@@ -146,11 +146,8 @@ void AccumulationMethod::extractValue(const AccumulationArray & accArray, const 
 		}
 	}
 	else {
-		mout.attention(" crop:", crop);
-		mout.attention(" dst: ", dst.getGeometry());
+		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
 		size_t addr;
-		//for (int j = crop.upperRight.y; j <= crop.lowerLeft.y; ++j) {
-		//	for (int i = crop.lowerLeft.x; i <= crop.upperRight.x; ++i) {
 		for (unsigned int j=0; j<dst.getHeight(); ++j) {
 			for (unsigned int i=0; i<dst.getWidth(); ++i) {
 				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
@@ -182,45 +179,89 @@ void AccumulationMethod::extractValue(const AccumulationArray & accArray, const 
 
 void AccumulationMethod::extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	// initDst(accArray, coder, dst, crop);
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	//double value = 0.0;
 	double weight;
 
-	const size_t s = dst.getVolume();
-	for (size_t i = 0; i < s; ++i) {
-
-		//value  = accArray.data.at(i);
-		weight = accArray.weight.at(i);
-		coder.encodeWeight(weight);
-		dst.put(i, weight);
+	if (crop.empty()){
+		const size_t s = dst.getVolume();
+		for (size_t i = 0; i < s; ++i) {
+			weight = accArray.weight.at(i);
+			coder.encodeWeight(weight);
+			dst.put(i, weight);
+		}
 	}
+	else {
+		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+		size_t addr;
+		for (unsigned int j=0; j<dst.getHeight(); ++j) {
+			for (unsigned int i=0; i<dst.getWidth(); ++i) {
+				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+				weight = accArray.weight.at(addr);
+				coder.encodeWeight(weight);
+				dst.put(i, j, weight);
+			}
+		}
+	}
+
 }
 
 
 void AccumulationMethod::extractCount(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	//LinearScaling scaling(gain, offset);
-	// initDst(accArray, coder, dst, crop);
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	double count;
-	const size_t s = dst.getVolume();
-	for (size_t i = 0; i < s; ++i){
-		count = static_cast<double>(accArray.count.at(i));
-		coder.encodeCount(count);
-		dst.put(i, count);
+	if (crop.empty()){
+		const size_t s = dst.getVolume();
+		for (size_t addr = 0; addr < s; ++addr){
+			count = static_cast<double>(accArray.count.at(addr));
+			coder.encodeCount(count);
+			dst.put(addr, count);
+		}
 	}
+	else {
+		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+		size_t addr;
+		for (unsigned int j=0; j<dst.getHeight(); ++j) {
+			for (unsigned int i=0; i<dst.getWidth(); ++i) {
+				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+				count = static_cast<double>(accArray.count.at(addr));
+				coder.encodeCount(count);
+				dst.put(i, j, count);
+			}
+		}
+	}
+
 
 }
 
 void AccumulationMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
+	Logger mout(getImgLog(), __FUNCTION__, getName());
+
 	double stdDev;
-	const size_t s = dst.getVolume();
-	for (size_t i = 0; i < s; ++i){
-		stdDev = static_cast<double>(accArray.count.at(i));  //???
-		coder.encodeStdDev(stdDev);
-		dst.put(i, stdDev);
+
+	if (crop.empty()){
+		const size_t s = dst.getVolume();
+		for (size_t addr = 0; addr < s; ++addr){
+			stdDev = static_cast<double>(accArray.count.at(addr));  //???
+			coder.encodeStdDev(stdDev);
+			dst.put(addr, stdDev);
+		}
+	}
+	else {
+		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+		size_t addr;
+		for (unsigned int j=0; j<dst.getHeight(); ++j) {
+			for (unsigned int i=0; i<dst.getWidth(); ++i) {
+				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+				stdDev = static_cast<double>(accArray.count.at(addr));  //???
+				coder.encodeStdDev(stdDev);
+				dst.put(i, j, stdDev);
+			}
+		}
 	}
 
 }
@@ -246,40 +287,51 @@ void OverwriteMethod::add(AccumulationArray & accArray, const size_t i, double v
 
 void OverwriteMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	// initDst(accArray, coder, dst, crop);
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	double diff;
 	const double noData   = coder.getNoDataMarker();
-	//coder.
-	//unsigned int count = 0;
 
-	const size_t s = dst.getVolume();
-	for (size_t i = 0; i < s; ++i){
-		switch (accArray.count.at(i)) {
-			case 2:
-				diff = static_cast<double>(accArray.data2.at(i));
-				coder.encodeDiff(diff);
-				dst.put(i, diff);
-				break;
-			case 1:
-				// dst.put(i, diff);
-				dst.put(i, noData);
-				break;
-			default:
-				dst.put(i, noData);
-				break;
+	if (crop.empty()){
+		const size_t s = dst.getVolume();
+		for (size_t addr = 0; addr < s; ++addr){
+			switch (accArray.count.at(addr)) {
+				case 2:
+					diff = static_cast<double>(accArray.data2.at(addr));
+					coder.encodeDiff(diff);
+					dst.put(addr, diff);
+					break;
+				case 1:
+					// dst.put(i, noData);
+					// no break;
+				default:
+					dst.put(addr, noData);
+					break;
+			}
 		}
-		/*
-		if (accArray.count.at(i) > 0){
-		  diff = static_cast<double>(accArray.data2.at(i));
-		  coder.encodeDiff(diff);
-		  dst.put(i, diff);
-		}
-		else {
-			dst.put(i, noData);
-		}
-		*/
 	}
+	else {
+		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+		size_t addr;
+		for (unsigned int j=0; j<dst.getHeight(); ++j) {
+			for (unsigned int i=0; i<dst.getWidth(); ++i) {
+				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+				switch (accArray.count.at(addr)) {
+				case 2:
+					diff = static_cast<double>(accArray.data2.at(addr));
+					coder.encodeDiff(diff);
+					dst.put(i,j, diff);
+					break;
+				case 1:
+				default:
+					dst.put(i,j, noData);
+					break;
+				}
+			}
+		}
+	}
+
+
 
 }
 
@@ -341,7 +393,7 @@ void AverageMethod::add(AccumulationArray & accArray, const size_t i, double val
 
 void AverageMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	// initDst(accArray, coder, dst, crop);
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	unsigned int count;
 	double value;
@@ -352,53 +404,104 @@ void AverageMethod::extractValue(const AccumulationArray & accArray, const Accum
 	// const double minValue = Type::call<typeMin, double>(dst.getType()); // dst.scaling.getMin<double>();
 	const double noDataMarker   = coder.getNoDataMarker();
 
-
-	const size_t s = dst.getVolume();
-	for (size_t i = 0; i < s; ++i) {
-
-		count = accArray.count.at(i);
-		if (count > 0){
-			weight = accArray.weight.at(i);
-			if (weight > 0.0){
-				value = accArray.data.at(i) / weight;  // because count is incremented also at undetectValue weight
-				// if (accArray.weight.at(i) > 0.0){
-				// value = accArray.data.at(i) / static_cast<double>(count);
-				weight = 1.0;
-				coder.encode(value, weight);  // WEIGHT unused
-				dst.put(i, value );
+	if (crop.empty()){
+		const size_t s = dst.getVolume();
+		for (size_t addr = 0; addr < s; ++addr) {
+			count = accArray.count.at(addr);
+			if (count > 0){
+				weight = accArray.weight.at(addr);
+				if (weight > 0.0){
+					value = accArray.data.at(addr) / weight;  // because count is incremented also at undetectValue weight
+					// if (accArray.weight.at(i) > 0.0){
+					// value = accArray.data.at(i) / static_cast<double>(count);
+					weight = 1.0;
+					coder.encode(value, weight);  // WEIGHT unused
+					dst.put(addr, value );
+				}
+				else {
+					dst.put(addr, noReadingMarker); //minValue);
+				}
 			}
 			else {
-				dst.put(i, noReadingMarker); //minValue);
+				dst.put(addr, noDataMarker);
 			}
 		}
-		else
-			dst.put(i, noDataMarker);
-
 	}
+	else {
+		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+		size_t addr;
+		for (unsigned int j=0; j<dst.getHeight(); ++j) {
+			for (unsigned int i=0; i<dst.getWidth(); ++i) {
+				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+				count = accArray.count.at(addr);
+				if (count > 0){
+					weight = accArray.weight.at(addr);
+					if (weight > 0.0){
+						value = accArray.data.at(addr) / weight;  // because count is incremented also at undetectValue weight
+						// if (accArray.weight.at(i) > 0.0){
+						// value = accArray.data.at(i) / static_cast<double>(count);
+						weight = 1.0;
+						coder.encode(value, weight);  // WEIGHT unused
+						dst.put(addr, value );
+					}
+					else {
+						dst.put(i, j, noReadingMarker); //minValue);
+					}
+				}
+				else {
+					dst.put(i, j, noDataMarker);
+				}
+			}
+		}
+	}
+
+
 }
 
 void AverageMethod::extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	// initDst(accArray, coder, dst, crop);
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	double count;
 	double weight = 0.0;
 	coder.encodeWeight(weight);
 	const double weight0 = weight;
 
-	const size_t s = dst.getVolume();
-	for (size_t i = 0; i < s; ++i) {
 
-		count = accArray.count.at(i);
-		if (count > 0.0){
-			/// Problem: with undetectValue weight, only counter has been incremented
-			weight = accArray.weight.at(i)/count;
-			coder.encodeWeight(weight);
-			dst.put(i, weight );
+	if (crop.empty()){
+		const size_t s = dst.getVolume();
+		for (size_t addr = 0; addr < s; ++addr) {
+			count = accArray.count.at(addr);
+			if (count > 0.0){
+				/// Problem: with undetectValue weight, only counter has been incremented
+				weight = accArray.weight.at(addr)/count;
+				coder.encodeWeight(weight);
+				dst.put(addr, weight );
+			}
+			else {
+				dst.put(addr, weight0);
+			}
 		}
-		else
-			dst.put(i, weight0);
 
+	}
+	else {
+		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+		size_t addr;
+		for (unsigned int j=0; j<dst.getHeight(); ++j) {
+			for (unsigned int i=0; i<dst.getWidth(); ++i) {
+				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+				count = accArray.count.at(addr);
+				if (count > 0.0){
+					/// Problem: with undetectValue weight, only counter has been incremented
+					weight = accArray.weight.at(addr)/count;
+					coder.encodeWeight(weight);
+					dst.put(i, j, weight );
+				}
+				else {
+					dst.put(i, j, weight0);
+				}
+			}
+		}
 	}
 
 }
@@ -406,30 +509,50 @@ void AverageMethod::extractWeight(const AccumulationArray & accArray, const Accu
 
 void AverageMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	// initDst(accArray, coder, dst, crop);
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	double count; // actually weight!
 	double x = 0.0;
 	coder.encodeStdDev(x);
 	const double stdDev0 = x;
 
-	const size_t s = dst.getVolume();
-	for (size_t i = 0; i < s; ++i) {
 
-		count = accArray.weight.at(i);
-		if (count > 0.0){
-			x = accArray.data.at(i)/count;
-			x = accArray.data2.at(i)/count - x*x;
-			//dst.put(i, scaling.forward(accArray.data2.at(i)/count - value*value) );
-			coder.encodeStdDev(x);
-			dst.put(i, x);
+	if (crop.empty()){
+		const size_t s = dst.getVolume();
+		for (size_t addr = 0; addr < s; ++addr) {
+			count = accArray.weight.at(addr);
+			if (count > 0.0){
+				x = accArray.data.at(addr)/count;
+				x = accArray.data2.at(addr)/count - x*x;
+				//dst.put(i, scaling.forward(accArray.data2.at(i)/count - value*value) );
+				coder.encodeStdDev(x);
+				dst.put(addr, x);
+			}
+			else {
+				dst.put(addr, stdDev0);
+			}
 		}
-		else {
-			dst.put(i, stdDev0);
-		}
-
 	}
-
+	else {
+		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+		size_t addr;
+		for (unsigned int j=0; j<dst.getHeight(); ++j) {
+			for (unsigned int i=0; i<dst.getWidth(); ++i) {
+				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+				count = accArray.weight.at(addr);
+				if (count > 0.0){
+					x = accArray.data.at(addr)/count;
+					x = accArray.data2.at(addr)/count - x*x;
+					//dst.put(i, scaling.forward(accArray.data2.at(i)/count - value*value) );
+					coder.encodeStdDev(x);
+					dst.put(i, j, x);
+				}
+				else {
+					dst.put(i, j, stdDev0);
+				}
+			}
+		}
+	}
 }
 
 
@@ -508,9 +631,6 @@ void WeightedAverageMethod::add(AccumulationArray & accArray, const size_t i, do
 void WeightedAverageMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	// mout.warn() << " start..." << mout.endl;
-
-	// initDst(accArray, coder, dst, crop);
 
 	double value;
 	double weight;
@@ -519,45 +639,73 @@ void WeightedAverageMethod::extractValue(const AccumulationArray & accArray, con
 	const double noDataCode   = coder.getNoDataMarker();
 	const double minCode = Type::call<typeMin, double>(dst.getType()); //dst.scaling.getMin<double>();
 
-	const size_t s = dst.getVolume();
+	if (crop.empty()){
 
-	for (size_t i = 0; i < s; ++i) {
+		const size_t s = dst.getVolume();
 
-		if (accArray.count.at(i) > 0){  // use count, not weight! ("undetected" values still "measured", yet with undetectValue weight)
+		for (size_t addr = 0; addr < s; ++addr) {
 
-			weight = accArray.weight.at(i);
+			if (accArray.count.at(addr) > 0){  // use count, not weight! ("undetected" values still "measured", yet with undetectValue weight)
+				weight = accArray.weight.at(addr);
+				if (weight > minWeight){
 
-			if (weight > minWeight){
+					// New scheme:
+					value = accArray.data.at(addr) / weight;
 
-				// New scheme:
-				value = accArray.data.at(i) / weight;
-
-				// NEW 2017: if p==1, allow negative values (and exponent r in weight)
-				if (USE_P){
-					value = pow(value, pInv) + bias;
+					// NEW 2017: if p==1, allow negative values (and exponent r in weight)
+					if (USE_P){
+						value = pow(value, pInv) + bias;
+					}
+					coder.encode(value, weight);
+					dst.put(addr, value);
 				}
-				//value += bias;  // 2017 moved above
-
-				coder.encode(value, weight);
-				dst.put(i, value);
+				else {
+					dst.put(addr, minCode);  // "undetect"
+					//dst.put(i, coder.undetectValue);
+				}
+				//value = dataScaling.forward( accArray.data.at(i)/weight );
 			}
 			else {
-				dst.put(i, minCode);  // "undetect"
-				//dst.put(i, coder.undetectValue);
+				dst.put(addr, noDataCode);
 			}
-			//value = dataScaling.forward( accArray.data.at(i)/weight );
 		}
-		else {
-			dst.put(i, noDataCode);
-		}
-
-		// if ((i%WIDTH)==j) std::cerr << "(" << value << ',' << weight << "\n";
-
-		// type.limit(value);  // needed?
-		//dst.put(i, value);
-
 
 	}
+	else {
+		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+		size_t addr;
+		for (unsigned int j=0; j<dst.getHeight(); ++j) {
+			for (unsigned int i=0; i<dst.getWidth(); ++i) {
+				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+				if (accArray.count.at(addr) > 0){  // use count, not weight! ("undetected" values still "measured", yet with undetectValue weight)
+
+					weight = accArray.weight.at(addr);
+
+					if (weight > minWeight){
+
+						// New scheme:
+						value = accArray.data.at(addr) / weight;
+
+						// NEW 2017: if p==1, allow negative values (and exponent r in weight)
+						if (USE_P){
+							value = pow(value, pInv) + bias;
+						}
+						//value += bias;  // 2017 moved above
+						coder.encode(value, weight);
+						dst.put(i, j, value);
+					}
+					else {
+						dst.put(i, j, minCode);  // "undetect"
+					}
+				}
+				else {
+					dst.put(addr, noDataCode);
+				}
+
+			}
+		}
+	}
+
 }
 
 
@@ -566,31 +714,41 @@ void WeightedAverageMethod::extractValue(const AccumulationArray & accArray, con
 
 void WeightedAverageMethod::extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	// initDst(accArray, coder, dst, crop);
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	double weight;
-
 	//const double rInv = (USE_R) ? 1.0/r : 1.0;  // div by undetectValue on some compilers?
 
-	const size_t s = dst.getVolume();
-	for (size_t i = 0; i < s; ++i) {
-
-		//count = accArray.count.at(i);
-		weight = accArray.weight.at(i);
-		// if ((i%1026)==0) std::cerr << "weight: " << weight << '\t';
-		if (weight > 0.0){ // 001){
-
-			// scale
-			// TODO: FIX!
-			weight = weight / static_cast<double>(accArray.count.at(i));
-
-			if (USE_R)
-				weight = pow(weight, rInv);
+	if (crop.empty()){
+		const size_t s = dst.getVolume();
+		for (size_t addr = 0; addr < s; ++addr) {
+			weight = accArray.weight.at(addr);
+			// if ((i%1026)==0) std::cerr << "weight: " << weight << '\t';
+			if (weight > 0.0){ //
+				weight = weight / static_cast<double>(accArray.count.at(addr)); // scale TODO: FIX!
+				if (USE_R)
+					weight = pow(weight, rInv);
+			}
+			coder.encodeWeight(weight);
+			dst.put(addr, weight);
 		}
-		// if ((i%1026)==0) std::cerr << weight << '\t';
-		coder.encodeWeight(weight);
-		// if ((i%1026)==0) std::cerr << weight << '\n';
-		dst.put(i, weight);
+	}
+	else {
+		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+		size_t addr;
+		for (unsigned int j=0; j<dst.getHeight(); ++j) {
+			for (unsigned int i=0; i<dst.getWidth(); ++i) {
+				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+				weight = accArray.weight.at(addr);
+				if (weight > 0.0){ //
+					weight = weight / static_cast<double>(accArray.count.at(addr)); // scale TODO: FIX!
+					if (USE_R)
+						weight = pow(weight, rInv);
+				}
+				coder.encodeWeight(weight);
+				dst.put(i, j, weight);
+			}
+		}
 	}
 
 }
@@ -598,7 +756,7 @@ void WeightedAverageMethod::extractWeight(const AccumulationArray & accArray, co
 
 void WeightedAverageMethod::extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	// initDst(accArray, coder, dst, crop);
+	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	double count;
 	double weight;
@@ -609,44 +767,71 @@ void WeightedAverageMethod::extractDev(const AccumulationArray & accArray, const
 
 	const double pInv2 = pInv*pInv;
 
-
-	const size_t s = dst.getVolume();
-	for (size_t i = 0; i < s; ++i) {
-
-		count = accArray.count.at(i);
-		if (count > 0.0){
-
-			weight = accArray.weight.at(i);
-			if (weight > 0.0){
-
-				if (USE_P) {
-					value  = pow(accArray.data.at(i)/weight, pInv);  // what about bias?
-					value2 = pow(accArray.data2.at(i)/weight, pInv2);
+	if (crop.empty()){
+		const size_t s = dst.getVolume();
+		for (size_t addr = 0; addr < s; ++addr) {
+			count = accArray.count.at(addr);
+			if (count > 0.0){
+				weight = accArray.weight.at(addr);
+				if (weight > 0.0){
+					if (USE_P) {
+						value  = pow(accArray.data.at(addr)/weight, pInv);  // what about bias?
+						value2 = pow(accArray.data2.at(addr)/weight, pInv2);
+					}
+					else {
+						value  = accArray.data.at(addr)/weight;
+						value2 = accArray.data2.at(addr)/weight;
+					}
+					value = value2 - value*value;
+					coder.encodeStdDev(value);
+					dst.put(addr, value);
+				}
+				else
+					dst.put(addr, stdDev0);
+			}
+			else {
+				dst.put(addr, stdDev0);
+			}
+		}
+	}
+	else {
+		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+		size_t addr;
+		for (unsigned int j=0; j<dst.getHeight(); ++j) {
+			for (unsigned int i=0; i<dst.getWidth(); ++i) {
+				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+				count = accArray.count.at(addr);
+				if (count > 0.0){
+					weight = accArray.weight.at(addr);
+					if (weight > 0.0){
+						if (USE_P) {
+							value  = pow(accArray.data.at(addr)/weight, pInv);  // what about bias?
+							value2 = pow(accArray.data2.at(addr)/weight, pInv2);
+						}
+						else {
+							value  = accArray.data.at(addr)/weight;
+							value2 = accArray.data2.at(addr)/weight;
+						}
+						value = value2 - value*value;
+						coder.encodeStdDev(value);
+						dst.put(i, j, value);
+					}
+					else
+						dst.put(i, j, stdDev0);
 				}
 				else {
-					value  = accArray.data.at(i)/weight;
-					value2 = accArray.data2.at(i)/weight;
+					dst.put(i, j, stdDev0);
 				}
-
-				value = value2 - value*value;
-				coder.encodeStdDev(value);
-				dst.put(i, value);
-
 			}
-			else
-				dst.put(i, stdDev0);
 		}
-		else {
-			dst.put(i, stdDev0);
-		}
-
 	}
-
 }
 
 
+
+
+
 void MaximumWeightMethod::add(AccumulationArray & accArray, const size_t i, double value, double weight) const {
-	//void MaximumWeightMethod::add(const size_t i, const double & value, const double & weight) const {
 
 	if (weight >= accArray.weight.at(i)){
 		accArray.data.at(i)   = value;

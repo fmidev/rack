@@ -210,11 +210,13 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 
-	mout.attention("Crop: ", crop);
+	// mout.attention("Crop: ", crop);
 	drain::Rectangle<int> finalCrop(crop);
 	initDst(coder, dst, finalCrop);
 
-	mout.attention("finalCrop:", finalCrop, ", dst geom:", dst.getGeometry());
+	if (crop != finalCrop){
+		mout.note("final crop [LL UR]: ", finalCrop, ", dst geom:", dst.getGeometry());
+	}
 
 	/*
 	if ((dst.getWidth() != accArray.getWidth()) || (dst.getHeight() != accArray.getHeight())){
@@ -237,13 +239,7 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 		}
 	}
 
-
-	// if (!dst.typeIsSet())
-	//	dst.setType<unsigned char>();
-
-	//if ((field >= 'A') && (field <= 'Z')) field = field-'A'+'a';
-
-	mout.debug2() << "field " << field << mout.endl;
+	mout.debug2("field ", field);
 
 	switch (field){
 		case 'd':
