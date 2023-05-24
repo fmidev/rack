@@ -18,7 +18,7 @@
 # Only considers examples which can be executed as such, including
 # those with variables like $FILE but not those with <FILE>
 # This was just a trick to exclude the latter from this test.
-DOC_FILES="../main/*.dox" 
+DOC_FILES="../src/main/*.dox" 
 
 # Resulting list of example commands from *.dox
 TEST_CMD_FILE=tests.lst
