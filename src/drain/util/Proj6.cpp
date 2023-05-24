@@ -448,8 +448,8 @@ int Projector::extractEPSG(const ProjDef & dict){
 			std::string k;
 			StringTools::split2(entry.second, k, epsg, ':');
 			if (k == "epsg"){
-				mout.discouraged("+init detected, EPSG: ", epsg);
-				mout.advice("For EPSG codes, consider using format: 'EPSG:", epsg, "'");
+				mout.discouraged("+init detected, epsg:", epsg);
+				mout.advice("Preferred format: 'EPSG:", epsg, "'");
 			}
 			else {
 				mout.warn("+init detected,  but without EPSG setting, arg=", entry.second);
@@ -459,7 +459,7 @@ int Projector::extractEPSG(const ProjDef & dict){
 			//epsg = atoi(entry.first);
 			epsg = drain::StringTools::convert<int>(entry.first);
 			if (epsg > 0){
-				mout.attention("Ok, plain number (", epsg, ") treated as EPSG code.");
+				mout.ok("Plain number (", epsg, ") handled as EPSG code.");
 			}
 		}
 	}

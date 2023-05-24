@@ -169,7 +169,7 @@ public:
 	//bool debug;
 
 	inline
-	size_t address(const size_t &i, const size_t &j){
+	size_t address(const size_t &i, const size_t &j) const {
 		return data.address(i,j);
 	};
 

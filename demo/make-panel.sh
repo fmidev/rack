@@ -59,7 +59,7 @@ echo $TIMESTAMP $SITE $MAP
 
 
 #if [ -s $BASENAME-cart-map.png ]; then
-if [ -s $MAP ]; then
+if [ -f $MAP ]; then
     #RGB1=tmp1.tif
     TMP2=tmp2.tif
     composite -compose Over $BASENAME-cart-rgb.png $MAP $BASENAME-cart-map.png
@@ -71,7 +71,9 @@ if [ -s $MAP ]; then
     #convert  -append -frame 1 $BASENAME-cart-map.png $BASENAME.png mika.jpg
 else
     echo "Empty map image: $MAP, removing... "
-    rm -vf $MAP
+    pwd 
+    ls -ltr $MAP
+    #rm -vf $MAP
     exit -1
 fi
     

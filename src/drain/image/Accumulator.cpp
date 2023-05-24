@@ -207,10 +207,14 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Ima
 
 void Accumulator::extractField(char field, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 
-	mout.attention("Resizing dst suppressed from here.");
+	mout.attention("Crop: ", crop);
+	drain::Rectangle<int> finalCrop(crop);
+	initDst(coder, dst, finalCrop);
+
+	mout.attention("finalCrop:", finalCrop, ", dst geom:", dst.getGeometry());
 
 	/*
 	if ((dst.getWidth() != accArray.getWidth()) || (dst.getHeight() != accArray.getHeight())){
@@ -244,25 +248,87 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 	switch (field){
 		case 'd':
 		case 'D':
-			methodPtr->extractValue(accArray, coder, dst, crop);
+			methodPtr->extractValue(accArray, coder, dst, finalCrop);
 			break;
 		case 'w':
 		case 'W':
-			methodPtr->extractWeight(accArray, coder, dst, crop);
+			methodPtr->extractWeight(accArray, coder, dst, finalCrop);
 			break;
 		case 'c':
 		case 'C':
-			methodPtr->extractCount(accArray, coder, dst, crop);
+			methodPtr->extractCount(accArray, coder, dst, finalCrop);
 			break;
 		case 's':
 		case 'S':
 			//mout.warn() << coder << mout.endl;
-			methodPtr->extractDev(accArray, coder, dst, crop);
+			methodPtr->extractDev(accArray, coder, dst, finalCrop);
 			//methodPtr->extractDev(dst, params.scale, params.bias, params.NODATA);
 			break;
 		default:
 			mout.error("unknown (unimplemented) field ", field);
 			//throw std::runtime_error(std::string("Accumulator::extractField: unknown field code '") + field + "'");
+	}
+
+}
+
+void Accumulator::initDst(const AccumulationConverter & coder, Image & dst, drain::Rectangle<int> & crop) const {
+
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
+	if (crop.upperRight.x < crop.lowerLeft.x){
+		mout.error("Negative direction in vertical crop coordinate (lowerLeft upperRight): ", crop);
+	}
+
+	if (crop.upperRight.y > crop.lowerLeft.y){
+		mout.error("Positive direction in vertical crop coordinate (lowerLeft upperRight): ", crop);
+	}
+
+	/*
+	//mout.attention("Crop image coords: ", cropImage);
+	if (cropImage.isInside(-1, 0) || cropImage.isInside(0, -1)){
+		mout.error("Crop area ", cropImage, " exceeds composite ");
+	}
+	if (cropImage.isInside(composite.getFrameWidth(), 0) || cropImage.isInside(0, composite.getFrameHeight())){
+		mout.error("Crop area ", cropImage, " exceeds composite ");
+	}
+	*/
+
+	if (!dst.typeIsSet()){
+		if (!coder.type.empty()){
+			dst.setType(coder.type.at(0));
+		}
+		else {
+			mout.error("default output type and image type unset.");
+		}
+	}
+
+
+	if (crop.empty()){
+		mout.debug("Empty crop request - using whole array");
+		dst.setGeometry(accArray.getWidth(), accArray.getHeight());
+		// return false
+	}
+	else {
+		Rectangle<int> finalCrop(0, accArray.getHeight()-1, accArray.getWidth()-1, 0);
+
+		if (crop == finalCrop){
+			mout.warn("Crop area equals array scope (", finalCrop, "), discarding it.");
+			crop.clear();
+			dst.setGeometry(accArray.getWidth(), accArray.getHeight());
+			return;
+		}
+
+		finalCrop.crop(crop);
+
+		if (finalCrop != crop){
+			mout.warn("Adjusted crop area: ", crop, " -> ", finalCrop);
+		}
+		crop.set(finalCrop);
+		mout.experimental("applying cropped (", crop ,") view of ", accArray.getGeometry());
+		const int w = ::abs(crop.getWidth());
+		const int h = ::abs(crop.getHeight());
+		dst.setGeometry(w+1, h+1);
+		// return true
 	}
 
 }

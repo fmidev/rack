@@ -668,44 +668,41 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	//mout.note() << "dst odim: " << odim << mout.endl;
 	mout.debug2("Extracting...");
 
-	//drain::Rectangle
-	drain::BBox cropping(bbox);
-	drain::Rectangle<int> cropCoords;
-	if (!cropping.empty()){
-		mout.special("Cropping: ", cropping, cropping.isMetric() ? " [meters]": " [degrees]");
-		if (cropping.isMetric()){
+	drain::BBox cropGeo(bbox);
+
+	drain::Rectangle<int> cropImage;
+	if (!cropGeo.empty()){
+		mout.special("Cropping: ", cropGeo, cropGeo.isMetric() ? " [meters]": " [degrees]");
+		if (cropGeo.isMetric()){
 			if (composite.isLongLat()){
 				mout.error("Cannot crop long-lat composite with a metric bbox (", bbox, ") ");
 				return;
 			}
 			// NOTE: vert coord swap
-			composite.m2pix(cropping.lowerLeft.x,  cropping.lowerLeft.y,   cropCoords.lowerLeft.x,  cropCoords.upperRight.y);
-			composite.m2pix(cropping.upperRight.x, cropping.upperRight.x,  cropCoords.upperRight.x, cropCoords.lowerLeft.y );
-
-			// composite.m2pix(cropping.lowerLeft,  cropCoords.lowerLeft);
-			// composite.m2pix(cropping.upperRight, cropCoords.upperRight);
+			// composite.m2pix(cropGeo.lowerLeft.x,  cropGeo.lowerLeft.y,   cropImage.lowerLeft.x,  cropImage.upperRight.y);
+			// composite.m2pix(cropGeo.upperRight.x, cropGeo.upperRight.y,  cropImage.upperRight.x, cropImage.lowerLeft.y );
+			composite.m2pix(cropGeo.lowerLeft,  cropImage.lowerLeft);
+			composite.m2pix(cropGeo.upperRight, cropImage.upperRight);
 		}
 		else {
-			composite.deg2pix(cropping.lowerLeft.x,  cropping.lowerLeft.y,   cropCoords.lowerLeft.x,  cropCoords.upperRight.y);
-			composite.deg2pix(cropping.upperRight.x, cropping.upperRight.x,  cropCoords.upperRight.x, cropCoords.lowerLeft.y );
-			// composite.deg2pix(cropping.lowerLeft,  cropCoords.lowerLeft);
-			// composite.deg2pix(cropping.upperRight, cropCoords.upperRight);
-
-			mout.special("Degrees: ", cropping);
-
+			// composite.deg2pix(cropGeo.lowerLeft.x,  cropGeo.lowerLeft.y,   cropImage.lowerLeft.x,  cropImage.upperRight.y);
+			// composite.deg2pix(cropGeo.upperRight.x, cropGeo.upperRight.y,  cropImage.upperRight.x, cropImage.lowerLeft.y );
+			composite.deg2pix(cropGeo.lowerLeft,  cropImage.lowerLeft);
+			composite.deg2pix(cropGeo.upperRight, cropImage.upperRight);
 		}
 
+		//++cropImage.upperRight.y;
+		--cropImage.upperRight.x;
+		++cropImage.upperRight.y;
+
 
 	}
-	mout.attention("Crop coords: ", cropCoords);
-	if (cropCoords.isInside(-1, 0) || cropCoords.isInside(0, -1)){
-		mout.error("Crop area ", cropCoords, " exceeds composite ");
-	}
-	if (cropCoords.isInside(composite.getFrameWidth(), 0) || cropCoords.isInside(0, composite.getFrameHeight())){
-		mout.error("Crop area ", cropCoords, " exceeds composite ");
-	}
+	mout.warn("Crop image now ", cropImage);
 
-	composite.extract(rootOdim, dstProduct, channels, cropCoords);
+
+	// cropArea check implemented in Accumulator
+
+	composite.extract(rootOdim, dstProduct, channels, cropImage);
 	//mout.warn() << "extracted data: " << dstProduct << mout.endl; // .getFirstData().data
 
 	/// Final step: write metadata

@@ -103,8 +103,7 @@ public:
 	}
 
 
-
-	inline
+	virtual inline
 	~Accumulator(){};
 
 	/// Set method to some of the predefined methods
@@ -208,7 +207,7 @@ protected:
 
 	AccumulationMethod undefinedMethod;
 
-/*
+	/*
 	AccumulationMethod undefinedMethod;
 	OverwriteMethod overwriteMethod;
 	MaximumMethod   maximumMethod;
@@ -216,9 +215,19 @@ protected:
 	AverageMethod   averageMethod;
 	WeightedAverageMethod weightedAverageMethod;
 	MaximumWeightMethod maximumWeightMethod;
-*/
+	*/
 
 	AccumulationMethod * methodPtr;
+
+	// Initialize destination image to match the accumulation array - cropped if requested.
+	/*
+	 * \param dst – destination image to be cropped if cropArea supplied
+	 * \param cropArea – sub-area of the accumulation array; empty if no cropping requested.
+	 *
+	 * If cropArea geometry equals that of the accumulation array, it will be cleared and discarded in processing.
+	 *
+	 */
+	void initDst(const AccumulationConverter & coder, Image & dst, drain::Rectangle<int> & cropArea) const;
 
 
 };

@@ -370,7 +370,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		}
 
 		//PlainData<DstType<OD> >
-		mout.debug() << "searching dstData... DATA=" << (type == DATA) << mout.endl;
+		mout.debug("searching dstData... DATA=", (type == DATA));
 		//pdata_dst_t & dstData = (type == DATA) ? dstProduct.getData(odimFinal.quantity) : dstProduct.getQualityData(odimQuality.quantity);
 		//mout .debug3() << "dstData: " << dstData << mout.endl;
 
@@ -378,8 +378,8 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		//mout.warn() << "odimFinal: " << odimFinal << mout.endl;
 		DataCoder dataCoder(odimFinal, odimQuality); // (will use only either odim!)
 		mout.debug("dataCoder: ", dataCoder);
-		mout.debug2() << "dataCoder: data: " << dataCoder.dataODIM    << mout.endl;
-		mout.debug2() << "dataCoder: qind: " << dataCoder.qualityODIM << mout.endl;
+		mout.debug2("dataCoder: data: ", dataCoder.dataODIM);
+		mout.debug2("dataCoder: qind: ", dataCoder.qualityODIM);
 
 		if (!crop.empty()){
 			mout.unimplemented("dstData.data resize + Accumulator::extractField");
@@ -409,32 +409,14 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 			this->Accumulator::extractField(field, dataCoder, dstData.data, crop);
 		}
 
-		/*
-		if (type != DATA){
-			double test=10.0;
-			mout.warn() << "Encode inv odimQuality 10.0 => " << odimQuality.scaleInverse(10.0) << mout.endl;
-			mout.warn() << "Encode fwd odimQuality 10.0 => " << odimQuality.scaleForward(10.0) << mout.endl;
-			converter.encodeStdDev(test);
-			mout.warn() << "Encode STDEV 10.0" << test << mout.endl;
-		}
-		*/
-		//this->Accumulator::extractField(field, converter, dstData.data);
 
-		//mout.debug()  << "dstData: " << dstData.odim << mout.endl;
-		mout.debug()  << "updating local tree attributes" << mout.endl;
-		//hi5::Writer::writeFile("test0.h5", dstProduct.tree);
-		//@= dstData.updateTree();
-		//std::cerr << __FUNCTION__ << ':' << dstData.tree << std::endl;
-		//hi5::Writer::writeFile("test1.h5", dstProduct.tree);
+		// mout.debug("updating local tree attributes");
 
 	}
 
 
 	//mout.debug()  << "updating local tree attributes" << mout.endl;
-
-
-	//mout.debug() << "Finished " << accumulator.getMethod().name << mout.endl;
-	mout.debug() << "finished" << mout.endl;
+	// mout.debug() << "finished" << mout.endl;
 
 }
 
@@ -442,6 +424,6 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 }  // rack::
 
 
-#endif /* RADAR_DATA_PICKER_H */
+#endif /* RADAR_ACCUMULATOR */
 
 // Rack

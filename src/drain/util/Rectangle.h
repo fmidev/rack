@@ -71,10 +71,16 @@ struct Rectangle : public drain::UniTuple<T,4> {
 		this->set(x, y, x2, y2);
 	}
 
+	Rectangle(const Point2D<T> & ll, const Point2D<T> & ur) : lowerLeft(this->tuple(), 0), upperRight(this->tuple(), 2){
+		lowerLeft.setLocation(ll);
+		upperRight.setLocation(ur);
+	};
 
 	Rectangle(const Rectangle & r) : lowerLeft(this->tuple(), 0), upperRight(this->tuple(), 2){
 		this->assign(r);
 	};
+
+
 
 	Rectangle<T> & operator=(const Rectangle<T> & rect){
 		this->set(rect.tuple());
@@ -154,12 +160,20 @@ struct Rectangle : public drain::UniTuple<T,4> {
 
 protected:
 
-	static inline
+	/// Limits x between interval [lowerBound, upperBound]
+	inline
 	void limit(const T & lowerBound, const T & upperBound, T & x){
+
+		if (lowerBound > upperBound){
+			limit(upperBound, lowerBound, x);
+			return;
+		}
+
 		if (x < lowerBound)
 			x = lowerBound;
 		else if (x > upperBound)
 			x = upperBound;
+
 	}
 
 };
