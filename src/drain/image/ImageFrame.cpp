@@ -89,11 +89,15 @@ void ImageFrame::adjustBuffer(){
 	try {
 		if (s > 0)
 			buffer.resize(s);
-		else
-			buffer.resize(1);
+		else {
+			// NEW
+			buffer.resize(0); // unsafe buffer[0] below?
+			// OLD
+			// buffer.resize(1);
+		}
 	}
 	catch (const std::runtime_error & e) {
-		mout.error() << "allocating image data failed" << mout.endl;
+		mout.error("allocating image data failed");
 	}
 
 	bufferPtr = &buffer[0];
