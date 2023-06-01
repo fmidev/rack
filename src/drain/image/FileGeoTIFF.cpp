@@ -262,14 +262,14 @@ void FileGeoTIFF::writeMetadata(){
 		GTIFWriteKeys(gtif);
 	}
 	else {
-		drain::Logger mout(__FILE__, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		mout.error("File not open");
 	}
 }
 
 void FileGeoTIFF::close(){
 	if (isOpen()){
-		drain::Logger mout(__FILE__, __FUNCTION__);
+		drain::Logger mout(__FUNCTION__, __FILE__);
 		mout.debug("Closing GeoTIFF...");
 		//GTIFWriteKeys(gtif); // moved to writeMetadata() for cloud optimized GeoTIFF, COG.
 
@@ -435,10 +435,10 @@ void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
 
 		//const short epsg = drain::Proj6::pickEpsgCode(dstProj);
 		const short epsg = proj.getDst().getEPSG(); //rain::Proj6::extractEPSG(dstProj);
-		mout.note("Read EPSG:", epsg);
+		mout.debug("Read EPSG:", epsg);
 
 		if (epsg > 0){
-			mout.note("using EPSG:", epsg);
+			mout.info("Using EPSG:", epsg, " 'directly'");
 			setProjectionEPSG(epsg);
 		}
 		else if (GTIFSetFromProj4(gtif, dstProj.c_str())){ // CHECK!!
