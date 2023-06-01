@@ -60,6 +60,7 @@ void AccumulationArray::setGeometry(size_t width, size_t height){
 }
 
 void AccumulationArray::clear(){
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 	data.clear();
 	weight.clear();
 	count.clear();
