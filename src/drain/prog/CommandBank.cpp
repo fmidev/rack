@@ -463,7 +463,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		const bool TRIGGER_CMD = (cmd.section & this->scriptTriggerFlag);
 		// ctx.setStatus("script", !routine.empty());
 
-		mout.debug() << '"' << key << '"' << " ctx=" << ctx.getName() << " cmd.section=" << cmd.section << '/' << this->scriptTriggerFlag;
+		mout.debug('"', key, '"', " ctx=", ctx.getName(), " cmd.section=", cmd.section, '/', this->scriptTriggerFlag);
 
 		if (TRIGGER_CMD)
 			mout << " TRIGGER_CMD,";
@@ -646,13 +646,12 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			mout.warn("Use these characters for parallel computing: [ / ]");
 			mout.error("Unrecognized single-character instruction: ", key);
 		}
-		else {
+		else { // Run a "normal" command...  This is the default action.
 
 			Logger mout2(ctx.log, __FUNCTION__, __FILE__);
 			mout2.startTiming(cmd.getName(), " <tt>", cmd.getParameters().getValues(), "</tt>");
 
-			// This is the default action!
-			mout.debug() << "Executing: " << key << " = " << cmd << " "  << mout.endl;
+			mout.debug("Executing: ", key, " = ", cmd, ' ');
 
 			// NEW 2023/05/10
 			ctx.setStatus("cmd", cmd.getName()); //

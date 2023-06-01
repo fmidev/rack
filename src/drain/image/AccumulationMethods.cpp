@@ -109,9 +109,7 @@ void AccumulationMethod::extractValue(const AccumulationArray & accArray, const 
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	mout.warn(name, " extracting...");
-
-
+	// mout.attention(name, " extracting...");
 
 	// Marker for bins having data (count > 0), but unusable value,
 	const double noReadingMarker = coder.getNoReadingMarker();
@@ -127,7 +125,7 @@ void AccumulationMethod::extractValue(const AccumulationArray & accArray, const 
 	double weight;
 
 	if (crop.empty()){
-		mout.attention("No cropping, computing in direct mode (quick)");
+		mout.debug("No cropping, computing in direct mode (quick)");
 		const size_t s = dst.getVolume();
 		for (size_t addr = 0; addr < s; ++addr) {
 			if (accArray.count.at(addr) > 0){

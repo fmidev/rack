@@ -120,13 +120,25 @@ public:
 		Composite & composite = ctx.composite;
 
 		if (!composite.geometryIsSet())
-			mout.error() << "Composite geometry undefined, cannot create tile" << mout.endl;
+			mout.error("Composite geometry undefined, cannot create tile");
 
 		if (! composite.bboxIsSet())
-			mout.error() << "Bounding box undefined, cannot create tile" << mout.endl;
+			mout.error("Bounding box undefined, cannot create tile");
 
 		if (! composite.projectionIsSet()) // or use first input (bbox reset)
-			mout.error() << "Projection undefined, cannot create tile" << mout.endl;
+			mout.error("Projection undefined, cannot create tile");
+
+		if ((composite.odim.ACCnum > 0) || (!composite.odim.quantity.empty())){
+			mout.special("Clearing previous composite");
+			// Consider: composite.clear() ?
+			composite.accArray.clear();
+			composite.odim.quantity.clear();
+			composite.odim.ACCnum = 0;
+			composite.odim.scaling.set(0,0);
+			composite.odim.type.clear(); // ? risky
+			mout.special("... Cleared.");
+		}
+
 
 		composite.setCropping(true);
 		//add(composite, RackContext::POLAR|RackContext::CURRENT);
@@ -135,8 +147,8 @@ public:
 
 		// "Debugging"
 		if (!composite.isCropping()){
-			mout.warn() << "Composite cropping switched off during op" << mout;
-			mout.error() << "? Programming error in parallel comp design" << mout;
+			mout.warn("Composite cropping switched off during op");
+			mout.error("? Programming error in parallel comp design");
 		}
 
 		composite.setCropping(false);

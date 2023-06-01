@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.51"
+#define __RACK_VERSION__ "7.52"
 
 /**
+ *   Version 7.52
+ *   -- Added Cropping BBOX parameter to --cExtract
+ *   -- Fixed cCreateTile (clear composite)
+ *
  *   Version 7.51
  *   -- More support for EPSG in saving composites in GeoTIFF.
  *

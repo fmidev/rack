@@ -93,7 +93,7 @@ void CartesianBBoxTest::exec() const {
 	 */
 	const double range = a.get("nbins",0.0) * a.get("rscale",0.0)  +  a.get("rstart",0.0);
 
-	mout.debug() << ": lon=" << lon << ", lat=" << lat << ", range=" << range << mout.endl;
+	mout.debug(": lon=", lon, ", lat=", lat, ", range=", range);
 
 	// TODO: str than aeqd?
 	RadarProj pRadarToComposite;
