@@ -56,7 +56,7 @@ void Projector::setProjection(int epsg, CRS_mode crs){
 	PJ *pjTmp = proj_create(0, sstr.str().c_str()); // pjContext: better with or without?
 
 	const char *projStr = proj_as_proj_string(pjContext, pjTmp, PJ_PROJ_4, nullptr);
-	mout.attention("Converted 'EPSG:", epsg, "' to non-(x,y)-swapping '", projStr,"'");
+	mout.info("Converted 'EPSG:", epsg, "' to non-(x,y)-swapping '", projStr,"'");
 
 	projDefDict.clear();
 	getProjDefDict(projStr, projDefDict);
