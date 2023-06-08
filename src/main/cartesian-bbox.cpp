@@ -66,15 +66,17 @@ void CartesianBBoxTest::exec() const {
 		return;
 	}
 
-	if ( ! ctx.composite.projectionIsSet() ){
-		// Maybe ok (if latlong?)
-		mout.note() << "Projection undefined." << mout.endl;
-	}
-
 	if ( ! ctx.composite.geometryIsSet() ){
 		// Maybe ok
-		mout.info() << "Composite array geometry undefined" << mout.endl;
+		mout.info("Composite array geometry undefined");
 	}
+
+	/*
+	if ( ! ctx.composite.projectionIsSet() ){
+		mout.note("Projection undefined.");
+	}
+	*/
+
 
 	// There may be no data, don't use Data<PolarSrc> etc here.
 	Hi5Tree & p = ctx.getHi5(RackContext::CURRENT|RackContext::POLAR|RackContext::INPUT);
@@ -84,6 +86,7 @@ void CartesianBBoxTest::exec() const {
 	drain::VariableMap & attributes = p[ODIMPathElem::WHERE].data.attributes;
 	double lon = attributes.get("lon", 0.0);
 	double lat = attributes.get("lat", 0.0);
+
 	//mout.warn() << attributes << mout.endl;
 	//
 	const drain::VariableMap & a = p.hasChild("dataset1") ? p["dataset1"]["where"].data.attributes : attributes;
@@ -98,6 +101,19 @@ void CartesianBBoxTest::exec() const {
 	// TODO: str than aeqd?
 	RadarProj pRadarToComposite;
 	pRadarToComposite.setSiteLocationDeg(lon, lat);
+
+
+	if ( ! ctx.composite.projectionIsSet() ){
+		// Maybe ok (if latlong?)
+		const std::string & s = pRadarToComposite.src.getProjDef();
+		mout.note("Projection undefined, using Azimuthal Equidistant: '", s, "'");
+		mout.advice("For 'longlat projection', use 'EPSG:4326'");
+		ctx.composite.setProjection(s);
+	}
+
+
+
+
 	pRadarToComposite.setProjectionDst(ctx.composite.getProjection());
 
 	drain::Rectangle<double> bboxM;
