@@ -923,7 +923,7 @@ class CmdImageQuality : public drain::BasicCommand { // public drain::SimpleComm
 public:
 
 	//  drain::SimpleCommand<std::string>
-	CmdImageQuality() :  drain::BasicCommand(__FUNCTION__, "Quality groups accepted as alpha channels"){
+	CmdImageQuality() :  drain::BasicCommand(__FUNCTION__, "Applied parent groups for quality: dataset:data"){
 		// , "groups", "None"
 		parameters.link("groups", groups = "dataset:data");
 		// parameters.link("quantity", quantity = "");
@@ -960,7 +960,7 @@ public:
 		}
 		// matcher.flags.assign(value);
 		// matcher.flags.value = v; // OK!
-		mout.special() << ctx.qualityGroups << '#' << mout;
+		mout.special(ctx.qualityGroups, '#' );
 		//mout.special() << ctx.qualityGroups << '#' << ctx.qualityGroups.flags << '=' << ctx.qualityGroups.flags.value << mout;
 		//mout.special() << matcher << '=' << matcher.flags << '=' << matcher.flags.value << mout;
 		//ctx.qualitySelector.pathMatcher.setElems(matcher);
@@ -971,7 +971,7 @@ public:
 		for (const char *s: {"", "dataset1", "dataset5", "data2", "data5"}) {
 			//mout.special() << s << "?\t" << ctx.quality....Matcher.match(s) << mout;
 			ODIMPathElem elem(s);
-			mout.special() << s << "?\t" << elem.belongsTo(ctx.qualityGroups) << mout;
+			mout.special(s, "?\t", elem.belongsTo(ctx.qualityGroups));
 		}
 
 		//}

@@ -18,7 +18,7 @@
 # Only considers examples which can be executed as such, including
 # those with variables like $FILE but not those with <FILE>
 # This was just a trick to exclude the latter from this test.
-#DOC_FILES="../src/main/*.dox" 
+DOC_FILES="../src/main/*.dox" 
 
 # Resulting list of example commands from *.dox
 TEST_CMD_FILE=tests.lst
@@ -68,7 +68,8 @@ fi
 echo -n > $TEST_CMD_FILE
 
 # Start by adding all "command.cmd" and ".inc" files
-INCLUDES=( `grep '\\include .*.\(hlp\|exm\|cut\)\w*$'  ${DOC_FILES[*]} | cut -d'\' -f2 | cut -d' ' -f2 ` )
+# INCLUDES=( `grep '\\include .*.\(hlp\|exm\|cut\)\w*$'  ${DOC_FILES[*]} | cut -d'\' -f2 | cut -d' ' -f2 ` )
+INCLUDES=( `grep '\\include .*.\(hlp\|exm\)\w*$'  ${DOC_FILES[*]} | cut -d'\' -f2 | cut -d' ' -f2 ` )
 echo "make --always-make ${INCLUDES[*]} " >> $TEST_CMD_FILE
 
 #echo > $TEST_CMD_FILE.foo

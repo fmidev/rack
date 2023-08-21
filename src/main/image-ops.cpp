@@ -31,10 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <utility>
 
-
 #include "drain/util/Cloner.h"
 #include "drain/util/Log.h"
-
 #include "drain/util/Range.h"
 #include "drain/util/Registry.h"
 #include "drain/util/SmartMap.h"
@@ -45,6 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/image/ImageFrame.h"
 #include "drain/image/ImageTray.h"
 #include "drain/imageops/ImageOpBank.h"
+#include "drain/imageops/CropOp.h"
 #include "drain/prog/CommandBankUtils.h"
 
 #include "data/Data.h"
@@ -52,14 +51,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIM.h"
 #include "data/ODIMPath.h"
 #include "data/QuantityMap.h"
-
 #include "product/ProductBase.h"
-
-
 #include "image-ops.h"
 #include "resources.h"
 
-#include "drain/imageops/CropOp.h"
 
 namespace rack {
 
@@ -72,15 +67,12 @@ void ImageOpExec::updateGeometryODIM(Hi5Tree & dstGroup, const std::string & qua
 	// OD odim;
 	typedef DstType<OD> dst_t;
 
-
-	//DataSet<dst_t> dstDataSet(dstGroup, quantity);
-	DataSet<dst_t> dstDataSet(dstGroup);
-
-	//mout.attention("check: ");
-
+	DataSet<dst_t> dstDataSet(dstGroup, quantity);
+	mout.attention("changed code, selecting by quantity: ", quantity);
+	//DataSet<dst_t> dstDataSet(dstGroup);
+	// mout.attention("check: ");
 
 	for (auto & entry: dstDataSet){
-
 		// mout.note("check: ", entry.first, '=', entry.second);
 
 		Data<dst_t> & dstData = entry.second;
@@ -90,7 +82,7 @@ void ImageOpExec::updateGeometryODIM(Hi5Tree & dstGroup, const std::string & qua
 			geometry.setArea(g.getWidth(), g.getHeight());
 		}
 		else if (geometry.area != g.area) {
-			mout.warn("nominal geom: ", geometry, ", found dataset with: ", g );
+			mout.warn("nominal geom: ", geometry, ", found dataset with: ", g , " [", entry.first, '/', quantity, ']');
 		}
 		else if (geometry.channels != g.channels){
 			mout.note("varying channel geometry: ", geometry.channels, ", dataset with: ", g.channels);
@@ -292,8 +284,10 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 		if (bean.srcAlpha() && (ctx.qualityGroups == 0)){
 			ctx.qualityGroups = (ODIMPathElem::DATASET | ODIMPathElem::DATA);
-			mout.special() << "alpha channel required, modified: " << ctx.qualityGroups << ", see --imageQuality" << mout;
+			mout.special("alpha channel required, modified: ", ctx.qualityGroups, ", see --imageQuality");
 		}
+
+		mout.attention("ctx.qualityGroups:", ctx.qualityGroups, ", DATASET=", ODIMPathElem::DATASET, ", dstDataSet.hasQuality: ", dstDataSet.hasQuality());
 
 		bool DATASET_QUALITY = (ctx.qualityGroups & ODIMPathElem::DATASET) && dstDataSet.hasQuality(); //
 		bool SPECIFIC_QUALITY_FOUND    = false;
@@ -389,6 +383,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				ImageConf srcConf(srcData.data.getConf());
 				srcConf.setChannelCount(1, (DATASET_QUALITY||SPECIFIC_QUALITY_FOUND) ? 1 : 0);
 				mout.special("src conf: ", srcConf);
+				mout.special("src DATASET_QUALITY: ", DATASET_QUALITY);
 
 				statusVariables["what:quantity"] = srcData.odim.quantity;
 
@@ -644,14 +639,14 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 
 		// MAIN
-		mout.debug() << "Main" << mout.endl;
+		mout.debug("Main");
 		//drain::image::ImageTray<const Channel> srcTray(dstTray); // fix
-		mout.debug() << "src tray :\n" << srcTray << mout.endl;
-		mout.debug() << "dst tray before:\n" << dstTray << mout.endl;
+		mout.debug("src tray :\n", srcTray);
+		mout.debug("dst tray before:\n", dstTray);
 		// bean.process(srcTray, dstTray); //, true);
 		bean.traverseChannels(srcTray, dstTray);
 		// bean.traverseChannels(srcTray, dstTray);
-		mout.debug() << "dst tray after:\n" << dstTray << mout.endl;
+		mout.debug("dst tray after:\n", dstTray);
 
 		//mout.unimplemented() = "what:gain and what:offset in HDF5 struct";
 		/*
@@ -685,6 +680,9 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		drain::image::Geometry geometry(0,0);
 
 		drain::Variable & object = dst[ODIMPathElem::WHAT].data.attributes["object"];
+
+		// TODO: warn if a single data array resized - Rack supports no variable-sized data arrays (in ODIM metadata)
+
 		if (object.toStr() == "COMP"){
 			updateGeometryODIM<CartesianODIM>(dst(path), datasetSelector.quantity, geometry);
 			// Non-standard (ODYSSEY) (ODIM suggests dataset1-level xsize, ysize)

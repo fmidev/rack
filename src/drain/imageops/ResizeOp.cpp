@@ -56,6 +56,12 @@ void ResizeOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
+	/*
+	if (traverseOverlappingWithTemp(src, dst)){
+		return;
+	}
+	*/
+
 	const AreaGeometry & srcArea = src.getGeometry();
 	const AreaGeometry & dstArea = dst.getGeometry();
 
