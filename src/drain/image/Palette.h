@@ -96,9 +96,8 @@ class PaletteEntry : public BeanLike {
 
 public:
 
-	std::string label;
-
 	/// Intensity type
+
 	typedef double value_t;
 
 	/// Color vector type
@@ -111,30 +110,18 @@ public:
 	/// Copy constructor
 	PaletteEntry(const PaletteEntry & entry);
 
-	/* TODO init list = {255, 68, 29, "id..", "desc"}
-	inline
-	void set(){}
-
-	inline
-	void set(const std::string &id){
-		this->id = id;
-	}
-
-	inline
-	void set(const std::string &id, const std::string &label){
-		this->id = id;
-		this->label = label;
-	}
-	*/
+	PaletteEntry(const std::string & label, double value, color_t color, value_t alpha, bool hidden=false);
 
 	void checkAlpha();
 
-	/// Index or threshold value. Must be signed, as images may generally have negative values.
+	/// Short descritpion appearing in legends
+	std::string label;
+
+	/// Index or threshold value. Must be signed, as image data may generally have negative values.
 	double value;
 
 
 	/// Colors, or more generally, channel values
-	//  as three or four element vector: red, green, blue and optional alpha.
 	color_t color;
 
 	value_t alpha;
@@ -143,14 +130,11 @@ public:
 	/// Unique label (latent/invisible? for undetected/nodata)
 	std::string id; // was already obsolete?
 
-	/// Description appearing in legends
-	//  std::string label; // Legend
-
 
 	/// Suggests hiding the entry in legends. Does not affect colouring of images.
 	/**
-	 *   When true, indicates that this entry is less significant and can be excluded in legends
-	 *   created by
+	 *   When true, indicates that this entry is less significant and can be skipped
+	 *   when rendering legends, for example.
 	 *
 	 */
 	bool hidden;
@@ -162,8 +146,6 @@ public:
 	 *
 	 */
 	std::ostream & toOStream(std::ostream &ostr, char separator='\t', char separator2=0) const;
-
-	//drain::ReferenceMap map;
 
 	/// Returns the color without leading marker (like "0x").
 	void getHexColor(std::ostream & ostr) const;
@@ -177,7 +159,6 @@ public:
 
 protected:
 
-
 	void init();
 
 
@@ -190,19 +171,26 @@ std::ostream & operator<<(std::ostream &ostr, const PaletteEntry & e){
 }
 
 
-// class Palette : public std::map<double,PaletteEntry > {
+
 class Palette : public ImageCodeMap<PaletteEntry> {
 
 public:
 
+	/// Basic constructor.
 	inline
 	Palette() : ImageCodeMap<PaletteEntry>(), refinement(0) {
 	};
 
+	// NEW
+	/// Constructor supporting initialisation.
+	inline
+	Palette(std::initializer_list<std::pair<const double, PaletteEntry> > l): ImageCodeMap<PaletteEntry>(l), refinement(0){
+	};
+
+
 	void reset();
 
 	/// Add one color
-	//void addEntry(double min, const std::string &id, double red=0.0, double green=0.0, double blue=0.0); // alpha
 	void addEntry(double min, double red=0.0, double green=0.0, double blue=0.0, const std::string &id="", const std::string & label =""); // alpha?
 
 	/// Loads a palette from text file
@@ -252,8 +240,7 @@ public:
 	typedef std::map<std::string,PaletteEntry> spec_t;
 	spec_t specialCodes; // To be read from palette
 
-	/// Extend palette to contain n entries ("colors") by adding intermediate entries ("colors")
-	// void refine(size_t n=256);
+	/// Extend palette to contain n entries ("colors") by adding intermediate entries.
 	void refine(size_t n=0);
 
 	typedef drain::Dictionary<key_t, std::string> dict_t;
@@ -274,14 +261,12 @@ protected:
 
 	void update() const;
 
+	/// Creates a palette from json object
+	void importJSON(const drain::JSONtree2 & json);
+
 	mutable
 	ChannelGeometry channels;
 
-	// void skipLine(std::ifstream &ifstr) const;
-
-	/// Creates a palette from json object
-	//void importJSON(const drain::JSONtree::tree_t & json, int depth);
-	void importJSON(const drain::JSONtree2 & json);
 
 };
 

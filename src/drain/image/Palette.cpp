@@ -52,14 +52,19 @@ namespace image
  */
 
 
-PaletteEntry::PaletteEntry(): BeanLike(__FUNCTION__){
+PaletteEntry::PaletteEntry(): BeanLike(__FUNCTION__), value(0.0), alpha(255.0), hidden(false){
 	init();
 }
 
-PaletteEntry::PaletteEntry(const PaletteEntry & entry): BeanLike(__FUNCTION__){
+PaletteEntry::PaletteEntry(const PaletteEntry & entry): BeanLike(__FUNCTION__), value(0.0), alpha(255.0), hidden(false){
 	init();
 	parameters.importMap(entry.getParameters());
 	color = entry.color;
+}
+
+PaletteEntry::PaletteEntry(const std::string & label, double value, color_t color, value_t alpha, bool hidden) :
+		BeanLike(__FUNCTION__), label(label), value(value), color(color), alpha(alpha), hidden(hidden) {
+	init();
 }
 
 
@@ -68,11 +73,11 @@ void PaletteEntry::init(){
 	// color.resize(1, 0); NOVECT
 
 
-	parameters.link("value", value = 0.0);
+	parameters.link("value", value); //  = 0.0
 	//parameters.link("color", color);
-	parameters.link("alpha", alpha = 255.0);
+	parameters.link("alpha", alpha); //  = 255.0
 	parameters.link("label", label);
-	parameters.link("hidden", hidden=false);
+	parameters.link("hidden", hidden); // =false
 	parameters.link("id", id);
 }
 

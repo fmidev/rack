@@ -77,7 +77,7 @@ namespace rack {
 
 
 
-// This command is problematci as to cloned context.
+// This command is problematic in a cloned context.
 /*
 class ClutterMapRead : public drain::SimpleCommand<std::string> {
 

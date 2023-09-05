@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.53"
+#define __RACK_VERSION__ "7.6"
 
 /**
+ *   Version 7.6
+ *   -- qualityCombiner supports explicit class index
+ *   -- Palette supports initializer_list
+ *
  *   Version 7.53
  *   -- cBoxTest uses AEQD as default projection
  *
