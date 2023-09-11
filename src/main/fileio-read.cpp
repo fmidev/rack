@@ -388,6 +388,18 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 	const PlainData<PolarSrc> & srcQind  = srcQ.getQualityData("QIND");  // ie.
 	const PlainData<PolarSrc> & srcClass = srcQ.getQualityData("CLASS"); // Maybe empty
 
+	if (srcQind.data.isEmpty()){
+		mout.debug("srcQind empty, skipping update");
+		return;
+	}
+	if (!srcClass.data.isEmpty()){
+		// mout.note("updating QIND and CLASS");
+	}
+	else {
+		mout.note("updating QIND (srcQind exists but srcClass empty");
+	}
+
+
 	QualityDataSupport<PolarDst> dstQ(dst);
 	PlainData<PolarDst> & dstQind  = dstQ.getQualityData("QIND");
 	PlainData<PolarDst> & dstClass = dstQ.getQualityData("CLASS");
@@ -405,13 +417,12 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 		const std::string & quantity  = it->first; // DBZH, or QIND or CLASS
 		const ODIMPathElem & srcChild = it->second;
 
-
 		if (quantity == "QIND"){  // => update (combine), do not just copy (override)
 
-			mout.note() << "Updating QIND (and CLASS) with "<< srcChild << '[' << quantity << ']' << mout.endl;
+			mout.note("Updating QIND (and CLASS) with ", srcChild, '[', quantity, ']');
 			// Todo: if no CLASS
 			if (srcClass.data.isEmpty()){
-				mout.warn() << "CLASS data for srcPath=" << srcChild << mout.endl;
+				mout.warn("CLASS data empty for srcPath=", srcChild);
 			}
 
 			QualityCombinerOp::updateOverallQuality(srcQind, srcClass,	dstQind, dstClass);
@@ -419,7 +430,7 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 
 		}
 		else if (quantity == "CLASS"){
-			mout.debug3() << "Combining CLASS skipped (handled by QIND, if found)" << mout.endl;
+			mout.debug3("Combining CLASS skipped (handled by QIND, if found)");
 			continue;
 		}
 
@@ -574,15 +585,16 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 					//mout.debug() << "New quantity, adapt the full data group (with or without quality)" << mout.endl;
 					ODIMPathElem dstChild(ODIMPathElem::DATA);
 					DataSelector::getNextChild(dstDataSet, dstChild);
-					mout.note() << "Add new quantity " <<  quantity << " => " << dstDataSetPath << '|' << dstChild << mout.endl;
+					mout.note("Add new quantity ",  quantity, " => ", dstDataSetPath, '|', dstChild);
 					Hi5Tree & dstData = dstDataSet[dstChild];
 					srcData.swap(dstData);
 					//continue;
 				}
 				else {
-					mout.note() << "Already [" <<  quantity << "] => " << dstDataSetPath << '|' << dit->second << ", updating its quality" << mout.endl;
+					mout.note("Quantity [", quantity, "] already exists in ", dstDataSetPath, '|', dit->second);  // "updating its quality"
 					Hi5Tree & dstData = dstDataSet[dit->second];
 					// DO not copy data, but quality
+					// if (srcData.has... quality?)
 					updateQuality(srcData, dstData);
 				}
 
