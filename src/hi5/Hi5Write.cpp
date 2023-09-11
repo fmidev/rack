@@ -232,14 +232,13 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 
 		const drain::Variable & leg = attributes["legend"];
 
-		mout.special() << "experimental: writing legend " << leg << mout.endl;
+		mout.special("experimental: writing legend ", leg);
 
 		if (!path.back().is(Hi5Tree::path_t::elem_t::WHAT)){ // FIX
-			mout.info() << "legend attribute found at " << path.back() << ", should be at what/' " << mout.endl;
+			mout.info("legend attribute found at ", path.back(), ", should be at what/' ");
 		}
 
 		// NOTE: tree is relative, path is absolute (for h5 functions)
-		//const Hi5Tree::path_t::elem_t legend(Hi5Tree::path_t::elem_t::LEGEND, 1); // essentially "legend1" ...
 		const Hi5Tree::path_t::elem_t legend(Hi5Tree::path_t::elem_t::LEGEND); // essentially just "legend" ...
 
 		if (!tree.hasChild(legend)){
@@ -253,12 +252,12 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 				p.pop_back(); // strip "/how"
 			p << legend;
 
-			mout.debug3() << "legend path=" << p << mout.endl;
+			mout.special("legend path=", p);
 			Writer::mapToH5Compound(entries, fid, p, "code", "class");
 
 		}
 		else {
-			mout.warn() << "legend already in path " << path << mout.endl;
+			mout.warn("legend already in path ", path, ", skipping.");
 		}
 
 	}

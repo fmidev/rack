@@ -41,8 +41,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 #include <list>
 
-#include "drain/image/Image.h"
 #include "drain/util/TreeOrdered.h"
+#include "drain/util/TypeUtils.h" // debugging
+#include "drain/image/Image.h"
 
 /*
  *
@@ -183,19 +184,24 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 	typedef typename vect_t::value_type pair_t;
 	typedef typename pair_t::first_type   first_type;
 	typedef typename pair_t::second_type second_type;
+	mout.debug("datatypes: ", drain::TypeName<first_type>::get(), ", ", drain::TypeName<second_type>::get());
+			// drain::Type::call<drain::simpleName>(second_type));
 
+
+	// General return code checking
 	herr_t status;
 
 	const hsize_t size = sizeof(pair_t);
-	mout.debug() << path << ": " << v.size() << " elements x " << size << "b" << mout.endl;
+	mout.special(path, ": ", v.size(), " elements x ", size, "b");
 
 	const hid_t first_h5t  = Hi5Base::getH5NativeDataType(typeid(first_type));
 	const hid_t second_h5t = Hi5Base::getH5NativeDataType(typeid(second_type));
-
-	mout.debug3() << "datatypes: " << first_h5t << ", " << second_h5t << mout.endl;
+	mout.debug("datatypes: ", first_h5t, ", ", second_h5t);
 
 	// Create the compound datatype for memory.
 	hid_t memtype = H5Tcreate (H5T_COMPOUND, size);
+	mout.debug("H5Tcreate, memtype=", memtype);
+
 
 	// HOFFSET(pair_t, first)
 	status = H5Tinsert (memtype, labelFirst, 0, first_h5t); // Hi5Base::getH5NativeDataType(typeid(int));
@@ -209,27 +215,26 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 
 	const hid_t std_t1 = Hi5Base::getH5StandardType(typeid(first_type));
 	const hid_t std_t2 = Hi5Base::getH5StandardType(typeid(second_type));
-	mout.debug() << "file types: " << std_t1 << ", " << std_t2 << mout.endl;
+	mout.debug("h5 (file) types: ", std_t1, ", ", std_t2);
+
 	const hsize_t s1 = H5Tget_size(std_t1);
 	const hsize_t s2 = H5Tget_size(std_t2);
+	mout.debug("h5 element sizes [bytes]: ", s1, ", ", s2);
 
 	hid_t filetype = H5Tcreate (H5T_COMPOUND, s1+s2);  // size wrong if hvt_t ?
-	H5Tinsert (filetype, labelFirst, 0,    std_t1);
-	H5Tinsert (filetype, labelSecond, s1,  std_t2); // TODO? Hi5Base::getH5StandardType(typeid(int));
+	H5Tinsert(filetype, labelFirst, 0,    std_t1);
+	H5Tinsert(filetype, labelSecond, s1,  std_t2); // TODO? Hi5Base::getH5StandardType(typeid(int));
 
 	// Create dataspace.  Setting maximum size to NULL sets the maximum size to be the current size.
-	hsize_t dims[1]; //
+	hsize_t dims[1]; // 1-dimensional = list
 	dims[0] = v.size();
 	hid_t space = H5Screate_simple (1, dims, NULL);
 
-
 	const std::string pathStr(path);
-	//static_cast<std::string>(path).c_str();
-	mout.note() << "experimental: creating compound at " << pathStr << mout.endl;
-
+	mout.debug("experimental: creating compound at ", pathStr);
 
 	if (H5Lexists(fid, pathStr.c_str(), H5P_DEFAULT)){
-		mout.warn() << "compound object exists already (combining is not supported) : " << pathStr << mout.endl;
+		mout.warn("compound object exists already (combining is not supported) : ", pathStr);
 	}
 	else {
 		// mout.debug3() << "does not exist, creating " << pathStr << mout.endl;

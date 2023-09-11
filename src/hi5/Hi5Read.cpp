@@ -394,16 +394,22 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 	}
 
 	if (H5Tget_class(H5Dget_type(dataset)) == H5T_COMPOUND){
-		mout.warn() << "skipping compound data at: " << path << mout.endl;
+		mout.warn("skipping compound data at: ", path);
+
+		mout.warn("TESTING compound data at: ", path);
+
+		const hid_t filespace = H5Dget_space(dataset);
+
+		const hid_t datatype  = H5Tget_native_type(H5Dget_type(dataset), H5T_DIR_DEFAULT);
+		hsize_t rank = H5Sget_simple_extent_ndims(filespace);
+		mout.attention("rank=", rank);
+
 		status = H5Dclose(dataset);
 		handleStatus(status, "H5Dclose failed", mout, __LINE__);
 		return;
 	}
 
 	const hid_t filespace = H5Dget_space(dataset);
-
-
-
 
 	/// Get the native data type. (The conversion will not store the original data type.)
 	//const hid_t datatype  = H5Tget_native_type(dataset, H5T_DIR_DEFAULT);

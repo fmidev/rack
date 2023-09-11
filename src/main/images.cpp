@@ -545,11 +545,11 @@ public:
 				mout.special("src [", quantity, "] : processing(", processing, ")");
 
 				if (!quantity.empty()){
-					mout.info() << "loading palette: " << quantity << mout.endl;
+					mout.info("loading palette: ", quantity);
 					ctx.palette.load(quantity, true);
 				}
 				else {
-					mout.fail() << "could not derive data quantity" << mout.endl;
+					mout.fail("could not derive data quantity (quantity empty)");
 				}
 			}
 			else

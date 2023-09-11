@@ -109,8 +109,8 @@ struct TypeName
     }
 };
 
-// a specialization for each type of those you want to support
-// and don't like the string returned by typeid
+/// Add a specialization for each type of those you want to support.
+//  (Unless the string returned by typeid is sufficient.)
 template <>
 struct TypeName<void> {
     static const char* get(){ return "void"; }
@@ -131,6 +131,11 @@ struct TypeName<int> {
     static const char* get(){ return "int"; }
 };
 
+template <>
+struct TypeName<long> {
+    static const char* get(){ return "long"; }
+};
+
 
 template <>
 struct TypeName<float> {
@@ -139,7 +144,17 @@ struct TypeName<float> {
 
 template <>
 struct TypeName<double> {
-    static const char* get(){ return "float"; }
+    static const char* get(){ return "double"; }
+};
+
+template <>
+struct TypeName<char *> {
+    static const char* get(){ return "char *"; }
+};
+
+template <>
+struct TypeName<const char *> {
+    static const char* get(){ return "const char *"; }
 };
 
 template <>

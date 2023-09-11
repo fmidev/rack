@@ -217,11 +217,15 @@ hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
 		return H5T_NATIVE_DOUBLE;
 	}
 	else if (type == typeid(const char *)){
+		// hi5mout.unimplemented(__FUNCTION__, "code not tested for (type==const char *)");
 		return getH5StringVariableLength();
+		//return H5T_NATIVE_UCHAR; /// TODO
 	}
 	else if (type == typeid(void)){
-		hi5mout.warn() << __FUNCTION__ << "void type requested, setting string type" << hi5mout;
+		hi5mout.warn(__FUNCTION__, "void type requested, setting string type");
+		throw std::runtime_error("Requested void type attribute");
 		return getH5StringVariableLength();
+		//return H5T_NATIVE_UCHAR; /// TODO
 	}
 	/*
 	else if (type == typeid(std::string)){
@@ -229,7 +233,7 @@ hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
 	}
 	*/
 	else {
-		hi5mout.error() << __FUNCTION__ << ": unsupported data type:'" << type.name() << '\'' << hi5mout.endl;
+		hi5mout.error(__FUNCTION__, ": unsupported data type:'", type.name(),'\'', hi5mout.endl);
 		return H5T_NATIVE_UCHAR; /// TODO
 	}
 
@@ -237,7 +241,9 @@ hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
 
 hid_t Hi5Base::getH5StringVariableLength(){
 
+	// static - WARNING: static causes write errors and segfaults
 	hid_t strtype = H5Tcopy(H5T_C_S1); // todo: delete dynamic?
+
 	//herr_t status =
 	H5Tset_size(strtype, H5T_VARIABLE);
 	//if (status < 0)hi5mout.error() << "H5T_C_S1 => H5Tset_size failed " << hi5mout.endl;

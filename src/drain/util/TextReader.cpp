@@ -113,10 +113,11 @@ char TextReader::scanSegment(std::istream & istr, const std::string & endChars, 
 				break;
 			// Conformality to JSON not implemented. https://www.crockford.com/mckeeman.html
 			case 'u':
-				mout.unimplemented("JSON: unsupported escape, unicode '\\u", (char)c, "...'");
+				// mout.unimplemented();
+				mout.unimplemented("unsupported escape, unicode '\\u", (char)c, "...'");
 				break;
 			default:
-				mout.unimplemented("JSON: unsupported escape char: '\\", (char)c, "' (",(int)c,")");
+				mout.unimplemented("unsupported escape char: '\\", (char)c, "' (",(int)c,")");
 			}
 			ostr.put(c);
 			/*

@@ -223,13 +223,13 @@ void Palette::load(const std::string & filename, bool flexible){
 		filePath.set(filename);
 	}
 
-	mout.debug() << " Initial dir path: '" << filePath.dir << "'" << mout.endl;
+	mout.debug(" Initial dir path: '", filePath.dir, "'");
 
 	// If relative path, add explicit ./
 	if (filePath.dir.empty())
 		filePath.dir.push_front(".");
 
-	mout.debug() << " Initial file path: " << filePath.str() << mout.endl;
+	mout.debug(" Initial file path: ", filePath.str());
 
 	const std::string s = filePath.str();
 
@@ -239,7 +239,7 @@ void Palette::load(const std::string & filename, bool flexible){
 
 	if (ifstr.good()){
 
-		mout.note() << "reading: " << filePath.str() << mout.endl;
+		mout.note("reading: ", filePath.str());
 
 		if (filePath.extension == "txt"){
 			loadTXT(ifstr);
@@ -301,8 +301,8 @@ void Palette::load(const std::string & filename, bool flexible){
 				for (std::list<std::string>::const_iterator eit = extensions.begin(); eit!=extensions.end(); ++eit){
 					finalFilePath.dir = *pit;
 					finalFilePath.extension = *eit;
-					mout.info() << "trying... " << finalFilePath << mout.endl;
-					mout.info() << "a.k.a.... " << finalFilePath.str().c_str() << mout.endl;
+					mout.info("trying... ", finalFilePath);
+					mout.info("a.k.a.... ", finalFilePath.str().c_str());
 					ifstr.open(finalFilePath.str().c_str(), std::ios::in);
 					//if (ifstr.good())
 					if (ifstr.is_open())
