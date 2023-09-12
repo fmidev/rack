@@ -43,7 +43,9 @@ drain::image::Palette & getClassPalette(){
 	static drain::image::Palette palette;
 
 	if (palette.empty()){
-
+		palette =
+#include "EchoClass.inc"
+		;
 		palette.addEntry(10, 240,240,240, "tech.err.time", "Timing problem");
 		palette.addEntry(13, 144,144,144, "tech.class.unclass", "Unclassified");
 		palette.addEntry(64, 80,208,80, "precip", "Precipitation");
