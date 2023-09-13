@@ -41,137 +41,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/UniTuple.h"
 
 #include "Legend.h"
+#include "PaletteEntry.h"
 
 
 namespace drain
 {
 
 
-/*   = old
-class PaletteEntry2 : public LegendEntry, public BeanLike {
-public:
-
-	PaletteEntry2(): BeanLike(__FUNCTION__), colour(3, 0){
-		parameters.link("label",  this->label);
-		parameters.link("colour", this->colour);
-	}
-
-	PaletteEntry2(const PaletteEntry2 & pale): BeanLike(__FUNCTION__), colour(3, 0){
-		parameters.link("label",  this->label = pale.label);
-		parameters.link("colour", this->colour = pale.colour);
-	}
-
-	PaletteEntry2 & operator=(const PaletteEntry2 & pale){
-		this->label  = pale.label;
-		this->colour = pale.colour;
-		return *this;
-	}
-
-	std::vector<double> colour;
-
-	inline
-	bool empty() const {
-		return this->label.empty();
-	}
-
-};
-*/
-
-/*
-template <>
-inline
-std::ostream & JSONwriter::toStream(const PaletteEntry2 &e, std::ostream &ostr, unsigned short indentation){
-	return JSONwriter::mapToStream(e.getParameters(), ostr, indentation);
-}
-*/
-
 namespace image
 {
 
 
-// Why beanlike? Overkill..
-
-//class PaletteEntry : public LegendEntry, public BeanLike {
-class PaletteEntry : public BeanLike {
-
-public:
-
-	/// Intensity type
-
-	typedef double value_t;
-
-	/// Color vector type
-	typedef UniTuple<value_t,3> color_t;
-
-
-	/// Default constructor
-	PaletteEntry();
-
-	/// Copy constructor
-	PaletteEntry(const PaletteEntry & entry);
-
-	PaletteEntry(const std::string & label, double value, color_t color, value_t alpha, bool hidden=false);
-
-	void checkAlpha();
-
-	/// Short descritpion appearing in legends
-	std::string label;
-
-	/// Index or threshold value. Must be signed, as image data may generally have negative values.
-	double value;
-
-
-	/// Colors, or more generally, channel values
-	color_t color;
-
-	value_t alpha;
-
-
-	/// Unique label (latent/invisible? for undetected/nodata)
-	std::string id; // was already obsolete?
-
-
-	/// Suggests hiding the entry in legends. Does not affect colouring of images.
-	/**
-	 *   When true, indicates that this entry is less significant and can be skipped
-	 *   when rendering legends, for example.
-	 *
-	 */
-	bool hidden;
-
-	/**
-	 *  \param ostr - output stream
-	 *  \param separator  - char after palette index
-	 *  \param separator2 - char after each color intensity value
-	 *
-	 */
-	std::ostream & toOStream(std::ostream &ostr, char separator='\t', char separator2=0) const;
-
-	/// Returns the color without leading marker (like "0x").
-	void getHexColor(std::ostream & ostr) const;
-
-	inline
-	void getHexColor(std::string & str) const {
-		std::stringstream sstr;
-		getHexColor(sstr);
-		str = sstr.str();
-	}
-
-protected:
-
-	void init();
-
-
-};
-
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const PaletteEntry & e){
-	return e.toOStream(ostr);
-}
-
-
-
+/** A map of RGB colours, with optional transparency (alpha) values, and with Dictionary support.
+ *
+ */
 class Palette : public ImageCodeMap<PaletteEntry> {
 
 public:
@@ -218,6 +101,8 @@ public:
 
 	/// Returns a legend as an SVG graphic.
 	void exportSVGLegend(TreeSVG & svg, bool up = true) const;
+
+	void exportCPP(std::ostream & ostr) const;
 
 	/// Creates a palette from json object
 	/**

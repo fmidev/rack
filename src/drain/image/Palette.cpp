@@ -51,36 +51,6 @@ namespace image
  *  - 
  */
 
-
-PaletteEntry::PaletteEntry(): BeanLike(__FUNCTION__), value(0.0), alpha(255.0), hidden(false){
-	init();
-}
-
-PaletteEntry::PaletteEntry(const PaletteEntry & entry): BeanLike(__FUNCTION__), value(0.0), alpha(255.0), hidden(false){
-	init();
-	parameters.importMap(entry.getParameters());
-	color = entry.color;
-}
-
-PaletteEntry::PaletteEntry(const std::string & label, double value, color_t color, value_t alpha, bool hidden) :
-		BeanLike(__FUNCTION__), label(label), value(value), color(color), alpha(alpha), hidden(hidden) {
-	init();
-}
-
-
-void PaletteEntry::init(){
-
-	// color.resize(1, 0); NOVECT
-
-
-	parameters.link("value", value); //  = 0.0
-	//parameters.link("color", color);
-	parameters.link("alpha", alpha); //  = 255.0
-	parameters.link("label", label);
-	parameters.link("hidden", hidden); // =false
-	parameters.link("id", id);
-}
-
 void Palette::addEntry(double min, double red, double green, double blue, const std::string & id, const std::string & label){
 
 	Logger mout(__FUNCTION__, __FILE__);
@@ -89,7 +59,7 @@ void Palette::addEntry(double min, double red, double green, double blue, const 
 
 	// 2023/01 Fixed to reference:
 	PaletteEntry & entry = (*this)[min];
-	entry.value = min;
+	// entry.value = min; NEW
 	// NOVECT entry.color.resize(3);
 	entry.color[0] = red;
 	entry.color[1] = green;
@@ -101,61 +71,6 @@ void Palette::addEntry(double min, double red, double green, double blue, const 
 
 }
 
-// Alpha check
-void PaletteEntry::checkAlpha(){
-
-	const size_t s = color.size();
-
-	switch (s){
-		case 4:
-		case 2:
-			alpha = color[s-1];
-			// NOVECT color.resize(s-1);
-			break;
-		default:
-			break;
-	}
-
-}
-
-void PaletteEntry::getHexColor(std::ostream & ostr) const {
-
-	for (color_t::const_iterator it = color.begin(); it!=color.end(); ++it){
-		ostr.width(2);
-		ostr.fill('0');
-		ostr << std::hex << static_cast<int>(*it);
-	}
-
-}
-
-std::ostream & PaletteEntry::toOStream(std::ostream &ostr, char separator, char separator2) const{
-
-		if (!separator2)
-			separator2 = separator;
-
-		//ostr << "# " << label << "\n";
-		if (std::isnan(value)){
-			//ostr << "# " << id << "\n";
-			ostr << '@' << separator;
-		}
-		else {
-			ostr << value << separator;
-		}
-
-		// ostr << separator;
-		for (color_t::const_iterator it=color.begin(); it != color.end(); ++it){
-			ostr << *it << separator2;
-		}
-
-		// alpha (optional)
-		if (alpha < 255.0) // NOTE: can be 255 in alpha image also...
-			ostr << alpha;
-		//if (color.size()==4)
-		//	if (color[3] != 255.0)
-		//		ostr << color[3];
-
-		return ostr;
-}
 
 
 void Palette::reset(){
@@ -428,7 +343,7 @@ void Palette::loadTXT(std::ifstream & ifstr){
 
 		PaletteEntry & entry = SPECIAL ? specialCodes[label] : (*this)[d]; // Create entry?
 
-		entry.value = d;
+		// entry.value = d; NEW
 		if (!label.empty()){
 			if (label.at(0) == '.'){
 				entry.hidden = true;
@@ -471,7 +386,7 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		// if (entry.color.size() == 4)
 		//  alpha=
 
-		mout.debug3() << entry.label << '\t' << entry << mout.endl;
+		mout.debug3(entry.label, '\t', entry);
 
 		label.clear();
 
@@ -502,7 +417,7 @@ void Palette::loadJSON(std::ifstream & ifstr){
 	mout.info("title: ", title);
 	//mout.isLevel(LOG_INFO)
 	mout.debug(); // << "metadata: ";
-	drain::TreeUtils::dump(json, mout, true);
+	drain::TreeUtils::dump(json, mout, nullptr); //true);
 	mout << mout.endl;
 	importJSON(json["entries"]);
 
@@ -540,7 +455,7 @@ void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 
 		entry.id = id;
 		// Deprecated, transitory:
-		entry.value = child["min"]; //
+		// entry.value = child["min"]; // NEW 2023
 		entry.label = child["label"].data.toStr(); // child["en"].data.toStr();
 		//entry.label = child["label"].data.toStr();
 
@@ -570,11 +485,11 @@ void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 		// NOVECT entry.checkAlpha();
 
 		if (SPECIAL){
-			entry.value = NAN;
+			// entry.value = NAN;   NEW2023
 		}
 
-		mout.debug2() << "entry: " << id << ':' << entry.getParameters() << mout.endl;
-		//importJSON(child, depth + 1); // recursion not in use, currently
+		mout.debug2("entry: ", id, ':', entry.getParameters());
+		//importJSON(child, depth  + 1); // recursion not in use, currently
 	}
 }
 
@@ -610,15 +525,13 @@ void Palette::write(const std::string & filename){
 
 	drain::Output ofstr(filename);
 
-	if (NodeSVG::fileinfo.checkExtension(filepath.extension)){
-	//if (filepath.extension == "svg"){
-		mout.debug() << "writing SVG legend" << mout.endl;
+	if (NodeSVG::fileinfo.checkExtension(filepath.extension)){ // .svg
+		mout.debug("writing SVG legend");
 		TreeSVG svg;
 		exportSVGLegend(svg, true);
 		ofstr << svg;
 	}
-	else if (drain::JSON::fileInfo.checkExtension(filepath.extension)){
-	//else if (filepath.extension == "json"){
+	else if (drain::JSON::fileInfo.checkExtension(filepath.extension)){ // .json
 		mout.debug("exporting JSON palette");
 		drain::JSONtree2 json;
 		exportJSON(json);
@@ -627,10 +540,13 @@ void Palette::write(const std::string & filename){
 	}
 	else if (filepath.extension == "cpp"){
 		mout.debug("writing C++ palette struct");
+		exportCPP(ofstr);
+		/*
 		drain::JSONtree2 json;
 		exportJSON(json);
 		static const drain::SprinterLayout myCpp("[,]", "{:}", "(=)", "\"\"");
 		drain::Sprinter::toStream(ofstr, json, myCpp); // drain::Sprinter::pythonLayout);
+		*/
 	}
 	else if (filepath.extension == "txt"){
 		mout.debug("writing plain txt palette file");
@@ -660,12 +576,14 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 	ostr << '\n';
 
 	if (!specialCodes.empty()){
-		for (std::map<std::string,PaletteEntry >::const_iterator it = specialCodes.begin(); it != specialCodes.end(); ++it){
+		//for (std::map<std::string,PaletteEntry >::const_iterator it = specialCodes.begin(); it != specialCodes.end(); ++it){
+		for (const auto & entry: specialCodes){
 			// ostr << it->second << '\n';
 
-			ostr << '#' << it->second.label << '\n';
-			ostr << '#' << it->first << '\n';
-			it->second.toOStream(ostr, separator, separator2);
+			// ostr << '#' << entry.second.label << '\n';
+			ostr << '#' << entry.first << '\n';
+			ostr << "@ ";
+			entry.second.toStream(ostr, separator); // , separator2);
 			ostr << '\n';
 			ostr << '\n';
 		}
@@ -673,24 +591,85 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 		ostr << '\n';
 	}
 
-	for (Palette::const_iterator it = begin(); it != end(); ++it){
-		//ostr << it->first << separator << it->second << '\n';
+	for (const auto & entry: *this){
+
+		const double & min      = entry.first;
+		const PaletteEntry & colour = entry.second;
+
 		ostr << '#';
 
-		if (it->second.hidden)
+		if (colour.hidden)
 			ostr << '.';
 
-		if (!it->second.label.empty())
-			ostr << it->second.label;
+		if (!colour.label.empty()){
+			ostr << ' ' << colour.label;
+		}
 		else
 			ostr << '?'; // << it->second.id;
 
 		ostr << '\n';
 
-		it->second.toOStream(ostr, separator, separator2);
+		ostr << min << separator;
+		colour.toStream(ostr, separator); //, separator2);
 		ostr << '\n';
 		ostr << '\n';
 	}
+
+}
+
+void Palette::exportCPP(std::ostream & ostr) const {
+
+	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
+	ostr << "{";
+	if (title.empty()){
+		ostr << " // " << title;
+	}
+	ostr << '\n';
+
+	char sep = 0;
+
+	if (!specialCodes.empty()){
+		ostr << "// special codes \n";
+		for (const auto & entry: specialCodes){
+			if (sep)
+				ostr << sep << '\n';
+			else
+				sep = ',';
+			ostr << "    {" << entry.first << ", {";
+			entry.second.toStream(ostr, ',');
+			ostr << "} }\n";
+		}
+		//ostr << '\n';
+	}
+
+	if (sep)
+		ostr << sep << '\n';
+	//else
+	//	sep = ',';
+
+
+	ostr << "// colour entries \n";
+	for (const auto & entry: *this){
+		if (sep)
+			ostr << sep << '\n';
+		else
+			sep = ',';
+		ostr << "    {" << entry.first << ", ";
+		if ((!entry.second.id.empty()) && (entry.second.id != entry.second.label)){
+			ostr << '"' << entry.second.id << '"' << ", ";
+		}
+		ostr << '"' << entry.second.label << '"' << ", {";
+		entry.second.toStream(ostr, ',');
+		//ostr << "} }";
+		ostr << "}";
+		if (entry.second.alpha < 1.0){
+			ostr << ", " << entry.second.alpha;
+		}
+		ostr << " }";
+	}
+
+	ostr << "\n}\n";
 
 }
 
@@ -738,14 +717,14 @@ void Palette::exportJSON(drain::JSONtree2 & json) const {
 		//for (Palette::const_iterator it = begin(); it!=end(); ++it){
 		//const PaletteEntry & entry = it->second;
 		key.str("");
-		key << "colour";
-		key.width(3);
+		key << "c";
+		key.width(4);
 		key.fill('0');
 		key << ++i;
 		drain::JSONtree2 & m = entries[key.str()];
 		const drain::image::PaletteEntry & col = entry.second;
-		m["color"] = col.color;
-		mout.warn("id: ", col.id, " = ", col.getParameter<std::string>("id"));
+		// m["color"] = col.color;
+		// mout.warn("id: ", col.id, " = ", col.getParameter<std::string>("id"));
 		for (const auto & param: col.getParameters()){
 			m[param.first] = param.second;
 		}

@@ -89,7 +89,7 @@ void PaletteOp::registerSpecialCode(const std::string & code, double d) {
 	Palette::spec_t::const_iterator it = palettePtr->specialCodes.find(code);
 	if (it != palettePtr->specialCodes.end()){
 		specialCodes[d] = it->second; // copy
-		specialCodes[d].value = d;
+		// specialCodes[d].value = d; NEW 2023
 	}
 	else {
 		mout.debug() << *palettePtr << mout.endl;
@@ -139,11 +139,9 @@ void PaletteOp::getDstConf(const ImageConf &src, ImageConf &dst) const {
 	dst.setArea(src);
 	dst.setChannelCount(palettePtr->getChannels());
 
-
 	if (dst.getAlphaChannelCount() != alphaChannelCount){
 		mout.warn() << "dst alpha channel count changed from " <<alphaChannelCount << " to " << dst.getAlphaChannelCount() << mout;
 	}
-
 
 	if (src.hasAlphaChannel() && !dst.hasAlphaChannel()){
 		mout.unimplemented() << "src has alpha channel, but palette not" << mout;
@@ -151,7 +149,7 @@ void PaletteOp::getDstConf(const ImageConf &src, ImageConf &dst) const {
 
 	//dst.setGeometry(src.getWidth(), src.getHeight(), colours.getImageChannelCount(), colours.getAlphaChannelCount());
 
-	mout.debug() << "dst: " << dst << mout.endl;
+	mout.debug("dst: ", dst);
 
 }
 

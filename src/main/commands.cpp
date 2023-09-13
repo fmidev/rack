@@ -1410,7 +1410,7 @@ public:
 			}
 
 			drain::Sprinter::toStream(ostr, jsonRoot, drain::Sprinter::jsonLayout);
-			drain::TreeUtils::dump(jsonRoot, ostr, true);
+			// drain::TreeUtils::dump(jsonRoot, ostr, nullptr);
 
 		}
 

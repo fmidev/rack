@@ -486,7 +486,7 @@ void Hi5Base::markNoSave(Hi5Tree &src, bool noSave){
 
 
 std::ostream & operator<<(std::ostream &ostr, const Hi5Tree & tree){
-	drain::TreeUtils::dump(tree, ostr, true);
+	drain::TreeUtils::dump(tree, ostr, nullptr);
 	// tree.dump(ostr);
 	return ostr;
 }

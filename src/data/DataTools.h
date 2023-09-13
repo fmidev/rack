@@ -215,6 +215,8 @@ void DataTools::getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & p, M &
 
 }
 
+bool dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr);
+
 
 /*
 template <class M>

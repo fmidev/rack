@@ -160,4 +160,38 @@ void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::Coordi
 	}
 }
 
+/// For drain::TreeUtils dumper()
+/**
+ *  \return – true, if data "empty", ie. no attributes or data array.
+ */
+bool dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr){
+
+	bool empty = true;
+
+	const drain::image::ImageFrame & img = data.dataSet;
+	if (!img.isEmpty()){
+		ostr << img.getWidth() << ',' << img.getHeight() << ' ';
+		ostr << drain::Type::call<drain::compactName>(img.getType());
+		ostr << '[' << (8*drain::Type::call<drain::sizeGetter>(img.getType())) << ']';
+		//<< drain::Type::call<drain::complexName>(img.getType());
+		empty = false;
+	}
+	// else ...
+	char sep = 0;
+	for (const auto & key: {"quantity", "date", "time", "src", "elangle", "task_args", "legend"}){
+		if (data.attributes.hasKey(key)){
+			if (sep)
+				ostr << sep << ' ';
+			else
+				sep = ',';
+			ostr << key << '=' << data.attributes[key];
+			empty = false;
+		}
+	}
+
+	return empty;
+
+};
+
+
 }  // rack::

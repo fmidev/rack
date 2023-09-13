@@ -197,55 +197,91 @@ public:
 	}
 	*/
 
+	template <class T>
+	static
+	bool dataDumperX(const T & data, std::ostream &ostr){
+		ostr << data << '*';
+		return true;
+	}
+
 	/// Debugging utility - dumps the structure of the tree (not the contents).
 	/**
-	 *  Respects EXCLUSIVE
+	 *  \tparam TR - tree type
+	 *  \tparam SKIP - skip empty branches (FUTURE OPTION)
 	 *
+	 *  \return - true if empty, false if groups exist or data non-empty (FUTURE OPTION)
 	 */
-	template <class TR>
+	template <class TR, bool SKIP_EMPTY=false>
 	static
-	void dump(const TR & tree, std::ostream &ostr = std::cout, bool nodes=false, const std::string &  indent="") { // int depth = 0) const {
+	//void dump(const TR & tree, std::ostream &ostr = std::cout, bool nodes=false, const std::string &  indent="") { // int depth = 0) const {
+	bool dump(const TR & tree, std::ostream &ostr = std::cout,
+			bool (* callBack)(const typename TR::node_data_t &, std::ostream &) = dataDumperX, const std::string &  indent="") { // int depth = 0) const {
 
 		// https://www.w3.org/TR/xml-entity-names/025.html
+		/*
 		static const std::string EMPTY(" ");
 		static const std::string VERT("│");
 		static const std::string VERT_RIGHT("├");
 		static const std::string UP_RIGHT("└");
 		static const std::string HORZ("─");
 		static const std::string HORZ_DOWN("┬");
+		*/
 
+		bool empty = true;
 
-		if (nodes){
-			if (tree.empty() || !tree.isExclusive())
-				ostr << tree.data;
+		//if (nodes){
+		if (callBack != nullptr){ // nodes){
+			// std::stringstream sstr;
+			if (tree.empty() || !tree.isExclusive()){
+				// if (empty || !tree.isExclusive()){
+				empty = (*callBack)(tree.data, ostr);
+				//if (sstr.LENGTH)
+				// ostr << sstr.str(); // See Logger for direct copy? Risk: pending
+				// ostr << tree.data;
+			}
 		}
 		ostr << '\n';
 
-		//for (const auto & entry: *this){
+		// for (const auto & entry: *this){
+		// for (const auto & entry: tree.begin()){
 		for (typename TR::container_t::const_iterator it = tree.begin(); it != tree.end(); it++){
 
-			const auto & entry = *it;
+			//empty = false; // has subtree(s)
+
+			// std::stringstream ostrChild;  (FUTURE OPTION)
+			std::ostream & ostrChild = ostr; // for now...
+
+			//const auto & entry = *it;
 
 			std::string indent2;
 			if (it == --tree.end()){
-				ostr   << indent << UP_RIGHT << HORZ << HORZ; // "'––";
-				indent2 = indent +  EMPTY  + EMPTY + EMPTY;   // "   ";
+				ostrChild   << indent << "└──"; // UP_RIGHT << HORZ << HORZ; // "'––";
+				indent2      = indent  + "   "; // EMPTY  + EMPTY + EMPTY;   // "   ";
 			}
 			else {
-				ostr   << indent << VERT_RIGHT << HORZ << HORZ; // "¦––";
-				indent2 = indent +  VERT + EMPTY + EMPTY; // "|  ";
+				ostrChild   << indent << "├──"; // VERT_RIGHT << HORZ << HORZ; // "¦––";
+				indent2      = indent  + "│  "; // VERT + EMPTY + EMPTY; // "|  ";
 			}
-			ostr << entry.first; // << '\n'; //' ' << depth << '\n';
+			ostrChild << it->first; // << '\n'; //' ' << depth << '\n';
 
-			if (nodes){
-				ostr << ':'; // << entry.second.data;
+			if (callBack != nullptr){ // nodes){
+				//ostr << ':';
+				ostrChild << ' ';
 			}
-			//ostr << '\n';
 
-			//entry.second.dump(ostr, depth+1);
-			dump(entry.second, ostr, nodes, indent2);
-			//ostr << '\n';
+			// dump(entry.second, ostr, nodes, indent2);
+			bool empty2 = dump(it->second, ostrChild, callBack, indent2);
+
+			if (!empty2)
+				empty = false;
+
+			//if (!(empty2 && SKIP_EMPTY))
+			// if ((empty2 && SKIP_EMPTY)) ostr << "{\n";
+			// ostr << sstr.str();
+			//if ((empty2 && SKIP_EMPTY)) ostr << "}\n";
 		};
+
+		return empty;
 
 	};
 

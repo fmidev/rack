@@ -404,6 +404,11 @@ void CmdOutputFile::exec() const {
 		//drain::TreeUtils::dumpContents(src, output);
 		drain::TreeUtils::dump(src, output);
 	}
+	else if (path.extension == "TRE"){
+
+		drain::Output output(path.str());
+		drain::TreeUtils::dump<Hi5Tree,true>(src, output, dataToStream);
+	}
 	else {
 
 
@@ -453,7 +458,33 @@ void CmdOutputFile::exec() const {
 };
 
 
+void CmdOutputTree::exec() const {
 
+	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+	// mout.info("File format: tree");
+
+	const bool STD_OUTPUT = value.empty() || (value == "-");
+
+	std::string filename;
+	if (STD_OUTPUT){
+		filename = "-";
+	}
+	else {
+		drain::StringMapper mapper(RackContext::variableMapper);
+		mapper.parse(ctx.outputPrefix + value);
+		filename = mapper.toStr(ctx.getStatusMap());
+		mout.note("writing: '", filename, "'");
+	}
+
+	drain::Output output(filename);
+	//Hi5Tree & src =
+	drain::TreeUtils::dump(ctx.getHi5(RackContext::CURRENT), output, dataToStream);
+
+
+}
 
 
 class CmdOutputRawImages : public drain::SimpleCommand<std::string> {
@@ -583,6 +614,7 @@ FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // 
 
 	install<CmdInputFile>('i').addSection(TRIGGER);
 	install<CmdOutputFile>('o');
+	install<CmdOutputTree>('t');
 
 	install<CmdInputPrefix>();
 	install<CmdOutputPrefix>();

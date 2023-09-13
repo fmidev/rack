@@ -87,7 +87,13 @@ drain::image::Palette & getClassPalette(){
 		palette.addEntry(246, 240,224,208, "signal.emitter.jamming", "Jamming");
 		palette.addEntry(248, 255,255,128, "signal.sun", "Sun");
 		 */
-		// drain::JSONwriter::toStream(palette);
+		//drain::JSONwriter::toStream(palette);
+		//palette.write("EchoClass.txt");
+
+
+		for (const auto & s: {"cpp", "json","svg", "txt"} ){
+			palette.write(std::string("pal-echoClass.") + s);
+		}
 
 	}
 

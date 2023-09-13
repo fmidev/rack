@@ -100,7 +100,18 @@ public:
 
 };
 
+class CmdOutputTree : public drain::SimpleCommand<std::string> {
 
+public:
+
+	inline
+	CmdOutputTree() : drain::SimpleCommand<>(__FUNCTION__, "Output data as simple tree structure.",
+			"filename", "", "<filename>|-") {
+	};
+
+	void exec() const;
+
+};
 
 class FileModule : public drain::CommandModule<> { // : public drain::CommandGroup {
 
