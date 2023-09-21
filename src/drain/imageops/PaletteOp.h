@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef PALETTEOP_H_
 #define PALETTEOP_H_
 
-
+#include "drain/util/Bank.h"
 #include "drain/image/Palette.h"
 
 #include "ImageOp.h"
@@ -97,6 +97,24 @@ public:
 		return *palettePtr;
 	}
 
+	/// NEW. Return a palette (like "DBZH") from Palette::paletteBank if already exists; else try to read in from TXT or JSON file.
+	/**
+	 *   Note: if not existing, creates an empty palette.
+	 */
+	static
+	Palette & ensurePalette(const std::string & key);
+
+	/// NEW. Return a palette (like "DBZH") from Palette::paletteBank if already exists; else try to read in from TXT or JSON file.
+	static
+	Palette & getPalette(const std::string & key);
+
+	/// NEW Load palette to Palette::paletteBank by key (like "DBZH") from TXT or JSON file.
+	static
+	Palette & loadPalette(const std::string & key);
+
+	// TODO: Refinement. Or better in actual op exec, with lookup? Or: retrieve a lookup...
+	// const Palette & getPalette(const std::string & key) const;
+
 
 	/// Creates a gray palette ie. "identity mapping" from gray (x) to rgb (x,x,x).
 	// TODO T 256, T2 32768
@@ -122,8 +140,13 @@ public:
 	/// Intensity mappings set by user, originally with std::string keys in Palette.
 	Palette specialCodes;
 
+	//typedef drain::Bank<Palette> PaletteBank;
+	static
+	//drain::Bank<Palette> paletteBank;
+	std::map<std::string,drain::image::Palette> paletteMap;
 
 protected:
+
 
 	//void initialize() const {Image & dst};
 

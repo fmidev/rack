@@ -59,21 +59,40 @@ class Palette : public ImageCodeMap<PaletteEntry> {
 
 public:
 
+	static
+	const SprinterLayout cppLayout2;
+
 	/// Basic constructor.
 	inline
 	Palette() : ImageCodeMap<PaletteEntry>(), refinement(0) {
 	};
 
-	// NEW
 	/// Constructor supporting initialisation.
-	inline
-	Palette(std::initializer_list<std::pair<const double, PaletteEntry> > l): ImageCodeMap<PaletteEntry>(l), refinement(0){
-	};
+	/**
+	 *   Having Variable as key type allows mixing numeric codes and alphabetic (special) codes.
+	 *
+	 */
+	Palette(std::initializer_list<std::pair<Variable, PaletteEntry> > inits);
 
+	/** Given code (class index or similar marker), returns the (threshold) value, ie. index of the palette entry.
+	 *
+	 *  Argument \code is matched against palette entries with tests in the following order:
+	 *
+	 *  # exact string match (if \c lenient=true , testing stops here )
+	 *  # \c palette.code starts   with \c code
+	 *  # \c palette.code end      with \c code
+	 *  # \c palette.code contains with \c code
+	 *
+	 *  If a matching code is not found, std::runtime_exeption is thrown.
+	 *
+	 * \param code
+	 * \param lenient - if false, only exact string match tested, else substring match accepted
+	 */
+	key_type getValueByCode(const std::string & code, bool lenient=true);
 
 	void reset();
 
-	/// Add one color
+	/// Add one color. Deprecating; brace-enclosed initialization more preferable.
 	void addEntry(double min, double red=0.0, double green=0.0, double blue=0.0, const std::string &id="", const std::string & label =""); // alpha?
 
 	/// Loads a palette from text file
@@ -82,14 +101,13 @@ public:
 	 */
 	void load(const std::string & filename, bool flexible = false);
 
-	/// Loads a palette from text file
-	void loadTXT(std::ifstream & ifstr);
+	/// Loads a palette from a text file
+	void loadTXT(std::istream & ifstr);
 
+	/// Loads a palette from a json file. Under revision; support may be dropped later.
+	void loadJSON(std::istream & ifstr);
 
-	/// Loads a palette from text file
-	void loadJSON(std::ifstream & ifstr);
-
-	void write(const std::string & filename);
+	void write(const std::string & filename) const;
 
 	void exportTXT(std::ostream & ostr, char separator='\t', char separator2=0) const;
 
@@ -102,7 +120,11 @@ public:
 	/// Returns a legend as an SVG graphic.
 	void exportSVGLegend(TreeSVG & svg, bool up = true) const;
 
-	void exportCPP(std::ostream & ostr) const;
+	/// Export palette such
+	/**
+	 * void exportCPP(std::ostream & ostr, bool flat=true) const;
+	 *
+	 */
 
 	/// Creates a palette from json object
 	/**
@@ -131,7 +153,7 @@ public:
 	typedef drain::Dictionary<key_t, std::string> dict_t;
 
 	/// Container for special codes
-	dict_t dictionary; // temp?
+	dict_t dictionary; // deprecating!
 
 	///
 	void updateDictionary();
@@ -141,6 +163,9 @@ public:
 	 *
 	 */
 	size_t refinement;
+
+	// Metadata - for example, the file path of a loaded palette.
+	std::string comment;
 
 protected:
 
@@ -162,8 +187,13 @@ std::ostream & operator<<(std::ostream &ostr, const Palette & p){
 	return ostr;
 }
 
+
 } // image::
 
 } // drain::
+
+template <>
+std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image::Palette & map, const drain::SprinterLayout & layout);
+
 
 #endif

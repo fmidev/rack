@@ -32,7 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <list>
 
-#include "drain/util/FilePath.h"
+// #include "drain/util/FilePath.h"
+#include "drain/util/Input.h"
 #include "drain/util/StringMapper.h"
 //
 #include "drain/util/Output.h"
@@ -45,11 +46,46 @@ namespace drain
 namespace image
 {
 
+const SprinterLayout Palette::cppLayout2("{,}", "{,}", "{,}", "\"\"", "");
+
 /// Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table. 
 /*! Treats an RGB truecolor image of N pixels as as a palette of N colors.
  *  -
  *  - 
  */
+
+
+// important!
+Palette::Palette(std::initializer_list<std::pair<Variable, PaletteEntry> > inits): ImageCodeMap<PaletteEntry>(), refinement(0){
+
+	for (const auto & entry: inits){
+		if (entry.first.isString()){
+			if (entry.first.toStr() == "title"){
+				title = entry.first.toStr();
+			}
+			else {
+				specialCodes[entry.first] = entry.second;
+			}
+			// std::cout << "special/";
+		}
+		else {
+			(*this)[entry.first] = entry.second;
+		}
+		// std::cout << entry.first << '|' << entry.first.getType().name();
+		// std::cout << '=' << sprinter(entry.second, Sprinter::cppLayout) << '\n';
+	}
+
+	comment = "Initialized in code";
+
+	/*
+	std::cout << "cppLayout: --- "<< '\n';
+	Sprinter::toStream(std::cout, *this, Sprinter::cppLayout);
+
+	static const SprinterLayout cppLayout2("{,}", "{,}", "{,}", "\"\"", "");
+	std::cout << "cppLayout2: --- "<< '\n';
+	Sprinter::toStream(std::cout, *this, cppLayout2);
+	*/
+};
 
 void Palette::addEntry(double min, double red, double green, double blue, const std::string & id, const std::string & label){
 
@@ -64,14 +100,82 @@ void Palette::addEntry(double min, double red, double green, double blue, const 
 	entry.color[0] = red;
 	entry.color[1] = green;
 	entry.color[2] = blue;
-	entry.id = id;
+	entry.code = id;
 	entry.label = label;
 
 	dictionary.add(min, id);
 
 }
 
+Palette::key_type Palette::getValueByCode(const std::string & code, bool lenient){
 
+	Logger mout(__FUNCTION__, __FILE__);
+
+	for (const auto & entry: *this){
+		if (entry.second.code == code){
+			return entry.first;
+		}
+	}
+
+	if (!lenient){
+		mout.advice("Use lenient=true if partial string matching ok");
+		mout.error(": could not find code: '", code, "' (with exact match)");
+		//throw std::runtime_error(drain::StringBuilder(__FILE__, __FUNCTION__, ": could not find code: ", code));
+		return NAN;
+	}
+
+	std::string code_lc(code);
+	for (char & c: code_lc){
+		if ((c>='A') && (c<='Z'))
+			c = (c-'A') + 'a';
+	}
+
+	if (code_lc != code){
+		mout.experimental("matching failed with '", code, "', trying with lowercase: '", code_lc, "'");
+		for (const auto & entry: *this){
+			if (entry.second.code == code_lc){
+				return entry.first;
+			}
+		}
+		mout.experimental("trying substring matching with '", code_lc, "'");
+	}
+
+
+	for (const auto & entry: *this){
+		// mout.experimental("starts with '", code_lc, "' ?");
+		if (entry.second.code.find(code_lc) == 0){
+			mout.experimental("'", entry.second.code, "' starts with '", code_lc, "'");
+			return entry.first;
+		}
+	}
+
+	size_t length = code_lc.length();
+	for (const auto & entry: *this){
+		size_t i = entry.second.code.rfind(code_lc);
+		if ((i != std::string::npos) && (i != (entry.second.code.length()-length))){
+			mout.experimental("'", entry.second.code, "' ends with '", code_lc, "', i=", i);
+			return entry.first;
+		}
+	}
+
+	for (const auto & entry: *this){
+		size_t i = std::string::npos;
+		if ((i=entry.second.code.find(code_lc)) != std::string::npos){
+			mout.experimental("'", entry.second.code, "' contains '", code_lc, "' starting at pos(", i, ")");
+			return entry.first;
+		}
+	}
+
+	mout.error("could not find code '", code_lc, "' with flexible (substring) matching");
+
+	// if extra lenient...
+	static int counter = 0;
+	key_type min = static_cast<double>(++counter);
+	mout.warn("code (key) '", code, "' was not found in CLASS palette, added it with index=", counter);
+	(*this)[min].code = code;
+
+	return min;
+}
 
 void Palette::reset(){
 
@@ -149,11 +253,16 @@ void Palette::load(const std::string & filename, bool flexible){
 	const std::string s = filePath.str();
 
 
-	std::ifstream ifstr;
-	ifstr.open(s.c_str(), std::ios::in);
+	//std::ifstream ifstr;
+	//ifstr.open(s.c_str(), std::ios::in);
 
-	if (ifstr.good()){
+	drain::Input ifstr(s);
 
+
+	//if (ifstr.good()){
+	if (ifstr){
+
+		comment = filePath.str();
 		mout.note("reading: ", filePath.str());
 
 		if (filePath.extension == "txt"){
@@ -163,7 +272,7 @@ void Palette::load(const std::string & filename, bool flexible){
 			loadJSON(ifstr);
 		}
 		else {
-			ifstr.close();
+			// ifstr.close();
 			mout.error() << "unknown file type: " << filePath.extension << mout.endl;
 			return;
 		}
@@ -171,7 +280,7 @@ void Palette::load(const std::string & filename, bool flexible){
 	}
 	else {
 
-		ifstr.close();
+		// ifstr.close();
 
 		if (!flexible){
 			//ifstr.close();
@@ -218,17 +327,22 @@ void Palette::load(const std::string & filename, bool flexible){
 					finalFilePath.extension = *eit;
 					mout.info("trying... ", finalFilePath);
 					mout.info("a.k.a.... ", finalFilePath.str().c_str());
-					ifstr.open(finalFilePath.str().c_str(), std::ios::in);
+					//ifstr.open(finalFilePath.str().c_str(), std::ios::in);
+					ifstr.open(finalFilePath.str());
 					//if (ifstr.good())
-					if (ifstr.is_open())
+					//if (ifstr.is_open())
+					if (ifstr)
 						break;
 				}
-				if (ifstr.is_open())
+				if (ifstr)
 					break;
+				// if (ifstr.is_open())
+				//	break;
 			}
 
-			if (!ifstr.good()){  // still not good
-				ifstr.close();
+			if (!ifstr){  // still not good
+				// if (!ifstr.good()){  // still not good
+				///// ifstr.close();
 				mout.error(" opening file '", finalFilePath.str(), "' failed");
 				return;
 			}
@@ -244,14 +358,14 @@ void Palette::load(const std::string & filename, bool flexible){
 				loadJSON(ifstr);
 			}
 			else {
-				ifstr.close();
+				///// ifstr.close();
 				mout.error() << "unknown file type: " << finalFilePath.extension << mout.endl;
 			}
 
 		}
 	};
 
-	ifstr.close();
+	///// ifstr.close();
 
 	updateDictionary();
 
@@ -259,7 +373,7 @@ void Palette::load(const std::string & filename, bool flexible){
 }
 
 
-void Palette::loadTXT(std::ifstream & ifstr){
+void Palette::loadTXT(std::istream & ifstr){
 
 	Logger mout(getImgLog(), "Palette", __FUNCTION__);
 
@@ -276,11 +390,13 @@ void Palette::loadTXT(std::ifstream & ifstr){
 	bool SPECIAL;
 	std::string line;
 	std::string label;
+	std::string labelPrev;
 
-	int index = 100;
-	Variable id;
-	id.setType(typeid(std::string));
-	//id.setSeparator('-');
+
+	// int index = 100;
+	// Variable id;
+	// id.setType(typeid(std::string));
+	// id.setSeparator('-');
 
 	while (std::getline(ifstr, line)){
 
@@ -306,12 +422,17 @@ void Palette::loadTXT(std::ifstream & ifstr){
 			if (j == std::string::npos) // when?
 				continue;
 			//mout.note() << "j=" << j << mout.endl;
+			// labelPrev = label;
+			labelPrev = label;
 
 			label = line.substr(i, j+1-i);
 
 			/// First label in the file will be the title
-			if (title.empty())
+			if (title.empty()){
 				title = label;
+				label.clear();
+				labelPrev.clear();
+			}
 
 			continue;
 		}
@@ -319,7 +440,7 @@ void Palette::loadTXT(std::ifstream & ifstr){
 		if (c == '@'){
 			SPECIAL = true;
 			++i;
-			mout .debug3() << "reading special entry[" << label << "]" << mout.endl;
+			mout .debug3("reading special entry[", label, "]");
 		}
 		else {
 			SPECIAL = false;
@@ -330,14 +451,14 @@ void Palette::loadTXT(std::ifstream & ifstr){
 
 		std::istringstream data(line.substr(i));
 		if (SPECIAL){
-			id = NAN;
+			//id = NAN;
 		}
 		else {
 			if (!(data >> d)){
-				mout.warn() << "suspicious line: " << line << mout.endl;
+				mout.warn("suspicious line: ", line);
 				continue;
 			}
-			mout .debug3() << "reading  entry[" << d << "]" << mout.endl;
+			mout .debug3("reading  entry[", d, "]");
 		}
 
 
@@ -353,15 +474,20 @@ void Palette::loadTXT(std::ifstream & ifstr){
 				entry.hidden = false;
 				entry.label = label;
 			}
+			entry.code = labelPrev;
+
+			label.clear();
+			labelPrev.clear();
 		}
 
 		// mout.warn(line, " <- ", label);
 
+		/*
 		id = "";
 		id << ++index;
-		// mout.warn("id now: ", id);
 		id << entry.label;
-		entry.id = id.toStr();
+		// entry.code = id.toStr();   NEW 2023/09
+		*/
 
 		//Variable colours(typeid(PaletteEntry::value_t)); // NOVECT
 		PaletteEntry::color_t::iterator cit = entry.color.begin();
@@ -388,16 +514,17 @@ void Palette::loadTXT(std::ifstream & ifstr){
 
 		mout.debug3(entry.label, '\t', entry);
 
-		label.clear();
+
+		// label.clear();
 
 	}
 
-	ifstr.close(); // ?
+	///// ifstr.close(); // ?
 
 }
 
 
-void Palette::loadJSON(std::ifstream & ifstr){
+void Palette::loadJSON(std::istream & ifstr){
 
 	Logger mout(getImgLog(), "Palette", __FUNCTION__);
 
@@ -453,7 +580,7 @@ void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 		//PaletteEntry & entry = SPECIAL ? specialCodes[attr["value"]] : (*this)[d]; // Create entry?
 		PaletteEntry & entry = SPECIAL ? specialCodes[value] : (*this)[d]; // Create entry?
 
-		entry.id = id;
+		entry.code = id;
 		// Deprecated, transitory:
 		// entry.value = child["min"]; // NEW 2023
 		entry.label = child["label"].data.toStr(); // child["en"].data.toStr();
@@ -501,27 +628,21 @@ void Palette::updateDictionary(){
 
 	for (Palette::const_iterator it = begin(); it != end(); ++it){
 		mout.info() << "add " << it->first << ' ' << it->second.label << mout.endl;
-		this->dictionary.add(it->first, it->second.id);
+		this->dictionary.add(it->first, it->second.code);
 	}
 
 
 }
 
-void Palette::write(const std::string & filename){
+void Palette::write(const std::string & filename) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
+	//Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(__FUNCTION__, __FILE__);
 
 	drain::FilePath filepath(filename);
 
-	/*
-	if ((filepath.extension != "txt") && (filepath.extension != "json") &&
-			(filepath.extension != "svg") && (filepath.extension != "pal")){
-		mout.error() << "unknown file type: " << filepath.extension << mout.endl;
-		return;
-	}
-	*/
-
 	mout.info("writing: ", *this);
+	mout.special("palette comment: ", comment);
 
 	drain::Output ofstr(filename);
 
@@ -538,15 +659,39 @@ void Palette::write(const std::string & filename){
 		mout.debug("writing JSON palette/class file");
 		drain::JSON::treeToStream(ofstr, json);
 	}
-	else if (filepath.extension == "cpp"){
-		mout.debug("writing C++ palette struct");
-		exportCPP(ofstr);
+	else if (filepath.extension == "inc"){
+		// mout.debug("writing C++ palette (flat)");
+		// exportCPP(ofstr, true);
+		mout.info("Writing in 'flat' C++ format: list of values.");
+		mout.debug("This format is compatible with PaletteEntry constructors.");
+		//static const SprinterLayout Palette::cppLayout2("{,}", "{,}", "{,}", "\"\"", "");
+		Sprinter::toStream(ofstr, *this, Palette::cppLayout2);
+	}
+	else if (filepath.extension == "ipp"){
+		mout.note("Writing in structured C++ format: list of (nested) {key,value} pairs.");
+		mout.debug("This format is compatible with std::map (ReferenceMap applied by BeanLike).");
+		Sprinter::toStream(ofstr, *this, Sprinter::cppLayout);
 		/*
 		drain::JSONtree2 json;
 		exportJSON(json);
 		static const drain::SprinterLayout myCpp("[,]", "{:}", "(=)", "\"\"");
 		drain::Sprinter::toStream(ofstr, json, myCpp); // drain::Sprinter::pythonLayout);
 		*/
+	}
+	else if (filepath.extension == "py"){
+		mout.note("Writing in flat Python format, preferring list to arrays.");
+		static const SprinterLayout pythonLayout2("[,]", "{,}",  "(,)", "''", "\"\"");
+		Sprinter::toStream(ofstr, *this, Sprinter::pythonLayout);
+	}
+	else if (filepath.extension == "PY"){
+		mout.note("Writing in structured Python format: list of (nested) {key,value} pairs.");
+		static const SprinterLayout pythonLayout2("[,]", "{,}",  "(,)", "''", "\"\"");
+		Sprinter::toStream(ofstr, *this, pythonLayout2);
+	}
+	else if (filepath.extension == "JSON"){
+		mout.note("Writing in JSON format: list of (nested) {key,value} pairs.");
+		// mout.debug("This format is compatible with std::map (ReferenceMap applied by BeanLike).");
+		Sprinter::toStream(ofstr, *this, Sprinter::jsonLayout);
 	}
 	else if (filepath.extension == "txt"){
 		mout.debug("writing plain txt palette file");
@@ -596,6 +741,10 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 		const double & min      = entry.first;
 		const PaletteEntry & colour = entry.second;
 
+		if (!colour.code.empty()){
+			ostr << '#' << ' ' << colour.code << '\n'; // New, risky...
+		}
+
 		ostr << '#';
 
 		if (colour.hidden)
@@ -617,10 +766,30 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 
 }
 
-void Palette::exportCPP(std::ostream & ostr) const {
+/*
+void Palette::exportCPP(std::ostream & ostr, bool flat) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
+	//std::cout << "cppLayout: --- "<< '\n';
+	if (flat){
+		mout.info("Writing in 'flat' C++ format: list of values.");
+		mout.debug("This format relies on PaletteEntry constructors.");
+		//static const SprinterLayout Palette::cppLayout2("{,}", "{,}", "{,}", "\"\"", "");
+		Sprinter::toStream(ostr, *this, Palette::cppLayout2);
+	}
+	else {
+		mout.note("Writing in structured C++ format: list of (nested) {key,value} pairs.");
+		mout.debug("This format relies on ReferenceMap reader applied by BeanLike.");
+		Sprinter::toStream(ostr, *this, Sprinter::cppLayout);
+	}
+
+}
+
+*/
+
+
+	/*
 	ostr << "{";
 	if (title.empty()){
 		ostr << " // " << title;
@@ -630,7 +799,7 @@ void Palette::exportCPP(std::ostream & ostr) const {
 	char sep = 0;
 
 	if (!specialCodes.empty()){
-		ostr << "// special codes \n";
+		ostr << "  // special codes //\n";
 		for (const auto & entry: specialCodes){
 			if (sep)
 				ostr << sep << '\n';
@@ -640,16 +809,12 @@ void Palette::exportCPP(std::ostream & ostr) const {
 			entry.second.toStream(ostr, ',');
 			ostr << "} }\n";
 		}
-		//ostr << '\n';
 	}
 
 	if (sep)
 		ostr << sep << '\n';
-	//else
-	//	sep = ',';
 
-
-	ostr << "// colour entries \n";
+	ostr << "  // colours  \n";
 	for (const auto & entry: *this){
 		if (sep)
 			ostr << sep << '\n';
@@ -670,8 +835,7 @@ void Palette::exportCPP(std::ostream & ostr) const {
 	}
 
 	ostr << "\n}\n";
-
-}
+	*/
 
 
 //void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
@@ -679,6 +843,7 @@ void Palette::exportJSON(drain::JSONtree2 & json) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
+	mout.warn("JSON syntax may change in future, ensure palettes using other formats.");
 
 	drain::JSONtree2 & metadata = json["metadata"];
 	metadata["title"] = title;
@@ -779,24 +944,6 @@ void Palette::exportJSON(drain::JSONtree2 & json) const {
 
 }
 
-/*
-struct PalEntry : BeanLike {
-
-	HistEntry() : BeanLike(__FUNCTION__), index(0), count(0){
-		parameters.link("index", index);
-		parameters.link("min", binRange.min);
-		parameters.link("max", binRange.max);
-		parameters.link("count", count);
-		parameters.link("label", label);
-	};
-
-	drain::Histogram::color_t::size_type index;
-	Range<double> binRange;
-	drain::Histogram::count_t count;
-	std::string label;
-
-};
-*/
 
 void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 
@@ -843,7 +990,7 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 
 	for (Palette::const_iterator it = begin(); it != end(); ++it){
 		if (!it->second.hidden){
-			mout.warn() << it->second.id << mout.endl;
+			mout.warn() << it->second.code << mout.endl;
 			//entry.map.append(it->second.map, true);
 			entry = it->second; // if color.size() != 3 ??
 			//entry.id = "koe";
@@ -1094,8 +1241,63 @@ void PaletteOp::setGrayPalette(unsigned int iChannels,unsigned int aChannels,flo
  */
 
 
-}
+} // image::
 
+} // drain::
+
+template <>
+std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image::Palette & palette, const drain::SprinterLayout & layout){
+
+	char sep = 0;
+	ostr << layout.arrayChars.prefix << '\n';
+
+	if (!palette.title.empty()){
+		ostr << "  " << layout.pairChars.prefix;
+		// ostr << layout.keyChars.prefix << "title" << layout.keyChars.suffix;
+		drain::Sprinter::toStream(ostr, "title", layout);
+		ostr << layout.pairChars.separator << ' ';
+		drain::Sprinter::toStream(ostr, palette.title, layout);
+		ostr << layout.pairChars.suffix;
+		ostr << layout.arrayChars.separator << '\n';
+	}
+
+	if (!palette.specialCodes.empty()){
+		for (const auto & entry: palette.specialCodes){
+
+			if (sep)
+				ostr << sep << '\n'; // <-- yes, additional newline
+			else
+				sep = layout.mapChars.separator;
+
+			ostr << "  " << layout.pairChars.prefix;
+			drain::Sprinter::toStream(ostr, entry.first, layout);
+			// ostr << layout.keyChars.prefix << entry.first << layout.mapChars.separator << ' ';
+			ostr << layout.pairChars.separator << ' ';
+			drain::Sprinter::toStream(ostr, entry.second, layout);
+			ostr << ' ' << layout.pairChars.suffix;
+		}
+		// ostr << layout.mapChars.separator;
+	}
+
+
+	for (const auto & entry: palette){
+
+		if (sep)
+			ostr << sep << '\n'; // <-- yes, additional newline
+		else
+			sep = layout.mapChars.separator;
+
+		ostr << "  " << layout.pairChars.prefix;
+		ostr.fill(' ');
+		ostr.width(10);
+		ostr << entry.first << layout.pairChars.separator << ' ';
+		drain::Sprinter::toStream(ostr, entry.second, layout);
+		//drain::Sprinter::mapToStream(ostr, entry.second.getParameters().getMap(), layout, keys);
+		ostr << ' ' << layout.pairChars.suffix;
+	}
+	ostr << '\n' << layout.arrayChars.suffix << '\n';
+
+	return ostr;
 }
 
 // Drain

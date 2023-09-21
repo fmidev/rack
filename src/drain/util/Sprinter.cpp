@@ -92,9 +92,9 @@ const SprinterLayout Sprinter::emptyLayout = {"","","",""};
 
 const SprinterLayout Sprinter::lineLayout = {",", "\n", "=", ""};
 
-const SprinterLayout Sprinter::cppLayout("{,}", "{,}", "{,}", "\"\""); // cppLayout("{,}", "{,}", "{,}", "\"\"");
+const SprinterLayout Sprinter::cppLayout("{,}", "{,}", "{,}", "\"\"", "\"\""); // cppLayout("{,}", "{,}", "{,}", "\"\"");
 
-const SprinterLayout Sprinter::pythonLayout("[,]", "{,}",  "(,)", "''");
+const SprinterLayout Sprinter::pythonLayout("[,]", "{,}",  "(,)", "\"\"", "''", ":"); // last ':' means plain map entries (not tuples as in C++)
 
 /// JSON layout uses std::pair<>(first,second) to display key:value pairs.
 /**

@@ -1,14 +1,7 @@
 {
 	// See drain/examples/ImageCodeMap-example.cpp
-	{324.123, {"värinen", {1.1, 14.0, 33.0}, 0.5}},
-	{314.123, {"toinen", {1.1, 14.0, 33.0}, 0.5}}
-	/*
-	 { //
-	// colour entries
-    {10, "tech.err.time", "Timing problem", {240,240,240} },
+	{10, "tech.err.time", "Timing problem", {240,240,240} },
     {13, "tech.class.unclass", "Unclassified", {144,144,144} },
-    {14.123, "toinen", {1.1,14,33,0.5}, 0.5 },
-    {24.123, "värinen", {1.1,14,33,0.5}, 0.5 },
     {64, "precip", "Precipitation", {80,208,80} },
     {72, "precip.widespread", "Rain", {32,248,96} },
     {80, "precip.snow", "Snow", {0,208,255} },
@@ -28,7 +21,4 @@
     {242, "signal.emitter.line", "Emitter line or segment", {240,208,224} },
     {246, "signal.emitter.jamming", "Jamming", {240,224,208} },
     {248, "signal.sun", "Sun", {255,255,192} }
-}
-
-	 */
 }

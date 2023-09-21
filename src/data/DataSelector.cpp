@@ -439,10 +439,10 @@ bool DataSelector::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 	else {
 		//if (!ODIMPath::isIndexed(child.getType())){
 		if (! child.isIndexed()){
-			mout.warn() << "index requested for unindexed path element '" << child << "'" << mout.endl;
+			mout.warn("index requested for unindexed path element '", child, "'");
 		}
 		else {
-			mout.debug() << "returning a new child element '" << child << "'" << mout.endl;
+			mout.debug("returning a new child element '", child, "'");
 			child.index = 1;
 		}
 		return false;
@@ -533,14 +533,16 @@ bool DataSelector::getNextPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 	}
 }
 
+// Todo: rename... getChildren by quantity? Also, WHAT + "quantity" needed?
 bool DataSelector::getChildren(const Hi5Tree & tree, std::map<std::string,ODIMPathElem> & children, ODIMPathElem::group_t groups){
 
-	for (Hi5Tree::const_iterator it = tree.begin(); it != tree.end(); ++it){
+	//for (Hi5Tree::const_iterator it = tree.begin(); it != tree.end(); ++it){
+	for (const auto & entry: tree){
 
-		const ODIMPathElem & elem = it->first;
-
-		if (elem.belongsTo(groups)){
-			children[tree[elem].data.dataSet.properties["what:quantity"]] = elem;
+		// const ODIMPathElem & elem = it->first;
+		if (entry.first.belongsTo(groups)){
+			//children[tree[entry.first].data.dataSet.properties["what:quantity"]] = entry.first;
+			children[entry.second.data.dataSet.properties["what:quantity"]] = entry.first;
 		}
 
 	}

@@ -52,8 +52,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+// Forward declaration
+// class Variable;
 
-
+// Forward declaration
+// class Referencer;
 
 /// An object that can be automatically casted to and from a basetype, array of basetype or std::string. Designed for objects returned by CastableIterator.
 /**
@@ -198,6 +201,19 @@ public:
 	Castable &operator=(const Castable &c){
 		return assignCastable(c);
 	}
+
+	/*
+	inline
+	Castable &operator=(const Variable &c){
+		return assignCastable(c);
+	}
+
+	inline
+	Castable &operator=(const Referencer &c){
+		return assignCastable(c);
+	}
+	*/
+
 
 	/// Copies an arbitrary base type or std::string value.
 	template <class T>
@@ -465,9 +481,10 @@ public:
 
 	std::ostream & toStream(std::ostream & ostr = std::cout, char separator='\0') const;
 
-
+	/*
 	void toJSONold(std::ostream & ostr = std::cout, char fill = ' ', int verbosity = 0) const;
 	std::ostream & valueToJSONold(std::ostream & ostr = std::cout) const;
+	*/
 
 	std::string toStr() const;
 
@@ -573,6 +590,8 @@ public:
 		this->fillArray       = c.fillArray;
 	}
 
+	/// Copy data from str Castable. Perhaps copy size and type, too.
+	Castable & assignCastable(const Castable &c);
 
 
 protected:
@@ -725,8 +744,6 @@ protected:
 	// Destination type (current type) specific assign operations
 
 
-	/// Copy data from str Castable. Perhaps copy size and type, too.
-	Castable & assignCastable(const Castable &c);
 
 	/// Append to std::string or char array.
 	/**

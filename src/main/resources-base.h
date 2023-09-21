@@ -119,9 +119,24 @@ public:
 	drain::image::Image grayImage;
 	drain::image::Image colorImage;
 
+	// New
+	std::string paletteKey;
 
+	// New
+	inline
+	drain::image::Palette & getPalette(){
+		return drain::image::PaletteOp::getPalette(paletteKey);
+	}
 
-	drain::image::Palette palette;
+	// New
+	inline
+	drain::image::Palette & getPalette(const std::string & key){
+		paletteKey = key;
+		return drain::image::PaletteOp::getPalette(key);
+	}
+
+	// OLD
+	// drain::image::Palette palette;
 
 	/*
 	Palette & getPalette(const std::string & quantity, unsigned short colors){

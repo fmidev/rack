@@ -139,7 +139,10 @@ typedef DstType<VerticalProfileODIM> VprDst;
 
 /// Base class for all kinds of radar data
 /**
- *  \tparam DT - data type: SrcType<> or DstType<> with ODIM template (PolarODIM, CartesianODIM)
+ *  Provides a layer on top of the raw HDF5 trees, so that data and attributes
+ *  can be accessed more directly using ODIM HDF5 conventions.
+ *
+ *  \tparam DT - data type: SrcType<T> or DstType<T> with ODIM template T = [PolarODIM|CartesianODIM|...]
  */
 template <typename DT>
 class TreeWrapper {
@@ -148,8 +151,6 @@ public:
 	typedef DT datatype_t;
 	typedef typename DT::tree_t tree_t;
 	typedef typename DT::tree_iter_t tree_iter_t;
-	// typedef typename DT::image_t image_t;
-	// typedef typename DT::odim_t odim_t;
 
 	inline
 	const drain::VariableMap & getWhat() const {
@@ -235,6 +236,12 @@ protected:
 
 };
 
+
+/// Experimental structure, designed only for accessing root level metadata.
+/**
+ *  Not extensively used...
+ *
+ */
 template <typename DT>
 class RootData : public TreeWrapper<DT> {
 
@@ -264,7 +271,12 @@ public:
 
 /// Essential class for storing radar data.
 /**
- *  \tparam DT - data type (PolarSrc, PolarDst, CartesianSrc, CartesianDst, ...)
+ *  Combines 2D image data and metadata.
+ *
+ *  For metadata, uses ODIM variables, hence replacing native
+ *
+ *  \tparam DT - data type: SrcType<T> or DstType<T> with ODIM template T = [PolarODIM|CartesianODIM|...]
+ *     (PolarSrc, PolarDst, CartesianSrc, CartesianDst, ...)
  */
 template <typename DT>
 class PlainData : public TreeWrapper<DT> {
@@ -507,9 +519,13 @@ std::ostream & operator<<(std::ostream & ostr, const PlainData<DT> & d){
 }
 
 
-/// Something, that contains TreeWrapper and data that can be retrieved by quantity keys.
+/// A map of "data type" group_t (DATA or QUALITY) where the data can be retrieved using quantity keys (strings).
 /**
-	So, data4/ or quality2/ for example.
+
+	For example, dataGroup["DBZH"] may return data located at "data2"
+	and qualityGroup["QIND"] may return data at "quality1".
+
+	Also based on TreeWrapper, so has a \c tree inside...
 
     \tparam DT - data object type: PlainData<...> or Data<...>
     \tparam G  - the path element of children: ODIMPathElem:: DATASET, DATA, or QUALITY
@@ -894,6 +910,11 @@ std::ostream & operator<<(std::ostream & ostr, const DataGroup<DT,G> & d){
 
 
 /// Base class providing quality support for Data<DT> and DataSet<DT>
+/**
+ *  Essentially, an instance of QualityDataSupport is something which has quality data as members.
+ *  This data is stored in quality group, which is a map of quality fields.
+ *
+ */
 template <typename DT>
 class QualityDataSupport {
 
@@ -902,7 +923,6 @@ public:
 	typedef PlainData<DT> plaindata_t;
 
 	typedef DataGroup<plaindata_t,ODIMPathElem::QUALITY> qualitygroup_t;
-
 
 
 	inline
@@ -961,6 +981,11 @@ public:
 
 	inline
 	const qualitygroup_t & getQuality() const {
+		return this->quality;
+	}
+
+	inline
+	qualitygroup_t & getQuality(){
 		return this->quality;
 	}
 

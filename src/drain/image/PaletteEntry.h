@@ -31,6 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_PALETTE_ENTRY
 #define DRAIN_PALETTE_ENTRY
 
+#include <iomanip>
+
 #include "ImageFile.h"
 #include "Geometry.h"
 #include "TreeSVG.h"
@@ -47,61 +49,26 @@ namespace drain
 {
 
 
-/*   = old
-class PaletteEntry2 : public LegendEntry, public BeanLike {
-public:
-
-	PaletteEntry2(): BeanLike(__FUNCTION__), colour(3, 0){
-		parameters.link("label",  this->label);
-		parameters.link("colour", this->colour);
-	}
-
-	PaletteEntry2(const PaletteEntry2 & pale): BeanLike(__FUNCTION__), colour(3, 0){
-		parameters.link("label",  this->label = pale.label);
-		parameters.link("colour", this->colour = pale.colour);
-	}
-
-	PaletteEntry2 & operator=(const PaletteEntry2 & pale){
-		this->label  = pale.label;
-		this->colour = pale.colour;
-		return *this;
-	}
-
-	std::vector<double> colour;
-
-	inline
-	bool empty() const {
-		return this->label.empty();
-	}
-
-};
-*/
-
-/*
-template <>
-inline
-std::ostream & JSONwriter::toStream(const PaletteEntry2 &e, std::ostream &ostr, unsigned short indentation){
-	return JSONwriter::mapToStream(e.getParameters(), ostr, indentation);
-}
-*/
-
 namespace image
 {
 
 
-// Why beanlike? Overkill..
-
+/// Container for color, transparency (alpha) and textual id and description. Does not contain intensity thresholds (intervals).
+/**
+ *  The color is stored as 8 bit value [0.0 ,255.0].
+ *  Alpha is stored (currenly) as a float: [0.0, 1.0].
+ *
+ *
+ */
 class PaletteEntry : public BeanLike {
 
 public:
 
 	/// Intensity type
-
 	typedef double value_t;
 
 	/// Color vector type
 	typedef UniTuple<value_t,3> color_t;
-
 
 	/// Default constructor
 	PaletteEntry();
@@ -109,17 +76,84 @@ public:
 	/// Copy constructor
 	PaletteEntry(const PaletteEntry & entry);
 
-	//PaletteEntry(const std::string & label, double value, color_t color, value_t alpha, bool hidden=false);
-	PaletteEntry(const std::string & id, const std::string & label, color_t color, value_t alpha, bool hidden=false);
+	///
+	/**
+	 *  This constructor supports Palette initialization of form:
+	 *  \code
+	 * 	  palette = {
+             { 10, {{"label","Timing problem"},{"color",{240,240,240}},{"code","tech.err.time"},{"alpha",255}} },
+             { 13, {{"label","Unclassified"},{"color",{144,144,144}},{"code","tech.class.unclass"},{"alpha",255}} },
+             { 64, {{"label","Precipitation"},{"color",{80,208,80}},{"code","precip"},{"alpha",255}} },
+             { 72, {{"label","Rain"},{"color",{32,248,96}},{"code","precip.widespread"},{"alpha",255}} },
+             // ...
+	 *  \endcode
+	 *
+	 */
+	PaletteEntry(const char * code, const char * label, const color_t & color, value_t alpha=255.0, bool hidden=false);
 
-	PaletteEntry(const std::string & label, color_t color, value_t alpha, bool hidden=false);
+	///
+	/**
+	   This constructor supports Palette initialization with following entry syntax:
+	   \code
+	  	  palette = {
+  	  	  	  {"nodata", {"nodata", "Data unavailable", {255.0,255.0,255.0}} },
+  	  	  	  {"undetect", {"undetect", "Measurement failed", {0.0,0.0,0.0}} },
+  	  	  	  {     -32.0, {"noise", "Noise", {0.0,0.0,0.0}} },
+  	  	  	  {      24.0, {"precip.rain.moderate", "Moderate rain", {255.0,150.0,50.0}} },
+	         // ...
+	   \endcode
+	 */
+	PaletteEntry(const char * label, const color_t & color, value_t alpha=255.0, bool hidden=false);
+
+	///
+	/**
+	 *  This constructor supports Palette initialization of form:
+ 	 	\code
+	  	  palette = {
+  	  	  	  {"nodata", {"Data unavailable", {255.0,255.0,255.0}} },
+  	  	  	  {"undetect", {"Measurement failed", {0.0,0.0,0.0}} },
+  	  	  	  {     -32.0, {"Noise", {0.0,0.0,0.0}} },
+  	  	  	  {      24.0, {"precip.moderate", "Moderate", {255.0,150.0,50.0}} },
+	         // ...
+	    \endcode
+	 *
+	 */
+	PaletteEntry(const color_t & color, value_t alpha=255.0, bool hidden=false);
+
+	/// Constructor supporting Palette initialization using "{key,value}" form.
+	/**
+	 *
+	 *  \code
+	 * 	  palette = {
+             { 10, {{"label","Timing problem"},{"color",{240,240,240}},{"code","tech.err.time"},{"alpha",255}} },
+             { 13, {{"label","Unclassified"},{"color",{144,144,144}},{"code","tech.class.unclass"},{"alpha",255}} },
+             { 64, {{"label","Precipitation"},{"color",{80,208,80}},{"code","precip"},{"alpha",255}} },
+             { 72, {{"label","Rain"},{"color",{32,248,96}},{"code","precip.widespread"},{"alpha",255}} },
+             // ...
+	 *  \endcode
+	 *
+	 */
+	PaletteEntry(const std::initializer_list<std::pair<const char *, const drain::Variable> > & args);
+
+	/// Special dummy constructor for reading a title or other metadata related to Palette.
+	/**
+	 *  This constructor supports Palette initialization of form:
+	 *  \code
+	 * 	  palette = {
+             { "title", {"Radar reflectivity"} }
+             // ...
+	 *  \endcode
+	 *
+	 */
+	//PaletteEntry(const std::string & label);
+	PaletteEntry(const char * label);
 
 	void checkAlpha();
 
-	/// Unique label (latent/invisible? for undetected/nodata)
-	std::string id; // was already obsolete?
+	/// Technical identifier (optional).
+	std::string code;
 
-	/// Short description appearing in legends
+	/// Short description for legends
 	std::string label;
 
 	/// Index or threshold value. Must be signed, as image data may generally have negative values.
@@ -128,6 +162,7 @@ public:
 	/// Colors, or more generally, channel values
 	color_t color;
 
+	/// Transparency
 	value_t alpha;
 
 
@@ -158,6 +193,14 @@ public:
 		str = sstr.str();
 	}
 
+	//template <class T>
+	/*
+	PaletteEntry & operator=(const drain::VariableMap & m){
+		setParameters(m);
+		return *this;
+	};
+	*/
+
 protected:
 
 	void init();
@@ -165,14 +208,35 @@ protected:
 };
 
 
+
 inline
-std::ostream & operator<<(std::ostream &ostr, const PaletteEntry & e){
-	return e.toStream(ostr);
+std::ostream & operator<<(std::ostream &ostr, const PaletteEntry & entry){
+	return entry.toStream(ostr);
 }
 
 
 } // image::
 
 } // drain::
+
+/*
+template <>
+inline
+std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image::PaletteEntry::color_t & color, const drain::SprinterLayout & layout){
+
+	ostr << layout.arrayChars.prefix; // << "xx";
+	ostr << std::fixed << std::setprecision(1); // ensure ".0"
+	drain::Sprinter::toStream(ostr, color[0], layout);
+	ostr << layout.arrayChars.separator;
+	drain::Sprinter::toStream(ostr, color[1], layout);
+	ostr << layout.arrayChars.separator;
+	drain::Sprinter::toStream(ostr, color[2], layout);
+	ostr << layout.arrayChars.suffix;
+	return ostr;
+}
+*/
+
+template <>
+std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image::PaletteEntry & entry, const drain::SprinterLayout & layout);
 
 #endif

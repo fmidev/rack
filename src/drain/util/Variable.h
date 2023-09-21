@@ -32,13 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef VARIABLE_H_
 #define VARIABLE_H_
 
-#include <drain/util/Referencer.h>
 #include <string.h>
 #include <string>
 #include <vector>
 #include <map>
 
 #include "CastableIterator.h"
+#include "Referencer.h"
 #include "Sprinter.h"
 #include "String.h"
 #include "UniTuple.h" // "Friend class"

@@ -69,6 +69,9 @@ public:
 		return static_cast<bool>(ifstr);
 	};
 
+	void open(const std::string & filename);
+
+
 protected:
 
 	std::ifstream ifstr;

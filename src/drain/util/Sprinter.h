@@ -92,7 +92,25 @@ struct SimpleLayout : public UniTuple<char,2>{
  *
  *  Notice that set() derived from UniTuple<char,3> has argument order: prefix, separator, suffix
  */
-struct TypeLayoutBase : public UniTuple<char,3>{
+class TypeLayoutBase : public UniTuple<char,3>{
+
+	/*
+   protected:
+	std::vector<char> chars;
+
+	inline
+	void set(char prefix, char separator,  char suffix){
+		this->prefix    = prefix;
+		this->separator = separator;
+		this->suffix    = suffix;
+	}
+
+	void assign(const TypeLayoutBase & layout){
+		set(layout.prefix, layout.separator, layout.suffix);
+	}
+	*/
+
+public:
 
 	typedef char cstr_t;
 	cstr_t & prefix;
@@ -100,8 +118,13 @@ struct TypeLayoutBase : public UniTuple<char,3>{
 	cstr_t & suffix;
 
 	inline
-	TypeLayoutBase():
+	TypeLayoutBase(): // chars('\0',3), prefix(chars[0]), separator(chars[1]), suffix(chars[2]){
 		prefix(this->next()), separator(this->next()), suffix(this->next()){
+	}
+
+	inline
+	bool empty() const {  // conside rename isDefined(), esp. if functions used later ?
+		return ((prefix==0) && (separator==0) && (suffix==0));
 	}
 
 
@@ -153,28 +176,30 @@ struct TypeLayout : public TypeLayoutBase{
 };
 
 
-/*   USE: TypeLayout(',')
-struct SimpleTypeLayout : public  TypeLayout{
-	SimpleTypeLayout (char separator): TypeLayout(0,0,separator){
-	}
-};
+/*
+    Consider printing a map structure
+    - as a map:  {key:value, key2:value2, ... }
+    - as a list or pairs: [(key,value), (key2,value2), ...]
+
 */
 
 struct SprinterLayout{
 
-	//char itemSeparator = ',';  // consider as equal sign:  KEY:VALUE
-	TypeLayout arrayChars = TypeLayout("[,]");
-	TypeLayout mapChars = TypeLayout("{,}");
-	TypeLayout pairChars = TypeLayout("(,)"); // layout for (key,value), see keyChars
-	TypeLayout stringChars = TypeLayout('"',0,'"'); // TODO: Separate value and sequence layouts?
-	TypeLayout keyChars    = TypeLayout(0,0,0); // given a pair = (key,value), defined how the key is .
+	// char itemSeparator = ',';  // consider as equal sign:  KEY:VALUE
+	TypeLayout arrayChars   = TypeLayout("[,]");
+	TypeLayout mapChars     = TypeLayout("{,}");
+	TypeLayout pairChars    = TypeLayout("(,)"); // layout for (key,value), see keyChars
+	TypeLayout stringChars  = TypeLayout('"',0,'"'); // TODO: Separate value and sequence layouts?
+	TypeLayout keyChars     = TypeLayout(0,0,0); // given a pair = (key,value), defined how the key is .
+	TypeLayout mapPairChars = TypeLayout(0,0,0); // When a map {entry, entry,... } is rendered, defines how
 
-	//TypeLayout stringChars = TypeLayout("\"\"");
-	//std::string boolTrue  = "true";
-	//std::string boolFalse = "false";
-	//std::string nullValue = "null";
+	// TypeLayout stringChars = TypeLayout("\"\"");
+	// std::string boolTrue  = "true";
+	// std::string boolFalse = "false";
+	// std::string nullValue = "null";
 
-	SprinterLayout(const char *arrayChars="[,]", const char *mapChars="{,}", const char *pairChars="(,)", const char *stringChars=nullptr, const char *keyChars=nullptr){
+	SprinterLayout(const char *arrayChars="[,]", const char *mapChars="{,}", const char *pairChars="(,)",
+			const char *stringChars=nullptr, const char *keyChars=nullptr, const char *mapPairChars=nullptr){
 		this->arrayChars.setLayout(arrayChars);
 		this->mapChars.setLayout(mapChars);
 		this->pairChars.setLayout(pairChars);
@@ -182,11 +207,13 @@ struct SprinterLayout{
 			this->stringChars.setLayout(stringChars);
 		if (keyChars)
 			this->keyChars.setLayout(keyChars);
-
+		if (mapPairChars)
+			this->mapPairChars.setLayout(mapPairChars);
 	}
 
 	SprinterLayout(const SprinterLayout &layout):
-		arrayChars(layout.arrayChars), mapChars(layout.mapChars), pairChars(layout.pairChars), stringChars(layout.stringChars), keyChars(layout.keyChars){
+		arrayChars(layout.arrayChars), mapChars(layout.mapChars), pairChars(layout.pairChars),
+		stringChars(layout.stringChars), keyChars(layout.keyChars), mapPairChars(layout.mapPairChars){
 	}
 
 
@@ -194,7 +221,9 @@ struct SprinterLayout{
 		arrayChars.separator = itemSeparator;
 		mapChars.separator = itemSeparator;
 		pairChars.separator = itemSeparator;
+		mapPairChars.separator = itemSeparator;
 	}
+
 
 
 };
@@ -202,11 +231,12 @@ struct SprinterLayout{
 // Mainly for debugging
 inline
 std::ostream & operator<<(std::ostream & ostr, const SprinterLayout & layout){
-	ostr << "arrayChars:  " << layout.arrayChars << '\n';
-	ostr << "mapChars:    " << layout.mapChars << '\n';
-	ostr << "pairChars:   " << layout.pairChars << '\n';
-	ostr << "stringChars: " << layout.stringChars << '\n';
-	ostr << "keyChars:    " << layout.keyChars << '\n';
+	ostr << "arrayChars:   " << layout.arrayChars << '\n';
+	ostr << "mapChars:     " << layout.mapChars << '\n';
+	ostr << "pairChars:    " << layout.pairChars << '\n';
+	ostr << "stringChars:  " << layout.stringChars << '\n';
+	ostr << "keyChars:     " << layout.keyChars << '\n';
+	ostr << "mapPairChars: " << layout.mapPairChars << '\n';
 	return ostr;
 }
 
@@ -274,7 +304,7 @@ public:
 	};
 
 
-	// Complicated, but unversal...
+	// Complicated, but universal...
 	template <class K, class V>
 	static
 	std::ostream & pairToStream(std::ostream & ostr, const std::pair<K,V> & x, const SprinterLayout & layout){
@@ -292,6 +322,28 @@ public:
 		toStream(ostr, x.second, layout);
 
 		suffixToStream(ostr, layout.pairChars);
+
+		return ostr;
+	}
+
+	/// If (key,value) pairs needs specific layout in maps, use this. (Compare with list of tuples).
+	template <class K, class V>
+	static
+	std::ostream & mapPairToStream(std::ostream & ostr, const std::pair<K,V> & x, const SprinterLayout & layout){
+
+		prefixToStream(ostr, layout.mapPairChars);
+
+		// EXPERIMENTAL
+		prefixToStream(ostr, layout.keyChars);
+		//toStream(ostr, x.first, layout);
+		ostr << x.first;
+		suffixToStream(ostr, layout.keyChars);
+
+		separatorToStream(ostr, layout.mapPairChars);
+
+		toStream(ostr, x.second, layout); // recursion
+
+		suffixToStream(ostr, layout.mapPairChars);
 
 		return ostr;
 	}
@@ -343,9 +395,11 @@ public:
 	static
 	std::ostream & mapToStream(std::ostream & ostr, const M & m, const SprinterLayout & layout, const K & keys){
 
-		prefixToStream(ostr, layout.mapChars);
+		prefixToStream(ostr, layout.mapChars); // redesign: layout.startMap(ostr)
 		//if (layout.mapChars.prefix)
 		//	ostr << layout.mapChars.prefix;
+
+		const bool MAP_PAIRS = !layout.mapPairChars.empty();
 
 		// char sep = 0; // for (const typename K::value_type & key =
 		for (typename K::const_iterator it=keys.begin(); it != keys.end(); ++it){
@@ -355,7 +409,12 @@ public:
 
 			typename M::const_iterator mit = m.find(*it);
 			if (mit != m.end()){
-				toStream(ostr, *mit, layout);
+				if (MAP_PAIRS){
+					mapPairToStream(ostr, *mit, layout);
+				}
+				else {
+					toStream(ostr, *mit, layout);
+				}
 			}
 			else {
 				std::cerr << __FILE__ << __FUNCTION__ << ':' << "missing key: " << *it << std::endl;
@@ -363,7 +422,7 @@ public:
 
 		}
 
-		suffixToStream(ostr, layout.mapChars);
+		suffixToStream(ostr, layout.mapChars); // redesign: layout.endMap(ostr) or layout.mapLayout.putStart(ostr); .putEnd(ostr);
 
 		return ostr;
 

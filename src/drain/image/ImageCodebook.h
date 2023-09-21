@@ -58,6 +58,10 @@ public:
 	typedef typename cont_t::value_type entry_t;
 	//typedef typename cont_t::size_type size_t;
 
+	// Utility for initializer_list based inits: the threshold values are read in parallel.
+	typedef typename std::list<entry_t> list_t;
+
+
 	/// Default constructor
 	//ImageCodeMap(size_t n=0, const T & value=T()): cont_t(n, value), separator(0) {
 	ImageCodeMap() : separator(0) {

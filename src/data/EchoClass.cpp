@@ -30,7 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include "drain/util/JSON.h"
-
+#include "drain/util/Output.h"
 #include "drain/image/Palette.h"
 
 #include "EchoClass.h"
@@ -44,8 +44,9 @@ drain::image::Palette & getClassPalette(){
 
 	if (palette.empty()){
 		palette =
-#include "EchoClass.inc"
+		#include "palette/palette-ANDRE-CLASS.inc"
 		;
+		/*
 		palette.addEntry(10, 240,240,240, "tech.err.time", "Timing problem");
 		palette.addEntry(13, 144,144,144, "tech.class.unclass", "Unclassified");
 		palette.addEntry(64, 80,208,80, "precip", "Precipitation");
@@ -67,6 +68,7 @@ drain::image::Palette & getClassPalette(){
 		palette.addEntry(242, 240,208,224, "signal.emitter.line", "Emitter line or segment");
 		palette.addEntry(246, 240,224,208, "signal.emitter.jamming", "Jamming");
 		palette.addEntry(248, 255,255,192, "signal.sun", "Sun");
+		*/
 
 		/*
 		palette.addEntry(13, 144,144,144, "tech.class.reject", "Unclassified");
@@ -90,10 +92,17 @@ drain::image::Palette & getClassPalette(){
 		//drain::JSONwriter::toStream(palette);
 		//palette.write("EchoClass.txt");
 
-
-		for (const auto & s: {"cpp", "json","svg", "txt"} ){
+		/*
+		for (const auto & s: {"inc", "json","svg", "txt"} ){
 			palette.write(std::string("pal-echoClass.") + s);
+
 		}
+		*/
+
+		/*
+		drain::Output output("pal-echoClass.inc");
+		drain::Sprinter::toStream(output, palette, drain::Sprinter::cppLayout);
+		*/
 
 	}
 
@@ -107,6 +116,10 @@ int getClassCode(const std::string & id){
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	static drain::image::Palette & palette = getClassPalette();
+
+	return palette.getValueByCode(id);
+
+	/*
 	static int counter = 0;
 
 	typedef drain::image::Palette::dict_t dict_t;
@@ -128,7 +141,7 @@ int getClassCode(const std::string & id){
 	}
 
 	return static_cast<int>(palette.dictionary.getKey(id));
-
+	*/
 }
 
 

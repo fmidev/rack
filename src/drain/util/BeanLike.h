@@ -41,6 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Log.h"
 #include "ReferenceMap.h"
+#include "Variable.h"
 
 namespace drain
 {
@@ -97,6 +98,13 @@ public:
 		return rmap.append(parameters);
 	};
 	*/
+	inline
+	void setParameters(std::initializer_list<std::pair<const char *, const Variable> > l){
+		for (const auto & entry: l){
+			setParameter(entry.first, entry.second);
+			//parameters[entry.first] = entry.second;
+		}
+	}
 
 	/// Sets comma-separated parameters in a predetermined order "a,b,c" or by specifing them "b=2".
 	/**
@@ -129,9 +137,38 @@ public:
 	}
 
 	/// Sets a single parameter
+	inline
+	void setParameter(const std::string &p, const Castable & value){
+		parameters[p].assignCastable(value);
+		updateBean();
+	}
+
+	/// Sets a single parameter
+	inline
+	void setParameter(const std::string &p, const Variable & value){
+		parameters[p].assignCastable(value);
+		updateBean();
+	}
+
+	/// Sets a single parameter
+	inline
+	void setParameter(const std::string &p, const Referencer & value){
+		parameters[p].assignCastable(value);
+		updateBean();
+	}
+
+	/// Sets a single parameter
 	template <class F>
 	inline
 	void setParameter(const std::string &p, const F &value){
+		parameters[p] = value;
+		updateBean();
+	}
+
+	/// Sets a single parameter
+	template <class F>
+	inline
+	void setParameter(const std::string &p, std::initializer_list<F> value){
 		parameters[p] = value;
 		updateBean();
 	}

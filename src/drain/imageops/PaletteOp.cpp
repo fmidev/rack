@@ -30,7 +30,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <sstream>
-//#include <strstream>
 #include <list>
 #include "PaletteOp.h"
 
@@ -39,6 +38,10 @@ namespace drain
 
 namespace image
 {
+
+
+// drain::Bank<Palette> PaletteOp::paletteBank;
+std::map<std::string,drain::image::Palette> PaletteOp::paletteMap;
 
 /// Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table. 
 /*! Treats an RGB truecolor image of N pixels as as a palette of N colors.
@@ -76,25 +79,92 @@ void PaletteOp::setPalette(const Palette & palette) {
 	this->palettePtr = &palette;
 }
 
+/*
+Palette & PaletteOp::ensurePalette(const std::string & key){
+
+	#pragma omp critical
+	{
+		if (!paletteBank.has(key)){
+			Palette & p = paletteBank.add<Palette>(key); // Bank could support derived <OtherPalette>!
+			p.comment = key;
+			p.title = key+"...";
+		}
+		std::cout << __FILE__ << '/' << __FUNCTION__ << ':' << key << '\n';
+	}
+	return paletteMap[key];
+}
+*/
+
+
+
+Palette & PaletteOp::loadPalette(const std::string & key){
+
+	Logger mout(__FUNCTION__, __FILE__);
+	// Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
+	Palette & palette = paletteMap[key];
+	#pragma omp critical
+	{
+		palette.load(key, true);
+		if (palette.title.empty()){
+			mout.debug("Palette had no title, added: ", key);
+			palette.title = key;
+		}
+		//setPalette(palette);
+	}
+	return palette;
+}
+
+
+Palette & PaletteOp::getPalette(const std::string & key) {
+
+	Logger mout(__FUNCTION__, __FILE__);
+	// Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+
+	Palette & palette = paletteMap[key];
+	if (palette.empty()){
+		palette.load(key, true);
+		if (palette.empty()){
+			mout.warn("Empty palette [", key, "] // ", palette.comment);
+		}
+	}
+	else {
+		mout.experimental("Using cached palette [", key, "]");
+	}
+	// setPalette(palette);
+	return palette;
+	/*
+	if (paletteBank.has(key)){
+		mout.experimental("Using cached palette [", key, "]");
+		return paletteBank.get(key);
+	}
+	else {
+		Palette & palette = loadPalette(key);
+		return palette;
+	}
+	*/
+}
 
 // Add label
 void PaletteOp::registerSpecialCode(const std::string & code, double d) {
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	if ((this->palettePtr == NULL) || (this->palettePtr->empty()))
+	if ((this->palettePtr == NULL) || (this->palettePtr->empty())){
 		//throw std::runtime_error("PaletteOp::setSpecialCode: palette not set (null)");
 		mout.error() << "no paletted loaded or linked " << mout.endl;
+	}
 
 	Palette::spec_t::const_iterator it = palettePtr->specialCodes.find(code);
 	if (it != palettePtr->specialCodes.end()){
+		mout.experimental("Notice: global(?) palette modified with special code: ", d, '=', it->second);
 		specialCodes[d] = it->second; // copy
 		// specialCodes[d].value = d; NEW 2023
 	}
 	else {
-		mout.debug() << *palettePtr << mout.endl;
+		mout.debug(*palettePtr);
 		//mout.note() << palettePtr->specialCodes << mout.endl;
-		mout.warn() << "could not find entry: "<< code << '(' << d << ')' << mout.endl;
+		mout.warn("could not find entry: ", code, '(', d, ')');
 	}
 	//std::cerr << code <<  ": setSpecialCode: could not find entry\n";
 
@@ -236,19 +306,18 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 		// This is needed for "normalising" quantities if desired (eg. Doppler wind, unamambiguous range)
 		ValueScaling sc(scale, offset);
-		//sc.setPhysicalScale(typeid(unsigned char), min, max);
 
-		mout.warn() << "first entry: " << sprinter(*pal.begin()) << mout;
-		mout.warn() << "last  entry: " << sprinter(*pal.rbegin()) << mout;
+		mout.warn("first entry: ", sprinter(*pal.begin())  );
+		mout.warn("last  entry: ", sprinter(*pal.rbegin()) );
 
 		const Palette::lookup_t & lut = pal.createLookUp(encoding.getType(), sc);
 
-		mout.info() << "created look-up table[" << lut.size() << "] for input: " << drain::Type::getTypeChar(encoding.getType()) << mout.endl;
-		mout.info() << "scaling: " << encoding.getScaling() << " => " << sc << mout.endl;
+		mout.info("created look-up table[", lut.size(), "] for input: ", drain::Type::getTypeChar(encoding.getType()) );
+		mout.info("scaling: ", encoding.getScaling(), " => ", sc);
 
 		if (mout.isDebug(2)){
 			for (size_t i=0; i<lut.size(); ++i){
-				mout.note() << i << "\t" << lut[i]->first << "\t" << sc.fwd(i) << "\t" << pal.retrieve(sc.fwd(i))->first  << mout.endl;
+				mout.note(i, "\t", lut[i]->first, "\t", sc.fwd(i), "\t", pal.retrieve(sc.fwd(i))->first );
 			}
 		}
 
@@ -284,8 +353,8 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	}
 	else {
 
-		mout.warn() << "using (slow) retrieval: " << srcChannel << mout.endl;
-		mout.note() << "scaling: " << scaling << mout.endl;
+		mout.warn("Not uint8b or uint16b, hence using (slow) retrieval: ", srcChannel);
+		mout.note("scaling: " , scaling);
 		//mout.warn() << "using (slow) retrieval, scaled=" << SCALED << ',' << drain::Type::getTypeChar(encoding.getType()) << ", " << scaling << mout.endl;
 
 		if (mout.isDebug(1)){

@@ -512,26 +512,28 @@ public:
 
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout;
 
-
 		if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR)){
 			mout.warn() << "input failed, skipping" << mout.endl;
 			return;
 		}
 
 		if (ctx.statusFlags.isSet(drain::StatusFlags::DATA_ERROR)){   // !resources.dataOk){
-			mout.warn() << "data error, skipping" << mout.endl;
+			mout.warn("data error, skipping");
 			return;
 		}
 
-		//ODIMPath path = ImageKit::findImage(ctx);
-		//ImageKit::updateCurrentImage(ctx); // no conversion!
+		// No explicit quantity issued
+		const bool DEFAULT_PALETTE = (value.empty() || (value == "default"));
 
+		if (DEFAULT_PALETTE && !ctx.paletteKey.empty()){
+			mout.info("Using current palette: ", ctx.paletteKey);
+		}
+		else {
+			// Read (get) a palette? (Ie. change current palette
+			//if ((!value.empty()) || ctx.paletteKey.empty()){
+			//if (!value.empty() || ctx.palette.empty()){
 
-		// DONT clear yet resources.select.clear();
-
-		if (!value.empty() || ctx.palette.empty()){
-
-			if (value == "default" || value.empty()){
+			if (DEFAULT_PALETTE){
 
 				// Guess label (quantity) Allow load even if no image
 				std::string quantity;
@@ -546,14 +548,18 @@ public:
 
 				if (!quantity.empty()){
 					mout.info("loading palette: ", quantity);
-					ctx.palette.load(quantity, true);
+					//ctx.palette.load(quantity, true);
+					ctx.getPalette(quantity);
 				}
 				else {
 					mout.fail("could not derive data quantity (quantity empty)");
 				}
 			}
-			else
-				ctx.palette.load(value, true);
+			else {
+				ctx.getPalette(value);
+				// ctx.palette.load(value, true);
+			}
+
 
 			/// TODO: store palette in dst /dataset, or better add palette(link) to Image ?
 			/*
@@ -572,7 +578,10 @@ public:
 
 		drain::Logger mout(ctx.log, __FUNCTION__, "Palette"); // = resources.mout;
 
-		if (ctx.palette.empty()){
+		//drain::image::Palette & palette = ctx.palette; // FAKE old (fallback)
+		drain::image::Palette & palette = ctx.getPalette(); // NEW
+
+		if (palette.empty()){
 			mout.warn("empty palette, giving up");
 			return;
 		}
@@ -593,13 +602,14 @@ public:
 		//graySrc.getConf().getElementSize()
 
 
-		if (ctx.palette.refinement > 0){
-			mout.note("Applying refinement: ", ctx.palette.refinement);
-			ctx.palette.refine();
+		if (palette.refinement > 0){
+			// TODO: Refine for PaletteBank::geCloned()
+			mout.note("Applying refinement: ", palette.refinement);
+			palette.refine();
 		}
 
 
-		PaletteOp  op(ctx.palette);
+		PaletteOp  op(palette);
 
 		// The intensities will  be mapped first: f' = gain*f + offset
 		const drain::FlexVariableMap  & props = graySrc.getProperties();
@@ -836,6 +846,69 @@ public:
 };
 
 
+class CmdPaletteConf : public drain::BasicCommand  {
+
+public:
+
+	CmdPaletteConf() : drain::BasicCommand(__FUNCTION__, "Check status of palette(s)."), lenient(true) {
+		parameters.link("key", key="list");
+		parameters.link("code", code);
+		parameters.link("lenient", lenient);
+		// parameters.link("quantity", quantity = "");
+	};
+
+	CmdPaletteConf(const CmdPaletteConf & cmd) : drain::BasicCommand(cmd), lenient(true){
+		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+	};
+
+	std::string key;
+	std::string code;
+	bool lenient;
+
+
+	virtual
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+		if (key == "list"){
+
+		}
+		else {
+			mout.note("Palette: [", key, "]");
+			drain::image::Palette & palette = ctx.getPalette(key);
+			mout.note("  title:   '", palette.title, "'");
+			if (code.empty()){
+				mout.note("  title:   '", palette.title, "'");
+				mout.note("  entries: ", palette.size(), "");
+				mout.note("  specials: ", palette.specialCodes.size(), "");
+			}
+			else {
+				drain::image::PaletteEntry::value_t v = 0.0;
+				try {
+					v = palette.getValueByCode(code, lenient);
+				}
+				catch (std::exception & e) {
+					mout.warn("  no such code: ", code, "");
+					if (!lenient){
+						try {
+							v = palette.getValueByCode(code, true);
+							mout.advice("  however, lenient matching found: ", code);
+						}
+						catch (std::exception & e) {
+							return;
+						}
+					}
+				}
+				mout.note("arg: [", code, "] => value=", v, " => ", palette[v].code);
+			}
+		}
+
+	};
+
+};
 
 class CmdPaletteIn : public drain::SimpleCommand<std::string> {
 
@@ -850,9 +923,27 @@ public:
 	};
 
 	void load(const std::string &s) const {
+
+		static drain::RegExp re("^[A-Z][A-Z_0-9\\-]+[A-Z0-9]$");
+
 		RackContext & ctx = getContext<RackContext>();
-		ctx.palette.load(s);
-		// getResources().palette.load(s);
+
+		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+
+		//ctx.palette.load(s);
+
+		// NEW
+		if (re.test(s)){
+			mout.note("Reading palette [", s,"] palette");
+			// drain::image::PaletteOp::paletteMap[s);
+			ctx.getPalette(s).load(s); // ctx.paletteKey = "USER";
+		}
+		else {
+			mout.warn("Reading 'USER' palette - probably not accessible by any quantity / PaletteOp");
+			// drain::image::PaletteOp::paletteMap["USER");
+			ctx.getPalette("USER").load(s); //ctx.paletteKey = "USER";
+		}
 	}
 
 };
@@ -870,19 +961,24 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
+		mout.attention("Palette key: ", ctx.paletteKey);
+
+		const drain::image::Palette & palette = ctx.getPalette();
+
 		if (ctx.formatStr.empty()){
-			ctx.palette.write(ctx.outputPrefix + value);
+			palette.write(ctx.outputPrefix + value);
 		}
 		else {
-			mout.warn() << "user defined format, extension not checked: " +  ctx.formatStr << mout.endl;
+			mout.warn("user defined format, extension not checked: ", ctx.formatStr);
 			drain::Output output(ctx.outputPrefix + value);
-			ctx.palette.exportFMT(output, ctx.formatStr);
+			palette.exportFMT(output, ctx.formatStr);
 		}
 
 	}
 };
 
 class CmdPaletteRefine : public drain::SimpleCommand<int> {
+
 public:
 
 	CmdPaletteRefine() : drain::SimpleCommand<int>(__FUNCTION__, "Refine colors", "count", 0){
@@ -894,13 +990,24 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
+		/* OLD
 		if (ctx.palette.empty()){
-			mout.note("Palette not yet loaded, ok");
+			mout.note("Palette not (yet) loaded, ok");
 			ctx.palette.refinement = value;
 			return;
 		}
 
 		ctx.palette.refine(value);
+		*/
+
+		// NEW
+		if (ctx.paletteKey.empty()){
+			mout.warn("Palette not loaded, refine will ne discarded!");
+			return;
+		}
+
+		ctx.getPalette().refine(value);
+
 		// cmdPalette.apply();
 		// mout.unimplemented()= "refine";
 
@@ -1119,11 +1226,107 @@ ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) { // :{ // 
 
 	/// WAS: with prefix 'i', like image operators
 	// drain::CommandInstaller<'i',ImageSection> installer2(drain::getCommandBank());
+	install<CmdPaletteConf>();
 	install<CmdPaletteIn>();
 	install<CmdPaletteOut>();
 	install<CmdPaletteRefine>();
 	install<CmdPlot>();
 	install<CmdImageBox>();
+
+
+	PaletteOp::paletteMap["ANDRE-CLASS"] =
+	#include "palette/palette-ANDRE-CLASS.inc"
+	;
+
+
+	PaletteOp::paletteMap["ALT"] =
+	#include "palette/palette-ALT.inc"
+	;
+
+	PaletteOp::paletteMap["CLASS"] =
+	#include "palette/palette-CLASS.inc"
+	;
+
+	PaletteOp::paletteMap["COUNT"] =
+	#include "palette/palette-COUNT.inc"
+	;
+
+	PaletteOp::paletteMap["DBZHSTDDEV"] =
+	#include "palette/palette-DBZHSTDDEV.inc"
+	;
+
+	PaletteOp::paletteMap["DBZH"] =
+	#include "palette/palette-DBZH.inc"
+	;
+
+	PaletteOp::paletteMap["FLASH"] =
+	#include "palette/palette-FLASH.inc"
+	;
+
+	PaletteOp::paletteMap["HCLASS"] =
+	#include "palette/palette-HCLASS.inc"
+	;
+
+	PaletteOp::paletteMap["HGHT"] =
+	#include "palette/palette-HGHT.inc"
+	;
+
+	PaletteOp::paletteMap["PROB"] =
+	#include "palette/palette-PROB.inc"
+	;
+
+	PaletteOp::paletteMap["QIND"] =
+	#include "palette/palette-QIND.inc"
+	;
+
+	PaletteOp::paletteMap["RATE"] =
+	#include "palette/palette-RATE.inc"
+	;
+
+	PaletteOp::paletteMap["RHOHV"] =
+	#include "palette/palette-RHOHV.inc"
+	;
+
+	PaletteOp::paletteMap["RISK"] =
+	#include "palette/palette-RISK.inc"
+	;
+
+	PaletteOp::paletteMap["SUNSHINE"] =
+	#include "palette/palette-SUNSHINE.inc"
+	;
+
+	PaletteOp::paletteMap["VRAD-DEV"] =
+	#include "palette/palette-VRAD-DEV.inc"
+	;
+
+	PaletteOp::paletteMap["VRAD"] =
+	#include "palette/palette-VRAD.inc"
+	;
+
+	PaletteOp::paletteMap["ZDR"] =
+	#include "palette/palette-ZDR.inc"
+	;
+
+	/*
+	{
+		 	{"title", {"Radar reflectance"} },
+			{"nodata", {"nodata", "102,nodata", {255.0,255.0,255.0}} },
+			{"undetect", {"undetect", "101,undetect", {0.0,0.0,0.0}} },
+			{     -32.0, {"noise", "103,noise", {0.0,0.0,0.0}} },
+			{     -24.0, {"", "104,", {60.0,140.0,200.0}} },
+			{     -16.0, {"", "105,", {10.0,155.0,225.0}} },
+			{      -8.0, {"insects", "106,insects", {5.0,205.0,170.0}} },
+			{       0.0, {"drizzle", "107,drizzle", {140.0,230.0,20.0}} },
+			{       8.0, {"weak", "108,weak", {240.0,240.0,20.0}} },
+			{      16.0, {"rain", "109,rain", {255.0,205.0,20.0}} },
+		 	{      24.0, {"moderate", "110,moderate", {255.0,150.0,50.0}} },
+			{      32.0, {"intensive", "111,intensive", {255.0,80.0,60.0}} },
+			{      40.0, {"hail", "112,hail", {250.0,120.0,255.0}} },
+			{      60.0, {"", "113,", {255.0,255.0,255.0}} }
+	}
+	;
+	*/
+
 
 };
 

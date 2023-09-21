@@ -64,29 +64,44 @@ PaletteEntry::PaletteEntry(const PaletteEntry & entry): BeanLike(__FUNCTION__), 
 	color = entry.color;
 }
 
-/*
-PaletteEntry::PaletteEntry(const std::string & label, double value, color_t color, value_t alpha, bool hidden) :
-		BeanLike(__FUNCTION__), label(label), value(value), color(color), alpha(alpha), hidden(hidden) {
-	init();
-}
-*/
-
-PaletteEntry::PaletteEntry(const std::string & id, const std::string & label, color_t color, value_t alpha, bool hidden) :
-		BeanLike(__FUNCTION__), id(id), label(label), color(color), alpha(alpha), hidden(hidden) {
+PaletteEntry::PaletteEntry(const char * code, const char * label, const color_t & color, value_t alpha, bool hidden) :
+		BeanLike(__FUNCTION__), code(code), label(label), color(color), alpha(alpha), hidden(hidden) {
 	init();
 }
 
-PaletteEntry::PaletteEntry(const std::string & label, color_t color, value_t alpha, bool hidden) :
-		BeanLike(__FUNCTION__), id(label), label(label), color(color), alpha(alpha), hidden(hidden) {
+PaletteEntry::PaletteEntry(const char * label, const color_t & color, value_t alpha, bool hidden) :
+		BeanLike(__FUNCTION__), code(label), label(label), color(color), alpha(alpha), hidden(hidden) {
 	init();
 }
+
+PaletteEntry::PaletteEntry(const color_t & color, value_t alpha, bool hidden) :
+		BeanLike(__FUNCTION__), color(color), alpha(alpha), hidden(hidden) {
+	init();
+}
+
+
+PaletteEntry::PaletteEntry(const std::initializer_list<std::pair<const char *, const drain::Variable> > & args) :
+		BeanLike(__FUNCTION__), alpha(255.0), hidden(false) {
+	init();
+	/*
+	for (auto entry: args){
+		std::cout << entry.first << " == " << entry.second << std::endl;
+		// setParameter(entry.first, entry.second);
+	}*/
+	setParameters(args);
+}
+
+PaletteEntry::PaletteEntry(const char * label): BeanLike(__FUNCTION__), label(label), alpha(255.0), hidden(true) {
+	parameters.link("label", this->label);
+}
+
 
 
 void PaletteEntry::init(){
 	// color.resize(1, 0); NOVECT
 	// parameters.link("value", value); //  = 0.0
 	// parameters.link("color", color);
-	parameters.link("id", id);
+	parameters.link("code", code);
 	parameters.link("label", label);
 	parameters.link("color", color);
 	parameters.link("alpha", alpha); //  = 255.0
@@ -124,11 +139,6 @@ void PaletteEntry::getHexColor(std::ostream & ostr) const {
 // std::ostream & PaletteEntry::toOStream(std::ostream &ostr, char separator, char separator2) const{
 std::ostream & PaletteEntry::toStream(std::ostream &ostr, char separator) const{
 
-
-		//if (!separator2)
-		//	separator2 = separator;
-
-
 		/*
 		ostr << "# value from Palette index!" << separator;
 		if (std::isnan(value)){
@@ -138,7 +148,7 @@ std::ostream & PaletteEntry::toStream(std::ostream &ostr, char separator) const{
 			ostr << value << separator;
 		}
 		*/
-
+		ostr << std::fixed << std::setprecision(1);
 		char sep = 0;
 		for (color_t::const_iterator it=color.begin(); it != color.end(); ++it){
 			if (sep){
@@ -164,10 +174,83 @@ std::ostream & PaletteEntry::toStream(std::ostream &ostr, char separator) const{
 		return ostr;
 }
 
+} // image::
+
+} // drain::
 
 
-}
+template <>
+std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image::PaletteEntry & entry, const drain::SprinterLayout & layout){
 
+	const bool KEYS = ( (layout.keyChars[0]!=0) || (layout.keyChars[1]!=0) || (layout.keyChars[2]!=0) );
+
+	const bool LABEL  = (!entry.label.empty());
+	const bool CODE   = ((!entry.code.empty()) && (entry.code != entry.label)); // rethink
+	const bool ALPHA  = (entry.alpha != 255.0);
+	const bool HIDDEN = (entry.hidden);
+
+	ostr << std::fixed << std::setprecision(1);
+
+
+	if (KEYS){
+
+		std::list<std::string> keys = {"label", "color"}; // "label","color"
+
+		if (CODE)
+			keys.push_back("code");
+
+		if (ALPHA)
+			keys.push_back("alpha");
+
+		if (HIDDEN)
+			keys.push_back("hidden");
+
+		drain::Sprinter::mapToStream(ostr, entry.getParameters().getMap(), layout, keys);
+	}
+	else {
+		// Plain (ordered) layout
+		ostr << layout.arrayChars.prefix;
+
+		if (CODE){
+			drain::Sprinter::toStream(ostr, entry.code, layout);
+			ostr << layout.arrayChars.separator << ' '; // <-- yes, additional space
+		}
+
+		if (CODE || LABEL){
+			drain::Sprinter::toStream(ostr, entry.label, layout);
+			ostr << layout.arrayChars.separator << ' '; // <-- yes, additional space
+		}
+
+		{
+			ostr << layout.arrayChars.prefix;
+			char sep = 0;
+			for (drain::image::PaletteEntry::value_t v: entry.color){
+				if (sep)
+					ostr << sep; // << ' '; // <-- yes, additional space
+				else
+					sep = layout.arrayChars.separator;
+				drain::Sprinter::toStream(ostr, v, layout);
+			}
+			ostr << layout.arrayChars.suffix;
+		}
+
+		if (ALPHA || HIDDEN){
+			ostr << layout.arrayChars.separator << ' '; // <-- yes, additional space
+			drain::Sprinter::toStream(ostr, entry.alpha, layout);
+			if (HIDDEN){
+				ostr << layout.arrayChars.separator << ' ';
+				drain::Sprinter::toStream(ostr, entry.hidden, layout);
+			}
+		}
+		// ostr << ' '; // <-- yes, additional space
+		ostr << layout.arrayChars.suffix;
+
+	}
+
+
+	//return drain::JSON::treeToStream(ostr, tree, layout);
+	//return drain::Sprinter::treeToStream(ostr, tree, layout);
+	return ostr;
 }
 
 // Drain

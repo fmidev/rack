@@ -60,6 +60,24 @@ Input::~Input(){
 	ifstr.close();
 }
 
+void Input::open(const std::string & filename){
+
+	if (filename.empty())
+		throw std::runtime_error(std::string(__FUNCTION__) + ": filename empty (use '-' for stdout)");
+
+	if (filename == "-"){
+		// if (ofstr.isOpen...)
+		ifstr.close(); // close std?
+		//mout.debug() << "opening standard output" << mout.endl;
+	}
+	else {
+		ifstr.open(filename.c_str(), std::ios::in);
+		if (!ifstr.is_open()){
+			throw std::runtime_error(std::string(__FUNCTION__) + ": filename=" + filename + ": failed");
+		}
+	}
+
+}
 
 Input::operator std::istream & (){
 	// drain::Logger mout(__FUNCTION__, __FILE__);

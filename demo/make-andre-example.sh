@@ -3,8 +3,11 @@ set -o errexit
 
 if (( ${#*} < 2 )); then
     echo "Creates andre example: command line and output files"
-    echo "Usage"
-    echo "  ${0##*/} <nick> --<detector1>[=<params>] ... --<detectorN>[=<params>]"
+    echo "Usage:"
+    echo "  ${0##*/} <nick> <detector1>[=<params>] ... --<detectorN>[=<params>]"
+    echo "  ...where <nick> yields volume-<nick>.h5 and detector is in lowercase"
+    echo "Example:"
+    echo "  ${0##*/} anom-sea <detector1>[=<params>] ... --<detectorN>[=<params>]"
     exit
 fi
 

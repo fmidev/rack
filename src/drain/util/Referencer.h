@@ -61,7 +61,7 @@ namespace drain {
 
  */
 
-//class Variable;
+class Variable;
 
 /// Extends Castable's interface with link()
 class Referencer : public Castable {
@@ -155,6 +155,16 @@ public:
 		Castable::operator=(x);
 		return *this;
 	}
+
+	/*
+	inline
+	Referencer & operator=(const Variable &x){
+		assignCastable(x);
+		// Castable::operator=(x);
+		return *this;
+	}
+	*/
+
 
 
 

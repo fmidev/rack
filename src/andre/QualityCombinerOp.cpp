@@ -64,21 +64,24 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.debug("Creating quality data [", dstQind.odim.quantity, "]");
+	mout.debug("Ensuring dst quality [", dstQind.odim.quantity, "] data array...");
 
-	if (dstQind.data.isEmpty()){
+	if (!dstQind.data.isEmpty()){
+		mout.debug("Ok, exists already");
+	}
+	else {
 
 		if (dstQind.odim.quantity.empty())
 			dstQind.odim.quantity = quantity;
 
-		mout.debug() << "Creating quality field [" << dstQind.odim.quantity <<  "] ~=[" << quantity <<  ']' << mout.endl;
+		mout.debug("Creating quality field [", dstQind.odim.quantity, "] ~=[", quantity, ']');
 
 		// Scaling, encoding
 		getQuantityMap().setQuantityDefaults(dstQind, quantity);  // or PROB
 
 		// Geometry
 		dstQind.setGeometry(srcData.odim.area);
-		mout.debug() << "set geometry: " << dstQind.data.getGeometry() << mout.endl;
+		mout.debug("set geometry: ", dstQind.data.getGeometry());
 		dstQind.odim.rscale = srcData.odim.rscale; // nbins, nrays, rscale
 
 		//mout.special() << "quality " << dstQind << mout.endl;
@@ -215,24 +218,27 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
+	mout.debug("Ensuring quality [", dstQind.odim.quantity, "] ~ [QIND] data array...");
 
 	QualityCombinerOp::initDstQuality(srcQind, dstQind, "QIND");
 
 	// const double QUALITY_THRESHOLD = 0.99;
 
-	std::set<std::string> classesNew;
-	srcQind.getHow()["task_args"].toSequence(classesNew, ',');
-	mout.special() << drain::sprinter(classesNew) << mout;
+	std::set<std::string> srcClasses;
+	srcQind.getHow()["task_args"].toSequence(srcClasses, ',');
+	//mout.special() << drain::sprinter(classesNew) << mout;
+	mout.special("srcClasses: ", drain::sprinter(srcClasses));
 
 	drain::Variable & task_args = dstQind.getHow()["task_args"];
-	std::set<std::string> classes;
-	task_args.toSequence(classes, ',');
-	mout.special() << drain::sprinter(classes) << mout;
+	std::set<std::string> dstClasses;
+	task_args.toSequence(dstClasses, ',');
+	// mout.special() << drain::sprinter(classes) << mout;
+	mout.special("dstClasses: ", drain::sprinter(dstClasses));
 
 	bool update = false;
 
-	for (const std::string & quantity: classesNew){
-		if (classes.find(quantity) == classes.end()){
+	for (const std::string & quantity: srcClasses){
+		if (dstClasses.find(quantity) == dstClasses.end()){
 			update = true;
 			mout.info() << "adding quantity: " << quantity << mout.endl;
 			task_args << quantity;
@@ -251,9 +257,9 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 	if (srcClass.data.isEmpty()){
 
 		if (!dstClass.data.isEmpty())
-			mout.note() << "no CLASS data, ok, simpler update" << mout.endl;
+			mout.note("No CLASS data, ok, simpler update");
 		else
-			mout.warn() << "CLASS not provided in input, only QIND will be updated" << mout.endl;
+			mout.warn("CLASS not provided in input, only QIND will be updated");
 
 		Image::const_iterator  it  = srcQind.data.begin();
 		Image::iterator pit = dstQind.data.begin();
@@ -275,7 +281,7 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 	}
 	else {
 
-		mout.debug() << "Updating QIND and CLASS data." << mout.endl;
+		mout.debug("Updating QIND and CLASS data.");
 
 		QualityCombinerOp::initDstQuality(srcQind, dstClass, "CLASS");
 		/*
@@ -358,7 +364,7 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 	const bool UPDATE_EXISTING = dstData.hasQuality();
 
 	if (!UPDATE_EXISTING){
-		mout.debug2() << "Skipping update, because srcData won't get it " << mout.endl;
+		mout.debug2("Skipping update, because srcData won't get it "); //??
 		return;
 	}
 
@@ -369,43 +375,51 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 	PlainData<PolarDst> & dstCLASS = dstData.getQualityData("CLASS");
 
 	if (UPDATE_EXISTING){
-		mout.success() << "updating.." << mout;
+		mout.info("updating quality fields [QIND,CLASS] of [", dstData.odim.quantity, "]");
 		updateOverallQuality(srcQIND, srcCLASS, dstQIND, dstCLASS);
 	}
 	else {
 		// FIX: DEPRECATED code
-		mout.note() << " NOT? Copying local QIND and CLASS for " <<  dstData.odim.quantity << mout.endl;
+		mout.attention("Not...? Copying local QIND and CLASS for ", dstData.odim.quantity);
 		dstQIND.data.copyDeep(srcQIND.data);
 		dstQIND.odim.importMap(srcQIND.odim);
-		mout.note() << EncodingODIM(dstQIND.odim) << mout.endl;
+		mout.note(EncodingODIM(dstQIND.odim));
 		dstCLASS.data.copyDeep(srcCLASS.data);
 		dstCLASS.odim.importMap(srcCLASS.odim);
 	}
 
+	//mout.advice("src qualities");
+	for (const auto & entry: srcDataSet.getQuality()){
+		if ((entry.first != "QIND") && (entry.first != "CLASS")){
+			mout.experimental("quality information [", entry.first, "] added here / elangle=", entry.second.odim.elangle);
+			updateOverallDetection(entry.second.data, dstQIND, dstCLASS, entry.first, (short unsigned int)123);
+		}
+	}
+
 }
 
-/*  Essentially, difference of images filtered with median in two directions.
+/*  Essentially,
  *
  *
  */
 //void QualityCombinerOp::processSweep(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const {
-void QualityCombinerOp::processDataSet(const DataSet<PolarSrc> & src, DataSet<PolarDst> & dst) const {
+void QualityCombinerOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<PolarDst> & dstDataSet) const {
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	mout.warn() << "Src: " << src << mout;
+	mout.info("Src: ", srcDataSet);
 
-	//DataDst & dstData = dst.getFirstData("QIND"); //targetQuantity);
-	//PlainData<PolarDst> & dstData = dst.getQualityData("QIND"); //targetQuantity);
+	/*
 	const PlainData<PolarSrc> & srcQuality = src.getQualityData("QIND");
 	if (srcQuality.data.isEmpty()){
-		mout.info() << "no global (dataset-level) quality index data (QIND), skipping." << mout.endl;
+		mout.info("no global (dataset-level) quality index data (QIND), skipping?");
 	}
 
 	const PlainData<PolarSrc> & srcClass   = src.getQualityData("CLASS");
 	if (srcClass.data.isEmpty()){
-		mout.info() << "no global (dataset-level) quality class data (CLASS), skipping. " << mout.endl;
+		mout.info("no global (dataset-level) quality class data (CLASS), skipping.");
 	}
+	*/
 
 	/*
 	for (DataSet<PolarSrc>::const_iterator it = src.begin(); it != src.end(); ++it){
@@ -415,32 +429,48 @@ void QualityCombinerOp::processDataSet(const DataSet<PolarSrc> & src, DataSet<Po
 	for (DataSet<PolarDst>::iterator it = dst.begin(); it != dst.end(); ++it){
 		mout.warn() << "dst data quantity:" << it->first << mout.endl;
 	}
+
+
+	mout.special(src);
+	for (const auto & entry: src.getQuality()){
+		if ((entry.first != "QIND") && (entry.first != "CLASS")){
+			mout.unimplemented("quality information [", entry.first, "] discarded here, elangle=", entry.second.odim.elangle);
+		}
+	}
 	*/
 
 
 
 	/// Note: iteration in src dataset (keys), because data selector applies to it.
-	for (DataSet<PolarSrc>::const_iterator it = src.begin(); it != src.end(); ++it){
+	for (DataSet<PolarSrc>::const_iterator it = srcDataSet.begin(); it != srcDataSet.end(); ++it){
 
-		mout.special() << it->first << mout;
+		mout.special("Handling: ", it->first);
 
-		Data<PolarDst> & dstData = dst.getData(it->first);
+		Data<PolarDst> & dstData = dstDataSet.getData(it->first);
+
+		if (dstData.data.isEmpty()){
+			mout.fail("Something went wrong, dst has no quantity [", it->first, "]");
+			mout.advice("Weird, because dstData should be found (referenced) in srcDataSet");
+			continue;
+		}
 
 		/// TODO: move these to updateLocalQuality
 
 		if (!dstData.hasQuality("QIND")){
-			mout.info() << "no quality index data (QIND) for quantity=" << it->first << ", skipping." << mout.endl;
+			mout.info("no quality index data (QIND) for quantity=", it->first, ", skipping.");
+			mout.attention("Shouldn't it be added, instead?");
 			continue;
 		}
 		// PlainData<PolarDst> & dstQuality = dstData.getQualityData("QIND");
 
 		if (!dstData.hasQuality("CLASS")){
-			mout.info() << "no quality class data (CLASS) for quantity=" << it->first << ", skipping." << mout.endl;
+			mout.info("no quality class data (CLASS) for quantity=", it->first, ", skipping.");
+			mout.attention("Shouldn't it be added, instead?");
 			continue;
 		}
 		// PlainData<PolarDst> & dstClass = dstData.getQualityData("CLASS");
 
-		updateLocalQuality(src, dstData);
+		updateLocalQuality(srcDataSet, dstData);
 
 	}
 
@@ -450,5 +480,3 @@ void QualityCombinerOp::processDataSet(const DataSet<PolarSrc> & src, DataSet<Po
 
 }  // rack::
 
-
-// Rack

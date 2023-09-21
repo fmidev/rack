@@ -101,6 +101,10 @@ protected:
 	void appendPolarH5(Hi5Tree & tmpSrc, Hi5Tree & dst) const;
 	//void appendPolarH5OLD(Hi5Tree & tmpSrc, Hi5Tree & dst) const;
 
+	typedef std::map<std::string, ODIMPathElem> quantity_map;
+
+	void updateDataNEW(Hi5Tree & srcData, const std::string & srcKey, Hi5Tree & dstDataSet, const quantity_map & dstQuantityElems) const ;
+
 	void updateQuality(Hi5Tree & srcData, Hi5Tree & dstData) const;
 
 

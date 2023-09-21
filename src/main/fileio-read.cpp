@@ -384,9 +384,63 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
+	{
+		mout.attention("Step 1: Append missing quality fields ");  // other than QIND or CLASS
+
+		QualityDataSupport<BasicDst> srcQ(src);
+		QualityDataSupport<BasicDst> dstQ(dst);
+
+		for (auto & srcEntry: srcQ.getQuality()){ // Iterate by quantity
+
+			// if ((srcEntry.first != "QIND") && (srcEntry.first != "CLASS")){
+			// mout.attention("special quality information [", srcEntry.first, "] , elangle=", srcEntry.second.odim.elangle);
+			// mout.attention("special quality information [", srcEntry.first, "] ");
+
+			if (dstQ.hasQuality(srcEntry.first)){
+				mout.attention("dst already contains quality field [", srcEntry.first, "], skipping (for now)");
+				// TODO: consider override, for fields other than QIND or CLASS? (Probably needs image.reset() )
+			}
+			else {
+				mout.attention("dst does not contain quality field [", srcEntry.first, "], adding");
+				dstQ.getQualityData(srcEntry.first).getTree().swap(srcEntry.second.getTree());
+			}
+
+		}
+
+		/*
+		mout.attention("Step 1: Join quality fields QIND and CLASS");
+
+		PlainData<BasicDst> & srcQind  = srcQ.getQualityData("QIND");  // ie.
+		PlainData<BasicDst> & srcClass = srcQ.getQualityData("CLASS"); // Maybe empty
+
+		//QualityDataSupport<BasicDst> dstQ(dst);
+
+		if (!srcQind.data.isEmpty()){
+
+			PlainData<BasicDst> & dstQind  = dstQ.getQualityData("QIND");
+
+			if (!srcClass.data.isEmpty()){
+				mout.attention("both src and dst have QIND and CLASS");
+				PlainData<BasicDst> & dstClass = dstQ.getQualityData("CLASS");
+				mout.advice("consider --aQualityCombiner"); // QualityCombinerOp::updateOverallQuality
+				// QualityCombinerOp::updateOverallQuality(srcQind, srcClass,	dstQind, dstClass);
+			}
+			else {
+				mout.attention("both src and dst have QIND (but not CLASS)");
+			}
+
+		}
+		*/
+
+	}
+
+	return;
+
 	const QualityDataSupport<PolarSrc> srcQ(src);
 	const PlainData<PolarSrc> & srcQind  = srcQ.getQualityData("QIND");  // ie.
 	const PlainData<PolarSrc> & srcClass = srcQ.getQualityData("CLASS"); // Maybe empty
+
+
 
 	if (srcQind.data.isEmpty()){
 		mout.debug("srcQind empty, skipping update");
@@ -485,6 +539,94 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 
 }
 
+
+
+//static
+void CmdInputFile::updateDataNEW(Hi5Tree & srcData, const std::string & srcKey, Hi5Tree & dstDataSet, const quantity_map & dstQuantityElems) const {
+
+	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+	// NEW: clumsy search.
+	for (const auto & dstEntry: dstQuantityElems) {
+		if (srcKey == dstEntry.first){
+			mout.note("Key [quantity ", srcKey, "] already exists in dst: ", dstEntry.second);
+			// Note: QIND and CLASS ruled out above
+			updateQuality(srcData, dstDataSet[dstEntry.second]);
+			// continue;
+			return;
+		}
+	}
+
+	ODIMPathElem dstChild(ODIMPathElem::DATA);
+	DataSelector::getNextChild(dstDataSet, dstChild);
+	mout.note("Add2 new quantity ", srcKey, " => dataset:/", dstChild);
+	Hi5Tree & dstData = dstDataSet[dstChild];
+	srcData.swap(dstData);
+
+}
+
+
+template <class K>
+struct DataSetPicker : public std::pair<K,ODIMPathElem> {
+
+	typedef K key_t;
+	typedef std::map<K,ODIMPathElem> map_t;
+
+	virtual
+	K getKey(const Hi5Tree & src, const ODIMPathElem & elem) = 0;
+};
+
+// Elangle
+struct PolarDataSetPicker : public DataSetPicker<double> {
+
+	virtual
+	~PolarDataSetPicker(){};
+
+	virtual
+	double getKey(const Hi5Tree & src, const ODIMPathElem & elem){
+		static double empty = -90.0;
+		return src[ODIMPathElem::WHERE].data.attributes.get("elangle", empty);
+	};
+
+};
+
+struct DataSetPickerByTime : public DataSetPicker<std::string> {
+
+	virtual
+	~DataSetPickerByTime(){};
+
+	virtual
+	std::string getKey(const Hi5Tree & src, const ODIMPathElem & elem){
+		// static double empty = "";
+		return src[ODIMPathElem::WHAT].data.attributes["startdate"].toStr() +
+			src[ODIMPathElem::WHAT].data.attributes["starttime"].toStr();
+	};
+
+};
+
+/**
+ *  groupFilter
+ */
+void pickElems(const Hi5Tree & src, int groupFilter, std::map<std::string, ODIMPathElem> & elems){
+
+	static DataSetPickerByTime picker;
+
+	for (const auto & entry: src){
+
+		if (entry.first.belongsTo(groupFilter)){
+			// consider error if exists
+			elems[picker.getKey(src, entry.first)] = entry.first;
+		}
+
+	}
+
+}
+
+
+
+// TODO: generalize? Not actually polar...
 void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 	RackContext & ctx = getContext<RackContext>();
@@ -495,26 +637,30 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 	const drain::Variable & sourceSrc = srcRoot[ODIMPathElem::WHAT].data.attributes["source"];
 	const drain::Variable & sourceDst = dstRoot[ODIMPathElem::WHAT].data.attributes["source"];
 	// mout.warn() << sourceDst << " => " << sourceSrc << mout.endl;
+	// TODO: consider option to accept different source?
 	if (!sourceDst.empty()){
 		if (!sourceSrc.empty()){
 			if (sourceSrc.toStr() != sourceDst.toStr()){
-				mout.warn() << "what:source changed in creating combined volume:" << mout.endl;
-				mout.warn() << "  dst: '" << sourceDst << "'" << mout.endl;
-				mout.warn() << "  src: '" << sourceSrc << "'" << mout.endl;
+				mout.warn("what:source changed in creating combined volume:");
+				mout.warn("  dst: '", sourceDst, "'");
+				mout.warn("  src: '", sourceSrc, "'");
 			}
 		}
 		else {
-			mout.warn() << "what:source empty, assuming: " << sourceDst << mout.endl;
+			mout.warn("what:source empty, assuming: ", sourceDst);
 		}
 	}
 
 
 	/// Common dataSetSelector for srcRoot and dstRoot
 	DataSelector dataSetSelector;
+	if (!ctx.select.empty())
+		mout.attention("Applying input selector: ", ctx.select);
 	dataSetSelector.consumeParameters(ctx.select); //??
 	dataSetSelector.pathMatcher = "dataset:"; // <fix
 
 	/// TIMESTAMP-based order (Consider generalization for Cartesian?)
+	//  Consider ODIMPathElem instead ??
 	typedef std::map<std::string,ODIMPath> sweepMap;
 
 	sweepMap srcPaths;
@@ -534,77 +680,144 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 	/// Traverse the child paths of srcRoot dataset[i]
 	//for (sweepMap::const_iterator it = srcPaths.begin(); it != srcPaths.end(); ++it){
-	for (const auto & entry: srcPaths){
+	for (const auto & srcDSEntry: srcPaths){
 
-		const sweepMap::key_type & timestamp = entry.first; // rename => key
-		const ODIMPath & srcDataSetPath = entry.second;
+		//const sweepMap::key_type & timestamp = srcDSEntry.first; // rename => key
+		//const ODIMPath & srcDataSetPath      = srcDSEntry.second;
 
-		Hi5Tree & srcDataSet = srcRoot(srcDataSetPath);  // clumsy, should be without leading '/'
+		Hi5Tree & srcDataSet = srcRoot(srcDSEntry.second);  // clumsy, should be without leading '/'
 
-		mout.debug("Considering ", srcDataSetPath, " (", timestamp, ')');
+		mout.debug("Considering ", srcDSEntry.second, " (", srcDSEntry.first, ')');
 
-		sweepMap::const_iterator eit = dstPaths.find(timestamp);
+		bool FOUND = false; // CLUMSY!
+
+		for (const auto & dstDSEntry: dstPaths){
+
+			if (dstDSEntry.first == srcDSEntry.first){ // timestamp
+
+				FOUND = true;
+
+				Hi5Tree & dstDataSet = dstRoot(dstDSEntry.second);
+
+				mout.note("Combining datasets having the same key (timestamp ", srcDSEntry.first, "): src:",
+						srcDSEntry.second, " => dst:", dstDSEntry.second); //"("<< eit->first << ")" << mout.endl;
+
+				typedef std::map<std::string, ODIMPathElem> quantity_map;
+
+				// CONFLICT!? Or ok with ODIMPathElem::DATA to use
+				quantity_map srcQuantityElems;
+				DataSelector::getChildren(srcDataSet, srcQuantityElems, ODIMPathElem::DATA);  // consider children
+
+				quantity_map dstQuantityElems;
+				DataSelector::getChildren(dstDataSet, dstQuantityElems, ODIMPathElem::DATA);
+
+				/// traverse DATA QUANTITIES assigning each to new / existing dstPaths in current structure.
+				for (const auto & srcEntry: srcQuantityElems) {
+
+					// NEW
+					if ((srcEntry.first == "QIND") || (srcEntry.first == "CLASS")){
+						mout.note("Quality field [", srcEntry.first, "] @", srcEntry.first, " treated separately");
+						// continue; // handled separately, see futher below
+					}
+					else {
+						updateDataNEW(srcDataSet[srcEntry.second], srcEntry.first, dstDataSet, dstQuantityElems);
+					}
+
+				}
+
+				// Update dataset quantities
+				updateQuality(srcDataSet, dstDataSet);
+
+			}
+
+		}
+
+		if (!FOUND){
+			ODIMPathElem child(ODIMPathElem::DATASET);
+			DataSelector::getNextChild(dstRoot, child);
+			mout.info("New key (timestamp ", srcDSEntry.first, "), appending to path=", child);
+			// Create empty dstRoot[path] and swap it...
+			Hi5Tree & dstDataSet = dstRoot[child];
+			dstDataSet.swap(srcDataSet);
+		}
+
+
+
+		/*
+
+		sweepMap::const_iterator eit = dstPaths.find(srcDSEntry.first);
 
 		if (eit == dstPaths.end()){ // New timestamp, add this \c dataset directly.
 
 			ODIMPathElem child(ODIMPathElem::DATASET);
 			DataSelector::getNextChild(dstRoot, child);
-			mout.info() << "New timestamp (" << timestamp << "), appending to path=" << child << mout.endl;
+			mout.info() << "New timestamp (" << srcDSEntry.first << "), appending to path=" << child << mout.endl;
 			// Create empty dstRoot[path] and swap it...
 			Hi5Tree & dstDataSet = dstRoot[child];
 			dstDataSet.swap(srcDataSet);
 		}
 		else { // timestamp is found in dstRoot.
 
-			static const DataSelector dataSelector;
+			static const DataSelector dataSelector; // ?? Needed init?
 
 			const ODIMPath & dstDataSetPath = eit->second;
-
-			mout.note("Combining datasets having the same timestamp (", timestamp, "): src:", srcDataSetPath, " => dst:", dstDataSetPath); //"("<< eit->first << ")" << mout.endl;
 
 			Hi5Tree & dstDataSet = dstRoot(dstDataSetPath);
 
 			typedef std::map<std::string, ODIMPathElem> quantity_map;
 
+
+			mout.note("Combining datasets having the same  (timestamp ", srcDSEntry.first, "): src:", srcDSEntry.second, " => dst:", dstDataSetPath); //"("<< eit->first << ")" << mout.endl;
+
 			// CONFLICT!? Or ok with ODIMPathElem::DATA to use
-			quantity_map srcQuantityPaths;
-			DataSelector::getChildren(srcDataSet, srcQuantityPaths, ODIMPathElem::DATA);  // consider children
+			quantity_map srcQuantityElems;
+			DataSelector::getChildren(srcDataSet, srcQuantityElems, ODIMPathElem::DATA);  // consider children
 
-			quantity_map dstQuantityPaths;
-			DataSelector::getChildren(dstDataSet, dstQuantityPaths, ODIMPathElem::DATA);
+			quantity_map dstQuantityElems;
+			DataSelector::getChildren(dstDataSet, dstQuantityElems, ODIMPathElem::DATA);
 
-			/// Traverse quantities, assigning each to new / existing dstPaths in current structure.
-			for (quantity_map::const_iterator qit = srcQuantityPaths.begin(); qit != srcQuantityPaths.end(); ++qit) {
+			/// traverse DATA QUANTITIES assigning each to new / existing dstPaths in current structure.
+			for (const auto & entry: srcQuantityElems) {
 
-				const std::string & quantity  = qit->first; // DBZH, or QIND or CLASS
-				const ODIMPathElem & srcChild = qit->second;  //srcPath.back();
-				Hi5Tree & srcData = srcDataSet[srcChild];
+				const std::string & quantity  = entry.first; // qit-> // DBZH, or QIND or CLASS
+				const ODIMPathElem & srcElem = entry.second;  //srcPath.back();
+				Hi5Tree & srcData = srcDataSet[srcElem];
 
-				quantity_map::const_iterator dit = dstQuantityPaths.find(quantity);
-				if (dit == dstQuantityPaths.end()){
-					//mout.debug() << "New quantity, adapt the full data group (with or without quality)" << mout.endl;
-					ODIMPathElem dstChild(ODIMPathElem::DATA);
-					DataSelector::getNextChild(dstDataSet, dstChild);
-					mout.note("Add new quantity ",  quantity, " => ", dstDataSetPath, '|', dstChild);
-					Hi5Tree & dstData = dstDataSet[dstChild];
-					srcData.swap(dstData);
-					//continue;
+				// NEW
+				if ((quantity == "QIND") || (quantity == "CLASS")){
+					continue; // handled separately, see futher below
 				}
-				else {
-					mout.note("Quantity [", quantity, "] already exists in ", dstDataSetPath, '|', dit->second);  // "updating its quality"
-					Hi5Tree & dstData = dstDataSet[dit->second];
-					// DO not copy data, but quality
-					// if (srcData.has... quality?)
-					updateQuality(srcData, dstData);
+
+				// NEW: clumsy search.
+				for (const auto & dstEntry: dstQuantityElems) {
+					const std::string  & dstQuantity  = dstEntry.first; // qit-> // DBZH, or QIND or CLASS
+					const ODIMPathElem & dstElem      = dstEntry.second;
+
+
+					if (quantity == dstQuantity){
+						mout.note("Quantity [", quantity, "] already exists in dst: ", dstElem);
+						// Note: QIND and CLASS ruled out above
+						updateQuality(srcData, dstDataSet[dstElem]);
+						continue;
+					}
 				}
+
+				// WRONG! continue goes on here, "return" would be correct
+
+				ODIMPathElem dstChild(ODIMPathElem::DATA);
+				DataSelector::getNextChild(dstDataSet, dstChild);
+				mout.note("Add new quantity ",  quantity, " => ", dstDataSetPath, '|', dstChild);
+				Hi5Tree & dstData = dstDataSet[dstChild];
+				srcData.swap(dstData);
 
 			}
+
 
 			// Update dataset quantities
 			updateQuality(srcDataSet, dstDataSet);
 
 		}
-
+		 */
 
 		// }
 

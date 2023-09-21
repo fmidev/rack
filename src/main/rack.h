@@ -34,12 +34,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK__ "Rack_fmi.fi"
 #define __RACK_VERSION__ "7.62"
 
-/**
+/**  Coming up:
+ *   Version 7.62
+ *   -- Standard palettes (DBZH, VRAD, ...) included directly as C++ code in ./palette
+ *
  *   Version 7.61
  *   -- Bug fix: qualityCombiner
  *
  *   Version 7.6
- *   -- qualityCombiner supports explicit class index
  *   -- Palette supports initializer_list
  *
  *   Version 7.53

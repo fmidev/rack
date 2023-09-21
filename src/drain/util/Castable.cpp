@@ -122,6 +122,7 @@ std::string Castable::toStr() const {
 	//return caster.get<std::string>(ptr);
 }
 
+/*
 void Castable::toJSONold(std::ostream & ostr, char fill, int verbosity) const {
 
 	ostr << '{' << fill << " \"value\": ";
@@ -154,26 +155,8 @@ void Castable::toJSONold(std::ostream & ostr, char fill, int verbosity) const {
 std::ostream & Castable::valueToJSONold(std::ostream & ostr) const {
 
 	return Sprinter::toStream(ostr, *this, Sprinter::plainLayout);
-	/*
-	if ((getType() == typeid(char)) || isStlString()){
-		ostr << '"';
-		Sprinter::toStream(ostr, *this, Sprinter::plainLayout);
-		toStream(ostr, ','); // use JSONtree separator
-		ostr << '"';
-	}
-	else {
-		if (getElementCount() != 1){
-			ostr << '[';
-			toStream(ostr); // why comma not explicit? ...
-			ostr << ']';
-		}
-		else
-			toStream(ostr, ',');  // ... but here
-	}
-	return ostr;
-	*/
 }
-
+*/
 
 void Castable::typeInfo(std::ostream & ostr) const {
 	ostr << '[';

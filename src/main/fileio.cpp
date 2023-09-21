@@ -271,24 +271,26 @@ void CmdOutputFile::exec() const {
 	// mout.attention(ctx.getName());
 	// mout.warn("ctx.select=", ctx.select);
 
+	/*
 	if (value.empty()){
 		mout.error() << "File name missing. (Use '-' for stdout.)" << mout.endl;
 		return;
 	}
+	*/
 
 	if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR)){
-		mout.warn() << "input failed, skipping" << mout.endl;
+		mout.warn("input failed, skipping");
 		return;
 	}
 
 	if (ctx.statusFlags.isSet(drain::StatusFlags::DATA_ERROR)){
-		mout.warn() << "data error, skipping" << mout.endl;
+		mout.warn("data error, skipping");
 		return;
 	}
 
 	std::string filename;
 
-	const bool STD_OUTPUT = (value == "-");
+	const bool STD_OUTPUT = value.empty() || (value == "-");
 
 	if (STD_OUTPUT){
 		filename = "-";
@@ -318,7 +320,7 @@ void CmdOutputFile::exec() const {
 		if (NO_EXTENSION){
 			mout.discouraged("No file extension! Assuming HDF5...");
 		}
-		mout.info() << "File format: HDF5" << mout.endl;
+		mout.info("File format: HDF5");
 		src.data.attributes["Conventions"] = "ODIM_H5/V2_2"; // CHECK
 		hi5::Writer::writeFile(filename, src); //*ctx.currentHi5);
 		// ctx.outputPrefix + value
@@ -407,7 +409,7 @@ void CmdOutputFile::exec() const {
 	else if (path.extension == "TRE"){
 
 		drain::Output output(path.str());
-		drain::TreeUtils::dump<Hi5Tree,true>(src, output, dataToStream);
+		drain::TreeUtils::dump<Hi5Tree,true>(src, output, DataTools::dataToStream);
 	}
 	else {
 
@@ -418,7 +420,7 @@ void CmdOutputFile::exec() const {
 
 		if (ctx.formatStr.empty()){
 
-			if (textFileExtension.test(filename) || (value == "-")){
+			if (textFileExtension.test(filename) || STD_OUTPUT){ // (value == "-")){
 				mout.info("Dumping HDF5 structure");
 			}
 			else {
@@ -481,7 +483,7 @@ void CmdOutputTree::exec() const {
 
 	drain::Output output(filename);
 	//Hi5Tree & src =
-	drain::TreeUtils::dump(ctx.getHi5(RackContext::CURRENT), output, dataToStream);
+	drain::TreeUtils::dump(ctx.getHi5(RackContext::CURRENT), output, DataTools::dataToStream);
 
 
 }

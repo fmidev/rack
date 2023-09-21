@@ -40,6 +40,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 //#include <set>
 
+// #include "Sprinter.h"
+
 
 namespace drain {
 
@@ -385,7 +387,6 @@ template <class T, size_t N>
 std::ostream & operator<<(std::ostream & ostr, const UniTuple<T,N> & tuple){
 	return tuple.toStream(ostr);
 }
-
 
 
 

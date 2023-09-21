@@ -79,9 +79,12 @@ public:
 	/// For enumerating keys. @see getKeys().
 	typedef std::set<K> key_set_t;
 
-
 	struct bank_id {
 	};
+
+	virtual inline
+	~Bank(){
+	}
 
 	template <class D>
 	static
@@ -301,7 +304,11 @@ std::ostream & operator<<(std::ostream & ostr, const Bank<T> & bank) {
 	return ostr;
 }
 
-// WIth brief support
+/// A Bank with additional support for brief, single char keys.
+/**
+ *   Consider a command like "--outputFile" abbreviated "-o".
+ *
+ */
 template <class T>
 class BankSuper : public Bank<T, std::string>  {
 
