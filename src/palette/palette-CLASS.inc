@@ -14,6 +14,7 @@
   {      58.0, {"Chaff", {128.0,255.0,144.0}} },
   {      60.0, {"32+16+8+4", "Insect", {144.0,255.0,0.0}} },
   {      64.0, {"LOCATED non-met 64 - 127 -------------------", "Clutter", {255.0,224.0,24.0}} },
+  {      74.0, {"joku.uusi.luokka.wind_turbine", "Wind turbine", {255.0,192.0,12.0}} },
   {      84.0, {"64 + 4+0+16 (peaklike fixed artefact)", "Mast", {255.0,170.0,0.0}} },
   {      92.0, {"64 + 4+8+16 (peaklike moving artefact)", "Vehicle", {255.0,96.0,0.0}} },
   {      96.0, {"32+64 LIVE+ACTIVE < 48+64 = BIOMET+ACTIVE", "Bird", {255.0,32.0,0.0}} },

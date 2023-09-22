@@ -549,7 +549,34 @@ bool DataSelector::getChildren(const Hi5Tree & tree, std::map<std::string,ODIMPa
 	return !children.empty();
 }
 
+void DataSelector::swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree & dst){
 
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	// mout.warn("Swapping!");
+	mout.attention("Swapping: src:", srcElem, "...");
+	swapData(src[srcElem], dst, srcElem.getType());
+
+	/*
+	//mout.debug("Swapping subtree of type: ", srcElem.getType());
+	ODIMPathElem dstElem(srcElem.getType());
+	DataSelector::getNextChild(dst, dstElem);
+	mout.attention("Swapping src:", srcElem, ") <=> dst:", dstElem);
+	// Create empty dstRoot[path] and swap it...
+	dst[dstElem].swap(src[srcElem]);
+	*/
+}
+
+void DataSelector::swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::group_t groupType){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+
+	ODIMPathElem dstElem(groupType);
+	DataSelector::getNextChild(dst, dstElem);
+	mout.attention("Swapping: ... dst:", dstElem);
+	// Create empty dstRoot[path] and swap it...
+	dst[dstElem].swap(srcGroup);
+
+}
 
 
 

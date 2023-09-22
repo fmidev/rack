@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.62"
+#define __RACK_VERSION__ "7.7"
 
-/**  Coming up:
+/**
+ *   Version 7.7
+ *   -- Revised & fixed combining of input quality fields
+ *
  *   Version 7.62
  *   -- Standard palettes (DBZH, VRAD, ...) included directly as C++ code in ./palette
  *

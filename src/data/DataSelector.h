@@ -297,6 +297,22 @@ public:
 	 */
 	void getPathsByTime(const  Hi5Tree  &  src, std::map<std::string,ODIMPath> & paths) const;
 
+	/// Swap branches such that dst gets a /dataset or /data with a new index.
+	/**
+	 *  Contents of \c src[srcElem] will be swapped with \c dst[dstElem] such that dstElem has an index greater than any index prior to the operation.
+	 *
+	 *  After the operation \c src[srcElem] contains an empty object that was created under \c dst for swapping.
+	 *
+	 *  Stylistic note: semantically this should belong to DataTools, but essentially calls getNextChild() hence is kept here.
+	 *  Also, DataTools stays independent from DataSelector.
+	 */
+	static
+	void swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree & dst);
+
+	/// Like swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree & dst), but src already at the level.
+	static
+	void swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::group_t groupType);
+
 
 protected:
 

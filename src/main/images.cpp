@@ -861,6 +861,16 @@ public:
 		parameters.copyStruct(cmd.getParameters(), cmd, *this);
 	};
 
+	void reset(){
+		key = list;
+		code.clear();
+		lenient = true;
+
+	}
+
+	mutable
+	drain::image::PaletteEntry paletteEntry;
+
 	std::string key;
 	std::string code;
 	bool lenient;

@@ -37,8 +37,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/image/Image.h"
 #include "drain/image/ImageFrame.h"
+#include "drain/imageops/PaletteOp.h"
 #include "drain/util/Log.h"
 #include "drain/util/SmartMap.h"
+#include "drain/util/Sprinter.h"
 #include "drain/util/TreeOrdered.h"
 #include "drain/util/Variable.h"
 
@@ -146,7 +148,7 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 
 
 	if (dstClass.data.isEmpty()){
-		mout.note() << "Creating CLASS data" << mout.endl;
+		mout.note("Creating CLASS data");
 		getQuantityMap().setQuantityDefaults(dstClass, "CLASS");
 		dstClass.data.setGeometry(srcProb.getGeometry());
 		// dstClass.fill(0);
@@ -156,20 +158,19 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 	drain::VariableMap & classWhat = dstClass.getWhat();
 	std::stringstream sstr;
 
-	//const classdict_t & dict = getClassDict();
+	mout.attention("str legend revised");
+	sstr << index << ':' << label;
+	/*
 	const classdict_t & dict = getClassPalette().dictionary;
 	mout.debug2() <<  index << ':' << dict.getValue(index) << '/' << label << mout.endl;
+//#include "drain/util/SmartMap.h"
 
 	sstr << index << ':' << dict.getValue(index);
+	*/
 	classWhat["legend"] << sstr.str();
 
-	mout.debug() << "Updating QIND and CLASS data" << mout.endl;
 
-	Image::const_iterator  it = srcProb.begin();
-	Image::iterator pit = dstQind.data.begin();
-	Image::iterator cit = dstClass.data.begin();
-
-	mout.debug() << "srcProb: " << srcProb << mout;
+	mout.debug("srcProb: ", srcProb);
 	//mout.special() << '\t' << dstQind.odim.scaleForward(i)  << mout;
 	//mout.special() << '\t' << dstClass.odim.scaleForward(i) << mout;
 
@@ -178,14 +179,21 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 		mout.special() << i << mout;
 		//mout.special() << '\t' << srcProb.odim.scaleForward(i)  << mout;
 		mout.special() << '\t' << srcProb.getConf().fwd(i) << mout;
-		mout.special() << '\t' << dstQind.odim.scaleForward(i)  << mout;
+		mout.special() << '\t' << dstQind#include "drain/util/SmartMap.h"
+		.odim.scaleForward(i)  << mout;
 		mout.special() << '\t' << dstClass.odim.scaleForward(i) << mout;
 	}
 	*/
 
-	/// Probability of anomaly
-	/// Quality = 1-Probability
 
+	mout.debug("Updating QIND and CLASS data");
+
+	Image::const_iterator  it = srcProb.begin();
+	Image::iterator pit = dstQind.data.begin();
+	Image::iterator cit = dstClass.data.begin();
+
+	// Probability of anomaly
+	// Quality = 1-Probability
 	// Yes, quality is *decreased* here.
 
 	const drain::ValueScaling & srcScale = srcProb.getConf();
@@ -392,7 +400,17 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 	for (const auto & entry: srcDataSet.getQuality()){
 		if ((entry.first != "QIND") && (entry.first != "CLASS")){
 			mout.experimental("quality information [", entry.first, "] added here / elangle=", entry.second.odim.elangle);
-			updateOverallDetection(entry.second.data, dstQIND, dstCLASS, entry.first, (short unsigned int)123);
+			//double marker = drain::image::PaletteOp::ge
+			try {
+				drain::image::Palette & palette = drain::image::PaletteOp::getPalette("CLASS");
+				drain::image::Palette::value_type & legendEntry = palette.getEntryByCode(entry.first, true);
+				// double marker = palette.getValueByCode(entry.first, true);
+				mout.attention("found palette entry: ", sprinter(legendEntry.second, drain::Sprinter::jsonLayout));
+				//updateOverallDetection(entry.second.data, dstQIND, dstCLASS, entry.first, (short unsigned int)123);
+				updateOverallDetection(entry.second.data, dstQIND, dstCLASS, entry.first, legendEntry.first);
+			} catch (const std::exception & e) {
+				mout.fail("Could not retrieve code (palette/legend entry) for [", entry.first, "]");
+			}
 		}
 	}
 

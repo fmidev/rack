@@ -104,6 +104,8 @@ protected:
 	typedef std::map<std::string, ODIMPathElem> quantity_map;
 
 	void updateDataNEW(Hi5Tree & srcData, const std::string & srcKey, Hi5Tree & dstDataSet, const quantity_map & dstQuantityElems) const ;
+	// void updateDataNEW(Hi5Tree & srcData, const ODIMPathElem & srcElem, Hi5Tree & dstDataSet, const quantity_map & dstQuantityElems) const ;
+
 
 	void updateQuality(Hi5Tree & srcData, Hi5Tree & dstData) const;
 

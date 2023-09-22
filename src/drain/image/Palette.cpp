@@ -107,21 +107,21 @@ void Palette::addEntry(double min, double red, double green, double blue, const 
 
 }
 
-Palette::key_type Palette::getValueByCode(const std::string & code, bool lenient){
+Palette::value_type & Palette::getEntryByCode(const std::string & code, bool lenient){
 
 	Logger mout(__FUNCTION__, __FILE__);
 
-	for (const auto & entry: *this){
+	for (auto & entry: *this){
 		if (entry.second.code == code){
-			return entry.first;
+			return entry;
 		}
 	}
 
 	if (!lenient){
-		mout.advice("Use lenient=true if partial string matching ok");
-		mout.error(": could not find code: '", code, "' (with exact match)");
+		mout.advice("Use lenient=true if partial string sufficient");
+		mout.error("could not find code: '", code, "' (with exact match)");
 		//throw std::runtime_error(drain::StringBuilder(__FILE__, __FUNCTION__, ": could not find code: ", code));
-		return NAN;
+		//return NAN;
 	}
 
 	std::string code_lc(code);
@@ -131,43 +131,45 @@ Palette::key_type Palette::getValueByCode(const std::string & code, bool lenient
 	}
 
 	if (code_lc != code){
-		mout.experimental("matching failed with '", code, "', trying with lowercase: '", code_lc, "'");
-		for (const auto & entry: *this){
+		mout.debug("matching failed with '", code, "', trying with lowercase: '", code_lc, "'");
+		for (auto & entry: *this){
 			if (entry.second.code == code_lc){
-				return entry.first;
+				mout.experimental("matched with lowercase: '", code_lc, "' <-> '", code, "'");
+				return entry;
 			}
 		}
-		mout.experimental("trying substring matching with '", code_lc, "'");
+		mout.debug("continuing substring matching with (lowercase) '", code_lc, "'");
 	}
 
 
-	for (const auto & entry: *this){
+	for (auto & entry: *this){
 		// mout.experimental("starts with '", code_lc, "' ?");
 		if (entry.second.code.find(code_lc) == 0){
 			mout.experimental("'", entry.second.code, "' starts with '", code_lc, "'");
-			return entry.first;
+			return entry;
 		}
 	}
 
 	size_t length = code_lc.length();
-	for (const auto & entry: *this){
+	for (auto & entry: *this){
 		size_t i = entry.second.code.rfind(code_lc);
 		if ((i != std::string::npos) && (i != (entry.second.code.length()-length))){
 			mout.experimental("'", entry.second.code, "' ends with '", code_lc, "', i=", i);
-			return entry.first;
+			return entry;
 		}
 	}
 
-	for (const auto & entry: *this){
+	for (auto & entry: *this){
 		size_t i = std::string::npos;
 		if ((i=entry.second.code.find(code_lc)) != std::string::npos){
 			mout.experimental("'", entry.second.code, "' contains '", code_lc, "' starting at pos(", i, ")");
-			return entry.first;
+			return entry;
 		}
 	}
 
 	mout.error("could not find code '", code_lc, "' with flexible (substring) matching");
 
+	/*
 	// if extra lenient...
 	static int counter = 0;
 	key_type min = static_cast<double>(++counter);
@@ -175,6 +177,11 @@ Palette::key_type Palette::getValueByCode(const std::string & code, bool lenient
 	(*this)[min].code = code;
 
 	return min;
+	*/
+	static
+	value_type dummy;
+
+	return dummy;
 }
 
 void Palette::reset(){

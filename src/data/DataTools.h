@@ -88,7 +88,6 @@ public:
 	void getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & path, M & attributes, bool updateOnly = false);
 
 
-
 	/// Copies values of \c what , \c where and \c how attributes to internal attributes down to \c data[n] groups.
 	/**
 	 *  Traverses the data tree, updates the data (image) attributes along the path down to \c data[n] level;
