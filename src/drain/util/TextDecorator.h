@@ -48,6 +48,11 @@ namespace drain
  */
 class TextDecorator {
 
+protected:
+
+	// input sep
+	std::string separator;
+
 public:
 
 	//enum Colour {NONE=0, DEFAULT=1, BLACK=2, GRAY=4, RED=8, GREEN=16, YELLOW=32, BLUE=64, PURPLE=128, CYAN=256, WHITE=512};
@@ -73,8 +78,34 @@ public:
 	LineFlag    line;
 	//std::map<std::type_info,size_t> state;
 
-	TextDecorator(){
-		reset();
+	inline
+	TextDecorator() : separator(","), color(NO_COLOR){
+		reset(); // ??
+	}
+
+	inline
+	TextDecorator(const TextDecorator & deco) :separator(deco.separator), color(deco.color), style(deco.style), line(deco.line){
+		reset(); // ??
+	}
+
+	inline
+	~TextDecorator(){
+		//reset(); ???
+	}
+
+	virtual inline
+	std::ostream & begin(std::ostream & ostr) const {
+		return ostr;
+	}
+
+	virtual inline
+	std::ostream & end(std::ostream & ostr) const {
+		return ostr;
+	}
+
+	inline
+	void setSeparator(const std::string & separator){
+		this->separator = separator;
 	}
 
 	//std::list<>
@@ -86,61 +117,96 @@ public:
 
 	template<typename T, typename ... TT>
 	void set(T arg, const TT &... args) {
-		//style.set()
-		//state[typeid(T)] = arg;
-		//std::cout << arg << '\n';
-		add(arg);
-		set(args...);
+		//set(arg);
+		reset();
+		add(arg, args...);
 	};
 
-
-	void set(const std::string & key){
+	/// Sets given keys
+	/*
+	template<typename ... TT>
+	void set(const std::string & keys, const TT &... args){
 		reset();
-
+		addKeys(keys);
+		add(args...);
 	}
+	*/
 
+	/// Adds separated keys. Essentially a string arg handler.
 	/**
-	 *  Note: Uses add() and set()
 	 *  Note: separate if's: accept DEFAULT and NONE - ?
 	 */
-	void add(const std::string & key){
-
-		std::list<std::string> l;
-		drain::StringTools::split(key, l, ",");
-		for (const std::string & k: l){
-			std::cout << "  +" << k << '\n';
-			addKey(k);
-		}
-
-
+	template<typename ... TT>
+	inline
+	void add(const std::string & keys, const TT &... args){
+		// std::cout << "Handling1: " << keys << '\n';
+		addKeys(keys); // string handler
+		add(args...);
 	}
 
+	/// Second case of strings...
+	template<typename ... TT>
+	inline
+	void add(const char *keys, const TT &... args){
+		// std::cout << "Handling2: " << keys << '\n';
+		addKeys(keys); // string handler
+		add(args...);
+	}
+
+	/// Third case of strings...
+	template<typename ... TT>
+	inline
+	void add(char *keys, const TT &... args){
+		// std::cout << "Handling3: " << keys << '\n';
+		addKeys(keys); // string handler
+		add(args...);
+	}
+
+	/// Adds several keys
+	template<typename T, typename ... TT>
+	void add(T arg, const TT &... args) {
+		// std::cout << "Adding:" << arg << ':' << typeid(arg).name() << '\n';
+		add(arg);
+		add(args...);
+	};
+
+	/// Change the current color setting.
+	inline
 	void add(Colour c){
 		color.set(c);
 	}
 
+	/// Change the current line setting.
+	inline
 	void add(Line l){
 		line.set(l);
 	}
 
+	/// Change the current current style setting.
+	inline
 	void add(Style s){
 		style.add(s);
 	}
 
 
-	void set(){
-		//str = criterion.str() + separator + operation.str();
-	}
 
 
-	void debug(std::ostream & ostr) const ;
+	void debug(std::ostream & ostr) const;
 
 	//std::string str;
 
 protected:
 
+
+	inline
+	void set(){}; // could be reset? No! This is the last one called..
+
+	inline
+	void add(){};
+
 	void addKey(const std::string & key);
 
+	void addKeys(const std::string & keys);
 
 };
 

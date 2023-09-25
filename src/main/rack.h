@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *   -- Revised & fixed combining of input quality fields
  *
  *   Version 7.62
- *   -- Standard palettes (DBZH, VRAD, ...) included directly as C++ code in ./palette
+ *   -- Default palettes for the most common quantities (DBZH, VRAD, ...) are included directly as C++ code, from ./palette
  *
  *   Version 7.61
  *   -- Bug fix: qualityCombiner

@@ -111,6 +111,39 @@ public:
 
 	void exec() const;
 
+	/// Tree attribute formatter
+	/**
+	 *  Applied by drain::TreeUtils::dump()
+	 *
+	 *  \return – true, if data is empty, ie. no attributes or data array.
+	 */
+	static
+	bool dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr);
+
+};
+
+// Tree and Dot
+class CmdOutputTreeConf : public drain::BasicCommand {
+
+public:
+
+	inline
+	CmdOutputTreeConf() : drain::BasicCommand(__FUNCTION__, "Configure output format of tree structures.") {
+	};
+
+	void exec() const;
+
+
+	static inline // std::list<std::string>
+	std::map<std::string,std::string> & getAttributes(){
+		return attributes;
+	}
+
+protected:
+
+	static // std::list<std::string>
+	std::map<std::string,std::string> attributes;
+
 };
 
 class FileModule : public drain::CommandModule<> { // : public drain::CommandGroup {

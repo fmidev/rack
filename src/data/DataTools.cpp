@@ -164,7 +164,6 @@ void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::Coordi
 /// For drain::TreeUtils dumper()
 /**
  *  \return – true, if data "empty", ie. no attributes or data array.
- */
 bool DataTools::dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr){
 
 	bool empty = true;
@@ -193,6 +192,7 @@ bool DataTools::dataToStream(const Hi5Tree::node_data_t & data, std::ostream &os
 	return empty;
 
 }
+ */
 
 
 

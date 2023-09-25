@@ -256,16 +256,17 @@ void CmdOutputFile::writeDotGraph(const Hi5Tree & src, const std::string & filen
 
 	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
+	mout.unimplemented("Attribute selection, like in --outputTree");
+
 	int index = 0;
 
-	drain::Output ofstr(filename);
+	drain::Output output(filename);
 
-	std::ostream & ostr = ofstr;
+	std::ostream & ostr = output;
 
 	ostr << "digraph G { \n";
-	ostr << "/* selector=" << selector << " */  \n";
-
-	writeGroupToDot(ostr, src, index, selector);
+	ostr << "/* selector=" << selector << " */  \n"; // consider escaping
+	writeGroupToDot(output, src, index, selector);
 	ostr << "}\n";
 
 }

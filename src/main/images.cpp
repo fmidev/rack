@@ -862,7 +862,7 @@ public:
 	};
 
 	void reset(){
-		key = list;
+		key = "list";
 		code.clear();
 		lenient = true;
 

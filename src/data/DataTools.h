@@ -120,8 +120,8 @@ public:
 	void updateCoordinatePolicy(Hi5Tree & src, const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(drain::image::CoordinatePolicy::LIMIT));
 	//void updateCoordinatePolicy(Hi5Tree & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
 
-	static
-	bool dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr);
+//	static
+//	bool dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr);
 
 	typedef std::map<std::string, ODIMPathElem> quantity_map;
 

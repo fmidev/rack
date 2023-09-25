@@ -75,6 +75,53 @@ const drain::FlaggerDict drain::EnumDict<TextDecorator::Line>::dict = {
 };
 
 
+
+
+/**
+ *
+ *
+ *
+ */
+void TextDecorator::addKeys(const std::string & key){
+
+	std::list<std::string> l;
+	//drain::StringTools::split(key, l, ",");
+	drain::StringTools::split(key, l, separator);
+	for (const std::string & k: l){
+		// std::cout << "  +" << k << '\n';
+		addKey(k);
+	}
+
+}
+
+/** Assumes \c key is a key (ie. "resolved", no string splitting needed)
+ *
+ */
+void TextDecorator::addKey(const std::string & key){
+	if (key.empty()){
+		return;
+	}
+	if (style.getDict().hasKey(key)){
+		style.add(key);
+		return;
+	}
+	if (color.getDict().hasKey(key)){
+		color.set(key);
+		return;
+	}
+	if (line.getDict().hasKey(key)){
+		line.set(key);
+		return;
+	}
+	throw std::runtime_error(drain::StringBuilder(__FILE__, '/', __FUNCTION__, ": no such key: ", key));
+	return;
+}
+
+/**
+ *
+ *
+ *
+ */
 void TextDecorator::debug(std::ostream & ostr) const {
 	style.debug(ostr);
 	ostr << '\n';
@@ -83,24 +130,6 @@ void TextDecorator::debug(std::ostream & ostr) const {
 	line.debug(ostr);
 	ostr << '\n';
 }
-
-void TextDecorator::addKey(const std::string & key){
-	if (style.getDict().hasKey(key)){
-		style.add(key);
-	}
-	if (color.getDict().hasKey(key)){
-		color.set(key);
-	}
-	if (line.getDict().hasKey(key)){
-		line.set(key);
-	}
-}
-
-/**
- *
- *
- *
- */
 
 
 // void TextDecorator::

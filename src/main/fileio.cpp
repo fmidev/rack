@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Output.h"
 #include "drain/util/StringMapper.h"
 #include "drain/util/TreeOrdered.h"
+#include "drain/util/TextDecorator.h"
 #include "drain/util/Variable.h"
 #include "drain/image/FilePng.h"
 #include "drain/image/FilePnm.h"
@@ -407,9 +408,9 @@ void CmdOutputFile::exec() const {
 		drain::TreeUtils::dump(src, output);
 	}
 	else if (path.extension == "TRE"){
-
+		mout.advice("Use dedicated --outputTree to apply formatting");
 		drain::Output output(path.str());
-		drain::TreeUtils::dump<Hi5Tree,true>(src, output, DataTools::dataToStream);
+		drain::TreeUtils::dump<Hi5Tree,true>(src, output, CmdOutputTree::dataToStream);
 	}
 	else {
 
@@ -483,11 +484,119 @@ void CmdOutputTree::exec() const {
 
 	drain::Output output(filename);
 	//Hi5Tree & src =
-	drain::TreeUtils::dump(ctx.getHi5(RackContext::CURRENT), output, DataTools::dataToStream);
+	drain::TreeUtils::dump(ctx.getHi5(RackContext::CURRENT), output, CmdOutputTree::dataToStream);
 
 
 }
 
+//std::list<std::string> CmdOutputTreeConf::attributeList = {"quantity", "date", "time", "src", "elangle", "task_args", "legend"};
+std::map<std::string,std::string> CmdOutputTreeConf::attributes =
+	{{"quantity","GREEN"}, {"date","RED:UNDERLINE"}, {"time",""}, {"src",""}, {"elangle",""}, {"task_args",""}, { "legend",""} };
+
+
+class TextDecoratorVt100 : public drain::TextDecorator {
+
+
+public:
+	/*
+	static
+	const std::map<drain::TextDecorator::Colour,int> colours = {
+			{drain::TextDecorator::Colour::GREEN, 32},
+			{drain::TextDecorator::Colour::RED, 30}
+	};
+	*/
+
+	virtual inline
+	~TextDecoratorVt100(){
+	}
+
+	static
+	int getColourCode(int colour){ // drain::TextDecorator::Colour colour
+		switch (colour) {
+		case RED:
+			return 31;
+			break;
+		case GREEN:
+			return 32;
+			break;
+		case BLUE:
+			return 33;
+			break;
+		default:
+			return 31;
+			break;
+		}
+	}
+
+	virtual inline
+	std::ostream & begin(std::ostream & ostr) const {
+		//
+		if (color){
+			ostr << "color: ";
+		}
+			if (color){
+				ostr << "\033[1;";
+				//ostr << 43 << ';';
+				ostr << getColourCode(color.value); //  << 'm';
+			}
+			if (style){
+				ostr << "STYLE" << style << ' ';
+			}
+			ostr << 'm'; //  << "\]";
+		// }
+		return ostr;
+	}
+
+	virtual inline
+	std::ostream & end(std::ostream & ostr) const {
+		ostr << "\033[0m";
+		return ostr;
+	}
+
+};
+
+bool CmdOutputTree::dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr){
+
+	// Shared TextDecorator!
+	// RackContext & ctx = getResources().getContext<RackContext>();
+
+	// drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+	//mout.unimplemented("Future option... ");
+
+	bool empty = true;
+
+	const drain::image::ImageFrame & img = data.dataSet;
+	if (!img.isEmpty()){
+		ostr << img.getWidth() << ',' << img.getHeight() << ' ';
+		ostr << drain::Type::call<drain::compactName>(img.getType());
+		ostr << '[' << (8*drain::Type::call<drain::sizeGetter>(img.getType())) << ']';
+		//<< drain::Type::call<drain::complexName>(img.getType());
+		empty = false;
+	}
+	// else ...
+	char sep = 0;
+	//for (const auto & key: {"quantity", "date", "time", "src", "elangle", "task_args", "legend"}){
+	TextDecoratorVt100 decorator;
+	decorator.setSeparator(":");
+	for (const auto & entry: CmdOutputTreeConf::getAttributes()){
+		if (data.attributes.hasKey(entry.first)){
+			if (sep)
+				ostr << sep << ' ';
+			else
+				sep = ',';
+			decorator.set(entry.second);
+			decorator.begin(ostr);
+			ostr << entry.first << '=' << data.attributes[entry.first];
+			decorator.end(ostr);
+			//decorator.reset();
+			empty = false;
+		}
+	}
+
+	return empty;
+
+}
 
 class CmdOutputRawImages : public drain::SimpleCommand<std::string> {
 
@@ -500,7 +609,9 @@ public:
 
 	void exec() const {
 
-		RackContext & ctx  = getContext<RackContext>();
+
+		// Shared
+		RackContext & ctx = getContext<RackContext>();
 
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 		//mout.note() << "Writing multiple image files" << mout.endl;
