@@ -498,8 +498,9 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 		}
 
 		if (!FOUND){ // Adding new Data group
-			mout.attention("Adding new data: ", srcDSEntry.first, ":", srcDSEntry.second);
-			DataSelector::swapData(srcRoot, srcDSEntry.first, dstRoot);
+			mout.attention("Adding new data: ", srcDSEntry.first, " ~ ", srcDSEntry.second);
+			//DataSelector::swapData(srcRoot, srcDSEntry.first, dstRoot);
+			DataSelector::swapData(srcRoot, srcDSEntry.second.back(), dstRoot);
 			/*
 			ODIMPathElem child(ODIMPathElem::DATASET);
 			DataSelector::getNextChild(dstRoot, child);

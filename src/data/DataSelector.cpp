@@ -551,9 +551,12 @@ bool DataSelector::getChildren(const Hi5Tree & tree, std::map<std::string,ODIMPa
 
 void DataSelector::swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree & dst){
 
+	//RackResources & resources = getResources();
+	// RackContext & ctx = getResources().getContext<RackContext>();
+
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	// mout.warn("Swapping!");
-	mout.attention("Swapping: src:", srcElem, "...");
+	mout.warn("Swapping: src: '", srcElem, "'...");
 	swapData(src[srcElem], dst, srcElem.getType());
 
 	/*
@@ -570,9 +573,9 @@ void DataSelector::swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::gro
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	ODIMPathElem dstElem(groupType);
+	ODIMPathElem dstElem(groupType, 1);
 	DataSelector::getNextChild(dst, dstElem);
-	mout.attention("Swapping: ... dst:", dstElem);
+	mout.attention("Swapping: ... dst:'", dstElem, "' group type: ", groupType);
 	// Create empty dstRoot[path] and swap it...
 	dst[dstElem].swap(srcGroup);
 
