@@ -68,6 +68,7 @@ public:
 
 	typedef drain::EnumFlagger<drain::SingleFlagger<Line> > LineFlag;
 
+
 	/// Read input stream until any char in \c endChars is encountered. The end char will not be included, but passed in input stream.
 	/**
 	 *
@@ -88,19 +89,26 @@ public:
 		reset(); // ??
 	}
 
-	inline
+	virtual inline
 	~TextDecorator(){
 		//reset(); ???
 	}
 
-	virtual inline
+	inline
 	std::ostream & begin(std::ostream & ostr) const {
-		return ostr;
+		return _begin(ostr);
 	}
 
-	virtual inline
+	inline
+	std::ostream & begin(std::ostream & ostr, const std::string & conf){
+		set(conf);
+		return _begin(ostr);
+	}
+
+
+	inline
 	std::ostream & end(std::ostream & ostr) const {
-		return ostr;
+		return _end(ostr);
 	}
 
 	inline
@@ -198,6 +206,16 @@ public:
 protected:
 
 
+	virtual inline
+	std::ostream & _begin(std::ostream & ostr) const {
+		return ostr;
+	}
+
+	virtual inline
+	std::ostream & _end(std::ostream & ostr) const {
+		return ostr;
+	}
+
 	inline
 	void set(){}; // could be reset? No! This is the last one called..
 
@@ -220,6 +238,128 @@ std::ostream & operator<<(std::ostream & ostr, const TextDecorator & decorator){
 	ostr << decorator.line  << '=' << decorator.line.getValue();
 	return ostr;
 }
+
+
+
+
+
+
+class TextDecoratorVt100 : public drain::TextDecorator {
+
+public:
+
+	typedef std::map<drain::TextDecorator::Colour,int> color_codemap_t;
+	typedef std::map<drain::TextDecorator::Style,int>  style_codemap_t;
+	typedef std::map<drain::TextDecorator::Line,int> line_codemap_t;
+
+	static
+	const color_codemap_t color_codemap;
+
+	static
+	const style_codemap_t style_codemap;
+
+	static
+	const line_codemap_t line_codemap;
+
+	virtual inline
+	~TextDecoratorVt100(){
+	}
+
+	template <class T>
+	static
+	const std::map<T,int> & getCodeMap();
+
+	template <class T>
+	static
+	int getIntCode(const T & enumCode){
+
+		typedef std::map<T,int> codemap_t;
+
+		const codemap_t & map = getCodeMap<T>();
+
+		typename codemap_t::const_iterator it = map.find(enumCode);
+		if (it != map.end()){
+			return it->second;
+		}
+		else {
+			throw std::runtime_error(drain::StringBuilder(__FILE__, '/', __FUNCTION__, ": no such enumCode: ", enumCode)); // TYPE!
+			return 0; // drain::TextDecorator::Colour::NO_COLOR;
+		}
+	}
+
+	/*
+	static inline
+	int getColourCode(drain::TextDecorator::Colour colour){ // drain::TextDecorator::Colour colour
+		color_codemap_t::const_iterator it = color_codemap.find(colour);
+		if (it != color_codemap.end()){
+			return it->second;
+		}
+		else {
+			throw std::runtime_error(drain::StringBuilder(__FILE__, '/', __FUNCTION__, ": no such colour: ", colour));
+			return drain::TextDecorator::Colour::NO_COLOR;
+		}
+	}
+
+	static inline
+	int getStyleCode(drain::TextDecorator::Style style){ // drain::TextDecorator::Colour colour
+		style_codemap_t::const_iterator it = style_codemap.find(style);
+		if (it != style_codemap.end()){
+			return it->second;
+		}
+		else {
+			throw std::runtime_error(drain::StringBuilder(__FILE__, '/', __FUNCTION__, ": no such colour: ", style));
+			return drain::TextDecorator::Style::NO_STYLE;
+		}
+	}
+
+	static inline
+	int getLineCode(drain::TextDecorator::Line line){ // drain::TextDecorator::Colour colour
+		line_codemap_t::const_iterator it = line_codemap.find(line);
+		if (it != line_codemap.end()){
+			return it->second;
+		}
+		else {
+			throw std::runtime_error(drain::StringBuilder(__FILE__, '/', __FUNCTION__, ": no such colour: ", line));
+			return drain::TextDecorator::Line::NO_LINE;
+		}
+	}
+	*/
+
+
+
+	virtual inline
+	std::ostream & _begin(std::ostream & ostr) const {
+
+		std::list<int> codes;
+
+		if (style)
+			codes.push_back(getIntCode<Colour>(color.value));
+
+		if (color)
+			codes.push_back(getIntCode<Colour>(color.value));
+
+		if (line)
+			codes.push_back(getIntCode<Colour>(color.value));
+
+		if (!codes.empty()){
+			ostr << "\033[";
+			ostr << drain::StringTools::join(codes,';'); // consider SprinterLayout(";");
+			ostr << 'm'; //  << "\]";
+		}
+
+		return ostr;
+	}
+
+	virtual inline
+	std::ostream & _end(std::ostream & ostr) const {
+		ostr << "\033[0m";
+		return ostr;
+	}
+
+};
+
+template <>
+const std::map<TextDecorator::Colour,int> & TextDecoratorVt100::getCodeMap();
 
 } // ::drain
 

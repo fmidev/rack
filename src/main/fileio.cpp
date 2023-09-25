@@ -490,70 +490,21 @@ void CmdOutputTree::exec() const {
 }
 
 //std::list<std::string> CmdOutputTreeConf::attributeList = {"quantity", "date", "time", "src", "elangle", "task_args", "legend"};
-std::map<std::string,std::string> CmdOutputTreeConf::attributes =
-	{{"quantity","GREEN"}, {"date","RED:UNDERLINE"}, {"time",""}, {"src",""}, {"elangle",""}, {"task_args",""}, { "legend",""} };
-
-
-class TextDecoratorVt100 : public drain::TextDecorator {
-
-
-public:
-	/*
-	static
-	const std::map<drain::TextDecorator::Colour,int> colours = {
-			{drain::TextDecorator::Colour::GREEN, 32},
-			{drain::TextDecorator::Colour::RED, 30}
-	};
-	*/
-
-	virtual inline
-	~TextDecoratorVt100(){
-	}
-
-	static
-	int getColourCode(int colour){ // drain::TextDecorator::Colour colour
-		switch (colour) {
-		case RED:
-			return 31;
-			break;
-		case GREEN:
-			return 32;
-			break;
-		case BLUE:
-			return 33;
-			break;
-		default:
-			return 31;
-			break;
-		}
-	}
-
-	virtual inline
-	std::ostream & begin(std::ostream & ostr) const {
-		//
-		if (color){
-			ostr << "color: ";
-		}
-			if (color){
-				ostr << "\033[1;";
-				//ostr << 43 << ';';
-				ostr << getColourCode(color.value); //  << 'm';
-			}
-			if (style){
-				ostr << "STYLE" << style << ' ';
-			}
-			ostr << 'm'; //  << "\]";
-		// }
-		return ostr;
-	}
-
-	virtual inline
-	std::ostream & end(std::ostream & ostr) const {
-		ostr << "\033[0m";
-		return ostr;
-	}
-
+// See drain::TextDecorator::VT100
+std::map<std::string,std::string> CmdOutputTreeConf::attributes = {
+		{"image", "BLUE"},
+		{"data", "BOLD"},
+		{"quantity", "BOLD:GREEN"},
+		{"date", "RED:UNDERLINE"},
+		{"time", "RED"},
+		{"src", "YELLOW"},
+		{"elangle", "YELLOW"},
+		{"task_args", "CYAN"},
+		{"legend", "PURPLE"}
 };
+
+
+
 
 bool CmdOutputTree::dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr){
 
@@ -566,27 +517,32 @@ bool CmdOutputTree::dataToStream(const Hi5Tree::node_data_t & data, std::ostream
 
 	bool empty = true;
 
+	drain::TextDecoratorVt100 decorator;
+	decorator.setSeparator(":");
+
 	const drain::image::ImageFrame & img = data.dataSet;
 	if (!img.isEmpty()){
-		ostr << img.getWidth() << ',' << img.getHeight() << ' ';
-		ostr << drain::Type::call<drain::compactName>(img.getType());
-		ostr << '[' << (8*drain::Type::call<drain::sizeGetter>(img.getType())) << ']';
-		//<< drain::Type::call<drain::complexName>(img.getType());
-		empty = false;
+		// if (data.attributes.hasKey("image")){
+			//decorator.begin(ostr, "YELLOW");
+			ostr << img.getWidth() << ',' << img.getHeight() << ' ';
+			ostr << drain::Type::call<drain::compactName>(img.getType());
+			ostr << '[' << (8*drain::Type::call<drain::sizeGetter>(img.getType())) << ']';
+			//decorator.end(ostr);
+			//<< drain::Type::call<drain::complexName>(img.getType());
+			empty = false;
+		//}
 	}
 	// else ...
 	char sep = 0;
-	//for (const auto & key: {"quantity", "date", "time", "src", "elangle", "task_args", "legend"}){
-	TextDecoratorVt100 decorator;
-	decorator.setSeparator(":");
+
 	for (const auto & entry: CmdOutputTreeConf::getAttributes()){
 		if (data.attributes.hasKey(entry.first)){
 			if (sep)
 				ostr << sep << ' ';
 			else
 				sep = ',';
-			decorator.set(entry.second);
-			decorator.begin(ostr);
+			//decorator.set(entry.second);
+			decorator.begin(ostr, entry.second);
 			ostr << entry.first << '=' << data.attributes[entry.first];
 			decorator.end(ostr);
 			//decorator.reset();

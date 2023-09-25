@@ -67,7 +67,7 @@ const drain::FlaggerDict drain::EnumDict<TextDecorator::Colour>::dict = {
 
 template <>
 const drain::FlaggerDict drain::EnumDict<TextDecorator::Line>::dict = {
-		{"NO_LINE", TextDecorator::NO_LINE},
+		{"NO_LINE", TextDecorator::NO_LINE}, // deprecating
 		{"UNDERLINE", TextDecorator::UNDERLINE},
 		{"DOUBLE_UNDERLINE", TextDecorator::DOUBLE_UNDERLINE},
 		{"OVERLINE", TextDecorator::OVERLINE},
@@ -132,9 +132,71 @@ void TextDecorator::debug(std::ostream & ostr) const {
 }
 
 
-// void TextDecorator::
 
 
+
+
+template <>
+const std::map<TextDecorator::Colour,int> & TextDecoratorVt100::getCodeMap(){
+
+	static
+	const std::map<TextDecorator::Colour,int> map = {
+			{BLACK, 30},
+			{RED, 31},
+			{GREEN, 32},
+			{YELLOW, 33},
+			{BLUE, 34},
+			{PURPLE, 35},
+			{CYAN, 36},
+			{WHITE, 37},
+			{NO_COLOR, 39}
+			/*
+			{BLACK_BG, 40},
+			{RED_BG, 41},
+			{GREEN_BG, 42},
+			{YELLOW_BG, 43},
+			{BLUE_BG, 44},
+			{MAGENTA_BG, 45},
+			{CYAN_BG, 46},
+			{WHITE_BG, 47},
+			{DEFAULT_BG, 49}
+			*/
+	};
+
+	return map;
+}
+
+template <>
+const std::map<TextDecorator::Style,int> & TextDecoratorVt100::getCodeMap(){
+
+	static
+	const std::map<TextDecorator::Style,int> map = {
+			{NO_STYLE, 0},
+			{ITALIC, 3},
+			{BOLD, 1},
+			{DIM, 2},
+			{REVERSE, 7}
+	};
+
+	return map;
+}
+
+// enum Style {NO_STYLE=0, ITALIC=1, BOLD=2, DIM=4, REVERSE=8}; // DEFAULT,
+// enum Line {NO_LINE=0, UNDERLINE=1, DOUBLE_UNDERLINE=2, OVERLINE=4};
+
+template <>
+const std::map<TextDecorator::Line,int> & TextDecoratorVt100::getCodeMap(){
+
+	static
+	const std::map<TextDecorator::Line,int> map = {
+			{NO_LINE, 0},
+			{UNDERLINE, 4},
+			{DOUBLE_UNDERLINE, 21}, // Double unnderline
+			{OVERLINE, 9}
+	};
+
+	return map;
+}
 
 
 } // drain::
