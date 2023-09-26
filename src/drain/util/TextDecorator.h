@@ -287,74 +287,14 @@ public:
 		}
 	}
 
-	/*
-	static inline
-	int getColourCode(drain::TextDecorator::Colour colour){ // drain::TextDecorator::Colour colour
-		color_codemap_t::const_iterator it = color_codemap.find(colour);
-		if (it != color_codemap.end()){
-			return it->second;
-		}
-		else {
-			throw std::runtime_error(drain::StringBuilder(__FILE__, '/', __FUNCTION__, ": no such colour: ", colour));
-			return drain::TextDecorator::Colour::NO_COLOR;
-		}
-	}
+protected:
 
-	static inline
-	int getStyleCode(drain::TextDecorator::Style style){ // drain::TextDecorator::Colour colour
-		style_codemap_t::const_iterator it = style_codemap.find(style);
-		if (it != style_codemap.end()){
-			return it->second;
-		}
-		else {
-			throw std::runtime_error(drain::StringBuilder(__FILE__, '/', __FUNCTION__, ": no such colour: ", style));
-			return drain::TextDecorator::Style::NO_STYLE;
-		}
-	}
+	virtual
+	std::ostream & _begin(std::ostream & ostr) const;
 
-	static inline
-	int getLineCode(drain::TextDecorator::Line line){ // drain::TextDecorator::Colour colour
-		line_codemap_t::const_iterator it = line_codemap.find(line);
-		if (it != line_codemap.end()){
-			return it->second;
-		}
-		else {
-			throw std::runtime_error(drain::StringBuilder(__FILE__, '/', __FUNCTION__, ": no such colour: ", line));
-			return drain::TextDecorator::Line::NO_LINE;
-		}
-	}
-	*/
+	virtual
+	std::ostream & _end(std::ostream & ostr) const;
 
-
-
-	virtual inline
-	std::ostream & _begin(std::ostream & ostr) const {
-
-		std::list<int> codes;
-
-		if (style)
-			codes.push_back(getIntCode<Colour>(color.value));
-
-		if (color)
-			codes.push_back(getIntCode<Colour>(color.value));
-
-		if (line)
-			codes.push_back(getIntCode<Colour>(color.value));
-
-		if (!codes.empty()){
-			ostr << "\033[";
-			ostr << drain::StringTools::join(codes,';'); // consider SprinterLayout(";");
-			ostr << 'm'; //  << "\]";
-		}
-
-		return ostr;
-	}
-
-	virtual inline
-	std::ostream & _end(std::ostream & ostr) const {
-		ostr << "\033[0m";
-		return ostr;
-	}
 
 };
 

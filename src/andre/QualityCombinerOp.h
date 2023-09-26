@@ -133,8 +133,12 @@ public:
 	//static double DEFAULT_QUALITY;
 
 
+	/** Ensures quality field
+	 *
+	 */
 	static
-	void initDstQuality(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstQind, const std::string & quantity = "");
+	//void initDstQuality(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstQuality, const std::string & quantity = "");
+	void initDstQuality(const PolarODIM & srcODIM, PlainData<PolarDst> & dstQuality, const std::string & quantity);
 
 protected:
 

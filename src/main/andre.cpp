@@ -178,16 +178,16 @@ public:
 		RackContext & ctx = this->template getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );
 
-		mout.debug() << "Applying data selector and targetEncoding " << mout.endl;
+		mout.debug("Applying data selector and targetEncoding ");
 
 		if (!ctx.select.empty()){
-			mout.info() << "Storing AnDRe selector: " << ctx.select << mout.endl;
+			mout.info("Storing AnDRe selector: ", ctx.select);
 			ctx.andreSelect = ctx.select;
 			ctx.select.clear();
 		}
 
 		if (!ctx.andreSelect.empty()){
-			mout.special() << "Applying AnDRe data selector: " << ctx.andreSelect << mout.endl;
+			mout.info("AnDRe data selector is set: ", ctx.andreSelect);
 			this->bean.dataSelector.setParameters(ctx.andreSelect);
 			mout.debug2() << "-> new values: " << this->bean.getDataSelector() << mout.endl;
 		}
@@ -208,8 +208,8 @@ public:
 
 		//mout.timestamp("BEGIN_ANDRE");
 
-		mout.debug() << "Running:  " << this->bean << mout.endl;
-		mout.note() << "AnDRe selector: " << ctx.andreSelect << mout.endl;
+		mout.debug("Running:  ", this->bean);
+		mout.info("AnDRe selector: ", ctx.andreSelect);
 
 		// For AnDRe ops, src serves also as dst.  UNNEEDED NOW, with own run() ?
 		Hi5Tree & dst = ctx.getHi5(

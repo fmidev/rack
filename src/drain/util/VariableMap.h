@@ -64,6 +64,14 @@ public:
 		importMap(v);
 	};
 
+	inline
+	VariableMap(std::initializer_list<std::pair<const char *, Variable> > inits) : SmartMap<Variable>(','){
+		//importMap(v);
+		for (const auto & entry: inits){
+			(*this)[entry.first] = entry.second;
+		}
+	};
+
 	/*
 	inline
 	VariableMap & operator=(const VariableMap & v){

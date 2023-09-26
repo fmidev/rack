@@ -120,31 +120,34 @@ public:
 	static
 	bool dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr);
 
-};
-
-// Tree and Dot
-class CmdOutputTreeConf : public drain::BasicCommand {
-
-public:
-
-	inline
-	CmdOutputTreeConf() : drain::BasicCommand(__FUNCTION__, "Configure output format of tree structures.") {
-	};
-
-	void exec() const;
-
-
-	static inline // std::list<std::string>
-	std::map<std::string,std::string> & getAttributes(){
+	static inline
+	drain::VariableMap & getAttributes(){
 		return attributes;
 	}
+	// std::list<std::string>
+	// std::map<std::string,std::string>
 
 protected:
 
 	static // std::list<std::string>
-	std::map<std::string,std::string> attributes;
+	drain::VariableMap attributes;
 
 };
+
+// Tree and Dot
+/*
+class CmdOutputTreeConf : public drain::BasicCommand {
+public:
+	inline
+	CmdOutputTreeConf() : drain::BasicCommand(__FUNCTION__, "Configure output format of tree structures.") {
+		// parameters.link("attributes", attributeStr, "attributes:" + drain::sprinter(getAttributes(), drain::Sprinter::pythonLayout));
+		//parameters.link("height", height = 0, "pixels");
+	};
+
+	void exec() const;
+	//std::map<std::string,std::string> attributes;
+};
+*/
 
 class FileModule : public drain::CommandModule<> { // : public drain::CommandGroup {
 

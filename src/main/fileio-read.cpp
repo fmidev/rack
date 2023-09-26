@@ -33,18 +33,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 #include <ostream>
 
-
 #include "drain/util/Log.h"
 #include "drain/util/RegExp.h"
 #include "drain/util/Input.h"
 #include "drain/image/FilePng.h"
 #include "drain/image/FilePnm.h"
 #include "drain/image/FileTIFF.h"
-
-
 #include "drain/prog/Command.h"
-
-//#include "drain/prog/CommandRegistry.h"
 
 #include "andre/QualityCombinerOp.h"
 #include "hi5/Hi5.h"
@@ -490,6 +485,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 				}
 
 				// Update general quality, i.e. dataset level quality
+				mout.special("Updating dataset level quality: '", dstDSEntry.first, "' -- ", dstDSEntry.second);
 				updateQuality(srcDataSet, dstDataSet);
 
 				// break; NO!
@@ -497,18 +493,11 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 		}
 
-		if (!FOUND){ // Adding new Data group
-			mout.attention("Adding new data: ", srcDSEntry.first, " ~ ", srcDSEntry.second);
+		if (!FOUND){ // Adding new DataSet group
+			mout.note("Adding new data: '", srcDSEntry.first, "' -- ", srcDSEntry.second);
 			//DataSelector::swapData(srcRoot, srcDSEntry.first, dstRoot);
 			DataSelector::swapData(srcRoot, srcDSEntry.second.back(), dstRoot);
-			/*
-			ODIMPathElem child(ODIMPathElem::DATASET);
-			DataSelector::getNextChild(dstRoot, child);
-			mout.info("New key (timestamp ", srcDSEntry.first, "), appending to path=", child);
-			// Create empty dstRoot[path] and swap it...
-			Hi5Tree & dstDataSet = dstRoot[child];
-			dstDataSet.swap(srcDataSet);
-			*/
+			// consider ODIM "swap" (copy) as well.
 		}
 
 
@@ -606,7 +595,7 @@ void CmdInputFile::updateDataNEW(Hi5Tree & srcData, const std::string & srcKey, 
 	// NEW: clumsy search.
 	for (const auto & dstEntry: dstQuantityElems) {
 		if (srcKey == dstEntry.first){
-			mout.note("Data group [", srcKey, "] exists: dst:", dstEntry.second, ", only updating QUALITY");
+			mout.note("Data group exists already [", srcKey, "] -- (", dstEntry.second, "), updating quality only");
 			// mout.note("-> Only updating local quality of [", srcKey, "] in dst: ", dstEntry.second);
 			// Note: QIND and CLASS ruled out above
 			updateQuality(srcData, dstDataSet[dstEntry.second]);
@@ -617,6 +606,7 @@ void CmdInputFile::updateDataNEW(Hi5Tree & srcData, const std::string & srcKey, 
 
 
 	// Else:
+	mout.attention("key [quantity ", srcKey, "] not found, adding by swapping");
 
 	DataSelector::swapData(srcData, dstDataSet, ODIMPathElem::DATA);
 
@@ -633,6 +623,8 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 	{
 		mout.special("Step 1: Append missing quality fields ");  // other than QIND or CLASS
 
+		//DataTools::updateInternalAttributes(src); // NEEDED?
+
 		QualityDataSupport<BasicDst> srcQ(src);
 		QualityDataSupport<BasicDst> dstQ(dst);
 
@@ -647,16 +639,27 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 				// TODO: consider override, for fields other than QIND or CLASS? (Probably needs image.reset() )
 			}
 			else {
-				mout.attention("dst does not contain quality field [", srcEntry.first, "], adding");
+				mout.special("dst does not contain quality field [", srcEntry.first, "], adding");
+				mout.debug("src field: ", srcEntry.second.odim);
+				// PolarODIM tmp(srcEntry.second.odim);
+				// Create new
+				dstQ.getQualityData(srcEntry.first).odim.updateFromMap(srcEntry.second.odim);
 				dstQ.getQualityData(srcEntry.first).getTree().swap(srcEntry.second.getTree());
+
+				mout.debug("dst field: ", dstQ.getQualityData(srcEntry.first).odim);
+
 			}
 
 		}
+
+		//DataTools::updateInternalAttributes(dst); // NEEDED?
+
 	}
+
 
 	{
 
-		mout.attention("Step 2: Join quality fields QIND and CLASS");
+		mout.special("Step 2: Join quality fields QIND and CLASS");
 
 		// TODO:
 		// Future option: templated Polar/Cart
@@ -674,15 +677,18 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 			PlainData<T_Dst> & dstQind  = dstQ.getQualityData("QIND");
 
 			if (!srcClass.data.isEmpty()){
-				mout.attention("both src and dst have QIND and CLASS");
+				mout.special("both src and dst have QIND and CLASS");
 				PlainData<T_Dst> & dstClass = dstQ.getQualityData("CLASS");
 				// mout.advice("consider --aQualityCombiner"); // QualityCombinerOp::updateOverallQuality
 				QualityCombinerOp::updateOverallQuality(srcQind, srcClass,	dstQind, dstClass);
 			}
 			else {
-				mout.attention("both src and dst have QIND (but not CLASS)");
+				mout.special("both src and dst have QIND (but not CLASS)");
 			}
 
+		}
+		else {
+			mout.special("srcQind empty, ok ");
 		}
 
 	}

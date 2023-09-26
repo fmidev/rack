@@ -556,7 +556,7 @@ void DataSelector::swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree &
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	// mout.warn("Swapping!");
-	mout.warn("Swapping: src: '", srcElem, "'...");
+	mout.debug("Swapping: src: '", srcElem, "'...");
 	swapData(src[srcElem], dst, srcElem.getType());
 
 	/*
@@ -575,10 +575,10 @@ void DataSelector::swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::gro
 
 	ODIMPathElem dstElem(groupType, 1);
 	DataSelector::getNextChild(dst, dstElem);
-	mout.attention("Swapping: ... dst:'", dstElem, "' group type: ", groupType);
+	mout.debug("Swapping: ... dst:'", dstElem, "' group type: ", groupType, " note: odim?"); // see quality comb..
 	// Create empty dstRoot[path] and swap it...
 	dst[dstElem].swap(srcGroup);
-
+	//DataTools::updateInternalAttributes(ctx.polarInputHi5);
 }
 
 

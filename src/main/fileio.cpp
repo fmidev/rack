@@ -96,17 +96,8 @@ class CmdOutputConf : public drain::SimpleCommand<std::string> {
 
 public:
 
-	//typedef drain::EnumFlagger<drain::SingleFlagger<drain::image::FileGeoTIFF::TiffCompliance> > tiffComplianceFlagger;
+	CmdOutputConf() : drain::SimpleCommand<std::string>(__FUNCTION__, "Format (h5|tif|png|tre|dot) specific configurations", "value", "<format>:<key>=value>,conf...") {
 
-//	CmdOutputConf() : drain::BasicCommand(__FUNCTION__, "Format specific configurations") {
-	CmdOutputConf() : drain::SimpleCommand<std::string>(__FUNCTION__, "Format (h5|tif|png) specific configurations", "value", "<format>:<key>=value>,conf...") {
-		/*
-		parameters.separator = ':';
-		parameters.link("format", format, "h5|png|tif");
-		parameters.link("params", params, "<key>=<value>[,<key2>=<value2>,...]");
-		*/
-		//gtiffConf.link("tilewidth", FileTIFF::defaultTile.width=256);
-		//gtiffConf.link("tileheight", FileTIFF::defaultTile.height=0);
 		hdf5Conf.link("compression", hi5::Writer::compressionLevel);
 
 		pngConf.link("compression", drain::image::FilePng::compressionLevel);
@@ -132,8 +123,8 @@ public:
 
 	}
 
-	std::string format;
-	std::string params;
+	// std::string format;
+	// std::string params;
 
 	/*
 	virtual inline
@@ -171,7 +162,6 @@ public:
 
 		// const drain::SprinterLayout & layout = drain::Sprinter::lineLayout; // cppLayout;
 
-		//hi5::fileInfo.checkExtension(ext);
 		if (hi5::fileInfo.checkExtension(format)){ // "h5", "hdf", "hdf5"
 			handleParams(hdf5Conf, params);
 		}
@@ -183,15 +173,29 @@ public:
 		}
 #ifndef USE_GEOTIFF_NO
 		else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
-			//FileGeoTIFF::compliance = FileGeoTIFF::flagger.str();
 			handleParams(gtiffConf, params);
 			drain::StringTools::replace(FileGeoTIFF::compliancy, ":", ",", FileGeoTIFF::compliancy);
-			// FileGeoTIFF::compliance.replace("")
 			FileGeoTIFF::compliancyFlagger.assign(FileGeoTIFF::compliancy);
-			//gtiff mika;
-			//mout.note("keys", gtiffConf.getKeys());
 		}
 #endif
+		else if ((format == "tre")||(format == "dot")){
+			static drain::SprinterLayout layout("[|]", ",", "=", "");
+			drain::VariableMap & vmap = CmdOutputTree::getAttributes();
+			if (!params.empty()){
+				mout.info("current values: ", drain::sprinter(vmap, layout));
+				vmap.clear();
+				vmap["format"] = "vt100"; // keep as default
+				//vmap.importEntries<false>(p, '='); and others fail...
+				drain::SmartMapTools::setValues(vmap, params, ',', '=');
+				// drain::Sprinter::toStream(std::cout, vmap, drain::Sprinter::pythonLayout);
+				// std::cout << '\n';
+				mout.info("    new values: ", drain::sprinter(vmap, layout));
+			}
+			else {
+				drain::Sprinter::toStream(std::cout, vmap, layout);
+				std::cout << '\n';
+			}
+		}
 		else {
 			mout.warn("format '", format, "' not recognized");
 		}
@@ -491,14 +495,20 @@ void CmdOutputTree::exec() const {
 
 //std::list<std::string> CmdOutputTreeConf::attributeList = {"quantity", "date", "time", "src", "elangle", "task_args", "legend"};
 // See drain::TextDecorator::VT100
-std::map<std::string,std::string> CmdOutputTreeConf::attributes = {
+// std::map<std::string,std::string>
+drain::VariableMap CmdOutputTree::attributes = {
+		{"format", "vt100"}, // "txt", "html" ?
 		{"image", "BLUE"},
 		{"data", "BOLD"},
 		{"quantity", "BOLD:GREEN"},
 		{"date", "RED:UNDERLINE"},
 		{"time", "RED"},
-		{"src", "YELLOW"},
-		{"elangle", "YELLOW"},
+		{"source", "YELLOW:DIM"},
+		{"elangle", "ITALIC:YELLOW"},
+		{"gain", "ITALIC:YELLOW"},
+		{"offset", "ITALIC:YELLOW"},
+		{"nodata", "DIM:YELLOW"},
+		{"undetect", "DIM:YELLOW"},
 		{"task_args", "CYAN"},
 		{"legend", "PURPLE"}
 };
@@ -517,7 +527,12 @@ bool CmdOutputTree::dataToStream(const Hi5Tree::node_data_t & data, std::ostream
 
 	bool empty = true;
 
-	drain::TextDecoratorVt100 decorator;
+	drain::VariableMap & attrs = CmdOutputTree::getAttributes();
+
+	drain::TextDecorator noDeco;
+	drain::TextDecoratorVt100 vt100Deco;
+
+	drain::TextDecorator & decorator = attrs.get("format", "") == "vt100" ? vt100Deco : noDeco;
 	decorator.setSeparator(":");
 
 	const drain::image::ImageFrame & img = data.dataSet;
@@ -535,7 +550,7 @@ bool CmdOutputTree::dataToStream(const Hi5Tree::node_data_t & data, std::ostream
 	// else ...
 	char sep = 0;
 
-	for (const auto & entry: CmdOutputTreeConf::getAttributes()){
+	for (const auto & entry: attrs){
 		if (data.attributes.hasKey(entry.first)){
 			if (sep)
 				ostr << sep << ' ';
@@ -689,6 +704,8 @@ FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // 
 	install<CmdOutputPrefix>();
 	install<CmdOutputRawImages>('O').addSection(IMAGES);
 	install<CmdOutputConf>();
+	// install<CmdOutputTreeConf>();
+
 	install<CmdGeoTiff>().addSection(IMAGES);
 	install<CmdImageSampler>("sample");
 	install<CmdHistogram>();

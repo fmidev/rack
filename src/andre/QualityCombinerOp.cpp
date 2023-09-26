@@ -62,14 +62,15 @@ namespace rack {
 
 //double QualityCombinerOp::DEFAULT_QUALITY(0.95);
 
-void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstQind, const std::string & quantity){
+//void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstQind, const std::string & quantity){
+void QualityCombinerOp::initDstQuality(const PolarODIM & srcODIM, PlainData<PolarDst> & dstQind, const std::string & quantity){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
 	mout.debug("Ensuring dst quality [", dstQind.odim.quantity, "] data array...");
 
 	if (!dstQind.data.isEmpty()){
-		mout.debug("Ok, exists already");
+		mout.note("Ok, [", quantity ,"?] exists already");
 	}
 	else {
 
@@ -82,9 +83,11 @@ void QualityCombinerOp::initDstQuality(const PlainData<PolarSrc> & srcData, Plai
 		getQuantityMap().setQuantityDefaults(dstQind, quantity);  // or PROB
 
 		// Geometry
-		dstQind.setGeometry(srcData.odim.area);
+		// dstQind.setGeometry(srcData.odim.area);
+		dstQind.setGeometry(srcODIM.area);
 		mout.debug("set geometry: ", dstQind.data.getGeometry());
-		dstQind.odim.rscale = srcData.odim.rscale; // nbins, nrays, rscale
+		//dstQind.odim.rscale = srcData.odim.rscale; // nbins, nrays, rscale
+		dstQind.odim.rscale = srcODIM.rscale; // nbins, nrays, rscale
 
 		//mout.special() << "quality " << dstQind << mout.endl;
 
@@ -127,7 +130,20 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 	//mout.debug()  <<  EncodingODIM(srcProb.odim) << mout.endl;
 	mout.debug2() <<  EncodingODIM(dstQind.odim) << mout.endl;
 
+	/*
+	mout.note("srcQ", srcQind.data,  " ", srcQind.odim);
+	mout.note("srcC", srcClass.data, " ", srcClass.odim);
+	mout.note("dstQ", dstQind.data,  " ", dstQind.odim);
+	mout.note("dstC", dstClass.data, " ", dstClass.odim);
+	*/
+
 	mout.success(srcProb);
+	//mout.success("srcProb ", srcProb.getScaling());
+
+	if (srcProb.getScaling().scale == 0){
+		mout.fail("No scaling factor in srcProb: ", srcProb);
+	}
+
 	//QualityCombinerOp::initDstQuality(srcProb, dstQind, "QIND");
 
 	if (dstQind.data.isEmpty()){
@@ -228,7 +244,8 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 	mout.debug("Ensuring quality [", dstQind.odim.quantity, "] ~ [QIND] data array...");
 
-	QualityCombinerOp::initDstQuality(srcQind, dstQind, "QIND");
+	//QualityCombinerOp::initDstQuality(srcQind, dstQind, "QIND");
+	QualityCombinerOp::initDstQuality(srcQind.odim, dstQind, "QIND");
 
 	// const double QUALITY_THRESHOLD = 0.99;
 
@@ -262,6 +279,12 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 		return;
 	}
 
+	if (dstQind.data.getScaling().scale == 0){
+		mout.attention("Dst QIND data had no scaling...");
+		dstQind.data.setScaling(srcQind.data.getScaling());
+		dstQind.odim.scaling.set(srcQind.data.getScaling());
+	}
+
 	if (srcClass.data.isEmpty()){
 
 		if (!dstClass.data.isEmpty())
@@ -291,7 +314,8 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 		mout.debug("Updating QIND and CLASS data.");
 
-		QualityCombinerOp::initDstQuality(srcQind, dstClass, "CLASS");
+		//QualityCombinerOp::initDstQuality(srcQind, dstClass, "CLASS");
+		QualityCombinerOp::initDstQuality(srcQind.odim, dstClass, "CLASS");
 		/*
 		if (dstClass.data.isEmpty()){
 			mout.note() << "Creating CLASS data" << mout.endl;
@@ -300,30 +324,49 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 			// dstClass.fill(0);
 		};
 		*/
+		if (dstClass.data.getScaling().scale == 0){
+			mout.attention("Dst CLASS data had no scaling...");
+			dstClass.data.setScaling(srcClass.data.getScaling());
+			dstClass.odim.scaling.set(srcClass.data.getScaling());
+		}
 
-		Image::const_iterator  it  = srcQind.data.begin();
-		Image::const_iterator  itc = srcClass.data.begin();
-		Image::iterator pit = dstQind.data.begin();
-		Image::iterator cit = dstClass.data.begin();
+		Image::const_iterator  sitQ  = srcQind.data.begin();
+		Image::const_iterator  sitC = srcClass.data.begin();
+		Image::iterator ditQ = dstQind.data.begin();
+		Image::iterator ditC = dstClass.data.begin();
+
+		/*
+		mout.note("srcQ ", srcQind.data,  " ", srcQind.odim);
+		mout.note("srcC ", srcClass.data, " ", srcClass.odim);
+		mout.note("dstQ ", dstQind.data,  " ", dstQind.odim);
+		mout.note("dstC ", dstClass.data, " ", dstClass.odim);
+		*/
+
+		//drain::image::FilePng::write(srcQind.data,  "srcQind.png");
+		//drain::image::FilePng::write(srcClass.data, "srcClass.png");
 
 		// Input quality
 		double q;
 		// Maximum quality this far
 		double qMax;
-		while (it != srcQind.data.end()){
+		while (sitQ != srcQind.data.end()){
 			//p = *it;
 			//p = 1.0 - srcQind.odim.scaleForward(p);
-			q = srcQind.odim.scaleForward(*it);
-			qMax = *pit;
+			q = srcQind.odim.scaleForward(*sitQ);
+			qMax = *ditQ;
 			qMax = dstQind.odim.scaleForward(qMax);
 			if (q < qMax){
 				//if (c < static_cast<int>(*pit) ){
-				*pit = dstQind.odim.scaleInverse(q);
+				*ditQ = dstQind.odim.scaleInverse(q);
 				//if (q < QUALITY_THRESHOLD) //DEFAULT_QUALITY)
-				*cit = *itc;
+				*ditC = *sitC;
 			}
-			++it; ++itc; ++pit; ++cit;
+			++sitQ; ++sitC; ++ditQ; ++ditC;
 		}
+
+		// drain::image::FilePng::write(dstQind.data,  "dstQind.png");
+		// drain::image::FilePng::write(dstClass.data, "dstClass.png");
+
 
 		// drain::Variable & classLegend = dstClass.getTree()["how"].data.attributes["legend"];
 		drain::Variable & classLegend = dstClass.getWhat()["legend"];
@@ -338,9 +381,9 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 			classCodes.insert(*it);
 		}
 
-		mout.debug() << " Updating CLASS, old: " << classLegend << mout.endl;
+		mout.debug(" Updating CLASS, old: ", classLegend);
 		classLegend = classCodes;
-		mout.debug() << " Updating CLASS, new: " << classLegend << mout.endl;
+		mout.debug(" Updating CLASS, new: ", classLegend);
 		//@ dstClass.updateTree();
 		//@ DataTools::updateInternalAttributes(dstClass.tree);
 	}
@@ -407,6 +450,7 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 				// double marker = palette.getValueByCode(entry.first, true);
 				mout.attention("found palette entry: ", sprinter(legendEntry.second, drain::Sprinter::jsonLayout));
 				//updateOverallDetection(entry.second.data, dstQIND, dstCLASS, entry.first, (short unsigned int)123);
+				mout.attention("srcData: ", entry.second.data);
 				updateOverallDetection(entry.second.data, dstQIND, dstCLASS, entry.first, legendEntry.first);
 			} catch (const std::exception & e) {
 				mout.fail("Could not retrieve code (palette/legend entry) for [", entry.first, "]");

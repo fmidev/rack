@@ -117,6 +117,35 @@ void TextDecorator::addKey(const std::string & key){
 	return;
 }
 
+
+std::ostream & TextDecoratorVt100::_begin(std::ostream & ostr) const {
+
+	std::list<int> codes;
+
+	if (style)
+		codes.push_back(getIntCode<Style>(style.value));
+
+	if (color)
+		codes.push_back(getIntCode<Colour>(color.value));
+
+	if (line)
+		codes.push_back(getIntCode<Line>(line.value));
+
+	if (!codes.empty()){
+		ostr << "\033[";
+		ostr << drain::StringTools::join(codes,';'); // consider SprinterLayout(";");
+		ostr << 'm'; //  << "\]";
+	}
+
+	return ostr;
+}
+
+std::ostream & TextDecoratorVt100::_end(std::ostream & ostr) const {
+	ostr << "\033[0m";
+	return ostr;
+}
+
+
 /**
  *
  *

@@ -301,11 +301,13 @@ void DetectorOp::initDataDst(const PlainData<PolarSrc> & srcData, PlainData<Pola
 		if (quantity.empty()){
 			//mout.warn() << "requested: " << quantity << mout.endl;
 			dstData.odim.quantity = getOutputQuantity();
-			QualityCombinerOp::initDstQuality(srcData, dstData, "PROB");
+			//QualityCombinerOp::initDstQuality(srcData, dstData, "PROB");
+			QualityCombinerOp::initDstQuality(srcData.odim, dstData, "PROB");
 		}
 		else {
 			dstData.odim.quantity = quantity;
-			QualityCombinerOp::initDstQuality(srcData, dstData, quantity);
+			//QualityCombinerOp::initDstQuality(srcData, dstData, quantity);
+			QualityCombinerOp::initDstQuality(srcData.odim, dstData, quantity);
 		}
 
 	}
