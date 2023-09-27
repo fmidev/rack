@@ -34,12 +34,36 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+/*
+ *  Usage:
+ *
+ *  Type::call<drain::typeIsFundamental>(t)
+ *
+ */
+class typeIsFundamental {
+
+public:
+
+	typedef bool value_t;
+
+	/**
+	 *  \tparam S - selector type
+	 *  \tparam T - destination type (practically value_t)
+	 */
+	template <class S, class T>
+	static inline
+	T callback(){ return std::is_fundamental<S>::value; }
+
+};
+
 
 void Variable::setType(const std::type_info & t){ //, size_t n = 0
 
 		reset(); // what if requested type already?
 
 		if ((t == typeid(std::string)) || (t == typeid(char *))){
+			// std::cout << __FUNCTION__ << ':' << t.name() << " is string " << std::endl;
+
 			//std::cerr << "Variable::setType (std::string) forward, OK\n";
 			caster.setType(typeid(char));
 			// setOutputSeparator(0); NEW 2019/11
@@ -50,14 +74,26 @@ void Variable::setType(const std::type_info & t){ //, size_t n = 0
 			caster.put('\0');
 		}
 		else {
-			if (t != typeid(void)){  // why not unset type
-				caster.setType(t);
+			// std::cerr << __FUNCTION__ << ':' << t.name() << " non-string" << std::endl;
+
+			if (t == typeid(void)){  // why not unset type
+				// std::cerr << __FUNCTION__ << ':' << t.name() << " is voido " << std::endl;
+				//caster.setType(t);  // else infinite loop
+				caster.unsetType();
 				// IS_STRING = false;
 				//resize(n);
 			}
-			else {
-				caster.setType(t); // unset
+			else if (Type::call<drain::typeIsFundamental>(t)){
+				// std::cerr << __FUNCTION__ << ':' << t.name() << " is fundo " << std::endl;
+				caster.setType(t);
 			}
+			else {
+				// std::cerr << __FUNCTION__ << ':' << t.name() << " throw... " << std::endl;
+				throw std::runtime_error(std::string(__FILE__) + __FUNCTION__ + ':' + t.name() + ": cannot convert to basic types");
+				//caster.setType(t); // set(void) = unset  // else infinite loop
+			}
+			// std::cerr << __FUNCTION__ << ':' << t.name() << " non-stringo" << std::endl;
+
 		}
 	}
 

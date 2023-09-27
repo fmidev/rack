@@ -610,9 +610,12 @@ std::ostream & Sprinter::treeToStream(std::ostream & ostr, const T & tree, const
 /**
  *   Examples.
  *
+ *   \tparam T - basetype variable or object to be printed
+ *   \tparam L - default layout; allows creating typedefs with default layouts
+ *
  *   Templated class, because references an external object of any type.
  */
-template <class T>
+template <class T, class L=SprinterLayout>
 class Sprintlet : public Sprinter {
 
 public:
@@ -620,7 +623,7 @@ public:
 	const T & src;
 	SprinterLayout layout;
 
-	Sprintlet(const T & x, const SprinterLayout & layout) : src(x), layout(layout) {
+	Sprintlet(const T & x, const SprinterLayout & layout = L()) : src(x), layout(layout) {
 	}
 	// Dangerous? Sprinter(const Sprinter<T> & x) : src(x.src){}
 
@@ -637,9 +640,9 @@ public:
 };
 
 
-template <class T>
+template <class T, class L>
 inline
-std::ostream & operator<<(std::ostream & ostr, const Sprintlet<T> & sp){
+std::ostream & operator<<(std::ostream & ostr, const Sprintlet<T,L> & sp){
 	return sp.toStream(ostr);
 }
 

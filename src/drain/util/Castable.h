@@ -962,41 +962,15 @@ public:
 
 public:
 
-	inline
-	const char * getCharArray() const {
-
-		if (isCharArrayString()){
-
-			if (empty()){
-				static const char * empty = "";
-				return empty;
-				// throw std::runtime_error("getCharArray: empty array, no even null char");
-			}
-
-			if (*getPtr(getElementCount()-1) != '\0')
-				throw std::runtime_error("getCharArray: no terminating null char");
-
-			return (const char *)caster.ptr;
-
-		}
-		else if (isStlString()){
-			return ((const std::string *)caster.ptr)->c_str();
-		}
-		else {
-			throw std::runtime_error("getCharArray: type neither charArray nor std::string");
-			return NULL;
-		}
-	}
+	const char * getCharArray() const;
 
 protected:
 
-
 	/// Pointer to the data variable.
-	//void *ptr;
+	//  void *ptr;
 
 	/// Size of the current variable
 	size_t elementCount;
-
 
 	/// Element separator usein in reading a char sequence to an (numeric) array.
 	char inputSeparator;

@@ -260,12 +260,15 @@ public:
 		else if (t == typeid(std::string)) {
 			return F::template callback<std::string,T>();
 		}
+		/*
 		else if (Type::call<isEnum>(t)){ // NEW 2023
+			// Problem: looping if not enum...
 			return F::template callback<int,T>();
 		}
+		*/
 		else {
 			Logger mout(__FUNCTION__, __FILE__);
-			mout.error("unimplemented type: ...", t.name());
+			mout.error("unimplemented type: ...", t.name(), " NOTE: enums suppressed");
 			//return T(); //F::template callback<char,T>();
 			// Problem with ref types
 			return F::template callback<char,T>();
@@ -354,11 +357,15 @@ public:
 		else if (t == typeid(void)) {
 			F::template callback<void>(target);
 		}
+		/*
 		else if (Type::call<isEnum>(t)){
 			F::template callback<int>(target);
 		}
+		*/
 		else {
-			throw std::runtime_error(std::string(": unimplemented type: ") + t.name());
+			Logger mout(__FUNCTION__, __FILE__);
+			mout.error("unimplemented type: ...", t.name(), " NOTE: enums suppressed");
+			// throw std::runtime_error(std::string(": unimplemented type: ") + t.name() + " NOTE: enums suppressed");
 			return;
 		}
 	}

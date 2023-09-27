@@ -400,7 +400,7 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 
 		const hid_t filespace = H5Dget_space(dataset);
 
-		const hid_t datatype  = H5Tget_native_type(H5Dget_type(dataset), H5T_DIR_DEFAULT);
+		// const hid_t datatype  = H5Tget_native_type(H5Dget_type(dataset), H5T_DIR_DEFAULT);
 		hsize_t rank = H5Sget_simple_extent_ndims(filespace);
 		mout.attention("rank=", rank);
 

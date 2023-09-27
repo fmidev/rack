@@ -399,7 +399,7 @@ void CmdOutputFile::exec() const {
 		// DataSelector selector;
 		// if (selector.consumeParameters(ctx.select))
 		if (!ctx.select.empty()){
-			mout.warn() << "no --select support for Graphviz DOT output, use --delete and --keep instead" << mout.endl;
+			mout.unimplemented("no --select support for Graphviz DOT output, use --delete and --keep instead");
 			ctx.select.clear();
 		}
 
@@ -417,7 +417,6 @@ void CmdOutputFile::exec() const {
 		drain::TreeUtils::dump<Hi5Tree,true>(src, output, CmdOutputTree::dataToStream);
 	}
 	else {
-
 
 		mout.info("File format: text");
 
@@ -487,7 +486,6 @@ void CmdOutputTree::exec() const {
 	}
 
 	drain::Output output(filename);
-	//Hi5Tree & src =
 	drain::TreeUtils::dump(ctx.getHi5(RackContext::CURRENT), output, CmdOutputTree::dataToStream);
 
 

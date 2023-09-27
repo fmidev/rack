@@ -64,12 +64,27 @@ public:
 		importMap(v);
 	};
 
+	/// Constructor for initializer lists.
+	/**
+	 *  \code
+	 *    	VariableMap vmap = {{"name": "Julian"}, {"number": 123.45}};
+	 *  \endcode
+	 */
 	inline
 	VariableMap(std::initializer_list<std::pair<const char *, Variable> > inits) : SmartMap<Variable>(','){
 		//importMap(v);
 		for (const auto & entry: inits){
 			(*this)[entry.first] = entry.second;
 		}
+	};
+
+	/// Experimental constructor
+	/**
+	 *
+	 */
+	inline
+	VariableMap(std::pair<const char *, Variable> & entry) : SmartMap<Variable>(','){
+		(*this)[entry.first] = entry.second;
 	};
 
 	/*

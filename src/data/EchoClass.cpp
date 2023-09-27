@@ -119,29 +119,6 @@ int getClassCode(const std::string & id){
 
 	return palette.getValueByCode(id);
 
-	/*
-	static int counter = 0;
-
-	typedef drain::image::Palette::dict_t dict_t;
-
-	dict_t & dict = palette.dictionary;
-
-	if (!dict.hasValue(id)){
-		double d;
-		while(counter < 256){
-			d = static_cast<double>(counter);
-			if (!dict.hasKey(d)){
-				dict.add(d, id);
-				mout.warn() << "key '" << id << "' was not found in class (palette) dictionary, added it with index=" << counter << mout.endl;
-				return counter;
-			}
-			++counter;
-		}
-		mout.error() << "could not add entry for '" << id << "', all the indices [0,255] in use" << mout.endl;
-	}
-
-	return static_cast<int>(palette.dictionary.getKey(id));
-	*/
 }
 
 

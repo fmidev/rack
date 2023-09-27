@@ -58,6 +58,36 @@ void Castable::clear(){
 	}
 }
 
+const char * Castable::getCharArray() const {
+
+	if (isCharArrayString()){
+
+		if (empty()){
+			static const char * empty = "";
+			return empty;
+			// throw std::runtime_error("getCharArray: empty array, no even null char");
+		}
+
+		if (*getPtr(getElementCount()-1) != '\0'){
+			std::cerr << getElementCount() << std::endl;
+			std::cerr << "first char: " << *getPtr(0) << std::endl;
+			//std::cerr << getElementCount() << std::endl;
+			throw std::runtime_error("getCharArray: no terminating null char..");
+		}
+
+		return (const char *)caster.ptr;
+
+	}
+	else if (isStlString()){
+		return ((const std::string *)caster.ptr)->c_str();
+	}
+	else {
+		throw std::runtime_error("getCharArray: type neither charArray nor std::string");
+		return NULL;
+	}
+}
+
+
 std::ostream & Castable::toStream(std::ostream & ostr, char separator) const {
 
 	const std::type_info & t = caster.getType();

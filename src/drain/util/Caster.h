@@ -468,6 +468,12 @@ void Caster::updateType<Caster>();
 template <class F>
 void Caster::updateType(){
 
+	if (!std::is_fundamental<F>::value){
+		throw std::runtime_error(std::string(__FILE__) + __FUNCTION__ + ':' + typeid(F).name() + ": cannot convert to basic types");
+		return;
+	}
+
+
 	type = & typeid(F);
 	byteSize = sizeof(F)/sizeof(char);
 
