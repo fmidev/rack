@@ -35,6 +35,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_VERSION__ "7.71"
 
 /**
+ *   Version 7.71
+ *   -- Revised DotGraph output
+ *   -- Revised & fixed combining of input quality fields
+ *
+ *
  *   Version 7.7
  *   -- Revised & fixed combining of input quality fields
  *

@@ -34,6 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 
 #include "drain/util/Log.h"
+#include "drain/util/DotGraph.h"
 #include "drain/util/Output.h"
 #include "drain/image/Sampler.h"
 
@@ -46,22 +47,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //drain::SprinterLayout dotAttributeLayout("*","[ ]", "=", "\"\"");
 
-
-class DotLayout : public drain::SprinterLayout {
-
-public:
-
-	inline
-	DotLayout() : SprinterLayout("*","[ ]", "=", "\"\""){};
-
-	// inline
-	// DotLayout(const DotLayout & layout) : SprinterLayout("*","[ ]", "=", "\"\""){};
-
-};
-
-typedef drain::Sprintlet<drain::VariableMap, DotLayout> attrSprintlet;
-typedef std::map<std::string,std::string> amap_t;  //map_t m2 = {{"koe", 123.45}};
-typedef drain::Sprintlet<amap_t, DotLayout> AttrSprintlet;
 
 
 /*
@@ -122,257 +107,6 @@ public:
 
 };
 
-class DotEntity {
-
-public:
-
-	typedef std::initializer_list<std::pair<const char *,const char *> > init_t;
-
-	void setAttributes(const init_t & args){
-		for (const auto & entry: args){
-			attributes[entry.first] = entry.second;
-		}
-	}
-
-	drain::VariableMap attributes;
-
-	/** Indentation string.
-	 */
-	static
-	const std::string fill;
-
-};
-
-const std::string DotEntity::fill = "  ";
-
-
-class DotNode : public DotEntity {
-
-public:
-
-
-
-	template<typename ... TT>
-	DotNode(const TT &... args){
-		setName(args...);
-	}
-
-	DotNode(init_t args){
-		//setName(args...);
-		//attributes["label"] = "";
-		setAttributes(args);
-	}
-
-
-
-	template<typename ... TT>
-	void setName(const TT &... args){
-		std::stringstream sstr;
-		_setName(sstr, args...);
-		name = sstr.str();
-	}
-
-	/// Returns the key of this entity.
-	/**
-	 *
-	 */
-	const std::string & getName() const {
-		return name;
-	}
-
-
-protected:
-
-	std::string name;
-
-	template<typename T, typename ... TT>
-	void _setName(std::stringstream & sstr, const T & arg, const TT &... args){
-		sstr << arg;
-		_setName(sstr, args...);
-	}
-
-	void _setName(std::stringstream & sstr){
-	}
-
-
-
-	void _setAttributes(std::stringstream & sstr){
-		name = sstr.str();
-	}
-
-
-	template<typename T, typename ... TT>
-	void _setAttributes(std::stringstream & sstr, const T & arg, const TT &... args){
-		sstr << arg;
-		_setAttributes(sstr, args...);
-		// name = sstr.str();
-	}
-
-
-};
-
-class DotBullit : public DotNode {
-
-public:
-
-	template<typename ... TT>
-	DotBullit(const TT &... args) : DotNode(args...){
-		setAttributes({{"shape","point"}});
-	}
-
-	DotBullit(int index) : DotNode("_B", index){
-		setAttributes({{"shape","point"}});
-	}
-
-};
-
-class DotRankNode : public DotNode {
-
-public:
-
-	DotRankNode(int rank=0) : DotNode("_R", rank){
-		setAttributes({{"style","invis"}});
-	}
-
-};
-
-
-
-std::ostream & operator<<(std::ostream & ostr, const DotNode & node){
-	ostr << DotEntity::fill << '"' << node.getName() << '"';
-	if (!node.attributes.empty())
-		ostr << ' ' << attrSprintlet(node.attributes);
-	ostr << ";\n";
-	return ostr;
-}
-
-class DotHeader : public DotEntity {
-
-public:
-
-
-	inline
-	DotHeader(const init_t & args = {}, const init_t & nodeArgs =  {}){
-		setAttributes(args);
-		nodeStyle.setAttributes(nodeArgs);
-	}
-
-
-	void setNodeAttributes(const init_t & args){
-		nodeStyle.setAttributes(args);
-	}
-
-	inline
-	const drain::VariableMap & getNodeAttributes() const {
-		return nodeStyle.attributes;
-	}
-
-protected:
-
-	//DotNode styleNode;
-	DotEntity nodeStyle;
-
-};
-
-std::ostream & operator<<(std::ostream & ostr, const DotHeader & header){
-
-	for (const auto & entry: header.attributes){
-		ostr << DotEntity::fill << entry.first << " = " << entry.second << ";\n";
-	}
-
-	if (!header.getNodeAttributes().empty()){
-		ostr << DotEntity::fill << "node " << attrSprintlet(header.getNodeAttributes()) << ";\n";
-	}
-	ostr << std::endl;
-
-	return ostr;
-}
-
-
-class DotComment {
-
-public:
-
-	DotComment(const std::string & s = "") : comment(s){
-	}
-
-	inline
-	const std::string & str() const {
-		return comment;
-	};
-
-protected:
-
-	std::string comment;
-
-};
-
-
-
-std::ostream & operator<<(std::ostream & ostr, const DotComment & comment){
-	return ostr << "  /* "  << comment.str() << " */ \n";
-}
-
-
-
-class DotLink : public DotEntity {
-
-public:
-
-	inline
-	DotLink(const DotNode &n1, const DotNode &n2, std::initializer_list<std::pair<const char *,const char *> > args = {}): node1(n1), node2(n2){
-		setAttributes(args);
-	}
-
-	const DotNode &node1;
-	const DotNode &node2;
-
-};
-
-std::ostream & operator<<(std::ostream & ostr, const DotLink & link){
-	ostr << DotEntity::fill << '"' << link.node1.getName() << '"' << " -> " << '"' << link.node2.getName() << '"';
-	if (!link.attributes.empty())
-		ostr << ' ' << attrSprintlet(link.attributes);
-	ostr << ";\n";
-	return ostr;
-}
-
-class DotRank {
-
-public:
-
-	DotRank(const std::string & s = "same") : rank(s){
-	}
-
-	inline
-	const std::string & str() const {
-		return rank;
-	};
-
-	inline
-	void add(const DotNode & node){
-		nodes.push_back(&node);
-	}
-
-	std::list<const DotNode *> nodes;
-
-
-protected:
-
-	std::string rank;
-
-};
-
-
-
-std::ostream & operator<<(std::ostream & ostr, const DotRank & rank){
-	ostr << DotEntity::fill << "{rank="<< rank.str();
-	for (const auto entry: rank.nodes){
-		ostr << ' ' << '"' << entry->getName() << '"';
-	}
-	ostr << "};\n";
-	return ostr;
-}
 
 
 void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
@@ -394,11 +128,11 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 
 	// ostr << DotComment(path);
 
-	ostr << DotComment(key);
+	ostr << drain::DotComment(key);
 	// ostr << "\n/* " << key << " */\n";
 	//ostr << "/* '" << path << ':' << path.front().group << ':' << path.front().getPrefix() << "' */\n";
 
-	DotNode node(key);
+	drain::DotNode node(key);
 
 	const ODIMPathElem & e = path.back();
 
@@ -465,9 +199,9 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 
 	ostr << node;
 	if (index > 0)
-		ostr << DotBullit(index);
+		ostr << drain::DotBullit(index);
 	/// Draw rank fixer   [style=invis]
-	ostr << DotRankNode(index);
+	ostr << drain::DotRankNode(index);
 	//ostr << fill << 'R' << id << INVISIBLE << ";\n"; //" [style=invis][shape=ellipse];\n";
 
 	//}
@@ -490,9 +224,9 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 		/// Draw rank fixer
 		//ostr << fill << 'R' <<  (id-1) << " -> R" <<  id << ' '<< INVISIBLE << ";\n\n"; // [style=invis]
 
-		DotRankNode rankNode(index);
+		drain::DotRankNode rankNode(index);
 
-		ostr << DotLink(DotRankNode(index-1), rankNode, {{"style", "invis"}}); // [style=invis]
+		ostr << drain::DotLink(drain::DotRankNode(index-1), rankNode, {{"style", "invis"}}); // [style=invis]
 
 		ODIMPath p(path);  // , _')
 		//p.push_back(e);
@@ -500,28 +234,28 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 		const std::string subkey = quoted(p);
 		// mout.note("writing: ", p);
 
-		DotBullit idNode(index);
+		drain::DotBullit idNode(index);
 
 		/// Draw edge
 		// ostr << fill;
 		if (first){
 			// parentNode.setName(key);
 			//ostr << '"' <<  key << '"';
-			ostr << DotLink(node, idNode, {{"arrowhead","none"}});
+			ostr << drain::DotLink(node, idNode, {{"arrowhead","none"}});
 			first = false;
 		}
 		else {
 			// DotBullit idNodePrev(indexPrev);
 			//parentNode.setName('B' ,indexPrev);
 			//ostr << '"' <<  indexPrev << '"';
-			ostr << DotLink(DotBullit(indexPrev), idNode, {{"arrowhead","none"}});
+			ostr << drain::DotLink(drain::DotBullit(indexPrev), idNode, {{"arrowhead","none"}});
 		}
 		// ostr << " -> " <<  id << ARROWLESS << ";\n"; //  [arrowhead=none]
 
-		DotNode subNode(subkey);
+		drain::DotNode subNode(subkey);
 
 		// ostr << fill << "{rank=same; R" << id << ";  " << id << "; \"" << subkey << "\" };\n";
-		DotRank rank;
+		drain::DotRank rank;
 		rank.add(rankNode);
 		rank.add(idNode);
 		rank.add(subNode);
@@ -529,7 +263,7 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 		ostr << rank;
 		// ostr << "{rank=same; " << rankNode.getName() << ";  " << idNode.getName() << "; \"" << subNode.getName() << "\" };\n";
 
-		ostr << DotLink(idNode, subNode);
+		ostr << drain::DotLink(idNode, subNode);
 
 		// Display variable collector (TOO DETAILED!)
 		/*
@@ -569,8 +303,8 @@ void CmdOutputFile::writeDotGraph(const Hi5Tree & src, const std::string & filen
 	ostr << "digraph G { \n";
 	ostr << "/* group selector (mask)=" << selector << " */  \n"; // consider escaping
 
-	ostr << DotComment("header");
-	DotHeader header({
+	ostr << drain::DotComment("header");
+	drain::DotHeader header({
 		{"rankdir", "TB"},
 		{"ranksep", "0.2"},
 		{"tailport", "s"}});
