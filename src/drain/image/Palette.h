@@ -197,10 +197,11 @@ std::ostream & operator<<(std::ostream &ostr, const Palette & p){
 
 } // image::
 
-} // drain::
-
 template <>
 std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image::Palette & map, const drain::SprinterLayout & layout);
+
+} // drain::
+
 
 
 #endif
