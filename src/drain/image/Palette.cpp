@@ -551,7 +551,7 @@ void Palette::loadJSON(std::istream & ifstr){
 	mout.info("title: ", title);
 	//mout.isLevel(LOG_INFO)
 	mout.debug(); // << "metadata: ";
-	drain::TreeUtils::dump(json, mout, nullptr); //true);
+	drain::TreeUtils::dump(json, mout, NULL); // nullptr); //true);
 	mout << mout.endl;
 	importJSON(json["entries"]);
 
