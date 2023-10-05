@@ -217,6 +217,10 @@ std::ostream & operator<<(std::ostream &ostr, const PaletteEntry & entry){
 
 } // image::
 
+template <>
+std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image::PaletteEntry & entry, const drain::SprinterLayout & layout);
+
+
 } // drain::
 
 /*
@@ -236,7 +240,5 @@ std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image
 }
 */
 
-template <>
-std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image::PaletteEntry & entry, const drain::SprinterLayout & layout);
 
 #endif

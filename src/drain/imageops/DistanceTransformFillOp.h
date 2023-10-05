@@ -277,7 +277,7 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 				dTest = this->distanceModel.decrease(dstAlpha.get<dist_t>(pTest), elem.coeff);
 				if (dTest > dWin){
 					dWin = dTest;
-					pWin = pTest;
+					pWin = pTest; // consider direct addressWin = dstAlpha.address(pWin.x, pWin.y); so, pTest
 				}
 			}
 
@@ -290,11 +290,11 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 				addressWin = dstAlpha.address(pWin.x, pWin.y);
 
 				if (addressWin != address){
-					for (size_t k=0; k<K; ++k)
+					for (size_t k=0; k<K; ++k) // copy from DST
 						dstTray.get(k).put(address, dstTray.get(k).get<dist_t>(addressWin));
 				}
 				else {
-					for (size_t k=0; k<K; ++k)
+					for (size_t k=0; k<K; ++k) // copy from SRC
 						dstTray.get(k).put(address, srcTray.get(k).get<dist_t>(address));
 				}
 
@@ -355,7 +355,7 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 	const Range<int> & xRange = coordinateHandler.getXRange();
 	const Range<int> & yRange = coordinateHandler.getYRange();
 
-	mout.debug() << "main loop, K=" << K <<  mout.endl;
+	mout.debug("main loop, K=", K);
 
 	for (p.y=yRange.max; p.y>=0; --p.y){
 		for (p.x=xRange.max; p.x>=0; --p.x){
@@ -384,12 +384,12 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 				addressWin = dstAlpha.address(pWin.x, pWin.y);
 
 				if (addressWin != address){
-					for (size_t k=0; k<K; ++k)
-						dstTray.get(k).put(address,dstTray.get(k).get<dist_t>(addressWin));
+					for (size_t k=0; k<K; ++k) // copy from DST
+						dstTray.get(k).put(address, dstTray.get(k).get<dist_t>(addressWin));
 				}
 				else {
-					for (size_t k=0; k<K; ++k)
-						dstTray.get(k).put(address,srcTray.get(k).get<dist_t>(address));
+					for (size_t k=0; k<K; ++k) // copy from SRC
+						dstTray.get(k).put(address, srcTray.get(k).get<dist_t>(address));
 				}
 
 			}

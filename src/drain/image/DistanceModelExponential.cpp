@@ -117,20 +117,6 @@ DistanceElement DistanceModelExponential::getElement(short dx, short dy, bool fo
 
 	return DistanceElement(dx, dy, exp(-sqrt(hLog*hLog + vLog*vLog)));
 
-
-	/*
-	if (forward){
-		hLog = static_cast<float>(dx) * log(horzDec.forward);
-		vLog = static_cast<float>(dy) * log(vertDec.forward);
-		return DistanceElement(dx, dy, exp(-sqrt(hLog*hLog + vLog*vLog)));
-	}
-	else {
-		hLog = static_cast<float>(dx) * log(horzDec.backward);
-		vLog = static_cast<float>(dy) * log(vertDec.backward);
-		return DistanceElement(-dx, -dy, exp(-sqrt(hLog*hLog + vLog*vLog)));
-	}
-	*/
-
 }
 
 

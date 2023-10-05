@@ -60,7 +60,9 @@ class DotEntity {
 
 public:
 
-	typedef std::initializer_list<std::pair<const char *,const char *> > init_t;
+	typedef std::initializer_list<std::pair<const char *,const Variable> > init_t;
+	// typedef std::initializer_list<std::pair<const char *,const char *> > init_t;
+
 
 	void setAttributes(const init_t & args);
 
@@ -228,7 +230,7 @@ class DotLink : public DotEntity {
 public:
 
 	inline
-	DotLink(const DotNode &n1, const DotNode &n2, std::initializer_list<std::pair<const char *,const char *> > args = {}): node1(n1), node2(n2){
+	DotLink(const DotNode &n1, const DotNode &n2, init_t args = {}): node1(n1), node2(n2){
 		setAttributes(args);
 	}
 

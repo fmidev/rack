@@ -84,7 +84,7 @@ public:
     inline
     void traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
     	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-    	mout.note() << "discarding alpha channels, redirecting to traverseChannel(src, dst)" << mout.endl;
+    	mout.note("discarding alpha channels, redirecting to traverseChannel(src, dst)");
     	traverseChannel(src, dst);
     };
 
@@ -192,18 +192,18 @@ protected:
 		const double physMax = dst.getConf().requestPhysicalMax(100.0);
 		const double codeMax = dst.getScaling().inv(physMax);
 
-		mout.debug() << "dst of type=" << Type::getTypeChar(dst.getType()) << ", scaling: " << dst.getScaling();
+		mout.debug("dst of type=", Type::getTypeChar(dst.getType()), ", scaling: ", dst.getScaling());
 
 		if (dst.getScaling().isPhysical()){
-			mout.info() << "ok, physical scaling [" << dst.getConf().getPhysicalRange() << "] : ";
+			mout.info("ok, physical scaling [", dst.getConf().getPhysicalRange(), "] : ");
 		}
 		else if (Type::call<typeIsSmallInt>(dst.getType())){
-			mout.note() << "no physical scaling, but small int, guessing: ";
+			mout.note("no physical scaling, but small int, guessing: ");
 		}
 		else {
-			mout.warn() << "no physical scaling, no small int: default ";
+			mout.warn("no physical scaling, no small int: default ");
 		}
-		mout << "physMax=" << physMax << " => " << codeMax << mout.endl;
+		mout.note("physMax=", physMax, " => ", codeMax);
 
 		distanceModel.setMax(codeMax);
 		// distModel.setMax(dst.getMax<double>()); // why not dst
@@ -266,7 +266,7 @@ void DistanceTransformOp<T>::traverseChannel(const Channel &src, Channel & dst) 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	//mout.warn() << "start" << mout.endl;
-	mout.debug() << "model max" << getDistanceModel().getMax() << mout.endl;
+	mout.debug("model max: ",  getDistanceModel().getMax());
 
 	//File::write(dst,"DistanceTransformOp-dst0.png");
 	traverseDownRight(src,dst);
@@ -282,23 +282,23 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	mout.debug() << "start" << mout.endl;
+	//mout.debug() << "start" << mout.endl;
 
 	//const DistanceModel & distModel = getDistanceModel();
-	mout.debug2() << "distModel:" << this->distanceModel << mout.endl;
+	mout.debug2("distModel:", this->distanceModel);
 
 	DistanceNeighbourhood chain;
 	this->distanceModel.createChain(chain, true);
 
 	CoordinateHandler2D coordinateHandler(src); // TODO: change param to ImageConf
-	mout.debug2() << "coordHandler:" << coordinateHandler << mout.endl;
+	mout.debug2("coordHandler:", coordinateHandler);
 
 
 	const ValueScaling src2dst(dst.getConf().getTypeMax<double>()/src.getConf().getTypeMax<double>(), 0);
 	//const ValueScaling src2dst(src.getScaling(), dst.getScaling());
 
 	for (double d: {0.0, 0.5, 1.0, 255.0, 65535.0}){
-		mout.special() << d << " => " << src2dst.fwd(d) << " inv:" << src2dst.inv(d) << mout;
+		mout.special(d, " => ", src2dst.fwd(d), " inv:", src2dst.inv(d));
 	}
 
 	// proximity (inverted distance)
@@ -311,9 +311,6 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	// Point in the target image
 	Point2D<int> p;
 	Point2D<int> pSafe;
-
-	//const Range<int> & xRange = coordinateHandler.getXRange();
-	//const Range<int> & yRange = coordinateHandler.getYRange();
 
 	Range<int> xRange = getHorzRange(coordinateHandler); //coordinateHandler.getXRange();
 	Range<int> yRange = getVertRange(coordinateHandler); // coordinateHandler.getYRange();
@@ -373,16 +370,16 @@ template <class T>
 void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	mout.debug() << "start" << mout.endl;
+	mout.debug("start");
 
 	//const DistanceModel & distModel = getDistanceModel();
-	mout.debug2() << "distModel:" << this->distanceModel << mout.endl;
+	mout.debug2("distModel:", this->distanceModel);
 
 	DistanceNeighbourhood chain;
 	this->distanceModel.createChain(chain, false);
 
 	CoordinateHandler2D coordinateHandler(src);
-	mout.debug2() << "coordHandler:" << coordinateHandler << mout.endl;
+	mout.debug2("coordHandler:", coordinateHandler);
 
 	//const ValueScaling src2dst(src.scaling.scale, src.scaling.offset, dst.scaling.scale, dst.scaling.offset);
 	// const ValueScaling src2dst(src.getScaling(), dst.getScaling());
@@ -403,7 +400,7 @@ void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) co
 	//const Range<int> & yRange = coordinateHandler.getYRange();
 	Range<int> xRange = getHorzRange(coordinateHandler); //coordinateHandler.getXRange();
 	Range<int> yRange = getVertRange(coordinateHandler); // coordinateHandler.getYRange();
-	mout.special() << xRange << ',' << yRange << mout;
+	mout.special(xRange, ',', yRange);
 
 	for (p.y=yRange.max; p.y>=yRange.min; --p.y){
 		for (p.x=xRange.max; p.x>=xRange.min; --p.x){
@@ -468,7 +465,7 @@ class DistanceTransformLinearOp : public DistanceTransformOp<DistanceModelLinear
 public:
 
 	inline
-	DistanceTransformLinearOp(float horz = 10.0, float vert = NAN, DistanceModel::topol_t topology=2) :
+	DistanceTransformLinearOp(float horz = 10.0, float vert = NAN, DistanceModel::topol_t topology = DistanceModel::PIX_ADJACENCY_KNIGHT) :
 	DistanceTransformOp<DistanceModelLinear>(__FUNCTION__, "Linearly decreasing intensities - applies decrements.", horz, vert, topology) {
 	};
 
@@ -496,16 +493,14 @@ public:
 	 *
 	 */
 	inline
-	DistanceTransformExponentialOp(dist_t horz = 10.0, dist_t vert = NAN, DistanceModel::topol_t topology=2) :
+	DistanceTransformExponentialOp(dist_t horz = 10.0, dist_t vert = NAN, DistanceModel::topol_t topology = DistanceModel::PIX_ADJACENCY_KNIGHT) :
 		DistanceTransformOp<DistanceModelExponential>(__FUNCTION__, "Exponentially decreasing intensities. Set half-decay radii.",	horz, vert, topology) {
 	};
 
 };	    
 
-}
-}
+}  // image::
+}  // drain::
 	
 #endif /*DISTANCETRANSFORMOP_H_*/
-
-// Drain
 

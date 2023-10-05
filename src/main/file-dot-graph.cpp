@@ -202,14 +202,11 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 		ostr << drain::DotBullit(index);
 	/// Draw rank fixer   [style=invis]
 	ostr << drain::DotRankNode(index);
-	//ostr << fill << 'R' << id << INVISIBLE << ";\n"; //" [style=invis][shape=ellipse];\n";
-
-	//}
 
 
 	/// Draw egdes
-	bool first = true;
 	int indexPrev = index;
+	bool FIRST = true;
 	for (const auto & entry: group){
 
 		const ODIMPathElem & e = entry.first;
@@ -222,60 +219,38 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 		++index;
 
 		/// Draw rank fixer
-		//ostr << fill << 'R' <<  (id-1) << " -> R" <<  id << ' '<< INVISIBLE << ";\n\n"; // [style=invis]
-
 		drain::DotRankNode rankNode(index);
 
 		ostr << drain::DotLink(drain::DotRankNode(index-1), rankNode, {{"style", "invis"}}); // [style=invis]
 
 		ODIMPath p(path);  // , _')
-		//p.push_back(e);
 		p << e;
-		const std::string subkey = quoted(p);
-		// mout.note("writing: ", p);
+		//const std::string subkey = quoted(p);
 
 		drain::DotBullit idNode(index);
 
 		/// Draw edge
-		// ostr << fill;
-		if (first){
-			// parentNode.setName(key);
-			//ostr << '"' <<  key << '"';
+		if (FIRST){
 			ostr << drain::DotLink(node, idNode, {{"arrowhead","none"}});
-			first = false;
+			FIRST = false;
 		}
-		else {
-			// DotBullit idNodePrev(indexPrev);
-			//parentNode.setName('B' ,indexPrev);
-			//ostr << '"' <<  indexPrev << '"';
+		else
 			ostr << drain::DotLink(drain::DotBullit(indexPrev), idNode, {{"arrowhead","none"}});
-		}
-		// ostr << " -> " <<  id << ARROWLESS << ";\n"; //  [arrowhead=none]
 
-		drain::DotNode subNode(subkey);
+		drain::DotNode subNode(p);
 
-		// ostr << fill << "{rank=same; R" << id << ";  " << id << "; \"" << subkey << "\" };\n";
 		drain::DotRank rank;
 		rank.add(rankNode);
 		rank.add(idNode);
 		rank.add(subNode);
-
 		ostr << rank;
-		// ostr << "{rank=same; " << rankNode.getName() << ";  " << idNode.getName() << "; \"" << subNode.getName() << "\" };\n";
 
 		ostr << drain::DotLink(idNode, subNode);
-
-		// Display variable collector (TOO DETAILED!)
-		/*
-			if (!ROOT)
-				//ostr << fill << quoted(p) << ":ATTR -> " << quoted(path) << ":IMG" << " [weight=0.1, style=dotted, color=gray] ;\n"; // [style=invis]
-				ostr << fill << quoted(p) << " -> " << quoted(path) << "" << " [weight=0.1, style=dotted, color=gray] ;\n"; // [style=invis]
-		 */
-
 		ostr << '\n';
 
 		indexPrev = index;
 
+		// Note: \c index can grow several steps here:
 		writeGroupToDot(ostr, entry.second, index, selector, p);
 
 	}
@@ -301,14 +276,24 @@ void CmdOutputFile::writeDotGraph(const Hi5Tree & src, const std::string & filen
 	std::ostream & ostr = output;
 
 	ostr << "digraph G { \n";
+
 	ostr << "/* group selector (mask)=" << selector << " */  \n"; // consider escaping
 
 	ostr << drain::DotComment("header");
-	drain::DotHeader header({
-		{"rankdir", "TB"},
-		{"ranksep", "0.2"},
-		{"tailport", "s"}});
-	header.setNodeAttributes({{"shape","box"}});
+	drain::DotHeader header(
+		// Graph
+		{
+			{"rankdir", "TB"},
+			{"ranksep", 0.2},
+			{"tailport", "s"}
+		},
+		// Node:
+		{
+			{"shape","box"}
+		}
+	);
+
+	// header.setNodeAttributes({{"shape","box"}});
 	ostr << header;
 
 	writeGroupToDot(output, src, index, selector);

@@ -89,39 +89,5 @@ protected:
 	
 #endif
 
-/*
-	inline
-	float decreaseHorz(float x) const {
-		return static_cast<float>(horzDecay*x);
-	};
-
-	inline
-	float decreaseVert(float x) const {
-		return static_cast<float>(vertDecay*x);
-	};
-
-	inline
-	float decreaseDiag(float x) const {
-		return (diagDecay*x);
-	};
-
-	inline
-	float decreaseKnightHorz(float x) const {
-		return (knightDecayHorz*x);
-	};
-
-	inline
-	float decreaseKnightVert(float x) const {
-		return (knightDecayVert*x);
-	};
-*/
-
-/*
-	float horzDecay;
-    float vertDecay;
-    float diagDecay;
-    float knightDecayHorz;
-    float knightDecayVert;
-*/
 
 // Drain

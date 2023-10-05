@@ -45,29 +45,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
-/*
- *
-template <typename T>
-class Radius : public drain::UniTuple<T,2> {
-public:
-
-	T & forward;
-	T & backward;
-
-	/// Default constructor.
-	Radius(T forward=T(), T backward=T()) : forward(this->at(0)), backward(this->at(1)) {
-		this->set(forward, backward);
-	};
-
-	/// Copy constructor.
-	Radius(const Radius & r) : forward(this->at(0)),  backward(this->at(1)) {
-		this->set(r.forward, r.backward);
-	};
-
-};
-
- */
-
 template <typename T>
 class Bidirectional : public drain::UniTuple<T,2> {
 public:
@@ -103,9 +80,13 @@ class DistanceElement {
 public:
 
 	// Todo: sync with DistanceModel::float
-	//typedef float float;
+	// typedef float float;
 
+	/// A small digital offset, for example {+1,-1} or {-2,+1}
 	const drain::Point2D<short int> diff;
+
+	// Saves connection even with changing weights
+	const float coeff;
 
 	inline
 	DistanceElement(short int di, short int dj, const float coeff) : diff(di,dj), coeff(coeff) {
@@ -119,8 +100,6 @@ public:
 	~DistanceElement(){
 	};
 
-	// Saves connection even with changing weights
-	const float coeff;
 
 };
 
@@ -132,13 +111,12 @@ std::ostream & operator<<(std::ostream &ostr, const DistanceElement & d){
 }
 
 
-//typedef std::list<DistanceElement> DistanceNeighbourhood;
 typedef std::vector<DistanceElement> DistanceNeighbourhood; // faster...
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const DistanceNeighbourhood & chain){
-	for (DistanceNeighbourhood::const_iterator it=chain.begin(); it!=chain.end(); ++it){
-		ostr << *it << '\n';
+	for (const DistanceElement & element: chain){
+		ostr << element << '\n';
 	}
 	return ostr;
 }
