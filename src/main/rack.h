@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.71"
+#define __RACK_VERSION__ "7.72"
 
 /**
+ *   Version 7.72
+ *   -- Revised drain::Path design (variadic templates)
+ *
  *   Version 7.71
  *   -- Revised DotGraph output
  *   -- Revised & fixed combining of input quality fields

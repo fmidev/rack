@@ -47,18 +47,24 @@ namespace hi5 {
 
 const drain::FileInfo fileInfo("h5|hdf5|hdf");
 
+drain::Log & getLogH5(){
+	static
+	drain::Log hi5monitor;
+	return hi5monitor;
+}
+
 
 //void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 
 void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
 
 	/// show only "big" groups explicitly?
 	/// if (prefix.back().belongsTo(...))
 	/// or Uncomment:
-	//if (attributes.empty() && dataSet.isEmpty()){
-	//if (!prefix.empty())
+	//  if (attributes.empty() && dataSet.isEmpty()){
+	//  if (!prefix.empty())
 	ostr << prefix;
 	if (noSave)
 		ostr << '~';
@@ -107,9 +113,9 @@ std::ostream &operator<<(std::ostream &ostr,const hi5::NodeHi5 &n){
 
 //Hi5Error Hi5Base::debug;
 //drain::Log Hi5Base::hi5monitor;
-//drain::Logger Hi5Base::hi5mout(Hi5Base::hi5monitor,"hi5");
+//drain::Logger Hi5Base::mout(Hi5Base::hi5monitor,"hi5");
 drain::Log hi5monitor;
-drain::Logger hi5mout(hi5monitor,"Hi5");
+drain::Logger mout(hi5monitor,"Hi5");
 
 
 void Hi5Base::handleStatus(herr_t status, const std::string & message, drain::Logger &mout, int lineNo){
@@ -124,11 +130,14 @@ void Hi5Base::handleStatus(herr_t status, const std::string & message, drain::Lo
 
 }
 
+
+
+
 // https://support.hdfgroup.org/HDF5/doc/RM/PredefDTypes.html
 hid_t Hi5Base::getH5StandardType(const std::type_info & type){
 
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
 
 	typedef drain::DictionaryPtr<hid_t, const std::type_info> dict_t;
 
@@ -173,9 +182,10 @@ hid_t Hi5Base::getH5StandardType(const std::type_info & type){
 
 hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
 
+	drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
 
 	if (type == typeid(bool)){  // does not work
-		hi5mout.warn() << __FUNCTION__ << ": boolean type '" << type.name() << "' currently unsupported" << hi5mout.endl;
+		mout.warn() << __FUNCTION__ << ": boolean type '" << type.name() << "' currently unsupported" << mout.endl;
 		return H5T_NATIVE_HBOOL; // experimental
 	}
 	else if (type == typeid(char)){
@@ -217,12 +227,12 @@ hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
 		return H5T_NATIVE_DOUBLE;
 	}
 	else if (type == typeid(const char *)){
-		// hi5mout.unimplemented(__FUNCTION__, "code not tested for (type==const char *)");
+		// mout.unimplemented(__FUNCTION__, "code not tested for (type==const char *)");
 		return getH5StringVariableLength();
 		//return H5T_NATIVE_UCHAR; /// TODO
 	}
 	else if (type == typeid(void)){
-		hi5mout.warn(__FUNCTION__, "void type requested, setting string type");
+		mout.warn(__FUNCTION__, "void type requested, setting string type");
 		throw std::runtime_error("Requested void type attribute");
 		return getH5StringVariableLength();
 		//return H5T_NATIVE_UCHAR; /// TODO
@@ -233,7 +243,7 @@ hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
 	}
 	*/
 	else {
-		hi5mout.error(__FUNCTION__, ": unsupported data type:'", type.name(),'\'', hi5mout.endl);
+		mout.error(__FUNCTION__, ": unsupported data type:'", type.name(),'\'', mout.endl);
 		return H5T_NATIVE_UCHAR; /// TODO
 	}
 
@@ -246,7 +256,7 @@ hid_t Hi5Base::getH5StringVariableLength(){
 
 	//herr_t status =
 	H5Tset_size(strtype, H5T_VARIABLE);
-	//if (status < 0)hi5mout.error() << "H5T_C_S1 => H5Tset_size failed " << hi5mout.endl;
+	//if (status < 0)mout.error() << "H5T_C_S1 => H5Tset_size failed " << mout.endl;
 	return strtype;
 
 }
@@ -442,28 +452,44 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 
 }
 
+// Marks CHILDREN of src for deleting
+void Hi5Base::markNoSave(Hi5Tree &src, bool noSave){
+
+	//drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+	for (auto & entry: src) {
+		//if (it->first.isIndexed()){
+		//if (!entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+			entry.second.data.noSave = noSave;
+			markNoSave(entry.second, noSave);
+		//}
+	}
+
+}
 
 
 void Hi5Base::deleteNoSave(Hi5Tree &src){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	rack::ODIMPath l;
+	//rack::ODIMPath l;
+	std::list<Hi5Tree::path_t::elem_t> elems;
 
-	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
-		if (! it->second.data.noSave){ // needed?
+	//for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
+	for (auto & entry: src) {
+		if (! entry.second.data.noSave){ // needed?
 			//mout.debug2() << "delete: " <<  it->first << mout.endl;
-			deleteNoSave(it->second);
+			deleteNoSave(entry.second);
 		}
 		else {
-			l.push_back(it->first);
+			elems.push_back(entry.first);
 		}
 	}
 
-	for (rack::ODIMPath::const_iterator it = l.begin(); it != l.end(); ++it){
+	for (const rack::ODIMPathElem & elem: elems){
 		Hi5Tree::path_t p;
-		p << *it;
-		mout.debug2() << "delete group: " <<  *it << mout.endl;
+		p << elem;
+		mout.debug2("delete group: ", elem);
 		src.erase(p);
 	}
 
@@ -486,7 +512,7 @@ void Hi5Base::markNoSave(Hi5Tree &src, bool noSave){
 
 
 std::ostream & operator<<(std::ostream &ostr, const Hi5Tree & tree){
-	drain::TreeUtils::dump(tree, ostr, nullptr);
+	drain::TreeUtils::dump(tree, ostr, (bool (*)(const typename Hi5Tree::node_data_t&, std::ostream&))nullptr);
 	// tree.dump(ostr);
 	return ostr;
 }

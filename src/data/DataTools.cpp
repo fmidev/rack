@@ -120,6 +120,20 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 }
 
 
+void DataTools::markNoSave(Hi5Tree &src, bool noSave){
+
+	// drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+
+	for (auto & entry: src) {
+		//if (it->first.isIndexed()){
+		if (!entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+			entry.second.data.noSave = noSave;
+			markNoSave(entry.second, noSave);
+		}
+	}
+
+}
+
 
 bool DataTools::removeIfNoSave(Hi5Tree & dst){
 	if (dst.data.noSave){

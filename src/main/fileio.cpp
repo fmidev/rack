@@ -498,10 +498,15 @@ drain::VariableMap CmdOutputTree::attributes = {
 		{"format", "vt100"}, // "txt", "html" ?
 		{"image", "BLUE"},
 		{"data", "BOLD"},
+		{"object", "WHITE"},
 		{"quantity", "BOLD:GREEN"},
 		{"date", "RED:UNDERLINE"},
 		{"time", "RED"},
 		{"source", "YELLOW:DIM"},
+		{"lon", "YELLOW:DIM"},
+		{"lat", "YELLOW:DIM"},
+		{"xsize", "YELLOW:DIM"},
+		{"ysize", "YELLOW:DIM"},
 		{"elangle", "ITALIC:YELLOW"},
 		{"gain", "ITALIC:YELLOW"},
 		{"offset", "ITALIC:YELLOW"},
@@ -533,16 +538,19 @@ bool CmdOutputTree::dataToStream(const Hi5Tree::node_data_t & data, std::ostream
 	drain::TextDecorator & decorator = attrs.get("format", "") == "vt100" ? vt100Deco : noDeco;
 	decorator.setSeparator(":");
 
+	if (data.noSave){
+		ostr << "~";
+		return false;
+	}
+
 	const drain::image::ImageFrame & img = data.dataSet;
 	if (!img.isEmpty()){
 		// if (data.attributes.hasKey("image")){
-			//decorator.begin(ostr, "YELLOW");
-			ostr << img.getWidth() << ',' << img.getHeight() << ' ';
-			ostr << drain::Type::call<drain::compactName>(img.getType());
-			ostr << '[' << (8*drain::Type::call<drain::sizeGetter>(img.getType())) << ']';
-			//decorator.end(ostr);
-			//<< drain::Type::call<drain::complexName>(img.getType());
-			empty = false;
+		ostr << img.getWidth() << ',' << img.getHeight() << ' ';
+		ostr << drain::Type::call<drain::compactName>(img.getType());
+		ostr << '[' << (8*drain::Type::call<drain::sizeGetter>(img.getType())) << ']';
+		//<< drain::Type::call<drain::complexName>(img.getType());
+		empty = false;
 		//}
 	}
 	// else ...

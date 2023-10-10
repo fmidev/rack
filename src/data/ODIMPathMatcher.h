@@ -190,18 +190,19 @@ public:
 	/// Almost copy constructor
 	ODIMPathMatcher(const std::string & path){
 		separator.acceptTrailing = true;
-		assign(path);
+		set(path);
+		//assign(path);
 	}
 
 	/// Almost copy constructor
 	ODIMPathMatcher(const char * path){
 		separator.acceptTrailing = true;
-		assign(path);
+		set(path);
+		// assign(path);
 	}
 
 	/// Resolves "where|where"
-	//void parse(const std::string & path);
-
+	//  void parse(const std::string & path);
 
 	/// If neither end has an empty element (appearing as slash), add one, to root.
 	bool ensureLimitingSlash();

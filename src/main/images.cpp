@@ -1148,7 +1148,7 @@ public:
 		//std::map<std::string,std::string> m;
 		DataSelector selector; //("data[0-9]+$");
 		selector.consumeParameters(ctx.select);
-		selector.pathMatcher.setElems(ODIMPathElem::DATA); // | ODIMPathElem::QUALITY);
+		selector.pathMatcher.set(ODIMPathElem::DATA); // | ODIMPathElem::QUALITY);
 		mout.debug() << "selector: " << selector << mout.endl;
 
 		//  selector.getPaths(*ctx.currentHi5, paths); // RE2 // todo getFirstData
@@ -1181,7 +1181,7 @@ public:
 			ODIMPath path;
 			mout.unimplemented() << "note: checking parallel quality unimplemented" << mout.endl;
 			DataSelector qualityDataSelector;
-			qualityDataSelector.pathMatcher.setElems(ODIMPathElem::QUALITY, ODIMPathElem::ARRAY);
+			qualityDataSelector.pathMatcher.set(ODIMPathElem::QUALITY, ODIMPathElem::ARRAY);
 			if (qualityDataSelector.getPath(dst, path)){
 			//if (DataSelector::getQualityPath(*ctx.currentHi5, path)){
 				//path << ODIMPathElem(ODIMPathElem::ARRAY);

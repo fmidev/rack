@@ -99,7 +99,7 @@ void FilePath::set(const std::string & s){
 
 			if (result.size() == 4){
 				// this->dir.assign(result[2]);  // excludes trailing separator '/'
-				this->dir.assign(result[2]);     // includes trailing separator '/'
+				this->dir.set(result[2]);     // includes trailing separator '/'
 				this->basename  = result[3];
 			}
 			else if (result.size() == 2){

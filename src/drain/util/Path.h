@@ -115,15 +115,62 @@ public:
 
 	typedef T elem_t;
 
-	typedef std::list<Path<T> > list_t;
+	typedef Path<T,SEP,ALEAD,AREPEAT,ATRAIL> path_t;
+
+	typedef std::list< path_t > list_t;
 
 	const PathSeparatorPolicy separator;
 
-	/// Initialize with given path
+	inline
+	Path() : separator(SEP, ALEAD, AREPEAT, ATRAIL){
+	};
+
+	template <typename ... TT>
+	inline
+	Path(const path_t & arg, const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: separator(separator) {
+		append(arg, args...);
+	};
+
+	///
+	template <typename ... TT>
+	inline
+	Path(const std::string & arg, const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: separator(separator) {
+		append(arg, args...);
+	};
+
+	template <typename ... TT>
+	inline
+	Path(const char * arg, const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: separator(separator) {
+		append(arg, args...);
+		//assign(s); // , sep) <- consider split here!
+	};
+
+	///
+	/*
+	template <typename ... TT>
+	inline
+	Path(const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: separator(separator) {
+		append(args...);
+	};
+	*/
+
+	/// Copy constructor.
+	inline
+	Path(const path_t & p) : std::list<T>(p), separator(p.separator){
+	};
+
+	/// Initialize with a given path.
+	/*
 	inline
 	Path(const std::string & s="") : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: separator(separator) {
-		appendPath(s, 0);
+		_appendPath(s, 0);
 		//assign(s); // , sep) <- consider split here!
+	};
+
+	/// Initialize with a given path.
+	inline
+	Path(const char *s) : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: s, char separator='/') : separator(separator) {
+		_appendPath(s, 0); //assign(s);
 	};
 
 	// Either this or previous is unneeded?
@@ -131,40 +178,84 @@ public:
 	Path(const elem_t &elem, const TT &... rest){
 		appendElems(elem, rest...);
 	}
+	*/
 
-
-	inline
-	Path(const char *s) : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: s, char separator='/') : separator(separator) {
-		appendPath(s, 0); //assign(s);
-	};
-
-	/// Copy constructor. Note: copies also the separator.
-	inline
-	Path(const Path<T> & p) : std::list<T>(p), separator(p.separator){
-	};
 
 
 	virtual inline
 	~Path(){};
 
+	// Design principle: handle all strings as paths.
+	// This means that if path elements are strings, assigning elements goes through an extra path check.
+	// If string arguments were accepted directly as elements, separator characters could be passed in the elements.
 
-	/// Note that an empty path is not a root.
-	//  Todo: also accept empty path as a root? Perhaps no, because appending may cause relative.
+	template <typename ... TT>
+	void set(const TT &... args) {
+		this->clear();
+		append(args...);
+	}
+
+	/// Append path with element(s), path(s) or string(s).
+	template <typename T2, typename ... TT>
+	void append(const T2 & arg, const TT &... args) {
+		_append(arg);
+		//_appendPath(arg);
+		append(args...);
+	}
+
+	template <typename ... TT>
+	void append(const path_t &p, const TT &... args) {
+		//appendPath(p);
+		this->insert(this->end(), p.begin(), p.end());
+		append(args...);
+	}
+
+	template <typename ... TT>
+	void append(const char * arg, const TT &... args) {
+		_appendPath(arg, 0);
+		append(args...);
+	}
+
+	template <typename ... TT>
+	void append(const std::string &arg, const TT &... args) {
+		_appendPath(arg, 0);
+		append(args...);
+	}
+
+
+	/// "Default" append function.
+	void _append(const elem_t &elem){
+		appendElem(elem);
+	}
+
+
+	//  Handler for all the rest (non elem_t) arguments.
+	/// Handler for all the rest args, assumed convertable to elem_t.
+	template <typename T2>
+	void _append(const T2 & p){
+		appendElem(p);
+		//_appendPath(p);
+	}
+
+	/// Specialized handler for strings (note, possibly: elem_t==std:::string)
 	inline
-	bool isRoot() const {
-		return ((this->size()==1) && this->front().empty());
-		//return separator.acceptLeading && ((this->size()==1) && this->front().empty());
+	void appendPath(const char *p){
+		_appendPath(p, 0);
 	}
 
-	/// Removes trailing empty elements, except for the root itself.
-	void removeTrailing(){
-		if ((this->size() > 1)){
-			if (this->back().empty()){
-				this->pop_back();
-				removeTrailing();
-			}
-		}
+
+
+
+	/// Specialized handler for args which are not 1) elems, 2) strings or 3) paths?
+	/*
+	template <typename T2>
+	void appendNewSub(const T & p){
+		std::stringstream sstr;
+		sstr << p;
+		appendPath(p.str(),0);
 	}
+	*/
+
 
 	/// Main method for adding elements.
 	void appendElem(const elem_t & elem){
@@ -198,6 +289,7 @@ public:
 
 	};
 
+	/*
 	template<typename ... TT>
 	void appendElems(const elem_t & elem, const TT &... rest) {
 		appendElem(elem);
@@ -210,35 +302,32 @@ public:
 		this->clear();
 		appendElems(elem, rest...);
 	}
+	*/
 
-	/// Extract elements from the string, starting at position i.
-	void appendPath(const std::string & p, size_t start=0){
-
-		if (start == p.length()){
-			// Last char in the string has been passed by one, meaning that: previous elem was empty
-			// That is: the previous char was a separator.
-			appendElems(elem_t()); // Try to append empty.
-			return;
-		}
-
-		// Append next segment, ie. up to next separator char.
-		size_t nextSep = p.find(separator.character, start);
-
-		// Remaining string...
-		if (nextSep==std::string::npos){
-			// ... is a single element
-			appendElem(p.substr(start));
-			return;
-		}
-		else {
-			// ... contains separator, hence contains several elements
-			appendElem(p.substr(start, nextSep - start)); // maybe empty, nextSep==start
-			appendPath(p, nextSep + 1);
-		}
-
+	/// Note that an empty path is not a root.
+	//  Todo: also accept empty path as a root? Perhaps no, because appending may cause relative.
+	inline
+	bool isRoot() const {
+		return ((this->size()==1) && this->front().empty());
+		//return separator.acceptLeading && ((this->size()==1) && this->front().empty());
 	}
 
+
+
+	/// Removes trailing empty elements, except for the root itself.
+	void removeTrailing(){
+		if ((this->size() > 1)){
+			if (this->back().empty()){
+				this->pop_back();
+				removeTrailing();
+			}
+		}
+	}
+
+public:
+
 	/// Replaces the full path
+	/*
 	void assign(const std::string & p){
 
 		// Assignment could be done directly, if all accepted:
@@ -252,17 +341,18 @@ public:
 		if (p.empty())
 			return;
 
-		appendPath(p, 0);
-
+		_appendPath(p, 0);
 
 	}
+	*/
 
 	/// Assigns a path directly with std::list assignment.
 	/**
 	 *  Should be safe, because separator policy is the same.
 	 */
-	Path<T> & operator=(const Path<T> & p){
-		std::list<T>::operator=(p);
+	 path_t & operator=(const  path_t & p){
+		set(p);
+		// std::list<T>::operator=(p);
 		//return assignPa(*this);
 		return *this;
 	}
@@ -272,47 +362,62 @@ public:
 	 *   Does separator checking, trims leading or trailing paths if needed.
 	 */
 	template <class T2>
-	Path<T> & operator=(const Path<T2> & p){
+	 path_t & operator=(const Path<T2> & p){
+		set(p);
+		/*
 		this->clear();
 		for (typename Path<T2>::const_iterator it = p.begin(); it != p.end(); ++it) {
 			appendElems(*it);
-		}
+		}*/
 		return *this;
 	}
 
 
 	inline
-	Path<T> & operator=(const std::string & p){
-		assign(p);
+	 path_t & operator=(const std::string & p){
+		set(p);
+		//assign(p);
 		return *this;
 	}
 
 	inline
-	Path<T> & operator=(const char *p){
-		assign(p);
+	 path_t & operator=(const char *p){
+		set(p);
+		//assign(p);
 		return *this;
 	}
 
 	// Note: this would be ambiguous!
 	// If (elem_t == std::string), elem cannot be assigned directly, because string suggest full path assignment, at least
-	// Path<T> & operator=(const elem_t & e)
+	//  path_t & operator=(const elem_t & e)
 
 	/// Append an element, unless empty string.
 	/*
 	inline
-	Path<T> & operator<<(const char *elem){
+	 path_t & operator<<(const char *elem){
 		*this <<
 	}
 	*/
 
+
+	// TODO: replace these with single
+	/*
+	template <class T2>
+	path_t & operator<<(const T2 & arg){
+		append(args);
+		return *this;
+	}
+	*/
+
+
 	/// Append an element. If path is rooted, allows empty (root) element only as the first.
-	Path<T> & operator<<(const elem_t & elem){
+	 path_t & operator<<(const elem_t & elem){
 		appendElem(elem);
 		return *this;
 	}
 
 	inline
-	Path<T> & operator<<(const Path<T> & path){
+	 path_t & operator<<(const  path_t & path){
 		this->insert(this->end(), path.begin(), path.end());
 		return *this;
 	}
@@ -320,14 +425,14 @@ public:
 
 	// Experimental
 	template <class T2>
-	Path<T> & operator<<(const T2 & strlike){
+	 path_t & operator<<(const T2 & strlike){
 		appendPath((const std::string &) strlike);
 		return *this;
 	}
 
 
 	/// Extract last element.
-	Path<T> & operator>>(elem_t & e){
+	 path_t & operator>>(elem_t & e){
 		e = this->back();
 		this->pop_back();
 		return *this;
@@ -374,7 +479,7 @@ public:
 		ostr << "Path elems:" << this->size() << " sep:" << separator << " typeid: " << typeid(T).name() << "\n";
 		ostr << *this << '\n';
 		int i=0;
-		for (typename Path<T>::const_iterator it = this->begin(); it != this->end(); ++it) {
+		for (typename  path_t::const_iterator it = this->begin(); it != this->end(); ++it) {
 			//if (it->empty())
 			//	ostr << "  " << i << '\t' << "{empty}" << '\n';		//else
 			ostr << "    " << i << '\t' << *it << '\n';
@@ -385,13 +490,48 @@ public:
 
 protected:
 
+	/// Extract elements from the string, starting at position i.
+	void _appendPath(const std::string & p, size_t start=0){
+
+		if (start == p.length()){
+			// Last char in the string has been passed by one, meaning that: previous elem was empty
+			// That is: the previous char was a separator.
+			//appendElems(elem_t()); // Try to append empty.
+			appendElem(elem_t()); // Try to append empty.
+			return;
+		}
+
+		// Append next segment, ie. up to next separator char.
+		size_t nextSep = p.find(separator.character, start);
+
+		// Remaining string...
+		if (nextSep==std::string::npos){
+			// ... is a single element
+			appendElem(p.substr(start));
+			return;
+		}
+		else {
+			// ... contains separator, hence contains several elements
+			appendElem(p.substr(start, nextSep - start)); // maybe empty, nextSep==start
+			_appendPath(p, nextSep + 1);
+		}
+
+	}
+
+
+protected:
+
 	/// Terminal function for variadic templates
-	void appendElems(){
+	void append(){
 	}
 
 	/// Terminal function for variadic templates
-	void setElems(){
-	};
+	//void appendElems(){
+	//}
+
+	/// Terminal function for variadic templates
+	//void setElems(){
+	// };
 
 };
 
@@ -403,9 +543,10 @@ std::ostream & operator<<(std::ostream & ostr, const Path<T,SEP,ALEAD,AREPEAT,AT
 	return p.toStream(ostr);
 }
 
-template <class T>
+
+template <class T, char SEP='/', bool ALEAD=true, bool AREPEAT=false, bool ATRAIL=true>
 inline
-std::istream & operator>>(std::istream &istr, Path<T> & p) {
+std::istream & operator>>(std::istream &istr, Path<T,SEP,ALEAD,AREPEAT,ATRAIL> & p) {
 	std::string s;
 	istr >> s;
 	p = s;

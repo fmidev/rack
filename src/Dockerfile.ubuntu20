@@ -11,7 +11,8 @@ COPY install-rack-docker-ubuntu20.cnf /rack/install-rack.cnf
 # Build: after this the binary is in rack/Release/rack and also copied to /usr/local/bin
 WORKDIR /rack
 
-RUN apt-get update && \
+ARG APT_PROXY
+RUN apt-get ${APT_PROXY} update && \
     apt-get -y install \
         g++ \
         make \

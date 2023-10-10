@@ -199,7 +199,7 @@ public:
 
 	template <class T>
 	static
-	bool dataDumperX(const T & data, std::ostream &ostr){
+	bool dataDumper(const T & data, std::ostream &ostr){
 		ostr << data << '*';
 		return true;
 	}
@@ -215,7 +215,7 @@ public:
 	static
 	//void dump(const TR & tree, std::ostream &ostr = std::cout, bool nodes=false, const std::string &  indent="") { // int depth = 0) const {
 	bool dump(const TR & tree, std::ostream &ostr = std::cout,
-			bool (* callBack)(const typename TR::node_data_t &, std::ostream &) = dataDumperX, const std::string &  indent="") { // int depth = 0) const {
+			bool (* callBack)(const typename TR::node_data_t &, std::ostream &) = TreeUtils::dataDumper, const std::string &  indent="") { // int depth = 0) const {
 
 		// https://www.w3.org/TR/xml-entity-names/025.html
 		/*

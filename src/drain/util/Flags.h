@@ -876,9 +876,13 @@ class MultiFlagger : public FlaggerBase<E> {
 
 public:
 
+	/// Fundamental type – in this case an enum.
 	typedef typename FlaggerBase<E>::value_t value_t;
+
 	typedef FlaggerDict dict_t;
+	/// Fundamental type of the bitvector - an integral type.
 	typedef typename dict_t::key_t key_t; // ~string
+	/// Fundamental type of the bitvector - an integral type.
 	typedef typename dict_t::value_t dvalue_t;
 
 	inline

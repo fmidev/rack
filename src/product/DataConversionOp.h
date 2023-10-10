@@ -91,7 +91,8 @@ public:
 		this->allowedEncoding.link("what:undetect", this->odim.undetect = undetect);
 		this->allowedEncoding.link("what:nodata", this->odim.nodata = nodata);
 
-		this->dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET, ODIMPathElem::DATA);
+		//this->dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET, ODIMPathElem::DATA);
+		this->dataSelector.pathMatcher.set(ODIMPathElem::DATASET, ODIMPathElem::DATA);
 
 	}
 

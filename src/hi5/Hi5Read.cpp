@@ -41,157 +41,153 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace hi5 {
 
-//const
-//const int Reader::ATTRIBUTES(1);
-//const
-//const int Reader::DATASETS(2);Reader::Mode::
-
-//const drain::SingleFlagger<Reader::Mode>::dict_t Reader::dict = {{"ATTRIBUTES", ATTRIBUTES}, {"DATASETS", DATASETS}};
-//const drain::SingleFlagger<Mode>::dict_t dict;
-
-//template <>
-//const Reader::ModeFlagger::dict_t Reader::ModeFlagger::dict = {{"ATTRIBUTES", hi5::Reader::ATTRIBUTES}, {"DATASETS", hi5::Reader::DATASETS}};
-// const drain::SingleFlagger<Reader::Mode>::dict_t drain::SingleFlagger<Reader::Mode>::dict = {{"ATTRIBUTES", hi5::Reader::ATTRIBUTES}, {"DATASETS", hi5::Reader::DATASETS}};
 
 template <>
-const drain::FlaggerDict drain::EnumDict<Reader::Mode>::dict = {{"ATTRIBUTES", hi5::Reader::ATTRIBUTES}, {"DATASETS", hi5::Reader::DATASETS}};
+const drain::FlaggerDict drain::EnumDict<Reader::Mode>::dict = {
+		{"ATTRIBUTES", hi5::Reader::ATTRIBUTES},
+		{"DATASETS", hi5::Reader::DATASETS},
+		{"MARKED", hi5::Reader::MARKED}
+};
 
 
-void Reader::readFile(const std::string & filename, Hi5Tree & tree, int mode) {
+void Reader::readFile(const std::string & filename, Hi5Tree & tree, ModeFlagger::dvalue_t mode) {
 
-	drain::Logger mout(hi5::hi5monitor, __FUNCTION__, __FILE__);
+	drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
 
-	// mout.warn() << "Mode: " << mode << mout.endl;
-
-	tree.clear();
+	if ((mode & MARKED) > 0){
+		mout.experimental("Selective read: mode: ", mode);
+	}
+	else {
+		tree.clear();
+	}
 
 	hid_t fid = H5Fopen(filename.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
-
-	if (fid < 0){
-		mout.error("H5Fopen failed for file='", filename, "'");
-		return;
-	}
+	handleStatus<LOG_ERR>(mout, fid, "H5Fopen failed for file=", filename, __LINE__);
 
 	h5FileToTree(fid, tree, mode);
 
 	int status = H5Fclose(fid);
-
-	if (status < 0){
-		mout.warn("H5Fclose failed for file='", filename, "'");
-	}
-
-	//tree.dump();
-	//hi5::debug(tree);
+	handleStatus<LOG_WARNING>(mout, status, "H5Fclose failed for file=", filename, __LINE__);
 
 }
 
 
-/// Recursive  , const std::string &path
-void Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t & path, Hi5Tree & tree, int mode){
+void
+Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, ModeFlagger::dvalue_t mode)  { //  = (ATTRIBUTES | DATASETS)
 
-	//drain::Logger mout(hi5::hi5monitor, __FUNCTION__, __FILE__);
-	drain::Logger mout(__FUNCTION__, __FILE__);
-	// drain::Logger mout(hi5monitor, "Reader::readFile");
+	drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
 
 
-	//static const std::string _func = "Reader::h5FileToTree";
+	if (path.empty()) {
+		mout.error("path empty");
+		return;
+	}
+
+	if (!path.front().isRoot()) {
+		mout.error("path does not start with root: ", path);
+		return;
+	}
+
+	// mout.experimental("start ", path);
+	// mout.warn("Me selective? : mode=", mode, " noSave=", tree.data.noSave, ", path: ", path);
+
 	int status = 0;
 
-	// std::cerr << "Deeper" << __FUNCTION__ << ':' << path << std::endl;
-	// path.debug();
 
-	//if (path=="/"){
-	if (path.empty()){
-		mout.error() << "path empty" << mout.endl;
-		return;
-	}
-
-	if (!path.front().isRoot()){
-		mout.error() << "path does not start with root: " << path << mout.endl;
-		return;
-		//mout.warn() << "path empty" << mout.endl;
-	}
-
-	if (path.size() == 1){ // ROOT
-		// if (path == ""){
-		if (mode & ATTRIBUTES)
-			H5Aiterate2(file_id, H5_INDEX_NAME,H5_ITER_NATIVE, NULL, &iterate_attribute, &(hi5::NodeHi5 &)tree);
-			//herr_t H5Aiterate2( hid_t obj_id, H5_index_t idx_type, H5_iter_order_t order, hsize_t *n, H5A_operator2_t op, void *op_data, )
+	if (path.size() == 1) { // ROOT
+		if (mode & ATTRIBUTES){
+			status = H5Aiterate2(file_id, H5_INDEX_NAME, H5_ITER_NATIVE, NULL, &iterate_attribute, &(hi5::NodeHi5&) tree);
+		}
+		handleStatus<LOG_WARNING>(mout, status, "H5Giterate2 failed for ROOT, path=", path);
+		//herr_t H5Aiterate2( hid_t obj_id, H5_index_t idx_type, H5_iter_order_t order, hsize_t *n, H5A_operator2_t op, void *op_data, )
 		// status = H5Giterate(file_id, "/", NULL, &iterate, &tree);
 	}
 	//else
 	/*
-	mout.warn() << path << mout.endl;
-	mout.warn() << path.str() << mout.endl;
-	mout.warn() << path.str().c_str() << mout.endl;
+	 mout.warn() << path << mout.endl;
+	 mout.warn() << path.str() << mout.endl;
+	 mout.warn() << path.str().c_str() << mout.endl;
+	 */
+	/*
+	mout.warn("Selective? : ", path, "/ *... (", tree.getChildren().size(), ") children");
+	for (auto & entry : tree(path)) {
+		mout.warn("Selective? : noSave=", entry.second.data.noSave, ", elem: ", entry.first);
+	}
 	*/
 
 	status = H5Giterate(file_id, path.str().c_str(), NULL, &iterate, &tree);
-	//status = H5Giterate(file_id, static_cast<std::string>(path).c_str(), NULL, &iterate, &tree);
-	//status = H5Giterate(file_id, path.c_str(), NULL, &iterate, &tree);
-
-	if (status < 0)
-		mout.warn() << "H5Giterate failed, path=" << path << mout.endl;
+	handleStatus<LOG_WARNING>(mout, status, "H5Giterate failed, path=", path, __LINE__);
 
 	H5G_stat_t info;
 
-	//for (Hi5Tree::iterator it = tree.begin(); it != tree.end(); ++it) {
-	for (auto & entry: tree) {
+	//for (auto & entry : tree) {
+	for (auto & entry : tree) { // no use iterate only subtrees?
 
-		const Hi5Tree::path_t::elem_t & child = entry.first;
+		const Hi5Tree::path_t::elem_t & elem = entry.first;
 
 		Hi5Tree & subtree = entry.second;
-		//const std::string p = path + separator+ child;
-		Hi5Tree::path_t p(path);
-		p << child;
+
+		Hi5Tree::path_t p(path); //, elem);
+		p << elem;
 		std::string pStr(p);
 
+		// std::cerr << "Deeper " << __FUNCTION__ << ':' << p << std::endl;
+		// mout.warn("Selective? : mode=", mode, " noSave=", subtree.data.noSave, ", path: ", p);
+
+		if (((mode & MARKED) > 0) && (subtree.data.noSave)) {
+			mout.warn("Selective read: skipping ", p);
+			continue;
+		}
+
 		//mout.note() << "traversing: " << p << " mode=" << mode << mout.endl;
-		mout.debug3() << "traversing: " << pStr << mout.endl;
+		mout.debug3("traversing: ", pStr);
 
 		status = H5Gget_objinfo(file_id, pStr.c_str(), false, &info);
-		//hi5monitor.note() << _func << ": called  H5Gget_objinfo, path=" << p << hi5monitor.endl;
-		if (status < 0)
-			mout.warn() << ": H5Gget_objinfo failed, path=" << p << mout.endl;
+		handleStatus<LOG_ERR>(mout, status, "H5Gget_objinfo failed, path=", p, __LINE__);
 
 		hid_t g = 0; // = H5Gopen(file_id,p.c_str()); // check if group
 		switch (info.type) {
-			case H5G_GROUP:
-				g = H5Gopen2(file_id, pStr.c_str(), H5P_DEFAULT);
-				if (g < 0)
-					mout.warn() << ": H5Gopen failed, path=" << p << mout.endl;
-				if (mode & ATTRIBUTES)
-					status = H5Aiterate2(g, H5_INDEX_NAME, H5_ITER_NATIVE, NULL, &iterate_attribute,&(hi5::NodeHi5 &)subtree);
-					//status = H5Aiterate(g,NULL,&iterate_attribute,&(hi5::NodeHi5 &)subtree);
-				if (status < 0)
-					mout.warn() << ": H5Aiterate failed, path=" << p << mout.endl;
+		case H5G_GROUP:
+			g = H5Gopen2(file_id, pStr.c_str(), H5P_DEFAULT);
+			handleStatus<LOG_WARNING>(mout, g, "H5Gopen2 failed, path=", p, __LINE__);
+			// if (g < 0) mout.warn() << ": H5Gopen failed, path=" << p << mout.endl;
 
-				// Recursion continues:
-				h5FileToTree(file_id, p, subtree, mode);
+			if (mode & ATTRIBUTES){
+				status = H5Aiterate2(g, H5_INDEX_NAME, H5_ITER_NATIVE, NULL,
+						&iterate_attribute, &(hi5::NodeHi5&) subtree);
+				//status = H5Aiterate(g,NULL,&iterate_attribute,&(hi5::NodeHi5 &)subtree);
+				handleStatus<LOG_WARNING>(mout, status, "H5Aiterate failed, path=", p, __LINE__);
+			}
 
-				status = H5Gclose(g);
-				if (status < 0)
-					mout.warn() << "H5Gclose failed, path=" << p << mout.endl;
+			// Recursion continues:
+			h5FileToTree(file_id, p, subtree, mode);
 
-				// Recursion continues:
-				//h5FileToTree(file_id, p, subtree, mode);
+			status = H5Gclose(g);
+			handleStatus<LOG_WARNING>(mout, status, "H5Gclose failed, path=", p, __LINE__);
 
-				break;
+			// Recursion continues:
+			//h5FileToTree(file_id, p, subtree, mode);
 
-			case H5G_DATASET:
-				if (mode & DATASETS){
-					if (child.is(rack::ODIMPathElem::LEGEND)){
-						mout.unimplemented() << "skipping legend (group) in path=" << p << mout.endl;
-					}
-					else {
-						//mout.startTiming("h5DatasetToImage");
-						h5DatasetToImage(file_id, p ,((hi5::NodeHi5 &)subtree).dataSet);
-					}
+			break;
+
+		case H5G_DATASET:
+			if (mode & DATASETS) {
+				if ( elem.is(rack::ODIMPathElem::LEGEND)) {
+					mout.unimplemented()
+									<< "skipping legend (group) in path=" << p
+									<< mout.endl;
+				} else {
+					//mout.startTiming("h5DatasetToImage");
+					h5DatasetToImage(file_id, p,
+							((hi5::NodeHi5&) subtree).dataSet);
 				}
-				break;
-			default:
-				mout.warn("H5Gget_objinfo unknown type – no group or dataset, path=", p);
-				break;
+			}
+			break;
+		default:
+			mout.warn(
+					"H5Gget_objinfo unknown type – no group or dataset, path=",
+					p);
+			break;
 		}
 		// TODO: read attributes
 		//H5Fget_
@@ -219,10 +215,10 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 
 	attribute.reset();  // TODO remove - should be unneeded
 
-
 	const hid_t a = H5Aopen_name(id, attr_name);
-	if (a < 0)
-		mout.error() << ": H5Aopen_name failed: " << attr_name  << mout.endl;
+	// if (a < 0)
+	//	mout.error() << ": H5Aopen_name failed: " << attr_name  << mout.endl;
+	handleStatus<LOG_ERR>(mout, a, "H5Aopen_name, name=", attr_name, __LINE__);
 
 	/// Get the native data type. (The conversion will not store the original data type.)
 	const hid_t datatype  = H5Tget_native_type(H5Aget_type(a), H5T_DIR_DEFAULT);
@@ -359,17 +355,17 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 			*/
 		}
 		else {
-			mout.warn() << ": type not implemented, attr=" << attr_name << " *\n";
-			mout << mout.endl;
+			mout.warn(": type not implemented, attr=", attr_name, " *\n");
 		}
 	}
 
 
 	int status = H5Aclose(a);
-	if (status < 0)
-		mout.warn() << "H5Aclose failed for attribute=" << attr_name << mout.endl;
+	handleStatus<LOG_ERR>(mout, status, "H5Aclose failed, attribute=", attr_name, __LINE__);
+	// if (status < 0)
+	//	mout.warn() << "H5Aclose failed for attribute=" << attr_name << mout.endl;
 
-	return 0;
+	return status;
 }
 
 
@@ -377,9 +373,7 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 // h5DatasetToImage(hid_t id, const std::string &path, drain::image::Image &image){
 void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::image::Image &image){
 
-	drain::Logger mout(hi5::hi5monitor, __FUNCTION__, __FILE__);
-
-	// mout.startTiming();
+	drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
 
 	herr_t status = 0;
 
@@ -405,7 +399,7 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 		mout.attention("rank=", rank);
 
 		status = H5Dclose(dataset);
-		handleStatus(status, "H5Dclose failed", mout, __LINE__);
+		handleStatus<LOG_WARNING>(mout, status, "H5Dclose failed", mout, __LINE__);
 		return;
 	}
 

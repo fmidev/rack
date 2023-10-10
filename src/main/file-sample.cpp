@@ -119,7 +119,7 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 	drain::Output ofstr(filename);
 
 	DataSelector selector;
-	selector.pathMatcher.setElems(ODIMPathElem::DATASET);
+	selector.pathMatcher.set(ODIMPathElem::DATASET);
 	selector.setParameters(ctx.select);
 	//selector.convertRegExpToRanges();
 	selector.count = 1;

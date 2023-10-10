@@ -125,7 +125,8 @@ public:
 
 	typedef std::map<std::string, ODIMPathElem> quantity_map;
 
-
+	static
+	void markNoSave(Hi5Tree &src, bool noSave=true);
 
 protected:
 

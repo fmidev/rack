@@ -307,7 +307,7 @@ public:
 		//mout.note() << "selector: " << selector << mout.endl;
 
 		ODIMPath path;
-		acc.dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
+		acc.dataSelector.pathMatcher.set(ODIMPathElem::DATASET); // .setElems(
 		acc.dataSelector.getPath(src, path);  //, ODIMPathElem::DATASET); //, true);
 
 		const DataSet<PolarSrc> srcDataSet(src(path));

@@ -464,23 +464,26 @@ void Writer::dataToH5Attribute(const drain::Variable &d, hid_t fid, const Hi5Tre
 	// status = H5Awrite(aid,tid,&x);
 	// New
 	status = H5Awrite(aid, tid, d.getPtr());
-	handleStatus(status, "H5Awrite failed", mout, __LINE__);
+	handleStatus<LOG_WARNING>(mout, status, "H5Awrite failed", __LINE__);
 	//if (status < 0)
 	//	mout.error()  << "H5Awrite failed, path=" << path << mout.endl;
 
 
 	status = H5Aclose(aid);
-	if (status < 0)
-		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+	handleStatus<LOG_ERR>(mout, status, "H5Aclose failed, path=", path, __LINE__);
+	// if (status < 0)
+	// mout.error()  << ": H5 close failed, path=" << path << mout.endl;
 
 	//status = H5Gclose(gid);
 	status = H5Oclose(oid);
-	if (status < 0)
-		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+	handleStatus<LOG_ERR>(mout, status, "H5Gclose failed, path=", path, __LINE__);
+	// if (status < 0)
+	// mout.error()  << ": H5 close failed, path=" << path << mout.endl;
 
 	status = H5Sclose(sid);
-	if (status < 0)
-		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+	handleStatus<LOG_ERR>(mout, status, "H5Sclose failed, path=", path, __LINE__);
+	// if (status < 0)
+	//	mout.error()  << ": H5 close failed, path=" << path << mout.endl;
 
 }
 
@@ -679,7 +682,7 @@ void Writer::dataToH5Compound(const drain::VariableMap & m, hid_t fid, const std
 // UNDER CONSTR.
 void linkToH5Attribute(hid_t lid, hid_t fid, const std::string &path, const std::string &attribute){
 
-	drain::Logger mout(hi5::hi5monitor, "Hi5Write", __FUNCTION__);
+	drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
 
 	int status = 0;
 

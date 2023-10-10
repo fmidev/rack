@@ -211,10 +211,10 @@ bool ODIMPathMatcher::isLiteral() const {
 void ODIMPathMatcher::extract(ODIMPath & path) const {
 	drain::Logger mout(__FUNCTION__, __FILE__);
 
-	for (const_iterator it=this->begin(); it!=this->end(); ++it){
-		if (!it->isSingle())
-			mout.warn("elem has range: ", *it, ", using min index=", it->index);
-		path << *it;
+	for (const auto & entry: *this){
+		if (!entry.isSingle())
+			mout.warn("elem has range: ", entry, ", using min index=", entry.index);
+		path.appendElem(entry);
 	}
 }
 

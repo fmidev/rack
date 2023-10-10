@@ -53,19 +53,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIMPath.h"
 
 
-
-
-// using namespace std;
-
 namespace hi5 {
 
+extern
+drain::Log & getLogH5();
 
-extern drain::Log hi5monitor;
-extern drain::Logger hi5mout;
-
-/// Syntax for recognising HDF5 filenames.
-//extern
-//const drain::RegExp fileNameRegExp;
 
 extern
 const drain::FileInfo fileInfo;
@@ -116,12 +108,7 @@ struct NodeHi5 {
 
 
 /// The most importand and central class for handling HDF5 data in \b Rack .
-//typedef drain::Tree<rack::ODIMPathElem, hi5::NodeHi5, '/', rack::ODIMPathLess> Hi5Tree;
-
-//typedef drain::Tree<hi5::NodeHi5, rack::ODIMPath, rack::ODIMPathLess> Hi5Tree;
-//typedef drain::Tree<hi5::NodeHi5, false, rack::ODIMPath, rack::ODIMPathLess> Hi5Tree;
 typedef drain::OrderedTree<hi5::NodeHi5, false, rack::ODIMPath> Hi5Tree;
-// typedef drain::Tree<std::map<rack::ODIMPath,hi5::NodeHi5>, false> Hi5Tree;
 
 
 
@@ -136,15 +123,26 @@ public:
 	static
 	void handleStatus(herr_t status, const std::string & message, drain::Logger &mout, int lineNo=0);
 
-	//static
-	// drain::Log hi5monitor;
+	template <int L, class T>
+	static inline
+	// void handleStatus(drain::Logger &mout, herr_t status, const std::string & message, const drain::Path<> & path, int lineNo=0);
+	void handleStatus(drain::Logger &mout, herr_t status, const std::string & message, const T & arg, int lineNo=0){
 
-	// static
-	// drain::Logger hi5mout; //(drain::monitor,"hi5");
+		if (status >= 0)
+			return;
+
+		mout.start<L>() << message << ": " << arg;
+		if (lineNo)
+			mout << ", line=" << lineNo;
+		mout << ", status=" << status << mout.endl;
+
+	}
+
+	/// Give a native C++ type, returns a standard(?) HDF5 data type.
 	static
 	hid_t getH5StandardType(const std::type_info &type);
 
-	/// Given type toOStr of a native C++ type, returns a native HDF5 data type.
+	/// Given a native C++ type, returns a native HDF5 data type.
 	static
 	hid_t getH5NativeDataType(const std::type_info &t);
 
@@ -226,6 +224,14 @@ public:
 	static
 	void markNoSave(Hi5Tree &src, bool noSave=true);
 	*/
+
+	///  Traverse tree, marking every group nodes for deletion by Hi5Base::deleteNoSave
+	/**
+	 *   This function traverses all the children, and their children, recursively.
+	 */
+	static
+	void markNoSave(Hi5Tree &src, bool noSave=true);
+
 
 	/// Delete branches that have been marked with noSave=true .
 	static

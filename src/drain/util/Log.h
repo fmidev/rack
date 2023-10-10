@@ -335,6 +335,16 @@ public:
 
 
 
+	/// General
+	template <int L, typename ... TT>
+	inline
+	Logger & start(const TT &... args){
+		initMessage<L>();
+		flush(args...);
+		return *this;
+	};
+
+
 	/// Quits immediately, dumps pending messages.
 	template<typename ... TT>
 	inline

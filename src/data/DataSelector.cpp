@@ -176,10 +176,10 @@ void DataSelector::updateBean() const {
 
 	if (!path.empty()){
 
-		mout.debug() << "Assigning (string) path='"  << path << "'" << mout.endl;
+		mout.debug("Assigning (string) path='", path, "'");
 
-		pathMatcher.assign(path);
-		mout.debug() << "Assigned pathMatcher: " << path << " => " << pathMatcher << mout.endl;
+		pathMatcher.set(path);
+		mout.debug("Assigned pathMatcher: ", path, " => ", pathMatcher);
 
 		if (!pathMatcher.empty()){
 			if (pathMatcher.back().empty()){ // "backroot" = > appears as trailing slash '/'
@@ -188,7 +188,7 @@ void DataSelector::updateBean() const {
 			}
 		}
 		else {
-			mout.warn() << "path matcher still empty after assigning path='" << path << "'" << mout.endl;
+			mout.warn("path matcher still empty after assigning path='", path, "'");
 		}
 
 		//path.clear();
@@ -230,7 +230,7 @@ void DataSelector::updateBean() const {
 	if (pathMatcher.empty() && !quantity.empty()){
 
 		if (! pathMatcher.front().is(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-			pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+			pathMatcher.set(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 			mout.info() << "quantity [" << quantity <<"] requested, completing path condition: " << pathMatcher << mout.endl;
 		}
 		//path = pathMatcher;
@@ -246,7 +246,7 @@ void DataSelector::ensureDataGroup(){
 	drain::Logger mout(__FUNCTION__, getName());
 
 	if (pathMatcher.empty()){
-		pathMatcher.setElems(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+		pathMatcher.set(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 		mout.debug() << "Completed pathMatcher: " << pathMatcher << mout.endl;
 	}
 	else {
@@ -513,7 +513,7 @@ bool DataSelector::getNextPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 
 	if (!getLastPath(src, path, group)){
 		// Empty
-		path.setElems(ODIMPathElem(group, 1)); // todo: check group is valid code (return false, if not)
+		path.set(ODIMPathElem(group, 1)); // todo: check group is valid code (return false, if not)
 		return true;
 	}
 	else {

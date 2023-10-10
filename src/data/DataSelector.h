@@ -119,17 +119,19 @@ public:
 	// DataSelector(ODIMPathElem::group_t e, ODIMPathElem::group_t e2=ODIMPathElem::ROOT, ODIMPathElem::group_t e3=ODIMPathElem::ROOT);
 
 	template<typename ... T>
-	DataSelector(const ODIMPathElem & elem, const T &... rest): BeanLike(__FUNCTION__){ //, orderFlags(orderDict,':') {
+	DataSelector(const ODIMPathElem & elem, const T &... args): BeanLike(__FUNCTION__){ //, orderFlags(orderDict,':') {
 		init();
-		pathMatcher.setElems(elem, rest...);
+		//pathMatcher.setElems(elem, rest...);
+		pathMatcher.set(elem, args...);
 		updateBean();
 	}
 
 	// Either this or previous is unneeded?
 	template<typename ... T>
-	DataSelector(ODIMPathElem::group_t e, const T &... rest): BeanLike(__FUNCTION__){ // , orderFlags(orderDict,':') {
+	DataSelector(ODIMPathElem::group_t e, const T &... args): BeanLike(__FUNCTION__){ // , orderFlags(orderDict,':') {
 		init();
-		pathMatcher.setElems(e, rest...);
+		//pathMatcher.setElems(e, rest...);
+		pathMatcher.set(e, args...);
 		updateBean();
 	}
 

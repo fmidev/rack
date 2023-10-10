@@ -63,83 +63,62 @@ class Reader : public Hi5Base {
 
 public:
 
-	enum Mode {ATTRIBUTES=1, DATASETS=2};
+	enum Mode {ATTRIBUTES=1, DATASETS=2, MARKED=4}; // NoSave; consider
 
-	//const drain::SingleFlagger<Mode>::dict_t dict;
-	//drain::SingleFlagger<Mode> koe;
 	typedef drain::EnumFlagger<drain::MultiFlagger<Mode> > ModeFlagger;
 
 
 	static
-	void readFile(const std::string &filename, Hi5Tree &tree, int mode=(ATTRIBUTES | DATASETS)); //(ATTRIBUTES|DATASETS));
+	void readFile(const std::string &filename, Hi5Tree &tree, ModeFlagger::dvalue_t mode=(ATTRIBUTES | DATASETS)); //(ATTRIBUTES|DATASETS));
 
-	/// Conversion from native HDF5 structure to Rack's hi5 structure.
+	/// Conversion from native HDF5 structure to Rack's hi5 tree structure.
 	/**
 	 *  \param fid  - input in native HDF5 structure
 	 *  \param path - subpath of input (typically the root, "/")
 	 *  \param tree - output in hi5 structure
 	 *  \param mode - switch for excluding attributes or datasets.
 	 */
-	static  // , const std::string &path,
-	void h5FileToTree(hid_t fid, const Hi5Tree::path_t &path, Hi5Tree &tree, int mode=(ATTRIBUTES | DATASETS)); // ATTRIBUTES|DATASETS));
+	/// Recursive  , const std::string &path
+	static void
+	h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree,	ModeFlagger::dvalue_t mode = (ATTRIBUTES | DATASETS));
 
-	/// Conversion from native HDF5 structure to Rack's hi5 structure.
+	/// Conversion from native HDF5 structure to Rack's hi5 tree structure.
 	/**
 	 *  \param fid  - input in native HDF5 structure
 	 *  \param tree - output in hi5 structure
 	 *  \param mode - switch for excluding attributes or datasets.
 	 */
-	static
-	inline
-	void h5FileToTree(hid_t fid, Hi5Tree &tree, int mode=3){ //(ATTRIBUTES|DATASETS)){
-		// h5FileToTree(fid, Hi5Tree::path_t(Hi5Tree::path_t::elem_t(Hi5Tree::path_t::elem_t::ROOT)), tree, mode);
+	static inline
+	void h5FileToTree(hid_t fid, Hi5Tree &tree, ModeFlagger::dvalue_t mode=(ATTRIBUTES | DATASETS)){ //(ATTRIBUTES|DATASETS)){
 		Hi5Tree::path_t path;
-		path.appendElem(Hi5Tree::key_t::ROOT);
-		//std::cerr << __FUNCTION__ << ':' << path << std::endl;
-		// path.debug();
-		//path << Hi5Tree::path_t::elem_t(Hi5Tree::key_t::ROOT;
+		path.append(Hi5Tree::key_t::ROOT);
+		// path.appendElem(Hi5Tree::key_t::ROOT);
 		h5FileToTree(fid, path, tree, mode);
-		// h5FileToTree(fid, Hi5Tree::path_t(Hi5Tree::path_t::elem_t(Hi5Tree::path_t::elem_t::ROOT)), tree, mode);
-
-		// h5FileToTree(fid, "", tree, mode);
 	};
 
-	/*
-	template <class T>
-	static
-	void h5AttributeToData(hid_t aid, hid_t datatype, drain::Variable & attribute){
-		T x;
-		int status = H5Aread(aid,datatype,&x);
-		if (status < 0){
-			hi5mout.error() << "h5AttributeToData: read failed " << hi5mout.endl;
-		}
-		attribute = x;
-	}
-	 */
 
 	template <class T>
 	static
 	void h5AttributeToData(hid_t aid, hid_t datatype, drain::Variable & attribute, size_t elements=1){
 
+		drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
+
 		attribute.setType(typeid(T));
 		attribute.setSize(elements);
 
 		int status = H5Aread(aid, datatype, attribute.getPtr());
-
+		handleStatus<LOG_ERR>(mout, status, "H5Aread failed for attribute=", attribute, __LINE__);
+		/*
 		if (status < 0){
-			hi5mout.error() << "h5AttributeToData: read failed " << hi5mout.endl;
+			mout.error("h5AttributeToData: read failed ");
 		}
-
-		//attribute = x;
-
+		*/
 	}
 
 
 
 	static
 	void h5DatasetToImage(hid_t id, const Hi5Tree::path_t &path, drain::image::Image &image);
-
-	//void h5DatasetToImage(hid_t id,const std::string &path,drain::image::Image &image);
 
 protected:
 
@@ -152,15 +131,9 @@ protected:
 };
 
 
-//const drain::SingleFlagger<Reader::Mode>::dict_t Reader::dict;
 //const drain::SingleFlagger<Reader::Mode>::dict_t Reader::dict = {{"ATTRIBUTES", ATTRIBUTES}, {"DATASETS", DATASETS}};
-//template <>
-//const Reader::ModeFlagger::dict_t Reader::ModeFlagger::dict;
 template <>
 const drain::FlaggerDict drain::EnumDict<Reader::Mode>::dict;
-
-//static
-//void debug(const Hi5Tree &src,int level = 0);
 
 
 } // ::hi5

@@ -575,29 +575,26 @@ public:
 		selector.setParameters(value);
 		//selector.pathMatcher.setElems(ODIMPathElem::DATASET, ODIMPathElem::DATA);
 
-		mout.warn() << "selector: " << selector << mout.endl;
+		mout.warn("selector: ", selector );
 		//mout.debug() << "group mask: " << groupFilter << ", selector: " << selector << mout.endl;
 
 		Hi5Tree & dst = *ctx.currentHi5;
 
 		// Step 0
-		mout.info() << "delete existing no-save structures " << mout.endl;
+		mout.info("delete existing no-save structures ");
 		hi5::Hi5Base::deleteNoSave(dst);
 
-		mout.debug() << "selector: " << selector << ", matcher=" << selector.pathMatcher << mout.endl;
+		mout.debug("selector: ", selector, ", matcher=", selector.pathMatcher);
 
 		ODIMPathList paths;
 		selector.getPaths(dst, paths);
-		mout.info() << "deleting " << paths.size() << " substructures" << mout.endl;
-		for (ODIMPathList::const_reverse_iterator it = paths.rbegin(); it != paths.rend(); it++){
-			mout.debug() << "deleting: " << *it << mout.endl;
-			dst.erase(*it);
+		mout.info("deleting ", paths.size(), " substructures");
+		for (const ODIMPath & path: paths){
+			mout.debug("deleting: ", path);
+			dst.erase(path);
 		}
 	};
 
-private:
-
-	//DataSelector selector;
 
 
 };
@@ -632,10 +629,10 @@ public:
 		Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT);  // *ctx.currentHi5;
 
 		// Step 0
-		mout.debug() << "delete existing no-save structures " << mout.endl;
+		mout.debug("delete existing no-save structures ");
 		hi5::Hi5Base::deleteNoSave(dst);
 
-		markNoSave(dst);
+		DataTools::markNoSave(dst);
 
 
 		DataSelector selector;
@@ -643,17 +640,17 @@ public:
 
 		//hi5::Hi5Base::writeText(dst, std::cerr);
 
-		mout.debug2() << "selector for saved paths: " << selector << mout.endl;
+		mout.debug2("selector for saved paths: ", selector);
 
 		ODIMPathList savedPaths;
 		selector.getPaths(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
-		for (ODIMPathList::iterator it = savedPaths.begin(); it != savedPaths.end(); it++){
+		for (const ODIMPath & path: savedPaths){
 
-			mout.debug2() << "set save through path: " << *it << mout.endl;
+			mout.debug2("set save through path: ", path);
 			ODIMPath p;
-			for (ODIMPath::iterator pit = it->begin(); pit != it->end(); pit++){
-				p << *pit;
+			for (const ODIMPathElem & elem: path){
+				p << elem;
 				dst(p).data.noSave = false;
 			}
 			//mout.debug() << "marked for save: " << *it << mout.endl;
@@ -661,12 +658,13 @@ public:
 			// Accept also tail (attribute groups)
 			//if (it->back().isIndexed()){ // belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){ or: DATASET
 
-			Hi5Tree & d = dst(*it);
-			for (Hi5Tree::iterator dit = d.begin(); dit != d.end(); dit++){
-				if (dit->first.is(ODIMPathElem::ARRAY)){
-					mout.debug2() << "also save: " << p << '|' << dit->first << mout.endl;
+			Hi5Tree & d = dst(path);
+			//for (Hi5Tree::iterator dit = d.begin(); dit != d.end(); dit++){
+			for (auto & entry: d){
+				if (entry.first.is(ODIMPathElem::ARRAY)){
+					mout.debug2("also save: ", p, '|', entry.first);
 					// if (dit->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
-					dit->second.data.noSave = false;
+					entry.second.data.noSave = false;
 				}
 			}
 			//
@@ -681,19 +679,21 @@ public:
 protected:
 
 	// Marks CHILDREN of src for deleting
+	/*
 	void markNoSave(Hi5Tree &src, bool noSave=true) const {
 
 		//drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
-		for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
+		for (auto & entry: src) {
 			//if (it->first.isIndexed()){
-			if (!it->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-				it->second.data.noSave = noSave;
-				markNoSave(it->second, noSave);
+			if (!entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+				entry.second.data.noSave = noSave;
+				markNoSave(entry.second, noSave);
 			}
 		}
 
 	}
+	*/
 
 };
 
@@ -1152,11 +1152,11 @@ public:
 
 		std::vector<std::string> result;
 		if (re.execute(value, result)){
-			selector.pathMatcher.assign(value);
+			selector.pathMatcher.set(value);
 			mout.debug() << "pathMatcher: " << selector.pathMatcher << mout.endl;
 		}
 		else {
-			selector.pathMatcher.assign(result[1]);
+			selector.pathMatcher.set(result[1]);
 			mout.info()  << "pathMatcher: " << selector.pathMatcher << mout.endl;
 			mout.debug() << "selector: " << selector << mout.endl;
 			assignment = result[3];
@@ -2197,6 +2197,8 @@ struct VerboseCmd : public drain::BasicCommand {
 		RackContext & ctx = getContext<RackContext>();
 		ctx.log.setVerbosity(level); // NEW
 		drain::getLog().setVerbosity(level);
+		// drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
+		hi5::getLogH5().setVerbosity(level);
 		drain::image::getImgLog().setVerbosity(imageLevel);
 		/*
 		std::cerr << "verbosity: " << level << '\n';
