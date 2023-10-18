@@ -1,5 +1,5 @@
 {
-  {"title", "title"},
+  {"title", "Reflectivity"},
   {"nodata", {"nodata", {255.0,255.0,255.0}} },
   {"undetect", {"dBZ", "undetect", {0.0,0.0,0.0}} },
   {     -32.0, {"noise", {0.0,0.0,0.0}} },

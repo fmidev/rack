@@ -934,25 +934,24 @@ public:
 
 	void load(const std::string &s) const {
 
-		static drain::RegExp re("^[A-Z][A-Z_0-9\\-]+[A-Z0-9]$");
+		static
+		const drain::RegExp re("^[A-Z][A-Z_0-9\\-]+[A-Z0-9]$");
 
 		RackContext & ctx = getContext<RackContext>();
 
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
-
-
 		//ctx.palette.load(s);
 
 		// NEW
 		if (re.test(s)){
-			mout.note("Reading palette [", s,"] palette");
-			// drain::image::PaletteOp::paletteMap[s);
+			mout.note("Checking palette [", s,"]");
 			ctx.getPalette(s).load(s); // ctx.paletteKey = "USER";
 		}
 		else {
+			mout.unimplemented("Quantity extraction from palette filename: ", s);
 			mout.warn("Reading 'USER' palette - probably not accessible by any quantity / PaletteOp");
 			// drain::image::PaletteOp::paletteMap["USER");
-			ctx.getPalette("USER").load(s); //ctx.paletteKey = "USER";
+			ctx.getPalette("USER").load(s); // ctx.paletteKey = "USER";
 		}
 	}
 

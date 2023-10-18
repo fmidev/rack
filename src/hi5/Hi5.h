@@ -412,6 +412,4 @@ struct lessAlphaNum {
 } // ::hi5
 
 
-#endif /* ImageH5_H_ */
-
-// Rack
+#endif

@@ -242,10 +242,10 @@ void Palette::load(const std::string & filename, bool flexible){
 	if (labelRE.test(filename)){
 		//filePath.set(std::string("palette-") + filename + std::string(".json"));
 		filePath.set(std::string("palette-") + filename + std::string(".txt")); // primary default type..
-		mout.info() << " extending path: " << filename << " => " << filePath << mout.endl;
+		mout.info(" extending path: ", filename, " => ", filePath);
 	}
 	else {
-		mout.info() << " setting filepath: " << filename << mout.endl;
+		mout.info(" setting filepath: ", filename);
 		filePath.set(filename);
 	}
 
@@ -259,14 +259,8 @@ void Palette::load(const std::string & filename, bool flexible){
 
 	const std::string s = filePath.str();
 
-
-	//std::ifstream ifstr;
-	//ifstr.open(s.c_str(), std::ios::in);
-
 	drain::Input ifstr(s);
 
-
-	//if (ifstr.good()){
 	if (ifstr){
 
 		comment = filePath.str();
@@ -279,7 +273,6 @@ void Palette::load(const std::string & filename, bool flexible){
 			loadJSON(ifstr);
 		}
 		else {
-			// ifstr.close();
 			mout.error() << "unknown file type: " << filePath.extension << mout.endl;
 			return;
 		}
@@ -287,11 +280,8 @@ void Palette::load(const std::string & filename, bool flexible){
 	}
 	else {
 
-		// ifstr.close();
-
 		if (!flexible){
-			//ifstr.close();
-			mout.error() << " opening file '" << filename << "' failed" << mout.endl;
+			mout.error(" opening file '", filename, "' failed");
 			return;
 		}
 		else {
@@ -313,7 +303,7 @@ void Palette::load(const std::string & filename, bool flexible){
 				extensions.push_back("txt");
 			}
 			else {
-				mout.error() << " unsupported palette file type: '" << filePath.extension << "', filename='" << filename << "'" << mout.endl;
+				mout.error(" unsupported palette file type: '", filePath.extension, "', filename='", filename, "'");
 				return;
 			}
 
@@ -366,13 +356,14 @@ void Palette::load(const std::string & filename, bool flexible){
 			}
 			else {
 				///// ifstr.close();
-				mout.error() << "unknown file type: " << finalFilePath.extension << mout.endl;
+				mout.error("unknown file type: ", finalFilePath.extension);
 			}
 
 		}
 	};
 
 	///// ifstr.close();
+	mout.special("Title: ", this->title);
 
 	updateDictionary();
 

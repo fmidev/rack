@@ -285,6 +285,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		if (bean.srcAlpha() && (ctx.qualityGroups == 0)){
 			ctx.qualityGroups = (ODIMPathElem::DATASET | ODIMPathElem::DATA);
 			mout.special("alpha channel required, modified: ", ctx.qualityGroups, ", see --imageQuality");
+			// mout.unimplemented("Still missing: ODIMPathElem::QUALITY ?"); // FIX!
 		}
 
 		mout.attention("ctx.qualityGroups:", ctx.qualityGroups, ", DATASET=", ODIMPathElem::DATASET, ", dstDataSet.hasQuality: ", dstDataSet.hasQuality());

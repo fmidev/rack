@@ -39,22 +39,21 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Hi5.h"
 
 
-// using namespace std;
 
 namespace hi5 {
 
-//const drain::RegExp fileNameRegExp("^((.*/)?([^/]+))\\.(h5|hdf5)$", REG_EXTENDED | REG_ICASE);
 
 const drain::FileInfo fileInfo("h5|hdf5|hdf");
 
 drain::Log & getLogH5(){
+
 	static
 	drain::Log hi5monitor;
+
 	return hi5monitor;
 }
 
 
-//void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 
 void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const {
 
@@ -69,23 +68,18 @@ void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const
 	if (noSave)
 		ostr << '~';
 	ostr << '\n';
-	//	return;
-	//}
 
 
 	for (const auto & entry: attributes){
 
-	//for (drain::VariableMap::const_iterator it = attributes.begin(); it != attributes.end(); it++){
 		if (!prefix.empty())
 			ostr << prefix << ':'; //'\t';
 		ostr << entry.first << '=';
-		//drain::JSONwriter::toStream(it->second, ostr);
 		drain::Sprinter::toStream(ostr, entry.second, drain::Sprinter::jsonLayout);
-		//ostr << ' ' << drain::Type::getTypeChar(it->second.getType());
+		// ostr << ' ' << drain::Type::getTypeChar(it->second.getType());
 		ostr << '\n';
 	}
 
-	//const drain::image::Image &d = n.dataSet;
 	if (dataSet.getVolume() > 0){
 
 		ostr << prefix;
@@ -111,11 +105,8 @@ std::ostream &operator<<(std::ostream &ostr,const hi5::NodeHi5 &n){
 }
 
 
-//Hi5Error Hi5Base::debug;
-//drain::Log Hi5Base::hi5monitor;
-//drain::Logger Hi5Base::mout(Hi5Base::hi5monitor,"hi5");
-drain::Log hi5monitor;
-drain::Logger mout(hi5monitor,"Hi5");
+// drain::Log hi5monitor;
+// drain::Logger mout(hi5monitor,"Hi5");
 
 
 void Hi5Base::handleStatus(herr_t status, const std::string & message, drain::Logger &mout, int lineNo){
@@ -144,6 +135,7 @@ hid_t Hi5Base::getH5StandardType(const std::type_info & type){
 	static dict_t dict;
 	if (dict.empty()){
 
+		// todo: initializer list
 		dict.add(H5T_STD_I8BE,  typeid(char));
 		dict.add(H5T_STD_U8BE,  typeid(unsigned char));
 		dict.add(H5T_STD_I16BE, typeid(short int));
@@ -170,11 +162,11 @@ hid_t Hi5Base::getH5StandardType(const std::type_info & type){
 
 	dict_t::const_iterator it = dict.findByValue(type);
 	if (it != dict.end()){
-		mout.debug() << "type_info=" << type.name() << ", size:" <<  H5Tget_size(it->first) << mout.endl;
+		mout.debug("type_info=", type.name(), ", size:", H5Tget_size(it->first));
 		return it->first;
 	}
 	else {
-		mout.warn() << "could not find HDF5 type for type_info=" << type.name() << mout.endl;
+		mout.warn("could not find HDF5 type for type_info=", type.name());
 		return 0;
 	}
 }
