@@ -59,28 +59,25 @@ public:
 	 * \param windowHeight - height of the neighbourhood window; in degrees
 	 */
 	ShipOp(double reflMin = 25.0, double reflDev = 15.0, int windowWidth = 1500, double windowHeight = 3.0) :
-		DetectorOp(__FUNCTION__,"Detects ships based on their high absolute reflectivity and local reflectivity difference.", "nonmet.artef.vessel.ship"){
+		DetectorOp(__FUNCTION__,"Detects ships based on their high absolute reflectivity and local reflectivity difference.", "nonmet.vessel.ship"){
 		parameters.link("reflMin", this->reflMin = reflMin, "dBZ");
 		parameters.link("reflDev", this->reflDev = reflDev, "dBZ");
 		parameters.link("windowWidth", this->windowWidth = windowWidth, "m");
 		parameters.link("windowHeight", this->windowHeight = windowHeight, "deg");
 		dataSelector.quantity = "^DBZH$";
 		REQUIRE_STANDARD_DATA = false;
-		//REQUIRE_STANDARD_DATA = true;  // HighPassOp
+		// REQUIRE_STANDARD_DATA = true;  // HighPassOp
 	};
-
 
 	double reflMin;
 	int windowWidth;
 	double windowHeight;
 	double reflDev;
 
-
 protected:
 
 	virtual
 	void runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const;
-	// void filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const;
 
 };
 
@@ -89,4 +86,3 @@ protected:
 
 #endif /* SHIP_OP_H_ */
 
-// Rack

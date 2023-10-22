@@ -1,7 +1,7 @@
 {
-  {"title", "Reflectivity"},
+  {"title", "Reflectivity dBZ"},
   {"nodata", {"nodata", {255.0,255.0,255.0}} },
-  {"undetect", {"dBZ", "undetect", {0.0,0.0,0.0}} },
+  {"undetect", {"undetect", {0.0,0.0,0.0}} },
   {     -32.0, {"noise", {0.0,0.0,0.0}} },
   {     -24.0, {{60.0,140.0,200.0}} },
   {     -16.0, {{10.0,155.0,225.0}} },

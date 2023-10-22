@@ -122,7 +122,11 @@ Palette & PaletteOp::getPalette(const std::string & key) {
 	// Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
 	Palette & palette = paletteMap[key];
-	if (palette.empty()){
+
+	if (key.empty()){
+		mout.experimental("Returning generic palette (empty quantity: [])");
+	}
+	else if (palette.empty()){
 		palette.load(key, true);
 		if (palette.empty()){
 			mout.warn("Empty palette [", key, "] // ", palette.comment);

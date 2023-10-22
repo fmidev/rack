@@ -1,5 +1,5 @@
 {
-  {"title", "title"},
+  {"title", "VRAD std.dev."},
   {"nodata", {"nodata", {255.0,255.0,255.0}} },
   {"undetect", {"undetect", {0.0,0.0,0.0}} },
   {       0.0, {"Markus.Peura@fmi.fi", "noise", {0.0,0.0,0.0}} },

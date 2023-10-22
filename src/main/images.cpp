@@ -935,7 +935,7 @@ public:
 	void load(const std::string &s) const {
 
 		static
-		const drain::RegExp re("^[A-Z][A-Z_0-9\\-]+[A-Z0-9]$");
+		const drain::RegExp re("^[A-Z][A-Z_0-9\\-]+[A-Z0-9]$"); // Nearly duplicate code, see Palette::load
 
 		RackContext & ctx = getContext<RackContext>();
 
@@ -945,13 +945,13 @@ public:
 		// NEW
 		if (re.test(s)){
 			mout.note("Checking palette [", s,"]");
-			ctx.getPalette(s).load(s); // ctx.paletteKey = "USER";
+			ctx.getPalette(s).load(s, true);
 		}
 		else {
-			mout.unimplemented("Quantity extraction from palette filename: ", s);
-			mout.warn("Reading 'USER' palette - probably not accessible by any quantity / PaletteOp");
+			mout.unimplemented("No quantity extraction yet... (filename: ", s, ")");
+			mout.warn("Reading generic palette (quantity unset)");
 			// drain::image::PaletteOp::paletteMap["USER");
-			ctx.getPalette("USER").load(s); // ctx.paletteKey = "USER";
+			ctx.getPalette("").load(s); // ctx.paletteKey = "USER";
 		}
 	}
 

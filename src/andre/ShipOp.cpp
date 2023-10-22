@@ -65,16 +65,16 @@ void ShipOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 
 	/// For verbose mode (monitoring and debugging the process)
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	mout.debug() << "odim: " << srcData.odim << mout.endl;
+	mout.debug("odim: ", srcData.odim);
 
 	/// Use natural (SI) units for neighbourhood window dimension, not bins/pixels.
-	//  This is for portablitity between radars.
+	//  This is for portabitity between radars.
 	const int width  = srcData.odim.getBeamBins(windowWidth);
-			//static_cast<int>(windowWidth / srcData.odim.rscale + 0.5);
+	// static_cast<int>(windowWidth / srcData.odim.rscale + 0.5);
 	const int height = srcData.odim.getAzimuthalBins(windowHeight);
-			// static_cast<int>((windowHeight/360.0) * srcData.odim.geometry.height + 0.5);
+	// static_cast<int>((windowHeight/360.0) * srcData.odim.geometry.height + 0.5);
 
-	mout.debug3() << "window: " << width << ',' << height << mout.endl;
+	mout.debug3("window: ", width, ',', height );
 
 
 	/// Temp image (probability field, fuzzy membership of "high reflectivity")

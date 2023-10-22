@@ -232,12 +232,13 @@ void Palette::update() const {
 
 void Palette::load(const std::string & filename, bool flexible){
 
-	//Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
-	Logger mout(__FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
+	//Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(__FUNCTION__, __FILE__);
 
 	drain::FilePath filePath;
 
-	static const drain::RegExp labelRE("^[A-Z]+[A-Z0-9_\\-]*$");
+	// static
+	const drain::RegExp labelRE("^[A-Z]+[A-Z0-9_\\-]*$");
 
 	if (labelRE.test(filename)){
 		//filePath.set(std::string("palette-") + filename + std::string(".json"));
@@ -1074,14 +1075,17 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 	const int lineheight = 20;
 
 	svg->setType(NodeSVG::SVG);
+	// svg->set("id", title);
 	// TODO font-size:  font-face:
 
+	/*  Moved below, and "header" -> "title"
 	TreeSVG & header = svg["header"];
 	header->setType(NodeSVG::TEXT);
 	header->set("x", lineheight/4);
 	header->set("y", (headerHeight * 9) / 10);
 	header->ctext = title;
 	header->set("style","font-size:20");
+	*/
 
 	TreeSVG & background = svg["bg"];
 	background->setType(NodeSVG::RECT);
@@ -1091,6 +1095,15 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 	background->set("fill", "white");
 	background->set("opacity", 0.8);
 	// width and height are set in the end (element slot reserved here,for rendering order)
+
+
+	TreeSVG & header = svg["title"];
+	header->setType(NodeSVG::TEXT);
+	header->set("x", lineheight/4);
+	header->set("y", (headerHeight * 9) / 10);
+	header->ctext = title;
+	header->set("style","font-size:20");
+
 
 	int index = 0;
 	int width = 150;

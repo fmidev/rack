@@ -1,5 +1,5 @@
 {
-  {"title", "title"},
+  {"title", "mm/h"},
   {"nodata", {"nodata", {255.0,255.0,255.0}} },
   {"undetect", {"Markus.Peura@fmi.fi", "undetect", {0.0,0.0,0.0}} },
   {       0.1, {"light", {10.0,155.0,225.0}} },
