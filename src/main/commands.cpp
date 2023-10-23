@@ -59,7 +59,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIM.h"
 #include "data/ODIMValidator.h"
 #include "data/DataCoder.h"
-#include "data/EchoClass.h"
+// #include "data/EchoClass.h"
 #include "hi5/Hi5.h"
 
 #include "product/DataConversionOp.h"

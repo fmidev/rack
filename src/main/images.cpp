@@ -884,7 +884,9 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
 
 		if (key == "list"){
-
+			for (const auto & entry: drain::image::PaletteOp::getPaletteMap()){
+				mout.note(entry.first, "' <=> '", entry.second);
+			}
 		}
 		else {
 			mout.note("Palette: [", key, "]");

@@ -47,7 +47,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/Data.h"
 #include "data/PolarODIM.h"
 #include "data/QuantityMap.h"
-#include "data/EchoClass.h"
+// #include "data/EchoClass.h"
 #include "hi5/Hi5.h"
 #include "radar/Analysis.h"
 

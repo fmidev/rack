@@ -100,9 +100,9 @@ public:
 	/// NEW. Return a palette (like "DBZH") from Palette::paletteBank if already exists; else try to read in from TXT or JSON file.
 	/**
 	 *   Note: if not existing, creates an empty palette.
-	 */
 	static
 	Palette & ensurePalette(const std::string & key);
+	 */
 
 	/// NEW. Return a palette (like "DBZH") from Palette::paletteBank if already exists; else try to read in from TXT or JSON file.
 	static
@@ -139,6 +139,12 @@ public:
 	// protect:
 	/// Intensity mappings set by user, originally with std::string keys in Palette.
 	Palette specialCodes;
+
+	// consider all here
+	static inline
+	std::map<std::string,drain::image::Palette> & getPaletteMap(){
+		return paletteMap;
+	};
 
 	//typedef drain::Bank<Palette> PaletteBank;
 	static
