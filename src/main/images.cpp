@@ -885,7 +885,7 @@ public:
 
 		if (key == "list"){
 			for (const auto & entry: drain::image::PaletteOp::getPaletteMap()){
-				mout.note(entry.first, "' <=> '", entry.second);
+				mout.note(entry.first, "' <=> '", entry.second.title);
 			}
 		}
 		else {
