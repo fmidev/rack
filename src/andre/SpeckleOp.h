@@ -64,7 +64,7 @@ public:
 	inline
 	SpeckleOp(double threshold=-20.0, int area=16, bool invertPolar=false) :
 
-	DetectorOp(__FUNCTION__,"Detects speckle noise. Universal: uses DBZ data as input, applies to all data in a sweep group.", "signal.noise"){
+	DetectorOp(__FUNCTION__,"Detects speckle noise. Universal: uses DBZ data as input, applies to all data in a sweep group.", "emitter.noise"){
 		dataSelector.quantity = "^DBZH$";
 		UNIVERSAL = true;
 		REQUIRE_STANDARD_DATA = false;

@@ -37,7 +37,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/image/Image.h"
 #include "drain/image/ImageFrame.h"
-#include "drain/imageops/PaletteOp.h"
 #include "drain/util/Log.h"
 #include "drain/util/SmartMap.h"
 #include "drain/util/Sprinter.h"
@@ -47,8 +46,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/Data.h"
 #include "data/PolarODIM.h"
 #include "data/QuantityMap.h"
-// #include "data/EchoClass.h"
 #include "hi5/Hi5.h"
+#include "palette/palette-manager.h"
 #include "radar/Analysis.h"
 
 #include "QualityCombinerOp.h"
@@ -445,7 +444,7 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 			mout.experimental("quality information [", entry.first, "] added here / elangle=", entry.second.odim.elangle);
 			//double marker = drain::image::PaletteOp::ge
 			try {
-				drain::image::Palette & palette = drain::image::PaletteOp::getPalette("CLASS");
+				drain::image::Palette & palette = PaletteManager::getPalette("CLASS");
 				drain::image::Palette::value_type & legendEntry = palette.getEntryByCode(entry.first, true);
 				// double marker = palette.getValueByCode(entry.first, true);
 				mout.attention("found palette entry: ", sprinter(legendEntry.second, drain::Sprinter::jsonLayout));

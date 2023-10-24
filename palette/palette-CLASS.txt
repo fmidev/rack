@@ -7,41 +7,55 @@
 # nodata
 @ 255 255 255
 
+# 0: reserved - primarily for nodata      (above)
+# 1: reserved - for example, for undetect (above)
 
-# PRECIP 1-47
-# PRECIP (2=wet, 4=light?)
+# Meteorological: 2-31
+# Precipitation:  2-15
+# 1 = wet
+# 2 = snow
+# 4 = hail
+# 6 = graupel
+# 8 = reserved (supercooled?)
+# 16 = meteorological, non-precip (dust, insects)
 
-# PRECIP = 8 64=0
-# 32 = RAIN
-# 16 = SNOW, else HAIL,  4=WET
 
-# Ice chrystals ?
-# 4 ... ... ...
 
-# Precip
-4	0 208 255
-
+# precip.hail
 # Hail
-8	208 144 255
+2	160 96 255
 
-# Wet hail
-10	160 96 255
+# precip.hail.wet
+# Hail, wet
+3	144 32 255
 
-# Graupel
-12	144 32 255
-
+# precip.snow
 # Snow
-16	80  0 255
+4	0 128 255
 
-# Wet snow
-18	0 128 255
+# precip.snow.wet
+# Snow, wet
+5	80  0 255
 
+# precip.graupel
+# Graupel
+6	0 192 255
 
+# precip
+# Precipitation
+8	0 208 255
+# 8	144 255 0
+
+# precip.wet
 # Rain
-32	0 192 255
+10	208 144 255
 
+# 16 240 255
+# precip.wet.supercooled
 # Supercooled Rain
-36	16 240 255
+11 	0  255  170
+
+
 
 
 # PASSIVE 48-63

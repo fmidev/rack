@@ -62,6 +62,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIMPath.h"
 #include "data/PolarODIM.h"
 #include "radar/Analysis.h"
+#include "palette/palette-manager.h"
 #include "product/DataConversionOp.h"
 #include "resources.h"
 #include "images.h"
@@ -885,7 +886,7 @@ public:
 
 		if (key == "list"){
 			for (const auto & entry: drain::image::PaletteOp::getPaletteMap()){
-				mout.note(entry.first, "' <=> '", entry.second.title);
+				mout.note(entry.first, " <=> ", entry.second.title);
 			}
 		}
 		else {
@@ -1245,98 +1246,10 @@ ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) { // :{ // 
 	install<CmdImageBox>();
 
 
-	PaletteOp::paletteMap["ANDRE-CLASS"] =
-	#include "palette/palette-ANDRE-CLASS.inc"
-	;
+	PaletteManager::getMap();
 
 
-	PaletteOp::paletteMap["ALT"] =
-	#include "palette/palette-ALT.inc"
-	;
 
-	PaletteOp::paletteMap["CLASS"] =
-	#include "palette/palette-CLASS.inc"
-	;
-
-	PaletteOp::paletteMap["COUNT"] =
-	#include "palette/palette-COUNT.inc"
-	;
-
-	PaletteOp::paletteMap["DBZHSTDDEV"] =
-	#include "palette/palette-DBZHSTDDEV.inc"
-	;
-
-	PaletteOp::paletteMap["DBZH"] =
-	#include "palette/palette-DBZH.inc"
-	;
-
-	PaletteOp::paletteMap["FLASH"] =
-	#include "palette/palette-FLASH.inc"
-	;
-
-	PaletteOp::paletteMap["HCLASS"] =
-	#include "palette/palette-HCLASS.inc"
-	;
-
-	PaletteOp::paletteMap["HGHT"] =
-	#include "palette/palette-HGHT.inc"
-	;
-
-	PaletteOp::paletteMap["PROB"] =
-	#include "palette/palette-PROB.inc"
-	;
-
-	PaletteOp::paletteMap["QIND"] =
-	#include "palette/palette-QIND.inc"
-	;
-
-	PaletteOp::paletteMap["RATE"] =
-	#include "palette/palette-RATE.inc"
-	;
-
-	PaletteOp::paletteMap["RHOHV"] =
-	#include "palette/palette-RHOHV.inc"
-	;
-
-	PaletteOp::paletteMap["RISK"] =
-	#include "palette/palette-RISK.inc"
-	;
-
-	PaletteOp::paletteMap["SUNSHINE"] =
-	#include "palette/palette-SUNSHINE.inc"
-	;
-
-	PaletteOp::paletteMap["VRAD-DEV"] =
-	#include "palette/palette-VRAD-DEV.inc"
-	;
-
-	PaletteOp::paletteMap["VRAD"] =
-	#include "palette/palette-VRAD.inc"
-	;
-
-	PaletteOp::paletteMap["ZDR"] =
-	#include "palette/palette-ZDR.inc"
-	;
-
-	/*
-	{
-		 	{"title", {"Radar reflectance"} },
-			{"nodata", {"nodata", "102,nodata", {255.0,255.0,255.0}} },
-			{"undetect", {"undetect", "101,undetect", {0.0,0.0,0.0}} },
-			{     -32.0, {"noise", "103,noise", {0.0,0.0,0.0}} },
-			{     -24.0, {"", "104,", {60.0,140.0,200.0}} },
-			{     -16.0, {"", "105,", {10.0,155.0,225.0}} },
-			{      -8.0, {"insects", "106,insects", {5.0,205.0,170.0}} },
-			{       0.0, {"drizzle", "107,drizzle", {140.0,230.0,20.0}} },
-			{       8.0, {"weak", "108,weak", {240.0,240.0,20.0}} },
-			{      16.0, {"rain", "109,rain", {255.0,205.0,20.0}} },
-		 	{      24.0, {"moderate", "110,moderate", {255.0,150.0,50.0}} },
-			{      32.0, {"intensive", "111,intensive", {255.0,80.0,60.0}} },
-			{      40.0, {"hail", "112,hail", {250.0,120.0,255.0}} },
-			{      60.0, {"", "113,", {255.0,255.0,255.0}} }
-	}
-	;
-	*/
 
 
 };

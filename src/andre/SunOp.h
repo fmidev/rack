@@ -60,7 +60,7 @@ public:
 	 * \param sensitivity - coefficient
 	 */
 	SunOp(double beamWidth = 1.0, double sensitivity=0.95) :
-		DetectorOp(__FUNCTION__,"Draw the sun beam", "signal.sun"){
+		DetectorOp(__FUNCTION__,"Draw the sun beam", "emitter.sun"){
 		parameters.link("beamWidth", this->beamWidth = beamWidth, "deg");
 		parameters.link("sensitivity", this->sensitivity = sensitivity, "0...1");
 		dataSelector.quantity = "^DBZH$";

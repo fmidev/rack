@@ -41,7 +41,7 @@ namespace image
 
 
 // drain::Bank<Palette> PaletteOp::paletteBank;
-std::map<std::string,drain::image::Palette> PaletteOp::paletteMap;
+//std::map<std::string,drain::image::Palette> PaletteOp::paletteMap;
 
 /// Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table. 
 /*! Treats an RGB truecolor image of N pixels as as a palette of N colors.
@@ -102,7 +102,7 @@ Palette & PaletteOp::loadPalette(const std::string & key){
 	Logger mout(__FUNCTION__, __FILE__);
 	// Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-	Palette & palette = paletteMap[key];
+	Palette & palette = getPaletteMap()[key];
 	#pragma omp critical
 	{
 		palette.load(key, true);
@@ -121,7 +121,7 @@ Palette & PaletteOp::getPalette(const std::string & key) {
 	Logger mout(__FUNCTION__, __FILE__);
 	// Logger mout(getImgLog(), __FUNCTION__, __FILE__);
 
-	Palette & palette = paletteMap[key];
+	Palette & palette = getPaletteMap()[key];
 
 	if (key.empty()){
 		mout.experimental("Returning generic palette (empty quantity: [])");
@@ -148,6 +148,14 @@ Palette & PaletteOp::getPalette(const std::string & key) {
 	}
 	*/
 }
+
+std::map<std::string,drain::image::Palette> & PaletteOp::getPaletteMap(){
+	static
+	std::map<std::string,drain::image::Palette> paletteMap;
+	return paletteMap;
+};
+
+
 
 // Add label
 void PaletteOp::registerSpecialCode(const std::string & code, double d) {

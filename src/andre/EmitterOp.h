@@ -60,7 +60,7 @@ public:
 	 *   \param samplingDistanceWidth - halfwidth of the weighting curve
 	 */
 	EmitterOp(double lengthMin=5.0, double thicknessMax=5.0, double sensitivity=0.5) :
-		DetectorOp(__FUNCTION__, "Detects electromagnetic interference segments by means of window medians.", "signal.emitter.line")
+		DetectorOp(__FUNCTION__, "Detects electromagnetic interference segments by means of window medians.", "emitter.line")
 	{
 		parameters.link("lengthMin", this->lengthMin = lengthMin, "km");
 		parameters.link("thicknessMax",  this->thicknessMax = thicknessMax, "deg");

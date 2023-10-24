@@ -140,17 +140,21 @@ public:
 	/// Intensity mappings set by user, originally with std::string keys in Palette.
 	Palette specialCodes;
 
-	// consider all here
+	/*
 	static inline
 	std::map<std::string,drain::image::Palette> & getPaletteMap(){
 		return paletteMap;
 	};
+	*/
+	typedef	std::map<std::string,drain::image::Palette> palette_map_t;
 
-	//typedef drain::Bank<Palette> PaletteBank;
+	/// Returns a static palette map which is initially empty.
 	static
-	//drain::Bank<Palette> paletteBank;
+	palette_map_t & getPaletteMap();
+	/*
+	static
 	std::map<std::string,drain::image::Palette> paletteMap;
-
+	*/
 protected:
 
 

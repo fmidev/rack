@@ -61,7 +61,7 @@ public:
 	 * \param maxAltitude - maximum expected altitude of biometeors
 	 */
 	DefaultOp() :
-		DetectorOp(__FUNCTION__, "Marks the data values as unclassified, with high probability", "tech.class.unclass"){ //ECHO_CLASS_PRECIP){
+		DetectorOp(__FUNCTION__, "Marks the data values as unclassified, with high probability", "tech.unclass"){ //ECHO_CLASS_PRECIP){
 
 		parameters.link("probability", this->probability = 0.8, "'resulting' probability");
 		//parameters.link("qualityThreshold", this->qualityThreshold = 0.95, "minimum quality");

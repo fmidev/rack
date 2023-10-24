@@ -61,7 +61,7 @@ Palette::Palette(std::initializer_list<std::pair<Variable, PaletteEntry> > inits
 	for (const auto & entry: inits){
 		if (entry.first.isString()){
 			if (entry.first.toStr() == "title"){
-				title = entry.first.toStr();
+				title = entry.second.label;
 			}
 			else {
 				specialCodes[entry.first] = entry.second;
@@ -75,7 +75,7 @@ Palette::Palette(std::initializer_list<std::pair<Variable, PaletteEntry> > inits
 		// std::cout << '=' << sprinter(entry.second, Sprinter::cppLayout) << '\n';
 	}
 
-	comment = "Initialized in code";
+	comment = "Built-in";  // = Initialized in code
 
 	/*
 	std::cout << "cppLayout: --- "<< '\n';

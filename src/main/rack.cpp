@@ -67,18 +67,14 @@ int process(int argc, const char **argv) {
 
 
 	if (argc == 1) {
+		// This could be from cmdBank ?
 		std::cerr << "Usage: rack <input> [commands...] -o <outputFile>\nHelp:  rack -h\n" ;
 		return 1;
 	}
 
-	// drain::CommandRegistry & registry = drain::getRegistry();
-
-	//registry.setSection("", "");
 	RackResources & resources = getResources();
 	RackResources::ctx_cloner_t & contextCloner = resources.getContextCloner();
 	RackContext & ctx = contextCloner.getSourceOrig(); // baseCtx
-
-	//resources.
 
 	// NEW
 	ctx.log.setVerbosity(LOG_NOTICE);
@@ -87,10 +83,6 @@ int process(int argc, const char **argv) {
 	//drain::image::getImgLog().setVerbosity(imageLevel);
 
 	drain::Logger mout(ctx.log, "rack");
-	//mout.timestamp("BEGIN_RACK"); // appears never, because verbosity initially low
-
-	// TODO take time, lapTime()
-	//mout.timestamp
 
 	mout.debug("Activate modules");
 
@@ -101,8 +93,9 @@ int process(int argc, const char **argv) {
 	ProductModule productMod;
 	AccumulationModule accumulationMod;
 	CartesianModule cartesianMod;
-	ImageOpModule imageOpMod;
+
 	ImageModule   imageMod;
+	ImageOpModule imageOpMod;
 
 	HiddenModule   hiddenMod;
 
@@ -113,7 +106,7 @@ int process(int argc, const char **argv) {
 	cmdBank.setTitle("Rack - a radar data processing program");
 
 	/** If a plain argument <arg> is given, forward it to this command.
-	 *  Hence equivalent to \c --inputFile \c <arg> .
+	 *  Equivalent to \c --inputFile \c <arg> .
 	 */
 	cmdBank.setDefaultCmdKey("inputFile");
 
@@ -127,7 +120,6 @@ int process(int argc, const char **argv) {
 	const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
 	cmdBank.setScriptTriggerFlag(TRIGGER);
 	cmdBank.get("inputFile").section |= TRIGGER;
-	// cmdBank.get("trigger").section |= TRIGGER;
 
 
 	try {

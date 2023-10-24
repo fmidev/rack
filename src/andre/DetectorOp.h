@@ -35,8 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "AndreOp.h"
 
-#include "drain/imageops/PaletteOp.h"
-
+#include "palette/palette-manager.h"
 
 namespace rack {
 
@@ -65,7 +64,7 @@ public:
 	*/
 
 	DetectorOp(const std::string & name = __FUNCTION__, const std::string & description = "", const std::string & echoClass = "") :
-			AndreOp(name,description), classCode(drain::image::PaletteOp::getPalette("ANDRE-CLASS").getValueByCode(echoClass)) {
+			AndreOp(name,description), classCode(PaletteManager::getPalette("CLASS").getValueByCode(echoClass)) {
 			//classCode(getClassCode(echoClass)) {
 
 		// dataSelector.path = ". * /da ta[0-9]+/?$";

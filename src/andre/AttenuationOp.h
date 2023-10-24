@@ -67,7 +67,7 @@ public:
 	 * \param devAltitude - fuzzy width of \c maxAltitude
 	 */
 	AttenuationOp() :
-		DetectorOp(__FUNCTION__, "Computes attenuation and converts it to probability", "dist.attn.rain"){ //ECHO_CLASS_PRECIP){
+		DetectorOp(__FUNCTION__, "Computes attenuation and converts it to probability", "distortion.attenuation"){ //ECHO_CLASS_PRECIP){
 
 		parameters.link("reflHalfWidth", this->reflHalfWidth=3.0, "dBZ limit of 50% quality");
 
