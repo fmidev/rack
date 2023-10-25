@@ -33,9 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define ANDRE_DETECTOR2_H_
 
 
+#include <main/palette-manager.h>
 #include "AndreOp.h"
 
-#include "palette/palette-manager.h"
 
 namespace rack {
 

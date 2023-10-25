@@ -29,6 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <main/palette-manager.h>
 #include <map>
 #include <set>
 #include <sstream>
@@ -47,7 +48,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/PolarODIM.h"
 #include "data/QuantityMap.h"
 #include "hi5/Hi5.h"
-#include "palette/palette-manager.h"
 #include "radar/Analysis.h"
 
 #include "QualityCombinerOp.h"

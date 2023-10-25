@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <stddef.h>
 
 #include <drain/prog/CommandInstaller.h>
+#include <main/palette-manager.h>
 #include <fstream>
 #include <list>
 #include <map>
@@ -62,7 +63,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIMPath.h"
 #include "data/PolarODIM.h"
 #include "radar/Analysis.h"
-#include "palette/palette-manager.h"
 #include "product/DataConversionOp.h"
 #include "resources.h"
 #include "images.h"
