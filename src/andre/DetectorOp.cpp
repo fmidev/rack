@@ -225,7 +225,8 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 
 
 			//QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, CLASSNAME, classCode);
-			QualityCombinerOp::updateOverallDetection(dstProb.data, dstQind, dstClass, CLASSNAME, classCode);
+			//QualityCombinerOp::updateOverallDetection(dstProb.data, dstQind, dstClass, CLASSNAME, classCode);
+			QualityCombinerOp::updateOverallDetection(dstProb.data, dstQind, dstClass, CLASSNAME, classEntry.first);
 			//File::write(dstQind.data, "dstQind2.png");
 			//File::write(dstClass.data, "dstClass2.png");
 			//mout.note() << dstDataSet << mout.endl;
@@ -323,8 +324,8 @@ const std::string & DetectorOp::getOutputQuantity(const std::string & inputQuant
 
 	// If unset, copy in uppercase letters.
 	if (upperCaseName.empty()) {
-		//size_t i = name.find_last_of("Op");
-		upperCaseName = name.substr(0, name.length()-2); // Rely on "Op" in the end.
+		// upperCaseName = name.substr(0, name.length()-2); // Rely on "Op" in the end.
+		upperCaseName = classEntry.second.code;
 		drain::StringTools::upperCase(upperCaseName);
 	}
 

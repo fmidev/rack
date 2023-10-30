@@ -64,8 +64,9 @@ public:
 	*/
 
 	DetectorOp(const std::string & name = __FUNCTION__, const std::string & description = "", const std::string & echoClass = "") :
-			AndreOp(name,description), classCode(PaletteManager::getPalette("CLASS").getValueByCode(echoClass)) {
-			//classCode(getClassCode(echoClass)) {
+			AndreOp(name,description), classEntry(PaletteManager::getPalette("CLASS").getEntryByCode(echoClass)) {
+			// classCode(PaletteManager::getPalette("CLASS").getValueByCode(echoClass)) {
+			// classCode(getClassCode(echoClass)) {
 
 		// dataSelector.path = ". * /da ta[0-9]+/?$";
 		//dataSelector.quantity = "DBZ.*";
@@ -73,13 +74,16 @@ public:
 		//cumulateDetections = MAX;
 		REQUIRE_STANDARD_DATA = true;
 		UNIVERSAL = false;
+
+		//PaletteManager::getPalette("CLASS").getEntryByCode(code, lenient);
 		// std::cout << __FUNCTION__ << ':' << name << ':' << echoClass << '\n';
 	}
 
 	// inline
 	// DetectorOp(const DetectorOp & op) : AndreOp(op), classCode(op.classCode), REQUIRE_STANDARD_DATA(op.REQUIRE_STANDARD_DATA), UNIVERSAL(op.UNIVERSAL) {}
 	inline
-	DetectorOp(const DetectorOp & op) : AndreOp(op), classCode(op.classCode), UNIVERSAL(op.UNIVERSAL), REQUIRE_STANDARD_DATA(op.REQUIRE_STANDARD_DATA) {};
+//	DetectorOp(const DetectorOp & op) : AndreOp(op), classCode(op.classCode), UNIVERSAL(op.UNIVERSAL), REQUIRE_STANDARD_DATA(op.REQUIRE_STANDARD_DATA) {};
+	DetectorOp(const DetectorOp & op) : AndreOp(op), classEntry(op.classEntry), UNIVERSAL(op.UNIVERSAL), REQUIRE_STANDARD_DATA(op.REQUIRE_STANDARD_DATA) {};
 
 	virtual
 	~DetectorOp(){};
@@ -94,9 +98,10 @@ public:
 	static bool SUPPORT_UNIVERSAL;
 
 	/// Index applied in the legend of the classification results
-	const unsigned short int classCode;
+	//const unsigned short int classCode;
 
-
+	/// Index applied in the legend of the classification results
+	const drain::image::Palette::value_type & classEntry;
 
 
 	// NEW
