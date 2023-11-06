@@ -67,13 +67,13 @@ Composite & Compositor::getCompositeOLD() const {
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	if (ctx.composite.isDefined()){ // raw or product
-		mout.debug() << "private composite" << mout.endl;
+		mout.debug("private composite" );
 		return ctx.composite;
 	}
 
 	RackContext & baseCtx = getResources().baseCtx();
 	if (baseCtx.composite.isDefined()){ // raw or product
-		mout.debug() << "shared composite" << mout.endl;
+		mout.debug("shared composite" );
 		return baseCtx.composite;
 	}
 
@@ -96,17 +96,17 @@ double Compositor::applyTimeDecay(Composite & composite, double w, const ODIM & 
 	if (composite.decay < 1.0){
 
 		const double delayMinutes = composite.getTimeDifferenceMinute(odim);  // assume update done
-		mout.info() << "Delay minutes: " << delayMinutes << mout.endl;
+		mout.info("Delay minutes: " , delayMinutes );
 
 		const double delayWeight = ::pow(composite.decay, delayMinutes);
-		mout.info() << "Scaled delay weight: "  << delayWeight  << mout.endl;
+		mout.info("Scaled delay weight: "  , delayWeight  );
 		if (delayWeight < 0.01)
-			mout.warn() << "decay (delay weight coeff) below 0.01" << mout.endl;  // SKIP?
+			mout.warn("decay (delay weight coeff) below 0.01" );  // SKIP?
 		w *= delayWeight;
 
 	}
 	else if (composite.decay > 1.0){
-		mout.warn() << "decay coeff (" << composite.decay << ") above 1.0, adjusting 1.0." << mout;
+		mout.warn("decay coeff (" , composite.decay , ") above 1.0, adjusting 1.0." );
 		composite.decay = 1.0;
 	}
 
@@ -123,7 +123,6 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 
 	mout.debug("add A1 " + ctx.getName());
 
-
 	/*
 	std::ostream & logOrig = std::cerr;
 	std::stringstream sstr;
@@ -131,7 +130,6 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 	drain::Output output(sstr.str());
 	ctx.log.setOstr(output);
 	(std::ostream &)output << "# LOG: " << sstr.str() << '\n';
-
 	*/
 
 	mout.debug("add A2 #" + ctx.getName());
@@ -143,14 +141,14 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 
 	// Check
 	if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR) ){ // ! resources.inputOk){
-		mout.note() << "last INPUT inapplicable, skipping it" << mout.endl;
+		mout.note("last INPUT inapplicable, skipping it" );
 		ctx.select.clear(); // ?
 		return;
 	}
 
 	// Check
 	if (ctx.statusFlags.isSet(drain::StatusFlags::DATA_ERROR) ){ // (! resources.dataOk){
-		mout.note() << "last DATA inapplicable, skipping it" << mout.endl;
+		mout.note("last DATA inapplicable, skipping it" );
 		ctx.select.clear(); // ?
 		return;
 	}
@@ -165,7 +163,7 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 		/// Set default method, if unset.
 		if (!composite.isMethodSet()){
 			composite.setMethod("MAXIMUM");  // ("LATEST");
-			mout.note() << " compositing method unset, setting:" << composite.getMethod() << mout;
+			mout.note(" compositing method unset, setting:" , composite.getMethod() );
 		}
 
 		/// Set dfault encoding for final (extracted) product. Applied by RadarAccumulator.
@@ -193,16 +191,16 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 
 
 	const RootData<SrcType<ODIM> > root(src);
-	mout.debug() << "Src root /what: " << root.getWhat() << mout;
+	mout.debug("Src root /what: " , root.getWhat() );
 
-	//mout.info() << "now: vmap" << mout.endl;
-	mout.debug() << "using selector: " << composite.dataSelector << mout; // consider: if composite.dataSelector...?
+	//mout.info("now: vmap" );
+	mout.debug("using selector: " , composite.dataSelector ); // consider: if composite.dataSelector...?
 
 	/// Main
 	const drain::Variable & object = root.getWhat()["object"];
 	if ((object == "COMP") || (object == "IMAGE")){
 		//if ((object == "SCAN") || (object == "PVOL")){
-		mout.info() << "Cartesian input data, ok" << mout.endl;
+		mout.info("Cartesian input data, ok" );
 		addCartesian(composite, src);
 	}
 	else {
@@ -217,7 +215,7 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 	}
 	/*
 	else {
-		mout.error() << "current H5 data inapplicable for compositing" << mout.endl;
+		mout.error("current H5 data inapplicable for compositing" );
 	}
 	*/
 
@@ -248,7 +246,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 	}
 
 	bool projectAEQD = false;
-	//mout.warn() << composite.getBoundingBoxD().getArea() << mout.endl;
+	//mout.warn(composite.getBoundingBoxD().getArea() );
 	//composite.toStream(std::cerr);
 	mout.debug(composite);
 	//mout.warn("checkb");
@@ -263,7 +261,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		// see single below
 	}
 
-	// mout.warn() << "FLAGS: " << ctx.statusFlags << mout.endl;
+	// mout.warn("FLAGS: " , ctx.statusFlags );
 
 	try {
 		ctx.statusFlags.reset(); // ALL?
@@ -275,8 +273,8 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			mout.debug("CART CRITICAL-1 ", ctx.getName());
 
 			mout.debug("composite.dataSelector: ", composite.dataSelector);
-			// mout.debug() << "composite.dataSelector.pathMatcher: " << composite.dataSelector.pathMatcher << mout.endl;
-			// mout.special() << "composite.dataSelector.pathMatcher.front: " << composite.dataSelector.pathMatcher.front().flags.keysToStr << mout.endl;
+			// mout.debug("composite.dataSelector.pathMatcher: " , composite.dataSelector.pathMatcher );
+			// mout.special("composite.dataSelector.pathMatcher.front: " , composite.dataSelector.pathMatcher.front().flags.keysToStr );
 
 			composite.dataSelector.updateBean(); // quantity
 
@@ -320,8 +318,8 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 			mout.debug("CART CRITICAL-2 #", ctx.getName());
 
-			// mout.warn() << "composite: " << composite.odim << mout.endl;
-			// mout.warn() << "FLAGS: " << ctx.statusFlags << mout.endl;
+			// mout.warn("composite: " , composite.odim );
+			// mout.warn("FLAGS: " , ctx.statusFlags );
 			if (!composite.odim.isSet()){
 
 				composite.odim.type = "";
@@ -332,14 +330,14 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 				const std::string & encoding = composite.getTargetEncoding();
 				if (encoding.empty()){
 					// This is somewhat disturbing but perhaps worth it.
-					mout.note() << "adapting encoding of first input: " << EncodingODIM(composite.odim) << mout.endl;
+					mout.note("adapting encoding of first input: " , EncodingODIM(composite.odim) );
 				}
-				mout.debug() << "storing metadata: " << composite.odim << mout.endl;
+				mout.debug("storing metadata: " , composite.odim );
 				ProductBase::completeEncoding(composite.odim, encoding); // note, needed even if encoding==""
 			}
 			else {
 				if (!resources.baseCtx().targetEncoding.empty()){
-					mout.warn() << "target encoding request ("<< resources.baseCtx().targetEncoding << ") bypassed, keeping original " << EncodingODIM(composite.odim) << mout.endl;
+					mout.warn("target encoding request (", resources.baseCtx().targetEncoding , ") bypassed, keeping original " , EncodingODIM(composite.odim) );
 				}
 
 				// Compare timestamps
@@ -382,8 +380,8 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			// ODIMPath..parent  = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
 			// parent.pop_back();
 
-			//mout.warn() << parent << "/HOW" << src(parent)[ODIMPathElem::HOW].data.attributes << mout;
-			//mout.warn() << datasetPath << "/HOW" << src[datasetPath][ODIMPathElem::HOW].data.attributes << mout;
+			//mout.warn(parent , "/HOW" , src(parent)[ODIMPathElem::HOW].data.attributes );
+			//mout.warn(datasetPath , "/HOW" , src[datasetPath][ODIMPathElem::HOW].data.attributes );
 			const drain::VariableMap & how = src(parent)[ODIMPathElem::HOW].data.attributes;
 
 			if (how["angles"].getElementCount() > 0)
@@ -425,15 +423,15 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 				//dataSetSrc.getQualityData2()
 				const PlainData<PolarSrc> & srcDataSetQuality = dataSetSrc.getQualityData("QIND");
 				if (!srcDataSetQuality.data.isEmpty()){
-					mout.info() << "using shared (dataset-level) quality data, path=" << parent << mout.endl;
+					mout.info("using shared (dataset-level) quality data, path=" , parent );
 				}
 				else {
-					mout.info() << "no quality data (QIND) found under path=" << parent << mout.endl;
+					mout.info("no quality data (QIND) found under path=" , parent );
 				}
 				composite.addPolar(polarSrc, srcDataSetQuality, w, projectAEQD); // Subcomposite: always 1.0.
 			}
 		}
-		//mout.warn() << "FLAGS: " << ctx.statusFlags << mout.endl;
+		//mout.warn("FLAGS: " , ctx.statusFlags );
 		//drain::Point2D<>
 		//composite.projGeo2Native.projectFwd(polarSrc.odim.lon, polarSrc.odim.lat, x, y);
 
@@ -448,8 +446,8 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		}
 
 		//drain::Variable & angles = composite.metadataMap["how:angles"];
-		//mout.warn() << "HOW" << polarSrc.getHow() << mout;
-		//mout.warn() << "HOW" << srcGroup[ODIMPathElem::HOW].data.attributes << mout;
+		//mout.warn("HOW" , polarSrc.getHow() );
+		//mout.warn("HOW" , srcGroup[ODIMPathElem::HOW].data.attributes );
 		//composite.metadataMap["how:angles"] = polarSrc.odim.angles;
 		// elangles = ;
 
@@ -458,7 +456,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 	}
 	catch (std::exception & e) {
 		//std::cerr << e.what() << std::endl;
-		mout.warn() << e.what() << mout.endl;
+		mout.warn(e.what() );
 	}
 
 
@@ -487,31 +485,31 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 		dataPath.pop_back();
 	//composite.dataSelector.getPathNEW((ctx.cartesianHi5), dataPath, ODIMPathElem::DATASET); // NEW 2019/05
 	if (dataPath.empty()){
-		mout.warn() << "create composite: no group found with selector:" << composite.dataSelector << mout.endl;
+		mout.warn("create composite: no group found with selector:" , composite.dataSelector );
 		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);  // resources.dataOk = false;
 		return;
 	}
 
 	//const ODIMPath & p = dataPath;
-	mout.info() << "using: dataset path:  " << dataPath << mout.endl;
+	mout.info("using: dataset path:  " , dataPath );
 
 	const DataSet<CartesianSrc> cartDataSetSrc(src(dataPath), composite.dataSelector.quantity);
 
 	if (cartDataSetSrc.empty()){
-		mout.warn() << "Empty dataset(s), skipping. Selector.quantity (regexp): '" << composite.dataSelector.quantity << "'" << mout.endl;
+		mout.warn("Empty dataset(s), skipping. Selector.quantity (regexp): '" , composite.dataSelector.quantity , "'" );
 		return;
 	}
 
 	const Data<CartesianSrc> & cartSrc = cartDataSetSrc.getFirstData(); // quantity match done above
 	if (cartSrc.odim.quantity.empty()){
-		mout.warn() << "no quantity in data: " << cartSrc.odim << mout.endl;
+		mout.warn("no quantity in data: " , cartSrc.odim );
 	}
 	else {
-		mout.debug() << "quantity: " << cartSrc.odim.quantity << mout.endl;
+		mout.debug("quantity: " , cartSrc.odim.quantity );
 	}
 
 	if (cartSrc.data.isEmpty()){
-		mout.warn() << "null sized tile, skipping..." << mout.endl;
+		mout.warn("null sized tile, skipping..." );
 		return;
 	}
 
@@ -525,12 +523,12 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	double w = weight;
 
 	if (srcQuality.data.isEmpty()){
-		mout.info() << "no quality data, using default quality:" << composite.defaultQuality << mout.endl;
+		mout.info("no quality data, using default quality:" , composite.defaultQuality );
 		//resources.cDefaultQuality << mout.endl;
 		w *= composite.defaultQuality; //resources.cDefaultQuality; ?
 	}
 	else {
-		mout.info() << "using quality data, ok. " << mout.endl;
+		mout.info("using quality data, ok. " );
 	}
 
 	// If needed, initialize with input metadata.
@@ -552,33 +550,33 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	/// If compositing scope is undefined, use that of the tile.
 	if (!composite.isDefined()){
 
-		mout.note() << "Using input properties: " << mout.endl;
-		mout.note() << "\t --cProj '" << cartSrc.odim.projdef << "'" << mout.endl;
+		mout.note("Using input properties: " );
+		mout.note("\t --cProj '" , cartSrc.odim.projdef , "'" );
 		composite.setProjection(cartSrc.odim.projdef); // Projector::FORCE_CRS
 
 		if (composite.getFrameWidth()*composite.getFrameHeight() == 0){
 			composite.setGeometry(cartSrc.odim.area.width, cartSrc.odim.area.height);
-			mout.note() << "\t --cSize '" << composite.getFrameWidth() << 'x' << composite.getFrameHeight() << "'" << mout.endl;
+			mout.note("\t --cSize '" , composite.getFrameWidth() , 'x' , composite.getFrameHeight() , "'" );
 		}
 
 		composite.setBoundingBoxD(cartSrc.odim.getBoundingBoxD());
 		//composite.setBoundingBoxD(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
-		mout.note() << "\t --cBBox '" << composite.getBoundingBoxD() << "'" << mout.endl;
+		mout.note("\t --cBBox '" , composite.getBoundingBoxD() , "'" );
 		if (!composite.projGeo2Native.isLongLat())
-			mout.note() << "\t --cBBox '" << composite.getBoundingBoxM() << "'" << mout.endl;
-				//mout.note() << "Using bounding box of the input: " << composite.getBoundingBoxD() << mout.endl;
+			mout.note("\t --cBBox '" , composite.getBoundingBoxM() , "'" );
+				//mout.note("Using bounding box of the input: " , composite.getBoundingBoxD() );
 
-		// mout.warn() << "Defined composite: " << composite << mout.endl;
+		// mout.warn("Defined composite: " , composite );
 	}
 
 	// At this stage, at latest, reserve memory for the accumulation array.
 	composite.allocate();
-	// mout.warn() << "Defined composite: " << composite << mout.endl;
+	// mout.warn("Defined composite: " , composite );
 
 	// Update source list, time stamp etc needed also for time decay
 	// => in addCartesian()
 
-	mout.debug() << "Composite initialized: " << composite << mout.endl;
+	mout.debug("Composite initialized: " , composite );
 
 	int i0,j0;
 	composite.deg2pix(cartSrc.odim.UL_lon, cartSrc.odim.UL_lat, i0, j0);
@@ -588,7 +586,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	composite.addCartesian(cartSrc, srcQuality, w, i0, j0);
 
 	ctx.setCurrentImages(cartSrc.data);
-	//mout.warn() << "composite: " << composite << mout.endl;
+	//mout.warn("composite: " , composite );
 	//drain::image::File::write(srcQuality.data, "srcQuality.png");
 
 	/*
@@ -652,7 +650,7 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	CartesianODIM & rootOdim = dstRoot.odim; // TEST
 	rootOdim.updateFromMap(composite.odim);
 
-	//mout.warn() << composite.odim << mout.endl;
+	//mout.warn(composite.odim );
 
 	ProductBase::completeEncoding(rootOdim, composite.getTargetEncoding());
 
@@ -663,9 +661,9 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		ctx.targetEncoding.clear();
 	}
 
-	//mout.warn() << "composite: " << composite.odim << mout.endl;
-	//mout.warn() << "composite: " << composite << mout.endl;
-	//mout.note() << "dst odim: " << odim << mout.endl;
+	//mout.warn("composite: " , composite.odim );
+	//mout.warn("composite: " , composite );
+	//mout.note("dst odim: " , odim );
 	mout.debug2("Extracting...");
 
 	drain::BBox cropGeo(bbox);
@@ -703,7 +701,7 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	// cropArea check implemented in Accumulator
 
 	composite.extract(rootOdim, dstProduct, channels, cropImage);
-	//mout.warn() << "extracted data: " << dstProduct << mout.endl; // .getFirstData().data
+	//mout.warn("extracted data: " , dstProduct ); // .getFirstData().data
 
 	/// Final step: write metadata
 
@@ -765,12 +763,12 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 		Data<CartesianDst> & dstData = dstProduct.getData(composite.odim.quantity); // OR: by odim.quantity
 		if (dstData.data.isEmpty()){
-			mout.warn() << "empty product data: " << dstData << mout.endl;
+			mout.warn("empty product data: " , dstData );
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 			ctx.unsetCurrentImages();
 		}
 		else {
-			mout.debug() << "extracted quantity: " << dstProduct << mout.endl; // .getFirstData().data
+			mout.debug("extracted quantity: " , dstProduct ); // .getFirstData().data
 			// NEW
 			drain::VariableMap & prodHow = dstProduct.getHow();
 			//how["elangles"] = composite.metadataMap.get("how:elangles", {0,1,2});
@@ -782,14 +780,14 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		}
 	}
 	else {
-		mout.experimental() << dstProduct << mout;
-		mout.warn() << "dstProduct does not have claimed quantity: " << composite.odim.quantity << mout.endl; // .getFirstData().data
+		mout.experimental(dstProduct );
+		mout.warn("dstProduct does not have claimed quantity: " , composite.odim.quantity ); // .getFirstData().data
 		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 		ctx.unsetCurrentImages();
 	}
 
 
-	//mout.warn() << "created" << mout.endl;
+	//mout.warn("created" );
 
 	// NEW 2020/07
 	ctx.select.clear();

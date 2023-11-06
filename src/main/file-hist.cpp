@@ -76,7 +76,7 @@ void CmdHistogram::exec() const {
 
 	// NO resources.setCurrentImage(selector);
 	// drain::image::Image & img = *ctx.currentImage;
-	// mout.warn() << "computing hist"  << mout.endl;
+	// mout.warn("computing hist"  );
 	const std::type_info & type = dstData.data.getType();
 
 	const drain::ValueScaling & scaling = dstData.data.getScaling();
@@ -163,7 +163,7 @@ void CmdHistogram::writeHistogram(const drain::Histogram & histogram, const std:
 	// TODO: check tests
 	// NEW
 	ostr << "# " << mapper << '\n'; // TODO: pick plain keys
-	mout.note() << "Legend: " << drain::sprinter(leg) << mout.endl;
+	mout.note("Legend: " , drain::sprinter(leg) );
 
 
 	// OLD
@@ -233,11 +233,11 @@ void CmdHistogram::setSpecialEntry(legend & leg, double value, const std::string
 
 	legend::key_type i = static_cast<legend::key_type>(value);
 	if (static_cast<double>(i) != value){
-		mout.warn() << "special code '" << label << "'=" << value << " not integer" << mout;
+		mout.warn("special code '" , label , "'=" , value , " not integer" );
 	}
 	/*
 	if (i < leg.begin()->first){
-		mout.warn() << "special code '" << label << "'=" << value << " smaller than" << mout;
+		mout.warn("special code '" , label , "'=" , value , " smaller than" );
 	}
 	*/
 	leg[i] = label;

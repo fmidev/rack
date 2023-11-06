@@ -85,7 +85,7 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 	/// Currently designed only for vertical profiles produced by VerticalProfileOp (\c --pVerticalProfile )
 	/// TODO: modify DataSet such that the quantities appear in desired order.
 
-	mout.info() << "File format: .mat (text dump of data)" << mout.endl;
+	mout.info("File format: .mat (text dump of data)" );
 
 	DataSelector selector;
 	selector.consumeParameters(ctx.select);
@@ -105,7 +105,7 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 
 	for (DataSet<PolarSrc>::const_iterator it = product.begin(); it != product.end(); ++it){
 		if ((it->second.data.getWidth()!=1) && (it->second.data.getHeight()!=1)){
-			mout.warn() << "skipping non-1D data, quantity: " << it->first << mout.endl;
+			mout.warn("skipping non-1D data, quantity: " , it->first );
 			continue;
 		}
 		if (mainQuantity.empty()){
@@ -124,7 +124,7 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 	const Data<PolarSrc> & srcMainData = product.getData(mainQuantity); // intervals//product.getData("HGHT"); // intervals
 	if (srcMainData.data.isEmpty()){
 		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
-		mout.warn() << "zero dimension data (for " << mainQuantity << "), giving up." << mout.endl;
+		mout.warn("zero dimension data (for " , mainQuantity , "), giving up." );
 		return;
 	}
 
@@ -142,8 +142,8 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 		const std::string & quantity = it->first;
 		const Data<PolarSrc> & srcData = it->second;
 		if ((srcData.data.getWidth()!=1) && (srcData.data.getHeight()!=1))
-			mout.warn() << "Skipping" << mout.endl;
-		//mout.warn() << "Skipping non 1-dimensional data, un supported for .mat format. Geometry=" << srcData.data.getGeometry() << " ." << mout.endl;
+			mout.warn("Skipping" );
+		//mout.warn("Skipping non 1-dimensional data, un supported for .mat format. Geometry=" , srcData.data.getGeometry() , " ." );
 		else if (quantity != mainQuantity){
 			ofstr << it->first << '\t'; // TO
 			if (USE_COUNT){
@@ -157,7 +157,7 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 
 	const size_t n = std::max(srcMainData.data.getWidth(), srcMainData.data.getHeight());
 	if (n == 0){
-		mout.warn() << "zero dimension data, giving up." << mout.endl;
+		mout.warn("zero dimension data, giving up." );
 		return;
 	}
 

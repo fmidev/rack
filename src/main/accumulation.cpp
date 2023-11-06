@@ -102,7 +102,7 @@ public:
 		if ((acc.accArray.getWidth()==0) || (acc.accArray.getHeight()==0)){
 
 			if (resources.baseCtx().targetEncoding.empty()){
-				mout.error() << "missing --encoding to set polar geometry: " << acc.odim.getKeys() << mout.endl;
+				mout.error("missing --encoding to set polar geometry: " , acc.odim.getKeys() );
 				return;
 			}
 
@@ -111,7 +111,7 @@ public:
 
 			acc.accArray.setGeometry(acc.odim.area.width, acc.odim.area.height);
 			acc.accArray.count.fill(1); // no weight, ie "undetect" values.
-			// mout.warn() << acc.odim  << mout.endl;
+			// mout.warn(acc.odim  );
 
 		}
 	}
@@ -152,18 +152,18 @@ public:
 		RadarProj proj;
 		proj.setSiteLocationDeg(acc.odim.lon, acc.odim.lat);
 		proj.setLatLonProjection();
-		mout.note() << proj << mout.endl;
+		mout.note(proj );
 		//drain::Point2D<double> point(lon*drain::DEG2RAD, lat*drain::DEG2RAD);
 		//proj.projectInv(point.x, point.y); // lon, lat,
-		//mout.warn() << " " << this->getParameters() << " => " << point << mout.endl;
+		//mout.warn(" " , this->getParameters() , " => " , point );
 
 		drain::Point2D<double> point;
 		proj.projectInv(lon*drain::DEG2RAD, lat*drain::DEG2RAD, point.x, point.y); // lon, lat,
 		//point.x *= drain::RAD2DEG;
 		//point.y *= drain::RAD2DEG;
-		//mout.warn() << " " << this->getParameters() << " => " << point << mout.endl;
+		//mout.warn(" " , this->getParameters() , " => " , point );
 		// double r = point.x*point.x + point.y*point.y;
-		// mout.warn() << "AEQD coords: " << point << mout.endl;
+		// mout.warn("AEQD coords: " , point );
 
 	};
 
@@ -200,7 +200,7 @@ void PolarPlotFile::exec() const {
 	RadarProj proj;
 	proj.setSiteLocationDeg(acc.odim.lon, acc.odim.lat);
 	proj.setLatLonProjection();
-	mout.warn() << proj << mout.endl;
+	mout.warn(proj );
 
 	drain::Point2D<double> metricCoord;
 	drain::Point2D<int> radarCoord;
@@ -296,15 +296,15 @@ public:
 		/// OR: resources.baseCtx().select
 		acc.dataSelector.consumeParameters(ctx.select);
 
-		mout.debug() << acc << mout.endl;
-		mout.info() << acc.dataSelector << mout.endl;
-		mout.debug()<< "DataCoder::undetectQualityCoeff: " << DataCoder::undetectQualityCoeff << mout.endl;
+		mout.debug(acc );
+		mout.info(acc.dataSelector );
+		mout.debug("DataCoder::undetectQualityCoeff: " , DataCoder::undetectQualityCoeff );
 
 
 		const Hi5Tree & src = ctx.getHi5(RackContext::CURRENT|RackContext::POLAR);
 
 		//selector.data.second = 0;
-		//mout.note() << "selector: " << selector << mout.endl;
+		//mout.note("selector: " , selector );
 
 		ODIMPath path;
 		acc.dataSelector.pathMatcher.set(ODIMPathElem::DATASET); // .setElems(
@@ -312,21 +312,21 @@ public:
 
 		const DataSet<PolarSrc> srcDataSet(src(path));
 		const Data<PolarSrc>  & srcData = srcDataSet.getFirstData();
-		// mout.note() << "input ACCnum " << srcData.odim.ACCnum << mout.endl;
+		// mout.note("input ACCnum " , srcData.odim.ACCnum );
 
 		if (srcData.data.isEmpty()){
-			mout.warn() << "No data found with selector:" << acc.dataSelector << ", skipping..." << mout.endl;
+			mout.warn("No data found with selector:" , acc.dataSelector , ", skipping..." );
 			return;
 		}
 
-		mout.info() << "using path=" << path << ", quantity=" << srcData.odim.quantity << mout.endl;
+		mout.info("using path=" , path , ", quantity=" , srcData.odim.quantity );
 
 		const bool LOCAL_QUALITY = srcData.hasQuality();
 		if (LOCAL_QUALITY)
-			mout.info() << "has local quality" << mout.endl;
+			mout.info("has local quality" );
 
 		const PlainData<PolarSrc> & srcQuality = LOCAL_QUALITY ? srcData.getQualityData() : srcDataSet.getQualityData();
-		mout.debug() << "quality: " << srcQuality.odim << mout.endl;
+		mout.debug("quality: " , srcQuality.odim );
 
 
 		if ((acc.accArray.getWidth()==0) || (acc.accArray.getHeight()==0)){
@@ -345,15 +345,15 @@ public:
 			return;
 		}
 		else if (srcData.odim.rscale != acc.odim.rscale){
-			mout.warn() << "Input rscale ("<< srcData.odim.rscale << ") " << acc.odim.rscale << ", skipping..." << mout.endl;
+			mout.warn("Input rscale (", srcData.odim.rscale , ") " , acc.odim.rscale , ", skipping..." );
 			return;
 		}
 
-		mout.debug() << "Encoding:" << EncodingODIM(acc.odim) << mout.endl;
+		mout.debug("Encoding:" , EncodingODIM(acc.odim) );
 		ProductBase::applyODIM(acc.odim, srcData.odim, true);
 		if (!resources.baseCtx().targetEncoding.empty()){
 			// ProductBase::completeEncoding(acc.odim, resources.baseCtx().targetEncoding);
-			mout.info() << "targetEncoding already at this stage may be deprecating(?) - use it only in extraction "  << mout.endl;
+			mout.info("targetEncoding already at this stage may be deprecating(?) - use it only in extraction "  );
 			acc.setTargetEncoding(resources.baseCtx().targetEncoding);
 			resources.baseCtx().targetEncoding.clear();
 		}
@@ -381,13 +381,13 @@ public:
 
 		// MAINS
 		if (srcDataSet.hasQuality("COUNT")){
-			mout.note() << "COUNT field detected, using restored weighted sums" << mout.endl;
+			mout.note("COUNT field detected, using restored weighted sums" );
 			const PlainData<PolarSrc> & srcCount = srcDataSet.getQualityData("COUNT");
 			acc.addData(srcData, srcQuality, srcCount);
 		}
 		else {
 			if (coeff != 1.0)
-				mout.note() << "No COUNT field detected, ACCnum "<< acc.odim.ACCnum << '+' << srcData.odim.ACCnum << ", using tuned weight: " << coeff << '*' << weight  << mout.endl;
+				mout.note("No COUNT field detected, ACCnum ", acc.odim.ACCnum , '+' , srcData.odim.ACCnum , ", using tuned weight: " , coeff , '*' , weight  );
 			acc.addData(srcData, srcQuality, coeff*weight, 0, 0);
 		}
 
@@ -452,7 +452,7 @@ public:
 		const QuantityMap & qm = getQuantityMap();
 		qm.setQuantityDefaults(acc.odim, acc.odim.quantity, acc.getTargetEncoding());
 
-		mout.info() << "acc.odim Encoding " << EncodingODIM(acc.odim) << mout.endl;
+		mout.info("acc.odim Encoding " , EncodingODIM(acc.odim) );
 
 		Hi5Tree & dst = ctx.polarProductHi5;
 		dst.clear();
@@ -473,7 +473,7 @@ public:
 		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
 		DataTools::updateInternalAttributes(dst); // why not start form "dataset1" ?
 
-		//mout.warn() << "ODIM lat" <<  acc.odim << mout.endl;
+		//mout.warn("ODIM lat" ,  acc.odim );
 		ODIM::copyToH5<ODIMPathElem::ROOT>(acc.odim, dst);
 
 		ProductBase::setODIMsoftwareVersion(dst[ODIMPathElem::HOW].data.attributes);

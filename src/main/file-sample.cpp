@@ -92,14 +92,14 @@ void sampleData(const typename P::dataset_t & dataset, const Sampler & sampler, 
 
 	const typename P::data_t & q = dataset.getQualityData();
 	if (!q.data.isEmpty()){
-		mout.note() << "using quality data, quantity=" << q.odim.quantity << mout.endl;
+		mout.note("using quality data, quantity=" , q.odim.quantity );
 		if (q.odim.quantity.empty()){
-			mout.warn() << " empty data, properties: \n " <<  q.data.properties  << mout.endl;
+			mout.warn(" empty data, properties: \n " ,  q.data.properties  );
 		}
 		dataMap.insert(typename P::map_t::value_type(q.odim.quantity, q));
 	}
 	else {
-		mout.info() << "no quality data" << mout.endl;
+		mout.info("no quality data" );
 	}
 
 	sampler.sample(dataMap, picker, format, ostr);
@@ -113,7 +113,7 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	mout.info() << "Sample file (.dat)" << mout.endl;
+	mout.info("Sample file (.dat)" );
 
 
 	drain::Output ofstr(filename);
@@ -124,12 +124,12 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 	//selector.convertRegExpToRanges();
 	selector.count = 1;
 	//selector.data.second = 0;
-	mout.special() << "selector: " << selector << mout.endl;
+	mout.special("selector: " , selector );
 
 	ODIMPath path;
 	selector.getPath(src, path);
 
-	mout.info() << "Sampling path: " << path << mout.endl;
+	mout.info("Sampling path: " , path );
 
 	const Hi5Tree & srcDataSet = src(path);
 
@@ -143,21 +143,21 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 
 	if (ctx.currentHi5 == ctx.currentPolarHi5){
 
-		mout.debug() << "sampling polar data" << mout.endl;
+		mout.debug("sampling polar data" );
 		const DataSet<PolarSrc> dataset(srcDataSet, drain::RegExp(selector.quantity));
-		mout.info() << "data: " << dataset << mout.endl;
+		mout.info("data: " , dataset );
 
 		sampleData<PolarDataPicker>(dataset, sampler, ctx.formatStr, ofstr);
 
 	}
 	else {
 
-		mout.debug() << "sampling Cartesian data: " << mout.endl;
+		mout.debug("sampling Cartesian data: " );
 		const DataSet<CartesianSrc> dataset(srcDataSet, drain::RegExp(selector.quantity));
-		mout.info() << "data: " << dataset << mout.endl;
+		mout.info("data: " , dataset );
 		/*
 			for (DataSet<CartesianSrc>::const_iterator it = dataset.begin(); it != dataset.end(); ++it){
-				mout.warn() << "data:" << it->first << mout.endl;
+				mout.warn("data:" , it->first );
 			}
 		 */
 

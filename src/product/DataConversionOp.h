@@ -405,6 +405,8 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 	mout .debug3() << "src props:" << srcImage.properties << mout.endl;
 	//std::cerr << src.properties << std::endl;
 
+	// ctx.grayImage.properties.importCastableMap(op.odim); // Optional
+	// ctx.grayImage.setCoordinatePolicy(srcImage.getCoordinatePolicy());
 
 	dstImage.properties = srcImage.properties;
 	dstImage.properties.updateFromMap(dstOdim);

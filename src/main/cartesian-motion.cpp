@@ -93,11 +93,11 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 			//srcData.data.setScaling(srcData.odim.scaling.scale, srcData.odim.scaling.offset);
 			srcData.data.setScaling(srcData.odim.scaling); // needed?
 
-			//mout.note() << "Using " << *it << ':' << srcData.data.getGeometry() << mout.endl;
+			//mout.note("Using " , *it , ':' , srcData.data.getGeometry() );
 			mout.note() << "Using " << *it << ": " << path << ' ';
 			mout <<  srcData.data.getGeometry() << ':' << drain::Type::getTypeChar(srcData.data.getType()) << mout.endl;
 			//<< srcData.data << mout.endl;
-			mout.debug() << srcData.odim << mout.endl;
+			mout.debug(srcData.odim );
 
 			//areaGeometry.setArea(srcData.data.getGeometry());
 			areaGeometry.set(srcData.data.getGeometry());
@@ -106,15 +106,15 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 			switch (count){
 			case 1:
 				srcData.odim.getStartTime(t1);
-				mout.debug() << t1.str() << mout.endl;
+				mout.debug(t1.str() );
 				break;
 			case 2:
 				srcData.odim.getStartTime(t2);
-				mout.debug() << t2.str() << mout.endl;
-				mout.debug() << "time difference: " << (t2.getTime() - t1.getTime())/60 << " mins" << mout.endl;
+				mout.debug(t2.str() );
+				mout.debug("time difference: " , (t2.getTime() - t1.getTime())/60 , " mins" );
 				break;
 			default:
-				mout.warn() << "file contains more than two datasets, discarding them" << mout.endl;
+				mout.warn("file contains more than two datasets, discarding them" );
 				return;
 			}
 
@@ -138,12 +138,12 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 				srcQ.data.properties.updateFromMap(srcQ.odim); /// IMPORTANT: DataSet<CartesianDst> below will read properties.
 			}
 			else {
-				mout.note() << "check gain: " <<  srcData.getQualityData().data.getScaling() << mout.endl;
+				mout.note("check gain: " ,  srcData.getQualityData().data.getScaling() );
 			}
 
 			PlainData<CartesianDst> & srcQuality = srcData.getQualityData();
 
-			//mout.note() << "srcQuality scaling0: " << srcQuality.data.getScaling() << mout.endl;
+			//mout.note("srcQuality scaling0: " , srcQuality.data.getScaling() );
 
 			if (bean.optPreprocess()){
 
@@ -152,36 +152,36 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 				parent.pop_back();
 
 
-				//mout.warn() << "preparing to preprocess" << mout.endl;
-				mout.note() << "preprocessing..." << mout.endl;
+				//mout.warn("preparing to preprocess" );
+				mout.note("preprocessing..." );
 
 				const std::string quantityMod = srcData.odim.quantity + "_MOD";
 
-				mout.info() << "creating new data array for '"<< quantityMod << "' under path=" << parent << mout.endl;
+				mout.info("creating new data array for '", quantityMod , "' under path=" , parent );
 
-				// mout.note() << "srcQuality scalingA: " << srcQuality.data.getScaling() << mout.endl;
+				// mout.note("srcQuality scalingA: " , srcQuality.data.getScaling() );
 
 				/*
 				QualityDataSupport<CartesianDst> test(ctx.cartesianHi5(parent));
-				mout.note() << "srcQuality scalingÅ: " << srcQuality.data.getScaling() << mout.endl;
+				mout.note("srcQuality scalingÅ: " , srcQuality.data.getScaling() );
 				QualityDataSupport<CartesianDst> test2(test);
-				mout.note() << "srcQuality scalingØ: " << srcQuality.data.getScaling() << mout.endl;
+				mout.note("srcQuality scalingØ: " , srcQuality.data.getScaling() );
 				*/
 				//drain::Log & log = drain::getLog();
 				//log.setVerbosity(20);
 
 				DataSet<CartesianDst> dstDataSet(ctx.cartesianHi5(parent));
 
-				// mout.note() << "srcQuality scalingB: " << srcQuality.data.getScaling() << mout.endl;
+				// mout.note("srcQuality scalingB: " , srcQuality.data.getScaling() );
 
-				// mout.error() << "thats it" << mout.endl;
+				// mout.error("thats it" );
 
 				Data<CartesianDst> & srcDataMod = dstDataSet.getData(quantityMod);
 				mout.experimental("noSave selector modified/supressed");
 				// srcDataMod.setNoSave(ProductBase::outputDataVerbosity==0);
 				srcDataMod.setNoSave(ctx.outputDataVerbosity==0);
 
-				// mout.note() << "srcQuality scalingC: " << srcQuality.data.getScaling() << mout.endl;
+				// mout.note("srcQuality scalingC: " , srcQuality.data.getScaling() );
 
 				srcDataMod.odim.updateFromMap(srcData.odim);
 				srcDataMod.odim.quantity = quantityMod;
@@ -189,7 +189,7 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 				//if (bean.optResize())
 				srcDataMod.odim.prodpar = getParameters().toStr();
 				srcDataMod.data.adoptScaling(srcData.data.getConf());
-				//mout.warn() << "srcDataMod scaling: " << srcDataMod.data.getScaling() << mout.endl;
+				//mout.warn("srcDataMod scaling: " , srcDataMod.data.getScaling() );
 
 
 				//smoother.process(srcData.data, srcDataMod.data);
@@ -198,14 +198,14 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 				//srcQualityMod.copyEncoding(srcQuality);
 				//srcQualityMod.data.adoptScaling(srcQuality.data);
 				//srcQualityMod.setPhysicalRange(0.0, 0.999);
-				// mout.note() << "srcQuality scaling1: " << srcQuality.data.getScaling() << mout.endl;
+				// mout.note("srcQuality scaling1: " , srcQuality.data.getScaling() );
 				//srcQualityMod.updateTree2();
-				//mout.warn() << "srcQualityMod scaling2: " << srcQualityMod.data.getScaling() << mout.endl;
+				//mout.warn("srcQualityMod scaling2: " , srcQualityMod.data.getScaling() );
 				//srcQualityMod.copyEncoding(srcQuality);
 
 				bean.preprocess(srcData.data, srcQuality.data, srcDataMod.data, srcQualityMod.data);
 				/*
-				mout.note() << "srcQualityMod scaling3: " << srcQualityMod.data.getScaling() << mout.endl;
+				mout.note("srcQualityMod scaling3: " , srcQualityMod.data.getScaling() );
 				drain::image::File::write(srcQuality.data, "dataQ.png");
 				drain::image::File::write(srcDataMod.data, "datamod.png");
 				drain::image::File::write(srcQualityMod.data, "datamodQ.png");
@@ -221,7 +221,7 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 
 			/*
 			if (srcData.hasQuality()){
-				mout.info() << "appending alpha channel of " << path << mout.endl;
+				mout.info("appending alpha channel of " , path );
 				srcTray.appendAlpha(srcData.getQualityData().data[0]);
 			}
 			*/
@@ -229,12 +229,12 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 
 		}
 		else {
-			mout.note() << "empty data in " << *it << "/data" << mout.endl;
+			mout.note("empty data in " , *it , "/data" );
 		}
 
 	}
 
-	// mout.note() << "input odim: " << odim << mout.endl;
+	// mout.note("input odim: " , odim );
 
 	switch (srcTray.size()) {
 	case 2:
@@ -242,14 +242,14 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 		return;
 		break;
 	case 1:
-		mout.warn() << "found " << srcTray << mout.endl;
-		mout.error() << "only one data array found with selector: " << selector << mout.endl;
+		mout.warn("found " , srcTray );
+		mout.error("only one data array found with selector: " , selector );
 		break;
 	case 0:
-		mout.error() << "no data found with selector: " << selector << mout.endl;
+		mout.error("no data found with selector: " , selector );
 		break;
 	default:
-		mout.warn() << "found more than 2 input fields: " << selector << mout.endl;
+		mout.warn("found more than 2 input fields: " , selector );
 	}
 
 
@@ -260,7 +260,7 @@ void CartesianOpticalFlow::getDiff(size_t width, size_t height, double max, Imag
 
 	 drain::Logger mout(__FUNCTION__, getName());
 
-	//mout.info() << "start" << mout.endl;
+	//mout.info("start" );
 
 	//RackResources & resources = getResources();
 	RackContext & ctx = getContext<RackContext>();
@@ -270,7 +270,7 @@ void CartesianOpticalFlow::getDiff(size_t width, size_t height, double max, Imag
 	ODIMPathElem parent(ODIMPathElem::DATASET, 1);
 	DataSelector::getNextChild(ctx.cartesianHi5, parent);
 
-	mout.info() << "storing diff channels to: " << parent << mout.endl;
+	mout.info("storing diff channels to: " , parent );
 
 	Hi5Tree & dstH5 = (ctx.cartesianHi5)[parent];
 
@@ -317,21 +317,21 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 
 	//RackResources & resources = getResources();
 	RackContext & ctx = getContext<RackContext>();
-	//mout.warn() << *ctx.currentHi5 << mout.endl;
+	//mout.warn(*ctx.currentHi5 );
 
 	/// Derive the timestep needed further below for [m/s] scaling
 	/// of the vectors (algorithm produces raw results in pixel scale).
 	//  Time difference in seconds
 	time_t timestep = (t2.getTime() - t1.getTime());
-	mout.note() << "timestep: " << timestep << "s (" << static_cast<int>(timestep/60) << " mins)" << mout.endl;
+	mout.note("timestep: " , timestep , "s (" , static_cast<int>(timestep/60) , " mins)" );
 	if (timestep != 0){
 		if (timestep < 0){
-			mout.warn() << "negative time difference, inverting it..." << mout.endl;
+			mout.warn("negative time difference, inverting it..." );
 			timestep = -timestep;
 		}
 	}
 	else {
-		mout.warn() << "cannot derive vector scaling, no time difference in inputs: start=" << t1.str() << ", end=" << t2.str() << mout.endl;
+		mout.warn("cannot derive vector scaling, no time difference in inputs: start=" , t1.str() , ", end=" , t2.str() );
 		timestep = 60*15; // TODO: parameter?
 	}
 
@@ -341,14 +341,14 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 	ODIMPathElem parent(ODIMPathElem::DATASET, 1);
 	DataSelector::getNextChild(ctx.cartesianHi5, parent);
 
-	mout.debug() << "appending " << parent << mout.endl;
+	mout.debug("appending " , parent );
 
 	/// Copy metadata from dataset1 (src1 ~ src2)
 	CartesianODIM odim;
 	odim.updateFromMap(ctx.cartesianHi5.data.dataSet.properties); // projdef
 	odim.updateFromMap(ctx.cartesianHi5["dataset1"].data.dataSet.properties); // needed?
-	//mout.debug() << "prop " << ctx.cartesianHi5.data.dataSet.properties << mout.endl;
-	mout.debug() << "odim: " << odim << mout.endl;
+	//mout.debug("prop " , ctx.cartesianHi5.data.dataSet.properties );
+	mout.debug("odim: " , odim );
 
 	//Hi5Tree & dstH5 = (*ctx.currentHi5)(path);
 	Hi5Tree & dstH5 = ctx.cartesianHi5[parent];
@@ -369,7 +369,7 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 			amvu.odim.scaling.scale = odim.xscale / timestep;
 		}
 		else {
-			mout.warn() << "no xscale, cannot set  [m/s] scaling for horz (u) component" << mout.endl;
+			mout.warn("no xscale, cannot set  [m/s] scaling for horz (u) component" );
 		}
 
 		//
@@ -386,13 +386,13 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 			amvv.odim.scaling.scale = odim.yscale / timestep;
 		}
 		else {
-			mout.warn() << "no yscale, cannot set  [m/s] scaling for vert (v) component" << mout.endl;
+			mout.warn("no yscale, cannot set  [m/s] scaling for vert (v) component" );
 		}
 		//@
 		//amvv.updateTree2();
 		channels.set(amvv.data.getChannel(0), 1);
 
-		mout.info() << "motion scale: (" << amvu.odim.scaling.scale << "," << amvv.odim.scaling.scale << ") m/s" << mout.endl;
+		mout.info("motion scale: (" , amvu.odim.scaling.scale , "," , amvv.odim.scaling.scale , ") m/s" );
 
 		PlainData<CartesianDst> & qind = dstDataSet.getQualityData();
 		qmap.setQuantityDefaults(qind, "QIND");
@@ -401,7 +401,7 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 		//@
 		//qind.updateTree2();
 		channels.alpha.set(qind.data.getChannel(0));
-		// mout.note() << "mote: " << qind << " m/s" << mout.endl;
+		// mout.note("mote: " , qind , " m/s" );
 
 		//dstDataSet.updateTree(amvu.odim);
 		odim.product = "AMV";
@@ -412,8 +412,8 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 		odim.endtime   = t2.str(ODIM::timeformat);
 		//dstDataSet.updateTree3(odim); // does not update non-dataset props in images!
 
-		//mout.warn() << "amvu props" << odim << mout.endl;
-		//mout.note() << "amvu props" << amvu.data.getProperties() << mout.endl;
+		//mout.warn("amvu props" , odim );
+		//mout.note("amvu props" , amvu.data.getProperties() );
 
 		ctx.currentHi5 = & ctx.cartesianHi5;
 		// Not very useful
@@ -428,7 +428,7 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 
 	// hi5::Hi5Base::deleteNoSave(ctx.cartesianHi5);
 
-	//mout.note() << "input odim: " << odim << mout.endl;
+	//mout.note("input odim: " , odim );
 
 }
 

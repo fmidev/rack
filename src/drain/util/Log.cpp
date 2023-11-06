@@ -217,37 +217,24 @@ char Logger::MARKER = '@'; // for filtering output
 
 Logger::oper Logger::endl;
 
-Logger::Logger(const char *funcName, const std::string & className):
+Logger::Logger(const char *filename, const std::string & className):
 				message(*this),
 				timing(false),
 				monitor(getLog()),
 				level(LOG_NOTICE),
 				time(getLog().getMilliseconds()),
 				notif_ptr(NULL){
-	setPrefix(funcName, className.c_str());
-	/*
-	if (TIMING){
-		std::cerr << "TIMING:" << MARKER << "<li>" << this->prefix << "...<ol>" << '\n';
-	}
-	*/
+	setPrefix(filename, className.c_str());
 }
 
-Logger::Logger(Log &log, const char *funcName, const std::string & className):
+Logger::Logger(Log &log, const char *filename, const std::string & className):
 				message(*this),
 				timing(false),
 				monitor(log),
 				level(LOG_NOTICE),
 				time(log.getMilliseconds()),
 				notif_ptr(NULL){
-	setPrefix(funcName, className.c_str());
-	/*
-	if (timing){
-		// timing("<li>START: ", this->prefix, ':', time, "<ol>");
-		// timing(MARKER, "<li>", this->prefix, "...", "<ol>"); // <ol> possibly empty.
-		std::cerr << "TIMING:" << MARKER << "<li>" << this->prefix << "...<ol>" << '\n';
-		// Note: <ol> will be empty for the leaves of the call hierarchy..
-	}
-	*/
+	setPrefix(filename, className.c_str());
 }
 
 /*

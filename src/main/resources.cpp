@@ -130,7 +130,7 @@ Composite & RackContext::getComposite(h5_role::value_t filter){
 
 	if (filter & SHARED){
 		if (baseCtx.composite.isDefined()){ // raw or product
-			mout.debug() << "shared composite" << mout.endl;
+			mout.debug("shared composite" );
 			return baseCtx.composite;
 		}
 	}
@@ -138,7 +138,7 @@ Composite & RackContext::getComposite(h5_role::value_t filter){
 	// Else PRIVATE
 	if (filter & PRIVATE){
 		if (composite.isDefined()){ // raw or product
-			mout.debug() << "private composite" << mout.endl;
+			mout.debug("private composite" );
 			return composite;
 		}
 	}
@@ -165,7 +165,7 @@ const drain::image::Image &  RackContext::getCurrentGrayImage(){ // RackContext 
 
 	if (ctx.currentGrayImage == NULL){
 		// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		//mout.fail() << "no gray image data available, returning default image, maybe empty" << mout.endl;
+		//mout.fail("no gray image data available, returning default image, maybe empty" );
 		return ctx.grayImage;
 	}
 
@@ -182,7 +182,7 @@ const drain::image::Image &  RackContext::getCurrentImage(){ // RackContext & ct
 
 	if (currentImage == NULL){
 		// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		//mout.fail() << "no gray image data available, returning default image, maybe empty" << mout.endl;
+		//mout.fail("no gray image data available, returning default image, maybe empty" );
 		return grayImage;
 	}
 
@@ -196,9 +196,8 @@ ODIMPath RackContext::findImage(){ //RackContext & ctx){
 	DataSelector imageSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY); // TODO: modify PathMatcher output to "data|quality" instead of "other".
 	// mout.accept("Image selector", imageSelector);
 
-	imageSelector.consumeParameters(this->select); // ctx.findImage
+	imageSelector.consumeParameters(this->select);
 	if (imageSelector.count > 1){
-		drain::Logger mout(this->log, __FILE__, __FUNCTION__);
 		mout.debug("Adjusting image selector.count=", imageSelector.count, " to 1");
 		imageSelector.count = 1;
 	}
@@ -213,52 +212,56 @@ ODIMPath RackContext::findImage(){ //RackContext & ctx){
 
 ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackContext & ctx,
 
-	RackContext & ctx = *this;
-	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+	//RackContext & ctx = *this;
+	drain::Logger mout(this->log, __FILE__, __FUNCTION__);
 
 	// NOTE  ODIMPathElem::ARRAY ie. "/data" cannot be searched, so it is added under DATA or QUALITY path.
 
-	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT|RackContext::PRIVATE, RackContext::CURRENT|RackContext::SHARED);
+	Hi5Tree & src = this->getHi5(RackContext::CURRENT|RackContext::PRIVATE, RackContext::CURRENT|RackContext::SHARED);
 
 
 	ODIMPath path;
 
 	if (src.empty()){
-		mout.debug() << "No HDF5 data" << mout.endl;
+		mout.debug("No HDF5 data" );
 		return path;
 	}
 
 	if (imageSelector.getPath(src, path)){
 
-		mout.ok() << "using path: '" << path << "'" << mout.endl;
+		mout.ok("using path: '" , path , "'" );
 
 		drain::image::Image & img = src(path)[ODIMPathElem::ARRAY].data.dataSet;
-		mout.info() << img.getProperties().get("what:quantity", "?") << ", scaling: " << img.getScaling() << "  " << img << mout.endl;
+		mout.info(img.getProperties().get("what:quantity", "?") , ", scaling: " , img.getScaling() , "  " , img );
+		// mout.attention("coordPolicy: " , img.getCoordinatePolicy());
+
 
 		if (!img.isEmpty()){
 			// WHY TWICE?
 			DataTools::getAttributes(src, path, img.properties); // for image processing ops?
 			if (!(img.getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(img.getType()))){ // CHECK LOGIC!
-				mout.warn() << "no physical scaling, consider --encoding C or --encoding S" << mout.endl;
+				mout.warn("no physical scaling, consider --encoding C or --encoding S" );
 			}
 			img.properties["path"] = drain::sprinter(path,"/").str();
 		}
 		else {
-			mout.warn() << "data not found or empty data with selector: " << imageSelector << mout.endl;
-			mout.debug() << "empty image: " << img.properties << mout.endl;
-			mout.warn()  << "empty image: " << img << mout.endl;
-			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // resources.dataOk = false;
+			mout.warn("data not found or empty data with selector: " , imageSelector );
+			mout.debug("empty image: " , img.properties );
+			mout.warn("empty image: ", img);
+			this->statusFlags.set(drain::StatusFlags::DATA_ERROR); // resources.dataOk = false;
 		}
 
+		// mout.attention("found: ", img);
+
 		// Hence, image may also be empty.
-		ctx.setCurrentImages(img);
+		this->setCurrentImages(img);
 
 	}
 	else {
 		path.clear();
 		// if (path.empty()){
 		mout.warn("no paths found with ", imageSelector, " (skipping?)");
-		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+		this->statusFlags.set(drain::StatusFlags::DATA_ERROR);
 		//return false;
 	}
 
@@ -276,16 +279,21 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 
 	// if ctx.select ..
 	if (!ctx.select.empty()){
-		mout.info("selector (", ctx.select, ")");
+		mout.info("selector: ", ctx.select);
 		path = findImage();
-		mout.info("selected new image ->  ", path);
+		mout.info("selected image at: ", path);
 	}
 
 	if (!ctx.targetEncoding.empty()){
 		if (ctx.currentImage != NULL){
 			if (ctx.currentGrayImage == &ctx.grayImage){
-				mout.warn() << "re-converting gray image..." << mout.endl;
+				mout.warn("re-converting gray image...");
 			}
+			else {
+				mout.advice("Use --convert to change encoding in HDF5 struct");
+				mout.note("Converting encoding...");
+			}
+			mout.attention("GrayImage: ", path, ": ", ctx.currentGrayImage->getCoordinatePolicy());
 			RackContext::convertGrayImage(*currentGrayImage); // ctx, *ctx.
 		}
 	}
@@ -293,21 +301,20 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 	if (ctx.currentImage == NULL){
 		path = findImage();
 		if (!path.empty())
-			mout.info() << "found image at: " << path << mout.endl;
+			mout.info("found image at: ", path);
 	}
 
 	if (ctx.currentImage == NULL){
-		mout.warn() << "image data not found"  << mout.endl;
-		//mout.warn() << "data not found or empty data with selector: " << imageSelector << mout.endl;
+		mout.warn("image data not found");
+		//mout.warn("data not found or empty data with selector: " , imageSelector );
 		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // resources.dataOk = false;
 		return ctx.grayImage;
 	}
-
-	// Security risk?
-	//ctx.currentImage->properties["path"] = path;
-
-	return *ctx.currentImage;
-
+	else {
+		mout.info("Image: ", path, ": ", ctx.currentImage->getCoordinatePolicy());
+		//ctx.currentImage->properties["path"] = path;
+		return *ctx.currentImage;
+	}
 
 }
 
@@ -321,26 +328,28 @@ void RackContext::convertGrayImage(const drain::image::Image & srcImage){ // Rac
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 	ODIM srcOdim(srcImage);
 	if (srcOdim.scaling.scale == 0){
-		mout.note() << "src image: " << srcImage << mout.endl;
-		mout.warn() << "no scaling:" << (const EncodingODIM &)srcOdim  << mout.endl;
+		mout.note("src image: ", srcImage);
+		mout.warn("no scaling:", (const EncodingODIM &)srcOdim);
 	}
 
-	mout.debug() << "srcEncoding: " << EncodingODIM(srcOdim) << mout.endl;
+	mout.special("srcEncoding: ", EncodingODIM(srcOdim));
+	mout.special("srcCoords: ", srcImage.getCoordinatePolicy());
 
-
+	/// TODO: wrap this and --convert to same code
 	DataConversionOp<ODIM> op;
 	//op.odim.copyFrom(srcImage);
 
 	op.odim.updateFromCastableMap(srcOdim); // quantity etc?
 	ProductBase::completeEncoding(op.odim, ctx.targetEncoding);
-	mout.debug() << "target: '" << ctx.targetEncoding << "' -> "<< EncodingODIM(op.odim) << mout.endl;
+	mout.debug("target: '", ctx.targetEncoding, "' -> ", EncodingODIM(op.odim));
 	ctx.targetEncoding.clear();
 
 
-	ctx.grayImage.properties.importCastableMap(op.odim); // Optional
+	// ctx.grayImage.properties.importCastableMap(op.odim); // Optional
 	op.processImage(srcOdim, srcImage, op.odim, ctx.grayImage);
 	// ctx.grayImage.setScaling(op.odim.scaling.scale, op.odim.scaling.offset);
-	mout.debug() << "result: " << ctx.grayImage << mout.endl;
+	// ctx.grayImage.setCoordinatePolicy(srcImage.getCoordinatePolicy());
+	mout.debug("result: ", ctx.grayImage);
 	ctx.setCurrentImages(ctx.grayImage);
 
 }
@@ -352,7 +361,7 @@ drain::image::Image &  RackContext::getModifiableImage(){  // RackContext & ctx
 	RackContext & ctx = *this;
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-	mout.note() << " getModifiableImage start" << mout.endl;
+	mout.note(" getModifiableImage start" );
 
 	/// Ensure
 	//RackContext::updateCurrentImage(ctx);
@@ -360,25 +369,25 @@ drain::image::Image &  RackContext::getModifiableImage(){  // RackContext & ctx
 	getCurrentImage(); // ctx
 
 	if (ctx.currentImage == NULL){
-		mout.warn() << " could not find image, yt" << mout.endl;
+		mout.warn(" could not find image, yt" );
 		return ctx.grayImage;
 	}
 	else if (ctx.currentImage == &ctx.colorImage){
-		mout.debug() << " using already existing colour image" << mout.endl;
+		mout.debug(" using already existing colour image" );
 		return ctx.colorImage;
 	}
 	else if (ctx.currentImage == &ctx.grayImage){
-		mout.debug() << " using already existing (additional) gray image" << mout.endl;
+		mout.debug(" using already existing (additional) gray image" );
 		if (ctx.imagePhysical){
-			mout.warn() << " check/ensure physical scale(?)" << mout.endl;
+			mout.warn(" check/ensure physical scale(?)" );
 		}
 		return ctx.grayImage;
 	}
 	else { // ctx.currentImage != &ctx.grayImage
-		//mout.debug() << " currentImage not modifiable, creating a copy to grayImage" << mout.endl;
+		//mout.debug(" currentImage not modifiable, creating a copy to grayImage" );
 		//convertGrayImage(*currentImage);
 		const drain::FlexVariable & quantity = ctx.currentGrayImage->properties["what:quantity"];
-		mout.warn() << "Experimental! Using h5-stored image, quantity=" << quantity << ", " << *ctx.currentImage << mout;
+		mout.warn("Experimental! Using h5-stored image, quantity=" , quantity , ", " , *ctx.currentImage );
 		return *((drain::image::Image *)ctx.currentImage); // force...
 	}
 
@@ -407,7 +416,7 @@ bool RackContext::guessDatasetGroup(const Hi5Tree & src, ODIMPathElem & pathElem
 		DataSelector::getNextChild(src, pathElem);
 		/*
 		if (pathElem == currentPath.front()){
-			mout.note() << "this path could have been set automatically: " << currentPath << mout.endl;
+			mout.note("this path could have been set automatically: " , currentPath );
 		}
 		*/
 		return true;
@@ -420,7 +429,7 @@ bool RackContext::guessDatasetGroup(const Hi5Tree & src, ODIMPathElem & pathElem
 		//path << parent;
 		/*
 		if (pathElem == currentPath.front()){
-			mout.note() << "this path could have been set automatically: " << currentPath << mout.endl;
+			mout.note("this path could have been set automatically: " , currentPath );
 		}
 		*/
 		return true;
@@ -470,7 +479,7 @@ void RackResources::setSource(Hi5Tree & dst, const drain::Command & cmd){
 	static sourceMap m;
 
 	if (m[&dst] != &cmd){
-		mout.debug() << "Cleared dst for " << cmd.getName() << mout.endl;
+		mout.debug("Cleared dst for " , cmd.getName() );
 		dst.clear();
 	}
 

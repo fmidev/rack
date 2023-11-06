@@ -96,7 +96,7 @@ void ImageOpExec::updateGeometryODIM(Hi5Tree & dstGroup, const std::string & qua
 		}
 
 		//d.odim.setArea(d.data.getWidth(), d.data.getHeight());
-		//mout.note() << "modified odim geom " << d.odim << mout.endl;
+		//mout.note("modified odim geom " , d.odim );
 
 
 	}
@@ -205,7 +205,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		superOdim.link("what:quantity", dstQuantitySyntax); // consider "${what:quantity}_FILT"
 		superOdim.addShortKeys();
 		superOdim.updateValues(ctx.targetEncoding); // do not clear yet. But risk: quantity(Syntax) causes scaling effors below.
-		//mout.debug() << "new quantity? - " << dstQuantity << mout.endl;
+		//mout.debug("new quantity? - " , dstQuantity );
 		CHANGE_SCALING = (superOdim.scaling.scale != 0.0);
 		//USER_TYPE    = (!superOdim.type.empty());
 	}
@@ -223,16 +223,16 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 	if (!USER_QUANTITY){
 
-		mout.warn() << "No output quantity, storing to a separate image" << mout;
+		mout.warn("No output quantity, storing to a separate image" );
 
 		if (paths.size() > 1){
 			paths.erase(++paths.begin());
-			mout.warn() << "Found several paths - using first path only" << mout;
+			mout.warn("Found several paths - using first path only" );
 		}
 	}
 	*/
 
-	//mout.debug() << "Selector results: " << mout.endl;
+	//mout.debug("Selector results: " );
 	for (const ODIMPath & path: paths)
 		mout.info("Selector results: ", path);
 
@@ -358,7 +358,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			else {
 
 				scaling.setScaling(1.0, 0.0); // WARNING: in future, direct linking with ODIM offset and gain will cause unexpected changes?
-				//mout.warn() << "src scaling: " << srcData.data.getScaling() << mout;
+				//mout.warn("src scaling: " , srcData.data.getScaling() );
 			}
 
 			mout.debug("src :", srcData.data, ' ', EncodingODIM(srcData.odim));
@@ -372,7 +372,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				SPECIFIC_QUALITY_FOUND = true;
 			}
 			else {
-				mout.debug() <<  path << "/[" << quantity <<  "] has no quality data (ok)" << mout.endl;
+				mout.debug(path , "/[" , quantity ,  "] has no quality data (ok)" );
 				SPECIFIC_QUALITY_MISSING = true;  // consider  && ctx.qualityGroupMatcher.test(ODIMPathElem::DATA)
 			}
 
@@ -424,7 +424,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				//dstConf.setCoordinatePolicy(srcConf.coordinatePolicy);
 
 				if (!ctx.targetEncoding.empty()){
-					// mout.special() << "trying: " << dstQuantity << '/' << ctx.targetEncoding << mout;
+					// mout.special("trying: " , dstQuantity , '/' , ctx.targetEncoding );
 
 					if (CHANGE_TYPE || CHANGE_SCALING){
 
@@ -467,7 +467,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 				if (!dstConf.typeIsSet()){
 					dstConf.setType(srcConf.getType());
-					mout.obsolete() << " setting src type? " << dstConf.getEncoding() << mout;
+					mout.obsolete(" setting src type? " , dstConf.getEncoding() );
 				}
 
 				//dstData.odim.type = drain::Type::getTypeChar(dstConf.getType());
@@ -525,7 +525,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			mout.debug2() << "at least some specific quality is used (and dataset-level)" << mout.endl;
 
 			//if (DATASET_QUALITY)
-			//	mout.note() << "detected dataset-level quality data: " << path << mout.endl;
+			//	mout.note("detected dataset-level quality data: " , path );
 
 			// Loop again (add specific)
 			for (const qlist_t::value_type & srcQuantity: quantityList){
@@ -547,10 +547,10 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				//Data<dst_t> & dstData = NEW_QUANTITY ? dstDataSet.getData(dstQuantity) : dit->second;
 
 				if (srcData.hasQuality()){
-					mout.info() << "using quantity[" << srcQuantity << "] specific quality data" << mout.endl;
+					mout.info("using quantity[" , srcQuantity , "] specific quality data" );
 
 					PlainData<dst_t> & srcQuality = srcData.getQualityData();
-					//mout.note() << "name: " << srcQuality.data.getName() << mout.endl;
+					//mout.note("name: " , srcQuality.data.getName() );
 
 					srcQuality.data.getScaling().setPhysicalRange(0.0, 1.0); // not self-evident
 					//srcQuality.data.setScaling(srcQuality.odim.scaling.scale, srcQuality.odim.scaling.offset);
@@ -571,7 +571,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				}
 				else if (DATASET_QUALITY) { // if USER_QUANTITY, dstQuality will be local
 
-					mout.info() << "using dataset specific quality data: " << path << mout.endl;
+					mout.info("using dataset specific quality data: " , path );
 
 					PlainData<dst_t> & srcQuality = dstDataSet.getQualityData();
 
@@ -593,7 +593,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				}
 
 				//PlainData<dst_t> & srcQuality = srcData.getQualityData();
-				//mout.note() << "name NOW: " << srcQuality.data.getName() << mout.endl;
+				//mout.note("name NOW: " , srcQuality.data.getName() );
 
 
 				if (true){  // (USER_QUANTITY / CHANGE_QUANTITY){
@@ -625,7 +625,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				dstTray.alpha.set(dstQuality.data);
 			}
 			else {
-				mout.unimplemented() << "no logic (yet) for single input quantity, multiple output: " <<  quantitySyntaxMapper << mout;
+				mout.unimplemented("no logic (yet) for single input quantity, multiple output: " ,  quantitySyntaxMapper );
 			}
 			*/
 		}
@@ -655,7 +655,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			Data<dst_t> & dstData = dstDataSet.getData(key);
 			//dstData.setEncoding(dstData.data.getType(), values);
 			dstData.odim.setScaling(dstData.data.getScaling().scale,  dstData.data.getScaling().offset);
-			mout.unimplemented() << "? what:gain and what:offset in HDF5 struct? " << dstData.odim.scaling << mout.endl;
+			mout.unimplemented("? what:gain and what:offset in HDF5 struct? " , dstData.odim.scaling );
 		}
 		*/
 
@@ -666,13 +666,13 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			ctx.setCurrentImages(dstTray.get());
 		}
 		else {
-			// mout.warn() << "No resulting image channels" << mout.endl;
+			// mout.warn("No resulting image channels" );
 			if (channels.getAlphaChannelCount() > 0){
-				mout.warn() << "Only alpha channels resulted, no conventional image channels" << mout.endl;
+				mout.warn("Only alpha channels resulted, no conventional image channels" );
 				ctx.setCurrentImages(dstTray.getAlpha());
 			}
 			else  {
-				mout.warn() << "No image or alpha channels resulted" << mout.endl;
+				mout.warn("No image or alpha channels resulted" );
 			}
 		}
 		*/
@@ -771,7 +771,7 @@ public:
 		targetScaled.min = dstScale.inv(target.min);
 		targetScaled.max = dstScale.inv(target.max);
 
-		mout.warn() << "targetScaled: " << targetScaled << mout.endl;
+		mout.warn("targetScaled: " , targetScaled );
 
 		double s;
 		while (true){

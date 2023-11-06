@@ -129,14 +129,14 @@ public:
 			mout.error("Projection undefined, cannot create tile");
 
 		if ((composite.odim.ACCnum > 0) || (!composite.odim.quantity.empty())){
-			mout.special("Clearing previous composite");
+			mout.debug("Clearing previous composite...");
 			// Consider: composite.clear() ?
 			composite.accArray.clear();
 			composite.odim.quantity.clear();
 			composite.odim.ACCnum = 0;
 			composite.odim.scaling.set(0,0);
 			composite.odim.type.clear(); // ? risky
-			mout.special("... Cleared.");
+			mout.info("Cleared previous composite");
 		}
 
 

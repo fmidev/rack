@@ -65,7 +65,7 @@ void CmdInputFile::exec() const {
 
 	// mout.timestamp("BEGIN_FILEREAD");
 
-	mout.note() << "reading: "<< value << mout.endl;
+	mout.note("reading: ", value );
 
 	// TODO: expand?
 	std::string fullFilename = ctx.inputPrefix + value;
@@ -75,12 +75,12 @@ void CmdInputFile::exec() const {
 	ctx.unsetCurrentImages();
 
 	//const drain::CommandRegistry & r = drain::getRegistry();
-	//mout.warn() << "lastCommand: '" << drain::CommandRegistry::index << r.getLastCommand() << "'" << mout.endl;
+	//mout.warn("lastCommand: '" , drain::CommandRegistry::index , r.getLastCommand() , "'" );
 
 	// Kludge. Check if last command was str than 1) file read or 2) odim assignment ( --/path:key=value )
 	// inputComplete = (r.getLastCommand() != this->name) && (r.getLastCommand() != "CmdSetODIM");
-	// mout.warn() << "inputComplete: " << (int)inputComplete << mout.endl;
-	// mout.warn() << "autoExec:      " << (int)cmdAutoExec.exec << mout.endl;
+	// mout.warn("inputComplete: " , (int)inputComplete );
+	// mout.warn("autoExec:      " , (int)cmdAutoExec.exec );
 	drain::FilePath path(value);
 	const bool NO_EXTENSION = path.extension.empty();
 	/*
@@ -132,13 +132,13 @@ void CmdInputFile::exec() const {
 	catch (const std::exception & e) {
 		//resources.inputOk = false;
 		ctx.statusFlags.set(drain::StatusFlags::INPUT_ERROR);
-		mout.debug() << e.what() << mout.endl;
+		mout.debug(e.what() );
 		/*
 		if (resources.scriptParser.autoExec > 0){  // => go on with str inputs
-			mout.warn() << "Read error, file: " << this->value << mout.endl;
+			mout.warn("Read error, file: " , this->value );
 		}
 		else {
-			mout.error() << "Read error, file: " << this->value << mout.endl;
+			mout.error("Read error, file: " , this->value );
 			//exit(1);
 		}
 		*/
@@ -148,8 +148,8 @@ void CmdInputFile::exec() const {
 
 	ctx.select.clear(); // NEW: "starts a product pipe". monitor effects of this
 
-	//mout.note() << "resources.getUpdatedStatusMap()" << mout.endl;
-	//mout.note() << "ctx.getStatusMap()" << mout;
+	//mout.note("resources.getUpdatedStatusMap()" );
+	//mout.note("ctx.getStatusMap()" );
 
 	drain::VariableMap & vmap = ctx.getStatusMap();
 
@@ -157,10 +157,10 @@ void CmdInputFile::exec() const {
 
 	path.basename.clear();
 	vmap["inputDir"] = path.str();
-	//mout.note() << path"ctx.getStatusMap() start" << mout;
+	//mout.note(path"ctx.getStatusMap() start" );
 
 	// mout.timestamp("END_FILEREAD");
-	//mout.warn() << "resources.getUpdatedStatusMap()" << mout.endl;
+	//mout.warn("resources.getUpdatedStatusMap()" );
 
 	//mout.special("END READ thread #", ctx.getId());
 
@@ -176,7 +176,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	// mout.debug() << "start: " << fullFilename << mout.endl;
+	// mout.debug("start: " , fullFilename );
 
 	mout.debug("thread #", ctx.getId(), ": reading ", fullFilename);
 
@@ -210,7 +210,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 				p << elem;
 				srcTmp(p).data.noSave = false;
 			}
-		}			//mout.debug() << "marked for save: " << *it << mout.endl;
+		}			//mout.debug("marked for save: " , *it );
 		/*
 		for (const ODIMPath & path: paths){
 			mout.warn("deleting: ", path);
@@ -252,14 +252,13 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 	// const bool SCRIPT_DEFINED = ctx.SCRIPT_DEFINED;
 
 
-	mout.debug() << "Derive file type (what:object)" << mout.endl;
+	mout.debug("Derive file type (what:object)");
 	drain::Variable & object = srcTmp[ODIMPathElem::WHAT].data.attributes["object"]; // beware of swap later
 	if (object.empty()){
 		object = "PVOL";
 		mout.warn("/what:object empty, assuming polar volume, '", object, "'");
 	}
 
-	//if ((object.toStr() == "COMP") || (object == "IMAGE")){
 	if ((object == "COMP") || (object == "IMAGE")){
 
 		mout.info("Cartesian [", object, ']');
@@ -271,26 +270,26 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		if (ctx.appendResults.isRoot() || ctx.cartesianHi5.empty()){
 			// Move (replace)
 			ctx.cartesianHi5.swap(srcTmp);
-			//mout.note() << ctx.cartesianHi5 << mout.endl;
-			mout.info() << "Swapped: " << ctx.cartesianHi5 << mout.endl;
+			//mout.note(ctx.cartesianHi5 );
+			mout.info("Swapped: " , ctx.cartesianHi5 );
 		}
 		else if (ctx.appendResults.isIndexed()){
-			mout.note() << "Cartesian, append mode: " << ctx.appendResults << mout.endl;
+			mout.note("Cartesian, append mode: " , ctx.appendResults );
 			appendCartesianH5(srcTmp, ctx.cartesianHi5);
 		}
 		else {
-			mout.error() << "unsupported mode for ProductOp::appendResults=" << ctx.appendResults << mout.endl;
+			mout.error("unsupported mode for ProductOp::appendResults=" , ctx.appendResults );
 		}
 
 		if (!ctx.composite.isMethodSet()){
 			//const std::string m = ctx.cartesianHi5["how"].data.attributes["camethod"];
 			const drain::Variable & m = ctx.cartesianHi5[ODIMPathElem::HOW].data.attributes["camethod"];
 			if (!m.empty()){
-				mout.info() << "adapting compositing method: " << m << mout.endl;
+				mout.info("adapting compositing method: " , m );
 				ctx.composite.setMethod(m.toStr());  // TODO: try-catch if invalid?
 			}
 			else {
-				mout.note() << "no compositing method (how:camethod) in metadata of '" << value << "', consider --cMethod " << mout.endl;
+				mout.note("no compositing method (how:camethod) in metadata of '" , value , "', consider --cMethod " );
 			}
 
 		}
@@ -332,11 +331,12 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 			}
 		}
 
-		//mout.warn() << "s" << mout.endl;
-		DataTools::updateCoordinatePolicy(ctx.polarInputHi5, RackResources::polarLeft);
-
+		// mout.warn("next: updateCoordinatePolicy");
+		// DataTools::updateCoordinatePolicy(ctx.polarInputHi5, RackResources::polarLeft);
+		// mout.warn();
 	}
 
+	// mout.warn("next: updateInternalAttributes");
 	DataTools::updateInternalAttributes(*ctx.currentHi5);
 
 	mout.info("ok thread=",  ctx.getId() );
@@ -351,7 +351,7 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	mout.debug() << "start" << mout.endl;
+	mout.debug("start" );
 
 	if (ctx.appendResults.is(ODIMPathElem::DATASET)){
 		attachCartesianH5(srcRoot, dstRoot);
@@ -359,10 +359,10 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 	else if (ctx.appendResults.isIndexed()){
 
 		if (srcRoot.empty())
-			mout.warn() << " srcRoot empty" << mout.endl;
+			mout.warn(" srcRoot empty" );
 
 		if (srcRoot.getChildren().size() > 1)
-			mout.note() << " srcRoot has several datasets" << mout.endl;
+			mout.note(" srcRoot has several datasets" );
 
 
 		ODIMPathElem parent(ODIMPathElem::DATASET);
@@ -382,18 +382,18 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 			// Hi5Tree & src = it->second;
 
 			if (elem.isIndexed()){
-				mout.note() << " appending " << elem << " => " << parent << mout.endl;
+				mout.note(" appending " , elem , " => " , parent );
 				attachCartesianH5(src, dst);
 			}
 			else {
-				mout.note() << " replacing " << elem << mout.endl;
+				mout.note(" replacing " , elem );
 				dst[elem].swap(src);   // overwrite what, where,
 			}
 
 		}
 	}
 	else {
-		mout.warn() << " could not find path with append=" << ctx.appendResults << ", swapping anyway" << mout.endl;
+		mout.warn(" could not find path with append=" , ctx.appendResults , ", swapping anyway" );
 		dstRoot.swap(srcRoot);
 	}
 
@@ -418,7 +418,7 @@ void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 			dst[p].swap(it->second);
 		}
 		else {
-			mout.note() << " replacing " << it->first << mout.endl;
+			mout.note(" replacing " , it->first );
 			dst[it->first].swap(it->second);   // overwrite what, where,
 		}
 
@@ -447,7 +447,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 	mout.debug("start");
 	const drain::Variable & sourceSrc = srcRoot[ODIMPathElem::WHAT].data.attributes["source"];
 	const drain::Variable & sourceDst = dstRoot[ODIMPathElem::WHAT].data.attributes["source"];
-	// mout.warn() << sourceDst << " => " << sourceSrc << mout.endl;
+	// mout.warn(sourceDst , " => " , sourceSrc );
 	// TODO: consider option to accept different source?
 	if (!sourceDst.empty()){
 		if (!sourceSrc.empty()){
@@ -565,7 +565,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 			ODIMPathElem child(ODIMPathElem::DATASET);
 			DataSelector::getNextChild(dstRoot, child);
-			mout.info() << "New timestamp (" << srcDSEntry.first << "), appending to path=" << child << mout.endl;
+			mout.info("New timestamp (" , srcDSEntry.first , "), appending to path=" , child );
 			// Create empty dstRoot[path] and swap it...
 			Hi5Tree & dstDataSet = dstRoot[child];
 			dstDataSet.swap(srcDataSet);
@@ -810,14 +810,14 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 		if (srcClass.data.isEmpty()){ // CLASS
 			const PlainData<PolarSrc> & srcProb = sDataSet.getQualityData(quantity);
 			if (srcProb.data.isEmpty()){
-				mout.warn() << "Empty data for prob. quantity="<< quantity << mout.endl;
+				mout.warn("Empty data for prob. quantity=", quantity );
 				continue;
 			}
 			mout.note() << "No CLASS data in src, ok. Updating dst CLASS with prob.field; quantity="<< quantity << mout.endl;
 			QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, quantity, (short unsigned int)123); // FIX code!
 		}
 		else {
-			mout.info() << "Found quality data (CLASS), updates done on that, not on orig quality=" << quantity << mout.endl;
+			mout.info("Found quality data (CLASS), updates done on that, not on orig quality=" , quantity );
 		}
 		 */
 
@@ -843,13 +843,13 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 			ODIMPathElem dstChild(ODIMPathElem::QUALITY);
 			DataSelector::getNextChild(dst, dstChild);
 
-			mout.note() << "Adding quality ["<< quantity << "] directly to ./" << dstChild  << mout.endl;
+			mout.note("Adding quality [", quantity , "] directly to ./" , dstChild  );
 
 			// Create empty dstRoot[path] and swap it...
 			dst[dstChild].swap(src[srcChild]);
 		}
 		else { // elangle is found in dstRoot.
-			mout.note() << "UNDONE: Already [" << quantity << "] at " << dit->second  << mout.endl;
+			mout.note("UNDONE: Already [" , quantity , "] at " , dit->second  );
 		}
 
 	}
@@ -951,18 +951,18 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	if (dataElem.getIndex() == 0)
 		dataElem.index = 1;
 
-	mout.debug() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
+	mout.debug("Found path " , dataSetElem , '>' , dataElem );
 	if (!ctx.polarInputHi5[dataSetElem][dataElem][ODIMPathElem::ARRAY].data.dataSet.isEmpty()){
-		mout.debug() << "Path " << dataSetElem << '>' << dataElem << "/data contains data already, searching further..." << mout.endl;
+		mout.debug("Path " , dataSetElem , '>' , dataElem , "/data contains data already, searching further..." );
 		//DataSelector::getNextOrdinalPath(ctx.inputHi5, pathSearch, dataPath);
 		++dataElem.index;
-		mout.debug() << "Found path " << dataSetElem << '>' << dataElem << mout.endl;
+		mout.debug("Found path " , dataSetElem , '>' , dataElem );
 	}
 
 	// Perhaps explicitly set already
 	std::string object = ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["object"];
 
-	mout.warn() << ctx.polarInputHi5[ODIMPathElem::WHAT] << mout;
+	mout.warn(ctx.polarInputHi5[ODIMPathElem::WHAT] );
 
 	Hi5Tree & dst = ctx.polarInputHi5[dataSetElem][dataElem];
 	drain::image::Image & dstImage = dst[ODIMPathElem::ARRAY].data.dataSet;
@@ -975,22 +975,22 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 
 	// No information, img has always (linked) attributes.
-	// mout.info() << "Image has metadata: " << drain::Variable(!attr.empty()) << mout.endl;
-	//mout.info() << d << mout;
+	// mout.info("Image has metadata: " , drain::Variable(!attr.empty()) );
+	//mout.info(d );
 
-	mout.note() << attr << mout;
+	mout.note(attr );
 		//mout.warn() << "object empty,: '" <<
 	drain::Variable & obj = attr["what:object"];
 	if (!obj.empty()){
 		if (object.empty()){
 			if (obj != object){
-				mout.warn() << "overwriting what:object '" << object << "' -> '" << obj << "'" << mout;
+				mout.warn("overwriting what:object '" , object , "' -> '" , obj , "'" );
 			}
 			object = obj.toStr();
 		}
 	}
 	//std::string object = attr["what:object"].toStr();
-	//mout.warn() << "object: '" << object << '[' << Type::getTypeChar(object.getType()) << "]', props: " <<  dstImage.properties << mout.endl;
+	//mout.warn("object: '" , object , '[' , Type::getTypeChar(object.getType()) , "]', props: " ,  dstImage.properties );
 
 
 	if (object.empty()){
@@ -1000,49 +1000,49 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 	if (object.empty()){ // unneeded? See below.
 		object = "SCAN";
-		mout.note() << "what:object empty, assuming "<< object <<"'" << mout;
+		mout.note("what:object empty, assuming ", object ,"'" );
 	}
 	else {
-		mout.warn() << "object: " << object << mout;
+		mout.warn("object: " , object );
 	}
 	/*
 	if (object == "COMP"){
 		CartesianODIM odim;
 		odim.updateFromMap(attr);
-		mout.note() << "Composite detected" << mout.endl;
-		mout.debug() << odim << mout.endl;
+		mout.note("Composite detected" );
+		mout.debug(odim );
 	}
 	else if ((object == "SCAN") || (object == "PVOL")){
 		PolarODIM odim;
 		odim.updateFromMap(attr);
-		mout.note() << "Polar scan detected" << mout.endl;
-		mout.debug() <<  odim << mout.endl;
+		mout.note("Polar scan detected" );
+		mout.debug(odim );
 	}
 	else {
-		mout.note() << "what:object not SCAN, PVOL or COMP: rack provides limited support" << mout.endl;
+		mout.note("what:object not SCAN, PVOL or COMP: rack provides limited support" );
 	}
 	*/
 
 
 	DataTools::updateInternalAttributes(ctx.polarInputHi5); // [dataSetElem] enough?
-	mout.debug() << "props: " <<  dstImage.properties << mout.endl;
+	mout.debug("props: " ,  dstImage.properties );
 
 	if ((object == "COMP")|| (object == "IMAGE") ){
-		mout.note() << "Cartesian product detected" << mout.endl;
+		mout.note("Cartesian product detected" );
 		CartesianODIM odim; //(dstImage.properties);
 		deriveImageODIM(dstImage, odim);  // generalize in ODIM.h (or obsolete already)
 		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
 		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, ctx.polarInputHi5[dataSetElem]); // $ odim.copyToDataSet(ctx.inputHi5(dataSetPath));
 		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, ctx.polarInputHi5); // $ odim.copyToRoot(ctx.inputHi5);
-		mout.unimplemented() << "swap HDF5 for Cartesian data" << mout;
+		mout.unimplemented("swap HDF5 for Cartesian data" );
 	}
 	else {
 		if ((object == "SCAN") || (object == "PVOL")) {
-			mout.note() << "Polar object (" << object << ") detected" << mout;
+			mout.note("Polar object (" , object , ") detected" );
 		}
 		else {
 			ctx.polarInputHi5["what"].data.attributes["object"] = "SCAN";
-			mout.warn() << "No what:object in metadata, assuming SCAN (Polar scan)" << mout;
+			mout.warn("No what:object in metadata, assuming SCAN (Polar scan)" );
 		}
 		PolarODIM odim;
 		deriveImageODIM(dstImage, odim);   // TODO generalize in ODIM.h (or obsolete already)

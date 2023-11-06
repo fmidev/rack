@@ -99,20 +99,25 @@ public:
 	 *
 	 *  \see updateAttributes(Hi5Tree & src, const drain::FlexVariableMap & attributes)
 	 */
-	static inline
-	void updateInternalAttributes(Hi5Tree & src){
+	static
+	void updateInternalAttributes(Hi5Tree & src);
+	/*
+	{
 		src.data.dataSet.properties.clear();
+		src.data.dataSet.setCoordinatePolicy(4,3,2,1);
 		updateInternalAttributes(src, drain::FlexVariableMap());
+		//updateInternalAttributes(src, drain::VariableMap());
 	}
+	*/
 
-	/// This \c const version does nothing.
+	/// This \c const version does nothing, but is needed for Data:: #supdateTree3()
 	/**
 	 *   \see updateAttributes(Hi5Tree & src, const drain::FlexVariableMap & attributes)
 	 */
 	static inline
-	void updateInternalAttributes(const Hi5Tree & src, const drain::FlexVariableMap & attributes = drain::FlexVariableMap()){
-		//drain::Logger mout("DataTools", __FUNCTION__);
-		//mout.warn() << "somebody called me" << mout.endl;
+	void updateInternalAttributes(const Hi5Tree & src){ // const drain::FlexVariableMap & attributes = drain::FlexVariableMap()){
+		// drain::Logger mout("DataTools", __FUNCTION__);
+		// mout.warn("somebody called me");
 	};
 
 
@@ -160,7 +165,10 @@ protected:
 	 */
 	//const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(),
 	static
-	void updateInternalAttributes(Hi5Tree & src, const drain::FlexVariableMap & attributes); // = drain::VariableMap()
+	void updateInternalAttributes(Hi5Tree & src, const drain::FlexVariableMap & attributes);
+	//void updateInternalAttributes(Hi5Tree & src, const drain::VariableMap & attributes);
+
+
 
 
 };

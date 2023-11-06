@@ -142,7 +142,7 @@ int process(int argc, const char **argv) {
 		//cmdBank.run(script, contextCloner);
 		cmdBank.run(prog, contextCloner);
 
-		// mout.warn() << "debug-level:" << prog.begin()->second->getContext<drain::Context>().log.getVerbosity() << mout.endl;
+		// mout.warn("debug-level:" , prog.begin()->second->getContext<drain::Context>().log.getVerbosity() );
 
 		if (!ctx.statusFlags){
 			mout.ok("Finished.");
@@ -157,7 +157,7 @@ int process(int argc, const char **argv) {
 		mout.warn( e.what() );
 		ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
 	}
-	//mout.note() << "debug-level:" << ctx.log.getVerbosity() << mout.endl;
+	//mout.note("debug-level:" , ctx.log.getVerbosity() );
 
 
 	return ctx.statusFlags.value;

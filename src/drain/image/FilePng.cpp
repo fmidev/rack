@@ -80,13 +80,13 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 		return;  // -1
 	}
 
-	mout.debug() << "Path: " << path << mout.endl;
+	mout.debug("Path: ", path);
 	//mout.warn()  << "img: " << image << mout.endl;
 
 	FILE *fp = fopen(path.c_str(), "wb");
 	if (!fp){
 		//throw std::runtime_error(std::string("FilePng: could not open file : ")+path);
-		mout.error() << "could not open file: " << path << mout.endl;
+		mout.error("could not open file: ", path);
 		return;
 	}
 
@@ -240,7 +240,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 		//drain::Sprinter::toStream(sstr, entry.second, drain::Sprinter::jsonLayout);
 		// std::string s = drain::sprinter((const drain::Castable &)entry.second, drain::Sprinter::jsonLayout).str();
 		std::string s = drain::sprinter((const drain::Castable &)entry.second, drain::Sprinter::jsonLayout).str();
-		mout.debug(s);
+		mout.debug3(s);
 		comments[entry.first] = s; //it->second.toStr();
 		//it->second.substr(0,79); MAX SIZE?
 	}

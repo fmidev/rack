@@ -170,7 +170,7 @@ Hi5Tree & Hdf5Context::getMyHi5(h5_role::value_t filter) {
 	}
 
 	if ((filter & EMPTY)){
-		mout.error() << "something went wrong, could not find even EMPTY H5 with filter=" << filter << mout.endl;
+		mout.error("something went wrong, could not find even EMPTY H5 with filter=" , filter );
 	}
 
 	// debugging
@@ -252,15 +252,15 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 		ODIMPath path;
 		selector.getPath(src, path);
 
-		mout.debug() << path << mout.endl;
+		mout.debug(path );
 
 
 		if (path.empty()){
-			//mout.special() << src << mout.endl;
-			mout.note() << "data exists, but no data groups found with selector '" << selector << "'" << mout.endl;
+			//mout.special(src );
+			mout.note("data exists, but no data groups found with selector '" , selector , "'" );
 		}
 		else {
-			mout.debug() << "using path=" << path << mout.endl;
+			mout.debug("using path=" , path );
 			DataTools::getAttributes(src, path, statusMap);
 
 			/// Split what:source to separate fields

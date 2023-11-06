@@ -77,7 +77,7 @@ void CartesianSun::exec() const {
 	Sun sun(timestamp);
 	dstData.odim.setTime(timestamp);
 
-	mout.warn() << "Check bbox and scaling? " << ctx.composite << mout.endl;
+	mout.warn("Check bbox and scaling? " , ctx.composite );
 	//ctx.composite.updateScaling();
 
 	mout.debug2() << "main" << mout.endl;

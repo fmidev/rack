@@ -90,7 +90,7 @@ public:
 
 	void exec() const {
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.info() << "querying " << value << mout.endl;
+		mout.info("querying " , value );
 		// OLD:
 		clutterOp.setClutterMap(value);
 	};
@@ -217,9 +217,9 @@ public:
 				RackContext::POLAR|RackContext::INPUT|RackContext::SHARED
 		);
 		const Hi5Tree &src = dst;
-		//mout.note() << src << mout.endl;
+		//mout.note(src );
 
-		//mout.warn() << dst << mout.endl;
+		//mout.warn(dst );
 		this->bean.traverseVolume(src, dst);
 
 		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
@@ -253,7 +253,7 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );
 
 
-		mout.unimplemented() << "...Applying UNIVERSAL" << mout.endl;
+		mout.unimplemented("...Applying UNIVERSAL" );
 
 		this->AnDReCommand<OP>::update(); // ? why down here
 

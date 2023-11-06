@@ -38,84 +38,117 @@ namespace rack {
 
 using namespace hi5;
 
+void DataTools::updateInternalAttributes(Hi5Tree & src){
 
-void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariableMap & attributes){
+	//src.data.dataSet.properties.clear();
+	drain::FlexVariableMap & properties = src.data.dataSet.properties;
+	//properties.clear(); // TODO: should not remove linked variables!
+
+	drain::Variable & object = src[ODIMPathElem::WHAT].data.attributes["object"];
+	if (object == "PVOL"){
+		src.data.dataSet.setCoordinatePolicy(
+				drain::image::CoordinatePolicy::POLAR,
+				drain::image::CoordinatePolicy::WRAP,
+				drain::image::CoordinatePolicy::LIMIT,
+				drain::image::CoordinatePolicy::WRAP);
+	}
+	else {
+		src.data.dataSet.setCoordinatePolicy(
+				drain::image::CoordinatePolicy::LIMIT,
+				drain::image::CoordinatePolicy::LIMIT,
+				drain::image::CoordinatePolicy::LIMIT,
+				drain::image::CoordinatePolicy::LIMIT);
+	}
+
+	updateInternalAttributes(src, properties);
+	//updateInternalAttributes(src, drain::FlexVariableMap());
+	//updateInternalAttributes(src, drain::VariableMap());
+}
+
+void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariableMap & parentAttributes){
+//void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::VariableMap & attributes){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	// std::string path = attributes.get("how:path","");
-	// mout.special("path: ", path);
-
+	//std::string path = parentAttributes.get("how:path","");
+	/*
+	mout.special(// "path: ", parentAttributes.get("how:path",""),
+			//" coordPolicy:", parentAttributes["coordPolicy"],
+			" my coordPolicy( ", src.data.dataSet.getCoordinatePolicy());
+	*/
 
 	/// Write to "hidden" variables of this node (src).
-	drain::FlexVariableMap & a = src.data.dataSet.properties;
-	// Init with upper level state
-	a.importMap(attributes); //, LOG_DEBUG+2);
-	//std::cerr << "MAP now: " << a << "\n\n";
+	drain::FlexVariableMap & attributes = src.data.dataSet.properties;
+	// mout.special("my coordProp) ", attributes["coordPolicy"]);
 
-	/// Step 1: collect local values of \c /what, \c /where, and \c /how groups, overwriting previous (upper-level) values.
+	// Init with upper level state
+	//attributes.importMap(parentAttributes); //, LOG_DEBUG+2);
+	attributes.updateFromCastableMap(parentAttributes);
+	// std::cerr << "MAP now: " << a << "\n\n";
+	// mout.special("my coordPolicy) ", src.data.dataSet.getCoordinatePolicy());
+
+	/// Step 1: collect local values of \c /what, \c /where, and \c /how groups, overwriting attributes initialised to parent values.
 	std::stringstream sstr;
-	// Traverse children (recursion)
-	//for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
-	for (const auto & it : src){
-		if (it.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-			const drain::VariableMap & attributes = it.second.data.attributes;
-			for(const auto & ait: attributes){
+	for (const auto & entry : src){
+		if (entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+			const drain::VariableMap & a = entry.second.data.attributes;
+			for(const auto & e: a){
 				sstr.str("");
-				sstr << it.first << ':' << ait.first;
-				a[sstr.str()] = ait.second;
+				sstr << entry.first << ':' << e.first;
+				attributes[sstr.str()] = e.second;
 				//mout.warn() << sstr.str() << '=' << it->second << " ... " << a[sstr.str()] << drain::Type::getTypeChar(it->second.getType()) << mout.endl;
 			}
 		}
 	}
 
-
 	// Step 2: Traverse other children (recursion)
-	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
+	for (auto & entry: src){
 
-		if (it->first.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-			if (!it->second.data.noSave){
-				mout.debug3() << it->first << " => ensure '/data' groups  " << mout.endl;
-				it->second[ODIMPathElem::ARRAY].data.dataSet;
+		if (entry.first.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+			if (!entry.second.data.noSave){
+				mout.debug3() << entry.first << " => ensure '/data' groups  " << mout.endl;
+				entry.second[ODIMPathElem::ARRAY].data.dataSet;
 			}
 		}
-		else if (it->first.is(ODIMPathElem::ARRAY)){
+		else if (entry.first.is(ODIMPathElem::ARRAY)){
 
-			drain::image::Image & img = it->second.data.dataSet;
+			drain::image::Image & img = entry.second.data.dataSet;
 			if (img.typeIsSet()){
-				a["what:type"] = std::string(1u, drain::Type::getTypeChar(img.getType()));
+				// Non-standard
+				attributes["what:type"] = std::string(1u, drain::Type::getTypeChar(img.getType()));
+				// Important: ensure Image has (scale,offset) as defined by above WHAT(gain,offset)
 				drain::ValueScaling & s = img.getScaling();
-				s.set(a.get("what:gain", s.scale), a.get("what:offset", s.offset));
-				//s.setScale(a["what:gain"], a["what:offset"]);
-				// Needed. As a side effect, empty data1.img will get a scaling...
-				a["scale"]  = s.scale;
-				a["offset"] = s.offset;
+				s.set(attributes.get("what:gain", s.scale), attributes.get("what:offset", s.offset));
+				// Needed. As a side effect, empty data1.img may get a scaling...
+				attributes["scale"]  = s.scale;
+				attributes["offset"] = s.offset;
 				//mout.warn() << a.get("what:quantity", "?") << ", scaling " << img.getScaling() << ' ' << img << mout.endl;
 			}
-			//mout.warn() << "scaling1 " << it->second.data.dataSet.getScaling() << mout.endl;
+			//mout.warn() << "scaling1 " << entry.second.data.dataSet.getScaling() << mout.endl;
 		}
 
 
-		// mout.note() << "considering " << it->first << mout.endl;
-		if (it->first.belongsTo(ODIMPathElem::DATA_GROUPS | ODIMPathElem::ARRAY)){  // ){//
-			//mout.warn() << "descending to... " << it->first << mout.endl;
+		// mout.note() << "considering " << entry.first << mout.endl;
+		if (entry.first.belongsTo(ODIMPathElem::DATA_GROUPS | ODIMPathElem::ARRAY)){  // ){//
+			//mout.warn() << "descending to... " << entry.first << mout.endl;
 			/*
 			a["how:path"] = path;
-			a["how:path"] << it->first;
+			a["how:path"] << entry.first;
 			mout.special("pathy -> ", a["how:path"]);
 			*/
-			updateInternalAttributes(it->second,  a); // policy,
+			updateInternalAttributes(entry.second,  attributes); // policy,
 		}
 
-		if (it->first.is(ODIMPathElem::ARRAY)){
-			//mout.warn() << "scaling2 " << it->second.data.dataSet.getScaling() << mout.endl;
+		if (entry.first.is(ODIMPathElem::ARRAY)){
+			// mout.warn("image ", entry.second.data.dataSet.getName(), " coordPolicy:", entry.second.data.dataSet.getCoordinatePolicy());
+			// mout.warn("image ", entry.second.data.dataSet.getName(), " scaling: ",    entry.second.data.dataSet.getScaling());
 		}
 
 	}
 
-	//if (src.hasChild(ODIMPathElem::ARRAY))
-		//mout.warn() << "scaling3 " << src[ODIMPathElem::ARRAY].data.dataSet.getScaling() << mout.endl;
 
+	// if (src.hasChild(ODIMPathElem::ARRAY))
+	//   mout.warn() << "scaling3 " << src[ODIMPathElem::ARRAY].data.dataSet.getScaling() << mout.endl;
 	// std::cerr << "### updateAttributes"
 }
 
@@ -154,25 +187,26 @@ void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::Coordi
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	mout.deprecating("This may be better handled with updateInternalAttributes");
+
 	drain::image::Image & data = src.data.dataSet;
+
 	if (!data.isEmpty()){
 		data.setCoordinatePolicy(policy);
-		//data.setName(path + ':' + data.properties["what:quantity"].toStr());
-		data.setName(data.properties["what:quantity"].toStr());
-		//mout.warn() << "qty=" << data.getName() << " - " << data.getCoordinatePolicy() << '\n';
+		data.setName(data.properties["what:quantity"].toStr() + policy.toStr('_'));
+		// mout.attention("image name=", data.getName(), " - ", data.getCoordinatePolicy());
 	}
 
-	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
-
-		if (!it->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-			//mout.warn() << "updating " << it->first << '\n';
-			updateCoordinatePolicy(it->second, policy);
+	for (auto & entry: src){
+		if (! entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+			mout.special("next updating: ", entry.first);
+			updateCoordinatePolicy(entry.second, policy);
 		}
-		else {
-		//	mout.warn() << "not updating " << it->first << '\n';
-		}
-		//if (g.find(key) == g.end()) updateCoordinatePolicy(it->second, policy);
 	}
+
+	// data.setName(data.properties["what:quantity"].toStr());
+	mout.attention("image name=", data.getName(), " - ", data.getCoordinatePolicy());
+
 }
 
 /// For drain::TreeUtils dumper()

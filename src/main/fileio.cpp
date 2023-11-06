@@ -154,8 +154,8 @@ public:
 			return;
 		}
 
-		// mout.warn() << format << mout.endl;
-		// mout.note() << params << mout.endl;
+		// mout.warn(format );
+		// mout.note(params );
 		// todo: shared resource for output conf:  refMap of refMaps...
 		// todo recognize tif,TIFF
 		mout.debug("Current conf [", format, "]");
@@ -278,7 +278,7 @@ void CmdOutputFile::exec() const {
 
 	/*
 	if (value.empty()){
-		mout.error() << "File name missing. (Use '-' for stdout.)" << mout.endl;
+		mout.error("File name missing. (Use '-' for stdout.)" );
 		return;
 	}
 	*/
@@ -301,13 +301,13 @@ void CmdOutputFile::exec() const {
 		filename = "-";
 	}
 	else {
-		//mout.warn() << RackContext::variableMapper << mout.endl;
+		//mout.warn(RackContext::variableMapper );
 		drain::StringMapper mapper(RackContext::variableMapper);
 		mapper.parse(ctx.outputPrefix + value);
 		filename = mapper.toStr(ctx.getStatusMap());
-		mout.note() << "writing: '" << filename << "'" << mout.endl;
+		mout.note("writing: '" , filename , "'" );
 	}
-	// mout.note() << "filename: " << filename << mout.endl;
+	// mout.note("filename: " , filename );
 
 	// TODO: generalize select
 	// TODO: generalize image pick (current or str) for png/tif
@@ -337,23 +337,17 @@ void CmdOutputFile::exec() const {
 
 		mout.info("File format: image");
 
-		if (!ctx.select.empty()){
-			// if (ctx.select.count){			}
-		}
-
-		// ctx.updateCurrentImage(); // ?
-
-		// Use ctx.select and/or ctx.targetEncoding, if defined.
+		// Handle ctx.select and ctx.targetEncoding, if defined.
 		const drain::image::Image & src = ctx.updateCurrentImage();
 
 		if (src.isEmpty()){
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
-			mout.warn() << "empty data, skipped" << mout.endl;
+			mout.warn("empty data, skipped");
 			return;
 		}
 
 		if (!ctx.formatStr.empty()){
-			mout.special() << "formatting comments" << mout.endl;
+			mout.special("formatting comments");
 			drain::StringMapper statusFormatter(RackContext::variableMapper);
 			statusFormatter.parse(ctx.formatStr, true);
 			drain::image::Image &dst = (drain::image::Image &)src; // violence...
@@ -362,7 +356,7 @@ void CmdOutputFile::exec() const {
 		}
 
 		if (IMAGE_PNG || IMAGE_PNM){
-			mout.debug() << "PNG or PGM format" << mout.endl;
+			mout.debug("PNG or PGM format, using ImageFile::write");
 			drain::image::ImageFile::write(src, filename);
 		}
 		else if (IMAGE_TIF) {
@@ -377,8 +371,9 @@ void CmdOutputFile::exec() const {
 #endif
 		}
 		else {
+			// This should be impossible
 			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR || drain::StatusFlags::OUTPUT_ERROR);
-			mout.error() << "unknown file name extension" << mout.endl;
+			mout.error("unknown file name extension: ", filename);
 		}
 
 	}
@@ -452,7 +447,7 @@ void CmdOutputFile::exec() const {
 			hi5::Hi5Base::writeText(src, paths, output);
 		}
 		else {
-			mout.debug() << "formatting text output" << mout.endl;
+			mout.debug("formatting text output" );
 			drain::StringMapper statusFormatter(RackContext::variableMapper);
 			statusFormatter.parse(ctx.formatStr, true);
 			statusFormatter.toStream(output, ctx.getStatusMap());
@@ -591,19 +586,19 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		//mout.note() << "Writing multiple image files" << mout.endl;
+		//mout.note("Writing multiple image files" );
 
 		//DataSelector imageSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY); //("/data$");
 		DataSelector imageSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY); // ImageS elector imageS elector;
 		imageSelector.consumeParameters(ctx.select);
 		imageSelector.ensureDataGroup();
-		mout.debug() << imageSelector << mout.endl;
+		mout.debug(imageSelector );
 
 
 		/// Split filename to dir+basename+extension.
 		drain::FilePath fp(ctx.outputPrefix + value);
-		mout.note() << "outputPrefix='" << ctx.outputPrefix << "'" << mout;
-		mout.note() << "Writing multiple image files: " << fp.dir << ' ' << fp.basename << "???_*." << fp.extension << mout.endl;
+		mout.note("outputPrefix='" , ctx.outputPrefix , "'" );
+		mout.note("Writing multiple image files: " , fp.dir , ' ' , fp.basename , "???_*." , fp.extension );
 
 		std::string filenameOut;
 		int i=0; // Overall index (prefix)
@@ -620,10 +615,10 @@ public:
 			hi5::NodeHi5 & node = src(path)[ODIMPathElem::ARRAY].data;
 			drain::image::Image & img = node.dataSet;
 
-			mout.debug() << "testing: " << path << " => /data" <<mout.endl;
+			mout.debug("testing: " , path , " => /data" );
 
 			if (img.isEmpty()){
-				mout.warn() << "empty data array: " << path << " => /data" <<mout.endl;
+				mout.warn("empty data array: " , path , " => /data" );
 				continue;
 			}
 
@@ -652,8 +647,8 @@ public:
 			sstr << '.' << fp.extension;
 			filenameOut = sstr.str();
 
-			mout.info() << "Writing image file: " << filenameOut << '\t' << path << mout.endl;
-			//mout.debug() << "  data :" << *it << mout.endl;
+			mout.info("Writing image file: " , filenameOut , '\t' , path );
+			//mout.debug("  data :" , *it );
 
 			drain::image::ImageFile::write(img, filenameOut);
 			//getResources().currentImage = & img; NEW 2017

@@ -61,7 +61,7 @@ void CartesianPlotFile::exec() const {
 
 	if (! ctx.composite.isMethodSet()){
 		ctx.composite.setMethod("LATEST");
-		mout.note() << " no method set, using " << ctx.composite.getMethod() << " (see --cMethod) " << mout.endl;
+		mout.note(" no method set, using " , ctx.composite.getMethod() , " (see --cMethod) " );
 	}
 
 	drain::Input input(value);
@@ -113,11 +113,11 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	Data<CartesianDst> & dst = dstDataSet.getFirstData(); // first data encountered; consider "DBZH"?
 
 	if (dst.data.isEmpty()){
-		mout.warn() << "Empty data, skipping..." << mout.endl;
+		mout.warn("Empty data, skipping..." );
 		return;
 	}
 
-	//mout.warn() << dst.odim << mout.endl;
+	//mout.warn(dst.odim );
 
 	/*
 	DistanceTransformFillLinearOp distLinear;
@@ -159,7 +159,7 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	mout.debug3() << "quality: " << dstQuality << mout.endl;
 
 	if (dstQuality.data.isEmpty()){
-		mout.warn() << "Empty quality data, skipping..." << mout.endl;
+		mout.warn("Empty quality data, skipping..." );
 		return;
 	}
 

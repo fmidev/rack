@@ -111,7 +111,7 @@ public:
 		std::stringstream sstr;
 		sstr << "dataset" << (1+elevIndex) << ',' << "quantity=" << quantity;
 		ctx.select = sstr.str();
-		mout.note() << ctx.select << mout;
+		mout.note(ctx.select );
 		ctx.currentHi5 = ctx.currentPolarHi5;
 		ctx.unsetCurrentImages();
 
@@ -154,13 +154,13 @@ public:
 
 		map_t::const_iterator it = quantityMap.find(value.substr(0, value.find(',')));
 		if (it != quantityMap.end()){
-			mout.note() << "found '" << it->first << "' " << mout;
-			mout.note() << "setting what:quantity: " << it->second << " " << mout;
+			mout.note("found '" , it->first , "' " );
+			mout.note("setting what:quantity: " , it->second , " " );
 			ctx.getStatusMap()["what:quantity"] = it->second;
 		}
 		else {
-			mout.note() << drain::sprinter(quantityMap) << mout;
-			mout.error() << "meteorological product '" << value << "' does not exist " << mout;
+			mout.note(drain::sprinter(quantityMap) );
+			mout.error("meteorological product '" , value , "' does not exist " );
 		}
 
 	}
@@ -207,11 +207,11 @@ public:
 		mout.debug("Applying data selector and targetEncoding ");
 
 		if (this->bean.dataSelector.consumeParameters(ctx.select)){
-			mout.special() << "User defined select: " << this->bean.getDataSelector() << mout.endl;
+			mout.special("User defined select: " , this->bean.getDataSelector() );
 		}
 
 		if (!ctx.targetEncoding.empty()){
-			mout.debug() << "Setting target parameters: " << ctx.targetEncoding << mout.endl;
+			mout.debug("Setting target parameters: " , ctx.targetEncoding );
 			this->bean.setEncodingRequest(ctx.targetEncoding);
 			//mout.debug2() << "New values: " << this->bean.odim  << mout.endl;
 			ctx.targetEncoding.clear();
@@ -264,7 +264,7 @@ public:
 			mout.warn("src = dst");
 		}
 
-		//mout.warn() << dst << mout.endl;
+		//mout.warn(dst );
 		//mout.warn("Produktsi");
 		this->bean.processVolume(src, dst);
 		// hi5::Writer::writeFile("test1.h5", dst);
@@ -309,7 +309,7 @@ drain::Command & ProductModule::install(char alias){  // = 0 TODO: EMBED "instal
 	drain::Command  & cmd = cmdBank.add<ProductCommand<OP> >(name);
 	cmd.section = getSection().index;
 	// drain::Logger mout(__FILE__, __FUNCTION__);
-	// mout.special() << name << "\n -> " << op.getOutputQuantity() << "\t test:" << op.getOutputQuantity("TEST") << mout;
+	// mout.special(name , "\n -> " , op.getOutputQuantity() , "\t test:" , op.getOutputQuantity("TEST") );
 	CmdOutputQuantity::quantityMap[name] =  op.getOutputQuantity();
 	return cmd;
 }

@@ -61,7 +61,7 @@ void CartesianBBoxTest::exec() const {
 
 
 	if ( ! ctx.composite.bboxIsSet() ){
-		mout.warn() << "Bounding box undefined, skipping." << mout.endl;
+		mout.warn("Bounding box undefined, skipping." );
 		ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
 		return;
 	}
@@ -87,7 +87,7 @@ void CartesianBBoxTest::exec() const {
 	double lon = attributes.get("lon", 0.0);
 	double lat = attributes.get("lat", 0.0);
 
-	//mout.warn() << attributes << mout.endl;
+	//mout.warn(attributes );
 	//
 	const drain::VariableMap & a = p.hasChild("dataset1") ? p["dataset1"]["where"].data.attributes : attributes;
 
@@ -123,7 +123,7 @@ void CartesianBBoxTest::exec() const {
 		//ctx.composite.determineBoundingBoxM(pRadarToComposite, range, bboxM);
 	}
 	else {
-		mout.warn() << "could not derive range, using 250km "<< mout.endl;
+		mout.warn("could not derive range, using 250km ");
 		pRadarToComposite.determineBoundingBoxM(250000, bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
 		//ctx.composite.determineBoundingBoxM(pRadarToComposite, 250000, bboxM);
 	}
@@ -150,17 +150,17 @@ void CartesianBBoxTest::exec() const {
 
 	//dataExtentD.extend();
 
-	//mout.warn() << "comp"  << ctx.composite.getBoundingBoxM() << mout.endl;
-	//mout.warn() << "radar" << bboxM << mout.endl;
+	//mout.warn("comp"  , ctx.composite.getBoundingBoxM() );
+	//mout.warn("radar" , bboxM );
 
 	//bool
 	// mutable
 	bool overlap = (bboxM.isOverLapping(ctx.composite.getBoundingBoxM()));
 
-	mout.debug() << "overlap:" << static_cast<int>(overlap) << ", bboxD: " << bboxD << mout.endl;
+	mout.debug("overlap:" , static_cast<int>(overlap) , ", bboxD: " , bboxD );
 
 	//resources.bbox.extend(bboxD);  // why?
-	//mout.debug() << "combined bbox:" << resources.bbox << mout.endl;
+	//mout.debug("combined bbox:" , resources.bbox );
 
 	if (overlap){
 		// ctx.statusFlags.set(RackContext::BBOX_STATUS);
@@ -205,7 +205,7 @@ void CartesianBBoxTile::exec() const {
 	composite.pix2deg(i, j, bboxTile.lowerLeft.x, bboxTile.lowerLeft.y);
 	composite.pix2deg(i2, j2, bboxTile.upperRight.x, bboxTile.upperRight.y);
 	if ((bboxTile.getWidth() <= 0.0) || (bboxTile.getHeight() <= 0.0)){
-		mout.error() << "negative-valued area in a bbox: " << bboxTile << mout.endl;
+		mout.error("negative-valued area in a bbox: " , bboxTile );
 	}
 
 	// Finally, redefine the composite scope.

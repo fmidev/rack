@@ -57,7 +57,7 @@ void CartesianGrid::exec() const {
 	/// GeoFrame is needed for calling  geoFrame.pix2deg(i,j, lon,lat) further below.
 	drain::image::GeoFrame geoFrame;
 
-	mout.info() << "Defining (but not allocating) composite with input data specifications" << mout.endl;
+	mout.info("Defining (but not allocating) composite with input data specifications" );
 
 	const Hi5Tree & cartesian = ctx.cartesianHi5;
 
@@ -66,7 +66,7 @@ void CartesianGrid::exec() const {
 	mout.debug2() << odim << mout.endl;
 
 	if (odim.projdef.empty()){
-		mout.warn() << "projdef missing, returning" << mout.endl;
+		mout.warn("projdef missing, returning" );
 		return;
 	}
 	geoFrame.setProjection(odim.projdef);
@@ -74,7 +74,7 @@ void CartesianGrid::exec() const {
 	//drain::Rectangle<double> bboxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
 	// const drain::Rectangle<double> bboxD(odim.bboxD);
 	if (odim.bboxD.getArea() == 0.0){
-		mout.warn() << "empty bbox, returning" << mout.endl;
+		mout.warn("empty bbox, returning" );
 		return;
 	}
 	geoFrame.setBoundingBoxD(odim.bboxD);
@@ -82,15 +82,15 @@ void CartesianGrid::exec() const {
 	geoFrame.setGeometry(odim.area.width, odim.area.height);
 
 	//geoFrame.setGeometry(odim.geometry.width, odim.geometry.height);
-	mout.debug() << geoFrame << mout.endl;
+	mout.debug(geoFrame );
 
 	/*
 	if ((ctx.currentImage != & ctx.grayImage) && (ctx.currentImage != &ctx.colorImage)){  // ctx.grayImage.isEmpty()
-		//mout.error() << "Gray or color image not created yet, use --image " << mout.endl;
-		mout.info() << "Gray or color image not created yet, calling --image " << mout.endl;
+		//mout.error("Gray or color image not created yet, use --image " );
+		mout.info("Gray or color image not created yet, calling --image " );
 		//cmdImage.exec();
 		if (CmdImage::convertGrayImage(ctx)){
-			mout.fail() << "could not find image" << mout.endl;
+			mout.fail("could not find image" );
 		}
 	}
 	*/

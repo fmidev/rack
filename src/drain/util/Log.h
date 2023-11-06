@@ -300,7 +300,7 @@ public:
 	 *  \param funcName - name of the finction, often assigned as standard C macro __FUNCTION__ .
 	 *  \param name - specifier of the source, file name for example (to be basenamed).
 	 */
-	Logger(const char *funcName, const std::string & name = "");
+	Logger(const char *filename, const std::string & name = "");
 	//Logger(const char *funcName, const char * name);
 
 	/// Start logging,
@@ -308,7 +308,7 @@ public:
 	 *  \param funcName - name of the finction, often assigned as standard C macro __FUNCTION__ .
 	 *  \param name - specifier of the source, file name for example (to be basenamed).
 	 */
-	Logger(Log &log, const char *funcName, const std::string & name = ""); //const char *className = NULL);
+	Logger(Log &log, const char *filename, const std::string & name = ""); //const char *className = NULL);
 
 	~Logger();
 
@@ -784,14 +784,20 @@ protected:
 	 */
 	void setPrefixOLD(const char *functionName, const char * name);
 
+	/// Sets a label that starts every line in the log.
 	/**
-	 * 	Expects filename as returned by __FILE__
+	 * \param filename – as returned by built-in macro __FILE__
+	 * \param func_name – as returned by built-in macro __FUNCTION__
+	 *
+	 * TODO: \param func_params – optional function and template parameters, formulated by the user.
 	 *
 	 */
 	template<typename ... TT>
 	inline
-	void setPrefix(const char * filename, const char * fct_name, const TT &... args){
+	void setPrefix(const char * filename, const char * func_name, const TT &... args){
+
 		std::stringstream sstr;
+
 		if (filename){
 
 			if (*filename != '\0'){
@@ -809,13 +815,12 @@ protected:
 					//prefix.assign(s2);
 				else
 					//prefix.assign(s2, s3-s2);
-					//sstr.put(s2, size_t(s3-s2));
 					sstr.write(s2, size_t(s3-s2));
 				// prefix.append(":");
 				sstr << ':';
 			}
 		}
-		sstr << fct_name << "| ";
+		sstr << func_name << ": ";
 		appendPrefix(sstr, args...);
 		prefix = sstr.str();
 	}

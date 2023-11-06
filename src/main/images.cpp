@@ -84,7 +84,7 @@ void CmdImage::exec() const {
 	drain::image::Image & dst = ctx.getModifiableImage();
 	ctx.setCurrentImages(dst);
 
-	mout.deprecating() << "This command may be removed in future versions." << mout;
+	mout.deprecating("This command may be removed in future versions." );
 
 	//ctx.updateCurrentImage();
 
@@ -93,7 +93,7 @@ void CmdImage::exec() const {
 	//ImageKit::findImage(ctx);
 	ctx.currentPath = ctx.findImage();
 	//if (ctx.currentPath)
-	mout.debug() << "(Quality data not used alpha channel" << mout.endl;
+	mout.debug("(Quality data not used alpha channel" );
 
 	//ImageKit::convertGrayImage(ctx, *ctx.currentGrayImage);
 	ctx.convertGrayImage(*ctx.currentGrayImage);
@@ -119,7 +119,7 @@ public:
 	// imageSelector.getPathNEW(*ctx.currentHi5, path, ODIMPathElem::DATA | ODIMPathElem::QUALITY);  // ODIMPathElem::ARRAY
 	imageSelector.getPath3(*ctx.currentHi5, path);
 	path << ODIMPathElem::ARRAY;
-	mout.debug() << "alphaSrc path:"  <<  path << mout.endl;
+	mout.debug("alphaSrc path:"  ,  path );
 	//hi5::NodeHi5 & node = (*ctx.currentHi5)(path).data;
 	drain::image::Image &srcImg = (*ctx.currentHi5)(path).data.dataSet; // Yes non-const, see below
 	EncodingODIM odim(srcImg);
@@ -135,17 +135,17 @@ public:
 		imageSelector.consumeParameters(ctx.select);
 		imageSelector.ensureDataGroup();
 
-		mout.debug() << "selector:"  << imageSelector << mout.endl;
+		mout.debug("selector:"  , imageSelector );
 
 		// Source image (original data)
 		ODIMPath path;
 		imageSelector.getPath(*ctx.currentHi5, path); //, ODIMPathElem::DATA | ODIMPathElem::QUALITY);  // ODIMPathElem::ARRAY
 
 		if (path.empty()){
-			mout.warn() << "no paths with selector: "  << imageSelector << mout.endl;
+			mout.warn("no paths with selector: "  , imageSelector );
 		}
 		else {
-			mout.debug() << "found path:"  <<  path << mout.endl;
+			mout.debug("found path:"  ,  path );
 		}
 
 
@@ -162,16 +162,16 @@ public:
 		drain::image::Image & dstImg = ctx.getModifiableImage();
 
 		if (dstImg.isEmpty()){
-			mout.warn() << "could not get ModifiableImage" << mout.endl;
+			mout.warn("could not get ModifiableImage" );
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 			return dstImg;
 		}
 		/// Add empty alphaSrc channel
-		mout.special() << "dst image/plain: " << dstImg << mout.endl;
+		mout.special("dst image/plain: " , dstImg );
 		dstImg.setAlphaChannelCount(1);
-		mout.special() << "dst image+alpha: " << dstImg << mout.endl;
+		mout.special("dst image+alpha: " , dstImg );
 
-		mout.debug() << "image:"       << dstImg << mout.endl;
+		mout.debug("image:"       , dstImg );
 
 		return dstImg;
 
@@ -205,14 +205,14 @@ public:
 		/*
 		drain::image::Image & dstImg = ctx.getModifiableImage();
 		if (dstImg.isEmpty()){
-			mout.warn() << "could not get ModifiableImage" << mout.endl;
+			mout.warn("could not get ModifiableImage" );
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 			return;
 		}
 		/// Add empty alphaSrc channel
 		dstImg.setAlphaChannelCount(1);
-		mout.debug() << "image:"       << dstImg << mout.endl;
-		//mout.debug() << "imageAlpha:"  << img.getAlphaChannel() << mout.endl;
+		mout.debug("image:"       , dstImg );
+		//mout.debug("imageAlpha:"  , img.getAlphaChannel() );
 		*/
 
 		DataConversionOp<ODIM> copier; //(copierHidden);
@@ -223,7 +223,7 @@ public:
 		//const std::string type(1, drain::Type::getTypeChar(img.getType())); // rewrite
 		const std::string type = drain::Type(dstImg.getType()); // rewrite
 		if (copier.odim.type != type){
-			mout.note() << " using the type of base image: " << type << mout.endl;
+			mout.note(" using the type of base image: " , type );
 		}
 		copier.odim.type = type; //drain::Type::getTypeChar(img->getType());
 
@@ -276,14 +276,14 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout; = resources.mout;
 
-		mout.warn() << getName() << mout.endl;
+		mout.warn(getName() );
 
 		//const PlainData<PolarSrc> src(getAlphaSrc(ctx));
 		// TODO: const Data<PolarSrc>, mixing data with quality
 		const drain::image::Image & srcAlpha = ctx.getCurrentGrayImage();
 		ODIM srcODIM(srcAlpha); // NOTE: perhaps no odim data in props?
 
-		mout.special() << "alpha src image: " << srcAlpha << mout.endl;
+		mout.special("alpha src image: " , srcAlpha );
 
 		// Dst image (typically, an existing coloured image)
 		drain::image::Image & dstImg = getDstImage(ctx);
@@ -292,16 +292,16 @@ public:
 		 *
 		drain::image::Image & dstImg = ctx.getModifiableImage(); //ImageKit::getModifiableImage(ctx);
 		if (dstImg.isEmpty()){
-			mout.warn() << "could not get ModifiableImage" << mout.endl;
+			mout.warn("could not get ModifiableImage" );
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 			return;
 		}
-		mout.special() << "dst image/plain: " << dstImg << mout.endl;
+		mout.special("dst image/plain: " , dstImg );
 		dstImg.setAlphaChannelCount(1);
-		mout.special() << "dst image+alpha: " << dstImg << mout.endl;
+		mout.special("dst image+alpha: " , dstImg );
 		// dstImg.getAlphaChannel().fill(128);
 		//dstImg.setAlphaChannelCount(0);
-		//mout.special() << "dst image+alpha: " << dstImg << mout.endl;
+		//mout.special("dst image+alpha: " , dstImg );
 		//return;
 		*/
 
@@ -331,13 +331,13 @@ public:
 
 			drain::UniCloner<drain::UnaryFunctor> localBank(functorBank);
 
-			//mout.special() << "list " << drain::sprinter(l) << mout;
+			//mout.special("list " , drain::sprinter(l) );
 
 			drain::UnaryFunctor & ftor2 = localBank.getCloned(s1);
 			//l.pop_front();
 
 			ftor2.setParameters(s2, '=', '_');
-			mout.special() << "functor: " << ftor2 << mout;
+			mout.special("functor: " , ftor2 );
 
 			radarFtor.apply(srcAlpha.getChannel(0), dstImg.getAlphaChannel(), ftor2, true);
 
@@ -345,9 +345,9 @@ public:
 		else {
 
 			if (!s2.empty()) {
-				mout.warn()  << functorBank << mout;
-				mout.warn()  << "use range <min>:<max> or functors above, params separated with '_'" << mout;
-				mout.error() << "unknown functor: " << s1 << mout;
+				mout.warn(functorBank );
+				mout.warn("use range <min>:<max> or functors above, params separated with '_'" );
+				mout.error("unknown functor: " , s1 );
 				return;
 			}
 			//std::list<std::string> params;
@@ -357,7 +357,7 @@ public:
 			//r.setSeparator(':').setFill() = ftor;
 			drain::Referencer(range.tuple()).setSeparator(':').setFill().assignString(ftor);
 
-			mout.special() << "range: " << range << mout;
+			mout.special("range: " , range );
 
 			drain::FuzzyStep<double> fuzzyStep;
 
@@ -369,7 +369,7 @@ public:
 			*/
 
 			if (ctx.imagePhysical){
-				mout.info() << "using physical scale " << mout;
+				mout.info("using physical scale " );
 				//fuzzyStep.functor.set(range.min, range.max, 1.0);
 				//fuzzyStep.setParameters(range, 1.0);
 				//fuzzyStep.set(range.min, range.max, 1.0);
@@ -377,7 +377,7 @@ public:
 			else {
 				//const drain::ValueScaling & scaling = srcImg.getScaling();
 				// EncodingODIM(src.odim)
-				mout.info() << "no physical scaling, using raw values of gray source: "  <<  srcAlpha.getConf()  << mout;
+				mout.info("no physical scaling, using raw values of gray source: "  ,  srcAlpha.getConf()  );
 				//const double max = drain::Type::call<drain::typeNaturalMax>(src.data.getType()); // 255, 65535, or 1.0
 				const double max = drain::Type::call<drain::typeNaturalMax>(srcAlpha.getType()); // 255, 65535, or 1.0
 				//fuzzyStep.functor.set(srcAlpha.getConf().fwd(max*range.min), srcAlpha.getConf().fwd(max*range.max), 1.0);
@@ -387,15 +387,15 @@ public:
 				range.min = ac.fwd(max*range.min);
 				range.max = ac.fwd(max*range.max);
 				// fuzzyStep.set(ac.fwd(max*range.min), ac.fwd(max*range.max), 1.0);
-				// mout.info() << "new range: " << fuzzyStep.range << mout;
-				// mout.info() << "range: " << fuzzyStep.functor.range << mout.endl;
-			//	mout.info() << "new range: " << fuzzyStep.range << mout;
+				// mout.info("new range: " , fuzzyStep.range );
+				// mout.info("range: " , fuzzyStep.functor.range );
+			//	mout.info("new range: " , fuzzyStep.range );
 			}
 
 			//fuzzyStep.setParameters(range, 1.0);
 			fuzzyStep.set(range, 1.0);
 
-			mout.debug() << "fuzzy: "  << fuzzyStep << mout.endl;
+			mout.debug("fuzzy: "  , fuzzyStep );
 
 			radarFtor.apply(srcAlpha.getChannel(0), dstImg.getAlphaChannel(), fuzzyStep, true);
 
@@ -430,14 +430,14 @@ public:
 
 		drain::image::Image & img = ctx.getModifiableImage(); //ImageKit::getModifiableImage(ctx);
 		if (img.isEmpty()){
-			mout.warn() << "could not get ModifiableImage" << mout.endl;
+			mout.warn("could not get ModifiableImage" );
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 			return;
 		}
 
 
 		if (img.getAlphaChannelCount() == 0) {
-			mout.warn() << name << ": no alpha channel" << mout.endl;
+			mout.warn(name , ": no alpha channel" );
 			return;
 		}
 
@@ -445,7 +445,7 @@ public:
 
 		const double alphaMax = imgAlpha.getConf().getTypeMax<double>();
 		if (alphaMax == 0) {
-			mout.warn() << name << ": zero alphaMax" << mout.endl;
+			mout.warn(name , ": zero alphaMax" );
 			return;
 		}
 
@@ -493,7 +493,7 @@ public:
 		if (!srcImage.isEmpty()){
 			quantity = srcImage.getProperties().get("what:quantity", "");
 			if (!quantity.empty())
-				mout.special() << "ctx.currentGrayImage: quantity=" << quantity << mout.endl;
+				mout.special("ctx.currentGrayImage: quantity=" , quantity );
 		}
 
 		if (quantity.empty()){
@@ -501,7 +501,7 @@ public:
 			//ctx.updateImageStatus(statusMap);
 			quantity = statusMap["what:quantity"].toStr();
 			if (!quantity.empty())
-				mout.ok() << "ctx.statusMap quantity=" << quantity << mout.endl;
+				mout.ok("ctx.statusMap quantity=" , quantity );
 		}
 
 	}
@@ -514,7 +514,7 @@ public:
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
 
 		if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR)){
-			mout.warn() << "input failed, skipping" << mout.endl;
+			mout.warn("input failed, skipping" );
 			return;
 		}
 
@@ -564,7 +564,7 @@ public:
 
 			/// TODO: store palette in dst /dataset, or better add palette(link) to Image ?
 			/*
-			mout.warn() << "palette will be also saved to: " << ctx.currentPath << mout.endl;
+			mout.warn("palette will be also saved to: " , ctx.currentPath );
 			Hi5Tree & dst = (*ctx.currentHi5);
 			dst(ctx.currentPath).data.attributes["IMAGE_SUBCLASS"] = "IMAGE_INDEXED";
 			*/
@@ -614,7 +614,7 @@ public:
 
 		// The intensities will  be mapped first: f' = gain*f + offset
 		const drain::FlexVariableMap  & props = graySrc.getProperties();
-		mout.debug() << "input properties: " << props << mout.endl;
+		mout.debug("input properties: " , props );
 		/*
 		const drain::FlexVariable & nodata = props["what:nodata"];
 		double d = nodata;
@@ -639,7 +639,7 @@ public:
 
 			const double NI = imgOdim.getNyquist(); //props["how:NI"];
 			if (NI != 0.0){
-				mout.special() << "Doppler speed (VRAD), using relative scale, NI=" << NI << " orig NI=" << props["how:NI"] << mout.endl;
+				mout.special("Doppler speed (VRAD), using relative scale, NI=" , NI , " orig NI=" , props["how:NI"] );
 				/*
 					f(data_min) = scale*data_min + offset == -1.0
 					f(data_max) = scale*data_max + offset == +1.0
@@ -650,18 +650,18 @@ public:
 				const double data_max = imgOdim.scaleInverse(+NI);
 				op.scale  =   2.0/(data_max-data_min);
 				op.offset = - op.scale*(data_max+data_min)/2.0;
-				mout.debug() << "expected storage value range: " << data_min << '-' << data_max << mout.endl;
+				mout.debug("expected storage value range: " , data_min , '-' , data_max );
 			}
 			else {
-				mout.fail() << "No Nyquist velocity (NI) found in metadata." << mout.endl;
+				mout.fail("No Nyquist velocity (NI) found in metadata." );
 			}
 		}
 
-		// mout.debug() <<  imgOdim << mout.endl;
+		// mout.debug(imgOdim );
 		op.registerSpecialCode("nodata",   imgOdim.nodata);    // props["what:nodata"]);
 		op.registerSpecialCode("undetect", imgOdim.undetect); // props["what:undetect"]);
 
-		// mout.note() << imgOdim << mout.endl;
+		// mout.note(imgOdim );
 		/*
 		mout.warn() << "OP Special codes: \n";
 		mout.precision(20);
@@ -682,10 +682,10 @@ public:
 		if (!ctx.targetEncoding.empty()){ // does not check if an encoding change requested, preserving quantity?
 			encoding.addShortKeys();
 			encoding.updateValues(ctx.targetEncoding); // do not clear yet
-			mout.note() << "target quantity: " << encoding.quantity << mout.endl;
-			//mout.note() << "target type:     " << encoding.type << mout.endl;
+			mout.note("target quantity: " , encoding.quantity );
+			//mout.note("target type:     " , encoding.type );
 			if (encoding.type != "C"){
-				mout.warn() << "currently, only char type [C] supported, rejecting: " << encoding.type << mout.endl;
+				mout.warn("currently, only char type [C] supported, rejecting: " , encoding.type );
 				encoding.setTypeDefaults("C");
 			}
 			//ctx.targetEncoding.clear();
@@ -736,7 +736,7 @@ public:
 			quantitySyntaxMapper.parse(ImageContext::outputQuantitySyntax);
 			statusMap["what:quantity"] = srcQuantity; // override...
 			encoding.quantity = quantitySyntaxMapper.toStr(statusMap);
-			mout.special() << "automatic quantity: " <<  encoding.quantity << mout;
+			mout.special("automatic quantity: " ,  encoding.quantity );
 			//dstQuantity = quantity + "/Palette";
 		}
 		 */
@@ -788,7 +788,7 @@ public:
 			data.setEncoding("C");
 			//data.odim.scaling.setScale(1, 0);
 			data.data.setScaling(data.odim.scaling);
-			// mout.note() << "target encoding:     " << EncodingODIM(data.odim) << mout.endl;
+			// mout.note("target encoding:     " , EncodingODIM(data.odim) );
 			// data.setEncoding("C");
 			// if (data.odim.type)
 
@@ -801,14 +801,14 @@ public:
 			//data.data.setScaling(128.0, 120); // RGB = unitless.
 			//data.odim.quantity = encoding.quantity;
 
-			mout.debug() << "target: " << data << mout;
+			mout.debug("target: " , data );
 
 			/// MAIN
 			op.process(graySrc, data.data);
 
 			// Currently, copying is possible only afterwards
 			if (graySrc.hasAlphaChannel()){
-				mout.experimental() << "copying alpha channel " << mout;
+				mout.experimental("copying alpha channel " );
 				//data.data.setGeometry(graySrc.getGeometry(), 3, 1);
 				data.data.setAlphaChannelCount(1);
 				data.data.getAlphaChannel().copyData(graySrc.getAlphaChannel());
@@ -818,23 +818,23 @@ public:
 
 			size_t channels = data.data.getChannelCount();
 			if (channels == 0){
-				mout.warn() << "operation failed, result has 0 channels" << mout.endl;
+				mout.warn("operation failed, result has 0 channels" );
 				ctx.statusFlags.set(drain::StatusFlags::COMMAND_ERROR);
 				ctx.unsetCurrentImages();
 			}
 			else if (channels >= 3){
-				//mout.note() << "stored color image in HDF5 structure: " << elem << '[' << dstQuantity << ']' << mout.endl;
+				//mout.note("stored color image in HDF5 structure: " , elem , '[' , dstQuantity , ']' );
 
 				if (channels > 3){
-					mout.warn() << "only 3 channels (RGB) of " << channels << " will be stored in HDF5 files" << mout.endl;
+					mout.warn("only 3 channels (RGB) of " , channels , " will be stored in HDF5 files" );
 				}
 				ctx.setCurrentImageColor(data.data);
 			}
 			else { //if (channels >= 1){
 				if (channels > 1){
-					mout.warn() << "only first channel of " << channels << " stored" << mout.endl;
+					mout.warn("only first channel of " , channels , " stored" );
 				}
-				//mout.note() << "also currentGrayImage updated " << mout.endl;
+				//mout.note("also currentGrayImage updated " );
 				ctx.setCurrentImages(data.data);
 			}
 
@@ -1080,15 +1080,15 @@ public:
 		// matcher.flags.assign(value);
 		// matcher.flags.value = v; // OK!
 		mout.special(ctx.qualityGroups, '#' );
-		//mout.special() << ctx.qualityGroups << '#' << ctx.qualityGroups.flags << '=' << ctx.qualityGroups.flags.value << mout;
-		//mout.special() << matcher << '=' << matcher.flags << '=' << matcher.flags.value << mout;
+		//mout.special(ctx.qualityGroups , '#' , ctx.qualityGroups.flags , '=' , ctx.qualityGroups.flags.value );
+		//mout.special(matcher , '=' , matcher.flags , '=' , matcher.flags.value );
 		//ctx.qualitySelector.pathMatcher.setElems(matcher);
-		//mout.warn() << ctx.qualitySelector << mout;
+		//mout.warn(ctx.qualitySelector );
 
 		// DEBUG
 		//for (const std::string & s: {"", "dataset1", "dataset5", "data2", "data5"}) {
 		for (const char *s: {"", "dataset1", "dataset5", "data2", "data5"}) {
-			//mout.special() << s << "?\t" << ctx.quality....Matcher.match(s) << mout;
+			//mout.special(s , "?\t" , ctx.quality....Matcher.match(s) );
 			ODIMPathElem elem(s);
 			mout.special(s, "?\t", elem.belongsTo(ctx.qualityGroups));
 		}
@@ -1117,7 +1117,7 @@ public:
 
 		drain::image::Image & dst = ctx.getModifiableImage(); //ImageKit::getModifiableImage(ctx);
 		if (dst.isEmpty()){
-			mout.warn() << "could not get ModifiableImage" << mout.endl;
+			mout.warn("could not get ModifiableImage" );
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 			return;
 		}
@@ -1151,7 +1151,7 @@ public:
 		DataSelector selector; //("data[0-9]+$");
 		selector.consumeParameters(ctx.select);
 		selector.pathMatcher.set(ODIMPathElem::DATA); // | ODIMPathElem::QUALITY);
-		mout.debug() << "selector: " << selector << mout.endl;
+		mout.debug("selector: " , selector );
 
 		//  selector.getPaths(*ctx.currentHi5, paths); // RE2 // todo getFirstData
 		//DataSelector::getPathsByQuantity(*ctx.currentHi5, selector, m); // key==quantity, so only one (last) path obtained
@@ -1161,18 +1161,18 @@ public:
 
 		//size_t count = m.size();
 		size_t count = paths.size();
-		mout.info() << "found: " << count << " paths " << mout.endl;
+		mout.info("found: " , count , " paths " );
 		drain::image::ImageTray<Channel> tray;
 		//size_t index = 0;
 		//for (std::map<std::string,std::string>::const_iterator it = m.begin(); it != m.end(); ++it){
 		for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
-			//mout.note() << "selected: " << it->first << '=' << it->second << mout.endl;
-			mout.debug() << "dst image: " << *it << '|' << ODIMPathElem::ARRAY << mout.endl;
+			//mout.note("selected: " , it->first , '=' , it->second );
+			mout.debug("dst image: " , *it , '|' , ODIMPathElem::ARRAY );
 			Hi5Tree & dst = src(*it);
 			//drain::image::Image & channel = (*ctx.currentHi5)(it->second)["data"].data.dataSet;
 			drain::image::Channel & channel = dst[ODIMPathElem::ARRAY].data.dataSet.getChannel(0);
 			if (channel.isEmpty()){
-				mout.warn() << "empty image in " << *it << "/data, skipping" << mout.endl;
+				mout.warn("empty image in " , *it , "/data, skipping" );
 				continue;
 			}
 			tray.appendImage(channel);
@@ -1181,27 +1181,27 @@ public:
 
 
 			ODIMPath path;
-			mout.unimplemented() << "note: checking parallel quality unimplemented" << mout.endl;
+			mout.unimplemented("note: checking parallel quality unimplemented" );
 			DataSelector qualityDataSelector;
 			qualityDataSelector.pathMatcher.set(ODIMPathElem::QUALITY, ODIMPathElem::ARRAY);
 			if (qualityDataSelector.getPath(dst, path)){
 			//if (DataSelector::getQualityPath(*ctx.currentHi5, path)){
 				//path << ODIMPathElem(ODIMPathElem::ARRAY);
-				mout.special() << "associated quality field for ["<< *it << "] found in " << path << mout.endl;
+				mout.special("associated quality field for [", *it , "] found in " , path );
 				if (tray.alpha.empty()){
 					drain::image::Channel & quality = dst(path).data.dataSet.getChannel(0);
 					tray.appendAlpha(quality);
 				}
 				else {
-					mout.note() << "skipping (using first quality data only)" << mout.endl;
+					mout.note("skipping (using first quality data only)" );
 				}
 			}
 			else {
-				mout.debug() << "no quality data" << mout.endl;
+				mout.debug("no quality data" );
 			}
 		}
 
-		//mout.warn() << tray << mout.endl;
+		//mout.warn(tray );
 
 		drain::image::ImagePlot plot;
 		plot.setParameters(value);
@@ -1210,7 +1210,7 @@ public:
 		/*
 		if (!paths.empty()){
 			const ODIMPathList::const_iterator it = paths.begin();
-			mout.info() << "selected: " << *it << mout.endl;
+			mout.info("selected: " , *it );
 		}
 		 */
 

@@ -441,8 +441,8 @@ public:
 		selector.getPaths(dst, paths);
 
 		mout.note() << std::isnan(dataQuality) << mout;
-		mout.note() << std::isnan(undetectQuality) << mout;
-		mout.note() << std::isnan(nodataQuality) << mout;
+		mout.note(std::isnan(undetectQuality) );
+		mout.note(std::isnan(nodataQuality) );
 
 		if (& dst == ctx.currentPolarHi5){
 			processStructure<PolarODIM>(dst, paths, quantityRegExp);
@@ -452,7 +452,7 @@ public:
 		}
 		else {
 			drain::Logger mout(ctx.log, __FUNCTION__, getName());
-			mout.warn() << "no data, or data structure other than polar volume or Cartesian" << mout.endl;
+			mout.warn("no data, or data structure other than polar volume or Cartesian" );
 		}
 
 		DataTools::updateInternalAttributes(dst);
@@ -478,14 +478,14 @@ public:
 		for (const ODIMPath & path: paths){
 
 			if (path.empty()){
-				mout.warn() << "Empty path, something went wrong." << mout.endl;
+				mout.warn("Empty path, something went wrong." );
 				continue;
 			}
 
 			if (path.back().belongsTo(ODIMPathElem::DATA | ODIMPathElem::DATASET)){
 			}
 
-			mout.warn() << path << mout.endl;
+			mout.warn(path );
 			Hi5Tree & dst = dstRoot(path);
 			//QualityDataSupport<DT> quality(dst);
 
@@ -501,21 +501,21 @@ public:
 				dstData.createSimpleQualityData(dstQuality, dataQuality, undetectQuality, nodataQuality);
 			}
 			else {
-				mout.warn() << "Path " << path << " typically contains no /quality groups, skipping." << mout.endl;
-				mout.note() << "Consider --select dataset or --select data: (note colon)." << mout.endl;
+				mout.warn("Path " , path , " typically contains no /quality groups, skipping." );
+				mout.note("Consider --select dataset or --select data: (note colon)." );
 			}
 
-			//mout.warn() << quality  << mout.endl;
+			//mout.warn(quality  );
 
 			/*
 			DataSet<DT> dstDataSet(dstDataSetH5, quantityRegExp);
 			if (quantitySpecific){
 				for (typename DataSet<DT>::iterator it2 = dstDataSet.begin(); it2!=dstDataSet.end(); ++it2){
-					mout.debug() << '\t' << it2->first  << mout.endl;
+					mout.debug('\t' , it2->first  );
 					Data<DT> & dstData = it2->second;
 					PlainData<DT> & dstQuality = dstData.getQualityData();
 					if (!dstQuality.data.isEmpty())
-						mout.warn() << "quality data exists already, overwriting" << mout.endl;
+						mout.warn("quality data exists already, overwriting" );
 					dstData.createSimpleQualityData(dstQuality, 1.0, 0.0, DataCoder::undetectQualityCoeff);
 					qmap.setQuantityDefaults(dstQuality, "QIND");
 					//dstQuality.data.setScaling(dstQuality.odim.scaling.scale, dstQuality.odim.scaling.offset);
@@ -527,7 +527,7 @@ public:
 				Data<DT> & dstData = dstDataSet.getFirstData();
 				PlainData<DT> & dstQuality = dstDataSet.getQualityData();
 				if (!dstQuality.data.isEmpty())
-					mout.warn() << "quality data exists already, overwriting" << mout.endl;
+					mout.warn("quality data exists already, overwriting" );
 				dstData.createSimpleQualityData(dstQuality, 1.0, 0.0, DataCoder::undetectQualityCoeff);
 				qmap.setQuantityDefaults(dstQuality, "QIND");
 				//dstQuality.data.setScaling(dstQuality.odim.scaling.scale, dstQuality.odim.scaling.offset);
@@ -577,7 +577,7 @@ public:
 		//selector.pathMatcher.setElems(ODIMPathElem::DATASET, ODIMPathElem::DATA);
 
 		mout.info("selector: ", selector );
-		//mout.debug() << "group mask: " << groupFilter << ", selector: " << selector << mout.endl;
+		//mout.debug("group mask: " , groupFilter , ", selector: " , selector );
 
 		Hi5Tree & dst = *ctx.currentHi5;
 
@@ -654,7 +654,7 @@ public:
 				p << elem;
 				dst(p).data.noSave = false;
 			}
-			//mout.debug() << "marked for save: " << *it << mout.endl;
+			//mout.debug("marked for save: " , *it );
 
 			// Accept also tail (attribute groups)
 			//if (it->back().isIndexed()){ // belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){ or: DATASET
@@ -739,7 +739,7 @@ public:
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		if (ctx.currentHi5 == NULL){
-			mout.error() << "current Hi5 == NULL" << mout.endl;
+			mout.error("current Hi5 == NULL" );
 			return;
 		}
 
@@ -760,10 +760,10 @@ public:
 		// std::string attr1type;// debug
 		std::string attrValue;
 		hi5::Hi5Base::parsePath(pathSrc, path1, attr1, attrValue);
-		mout.debug() << "path:  " << path1 << ", size=" << path1.size() << mout.endl;
+		mout.debug("path:  " , path1 , ", size=" , path1.size() );
 
 		if (!attrValue.empty()){
-			mout.warn() << "value (" << attrValue << ") not empty in " << path1 << mout.endl;
+			mout.warn("value (" , attrValue , ") not empty in " , path1 );
 		}
 
 		// NEW
@@ -775,43 +775,43 @@ public:
 		*/
 
 		/*
-		mout.warn() << "path:  " << path1 << mout.endl;
-		mout.warn() << "attr:  " << attr1 << mout.endl;
-		mout.warn() << "value: " << attr1attrValue << mout.endl;
-		mout.warn() << "type:  " << attr1type  << mout.endl;
+		mout.warn("path:  " , path1 );
+		mout.warn("attr:  " , attr1 );
+		mout.warn("value: " , attr1attrValue );
+		mout.warn("type:  " , attr1type  );
 		return;
 		 */
 
 		if (!dstRoot.hasPath(path1)) // make it temporary (yet allocating)
-			mout.warn() << "nonexistent path: " << path1 << mout.endl;
+			mout.warn("nonexistent path: " , path1 );
 
 		ODIMPath path2;
 		std::string attr2;
 		hi5::Hi5Base::parsePath(pathDst, path2, attr2, attrValue);
 		if (!attrValue.empty()){
-			mout.warn() << "value (" << attrValue << ") not empty in " << path2 << mout.endl;
+			mout.warn("value (" , attrValue , ") not empty in " , path2 );
 		}
 
 
 		if (pathDst.at(0) == ':'){
-			mout.note() << " renaming attribute only" << mout.endl;
+			mout.note(" renaming attribute only" );
 			path2 = path1;
 		}
 
 
-		mout.debug() << "path1: " << path1 << '(' << path1.size() << ')' << " : " << attr1 << mout.endl;
-		mout.debug() << "path2: " << path2 << '(' << path2.size() << ')' << " : " << attr2 << mout.endl;
+		mout.debug("path1: " , path1 , '(' , path1.size() , ')' , " : " , attr1 );
+		mout.debug("path2: " , path2 , '(' , path2.size() , ')' , " : " , attr2 );
 
 
 		if (attr1.empty()){ // RENAME PATHS (swap two paths)
 
 			if (!attr2.empty()){
-				mout.error() << "cannot move path '" << path1 << "' to attribute '" << attr2 << "'" << mout.endl;
+				mout.error("cannot move path '" , path1 , "' to attribute '" , attr2 , "'" );
 				return;
 			}
 
-			mout.debug() << "renaming path '" << path1 << "' => '" << path2 << "'" << mout.endl;
-			//mout.warn() << dstRoot << mout.endl;
+			mout.debug("renaming path '" , path1 , "' => '" , path2 , "'" );
+			//mout.warn(dstRoot );
 			Hi5Tree & dst1 = dstRoot(path1);
 			if (!dstRoot.hasPath(path2)) // make it temporary (yet allocating it for now)
 				dstRoot(path2).data.noSave = true;
@@ -837,18 +837,18 @@ public:
 			if (attr2.empty())
 				attr2 = attr1;
 
-			mout.debug() << "renaming attribute (" << path1 << "):" << attr1 << " => (" << path2 << "):" << attr2 << mout.endl;
+			mout.debug("renaming attribute (" , path1 , "):" , attr1 , " => (" , path2 , "):" , attr2 );
 
 			Hi5Tree & dst1 = dstRoot(path1);
 			if (!dst1.data.attributes.hasKey(attr1)){
-				mout.warn() <<  "attribute '" << attr1 << "' not found, path='" << path1 << "'" << mout.endl;
+				mout.warn("attribute '" , attr1 , "' not found, path='" , path1 , "'" );
 			}
 			Hi5Tree & dst2 = dstRoot(path2);
 			dst2.data.attributes[attr2] = dst1.data.attributes[attr1];
 			dst1.data.attributes.erase(attr1);
 			//DataTools::updateInternalAttributes(dst2);
-			mout.debug() << "dst1 attributes now: " << dst1.data.attributes << mout.endl;
-			mout.debug() << "dst2 attributes now: " << dst2.data.attributes << mout.endl;
+			mout.debug("dst1 attributes now: " , dst1.data.attributes );
+			mout.debug("dst2 attributes now: " , dst2.data.attributes );
 			//dstRoot.erase(path1);
 		}
 
@@ -882,7 +882,7 @@ public:
 	void exec() const {
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		mout.obsolete() << "--> '--move' " << mout.endl;
+		mout.obsolete("--> '--move' " );
 		CmdMove::exec();
 	};
 
@@ -912,13 +912,13 @@ public:
 		enc.setValues(ctx.targetEncoding);
 		// ? ctx.targetEncoding.clear();
 
-		//mout.debug() << "start upd" << mout.endl;
+		//mout.debug("start upd" );
 
 		DataTools::updateInternalAttributes(dstH5); //, drain::FlexVariableMap());
 		// DataTools::updateInternalAttributes(dstH5);
 
 		// OD rootODIM(dstH5.data.dataSet.getProperties());
-		// mout.debug() << "Root odim: " << rootODIM << mout.endl;
+		// mout.debug("Root odim: " , rootODIM );
 
 		//for (Hi5Tree::iterator it = dstH5.begin(); it != dstH5.end(); ++it){
 
@@ -945,10 +945,10 @@ public:
 				PlainData<DT> dstData(subEntry.second);
 				//PlainData<DT> & dstData = dit->second;
 
-				//mout.warn() << "prop: " << dstData.data.properties << mout.endl;
+				//mout.warn("prop: " , dstData.data.properties );
 
 				dstData.odim.updateFromMap(dstData.data.properties); // assume UpdateMetadata
-				//mout.warn() << "ODIM: " << dstData.odim << mout.endl;
+				//mout.warn("ODIM: " , dstData.odim );
 				dstData.odim.quantity = dstData.data.properties.get("what:quantity","");
 				dstData.odim.type = dstData.data.properties.get("what:type", enc.type);
 
@@ -983,20 +983,20 @@ public:
 					//	dstData.odim.quantity = dit->first;
 					//else
 					dstData.odim.quantity = enc.quantity;
-					mout.special() << "quantity:" <<  dstData.odim.quantity << mout;
+					mout.special("quantity:" ,  dstData.odim.quantity );
 				}
 				if (dstData.odim.scaling.scale == 0){
-					mout.info() << "setting quantity defaults [" << dstData.odim.quantity << ']' << mout.endl;
+					mout.info("setting quantity defaults [" , dstData.odim.quantity , ']' );
 					getQuantityMap().setQuantityDefaults(dstData.odim); //, dstData.odim.quantity);
 				}
 
 
-				//mout.note() << "dstData.updateTree: " << dit->first << mout.endl;
+				//mout.note("dstData.updateTree: " , dit->first );
 
 				dstData.updateTree2();
 				//rootODIM.updateLenient(dstData.odim);
-				mout.debug() << "dstData.odim.time: " << dstData.odim.time << mout.endl;
-				//mout.note() << "    rootODIM.time: " << rootODIM.time << mout.endl;
+				mout.debug("dstData.odim.time: " , dstData.odim.time );
+				//mout.note("    rootODIM.time: " , rootODIM.time );
 			}
 			//}
 		}
@@ -1008,10 +1008,10 @@ public:
 			rootODIM.time = rootODIM.starttime;
 		 */
 		/*
-		mout.special() << "Final rootODIM.time: " << rootODIM.time << mout.endl;
+		mout.special("Final rootODIM.time: " , rootODIM.time );
 		rootODIM.source = "radar.TEST";
 		ODIM::copyToH5<ODIMPathElem::ROOT>(rootODIM, dstH5);
-		mout.special() << dstH5 << mout;
+		mout.special(dstH5 );
 		*/
 		DataTools::updateInternalAttributes(dstH5);
 		//hi5::Writer::writeFile("disto.h5", dstH5);
@@ -1111,7 +1111,7 @@ public:
 
 		if (value.find_first_of("?*()^$") != std::string::npos){
 			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
-			mout.warn() << "RegExp support suppressed from this version" << mout.endl;
+			mout.warn("RegExp support suppressed from this version" );
 			return;
 		}
 
@@ -1131,8 +1131,8 @@ public:
 
 		if (value.at(0) != '/'){
 			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
-			mout.warn()  << "Could not handle argument '" << value << "': no leading '/' " << mout.endl;
-			mout.error() << "Dynamic command handler (" << getName() << ") failed " << mout.endl;
+			mout.warn("Could not handle argument '" , value , "': no leading '/' " );
+			mout.error("Dynamic command handler (" , getName() , ") failed " );
 			//throw std::runtime_error();
 			return;
 		}
@@ -1142,7 +1142,7 @@ public:
 
 		Hi5Tree & src = *(ctx.currentHi5);
 
-		mout.debug() << "try to track if argument is a path, an attribute, or a combination of both" << mout.endl;
+		mout.debug("try to track if argument is a path, an attribute, or a combination of both" );
 
 		static
 		const drain::RegExp re("^(.*(data|what|where|how)):([a-zA-Z0-9_]+(=.*)?)$");
@@ -1154,12 +1154,12 @@ public:
 		std::vector<std::string> result;
 		if (re.execute(value, result)){
 			selector.pathMatcher.set(value);
-			mout.debug() << "pathMatcher: " << selector.pathMatcher << mout.endl;
+			mout.debug("pathMatcher: " , selector.pathMatcher );
 		}
 		else {
 			selector.pathMatcher.set(result[1]);
-			mout.info()  << "pathMatcher: " << selector.pathMatcher << mout.endl;
-			mout.debug() << "selector: " << selector << mout.endl;
+			mout.info("pathMatcher: " , selector.pathMatcher );
+			mout.debug("selector: " , selector );
 			assignment = result[3];
 			mout.debug2() << "assignment:  " << assignment    << mout.endl;
 		}
@@ -1168,7 +1168,7 @@ public:
 		ODIMPathList paths;
 		selector.getPaths(src, paths);
 		if (paths.empty()){
-			mout.debug() << "no paths found, so trying creating one:" << selector.pathMatcher  << mout.endl;
+			mout.debug("no paths found, so trying creating one:" , selector.pathMatcher  );
 			mout.debug2() << "isLiteral:  " << selector.pathMatcher.isLiteral() << mout.endl;
 			ODIMPath path;
 			selector.pathMatcher.extract(path);
@@ -1178,7 +1178,7 @@ public:
 		for (ODIMPath path: paths) {
 			Hi5Tree & d = src(path);
 			if (assignment.empty()){
-				mout.debug() << path << mout.endl;
+				mout.debug(path );
 			}
 			else {
 				mout.debug("path: ", path, " assignment:'", assignment, "'");
@@ -1295,7 +1295,7 @@ public:
 		//const std::string key = value.substr(value.find_first_not_of('-'));
 
 		if (key != value)
-			mout.debug() << "resolved: " << value << " -> "<< key << mout.endl;
+			mout.debug("resolved: " , value , " -> ", key );
 
 		drain::CommandBank::map_t::const_iterator it = cmdMap.find(key);
 
@@ -1333,7 +1333,7 @@ public:
 
 		}
 		else {
-			mout.fail() << "command " << value << " not found" << mout.endl;
+			mout.fail("command " , value , " not found" );
 		}
 
 		exit(0);
@@ -1377,7 +1377,7 @@ public:
 		}
 		else {
 			if (!cmdBank.has(value)){
-				mout.error() << "no such key: " << value << mout.endl;
+				mout.error("no such key: " , value );
 				return;
 			}
 
@@ -1468,13 +1468,13 @@ public:
 		mout.deprecating("Use  -o / --outputFile [file|'-'] instead of  ", getName());
 
 		if (value == "log"){
-			mout.unimplemented() << "Logging: future option" <<  mout.endl;
+			mout.unimplemented("Logging: future option" );
 			//statusFormatter.toStream(ctx.log.getOstr, ctx.getStatus());
 			//std::cout << statusFormatter;
 		}
 		else if (value == "image"){
 			//resources.
-			mout.deprecating() << "this command is unneed (--format is sufficient)" << mout.endl;
+			mout.deprecating("this command is unneed (--format is sufficient)" );
 		}
 		else {
 			std::string outFileName;
@@ -1488,19 +1488,19 @@ public:
 				outFileName = filenameFormatter.toStr(statusMap);
 				//outFileName = ctx.outputPrefix + value;
 			}
-			mout.info() << "writing " << outFileName << mout.endl;
+			mout.info("writing " , outFileName );
 			drain::Output ofstr(outFileName);
-			//mout.warn() <<  ctx.getStatus() << mout.endl;
+			//mout.warn(ctx.getStatus() );
 			//std::ofstream ofstr(outFileName.c_str(), std::ios::out);
 			if (ofstr)
 				statusFormatter.toStream(ofstr, statusMap);
 			else
-				mout.warn() << "write error: " << outFileName << mout.endl;
+				mout.warn("write error: " , outFileName );
 			//strm.toStream(ofstr, cmdStatus.statusMap.exportMap());
 			//ofstr.close();
 		}
 
-		//mout.warn() << "after expansion: " << r.statusFormatter << mout.endl;
+		//mout.warn("after expansion: " , r.statusFormatter );
 		//r.statusFormatter.debug(std::cerr, r.getStatusMap());
 
 	};
@@ -1546,32 +1546,32 @@ public:
 			drain::Range<double> range;
 			range.set(drain::Type::call<drain::typeMin, double>(enc.type), drain::Type::call<drain::typeMax, double>(enc.type));
 			if (!range.contains(enc.undetect)){
-				mout.warn() << "undetect=" << enc.undetect << " outside storage type range=" << range << mout.endl;
+				mout.warn("undetect=" , enc.undetect , " outside storage type range=" , range );
 			}
 			if (!range.contains(enc.nodata)){
-				mout.warn() << "nodata=" << enc.nodata << " outside storage type range=" << range << mout.endl;
+				mout.warn("nodata=" , enc.nodata , " outside storage type range=" , range );
 			}
 
-			//mout.note() << "(user) params: " << params << mout.endl;
-			//mout.note() << "parameters:    " << parameters << mout.endl;
-			mout.debug() << "odim: " << enc << mout.endl;
+			//mout.note("(user) params: " , params );
+			//mout.note("parameters:    " , parameters );
+			mout.debug("odim: " , enc );
 			//odim.setTypeDefaults();
 
 			/// Main action: store the value for later commands.
 			ctx.targetEncoding = value;
-			mout.debug() << "ctx.targetEncoding " << ctx.targetEncoding << mout.endl;
+			mout.debug("ctx.targetEncoding " , ctx.targetEncoding );
 
 			// Reassign (to odim).
 			//parameters.setValues(params);
-			//mout.note() << "Re-assigned parameters: " << parameters << mout.endl;
+			//mout.note("Re-assigned parameters: " , parameters );
 
 		}
 		catch (const std::runtime_error & e) {
 
-			mout.warn() << "Could not set odim" << mout.endl;
-			mout.note() << "pars: " << parameters << mout.endl;
-			//mout.warn() << "odim: " << enc << mout.endl;
-			mout.error() << e.what() << mout.endl;
+			mout.warn("Could not set odim" );
+			mout.note("pars: " , parameters );
+			//mout.warn("odim: " , enc );
+			mout.error(e.what() );
 
 		}
 
@@ -1683,17 +1683,17 @@ public:
 		const drain::RegExp odimSyntax("^--?(/.+)$");
 
 		if (value.empty()){
-			mout.error() << "Empty parameters" << mout.endl;
+			mout.error("Empty parameters" );
 		}
 		else if (odimSyntax.execute(value) == 0) {
-			//mout.warn() << "Recognised --/ hence running applyODIM" << mout.endl;
-			mout.warn() << "assign: " << odimSyntax.result[1] << mout.endl;
+			//mout.warn("Recognised --/ hence running applyODIM" );
+			mout.warn("assign: " , odimSyntax.result[1] );
 			drain::getCommandBank().run("setODIM", odimSyntax.result[1], ctx);
 			///drain::getRegistry().run("setODIM", odimSyntax.result[1]);
 
 		}
 		else if (value.at(0) == '-'){
-				mout.error() << "Unknown parameter (or invalid filename): " << value << mout.endl;
+				mout.error("Unknown parameter (or invalid filename): " , value );
 		}
 		else {
 			try {
@@ -1701,7 +1701,7 @@ public:
 				drain::getCommandBank().run("inputFile", value, ctx);
 				//drain::getRegistry().run("inputFile", params);
 			} catch (std::exception & e) {
-				mout.error() << "could not handle params='" << value << "'" << mout.endl;
+				mout.error("could not handle params='" , value , "'" );
 			}
 		}
 
@@ -1787,12 +1787,12 @@ void CmdValidate::exec() const {
 				wit = validator.validate(path, H5I_GROUP);
 
 			if (wit == validator.end()){
-				mout.warn() << "REJECT path: " << path << mout.endl;
+				mout.warn("REJECT path: " , path );
 				return;
 			}
 			else {
 				mout.debug2() << "RegExp: " << wit->pathRegExp.toStr() << mout.endl; //.toStr()
-				mout.debug() << "ACCEPT path: " << path << mout.endl;
+				mout.debug("ACCEPT path: " , path );
 			}
 
 			const Hi5Tree & t = src(path); // (*ctx.currentHi5)(*it);
@@ -1806,7 +1806,7 @@ void CmdValidate::exec() const {
 					attributePath.append(entry.first); //ait->first);
 					ODIMValidator::const_iterator wit = validator.validate(attributePath, H5I_ATTR);
 					if (wit == validator.end()){
-						mout.warn() << "UNKNOWN attribute: " << attributePath << mout.endl;
+						mout.warn("UNKNOWN attribute: " , attributePath );
 						continue;
 					}
 					else {
@@ -1829,20 +1829,20 @@ void CmdValidate::exec() const {
 
 					/// Type test
 					if (aType == rType){
-						mout.debug() << "COMPLIANT attribute type: " << sstr.str() << mout.endl;
+						mout.debug("COMPLIANT attribute type: " , sstr.str() );
 					}
 					else {
 						sstr << ", should be " << drain::Type::call<drain::complexName>(rType);
 						if ((drain::Type::call<drain::typeIsScalar>(aType) == drain::Type::call<drain::typeIsScalar>(rType)) ||
 								(drain::Type::call<drain::typeIsInteger>(aType) == drain::Type::call<drain::typeIsInteger>(rType)) ||
 								(drain::Type::call<drain::typeIsFloat>(aType) == drain::Type::call<drain::typeIsFloat>(rType))){
-							mout.info() << "Slightly INCOMPLIANT attribute type: " << sstr.str() << mout.endl;
+							mout.info("Slightly INCOMPLIANT attribute type: " , sstr.str() );
 						}
 						else if ((drain::Type::call<drain::typeIsScalar>(aType) && !drain::Type::call<drain::typeIsScalar>(rType))){
-							mout.note() << "Moderately INCOMPLIANT attribute type: " << sstr.str() << mout.endl;
+							mout.note("Moderately INCOMPLIANT attribute type: " , sstr.str() );
 						}
 						else {
-							mout.warn() << "INCOMPLIANT attribute type: " << sstr.str() << mout.endl;
+							mout.warn("INCOMPLIANT attribute type: " , sstr.str() );
 						}
 					}
 
@@ -1850,22 +1850,22 @@ void CmdValidate::exec() const {
 					if (wit->valueRegExp.isSet()){
 						sstr << " regExp='" <<  wit->valueRegExp.toStr() << "'";
 						if (wit->valueRegExp.test(entry.second)){ // convert on the fly
-							mout.debug() << "COMPLIANT attribute value: " << sstr.str() << mout.endl;
+							mout.debug("COMPLIANT attribute value: " , sstr.str() );
 						}
 						else {
-							mout.warn() << "INCOMPLIANT attribute value: " << sstr.str() << mout.endl;
+							mout.warn("INCOMPLIANT attribute value: " , sstr.str() );
 						}
 					}
 				}
 			}
 			else {
-				mout.debug() << "ACCEPT data: " << path << mout.endl;
+				mout.debug("ACCEPT data: " , path );
 			}
 
 		}
 	}
 	else
-		mout.warn() << "no current H5 data" << mout.endl;
+		mout.warn("no current H5 data" );
 
 }
 
@@ -1965,12 +1965,12 @@ public:
 			ctx.appendResults.set(ODIMPathElem::DATA);
 		else {
 			ctx.appendResults.set(value); // possibly "data4" or "dataset7"
-			//mout.warn() << "check path validity: "<< value << "'" << mout.endl;
+			//mout.warn("check path validity: ", value , "'" );
 		}
 
 		/*
 		if (!ODIMPath::isIndexed(ctx.appendResults.getType()) && ! (ctx.appendResults != ODIMPathElem::NONE)){
-			mout.warn() << "illegal path elem '"<< value << "'" << mout.endl;
+			mout.warn("illegal path elem '", value , "'" );
 		}
 		 */
 
@@ -2015,7 +2015,7 @@ public:
 		/*
 		if (!append.empty()){
 			ctx.appendResults.set(append);
-			mout.warn() << "option 'append' is deprecating, use --append <path> instead." << mout.endl;
+			mout.warn("option 'append' is deprecating, use --append <path> instead." );
 		}
 		*/
 	};
@@ -2074,7 +2074,7 @@ public:
 		else {
 			/*
 			if (!encoding.empty()){
-				mout.fail() << "given encoding... 'quantity' parameter is obligatory" << mout.endl;
+				mout.fail("given encoding... 'quantity' parameter is obligatory" );
 				return;
 			}
 			*/
@@ -2094,12 +2094,12 @@ public:
 				for (QuantityMap::const_iterator it = m.begin(); it != m.end(); ++it){
 					if (regExp.test(it->first)){
 						match = true;
-						mout.warn() << it->first << " matches " << regExp << mout.endl;
+						mout.warn(it->first , " matches " , regExp );
 						editQuantityConf(it->first);
 					}
 				}
 				if (!match)
-					mout.warn() << "no matches with. " << regExp << mout.endl;
+					mout.warn("no matches with. " , regExp );
 			}
 		}
 
@@ -2127,15 +2127,15 @@ protected:
 			return;
 		}
 
-		mout.debug() << "[" << quantity << "]: " << encoding << ", zero=" << zero << mout.endl;
+		mout.debug("[" , quantity , "]: " , encoding , ", zero=" , zero );
 
 		QuantityMap & m = getQuantityMap();
 		Quantity & q = m[quantity];
 
-		//mout.warn() << "base: " << q << mout.endl;
+		//mout.warn("base: " , q );
 
 		if (zero != std::numeric_limits<double>::max()){
-			mout.warn() << "setting zero " << zero << mout.endl;
+			mout.warn("setting zero " , zero );
 			if (std::isnan(zero)) // DOES NOT WORK.. convert toStr to double NaN
 				q.unsetZero();
 			else
@@ -2155,7 +2155,7 @@ protected:
 			odim.setValues(encoding);
 			mout.warn(odim);
 			if (odim.type.length() != 1){
-				mout.fail() << "illegal type: " << odim.type << mout.endl;
+				mout.fail("illegal type: " , odim.type );
 				return;
 			}
 			const char typeChar= odim.type.at(0);
@@ -2167,7 +2167,7 @@ protected:
 			// currentEncoding.updateFromCastableMap(newEncoding);
 			//q.set(typecode).updateValues(args);
 
-			mout.warn() << "set default type for :" << quantity << '\n' << q << mout.endl;
+			mout.warn("set default type for :" , quantity , '\n' , q );
 		}
 		else {  // No type given, dump quantity conf
 			std::cout << quantity << '\n';

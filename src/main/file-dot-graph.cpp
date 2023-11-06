@@ -115,7 +115,7 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	// RackContext & ctx = getContext<RackContext>();
 	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-	// mout.info() << "Dot graph file" << mout.endl;
+	// mout.info("Dot graph file" );
 	// drain::Output ofstr(filename);
 
 
@@ -212,7 +212,7 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 		const ODIMPathElem & e = entry.first;
 
 		if ((e.group & selector) == 0){  // eg. DATASET, DATA, ARRAY, WHAT, WHERE, HOW
-			mout.debug() << "Skipping: " << e << mout.endl;
+			mout.debug("Skipping: " , e );
 			continue;
 		}
 
