@@ -129,7 +129,7 @@ public:
 
 	const Hi5Tree & getAlphaSrc(RackContext & ctx) const {
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		DataSelector imageSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY); // ImageS elector imageS elector;
 		imageSelector.consumeParameters(ctx.select);
@@ -157,7 +157,7 @@ public:
 
 	drain::image::Image & getDstImage(RackContext & ctx) const {
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		drain::image::Image & dstImg = ctx.getModifiableImage();
 
@@ -197,7 +197,7 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout; = resources.mout;
 
 		const PlainData<PolarSrc> src(getAlphaSrc(ctx));
 
@@ -274,7 +274,7 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout; = resources.mout;
 
 		mout.warn() << getName() << mout.endl;
 
@@ -423,7 +423,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+		drain::Logger mout(__FILE__, __FUNCTION__); // = resources.mout;
 
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
@@ -487,7 +487,7 @@ public:
 	static
 	void retrieveQuantity(RackContext & ctx, std::string & quantity){
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		const drain::image::Image & srcImage = ctx.getCurrentGrayImage();
 		if (!srcImage.isEmpty()){
@@ -511,7 +511,7 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout;
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
 
 		if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR)){
 			mout.warn() << "input failed, skipping" << mout.endl;
@@ -882,7 +882,7 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		if (key == "list"){
 			for (const auto & entry: drain::image::PaletteOp::getPaletteMap()){
@@ -942,7 +942,7 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		//ctx.palette.load(s);
 
 		// NEW
@@ -969,7 +969,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+		drain::Logger mout(__FILE__, __FUNCTION__); // = resources.mout;
 
 		RackContext & ctx = getContext<RackContext>();
 
@@ -998,7 +998,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+		drain::Logger mout(__FILE__, __FUNCTION__); // = resources.mout;
 
 		RackContext & ctx = getContext<RackContext>();
 
@@ -1108,7 +1108,7 @@ public:
 	};
 
 	void exec() const {
-		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+		drain::Logger mout(__FILE__, __FUNCTION__); // = resources.mout;
 
 		RackContext & ctx = getContext<RackContext>();
 
@@ -1141,7 +1141,7 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+		drain::Logger mout(__FILE__, __FUNCTION__); // = resources.mout;
 
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();

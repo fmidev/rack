@@ -141,7 +141,7 @@ public:
 
 	virtual
 	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.unimplemented(__FUNCTION__);
 	};
 
@@ -169,7 +169,7 @@ protected:
 	virtual inline
 	void initDst(const MS & srcODIM, PlainData<dst_t > & dstData) const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
+		drain::Logger mout(__FILE__, __FUNCTION__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
 
 		setEncoding(srcODIM, dstData);
 		setGeometry(srcODIM, dstData);
@@ -222,7 +222,7 @@ protected:
 	static
 	void handleEncodingRequest(const std::string & encoding, PlainData<dst_t> & dst){
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 
 		ProductBase::completeEncoding(dst.odim, encoding);
 
@@ -245,7 +245,7 @@ template <class MS, class MD>
 void ProductOp<MS,MD>::setEncodingNEW(PlainData<dst_t> & dstData,
 		const std::string quantity, const std::string type) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (dstData.odim.quantity.empty())
 		dstData.odim.quantity = quantity;
@@ -275,7 +275,7 @@ void ProductOp<MS,MD>::setEncodingNEW(PlainData<dst_t> & dstData,
 template <class MS, class MD>
 void ProductOp<MS,MD>::setEncodingNEW(PlainData<dst_t> & dst, const std::string quantity = "", const std::string type = "") const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (odim.quantity.empty())
 		odim.quantity = quantity;
@@ -315,8 +315,8 @@ void ProductOp<MS,MD>::setEncoding(const ODIM & inputODIM, PlainData<dst_t> & ds
 template <class MS, class MD>  // copied from VolumeOp::processVolume
 void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
-	//drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	//drain::Logger mout(__FILE__, __FUNCTION__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug() << "start" << mout.endl;
 	mout.debug3() << *this << mout.endl;
@@ -416,7 +416,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 template <class MS, class MD>
 void ProductOp<MS,MD>::computeSingleProduct(const DataSetMap<src_t > & src, DataSet<DstType<MD> > & dstProduct) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
 	mout.debug3() << "start" << mout.endl;
 
 	if (src.size() == 0)
@@ -442,8 +442,8 @@ void ProductOp<MS,MD>::computeSingleProduct(const DataSetMap<src_t > & src, Data
 template <class MS, class MD>
 void ProductOp<MS,MD>::processDataSet(const DataSet<src_t > & srcSweep, DataSet<DstType<MD> > & dstProduct) const {
 
-	//drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(ProductOp<MS,MD>)", __FUNCTION__);
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	//drain::Logger mout(__FILE__, __FUNCTION__); //REPL this->name+"(ProductOp<MS,MD>)", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug() << "start" << mout.endl;
 

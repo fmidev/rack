@@ -43,7 +43,7 @@ using namespace drain::image;
 
 void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug3() << "Start" << mout.endl;
 	mout .debug3() << (const drain::image::Accumulator &) accumulator << mout.endl;
 

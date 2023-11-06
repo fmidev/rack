@@ -63,7 +63,7 @@ public:
 	void allocate(){
 		//AccumulationArray::setGeometry(frameWidth,frameHeight);
 		if (!geometryIsSet()){
-			Logger mout(__FUNCTION__, __FILE__);
+			Logger mout(__FILE__, __FUNCTION__);
 			mout.warn() << "allocation requested for empty area" << mout.endl;
 		}
 		//AccumulationArray::setGeometry(frameWidth, frameHeight);

@@ -44,7 +44,7 @@ namespace image
 // void TransparentOp::make Compatible(const ImageFrame &src,Image &dst) const  {
 void TransparentOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	//if (!dst.typeIsSet())
 	//	dst.setType(src.getType());
@@ -71,7 +71,7 @@ void TransparentOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 void TransparentOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {  //  = 0;
 	//drain::Logger mout(this->getName()+"(UnaryFunctorOp)", __FUNCTION__);
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (dst.hasAlpha()){
 		mout.fail() << "dst has no alpha channel()" << mout.endl;
@@ -92,7 +92,7 @@ void TransparentOp::traverseChannels(const ImageTray<const Channel> & src, Image
 
 void TransparentOp::traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.note() << "forwarding to: traverseChannel(src.get(), dst.getAlphaChannel())  " << mout.endl;
 	UnaryFunctorOp<drain::FuzzyStep<double> >::traverseChannel(src, dstAlpha);

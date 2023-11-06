@@ -87,7 +87,7 @@ public:
 	// Note: only a default implementation.
 	virtual inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
 		mout.error() << "not implemented; consider processChannels[Equally|Repeated|Separately]" << mout.endl;
 		// traverseChannelsEqually(src, dst);
 		// traverseChannelsRepeated(src, dst);
@@ -106,7 +106,7 @@ public:
     virtual inline
     void traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
     	//throw std::runtime_error(name+"(ImageOp)::"+__FUNCTION__+"(src,srcAlpha,dst,dstAlpha) unimplemented.");
-    	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+    	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
     	mout.note() << "using image channels only (discarding alpha channels)" << mout.endl;
     	traverseChannel(src, dst);
     };
@@ -208,7 +208,7 @@ protected:
 	/// Redirect to processing as trays. This is the opposite of processChannels...() functions.
 	inline
 	void traverseAsChannelTrays(const ImageFrame &src, ImageFrame &dst) const {
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.debug() << "restoring to trays" << mout.endl;
 
 		ImageTray<const Channel> s; //
@@ -224,7 +224,7 @@ protected:
 	inline
 	void traverseAsChannelTrays(const ImageFrame &src, const ImageFrame & srcWeight, ImageFrame &dst, ImageFrame &dstWeight) const {
 
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.debug() << "restoring to trays" << mout.endl;
 
 		ImageTray<const Channel> s;
@@ -254,15 +254,15 @@ protected:
 	/// Set applicable internal parameters before calling traverse().
 	virtual inline
 	void initializeParameters(const ImageFrame &src, const ImageFrame &dst) const {
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //  name+"(ImageOp) src,dst"
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //  name+"(ImageOp) src,dst"
 		mout.debug() << "nothing defined (ok)" << mout.endl;
 	}
 
 	/// Set applicable internal parameters before calling traverse().
 	inline virtual
 	void initializeParameters(const ImageFrame &src, const ImageFrame &src2, const ImageFrame &dst) const {
-		//drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(ImageOp) src,src2,dst", __FUNCTION__);
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		//drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(ImageOp) src,src2,dst", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.debug() << "nothing defined (ok)" << mout.endl;
 	}
 

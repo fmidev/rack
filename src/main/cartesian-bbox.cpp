@@ -57,7 +57,7 @@ void CartesianBBoxTest::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = getResources().mout;
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = getResources().mout;
 
 
 	if ( ! ctx.composite.bboxIsSet() ){
@@ -179,7 +179,7 @@ void CartesianBBoxTest::exec() const {
 
 void CartesianBBoxTile::exec() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	// TODO PROJ CHECK! => error, warn?
 
 	//Composite & composite = getResources().composite;

@@ -33,13 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <math.h>
 
-//#include <limits>
-
-//#include "BufferedImage.h"
-#include "../util/Functor.h"
-//#include "SequentialImageOp.h"
-
-// using namespace std;
+#include "drain/util/Functor.h"
 
 namespace drain
 {
@@ -57,9 +51,9 @@ namespace image
 	(eg. with \c--physicalRange, \c -R ).
 
    \code
-   drainage gray.png -R 0:1 --iGamma 1.5 -o gamma-bright.png
-   drainage gray.png -R 0:1 --iGamma 2.0 -o gamma-bright.png
-   drainage gray.png -R 0:1 --iGamma 0.5 -o gamma-dark.png
+   drainage image-gray.png -R 0:1 --iGamma 1.5 -o gamma-bright.png
+   drainage image-gray.png -R 0:1 --iGamma 2.0 -o gamma-bright.png
+   drainage image-gray.png -R 0:1 --iGamma 0.5 -o gamma-dark.png
    \endcode
 
 

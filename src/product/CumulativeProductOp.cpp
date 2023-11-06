@@ -50,7 +50,7 @@ using namespace drain::image;
 
 void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (srcSweeps.empty()){
 		mout.warn() << "no data found with selector: " << dataSelector << mout.endl;

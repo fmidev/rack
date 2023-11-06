@@ -51,7 +51,7 @@ namespace rack {
 
 void CartesianPlotFile::exec() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout; = getResources().mout;
+	drain::Logger mout(__FILE__, __FUNCTION__); // = getResources().mout; = getResources().mout;
 
 	RackContext & ctx = getContext<RackContext>();
 
@@ -103,7 +103,7 @@ void CartesianPlotFile::exec() const {
 // OBSOLETE? iDistranceTransform/Fill Or develop...
 void CartesianSpread::exec() const {  // TODO iDistanceFill
 
-	drain::Logger mout(__FUNCTION__, __FILE__); // = getResources().mout;
+	drain::Logger mout(__FILE__, __FUNCTION__); // = getResources().mout;
 
 	//RackResources & resources = getResources();
 	RackContext & ctx = getContext<RackContext>();

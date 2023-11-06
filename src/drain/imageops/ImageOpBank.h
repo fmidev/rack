@@ -131,7 +131,7 @@ class NegateOp : public ImageOp {
 
 public:
 
-	NegateOp() : ImageOp(__FUNCTION__, __FILE__){
+	NegateOp() : ImageOp(__FILE__, __FUNCTION__){
 	}
 
 	virtual inline
@@ -184,7 +184,7 @@ public:
 	template <class OP>
 	OP & install(const std::string & name = OP().getName()){
 
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 		std::string key(name);
 		drain::CommandBank::deriveCmdName(key, 0);

@@ -182,7 +182,10 @@ public:
 	}
 
 
+	virtual
+	std::ostream & toStream(std::ostream & ostr, bool compact = true) const;
 
+	/*
 	virtual inline
 	std::ostream & toStream(std::ostream & ostr) const {
 		//ostr << name << ':' << parameters;
@@ -190,17 +193,7 @@ public:
 		ostr << '\t' << parameters << '\n';
 		return ostr;
 	}
-
-	/*
-	inline
-	std::string toStr() const {
-		std::stringstream sstr;
-		toStream(sstr);
-		return sstr.str();
-	}
 	*/
-
-
 
 
 protected:

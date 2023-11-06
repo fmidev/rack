@@ -63,7 +63,7 @@ public:
 	void exec() const {
 		// Accept Cartesian and polar
 		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		Composite & composite = ctx.getComposite(RackContext::SHARED);
 
@@ -107,7 +107,7 @@ public:
 	void exec() const {
 
 		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		Composite & composite = ctx.getComposite(RackContext::SHARED);
 		add(composite, RackContext::CURRENT, true);

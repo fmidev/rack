@@ -48,7 +48,7 @@ using namespace drain::image;
 
 void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name,__FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__); //REPL name,__FUNCTION__);
 
 	const drain::FunctorBank & functorBank = drain::getFunctorBank();
 

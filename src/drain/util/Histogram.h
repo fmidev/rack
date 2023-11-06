@@ -138,7 +138,7 @@ public:
 
 	inline
 	void setScale(const ValueScaling & scaling){
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.discouraged("use setRange instead (scaling=", scaling, ")");
 		mout.advice("range perhaps: [", this->scaling.getPhysicalRange());
 		this->scaling.assign(scaling);
@@ -477,7 +477,7 @@ private:
 template <class T>
 void Histogram::compute(const T & dst, const std::type_info & type, const UniTuple<double,2>  & scaling){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const int size = autoSize(type);
 

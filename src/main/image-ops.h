@@ -68,7 +68,7 @@ public:
 	template <class OD>
 	void updateGeometryODIM(Hi5Tree & dstGroup, const std::string & quantity, drain::image::Geometry & geometry) const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+		drain::Logger mout(__FILE__, __FUNCTION__); // = resources.mout;
 
 		// OD odim;
 		typedef DstType<OD> dst_t;

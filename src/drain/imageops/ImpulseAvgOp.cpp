@@ -44,7 +44,7 @@ namespace image
 
 
 void ImpulseAvg::init(const Channel & src, bool horizontal){
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	const size_t n = horizontal ? src.getWidth() : src.getHeight();
 	data.resize(n);

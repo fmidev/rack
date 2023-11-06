@@ -62,7 +62,7 @@ using namespace drain::image;
 void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	//drain::Logger mout(this->getName()+"(VolumeTraversalOp)", __FUNCTION__);
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug2() << "start" << mout.endl;
 
 	/*
@@ -174,7 +174,7 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 /*
 void VolumeTraversalOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.unimplemented("TODO...");
 	mout.error("TODO...");
 }
@@ -182,7 +182,7 @@ void VolumeTraversalOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcDat
 
 void VolumeTraversalOp::computeProducts(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(DetectorOp)", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__); //REPL name+"(DetectorOp)", __FUNCTION__);
 
 	mout.debug2("start1");
 

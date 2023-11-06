@@ -48,7 +48,7 @@ namespace image
 void ImageMod::process(Image & dst) const {
 
 	//std::cerr << "TEST" << std::endl;
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageModifier::)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageModifier::)", __FUNCTION__);
 	initialize(dst);
 	//ImageFrame & dstFrame = dst;
 	mout.debug2() << "forwarding to: traverseChannel(Channel &)" << mout.endl;
@@ -60,7 +60,7 @@ void ImageMod::process(Image & dst) const {
 
 /*
 void ImageMod::traverse rame(ImageFrame & dst) const {
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageModifier::)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageModifier::)", __FUNCTION__);
 	mout.debug2() << "forwarding to: applyAsChannelTray(Channel &)" << mout.endl;
 	traverseChannels(dst);
 }
@@ -69,7 +69,7 @@ void ImageMod::traverse rame(ImageFrame & dst) const {
 /*
 //void ImageMod::traverseFrame(Tray<Image> & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL __FILE__, __FUNCTION__);
 
 	Tray<ImageFrame> frameDst;
 
@@ -90,7 +90,7 @@ void ImageMod::traverse rame(ImageFrame & dst) const {
 /*
 void ImageMod::processImages(Tray<Image> & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	// Check if multiple multichannel
 	bool MULTICHANNEL = false;
@@ -114,7 +114,7 @@ void ImageMod::processImages(Tray<Image> & dst) const {
 /*
 //void ImageMod::traverseFrame(Tray<ImageFrame> & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	// Check if multiple multichannel
 	bool MULTICHANNEL = false;
@@ -133,7 +133,7 @@ void ImageMod::processImages(Tray<Image> & dst) const {
 */
 
 void ImageMod::traverseChannels(ImageTray<Channel> & dst) const {
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageModifier::)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageModifier::)", __FUNCTION__);
 	mout.debug2() << "forwarding to: processChannelsSeparately(Channel &)" << mout.endl;
 	processChannelsSeparately(dst);
 }
@@ -141,7 +141,7 @@ void ImageMod::traverseChannels(ImageTray<Channel> & dst) const {
 
 void ImageMod::processChannelsSeparately(ImageTray<Channel> & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageModifier::)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageModifier::)", __FUNCTION__);
 
 	if (dst.hasAlpha()){
 
@@ -173,7 +173,7 @@ void ImageMod::processChannelsSeparately(ImageTray<Channel> & dst) const {
 // "Final" ie DONT CHANGE THIS. Important that the invocations converge to traverseFrame(ImageTray<Channel> & dst) .
 void ImageMod::traverseChannels(ImageFrame & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	ImageTray<Channel> dstChannels;
 	dstChannels.setChannels(dst);

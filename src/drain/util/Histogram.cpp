@@ -40,13 +40,16 @@ namespace drain
 /*
 */
 Histogram::Histogram(size_t size){
-	//initialize(size);
+	setSize(size);
+	weight = 0.5;
+	//initialize(size); // call moved to computation phase
 }
 
 Histogram::Histogram(const Histogram & histogram){
 	setSize(histogram.getSize());
 	scaling.set(histogram.scaling);
-	//initialize(histogram.getSize());
+	weight = 0.5;
+	//initialize(histogram.getSize()); // call moved to computation phase
 }
 
 void Histogram::initialize(){
@@ -62,7 +65,7 @@ void Histogram::setSize(size_t n){
 	resize(n);
 
 	if (!scaling.physRange.empty()){
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		Range<double> histRange(0, size());
 		scaling.setConversionScale(histRange, scaling.physRange);
 		mout.warn("tuned also scaling: ", scaling);
@@ -73,7 +76,7 @@ void Histogram::setSize(size_t n){
 
 void Histogram::setRange(double dataMin, double dataMax){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const Range<double> histRange(0, size());
 
@@ -91,7 +94,7 @@ void Histogram::setRange(double dataMin, double dataMax){
 
 std::size_t  Histogram::recommendSizeByType(const std::type_info & type, std::size_t value){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (drain::Type::call<drain::typeIsSmallInt>(type)){
 		const size_t s = drain::Type::call<drain::sizeGetter>(type);

@@ -73,7 +73,7 @@ FileInfo & FilePng::initFileInfo(FilePng::fileInfo); // ???
 */
 void FilePng::write(const ImageFrame & image, const std::string & path){
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (image.isEmpty()){
 		mout.warn() << "empty image, skipping" << mout.endl;

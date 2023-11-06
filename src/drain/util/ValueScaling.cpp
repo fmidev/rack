@@ -35,7 +35,7 @@ namespace drain {
 
 void ValueScaling::setOptimalScale(const std::type_info & t){ // , const std::string &unit ?
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	if (!isPhysical()){
 		mout.warn() << "physical range unset, setting absolute scale" << mout.endl;
@@ -72,7 +72,7 @@ void ValueScaling::setOptimalScale(const std::type_info & t){ // , const std::st
 
 void ValueScaling::adoptScaling(const ValueScaling & srcScaling, const std::type_info & srcType, const std::type_info & dstType){
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	if (dstType == typeid(void)){
 		mout.warn() << "Dst type not given" << mout.endl;

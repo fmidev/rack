@@ -48,7 +48,7 @@ using namespace drain::image;
 
 void SunShineOp::processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug() << "Start"  << mout.endl;
 

@@ -62,7 +62,7 @@ namespace rack {
 template <class OD>
 void ImageOpExec::updateGeometryODIM(Hi5Tree & dstGroup, const std::string & quantity, drain::image::Geometry & geometry) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); // = resources.mout;
+	drain::Logger mout(__FILE__, __FUNCTION__); // = resources.mout;
 
 	// OD odim;
 	typedef DstType<OD> dst_t;
@@ -746,7 +746,7 @@ public:
 	virtual
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
+		drain::Logger mout(__FILE__, __FUNCTION__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
 		traverseChannelsSeparately(src, dst);
 		// traverseChannelsEqually(src, dst);
 		// traverseChannelsRepeated(src, dst);
@@ -759,7 +759,7 @@ public:
     virtual inline
     void traverseChannel(const Channel & src, Channel &dst) const {
 
-    	drain::Logger mout(__FUNCTION__, __FILE__);
+    	drain::Logger mout(__FILE__, __FUNCTION__);
 
     	const drain::ValueScaling & srcScale = src.getScaling();
     	const drain::ValueScaling & dstScale = dst.getScaling();
@@ -861,7 +861,7 @@ ImageOpModule::ImageOpModule(){ //:  CommandSection("imageOps"){
 
 	drain::CommandBank::trimWords().insert("Functor");  // { //const std::string & section, const std::string & prefix){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	// NEW
 	// drain::CommandBank & cmdBank = drain::getCommandBank();
 	// RackImageOpInstaller installer(cmdBank);

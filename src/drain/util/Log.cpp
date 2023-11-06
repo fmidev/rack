@@ -142,7 +142,7 @@ void Log::setVerbosity(const std::string & level){
 	}
 	//std::cout << "failed:" << level << '\n';
 
-	throw std::runtime_error(level + " - no such error level");
+	throw std::runtime_error(level + " - no such error level"); // + drain::sprinter(getDict()));
 }
 
 void Log::flush(level_t level, const std::string & prefix, const std::stringstream & sstr){
@@ -274,7 +274,7 @@ Logger::~Logger(){
 	endTiming();
 }
 
-void Logger::setPrefix(const char *functionName, const char *name){
+void Logger::setPrefixOLD(const char *functionName, const char *name){
 
 	if (name){
 

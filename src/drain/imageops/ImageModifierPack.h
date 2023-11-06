@@ -152,7 +152,7 @@ public:
 
 	virtual
 	void traverseChannel(Channel & dst) const {
-		//drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		//drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		//mout.fail() << "Feelu" << mout.endl;
 	};
 	//virtual

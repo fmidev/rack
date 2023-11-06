@@ -46,7 +46,7 @@ int ImageFile::index(0);
 
 void ImageFile::read(Image &img, const std::string & path){
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	/*
 	mout.warn("path: ", path);
@@ -70,7 +70,7 @@ void ImageFile::read(Image &img, const std::string & path){
 
 void ImageFile::readFrame(ImageFrame &img, const std::string & path){
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 
 	if (FilePng::fileInfo.checkPath(path)){
@@ -94,7 +94,7 @@ void ImageFile::readFrame(ImageFrame &img, const std::string & path){
 //static void read(Image<unsigned char> &image,const std::string &path);
 void ImageFile::write(const ImageFrame &img,const std::string &path){
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	FilePath filePath(path);
 

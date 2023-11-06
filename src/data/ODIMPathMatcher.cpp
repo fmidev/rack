@@ -43,7 +43,7 @@ void parse(const std::string & path){
 
 bool ODIMPathMatcher::ensureLimitingSlash(){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.unimplemented("implementation postponed/cancelled");
 
@@ -68,7 +68,7 @@ bool ODIMPathMatcher::ensureLimitingSlash(){
 
 void ODIMPathElemMatcher::extractIndex(const std::string &s){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	std::stringstream sstr(s);
 
@@ -99,7 +99,7 @@ void ODIMPathElemMatcher::extractIndex(const std::string &s){
 
 bool ODIMPathElemMatcher::extractPrefix(const std::string & prefix, bool indexed){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	//mout.warn( << "current: " << flags << ", setting prefix=" << prefix << ", indexed=" << indexed);;
 
@@ -150,7 +150,7 @@ bool ODIMPathElemMatcher::extractPrefix(const std::string & prefix, bool indexed
 
 bool ODIMPathElemMatcher::test(const ODIMPathElem & elem) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (!elem.belongsTo(this->flags.value)){
 		//if (elem.group != this->group){
@@ -209,7 +209,7 @@ bool ODIMPathMatcher::isLiteral() const {
 
 /// Extracts a single, "deterministic" path only. TODO: enumerate, extract maximally N branches.
 void ODIMPathMatcher::extract(ODIMPath & path) const {
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	for (const auto & entry: *this){
 		if (!entry.isSingle())
@@ -222,7 +222,7 @@ void ODIMPathMatcher::extract(ODIMPath & path) const {
 // const rack::ODIMPathMatcher & matcher
 bool ODIMPathMatcher::match(const rack::ODIMPath & path) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (this->empty())
 		return true;
@@ -236,7 +236,7 @@ bool ODIMPathMatcher::match(const rack::ODIMPath & path) const {
 
 bool ODIMPathMatcher::matchHead(const rack::ODIMPath & path)  const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	//mout.debug() << "matcher: " << *this);
 	mout.debug3( "path:    ", path   );
@@ -264,7 +264,7 @@ bool ODIMPathMatcher::matchHead(const rack::ODIMPath & path)  const {
 
 bool ODIMPathMatcher::matchTail(const rack::ODIMPath & path) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	//mout.debug() << "matcher: " << *this);
 	mout.debug3("path: ", path);

@@ -53,7 +53,7 @@ unsigned short Writer::compressionLevel = 6;
 
 void Writer::writeFile(const std::string &filename, const Hi5Tree &tree){
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL hi5::hi5monitor, __FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__); //REPL hi5::hi5monitor, __FILE__, __FUNCTION__);
 
 	const hid_t fid = H5Fcreate(filename.c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
 
@@ -270,7 +270,7 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
  */
 hsize_t Writer::deriveDimensions(const drain::image::Geometry & g, std::vector<hsize_t> & dims, std::vector<hsize_t> & chunkDims){
 
-	drain::Logger mout(__FUNCTION__, __FILE__ );
+	drain::Logger mout(__FILE__, __FUNCTION__ );
 
 	hsize_t width    = g.getWidth();
 	hsize_t height   = g.getHeight();
@@ -327,7 +327,7 @@ hsize_t Writer::deriveDimensions(const drain::image::Geometry & g, std::vector<h
 hid_t Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, const Hi5Tree::path_t & path){
 
 	// hi5::hi5monitor,
-	drain::Logger mout(__FUNCTION__, __FILE__ );
+	drain::Logger mout(__FILE__, __FUNCTION__ );
 	// mout.startTiming();
 
 	mout.debug3() << ": starting, path=" << path << mout.endl;
@@ -682,7 +682,7 @@ void Writer::dataToH5Compound(const drain::VariableMap & m, hid_t fid, const std
 // UNDER CONSTR.
 void linkToH5Attribute(hid_t lid, hid_t fid, const std::string &path, const std::string &attribute){
 
-	drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 
 	int status = 0;
 

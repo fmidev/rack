@@ -118,7 +118,7 @@ void ProductBase::help(std::ostream &ostr, bool showDescription) const {
 
 void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDefaults){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const bool QUANTITY_UNSET = productODIM.quantity.empty();
 
@@ -184,7 +184,7 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 
 void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (encoding.empty()){
 		mout.debug() << "empty request (ok)" << mout.endl;
@@ -254,7 +254,7 @@ void ProductBase::setAllowedEncoding(const std::string & keys) {
 
 void ProductBase::setODIMspecials(ODIM & dstODIM){
 
-	//drain::Logger mout(__FUNCTION__, __FILE__);
+	//drain::Logger mout(__FILE__, __FUNCTION__);
 
 	dstODIM.distinguishNodata("VRAD");
 	/*

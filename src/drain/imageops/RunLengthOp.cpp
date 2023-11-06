@@ -44,7 +44,7 @@ namespace image
 
 void RunLengthHorzOp::traverseChannel(const Channel &src, Channel &dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	// mout.debug() << "start" << mout.endl;
 
@@ -126,7 +126,7 @@ Further, \c --scale command may be needed to make segment lengths visible in 16-
 void RunLengthVertOp::traverseChannel(const Channel &src, Channel &dst) const {
 
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	const int width  = src.getWidth();
 	const int height = src.getHeight();

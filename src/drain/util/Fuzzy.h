@@ -175,7 +175,7 @@ public:
 	inline
 	void updateBean() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 
 		this->INVERSE = (range.min > range.max);
 

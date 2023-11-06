@@ -45,7 +45,7 @@ Quantity::Quantity(const std::string & name,
 			physicalRange(range),
 			undetectValue(undetectValue) {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	for (const typename list_t::value_type & entry: l){
 		if (entry.type.empty()){

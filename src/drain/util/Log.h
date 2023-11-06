@@ -41,9 +41,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include <ctime>
 #include <sys/time.h>
+#include <string.h> // strrchr()
 
 #include <syslog.h>
-
 
 #include <vector>
 
@@ -690,29 +690,6 @@ public:
 		}
 	}
 
-protected:
-
-	template<typename ... TT>
-	void initTiming(const TT &... args){
-		timing = true; // consider error if already timing?
-		std::cerr << "TIMING:" << MARKER; // << "<li>";
-		describeTiming(args...);
-		// std::cerr << " [" <<  prefix  << "] <ol>" << '\n';
-		//std::cerr << " <ol>" << '\n';
-		std::cerr << " <div>" << '\n';
-		time = monitor.getMilliseconds();
-	};
-
-
-	template<typename T, typename ... TT>
-	void describeTiming(const T & arg, const TT &... args){
-		std::cerr << arg;
-		describeTiming(args...);
-	};
-
-	inline
-	void describeTiming(){
-	};
 
 public:
 
@@ -777,11 +754,90 @@ protected:
 
 	const Notification * notif_ptr;
 
+protected:
+
+	template<typename ... TT>
+	void initTiming(const TT &... args){
+		timing = true; // consider error if already timing?
+		std::cerr << "TIMING:" << MARKER; // << "<li>";
+		describeTiming(args...);
+		// std::cerr << " [" <<  prefix  << "] <ol>" << '\n';
+		//std::cerr << " <ol>" << '\n';
+		std::cerr << " <div>" << '\n';
+		time = monitor.getMilliseconds();
+	};
+
+
+	template<typename T, typename ... TT>
+	void describeTiming(const T & arg, const TT &... args){
+		std::cerr << arg;
+		describeTiming(args...);
+	};
+
+	inline
+	void describeTiming(){
+	};
+
 	/**
 	 *  \param name - explicitly given classname like "Composite" or __FILE__
 	 *  \param name - __FILE__
 	 */
-	void setPrefix(const char *functionName, const char * name);
+	void setPrefixOLD(const char *functionName, const char * name);
+
+	/**
+	 * 	Expects filename as returned by __FILE__
+	 *
+	 */
+	template<typename ... TT>
+	inline
+	void setPrefix(const char * filename, const char * fct_name, const TT &... args){
+		std::stringstream sstr;
+		if (filename){
+
+			if (*filename != '\0'){
+
+				const char * s2 = strrchr(filename, '/');
+				if (s2 == nullptr)
+					s2 = filename;
+				else
+					++s2;
+
+				/// Start from s2, because dir may contain '.'
+				const char * s3 = strrchr(s2, '.');
+				if (s3 == nullptr)
+					sstr << s2;
+					//prefix.assign(s2);
+				else
+					//prefix.assign(s2, s3-s2);
+					//sstr.put(s2, size_t(s3-s2));
+					sstr.write(s2, size_t(s3-s2));
+				// prefix.append(":");
+				sstr << ':';
+			}
+		}
+		sstr << fct_name << "| ";
+		appendPrefix(sstr, args...);
+		prefix = sstr.str();
+	}
+
+	template<typename T, typename ... TT>
+	inline
+	void setPrefix(const TT &... args){
+		std::stringstream sstr;
+		appendPrefix(sstr, args...);
+		prefix = sstr.str();
+	}
+
+
+	inline
+	void appendPrefix(std::stringstream & sstr){
+	}
+
+	template<typename T, typename ... TT>
+	void appendPrefix(std::stringstream & sstr, const T & arg, const TT &... args){
+		sstr << arg;
+		appendPrefix(sstr, args...);
+	}
 
 	template <level_t L>
 	Logger & initMessage(const Notification & notif){

@@ -80,7 +80,7 @@ FunctorBank & getFunctorBank() { // who uses this (limited) set?
 
 UnaryFunctor & getFunctor(const std::string & nameAndParams, char separator) {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL getLog(), __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__); //REPL getLog(), __FUNCTION__);
 
 	std::string name;
 	std::string params;

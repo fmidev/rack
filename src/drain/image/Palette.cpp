@@ -89,7 +89,7 @@ Palette::Palette(std::initializer_list<std::pair<Variable, PaletteEntry> > inits
 
 void Palette::addEntry(double min, double red, double green, double blue, const std::string & id, const std::string & label){
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	//mout.warn("probably faulty code");
 
@@ -109,7 +109,7 @@ void Palette::addEntry(double min, double red, double green, double blue, const 
 
 Palette::value_type & Palette::getEntryByCode(const std::string & code, bool lenient){
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	for (auto & entry: *this){
 		if (entry.second.code == code){
@@ -195,7 +195,7 @@ void Palette::reset(){
 
 void Palette::update() const {
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	size_t i = 0;
 	size_t a = 0;
@@ -233,8 +233,8 @@ void Palette::update() const {
 
 void Palette::load(const std::string & filename, bool flexible){
 
-	//Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	Logger mout(__FUNCTION__, __FILE__);
+	//Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	drain::FilePath filePath;
 
@@ -554,7 +554,7 @@ void Palette::loadJSON(std::istream & ifstr){
 
 void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	//const drain::JSONtree::tree_t & entries = json["entries"];
 
@@ -623,7 +623,7 @@ void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 
 void Palette::updateDictionary(){
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	this->dictionary.clear();
 
@@ -637,8 +637,8 @@ void Palette::updateDictionary(){
 
 void Palette::write(const std::string & filename) const {
 
-	//Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	Logger mout(__FUNCTION__, __FILE__);
+	//Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	drain::FilePath filepath(filename);
 
@@ -713,7 +713,7 @@ void Palette::write(const std::string & filename) const {
 
 void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (!separator2)
 		separator2 = separator;
@@ -770,7 +770,7 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 /*
 void Palette::exportCPP(std::ostream & ostr, bool flat) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	//std::cout << "cppLayout: --- "<< '\n';
 	if (flat){
@@ -842,7 +842,7 @@ void Palette::exportCPP(std::ostream & ostr, bool flat) const {
 //void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
 void Palette::exportJSON(drain::JSONtree2 & json) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.warn("JSON syntax may change in future, ensure palettes using other formats.");
 
@@ -948,7 +948,7 @@ void Palette::exportJSON(drain::JSONtree2 & json) const {
 
 void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	PaletteEntry entry;
 

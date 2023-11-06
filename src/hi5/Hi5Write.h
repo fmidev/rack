@@ -178,7 +178,7 @@ protected:
 template <class K, class V>
 void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fid, const Hi5Tree::path_t & path, const char *labelFirst, const char *labelSecond){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	typedef std::vector<std::pair<K,V> > vect_t;
 	typedef typename vect_t::value_type pair_t;
@@ -288,7 +288,7 @@ public:
 template <class K, class V>
 void Writer::mapToH5Compound(const std::map<K,V> & m, hid_t fid, const Hi5Tree::path_t & path, const char *labelFirst, const char *labelSecond){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	typedef typename CompoundConv<K>::conv_t key_t;
 	typedef typename CompoundConv<V>::conv_t val_t;

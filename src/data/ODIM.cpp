@@ -85,7 +85,7 @@ bool ODIM::distinguishNodata(const std::string & quantityPrefix){
 	if (this->quantity.find(quantityPrefix)==0){  // Fix Vaisala IRIS bug
 		//std::cerr << "setNodata" << quantity << '\n';
 		if (nodata == undetect){
-			drain::Logger mout(__FUNCTION__, __FILE__);
+			drain::Logger mout(__FILE__, __FUNCTION__);
 			nodata = drain::Type::call<drain::typeMax,double>(type);
 			mout.special("setting [", quantity ,"] nodata=", nodata, " to distinguish undetect=", undetect);
 			return true;
@@ -99,7 +99,7 @@ bool ODIM::distinguishNodata(const std::string & quantityPrefix){
 
 void ODIM::copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
 	//for (ReferenceMap::const_iterator it = begin(); it != end(); ++it){
@@ -185,7 +185,7 @@ void ODIM::copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const {
 
 bool ODIM::getTime(drain::Time & t, const std::string &dateStr, const std::string &timeStr) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	try {
 		if (!dateStr.empty())
@@ -200,7 +200,7 @@ bool ODIM::getTime(drain::Time & t, const std::string &dateStr, const std::strin
 
 	}
 	catch (const std::exception &e) {
-		// drain::Logger mout(__FUNCTION__, __FILE__);
+		// drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.fail(e.what());
 		return false;
 	}
@@ -218,7 +218,7 @@ bool ODIM::setTime(const drain::Time & t){
 		time = t.str(ODIM::timeformat);
 	}
 	catch (const std::exception &e) {
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.warn() << e.what() << mout.endl;
 		return false;
 	}
@@ -229,7 +229,7 @@ bool ODIM::setTime(const drain::Time & t){
 
 bool ODIM::setTime(const std::string & s){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const size_t nDate = 8; // "YYYYmmdd"
 	const size_t nTime = 6; // "HHMMSS"
@@ -261,7 +261,7 @@ bool ODIM::setTime(const std::string & s){
 
 void ODIM::adjustGeometry(size_t cols, size_t rows){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	const drain::image::AreaGeometry a(area);
 	setGeometry(cols, rows);
 	mout.note(a, " => ", area);
@@ -271,7 +271,7 @@ void ODIM::adjustGeometry(size_t cols, size_t rows){
 
 void ODIM::updateLenient(const ODIM & odim){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	EncodingODIM::updateLenient(odim);
 

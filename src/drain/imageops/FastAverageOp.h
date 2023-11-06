@@ -128,7 +128,7 @@ protected:
 
 	virtual	inline
 	void setImageLimits() const {
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.debug() << this->src << mout.endl;
 		this->coordinateHandler.set(this->src.getGeometry(), this->src.getCoordinatePolicy());
 		mout.debug() << this->coordinateHandler << mout.endl;

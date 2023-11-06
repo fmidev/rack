@@ -79,7 +79,7 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 
 	/// Currently designed only for vertical profiles produced by VerticalProfileOp (\c --pVerticalProfile )

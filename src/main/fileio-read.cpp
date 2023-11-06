@@ -174,7 +174,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	// mout.debug() << "start: " << fullFilename << mout.endl;
 
@@ -349,7 +349,7 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	mout.debug() << "start" << mout.endl;
 
@@ -403,7 +403,7 @@ void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	//ODIMPathElem p(g);
 	//DataSelector::getLastChild(dst, p);
@@ -442,7 +442,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	mout.debug("start");
 	const drain::Variable & sourceSrc = srcRoot[ODIMPathElem::WHAT].data.attributes["source"];
@@ -645,7 +645,7 @@ void CmdInputFile::updateDataNEW(Hi5Tree & srcData, const std::string & srcKey, 
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	// NEW: clumsy search.
 	for (const auto & dstEntry: dstQuantityElems) {
@@ -673,7 +673,7 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	{
 		mout.special("Step 1: Append missing quality fields ");  // other than QIND or CLASS
@@ -922,7 +922,7 @@ void CmdInputFile::readTextFile(const std::string & fullFilename) const  {
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = getResources().mout( ;
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = getResources().mout( ;
 
 	drain::Input ifstr(fullFilename);
 
@@ -936,7 +936,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = getResources().mout;
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = getResources().mout;
 
 	/// Search last dataset
 	ODIMPathElem dataSetElem(ODIMPathElem::DATASET);

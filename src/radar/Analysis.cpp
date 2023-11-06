@@ -78,7 +78,7 @@ void RadarWindowConfig::updatePixelSize(const PolarODIM & inputODIM){ // Doppler
 
 void rack::RadarFunctorBase::apply(const Channel &src, Channel &dst, const drain::UnaryFunctor & ftor, bool LIMIT) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(RadarFunctorOp)", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(RadarFunctorOp)", __FUNCTION__);
 	mout.debug() << "start" << mout.endl;
 
 	// const double dstMax = dst.scaling.getMax<double>();

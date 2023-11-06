@@ -67,7 +67,7 @@ public:
 	void getDstConf(const ImageConf & src, ImageConf & dst) const {
 	//virtual void make Compatible(const ImageFrame &src,Image &dst) const  {
 
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name + "(ImageOp::_makeCompatible)");
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 		// unneeded if (!dst.typeIsSet())	dst.setType(src.getType());
 
@@ -101,7 +101,7 @@ public:
 
 	inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		drain::Logger mout(getImgLog(), __FUNCTION__,__FILE__);  //REP (this->name+"[const ChannelTray &, ChannelTray &]", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);  //REP (this->name+"[const ChannelTray &, ChannelTray &]", __FUNCTION__);
 		traverseChannelsSeparately(src, dst);
 	}
 

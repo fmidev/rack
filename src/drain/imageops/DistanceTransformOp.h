@@ -83,7 +83,7 @@ public:
     virtual
     inline
     void traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
-    	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+    	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
     	mout.note("discarding alpha channels, redirecting to traverseChannel(src, dst)");
     	traverseChannel(src, dst);
     };
@@ -109,7 +109,7 @@ public:
     /*
     virtual // TODO: non-virtual, ie, final!
 	void makeCompatible(const ImageConf & src, Image & dst) const {
-    	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+    	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
     	mout.warn() << "derived " << mout;
     	ImageOp::makeCompatible(src, dst);
     }
@@ -120,7 +120,7 @@ public:
 	inline
 	void make Compatible(const ImageFrame &src, Image &dst) const  {
 
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.debug3() << "src: " << src << mout.endl;
 
 		//if (!dst.typeIsSet())
@@ -186,7 +186,7 @@ protected:
 	virtual
 	void initializeParameters(const ImageFrame &src, const ImageFrame &dst) const {
 
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 		// WAS: src (all)  // .getEncoding()
 		const double physMax = dst.getConf().requestPhysicalMax(100.0);
@@ -238,7 +238,7 @@ Range<int> DistanceTransformOp<T>::getHorzRange(const CoordinateHandler2D & coor
 template <class T>
 Range<int> DistanceTransformOp<T>::getVertRange(const CoordinateHandler2D & coordinateHandler) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	Range<int> yRange = coordinateHandler.getYRange();
 
@@ -263,7 +263,7 @@ template <class T>
 void DistanceTransformOp<T>::traverseChannel(const Channel &src, Channel & dst) const
 {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	//mout.warn() << "start" << mout.endl;
 	mout.debug("model max: ",  getDistanceModel().getMax());
@@ -281,7 +281,7 @@ template <class T>
 void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst) const
 {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	//mout.debug() << "start" << mout.endl;
 
 	//const DistanceModel & distModel = getDistanceModel();
@@ -369,7 +369,7 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 template <class T>
 void DistanceTransformOp<T>::traverseUpLeft(const Channel &src, Channel &dst) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	mout.debug("start");
 
 	//const DistanceModel & distModel = getDistanceModel();
@@ -477,9 +477,9 @@ public:
 Examples:
  \code
  drainage dots.png       --iDistanceTransformExp 25    -o distExp.png
- drainage dots-16bit.png --iDistanceTransformExp 25    -o distExp-16b.png
+ drainage dots-16b.png --iDistanceTransformExp 25    -o distExp-16b.png
  drainage dots.png       --iDistanceTransformExp 40,20 -o distExp-horz.png
- drainage dots-16bit.png --iDistanceTransformExp 10:40,20:80 -o distExp-asym.png
+ drainage dots-16b.png --iDistanceTransformExp 10:40,20:80 -o distExp-asym.png
  \endcode
 
  TODO: gnuplot curves

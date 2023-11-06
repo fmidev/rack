@@ -348,7 +348,7 @@ public:
 	virtual
 	void exec() const {
 		Context & ctx = getContext<Context>();
-		drain::Logger mout(ctx.log,__FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log,__FILE__, __FUNCTION__);
 		mout.note() << "I am " << getName() << ", invoked as " << key << mout.endl;
 	}
 

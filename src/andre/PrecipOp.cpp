@@ -44,7 +44,7 @@ namespace rack {
 
 void PrecipOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug() << *this << mout.endl;
 	mout.debug2() << "=>srcData.odim: " << srcData.odim << mout.endl;
 
@@ -61,7 +61,7 @@ void PrecipOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 // TODO: join with default quality
 void DefaultOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug() << *this << mout.endl;
 	mout.debug2() << " => srcData.odim: " << EncodingODIM(srcData.odim) << mout.endl;

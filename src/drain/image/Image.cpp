@@ -85,7 +85,7 @@ void Image::swap(Image & img){
 }
 
 void ModifiableImage::update(){
-	//Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	//Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	//mout.warn() << "clear" << mout;
 	adjustBuffer();
 	this->channelVector.clear();

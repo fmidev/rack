@@ -114,7 +114,7 @@ public:
 
 	virtual inline
 	void computeProducts(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const {
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.unimplemented("TODO... redirecting...");
 		runDetection(srcVolume, dstVolume);
 	}
@@ -156,20 +156,20 @@ public:
 	 */
 	virtual inline
 	void runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.unimplemented("function ", __FUNCTION__," not implemented for ", getName());
 		mout.error("stopping");
 	}
 	/*
 	 {
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.unimplemented("function ", __FUNCTION__," not implemented for ", getName());
 	}*
 	 */
 
 	virtual
 	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.special(__FUNCTION__, " now, here!");
 		//runDetector((const PlainData<PolarSrc> &) srcData, (PlainData<PolarDst> &)dstData);
 		// Default implementation is simple, creates no (2nd order) quality field of the detection

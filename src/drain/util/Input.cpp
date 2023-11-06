@@ -38,7 +38,7 @@ namespace drain {
 
 Input::Input(const std::string & filename){ // : filename(filename){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (filename.empty())
 		mout.error() << "filename empty (use '-' for stdin)" << mout.endl;
@@ -55,7 +55,7 @@ Input::Input(const std::string & filename){ // : filename(filename){
 }
 
 Input::~Input(){
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug() << "closing... " << mout.endl;
 	ifstr.close();
 }
@@ -80,7 +80,7 @@ void Input::open(const std::string & filename){
 }
 
 Input::operator std::istream & (){
-	// drain::Logger mout(__FUNCTION__, __FILE__);
+	// drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (ifstr.is_open()){
 		return ifstr;

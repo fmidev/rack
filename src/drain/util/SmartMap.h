@@ -444,7 +444,7 @@ template <class T>
 template <bool STRICT>
 void SmartMap<T>::importEntries(const std::string & entries, char assignmentSymbol, char separatorSymbol){ //, bool updateOnly){
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 	//mout.debug(10) << entries << mout.endl;
 
 	if (entries.empty()){ //old
@@ -473,7 +473,7 @@ template <class T>
 template <bool STRICT>
 void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmentSymbol){ // , bool updateOnly){
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	// NUEVO3 SmartMapTools::setValues<T,STRICT>(*this, p, assignmentSymbol);
 
@@ -548,7 +548,7 @@ template <class T>
 template <class S>
 void SmartMap<T>::setValuesSEQ(const S & sequence){
 
-	Logger log(__FUNCTION__, __FILE__);
+	Logger log(__FILE__, __FUNCTION__);
 
 	const std::list<std::string> & keys = getKeyList();
 	std::list<std::string>::const_iterator kit = keys.begin();

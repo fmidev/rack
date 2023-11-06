@@ -37,7 +37,7 @@ namespace image {
 
 void ResizeOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	mout.debug("src:  ", src);
 	mout.debug("dst0: ", dst);
 
@@ -54,7 +54,7 @@ void ResizeOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
 
 void ResizeOp::traverseChannel(const Channel & src, Channel & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	/*
 	if (traverseOverlappingWithTemp(src, dst)){

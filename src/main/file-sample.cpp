@@ -79,8 +79,8 @@ void sampleData(const typename P::dataset_t & dataset, const Sampler & sampler, 
 
 	//RackContext & ctx  = this->template getContext<RackContext>();
 
-	//drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	P picker(sampler.variableMap, dataset.getFirstData().odim);
 
@@ -111,7 +111,7 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	mout.info() << "Sample file (.dat)" << mout.endl;
 

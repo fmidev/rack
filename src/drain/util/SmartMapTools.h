@@ -205,7 +205,7 @@ public:
 	static
 	void setValues(M & dst, const std::list<std::string> & keys, const std::list<std::string> & entries, char assignmentSymbol='=') {
 
-		Logger mout(__FUNCTION__, __FILE__);
+		Logger mout(__FILE__, __FUNCTION__);
 
 
 		const std::string assignmentSymbols(1, assignmentSymbol);

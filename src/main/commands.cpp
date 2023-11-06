@@ -42,7 +42,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/JSON.h"
 #include "drain/util/Input.h"
 #include "drain/util/Output.h"
-// #include "drain/util/JSONwriter.h"
 #include "drain/util/Proj6.h"
 #include "drain/util/RegExp.h"
 #include "drain/util/Sprinter.h"
@@ -59,7 +58,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIM.h"
 #include "data/ODIMValidator.h"
 #include "data/DataCoder.h"
-// #include "data/EchoClass.h"
 #include "hi5/Hi5.h"
 
 #include "product/DataConversionOp.h"
@@ -354,12 +352,14 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		if (ctx.currentHi5 == &ctx.cartesianHi5){
+			mout.debug("Cartesian data");
 			convertCurrentH5<CartesianODIM>();
 		}
 		else if (ctx.currentHi5 == ctx.currentPolarHi5) {
+			mout.debug("Cartesian data");
 			convertCurrentH5<PolarODIM>();
 		}
 		else {
@@ -377,13 +377,13 @@ protected:
 
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout; = resources.mout;
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout; = resources.mout;
 
 		DataConversionOp<OD> op;
 		op.setEncodingRequest(ctx.targetEncoding);
 		ctx.targetEncoding.clear();
 
-		mout.debug(op.targetEncoding);
+		mout.debug("op.targetEncoding: ", op.targetEncoding);
 		// mout.warn() << op << mout.endl;
 		op.dataSelector.consumeParameters(ctx.select);
 		mout.debug(op.dataSelector);
@@ -423,7 +423,7 @@ public:
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		DataSelector selector(ODIMPathElem::DATASET);
 		selector.consumeParameters(ctx.select);
@@ -569,13 +569,14 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 		//Hi5Tree & dst = *getResources().currentHi5;
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout;
+		//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
+		drain::Logger mout(ctx.log, getName().c_str(), __FILE__); // = resources.mout;
 
 		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);
 		selector.setParameters(value);
 		//selector.pathMatcher.setElems(ODIMPathElem::DATASET, ODIMPathElem::DATA);
 
-		mout.warn("selector: ", selector );
+		mout.info("selector: ", selector );
 		//mout.debug() << "group mask: " << groupFilter << ", selector: " << selector << mout.endl;
 
 		Hi5Tree & dst = *ctx.currentHi5;
@@ -682,7 +683,7 @@ protected:
 	/*
 	void markNoSave(Hi5Tree &src, bool noSave=true) const {
 
-		//drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		for (auto & entry: src) {
 			//if (it->first.isIndexed()){
@@ -735,7 +736,7 @@ public:
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		if (ctx.currentHi5 == NULL){
 			mout.error() << "current Hi5 == NULL" << mout.endl;
@@ -880,7 +881,7 @@ public:
 
 	void exec() const {
 		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		mout.obsolete() << "--> '--move' " << mout.endl;
 		CmdMove::exec();
 	};
@@ -1020,7 +1021,7 @@ public:
 	void exec() const {
 
 		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 
 		if (ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["object"].toStr() == "COMP"){
@@ -1106,7 +1107,7 @@ public:
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		if (value.find_first_of("?*()^$") != std::string::npos){
 			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
@@ -1280,7 +1281,7 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		std::ostream & ostr = std::cout;
 
@@ -1358,7 +1359,7 @@ public:
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		//drain::CommandRegistry & reg = drain::getRegistry();
 		drain::CommandBank & cmdBank = drain::getCommandBank();
@@ -1430,7 +1431,7 @@ public:
 	void exec() const {
 
 		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout;
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
 
 		//std::string format = value;
 		// format = drain::StringTools::replace(format, "\\n", "\n");
@@ -1459,7 +1460,7 @@ public:
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = resources.mout;
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
 
 		drain::StringMapper statusFormatter(RackContext::variableMapper);
 		statusFormatter.parse(ctx.formatStr, true);
@@ -1914,7 +1915,7 @@ public:
 	virtual
 	void exec() const {
 		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		mout.deprecating() << "use '--store " << value << "' instead";
 		ctx.outputDataVerbosity = value;
 	};
@@ -1932,7 +1933,7 @@ public:
 
 	void exec() const {
 		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		mout.deprecating() = "use '--store 2' instead";
 	};
 
@@ -1953,7 +1954,7 @@ public:
 	void exec() const {
 
 		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		if (value.empty()){
 			ctx.appendResults.set(ODIMPathElem::ROOT); // = overwrite, do not append
@@ -2007,7 +2008,7 @@ public:
 	void exec() const {
 
 		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		ctx.outputDataVerbosity = value;
 		// DetectorOp::STORE = (ProductBase::outputDataVerbosity>0);
 		//DetectorOp::STORE = ctx.outputDataVerbosity;
@@ -2197,7 +2198,7 @@ struct VerboseCmd : public drain::BasicCommand {
 		RackContext & ctx = getContext<RackContext>();
 		ctx.log.setVerbosity(level); // NEW
 		drain::getLog().setVerbosity(level);
-		// drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
+		// drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 		hi5::getLogH5().setVerbosity(level);
 		drain::image::getImgLog().setVerbosity(imageLevel);
 		/*

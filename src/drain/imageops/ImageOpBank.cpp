@@ -44,7 +44,7 @@ namespace image
 
 ImageOp & ImageOpBank::getComplete(const std::string & query, char assignmentChar, char separatorChar, const drain::SmartMap<std::string> & aliasMap){
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), "ImageOpBank", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), "ImageOpBank", __FUNCTION__);
 
 	size_t index = query.find(separatorChar);
 	const bool PARAMS = (index != std::string::npos);
@@ -98,7 +98,7 @@ public:
 	template <class OP>
 	void add(const std::string & name = OP().getName()){
 
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 		std::string key(name);
 		//std::string name(OP().getName());

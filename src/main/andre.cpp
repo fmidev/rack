@@ -89,7 +89,7 @@ public:
 	};
 
 	void exec() const {
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.info() << "querying " << value << mout.endl;
 		// OLD:
 		clutterOp.setClutterMap(value);
@@ -119,7 +119,7 @@ public:
 
 	void exec() const {
 		RackContext & ctx = this->template getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__ );
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__ );
 		ctx.defaultQuality = value;
 		mout.unimplemented("Warning: this value is currently unused");
 	}
@@ -136,7 +136,7 @@ public:
 
 	void exec() const {
 		RackContext & ctx = this->template getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__ );
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__ );
 		// ctx.statusFlags.set(ANDRE_UNIVERSAL, this->value);
 		DetectorOp::SUPPORT_UNIVERSAL = this->value;
 	};
@@ -380,8 +380,7 @@ AnDReModule::AnDReModule(drain::CommandBank & cmdBank) : module_t(cmdBank) { // 
 	detectorInstaller.install<SunOp>(); //   sun;
 	detectorInstaller.install<TimeOp>(); // time;
 
-	// detectorInstaller.install<TestOp>(); // time;
-
+	detectorInstaller.install<TestOp>().section |= drain::Static::get<drain::HiddenSection>().index;
 
 	// Wrapper for removal ops
 	RemoverInstaller removerInstaller(cmdBank);

@@ -137,7 +137,7 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		std::string format;
 		std::string params;
@@ -271,7 +271,7 @@ void CmdOutputFile::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	// mout.attention(ctx.getName());
 	// mout.warn("ctx.select=", ctx.select);
@@ -468,7 +468,7 @@ void CmdOutputTree::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	// mout.info("File format: tree");
 
@@ -524,7 +524,7 @@ bool CmdOutputTree::dataToStream(const Hi5Tree::node_data_t & data, std::ostream
 	// Shared TextDecorator!
 	// RackContext & ctx = getResources().getContext<RackContext>();
 
-	// drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	//mout.unimplemented("Future option... ");
 
@@ -590,7 +590,7 @@ public:
 		// Shared
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		//mout.note() << "Writing multiple image files" << mout.endl;
 
 		//DataSelector imageSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY); //("/data$");

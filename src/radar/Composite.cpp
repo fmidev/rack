@@ -121,7 +121,7 @@ void Composite::checkQuantity(const std::string & quantity){
 
 void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, double priorWeight, bool projAEQD) {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (drain::Logger::TIMING){
 		SourceODIM source(srcData.odim.source);
@@ -499,7 +499,7 @@ void Composite::updateNodeMap(const std::string & node, int i, int j){
 
 void Composite::updateGeoData(){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	odim.updateGeoInfo(*this);
 
@@ -529,7 +529,7 @@ void Composite::updateGeoData(){
 
 void Composite::updateInputSelector(const std::string & select){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (!select.empty()){
 		// mout.warn() << "Setting selector=" << resources.select << mout.endl;
@@ -564,7 +564,7 @@ void Composite::updateInputSelector(const std::string & select){
 
 double Composite::getTimeDifferenceMinute(const CartesianODIM & odimIn) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	//mout.note(2) << "Tile time: " << tileTime.toStr("%Y/%m/%d %H:%M.%S") << mout.endl;
 
 	drain::Time compositeTime;

@@ -42,7 +42,7 @@ const SprinterLayout Projector::projDefLayout(" ","","=", "",""); // space-separ
 
 void Projector::setProjection(int epsg, CRS_mode crs){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.info("Setting epsg: ", epsg, ", expanding projDef");
 
@@ -68,7 +68,7 @@ void Projector::setProjection(int epsg, CRS_mode crs){
 
 void Projector::setProjection(const std::string &projDefStr, CRS_mode crs){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	getProjDefDict(projDefStr, projDefDict);
 
@@ -100,7 +100,7 @@ void Projector::setProjection(const std::string &projDefStr, CRS_mode crs){
 
 void Projector::updateProjectionDefs(CRS_mode crs){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	std::set<std::string> excludeKeys = {"+init"};
 	switch (crs) {
@@ -161,7 +161,7 @@ void Projector::updateProjectionDefs(CRS_mode crs){
 
 void Projector::getProjDefDict(const std::string & src, ProjDef & projDef){ // , const std::set<string> & exclude){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	std::list<std::string> projDefList;
 	drain::StringTools::split(src, projDefList, ' ');
@@ -194,7 +194,7 @@ void Projector::getProjDefDict(const std::string & src, ProjDef & projDef){ // ,
 
 void Projector::getProjDefStr(const ProjDef & projDef, std::stringstream & sstr, const std::set<std::string> & exclude){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	//drain::Sprinter::sequenceToStream(cout, projDef, SprinterLayout(" ","","=", "",""));
 
 	char sep = 0;
@@ -255,7 +255,7 @@ void Projector::getProjDefStr(const ProjDef & projDef, std::stringstream & sstr,
 /*
 PJ *Projector::getProjection(const std::string & projDef, CRS_mode CRS) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	std::stringstream sstr;
 
@@ -305,7 +305,7 @@ PJ *Projector::getProjection(const std::string & projDef, CRS_mode CRS) const {
 
 bool Projector::isLongLat(const PJ *pj) {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (pj == nullptr){
 		mout.error("PJ object not set");
@@ -427,7 +427,7 @@ void Projector::info(PJ *pj, std::ostream & ostr, int wkt){
 
 int Projector::extractEPSG(const ProjDef & dict){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	//std::ostream dummy(nullptr);
 	//return filterProjStr(projDef, dummy, ACCEPT_CRS);
@@ -514,7 +514,7 @@ void Proj6::setProjectionDst(const std::string & projDef, CRS_mode crs){
 
 
 void Proj6::setMapping(bool lenient){
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	if (isSet()){ // (projSrc != nullptr) && (projDst != nullptr)
 		//std::cout << proj_get_type(projSrc) << '#' << proj_get_type(projDst) << '\n';
 		proj = proj_create_crs_to_crs_from_pj(pjContext, src.pj, dst.pj, 0, nullptr);

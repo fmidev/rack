@@ -175,7 +175,7 @@ std::ostream & JSON::treeToStream(std::ostream & ostr, const T & tree, const dra
 template <class T>
 void JSON::readTree(T & tree, std::istream & istr){
 
-	drain::Logger log(__FUNCTION__, __FILE__);
+	drain::Logger log(__FILE__, __FUNCTION__);
 
 
 	if (!istr){
@@ -259,7 +259,7 @@ inline
 void drain::JSON::handleValue(std::istream & istr, JSONtree2 & dst, const std::string & key){
 //void drain::JSON::handleValue(std::istream & istr, JSONtree2 & child){
 
-	drain::Logger log( __FUNCTION__, __FILE__);
+	drain::Logger log( __FILE__, __FUNCTION__);
 
 
 	JSONtree2 & child = dst.addChild(key);

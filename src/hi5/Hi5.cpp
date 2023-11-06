@@ -57,7 +57,7 @@ drain::Log & getLogH5(){
 
 void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const {
 
-	drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 
 	/// show only "big" groups explicitly?
 	/// if (prefix.back().belongsTo(...))
@@ -128,7 +128,7 @@ void Hi5Base::handleStatus(herr_t status, const std::string & message, drain::Lo
 hid_t Hi5Base::getH5StandardType(const std::type_info & type){
 
 
-	drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 
 	typedef drain::DictionaryPtr<hid_t, const std::type_info> dict_t;
 
@@ -174,7 +174,7 @@ hid_t Hi5Base::getH5StandardType(const std::type_info & type){
 
 hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
 
-	drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 
 	if (type == typeid(bool)){  // does not work
 		mout.warn() << __FUNCTION__ << ": boolean type '" << type.name() << "' currently unsupported" << mout.endl;
@@ -331,7 +331,7 @@ void Hi5Base::readText(Hi5Tree &src, std::istream & istr) {
 
 void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	Hi5Tree::path_t path;
 
@@ -352,7 +352,7 @@ void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 //void Hi5Base::readTextLine(Hi5Tree & dst, const Hi5Tree::path_t & path, const std::string & assignment){
 void Hi5Base::assignAttribute(Hi5Tree & dst, const std::string & assignment){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	// NEW
 
 	std::string attrKey;
@@ -418,7 +418,7 @@ void Hi5Base::assignAttribute(Hi5Tree & dst, const std::string & assignment){
 /*
 void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & assignment){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug() << "line: " << line << mout.endl;
 
@@ -432,7 +432,7 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 // consider ValueReader, TextReader instead (skipping attrType)
 void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::string & attrKey, std::string & attrValue){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug() << "line: " << line << mout.endl;
 
@@ -447,7 +447,7 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 // Marks CHILDREN of src for deleting
 void Hi5Base::markNoSave(Hi5Tree &src, bool noSave){
 
-	//drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	for (auto & entry: src) {
 		//if (it->first.isIndexed()){
@@ -462,7 +462,7 @@ void Hi5Base::markNoSave(Hi5Tree &src, bool noSave){
 
 void Hi5Base::deleteNoSave(Hi5Tree &src){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	//rack::ODIMPath l;
 	std::list<Hi5Tree::path_t::elem_t> elems;
@@ -491,7 +491,7 @@ void Hi5Base::deleteNoSave(Hi5Tree &src){
 /*
 void Hi5Base::markNoSave(Hi5Tree &src, bool noSave){
 
-	//drain::Logger mout(__FUNCTION__, __FILE__);
+	//drain::Logger mout(__FILE__, __FUNCTION__);
 
 	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
 		it->second.data.noSave = noSave;

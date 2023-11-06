@@ -76,7 +76,7 @@ public:
 	inline
 	void update() const {
 
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 		mask = 0;
 		// Create 111111...

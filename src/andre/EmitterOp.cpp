@@ -59,7 +59,7 @@ namespace rack {
 
 void EmitterOp::runDetector(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug() << *this << mout.endl;
 
 	//dst.data.setPhysicalScale(0.0, 1.0);

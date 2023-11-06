@@ -39,7 +39,7 @@ namespace drain {
 
 Output::Output(const std::string & filename){ // : filename(filename){
 
-	//drain::Logger mout(__FUNCTION__, __FILE__);
+	//drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (filename.empty())
 		throw std::runtime_error("drain::Output(...):  filename empty (use '-' for stdout)");
@@ -58,7 +58,7 @@ Output::Output(const std::string & filename){ // : filename(filename){
 }
 
 Output::~Output(){
-	// drain::Logger mout(__FUNCTION__, __FILE__);
+	// drain::Logger mout(__FILE__, __FUNCTION__);
 	// mout.debug() << "closing... " << mout.endl;
 	ofstr.close();
 }
@@ -84,7 +84,7 @@ void Output::open(const std::string & filename){
 
 
 Output::operator std::ostream & (){
-	// drain::Logger mout(__FUNCTION__, __FILE__);
+	// drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (ofstr.is_open()){
 		return ofstr;

@@ -70,7 +70,7 @@ namespace rack {
 void LineOp::runDetector(const PlainData<PolarSrc> &srcData, PlainData<PolarDst> &dstData) const {
 
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug() << "start" << mout.endl;
 
 	//const Image & src = srcData.data;

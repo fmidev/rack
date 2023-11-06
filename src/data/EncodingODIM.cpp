@@ -245,7 +245,7 @@ void EncodingODIM::grantShortKeys(drain::ReferenceMap & ref) {
 
 void EncodingODIM::copyFrom(const drain::image::Image & data){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const drain::FlexVariableMap & m = data.getProperties();
 
@@ -279,7 +279,7 @@ void EncodingODIM::copyFrom(const drain::image::Image & data){
 
 void EncodingODIM::setRange(double min, double max) {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (min != max)
 		explicitSettings |= RANGE;
@@ -368,7 +368,7 @@ void EncodingODIM::checkType(Hi5Tree & dst, EncodingODIM & odim){
 
 double EncodingODIM::getMin() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const std::type_info & t = drain::Type::getTypeInfo(type);
 
@@ -392,7 +392,7 @@ double EncodingODIM::getMin() const {
 
 double EncodingODIM::getMax() const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const std::type_info & t = drain::Type::getTypeInfo(type);
 

@@ -132,7 +132,7 @@ protected:
 template <class T>
 void FilePnm::read(T & image, const std::string & path, const CommentReader & commentReader) {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.info() << "path='" << path << "'" << mout.endl;
 

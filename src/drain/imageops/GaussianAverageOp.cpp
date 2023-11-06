@@ -51,7 +51,7 @@ GaussianAverageOp::GaussianAverageOp(int width, int height, double radius) :
 
 void GaussianAverageOp::traverseChannel(const Channel & src, Channel & dst) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	// TODO: generalize!
 	mout.special() << "conf: " << conf.frame << ',' << conf.radius << mout.endl;
@@ -87,7 +87,7 @@ void GaussianAverageOp::traverseChannel(const Channel & src, Channel & dst) cons
 //void GaussianAverageOp::process(const ImageFrame & src, const ImageFrame & srcWeight, Image & dst, Image & dstWeight) const {
 void GaussianAverageOp::traverseChannel(const Channel & src, const Channel & srcWeight, Channel & dst, Channel & dstWeight) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	Image tmp(dst.getType());
 	Image tmpWeight(dstWeight.getType());

@@ -92,7 +92,7 @@ void ODIMPathElem::extractIndex(const std::string &s){
 
 bool ODIMPathElem::extractPrefix(const std::string & prefix, bool indexed){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	static
 	const dict_t & d = ODIMPathElem::getDictionary(); // New here
@@ -131,7 +131,7 @@ bool ODIMPathElem::extractPrefix(const std::string & prefix, bool indexed){
 
 bool ODIMPathElem::set(const std::string &s){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	this->group = ROOT; // or none?
 	this->index = 0;

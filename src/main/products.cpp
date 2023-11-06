@@ -105,7 +105,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 
 		// ODIMPathElem elem(ODIMPathElem::DATASET, 1+elevIndex);
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		//ctx.select = drain::sprinter(parameters.getMap(), "", ",", "=").str();
 		std::stringstream sstr;
@@ -137,7 +137,7 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		/*
 		std::vector<std::string> s;
@@ -308,7 +308,7 @@ drain::Command & ProductModule::install(char alias){  // = 0 TODO: EMBED "instal
 	drain::CommandBank::deriveCmdName(name, getPrefix());
 	drain::Command  & cmd = cmdBank.add<ProductCommand<OP> >(name);
 	cmd.section = getSection().index;
-	// drain::Logger mout(__FUNCTION__, __FILE__);
+	// drain::Logger mout(__FILE__, __FUNCTION__);
 	// mout.special() << name << "\n -> " << op.getOutputQuantity() << "\t test:" << op.getOutputQuantity("TEST") << mout;
 	CmdOutputQuantity::quantityMap[name] =  op.getOutputQuantity();
 	return cmd;

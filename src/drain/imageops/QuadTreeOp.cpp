@@ -44,7 +44,7 @@ void QuadTreeOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 void QuadTreeOp::process(const ImageFrame & src, ImageFrame & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	const size_t widthSrc  = src.getWidth();
 	const size_t heightSrc = src.getHeight();

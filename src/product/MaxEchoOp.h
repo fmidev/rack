@@ -57,28 +57,28 @@ public:
 	/// Experimental parameter handling
 
 	/// Todo: rscale*,nbins*,nrays*,beamwidth*
-	MaxEchoOp(double altitude=1000.0, double devAltitude=500.0, const std::string & accumulationMethod = "MAXIMUM"): //"WAVG,8,1,-32") :
+	//MaxEchoOp(double altitude=1000.0, double devAltitude=500.0, const std::string & accumulationMethod = "MAXIMUM"): //"WAVG,8,1,-32") :
+	MaxEchoOp(const drain::Range<double> & altitude = {500.0,1500.0}, const std::string & accumulationMethod = "MAXIMUM"): //"WAVG,8,1,-32") :
 		CumulativeProductOp("MaxEcho","Computes...", accumulationMethod) //"WAVG,2,2,-32") "MAXW") //
 		{
 
-		parameters.link("altitude", this->altitude = altitude, "metres");
-		parameters.link("devAltitude", this->devAltitude = devAltitude, "metres");
+		parameters.link("altitude", this->altitude.tuple() = altitude, "metres").fillArray = true;
+		// parameters.link("altitude", this->altitude = altitude, "metres");
+		// parameters.link("devAltitude", this->devAltitude = devAltitude, "metres");
 		parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "MAXIMUM|AVERAGE|WAVG:2:2|MAXW");
 
 		dataSelector.quantity = "^DBZH$";
-
 		odim.product = "MAX";
 		odim.quantity = "DBZH";
+
 	};
-
-
 
 	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const;
 	// void filter(const Hi5Tree &src, const std::map<double,std::string> & srcPaths, Hi5Tree &dst) const;
 
-	double altitude;
-	double devAltitude;
-
+	drain::Range<double> altitude;
+	// double altitude;
+	// double devAltitude;
 
 
 };

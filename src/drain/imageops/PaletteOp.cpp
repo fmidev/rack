@@ -99,8 +99,8 @@ Palette & PaletteOp::ensurePalette(const std::string & key){
 
 Palette & PaletteOp::loadPalette(const std::string & key){
 
-	Logger mout(__FUNCTION__, __FILE__);
-	// Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
+	// Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	Palette & palette = getPaletteMap()[key];
 	#pragma omp critical
@@ -118,8 +118,8 @@ Palette & PaletteOp::loadPalette(const std::string & key){
 
 Palette & PaletteOp::getPalette(const std::string & key) {
 
-	Logger mout(__FUNCTION__, __FILE__);
-	// Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
+	// Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	Palette & palette = getPaletteMap()[key];
 
@@ -251,7 +251,7 @@ void PaletteOp::help(std::ostream & ostr) const {
 
 void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
 
 	// mout.debug() << "Starting" << mout.endl;
 
@@ -428,7 +428,7 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 /*
 void PaletteOp::processOLD(const ImageFrame &src,Image &dst) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	initialize();
 

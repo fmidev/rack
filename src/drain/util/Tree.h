@@ -456,7 +456,7 @@ x	 *  \see clearData()
 	// ??-> If an ending slash is included, then groups but no datasets will be erased. (?)
 	void erase(const path_t & path){ // RAISE/virtualize
 
-		// drain::Logger mout(__FUNCTION__, __FILE__);
+		// drain::Logger mout(__FILE__, __FUNCTION__);
 
 		// Idea: first assign the leaf, and step one back.
 		typename path_t::const_iterator it = path.end();

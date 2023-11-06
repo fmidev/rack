@@ -163,7 +163,7 @@ public:
 			return typeid(void);
 		default:
 			//Logger mout("Type", std::string(__FUNCTION__)+"(char c)");
-			Logger mout(__FUNCTION__, __FILE__);
+			Logger mout(__FILE__, __FUNCTION__);
 			mout.error() << " undefined type: '" << t << "'=" << (int)t << mout.endl;
 			return typeid(void);
 		}
@@ -267,7 +267,7 @@ public:
 		}
 		*/
 		else {
-			Logger mout(__FUNCTION__, __FILE__);
+			Logger mout(__FILE__, __FUNCTION__);
 			mout.error("unimplemented type: ...", t.name(), " NOTE: enums suppressed");
 			//return T(); //F::template callback<char,T>();
 			// Problem with ref types
@@ -363,7 +363,7 @@ public:
 		}
 		*/
 		else {
-			Logger mout(__FUNCTION__, __FILE__);
+			Logger mout(__FILE__, __FUNCTION__);
 			mout.error("unimplemented type: ...", t.name(), " NOTE: enums suppressed");
 			// throw std::runtime_error(std::string(": unimplemented type: ") + t.name() + " NOTE: enums suppressed");
 			return;

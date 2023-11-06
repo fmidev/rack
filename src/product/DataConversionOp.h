@@ -153,7 +153,7 @@ PlainData< DstType<M> > & DataConversionOp<M>::getNormalizedData(const DataSet<s
 	//typename DataSet< SrcType<M const> >::const_iterator it = normDataSet.find(quantityExt);
 	typename DataSet<dst_t >::iterator it = normDataSet.find(quantityExt);
 	if (it != normDataSet.end()){
-		mout.note() << "using cached data: " << quantityExt << mout.endl;
+		mout.note("using cached data: ", quantityExt);
 		return it->second;
 	}
 	else {
@@ -189,7 +189,7 @@ PlainData< DstType<M> > & DataConversionOp<M>::getNormalizedData(const DataSet<s
 template <class M> //// copied from VolumeOp::processVolume
 void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug3() << *this << mout.endl;
 	mout.debug("DataSelector: ", this->dataSelector);
@@ -217,13 +217,13 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 		//const ODIMPathElem & parent = path.back();
 		const ODIMPathElem & parent = path.front();
 
-		mout.special("handling: ", parent, '<', path);
+		mout.special("handling: ", parent, " -> ", path);
 
 		if (parents.find(parent) == parents.end()){
 			if (parent.getType() != ODIMPathElem::DATASET){
-				mout.note() << "non-dataset group: " << parent << mout.endl;
+				mout.note("non-dataset group: ", parent);
 			}
-			mout.note("append ", parent);
+			mout.note("now handling: ", parent);
 			parents.insert(parent);
 			// DataSet<src_t> srcDataSet(src(path), quantityRegExp);
 			// DataSet<dst_t> dstDataSet(dst(path));
@@ -232,7 +232,7 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 			processDataSet(srcDataSet, dstDataSet);
 		}
 		else {
-			mout.note("already exists: ", parent);
+			mout.note("already exists(?): ", parent); // ???
 		}
 
 	}
@@ -241,13 +241,13 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 template <class M>
 void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSet<dst_t> & dstProduct) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	std::set<std::string> convertedQuantities;
 
 	//const std::string extension("_X");
 
-	mout.attention("number of layers: ", srcSweep.size());
+	mout.attention("number of layers (sub groups of DataSet): ", srcSweep.size());
 
 	// Traverse quantities
 	//for (typename DataSet<src_t>::const_iterator it = srcSweep.begin(); it != srcSweep.end(); ++it){
@@ -308,6 +308,7 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 			dstData.odim.quantity = quantity;
 			dstData.odim.updateLenient(srcODIM); // <= dstData.odim.NI = srcData.odim.NI; // if Cart?
 			ProductBase::completeEncoding(dstData.odim, this->targetEncoding);
+			mout.special("Final encoding: ", (const EncodingODIM &)dstData.odim);
 			//processData(srcData, dstData2);
 			processImage(srcODIM, srcData.data, dstData.odim, dstData.data);
 
@@ -339,8 +340,8 @@ template <class M>
 void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image::ImageFrame & srcImage, const ODIM & dstOdim, drain::image::Image & dstImage) const {
 
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
-	mout.debug2() << "start, type=" << this->odim.type << ", geom=" << srcImage.getGeometry() << mout.endl;
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.debug("type=", this->odim.type, ", geom=", srcImage.getGeometry() );
 
 	// const drain::Type t(this->odim.type);
 	const drain::Type t(dstOdim.type);
@@ -349,7 +350,7 @@ void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image:
 
 	if (srcImage.hasOverlap(dstImage)){
 		if ((t.getType() != srcImage.getType()) || (g != dstImage.getGeometry())){
-			mout.warn() << "using temp image + swap" << mout.endl;
+			mout.warn("using temp image + swap");
 			drain::image::Image tmp;
 			tmp.setType(t);
 			tmp.setGeometry(g);
@@ -360,7 +361,7 @@ void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image:
 			return;
 		}
 		else {
-			mout.warn() << "same type and geometry, hence only rescaling (in-place)" << mout.endl;
+			mout.warn("same type and geometry, hence only rescaling (in-place)");
 		}
 		/*
 		if (t != srcImage.getType2()){
@@ -378,7 +379,7 @@ void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image:
 		dstImage.setGeometry(g);
 		//dstImage.setScaling(dstOdim.scaling.scale, dstOdim.scaling.offset);
 		dstImage.setScaling(dstOdim.scaling); // ok separate
-		mout.debug() << "dst:" << dstImage << mout.endl;
+		mout.debug("dst:", dstImage);
 		traverseImageFrame(srcOdim, srcImage, dstOdim, dstImage);
 	}
 
@@ -389,9 +390,9 @@ template <class M>
 void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::image::ImageFrame & srcImage,
 		const ODIM & dstOdim, drain::image::ImageFrame & dstImage) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug2() << "dst:" << dstImage << mout.endl;
+	mout.debug2("dst:", dstImage);
 
 	dstImage.setCoordinatePolicy(srcImage.getCoordinatePolicy());
 
@@ -409,8 +410,8 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 	dstImage.properties.updateFromMap(dstOdim);
 	//dst.odim.set(odim);
 	//mout.debug2() << "op  odim: " << EncodingODIM(odim) << mout.endl;
-	mout.debug2() << "dst odim: " << EncodingODIM(dstOdim) << mout.endl;
-	mout.debug2() << "dst props: " << dstImage.properties << mout.endl;
+	mout.debug2("dst odim: ", EncodingODIM(dstOdim));
+	mout.debug2("dst props: ", dstImage.properties);
 	//std::cerr << dst.properties << std::endl;
 
 	// const drain::ValueScaling scaling(srcOdim.scaling.scale, srcOdim.scaling.offset, dstOdim.scaling.scale, dstOdim.scaling.offset);
@@ -419,8 +420,7 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 	typedef drain::typeLimiter<double> Limiter;
 	Limiter::value_t limit = drain::Type::call<Limiter>(dstOdim.type);
 
-
-	mout.debug2() << "scaling: " << scaling << mout.endl;
+	mout.debug2("scaling: ", scaling);
 
 	Image::const_iterator s = srcImage.begin();
 	Image::iterator d = dstImage.begin();
@@ -428,14 +428,15 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 	// Long int check by wrting to pixel at (0,0)
 	*d = dstOdim.nodata;
 	if (static_cast<double>(*d) != dstOdim.nodata){
-		mout.note() << "dstOdim.nodata=" << dstOdim.nodata << " -> " << static_cast<double>(*d) << mout.endl;
-		mout.warn() << "dstOdim.nodata type conversion " << dstOdim.type << " -> " << drain::Type::getTypeChar(dstImage.getType()) << " changed the value" << mout.endl;
+		mout.note("dstOdim.nodata=", dstOdim.nodata, " -> ", static_cast<double>(*d));
+		mout.note("type conversion ", srcOdim.type, " -> ", dstOdim.type);
+		mout.warn("type conversion ", dstOdim.type, " ~= ", drain::Type::getTypeChar(dstImage.getType()), " changed the value");
 	}
 	//mout.debug() << "dstOdim nodata long-int check " << dstOdim.nodata << " <> " << (long int)(*d = dstOdim.nodata) << mout.endl;
 
 
-	mout.debug3() << "src:    " << srcImage << mout.endl;
-	mout.debug3() << "dst: " << dstImage << mout.endl;
+	mout.debug2("src: ", srcImage);
+	mout.debug2("dst: ", dstImage);
 	double x;
 	while (s != srcImage.end()){
 		x = *s;
@@ -446,12 +447,15 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 		else if (x == srcOdim.nodata)
 			*d = dstOdim.nodata;
 		else {
-			//  x = srcOdim.scaleForward(x);
+			/*
+			x =  srcOdim.scaleForward(x);
+			*d = limit(dstOdim.scaleInverse(x));
+			*/
 			//  x = dst.odim.scaleInverse(x);
 			// *d = dstImage.limit<double>( x );
 			// *d = limit( scaling.forward(x) );
-			*d = limit( scaling.fwd(x) );
-			//dstImage.scaling.limit<double>( scaling.forward(x) );
+			*d = limit( scaling.inv(x) );
+
 		}
 
 		++s;

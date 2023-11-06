@@ -100,7 +100,7 @@ public:
 	virtual
 	inline
 	void traverseChannel(Channel & dst) const {
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageMod)", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageMod)", __FUNCTION__);
 		mout.warn() << "(Channel &): not implemented" << mout.endl;
 	};
 
@@ -111,7 +111,7 @@ public:
 	virtual
 	inline
 	void traverseChannel(Channel & dst, Channel & dstAlpha) const {
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageMod)", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageMod)", __FUNCTION__);
 		mout.debug() << "(Channel &, Channel &alpha): not implemented" << mout.endl;
 	};
 

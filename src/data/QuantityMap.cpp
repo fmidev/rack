@@ -40,7 +40,7 @@ namespace rack {
 void QuantityMap::initialize(){
 
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// OLD
 

@@ -53,7 +53,7 @@ void ImageOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 void ImageOp::makeCompatible(const ImageConf & srcConf, Image & dst) const  {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
 
 	// mout.warn() << "srcConf:      " << srcConf << mout.endl;
 	// mout.warn() << "dst.getConf:  " << dst.getConf() << mout.endl;
@@ -103,7 +103,7 @@ void ImageOp::makeCompatible(const ImageConf & srcConf, Image & dst) const  {
 
 void ImageOp::makeCompatible2(const ImageFrame & src1, const ImageFrame & src2, Image & dst) const  {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
 
 	mout.debug3() << "src1: " << src1 << mout.endl;
 	mout.debug3() << "src2: " << src2 << mout.endl;
@@ -125,7 +125,7 @@ void ImageOp::makeCompatible2(const ImageFrame & src1, const ImageFrame & src2, 
 
 void ImageOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
 
 	if (processOverlappingWithTemp(srcFrame, dstImage)){
 		return;
@@ -157,7 +157,7 @@ void ImageOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 
 void ImageOp::process(const ImageFrame & src, const ImageFrame & srcWeight, Image & dst, Image & dstWeight) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
 
 
 	ImageTray<const Channel> srcTray;
@@ -178,7 +178,7 @@ void ImageOp::process(const ImageFrame & src, const ImageFrame & srcWeight, Imag
 
 bool ImageOp::processOverlappingWithTemp(const ImageFrame & srcFrame, Image & dstImage) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
 
 	mout.debug2() << "checking tmp" << mout.endl;
 
@@ -200,7 +200,7 @@ bool ImageOp::processOverlappingWithTemp(const ImageFrame & srcFrame, Image & ds
 
 bool ImageOp::processOverlappingWithTemp(const ImageTray<const Channel> & srcChannels, ImageTray<Image> & dstImages) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"[ImageOp](trays)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"[ImageOp](trays)", __FUNCTION__);
 
 	//mout.debug() << "start" << mout.endl;
 	mout.debug() << srcChannels << mout.endl;
@@ -260,7 +260,7 @@ bool ImageOp::processOverlappingWithTemp(const ImageTray<const Channel> & srcCha
 
 void ImageOp::process(const ImageTray<const Channel> & srcChannels, ImageTray<Image> & dstImages, bool checkOverlap) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"[ImageOp](c ChannelTray, ImageTray, checkOverlap)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"[ImageOp](c ChannelTray, ImageTray, checkOverlap)", __FUNCTION__);
 
 	mout.debug() << "start" << mout.endl;
 
@@ -339,7 +339,7 @@ void ImageOp::process(const ImageTray<const Channel> & srcChannels, ImageTray<Im
 /// Corresponds to processChannelsSeparately
 void ImageOp::traverseChannelsSeparately(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageOp::)", __FUNCTION__);
 
 	if (src.empty()){
 		mout.error() << "src empty" << mout.endl;
@@ -413,7 +413,7 @@ void ImageOp::traverseChannelsSeparately(const ImageTray<const Channel> & src, I
 
 void ImageOp::traverseChannelsEqually(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageOp::)", __FUNCTION__);
 
 	/*
 	if (src.getGeometry() != dst.getGeometry()){
@@ -453,7 +453,7 @@ void ImageOp::traverseChannelsEqually(const ImageTray<const Channel> & src, Imag
 
 void ImageOp::traverseChannelsRepeated(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"(ImageOp::)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageOp::)", __FUNCTION__);
 
 	if (src.empty()){
 		mout.error() << "src empty" << mout.endl;

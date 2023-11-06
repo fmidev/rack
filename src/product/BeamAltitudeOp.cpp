@@ -65,7 +65,7 @@ BeamAltitudeOp::BeamAltitudeOp() : // const std::string & type="S", double gain=
 
 void BeamAltitudeOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	//mout.debug2() << "target nbins:" << dst.odim.geometry.width << " rscale:" << dst.odim.rscale << mout.endl;
 
 	//dst.data.setGeometry(dst.odim.geometry.width, 1);

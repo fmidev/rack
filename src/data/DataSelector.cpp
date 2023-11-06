@@ -276,7 +276,7 @@ void DataSelector::ensureDataGroup(){
 // Resets, set given parameters and derives missing parameters.
 void DataSelector::deriveParameters(const std::string & parameters, bool clear){ //, ODIMPathElem::group_t defaultGroups){
 
-	// drain::Logger mout(__FUNCTION__, __FILE__);
+	// drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// Consider:
 	if (clear){
@@ -293,7 +293,7 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 
 void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathList) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (order.criterion == DataOrder::DATA){
 		// = default
@@ -325,7 +325,7 @@ void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathList)
 
 void DataSelector::getPathsByElangle(const Hi5Tree & src, std::map<double,ODIMPath> & paths) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (order.criterion == DataOrder::TIME){
 		mout.warn("map keys sorted by ELANGLE (double), yet DataOrder::TIME requested");
@@ -338,7 +338,7 @@ void DataSelector::getPathsByElangle(const Hi5Tree & src, std::map<double,ODIMPa
 
 void DataSelector::getPathsByTime(const Hi5Tree & src, std::map<std::string,ODIMPath> & paths) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (order.criterion == DataOrder::ELANGLE){
 		mout.warn("map keys sorted by TIME (string), yet DataOrder::ELANGLE requested");
@@ -355,7 +355,7 @@ void DataSelector::pruneMap(std::list<ODIMPath> & pathContainer, DataOrder::Oper
 	// Number of paths kept.
 	unsigned int n = count <= pathContainer.size() ? count : pathContainer.size();
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	auto it = pathContainer.begin();
 	if (oper == DataOrder::Oper::MIN){
@@ -383,7 +383,7 @@ void DataSelector::pruneMap(std::list<ODIMPath> & pathContainer, DataOrder::Oper
 
 bool DataSelector::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //, (ODIMPathElem::group_t g
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (!ODIMPathElem::isIndexed(child.getType())){
 		mout.warn() << ": index requested for unindexed path element '" << child << "'" << mout.endl;
@@ -406,7 +406,7 @@ bool DataSelector::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //,
 
 bool DataSelector::getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMPathElem::index_t iMax){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (!child.isIndexed()){ // ODIMPathElem::isIndexed(child.getType())){
 		mout.warn() << ": index requested for unindexed path element '" << child << "'" << mout.endl;
@@ -430,7 +430,7 @@ bool DataSelector::getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMP
 
 bool DataSelector::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (getLastChild(tree, child)){
 		++child.index;
@@ -554,7 +554,7 @@ void DataSelector::swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree &
 	//RackResources & resources = getResources();
 	// RackContext & ctx = getResources().getContext<RackContext>();
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	// mout.warn("Swapping!");
 	mout.debug("Swapping: src: '", srcElem, "'...");
 	swapData(src[srcElem], dst, srcElem.getType());
@@ -571,7 +571,7 @@ void DataSelector::swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree &
 
 void DataSelector::swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::group_t groupType){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	ODIMPathElem dstElem(groupType, 1);
 	DataSelector::getNextChild(dst, dstElem);

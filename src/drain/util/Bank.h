@@ -495,7 +495,7 @@ public:
 
 	~UniCloner(){
 		for (typename book_t::value_type & v : this->book){
-			drain::Logger mout(__FUNCTION__, __FILE__);
+			drain::Logger mout(__FILE__, __FUNCTION__);
 			mout.debug() << "Freeing: ";
 			for (index_t i : v.second){  // << v.first->getSource().getName() not universal
 				//std::cerr << __FILE__ << ':' << __FUNCTION__ << ": dropping " << i << '\n';

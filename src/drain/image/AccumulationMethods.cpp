@@ -557,7 +557,7 @@ void AverageMethod::extractDev(const AccumulationArray & accArray, const Accumul
 
 void WeightedAverageMethod::updateBean() const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (p<0.0){
 		mout.error() << "p negative" << mout.endl;
@@ -628,7 +628,7 @@ void WeightedAverageMethod::add(AccumulationArray & accArray, const size_t i, do
 
 void WeightedAverageMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	double value;
 	double weight;

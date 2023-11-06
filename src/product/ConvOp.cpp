@@ -66,7 +66,7 @@ using namespace drain::image;
 void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const {
 
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug2() << "start" << mout.endl;
 
 	//const CoordinatePolicy polarCoordPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP);
@@ -83,8 +83,9 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 	MaxEchoOp maxOp;
 	maxOp.odim.updateFromMap(qm.get("DBZH").get('C'));
 	maxOp.odim.quantity = "MAX";
-	maxOp.altitude    = 1000; //echoTopThreshold/2;
-	maxOp.devAltitude = 500; //echoTopThreshold/2;
+	maxOp.altitude.set(500,1000);
+	//maxOp.altitude    = 1000; //echoTopThreshold/2;
+	//maxOp.devAltitude = 500; //echoTopThreshold/2;
 	maxOp.computeSingleProduct(srcSweeps, dstProduct);
 	Data<PolarDst> & maxEcho = dstProduct.getData(maxOp.odim.quantity); // ensure
 	//mout.warn() << "maxEcho " << maxEcho.odim << mout.endl;

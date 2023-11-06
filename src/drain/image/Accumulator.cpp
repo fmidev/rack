@@ -56,8 +56,8 @@ namespace image
 
 void Accumulator::setMethod(const std::string & name, const std::string & params){  //const Variable & parameters
 
-	//Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-	Logger mout(__FUNCTION__, __FILE__);
+	//Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	if (name == "AVG"){
 		mout.deprecating("'AVG' => using 'AVERAGE'");
@@ -207,7 +207,7 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Ima
 
 void Accumulator::extractField(char field, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 
 	// mout.attention("Crop: ", crop);
@@ -269,7 +269,7 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 
 void Accumulator::initDst(const AccumulationConverter & coder, Image & dst, drain::Rectangle<int> & crop) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (crop.upperRight.x < crop.lowerLeft.x){
 		mout.error("Negative direction in vertical crop coordinate (lowerLeft upperRight): ", crop);

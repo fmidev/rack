@@ -124,7 +124,7 @@ public:
 	static
 	void erase(TR & tree, const typename TR::path_t & path){ // RAISE/virtualize
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.unimplemented("consider: tree(", path, ").clear()");
 		/*
 		typename path_t::const_iterator it = path.end();

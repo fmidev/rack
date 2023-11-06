@@ -82,7 +82,7 @@ public:
     virtual // TODO: non-virtual, ie, final!
 	void makeCompatible(const ImageConf & src, Image & dst) const {
 
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.debug3() << "src: " << src << mout;
 
 		ImageConf dstConf(dst.getConf());
@@ -152,7 +152,7 @@ template <class T>
 void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 	// void DistanceTransformFillOp<T>::process(const ImageFrame &src, const ImageFrame &srcAlpha, ImageFrame & dst, ImageFrame & dstAlpha) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.debug() << "start: " << *this << mout.endl;
 
@@ -225,7 +225,7 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 template <class T>
 void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel> & srcTray, ImageTray<Channel> & dstTray) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.debug() << "distModel: " << this->distanceModel << mout;
 
@@ -323,7 +323,7 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 template <class T>
 void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, ImageTray<Channel> & dstTray) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	mout.debug() << "start" << mout.endl;
 
 	mout.debug2() << "this->distanceModel" << this->distanceModel << mout.endl;

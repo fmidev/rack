@@ -94,7 +94,7 @@ protected:
 	inline
 	const UnaryFunctor & getFunctor(double scale = 0.0, double bias = 0.0) const {
 
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 		if (functorStr.empty()){
 			// Use my functor.

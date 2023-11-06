@@ -72,7 +72,7 @@ void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 void PolarODIM::updateLenient(const PolarODIM & odim){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	ODIM::updateLenient(odim);
 

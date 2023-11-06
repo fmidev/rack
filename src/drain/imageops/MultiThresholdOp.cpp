@@ -41,7 +41,7 @@ namespace image {
 /// Apply to single channel.
 void MultiThresholdOp::traverseChannel(const Channel & src, Channel &dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	const drain::ValueScaling & srcScale = src.getScaling();
 	const drain::ValueScaling & dstScale = dst.getScaling();

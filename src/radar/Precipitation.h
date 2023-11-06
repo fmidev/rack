@@ -57,7 +57,7 @@ public:
 	inline
 	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 
 		static const drain::RegExp presetKey("^[a-zA-Z]+");
 
@@ -160,7 +160,7 @@ public:
 	void updateBean() const {
 		aInv = 1.0/a;
 		bInv = 1.0/b;
-		//drain::Logger mout(__FUNCTION__, __FILE__);
+		//drain::Logger mout(__FILE__, __FUNCTION__);
 		//mout.warn("coeff:", aInv, bInv);
 	};
 

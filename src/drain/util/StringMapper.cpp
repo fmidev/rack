@@ -40,7 +40,7 @@ namespace drain {
 
 StringMapper & StringMapper::parse(const std::string &s, bool convertEscaped) {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug() << "regExp= " << regExp << mout.endl;
 

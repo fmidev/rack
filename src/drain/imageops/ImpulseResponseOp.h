@@ -181,7 +181,7 @@ public:
 	virtual	inline
 	void make Compatible(const ImageFrame &src, Image &dst) const  {
 
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		//mout.debug3() << "src: " << src << mout.endl;
 
 		if (dst.getType() != src.getType()){
@@ -232,7 +232,7 @@ protected:
 
 template <class T>
 void ImpulseResponseOp<T>::traverseChannel(const Channel & src, Channel & dst) const {
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.debug() << "delegating to traverseChannel(src, empty, dst, empty)" << mout.endl;
 
@@ -244,7 +244,7 @@ void ImpulseResponseOp<T>::traverseChannel(const Channel & src, Channel & dst) c
 template <class T>
 void ImpulseResponseOp<T>::traverseChannel(const Channel & src, const Channel & srcWeight, Channel & dst, Channel & dstWeight) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	dst.setScaling(src.getScaling());
 	// OLD dstWeight.setScaling(srcWeight.getScaling());
@@ -262,7 +262,7 @@ void ImpulseResponseOp<T>::traverseChannel(const Channel & src, const Channel & 
 template <class T>
 void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channel & srcWeight, Channel & dst, Channel & dstWeight) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.debug() << *this << mout.endl;
 
@@ -354,7 +354,7 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 template <class T>
 void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channel & srcWeight, Channel & dst, Channel & dstWeight) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.debug() << *this << mout.endl;
 

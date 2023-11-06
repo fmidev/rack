@@ -64,7 +64,7 @@ Composite & Compositor::getCompositeOLD() const {
 
 	RackContext & ctx  = this->template getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	if (ctx.composite.isDefined()){ // raw or product
 		mout.debug() << "private composite" << mout.endl;
@@ -86,7 +86,7 @@ double Compositor::applyTimeDecay(Composite & composite, double w, const ODIM & 
 
 	RackContext & ctx  = this->template getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	//const RackResources & resources = getResources();
 	//RackContext & ctx = getContext<RackContext>();
@@ -119,7 +119,7 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	mout.debug("add A1 " + ctx.getName());
 
@@ -470,7 +470,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // = getResources().mout;
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = getResources().mout;
 
 	// Composite & composite = getComposite();
 
@@ -613,7 +613,7 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	RackResources & resources = getResources();
 

@@ -94,7 +94,7 @@ public:
 	 */
 	lookup_t & createLookUp(const std::type_info & type, const ValueScaling & scaling) const { // todo N?
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 
 		//mout.warn() << "first entry: " << sprinter(*pal.begin()) << mout;
 		//mout.warn() << "last  entry: " << sprinter(*pal.rbegin()) << mout;

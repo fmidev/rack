@@ -72,7 +72,7 @@ public:
 protected:
 
 	PixelVectorOp(const std::string & name, const std::string & description) :
-		ImageOp(name,description + " Post-scaling with desired functor."), rescale(0.0), POW(1.0), INVPOW(1.0) { //, l(1){ , rescale(0.0),
+		ImageOp(name, description + " Post-scaling with desired functor."), rescale(0.0), POW(1.0), INVPOW(1.0) { //, l(1){ , rescale(0.0),
 		// parameters.separator = ':';
 		parameters.link("functor", this->functorDef);
 		// parameters.link("params", this->functorParams);
@@ -92,11 +92,15 @@ class GrayOp : public PixelVectorOp
 public:
 
 	std::string coefficients;
+	bool normalize;
+
+	// static char coeffSeparator = ':';
 
 	GrayOp() : PixelVectorOp(__FUNCTION__, "Convert multi-channel image to single."){
 		parameters.clear();
-		parameters.link("coeff", coefficients="1.0", "0..1[,0..1,0..1,..]");
-		parameters.separator = 0;
+		parameters.link("coeff", coefficients="1.0", "c[:c2:c3:...]");
+		parameters.link("normalize", normalize=true, "true|false");
+		//parameters.separator = 0;
 	};
 
 	virtual
@@ -107,8 +111,8 @@ public:
 	/// Apply to single channel.
 	virtual inline
 	void traverseChannel(const Channel & src, Channel &dst) const {
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
-		mout.warn() << "already a single-channel image?" << mout;
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+		mout.warn("already a single-channel image?");
 		dst.copyData(src);
 		//throw std::runtime_error(name+"(ImageOp)::"+__FUNCTION__+"(src,dst) unimplemented.");
 	};
@@ -130,7 +134,7 @@ public:
 	virtual
 	inline
 	void process(const ImageFrame &src, Image &dst) const {
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
 		mout.debug() << "delegating: process(src, dst, dst)" << mout.endl;
 		process(src, dst, dst);
 	};
@@ -141,7 +145,7 @@ public:
 	inline
 	void process(const ImageFrame &src1, const ImageFrame &src2, Image &dst) const {
 
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
 
 		mout.debug() << "imitating: " << mout.endl;
 		//process2WithTemp(src, dst);
@@ -171,7 +175,7 @@ public:
 
 	virtual
 	void traverseChannels(const ImageTray<const Channel> & srcTray, ImageTray<Channel> & dstTray) const {
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.unimplemented() << "traverseChannels for one srcTray only " << mout.endl;
 	}
 
@@ -181,7 +185,7 @@ public:
 
 	void traverseFrame(const ImageFrame &src1, const ImageFrame &src2, ImageFrame &dst) const {
 
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
 		mout.debug() << "delegate to: traverseChannels(src, dst, dst)" << mout.endl;
 
 		ImageTray<const Channel> src1Channels;
@@ -214,7 +218,7 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 		ImageTray<Channel> & dst) const {
 
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
 
 	if (src1.empty())
 		mout.error() << "src1 empty" << mout.endl;
@@ -396,7 +400,7 @@ public:
 	virtual
 	inline
 	void process(const ImageFrame &src, Image &dst) const {
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
 		mout.debug() << "delegating to: process(src, src, dst)" << mout.endl;
 		BinaryPixelVectorOp<MultiplicationFunctor>::process(src, src, dst);
 	};
@@ -404,7 +408,7 @@ public:
 	virtual
 	inline
 	void traverseFrame(const ImageFrame &src, ImageFrame & dst) const {
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"::PixelVectorOp[src, dst]", __FUNCTION__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"::PixelVectorOp[src, dst]", __FUNCTION__);
 		mout.warn() << "delegating to: traverseFrame(src, src, dst)" << mout.endl;
 		BinaryPixelVectorOp<MultiplicationFunctor>::traverseFrame(src, src, dst);
 	}
@@ -412,7 +416,7 @@ public:
 	virtual
 	inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"::PixelVectorOp[src,dst]", __FUNCTION__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"::PixelVectorOp[src,dst]", __FUNCTION__);
 		mout.debug() << "delegate to: traverseChannels(src, SRC, dst)" << mout.endl;
 		BinaryPixelVectorOp<MultiplicationFunctor>::traverseChannels(src, src, dst);
 	}

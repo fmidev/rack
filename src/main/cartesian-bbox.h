@@ -73,7 +73,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		ctx.composite.setBoundingBox(bbox);
 		// std::cerr << __FILE__ << ' ' << bbox << std::endl;
-		// drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	}
 

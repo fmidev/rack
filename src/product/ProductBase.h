@@ -133,14 +133,14 @@ public:
 	inline
 	void setEncodingRequest(const std::string &p) {
 
-		drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(ProductOp)", __FUNCTION__);
+		drain::Logger mout(__FILE__, __FUNCTION__); //REPL name+"(ProductOp)", __FUNCTION__);
 
 		try {
 			mout.debug2() << "Checking if these are allowed" << mout.endl;
 			allowedEncoding.setValues(p); // may throw?
 		}
 		catch (std::exception & e) {
-			drain::Logger mout(__FUNCTION__, __FILE__);
+			drain::Logger mout(__FILE__, __FUNCTION__);
 			mout.warn() << " unsupported parameters in: '" << p << "', use: " << allowedEncoding.getKeys() << mout.endl;
 			return;
 		}

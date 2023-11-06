@@ -54,7 +54,7 @@ namespace rack {
 
 void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const Data<PolarSrc> & srcData = srcSweep.getFirstData(); // VRAD or VRADH
 

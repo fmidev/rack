@@ -115,7 +115,7 @@ public:
 template <typename T>
 typename FlagResolver::value_t FlagResolver::getFreeBit(const drain::Dictionary<key_t,T> & dict){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// Bit mask containing all the values.
 	value_t currentMask = 0;
@@ -149,7 +149,7 @@ typename FlagResolver::value_t FlagResolver::getFreeBit(const drain::Dictionary<
 template <typename T>
 typename FlagResolver::value_t FlagResolver::addEntry(drain::Dictionary<key_t,T> &dict, const typename dict_t::key_t & key){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	if (dict.hasKey(key)){
 		mout.info() << key << " already in dict: " << dict << mout.endl;
 		return dict.getValue(key);
@@ -162,7 +162,7 @@ typename FlagResolver::value_t FlagResolver::addEntry(drain::Dictionary<key_t,T>
 template <typename T>
 typename FlagResolver::value_t FlagResolver::addEntry(drain::Dictionary<key_t,T> &dict, const typename dict_t::key_t & key, value_t i){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (dict.hasKey(key)){
 		mout.info() << key << " already in dict: " << dict << mout.endl;
@@ -186,7 +186,7 @@ typename FlagResolver::value_t FlagResolver::addEntry(drain::Dictionary<key_t,T>
 template <typename T>
 typename FlagResolver::value_t FlagResolver::getValue(const drain::Dictionary<key_t,T> & dict, const std::string & args, char separator){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	value_t v = 0;
 
@@ -331,7 +331,7 @@ public:
 		dictionary(flags.dictionary),
 		separator(flags.separator){
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.error("Flagger inits value &= flags.value", flags);
 	};
 

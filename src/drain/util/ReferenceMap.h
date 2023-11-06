@@ -78,8 +78,8 @@ public:
 	template <class F>
 	Referencer & link(const std::string & key, Range<F> &x, const std::string & unit = std::string()){
         //#pragma deprecating (This will be removed)
-		Logger mout(__FUNCTION__, __FILE__);
-		mout.deprecating() << key << '[' << unit << ']' << mout.endl;
+		Logger mout(__FILE__, __FUNCTION__);
+		mout.deprecating(" type drain::Range<>  use .tuple() instead: ", key, '[', unit, ']');
 		// std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << key << '[' << unit << ']' << '\n';
 		return link(key, &x, typeid(F), 2, unit);
 		// return x;
@@ -228,7 +228,7 @@ public:
 	void copyStruct(const ReferenceMap & m, const T & src, T & dst, extLinkPolicy policy=RESERVE) {
 		//, bool copyValues = true, bool linkExternal = false){
 
-		Logger mout(__FUNCTION__, __FILE__);
+		Logger mout(__FILE__, __FUNCTION__);
 		long s = sizeof(T); // yes signed
 		//mout.warn() << "experimental, obj.size=" << s << mout.endl;
 
@@ -288,7 +288,7 @@ public:
 	template <class T>
 	inline
 	ReferenceMap & operator=(const SmartMap<T> & v){
-		//Logger log(__FUNCTION__, __FILE__);
+		//Logger log(__FILE__, __FUNCTION__);
 		//log.error() << "in:" << v << log.endl;
 		importMap(v);
 		return *this;
@@ -298,7 +298,7 @@ public:
 	virtual
 	mapped_type & operator[](const std::string &key){
 
-		Logger mout(__FUNCTION__, __FILE__);
+		Logger mout(__FILE__, __FUNCTION__);
 
 		iterator it = this->find(key);
 		if (it != this->end()) {
@@ -319,7 +319,7 @@ public:
 	virtual
 	const mapped_type & operator[](const std::string &key) const {
 
-		Logger mout(__FUNCTION__, __FILE__); //Logger mout(__FUNCTION__, __FILE__);
+		Logger mout(__FILE__, __FUNCTION__); //Logger mout(__FILE__, __FUNCTION__);
 
 		const_iterator it = this->find(key);
 		if (it != this->end()) {

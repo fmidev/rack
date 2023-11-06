@@ -37,7 +37,7 @@ namespace image {
 
 void RecomposeOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (dst.typeIsSet() && (dst.getType() != src.getType())){
 		mout.special() << "changing dst type -> " << src.getType().name() << mout.endl;
@@ -85,7 +85,7 @@ void RecomposeOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.debug() << parameters << mout;
 

@@ -123,7 +123,7 @@ void BiometeorOp::applyOperator(const ImageOp & op, Image & tmp, const std::stri
 // processDataSet
 void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug3("start"); //
 
 	//mout.error() << dstData <<  mout.endl; //

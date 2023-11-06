@@ -103,7 +103,7 @@ public:
 	//
 	inline
 	ValueScaling(const drain::UniTuple<double,2> & scaling) :
-		scale(this->next()), offset(this->next()) //, physRange(this->tuple(), 2)
+		scale(this->next()), offset(this->next())
 	{
 		setScaling(scaling[0], scaling[1]);
 	};
@@ -112,7 +112,7 @@ public:
 	// Conversion scaling
 	inline
 	ValueScaling(const drain::ValueScaling & scalingIn, const drain::ValueScaling & scalingOut) :
-		scale(this->next()), offset(this->next()) //, physRange(this->tuple(), 2)
+		scale(this->next()), offset(this->next())
 	{
 		setConversionScale(scalingIn, scalingOut);
 		// physRange??? intersection / union

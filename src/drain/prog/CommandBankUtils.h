@@ -200,7 +200,7 @@ public:
 		const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
 		this->section |= TRIGGER;
 		/*
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.experimental() << "constr: TRIGGER=" << TRIGGER << mout;
 		mout.experimental() << "My sections: " << this->section << mout;
 		*/
@@ -209,7 +209,7 @@ public:
 	/*
 	inline
 	CmdExecScript(const	CmdExecScript & cmd) : BasicCommand(cmd){
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.experimental() << "Copy constr, their sections: " << cmd.section << mout;
 		mout.experimental() << "Copy constr, my sections:    " << this->section << mout;
 	};
@@ -222,7 +222,7 @@ public:
 		cmdBank.setScriptTriggerFlag(TRIGGER);
 		this->section |= TRIGGER;
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.experimental() << "constr: TRIGGER=" << TRIGGER << mout;
 		mout.experimental() << *this << mout;
 		mout.experimental() << "My sections: '" << this->section << "' ." << mout;
@@ -233,7 +233,7 @@ public:
 	inline
 	void exec() const {
 		SmartContext & ctx = getContext<SmartContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		mout.debug() << "Executing script with '" << getName() << "' ." << mout;
 		//mout.warn() << "My sections: '" << this->section << "' ." << mout;
 		//mout.error() << "This command '" << getName() << "' cannot be run independently." << mout;
@@ -338,7 +338,7 @@ public:
 	void exec() const {
 		Context & ctx = getContext<>();
 
-		drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		mout.error() << "Command '" << value << "' not found." << mout.endl;
 		/// cmdBank.help() ?
@@ -368,7 +368,7 @@ void CmdFormatFile<C>::exec() const {
 
 	C &ctx = getContext<C>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	//drain::Input ifstr(value);
 	std::ifstream ifstr;

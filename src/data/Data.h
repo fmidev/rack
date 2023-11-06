@@ -591,7 +591,7 @@ public:
 
 	const data_t & getData(const std::string & quantity) const {
 
-		//drain::Logger mout(__FUNCTION__, __FILE__); //
+		//drain::Logger mout(__FILE__, __FUNCTION__); //
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G) + "}");
 
 		typename datagroup_t::const_iterator it = this->find(quantity);
@@ -609,7 +609,7 @@ public:
 
 	data_t & getData(const std::string & quantity) {
 
-		//drain::Logger mout(__FUNCTION__, __FILE__); //REPL "DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+		//drain::Logger mout(__FILE__, __FUNCTION__); //REPL "DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G) + "}");
 
 		//mout.warn() << "non-const " << mout.endl;
@@ -863,7 +863,7 @@ protected:
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
 		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
-		// drain::Logger mout(__FUNCTION__, __FILE__);
+		// drain::Logger mout(__FILE__, __FUNCTION__);
 
 		if (src.empty()){
 			mout.debug3() << "src empty" << mout.endl;

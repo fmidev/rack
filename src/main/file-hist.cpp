@@ -56,7 +56,7 @@ void CmdHistogram::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // getResources().mout;
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // getResources().mout;
 
 	Hi5Tree & currentHi5 = *ctx.currentHi5;
 
@@ -142,7 +142,7 @@ void CmdHistogram::writeHistogram(const drain::Histogram & histogram, const std:
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	mout.note("Scaling: ", histogram.scaling);
 
@@ -229,7 +229,7 @@ void CmdHistogram::setSpecialEntry(legend & leg, double value, const std::string
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__); // getResources().mout;
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // getResources().mout;
 
 	legend::key_type i = static_cast<legend::key_type>(value);
 	if (static_cast<double>(i) != value){

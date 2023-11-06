@@ -129,7 +129,7 @@ const drain::FlaggerDict drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict = {
 /*
 const drain::FlaggerDict & FileGeoTIFF::getComplianceDict(){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.error("design");
 
 	return drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict;
@@ -209,7 +209,7 @@ const mydict_t MD = {
 */
 
 void FileGeoTIFF::open(const std::string & path, const std::string & mode){
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	if (isOpen()){
 		// drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.warn("GeoTIFF already open?");
@@ -244,7 +244,7 @@ void FileGeoTIFF::open(){
 
 void FileGeoTIFF::writeMetadata(){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (isOpen()){
 
@@ -262,14 +262,14 @@ void FileGeoTIFF::writeMetadata(){
 		GTIFWriteKeys(gtif);
 	}
 	else {
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.error("File not open");
 	}
 }
 
 void FileGeoTIFF::close(){
 	if (isOpen()){
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.debug("Closing GeoTIFF...");
 		//GTIFWriteKeys(gtif); // moved to writeMetadata() for cloud optimized GeoTIFF, COG.
 
@@ -289,7 +289,7 @@ void FileGeoTIFF::close(){
 void FileGeoTIFF::setGdalScale(double scale, double offset){
 	// TODO: separate code without nodata marker?
 	// void FileGeoTIFF::setGdalMetaData(double nodata, double scale, double offset){
-	// drain::Logger mout(__FUNCTION__, __FILE__);
+	// drain::Logger mout(__FILE__, __FUNCTION__);
 	gdalInfo["SCALE"]->setGDAL(scale, 0, "scale");
 	gdalInfo["OFFSET"]->setGDAL(offset, 0, "offset");
 }
@@ -329,7 +329,7 @@ void FileGeoTIFF::setGdalNoData(const std::string & nodata){
 
 void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// mout.special("NOW");
 
@@ -414,7 +414,7 @@ void FileGeoTIFF::setProjection(const std::string & projstr){
 
 void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	setGeoTiffField(GTRasterTypeGeoKey, RasterPixelIsArea);
 	// GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsArea); // 2023/03 moved here
@@ -460,7 +460,7 @@ void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
 
 void FileGeoTIFF::setProjectionEPSG(short epsg){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (epsg == 4326){
 		setProjectionLongLat();
@@ -520,7 +520,7 @@ void FileGeoTIFF::setProjectionEPSG(short epsg){
 
 void FileGeoTIFF::setProjectionLongLat(){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	/* compare with:
 	setGeoTiffField(GTModelTypeGeoKey, ModelTypeProjected);

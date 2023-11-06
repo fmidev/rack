@@ -63,7 +63,7 @@ public:
 
 	virtual
 	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		if (srcData.hasQuality()){
 			mout.warn() << "quality found, weighted operation" << mout.endl;
 			processDataWeighted(srcData, dstData);
@@ -78,7 +78,7 @@ public:
 	virtual
 	void processPlainData(const PlainData<src_t > & srcData, PlainData<dst_t > & dstData) const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		//mout.warn() << "not implemented" << mout.endl;
 		typename W::conf_t pixelConf;
 		//this->setPixelConf(srcData.odim, pixelConf); // what about other parameters?
@@ -106,7 +106,7 @@ public:
 	/// Quality-weighted prosessing of data
 	virtual
 	void processDataWeighted(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.warn() << "not implemented, calling for plain data" << mout.endl;
 
 		processPlainData(srcData, dstData);
@@ -132,7 +132,7 @@ protected:
 template <class W>
 void PolarSlidingWindowOp<W>::setPixelConf(const PolarODIM & odim, typename W::conf_t & pixelConf) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// pixelConf = this->conf;  PROBLEM: ftor prevents op=
 	pixelConf.widthM  = this->conf.widthM;

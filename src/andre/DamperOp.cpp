@@ -46,7 +46,7 @@ namespace rack {
 void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQuality) const {
 
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug() << "start" << mout.endl;
 

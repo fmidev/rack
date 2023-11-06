@@ -101,7 +101,7 @@ FloodFillOp::FloodFillOp(int i, int j, double min, double max, double value) : I
 }
 
 FloodFillOp::FloodFillOp(const FloodFillOp & op) : ImageOp(op){
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	//mout.warn() << "parameters" << mout.endl;
 	parameters.copyStruct(op.getParameters(), op, *this);
 	//parameters.copyStruct(op.getParameters(), op.conf, this->conf); // CONTAINED in obj
@@ -111,7 +111,7 @@ FloodFillOp::FloodFillOp(const FloodFillOp & op) : ImageOp(op){
 
 void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.debug() << *this << mout.endl;
 

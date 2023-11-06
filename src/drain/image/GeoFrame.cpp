@@ -89,7 +89,7 @@ void GeoFrame::setGeometry(unsigned int w,unsigned int h) {
 
 void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double latUR){
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	// FIX: 2022/03: from AND to OR
 	if (BBox::isMetric({lonLL, latLL}) || BBox::isMetric({lonUR, latUR})){
@@ -129,7 +129,7 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 /*
 void GeoFrame::setBoundingBoxR(double lonLL,double latLL,double lonUR,double latUR) {
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	bBoxR.set(lonLL, latLL, lonUR, latUR);
 
@@ -148,7 +148,7 @@ void GeoFrame::setBoundingBoxR(double lonLL,double latLL,double lonUR,double lat
 
 void GeoFrame::setBoundingBoxD(double lonLL,double latLL,double lonUR,double latUR) {
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	bBoxD.set(lonLL, latLL, lonUR, latUR);
 
@@ -184,7 +184,7 @@ void GeoFrame::setBoundingBoxM(double xLL,double yLL,double xUR,double yUR) {
 		*/
 	}
 	else {
-		Logger mout(__FUNCTION__, __FILE__);
+		Logger mout(__FILE__, __FUNCTION__);
 		mout.warn("Tryng to set metric BBOX prior to setting projection");
 	}
 
@@ -256,7 +256,7 @@ void GeoFrame::updateBoundingBoxM(){
 		// projR2M.projectFwd(bBoxR.upperRight.x, bBoxR.upperRight.y, bBoxNative.upperRight.x, bBoxNative.upperRight.y);
 	}
 	else {
-		// drain::Logger mout(__FUNCTION__, __FILE__);
+		// drain::Logger mout(__FILE__, __FUNCTION__);
 		// mout.debug() << "could not (yet) set metric/native bbox" << mout.endl;
 		// warn?
 		if (isLongLat()){ // ie. native coords went radial above
@@ -288,7 +288,7 @@ void GeoFrame::setProjection(const std::string &s){
 
 void GeoFrame::updateProjection(){
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 
 	const bool METRIC_BBOX = (bBoxNative.getArea() > 40000);
 
@@ -330,7 +330,7 @@ void GeoFrame::updateProjection(){
 /// Notice: changed! For LatLon, consider approx? See composite
 void GeoFrame::updateScaling()
 {
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 	// QUICK FIX, TODO redesign
 	/*
 	if (projR2M.isSet()){
@@ -366,7 +366,7 @@ void GeoFrame::updateScaling()
 			xScale = (bBoxNative.upperRight.x - bBoxNative.lowerLeft.x) / static_cast<double>(getFrameWidth());
 			yScale = (bBoxNative.upperRight.y - bBoxNative.lowerLeft.y) / static_cast<double>(getFrameHeight());
 		}
-		//Logger mout(__FUNCTION__, __FILE__);
+		//Logger mout(__FILE__, __FUNCTION__);
 		//mout.warn() << "Tryng to update scaling prior to setting projection";
 	}
 
@@ -377,7 +377,7 @@ void GeoFrame::updateScaling()
 
 void GeoFrame::cropWithM(double xLL, double yLL, double xUR, double yUR) {
 
-	Logger mout(__FUNCTION__, __FILE__);
+	Logger mout(__FILE__, __FUNCTION__);
 	//mout.warn() << "me " << *this << mout.endl;
 
 	Rectangle<int> frame(0, 0, getFrameWidth(), getFrameHeight());

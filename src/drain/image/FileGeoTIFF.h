@@ -132,7 +132,7 @@ public:
 			GTIFKeySet(gtif, tag, TYPE_FLOAT, 1, value);
 		}
 		else {
-			drain::Logger mout(__FUNCTION__, __FILE__);
+			drain::Logger mout(__FILE__, __FUNCTION__);
 			mout.warn("TAG: ", tag, ", value:", value, ", type=", typeid(T).name()); // , drain::Type::call<drain::nameGetter>(typeid(T)));
 			mout.error("Not implemented");
 		}

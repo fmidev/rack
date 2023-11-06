@@ -82,7 +82,7 @@ std::string quoted(const ODIMPath & path){
 	if (path.empty() || path.back().isRoot())
 		return "root";
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	drain::Path<std::string,'_'> p(path);
 	mout.debug2() << p.str() << mout.endl;
@@ -112,9 +112,9 @@ public:
 void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 		ODIMPathElem::group_t selector, const ODIMPath & path = ODIMPath()) {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	// RackContext & ctx = getContext<RackContext>();
-	// drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 	// mout.info() << "Dot graph file" << mout.endl;
 	// drain::Output ofstr(filename);
 
@@ -265,7 +265,7 @@ void CmdOutputFile::writeDotGraph(const Hi5Tree & src, const std::string & filen
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	mout.unimplemented("Attribute selection, like in --outputTree");
 

@@ -46,32 +46,35 @@ using namespace drain::image;
 void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 	// void MaxEchoOp::filter(const Hi5Tree &src, const std::map<double,std::string> & srcPaths, Hi5Tree &dst) const {
 
-	//drain::Logger mout(drain::getLog(), __FUNCTION__, getName());
-	drain::Logger mout(drain::getLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(drain::getLog(), __FILE__, __FUNCTION__);
+
 	mout.debug3() << "Starting MaxEchoOp (" << name << ") " << mout.endl;
-	mout .debug3() << (const drain::image::Accumulator &) accumulator << mout.endl;
+	mout.debug3() << (const drain::image::Accumulator &) accumulator << mout.endl;
 
 	const PlainData<PolarSrc> & srcQuality = sweep.getQualityData();
 	const bool WEIGHTED = !srcQuality.data.isEmpty();
 
 	DataCoder converter(sweep.odim, srcQuality.odim);
 
-
-	mout.info() << "Using quality data: " << (WEIGHTED?"YES":"NO") << mout.endl;
-
+	mout.info("Using quality data: ", (WEIGHTED ? "YES":"NO") );
 
 	// Elevation angle
 	const double eta = sweep.odim.getElangleR();
 
 	// A fuzzy beam power model.
-	//drain::FuzzyPeak<double,double> beamPower(0.0, 0.25*DEG2RAD, 1.0);
-	drain::FuzzyBell<double> altitudeQuality(altitude, devAltitude, 1.0);
+	// drain::FuzzyPeak<double,double> beamPower(0.0, 0.25*DEG2RAD, 1.0);
+	if (altitude.width() < 0){
+		mout.fail("Negative altitude range: ", altitude);
+	}
+	double altitudeCenter = 0.5*(altitude.min + altitude.max);
+	double altitudeSpan   = 0.5 * altitude.span();
+
+	drain::FuzzyBell<double> altitudeQuality(altitudeCenter, altitudeSpan, 1.0);
 
 	/// Ground angle
 	double beta;
 
 	/// Elevation angle of a bin.
-	//double etaBin;
 	double altitudeBin;
 
 	// Bin distance along the beam.
@@ -87,7 +90,7 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 	double value;
 
 	/// Measurement, decoded
-	// double dbz;
+	//  double dbz;
 
 	/// Beam weight
 	double weight=1.0;

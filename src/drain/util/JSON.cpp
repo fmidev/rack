@@ -50,7 +50,7 @@ void JSON::readValue(const std::string & s, Variable & v, bool keepType){
 
 void JSON::readValue(std::istream & istr, Variable & v, bool keepType){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	std::string value;
 

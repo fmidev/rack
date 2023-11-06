@@ -114,7 +114,7 @@ const Hdf5Context::h5_role::value_t Hdf5Context::SHARED  = h5_role::addEntry("SH
  */
 Hi5Tree & Hdf5Context::getMyHi5(h5_role::value_t filter) {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug("filter=", filter, h5_role::getShared().getKeys(filter, '|'));
 
@@ -191,7 +191,7 @@ Hi5Tree & Hdf5Context::getMyHi5(h5_role::value_t filter) {
 
 Hi5Tree & Hdf5Context::getHi5Defunct(h5_role::value_t filter) {
 
-	drain::Logger mout( __FUNCTION__, __FILE__);
+	drain::Logger mout( __FILE__, __FUNCTION__);
 
 
 	bool emptyOk = (filter & EMPTY)>0;
@@ -225,7 +225,7 @@ Hi5Tree & Hdf5Context::getHi5Defunct(h5_role::value_t filter) {
 
 void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 
-	drain::Logger mout( __FUNCTION__, __FILE__);
+	drain::Logger mout( __FILE__, __FUNCTION__);
 
 	const Hi5Tree & src = getMyHi5(CURRENT);
 

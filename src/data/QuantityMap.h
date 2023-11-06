@@ -61,13 +61,13 @@ public:
 
 	inline
 	QuantityMap(const QuantityMap & m) : map_t(m){
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.attention("? copy const <QuantityMap>");
 	}
 
 	inline
 	QuantityMap(const map_t & m) : map_t(m){
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.attention("? copy const <map>");
 	}
 

@@ -46,7 +46,7 @@ namespace rack {
 //void ZDRvarOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
 void ZDRvarOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	//mout.debug() << parameters << mout.endl;
 
 	/// Assumes that at least range 2...253 is intensities (not nodata or undetected)

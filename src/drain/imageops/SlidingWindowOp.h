@@ -72,7 +72,7 @@ public:
 
 	virtual inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		// drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"[const ImageTray &, ImageTray &]", __FUNCTION__);
+		// drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"[const ImageTray &, ImageTray &]", __FUNCTION__);
 		this->traverseChannelsSeparately(src, dst);
 	}
 
@@ -81,10 +81,10 @@ public:
 	virtual
 	void traverseChannel(const Channel &src, Channel &dst) const {
 
-		//Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(SlidingWindowOp/2) (unweighted)", __FUNCTION__);
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		//Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(SlidingWindowOp/2) (unweighted)", __FUNCTION__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-		mout.debug() << "unweighted version" << mout.endl;
+		mout.debug("unweighted version");
 
 		typename W::unweighted window(this->conf); // copies parameters (hopefully)
 		//ImageTray<const Channel> & src
@@ -111,9 +111,9 @@ public:
 	virtual
 	void traverseChannel(const Channel &src, const Channel &srcWeight, Channel &dst, Channel &dstWeight) const {
 
-		//Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(SlidingWindowOp/4)", __FUNCTION__);
+		//Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(SlidingWindowOp/4)", __FUNCTION__);
 
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 		mout.debug() << "weighted version" << mout.endl;
 		if (srcWeight.isEmpty()){
@@ -134,8 +134,8 @@ public:
 
 	void traverseMultiChannel(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-		// Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(SlidingWindowOp/4)", __FUNCTION__);
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		// Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(SlidingWindowOp/4)", __FUNCTION__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 		mout.debug() << "start" << mout.endl;
 

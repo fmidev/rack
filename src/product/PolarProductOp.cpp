@@ -66,7 +66,7 @@ PolarProductOp::PolarProductOp(const std::string & name, const std::string & des
 	//this->odim.object  = "PVOL"; // consider!
 	//dataSelector.orderFlags.set(DataSelector::ELANGLE, DataSelector::MIN);
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	//mout.debug(dataSelector);
 	//dataSelector.order.set(DataOrder::ELANGLE, DataOrder::MIN);
 	dataSelector.order.set(DataOrder::DATA, DataOrder::MIN);
@@ -88,7 +88,7 @@ PolarProductOp::PolarProductOp(const PolarProductOp & op) : VolumeOp<PolarODIM>(
 
 void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, PolarODIM & dstOdim) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(CumulativeProductOp)", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__); //REPL name+"(CumulativeProductOp)", __FUNCTION__);
 
 	const bool MAXIMIZE_AZM_RESOLUTION = (dstOdim.area.height == 0);
 	const bool DERIVE_NBINS  = (dstOdim.area.width == 0); // ||(dstOdim.rscale == 0.0);

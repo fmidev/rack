@@ -234,7 +234,7 @@ void CommandBank::scriptify(const std::string & line, Script & script) const{
 
 bool CommandBank::scriptify(const std::string & arg, const std::string & argNext, Script & script) const {
 
-	Logger mout(__FUNCTION__, __FILE__); // warning, not initialized
+	Logger mout(__FILE__, __FUNCTION__); // warning, not initialized
 
 	if (arg.empty()){
 		mout.debug() << "empty arg" <<  mout.endl;
@@ -439,7 +439,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
 	Context & ctx = prog.getContext<>(); // 2023/01
 	//Log & log = ctx.log; // 2022/10
-	Logger mout(ctx.log, __FUNCTION__, __FILE__); // Could be thread prefix?
+	Logger mout(ctx.log, __FILE__, __FUNCTION__); // Could be thread prefix?
 
 	mout.debug(ctx.getName());
 
@@ -547,7 +547,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			prog.add(key, cmd).section = 0; // To not re-trigger?
 			//append(routine, cmd.getContext<Context>(), prog);
 			append(routine, prog);
-			//Logger mout2(ctx.log, __FUNCTION__, __FILE__);
+			//Logger mout2(ctx.log, __FILE__, __FUNCTION__);
 			//mout2.startTiming("SCRIPT");
 			run(prog, contextCloner); // Run in this context
 		}
@@ -648,7 +648,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		}
 		else { // Run a "normal" command...  This is the default action.
 
-			Logger mout2(ctx.log, __FUNCTION__, __FILE__);
+			Logger mout2(ctx.log, __FILE__, __FUNCTION__);
 			mout2.startTiming(cmd.getName(), " <tt>", cmd.getParameters().getValues(), "</tt>");
 
 			mout.debug("Executing: ", key, " = ", cmd, ' ');

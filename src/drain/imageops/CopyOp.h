@@ -139,7 +139,7 @@ public:
 	virtual
 	inline
 	void traverseChannel(const Channel &src, Channel &dst) const {
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.debug() << "start" << mout.endl;
 		UnaryFunctorOp<CopyFunctor>::traverseChannel(src, dst);
 	}
@@ -147,7 +147,7 @@ public:
 	virtual
 	inline
 	void traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		/*
 		mout.warn() << "src     " << src << mout.endl;
 		mout.warn() << "srcAlpha" << srcAlpha << mout.endl;

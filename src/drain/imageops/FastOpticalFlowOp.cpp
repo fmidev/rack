@@ -115,7 +115,7 @@ void OpticalFlowCore1::setSrcFrames(const ImageTray<const Channel> & srcTray){
 /// Computes a differential image with channels dx, dy, dt and w (quality of gradients).
 void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	// TODO: concentrate on the "middle image". Skip grad stability, let oflow use
 
 	// Source images (intensity)

@@ -189,7 +189,7 @@ void FastOpticalFlow2Op::preprocess(const Channel & srcImage, const Channel & sr
 /// Computes a differential image with channels dx, dy, dt and w (quality of gradients).
 void FastOpticalFlow2Op::computeDifferentials(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	// Source images (intensity)
 	if (src.size() < 2) {

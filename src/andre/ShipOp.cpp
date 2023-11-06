@@ -64,7 +64,7 @@ namespace rack {
 void ShipOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
 	/// For verbose mode (monitoring and debugging the process)
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug("odim: ", srcData.odim);
 
 	/// Use natural (SI) units for neighbourhood window dimension, not bins/pixels.

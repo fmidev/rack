@@ -39,7 +39,7 @@ namespace image {
 
 void ImageFrame::init(){
 
-	// Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL __FUNCTION__, __FILE__);
+	// Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL __FILE__, __FUNCTION__);
 
 	properties["name"] = name; // ("security risk", if file paths included by default?)
 
@@ -61,7 +61,7 @@ void ImageFrame::init(){
 
 void ImageFrame::setStorageType(const std::type_info &type){
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	conf.setType(type);
 	segmentBegin.setType(type);
@@ -71,7 +71,7 @@ void ImageFrame::setStorageType(const std::type_info &type){
 
 void ImageFrame::adjustBuffer(){
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	/*
 	mout.warn() << "Area: " << area << '=' <<  area.getArea() << mout;
@@ -112,7 +112,7 @@ void ImageFrame::adjustBuffer(){
  */
 void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t channelCount, bool catenate){
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	try {
 		setStorageType(src.getType());
@@ -206,7 +206,7 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 
 void ImageFrame::copyData(const ImageFrame & src){
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	mout.debug() << "start" << mout;
 
 	if (getGeometry() != src.getGeometry()){

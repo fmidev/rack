@@ -79,7 +79,7 @@ CappiOp::CappiOp(double altitude, bool aboveSeaLevel, double beamWidth, double w
 
 void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// mout.debug3("start");
 	mout.debug3() << (const drain::image::Accumulator &) accumulator << mout.endl;

@@ -61,7 +61,7 @@ public:
 
 	inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
-		drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL this->name+"[const ChannelTray &, ChannelTray &]", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"[const ChannelTray &, ChannelTray &]", __FUNCTION__);
 		//mout.error() << "not implemented; consider forwarding to processChannelsSeparately()" << mout.endl;
 		traverseChannelsSeparately(src, dst);
 	}

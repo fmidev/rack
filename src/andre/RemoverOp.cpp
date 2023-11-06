@@ -47,7 +47,7 @@ namespace rack {
 
 void RemoverOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(RemoverOp)", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__); //REPL name+"(RemoverOp)", __FUNCTION__);
 
 	mout.debug2() << "start" << mout.endl;
 
@@ -77,7 +77,7 @@ void RemoverOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSe
 
 void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<PolarDst> & dstDataSet) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__); //REPL name+"(RemoverOp)", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__); //REPL name+"(RemoverOp)", __FUNCTION__);
 
 	mout.debug() << "start" << mout.endl;
 
@@ -130,7 +130,7 @@ void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<Pol
 
 void RemoverOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.error() << "explicitly selected quality field required, skipping" << mout.endl;
 
@@ -142,7 +142,7 @@ void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 		PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstQuality) const {
 
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug2() << "start" << mout.endl;
 	// PlainData<PolarSrc> srcQuality = srcData.getQualityData();

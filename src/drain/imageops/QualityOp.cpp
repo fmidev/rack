@@ -41,7 +41,7 @@ namespace image
 void QualityOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
 //void QualityOp::makeCompatible(const ImageFrame & src, Image & dst) const  {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
 
 	mout.debug3() << "src: " << src << mout.endl;
 

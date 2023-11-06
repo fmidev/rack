@@ -68,7 +68,7 @@ char TextReader::skipChars(std::istream & istr, const std::string chars){
 
 char TextReader::scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	int c=0, cPrev=0;
 

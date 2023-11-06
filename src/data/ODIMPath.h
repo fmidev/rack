@@ -234,7 +234,7 @@ public:
 		index = i;
 		//indexMax = i; // not relevant, or check
 		if ((i>0) && !isIndexed(g)){
-			drain::Logger mout(__FUNCTION__, __FILE__);
+			drain::Logger mout(__FILE__, __FUNCTION__);
 			mout.note() << "index (" << i << ") given for non-indexed element:" << *this << mout.endl;
 			return false;
 		}

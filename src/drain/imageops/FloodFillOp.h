@@ -81,7 +81,7 @@ public:
 	void traverseChannel(const Channel & src, Channel & dst) const;
 
 	void traverseChannel(const Channel & src, const Channel & srcAlpha, Channel & dst, Channel & dstAlpha) const {
-		Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.warn("Alpha channels not supported, calling traverseChannel(src, dst).");
 		traverseChannel(src, dst);
 	}

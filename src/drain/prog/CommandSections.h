@@ -57,7 +57,7 @@ class CommandSection {
 public:
 
 	CommandSection(const std::string & title) : title(title), index(drain::getCommandBank().addSection(title)){
-		Logger mout(__FUNCTION__, __FILE__);
+		Logger mout(__FILE__, __FUNCTION__);
 		//std::cerr << __FUNCTION__ << ':' << title << '(' << index << ')' << std::endl;
 		mout.debug() << __FUNCTION__ << ':' << title << '(' << index << ')' << mout.endl;
 	}

@@ -56,7 +56,7 @@ const drain::RegExp DopplerOp::regExpVRAD("^VRADH?$");
 void DopplerDiffOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
 	//drain::Logger mout(__FUNCTION__, getName());
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	//double azm;
 	int j1, j2;
@@ -116,7 +116,7 @@ void DopplerDiffOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> &
 
 void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	//const Data<PolarSrc> & srcData = srcSweep.getFirstData(); // VRAD or VRADH
 
@@ -403,7 +403,7 @@ protected:
 
 void DopplerCrawlerOp::processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	ProductBase::applyODIM(dstData.odim, odim, true);
 	//dstData.data.setScaling(dstData.odim.scaling.scale, dstData.odim.scaling.offset);
@@ -423,7 +423,7 @@ void DopplerCrawlerOp::processData(const Data<src_t > & srcData, Data<dst_t > & 
 /*
 void DopplerModulatorOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	dstData.initialize(typeid(unsigned char), srcData.data.getGeometry());
 	dstData.setPhysicalRange(-1, +1);

@@ -62,7 +62,7 @@ namespace rack {
 void TimeOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug() << "start" << mout.endl;
 
 	drain::Time timeRef;

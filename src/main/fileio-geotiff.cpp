@@ -48,7 +48,7 @@ const drain::image::FileTIFF::dict_t & CmdGeoTiff::compressionDict(drain::image:
 void CmdGeoTiff::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	mout.deprecating("Use --outputConf instead");
 
@@ -74,7 +74,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 
 	//void FileGeoTIFF::adjustGeoFrame_rack(const drain::image::Image & src, drain::image::GeoFrame & frame){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	#ifdef USE_GEOTIFF_NO
 	mout.attention("No GeoTIFF support in this build");

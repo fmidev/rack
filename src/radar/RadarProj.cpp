@@ -40,7 +40,7 @@ namespace rack {
 
 void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, double & xUR, double & yUR) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	//mout.debug2() << "start\n" << *this << mout.endl;
 

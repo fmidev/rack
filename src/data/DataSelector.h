@@ -458,7 +458,7 @@ protected:
 template <class M>
 void DataSelector::copyPaths(M & pathMap, DataOrder::Oper oper, std::list<ODIMPath> & pathList) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	drain::Range<int> range; // (1, pathContainer.size());
 
@@ -497,7 +497,7 @@ void DataSelector::pruneMap(M & pathContainer, DataOrder::Oper oper) const {
 	// Number of paths kept.
 	unsigned int n = count <= pathContainer.size() ? count : pathContainer.size();
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	typename M::iterator it = pathContainer.begin();
 	if (oper == DataOrder::Oper::MIN){
@@ -527,7 +527,7 @@ void DataSelector::pruneMap(M & pathContainer, DataOrder::Oper oper) const {
 template <class T>
 bool DataSelector::getPathsOLD(const Hi5Tree & src, T & pathContainer) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (orderFlags.isSet(TIME)){
 		mout.special(__FUNCTION__, ':', orderFlags);
@@ -567,7 +567,7 @@ bool DataSelector::getPathsOLD(const Hi5Tree & src, T & pathContainer) const {
 template <class T>
 void DataSelector::getMainPaths(const Hi5Tree & src, T & pathContainer, bool LIMIT_COUNT) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// Current search point
 	const Hi5Tree & s = src;
@@ -654,7 +654,7 @@ void DataSelector::getMainPaths(const Hi5Tree & src, T & pathContainer, bool LIM
 template <class T>
 bool DataSelector::getSubPaths(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const bool quantityRequired = quantityRegExp.isSet() || qualityRegExp.isSet();
 
@@ -794,7 +794,7 @@ class DatasetSelector : public DataSelector {
 public:
 
 	DatasetSelector() : DataSelector(ODIMPathElem::DATASET){
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		parameters.delink("path");
 		mout.info() << "experimental: not re-setting DATASET" << mout.endl;
 		//pathMatcher.setElems(ODIMPathElem::DATASET);

@@ -101,7 +101,7 @@ public:
 	static
 	void h5AttributeToData(hid_t aid, hid_t datatype, drain::Variable & attribute, size_t elements=1){
 
-		drain::Logger mout(getLogH5(), __FUNCTION__, __FILE__);
+		drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 
 		attribute.setType(typeid(T));
 		attribute.setSize(elements);

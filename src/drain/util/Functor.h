@@ -64,7 +64,7 @@ public:
 	virtual inline
 	void updateBean() const {
 		updateScale();
-		//drain::Logger mout(__FUNCTION__, __FILE__);
+		//drain::Logger mout(__FILE__, __FUNCTION__);
 		//mout.debug2() << "final scale,bias: " << this->scaleFinal << ',' << this->biasFinal << mout.endl;
 	}
 

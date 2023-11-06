@@ -67,7 +67,7 @@ unsigned short int DetectorOp::_count(0);
 
 /*
 void DetectorOp::processProduct(DataSetList<PolarDst> & srcVolume, DataSetList<PolarDst> & dstVolume) const {
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.unimplemented("TODO...");
 	mout.error("TODO...");
 }
@@ -75,7 +75,7 @@ void DetectorOp::processProduct(DataSetList<PolarDst> & srcVolume, DataSetList<P
 
 /*
 void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSetMap<PolarDst> & dstDataSets) const {
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.unimplemented("TODO...");
 	mout.error("TODO...");
 }
@@ -83,11 +83,11 @@ void DetectorOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataS
 
 void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const std::string & CLASSNAME = getOutputQuantity();
 
-	mout.attention("start1", CLASSNAME);
+	mout.attention(CLASSNAME);
 
 	/*
 	for (const auto & entry: srcVolume){
@@ -246,7 +246,7 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 
 void DetectorOp::runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & cache) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.info("start");
 	//mout.warn() << "start" << mout.endl;
@@ -352,7 +352,7 @@ void DetectorOp::storeDebugData(int debugLevel, const ImageFrame & srcImage, con
 
 	static int counter=0;
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (mout.isDebug(debugLevel)){
 		std::stringstream sstr;

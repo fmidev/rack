@@ -46,7 +46,7 @@ size_t Geometry::getChannelIndex(const std::string & index) const {
 
 	// consider: conv to lower case
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 
 	if (index.empty()){

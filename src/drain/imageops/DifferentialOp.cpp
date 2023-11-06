@@ -45,7 +45,7 @@ namespace image
 
 void DifferentialOp::getDstConf(const ImageConf & src, ImageConf & dst) const {  // TODO: src, src2, dst
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	dst.setEncoding(src);
 	dst.setArea(src.getGeometry()); // EROR?
@@ -66,7 +66,7 @@ void DifferentialOp::getDstConf(const ImageConf & src, ImageConf & dst) const { 
 
 /*
 void DifferentialOp::makeCompatible(const ImageFrame & src, Image & dst) const {
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	dst.initialize(src.getType(), src.getWidth(), src.getHeight(), channels, 0);
 	dst.setScaling(src.getScaling());
@@ -86,7 +86,7 @@ void DifferentialOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 
 void DifferentialOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(DifferentialOp)", __FUNCTION__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(DifferentialOp)", __FUNCTION__);
 
 	if (src.empty()){
 		mout.error() << "src empty" << mout.endl;
@@ -114,7 +114,7 @@ void DifferentialOp::traverseChannels(const ImageTray<const Channel> & src, Imag
 //void GradientOp::traverse(const Channel &src, Channel &dst, int diLow, int djLow, int diHigh, int djHigh) const {
 void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), name+"(GradientOp)", __FUNCTION__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(GradientOp)", __FUNCTION__);
 
 	/// Type for internal computation (~image intensity).
 	typedef double ftype;
@@ -223,7 +223,7 @@ void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) cons
 //, int diLow, int djLow, int diHigh, int djHigh) const {
 void LaplaceOp::traverse(const Channel &src, Channel &dst, int di, int dj) const {
 
-	Logger mout(getImgLog(),__FUNCTION__, __FILE__);
+	Logger mout(getImgLog(),__FILE__, __FUNCTION__);
 
 	/// Type for internal compuation (~image intensity).
 	typedef float ftype;

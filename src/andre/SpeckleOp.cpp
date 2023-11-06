@@ -54,7 +54,7 @@ namespace rack {
 //void SpeckleOp::filterImage(const RadarODIM &odimIn, const Image &src, Image &dst) const {
 void SpeckleOp::runDetector(const PlainData<PolarSrc> &src, PlainData<PolarDst> &dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug() << parameters << mout.endl;
 
 	mout.debug2() << src.data.getCoordinatePolicy() << mout.endl;

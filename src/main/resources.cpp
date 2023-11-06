@@ -83,7 +83,7 @@ Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
 Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
 //Hi5Tree & RackContext::getHi5(h5_role::value_t filter) {
 
-	drain::Logger mout( __FUNCTION__, __FILE__);
+	drain::Logger mout( __FILE__, __FUNCTION__);
 	// bool emptyOk = (filter & EMPTY)>0;
 	// mout.special("Accept empty:", emptyOk);
 	if ((filter & (PRIVATE|SHARED)) == 0){
@@ -121,7 +121,7 @@ Composite & RackContext::getComposite(h5_role::value_t filter){
 	//RackContext & ctx  = this->template getContext<RackContext>();
 	RackContext & baseCtx = getResources().baseCtx();
 
-	drain::Logger mout(log, __FUNCTION__, __FILE__);
+	drain::Logger mout(log, __FILE__, __FUNCTION__);
 
 	if ((filter & (PRIVATE|SHARED)) == 0){
 		filter = (filter|PRIVATE|SHARED);
@@ -164,7 +164,7 @@ const drain::image::Image &  RackContext::getCurrentGrayImage(){ // RackContext 
 	}
 
 	if (ctx.currentGrayImage == NULL){
-		// drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		//mout.fail() << "no gray image data available, returning default image, maybe empty" << mout.endl;
 		return ctx.grayImage;
 	}
@@ -181,7 +181,7 @@ const drain::image::Image &  RackContext::getCurrentImage(){ // RackContext & ct
 	}
 
 	if (currentImage == NULL){
-		// drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+		// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		//mout.fail() << "no gray image data available, returning default image, maybe empty" << mout.endl;
 		return grayImage;
 	}
@@ -191,14 +191,14 @@ const drain::image::Image &  RackContext::getCurrentImage(){ // RackContext & ct
 
 ODIMPath RackContext::findImage(){ //RackContext & ctx){
 
-	drain::Logger mout(this->log, __FUNCTION__, __FILE__);
+	drain::Logger mout(this->log, __FILE__, __FUNCTION__);
 
 	DataSelector imageSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY); // TODO: modify PathMatcher output to "data|quality" instead of "other".
 	// mout.accept("Image selector", imageSelector);
 
 	imageSelector.consumeParameters(this->select); // ctx.findImage
 	if (imageSelector.count > 1){
-		drain::Logger mout(this->log, __FUNCTION__, __FILE__);
+		drain::Logger mout(this->log, __FILE__, __FUNCTION__);
 		mout.debug("Adjusting image selector.count=", imageSelector.count, " to 1");
 		imageSelector.count = 1;
 	}
@@ -214,7 +214,7 @@ ODIMPath RackContext::findImage(){ //RackContext & ctx){
 ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackContext & ctx,
 
 	RackContext & ctx = *this;
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	// NOTE  ODIMPathElem::ARRAY ie. "/data" cannot be searched, so it is added under DATA or QUALITY path.
 
@@ -270,7 +270,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & ctx,
 
 	RackContext & ctx = *this;
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	ODIMPath path;
 
@@ -318,7 +318,7 @@ void RackContext::convertGrayImage(const drain::image::Image & srcImage){ // Rac
 
 	RackContext & ctx = *this;
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 	ODIM srcOdim(srcImage);
 	if (srcOdim.scaling.scale == 0){
 		mout.note() << "src image: " << srcImage << mout.endl;
@@ -351,7 +351,7 @@ drain::image::Image &  RackContext::getModifiableImage(){  // RackContext & ctx
 
 	RackContext & ctx = *this;
 
-	drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 	mout.note() << " getModifiableImage start" << mout.endl;
 
 	/// Ensure
@@ -399,7 +399,7 @@ const CoordinatePolicy RackResources::limit(CoordinatePolicy::LIMIT, CoordinateP
 
 bool RackContext::guessDatasetGroup(const Hi5Tree & src, ODIMPathElem & pathElem) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	pathElem.set(ODIMPathElem::DATASET, 1);
 	//ODIMPathElem parent(ODIMPathElem::DATASET, 1);

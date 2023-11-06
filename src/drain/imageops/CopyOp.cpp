@@ -38,7 +38,7 @@ namespace image {
 // Consider Image::swap() ?
 void CopyOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (!dst.typeIsSet())
 		dst.setType(src.getType());
@@ -81,7 +81,7 @@ void CopyOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 }
 
 void CopyOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
 	mout.debug2() << "calling makeCompatible()" << mout.endl;
 	makeCompatible(srcFrame.getConf(), dstImage);
 	ImageView dst2; //(dstImage, functor.dstView);
@@ -96,7 +96,7 @@ void CopyOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 /*
 void CopyOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (!dst.typeIsSet())
 		dst.setType(src.getType());

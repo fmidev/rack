@@ -45,7 +45,7 @@ namespace image {
 void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 	//void BlenderOp::traverseChannel(const Channel &src, const Channel &srcWeight, Channel & dst, Channel & dstWeight) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__); //REPL getImgLog(), this->name, std::string(__FUNCTION__)); // +"(src,srcW, dst,dstW"
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), this->name, std::string(__FUNCTION__)); // +"(src,srcW, dst,dstW"
 
 	mout.debug() << "start" << mout.endl;
 	// File::write(src.get(), getName() + "0.png");
@@ -217,7 +217,7 @@ void BlenderOp::getSmootherAliasMap(drain::SmartMap<std::string> & aliasMap, boo
 /*
 ImageOp & BlenderOp::getSmoother(const std::string & key, bool weighted, unsigned short & loops) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	const drain::SmartMap<std::string> & aliasMap = weighted ? getSmootherAliasMap<true>() : getSmootherAliasMap<false>();
 
 	ImageOpBank & bank = getImageOpBank();
@@ -241,7 +241,7 @@ ImageOp & BlenderOp::getSmoother(const std::string & key, bool weighted, unsigne
 /*
 ImageOp & BlenderOp::getMixer(const std::string & key, bool weighted) const {
 
-	Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	ImageOpBank & bank = getImageOpBank();
 

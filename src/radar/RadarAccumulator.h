@@ -249,7 +249,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		const std::string & quantities, const drain::Rectangle<int> & crop) const {
 	// , const drain::Rectangle<double> & bbox) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const std::type_info & t = drain::Type::getTypeInfo(odimOut.type);
 

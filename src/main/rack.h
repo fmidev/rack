@@ -32,9 +32,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.75"
+#define __RACK_VERSION__ "7.77"
 
 /**
+ *   Version 7.77
+ *   -- Logger arg order
+ *   -- Fixed conversion bug
+ *
+ *   Version 7.76
+ *   -- Bug fix: QualityCombiner
+ *
  *   Version 7.75
  *   -- Revised AnDRe class code assignment
  *

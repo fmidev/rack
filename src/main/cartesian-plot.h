@@ -57,7 +57,7 @@ public:
 	inline
 	void exec() const {
 
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		RackResources & resources = getResources();
 		//RackContext & ctx = getContext();
 		RackResources::baseCtx().targetEncoding = "quantity=" + resources.composite.odim.quantity;

@@ -45,7 +45,7 @@ void Time::setTime(const std::string &time, const std::string &format, bool stri
 	// setTime(0); reset seconds?
 	const char *t = strptime(time.c_str(), format.c_str(), (tm *)this);
 	if (strict && (t == NULL)){
-		drain::Logger mout(__FUNCTION__, __FILE__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.error() << "parse error for '"  << time << "', format='" << format << "'" << mout.endl;
 		//throw std::runtime_error(std::string("setTime(): parse error for '") + time + "', format '" + format + "'");
 	}
@@ -77,7 +77,7 @@ const std::string & Time::str(const std::string &format) const {
 		const size_t length = strftime(tmp, maxSize, format.c_str(), (tm *)this);
 		timeStr.assign(tmp,length);
 		if (length == maxSize){
-			drain::Logger mout(__FUNCTION__, __FILE__);
+			drain::Logger mout(__FILE__, __FUNCTION__);
 			mout.error() << " max time str length("<< maxSize << ") exceeded " << mout.endl;
 			//std::cerr << __FILE__ << ':' << __FUNCTION__ << " max time str length("<< maxSize << ") exceeded " << std::endl;
 			// TODO: string mapper

@@ -49,7 +49,7 @@ namespace image
 
 void ImageChannels::initialize(Image & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	dst.setChannelCount(imageChannelCount, alphaChannelCount);
 	// Reset for the next invocation.
@@ -60,7 +60,7 @@ void ImageChannels::initialize(Image & dst) const {
 
 void ImageEncoding::initialize(Image & dst) const { //(const std::string & params, char assignmentSymbol='=') {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	//mout.fail() << "Feelu" << mout.endl;
 
@@ -102,7 +102,7 @@ void ImageEncoding::initialize(Image & dst) const { //(const std::string & param
 
 void ImageHistogram::traverseChannel(Channel & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 
 	//const std::type_info & type = dst.getType();
@@ -154,7 +154,7 @@ void ImageHistogram::traverseChannel(Channel & dst) const {
 /*
 void ImageHistogram::computeHistogram(const Channel & dst, drain::Histogram & histogram) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	const std::type_info & type = dst.getType();
 
@@ -189,7 +189,7 @@ void ImageHistogram::computeHistogram(const Channel & dst, drain::Histogram & hi
 
 void ImageFill::traverseChannels(ImageTray<Channel> & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	mout.note() << value << mout.endl;
 
 	std::vector<double> v;
@@ -207,7 +207,7 @@ void ImageFill::traverseChannels(ImageTray<Channel> & dst) const {
 
 void ImageFill::traverseChannel(Channel & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	//mout.note() << value << mout.endl;
 	dst.fill(Variable(value));
 }
@@ -217,7 +217,7 @@ void ImageGeometry::initialize(Image & dst) const {
 
 	//std::cerr << "TEST" << std::endl;
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	// mout.note() << "file:" << value << mout.endl;
 	//const size_t height = this->height > 0 ? this->height : width;
 	if (height == 0)
@@ -234,7 +234,7 @@ void ImageGeometry::initialize(Image & dst) const {
 
 void ImageCoordPolicy::initialize(Image & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	std::vector<int> v;
 	Variable(value, typeid(int)).toSequence(v);
@@ -279,7 +279,7 @@ void ImageCoordPolicy::initialize(Image & dst) const {
 
 void ImageCoordPolicy::traverseChannel(Channel & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	//mout.note() << "file:" << value << mout.endl;
 	dst.setCoordinatePolicy(policy);
 }
@@ -289,7 +289,7 @@ void ImageCoordPolicy::traverseChannel(Channel & dst) const {
 void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 //void ImagePlot::traverseChannel(Channel & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	// Note: value is of type string
 	//mout.note() << getParameters() << mout.endl;
@@ -357,7 +357,7 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 
 void ImageBox::traverseChannels(ImageTray<Channel> & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	// Note: value is of type string
 
@@ -408,7 +408,7 @@ void ImageBox::traverseChannels(ImageTray<Channel> & dst) const {
 //void ImagePlotFile::process(ImageDst & imageDst) const {
 void ImagePlotFile::traverseFrame(ImageFrame & dst) const {
 
-	drain::Logger mout(getImgLog(), __FUNCTION__, __FILE__);
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	mout.note() << "file: " << filename << mout.endl;
 
 	//Drainage & r = getDrainage();

@@ -41,7 +41,7 @@ namespace rack {
 void HydroClassBasedOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 //void HydroClassBasedOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	//mout.debug() << parameters << mout.endl;
 
 	const double probScaled = nonMet * dstProb.odim.scaleInverse(1.0);

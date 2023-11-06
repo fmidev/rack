@@ -41,7 +41,7 @@ using namespace hi5;
 
 void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariableMap & attributes){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// std::string path = attributes.get("how:path","");
 	// mout.special("path: ", path);
@@ -122,7 +122,7 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 
 void DataTools::markNoSave(Hi5Tree &src, bool noSave){
 
-	// drain::Logger mout(ctx.log, __FUNCTION__, __FILE__);
+	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	for (auto & entry: src) {
 		//if (it->first.isIndexed()){
@@ -152,7 +152,7 @@ bool DataTools::removeIfNoSave(Hi5Tree & dst){
 
 void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::CoordinatePolicy & policy){
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	drain::image::Image & data = src.data.dataSet;
 	if (!data.isEmpty()){

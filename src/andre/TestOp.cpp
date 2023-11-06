@@ -53,10 +53,10 @@ namespace rack {
 // void TestOp::runDetector(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
 // PlainData<PolarDst> & dstData, PlainData<PolarDst> & dstProb) const {
 
-void TestOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & cache) const {
+void TestOp::runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & cache) const {
 
 
-	drain::Logger mout(__FUNCTION__, __FILE__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.warn() << *this << mout;
 

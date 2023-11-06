@@ -65,6 +65,10 @@ public:
 
 		parameters.link("i", this->iRange.tuple() = {200,230}, "coord range"); // ~500m
 		parameters.link("j", this->jRange.tuple() = {240,300}, "coord range"); // deg
+
+		// TODO: classEntry.code (final code derived from numeric or (partial) string)
+		// parameters.link("code", this->code = "clutter.test", "class code"); // deg
+
 	};
 
 	double value;
@@ -72,9 +76,10 @@ public:
 	drain::Range<int> iRange;
 	drain::Range<int> jRange;
 
-protected:
 
-	void processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & cache) const;
+	void runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & cache) const;
+
+protected:
 
 	/*
 	virtual
