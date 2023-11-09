@@ -238,7 +238,7 @@ void Palette::load(const std::string & filename, bool flexible){
 
 	drain::FilePath filePath;
 
-	// static
+	// static checker for quantities
 	const drain::RegExp labelRE("^[A-Z]+[A-Z0-9_\\-]*$");
 
 	if (labelRE.test(filename)){
@@ -251,20 +251,21 @@ void Palette::load(const std::string & filename, bool flexible){
 		filePath.set(filename);
 	}
 
-	mout.debug(" Initial dir path: '", filePath.dir, "'");
 
 	// If relative path, add explicit ./
 	if (filePath.dir.empty())
 		filePath.dir.push_front(".");
 
-	mout.debug(" Initial file path: ", filePath.str());
+	mout.debug("Initial dir  path: '", filePath.dir, "', flexible=", flexible);
+	mout.debug("Initial file path: " , filePath.str());
 
 	const std::string s = filePath.str();
 
-	drain::Input ifstr(s);
+	drain::Input ifstr(s, LOG_DEBUG);
 
 	if (ifstr){
 
+		reset();
 		comment = filePath.str();
 		mout.note("reading: ", filePath.str());
 
@@ -275,15 +276,17 @@ void Palette::load(const std::string & filename, bool flexible){
 			loadJSON(ifstr);
 		}
 		else {
-			mout.error() << "unknown file type: " << filePath.extension << mout.endl;
+			mout.error("unknown file type: ", filePath.extension);
 			return;
 		}
 
 	}
 	else {
 
+		mout.debug("Failed: ", filePath.str());
+
 		if (!flexible){
-			mout.error(" opening file '", filename, "' failed");
+			mout.error("opening file '", filename, "' failed...");
 			return;
 		}
 		else {
@@ -316,39 +319,43 @@ void Palette::load(const std::string & filename, bool flexible){
 				// Add /<dir>/palette
 				paths.push_back(filePath.dir);
 				paths.back().appendElem("palette");  // subdir
+				// mout.warn("x: ", paths);
 			}
 
 			drain::FilePath finalFilePath;
 			finalFilePath.basename = filePath.basename;
-			for (drain::FilePath::path_t::list_t::const_iterator pit = paths.begin(); pit!=paths.end(); ++pit){
-				for (std::list<std::string>::const_iterator eit = extensions.begin(); eit!=extensions.end(); ++eit){
-					finalFilePath.dir = *pit;
-					finalFilePath.extension = *eit;
-					mout.info("trying... ", finalFilePath);
-					mout.info("a.k.a.... ", finalFilePath.str().c_str());
-					//ifstr.open(finalFilePath.str().c_str(), std::ios::in);
-					ifstr.open(finalFilePath.str());
-					//if (ifstr.good())
-					//if (ifstr.is_open())
-					if (ifstr)
+			//for (drain::FilePath::path_t::list_t::const_iterator pit = paths.begin(); pit!=paths.end(); ++pit){
+			for (const drain::FilePath::path_t & p: paths){
+				//for (std::list<std::string>::const_iterator eit = extensions.begin(); eit!=extensions.end(); ++eit){
+				for (const std::string & e: extensions){
+					finalFilePath.dir = p; // *pit;
+					finalFilePath.extension = e; // *eit;
+					if (finalFilePath == filePath){
+						mout.info("already tried: ", finalFilePath, ", skipping...");
+						continue;
+					}
+					mout.info("trying ", finalFilePath);
+					// mout.info("a.k.a.... ", finalFilePath.str().c_str());
+					// ifstr.open(finalFilePath.str().c_str(), std::ios::in);
+					ifstr.open(finalFilePath.str(), LOG_DEBUG);
+					// if (ifstr.good())
+					// if (ifstr.is_open())
+					if (ifstr){
 						break;
+					}
 				}
 				if (ifstr)
 					break;
-				// if (ifstr.is_open())
-				//	break;
 			}
 
 			if (!ifstr){  // still not good
-				// if (!ifstr.good()){  // still not good
-				///// ifstr.close();
-				mout.error(" opening file '", finalFilePath.str(), "' failed");
+				mout.error("opening palette file failed");
 				return;
 			}
 
 			mout.note("reading: ", finalFilePath.str());
-
 			reset();
+			comment = finalFilePath.str();
 
 			if (finalFilePath.extension == "txt"){
 				loadTXT(ifstr);
@@ -357,14 +364,12 @@ void Palette::load(const std::string & filename, bool flexible){
 				loadJSON(ifstr);
 			}
 			else {
-				///// ifstr.close();
 				mout.error("unknown file type: ", finalFilePath.extension);
 			}
 
 		}
 	};
 
-	///// ifstr.close();
 	mout.special("Title: ", this->title);
 
 	updateDictionary();
