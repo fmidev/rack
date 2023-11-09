@@ -57,7 +57,7 @@ class Input {
 public:
 
 	/// Opens stdIn with "-".
-	Input(const std::string & filename);
+	Input(const std::string & filename, Logger::level_t errorSensivity = LOG_ERR);
 
 	/// Closes upon destruction.
 	~Input();
@@ -69,7 +69,7 @@ public:
 		return static_cast<bool>(ifstr);
 	};
 
-	void open(const std::string & filename);
+	void open(const std::string & filename, Logger::level_t errorSensivity = LOG_ERR);
 
 
 protected:
