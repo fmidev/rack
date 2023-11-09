@@ -638,8 +638,16 @@ public:
 
 	inline
 	Logger & log(level_t level){
-		return initMessage(level); // avoid
-		//return *this;
+		initMessage(level); // avoid
+		return *this;
+	};
+
+	// Experimental! For mout.log(level)(args); !
+	template<typename ... TT>
+	inline
+	Logger & operator()(const TT &... args){
+		flush(args...);
+		return *this;
 	};
 
 
