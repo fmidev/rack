@@ -153,7 +153,7 @@ Palette::value_type & Palette::getEntryByCode(const std::string & code, bool len
 	size_t length = code_lc.length();
 	for (auto & entry: *this){
 		size_t i = entry.second.code.rfind(code_lc);
-		mout.warn(entry.second.code, " <=> ", code_lc);
+		mout.debug(entry.second.code, " <=> ", code_lc);
 		if ((i != std::string::npos) && (i != (entry.second.code.length()-length))){
 			mout.experimental("'", entry.second.code, "' ends with '", code_lc, "', i=", i);
 			return entry;

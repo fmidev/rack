@@ -59,7 +59,7 @@ public:
 	inline
 	DopplerNoiseOp(double speedDevThreshold = 3.0, double windowWidthM = 1500, double windowHeightD = 3.0) :
 
-		DetectorOp(__FUNCTION__, "Detects suspicious variance in Doppler speed (VRAD).", "nonmet.biol.bird"){
+		DetectorOp(__FUNCTION__, "Detects suspicious variance in Doppler speed (VRAD).", "nonmet.biol.dopplernoise"){
 
 		// dataSelector.path = "da ta[0-9]+/?$";
 		dataSelector.quantity = "^(VRAD|VRADH)$";

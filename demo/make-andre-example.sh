@@ -16,23 +16,22 @@ fi
 NICK=$1
 VOLUME=volume-$NICK.h5
 
-
-
-#VOLUME_IMG=${VOLUME%%.*}.png
-VOLUME_IMG_PANEL=${NICK}${SITE:+"-$SITE"}-panel.png
-#VOLUME_IMG_PANEL=${NICK}-${SITE}-panel.png
+if [ ! -f $VOLUME ]; then
+    echo "# Volume '$VOLUME' not found"
+    exit
+fi
 
 SITE=${SITE:-`rack $VOLUME --format '${NOD}' -o -`}
+
+# VOLUME_IMG=${VOLUME%%.*}.png
+# VOLUME_IMG_PANEL=${NICK}${SITE:+"-$SITE"}-panel.png # GOOD
+# VOLUME_IMG_PANEL=${NICK}-${SITE}-panel.png
+VOLUME_IMG_PANEL=${NICK}-panel.png # DBZH?
 
 # if [ "$SITE" == '' ]; then
 # eval SITE=`rack --verbose 0 $VOLUME --format '${NOD}' --formatOut -`
 
 
-
-if [ ! -f $VOLUME ]; then
-    echo "# Volume '$VOLUME' not found"
-    exit
-fi
 
 #cmd="QUANTITY=$QUANTITY ./make-panel.sh $NICK $VOLUME $SITE"
 cmd="make $VOLUME_IMG_PANEL"
@@ -93,7 +92,7 @@ while [ ${#*} != 0 ]; do
 	ANOM_IMG_PANEL=$ANOM_BASE-panel.png
 
 	echo "# Longer test" # -o $VOLUME_IMG
-	select="-Q '${QUANTITY}'" # +"OP"
+	select="-Q '*${QUANTITY}*'" # +"OP"
 	#cmd="rack $VOLUME   --store intermediate=1 --$aDETECTOR $VALUES $select -o $ANOM_IMG $select --cSize 500 --encoding C,0.004,-0.004,0,16  -c -o $ANOM_IMG_CART"
 	cmd="rack $VOLUME   --store intermediate=1 --$aDETECTOR $VALUES $select -o $ANOM_IMG $select --cSize 500   -c -o $ANOM_IMG_CART"
 

@@ -216,7 +216,7 @@ public:
 		*/
 
 		DataConversionOp<ODIM> copier; //(copierHidden);
-		copier.odim.addShortKeys();
+		copier.odim.addShortKeys(); // consider always?
 		copier.odim.setValues(ctx.targetEncoding);
 		ctx.targetEncoding.clear();
 

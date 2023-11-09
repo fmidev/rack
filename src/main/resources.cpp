@@ -293,7 +293,7 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 				mout.advice("Use --convert to change encoding in HDF5 struct");
 				mout.note("Converting encoding...");
 			}
-			mout.attention("GrayImage: ", path, ": ", ctx.currentGrayImage->getCoordinatePolicy());
+			mout.attention("converting GrayImage: ", path, ": ", ctx.currentGrayImage->getCoordinatePolicy());
 			RackContext::convertGrayImage(*currentGrayImage); // ctx, *ctx.
 		}
 	}
@@ -329,7 +329,7 @@ void RackContext::convertGrayImage(const drain::image::Image & srcImage){ // Rac
 	ODIM srcOdim(srcImage);
 	if (srcOdim.scaling.scale == 0){
 		mout.note("src image: ", srcImage);
-		mout.warn("no scaling:", (const EncodingODIM &)srcOdim);
+		mout.error("no scaling:", (const EncodingODIM &)srcOdim);
 	}
 
 	mout.special("srcEncoding: ", EncodingODIM(srcOdim));
@@ -337,16 +337,17 @@ void RackContext::convertGrayImage(const drain::image::Image & srcImage){ // Rac
 
 	/// TODO: wrap this and --convert to same code
 	DataConversionOp<ODIM> op;
-	//op.odim.copyFrom(srcImage);
+	op.setEncodingRequest(ctx.targetEncoding);
+	ctx.targetEncoding.clear();
 
+	op.processImage2023(srcOdim, srcImage, ctx.grayImage);
+	/*
 	op.odim.updateFromCastableMap(srcOdim); // quantity etc?
 	ProductBase::completeEncoding(op.odim, ctx.targetEncoding);
 	mout.debug("target: '", ctx.targetEncoding, "' -> ", EncodingODIM(op.odim));
-	ctx.targetEncoding.clear();
-
-
 	// ctx.grayImage.properties.importCastableMap(op.odim); // Optional
 	op.processImage(srcOdim, srcImage, op.odim, ctx.grayImage);
+	*/
 	// ctx.grayImage.setScaling(op.odim.scaling.scale, op.odim.scaling.offset);
 	// ctx.grayImage.setCoordinatePolicy(srcImage.getCoordinatePolicy());
 	mout.debug("result: ", ctx.grayImage);

@@ -1,170 +1,135 @@
 # CLASS
 
+#nodata
+@ 255.0	255.0	255.0
 
-# undetect
-@ 0   0   0
-
-# nodata
-@ 255 255 255
-
-# 0: reserved - primarily for nodata      (above)
-# 1: reserved - for example, for undetect (above)
-
-# Meteorological: 2-31
-# Precipitation:  2-15
-# 1 = wet
-# 2 = snow
-# 4 = hail
-# 6 = graupel
-# 8 = reserved (supercooled?)
-# 16 = meteorological, non-precip (dust, insects)
+#undetect
+@ 0.0	0.0	0.0
 
 
 
 # precip.hail
 # Hail
-2	160 96 255
+2.0	160.0	96.0	255.0
 
 # precip.hail.wet
 # Hail, wet
-3	144 32 255
+3.0	144.0	32.0	255.0
 
 # precip.snow
 # Snow
-4	0 128 255
+4.0	35.0	52.0	226.0
 
 # precip.snow.wet
 # Snow, wet
-5	80  0 255
+5.0	36.0	144.0	255.0
 
 # precip.graupel
 # Graupel
-6	0 192 255
+6.0	0.0	255.0	229.0
 
 # precip
 # Precipitation
-8	0 208 255
-# 8	144 255 0
+8.0	14.0	255.0	0.0
 
 # precip.wet
 # Rain
-10	208 144 255
+10.0	151.0	255.0	19.0
 
-# 16 240 255
 # precip.wet.supercooled
 # Supercooled Rain
-11 	0  255  170
+11.0	233.0	252.0	8.0
 
-
-
-
-# PASSIVE 48-63
-
+# nonmet.dust
 # Dust
-56	0  255  170
+56.0	233.0	255.0	164.0
 
+# nonmet.chaff
 # Chaff
-58	128 255 144
+58.0	249.0	240.0	107.0
 
-# 32+16+8+4
+# nonmet.biol.insect
 # Insect
-60	144 255 0
+60.0	255.0	255.0	16.0
 
+# nonmet.biol.dopplernoise
+# Doppler noise
+61.0	255.0	224.0	64.0
 
-# LOCATED 0 - 127 
-# LOCATED non-met 64 - 127 -------------------
+# nonmet.biomet
+# Biol
+62.0	255.0	190.0	111.0
 
-
-# Clutter
-64	255 224  24
-
-# Ground clutter, Sea clutter
-# ??
-
-# 64 + 4+0+16 (peaklike fixed artefact)
-# Mast
-84	255  170 0 
-
-# Wind turbine
-# 85	255  170 0 
-
-# Chimney
-# 86	255  170 0 
-
-
-# 64 + 4+8+16 (peaklike moving artefact)
-# Vehicle 
-92  255  96 0
-
-# .Ship
-#93  255  96 0 
-
-# .Aircraft
-#94   255  96 0
-
-
-
-
-# 32+64 LIVE+ACTIVE < 48+64 = BIOMET+ACTIVE
+# nonmet.biol.bird
 # Bird
-96	255  32 0
+63.0	255.0	32.0	32.0
 
-# Bat
-104	255 0 144
+# nonmet
+# Non-meteorological
+64.0	255.0	120.0	0.0
 
+# nonmet.clutter
+# Clutter
+68.0	198.0	70.0	0.0
 
+# nonmet.clutter.ccor
+# Clutter
+72.0	160.0	70.0	24.0
 
-# MISLOCATED (64+128=192) 192-223
+# nonmet.clutter.ground
+# Ground
+74.0	99.0	69.0	44.0
 
-# Attenuation (192 + 0...7)
+# nonmet.clutter.wind_turbine
+# Wind turbine
+84.0	154.0	153.0	64.0
 
+# nonmet.clutter.ship
+# Ship
+90.0	153.0	193.0	241.0
+
+# nonmet.clutter.sea
+# Sea waves
+92.0	98.0	160.0	234.0
+
+# distortion.attenuation
 # Attenuated
-192	208 208 255
+192.0	208.0	208.0	255.0
 
-# Attn in precip
-# 192	208 208 255
-
-# Radome attn
-# 192	208 208 255
-
-
-# Location error (64+128+ 8|16) 200-223
-
-# Specular
-200	170 255 208
-
-# Flare echo
-208	192 255 224
-
+# distortion.second_trip
 # Second trip
-216	224 255 240
+216.0	224.0	255.0	240.0
 
-# Attenuated?
-
-# 224 = 128+64+32
-# EXTERNAL  224-254
-
-# (non-peaklike non-moving non-artefact)
+# sun
 # Sun
-224     255 255 208
+224.0	255.0	255.0	208.0
 
-# 224 + 16 
-# (non-peaklike non-moving artefact)
+# emitter
 # Emitter
-240	255 240 224 
+240.0	255.0	224.0	224.0
 
-# (non-peaklike non-moving artefact)
+# emitter.line
+# Emitter line
+241.0	255.0	232.0	232.0
+
+# jamming
 # Jamming
-242	255 224 240
+242.0	255.0	224.0	240.0
 
-
-# (peaklike non-moving artefact)
+# noise
 # Noise
-244	224 224 255
+244.0	224.0	224.0	255.0
 
-# Delay
-248	240 240 240
+# noise.speckle
+# Speckle
+246.0	224.0	255.0	255.0
 
 
+# tech.unclass
+# Unclass
+250.0	224.0	224.0	255.0
 
+# tech.time
+# Time offset
+252.0	224.0	254.0	255.0
 

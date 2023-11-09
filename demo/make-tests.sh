@@ -144,7 +144,7 @@ while (( $line <= iEnd )); do
 
     exec_only="`echo $cmd | fgrep '#exec' `"
     if [ "$exec_only" != '' ]; then
-	echo -ne '\033[1;30m';
+	echo -ne '\033[1;32m';   # 30
 	echo "Executing only (line=$line): "
 	echo "  $cmd"
 	#$cmd

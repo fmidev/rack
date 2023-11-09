@@ -337,7 +337,7 @@ void CmdOutputFile::exec() const {
 
 		mout.info("File format: image");
 
-		// Handle ctx.select and ctx.targetEncoding, if defined.
+		// Optional on-the-fly conversions: handle ctx.select and ctx.targetEncoding, if defined.
 		const drain::image::Image & src = ctx.updateCurrentImage();
 
 		if (src.isEmpty()){

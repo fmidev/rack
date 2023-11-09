@@ -114,12 +114,14 @@ public:
 		processImage(src.odim, src.data, this->odim, dst);
 	}
 
-
 	/// Converts src to dst such that dst applies desired gain, offset, undetect and nodata values.
 	/**
 	 *   Sometimes this is applied directly (for alpha channel ops).
 	 */
 	void processImage(const ODIM & odimSrc, const drain::image::ImageFrame & src, const ODIM & odimDst, drain::image::Image & dst) const;
+
+	void processImage2023(const ODIM & srcOdim, const drain::image::ImageFrame & src, drain::image::Image & dst) const;
+
 
 	void traverseImageFrame(const ODIM & odimSrc, const drain::image::ImageFrame & src, const ODIM & odimDst, drain::image::ImageFrame & dst) const;
 
@@ -265,9 +267,10 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 
 		mout.debug("quantity: ", quantity);
 
-		const Data< src_t> & srcData = entry.second;
+		const Data<src_t> & srcData = entry.second;
 		Data<dst_t>       & dstData = dstProduct.getData(quantityTmp); // todo: getNewData
 		//dstProduct.getData(quantity).setNoSave(true);
+		mout.attention("srcData: ", entry.second);
 
 		mout.debug2(EncodingODIM(this->odim));
 		//mout.toOStr() << "src " << (long int) &(srcData.data) << EncodingODIM(srcData.odim) << mout.endl;
@@ -304,7 +307,10 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 
 			convertedQuantities.insert(entry.first); // CHECK: was first abovw - ?
 
-			const M srcODIM(srcData.odim); // copy, because src may be modified next
+			//const M srcODIM(srcData.odim); // Copy, because src may be modified next
+			const M srcODIM(srcData.data); // Copy, because src may be modified next
+			mout.attention("srcData.odim: ", srcData.odim);
+			mout.attention("srcODIM:   z   ", srcODIM);
 			dstData.odim.quantity = quantity;
 			dstData.odim.updateLenient(srcODIM); // <= dstData.odim.NI = srcData.odim.NI; // if Cart?
 			ProductBase::completeEncoding(dstData.odim, this->targetEncoding);
@@ -335,6 +341,20 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 
 }
 
+template <class M>
+void DataConversionOp<M>::processImage2023(const ODIM & srcOdim, const drain::image::ImageFrame & srcImage,
+		drain::image::Image & dstImage) const {
+
+	// drain::Logger mout(__FILE__, __FUNCTION__);
+
+	ODIM odim;
+	odim.updateFromCastableMap(srcOdim); // quantity, etc
+	ProductBase::completeEncoding(odim, this->targetEncoding);
+	processImage(srcOdim, srcImage, odim, dstImage);
+
+	//op.processImage2(srcOdim, srcImage, ctx.targetEncoding, ctx.grayImage);
+
+}
 
 template <class M>
 void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image::ImageFrame & srcImage, const ODIM & dstOdim, drain::image::Image & dstImage) const {
@@ -347,6 +367,9 @@ void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image:
 	const drain::Type t(dstOdim.type);
 
 	const drain::image::Geometry g(srcImage.getGeometry());
+
+	mout.attention("srcOdim",   srcOdim);
+	mout.attention("srcImage", srcImage);
 
 	if (srcImage.hasOverlap(dstImage)){
 		if ((t.getType() != srcImage.getType()) || (g != dstImage.getGeometry())){
@@ -383,6 +406,9 @@ void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image:
 		traverseImageFrame(srcOdim, srcImage, dstOdim, dstImage);
 	}
 
+	mout.attention("dstOdim",   dstOdim);
+	mout.attention("dstImage", dstImage);
+
 
 }
 
@@ -392,42 +418,36 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug2("dst:", dstImage);
+	// mout.debug3() << "input name: " << src.getName() << mout.endl;
+	mout.debug2("src odim: ", EncodingODIM(srcOdim));
+	mout.debug3("src props:", srcImage.properties);
+	// std::cerr << src.properties << std::endl;
 
+	mout.debug("dst:", dstImage);
+
+	//dstImage.properties.updateFromCastableMap(srcImage.properties);
+	dstImage.properties.importCastableMap(srcImage.properties);
+	dstImage.properties.importCastableMap(dstOdim);
+	dstImage.setScaling(dstOdim.scaling);
 	dstImage.setCoordinatePolicy(srcImage.getCoordinatePolicy());
 
-	//const double ud = std::max(odimOut.undetect, dst.getMin<double>());
-	//const double nd = std::min(odimOut.nodata, dst.getMax<double>());
-
-	//mout.debug3() << "input name: " << src.getName() << mout.endl;
-
-	mout.debug2() << "src odim: " << EncodingODIM(srcOdim) << mout.endl;
-	mout .debug3() << "src props:" << srcImage.properties << mout.endl;
-	//std::cerr << src.properties << std::endl;
-
-	// ctx.grayImage.properties.importCastableMap(op.odim); // Optional
-	// ctx.grayImage.setCoordinatePolicy(srcImage.getCoordinatePolicy());
-
-	dstImage.properties = srcImage.properties;
-	dstImage.properties.updateFromMap(dstOdim);
-	//dst.odim.set(odim);
-	//mout.debug2() << "op  odim: " << EncodingODIM(odim) << mout.endl;
-	mout.debug2("dst odim: ", EncodingODIM(dstOdim));
-	mout.debug2("dst props: ", dstImage.properties);
+	// dst.odim.set(odim);
+	// mout.debug2() << "op  odim: " << EncodingODIM(odim) << mout.endl;
+	mout.debug("dst odim: ", EncodingODIM(dstOdim));
+	mout.debug("dst props: ", dstImage.properties);
 	//std::cerr << dst.properties << std::endl;
 
 	// const drain::ValueScaling scaling(srcOdim.scaling.scale, srcOdim.scaling.offset, dstOdim.scaling.scale, dstOdim.scaling.offset);
 	const drain::ValueScaling scaling(srcOdim.scaling, dstOdim.scaling); // 2023/04/21
+	mout.debug("scaling: ", scaling);
 
 	typedef drain::typeLimiter<double> Limiter;
 	Limiter::value_t limit = drain::Type::call<Limiter>(dstOdim.type);
 
-	mout.debug2("scaling: ", scaling);
-
 	Image::const_iterator s = srcImage.begin();
 	Image::iterator d = dstImage.begin();
 
-	// Long int check by wrting to pixel at (0,0)
+	// Tailored long int check by writing and reading a pixel.
 	*d = dstOdim.nodata;
 	if (static_cast<double>(*d) != dstOdim.nodata){
 		mout.note("dstOdim.nodata=", dstOdim.nodata, " -> ", static_cast<double>(*d));
@@ -435,7 +455,6 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 		mout.warn("type conversion ", dstOdim.type, " ~= ", drain::Type::getTypeChar(dstImage.getType()), " changed the value");
 	}
 	//mout.debug() << "dstOdim nodata long-int check " << dstOdim.nodata << " <> " << (long int)(*d = dstOdim.nodata) << mout.endl;
-
 
 	mout.debug2("src: ", srcImage);
 	mout.debug2("dst: ", dstImage);
@@ -464,7 +483,7 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 		++d;
 	}
 
-	mout.debug3() << "finished." << mout.endl;
+	mout.debug3("finished.");
 
 }
 
