@@ -80,7 +80,20 @@ public:
 	}
 	*/
 
+	inline
+	bool operator==(const FilePath & p) const {
 
+		if (p.basename != basename)
+			return false;
+
+		if (p.extension != extension)
+			return false;
+
+		if (p.dir != dir)
+			return false;
+
+		return true;
+	}
 
 
 	path_t dir;
