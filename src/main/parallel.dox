@@ -142,7 +142,7 @@ The following example creates a composite as a single command line -- as a singl
 \code
 rack   --cMethod WAVG,2,3,-32  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs' \
        --cSize 2000,2000 --cBBox 0,47,40,73    --cInit    --script '--pCappi 1500 --cAdd' \
-        [  data-20140924/201409241200_radar.raw.*.h5 ] \
+        [  data-20140924/201409241200_radar.polar.*.h5 ] \
          --cExtract d  -o composite-parallel.h5
 \endcode
 

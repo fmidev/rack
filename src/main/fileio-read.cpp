@@ -304,10 +304,8 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 		mout.info("Polar product [", object, "] thread=",  ctx.getId() );
 
-
 		ctx.currentHi5 =      & ctx.polarInputHi5;
 		ctx.currentPolarHi5 = & ctx.polarInputHi5;
-
 
 		// TODO: force APPEND / REPLACE?
 		if (ctx.polarInputHi5.empty() || ctx.SCRIPT_DEFINED){

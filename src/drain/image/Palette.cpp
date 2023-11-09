@@ -134,7 +134,7 @@ Palette::value_type & Palette::getEntryByCode(const std::string & code, bool len
 		mout.debug("matching failed with '", code, "', trying with lowercase: '", code_lc, "'");
 		for (auto & entry: *this){
 			if (entry.second.code == code_lc){
-				mout.experimental("matched with lowercase: '", code_lc, "' <-> '", code, "'");
+				mout.debug("matched with lowercase: '", code_lc, "' <-> '", code, "'");
 				return entry;
 			}
 		}
@@ -145,7 +145,7 @@ Palette::value_type & Palette::getEntryByCode(const std::string & code, bool len
 	for (auto & entry: *this){
 		// mout.experimental("starts with '", code_lc, "' ?");
 		if (entry.second.code.find(code_lc) == 0){
-			mout.experimental("'", entry.second.code, "' starts with '", code_lc, "'");
+			mout.debug("'", entry.second.code, "' starts with '", code_lc, "'");
 			return entry;
 		}
 	}
@@ -155,7 +155,7 @@ Palette::value_type & Palette::getEntryByCode(const std::string & code, bool len
 		size_t i = entry.second.code.rfind(code_lc);
 		mout.debug(entry.second.code, " <=> ", code_lc);
 		if ((i != std::string::npos) && (i != (entry.second.code.length()-length))){
-			mout.experimental("'", entry.second.code, "' ends with '", code_lc, "', i=", i);
+			mout.debug("'", entry.second.code, "' ends with '", code_lc, "', i=", i);
 			return entry;
 		}
 	}
@@ -163,7 +163,7 @@ Palette::value_type & Palette::getEntryByCode(const std::string & code, bool len
 	for (auto & entry: *this){
 		size_t i = std::string::npos;
 		if ((i=entry.second.code.find(code_lc)) != std::string::npos){
-			mout.experimental("'", entry.second.code, "' contains '", code_lc, "' starting at pos(", i, ")");
+			mout.debug("'", entry.second.code, "' contains '", code_lc, "' starting at pos(", i, ")");
 			return entry;
 		}
 	}
