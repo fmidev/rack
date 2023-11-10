@@ -145,7 +145,7 @@ public:
 		//assign(s); // , sep) <- consider split here!
 	};
 
-	///
+	/// Why the three above instead of this?
 	/*
 	template <typename ... TT>
 	inline
@@ -159,34 +159,13 @@ public:
 	Path(const path_t & p) : std::list<T>(p), separator(p.separator){
 	};
 
-	/// Initialize with a given path.
-	/*
-	inline
-	Path(const std::string & s="") : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: separator(separator) {
-		_appendPath(s, 0);
-		//assign(s); // , sep) <- consider split here!
-	};
-
-	/// Initialize with a given path.
-	inline
-	Path(const char *s) : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: s, char separator='/') : separator(separator) {
-		_appendPath(s, 0); //assign(s);
-	};
-
-	// Either this or previous is unneeded?
-	template<typename ... TT>
-	Path(const elem_t &elem, const TT &... rest){
-		appendElems(elem, rest...);
-	}
-	*/
-
 
 
 	virtual inline
 	~Path(){};
 
-	// Design principle: handle all strings as paths.
-	// This means that if path elements are strings, assigning elements goes through an extra path check.
+	// Design principle: handle all strings as paths!
+	// This means that if path elements are strings, assigning elements goes through an "extra" path check.
 	// If string arguments were accepted directly as elements, separator characters could be passed in the elements.
 
 	template <typename ... TT>
@@ -196,9 +175,10 @@ public:
 	}
 
 	/// Append path with element(s), path(s) or string(s).
+	//  needed?
 	template <typename T2, typename ... TT>
 	void append(const T2 & arg, const TT &... args) {
-		_append(arg);
+		_append(arg); // replace with appendElem(elem), remove _append?
 		//_appendPath(arg);
 		append(args...);
 	}
@@ -244,19 +224,6 @@ public:
 	}
 
 
-
-
-	/// Specialized handler for args which are not 1) elems, 2) strings or 3) paths?
-	/*
-	template <typename T2>
-	void appendNewSub(const T & p){
-		std::stringstream sstr;
-		sstr << p;
-		appendPath(p.str(),0);
-	}
-	*/
-
-
 	/// Main method for adding elements.
 	void appendElem(const elem_t & elem){
 
@@ -289,21 +256,6 @@ public:
 
 	};
 
-	/*
-	template<typename ... TT>
-	void appendElems(const elem_t & elem, const TT &... rest) {
-		appendElem(elem);
-		appendElems(rest...);
-	}
-
-	/// Clear the path and append elements.
-	template<typename ... TT>
-	void setElems(const elem_t & elem, const TT &... rest){
-		this->clear();
-		appendElems(elem, rest...);
-	}
-	*/
-
 	/// Note that an empty path is not a root.
 	//  Todo: also accept empty path as a root? Perhaps no, because appending may cause relative.
 	inline
@@ -311,7 +263,6 @@ public:
 		return ((this->size()==1) && this->front().empty());
 		//return separator.acceptLeading && ((this->size()==1) && this->front().empty());
 	}
-
 
 
 	/// Removes trailing empty elements, except for the root itself.
@@ -326,34 +277,20 @@ public:
 
 public:
 
-	/// Replaces the full path
-	/*
-	void assign(const std::string & p){
-
-		// Assignment could be done directly, if all accepted:
-		// StringTools::split(p, *this, separator.character);
-		// ... but then illegal paths could become accepted.
-
-		this->clear();
-
-		// Note: given empty string, nothing will be appended.
-		// Especially, no empty element ("root"), either.
-		if (p.empty())
-			return;
-
-		_appendPath(p, 0);
-
-	}
-	*/
 
 	/// Assigns a path directly with std::list assignment.
 	/**
 	 *  Should be safe, because separator policy is the same.
 	 */
-	 path_t & operator=(const  path_t & p){
-		set(p);
+	path_t & operator=(const path_t & p){
+
+		if (&p != this){
+			// Yes, important self-check.
+			// Otherwise clear() also makes the"source" empty.
+			set(p);
+		}
 		// std::list<T>::operator=(p);
-		//return assignPa(*this);
+		// return assignPa(*this);
 		return *this;
 	}
 
@@ -364,11 +301,6 @@ public:
 	template <class T2>
 	 path_t & operator=(const Path<T2> & p){
 		set(p);
-		/*
-		this->clear();
-		for (typename Path<T2>::const_iterator it = p.begin(); it != p.end(); ++it) {
-			appendElems(*it);
-		}*/
 		return *this;
 	}
 
@@ -376,14 +308,12 @@ public:
 	inline
 	 path_t & operator=(const std::string & p){
 		set(p);
-		//assign(p);
 		return *this;
 	}
 
 	inline
 	 path_t & operator=(const char *p){
 		set(p);
-		//assign(p);
 		return *this;
 	}
 

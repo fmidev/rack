@@ -753,19 +753,6 @@ public:
 		mout.experimental("Resolved path:", pathSrc, " => ", matcher);
 		*/
 
-
-		ODIMPath path1;
-		std::string attr1;
-		// std::string attr1value; // debug
-		// std::string attr1type;// debug
-		std::string attrValue;
-		hi5::Hi5Base::parsePath(pathSrc, path1, attr1, attrValue);
-		mout.debug("path:  " , path1 , ", size=" , path1.size() );
-
-		if (!attrValue.empty()){
-			mout.warn("value (" , attrValue , ") not empty in " , path1 );
-		}
-
 		// NEW
 		/*
 		DataSelector selector;
@@ -781,6 +768,24 @@ public:
 		mout.warn("type:  " , attr1type  );
 		return;
 		 */
+
+		ODIMPath path1;
+		//std::string path1;
+		std::string attr1;
+		// std::string attr1value; // debug
+		// std::string attr1type;  // debug
+		std::string attrValue;
+		hi5::Hi5Base::parsePath(pathSrc, path1, attr1, attrValue);
+
+		hi5::Hi5Base::parsePath(pathSrc, path1, attr1, attrValue);
+
+		//mout.debug(pathSrc, " -> path:  " , path1 , ", size=" , path1.size() );
+		mout.debug(pathSrc, " -> path1: " , path1 , '(' , path1.size() , ')' , " attr1:" , attr1 , " ~", attrValue);
+
+		if (!attrValue.empty()){
+			mout.warn("value (" , attrValue , ") not empty in " , path1 );
+		}
+
 
 		if (!dstRoot.hasPath(path1)) // make it temporary (yet allocating)
 			mout.warn("nonexistent path: " , path1 );
@@ -799,8 +804,7 @@ public:
 		}
 
 
-		mout.debug("path1: " , path1 , '(' , path1.size() , ')' , " : " , attr1 );
-		mout.debug("path2: " , path2 , '(' , path2.size() , ')' , " : " , attr2 );
+		mout.debug(pathDst, " -> path2: " , path2 , '(' , path2.size() , ')' , " attr2:" , attr2 , " ~", attrValue);
 
 
 		if (attr1.empty()){ // RENAME PATHS (swap two paths)
@@ -810,7 +814,7 @@ public:
 				return;
 			}
 
-			mout.debug("renaming path '" , path1 , "' => '" , path2 , "'" );
+			mout.debug("renaming (swapping) paths '" , path1 , "' => '" , path2 , "'" );
 			//mout.warn(dstRoot );
 			Hi5Tree & dst1 = dstRoot(path1);
 			if (!dstRoot.hasPath(path2)) // make it temporary (yet allocating it for now)
@@ -823,7 +827,9 @@ public:
 			dst1.data.noSave = noSave2;
 			dst2.data.noSave = noSave1;
 			dst2.data.attributes.swap(dst1.data.attributes);
-			//dstRoot.erase(path1);
+
+			// dstRoot.erase(path1); ?
+			dstRoot(path1).data.noSave = true;
 			//DataTools::updateInternalAttributes(dst1); // recurse subtrees
 			//DataTools::updateInternalAttributes(dst2); // recurse subtrees
 

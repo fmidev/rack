@@ -9,7 +9,7 @@ ENCODING=${ENCODING:-"C,gain=${GAIN},offset=-${GAIN},undetect=254,nodata=0,quant
 BBOX=${BBOX:-'17,57.75,32.75,70'}
 SIZE=${SIZE:-'500,750'}
 
-palette=`ls palette-${QUANTITY}.{json,txt}` &> /dev/null
+#palette=`ls palette-${QUANTITY}.{json,txt}` &> /dev/null
 cmd="rack  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs' --cBBox $BBOX  --cSize $SIZE  \
   --encoding ${ENCODING} \
   --cPlotFile ${INFILE} \
@@ -17,7 +17,9 @@ cmd="rack  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs' --cBBox $B
   -o plot.png \
   --iDistanceTransformFill 7 \
   -o plot-spread1.png  \
-  --palette $palette --paletteRefine 64  -o plot-spread-color.png  "
+  --palette '$QUANTITY' --paletteRefine 64  -o plot-spread-color.png  "
+
+#   --palette $palette --paletteRefine 64  -o plot-spread-color.png  "
 
 
 #  --palette palette-RATE.txt --paletteRefine 64 --imageTransp 0,0.5,0.2  -o plot-spread-color.png  

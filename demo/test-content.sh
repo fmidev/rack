@@ -215,23 +215,23 @@ INFILE='volume-detected.h5'
 
 TITLE "Keep quality groups only"
 TEST    --keep quality
-REQUIRE dataset1/quality{1,2}  dataset1/data1/quality{1,2}
+REQUIRE dataset1/quality{1,2}  dataset1/data2/quality{1,2}
 REQUIRE dataset1/{what,where}
 #REQUIRE dataset1/data1/what
 EXCLUDE dataset1/data1/data
 
 TITLE "Keep quality1 and quality2 groups"
 TEST    --keep quality1:2
-REQUIRE dataset1/quality{1,2}  dataset1/data1/quality{1,2}
+REQUIRE dataset1/quality{1,2}  dataset1/data2/quality{1,2}
 REQUIRE dataset1/{what,where}
 EXCLUDE dataset1/data1/data
 
 TITLE "Keep data specific quality groups"
 TEST    --keep data:/quality
-REQUIRE dataset1/data1/quality{1,2}
+REQUIRE dataset1/data2/quality{1,2}
 REQUIRE dataset1/{what,where}
 EXCLUDE dataset1/quality{1,2}
-EXCLUDE dataset1/data1/data
+EXCLUDE dataset1/data2/data
 
 
 TITLE "Keep dataset[] specific quality groups"
@@ -246,8 +246,8 @@ START example-move.inc
 INFILE='volume-detected.h5'
 
 TITLE "Move group"
-TEST --move dataset1/quality1,dataset1/data1/quality3
-REQUIRE dataset1/data1/quality3
+TEST --move dataset1/quality1,dataset1/data2/quality3
+REQUIRE dataset1/data2/quality3
 EXCLUDE dataset1/quality1
 
 

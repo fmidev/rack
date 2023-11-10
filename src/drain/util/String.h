@@ -152,11 +152,19 @@ public:
 
 	/// Splits and trims a given std::string to two substrings, by first separator encountered.
 	/**
+	 *
 	 *  \tparam T1 - target of 1st part ("key")
 	 *  \tparam T2 - target of 1st part ("value")
 	 *  \tparam C - character or string (any char in which will split)
+	 *  \param s - source string
+	 *  \param first - target of 1st part, typically the "key"
+	 *  \param second - target of 2nd part, typically the "object"
 	 *
-	 *  Given an empty std::string,
+	 *  Given an empty std::string, returns empty (intact) destinations.
+	 *  Given a string that does contain a separator, assigns the string on \c first , leaving \c empty/intact.
+	 *
+	 *  Note: the classes of target objects \c first and \c second should have an
+	 *  assignment operator=() that does not clear the object when assigning itself obj=obj !
 	 */
 	template <class T1, class T2, class C>
 	static
@@ -238,8 +246,12 @@ public:
 	/**
 	 *  \param str - input string
 	 *  \param tmp - "hidden" temporary value; returned reference should be read instead of this.
+	 *  \tparam - string or any class that does not clear the object upon identity assigment (obj=obj).
 	 *  \return - reference to the result of the conversion.
 	 *
+	 *
+	 * Note: the classes of target objects \c first and \c second should have an
+	 * assignment operator=() that does not clear the object when assigning itself obj=obj !
 	 */
 	template <class T>
 	static
@@ -338,20 +350,13 @@ bool StringTools::split2(const std::string & s, T1 & first, T2 & second, const S
 		++i;
 		std::string srcSecond(s, std::min(s.size(), i));
 
-		// std::stringstream sstr1;
-		// std::cerr << "eka " << s.substr(0, i) << '\n';
 		if (!trimChars.empty()){
-			// sstr1 << StringTools::trim(s.substr(0, i), trimChars);
-			// sstr1 >> first;
-			first = lazyConvert(StringTools::trim(srcFirst, trimChars), first);
+			first = lazyConvert(StringTools::trim(srcFirst, trimChars), first); // first=first should not clear the object!
 		}
 		else {
-			// sstr1 << s.substr(0, i);
-			// sstr1 >> first;
-			first = lazyConvert(srcFirst, first);
+			first = lazyConvert(srcFirst, first); // Note: first=first should not clear the object!
 		}
 
-		//std::stringstream sstr2;
 		if (!srcSecond.empty()){
 			if (!trimChars.empty()){
 				second = lazyConvert(StringTools::trim(srcSecond), second);

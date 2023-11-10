@@ -434,13 +434,11 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug() << "line: " << line << mout.endl;
+	mout.debug("line: ", line);
 
 	std::string assignment;
-	//Hi5Base::parsePath(line, path, assignment);
-	drain::StringTools::split2(line, path, assignment, ":");
-
-	drain::StringTools::split2(assignment, attrKey, attrValue, "=");
+	drain::StringTools::split2(line,       path,    assignment, ":");
+	drain::StringTools::split2(assignment, attrKey, attrValue,  "=");
 
 }
 
