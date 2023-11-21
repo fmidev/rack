@@ -129,9 +129,9 @@ protected:
 	virtual	inline
 	void setImageLimits() const {
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		mout.debug() << this->src << mout.endl;
+		mout.debug(this->src );
 		this->coordinateHandler.set(this->src.getGeometry(), this->src.getCoordinatePolicy());
-		mout.debug() << this->coordinateHandler << mout.endl;
+		mout.debug(this->coordinateHandler );
 		// this->src.adjustCoordinateHandler(this->coordinateHandler);
 	}
 
@@ -176,23 +176,23 @@ public:
 		/*
 		areaF = this->getArea();  // NOTE: maybe actual area varies, depending on coord handler?
 		if (areaF == 0.0){
-			mout.error() << "area==0 ?" << mout.endl;
+			mout.error("area==0 ?" );
 		}
 		*/
 
 		// mout .debug3() << "src.getMax=" << this->src.scaling.template getMax<value_t>() << mout.endl;
 		// this->scaleResult = this->dst.template getMax<value_t>() / this->src.template getMax<value_t>();
 		this->scaling.setConversionScale(this->src.getScaling(), this->dst.getScaling());
-		mout.debug() << "scaling:" << this->scaling << mout.endl;
+		mout.debug("scaling:" , this->scaling );
 
 		// WEIGHT
 		this->scalingW.setConversionScale(this->srcWeight.getScaling(), this->dstWeight.getScaling());
 		//this->scalingW.setScale(this->scalingW.getScale() * static_cast<double>(this->getArea()));
-		mout.debug() << "scalingW:" << this->scalingW << mout.endl;
+		mout.debug("scalingW:" , this->scalingW );
 
 		//this->SCALE = this->src.scaling.isScaled() || this->dst.scaling.isScaled(); // NEEDED?
-		//mout.warn() << "areaF=" << this->areaF << mout.endl;
-		//mout.warn() << "scaleResult=" << this->scaleResult << mout.endl;
+		//mout.warn("areaF=" , this->areaF );
+		//mout.warn("scaleResult=" , this->scaleResult );
 
 	}
 

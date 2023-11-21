@@ -52,7 +52,7 @@ void OpticalFlowCore::setDstFrames(ImageTray<Channel> & dstTray){
 	Logger mout(getImgLog(), "SlidingOpticalFlow", __FUNCTION__);
 
 	if (dstTray.size() < 2)
-		mout.error() << "dst has less than 2 channels" << mout.endl;
+		mout.error("dst has less than 2 channels" );
 
 	// Set main dst channels: horizontal (uField) and vertical (vField) motion.
 	//Window<OpticalFlowConfig>::setDstFrames(dstTray.get()); // MUST BE HERE, also for dst
@@ -61,21 +61,21 @@ void OpticalFlowCore::setDstFrames(ImageTray<Channel> & dstTray){
 
 	/// Set quality (weight) channel
 	if (dstTray.hasAlpha()){
-		mout.info() << "using dst.alpha() as quality" << mout.endl;
+		mout.info("using dst.alpha() as quality" );
 		dstWeight.setView(dstTray.getAlpha());
 		//this->setDstFrameWeight(dstTray.getAlpha());
 	}
 	else if (dstTray.size() >= 2){
-		mout.note() << "using dst[2] as quality" << mout.endl;
+		mout.note("using dst[2] as quality" );
 		//this->setDstFrameWeight(dstTray.get(2));
 		dstWeight.setView(dstTray.get(2));
 	}
 	else {
-		mout.warn() << "no alpha to set" << mout.endl;
+		mout.warn("no alpha to set" );
 	}
 
 	if (dstTray.size() > 3)
-		mout.note() << "dst has more than 3 channels?" << mout.endl;
+		mout.note("dst has more than 3 channels?" );
 
 }
 
@@ -84,7 +84,7 @@ void OpticalFlowCore1::setSrcFrames(const ImageTray<const Channel> & srcTray){
 	Logger mout(getImgLog(), "SlidingOpticalFlow", __FUNCTION__);
 
 	if (srcTray.size() < getDiffChannelCount())
-		mout.error() << "src has less than "<< getDiffChannelCount() << " channels (Dx,Dy,Dt needed)" << mout.endl;
+		mout.error("src has less than ", getDiffChannelCount() , " channels (Dx,Dy,Dt needed)" );
 
 	Dx.setView(srcTray.get(0));
 	Dy.setView(srcTray.get(1));
@@ -92,23 +92,23 @@ void OpticalFlowCore1::setSrcFrames(const ImageTray<const Channel> & srcTray){
 
 	/// Set quality (weight) channel
 	if (srcTray.hasAlpha()){
-		mout.info() << "set alpha from src.alpha() " << mout.endl;
+		mout.info("set alpha from src.alpha() " );
 		//srcWeight.setView(srcTray.getAlpha());
 		// setSrcFrameWeight(srcTray.getAlpha());
 		srcWeight.setView(srcTray.getAlpha());
 	}
 	else if (srcTray.size() >= 4) {
-		mout.note() << "set alpha from src.get(3) " << mout.endl;
+		mout.note("set alpha from src.get(3) " );
 		//srcWeight.setView(srcTray.get(3));
 		srcWeight.setView(srcTray.getAlpha(3));
 		// setSrcFrameWeight(srcTray.getAlpha(3));
 	}
 	else {
-		mout.warn() << "no alpha to set?" << mout.endl;
+		mout.warn("no alpha to set?" );
 	}
 
 	if ((srcTray.size()+srcTray.alpha.size()) > 4)
-		mout.note() << "src has more than 4 channels?" << mout.endl;
+		mout.note("src has more than 4 channels?" );
 }
 
 
@@ -120,10 +120,10 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 
 	// Source images (intensity)
 	if (src.size() < 2) {
-		mout.error() << "src image tray must have at least 2 channels, now ("<< src.size() << ")" << mout.endl;
+		mout.error("src image tray must have at least 2 channels, now (", src.size() , ")" );
 	}
 	else if (src.size() > 2) {
-		mout.warn() << "src image set has more than 2 channels ("<< src.size() << "), using [0] and [1]" << mout.endl;
+		mout.warn("src image set has more than 2 channels (", src.size() , "), using [0] and [1]" );
 	}
 
 	const Channel & src1 = src.get(0);
@@ -133,7 +133,7 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	if (dst.size() == 3) {
 	}
 	else {
-		mout.error() << "dst image tray does not have enough channels (3)" << mout.endl;
+		mout.error("dst image tray does not have enough channels (3)" );
 	}
 
 	const double scale = src1.getConf().requestPhysicalMax(10.0); // easily returns 255.0 for unsigned char images
@@ -142,10 +142,10 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	for (size_t i = 0; i < dst.size(); ++i) {
 		Channel & d = dst.get(i);
 		if (!d.getScaling().isPhysical()){
-			mout.warn() << "would like to use physical scaling +/-" << scale << " for diff channel #" << i << mout.endl;
+			mout.warn("would like to use physical scaling +/-" , scale , " for diff channel #" , i );
 			//  => =>  d.setOptimalScale(-scale, scale); // pix?
 		}
-		mout.debug() << "diff channel #" << i << "scaling: " << d.getScaling() << mout.endl;
+		mout.debug("diff channel #" , i , "scaling: " , d.getScaling() );
 	}
 
 	if (mout.isDebug(20)){
@@ -164,14 +164,14 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	mout.debug2() << " diff: dst=" << dst << mout.endl;
 	mout.debug2() << " diff: &dt=" << dt  << mout.endl;
 
-	mout.debug() << "Computing time derivative" << mout.endl;
+	mout.debug("Computing time derivative" );
 	BinaryFunctorOp<SubtractionFunctor>().traverseChannel(src2, src1, dt);
 	if (mout.isDebug(10)){
 		ImageFile::write(dt, "diff-dt.png");
 		//writeDebugImage(dt, "diff-dt.png", 0.5, 0.5);
 	}
 
-	mout.debug() << "Computing gradients" << mout.endl;
+	mout.debug("Computing gradients" );
 	mout .debug3() << " - smooth1: " << src1 << mout.endl;
 	mout .debug3() << " - smooth2: " << src2 << mout.endl;
 	mout .debug3() << " - dstTray: "     << dst << mout.endl;
@@ -219,8 +219,8 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	distOp.traverseChannels(gradTray1, gradTray2, weightTray);
 
 	if (mout.isDebug(3)){
-		mout.warn() << w << mout.endl;
-		mout.warn() << weightTray.get() << mout.endl;
+		mout.warn(w );
+		mout.warn(weightTray.get() );
 		mout.debug2() << scale << mout.endl;
 		Histogram histogram(256);
 		histogram.setRange(0.0, scale);
@@ -228,7 +228,7 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 		ImageHistogram histOp;
 		histogram.compute(w, w.getType());
 		//histOp.computeHistogram(w, histogram);
-		mout.warn() << histogram << mout.endl;
+		mout.warn(histogram );
 		// TODO:
 		ImageFile::write(w, "diff-grad-w.png");  // actually, w
 		//File::write(weightTray.get(), "diff-grad-w.png");  // actually, w
@@ -236,7 +236,7 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	}
 
 
-	mout.debug() << "Computing intermediate source image, for 'final' gradients" << mout.endl;
+	mout.debug("Computing intermediate source image, for 'final' gradients" );
 	// Intensity gradients should not be computed for the 1st or 2nd image, but "between" them.
 	// So the images will be mixed here. //// To save memory, src2 is recycled.
 	Image srcMixed; // = src2;
@@ -258,7 +258,7 @@ void FastOpticalFlowOp::computeDifferentials(const ImageTray<const Channel> & sr
 	}
 
 	/*
-		mout.note() << "Computing gradient magnitude" << mout.endl;
+		mout.note("Computing gradient magnitude" );
 		// Update Gradient stability as well (emphasize strong gradients)
 		Image gradMagnitude;
 		gradMagnitude.setLimits(0, 255);

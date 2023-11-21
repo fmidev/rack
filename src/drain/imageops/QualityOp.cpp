@@ -45,10 +45,10 @@ void QualityOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
 
 	mout.debug3() << "src: " << src << mout.endl;
 
-	mout.unimplemented() << "overlap check possibly missing" << mout;
+	mout.unimplemented("overlap check possibly missing" );
 	/*
 	if (dst.hasSameSegment(src)){
-		mout.debug() << "dst == src, ok" << mout.endl;
+		mout.debug("dst == src, ok" );
 		return;
 	}
 	*/
@@ -59,7 +59,7 @@ void QualityOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
 		//dst.scaling.setScale(src.scaling.getScale());
 		dst.setScaling(src.getScaling());
 		if (dst.getType() != src.getType()){
-			mout.info() << "Adopting src scaling for dst (different storage types)" << mout.endl;
+			mout.info("Adopting src scaling for dst (different storage types)" );
 		}
 	}
 
@@ -69,7 +69,7 @@ void QualityOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
 	/// TODO: copy alpha, fill alpha?
 	if (dst.setGeometry(src.getGeometry())){
 		if (dst.getAlphaChannelCount()){
-			mout.warn() << "resetting alpha channel" << mout.endl;
+			mout.warn("resetting alpha channel" );
 			dst.getAlphaChannel().fill(dst.scaling.getMax<int>());
 		}
 	}
@@ -90,7 +90,7 @@ void QualityThresholdOp::traverseChannel(const Channel &src, const Channel &srcA
 	// Lowest quality, as a code value
 	const double zero = dstAlpha.getScaling().inv(0);
 
-	// mout.warn() << " t=" << t << mout.endl;
+	// mout.warn(" t=" , t );
 
 	Channel::const_iterator  sit = src.begin();
 	Channel::const_iterator sait = srcAlpha.begin();

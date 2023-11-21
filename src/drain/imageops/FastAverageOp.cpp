@@ -57,7 +57,7 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (dst.isEmpty()){
-		mout.error() << "dst empty: " << dst << mout.endl;
+		mout.error("dst empty: " , dst );
 		return;
 	}
 
@@ -66,20 +66,20 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 
 	/// Special case
 	if ((width==1) && (height==1)){
-		mout.note() << "Special case: 1x1 window => simple copy" << mout.endl;
+		mout.note("Special case: 1x1 window => simple copy" );
 		dst.copyData(src);
 		return;
 	}
 
-	mout.special() << width << 'x' << height << mout.endl;
+	mout.special(width , 'x' , height );
 
 
 	Image tmp;
 	tmp.setConf(src.getConf());
 	//makeCompatible(src.getConf(), tmp);
-	mout.debug()   << "src: " << src << mout.endl;
-	mout.special() << "tmp: " << tmp << mout.endl;
-	mout.special() << "dst: " << dst << mout.endl;
+	mout.debug("src: " , src );
+	mout.special("tmp: " , tmp );
+	mout.special("dst: " , dst );
 
 	// Accelerate computation if (1 x H) or (W x 1) window.
 	if (width > 1){
@@ -88,10 +88,10 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 		window1.setDstFrame(tmp);
 		mout.debug2() << window1 << mout.endl;
 		window1.run();
-		mout.special() << window1 << mout.endl;
+		mout.special(window1 );
 	}
 	else {
-		mout.info() << "Special case optimized: 1xH window" << mout.endl;
+		mout.info("Special case optimized: 1xH window" );
 		tmp.copyDeep(src);
 	}
 
@@ -104,7 +104,7 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 		window2.run();
 	}
 	else {
-		mout.info() << "Special case optimized: Wx1 window" << mout.endl;
+		mout.info("Special case optimized: Wx1 window" );
 		dst.copyData(tmp);
 	}
 
@@ -118,8 +118,8 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 void FastAverageOp::traverseChannel(const Channel & src, const Channel & srcAlpha, Channel & dst, Channel & dstAlpha) const {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name, "process(src,srcW,dst,dstW)");
-	//mout.warn() <<  src      << mout.endl;
-	//mout.warn() << srcAlpha << mout.endl;
+	//mout.warn(src      );
+	//mout.warn(srcAlpha );
 
 	size_t width  = conf.getWidth();
 	size_t height = conf.getHeight() ? conf.getHeight() : width;
@@ -127,7 +127,7 @@ void FastAverageOp::traverseChannel(const Channel & src, const Channel & srcAlph
 	/// Special case
 	/*
 	if ((width==1) && (height==1)){
-		mout.note() << "Special case: 1x1 window => simple copy" << mout.endl;
+		mout.note("Special case: 1x1 window => simple copy" );
 		dst.copyData(src);
 		return;
 	}
@@ -140,8 +140,8 @@ void FastAverageOp::traverseChannel(const Channel & src, const Channel & srcAlph
 	// makeCompatible(srcAlpha.getConf(), tmpAlpha);
 	// tmpAlpha.setPhysicalRange(0, 1, true); // important
 
-	mout.warn() << "tmp:      " << tmp      << mout.endl;
-	mout.warn() << "tmpAlpha: " << tmpAlpha << mout.endl;
+	mout.warn("tmp:      " , tmp      );
+	mout.warn("tmpAlpha: " , tmpAlpha );
 
 
 
@@ -165,7 +165,7 @@ void FastAverageOp::traverseChannel(const Channel & src, const Channel & srcAlph
 	// FilePng::write(dstAlpha, name+"-A2.png");
 
 
-	// mout.warn() << "check scaling: " << src.getScaling() << " ? => " << dst.getScaling() << mout.endl;
+	// mout.warn("check scaling: " , src.getScaling() , " ? => " , dst.getScaling() );
 	// dst.setScaling(src.getScaling()); // ??
 
 }

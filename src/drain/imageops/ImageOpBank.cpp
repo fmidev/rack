@@ -51,11 +51,11 @@ ImageOp & ImageOpBank::getComplete(const std::string & query, char assignmentCha
 	const std::string n = PARAMS ? query.substr(0,index) : query;
 	const std::string name = aliasMap.get(n, n);  // :-D default value is the key itself.
 	const std::string params = PARAMS ? query.substr(index+1) : "";
-	mout.debug() << "op: " << name << '\t' << params << mout.endl;
+	mout.debug("op: " , name , '\t' , params );
 	if (!has(name)){
-		mout.warn() << *this << mout.endl;
+		mout.warn(*this );
 
-		mout.error() << "invalid op: '" << name << "' extracted from query: '" << query << "'" << mout.endl;
+		mout.error("invalid op: '" , name , "' extracted from query: '" , query , "'" );
 	}
 
 	ImageOp & op = get(name);
@@ -112,8 +112,8 @@ public:
 			//cmd.section = ImageOpAdapter2<>::getSectionFlag();
 		}
 		catch (const std::exception &e) {
-			mout.warn() << name  << ">" <<  OP().getName()  << '>' << mout.endl;
-			mout.fail() << e.what() << mout.endl;
+			mout.warn(name  , ">" ,  OP().getName()  , '>' );
+			mout.fail(e.what() );
 		}
 	}
 

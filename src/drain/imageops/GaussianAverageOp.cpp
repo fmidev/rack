@@ -54,21 +54,21 @@ void GaussianAverageOp::traverseChannel(const Channel & src, Channel & dst) cons
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	// TODO: generalize!
-	mout.special() << "conf: " << conf.frame << ',' << conf.radius << mout.endl;
+	mout.special("conf: " , conf.frame , ',' , conf.radius );
 
 	Image tmp(dst.getType());
 	makeCompatible(src.getConf(), tmp);
 	//makeCompatible(src, dst); // unneeded in traverse?
 
-	mout.special() << "src: "  << src << mout.endl;
-	mout.special() << "tmp: "  << tmp << mout.endl;
+	mout.special("src: "  , src );
+	mout.special("tmp: "  , tmp );
 
 
 	//GaussianStripe<true> window1(conf.width, 0.5*conf.radius*static_cast<double>(conf.width));
 	GaussianStripe<true> window1(conf.getWidth(), conf.radius);
 	window1.setSrcFrame(src);
 	window1.setDstFrame(tmp);
-	mout.debug() << window1 << mout.endl;
+	mout.debug(window1 );
 	window1.run();
 
 	//const int h = (conf.height>0.0) ? conf.height : conf.width;
@@ -76,10 +76,10 @@ void GaussianAverageOp::traverseChannel(const Channel & src, Channel & dst) cons
 	GaussianStripe<false> window2(conf.getHeight(), conf.radius);
 	window2.setSrcFrame(tmp);
 	window2.setDstFrame(dst);
-	mout.debug() << window2 << mout.endl;
+	mout.debug(window2 );
 	window2.run();
 
-	// mout.warn() << "could not set scaling now" << mout.endl;
+	// mout.warn("could not set scaling now" );
 	// dst.getScaling().setScale(src.getScaling().getScale());
 
 }
@@ -100,7 +100,7 @@ void GaussianAverageOp::traverseChannel(const Channel & src, const Channel & src
 	window1.setSrcFrameWeight(srcWeight);
 	window1.setDstFrame(tmp);
 	window1.setDstFrameWeight(tmpWeight);
-	mout.debug() << window1 << mout.endl;
+	mout.debug(window1 );
 	window1.run();
 	// File::write(tmp, "gauss1d.png");
 	// File::write(tmpWeight, "gauss1w.png");
@@ -112,10 +112,10 @@ void GaussianAverageOp::traverseChannel(const Channel & src, const Channel & src
 	window2.setSrcFrameWeight(tmpWeight);
 	window2.setDstFrame(dst);
 	window2.setDstFrameWeight(dstWeight);
-	mout.debug() << window2 << mout.endl;
+	mout.debug(window2 );
 	window2.run();
 
-	// mout.warn() << "could not set scaling now" << mout.endl;
+	// mout.warn("could not set scaling now" );
 	// dst.scaling.setScale(src.scaling.getScale());
 
 }

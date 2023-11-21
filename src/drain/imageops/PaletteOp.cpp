@@ -164,7 +164,7 @@ void PaletteOp::registerSpecialCode(const std::string & code, double d) {
 
 	if ((this->palettePtr == NULL) || (this->palettePtr->empty())){
 		//throw std::runtime_error("PaletteOp::setSpecialCode: palette not set (null)");
-		mout.error() << "no paletted loaded or linked " << mout.endl;
+		mout.error("no paletted loaded or linked " );
 	}
 
 	Palette::spec_t::const_iterator it = palettePtr->specialCodes.find(code);
@@ -175,7 +175,7 @@ void PaletteOp::registerSpecialCode(const std::string & code, double d) {
 	}
 	else {
 		mout.debug(*palettePtr);
-		//mout.note() << palettePtr->specialCodes << mout.endl;
+		//mout.note(palettePtr->specialCodes );
 		mout.warn("could not find entry: ", code, '(', d, ')');
 	}
 	//std::cerr << code <<  ": setSpecialCode: could not find entry\n";
@@ -207,13 +207,13 @@ void PaletteOp::getDstConf(const ImageConf &src, ImageConf &dst) const {
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	if (palettePtr->empty()){
-		mout.warn() << " no palette loaded " << mout.endl;
+		mout.warn(" no palette loaded " );
 		dst.setGeometry(src.getGeometry());
 		return;
 	}
 
 	// const ChannelGeometry & colours = palettePtr->getChannels();
-	// mout.debug() << colours << mout;
+	// mout.debug(colours );
 
 	// TODO: what if src image has alpha channel?
 	const size_t alphaChannelCount = dst.getAlphaChannelCount();
@@ -222,11 +222,11 @@ void PaletteOp::getDstConf(const ImageConf &src, ImageConf &dst) const {
 	dst.setChannelCount(palettePtr->getChannels());
 
 	if (dst.getAlphaChannelCount() != alphaChannelCount){
-		mout.warn() << "dst alpha channel count changed from " <<alphaChannelCount << " to " << dst.getAlphaChannelCount() << mout;
+		mout.warn("dst alpha channel count changed from " ,alphaChannelCount , " to " , dst.getAlphaChannelCount() );
 	}
 
 	if (src.hasAlphaChannel() && !dst.hasAlphaChannel()){
-		mout.unimplemented() << "src has alpha channel, but palette not" << mout;
+		mout.unimplemented("src has alpha channel, but palette not" );
 	}
 
 	//dst.setGeometry(src.getWidth(), src.getHeight(), colours.getImageChannelCount(), colours.getAlphaChannelCount());
@@ -253,34 +253,34 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	drain::Logger mout(__FILE__, __FUNCTION__); //REPL this->name+"(ImageOp::)[const ChannelTray &, ChannelTray &]", __FUNCTION__);
 
-	// mout.debug() << "Starting" << mout.endl;
+	// mout.debug("Starting" );
 
 	mout.debug2() << src << mout.endl;
 	mout.debug2() << dst << mout.endl;
 
 	const Channel & srcChannel = src.get(0);
 	if (src.size() > 1){
-		mout.note() << "src has " << src.size() << " > 1 channels, using first " << mout.endl;
+		mout.note("src has " , src.size() , " > 1 channels, using first " );
 	}
 
-	mout.debug() << "srcChannel " << srcChannel   << mout.endl;
+	mout.debug("srcChannel " , srcChannel   );
 
 	const size_t width  = dst.getGeometry().getWidth();
 	const size_t height = dst.getGeometry().getHeight();
 	const ChannelGeometry paletteChannels = palettePtr->getChannels();
 
-	mout.debug() << paletteChannels << mout.endl;
+	mout.debug(paletteChannels );
 
 	// Note: colouring involves also alpha, if found, so channelCount includes alpha channel(s)
 
 	size_t channelCount = dst.getGeometry().channels.getChannelCount();
 
 	if (channelCount > paletteChannels.getChannelCount()){
-		mout.note() << "dst has " << channelCount << " colours (channels), using that of palette: " << paletteChannels.getChannelCount() << mout.endl;
+		mout.note("dst has " , channelCount , " colours (channels), using that of palette: " , paletteChannels.getChannelCount() );
 		channelCount = paletteChannels.getChannelCount();
 	}
 	else if (channelCount < paletteChannels.getChannelCount()){
-		mout.note() << "palette has " << paletteChannels.getImageChannelCount() << " colours (channels), using only that of dst: " << channelCount << mout.endl;
+		mout.note("palette has " , paletteChannels.getImageChannelCount() , " colours (channels), using only that of dst: " , channelCount );
 	}
 
 
@@ -294,10 +294,10 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	//const ValueScaling & scaling = srcChannel.getScaling();
 	const ValueScaling scaling(scale, offset);
 
-	//mout.warn() << "src    scaling " << encoding.scaling << mout.endl;
-	//mout.warn() << "src getScaling " << srcChannel.getScaling() << mout.endl;
+	//mout.warn("src    scaling " , encoding.scaling );
+	//mout.warn("src getScaling " , srcChannel.getScaling() );
 	// encoding.scaling.
-	//mout.warn() << "src    scaling " << scaling << mout.endl;
+	//mout.warn("src    scaling " , scaling );
 
 	const bool SCALED = scaling.isScaled();
 	const bool UCHAR  = (encoding.getType() == typeid(unsigned char));      // && !SCALED;
@@ -367,10 +367,10 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 		mout.warn("Not uint8b or uint16b, hence using (slow) retrieval: ", srcChannel);
 		mout.note("scaling: " , scaling);
-		//mout.warn() << "using (slow) retrieval, scaled=" << SCALED << ',' << drain::Type::getTypeChar(encoding.getType()) << ", " << scaling << mout.endl;
+		//mout.warn("using (slow) retrieval, scaled=" , SCALED , ',' , drain::Type::getTypeChar(encoding.getType()) , ", " , scaling );
 
 		if (mout.isDebug(1)){
-			mout.debug() << "first entries of palette: " << mout.endl;
+			mout.debug("first entries of palette: " );
 			mout.debug() << '\n';
 			for (size_t  i = 0; i < 25; ++i) {
 				mout << i << '>' << scaling.fwd(i) << '\t';
@@ -417,7 +417,7 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	if (paletteChannels.getAlphaChannelCount() == 0){
 		if ((src.getGeometry().channels.getAlphaChannelCount()>0) && (dst.getGeometry().channels.getAlphaChannelCount()>0)){
-			mout.info() << "Copying original (1st) alpha channel" << mout.endl;
+			mout.info("Copying original (1st) alpha channel" );
 			CopyOp().traverseChannel(src.getAlpha(), dst.getAlpha());
 		}
 	}
@@ -485,7 +485,7 @@ void PaletteOp::processOLD(const ImageFrame &src,Image &dst) const {
 
 	if (channels.getAlphaChannelCount() == 0){
 		if ((src.getAlphaChannelCount()>0) && (dst.getAlphaChannelCount()>0)){
-			mout.info() << "Copying original alpha channel" << mout.endl;
+			mout.info("Copying original alpha channel" );
 			CopyOp().traverseChannel(src.getAlphaChannel(), dst.getAlphaChannel());
 		}
 	}

@@ -45,7 +45,7 @@ void SegmentStatisticsOp::getDstConf(const ImageConf & src, ImageConf & dst) con
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	mout.debug() << dst << mout.endl;
+	mout.debug(dst );
 
 	const std::type_info & t = typeid(unsigned short);
 
@@ -54,7 +54,7 @@ void SegmentStatisticsOp::getDstConf(const ImageConf & src, ImageConf & dst) con
 	}
 	else if (Type::call<typeIsFloat>(dst.getType())){
 		dst.setType(t);
-		mout.warn() << "float valued destination data not supported, setting: " << Type::getTypeChar(t) << mout.endl;
+		mout.warn("float valued destination data not supported, setting: " , Type::getTypeChar(t) );
 		//throw std::runtime_error("SegmentAreaOp: float valued destination image not supported.");
 	}
 
@@ -70,7 +70,7 @@ void SegmentStatisticsOp::makeCompatible(const ImageFrame & src, Image & dst) co
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	mout.debug() << dst << mout.endl;
+	mout.debug(dst );
 
 	const std::type_info & t = typeid(unsigned short);
 
@@ -79,7 +79,7 @@ void SegmentStatisticsOp::makeCompatible(const ImageFrame & src, Image & dst) co
 	}
 	else if (Type::call<typeIsFloat>(dst.getType())){
 		dst.setType(t);
-		mout.warn() << "float valued destination data not supported, setting: " << Type::getTypeChar(t) << mout.endl;
+		mout.warn("float valued destination data not supported, setting: " , Type::getTypeChar(t) );
 		//throw std::runtime_error("SegmentAreaOp: float valued destination image not supported.");
 	}
 
@@ -117,10 +117,10 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 			src.getScaling().inv(intensity.max);
 
 	if (minRaw <= src.getConf().getTypeMin<double>()){
-		mout.warn()  << "min value=" << (double)minRaw <<  " less or smaller than storage type min=" << src.getConf().getTypeMin<double>() << mout.endl;
+		mout.warn("min value=" , (double)minRaw ,  " less or smaller than storage type min=" , src.getConf().getTypeMin<double>() );
 	}
 
-	mout.debug()  << "raw range: " << (double)minRaw << '-' << (double)maxRaw << mout.endl;
+	mout.debug("raw range: " , (double)minRaw , '-' , (double)maxRaw );
 
 
 	/// TODO: should use the actual types of src and dst.
@@ -147,8 +147,8 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 	//mout << "dst scale:" << (float)intensity.min  << '-' << (float)max;
 	mout << mout.endl;
 
-	mout.debug() << "prober:" << prober    << mout.endl;
-	mout.debug() << "fill:  " << floodFill << mout.endl;
+	mout.debug("prober:" , prober    );
+	mout.debug("fill:  " , floodFill );
 
 	typedef drain::typeLimiter<size_t> Limiter;
 	Limiter::value_t limiter = Type::call<Limiter>(dst.getType());
@@ -217,7 +217,7 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 						quantity = prescale * s.getElongation();
 						break;
 					default:
-						mout.error() << "prober: unknown statistic: " << statistics.at(k) << mout.endl;
+						mout.error("prober: unknown statistic: " , statistics.at(k) );
 						return;
 					}
 

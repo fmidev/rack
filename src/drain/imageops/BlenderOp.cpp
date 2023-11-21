@@ -47,16 +47,16 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), this->name, std::string(__FUNCTION__)); // +"(src,srcW, dst,dstW"
 
-	mout.debug() << "start" << mout.endl;
+	mout.debug("start" );
 	// File::write(src.get(), getName() + "0.png");
-	mout.info() << getParameters() << mout; //
+	mout.info(getParameters() ); //
 
 	initializeParameters(src.get(), dst.get());
 
 
 	if (loops == 0){
-		//mout.error() << "zero loops, use copy instead..." << mout.endl;
-		mout.note() << "zero loops, only copying data" << mout.endl;
+		//mout.error("zero loops, use copy instead..." );
+		mout.note("zero loops, only copying data" );
 		CopyOp copy;
 		copy.traverseChannels(src, dst);
 		//dst.get().copyData(src.get());
@@ -64,9 +64,9 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	}
 
 	if (src.hasAlpha() ^ dst.hasAlpha()){
-		mout.warn() << "src: " << src << mout.endl;
-		mout.warn() << "dst: " << dst << mout.endl;
-		mout.error() << "src/dst: only either has alpha" << mout.endl;
+		mout.warn("src: " , src );
+		mout.warn("dst: " , dst );
+		mout.error("src/dst: only either has alpha" );
 		return;
 	}
 
@@ -92,13 +92,13 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	Frame2D<int> frame(conf.frame);
 	// Set width,height only if applicable...
 	if (SPREADER_WINDOW){
-		mout.info() << "frame: " << conf.frame << " -> " << frame << mout;
+		mout.info("frame: " , conf.frame , " -> " , frame );
 		spreaderOp.setParameter("width", frame.tuple());
 		//spreaderOp.setParameter("height", frame.height);
 	}
 	spreaderOp.setParameters(spreaderParams, ':', '/');
 
-	mout.info() << "spreader: " << spreaderOp << mout; // .getName() << ' ' << spreader.getName()
+	mout.info("spreader: " , spreaderOp ); // .getName() << ' ' << spreader.getName()
 
 
 	const drain::SmartMap<std::string> & blenderAliases = WEIGHTED ? getMixerAliasMap<true>() : getMixerAliasMap<false>();
@@ -109,7 +109,7 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	std::string blenderKey = (coeff > 0.0) ? "blend" : blender;
 
 	ImageOp & mixerOp = cloner.getCloned(blenderAliases.get(blenderKey, blenderKey));
-	mout.info() << "blender: " << mixerOp << mout; // .getName() << ' ' << spreader.getName()
+	mout.info("blender: " , mixerOp ); // .getName() << ' ' << spreader.getName()
 
 	//const Variable v(key, typeid(double));
 	if (coeff > 0.0){
@@ -136,14 +136,14 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	// Process one or two steps, ensuring ending at dst
 	if ((loopsFinal==0) || ((loopsFinal&1)==1)){ // odd
 
-		mout.info() << "pre-round (src->dst):  " << loop << mout.endl;
+		mout.info("pre-round (src->dst):  " , loop );
 		//std::stringstream sstr;
 		//sstr << getName() << loop;
 		//File::write(src.get(), sstr.str() + "S1.png");
 		spreaderOp.traverseChannels(src, dst);
 		//File::write(src.get(), sstr.str() + "S2.png");
 		if (loopsFinal == 0){
-			mout.info() << "distance op, skipping remaining loops, loops=" << loops << mout.endl;
+			mout.info("distance op, skipping remaining loops, loops=" , loops );
 			return;
 		}
 		mixerOp.traverseChannels(src, dst);
@@ -152,7 +152,7 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	}
 	else { // even
 
-		mout.info() << "pre-round (A:src->tmp):  " << loop << mout.endl;
+		mout.info("pre-round (A:src->tmp):  " , loop );
 		spreaderOp.traverseChannels(src, tmp);
 		mixerOp.traverseChannels(src, tmp);
 		++loop;
@@ -163,7 +163,7 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 			spreaderOp.setParameter("width", frame);
 		}
 
-		mout.debug() << "pre-round (B:tmp->dst):  " << loop << mout.endl;
+		mout.debug("pre-round (B:tmp->dst):  " , loop );
 		spreaderOp.traverseChannels(tmp, dst);
 		mixerOp.traverseChannels(src, dst);
 		++loop;
@@ -177,10 +177,10 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 		if (SPREADER_WINDOW){
 			frame.width  *= expansionCoeff;
 			frame.height *= expansionCoeff;
-			mout.special() << "frame -> " << frame << mout;
+			mout.special("frame -> " , frame );
 			spreaderOp.setParameter("width", frame);
 		}
-		mout.info() << "round (dst->tmp):  " << loop << mout.endl;
+		mout.info("round (dst->tmp):  " , loop );
 		spreaderOp.traverseChannels(dst, tmp);
 		mixerOp.traverseChannels(src, tmp);
 		++loop;
@@ -191,7 +191,7 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 			spreaderOp.setParameter("width", frame);
 		}
 
-		mout.info() << "round (tmp->dst):  " << loop << mout.endl;
+		mout.info("round (tmp->dst):  " , loop );
 		spreaderOp.traverseChannels(tmp, dst);
 		mixerOp.traverseChannels(src, dst);
 		++loop;
@@ -199,7 +199,7 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	}
 
 
-	mout.debug() << "end" << mout.endl;
+	mout.debug("end" );
 
 }
 
@@ -223,13 +223,13 @@ ImageOp & BlenderOp::getSmoother(const std::string & key, bool weighted, unsigne
 	ImageOpBank & bank = getImageOpBank();
 
 	if (key == "blender"){
-		mout.error() << "blender cannot call itself: key=" << key << mout.endl;
+		mout.error("blender cannot call itself: key=" , key );
 	}
 
 	ImageOp & op = bank.getComplete(key, ':', '/', aliasMap);
 	if (op.getName().find("DistanceTransform") == 0){ // +"Fill" +"Exp"/"Linear"
 		if (loops > 1)
-			mout.note() << "discarding further loops (" << loops << "), inapplicable with " << op.getName() << mout.endl;
+			mout.note("discarding further loops (" , loops , "), inapplicable with " , op.getName() );
 		loops = 0;
 	}
 

@@ -58,38 +58,38 @@ void OpticalFlowCore2::setSrcFrames(const ImageTray<const Channel> & srcTray){
 	const size_t N = getDiffChannelCount();
 
 	if (srcTray.size() < getDiffChannelCount())
-		mout.error() << "src has less channels than needed = " << N << mout.endl;
+		mout.error("src has less channels than needed = " , N );
 
 	// For general coord handling etc, native src must be set!
 	//Window<OpticalFlowConfig>::setSrcFrames(srcTray.get());
-	mout.debug() << "setting accumulation channels" << mout.endl;
+	mout.debug("setting accumulation channels" );
 
 	GXX.setView(srcTray.get(0));
 	GXY.setView(srcTray.get(1));
 	GYY.setView(srcTray.get(2));
 	GXT.setView(srcTray.get(3));
 	GYT.setView(srcTray.get(4));
-	//mout.warn() << "GXX:" << GXX << mout.endl;
+	//mout.warn("GXX:" , GXX );
 	//File::write(GXX, "GXX1.png");
 
-	//mout.warn() << "setting alpha, if found" << mout.endl;
+	//mout.warn("setting alpha, if found" );
 	/// Set quality (weight) channel
 	if (srcTray.hasAlpha()){
-		mout.info() << "set alpha from src.alpha() " << mout.endl;
+		mout.info("set alpha from src.alpha() " );
 		//srcWeight.setView(srcTray.getAlpha());
 		setSrcFrameWeight(srcTray.getAlpha());
 	}
 	else if (srcTray.size() > N) {
-		mout.note() << "set alpha from src.get(" << N << ") " << mout.endl;
+		mout.note("set alpha from src.get(" , N , ") " );
 		//srcWeight.setView(srcTray.get(3));
 		setSrcFrameWeight(srcTray.get(N));
 	}
 	else {
-		mout.warn() << "no alpha to set?" << mout.endl;
+		mout.warn("no alpha to set?" );
 	}
 
 	if ((srcTray.size()+srcTray.alpha.size()) > (N+1))
-		mout.note() << "src has more than " << (N+1) << " channels?" << mout.endl;
+		mout.note("src has more than " , (N+1) , " channels?" );
 }
 
 
@@ -103,29 +103,29 @@ void FastOpticalFlow2Op::preprocess(const Channel & srcImage, const Channel & sr
 	dstImage.adoptScaling(srcImage.getConf());
 	dstWeight.adoptScaling(srcWeight.getConf());
 
-	mout.debug() << "src:  " << srcImage  << mout.endl;
-	mout.debug() << "srcW: " << srcWeight << mout.endl;
-	mout.debug() << "dst:  " << dstImage  << mout.endl;
-	mout.debug() << "dstW: " << dstWeight << mout.endl;
+	mout.debug("src:  " , srcImage  );
+	mout.debug("srcW: " , srcWeight );
+	mout.debug("dst:  " , dstImage  );
+	mout.debug("dstW: " , dstWeight );
 
 
 	Image mask; //srcData.createSimpleQualityData(mask, 1.0, 0.0, 1.0);
 
 	if (optResize()){
-		mout.debug() << "rescale: " << resize << mout.endl;
+		mout.debug("rescale: " , resize );
 		drain::image::ResizeOp op;
 		if (resize > 1.0){
 			op.setWidth(resize);
 			op.setHeight((resize*srcImage.getHeight())/srcImage.getWidth());
 			if (resize < 10.0){
-				mout.warn() << "resized geometry suspiciously small " << op.getParameters() << mout.endl;
+				mout.warn("resized geometry suspiciously small " , op.getParameters() );
 			}
 		}
 		else { // shrink 0%...100%
 			op.setWidth(resize * srcImage.getWidth());
 			op.setHeight(resize * srcImage.getHeight());
 		}
-		mout.info() << "run: " << op.getName() << ':' << op.getParameters() << mout.endl;
+		mout.info("run: " , op.getName() , ':' , op.getParameters() );
 		op.process(*srcImagePtr,  dstImage);
 		op.process(*srcWeightPtr, dstWeight);
 		srcImagePtr  = & dstImage;
@@ -139,8 +139,8 @@ void FastOpticalFlow2Op::preprocess(const Channel & srcImage, const Channel & sr
 		op.functor.threshold = threshold;
 		op.functor.replace = srcImage.getConf().requestPhysicalMin();
 				//srcImage.getScaling().inv(srcImage.getMin<double>());
-		//mout.warn() << "running: " << op.getParameters() << mout.endl;
-		mout.info() << "run: " << op.getName() << ':' << op.getParameters() << mout.endl;
+		//mout.warn("running: " , op.getParameters() );
+		mout.info("run: " , op.getName() , ':' , op.getParameters() );
 		op.process(*srcImagePtr, dstImage);
 		srcImagePtr   = & dstImage;
 	}
@@ -148,7 +148,7 @@ void FastOpticalFlow2Op::preprocess(const Channel & srcImage, const Channel & sr
 	if (optSpread()|| optSmoother()){
 		UnaryFunctorOp<ThresholdFunctor> op;
 		op.functor.threshold = 0.2;
-		mout.info() << "creating mask: " << op.getName() << ':' << op.getParameters() << mout.endl;
+		mout.info("creating mask: " , op.getName() , ':' , op.getParameters() );
 		op.process(*srcWeightPtr, mask);
 		//File::write(mask, "mask.png");
 	}
@@ -156,7 +156,7 @@ void FastOpticalFlow2Op::preprocess(const Channel & srcImage, const Channel & sr
 	if (optSmoother()){
 		drain::image::GaussianAverageOp op;
 		op.setSize(conf.frame.width, conf.frame.height);
-		mout.info() << "run: " << op.getName() << ':'<< op.getParameters() << mout.endl;
+		mout.info("run: " , op.getName() , ':', op.getParameters() );
 		op.process(*srcImagePtr, *srcWeightPtr, dstImage, dstWeight);
 		srcImagePtr  = & dstImage;
 		srcWeightPtr = & dstWeight;
@@ -166,7 +166,7 @@ void FastOpticalFlow2Op::preprocess(const Channel & srcImage, const Channel & sr
 		//drain::image::DistanceTransformFillExponentialOp op;
 		drain::image::DistanceTransformExponentialOp op;
 		op.setRadius(conf.frame.width, conf.frame.height);
-		mout.info() << "run: " << op.getName() << ':' << op.getParameters() << mout.endl;
+		mout.info("run: " , op.getName() , ':' , op.getParameters() );
 		op.process(*srcImagePtr,  dstImage);
 		op.process(*srcWeightPtr, dstWeight);
 		srcImagePtr  = & dstImage;
@@ -193,10 +193,10 @@ void FastOpticalFlow2Op::computeDifferentials(const ImageTray<const Channel> & s
 
 	// Source images (intensity)
 	if (src.size() < 2) {
-		mout.error() << "src image tray must have at least 2 channels, now ("<< src.size() << ")" << mout.endl;
+		mout.error("src image tray must have at least 2 channels, now (", src.size() , ")" );
 	}
 	else if (src.size() > 2) {
-		mout.warn() << "src image set has more than 2 channels ("<< src.size() << "), using [0] and [1]" << mout.endl;
+		mout.warn("src image set has more than 2 channels (", src.size() , "), using [0] and [1]" );
 	}
 
 	const Channel & src1 = src.get(0);
@@ -213,26 +213,26 @@ void FastOpticalFlow2Op::computeDifferentials(const ImageTray<const Channel> & s
 	if (USE_ALPHA){
 
 		if (USE_ALPHA2){
-			mout.note() << "using separate alpha channels for both inputs, ok" << mout.endl;
+			mout.note("using separate alpha channels for both inputs, ok" );
 		}
 		else {
-			mout.note() << "using shared alpha channel, ok" << mout.endl;
+			mout.note("using shared alpha channel, ok" );
 		}
 
 		if (a>2) {
-			mout.warn() << "several alpha channels ("<< a << "), using [0] and [1] only..." << mout.endl;
+			mout.warn("several alpha channels (", a , "), using [0] and [1] only..." );
 		}
 
-		mout.note() << src.alpha << mout.endl;
+		mout.note(src.alpha );
 
 	}
 	else {
-		mout.debug() << " no alpha channel (quality weight) in src data, ok" << mout.endl;
+		mout.debug(" no alpha channel (quality weight) in src data, ok" );
 	}
 
 	// Source images (differentials)
 	if (dst.size() < getDiffChannelCount()) {
-		mout.error() << "dst image tray does not have enough channels ("<< getDiffChannelCount() << ")" << mout.endl;
+		mout.error("dst image tray does not have enough channels (", getDiffChannelCount() , ")" );
 	}
 
 	// ! Scale should be set already in getSrc().
@@ -242,10 +242,10 @@ void FastOpticalFlow2Op::computeDifferentials(const ImageTray<const Channel> & s
 	for (size_t i = 0; i < dst.size(); ++i) {
 		Channel & d = dst.get(i);
 		if (!d.getScaling().isPhysical()){
-			mout.warn() << "would like to use physical scaling +/-" << scale << " for diff channel #" << i << mout.endl;
+			mout.warn("would like to use physical scaling +/-" , scale , " for diff channel #" , i );
 			//  => =>  d.setOptimalScale(-scale, scale); // pix?
 		}
-		mout.debug() << "diff channel #" << i << "scaling: " << d.getScaling() << mout.endl;
+		mout.debug("diff channel #" , i , "scaling: " , d.getScaling() );
 	}
 
 	if (mout.isDebug(20)){

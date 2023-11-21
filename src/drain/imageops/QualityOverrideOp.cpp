@@ -44,13 +44,13 @@ void QualityOverrideOp::traverseChannels(const ImageTray<const Channel> & src, I
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	//mout.debug() << "src: " << src.getGeometry() << ", dst: "  << dst.getGeometry() << mout;
-	mout.info() << "src: " << src << mout;
-	mout.info() << "dst: " << dst << mout;
-	mout.warn() << getParameters() << mout;
+	//mout.debug("src: " , src.getGeometry() , ", dst: "  , dst.getGeometry() );
+	mout.info("src: " , src );
+	mout.info("dst: " , dst );
+	mout.warn(getParameters() );
 
 	if (src.getGeometry() != dst.getGeometry()){
-		mout.error() << "geometries not same" << mout;
+		mout.error("geometries not same" );
 	}
 
 	// assume 1 alpha channel!
@@ -92,10 +92,10 @@ void QualityOverrideOp::traverseChannels(const ImageTray<const Channel> & src1, 
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.note() << "src: " << src1.getGeometry() << ", src2: " << src2.getGeometry() <<", dst: "  << dst.getGeometry() << mout.endl;
+	mout.note("src: " , src1.getGeometry() , ", src2: " , src2.getGeometry() ,", dst: "  , dst.getGeometry() );
 
 	if ((src1.getGeometry() != dst.getGeometry()) || (src2.getGeometry() != dst.getGeometry())){
-		mout.error() << "geometries not same" << mout.endl;
+		mout.error("geometries not same" );
 	}
 
 	// assume 1 alpha channel!
@@ -147,11 +147,11 @@ void QualityOverrideOp::traverseChannels(const ImageTray<const Channel> & src1, 
 void QualityOverrideOp::traverseChannels(const ImageTray<const Channel> & src1, const ImageTray<const Channel> & src2,
 		ImageTray<Channel> & dst) const {  // RAISE for each
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"[3]", __FUNCTION__);
-	//mout.error() << "under constr" << mout.endl;
+	//mout.error("under constr" );
 
-	mout.debug() << "src1:" << src1.getGeometry() << mout.endl;
-	mout.debug() << "src2:" << src2.getGeometry() << mout.endl;
-	mout.debug() << "dst:"  << dst.getGeometry()  << mout.endl;
+	mout.debug("src1:" , src1.getGeometry() );
+	mout.debug("src2:" , src2.getGeometry() );
+	mout.debug("dst:"  , dst.getGeometry()  );
 
 	typename ImageTray<const Channel>::map_t::const_iterator sit1 = src1.begin();
 	typename ImageTray<const Channel>::map_t::const_iterator sat1 = src1.alpha.begin();
@@ -166,35 +166,35 @@ void QualityOverrideOp::traverseChannels(const ImageTray<const Channel> & src1, 
 	while (true){
 
 		if (sit1 == src1.end()){
-			//mout.note() << "src1 ended, ok" << mout.endl;
+			//mout.note("src1 ended, ok" );
 			if (sit2 != src2.end()){
-				mout.warn() << "src1 ended before src2 (src2 had extra channels)" << mout.endl;
+				mout.warn("src1 ended before src2 (src2 had extra channels)" );
 			}
 			return;
 		}
 		if (sit2 == src2.end()){
-			mout.warn() << "src2 ended before src1" << mout.endl;
+			mout.warn("src2 ended before src1" );
 			return;
 		}
 		if (dit == dst.end()){
-			mout.warn() << "dst ended before src1,src2" << mout.endl;
+			mout.warn("dst ended before src1,src2" );
 			return;
 		}
 
 		if (sat1 == src1.alpha.end()){
-			mout.debug() << "reuse src1.alpha, ok" << mout.endl;
+			mout.debug("reuse src1.alpha, ok" );
 			sat1 =  src1.alpha.begin();
 		}
 		if (sat2 == src2.alpha.end()){
-			mout.debug() << "reuse src2.alpha, ok" << mout.endl;
+			mout.debug("reuse src2.alpha, ok" );
 			sat2 =  src2.alpha.begin();
 		}
 		if (dat == dst.alpha.end()){
-			mout.debug() << "reuse dst.alpha, ok" << mout.endl;
+			mout.debug("reuse dst.alpha, ok" );
 			dat =  dst.alpha.begin();
 		}
 
-		mout.debug() << "calling traverseChannel(s1,sa1, s2,sa2, d,da)" << mout.endl;
+		mout.debug("calling traverseChannel(s1,sa1, s2,sa2, d,da)" );
 		traverseChannel(sit1->second, sat1->second, sit2->second, sat2->second, dit->second, dat->second);
 
 		++sit1; ++sat1;
@@ -214,7 +214,7 @@ void QualityOverrideOp::traverseChannel(const Channel & src1, const Channel & sr
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"[2+2,2]", __FUNCTION__);
 
 	if (decay != 1.0)
-		mout.info() << this->getParameters() << mout.endl;
+		mout.info(this->getParameters() );
 
 	mout.debug()  << '\n';
 	mout << src1 << ",\t " << src1Weight << ",\n";
@@ -262,10 +262,10 @@ void QualityOverrideOp::traverseFrame(const Channel &src, const Channel &srcWeig
 
 	Logger mout(getImgLog(),__FILE__, __FUNCTION__);
 
-	mout.note() << src << ", " << srcWeight << ", " << dst << ", " << dstWeight << mout.endl;
+	mout.note(src , ", " , srcWeight , ", " , dst , ", " , dstWeight );
 
 	if (decay != 1.0)
-		mout.warn() << "Deprecating param 'decay' (" << decay << ") " << mout.endl;
+		mout.warn("Deprecating param 'decay' (" , decay , ") " );
 
 	for (size_t k=0; k<src.getChannelCount(); k++){
 
@@ -298,9 +298,9 @@ void QualityOverrideOp::traverseFrame(const Channel & src, const Channel & srcWe
 	Logger mout(getImgLog(),__FILE__, __FUNCTION__);
 
 	if (decay != 1.0)
-		mout.warn() << "Deprecating param 'decay' (" << decay << ") " << mout.endl;
+		mout.warn("Deprecating param 'decay' (" , decay , ") " );
 
-	mout.warn() << src << ", " << srcWeight << ", " << dst << ", " << dstWeight << mout.endl;
+	mout.warn(src , ", " , srcWeight , ", " , dst , ", " , dstWeight );
 
 	for (size_t k=0; k<src.getChannelCount(); k++){
 

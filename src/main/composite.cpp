@@ -121,18 +121,18 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	mout.debug("add A1 " + ctx.getName());
 
 	/*
+	mout.debug("add A1 " + ctx.getName());
 	std::ostream & logOrig = std::cerr;
 	std::stringstream sstr;
 	sstr << "thread-" << ctx.getId() << ".log";
 	drain::Output output(sstr.str());
 	ctx.log.setOstr(output);
 	(std::ostream &)output << "# LOG: " << sstr.str() << '\n';
+	mout.debug("add A2 #" + ctx.getName());
 	*/
 
-	mout.debug("add A2 #" + ctx.getName());
 
 	if (ctx.statusFlags)
 		mout.warn("Status flags before accumulating: ", ctx.statusFlags);
@@ -156,7 +156,7 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 
 	// Changed order 2022/12
 
-	mout.debug("add B #" + ctx.getName());
+	//mout.debug("add B #" + ctx.getName());
 
 	#pragma omp critical
 	{

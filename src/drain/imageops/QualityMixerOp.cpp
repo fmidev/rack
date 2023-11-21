@@ -43,10 +43,10 @@ void QualityMixerOp::traverseChannels(const ImageTray<const Channel> & src, Imag
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.note() << "src: " << src.getGeometry() << ", dst: "  << dst.getGeometry() << mout.endl;
+	mout.note("src: " , src.getGeometry() , ", dst: "  , dst.getGeometry() );
 
 	if (src.getGeometry() != dst.getGeometry()){
-		mout.error() << "geometries not same" << mout.endl;
+		mout.error("geometries not same" );
 	}
 
 	// assume 1 alpha channel!

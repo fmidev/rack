@@ -62,7 +62,7 @@ void ImageEncoding::initialize(Image & dst) const { //(const std::string & param
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	//mout.fail() << "Feelu" << mout.endl;
+	//mout.fail("Feelu" );
 
 
 	/// Step 1: change type, if requested
@@ -89,13 +89,13 @@ void ImageEncoding::initialize(Image & dst) const { //(const std::string & param
 	/*
 	if ((dst.scaling.minCodeValue >= 0) && (dst.scaling.minPhysValue < 0.0)){
 		/// light error
-		mout.warn() << "unsigned storage type, negative physical values not supported: " << scaling.toStr() << mout.endl;
+		mout.warn("unsigned storage type, negative physical values not supported: " , scaling.toStr() );
 	}
 	*/
-	mout.special() << refMap << mout.endl;
-	mout.special() << encoding << mout.endl;
-	mout.special() << dst << mout.endl;
-	mout.special() << "DEBUG" << mout.endl;
+	mout.special(refMap );
+	mout.special(encoding );
+	mout.special(dst );
+	mout.special("DEBUG" );
 	dst.dump();
 }
 
@@ -114,7 +114,7 @@ void ImageHistogram::traverseChannel(Channel & dst) const {
 		histogram.setSize(Histogram::recommendSizeByType(dst.getType(), bins));
 	}
 
-	mout.debug() << "(initial) bins: " << bins << ",  " << histogram.getSize() << mout.endl;
+	mout.debug("(initial) bins: " , bins , ",  " , histogram.getSize() );
 
 	histogram.compute(dst, dst.getType());
 	//computeHistogram(dst, histogram);
@@ -122,14 +122,14 @@ void ImageHistogram::traverseChannel(Channel & dst) const {
 	const std::vector<drain::Histogram::count_t> & v = histogram.getVector();
 
 	if (!store.empty()){
-		mout.warn() << "storing in metadata in attribute '" << store << "'" << mout.endl;
+		mout.warn("storing in metadata in attribute '" , store , "'" );
 		if (histogram.getSize() > 256)
-			mout.warn() << " storing large histogram in metadata (" << histogram.getSize() << ")" << mout.endl;
+			mout.warn(" storing large histogram in metadata (" , histogram.getSize() , ")" );
 		dst.properties[store] = v;
 	}
 
 	if (!filename.empty()){
-		mout.warn() << "storing in file " << filename << mout.endl;
+		mout.warn("storing in file " , filename );
 		dst.properties[store] = histogram.getVector();
 
 		std::ostream *ofstreamPtr = & std::cout;
@@ -160,29 +160,29 @@ void ImageHistogram::computeHistogram(const Channel & dst, drain::Histogram & hi
 
 	const std::size_t s = histogram.getSize();
 
-	mout.note() << histogram.getSize() << " bins, storage type resolution " << s << " " << mout.endl;
+	mout.note(histogram.getSize() , " bins, storage type resolution " , s , " " );
 
 	if ((s == 256) && (type == typeid(unsigned char))){
-		mout.note() << "direct mode: u char (fast)" << mout.endl;
+		mout.note("direct mode: u char (fast)" );
 		for (Channel::const_iterator it = dst.begin(); it != dst.end(); ++it){
 			histogram.incrementRaw(static_cast<unsigned short int>(*it));
 		}
 	}
 	else if ((s == 256) && (type == typeid(unsigned short int))){
-		mout.note() << "direct mode: u short (fast)" << mout.endl;
+		mout.note("direct mode: u short (fast)" );
 		for (Channel::const_iterator it = dst.begin(); it != dst.end(); ++it){
 			histogram.incrementRaw(static_cast<unsigned short int>(*it) >> 8);
 		}
 	}
 	else {
-		mout.note() << "scaled mode (slow)" << mout.endl;
+		mout.note("scaled mode (slow)" );
 		histogram.setScale(dst.getScaling().getMinPhys(), dst.getScaling().getMaxPhys());
 		for (Channel::const_iterator it = dst.begin(); it != dst.end(); ++it){
 			histogram.increment(*it);
 		}
 	}
 
-	mout.note() << "finito" << mout.endl;
+	mout.note("finito" );
 
 }
 */
@@ -190,7 +190,7 @@ void ImageHistogram::computeHistogram(const Channel & dst, drain::Histogram & hi
 void ImageFill::traverseChannels(ImageTray<Channel> & dst) const {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-	mout.note() << value << mout.endl;
+	mout.note(value );
 
 	std::vector<double> v;
 	Variable(value, typeid(double)).toSequence(v);
@@ -208,7 +208,7 @@ void ImageFill::traverseChannels(ImageTray<Channel> & dst) const {
 void ImageFill::traverseChannel(Channel & dst) const {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-	//mout.note() << value << mout.endl;
+	//mout.note(value );
 	dst.fill(Variable(value));
 }
 
@@ -218,12 +218,12 @@ void ImageGeometry::initialize(Image & dst) const {
 	//std::cerr << "TEST" << std::endl;
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-	// mout.note() << "file:" << value << mout.endl;
+	// mout.note("file:" , value );
 	//const size_t height = this->height > 0 ? this->height : width;
 	if (height == 0)
 		height = width;
 	dst.setGeometry(width, height, imageChannelCount, alphaChannelCount);
-	mout.debug() << dst.getGeometry() << mout.endl;
+	mout.debug(dst.getGeometry() );
 	// Reset
 	imageChannelCount = 1;
 	alphaChannelCount = 0;
@@ -242,7 +242,7 @@ void ImageCoordPolicy::initialize(Image & dst) const {
 	/// Check values
 	for (size_t i = 0; i < v.size(); ++i) {
 		if ((v[i]==0) || (v[i]>4)){
-			mout.warn() << "undefined coordPolicy index: " << v[i] << mout.endl;
+			mout.warn("undefined coordPolicy index: " , v[i] );
 			v[i] = 1;
 		}
 	}
@@ -268,11 +268,11 @@ void ImageCoordPolicy::initialize(Image & dst) const {
 		policy.xUnderFlowPolicy = v[0];
 		break;
 	default:
-		mout.error() << "Wrong number of parameters (not 1, 2 or 4): " << v.size() << " (" << value << ")" << mout.endl;
+		mout.error("Wrong number of parameters (not 1, 2 or 4): " , v.size() , " (" , value , ")" );
 		break;
 	}
 
-	mout.debug() << policy << mout.endl;
+	mout.debug(policy );
 	dst.setCoordinatePolicy(policy);
 }
 
@@ -280,7 +280,7 @@ void ImageCoordPolicy::initialize(Image & dst) const {
 void ImageCoordPolicy::traverseChannel(Channel & dst) const {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-	//mout.note() << "file:" << value << mout.endl;
+	//mout.note("file:" , value );
 	dst.setCoordinatePolicy(policy);
 }
 
@@ -292,7 +292,7 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	// Note: value is of type string
-	//mout.note() << getParameters() << mout.endl;
+	//mout.note(getParameters() );
 
 	typedef double data_t;
 	std::vector<data_t> v;
@@ -308,7 +308,7 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 		return;
 	}
 
-	//mout.debug() << "Variable p=" << p.toStr() << " vector vField[" << vField.size() << ']' << mout.endl;
+	//mout.debug("Variable p=" , p.toStr() , " vector vField[" , vField.size() , ']' );
 
 	const size_t nImages = dst.size();
 	const size_t nAlphas = dst.alpha.size();
@@ -316,13 +316,13 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 
 	size_t n = v.size()-2;
 
-	mout.debug() << "i=" << nImages << ", a=" << nAlphas << " n=" << n << mout.endl;
+	mout.debug("i=" , nImages , ", a=" , nAlphas , " n=" , n );
 
 	if (n < nChannels){
-		mout.info() << "image has " << nChannels << " channels, yet only " << n << " intensities supplied" << mout.endl;
+		mout.info("image has " , nChannels , " channels, yet only " , n , " intensities supplied" );
 	}
 	else if (n > nChannels){
-		mout.warn() << "image has " << nChannels << " channels, discarding " << (n-nChannels) << " trailing intensities " << mout.endl;
+		mout.warn("image has " , nChannels , " channels, discarding " , (n-nChannels) , " trailing intensities " );
 		n = nChannels;
 	}
 
@@ -338,10 +338,10 @@ void ImagePlot::traverseChannels(ImageTray<Channel> & dst) const {
 			//mout.warn() << k << " kaneli: " << vField[2+k] << "\n";
 			Channel & channel = (k<nImages) ? dst.get(k) : dst.getAlpha(k-nImages);
 			if (k>=nImages){
-				//mout.warn() << k << "quality channel <=" << vField[2+k] << mout.endl;
+				//mout.warn(k , "quality channel <=" , vField[2+k] );
 			}
 			else {
-				//mout.warn() << k << "normi channel <=" << vField[2+k] << mout.endl;
+				//mout.warn(k , "normi channel <=" , vField[2+k] );
 			}
 			const drain::ValueScaling & scaling = channel.getScaling();
 			const drain::typeLimiter<data_t>::value_t & limit = channel.getConf().getLimiter<data_t>();
@@ -373,7 +373,7 @@ void ImageBox::traverseChannels(ImageTray<Channel> & dst) const {
 
 	//const size_t channels = dst.getGeometry().getChannelCount();
 	if (v.size() > nChannels){
-		mout.warn() << "intensity vector  ("<< value << ") has " << v.size() <<" elements, limiting to channel depth " << nChannels << mout;
+		mout.warn("intensity vector  (", value , ") has " , v.size() ," elements, limiting to channel depth " , nChannels );
 		v.resize(nChannels);
 	}
 
@@ -409,7 +409,7 @@ void ImageBox::traverseChannels(ImageTray<Channel> & dst) const {
 void ImagePlotFile::traverseFrame(ImageFrame & dst) const {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-	mout.note() << "file: " << filename << mout.endl;
+	mout.note("file: " , filename );
 
 	//Drainage & r = getDrainage();
 	//Image & dst = r.getDst();
@@ -479,7 +479,7 @@ void ImageSampler::process(Image & dst) const {  // consider void traverse(const
 
 	drain::image::ImageReader reader(sampler.variableMap); //  reader(sampler.variableMap);
 
-	mout.debug() << "variableMap: " << sampler.variableMap << mout.endl;
+	mout.debug("variableMap: " , sampler.variableMap );
 
 	reader.setSize(dst.getWidth(), dst.getHeight());
 
@@ -493,9 +493,9 @@ void ImageSampler::process(Image & dst) const {  // consider void traverse(const
 		else
 			sstr << 'A' << (i-imageChannelCount);
 		images[sstr.str()].setView(dst.getChannel(i));
-		//mout.warn() << sstr.str() << '\t' << images[sstr.str()] << mout.endl;
+		//mout.warn(sstr.str() , '\t' , images[sstr.str()] );
 		const Channel & frame = images[sstr.str()];
-		mout.debug() << sstr.str() << '\t' << frame << mout.endl;
+		mout.debug(sstr.str() , '\t' , frame );
 		//drain::image::File::write(frame, sstr.str()+".png");
 		/*
 		for (int i = 0; i < frame.getHeight(); i+=16){

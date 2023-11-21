@@ -110,7 +110,7 @@ public:
     virtual // TODO: non-virtual, ie, final!
 	void makeCompatible(const ImageConf & src, Image & dst) const {
     	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-    	mout.warn() << "derived " << mout;
+    	mout.warn("derived " );
     	ImageOp::makeCompatible(src, dst);
     }
     */
@@ -126,7 +126,7 @@ public:
 		//if (!dst.typeIsSet())
 			//dst.setType(src.getType());
 		if (dst.getType() != src.getType()){
-			mout.note() << " changing dst image type: " << dst.getType().name() << '>' << src.getType().name() << mout.endl;
+			mout.note(" changing dst image type: " , dst.getType().name() , '>' , src.getType().name() );
 		}
 
 		dst.copyShallow(src);
@@ -242,11 +242,11 @@ Range<int> DistanceTransformOp<T>::getVertRange(const CoordinateHandler2D & coor
 
 	Range<int> yRange = coordinateHandler.getYRange();
 
-	// mout.warn() << "yRange: " << yRange << mout;
+	// mout.warn("yRange: " , yRange );
 
 	const Bidirectional<float> & radiusVert = getDistanceModel().getRadiusVert();
 
-	// mout.warn() << "radiusVert: " << radiusVert << mout;
+	// mout.warn("radiusVert: " , radiusVert );
 
 
 	if (coordinateHandler.policy.yUnderFlowPolicy == CoordinatePolicy::WRAP)
@@ -265,7 +265,7 @@ void DistanceTransformOp<T>::traverseChannel(const Channel &src, Channel & dst) 
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	//mout.warn() << "start" << mout.endl;
+	//mout.warn("start" );
 	mout.debug("model max: ",  getDistanceModel().getMax());
 
 	//File::write(dst,"DistanceTransformOp-dst0.png");
@@ -282,7 +282,7 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-	//mout.debug() << "start" << mout.endl;
+	//mout.debug("start" );
 
 	//const DistanceModel & distModel = getDistanceModel();
 	mout.debug2("distModel:", this->distanceModel);
@@ -314,7 +314,7 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 
 	Range<int> xRange = getHorzRange(coordinateHandler); //coordinateHandler.getXRange();
 	Range<int> yRange = getVertRange(coordinateHandler); // coordinateHandler.getYRange();
-	mout.special() << xRange << ',' << yRange << mout;
+	mout.special(xRange , ',' , yRange );
 
 	// Experimental (element horz/vert topology not yet implemented)
 	// Possibly wrong...  not interchangible due to to scanning element geometry?

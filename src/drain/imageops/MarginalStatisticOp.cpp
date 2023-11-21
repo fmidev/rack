@@ -78,7 +78,7 @@ void MarginalStatisticOp::process(const ImageFrame &src, const ImageFrame &weigh
 
 	if (WEIGHTED){
 		if (weight.getGeometry() != src.getGeometry())
-			mout.error() << "MarginalStatisticOp::geom mismatch" << mout.endl;
+			mout.error("MarginalStatisticOp::geom mismatch" );
 
 		//Point2D<int> p;
 		//CoordinateHandler2D handler(weight.getWidth(), weight.getHeight());

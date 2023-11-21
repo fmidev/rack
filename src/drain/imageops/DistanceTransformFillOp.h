@@ -95,7 +95,7 @@ public:
 
 		dst.setConf(dstConf);
 
-		mout.debug() << "clearing alpha (use traverseChannel(s) to avoid)" << mout;
+		mout.debug("clearing alpha (use traverseChannel(s) to avoid)" );
 
 		// Important
 		dst.getAlphaChannel().fill(0);
@@ -151,19 +151,19 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.debug() << "start: " << *this << mout.endl;
+	mout.debug("start: " , *this );
 
 	if (!src.hasAlpha()){
-		mout.warn()  << "src: " << src << mout;
-		mout.error() << "required alpha channel missing in src" << mout;
+		mout.warn("src: " , src );
+		mout.error("required alpha channel missing in src" );
 		return;
 	}
 	else
 		mout.debug2()  << "src: " << src << mout.endl;
 
 	if (!dst.hasAlpha()){
-		mout.warn()  << "dst: " << dst << mout;
-		mout.error() << "required alpha channel missing in dst" << mout.endl;
+		mout.warn("dst: " , dst );
+		mout.error("required alpha channel missing in dst" );
 		return;
 	}
 	else
@@ -179,7 +179,7 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 	//drain::image::File::write(dst.getAlpha(),"dt0-a.png");
 
 
-	mout.debug()   << "calling traverseDownRight" << mout.endl;
+	mout.debug("calling traverseDownRight" );
 	// mout.debug2()  << src << mout.endl;
 	// mout.debug2()  << dst << mout.endl;
 	traverseDownRight(src, dst);
@@ -190,7 +190,7 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 	}
 	 */
 
-	mout.debug()  << "calling traverseUpLeft" << mout.endl;
+	mout.debug("calling traverseUpLeft" );
 	// mout.debug2()  << dst << mout.endl;
 	traverseUpLeft(dst, dst);
 	/*
@@ -205,8 +205,8 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 
 		UnaryFunctorOp<FuzzyStep<double>,true> threshold;
 		threshold.functor.set(alphaThreshold);
-		mout.debug() << "Thresholding: "<< threshold.functor << mout;
-		// mout.debug() << threshold << mout;
+		mout.debug("Thresholding: ", threshold.functor );
+		// mout.debug(threshold );
 		threshold.traverseChannel(dstAlpha, dstAlpha);
 		//FilePng::write(dstAlpha, "a2.png");
 	}
@@ -224,7 +224,7 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.debug() << "distModel: " << this->distanceModel << mout;
+	mout.debug("distModel: " , this->distanceModel );
 
 	DistanceNeighbourhood chain;
 	this->distanceModel.createChain(chain, true);
@@ -235,7 +235,7 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 	Channel & dstAlpha = dstTray.getAlpha();
 
 	CoordinateHandler2D coordinateHandler(srcTray.get(0));
-	mout.debug() << "coordHandler " << coordinateHandler << mout;
+	mout.debug("coordHandler " , coordinateHandler );
 
 	mout.debug3() << "src alpha:" << srcAlpha << mout;
 	mout.debug3() << "dst alpha:" << dstAlpha << mout;
@@ -258,7 +258,7 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 	size_t address = 0;
 	size_t addressWin = 0;
 
-	mout.debug() << "main loop, K=" << K <<  mout.endl;
+	mout.debug("main loop, K=" , K );
 	for (p.y=0; p.y<=yRange.max; ++p.y){
 		for (p.x=0; p.x<=xRange.max; ++p.x){
 
@@ -321,7 +321,7 @@ template <class T>
 void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, ImageTray<Channel> & dstTray) const {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-	mout.debug() << "start" << mout.endl;
+	mout.debug("start" );
 
 	mout.debug2() << "this->distanceModel" << this->distanceModel << mout.endl;
 
