@@ -40,30 +40,35 @@ namespace drain
 namespace image
 {
 
-// using namespace std;
 
 
 /** 
 	\code
-	drainage gray.png --iMedian 5 -o median.png
+	# Basic example: 5x5 window
+	drainage image-gray.png --iMedian 5 -o median.png
 	\endcode
 
 	\code
-	drainage gray.png --iMedian 3:7 -o medianVert.png
+	# Vertical 3×7 window
+	drainage image-gray.png --iMedian 3:7 -o medianVert.png
 	\endcode
 
 	\code
-	drainage gray.png --iMedian 5:5,0.1 -o median010.png
+	# Weighted median – lower end (darkening)
+	drainage image-gray.png --iMedian 5:5,0.1 -o median010.png
 	\endcode
 
 	\code
-	drainage gray.png --iMedian 5:5,0.9 -o median090.png
+	# Weighted median – upper end (brightening)
+	drainage image-gray.png --iMedian 5:5,0.9 -o median090.png
 	\endcode
 
 	\code
+	# Coloured image: each channel processed separately
 	drainage image.png --iMedian 5 -o median-color.png
 	\endcode
  */
+
 //template <class R = WindowCore>
 class SlidingWindowMedian : public SlidingWindowHistogram<WindowCore> {
 

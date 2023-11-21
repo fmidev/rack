@@ -1028,6 +1028,12 @@ public:
 	}
 
 
+	/// Returns the static dictionary created for this \c value_t .
+	/**
+	 *  Notice that this function is non-static but returns a reference to a static dictionary.
+	 *  In C++ virtual functions must be non-static.
+	 *  This is nevertheless handy in templated design, for example.
+	 */
 	virtual
 	const typename FlaggerBase<value_t>::dict_t & getDict() const {
 		return EnumDict<value_t>::dict;

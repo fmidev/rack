@@ -479,6 +479,27 @@ public:
 		outputSeparator = c;
 	}
 
+	///
+	/**
+	 *   May append elements dynamically, there should be a marker for separating elements
+	 *   is a string.
+	 */
+	inline
+	char getInputSeparator(){
+		return inputSeparator;
+	}
+
+	///
+	/**
+	 *   May append elements dynamically, there should be a marker for separating elements
+	 *   is a string.
+	 */
+	inline
+	char getOutputSeparator(){
+		return outputSeparator;
+	}
+
+
 	std::ostream & toStream(std::ostream & ostr = std::cout, char separator='\0') const;
 
 	/*

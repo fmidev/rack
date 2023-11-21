@@ -128,7 +128,8 @@ void EmitterOp::runDetector(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	mout.special() << "DistanceTransformExponentialOp op:" << mout.endl;
 
 	// TOPOLOGY=0
-	DistanceTransformExponentialOp(1.0, 3.0*static_cast<double>(h), 0).process(marginAvg, marginAvg);
+	//DistanceTransformExponentialOp(1.0, 3.0*static_cast<double>(h), 0).process(marginAvg, marginAvg);
+	DistanceTransformExponentialOp(1.0, 3.0*static_cast<double>(h), DistanceModel::CONN4).process(marginAvg, marginAvg);
 	storeDebugData(2, marginAvg, "MARG_HP_DIST");
 
 	Image srcElong;

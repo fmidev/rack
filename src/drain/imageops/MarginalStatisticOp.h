@@ -49,7 +49,7 @@ namespace image
 /**
 
  \code
-   drainage gray.png --iMarginStat horz,asmdvNX,0.50 --iResize 100,270 -o marginStat.png
+   drainage image-gray.png --iMarginStat horz,asmdvNX,0.50 --iResize 100,270 -o marginStat.png
  \endcode
 
  */

@@ -58,7 +58,7 @@ Note: current designed for SegmentProber.
 
 \code
 drainage shapes.png --iSegmentArea 64:255 -o segmentArea.png
-drainage gray.png --physicalRange 0:1 --iSegmentArea 0.5 -o segmentAreaPhys.png
+drainage image-gray.png --physicalRange 0:1 --iSegmentArea 0.5 -o segmentAreaPhys.png
 \endcode
 
 \code
@@ -230,9 +230,9 @@ void SegmentAreaOp<S,D,T>::traverseChannel(const Channel & src, Channel & dst) c
 }
 
 
-} // namespace image
+} // image
 
-} // namespace drain
+} // drain
 
 #endif
 

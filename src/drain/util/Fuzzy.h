@@ -117,14 +117,14 @@ private:
 
  Examples with and without physical scaling to (0.0,1.0), setting step at 50% intensity (128 and 0.5):
 \code
-drainage gray.png        --iFuzzyStep 64:192    -o fuzzyStep.png
-drainage gray.png -R 0:1 --iFuzzyStep 0.25:0.75  -o fuzzyStep-phys.png
+drainage image-gray.png        --iFuzzyStep 64:192    -o fuzzyStep.png
+drainage image-gray.png -R 0:1 --iFuzzyStep 0.25:0.75  -o fuzzyStep-phys.png
 \endcode
 
 When changing storage type, scaling must be given explicitly (here 256, from \c C to \c S ) or physically with \c -R :
 \code
-drainage gray.png         -T S --iFuzzyStep 64:192   -o fuzzyStep-16bit.png
-drainage gray.png  -R 0:1 -T S --iFuzzyStep 0.25:0.5 -o fuzzyStep-16bit-phys.png
+drainage image-gray.png         -T S --iFuzzyStep 64:192   -o fuzzyStep-16bit.png
+drainage image-gray.png  -R 0:1 -T S --iFuzzyStep 0.25:0.5 -o fuzzyStep-16bit-phys.png
 \endcode
 
  */
@@ -231,9 +231,9 @@ protected:
  *  \tparam T2 - output storage type
  *
 	\code
-	drainage gray.png        --iFuzzyTriangle 64:192,128     -o fuzzyTriangle.png
-	drainage gray.png -R 0:1 --iFuzzyTriangle 0.25:0.75,0.5  -o fuzzyTriangle-phys.png
-	drainage gray.png -T S   --iFuzzyTriangle 64:192,128     -o fuzzyTriangle-16bit.png
+	drainage image-gray.png        --iFuzzyTriangle 64:192,128     -o fuzzyTriangle.png
+	drainage image-gray.png -R 0:1 --iFuzzyTriangle 0.25:0.75,0.5  -o fuzzyTriangle-phys.png
+	drainage image-gray.png -T S   --iFuzzyTriangle 64:192,128     -o fuzzyTriangle-16bit.png
 	\endcode
  */
 template <class T>  //,class T2>
@@ -366,9 +366,9 @@ protected:
  *
  *  The approximation applies
 	\code
-	drainage gray.png        --iFuzzyBell 128,16   -o fuzzyBell.png
-	drainage gray.png -R 0:1 --iFuzzyBell 0.5,0.2  -o fuzzyBell-phys.png
-	drainage gray.png -T S   --iFuzzyBell 128,16   -o fuzzyBell-16bit.png
+	drainage image-gray.png        --iFuzzyBell 128,16   -o fuzzyBell.png
+	drainage image-gray.png -R 0:1 --iFuzzyBell 0.5,0.2  -o fuzzyBell-phys.png
+	drainage image-gray.png -T S   --iFuzzyBell 128,16   -o fuzzyBell-16bit.png
 	\endcode
  */
 template <class T>
@@ -435,9 +435,9 @@ protected:
  *  \tparam T  - input storage type
  *  \tparam T2 - output storage type
  *
-    drainage gray.png        --iFuzzyBell2 128,16   -o fuzzyBell2.png
-	drainage gray.png -R 0:1 --iFuzzyBell2 0.5,0.2  -o fuzzyBell2-phys.png
-	drainage gray.png -T S   --iFuzzyBell2 128,16   -o fuzzyBell2-16bit.png
+    drainage image-gray.png        --iFuzzyBell2 128,16   -o fuzzyBell2.png
+	drainage image-gray.png -R 0:1 --iFuzzyBell2 0.5,0.2  -o fuzzyBell2-phys.png
+	drainage image-gray.png -T S   --iFuzzyBell2 128,16   -o fuzzyBell2-16bit.png
  *
  */
 template <class T>

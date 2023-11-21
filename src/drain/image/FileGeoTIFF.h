@@ -56,7 +56,11 @@ public:
 
 	enum type { UNDEFINED, ROOT, ITEM, USER }; // check CTEXT, maybe implement in XML
 
+	/// Constructor
 	NodeGDAL(type t = USER);
+
+	/// Copy constructor
+	NodeGDAL(const NodeGDAL & node);
 
 	void setGDAL(const drain::Variable & ctext, int sample=0, const std::string & role = "");
 

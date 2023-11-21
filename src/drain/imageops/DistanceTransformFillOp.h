@@ -32,12 +32,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DISTANCETRANSFORMFILLOP_H_
 
 #include <drain/image/ImageFile.h> // debugging
-#include "DistanceTransformOp.h"
-
-//#include "drain/util/FunctorPack.h"
-#include "drain/util/Fuzzy.h"
+#include <drain/util/Fuzzy.h>
 #include "FunctorOp.h"
-//#include "QualityMixerOp.h"
+#include "DistanceTransformOp.h"
 
 
 namespace drain
@@ -126,7 +123,7 @@ public:
 protected:
 
 	DistanceTransformFillOp(const std::string &name, const std::string &description, dist_t horz = 10.0, dist_t vert = NAN,
-			DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
+			DistanceModel::topol_t topology=DistanceModel::KNIGHT) : // PIX_ADJACENCY_
 		DistanceTransformOp<T>(name, description, horz, vert, topology), alphaThreshold(0.0, 0.0) {
 		this->parameters.link("alphaThreshold", alphaThreshold.tuple(), "0..1").fillArray = true;
 	};
@@ -415,15 +412,16 @@ make spots-rgba.png spots-rgba-16b.png
 
 Examples on three distinct pixels (red, green, and blue):
 \code
-  drainage spots-rgba.png     --iDistanceTransformFill 50 -o distFill.png
-  drainage spots-rgba-16b.png --iDistanceTransformFill 50 -o distFill-16b.png
+  drainage spots-rgba.png     --iDistanceTransformFill 50 -o distFill-rgba.png
+  drainage spots-rgba-16b.png --iDistanceTransformFill 50 -o distFill-rgba-16b.png
 \endcode
 
 
 
 The radii do not have to be symmetric:
 \code
-  drainage spots-rgba.png     --iDistanceTransformFill 20:40,30:50 -o distFillAsym.png
+  # Asymmetric radii:
+  drainage spots-rgba.png     --iDistanceTransformFill 20:40,30:50 -o distFillAsym-rgba.png
 \endcode
 
 
@@ -435,15 +433,20 @@ make graphic-rgba-16b.png
 \~
 \code
   drainage graphic-rgba.png          --iDistanceTransformFill 20 -o distFill2.png
-  drainage graphic-rgba-16b.png      --iDistanceTransformFill 20 -o distFill2-8b.png
+  # 16-bit image to 8-bit output
+  drainage graphic-rgba-16b.png -T C --iDistanceTransformFill 20 -o distFill2-8b.png
   drainage graphic-rgba-16b.png -T S --iDistanceTransformFill 20 -o distFill2-16b.png
 \endcode
 
 \~exec
 # ma ke graphic-tr-ia.png distFill2-ia.png distFill2-8b-ia.png distFill2-16b-ia.png
 # con vert +append graphic-tr-ia.png distFill2-ia.png distFill-compare.png
+#
 \~
 
+\see DistanceTransformFillExponentialOp
+\see BlenderOp
+\see FastAVerageOp
 
  */
 class DistanceTransformFillLinearOp : public DistanceTransformFillOp<DistanceModelLinear>
@@ -453,7 +456,8 @@ public:
 
 	inline
 	DistanceTransformFillLinearOp(dist_t horz = 10.0, dist_t vert = NAN,
-			DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
+			DistanceModel::topol_t topology=DistanceModel::KNIGHT) :
+			//DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
 
 			DistanceTransformFillOp<DistanceModelLinear> (__FUNCTION__, "Spreads intensities linearly up to distance defined by alpha intensities.",
 			horz, vert, topology) {
@@ -466,13 +470,15 @@ public:
 
 \~exec
 # ma ke dots-rgba.png dots-rgba-16b.png
+#
 make spots-rgba.png spots-rgba-16b.png
 \~
 
 Examples:
 \code
-  drainage spots-rgba.png     --iDistanceTransformFillExp 50 -o distFill-exp.png
-  drainage spots-rgba-16b.png --iDistanceTransformFillExp 50 -o distFill-exp-16b.png
+  # Basic example
+  drainage spots-rgba.png          --iDistanceTransformFillExp 50 -o distFill-exp-rgba.png
+  drainage spots-rgba-16b.png -T S --iDistanceTransformFillExp 50 -o distFill-exp-rgba-16b.png
 \endcode
 
 Examples on a graphical image:
@@ -482,7 +488,9 @@ drainage graphic.png -a graphic-mask.png -o graphic-tr.png -T S --iCopy f -o gra
 \~
 \code
   drainage graphic-tr.png          --iDistanceTransformFillExp 20 -o distFill2Exp.png
-  drainage graphic-tr-16b.png      --iDistanceTransformFillExp 20 -o distFill2Exp-8b.png
+  # 16-bit image
+  drainage graphic-tr-16b.png -T C --iDistanceTransformFillExp 20 -o distFill2Exp-8b.png
+  # 16-bit image
   drainage graphic-tr-16b.png -T S --iDistanceTransformFillExp 20 -o distFill2Exp-16b.png
 \endcode
 
@@ -492,6 +500,10 @@ drainage graphic.png -a graphic-mask.png -o graphic-tr.png -T S --iCopy f -o gra
 \~
 
 
+\see DistanceTransformFillOp
+\see BlenderOp
+\see FastAVerageOp
+
  */
 class DistanceTransformFillExponentialOp : public DistanceTransformFillOp<DistanceModelExponential>
 {
@@ -500,8 +512,9 @@ public:
 
 	inline
 	DistanceTransformFillExponentialOp(dist_t horz = 10.0, dist_t vert = NAN,
-			DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
-	DistanceTransformFillOp<DistanceModelExponential> (__FUNCTION__, "Spreads intensities exponentially up to distance defined by alpha intensities.",
+			//DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
+			DistanceModel::topol_t topology=DistanceModel::KNIGHT) :
+			DistanceTransformFillOp<DistanceModelExponential> (__FUNCTION__, "Spreads intensities exponentially up to distance defined by alpha intensities.",
 			horz, vert, topology) {
 	};
 

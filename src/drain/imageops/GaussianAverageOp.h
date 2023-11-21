@@ -46,21 +46,19 @@ namespace image
 
   Implemented as two consequent SlidingStripeOp's: horizontal filtering followed by vertical.
 
-
   \code
-    drainage shapes.png --iGaussianAverage 25   -o gaussianAverage.png
+     drainage shapes.png --iGaussianAverage 25   -o gaussianAverage.png
+     drainage shapes.png     --iGaussianAverage 5:25  -o gaussianAverage-vert.png
   \endcode
 
   If the source image contains several channels, each channel is treated separately.
 
   \code
-     drainage shapes.png     --iGaussianAverage 5:25  -o gaussianAverage-vert.png
-     drainage image-rgba.png --iGaussianAverage 25    -o gaussianAverageWeighted.png
+     drainage image-rgba.png --iGaussianAverage 25    -o gaussianAverageWeighted-rgba.png
   \endcode
 
-  \~exec
-  	  # rainage orvokki-rgba.png --iGaussianAverage 25:25 -o flower-blurred.png
-  \~
+
+  \see FastAverageOp
 
  */
 class GaussianAverageOp : public WindowOp<Window<GaussianWindowConf> > //WindowOp<GaussianStripe<WindowCore> >

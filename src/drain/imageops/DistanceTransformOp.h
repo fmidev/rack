@@ -158,7 +158,7 @@ protected:
 	//int topology;
 
 	DistanceTransformOp(const std::string &name, const std::string &description, float width, float height,
-			DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
+			DistanceModel::topol_t topology=DistanceModel::KNIGHT) : // PIX_ADJACENCY_
 		ImageOp(name, description) {
 		parameters.append(this->distanceModel.getParameters());
 		distanceModel.setTopology(topology);
@@ -451,11 +451,17 @@ make dots-16b.png
 
 Examples:
 \code
+# Default: 16-connected topology (chess king and knight combined)
 drainage dots.png     --iDistanceTransform 70      -o dist.png
 drainage dots-16b.png --iDistanceTransform 25      -o dist-16b.png
-drainage dots.png     --iDistanceTransform 70,70,0 -o dist-diamond.png
-drainage dots.png     --iDistanceTransform 70,70,1 -o dist-simple.png
+# Simpler 4-connected topology ("diamond" or "city-block" distance)
+drainage dots.png     --iDistanceTransform 70,70,4-CONNECTED -o dist-diamond.png
+# 8-connected topology (chess king)
+drainage dots.png     --iDistanceTransform 70,70,8-CONNECTED -o dist-simple.png
+# Horizontally distorted
 drainage dots.png     --iDistanceTransform 40,20   -o dist-horz.png
+# Asymmetric topology
+drainage dots.png     --iDistanceTransform 10:40,20:80  -o dist-horz.png
 
 \endcode
 
@@ -465,7 +471,7 @@ class DistanceTransformLinearOp : public DistanceTransformOp<DistanceModelLinear
 public:
 
 	inline
-	DistanceTransformLinearOp(float horz = 10.0, float vert = NAN, DistanceModel::topol_t topology = DistanceModel::PIX_ADJACENCY_KNIGHT) :
+	DistanceTransformLinearOp(float horz = 10.0, float vert = NAN, DistanceModel::topol_t topology = DistanceModel::KNIGHT): // PIX_ADJACENCY_
 	DistanceTransformOp<DistanceModelLinear>(__FUNCTION__, "Linearly decreasing intensities - applies decrements.", horz, vert, topology) {
 	};
 
@@ -476,9 +482,16 @@ public:
 
 Examples:
  \code
- drainage dots.png       --iDistanceTransformExp 25    -o distExp.png
+ # Basic example
+ drainage dots.png     --iDistanceTransformExp 25    -o distExp.png
+
+ # 16-bit image
  drainage dots-16b.png --iDistanceTransformExp 25    -o distExp-16b.png
- drainage dots.png       --iDistanceTransformExp 40,20 -o distExp-horz.png
+
+ # Horizontal topology
+ drainage dots.png     --iDistanceTransformExp 40,20 -o distExp-horz.png
+
+ # Asymmetric distances
  drainage dots-16b.png --iDistanceTransformExp 10:40,20:80 -o distExp-asym.png
  \endcode
 
@@ -493,7 +506,7 @@ public:
 	 *
 	 */
 	inline
-	DistanceTransformExponentialOp(dist_t horz = 10.0, dist_t vert = NAN, DistanceModel::topol_t topology = DistanceModel::PIX_ADJACENCY_KNIGHT) :
+	DistanceTransformExponentialOp(dist_t horz = 10.0, dist_t vert = NAN, DistanceModel::topol_t topology = DistanceModel::KNIGHT): // PIX_ADJACENCY_
 		DistanceTransformOp<DistanceModelExponential>(__FUNCTION__, "Exponentially decreasing intensities. Set half-decay radii.",	horz, vert, topology) {
 	};
 

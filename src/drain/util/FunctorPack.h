@@ -46,11 +46,11 @@ namespace drain
 /**
     Scale determines the contrast, offset determines the brightness of the resulting image.
 	\code
-	drainage gray.png  --iRescale 0.5              -o scale-dark.png
-	drainage gray.png  --target S --iRescale 0.5   -o scale-dark16.png
-	drainage gray.png  --iRescale 0.5,128          -o scale-dim.png
+	drainage image-gray.png  --iRescale 0.5              -o scale-dark.png
+	drainage image-gray.png  --target S --iRescale 0.5   -o scale-dark16.png
+	drainage image-gray.png  --iRescale 0.5,128          -o scale-dim.png
 	drainage image.png --iRescale 0.5,128          -o scale-dim-image.png
-	drainage gray.png  --iRescale 2.0,-128,LIMIT=1 -o scale-contrast.png
+	drainage image-gray.png  --iRescale 2.0,-128,LIMIT=1 -o scale-contrast.png
 	\endcode
  */
 // Inversely: f = (f'-offset)/scale = a*f+b, where a=1/scale and b=-offset/scale.
@@ -90,7 +90,7 @@ protected:
 /**
    Inverts image by subtracting the pixel intensities from the maximum intensity (255, 65535 or 1.0).
 	\code
-	drainage gray.png  --iNegate -o negate.png
+	drainage image-gray.png  --iNegate -o negate.png
 	drainage image.png --iNegate -o negate-image.png
 	\endcode
  */
@@ -109,8 +109,8 @@ public:
 /// Maps a single intensity value to another value.
 /**
 	\code
-	drainage gray.png  --iRemap 255,32       -o remap-abs.png
-	drainage gray.png  --physicalRange 0:1 --iRemap 1,0.125  -o remap.png
+	drainage image-gray.png  --iRemap 255,32       -o remap-abs.png
+	drainage image-gray.png  --physicalRange 0:1 --iRemap 1,0.125  -o remap.png
 	drainage image.png --physicalRange 0:1 --iRemap 1,0.25  -o remap-image.png
 	\endcode
  */
@@ -152,8 +152,8 @@ public:
 /// Thresholds intensity values.
 /**
 	\code
-	drainage gray.png  --iThreshold 96 -o thresholdAbs.png
-	drainage gray.png  --physicalRange 0:1 --iThreshold 0.5   -o thresholdRelative.png
+	drainage image-gray.png  --iThreshold 96 -o thresholdAbs.png
+	drainage image-gray.png  --physicalRange 0:1 --iThreshold 0.5   -o thresholdRelative.png
 	drainage image.png --physicalRange 0:1 --iThreshold 0.25  -o thresholdRelative-image.png
 	\endcode
  */
@@ -187,8 +187,8 @@ public:
 /// Thresholds intensity values.
 /**
 	\code
-	drainage gray.png  --iThresholdBinary 128,64,192 -o thresholdBinaryAbs.png
-	drainage gray.png  --physicalRange 0:1 --iThresholdBinary 0.65 -o thresholdBinaryRelative.png
+	drainage image-gray.png  --iThresholdBinary 128,64,192 -o thresholdBinaryAbs.png
+	drainage image-gray.png  --physicalRange 0:1 --iThresholdBinary 0.65 -o thresholdBinaryRelative.png
 	drainage image.png --physicalRange 0:1 --iThresholdBinary 0.5  -o thresholdBinaryRelative-image.png
 	\endcode
  */
@@ -233,12 +233,12 @@ public:
 /**
  *
    \~exec
-   make gray-rot.png #exec
+   make image-gray-rot.png #exec
    \~
 
 	\code
 	drainage shapes1.png shapes2.png --iAdd 0.5  -o add1.png
-	drainage gray.png gray-rot.png   --iAdd 0.5  -o add2.png
+	drainage image-gray.png image-gray-rot.png   --iAdd 0.5  -o add2.png
 	\endcode
  */
 class AdditionFunctor : public BinaryFunctor {
@@ -294,7 +294,7 @@ public:
  The order of the images counts; the destination dimensions are determined from the image last read.
  \code
   drainage image.png shapes.png  --physicalRange 0:1 --iMul 1 -o mul-shapes.png
-  drainage gray.png gray-rot.png --physicalRange 0:1 --iMul 1 -o mul-gray.png
+  drainage image-gray.png image-gray-rot.png --physicalRange 0:1 --iMul 1 -o mul-gray.png
   drainage shapes.png image.png  --physicalRange 0:1 --iMul 1 -o mul-image.png
  \endcode
 

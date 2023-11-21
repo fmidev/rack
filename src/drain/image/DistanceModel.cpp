@@ -37,9 +37,77 @@ namespace image {
 
 const float DistanceModel::nan_f = std::numeric_limits<float>::quiet_NaN();
 
-void DistanceModel::createChain(DistanceNeighbourhood & chain, topol_t topology, bool forward) const {
+// typedef drain::EnumFlagger<drain::SingleFlagger<PIXEL_ADJACENCY> > PixelAdjacencyFlagger;
+// PixelAdjacencyFlagger pixelAdjacency;
+
+template <>
+const FlaggerDict EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict = {
+	{"4-CONNECTED",   drain::image::DistanceModel::CONN4},
+	{"8-CONNECTED",   drain::image::DistanceModel::CONN8},
+	{"16-CONNECTED",  drain::image::DistanceModel::KNIGHT}
+};
+
+void DistanceModel::update(){
+
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+	static
+	const std::map<std::string,std::string> compatibilityMap = {
+			{"0","4-CONNECTED"},
+			{"1","8-CONNECTED"},
+			{"2","16-CONNECTED"},
+			{"KNIGHT","16-CONNECTED"}
+	};
+
+	for (const auto & entry: compatibilityMap){
+		if (pixelAdjacencyStr == entry.first){
+			mout.deprecating("use '", entry.second, "' instead of '", entry.first, "'");
+			pixelAdjacencyStr = entry.second;
+			break;
+		}
+	}
+
+	pixelAdjacency.set(pixelAdjacencyStr);
+	pixelAdjacencyStr = pixelAdjacency.getDict().getKey(pixelAdjacency.getValue());
+	setRadius(horzRadius.forward, vertRadius.forward, horzRadius.backward, vertRadius.backward);
+}
+
+void DistanceModel::createChain(DistanceNeighbourhood & chain, PIXEL_ADJACENCY topology, bool forward) const {
 
 	chain.clear();
+
+	// pixelAdjacency.set(2);
+	// pixelAdjacency.set
+
+	switch (topology) {
+	// element creation is dynamically by the model, hence initializer list not applicable
+	case KNIGHT:
+		chain.push_back(getElement(-1, -2, forward));
+		chain.push_back(getElement(+1, -2, forward));
+		chain.push_back(getElement(-2, -1, forward));
+		chain.push_back(getElement(+2, -1, forward));
+		// no break
+	case CONN8:
+		chain.push_back(getElement(-1, -1, forward));
+		chain.push_back(getElement(+1, -1, forward));
+		// no break
+	case CONN4:
+		chain.push_back(getElement(-1,  0, forward));
+		chain.push_back(getElement( 0, -1, forward));
+		break;
+	default:
+		break;
+	}
+
+}
+
+/*
+void DistanceModel::createChainOLD(DistanceNeighbourhood & chain, topol_t topology, bool forward) const {
+
+	chain.clear();
+
+	// pixelAdjacency.set(2);
+	//pixelAdjacency.set
 
 	switch (topology) {
 	// element creation is dynamically by the model, hence initializer list not applicable
@@ -62,7 +130,7 @@ void DistanceModel::createChain(DistanceNeighbourhood & chain, topol_t topology,
 	}
 
 }
-
+*/
 
 
 }

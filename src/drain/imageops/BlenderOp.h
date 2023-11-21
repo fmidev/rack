@@ -87,6 +87,8 @@ drainage flowers-rgba.png --iBlender 51,spreader=dist    -o restored--d.png
 drainage flowers-rgba.png --iBlender 51,spreader=distExp -o restored--dexp.png
 \endcode
 
+\see FastAVerageOp
+\see DistanceTransformOp
 
  */
 class BlenderOp: public WindowOp<> {

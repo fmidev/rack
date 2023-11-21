@@ -279,21 +279,24 @@ protected:
 
  This operator applies weighted averaging, if a weight image (alpha channel) is provided.
  \code
-  drainage image-rgba.png --iAverage 25 -o average-weighted.png
+  drainage image-rgba.png --iAverage 25 -o average-weighted-rgba.png
  \endcode
 
 \code
-  drainage spots-rgba.png     --iAverage 50 -o spots-avg.png
-  drainage spots-rgba-16b.png --iAverage 50 -o spots-avg-16b.png
+  drainage spots-rgba.png     --iAverage 50 -o spots-avg-rgba.png
+  drainage spots-rgba-16b.png --iAverage 50 -o spots-avg-rgba-16b.png
 \endcode
 
 \code
-  drainage graphic-rgba.png          --iAverage 20 -o graphicAvg.png
-  drainage graphic-rgba-16b.png      --iAverage 20 -o graphicAvg-8b.png
-  drainage graphic-rgba-16b.png -T S --iAverage 20 -o graphicAvg-16b.png
+  drainage graphic-rgba.png          --iAverage 5 -o graphicAvg-rgba.png
+  drainage graphic-rgba-16b.png -T C --iAverage 5 -o graphicAvg-8b-rgba.png
+  drainage graphic-rgba-16b.png -T S --iAverage 5 -o graphicAvg-16b-rgba.png
 \endcode
 
-  \see BlenderOp
+
+\see BlenderOp
+\see DistanceTranformFillOp
+
  */
 class FastAverageOp : public WindowOp< Window<WindowConfig> > {
 

@@ -81,7 +81,7 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	// mout.special() << "loops=" << loops << " => using " << op << mout;
 
 	// BlenderOp blenderOp(pix.width, pix.height, "avg", "max", loops, expansionCoeff);
-	DistanceTransformFillExponentialOp op(pix.width, pix.height, DistanceModel::PIX_ADJACENCY_KNIGHT);
+	DistanceTransformFillExponentialOp op(pix.width, pix.height, DistanceModel::KNIGHT);
 	// DistanceTransformFillLinearOp distOp(pix.width, pix.height, DistanceModel::PIX_ADJACENCY_KNIGHT);
 	// ImageOp & op = distOp; // (loops == 0) ? (ImageOp &)distOp : (ImageOp &)blenderOp;
 
