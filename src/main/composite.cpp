@@ -538,7 +538,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 
 	w = applyTimeDecay(composite, w, cartSrc.odim);
 
-	mout.debug2() << "input properties:\n" << cartSrc.odim << mout.endl;
+	mout.debug2("input properties:\n" , cartSrc.odim );
 
 	/// If a multi-radar mainComposite is being computed, a warning/note should be given is some of these properties are
 	/// being setValues implicitly ie. based on the first input:
@@ -581,7 +581,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	int i0,j0;
 	composite.deg2pix(cartSrc.odim.UL_lon, cartSrc.odim.UL_lat, i0, j0);
 	j0++; // UL pixel is located at (0,-1) in the image coordinates!
-	mout.debug2() << "sub image start coordinates: " << i0 << ',' << j0 << mout.endl;
+	mout.debug2("sub image start coordinates: " , i0 , ',' , j0 );
 
 	composite.addCartesian(cartSrc, srcQuality, w, i0, j0);
 

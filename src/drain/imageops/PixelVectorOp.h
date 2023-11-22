@@ -135,7 +135,7 @@ public:
 	inline
 	void process(const ImageFrame &src, Image &dst) const {
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
-		mout.debug() << "delegating: process(src, dst, dst)" << mout.endl;
+		mout.debug("delegating: process(src, dst, dst)" );
 		process(src, dst, dst);
 	};
 
@@ -147,7 +147,7 @@ public:
 
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
 
-		mout.debug() << "imitating: " << mout.endl;
+		mout.debug("imitating: " );
 		//process2WithTemp(src, dst);
 
 		if (src2.hasOverlap(dst)){
@@ -176,7 +176,7 @@ public:
 	virtual
 	void traverseChannels(const ImageTray<const Channel> & srcTray, ImageTray<Channel> & dstTray) const {
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		mout.unimplemented() << "traverseChannels for one srcTray only " << mout.endl;
+		mout.unimplemented("traverseChannels for one srcTray only " );
 	}
 
 	virtual
@@ -186,7 +186,7 @@ public:
 	void traverseFrame(const ImageFrame &src1, const ImageFrame &src2, ImageFrame &dst) const {
 
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
-		mout.debug() << "delegate to: traverseChannels(src, dst, dst)" << mout.endl;
+		mout.debug("delegate to: traverseChannels(src, dst, dst)" );
 
 		ImageTray<const Channel> src1Channels;
 		src1Channels.setChannels(src1);
@@ -221,21 +221,21 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
 
 	if (src1.empty())
-		mout.error() << "src1 empty" << mout.endl;
+		mout.error("src1 empty" );
 
 	if (src2.empty())
-		mout.error() << "src2 empty" << mout.endl;
+		mout.error("src2 empty" );
 
 	if (dst.empty())
-		mout.error() << "dst empty" << mout.endl;
+		mout.error("dst empty" );
 
 	Channel & dstChannel = dst.get();
 
 	if (src1.getGeometry() != src2.getGeometry()){
-		mout.warn() << "src1" << src1.getGeometry() << mout.endl;
-		mout.warn() << "src2" << src2.getGeometry() << mout.endl;
-		mout.note() << "dstChannel" << dstChannel << mout.endl;
-		mout.error() << "src1 and src2 geometry error" << mout.endl;
+		mout.warn("src1" , src1.getGeometry() );
+		mout.warn("src2" , src2.getGeometry() );
+		mout.note("dstChannel" , dstChannel );
+		mout.error("src1 and src2 geometry error" );
 		return;
 	}
 
@@ -245,10 +245,10 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 
 	double x=0.0, sum=0.0;
 
-	mout.debug3() << *this << mout.endl;
-	//mout.debug3() << "src1: " << src1  << mout.endl;
-	//mout.debug3() << "src2: " << src2 << mout.endl;
-	//mout.debug3() << "dst:  " << dst  << mout.endl;
+	mout.debug3(*this );
+	//mout.debug3("src1: " , src1  );
+	//mout.debug3("src2: " , src2 );
+	//mout.debug3("dst:  " , dst  );
 
 	FunctorBank & functorBank = getFunctorBank();
 
@@ -260,20 +260,20 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 
 	if (!functorBank.has(functorName)){
 		//functorBank.help(std::cerr);
-		mout.note() << functorBank << mout.endl;
-		mout.error() << "functor '" << functorName << "' not found: " << functorDef << mout.endl;
+		mout.note(functorBank );
+		mout.error("functor '" , functorName , "' not found: " , functorDef );
 		return;
 	}
 
 	UnaryFunctor & scalingFunctor = functorBank.clone(functorName); // consider get? Or static from clone()
 
-	//mout.debug() << scalingFunctor.getName() << ':' << scalingFunctor.getDescription() << mout.endl;
+	//mout.debug(scalingFunctor.getName() , ':' , scalingFunctor.getDescription() );
 	//scalingFunctor.setScale(dstChannel.scaling.getMax<double>(), 0.0);
 	const std::type_info & t = dstChannel.getType();
 	if (Type::call<drain::typeIsSmallInt>(t)){
 		const double m = Type::call<typeMax, double>(t);
 		scalingFunctor.setScale(m, 0.0); // TODO consider invScale, invOffset?
-		mout.info() << "small int type, scaling with its maximum (" << m << ')' << mout;
+		mout.info("small int type, scaling with its maximum (" , m , ')' );
 	}
 
 	//scalingFunctor.setParameters(functorParams);
@@ -285,12 +285,12 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 		mout.error(e.what());
 	}
 
-	mout.debug2() << scalingFunctor.getName() << ':' << scalingFunctor << mout;
+	mout.debug2(scalingFunctor.getName() , ':' , scalingFunctor );
 
 	const double coeff = (rescale>0.0) ? 1.0/rescale : 1.0/static_cast<double>(channels);
 	const bool USE_POW    = (POW != 1.0);
 	const bool USE_INVPOW = (INVPOW != 1.0);
-	mout.debug3() << "coeff " << coeff << mout;
+	mout.debug3("coeff " , coeff );
 	const BinaryFunctor & f = binaryFunctor;
 	size_t a;
 	for (int j = 0; j < height; j++) {
@@ -401,7 +401,7 @@ public:
 	inline
 	void process(const ImageFrame &src, Image &dst) const {
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(PixelVectorOp)", __FUNCTION__);
-		mout.debug() << "delegating to: process(src, src, dst)" << mout.endl;
+		mout.debug("delegating to: process(src, src, dst)" );
 		BinaryPixelVectorOp<MultiplicationFunctor>::process(src, src, dst);
 	};
 
@@ -409,7 +409,7 @@ public:
 	inline
 	void traverseFrame(const ImageFrame &src, ImageFrame & dst) const {
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"::PixelVectorOp[src, dst]", __FUNCTION__);
-		mout.warn() << "delegating to: traverseFrame(src, src, dst)" << mout.endl;
+		mout.warn("delegating to: traverseFrame(src, src, dst)" );
 		BinaryPixelVectorOp<MultiplicationFunctor>::traverseFrame(src, src, dst);
 	}
 
@@ -417,7 +417,7 @@ public:
 	inline
 	void traverseChannels(const ImageTray<const Channel> & src, ImageTray<Channel> & dst) const {
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"::PixelVectorOp[src,dst]", __FUNCTION__);
-		mout.debug() << "delegate to: traverseChannels(src, SRC, dst)" << mout.endl;
+		mout.debug("delegate to: traverseChannels(src, SRC, dst)" );
 		BinaryPixelVectorOp<MultiplicationFunctor>::traverseChannels(src, src, dst);
 	}
 

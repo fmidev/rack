@@ -101,7 +101,7 @@ public:
 	inline
 	void traverseChannel(Channel & dst) const {
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageMod)", __FUNCTION__);
-		mout.warn() << "(Channel &): not implemented" << mout.endl;
+		mout.warn("(Channel &): not implemented" );
 	};
 
 	/// Run this modifier for an image frame.
@@ -112,7 +112,7 @@ public:
 	inline
 	void traverseChannel(Channel & dst, Channel & dstAlpha) const {
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageMod)", __FUNCTION__);
-		mout.debug() << "(Channel &, Channel &alpha): not implemented" << mout.endl;
+		mout.debug("(Channel &, Channel &alpha): not implemented" );
 	};
 
 

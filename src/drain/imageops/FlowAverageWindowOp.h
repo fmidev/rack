@@ -87,25 +87,25 @@ protected:
 
 		drain::Logger mout(getImgLog(), "FlowAverageWindow", __FUNCTION__);
 
-		mout.debug2() << "srcTray:\n" << srcTray  << mout.endl;
-		mout.debug2() << "dstTray:\n" << dstTray << mout.endl;
+		mout.debug2("srcTray:\n" , srcTray  );
+		mout.debug2("dstTray:\n" , dstTray );
 
 		if (srcWeight.isEmpty())
-			mout.debug() << "no src alpha"  << mout.endl;
+			mout.debug("no src alpha"  );
 
 		if (dstWeight.isEmpty())
-			mout.debug() << "no dst alpha"  << mout.endl;
+			mout.debug("no dst alpha"  );
 
 		if (!srcTray.checkGeometry()){
-			mout.special() << "scrTray geom: " << srcTray.getGeometry() << mout.endl;
-			mout.special() << "content geom: " << srcTray << mout.endl;
-			mout.error() << "srcTray geometry inconsistent"  << mout.endl;
+			mout.special("scrTray geom: " , srcTray.getGeometry() );
+			mout.special("content geom: " , srcTray );
+			mout.error("srcTray geometry inconsistent"  );
 		};
 
 		if (!dstTray.checkGeometry()){
-			mout.special() << "dstTray geom: " << dstTray.getGeometry() << mout.endl;
-			mout.special() << "content geom: " << dstTray << mout.endl;
-			mout.error() << "dstTray geometry inconsistent"  << mout.endl;
+			mout.special("dstTray geom: " , dstTray.getGeometry() );
+			mout.special("content geom: " , dstTray );
+			mout.error("dstTray geometry inconsistent"  );
 		};
 
 		setImageLimits();

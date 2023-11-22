@@ -86,8 +86,8 @@ public:
 	void setSrcFrameWeight(const ImageFrame & srcW){
 		Logger mout(getImgLog(), "WeightedOpticalFlowCore", __FUNCTION__);
 		this->srcWeight.setView(srcW);
-		//mout.debug() << "srcW: " << srcW << mout.endl;
-		mout.debug() << "srcWeight (view): " << this->srcWeight << mout.endl;
+		//mout.debug("srcW: " , srcW );
+		mout.debug("srcWeight (view): " , this->srcWeight );
 	};
 
 	// Destination images
@@ -115,8 +115,8 @@ public:
 	void setDstFrameWeight(const ImageFrame & dstW){
 		//Logger mout(getImgLog(), "OpticalFlowCore2", __FUNCTION__);
 		this->dstWeight.setView(dstW);
-		//mout.debug() << "srcW: " << srcW << mout.endl;
-		//mout.debug() << "view: " << this->srcWeight << mout.endl;
+		//mout.debug("srcW: " , srcW );
+		//mout.debug("view: " , this->srcWeight );
 	};
 
 	inline
@@ -343,14 +343,14 @@ public:
 		nom = this->nominator();
 		/*
 		Logger mout(getImgLog(), "SlidingOpticalFlow", __FUNCTION__);
-		mout.warn() << "start: " << location << mout.endl;
-		mout.note() << "uField: " << uField << mout.endl;
-		mout.note() << "vField: " << vField << mout.endl;
-		mout.note() << "w: " << dstWeight << mout.endl;
+		mout.warn("start: " , location );
+		mout.note("uField: " , uField );
+		mout.note("vField: " , vField );
+		mout.note("w: " , dstWeight );
 		File::write(uField, "uField.png");
 		File::write(vField, "vField.png");
 		File::write(dstWeight, "w.png");
-		mout.error() << "halt" << mout.endl;
+		mout.error("halt" );
 		 */
 
 		if (nom > 0.01){  // todo minQuality
@@ -425,10 +425,10 @@ void SlidingOpticalFlow<R>::initialize() {
 	this->setImageLimits();
 	this->setLoopLimits();
 
-	mout.debug() << "window: "  << *this << mout.endl;
-	mout.debug3() << "Dx: " << this->Dx << mout.endl;
-	mout.debug3() << "Dy: " << this->Dy << mout.endl;
-	mout.debug3() << "Dt: " << this->Dt << mout.endl;
+	mout.debug("window: "  , *this );
+	mout.debug3("Dx: " , this->Dx );
+	mout.debug3("Dy: " , this->Dy );
+	mout.debug3("Dt: " , this->Dt );
 
 	//clear();
 	//fill(0, 0);
@@ -475,7 +475,7 @@ public:
 		/*
 		if ((location.x == 70) && (location.y == 120)){
 			Logger mout(getImgLog(), "SlidingOpticalFlow", __FUNCTION__);
-			mout.note() << this->location << '\t' << p << mout.endl;
+			mout.note(this->location , '\t' , p );
 		}
 		*/
 
@@ -581,7 +581,7 @@ public:
 	virtual inline
 	void traverseChannel(const Channel & src, Channel & dst) const {
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		mout.error() << "Not implemented (1/1)" << mout.endl;
+		mout.error("Not implemented (1/1)" );
 	}
 
 	virtual inline

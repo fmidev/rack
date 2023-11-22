@@ -182,14 +182,14 @@ public:
 	void make Compatible(const ImageFrame &src, Image &dst) const  {
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		//mout.debug3() << "src: " << src << mout.endl;
+		//mout.debug3("src: " , src );
 
 		if (dst.getType() != src.getType()){
-			mout.note() << " changing dst image type: " << dst.getType().name() << '>' << src.getType().name() << mout.endl;
+			mout.note(" changing dst image type: " , dst.getType().name() , '>' , src.getType().name() );
 		}
 
 		dst.copyShallow(src);
-		mout.warn() << dst << mout.endl;
+		mout.warn(dst );
 		// mout .debug3() << "dst: " << dst << mout.endl;
 
 	};
@@ -234,7 +234,7 @@ template <class T>
 void ImpulseResponseOp<T>::traverseChannel(const Channel & src, Channel & dst) const {
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.debug() << "delegating to traverseChannel(src, empty, dst, empty)" << mout.endl;
+	mout.debug("delegating to traverseChannel(src, empty, dst, empty)" );
 
 	drain::image::Image empty;
 	traverseChannel(src, empty, dst, empty);
@@ -251,7 +251,7 @@ void ImpulseResponseOp<T>::traverseChannel(const Channel & src, const Channel & 
 	// NEW
 	dstWeight.setPhysicalRange({0.0, 1.0}, true);
 
-	mout.warn() << dst.getProperties() << mout.endl;
+	mout.warn(dst.getProperties() );
 
 	traverseChannelHorz(src, srcWeight, dst, dstWeight);
 	traverseChannelVert(dst, dstWeight, dst, dstWeight);
@@ -264,7 +264,7 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.debug() << *this << mout.endl;
+	mout.debug(*this );
 
 	const bool UNWEIGHTED = (srcWeight.isEmpty() || dstWeight.isEmpty());
 
@@ -356,7 +356,7 @@ void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channe
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.debug() << *this << mout.endl;
+	mout.debug(*this );
 
 	const bool UNWEIGHTED = (srcWeight.isEmpty() || dstWeight.isEmpty());
 

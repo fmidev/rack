@@ -146,8 +146,8 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	dist.setRadius(h, v);
 	*/
 
-	mout.debug3() << name << ": pixel resolution: " << dst.odim.xscale << ',' << dst.odim.yscale << mout.endl;
-	//mout.debug3() << dist << mout.endl;
+	mout.debug3(name , ": pixel resolution: " , dst.odim.xscale , ',' , dst.odim.yscale );
+	//mout.debug3(dist );
 
 
 
@@ -155,8 +155,8 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	// OR local?? ::
 	// PlainData<CartesianDst> & dstQuality = dst.getQuality();
 
-	mout.debug3() << "data: "    << dst << mout.endl;
-	mout.debug3() << "quality: " << dstQuality << mout.endl;
+	mout.debug3("data: "    , dst );
+	mout.debug3("quality: " , dstQuality );
 
 	if (dstQuality.data.isEmpty()){
 		mout.warn("Empty quality data, skipping..." );
@@ -189,11 +189,11 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	recOp.traverseChannel(dst.data.getChannel(0), dstQuality.data.getChannel(0), dst.data.getChannel(0), dstQuality.data.getChannel(0));
 	/*
 	if (recOp.loops > 0){
-		mout.debug3() << recOp << mout.endl;
+		mout.debug3(recOp );
 		recOp.filter(dst.data, dstQuality.data, dst.data, dstQuality.data);
 	}
 	else {
-		mout.debug3() << "copying..." << mout.endl;
+		mout.debug3("copying..." );
 		CopyOp().filter(tmpWeight, dstQuality.data); // ??
 	}
 	*/

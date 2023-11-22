@@ -79,7 +79,7 @@ protected:
 		drain::Command  & cmd = cmdBank.add<ProductCommand<OP> >(name);
 		cmd.section = getSection().index;
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.special() << name << "\n -> " << op.getOutputQuantity() << "\t test:" << op.getOutputQuantity("TEST") << mout;
+		mout.special(name , "\n -> " , op.getOutputQuantity() , "\t test:" , op.getOutputQuantity("TEST") );
 		CmdOutputQuantity::quantityMap[name] =  op.getOutputQuantity();
 		return cmd;
 	}

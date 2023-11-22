@@ -121,7 +121,7 @@ public:
 	void make Compatible(const ImageFrame &src, Image &dst) const  {
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		mout.debug3() << "src: " << src << mout.endl;
+		mout.debug3("src: " , src );
 
 		//if (!dst.typeIsSet())
 			//dst.setType(src.getType());
@@ -324,8 +324,8 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	const Range<int> & outer     = HORZ ? yRange : xRange;
 	int & innerValue  = HORZ ? p.x : p.y;
 	int & outerValue  = HORZ ? p.y : p.x;
-	mout.debug2() << "outer range:" << outer << mout.endl;
-	mout.debug2() << "inner range:" << inner << mout.endl;
+	mout.debug2("outer range:" , outer );
+	mout.debug2("inner range:" , inner );
 	*/
 	//Range<int>
 

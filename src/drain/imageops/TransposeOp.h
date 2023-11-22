@@ -79,7 +79,7 @@ public:
 		/*
 		if ((dst.getHeight()==width) && (dst.getWidth()==height) &&
 				(dst.getImageChannelCount()==iChannels) && (dst.getAlphaChannelCount()==aChannels) ){
-			mout.debug() << "dst with ok geometry" << mout.endl;
+			mout.debug("dst with ok geometry" );
 			return;
 		}
 		*/
@@ -95,7 +95,7 @@ public:
 				pol.xUnderFlowPolicy
 		);
 
-		mout.debug() << "dst:" << dst << mout.endl;
+		mout.debug("dst:" , dst );
 
 	};
 

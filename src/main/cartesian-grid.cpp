@@ -63,7 +63,7 @@ void CartesianGrid::exec() const {
 
 	CartesianODIM odim;
 	DataTools::getAttributes(cartesian, "dataset1", odim, true);
-	mout.debug2() << odim << mout.endl;
+	mout.debug2(odim );
 
 	if (odim.projdef.empty()){
 		mout.warn("projdef missing, returning" );

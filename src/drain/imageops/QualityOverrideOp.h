@@ -104,14 +104,14 @@ public:
 	virtual	inline
 	void traverseChannel(const Channel &src, Channel &dst) const {
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		mout.error() << "Inapplicable for single channels, needs alpha channels" << mout.endl;
+		mout.error("Inapplicable for single channels, needs alpha channels" );
 	}
 
 	/// fwd as trays
 	virtual	inline
 	void traverseChannel(const Channel &src, const Channel &srcWeight, Channel &dst, Channel &dstWeight) const {
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		mout.note() << "fwd as trays" << mout.endl;
+		mout.note("fwd as trays" );
 		traverseAsChannelTrays(src, srcWeight, dst, dstWeight);
 	}
 	

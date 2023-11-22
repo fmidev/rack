@@ -79,9 +79,9 @@ protected:
 		// scaling.setScale(scaling.getScale() * static_cast<double>(this->getArea()));  // replaced by count
 
 
-		mout.debug3() << "scaling (including area): " << scaling.toStr() << mout.endl;
-		// mout.debug3() << "scaleResult(by area)=" << scaleResult   << mout.endl;
-		mout.debug3() << this->dst.getCoordinatePolicy() << mout.endl;
+		mout.debug3("scaling (including area): " , scaling.toStr() );
+		// mout.debug3("scaleResult(by area)=" , scaleResult   );
+		mout.debug3(this->dst.getCoordinatePolicy() );
 		//coordinateHandler.setLimits(src.getWidth(), src.getWidth())
 		//ImageOp::adaptCoordinateHandler(src, coordinateHandler);
 

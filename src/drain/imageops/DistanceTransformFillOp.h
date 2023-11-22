@@ -80,7 +80,7 @@ public:
 	void makeCompatible(const ImageConf & src, Image & dst) const {
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		mout.debug3() << "src: " << src << mout;
+		mout.debug3("src: ", src);
 
 		ImageConf dstConf(dst.getConf());
 		dstConf.setCoordinatePolicy(src.getCoordinatePolicy());
@@ -100,7 +100,7 @@ public:
 		// Important
 		dst.getAlphaChannel().fill(0);
 
-		mout.debug3() << "dst: " << dst << mout;
+		mout.debug3("dst: ", dst);
 
 	};
 
@@ -159,7 +159,7 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 		return;
 	}
 	else
-		mout.debug2()  << "src: " << src << mout.endl;
+		mout.debug2("src: " , src );
 
 	if (!dst.hasAlpha()){
 		mout.warn("dst: " , dst );
@@ -167,11 +167,11 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 		return;
 	}
 	else
-		mout.debug2()  << "dst: " << dst << mout.endl;
+		mout.debug2("dst: " , dst );
 
 
-	// mout.debug3()  << "init params: " << mout.endl;
-	mout.debug3()  << "init params, using alpha: " << mout.endl;
+	// mout.debug3("init params: " );
+	mout.debug3("init params, using alpha: " );
 	this->initializeParameters(src.getAlpha(), dst.getAlpha());
 	// dst.getAlpha().fill(0); NEW: MOved to ...
 
@@ -180,8 +180,8 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 
 
 	mout.debug("calling traverseDownRight" );
-	// mout.debug2()  << src << mout.endl;
-	// mout.debug2()  << dst << mout.endl;
+	// mout.debug2(src );
+	// mout.debug2(dst );
 	traverseDownRight(src, dst);
 	/*
 	if (getImgLog().getVerbosity() > 10){
@@ -191,7 +191,7 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 	 */
 
 	mout.debug("calling traverseUpLeft" );
-	// mout.debug2()  << dst << mout.endl;
+	// mout.debug2(dst );
 	traverseUpLeft(dst, dst);
 	/*
 	if (getImgLog().getVerbosity() > 10){
@@ -229,7 +229,7 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 	DistanceNeighbourhood chain;
 	this->distanceModel.createChain(chain, true);
 
-	mout.debug2() << "neighbourHood " << drain::sprinter(chain) << mout;
+	mout.debug2("neighbourHood " , drain::sprinter(chain) );
 
 	const Channel & srcAlpha = srcTray.getAlpha();
 	Channel & dstAlpha = dstTray.getAlpha();
@@ -237,8 +237,8 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 	CoordinateHandler2D coordinateHandler(srcTray.get(0));
 	mout.debug("coordHandler " , coordinateHandler );
 
-	mout.debug3() << "src alpha:" << srcAlpha << mout;
-	mout.debug3() << "dst alpha:" << dstAlpha << mout;
+	mout.debug3("src alpha:" , srcAlpha );
+	mout.debug3("dst alpha:" , dstAlpha );
 
 	/// Current cursor location
 	Point2D<int> p;
@@ -323,7 +323,7 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	mout.debug("start" );
 
-	mout.debug2() << "this->distanceModel" << this->distanceModel << mout.endl;
+	mout.debug2("this->distanceModel" , this->distanceModel );
 
 	DistanceNeighbourhood chain;
 	this->distanceModel.createChain(chain, false);
@@ -412,8 +412,8 @@ make spots-rgba.png spots-rgba-16b.png
 
 Examples on three distinct pixels (red, green, and blue):
 \code
-  drainage spots-rgba.png     --iDistanceTransformFill 50 -o distFill-rgba.png
-  drainage spots-rgba-16b.png --iDistanceTransformFill 50 -o distFill-rgba-16b.png
+  drainage spots-rgba.png     --iDistanceTransformFill 50 -o distFill-color.png
+  drainage spots-rgba-16b.png --iDistanceTransformFill 50 -o distFill-16b-color.png
 \endcode
 
 
@@ -421,7 +421,7 @@ Examples on three distinct pixels (red, green, and blue):
 The radii do not have to be symmetric:
 \code
   # Asymmetric radii:
-  drainage spots-rgba.png     --iDistanceTransformFill 20:40,30:50 -o distFillAsym-rgba.png
+  drainage spots-rgba.png     --iDistanceTransformFill 20:40,30:50 -o distFillAsym-color.png
 \endcode
 
 

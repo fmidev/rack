@@ -170,17 +170,17 @@ void SegmentAreaOp<S,D,T>::traverseChannel(const Channel & src, Channel & dst) c
 	}
 
 	mout.special("raw range: " , (double)raw.min , '-' , (double)raw.max );
-	mout.debug2() << "src: " << src << mout.endl;
-	mout.debug2() << "dst: " << dst << mout.endl;
+	mout.debug2("src: " , src );
+	mout.debug2("dst: " , dst );
 
 	//SizeProber sizeProber(src, dst);
 	T sizeProber(src, dst);
 	sizeProber.conf.anchor.set(raw.min, raw.max);
-	mout.debug2() << "areaProber:" << sizeProber << mout.endl;
+	mout.debug2("areaProber:" , sizeProber );
 
 	FillProber floodFill(src, dst);
 	floodFill.conf.anchor.set(raw.min, raw.max); // Min = raw.min;
-	mout.debug2() << "Floodfill: " << floodFill << mout.endl;
+	mout.debug2("Floodfill: " , floodFill );
 
 	const double scale = drain::Type::call<typeNaturalMax>(dst.getType());
 	// const double scale = drain::Type::call<drain::typeIsSmallInt>(dst.getType()) ? dst.getEncoding().getTypeMax<double>() : 1.0;

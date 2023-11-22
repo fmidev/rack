@@ -189,7 +189,7 @@ public:
 		if (!ctx.andreSelect.empty()){
 			mout.info("AnDRe data selector is set: ", ctx.andreSelect);
 			this->bean.dataSelector.setParameters(ctx.andreSelect);
-			mout.debug2() << "-> new values: " << this->bean.getDataSelector() << mout.endl;
+			mout.debug2("-> new values: " , this->bean.getDataSelector() );
 		}
 
 		// NEW (Bug fix) 2022/07/10

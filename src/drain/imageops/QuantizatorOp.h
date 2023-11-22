@@ -83,9 +83,9 @@ public:
 		for (unsigned int i = 0; i < bits; i++)
 			mask = (mask << 1) | 1;
 
-		//mout.warn() << mask << mout.endl;
+		//mout.warn(mask );
 		mask = mask << (1*8 - bits); // assum uchar?
-		//mout.warn() << mask << mout.endl;
+		//mout.warn(mask );
 		updateScale();
 		/*
 		mout.note();
