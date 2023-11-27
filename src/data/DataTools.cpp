@@ -44,7 +44,8 @@ void DataTools::updateInternalAttributes(Hi5Tree & src){
 	drain::FlexVariableMap & properties = src.data.dataSet.properties;
 	//properties.clear(); // TODO: should not remove linked variables!
 
-	drain::Variable & object = src[ODIMPathElem::WHAT].data.attributes["object"];
+	//drain::Variable & object = src[ODIMPathElem::WHAT].data.attributes["object"];
+	std::string object = src[ODIMPathElem::WHAT].data.attributes.get("object", "");
 	if (object == "PVOL"){
 		src.data.dataSet.setCoordinatePolicy(
 				drain::image::CoordinatePolicy::POLAR,
@@ -82,8 +83,8 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 	// mout.special("my coordProp) ", attributes["coordPolicy"]);
 
 	// Init with upper level state
-	//attributes.importMap(parentAttributes); //, LOG_DEBUG+2);
-	attributes.updateFromCastableMap(parentAttributes);
+	attributes.importMap(parentAttributes); //, LOG_DEBUG+2);
+	// attributes.updateFromCastableMap(parentAttributes);
 	// std::cerr << "MAP now: " << a << "\n\n";
 	// mout.special("my coordPolicy) ", src.data.dataSet.getCoordinatePolicy());
 
@@ -123,6 +124,10 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 				attributes["scale"]  = s.scale;
 				attributes["offset"] = s.offset;
 				//mout.warn() << a.get("what:quantity", "?") << ", scaling " << img.getScaling() << ' ' << img << mout.endl;
+			}
+
+			if (img.getName().empty()){
+				img.setName(attributes.get("name",""));
 			}
 			//mout.warn() << "scaling1 " << entry.second.data.dataSet.getScaling() << mout.endl;
 		}
@@ -187,25 +192,25 @@ void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::Coordi
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.deprecating("This may be better handled with updateInternalAttributes");
+	//mout.deprecating("This may be better handled with updateInternalAttributes");
 
 	drain::image::Image & data = src.data.dataSet;
 
 	if (!data.isEmpty()){
 		data.setCoordinatePolicy(policy);
-		data.setName(data.properties["what:quantity"].toStr() + policy.toStr('_'));
+		//data.setName(data.properties["what:quantity"].toStr() + policy.toStr('_'));
 		// mout.attention("image name=", data.getName(), " - ", data.getCoordinatePolicy());
 	}
 
 	for (auto & entry: src){
 		if (! entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-			mout.special("next updating: ", entry.first);
+			// mout.special("next updating: ", entry.first);
 			updateCoordinatePolicy(entry.second, policy);
 		}
 	}
 
 	// data.setName(data.properties["what:quantity"].toStr());
-	mout.attention("image name=", data.getName(), " - ", data.getCoordinatePolicy());
+	// mout.attention("image name=", data.getName(), " - ", data.getCoordinatePolicy());
 
 }
 

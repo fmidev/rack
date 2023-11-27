@@ -251,7 +251,7 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, getName());
 
-		//mout.warn() << "setting: " << value << mout.endl;
+		//mout.warn("setting: " , value );
 		DataSelector  test;
 
 		try {
@@ -259,14 +259,14 @@ public:
 
 			// ImageSelector itest;
 			if (ctx.log.getVerbosity() > LOG_DEBUG){
-				mout.special() << "testing: " << value << mout.endl;
+				mout.special("testing: " , value );
 				test.setParameters(value);
-				mout.special() << "testing: => " <<  test << mout.endl;
+				mout.special("testing: => " ,  test );
 				ODIMPathList paths;
 				const Hi5Tree & src = ctx.getMyHi5();
 				test.getPaths(src, paths);
-				mout.special() << "path count => " <<  paths.size() << mout.endl;
-				mout.debug3() << "paths: " <<  drain::sprinter(paths) << mout.endl;
+				mout.special("path count => " ,  paths.size() );
+				mout.debug3("paths: " ,  drain::sprinter(paths) );
 			}
 
 			// std::cerr << __FILE__ << drain::sprinter(paths) << '\n';
@@ -274,11 +274,11 @@ public:
 
 		}
 		catch (const std::exception &e) { // consider generalising this
-			mout.warn()  << "keys: " << test.getParameters().getKeys() << mout.endl;
-			mout.warn()  << "msg: "  << e.what() << mout.endl;
-			mout.error() << "error in: " << value << mout.endl;
+			mout.warn("keys: " , test.getParameters().getKeys() );
+			mout.warn("msg: "  , e.what() );
+			mout.error("error in: " , value );
 		}
-		// mout.special() << getName() << ctx.getId() << ':' << ctx.select << mout.endl;
+		// mout.special(getName() , ctx.getId() , ':' , ctx.select );
 
 	};
 
@@ -315,7 +315,7 @@ public:
 
 
 		if (qualityQuantity.empty()){
-			//mout.warn() << "s"  << mout.endl;
+			//mout.warn("s"  );
 			ctx.select = "quantity=^(" + quantity + ")$";
 		}
 		else {
@@ -384,7 +384,7 @@ protected:
 		ctx.targetEncoding.clear();
 
 		mout.debug("op.targetEncoding: ", op.targetEncoding);
-		// mout.warn() << op << mout.endl;
+		// mout.warn(op );
 		op.dataSelector.consumeParameters(ctx.select);
 		mout.debug(op.dataSelector);
 
@@ -430,7 +430,7 @@ public:
 
 		if (selector.quantity.empty()){
 			selector.quantity = "^DBZH";
-			mout.note() << "selector quantity unset, setting " << selector.quantity << mout;
+			mout.note("selector quantity unset, setting " , selector.quantity );
 		}
 
 		const drain::RegExp quantityRegExp(selector.quantity);
@@ -440,7 +440,7 @@ public:
 		ODIMPathList paths;
 		selector.getPaths(dst, paths);
 
-		mout.note() << std::isnan(dataQuality) << mout;
+		mout.note(std::isnan(dataQuality) );
 		mout.note(std::isnan(undetectQuality) );
 		mout.note(std::isnan(nodataQuality) );
 
@@ -753,19 +753,6 @@ public:
 		mout.experimental("Resolved path:", pathSrc, " => ", matcher);
 		*/
 
-
-		ODIMPath path1;
-		std::string attr1;
-		// std::string attr1value; // debug
-		// std::string attr1type;// debug
-		std::string attrValue;
-		hi5::Hi5Base::parsePath(pathSrc, path1, attr1, attrValue);
-		mout.debug("path:  " , path1 , ", size=" , path1.size() );
-
-		if (!attrValue.empty()){
-			mout.warn("value (" , attrValue , ") not empty in " , path1 );
-		}
-
 		// NEW
 		/*
 		DataSelector selector;
@@ -781,6 +768,24 @@ public:
 		mout.warn("type:  " , attr1type  );
 		return;
 		 */
+
+		ODIMPath path1;
+		//std::string path1;
+		std::string attr1;
+		// std::string attr1value; // debug
+		// std::string attr1type;  // debug
+		std::string attrValue;
+		hi5::Hi5Base::parsePath(pathSrc, path1, attr1, attrValue);
+
+		hi5::Hi5Base::parsePath(pathSrc, path1, attr1, attrValue);
+
+		//mout.debug(pathSrc, " -> path:  " , path1 , ", size=" , path1.size() );
+		mout.debug(pathSrc, " -> path1: " , path1 , '(' , path1.size() , ')' , " attr1:" , attr1 , " ~", attrValue);
+
+		if (!attrValue.empty()){
+			mout.warn("value (" , attrValue , ") not empty in " , path1 );
+		}
+
 
 		if (!dstRoot.hasPath(path1)) // make it temporary (yet allocating)
 			mout.warn("nonexistent path: " , path1 );
@@ -799,8 +804,7 @@ public:
 		}
 
 
-		mout.debug("path1: " , path1 , '(' , path1.size() , ')' , " : " , attr1 );
-		mout.debug("path2: " , path2 , '(' , path2.size() , ')' , " : " , attr2 );
+		mout.debug(pathDst, " -> path2: " , path2 , '(' , path2.size() , ')' , " attr2:" , attr2 , " ~", attrValue);
 
 
 		if (attr1.empty()){ // RENAME PATHS (swap two paths)
@@ -810,7 +814,7 @@ public:
 				return;
 			}
 
-			mout.debug("renaming path '" , path1 , "' => '" , path2 , "'" );
+			mout.debug("renaming (swapping) paths '" , path1 , "' => '" , path2 , "'" );
 			//mout.warn(dstRoot );
 			Hi5Tree & dst1 = dstRoot(path1);
 			if (!dstRoot.hasPath(path2)) // make it temporary (yet allocating it for now)
@@ -823,7 +827,9 @@ public:
 			dst1.data.noSave = noSave2;
 			dst2.data.noSave = noSave1;
 			dst2.data.attributes.swap(dst1.data.attributes);
-			//dstRoot.erase(path1);
+
+			// dstRoot.erase(path1); ?
+			dstRoot(path1).data.noSave = true;
 			//DataTools::updateInternalAttributes(dst1); // recurse subtrees
 			//DataTools::updateInternalAttributes(dst2); // recurse subtrees
 
@@ -1161,7 +1167,7 @@ public:
 			mout.info("pathMatcher: " , selector.pathMatcher );
 			mout.debug("selector: " , selector );
 			assignment = result[3];
-			mout.debug2() << "assignment:  " << assignment    << mout.endl;
+			mout.debug2("assignment:  " , assignment    );
 		}
 
 
@@ -1169,7 +1175,7 @@ public:
 		selector.getPaths(src, paths);
 		if (paths.empty()){
 			mout.debug("no paths found, so trying creating one:" , selector.pathMatcher  );
-			mout.debug2() << "isLiteral:  " << selector.pathMatcher.isLiteral() << mout.endl;
+			mout.debug2("isLiteral:  " , selector.pathMatcher.isLiteral() );
 			ODIMPath path;
 			selector.pathMatcher.extract(path);
 			paths.push_back(path);
@@ -1676,7 +1682,7 @@ public:
 
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		mout.debug2() << "params: " << value << mout.endl;
+		mout.debug2("params: " , value );
 
 		/// Syntax for recognising text files.
 		static
@@ -1697,7 +1703,7 @@ public:
 		}
 		else {
 			try {
-				mout.debug2() << "Assuming filename, trying to read." << mout.endl;
+				mout.debug2("Assuming filename, trying to read." );
 				drain::getCommandBank().run("inputFile", value, ctx);
 				//drain::getRegistry().run("inputFile", params);
 			} catch (std::exception & e) {
@@ -1756,8 +1762,8 @@ void CmdValidate::exec() const {
 		validator.push_back(ODIMNodeValidator());
 		ODIMNodeValidator & nodeValidator = validator.back();
 		nodeValidator.assign(line);
-		mout.debug2() << "L: " << line          << mout.endl;
-		mout.debug2() << "V: " << nodeValidator << mout.endl;
+		mout.debug2("L: " , line          );
+		mout.debug2("V: " , nodeValidator );
 		line.clear();
 	}
 
@@ -1791,7 +1797,7 @@ void CmdValidate::exec() const {
 				return;
 			}
 			else {
-				mout.debug2() << "RegExp: " << wit->pathRegExp.toStr() << mout.endl; //.toStr()
+				mout.debug2("RegExp: " , wit->pathRegExp.toStr() ); //.toStr()
 				mout.debug("ACCEPT path: " , path );
 			}
 
@@ -1810,7 +1816,7 @@ void CmdValidate::exec() const {
 						continue;
 					}
 					else {
-						mout.debug2() << "ACCEPT attribute path: " << attributePath << mout.endl;
+						mout.debug2("ACCEPT attribute path: " , attributePath );
 					}
 					const std::type_info & rType = wit->basetype.getType();
 					const std::type_info & aType = entry.second.getType();

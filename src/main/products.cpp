@@ -213,7 +213,7 @@ public:
 		if (!ctx.targetEncoding.empty()){
 			mout.debug("Setting target parameters: " , ctx.targetEncoding );
 			this->bean.setEncodingRequest(ctx.targetEncoding);
-			//mout.debug2() << "New values: " << this->bean.odim  << mout.endl;
+			//mout.debug2("New values: " , this->bean.odim  );
 			ctx.targetEncoding.clear();
 		}
 

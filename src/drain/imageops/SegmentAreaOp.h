@@ -58,7 +58,7 @@ Note: current designed for SegmentProber.
 
 \code
 drainage shapes.png --iSegmentArea 64:255 -o segmentArea.png
-drainage gray.png --physicalRange 0:1 --iSegmentArea 0.5 -o segmentAreaPhys.png
+drainage image-gray.png --physicalRange 0:1 --iSegmentArea 0.5 -o segmentAreaPhys.png
 \endcode
 
 \code
@@ -141,7 +141,7 @@ void SegmentAreaOp<S,D,T>::getDstConf(const ImageConf & src, ImageConf & dst) co
 	else*/
 	if (Type::call<typeIsFloat>(dst.getType())){
 		dst.setType(t);
-		mout.warn() << "float valued destination data not supported, setting: " << Type::getTypeChar(t) << mout.endl;
+		mout.warn("float valued destination data not supported, setting: " , Type::getTypeChar(t) );
 		//throw std::runtime_error("SegmentAreaOp: float valued destination image not supported.");
 	}
 
@@ -163,36 +163,36 @@ void SegmentAreaOp<S,D,T>::traverseChannel(const Channel & src, Channel & dst) c
 	raw.max = (this->intensity.max == std::numeric_limits<double>::max()) ? src.getConf().getTypeMax<src_t>() : src.getScaling().inv(this->intensity.max);
 
 	if (raw.min <= src.getConf().getTypeMin<src_t>()){
-		mout.warn() << "src scaling:   "    << src.getScaling() << mout;
-		mout.warn() << "original range:   " << intensity << mout;
-		mout.warn() << "raw (code) range: " << raw << mout;
-		mout.warn() << "min value=" << (double)raw.min <<  " less or smaller than storage type min=" << src.getConf().getTypeMin<src_t>() << mout;
+		mout.warn("src scaling:   "    , src.getScaling() );
+		mout.warn("original range:   " , intensity );
+		mout.warn("raw (code) range: " , raw );
+		mout.warn("min value=" , (double)raw.min ,  " less or smaller than storage type min=" , src.getConf().getTypeMin<src_t>() );
 	}
 
-	mout.special()  << "raw range: " << (double)raw.min << '-' << (double)raw.max << mout.endl;
-	mout.debug2() << "src: " << src << mout.endl;
-	mout.debug2() << "dst: " << dst << mout.endl;
+	mout.special("raw range: " , (double)raw.min , '-' , (double)raw.max );
+	mout.debug2("src: " , src );
+	mout.debug2("dst: " , dst );
 
 	//SizeProber sizeProber(src, dst);
 	T sizeProber(src, dst);
 	sizeProber.conf.anchor.set(raw.min, raw.max);
-	mout.debug2() << "areaProber:" << sizeProber << mout.endl;
+	mout.debug2("areaProber:" , sizeProber );
 
 	FillProber floodFill(src, dst);
 	floodFill.conf.anchor.set(raw.min, raw.max); // Min = raw.min;
-	mout.debug2() << "Floodfill: " << floodFill << mout.endl;
+	mout.debug2("Floodfill: " , floodFill );
 
 	const double scale = drain::Type::call<typeNaturalMax>(dst.getType());
 	// const double scale = drain::Type::call<drain::typeIsSmallInt>(dst.getType()) ? dst.getEncoding().getTypeMax<double>() : 1.0;
 
 	const UnaryFunctor & ftor = getFunctor(scale); // scale problematic, but needed for const Ftor
 
-	mout.warn() << "Scale: " << scale << mout.endl;
-	mout.warn() << "Final functor: " << ftor.getName() << '(' << ftor.getParameters() << ')' << mout.endl;
+	mout.warn("Scale: " , scale );
+	mout.warn("Final functor: " , ftor.getName() , '(' , ftor.getParameters() , ')' );
 	/*
-	mout.warn() << "Functor: 1 =>" << ftor(1.0) << mout.endl;
-	mout.warn() << "Functor: 100 =>" << ftor(100.0) << mout.endl;
-	mout.warn() << "Functor: 10000 =>" << ftor(10000.0) << mout.endl;
+	mout.warn("Functor: 1 =>" , ftor(1.0) );
+	mout.warn("Functor: 100 =>" , ftor(100.0) );
+	mout.warn("Functor: 10000 =>" , ftor(10000.0) );
 	*/
 	//mout.debug2();
 
@@ -230,9 +230,9 @@ void SegmentAreaOp<S,D,T>::traverseChannel(const Channel & src, Channel & dst) c
 }
 
 
-} // namespace image
+} // image
 
-} // namespace drain
+} // drain
 
 #endif
 

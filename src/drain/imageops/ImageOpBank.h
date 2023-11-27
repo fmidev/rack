@@ -131,7 +131,7 @@ class NegateOp : public ImageOp {
 
 public:
 
-	NegateOp() : ImageOp(__FILE__, __FUNCTION__){
+	NegateOp() : ImageOp(__FUNCTION__, "Invert values (unsigned char or unsigned short int)"){
 	}
 
 	virtual inline

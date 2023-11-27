@@ -110,17 +110,17 @@ protected:
 				if (scale > 0.0)
 					f.setScale(scale, bias);
 				f.setParameters(functorParams);
-				mout.debug3() << " ftor: " << f << mout.endl;
-				// mout.warn() << "cftor: " << (const UnaryFunctor &)f << mout.endl;
+				mout.debug3(" ftor: " , f );
+				// mout.warn("cftor: " , (const UnaryFunctor &)f );
 				return f;
 			}
 			else {
-				mout.fail() << "Functor '" << functorName << "' not found. Available functors:" << mout.endl;
+				mout.fail("Functor '" , functorName , "' not found. Available functors:" );
 				//std::cerr << unicloner.bank
-				mout.note() << "Available functors:\n" << unicloner.bank << mout.endl;
+				mout.note("Available functors:\n" , unicloner.bank );
 				//static const SprinterLayout layout("\n", "<?>", "\0=;", "''");
 				//Sprinter::sequenceToStream(std::cerr, unicloner.bank, layout);
-				mout.warn() << "using default ftor: " << this->functor << mout.endl;
+				mout.warn("using default ftor: " , this->functor );
 				return this->functor;
 			}
 		}

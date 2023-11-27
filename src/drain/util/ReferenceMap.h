@@ -158,8 +158,11 @@ public:
 		for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
 			//std::cerr << " -> " << *it <<  std::endl;
 			if (replace || !hasKey(*it)){
-				Referencer & item = rMap[*it];
-				link(*it, item, rMap.unitMap[*it]).fillArray = item.fillArray;
+				Referencer & srcItem = rMap[*it];
+				Referencer & item = link(*it, srcItem, rMap.unitMap[*it]); //.fillArray = item.fillArray;
+				item.setFill(srcItem.fillArray);
+				item.setInputSeparator(srcItem.getInputSeparator());
+				item.setOutputSeparator(srcItem.getOutputSeparator());
 			}
 		}
 	}

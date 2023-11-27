@@ -100,7 +100,7 @@ void ImageMod::processImages(Tray<Image> & dst) const {
 
 		ImageTray<Channel> channelDst(it->second);
 		if (MULTICHANNEL)
-			mout.note() << "input contains several images, and calling traverseFrame(ImageTray<ChannelFrame> &)" << mout.endl;
+			mout.note("input contains several images, and calling traverseFrame(ImageTray<ChannelFrame> &)" );
 		mout.debug3() << "appending image #" << it->first << mout.endl;
 		//channelDst.append(it->second);
 		traverseChannels(channelDst);
@@ -121,7 +121,7 @@ void ImageMod::processImages(Tray<Image> & dst) const {
 	for (typename Tray<ImageFrame>::map_t::iterator it = dst.begin(); it != dst.end(); ++it){
 		ImageTray<Channel> channelDst;
 		if (MULTICHANNEL)
-			mout.note() << "input contains several images, and calling traverseFrame(ImageTray<ChannelFrame> &)" << mout.endl;
+			mout.note("input contains several images, and calling traverseFrame(ImageTray<ChannelFrame> &)" );
 		mout.debug3() << "appending image #" << it->first << mout.endl;
 		channelDst.append(it->second);
 		traverseFrame(channelDst);

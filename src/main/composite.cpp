@@ -121,18 +121,18 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	mout.debug("add A1 " + ctx.getName());
 
 	/*
+	mout.debug("add A1 " + ctx.getName());
 	std::ostream & logOrig = std::cerr;
 	std::stringstream sstr;
 	sstr << "thread-" << ctx.getId() << ".log";
 	drain::Output output(sstr.str());
 	ctx.log.setOstr(output);
 	(std::ostream &)output << "# LOG: " << sstr.str() << '\n';
+	mout.debug("add A2 #" + ctx.getName());
 	*/
 
-	mout.debug("add A2 #" + ctx.getName());
 
 	if (ctx.statusFlags)
 		mout.warn("Status flags before accumulating: ", ctx.statusFlags);
@@ -156,7 +156,7 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 
 	// Changed order 2022/12
 
-	mout.debug("add B #" + ctx.getName());
+	//mout.debug("add B #" + ctx.getName());
 
 	#pragma omp critical
 	{
@@ -538,7 +538,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 
 	w = applyTimeDecay(composite, w, cartSrc.odim);
 
-	mout.debug2() << "input properties:\n" << cartSrc.odim << mout.endl;
+	mout.debug2("input properties:\n" , cartSrc.odim );
 
 	/// If a multi-radar mainComposite is being computed, a warning/note should be given is some of these properties are
 	/// being setValues implicitly ie. based on the first input:
@@ -581,7 +581,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	int i0,j0;
 	composite.deg2pix(cartSrc.odim.UL_lon, cartSrc.odim.UL_lat, i0, j0);
 	j0++; // UL pixel is located at (0,-1) in the image coordinates!
-	mout.debug2() << "sub image start coordinates: " << i0 << ',' << j0 << mout.endl;
+	mout.debug2("sub image start coordinates: " , i0 , ',' , j0 );
 
 	composite.addCartesian(cartSrc, srcQuality, w, i0, j0);
 

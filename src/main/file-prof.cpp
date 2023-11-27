@@ -91,10 +91,10 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 	selector.consumeParameters(ctx.select);
 	//ctx.select.clear();
 
-	mout.debug2() << selector << mout.endl;
+	mout.debug2(selector );
 	const drain::RegExp quantityRegExp(selector.quantity);
 	const bool USE_COUNT = quantityRegExp.test("COUNT");
-	// mout.debug3() << "use count" << static_cast<int>(USE_COUNT) << mout.endl;
+	// mout.debug3("use count" , static_cast<int>(USE_COUNT) );
 
 	const DataSet<PolarSrc> product(src["dataset1"], drain::RegExp(selector.quantity));
 	//const DataSet<> product((*ctx.currentHi5), selector);
@@ -113,12 +113,12 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 		}
 		else if (mainQuantityRegExp.test(it->first)){
 			mainQuantity = it->first;
-			mout.debug3() << "picked main quantity: " << mainQuantity << mout.endl;
+			mout.debug3("picked main quantity: " , mainQuantity );
 			break;
 		}
 	}
 
-	mout.debug2() << "main quantity: " << mainQuantity << mout.endl;
+	mout.debug2("main quantity: " , mainQuantity );
 
 
 	const Data<PolarSrc> & srcMainData = product.getData(mainQuantity); // intervals//product.getData("HGHT"); // intervals

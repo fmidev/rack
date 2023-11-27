@@ -91,8 +91,8 @@ public:
 		window.setSrcFrame(src);
 		window.setDstFrame(dst);
 
-		mout.debug2() << window << mout;
-		//mout.warn() << window.myFunctor.getName() << '#' << window.myFunctor.getParameters() << mout;
+		mout.debug2(window );
+		//mout.warn(window.myFunctor.getName() , '#' , window.myFunctor.getParameters() );
 
 		/*
 		for (int i=0; i<50; ++i){
@@ -100,11 +100,11 @@ public:
 		}
 		*/
 
-		//mout.debug3() << window.getSrc() << mout.endl;
-		//mout.debug3() << "slide:" << mout.endl;
+		//mout.debug3(window.getSrc() );
+		//mout.debug3("slide:" );
 
 		window.run();
-		//mout.debug3() << "end" << mout.endl;
+		//mout.debug3("end" );
 
 	};
 
@@ -115,9 +115,9 @@ public:
 
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-		mout.debug() << "weighted version" << mout.endl;
+		mout.debug("weighted version" );
 		if (srcWeight.isEmpty()){
-			mout.error() << "weight image empty" << mout.endl;
+			mout.error("weight image empty" );
 		}
 
 		W window(this->conf);  // W::conf_t & must be compatible & sufficient
@@ -126,7 +126,7 @@ public:
 		window.setDstFrame(dst);
 		window.setDstFrameWeight(dstWeight);
 
-		mout.debug3() << window << mout.endl;
+		mout.debug3(window );
 
 		window.run();
 
@@ -137,22 +137,22 @@ public:
 		// Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(SlidingWindowOp/4)", __FUNCTION__);
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-		mout.debug() << "start" << mout.endl;
+		mout.debug("start" );
 
 		if (!src.hasAlpha() || !dst.hasAlpha()){
-			mout.info() << "unweighted window" << mout.endl;
+			mout.info("unweighted window" );
 			typename W::unweighted window(this->conf);
 			window.setSrcFrames(src);
 			window.setDstFrames(dst);
-			mout.debug3() << window << mout.endl;
+			mout.debug3(window );
 			window.run();
 		}
 		else {
-			mout.info() << "weighted window" << mout.endl;
+			mout.info("weighted window" );
 			W window(this->conf);
 			window.setSrcFrames(src);
 			window.setDstFrames(dst);
-			mout.debug3() << window << mout.endl;
+			mout.debug3(window );
 			window.run();
 		}
 

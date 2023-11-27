@@ -54,7 +54,7 @@ void QuadTreeOp::process(const ImageFrame & src, ImageFrame & dst) const {
 
 	//CoordinateHandler2D handler1(width, height, src.getCoordinatePolicy());
 	if (this->interpolation.empty()){
-		mout.error() << "interpolation method unset" << mout.endl;
+		mout.error("interpolation method unset" );
 		return;
 	}
 	// const char intMethod = interpolation[0];  see Resize()?
@@ -98,7 +98,7 @@ void QuadTreeOp::process(const ImageFrame & src, ImageFrame & dst) const {
 			}
 			break;
 		default:
-			mout.error() << "unknown interpolation method: " << interpolation << mout.endl;
+			mout.error("unknown interpolation method: " , interpolation );
 		}
 	}
 	*/

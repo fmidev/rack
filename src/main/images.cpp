@@ -216,7 +216,7 @@ public:
 		*/
 
 		DataConversionOp<ODIM> copier; //(copierHidden);
-		copier.odim.addShortKeys();
+		copier.odim.addShortKeys(); // consider always?
 		copier.odim.setValues(ctx.targetEncoding);
 		ctx.targetEncoding.clear();
 
@@ -227,9 +227,9 @@ public:
 		}
 		copier.odim.type = type; //drain::Type::getTypeChar(img->getType());
 
-		//mout.debug3() << "alphaSrcODIM:  "  <<  alphaSrcODIM << mout.endl;
-		mout.debug3() << "odimOut: " << copier.odim << mout.endl;
-		mout.debug3() << "copier: " << copier << mout.endl;
+		//mout.debug3("alphaSrcODIM:  "  ,  alphaSrcODIM );
+		mout.debug3("odimOut: " , copier.odim );
+		mout.debug3("copier: " , copier );
 		copier.traverseImageFrame(src.odim,  src.data, copier.odim, dstImg.getAlphaChannel());
 
 		//copier.traverseImageFrame(srcODIM,  srcAlpha, copier.odim, dstImg.getAlphaChannel());
@@ -1176,7 +1176,7 @@ public:
 				continue;
 			}
 			tray.appendImage(channel);
-			mout.debug2() << channel << mout.endl;
+			mout.debug2(channel );
 			//std::string path(*it);
 
 

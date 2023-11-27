@@ -127,7 +127,17 @@ class DistanceModel : public BeanLike {
 	
 public:
 
-	typedef unsigned short topol_t;
+	// OLD typedef unsigned short topol_t;
+	// NEW
+	enum PIXEL_ADJACENCY {CONN4, CONN8, KNIGHT};
+	typedef PIXEL_ADJACENCY topol_t;
+
+
+	typedef drain::EnumFlagger<drain::SingleFlagger<PIXEL_ADJACENCY> > PixelAdjacencyFlagger;
+	PixelAdjacencyFlagger pixelAdjacency;
+
+	mutable
+	std::string pixelAdjacencyStr;  // number to string
 
 	static
 	const float nan_f; // = std::numeric_limits<float>::quiet_NaN();
@@ -195,17 +205,35 @@ public:
 	virtual
 	DistanceElement getElement(short dx, short dy, bool forward=true) const = 0;
 
+	void update();
+
+	/*
 	inline
 	void update(){
 		//setTopology(topology);
+		pixelAdjacency.set(pixelAdjacencyStr);
+		pixelAdjacencyStr = pixelAdjacency.getDict().getKey(pixelAdjacency.getValue());
 		setRadius(horzRadius.forward, vertRadius.forward, horzRadius.backward, vertRadius.backward);
 	}
+	*/
+
 
 	/// Sets the topology of the computation grid: 0=diamond, 1=diagonal, 2=extended (chess knight steps)
+	inline
+	void setTopology(PIXEL_ADJACENCY topology){
+		// this->topology = topology;
+		// EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict.getKeys()
+		pixelAdjacency.set(topology);
+		pixelAdjacencyStr = pixelAdjacency.getDict().getKey(topology);
+				//pixelAdjacency;
+	};
+	/*
 	inline
 	void setTopology(topol_t topology){
 		this->topology = topology;
 	};
+	*/
+
 
 	/// Creates a list of DistanceElements
 	/**
@@ -213,21 +241,29 @@ public:
 	 *
 	 */
 	//virtual
-	void createChain(DistanceNeighbourhood & chain, topol_t topology, bool forward=true) const;
+	//void createChain(DistanceNeighbourhood & chain, topol_t topology, bool forward=true) const;
+	void createChain(DistanceNeighbourhood & chain, PIXEL_ADJACENCY topology, bool forward=true) const;
 
 	inline
 	void createChain(DistanceNeighbourhood & chain, bool forward=true) const {
-		createChain(chain, this->topology, forward);
+		//PixelAdjacencyFlagger f;
+		//f.set(this->topology);
+		//createChain(chain, this->topology, forward);
+		createChain(chain, pixelAdjacency, forward);
 	}
 
 	virtual
 	float decrease(float value, float coeff) const = 0;
 
+	//PIXEL_ADJACENCY topology;
+	/*
 	topol_t topology; // NEEDED, separately?
-
 	static const topol_t PIX_ADJACENCY_4 = 0;
 	static const topol_t PIX_ADJACENCY_8 = 1;
 	static const topol_t PIX_ADJACENCY_KNIGHT = 2;
+	*/
+
+
 
 protected:
 
@@ -239,9 +275,14 @@ protected:
 	 *  By default, the geometry is octagonal, applying 8-distance.
 	*/
 	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), horzRadius(10.0, 10.0), vertRadius(-1.0, -1.0) {
-		parameters.link("width",  horzRadius.tuple(),  "pix").fillArray = true;
+		parameters.link("width",  horzRadius.tuple(), "pix").fillArray = true;
 		parameters.link("height", vertRadius.tuple(), "pix").fillArray = true;
-		parameters.link("topology", topology=PIX_ADJACENCY_KNIGHT, "0|1|2");
+		//parameters.link("topology", topology=PIX_ADJACENCY_KNIGHT, "0|1|2");
+
+		//parameters.link("topology", pixelAdjacencyStr = "KNIGHT", "0|1|2");
+		parameters.link("topology", pixelAdjacencyStr = "KNIGHT", sprinter(EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict.getKeys()).str());
+		//drain::sprinter(drain::EnumDict<DataOrder::Oper>::dict.getKeys()).str()
+		// ? update();
 		setMax(255); // warning
 		// drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 		// mout.warn() << *this << mout.endl;

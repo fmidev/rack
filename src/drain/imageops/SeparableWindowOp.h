@@ -128,12 +128,12 @@ void SeparableWindowOp::traverseChannel(const Channel & src, Channel & dst) cons
 	// Jotestin setParams
 	window.setSrc(src);
 	window.setDst(tmp);
-	mout.debug() << window << mout.endl;
+	mout.debug(window );
 	window.runHorz();
 
 	window.setSrc(tmp);
 	window.setDst(dst);
-	mout.debug() << window << mout.endl;
+	mout.debug(window );
 	window.runVert();
 
 	dst.scaling.setScale(src.scaling.getScale());
@@ -158,7 +158,7 @@ void SeparableWindowOp::traverseChannel(const Channel & src, const Channel & src
 	window1.setSrcFrameWeight(srcWeight);
 	window1.setDst(tmp);
 	window1.setDstFrame1Weight(tmpWeight);
-	mout.debug() << window1 << mout.endl;
+	mout.debug(window1 );
 	window1.run();
 	// File::write(tmp, "gauss1d.png");
 	// File::write(tmpWeight, "gauss1w.png");
@@ -169,7 +169,7 @@ void SeparableWindowOp::traverseChannel(const Channel & src, const Channel & src
 	window2.setSrcFrameWeight(tmpWeight);
 	window2.setDst(dst);
 	window2.setDstFrame1Weight(dstWeight);
-	mout.debug() << window2 << mout.endl;
+	mout.debug(window2 );
 	window2.run();
 
 	dst.scaling.setScale(src.scaling.getScale());

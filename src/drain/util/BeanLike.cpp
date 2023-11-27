@@ -28,66 +28,30 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef MARGINALSTATISTICOP_H_
-#define MARGINALSTATISTICOP_H_
 
-#include "math.h"
-
-#include "drain/util/Histogram.h"
-
-
-#include "ImageOp.h"
-
+#include "BeanLike.h"
 
 namespace drain
 {
 
-namespace image
-{
-
-/// Computes horizontal or vertical intensity statistics: iAverage, sum, ...
-/**
-
- \code
-   drainage image-gray.png --iMarginStat horz,asmdvNX,0.50 --iResize 100,270 -o marginStat.png
- \endcode
-
- */
-class MarginalStatisticOp : public ImageOp
-{
-public:
-
-	/// Default constructor.
-	/**
-	 *   \par mode - "horz" or "vert"
-	 *   \par stat - a sequence of letters, referring to statistics through Histogram::get(const char &key) .
-	 */
-	MarginalStatisticOp(const std::string & mode = "horz", const std::string & stat="asmdvNX", float medianPos=0.50) :
-		ImageOp("MarginStat","Computes statistics on <horz> or <vert> lines: iAverage,sum,median,stdDev,variance,miN,maX") {
-		parameters.link("mode", this->mode = mode);
-		parameters.link("stat", this->stat = stat);
-		parameters.link("medianPos", this->medianPos = medianPos);
-	};
-
-	/// Unweighted computation
-	inline
-	void process(const ImageFrame &src, Image &dst) const {
-		process(src, Image(), dst);
+	std::ostream & BeanLike::toStream(std::ostream & ostr, bool compact) const {
+		ostr << name << ": " << description << '\n';
+		if (compact){
+			ostr << '\t' << parameters << '\n';
+		}
+		else {
+			for (const std::string & key: getParameters().getKeyList()){
+				const Referencer & param = parameters.at(key);
+				std::cout << '\t' << key << ':' << param << '\n';
+			}
+			/*
+			for (const auto & entry: getParameters()){
+				std::cout << '\t' << entry.first << ':' << entry.second << '\n';
+			}
+			*/
+		}
+		return ostr;
 	}
 
-	/// Unweighted computation
-	void process(const ImageFrame &src, const ImageFrame &weight, Image &dst) const;
 
-	std::string mode;
-	std::string stat;
-	float medianPos;
-
-
-};
-
-}
-}
-
-#endif /*MARGINALSTATISTICOP_H_*/
-
-// Drain
+} // drain::

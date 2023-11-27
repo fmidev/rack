@@ -40,7 +40,7 @@ void RecomposeOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (dst.typeIsSet() && (dst.getType() != src.getType())){
-		mout.special() << "changing dst type -> " << src.getType().name() << mout.endl;
+		mout.special("changing dst type -> " , src.getType().name() );
 	}
 
 	dst.setType(src.getType());
@@ -69,7 +69,7 @@ void RecomposeOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 		iChannels = std::max(iChannels, view.getImageChannelCount());
 		aChannels = std::max(aChannels, view.getAlphaChannelCount());
-		mout.debug() << "channels... " << s << " (" << iChannels << '+' << aChannels << ')' << mout;
+		mout.debug("channels... " , s , " (" , iChannels , '+' , aChannels , ')' );
 
 	}
 
@@ -77,7 +77,7 @@ void RecomposeOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 	dst.setArea(src.getWidth(), panels*src.getHeight());
 
-	mout.debug() << "dst: " << dst << mout.endl;
+	mout.debug("dst: " , dst );
 
 }
 
@@ -87,18 +87,18 @@ void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.debug() << parameters << mout;
+	mout.debug(parameters );
 
 	makeCompatible(srcFrame.getConf(), dstImage);
 
 	//  if (channels < 3)
-	//	mout.debug() << "small number of channels: " << channels << mout.endl;
+	//	mout.debug("small number of channels: " , channels );
 
 	const size_t width  = srcFrame.getWidth();
 	const size_t height = srcFrame.getHeight();
 	const double gray = dstImage.getConf().getTypeMax<double>()/2.0;
 
-	mout.debug() << "src: " << srcFrame << mout;
+	mout.debug("src: " , srcFrame );
 	//return;
 
 	if (dstImage.hasAlphaChannel()){
@@ -106,7 +106,7 @@ void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 		dstAlpha.fill(dstAlpha.getConf().getTypeMax<double>());
 	}
 
-	mout.debug() << "dst: " << dstImage << mout;
+	mout.debug("dst: " , dstImage );
 
 
 	ImageView view;
@@ -147,7 +147,7 @@ void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 			if (kView >= view.getChannelCount())
 				kView = view.getChannelCount()-1; // last channel
 
-			mout.debug() << "copy: " << viewStr << '[' << kView  << "] => dst[" << k << ']' << '+' << v << mout;
+			mout.debug("copy: " , viewStr , '[' , kView  , "] => dst[" , k , ']' , '+' , v );
 
 			const Channel & src = view.getChannel(kView);
 			Channel & dst = dstImage.getChannel(k);

@@ -69,6 +69,14 @@ NodeGDAL::NodeGDAL(type t){
 	//this->name = "~";
 }
 
+NodeGDAL::NodeGDAL(const NodeGDAL & node){
+	this->id = -1;
+	tag = node.tag;
+	sample = 0;
+	copyStruct(node, node, *this);
+}
+
+
 void NodeGDAL::setType(type t){
 
 	if (t == ROOT){

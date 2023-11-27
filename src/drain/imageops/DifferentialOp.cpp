@@ -89,19 +89,19 @@ void DifferentialOp::traverseChannels(const ImageTray<const Channel> & src, Imag
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(DifferentialOp)", __FUNCTION__);
 
 	if (src.empty()){
-		mout.error() << "src empty" << mout.endl;
+		mout.error("src empty" );
 	}
 
 	if (dst.size() < channels){
-		mout.error() << "dst size(" << dst.size() << ") incompatible with required channel count " << channels << mout.endl;
+		mout.error("dst size(" , dst.size() , ") incompatible with required channel count " , channels );
 	}
 
 	if (channels == 1){
-		mout.debug() << "1D (single-direction) operator" << mout.endl;
+		mout.debug("1D (single-direction) operator" );
 		traverseChannel(src.get(), dst.get());
 	}
 	else {
-		mout.debug() << "2D (combined horz & vert) operator" << mout.endl;
+		mout.debug("2D (combined horz & vert) operator" );
 		traverseHorz(src.get(), dst.get(0));
 		traverseVert(src.get(), dst.get(1));
 	}
@@ -125,20 +125,20 @@ void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) cons
 	CoordinateHandler2D coordinateHandler(width, height, src.getCoordinatePolicy());
 
 	if ((di==0) && (dj==0))
-		mout.error() << "zero span" << mout.endl;
+		mout.error("zero span" );
 
 	/*
 	const ftype scaleFinal = scale / spanFinal;
-	mout.warn() << *this << mout.endl;
-	mout.warn() << "  -- spanFinal=" << spanFinal << " scaleFinal=" << scaleFinal << mout.endl;
-	mout.warn() << "  -- coordHandler" << coordinateHandler << mout.endl;
+	mout.warn(*this );
+	mout.warn("  -- spanFinal=" , spanFinal , " scaleFinal=" , scaleFinal );
+	mout.warn("  -- coordHandler" , coordinateHandler );
 	dst.dump();
-	mout.warn() << "  -- dst: (see above) " << dst << mout.endl;
+	mout.warn("  -- dst: (see above) " , dst );
 	 */
 	const bool SCALE = src.getScaling().isScaled() || dst.getScaling().isScaled();
 	const ftype spanCoeff = 0.5/static_cast<ftype>(abs(di)+abs(dj));
 
-	mout.debug() << this->getParameters() << mout.endl;
+	mout.debug(this->getParameters() );
 	mout.debug2() << "spanCoeff:" << spanCoeff << ", SCALE:" << (int)SCALE << mout.endl;
 
 	Point2D<int> pLo;
@@ -146,10 +146,10 @@ void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) cons
 
 	if (!this->LIMIT){
 
-		mout.debug() << "LIMIT=false" << mout.endl;
+		mout.debug("LIMIT=false" );
 
 		if (!SCALE){
-			mout.debug() << "SCALE=false" << mout.endl;
+			mout.debug("SCALE=false" );
 			for (int j = 0; j < height; j++) {
 				for (int i = 0; i < width; i++) {
 					pLo.setLocation(i-di,j-dj);
@@ -162,7 +162,7 @@ void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) cons
 			}
 		}
 		else {
-			mout.debug() << "SCALE=true" << mout.endl;
+			mout.debug("SCALE=true" );
 			for (int j = 0; j < height; j++) {
 				for (int i = 0; i < width; i++) {
 					pLo.setLocation(i-di,j-dj);
@@ -180,11 +180,11 @@ void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) cons
 	}
 	else {
 
-		mout.debug() << "LIMIT=true" << mout.endl;
+		mout.debug("LIMIT=true" );
 
 		drain::typeLimiter<ftype>::value_t limit = dst.getConf().getLimiter<ftype>();
 		if (!SCALE){
-			mout.debug() << "SCALE=false" << mout.endl;
+			mout.debug("SCALE=false" );
 			for (int j = 0; j < height; j++) {
 				for (int i = 0; i < width; i++) {
 					pLo.setLocation(i-di,j-dj);
@@ -197,7 +197,7 @@ void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) cons
 			}
 		}
 		else {
-			mout.debug() << "SCALE=true" << mout.endl;
+			mout.debug("SCALE=true" );
 			for (int j = 0; j < height; j++) {
 				for (int i = 0; i < width; i++) {
 					pLo.setLocation(i-di,j-dj);
@@ -213,7 +213,7 @@ void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) cons
 	}
 
 	//drain::image::File::write(dst, "Mika.png");
-	// mout.warn() << "finished\n" << mout.endl;
+	// mout.warn("finished\n" );
 
 }
 
@@ -244,10 +244,10 @@ void LaplaceOp::traverse(const Channel &src, Channel &dst, int di, int dj) const
 	if (spanFinal == 0.0)
 	*/
 	if ((di==0) && (dj==0))
-		mout.error() << "zero span" << mout.endl;
+		mout.error("zero span" );
 
 	if ((di!=0) && (dj!=0))
-		mout.error() << "mixed span" << mout.endl;
+		mout.error("mixed span" );
 
 	const ftype sign = ((di>0)  || (dj>0)) ? +1.0 : -1.0;
 

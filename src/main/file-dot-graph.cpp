@@ -85,7 +85,7 @@ std::string quoted(const ODIMPath & path){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	drain::Path<std::string,'_'> p(path);
-	mout.debug2() << p.str() << mout.endl;
+	mout.debug2(p.str() );
 
 	return p.str();
 

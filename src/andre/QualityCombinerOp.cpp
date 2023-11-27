@@ -327,8 +327,7 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 			dstClass.odim.scaling.set(srcClass.data.getScaling());
 		}
 
-
-
+		/*
 		mout.note("srcQ ", srcQind.data,  " ", srcQind.odim);
 		mout.note("srcC ", srcClass.data, " ", srcClass.odim);
 		mout.note("dstQ ", dstQind.data,  " ", dstQind.odim);
@@ -338,6 +337,7 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 		drain::image::FilePng::write(srcClass.data, "srcClass.png");
 		drain::image::FilePng::write(dstQind.data,  "dstQind.png");
 		drain::image::FilePng::write(dstClass.data, "dstClass.png");
+		*/
 
 		Image::const_iterator  sitQ  = srcQind.data.begin();
 		Image::const_iterator  sitC = srcClass.data.begin();

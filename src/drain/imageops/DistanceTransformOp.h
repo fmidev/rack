@@ -110,7 +110,7 @@ public:
     virtual // TODO: non-virtual, ie, final!
 	void makeCompatible(const ImageConf & src, Image & dst) const {
     	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-    	mout.warn() << "derived " << mout;
+    	mout.warn("derived " );
     	ImageOp::makeCompatible(src, dst);
     }
     */
@@ -121,12 +121,12 @@ public:
 	void make Compatible(const ImageFrame &src, Image &dst) const  {
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		mout.debug3() << "src: " << src << mout.endl;
+		mout.debug3("src: " , src );
 
 		//if (!dst.typeIsSet())
 			//dst.setType(src.getType());
 		if (dst.getType() != src.getType()){
-			mout.note() << " changing dst image type: " << dst.getType().name() << '>' << src.getType().name() << mout.endl;
+			mout.note(" changing dst image type: " , dst.getType().name() , '>' , src.getType().name() );
 		}
 
 		dst.copyShallow(src);
@@ -158,7 +158,7 @@ protected:
 	//int topology;
 
 	DistanceTransformOp(const std::string &name, const std::string &description, float width, float height,
-			DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
+			DistanceModel::topol_t topology=DistanceModel::KNIGHT) : // PIX_ADJACENCY_
 		ImageOp(name, description) {
 		parameters.append(this->distanceModel.getParameters());
 		distanceModel.setTopology(topology);
@@ -242,11 +242,11 @@ Range<int> DistanceTransformOp<T>::getVertRange(const CoordinateHandler2D & coor
 
 	Range<int> yRange = coordinateHandler.getYRange();
 
-	// mout.warn() << "yRange: " << yRange << mout;
+	// mout.warn("yRange: " , yRange );
 
 	const Bidirectional<float> & radiusVert = getDistanceModel().getRadiusVert();
 
-	// mout.warn() << "radiusVert: " << radiusVert << mout;
+	// mout.warn("radiusVert: " , radiusVert );
 
 
 	if (coordinateHandler.policy.yUnderFlowPolicy == CoordinatePolicy::WRAP)
@@ -265,7 +265,7 @@ void DistanceTransformOp<T>::traverseChannel(const Channel &src, Channel & dst) 
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	//mout.warn() << "start" << mout.endl;
+	//mout.warn("start" );
 	mout.debug("model max: ",  getDistanceModel().getMax());
 
 	//File::write(dst,"DistanceTransformOp-dst0.png");
@@ -282,7 +282,7 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-	//mout.debug() << "start" << mout.endl;
+	//mout.debug("start" );
 
 	//const DistanceModel & distModel = getDistanceModel();
 	mout.debug2("distModel:", this->distanceModel);
@@ -314,7 +314,7 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 
 	Range<int> xRange = getHorzRange(coordinateHandler); //coordinateHandler.getXRange();
 	Range<int> yRange = getVertRange(coordinateHandler); // coordinateHandler.getYRange();
-	mout.special() << xRange << ',' << yRange << mout;
+	mout.special(xRange , ',' , yRange );
 
 	// Experimental (element horz/vert topology not yet implemented)
 	// Possibly wrong...  not interchangible due to to scanning element geometry?
@@ -324,8 +324,8 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	const Range<int> & outer     = HORZ ? yRange : xRange;
 	int & innerValue  = HORZ ? p.x : p.y;
 	int & outerValue  = HORZ ? p.y : p.x;
-	mout.debug2() << "outer range:" << outer << mout.endl;
-	mout.debug2() << "inner range:" << inner << mout.endl;
+	mout.debug2("outer range:" , outer );
+	mout.debug2("inner range:" , inner );
 	*/
 	//Range<int>
 
@@ -451,11 +451,17 @@ make dots-16b.png
 
 Examples:
 \code
+# Default: 16-connected topology (chess king and knight combined)
 drainage dots.png     --iDistanceTransform 70      -o dist.png
 drainage dots-16b.png --iDistanceTransform 25      -o dist-16b.png
-drainage dots.png     --iDistanceTransform 70,70,0 -o dist-diamond.png
-drainage dots.png     --iDistanceTransform 70,70,1 -o dist-simple.png
+# Simpler 4-connected topology ("diamond" or "city-block" distance)
+drainage dots.png     --iDistanceTransform 70,70,4-CONNECTED -o dist-diamond.png
+# 8-connected topology (chess king)
+drainage dots.png     --iDistanceTransform 70,70,8-CONNECTED -o dist-simple.png
+# Horizontally distorted
 drainage dots.png     --iDistanceTransform 40,20   -o dist-horz.png
+# Asymmetric topology
+drainage dots.png     --iDistanceTransform 10:40,20:80  -o dist-horz.png
 
 \endcode
 
@@ -465,7 +471,7 @@ class DistanceTransformLinearOp : public DistanceTransformOp<DistanceModelLinear
 public:
 
 	inline
-	DistanceTransformLinearOp(float horz = 10.0, float vert = NAN, DistanceModel::topol_t topology = DistanceModel::PIX_ADJACENCY_KNIGHT) :
+	DistanceTransformLinearOp(float horz = 10.0, float vert = NAN, DistanceModel::topol_t topology = DistanceModel::KNIGHT): // PIX_ADJACENCY_
 	DistanceTransformOp<DistanceModelLinear>(__FUNCTION__, "Linearly decreasing intensities - applies decrements.", horz, vert, topology) {
 	};
 
@@ -476,9 +482,16 @@ public:
 
 Examples:
  \code
- drainage dots.png       --iDistanceTransformExp 25    -o distExp.png
+ # Basic example
+ drainage dots.png     --iDistanceTransformExp 25    -o distExp.png
+
+ # 16-bit image
  drainage dots-16b.png --iDistanceTransformExp 25    -o distExp-16b.png
- drainage dots.png       --iDistanceTransformExp 40,20 -o distExp-horz.png
+
+ # Horizontal topology
+ drainage dots.png     --iDistanceTransformExp 40,20 -o distExp-horz.png
+
+ # Asymmetric distances
  drainage dots-16b.png --iDistanceTransformExp 10:40,20:80 -o distExp-asym.png
  \endcode
 
@@ -493,7 +506,7 @@ public:
 	 *
 	 */
 	inline
-	DistanceTransformExponentialOp(dist_t horz = 10.0, dist_t vert = NAN, DistanceModel::topol_t topology = DistanceModel::PIX_ADJACENCY_KNIGHT) :
+	DistanceTransformExponentialOp(dist_t horz = 10.0, dist_t vert = NAN, DistanceModel::topol_t topology = DistanceModel::KNIGHT): // PIX_ADJACENCY_
 		DistanceTransformOp<DistanceModelExponential>(__FUNCTION__, "Exponentially decreasing intensities. Set half-decay radii.",	horz, vert, topology) {
 	};
 

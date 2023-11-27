@@ -50,8 +50,8 @@ void ImpulseAvg::init(const Channel & src, bool horizontal){
 	data.resize(n);
 	scaling.assign(src.getScaling());
 
-	mout.debug() << "Data vector, n=" << n << mout.endl;
-	mout.debug() << "Scaling: " << scaling << mout.endl;
+	mout.debug("Data vector, n=" , n );
+	mout.debug("Scaling: " , scaling );
 
 
 }

@@ -67,11 +67,11 @@ public:
 
 		Composite & composite = ctx.getComposite(RackContext::SHARED);
 
-		mout.debug("ADD start thread #", ctx.getName());
+		mout.debug("starting add(), thread #", ctx.getName());
 
 		add(composite, RackContext::CURRENT, true);
 
-		mout.debug("ADD end.. thread #", ctx.getName());
+		mout.debug("ended add(), thread #", ctx.getName());
 
 		// composite.updateInputSelector(ctx.select);
 		// CHECK ctx.select.clear();

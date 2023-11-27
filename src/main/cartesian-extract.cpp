@@ -80,7 +80,7 @@ void CartesianSun::exec() const {
 	mout.warn("Check bbox and scaling? " , ctx.composite );
 	//ctx.composite.updateScaling();
 
-	mout.debug2() << "main" << mout.endl;
+	mout.debug2("main" );
 	double lat, lon;
 
 	for (size_t j = 0; j < height; ++j) {

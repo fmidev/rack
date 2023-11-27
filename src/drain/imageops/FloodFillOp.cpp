@@ -102,10 +102,10 @@ FloodFillOp::FloodFillOp(int i, int j, double min, double max, double value) : I
 
 FloodFillOp::FloodFillOp(const FloodFillOp & op) : ImageOp(op){
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-	//mout.warn() << "parameters" << mout.endl;
+	//mout.warn("parameters" );
 	parameters.copyStruct(op.getParameters(), op, *this);
 	//parameters.copyStruct(op.getParameters(), op.conf, this->conf); // CONTAINED in obj
-	// mout.warn() << parameters << mout.endl;
+	// mout.warn(parameters );
 }
 
 
@@ -113,14 +113,14 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.debug() << *this << mout.endl;
+	mout.debug(*this );
 
 	CoordinateHandler2D preHandler(src.getGeometry());
 	preHandler.setPolicy(CoordinatePolicy::WRAP);
-	mout.debug() << preHandler << mout.endl;
+	mout.debug(preHandler );
 	Point2D<int> point(startPoint);
 	if (preHandler.handle(point)){
-		mout.info() << "tuned coordinates => (" << point << ')' << mout.endl;
+		mout.info("tuned coordinates => (" , point , ')' );
 	}
 
 	if (Type::call<typeIsFloat>(src.getType()) || Type::call<typeIsFloat>(dst.getType()) ) {
@@ -141,14 +141,14 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 		fill.conf.updateFromMap(conf);
 		fill.conf.markerValue = dst.getScaling().inv(conf.markerValue);
 		fill.init();
-		mout.debug() << "dst: " << dst << mout.endl;
-		//mout.warn() << conf << '>' << conf.markerValue << mout.endl;
-		mout.debug() << fill << '>' << fill.conf.markerValue << mout.endl;
+		mout.debug("dst: " , dst );
+		//mout.warn(conf , '>' , conf.markerValue );
+		mout.debug(fill , '>' , fill.conf.markerValue );
 		//fill.count = 0;
 		fill.probe(point.x, point.y);
 
 		//fill.scan();
-		//mout.warn() << "fill.count: " << fill.count <<  mout.endl;
+		//mout.warn("fill.count: " , fill.count );
 	}
 
 }

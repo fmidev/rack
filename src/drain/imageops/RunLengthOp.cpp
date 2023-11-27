@@ -46,7 +46,7 @@ void RunLengthHorzOp::traverseChannel(const Channel &src, Channel &dst) const {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	// mout.debug() << "start" << mout.endl;
+	// mout.debug("start" );
 
 	int hResult = 0;
 
@@ -54,7 +54,7 @@ void RunLengthHorzOp::traverseChannel(const Channel &src, Channel &dst) const {
 	const int height = src.getHeight();
 	const CoordinateHandler2D handler(src);
 
-	// mout.warn() << dst << mout.endl;
+	// mout.warn(dst );
 
 	Point2D<int> p;
 
@@ -69,7 +69,7 @@ void RunLengthHorzOp::traverseChannel(const Channel &src, Channel &dst) const {
 
 	for (int j=0; j<height; j++){
 
-		// mout.warn() << "Line" << j << mout.endl;
+		// mout.warn("Line" , j );
 
 		pos = 0;  // pos will never decrease
 		length = 0;
@@ -146,7 +146,7 @@ void RunLengthVertOp::traverseChannel(const Channel &src, Channel &dst) const {
 	// => Convert to unambiguous thresholdAbs.
 	const double thresholdAbs = src.getScaling().inv(threshold);
 
-	mout.warn() << "src.sc: " << src.getScaling() << ",  thresholdAbs: " << thresholdAbs << mout;
+	mout.warn("src.sc: " , src.getScaling() , ",  thresholdAbs: " , thresholdAbs );
 	mout.debug2() << "coordHandler: " << handler << mout.endl;
 	mout.debug2() << "lengthMax=" << lengthMax << mout.endl;
 	mout.debug2() << "src: " << src << mout.endl;

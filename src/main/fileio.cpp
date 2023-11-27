@@ -337,7 +337,7 @@ void CmdOutputFile::exec() const {
 
 		mout.info("File format: image");
 
-		// Handle ctx.select and ctx.targetEncoding, if defined.
+		// Optional on-the-fly conversions: handle ctx.select and ctx.targetEncoding, if defined.
 		const drain::image::Image & src = ctx.updateCurrentImage();
 
 		if (src.isEmpty()){
@@ -626,7 +626,7 @@ public:
 
 			//if (path.front().isRoot()) // typically is, string started with slash '/'
 			//path.pop_back(); // strip /data
-			mout.debug3() << "constructing filename for : " << path <<mout.endl;
+			mout.debug3("constructing filename for : " , path );
 
 			std::stringstream sstr;
 			sstr << fp.dir << fp.basename;

@@ -20,7 +20,7 @@ Here, a routine to be run for each input is defined as a script, just as explain
 Then, the triggering commands – input file arguments – are put in braces. In the following example, for each input 
 Pseudo CAPPI and Echo Top products are generated converted to Cartesian coordinates and stored in a file.
 \code
-rack --script '--pCappi 500 -c -o cappi-${NOD}.h5 --pEchoTop 20 -c -o echoTop-${NOD}.h5' [ data/pvol_fi*.h5 ]
+rack --script '--pCappi 500 -c -o cappi-${NOD}.h5 --pEchoTop 20 -c -o echoTop-${NOD}.h5' [ data/pvol_fi*.h5 <defunct> ]
 \endcode
 
 Within braces, <tt>[--inputFile] <file></tt> command will trigger the defined script in a separate, parallel thread.
@@ -142,7 +142,7 @@ The following example creates a composite as a single command line -- as a singl
 \code
 rack   --cMethod WAVG,2,3,-32  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs' \
        --cSize 2000,2000 --cBBox 0,47,40,73    --cInit    --script '--pCappi 1500 --cAdd' \
-        [  data-20140924/201409241200_radar.raw.*.h5 ] \
+        [  data-20140924/201409241200_radar.polar.*.h5 ] \
          --cExtract d  -o composite-parallel.h5
 \endcode
 

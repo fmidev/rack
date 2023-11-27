@@ -58,9 +58,11 @@ namespace image
 
 
    \code
-   drainage color.png -R 0:1 --iGamma 2.0 -o gamma-color-bright.png
-   drainage color.png -R 0:1 --iGamma 0.5 -o gamma-color-dark.png
+   drainage image-color.png -R 0:1 --iGamma 2.0 -o gamma-color-bright.png
+   drainage image-color.png -R 0:1 --iGamma 0.5 -o gamma-color-dark.png
    \endcode
+
+   \see FunctorOp
 
  *  NOTE. Design for parameters may vary in future, since multichannel image could be handled by giving
  *  a value for each: 1.2,1.4,0.7 for example. 

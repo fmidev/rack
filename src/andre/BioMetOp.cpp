@@ -47,15 +47,15 @@ void BiometOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 	const int width  = srcData.data.getWidth();
 	const int height = srcData.data.getHeight();
 
-	mout.note("=>srcData.odim: ", srcData.odim);
-	mout.note("=>dstData: \n", dstData);
+	// mout.note("=>srcData.odim: ", srcData.odim);
+	// mout.note("=>dstData: \n", dstData);
 
 	/// Descending fuzzy step, located at (max) altitude.
-	//const drain::FuzzyStepsoid<double,float> fuzzyAltitude(maxAltitude, -devAltitude);
+	//  const drain::FuzzyStepsoid<double,float> fuzzyAltitude(maxAltitude, -devAltitude);
 	const drain::FuzzyStep<double> fuzzyAltitude(maxAltitude + devAltitude, maxAltitude - devAltitude);
 
 	/// Descending fuzzy step, located at max intensity
-	//const drain::FuzzyStepsoid<float,float> fuzzyDBZ(reflMax, -reflDev);
+	//  const drain::FuzzyStepsoid<float,float> fuzzyDBZ(reflMax, -reflDev);
 	const drain::FuzzyStep<double> fuzzyDBZ(reflMax + reflDev, reflMax - reflDev);
 
 	double s;

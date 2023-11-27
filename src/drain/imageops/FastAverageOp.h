@@ -79,9 +79,9 @@ protected:
 		// scaling.setScale(scaling.getScale() * static_cast<double>(this->getArea()));  // replaced by count
 
 
-		mout.debug3() << "scaling (including area): " << scaling.toStr() << mout.endl;
-		// mout.debug3() << "scaleResult(by area)=" << scaleResult   << mout.endl;
-		mout.debug3() << this->dst.getCoordinatePolicy() << mout.endl;
+		mout.debug3("scaling (including area): " , scaling.toStr() );
+		// mout.debug3("scaleResult(by area)=" , scaleResult   );
+		mout.debug3(this->dst.getCoordinatePolicy() );
 		//coordinateHandler.setLimits(src.getWidth(), src.getWidth())
 		//ImageOp::adaptCoordinateHandler(src, coordinateHandler);
 
@@ -129,9 +129,9 @@ protected:
 	virtual	inline
 	void setImageLimits() const {
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		mout.debug() << this->src << mout.endl;
+		mout.debug(this->src );
 		this->coordinateHandler.set(this->src.getGeometry(), this->src.getCoordinatePolicy());
-		mout.debug() << this->coordinateHandler << mout.endl;
+		mout.debug(this->coordinateHandler );
 		// this->src.adjustCoordinateHandler(this->coordinateHandler);
 	}
 
@@ -176,23 +176,23 @@ public:
 		/*
 		areaF = this->getArea();  // NOTE: maybe actual area varies, depending on coord handler?
 		if (areaF == 0.0){
-			mout.error() << "area==0 ?" << mout.endl;
+			mout.error("area==0 ?" );
 		}
 		*/
 
 		// mout .debug3() << "src.getMax=" << this->src.scaling.template getMax<value_t>() << mout.endl;
 		// this->scaleResult = this->dst.template getMax<value_t>() / this->src.template getMax<value_t>();
 		this->scaling.setConversionScale(this->src.getScaling(), this->dst.getScaling());
-		mout.debug() << "scaling:" << this->scaling << mout.endl;
+		mout.debug("scaling:" , this->scaling );
 
 		// WEIGHT
 		this->scalingW.setConversionScale(this->srcWeight.getScaling(), this->dstWeight.getScaling());
 		//this->scalingW.setScale(this->scalingW.getScale() * static_cast<double>(this->getArea()));
-		mout.debug() << "scalingW:" << this->scalingW << mout.endl;
+		mout.debug("scalingW:" , this->scalingW );
 
 		//this->SCALE = this->src.scaling.isScaled() || this->dst.scaling.isScaled(); // NEEDED?
-		//mout.warn() << "areaF=" << this->areaF << mout.endl;
-		//mout.warn() << "scaleResult=" << this->scaleResult << mout.endl;
+		//mout.warn("areaF=" , this->areaF );
+		//mout.warn("scaleResult=" , this->scaleResult );
 
 	}
 
@@ -279,21 +279,24 @@ protected:
 
  This operator applies weighted averaging, if a weight image (alpha channel) is provided.
  \code
-  drainage image-rgba.png --iAverage 25 -o average-weighted.png
+  drainage image-rgba.png --iAverage 25 -o average-weighted-rgba.png
  \endcode
 
 \code
-  drainage spots-rgba.png     --iAverage 50 -o spots-avg.png
-  drainage spots-rgba-16b.png --iAverage 50 -o spots-avg-16b.png
+  drainage spots-rgba.png     --iAverage 50 -o spots-avg-rgba.png
+  drainage spots-rgba-16b.png --iAverage 50 -o spots-avg-rgba-16b.png
 \endcode
 
 \code
-  drainage graphic-rgba.png          --iAverage 20 -o graphicAvg.png
-  drainage graphic-rgba-16b.png      --iAverage 20 -o graphicAvg-8b.png
-  drainage graphic-rgba-16b.png -T S --iAverage 20 -o graphicAvg-16b.png
+  drainage graphic-rgba.png          --iAverage 5 -o graphicAvg-rgba.png
+  drainage graphic-rgba-16b.png -T C --iAverage 5 -o graphicAvg-8b-rgba.png
+  drainage graphic-rgba-16b.png -T S --iAverage 5 -o graphicAvg-16b-rgba.png
 \endcode
 
-  \see BlenderOp
+
+\see BlenderOp
+\see DistanceTranformFillOp
+
  */
 class FastAverageOp : public WindowOp< Window<WindowConfig> > {
 

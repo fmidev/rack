@@ -67,14 +67,14 @@ void ResizeOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 	//CoordinateHandler2D handler1(width, height, src.getCoordinatePolicy());
 	if (this->interpolation.empty()){
-		mout.error() << "interpolation method unset" << mout.endl;
+		mout.error("interpolation method unset" );
 		return;
 	}
 	const char intMethod = interpolation[0];
 
 	const Point2D<double> aspect(static_cast<double>(srcArea.width)/static_cast<double>(dstArea.width), static_cast<double>(srcArea.height)/static_cast<double>(dstArea.height));
-	mout.debug() << "interpolation: " << intMethod << mout.endl;
-	mout.debug() << "aspect ratio: " << aspect << mout.endl;
+	mout.debug("interpolation: " , intMethod );
+	mout.debug("aspect ratio: " , aspect );
 
 	const ValueScaling conv(src.getScaling(), dst.getScaling());
 	drain::typeLimiter<double>::value_t limit = dst.getConf().getLimiter<double>();
@@ -89,7 +89,7 @@ void ResizeOp::traverseChannel(const Channel & src, Channel & dst) const {
 		l.push_back(src.getConf().getTypeMin<int>());
 		l.push_back(src.getConf().getTypeMax<int>());
 		for (int i : l){
-			mout.warn() << i << '\t' << conv.inv(i) << '\t' << limit(conv.inv(i)) << mout;
+			mout.warn(i , '\t' , conv.inv(i) , '\t' , limit(conv.inv(i)) );
 		}
 	}
 
@@ -152,7 +152,7 @@ void ResizeOp::traverseChannel(const Channel & src, Channel & dst) const {
 		}
 		break;
 	default:
-		mout.error() << "unknown interpolation method: " << interpolation << mout.endl;
+		mout.error("unknown interpolation method: " , interpolation );
 	}
 
 	//	}

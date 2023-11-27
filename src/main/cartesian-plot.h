@@ -61,7 +61,7 @@ public:
 		RackResources & resources = getResources();
 		//RackContext & ctx = getContext();
 		RackResources::baseCtx().targetEncoding = "quantity=" + resources.composite.odim.quantity;
-		mout.deprecating() << "use --encoding " << RackResources::baseCtx().targetEncoding << " instead" << mout.endl;
+		mout.deprecating("use --encoding " , RackResources::baseCtx().targetEncoding , " instead" );
 		// = "quantity=" + resources.composite.odim.quantity;
 
 	};

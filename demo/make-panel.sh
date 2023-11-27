@@ -29,10 +29,19 @@ TIMESTAMP="${TIME:0:4}/${TIME:4:2}/${TIME:6:2} ${TIME:8:2}:${TIME:10:2}"
 
 
 # If explicit quantity given
-BASENAME=$BASENAME${SITE:+"-$SITE"}${QUANTITY:+"-$QUANTITY"}
+#
 
 SITE=${SITE:-$3}
 SITE=${SITE:-`rack $VOLUME --format '${NOD}' -o -`}
+if [ "$SITE" == '' ]; then
+    echo "# ERROR: SITE not given, and could not be derived from data. Exiting..."
+    echo 
+    exit -1
+fi
+
+#BASENAME=$BASENAME${SITE:+"-$SITE"}${QUANTITY:+"-$QUANTITY"}
+BASENAME=$BASENAME${QUANTITY:+"-$QUANTITY"}
+
 MAP=map-$SITE.png
 make $MAP
 

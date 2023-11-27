@@ -53,7 +53,7 @@ void MultiThresholdOp::traverseChannel(const Channel & src, Channel &dst) const 
 	targetScaled.min = dstScale.inv(target.min);
 	targetScaled.max = dstScale.inv(target.max);
 
-	mout.warn() << "targetScaled: " << targetScaled << mout.endl;
+	mout.warn("targetScaled: " , targetScaled );
 
 	double s;
 	while (true){

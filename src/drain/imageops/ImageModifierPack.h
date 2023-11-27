@@ -54,7 +54,7 @@ public:
 		parameters.link("alphaChannels", alphaChannelCount = 0UL);
 	};
 
-	ImageChannels(const ImageChannels & op) : ImageMod(op) {
+	ImageChannels(const ImageChannels & op) : ImageMod(op), imageChannelCount(op.imageChannelCount), alphaChannelCount(op.alphaChannelCount) {
 		parameters.copyStruct(op.getParameters(), op, *this);
 	}
 
@@ -153,7 +153,7 @@ public:
 	virtual
 	void traverseChannel(Channel & dst) const {
 		//drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		//mout.fail() << "Feelu" << mout.endl;
+		//mout.fail("Feelu" );
 	};
 	//virtual
 	//void process(Image & dst) const;
@@ -230,7 +230,7 @@ public:
 		// Todo prefix/comment
 	};
 
-	ImageHistogram(const ImageHistogram & op) : ImageMod(op) {
+	ImageHistogram(const ImageHistogram & op) : ImageMod(op), bins(op.bins) {
 		parameters.copyStruct(op.getParameters(), op, *this);
 	}
 
@@ -400,7 +400,7 @@ public:
 /**
   As convenience, provides also a filename
  \code
- drainage gray.png  --sample file=samples-gray.txt
+ drainage image-gray.png  --sample file=samples-gray.txt
  drainage image.png --format '${i},${j}\t ${0},${-2}' --sample 50,50,file=samples.txt
  \endcode
  */

@@ -127,7 +127,7 @@ public:
 	void addPixel(Point2D<int> & p){
 
 		Logger mout(getImgLog(), "SlidingOpticalFlow", __FUNCTION__);
-		mout.error() << "unimplemented" << mout.endl;
+		mout.error("unimplemented" );
 		/*
 		if (! this->coordinateHandler.validate(p))
 			return;
@@ -149,7 +149,7 @@ public:
 	void removePixel(Point2D<int> & p){
 
 		Logger mout(getImgLog(), "SlidingOpticalFlow", __FUNCTION__);
-		mout.error() << "unimplemented" << mout.endl;
+		mout.error("unimplemented" );
 
 		/*
 		if (! this->coordinateHandler.validate(p))
@@ -253,7 +253,7 @@ void SlidingOpticalFlow2<R>::initialize() {
 	this->setLoopLimits();
 	this->location.setLocation(0,0);
 
-	mout.debug() << "window: "  << *this << mout.endl;
+	mout.debug("window: "  , *this );
 	mout.debug2();
 	mout << "GXX: " << this->GXX << '\n';
 	mout << "GXY: " << this->GXY << '\n';

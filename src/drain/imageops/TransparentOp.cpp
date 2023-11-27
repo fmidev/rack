@@ -57,7 +57,7 @@ void TransparentOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 	// dst.setGeometry(w, h, i, a);
 
 	dst.setChannelCount(src.getImageChannelCount(), std::max(1UL, src.getAlphaChannelCount()));
-	mout.debug() << "dst:" << dst << mout.endl;
+	mout.debug("dst:" , dst );
 
 };
 
@@ -74,16 +74,16 @@ void TransparentOp::traverseChannels(const ImageTray<const Channel> & src, Image
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (dst.hasAlpha()){
-		mout.fail() << "dst has no alpha channel()" << mout.endl;
+		mout.fail("dst has no alpha channel()" );
 		return;
 	}
 
 	size_t srcChannels = src.getGeometry().channels.getImageChannelCount();
 	if (srcChannels > 1){
-		mout.fail() << "src has several image channels, using the last" << (srcChannels-1) << mout.endl;
+		mout.fail("src has several image channels, using the last" , (srcChannels-1) );
 	}
 
-	mout.note() << "forwarding to: traverseChannel(src.get(), dst.getAlpha())  " << mout.endl;
+	mout.note("forwarding to: traverseChannel(src.get(), dst.getAlpha())  " );
 
 	UnaryFunctorOp<drain::FuzzyStep<double> >::traverseChannel(src.get(0), dst.getAlpha());
 
@@ -94,7 +94,7 @@ void TransparentOp::traverseChannel(const Channel &src, const Channel &srcAlpha,
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.note() << "forwarding to: traverseChannel(src.get(), dst.getAlphaChannel())  " << mout.endl;
+	mout.note("forwarding to: traverseChannel(src.get(), dst.getAlphaChannel())  " );
 	UnaryFunctorOp<drain::FuzzyStep<double> >::traverseChannel(src, dstAlpha);
 
 };

@@ -135,7 +135,7 @@ public:
 	inline
 	void traverseChannel(const Channel & src, const Channel & srcAlpha, Channel & dst, Channel & dstAlpha) const {
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"[2+2]", __FUNCTION__);
-		mout.note() << "delegating to: 2 x traverseChannel(2)" << mout.endl;
+		mout.note("delegating to: 2 x traverseChannel(2)" );
 		traverseChannel(src, dst);
 		traverseChannel(srcAlpha, dstAlpha);
 	}

@@ -113,11 +113,11 @@ public:
 		RackResources & resources = getResources();
 		Hi5Tree *h5 = ctx.currentHi5;
 		if (h5 == ctx.currentPolarHi5){
-			mout.warn() << "not implemented for polar coord data" << mout.endl;
+			mout.warn("not implemented for polar coord data" );
 			//MotionFillOp<PolarODIM> op;
 		}
 		else if (h5 == &ctx.cartesianHi5){
-			mout.note() << "dst: cartesianHi5" << mout.endl;
+			mout.note("dst: cartesianHi5" );
 			MotionFillOp<CartesianODIM> op;
 			op.conf.width  = this->conf.width;
 			op.conf.height = this->conf.height;
@@ -125,7 +125,7 @@ public:
 			op.processH5(ctx.cartesianHi5);
 		}
 		else {
-			mout.warn() << "no class found for currentHi5" << mout.endl;
+			mout.warn("no class found for currentHi5" );
 		}
 
 	};

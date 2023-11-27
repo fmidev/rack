@@ -245,12 +245,12 @@ void PolarPlotFile::exec() const {
 				if (azm < 0.0)
 					azm += (2.0*M_PI);
 				radarCoord.y = acc.odim.getRayIndex(azm);
-				mout.debug3() << "adding " << geoCoord << " => "<< radarCoord << mout.endl;
+				mout.debug3("adding " , geoCoord , " => ", radarCoord );
 				addr = acc.accArray.data.address(radarCoord.x, radarCoord.y);
 				acc.add(addr, d, w);
 			}
 			else {
-				mout.debug3() << "outside radar range: " << geoCoord << " => " << metricCoord << mout.endl;
+				mout.debug3("outside radar range: " , geoCoord , " => " , metricCoord );
 			}
 		}
 

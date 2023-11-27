@@ -83,11 +83,11 @@ void HighPassOp::traverseChannel(const Channel & src, Channel & dst) const {
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	// File::write(src,"HighPass-01-src.png");
-	// mout.warn() << "src: " << src << mout.endl;
+	// mout.warn("src: " , src );
 	FastAverageOp fop(width, height);
 	//fop.initializeParameters(src, dst);
 	fop.traverseChannel(src, dst);
-	//mout.warn() << "src2: " << src2 << mout.endl;
+	//mout.warn("src2: " , src2 );
 
 	// File::write(dst, "HighPass-02-avg.png");
 

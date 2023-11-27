@@ -36,20 +36,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-Input::Input(const std::string & filename){ // : filename(filename){
+Input::Input(const std::string & filename, Logger::level_t errorSensivity){ // : filename(filename){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (filename.empty())
-		mout.error() << "filename empty (use '-' for stdin)" << mout.endl;
+		mout.log(errorSensivity) << "filename empty (use '-' for stdin)" << mout;
 
 	if (filename == "-"){
-		mout.debug() << "opening standard output" << mout.endl;
+		mout.debug("opening standard output");
 	}
 	else {
 		ifstr.open(filename.c_str(), std::ios::in);
 		if (!ifstr.is_open()){
-			mout.error() << "opening '" << filename << "' failed" << mout.endl;
+			mout.log(errorSensivity)("opening '", filename, "' failed");
 		}
 	}
 }
@@ -60,20 +60,24 @@ Input::~Input(){
 	ifstr.close();
 }
 
-void Input::open(const std::string & filename){
+void Input::open(const std::string & filename, Logger::level_t errorSensivity){
 
-	if (filename.empty())
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (filename.empty()){
 		throw std::runtime_error(std::string(__FUNCTION__) + ": filename empty (use '-' for stdout)");
+	}
 
 	if (filename == "-"){
 		// if (ofstr.isOpen...)
 		ifstr.close(); // close std?
-		//mout.debug() << "opening standard output" << mout.endl;
+		// mout.debug() << "opening standard output" << mout.endl;
 	}
 	else {
 		ifstr.open(filename.c_str(), std::ios::in);
 		if (!ifstr.is_open()){
-			throw std::runtime_error(std::string(__FUNCTION__) + ": filename=" + filename + ": failed");
+			mout.log(errorSensivity)("opening filename=" + filename + ": failed");
+			// throw std::runtime_error(std::string(__FUNCTION__) + ": filename=" + filename + ": failed");
 		}
 	}
 

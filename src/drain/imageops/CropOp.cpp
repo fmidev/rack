@@ -43,7 +43,7 @@ void CropOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 	dst.setGeometry(width, height, src.getImageChannelCount(), src.getAlphaChannelCount());
 
-	mout.special() << "dst: " << dst << mout.endl;
+	mout.special("dst: " , dst );
 
 }
 
@@ -54,13 +54,13 @@ void CropOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.debug() << parameters << mout.endl;
+	mout.debug(parameters );
 
 	//makeCompatible(src, dst);
 	const size_t channels = std::min(src.getChannelCount(), dst.getChannelCount());
 
 	if (channels > 1)
-		mout.warn() << "channels: " <<channels << mout.endl;
+		mout.warn("channels: " ,channels );
 
 	CoordinateHandler2D handler(src.getWidth(), src.getHeight(), src.getCoordinatePolicy());
 

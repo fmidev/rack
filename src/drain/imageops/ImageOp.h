@@ -107,7 +107,7 @@ public:
     void traverseChannel(const Channel &src, const Channel &srcAlpha, Channel &dst, Channel &dstAlpha) const {
     	//throw std::runtime_error(name+"(ImageOp)::"+__FUNCTION__+"(src,srcAlpha,dst,dstAlpha) unimplemented.");
     	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-    	mout.note() << "using image channels only (discarding alpha channels)" << mout.endl;
+    	mout.note("using image channels only (discarding alpha channels)" );
     	traverseChannel(src, dst);
     };
 
@@ -209,7 +209,7 @@ protected:
 	inline
 	void traverseAsChannelTrays(const ImageFrame &src, ImageFrame &dst) const {
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		mout.debug() << "restoring to trays" << mout.endl;
+		mout.debug("restoring to trays" );
 
 		ImageTray<const Channel> s; //
 		s.setChannels(src);
@@ -225,7 +225,7 @@ protected:
 	void traverseAsChannelTrays(const ImageFrame &src, const ImageFrame & srcWeight, ImageFrame &dst, ImageFrame &dstWeight) const {
 
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		mout.debug() << "restoring to trays" << mout.endl;
+		mout.debug("restoring to trays" );
 
 		ImageTray<const Channel> s;
 		s.setChannels(src, srcWeight);
@@ -255,7 +255,7 @@ protected:
 	virtual inline
 	void initializeParameters(const ImageFrame &src, const ImageFrame &dst) const {
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //  name+"(ImageOp) src,dst"
-		mout.debug() << "nothing defined (ok)" << mout.endl;
+		mout.debug("nothing defined (ok)" );
 	}
 
 	/// Set applicable internal parameters before calling traverse().
@@ -263,7 +263,7 @@ protected:
 	void initializeParameters(const ImageFrame &src, const ImageFrame &src2, const ImageFrame &dst) const {
 		//drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(ImageOp) src,src2,dst", __FUNCTION__);
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		mout.debug() << "nothing defined (ok)" << mout.endl;
+		mout.debug("nothing defined (ok)" );
 	}
 
 

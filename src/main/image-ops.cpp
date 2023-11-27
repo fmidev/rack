@@ -294,7 +294,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		bool SPECIFIC_QUALITY_FOUND    = false;
 		bool SPECIFIC_QUALITY_MISSING  = false;
 
-		mout.debug2() << "path: " << path << " contains " << QUANTITY_COUNT << " quantities, and... " << (DATASET_QUALITY ? " has":" has no") <<  " dataset quality (ok)" << mout.endl;
+		mout.debug2("path: " , path , " contains " , QUANTITY_COUNT , " quantities, and... " , (DATASET_QUALITY ? " has":" has no") ,  " dataset quality (ok)" );
 
 		if (QUANTITY_COUNT == 0){
 			mout.warn("no quantities with quantity regExp ", datasetSelector.quantity, " to process, skipping");
@@ -461,7 +461,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				dstData.odim.quantity = dstQuantity;
 
 
-				mout.debug2() << "dst dataset: " << dstDataSet << mout;
+				mout.debug2("dst dataset: " , dstDataSet );
 
 				bean.getDstConf(srcConf, dstConf);
 
@@ -522,7 +522,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		//  Case 1: at least some specific quality is used (and dataset-level )
 		if ((DATASET_QUALITY && SPECIFIC_QUALITY_FOUND) || !SPECIFIC_QUALITY_MISSING) {
 
-			mout.debug2() << "at least some specific quality is used (and dataset-level)" << mout.endl;
+			mout.debug2("at least some specific quality is used (and dataset-level)" );
 
 			//if (DATASET_QUALITY)
 			//	mout.note("detected dataset-level quality data: " , path );
@@ -530,7 +530,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			// Loop again (add specific)
 			for (const qlist_t::value_type & srcQuantity: quantityList){
 
-				mout.debug("considering quantity [", srcQuantity, ']');
+				mout.debug("considering quantity [", srcQuantity, "]");
 
 				Data<dst_t> & srcData = dstDataSet.getData(srcQuantity);
 
@@ -559,9 +559,10 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 					/// dstData was fully added above (all the channels)
 					/*
+					 *
 					if (USER_QUANTITY){
 						// TODO: alpha check
-						Data<dst_t> & dstData = dstDataSet.getData(dstQuantity);
+						Data<dst_drainage spots-16b.png --iGray '0.6:0.3:0.1' t> & dstData = dstDataSet.getData(dstQuantity);
 						//mout.special() = "policy changed: if srcQuality exists, add always local dstQuality";
 						PlainData<dst_t> & dstQuality = dstData.getQualityData();
 						dstQuality.copyEncoding(srcQuality);
