@@ -70,7 +70,7 @@ if [ -f $MAP ]; then
     echo -e "Created: $PANEL \n"
     #convert  -append -frame 1 $BASENAME-cart-map.png $BASENAME.png mika.jpg
 else
-    echo "Empty map image: $MAP, removing... "
+    echo "Empty map image: $MAP, PWD=$PWD "
     pwd 
     ls -ltr $MAP
     #rm -vf $MAP
