@@ -132,17 +132,17 @@ void PolarSector::deriveWindow(const PolarODIM & srcOdim, int & ray1, int & bin1
 	}
 
 	if (bin1 < 0){
-		mout.warn() << "bin1 negative: " << bin1 << "), setting to zero" << mout.endl;
+		mout.warn("bin1 negative: " , bin1 , "), setting to zero" );
 		bin1 = 0;
 	}
 
 	if (bin2 > srcOdim.area.width){
-		mout.warn() << "bin2 too large (" << bin2 << "), setting to nbins"<< mout.endl;
+		mout.warn("bin2 too large (" , bin2 , "), setting to nbins");
 		bin2 = srcOdim.area.width;
 	}
 
 	if (bin1 > bin2){
-		mout.error() << "bin1 (" << bin1 << ") larger than bin2 (" << bin2 << ") "<< mout.endl;
+		mout.error("bin1 (" , bin1 , ") larger than bin2 (" , bin2 , ") ");
 	}
 
 }

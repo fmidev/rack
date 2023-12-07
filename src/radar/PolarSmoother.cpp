@@ -80,10 +80,10 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 
 	dst.setGeometry(src.getGeometry());
 	dst.setCoordinatePolicy(polar);
-	//mout.warn() << srcWeighted << mout.endl;
+	//mout.warn(srcWeighted );
 
 	if (radiusMetres <=  odimSrc.rscale){
-		mout.warn() << "too small radiusMetres==" << radiusMetres << ", setting to 3" << mout.endl;
+		mout.warn("too small radiusMetres==" , radiusMetres , ", setting to 3" );
 		radiusMetres = odimSrc.rscale * 3;
 	}
 
@@ -93,16 +93,16 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	//double radius = static_cast<double>(radiusBins);
 	//GaussianStripeHorzWeighted window1(static_cast<double>(radiusBins), radiusBins*2);
 	GaussianStripeWeighted<true> window1(radiusBins*2, static_cast<double>(radiusBins));
-	mout.debug() << "src scale:" << src.getChannel(0).getScaling() << mout.endl;
+	mout.debug("src scale:" , src.getChannel(0).getScaling() );
 	window1.setSrcFrame(src);
 	window1.setSrcFrameWeight(srcWeighted);
 	window1.setDstFrame(tmp);
 	window1.setDstFrameWeight(tmpWeighted);
-	// mout.debug2() << window1 << mout.endl;
+	// mout.debug2(window1 );
 	//std::cerr << __FUNCTION__ << '\n';
 	window1.run();
 	//std::cerr << __FUNCTION__ << "OK" << std::endl;
-	//mout.warn() << tmp << '\n' << tmpWeighted << mout.endl;
+	//mout.warn(tmp , '\n' , tmpWeighted );
 	//File::write(tmp, "PolarSmoother2.png");
 
 	GaussianStripeVertPolarWeighted window2(static_cast<double>(radiusBins), radiusBins*2);
@@ -112,14 +112,14 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	window2.setRangeNorm(odimSrc);
 	//std::cerr << __FUNCTION__ << "OK" << std::endl;
 	//static_cast<double>(odimSrc.geometry.height) * (M_PI/180.0) / static_cast<double>(odimSrc.rscale);
-	//mout.warn() << "tmp scale:" << tmp.getChannel(0).getScaling() << mout.endl;
+	//mout.warn("tmp scale:" , tmp.getChannel(0).getScaling() );
 	window2.setSrcFrame(tmp);
 	window2.setSrcFrameWeight(tmpWeighted);
 	window2.setDstFrame(dst);
 	window2.setDstFrameWeight(dstWeighted);
-	mout.debug3() << window2 << mout.endl;
-	mout.debug() << ", rangeNorm=" << window2.getRangeNorm() << mout.endl;
-	//mout.warn() << "startar: " << window2 << mout.endl;
+	mout.debug3(window2 );
+	mout.debug(", rangeNorm=" , window2.getRangeNorm() );
+	//mout.warn("startar: " , window2 );
 	window2.run();
 	//File::write(dst, "PolarSmoother3.png");
 	/*

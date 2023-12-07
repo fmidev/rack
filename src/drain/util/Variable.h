@@ -260,11 +260,14 @@ public:
 
 
 	/// Extends the array by one element.
+	/*
 	inline
 	Variable &operator<<(const char *s){
-		Castable::operator<<(s);
+		// Castable::operator<<(s);
+		append(s);
 		return *this;
 	}
+	*/
 
 	/// Extends the array by one element.
 	/*
@@ -273,7 +276,8 @@ public:
 	template <class T>
 	inline
 	Variable &operator<<(const T &x){
-		Castable::operator<<(x);
+		//Castable::operator<<(x);
+		append(x);
 		return *this;
 	}
 
@@ -374,10 +378,12 @@ public:
 		return *this;
 	}
 
+	/*
 	inline
 	void relink(Castable & c){
 		Castable::relink(c);
 	}
+	*/
 
 	template <class T>
 	inline

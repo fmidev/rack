@@ -123,23 +123,23 @@ typename FlagResolver::value_t FlagResolver::getFreeBit(const drain::Dictionary<
 		currentMask = currentMask | entry.second;
 	}
 
-	mout.debug2() << "sum:" << currentMask << mout.endl;
+	mout.debug2("sum:" , currentMask );
 
 	value_t i = 1;
 	while ((i&currentMask) > 0){
-		mout.debug3() << "checking bit:" << i << " vs.\t" << currentMask << mout.endl;
+		mout.debug3("checking bit:" , i , " vs.\t" , currentMask );
 		//full = (full>>1);
 		i = (i<<1);
 	}
 	/*
 	while (full>0){
-		mout.debug2() << "checking bit:" << i << " vs.\t" << full << mout.endl;
+		mout.debug2("checking bit:" , i , " vs.\t" , full );
 		full = (full>>1);
 		i = (i<<1);
 	}
 	*/
 
-	mout.debug() << "released: " << i << mout.endl;
+	mout.debug("released: " , i );
 
 	return i;
 
@@ -151,7 +151,7 @@ typename FlagResolver::value_t FlagResolver::addEntry(drain::Dictionary<key_t,T>
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	if (dict.hasKey(key)){
-		mout.info() << key << " already in dict: " << dict << mout.endl;
+		mout.info(key , " already in dict: " , dict );
 		return dict.getValue(key);
 	}
 
@@ -165,7 +165,7 @@ typename FlagResolver::value_t FlagResolver::addEntry(drain::Dictionary<key_t,T>
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (dict.hasKey(key)){
-		mout.info() << key << " already in dict: " << dict << mout.endl;
+		mout.info(key , " already in dict: " , dict );
 		return dict.getValue(key);
 	}
 
@@ -176,7 +176,7 @@ typename FlagResolver::value_t FlagResolver::addEntry(drain::Dictionary<key_t,T>
 		dict.add(key, i);
 	}
 	else {
-		mout.warn() << key << " could not get a valid (non-zero) bit flag for dict: " << dict << mout.endl;
+		mout.warn(key , " could not get a valid (non-zero) bit flag for dict: " , dict );
 	}
 
 	return i;
@@ -207,7 +207,7 @@ typename FlagResolver::value_t FlagResolver::getValue(const drain::Dictionary<ke
 			v = 0; // TODO if resets and sets?
 			continue;
 		}
-		// mout.warn() << " '" << *it << "'" << mout.endl;
+		// mout.warn(" '" , *it , "'" );
 
 		//typename dict_t::const_iterator dit = dict.findByKey(key);
 		typename drain::Dictionary<key_t,T>::const_iterator dit = dict.findByKey(key);
@@ -1037,6 +1037,14 @@ public:
 	virtual
 	const typename FlaggerBase<value_t>::dict_t & getDict() const {
 		return EnumDict<value_t>::dict;
+	};
+
+	/**
+	 *  Dictionary throws except if key now found.
+	 */
+	static
+	value_t getValueNEW(const std::string & key){
+		return (value_t)EnumDict<value_t>::dict.getValue(key);
 	};
 
 

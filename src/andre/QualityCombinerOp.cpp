@@ -88,7 +88,7 @@ void QualityCombinerOp::initDstQuality(const PolarODIM & srcODIM, PlainData<Pola
 		//dstQind.odim.rscale = srcData.odim.rscale; // nbins, nrays, rscale
 		dstQind.odim.rscale = srcODIM.rscale; // nbins, nrays, rscale
 
-		//mout.special() << "quality " << dstQind << mout.endl;
+		//mout.special("quality " , dstQind );
 
 		// Fill with init value
 		if (quantity == "QIND"){
@@ -102,18 +102,18 @@ void QualityCombinerOp::initDstQuality(const PolarODIM & srcODIM, PlainData<Pola
 		}	// Fill with init value
 		else if (quantity == "CLASS"){ // TODO and unclass
 			/*
-			mout.note() << "Creating CLASS data based on src[" << srcData.odim.quantity << "]"<< mout.endl;
-			mout.note() << dstQind.data << mout.endl;
+			mout.note("Creating CLASS data based on src[" , srcData.odim.quantity , "]");
+			mout.note(dstQind.data );
 			RadarFunctorOp<DataMarker> marker;
 			marker.odimSrc = srcData.odim;
 			int codeUnclass = getClassCode("tech.class.unclass");
 			marker.functor.set(codeUnclass);
-			//mout.warn() << marker << mout.endl;
+			//mout.warn(marker );
 			marker.process(srcData.data, dstQind.data);
 			*/
-			mout.debug() << "created empty CLASS" << mout.endl;
+			mout.debug("created empty CLASS" );
 			//dstQind.data.fill(minCode);
-			mout.debug2() << " => DST: " << dstQind.data.getScaling() << mout.endl;
+			mout.debug2(" => DST: " , dstQind.data.getScaling() );
 		}
 
 		dstQind.data.setName(dstQind.odim.quantity);
@@ -126,8 +126,8 @@ void QualityCombinerOp::initDstQuality(const PolarODIM & srcODIM, PlainData<Pola
 void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & srcProb, PlainData<PolarDst> & dstQind, PlainData<PolarDst> & dstClass, const std::string & label, unsigned short index) { //const {
 
 	drain::Logger mout(__FUNCTION__, label+"(DetectorOp)");
-	//mout.debug()  <<  EncodingODIM(srcProb.odim) << mout.endl;
-	mout.debug2() <<  EncodingODIM(dstQind.odim) << mout.endl;
+	//mout.debug(EncodingODIM(srcProb.odim) );
+	mout.debug2(EncodingODIM(dstQind.odim) );
 
 	/*
 	mout.note("srcQ", srcQind.data,  " ", srcQind.odim);
@@ -177,7 +177,7 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 	sstr << index << ':' << label;
 	/*
 	const classdict_t & dict = getClassPalette().dictionary;
-	mout.debug2() <<  index << ':' << dict.getValue(index) << '/' << label << mout.endl;
+	mout.debug2(index , ':' , dict.getValue(index) , '/' , label );
 //#include "drain/util/SmartMap.h"
 
 	sstr << index << ':' << dict.getValue(index);
@@ -186,17 +186,17 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 
 
 	mout.debug("srcProb: ", srcProb);
-	//mout.special() << '\t' << dstQind.odim.scaleForward(i)  << mout;
-	//mout.special() << '\t' << dstClass.odim.scaleForward(i) << mout;
+	//mout.special('\t' , dstQind.odim.scaleForward(i)  );
+	//mout.special('\t' , dstClass.odim.scaleForward(i) );
 
 	/*
 	for (int i : {0,1,64,128,192,255}){
-		mout.special() << i << mout;
-		//mout.special() << '\t' << srcProb.odim.scaleForward(i)  << mout;
-		mout.special() << '\t' << srcProb.getConf().fwd(i) << mout;
-		mout.special() << '\t' << dstQind#include "drain/util/SmartMap.h"
-		.odim.scaleForward(i)  << mout;
-		mout.special() << '\t' << dstClass.odim.scaleForward(i) << mout;
+		mout.special(i );
+		//mout.special('\t' , srcProb.odim.scaleForward(i)  );
+		mout.special('\t' , srcProb.getConf().fwd(i) );
+		mout.special('\t' , dstQind#include "drain/util/SmartMap.h"
+		.odim.scaleForward(i)  );
+		mout.special('\t' , dstClass.odim.scaleForward(i) );
 	}
 	*/
 
@@ -272,7 +272,7 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 
 
 	if (!update){
-		mout.info() << "no new quantities, returning" << mout.endl;
+		mout.info("no new quantities, returning" );
 		return;
 	}
 
@@ -315,7 +315,7 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 		QualityCombinerOp::initDstQuality(srcQind.odim, dstClass, "CLASS");
 		/*
 		if (dstClass.data.isEmpty()){
-			mout.note() << "Creating CLASS data" << mout.endl;
+			mout.note("Creating CLASS data" );
 			getQuantityMap().setQuantityDefaults(dstClass, "CLASS");
 			dstClass.data.setGeometry(srcQind.data.getGeometry());
 			// dstClass.fill(0);
@@ -482,11 +482,11 @@ void QualityCombinerOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, Dat
 
 	/*
 	for (DataSet<PolarSrc>::const_iterator it = src.begin(); it != src.end(); ++it){
-		mout.warn() << "src data quantity:" << it->first << mout.endl;
+		mout.warn("src data quantity:" , it->first );
 	}
 
 	for (DataSet<PolarDst>::iterator it = dst.begin(); it != dst.end(); ++it){
-		mout.warn() << "dst data quantity:" << it->first << mout.endl;
+		mout.warn("dst data quantity:" , it->first );
 	}
 
 

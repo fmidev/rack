@@ -134,6 +134,32 @@ protected:
 
 };
 
+
+
+class CmdOutputPanel : public drain::BasicCommand {
+
+public:
+
+	inline
+	CmdOutputPanel() : drain::BasicCommand(__FUNCTION__, "Save SVG panel of latest images. See also: --image, --outputRawImages.") {
+		parameters.link("filename", filename="");
+		parameters.link("layout", layout, "basic");
+	};
+
+	CmdOutputPanel(const CmdOutputPanel & cmd) : drain::BasicCommand(cmd) {
+		parameters.copyStruct(cmd.parameters, cmd, *this);
+	}
+
+
+	void exec() const;
+
+
+	std::string layout;
+	std::string filename;
+
+};
+
+
 // Tree and Dot
 /*
 class CmdOutputTreeConf : public drain::BasicCommand {

@@ -106,8 +106,8 @@ protected:
 
 		this->NI = this->odimSrc.getNyquist(LOG_WARNING); // warn if guessed from scaling
 		if (this->NI == 0.0){
-			mout.warn() << odimSrc << mout.endl;
-			mout.error() << "Could not derive Nyquist velocity (NI) from metadata." << mout.endl;
+			mout.warn(odimSrc );
+			mout.error("Could not derive Nyquist velocity (NI) from metadata." );
 			radialSpeedConv    = 1.0;
 			radialSpeedConvInv = 1.0;
 		}

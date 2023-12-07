@@ -47,21 +47,21 @@ namespace rack {
 void SunOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.debug() << "start" << mout.endl;
-	// mout.debug() << *this << mout.endl;
-	// mout.debug2() << "=>odimIn: " << srcData.odim << mout.endl;
+	mout.debug("start" );
+	// mout.debug(*this );
+	// mout.debug2("=>odimIn: " , srcData.odim );
 
 	double sunAzm = 0.0;
 	double sunElev = 0.0;
 	Sun::getSunPos(srcData.odim.date + srcData.odim.time, srcData.odim.lon*drain::DEG2RAD, srcData.odim.lat*drain::DEG2RAD, sunAzm, sunElev);
 
-	mout.info() << " sunAzm=" << sunAzm << ", sunElev=" << sunElev << mout.endl;
+	mout.info(" sunAzm=" , sunAzm , ", sunElev=" , sunElev );
 	if (sensitivity > 1.0){
-		mout.warn() << " sensitivity=" << sensitivity << ">1.0, using 1.0" << mout.endl;
+		mout.warn(" sensitivity=" , sensitivity , ">1.0, using 1.0" );
 	}
 	const double scale = dstProb.odim.scaleInverse(std::min(sensitivity, 1.0));
 
-	mout.info() << " scale=" << scale << " (max="<< dstProb.odim.getMax() << ')' << mout;
+	mout.info(" scale=" , scale , " (max=", dstProb.odim.getMax() , ')' );
 
 
 	double widthD = beamWidth * drain::DEG2RAD;

@@ -101,7 +101,7 @@ public:
 		normRange.min = static_cast<double>(odim.area.height) / (2.0*M_PI);
 		//normRange.min = static_cast<double>(this->conf.odimSrc.rscale * this->conf.odimSrc.geometry.height) / (2.0*M_PI);
 		normRange.max = (normRange.min * this->conf.frame.height);
-		//mout.warn() << rangeNorm << '-' << rangeNormEnd << mout.endl;
+		//mout.warn(rangeNorm , '-' , rangeNormEnd );
 	}
 
 

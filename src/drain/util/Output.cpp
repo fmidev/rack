@@ -43,23 +43,23 @@ Output::Output(const std::string & filename){ // : filename(filename){
 
 	if (filename.empty())
 		throw std::runtime_error("drain::Output(...):  filename empty (use '-' for stdout)");
-		//mout.error() << "filename empty (use '-' for stdout)" << mout.endl;
+		//mout.error("filename empty (use '-' for stdout)" );
 
 	if (filename == "-"){
-		//mout.debug() << "opening standard output" << mout.endl;
+		//mout.debug("opening standard output" );
 	}
 	else {
 		ofstr.open(filename.c_str(), std::ios::out);
 		if (!ofstr.is_open()){//"drain::Output(...):  filename empty (use '-' for stdout)"
 			throw std::runtime_error(filename + ": drain::Output(filename) opening failed");
-			//mout.error() << "opening '" << filename << "' failed" << mout.endl;
+			//mout.error("opening '" , filename , "' failed" );
 		}
 	}
 }
 
 Output::~Output(){
 	// drain::Logger mout(__FILE__, __FUNCTION__);
-	// mout.debug() << "closing... " << mout.endl;
+	// mout.debug("closing... " );
 	ofstr.close();
 }
 
@@ -71,7 +71,7 @@ void Output::open(const std::string & filename){
 	if (filename == "-"){
 		// if (ofstr.isOpen...)
 		ofstr.close(); // close std?
-		//mout.debug() << "opening standard output" << mout.endl;
+		//mout.debug("opening standard output" );
 	}
 	else {
 		ofstr.open(filename.c_str(), std::ios::out);

@@ -47,14 +47,14 @@ namespace rack {
 void ZDRvarOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	//mout.debug() << parameters << mout.endl;
+	//mout.debug(parameters );
 
 	/// Assumes that at least range 2...253 is intensities (not nodata or undetected)
 	//op.setParameter("max", srcData.data.getMax<double>()-2.0);
 
 	//drain::FuzzyStepsoid<double, double> f(srcData.odim.scaleInverse(threshold), srcData.odim.scaleInverse(threshold + thresholdWidth) - srcData.odim.scaleInverse(threshold) ); BUG
 	drain::FuzzyStepsoid<double> f(threshold, thresholdWidth);
-	mout.debug() << "fuzzy step:"  << mout.endl;
+	mout.debug("fuzzy step:"  );
 
 	const double maxQuality = dstProb.odim.scaleInverse(1.0);
 	//SlidingWindowHistogramOp histogramOp(windowWidth);

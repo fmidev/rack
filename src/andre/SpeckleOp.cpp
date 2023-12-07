@@ -55,9 +55,9 @@ namespace rack {
 void SpeckleOp::runDetector(const PlainData<PolarSrc> &src, PlainData<PolarDst> &dst) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.debug() << parameters << mout.endl;
+	mout.debug(parameters );
 
-	mout.debug2() << src.data.getCoordinatePolicy() << mout.endl;
+	mout.debug2(src.data.getCoordinatePolicy() );
 
 
 	//const double codeValueMin = src.odim.getMin<double>();
@@ -65,10 +65,10 @@ void SpeckleOp::runDetector(const PlainData<PolarSrc> &src, PlainData<PolarDst> 
 
 	double thresholdFinal = this->threshold;
 	if (thresholdFinal < thresholdMin){
-		mout.warn() << "src    " << src.data.getConf() << mout;
-		mout.warn() << "src[0] " << src.data.getChannel(0).getConf() << mout;
-		mout.warn() << "src.odim " << src.odim.scaling << mout;
-		mout.warn() << "threshold ("<< thresholdFinal << "dBZ) lower than supported min (" << thresholdMin << "), adjusting it." << mout;
+		mout.warn("src    " , src.data.getConf() );
+		mout.warn("src[0] " , src.data.getChannel(0).getConf() );
+		mout.warn("src.odim " , src.odim.scaling );
+		mout.warn("threshold (", thresholdFinal , "dBZ) lower than supported min (" , thresholdMin , "), adjusting it." );
 		thresholdFinal = thresholdMin;
 	}
 
@@ -87,13 +87,13 @@ void SpeckleOp::runDetector(const PlainData<PolarSrc> &src, PlainData<PolarDst> 
 		const double r = static_cast<double>(src.odim.area.height) / (2.0*M_PI);
 		fuzzyBell.set(1.0, static_cast<double>(area)*r, dst.odim.scaleInverse(1.0)-offset, offset);
 		SegmentAreaOp<float,unsigned short,PolarSegmentProber> op2(fuzzyBell, thresholdFinal);
-		mout.debug() << "internal operator: " << op2 << mout.endl;
+		mout.debug("internal operator: " , op2 );
 		op2.process(src.data, dst.data);
 	}
 	else {
 		fuzzyBell.set(1.0, area, dst.odim.scaleInverse(1.0)-offset, offset);
 		SegmentAreaOp<float,unsigned short> op(fuzzyBell, thresholdFinal); // dBZ!	//"min,max,mapping,mSlope,mPos"
-		mout.debug() << "internal operator: " << op << mout.endl;
+		mout.debug("internal operator: " , op );
 		op.process(src.data, dst.data);
 	}
 

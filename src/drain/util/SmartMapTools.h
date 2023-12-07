@@ -216,12 +216,12 @@ public:
 
 		bool acceptOrderedParams = true;
 
-		// mout.warn() << " assignmentSymbol: " <<  assignmentSymbol << mout.endl;
-		// mout.warn() << " size: " <<  this->size() << mout.endl;
+		// mout.warn(" assignmentSymbol: " ,  assignmentSymbol );
+		// mout.warn(" size: " ,  this->size() );
 		for (const std::string & entry: entries){
 
 			//for (std::list<std::string>::const_iterator pit = p.begin(); pit != p.end(); ++pit){
-			//mout.warn() << " entry: " << *pit << mout.endl;
+			//mout.warn(" entry: " , *pit );
 
 			// Check specific assignment, ie. check if the key=value is given explicitly.
 			if (assignmentSymbol){ // typically '='
@@ -230,7 +230,7 @@ public:
 
 				if (StringTools::split2(entry, key, value, assignmentSymbols)){
 
-					// mout.warn() << " specified " <<  key << "=\t" << value << mout.endl;
+					// mout.warn(" specified " ,  key , "=\t" , value );
 
 					if (dst.size()==1){
 						/*
@@ -242,7 +242,7 @@ public:
 							it->second = value;
 						else {
 							it->second = entry;
-							// mout.warn() << "is this in use?" << it->first << " <= '" << entry << "'" << mout;
+							// mout.warn("is this in use?" , it->first , " <= '" , entry , "'" );
 						}
 						return;
 					}
@@ -252,7 +252,7 @@ public:
 					continue;
 				}
 				else {
-					// mout.warn() << " could not split: " << *pit << mout.endl;
+					// mout.warn(" could not split: " , *pit );
 				}
 			}
 
@@ -261,9 +261,9 @@ public:
 			if (kit != keys.end()){
 				// Assignment-by-order
 				if (!acceptOrderedParams){
-					mout.warn() << "positional arg '" << entry << "' for ["<< *kit << "] given after explicit args" << mout.endl;
+					mout.warn("positional arg '" , entry , "' for [", *kit , "] given after explicit args" );
 				}
-				//mout.warn() << " ordered  " <<   << mout.endl;
+				//mout.warn(" ordered  " ,   );
 				dst[*kit] = entry;  // does not need to call import() because *kit exists.
 				++kit; // NUEVO
 			}
@@ -271,7 +271,7 @@ public:
 				//mout.log(criticality)
 				// << "too many (over "<< this->size() << ") params, run out of keys with entry=" << *pit << mout.endl;
 				if (STRICT){
-					mout.error() << "too many (over "<< dst.size() << ") params, run out of keys with entry=" << entry << mout.endl;
+					mout.error("too many (over ", dst.size() , ") params, run out of keys with entry=" , entry );
 				}
 
 			}
@@ -292,7 +292,7 @@ public:
 			else if (kit != keys.end()){
 				// Assignment-by-order
 				if (!acceptOrderedParams){
-					mout.warn() << "positional arg '" << entry << "' for ["<< *kit << "] given after explicit args" << mout.endl;
+					mout.warn("positional arg '" , entry , "' for [", *kit , "] given after explicit args" );
 				}
 				setValue<std::map<std::string,T>, std::string, STRICT>(dst, *kit, entry);
 				++kit;

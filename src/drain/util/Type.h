@@ -164,7 +164,7 @@ public:
 		default:
 			//Logger mout("Type", std::string(__FUNCTION__)+"(char c)");
 			Logger mout(__FILE__, __FUNCTION__);
-			mout.error() << " undefined type: '" << t << "'=" << (int)t << mout.endl;
+			mout.error(" undefined type: '" , t , "'=" , (int)t );
 			return typeid(void);
 		}
 

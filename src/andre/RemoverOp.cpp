@@ -49,12 +49,12 @@ void RemoverOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSe
 
 	drain::Logger mout(__FILE__, __FUNCTION__); //REPL name+"(RemoverOp)", __FUNCTION__);
 
-	mout.debug2() << "start" << mout.endl;
+	mout.debug2("start" );
 
 	DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
 	DataSetMap<PolarDst>::iterator       itd = dstDataSets.begin();
 	while (its != srcDataSets.end()){
-		mout.info() << "processing elangle:" << its->first << mout.endl;
+		mout.info("processing elangle:" , its->first );
 		if (its->first == itd->first){
 
 			const DataSet<PolarSrc> & srcDataSet = its->second;
@@ -66,7 +66,7 @@ void RemoverOp::processDataSets(const DataSetMap<PolarSrc> & srcDataSets, DataSe
 
 		}
 		else {
-			mout.warn() << "something went wrong, dst has different angle, dst=" << itd->first << " != " << its->first << mout.endl;
+			mout.warn("something went wrong, dst has different angle, dst=" , itd->first , " != " , its->first );
 			return;
 		}
 		++its;
@@ -79,20 +79,20 @@ void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<Pol
 
 	drain::Logger mout(__FILE__, __FUNCTION__); //REPL name+"(RemoverOp)", __FUNCTION__);
 
-	mout.debug() << "start" << mout.endl;
+	mout.debug("start" );
 
 	if (srcDataSet.size() == 0){
-		mout.warn() << "dataset contains no data, skipping" << mout.endl;
+		mout.warn("dataset contains no data, skipping" );
 		return;
 	}
 	else {
 
 		const PlainData<PolarSrc> & srcDataSetQualityIndex = srcDataSet.getQualityData("QIND");
 		const bool DATASET_QUALITY = !srcDataSetQualityIndex.data.isEmpty();
-		mout.debug() << "DataSet level quality: "  << (int) DATASET_QUALITY <<  mout.endl;
+		mout.debug("DataSet level quality: "  , (int) DATASET_QUALITY );
 
 		for (DataSet<PolarSrc>::const_iterator it = srcDataSet.begin(); it != srcDataSet.end(); ++it){
-			mout.info() << "calling processData() for " << it->first << " elangle=" << it->second.odim.elangle << mout.endl;
+			mout.info("calling processData() for " , it->first , " elangle=" , it->second.odim.elangle );
 
 			Data<PolarDst> & dstData = dstDataSet.getData(it->first);  // create or retrieve data
 
@@ -111,15 +111,15 @@ void RemoverOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<Pol
 
 			if (LOCAL_QUALITY){
 				// TODO if (REQUIRE_STANDARD_DATA){ ?
-				mout.info() << "using local quality data" << mout.endl;
+				mout.info("using local quality data" );
 				processData(srcData, srcData.getQualityData(), dstData, dstData.getQualityData());
 			}
 			else if (DATASET_QUALITY) {
-				mout.note() << "using dataset-level quality data" << mout.endl;
+				mout.note("using dataset-level quality data" );
 				processData(srcData, srcDataSetQualityIndex, dstData, dstDataSet.getQualityData());
 			}
 			else {
-				mout.note() << "no quality data for quantity=" << it->first << " elangle=" << it->second.odim.elangle << ", skipping " << mout.endl;
+				mout.note("no quality data for quantity=" , it->first , " elangle=" , it->second.odim.elangle , ", skipping " );
 			}
 		}
 
@@ -132,7 +132,7 @@ void RemoverOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dst
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.error() << "explicitly selected quality field required, skipping" << mout.endl;
+	mout.error("explicitly selected quality field required, skipping" );
 
 	//processData(srcData, srcData.getQualityData(), dstData, dstData.getQualityData());
 
@@ -144,11 +144,11 @@ void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug2() << "start" << mout.endl;
+	mout.debug2("start" );
 	// PlainData<PolarSrc> srcQuality = srcData.getQualityData();
 
 	if (srcQuality.data.isEmpty()){
-		mout.warn() << " src Quality empty, skipping..." << mout.endl;
+		mout.warn(" src Quality empty, skipping..." );
 		return;
 	}
 
@@ -158,11 +158,11 @@ void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	//const double t = threshold * srcQIND.odim.scaleInverse(1.0);
 	const double t = srcQuality.odim.scaleInverse(threshold * 1.0);
 
-	mout.debug() << " t=" << t << mout.endl;
+	mout.debug(" t=" , t );
 	/*
-	mout.note() << " srcData" << srcData << mout.endl;
-	mout.warn() << " srcQuality" << srcQuality << mout.endl;
-	mout.note() << " dstData" << dstData << mout.endl;
+	mout.note(" srcData" , srcData );
+	mout.warn(" srcQuality" , srcQuality );
+	mout.note(" dstData" , dstData );
 	*/
 	double replaceCode = dstData.odim.nodata;
 	if (replace == "nodata"){
@@ -184,12 +184,12 @@ void RemoverOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 		}
 		//drain::StringTools::lazyConvert(replace, d);
 	}
-	mout.note() << replace << " = > replaceCode: " << replaceCode << mout.endl;
+	mout.note(replace , " = > replaceCode: " , replaceCode );
 
 	const double ZERO_QUALITY = dstQuality.odim.scaleInverse(0.0);
 	//const bool ZERO_QUALITY = dstQuality.data.getConf().getTypeMin<double>();
 	if (clearQuality){
-		mout.special() << "zero quality code: " << ZERO_QUALITY << mout.endl;
+		mout.special("zero quality code: " , ZERO_QUALITY );
 	}
 
 	//File::write(dstData.data, "dst1.png");

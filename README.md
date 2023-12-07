@@ -10,6 +10,7 @@ A command-line program for processing weather radar data:
 * Command-line interface
 * File formats: HDF5, PNG, TXT (and GeoTIFF)
 * Online [documentation](https://fmidev.github.io/rack/)
-* Quick [installation](./rack/INSTALL.md) guide
+* Quick [installation](./src/INSTALL.md) guide
+* Notes for [building Docker image](./src/DOCKER.md)
 
 ![Rack cover](./cover/rack-cover.png)

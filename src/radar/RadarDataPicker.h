@@ -235,13 +235,13 @@ public:
 		setSize(odim.area.width, odim.area.height);
 		frame.setGeometry(odim.area.width, odim.area.height);
 		if (!frame.geometryIsSet()){
-			mout.warn() << "Array geometry undefined?" << mout.endl;
+			mout.warn("Array geometry undefined?" );
 		}
 
 		//frame.setBoundingBoxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
 		frame.setBoundingBoxD(odim.bboxD);
 		if (!frame.bboxIsSet()){
-			mout.warn() << "Bounding box undefined?" << mout.endl;
+			mout.warn("Bounding box undefined?" );
 		}
 
 		/* TODO: if (odim.epsg)
@@ -257,13 +257,13 @@ public:
 			frame.setProjection(odim.projdef);
 		}
 		else {
-			mout.note() << odim << mout.endl;
-			mout.warn() << "no projdef in metadata, cannot derive geographical coords (LON,LAT)" << mout.endl;
+			mout.note(odim );
+			mout.warn("no projdef in metadata, cannot derive geographical coords (LON,LAT)" );
 		}
 		*/
 
 		if (!frame.isDefined()){
-			//mout.warn() << "Geo frame properties undefined, incomplete metadata?" << mout.endl;
+			//mout.warn("Geo frame properties undefined, incomplete metadata?" );
 			mout.note(odim);
 			mout.note(frame);
 			mout.note(frame.getBoundingBoxR());

@@ -193,7 +193,7 @@ public:
 
 		this->updateScale();
 
-		mout.debug2() << this->scaleFinal << ',' << this->biasFinal << mout.endl;
+		mout.debug2(this->scaleFinal , ',' , this->biasFinal );
 
 	}
 

@@ -95,7 +95,7 @@ void FilePath::set(const std::string & s){
 
 			//std::cerr << "Regepp: " << sprinter(result) << '\n';
 			// for (std::size_t i = 1; i < result.size(); ++i)
-			//   mout.warn() << '\t' << i << "  = \t'" << result[i] << "'" << mout.endl;
+			//   mout.warn('\t' , i , "  = \t'" , result[i] , "'" );
 
 			if (result.size() == 4){
 				// this->dir.assign(result[2]);  // excludes trailing separator '/'
@@ -106,8 +106,8 @@ void FilePath::set(const std::string & s){
 				this->basename  = result[1];
 			}
 			else {
-				mout.warn() << "Result: " <<	sprinter(result) << mout.endl;
-				mout.error() << "odd parsing results for file path: " << s << mout.endl;
+				mout.warn("Result: " ,	sprinter(result) );
+				mout.error("odd parsing results for file path: " , s );
 			}
 
 			//mout.special("Split: ", this->dir, '|', this->basename);
@@ -122,8 +122,8 @@ void FilePath::set(const std::string & s){
 					this->extension = result[2];
 				}
 				else {
-					mout.warn() << "Result: " <<	sprinter(result) << mout.endl;
-					mout.error() << "odd parsing results for file path: " << s << mout.endl;
+					mout.warn("Result: " ,	sprinter(result) );
+					mout.error("odd parsing results for file path: " , s );
 				}
 
 
@@ -132,7 +132,7 @@ void FilePath::set(const std::string & s){
 
 		}
 		else {
-			mout.error() << "could not parse file path: '" << s << "'" << mout.endl;
+			mout.error("could not parse file path: '" , s , "'" );
 		}
 		//std::cerr << "Result: " << this->dir << this->basename << this->extension << std::endl;
 	}

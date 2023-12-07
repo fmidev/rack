@@ -96,6 +96,8 @@ void DistanceModel::createChain(DistanceNeighbourhood & chain, PIXEL_ADJACENCY t
 		chain.push_back(getElement( 0, -1, forward));
 		break;
 	default:
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+		mout.warn("illegal topology value: ", topology, " (", (unsigned int)topology, ")");
 		break;
 	}
 

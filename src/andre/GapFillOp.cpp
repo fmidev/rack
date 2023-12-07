@@ -78,7 +78,7 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	pix.height = heightD * srcData.data.getHeight() / 360.0;
 	mout.special("Pixel scope: ", pix);
 
-	// mout.special() << "loops=" << loops << " => using " << op << mout;
+	// mout.special("loops=" , loops , " => using " , op );
 
 	// BlenderOp blenderOp(pix.width, pix.height, "avg", "max", loops, expansionCoeff);
 	DistanceTransformFillExponentialOp op(pix.width, pix.height, DistanceModel::KNIGHT);
@@ -91,8 +91,8 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 
 	drain::image::Image tmpData(srcData.data.getConf());
 	tmpData.setName("tmpData");
-	// mout.warn() << tmpData << mout;
-	mout.debug() << tmpData.getChannel(0) << mout;
+	// mout.warn(tmpData );
+	mout.debug(tmpData.getChannel(0) );
 
 
 	drain::image::Image tmpQuality(srcQuality.data.getConf());
@@ -105,8 +105,8 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	dstQuality.data.setCoordinatePolicy(polarCoordPolicy);
 	// tmpQuality.setPhysicalRange(0, 255, true);
 	// tmpQuality.getChannel(0).setPhysicalRange(0, 250, true);
-	// mout.warn() << tmpQuality << mout;
-	// mout.warn() << tmpQuality.getChannel(0) << mout;
+	// mout.warn(tmpQuality );
+	// mout.warn(tmpQuality.getChannel(0) );
 
 	// ImageFile::write(srcData.data,    "GapFillOp-src-d.png");
 	// ImageFile::write(srcQuality.data, "GapFillOp-src-q.png");
@@ -119,7 +119,7 @@ void GapFillOp::processData(const PlainData<PolarSrc> & srcData, const PlainData
 	ImageTray<const Channel> srcTray;
 	//srcTray.setChannels(srcData.data, tmpQuality);
 	srcTray.setChannels(srcData.data, srcQuality.data);
-	mout.debug() << "srcTray:\n" << srcTray << mout;
+	mout.debug("srcTray:\n" , srcTray );
 	// File::write(srcTray.get(),"GapFillOp-ind.png");
 	// File::write(srcTray.getAlpha(),"GapFillOp-inq.png");
 

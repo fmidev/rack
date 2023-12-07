@@ -196,10 +196,27 @@ public:
 	}
 
 
+	template <class T>
+	Castable &operator=(const T &x){
+		assign(x);
+		return *this;
+	}
+
+
+	inline
+	Castable & operator=(const char *c){
+	//void assign(const char *c){
+		assignString(c);
+		return *this;
+	}
+
 	/// Copies the value referred to by Castable. Notice that if type is unset (void), no operation is performed.
+
 	inline
 	Castable &operator=(const Castable &c){
-		return assignCastable(c);
+	// void assign(const Castable &c){
+		assignCastable(c);
+		return *this;
 	}
 
 	/*
@@ -214,10 +231,20 @@ public:
 	}
 	*/
 
+	// Special handler for string assignment
+	inline
+	//Castable & operator=(const std::string &c){
+	void assign(const std::string &c){
+		assignString(c);
+		// return *this;
+	}
+
+
 
 	/// Copies an arbitrary base type or std::string value.
 	template <class T>
-	Castable &operator=(const T &x){
+	// Castable &operator=(const T &x){
+	void assign(const T &x){
 
 		// std::cout << "assign " << x << " -> " << Type::getTypeChar(getType()) << ',' << getElementCount() << '\n';
 		suggestType(typeid(T));
@@ -241,51 +268,55 @@ public:
 			throw std::runtime_error(std::string(__FUNCTION__) + ": type is unset");
 		}
 
-		return *this;
+		// return *this;
 
 	}
 
-	inline
-	Castable & operator=(const std::string &c){
-		assignString(c);
-		return *this;
-	}
-
-	inline
-	Castable & operator=(const char *c){
-		assignString(c);
-		return *this;
-	}
 
 
 	/// Copies elements of a list.
 	template<typename T>
-	Castable & operator=(std::initializer_list<T> l){
+	// Castable & operator=(std::initializer_list<T> l){
+	void assign(std::initializer_list<T> l){
 		assignContainer(l);
-		return *this;
+		//return *this;
 	}
 
 	/// Copies elements of a list.
 	template <class T>
 	inline
-	Castable &operator=(const std::list<T> & l){
+	// Castable &operator=(const std::list<T> & l){
+	void assign(const std::list<T> & l){
 		assignContainer(l);
-		return *this;
+		// return *this;
 	}
 
 	/// Copies elements of a vector.
 	template <class T>
 	inline
-	Castable &operator=(const std::vector<T> & v){
+	// Castable &operator=(const std::vector<T> & v){
+	void assign(const std::vector<T> & v){
 		assignContainer(v);
-		return *this;
+		// return *this;
 	}
 
 	/// Copies elements of a set.
 	template <class T>
 	inline
-	Castable &operator=(const std::set<T> & s){
+	// Castable &operator=(const std::set<T> & s){
+	void assign(const std::set<T> & s){
 		assignContainer(s);
+		//return *this;
+	}
+
+
+
+
+
+	template <class T>
+	inline
+	Castable &operator<<(const T &x){
+		append(x);
 		return *this;
 	}
 
@@ -296,7 +327,8 @@ public:
 	 */
 	template <class T>
 	inline
-	Castable &operator<<(const T &x){
+	//Castable &operator<<(const T &x){
+	void append(const T &x){
 		suggestType(typeid(T));
 		if (isString()){
 			appendToString(x);
@@ -304,37 +336,40 @@ public:
 		else {
 			appendToElementArray(x);
 		}
-		return *this;
+		//return *this;
 	}
 
 	/// Appends the string or appends the array by one element.
 	inline
-	Castable &operator<<(const char *s){
-		return *this << (std::string(s));
+	// Castable &operator<<
+	void append(const char *s){
+		//return *this << (std::string(s));
+		append(std::string(s));
 	}
 
 	/// Appends elements of std::list
 	template <class T>
-	inline
-	Castable &operator<<(const std::list<T> & l){
+	inline  /// Castable &operator<<(
+	void append(const std::list<T> & l){
 		assignContainer(l, true);
-		return *this;
+		//return *this;
 	}
 
 	/// Appends elements of a vector
 	template <class T>
 	inline
-	Castable &operator<<(const std::vector<T> & v){
+	// Castable &operator<<
+	void append(const std::vector<T> & v){
 		assignContainer(v, true);
-		return *this;
+		/// return *this;
 	}
 
 	/// Appends elements of a set
 	template <class T>
-	inline
-	Castable &operator<<(const std::set<T> & s){
+	inline  // Castable &operator<<
+	void append(const std::set<T> & s){
 		assignContainer(s, true);
-		return *this;
+		// return *this;
 	}
 
 	template <class T>

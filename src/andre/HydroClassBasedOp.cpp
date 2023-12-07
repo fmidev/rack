@@ -42,7 +42,7 @@ void HydroClassBasedOp::runDetector(const PlainData<PolarSrc> & srcData, PlainDa
 //void HydroClassBasedOp::filterImage(const PolarODIM &odimIn, const Image &src, Image &dst) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	//mout.debug() << parameters << mout.endl;
+	//mout.debug(parameters );
 
 	const double probScaled = nonMet * dstProb.odim.scaleInverse(1.0);
 

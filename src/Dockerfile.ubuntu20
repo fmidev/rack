@@ -1,9 +1,17 @@
-# Main level Dockerfile for ubuntu18
+# Main level Dockerfile for ubuntu20
 # Markus Peura  fmi.fi
 
 # Install environment & dependencies for rack
 
 FROM ubuntu:20.04 as builder
+
+ARG CONF_DIR=.
+
+# Set proxy and test it
+COPY $CONF_DIR/apt-proxy.conf /etc/apt/apt.conf.d/proxy.conf
+RUN cat /etc/apt/apt.conf.d/proxy.conf
+RUN set | fgrep proxy || echo "No proxy env variables set"
+# RUN set | fgrep proxy && ping -c 3 -w 5  wwwcache.fmi.fi
 
 COPY . /rack
 COPY install-rack-docker-ubuntu20.cnf /rack/install-rack.cnf
@@ -11,8 +19,9 @@ COPY install-rack-docker-ubuntu20.cnf /rack/install-rack.cnf
 # Build: after this the binary is in rack/Release/rack and also copied to /usr/local/bin
 WORKDIR /rack
 
-ARG APT_PROXY
-RUN apt-get ${APT_PROXY} update && \
+
+
+RUN apt-get update && \
     apt-get -y install \
         g++ \
         make \
@@ -32,7 +41,7 @@ RUN apt-get ${APT_PROXY} update && \
 FROM ubuntu:20.04
 
 RUN apt update && \
-    apt -y install \
+    	apt -y install \
        	libgomp1 \
 #       libhdf5-100 \
         libhdf5-103 \

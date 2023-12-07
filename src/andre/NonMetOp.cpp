@@ -49,7 +49,7 @@ void NonMetOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	//mout.debug() << parameters << mout.endl;
+	//mout.debug(parameters );
 
 	/// Assumes that at least range 2...253 is intensities (not nodata or undetected)
 	//op.setParameter("max", src.getMax<double>()-2.0);
@@ -58,7 +58,7 @@ void NonMetOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 	const unsigned int QMIN = dstProb.odim.scaleInverse(0.0);
 	const unsigned int QMAX = dstProb.odim.scaleInverse(0.95);
 	drain::FuzzyStep<double> fuzzyStep(threshold.max, threshold.min, QMAX);  // inverted
-	mout.debug() << "fuzzy step:" << fuzzyStep << mout.endl;
+	mout.debug("fuzzy step:" , fuzzyStep );
 
 	Image::const_iterator it = srcData.data.begin();
 	Image::iterator dit = dstProb.data.begin();
@@ -86,7 +86,7 @@ void NonMetOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 		SlidingWindowMedianOp median;
 		median.setSize(w,h);
 		median.conf.percentage = medianPos;
-		mout.warn() << "median: " << median << mout.endl;
+		mout.warn("median: " , median );
 		//median.traverseChannel(dstProb.data.getChannel(0), dstProb.data.getChannel(0));
 		//median.process(dstProb.data, tmp);
 		//drain::image::FilePng::write(tmp, "mika.png");

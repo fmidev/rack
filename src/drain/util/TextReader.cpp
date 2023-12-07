@@ -86,7 +86,7 @@ char TextReader::scanSegment(std::istream & istr, const std::string & endChars, 
 			istr.get(); // Swallow escape char.
 			//mout.warn("escape char (", c, ")"); // todo: interpret \t, \n ?
 			if (!istr){
-				//mout.warn() << "str=" << ostr.str() << mout.endl;
+				//mout.warn("str=" , ostr.str() );
 				mout.warn("premature end-of-file after escape char '\\' (", c, ")"); // , str=" << ostr.str()
 				return cPrev;
 			}

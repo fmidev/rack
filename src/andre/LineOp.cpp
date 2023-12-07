@@ -71,7 +71,7 @@ void LineOp::runDetector(const PlainData<PolarSrc> &srcData, PlainData<PolarDst>
 
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.debug() << "start" << mout.endl;
+	mout.debug("start" );
 
 	//const Image & src = srcData.data;
 	//Image & dst = dstData.data;

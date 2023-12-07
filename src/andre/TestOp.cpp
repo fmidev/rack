@@ -58,11 +58,11 @@ void TestOp::runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarD
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.warn() << *this << mout;
+	mout.warn(*this );
 
-	mout.debug() << "start" << mout.endl;
-	// mout.debug() << *this << mout.endl;
-	// mout.debug2() << "=>odimIn: " << srcData.odim << mout.endl;
+	mout.debug("start" );
+	// mout.debug(*this );
+	// mout.debug2("=>odimIn: " , srcData.odim );
 	PlainData<PolarDst> & dstData = cache.getData("DBZH"); // drain::RegExp(dataSelector.quantity));
 
 	drain::image::ImageBox boxOp;
@@ -75,7 +75,7 @@ void TestOp::runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarD
 	boxOp.setParameter("value", this->prob); // dstProb.odim.scaleInverse(this->prob));
 	boxOp.process(dstProb.data);
 
-	mout.warn() << boxOp << mout;
+	mout.warn(boxOp );
 
 }
 

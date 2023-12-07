@@ -183,7 +183,7 @@ public:
 	void traverseChannelOLD(const Channel &src, Channel & dst) const {
 
 		drain::Logger mout(__FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(RadarFunctorOp)", __FUNCTION__);
-		mout.debug() << "start" << mout.endl;
+		mout.debug("start" );
 
 		// const double dstMax = dst.scaling.getMax<double>();
 		//// NEW 2019/11 const double dstMax = dst.getEncoding().getTypeMax<double>();
@@ -368,22 +368,22 @@ public:
 	void setSrcFrame(const drain::image::ImageFrame & src){
 
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
-		//mout.debug()  << "src Scaling0: " << src.getScaling() << mout.endl;
-		mout.debug2() << "src props for odim: " << src.getProperties() << mout.endl;
+		//mout.debug("src Scaling0: " , src.getScaling() );
+		mout.debug2("src props for odim: " , src.getProperties() );
 
 		this->odimSrc.updateFromMap(src.getProperties());
-		mout.info()  << "NI=" << this->odimSrc.getNyquist(LOG_WARNING) << mout.endl;
-		mout.info() << "copied odim: " << EncodingODIM(this->odimSrc) << mout.endl;
+		mout.info("NI=" , this->odimSrc.getNyquist(LOG_WARNING) );
+		mout.info("copied odim: " , EncodingODIM(this->odimSrc) );
 
 		SlidingWindow<C, R>::setSrcFrame(src);
-		mout.debug2()  << "src Scaling: " << src.getScaling() << mout.endl;
+		mout.debug2("src Scaling: " , src.getScaling() );
 	}
 
 	/*
 	void setDst(drain::image::ImageFrame & dst){
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 		//this->odimSrc.updateFromMap(src.getProperties());
-		//mout.debug() << "copied odim: " << this->odimSrc << mout.endl;
+		//mout.debug("copied odim: " , this->odimSrc );
 		SlidingWindow<C, RadarWindowCore>::setDst(dst);
 	}
 	*/
@@ -398,7 +398,7 @@ protected:
 		if (drain::Type::call<drain::typeIsSmallInt>(this->dst.getType())){
 			drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 			//this->conf.ftor.setScale(1.0);
-			mout.info() << "(not implemented: functor scaling for small int dst)"  << mout.endl;  // << this->odimSrc
+			mout.info("(not implemented: functor scaling for small int dst)"  );  // << this->odimSrc
 		}
 		// what about reset(); ?
 		reset();
@@ -417,7 +417,7 @@ protected:
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 
 		if (this->odimSrc.area.height == 0)
-			mout.error() << "src odim.area.height==0" << mout.endl;
+			mout.error("src odim.area.height==0" );
 
 		/// Distance [bins] at which a bin is (nearly) square, ie. beam-perpendicular and beam-directional steps are equal.
 		const double r = static_cast<double>(this->odimSrc.area.height) / (2.0*M_PI);
@@ -428,7 +428,7 @@ protected:
 		rangeNormEnd = static_cast<int>(r * static_cast<double>(this->conf.frame.height));
 		if ((rangeNorm <= 0) || (rangeNormEnd >= max)){
 
-			mout.note() << rangeNorm << '-' << rangeNormEnd << mout.endl;
+			mout.note(rangeNorm , '-' , rangeNormEnd );
 		}
 		//
 	}
@@ -454,7 +454,7 @@ protected:
 			this->setLoopLimits(this->conf.frame.width, 1);
 		}
 		//drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
-		//mout.warn() << this->iMax << ',' << this->jMax << '\t' << this->getSamplingArea( )<< mout.endl;
+		//mout.warn(this->iMax , ',' , this->jMax , '\t' , this->getSamplingArea( ));
 		countMin = this->conf.contributionThreshold * this->getSamplingArea();
 
 		return SlidingWindow<C,R>::reset();

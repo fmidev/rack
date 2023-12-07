@@ -92,19 +92,19 @@ void Composite::checkQuantity(const std::string & quantity){
 	if (!this->odim.quantity.empty()){
 
 		if (this->odim.quantity != quantity){
-			mout.note() << "composite of quantity=" << this->odim.quantity << ", input with " << quantity << mout;
-			mout.experimental() << "Not replacing '" << this->odim.quantity << "' with '" << quantity << "'" << mout;
+			mout.note("composite of quantity=" , this->odim.quantity , ", input with " , quantity );
+			mout.experimental("Not replacing '" , this->odim.quantity , "' with '" , quantity , "'" );
 		}
 
 		if (odim.ACCnum > 1){
 			// quantity.find
 			//if (quantity.substr(0, 4) == "VRAD"){
 			if (quantity.find("VRAD", 0, 4) == 0){
-				mout.experimental() << "Revised VRAD check (TRUE)" << mout;
-				mout.warn() << "compositing VRAD directly, consider Doppler dealiasing (u,v) first" << quantity << mout;
+				mout.experimental("Revised VRAD check (TRUE)" );
+				mout.warn("compositing VRAD directly, consider Doppler dealiasing (u,v) first" , quantity );
 			}
 			else {
-				mout.debug() << "Revised VRAD check: FALSE" << mout;
+				mout.debug("Revised VRAD check: FALSE" );
 			}
 		}
 
@@ -112,7 +112,7 @@ void Composite::checkQuantity(const std::string & quantity){
 	else // <- 2021/06/23
 		this->odim.quantity = quantity;
 
-	// mout.special() << "Setting quantity" << quantity << mout.endl;
+	// mout.special("Setting quantity" , quantity );
 
 	// omp critical?
 	//this->odim.quantity = quantity;
@@ -152,17 +152,17 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 
 	if (USE_QUALITY_FIELD) {
-		mout.info() << " using input q: " << EncodingODIM(srcQuality.odim) << mout.endl;
+		mout.info(" using input q: " , EncodingODIM(srcQuality.odim) );
 	}
 	else if (USE_PRIOR_WEIGHT) {
-		mout.info() << " using input weight=" << priorWeight << mout.endl;
+		mout.info(" using input weight=" , priorWeight );
 		// TODO
 		// mout.info() << "input quality exists=" << srcQuality.data.isEmpty() << ',';
 	}
 	else {
-		mout.info() << " quality weighting not applied" << mout.endl;
+		mout.info(" quality weighting not applied" );
 		if (srcQuality.data.isEmpty())
-			mout.note() << " (input quality would be available) " << mout.endl;
+			mout.note(" (input quality would be available) " );
 	}
 
 	/// GEOGRAPHIC DEFINITIONS: USE THOSE OF THE MAIN COMPOSITE, OR USE AEQD FOR SINGLE RADAR
@@ -178,7 +178,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	}
 
 	mout.info("Info: \"", *this, '"');
-	//mout.debug2() << "undetectValue=" << undetectValue << mout.endl;
+	//mout.debug2("undetectValue=" , undetectValue );
 
 	// Defined here, because later used for data update.
 	//drain::Rectangle<double> bboxM;
@@ -191,7 +191,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		if (projAEQD){
 			mout.info("Using default projection AEQD (azimuthal equidistant).");
 			const std::string & aeqdStr = pRadarToComposite.getProjectionSrc();
-			// mout.debug() << aeqdStr << mout.endl;
+			// mout.debug(aeqdStr );
 			setProjection(aeqdStr);
 		}
 
@@ -199,7 +199,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 		double range = PolarODIM::defaultRange;
 		if (range > 0.0){
-			mout.info() << "Using predefined range: " << range << mout.endl;
+			mout.info("Using predefined range: " , range );
 			// pRadarToComposite.determineBoundingBoxM(PolarODIM::defaultRange, bboxM);
 		}
 		else {
@@ -217,23 +217,23 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 		setBoundingBoxM(bboxInput);
 
-		// mout.note() << "Now this: " << *this << mout.endl;
+		// mout.note("Now this: " , *this );
 
 	}
 	else {
-		mout.info() << "Using user-defined projection: " << getProjection() << mout.endl;
+		mout.info("Using user-defined projection: " , getProjection() );
 		pRadarToComposite.setProjectionDst(getProjection());
 		pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxInput);
 
 		if (cropping){
 			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxInput); // ALREADY?
-			mout.debug() << "Orig: " << getBoundingBoxM() << mout.endl;
-			mout.debug() << "Cropping with " << srcData.odim.getMaxRange() << " range with bbox=" << bboxInput << mout.endl;
+			mout.debug("Orig: " , getBoundingBoxM() );
+			mout.debug("Cropping with " , srcData.odim.getMaxRange() , " range with bbox=" , bboxInput );
 			cropWithM(bboxInput);
-			mout.info() << "Cropped to: " << getBoundingBoxM() << mout.endl;
+			mout.info("Cropped to: " , getBoundingBoxM() );
 			if (getBoundingBoxM().getArea() == 0){
-				mout.info() << "Cropping returned empty area." << mout.endl;
-				mout.note() << "Data outside bounding box, returning" << mout.endl;
+				mout.info("Cropping returned empty area." );
+				mout.note("Data outside bounding box, returning" );
 				allocate(); // ?
 				updateGeoData();
 				return;
@@ -243,9 +243,9 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	}
 	/// Note: area not yet defined.
 
-	// mout.warn() << "range: " << (srcData.odim.getMaxRange() / 1000.0) << " km "<< mout.endl;
+	// mout.warn("range: " , (srcData.odim.getMaxRange() / 1000.0) , " km ");
 	if (!pRadarToComposite.isSet()){
-		mout.error() << "source or dst projection is unset " << mout.endl;
+		mout.error("source or dst projection is unset " );
 		return;
 	}
 
@@ -274,18 +274,18 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	/// Limit to data extent
 	//drain::Rectangle<double> bboxNatCommon(bboxInput);
 	//drain::Rectangle<double> & bboxNatCommon = bboxInput;
-	//mout.warn() << "input bbox:" <<  bboxNatCommon << mout.endl;
+	//mout.warn("input bbox:" ,  bboxNatCommon );
 
 	/// Area for main loop
 	/*
 	if (pRadarToComposite.isLongLat()){
-		mout.warn() << "cropping with bboxR (radians):" <<  getBoundingBoxR()  << mout.endl;
+		mout.warn("cropping with bboxR (radians):" ,  getBoundingBoxR()  );
 		bboxNatCommon.crop(getBoundingBoxR());
 		//deg2pix(bboxM.lowerLeft,  bboxPix.lowerLeft);
 		//deg2pix(bboxM.upperRight, bboxPix.upperRight);
 	}
 	else {
-		mout.warn() << "cropping with bboxM (metric): " <<  getBoundingBoxM()  << mout.endl;
+		mout.warn("cropping with bboxM (metric): " ,  getBoundingBoxM()  );
 		bboxNatCommon.crop(getBoundingBoxM());
 	}*/
 	bboxInput.crop(getBoundingBoxM());
@@ -308,7 +308,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	mout.debug("allocating");
 	allocate();
-	//mout.debug2() << "allocated" << mout.endl;
+	//mout.debug2("allocated" );
 	//std::cerr << count << std::endl;
 
 	/// -------------------------------------------------------
@@ -338,7 +338,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	// converter.undetectValue = undetectValue;  // quantity.getZero() ?
 	//const Quantity &q = getQuantityMap().get(srcData.odim.quantity);
 	//const bool SKIP_UNDETECT = (DataCoder::undetectQualityCoeff == 0.0) || (! q.hasUndetectValue); //(undetectQualityCoeff == 0.0);
-	//mout.warn() << "skip undetect:" << (int)SKIP_UNDETECT << mout.endl;
+	//mout.warn("skip undetect:" , (int)SKIP_UNDETECT );
 
 	DataCoder converter(srcData.odim, srcQuality.odim);
 
@@ -478,7 +478,7 @@ void Composite::addCartesian(const PlainData<CartesianSrc> & cartSrc, const Plai
 	/// Cartesian
 	updateNodeMap(SourceODIM(cartSrc.odim.source).getSourceCode(), i0 + cartSrc.odim.area.width/2, j0 + cartSrc.odim.area.height/2);
 	//updateGeoData();
-	//mout.warn() << "nodemap keys: " << nodeMap << mout.endl;
+	//mout.warn("nodemap keys: " , nodeMap );
 
 	// Update geographical extent (optional information)
 	// const Rectangle<double> srcExtent(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
@@ -515,7 +515,7 @@ void Composite::updateGeoData(){
 			odim.source = "NOD:"+nodSyntax.result[1]+",ORG:"+nodSyntax.result[1];
 		}
 		else {
-			mout.info() << "could not derive composite source NOD from nodes: " << odim.nodes << mout.endl;
+			mout.info("could not derive composite source NOD from nodes: " , odim.nodes );
 		}
 	}
 	else {
@@ -532,7 +532,7 @@ void Composite::updateInputSelector(const std::string & select){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (!select.empty()){
-		// mout.warn() << "Setting selector=" << resources.select << mout.endl;
+		// mout.warn("Setting selector=" , resources.select );
 		const std::string quantityOrig(dataSelector.quantity);
 
 		//composite.dataSelector.setParameters(resources.baseCtx().select);
@@ -545,7 +545,7 @@ void Composite::updateInputSelector(const std::string & select){
 		// TODO: selecor.quantity is allowed to be regExp?
 		// TODO: what if one wants to add TH or DBZHC in a DBZH composite?
 		if (!quantityOrig.empty() && (quantityOrig != dataSelector.quantity)){
-			mout.warn() << "quantity selector changed, resetting accumulation array" << mout;
+			mout.warn("quantity selector changed, resetting accumulation array" );
 			accArray.clear();
 			odim.quantity.clear();
 			odim.scaling.set(0.0, 0.0);
@@ -553,7 +553,7 @@ void Composite::updateInputSelector(const std::string & select){
 	}
 	else {
 		if (dataSelector.quantity.empty()){
-			mout.info() << "Setting selector quantity=" << odim.quantity << mout;
+			mout.info("Setting selector quantity=" , odim.quantity );
 			dataSelector.quantity = odim.quantity; // consider "^"+...+"$"
 			//
 		}

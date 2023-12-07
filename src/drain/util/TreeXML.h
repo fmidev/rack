@@ -42,12 +42,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <ostream>
 #include "ReferenceMap.h"
+//#include "VariableMap.h"
 #include "TreeUnordered.h"
 
 namespace drain {
 
 
 class NodeXML : protected ReferenceMap {
+// class NodeXML : protected FlexVariableMap {
 
 
 public:
@@ -59,8 +61,10 @@ public:
 
 	~NodeXML(){};
 
-	//std::string id;  // int?
-	//std::string name;
+	typedef ReferenceMap map_t;
+	//typedef FlexVariableMap map_t;
+	// std::string id;  // int?
+	// std::string name;
 
 	inline
 	const std::string & getTag() const {return tag;};
@@ -85,7 +89,8 @@ public:
 
 	inline
 	bool empty() const {
-		return ReferenceMap::empty();
+		return map_t::empty();
+		//return ReferenceMap::empty();
 	}
 
 protected:
@@ -98,17 +103,17 @@ protected:
 
 
 
-//#define TreeXML drain::Tree<std::string,NodeXML>  // , std::less<std::basic_std::string<char>
-
-//typedef drain::Tree<std::string,NodeXML> TreeXML;
+// #define TreeXML drain::Tree<std::string,NodeXML>  // , std::less<std::basic_std::string<char>
+// typedef drain::Tree<std::string,NodeXML> TreeXML;
 typedef drain::UnorderedMultiTree<NodeXML,false> TreeXML;
 
-//template <class K, boolclass T, class C> //, class C>
-template <class T>
-std::ostream & NodeXML::toOStr(std::ostream &ostr, const T & tree, const std::string & defaultTag){
 
-	//TreeXML::map_t x;
-	//const std::map<std::string,TreeXML> & children = tree.getChildren();
+/**
+ *   \param defaultTag - important for
+ */
+template <class T>
+std::ostream & NodeXML::toOStr(std::ostream & ostr, const T & tree, const std::string & defaultTag){
+
 	const typename T::container_t & children = tree.getChildren();
 
 	// OPEN TAG
@@ -127,6 +132,20 @@ std::ostream & NodeXML::toOStr(std::ostream &ostr, const T & tree, const std::st
 		ostr << "id=\"" << tree.data.id << '"' << ' ';
 
 	/// iterate attributes
+	//for (const typename T::node_data_t::key_t & keys: tree.data.getKeys()){
+	//ostr << tree.data.getKeys();
+	for (const typename T::node_data_t::key_t & key: tree.data.getKeyList()){
+
+		std::stringstream sstr;
+		sstr << tree.data[key];
+		if (!sstr.str().empty()){
+			ostr << key << "=\"" << sstr.str() << '"' << ' ';
+			//ostr << "test=\"" << sstr.str() << '"' << ' ';
+		}
+
+	}
+
+	/*
 	for (ReferenceMap::const_iterator it = tree->begin(); it != tree->end(); it++){
 
 		std::stringstream sstr;
@@ -136,6 +155,7 @@ std::ostream & NodeXML::toOStr(std::ostream &ostr, const T & tree, const std::st
 			//ostr << "test=\"" << sstr.str() << '"' << ' ';
 		}
 	}
+	*/
 
 	if ((children.size() == 0) && tree->ctext.empty() ){ // OR no ctext!
 		// close TAG
@@ -150,8 +170,7 @@ std::ostream & NodeXML::toOStr(std::ostream &ostr, const T & tree, const std::st
 		else
 			ostr << tree->ctext;
 
-		/// iterate children
-		//for (typename std::map<std::string, TreeXML >::const_iterator it = children.begin(); it != children.end(); it++){
+		/// iterate children - note the use of default tag
 		for (const auto & entry: children){
 			toOStr(ostr, entry.second, entry.first);
 			//ostr << *it;
@@ -160,8 +179,8 @@ std::ostream & NodeXML::toOStr(std::ostream &ostr, const T & tree, const std::st
 		ostr << '<' << '/' << tree->getTag() << '>';
 		ostr << '\n';  // TODO nextline
 
-		if (tree.data.id >= 0)
-			ostr << "<!-- " << tree.data.id << " /-->\n";
+		//if (tree.data.id >= 0)
+		//	ostr << "<!-- " << tree.data.id << " /-->\n";
 	}
 	return ostr;
 }

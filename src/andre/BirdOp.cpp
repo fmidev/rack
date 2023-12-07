@@ -64,37 +64,37 @@ void BirdOp::applyOperator(const ImageOp & op, const std::string & feature, cons
  *
  *
  */
-void BiometeorOp::applyOperator(const ImageOp & op, Image & tmp, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
+void GliderOp::applyOperator(const ImageOp & op, Image & tmp, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
 	drain::Logger mout(__FUNCTION__, getName() + "::"+feature);
 
-	mout.debug() << "running " << feature << '/' << op.getName() << mout.endl;
+	mout.debug("running " , feature , '/' , op.getName() );
 
 	const bool NEW = dstData.odim.prodpar.empty();  // or tmp.empty()
 
 	//Channel & channel = dstData.data;
 	//channel.properties.updateFromMap(dstData.data.getProperties());
-	//mout.success() << feature << " -> dstData: " << dstData << mout;
+	//mout.success(feature , " -> dstData: " , dstData );
 
 
 	/// Save directly to target (dstData), if this is the first applied detector
 	if (NEW){
-		mout.debug2() << "creating dst image" << mout.endl;
+		mout.debug2("creating dst image" );
 		//dstData.setPhysicalRange(0.0, 1.0);
 		dstData.setPhysicalRange(0.0, 1.0);
 		op.traverseChannel(src.data, dstData.data);
 		dstData.odim.prodpar = feature;
 		//tmp.copyShallow(dstData.data);
 		tmp.setGeometry(dstData.data.getGeometry());
-		// mout.success() << "dstData: " << dstData << mout;
+		// mout.success("dstData: " , dstData );
 		// tmp.initialize(dstData.data.getType(), dstData.data.getGeometry());
 		// tmp.adoptScaling(dstData.data);
 	}
 	else {
-		mout.debug2() << "tmp exists => accumulating detection" << mout.endl;
+		mout.debug2("tmp exists => accumulating detection" );
 		op.process(src.data, tmp);
 		//op.traverseChannel(src.data.getChannel(0), tmp.getChannel(0));
-		mout.debug2() << "updating dst image" << mout.endl;
+		mout.debug2("updating dst image" );
 		dstData.data.getChannel(0).setPhysicalRange({0,1}, true);
 		tmp.getChannel(0).setPhysicalRange({0,1}, true);
 		BinaryFunctorOp<MultiplicationFunctor>().traverseChannel(dstData.data, tmp, dstData.data);
@@ -121,12 +121,12 @@ void BiometeorOp::applyOperator(const ImageOp & op, Image & tmp, const std::stri
 }
 
 // processDataSet
-void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
+void GliderOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug3("start"); //
 
-	//mout.error() << dstData <<  mout.endl; //
+	//mout.error(dstData ); //
 
 	//dstData.setPhysicalRange(0.0, 1.0);
 
@@ -144,7 +144,7 @@ void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<Pol
 	const Data<PolarSrc> & dbzSrc = sweepSrc.getData("DBZH"); // VolumeOpNew::
 	const bool DBZ = !dbzSrc.data.isEmpty();  // or: || dbzParams.empty() ?
 	if (!DBZ){
-		mout.warn() << "DBZH missing" <<  mout.endl;
+		mout.warn("DBZH missing" );
 		overallScale *= 0.75;
 	}
 	else {
@@ -156,7 +156,7 @@ void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<Pol
 		RadarFunctorOp<FuzzyBell<double> > dbzFuzzifier;
 		dbzFuzzifier.odimSrc = dbzSrc.odim;
 		dbzFuzzifier.functor.set(dbzPeak, +5.0);
-		mout.debug() << "DBZ_LOW" << dbzFuzzifier.functor << mout.endl;
+		mout.debug("DBZ_LOW" , dbzFuzzifier.functor );
 
 		applyOperator(dbzFuzzifier, tmp, "DBZ_LOW", dbzSrc, dstData, dstProductAux);
 
@@ -167,23 +167,23 @@ void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<Pol
 	const bool VRAD = !vradSrc.data.isEmpty();
 	const double NI = vradSrc.odim.getNyquist();
 	if (!VRAD){
-		mout.warn() << "VRAD missing, skipping..." <<  mout.endl;
+		mout.warn("VRAD missing, skipping..." );
 		overallScale *= 0.5;
 	}
 	else if (NI == 0) { //  if (vradSrc.odim.NI == 0) {
-		mout.note() << "vradSrc.odim (encoding): " << EncodingODIM(vradSrc.odim) << mout.endl;
-		mout.warn() << "vradSrc.odim.NI==0, and could not derive NI from encoding" <<  mout.endl;
-		mout.warn() << "skipping VRAD..." <<  mout.endl;
+		mout.note("vradSrc.odim (encoding): " , EncodingODIM(vradSrc.odim) );
+		mout.warn("vradSrc.odim.NI==0, and could not derive NI from encoding" );
+		mout.warn("skipping VRAD..." );
 		overallScale *= 0.5;
 	}
 	else if (vradDevRange.min > NI) {
-			mout.warn() << "vradDev range (" << vradDevRange << ") exceeds NI of input: " << NI << mout.endl; // semi-fatal
-			mout.warn() << "skipping VRAD..." <<  mout.endl;
+			mout.warn("vradDev range (" , vradDevRange , ") exceeds NI of input: " , NI ); // semi-fatal
+			mout.warn("skipping VRAD..." );
 			overallScale *= 0.5;
 	}
 	else {
 		if (vradDevRange.max > NI) {
-			mout.warn() << "threshold end point of vradDev (" << vradDevRange << ") exceeds NI of input: " << NI << mout.endl;
+			mout.warn("threshold end point of vradDev (" , vradDevRange , ") exceeds NI of input: " , NI );
 		}
 
 		FuzzyStep<double> fuzzyStep; //(0.5);
@@ -208,13 +208,13 @@ void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<Pol
 		conf.updatePixelSize(vradSrc.odim);
 		SlidingWindowOp<DopplerDevWindow> vradDevOp(conf);
 
-		//mout.warn() << "fuzzy step: " << fuzzyStep  <<  mout.endl;
-		mout.debug2() << "VRAD op   " << vradDevOp <<  mout.endl;
-		mout.debug()  << vradDevOp.conf.frame.width  << 'x' << vradDevOp.conf.frame.height <<  mout.endl;
-		//mout.debug()  << vradDevOp.conf.ftor <<  mout.endl;
-		mout.special()  << "ftor params: " << vradDevOp.conf.functorParameters <<  mout.endl;
-		mout.debug()  << "vradSrc NI=" << vradSrc.odim.getNyquist() <<  mout.endl;
-		mout.debug2() << "vradSrc props:" << vradSrc.data.getProperties() <<  mout.endl;
+		//mout.warn("fuzzy step: " , fuzzyStep  );
+		mout.debug2("VRAD op   " , vradDevOp );
+		mout.debug(vradDevOp.conf.frame.width  , 'x' , vradDevOp.conf.frame.height );
+		//mout.debug(vradDevOp.conf.ftor );
+		mout.special("ftor params: " , vradDevOp.conf.functorParameters );
+		mout.debug("vradSrc NI=" , vradSrc.odim.getNyquist() );
+		mout.debug2("vradSrc props:" , vradSrc.data.getProperties() );
 
 		/*
 		dstData.data.setOptimalScale(0.0, 1.0);
@@ -223,8 +223,8 @@ void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<Pol
 		*/
 
 		applyOperator(vradDevOp, tmp, "VRAD_DEV", vradSrc, dstData, dstProductAux);
-		//mout.debug() << dstData.data <<  mout.endl;
-		//mout.debug() << EncodingODIM(dstData.odim) <<  mout.endl;
+		//mout.debug(dstData.data );
+		//mout.debug(EncodingODIM(dstData.odim) );
 
 	}
 
@@ -232,7 +232,7 @@ void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<Pol
 	const Data<PolarSrc> &  wradSrc = sweepSrc.getData("WRAD"); // VolumeOpNew::
 	const bool WRAD = !wradSrc.data.isEmpty();
 	if (!WRAD)
-		mout.warn() << "WRAD missing" <<  mout.endl;
+		mout.warn("WRAD missing" );
 	else {
 
 		RadarDataFuzzifier<FuzzyStep<double,double> > wradFuzzifier;
@@ -257,7 +257,7 @@ void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<Pol
 	const bool RHOHV = !rhohvSrc.data.isEmpty();
 	if (!RHOHV){
 		overallScale *= 0.5;
-		mout.warn() << "RHOHV missing" <<  mout.endl;
+		mout.warn("RHOHV missing" );
 	}
 	else {
 
@@ -266,7 +266,7 @@ void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<Pol
 		rhohvFuzzifier.odimSrc = rhohvSrc.odim;
 		//rhohvFuzzifier.functor.set(rhoHVmax+(1.0-rhoHVmax)/2.0, rhoHVmax);
 		rhohvFuzzifier.functor.set(rhoHVRange.max, rhoHVRange.min);
-		mout.debug() << "RHOHV_LOW" << rhohvFuzzifier.functor << mout.endl;
+		mout.debug("RHOHV_LOW" , rhohvFuzzifier.functor );
 		applyOperator(rhohvFuzzifier, tmp, "RHOHV_LOW", rhohvSrc, dstData, dstProductAux);
 
 	}
@@ -275,11 +275,11 @@ void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<Pol
 	const bool ZDR = !zdrSrc.data.isEmpty();
 	if (!ZDR){
 		overallScale *= 0.75;
-		mout.warn() << "ZDR missing" <<  mout.endl;
+		mout.warn("ZDR missing" );
 	}
 	else {
 
-		mout.debug2() << zdrSrc.odim << mout.endl;
+		mout.debug2(zdrSrc.odim );
 
 		// tmp.setPhysicalScale(0.0, 1.0);
 
@@ -288,26 +288,26 @@ void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<Pol
 		zdrFuzzifier.odimSrc = zdrSrc.odim;
 		zdrFuzzifier.functor.set(+zdrAbsMin, 0.0, -zdrAbsMin); // INVERSE //, -1.0, 1.0);
 		//zdrFuzzifier.functor.set(0.5, 2.0, 255);
-		mout.debug() << "ZDR_NONZERO" << zdrFuzzifier.functor << mout.endl;
+		mout.debug("ZDR_NONZERO" , zdrFuzzifier.functor );
 		applyOperator(zdrFuzzifier, tmp, "ZDR_NONZERO", zdrSrc, dstData, dstProductAux);
 		//applyOperator(zdrFuzzifier, tmp, "ZDR_HIGH", zdrSrc, dstData, dstProductAux);
 
-		//mout.warn() << "ZDR_NONZERO" << zdrFuzzifier.functor << mout.endl;
-		//mout.warn() << "ZDR_NONZERO" << tmp << mout.endl;
+		//mout.warn("ZDR_NONZERO" , zdrFuzzifier.functor );
+		//mout.warn("ZDR_NONZERO" , tmp );
 
 		// File::write(tmp, "ZDR_NONZERO.png");
 
 	}
 
-	mout.debug() << "Overall scale " << overallScale << mout;
-	mout.success() << " -> dstData: " << dstData << mout;
+	mout.debug("Overall scale " , overallScale );
+	mout.success(" -> dstData: " , dstData );
 
 	if (dstData.data.isEmpty()){
 		mout.error() << "could not find input data; quantity=" << dataSelector.quantity;
 	}
 	else {
 		if (overallScale < 1.0){
-			mout.warn() << "Input(s) missing, rescaling with overall scale " << overallScale << mout;
+			mout.warn("Input(s) missing, rescaling with overall scale " , overallScale );
 			dstData.data.getScaling().scale *= overallScale;
 			dstData.data.getScaling().offset *= overallScale;
 			dstData.odim.scaling.setScaling(dstData.data.getScaling());
@@ -323,7 +323,7 @@ void BiometeorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<Pol
 	}
 	writeHow(dstData);
 	//DataTools::updateInternalAttributes(dstData.getTree()); // needed?
-	mout.success() << " -> dstData: " << dstData << mout;
+	mout.success(" -> dstData: " , dstData );
 }
 
 

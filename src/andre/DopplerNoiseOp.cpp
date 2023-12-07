@@ -56,36 +56,36 @@ namespace rack {
 void DopplerNoiseOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.debug3() << "start" <<  mout.endl; //
+	mout.debug3("start" ); //
 
 	//const double MAX = dstData.odim.scaleInverse(1.0); // dstData.data.getMax<double>(); //dstData.odim.scaleInverse(1);
 
 	//static drain::RegExp regExpVRAD("^VRAD[H]?$");
 	const Data<PolarSrc> &  vradSrc = sweepSrc.getFirstData();
 
-	mout.special() << "Data: " << vradSrc <<  mout.endl;
+	mout.special("Data: " , vradSrc );
 
 	if (vradSrc.data.isEmpty()){
-		mout.warn() << "VRAD missing, skipping..." <<  mout.endl;
+		mout.warn("VRAD missing, skipping..." );
 		return;
 	}
 
 	const double NI = vradSrc.odim.getNyquist(LOG_ERR);
 
 	if (NI == 0) {
-		mout.note() << "vradSrc.odim (encoding): " << EncodingODIM(vradSrc.odim) << mout.endl;
-		mout.warn() << "vradSrc.odim.NI==0, and could not derive NI from encoding" <<  mout.endl;
+		mout.note("vradSrc.odim (encoding): " , EncodingODIM(vradSrc.odim) );
+		mout.warn("vradSrc.odim.NI==0, and could not derive NI from encoding" );
 		return;
 	}
 
 	if (speedDevThreshold > NI) {
-		mout.warn() << "speedDevThreshold=" << speedDevThreshold << " exceeds input NI="  << NI << mout.endl;
+		mout.warn("speedDevThreshold=" , speedDevThreshold , " exceeds input NI="  , NI );
 	}
 	else if (speedDevThreshold > (0.8*NI)) {
-		mout.warn() << "speedDevThreshold=" << speedDevThreshold << " close to input NI=" << NI << mout.endl;
+		mout.warn("speedDevThreshold=" , speedDevThreshold , " close to input NI=" , NI );
 	}
 	else {
-		mout.info() << "vradSrc NI=" << NI <<  mout.endl;
+		mout.info("vradSrc NI=" , NI );
 	}
 
 	FuzzyStep<double> fuzzyStep; //(0.5);
@@ -100,9 +100,9 @@ void DopplerNoiseOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<
 	// DopplerDevWindow::conf_t pixelConf(conf.widthM, conf.heightD, 0.5, true, false); // require 5% samples
 	// pixelConf.updatePixelSize(vradSrc.odim);
 
-	mout.debug() << "vradSrc: " << ODIM(vradSrc.odim)  <<  mout.endl;
-	mout.debug() << "vradSrc props:" << vradSrc.data.getProperties() <<  mout.endl;
-	mout.debug() << "functor: " << fuzzyStep  <<  mout.endl;
+	mout.debug("vradSrc: " , ODIM(vradSrc.odim)  );
+	mout.debug("vradSrc props:" , vradSrc.data.getProperties() );
+	mout.debug("functor: " , fuzzyStep  );
 
 	//FuzzyBell<double> fuzzyBell(0.0, speedDevThreshold, 1.0, 0); //(0.5
 
@@ -112,14 +112,14 @@ void DopplerNoiseOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<
 
 	this->conf.setPixelConf(pixelConf, vradSrc.odim);
 
-	mout.special()  << pixelConf.functorParameters <<  mout.endl;
+	mout.special(pixelConf.functorParameters );
 	//pixelConf.getFunctor();
 
 	SlidingWindowOp<DopplerDevWindow> op(pixelConf);
 
-	mout.debug()  << "VRAD op   " << op <<  mout.endl;
-	//mout.special()  << "window size: " << op.conf.frame <<  mout.endl;
-	//mout.special() << "provided functor: " <<  op.conf.getFunctorName() << '|' << op.conf.functorParameters << mout.endl;
+	mout.debug("VRAD op   " , op );
+	//mout.special("window size: " , op.conf.frame );
+	//mout.special("provided functor: " ,  op.conf.getFunctorName() , '|' , op.conf.functorParameters );
 
 	dstData.setPhysicalRange(0.0, 1.0);
 	op.traverseChannel(vradSrc.data, dstData.data);

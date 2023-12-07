@@ -56,7 +56,7 @@ Input::Input(const std::string & filename, Logger::level_t errorSensivity){ // :
 
 Input::~Input(){
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.debug() << "closing... " << mout.endl;
+	mout.debug("closing... " );
 	ifstr.close();
 }
 
@@ -71,7 +71,7 @@ void Input::open(const std::string & filename, Logger::level_t errorSensivity){
 	if (filename == "-"){
 		// if (ofstr.isOpen...)
 		ifstr.close(); // close std?
-		// mout.debug() << "opening standard output" << mout.endl;
+		// mout.debug("opening standard output" );
 	}
 	else {
 		ifstr.open(filename.c_str(), std::ios::in);

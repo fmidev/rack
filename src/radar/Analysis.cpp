@@ -54,24 +54,24 @@ void RadarWindowConfig::updatePixelSize(const PolarODIM & inputODIM){ // Doppler
 
 	drain::Logger mout(__FUNCTION__, "RadarWindowConfig");
 
-	//mout.note() << odimSrc << mout.endl;
+	//mout.note(odimSrc );
 	this->frame.width  = inputODIM.getBeamBins(this->widthM);
 	this->frame.height = inputODIM.getAzimuthalBins(this->heightD);
-	//mout.note() << this->width << '<' << this->widthM << mout.endl;
+	//mout.note(this->width , '<' , this->widthM );
 
 	if (this->frame.width <= 0){
-		// mout.note() << this->frame.width  << "pix ~ " << this->widthM << "m " << mout.endl;
-		//mout.note() << *this << mout.endl;
-		mout.warn() << "Requested width (" << this->widthM <<  " meters) smaller than rscale ("<< inputODIM.rscale <<"), setting window width=1 " << mout.endl;
+		// mout.note(this->frame.width  , "pix ~ " , this->widthM , "m " );
+		//mout.note(*this );
+		mout.warn("Requested width (" , this->widthM ,  " meters) smaller than rscale (", inputODIM.rscale ,"), setting window width=1 " );
 		this->frame.width = 1;
 	}
 
 	if (this->frame.height == 0){
-		mout.warn() << "Requested height (" << this->heightD <<  " degrees) smaller than 360/nrays ("<< (360.0/inputODIM.area.height) <<"), setting window height=1 " << mout.endl;
+		mout.warn("Requested height (" , this->heightD ,  " degrees) smaller than 360/nrays (", (360.0/inputODIM.area.height) ,"), setting window height=1 " );
 		this->frame.height = 1;
 	}
 
-	//mout.note() << this->height << '<' << this->heightD << mout.endl;
+	//mout.note(this->height , '<' , this->heightD );
 
 }
 
@@ -79,7 +79,7 @@ void RadarWindowConfig::updatePixelSize(const PolarODIM & inputODIM){ // Doppler
 void rack::RadarFunctorBase::apply(const Channel &src, Channel &dst, const drain::UnaryFunctor & ftor, bool LIMIT) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(RadarFunctorOp)", __FUNCTION__);
-	mout.debug() << "start" << mout.endl;
+	mout.debug("start" );
 
 	// const double dstMax = dst.scaling.getMax<double>();
 	//// NEW 2019/11 const double dstMax = dst.getEncoding().getTypeMax<double>();

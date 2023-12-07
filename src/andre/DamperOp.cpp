@@ -48,7 +48,7 @@ void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug() << "start" << mout.endl;
+	mout.debug("start" );
 
 	drain::FuzzyStep<double> fstep(threshold, threshold+(1.0-threshold)/2.0);
 
@@ -59,7 +59,7 @@ void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<
 		if (qMap.hasQuantity(srcData.odim.quantity)){
 			const Quantity & quantity = qMap.get(srcData.odim.quantity);
 			if (quantity.hasUndetectValue()){
-				mout.info() << "using physical undetect value: " << quantity.undetectValue << ", set by --quantityConf" << mout.endl;
+				mout.info("using physical undetect value: " , quantity.undetectValue , ", set by --quantityConf" );
 				minVal = quantity.undetectValue;
 			}
 		}
@@ -67,7 +67,7 @@ void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<
 
 	//if (minValue == -std::numeric_limits<double>::max()){
 	if (isnan(minVal)){
-		mout.error() << "minimum physical value unset for ["<< srcData.odim.quantity << "] (no parameter or quantityConf)" << mout.endl;
+		mout.error("minimum physical value unset for [", srcData.odim.quantity , "] (no parameter or quantityConf)" );
 		return;
 	}
 
@@ -78,10 +78,10 @@ void DamperOp::processData(const PlainData<PolarSrc> & srcData, const PlainData<
 	double w;
 	//data.setLimits(-256.0, 255.0);
 
-	mout.note() << "data " << dstData.data << mout.endl;
+	mout.note("data " , dstData.data );
 	const drain::image::Encoding & encoding = dstData.data.getConf();
-	//mout.note() << "encoding " << encoding.get << mout.endl;
-	mout.debug3() << "limits: " << encoding.getTypeMin<double>() << ',' << encoding.getTypeMax<double>() << mout.endl;
+	//mout.note("encoding " , encoding.get );
+	mout.debug3("limits: " , encoding.getTypeMin<double>() , ',' , encoding.getTypeMax<double>() );
 	//data.toOStr(std::cout);
 
 	drain::typeLimiter<double>::value_t limit = encoding.getLimiter<double>();

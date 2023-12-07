@@ -44,6 +44,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Variable.h"
 #include "SmartMap.h"
 
+#ifndef DRAIN_SMAP_NAME
+#define DRAIN_SMAP_NAME VariableMap
+#endif
 
 namespace drain {
 

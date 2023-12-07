@@ -42,7 +42,7 @@ StringMapper & StringMapper::parse(const std::string &s, bool convertEscaped) {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug() << "regExp= " << regExp << mout.endl;
+	mout.debug("regExp= " , regExp );
 
 	clear();  // clear list
 

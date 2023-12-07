@@ -50,18 +50,25 @@ class NodeSVG;
 typedef drain::UnorderedMultiTree<NodeSVG> TreeSVG;
 
 
-/// A node for TreeXML
+/// A node structure for drain::UnorderedMultiTree<NodeSVG>, compatible with TreeXML
 /**
   \example TreeSVG-example.cpp
+
+  \see drain::TreeXML
+
  */
 class NodeSVG: public NodeXML {
 public:
 
 	//typedef drain::Tree<NodeSVG> tree_t;
 
-	enum type { UNDEFINED, SVG, TITLE, CTEXT, GROUP, TEXT, RECT, CIRC, LINE }; // check CTEXT, maybe implement in XML
+	enum type { UNDEFINED, SVG, TITLE, CTEXT, GROUP, TEXT, RECT, CIRC, LINE, IMAGE }; // check CTEXT, maybe implement in XML
 
 	NodeSVG(type t = UNDEFINED);
+
+	/// Copy constructor.
+	NodeSVG(const NodeSVG & node);
+
 
 	void setType(type t);
 
@@ -103,10 +110,9 @@ std::ostream & operator<<(std::ostream &ostr, const TreeSVG & t){
 }
 
 
-}  // namespace image
+}  // image::
 
-}  // namespace drain
+}  // drain::
 
-#endif /* TREESVG_H_ */
+#endif // TREESVG_H_
 
-// Rack

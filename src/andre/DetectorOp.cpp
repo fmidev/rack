@@ -106,16 +106,16 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 
 		const Data<PolarSrc> & srcData = srcDataSet.getFirstData();
 		if (srcData.data.isEmpty()){
-			mout.warn() << "empty srcData [" << srcDataSet.begin()->first << "]: " << srcData << mout.endl;
+			mout.warn("empty srcData [" , srcDataSet.begin()->first , "]: " , srcData );
 			return;
 		}
 		else if (!srcData.data.typeIsSet()){
-			mout.warn() << "unset type in srcData [" << srcDataSet.begin()->first << "]: " << srcData << mout.endl;
+			mout.warn("unset type in srcData [" , srcDataSet.begin()->first , "]: " , srcData );
 			return;
 		}
 
 		if (srcData.odim.area.empty()){ // width==0) || (srcData.odim.area.height==0)){
-			mout.warn() << "empty geom in odim of srcData [" << srcDataSet.begin()->first << "]: " << srcData.odim << mout.endl;
+			mout.warn("empty geom in odim of srcData [" , srcDataSet.begin()->first , "]: " , srcData.odim );
 			return;
 		}
 
@@ -144,7 +144,7 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 		mout.debug("outputDataVerbosity ", outputDataVerbosity);
 		dstProb.setNoSave(outputDataVerbosity==0);
 
-		//mout.warn() << "dstProb: " << dstProb << mout.endl;
+		//mout.warn("dstProb: " , dstProb );
 		/// MAIN COMMAND
 		processDataSet(srcDataSet, dstProb,  dstDataSet);
 
@@ -153,7 +153,7 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 		QualityCombinerOp::updateOverallDetection(dstProb.data, dstQind, dstClass, CLASSNAME, classCode);
 		//File::write(dstQind.data, "dstQind2.png");
 		//File::write(dstClass.data, "dstClass2.png");
-		//mout.note() << dstDataSet << mout.endl;
+		//mout.note(dstDataSet );
 
 	}
 	*/
@@ -169,7 +169,7 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 
 		if (its->first == itd->first){
 
-			//mout.warn() << its->first << mout.endl;
+			//mout.warn(its->first );
 			//return;
 
 			const DataSet<PolarSrc> & srcDataSet = its->second;
@@ -184,15 +184,15 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 
 			const Data<PolarSrc> & srcData = srcDataSet.getFirstData();
 			if (srcData.data.isEmpty()){
-				mout.warn() << "empty srcData [" << srcDataSet.begin()->first << "]: " << srcData << mout.endl;
+				mout.warn("empty srcData [" , srcDataSet.begin()->first , "]: " , srcData );
 				return;
 			}
 			else if (!srcData.data.typeIsSet()){
-				mout.warn() << "unset type in srcData [" << srcDataSet.begin()->first << "]: " << srcData << mout.endl;
+				mout.warn("unset type in srcData [" , srcDataSet.begin()->first , "]: " , srcData );
 				return;
 			}
 			if ((srcData.odim.area.width==0) || (srcData.odim.area.height==0)){
-				mout.warn() << "empty geom in odim of srcData [" << srcDataSet.begin()->first << "]: " << srcData.odim << mout.endl;
+				mout.warn("empty geom in odim of srcData [" , srcDataSet.begin()->first , "]: " , srcData.odim );
 				return;
 			}
 
@@ -229,7 +229,7 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 			QualityCombinerOp::updateOverallDetection(dstProb.data, dstQind, dstClass, CLASSNAME, classEntry.first);
 			//File::write(dstQind.data, "dstQind2.png");
 			//File::write(dstClass.data, "dstClass2.png");
-			//mout.note() << dstDataSet << mout.endl;
+			//mout.note(dstDataSet );
 
 		}
 		else {
@@ -249,7 +249,7 @@ void DetectorOp::runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<Po
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.info("start");
-	//mout.warn() << "start" << mout.endl;
+	//mout.warn("start" );
 
 	if (srcDataSet.size() == 0){
 		mout.warn("dataset contains no data, skipping");
@@ -260,8 +260,8 @@ void DetectorOp::runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<Po
 		const PlainData<PolarSrc> & srcData = srcDataSet.getFirstData();
 
 		if (REQUIRE_STANDARD_DATA){
-			//mout.note() << "dstProb (target): " << dstProb << mout.endl;
-			mout.debug() << "requires normalized srcData" << mout.endl;
+			//mout.note("dstProb (target): " , dstProb );
+			mout.debug("requires normalized srcData" );
 
 		    const QuantityMap & qmap = getQuantityMap();
 		    if (qmap.isNormalized(srcData.odim)){
@@ -271,7 +271,7 @@ void DetectorOp::runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<Po
 		    else {
 		    	mout.info("using 'normalized' data...");
 		    	PlainData<PolarDst> & srcDataNorm = DataConversionOp<PolarODIM>::getNormalizedData(srcDataSet, cache,  srcData.odim.quantity);
-				//mout.debug3() << "got normalized data, now processing" << mout.endl;
+				//mout.debug3("got normalized data, now processing" );
 				mout.debug("srcDataNorm: ", srcDataNorm.odim);
 				runDetector(srcDataNorm, dstProb);
 		    }
@@ -287,7 +287,7 @@ void DetectorOp::runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<Po
 		//}
 	}
 
-	//mout.warn() << "end" << dstProb.odim.quantity << mout.endl;
+	//mout.warn("end" , dstProb.odim.quantity );
 
 }
 
@@ -300,7 +300,7 @@ void DetectorOp::initDataDst(const PlainData<PolarSrc> & srcData, PlainData<Pola
 	if (dstData.data.isEmpty()){
 
 		if (quantity.empty()){
-			//mout.warn() << "requested: " << quantity << mout.endl;
+			//mout.warn("requested: " , quantity );
 			dstData.odim.quantity = getOutputQuantity();
 			//QualityCombinerOp::initDstQuality(srcData, dstData, "PROB");
 			QualityCombinerOp::initDstQuality(srcData.odim, dstData, "PROB");
@@ -313,8 +313,8 @@ void DetectorOp::initDataDst(const PlainData<PolarSrc> & srcData, PlainData<Pola
 
 	}
 	else {
-		mout.debug() << "already initialized: " << EncodingODIM(dstData.odim) << mout.endl;
-		mout.debug2() << dstData << mout.endl;
+		mout.debug("already initialized: " , EncodingODIM(dstData.odim) );
+		mout.debug2(dstData );
 	}
 }
 
@@ -361,7 +361,7 @@ void DetectorOp::storeDebugData(int debugLevel, const ImageFrame & srcImage, con
 		sstr.fill('0');
 		sstr << counter << '-' << label << ".png";
 		const std::string filename = sstr.str();
-		mout.debug() << "writing " << filename << mout.endl;
+		mout.debug("writing " , filename );
 		ImageFile::write(srcImage, filename);
 		counter++;
 	}
@@ -385,7 +385,7 @@ void DetectorOp::writeHow(PlainData<PolarDst> & dstData) const {
 void DetectorOp::_enhanceDirectionally(Image & dst, float medianPos, int width) const {
 
 	drain::Logger mout(drain::getLog(), __FUNCTION__, getName());
-	mout.debug() << " called by " << name << mout.endl;
+	mout.debug(" called by " , name );
 	if (mout.isDebug(12))
 		ImageFile::write(dst,"andre-enh0-src.png");
 

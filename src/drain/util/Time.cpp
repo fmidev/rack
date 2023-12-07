@@ -46,7 +46,7 @@ void Time::setTime(const std::string &time, const std::string &format, bool stri
 	const char *t = strptime(time.c_str(), format.c_str(), (tm *)this);
 	if (strict && (t == NULL)){
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.error() << "parse error for '"  << time << "', format='" << format << "'" << mout.endl;
+		mout.error("parse error for '"  , time , "', format='" , format , "'" );
 		//throw std::runtime_error(std::string("setTime(): parse error for '") + time + "', format '" + format + "'");
 	}
 	/*
@@ -78,7 +78,7 @@ const std::string & Time::str(const std::string &format) const {
 		timeStr.assign(tmp,length);
 		if (length == maxSize){
 			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.error() << " max time str length("<< maxSize << ") exceeded " << mout.endl;
+			mout.error(" max time str length(", maxSize , ") exceeded " );
 			//std::cerr << __FILE__ << ':' << __FUNCTION__ << " max time str length("<< maxSize << ") exceeded " << std::endl;
 			// TODO: string mapper
 		}

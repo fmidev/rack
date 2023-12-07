@@ -48,12 +48,13 @@ namespace rack {
 
  *
  */
-class BiometeorOp: public DetectorOp {
+class GliderOp: public DetectorOp {
 
 protected:
 
 	inline
-	BiometeorOp(const std::string & name, const std::string & description, const std::string & classCode) : DetectorOp(name, description, classCode), dbzPeak(+5),  VRAD_FLIP(false), zdrAbsMin(+2.0)  {
+	GliderOp(const std::string & name, const std::string & description, const std::string & classCode) :
+		DetectorOp(name, description, classCode), dbzPeak(+5),  VRAD_FLIP(false), zdrAbsMin(+2.0)  {
 		dataSelector.quantity = "^(DBZH|VRAD|VRADH|RHOHV|ZDR)$";
 		dataSelector.count = 1;
 	};
@@ -77,12 +78,12 @@ protected:
 	 */
 
 	inline
-	BiometeorOp(const BiometeorOp & op) : DetectorOp(op) {
+	GliderOp(const GliderOp & op) : DetectorOp(op), VRAD_FLIP(false) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	};
 
 	virtual inline
-	~BiometeorOp(){};
+	~GliderOp(){};
 
 
 	double dbzPeak;
@@ -129,7 +130,7 @@ protected:
 
  *
  */
-class BirdOp: public BiometeorOp {
+class BirdOp: public GliderOp {
 
 public:
 
@@ -146,14 +147,14 @@ public:
 //	BirdOp(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrAbsMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0) :
 	BirdOp(double dbzPeak = 0.0, double vradDevMin = 3.0, double rhoHVmax = 0.8, double zdrAbsMin = 1.0, double windowWidth = 2500, double windowHeight = 5.0) :
 
-		BiometeorOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.bird"){ // Optional postprocessing: morphological closing.
+		GliderOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.bird"){ // Optional postprocessing: morphological closing.
 
 		init(dbzPeak, vradDevMin, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 
 	};
 
 	inline
-	BirdOp(const BirdOp & op) : BiometeorOp(op) {
+	BirdOp(const BirdOp & op) : GliderOp(op) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	};
 
@@ -167,20 +168,20 @@ protected:
 };
 
 
-class InsectOp: public BiometeorOp {
+class InsectOp: public GliderOp {
 
 public:
 
 	// BIRD: double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrAbsMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0
 
 	InsectOp(double dbzPeak = -10.0, double vradDevMax = +5.0, double rhoHVmax = 0.7, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
-		BiometeorOp(__FUNCTION__, "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.insect"){
+		GliderOp(__FUNCTION__, "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.insect"){
 		init(dbzPeak, vradDevMax, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 		// this->vradDev.max = 0.9 *vradDevMax;
 		//this->vradDev.min = 1.1 *vradDevMax;
 	};
 
-	InsectOp(const InsectOp & op) : BiometeorOp(op) {
+	InsectOp(const InsectOp & op) : GliderOp(op) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	}
 

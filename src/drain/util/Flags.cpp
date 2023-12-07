@@ -65,7 +65,7 @@ void Flagger::assign(const key_t & args){
 	if (args.empty()){
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		// Should it reset or skip?
-		mout.warn() << "Skipping empty assignment" << mout.endl;
+		mout.warn("Skipping empty assignment" );
 		return;
 	}
 

@@ -49,6 +49,11 @@ std::string NodeSVG::svg("http://www.w3.org/2000/svg");
 
 // NodeSVG::NodeSVG(){	setType(UNDEFINED);}
 
+NodeSVG::NodeSVG(const NodeSVG & node){
+	copyStruct(node, node, *this, RESERVE);
+}
+
+
 NodeSVG::NodeSVG(type t){
 	setType(t);
 }
@@ -91,6 +96,14 @@ void NodeSVG::setType(type t) {
 		link("y", y = 0);
 		link("radius", radius = 0);
 		break;
+	case IMAGE:
+		tag = "image";
+		link("x", x = 0);
+		link("y", y = 0);
+		link("width", width = 0);
+		link("height", height = 0);
+		link("xlink:href", text_anchor);
+		break;
 	case CTEXT:
 		tag = "";
 		//link("x", x, 0);
@@ -111,17 +124,12 @@ void NodeSVG::setType(type t) {
 std::ostream & NodeSVG::toOStr(std::ostream &ostr, const TreeSVG & tree){
 	ostr << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>";
 	ostr << '\n';
-	//NodeXML::toOStr()
-	//NodeXML::toOStr(ostr, tree, "svg");
 	NodeXML::toOStr(ostr, tree);
 	return ostr;
 }
 
 
 
-}  // namespace image
+}  // image::
 
-}  // namespace drain
-
-
-// Rack
+}  // drain::

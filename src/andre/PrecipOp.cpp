@@ -45,8 +45,8 @@ namespace rack {
 void PrecipOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.debug() << *this << mout.endl;
-	mout.debug2() << "=>srcData.odim: " << srcData.odim << mout.endl;
+	mout.debug(*this );
+	mout.debug2("=>srcData.odim: " , srcData.odim );
 
 	/// Descending fuzzy step, located at (max) altitude.
 	//  const drain::FuzzyStepsoid<double,float> fuzzyAltitude(maxAltitude, -devAltitude);
@@ -63,11 +63,11 @@ void DefaultOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<Polar
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug() << *this << mout.endl;
-	mout.debug2() << " => srcData.odim: " << EncodingODIM(srcData.odim) << mout.endl;
-	mout.debug2() << " => dstData.odim: " << EncodingODIM(dstData.odim) << mout.endl;
+	mout.debug(*this );
+	mout.debug2(" => srcData.odim: " , EncodingODIM(srcData.odim) );
+	mout.debug2(" => dstData.odim: " , EncodingODIM(dstData.odim) );
 
-	mout.debug2() << " => dst: " << dstData.data.getScaling() << mout.endl;
+	mout.debug2(" => dst: " , dstData.data.getScaling() );
 	//const int code = AndreOp::getClassCode(this->classCode);
 
 	RadarFunctorOp<DataMarker> marker;
@@ -75,7 +75,7 @@ void DefaultOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<Polar
 
 	// const PolarODIM & odim = dstData.odim;
 	// const double probCode = dstData.odim.scaleInverse(1.0 - QualityCombinerOp::DEFAULT_QUALITY) + 2;
-	// mout.warn() << "Using prob (code value) " << probCode << mout.endl;
+	// mout.warn("Using prob (code value) " , probCode );
 	// marker.functor.set(dstData.odim.scaleForward(probCode));
 	// const double pCode    = dstData.odim.scaleInverse(this->probability);
 	// const double pCodeMin = dstData.odim.scaleInverse(1.0 - this->qualityThreshold); // QualityCombinerOp::DEFAULT_QUALITY);
@@ -88,9 +88,9 @@ void DefaultOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<Polar
 	*/
 
 	marker.functor.set(this->probability);
-	// mout.warn() << marker << mout.endl;
+	// mout.warn(marker );
 	marker.process(srcData.data, dstData.data);
-	mout.debug2() << " => DST: " << dstData.data.getScaling() << mout.endl;
+	mout.debug2(" => DST: " , dstData.data.getScaling() );
 
 }
 

@@ -63,7 +63,7 @@ void TimeOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.debug() << "start" << mout.endl;
+	mout.debug("start" );
 
 	drain::Time timeRef;
 
@@ -72,7 +72,7 @@ void TimeOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 		try {
 			timeRef.setTime(time, format);
 		} catch (std::runtime_error &e) {
-			mout.warn() << "warning: parsing failed for time: " << time << ", using format: " << format << mout.endl;
+			mout.warn("warning: parsing failed for time: " , time , ", using format: " , format );
 		}
 	}
 	else if ((time == "NOMINAL") || time.empty()){
@@ -80,7 +80,7 @@ void TimeOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 			timeRef.setTime(srcData.odim.date, "%Y%m%d");
 			timeRef.setTime(srcData.odim.time, "%H%M%S");
 		} catch (std::runtime_error &e) {
-			mout.warn() << "warning: parsing failed for scan start time:" <<  srcData.odim.startdate << srcData.odim.starttime << mout.endl;
+			mout.warn("warning: parsing failed for scan start time:" ,  srcData.odim.startdate , srcData.odim.starttime );
 		}
 	}
 	/*
@@ -89,7 +89,7 @@ void TimeOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 			timeRef.setTime(srcData.odim.startdate, "%Y%m%d");
 			timeRef.setTime(srcData.odim.starttime, "%H%M%S");
 		} catch (std::runtime_error &e) {
-			mout.warn() << "warning: parsing failed for scan start time:" <<  srcData.odim.startdate << srcData.odim.starttime << mout.endl;
+			mout.warn("warning: parsing failed for scan start time:" ,  srcData.odim.startdate , srcData.odim.starttime );
 		}
 	}
 	else if ((time == "END")){
@@ -97,7 +97,7 @@ void TimeOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 			timeRef.setTime(srcData.odim.enddate, "%Y%m%d");
 			timeRef.setTime(srcData.odim.endtime, "%H%M%S");
 		} catch (std::runtime_error &e) {
-			mout.warn() << "warning: parsing failed for scan start time:" <<  srcData.odim.startdate << srcData.odim.starttime << mout.endl;
+			mout.warn("warning: parsing failed for scan start time:" ,  srcData.odim.startdate , srcData.odim.starttime );
 		}
 	}
 	*/
@@ -105,13 +105,13 @@ void TimeOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 		try {
 			timeRef.setTime(time, "%Y%m%d%H%M%S");
 		} catch (std::runtime_error &e) {
-			mout.warn() << "warning: parsing failed for user-defined ref time: " << time << ", skipping operation." << mout.endl;
+			mout.warn("warning: parsing failed for user-defined ref time: " , time , ", skipping operation." );
 			return;
 		}
 	}
 
-	mout.debug() << "time" << timeRef.str() << mout.endl;
-	mout.info() << srcData.odim.date << ' ' << srcData.odim.time << mout.endl;
+	mout.debug("time" , timeRef.str() );
+	mout.info(srcData.odim.date , ' ' , srcData.odim.time );
 	const time_t secondRef = timeRef.getTime();
 
 	const double maxQuality = dstProb.odim.scaleInverse(1.0);
@@ -122,16 +122,16 @@ void TimeOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	drain::Time t;
 	t.setTime(srcData.odim.startdate, "%Y%m%d");
 	t.setTime(srcData.odim.starttime, "%H%M%S");
-	mout.debug() << "startTime: " << t.str() << mout.endl;
+	mout.debug("startTime: " , t.str() );
 	time_t secondStart = t.getTime();
 
 	t.setTime(srcData.odim.enddate, "%Y%m%d");
 	t.setTime(srcData.odim.endtime, "%H%M%S");
-	mout.debug() << "endTime: " << t.str() << mout.endl;
+	mout.debug("endTime: " , t.str() );
 	time_t secondEnd = t.getTime();
 
 	const double secondsPerBeam = (secondEnd-secondStart)/(double)dstProb.data.getWidth();
-	mout.debug() << "secondsPerBeam: " << secondsPerBeam << mout.endl;
+	mout.debug("secondsPerBeam: " , secondsPerBeam );
 	double s, q;
 
 	/// MAIN
@@ -154,7 +154,7 @@ void TimeOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 			q = maxQuality - fuzzyPast(s);
 		else
 			q = maxQuality - fuzzyFuture(s);
-		//mout.debug() << "beam: #" << j << ", q:" << q << mout.endl;
+		//mout.debug("beam: #" , j , ", q:" , q );
 		for (size_t i = 0; i < dstProb.data.getWidth(); ++i) {
 			dstProb.data.put(i,j, q);
 		}

@@ -98,18 +98,18 @@ UnaryFunctor & getFunctor(const std::string & nameAndParams, char separator) {
 	//const std::string name(nameAndParams.substr(0, i));
 	//const std::string params(nameAndParams.substr(i+1));
 
-	mout.debug3() << "functor name: " << name << ", params: " << params << mout.endl;
+	mout.debug3("functor name: " , name , ", params: " , params );
 
 	FunctorBank & functorBank = getFunctorBank();
 	if (!functorBank.has(name)){
-		mout.error() << "functor not found: " << name << mout.endl;
+		mout.error("functor not found: " , name );
 	}
 
 	UnaryFunctor & ftor = functorBank.get(name);  // or clone() ?
-	mout.debug3() << ftor.getName() << ',' << ftor.getDescription() << mout.endl;
+	mout.debug3(ftor.getName() , ',' , ftor.getDescription() );
 
 	ftor.setParameters(params, '=', separator);
-	mout.debug() << ftor.getParameters() << mout.endl;
+	mout.debug(ftor.getParameters() );
 
 	return ftor;
 }

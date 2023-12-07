@@ -52,7 +52,7 @@ namespace rack {
 void CCorOp::runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	//mout.debug() << parameters << mout.endl;
+	//mout.debug(parameters );
 
 	// TODO: select H or V
 
@@ -60,13 +60,13 @@ void CCorOp::runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & d
 	const Data<PolarSrc> & srcDBZH = src.getData("DBZH");
 
 	if (srcTH.data.isEmpty()){
-		mout.warn() << "input data of TH missing, giving up." << mout.endl;
+		mout.warn("input data of TH missing, giving up." );
 		// or error flag?
 		return;
 	}
 
 	if (srcDBZH.data.isEmpty()){
-		mout.warn() << "input data of DBZH missing, giving up." << mout.endl;
+		mout.warn("input data of DBZH missing, giving up." );
 		return;
 	}
 

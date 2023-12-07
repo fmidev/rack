@@ -64,12 +64,12 @@ public:
 		if (presetKey.test(p)){
 			std::map<std::string,std::string>::const_iterator it = presets.find(p);
 			if (it != presets.end()){
-				mout.info() << "applying presets '" << "'" << mout.endl;
+				mout.info("applying presets '" , "'" );
 				//setParameters(it->second);
 				BeanLike::setParameters(it->second, assignmentSymbol, separatorSymbol);
 			}
 			else {
-				mout.warn() << "no preset found for: '" << p << "'" << mout.endl;
+				mout.warn("no preset found for: '" , p , "'" );
 			}
 		}
 		else {

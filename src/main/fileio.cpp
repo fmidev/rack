@@ -458,6 +458,94 @@ void CmdOutputFile::exec() const {
 
 };
 
+/**
+ *
+ *   \see Palette::exportSVGLegend()
+ */
+void CmdOutputPanel::exec() const {
+
+	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	// mout.attention(ctx.getName());
+	// mout.warn("ctx.select=", ctx.select);
+
+	/*
+	if (value.empty()){
+		mout.error("File name missing. (Use '-' for stdout.)" );
+		return;
+	}
+	*/
+
+	if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR)){
+		mout.warn("input failed, skipping");
+		return;
+	}
+
+	if (ctx.statusFlags.isSet(drain::StatusFlags::DATA_ERROR)){
+		mout.warn("data error, skipping");
+		return;
+	}
+
+	//TreeSVG &  // = svg["bg"];
+	TreeSVG svg(NodeSVG::SVG);
+	// TreeSVG svg; // (NodeSVG::SVG); REDO this, check copy constr!
+	svg->setType(NodeSVG::SVG);
+
+	TreeSVG & main = svg["main"];
+	main->setType(NodeSVG::GROUP);
+	main->set("style", "fill:green");
+
+	const drain::image::Image & src = ctx.updateCurrentImage();
+	// svg->set("width",  src.getWidth());
+	// svg->set("height", src.getHeight());
+
+	/*
+	TreeSVG::node_data_t & rect = svg["main"];
+	main.setType(NodeSVG::RECT);
+	main.set("x", 0);
+	main.set("y", 0);
+	//main.set("style", "fill:white opacity:0.8"); // not supported by some SVG renderers
+	main.set("fill", "white");
+	main.set("opacity", 0.8);
+	*/
+	TreeSVG & image = main["image1"];
+	image->setType(NodeSVG::IMAGE);
+	image->set("x", 0);
+	image->set("y", 0);
+	image->set("width",  src.getWidth());
+	image->set("height", src.getHeight());
+	image->set("xlink:href", "image.png");
+
+	/*
+	TreeSVG & header = svg["title"];
+	header->setType(NodeSVG::TEXT);
+	header->set("x", lineheight/4);
+	header->set("y", (headerHeight * 9) / 10);
+	header->ctext = title;
+	header->set("style","font-size:20");
+	*/
+
+	if (layout == "basic"){
+
+
+
+	}
+	else {
+		mout.error("Unknown layout '", layout, "'");
+	}
+
+	std::string s = filename.empty() ? layout+".svg" : filename;
+
+	if (NodeSVG::fileinfo.checkExtension("svg")){ // .svg
+		drain::Output ofstr(s);
+		mout.note("writing SVG file: '", s, "");
+		ofstr << svg;
+	}
+
+
+}
 
 void CmdOutputTree::exec() const {
 
@@ -700,11 +788,13 @@ FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // 
 	install<CmdInputFile>('i').addSection(TRIGGER);
 	install<CmdOutputFile>('o');
 	install<CmdOutputTree>('t');
+	install<CmdOutputPanel>();
 
 	install<CmdInputPrefix>();
 	install<CmdOutputPrefix>();
 	install<CmdOutputRawImages>('O').addSection(IMAGES);
 	install<CmdOutputConf>();
+
 	// install<CmdOutputTreeConf>();
 
 	install<CmdGeoTiff>().addSection(IMAGES);

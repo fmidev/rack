@@ -233,7 +233,7 @@ public:
 
 		Logger mout(__FILE__, __FUNCTION__);
 		long s = sizeof(T); // yes signed
-		//mout.warn() << "experimental, obj.size=" << s << mout.endl;
+		//mout.warn("experimental, obj.size=" , s );
 
 		// Clearing is bad, it resets work of base class constructors
 		// if (policy==LINK)
@@ -244,36 +244,37 @@ public:
 
 		const addr_t srcAddr = (addr_t)(&src);
 		const addr_t dstAddr = (addr_t)(&dst);
-		for (std::list<std::string>::const_iterator it = m.getKeyList().begin(); it != m.getKeyList().end(); ++it){
-			const std::string & key = *it;
+		//for (std::list<std::string>::const_iterator it = m.getKeyList().begin(); it != m.getKeyList().end(); ++it){
+		for (const std::string & key: m.getKeyList()){
+			// const std::string & key = *it;
 			const Referencer & srcRef = m[key];
 			addr_t srcVarAddr = (addr_t)srcRef.getPtr();
 			addr_diff_t relativeAddr = srcVarAddr - srcAddr;
 			if ((relativeAddr >= 0) && (relativeAddr < s)){ // INTERNAL
 				Referencer & dstMemberRef = link(key, (void *)(dstAddr + relativeAddr), srcRef.getType(), srcRef.getElementCount());
-				//mout.warn() << "local: " << key << ':' << srcRef.getElementCount() << mout.endl;
+				//mout.warn("local: " , key , ':' , srcRef.getElementCount() );
 				dstMemberRef.copyFormat(srcRef);
 				dstMemberRef = srcRef; // value
 			}
 			else {
-				//mout.warn() << "external: " << key     << mout.endl;
+				//mout.warn("external: " , key     );
 				switch (policy) {
 				case LINK:
 					link(key, (void *)srcVarAddr, srcRef.getType(), srcRef.getElementCount()).copyFormat(srcRef);
 					break;
 				case RESERVE:
 					reserve(key);
-					//mout.warn() << "reserved: " << key     << mout.endl;
-					//mout.warn() << "keyList:  " << getKeys() << mout.endl;
+					//mout.warn("reserved: " , key     );
+					//mout.warn("keyList:  " , getKeys() );
 					break;
 				case SKIP:
-					mout.debug() << "skipping external variable: '" << key << '=' << srcRef << "' relative addr=" << relativeAddr << mout.endl;
+					mout.debug("skipping external variable: '" , key , '=' , srcRef , "' relative addr=" , relativeAddr );
 					break;
 				case ERROR:
-					mout.error() << "external variable: '" << key << '=' << srcRef << "' relative addr=" << relativeAddr << mout.endl;
+					mout.error("external variable: '" , key , '=' , srcRef , "' relative addr=" , relativeAddr );
 					break;
 				default:
-					mout.warn() << "unknown enum option in handling external variable '" << key << '=' << srcRef << "' relative addr=" << relativeAddr << mout.endl;
+					mout.warn("unknown enum option in handling external variable '" , key , '=' , srcRef , "' relative addr=" , relativeAddr );
 				}
 			}
 		}
@@ -308,9 +309,9 @@ public:
 			return it->second;
 		}
 		else {
-			mout.warn() << "current contents: " << *this << mout.endl;
+			mout.warn("current contents: " , *this );
 
-			mout.error() << "key '" << key <<"' not declared (referenced)" << mout.endl;
+			mout.error("key '" , key ,"' not declared (referenced)" );
 			//throw std::runtime_error(key + ": ReferenceMap & operator[] : key not found");
 			static mapped_type empty;
 			return empty;
@@ -329,7 +330,7 @@ public:
 			return it->second;
 		}
 		else {
-			mout.error() << "key '" << key <<"' not declared (referenced)" << mout.endl;
+			mout.error("key '" , key ,"' not declared (referenced)" );
 			//throw std::runtime_error(key + ": ReferenceMap & operator[] : key not found");
 			static const mapped_type empty;
 			return empty;

@@ -87,20 +87,20 @@ void ShipOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	RadarFunctorOp<drain::FuzzyStepsoid<double> > dbzFuzzifier; // Fuzzy step, sigmoid-like, continuous
 	dbzFuzzifier.odimSrc = srcData.odim; // Radar ops use metadata for scaling the pixels and the values
 	dbzFuzzifier.functor.set(reflMin, 10.0);  // minimum reflectivity (10dBZ if not set)
-	mout.debug() << "fuzzy: " << dbzFuzzifier.functor << mout.endl;
+	mout.debug("fuzzy: " , dbzFuzzifier.functor );
 	dbzFuzzifier.process(srcData.data, tmpFuzzyDBZ);  // compute "high reflectivity"
 	//tmpFuzzyDBZ.setPhysicalScale(0.0, 1.0);
 	tmpFuzzyDBZ.setPhysicalRange(0.0, 1.0, true);
 	//tmpFuzzyDBZ.setOptimalScale();
 	// Debugging
 	storeDebugData(2, tmpFuzzyDBZ, "SHIP_DBZ"); // for debugging only
-	mout.debug2() << tmpFuzzyDBZ << mout.endl;
+	mout.debug2(tmpFuzzyDBZ );
 
 	/// Step 2b: detect high peaks
 	/// Temp image for peaks
 	/*
 		if (! drain::Type::call<drain::typeIsSmallInt>(srcData.data.getType())){  // well, still standardized data.
-			mout.warn() << "input data not 8/16 bit, probably problems ahead with undetect: " <<  srcData.data << mout.endl;
+			mout.warn("input data not 8/16 bit, probably problems ahead with undetect: " ,  srcData.data );
 		}
 	 */
 
@@ -152,12 +152,12 @@ void ShipOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	/// Step 2b: imitate sidelobes (expontential, "IRF style"), adding them to the peaks
 	DistanceTransformExponentialOp dist;
 	dist.setRadius(1.0, srcData.odim.getAzimuthalBins(15.0));
-	mout.special() << dist << mout;
-	//mout.special() << dist. << mout;
+	mout.special(dist );
+	//mout.special(dist. );
 
 	dist.process(tmpPeaks, tmpPeaks);
 	storeDebugData(2, tmpPeaks, "SHIP_HP_DIST"); // for debugging only
-	//mout.warn() << tmpPeaks << mout.endl;
+	//mout.warn(tmpPeaks );
 
 
 	/// Step 3: combine the two evidence field by multiplying them (fuzzy-AND operation)
@@ -169,7 +169,7 @@ void ShipOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst
 	dstProb.setPhysicalRange(0.0, 1.0);
 	mulOp.traverseChannel(tmpLap.getChannel(0), tmpPeaks, dstProb.data);
 	storeDebugData(3, dstProb.data, "SHIP_FINAL"); // for debugging only
-	mout.debug3() << dstProb.data << mout.endl;
+	mout.debug3(dstProb.data );
 
 }
 

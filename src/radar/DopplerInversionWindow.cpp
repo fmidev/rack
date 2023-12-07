@@ -63,7 +63,7 @@ void DopplerInversionWindow::initialize(){
 	//NI = (this->odimSrc.NI != 0.0) ? this->odimSrc.NI : 0.01*this->odimSrc.wavelength * this->odimSrc.lowprf / 4.0;
 	NI = this->odimSrc.getNyquist();
 
-	mout.debug() << "NI=" << NI << mout.endl;
+	mout.debug("NI=" , NI );
 
 	/// Set maximum quality to undetectValue, and 50% quality at NI/4.
 	diffQuality.set(0.0, NI/1.0);
@@ -77,11 +77,11 @@ void DopplerInversionWindow::initialize(){
 
 	const drain::Type t(odimOut.type);
 	if (drain::Type::call<drain::typeIsInteger>(t)){
-		mout.note() << "AMVU, AMVV: vMin=" << vMin << ", vMax=" << vMax << mout.endl;
+		mout.note("AMVU, AMVV: vMin=" , vMin , ", vMax=" , vMax );
 		if (drain::Type::call<drain::typeIsSmallInt>(t)){
 			// values
 			unsigned int n = 1 << 8*drain::Type::call<drain::sizeGetter>(t);
-			mout.note() << "AMVU, AMVV: resolution=" << static_cast<double>(vMax-vMin)/static_cast<double>(n) << "m/s / bit" << mout.endl;
+			mout.note("AMVU, AMVV: resolution=" , static_cast<double>(vMax-vMin)/static_cast<double>(n) , "m/s / bit" );
 		}
 	}
 
@@ -92,24 +92,24 @@ void DopplerInversionWindow::initialize(){
 		const size_t index = functorSetup.find(':');
 		const std::string functorName = functorSetup.substr(0, index);
 		if (functorBank.has(functorName)){
-			mout.note() << "using "<< functorName << mout.endl;
+			mout.note("using ", functorName );
 			drain::UnaryFunctor & test = functorBank.clone(functorName);
 			functor = & test; //functorBank.get(functorName).clone(); // todo fbank exeption
 			if (index != std::string::npos){
 				functor->setParameters(functorSetup.substr(index+1), '=', ':');
 			}
-			mout.note() << *functor << mout.endl;
-			mout.warn() << "map alt: " << test(10.0)<< mout.endl;
-			mout.warn() << "map alt: " << (*functor)(10.0)<< mout.endl;
+			mout.note(*functor );
+			mout.warn("map alt: " , test(10.0));
+			mout.warn("map alt: " , (*functor)(10.0));
 		}
 		else {
-			mout.warn() << "could not find functor '" << functorName << "'" << mout.endl;
+			mout.warn("could not find functor '" , functorName , "'" );
 			functor = NULL;
 		}
 	}
 
 	if (functor){
-		mout.info() << "functor='" << *functor << "'" << mout.endl;
+		mout.info("functor='" , *functor , "'" );
 	}
 
 	reset();

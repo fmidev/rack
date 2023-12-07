@@ -314,6 +314,7 @@ CartesianModule::CartesianModule(drain::CommandBank & bank) : module_t(bank) {
 	install<CartesianOpticalFlow>("cOpticalFlow"); // class name: FastOpticalFlow2Op
 
 	/// In future, unused.
+
 	/*
 	static RackLetAdapter<CompositeAdd> cAdd;
 	static RackLetAdapter<CartesianAddWeighted> cAddWeighted;

@@ -57,19 +57,19 @@ void ClutterOp::setClutterMap(const std::string & filename) const {
 
 	if (!clutterMap.getChildren().empty()){
 		if (clutterMap.data.attributes["filename"].toStr() == filename){
-			mout.note() << "required map '" << filename << "' already loaded, skipping reload"  << mout.endl;
+			mout.note("required map '" , filename , "' already loaded, skipping reload"  );
 			return;
 		}
 	}
 
-	mout.debug() << "reading " << filename << mout.endl;
+	mout.debug("reading " , filename );
 	try {
 		hi5::Reader::readFile(filename, clutterMap);
 		DataTools::updateInternalAttributes(clutterMap);
 		clutterMap.data.attributes["filename"] = filename;
 	}
 	catch (const std::runtime_error & e) {
-		mout.warn() << "Failed reading cluttermap '" << filename << "'" << mout.endl;
+		mout.warn("Failed reading cluttermap '" , filename , "'" );
 	}
 
 }
@@ -87,7 +87,7 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 	setClutterMap(filePath); // Note: loads new only when needed
 
 	if (clutterMap.getChildren().empty()){
-		mout.warn() << "no clutterMap available, problems ahead..." << mout.endl;
+		mout.warn("no clutterMap available, problems ahead..." );
 		return clutterMap;
 	}
 
@@ -97,15 +97,15 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 	// selector.setParameters("");
 	//selector.setParameter("quantity", quantity);
 	selector.setQuantity(quantity);
-	mout.debug() << "selector " << selector << mout.endl; // TODO protect quantity
+	mout.debug("selector " , selector ); // TODO protect quantity
 
 	//selector.ensureDataGroup();
 	if (selector.getPath(clutterMap, path)){ //, ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-		mout.info() << "found " << path << mout.endl;
+		mout.info("found " , path );
 		return clutterMap(path);
 	}
 	else {
-		mout.warn() << "using default path " << path << mout.endl;
+		mout.warn("using default path " , path );
 		return clutterMap["dataset1"]["data1"];
 		//return clutterMap.begin()->second.begin()->second;  // "dataset1/data1"
 	}
@@ -129,16 +129,16 @@ void ClutterOp::runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> 
 	//const Data<PolarSrc> srcMap(getClutterMap(srcData.odim));
 	const Data<PolarSrc> srcMap(clutterMap);
 
-	mout.note() << "using clutter 'quality quantity': " << srcMap.odim.quantity << mout.endl;
+	mout.note("using clutter 'quality quantity': " , srcMap.odim.quantity );
 
 	/*
 	if (srcMap.data.isEmpty()){
 		//clutterMap.dumpContents(std::cerr);
 		//hi5::Hi5Base::writeText(clutterMap);
-		mout.warn() << clutterMap << mout.endl;
+		mout.warn(clutterMap );
 
-		// mout.note() << clutterDataSet << mout.endl;
-		mout.warn() << "input clutter map missing, giving up." << mout.endl;
+		// mout.note(clutterDataSet );
+		mout.warn("input clutter map missing, giving up." );
 		return;
 	}*/
 

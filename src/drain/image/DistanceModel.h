@@ -129,7 +129,7 @@ public:
 
 	// OLD typedef unsigned short topol_t;
 	// NEW
-	enum PIXEL_ADJACENCY {CONN4, CONN8, KNIGHT};
+	enum PIXEL_ADJACENCY {CONN4=4, CONN8=8, KNIGHT=16};
 	typedef PIXEL_ADJACENCY topol_t;
 
 
@@ -242,27 +242,15 @@ public:
 	 */
 	//virtual
 	//void createChain(DistanceNeighbourhood & chain, topol_t topology, bool forward=true) const;
-	void createChain(DistanceNeighbourhood & chain, PIXEL_ADJACENCY topology, bool forward=true) const;
+	void createChain(DistanceNeighbourhood & chain, PIXEL_ADJACENCY topology = PIXEL_ADJACENCY::KNIGHT, bool forward=true) const;
 
 	inline
 	void createChain(DistanceNeighbourhood & chain, bool forward=true) const {
-		//PixelAdjacencyFlagger f;
-		//f.set(this->topology);
-		//createChain(chain, this->topology, forward);
 		createChain(chain, pixelAdjacency, forward);
 	}
 
 	virtual
 	float decrease(float value, float coeff) const = 0;
-
-	//PIXEL_ADJACENCY topology;
-	/*
-	topol_t topology; // NEEDED, separately?
-	static const topol_t PIX_ADJACENCY_4 = 0;
-	static const topol_t PIX_ADJACENCY_8 = 1;
-	static const topol_t PIX_ADJACENCY_KNIGHT = 2;
-	*/
-
 
 
 protected:

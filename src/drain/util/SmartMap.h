@@ -460,7 +460,7 @@ void SmartMap<T>::importEntries(const std::string & entries, char assignmentSymb
 		drain::StringTools::split(entries, p, std::string(1, separatorSymbol));  // separators);
 	else {
 		// no separator => single-param cmd, BUT explicit key=value possible
-		// mout.warn() << "push back entries:" << entries << mout.endl;
+		// mout.warn("push back entries:" , entries );
 		p.push_back(entries);
 	}
 	importEntries<STRICT>(p, assignmentSymbol);
@@ -487,19 +487,19 @@ void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmen
 
 	bool acceptOrderedParams = true;
 
-	// mout.warn() << " assignmentSymbol: " <<  assignmentSymbol << mout.endl;
-	// mout.warn() << " size: " <<  this->size() << mout.endl;
+	// mout.warn(" assignmentSymbol: " ,  assignmentSymbol );
+	// mout.warn(" size: " ,  this->size() );
 
 	for (std::list<std::string>::const_iterator pit = p.begin(); pit != p.end(); ++pit){
 
-		//mout.warn() << " entry: " << *pit << mout.endl;
+		//mout.warn(" entry: " , *pit );
 
 		// Check specific assignment, ie. check if the key=value is given explicitly.
 		if (assignmentSymbol){ // typically '='
 			std::string key;
 			std::string value;
 			if (StringTools::split2(*pit, key, value, assignmentSymbols)){
-				// mout.warn() << " specified " <<  key << "=\t" << value << mout.endl;
+				// mout.warn(" specified " ,  key , "=\t" , value );
 				if (this->size()==1){
 					iterator it = this->begin();
 					if (key == it->first)
@@ -514,7 +514,7 @@ void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmen
 				continue;
 			}
 			else {
-				// mout.warn() << " could not split: " << *pit << mout.endl;
+				// mout.warn(" could not split: " , *pit );
 			}
 		}
 
@@ -523,9 +523,9 @@ void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmen
 		if (kit != keys.end()){
 			// Assignment-by-order
 			if (!acceptOrderedParams){
-				mout.warn() << "positional arg '" << *pit << "' for ["<< *kit << "] given after explicit args" << mout.endl;
+				mout.warn("positional arg '" , *pit , "' for [", *kit , "] given after explicit args" );
 			}
-			//mout.warn() << " ordered  " <<   << mout.endl;
+			//mout.warn(" ordered  " ,   );
 			(*this)[*kit] = *pit;  // does not need to call import() because *kit exists.
 			++kit; // NUEVO
 		}
@@ -533,7 +533,7 @@ void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmen
 			//mout.log(criticality)
 			// << "too many (over "<< this->size() << ") params, run out of keys with entry=" << *pit << mout.endl;
 			if (STRICT){
-				mout.error() << "too many (over "<< this->size() << ") params, run out of keys with entry=" << *pit << mout.endl;
+				mout.error("too many (over ", this->size() , ") params, run out of keys with entry=" , *pit );
 			}
 
 		}
