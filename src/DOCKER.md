@@ -3,19 +3,19 @@
 
 # Server-side build 
 
-Automated build of an image on a server
+This section explains automated build of an image on a server
 
 Required settings:
 
-| Dockerfile Location | Context Location | Branches/Tags  | Pull Robot | Tagging options   |
-| ------------------- | ---------------- | -------------  | ---------- | ----------------- |
-| /src/Dockerfile     | `/src`           | `heads/main`   | (None)     | Branch/tag name |
-|                     |                  |                |            | `latest` if default branch |
+| Dockerfile Location | Context Location | Branches/Tags  | Pull Robot |
+| ------------------- | ---------------- | -------------  | ---------- |
+| /src/Dockerfile     | `/src`           | `heads/main`   | (None)     |
+|                     |                  |                |            |
 
-
-
+Tagging options:
+- Branch/tag name
+- `latest` if default branch
 - ${commit_info.short_sha} 
-
 
  
 # Local build
