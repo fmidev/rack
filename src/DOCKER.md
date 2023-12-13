@@ -21,6 +21,7 @@ Tagging options:
 # Local build
 
 This section explains how a Docker image is build on command line.
+The required commands are defined in [Makefile](Makefile) and invoked with `make` command.
 
 ## Basic build commands
 
