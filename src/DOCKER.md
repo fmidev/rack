@@ -7,22 +7,22 @@ Required settings:
 ```
 
 ```
-
+ 
 # Building an image on command line
 
+An image is constructed by entering `rack/src` directory and issuing:
+
 ```
-make docker
+make docker-image
 ```
 
-The process creates a separare configuration dir, `./docker-conf-${HOSTNAME}` by default.
-The directory contains files
+## Proxy settings
 
-* `config.json` – settings for docker command
-* `apt-proxy.conf` – settings for docker command
+Proxy settings are often required for a build to run. Therefore, the process creates a
+separare configuration dir, `./docker-conf-${HOSTNAME}` by default.
+The directory contains the following files:
 
-If the build environment has proxy settings, defined as variables `http_proxy` and `https_proxy`,
-the process stores them in these files, appearing as follows:
-
+* `config.json` – settings for `docker` command
 ```
 {
   "proxies": {
@@ -35,6 +35,7 @@ the process stores them in these files, appearing as follows:
 }
 ```
 
+* `apt-proxy.conf` – settings for `apt-get` command
 ```
 Acquire::http::Proxy  "http://proxy.domain.org:8080";
 Acquire::https::Proxy "http://proxy.domain.org:8080";
@@ -43,7 +44,19 @@ Acquire::https::Proxy "http://proxy.domain.org:8080";
 One may create, then edit and use alternative configuration directories, issued in a `make` parameter as follows:
 
 ```
-make docker DOCKER_CONF_DIR=docker-conf-external
+make docker-image DOCKER_CONF_DIR=docker-conf-external
+```
+
+## Testing 
+
+```
+make docker-image-test
+```
+
+## Uploading to Quay.io 
+
+```
+make docker-image-push
 ```
 
 
