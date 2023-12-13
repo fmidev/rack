@@ -76,11 +76,17 @@ After building an image, it is good to test that `rack` command is found and wor
 make docker-image-test
 ```
 
+One can also do this directly, issuing commands like:
+```
+docker run -t "rack_ubuntu20:7.79" rack --version
+```
+
 ## Uploading to Quay.io 
 
 (Currently, this part is FMI specific and used only by the developers.)
 ```
 make docker-image-push
 ```
+
 
 
