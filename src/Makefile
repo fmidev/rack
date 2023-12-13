@@ -8,7 +8,8 @@ USE_GEOTIFF=NO
 VERSION=$(shell fgrep __RACK_VERSION__ main/rack.h | cut -d' ' -f 3 | tr -d '"' )
 
 help:
-	@ X="`cat Makefile Makefile-doxygen | grep '^[a-z\-\.]\+:' | cut -d' ' -f1 | tr ':' '|' `"; echo make \[ $$X \]
+#	@ X="`cat Makefile Makefile-doxygen | grep '^[a-z.-]\+:' | cut -d' ' -f1 | tr ':' '|' `" && echo make \[ $$X \]
+	@ X="`cat Makefile Makefile-doxygen | grep '^[a-z.-]\+:' | cut -d':' -f1 | tr ':' '|' `" && echo make \[ $$X \]
 
 
 release: #unpack
@@ -79,7 +80,7 @@ ${DOCKER_CONF_DIR}/config.json ${DOCKER_CONF_DIR}/apt-proxy.conf: ${DOCKER_CONF_
 	@ test "$${http_proxy}" && test "$${https_proxy}" && cat docker-conf/$(@F).tpl | envsubst > $@ || echo ok
 
 
-docker: Dockerfile.${BASE_IMAGE} ${DOCKER_CONF_DIR}/config.json  ${DOCKER_CONF_DIR}/apt-proxy.conf
+docker-image: Dockerfile.${BASE_IMAGE} ${DOCKER_CONF_DIR}/config.json  ${DOCKER_CONF_DIR}/apt-proxy.conf
 # Note: config precedes 'build' cmd
 	@ echo "Note: Docker conf files:"
 	@ file ${DOCKER_CONF_DIR}/apt-proxy.conf
@@ -90,6 +91,15 @@ docker: Dockerfile.${BASE_IMAGE} ${DOCKER_CONF_DIR}/config.json  ${DOCKER_CONF_D
 	docker --config ${DOCKER_CONF_DIR}  build . --build-arg CONF_DIR=${DOCKER_CONF_DIR} --file $<  --tag rack_${BASE_IMAGE}:${VERSION}
 #docker build . --file $<  --tag rack$(shell Release/rack --version | head -1 | tr -d '[:space:]')_${BASE_IMAGE}
 
+docker-image-test: # docker
+	docker image history "rack_${BASE_IMAGE}:${VERSION}" || make docker
+	docker run -t "rack_${BASE_IMAGE}:${VERSION}" rack --version
+
+
+docker-image-push: docker
+	docker tag "rack_${BASE_IMAGE}:${VERSION}" "quay.io/fmi/rack:${VERSION}"
+	docker login quay.io
+	docker push "quay.io/fmi/rack:${VERSION}"
 
 
 clean:

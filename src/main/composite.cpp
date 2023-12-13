@@ -695,7 +695,7 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 
 	}
-	mout.warn("Crop image now ", cropImage);
+	mout.debug("Crop image now ", cropImage, " - usually empty?");
 
 
 	// cropArea check implemented in Accumulator
