@@ -1,20 +1,33 @@
 
 
 
-# Automated build of an image on a server
+# Server-side build 
+
+Automated build of an image on a server
 
 Required settings:
 ```
 
 ```
  
-# Building an image on command line
+#
+
+This section explains how a Docker image is build on command line.
+
+## Basic build commands
 
 An image is constructed by entering `rack/src` directory and issuing:
 
 ```
 make docker-image
 ```
+
+Essentially, a command like this one will be run:
+```
+docker --config docker-conf-<hostname>  build . --build-arg CONF_DIR=docker-conf-<hostname> --file Dockerfile.ubuntu20  --tag rack_ubuntu20:7.79
+```
+
+
 
 ## Proxy settings
 
@@ -49,12 +62,14 @@ make docker-image DOCKER_CONF_DIR=docker-conf-external
 
 ## Testing 
 
+After building an image, it is good to test that `rack` command is found and works, at least responses to basic commands.
 ```
 make docker-image-test
 ```
 
 ## Uploading to Quay.io 
 
+(Currently, this part is FMI specific and used only by the developers.)
 ```
 make docker-image-push
 ```
