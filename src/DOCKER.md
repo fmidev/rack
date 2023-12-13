@@ -7,13 +7,13 @@ Automated build of an image on a server
 
 Required settings:
 
-| Dockerfile Location | Context Location | Branches/Tags  | Pull Robot |
-| ------------------- | ---------------- | -------------  | ---------- |
-| /src/Dockerfile     | `/src`           | `heads/main`   | (None)     |
+| Dockerfile Location | Context Location | Branches/Tags  | Pull Robot | Tagging options   |
+| ------------------- | ---------------- | -------------  | ---------- | ----------------- |
+| /src/Dockerfile     | `/src`           | `heads/main`   | (None)     | Branch/tag name |
+|                     |                  |                |            | `latest` if default branch |
 
-Tagging options:
-- Branch/tag name
-- `latest` if default branch
+
+
 - ${commit_info.short_sha} 
 
 
