@@ -7,16 +7,13 @@ Automated build of an image on a server
 
 Required settings:
 
-| A | B |
-| - | - |
-| a | b |
+| Dockerfile Location | Context Location | Branches/Tags              | Pull Robot |
+| `/src/Dockerfile`   | `/src`           | `heads/develop|heads/main` | (None) 	   |
 
-Trigger Name 	Dockerfile Location 	Context Location 	Branches/Tags 	Pull Robot 	Tagging Options 	
-Push to GitHub repository fmidev/rack 	/src/Dockerfile 	/src 	heads/develop|heads/main 	(None) 	
-
-    Branch/tag name
-    latest if default branch
-    ${commit_info.short_sha} 
+Tagging options:
+- Branch/tag name
+- `latest` if default branch
+- ${commit_info.short_sha} 
 
 
  
