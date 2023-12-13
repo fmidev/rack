@@ -8,8 +8,8 @@ Automated build of an image on a server
 Required settings:
 
 | Dockerfile Location | Context Location | Branches/Tags  | Pull Robot |
-| ------------------- | ---------------- | -------------  | ---- ----- |
-| `/src/Dockerfile`   | `/src`           | `heads/main`   | (None)     |
+| ------------------- | ---------------- | -------------  | ---------- |
+| /src/Dockerfile     | `/src`           | `heads/main`   | (None)     |
 
 Tagging options:
 - Branch/tag name
