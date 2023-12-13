@@ -10,12 +10,12 @@ Required settings:
 | Dockerfile Location | Context Location | Branches/Tags  | Pull Robot |
 | ------------------- | ---------------- | -------------  | ---------- |
 | /src/Dockerfile     | `/src`           | `heads/main`   | (None)     |
-|                     |                  |                |            |
+
 
 Tagging options:
 - Branch/tag name
 - `latest` if default branch
-- ${commit_info.short_sha} 
+- `${commit_info.short_sha}`
 
  
 # Local build
