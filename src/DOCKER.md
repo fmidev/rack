@@ -6,11 +6,20 @@
 Automated build of an image on a server
 
 Required settings:
-```
 
-```
+|| A || B ||
+|  a |  b |
+
+Trigger Name 	Dockerfile Location 	Context Location 	Branches/Tags 	Pull Robot 	Tagging Options 	
+Push to GitHub repository fmidev/rack 	/src/Dockerfile 	/src 	heads/develop|heads/main 	(None) 	
+
+    Branch/tag name
+    latest if default branch
+    ${commit_info.short_sha} 
+
+
  
-#
+# Local build
 
 This section explains how a Docker image is build on command line.
 
