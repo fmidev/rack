@@ -92,7 +92,7 @@ docker-image: Dockerfile.${BASE_IMAGE} ${DOCKER_CONF_DIR}/config.json  ${DOCKER_
 #docker build . --file $<  --tag rack$(shell Release/rack --version | head -1 | tr -d '[:space:]')_${BASE_IMAGE}
 
 docker-image-test: # docker
-	docker image history "rack_${BASE_IMAGE}:${VERSION}" || make docker
+	docker image history "rack_${BASE_IMAGE}:${VERSION}" || make docker-image
 	docker run -t "rack_${BASE_IMAGE}:${VERSION}" rack --version
 
 
