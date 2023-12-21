@@ -35,7 +35,7 @@ INSTALL_SCRIPTS=${INSTALL_SCRIPTS^}
 if [ "${INSTALL_SCRIPTS}" == 'Y' ]; then
     for i in ../scripts/rack*.sh; do
 	TARGET=${i##*/}
-	cp -vu $i ${TARGET%.*}
+	cp -vu $i ${prefix}/bin/${TARGET%.*}
     done
 fi
 
