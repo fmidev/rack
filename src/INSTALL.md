@@ -54,12 +54,10 @@ After donwloading the code, move to rack/rack/ directory and:
    
 2. Run `./build.sh`  
    The command unzips make.zip to Release/ directory and calls 'make all' there. 
+   If you encounter compilation problems after installing several versions,
+   issue `./build.sh clean` and rerun `./build.sh`.
 
-After successful build, the script will prompt for a directory for installing
-the binary.
-
-If you encounter compilation problems after installing several versions,
-issue `./build.sh clean` and rerun `./build.sh`.
+3. Run `./install.sh`  
 
 
 If hdf5 or sz libraries raise errors upon invocation of Rack, ensure that
