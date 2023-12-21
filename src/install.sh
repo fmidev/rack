@@ -15,12 +15,27 @@ else
 fi
 
 prefix=${prefix:-"/usr/local"}
-echo "# Using prefix=$prefix"
+#echo "# Using prefix=$prefix"
+echo "# Copying executable 'rack' to ${prefix}/bin/"
 
 mkdir -v --parents ${prefix}/bin
 cp -vi ./rack ${prefix}/bin/${RACK_LATEST} && pushd ${prefix}/bin; ln -s ${RACK_LATEST} rack || ln -si ${RACK_LATEST} rack; popd
 
 if [ $? != 0 ]; then
+    echo "# Copy failed"
+    ls -ld ${prefix}/bin/
     exit 1
+fi
+
+INSTALL_SCRIPTS='Y'
+read -e  -i "$INSTALL_SCRIPTS" -p "  Install rack scripts as well? " INSTALL_SCRIPTS
+
+INSTALL_SCRIPTS=${INSTALL_SCRIPTS^}
+
+if [ "${INSTALL_SCRIPTS}" == 'Y' ]; then
+    for i in ../scripts/rack*.sh; do
+	TARGET=${i##*/}
+	cp -vu $i ${TARGET%.*}
+    done
 fi
 

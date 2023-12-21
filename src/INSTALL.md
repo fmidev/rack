@@ -58,7 +58,8 @@ After donwloading the code, move to rack/rack/ directory and:
    issue `./build.sh clean` and rerun `./build.sh`.
 
 3. Run `./install.sh`  
-
+   In success, the script will also prompt for copying utility scripts in
+   the same target directory
 
 If hdf5 or sz libraries raise errors upon invocation of Rack, ensure that
 both libraries are available, for example with
@@ -66,7 +67,6 @@ both libraries are available, for example with
 ```
   export LD_RUN_PATH=$LD_RUN_PATH:/var/opt/lib
 ```
-
 
 
 Note on Eclipse settings
