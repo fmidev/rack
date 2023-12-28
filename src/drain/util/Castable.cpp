@@ -87,7 +87,7 @@ const char * Castable::getCharArray() const {
 	}
 }
 
-
+// Deprecating. Use Sprinter only
 std::ostream & Castable::toStream(std::ostream & ostr, char separator) const {
 
 	const std::type_info & t = caster.getType();
@@ -135,7 +135,9 @@ std::ostream & Castable::toStream(std::ostream & ostr, char separator) const {
 
 }
 
+// Deprecating. Use Sprinter only
 std::string Castable::toStr() const {
+
 
 	if (isStlString()){
 		return *(const std::string *)caster.ptr;
@@ -152,41 +154,7 @@ std::string Castable::toStr() const {
 	//return caster.get<std::string>(ptr);
 }
 
-/*
-void Castable::toJSONold(std::ostream & ostr, char fill, int verbosity) const {
 
-	ostr << '{' << fill << " \"value\": ";
-
-	valueToJSONold(ostr);
-
-	if (verbosity > 1){
-		ostr << ',' << fill << " \"type\": \"";
-		if (isCharArrayString())
-			ostr << '$';
-		else
-			ostr << drain::Type::getTypeChar(getType());
-		// OLD: if (getElementCount() != 1)		ostr << '[' << getElementCount() << ']';
-		ostr << "\"";
-
-		//if (getElementCount() != 1) || (verbosity > 1)){
-		ostr << ',' << fill << " \"size\": "  << getElementCount();
-		//}
-	}
-
-	if (verbosity > 2){
-		ostr << ',' << fill << " \"inputSeparator\": \""  << inputSeparator  << "\"";
-		ostr << ',' << fill << " \"outputSeparator\": \"" << outputSeparator << "\"";
-	}
-
-	ostr << fill << '}' << fill;
-}
-
-
-std::ostream & Castable::valueToJSONold(std::ostream & ostr) const {
-
-	return Sprinter::toStream(ostr, *this, Sprinter::plainLayout);
-}
-*/
 
 void Castable::typeInfo(std::ostream & ostr) const {
 	ostr << '[';
@@ -202,9 +170,15 @@ void Castable::typeInfo(std::ostream & ostr) const {
 
 
 void Castable::info(std::ostream & ostr) const {
-	ostr << *this << " (";
-	if (isString())
-		ostr << "string [" << (getElementCount()-1) << "+1]";
+	Sprinter::toStream(ostr, *this, Sprinter::jsonLayout);
+	// ostr << *this << " (";
+	ostr << " (";
+	if (isCharArrayString()){
+		ostr << "char[" << (getElementCount()-1) << "+1]";
+	}
+	else if (isCharArrayString()){
+		ostr << "std::string";
+	}
 	else {
 		ostr << drain::Type::call<drain::simpleName>(getType());
 		if (getElementCount() > 1)
@@ -212,16 +186,6 @@ void Castable::info(std::ostream & ostr) const {
 	}
 	ostr << ")";
 
-	//debug(ostr);
-	/*
-	valueToJSON(ostr);
-	ostr << ' ' << Type::call<complexName>(getType()); // << '(' << (getElementSize()*8) << ')';
-	size_t n = getElementCount();
-	if (n > 1)
-		ostr << " * " << n;
-	//ostr << '\n';
-
-	*/
 }
 
 
@@ -231,6 +195,7 @@ Castable & Castable::assignCastable(const Castable &c){
 	// If this ie. destination is a string, convert input.
 	if (c.getType() == typeid(void)){
 		// std::cerr << __FUNCTION__ << ": NEW: assign 'unset'\n";
+		// CHECK: this may be wrong for ReferenceVar:
 		reset();
 	}
 	else if (isString()){
@@ -300,29 +265,8 @@ void Castable::assignString(const std::string &s){
 
 }
 
-/*
-template <>
-std::ostream & JSONwriter::toStream(const drain::Castable & v, std::ostream &ostr, unsigned short indentation){
 
-	if (v.isCharArrayString()){
-		return JSONwriter::toStream(v.getCharArray(), ostr, indentation);
-	}
-	else if (v.isStlString()){
-		return JSONwriter::toStream(v.toStr(), ostr, indentation);
-	}
-	else if (v.getElementCount() > 1) {
-		ostr << '[';
-		v.toStream(ostr, ',');
-		ostr << ']';
-		return ostr; // JSONwriter::sequenceToStream(v, ostr);
-	}
-	else
-		return JSONwriter::plainToStream(v, ostr);
-
-}
-*/
-
-/// "Friend class" template implementation
+/// Output implementation
 template <>
 std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Castable & v, const SprinterLayout & layout) {
 

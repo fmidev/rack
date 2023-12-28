@@ -85,13 +85,17 @@ public:
 		caster.unsetType();
 	};
 
-	/// Copy constructor: copies the layout and thepointer to the target.
+	/// Copy constructor: copies the layout and the pointer to the target.
+	inline
 	Castable(const Castable &c) : fillArray(false), elementCount(0) {
 		copyFormat(c);
 		setPtr(c.caster.ptr, c.caster.getType());
 	}
 
 	// Obsolete?
+	/**
+	 *
+	 */
 	template <class F>
 	Castable(F *p) : fillArray(false), elementCount(0) {
 		setSeparator();
@@ -115,7 +119,7 @@ public:
 		return caster.getType();
 	};
 
-	/// Returns true, if type is \c char and outputSepator is the null char.
+	/// Returns true, if type is C char array and outputSepator is the null char.
 	inline
 	bool isCharArrayString() const {
 		return ((caster.getType() == typeid(char)) && (outputSeparator=='\0'));  // "close enough" guess
@@ -127,7 +131,7 @@ public:
 		return (caster.getType() == typeid(std::string));
 	};
 
-	/// Returns true, if type is std::string .
+	/// Returns true, if type is C char array or std::string .
 	inline
 	bool isString() const {
 		return (isCharArrayString() || isStlString());
@@ -185,10 +189,13 @@ public:
 		return *this;
 	}
 
-	/// Clears std::strings or sets numeric values to zero. Does not change type. // or resize.
+	/// Clears strings, or for scalars and arrays, sets all the values to zero. Does not change type.
 	// Has been protected, even private. Why? Essentially setting a value.
 	void clear();
 
+	/** Unset the type (set it to \c void ) and clear @elementCount .
+	 *
+	 */
 	inline
 	void reset(){
 		caster.unsetType();
@@ -202,22 +209,32 @@ public:
 		return *this;
 	}
 
-
+	/** Obligatory. Many values will be read from command line or text files.
+	 *
+	 */
 	inline
 	Castable & operator=(const char *c){
-	//void assign(const char *c){
 		assignString(c);
+		return *this;
+	}
+
+
+	template <class T>
+	Castable & operator=(const T *x){
+		throw std::runtime_error("Castable & operator=(const T *x): unsupported");
 		return *this;
 	}
 
 	/// Copies the value referred to by Castable. Notice that if type is unset (void), no operation is performed.
 
+	/** Seems to be obligatory.
+	 */
 	inline
 	Castable &operator=(const Castable &c){
-	// void assign(const Castable &c){
 		assignCastable(c);
 		return *this;
 	}
+
 
 	/*
 	inline
@@ -233,18 +250,30 @@ public:
 
 	// Special handler for string assignment
 	inline
-	//Castable & operator=(const std::string &c){
 	void assign(const std::string &c){
 		assignString(c);
-		// return *this;
 	}
 
 
+	inline
+	void assign(const char *c){
+		assignString(c);
+	}
+
+	// "NEW"
+	inline
+	void assign(const Castable &c){
+		assignCastable(c);
+	}
 
 	/// Copies an arbitrary base type or std::string value.
+	/**
+	 *
+	 */
 	template <class T>
-	// Castable &operator=(const T &x){
 	void assign(const T &x){
+
+
 
 		// std::cout << "assign " << x << " -> " << Type::getTypeChar(getType()) << ',' << getElementCount() << '\n';
 		suggestType(typeid(T));

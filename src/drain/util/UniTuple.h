@@ -40,8 +40,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 //#include <set>
 
-// #include "Sprinter.h"
-
+// #include "Sprinter.h": cannot use Sprinter, as long as SprinterLayouit uses UniTuple...
+#include "TypeUtils.h"
 
 namespace drain {
 
@@ -383,12 +383,31 @@ private:
 
 };
 
+
+template <class T, size_t N>
+struct TypeName<UniTuple<T,N> > {
+	// static const std::string name = (const std::string &)drain::StringBuilder("UniTuple<", drain::TypeName<T>::get(), ',', N, ">");
+    // static const char* get(){ return "UniTuple<>"; }
+	static const char* get(){
+		static std::string name;
+		if (name.empty())
+			name = drain::StringBuilder("UniTuple<", drain::TypeName<T>::get(), ',', N, ">");
+		return name.c_str();
+	}
+};
+
 template <class T, size_t N>
 std::ostream & operator<<(std::ostream & ostr, const UniTuple<T,N> & tuple){
 	return tuple.toStream(ostr);
 }
 
-
+/*
+ // NOTE: cannot use Sprinter, as long as SprinterLayout uses UniTuple...
+template <class T, size_t N>
+std::ostream & Sprinter::toStream(std::ostream & ostr, const  UniTuple<T,N> & tuple, const SprinterLayout & layout) {
+	return Sprinter::sequenceToStream(ostr, tuple, layout);
+}
+*/
 
 }  // drain
 

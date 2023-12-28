@@ -157,6 +157,7 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & v
 	return ostr;
 }
 
+/*
 void FlexVariable::info(std::ostream & ostr) const {
 	Castable::info(ostr);
 	if (isReference())
@@ -164,6 +165,7 @@ void FlexVariable::info(std::ostream & ostr) const {
 	else
 		ostr << " <own>";
 }
+*/
 
 
 

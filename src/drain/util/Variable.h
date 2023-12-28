@@ -38,19 +38,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 
 #include "CastableIterator.h"
-#include "Referencer.h"
+//#include "Referencer.h"
 #include "Sprinter.h"
 #include "String.h"
 #include "UniTuple.h" // "Friend class"
-//#include "JSONwriter.h"
 
 
-// // // // using namespace stda;
 
 namespace drain {
 
-class Variable;
-class Referencer;
+class Referencer; // deprecating
+class FlexibleVariable;
+//class ReferenceVariable;
 
 //std::ostream & operator<<(std::ostream &ostr, const Variable &x);
 
@@ -129,6 +128,8 @@ public:
 	inline
 	Variable(const Castable & c) {
 		reset();
+		//this->outputSeparator = c.outputSeparator;
+		//this->inputSeparator  = c.inputSeparator;
 		assignCastable(c);
 	};
 
@@ -219,18 +220,33 @@ public:
 		return *this;
 	}
 
-
+	/*
 	inline
-	Variable &operator=(const Referencer &r){
-		assignCastable(r);
+	Variable &operator=(const ReferenceVariable &v){
+		assignCastable(v); // (const Castable &)
 		return *this;
 	}
+	*/
+
+	/*
+	inline
+	Variable &operator=(const FlexibleVariable &v){
+		assignCastable((const Castable &)v);
+		return *this;
+	}
+	*/
+
+	/*
+	inline
+	Variable &operator=(const Referencer &r){
+		assignCastable((const Castable &)r);
+		return *this;
+	}
+	*/
 
 	template <class T, size_t N>
 	inline
 	Variable &operator=(const UniTuple<T,N> & unituple){
-		// reset();
-		//setType(typeid(T));
 		assignContainer(unituple);
 		return *this;
 	}
@@ -351,6 +367,10 @@ protected:
 
 };
 
+template <>
+struct TypeName<Variable> {
+    static const char* get(){ return "Variable"; }
+};
 
 /*
 template <>
@@ -363,152 +383,6 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & x
 template <>
 std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Castable & v, const SprinterLayout & layout);
 
-
-
-/// FlexVariable combines behaviour of Variable and Referencer: it is like a Variable that can be also relinked to an external target.
-class FlexVariable : public Variable {
-
-public:
-
-	template <class T>
-	inline
-	FlexVariable & link(T &p){
-		reset();
-		setPtr(p);
-		return *this;
-	}
-
-	/*
-	inline
-	void relink(Castable & c){
-		Castable::relink(c);
-	}
-	*/
-
-	template <class T>
-	inline
-	FlexVariable & operator=(const T &x){
-		if (isReference())
-			Castable::operator=(x);
-		else
-			Variable::operator=(x);
-		return *this;
-	}
-
-	/// Tries to change type with requestType. Throws exception if not possible.
-	/**
-	 *  \param t - new type
-	 *
-	 *  \see requestType()
-	 *  \see Variable::suggestType()
-	 */
-	virtual inline
-	void setType(const std::type_info & t){
-
-		if (!requestType(t)){
-			throw std::runtime_error(std::string("FlexVariable::") + __FUNCTION__ + ": illegal for referenced variable");
-		}
-
-	}
-
-
-
-	/// Changes type, if possible. See also suggestType()
-	/**
-	 *  \param t - new type
-	 *  \return - true if requested type obtained
-	 *
-	 *  \see Castable::suggestType()
-	 */
-	virtual inline
-	bool requestType(const std::type_info & t){
-
-		if (!isReference()){ // is in Variable mode
-			Variable::setType(t);
-			return true;
-		}
-		else { // is in Referencer mode (points to external array)
-			return (getType() == t);
-		}
-	}
-
-	/// Extends the vector to include n elements of the current type.
-	virtual inline
-	bool setSize(size_t elementCount){
-		if (!isReference()){ // is in Variable mode
-			updateSize(elementCount);
-			return true;
-		}
-		else {
-			if (getType() == typeid(drain::Variable)){
-				std::cerr << "FlexVariable::" << __FUNCTION__ << " warning: resize for linked Variable not yet implemented " << std::endl;
-			}
-			if (elementCount != getElementCount()){
-				throw std::runtime_error(std::string("FlexVariable::") + __FUNCTION__ + ": illegal for referenced variable");
-				// = return false;
-			}
-			return true;
-		}
-	}
-
-	virtual
-	void info(std::ostream & ostr = std::cout) const;
-
-protected:
-
-	/// Returns true, if the internal pointer directs to external data object, ie. internal data vector is not used.
-	/**
-	 *  (Derived classes, like FlexVariable, may alternatively point to external data array.)
-	 *
-	 *  \return - true, if the internal pointer directs to external data object
-	 *
-	 */
-	inline
-	bool isReference() const {
-		return (caster.ptr != (void *) &data[0]);
-	}
-
-	/// Request to change the array size. For Castable (and Reference) does nothing and returns false.
-	/**
-	 *
-	 */
-	virtual inline
-	bool requestSize(size_t elementCount){
-		if (isReference()){
-			return Castable::requestSize(elementCount);
-		}
-		else {
-			return Variable::requestSize(elementCount);
-		}
-	}
-
-
-};
-
-
-template <>
-inline
-FlexVariable & FlexVariable::link<Castable>(Castable &c){
-	std::cerr << "Referencer::" << __FUNCTION__ << "(Castable): discouraged, use relink(Castable &) " << std::endl;
-	Castable::relink(c);
-	return *this;
-}
-
-template <>
-inline
-FlexVariable & FlexVariable::link<Variable>(Variable &c){
-	std::cerr << "Referencer::" << __FUNCTION__ << "(Castable): discouraged, use relink(Castable &) " << std::endl;
-	Castable::relink(c);
-	return *this;
-}
-
-template <>
-inline
-FlexVariable & FlexVariable::link<Referencer>(Referencer &r){
-	//std::cerr << "Referencer::" << __FUNCTION__ << "(Referencer): deprecating, use relink(Referencer &) " << std::endl;
-	Castable::relink(r);
-	return *this;
-}
 
 
 

@@ -31,13 +31,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <typeinfo>
 #include <stdexcept>
 #include <iostream>
-//#include <vector>
-//#include <string>
 
-#include "Castable.h"
 
-#ifndef DRAIN_REFERENCE
-#define DRAIN_REFERENCE
+//#include "Castable.h"
+#include "Variable.h"
+#include "Sprinter.h"
+
+
+#ifndef DRAIN_REFERENCE_VARIABLE_NEW
+#define DRAIN_REFERENCE_VARIABLE_NEW
 
 // // using namespace std;
 
@@ -61,49 +63,68 @@ namespace drain {
 
  */
 
-class Variable;
+//class Variable;
+
+// TODO: finally, rename to Referencer
 
 /// Extends Castable's interface with link()
-class Referencer : public Castable {
+/**
+ *   \tparam F Castable or Variable
+ */
+template <class T>
+class ReferenceBase : public T {
 
 public:
 
+//	typedef T var_base_t; // needed
+
+protected:
+
 	/// Default constructor.
-	Referencer(){};
+	ReferenceBase(){};
 
 	/// Copy constructor.
-	Referencer(const Referencer & r) : Castable((const Castable &)r) {
+	/**
+	 *  If T is Castable, pointer is copied.
+	 *  If T is Variable, data and type are copied.
+	 *
+	 */
+	ReferenceBase(const ReferenceBase<T> & r) : T(r) { // (const T &)r
 	};
 
-	// Needed?
-	Referencer(Referencer & r) : Castable((Castable &)r) {
+	/*
+	Reference(Reference<T> & r) : Castable((Castable &)r) {
 	};
 
-	template <class T>
+	template <class F>
 	inline
-	Referencer(T *p) : Castable(p){}
+	Reference(F *p) : Castable(p){}
 
 
-	template <class T>
+	template <class F>
 	inline
-	Referencer(T & x) : Castable(x){}
+	Reference(F & x) : Castable(x){}
+	*/
 
 	virtual inline
-	~Referencer(){};
+	~ReferenceBase(){};
+
+public:
+
 
 	/// Set pointer to &p.
 	/**
-	 *  \tparam T - target object (if Castable or Referencer redirected to relink() )
+	 *  \tparam T - target object (if Castable or Reference redirected to relink() )
 	 */
 	template <class F>
 	inline
-	Referencer & link(F &p){
+	ReferenceBase<T> & link(F &p){
 		try {
-			setPtr(p);
+			this->setPtr(p);
 		}
 		catch (const std::exception & e){
-			//std::cerr << "Referencer & link: unsupported type?" << std::endl;
-			//throw e;
+			// std::cerr << "Reference & link: unsupported type?" << std::endl;
+			// throw e;
 			throw DrainException(__FILE__, ':', __FUNCTION__,": unsupported type: ", typeid(F).name());
 		}
 		return *this;
@@ -111,111 +132,155 @@ public:
 
 	/// Set pointer to &p.
 	/**
-	 *  \tparam T - target object (if Castable or Referencer redirected to relink() )
+	 *  \tparam T - target object (if Castable or Reference redirected to relink() )
 	 */
 	template <class F>
 	inline
-	Referencer & link(F *p){
-		setPtr(p);
+	ReferenceBase & link(F *p){
+		this->setPtr(p);
 		return *this;
 	}
 
-	/// NEW. Set pointer to p, of given type.
+	/// Set pointer to p, of given type.
 	inline
-	Referencer & link(void *p, const std::type_info &t, size_t count=1){
-		setPtr(p, t);
-		elementCount = count;
-		return *this;
-	}
-
-
-	/// Explicit linking for Castable class(es).
-	/**
-	 *   Essentially, makes Castable::relink visible.
-	 */
-	/* 2022/06/27
-	inline
-	Referencer & relink(Castable & c){
-		Castable::relink(c);
-		return *this;
-	}
-	*/
-
-	template <class T>
-	inline
-	Referencer & operator=(const T &x){
-		//std::cout << "Yleis\n";
-		Castable::operator=(x);
+	ReferenceBase & link(void *p, const std::type_info &t, size_t count=1){
+		this->setPtr(p, t);
+		this->elementCount = count;
 		return *this;
 	}
 
 	inline
-	Referencer & operator=(const Castable &x){
-		//std::cout << "Kasta\n";
-		Castable::operator=(x);
+	ReferenceBase & link(void *p){
+		throw std::runtime_error(std::string("ReferenceBase::") + __FUNCTION__ + ": void type unsupported");
 		return *this;
 	}
 
-	/*
+
+	// Copied
 	inline
-	Referencer & operator=(const Variable &x){
-		assignCastable(x);
-		// Castable::operator=(x);
+	ReferenceBase & link(Castable &c){
+		this->relink(c);
 		return *this;
 	}
-	*/
 
-
+	// Copied
+	template <class F>
+	inline
+	ReferenceBase & link(ReferenceBase<F> &r){
+		this->relink(r);
+		return *this;
+	}
 
 
 };
 
 template <>
-inline
-Referencer & Referencer::link<void>(void *p){
-	throw std::runtime_error(std::string("Referencer::") + __FUNCTION__ + ": void type unsupported");
-	return *this;
-}
+struct TypeName<ReferenceBase<Castable> > {
+    static const char* get(){ return "ReferenceBase<Castable>"; }
+};
 
 template <>
-inline
-Referencer & Referencer::link<Castable>(Castable &c){
-	// Warning removed, because link(T) is handy for ReferenceMap::append()
-	// std::cerr << "Referencer::" << __FUNCTION__ << "(): deprecating, use relink() for this type" << std::endl;
-	relink(c);
-	return *this;
-}
+struct TypeName<ReferenceBase<Variable> > {
+    static const char* get(){ return "ReferenceBase<Variable>"; }
+};
 
+
+class Referencer : public ReferenceBase<Castable> {
+
+public:
+
+	inline
+	Referencer(){
+	}
+
+	inline
+	Referencer(const Referencer & v){
+		// Note: neither ptr nor type is set.
+	}
+
+	/// Copy pointer and type of the referenced variable.
+	/**
+	 *  This is the "parasite mode".
+	 *
+	 */
+	inline
+	Referencer(Referencer & v){
+		setPtr(v.getPtr(), v.getType());
+	}
+
+	template <class T>
+	inline
+	Referencer(T *p){
+		setPtr(p);
+	}
+
+
+	template <class T>
+	inline
+	Referencer(T & x){
+		setPtr(x);
+	}
+
+	/// Default assignment operator - aimed for basic types and std::string.
+	/**
+	 *  This is the idea of the whole thing.
+	 *
+	 */
+	template <class T>
+	inline
+	Referencer & operator=(const T &x){
+		assign(x);
+		return *this;
+	}
+
+	/// Assignment of the same class. [Obligatory]
+	inline
+	Referencer & operator=(const Referencer &x){
+		assignCastable(x);
+		return *this;
+	}
+
+	/// [Obligatory]
+	/**
+	 *  Notice:
+	 */
+	template <class T>
+	inline
+	Referencer & operator=(std::initializer_list<T> l){
+		//std::cerr << __FILE__ << ": Check " << __FUNCTION__ << '\n';
+		assignContainer(l, false);
+		return *this;
+	}
+
+	/// Assignment of C strings. [Obligatory]
+	/**
+	 *   STL strings will be handled by the default operator operator=(const T &x) .
+	 */
+	inline
+	Referencer & operator=(const char *x){
+		assign(x);
+		return *this;
+	}
+
+};
+
+//typedef ReferenceVariable Referencer;
+
+/// drain:: reflection support.
+template <>
+struct TypeName<Referencer> {
+    static const char* get(){ return "Referencer"; }
+};
+
+/// drain:: default implementation for output formatting
 template <>
 inline
-Referencer & Referencer::link<Referencer>(Referencer &r){
-	// Warning removed, because link(T) is handy for ReferenceMap::append()
-	// std::cerr << "Referencer::" << __FUNCTION__ << "(): deprecating, use relink() for this type" << std::endl;
-	relink(r);
-	return *this;
-}
-
-/// "Friend class" template implementation
-/* OBSOLETE
-template <>
-inline
-std::ostream & JSONwriter::toStream(const Referencer & v, std::ostream &ostr, unsigned short indentation){
-	return JSONwriter::toStream((const Castable &) v, ostr, indentation);
-}
-*/
-
-
-/// "Friend class" template implementation
-template <>
-inline
-std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Referencer & x, const SprinterLayout & layout) {
-	return Sprinter::toStream(ostr, (const drain::Castable &)x, layout);
-}
+std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Referencer & v, const SprinterLayout & layout){
+	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
+};
 
 
 }  // namespace drain
 
 
 #endif
-
-// Drain

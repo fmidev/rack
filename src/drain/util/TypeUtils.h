@@ -136,6 +136,11 @@ struct TypeName<long> {
     static const char* get(){ return "long"; }
 };
 
+template <>
+struct TypeName<unsigned long> {
+    static const char* get(){ return "unsigned long"; }
+};
+
 
 template <>
 struct TypeName<float> {
@@ -160,6 +165,39 @@ struct TypeName<const char *> {
 template <>
 struct TypeName<std::string> {
     static const char* get(){ return "string"; }
+};
+
+
+template <typename T>
+struct TypeName<std::initializer_list<T> > {
+	static const char* get(){
+		static std::string name;
+		if (name.empty())
+			name = drain::StringBuilder("std::initializer_list<", drain::TypeName<T>::get(), ">");
+		return name.c_str();
+	}
+};
+
+/*
+template <class T, size_t N>
+struct TypeName<UniTuple<T,N> > {
+	static const char* get(){
+		static std::string name;
+		if (name.empty())
+			name = drain::StringBuilder("UniTuple<", drain::TypeName<T>::get(), ',', N, ">");
+		return name.c_str();
+	}
+};
+*/
+
+template <typename T>
+struct TypeName<std::vector<T> > {
+	static const char* get(){
+		static std::string name;
+		if (name.empty())
+			name = drain::StringBuilder("std::vector<", drain::TypeName<T>::get(), ">");
+		return name.c_str();
+	}
 };
 
 

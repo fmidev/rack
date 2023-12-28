@@ -450,6 +450,14 @@ public:
 
 	// std::ostream & mapToStream(std::ostream & ostr, const T & x){
 
+	/// New (experimental)
+	template <class T>
+	static
+	std::ostream & toStream(std::ostream & ostr, const std::initializer_list<T> & x, const SprinterLayout & layout = defaultLayout){
+		//ostr << x.size() << '@';
+		return sequenceToStream(ostr, x, layout.arrayChars, layout);
+	}
+
 	template <class K, class V>
 	static
 	std::ostream & toStream(std::ostream & ostr, const std::pair<K,V> & x, const SprinterLayout & layout = defaultLayout){

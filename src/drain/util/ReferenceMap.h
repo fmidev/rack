@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Log.h"
 #include "Range.h"
 #include "Referencer.h"
+//#include "ReferenceVariable.h"
 #include "String.h"
 #include "SmartMap.h"
 
@@ -77,15 +78,10 @@ public:
 	// Temporary catch for Range
 	template <class F>
 	Referencer & link(const std::string & key, Range<F> &x, const std::string & unit = std::string()){
-        //#pragma deprecating (This will be removed)
 		Logger mout(__FILE__, __FUNCTION__);
 		mout.deprecating(" type drain::Range<>  use .tuple() instead: ", key, '[', unit, ']');
-		// std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << key << '[' << unit << ']' << '\n';
 		return link(key, &x, typeid(F), 2, unit);
-		// return x;
 	}
-
-
 
 	/// Associates a map entry with a variable
 	/**
@@ -105,6 +101,11 @@ public:
 		r.link(x);
 		unitMap[key] = unit;
 		return r;
+	}
+
+	inline
+	Referencer & link(const std::string & key, Referencer &x, const std::string & unit = std::string()){
+		return link(key, x.getPtr(), x.getType(), x.getElementCount(), unit); //.fillArray = item.fillArray;
 	}
 
 
@@ -155,11 +156,14 @@ public:
 	void append(ReferenceMap & rMap, bool replace=true){
 		//std::cerr << __FILE__ << " -> " << __FUNCTION__ <<  std::endl;
 		const std::list<std::string> & keys = rMap.getKeyList();
-		for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
+		//for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
+		for (const std::string & key: keys){
 			//std::cerr << " -> " << *it <<  std::endl;
-			if (replace || !hasKey(*it)){
-				Referencer & srcItem = rMap[*it];
-				Referencer & item = link(*it, srcItem, rMap.unitMap[*it]); //.fillArray = item.fillArray;
+			if (replace || !hasKey(key)){
+				Referencer & srcItem = rMap[key];
+				Referencer & item = link(key, srcItem, rMap.unitMap[key]); //.fillArray = item.fillArray;
+				// Referencer & item = link(key, (const Castable &)srcItem, rMap.unitMap[key]); //.fillArray = item.fillArray;
+				// Referencer & item = link(key, srcItem.getPtr(), srcItem.getType(), srcItem.getElementCount(), rMap.unitMap[key]); //.fillArray = item.fillArray;
 				item.setFill(srcItem.fillArray);
 				item.setInputSeparator(srcItem.getInputSeparator());
 				item.setOutputSeparator(srcItem.getOutputSeparator());

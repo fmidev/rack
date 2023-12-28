@@ -41,7 +41,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "CastableIterator.h"
 //#include "String.h"
 
-#include "Variable.h"
+#include "Variable.h" // <- FlexVariable
+#include "FlexibleVariable.h"
+
 #include "SmartMap.h"
 
 #ifndef DRAIN_SMAP_NAME
@@ -109,20 +111,19 @@ public:
 };
 
 /// A map of FlexVariable:s.
-class FlexVariableMap : public SmartMap<FlexVariable> {
+
+class FlexVariableMap : public SmartMap<FlexibleVariable> {
 
 public:
 
 	inline
-	FlexVariableMap(char separator = '\0') : SmartMap<FlexVariable>(separator){
+	FlexVariableMap(char separator = '\0') : SmartMap<FlexibleVariable>(separator){
 	};
 
 	/// Copies a map like VariableMap does - creates an own entry for every input entry.
-	/**
-	 *   Does not try to create references (links), ie does not copy pointers even if input has referencing entries.
-	 */
+	//Does not try to create references (links), ie does not copy pointers even if input has referencing entries.
 	inline
-	FlexVariableMap(const FlexVariableMap & m) : SmartMap<FlexVariable>(m.separator){ // vField.ordered,
+	FlexVariableMap(const FlexVariableMap & m) : SmartMap<FlexibleVariable>(m.separator){ // vField.ordered,
 		importMap(m);
 	};
 
