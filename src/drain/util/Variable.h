@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <vector>
 #include <map>
 
+#include "Castable.h"
 #include "CastableIterator.h"
 //#include "Referencer.h"
 #include "Sprinter.h"
@@ -47,7 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-class Referencer; // deprecating
+class Referencer;
 class FlexibleVariable;
 //class ReferenceVariable;
 
@@ -215,50 +216,6 @@ public:
 #include "SmartVariable.inc"
 #undef  SmartVariable
 
-	/**
-	 *
-	 *  Semantics: should the type change always?
-	 */
-	/*
-	inline
-	Variable &operator=(const Variable &v){
-		assignCastable(v);
-		return *this;
-	}*/
-
-	/*
-	inline
-	Variable &operator=(const ReferenceVariable &v){
-		assignCastable(v); // (const Castable &)
-		return *this;
-	}
-	*/
-
-	/*
-	inline
-	Variable &operator=(const FlexibleVariable &v){
-		assignCastable((const Castable &)v);
-		return *this;
-	}
-	*/
-
-	/*
-	inline
-	Variable &operator=(const Referencer &r){
-		assignCastable((const Castable &)r);
-		return *this;
-	}
-	*/
-
-	/* Handler by template, below
-	inline
-	Variable &operator=(const Castable &c){
-		assignCastable(c);
-		return *this;
-	}
-	*/
-
-
 
 	/// Extends the array by one element.
 	/*
@@ -357,13 +314,6 @@ struct TypeName<Variable> {
     static const char* get(){ return "Variable"; }
 };
 
-/*
-template <>
-inline
-std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & x, const SprinterLayout & layout){
-	return Sprinter::toStream(ostr, (const drain::Castable &)x, layout);
-}
-*/
 
 template <>
 inline

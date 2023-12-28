@@ -99,14 +99,43 @@ SmartVariable & operator=(const T &x){
 	return *this;
 }
 
-/// Assignment of the same class. [Obligatory]
+/// Assignment of the same class is implemented (in some of the ones) below.
+
+SmartVariable & operator=(const Variable &x);
+
+SmartVariable & operator=(const Referencer &x);
+
+SmartVariable & operator=(const FlexibleVariable &x);
+
+/*
 inline
 SmartVariable & operator=(const SmartVariable &x){
 	assignCastable(x);
 	return *this;
 }
+*/
 
-/// Assignment of the same class. [Obligatory]
+/*
+inline
+SmartVariable & operator=(const Variable &x){
+	assignCastable(x);
+	return *this;
+}
+
+inline
+SmartVariable & operator=(const Referencer &x){
+	assignCastable(x);
+	return *this;
+}
+
+inline
+SmartVariable & operator=(const FlexibleVariable &x){
+	assignCastable(x);
+	return *this;
+}
+*/
+
+/// Assignment of a Castable (exact class - not derived).
 inline
 SmartVariable & operator=(const Castable &x){
 	assignCastable(x);

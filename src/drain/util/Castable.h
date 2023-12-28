@@ -952,8 +952,14 @@ public:
 
 	void assignString(const std::string &s);
 
-	/// Assigns an STL::Sequence, element by element.
-	//  Does not clear()?
+	// NEW 2024
+	template <class T, size_t N>
+	inline
+	void assign(UniTuple<T,N> & tuple){
+		assignContainer(tuple);
+	}
+
+	/// Assigns a STL Sequence, element by element.
 	template <class T>
 	void assignContainer(const T & v, bool append=false) {
 

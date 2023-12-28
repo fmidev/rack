@@ -42,30 +42,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_FLEXIBLE_VARIABLE
 #define DRAIN_FLEXIBLE_VARIABLE
 
-// // using namespace std;
 
 namespace drain {
 
 
-//class Variable;
-
-/// An object that can be automatically casted to and from a base type or std::string. Designed for objects returned by CastableIterator.
-/**
-
-  Saves type info (like Caster) and also a pointer to external object.
-  The object ie. the memory resource is provided by the user.
-  Supports arrays.
+/** Combination of Variable and ReferenceVariable: the target can be internal or external (reference).
 
   \example Castable-example.cpp
-   
+
   \see ReferenceMap
   \see Variable
 
-
- */
-
-/** Combination of Variable and ReferenceVariable: the target can be internal or external (reference).
- *
  */
 class FlexibleVariable : public ReferenceBase<Variable> {
 
@@ -122,82 +109,10 @@ public:
 	~FlexibleVariable(){
 	}
 
-
-
-#define SmartVariable FlexibleVariable
-#include "SmartVariable.inc"
-#undef  SmartVariable
-
-	inline
-	FlexibleVariable & operator=(const Variable &x){
-		assignCastable(x);
-		return *this;
-	}
-
-	/*
-	inline
-	FlexibleVariable & operator=(const FlexibleVariable &x){
-		assignCastable(x);
-		return *this;
-	}
-
-	inline
-	FlexibleVariable & operator=(const Castable &x){
-		assignCastable(x);
-		return *this;
-	}
-
-	inline
-	FlexibleVariable & operator=(const Variable &x){
-		assignCastable(x);
-		return *this;
-	}
-
-	template <class T, size_t N>
-	inline
-	FlexibleVariable &operator=(const UniTuple<T,N> & unituple){
-		assignContainer(unituple);
-		return *this;
-	}
-
-	template <class T>
-	inline
-	FlexibleVariable & operator=(const T &x){
-		assign(x);
-		return *this;
-	}
-
-	inline
-	FlexibleVariable & operator=(const char *x){
-		assign(x);
-		return *this;
-	}
-
-	template<typename T>
-	inline
-	FlexibleVariable & operator=(const std::initializer_list<T> & l){
-		assignContainer(l, false); // don't append
-		return *this;
-	};
-
-*/
-
-	/*
-	inline
-	FlexibleVariable & operator=(const ReferenceVariable &x){
-		assignCastable(x);
-		return *this;
-	}
-	*/
-
-	// Deprecating?
-	/*
-	inline
-	FlexibleVariable & operator=(const Referencer &x){
-		assignCastable(x);
-		return *this;
-	}
-	*/
+	/// Methods shared with Variable, Referencer, FlexibleVariable
+	#define SmartVariable FlexibleVariable
+	#include "SmartVariable.inc"
+	#undef  SmartVariable
 
 
 	/// Tries to change type with requestType. Throws exception if not possible.
@@ -242,12 +157,11 @@ public:
 			return true;
 		}
 		else {
-			if (getType() == typeid(drain::Variable)){
+			if (getType() == typeid(drain::Variable)){ // defunct/deprecated?
 				std::cerr << "FlexibleVariable::" << __FUNCTION__ << " warning: resize for linked Variable not yet implemented " << std::endl;
 			}
 			if (elementCount != getElementCount()){
 				throw std::runtime_error(std::string("FlexibleVariable::") + __FUNCTION__ + ": illegal for referenced variable");
-				// = return false;
 			}
 			return true;
 		}
@@ -280,12 +194,12 @@ protected:
 
 	/// Request to change the array size. For Castable (and Reference) does nothing and returns false.
 	/**
-	 *
+	 *  Important!
 	 */
 	virtual inline
 	bool requestSize(size_t elementCount){
 		if (isReference()){
-			return Castable::requestSize(elementCount);
+			return Castable::requestSize(elementCount); //  "Referencer::requestSize()"
 		}
 		else {
 			return Variable::requestSize(elementCount);

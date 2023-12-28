@@ -221,49 +221,11 @@ public:
 		setPtr(x);
 	}
 
-#define SmartVariable Referencer
-#include "SmartVariable.inc"
-#undef  SmartVariable
+	/// Methods shared with Variable, Referencer, FlexibleVariable
+	#define SmartVariable Referencer
+	#include "SmartVariable.inc"
+	#undef  SmartVariable
 
-	inline
-	Referencer & operator=(const Variable &x){
-		assignCastable(x);
-		return *this;
-	}
-
-	/*
-	/// Default assignment operator - aimed for basic types and std::string.
-	//  This is the idea of the whole thing.
-	template <class T>
-	inline
-	Referencer & operator=(const T &x){
-		assign(x);
-		return *this;
-	}
-
-	/// Assignment of the same class. [Obligatory]
-	inline
-	Referencer & operator=(const Referencer &x){
-		assignCastable(x);
-		return *this;
-	}
-
-	/// [Obligatory]
-	template <class T>
-	inline
-	Referencer & operator=(std::initializer_list<T> l){
-		assignContainer(l, false);
-		return *this;
-	}
-
-	/// Assignment of C strings. [Obligatory]
-	//   STL strings will be handled by the default operator operator=(const T &x) .
-	inline
-	Referencer & operator=(const char *x){
-		assign(x);
-		return *this;
-	}
-	*/
 
 };
 

@@ -30,6 +30,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include "Variable.h"
+#include "Referencer.h"
+#include "FlexibleVariable.h"
+
+/// Methods shared with Variable, Referencer, FlexibleVariable
+#define SmartVariable Variable
+#include "SmartVariable.ipp"
+#undef  SmartVariable
+
+
 
 
 namespace drain {
@@ -56,6 +65,17 @@ public:
 
 };
 
+/*
+Variable & Variable::operator=(const Referencer &x){
+	assignCastable(x);
+	return *this;
+}
+
+Variable & Variable::operator=(const FlexibleVariable &x){
+	assignCastable(x);
+	return *this;
+}
+*/
 
 void Variable::setType(const std::type_info & t){ //, size_t n = 0
 
@@ -128,30 +148,6 @@ void Variable::updateIterators()  {
 	dataEnd = (void *) & data[ getElementCount() * getElementSize() ]; // NOTE (elementCount-1) +1
 
 }
-
-/*
-template <>
-std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & v, const SprinterLayout & layout) {
-
-	if ((v.getElementCount() > 1) && !v.isString()){
-		return Sprinter::sequenceToStream(ostr, v, layout);
-	}
-	else {
-		return Sprinter::toStream(ostr, (const Castable &)v, layout); //
-	}
-	return ostr;
-}
-*/
-
-/*
-void FlexVariable::info(std::ostream & ostr) const {
-	Castable::info(ostr);
-	if (isReference())
-		ostr << " <reference>";
-	else
-		ostr << " <own>";
-}
-*/
 
 
 
