@@ -60,13 +60,13 @@ SourceODIM::SourceODIM(const SourceODIM & s){
 
 void SourceODIM::init(){
 	// Considered prefix "where:source", but gets complicated for default constructor.  (?)
-	link("NOD", NOD);
-	link("RAD", RAD);
-	link("WMO", WMO);
-	link("ORG", ORG);
-	link("CTY", CTY);
-	link("PLC", PLC);
-	link("CMT", CMT);
+	(*this)["NOD"].link(NOD);
+	(*this)["RAD"].link(RAD);
+	(*this)["WMO"].link(WMO);
+	(*this)["ORG"].link(ORG);
+	(*this)["CTY"].link(CTY);
+	(*this)["PLC"].link(PLC);
+	(*this)["CMT"].link(CMT);
 }
 
 

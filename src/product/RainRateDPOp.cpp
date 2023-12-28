@@ -179,7 +179,7 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	const bool useDBZH  = !srcDBZH.data.isEmpty();
 
 	if (!useDBZH){
-		mout.warn() << "critical DBZH data missing, giving up..." <<  mout.endl;
+		mout.warn("critical DBZH data missing, giving up..." );
 		return;
 	}
 
@@ -209,14 +209,14 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	const PlainData<PolarSrc> & srcZDR = sweepSrc.getData("ZDR");
 	const bool useZDR   = !srcZDR.data.isEmpty();
 	if (!useZDR){
-		mout.warn() << "ZDR missing" <<  mout.endl;
+		mout.warn("ZDR missing" );
 	}
 
 	// KDP
 	const PlainData<PolarSrc> & srcKDP = sweepSrc.getData("KDP");
 	const bool useKDP = !srcKDP.data.isEmpty();
 	if (!useKDP){
-		mout.warn() << "KDP missing" <<  mout.endl;
+		mout.warn("KDP missing" );
 	}
 
 	// KDP x DBZH... needed?
@@ -225,9 +225,9 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	qmap.setQuantityDefaults(heavyKDPxDBZH, "PROB");
 	heavyKDPxDBZH.setGeometry(geometry);
 	drain::image::BinaryFunctorOp<MultiplicationFunctor> mul;
-	mout.warn() << heavyDBZH.data     <<  mout.endl;
-	mout.warn() << heavyKDP.data.getChannel(0)      <<  mout.endl;
-	mout.warn() << heavyKDPxDBZH.data <<  mout.endl;
+	mout.warn(heavyDBZH.data     );
+	mout.warn(heavyKDP.data.getChannel(0)      );
+	mout.warn(heavyKDPxDBZH.data );
 	mul.traverseChannel(heavyDBZH.data, heavyKDP.data.getChannel(0), heavyKDPxDBZH.data);
 	*/
 
@@ -329,7 +329,7 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 		}
 
 
-		mout.note() << "added: " << dstProduct << mout.endl;
+		mout.note("added: " , dstProduct );
 
 	}
 

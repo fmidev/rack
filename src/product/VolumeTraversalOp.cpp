@@ -63,7 +63,7 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	//drain::Logger mout(this->getName()+"(VolumeTraversalOp)", __FUNCTION__);
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.debug2() << "start" << mout.endl;
+	mout.debug2("start" );
 
 	/*
 	DataSetMap<PolarSrc> srcDataSets;
@@ -75,10 +75,10 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
 	this->dataSelector.getPaths(src, dataPaths); //, ODIMPathElem::DATA);
 
-	mout.note() << "Initially " << dataPaths.size() << " paths with " << this->dataSelector << mout.endl;
+	mout.note("Initially " , dataPaths.size() , " paths with " , this->dataSelector );
 
 	if (dataPaths.size() == 0)
-		mout.note() << "no dataPaths matching selector: "  << this->dataSelector << mout.endl;
+		mout.note("no dataPaths matching selector: "  , this->dataSelector );
 
 	drain::RegExp quantityRegExp(this->dataSelector.quantity); // DataSet objects (further below)
 
@@ -117,12 +117,12 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		if (!pit->is(ODIMPathElem::DATASET)){
 			++pit;
 			if (pit == it->end()){
-				mout.warn() << "odd 2nd path elem ("<< *pit << "), with selector: " <<  this->dataSelector << mout.endl;
+				mout.warn("odd 2nd path elem (", *pit , "), with selector: " ,  this->dataSelector );
 			}
 		}
 
 		if (!pit->is(ODIMPathElem::DATASET)){
-			mout.warn() << "path does not start with /dataset.. :" << *it  << ", with selector: "<<  this->dataSelector << mout.endl;
+			mout.warn("path does not start with /dataset.. :" , *it  , ", with selector: ",  this->dataSelector );
 		}
 		*/
 
@@ -130,20 +130,20 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 
 
-		mout.debug3() << "parent: " << parent << mout.endl;
+		mout.debug3("parent: " , parent );
 
 		const drain::VariableMap & what = src[parent][ODIMPathElem::WHAT].data.attributes;
 		std::string datetime = what["startdate"].toStr() + what["starttime"].toStr();
 
 
 		const drain::VariableMap & where = src[parent][ODIMPathElem::WHERE].data.attributes;
-		mout.debug3() << "attribs " << where << mout.endl;
+		mout.debug3("attribs " , where );
 		const double elangle = where["elangle"];
 
 		//if (srcDataSets.find(elangle) == srcDataSets.end()){
 		if (srcDataSets.find(datetime) == srcDataSets.end()){
 
-			mout.debug2() << "add elangle="  << elangle<< " time="  << datetime << ':'  << parent << mout.endl;
+			mout.debug2("add elangle="  , elangle, " time="  , datetime , ':'  , parent );
 
 			// Something like: sweeps[elangle] = src[parent] .
 
@@ -219,7 +219,7 @@ void VolumeTraversalOp::computeProducts(const DataSetMap<PolarSrc> & srcDataSets
 		//++itd;
 	}
 
-	//mout.debug2() << "end" << mout.endl;
+	//mout.debug2("end" );
 
 }
 

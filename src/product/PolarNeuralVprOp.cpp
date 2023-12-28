@@ -41,7 +41,7 @@ using namespace drain::image;
 void PolarNeuralVPROp::filter(const Hi5Tree &src, const std::map<double,std::string> & srcPaths, Hi5Tree &dst) const {
 
 	drain::Logger mout(drain::getLog(),"PolarNeuralVPROp::filter");
-	mout.debug2() << "start" << mout.endl;
+	mout.debug2("start" );
 
 
 	// TARGET DATAEARTH_RADIUS_43
@@ -55,7 +55,7 @@ void PolarNeuralVPROp::filter(const Hi5Tree &src, const std::map<double,std::str
 
 	ODIM odimOut;
     */
-	mout.debug2() << "Finished" << mout.endl;
+	mout.debug2("Finished" );
 
 }
 

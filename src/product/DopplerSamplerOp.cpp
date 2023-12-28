@@ -44,7 +44,7 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 	const Data<PolarSrc> & srcData = srcSweep.getFirstData();  // VRAD or VRADH
 
 	if (srcData.data.isEmpty()){
-		mout.warn() << "data empty" << mout.endl;
+		mout.warn("data empty" );
 		return;
 	}
 	//setEncoding(srcData.odim, dstData.odim);
@@ -55,16 +55,16 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 		w.rayRange.max += 360;
 	}
 
-	mout.note() << "odim       : " << srcData.odim << mout.endl;
-	mout.warn() << "range      : " << w.distanceRange << mout.endl;
-	mout.warn() << "bin indices: " << w.binRange << mout.endl;
-	mout.warn() << "azm        : " << w.azmRange   << mout.endl;
-	mout.warn() << "ray indices: " << w.rayRange << mout.endl;
+	mout.note("odim       : " , srcData.odim );
+	mout.warn("range      : " , w.distanceRange );
+	mout.warn("bin indices: " , w.binRange );
+	mout.warn("azm        : " , w.azmRange   );
+	mout.warn("ray indices: " , w.rayRange );
 
-	mout.warn() << "azm.first: " << w.azmRange.min << " => ray.min="  <<  srcData.odim.getRayIndex(w.azmRange.min) << mout.endl;
+	mout.warn("azm.first: " , w.azmRange.min , " => ray.min="  ,  srcData.odim.getRayIndex(w.azmRange.min) );
 
 	size_t count = (w.rayRange.max - w.rayRange.min) * (w.binRange.max - w.binRange.min);
-	//mout.warn() << "size " << count << mout.endl;
+	//mout.warn("size " , count );
 
 	PlainData<PolarDst> & dstDataU = dstProduct.getData("X");
 	PlainData<PolarDst> & dstDataV = dstProduct.getData("Y");
@@ -94,8 +94,8 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 
 	//@? dstProduct.updateTree(odim);
 
-	mout.debug() << '\t' << dstDataU.data.getGeometry() << mout.endl;
-	mout.debug() << '\t' << dstDataV.data.getGeometry() << mout.endl;
+	mout.debug('\t' , dstDataU.data.getGeometry() );
+	mout.debug('\t' , dstDataV.data.getGeometry() );
 
 
 	double d,x,y;
@@ -107,7 +107,7 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 			d = srcData.data.get<double>(i, j2);
 			//if ((d != srcData.odim.undetect) && (d != srcData.odim.nodata)){
 			if (srcData.odim.isValue(d)){
-				// mout.warn() << "data d: " << (double)d << mout.endl;
+				// mout.warn("data d: " , (double)d );
 				srcData.odim.mapDopplerSpeed(d, x, y);
 				dstDataU.data.put(index, x);
 				dstDataV.data.put(index, y);
@@ -116,7 +116,7 @@ void DopplerSamplerOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSe
 				dstDataU.data.put(index, 0);
 				dstDataV.data.put(index, 0);
 			}
-			// mout.warn() << '\t' << index << mout.endl;
+			// mout.warn('\t' , index );
 			++index;
 		}
 	}
@@ -131,7 +131,7 @@ void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Da
 	const Data<PolarSrc > & srcData = srcSweep.getData("VRAD");
 
 	if (srcData.data.isEmpty()){
-		mout.warn() << "data empty" << mout.endl;
+		mout.warn("data empty" );
 		return;
 	}
 	// setEncoding(srcData.odim, dstData.odim);
@@ -141,16 +141,16 @@ void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Da
 	if (w.rayRange.max < w.rayRange.min){
 		w.rayRange.max += 360;
 	}
-	mout.warn() << "rays: " << w.rayRange.min << '-' << w.rayRange.max << mout.endl;
+	mout.warn("rays: " , w.rayRange.min , '-' , w.rayRange.max );
 
 	const double NI = srcData.odim.getNyquist();
 
-	mout.warn() << "NI: " << NI << mout.endl;
+	mout.warn("NI: " , NI );
 
-	// mout.warn() << "ray=" << w.ray1 << ',' << w.ray2 << ", bins=" << w.bin1 << ',' << w.bin2 << mout.endl;
+	// mout.warn("ray=" , w.ray1 , ',' , w.ray2 , ", bins=" , w.bin1 , ',' , w.bin2 );
 
 	size_t count = (w.rayRange.max - w.rayRange.min) * (w.binRange.max - w.binRange.min);
-	//mout.warn() << "size " << count << mout.endl;
+	//mout.warn("size " , count );
 
 	PlainData<PolarDst> & dstDataU = dstProduct.getData("AZM"); // deg
 	dstDataU.setEncoding(typeid(double));
@@ -175,9 +175,9 @@ void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Da
 	dstData2.data.fill(dstData2.odim.undetect);
 
 
-	mout.debug() << '\t' << dstDataU.data.getGeometry() << mout.endl;
-	mout.debug() << '\t' << dstData2.data.getGeometry() << mout.endl;
-	mout.debug() << '\t' << dstData1.data.getGeometry() << mout.endl;
+	mout.debug('\t' , dstDataU.data.getGeometry() );
+	mout.debug('\t' , dstData2.data.getGeometry() );
+	mout.debug('\t' , dstData1.data.getGeometry() );
 
 
 	double azm, v1,v2,vDiff; // ,x,y;
@@ -198,7 +198,7 @@ void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Da
 			v2 = srcData.data.get<double>(i, j2);
 
 			if (srcData.odim.deriveDifference(v1, v2, vDiff)) {
-				// mout.warn() << "data d: " << (double)d << mout.endl;
+				// mout.warn("data d: " , (double)d );
 
 				dstDataU.data.put(index, azm*drain::RAD2DEG);
 
@@ -219,7 +219,7 @@ void DopplerDiffPlotterOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Da
 				dstData1.data.put(index, dstData1.odim.nodata);
 				dstData2.data.put(index, dstData2.odim.nodata);
 			}
-			// mout.warn() << '\t' << index << mout.endl;
+			// mout.warn('\t' , index );
 			++index;
 		}
 	}

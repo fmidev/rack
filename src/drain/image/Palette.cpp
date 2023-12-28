@@ -109,9 +109,12 @@ void Palette::addEntry(double min, double red, double green, double blue, const 
 
 Palette::value_type & Palette::getEntryByCode(const std::string & code, bool lenient){
 
-	Logger mout(__FILE__, __FUNCTION__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+	/// getImgLog().setVerbosity(20);
 
 	for (auto & entry: *this){
+		// mout.note(entry.first, ":", entry.second);
 		if (entry.second.code == code){
 			return entry;
 		}

@@ -254,7 +254,7 @@ void EncodingODIM::copyFrom(const drain::image::Image & data){
 		const EncodingODIM::iterator oit = find(it->first);
 
 		if (oit != end()){
-			const drain::FlexVariable & srcValue = it->second;
+			const drain::FlexibleVariable & srcValue = it->second;
 			const std::type_info & t = srcValue.getType();
 			drain::Castable & dstValue = oit->second;
 			// std::cerr << key << " type=" << t.name() << '\n';

@@ -100,7 +100,7 @@ void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, P
 	size_t nbinsMax = 0;
 	double rscaleMin = 2000;
 
-	mout.debug2() << (dstOdim) << mout.endl;
+	mout.debug2((dstOdim) );
 
 	if (MAXIMIZE_AZM_RESOLUTION || DERIVE_NBINS || DERIVE_RSCALE){
 
@@ -121,19 +121,19 @@ void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, P
 
 
 			if (srcData.data.isEmpty()){
-				mout.warn() << "srcData empty" << mout.endl;
+				mout.warn("srcData empty" );
 				continue; // warning issued later, in the main loop.
-				//mout.warn() << "selected quantity=" << quantity << " not present in elangle=" << it->first << mout.endl;
+				//mout.warn("selected quantity=" , quantity , " not present in elangle=" , it->first );
 			}
 
 			dstOdim.angles.push_back(srcOdim.elangle);
 
-			mout.debug2() << "testing: " << srcOdim << mout.endl;
+			mout.debug2("testing: " , srcOdim );
 
 			if (MAXIMIZE_AZM_RESOLUTION){
 				if (srcOdim.area.height > dstOdim.area.height){
 					dstOdim.area.height = srcOdim.area.height;
-					mout.info() << "Updating dst nrays to: " << dstOdim.area.height << mout.endl;
+					mout.info("Updating dst nrays to: " , dstOdim.area.height );
 				}
 			}
 
@@ -151,26 +151,26 @@ void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, P
 		}
 
 		if (AUTOSCALE_RANGE){
-			mout.debug() << "Applied input geometry with maximum range" << mout.endl;
+			mout.debug("Applied input geometry with maximum range" );
 		}
 		else if (dstOdim.area.width ==0){
 			dstOdim.area.width = rangeMax/static_cast<int>(dstOdim.rscale);
-			mout.debug() << "Derived nbins=" << dstOdim.area.width << mout.endl;
+			mout.debug("Derived nbins=" , dstOdim.area.width );
 		}
 		else if (dstOdim.rscale ==0){
 			dstOdim.rscale = rangeMax/static_cast<double>(dstOdim.area.width);
-			mout.debug() << "Derived rscale=" << dstOdim.rscale << mout.endl;
+			mout.debug("Derived rscale=" , dstOdim.rscale );
 		}
 		else {
-			mout.debug() << "Adapting user-defined nbins and rscale" << mout.endl;
+			mout.debug("Adapting user-defined nbins and rscale" );
 		}
 
-		mout.info() << "Setting dst geometry:" << dstOdim.area.width << "bin x " << dstOdim.rscale << "m/bin (" << (dstOdim.getMaxRange()/1000.0) << "km) " << mout.endl;
+		mout.info("Setting dst geometry:" , dstOdim.area.width , "bin x " , dstOdim.rscale , "m/bin (" , (dstOdim.getMaxRange()/1000.0) , "km) " );
 
 	}
 	else {
-		//mout.warn() << "output prop" << dstOdim << mout.endl;
-		mout.info() << "output properties: " << EncodingODIM(dstOdim) << mout.endl;
+		//mout.warn("output prop" , dstOdim );
+		mout.info("output properties: " , EncodingODIM(dstOdim) );
 	}
 }
 

@@ -118,7 +118,17 @@ public:
 		assignContainer(unituple);
 	}
 
+	inline
+	~FlexibleVariable(){
+	}
 
+
+
+#define SmartVariable FlexibleVariable
+#include "SmartVariable.inc"
+#undef  SmartVariable
+
+	/*
 	inline
 	FlexibleVariable & operator=(const FlexibleVariable &x){
 		assignCastable(x);
@@ -136,23 +146,6 @@ public:
 		assignCastable(x);
 		return *this;
 	}
-
-	/*
-	inline
-	FlexibleVariable & operator=(const ReferenceVariable &x){
-		assignCastable(x);
-		return *this;
-	}
-	*/
-
-	// Deprecating?
-	/*
-	inline
-	FlexibleVariable & operator=(const Referencer &x){
-		assignCastable(x);
-		return *this;
-	}
-	*/
 
 	template <class T, size_t N>
 	inline
@@ -181,9 +174,25 @@ public:
 		return *this;
 	};
 
+*/
+
+	/*
 	inline
-	~FlexibleVariable(){
+	FlexibleVariable & operator=(const ReferenceVariable &x){
+		assignCastable(x);
+		return *this;
 	}
+	*/
+
+	// Deprecating?
+	/*
+	inline
+	FlexibleVariable & operator=(const Referencer &x){
+		assignCastable(x);
+		return *this;
+	}
+	*/
+
 
 	/// Tries to change type with requestType. Throws exception if not possible.
 	/**
@@ -247,6 +256,8 @@ public:
 			ostr << " <own>";
 	}
 
+
+
 protected:
 
 	/// Returns true, if the internal pointer directs to external data object, ie. internal data vector is not used.
@@ -290,7 +301,6 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::FlexibleVari
 	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
 };
 
-//typedef SmartMap<FlexibleVariable> FlexVariableMap;
 
 
 

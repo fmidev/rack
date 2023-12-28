@@ -148,7 +148,7 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 	dst.data.setType(dst.odim.type);
 
 	if (odim.scaling.scale != 0.0){ // NOTE: now dst.odim.scaling.scale at least default (1.0)
-		mout.warn() << "Init with ODIM: " << EncodingODIM(odim)  << mout.endl;
+		mout.warn("Init with ODIM: " , EncodingODIM(odim)  );
 		//ProductOp::
 		applyODIM(dst.odim, odim);
 	}
@@ -156,14 +156,14 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 		// const double max = (this->conf.relativeScale) ? 1.0 : inputODIM.NI;
 		if (drain::Type::call<drain::typeIsSmallInt>(dst.data.getType())){
 			dst.setPhysicalRange(getTypicalMin(inputODIM), getTypicalMax(inputODIM));
-			//mout.note() << EncodingODIM(inputODIM) << mout.endl;
-			mout.debug()  << "small int: " << EncodingODIM(dst.odim)  << mout.endl;
-			mout.debug2() << "small int: " << dst.data  << mout.endl;
+			//mout.note(EncodingODIM(inputODIM) );
+			mout.debug("small int: " , EncodingODIM(dst.odim)  );
+			mout.debug2("small int: " , dst.data  );
 			// dstData.data.setScaling(dstData.odim.scaling.scale, dstData.odim.scaling.offset);
 		}
 		else {
 			if (drain::Type::call<drain::typeIsInteger>(dst.data.getType()))
-				mout.warn() << "large int" << mout.endl;
+				mout.warn("large int" );
 		}
 		dst.odim.distinguishNodata(); // change undetect
 	}
@@ -173,7 +173,7 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 
 	dst.data.setScaling(dst.odim.scaling); // needed?
 	//dst.data.setScaling(dst.odim.scaling.scale, dst.odim.scaling.offset);
-	mout.debug() << "final dst: " << dst.data  << mout.endl;
+	mout.debug("final dst: " , dst.data  );
 }
 
 
@@ -187,12 +187,12 @@ void DopplerWindowOp<W>::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	const Data<PolarSrc> & vradSrc = srcSweep.getData(quantityRe);
 
 	if (vradSrc.data.isEmpty()){
-		mout.warn() << "VRAD missing" <<  mout.endl;
+		mout.warn("VRAD missing" );
 		return;
 	}
 
 	if (vradSrc.odim.getNyquist() == 0) {
-		mout.warn() << "VRAD unusable, vradSrc.odim.getNyquist() == 0" <<  mout.endl;
+		mout.warn("VRAD unusable, vradSrc.odim.getNyquist() == 0" );
 		return;
 	}
 
@@ -205,7 +205,7 @@ void DopplerWindowOp<W>::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	dstData.data.fill(dstData.odim.undetect); // NEW 2019/11
 
 	processData(vradSrc, dstData);
-	//mout.warn() << "after:" << dstData.data.getScaling() << mout.endl;
+	//mout.warn("after:" , dstData.data.getScaling() );
 
 
 	//@ dstProduct.updateTree(dstData.odim);
@@ -228,15 +228,15 @@ void DopplerWindowOp<W>::setPixelConf(typename W::conf_t & pixelConf, const Pola
 	pixelConf.relativeScale = this->conf.relativeScale;
 
 	if (pixelConf.frame.width == 0){
-		mout.note() << this->conf.frame.width  << mout.endl;
-		mout.note() << this->conf.widthM << mout.endl;
-		mout.note() << *this << mout.endl;
-		mout.warn() << "Requested width (" << pixelConf.widthM <<  " meters) smaller than rscale ("<< inputODIM.rscale <<"), setting window width=1 " << mout.endl;
+		mout.note(this->conf.frame.width  );
+		mout.note(this->conf.widthM );
+		mout.note(*this );
+		mout.warn("Requested width (" , pixelConf.widthM ,  " meters) smaller than rscale (", inputODIM.rscale ,"), setting window width=1 " );
 		pixelConf.frame.width = 1;
 	}
 
 	if (pixelConf.frame.height == 0){
-		mout.warn() << "Requested height (" << pixelConf.heightD <<  " degrees) smaller than 360/nrays ("<< (360.0/inputODIM.geometry.height) <<"), setting window height=1 " << mout.endl;
+		mout.warn("Requested height (" , pixelConf.heightD ,  " degrees) smaller than 360/nrays (", (360.0/inputODIM.geometry.height) ,"), setting window height=1 " );
 		pixelConf.frame.height = 1;
 	}
 
@@ -257,10 +257,10 @@ void DopplerWindowOp<W>::processData(const Data<PolarSrc> & vradSrc, Data<PolarD
 		//setPixelConf(pixelConf, vradSrc.odim);
 
 		SlidingWindowOp<W> op(pixelConf);
-		mout.debug() << op << mout.endl;
-		mout.special() << "provided functor: " <<  op.conf.getFunctorName() << '|' << op.conf.functorParameters << mout.endl;
-		mout.debug() << "pixelConf.contributionThreshold " << pixelConf.contributionThreshold << mout.endl;
-		mout.debug() << "op.conf.contributionThreshold " << op.conf.contributionThreshold << mout.endl;
+		mout.debug(op );
+		mout.special("provided functor: " ,  op.conf.getFunctorName() , '|' , op.conf.functorParameters );
+		mout.debug("pixelConf.contributionThreshold " , pixelConf.contributionThreshold );
+		mout.debug("op.conf.contributionThreshold " , op.conf.contributionThreshold );
 		//dstData.data.setGeometry(vradSrc.data.getGeometry()); // setDst() handles
 		//op.process(vradSrc.data, dstData.data);
 		//op.traverseChannel(vradSrc.data.getChannel(0), dstData.data.getChannel(0));
@@ -327,14 +327,14 @@ public:
 		// setPixelConf(pixelConf, vradSrc.odim);
 		this->conf.setPixelConf(pixelConf, vradSrc.odim);
 
-		mout.debug()  << "radarConf: " << this->conf.widthM << 'x' << this->conf.heightD << mout.endl;
-		mout.debug()  << "pixelConf: " << pixelConf.frame.width << 'x' << this->conf.frame.height << mout.endl;
+		mout.debug("radarConf: " , this->conf.widthM , 'x' , this->conf.heightD );
+		mout.debug("pixelConf: " , pixelConf.frame.width , 'x' , this->conf.frame.height );
 
 		SlidingWindowOp<DopplerAverageWindow2> op(pixelConf);
-		mout.debug() << op << mout.endl;
-		mout.warn() << op << mout.endl;
-		mout.special() << "provided functor: " <<  op.conf.getFunctorName() << '|' << op.conf.functorParameters << mout.endl;
-		//mout.debug()  << "provided functor: " << op.conf.ftor << mout.endl;
+		mout.debug(op );
+		mout.warn(op );
+		mout.special("provided functor: " ,  op.conf.getFunctorName() , '|' , op.conf.functorParameters );
+		//mout.debug("provided functor: " , op.conf.ftor );
 
 		const drain::image::Geometry & g = vradSrc.data.getGeometry();
 

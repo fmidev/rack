@@ -50,18 +50,18 @@ public:
 		init(initialize);
 	};
 
-	PolarODIM(const PolarODIM & odim) : ODIM(ODIMPathElem::ALL_LEVELS), rscale(resolution.x) {
+	PolarODIM(const PolarODIM & odim) : ODIM(ODIMPathElem::ALL_LEVELS), rscale(resolution.x), highprf(0.0) {
 		initFromMap(odim);
 		getNyquist();
 	}
 
 	template <class T>
-	PolarODIM(const std::map<std::string,T> & m) : ODIM(ODIMPathElem::ALL_LEVELS), rscale(resolution.x) {
+	PolarODIM(const std::map<std::string,T> & m) : ODIM(ODIMPathElem::ALL_LEVELS), rscale(resolution.x), highprf(0.0) {
 		initFromMap(m);
 		getNyquist();
 	}
 
-	PolarODIM(const drain::image::Image & img, const std::string & quantity="") : ODIM(ODIMPathElem::ALL_LEVELS), rscale(resolution.x) {
+	PolarODIM(const drain::image::Image & img, const std::string & quantity="") : ODIM(ODIMPathElem::ALL_LEVELS), rscale(resolution.x), highprf(0.0) {
 		initFromImage(img, quantity);
 	}
 

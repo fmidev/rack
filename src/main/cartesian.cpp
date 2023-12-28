@@ -282,7 +282,6 @@ CartesianModule::CartesianModule(drain::CommandBank & bank) : module_t(bank) {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-
 	install<CartesianCreate>('c');
 	install<CompositeAdd>();
 

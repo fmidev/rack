@@ -82,10 +82,10 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// mout.debug3("start");
-	mout.debug3() << (const drain::image::Accumulator &) accumulator << mout.endl;
+	mout.debug3((const drain::image::Accumulator &) accumulator );
 
 	if (sweep.data.isEmpty()){
-		mout.fail() << "data is empty " << mout.endl;
+		mout.fail("data is empty " );
 		return;
 	}
 
@@ -102,9 +102,9 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 	const bool USE_QUALITY = ! sweepQuality.data.isEmpty();
 
-	mout.debug() << "Elangle: " <<  sweep.odim.elangle << mout.endl;
+	mout.debug("Elangle: " ,  sweep.odim.elangle );
 
-	mout.debug() << "Using quality data: " << USE_QUALITY << mout.endl;
+	mout.debug("Using quality data: " , USE_QUALITY );
 
 
 	double altitudeFinal;
@@ -124,7 +124,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		}
 	}
 
-	mout.debug() << "Freezing level: " << sweep.odim.freeze << mout.endl;
+	mout.debug("Freezing level: " , sweep.odim.freeze );
 
 	// In this context decoding only, ie form bytevalues to physical values.
 	DataCoder coder(sweep.odim, sweepQuality.odim);

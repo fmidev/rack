@@ -163,13 +163,13 @@ PlainData< DstType<M> > & DataConversionOp<M>::getNormalizedData(const DataSet<s
 		const PlainData<src_t> &  srcData = srcDataSet.getData(quantity);
 		const EncodingODIM     & odimNorm = getQuantityMap().get(quantity).get(); //[srcData.odim.type.at(0)];
 
-		mout.info() << "converting and adding to cache: " << quantityExt << " odim: " << odimNorm << mout.endl;
+		mout.info("converting and adding to cache: " , quantityExt , " odim: " , odimNorm );
 		PlainData<dst_t> & dstDataNew = normDataSet.getData(quantityExt);
 		dstDataNew.setNoSave();
 		DataConversionOp<M> op;
 		//op.odim.importMap(odimNorm);
-		// mout.warn() << "odimNorm: " << odimNorm << mout.endl;
-		// mout.warn() << "op.odim: " << op.odim << mout.endl;
+		// mout.warn("odimNorm: " , odimNorm );
+		// mout.warn("op.odim: " , op.odim );
 		dstDataNew.odim.importMap(srcData.odim);
 		dstDataNew.odim.importMap(odimNorm);
 		dstDataNew.odim.quantity = quantity;
@@ -177,7 +177,7 @@ PlainData< DstType<M> > & DataConversionOp<M>::getNormalizedData(const DataSet<s
 		op.processImage(srcData.odim, srcData.data, dstDataNew.odim, dstDataNew.data);
 		dstDataNew.odim.quantity = quantityExt;
 		dstDataNew.updateTree2(); // @?
-		mout.debug() << "obtained: " << dstDataNew << mout.endl;
+		mout.debug("obtained: " , dstDataNew );
 
 		return dstDataNew;
 	}
@@ -193,7 +193,7 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug3() << *this << mout.endl;
+	mout.debug3(*this );
 	mout.debug("DataSelector: ", this->dataSelector);
 
 	/// The operator does not need groups sorted by elevation.
@@ -274,7 +274,7 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 
 		mout.debug2(EncodingODIM(this->odim));
 		//mout.toOStr() << "src " << (long int) &(srcData.data) << EncodingODIM(srcData.odim) << mout.endl;
-		//mout.warn() << "dst " << (long int) &(dstData.data) << EncodingODIM(dstData.odim) << mout.endl;
+		//mout.warn("dst " , (long int) &(dstData.data) , EncodingODIM(dstData.odim) );
 
 		const drain::Type t(this->odim.type);
 
@@ -388,11 +388,11 @@ void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image:
 		}
 		/*
 		if (t != srcImage.getType2()){
-			mout.error() << "trying to change type when dst==src" << mout.endl;
+			mout.error("trying to change type when dst==src" );
 			return;
 		}
 		if (g != dstImage.getGeometry()){
-			mout.error() << "trying to change geometry when dst==src" << mout.endl;
+			mout.error("trying to change geometry when dst==src" );
 			return;
 		}
 		 */
@@ -418,7 +418,7 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	// mout.debug3() << "input name: " << src.getName() << mout.endl;
+	// mout.debug3("input name: " , src.getName() );
 	mout.debug2("src odim: ", EncodingODIM(srcOdim));
 	mout.debug3("src props:", srcImage.properties);
 	// std::cerr << src.properties << std::endl;
@@ -432,7 +432,7 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 	dstImage.setCoordinatePolicy(srcImage.getCoordinatePolicy());
 
 	// dst.odim.set(odim);
-	// mout.debug2() << "op  odim: " << EncodingODIM(odim) << mout.endl;
+	// mout.debug2("op  odim: " , EncodingODIM(odim) );
 	mout.debug("dst odim: ", EncodingODIM(dstOdim));
 	mout.debug("dst props: ", dstImage.properties);
 	//std::cerr << dst.properties << std::endl;
@@ -454,7 +454,7 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 		mout.note("type conversion ", srcOdim.type, " -> ", dstOdim.type);
 		mout.warn("type conversion ", dstOdim.type, " ~= ", drain::Type::getTypeChar(dstImage.getType()), " changed the value");
 	}
-	//mout.debug() << "dstOdim nodata long-int check " << dstOdim.nodata << " <> " << (long int)(*d = dstOdim.nodata) << mout.endl;
+	//mout.debug("dstOdim nodata long-int check " , dstOdim.nodata , " <> " , (long int)(*d = dstOdim.nodata) );
 
 	mout.debug2("src: ", srcImage);
 	mout.debug2("dst: ", dstImage);

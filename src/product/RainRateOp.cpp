@@ -62,7 +62,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug2() << "Start." << mout.endl;
+	mout.debug2("Start." );
 
 	setGeometry(srcData.odim, dstData);
 
@@ -82,14 +82,14 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 
 	//srcData.odim.toOStr(std::cout, ':', '{','}','\n');
 	/*
-	mout.warn() << "---------------------\n" << srcData.data << "\n" << mout.endl;
-	mout.warn() << "---------------------\n" << srcData.odim << "\n" << mout.endl;
-	mout.warn() << dstData << mout.endl;
-	mout.warn() << dstQuality << mout.endl;
+	mout.warn("---------------------\n" , srcData.data , "\n" );
+	mout.warn("---------------------\n" , srcData.odim , "\n" );
+	mout.warn(dstData );
+	mout.warn(dstQuality );
 	*/
-	//mout.warn() << EncodingODIM(dstData.odim) << mout.endl;
+	//mout.warn(EncodingODIM(dstData.odim) );
 
-	//mout.warn() << "\n::: " << srcData.odim << "\n::: " << mout.endl;
+	//mout.warn("\n::: " , srcData.odim , "\n::: " );
 
 	// Quantity (reflectivity) in normal and db scale.
 	//double z;
@@ -119,7 +119,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	/// Check if elevation scan or a ground-level product.
 	const bool SCAN = (srcData.odim.product == "SCAN");
 	if (!SCAN){
-		mout.error() << "input data not of type SCAN " << mout.endl;
+		mout.error("input data not of type SCAN " );
 	}
 
 	const double elangleR = srcData.odim.getElangleR();
@@ -132,7 +132,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 
 	const double dstMin = dstData.data.getConf().getTypeMin<double>();
 	const double dstMax = dstData.data.getConf().getTypeMax<double>();
-	//mout.warn() << dstMin << '-' << dstMax << mout.endl;
+	//mout.warn(dstMin , '-' , dstMax );
 
 	const bool USE_METADATA_FLEVEL = std::isnan(freezingLevel.height);
 
@@ -140,13 +140,13 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	const double relativeHeight = 1000.0 * (USE_METADATA_FLEVEL ? srcData.odim.freeze : freezingLevel.height) - srcData.odim.height;
 
 	if (USE_METADATA_FLEVEL){
-		mout.note() << "Using freezing level set in metadata: " << srcData.odim.freeze << " (km)" << mout.endl;
+		mout.note("Using freezing level set in metadata: " , srcData.odim.freeze , " (km)" );
 	}
-	mout.note() << "Site-relative freezing level height: " << relativeHeight << " (m)" << mout.endl;
+	mout.note("Site-relative freezing level height: " , relativeHeight , " (m)" );
 
-	// mout.warn() << srcData << mout.endl;
-	// mout.note() << srcData.odim << mout.endl;
-	// mout.warn() << dstData << mout.endl;
+	// mout.warn(srcData );
+	// mout.note(srcData.odim );
+	// mout.warn(dstData );
 
 	for (unsigned int i = 0; i < srcData.odim.area.width; ++i) {
 
@@ -203,7 +203,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 		}
 	}
 
-	//mout.warn() << "Finished." << mout.endl;
+	//mout.warn("Finished." );
 
 }
 

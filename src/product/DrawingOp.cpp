@@ -56,15 +56,15 @@ void DrawingOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<Polar
 		dstData.data.copyDeep(srcData.data); // todo: scale
 		dstData.odim.updateFromMap(srcData.odim);
 		if (dstData.odim.distinguishNodata("VRAD"))
-			mout.note() << "forced nodata=" <<  dstData.odim.nodata << mout.endl;
-		mout.debug() << "copy dstData: " << EncodingODIM(dstData.odim) << mout.endl;
+			mout.note("forced nodata=" ,  dstData.odim.nodata );
+		mout.debug("copy dstData: " , EncodingODIM(dstData.odim) );
 	}
 
 	PolarSector w;
-	//mout.warn() << "ray=" << ray1 << ',' << ray2 << ", bins=" << bin1 << ',' << bin2 << mout.endl;
+	//mout.warn("ray=" , ray1 , ',' , ray2 , ", bins=" , bin1 , ',' , bin2 );
 
 	if ((shape.length()>1) && (shape != "direction") && (shape != "range") && (shape != "arc") && (shape != "sector")){
-		mout.error() << "unknown shape type: " << shape << mout.endl;
+		mout.error("unknown shape type: " , shape );
 		return;
 	}
 
@@ -112,7 +112,7 @@ void DrawingOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<Polar
 		w.setAzimuth(p1,p2); //odim.geometry.height;
 		w.setRange(p3,p4);
 		w.adjustIndices(dstData.odim);
-		mout.debug() << w << mout.endl;
+		mout.debug(w );
 		for (int j=w.rayRange.min; j<w.rayRange.max; ++j){
 			j1 = w.getSafeRay(dstData.odim, j);
 			dstData.data.put(w.binRange.min, j1, marker);
@@ -127,7 +127,7 @@ void DrawingOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<Polar
 		}
 		break;
 	default:
-		mout.error() << "Unknown shape code: " << shape << mout.endl;
+		mout.error("Unknown shape code: " , shape );
 		break;
 	}
 

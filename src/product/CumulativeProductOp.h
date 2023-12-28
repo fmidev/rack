@@ -109,7 +109,7 @@ protected:
 	inline
 	void setGeometry(const PolarODIM & srcODIM, PlainData<PolarDst> & dstData) const {
 		drain::Logger mout(__FILE__, __FUNCTION__); //REPL name+"(CumulativeProductOp)", __FUNCTION__);
-		mout.warn() << "setGeometry??" << mout.endl;
+		mout.warn("setGeometry??" );
 		copyPolarGeometry(dstData.odim, dstData);
 	}
 

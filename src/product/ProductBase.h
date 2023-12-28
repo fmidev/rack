@@ -136,12 +136,12 @@ public:
 		drain::Logger mout(__FILE__, __FUNCTION__); //REPL name+"(ProductOp)", __FUNCTION__);
 
 		try {
-			mout.debug2() << "Checking if these are allowed" << mout.endl;
+			mout.debug2("Checking if these are allowed" );
 			allowedEncoding.setValues(p); // may throw?
 		}
 		catch (std::exception & e) {
 			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.warn() << " unsupported parameters in: '" << p << "', use: " << allowedEncoding.getKeys() << mout.endl;
+			mout.warn(" unsupported parameters in: '" , p , "', use: " , allowedEncoding.getKeys() );
 			return;
 		}
 

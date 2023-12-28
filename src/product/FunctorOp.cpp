@@ -112,8 +112,8 @@ void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) con
 
 	}
 	catch (const std::exception & e){
-		mout.warn()  << functorBank << mout;
-		mout.error() << e.what() << mout;
+		mout.warn(functorBank );
+		mout.error(e.what() );
 	}
 	/*
 	for (long int i = 0; i < dst.odim.geometry.width; ++i) {

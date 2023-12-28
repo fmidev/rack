@@ -65,12 +65,12 @@ public:
 	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		if (srcData.hasQuality()){
-			mout.warn() << "quality found, weighted operation" << mout.endl;
+			mout.warn("quality found, weighted operation" );
 			processDataWeighted(srcData, dstData);
 		}
 		else {
-			mout.warn() << "no quality, unweighted operation" << mout.endl;
-			mout.warn() << dstData.data.getScaling() << mout.endl;
+			mout.warn("no quality, unweighted operation" );
+			mout.warn(dstData.data.getScaling() );
 			processPlainData(srcData, dstData);
 		}
 	};
@@ -79,19 +79,19 @@ public:
 	void processPlainData(const PlainData<src_t > & srcData, PlainData<dst_t > & dstData) const {
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		//mout.warn() << "not implemented" << mout.endl;
+		//mout.warn("not implemented" );
 		typename W::conf_t pixelConf;
 		//this->setPixelConf(srcData.odim, pixelConf); // what about other parameters?
 		this->conf.setPixelConf(pixelConf, srcData.odim);
 
-		mout.warn() << "srcData.odim: " << srcData.odim << mout.endl;
+		mout.warn("srcData.odim: " , srcData.odim );
 
 		SlidingWindowOp<W> op(pixelConf);
-		mout.warn() << op << mout.endl;
-		mout.special() << "provided functor: " <<  op.conf.getFunctorName() << '|' << op.conf.functorParameters << mout.endl;
-		//mout.debug() << "provided functor: " << op.conf.ftor << mout.endl;
-		mout.debug() << "pixelConf.contributionThreshold " << pixelConf.contributionThreshold << mout.endl;
-		mout.debug() << "op.conf.contributionThreshold " << op.conf.contributionThreshold << mout.endl;
+		mout.warn(op );
+		mout.special("provided functor: " ,  op.conf.getFunctorName() , '|' , op.conf.functorParameters );
+		//mout.debug("provided functor: " , op.conf.ftor );
+		mout.debug("pixelConf.contributionThreshold " , pixelConf.contributionThreshold );
+		mout.debug("op.conf.contributionThreshold " , op.conf.contributionThreshold );
 		//dstData.data.setGeometry(vradSrc.data.getGeometry()); // setDst() handles
 		//op.process(vradSrc.data, dstData.data);
 		//op.traverseChannel(vradSrc.data.getChannel(0), dstData.data.getChannel(0));
@@ -107,7 +107,7 @@ public:
 	virtual
 	void processDataWeighted(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.warn() << "not implemented, calling for plain data" << mout.endl;
+		mout.warn("not implemented, calling for plain data" );
 
 		processPlainData(srcData, dstData);
 
@@ -145,15 +145,15 @@ void PolarSlidingWindowOp<W>::setPixelConf(const PolarODIM & odim, typename W::c
 	pixelConf.updatePixelSize(odim);
 
 	if (pixelConf.frame.width == 0){
-		mout.note() << this->conf.frame.width  << mout.endl;
-		mout.note() << this->conf.widthM << mout.endl;
-		mout.note() << *this << mout.endl;
-		mout.warn() << "Requested width (" << pixelConf.widthM <<  " meters), smaller than rscale ("<< odim.rscale <<"), setting window width=1 " << mout.endl;
+		mout.note(this->conf.frame.width  );
+		mout.note(this->conf.widthM );
+		mout.note(*this );
+		mout.warn("Requested width (" , pixelConf.widthM ,  " meters), smaller than rscale (", odim.rscale ,"), setting window width=1 " );
 		pixelConf.frame.width = 1;
 	}
 
 	if (pixelConf.frame.height == 0){
-		mout.warn() << "Requested height (" << pixelConf.heightD <<  " degrees), smaller than 360/nrays ("<< (360.0/odim.geometry.height) <<"), setting window height=1 " << mout.endl;
+		mout.warn("Requested height (" , pixelConf.heightD ,  " degrees), smaller than 360/nrays (", (360.0/odim.geometry.height) ,"), setting window height=1 " );
 		pixelConf.frame.height = 1;
 	}
 

@@ -221,11 +221,13 @@ public:
 		setPtr(x);
 	}
 
+#define SmartVariable Referencer
+#include "SmartVariable.inc"
+#undef  SmartVariable
+
+	/*
 	/// Default assignment operator - aimed for basic types and std::string.
-	/**
-	 *  This is the idea of the whole thing.
-	 *
-	 */
+	//  This is the idea of the whole thing.
 	template <class T>
 	inline
 	Referencer & operator=(const T &x){
@@ -241,26 +243,21 @@ public:
 	}
 
 	/// [Obligatory]
-	/**
-	 *  Notice:
-	 */
 	template <class T>
 	inline
 	Referencer & operator=(std::initializer_list<T> l){
-		//std::cerr << __FILE__ << ": Check " << __FUNCTION__ << '\n';
 		assignContainer(l, false);
 		return *this;
 	}
 
 	/// Assignment of C strings. [Obligatory]
-	/**
-	 *   STL strings will be handled by the default operator operator=(const T &x) .
-	 */
+	//   STL strings will be handled by the default operator operator=(const T &x) .
 	inline
 	Referencer & operator=(const char *x){
 		assign(x);
 		return *this;
 	}
+	*/
 
 };
 

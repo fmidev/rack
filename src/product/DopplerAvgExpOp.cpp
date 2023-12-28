@@ -41,7 +41,7 @@ void DopplerAvg::init(const Channel & src, bool horizontal){
 	const size_t n = horizontal ? src.getWidth() : src.getHeight();
 	data.resize(n);
 	odim.updateFromMap(src.getProperties());
-	mout.note() << (int)horizontal << '\t' << EncodingODIM(odim) << mout.endl; // src.getProperties()
+	mout.note((int)horizontal , '\t' , EncodingODIM(odim) ); // src.getProperties()
 	odim.getNyquist(LOG_ERR);
 }
 
@@ -138,7 +138,7 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug() << "Src: " << srcData << mout.endl;
+	mout.debug("Src: " , srcData );
 
 	// Dst
 	const double vMax = srcData.odim.getNyquist();
@@ -147,7 +147,7 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 	// dstData.data.setScaling(dstData.odim.scaling.scale, dstData.odim.scaling.offset);  // TODO: re-design, get rid of these
 	dstData.data.properties.importMap(dstData.odim); // IMPORTANT! But get rid of the self-copying later.
 	dstData.data.setCoordinatePolicy(srcData.data.getCoordinatePolicy());
-	mout.debug() << "Dst: " << dstData << mout.endl;
+	mout.debug("Dst: " , dstData );
 
 	const QuantityMap & qm = getQuantityMap();
 	PlainData<PolarDst> & dstQuality = dstData.getQualityData("QIND");
@@ -155,30 +155,30 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 	dstQuality.setGeometry(srcData.data.getWidth(), srcData.data.getHeight());
 	dstQuality.data.properties.updateFromMap(dstQuality.odim); // get rid of these
 
-	//mout.warn() << "conf.decay: " << conf.decay << mout.endl;
+	//mout.warn("conf.decay: " , conf.decay );
 	//drain::image::ImpulseResponseOp<drain::image::ImpulseAvg> impOp(conf);
 	drain::image::ImpulseResponseOp<DopplerAvg> impOp(conf);
 	impOp.setExtensions(horzExt, vertExt);
-	mout.special() << "Op: " << impOp << mout.endl;
+	mout.special("Op: " , impOp );
 
-	mout.special() << "ThConf: " << this->conf.decays << mout.endl;
-	mout.special() << "OpConf: " << impOp.conf.decays << mout.endl;
+	mout.special("ThConf: " , this->conf.decays );
+	mout.special("OpConf: " , impOp.conf.decays );
 
 
 	if (srcData.hasQuality()){
 
 		const PlainData<PolarSrc> & srcQuality = srcData.getQualityData();
-		mout.note() << "Using quality field (" << srcQuality.odim.quantity << ") " << mout.endl;
+		mout.note("Using quality field (" , srcQuality.odim.quantity , ") " );
 
 		impOp.traverseChannel(srcData.data, srcQuality.data, dstData.data, dstQuality.data);
 
 	}
 	else {
-		mout.note() << "no quality field, creating default quality field" << mout.endl;
+		mout.note("no quality field, creating default quality field" );
 		drain::image::Image srcQuality(typeid(unsigned char));
 
 		if (!qm.hasQuantity(srcData.odim.quantity))
-			mout.info() << "quantity map contains no quantity=" << srcData.odim.quantity << mout.endl;
+			mout.info("quantity map contains no quantity=" , srcData.odim.quantity );
 
 		// Handle undetect
 		const Quantity & qty = qm.get(srcData.odim.quantity); // VRAD?
@@ -186,9 +186,9 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 
 		if (DataCoder::undetectQualityCoeff > 0.0){
 			if (qty.hasUndetectValue())
-				mout.warn() << "using undetectQualityCoeff=" << udc << ", actual value still indefinite" << mout.endl;
+				mout.warn("using undetectQualityCoeff=" , udc , ", actual value still indefinite" );
 			else
-				mout.note() << "quantity=" << srcData.odim.quantity << ", discarding 'undetect' values" << mout.endl;
+				mout.note("quantity=" , srcData.odim.quantity , ", discarding 'undetect' values" );
 		}
 
 		// NOTE: the actual undetectValue is NOT (yet) used!
@@ -233,7 +233,7 @@ void DopplerAvgExpOp::processData1D(const Data<PolarSrc> & srcData, Data<PolarDs
 
 	const double NI = srcData.odim.getNyquist();
 	if (NI == 0){
-		mout.error() << "NI=0" << mout.endl;
+		mout.error("NI=0" );
 		return;
 	}
 
@@ -351,7 +351,7 @@ void DopplerModulatorOp::processData(const Data<PolarSrc> & srcData, Data<PolarD
 
 	const double NI = srcData.odim.getNyquist();
 	if (NI == 0){
-		mout.error() << "NI=0" << mout.endl;
+		mout.error("NI=0" );
 		return;
 	}
 

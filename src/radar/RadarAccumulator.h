@@ -198,7 +198,7 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 template  <class AC, class OD>
 void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, const pdata_src_t & srcCount){
 
-	drain::Logger mout("RadarAccumulator", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	//mout.info() << "Quality data available with input; using quality as weights in compositing." << mout.endl;
 	DataCoder converter(srcData.odim, srcQuality.odim);
 	AC::addData(srcData.data, srcQuality.data, srcCount.data, converter);
@@ -210,7 +210,7 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 template  <class AC, class OD>
 bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) const {
 
-	drain::Logger mout("RadarAccumulator", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug("start, quantity=" , dataODIM.quantity );
 

@@ -70,7 +70,7 @@ void DopplerDiffOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> &
 	else {
 		const double NI   = srcData.odim.getNyquist();
 		const double NI_4 = NI/4.0;
-		mout.warn() << "no dMax given, using (V_Nyq=" << NI << ")/4 = " << NI_4 << "  m/s"<< mout.endl;
+		mout.warn("no dMax given, using (V_Nyq=" , NI , ")/4 = " , NI_4 , "  m/s");
 		dstData.odim.setRange(-NI_4,+NI_4);
 	}
 
@@ -79,7 +79,7 @@ void DopplerDiffOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> &
 
 	const double minPhys = dstData.odim.getMin();
 	const double maxPhys = dstData.odim.getMax();
-	mout.info() << "limiting to physical range: [" << minPhys << ',' << maxPhys << "] m/s"<< mout.endl;
+	mout.info("limiting to physical range: [" , minPhys , ',' , maxPhys , "] m/s");
 
 
 	//PlainData<PolarDst> & dstQuality = dstData.getQualityData();
@@ -124,13 +124,13 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 	const PlainData<PolarSrc> & srcDataU = srcSweep.getData("AMVU");
 	if (srcDataU.data.isEmpty()){
-		mout.warn() << "AMVU input missing" << mout.endl;
+		mout.warn("AMVU input missing" );
 		return;
 	}
 
 	const PlainData<PolarSrc> & srcDataV    = srcSweep.getData("AMVV");
 	if (srcDataV.data.isEmpty()){
-		mout.warn() << "AMVV input missing" << mout.endl;
+		mout.warn("AMVV input missing" );
 		return;
 	}
 
@@ -138,7 +138,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	const PlainData<PolarSrc> & srcDataVRAD = srcSweep.getData("VRAD"); // maybe empty
 	const bool VRAD_SRC = !srcDataVRAD.data.isEmpty();
 	if ((matchOriginal > 0) && !VRAD_SRC){
-		mout.warn() << "No VRAD input, matching will be skipped" << mout.endl;
+		mout.warn("No VRAD input, matching will be skipped" );
 	}
 	const bool MATCH_ALIASED  = (matchOriginal & 1) && VRAD_SRC;
 	const bool MASK_DATA = (matchOriginal & 2) && VRAD_SRC;
@@ -148,7 +148,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	const bool VRAD_OVERWRITE = (dstProduct.find("VRAD") != dstProduct.end());
 
 	if (VRAD_OVERWRITE){
-		mout.warn() << "Contains already VRAD, overwriting" << mout.endl;
+		mout.warn("Contains already VRAD, overwriting" );
 		//return;
 	}
 
@@ -173,11 +173,11 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	setGeometry(dstData.odim, dstQuality);
 
 	//const double dstNI = abs(odim.NI);
-	mout.info() << "Inverting (u,v) back to VRAD " << mout.endl;
-	mout.info() << "src [" << srcDataU.odim.quantity << "] " << EncodingODIM(srcDataU.odim) << mout.endl;
-	mout.info() << "src [" << srcDataV.odim.quantity << "] " << EncodingODIM(srcDataV.odim) << mout.endl;
-	mout.info() << "dst [" << dstData.odim.quantity << "]  " << EncodingODIM(dstData.odim) << ", [" << minCode << ',' << maxCode << ']' << mout.endl;
-	mout.info() << "dst [" << dstQuality.odim.quantity << "]" << EncodingODIM(dstQuality.odim) << mout.endl;
+	mout.info("Inverting (u,v) back to VRAD " );
+	mout.info("src [" , srcDataU.odim.quantity , "] " , EncodingODIM(srcDataU.odim) );
+	mout.info("src [" , srcDataV.odim.quantity , "] " , EncodingODIM(srcDataV.odim) );
+	mout.info("dst [" , dstData.odim.quantity , "]  " , EncodingODIM(dstData.odim) , ", [" , minCode , ',' , maxCode , ']' );
+	mout.info("dst [" , dstQuality.odim.quantity , "]" , EncodingODIM(dstQuality.odim) );
 
 	// UNUSED const double srcNI2 = 2.0*srcDataVRAD.odim.getNyquist(); // 2.0*srcData.odim.NI;
 
@@ -202,8 +202,8 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 	size_t address;
 
-	mout.warn() << "Main " << dstData    << mout.endl;
-	mout.note() << "Main " << dstQuality << mout.endl;
+	mout.warn("Main " , dstData    );
+	mout.note("Main " , dstQuality );
 
 	for (size_t j = 0; j < dstData.data.getHeight(); ++j) {
 
@@ -412,8 +412,8 @@ void DopplerCrawlerOp::processData(const Data<src_t > & srcData, Data<dst_t > & 
 	DopplerSegmentProber prober(srcData.data, dstData.data);
 	prober.relative_NI_threshold = relative_NI_threshold;
 	prober.init();
-	mout.warn() << "src: " << srcData << mout.endl;
-	mout.warn() << "dst: " << dstData << mout.endl;
+	mout.warn("src: " , srcData );
+	mout.warn("dst: " , dstData );
 	prober.scan();
 
 
@@ -430,7 +430,7 @@ void DopplerModulatorOp::processData(const Data<PolarSrc> & srcData, Data<PolarD
 
 	const double NI = srcData.odim.getNyquist();
 	if (NI == 0){
-		mout.error() << "NI=0" << mout.endl;
+		mout.error("NI=0" );
 		return;
 	}
 

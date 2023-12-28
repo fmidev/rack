@@ -129,6 +129,7 @@ void Variable::updateIterators()  {
 
 }
 
+/*
 template <>
 std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & v, const SprinterLayout & layout) {
 
@@ -138,24 +139,9 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & v
 	else {
 		return Sprinter::toStream(ostr, (const Castable &)v, layout); //
 	}
-
-	/*
-	else if (v.getElementCount() > 1) {
-		Sprinter::sequenceToStream(ostr, v, layout);
-	}
-	else if (v.empty()) {
-		Sprinter::toStream(ostr, (double *)0, layout);
-	}
-	else if (v.getType() == typeid(bool)) {
-		Sprinter::toStream(ostr, (bool)v, layout);
-	}
-	else {
-		Sprinter::basicToStream(ostr, v, ""); // ?
-		// ostr << v; // Infinite loop? Sprinter::basicToStream(ostr, v, myChars);
-	}
-	*/
 	return ostr;
 }
+*/
 
 /*
 void FlexVariable::info(std::ostream & ostr) const {

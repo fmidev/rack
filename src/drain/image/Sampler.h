@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include "drain/util/BeanLike.h"
+#include "drain/util/FlexibleVariable.h"
 #include "drain/util/IosFormat.h"
 #include "drain/util/Range.h"
 #include "drain/util/ReferenceMap.h"
@@ -64,8 +65,8 @@ struct SamplePicker {
 	 */
 	inline
 	SamplePicker(ReferenceMap & variableMap) : variableMap(variableMap) {
-		infoMap.link("width",  width  = 0);
-		infoMap.link("height", height = 0);
+		infoMap["width"].link(width  = 0);
+		infoMap["height"].link(height = 0);
 	}
 
 	virtual inline

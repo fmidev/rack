@@ -44,11 +44,11 @@ using namespace drain::image;
 void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.debug3() << "Start" << mout.endl;
+	mout.debug3("Start" );
 	mout .debug3() << (const drain::image::Accumulator &) accumulator << mout.endl;
 
 	//if (sweep.data.isEmpty())
-	//	mout.warn() << "data is empty " << mout.endl;
+	//	mout.warn("data is empty " );
 	//else
 	//	mout.debug(5) << "data:\n" << sweep << mout.endl;
 	const PlainData<PolarSrc> & srcQuality = sweep.getQualityData();
@@ -60,7 +60,7 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 	const double undetectWeight = HGHT.hasUndetectValue() ? DataCoder::undetectQualityCoeff : 0.0;
 
 
-	mout.info() << "Using quality data: " << (USE_QUALITY?"YES":"NO") << mout.endl;
+	mout.info("Using quality data: " , (USE_QUALITY?"YES":"NO") );
 
 
 	/// Derivative
@@ -145,7 +145,7 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 			continue;
 
 		h = Geometry::heightFromEtaBeta(eta, beta);
-		//mout.warn() << "h=" << h << mout.endl;
+		//mout.warn("h=" , h );
 		wHeight = heightQuality(h);
 		wUndetect = 0.10 + 0.40*(1.0-wHeight);
 		//if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.geometry.width)){
@@ -163,7 +163,7 @@ void EchoTopOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 					hTop = M2KM *  (hRef + (h-hRef)/(dbz-dbzRef)*(minDBZ - dbzRef));
 					// w = weight;
 					if (hTop < 0.0){
-						//mout.warn() << "h=" << hTop << mout.endl;
+						//mout.warn("h=" , hTop );
 						hTop = 0.0;
 						w = wUndetect;
 					}

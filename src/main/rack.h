@@ -32,11 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.79"
+#define __RACK_VERSION__ "7.8"
 
 /**
  *   Version 7.8
+ *   -- Revised Variable, ReferenceVariable, FlexibleVariable definitions
  *   -- Image processing: keys instead of numeric indices
+ *   -- Check rscale, nbins, nrays in compositing
  *
  *   Version 7.79
  *   -- DistanceTransform: literal keywords: "4-CONNECTED", "8-CONNECTED", "16-CONNECTED",

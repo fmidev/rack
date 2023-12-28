@@ -53,7 +53,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (srcSweeps.empty()){
-		mout.warn() << "no data found with selector: " << dataSelector << mout.endl;
+		mout.warn("no data found with selector: " , dataSelector );
 		// TODO: DATA ERROR?
 		return;
 	}
@@ -62,7 +62,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	const Data<PolarSrc> & srcData = firstSweep.getFirstData();
 	const std::string & quantity = srcData.odim.quantity;
 	if (firstSweep.size() > 1){
-		mout.info() << "several quantities, using the first one :" << quantity << mout.endl;
+		mout.info("several quantities, using the first one :" , quantity );
 	}
 
 
@@ -71,7 +71,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	const std::string dstQuantity = getOutputQuantity(quantity);
 
 	Data<PolarDst> & dstData = dstProduct.getData(dstQuantity);
-	//mout.warn() << "dstOdim " << dstData.odim << mout.endl;
+	//mout.warn("dstOdim " , dstData.odim );
 
 	setEncoding(srcData.odim, dstData);
 
@@ -87,7 +87,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	accumulator.accArray.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
 	accumulator.odim.rscale = dstData.odim.rscale;
 
-	mout.debug() << (const Accumulator &) accumulator << mout.endl;
+	mout.debug((const Accumulator &) accumulator );
 
 	//dstData.odim.NI =
 	srcData.odim.getNyquist(); // to prevent warning in the next cmd
@@ -98,7 +98,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	dstData.odim.angles.clear(); // DO NOT USE clear(), it changes address of 1st elem
 	//dstData.odim.angles.resize(0); // DO NOT USE clear(), it changes address of 1st elem
 
-	mout.debug() << "main loop, quantity=" << quantity << mout.endl;
+	mout.debug("main loop, quantity=" , quantity );
 
 	//for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
 	for (const auto & entry: srcSweeps){
@@ -110,7 +110,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 			continue;
 		}
 		mout.debug3("index: ", entry.first);
-		//mout.warn() << "elangle=" << it->first << mout.endl;
+		//mout.warn("elangle=" , it->first );
 
 		processData(srcData, accumulator);
 
@@ -120,23 +120,23 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 
 	}
 
-	// mout.warn() << "eka: " << drain::sprinter(dstData.odim.angles) << mout;
+	// mout.warn("eka: " , drain::sprinter(dstData.odim.angles) );
 
 	//if (mout.isDebug(LOG_DEBUG))
 	accumulator.extract(dstData.odim, dstProduct, "dwC");
 	//else
-	// OK mout.warn() << "eka: " << drain::sprinter(dstData.odim.angles) << mout;
+	// OK mout.warn("eka: " , drain::sprinter(dstData.odim.angles) );
 		//accumulator.extract(dstData.odim, dstProduct, "dw");
-	//mout.warn() << "toka:" << drain::sprinter(dstData.odim.angles) << mout;
+	//mout.warn("toka:" , drain::sprinter(dstData.odim.angles) );
 
-	//mout.warn() << "koka:" << drain::sprinter(dstProduct.getFirstData().odim.angles) << mout;
-	// OK mout.warn() << "moka:" << drain::sprinter(dstData.odim) << mout;
+	//mout.warn("koka:" , drain::sprinter(dstProduct.getFirstData().odim.angles) );
+	// OK mout.warn("moka:" , drain::sprinter(dstData.odim) );
 
 	/// Important: RELINK => resize, relocate (Address of dstData.odim.angles[0] may have changed.)
 	//  Alternatively, dstData.odim.angles.reserve(90) etc upon ODIM constr?
 	// dstData.odim.link("how:angles", dstData.odim.angles);
 	// drain::image::FilePng::write(dstProduct.getData("DBZH").data, "debug.png");
-	//mout.warn() << "dstProduct.updateTree" << dstData.odim << mout.endl;
+	//mout.warn("dstProduct.updateTree" , dstData.odim );
 	//@= dstProduct.updateTree(dstData.odim);
 
 

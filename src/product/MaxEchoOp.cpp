@@ -48,8 +48,8 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 	drain::Logger mout(drain::getLog(), __FILE__, __FUNCTION__);
 
-	mout.debug3() << "Starting MaxEchoOp (" << name << ") " << mout.endl;
-	mout.debug3() << (const drain::image::Accumulator &) accumulator << mout.endl;
+	mout.debug3("Starting MaxEchoOp (" , name , ") " );
+	mout.debug3((const drain::image::Accumulator &) accumulator );
 
 	const PlainData<PolarSrc> & srcQuality = sweep.getQualityData();
 	const bool WEIGHTED = !srcQuality.data.isEmpty();
@@ -146,7 +146,7 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 		}
 		//else
-			//mout.warn() << "skipping range b=" << binDistance << " i1=" << iSweep << mout.endl;
+			//mout.warn("skipping range b=" , binDistance , " i1=" , iSweep );
 
 	}
 

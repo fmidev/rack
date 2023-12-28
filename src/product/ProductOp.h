@@ -174,7 +174,7 @@ protected:
 		setEncoding(srcODIM, dstData);
 		setGeometry(srcODIM, dstData);
 
-		mout.debug() << "final dstData: " << dstData << mout.endl;
+		mout.debug("final dstData: " , dstData );
 	}
 
 
@@ -256,7 +256,7 @@ void ProductOp<MS,MD>::setEncodingNEW(PlainData<dst_t> & dstData,
 	const std::string & qty = quantity.empty() ? dstData.odim.quantity : quantity;
 
 	if (qty.empty()){
-		mout.warn() << "No quantity in metadata or as argument" << mout.endl;
+		mout.warn("No quantity in metadata or as argument" );
 	}
 
 	const QuantityMap & qmap = getQuantityMap();
@@ -318,9 +318,9 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	//drain::Logger mout(__FILE__, __FUNCTION__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug() << "start" << mout.endl;
-	mout.debug3() << *this << mout.endl;
-	mout.debug2() << "DataSelector: "  << this->dataSelector << mout.endl;
+	mout.debug("start" );
+	mout.debug3(*this );
+	mout.debug2("DataSelector: "  , this->dataSelector );
 
 	// Step 1: collect sweeps (/datasetN/)
 	//DataSetMap<src_t> sweeps;
@@ -335,10 +335,10 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	mout.unimplemented("No index generator defined!");
 	// NEW
 	this->dataSelector.getPaths(src, dataPaths); //, ODIMPathElem::DATASET);
-	mout.debug3() << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
+	mout.debug3("populate the dataset map, paths=" , dataPaths.size() );
 	//for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 	for (const ODIMPath & path: dataPaths){
-		mout.debug3() << "add: " << index << '\t' << path  << mout.endl;
+		mout.debug3("add: " , index , '\t' , path  );
 		sweeps.insert(typename DataSetMap<src_t>::value_type("indexxx", DataSet<src_t>(src(path), drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
 	}
 
@@ -347,7 +347,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	/*
 	this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATA);
 
-	mout.debug3() << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
+	mout.debug3("populate the dataset map, paths=" , dataPaths.size() );
 	std::set<ODIMPath> parents;
 
 	for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
@@ -355,10 +355,10 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 		ODIMPath parent = *it;
 		parent.pop_back();
 
-		mout.debug3() << "check "  << *it << mout.endl;
+		mout.debug3("check "  , *it );
 
 		if (parents.find(parent) == parents.end()){
-			mout.debug3() << "add " << parent  << "=>" << index << mout.endl;
+			mout.debug3("add " , parent  , "=>" , index );
 			// kludge (index ~ elevation)
 			sweeps.insert(typename DataSetMap<src_t>::value_type(index, DataSet<src_t>(src(parent), drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
 			//elangles << elangle;
@@ -367,7 +367,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	*/
 
 
-	mout.debug2() << "DataSets: "  << sweeps.size() << mout.endl;
+	mout.debug2("DataSets: "  , sweeps.size() );
 
 
 	// Copy metadata from the input volume (note that dst may have been cleared above)
@@ -381,15 +381,15 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	ODIMPathElem parent(ODIMPathElem::DATASET, 1); // /dataset1
 	ODIMPathElem child(ODIMPathElem::DATA, 1); // /dataset1
 
-	mout.note() << "appendResults path: " <<  ProductBase::appendResults << mout.endl;
+	mout.note("appendResults path: " ,  ProductBase::appendResults );
 	if (ProductBase::appendResults.getType() == ODIMPathElem::DATASET){
 		DataSelector::getNextChild(dst, parent);
 	}
 
 	DataSelector::getNextChild(dst[parent], child);
 
-	mout.note() << "storing product in path: " <<  parent << '|' << child << mout.endl;
-	//mout.debug3() << "storing product in path: "  << dataSetPath << mout.endl;
+	mout.note("storing product in path: " ,  parent , '|' , child );
+	//mout.debug3("storing product in path: "  , dataSetPath );
 
 	Hi5Tree & dstProduct = dst[parent][child]; // (dataSetPath);
 	DataSet<dst_t> dstProductDataset(dstProduct); // PATH
@@ -417,24 +417,24 @@ template <class MS, class MD>
 void ProductOp<MS,MD>::computeSingleProduct(const DataSetMap<src_t > & src, DataSet<DstType<MD> > & dstProduct) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
-	mout.debug3() << "start" << mout.endl;
+	mout.debug3("start" );
 
 	if (src.size() == 0)
-		mout.warn() << "no data" << mout.endl;
+		mout.warn("no data" );
 
 	//for (typename DataSetMap<src_t >::const_iterator it = src.begin(); it != src.end(); ++it) {
 	for (const auto & entry: src) {
 		mout.debug3("calling processDataSet for elev=", entry.first,  " #datasets=", entry.second.size());
 		processDataSet(entry.second, dstProduct);
 		// TODO: detect first init?
-		// mout.warn() << "OK" << mout.endl;
+		// mout.warn("OK" );
 	}
 
 	/// Pick main product data and assign (modified) odim data
-	// mout.warn() << "getFirst data" << mout.endl;
+	// mout.warn("getFirst data" );
 	//@ Data<DstType<MD> > & dstData = dstProduct.getFirstData(); // main data
 	//@ dstProduct.updateTree(dstData.odim);
-	// mout.warn() << "end" << mout.endl;
+	// mout.warn("end" );
 }
 
 
@@ -445,11 +445,11 @@ void ProductOp<MS,MD>::processDataSet(const DataSet<src_t > & srcSweep, DataSet<
 	//drain::Logger mout(__FILE__, __FUNCTION__); //REPL this->name+"(ProductOp<MS,MD>)", __FUNCTION__);
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug() << "start" << mout.endl;
+	mout.debug("start" );
 
 	const Data<src_t > & srcData = srcSweep.getFirstData();
 
-	mout.debug() << "target quantity: " << odim.quantity << mout.endl;
+	mout.debug("target quantity: " , odim.quantity );
 
 	// NEW 2020/06
 	const std::string & quantity = !odim.quantity.empty() ? odim.quantity : srcData.odim.quantity;
@@ -461,13 +461,13 @@ void ProductOp<MS,MD>::processDataSet(const DataSet<src_t > & srcSweep, DataSet<
 	//if (dstData.odim.quantity.empty())
 	//	dstData.odim.quantity = odim.quantity;
 
-	//mout.debug() << "calling setEncoding" << mout.endl;
+	//mout.debug("calling setEncoding" );
 	//setEncoding(srcData.odim, dstData.odim);
 	this->initDst(srcData.odim, dstData);
 
-	//mout.warn() << "calling processData" << mout.endl;
+	//mout.warn("calling processData" );
 	processData(srcData, dstData);
-	//mout.warn() << "updateTree" << mout.endl;
+	//mout.warn("updateTree" );
 	//@ dstData.updateTree();
 }
 

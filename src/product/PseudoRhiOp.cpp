@@ -78,11 +78,11 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 //void PseudoRhiOp::processVolume(const Hi5Tree & src, Hi5Tree &dst) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	//mout.warn() << parameters  << mout.endl;
-	//mout.warn() << odim  << mout.endl;
+	//mout.warn(parameters  );
+	//mout.warn(odim  );
 
 	if (src.empty()){
-		mout.warn() << "Empty input data, skipping. Selector=" << dataSelector << mout.endl;
+		mout.warn("Empty input data, skipping. Selector=" , dataSelector );
 		return;
 	}
 
@@ -91,23 +91,23 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 	const std::string & quantity = srcData.odim.quantity;
 
 	if (srcDataSet.size() > 1){
-		mout.note() << "Multiple data: several quantities. Using quantity=" << quantity << mout.endl;
+		mout.note("Multiple data: several quantities. Using quantity=" , quantity );
 	}
 	else {
-		mout.debug() << "Using quantity=" << quantity << mout.endl;
+		mout.debug("Using quantity=" , quantity );
 	}
 
 	Data<RhiDst> & dstData = dstProduct.getData(quantity);
 	dstData.odim.quantity = quantity;
-	//mout.warn() << dstData.odim << mout.endl;
+	//mout.warn(dstData.odim );
 
 	initDst(srcData.odim, dstData);
 
-	// mout.warn() << odim         << mout.endl;
-	// mout.warn() << dstData.odim << mout.endl;
+	// mout.warn(odim         );
+	// mout.warn(dstData.odim );
 
 	if ((odim.area.width==0) || (odim.area.height==0)){
-		mout.warn() << "empty image: " <<  dstData.data.getGeometry() << mout.endl;
+		mout.warn("empty image: " ,  dstData.data.getGeometry() );
 		return;
 	}
 
@@ -129,8 +129,8 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 
 	const double beamWidth2 = beamWidth*beamWidth*(M_PI/180.0)*(M_PI/180.0);
 
-	// mout.warn() << " rangeResolution:  " <<  rangeResolution  << mout.endl;
-	// mout.warn() << " heightResolution: " <<  heightResolution << mout.endl;
+	// mout.warn(" rangeResolution:  " ,  rangeResolution  );
+	// mout.warn(" heightResolution: " ,  heightResolution );
 
 
 	// "Ground angle" = distance / earthRadius43
@@ -168,12 +168,12 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 	*/
 	// QuantityMap & qmap = getQuantityMap();
 	const Quantity & quantityInfo = getQuantityMap().get(dstData.odim.quantity);
-	mout.debug()  << "Using quality info:" << mout.endl;
-	mout.debug2() << quantityInfo << mout.endl;
+	mout.debug("Using quality info:" );
+	mout.debug2(quantityInfo );
 
 	const bool SKIP_UNDETECT = !quantityInfo.hasUndetectValue();
 	const double undetectValue = quantityInfo.undetectValue;
-	mout.debug() << "Has zero:" << (int)quantityInfo.hasUndetectValue() << mout.endl;
+	mout.debug("Has zero:" , (int)quantityInfo.hasUndetectValue() );
 
 	/// bin index
 	int bin;
@@ -341,7 +341,7 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 
 			//if (USE_LOWER)					dstData.data.put(i, odim.geometry.height-1-k, 192);
 
-			// mout.debug2() << "elev=" << it->first << "\t : " << it->second << mout.endl;
+			// mout.debug2("elev=" , it->first , "\t : " , it->second );
 
 		}  // for k
 

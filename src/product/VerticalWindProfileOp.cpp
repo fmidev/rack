@@ -55,19 +55,19 @@ void VerticalWindProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & sr
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug() << *this << mout.endl;
+	mout.debug(*this );
 
 	/// Copy top level metadata, part I: product settings  (including undetectValue timestamps - so this must be before user's attributes)
 
 	if (srcSweeps.empty()){
-		mout.warn() << "no input data, skipping" << mout.endl;
+		mout.warn("no input data, skipping" );
 		return;
 	}
 
 	/// Trick. Mutable member referenced by odim.
 	interval = (odim.altitudeRange.max - odim.altitudeRange.min) / static_cast<double>(odim.levels);
-	//mout.warn() << "interval" << interval << mout.endl;
-	//mout.warn() << "odim " << odim << mout.endl;
+	//mout.warn("interval" , interval );
+	//mout.warn("odim " , odim );
 
 
 	// Create (as first data?)
@@ -100,7 +100,7 @@ void VerticalWindProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & sr
 	const drain::RegExp decibels("(T|DBZ)(H|V)");
 
 
-	mout.debug3() << "Step 1: initialize accumulation arrays." << mout.endl;
+	mout.debug3("Step 1: initialize accumulation arrays." );
 
 	// Temporary storage for eacg quantity
 	std::map<std::string,drain::image::ImageT<double> > sumDataMap; //quantityGroup;
@@ -113,14 +113,14 @@ void VerticalWindProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & sr
 	proj.setProjectionDst("+proj=longlat +datum=WGS84 +no_defs");
 	 */
 
-	mout.debug3() << "Step 2: main loop - collect profile data." << mout.endl;
+	mout.debug3("Step 2: main loop - collect profile data." );
 
 	std::set<double> elangles;
 
 	/// Traverse elevation angles
 	for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it) {
 
-		mout.debug3() << "Sweep:" << it->first << mout.endl;
+		mout.debug3("Sweep:" , it->first );
 
 		const DataSet<PolarSrc> & sweep = it->second;
 
@@ -130,10 +130,10 @@ void VerticalWindProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & sr
 			const std::string & quantity = dit->first;
 			const Data<PolarSrc> & srcData = dit->second;
 
-			mout.note() << "  quantity:" << quantity << mout.endl;
+			mout.note("  quantity:" , quantity );
 
 			if (srcData.data.isEmpty()){
-				mout.warn() << " empty quantity:" << quantity << mout.endl;
+				mout.warn(" empty quantity:" , quantity );
 				continue;  // TODO warn?
 			}
 
@@ -147,15 +147,15 @@ void VerticalWindProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & sr
 
 			Data<VprDst> & dstData = dstProduct.getData(quantity);
 			if (dstData.data.isEmpty()) {
-				mout.debug() << "init quantity: "  << quantity << " db scale: " << (int)DB_SCALE << mout.endl;
+				mout.debug("init quantity: "  , quantity , " db scale: " , (int)DB_SCALE );
 				dstData.odim.quantity = quantity; // causes copying metadata from src
 				setEncoding(srcData.odim, dstData);
-				mout.debug() << EncodingODIM(dstData.odim) << mout.endl;
+				mout.debug(EncodingODIM(dstData.odim) );
 				dstData.data.setType(dstData.odim.type.at(0));
 				//dstData.initialize(dstData.odim.type, geometry.getWidth(), geometry.getHeight());
 				//dstData.setEncoding(dstData.odim.type);
 				dstData.setGeometry(geometry.getWidth(), geometry.getHeight());
-				// mout.warn() << "init: "  << dstData << mout.endl;
+				// mout.warn("init: "  , dstData );
 
 				sumData.setGeometry(geometry);  // .Map[quantity]
 				sumQuality.setGeometry(geometry);
@@ -179,9 +179,9 @@ void VerticalWindProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & sr
 					//proj.projectFwd(meanRange, meanAzm, odimFinal.lon, odimFinal.lat);
 					//odimFinal.lon *= RAD2DEG;
 					//odimFinal.lat *= RAD2DEG;
-					//mout.warn() << dstData.odim.lon << ',' << dstData.odim.lat << '\t' << dstData.odim.prodpar << mout.endl;
-					//mout.warn() << odimFinal.lon << ',' << odimFinal.lat << '\t' << odimFinal.prodpar << mout.endl;
-					//mout.warn() << EncodingODIM(dstData.odim) << mout.endl;
+					//mout.warn(dstData.odim.lon , ',' , dstData.odim.lat , '\t' , dstData.odim.prodpar );
+					//mout.warn(odimFinal.lon , ',' , odimFinal.lat , '\t' , odimFinal.prodpar );
+					//mout.warn(EncodingODIM(dstData.odim) );
 
 				}
 				*/
@@ -215,13 +215,13 @@ void VerticalWindProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & sr
 			/// Distance (in metres) to the first measurement requested by the user.
 			const double beamMin = Geometry::beamFromEtaGround(eta, odim.distanceRange.min * 1000.0);
 			if (beamMin < beamOffset)
-				mout.info() << "requested minimum distance " << beamMin << " smaller than measured distance " << beamOffset << mout.endl;
+				mout.info("requested minimum distance " , beamMin , " smaller than measured distance " , beamOffset );
 
 			/// Distance (in metres) to the last measurement requested by the user.
 			const double beamMax = Geometry::beamFromEtaGround(eta, odim.distanceRange.max * 1000.0);
 			const double beamMaxMeasured = srcData.odim.area.width*srcData.odim.rscale + beamOffset;
 			if (beamMax > beamMaxMeasured)
-				mout.info() << "requested maximum distance " << beamMax << " greater than measured distance " << beamMaxMeasured << mout.endl;
+				mout.info("requested maximum distance " , beamMax , " greater than measured distance " , beamMaxMeasured );
 
 
 			const int startRay = srcData.odim.area.height * (odim.azmRange.min / 360.0);  //
@@ -242,9 +242,9 @@ void VerticalWindProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & sr
 
 			// (Altitude check is within the loop)
 
-			mout.debug() << "Bins:    "  << binStart << '-' << binEnd << mout.endl;
-			mout.debug() << "Beam[m]: "  << beamMin << '-' << beamMax << mout.endl;
-			mout.debug2() << srcData.odim << mout.endl;
+			mout.debug("Bins:    "  , binStart , '-' , binEnd );
+			mout.debug("Beam[m]: "  , beamMin , '-' , beamMax );
+			mout.debug2(srcData.odim );
 
 			//if (beamStart )
 			int k = 0; // level index (vertical coordinate)
@@ -314,7 +314,7 @@ void VerticalWindProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & sr
 	} // end elevations
 
 
-	mout.debug3() << "Step 3: copy profiles to structure" << mout.endl;
+	mout.debug3("Step 3: copy profiles to structure" );
 
 
 	/// Second loop: copy the profile(s), each quantity at a time.
@@ -325,7 +325,7 @@ void VerticalWindProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & sr
 
 		Data<VprDst> & dstData = it->second;
 
-		mout.debug3() << "quantity:" << quantity << mout.endl;
+		mout.debug3("quantity:" , quantity );
 
 		//Hi5Tree & group = dstDataSet[groupName];
 		//drain::VariableMap & what = group["what"].data.attributes;
@@ -347,7 +347,7 @@ void VerticalWindProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & sr
 
 			const bool DB_SCALE = decibels.test(quantity);
 
-			//mout.warn() << EncodingODIM(dstData.odim) << " DB_SCALE=" << (int)DB_SCALE << mout.endl;
+			//mout.warn(EncodingODIM(dstData.odim) , " DB_SCALE=" , (int)DB_SCALE );
 
 			// TODO check cf namings above
 			ImageT<double> & profile            = sumDataMap[quantity]; // rename
@@ -400,7 +400,7 @@ void VerticalWindProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & sr
 	}
 
 	// @? dstProduct.updateTree(odimFinal);
-	//mout.warn() << odimFinal << mout.endl;
+	//mout.warn(odimFinal );
 
 
 }

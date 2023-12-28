@@ -50,33 +50,33 @@ void SunShineOp::processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) c
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug() << "Start"  << mout.endl;
+	mout.debug("Start"  );
 
 	if (odim.type.empty())
-		mout.error() << "Unset data storage type."  << mout.endl;
+		mout.error("Unset data storage type."  );
 
 	//ProductOp::applyODIM();
-	mout.note() << " odim: " << odim << mout.endl;
-	//mout.note() << "dodim: " << dst.odim << mout.endl;
+	mout.note(" odim: " , odim );
+	//mout.note("dodim: " , dst.odim );
 	setGeometry(odim, dst);
 	//ProductOp::applyODIM(dst.odim, odim);
 
 	//dst.odim.rscale = (static_cast<double>(src.odim.geometry.width) * src.odim.rscale + src.odim.rstart) / static_cast<double>(dst.odim.geometry.width);
-	mout.debug2() << "target nbins:" << dst.odim.area.width << " rscale:" << dst.odim.rscale << mout.endl;
+	mout.debug2("target nbins:" , dst.odim.area.width , " rscale:" , dst.odim.rscale );
 
 	RadarProj4 proj(src.odim.lon, src.odim.lat);
 	proj.setProjectionDst("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_def");
 
-	mout.debug() << proj << mout.endl;
+	mout.debug(proj );
 
 	//std::string timestamp = src.odim.date + src.odim.time.substr(0,4);
-	//mout.warn() << "timestamp " << timestamp << " <- " << src.odim.date << ':' <<  src.odim.time << mout.endl;
+	//mout.warn("timestamp " , timestamp , " <- " , src.odim.date , ':' ,  src.odim.time );
 
 	Sun sun(timestamp);
 	dst.odim.setTime(timestamp);
 	dst.odim.updateLenient(odim);
 	// dst.odim.updateLenient() //.setTypeDefaults
-	// mout.warn() << "odim " << dst.odim.date << '-' << dst.odim.time << mout.endl;
+	// mout.warn("odim " , dst.odim.date , '-' , dst.odim.time );
 
 	double a;  // azm of the beam
 	double r;  // range of the bin
@@ -84,9 +84,9 @@ void SunShineOp::processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) c
 	double lat;
 
 	// proj.projectInv(0.0, 0.0, lon, lat);
-	// mout.warn() << "proj\t" << (180.0*lon/M_PI) << ',' << (180.0*lat/M_PI) << mout.endl;
+	// mout.warn("proj\t" , (180.0*lon/M_PI) , ',' , (180.0*lat/M_PI) );
 
-	mout.debug2() << "main" << mout.endl;
+	mout.debug2("main" );
 
 
 	for (unsigned int j = 0; j < dst.odim.area.height; ++j) {
@@ -105,13 +105,13 @@ void SunShineOp::processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) c
 		}
 	}
 
-	//mout.note() << "dst odim: " << dst.odim << mout.endl;
+	//mout.note("dst odim: " , dst.odim );
 
 	//dst.odim.product = "MIKA"; // odim.product;
 	//dst.odim.undetect = 0.123456789; // odim.product;
 	//dst.odim.prodpar = odim.prodpar;
 	//dst.updateTree2();
-	//mout.note() << "dst odim: " << dst.odim << mout.endl;
+	//mout.note("dst odim: " , dst.odim );
 
 }
 

@@ -29,6 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <drain/util/Log.h>
 
 #include "palette-manager.h"
 
@@ -40,6 +41,11 @@ namespace rack {
 		drain::image::PaletteOp::palette_map_t & m = drain::image::PaletteOp::getPaletteMap();
 
 		if (m.empty()){ // Todo: what if future PaletteOp map is non-empty (factory palettes)
+
+
+			//drain::Logger mout(drain::image::getImgLog(), __FILE__, __FUNCTION__);
+
+			//drain::image::getImgLog().setVerbosity(20);
 
 			/*
 			m["ANDRE-CLASS"] =
@@ -116,6 +122,7 @@ namespace rack {
 			#include "palette/palette-ZDR.inc"
 			;
 
+			// drain::Sprinter::toStream(std::cout, m["CLASS"], drain::Sprinter::jsonLayout);
 		}
 
 		return m;

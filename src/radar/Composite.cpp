@@ -132,18 +132,54 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	if (!projGeo2Native.isSet()){
 		mout.special("projR2M src: ", projGeo2Native.getProjectionSrc());
-		//mout.special("projR2M dst: ", projR2M.getProjectionDst());
 		mout.special("projR2M dst: unset, using AEQD");
 		projAEQD = true;
 	}
 
 	odim.object = "COMP";
 
+	// Various checks
+
 	checkQuantity(srcData.odim.quantity);
+
+	checkCompositingMethod(srcData.odim);
+
+	if (srcData.odim.rscale <= 0.0){
+		mout.advice("Consider quick fix, like --/dataset1/where:rscale=500");
+		mout.fail("Illegal or missing bin length (where:rscale): ", srcData.odim.rscale);
+		return;
+	}
+
+	if (srcData.odim.area.width <= 0.0){
+		mout.advice("Consider quick fix, like --/dataset1/where:nbins=", srcData.data.getWidth());
+		mout.fail("Illegal or missing bin count (where:nbins): ", srcData.odim.area.width);
+		srcData.odim.area.width = srcData.data.getWidth();
+		mout.warn("Setting where:nbins=", srcData.odim.area.width);
+	}
+
+	if (srcData.odim.area.height <= 0.0){
+		mout.advice("Consider quick fix, like --/dataset1/where:nrays=", srcData.data.getHeight());
+		mout.fail("Illegal or missing beam count (where:nrays): ", srcData.odim.area.height);
+		srcData.odim.area.height = srcData.data.getHeight();
+		mout.warn("Setting where:nrays=", srcData.odim.area.height);
+	}
+
+
+	if (srcData.odim.lat == 0.0){
+		mout.warn("Suspicious latitude (where:lat): 0.0");
+	}
+
+	if (srcData.odim.lon == 0.0){
+		mout.warn("Suspicious longitude (where:long): 0.0");
+	}
+
+
 
 	ProductBase::applyODIM(this->odim, srcData.odim);
 
-	checkCompositingMethod(srcData.odim);
+
+
+
 
 	const bool USE_PRIOR_WEIGHT = (priorWeight > 0.0);
 

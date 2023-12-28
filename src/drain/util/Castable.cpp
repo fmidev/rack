@@ -307,5 +307,18 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Castable & v
 
 }
 
+/*
+template <>
+std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & v, const SprinterLayout & layout) {
+
+	if ((v.getElementCount() > 1) && !v.isString()){
+		return Sprinter::sequenceToStream(ostr, v, layout);
+	}
+	else {
+		return Sprinter::toStream(ostr, (const Castable &)v, layout); //
+	}
+	return ostr;
+}
+*/
 
 }  // drain

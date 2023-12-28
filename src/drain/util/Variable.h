@@ -210,15 +210,21 @@ public:
 		return true;
 	}
 
+
+#define SmartVariable Variable
+#include "SmartVariable.inc"
+#undef  SmartVariable
+
 	/**
 	 *
 	 *  Semantics: should the type change always?
 	 */
+	/*
 	inline
 	Variable &operator=(const Variable &v){
 		assignCastable(v);
 		return *this;
-	}
+	}*/
 
 	/*
 	inline
@@ -244,12 +250,6 @@ public:
 	}
 	*/
 
-	template <class T, size_t N>
-	inline
-	Variable &operator=(const UniTuple<T,N> & unituple){
-		assignContainer(unituple);
-		return *this;
-	}
 	/* Handler by template, below
 	inline
 	Variable &operator=(const Castable &c){
@@ -258,21 +258,6 @@ public:
 	}
 	*/
 
-	/// Assignment from basic types and std::string.
-	template <class T>
-	inline
-	Variable & operator=(const T &x){
-		Castable::operator=(x);
-		return *this;
-	}
-
-
-	/// Assignment from char * and std::string splits the input by separator.
-	inline
-	Variable &operator=(const char *s){
-		Castable::operator=(s);
-		return *this;
-	}
 
 
 	/// Extends the array by one element.
@@ -381,8 +366,10 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & x
 */
 
 template <>
-std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Castable & v, const SprinterLayout & layout);
-
+inline
+std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & x, const SprinterLayout & layout){
+	return Sprinter::toStream(ostr, (const drain::Castable &)x, layout);
+}
 
 
 

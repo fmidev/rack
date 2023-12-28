@@ -120,16 +120,16 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug() << "start" << mout.endl;
-	mout.debug3() << *this << mout.endl;
-	mout.debug2() << "DataSelector: "  << this->dataSelector << mout.endl;
+	mout.debug("start" );
+	mout.debug3(*this );
+	mout.debug2("DataSelector: "  , this->dataSelector );
 
 	// Step 1: collect sweeps (/datasetN/)
 	//DataSetMap<PolarSrc> sweeps;
 	DataSetMap<PolarSrc> sweeps;
 
 	/// Usually, the operator does not need groups sorted by elevation.
-	mout.debug3() << "collect the applicable paths"  << mout.endl;
+	mout.debug3("collect the applicable paths"  );
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
 	//this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATASET); // RE2
 
@@ -138,10 +138,10 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 
 	if (dataPaths.empty()){
-		mout.warn() << "no dataset's selected" << mout.endl;
+		mout.warn("no dataset's selected" );
 	}
 	else {
-		mout.debug3() << "populate the dataset map, paths=" << dataPaths.size() << mout.endl;
+		mout.debug3("populate the dataset map, paths=" , dataPaths.size() );
 	}
 
 	for (ODIMPath & path: dataPaths){
@@ -161,7 +161,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 			continue;
 		}
 
-		// mout.debug3() << "elangles (this far> "  << elangles << mout.endl;
+		// mout.debug3("elangles (this far> "  , elangles );
 		const Hi5Tree & srcDataSet = src(parent);
 
 		// const double elangle = srcDataSet[ODIMPathElem::WHERE].data.attributes["elangle"];  // PATH
@@ -180,19 +180,19 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 		/*
 		if (sweeps.find(elangle) == sweeps.end()){
-			mout.debug3() << "add "  << elangle << ':'  << parent << " quantity RegExp:" << this->dataSelector.quantity << mout.endl;
+			mout.debug3("add "  , elangle , ':'  , parent , " quantity RegExp:" , this->dataSelector.quantity );
 			sweeps.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(srcDataSet, drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
 			// elangles << elangle;
-			//mout.warn() << "add " <<  DataSet<PolarSrc>(src(parent), drain::RegExp(this->dataSelector.quantity) ) << mout.endl;
+			//mout.warn("add " ,  DataSet<PolarSrc>(src(parent), drain::RegExp(this->dataSelector.quantity) ) );
 		}
 		else {
-			mout.note() << "elange ="  << elangle << " already added, skipping " << parent << mout.endl;
+			mout.note("elange ="  , elangle , " already added, skipping " , parent );
 		}
 		*/
 	}
 
-	//mout.note() << "first elange =" << sweeps.begin()->first << " DS =" << sweeps.begin()->second << mout.endl;
-	//mout.note() << "first qty =" << sweeps.begin()->second.begin()->first << " D =" << sweeps.begin()->second.getFirstData() << mout.endl;
+	//mout.note("first elange =" , sweeps.begin()->first , " DS =" , sweeps.begin()->second );
+	//mout.note("first qty =" , sweeps.begin()->second.begin()->first , " D =" , sweeps.begin()->second.getFirstData() );
 
 
 	ODIMPathElem dataSetPath(ODIMPathElem::DATASET, 1);
@@ -207,7 +207,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		}
 	}
 	else if (ProductBase::appendResults.is(ODIMPathElem::DATA)){
-		//mout.info() << "appending to next available data group in " << dataSetPath <<  mout.endl;
+		//mout.info("appending to next available data group in " , dataSetPath );
 	}
 	else if (ProductBase::appendResults.is(ODIMPathElem::ROOT)){
 		if (!dst.empty() && (&src != &dst)){  // latter is ANDRE test... (kludge)
@@ -221,7 +221,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	}
 	//++dataSetPath.index;
 
-	//mout.warn() << "FAILED: "  << dataSetPath << mout.endl;
+	//mout.warn("FAILED: "  , dataSetPath );
 	//dataSetPath.push_back(ODIMPathElem(ODIMPathElem::DATASET, 1));
 
 	mout.debug("storing product in path: ", dataSetPath);
@@ -251,7 +251,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	drain::VariableMap & rootWhere = dst[ODIMPathElem::WHERE].data.attributes; //root.getWhere();
 	//where["init0"] = {0.1, 2.2};
 	rootWhere = src[ODIMPathElem::WHERE].data.attributes;
-	//mout.warn() << where << mout;
+	//mout.warn(where );
 	//rootWhere.importCastableMap(src[ODIMPathElem::WHERE].data.attributes);
 	//where.importMap(src[ODIMPathElem::WHERE].data.attributes);
 	//where.importCastableMap(src[ODIMPathElem::WHERE].data.attributes);
@@ -273,14 +273,14 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	this->computeSingleProduct(sweeps, dstProductDataset);
 	// this->processSweeps(sweeps, dstProductDataset);
 
-	// mout.warn() << "MAIN eka: " << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
+	// mout.warn("MAIN eka: " , drain::sprinter(dstProductDataset.getFirstData().odim) );
 
 	if (!dstProductDataset.empty()){
 		/// Todo: how to handle undefined
 		how["angles"] = dstProductDataset.getFirstData().odim.angles;
 		//how["anglesXX"] = dstProductDataset.getFirstData().odim.angles;
 	}
-	//mout.warn() << "MAIN toka:" << drain::sprinter(dstProductDataset.getFirstData().odim) << mout;
+	//mout.warn("MAIN toka:" , drain::sprinter(dstProductDataset.getFirstData().odim) );
 	//mout.warn("how how", how);
 	// mout.experimental("dst2", rootWhere);
 	// hi5::Writer::writeFile("test0.h5", dst);

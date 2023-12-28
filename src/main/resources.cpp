@@ -387,7 +387,7 @@ drain::image::Image &  RackContext::getModifiableImage(){  // RackContext & ctx
 	else { // ctx.currentImage != &ctx.grayImage
 		//mout.debug(" currentImage not modifiable, creating a copy to grayImage" );
 		//convertGrayImage(*currentImage);
-		const drain::FlexVariable & quantity = ctx.currentGrayImage->properties["what:quantity"];
+		const drain::FlexibleVariable & quantity = ctx.currentGrayImage->properties["what:quantity"];
 		mout.warn("Experimental! Using h5-stored image, quantity=" , quantity , ", " , *ctx.currentImage );
 		return *((drain::image::Image *)ctx.currentImage); // force...
 	}

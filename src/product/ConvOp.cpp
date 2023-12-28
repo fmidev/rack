@@ -67,7 +67,7 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.debug2() << "start" << mout.endl;
+	mout.debug2("start" );
 
 	//const CoordinatePolicy polarCoordPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP);
 
@@ -79,7 +79,7 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 
 	const QuantityMap & qm = getQuantityMap();
 
-	//mout.warn() << quantityMap.get("DBZH").get('C').toStr() << mout.endl;
+	//mout.warn(quantityMap.get("DBZH").get('C').toStr() );
 	MaxEchoOp maxOp;
 	maxOp.odim.updateFromMap(qm.get("DBZH").get('C'));
 	maxOp.odim.quantity = "MAX";
@@ -88,9 +88,9 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 	//maxOp.devAltitude = 500; //echoTopThreshold/2;
 	maxOp.computeSingleProduct(srcSweeps, dstProduct);
 	Data<PolarDst> & maxEcho = dstProduct.getData(maxOp.odim.quantity); // ensure
-	//mout.warn() << "maxEcho " << maxEcho.odim << mout.endl;
+	//mout.warn("maxEcho " , maxEcho.odim );
 	//maxEcho.updateTree2();
-	//mout.warn() << "maxEcho " << maxEcho << mout.endl;
+	//mout.warn("maxEcho " , maxEcho );
 
 	CappiOp cappiOp;
 	if (USE_FCELL){
@@ -103,7 +103,7 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 	Data<PolarDst> & cappi = dstProduct.getData(cappiOp.odim.quantity);
 	dstProduct.updateTree3(cappi.odim); // IMPORTANT
 	//cappi.updateTree2();
-	mout.warn() << "cappi " << cappi << mout.endl;
+	mout.warn("cappi " , cappi );
 
 	EchoTopOp echoTopOp;
 	if (USE_FETOP){
@@ -128,7 +128,7 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 	}
 	*/
 	deriveDstGeometry(srcSweeps, dstData.odim);
-	mout.note() << "dstData.odim: " << ODIM(dstData.odim) << mout.endl;
+	mout.note("dstData.odim: " , ODIM(dstData.odim) );
 
 	// Product quality (?)
 	PlainData<PolarDst> & dstQuality = dstData.getQualityData();
@@ -137,7 +137,7 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 	const drain::image::Geometry g(dstData.odim.area.width, dstData.odim.area.height);
 	dstData.data.setGeometry(g);
 	dstData.data.clear();
-	//mout.warn() << "Destination data:" << dstData << mout.endl;
+	//mout.warn("Destination data:" , dstData );
 
 	dstQuality.data.setGeometry(g);
 	dstQuality.data.fill(dstQuality.odim.scaling.inv(1.0));
@@ -175,7 +175,7 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 		//avgOp.conf.
 		avgOp.conf.widthM  = cellDiameter*1000.0; // smoothAzm;
 		avgOp.conf.heightD = cellDiameter*1000.0; // smoothRad;
-		mout.warn() << "cappi.odim: " << cappi.odim << mout.endl;
+		mout.warn("cappi.odim: " , cappi.odim );
 		//avgOp.setPixelConf();
 		avgOp.processPlainData(cappi, fuzzyCell2);
 
@@ -197,7 +197,7 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 	smoothOp.setRadius(horz, vert);
 	// Consider GaussianPolar
 	if ((horz > 0) && (vert > 0.0)){
-		//mout.warn() << "smoothing: " << smoothOp << mout.endl;
+		//mout.warn("smoothing: " , smoothOp );
 		fuzzyCore.data.setCoordinatePolicy(polarCoordPolicy);
 		smoothOp.process(fuzzyCore.data, fuzzyCore.data);
 		fuzzyCell.data.setCoordinatePolicy(polarCoordPolicy);
@@ -256,7 +256,7 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 	}
 
 
-	mout.debug() << "Finished" << mout.endl;
+	mout.debug("Finished" );
 
 }
 
