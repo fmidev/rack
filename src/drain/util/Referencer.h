@@ -225,6 +225,12 @@ public:
 #include "SmartVariable.inc"
 #undef  SmartVariable
 
+	inline
+	Referencer & operator=(const Variable &x){
+		assignCastable(x);
+		return *this;
+	}
+
 	/*
 	/// Default assignment operator - aimed for basic types and std::string.
 	//  This is the idea of the whole thing.

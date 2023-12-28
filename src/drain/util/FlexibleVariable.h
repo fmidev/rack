@@ -128,6 +128,12 @@ public:
 #include "SmartVariable.inc"
 #undef  SmartVariable
 
+	inline
+	FlexibleVariable & operator=(const Variable &x){
+		assignCastable(x);
+		return *this;
+	}
+
 	/*
 	inline
 	FlexibleVariable & operator=(const FlexibleVariable &x){
