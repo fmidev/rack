@@ -92,7 +92,7 @@ typedef drain::UnorderedMultiTree<NodeGDAL> TreeGDAL;
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
-	return drain::NodeXML::toOStr(ostr, tree);
+	return drain::NodeXML::toStream(ostr, tree);
 }
 
 

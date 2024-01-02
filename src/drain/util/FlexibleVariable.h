@@ -177,9 +177,6 @@ public:
 	}
 
 
-
-protected:
-
 	/// Returns true, if the internal pointer directs to external data object, ie. internal data vector is not used.
 	/**
 	 *  (Derived classes, like FlexibleVariable, may alternatively point to external data array.)
@@ -187,10 +184,13 @@ protected:
 	 *  \return - true, if the internal pointer directs to external data object
 	 *
 	 */
-	inline
+	inline  // consider virtual: isReference() == true for Reference
 	bool isReference() const {
 		return (caster.ptr != (void *) &data[0]);
 	}
+
+
+protected:
 
 	/// Request to change the array size. For Castable (and Reference) does nothing and returns false.
 	/**

@@ -815,6 +815,11 @@ void drain::FlaggerBase<E>::debug(std::ostream & ostr) const {
 }
 
 
+template <typename E>
+inline
+std::ostream & operator<<(std::ostream & ostr, const drain::FlaggerBase<E> & flagger) {
+	return ostr << flagger.str(); // flags.keysToStream(ostr);
+}
 
 template <typename E>
 class SingleFlagger : public FlaggerBase<E> {

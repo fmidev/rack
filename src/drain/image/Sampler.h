@@ -64,7 +64,8 @@ struct SamplePicker {
 	 *  \param ref - flexible container in which the values in each location will be written.
 	 */
 	inline
-	SamplePicker(ReferenceMap & variableMap) : variableMap(variableMap) {
+	//SamplePicker(ReferenceMap & variableMap) : variableMap(variableMap) {
+	SamplePicker(ReferenceMap2<> & variableMap) : variableMap(variableMap) {
 		infoMap["width"].link(width  = 0);
 		infoMap["height"].link(height = 0);
 	}
@@ -111,7 +112,7 @@ struct SamplePicker {
 
 	/// Container for image data, including data derived thereof. Updated in every image position (i,j).
 	/// Formatted and displayed in each row or the output file.
-	ReferenceMap & variableMap;
+	ReferenceMap2<> & variableMap;
 
 };
 
@@ -124,7 +125,7 @@ class ImageReader : public SamplePicker {
 public:
 
 	inline
-	ImageReader(ReferenceMap & ref) : SamplePicker(ref) {//static int dummy;
+	ImageReader(ReferenceMap2<> & ref) : SamplePicker(ref) {//static int dummy;
 		variableMap.link("i", current_i = 0);
 		variableMap.link("j", current_j = 0);
 		variableMap.link("j2", current_j2 = 0);
@@ -177,7 +178,7 @@ public:
 
 	/// Interface that links coordinates and image data.
 	mutable
-	ReferenceMap variableMap;
+	ReferenceMap2<> variableMap;
 
 	/// Returns character, also supporting numeric ASCII values between 32 and 128.
 	char getCommentChar() const;

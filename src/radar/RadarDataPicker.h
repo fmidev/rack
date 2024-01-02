@@ -61,7 +61,7 @@ class RadarDataPicker : public drain::image::SamplePicker {
 public:
 
 	/// Default constructor
-	RadarDataPicker(drain::ReferenceMap & variableMap, const OD & odim) : drain::image::SamplePicker(variableMap), odim(odim) {
+	RadarDataPicker(drain::ReferenceMap2<> & variableMap, const OD & odim) : drain::image::SamplePicker(variableMap), odim(odim) {
 
 		variableMap.link("i", current_i = 0);
 		variableMap.link("j", current_j = 0);
@@ -142,7 +142,7 @@ public:
 
 	/// Reads a value, and scales it unless \c nodata or \c undetect.
 	inline
-	PolarDataPicker(drain::ReferenceMap & variableMap, const PolarODIM & odim) :
+	PolarDataPicker(drain::ReferenceMap2<> & variableMap, const PolarODIM & odim) :
 		RadarDataPicker<PolarODIM>(variableMap, odim), J2AZMDEG(360.0/static_cast<double>(odim.area.height)),
 		current_sin(0), current_cos(0), current_azm(0), current_range(0)
 		{
@@ -227,7 +227,7 @@ public:
 
 	/// Default constructor
 	inline
-	CartesianDataPicker(drain::ReferenceMap & variableMap, const CartesianODIM & odim) : RadarDataPicker<CartesianODIM>(variableMap,odim) {
+	CartesianDataPicker(drain::ReferenceMap2<> & variableMap, const CartesianODIM & odim) : RadarDataPicker<CartesianODIM>(variableMap,odim) {
 
 		drain::Logger mout(__FUNCTION__, __FUNCTION__);
 

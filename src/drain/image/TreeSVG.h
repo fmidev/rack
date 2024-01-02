@@ -69,11 +69,13 @@ public:
 	/// Copy constructor.
 	NodeSVG(const NodeSVG & node);
 
+	inline virtual
+	~NodeSVG(){};
 
 	void setType(type t);
 
 	static
-	std::ostream & toOStr(std::ostream &ostr, const TreeSVG & t);
+	std::ostream & toStream(std::ostream &ostr, const TreeSVG & t);
 
 	/// In opening SVG tag, referred to by attribute "xmlns:xlink"
 	static
@@ -106,7 +108,7 @@ protected:
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeSVG & t){
-	  return NodeSVG::toOStr(ostr, t);
+	  return NodeSVG::toStream(ostr, t);
 }
 
 

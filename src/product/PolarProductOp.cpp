@@ -70,6 +70,7 @@ PolarProductOp::PolarProductOp(const std::string & name, const std::string & des
 	//mout.debug(dataSelector);
 	//dataSelector.order.set(DataOrder::ELANGLE, DataOrder::MIN);
 	dataSelector.order.set(DataOrder::DATA, DataOrder::MIN);
+	dataSelector.selectPRF = DataSelector::Prf::SINGLE;
 	dataSelector.updateBean();
 	mout.debug2(dataSelector);
 

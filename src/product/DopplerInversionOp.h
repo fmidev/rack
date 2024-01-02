@@ -68,12 +68,6 @@ public:
 	int widthM;
 	double heightD;
 	std::string altitudeWeight;  // Functor
-
-
-
-	// double nyquist;
-	// int matchOriginal;
-
 	bool VVP;
 
 protected:
@@ -89,7 +83,7 @@ protected:
 		parameters.link("height", this->heightD = heightD, "degrees");
 
 		dataSelector.count = 1;
-
+		VVP = false;
 		odim.type = "S";
 		odim.product = "AMV"; // ?
 		odim.quantity = "AMV"; // To be overridden tu AMVV, AMVU
@@ -121,6 +115,7 @@ public:
 		//parameters.link("testSigns", testSigns = 3, "bits");
 
 		dataSelector.count = 1;
+		//dataSelector.selectPRF = DataSelector::Prf::ANY; // consider double
 
 		odim.type = "S";
 		odim.product = "AMV";

@@ -49,7 +49,7 @@ std::string NodeSVG::svg("http://www.w3.org/2000/svg");
 
 // NodeSVG::NodeSVG(){	setType(UNDEFINED);}
 
-NodeSVG::NodeSVG(const NodeSVG & node){
+NodeSVG::NodeSVG(const NodeSVG & node) : x(0), y(0), width(0), height(0) {
 	copyStruct(node, node, *this, RESERVE);
 }
 
@@ -121,10 +121,15 @@ void NodeSVG::setType(type t) {
 
 }
 
-std::ostream & NodeSVG::toOStr(std::ostream &ostr, const TreeSVG & tree){
-	ostr << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>";
+std::ostream & NodeSVG::toStream(std::ostream &ostr, const TreeSVG & tree){
+	//ostr << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>";
+	ostr << "<?xml ";
+	attribToStream(ostr, "version",  "1.0");
+	attribToStream(ostr, "encoding", "UTF-8");
+	attribToStream(ostr, "standalone", "no");
+	ostr << "?>";
 	ostr << '\n';
-	NodeXML::toOStr(ostr, tree);
+	NodeXML::toStream(ostr, tree);
 	return ostr;
 }
 

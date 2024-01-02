@@ -496,6 +496,8 @@ void CmdOutputPanel::exec() const {
 	TreeSVG & main = svg["main"];
 	main->setType(NodeSVG::GROUP);
 	main->set("style", "fill:green");
+	main->set("jimbo", 126);
+	main->set("jimboz", true);
 
 	const drain::image::Image & src = ctx.updateCurrentImage();
 	// svg->set("width",  src.getWidth());
@@ -527,9 +529,7 @@ void CmdOutputPanel::exec() const {
 	header->set("style","font-size:20");
 	*/
 
-	if (layout == "basic"){
-
-
+	if (layout.empty() || layout == "basic"){
 
 	}
 	else {

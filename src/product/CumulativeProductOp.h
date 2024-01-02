@@ -61,13 +61,6 @@ class CumulativeProductOp : public PolarProductOp {
 public:
 
 	/// Returns the primary output quantity (ODIM \c what:quantity , like DBZH)
-	/*
-	virtual inline
-	const std::string & getOutputQuantity() const {
-		static const std::string defaultQuantity("DBZH");
-		return odim.quantity.empty() ? defaultQuantity : odim.quantity;
-	}
-	*/
 	virtual inline
 	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const {
 		if (!inputQuantity.empty())
@@ -87,8 +80,8 @@ protected:
 	CumulativeProductOp(const std::string & name = __FUNCTION__,
 			const std::string &description = "", const std::string & accumulationMethod = "LATEST") :
 		PolarProductOp(name, description), accumulationMethod(accumulationMethod){
-		//, undetectValue(-40), relativeUndetectWeight(0.95) {  // , method(method), p(p), q(q)
-		//dataSelector.path = "^.*/data[0-9]+$";
+		// , undetectValue(-40), relativeUndetectWeight(0.95) {  // , method(method), p(p), q(q)
+		// dataSelector.path = "^.*/data[0-9]+$";
 
 		// Empty values imply automagic
 		odim.type = "";
@@ -99,11 +92,7 @@ protected:
 
 	};
 
-
-
 	std::string accumulationMethod;
-
-
 
 	virtual
 	inline
@@ -114,22 +103,13 @@ protected:
 	}
 
 
-
 	virtual
 	void processData(const Data<PolarSrc> & src, RadarAccumulator<Accumulator,PolarODIM> & cumulator) const = 0;
-
 
 
 };
 
 
+}  // rack::
 
-
-//================================================
-
-
-}  // namespace rack
-
-#endif /* RACKOP_H_ */
-
-// Rack
+#endif

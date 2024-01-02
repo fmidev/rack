@@ -158,16 +158,23 @@ public:
 
 	// Copied
 	inline
-	ReferenceBase & link(Castable &c){
-		this->relink(c);
+	ReferenceBase & link(Castable &x){
+		this->relink(x);
+		return *this;
+	}
+
+	// Copied
+	inline
+	ReferenceBase & link(Variable &x){
+		this->relink(x);
 		return *this;
 	}
 
 	// Copied
 	template <class F>
 	inline
-	ReferenceBase & link(ReferenceBase<F> &r){
-		this->relink(r);
+	ReferenceBase & link(ReferenceBase<F> &x){
+		this->relink(x);
 		return *this;
 	}
 

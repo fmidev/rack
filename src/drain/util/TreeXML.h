@@ -43,16 +43,24 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <ostream>
 #include "ReferenceMap.h"
 //#include "VariableMap.h"
+//#include "FlexibleVariable.h"
+//#include "SmartMap.h"
 #include "TreeUnordered.h"
+//#include "FlexibleVariable.h"
 
 namespace drain {
 
 
-class NodeXML : protected ReferenceMap {
-// class NodeXML : protected FlexVariableMap {
 
+//class NodeXML : protected ReferenceMap {
+class NodeXML : protected ReferenceMap2<FlexibleVariable> {
+//class NodeXML : protected RefMap<> {
+//class NodeXML : protected FlexVariableMap{
 
 public:
+
+	//typedef ReferenceMap map_t;
+	typedef ReferenceMap2<FlexibleVariable> map_t;
 
 	NodeXML(){
 		id = nextID;
@@ -61,7 +69,6 @@ public:
 
 	~NodeXML(){};
 
-	typedef ReferenceMap map_t;
 	//typedef FlexVariableMap map_t;
 	// std::string id;  // int?
 	// std::string name;
@@ -74,22 +81,23 @@ public:
 	void set(const std::string & key, const T &value){
 		(*this)[key] = value;
 	}
+	template <class T>
+	static inline
+	void attribToStream(std::ostream &ostr, const std::string & key, const T &value){
+		ostr << key << '=' << '"' << value << '"' << ' ';
+	}
 
-	//std::ostream & toOstr(std::ostream &ostr);
-	/*
-	template <class K, class T, class C>
-	static
-	std::ostream & toOStr(std::ostream &ostr, const drain::Tree<K,false,T,C> & t, const std::string & defaultTag = "");
-	*/
 	template <class T>
 	static
-	std::ostream & toOStr(std::ostream &ostr, const T & t, const std::string & defaultTag = "");
+	std::ostream & toStream(std::ostream &ostr, const T & t, const std::string & defaultTag = "");
 
 	std::string ctext;
 
 	inline
 	bool empty() const {
 		return map_t::empty();
+		//return FlexVariableMap::empty();
+		//return this->(FlexVariableMap::empty)();
 		//return ReferenceMap::empty();
 	}
 
@@ -112,7 +120,7 @@ typedef drain::UnorderedMultiTree<NodeXML,false> TreeXML;
  *   \param defaultTag - important for
  */
 template <class T>
-std::ostream & NodeXML::toOStr(std::ostream & ostr, const T & tree, const std::string & defaultTag){
+std::ostream & NodeXML::toStream(std::ostream & ostr, const T & tree, const std::string & defaultTag){
 
 	const typename T::container_t & children = tree.getChildren();
 
@@ -125,37 +133,25 @@ std::ostream & NodeXML::toOStr(std::ostream & ostr, const T & tree, const std::s
 		ostr << tree->getTag() << ' ';
 		// TODO if (tree.data.name.empty()) ?
 		if (!defaultTag.empty())
-			ostr << "name=\"" << defaultTag << '"' << ' ';
+			attribToStream(ostr, "name", defaultTag);
+			//ostr << "name=\"" << defaultTag << '"' << ' ';
 	}
 
 	if (tree.data.id >= 0)
-		ostr << "id=\"" << tree.data.id << '"' << ' ';
+		attribToStream(ostr, "id", tree.data.id);
+		//ostr << "id=\"" << tree.data.id << '"' << ' ';
 
 	/// iterate attributes
-	//for (const typename T::node_data_t::key_t & keys: tree.data.getKeys()){
-	//ostr << tree.data.getKeys();
 	for (const typename T::node_data_t::key_t & key: tree.data.getKeyList()){
 
 		std::stringstream sstr;
 		sstr << tree.data[key];
 		if (!sstr.str().empty()){
-			ostr << key << "=\"" << sstr.str() << '"' << ' ';
-			//ostr << "test=\"" << sstr.str() << '"' << ' ';
+			attribToStream(ostr, key, sstr.str());
+			// ostr << key << "=\"" << sstr.str() << '"' << ' ';
 		}
 
 	}
-
-	/*
-	for (ReferenceMap::const_iterator it = tree->begin(); it != tree->end(); it++){
-
-		std::stringstream sstr;
-		sstr << it->second;
-		if (!sstr.str().empty()){
-			ostr << it->first << "=\"" << it->second << '"' << ' ';
-			//ostr << "test=\"" << sstr.str() << '"' << ' ';
-		}
-	}
-	*/
 
 	if ((children.size() == 0) && tree->ctext.empty() ){ // OR no ctext!
 		// close TAG
@@ -172,7 +168,7 @@ std::ostream & NodeXML::toOStr(std::ostream & ostr, const T & tree, const std::s
 
 		/// iterate children - note the use of default tag
 		for (const auto & entry: children){
-			toOStr(ostr, entry.second, entry.first);
+			toStream(ostr, entry.second, entry.first);
 			//ostr << *it;
 		}
 		// add end </TAG>
@@ -188,12 +184,11 @@ std::ostream & NodeXML::toOStr(std::ostream & ostr, const T & tree, const std::s
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeXML & t){
-	  return NodeXML::toOStr(ostr, t, "");
+	  return NodeXML::toStream(ostr, t, "");
 }
 
 
-}  // namespace drain
+}  // drain::
 
 #endif /* TREEXML_H_ */
 
-// Rack

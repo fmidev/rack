@@ -88,6 +88,7 @@ protected:
 		//dataSelector.quantity = "VRADH?";
 		dataSelector.quantity = "^VRADH?$"; // avoid VRADDH
 		dataSelector.count = 1;
+		// dataSelector.selectPRF = DataSelector::Prf::DOUBLE;
 	}
 
 	//virtual void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const ;

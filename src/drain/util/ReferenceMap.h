@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Log.h"
 #include "Range.h"
 #include "Referencer.h"
+#include "FlexibleVariable.h"
 //#include "ReferenceVariable.h"
 #include "String.h"
 #include "SmartMap.h"
@@ -48,9 +49,150 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef REFERENCE_MAP
 #define REFERENCE_MAP
 
-// // // using namespace std;
 
 namespace drain {
+
+/// A map of references to base type scalars, arrays or std::string; changing values in either are equivalent operations.
+/**
+ *  New, templated implementation.
+ *
+ *  \tparam T SmartVariable: Reference or FlexibleVariable; in future, also Parameter<Reference> or Parameter<FlexibleVariable>. Must implement link()
+ *
+ *
+ */
+template <class T=Referencer>
+class ReferenceMap2 : public SmartMap<T> {
+
+public:
+
+	typedef T ref_t;
+	typedef SmartMap<T> map_t;
+
+
+	/// Associates a map entry with a variable
+	/**
+	 *  \param key - variable name in a map
+	 *  \param x   - target variable to be linked
+	 */
+	template <class F>
+	inline
+	ref_t & link(const std::string & key, F &x){
+
+		ref_t & r = (*this)[key];
+
+		r.link(x); // .setSeparator(this->arraySeparator);
+
+		return r;
+
+		/*
+		if (this->find(key) == this->end()) // not  already referenced
+			this->keyList.push_back(key);
+		// Create
+		ref_t & r = map_t::operator[](key);
+		r.setSeparator(this->arraySeparator); // applicable, if array type element
+		// Link
+		r.link(x);
+		// unitMap[key] = unit;
+		return r;
+		*/
+	}
+
+	/// Create a reference to a basic type or std::string. (Also for basetype arrays.)
+	inline
+	ref_t  & link(const std::string & key, void *ptr, const std::type_info &type, size_t count=1){
+
+		ref_t & r = (*this)[key];
+
+		r.link(ptr, type, count);
+
+		return r;
+
+		/*
+		if (this->find(key) == this->end()) // not  already referenced
+			this->keyList.push_back(key);
+
+		Referencer & r = map_t::operator[](key);
+		r.setSeparator(this->arraySeparator); // applicable, if array type element
+		r.link(ptr, type, count);
+		// unitMap[key] = unit;
+		return r;
+		*/
+	}
+
+	/** Alternatives in handling a link which is outside the source object.
+	 *
+	 */
+	typedef enum {
+		LINK,    /**<  Link also external targets */
+		SKIP,    /**<  No action */
+		RESERVE, /**< No not link, but add a void entry as a placeholder */
+		ERROR    /**< Throw exception */
+	} extLinkPolicy;
+
+	/// Experimental. Copies references and values of a structure to another.
+	/**
+	 * 	\param m - links to the members of the source object
+	 * 	\param src - the source object
+	 * 	\param dst - the destination object
+	 *
+	 *  Also updates key list and unit map?
+	 */
+	template <class T2>
+	//static  // Start with T. Todo: consider other
+	void copyStruct(const ReferenceMap2<T> & m, const T2 & src, T2 & dst, extLinkPolicy policy=RESERVE) {
+		//, bool copyValues = true, bool linkExternal = false){
+
+		Logger mout(__FILE__, __FUNCTION__);
+		long s = sizeof(T2); // yes signed
+		//mout.warn("experimental, obj.size=" , s );
+
+		// Clearing is bad, it resets work of base class constructors
+		// if (policy==LINK)
+		//	clear();
+
+		typedef unsigned long addr_t;
+		typedef          long addr_diff_t;
+
+		const addr_t srcAddr = (addr_t)(&src);
+		const addr_t dstAddr = (addr_t)(&dst);
+		//for (std::list<std::string>::const_iterator it = m.getKeyList().begin(); it != m.getKeyList().end(); ++it){
+		for (const std::string & key: m.getKeyList()){
+			// const std::string & key = *it;
+			const ref_t & srcRef = m[key];
+			addr_t srcVarAddr = (addr_t)srcRef.getPtr();
+			addr_diff_t relativeAddr = srcVarAddr - srcAddr;
+			if ((relativeAddr >= 0) && (relativeAddr < s)){ // INTERNAL
+				//Referencer & dstMemberRef = (*this)[key];
+				ref_t & dstMemberRef = link(key, (void *)(dstAddr + relativeAddr), srcRef.getType(), srcRef.getElementCount());
+				//mout.warn("local: " , key , ':' , srcRef.getElementCount() );
+				dstMemberRef.copyFormat(srcRef);
+				dstMemberRef.assignCastable(srcRef); // value
+			}
+			else {
+				//mout.warn("external: " , key     );
+				switch (policy) {
+				case LINK:
+					link(key, (void *)srcVarAddr, srcRef.getType(), srcRef.getElementCount()).copyFormat(srcRef);
+					break;
+				case RESERVE:
+					// reserve(key);
+					(*this)[key];
+					//mout.warn("reserved: " , key     );
+					//mout.warn("keyList:  " , getKeys() );
+					break;
+				case SKIP:
+					mout.debug("skipping external variable: '" , key , '=' , srcRef , "' relative addr=" , relativeAddr );
+					break;
+				case ERROR:
+					mout.error("external variable: '" , key , '=' , srcRef , "' relative addr=" , relativeAddr );
+					break;
+				default:
+					mout.warn("unknown enum option in handling external variable '" , key , '=' , srcRef , "' relative addr=" , relativeAddr );
+				}
+			}
+		}
+	}
+};
 
 
 /// A map of references to base type scalars, arrays or std::string; changing values in either are equivalent operations.
@@ -74,6 +216,9 @@ public:
 	inline
 	ReferenceMap(const ReferenceMap & rmap): SmartMap<Referencer>(rmap.separator, rmap.arraySeparator){
 	};
+
+	inline virtual
+	~ReferenceMap(){};
 
 	// Temporary catch for Range
 	template <class F>
