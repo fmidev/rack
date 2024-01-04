@@ -188,7 +188,7 @@ public:
 			this->type = typechar;
 		else {
 			if (this->type.at(0) != typechar)
-				mout.warn() << "different types: " << this->type << '/' << typechar << mout.endl;
+				mout.warn("different types: " , this->type , '/' , typechar );
 		}
 
 		scaling.set(1.0, 0.0);

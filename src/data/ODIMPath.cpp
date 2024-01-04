@@ -120,7 +120,7 @@ bool ODIMPathElem::extractPrefix(const std::string & prefix, bool indexed){
 
 	if (pit != d.end()){
 		this->group = pit->second;
-		mout.warn() << " -> setting implicit/lenient " << prefix << '=' << this->group << mout.endl;
+		mout.warn(" -> setting implicit/lenient " , prefix , '=' , this->group );
 		return true;
 	}
 
@@ -149,7 +149,7 @@ bool ODIMPathElem::set(const std::string &s){
 	dict_t::const_iterator dit = d.findByKey(s);
 	if (dit != d.end()){
 		this->group = dit->second;
-		mout.note() << "direct: " << dit->first << '~' << dit->second << mout.endl;
+		mout.note("direct: " , dit->first , '~' , dit->second );
 		return true;
 	}*/
 
@@ -173,7 +173,7 @@ bool ODIMPathElem::set(const std::string &s){
 	this->group = OTHER;  //(INDEXED) ? ODIMPathElem::OTHER_INDEXED :
 	this->str = s;
 
-	mout.note() << "non-standard path element: " << *this << mout.endl;
+	mout.note("non-standard path element: " , *this );
 
 	return false;
 

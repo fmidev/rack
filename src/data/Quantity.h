@@ -125,7 +125,7 @@ public:
 		}
 		else {
 			//drain::Logger mout("Quantity", __FUNCTION__);
-			//mout.warn() << "undefined code for this quantity, code=" << typecode << mout.endl;
+			//mout.warn("undefined code for this quantity, code=" , typecode );
 			// TODO return default
 			static EncodingODIM empty;
 			return empty;

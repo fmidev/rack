@@ -77,7 +77,6 @@ Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, 
 
 	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 
-
 	if (path.empty()) {
 		mout.error("path empty");
 		return;
@@ -134,9 +133,14 @@ Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, 
 		// std::cerr << "Deeper " << __FUNCTION__ << ':' << p << std::endl;
 		// mout.warn("Selective? : mode=", mode, " noSave=", subtree.data.noSave, ", path: ", p);
 
-		if (((mode & MARKED) > 0) && (subtree.data.noSave)) {
-			mout.warn("Selective read: skipping ", p);
-			continue;
+		if ((mode & MARKED) > 0) {
+			if (subtree.data.noSave) {
+				mout.reject("Selective read: skipping ", p);
+				continue;
+			}
+			else {
+				mout.accept("Selective read: accepting ", p);
+			}
 		}
 
 		//mout.note() << "traversing: " << p << " mode=" << mode << mout.endl;

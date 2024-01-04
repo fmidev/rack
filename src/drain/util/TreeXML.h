@@ -118,6 +118,9 @@ typedef drain::UnorderedMultiTree<NodeXML,false> TreeXML;
 
 /**
  *   \param defaultTag - important for
+ *
+ *   Consider indentation: std::fill_n(std::ostream_iterator<char>(std::cout), 2*i, ' '); ?
+ *
  */
 template <class T>
 std::ostream & NodeXML::toStream(std::ostream & ostr, const T & tree, const std::string & defaultTag){

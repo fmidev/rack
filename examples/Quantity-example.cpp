@@ -25,8 +25,9 @@
 RE: drain/util/{Log,Sprinter,String}.cpp data/{EncodingODIM,ODIMPath}.cpp
 
 REQUIRE: data/{EncodingODIM,ODIMPath,Quantity}.cpp
-FLAGS: -I../ -I/usr/include/hdf5/serial
-LIBS: -L../../drain/Debug/  -ldrain
+FLAGS: -I../src -I/usr/include/hdf5/serial
+LIBS: -L../../drain/Debug/
+# -ldrain
 
 g + + -I.. -L../drain/Debug/ examples/Hi5Read-example.cpp hi5/Hi5.cpp hi5/Hi5Read.cpp  -ldrain -lhdf5 -o Hi5Read-example
  */

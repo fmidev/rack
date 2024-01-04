@@ -186,14 +186,15 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	if (!ctx.select.empty()){
 		//mout.special() << "Input selector (" << ctx.select << ") applies, pre-reading attributes first:\n";
-		mout.special("Input selector (", ctx.select, ") applies, pre-reading attributes first:\n");
+		mout.special("Input selector (", ctx.select, ") set -> selective read");
+		mout.special("Pre-reading attributes first:\n");
 		hi5::Reader::readFile(fullFilename, srcTmp, hi5::Reader::ATTRIBUTES);
 
 		DataTools::updateInternalAttributes(srcTmp); // to support DataSelector with what:quantity and what:elangle
 
 		// Initially, mark all deleted...
 		DataTools::markNoSave(srcTmp);
-		drain::TreeUtils::dump(srcTmp, std::cout, CmdOutputTree::dataToStream); // true);
+		// drain::TreeUtils::dump(srcTmp, std::cout, CmdOutputTree::dataToStream); // true);
 
 		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);  // NO QUALITY?
 		selector.setParameters(ctx.select);
@@ -236,8 +237,15 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 	if (!ctx.select.empty()){ // or stg like: hi5::Reader::MARKED
 		mout.special("Input selection: removing excluded subtrees");
 		hi5::Hi5Base::deleteNoSave(srcTmp);
-		drain::TreeUtils::dump(srcTmp, std::cout, CmdOutputTree::dataToStream); // true);
-		ctx.select.clear();
+		// drain::TreeUtils::dump(srcTmp, std::cout, CmdOutputTree::dataToStream); // true
+		if (ctx.SCRIPT_DEFINED){
+			mout.note("Script defined. NOT clearing input data selector (", ctx.select, ')');
+			//mout.info(ctx.select);
+		}
+		else {
+			mout.note("Clearing input data selector (", ctx.select, ')');
+			ctx.select.clear();
+		}
 	}
 
 	if (mout.isDebug(6)){

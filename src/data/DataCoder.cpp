@@ -59,7 +59,7 @@ void DataCoder::init(){
 
 	//SKIP_UNDETECT = ((!q.hasUndetectValue()) || (DataCoder::undetectQualityCoeff==0));
 
-	mout.debug() << "DataCoder::undetectQualityCoeff: " << DataCoder::undetectQualityCoeff << mout;
+	mout.debug("DataCoder::undetectQualityCoeff: " , DataCoder::undetectQualityCoeff );
 	mout.debug('[', dataODIM.quantity, ']');
 	mout << "q.hasUndetectValue: " << q.hasUndetectValue() << mout;
 	mout << "SKIP_UNDETECT: " << SKIP_UNDETECT << mout;
@@ -70,16 +70,16 @@ void DataCoder::init(){
 		detectionThreshold = undetectValue;
 	}
 	else {
-		mout.info() << "using quantity-specific zero for undetectValue: " << q.undetectValue << " (quantity="<< dataODIM.quantity << ")" <<  mout.endl;
+		mout.info("using quantity-specific zero for undetectValue: " , q.undetectValue , " (quantity=", dataODIM.quantity , ")" );
 		undetectValue = q.undetectValue;
 		detectionThreshold = undetectValue + 0.0001;
 		if (detectionThreshold < dataODIM.getMin()){
-			mout.debug() << "tuning detectionThreshold " << detectionThreshold << ") to odim.getMin(): "  << dataODIM.getMin() << mout.endl;
+			mout.debug("tuning detectionThreshold " , detectionThreshold , ") to odim.getMin(): "  , dataODIM.getMin() );
 			detectionThreshold = dataODIM.getMin();
 		}
 	}
 
-	// mout.warn() << parameters << mout.endl;
+	// mout.warn(parameters );
 
 }
 

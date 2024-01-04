@@ -113,11 +113,11 @@ void ODIM::copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const {
 
 			// Mainly debugging
 			if (t == typeid(void)){
-				mout.warn() << "no type info, skipping key=" << *it << mout.endl;
+				mout.warn("no type info, skipping key=" , *it );
 				continue;
 			}
 			if (v.getElementSize() == 0){
-				mout.warn() << "empty source, skipping key=" << *it << mout.endl;
+				mout.warn("empty source, skipping key=" , *it );
 				continue;
 			}
 
@@ -156,21 +156,21 @@ void ODIM::copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const {
 			/*
 			if (v.getType() == typeid(std::string)){
 
-				mout.note() << "here v:" << mout.endl;
+				mout.note("here v:" );
 				v.toJSON();
 				std::cout << std::endl;
 
-				mout.warn() << "here a:" << mout.endl;
+				mout.warn("here a:" );
 				attribute.toJSON();
 				std::cout << std::endl;
 
 			}*/
 			//mout << mout.endl;
 
-			// mout.warn() << "writing:" << key << " = " << attribute << mout.endl;
+			// mout.warn("writing:" , key , " = " , attribute );
 		}
 		else {
-			mout.note() << "no key: " << key << mout.endl;
+			mout.note("no key: " , key );
 		}
 		//attribute.toOStr(std::cerr); std::cerr << '\n';
 	}
@@ -219,7 +219,7 @@ bool ODIM::setTime(const drain::Time & t){
 	}
 	catch (const std::exception &e) {
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.warn() << e.what() << mout.endl;
+		mout.warn(e.what() );
 		return false;
 	}
 
@@ -338,7 +338,7 @@ void ODIM::updateLenient(const ODIM & odim){
 	if (NI == 0.0)
 		NI = odim.NI;
 
-	//mout.note() << "raimo" << starttime << ":" << enddate << mout.endl;
+	//mout.note("raimo" , starttime , ":" , enddate );
 
 }
 

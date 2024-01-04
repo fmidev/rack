@@ -12,6 +12,53 @@ OUTFILE='volume-modified.h5'
 START example-select.inc
 OUTFILE='volume-select.txt'
 
+
+TITLE "For a Pseudo CAPPI product, change default input selection"
+OUTFILE='pCappi-TH-1500m.h5'
+TEST    --select "'quantity=^TH$,elangle=1.5:10,count=3' --pCappi 1500"
+REQUIRE 'dataset1/data1/what:quantity="TH"'
+
+TITLE "For image output, select DBZH  "
+OUTFILE='volume-DBZH.png'
+TEST    --select 'elangle=1.5,quantity=DBZH'
+REQUIRE dataset3/data.
+EXCLUDE dataset1/ data1/
+
+TITLE "For image output, select VRAD of the lowest dual-PRF scan "
+OUTFILE='volume-VRAD.png'
+TEST    --select 'quantity=VRAD,order=ELANGLE:MIN,prf=DOUBLE'
+REQUIRE dataset7
+EXCLUDE dataset[1-6]/
+
+TITLE "For image output, select ZDR of the highest single-PRF scan "
+OUTFILE='volume-ZDR.png'
+TEST    --select 'quantity=ZDR,count=1,order=ELANGLE:MAX,prf=SINGLE'
+REQUIRE dataset6
+EXCLUDE dataset[1-5]/
+EXCLUDE dataset[7-9]/ 
+
+
+INFILE='volume-test-elangle.h5'
+
+TITLE "For single-image output, select DBZH of the lowest scan (from 90 6.5 2.4 1.8 1.2 0.59)"
+OUTFILE='volume-DBZH2.png'
+TEST    --select 'quantity=DBZH,order=ELANGLE:MIN'
+REQUIRE dataset6
+#EXCLUDE dataset[1-5]
+
+TITLE "For single-image output, select DBZH of the highest scan (from 90 6.5 2.4 1.8 1.2 0.59)"
+OUTFILE='volume-DBZH3.png'
+TEST    --select 'quantity=DBZH,order=ELANGLE:MAX'
+REQUIRE dataset1
+#EXCLUDE dataset[1-5]
+
+
+
+# Technical tests only (not commands)
+
+START example-select-test.inc
+OUTFILE='volume-select.txt'
+
 TITLE "Index range: select dataset3, including its subgroups. "
 TEST    --select /dataset3
 REQUIRE dataset3/where dataset3/what dataset3/data1
@@ -59,45 +106,6 @@ TEST    --select "'what|where,elangle=0.5:6'"
 REQUIRE dataset4/{data1,where}
 EXCLUDE dataset1 
 
-TITLE "For single-image output, select DBZH  "
-OUTFILE='volume-DBZH.png'
-TEST    --select 'elangle=1.5,quantity=DBZH'
-REQUIRE dataset3/data.
-EXCLUDE dataset1/ data1/
-
-TITLE "For single-image output, select VRAD of the lowest dual-PRF scan "
-OUTFILE='volume-VRAD.png'
-TEST    --select 'quantity=VRAD,order=ELANGLE:MIN,prf=DOUBLE'
-REQUIRE dataset7
-EXCLUDE dataset[1-6]/
-
-
-TITLE "For single-image output, select ZDR of the highest single-PRF scan "
-OUTFILE='volume-ZDR.png'
-TEST    --select 'quantity=ZDR,count=1,order=ELANGLE:MAX,prf=SINGLE'
-REQUIRE dataset6
-EXCLUDE dataset[1-5]/
-EXCLUDE dataset[7-9]/ 
-
-TITLE "For a Pseudo CAPPI product, change default input selection"
-OUTFILE='pCappi-TH-1500m.h5'
-TEST    --select "'quantity=^TH$,elangle=1.5:10,count=3' --pCappi 1500"
-REQUIRE 'dataset1/data1/what:quantity="TH"'
-
-
-INFILE='volume-test-elangle.h5'
-
-TITLE "For single-image output, select DBZH of the lowest scan (from 90 6.5 2.4 1.8 1.2 0.59)"
-OUTFILE='volume-DBZH2.png'
-TEST    --select 'quantity=DBZH,order=ELANGLE:MIN'
-REQUIRE dataset6
-#EXCLUDE dataset[1-5]
-
-TITLE "For single-image output, select DBZH of the highest scan (from 90 6.5 2.4 1.8 1.2 0.59)"
-OUTFILE='volume-DBZH3.png'
-TEST    --select 'quantity=DBZH,order=ELANGLE:MAX'
-REQUIRE dataset1
-#EXCLUDE dataset[1-5]
 
 
 

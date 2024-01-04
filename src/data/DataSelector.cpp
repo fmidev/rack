@@ -184,7 +184,7 @@ void DataSelector::updateBean() const {
 		if (!pathMatcher.empty()){
 			if (pathMatcher.back().empty()){ // "backroot" = > appears as trailing slash '/'
 				pathMatcher.pop_back();
-				mout.note() << "stripped trailing slash '/' => " << pathMatcher << mout.endl;
+				mout.note("stripped trailing slash '/' => ", pathMatcher);
 			}
 		}
 		else {
@@ -193,10 +193,10 @@ void DataSelector::updateBean() const {
 
 		//path.clear();
 	}
-	//mout.warn() << "pathMatcher >> '" << pathMatcher << "'" << mout.endl;
+	//mout.warn("pathMatcher >> '" , pathMatcher , "'" );
 
 	//path = pathMatcher; // Note: this (over)simplifies data|quality: to data|quality (discards explicit index)
-	//mout.warn() << "-----> path >> '" << path << "'" << mout.endl;
+	//mout.warn("-----> path >> '" , path , "'" );
 
 	quantityRegExp.clear();
 	qualityRegExp.clear();
@@ -206,7 +206,7 @@ void DataSelector::updateBean() const {
 	drain::StringTools::split(quantity, s, ":");  // experimental
 	if (s.size() == 2){
 		// Compare with --qualityQuantity
-		mout.deprecating() << "in future, slash '/' may replace colon ':' in args like " << quantity << mout.endl;
+		mout.deprecating("in future, slash '/' may replace colon ':' in args like " , quantity );
 	}
 	else {
 		drain::StringTools::split(quantity, s, "/");  // experimental
@@ -220,18 +220,18 @@ void DataSelector::updateBean() const {
 			quantityRegExp.setExpression(s[0]);
 			break;
 		default:
-			mout.warn() << "could not parse quantity='" << quantity << "', should be <quantity> or [<quantity>]:<quality>" << mout.endl;
+			mout.warn("could not parse quantity='" , quantity , "', should be <quantity> or [<quantity>]:<quality>" );
 			break;
 	}
 
-	// mout.special() << "quantity [" << quantity <<"], " << "pathMatcher: " << path << " => " << pathMatcher   << mout.endl;
+	// mout.special("quantity [" , quantity ,"], " , "pathMatcher: " , path , " => " , pathMatcher   );
 
 
 	if (pathMatcher.empty() && !quantity.empty()){
 
 		if (! pathMatcher.front().is(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 			pathMatcher.set(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-			mout.info() << "quantity [" << quantity <<"] requested, completing path condition: " << pathMatcher << mout.endl;
+			mout.info("quantity [" , quantity ,"] requested, completing path condition: " , pathMatcher );
 		}
 		//path = pathMatcher;
 	}
@@ -247,26 +247,26 @@ void DataSelector::ensureDataGroup(){
 
 	if (pathMatcher.empty()){
 		pathMatcher.set(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-		mout.debug() << "Completed pathMatcher: " << pathMatcher << mout.endl;
+		mout.debug("Completed pathMatcher: " , pathMatcher );
 	}
 	else {
 		if (pathMatcher.back().empty()){ // "backroot"
 			pathMatcher.pop_back();
-			mout.note() << "stripped trailing slash (rootlike empty elem): "  << pathMatcher << mout.endl;
+			mout.note("stripped trailing slash (rootlike empty elem): "  , pathMatcher );
 		}
 
 		if (! pathMatcher.back().belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 			if (! pathMatcher.back().is(ODIMPathElem::DATASET)){
-				mout.warn() << "Resetting pathMatcher with suspicious tail: " << pathMatcher << mout.endl;
+				mout.warn("Resetting pathMatcher with suspicious tail: " , pathMatcher );
 				pathMatcher.clear();
 			}
 			pathMatcher.push_back(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-			mout.note() << "Completed pathMatcher: " << pathMatcher << mout.endl;
+			mout.note("Completed pathMatcher: " , pathMatcher );
 		}
 	}
 
 	if (quantity.empty()){
-		mout.info() << "quantity [" << quantity <<"] unset: " << *this << mout.endl;
+		mout.info("quantity [" , quantity ,"] unset: " , *this );
 	}
 
 }
@@ -386,7 +386,7 @@ bool DataSelector::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //,
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (!ODIMPathElem::isIndexed(child.getType())){
-		mout.warn() << ": index requested for unindexed path element '" << child << "'" << mout.endl;
+		mout.warn(": index requested for unindexed path element '" , child , "'" );
 		return false;
 	}
 
@@ -409,7 +409,7 @@ bool DataSelector::getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMP
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (!child.isIndexed()){ // ODIMPathElem::isIndexed(child.getType())){
-		mout.warn() << ": index requested for unindexed path element '" << child << "'" << mout.endl;
+		mout.warn(": index requested for unindexed path element '" , child , "'" );
 		return false;
 	}
 
@@ -475,7 +475,7 @@ bool DataSelector::getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 	}
 
 	if (true){
-		mout.warn() << "check group " << group << " vs back() of path: " << path << mout.endl;
+		mout.warn("check group " , group , " vs back() of path: " , path );
 	}
 
 	ODIMPathList paths;
@@ -527,7 +527,7 @@ bool DataSelector::getNextPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 			return true;
 		}
 		else {
-			mout.warn() << "leaf element '" << elem << "' not indexed type" << mout.endl;
+			mout.warn("leaf element '" , elem , "' not indexed type" );
 			return false;
 		}
 	}

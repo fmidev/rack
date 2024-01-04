@@ -161,13 +161,13 @@ bool ODIMPathElemMatcher::test(const ODIMPathElem & elem) const {
 		// same group, indexed (DATASET, DATA, QUALITY)
 		//mout.debug2();
 		//mout.warn();
-		mout.debug2() <<  this->index  << '(' << elem.index <<  ')' <<  this->indexMax << '!';
+		// mout.debug2() <<  this->index  << '(' << elem.index <<  ')' <<  this->indexMax << '!';
 		if (elem.index < this->index){
-			mout << "below " << this->index << '!' << mout.endl;
+			mout.debug2(this->index, '(', elem.index,  ')', this->indexMax, "! below ", this->index, '!');
 			return false;
 		}
 		else if (elem.index > this->indexMax){
-			mout << "above " << this->indexMax << '!' << mout.endl;
+			mout.debug2(this->index, '(', elem.index,  ')', this->indexMax, "! above ", this->indexMax, '!');
 			return false;
 		}
 		else

@@ -369,7 +369,7 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 
 	drain::Logger mout("QuantityMap", __FUNCTION__);
 
-	mout.debug3() << "for quantity=" << quantity << ", values=" << values << mout.endl;
+	mout.debug3("for quantity=" , quantity , ", values=" , values );
 	//if (quantity.empty())
 	//	quantity = dstODIM.quantity;
 
@@ -379,18 +379,18 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 		refMap.setValues(values);   // essentially, sets dstODIM.type (str values will be reset, below)
 	}
 
-	mout.debug3() << "searching for quantity=" << quantity << mout.endl;
+	mout.debug3("searching for quantity=" , quantity );
 	const_iterator it = find(quantity);
 	if (it != end()){
 
-		mout.debug2() << "found quantity '"  << quantity << "'" << mout.endl;
+		mout.debug2("found quantity '"  , quantity , "'" );
 
 		/// Use user-defined type. If not supplied, use default type.
 		if (dstODIM.type.empty()) {
 			if (it->second.defaultType)
 				dstODIM.type = it->second.defaultType;
 			else {
-				mout.warn() << "type unset, and no defaultType defined for quantity=" << quantity <<  mout.endl;
+				mout.warn("type unset, and no defaultType defined for quantity=" , quantity );
 				return false;
 			}
 		}
@@ -407,22 +407,22 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 			if (!values.empty()){
 				refMap.setValues(values);
 			}
-			mout.debug2() << "updated dstODIM: "  << dstODIM << mout.endl;
+			mout.debug2("updated dstODIM: "  , dstODIM );
 			return true;
 		}
 		else {
 			// error: type
-			mout.info() << "quantity=" << quantity << " found, but no conf for typechar=" << typechar << mout.endl;
+			mout.info("quantity=" , quantity , " found, but no conf for typechar=" , typechar );
 		}
 	}
 	else {
-		mout.info() << "quantity=" << quantity << " not found" << mout.endl;
+		mout.info("quantity=" , quantity , " not found" );
 	}
 
 	if (!dstODIM.type.empty()) {
 		//const char typechar = dstODIM.type.at(0);
 		const drain::Type t(dstODIM.type);
-		mout.debug() << "applying universal defaults (1,0,min,max) for typechar=" << t << mout.endl;
+		mout.debug("applying universal defaults (1,0,min,max) for typechar=" , t );
 		dstODIM.scaling.set(1.0, 0.0); // check! Maybe "physical" range 0.0 ...1.0 better than gain=1.0
 		dstODIM.undetect = drain::Type::call<drain::typeMin, double>(t); //drain::Type::getMin<double>(typechar);
 		dstODIM.nodata =   drain::Type::call<drain::typeMax, double>(t); //drain::Type::call<drain::typeMax,double>(typechar);

@@ -258,7 +258,7 @@ void EncodingODIM::copyFrom(const drain::image::Image & data){
 			const std::type_info & t = srcValue.getType();
 			drain::Castable & dstValue = oit->second;
 			// std::cerr << key << " type=" << t.name() << '\n';
-			mout.debug3() << "setting '" << it->first << "'=" << srcValue  << '|' << drain::Type::getTypeChar(t) << mout.endl;
+			mout.debug3("setting '" , it->first , "'=" , srcValue  , '|' , drain::Type::getTypeChar(t) );
 
 			if (t == typeid(double)){
 				dstValue = static_cast<double>(srcValue);
@@ -269,7 +269,7 @@ void EncodingODIM::copyFrom(const drain::image::Image & data){
 				dstValue = srcValue;
 		}
 		else {
-			mout.debug3() << "img property '" << it->first << "' not supported by ODIM" << mout.endl;
+			mout.debug3("img property '" , it->first , "' not supported by ODIM" );
 		}
 
 	}
@@ -380,7 +380,7 @@ double EncodingODIM::getMin() const {
 		double d;
 		do { // loop, yet max 2 steps
 			d = static_cast<double>(i);
-			//mout.warn() << "trying: " << i << " \t-> " << scaleForward(d) << mout.endl;
+			//mout.warn("trying: " , i , " \t-> " , scaleForward(d) );
 			++i;
 		} while ((d == undetect) || (d == nodata));
 		return scaleForward(d);
@@ -404,7 +404,7 @@ double EncodingODIM::getMax() const {
 		double d;
 		do { // loop, yet max 2 steps
 			d = static_cast<double>(i);
-			// mout.warn() << "trying: " << i << " \t-> " <<  scaleForward(d) << mout.endl;
+			// mout.warn("trying: " , i , " \t-> " ,  scaleForward(d) );
 			--i;
 		} while ((d == undetect) || (d == nodata));
 		return scaleForward(d);

@@ -98,22 +98,22 @@ double PolarODIM::getMaxRange(bool warn) const {
 	else {
 		drain::Logger mout("PolarODIM", __FUNCTION__);
 		if (area.width == 0){
-			mout.warn() << "nbins==0" << mout.endl;
+			mout.warn("nbins==0" );
 		}
 		if (rscale == 0){
-			mout.warn() << "rscale==0" << mout.endl;
-			// mout.warn() << "rscale==0, returning default range=" << PolarODIM::defaultRange << 'm' << mout.endl;
+			mout.warn("rscale==0" );
+			// mout.warn("rscale==0, returning default range=" , PolarODIM::defaultRange , 'm' );
 			// return 250000;
 		}
 		double r = rscale*static_cast<double>(area.width);
 		if (r == 0.0){
 			if (PolarODIM::defaultRange > 0){
 				r = PolarODIM::defaultRange;
-				mout.note() << "using defaultRange" << r << mout.endl;
+				mout.note("using defaultRange" , r );
 			}
 			else {
 				r = 250000.0;
-				mout.note() << "using range=" << r << mout.endl;
+				mout.note("using range=" , r );
 			}
 		}
 		return r;
@@ -139,7 +139,7 @@ double PolarODIM::getNyquist(int errorThreshold) const {
 			// check dual-prf
 			if (highprf > lowprf){
 				const double NI2 = 0.01 * wavelength * highprf / 4.0;
-				mout.debug() << "dual-PDF detected, NI=" << NI << ", NI2=" << NI2 << mout.endl;
+				mout.debug("dual-PDF detected, NI=" , NI , ", NI2=" , NI2 );
 				// HOLLEMAN & BEEKHUIS 2002 Analysis and Correction of Dual PRF Velocity Data
 				NI = NI*NI2 / (NI2-NI);
 				mout.log(errorThreshold + 4) << "derived NI=" << NI << " from dual-PRF" << mout.endl;

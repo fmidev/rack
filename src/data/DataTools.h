@@ -180,14 +180,14 @@ void DataTools::getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & p, M &
 	drain::Logger mout("DataTools", __FUNCTION__);
 
 	if (p.empty() || !p.front().isRoot()){
-		mout.debug() << "add root and restart with path= '" << p << "'" << mout.endl;
+		mout.debug("add root and restart with path= '" , p , "'" );
 		Hi5Tree::path_t pRooted(p);
 		pRooted.push_front(Hi5Tree::path_t::elem_t::ROOT);
 		DataTools::getAttributes(src, pRooted, attributes, updateOnly);
 		return;
 	}
 
-	mout.debug() << "path= '" << p << "'" << mout.endl;
+	mout.debug("path= '" , p , "'" );
 
 	Hi5Tree::path_t path;
 	std::stringstream sstr;
@@ -196,7 +196,7 @@ void DataTools::getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & p, M &
 
 		path << *pit;
 
-		mout.debug() << "check='" << path << "'" << mout.endl;
+		mout.debug("check='" , path , "'" );
 
 		const Hi5Tree & s = src(path);
 

@@ -115,8 +115,43 @@ protected:
 
 };
 
+/// Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection criteria.
+/**
 
+	In \b Rack , many operations implictly select a subset of available data instead of using it all.
+	For example, in computing a Pseudo CAPPI image, \c DBZH data from single-PRF sweeps is used by default.
 
+	\b Synopsis
+	\include select.hlp
+
+	This option is useful in selecting data for:
+
+	- partial reading a large input file (see \ref fileiopage ).
+	- a meteorological product (see \ref productspage ).
+	- compositing (see \ref compositespage ).
+	- saving images (PNG, GeoTIFF, PPM; see \ref imagespage ).
+	- other data dumps, useful in debugging, for example
+
+	\subsubsection CmdSelect_exm Examples
+
+	The following command lines illustrate usage of \c --select in product generation and image output.
+
+	\include example-select.inc
+
+	The following examples are less realistic than those above, but are used in unit testing of the program code.
+
+	\include example-select-test.inc
+
+	\subsubsection CmdSelect_also See also
+	- \ref CmdDelete
+	- \ref CmdKeep
+	- \ref CmdSetODIM
+
+	\subsubsection CmdSelect_code Related code
+	- #rack::CmdSelect
+	- #rack::DataSelector
+
+*/
 class CmdSelect : public drain::BasicCommand {
 
 public:
@@ -546,17 +581,24 @@ public:
 };
 
 
-
+/// Remove parts of a hierarchical data structure.
 /**
 
-Examples:
-\include example-delete.inc
+ 	\param selection - desired parts to be deleted (syntax explained in \ref CmdSelect)
 
-Notice that \c --elangle applies to volume data only, and essentially selects \c dataset  groups.
-Similarly, \c quantity selects \c data (and \c quality)  groups.
-If selection parameters of both levels are issued in the same command,
-implicit \c AND function applies in selection.
+	\b Synopsis
+	\include delete.hlp
 
+	\b Examples
+	\include example-delete.inc
+
+	Notice that \c --elangle applies to volume data only, and essentially selects \c dataset  groups.
+	Similarly, \c quantity selects \c data (and \c quality)  groups.
+	If selection parameters of both levels are issued in the same command,
+	implicit \c AND function applies in selection.
+
+	\b See\ also
+	- \ref CmdKeep
 */
 class CmdDelete : public CmdBaseSelective {
 
@@ -601,25 +643,30 @@ public:
 };
 
 
-///
+/// Remove parts of a hierarchical data structure.
 /**
 
-Metadata groups (\c what, \c where, \c how) are preserved or deleted together with their
-parent groups.
+ 	\param selection - desired parts to be kept (syntax explained in \ref CmdSelect)
 
-Examples:
-\include example-keep.inc
+	Metadata groups (\c what, \c where, \c how) are preserved or deleted together with their
+	parent groups.
+
+	\b Synopsis
+	\include keep.hlp
+
+	Examples:
+	\include example-keep.inc
+
+	See also: \ref CmdDelete
 
  */
 class CmdKeep : public  CmdBaseSelective {
 
 public:
 
-	/// Keeps a part of the current h5 structure, deletes the rest. Path and quantity are regexps.
+	/// Keeps a part of the current h5 structure, deletes the rest. Quantity is a regular expression.
 	CmdKeep() :  CmdBaseSelective(__FUNCTION__, "Keeps selected part of data structure, deletes rest."){
 	};
-
-
 
 	void exec() const {
 
@@ -633,8 +680,8 @@ public:
 		mout.debug("delete existing no-save structures ");
 		hi5::Hi5Base::deleteNoSave(dst);
 
+		// Initially, mark all paths excluded.
 		DataTools::markNoSave(dst);
-
 
 		DataSelector selector;
 		selector.setParameters(value);
@@ -655,13 +702,10 @@ public:
 				dst(p).data.noSave = false;
 			}
 			//mout.debug("marked for save: " , *it );
-
 			// Accept also tail (attribute groups)
 			//if (it->back().isIndexed()){ // belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){ or: DATASET
-
-			Hi5Tree & d = dst(path);
-			//for (Hi5Tree::iterator dit = d.begin(); dit != d.end(); dit++){
-			for (auto & entry: d){
+			// Hi5Tree & d = dst(path);
+			for (auto & entry: dst(path)){
 				if (entry.first.is(ODIMPathElem::ARRAY)){
 					mout.debug2("also save: ", p, '|', entry.first);
 					// if (dit->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
@@ -676,25 +720,6 @@ public:
 		hi5::Hi5Base::deleteNoSave(dst);
 
 	};
-
-protected:
-
-	// Marks CHILDREN of src for deleting
-	/*
-	void markNoSave(Hi5Tree &src, bool noSave=true) const {
-
-		//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-		for (auto & entry: src) {
-			//if (it->first.isIndexed()){
-			if (!entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-				entry.second.data.noSave = noSave;
-				markNoSave(entry.second, noSave);
-			}
-		}
-
-	}
-	*/
 
 };
 
@@ -711,6 +736,7 @@ protected:
     A full path consist of a slash-separated group path elements followed by an attribute key separated by colon.
     For example: \c /dataset1/data2/what:gain .
 
+	\include move.hlp
 
     Examples:
 	\include example-move.inc

@@ -133,7 +133,7 @@ public:
 			}
 			else {
 				//drain::Logger mout("Quantity", __FUNCTION__);
-				//mout.warn() << "undefined quantity=" << key << mout.endl;
+				//mout.warn("undefined quantity=" , key );
 				static Quantity empty;
 				return empty;
 			}
@@ -195,12 +195,12 @@ public:
 				dstData.odim.quantity = q;
 			}
 			else {
-				mout.warn() << "quantity neither given nor set already" << mout.endl;
+				mout.warn("quantity neither given nor set already" );
 			}
 		}
 
 		if (!typeSet){
-			mout.warn() << "conf for " << quantity << "[" << dstData.odim.type << "] not found" << mout.endl;
+			mout.warn("conf for " , quantity , "[" , dstData.odim.type , "] not found" );
 		}
 		// Redesign all this...
 		dstData.data.setType(dstData.odim.type);
@@ -225,7 +225,7 @@ public:
 		if (dstData.data.getName().empty())
 			dstData.data.setName(dstData.odim.quantity);
 
-		mout.debug2() << "final scaling for " << dstData.odim.quantity << '[' << quantity << ']' << dstData.data.getScaling() << mout.endl;
+		mout.debug2("final scaling for " , dstData.odim.quantity , '[' , quantity , ']' , dstData.data.getScaling() );
 
 		return typeSet;
 	}
@@ -237,7 +237,7 @@ public:
 		const Quantity & q = get(odim.quantity);
 		if (!q.defaultType){
 			drain::Logger mout("QuantityMap", __FUNCTION__);
-			mout.warn() << "no default type for quantity:" << odim.quantity << mout.endl;
+			mout.warn("no default type for quantity:" , odim.quantity );
 			return false;
 		}
 		return EncodingODIM::haveSimilarEncoding(odim, q.get(q.defaultType));

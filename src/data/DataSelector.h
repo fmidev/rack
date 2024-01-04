@@ -569,24 +569,24 @@ void DataSelector::getMainPaths(const Hi5Tree & src, T & pathContainer, bool LIM
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	// Current search point
-	const Hi5Tree & s = src;
+	// Current search point const Hi5Tree & s = src;
 
 	/// For book keeping of traversed datasets
 	std::set<ODIMPathElem::index_t> dataSetIndices;
 
-	for (Hi5Tree::const_iterator it = s.begin(); it != s.end(); ++it) {
+	//for (Hi5Tree::const_iterator it = s.begin(); it != s.end(); ++it) {
+	for (const auto & entry: src) {
 
-		const ODIMPathElem & currentElem = it->first;
-		mout.debug3() << "currentElem='" << currentElem << "'" << mout.endl;
+		const ODIMPathElem & currentElem = entry.first;
+		mout.debug3("currentElem='" , currentElem , "'" );
 
 		// can be moved inside DATASET scope if no other groups included in path (in future?)
-		const drain::image::Image & data    = it->second.data.dataSet; // for ODIM
+		const drain::image::Image & data    = entry.second.data.dataSet; // for ODIM
 		const drain::FlexVariableMap & props = data.getProperties();
 
-		ODIMPath path;
-		path << currentElem;
-
+		// ODIMPath path;
+		// path << currentElem;
+		ODIMPath path(currentElem);
 
 		// Check ELANGLE (in datasets) or quantity (in data/quality)
 		if (currentElem.is(ODIMPathElem::DATASET)){
@@ -598,7 +598,7 @@ void DataSelector::getMainPaths(const Hi5Tree & src, T & pathContainer, bool LIM
 			}
 
 			if ((LIMIT_COUNT) && (dataSetIndices.size() >= count)){
-				mout.debug2() << "dataset count " << dataSetIndices.size() << ">=" << count << ") already completed for " << currentElem << mout.endl;
+				mout.debug2("dataset count " , dataSetIndices.size() , ">=" , count , ") already completed for " , currentElem );
 				continue;
 			}
 
@@ -613,7 +613,7 @@ void DataSelector::getMainPaths(const Hi5Tree & src, T & pathContainer, bool LIM
 			if (getSubPaths(src, pathContainer, path)){
 				// Add this data set path
 				if (pathMatcher.match(path)){
-					mout.debug2() << " path matches (subtree OK) " << path << mout;
+					mout.debug2(" path matches (subtree OK) " , path );
 					addPath(pathContainer, props, path);
 				}
 				dataSetIndices.insert(currentElem.index);
@@ -625,7 +625,7 @@ void DataSelector::getMainPaths(const Hi5Tree & src, T & pathContainer, bool LIM
 		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){ // 2021/04
 
 			if (currentElem.is(ODIMPathElem::DATA)){
-				mout.warn() << " DATA_GROUP '" << currentElem << "' directly under root"  << mout;
+				mout.warn(" DATA_GROUP '" , currentElem , "' directly under root"  );
 			}
 
 			if (getSubPaths(src, pathContainer, ODIMPath())){
@@ -635,14 +635,14 @@ void DataSelector::getMainPaths(const Hi5Tree & src, T & pathContainer, bool LIM
 		}
 		else if (currentElem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
 			// Consider policy..
-			//mout.warn() << " skipping ATTRIBUTE_GROUP: /" << currentElem << mout;
+			//mout.warn(" skipping ATTRIBUTE_GROUP: /" , currentElem );
 			if (pathMatcher.match(path)){
 				addPath(pathContainer, props, path);
 			}
 			// addPath(pathContainer, v, path); // ?
 		}
 		else {
-			mout.warn() << " skipping odd group: /" << currentElem << mout;
+			mout.warn(" skipping odd group: /" , currentElem );
 		}
 
 	}
@@ -658,28 +658,28 @@ bool DataSelector::getSubPaths(const Hi5Tree & src, T & pathContainer, const ODI
 
 	const bool quantityRequired = quantityRegExp.isSet() || qualityRegExp.isSet();
 
-	bool groupsOK = false || !quantityRequired; // :-)
+	bool groupsOK = !quantityRequired;
 
-	const Hi5Tree & s = src(path);
+	//const Hi5Tree & s = src(path);
 
-	for (Hi5Tree::const_iterator it = s.begin(); it != s.end(); ++it) {
+	//for (Hi5Tree::const_iterator it = s.begin(); it != s.end(); ++it) {
+	for (const auto & entry: src(path)) {
 
-		bool quantityFound = false || !quantityRequired; // :-)
+		bool quantityFound = !quantityRequired;
 
-		//bool quantityOk = !quantityRequired; // Always ok if not required...
-		const ODIMPathElem & currentElem = it->first;
-		mout.debug3() << "currentElem='" << currentElem << "'" << mout.endl;
-		const drain::image::Image & data    = it->second.data.dataSet; // for ODIM
+		const ODIMPathElem & currentElem = entry.first;
+		mout.debug3("currentElem='" , currentElem , "'" );
+		const drain::image::Image    & data  = entry.second.data.dataSet; // for ODIM
 		const drain::FlexVariableMap & props = data.getProperties();
 
-		ODIMPath p(path);
-		p << currentElem; // also for attrib groups
+		ODIMPath p(path, currentElem);
+		// ODIMPath p(path);
+		// p << currentElem; // also for attrib groups
 
+		//
 		if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 
 			if (quantityRequired){
-
-
 
 				if (props.hasKey("what:quantity")){
 
@@ -688,38 +688,36 @@ bool DataSelector::getSubPaths(const Hi5Tree & src, T & pathContainer, const ODI
 					if (qualityRegExp.isSet()){ // NOTE: at least, do not test quantity after this!
 						//quantityOk = false;
 						if (currentElem.is(ODIMPathElem::QUALITY) && qualityRegExp.test(quantity)){
-							mout.note() << "QUALITY quantity matches: [" << quantity << "]" << mout.endl;
+							mout.note("QUALITY quantity matches: [" , quantity , "]" );
 							//quantityOk    = true;
 							quantityFound = true;
 						}
 					}
 					else if (quantityRegExp.test(quantity)){
-						mout.debug2() << "quantity matches: [" << quantity << "]: " << path << '|' << currentElem << mout.endl;
+						mout.debug2("quantity matches: [" , quantity , "]: " , path , '|' , currentElem );
 						//quantityOk    = true;
 						quantityFound = true;
 					}
 					else {
-						mout.debug3() << "unmatching DATA quantity  [" <<  quantity << "], skipping" << mout.endl;
-						//NO continue; have to descend for quality (QIND) below!
-						//quantityOk = false;
+						mout.debug3("unmatching DATA quantity  [" ,  quantity , "], skipping" );
+						// NO continue; have to descend for quality (QIND) below!
 						// continue;
 						// recursion continues below
 					}
 
-					//if (quantityFound && (dualPRF != 0)){
 					if (quantityFound && (selectPRF != ANY)){
 						double lowPRF   = props.get("how:lowprf",  0.0);
 						double hightPRF = props.get("how:highprf", lowPRF);
 						bool IS_DUAL_PRF = (lowPRF != hightPRF);
 						if (selectPRF == Prf::DOUBLE){
 							if (!IS_DUAL_PRF){
-								mout.experimental() << "dualPRF required, rejecting [" << quantity << "] at " << p << mout;
+								mout.experimental("dualPRF required, rejecting [" , quantity , "] at " , p );
 								quantityFound = false;
 							}
 						}
 						else {
 							if (IS_DUAL_PRF){
-								mout.experimental() << "dualPRF rejected:  [" << quantity << "] at " << p << mout;
+								mout.experimental("dualPRF rejected:  [" , quantity , "] at " , p );
 								quantityFound = false;
 							}
 						}
@@ -749,23 +747,24 @@ bool DataSelector::getSubPaths(const Hi5Tree & src, T & pathContainer, const ODI
 
 		}
 		else if (currentElem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS | ODIMPathElem::ARRAY)){
-			// mout.warn() << " ATTRIBUTE_GROUP: " << path << " / " << currentElem << mout;
+			// mout.warn(" ATTRIBUTE_GROUP: " , path , " / " , currentElem );
 			if (pathMatcher.match(p)){
-				mout.debug3() << " adding" << path << " / " << currentElem << mout;
+				//mout.debug3("adding " , path , " / " , currentElem );
+				mout.accept("adding " , path , " / " , currentElem );
 				addPath(pathContainer, props, p);
 			}
 		}
 		else if (currentElem.is(ODIMPathElem::DATASET)){
-			mout.warn() << " NESTING DATASET_GROUP: " << path << " / " << currentElem << mout;
+			mout.warn(" NESTING DATASET_GROUP: " , path , " / " , currentElem );
 			// addPath(pathContainer, v, path); // ?
 		}
 		else {
-			mout.debug() << " skipping special: " << path << " / " << currentElem << mout;
+			mout.debug(" skipping special: " , path , " / " , currentElem );
 		}
 		/*
 		   else if (currentElem.is(ODIMPathElem::ARRAY)){
 			if (pathMatcher.match(p)){
-				mout.debug3() << " adding" << path << " / " << currentElem << mout;
+				mout.debug3(" adding" , path , " / " , currentElem );
 				addPath(pathContainer, props, p);
 			}
 		  }
@@ -774,6 +773,9 @@ bool DataSelector::getSubPaths(const Hi5Tree & src, T & pathContainer, const ODI
 		groupsOK |= quantityFound;
 	}
 
+	if (quantityRequired){ //  && groupsOK
+		mout.attention("Quantity [", quantityRegExp , ':', qualityRegExp, "] was required. Found: ", groupsOK);
+	}
 	return groupsOK;
 }
 
@@ -796,7 +798,7 @@ public:
 	DatasetSelector() : DataSelector(ODIMPathElem::DATASET){
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		parameters.delink("path");
-		mout.info() << "experimental: not re-setting DATASET" << mout.endl;
+		mout.info("experimental: not re-setting DATASET" );
 		//pathMatcher.setElems(ODIMPathElem::DATASET);
 	}
 

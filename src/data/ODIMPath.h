@@ -235,7 +235,7 @@ public:
 		//indexMax = i; // not relevant, or check
 		if ((i>0) && !isIndexed(g)){
 			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.note() << "index (" << i << ") given for non-indexed element:" << *this << mout.endl;
+			mout.note("index (" , i , ") given for non-indexed element:" , *this );
 			return false;
 		}
 		return (g != ODIMPathElem::OTHER);

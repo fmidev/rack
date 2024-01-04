@@ -97,7 +97,7 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 				sstr.str("");
 				sstr << entry.first << ':' << e.first;
 				attributes[sstr.str()] = e.second;
-				//mout.warn() << sstr.str() << '=' << it->second << " ... " << a[sstr.str()] << drain::Type::getTypeChar(it->second.getType()) << mout.endl;
+				//mout.warn(sstr.str() , '=' , it->second , " ... " , a[sstr.str()] , drain::Type::getTypeChar(it->second.getType()) );
 			}
 		}
 	}
@@ -107,7 +107,7 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 
 		if (entry.first.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 			if (!entry.second.data.noSave){
-				mout.debug3() << entry.first << " => ensure '/data' groups  " << mout.endl;
+				mout.debug3(entry.first , " => ensure '/data' groups  " );
 				entry.second[ODIMPathElem::ARRAY].data.dataSet;
 			}
 		}
@@ -123,19 +123,19 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 				// Needed. As a side effect, empty data1.img may get a scaling...
 				attributes["scale"]  = s.scale;
 				attributes["offset"] = s.offset;
-				//mout.warn() << a.get("what:quantity", "?") << ", scaling " << img.getScaling() << ' ' << img << mout.endl;
+				//mout.warn(a.get("what:quantity", "?") , ", scaling " , img.getScaling() , ' ' , img );
 			}
 
 			if (img.getName().empty()){
 				img.setName(attributes.get("name",""));
 			}
-			//mout.warn() << "scaling1 " << entry.second.data.dataSet.getScaling() << mout.endl;
+			//mout.warn("scaling1 " , entry.second.data.dataSet.getScaling() );
 		}
 
 
-		// mout.note() << "considering " << entry.first << mout.endl;
+		// mout.note("considering " , entry.first );
 		if (entry.first.belongsTo(ODIMPathElem::DATA_GROUPS | ODIMPathElem::ARRAY)){  // ){//
-			//mout.warn() << "descending to... " << entry.first << mout.endl;
+			//mout.warn("descending to... " , entry.first );
 			/*
 			a["how:path"] = path;
 			a["how:path"] << entry.first;
@@ -153,7 +153,7 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 
 
 	// if (src.hasChild(ODIMPathElem::ARRAY))
-	//   mout.warn() << "scaling3 " << src[ODIMPathElem::ARRAY].data.dataSet.getScaling() << mout.endl;
+	//   mout.warn("scaling3 " , src[ODIMPathElem::ARRAY].data.dataSet.getScaling() );
 	// std::cerr << "### updateAttributes"
 }
 
@@ -176,7 +176,7 @@ void DataTools::markNoSave(Hi5Tree &src, bool noSave){
 bool DataTools::removeIfNoSave(Hi5Tree & dst){
 	if (dst.data.noSave){
 		drain::Logger mout("DataTools", __FUNCTION__);
-		mout.note() << "// about to resetting noSave struct: " << dst.data << mout.endl;
+		mout.note("// about to resetting noSave struct: " , dst.data );
 		/*
 		dst.data.attributes.clear();
 		dst.data.dataSet.resetGeometry();

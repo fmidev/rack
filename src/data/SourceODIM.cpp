@@ -123,11 +123,11 @@ void SourceODIM::setNOD(){
 				//mout.toOStr() << "Site code 'NOD' not found, substituting with '" << NOD << "'" << mout.endl;
 				const std::string & code = getSourceCode();
 				if (!code.empty()){
-					mout.info() << "Site code 'NOD' not found, using '" << code << "' as node indicator " << mout.endl;
+					mout.info("Site code 'NOD' not found, using '" , code , "' as node indicator " );
 				}
 				else {
 					mout.info(*this);
-					mout.note() << "Site information (what:source) not found " << mout.endl;
+					mout.note("Site information (what:source) not found " );
 				}
 			}
 		}

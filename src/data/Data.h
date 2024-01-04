@@ -216,7 +216,7 @@ protected:
 		/*
 		drain::Logger mout("TreeWrapper", __FUNCTION__);
 		if (this->tree.data.noSave){
-			mout.note() << "deleting (children only?)" << mout.endl;
+			mout.note("deleting (children only?)" );
 			this->tree.clear();
 		}
 		*/
@@ -327,7 +327,7 @@ public:
 	inline
 	~PlainData(){
 		//drain::Logger mout("PlainData", __FUNCTION__);
-		//mout.debug2() << "calling updateTree2, odim: " << odim << mout.endl;
+		//mout.debug2("calling updateTree2, odim: " , odim );
 		updateTree2();
 	}
 
@@ -571,13 +571,13 @@ public:
 		drain::Logger mout("DataGroup<" + ODIMPathElem::getKey(G)+">", __FUNCTION__);
 		switch (this->size()) {
 		case 0:
-			mout.debug3() << "no data<n> groups" << mout.endl;
+			mout.debug3("no data<n> groups" );
 			break;
 		default:
-			mout.info() << "several Data groups, using: " << this->begin()->first << mout.endl;
+			mout.info("several Data groups, using: " , this->begin()->first );
 			// no break;
 		case 1:
-			mout.debug() << "updating from 1st data: " << this->begin()->first << mout.endl;
+			mout.debug("updating from 1st data: " , this->begin()->first );
 			updateTree3(this->getFirstData().odim); // tree
 		}
 		*/
@@ -597,11 +597,11 @@ public:
 		typename datagroup_t::const_iterator it = this->find(quantity);
 
 		if (it != this->end()){
-			mout.debug3() << '[' << quantity << "]\t = " << it->first << mout.endl;
+			mout.debug3('[' , quantity , "]\t = " , it->first );
 			return it->second;
 		}
 		else {
-			mout.debug() << '[' << quantity << "] not found, returning empty"  << mout.endl;
+			mout.debug('[' , quantity , "] not found, returning empty"  );
 			return getEmpty();
 		}
 	}
@@ -612,19 +612,19 @@ public:
 		//drain::Logger mout(__FILE__, __FUNCTION__); //REPL "DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G) + "}");
 
-		//mout.warn() << "non-const " << mout.endl;
+		//mout.warn("non-const " );
 		typename datagroup_t::iterator it;
 		#pragma omp critical  //(h5insert)
 		{
 			it = this->find(quantity);
 			if (it != this->end()){
-				mout.debug3() << "found " << it->first << mout.endl;
+				mout.debug3("found " , it->first );
 			}
 			else {
-				//mout.note() << "not found..." << mout.endl;
+				//mout.note("not found..." );
 				ODIMPathElem child(G);
 				DataSelector::getNextChild(this->tree, child);
-				mout.debug3() << "add: " << child << " [" << quantity << ']' << mout.endl;
+				mout.debug3("add: " , child , " [" , quantity , ']' );
 				it = this->insert(this->begin(), typename map_t::value_type(quantity, DT(this->getTree()[child], quantity)));  // WAS [path]
 			}
 		}
@@ -637,16 +637,16 @@ public:
 		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G)+"(RegExp) {const}", __FUNCTION__);
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
-		//mout.warn() << "const " << mout.endl;
+		//mout.warn("const " );
 
 		for (typename datagroup_t::const_iterator it = this->begin(); it != this->end(); ++it){
 			if (regExp.test(it->first)){
-				mout.debug() << "quantity " << it->first << " matches " << regExp << mout.endl;
+				mout.debug("quantity " , it->first , " matches " , regExp );
 				return it->second;
 			}
 		}
 
-		mout.note() << "no quantity match for " << regExp << mout.endl;
+		mout.note("no quantity match for " , regExp );
 
 		return getEmpty();
 
@@ -674,7 +674,7 @@ public:
 			//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
 			drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
-			mout.error() << "no data" << mout.endl;
+			mout.error("no data" );
 			return this->getData("");
 		}
 		else
@@ -687,16 +687,16 @@ public:
 		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G) + " {const}", __FUNCTION__);
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
-		//mout.warn() << "const" << mout.endl;
+		//mout.warn("const" );
 
 		typename datagroup_t::const_iterator it = this->begin();
 
 		if (it != this->end()){
-			mout.debug2() << "found: " << it->first << mout.endl;
+			mout.debug2("found: " , it->first );
 			return it->second;
 		}
 		else {
-			mout.note() << "not found, returning empty"  << mout.endl;
+			mout.note("not found, returning empty"  );
 			return getEmpty();
 		}
 
@@ -711,7 +711,7 @@ public:
 
 		if (it == this->rbegin()){
 			drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
-			mout.error() << "no data" << mout.endl;
+			mout.error("no data" );
 			return this->getData("");
 		}
 		else
@@ -724,16 +724,16 @@ public:
 
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G) + "}-const");
 
-		//mout.warn() << "const" << mout.endl;
+		//mout.warn("const" );
 
 		typename datagroup_t::const_reverse_iterator it = this->rend();
 
 		if (it != this->rbegin()){
-			mout.debug2() << "found: " << it->first << mout.endl;
+			mout.debug2("found: " , it->first );
 			return it->second;
 		}
 		else {
-			mout.note() << "not found, returning empty"  << mout.endl;
+			mout.note("not found, returning empty"  );
 			return getEmpty();
 		}
 
@@ -802,7 +802,7 @@ protected:
 
 				/// Accept groups of type G only
 				if (! (it->first.is(G))){
-					//mout.warn() << "skip '" << it->first << "' \t group != " << G << mout.endl;
+					//mout.warn("skip '" , it->first , "' \t group != " , G );
 					continue;
 				}
 
@@ -816,19 +816,19 @@ protected:
 					++counter; // candidate count
 					if (!quantityRegExp.test(quantity)){
 						//if (it->second.hasChild("quality1"))
-						//	mout.warn() << it->first << "...rejecting, but has quality?" << mout.endl;
-						mout.debug3()<< "rejected '" << it->first << "' [" << quantity << "] !~" << quantityRegExp.toStr() << mout.endl;
+						//	mout.warn(it->first , "...rejecting, but has quality?" );
+						mout.debug3("rejected '" , it->first , "' [" , quantity , "] !~" , quantityRegExp.toStr() );
 						continue;
 					}
 				}
 
-				mout.debug3()<< "accept '" << it->first << "' [" << quantity << ']' << mout.endl;
+				mout.debug3("accept '" , it->first , "' [" , quantity , ']' );
 
 
 				if (quantity.empty()){
 					//drain::Logger mout("DataSet", __FUNCTION__);
-					mout.info() << "quantities dataset:'" << datasetQuantity << "', data:'" << dataQuantity << "'"<< mout.endl;
-					mout.warn() << "undefined quantity in " << it->first << ", using key=" << it->first << mout.endl;
+					mout.info("quantities dataset:'" , datasetQuantity , "', data:'" , dataQuantity , "'");
+					mout.warn("undefined quantity in " , it->first , ", using key=" , it->first );
 					// Assign by path component "data3"
 					dst.insert(typename map_t::value_type(it->first, DT(it->second, it->first)));
 					//associate(dst, it->first, it->second);
@@ -836,11 +836,11 @@ protected:
 				else {
 					if (dst.find(quantity) != dst.end()){ // already created
 						//drain::Logger mout("DataSet", __FUNCTION__);
-						mout.warn() << "quantity '" << quantity << "' replaced same quantity at " << it->first << mout.endl;
+						mout.warn("quantity '" , quantity , "' replaced same quantity at " , it->first );
 					}
 					dst.insert(typename map_t::value_type(quantity, DT(it->second, quantity)));
 					//typename datagroup_t::reverse_iterator rit = dst.rend();
-					//mout.warn() << "last '" << "' [" << quantity << '=' << rit->first << ']' << rit->second << mout.endl;
+					//mout.warn("last '" , "' [" , quantity , '=' , rit->first , ']' , rit->second );
 					//dst[quantity] = T(it->second);
 					//associate(dst, quantity, it->second);t.
 				}
@@ -848,9 +848,9 @@ protected:
 		} // end pragma
 
 		if (USE_REGEXP)
-			mout.debug3() << "matched " << dst.size() << "(out of " << counter << ") data items with RegExp=/" << quantityRegExp.toStr() << '/' << mout.endl;
+			mout.debug3("matched " , dst.size() , "(out of " , counter , ") data items with RegExp=/" , quantityRegExp.toStr() , '/' );
 		else
-			mout.debug3() << "collected " << dst.size() << " data items" << mout.endl;
+			mout.debug3("collected " , dst.size() , " data items" );
 
 		return t;
 	};
@@ -866,7 +866,7 @@ protected:
 		// drain::Logger mout(__FILE__, __FUNCTION__);
 
 		if (src.empty()){
-			mout.debug3() << "src empty" << mout.endl;
+			mout.debug3("src empty" );
 			return src.tree;
 		}
 
@@ -1119,13 +1119,13 @@ public:
 
 		switch (this->size()) {
 		case 0:
-			mout.debug3() << "no data<n> groups" << mout.endl;
+			mout.debug3("no data<n> groups" );
 			break;
 		default:
-			mout.info() << "several Data groups, using: " << this->begin()->first << mout.endl;
+			mout.info("several Data groups, using: " , this->begin()->first );
 			// no break;
 		case 1:
-			mout.debug() << "updating from 1st data: " << this->begin()->first << mout.endl;
+			mout.debug("updating from 1st data: " , this->begin()->first );
 			updateTree3(this->getFirstData().odim); // tree
 		}
 
