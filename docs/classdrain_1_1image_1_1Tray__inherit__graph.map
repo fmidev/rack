@@ -1,5 +1,7 @@
 <map id="Tray&lt; T &gt;" name="Tray&lt; T &gt;">
-<area shape="rect" id="node1" title="Set of images, usable for general calls of type traverseFrame(src, dst) ." alt="" coords="36,80,124,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageTray.html" title="Container applicable for Channels and Images, with alpha support." alt="" coords="15,155,145,181"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,155,32"/>
+<area shape="rect" id="node1" title="Set of images, usable for general calls of type traverseFrame(src, dst) ." alt="" coords="203,78,289,105"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageTray.html" title=" " alt="" coords="337,5,524,47"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageTray.html" title=" " alt="" coords="342,71,519,112"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageTray.html" title="Container applicable for Channels and Images, with alpha support." alt="" coords="367,137,495,163"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,78,155,105"/>
 </map>

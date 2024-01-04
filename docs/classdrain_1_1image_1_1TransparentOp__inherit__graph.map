@@ -1,9 +1,9 @@
 <map id="TransparentOp" name="TransparentOp">
-<area shape="rect" id="node1" title=" " alt="" coords="118,423,235,449"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="84,333,269,375"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1FunctorOp.html" title=" " alt="" coords="71,244,282,285"/>
-<area shape="rect" id="node4" href="$structdrain_1_1image_1_1FunctorWrapper.html" title=" " alt="" coords="5,155,191,196"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="215,162,296,189"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="210,80,301,107"/>
-<area shape="rect" id="node7" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="215,5,296,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="102,393,218,420"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="67,304,253,345"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1FunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="97,229,223,256"/>
+<area shape="rect" id="node4" href="$structdrain_1_1image_1_1FunctorWrapper.html" title="Helper class that only ensures that functor is initialized before ImageOp." alt="" coords="5,155,168,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="193,155,274,181"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="188,80,279,107"/>
+<area shape="rect" id="node7" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="193,5,274,32"/>
 </map>

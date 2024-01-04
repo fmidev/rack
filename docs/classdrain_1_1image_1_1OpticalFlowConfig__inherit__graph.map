@@ -1,4 +1,4 @@
 <map id="OpticalFlowConfig" name="OpticalFlowConfig">
-<area shape="rect" id="node1" title="Consider using SlidingStripeOpticalFlow instead." alt="" coords="5,80,147,107"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="18,5,134,32"/>
+<area shape="rect" id="node1" title="Consider using SlidingStripeOpticalFlow instead." alt="" coords="5,80,145,107"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="18,5,133,32"/>
 </map>

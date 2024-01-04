@@ -1,5 +1,6 @@
 <map id="Referencer" name="Referencer">
-<area shape="rect" id="node1" title="Extends Castable&#39;s interface with link()" alt="" coords="5,171,99,197"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Castable.html" title=" " alt="" coords="13,95,91,121"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Caster.html" title=" " alt="" coords="20,5,84,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="62,247,155,273"/>
+<area shape="rect" id="node2" href="$classdrain_1_1ReferenceBase.html" title=" " alt="" coords="5,171,212,197"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Castable.html" title=" " alt="" coords="69,95,148,121"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Caster.html" title=" " alt="" coords="77,5,141,32"/>
 </map>

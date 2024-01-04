@@ -1,5 +1,5 @@
 <map id="ImageModule" name="ImageModule">
 <area shape="rect" id="node1" title=" " alt="" coords="86,169,197,196"/>
 <area shape="rect" id="node2" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="5,95,277,121"/>
-<area shape="rect" id="node3" href="$classdrain_1_1CommandInstaller.html" title=" " alt="" coords="38,5,245,47"/>
+<area shape="rect" id="node3" href="$classdrain_1_1CommandInstaller.html" title="Creates an instance of command class C." alt="" coords="38,5,245,47"/>
 </map>

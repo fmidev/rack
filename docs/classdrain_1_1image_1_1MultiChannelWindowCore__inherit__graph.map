@@ -1,10 +1,6 @@
 <map id="MultiChannelWindowCore" name="MultiChannelWindowCore">
-<area shape="rect" id="node1" title=" " alt="" coords="25,229,216,256"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="16,304,225,345"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title=" " alt="" coords="37,155,204,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="69,80,173,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="53,5,189,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="5,393,236,435"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1FlowAverageWindow.html" title="Window average that preserves the magnitude." alt="" coords="41,483,200,509"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1FlowAverageWindowWeighted.html" title=" " alt="" coords="11,557,231,584"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,229,196,256"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title=" " alt="" coords="18,155,183,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="49,80,153,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="33,5,169,32"/>
 </map>

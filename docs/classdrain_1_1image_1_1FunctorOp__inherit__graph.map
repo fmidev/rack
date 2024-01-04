@@ -1,11 +1,14 @@
 <map id="FunctorOp&lt; F &gt;" name="FunctorOp&lt; F &gt;">
-<area shape="rect" id="node1" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="217,229,343,256"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1BinaryFunctorOp.html" title="Class for using two&#45;parameter function objects (like std::functor) for sequential and spatial pixel i..." alt="" coords="5,304,173,331"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="197,304,363,331"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="387,304,552,331"/>
-<area shape="rect" id="node2" href="$structdrain_1_1image_1_1FunctorWrapper.html" title="Helper class that only ensures that functor is initialized before ImageOp." alt="" coords="125,155,288,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="313,155,394,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="308,80,399,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="313,5,394,32"/>
-<area shape="rect" id="node9" href="$classrack_1_1RadarFunctorOp.html" title="Convenience (abbreviation)" alt="" coords="387,379,551,405"/>
+<area shape="rect" id="node1" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="484,97,611,123"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="685,5,871,47"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="659,71,897,98"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1BinaryFunctorOp.html" title="Class for using two&#45;parameter function objects (like std::functor) for sequential and spatial pixel i..." alt="" coords="694,122,862,149"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="701,173,855,215"/>
+<area shape="rect" id="node2" href="$structdrain_1_1image_1_1FunctorWrapper.html" title="Helper class that only ensures that functor is initialized before ImageOp." alt="" coords="273,71,436,98"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="314,122,395,149"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="135,122,225,149"/>
+<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="5,122,87,149"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1TransparentOp.html" title=" " alt="" coords="969,13,1085,39"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1CopyOp.html" title=" " alt="" coords="991,71,1064,98"/>
+<area shape="rect" id="node12" href="$classrack_1_1RadarFunctorOp.html" title="Convenience (abbreviation)" alt="" coords="945,181,1109,207"/>
 </map>

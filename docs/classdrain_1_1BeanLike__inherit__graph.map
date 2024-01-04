@@ -5,7 +5,7 @@
 <area shape="rect" id="node20" href="$classdrain_1_1image_1_1DistanceModel.html" title="Base class for linear and exponential distances in rectangular pixel images." alt="" coords="155,715,274,741"/>
 <area shape="rect" id="node23" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="169,1019,260,1045"/>
 <area shape="rect" id="node35" href="$structdrain_1_1image_1_1ImpulseAvgConf.html" title=" " alt="" coords="151,1069,279,1096"/>
-<area shape="rect" id="node37" href="$classdrain_1_1image_1_1PaletteEntry.html" title=" " alt="" coords="163,1120,266,1147"/>
+<area shape="rect" id="node37" href="$classdrain_1_1image_1_1PaletteEntry.html" title="Container for color, transparency (alpha) and textual id and description. Does not contain intensity ..." alt="" coords="164,1120,265,1147"/>
 <area shape="rect" id="node38" href="$classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data." alt="" coords="177,1171,253,1197"/>
 <area shape="rect" id="node39" href="$classrack_1_1DataCoder.html" title="Converts ODIM encoded data (with markers) to natural values and backwards." alt="" coords="169,1221,260,1248"/>
 <area shape="rect" id="node40" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations." alt="" coords="161,1272,268,1299"/>
@@ -29,14 +29,14 @@
 <area shape="rect" id="node16" href="$classdrain_1_1image_1_1MaximumWeightMethod.html" title=" " alt="" coords="356,461,539,488"/>
 <area shape="rect" id="node17" href="$classdrain_1_1image_1_1MinimumMethod.html" title=" " alt="" coords="381,512,514,539"/>
 <area shape="rect" id="node18" href="$classdrain_1_1image_1_1OverwriteMethod.html" title=" " alt="" coords="380,563,515,589"/>
-<area shape="rect" id="node19" href="$classdrain_1_1image_1_1WeightedAverageMethod.html" title=" " alt="" coords="354,613,541,640"/>
+<area shape="rect" id="node19" href="$classdrain_1_1image_1_1WeightedAverageMethod.html" title=" " alt="" coords="355,613,540,640"/>
 <area shape="rect" id="node21" href="$classdrain_1_1image_1_1DistanceModelExponential.html" title=" " alt="" coords="349,664,545,691"/>
 <area shape="rect" id="node22" href="$classdrain_1_1image_1_1DistanceModelLinear.html" title=" " alt="" coords="368,715,527,741"/>
 <area shape="rect" id="node24" href="$classdrain_1_1image_1_1ImageBox.html" title="Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by de..." alt="" coords="403,765,491,792"/>
 <area shape="rect" id="node25" href="$classdrain_1_1image_1_1ImageChannels.html" title=" " alt="" coords="386,816,509,843"/>
 <area shape="rect" id="node26" href="$classdrain_1_1image_1_1ImageCoordPolicy.html" title=" " alt="" coords="377,867,517,893"/>
 <area shape="rect" id="node27" href="$classdrain_1_1image_1_1ImageEncoding.html" title="Changes the type of a target image." alt="" coords="386,917,509,944"/>
-<area shape="rect" id="node28" href="$classdrain_1_1image_1_1ImageFill.html" title=" " alt="" coords="407,968,488,995"/>
+<area shape="rect" id="node28" href="$classdrain_1_1image_1_1ImageFill.html" title=" " alt="" coords="406,968,489,995"/>
 <area shape="rect" id="node29" href="$classdrain_1_1image_1_1ImageGeometry.html" title=" " alt="" coords="383,1019,511,1045"/>
 <area shape="rect" id="node30" href="$classdrain_1_1image_1_1ImageHistogram.html" title=" " alt="" coords="382,1069,513,1096"/>
 <area shape="rect" id="node31" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="407,1120,488,1147"/>
@@ -45,7 +45,7 @@
 <area shape="rect" id="node34" href="$classdrain_1_1image_1_1ImageSampler.html" title="Traverses image, returning samples." alt="" coords="389,1272,506,1299"/>
 <area shape="rect" id="node36" href="$classdrain_1_1image_1_1ImpulseBucket.html" title=" " alt="" coords="343,1323,552,1365"/>
 <area shape="rect" id="node41" href="$classrack_1_1DatasetSelector.html" title=" " alt="" coords="384,1389,511,1416"/>
-<area shape="rect" id="node46" href="$classrack_1_1DoubleParamPrecip.html" title=" " alt="" coords="372,1440,523,1467"/>
-<area shape="rect" id="node47" href="$classrack_1_1SingleParamPrecip.html" title=" " alt="" coords="375,1491,519,1517"/>
+<area shape="rect" id="node46" href="$classrack_1_1DoubleParamPrecip.html" title=" " alt="" coords="373,1440,522,1467"/>
+<area shape="rect" id="node47" href="$classrack_1_1SingleParamPrecip.html" title=" " alt="" coords="376,1491,519,1517"/>
 <area shape="rect" id="node49" href="$classrack_1_1ProductOp.html" title="Polar and Cartesian products." alt="" coords="363,1541,532,1568"/>
 </map>

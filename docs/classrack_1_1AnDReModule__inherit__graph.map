@@ -1,5 +1,5 @@
 <map id="AnDReModule" name="AnDReModule">
 <area shape="rect" id="node1" title=" " alt="" coords="51,184,166,211"/>
 <area shape="rect" id="node2" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="23,95,195,136"/>
-<area shape="rect" id="node3" href="$classdrain_1_1CommandInstaller.html" title=" " alt="" coords="5,5,212,47"/>
+<area shape="rect" id="node3" href="$classdrain_1_1CommandInstaller.html" title="Creates an instance of command class C." alt="" coords="5,5,212,47"/>
 </map>

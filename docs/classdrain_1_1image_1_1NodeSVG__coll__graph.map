@@ -1,9 +1,9 @@
 <map id="NodeSVG" name="NodeSVG">
-<area shape="rect" id="node1" title=" " alt="" coords="137,336,219,363"/>
-<area shape="rect" id="node2" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="87,247,171,273"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="60,157,176,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,5,231,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1FileInfo.html" title=" " alt="" coords="199,247,269,273"/>
-<area shape="rect" id="node7" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="200,157,271,184"/>
+<area shape="rect" id="node1" title=" " alt="" coords="176,351,259,377"/>
+<area shape="rect" id="node2" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="126,261,210,288"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,172,264,199"/>
+<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,96,247,123"/>
+<area shape="rect" id="node5" title=" " alt="" coords="39,5,230,47"/>
+<area shape="rect" id="node6" href="$classdrain_1_1FileInfo.html" title=" " alt="" coords="277,261,347,288"/>
+<area shape="rect" id="node7" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="287,172,358,199"/>
 </map>

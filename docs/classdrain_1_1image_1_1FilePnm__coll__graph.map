@@ -1,6 +1,6 @@
 <map id="FilePnm" name="FilePnm">
-<area shape="rect" id="node1" title="For reading and writing images in PNM format." alt="" coords="37,184,111,211"/>
-<area shape="rect" id="node2" href="$classdrain_1_1FileHandler.html" title=" " alt="" coords="5,95,100,121"/>
-<area shape="rect" id="node3" href="$classdrain_1_1FileInfo.html" title=" " alt="" coords="125,95,194,121"/>
-<area shape="rect" id="node4" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="124,5,195,32"/>
+<area shape="rect" id="node1" title="For reading and writing images in PNM format." alt="" coords="37,184,112,211"/>
+<area shape="rect" id="node2" href="$classdrain_1_1FileHandler.html" title=" " alt="" coords="5,95,101,121"/>
+<area shape="rect" id="node3" href="$classdrain_1_1FileInfo.html" title=" " alt="" coords="126,95,197,121"/>
+<area shape="rect" id="node4" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="126,5,197,32"/>
 </map>

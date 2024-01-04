@@ -1,7 +1,7 @@
 <map id="CmdImageAlphaBase" name="CmdImageAlphaBase">
 <area shape="rect" id="node1" title=" " alt="" coords="68,229,231,256"/>
 <area shape="rect" id="node5" href="$classrack_1_1CmdImageAlpha.html" title=" " alt="" coords="5,304,136,331"/>
-<area shape="rect" id="node6" href="$classrack_1_1CmdImageTransp.html" title=" " alt="" coords="160,304,296,331"/>
+<area shape="rect" id="node6" href="$classrack_1_1CmdImageTransp.html" title=" " alt="" coords="161,304,295,331"/>
 <area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="87,155,211,181"/>
 <area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="105,80,194,107"/>
 <area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="103,5,196,32"/>

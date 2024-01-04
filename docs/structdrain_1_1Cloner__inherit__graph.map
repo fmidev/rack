@@ -1,4 +1,8 @@
 <map id="Cloner&lt; B, S &gt;" name="Cloner&lt; B, S &gt;">
-<area shape="rect" id="node1" title="Wrapper for derived class S, returning base class T." alt="" coords="13,80,132,107"/>
-<area shape="rect" id="node2" href="$structdrain_1_1ClonerBase.html" title=" " alt="" coords="5,5,140,32"/>
+<area shape="rect" id="node1" title="Wrapper for derived class S, returning base class T." alt="" coords="184,80,303,107"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="5,155,231,196"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="255,155,483,196"/>
+<area shape="rect" id="node2" href="$structdrain_1_1ClonerBase.html" title=" " alt="" coords="176,5,311,32"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1UnaryFunctorOpCloner.html" title=" " alt="" coords="15,244,221,271"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1BinaryFunctorOpCloner.html" title=" " alt="" coords="263,244,474,271"/>
 </map>

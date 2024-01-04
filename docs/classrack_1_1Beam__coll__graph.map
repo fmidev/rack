@@ -1,7 +1,7 @@
 <map id="Beam" name="Beam">
 <area shape="rect" id="node1" title=" " alt="" coords="152,640,212,667"/>
 <area shape="rect" id="node2" href="$classdrain_1_1FuzzyBell2.html" title=" " alt="" coords="5,551,172,577"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Fuzzifier.html" title=" " alt="" coords="105,475,256,501"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor." alt="" coords="123,475,238,501"/>
 <area shape="rect" id="node10" href="$classdrain_1_1FuzzyBell.html" title=" " alt="" coords="196,551,355,577"/>
 <area shape="rect" id="node4" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="126,399,235,425"/>
 <area shape="rect" id="node5" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="145,323,216,349"/>

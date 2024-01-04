@@ -1,5 +1,5 @@
 <map id="LaplaceVertOp" name="LaplaceVertOp">
-<area shape="rect" id="node1" title="Computes second vertical derivative, dy2." alt="" coords="59,627,177,653"/>
+<area shape="rect" id="node1" title="Computes second vertical derivative, dy2." alt="" coords="60,627,176,653"/>
 <area shape="rect" id="node2" href="$classdrain_1_1image_1_1LaplaceOp.html" title="Computes second intensity derivatives." alt="" coords="73,551,163,577"/>
 <area shape="rect" id="node3" href="$classdrain_1_1image_1_1DifferentialOp.html" title="Virtual base class for horizontal and vertical intensity derivatives." alt="" coords="61,475,175,501"/>
 <area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="77,399,159,425"/>

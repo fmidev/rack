@@ -1,4 +1,7 @@
 <map id="CommandModule&lt; PREFIX, SECTION &gt;" name="CommandModule&lt; PREFIX, SECTION &gt;">
-<area shape="rect" id="node1" title="Combines command installation and sectioning." alt="" coords="5,95,208,136"/>
-<area shape="rect" id="node2" href="$classdrain_1_1CommandInstaller.html" title=" " alt="" coords="22,5,191,47"/>
+<area shape="rect" id="node1" title="Combines command installation and sectioning." alt="" coords="105,95,308,136"/>
+<area shape="rect" id="node3" href="$classrack_1_1FileModule.html" title=" " alt="" coords="5,184,120,211"/>
+<area shape="rect" id="node4" href="$classrack_1_1MainModule.html" title=" " alt="" coords="145,184,269,211"/>
+<area shape="rect" id="node5" href="$classrack_1_1ScienceModule.html" title=" " alt="" coords="293,184,435,211"/>
+<area shape="rect" id="node2" href="$classdrain_1_1CommandInstaller.html" title=" " alt="" coords="122,5,291,47"/>
 </map>

@@ -1,9 +1,9 @@
 <map id="BankSuper&lt; T &gt;" name="BankSuper&lt; T &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="516,78,647,105"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Bank.html" title=" " alt="" coords="236,15,403,42"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,5,187,47"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="239,71,399,112"/>
-<area shape="rect" id="node5" title=" " alt="" coords="17,71,175,112"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="248,136,391,177"/>
-<area shape="rect" id="node7" title=" " alt="" coords="22,136,170,177"/>
+<area shape="rect" id="node1" title="A Bank with additional support for brief, single char keys." alt="" coords="499,78,629,105"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Bank.html" title=" " alt="" coords="219,15,385,42"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,5,169,47"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="222,71,382,112"/>
+<area shape="rect" id="node5" title=" " alt="" coords="9,71,166,112"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="231,136,373,177"/>
+<area shape="rect" id="node7" title=" " alt="" coords="13,136,161,177"/>
 </map>

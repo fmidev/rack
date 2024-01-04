@@ -1,5 +1,6 @@
 <map id="UnaryFunctorOp&lt; F, NORM, SIGN &gt;" name="UnaryFunctorOp&lt; F, NORM, SIGN &gt;">
 <area shape="rect" id="node1" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="83,304,237,345"/>
+<area shape="rect" id="node7" href="$classrack_1_1RadarFunctorOp.html" title="Convenience (abbreviation)" alt="" coords="78,393,242,420"/>
 <area shape="rect" id="node2" href="$classdrain_1_1image_1_1FunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="97,229,223,256"/>
 <area shape="rect" id="node3" href="$structdrain_1_1image_1_1FunctorWrapper.html" title="Helper class that only ensures that functor is initialized before ImageOp." alt="" coords="5,155,168,181"/>
 <area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="193,155,274,181"/>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['working_20with_20images_3896',['Working with images',['../imagespage.html',1,'']]]
+  ['using_20an_20ide_20in_20developing_20rack_3972',['Using an IDE in developing Rack',['../md_IDE.html',1,'']]]
 ];

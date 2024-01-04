@@ -1,5 +1,217 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classdrain_1_1CommandInstaller.html" title="Creates an instance of command class C." alt="" coords="5,23,212,65"/>
-<area shape="rect" id="node2" href="$classrack_1_1DetectorInstaller.html" title=" " alt="" coords="262,5,393,32"/>
-<area shape="rect" id="node3" href="$classrack_1_1RemoverInstaller.html" title=" " alt="" coords="260,56,395,83"/>
+<area shape="rect" id="node1" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="930,1463,1023,1489"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SuperContextual.html" title=" " alt="" coords="1140,1292,1383,1319"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="1217,1437,1306,1464"/>
+<area shape="rect" id="node138" href="$classdrain_1_1Program.html" title="Sequence consisting of Command:s retrieved from a CommandBank." alt="" coords="1223,3557,1300,3584"/>
+<area shape="rect" id="node139" href="$classdrain_1_1SuperContextual.html" title="Adds class&#45;specific convenience functions." alt="" coords="1177,1488,1346,1515"/>
+<area shape="rect" id="node3" href="$classrack_1_1RackResources.html" title="A container for shared resources applied by RackLets." alt="" coords="1475,1168,1596,1195"/>
+<area shape="rect" id="node5" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="1450,2804,1621,2831"/>
+<area shape="rect" id="node10" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="1439,1219,1631,1245"/>
+<area shape="rect" id="node12" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="1450,1270,1621,1311"/>
+<area shape="rect" id="node14" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="1431,1335,1640,1377"/>
+<area shape="rect" id="node17" href="$classdrain_1_1BeanerCommand.html" title=" " alt="" coords="1441,1401,1630,1442"/>
+<area shape="rect" id="node19" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="1473,1467,1597,1493"/>
+<area shape="rect" id="node136" href="$classdrain_1_1BeanCommand.html" title="Base for derived classes using member BeanLike or referenced BeanLikes." alt="" coords="1442,1568,1629,1595"/>
+<area shape="rect" id="node137" href="$classdrain_1_1BeanerCommand.html" title="Command stored as a single entry in CommandBank and becomes &quot;renamed&quot; upon setKey() prior to executio..." alt="" coords="1448,1619,1623,1645"/>
+<area shape="rect" id="node6" href="$classrack_1_1AnDReCommand.html" title=" " alt="" coords="1701,2972,1883,2999"/>
+<area shape="rect" id="node8" href="$classrack_1_1ProductCommand.html" title="Wrapper for meteorological products derived from VolumeOp." alt="" coords="1699,2829,1885,2856"/>
+<area shape="rect" id="node9" href="$classrack_1_1RackImageOpCmd.html" title="Designed for Rack." alt="" coords="1697,2779,1887,2805"/>
+<area shape="rect" id="node7" href="$classrack_1_1DetectorCommand.html" title=" " alt="" coords="1944,3349,2137,3376"/>
+<area shape="rect" id="node11" href="$classdrain_1_1BeanRefCommand.html" title=" " alt="" coords="1701,99,1883,125"/>
+<area shape="rect" id="node13" href="$classrack_1_1CmdImageBox.html" title=" " alt="" coords="1733,149,1851,176"/>
+<area shape="rect" id="node15" href="$classdrain_1_1CmdOpticalFlowBase.html" title="Utility for creating a Command that runs FastOpticalFlowOp operator." alt="" coords="1711,200,1873,227"/>
+<area shape="rect" id="node16" href="$classrack_1_1CartesianOpticalFlow.html" title=" " alt="" coords="1960,5,2121,32"/>
+<area shape="rect" id="node18" href="$classrack_1_1CmdImageSampler.html" title=" " alt="" coords="1719,251,1865,277"/>
+<area shape="rect" id="node20" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="1688,1619,1896,1645"/>
+<area shape="rect" id="node24" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="1707,1670,1877,1711"/>
+<area shape="rect" id="node59" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="1695,1736,1889,1763"/>
+<area shape="rect" id="node61" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="1701,1568,1883,1595"/>
+<area shape="rect" id="node67" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="1691,1787,1893,1813"/>
+<area shape="rect" id="node71" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="1701,1837,1883,1893"/>
+<area shape="rect" id="node73" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="1696,1917,1888,1944"/>
+<area shape="rect" id="node76" href="$structComputeCmd.html" title=" " alt="" coords="1737,1968,1847,1995"/>
+<area shape="rect" id="node77" href="$classdrain_1_1CmdDebug.html" title=" " alt="" coords="1745,2019,1839,2045"/>
+<area shape="rect" id="node78" href="$classdrain_1_1CmdExecScript.html" title="Executes the defined script." alt="" coords="1733,2069,1851,2096"/>
+<area shape="rect" id="node79" href="$classdrain_1_1CmdExpandVariables.html" title=" " alt="" coords="1712,2120,1872,2147"/>
+<area shape="rect" id="node81" href="$classdrain_1_1CmdLog.html" title=" " alt="" coords="1755,2171,1829,2197"/>
+<area shape="rect" id="node82" href="$classdrain_1_1CmdStatus.html" title=" " alt="" coords="1745,2221,1839,2248"/>
+<area shape="rect" id="node83" href="$classdrain_1_1SimpleCommand.html" title="A single&#45;parameter command." alt="" coords="1706,2272,1878,2299"/>
+<area shape="rect" id="node93" href="$classrack_1_1CartesianBBox.html" title=" " alt="" coords="1733,2323,1851,2349"/>
+<area shape="rect" id="node94" href="$classrack_1_1CartesianBBoxReset.html" title=" " alt="" coords="1715,2373,1869,2400"/>
+<area shape="rect" id="node95" href="$classrack_1_1CartesianBBoxTest.html" title=" " alt="" coords="1720,2424,1864,2451"/>
+<area shape="rect" id="node96" href="$classrack_1_1CartesianBBoxTile.html" title=" " alt="" coords="1721,2475,1863,2501"/>
+<area shape="rect" id="node97" href="$classrack_1_1CartesianGrid.html" title=" " alt="" coords="1737,2525,1847,2552"/>
+<area shape="rect" id="node98" href="$classrack_1_1CartesianInit.html" title=" " alt="" coords="1739,2576,1845,2603"/>
+<area shape="rect" id="node99" href="$classrack_1_1CartesianPlot.html" title=" " alt="" coords="1737,2627,1847,2653"/>
+<area shape="rect" id="node100" href="$classrack_1_1CartesianRange.html" title=" " alt="" coords="1729,2677,1855,2704"/>
+<area shape="rect" id="node101" href="$classrack_1_1CartesianReset.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="1731,2728,1853,2755"/>
+<area shape="rect" id="node102" href="$classrack_1_1CartesianSize.html" title=" " alt="" coords="1737,301,1847,328"/>
+<area shape="rect" id="node103" href="$classrack_1_1CartesianSpread.html" title=" " alt="" coords="1727,352,1857,379"/>
+<area shape="rect" id="node104" href="$classrack_1_1CmdCheckType.html" title="Default handler for requests without own handler. Handles options that are recognized as 1) files to ..." alt="" coords="1731,403,1853,429"/>
+<area shape="rect" id="node105" href="$classrack_1_1CmdCompleteODIM.html" title=" " alt="" coords="1717,453,1867,480"/>
+<area shape="rect" id="node106" href="$classrack_1_1CmdConvert.html" title=" " alt="" coords="1741,504,1843,531"/>
+<area shape="rect" id="node107" href="$classrack_1_1CmdCreateDefaultQuality.html" title=" " alt="" coords="1697,555,1887,581"/>
+<area shape="rect" id="node108" href="$classrack_1_1CmdDumpMap.html" title=" " alt="" coords="1733,605,1851,632"/>
+<area shape="rect" id="node109" href="$classrack_1_1CmdGeoTiff.html" title=" " alt="" coords="1743,656,1841,683"/>
+<area shape="rect" id="node110" href="$classrack_1_1CmdHistogram.html" title="TODO: generalize to array outfile." alt="" coords="1732,707,1852,733"/>
+<area shape="rect" id="node111" href="$classrack_1_1CmdImage.html" title=" " alt="" coords="1745,757,1839,784"/>
+<area shape="rect" id="node112" href="$classrack_1_1CmdImageAlphaBase.html" title=" " alt="" coords="1711,859,1873,885"/>
+<area shape="rect" id="node115" href="$classrack_1_1CmdImageQuality.html" title="Quality groups accepted as alpha channels." alt="" coords="1722,808,1862,835"/>
+<area shape="rect" id="node116" href="$classrack_1_1CmdMove.html" title="Rename or move data groups and attributes." alt="" coords="1748,1011,1836,1037"/>
+<area shape="rect" id="node118" href="$classrack_1_1CmdOutputPanel.html" title=" " alt="" coords="1727,909,1857,936"/>
+<area shape="rect" id="node119" href="$classrack_1_1CmdPaletteConf.html" title=" " alt="" coords="1729,960,1855,987"/>
+<area shape="rect" id="node120" href="$classrack_1_1CmdQuantityConf.html" title=" " alt="" coords="1723,1061,1861,1088"/>
+<area shape="rect" id="node121" href="$classrack_1_1CmdSelect.html" title="Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection cri..." alt="" coords="1746,1112,1838,1139"/>
+<area shape="rect" id="node122" href="$classrack_1_1CmdSweep.html" title="&quot;Virtual&quot; command extracting one sweep &#45; actually only modifying selector" alt="" coords="1745,1163,1839,1189"/>
+<area shape="rect" id="node123" href="$classrack_1_1CmdTest2.html" title=" " alt="" coords="1749,1213,1835,1240"/>
+<area shape="rect" id="node124" href="$classrack_1_1CmdVersion.html" title=" " alt="" coords="1742,1264,1842,1291"/>
+<area shape="rect" id="node125" href="$classrack_1_1Compositor.html" title=" " alt="" coords="1743,1315,1841,1341"/>
+<area shape="rect" id="node131" href="$classrack_1_1PolarAdd.html" title=" " alt="" coords="1752,1365,1832,1392"/>
+<area shape="rect" id="node133" href="$classrack_1_1PolarPlot.html" title=" " alt="" coords="1752,1416,1832,1443"/>
+<area shape="rect" id="node134" href="$classrack_1_1UndetectWeight.html" title=" " alt="" coords="1729,1467,1855,1493"/>
+<area shape="rect" id="node135" href="$structrack_1_1VerboseCmd.html" title=" " alt="" coords="1740,1517,1844,1544"/>
+<area shape="rect" id="node21" href="$structCmdProcessFile.html" title=" " alt="" coords="1978,765,2103,792"/>
+<area shape="rect" id="node22" href="$classrack_1_1CompositeDefaultQuality.html" title=" " alt="" coords="1947,867,2134,893"/>
+<area shape="rect" id="node23" href="$classrack_1_1CompositeTimeDecay.html" title=" " alt="" coords="1957,816,2124,843"/>
+<area shape="rect" id="node25" href="$classdrain_1_1CmdExecFile.html" title="Load script file and execute the commands immediately using current Context." alt="" coords="1988,1981,2093,2008"/>
+<area shape="rect" id="node26" href="$classdrain_1_1CmdFormat.html" title=" " alt="" coords="1991,2032,2090,2059"/>
+<area shape="rect" id="node27" href="$classdrain_1_1CmdFormatFile.html" title=" " alt="" coords="1961,2083,2121,2109"/>
+<area shape="rect" id="node28" href="$classdrain_1_1CmdScript.html" title="Load script file and executes the commands immediately." alt="" coords="1996,2133,2085,2160"/>
+<area shape="rect" id="node29" href="$classdrain_1_1HelpCmd.html" title="CommandBank&#45;dependent." alt="" coords="1999,2184,2082,2211"/>
+<area shape="rect" id="node30" href="$classrack_1_1CartesianPlotFile.html" title=" " alt="" coords="1975,2235,2107,2261"/>
+<area shape="rect" id="node31" href="$classrack_1_1CartesianSun.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="1987,2285,2095,2312"/>
+<area shape="rect" id="node32" href="$classrack_1_1CartesianTime.html" title=" " alt="" coords="1982,2336,2099,2363"/>
+<area shape="rect" id="node33" href="$classrack_1_1CmdAppend.html" title=" " alt="" coords="1990,2387,2091,2413"/>
+<area shape="rect" id="node34" href="$classrack_1_1CmdEcho.html" title=" " alt="" coords="1999,2437,2082,2464"/>
+<area shape="rect" id="node35" href="$classrack_1_1CmdErrorFlags.html" title=" " alt="" coords="1981,2488,2100,2515"/>
+<area shape="rect" id="node36" href="$classrack_1_1CmdFormatOut.html" title=" " alt="" coords="1980,2539,2101,2565"/>
+<area shape="rect" id="node37" href="$classrack_1_1CmdHdf5Test.html" title=" " alt="" coords="1986,2589,2095,2616"/>
+<area shape="rect" id="node38" href="$classrack_1_1CmdHelpExample.html" title=" " alt="" coords="1971,917,2110,944"/>
+<area shape="rect" id="node39" href="$classrack_1_1CmdImageFlatten.html" title=" " alt="" coords="1971,968,2110,995"/>
+<area shape="rect" id="node40" href="$classrack_1_1CmdInputFile.html" title=" " alt="" coords="1987,1019,2095,1045"/>
+<area shape="rect" id="node41" href="$classrack_1_1CmdInputFilter.html" title=" " alt="" coords="1981,1069,2100,1096"/>
+<area shape="rect" id="node42" href="$classrack_1_1CmdInputPrefix.html" title="A debugging facility. Obsolete?" alt="" coords="1979,1120,2102,1147"/>
+<area shape="rect" id="node43" href="$classrack_1_1CmdJSON.html" title=" " alt="" coords="1999,1171,2083,1197"/>
+<area shape="rect" id="node44" href="$classrack_1_1CmdOutputConf.html" title=" " alt="" coords="1977,1221,2104,1248"/>
+<area shape="rect" id="node45" href="$classrack_1_1CmdOutputFile.html" title=" " alt="" coords="1981,1272,2100,1299"/>
+<area shape="rect" id="node46" href="$classrack_1_1CmdOutputPrefix.html" title=" " alt="" coords="1974,1323,2107,1349"/>
+<area shape="rect" id="node47" href="$classrack_1_1CmdOutputRawImages.html" title=" " alt="" coords="1955,1373,2127,1400"/>
+<area shape="rect" id="node48" href="$classrack_1_1CmdOutputTree.html" title=" " alt="" coords="1979,1424,2102,1451"/>
+<area shape="rect" id="node49" href="$classrack_1_1CmdPalette.html" title=" " alt="" coords="1992,1475,2089,1501"/>
+<area shape="rect" id="node50" href="$classrack_1_1CmdPaletteIn.html" title=" " alt="" coords="1986,1525,2095,1552"/>
+<area shape="rect" id="node51" href="$classrack_1_1CmdPause.html" title=" " alt="" coords="1995,1576,2086,1603"/>
+<area shape="rect" id="node52" href="$classrack_1_1CmdPlot.html" title=" " alt="" coords="2002,1627,2079,1653"/>
+<area shape="rect" id="node53" href="$classrack_1_1CmdSelectQuantity.html" title="Set selection criteria strictly to one quantity ." alt="" coords="1967,1677,2115,1704"/>
+<area shape="rect" id="node54" href="$classrack_1_1CmdSetODIM.html" title="Modifies metadata (data attributes)." alt="" coords="1986,1728,2095,1755"/>
+<area shape="rect" id="node55" href="$classrack_1_1CmdValidate.html" title=" " alt="" coords="1988,1779,2093,1805"/>
+<area shape="rect" id="node56" href="$classrack_1_1CompositeMethod.html" title="Commands (more) related to radar composites." alt="" coords="1970,1829,2111,1856"/>
+<area shape="rect" id="node57" href="$classrack_1_1PolarExtract.html" title=" " alt="" coords="1990,1880,2091,1907"/>
+<area shape="rect" id="node58" href="$classrack_1_1PolarPlotFile.html" title=" " alt="" coords="1989,1931,2092,1957"/>
+<area shape="rect" id="node60" href="$classrack_1_1AnDReDefaultQuality.html" title="Set the default quality [0.0,1.0] of radar data, typically close to 0.9." alt="" coords="1960,2640,2121,2667"/>
+<area shape="rect" id="node62" href="$classdrain_1_1CmdVerbosity.html" title=" " alt="" coords="1984,563,2097,589"/>
+<area shape="rect" id="node63" href="$classrack_1_1CmdPaletteRefine.html" title=" " alt="" coords="1971,613,2110,640"/>
+<area shape="rect" id="node64" href="$classrack_1_1CmdStore.html" title=" " alt="" coords="1997,664,2084,691"/>
+<area shape="rect" id="node65" href="$classrack_1_1CompositeDecayTime.html" title="half&#45;time in minutes" alt="" coords="1957,715,2124,741"/>
+<area shape="rect" id="node66" href="$classrack_1_1OutputDataVerbosity.html" title=" " alt="" coords="1961,512,2120,539"/>
+<area shape="rect" id="node68" href="$structCmdReadFile.html" title=" " alt="" coords="1987,2792,2095,2819"/>
+<area shape="rect" id="node69" href="$structEchoCmd.html" title=" " alt="" coords="1999,2691,2082,2717"/>
+<area shape="rect" id="node70" href="$structHelloCmd.html" title=" " alt="" coords="1997,2741,2084,2768"/>
+<area shape="rect" id="node72" href="$classrack_1_1PolarSite.html" title=" " alt="" coords="2001,2843,2081,2869"/>
+<area shape="rect" id="node74" href="$classrack_1_1AnDReUniversal.html" title=" " alt="" coords="1977,2944,2105,2971"/>
+<area shape="rect" id="node75" href="$classrack_1_1CmdImagePhysical.html" title="Switch for image operators to use physical scale instead of storage typed values." alt="" coords="1967,2893,2114,2920"/>
+<area shape="rect" id="node80" href="$classrack_1_1CmdExpandVariables2.html" title=" " alt="" coords="1957,2995,2125,3021"/>
+<area shape="rect" id="node84" href="$classdrain_1_1CmdNotFound.html" title="Special command for handling undefined commands." alt="" coords="1983,3096,2098,3123"/>
+<area shape="rect" id="node85" href="$classrack_1_1CartesianProj.html" title="First, commands applicable in any Cartesian product generation, not only radar compositeing." alt="" coords="1986,3147,2095,3173"/>
+<area shape="rect" id="node86" href="$classrack_1_1CmdBaseSelective.html" title=" " alt="" coords="1969,3197,2113,3224"/>
+<area shape="rect" id="node90" href="$classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="1985,3299,2096,3325"/>
+<area shape="rect" id="node91" href="$classrack_1_1CmdOutputQuantity.html" title=" " alt="" coords="1965,3248,2117,3275"/>
+<area shape="rect" id="node92" href="$classrack_1_1CmdPaletteOut.html" title=" " alt="" coords="1981,3045,2101,3072"/>
+<area shape="rect" id="node87" href="$classrack_1_1CmdDelete.html" title="Remove parts of a hierarchical data structure." alt="" coords="2195,3147,2290,3173"/>
+<area shape="rect" id="node88" href="$classrack_1_1CmdKeep.html" title="Remove parts of a hierarchical data structure." alt="" coords="2201,3197,2285,3224"/>
+<area shape="rect" id="node89" href="$classrack_1_1CmdSelectOld.html" title="Tool for selecting data for next command(s), based on paths, quantities and elevations." alt="" coords="2185,3248,2300,3275"/>
+<area shape="rect" id="node113" href="$classrack_1_1CmdImageAlpha.html" title=" " alt="" coords="1975,56,2106,83"/>
+<area shape="rect" id="node114" href="$classrack_1_1CmdImageTransp.html" title=" " alt="" coords="1973,107,2108,133"/>
+<area shape="rect" id="node117" href="$classrack_1_1CmdRename.html" title=" " alt="" coords="1987,157,2094,184"/>
+<area shape="rect" id="node126" href="$classrack_1_1CartesianCreate.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="1977,309,2104,336"/>
+<area shape="rect" id="node127" href="$classrack_1_1CartesianExtract.html" title=" " alt="" coords="1975,360,2106,387"/>
+<area shape="rect" id="node128" href="$classrack_1_1CompositeAdd.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="1982,411,2099,437"/>
+<area shape="rect" id="node129" href="$classrack_1_1CompositeAddWeighted.html" title=" " alt="" coords="1951,208,2130,235"/>
+<area shape="rect" id="node130" href="$classrack_1_1CompositeCreateTile.html" title=" " alt="" coords="1961,259,2120,285"/>
+<area shape="rect" id="node132" href="$classrack_1_1PolarAddWeighted.html" title=" " alt="" coords="1970,461,2111,488"/>
+<area shape="rect" id="node140" href="$classrack_1_1ImageOpExec.html" title=" " alt="" coords="1480,1517,1591,1544"/>
+<area shape="rect" id="node141" title=" " alt="" coords="663,4127,705,4153"/>
+<area shape="rect" id="node142" href="$classdrain_1_1CommandSequence.html" title=" " alt="" coords="883,3645,1070,3701"/>
+<area shape="rect" id="node143" href="$classdrain_1_1CommandSequence.html" title=" " alt="" coords="883,4239,1070,4295"/>
+<area shape="rect" id="node145" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="905,4319,1048,4361"/>
+<area shape="rect" id="node146" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="897,4385,1057,4426"/>
+<area shape="rect" id="node147" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="890,4450,1063,4491"/>
+<area shape="rect" id="node148" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="899,4516,1055,4543"/>
+<area shape="rect" id="node150" href="$classdrain_1_1Path.html" title=" " alt="" coords="861,4087,1092,4113"/>
+<area shape="rect" id="node152" href="$classdrain_1_1Path.html" title=" " alt="" coords="900,3751,1053,3793"/>
+<area shape="rect" id="node153" href="$classdrain_1_1CommandSequence.html" title="A base class for Script and Program." alt="" coords="881,3817,1072,3844"/>
+<area shape="rect" id="node154" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="904,3868,1049,3895"/>
+<area shape="rect" id="node155" href="$classdrain_1_1Layer.html" title=" " alt="" coords="929,3919,1025,3945"/>
+<area shape="rect" id="node156" href="$classdrain_1_1Path.html" title=" " alt="" coords="897,3970,1057,4011"/>
+<area shape="rect" id="node157" href="$classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="922,4036,1031,4063"/>
+<area shape="rect" id="node158" href="$classrack_1_1DataSetList.html" title=" " alt="" coords="904,4137,1049,4164"/>
+<area shape="rect" id="node159" href="$classrack_1_1ODIMValidator.html" title=" " alt="" coords="919,4188,1035,4215"/>
+<area shape="rect" id="node144" href="$classdrain_1_1Script.html" title=" " alt="" coords="1232,4253,1291,4280"/>
+<area shape="rect" id="node149" href="$classdrain_1_1DictionaryPtr.html" title="Associates type info." alt="" coords="1180,4516,1343,4543"/>
+<area shape="rect" id="node151" href="$classrack_1_1ODIMPathMatcher.html" title="Structure for testing if a path matches a given sequence of path elements." alt="" coords="1192,4087,1331,4113"/>
+<area shape="rect" id="node160" title=" " alt="" coords="95,3500,145,3527"/>
+<area shape="rect" id="node161" href="$classdrain_1_1Bank.html" title=" " alt="" coords="311,3273,478,3300"/>
+<area shape="rect" id="node163" href="$classdrain_1_1Bank.html" title=" " alt="" coords="323,3324,467,3351"/>
+<area shape="rect" id="node165" href="$classdrain_1_1ImageCodeMap.html" title=" " alt="" coords="311,3375,478,3417"/>
+<area shape="rect" id="node167" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="309,3660,481,3687"/>
+<area shape="rect" id="node169" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="299,3105,490,3132"/>
+<area shape="rect" id="node183" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="283,3441,507,3468"/>
+<area shape="rect" id="node192" href="$classrack_1_1DataGroup.html" title=" " alt="" coords="285,3039,504,3081"/>
+<area shape="rect" id="node193" href="$classrack_1_1DataGroup.html" title=" " alt="" coords="295,3157,494,3198"/>
+<area shape="rect" id="node195" href="$classdrain_1_1Bank.html" title=" " alt="" coords="339,3559,450,3585"/>
+<area shape="rect" id="node198" href="$classdrain_1_1ImageCodeMap.html" title=" " alt="" coords="313,3761,476,3788"/>
+<area shape="rect" id="node199" href="$classdrain_1_1ListMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="339,3812,450,3839"/>
+<area shape="rect" id="node200" href="$classdrain_1_1ProgramVector.html" title="Structure for implementing threads in parallelized OpenMP for loop." alt="" coords="335,3863,454,3889"/>
+<area shape="rect" id="node201" href="$classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="331,3913,458,3940"/>
+<area shape="rect" id="node202" href="$classdrain_1_1image_1_1Tray.html" title="Set of images, usable for general calls of type traverseFrame(src, dst) ." alt="" coords="351,4015,438,4041"/>
+<area shape="rect" id="node206" href="$classrack_1_1DataGroup.html" title="A map of &quot;data type&quot; group_t (DATA or QUALITY) where the data can be retrieved using quantity keys (s..." alt="" coords="315,2988,474,3015"/>
+<area shape="rect" id="node207" href="$classrack_1_1DataSetMap.html" title=" " alt="" coords="319,3223,470,3249"/>
+<area shape="rect" id="node208" href="$classrack_1_1Quantity.html" title="Structure for defining." alt="" coords="355,3609,434,3636"/>
+<area shape="rect" id="node209" href="$classrack_1_1QuantityMap.html" title=" " alt="" coords="341,3711,448,3737"/>
+<area shape="rect" id="node162" href="$classdrain_1_1BankSuper.html" title="A Bank with additional support for brief, single char keys." alt="" coords="619,3224,749,3251"/>
+<area shape="rect" id="node164" href="$classdrain_1_1image_1_1ImageOpBank.html" title=" " alt="" coords="627,3325,741,3352"/>
+<area shape="rect" id="node166" href="$classdrain_1_1Legend.html" title=" " alt="" coords="649,3380,719,3407"/>
+<area shape="rect" id="node168" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="633,3660,735,3687"/>
+<area shape="rect" id="node170" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="626,3105,742,3132"/>
+<area shape="rect" id="node181" href="$classdrain_1_1ReferenceMap2.html" title="A map of references to base type scalars, arrays or std::string; changing values in either are equiva..." alt="" coords="603,3165,765,3192"/>
+<area shape="rect" id="node171" href="$classdrain_1_1image_1_1SegmentProberConf.html" title=" " alt="" coords="895,3157,1058,3198"/>
+<area shape="rect" id="node172" href="$classdrain_1_1image_1_1SegmentProberConf.html" title="Container for parameters of SegmentProber." alt="" coords="895,3039,1058,3081"/>
+<area shape="rect" id="node173" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="918,3105,1035,3132"/>
+<area shape="rect" id="node174" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)" alt="" coords="1232,3219,1291,3245"/>
+<area shape="rect" id="node175" href="$classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites)." alt="" coords="1475,3244,1595,3271"/>
+<area shape="rect" id="node176" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products)." alt="" coords="1490,3193,1581,3220"/>
+<area shape="rect" id="node178" href="$classrack_1_1VerticalCrossSectionODIM.html" title=" " alt="" coords="1440,3295,1631,3321"/>
+<area shape="rect" id="node177" href="$classrack_1_1EncodingBag.html" title="Utility. Consider long names, and then addShortKeys()" alt="" coords="1739,3207,1845,3233"/>
+<area shape="rect" id="node179" href="$classrack_1_1RhiODIM.html" title=" " alt="" coords="1753,3283,1831,3309"/>
+<area shape="rect" id="node180" href="$classrack_1_1VerticalProfileODIM.html" title=" " alt="" coords="1718,3333,1866,3360"/>
+<area shape="rect" id="node182" href="$classPerson.html" title=" " alt="" coords="943,3223,1010,3249"/>
+<area shape="rect" id="node184" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="555,3481,813,3508"/>
+<area shape="rect" id="node190" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s." alt="" coords="619,3431,749,3457"/>
+<area shape="rect" id="node185" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="935,3481,1019,3508"/>
+<area shape="rect" id="node186" href="$classNodeHTML.html" title=" " alt="" coords="1215,3608,1308,3635"/>
+<area shape="rect" id="node187" href="$classdrain_1_1NodeSLD.html" title=" " alt="" coords="1221,3405,1302,3432"/>
+<area shape="rect" id="node188" href="$classdrain_1_1image_1_1NodeGDAL.html" title=" " alt="" coords="1215,3456,1307,3483"/>
+<area shape="rect" id="node189" href="$classdrain_1_1image_1_1NodeSVG.html" title=" " alt="" coords="1220,3507,1303,3533"/>
+<area shape="rect" id="node191" href="$classrack_1_1SourceODIM.html" title=" " alt="" coords="925,3431,1028,3457"/>
+<area shape="rect" id="node194" href="$classrack_1_1DataSet.html" title="A map of radar data, indexed by quantity code (DBZH, VRAD, etc)." alt="" coords="623,3275,745,3301"/>
+<area shape="rect" id="node196" href="$classdrain_1_1BankSuper.html" title=" " alt="" coords="589,3583,779,3609"/>
+<area shape="rect" id="node197" href="$classdrain_1_1CommandBank.html" title="Container and execution tools for commands derived from Command." alt="" coords="915,3583,1038,3609"/>
+<area shape="rect" id="node203" href="$classdrain_1_1image_1_1ImageTray.html" title=" " alt="" coords="591,4061,777,4102"/>
+<area shape="rect" id="node204" href="$classdrain_1_1image_1_1ImageTray.html" title=" " alt="" coords="595,3995,773,4037"/>
+<area shape="rect" id="node205" href="$classdrain_1_1image_1_1ImageTray.html" title="Container applicable for Channels and Images, with alpha support." alt="" coords="620,3944,748,3971"/>
+<area shape="rect" id="node210" href="$classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="319,3493,470,3534"/>
+<area shape="rect" id="node211" href="$classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data." alt="" coords="633,3532,735,3559"/>
+<area shape="rect" id="node212" href="$classrack_1_1TreeWrapper.html" title="Base class for all kinds of radar data." alt="" coords="44,4015,196,4041"/>
+<area shape="rect" id="node213" href="$classrack_1_1PlainData.html" title="Essential class for storing radar data." alt="" coords="328,3964,461,3991"/>
+<area shape="rect" id="node214" href="$classrack_1_1RootData.html" title="Experimental structure, designed only for accessing root level metadata." alt="" coords="329,4065,460,4092"/>
+<area shape="rect" id="node215" href="$classrack_1_1TreeWrapper.html" title=" " alt="" coords="5,3047,235,3073"/>
 </map>

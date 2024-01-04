@@ -1,0 +1,8 @@
+<map id="DotBullit" name="DotBullit">
+<area shape="rect" id="node1" title=" " alt="" coords="69,399,148,425"/>
+<area shape="rect" id="node2" href="$classdrain_1_1DotNode.html" title=" " alt="" coords="69,323,148,349"/>
+<area shape="rect" id="node3" href="$classdrain_1_1DotEntity.html" title=" " alt="" coords="67,247,150,273"/>
+<area shape="rect" id="node4" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,157,160,184"/>
+<area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,195,108"/>
+<area shape="rect" id="node6" title=" " alt="" coords="5,5,212,32"/>
+</map>

@@ -1,8 +1,8 @@
 <map id="SlidingWindowMedian" name="SlidingWindowMedian">
-<area shape="rect" id="node1" title=" " alt="" coords="49,423,216,449"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="39,333,226,375"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="22,244,243,285"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="5,155,260,196"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="81,80,185,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="65,5,201,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="32,408,199,435"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="22,319,209,360"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="5,229,225,271"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WIndowOp&#39;s." alt="" coords="50,155,181,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="63,80,167,107"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="47,5,183,32"/>
 </map>

@@ -1,7 +1,17 @@
 <map id="WindowOp&lt; W &gt;" name="WindowOp&lt; W &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="27,229,162,256"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title="Template for operators applying pipeline&#45;like sliding window." alt="" coords="5,304,184,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="54,155,135,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="49,80,140,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="54,5,135,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="403,177,537,203"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="603,5,802,47"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="605,71,800,112"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="593,136,812,177"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="585,201,820,243"/>
+<area shape="rect" id="node13" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="605,267,800,308"/>
+<area shape="rect" id="node15" href="$classdrain_1_1image_1_1BlenderOp.html" title="Smoothes image and mixes the result with the original." alt="" coords="647,333,759,359"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="273,177,355,203"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="135,177,225,203"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="5,177,87,203"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1SlidingWindowMedianOp.html" title=" " alt="" coords="878,13,1062,39"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1FastOpticalFlowOp.html" title=" " alt="" coords="899,78,1041,105"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1SlidingWindowHistogramOp.html" title="Window histogram for computing [asmdvNX] = iAverage, sum, median, stddev, variance,..." alt="" coords="868,143,1072,170"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1FlowAverageOp.html" title="Window average that preserves the magnitude." alt="" coords="908,209,1032,235"/>
+<area shape="rect" id="node14" href="$classdrain_1_1image_1_1FastOpticalFlow2Op.html" title=" " alt="" coords="895,274,1045,301"/>
 </map>

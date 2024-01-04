@@ -1,9 +1,9 @@
 <map id="SamplePicker" name="SamplePicker">
-<area shape="rect" id="node1" title="Interprets data values for Sampler." alt="" coords="199,247,309,273"/>
-<area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="123,157,239,184"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="32,81,223,108"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,5,231,32"/>
-<area shape="rect" id="node5" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s." alt="" coords="280,157,412,184"/>
-<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="264,81,465,108"/>
-<area shape="rect" id="node7" title=" " alt="" coords="255,5,491,32"/>
+<area shape="rect" id="node1" title="Interprets data values for Sampler." alt="" coords="193,261,303,288"/>
+<area shape="rect" id="node2" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s." alt="" coords="97,172,228,199"/>
+<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="5,96,229,123"/>
+<area shape="rect" id="node4" title=" " alt="" coords="22,5,213,47"/>
+<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap2.html" title="A map of references to base type scalars, arrays or std::string; changing values in either are equiva..." alt="" coords="260,172,423,199"/>
+<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="254,96,445,123"/>
+<area shape="rect" id="node7" title=" " alt="" coords="237,13,462,39"/>
 </map>

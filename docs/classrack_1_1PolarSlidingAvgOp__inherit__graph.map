@@ -1,7 +1,12 @@
 <map id="PolarSlidingAvgOp" name="PolarSlidingAvgOp">
-<area shape="rect" id="node1" title=" " alt="" coords="63,348,204,375"/>
-<area shape="rect" id="node2" href="$classrack_1_1PolarSlidingWindowOp.html" title=" " alt="" coords="5,244,261,300"/>
-<area shape="rect" id="node3" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="72,169,195,196"/>
-<area shape="rect" id="node4" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="39,95,228,121"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ProductOp.html" title=" " alt="" coords="25,5,241,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="63,736,204,763"/>
+<area shape="rect" id="node2" href="$classrack_1_1PolarSlidingWindowOp.html" title=" " alt="" coords="5,632,261,688"/>
+<area shape="rect" id="node3" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="72,557,195,584"/>
+<area shape="rect" id="node4" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="39,483,227,509"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images." alt="" coords="25,393,241,435"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="39,304,228,345"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="77,229,189,256"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="93,155,174,181"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="88,80,179,107"/>
+<area shape="rect" id="node10" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="93,5,174,32"/>
 </map>

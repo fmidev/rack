@@ -1,7 +1,7 @@
 <map id="NodeHTML" name="NodeHTML">
-<area shape="rect" id="node1" title=" " alt="" coords="71,304,165,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="76,229,160,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="60,155,176,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,80,213,107"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,5,231,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="88,319,181,345"/>
+<area shape="rect" id="node2" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="93,244,177,271"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,169,264,196"/>
+<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,95,247,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="39,5,230,47"/>
 </map>

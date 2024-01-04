@@ -1,6 +1,10 @@
 <map id="SlidingRadarWindow&lt; C, R &gt;" name="SlidingRadarWindow&lt; C, R &gt;">
-<area shape="rect" id="node1" title="A two&#45;dimensional image processing window that handles the special ODIM codes and scales the result...." alt="" coords="48,244,204,285"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="6,155,246,196"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="5,80,247,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="55,5,197,32"/>
+<area shape="rect" id="node1" title="A two&#45;dimensional image processing window that handles the special ODIM codes and scales the result...." alt="" coords="228,319,384,360"/>
+<area shape="rect" id="node6" href="$classrack_1_1RadarWindowAvg.html" title=" " alt="" coords="5,408,180,435"/>
+<area shape="rect" id="node7" href="$classrack_1_1RadarWindowSoftMax.html" title=" " alt="" coords="204,408,408,435"/>
+<area shape="rect" id="node8" href="$classrack_1_1RadarWindowStdDev.html" title="Sliding window for computing standard deviation of scalar quantities." alt="" coords="432,408,631,435"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="186,229,426,271"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WIndowOp&#39;s." alt="" coords="241,155,371,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="254,80,358,107"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="238,5,374,32"/>
 </map>

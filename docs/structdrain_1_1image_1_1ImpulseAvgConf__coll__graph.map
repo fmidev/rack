@@ -1,11 +1,9 @@
 <map id="ImpulseAvgConf" name="ImpulseAvgConf">
-<area shape="rect" id="node1" title=" " alt="" coords="145,351,273,377"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="100,261,181,288"/>
+<area shape="rect" id="node1" title=" " alt="" coords="127,336,255,363"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="83,247,164,273"/>
 <area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="60,157,176,184"/>
 <area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
 <area shape="rect" id="node5" title=" " alt="" coords="5,5,231,32"/>
-<area shape="rect" id="node6" href="$structdrain_1_1image_1_1Decay4.html" title=" " alt="" coords="212,261,357,288"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="201,157,369,184"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1Decay2.html" title=" " alt="" coords="393,157,539,184"/>
-<area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="382,81,550,108"/>
+<area shape="rect" id="node6" href="$structdrain_1_1image_1_1Decay4.html" title=" " alt="" coords="193,247,339,273"/>
+<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="200,157,335,184"/>
 </map>

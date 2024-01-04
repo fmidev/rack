@@ -1,5 +1,5 @@
 <map id="RadarWindowConfig" name="RadarWindowConfig">
-<area shape="rect" id="node1" title=" " alt="" coords="15,80,170,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="16,80,169,107"/>
 <area shape="rect" id="node3" href="$classrack_1_1DopplerInversionConfig.html" title=" " alt="" coords="5,155,180,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="35,5,151,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="35,5,150,32"/>
 </map>

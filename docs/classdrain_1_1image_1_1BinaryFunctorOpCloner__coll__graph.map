@@ -1,6 +1,6 @@
 <map id="BinaryFunctorOpCloner&lt; F &gt;" name="BinaryFunctorOpCloner&lt; F &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="18,259,229,285"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="9,169,237,211"/>
-<area shape="rect" id="node3" href="$structdrain_1_1Cloner.html" title=" " alt="" coords="5,80,241,121"/>
-<area shape="rect" id="node4" href="$structdrain_1_1ClonerBase.html" title=" " alt="" coords="31,5,216,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="14,244,225,271"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="5,155,233,196"/>
+<area shape="rect" id="node3" href="$structdrain_1_1Cloner.html" title="Wrapper for derived class S, returning base class T." alt="" coords="60,80,179,107"/>
+<area shape="rect" id="node4" href="$structdrain_1_1ClonerBase.html" title=" " alt="" coords="52,5,187,32"/>
 </map>
