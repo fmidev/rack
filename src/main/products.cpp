@@ -205,13 +205,14 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName());
 
 		mout.debug("Applying data selector and targetEncoding ");
+		mout.debug("Initial data selector: ", this->bean.dataSelector);
 
 		if (this->bean.dataSelector.consumeParameters(ctx.select)){
-			mout.special("User defined select: " , this->bean.getDataSelector() );
+			mout.special("User defined select: ", this->bean.getDataSelector() );
 		}
 
 		if (!ctx.targetEncoding.empty()){
-			mout.debug("Setting target parameters: " , ctx.targetEncoding );
+			mout.debug("Setting target parameters: ", ctx.targetEncoding );
 			this->bean.setEncodingRequest(ctx.targetEncoding);
 			//mout.debug2("New values: " , this->bean.odim  );
 			ctx.targetEncoding.clear();
@@ -231,7 +232,7 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName());
 		// mout.timestamp("BEGIN_PRODUCT");
 
-		mout.info("Computing: ", this->bean.getName(), ' ', this->getParameters());
+		mout.info("Computing: ", this->bean.getName(), ' ', drain::sprinter(this->getParameters().getMap(), drain::Sprinter::cmdLineLayout)); // XXX
 
 		// op.filter(getResources().inputHi5, getResources().polarHi5);
 		// const Hi5Tree & src = ctx.getCurrentInputHi5();
@@ -254,8 +255,9 @@ public:
 		  mout.warn("hdf5.b  ", (size_t)&dst2,  '\n');
 		*/
 
-		if (src.empty())
+		if (src.empty()){
 			mout.warn("Empty, but proceeding...");
+		}
 
 		// if (only if) ctx.append, then ctx? shared?
 		Hi5Tree & dst = ctx.polarProductHi5; //getTarget();  //For AnDRe ops, src serves also as dst.
@@ -265,7 +267,6 @@ public:
 		}
 
 		//mout.warn(dst );
-		//mout.warn("Produktsi");
 		this->bean.processVolume(src, dst);
 		// hi5::Writer::writeFile("test1.h5", dst);
 

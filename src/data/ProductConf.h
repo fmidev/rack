@@ -55,15 +55,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-//using namespace drain::image;
-
-
 /// Shared properties for meteorological products and Cartesian products (composites and single-radar images)
 /**
  *   TODO: separate member object
  */
-struct ProductConf {
+class ProductConf {
 
+public:
+
+	/// Default constructor.
+	inline
+	ProductConf(){};
+
+	/// Copy constructor.
+	ProductConf(const ProductConf & conf);
 
 	// INPUT:
 

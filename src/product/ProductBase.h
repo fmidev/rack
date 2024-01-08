@@ -87,11 +87,14 @@ class ProductBase : public ProductConf, public drain::BeanLike {
 protected:
 
 	/// Default constructor
+	inline
 	ProductBase(const std::string &name, const std::string & description) : drain::BeanLike(name, description){
-		//std::cout << name << '\t' << __FILE__ << std::endl;
-		//dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
 		dataSelector.pathMatcher.set(ODIMPathElem::DATASET);
 		dataSelector.updateBean();
+	}
+
+	inline
+	ProductBase(const ProductBase & product) : ProductConf(product), drain::BeanLike(product){
 	}
 
 public:

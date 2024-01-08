@@ -77,6 +77,7 @@ public:
 
 protected:
 
+	inline
 	CumulativeProductOp(const std::string & name = __FUNCTION__,
 			const std::string &description = "", const std::string & accumulationMethod = "LATEST") :
 		PolarProductOp(name, description), accumulationMethod(accumulationMethod){
@@ -91,6 +92,9 @@ protected:
 		odim.rscale = 0.0;
 
 	};
+
+	inline
+	CumulativeProductOp(const CumulativeProductOp & op) : PolarProductOp(op){};
 
 	std::string accumulationMethod;
 

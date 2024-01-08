@@ -96,6 +96,8 @@ const SprinterLayout Sprinter::cppLayout("{,}", "{,}", "{,}", "\"\"", "\"\""); /
 
 const SprinterLayout Sprinter::pythonLayout("[,]", "{,}",  "(,)", "\"\"", "''", ":"); // last ':' means plain map entries (not tuples as in C++)
 
+const SprinterLayout Sprinter::cmdLineLayout = {":", ",", "=", ""};
+
 /// JSON layout uses std::pair<>(first,second) to display key:value pairs.
 /**
  *   # arrays  as [...]

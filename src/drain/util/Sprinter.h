@@ -285,6 +285,8 @@ public:
 	static const SprinterLayout pythonLayout;
 
 
+	static const SprinterLayout cmdLineLayout; // = {":", ",", "=", ""};
+
 	static inline
 	void prefixToStream(std::ostream & ostr, const TypeLayout & layout){
 		if (layout.prefix)

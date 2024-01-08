@@ -70,10 +70,15 @@ CappiOp::CappiOp(double altitude, bool aboveSeaLevel, double beamWidth, double w
 	parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "string");
 	//parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
 
+	dataSelector.quantity = "^DBZH$";
+	// dataSelector.selectPRF.set(DataSelector::Prf::SINGLE);
+	dataSelector.prf = "SINGLE";
+	dataSelector.updateBean();
+
 	odim.product  = "PCAPPI";
 	odim.type = "";
-	dataSelector.quantity = "^DBZH$";
 	odim.quantity = "DBZH";
+
 
 };
 

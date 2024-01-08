@@ -257,9 +257,9 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 
 		if (path.empty()){
 
-			const SprinterLayout cmdLineLayout = {":", ",", "=", ""};  // , "|","<>"
+			// const SprinterLayout cmdLineLayout = {":", ",", "=", ""};  // , "|","<>"
 
-			mout.special(drain::sprinter(selector.getParameters().getMap(), cmdLineLayout)); // ,"'"
+			mout.special(drain::sprinter(selector.getParameters().getMap(), drain::Sprinter::cmdLineLayout)); // ,"'"
 			mout.note("data exists, but no data groups found with selector: ", selector.getParameters()); // ,"'"
 		}
 		else {

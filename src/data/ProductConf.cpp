@@ -35,32 +35,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-/*
-#include "data/QuantityMap.h"
-//#include "drain/image/File.h"
-//#include "drain/util/Log.h"
-//#include "drain/util/Variable.h"
-
-#include "drain/util/Castable.h"
-#include "drain/util/Reference.h"
-#include "drain/util/String.h"
-#include "drain/util/Type.h"
-#include "drain/util/TypeUtils.h"
-//#include "data/Quantity.h"
-#include <limits>
-//#include <stdexcept>
-#include <utility>
-
 #include "ProductConf.h"
-*/
 
 namespace rack {
 
+/// Copy constructor.
+ProductConf::ProductConf(const ProductConf & conf) :
+		dataSelector(conf.dataSelector),
+		appendResults(conf.appendResults),
+		targetEncoding(conf.targetEncoding),
+		outputDataVerbosity(conf.outputDataVerbosity){
+	dataSelector.updateBean();
+}
 
-/*
-ODIMPathElem ProductBase::appendResults;
-int ProductBase::outputDataVerbosity(0);
-*/
 
 }  // rack::
 

@@ -70,6 +70,11 @@ public:
 	 */
 	CappiOp(double altitude=1000.0, bool aboveSeaLevel=true, double beamWidth = 1.0, double weightMin = 0.0, std::string accumulationMethod="WAVG:1:8:-40");
 
+	inline
+	CappiOp(const CappiOp &op) : CumulativeProductOp(op){
+		//dataSelector.selectPRF.set(DataSelector::Prf::SINGLE);
+		//dataSelector.updateBean();
+	};
 
 	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const;
 

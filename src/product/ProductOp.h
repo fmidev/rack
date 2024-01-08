@@ -87,9 +87,15 @@ public:
 
 
 	/// Default constructor
+	inline
 	ProductOp(const std::string &name, const std::string & description) : ProductBase(name, description) {
 		// dataSelector.path = "^.* / da ta[0-9]+/?$";  /// Contract: in Op's, path filters should be copy to group level.
 	}
+
+	inline
+	ProductOp(const ProductOp & product) : ProductBase(product){
+		std::cerr << __FUNCTION__ << " copy ct " << product.getName() << this->dataSelector << '\n';
+	};
 
 	/// The default data parameters for encoding output (the product).
 	MD odim;

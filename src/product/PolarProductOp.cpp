@@ -70,7 +70,7 @@ PolarProductOp::PolarProductOp(const std::string & name, const std::string & des
 	//mout.debug(dataSelector);
 	//dataSelector.order.set(DataOrder::ELANGLE, DataOrder::MIN);
 	dataSelector.order.set(DataOrder::DATA, DataOrder::MIN);
-	dataSelector.selectPRF = DataSelector::Prf::SINGLE;
+	dataSelector.selectPRF.set(DataSelector::Prf::SINGLE);
 	dataSelector.updateBean();
 	mout.debug2(dataSelector);
 
@@ -82,6 +82,7 @@ PolarProductOp::PolarProductOp(const PolarProductOp & op) : VolumeOp<PolarODIM>(
 	//odim.importMap(op.odim);
 	//odim.copyStruct(op.odim, op, odim); // // may contain more /less links?
 	aboveSeaLevel = op.aboveSeaLevel;
+	dataSelector.setParameters(op.getParameters()); // should not be needed
 	allowedEncoding.copyStruct(op.allowedEncoding, op.odim, odim);
 }
 

@@ -84,12 +84,13 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	if (qualityRegExp.isSet()){
-		mout.attention<LOG_INFO>("qualityRegExp: ", qualityRegExp);
-	}
-
-	if (quantityRegExp.isSet()){
-		mout.attention<LOG_INFO>("quantityRegExp: ", quantityRegExp);
+	if (basepath.empty()){
+		if (qualityRegExp.isSet()){
+			mout.attention<LOG_DEBUG>(basepath, "qualityRegExp: ", qualityRegExp);
+		}
+		if (quantityRegExp.isSet()){
+			mout.attention<LOG_DEBUG>(basepath, "quantityRegExp: ", quantityRegExp);
+		}
 	}
 
 	// mout.attention<LOG_INFO>("quantityRegExp: ", quantityRegExp,  ", qualityRegExp: ", qualityRegExp);
@@ -145,7 +146,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 				result = true;
 
 				if (pathMatcher.match(path)){
-					mout.accept<LOG_DEBUG>("DATASET path matches (subtree OK) " , path );
+					mout.accept<LOG_DEBUG>("DATASET path ", path, " matches (and subtree OK)");
 					pathContainer.push_back(path);
 					// addPath(pathContainer, props, path);
 				}
@@ -183,7 +184,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 					quantityOK = true;
 				}
 				else {
-					mout.reject<LOG_DEBUG>("unmatching DATA quantity  [" ,  retrievedQuantity , "], skipping" );
+					mout.reject<LOG_DEBUG+1>("unmatching DATA quantity  [" ,  retrievedQuantity , "], skipping" );
 					// no continue! Recursion follows (for quality quantity)
 				}
 			}
