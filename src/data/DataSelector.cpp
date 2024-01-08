@@ -309,7 +309,7 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 	mout.accept<LOG_DEBUG>("DATASETs before sorting and pruning: ", drain::sprinter(accepted));
 
 	/// Step 3: sort
-	switch (order.criterion) {
+	switch (order.criterion.value) {
 		case DataOrder::DATA:
 			// Already in order
 			// std::sort(accepted.begin(), accepted.end(), ODIMPathLess());
@@ -336,7 +336,7 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 	n = std::min(n, accepted.size());
 
 	std::vector<ODIMPathElem2>::iterator it = accepted.begin();
-	switch (order.operation){
+	switch (order.operation.value){ // explicit: Enum value.
 	case DataOrder::MIN:
 		std::advance(it, n);
 		accepted.erase(it, accepted.end());
@@ -620,6 +620,10 @@ void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathList)
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	mout.experimental<LOG_WARNING>("revised code: getPaths->selectPaths(): ", __FILE__, ':', __LINE__);
+	selectPaths(src, pathList);
+
+	/*
 	if (order.criterion == DataOrder::DATA){
 		// = default
 		getMainPaths(src, pathList);
@@ -644,6 +648,7 @@ void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathList)
 			mout.error(std::string(__FILE__), " unimplemented ENUM value for order.criterion: ", order.criterion.str());
 		}
 	}
+	*/
 }
 
 

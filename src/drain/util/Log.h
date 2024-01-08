@@ -497,11 +497,11 @@ public:
 	};
 	*/
 
-	template<typename ... TT>
+	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & experimental(const TT &... args){
 		static const Notification notif(__FUNCTION__, 94);
-		initMessage<LOG_NOTICE>(notif);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
