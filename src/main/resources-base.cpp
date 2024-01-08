@@ -246,7 +246,7 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 		selector.setParameters(select);
 		selector.count = 1; // Because just one path wanted (below)
 
-		mout.debug("status metadata selector: ", selector, " <- ", select, ", orderFlags=", selector.order.str);
+		mout.debug("status metadata selector: ", selector.getParameters(), " <- ", select); //, ", orderFlags=", selector.order.str);
 		// mout.debug("status metadata selector: ", selector, " <- ", select, "orderFlags=", selector.orderFlags);
 
 		ODIMPath path;
@@ -256,8 +256,11 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 
 
 		if (path.empty()){
-			//mout.special(src );
-			mout.note("data exists, but no data groups found with selector '" , selector , "'" );
+
+			const SprinterLayout cmdLineLayout = {":", ",", "=", ""};  // , "|","<>"
+
+			mout.special(drain::sprinter(selector.getParameters().getMap(), cmdLineLayout)); // ,"'"
+			mout.note("data exists, but no data groups found with selector: ", selector.getParameters()); // ,"'"
 		}
 		else {
 			mout.debug("using path=" , path );

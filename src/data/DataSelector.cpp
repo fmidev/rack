@@ -74,11 +74,6 @@ void DataSelector::selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathCo
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	//if (basepath.empty()){
-	mout.attention("quantityRegExp: ", quantityRegExp,  ", qualityRegExp: ", qualityRegExp);
-	//}
-
-	//, const ODIMPath & basepath =
 	collectPaths(src, pathContainer, ODIMPath());
 
 	prunePaths(src, pathContainer);
@@ -89,11 +84,13 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	/*
-	if (basepath.empty()){
-		mout.attention("quantityRegExp: ", quantityRegExp,  ", qualityRegExp: ", qualityRegExp);
+	if (qualityRegExp.isSet()){
+		mout.attention<LOG_INFO>("quantityRegExp: ", quantityRegExp);
 	}
-	*/
+	if (quantityRegExp.isSet()){
+		mout.attention<LOG_INFO>("qualityRegExp: ", qualityRegExp);
+	}
+	// mout.attention<LOG_INFO>("quantityRegExp: ", quantityRegExp,  ", qualityRegExp: ", qualityRegExp);
 
 	bool result = false;
 
@@ -110,7 +107,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 		// Check ELANGLE (in datasets) or quantity (in data/quality)
 		if (currentElem.is(ODIMPathElem::DATASET)){
 
-			mout.debug("DATASET = '" ,path , "'" );
+			mout.debug2("DATASET = '" ,path , "'" );
 
 			// PRF criterion applies?
 			if (selectPRF != ANY){
@@ -147,18 +144,26 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 
 				if (pathMatcher.match(path)){
 					mout.accept<LOG_DEBUG>("DATASET path matches (subtree OK) " , path );
-					addPath(pathContainer, props, path);
+					pathContainer.push_back(path);
+					// addPath(pathContainer, props, path);
 				}
+				else {
+					mout.reject<LOG_DEBUG+1>("DATASET path '", path, "' does not match '", pathMatcher, "' (but subtree OK)");
+				}
+			}
+			else {
+				mout.reject<LOG_NOTICE>("DATASET contained no matching groups: ", path );
 			}
 
 		}
 		//else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::DATA)){
 		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){ // 2021/04
 
+			bool quantityOK = false;
 
 			const std::string retrievedQuantity = props["what:quantity"].toStr();
 
-			mout.debug("DATA = '" ,path , "' [", retrievedQuantity, "]");
+			mout.debug2("DATA = '" ,path , "' [", retrievedQuantity, "]");
 
 			// QUANTITY criterion applies?
 			if (quantityRegExp.isSet() || qualityRegExp.isSet()){
@@ -169,32 +174,49 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 					if (currentElem.is(ODIMPathElem::QUALITY) && qualityRegExp.test(retrievedQuantity)){
 						mout.note("QUALITY quantity matches: [", retrievedQuantity, "]: ", basepath, '|', currentElem);
 						//quantityOk    = true;
-						result = true;
+						quantityOK = true;
+						/*
 						if (pathMatcher.match(path)){
 							mout.accept("QUALITY path matches: " , path,  " [", retrievedQuantity, "]");
 							addPath(pathContainer, props, path);
 						}
+						*/
 					}
 				}
 				else if (quantityRegExp.test(retrievedQuantity)){
-					mout.accept("quantity matches: [", retrievedQuantity, "]: ", basepath, '|', currentElem);
-					result = true;
+					mout.accept<LOG_DEBUG>("quantity matches: [", retrievedQuantity, "]: ", basepath, '|', currentElem);
+					quantityOK = true;
+					/*
 					if (pathMatcher.match(path)){
 						mout.accept("DATA path matches: ", path,  " [", retrievedQuantity, "]");
 						addPath(pathContainer, props, path);
 					}
+					else {
+						mout.accept<LOG_WARNING>("DATA path does match: " , path );
+					}
+					*/
 				}
 				else {
-					mout.debug3("unmatching DATA quantity  [" ,  retrievedQuantity , "], skipping" );
+					mout.reject<LOG_DEBUG>("unmatching DATA quantity  [" ,  retrievedQuantity , "], skipping" );
 					// no continue
 				}
 			}
+			else {
+				// No quantity constraint.
+				quantityOK = true;
+			}
 
+			result |= quantityOK; // = at least one found
 
-			if (result){
-				// else {
-				//	mout.note("quantity matches: [" , retrievedQuantity , "], but DATA/QUALITY path not: " , path );
-				// }
+			if (quantityOK){
+				if (pathMatcher.match(path)){
+					mout.accept<LOG_DEBUG>("DATA/QUANTITY path matches: ", path,  " [", retrievedQuantity, "]");
+					pathContainer.push_back(path);
+					// addPath(pathContainer, props, path);
+				}
+				else {
+					mout.reject<LOG_DEBUG+1>("DATA path '", path, "' does not match '", pathMatcher, "' (but quantity check OK)");
+				}
 			}
 
 			result |= collectPaths(src, pathContainer, path);
@@ -204,9 +226,9 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 
 			// Does not affect result.
 			if (pathMatcher.match(path)){
-				addPath(pathContainer, props, path);
+				pathContainer.push_back(path);
+				// addPath(pathContainer, props, path);
 			}
-
 		}
 		else {
 			// mout.warn(" skipping odd group: /" , currentElem );
@@ -235,17 +257,29 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	if (pathList.empty()){
+		mout.warn("Path list empty, returning");
+		return;
+	}
+
 	// Step 1: collect a set of major groups (dataset1, dataset2...) fulfilling elangle and time criterion
 	std::set<ODIMPathElem> retrieved;
 	for (ODIMPath & path: pathList) {
 
 		// Check... (Should not be needed)
 		while ((!path.empty()) && path.front().empty()){
-			mout.warn("Rooted path '", path, "' striping leading slach");
+			mout.warn("Rooted path '", path, "' stripping leading slash");
 			path.pop_front();
 		}
 
-		retrieved.insert(path.front());
+
+		if (path.front().is(ODIMPathElem::DATASET)){
+			retrieved.insert(path.front());
+		}
+		else {
+
+		}
+
 	}
 
 

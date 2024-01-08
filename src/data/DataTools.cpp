@@ -193,7 +193,8 @@ void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::Coordi
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// mout.deprecating("This may be better handled with updateInternalAttributes");
-	mout.warn("Removed: ", __FUNCTION__);
+	//mout.warn("Removed: ", __FUNCTION__);
+	mout.experimental<LOG_INFO>("Removed code: ", __FUNCTION__);
 
 	return;
 

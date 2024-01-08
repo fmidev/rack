@@ -131,8 +131,8 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	//const DataSet<PolarSrc> konsta(srcData.getTree()["dataset1"]);  // TODO REMOVE XX
 
 	if (!projGeo2Native.isSet()){
-		mout.special("projR2M src: ", projGeo2Native.getProjectionSrc());
-		mout.special("projR2M dst: unset, using AEQD");
+		mout.debug("projGeo2Native src: ", projGeo2Native.getProjectionSrc());
+		mout.info("projGeo2Native dst: projection unset, using AEQD");
 		projAEQD = true;
 	}
 
