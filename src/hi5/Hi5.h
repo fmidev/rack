@@ -84,10 +84,10 @@ struct NodeHi5 {
 
 	drain::VariableMap  attributes;
 
-	NodeHi5() : noSave(false) {};
+	NodeHi5() : exclude(false) {};
 
 	inline
-	NodeHi5(const NodeHi5 & n) : noSave(n.noSave) {
+	NodeHi5(const NodeHi5 & n) : exclude(n.exclude) {
 		attributes.importMap(n.attributes);
 	};
 
@@ -100,7 +100,7 @@ struct NodeHi5 {
 	void writeText(std::ostream & ostr = std::cout, const rack::ODIMPath & prefix = rack::ODIMPath()) const;
 
 	/// Experimental
-	bool noSave;  // OK!
+	bool exclude;  // OK!
 
 };
 
@@ -219,23 +219,23 @@ public:
 
 	// static	void readTextLine(Hi5Tree & dst, const Hi5Tree::path_t & path, const std::string & key, const std::string & value);
 
-	/// Traverse subtree setting noSave=true .
+	/// Traverse subtree setting exclude=true .
 	/*
 	static
-	void markNoSave(Hi5Tree &src, bool noSave=true);
+	void markExcluded(Hi5Tree &src, bool exclude=true);
 	*/
 
-	///  Traverse tree, marking every group nodes for deletion by Hi5Base::deleteNoSave
+	///  Traverse tree, marking every group nodes for deletion by Hi5Base::deleteExcluded
 	/**
 	 *   This function traverses all the children, and their children, recursively.
 	 */
 	static
-	void markNoSave(Hi5Tree &src, bool noSave=true);
+	void markExcluded(Hi5Tree &src, bool exclude=true);
 
 
-	/// Delete branches that have been marked with noSave=true .
+	/// Delete branches that have been marked with exclude=true .
 	static
-	void deleteNoSave(Hi5Tree &src);
+	void deleteExcluded(Hi5Tree &src);
 
 
 };

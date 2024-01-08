@@ -165,7 +165,7 @@ PlainData< DstType<M> > & DataConversionOp<M>::getNormalizedData(const DataSet<s
 
 		mout.info("converting and adding to cache: " , quantityExt , " odim: " , odimNorm );
 		PlainData<dst_t> & dstDataNew = normDataSet.getData(quantityExt);
-		dstDataNew.setNoSave();
+		dstDataNew.setExcluded();
 		DataConversionOp<M> op;
 		//op.odim.importMap(odimNorm);
 		// mout.warn("odimNorm: " , odimNorm );
@@ -269,7 +269,7 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 
 		const Data<src_t> & srcData = entry.second;
 		Data<dst_t>       & dstData = dstProduct.getData(quantityTmp); // todo: getNewData
-		//dstProduct.getData(quantity).setNoSave(true);
+		//dstProduct.getData(quantity).setExcluded(true);
 		mout.attention("srcData: ", entry.second);
 
 		mout.debug2(EncodingODIM(this->odim));
@@ -336,7 +336,7 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 		dstDataOrig.swap(dstDataConv); // calls updateTree2 (consider what:quantity)
 
 		dstDataConv.odim.quantity = quantityTmp;
-		dstDataConv.setNoSave(true);
+		dstDataConv.setExcluded(true);
 	}
 
 }

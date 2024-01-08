@@ -185,8 +185,8 @@ public:
 
 	// Mark this data temporary so that it will not be save by Hi5::write().
 	inline
-	void setNoSave(bool noSave = true){
-		this->tree.data.noSave = noSave;
+	void setExcluded(bool exclude = true){
+		this->tree.data.exclude = exclude;
 	};
 
 
@@ -215,7 +215,7 @@ protected:
 	~TreeWrapper(){
 		/*
 		drain::Logger mout("TreeWrapper", __FUNCTION__);
-		if (this->tree.data.noSave){
+		if (this->tree.data.exclude){
 			mout.note("deleting (children only?)" );
 			this->tree.clear();
 		}
@@ -746,7 +746,7 @@ public:
 	inline
 	void updateTree3(const typename datatype_t::odim_t & odim){  //
 		//odim.copyToDataSet(this->tree);
-		//if (!DataTools::removeIfNoSave(this->tree))
+		//if (!DataTools::removeIfExcluded(this->tree))
 		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, this->tree);
 		DataTools::updateInternalAttributes(this->tree); // images, including DataSet.data, TODO: skip children
 	}
@@ -1153,7 +1153,7 @@ public:
 	inline
 	void updateTree3(const typename DT::odim_t & odim){  //
 		//odim.copyToDataSet(this->tree);
-		//if (!DataTools::removeIfNoSave(this->tree))
+		//if (!DataTools::removeIfExcluded(this->tree))
 		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, this->tree);
 		DataTools::updateInternalAttributes(this->tree); // TEST2019/09 // images, including DataSet.data, TODO: skip children
 		//DataTools::updateInternalAttributes(this->tree, drain::FlexVariableMap()); // TEST2019/09 // images, including DataSet.data, TODO: skip children

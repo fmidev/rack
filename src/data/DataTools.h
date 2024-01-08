@@ -131,23 +131,23 @@ public:
 	typedef std::map<std::string, ODIMPathElem> quantity_map;
 
 	static
-	void markNoSave(Hi5Tree &src, bool noSave=true);
+	void markExcluded(Hi5Tree &src, bool exclude=true);
 
 protected:
 
-	/// Removes the children of the tree if Node::noSave is set.
+	/// Removes the children of the tree if Node::exclude is set.
 	/**
 	 *  \return - true if children were removed
 	 */
 	static
-	bool removeIfNoSave(Hi5Tree & dst);
+	bool removeIfExcluded(Hi5Tree & dst);
 
 	/// Does nothing
 	/**
 	 *  \return - false (always, as nothing will be removed)
 	 */
 	static
-	bool removeIfNoSave(const Hi5Tree & src){
+	bool removeIfExcluded(const Hi5Tree & src){
 		return false;
 	};
 

@@ -57,6 +57,7 @@ REQUIRE dataset1
 # Technical tests only (not commands)
 
 START example-select-test.inc
+INFILE='volume.h5'
 OUTFILE='volume-select.txt'
 
 TITLE "Index range: select dataset3, including its subgroups. "

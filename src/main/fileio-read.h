@@ -57,10 +57,16 @@ public:
 };
 */
 
+/// Path prefix string for subsequent input files.
+/**
+ *  \see rack::CmdInput
+ *  \see rack::CmdInputSelect
+ */
 class CmdInputPrefix : public drain::SimpleCommand<std::string> {
 
 public:
 
+	inline
 	CmdInputPrefix() : drain::SimpleCommand<std::string>(__FUNCTION__, "Path prefix for input files."){
 		//RackContext & ctx = getContext<RackContext>(); // DO NOT LINK, dynamic context!
 		//parameters.link("path", getResources().inputPrefix = "");
@@ -74,10 +80,18 @@ public:
 
 
 
+/// Input HDF5, PNG or text file.
+/**
+ *  In \b Rack, this command is also the default option, hence plain argument will be treated as files to read.
+ *
+ *  \see rack::CmdInputPrefix
+ *  \see rack::CmdInputSelect
+ */
 class CmdInputFile : public drain::SimpleCommand<std::string>  {
 
 public:
 
+	inline
 	CmdInputFile() : drain::SimpleCommand<std::string>(__FUNCTION__, "Read HDF5, text or image file",
 			"filename", "", "<filename>.[h5|hdf5|png|pgm|ppm|txt]"){ //, inputComplete(true) {
 		//execRoutine = true;
@@ -135,6 +149,25 @@ protected:
 };
 
 
+
+/// Data selector for subsequent input files.
+/**
+ *  \see rack::CmdInput
+ *  \see rack::CmdInputSelect
+ */
+class CmdInputSelect : public drain::SimpleCommand<std::string> {
+
+public:
+
+	inline
+	CmdInputSelect() : drain::SimpleCommand<std::string>(__FUNCTION__, "Selector for input data."){
+	};
+
+	inline
+	void exec() const {
+		getContext<RackContext>().inputSelect = value;
+	}
+};
 
 
 } // rack

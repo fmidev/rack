@@ -106,7 +106,7 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 	for (auto & entry: src){
 
 		if (entry.first.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-			if (!entry.second.data.noSave){
+			if (!entry.second.data.exclude){
 				mout.debug3(entry.first , " => ensure '/data' groups  " );
 				entry.second[ODIMPathElem::ARRAY].data.dataSet;
 			}
@@ -158,25 +158,25 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 }
 
 
-void DataTools::markNoSave(Hi5Tree &src, bool noSave){
+void DataTools::markExcluded(Hi5Tree &src, bool exclude){
 
 	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	for (auto & entry: src) {
 		//if (it->first.isIndexed()){
 		if (!entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-			entry.second.data.noSave = noSave;
-			markNoSave(entry.second, noSave);
+			entry.second.data.exclude = exclude;
+			markExcluded(entry.second, exclude);
 		}
 	}
 
 }
 
 
-bool DataTools::removeIfNoSave(Hi5Tree & dst){
-	if (dst.data.noSave){
+bool DataTools::removeIfExcluded(Hi5Tree & dst){
+	if (dst.data.exclude){
 		drain::Logger mout("DataTools", __FUNCTION__);
-		mout.note("// about to resetting noSave struct: " , dst.data );
+		mout.note("// about to resetting exclude struct: " , dst.data );
 		/*
 		dst.data.attributes.clear();
 		dst.data.dataSet.resetGeometry();
@@ -192,7 +192,10 @@ void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::Coordi
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	//mout.deprecating("This may be better handled with updateInternalAttributes");
+	// mout.deprecating("This may be better handled with updateInternalAttributes");
+	mout.warn("Removed: ", __FUNCTION__);
+
+	return;
 
 	drain::image::Image & data = src.data.dataSet;
 

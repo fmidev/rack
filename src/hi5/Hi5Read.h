@@ -63,7 +63,11 @@ class Reader : public Hi5Base {
 
 public:
 
-	enum Mode {ATTRIBUTES=1, DATASETS=2, MARKED=4}; // NoSave; consider
+	enum Mode {
+		ATTRIBUTES=1, /** Read attributes */
+		DATASETS=2,   /** Read data arrays */
+		EXCLUSIVE=4   /** Do not read groups marked 'exclude'  */
+	};
 
 	typedef drain::EnumFlagger<drain::MultiFlagger<Mode> > ModeFlagger;
 

@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // g++ deer_regexp.cpp -o deer_regexp
 
 #include "RegExp.h"
+#include "Sprinter.h"
 
 // // using namespace std;
 
@@ -189,9 +190,14 @@ void RegExp::replace(const std::string &src, const std::string & replacement, st
 
 std::ostream & operator<<(std::ostream &ostr, const drain::RegExp & r){
 
-	ostr << r.toStr() << ", flags=" << r.flags;
-	for (std::vector<std::string>::const_iterator it = r.result.begin(); it != r.result.end(); ++it){
-		ostr << '|' << *it;
+	if (r.isSet()){
+		ostr << r.toStr() << ", flags=" << r.flags;
+		Sprinter::sequenceToStream(ostr, r.result, Sprinter::jsonLayout);
+		/*
+		for (const std::string & s : r.result){
+			ostr << '|' << s;
+		}
+		*/
 	}
 	return ostr;
 }
@@ -199,6 +205,3 @@ std::ostream & operator<<(std::ostream &ostr, const drain::RegExp & r){
 
 } // drain
 
-
-
-// Drain

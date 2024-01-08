@@ -621,7 +621,7 @@ bool CmdOutputTree::dataToStream(const Hi5Tree::node_data_t & data, std::ostream
 	drain::TextDecorator & decorator = attrs.get("format", "") == "vt100" ? vt100Deco : noDeco;
 	decorator.setSeparator(":");
 
-	if (data.noSave){
+	if (data.exclude){
 		ostr << "~";
 		return false;
 	}
@@ -791,6 +791,7 @@ FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // 
 	install<CmdOutputPanel>();
 
 	install<CmdInputPrefix>();
+	install<CmdInputSelect>();
 	install<CmdOutputPrefix>();
 	install<CmdOutputRawImages>('O').addSection(IMAGES);
 	install<CmdOutputConf>();

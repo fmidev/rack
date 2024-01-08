@@ -81,7 +81,8 @@ eval $cmd
 #if [ ! -f $OUTFILE_LEGEND ]; then
 echo "# Creating legend..."
 #cmd="convert tmp.svg  $OUTFILE_LEGEND"
-cmd="inkscape -z --export-png $OUTFILE_LEGEND tmp.svg"
+#cmd="inkscape -z --export-png $OUTFILE_LEGEND tmp.svg"
+cmd="convert tmp.svg  $OUTFILE_LEGEND"  # -filter point -resize 400 
 echo $cmd
 eval $cmd
 #fi

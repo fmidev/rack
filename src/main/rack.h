@@ -36,7 +36,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 /**
  *   Version 7.8
- *   -- Revised Variable, ReferenceVariable, FlexibleVariable definitions
+ *   -- New functionality: selective read --inputSelect
+ *   -- Log: adjustable sublevels: accept<LOG_DEBUG>(...) , fail<LOG_INFO>(...)
+ *   -- Revised definitions: Variable, ReferenceVariable, FlexibleVariable
  *   -- Image processing: keys instead of numeric indices
  *   -- Check rscale, nbins, nrays in compositing
  *

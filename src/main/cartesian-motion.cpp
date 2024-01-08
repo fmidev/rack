@@ -177,9 +177,9 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 				// mout.error("thats it" );
 
 				Data<CartesianDst> & srcDataMod = dstDataSet.getData(quantityMod);
-				mout.experimental("noSave selector modified/supressed");
-				// srcDataMod.setNoSave(ProductBase::outputDataVerbosity==0);
-				srcDataMod.setNoSave(ctx.outputDataVerbosity==0);
+				mout.experimental("exclude selector modified/supressed");
+				// srcDataMod.setExcluded(ProductBase::outputDataVerbosity==0);
+				srcDataMod.setExcluded(ctx.outputDataVerbosity==0);
 
 				// mout.note("srcQuality scalingC: " , srcQuality.data.getScaling() );
 
@@ -274,8 +274,8 @@ void CartesianOpticalFlow::getDiff(size_t width, size_t height, double max, Imag
 
 	Hi5Tree & dstH5 = (ctx.cartesianHi5)[parent];
 
-	mout.unimplemented("noSave selector supressed");
-	// dstH5.data.noSave = (ProductBase::outputDataVerbosity==0);
+	mout.unimplemented("exclude selector supressed");
+	// dstH5.data.exclude = (ProductBase::outputDataVerbosity==0);
 
 	DataSet<CartesianDst> dstDataSet(dstH5);
 
@@ -426,7 +426,7 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 	// NOTE: this is neededn because  ctx.cartesianHi5("dataset4") above does not propagate information.
 	DataTools::updateInternalAttributes(ctx.cartesianHi5);
 
-	// hi5::Hi5Base::deleteNoSave(ctx.cartesianHi5);
+	// hi5::Hi5Base::deleteExcluded(ctx.cartesianHi5);
 
 	//mout.note("input odim: " , odim );
 

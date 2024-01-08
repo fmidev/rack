@@ -410,6 +410,48 @@ struct ODIMPathLess {
 };  // end class
 
 
+class ODIMPathElem2 : public ODIMPathElem {
+
+public:
+
+	inline
+	ODIMPathElem2(): elangle(0.0) {};
+
+	virtual inline
+	~ODIMPathElem2(){};
+
+	inline
+	ODIMPathElem2(const ODIMPathElem & elem, const double elangle, const std::string & date, const std::string & time):
+		ODIMPathElem(elem), elangle(elangle), timestamp(date+time) {
+	}
+
+	double elangle;
+	std::string timestamp;
+
+};
+
+
+inline
+std::ostream & operator<<(std::ostream & ostr, const ODIMPathElem2 & elem) {
+	return ostr << (const ODIMPathElem &)elem << '-' << elem.timestamp << '-' << elem.elangle;
+}
+
+
+struct ODIMPathLessTime {
+	inline
+	bool operator()(const ODIMPathElem2 & e1, const ODIMPathElem2 & e2) const {
+		return e1.timestamp < e2.timestamp;
+	}
+};
+
+struct ODIMPathLessElangle {
+	inline
+	bool operator()(const ODIMPathElem2 & e1, const ODIMPathElem2 & e2) const {
+		return e1.elangle < e2.elangle;
+	}
+};
+
+
 /*
 inline
 std::ostream & operator<<(std::ostream & ostr, const ODIMPath & p) {

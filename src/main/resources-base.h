@@ -203,6 +203,7 @@ public:
 	Hdf5Context(const Hdf5Context &ctx);
 
 	std::string select;
+	std::string inputSelect;
 
 
 

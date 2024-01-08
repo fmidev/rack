@@ -29,6 +29,9 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
+#include <algorithm>
+#include <syslog.h>  // levels: LOG_ERROR etc.
+
 #include "drain/util/Type.h"
 #include "drain/util/RegExp.h"
 
@@ -62,7 +65,329 @@ const drain::FlaggerDict drain::EnumDict<DataSelector::Prf>::dict =  {
 		{"DOUBLE", rack::DataSelector::DOUBLE}
 };
 
-// using namespace hi5;
+/// PRESELECT
+/*
+ *  Consider replacing props with direct group attribs, like [WHERE].attr["elangle"] and  [WHAT].attr["time"]
+ *
+ */
+void DataSelector::selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	//if (basepath.empty()){
+	mout.attention("quantityRegExp: ", quantityRegExp,  ", qualityRegExp: ", qualityRegExp);
+	//}
+
+	//, const ODIMPath & basepath =
+	collectPaths(src, pathContainer, ODIMPath());
+
+	prunePaths(src, pathContainer);
+
+}
+
+bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & basepath) const {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	/*
+	if (basepath.empty()){
+		mout.attention("quantityRegExp: ", quantityRegExp,  ", qualityRegExp: ", qualityRegExp);
+	}
+	*/
+
+	bool result = false;
+
+	for (const auto & entry: src(basepath)) {
+
+		const ODIMPathElem & currentElem = entry.first;
+		ODIMPath path(basepath, currentElem);
+		//mout.debug3("currentElem='" , currentElem , "'" );
+
+		const drain::image::Image & data    = entry.second.data.dataSet; // for ODIM
+		const drain::FlexVariableMap & props = data.getProperties();
+
+
+		// Check ELANGLE (in datasets) or quantity (in data/quality)
+		if (currentElem.is(ODIMPathElem::DATASET)){
+
+			mout.debug("DATASET = '" ,path , "'" );
+
+			// PRF criterion applies?
+			if (selectPRF != ANY){
+				double lowPRF   = props.get("how:lowprf",  0.0);
+				double hightPRF = props.get("how:highprf", lowPRF);
+				if ((lowPRF == hightPRF) == (selectPRF == Prf::SINGLE)){
+					mout.accept<LOG_DEBUG>("PRF=", lowPRF, '/', hightPRF, ", required ", selectPRF, ": including " , path);
+				}
+				else {
+					mout.reject<LOG_DEBUG>("PRF=", lowPRF, '/', hightPRF, ", required ", selectPRF, ": excluding " , path);
+					continue; // yes, subtrees skipped ok
+				}
+			}
+
+			/*
+			if (!pathMatcher.matchElem(currentElem, true)){
+				// pathMatcher does not accept this dataset<N> at all
+				mout.reject(currentElem);
+				continue;
+			}
+			*/
+
+			if (props.hasKey("where:elangle")){
+				double e = props["where:elangle"];
+				if (!elangle.contains(e)){
+					mout.reject<LOG_DEBUG>("elangle ",e," outside range ",elangle);
+					continue;
+				}
+			}
+
+			if (collectPaths(src, pathContainer, path)){
+
+				result = true;
+
+				if (pathMatcher.match(path)){
+					mout.accept<LOG_DEBUG>("DATASET path matches (subtree OK) " , path );
+					addPath(pathContainer, props, path);
+				}
+			}
+
+		}
+		//else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::DATA)){
+		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){ // 2021/04
+
+
+			const std::string retrievedQuantity = props["what:quantity"].toStr();
+
+			mout.debug("DATA = '" ,path , "' [", retrievedQuantity, "]");
+
+			// QUANTITY criterion applies?
+			if (quantityRegExp.isSet() || qualityRegExp.isSet()){
+
+
+				if (qualityRegExp.isSet()){ // At least: do not test quantity after this
+					//quantityOk = false;
+					if (currentElem.is(ODIMPathElem::QUALITY) && qualityRegExp.test(retrievedQuantity)){
+						mout.note("QUALITY quantity matches: [", retrievedQuantity, "]: ", basepath, '|', currentElem);
+						//quantityOk    = true;
+						result = true;
+						if (pathMatcher.match(path)){
+							mout.accept("QUALITY path matches: " , path,  " [", retrievedQuantity, "]");
+							addPath(pathContainer, props, path);
+						}
+					}
+				}
+				else if (quantityRegExp.test(retrievedQuantity)){
+					mout.accept("quantity matches: [", retrievedQuantity, "]: ", basepath, '|', currentElem);
+					result = true;
+					if (pathMatcher.match(path)){
+						mout.accept("DATA path matches: ", path,  " [", retrievedQuantity, "]");
+						addPath(pathContainer, props, path);
+					}
+				}
+				else {
+					mout.debug3("unmatching DATA quantity  [" ,  retrievedQuantity , "], skipping" );
+					// no continue
+				}
+			}
+
+
+			if (result){
+				// else {
+				//	mout.note("quantity matches: [" , retrievedQuantity , "], but DATA/QUALITY path not: " , path );
+				// }
+			}
+
+			result |= collectPaths(src, pathContainer, path);
+
+		}
+		else if (currentElem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+
+			// Does not affect result.
+			if (pathMatcher.match(path)){
+				addPath(pathContainer, props, path);
+			}
+
+		}
+		else {
+			// mout.warn(" skipping odd group: /" , currentElem );
+		}
+
+	}
+
+	return result;
+}
+
+
+
+
+/** Future C++20 option:
+template <DataOrder E>
+class SuperElemLess {
+	inline
+	bool operator()(const SuperElem & e1, const SuperElem & e2) const {
+	}
+}
+*/
+
+
+/// Using \c criterion TIME and \c order (MIN or MAX)
+void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathList) const {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	// Step 1: collect a set of major groups (dataset1, dataset2...) fulfilling elangle and time criterion
+	std::set<ODIMPathElem> retrieved;
+	for (ODIMPath & path: pathList) {
+
+		// Check... (Should not be needed)
+		while ((!path.empty()) && path.front().empty()){
+			mout.warn("Rooted path '", path, "' striping leading slach");
+			path.pop_front();
+		}
+
+		retrieved.insert(path.front());
+	}
+
+
+	// Step 2: collect a set of major groups (dataset1, dataset2...) fulfilling elangle and time criterion
+	std::vector<ODIMPathElem2> accepted; // sortable
+	accepted.reserve(src.getChildren().size());
+
+	for (const auto & entry: src) {
+
+		const ODIMPathElem & elem = entry.first;
+
+		if (elem.is(ODIMPathElem::DATASET)){
+
+			if (retrieved.find(elem) != retrieved.end()){
+				mout.debug(elem);
+				const drain::image::Image & data    = entry.second.data.dataSet; // for ODIM
+				const drain::FlexVariableMap & props = data.getProperties();
+				accepted.push_back(ODIMPathElem2(elem, props.get("where:elangle", 0.0), props.get("what:startdate",""), props.get("what:starttime","")));
+			}
+			else {
+				mout.debug("not in list of retrieved paths, skipping: ", elem);
+				continue;
+			}
+
+			/** Not needed, if called after selectPaths(), it's implicit there.
+			if (!pathMatcher.matchElem(elem, true)){ // <- if no dataset test involved, return 'true'
+				// pathMatcher did not accept this dataset<N> at all
+				mout.reject(elem);
+				continue;
+			}
+			*/
+
+			/// Elangle test NOT NEEDED (repeated)
+			/*
+			if (props.hasKey("where:elangle")){
+				double e = props["where:elangle"];
+				if (!this->elangle.contains(e)){
+					mout.reject("elangle ", e, " outside range: ", this->elangle);
+					continue;
+				}
+			}
+			*/
+
+		}
+
+		/* not needed, including DATASET's only
+		if (elem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+			mout.debug("skipping attribute group (for now): ", elem);
+			continue;
+		}
+		*/
+
+		/*
+		if (std::find(accepted.begin(), accepted.end(), elem) == accepted.end()){ // clumsy, but list needed (instead of set).
+			accepted.push_back(elem);
+		}
+		*/
+
+	}
+
+	mout.accept<LOG_DEBUG>("DATASETs before sorting and pruning: ", drain::sprinter(accepted));
+
+	/// Step 3: sort
+	switch (order.criterion) {
+		case DataOrder::DATA:
+			// Already in order
+			// std::sort(accepted.begin(), accepted.end(), ODIMPathLess());
+			mout.debug("criterion: DATA path");
+			break;
+		case DataOrder::TIME:
+			std::sort(accepted.begin(), accepted.end(), ODIMPathLessTime());
+			mout.debug("criterion: TIME");
+			break;
+		case DataOrder::ELANGLE:
+			std::sort(accepted.begin(), accepted.end(), ODIMPathLessElangle());
+			mout.debug("criterion: ELANGLE");
+			break;
+			// case DataOrder::NONE "random" ?
+		default:
+			mout.error("something went wrong,  order.criterion=", order.criterion);
+	}
+
+
+	mout.debug("sorted DATASETs: ", drain::sprinter(accepted));
+
+	/// Step 4: save the first or last n entries (ie. delete others)
+	size_t n = count; ;
+	n = std::min(n, accepted.size());
+
+	std::vector<ODIMPathElem2>::iterator it = accepted.begin();
+	switch (order.operation){
+	case DataOrder::MIN:
+		std::advance(it, n);
+		accepted.erase(it, accepted.end());
+		break;
+	case DataOrder::MAX:
+		std::advance(it, accepted.size()-n);
+		accepted.erase(accepted.begin(), it);
+		break;
+	default:
+		mout.error("something went wrong,  order.operation=", order.operation);
+	}
+
+	mout.accept<LOG_DEBUG>("Final (", n, ") DATASETs: ", drain::sprinter(accepted)); // without ATTRIBUTES
+
+	/// Step 5. Compare list of retrieved paths and the set of accepted \c dataset elems.
+	std::list<ODIMPath> finalPaths;
+
+	for (const ODIMPath & path: pathList){
+
+		const ODIMPathElem & stem = path.front();
+
+		//  rack --inputSelect '/where|what|dataset2:11,count=3,order=TIME:MAX,quantity=^DBZH$,prf=DOUBLE'
+
+		if (stem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+			if (pathMatcher.match(path)){
+				mout.special<LOG_DEBUG>("adding back ATTRIBUTE_GROUP: ", stem);
+				finalPaths.push_back(path);
+			}
+			continue;
+		}
+
+		for (const ODIMPathElem & a: accepted){
+			if (stem == a){
+				finalPaths.push_back(path);
+				break;
+			}
+		}
+
+
+	}
+
+	pathList.swap(finalPaths);
+
+	/*
+	mout.attention("final list:");
+	for (const ODIMPath & path: pathContainer){
+		mout.ok(path);
+	}
+	*/
+
+}
 
 
 DataSelector::DataSelector(

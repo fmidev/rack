@@ -184,67 +184,62 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 	// InputSelect needed?
 	Hi5Tree srcTmp;
 
-	if (!ctx.select.empty()){
+	if (!ctx.inputSelect.empty()){
 		//mout.special() << "Input selector (" << ctx.select << ") applies, pre-reading attributes first:\n";
-		mout.special("Input selector (", ctx.select, ") set -> selective read");
-		mout.special("Pre-reading attributes first:\n");
+		mout.special("Input selector (", ctx.inputSelect, ") set -> selective read.");
+		mout.debug("First, reading attributes only:\n");
 		hi5::Reader::readFile(fullFilename, srcTmp, hi5::Reader::ATTRIBUTES);
 
 		DataTools::updateInternalAttributes(srcTmp); // to support DataSelector with what:quantity and what:elangle
 
 		// Initially, mark all deleted...
-		DataTools::markNoSave(srcTmp);
+		DataTools::markExcluded(srcTmp);
 		// drain::TreeUtils::dump(srcTmp, std::cout, CmdOutputTree::dataToStream); // true);
 
 		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);  // NO QUALITY?
-		selector.setParameters(ctx.select);
+		selector.setParameters(ctx.inputSelect);
 		mout.special("selector: ", selector, ", matcher=", selector.pathMatcher);
 
+
 		ODIMPathList paths;
-		selector.getPaths(srcTmp, paths);
+		// OLD selector.getPaths(srcTmp, paths);
+		// NEW
+		selector.selectPaths(srcTmp, paths);
 
 		for (const ODIMPath & path: paths){
-
-			mout.special("set save through path: ", path);
+			/*
+			mout.special("set included THROUGH path: ", path, ", leaf would suffit?");
 			ODIMPath p;
 			for (const ODIMPathElem & elem: path){
 				p << elem;
-				srcTmp(p).data.noSave = false;
+				srcTmp(p).data.exclude = false;
+			}
+			*/
+			if (srcTmp.hasPath(path)){ // otherwise path query would create one...
+				mout.debug("Including: ", path);
+				srcTmp(path).data.exclude = false;
 			}
 		}			//mout.debug("marked for save: " , *it );
-		/*
-		for (const ODIMPath & path: paths){
-			mout.warn("deleting: ", path);
-			srcTmp.erase(path);
-		}
-		*/
-		// hi5::Hi5Base::deleteNoSave(srcTmp);
-		// drain::TreeUtils::dump(srcTmp, std::cout, CmdOutputTree::dataToStream); // true);
-		mout.special("noSave marking completed: ", fullFilename);
 
-		// mout << mout.endl;
-		// return;
-		hi5::Reader::readFile(fullFilename, srcTmp, hi5::Reader::MARKED | hi5::Reader::ATTRIBUTES | hi5::Reader::DATASETS);
+		// mout.special("marking 'excluded' completed: ", fullFilename);
+		hi5::Reader::readFile(fullFilename, srcTmp, hi5::Reader::EXCLUSIVE | hi5::Reader::ATTRIBUTES | hi5::Reader::DATASETS);
 	}
 	else {
 		hi5::Reader::readFile(fullFilename, srcTmp);
 	}
 
 
-	 //, resources.inputSelect); //, 0);  // 0 = read no attributes or datasets (yet)
-	//hi5::Reader::readFile(fullFilename, srcTmp, ctx.inputFilter.value); //, resources.inputSelect); //, 0);  // 0 = read no attributes or datasets (yet)
-
-	if (!ctx.select.empty()){ // or stg like: hi5::Reader::MARKED
+	if (!ctx.inputSelect.empty()){ // or stg like: hi5::Reader::MARKED
 		mout.special("Input selection: removing excluded subtrees");
-		hi5::Hi5Base::deleteNoSave(srcTmp);
+		hi5::Hi5Base::deleteExcluded(srcTmp);
 		// drain::TreeUtils::dump(srcTmp, std::cout, CmdOutputTree::dataToStream); // true
 		if (ctx.SCRIPT_DEFINED){
-			mout.note("Script defined. NOT clearing input data selector (", ctx.select, ')');
+			mout.note("Script defined. NOT clearing input data selector (", ctx.inputSelect, ')');
 			//mout.info(ctx.select);
 		}
 		else {
-			mout.note("Clearing input data selector (", ctx.select, ')');
-			ctx.select.clear();
+			mout.note("Clearing input data selector (", ctx.inputSelect, ')');
+			ctx.inputSelect.clear();
 		}
 	}
 
@@ -428,7 +423,7 @@ void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 			dst[it->first].swap(it->second);   // overwrite what, where,
 		}
 
-		src[it->first].data.noSave = true;
+		src[it->first].data.exclude = true;
 
 	}
 

@@ -166,7 +166,7 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 	// END LABEL
 
 	// STYLE
-	if (group.data.noSave)
+	if (group.data.exclude)
 		node.attributes["style"] = "dotted"; //ostr << " style=\"dotted\" ";
 	else if (e.isIndexed()){
 		node.attributes["style"] = "filled"; // ostr << " style=\"filled\"";

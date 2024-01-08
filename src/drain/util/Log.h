@@ -414,11 +414,11 @@ public:
 
 
 	/// Possible error, but execution can continue. Special type of Logger::warn().
-	template<typename ... TT>
+	template<int L=LOG_WARNING,typename ... TT>
 	inline
 	Logger & fail(const TT &... args){
 		static const Notification notif(__FUNCTION__, 33);
-		initMessage<LOG_WARNING>(notif);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -435,11 +435,11 @@ public:
 	};
 
 	/// Possible error, but execution can continue. Special type of Logger::warn().
-	template<typename ... TT>
+	template<int L=LOG_WARNING,typename ... TT>
 	inline
 	Logger & attention(const TT &... args){
 		static const Notification notif(__FUNCTION__, 46);
-		initMessage<LOG_WARNING>(notif);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -479,11 +479,11 @@ public:
 	};
 
 	/// Other useful information
-	template<typename ... TT>
+	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & special(const TT &... args){
 		static const Notification notif(__FUNCTION__, 36);
-		initMessage<LOG_NOTICE>(notif);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -526,39 +526,39 @@ public:
 		return *this;
 	};
 
-	template<typename ... TT>
+	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & ok(const TT &... args){
 		static const Notification notif(__FUNCTION__, 32);
-		initMessage<LOG_INFO>(notif);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
 
-	template<typename ... TT>
+	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & accept(const TT &... args){
 		static const Notification notif(__FUNCTION__, 42);
-		initMessage<LOG_INFO>(notif);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
 
-	template<typename ... TT>
+	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & reject(const TT &... args){
 		static const Notification notif(__FUNCTION__, 41);
-		initMessage<LOG_INFO>(notif);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
 
 
-	template<typename ... TT>
+	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & success(const TT &... args){
 		static const Notification notif(__FUNCTION__, 92);
-		initMessage<LOG_NOTICE>(notif);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};

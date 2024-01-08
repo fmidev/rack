@@ -118,7 +118,9 @@ protected:
 /// Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection criteria.
 /**
 
-	In \b Rack , many operations implictly select a subset of available data instead of using it all.
+	This command determines the data to be applied in subsequent input read or product generation commands.
+
+	In \b Rack, many operations implictly select a subset of available data instead of using it all.
 	For example, in computing a Pseudo CAPPI image, \c DBZH data from single-PRF sweeps is used by default.
 
 	\b Synopsis
@@ -142,14 +144,11 @@ protected:
 
 	\include example-select-test.inc
 
-	\subsubsection CmdSelect_also See also
-	- \ref CmdDelete
-	- \ref CmdKeep
-	- \ref CmdSetODIM
-
-	\subsubsection CmdSelect_code Related code
-	- #rack::CmdSelect
-	- #rack::DataSelector
+	\see CmdDelete
+	\see CmdKeep
+	\see CmdSetODIM
+	\see #rack::CmdSelect (code)
+	\see #rack::DataSelector (code)
 
 */
 class CmdSelect : public drain::BasicCommand {
@@ -372,9 +371,21 @@ protected:
 const std::map<std::string,std::string> CmdSelectQuantity::transTable = {{",", "|"}, {"*",".*"}, {"?","."}};
 
 
+/// Convert data with desired encoding
+/**
 
+	Volume data can be converted to desired scale and encoding with \c --encoding followed by \c --convert .
+	If the input file contains several quantities, the target quantity can be selected with \c --select (\c -s) command:
 
+	\code
+	rack volume-double.h5 -Q DBZH --encoding C,0.5,-32 --convert  -o volume-new.h5
+	rack volume-uint16.h5 -Q DBZH --encoding d --convert -Q VRAD --encoding C,0.025,-7.65506,0,255 --convert -o volume-new.h5
+	\endcode
 
+	\see #rack::CmdEncoding (code)
+	\see #rack::CmdSetODIM (code)
+
+*/
 class CmdConvert : public  drain::BasicCommand {
 
 public:
@@ -597,8 +608,9 @@ public:
 	If selection parameters of both levels are issued in the same command,
 	implicit \c AND function applies in selection.
 
-	\b See\ also
-	- \ref CmdKeep
+	\see CmdKeep
+	\see modifypage
+
 */
 class CmdDelete : public CmdBaseSelective {
 
@@ -625,7 +637,7 @@ public:
 
 		// Step 0
 		mout.info("delete existing no-save structures ");
-		hi5::Hi5Base::deleteNoSave(dst);
+		hi5::Hi5Base::deleteExcluded(dst);
 
 		mout.debug("selector: ", selector, ", matcher=", selector.pathMatcher);
 
@@ -657,7 +669,8 @@ public:
 	Examples:
 	\include example-keep.inc
 
-	See also: \ref CmdDelete
+	\see CmdDelete
+	\see modifypage
 
  */
 class CmdKeep : public  CmdBaseSelective {
@@ -678,10 +691,10 @@ public:
 
 		// Step 0
 		mout.debug("delete existing no-save structures ");
-		hi5::Hi5Base::deleteNoSave(dst);
+		hi5::Hi5Base::deleteExcluded(dst);
 
 		// Initially, mark all paths excluded.
-		DataTools::markNoSave(dst);
+		DataTools::markExcluded(dst);
 
 		DataSelector selector;
 		selector.setParameters(value);
@@ -699,7 +712,7 @@ public:
 			ODIMPath p;
 			for (const ODIMPathElem & elem: path){
 				p << elem;
-				dst(p).data.noSave = false;
+				dst(p).data.exclude = false;
 			}
 			//mout.debug("marked for save: " , *it );
 			// Accept also tail (attribute groups)
@@ -709,7 +722,7 @@ public:
 				if (entry.first.is(ODIMPathElem::ARRAY)){
 					mout.debug2("also save: ", p, '|', entry.first);
 					// if (dit->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
-					entry.second.data.noSave = false;
+					entry.second.data.exclude = false;
 				}
 			}
 			//
@@ -717,7 +730,7 @@ public:
 
 		// debug: hi5::Hi5Base::writeText(dst, std::cerr);
 
-		hi5::Hi5Base::deleteNoSave(dst);
+		hi5::Hi5Base::deleteExcluded(dst);
 
 	};
 
@@ -740,6 +753,10 @@ public:
 
     Examples:
 	\include example-move.inc
+
+	\see CmdDelete
+	\see CmdKeep
+	\see modifypage
 
  */
 class CmdMove :  public  drain::BasicCommand {
@@ -844,18 +861,18 @@ public:
 			//mout.warn(dstRoot );
 			Hi5Tree & dst1 = dstRoot(path1);
 			if (!dstRoot.hasPath(path2)) // make it temporary (yet allocating it for now)
-				dstRoot(path2).data.noSave = true;
+				dstRoot(path2).data.exclude = true;
 			Hi5Tree & dst2 = dstRoot(path2);
 
-			const bool noSave1 = dst1.data.noSave;
-			const bool noSave2 = dst2.data.noSave;
+			const bool exclude1 = dst1.data.exclude;
+			const bool exclude2 = dst2.data.exclude;
 			dst2.swap(dst1);
-			dst1.data.noSave = noSave2;
-			dst2.data.noSave = noSave1;
+			dst1.data.exclude = exclude2;
+			dst2.data.exclude = exclude1;
 			dst2.data.attributes.swap(dst1.data.attributes);
 
 			// dstRoot.erase(path1); ?
-			dstRoot(path1).data.noSave = true;
+			dstRoot(path1).data.exclude = true;
 			//DataTools::updateInternalAttributes(dst1); // recurse subtrees
 			//DataTools::updateInternalAttributes(dst2); // recurse subtrees
 
@@ -920,9 +937,19 @@ public:
 
 };
 
+/// Ensure correct ODIM types after setting attributes
+/**
+    The OPERA data information model (ODIM) defines conventions for weather radar data.
+	Some important ODIM attributes can be added automatically with \c --completeODIM command, which sets \c nbins , \c nrays , \c xsize , and \c ysize
+	equal to data dimensions, if already loaded as image.
 
+	\b Synopsis
+	\include completeODIM.hlp
 
+	\see #rack::CmdSetODIM (code)
+	\see CmdSetODIM
 
+ */
 class CmdCompleteODIM : public  drain::BasicCommand {
 
 public:
@@ -1378,6 +1405,17 @@ public:
 
 // static drain::CommandEntry<CmdHelpExample> cmdHelpExample("helpExample", 0);
 
+
+/// Explain..
+/**
+
+	Text
+
+	\b Synopsis
+	\include JSON.hlp
+
+	\see #::Command
+ */
 class CmdJSON : public drain::SimpleCommand<std::string> { // drain::BasicCommand {
 public:
 

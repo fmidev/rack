@@ -46,7 +46,7 @@ template <>
 const drain::FlaggerDict drain::EnumDict<Reader::Mode>::dict = {
 		{"ATTRIBUTES", hi5::Reader::ATTRIBUTES},
 		{"DATASETS", hi5::Reader::DATASETS},
-		{"MARKED", hi5::Reader::MARKED}
+		{"MARKED", hi5::Reader::EXCLUSIVE}
 };
 
 
@@ -54,7 +54,7 @@ void Reader::readFile(const std::string & filename, Hi5Tree & tree, ModeFlagger:
 
 	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 
-	if ((mode & MARKED) > 0){
+	if ((mode & EXCLUSIVE) > 0){
 		mout.experimental("Selective read: mode: ", mode);
 	}
 	else {
@@ -133,8 +133,8 @@ Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, 
 		// std::cerr << "Deeper " << __FUNCTION__ << ':' << p << std::endl;
 		// mout.warn("Selective? : mode=", mode, " noSave=", subtree.data.noSave, ", path: ", p);
 
-		if ((mode & MARKED) > 0) {
-			if (subtree.data.noSave) {
+		if ((mode & EXCLUSIVE) > 0) {
+			if (subtree.data.exclude) {
 				mout.reject("Selective read: skipping ", p);
 				continue;
 			}

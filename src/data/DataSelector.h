@@ -447,7 +447,28 @@ protected:
 	void copyPaths(M & pathMap, DataOrder::Oper oper, std::list<ODIMPath> & mapList) const ;
 	// void pruneMap(std::list<ODIMPath> & pathContainer, DataOrder::Oper oper=DataOrder::Oper::MIN) const ;
 
+// EXPERIMENTAL
 
+
+	/// Collect paths (only) with criteria: path, elevation(range), PRF, quantity.
+	/**
+	 *
+	 *  \return true, if contained something accepted by tests
+	 */
+	bool collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & basepath = ODIMPath()) const;
+
+	/// Use #DataOrder::criterion \c DATA , \c TIME or \c ELANGLE and #DataOrder::order \c MIN or MAX to sort paths.
+	void prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const;
+
+
+public:
+
+	/// Collect paths with all the criteria: path, elevation(range), PRF, quantity...
+	/**
+	 *
+	 *
+	 */
+	void selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const;
 
 };
 
@@ -584,8 +605,6 @@ void DataSelector::getMainPaths(const Hi5Tree & src, T & pathContainer, bool LIM
 		const drain::image::Image & data    = entry.second.data.dataSet; // for ODIM
 		const drain::FlexVariableMap & props = data.getProperties();
 
-		// ODIMPath path;
-		// path << currentElem;
 		ODIMPath path(currentElem);
 
 		// Check ELANGLE (in datasets) or quantity (in data/quality)
@@ -673,8 +692,6 @@ bool DataSelector::getSubPaths(const Hi5Tree & src, T & pathContainer, const ODI
 		const drain::FlexVariableMap & props = data.getProperties();
 
 		ODIMPath p(path, currentElem);
-		// ODIMPath p(path);
-		// p << currentElem; // also for attrib groups
 
 		//
 		if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){

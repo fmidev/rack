@@ -766,7 +766,7 @@ public:
 			//Data<BasicDst> & data = dstProduct.getData(encoding.quantity);
 			const size_t origSize = dstProduct.size();
 			Data<BasicDst> & data = dstProduct.getData(dstQuantity); // NEW 2023/03 !
-			data.setNoSave(NO_SAVE);
+			data.setExcluded(NO_SAVE);
 
 			if (origSize == dstProduct.size()){
 				mout.note("Storing processed image in: ", elem, "/data?/ [", dstQuantity, ']'); // NEW 2023

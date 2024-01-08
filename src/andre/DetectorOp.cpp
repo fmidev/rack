@@ -139,10 +139,10 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 
 		// PROBABILITY OF THE CLASS APPROXIMATED BY THIS DETECTOR
 		PlainData<PolarDst> & dstProb = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData(CLASSNAME) : dstData.getQualityData(CLASSNAME);
-		//dstProb.tree.data.noSave = !DetectorOp::STORE;
+		//dstProb.tree.data.exclude = !DetectorOp::STORE;
 		initDataDst(srcData, dstProb);
 		mout.debug("outputDataVerbosity ", outputDataVerbosity);
-		dstProb.setNoSave(outputDataVerbosity==0);
+		dstProb.setExcluded(outputDataVerbosity==0);
 
 		//mout.warn("dstProb: " , dstProb );
 		/// MAIN COMMAND
@@ -214,10 +214,10 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 
 			// PROBABILITY OF THE CLASS APPROXIMATED BY THIS DETECTOR
 			PlainData<PolarDst> & dstProb = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData(CLASSNAME) : dstData.getQualityData(CLASSNAME);
-			//dstProb.tree.data.noSave = !DetectorOp::STORE;
+			//dstProb.tree.data.exclude = !DetectorOp::STORE;
 			initDataDst(srcData, dstProb);
 			mout.debug("outputDataVerbosity ", outputDataVerbosity);
-			dstProb.setNoSave(outputDataVerbosity==0);
+			dstProb.setExcluded(outputDataVerbosity==0);
 			// mout.debug2("dstProb: ", dstProb);
 
 			/// MAIN COMMAND

@@ -65,7 +65,7 @@ void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const
 	//  if (attributes.empty() && dataSet.isEmpty()){
 	//  if (!prefix.empty())
 	ostr << prefix;
-	if (noSave)
+	if (exclude)
 		ostr << '~';
 	ostr << '\n';
 
@@ -83,7 +83,7 @@ void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const
 	if (dataSet.getVolume() > 0){
 
 		ostr << prefix;
-		//if (noSave) ostr << '~';
+		//if (exclude) ostr << '~';
 		ostr << ':';
 		//'\t';
 		//mout.note() << dataSet.getGeometry() << mout.endl;
@@ -443,22 +443,22 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 }
 
 // Marks CHILDREN of src for deleting
-void Hi5Base::markNoSave(Hi5Tree &src, bool noSave){
+void Hi5Base::markExcluded(Hi5Tree &src, bool exclude){
 
 	//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	for (auto & entry: src) {
 		//if (it->first.isIndexed()){
 		//if (!entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-			entry.second.data.noSave = noSave;
-			markNoSave(entry.second, noSave);
+			entry.second.data.exclude = exclude;
+			markExcluded(entry.second, exclude);
 		//}
 	}
 
 }
 
 
-void Hi5Base::deleteNoSave(Hi5Tree &src){
+void Hi5Base::deleteExcluded(Hi5Tree &src){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -467,9 +467,9 @@ void Hi5Base::deleteNoSave(Hi5Tree &src){
 
 	//for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
 	for (auto & entry: src) {
-		if (! entry.second.data.noSave){ // needed?
+		if (! entry.second.data.exclude){ // needed?
 			//mout.debug2() << "delete: " <<  it->first << mout.endl;
-			deleteNoSave(entry.second);
+			deleteExcluded(entry.second);
 		}
 		else {
 			elems.push_back(entry.first);
@@ -487,13 +487,13 @@ void Hi5Base::deleteNoSave(Hi5Tree &src){
 }
 
 /*
-void Hi5Base::markNoSave(Hi5Tree &src, bool noSave){
+void Hi5Base::markExcluded(Hi5Tree &src, bool exclude){
 
 	//drain::Logger mout(__FILE__, __FUNCTION__);
 
 	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
-		it->second.data.noSave = noSave;
-		markNoSave(it->second, noSave);
+		it->second.data.exclude = exclude;
+		markExcluded(it->second, exclude);
 	}
 
 
