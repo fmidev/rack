@@ -42,8 +42,8 @@ namespace rack {
 /// Copy constructor.
 ProductConf::ProductConf(const ProductConf & conf) :
 		dataSelector(conf.dataSelector),
-		appendResults(conf.appendResults),
 		targetEncoding(conf.targetEncoding),
+		appendResults(conf.appendResults),
 		outputDataVerbosity(conf.outputDataVerbosity){
 	dataSelector.updateBean();
 }
