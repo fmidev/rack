@@ -87,9 +87,11 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 	if (qualityRegExp.isSet()){
 		mout.attention<LOG_INFO>("qualityRegExp: ", qualityRegExp);
 	}
+
 	if (quantityRegExp.isSet()){
 		mout.attention<LOG_INFO>("quantityRegExp: ", quantityRegExp);
 	}
+
 	// mout.attention<LOG_INFO>("quantityRegExp: ", quantityRegExp,  ", qualityRegExp: ", qualityRegExp);
 
 	bool result = false;
@@ -173,32 +175,16 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 					//quantityOk = false;
 					if (currentElem.is(ODIMPathElem::QUALITY) && qualityRegExp.test(retrievedQuantity)){
 						mout.note("QUALITY quantity matches: [", retrievedQuantity, "]: ", basepath, '|', currentElem);
-						//quantityOk    = true;
 						quantityOK = true;
-						/*
-						if (pathMatcher.match(path)){
-							mout.accept("QUALITY path matches: " , path,  " [", retrievedQuantity, "]");
-							addPath(pathContainer, props, path);
-						}
-						*/
 					}
 				}
 				else if (quantityRegExp.test(retrievedQuantity)){
 					mout.accept<LOG_DEBUG>("quantity matches: [", retrievedQuantity, "]: ", basepath, '|', currentElem);
 					quantityOK = true;
-					/*
-					if (pathMatcher.match(path)){
-						mout.accept("DATA path matches: ", path,  " [", retrievedQuantity, "]");
-						addPath(pathContainer, props, path);
-					}
-					else {
-						mout.accept<LOG_WARNING>("DATA path does match: " , path );
-					}
-					*/
 				}
 				else {
 					mout.reject<LOG_DEBUG>("unmatching DATA quantity  [" ,  retrievedQuantity , "], skipping" );
-					// no continue
+					// no continue! Recursion follows (for quality quantity)
 				}
 			}
 			else {
@@ -212,7 +198,6 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 				if (pathMatcher.match(path)){
 					mout.accept<LOG_DEBUG>("DATA/QUANTITY path matches: ", path,  " [", retrievedQuantity, "]");
 					pathContainer.push_back(path);
-					// addPath(pathContainer, props, path);
 				}
 				else {
 					mout.reject<LOG_DEBUG+1>("DATA path '", path, "' does not match '", pathMatcher, "' (but quantity check OK)");
@@ -222,16 +207,18 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 			result |= collectPaths(src, pathContainer, path);
 
 		}
-		else if (currentElem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+		else if (currentElem.is(ODIMPathElem::ARRAY) || currentElem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
 
 			// Does not affect result.
 			if (pathMatcher.match(path)){
 				pathContainer.push_back(path);
-				// addPath(pathContainer, props, path);
 			}
 		}
+		else if (currentElem.is(ODIMPathElem::LEGEND)){
+			mout.debug("skipping LEGEND: /" , currentElem );
+		}
 		else {
-			// mout.warn(" skipping odd group: /" , currentElem );
+			mout.warn("skipping odd group: /" , currentElem );
 		}
 
 	}
