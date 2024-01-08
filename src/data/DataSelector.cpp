@@ -85,10 +85,10 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (qualityRegExp.isSet()){
-		mout.attention<LOG_INFO>("quantityRegExp: ", quantityRegExp);
+		mout.attention<LOG_INFO>("qualityRegExp: ", qualityRegExp);
 	}
 	if (quantityRegExp.isSet()){
-		mout.attention<LOG_INFO>("qualityRegExp: ", qualityRegExp);
+		mout.attention<LOG_INFO>("quantityRegExp: ", quantityRegExp);
 	}
 	// mout.attention<LOG_INFO>("quantityRegExp: ", quantityRegExp,  ", qualityRegExp: ", qualityRegExp);
 
@@ -654,7 +654,7 @@ void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathList)
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.experimental<LOG_WARNING>("revised code: getPaths->selectPaths(): ", __FILE__, ':', __LINE__);
+	mout.experimental<LOG_DEBUG>("revised code: getPaths->selectPaths(): ", __FILE__, ':', __LINE__);
 	selectPaths(src, pathList);
 
 	/*

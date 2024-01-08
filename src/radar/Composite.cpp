@@ -249,7 +249,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		//drain::Rectangle<double> bboxNat;
 		pRadarToComposite.determineBoundingBoxM(range, bboxInput);
 
-		mout.attention("Detected 'native' input BBOX: ", bboxInput);
+		mout.accept("Detected 'native' input BBOX: ", bboxInput);
 
 		setBoundingBoxM(bboxInput);
 
