@@ -107,6 +107,8 @@ struct DataOrder { //: public drain::BeanLike {
 class DataSelector : public drain::BeanLike {
 public:
 
+	/// Pulse repetition frequency mode
+	enum Prf {SINGLE=1, DOUBLE=2, ANY=3};
 
 	// TODO: string => ODIMPath
 	DataSelector(const std::string & path, const std::string & quantity,
@@ -162,10 +164,28 @@ public:
 	}
 
 
+	void setQuantity(const std::string & s);
+
+	void updateQuantity() const ;
+
+	bool testQuantity(const std::string & s) const;
+
 	inline
-	void setQuantity(const std::string & quantity){
-		this->quantity = quantity;
-		this->updateBean();
+	void setPrf(const std::string & s){
+		this->prf = s;
+		this->selectPRF.set(s);
+	}
+
+	inline
+	void setPrf(Prf prf){
+		this->selectPRF.set(prf);
+		this->prf = this->selectPRF.str();
+		//this->updateBean();
+	}
+
+	template<typename ... TT>
+	void setOrder(const TT &... args) {
+		this->order.set(args...);
 	}
 
 	/// Regular expression of accepted paths, for example ".*/data$". Deprecated
@@ -182,12 +202,6 @@ public:
 	// TODO: protect
 	std::string quantity;
 
-	// Path criteria
-	// drain::Range<unsigned short> dataset;
-	// drain::Range<unsigned short> data;
-	/// The (minimum) index of the key in the list of matching keys.
-	//  unsigned int index;
-
 	/// The maximum length of the list of matching keys.
 	unsigned int count;
 
@@ -197,8 +211,6 @@ public:
 	mutable DataOrder order;
 
 	/// Reject or accept VRAD(VH)
-	//int dualPRF;
-	enum Prf {SINGLE=1, DOUBLE=2, ANY=3};
 	std::string prf;
 
 	mutable

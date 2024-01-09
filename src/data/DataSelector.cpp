@@ -515,35 +515,14 @@ void DataSelector::reset() {
 
 }
 
+void DataSelector::setQuantity(const std::string & quantity){
+	this->quantity = quantity;
+	updateQuantity();
+}
 
+void DataSelector::updateQuantity() const {
 
-void DataSelector::updateBean() const {
-
-	drain::Logger mout(__FUNCTION__, getName());
-
-	if (!path.empty()){
-
-		mout.debug("Assigning (string) path='", path, "'");
-
-		pathMatcher.set(path);
-		mout.debug("Assigned pathMatcher: ", path, " => ", pathMatcher);
-
-		if (!pathMatcher.empty()){
-			if (pathMatcher.back().empty()){ // "backroot" = > appears as trailing slash '/'
-				pathMatcher.pop_back();
-				mout.note("stripped trailing slash '/' => ", pathMatcher);
-			}
-		}
-		else {
-			mout.warn("path matcher still empty after assigning path='", path, "'");
-		}
-
-		//path.clear();
-	}
-	//mout.warn("pathMatcher >> '" , pathMatcher , "'" );
-
-	//path = pathMatcher; // Note: this (over)simplifies data|quality: to data|quality (discards explicit index)
-	//mout.warn("-----> path >> '" , path , "'" );
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	quantityRegExp.clear();
 	qualityRegExp.clear();
@@ -571,8 +550,43 @@ void DataSelector::updateBean() const {
 			break;
 	}
 
-	// mout.special("quantity [" , quantity ,"], " , "pathMatcher: " , path , " => " , pathMatcher   );
+	// dont update bean. Bean updates this.
+}
 
+bool DataSelector::testQuantity(const std::string & s) const {
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.unimplemented("code");
+}
+
+
+void DataSelector::updateBean() const {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (!path.empty()){
+
+		mout.debug("Assigning (string) path='", path, "'");
+
+		pathMatcher.set(path);
+		mout.debug("Assigned pathMatcher: ", path, " => ", pathMatcher);
+
+		if (!pathMatcher.empty()){
+			if (pathMatcher.back().empty()){ // "backroot" = > appears as trailing slash '/'
+				pathMatcher.pop_back();
+				mout.note("stripped trailing slash '/' => ", pathMatcher);
+			}
+		}
+		else {
+			mout.warn("path matcher still empty after assigning path='", path, "'");
+		}
+
+		//path.clear();
+	}
+
+	//path = pathMatcher; // Note: this (over)simplifies data|quality: to data|quality (discards explicit index)
+
+	updateQuantity();
+	// mout.special("quantity [" , quantity ,"], " , "pathMatcher: " , path , " => " , pathMatcher   );
 
 	if (pathMatcher.empty() && !quantity.empty()){
 
