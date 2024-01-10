@@ -459,11 +459,11 @@ public:
 
 
 	///  Feature to be done. Special type of Logger::note(). \see Logger::obsolete().
-	template<typename ... TT>
+	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & unimplemented(const TT &... args){
 		static const Notification notif(__FUNCTION__, 35);
-		initMessage<LOG_NOTICE>(notif);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};

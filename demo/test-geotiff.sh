@@ -139,9 +139,10 @@ if [ $# == 0 ]; then
     SIZE=300,500
     DEMO=1 ENCODING=C            OUTFILE=composite-fi-C.h5 SIZE=$SIZE  BBOX=17,57.7,33,69.5  ./make-composite.sh  data-20140525/201405251200_radar.polar.fi*.h5
     #convert composite-fi-C.tif composite-fi-C.png
-    
-    DEMO=1 ENCODING=S,0.002,-1100 OUTFILE=composite-fi-S.h5 SIZE=$SIZE  BBOX=17,57.7,33,69.5  ./make-composite.sh  data-20140525/201405251200_radar.polar.fi*.h5
-    #convert composite-fi-S.tif composite-fi-S.png
+
+    DEMO=1 ENCODING=S            OUTFILE=composite-fi-S.h5 SIZE=$SIZE  BBOX=17,57.7,33,69.5  ./make-composite.sh  data-20140525/201405251200_radar.polar.fi*.h5
+    # DEMO=1 ENCODING=S,0.002,-1100 OUTFILE=composite-fi-S.h5 SIZE=$SIZE  BBOX=17,57.7,33,69.5  ./make-composite.sh  data-20140525/201405251200_radar.polar.fi*.h5
+    # convert composite-fi-S.tif composite-fi-S.png
     
     convert +append -frame 3 -fill green  composite-fi-C.tif  composite-fi-S.tif composite-geotiff-error.png
 

@@ -32,10 +32,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.8"
+#define __RACK_VERSION__ "7.81"
 
 /**
+ *   Version 7.81
+ *   -- Further revised/simplified DataSelector
+ *
  *   Version 7.8
+ *   -- Revised DataSelector: #selectPaths()
  *   -- New functionality: selective read --inputSelect
  *   -- Log: adjustable sublevels: accept<LOG_DEBUG>(...) , fail<LOG_INFO>(...)
  *   -- Revised definitions: Variable, ReferenceVariable, FlexibleVariable

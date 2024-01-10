@@ -289,42 +289,13 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 			}
 			else {
 				mout.debug("not in list of retrieved paths, skipping: ", elem);
-				continue;
+				//continue;
 			}
 
-			/** Not needed, if called after selectPaths(), it's implicit there.
-			if (!pathMatcher.matchElem(elem, true)){ // <- if no dataset test involved, return 'true'
-				// pathMatcher did not accept this dataset<N> at all
-				mout.reject(elem);
-				continue;
-			}
-			*/
+			// pathMatcher.matchElem() not needed here
 
-			/// Elangle test NOT NEEDED (repeated)
-			/*
-			if (props.hasKey("where:elangle")){
-				double e = props["where:elangle"];
-				if (!this->elangle.contains(e)){
-					mout.reject("elangle ", e, " outside range: ", this->elangle);
-					continue;
-				}
-			}
-			*/
-
+			// props.hasKey("where:elangle")) not needed here
 		}
-
-		/* not needed, including DATASET's only
-		if (elem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-			mout.debug("skipping attribute group (for now): ", elem);
-			continue;
-		}
-		*/
-
-		/*
-		if (std::find(accepted.begin(), accepted.end(), elem) == accepted.end()){ // clumsy, but list needed (instead of set).
-			accepted.push_back(elem);
-		}
-		*/
 
 	}
 
@@ -410,6 +381,29 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 	*/
 
 }
+
+
+void DataSelector::getTimeMap(const Hi5Tree & srcRoot, ODIMPathElemMap & m){
+
+	for (const auto & entry: srcRoot) {
+		if (entry.first.is(ODIMPathElem::DATASET)){
+			const drain::VariableMap & attr = entry.second[ODIMPathElem::WHAT].data.attributes;
+			m[attr.get("startdate","") + attr.get("starttime","")] = entry.first;
+		}
+	}
+
+};
+
+void DataSelector::getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m){
+
+	for (const auto & entry: srcDataset) {
+		if (entry.first.is(ODIMPathElem::DATA)){
+			const drain::VariableMap & attr = entry.second[ODIMPathElem::WHAT].data.attributes;
+			m[attr.get("quantity","")] = entry.first;
+		}
+	}
+
+};
 
 
 DataSelector::DataSelector(
@@ -556,6 +550,7 @@ void DataSelector::updateQuantity() const {
 bool DataSelector::testQuantity(const std::string & s) const {
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.unimplemented("code");
+	return false;
 }
 
 
@@ -689,7 +684,7 @@ void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathList)
 
 
 
-void DataSelector::getPathsByElangle(const Hi5Tree & src, std::map<double,ODIMPath> & paths) const {
+void DataSelector::getPathsByElangleFOO(const Hi5Tree & src, std::map<double,ODIMPath> & paths) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -697,12 +692,10 @@ void DataSelector::getPathsByElangle(const Hi5Tree & src, std::map<double,ODIMPa
 		mout.warn("map keys sorted by ELANGLE (double), yet DataOrder::TIME requested");
 	}
 
-	getMainPaths(src, paths, false);
-	// pruneMap(paths, order.operation);
-	//	mout.attention("remaining: ", drain::sprinter(paths));
+	getMainPathsFOO(src, paths, false);
 }
 
-void DataSelector::getPathsByTime(const Hi5Tree & src, std::map<std::string,ODIMPath> & paths) const {
+void DataSelector::getPathsByTimeFOO(const Hi5Tree & src, std::map<std::string,ODIMPath> & paths) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -710,7 +703,7 @@ void DataSelector::getPathsByTime(const Hi5Tree & src, std::map<std::string,ODIM
 		mout.warn("map keys sorted by TIME (string), yet DataOrder::ELANGLE requested");
 	}
 
-	getMainPaths(src, paths, false);
+	getMainPathsFOO(src, paths, false);
 	//pruneMap(paths, order.operation);
 	//mout.attention("remaining: ", drain::sprinter(paths));
 }
@@ -941,8 +934,8 @@ void DataSelector::swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::gro
 
 	ODIMPathElem dstElem(groupType, 1);
 	DataSelector::getNextChild(dst, dstElem);
-	mout.debug("Swapping: ... dst:'", dstElem, "' group type: ", groupType, " note: odim?"); // see quality comb..
-	// Create empty dstRoot[path] and swap it...
+	mout.note("Swapping: ... dst:'", dstElem, "' group type: ", groupType, " note: odim?"); // see quality comb..
+	// Create empty dst[dstElem] and swap it...
 	dst[dstElem].swap(srcGroup);
 	//DataTools::updateInternalAttributes(ctx.polarInputHi5);
 }

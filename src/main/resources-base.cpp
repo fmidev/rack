@@ -246,21 +246,17 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 		selector.setParameters(select);
 		selector.count = 1; // Because just one path wanted (below)
 
-		mout.debug("status metadata selector: ", selector.getParameters(), " <- ", select); //, ", orderFlags=", selector.order.str);
+		mout.debug("status metadata selector: ", selector, " <- '", select, "'"); //, ", orderFlags=", selector.order.str);
 		// mout.debug("status metadata selector: ", selector, " <- ", select, "orderFlags=", selector.orderFlags);
 
 		ODIMPath path;
 		selector.getPath(src, path);
 
-		mout.debug(path );
-
+		mout.debug(path);
 
 		if (path.empty()){
-
-			// const SprinterLayout cmdLineLayout = {":", ",", "=", ""};  // , "|","<>"
-
-			mout.special(drain::sprinter(selector.getParameters().getMap(), drain::Sprinter::cmdLineLayout)); // ,"'"
-			mout.note("data exists, but no data groups found with selector: ", selector.getParameters()); // ,"'"
+			mout.special(selector); // ,"'"
+			mout.note("data exists, but no data groups found with selector: ", selector); // ,"'"
 		}
 		else {
 			mout.debug("using path=" , path );

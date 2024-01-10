@@ -433,8 +433,9 @@ void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 // Move to datatools:
 
 
-
-/**  Specialized to polar measurement data: time stamps identify the dataset groups.
+/// Add DATASET groups of srcRoot to dstRoot.
+/**
+ *   Specialized to polar measurement data: time stamps identify the dataset groups.
  *   Note: also DataSelector applied.
  *
  */
@@ -463,43 +464,98 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 		}
 	}
 
+	ODIMPathElemMap srcTimeGroups, dstTimeGroups;
+	DataSelector::getTimeMap(srcRoot, srcTimeGroups);
+	DataSelector::getTimeMap(dstRoot, dstTimeGroups);
 
+	for (const auto & timeGroup: srcTimeGroups){
+
+		Hi5Tree & srcDataSet = srcRoot[timeGroup.second];
+
+		ODIMPathElemMap::iterator tit = dstTimeGroups.find(timeGroup.first);
+
+		if (tit == dstTimeGroups.end()){
+			mout.note("Adding new dataset, time: ", timeGroup.first);
+			// In this form, does not support top-level QUALITY field insertions, neither updates.
+			DataSelector::swapData(srcDataSet, dstRoot, ODIMPathElem::DATASET); // check type (DATASET) after filter implemented!
+		}
+		else {
+			mout.attention("DATASET group exists for <", timeGroup.first, "> dst:", tit->second, " <-> src: ", timeGroup.second);
+
+			Hi5Tree & dstDataSet = dstRoot[tit->second];
+
+			ODIMPathElemMap srcQuantityGroups, dstQuantityGroups;
+			DataSelector::getQuantityMap(srcDataSet, srcQuantityGroups);
+			DataSelector::getQuantityMap(dstDataSet, dstQuantityGroups);
+
+			for (const auto & quantityGroup: srcQuantityGroups){
+				// Hi5Tree & srcData = srcDataSet[quantityGroup.second];
+				updateDataNEW(srcDataSet[quantityGroup.second], quantityGroup.first, dstDataSet, dstQuantityGroups);
+				/*
+				ODIMPathElemMap::iterator qit = dstQuantityGroups.find(quantityGroup.first);
+				if (qit == dstQuantityGroups.end()){
+					mout.note("Adding new DATA group, quantity: ", quantityGroup.first);
+				}
+				else {
+					Hi5Tree & srcData = srcDataSet[quantityGroup];
+					mout.attention("DATA group exists for [", quantityGroup.first, "] dst:", qit->second, " <-> src: ", quantityGroup.second);
+					updateDataNEW(srcData, quantityGroup.first, dstDataSet, dstQuantityGroups);
+				}
+				*/
+			}
+
+			// Update general quality, i.e. dataset level quality
+			mout.special("Updating dataset level quality: '", timeGroup.first, "' -- ", timeGroup.second);
+			updateQuality(srcDataSet, dstDataSet);
+
+		}
+	}
+
+	return;
+}
+
+/*
 	/// Common dataSetSelector for srcRoot and dstRoot
 	DataSelector dataSetSelector;
+	dataSetSelector.setOrder(DataOrder::Crit::TIME, DataOrder::Oper::MIN);
 	if (!ctx.select.empty())
 		mout.attention("Applying input selector: ", ctx.select);
 	dataSetSelector.consumeParameters(ctx.select); //??
-	dataSetSelector.pathMatcher = "dataset:"; // <fix
+	dataSetSelector.pathMatcher = "dataset:"; // <fix (constr?)
 
 	/// TIMESTAMP-based order (Consider generalization for Cartesian?)
 	//  Consider ODIMPathElem instead ??
 	typedef std::map<std::string,ODIMPath> sweepMap;
 
-	sweepMap srcPaths;
-	dataSetSelector.getPathsByTime(srcRoot, srcPaths);
-	//dataSetSelector.getPaths(srcRoot, srcPaths);
+	//sweepMap srcPaths;
+	//dataSetSelector.getPathsByTime(srcRoot, srcPaths);
+	ODIMPathList srcPaths;
+	dataSetSelector.getPaths(srcRoot, srcPaths);
 
-	sweepMap dstPaths;
-	dataSetSelector.getPathsByTime(dstRoot, dstPaths);
-	// dataSetSelector.getPaths(dstRoot, dstPaths);
+	//sweepMap dstPaths;
+	// dataSetSelector.getPathsByTime(dstRoot, dstPaths);
+	ODIMPathList dstPaths;
+	dataSetSelector.getPaths(dstRoot, dstPaths);
 
 	for (const auto & entry: dstPaths){
-		mout.info("exists: ", entry.second,"\t (", entry.first, ')');
+		//mout.info("exists: ", entry.second,"\t (", entry.first, ')');
+		mout.info("exists: ", entry);
 	}
-
 
 	mout.debug("traverse paths");
 
 	/// Traverse the child paths of srcRoot dataset[i]
-	//for (sweepMap::const_iterator it = srcPaths.begin(); it != srcPaths.end(); ++it){
-	for (const auto & srcDSEntry: srcPaths){
+	//for (const auto & srcDSEntry: srcPaths){
+	for (const ODIMPath & path: srcPaths){
 
 		//const sweepMap::key_type & timestamp = srcDSEntry.first; // rename => key
 		//const ODIMPath & srcDataSetPath      = srcDSEntry.second;
 
-		Hi5Tree & srcDataSet = srcRoot(srcDSEntry.second);  // clumsy (), could be [] because no leading '/'
+		Hi5Tree & srcDataSet = srcRoot(path);  // srcDSEntry.second // clumsy (), could be [] because no leading '/'
 
-		mout.debug("Considering ", srcDSEntry.second, " (", srcDSEntry.first, ')');
+		mout.unimplemented<LOG_WARNING>("Considering ", path);
+		//mout.debug("Considering ", srcDSEntry.second, " (", srcDSEntry.first, ')');
+
 
 		bool FOUND = false; // CLUMSY!
 
@@ -558,87 +614,9 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 
 
-		/*
-
-		sweepMap::const_iterator eit = dstPaths.find(srcDSEntry.first);
-
-		if (eit == dstPaths.end()){ // New timestamp, add this \c dataset directly.
-
-			ODIMPathElem child(ODIMPathElem::DATASET);
-			DataSelector::getNextChild(dstRoot, child);
-			mout.info("New timestamp (" , srcDSEntry.first , "), appending to path=" , child );
-			// Create empty dstRoot[path] and swap it...
-			Hi5Tree & dstDataSet = dstRoot[child];
-			dstDataSet.swap(srcDataSet);
-		}
-		else { // timestamp is found in dstRoot.
-
-			static const DataSelector dataSelector; // ?? Needed init?
-
-			const ODIMPath & dstDataSetPath = eit->second;
-
-			Hi5Tree & dstDataSet = dstRoot(dstDataSetPath);
-
-			typedef std::map<std::string, ODIMPathElem> quantity_map;
-
-
-			mout.note("Combining datasets having the same  (timestamp ", srcDSEntry.first, "): src:", srcDSEntry.second, " => dst:", dstDataSetPath); //"("<< eit->first << ")" << mout.endl;
-
-			// CONFLICT!? Or ok with ODIMPathElem::DATA to use
-			quantity_map srcQuantityElems;
-			DataSelector::getChildren(srcDataSet, srcQuantityElems, ODIMPathElem::DATA);  // consider children
-
-			quantity_map dstQuantityElems;
-			DataSelector::getChildren(dstDataSet, dstQuantityElems, ODIMPathElem::DATA);
-
-			/// traverse DATA QUANTITIES assigning each to new / existing dstPaths in current structure.
-			for (const auto & entry: srcQuantityElems) {
-
-				const std::string & quantity  = entry.first; // qit-> // DBZH, or QIND or CLASS
-				const ODIMPathElem & srcElem = entry.second;  //srcPath.back();
-				Hi5Tree & srcData = srcDataSet[srcElem];
-
-				// NEW
-				if ((quantity == "QIND") || (quantity == "CLASS")){
-					continue; // handled separately, see futher below
-				}
-
-				// NEW: clumsy search.
-				for (const auto & dstEntry: dstQuantityElems) {
-					const std::string  & dstQuantity  = dstEntry.first; // qit-> // DBZH, or QIND or CLASS
-					const ODIMPathElem & dstElem      = dstEntry.second;
-
-
-					if (quantity == dstQuantity){
-						mout.note("Quantity [", quantity, "] already exists in dst: ", dstElem);
-						// Note: QIND and CLASS ruled out above
-						updateQuality(srcData, dstDataSet[dstElem]);
-						continue;
-					}
-				}
-
-				// WRONG! continue goes on here, "return" would be correct
-
-				ODIMPathElem dstChild(ODIMPathElem::DATA);
-				DataSelector::getNextChild(dstDataSet, dstChild);
-				mout.note("Add new quantity ",  quantity, " => ", dstDataSetPath, '|', dstChild);
-				Hi5Tree & dstData = dstDataSet[dstChild];
-				srcData.swap(dstData);
-
-			}
-
-
-			// Update dataset quantities
-			updateQuality(srcDataSet, dstDataSet);
-
-		}
-		 */
-
-		// }
-
 	}
 }
-
+*/
 
 // const std::string & srcKey,
 // const ODIMPathElem & srcElem

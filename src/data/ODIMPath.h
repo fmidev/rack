@@ -80,6 +80,7 @@ class ODIMPathElem;
 std::ostream & operator<<(std::ostream & ostr, const ODIMPathElem & p);
 
 
+
 class ODIMPathElem  {
 
 public:
@@ -397,6 +398,10 @@ typedef std::list<ODIMPath> ODIMPathList;
 
 typedef std::vector<ODIMPathElem> ODIMPathElemSeq;
 
+/**
+ *   Applicable for timestamp based sorting of DATASET groups and quantity based DATA/quality groups
+ */
+typedef std::map<std::string,ODIMPathElem> ODIMPathElemMap;
 
 struct ODIMPathLess {
 
@@ -427,6 +432,7 @@ public:
 
 	double elangle;
 	std::string timestamp;
+
 
 };
 
