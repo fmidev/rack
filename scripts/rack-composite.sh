@@ -147,6 +147,7 @@ do
 	    ;;
 	# Rack options: polar products and Cartesian (trim leading C or P)
 	--[cp][A-Z][A-Za-z]*)
+	    echo "# Polar/cart product: $key"
 	    KEY=${KEY:1}
 	    value=$2
 	    shift
