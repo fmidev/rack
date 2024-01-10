@@ -164,7 +164,6 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		mout.warn("Setting where:nrays=", srcData.odim.area.height);
 	}
 
-
 	if (srcData.odim.lat == 0.0){
 		mout.warn("Suspicious latitude (where:lat): 0.0");
 	}
@@ -173,18 +172,12 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		mout.warn("Suspicious longitude (where:long): 0.0");
 	}
 
-
-
 	ProductBase::applyODIM(this->odim, srcData.odim);
-
-
-
 
 
 	const bool USE_PRIOR_WEIGHT = (priorWeight > 0.0);
 
 	const bool USE_QUALITY_FIELD = USE_PRIOR_WEIGHT && !srcQuality.data.isEmpty(); // && (odim.quantity == "DBZH"); // quantity != QIND
-
 
 
 	if (USE_QUALITY_FIELD) {
