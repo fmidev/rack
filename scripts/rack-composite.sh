@@ -125,9 +125,11 @@ do
     key=$1
     unset value
     KEY=${1##*-} # trim leading hyphens
-    # echo $KEY
+    echo "#$KEY"
     KEY=${KEY^^} # uppercase
+    echo "#$KEY"
     KEY=${KEY//[- ]/}
+    echo "#$KEY"
     if [ "$KEY" == 'PATH' ] || [ "${KEY:1}" == 'PATH' ]; then
        echo "$0: illegal variable name: $1 -> $KEY "
        exit 0
