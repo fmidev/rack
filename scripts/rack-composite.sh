@@ -5,6 +5,7 @@
 # Markus.Peura@fmi.fi
 #
 
+shopt -s extglob
 LC_NUMERIC='en_GB.utf8'
 START_TIME=`date +'%s'`
 
