@@ -6,6 +6,7 @@
 #
 
 shopt -s extglob
+# shopt | grep extglob
 LC_NUMERIC='en_GB.utf8'
 START_TIME=`date +'%s'`
 
@@ -118,35 +119,41 @@ OUTFILE=
 # These are for debugging and demos
 FORMAT=${FORMAT:-'h5'}
 
+FORMATS=${FORMATS:-$FORMAT}
 
+#echo "FORMATS=$FORMATS  # auxiliary formats"
 
-while [ $# -gt 0 ]
+while [ ${#*} -gt 0 ]
 do
+    echo "# Next arg: $1"
     # Consume next (1st) argument
     key=$1
     unset value
     KEY=${1##*-} # trim leading hyphens
-    echo "#$KEY"
+    # echo "#$KEY"
     KEY=${KEY^^} # uppercase
-    echo "#$KEY"
+    # echo "#$KEY"
     KEY=${KEY//[- ]/}
-    echo "#$KEY"
+    # echo "#$KEY"
+
     if [ "$KEY" == 'PATH' ] || [ "${KEY:1}" == 'PATH' ]; then
        echo "$0: illegal variable name: $1 -> $KEY "
        exit 0
     fi
+    
     case $key in
 	-h|--help)
 	    set -- 
 	    break
 	    ;;
-	# Script-level options
-	(--[A-Z]*)
-	    value=$2
-	    shift
-	    ;;
 	--debug)
 	    DEBUG=1
+	    ;;
+	# Script-level options
+	--[E-Z]*)
+	    echo "# A-Z"
+	    value=$2
+	    shift
 	    ;;
 	# Rack options: polar products and Cartesian (trim leading C or P)
 	--[cp][A-Z][A-Za-z]*)
@@ -156,22 +163,25 @@ do
 	    shift
 	    ;;
 	# Other Rack options
-	--[a-z]*) 
+	--[a-z]+)
+	    echo "# Other"
 	    value=$2
 	    shift
 	    ;;
 #	(--) 
 #	    shift
 #	    break;;
-	(-*) 
+	(-+) 
 	    echo "$0: error - unrecognized option key $key ($KEY)" 1>&2;
 	    exit 1
 	    ;;
-	(*) 
+	*)
+	    echo "# Free args"
 	    break
 	    ;;
     esac
-    echo "# Fetch next argument as 1st"
+    echo "# Fetched $key ($KEY)" 1>&2
+    # echo "# Fetch next argument as 1st"
     if [ -v "$KEY" ]; then
 	eval "$KEY"=$value
     else
@@ -179,21 +189,18 @@ do
 	exit 1
     fi
     shift
+    echo "Remaing now $*"
 done
 
 echo "BBOX=$BBOX"
 echo "SIZE=$SIZE"
 echo "$@"
-
+echo "Remaing $*"
 
 
 # Binary executable to use
 RACK=${RACK:-'rack'}
-
-
-#exit 0
-
-
+# exit 0
 
 
 if [ "$MODE" != '' ]; then
@@ -222,7 +229,7 @@ done
 inprefix=${INPREFIX:+"--inputPrefix $INPREFIX"} # inputPrefix
 outprefix=${OUTPREFIX:+"--outputPrefix $OUTPREFIX"} # inputPrefix
 
-#OUTDIR=${OUTDIR:-'.'}
+OUTDIR=${OUTDIR:-'.'}
 
 
 # Filename of the output product
@@ -325,6 +332,7 @@ fi
 # PART 1: Initial part    # --encoding $CTYPE
 command="$RACK $debug $decay --cMethod $METHOD $undetect  $INIT $NEWLINE $inprefix $outprefix $verbose" 
 
+#echo "# command start: $command"
 
 # Routine applied to each input volume (in default and TILE schemes).
 routine="$delete ${ANDRE[*]} $product $encoding "  #--cCreate"
@@ -417,11 +425,82 @@ fi
 
 
 
+if [ "$BASENAME" == '' ]; then 
+    echo "# WARNING: \$BASENAME unset"
+fi 
+#BASENAME=${OUTFILE%.*}
+
+
+echo "FORMATS=$FORMATS  # auxiliary formats"
+
+outh5=''
+outtxt=''
+outgray=''
+outpng=''
+outpgm=''
+outppm=''
+outtif=''
+outrgb=''
+outrgba=''
+outqpng=''
+
+for F in $FORMAT ${FORMATS//,/ }; do
+    case "$F" in
+	h5)
+	    outhdf5="-o $BASENAME.h5 $NEWLINE"
+	    ;;
+	txt)
+	    outtext="-o $BASENAME.txt $NEWLINE"
+	    ;;
+	png)
+	    outpng="-o $BASENAME.png $NEWLINE"
+	    ;;
+	gray)
+	    outgray="-o $BASENAME-gray.png $NEWLINE"
+	    ;;
+	tif)
+	    #  -co COMPRESS=LZW
+	    outtif="-o ${BASENAME}.tif $NEWLINE --format 'gdal_translate -a_srs \"\${where:projdef}\" -co COMPRESS=DEFLATE ${BASENAME}.tif ${BASENAME}.tiff ' $NEWLINE --formatOut ${BASENAME}.gdal $NEWLINE"
+		;;
+	pgm)
+	    if [ "$HEADER" != '' ]; then
+		outpgm="--formatFile header-$HEADER.txt --formatOut image "  # " $NEWLINE"		
+	    fi
+	    outpgm="$outpgm -o $BASENAME.pgm $NEWLINE"
+	    ;;
+	rgb)
+	    palette=${palette:-'--palette default'}
+	    outrgb="-o $BASENAME-rgb.png $NEWLINE"
+	    ;;
+	rgba)
+	    palette=${palette:-'--palette default'}
+	    outrgba="-o $BASENAME-rgba.png $NEWLINE"
+	    ;;
+	ppm)
+	    palette=${palette:-'--palette default'}
+	    outppm="-o $BASENAME.ppm $NEWLINE"
+	    ;;
+	qpng)
+	    outqpng="-Q QIND -o $BASENAME-q.png $NEWLINE"
+	    ;;
+	*)
+	    echo "# Format $F : no special handling"
+	    ;;
+    esac
+done
+
+
 
 # If $DEMO is set, write some additional image files and 
 # metadata as a text file.
 
 grid=${GRID:+"--cGrid $GRID"}
+
+
+output="$comment $outputPrefix $NEWLINE $outhdf5 $outtext $grid_GRAY $outgray $outtif $outpgm $iselect $palette $grid_RGB $outrgb $transparent $grid $outrgba $outpng $outqpng $outppm"
+
+#output="--outputPrefix $OUTDIR/ $comment $NEWLINE $outhdf5 $outtext $grid_GRAY $outgray $outtif $outpgm $iselect $palette $grid_RGB $outrgb $transparent $grid $outrgba $outpng $outqpng $outppm"
+
 
 # -O $BASENAME-.p
 #  -o $BASENAME.tif
@@ -432,7 +511,7 @@ DEMOFILES=${DEMO:+"$NEWLINE -o $BASENAME.png -o $BASENAME.tif -Q QIND -o $BASENA
 
 # if not TILED encoding='' ?
 encoding='' 
-command="$command $NEWLINE$encoding --cExtract dwsc $NEWLINE -o $OUTFILE $DEMOFILES"
+command="$command $NEWLINE$encoding --cExtract dwsc $NEWLINE -o $OUTFILE $output $DEMOFILES"
 
 #fi 0,47,36,73
 echo
