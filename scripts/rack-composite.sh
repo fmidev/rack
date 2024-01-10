@@ -146,7 +146,7 @@ do
 	    DEBUG=1
 	    ;;
 	# Rack options: polar products and Cartesian (trim leading C or P)
-	--[cp][A-Z][a-z]*)
+	--[cp][A-Z][A-Za-z]*)
 	    KEY=${KEY:1}
 	    value=$2
 	    shift
