@@ -490,7 +490,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 			for (const auto & quantityGroup: srcQuantityGroups){
 				// Hi5Tree & srcData = srcDataSet[quantityGroup.second];
-				updateDataNEW(srcDataSet[quantityGroup.second], quantityGroup.first, dstDataSet, dstQuantityGroups);
+				updateData(srcDataSet[quantityGroup.second], quantityGroup.first, dstDataSet, dstQuantityGroups);
 				/*
 				ODIMPathElemMap::iterator qit = dstQuantityGroups.find(quantityGroup.first);
 				if (qit == dstQuantityGroups.end()){
@@ -620,7 +620,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 
 // const std::string & srcKey,
 // const ODIMPathElem & srcElem
-void CmdInputFile::updateDataNEW(Hi5Tree & srcData, const std::string & srcKey, Hi5Tree & dstDataSet, const quantity_map & dstQuantityElems) const {
+void CmdInputFile::updateData(Hi5Tree & srcData, const std::string & srcKey, Hi5Tree & dstDataSet, const quantity_map & dstQuantityElems) const {
 
 	RackContext & ctx = getContext<RackContext>();
 
@@ -629,18 +629,17 @@ void CmdInputFile::updateDataNEW(Hi5Tree & srcData, const std::string & srcKey, 
 	// NEW: clumsy search.
 	for (const auto & dstEntry: dstQuantityElems) {
 		if (srcKey == dstEntry.first){
-			mout.note("Data group exists already [", srcKey, "] -- (", dstEntry.second, "), updating quality only");
+			mout.ok<LOG_DEBUG>("Data group for [", srcKey, "] found -- (", dstEntry.second, "), updating quality only");
 			// mout.note("-> Only updating local quality of [", srcKey, "] in dst: ", dstEntry.second);
-			// Note: QIND and CLASS ruled out above
+			// Note: QIND and CLASS ruled out above (old comment)
 			updateQuality(srcData, dstDataSet[dstEntry.second]);
-			// continue;
 			return;
 		}
 	}
 
 
 	// Else:
-	mout.attention("key [quantity ", srcKey, "] not found, adding by swapping");
+	mout.ok<LOG_DEBUG>("key [quantity ", srcKey, "] not found, adding by swapping");
 
 	DataSelector::swapData(srcData, dstDataSet, ODIMPathElem::DATA);
 
