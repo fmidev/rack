@@ -160,7 +160,7 @@ do
 #	    shift
 #	    break;;
 	(-*) 
-	    echo "$0: error - unrecognized option $key" 1>&2;
+	    echo "$0: error - unrecognized option key $key ($KEY)" 1>&2;
 	    exit 1
 	    ;;
 	(*) 
@@ -171,7 +171,7 @@ do
     if [ -v "$KEY" ]; then
 	eval "$KEY"=$value
     else
-	echo "$0: error: unrecognized option $key" 1>&2
+	echo "$0: error: unrecognized option $key ($KEY)" 1>&2
 	exit 1
     fi
     shift
