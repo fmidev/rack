@@ -13,4 +13,4 @@ A command-line program for processing weather radar data:
 * Quick [installation](./src/INSTALL.md) guide
 * Notes for [building Docker image](./src/DOCKER.md)
 
-![Rack cover](./cover/rack-cover.png)
+![Rack cover](docs/cover/rack-cover.png)
