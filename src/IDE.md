@@ -27,7 +27,7 @@ Install the libraries required by Rack. For example:
 apt install libhdf5-dev libpng-dev libproj-dev libtiff-dev libgeotiff-dev libgomp1 
 ```
 
-Hint: take a look at the Docker files in [rack/src directory](../src) for applicable library versions.
+Hint: take a look at the [Dockerfile](Dockerfile) in [rack/src](.) directory for applicable library versions.
 
 
 Download (clone) the Rack software in a temporary directory, for example:
