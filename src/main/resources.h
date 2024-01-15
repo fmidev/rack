@@ -228,14 +228,6 @@ public:
 	// void setSource(Hi5Tree & dst, const drain::Command & cmd);
 
 
-	/// Standard (?) orientation of polar coords in radar data
-	static
-	const CoordinatePolicy polarLeft;
-
-	/// Default coordinate policy; no wrapping or mirroring at edges.
-	static
-	const CoordinatePolicy limit;
-
 	//static 	void updateCoordinatePolicy(Hi5Tree & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
 
 

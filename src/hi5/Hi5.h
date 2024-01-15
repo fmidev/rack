@@ -225,12 +225,6 @@ public:
 	void markExcluded(Hi5Tree &src, bool exclude=true);
 	*/
 
-	///  Traverse tree, marking every group nodes for deletion by Hi5Base::deleteExcluded
-	/**
-	 *   This function traverses all the children, and their children, recursively.
-	 */
-	static
-	void markExcluded(Hi5Tree &src, bool exclude=true);
 
 
 	/// Delete branches that have been marked with exclude=true .

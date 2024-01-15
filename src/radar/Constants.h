@@ -34,6 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //
 #include <math.h>
 
+#include "drain/image/CoordinateHandler.h"
+
 
 /*! \file
  *  This file contains radar constants...
@@ -53,6 +55,8 @@ const double EARTH_RADIUS_43 = EARTH_RADIUS * 4.0 / 3.0;
 const int     earthRadiusMI = 6371000;  // WHY THIS AS WELL
 const int   earthRadius43MI = (earthRadiusMI * 4) / 3;
 const float earthRadius43MF = static_cast<float>(earthRadiusMI) * 4.0 / 3.0;
+
+
 
 
 /*! Converts Z from logarithmic to linear scale.

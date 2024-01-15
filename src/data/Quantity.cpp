@@ -94,7 +94,8 @@ std::ostream & Quantity::toStream(std::ostream & ostr) const {
 			ostr << "  *";
 		else
 			ostr << "   ";
-		ostr << it->first << ',' << it->second;
+		ostr << it->first << ','; //  << it->second;
+		drain::Sprinter::toStream(std::cout, it->second, drain::Sprinter::cmdLineLayout);
 		if (drain::Type::call<drain::typeIsInteger>(it->first)){
 			ostr << " (min=" << it->second.getMin() << ')';
 		}

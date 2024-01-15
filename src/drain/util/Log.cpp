@@ -261,6 +261,7 @@ Logger::~Logger(){
 	endTiming();
 }
 
+/*
 void Logger::setPrefixOLD(const char *functionName, const char *name){
 
 	if (name){
@@ -289,6 +290,7 @@ void Logger::setPrefixOLD(const char *functionName, const char *name){
 	//sstr << ;
 	prefix.append(functionName);
 }
+*/
 
 /*
 void Logger::initMessage(level_t level){

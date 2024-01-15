@@ -179,6 +179,41 @@ public:
 
 };
 
+/// Creates a single-radar Cartesian data set (2D data of both quantity and quality).
+/**
+ *   Accumulates data to a temporary array ("subcomposite"= and extracts that to a Cartesian product (HDF5).
+ *
+ *   If a composite has been defined, uses it as a reference of projection, resolution and cropping to geographical bounding box.
+ *
+ */
+class CartesianCreateLookup : public drain::BasicCommand {
+
+public:
+
+
+	CartesianCreateLookup() : drain::BasicCommand(__FUNCTION__, "Creates lookup objects"){
+	}
+
+
+	inline
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		Composite & composite = ctx.getComposite(RackContext::PRIVATE);
+
+		mout.debug("composite*: ", &composite, "accArray: ", composite.accArray);
+
+		if (!ctx.polarInputHi5.empty())
+			mout.warn("polar input not empty");
+
+		composite.createProjectionLookup(ctx.polarInputHi5);
+
+
+	}
+
+};
 
 /// Creates a single-radar Cartesian data set (2D data of both quantity and quality).
 /**

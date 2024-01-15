@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RADAR__COORDINATES_ 
 #define RADAR__COORDINATES_ "radar__coordinates 0.2, May 16 2011 Markus.Peura@fmi.fi"
 
+#include <drain/image/CoordinatePolicy.h>
 #include <math.h>
 
 #include <iostream>
@@ -39,13 +40,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "drain/util/Proj6.h"
 #include "drain/util/Rectangle.h"
-
 #include "Constants.h"
 //#include "radar.h"
 
 // See also RadarProj4 @ Geometry?
 
 namespace rack {
+
+/// Standard (?) orientation of polar coords in radar data
+extern //static
+const drain::image::CoordinatePolicy polarLeftCoords;
+
+/// Default coordinate policy; no wrapping or mirroring at edges.
+extern //static
+const drain::image::CoordinatePolicy limitCoords;
 
 /*
 class RadarProj : public drain::Proj4 {
@@ -136,7 +144,7 @@ public:
     void setOrigin(const double &theta,const double &phi); 
 
     /// Set target projection.
-    void setProjection(const std::string &s);
+    ///// void setProjection(const std::string &s);
 
     // inline
     void setOriginDeg(const double &lat,const double &lon);
@@ -151,7 +159,7 @@ public:
     //void setBinPosition(double alpha, float range);
    
 	/// Determines the bounding box (in degrees) of the circular radar measurement area.
-    void getBoundingBox(float range,double &latMin,double &lonMin,double &latMax,double &lonMax);
+   //  void getBoundingBox(float range,double &latMin,double &lonMin,double &latMax,double &lonMax);
 
     /// Info
     void info(std::ostream &ostr = std::cout);
@@ -189,15 +197,17 @@ public:
     double binLongitudeDeg(){ return phiBin/M_PI*180.0;};
     //    theta_bin/M_PI*180.0;};;
     //
-    drain::Proj6 proj;
 
+    //drain::Proj6 proj;
 
+    /*
     inline
     virtual std::string getProjectionString(){
     	std::stringstream sstr;
     	sstr << "+proj=longlat +R=" << EARTH_RADIUS << std::string(" +no_defs");
     	return sstr.str();
     };
+    */
   };
 
 } // ::rack

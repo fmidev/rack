@@ -470,7 +470,7 @@ public:
 
 		ODIM::copyToH5<ODIMPathElem::DATASET>(acc.odim, dstDataSetGroup); //@dstProduct odim.copyToDataSet(dstDataSetGroup);
 		// dst.odim.copyToData(dstDataGroup); ??
-		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
+		///// DataTools::updateCoordinatePolicy(dst, rack::polarLeft);
 		DataTools::updateInternalAttributes(dst); // why not start form "dataset1" ?
 
 		//mout.warn("ODIM lat" ,  acc.odim );

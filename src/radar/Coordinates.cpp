@@ -28,14 +28,33 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+#include <drain/image/CoordinatePolicy.h>
 #include <math.h>
 #include <limits>
+
+
+
 #include "drain/util/Log.h"
 #include "Geometry.h"
 #include "Coordinates.h"
 
 
+
 namespace rack {
+
+// could be needed also in Data.h
+const drain::image::CoordinatePolicy polarLeftCoords(
+		drain::image::CoordinatePolicy::POLAR,
+		drain::image::CoordinatePolicy::WRAP,
+		drain::image::CoordinatePolicy::LIMIT,
+		drain::image::CoordinatePolicy::WRAP);
+
+// could be needed also in Data.h
+const drain::image::CoordinatePolicy limitCoords(
+		drain::image::CoordinatePolicy::LIMIT,
+		drain::image::CoordinatePolicy::LIMIT,
+		drain::image::CoordinatePolicy::LIMIT,
+		drain::image::CoordinatePolicy::LIMIT);
 
 /*
 void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, double & xUR, double & yUR) const {
@@ -121,15 +140,24 @@ void RadarProj::determineBoundingBoxD(double range, double & xLL, double & yLL, 
 
 
 Coordinates::Coordinates(){
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	mout.error("Use RadarProj");
+	/*
 	std::stringstream sstr;
 	sstr << "+proj=longlat +R=" << EARTH_RADIUS << " +no_defs";
 	proj.setProjectionSrc(sstr.str());
 	proj.setProjectionDst("+proj=longlat +datum=WGS84 +no_defs");
+	*/
 }
 
+/*
 void Coordinates::setProjection(const std::string &s){
-	proj.setProjectionDst(s);
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.error("Use RadarProj");
+	// proj.setProjectionDst(s);
 }
+*/
 
 /*! \par theta latitude in radians, \par phi longitude in radians
     To speed up the computation of bin locations, some internal variables are
@@ -203,7 +231,10 @@ void Coordinates::setBinPosition(const double &azimuth,const float &range){
 
 	phiBin   = atan2( p2,p1 );
 	thetaBin = asin( p3 / EARTH_RADIUS );
-	proj.projectFwd(phiBin,thetaBin);
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.error("Use RadarProj");
+	// proj.projectFwd(phiBin,thetaBin);
 	//phiBin   = phiBin;
 	//thetaBin = thetaBin;
 }
@@ -229,6 +260,7 @@ void Coordinates::setBinPosition(const double &azimuth,const float &range){
 /**
  *
  */
+/*
 void  Coordinates::getBoundingBox(float range, double &latMin,double &lonMin, double &latMax,double &lonMax)
 {
 
@@ -258,7 +290,7 @@ void  Coordinates::getBoundingBox(float range, double &latMin,double &lonMin, do
 		lonMax = std::max(lon,lonMax);
 	}
 }
-
+*/
 
 
 void  Coordinates::info(std::ostream &ostr){

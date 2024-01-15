@@ -84,6 +84,92 @@ Composite::Composite() :  decay(1.0), cropping(false)
 
 }
 
+// With current settings, create simple "Polar volume" containing coordinates.
+void Composite::createProjectionLookup(Hi5Tree & dst, const AreaGeometry & binGeometry){
+
+	/// Automatically creates some metadata.
+
+	dst.clear(); // ok?
+
+	{
+		const std::type_info & t = typeid(unsigned short int);
+
+		//RootData<PolarDst> root(dst);
+
+		PolarODIM rootOdim;
+		rootOdim.type.clear();
+		rootOdim.setTypeDefaults(t);
+		rootOdim.lat = 60.0;
+		rootOdim.lon = 25.0;
+		rootOdim.setGeometry(binGeometry);
+		rootOdim.rscale = 500.0;
+		rootOdim.scaling.set(1.0, 0.0);
+		ODIM::copyToH5<ODIMPathElem::ROOT>(rootOdim, dst);
+
+		DataSet<PolarDst> polar(dst["dataset1"]);  //ODIMPathElem::DATASET
+
+		if (true){
+			Data<PolarDst> beam = polar.getData("BIN_INDEX");
+			beam.initialize(t, binGeometry.width, 1);
+			for (size_t i=0; i<binGeometry.width; ++i){
+				beam.data.put(i, i);
+			}
+			// beam.odim.updateLenient(rootOdim);
+			// ODIM::copyToH5<ODIMPathElem::DATA>(rootOdim, beam.getTree());
+
+			//beam.data.properties.importCastableMap(rootOdim);
+			//beam.odim.importCastableMap(rootOdim);
+			//getQuantityMap().setQuantityDefaults(beam.odim, "COUNT", "S");
+			//beam.updateTree2();
+			//drain::TreeUtils::dump(beam.getTree());
+
+			// std::cout << beam.odim << '\n';
+			// hi5::Hi5Base::writeText(beam.getTree(), std::cerr);
+
+
+			PlainData<PolarDst> azimuthal = polar.getData("BEAM_INDEX");
+			azimuthal.initialize(t, 1, binGeometry.height);
+			for (size_t j=0; j<binGeometry.height; ++j){
+				azimuthal.data.put(j, j);
+			}
+			//azimuthal.data.properties.importCastableMap(azimuthal.odim);
+			//azimuthal.odim.importCastableMap(rootOdim);
+			// azimuthal.updateTree2();
+
+			//hi5::Hi5Base::writeText(beam.getTree(), std::cerr);
+
+		}
+
+		// polar.getFirstData().odim.updateLenient(rootOdim);
+
+		// polar.updateTree3(rootOdim);
+		// DataTools::updateInternalAttributes(polar.getTree());
+
+		// hi5::Hi5Base::writeText(polar.getTree(), std::cerr);
+		// DataTools::updateInternalAttributes(dst["dataset1"]);
+		// DataTools::updateInternalAttributes(dst);
+
+		//TreeUtils::dump(polar.getTree(), std::cout); //, CmdOutputTree::dataToStream);
+
+		// drain::Sprinter::toStream(ostr, );
+		// std::cerr << "UPON polar\n";
+		// hi5::Hi5Base::writeText(polar.getTree(), std::cerr);
+		ODIM::copyToH5<ODIMPathElem::DATASET>(rootOdim, polar.getTree());
+		DataTools::updateInternalAttributes(polar.getTree()); // TEST2019/09 // images, including DataSet.data, TODO: skip children
+
+		std::cerr << "\nUPON dst/ polar\n";
+		//hi5::Hi5Base::writeText(dst, std::cerr);
+		hi5::Hi5Base::writeText(polar.getTree(), std::cerr);
+
+
+	}
+	std::cerr << "\nUPON dst\n";
+	hi5::Hi5Base::writeText(dst["dataset1"], std::cerr);
+	//DataTools::updateInternalAttributes(dst);
+
+}
+
+
 void Composite::checkQuantity(const std::string & quantity){
 
 	drain::Logger mout("Composite", __FUNCTION__);

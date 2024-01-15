@@ -101,10 +101,11 @@ void ODIM::copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
+	//for (std::list<std::string>::const_iterator it = keys.begin(); it != keys.end(); ++it){
 	//for (ReferenceMap::const_iterator it = begin(); it != end(); ++it){
+	for (const std::string & key: keys){
 
-		const std::string & key = *it;
+		// const std::string & key = *it;
 
 		if (hasKey(key)){
 
@@ -113,11 +114,11 @@ void ODIM::copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const {
 
 			// Mainly debugging
 			if (t == typeid(void)){
-				mout.warn("no type info, skipping key=" , *it );
+				mout.warn("no type info, skipping key=", key);
 				continue;
 			}
 			if (v.getElementSize() == 0){
-				mout.warn("empty source, skipping key=" , *it );
+				mout.warn("empty source, skipping key=", key);
 				continue;
 			}
 

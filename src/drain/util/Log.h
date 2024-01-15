@@ -789,8 +789,9 @@ protected:
 	/**
 	 *  \param name - explicitly given classname like "Composite" or __FILE__
 	 *  \param name - __FILE__
-	 */
+
 	void setPrefixOLD(const char *functionName, const char * name);
+	 */
 
 	/// Sets a label that starts every line in the log.
 	/**

@@ -84,7 +84,7 @@ protected:
 
 	double weight;
 
-	Composite & getCompositeOLD() const;
+	// Composite & getCompositeOLD() const;
 
 };
 

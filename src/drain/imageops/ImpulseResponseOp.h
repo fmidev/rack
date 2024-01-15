@@ -31,11 +31,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ImpulseResponse2_H
 #define ImpulseResponse2_H
 
+#include <drain/image/CoordinatePolicy.h>
 #include <sstream>
 #include <ostream>
 //#include "drain/utility>
 
-#include "drain/image/Coordinates.h"
 #include "drain/image/FilePng.h"
 //#include "drain/image/SegmentProber.h"
 

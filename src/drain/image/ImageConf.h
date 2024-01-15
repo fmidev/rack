@@ -31,13 +31,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef IMAGE_CONF_H_
 #define IMAGE_CONF_H_ "ImageConf 2,  2021/03 Markus.Peura@fmi.fi"
 
+#include <drain/image/CoordinatePolicy.h>
 #include <stddef.h>  // size_t
 
 #include "../util/Caster.h"
 #include "../util/ValueScaling.h"
 
 #include "Geometry.h"
-#include "Coordinates.h"
 
 namespace drain
 {

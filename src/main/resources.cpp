@@ -396,9 +396,6 @@ drain::image::Image &  RackContext::getModifiableImage(){  // RackContext & ctx
 }
 
 
-const CoordinatePolicy RackResources::polarLeft(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT, CoordinatePolicy::WRAP);
-
-const CoordinatePolicy RackResources::limit(CoordinatePolicy::LIMIT, CoordinatePolicy::LIMIT, CoordinatePolicy::LIMIT,CoordinatePolicy::LIMIT);
 
 /* TODO: more status flags
  * INCOMPLETE_PRODUCT ?

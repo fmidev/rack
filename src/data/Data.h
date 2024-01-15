@@ -236,10 +236,13 @@ protected:
 
 };
 
+// In future, could be the interface for wrapping the whole structure?
 
 /// Experimental structure, designed only for accessing root level metadata.
 /**
  *  Not extensively used...
+ *
+ *
  *
  */
 template <typename DT>
@@ -256,7 +259,7 @@ public:
 	~RootData(){
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.unimplemented() << "ODIM::copyToH5<ODIMPathElem::ROOT> odim design: " <<  this->odim;
+		mout.unimplemented("ODIM::copyToH5<ODIMPathElem::ROOT> odim design: ", this->odim);
 
 		ODIM::copyToH5<ODIMPathElem::ROOT>(this->odim, this->tree);
 		DataTools::updateInternalAttributes(this->tree); // overrides anything?
@@ -436,7 +439,7 @@ public:
 	inline
 	void updateTree2(){
 		ODIM::copyToH5<ODIMPathElem::DATA>(this->odim, this->tree);
-		DataTools::updateInternalAttributes(this->tree);
+		DataTools::updateInternalAttributes(this->tree); // Needed? The subtree is small... But for quality field perhaps.
 	}
 
 
@@ -541,7 +544,19 @@ public:
 	typedef typename DT::datatype_t datatype_t;
 	typedef std::map<std::string, DT > map_t;
 
+	// Experimental. Mainly for geometry (width, height) - but also for date+time or elangle?
+	typedef typename DT::odim_t odim_t;
+	odim_t baseODIM;
 
+	inline
+	void setGeometry(size_t width, size_t height){
+		baseODIM.setGeometry(width, height);
+	}
+
+	inline
+	void setGeometry(const drain::image::AreaGeometry & geometry){
+		baseODIM.setGeometry(geometry);
+	}
 	//typename DT::odim_t odim;// 2023/01 experimental
 
 	/// Given a \c dataset subtree, like tree["dataset3"], constructs a data map of desired quantities.
@@ -621,11 +636,12 @@ public:
 				mout.debug3("found " , it->first );
 			}
 			else {
-				//mout.note("not found..." );
+				//mout.note("not found, creating new data array" );
 				ODIMPathElem child(G);
 				DataSelector::getNextChild(this->tree, child);
 				mout.debug3("add: " , child , " [" , quantity , ']' );
 				it = this->insert(this->begin(), typename map_t::value_type(quantity, DT(this->getTree()[child], quantity)));  // WAS [path]
+				it->second.setGeometry(baseODIM.getGeometry());
 			}
 		}
 		return it->second;
@@ -862,7 +878,7 @@ protected:
 
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
-		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
+		// drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
 		// drain::Logger mout(__FILE__, __FUNCTION__);
 
 		if (src.empty()){
@@ -876,7 +892,7 @@ protected:
 			//dst.insert(typename map_t::value_type(it->first, D(it->second)));
 			dst.insert(typename map_t::value_type(it->first, it->second));
 		}
-		mout.debug3() << "adapted " << dst.size() << " data items; " << src.begin()->first << "..." << mout.endl;
+		mout.debug3("adapted ", dst.size(), " data items; ", src.begin()->first, "...");
 
 		//return t
 		return src.tree;
@@ -1046,7 +1062,7 @@ public:
 	// Experimental
 	void swap(Data<DT> &d){ // TODO: also for plaindata?
 
-		drain::Logger mout( __FUNCTION__, "Data<DT>");
+		drain::Logger mout("Data<DT>", __FUNCTION__);
 		mout.experimental("Swapping...");
 		this->tree.swap(d.tree);
 
@@ -1115,7 +1131,7 @@ public:
 
 	~DataSet(){
 
-		drain::Logger mout(__FUNCTION__, "DataSet");
+		drain::Logger mout(__FILE__, __FUNCTION__);
 
 		switch (this->size()) {
 		case 0:
@@ -1165,6 +1181,8 @@ public:
 		std::cout << "updateTree3 const \n";
 		//ODIM::copyToH5<ODIMPathElem::DATASET>(odim, tree);
 	}
+
+
 
 protected:
 

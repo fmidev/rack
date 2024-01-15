@@ -222,7 +222,7 @@ public:
 		//mout.warn(dst );
 		this->bean.traverseVolume(src, dst);
 
-		DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
+		///// DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
 		DataTools::updateInternalAttributes(dst);
 		ctx.currentPolarHi5 = & dst; // if cartesian, be careful with this...
 		ctx.currentHi5      = & dst;

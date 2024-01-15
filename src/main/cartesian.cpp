@@ -283,6 +283,7 @@ CartesianModule::CartesianModule(drain::CommandBank & bank) : module_t(bank) {
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	install<CartesianCreate>('c');
+	install<CartesianCreateLookup>();
 	install<CompositeAdd>();
 
 	install<CompositeAddWeighted>();
@@ -312,38 +313,6 @@ CartesianModule::CartesianModule(drain::CommandBank & bank) : module_t(bank) {
 	install<CartesianSun>("cCreateSun");
 	install<CartesianOpticalFlow>("cOpticalFlow"); // class name: FastOpticalFlow2Op
 
-	/// In future, unused.
-
-	/*
-	static RackLetAdapter<CompositeAdd> cAdd;
-	static RackLetAdapter<CartesianAddWeighted> cAddWeighted;
-	static RackLetAdapter<CompositeDefaultQuality> cDefaultQuality;
-	static RackLetAdapter<CartesianBBox> cBBox;
-	static RackLetAdapter<CartesianBBoxReset> cBBoxReset;
-	static RackLetAdapter<CartesianBBoxTest> cBBoxTest;
-	static RackLetAdapter<CartesianBBoxTile> cBBoxTile;
-	static RackLetAdapter<CartesianExtract> cExtract;
-	static RackLetAdapter<CartesianGrid> cGrid;
-	static RackLetAdapter<CompositeInit> cInit;
-	static RackLetAdapter<CompositeMethod> cMethod;
-	static RackLetAdapter<CartesianPlot> cPlot;
-	static RackLetAdapter<CartesianPlotFile> cPlotFile;
-	static RackLetAdapter<CartesianProj> cProj;  // shared
-	static RackLetAdapter<CartesianRange> cRange;
-	static RackLetAdapter<CartesianReset> cReset;
-	static RackLetAdapter<CartesianSize> cSize;
-	static RackLetAdapter<CartesianSpread> cSpread;
-	static RackLetAdapter<CartesianTime> cTime;
-	static RackLetAdapter<CompositeTimeDecay> cTimeDecay;
-	static RackLetAdapter<CompositeDecayTime> cCompositeDecayTime;
-	static RackLetAdapter<CartesianCreate> cCreate("create", 'c');
-	static RackLetAdapter<CartesianCreateTile> cCreateTile;
-	static RackLetAdapter<CartesianSun> cCreateSun;
-	static RackLetAdapter<CartesianOpticalFlow> opticalFlow("opticalFlow");
-	//static RackLetAdapter<CartesianQuantity> cQuantity;
-
-	// static RackLetAdapter<CmdMotionFill> motionFill("motionFill"); => drain/image/ImageOpBank => FlowAverage
-	*/
 
 }
 

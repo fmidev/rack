@@ -442,45 +442,33 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 
 }
 
-// Marks CHILDREN of src for deleting
-void Hi5Base::markExcluded(Hi5Tree &src, bool exclude){
 
-	//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-	for (auto & entry: src) {
-		//if (it->first.isIndexed()){
-		//if (!entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-			entry.second.data.exclude = exclude;
-			markExcluded(entry.second, exclude);
-		//}
-	}
-
-}
 
 
 void Hi5Base::deleteExcluded(Hi5Tree &src){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	//rack::ODIMPath l;
+	// Children to be removed
 	std::list<Hi5Tree::path_t::elem_t> elems;
 
 	//for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it) {
 	for (auto & entry: src) {
-		if (! entry.second.data.exclude){ // needed?
-			//mout.debug2() << "delete: " <<  it->first << mout.endl;
-			deleteExcluded(entry.second);
+		if (entry.second.data.exclude){
+			elems.push_back(entry.first);
 		}
 		else {
-			elems.push_back(entry.first);
+			mout.special("traverse subtree: ", entry.first);
+			deleteExcluded(entry.second);
 		}
 	}
 
 	for (const rack::ODIMPathElem & elem: elems){
-		Hi5Tree::path_t p;
-		p << elem;
-		mout.debug2("delete group: ", elem);
-		src.erase(p);
+		//Hi5Tree::path_t p;
+		//p << elem;
+		mout.reject("delete group: ", elem);
+		//src.erase(p);
+		src.getChildren().erase(elem);
 	}
 
 

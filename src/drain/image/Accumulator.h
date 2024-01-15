@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ACCUMULATOR_H_
 #define ACCUMULATOR_H_
 
+#include <drain/image/CoordinatePolicy.h>
 #include <limits>
 #include <math.h>
 
@@ -41,7 +42,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Variable.h"
 
 #include "ImageT.h"
-#include "Coordinates.h"
 #include "AccumulationArray.h"
 #include "AccumulationMethods.h"
 #include "AccumulationConverter.h"

@@ -694,7 +694,8 @@ public:
 		hi5::Hi5Base::deleteExcluded(dst);
 
 		// Initially, mark all paths excluded.
-		DataTools::markExcluded(dst);
+		DataTools::markExcluded(dst, true);
+		//hi5::Hi5Base::markExcluded(dst);
 
 		DataSelector selector;
 		selector.setParameters(value);
@@ -709,22 +710,27 @@ public:
 		for (const ODIMPath & path: savedPaths){
 
 			mout.debug2("set save through path: ", path);
+			DataTools::markExcluded(dst, path, false);
+			/*
 			ODIMPath p;
 			for (const ODIMPathElem & elem: path){
 				p << elem;
 				dst(p).data.exclude = false;
 			}
+			*/
 			//mout.debug("marked for save: " , *it );
 			// Accept also tail (attribute groups)
 			//if (it->back().isIndexed()){ // belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){ or: DATASET
 			// Hi5Tree & d = dst(path);
+
 			for (auto & entry: dst(path)){
 				if (entry.first.is(ODIMPathElem::ARRAY)){
-					mout.debug2("also save: ", p, '|', entry.first);
+					mout.debug2("also save: ", path, '|', entry.first);
 					// if (dit->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
 					entry.second.data.exclude = false;
 				}
 			}
+
 			//
 		}
 
@@ -2119,7 +2125,7 @@ public:
 
 	}
 
-	CmdQuantityConf(const CmdQuantityConf & cmd) : drain::BasicCommand(cmd) {
+	CmdQuantityConf(const CmdQuantityConf & cmd) : drain::BasicCommand(cmd), zero(cmd.zero) {
 		parameters.copyStruct(cmd.getParameters(), cmd, *this);
 	};
 
@@ -2153,7 +2159,9 @@ public:
 			if (ctx.select.empty()){
 				// No quantity given, dump all the quantities
 				std::cout << "Quantities:\n";
-				std::cout << m << std::endl;
+				drain::Sprinter::toStream(std::cout, m, drain::Sprinter::cmdLineLayout);
+				//std::cout << m << std::endl;
+				std::cout << std::endl;
 			}
 			else {
 				// Select desired quantities. Note: on purpose, getResources().select not cleared by this operation
@@ -2237,13 +2245,14 @@ protected:
 			// currentEncoding.updateFromCastableMap(newEncoding);
 			//q.set(typecode).updateValues(args);
 
-			mout.warn("set default type for :" , quantity , '\n' , q );
+			mout.note("set default type for :" , quantity , '\n' , q );
 		}
 		else {  // No type given, dump quantity conf
 			std::cout << quantity << '\n';
-			//if (params != quantity)
+			// if (params != quantity)
 			//	std::cout << " *\t" << q.get(q.defaultType) << '\n';
-			//else
+			// else
+			// drain::Sprinter::toStream(std::cout, q, drain::Sprinter::cmdLineLayout);
 			std::cout << q;
 		}
 

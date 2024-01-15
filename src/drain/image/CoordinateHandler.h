@@ -32,13 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef COORD_HANDLER_H_
 #define COORD_HANDLER_H_
 
+#include <drain/image/CoordinatePolicy.h>
 #include <ostream>
 #include <stdexcept>
 
 #include "drain/util/Log.h"
 #include "drain/util/Flags.h"
 #include "drain/util/Frame.h"
-#include "Coordinates.h"
 #include "Geometry.h"
 
 #include "ImageFrame.h"

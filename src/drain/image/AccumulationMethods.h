@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ACCUMULATION_H_
 #define ACCUMULATION_H_
 
+#include <drain/image/CoordinatePolicy.h>
 #include <limits>
 #include <math.h>
 
@@ -41,7 +42,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Point.h"
 #include "drain/util/Rectangle.h"
 #include "ImageT.h"
-#include "Coordinates.h"
 #include "AccumulationArray.h"
 
 /** See also radar::Compositor

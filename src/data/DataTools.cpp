@@ -32,6 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Type.h"
 
 #include "hi5/Hi5.h"
+#include "radar/Coordinates.h"
+
 #include "DataTools.h"
 
 namespace rack {
@@ -44,21 +46,29 @@ void DataTools::updateInternalAttributes(Hi5Tree & src){
 	drain::FlexVariableMap & properties = src.data.dataSet.properties;
 	//properties.clear(); // TODO: should not remove linked variables!
 
-	//drain::Variable & object = src[ODIMPathElem::WHAT].data.attributes["object"];
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+
+	// NOTE: is essentially recursive, through linked variables.
+
 	std::string object = src[ODIMPathElem::WHAT].data.attributes.get("object", "");
 	if (object == "PVOL"){
-		src.data.dataSet.setCoordinatePolicy(
+		src.data.dataSet.setCoordinatePolicy(polarLeftCoords);
+		/*
 				drain::image::CoordinatePolicy::POLAR,
 				drain::image::CoordinatePolicy::WRAP,
 				drain::image::CoordinatePolicy::LIMIT,
 				drain::image::CoordinatePolicy::WRAP);
+				*/
 	}
 	else {
-		src.data.dataSet.setCoordinatePolicy(
+		src.data.dataSet.setCoordinatePolicy(limitCoords);
+		/*
 				drain::image::CoordinatePolicy::LIMIT,
 				drain::image::CoordinatePolicy::LIMIT,
 				drain::image::CoordinatePolicy::LIMIT,
 				drain::image::CoordinatePolicy::LIMIT);
+				*/
 	}
 
 	updateInternalAttributes(src, properties);
@@ -98,6 +108,8 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 				sstr << entry.first << ':' << e.first;
 				attributes[sstr.str()] = e.second;
 				//mout.warn(sstr.str() , '=' , it->second , " ... " , a[sstr.str()] , drain::Type::getTypeChar(it->second.getType()) );
+				//mout.warn("  ", sstr.str() , '=' , e.second , " ... (" , a[sstr.str()], ')' , drain::Type::getTypeChar(e.second.getType()) );
+				mout.warn("  ", sstr.str() , '=' , e.second , " ... [", drain::Type::getTypeChar(e.second.getType()), ']');
 			}
 		}
 	}
@@ -135,7 +147,7 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 
 		// mout.note("considering " , entry.first );
 		if (entry.first.belongsTo(ODIMPathElem::DATA_GROUPS | ODIMPathElem::ARRAY)){  // ){//
-			//mout.warn("descending to... " , entry.first );
+			mout.warn(entry.first, " .... ");
 			/*
 			a["how:path"] = path;
 			a["how:path"] << entry.first;
@@ -145,8 +157,8 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 		}
 
 		if (entry.first.is(ODIMPathElem::ARRAY)){
-			// mout.warn("image ", entry.second.data.dataSet.getName(), " coordPolicy:", entry.second.data.dataSet.getCoordinatePolicy());
-			// mout.warn("image ", entry.second.data.dataSet.getName(), " scaling: ",    entry.second.data.dataSet.getScaling());
+			mout.warn("  --image ", entry.second.data.dataSet.getName(), " coordPolicy:", entry.second.data.dataSet.getCoordinatePolicy());
+			mout.warn("  --image ", entry.second.data.dataSet.getName(), " scaling: ",    entry.second.data.dataSet.getScaling());
 		}
 
 	}
@@ -173,21 +185,19 @@ void DataTools::markExcluded(Hi5Tree &src, bool exclude){
 
 }
 
+// Marks all descendants of src for deletion
+void DataTools::markExcluded(Hi5Tree &src, const Hi5Tree::path_t & path, bool exclude){
+	//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-bool DataTools::removeIfExcluded(Hi5Tree & dst){
-	if (dst.data.exclude){
-		drain::Logger mout("DataTools", __FUNCTION__);
-		mout.note("// about to resetting exclude struct: " , dst.data );
-		/*
-		dst.data.attributes.clear();
-		dst.data.dataSet.resetGeometry();
-		dst.getChildren().clear();
-		 */
-		return true;
+	Hi5Tree *ptr = &src; // Rare!
+	for (const Hi5Tree::path_t::elem_t & elem: path){
+		ptr->data.exclude = exclude;
+		ptr = & (*ptr)[elem];
 	}
-	else
-		return false;
+	ptr->data.exclude = exclude;
+
 }
+
 
 void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::CoordinatePolicy & policy){
 
@@ -218,39 +228,6 @@ void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::Coordi
 	// mout.attention("image name=", data.getName(), " - ", data.getCoordinatePolicy());
 
 }
-
-/// For drain::TreeUtils dumper()
-/**
- *  \return – true, if data "empty", ie. no attributes or data array.
-bool DataTools::dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr){
-
-	bool empty = true;
-
-	const drain::image::ImageFrame & img = data.dataSet;
-	if (!img.isEmpty()){
-		ostr << img.getWidth() << ',' << img.getHeight() << ' ';
-		ostr << drain::Type::call<drain::compactName>(img.getType());
-		ostr << '[' << (8*drain::Type::call<drain::sizeGetter>(img.getType())) << ']';
-		//<< drain::Type::call<drain::complexName>(img.getType());
-		empty = false;
-	}
-	// else ...
-	char sep = 0;
-	for (const auto & key: {"quantity", "date", "time", "src", "elangle", "task_args", "legend"}){
-		if (data.attributes.hasKey(key)){
-			if (sep)
-				ostr << sep << ' ';
-			else
-				sep = ',';
-			ostr << key << '=' << data.attributes[key];
-			empty = false;
-		}
-	}
-
-	return empty;
-
-}
- */
 
 
 

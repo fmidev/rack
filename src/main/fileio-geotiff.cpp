@@ -85,6 +85,9 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	CartesianODIM odim(src);
 	src.properties["how:angles"].toSequence(odim.angles); // std::vector cannot be linked
 
+	mout.attention(src.properties);
+	//mout.attention(odim);
+
 	drain::Time t;
 	odim.getTime(t);
 	// t.setTime(prop.get("what:date", "19700101"), "%Y%m%d");

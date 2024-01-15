@@ -593,6 +593,7 @@ drain::VariableMap CmdOutputTree::attributes = {
 		{"lat", "YELLOW:DIM"},
 		{"xsize", "YELLOW:DIM"},
 		{"ysize", "YELLOW:DIM"},
+		{"rscale", "YELLOW:DIM"},
 		{"elangle", "ITALIC:YELLOW"},
 		{"gain", "ITALIC:YELLOW"},
 		{"offset", "ITALIC:YELLOW"},

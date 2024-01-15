@@ -174,6 +174,10 @@ public:
 	 */
 	void updateInputSelector(const std::string & select);
 
+	// With current settings, create simple "Polar volume" containing coordinates.
+	void createProjectionLookup(Hi5Tree & dst, const AreaGeometry & binGeometry = {500,360});
+
+
 protected:
 
 	void updateNodeMap(const std::string & node, int i, int j);

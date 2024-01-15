@@ -197,7 +197,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 
 			if (quantityOK){
 				if (pathMatcher.match(path)){
-					mout.accept<LOG_DEBUG>("DATA/QUANTITY path matches: ", path,  " [", retrievedQuantity, "]");
+					mout.accept<LOG_DEBUG>("DATA/QUALITY path matches: ", path,  " [", retrievedQuantity, "]");
 					pathContainer.push_back(path);
 				}
 				else {
@@ -246,11 +246,15 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (pathList.empty()){
+		//mout.warn<LOG_INFO>("Path list empty, returning");
 		mout.warn("Path list empty, returning");
 		return;
 	}
 
-	// Step 1: collect a set of major groups (dataset1, dataset2...) fulfilling elangle and time criterion
+	/// ! TODO! IS this needed! See next. Vector search may be slow, but anyway.
+	/// Or this could be updated on the fly.
+	/*
+	mout.debug("STEP 1: pick the stem groups (DATASETs) from the full path list"); //  fulfilling elangle and time criterion
 	std::set<ODIMPathElem> retrieved;
 	for (ODIMPath & path: pathList) {
 
@@ -260,7 +264,6 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 			path.pop_front();
 		}
 
-
 		if (path.front().is(ODIMPathElem::DATASET)){
 			retrieved.insert(path.front());
 		}
@@ -269,82 +272,107 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 		}
 
 	}
+	*/
 
+	// mout.debug("..STEP 2: from all the DATASETs, pick accepted ones to a sortable structure.");
+	// for (const auto & entry: src) {
+		//const ODIMPathElem & elem = entry.first;
 
-	// Step 2: collect a set of major groups (dataset1, dataset2...) fulfilling elangle and time criterion
-	std::vector<ODIMPathElem2> accepted; // sortable
+	std::vector<ODIMPathElem2> accepted; // sortable!
 	accepted.reserve(src.getChildren().size());
+	mout.debug("STEP 1: from the given paths, extract DATASETs to a sortable structure.");
 
-	for (const auto & entry: src) {
+	for (ODIMPath & path: pathList) {
 
-		const ODIMPathElem & elem = entry.first;
+		while ((!path.empty()) && path.front().empty()){
+			mout.warn("Rooted path '", path, "' stripping leading slash");
+			path.pop_front();
+		}
+
+		const ODIMPathElem & elem = path.front();
 
 		if (elem.is(ODIMPathElem::DATASET)){
 
-			if (retrieved.find(elem) != retrieved.end()){
-				mout.debug(elem);
-				const drain::image::Image & data    = entry.second.data.dataSet; // for ODIM
+			//if (retrieved.find(elem) != retrieved.end()){
+			// Speedup: vector<bool> found(n, false);  found[elem.getIndex()] == true;
+			if (std::find(accepted.begin(), accepted.end(), elem) == accepted.end()){
+				const drain::image::Image & data    = src[elem].data.dataSet;
 				const drain::FlexVariableMap & props = data.getProperties();
 				accepted.push_back(ODIMPathElem2(elem, props.get("where:elangle", 0.0), props.get("what:startdate",""), props.get("what:starttime","")));
 			}
+			/*
+			if (accepted.find(elem) != accepted.end()){
+				mout.debug(elem);
+				const drain::image::Image & data    = entry.second.data.dataSet;
+				const drain::image::Image & data    = src[elem].data.dataSet;
+				const drain::FlexVariableMap & props = data.getProperties();
+				accepted.push_back(ODIMPathElem2(elem, props.get("where:elangle", 0.0), props.get("what:startdate",""), props.get("what:starttime","")));
+			}
+			*/
 			else {
 				mout.debug("not in list of retrieved paths, skipping: ", elem);
 				//continue;
 			}
 
-			// pathMatcher.matchElem() not needed here
-
-			// props.hasKey("where:elangle")) not needed here
 		}
 
 	}
 
 	mout.accept<LOG_DEBUG>("DATASETs before sorting and pruning: ", drain::sprinter(accepted));
 
-	/// Step 3: sort
-	switch (order.criterion.value) {
-		case DataOrder::DATA:
-			// Already in order
-			// std::sort(accepted.begin(), accepted.end(), ODIMPathLess());
-			mout.debug("criterion: DATA path");
+	const size_t a0 = accepted.size(); // Used for debugging below.
+
+	if (a0 == count){
+		mout.attention<LOG_DEBUG>("retrieved count (", a0, ") matches requested count, skipping sorted select (to STEP 4).");
+	}
+	else {
+
+		mout.debug("STEP 2: sort using criterion ", order.criterion);
+		switch (order.criterion.value) {
+			case DataOrder::DATA:
+				// Already in order
+				// std::sort(accepted.begin(), accepted.end(), ODIMPathLess());
+				// mout.debug("criterion: DATA path");
+				break;
+			case DataOrder::TIME:
+				std::sort(accepted.begin(), accepted.end(), ODIMPathLessTime());
+				// mout.debug("criterion: TIME");
+				break;
+			case DataOrder::ELANGLE:
+				std::sort(accepted.begin(), accepted.end(), ODIMPathLessElangle());
+				// mout.debug("criterion: ELANGLE");
+				break;
+				// case DataOrder::NONE "random" ?
+			default:
+				mout.error("something went wrong,  order.criterion=", order.criterion);
+		}
+
+		// mout.debug("sorted DATASETs: ", drain::sprinter(accepted));
+		size_t n = count;
+		n = std::min(n, a0);
+		mout.debug("STEP 3: save the ", order.operation, ' ', n, " entries (delete others)");
+
+		std::vector<ODIMPathElem2>::iterator it = accepted.begin();
+		switch (order.operation.value){ // explicit: Enum value.
+		case DataOrder::MIN:
+			std::advance(it, n);
+			accepted.erase(it, accepted.end());
 			break;
-		case DataOrder::TIME:
-			std::sort(accepted.begin(), accepted.end(), ODIMPathLessTime());
-			mout.debug("criterion: TIME");
+		case DataOrder::MAX:
+			std::advance(it, accepted.size()-n);
+			accepted.erase(accepted.begin(), it);
 			break;
-		case DataOrder::ELANGLE:
-			std::sort(accepted.begin(), accepted.end(), ODIMPathLessElangle());
-			mout.debug("criterion: ELANGLE");
-			break;
-			// case DataOrder::NONE "random" ?
 		default:
-			mout.error("something went wrong,  order.criterion=", order.criterion);
+			mout.error("something went wrong,  order.operation=", order.operation);
+		}
+
+		mout.accept<LOG_DEBUG>("Final ", accepted.size(), " (out of initial ", a0, ") DATASETs: ", drain::sprinter(accepted)); // without ATTRIBUTES
+		if (accepted.size() != count){
+			mout.debug("Retrieved count (", accepted.size(), ") is less than requested (", count, ") DATASETs.");
+		}
 	}
 
-
-	mout.debug("sorted DATASETs: ", drain::sprinter(accepted));
-
-	/// Step 4: save the first or last n entries (ie. delete others)
-	size_t n = count; ;
-	n = std::min(n, accepted.size());
-
-	std::vector<ODIMPathElem2>::iterator it = accepted.begin();
-	switch (order.operation.value){ // explicit: Enum value.
-	case DataOrder::MIN:
-		std::advance(it, n);
-		accepted.erase(it, accepted.end());
-		break;
-	case DataOrder::MAX:
-		std::advance(it, accepted.size()-n);
-		accepted.erase(accepted.begin(), it);
-		break;
-	default:
-		mout.error("something went wrong,  order.operation=", order.operation);
-	}
-
-	mout.accept<LOG_DEBUG>("Final (", n, ") DATASETs: ", drain::sprinter(accepted)); // without ATTRIBUTES
-
-	/// Step 5. Compare list of retrieved paths and the set of accepted \c dataset elems.
+	mout.debug("STEP 4: From the retrieved paths select the ones with accepted DATASET elems");
 	std::list<ODIMPath> finalPaths;
 
 	for (const ODIMPath & path: pathList){
@@ -361,13 +389,20 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 			continue;
 		}
 
+		// bool stemOk = false; // debugging
 		for (const ODIMPathElem & a: accepted){
 			if (stem == a){
+				mout.accept<LOG_DEBUG>("Finally accepting '", path, ", due to stem=", stem);
 				finalPaths.push_back(path);
+				// stemOk = true;
 				break;
+				//continue;
 			}
 		}
 
+		/* if (!stemOk){
+			mout.reject<LOG_DEBUG>("Excluded '", path, ", in the last stage, stem='", stem, '"');
+		}*/
 
 	}
 

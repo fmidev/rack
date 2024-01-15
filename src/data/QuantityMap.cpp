@@ -367,7 +367,7 @@ void QuantityMap::initialize(){
 
 bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string & quantity, const std::string & values) const {  // TODO : should it add?
 
-	drain::Logger mout("QuantityMap", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug3("for quantity=" , quantity , ", values=" , values );
 	//if (quantity.empty())

@@ -178,6 +178,11 @@ public:
 		setGeometry(g.getWidth(), g.getHeight());
 	};
 
+	virtual // ?
+	const drain::image::AreaGeometry & getGeometry() const {
+		return area;
+	};
+
 	/// Change geometry and adjust spatial resolution respectively.
 	virtual
 	void adjustGeometry(size_t cols, size_t rows);
@@ -219,9 +224,10 @@ public:
 	/// Returns recommended coordinate policy. Redefined in PolarODIM.
 	virtual inline
 	const drain::image::CoordinatePolicy & getCoordinatePolicy() const {
-		using namespace drain::image;
-		static const CoordinatePolicy p(CoordinatePolicy::LIMIT);
-		return p;
+		//using namespace drain::image;
+		static const drain::image::CoordinatePolicy policy(drain::image::CoordinatePolicy::LIMIT);
+		return policy;
+		//return rack::limit;
 	}
 
 	/// If nodata==undetect, set nodata=maxValue (hoping its not nodata...)
@@ -233,23 +239,27 @@ public:
 	bool distinguishNodata(const std::string & quantityPrefix = "");
 
 
-	/// Write ODIM data relevant for data level, eg. \c /dataset2, \c data4, and root.
+	/// Write ODIM metadata to WHAT, WHERE and HOW groups.
 	/**
-	 *  \tparam G - group selector
+	 *  \tparam G - group selector (number)
 	 *  \tparam T - ODIM class
 	 *
 	 *  Examples of usage:
-	 *
+	 *  \code
 	 * 	- ODIM::copyToH5<ODIMPathElem::ROOT>(odim, resources.inputHi5);
 	 *	- ODIM::copyToH5<ODIMPathElem::DATASET>(odim, resources.inputHi5(dataSetPath));
 	 *  - ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst);
+	 *  \endcode
 	 *
+	 *  relevant for data level, eg. \c /dataset2, \c data4, and root.
 	 */
 	template <group_t G, class T>
 	static inline
 	void copyToH5(const T &odim, Hi5Tree & dst) {
-		static T odimLimited(G);
-		odim.copyTo(odimLimited.getKeyList(), dst);
+		static const T odimLimited(G);
+		static const std::list<std::string> & keys = odimLimited.getKeyList();
+		//odim.copyTo(odimLimited.getKeyList(), dst);
+		odim.copyTo(keys, dst);
 	}
 
 	template <group_t G, class T>

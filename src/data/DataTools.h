@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DATATOOLS_H_
 #define DATATOOLS_H_
 
+#include <drain/image/CoordinatePolicy.h>
 #include <set>
 #include <list>
 #include <map>
@@ -42,8 +43,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/RegExp.h"
 
 #include "drain/util/Variable.h"
-
-#include "drain/image/Coordinates.h"
 
 #include "ODIM.h"
 #include "PolarODIM.h" // elangle
@@ -125,24 +124,33 @@ public:
 	void updateCoordinatePolicy(Hi5Tree & src, const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(drain::image::CoordinatePolicy::LIMIT));
 	//void updateCoordinatePolicy(Hi5Tree & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
 
-//	static
-//	bool dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr);
+	// static
+	// bool dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr);
 
 	typedef std::map<std::string, ODIMPathElem> quantity_map;
 
 
-
+	/// Mark/unmark whole tree to be deleted with #Hi5Base::deleteExcluded()
+	/**
+	 *   This function traverses all the children and their children, recursively.
+	 *   Needed here, ATTRIBUTE_GROUPS not in Hi5Base.
+	 *
+	 */
 	static
 	void markExcluded(Hi5Tree &src, bool exclude=true);
+
+	///  (Un)mark groups along a path for deletion by #Hi5Base::deleteExcluded()
+	static
+	void markExcluded(Hi5Tree &src, const Hi5Tree::path_t & path, bool exclude=true);
 
 protected:
 
 	/// Removes the children of the tree if Node::exclude is set.
 	/**
 	 *  \return - true if children were removed
-	 */
 	static
-	bool removeIfExcluded(Hi5Tree & dst);
+	bool removeIfExcluded_REMOVE(Hi5Tree & dst);
+	 */
 
 	/// Does nothing
 	/**

@@ -186,14 +186,14 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	if (!ctx.inputSelect.empty()){
 		//mout.special() << "Input selector (" << ctx.select << ") applies, pre-reading attributes first:\n";
-		mout.special("Input selector (", ctx.inputSelect, ") set -> selective read.");
+		mout.experimental("Input selector (", ctx.inputSelect, ") set -> selective read.");
 		mout.debug("First, reading attributes only:\n");
 		hi5::Reader::readFile(fullFilename, srcTmp, hi5::Reader::ATTRIBUTES);
 
 		DataTools::updateInternalAttributes(srcTmp); // to support DataSelector with what:quantity and what:elangle
 
 		// Initially, mark all deleted...
-		DataTools::markExcluded(srcTmp);
+		DataTools::markExcluded(srcTmp, true);
 		// drain::TreeUtils::dump(srcTmp, std::cout, CmdOutputTree::dataToStream); // true);
 
 		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);  // NO QUALITY?
@@ -202,8 +202,6 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 
 		ODIMPathList paths;
-		// OLD selector.getPaths(srcTmp, paths);
-		// NEW
 		selector.selectPaths(srcTmp, paths);
 
 		for (const ODIMPath & path: paths){
@@ -216,8 +214,12 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 			}
 			*/
 			if (srcTmp.hasPath(path)){ // otherwise path query would create one...
-				mout.debug("Including: ", path);
-				srcTmp(path).data.exclude = false;
+				mout.accept("including: ", path); // marking for save...
+				DataTools::markExcluded(srcTmp, path, false);
+				//srcTmp(path).data.exclude = false;
+			}
+			else {
+				mout.warn("bug: path does not exist: ", path);
 			}
 		}			//mout.debug("marked for save: " , *it );
 

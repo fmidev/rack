@@ -59,7 +59,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-
+/*
 Composite & Compositor::getCompositeOLD() const {
 
 	RackContext & ctx  = this->template getContext<RackContext>();
@@ -81,6 +81,7 @@ Composite & Compositor::getCompositeOLD() const {
 	return ctx.composite;
 
 };
+*/
 
 double Compositor::applyTimeDecay(Composite & composite, double w, const ODIM & odim) const {
 
@@ -751,7 +752,7 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	}
 
 
-	DataTools::updateCoordinatePolicy(ctx.cartesianHi5, RackResources::limit);
+	///// DataTools::updateCoordinatePolicy(ctx.cartesianHi5, RackResources::limit);
 	DataTools::updateInternalAttributes(ctx.cartesianHi5);
 
 	ctx.currentHi5 = & ctx.cartesianHi5;

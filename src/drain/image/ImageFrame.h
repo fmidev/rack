@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef IMAGE_FRAME_H_
 #define IMAGE_FRAME_H_ "ImageFrame 0.9,  2011.09.25 Markus.Peura@fmi.fi"
 
+#include <drain/image/CoordinatePolicy.h>
 #include <stddef.h>  // size_t
 
 #include "drain/util/CastableIterator.h"
@@ -42,7 +43,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/ValueScaling.h"
 
 #include "Geometry.h"
-#include "Coordinates.h"
 #include "ImageLike.h"
 
 namespace drain
