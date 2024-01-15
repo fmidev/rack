@@ -77,12 +77,17 @@ $(function() {
 <div class="title">CmdInputFile Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Input HDF5, PNG or text file.  
+ <a href="classrack_1_1CmdInputFile.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="fileio-read_8h_source.html">fileio-read.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CmdInputFile:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1CmdInputFile__inherit__graph.png" border="0" usemap="#aCmdInputFile_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCmdInputFile_inherit__map" id="aCmdInputFile_inherit__map">
-<area shape="rect" title=" " alt="" coords="36,319,144,345"/>
+<area shape="rect" title="Input HDF5, PNG or text file." alt="" coords="36,319,144,345"/>
 <area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="5,229,175,271"/>
 <area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="28,155,152,181"/>
 <area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="45,80,135,107"/>
@@ -94,7 +99,7 @@ Collaboration diagram for CmdInputFile:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1CmdInputFile__coll__graph.png" border="0" usemap="#aCmdInputFile_coll__map" alt="Collaboration graph"/></div>
 <map name="aCmdInputFile_coll__map" id="aCmdInputFile_coll__map">
-<area shape="rect" title=" " alt="" coords="255,1087,363,1113"/>
+<area shape="rect" title="Input HDF5, PNG or text file." alt="" coords="255,1087,363,1113"/>
 <area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="224,996,393,1037"/>
 <area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="247,920,371,947"/>
 <area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="201,831,291,857"/>
@@ -241,10 +246,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>appendCartesianH5</b>
 <tr class="memitem:a56d2ec992ddd93bc064d9d6bc83cbef1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdInputFile.html#a56d2ec992ddd93bc064d9d6bc83cbef1">attachCartesianH5</a> (Hi5Tree &amp;srcRoot, Hi5Tree &amp;dstRoot) const</td></tr>
 <tr class="separator:a56d2ec992ddd93bc064d9d6bc83cbef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bac9c882aa04086a3c941773876e27a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdInputFile.html#a1bac9c882aa04086a3c941773876e27a">appendPolarH5</a> (Hi5Tree &amp;tmpSrc, Hi5Tree &amp;dst) const</td></tr>
+<tr class="memdesc:a1bac9c882aa04086a3c941773876e27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add DATASET groups of srcRoot to dstRoot.  <a href="classrack_1_1CmdInputFile.html#a1bac9c882aa04086a3c941773876e27a">More...</a><br /></td></tr>
 <tr class="separator:a1bac9c882aa04086a3c941773876e27a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae81958ed7ec7a2f377e86ab04fa2f439"><td class="memItemLeft" align="right" valign="top"><a id="ae81958ed7ec7a2f377e86ab04fa2f439"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>updateDataNEW</b> (Hi5Tree &amp;srcData, const std::string &amp;srcKey, Hi5Tree &amp;dstDataSet, const quantity_map &amp;dstQuantityElems) const</td></tr>
-<tr class="separator:ae81958ed7ec7a2f377e86ab04fa2f439"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa90ef0f34366a2319717ca173605c672"><td class="memItemLeft" align="right" valign="top"><a id="aa90ef0f34366a2319717ca173605c672"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateData</b> (Hi5Tree &amp;srcData, const std::string &amp;srcKey, Hi5Tree &amp;dstDataSet, const quantity_map &amp;dstQuantityElems) const</td></tr>
+<tr class="separator:aa90ef0f34366a2319717ca173605c672"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c75d9362e28837703b5f4710fcea51e"><td class="memItemLeft" align="right" valign="top"><a id="a3c75d9362e28837703b5f4710fcea51e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>updateQuality</b> (Hi5Tree &amp;srcData, Hi5Tree &amp;dstData) const</td></tr>
 <tr class="separator:a3c75d9362e28837703b5f4710fcea51e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -292,7 +298,13 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <a class="el" href="classdrain_1_1Context.html">Context</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>contextPtr</b></td></tr>
 <tr class="separator:aa93503d4d64d09604ec306f58e6f03b5 inherit pro_attribs_classdrain_1_1Contextual"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Input HDF5, PNG or text file. </p>
+<p>In <b>Rack</b>, this command is also the default option, hence plain argument will be treated as files to read.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1CmdInputPrefix.html" title="A debugging facility. Obsolete?">rack::CmdInputPrefix</a> </dd>
+<dd>
+<a class="el" href="classrack_1_1CmdInputSelect.html" title="Data selector for subsequent input files.">rack::CmdInputSelect</a> </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a1bac9c882aa04086a3c941773876e27a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1bac9c882aa04086a3c941773876e27a">&#9670;&nbsp;</a></span>appendPolarH5()</h2>
 
@@ -326,11 +338,9 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Add DATASET groups of srcRoot to dstRoot. </p>
 <p>Specialized to polar measurement data: time stamps identify the dataset groups. Note: also <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a> applied. </p>
-<p>Common dataSetSelector for srcRoot and dstRoot</p>
-<p>TIMESTAMP-based order (Consider generalization for Cartesian?)</p>
-<p>Traverse the child paths of srcRoot dataset[i]</p>
-<p>traverse DATA QUANTITIES assigning each to new / existing dstPaths in current structure.</p>
 
 </div>
 </div>

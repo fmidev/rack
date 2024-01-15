@@ -81,43 +81,20 @@ $(function() {
  <a href="classrack_1_1Coordinates.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="radar_2Coordinates_8h_source.html">Coordinates.h</a>&gt;</code></p>
-<div class="dynheader">
-Collaboration diagram for Coordinates:</div>
-<div class="dyncontent">
-<div class="center"><img src="classrack_1_1Coordinates__coll__graph.png" border="0" usemap="#aCoordinates_coll__map" alt="Collaboration graph"/></div>
-<map name="aCoordinates_coll__map" id="aCoordinates_coll__map">
-<area shape="rect" title="Simple spherical coordinate computation. Does not handle projections, but earth coords." alt="" coords="126,632,226,659"/>
-<area shape="rect" href="classdrain_1_1Proj6.html" title=" " alt="" coords="149,543,203,569"/>
-<area shape="rect" href="classdrain_1_1Projector.html" title=" " alt="" coords="136,439,216,465"/>
-<area shape="rect" href="classdrain_1_1Dictionary.html" title=" " alt="" coords="5,335,179,376"/>
-<area shape="rect" title=" " alt="" coords="7,157,177,199"/>
-<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="203,342,320,369"/>
-<area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="213,165,309,191"/>
-<area shape="rect" href="classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="197,81,325,108"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="185,5,337,32"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a84d7cd1ef0c55fae16c62518fc907152"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#a84d7cd1ef0c55fae16c62518fc907152">setOrigin</a> (const double &amp;theta, const double &amp;phi)</td></tr>
 <tr class="memdesc:a84d7cd1ef0c55fae16c62518fc907152"><td class="mdescLeft">&#160;</td><td class="mdescRight">Radar site latitude and longitude in radians.  <a href="classrack_1_1Coordinates.html#a84d7cd1ef0c55fae16c62518fc907152">More...</a><br /></td></tr>
 <tr class="separator:a84d7cd1ef0c55fae16c62518fc907152"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7f9d6b671d4119ec9245ae4c1473d66"><td class="memItemLeft" align="right" valign="top"><a id="ab7f9d6b671d4119ec9245ae4c1473d66"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#ab7f9d6b671d4119ec9245ae4c1473d66">setProjection</a> (const std::string &amp;s)</td></tr>
-<tr class="memdesc:ab7f9d6b671d4119ec9245ae4c1473d66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target projection. <br /></td></tr>
-<tr class="separator:ab7f9d6b671d4119ec9245ae4c1473d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4257848c6dc1c8c052f9c85170a3b27"><td class="memItemLeft" align="right" valign="top"><a id="ae4257848c6dc1c8c052f9c85170a3b27"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setOriginDeg</b> (const double &amp;lat, const double &amp;lon)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#ae4257848c6dc1c8c052f9c85170a3b27">setOriginDeg</a> (const double &amp;lat, const double &amp;lon)</td></tr>
+<tr class="memdesc:ae4257848c6dc1c8c052f9c85170a3b27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target projection. // void setProjection(const std::string &amp;s);. <br /></td></tr>
 <tr class="separator:ae4257848c6dc1c8c052f9c85170a3b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a426e5a3d0eac5a2295f72c634dcee04e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#a426e5a3d0eac5a2295f72c634dcee04e">setBinPosition</a> (const double &amp;alpha, const float &amp;range)</td></tr>
 <tr class="separator:a426e5a3d0eac5a2295f72c634dcee04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b07bf66917ddead5dcef4b8305814c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#a4b07bf66917ddead5dcef4b8305814c1">getBoundingBox</a> (float range, double &amp;latMin, double &amp;lonMin, double &amp;latMax, double &amp;lonMax)</td></tr>
-<tr class="memdesc:a4b07bf66917ddead5dcef4b8305814c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the bounding box (in degrees) of the circular radar measurement area.  <a href="classrack_1_1Coordinates.html#a4b07bf66917ddead5dcef4b8305814c1">More...</a><br /></td></tr>
-<tr class="separator:a4b07bf66917ddead5dcef4b8305814c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20a8408f211bf7c765bf9e5ea5b8ca4e"><td class="memItemLeft" align="right" valign="top"><a id="a20a8408f211bf7c765bf9e5ea5b8ca4e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#a20a8408f211bf7c765bf9e5ea5b8ca4e">info</a> (std::ostream &amp;ostr=std::cout)</td></tr>
-<tr class="memdesc:a20a8408f211bf7c765bf9e5ea5b8ca4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Info. <br /></td></tr>
+<tr class="memitem:a20a8408f211bf7c765bf9e5ea5b8ca4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#a20a8408f211bf7c765bf9e5ea5b8ca4e">info</a> (std::ostream &amp;ostr=std::cout)</td></tr>
+<tr class="memdesc:a20a8408f211bf7c765bf9e5ea5b8ca4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the bounding box (in degrees) of the circular radar measurement area.  <a href="classrack_1_1Coordinates.html#a20a8408f211bf7c765bf9e5ea5b8ca4e">More...</a><br /></td></tr>
 <tr class="separator:a20a8408f211bf7c765bf9e5ea5b8ca4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae848757cd06cd26c24661a5de218427e"><td class="memItemLeft" align="right" valign="top"><a id="ae848757cd06cd26c24661a5de218427e"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#ae848757cd06cd26c24661a5de218427e">binLatitudeDeg</a> ()</td></tr>
@@ -127,9 +104,6 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#aac43d0b972fde15ed19bd9399260b62d">binLongitudeDeg</a> ()</td></tr>
 <tr class="memdesc:aac43d0b972fde15ed19bd9399260b62d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bin longitude in degrees after calling bin_position(). <br /></td></tr>
 <tr class="separator:aac43d0b972fde15ed19bd9399260b62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ed881b5f1be78eefd335748e399bb72"><td class="memItemLeft" align="right" valign="top"><a id="a4ed881b5f1be78eefd335748e399bb72"></a>
-virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getProjectionString</b> ()</td></tr>
-<tr class="separator:a4ed881b5f1be78eefd335748e399bb72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -181,9 +155,6 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#a5f200d941b7ddb17e68893ea9426e3e2">phiBin</a></td></tr>
 <tr class="memdesc:a5f200d941b7ddb17e68893ea9426e3e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bin longitude in radians after calling bin_position(). <br /></td></tr>
 <tr class="separator:a5f200d941b7ddb17e68893ea9426e3e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ede38de98ea8f5854a71a35a49729a8"><td class="memItemLeft" align="right" valign="top"><a id="a6ede38de98ea8f5854a71a35a49729a8"></a>
-<a class="el" href="classdrain_1_1Proj6.html">drain::Proj6</a>&#160;</td><td class="memItemRight" valign="bottom"><b>proj</b></td></tr>
-<tr class="separator:a6ede38de98ea8f5854a71a35a49729a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Simple spherical coordinate computation. Does not handle projections, but earth coords. </p>
@@ -203,51 +174,24 @@ Variable names</h1>
 </div><!-- fragment --><p> where R is the radius of the Earth. Use getDatumString() to get the actual std::string.</p>
 <p>Note that this is not equivalent with </p><div class="fragment"><div class="line">EPSG:4326 = <span class="stringliteral">&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&quot;</span>;</div>
 </div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4b07bf66917ddead5dcef4b8305814c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b07bf66917ddead5dcef4b8305814c1">&#9670;&nbsp;</a></span>getBoundingBox()</h2>
+<a id="a20a8408f211bf7c765bf9e5ea5b8ca4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20a8408f211bf7c765bf9e5ea5b8ca4e">&#9670;&nbsp;</a></span>info()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void getBoundingBox </td>
+          <td class="memname">void info </td>
           <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>range</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostr</em> = <code>std::cout</code></td><td>)</td>
           <td></td>
-          <td class="paramtype">double &amp;&#160;</td>
-          <td class="paramname"><em>latMin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&#160;</td>
-          <td class="paramname"><em>lonMin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&#160;</td>
-          <td class="paramname"><em>latMax</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double &amp;&#160;</td>
-          <td class="paramname"><em>lonMax</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Determines the bounding box (in degrees) of the circular radar measurement area. </p>
+<p>Info</p>
 <p>Sets surface coordinates (phiBin, thetaBin) according to polar coordinates.</p>
 <p>Polar coordinates. </p>
 

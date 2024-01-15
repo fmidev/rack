@@ -76,12 +76,15 @@ $(function() {
 <div class="title">CmdConvert Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Convert data with desired encoding.  
+ <a href="classrack_1_1CmdConvert.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for CmdConvert:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1CmdConvert__inherit__graph.png" border="0" usemap="#aCmdConvert_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCmdConvert_inherit__map" id="aCmdConvert_inherit__map">
-<area shape="rect" title=" " alt="" coords="16,229,119,256"/>
+<area shape="rect" title="Convert data with desired encoding." alt="" coords="16,229,119,256"/>
 <area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="5,155,129,181"/>
 <area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="23,80,112,107"/>
 <area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="21,5,114,32"/>
@@ -92,7 +95,7 @@ Collaboration diagram for CmdConvert:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1CmdConvert__coll__graph.png" border="0" usemap="#aCmdConvert_coll__map" alt="Collaboration graph"/></div>
 <map name="aCmdConvert_coll__map" id="aCmdConvert_coll__map">
-<area shape="rect" title=" " alt="" coords="257,996,360,1023"/>
+<area shape="rect" title="Convert data with desired encoding." alt="" coords="257,996,360,1023"/>
 <area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="247,920,371,947"/>
 <area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="201,831,291,857"/>
 <area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="170,755,263,781"/>
@@ -246,7 +249,16 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <a class="el" href="classdrain_1_1Context.html">Context</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>contextPtr</b></td></tr>
 <tr class="separator:aa93503d4d64d09604ec306f58e6f03b5 inherit pro_attribs_classdrain_1_1Contextual"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Convert data with desired encoding. </p>
+<p>Volume data can be converted to desired scale and encoding with <code>&ndash;encoding</code> followed by <code>&ndash;convert</code> . If the input file contains several quantities, the target quantity can be selected with <code>&ndash;select</code> (<code>-s</code>) command:</p>
+<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-<span class="keywordtype">double</span>.h5 -Q DBZH --encoding C,0.5,-32 --convert  -o volume-<span class="keyword">new</span>.h5</div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume-uint16.h5 -Q DBZH --encoding d --convert -Q VRAD --encoding C,0.025,-7.65506,0,255 --convert -o volume-<span class="keyword">new</span>.h5</div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
+</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non-meteorological) user parameters.">rack::CmdEncoding</a> (code) </dd>
+<dd>
+<a class="el" href="classrack_1_1CmdSetODIM.html" title="Modifies metadata (data attributes).">rack::CmdSetODIM</a> (code) </dd></dl>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/main/commands.cpp</li>
 </ul>
 </div><!-- contents -->

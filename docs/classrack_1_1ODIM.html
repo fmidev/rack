@@ -145,6 +145,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a07f30b79c579bbf90133bc0cebc2327b"><td class="memItemLeft" align="right" valign="top"><a id="a07f30b79c579bbf90133bc0cebc2327b"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setGeometry</b> (const <a class="el" href="classdrain_1_1Frame2D.html">drain::image::AreaGeometry</a> &amp;g)</td></tr>
 <tr class="separator:a07f30b79c579bbf90133bc0cebc2327b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75269c1faf1df2b3e83c9d1554def77b"><td class="memItemLeft" align="right" valign="top"><a id="a75269c1faf1df2b3e83c9d1554def77b"></a>
+virtual const <a class="el" href="classdrain_1_1Frame2D.html">drain::image::AreaGeometry</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getGeometry</b> () const</td></tr>
+<tr class="separator:a75269c1faf1df2b3e83c9d1554def77b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dd275ae30f19759b1e2bb6cdab23ba5"><td class="memItemLeft" align="right" valign="top"><a id="a2dd275ae30f19759b1e2bb6cdab23ba5"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#a2dd275ae30f19759b1e2bb6cdab23ba5">adjustGeometry</a> (size_t cols, size_t rows)</td></tr>
 <tr class="memdesc:a2dd275ae30f19759b1e2bb6cdab23ba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change geometry and adjust spatial resolution respectively. <br /></td></tr>
@@ -424,7 +427,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> (cha
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a1c0303a3ce630915056eb914cc6ffb25"><td class="memTemplParams" colspan="2">template&lt;group_t G, class T &gt; </td></tr>
 <tr class="memitem:a1c0303a3ce630915056eb914cc6ffb25"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#a1c0303a3ce630915056eb914cc6ffb25">copyToH5</a> (const T &amp;odim, Hi5Tree &amp;dst)</td></tr>
-<tr class="memdesc:a1c0303a3ce630915056eb914cc6ffb25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> data relevant for data level, eg. <code>/dataset2</code>, <code>data4</code>, and root.  <a href="classrack_1_1ODIM.html#a1c0303a3ce630915056eb914cc6ffb25">More...</a><br /></td></tr>
+<tr class="memdesc:a1c0303a3ce630915056eb914cc6ffb25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> metadata to WHAT, WHERE and HOW groups.  <a href="classrack_1_1ODIM.html#a1c0303a3ce630915056eb914cc6ffb25">More...</a><br /></td></tr>
 <tr class="separator:a1c0303a3ce630915056eb914cc6ffb25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9fea6cff62de987ef9d3310feed01c7"><td class="memTemplParams" colspan="2"><a id="ad9fea6cff62de987ef9d3310feed01c7"></a>
 template&lt;group_t G, class T &gt; </td></tr>
@@ -682,20 +685,18 @@ static const ODIMPathElemSeq &amp;&#160;</td><td class="memItemRight" valign="bo
 </table>
 </div><div class="memdoc">
 
-<p>Write <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> data relevant for data level, eg. <code>/dataset2</code>, <code>data4</code>, and root. </p>
+<p>Write <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> metadata to WHAT, WHERE and HOW groups. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">G</td><td>- group selector </td></tr>
+    <tr><td class="paramname">G</td><td>- group selector (number) </td></tr>
     <tr><td class="paramname">T</td><td>- <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> class</td></tr>
   </table>
   </dd>
 </dl>
-<p>Examples of usage:</p>
-<ul>
-<li><a class="el" href="classrack_1_1ODIM.html#a1c0303a3ce630915056eb914cc6ffb25" title="Write ODIM data relevant for data level, eg. /dataset2, data4, and root.">ODIM::copyToH5&lt;ODIMPathElem::ROOT&gt;</a>(odim, resources.inputHi5);</li>
-<li><a class="el" href="classrack_1_1ODIM.html#a1c0303a3ce630915056eb914cc6ffb25" title="Write ODIM data relevant for data level, eg. /dataset2, data4, and root.">ODIM::copyToH5&lt;ODIMPathElem::DATASET&gt;</a>(odim, resources.inputHi5(dataSetPath));</li>
-<li>ODIM::copyToH5&lt;ODIMPathElem::DATA&gt;(odim, dst); </li>
-</ul>
+<p>Examples of usage: </p><div class="fragment"><div class="line">- ODIM::copyToH5&lt;ODIMPathElem::ROOT&gt;(odim, resources.inputHi5);</div>
+<div class="line">- ODIM::copyToH5&lt;ODIMPathElem::DATASET&gt;(odim, resources.inputHi5(dataSetPath));</div>
+<div class="line">- ODIM::copyToH5&lt;ODIMPathElem::DATA&gt;(odim, dst);</div>
+</div><!-- fragment --><p>relevant for data level, eg. <code>/dataset2</code>, <code>data4</code>, and root. </p>
 
 </div>
 </div>

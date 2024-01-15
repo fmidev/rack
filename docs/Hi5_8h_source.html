@@ -150,10 +150,10 @@ $(function() {
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="classdrain_1_1VariableMap.html">drain::VariableMap</a>  attributes;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="structhi5_1_1NodeHi5.html">NodeHi5</a>() : <a class="code" href="structhi5_1_1NodeHi5.html#a5f26d0fb37accfd67619e6d2e59d5890">noSave</a>(<span class="keyword">false</span>) {};</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="structhi5_1_1NodeHi5.html">NodeHi5</a>() : <a class="code" href="structhi5_1_1NodeHi5.html#a6a2ba0dc8da092e09dae484374810da1">exclude</a>(<span class="keyword">false</span>) {};</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="structhi5_1_1NodeHi5.html">NodeHi5</a>(<span class="keyword">const</span> <a class="code" href="structhi5_1_1NodeHi5.html">NodeHi5</a> &amp; n) : <a class="code" href="structhi5_1_1NodeHi5.html#a5f26d0fb37accfd67619e6d2e59d5890">noSave</a>(n.<a class="code" href="structhi5_1_1NodeHi5.html#a5f26d0fb37accfd67619e6d2e59d5890">noSave</a>) {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <a class="code" href="structhi5_1_1NodeHi5.html">NodeHi5</a>(<span class="keyword">const</span> <a class="code" href="structhi5_1_1NodeHi5.html">NodeHi5</a> &amp; n) : <a class="code" href="structhi5_1_1NodeHi5.html#a6a2ba0dc8da092e09dae484374810da1">exclude</a>(n.<a class="code" href="structhi5_1_1NodeHi5.html#a6a2ba0dc8da092e09dae484374810da1">exclude</a>) {</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        attributes.<a class="code" href="classdrain_1_1SmartMap.html#af96c05d0eecedaf1550432f0b74eb304">importMap</a>(n.attributes);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    };</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
@@ -165,7 +165,7 @@ $(function() {
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="comment">//void writeText(std::ostream &amp; ostr = std::cout, const std::string &amp; prefix = &quot;&quot;) const;</span></div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="structhi5_1_1NodeHi5.html#ae9e766589466923fa49e54d806aa0768">writeText</a>(std::ostream &amp; ostr = std::cout, <span class="keyword">const</span> <a class="code" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp; prefix = <a class="code" href="classdrain_1_1Path.html">rack::ODIMPath</a>()) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="structhi5_1_1NodeHi5.html#a5f26d0fb37accfd67619e6d2e59d5890">  103</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structhi5_1_1NodeHi5.html#a5f26d0fb37accfd67619e6d2e59d5890">noSave</a>;  <span class="comment">// OK!</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="structhi5_1_1NodeHi5.html#a6a2ba0dc8da092e09dae484374810da1">  103</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structhi5_1_1NodeHi5.html#a6a2ba0dc8da092e09dae484374810da1">exclude</a>;  <span class="comment">// OK!</span></div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;};</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
@@ -258,191 +258,188 @@ $(function() {
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; </div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="comment">/*</span></div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="comment">    static</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="comment">    void markNoSave(Hi5Tree &amp;src, bool noSave=true);</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="comment">    void markExcluded(Hi5Tree &amp;src, bool exclude=true);</span></div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="comment">    */</span></div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; </div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classhi5_1_1Hi5Base.html#abda893e103b8f01eca66c5c45116b49c">markNoSave</a>(Hi5Tree &amp;src, <span class="keywordtype">bool</span> noSave=<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classhi5_1_1Hi5Base.html#a6ffc3d791e1d56c407fa7806081bf948">deleteExcluded</a>(Hi5Tree &amp;src);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classhi5_1_1Hi5Base.html#a69610563c3be5c6fe0e885a9d612bddb">deleteNoSave</a>(Hi5Tree &amp;src);</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;};</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> <a class="code" href="structhi5_1_1NodeHi5.html">hi5::NodeHi5</a> &amp;n);</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;};</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> Hi5Tree &amp; tree);</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> <a class="code" href="structhi5_1_1NodeHi5.html">hi5::NodeHi5</a> &amp;n);</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> Hi5Tree &amp; tree);</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment">struct lessAlphaNum {</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment">    enum comparison {LESS=-1, EQUAL=0, GREATER=+1};</span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="comment">struct lessAlphaNum {</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;<span class="comment">    enum comparison {LESS=-1, EQUAL=0, GREATER=+1};</span></div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="comment">    static</span></div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="comment">    bool isNumeric(char c) {</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;<span class="comment">        return ((c &gt;= &#39;0&#39;) &amp;&amp; (c &lt;= &#39;9&#39;));</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;<span class="comment">    };</span></div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment">    inline</span></div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">    static</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment">    bool isNumeric(char c) {</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="comment">        return ((c &gt;= &#39;0&#39;) &amp;&amp; (c &lt;= &#39;9&#39;));</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="comment">    };</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment">    comparison compareAlphaBetical(std::string::const_iterator &amp; c1, std::string::const_iterator end1,</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="comment">            std::string::const_iterator &amp; c2, std::string::const_iterator end2){</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="comment">    inline</span></div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment">    static</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment">    comparison compareAlphaBetical(std::string::const_iterator &amp; c1, std::string::const_iterator end1,</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">            std::string::const_iterator &amp; c2, std::string::const_iterator end2){</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="comment">        while (c1 != end1){</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;<span class="comment">            if (c2 == end2){</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">                return GREATER; // str1 longer</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;<span class="comment">            }</span></div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment">        while (c1 != end1){</span></div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="comment">            if (c2 == end2){</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="comment">                return GREATER; // str1 longer</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="comment">            }</span></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="comment">            // Stop if both are numeric</span></div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment">            if (isNumeric(*c1) &amp;&amp; isNumeric(*c2)){</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment">                return EQUAL; // that is, equal as to the alpha part.</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="comment">            }</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="comment">            if (*c1 &lt; *c2)</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment">                return LESS;</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">            else if (*c1 &gt; *c2)</span></div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment">                return GREATER;</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment">            // *c1 == *c2 : strs are equal, non-numeric this far.</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">            ++c1;</span></div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment">            ++c2;</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment">        if (c2 != end2) // str2 is longer</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">            return LESS;</span></div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">        else</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">            return EQUAL;</span></div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">    inline</span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">    static</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment">    comparison compareNumeric(std::string::const_iterator &amp; c1, std::string::const_iterator end1,</span></div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="comment">            std::string::const_iterator &amp; c2, std::string::const_iterator end2){</span></div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">        const std::string::const_iterator n1 = c1;</span></div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">        const std::string::const_iterator n2 = c2;</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">        size_t length1 = 0;</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">        size_t length2 = 0;</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="comment">        // scan  to end of numeric segment</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment">        while ((c1 != end1) &amp;&amp; isNumeric(*c1)){</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment">            ++c1;</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="comment">            // todo: if undetectValue padding?</span></div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="comment">            ++length1;</span></div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="comment">        // scan  to end of numeric segment</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="comment">        while ((c2 != end2) &amp;&amp; isNumeric(*c2)){</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="comment">            ++c2;</span></div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment">            // todo: if undetectValue padding?</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="comment">            ++length2;</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="comment">        if (length1 &lt; length2)</span></div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="comment">            return LESS;</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="comment">        else if (length1 &gt; length2)</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="comment">            return GREATER;</span></div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="comment">        else {</span></div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="comment">            // std::cout &lt;&lt; &quot;Equal lengths. Compare element by element\n&quot;;</span></div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="comment">            // end points of numsegs</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="comment">            const std::string::const_iterator ne1 = c1;</span></div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="comment">            const std::string::const_iterator ne2 = c2;</span></div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="comment">            // rescan from start</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="comment">            c1 = n1;</span></div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="comment">            c2 = n2;</span></div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="comment">            while  ((c1 != ne1) &amp;&amp; (c2 != ne2)){ //</span></div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="comment">                if (*c1 &lt; *c2)</span></div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="comment">                    return LESS;</span></div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="comment">                else if (*c1 &gt; *c2)</span></div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="comment">                    return GREATER;</span></div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="comment">                ++c1;</span></div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="comment">                ++c2;</span></div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="comment">            }</span></div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;<span class="comment">            // Stop if both are numeric</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;<span class="comment">            if (isNumeric(*c1) &amp;&amp; isNumeric(*c2)){</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;<span class="comment">                return EQUAL; // that is, equal as to the alpha part.</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;<span class="comment">            }</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="comment">            if (*c1 &lt; *c2)</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="comment">                return LESS;</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment">            else if (*c1 &gt; *c2)</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment">                return GREATER;</span></div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="comment">            // *c1 == *c2 : strs are equal, non-numeric this far.</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment">            ++c1;</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">            ++c2;</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">        if (c2 != end2) // str2 is longer</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">            return LESS;</span></div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment">        else</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment">            return EQUAL;</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">    static</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">    comparison compareNumeric(std::string::const_iterator &amp; c1, std::string::const_iterator end1,</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">            std::string::const_iterator &amp; c2, std::string::const_iterator end2){</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">        const std::string::const_iterator n1 = c1;</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">        const std::string::const_iterator n2 = c2;</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">        size_t length1 = 0;</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment">        size_t length2 = 0;</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment">        // scan  to end of numeric segment</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">        while ((c1 != end1) &amp;&amp; isNumeric(*c1)){</span></div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">            ++c1;</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">            // todo: if undetectValue padding?</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">            ++length1;</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment">        // scan  to end of numeric segment</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment">        while ((c2 != end2) &amp;&amp; isNumeric(*c2)){</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="comment">            ++c2;</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="comment">            // todo: if undetectValue padding?</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="comment">            ++length2;</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment">        if (length1 &lt; length2)</span></div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="comment">            return LESS;</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="comment">        else if (length1 &gt; length2)</span></div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment">            return GREATER;</span></div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="comment">        else {</span></div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="comment">            // std::cout &lt;&lt; &quot;Equal lengths. Compare element by element\n&quot;;</span></div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="comment">            // end points of numsegs</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="comment">            const std::string::const_iterator ne1 = c1;</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="comment">            const std::string::const_iterator ne2 = c2;</span></div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="comment">            // rescan from start</span></div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="comment">            c1 = n1;</span></div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="comment">            c2 = n2;</span></div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="comment">            while  ((c1 != ne1) &amp;&amp; (c2 != ne2)){ //</span></div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="comment">                if (*c1 &lt; *c2)</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="comment">                    return LESS;</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="comment">                else if (*c1 &gt; *c2)</span></div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="comment">                    return GREATER;</span></div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="comment">                ++c1;</span></div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="comment">                ++c2;</span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="comment">            }</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="comment">            return EQUAL;</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="comment">    }</span></div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="comment">            return EQUAL;</span></div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="comment">    // Main function</span></div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="comment">    bool operator()(const std::string &amp; s1, const std::string &amp; s2) const {</span></div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="comment">        const std::string::const_iterator end1 = s1.end();</span></div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="comment">        const std::string::const_iterator end2 = s2.end();</span></div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="comment">        std::string::const_iterator c1 = s1.begin();</span></div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment">        std::string::const_iterator c2 = s2.begin();</span></div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="comment">        comparison result;</span></div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="comment">        // debugging</span></div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="comment">        std::string d1, d2;</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="comment">    // Main function</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="comment">    bool operator()(const std::string &amp; s1, const std::string &amp; s2) const {</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="comment">        const std::string::const_iterator end1 = s1.end();</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">        const std::string::const_iterator end2 = s2.end();</span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment">        std::string::const_iterator c1 = s1.begin();</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="comment">        std::string::const_iterator c2 = s2.begin();</span></div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="comment">        comparison result;</span></div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="comment">        // debugging</span></div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="comment">        std::string d1, d2;</span></div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="comment">        //while ((c1 != end1) &amp;&amp; (c2 != end2)){</span></div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="comment">        //int n = 10;</span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="comment">        //while (n &gt; 0){</span></div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="comment">        //--n;</span></div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="comment">        while (true){</span></div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="comment">        //while ((c1 != end1) &amp;&amp; (c2 != end2)){</span></div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="comment">        //int n = 10;</span></div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="comment">        //while (n &gt; 0){</span></div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="comment">        //--n;</span></div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;<span class="comment">        while (true){</span></div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;<span class="comment">            //std::cout &lt;&lt; &quot;Alphabetic check\n&quot;;</span></div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="comment">            //std::cout &lt;&lt; d1.assign(c1, end1) &lt;&lt; &quot; vs. &quot; &lt;&lt; d2.assign(c2, end2) &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="comment">            result = compareAlphaBetical(c1, end1, c2, end2);</span></div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="comment">            if (result == LESS)</span></div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="comment">                return true;</span></div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="comment">            if (result == GREATER)</span></div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="comment">                return false;</span></div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="comment">            //if (c1 == end1) // s1 ends, so s2 same this far (ie. same or longer)</span></div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;<span class="comment">            if (c2 == end2) // s2 gives up, so s1 same this far (ie. same or longer)</span></div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="comment">                return false;</span></div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="comment">            //std::cout &lt;&lt; &quot;Alphabetic check\n&quot;;</span></div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="comment">            //std::cout &lt;&lt; d1.assign(c1, end1) &lt;&lt; &quot; vs. &quot; &lt;&lt; d2.assign(c2, end2) &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="comment">            result = compareAlphaBetical(c1, end1, c2, end2);</span></div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="comment">            if (result == LESS)</span></div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;<span class="comment">                return true;</span></div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="comment">            if (result == GREATER)</span></div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="comment">                return false;</span></div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="comment">            //if (c1 == end1) // s1 ends, so s2 same this far (ie. same or longer)</span></div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="comment">            if (c2 == end2) // s2 gives up, so s1 same this far (ie. same or longer)</span></div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="comment">                return false;</span></div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="comment">            // std::cout &lt;&lt; &quot;Numeric part check\n&quot;;</span></div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="comment">            //std::cout &lt;&lt; d1.assign(c1, end1) &lt;&lt; &quot; vs. &quot; &lt;&lt; d2.assign(c2, end2) &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="comment">            result = compareNumeric(c1, end1, c2, end2);</span></div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;<span class="comment">            // std::cout &lt;&lt; &quot;Numeric part check\n&quot;;</span></div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="comment">            //std::cout &lt;&lt; d1.assign(c1, end1) &lt;&lt; &quot; vs. &quot; &lt;&lt; d2.assign(c2, end2) &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;<span class="comment">            result = compareNumeric(c1, end1, c2, end2);</span></div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;<span class="comment">            if (result == LESS)</span></div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;<span class="comment">                return true;</span></div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;<span class="comment">            if (result == GREATER)</span></div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;<span class="comment">                return false;</span></div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;<span class="comment">            //if (c1 == end1) // s1 ends, so s2 same this far (ie. same or longer)</span></div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="comment">            if (c2 == end2) // s2 gives up, so s1 same this far (ie. same or longer)</span></div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="comment">                return false;</span></div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;<span class="comment">            if (result == LESS)</span></div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="comment">                return true;</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment">            if (result == GREATER)</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;<span class="comment">                return false;</span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;<span class="comment">            //if (c1 == end1) // s1 ends, so s2 same this far (ie. same or longer)</span></div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;<span class="comment">            if (c2 == end2) // s2 gives up, so s1 same this far (ie. same or longer)</span></div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;<span class="comment">                return false;</span></div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;<span class="comment">            // std::cout &lt;&lt; &quot;Equal, continuing \n&quot;;</span></div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="comment">            // std::cout &lt;&lt; &quot;Equal, continuing \n&quot;;</span></div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="comment">    } // end operator()</span></div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;<span class="comment">};  // end class</span></div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160; </div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160; </div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;} <span class="comment">// ::hi5</span></div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160; </div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160; </div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="comment">    } // end operator()</span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="comment">};  // end class</span></div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160; </div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160; </div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;} <span class="comment">// ::hi5</span></div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160; </div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160; </div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdrain_1_1FileInfo_html"><div class="ttname"><a href="classdrain_1_1FileInfo.html">drain::FileInfo</a></div><div class="ttdef"><b>Definition:</b> FileInfo.h:47</div></div>
 <div class="ttc" id="aclassdrain_1_1Log_html"><div class="ttname"><a href="classdrain_1_1Log.html">drain::Log</a></div><div class="ttdoc">Handler for notifications sent by a Logger.</div><div class="ttdef"><b>Definition:</b> Log.h:133</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:288</div></div>
@@ -456,17 +453,16 @@ $(function() {
 <div class="ttc" id="aclasshi5_1_1Hi5Base_html_a46f99aa747a87c81d474705f2944e022"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#a46f99aa747a87c81d474705f2944e022">hi5::Hi5Base::writeText</a></div><div class="ttdeci">static void writeText(const Hi5Tree &amp;src, const std::list&lt; typename Hi5Tree::path_t &gt; &amp;paths, std::ostream &amp;ostr=std::cout)</div><div class="ttdoc">Dumps the H5 structure, attributes and data properties.</div><div class="ttdef"><b>Definition:</b> Hi5.cpp:302</div></div>
 <div class="ttc" id="aclasshi5_1_1Hi5Base_html_a47ce7ad5d35bcae6d37273b29de98937"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#a47ce7ad5d35bcae6d37273b29de98937">hi5::Hi5Base::getH5StandardType</a></div><div class="ttdeci">static hid_t getH5StandardType(const std::type_info &amp;type)</div><div class="ttdoc">Give a native C++ type, returns a standard(?) HDF5 data type.</div><div class="ttdef"><b>Definition:</b> Hi5.cpp:128</div></div>
 <div class="ttc" id="aclasshi5_1_1Hi5Base_html_a482eb384e7a232e949c8f3fb017c0b09"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#a482eb384e7a232e949c8f3fb017c0b09">hi5::Hi5Base::getPalette</a></div><div class="ttdeci">static drain::image::Image &amp; getPalette(Hi5Tree &amp;dst)</div><div class="ttdoc">Creates a 256-element RGB palette to be referenced with linkPalette().</div><div class="ttdef"><b>Definition:</b> Hi5.cpp:259</div></div>
-<div class="ttc" id="aclasshi5_1_1Hi5Base_html_a69610563c3be5c6fe0e885a9d612bddb"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#a69610563c3be5c6fe0e885a9d612bddb">hi5::Hi5Base::deleteNoSave</a></div><div class="ttdeci">static void deleteNoSave(Hi5Tree &amp;src)</div><div class="ttdoc">Delete branches that have been marked with noSave=true .</div><div class="ttdef"><b>Definition:</b> Hi5.cpp:461</div></div>
+<div class="ttc" id="aclasshi5_1_1Hi5Base_html_a6ffc3d791e1d56c407fa7806081bf948"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#a6ffc3d791e1d56c407fa7806081bf948">hi5::Hi5Base::deleteExcluded</a></div><div class="ttdeci">static void deleteExcluded(Hi5Tree &amp;src)</div><div class="ttdoc">Traverse subtree setting exclude=true .</div><div class="ttdef"><b>Definition:</b> Hi5.cpp:448</div></div>
 <div class="ttc" id="aclasshi5_1_1Hi5Base_html_a8c7d9aeb913275da0983b01bb719fbfa"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#a8c7d9aeb913275da0983b01bb719fbfa">hi5::Hi5Base::parsePath</a></div><div class="ttdeci">static void parsePath(const std::string &amp;line, Hi5Tree::path_t &amp;path, std::string &amp;attrKey, std::string &amp;attrValue)</div><div class="ttdoc">Split full path string to path object and attribute key.</div><div class="ttdef"><b>Definition:</b> Hi5.cpp:433</div></div>
 <div class="ttc" id="aclasshi5_1_1Hi5Base_html_a9c050369710c9652949a8078c78654f5"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#a9c050369710c9652949a8078c78654f5">hi5::Hi5Base::getH5NativeDataType</a></div><div class="ttdeci">static hid_t getH5NativeDataType()</div><div class="ttdoc">Given a native C++ type, returns a native HDF5 data type.</div><div class="ttdef"><b>Definition:</b> Hi5.h:152</div></div>
 <div class="ttc" id="aclasshi5_1_1Hi5Base_html_aac5c55bae43af4e588fc51217943fbfb"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#aac5c55bae43af4e588fc51217943fbfb">hi5::Hi5Base::writeText</a></div><div class="ttdeci">static void writeText(const Hi5Tree &amp;src, std::ostream &amp;ostr=std::cout)</div><div class="ttdoc">Dumps the H5 structure, attributes and data properties. (Calls writeText(src, src....</div><div class="ttdef"><b>Definition:</b> Hi5.h:176</div></div>
-<div class="ttc" id="aclasshi5_1_1Hi5Base_html_abda893e103b8f01eca66c5c45116b49c"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#abda893e103b8f01eca66c5c45116b49c">hi5::Hi5Base::markNoSave</a></div><div class="ttdeci">static void markNoSave(Hi5Tree &amp;src, bool noSave=true)</div><div class="ttdoc">Traverse subtree setting noSave=true .</div><div class="ttdef"><b>Definition:</b> Hi5.cpp:446</div></div>
 <div class="ttc" id="aclasshi5_1_1Hi5Base_html_acad4cbff3e5bec4e6b2c48410dbb0d2b"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#acad4cbff3e5bec4e6b2c48410dbb0d2b">hi5::Hi5Base::assignAttribute</a></div><div class="ttdeci">static void assignAttribute(Hi5Tree &amp;dst, const std::string &amp;assignment)</div><div class="ttdef"><b>Definition:</b> Hi5.cpp:353</div></div>
 <div class="ttc" id="aclasshi5_1_1Hi5Base_html_ad53431d3f72edbc7c40989ab2415a974"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#ad53431d3f72edbc7c40989ab2415a974">hi5::Hi5Base::linkPalette</a></div><div class="ttdeci">static void linkPalette(const Hi5Tree &amp;palette, Hi5Tree &amp;dst)</div><div class="ttdoc">Links the palette that has been (or will be) created with createPalette().</div><div class="ttdef"><b>Definition:</b> Hi5.cpp:294</div></div>
 <div class="ttc" id="aclasshi5_1_1Hi5Base_html_add2da669b032729add1d93e5a792f8db"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#add2da669b032729add1d93e5a792f8db">hi5::Hi5Base::readText</a></div><div class="ttdeci">static void readText(Hi5Tree &amp;src, std::istream &amp;istr=std::cin)</div><div class="ttdoc">Constructs a tree from formatted text. See writeText().</div><div class="ttdef"><b>Definition:</b> Hi5.cpp:311</div></div>
 <div class="ttc" id="aclasshi5_1_1Hi5Base_html_afe2356492766eb800826d1f36c6ac081"><div class="ttname"><a href="classhi5_1_1Hi5Base.html#afe2356492766eb800826d1f36c6ac081">hi5::Hi5Base::readTextLine</a></div><div class="ttdeci">static void readTextLine(Hi5Tree &amp;src, const std::string &amp;line)</div><div class="ttdoc">Assign a value with optional type specification.</div><div class="ttdef"><b>Definition:</b> Hi5.cpp:332</div></div>
 <div class="ttc" id="astructhi5_1_1NodeHi5_html"><div class="ttname"><a href="structhi5_1_1NodeHi5.html">hi5::NodeHi5</a></div><div class="ttdoc">Rack's hi5 structure that uses Rack classes (Tree, Data, Image).</div><div class="ttdef"><b>Definition:</b> Hi5.h:74</div></div>
-<div class="ttc" id="astructhi5_1_1NodeHi5_html_a5f26d0fb37accfd67619e6d2e59d5890"><div class="ttname"><a href="structhi5_1_1NodeHi5.html#a5f26d0fb37accfd67619e6d2e59d5890">hi5::NodeHi5::noSave</a></div><div class="ttdeci">bool noSave</div><div class="ttdoc">Experimental.</div><div class="ttdef"><b>Definition:</b> Hi5.h:103</div></div>
+<div class="ttc" id="astructhi5_1_1NodeHi5_html_a6a2ba0dc8da092e09dae484374810da1"><div class="ttname"><a href="structhi5_1_1NodeHi5.html#a6a2ba0dc8da092e09dae484374810da1">hi5::NodeHi5::exclude</a></div><div class="ttdeci">bool exclude</div><div class="ttdoc">Experimental.</div><div class="ttdef"><b>Definition:</b> Hi5.h:103</div></div>
 <div class="ttc" id="astructhi5_1_1NodeHi5_html_ae9e766589466923fa49e54d806aa0768"><div class="ttname"><a href="structhi5_1_1NodeHi5.html#ae9e766589466923fa49e54d806aa0768">hi5::NodeHi5::writeText</a></div><div class="ttdeci">void writeText(std::ostream &amp;ostr=std::cout, const rack::ODIMPath &amp;prefix=rack::ODIMPath()) const</div><div class="ttdef"><b>Definition:</b> Hi5.cpp:58</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

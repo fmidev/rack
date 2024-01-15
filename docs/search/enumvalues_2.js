@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['reserve_3945',['RESERVE',['../classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1af8ede8b906acf8b2b5e13127a2a17032',1,'drain::ReferenceMap2::RESERVE()'],['../classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1af8ede8b906acf8b2b5e13127a2a17032',1,'drain::ReferenceMap::RESERVE()']]]
+  ['link_3974',['LINK',['../classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3',1,'drain::ReferenceMap2::LINK()'],['../classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3',1,'drain::ReferenceMap::LINK()']]]
 ];

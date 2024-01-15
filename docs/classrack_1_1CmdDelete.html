@@ -273,10 +273,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
   </table>
   </dd>
 </dl>
-<p><b>Synopsis</b> </p><div class="fragment"><div class="line">--delete  &lt;selector&gt;  (Section: general)</div>
-<div class="line">  Deletes selected parts of h5 structure.</div>
-<div class="line">    selector=&quot;count&quot;=1000,&quot;elangle&quot;=[-90,90],&quot;order&quot;=&quot;DATA:MIN&quot;,&quot;path&quot;=&quot;&quot;,&quot;prf&quot;=&quot;ANY&quot;,&quot;quantity&quot;=&quot;&quot; </div>
-</div><!-- fragment --><p><b>Examples</b> </p><div class="fragment"><div class="line"><span class="preprocessor"># Delete dataset[i] groups 2...10 </span></div>
+<p><b>Synopsis</b> </p><div class="fragment"></div><!-- fragment --><p><b>Examples</b> </p><div class="fragment"><div class="line"><span class="preprocessor"># Delete dataset[i] groups 2...10 </span></div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --<span class="keyword">delete</span> dataset2:10 -o volume-modified.h5</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># Delete data[i] groups 3...20</span></div>
@@ -302,9 +299,9 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <div class="line"> </div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 </div><!-- fragment --><p>Notice that <code>&ndash;elangle</code> applies to volume data only, and essentially selects <code>dataset</code> groups. Similarly, <code>quantity</code> selects <code>data</code> (and <code>quality</code>) groups. If selection parameters of both levels are issued in the same command, implicit <code>AND</code> function applies in selection.</p>
-<p><b>See\</b> also</p><ul>
-<li><a class="el" href="modifypage.html#CmdKeep">Keeping data</a> </li>
-</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1CmdKeep.html" title="Remove parts of a hierarchical data structure.">CmdKeep</a> </dd>
+<dd>
+modifypage </dd></dl>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/main/commands.cpp</li>
 </ul>

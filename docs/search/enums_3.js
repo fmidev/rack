@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tiffcompliance_3942',['TiffCompliance',['../classdrain_1_1image_1_1FileGeoTIFF.html#a06e0d560e1db494afd9b331dc70aeae3',1,'drain::image::FileGeoTIFF']]]
+  ['scalingmode_3969',['scalingMode',['../classdrain_1_1image_1_1Intensity.html#a5bfd72be6595077d2b4a6d662c08c335',1,'drain::image::Intensity']]]
 ];

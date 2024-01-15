@@ -142,13 +142,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="separator:afe2356492766eb800826d1f36c6ac081"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acad4cbff3e5bec4e6b2c48410dbb0d2b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#acad4cbff3e5bec4e6b2c48410dbb0d2b">assignAttribute</a> (Hi5Tree &amp;dst, const std::string &amp;assignment)</td></tr>
 <tr class="separator:acad4cbff3e5bec4e6b2c48410dbb0d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abda893e103b8f01eca66c5c45116b49c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#abda893e103b8f01eca66c5c45116b49c">markNoSave</a> (Hi5Tree &amp;src, bool noSave=true)</td></tr>
-<tr class="memdesc:abda893e103b8f01eca66c5c45116b49c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse subtree setting noSave=true .  <a href="classhi5_1_1Hi5Base.html#abda893e103b8f01eca66c5c45116b49c">More...</a><br /></td></tr>
-<tr class="separator:abda893e103b8f01eca66c5c45116b49c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69610563c3be5c6fe0e885a9d612bddb"><td class="memItemLeft" align="right" valign="top"><a id="a69610563c3be5c6fe0e885a9d612bddb"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a69610563c3be5c6fe0e885a9d612bddb">deleteNoSave</a> (Hi5Tree &amp;src)</td></tr>
-<tr class="memdesc:a69610563c3be5c6fe0e885a9d612bddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete branches that have been marked with noSave=true . <br /></td></tr>
-<tr class="separator:a69610563c3be5c6fe0e885a9d612bddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ffc3d791e1d56c407fa7806081bf948"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Hi5Base.html#a6ffc3d791e1d56c407fa7806081bf948">deleteExcluded</a> (Hi5Tree &amp;src)</td></tr>
+<tr class="memdesc:a6ffc3d791e1d56c407fa7806081bf948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse subtree setting exclude=true .  <a href="classhi5_1_1Hi5Base.html#a6ffc3d791e1d56c407fa7806081bf948">More...</a><br /></td></tr>
+<tr class="separator:a6ffc3d791e1d56c407fa7806081bf948"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classBase.html">Base</a> class for <a class="el" href="classhi5_1_1Reader.html">Reader</a> and <a class="el" href="classhi5_1_1Writer.html" title="Converts Rack&#39;s h5 structure to native h5 structure applied for file output.">Writer</a>, essentially just wrapping some utilities. </p>
@@ -190,6 +186,35 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 </div>
 </div>
+<a id="a6ffc3d791e1d56c407fa7806081bf948"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ffc3d791e1d56c407fa7806081bf948">&#9670;&nbsp;</a></span>deleteExcluded()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void deleteExcluded </td>
+          <td>(</td>
+          <td class="paramtype">Hi5Tree &amp;&#160;</td>
+          <td class="paramname"><em>src</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Traverse subtree setting exclude=true . </p>
+<p>Delete branches that have been marked with exclude=true . </p>
+
+</div>
+</div>
 <a id="af370b9e9fa4eaaf172103cb07dc16aec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af370b9e9fa4eaaf172103cb07dc16aec">&#9670;&nbsp;</a></span>getH5NativeDataType()</h2>
 
@@ -216,45 +241,6 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 
 <p>Given a native C++ type, returns a native HDF5 data type. </p>
 <p>TODO</p>
-
-</div>
-</div>
-<a id="abda893e103b8f01eca66c5c45116b49c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abda893e103b8f01eca66c5c45116b49c">&#9670;&nbsp;</a></span>markNoSave()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void markNoSave </td>
-          <td>(</td>
-          <td class="paramtype">Hi5Tree &amp;&#160;</td>
-          <td class="paramname"><em>src</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>noSave</em> = <code>true</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Traverse subtree setting noSave=true . </p>
-<p>Traverse tree, marking every group nodes for deletion by <a class="el" href="classhi5_1_1Hi5Base.html#a69610563c3be5c6fe0e885a9d612bddb" title="Delete branches that have been marked with noSave=true .">Hi5Base::deleteNoSave</a> This function traverses all the children, and their children, recursively. </p>
 
 </div>
 </div>

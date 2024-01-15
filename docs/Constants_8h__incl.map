@@ -1,4 +1,52 @@
 <map id="src/radar/Constants.h" name="src/radar/Constants.h">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,165,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="51,80,119,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="2493,5,2653,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="2451,80,2519,107"/>
+<area shape="rect" id="node3" href="$CoordinateHandler_8h_source.html" title=" " alt="" coords="2544,80,2781,107"/>
+<area shape="rect" id="node4" href="$CoordinatePolicy_8h_source.html" title=" " alt="" coords="2768,379,2992,405"/>
+<area shape="rect" id="node5" title=" " alt="" coords="3017,603,3093,629"/>
+<area shape="rect" id="node6" title=" " alt="" coords="2971,1125,3058,1152"/>
+<area shape="rect" id="node7" href="$Log_8h_source.html" title=" " alt="" coords="1774,1051,1893,1077"/>
+<area shape="rect" id="node18" href="$Frame_8h_source.html" title=" " alt="" coords="2841,528,2978,555"/>
+<area shape="rect" id="node30" href="$Flags_8h_source.html" title=" " alt="" coords="2065,603,2135,629"/>
+<area shape="rect" id="node38" href="$drain_2image_2Geometry_8h_source.html" title=" " alt="" coords="2475,453,2573,480"/>
+<area shape="rect" id="node39" href="$ImageFrame_8h_source.html" title=" " alt="" coords="2491,155,2607,181"/>
+<area shape="rect" id="node19" href="$UniTuple_8h_source.html" title=" " alt="" coords="2951,827,3103,853"/>
+<area shape="rect" id="node26" href="$Point_8h_source.html" title=" " alt="" coords="2999,677,3129,704"/>
+<area shape="rect" id="node27" href="$Range_8h_source.html" title=" " alt="" coords="3150,453,3287,480"/>
+<area shape="rect" id="node28" href="$StatusFlags_8h_source.html" title=" " alt="" coords="2699,453,2871,480"/>
+<area shape="rect" id="node8" title=" " alt="" coords="1906,1125,1977,1152"/>
+<area shape="rect" id="node9" title=" " alt="" coords="1401,1125,1476,1152"/>
+<area shape="rect" id="node10" title=" " alt="" coords="608,1200,667,1227"/>
+<area shape="rect" id="node11" title=" " alt="" coords="2127,1200,2207,1227"/>
+<area shape="rect" id="node12" title=" " alt="" coords="1693,1125,1766,1152"/>
+<area shape="rect" id="node13" title=" " alt="" coords="1791,1125,1881,1152"/>
+<area shape="rect" id="node14" title=" " alt="" coords="450,1125,521,1152"/>
+<area shape="rect" id="node15" title=" " alt="" coords="1301,1125,1377,1152"/>
+<area shape="rect" id="node16" title=" " alt="" coords="675,1125,738,1152"/>
+<area shape="rect" id="node17" href="$StringBuilder_8h_source.html" title=" " alt="" coords="1551,1125,1668,1152"/>
+<area shape="rect" id="node20" title=" " alt="" coords="2825,1051,2901,1077"/>
+<area shape="rect" id="node21" href="$TypeUtils_8h_source.html" title=" " alt="" coords="2426,901,2521,928"/>
+<area shape="rect" id="node22" title=" " alt="" coords="2020,976,2079,1003"/>
+<area shape="rect" id="node23" href="$Type_8h_source.html" title=" " alt="" coords="2305,976,2369,1003"/>
+<area shape="rect" id="node24" title=" " alt="" coords="1411,1051,1453,1077"/>
+<area shape="rect" id="node25" title=" " alt="" coords="1081,1051,1124,1077"/>
+<area shape="rect" id="node29" href="$GlobalFlags_8h_source.html" title=" " alt="" coords="2654,528,2765,555"/>
+<area shape="rect" id="node37" href="$Static_8h_source.html" title=" " alt="" coords="2694,603,2765,629"/>
+<area shape="rect" id="node31" title=" " alt="" coords="1774,827,1845,853"/>
+<area shape="rect" id="node32" href="$Dictionary_8h_source.html" title=" " alt="" coords="923,677,1021,704"/>
+<area shape="rect" id="node36" href="$String_8h_source.html" title=" " alt="" coords="1548,752,1620,779"/>
+<area shape="rect" id="node33" title=" " alt="" coords="347,827,397,853"/>
+<area shape="rect" id="node34" href="$Sprinter_8h_source.html" title=" " alt="" coords="745,752,829,779"/>
+<area shape="rect" id="node35" title=" " alt="" coords="726,827,786,853"/>
+<area shape="rect" id="node40" title=" " alt="" coords="3413,453,3488,480"/>
+<area shape="rect" id="node41" href="$CastableIterator_8h_source.html" title=" " alt="" coords="1687,603,1887,629"/>
+<area shape="rect" id="node44" href="$VariableMap_8h_source.html" title=" " alt="" coords="818,453,995,480"/>
+<area shape="rect" id="node48" href="$ValueScaling_8h_source.html" title=" " alt="" coords="3016,379,3195,405"/>
+<area shape="rect" id="node49" href="$ImageLike_8h_source.html" title=" " alt="" coords="2543,229,2644,256"/>
+<area shape="rect" id="node42" href="$Castable_8h_source.html" title=" " alt="" coords="1437,677,1528,704"/>
+<area shape="rect" id="node43" href="$Caster_8h_source.html" title=" " alt="" coords="2497,827,2572,853"/>
+<area shape="rect" id="node45" href="$Variable_8h_source.html" title=" " alt="" coords="533,528,619,555"/>
+<area shape="rect" id="node46" href="$FlexibleVariable_8h_source.html" title=" " alt="" coords="2207,528,2345,555"/>
+<area shape="rect" id="node47" href="$SmartMap_8h_source.html" title=" " alt="" coords="1008,603,1109,629"/>
+<area shape="rect" id="node50" href="$ImageConf_8h_source.html" title=" " alt="" coords="2648,304,2752,331"/>
 </map>

@@ -104,18 +104,19 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:af37aa3fb6dce876cff746080f1f2c54d"><td class="memItemLeft" align="right" valign="top"><a id="af37aa3fb6dce876cff746080f1f2c54d"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>updateCoordinatePolicy</b> (Hi5Tree &amp;src, const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a> &amp;policy=<a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a>(drain::image::CoordinatePolicy::LIMIT))</td></tr>
 <tr class="separator:af37aa3fb6dce876cff746080f1f2c54d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abda893e103b8f01eca66c5c45116b49c"><td class="memItemLeft" align="right" valign="top"><a id="abda893e103b8f01eca66c5c45116b49c"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>markNoSave</b> (Hi5Tree &amp;src, bool noSave=true)</td></tr>
-<tr class="separator:abda893e103b8f01eca66c5c45116b49c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a23160d481d0055582b04d0125bd2a5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#a6a23160d481d0055582b04d0125bd2a5">markExcluded</a> (Hi5Tree &amp;src, bool exclude=true)</td></tr>
+<tr class="memdesc:a6a23160d481d0055582b04d0125bd2a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark/unmark whole tree to be deleted with #Hi5Base::deleteExcluded()  <a href="classrack_1_1DataTools.html#a6a23160d481d0055582b04d0125bd2a5">More...</a><br /></td></tr>
+<tr class="separator:a6a23160d481d0055582b04d0125bd2a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09c5875ce5f5445a0d63051617f246fa"><td class="memItemLeft" align="right" valign="top"><a id="a09c5875ce5f5445a0d63051617f246fa"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#a09c5875ce5f5445a0d63051617f246fa">markExcluded</a> (Hi5Tree &amp;src, const Hi5Tree::path_t &amp;path, bool exclude=true)</td></tr>
+<tr class="memdesc:a09c5875ce5f5445a0d63051617f246fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">(Un)mark groups along a path for deletion by #Hi5Base::deleteExcluded() <br /></td></tr>
+<tr class="separator:a09c5875ce5f5445a0d63051617f246fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:a62b4a72c8f43d99725419ad38794e954"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#a62b4a72c8f43d99725419ad38794e954">removeIfNoSave</a> (Hi5Tree &amp;dst)</td></tr>
-<tr class="memdesc:a62b4a72c8f43d99725419ad38794e954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the children of the tree if Node::noSave is set.  <a href="classrack_1_1DataTools.html#a62b4a72c8f43d99725419ad38794e954">More...</a><br /></td></tr>
-<tr class="separator:a62b4a72c8f43d99725419ad38794e954"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75bfc7c1b15e4f544872e0100b37307f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#a75bfc7c1b15e4f544872e0100b37307f">removeIfNoSave</a> (const Hi5Tree &amp;src)</td></tr>
-<tr class="memdesc:a75bfc7c1b15e4f544872e0100b37307f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does nothing.  <a href="classrack_1_1DataTools.html#a75bfc7c1b15e4f544872e0100b37307f">More...</a><br /></td></tr>
-<tr class="separator:a75bfc7c1b15e4f544872e0100b37307f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a0d153bc5453397aad85c17b6bcefd9"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#a4a0d153bc5453397aad85c17b6bcefd9">removeIfExcluded</a> (const Hi5Tree &amp;src)</td></tr>
+<tr class="memdesc:a4a0d153bc5453397aad85c17b6bcefd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the children of the tree if Node::exclude is set.  <a href="classrack_1_1DataTools.html#a4a0d153bc5453397aad85c17b6bcefd9">More...</a><br /></td></tr>
+<tr class="separator:a4a0d153bc5453397aad85c17b6bcefd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad94e3c042639d31f0b1d019235356a34"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#ad94e3c042639d31f0b1d019235356a34">updateInternalAttributes</a> (Hi5Tree &amp;src, const <a class="el" href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a> &amp;attributes)</td></tr>
 <tr class="memdesc:ad94e3c042639d31f0b1d019235356a34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies values of <code>what</code> , <code>where</code> and <code>how</code> attributes to internal attributes down to <code>data</code>[n] groups.  <a href="classrack_1_1DataTools.html#ad94e3c042639d31f0b1d019235356a34">More...</a><br /></td></tr>
 <tr class="separator:ad94e3c042639d31f0b1d019235356a34"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -185,8 +186,8 @@ Static Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a75bfc7c1b15e4f544872e0100b37307f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75bfc7c1b15e4f544872e0100b37307f">&#9670;&nbsp;</a></span>removeIfNoSave() <span class="overload">[1/2]</span></h2>
+<a id="a6a23160d481d0055582b04d0125bd2a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a23160d481d0055582b04d0125bd2a5">&#9670;&nbsp;</a></span>markExcluded()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -195,7 +196,46 @@ Static Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool removeIfNoSave </td>
+          <td class="memname">void markExcluded </td>
+          <td>(</td>
+          <td class="paramtype">Hi5Tree &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>exclude</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mark/unmark whole tree to be deleted with #Hi5Base::deleteExcluded() </p>
+<p>This function traverses all the children and their children, recursively. Needed here, ATTRIBUTE_GROUPS not in Hi5Base. </p>
+
+</div>
+</div>
+<a id="a4a0d153bc5453397aad85c17b6bcefd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a0d153bc5453397aad85c17b6bcefd9">&#9670;&nbsp;</a></span>removeIfExcluded()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool removeIfExcluded </td>
           <td>(</td>
           <td class="paramtype">const Hi5Tree &amp;&#160;</td>
           <td class="paramname"><em>src</em></td><td>)</td>
@@ -209,37 +249,9 @@ Static Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Does nothing. </p>
-<dl class="section return"><dt>Returns</dt><dd>- false (always, as nothing will be removed) </dd></dl>
-
-</div>
-</div>
-<a id="a62b4a72c8f43d99725419ad38794e954"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62b4a72c8f43d99725419ad38794e954">&#9670;&nbsp;</a></span>removeIfNoSave() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool removeIfNoSave </td>
-          <td>(</td>
-          <td class="paramtype">Hi5Tree &amp;&#160;</td>
-          <td class="paramname"><em>dst</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Removes the children of the tree if Node::noSave is set. </p>
-<dl class="section return"><dt>Returns</dt><dd>- true if children were removed </dd></dl>
+<p>Removes the children of the tree if Node::exclude is set. </p>
+<pre class="fragment">\return - true if children were removed
+</pre><p> static bool removeIfExcluded_REMOVE(Hi5Tree &amp; dst); Does nothing </p><dl class="section return"><dt>Returns</dt><dd>- false (always, as nothing will be removed) </dd></dl>
 
 </div>
 </div>

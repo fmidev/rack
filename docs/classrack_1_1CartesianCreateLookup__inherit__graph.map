@@ -1,0 +1,6 @@
+<map id="CartesianCreateLookup" name="CartesianCreateLookup">
+<area shape="rect" id="node1" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="5,229,179,256"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="30,155,154,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="47,80,137,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="45,5,139,32"/>
+</map>

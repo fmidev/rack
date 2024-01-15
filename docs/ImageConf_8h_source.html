@@ -105,13 +105,13 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifndef IMAGE_CONF_H_</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define IMAGE_CONF_H_ &quot;ImageConf 2,  2021/03 Markus.Peura@fmi.fi&quot;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span>  <span class="comment">// size_t</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;../util/Caster.h&quot;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;../util/ValueScaling.h&quot;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;Geometry.h&quot;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;Coordinates.h&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;drain/image/CoordinatePolicy.h&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span>  <span class="comment">// size_t</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;../util/Caster.h&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;../util/ValueScaling.h&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;Geometry.h&quot;</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
@@ -458,7 +458,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1ValueScaling_html_aba7d8cfdbb026f2b6d295d413bd50cf3"><div class="ttname"><a href="classdrain_1_1ValueScaling.html#aba7d8cfdbb026f2b6d295d413bd50cf3">drain::ValueScaling::getPhysicalRange</a></div><div class="ttdeci">const Range&lt; double &gt; &amp; getPhysicalRange() const</div><div class="ttdoc">Returns a typical or supported range for physical values.</div><div class="ttdef"><b>Definition:</b> ValueScaling.h:219</div></div>
 <div class="ttc" id="aclassdrain_1_1ValueScaling_html_ac6bbbf5142f79a266d38b55eea9eb18d"><div class="ttname"><a href="classdrain_1_1ValueScaling.html#ac6bbbf5142f79a266d38b55eea9eb18d">drain::ValueScaling::setScaling</a></div><div class="ttdeci">virtual void setScaling(double scale, double offset)</div><div class="ttdoc">Set linear scaling.</div><div class="ttdef"><b>Definition:</b> ValueScaling.h:134</div></div>
 <div class="ttc" id="aclassdrain_1_1ValueScaling_html_ae69701b11ce9e876fd546ecbadc38549"><div class="ttname"><a href="classdrain_1_1ValueScaling.html#ae69701b11ce9e876fd546ecbadc38549">drain::ValueScaling::setOptimalScale</a></div><div class="ttdeci">void setOptimalScale(const std::type_info &amp;t)</div><div class="ttdoc">If storage type is integer, adjust scale such that resolution is maximized.</div><div class="ttdef"><b>Definition:</b> ValueScaling.cpp:36</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1CoordinatePolicy_html"><div class="ttname"><a href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a></div><div class="ttdoc">Policies for coordinate underflows and overflows.</div><div class="ttdef"><b>Definition:</b> Coordinates.h:88</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1CoordinatePolicy_html"><div class="ttname"><a href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a></div><div class="ttdoc">Policies for coordinate underflows and overflows.</div><div class="ttdef"><b>Definition:</b> CoordinatePolicy.h:88</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Encoding_html"><div class="ttname"><a href="classdrain_1_1image_1_1Encoding.html">drain::image::Encoding</a></div><div class="ttdef"><b>Definition:</b> ImageConf.h:51</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Encoding_html_a0d28bdb714b19c471d7ee28f608906de"><div class="ttname"><a href="classdrain_1_1image_1_1Encoding.html#a0d28bdb714b19c471d7ee28f608906de">drain::image::Encoding::getEncoding</a></div><div class="ttdeci">const Encoding &amp; getEncoding() const</div><div class="ttdoc">Return type and scaling.</div><div class="ttdef"><b>Definition:</b> ImageConf.h:68</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Encoding_html_a12b1a0cbc4d6cca486c80b9fb6265f63"><div class="ttname"><a href="classdrain_1_1image_1_1Encoding.html#a12b1a0cbc4d6cca486c80b9fb6265f63">drain::image::Encoding::typeIsSet</a></div><div class="ttdeci">bool typeIsSet() const</div><div class="ttdoc">Get the storage type.</div><div class="ttdef"><b>Definition:</b> ImageConf.h:114</div></div>

@@ -1,6 +1,6 @@
 <map id="ProductBase" name="ProductBase">
 <area shape="rect" id="node1" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="1723,68,1825,95"/>
-<area shape="rect" id="node2" href="$structrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="1572,196,1673,223"/>
+<area shape="rect" id="node2" href="$classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="1572,196,1673,223"/>
 <area shape="rect" id="node3" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations." alt="" coords="1310,196,1417,223"/>
 <area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="1042,68,1123,95"/>
 <area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="609,24,725,51"/>

@@ -247,7 +247,8 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection criteria. </p>
-<p>In <b>Rack</b> , many operations implictly select a subset of available data instead of using it all. For example, in computing a Pseudo CAPPI image, <code>DBZH</code> data from single-PRF sweeps is used by default.</p>
+<p>This command determines the data to be applied in subsequent input read or product generation commands.</p>
+<p>In <b>Rack</b>, many operations implictly select a subset of available data instead of using it all. For example, in computing a Pseudo CAPPI image, <code>DBZH</code> data from single-PRF sweeps is used by default.</p>
 <p><b>Synopsis</b> </p><div class="fragment"><div class="line">--select, -s  &lt;path&gt;,&lt;quantity&gt;,&lt;elangle&gt;,&lt;count&gt;,&lt;order&gt;,&lt;prf&gt;  (Section: general)</div>
 <div class="line">  Data selector for the next computation</div>
 <div class="line">    path= [[/]dataset&lt;i&gt;[/data&lt;j&gt;|/quality&lt;j&gt;]]</div>
@@ -305,19 +306,24 @@ Examples</h3>
 <div class="line"><span class="preprocessor"># For text output, select paths of elevations of at least 6.0 degrees </span></div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select elangle=6.0 -o volume-select.txt</div>
 <div class="line"> </div>
-</div><!-- fragment --><h3><a class="anchor" id="CmdSelect_also"></a>
-See also</h3>
-<ul>
-<li><a class="el" href="modifypage.html#CmdDelete">Deleting data</a></li>
-<li><a class="el" href="modifypage.html#CmdKeep">Keeping data</a></li>
-<li><a class="el" href="modifypage.html#CmdSetODIM">Adding and changing ODIM metadata</a></li>
-</ul>
-<h3><a class="anchor" id="CmdSelect_code"></a>
-Related code</h3>
-<ul>
-<li><a class="el" href="classrack_1_1CmdSelect.html" title="Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection cri...">rack::CmdSelect</a></li>
-<li><a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">rack::DataSelector</a> </li>
-</ul>
+<div class="line"><span class="preprocessor"># For text output, select paths of elevations up to 6.0 degrees </span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select elangle=:6.0 -o volume-select.txt</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># For text output, select &#39;where&#39; groups of 3 lowest elevations from 0.5 degrees upwards </span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select where,elangle=0.5:90.0,count=3 -o volume-select.txt</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># For text output, select &#39;what&#39; and &#39;where&#39; groups of elevations from 0.5 to 6.0 degrees</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;what|where,elangle=0.5:6&#39;</span> -o volume-select.txt</div>
+<div class="line"> </div>
+</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1CmdDelete.html" title="Remove parts of a hierarchical data structure.">CmdDelete</a> </dd>
+<dd>
+<a class="el" href="classrack_1_1CmdKeep.html" title="Remove parts of a hierarchical data structure.">CmdKeep</a> </dd>
+<dd>
+<a class="el" href="classrack_1_1CmdSetODIM.html" title="Modifies metadata (data attributes).">CmdSetODIM</a> </dd>
+<dd>
+<a class="el" href="classrack_1_1CmdSelect.html" title="Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection cri...">rack::CmdSelect</a> (code) </dd>
+<dd>
+<a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">rack::DataSelector</a> (code) </dd></dl>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/main/commands.cpp</li>
 </ul>

@@ -75,12 +75,15 @@ $(function() {
 <div class="title">CmdCompleteODIM Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Ensure correct <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> types after setting attributes.  
+ <a href="classrack_1_1CmdCompleteODIM.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for CmdCompleteODIM:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1CmdCompleteODIM__inherit__graph.png" border="0" usemap="#aCmdCompleteODIM_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCmdCompleteODIM_inherit__map" id="aCmdCompleteODIM_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,229,156,256"/>
+<area shape="rect" title="Ensure correct ODIM types after setting attributes." alt="" coords="5,229,156,256"/>
 <area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="19,155,143,181"/>
 <area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="36,80,125,107"/>
 <area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="34,5,127,32"/>
@@ -91,7 +94,7 @@ Collaboration diagram for CmdCompleteODIM:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1CmdCompleteODIM__coll__graph.png" border="0" usemap="#aCmdCompleteODIM_coll__map" alt="Collaboration graph"/></div>
 <map name="aCmdCompleteODIM_coll__map" id="aCmdCompleteODIM_coll__map">
-<area shape="rect" title=" " alt="" coords="233,996,384,1023"/>
+<area shape="rect" title="Ensure correct ODIM types after setting attributes." alt="" coords="233,996,384,1023"/>
 <area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="247,920,371,947"/>
 <area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="201,831,291,857"/>
 <area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="170,755,263,781"/>
@@ -242,7 +245,13 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <a class="el" href="classdrain_1_1Context.html">Context</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>contextPtr</b></td></tr>
 <tr class="separator:aa93503d4d64d09604ec306f58e6f03b5 inherit pro_attribs_classdrain_1_1Contextual"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Ensure correct <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> types after setting attributes. </p>
+<p>The OPERA data information model (<a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a>) defines conventions for weather radar data. Some important <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> attributes can be added automatically with <code>&ndash;completeODIM</code> command, which sets <code>nbins</code> , <code>nrays</code> , <code>xsize</code> , and <code>ysize</code> equal to data dimensions, if already loaded as image.</p>
+<p><b>Synopsis</b> </p><div class="fragment"></div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1CmdSetODIM.html" title="Modifies metadata (data attributes).">rack::CmdSetODIM</a> (code) </dd>
+<dd>
+<a class="el" href="classrack_1_1CmdSetODIM.html" title="Modifies metadata (data attributes).">CmdSetODIM</a> </dd></dl>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/main/commands.cpp</li>
 </ul>
 </div><!-- contents -->

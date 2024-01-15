@@ -278,10 +278,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
   </dd>
 </dl>
 <p>Metadata groups (<code>what</code>, <code>where</code>, <code>how</code>) are preserved or deleted together with their parent groups.</p>
-<p><b>Synopsis</b> </p><div class="fragment"><div class="line">--keep  &lt;selector&gt;  (Section: general)</div>
-<div class="line">  Keeps selected part of data structure, deletes rest.</div>
-<div class="line">    selector=&quot;count&quot;=1000,&quot;elangle&quot;=[-90,90],&quot;order&quot;=&quot;DATA:MIN&quot;,&quot;path&quot;=&quot;&quot;,&quot;prf&quot;=&quot;ANY&quot;,&quot;quantity&quot;=&quot;&quot; </div>
-</div><!-- fragment --><p>Examples: </p><div class="fragment"><div class="line"><span class="preprocessor"># Keep data[i] groups containg DBZH</span></div>
+<p><b>Synopsis</b> </p><div class="fragment"></div><!-- fragment --><p>Examples: </p><div class="fragment"><div class="line"><span class="preprocessor"># Keep data[i] groups containg DBZH</span></div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --keep quantity=DBZH -o volume-modified.h5</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># Keep dataset[i] groups containing (at least) VRAD</span></div>
@@ -306,7 +303,9 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --keep dataset:/quality -o volume-modified.h5</div>
 <div class="line"> </div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
-</div><!-- fragment --><p>See also: <a class="el" href="modifypage.html#CmdDelete">Deleting data</a> </p>
+</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1CmdDelete.html" title="Remove parts of a hierarchical data structure.">CmdDelete</a> </dd>
+<dd>
+modifypage </dd></dl>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/main/commands.cpp</li>
 </ul>

@@ -90,7 +90,7 @@ Inheritance diagram for ProductOp&lt; MS, MD &gt;:</div>
 <map name="aProductOp_3_01MS_00_01MD_01_4_inherit__map" id="aProductOp_3_01MS_00_01MD_01_4_inherit__map">
 <area shape="rect" title="Polar and Cartesian products." alt="" coords="29,155,198,181"/>
 <area shape="rect" href="classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="62,80,165,107"/>
-<area shape="rect" href="structrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="5,5,107,32"/>
+<area shape="rect" href="classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="5,5,107,32"/>
 <area shape="rect" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="131,5,213,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -101,7 +101,7 @@ Collaboration diagram for ProductOp&lt; MS, MD &gt;:</div>
 <map name="aProductOp_3_01MS_00_01MD_01_4_coll__map" id="aProductOp_3_01MS_00_01MD_01_4_coll__map">
 <area shape="rect" title="Polar and Cartesian products." alt="" coords="1875,68,2044,95"/>
 <area shape="rect" href="classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="1723,68,1825,95"/>
-<area shape="rect" href="structrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="1572,196,1673,223"/>
+<area shape="rect" href="classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="1572,196,1673,223"/>
 <area shape="rect" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations." alt="" coords="1310,196,1417,223"/>
 <area shape="rect" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="1042,68,1123,95"/>
 <area shape="rect" href="classdrain_1_1ReferenceMap.html" title=" " alt="" coords="609,24,725,51"/>
@@ -140,6 +140,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductOp.html#ad094bedd0ad67920dd867b0432b0a4d9">ProductOp</a> (const std::string &amp;name, const std::string &amp;description)</td></tr>
 <tr class="memdesc:ad094bedd0ad67920dd867b0432b0a4d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:ad094bedd0ad67920dd867b0432b0a4d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a573a526142f053a4758fb7cb493bbe06"><td class="memItemLeft" align="right" valign="top"><a id="a573a526142f053a4758fb7cb493bbe06"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ProductOp</b> (const <a class="el" href="classdrain_1_1image_1_1ProductOp.html">ProductOp</a> &amp;product)</td></tr>
+<tr class="separator:a573a526142f053a4758fb7cb493bbe06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99b2f367921deda71dd7c5d2674bdb92"><td class="memItemLeft" align="right" valign="top">virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductOp.html#a99b2f367921deda71dd7c5d2674bdb92">getOutputQuantity</a> (const std::string &amp;inputQuantity=&quot;&quot;) const</td></tr>
 <tr class="memdesc:a99b2f367921deda71dd7c5d2674bdb92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the primary output quantity (<a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> <code>what:quantity</code> , like DBZH)  <a href="classrack_1_1ProductOp.html#a99b2f367921deda71dd7c5d2674bdb92">More...</a><br /></td></tr>
 <tr class="separator:a99b2f367921deda71dd7c5d2674bdb92"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -185,6 +188,15 @@ const <a class="el" href="classdrain_1_1ReferenceMap.html">drain::ReferenceMap</
 <tr class="memitem:a282e68e454ff7c5689dbff12de7e125f inherit pub_methods_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top"><a id="a282e68e454ff7c5689dbff12de7e125f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setAllowedEncoding</b> (const std::string &amp;keys)</td></tr>
 <tr class="separator:a282e68e454ff7c5689dbff12de7e125f inherit pub_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classrack_1_1ProductConf"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1ProductConf')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td></tr>
+<tr class="memitem:a70c56da05f530c93211fc87a8923c5c7 inherit pub_methods_classrack_1_1ProductConf"><td class="memItemLeft" align="right" valign="top"><a id="a70c56da05f530c93211fc87a8923c5c7"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductConf.html#a70c56da05f530c93211fc87a8923c5c7">ProductConf</a> ()</td></tr>
+<tr class="memdesc:a70c56da05f530c93211fc87a8923c5c7 inherit pub_methods_classrack_1_1ProductConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a70c56da05f530c93211fc87a8923c5c7 inherit pub_methods_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaac419e9f8e53a768cbe0eb82b73654 inherit pub_methods_classrack_1_1ProductConf"><td class="memItemLeft" align="right" valign="top"><a id="abaac419e9f8e53a768cbe0eb82b73654"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductConf.html#abaac419e9f8e53a768cbe0eb82b73654">ProductConf</a> (const <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a> &amp;conf)</td></tr>
+<tr class="memdesc:abaac419e9f8e53a768cbe0eb82b73654 inherit pub_methods_classrack_1_1ProductConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:abaac419e9f8e53a768cbe0eb82b73654 inherit pub_methods_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
 <tr class="memitem:acdcfed065f00c724f18ee8fde76d0a52 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="acdcfed065f00c724f18ee8fde76d0a52"></a>
 virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#acdcfed065f00c724f18ee8fde76d0a52">getName</a> () const</td></tr>
@@ -260,21 +272,21 @@ Public Attributes</h2></td></tr>
 MD&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductOp.html#a582a43111f0014d61e6272cc1ed36d51">odim</a></td></tr>
 <tr class="memdesc:a582a43111f0014d61e6272cc1ed36d51"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default data parameters for encoding output (the product). <br /></td></tr>
 <tr class="separator:a582a43111f0014d61e6272cc1ed36d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_attribs_structrack_1_1ProductConf"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_structrack_1_1ProductConf')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="structrack_1_1ProductConf.html">ProductConf</a></td></tr>
-<tr class="memitem:a2fe1ad87be83ea67c8e51843cb791be4 inherit pub_attribs_structrack_1_1ProductConf"><td class="memItemLeft" align="right" valign="top"><a id="a2fe1ad87be83ea67c8e51843cb791be4"></a>
+<tr class="inherit_header pub_attribs_classrack_1_1ProductConf"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classrack_1_1ProductConf')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td></tr>
+<tr class="memitem:a2fe1ad87be83ea67c8e51843cb791be4 inherit pub_attribs_classrack_1_1ProductConf"><td class="memItemLeft" align="right" valign="top"><a id="a2fe1ad87be83ea67c8e51843cb791be4"></a>
 <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dataSelector</b></td></tr>
-<tr class="separator:a2fe1ad87be83ea67c8e51843cb791be4 inherit pub_attribs_structrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0470ed466227d970c549f7c1da5a0df1 inherit pub_attribs_structrack_1_1ProductConf"><td class="memItemLeft" align="right" valign="top"><a id="a0470ed466227d970c549f7c1da5a0df1"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1ProductConf.html#a0470ed466227d970c549f7c1da5a0df1">targetEncoding</a></td></tr>
-<tr class="memdesc:a0470ed466227d970c549f7c1da5a0df1 inherit pub_attribs_structrack_1_1ProductConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">How the (main) output is encoded. <br /></td></tr>
-<tr class="separator:a0470ed466227d970c549f7c1da5a0df1 inherit pub_attribs_structrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29b7238397966b974ac5f6978867d32a inherit pub_attribs_structrack_1_1ProductConf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">appendResults</a></td></tr>
-<tr class="memdesc:a29b7238397966b974ac5f6978867d32a inherit pub_attribs_structrack_1_1ProductConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set, appends outputs in an hdf5 structure instead of overwriting.  <a href="structrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">More...</a><br /></td></tr>
-<tr class="separator:a29b7238397966b974ac5f6978867d32a inherit pub_attribs_structrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb880a78fc420afd98783e324338f2b0 inherit pub_attribs_structrack_1_1ProductConf"><td class="memItemLeft" align="right" valign="top"><a id="afb880a78fc420afd98783e324338f2b0"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1ProductConf.html#afb880a78fc420afd98783e324338f2b0">outputDataVerbosity</a></td></tr>
-<tr class="memdesc:afb880a78fc420afd98783e324338f2b0 inherit pub_attribs_structrack_1_1ProductConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if also intermediate results (1) are saved. See &ndash;aStore. <br /></td></tr>
-<tr class="separator:afb880a78fc420afd98783e324338f2b0 inherit pub_attribs_structrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a2fe1ad87be83ea67c8e51843cb791be4 inherit pub_attribs_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0470ed466227d970c549f7c1da5a0df1 inherit pub_attribs_classrack_1_1ProductConf"><td class="memItemLeft" align="right" valign="top"><a id="a0470ed466227d970c549f7c1da5a0df1"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductConf.html#a0470ed466227d970c549f7c1da5a0df1">targetEncoding</a></td></tr>
+<tr class="memdesc:a0470ed466227d970c549f7c1da5a0df1 inherit pub_attribs_classrack_1_1ProductConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">How the (main) output is encoded. <br /></td></tr>
+<tr class="separator:a0470ed466227d970c549f7c1da5a0df1 inherit pub_attribs_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29b7238397966b974ac5f6978867d32a inherit pub_attribs_classrack_1_1ProductConf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">appendResults</a></td></tr>
+<tr class="memdesc:a29b7238397966b974ac5f6978867d32a inherit pub_attribs_classrack_1_1ProductConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set, appends outputs in an hdf5 structure instead of overwriting.  <a href="classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">More...</a><br /></td></tr>
+<tr class="separator:a29b7238397966b974ac5f6978867d32a inherit pub_attribs_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb880a78fc420afd98783e324338f2b0 inherit pub_attribs_classrack_1_1ProductConf"><td class="memItemLeft" align="right" valign="top"><a id="afb880a78fc420afd98783e324338f2b0"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductConf.html#afb880a78fc420afd98783e324338f2b0">outputDataVerbosity</a></td></tr>
+<tr class="memdesc:afb880a78fc420afd98783e324338f2b0 inherit pub_attribs_classrack_1_1ProductConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if also intermediate results (1) are saved. See &ndash;aStore. <br /></td></tr>
+<tr class="separator:afb880a78fc420afd98783e324338f2b0 inherit pub_attribs_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -296,6 +308,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#ad4df2c00e899650fb621004091420b49">ProductBase</a> (const std::string &amp;name, const std::string &amp;description)</td></tr>
 <tr class="memdesc:ad4df2c00e899650fb621004091420b49 inherit pro_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:ad4df2c00e899650fb621004091420b49 inherit pro_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac98f4fa0ae081f3e5a11d8c37509c4b4 inherit pro_methods_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top"><a id="ac98f4fa0ae081f3e5a11d8c37509c4b4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ProductBase</b> (const <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a> &amp;product)</td></tr>
+<tr class="separator:ac98f4fa0ae081f3e5a11d8c37509c4b4 inherit pro_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
 <tr class="memitem:a2f334f14441ffc0392abd27fd2f809cb inherit pro_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="a2f334f14441ffc0392abd27fd2f809cb"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>BeanLike</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
@@ -311,7 +326,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_methods_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
-<tr class="memitem:a738aee34706a5c39f02942909361bdc4 inherit pub_static_methods_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a738aee34706a5c39f02942909361bdc4">completeEncoding</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM, const std::string &amp;<a class="el" href="structrack_1_1ProductConf.html#a0470ed466227d970c549f7c1da5a0df1">targetEncoding</a>)</td></tr>
+<tr class="memitem:a738aee34706a5c39f02942909361bdc4 inherit pub_static_methods_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a738aee34706a5c39f02942909361bdc4">completeEncoding</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM, const std::string &amp;<a class="el" href="classrack_1_1ProductConf.html#a0470ed466227d970c549f7c1da5a0df1">targetEncoding</a>)</td></tr>
 <tr class="memdesc:a738aee34706a5c39f02942909361bdc4 inherit pub_static_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modifies encoding. If type is changed, resets scaling first.  <a href="classrack_1_1ProductBase.html#a738aee34706a5c39f02942909361bdc4">More...</a><br /></td></tr>
 <tr class="separator:a738aee34706a5c39f02942909361bdc4 inherit pub_static_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d69a96f68c7fe813dada3f601b811af inherit pub_static_methods_classrack_1_1ProductBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a4d69a96f68c7fe813dada3f601b811af">applyODIM</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM, const <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;srcODIM, bool applyDefaults=false)</td></tr>
