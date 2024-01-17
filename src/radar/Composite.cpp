@@ -45,7 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "Geometry.h"
 #include "Composite.h"
 //#include "Coordinates.h"
-#include "RadarProj.h"
+//#include "RadarProj.h"
 
 using namespace drain::image;
 
@@ -85,94 +85,69 @@ Composite::Composite() :  decay(1.0), cropping(false)
 }
 
 // With current settings, create simple "Polar volume" containing coordinates.
-void Composite::createProjectionLookup(Hi5Tree & dst, const AreaGeometry & binGeometry){
+void Composite::createBinIndex(Hi5Tree & dst){ //const AreaGeometry & binGeometry){
 
 	/// Automatically creates some metadata.
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	dst.clear(); // ok?
+	DataSet<PolarDst> sweep(dst["dataset1"]);
+	createBinIndex(dst, sweep.getFirstData().odim); // empty?
+
+}
+
+// With current settings, create simple "Polar volume" containing coordinates.
+void Composite::createBinIndex(Hi5Tree & dst, const PolarODIM & odim){ //const AreaGeometry & binGeometry){
+
+	/// Automatically creates some metadata.
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	//dst.clear(); // ok?
+
+	const std::type_info & t = typeid(unsigned int);
+	// RootData<PolarDst> root(dst);
 
 	{
-		const std::type_info & t = typeid(unsigned short int);
-
-		//RootData<PolarDst> root(dst);
-
 		PolarODIM rootOdim;
+		rootOdim.updateLenient(odim);
+		rootOdim.object = "PVOL";
 		rootOdim.type.clear();
 		rootOdim.setTypeDefaults(t);
-		rootOdim.lat = 60.0;
-		rootOdim.lon = 25.0;
-		rootOdim.setGeometry(binGeometry);
+		//rootOdim.lat = 60.0;
+		//rootOdim.lon = 25.0;
+		rootOdim.setGeometry(500, 360);
 		rootOdim.rscale = 500.0;
 		rootOdim.scaling.set(1.0, 0.0);
-		ODIM::copyToH5<ODIMPathElem::ROOT>(rootOdim, dst);
+		ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT>(rootOdim, dst);
 
-		DataSet<PolarDst> polar(dst["dataset1"]);  //ODIMPathElem::DATASET
-
-		if (true){
-			Data<PolarDst> beam = polar.getData("BIN_INDEX");
-			beam.initialize(t, binGeometry.width, 1);
-			for (size_t i=0; i<binGeometry.width; ++i){
-				beam.data.put(i, i);
-			}
-			// beam.odim.updateLenient(rootOdim);
-			// ODIM::copyToH5<ODIMPathElem::DATA>(rootOdim, beam.getTree());
-
-			//beam.data.properties.importCastableMap(rootOdim);
-			//beam.odim.importCastableMap(rootOdim);
-			//getQuantityMap().setQuantityDefaults(beam.odim, "COUNT", "S");
-			//beam.updateTree2();
-			//drain::TreeUtils::dump(beam.getTree());
-
-			// std::cout << beam.odim << '\n';
-			// hi5::Hi5Base::writeText(beam.getTree(), std::cerr);
-
-
-			PlainData<PolarDst> azimuthal = polar.getData("BEAM_INDEX");
-			azimuthal.initialize(t, 1, binGeometry.height);
-			for (size_t j=0; j<binGeometry.height; ++j){
-				azimuthal.data.put(j, j);
-			}
-			//azimuthal.data.properties.importCastableMap(azimuthal.odim);
-			//azimuthal.odim.importCastableMap(rootOdim);
-			// azimuthal.updateTree2();
-
-			//hi5::Hi5Base::writeText(beam.getTree(), std::cerr);
-
-		}
-
-		// polar.getFirstData().odim.updateLenient(rootOdim);
-
-		// polar.updateTree3(rootOdim);
-		// DataTools::updateInternalAttributes(polar.getTree());
-
-		// hi5::Hi5Base::writeText(polar.getTree(), std::cerr);
-		// DataTools::updateInternalAttributes(dst["dataset1"]);
-		// DataTools::updateInternalAttributes(dst);
-
-		//TreeUtils::dump(polar.getTree(), std::cout); //, CmdOutputTree::dataToStream);
-
-		// drain::Sprinter::toStream(ostr, );
-		// std::cerr << "UPON polar\n";
-		// hi5::Hi5Base::writeText(polar.getTree(), std::cerr);
-		ODIM::copyToH5<ODIMPathElem::DATASET>(rootOdim, polar.getTree());
-		DataTools::updateInternalAttributes(polar.getTree()); // TEST2019/09 // images, including DataSet.data, TODO: skip children
-
-		std::cerr << "\nUPON dst/ polar\n";
+		//mout.attention("Root");
 		//hi5::Hi5Base::writeText(dst, std::cerr);
-		hi5::Hi5Base::writeText(polar.getTree(), std::cerr);
 
+		ODIMPathElem elem(ODIMPathElem::DATASET); // "dataset" + <n>
+		mout.attention("Creating groups");
+		DataSelector::getNewChild(dst, elem);
+		mout.attention("Creating ");
+		DataSet<PolarDst> polar(dst[elem]);  //ODIMPathElem::DATASET
+
+		mout.attention("Creating groups");
+		Data<PolarDst> & beam = polar.getData("BIN_INDEX");
+		beam.initialize(t, odim.getGeometry());
+
+		for (size_t i=0; i<odim.getGeometry().getArea(); ++i){
+			beam.data.put(i, i);
+		}
+		beam.odim.updateLenient(rootOdim);
 
 	}
-	std::cerr << "\nUPON dst\n";
-	hi5::Hi5Base::writeText(dst["dataset1"], std::cerr);
-	//DataTools::updateInternalAttributes(dst);
+	// std::cerr << "\nUPON dst\n";
+	// hi5::Hi5Base::writeText(dst["dataset1"], std::cerr);
+	DataTools::updateInternalAttributes(dst);
 
 }
 
 
 void Composite::checkQuantity(const std::string & quantity){
 
-	drain::Logger mout("Composite", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	/// TODO: regexp for accepting quantities
 
 	if (!this->odim.quantity.empty()){
@@ -205,229 +180,16 @@ void Composite::checkQuantity(const std::string & quantity){
 
 }
 
-void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, double priorWeight, bool projAEQD) {
+void Composite::addPolarInnerLoop(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality,
+		double priorWeight, const RadarProj & pRadarToComposite, const drain::Rectangle<int> & bboxPix) {
+
+	/// -------------------------------------------------------
+	/// DATA PROJECTION (MAIN LOOP)
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	if (drain::Logger::TIMING){
-		SourceODIM source(srcData.odim.source);
-		mout.startTiming(source.NOD);
-	}
+	const bool USE_QUALITY_FIELD = (priorWeight > 0.0) && !srcQuality.data.isEmpty();
 
-	//const DataSet<PolarSrc> konsta(srcData.getTree()["dataset1"]);  // TODO REMOVE XX
-
-	if (!projGeo2Native.isSet()){
-		mout.debug("projGeo2Native src: ", projGeo2Native.getProjectionSrc());
-		mout.info("projGeo2Native dst: projection unset, using AEQD");
-		projAEQD = true;
-	}
-
-	odim.object = "COMP";
-
-	// Various checks
-
-	checkQuantity(srcData.odim.quantity);
-
-	checkCompositingMethod(srcData.odim);
-
-	if (srcData.odim.rscale <= 0.0){
-		mout.advice("Consider quick fix, like --/dataset1/where:rscale=500");
-		mout.fail("Illegal or missing bin length (where:rscale): ", srcData.odim.rscale);
-		return;
-	}
-
-	if (srcData.odim.area.width <= 0.0){
-		mout.advice("Consider quick fix, like --/dataset1/where:nbins=", srcData.data.getWidth());
-		mout.fail("Illegal or missing bin count (where:nbins): ", srcData.odim.area.width);
-		srcData.odim.area.width = srcData.data.getWidth();
-		mout.warn("Setting where:nbins=", srcData.odim.area.width);
-	}
-
-	if (srcData.odim.area.height <= 0.0){
-		mout.advice("Consider quick fix, like --/dataset1/where:nrays=", srcData.data.getHeight());
-		mout.fail("Illegal or missing beam count (where:nrays): ", srcData.odim.area.height);
-		srcData.odim.area.height = srcData.data.getHeight();
-		mout.warn("Setting where:nrays=", srcData.odim.area.height);
-	}
-
-	if (srcData.odim.lat == 0.0){
-		mout.warn("Suspicious latitude (where:lat): 0.0");
-	}
-
-	if (srcData.odim.lon == 0.0){
-		mout.warn("Suspicious longitude (where:long): 0.0");
-	}
-
-	ProductBase::applyODIM(this->odim, srcData.odim);
-
-
-	const bool USE_PRIOR_WEIGHT = (priorWeight > 0.0);
-
-	const bool USE_QUALITY_FIELD = USE_PRIOR_WEIGHT && !srcQuality.data.isEmpty(); // && (odim.quantity == "DBZH"); // quantity != QIND
-
-
-	if (USE_QUALITY_FIELD) {
-		mout.info(" using input q: " , EncodingODIM(srcQuality.odim) );
-	}
-	else if (USE_PRIOR_WEIGHT) {
-		mout.info(" using input weight=" , priorWeight );
-		// TODO
-		// mout.info() << "input quality exists=" << srcQuality.data.isEmpty() << ',';
-	}
-	else {
-		mout.info(" quality weighting not applied" );
-		if (srcQuality.data.isEmpty())
-			mout.note(" (input quality would be available) " );
-	}
-
-	/// GEOGRAPHIC DEFINITIONS: USE THOSE OF THE MAIN COMPOSITE, OR USE AEQD FOR SINGLE RADAR
-	RadarProj pRadarToComposite(srcData.odim.lon, srcData.odim.lat);
-	// pRadarToComposite.setSiteLocationDeg(srcData.odim.lon, srcData.odim.lat);
-
-	if (odim.source.empty())
-		odim.source = srcData.odim.source; // for tile (single-radar "composite")
-
-	if (! geometryIsSet()){
-		setGeometry(500, 500);
-		mout.info("Size not given, using default: ", this->getFrameWidth(), ',', this->getFrameHeight() );
-	}
-
-	mout.info("Info: \"", *this, '"');
-	//mout.debug2("undetectValue=" , undetectValue );
-
-	// Defined here, because later used for data update.
-	//drain::Rectangle<double> bboxM;
-
-	drain::Rectangle<double> bboxInput;
-
-
-	if (projAEQD || !isDefined()){
-
-		if (projAEQD){
-			mout.info("Using default projection AEQD (azimuthal equidistant).");
-			const std::string & aeqdStr = pRadarToComposite.getProjectionSrc();
-			// mout.debug(aeqdStr );
-			setProjection(aeqdStr);
-		}
-
-		pRadarToComposite.setProjectionDst(getProjection());
-
-		double range = PolarODIM::defaultRange;
-		if (range > 0.0){
-			mout.info("Using predefined range: " , range );
-			// pRadarToComposite.determineBoundingBoxM(PolarODIM::defaultRange, bboxM);
-		}
-		else {
-			range = srcData.odim.getMaxRange(false);
-			mout.info("Using maximum range: ", range);
-			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(true), bboxM);
-		}
-
-		mout.debug("Range:", range, " (max: ", srcData.odim.getMaxRange(true), ')');
-
-		//drain::Rectangle<double> bboxNat;
-		pRadarToComposite.determineBoundingBoxM(range, bboxInput);
-
-		mout.accept("Detected 'native' input BBOX: ", bboxInput);
-
-		setBoundingBoxM(bboxInput);
-
-		// mout.note("Now this: " , *this );
-
-	}
-	else {
-		mout.info("Using user-defined projection: " , getProjection() );
-		pRadarToComposite.setProjectionDst(getProjection());
-		pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxInput);
-
-		if (cropping){
-			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxInput); // ALREADY?
-			mout.debug("Orig: " , getBoundingBoxM() );
-			mout.debug("Cropping with " , srcData.odim.getMaxRange() , " range with bbox=" , bboxInput );
-			cropWithM(bboxInput);
-			mout.info("Cropped to: " , getBoundingBoxM() );
-			if (getBoundingBoxM().getArea() == 0){
-				mout.info("Cropping returned empty area." );
-				mout.note("Data outside bounding box, returning" );
-				allocate(); // ?
-				updateGeoData();
-				return;
-			}
-		}
-
-	}
-	/// Note: area not yet defined.
-
-	// mout.warn("range: " , (srcData.odim.getMaxRange() / 1000.0) , " km ");
-	if (!pRadarToComposite.isSet()){
-		mout.error("source or dst projection is unset " );
-		return;
-	}
-
-	if (mout.isDebug(1)){
-		/// Check mapping for the origin (= location of the radar)?
-		drain::Point2D<double> aeqd;
-		drain::Point2D<double> dest;
-
-		aeqd   = {0,0};
-		pRadarToComposite.projectFwd(aeqd.x, aeqd.y, dest.x, dest.y);
-		mout.special("Test origin", aeqd, "mapping: ", dest);
-
-		aeqd   = {0, 100000};
-		pRadarToComposite.projectFwd(aeqd.x, aeqd.y, dest.x, dest.y);
-		mout.special("Test ", aeqd, " (100km North) : ", dest);
-
-		aeqd   = {-50000,0};
-		pRadarToComposite.projectFwd(aeqd.x, aeqd.y, dest.x, dest.y);
-		mout.special("Test ", aeqd, " (50km West) : ", dest);
-	}
-
-
-	//std::cout << "pRadarToComposite:\n";
-	//pRadarToComposite.debug(std::cout);
-
-	/// Limit to data extent
-	//drain::Rectangle<double> bboxNatCommon(bboxInput);
-	//drain::Rectangle<double> & bboxNatCommon = bboxInput;
-	//mout.warn("input bbox:" ,  bboxNatCommon );
-
-	/// Area for main loop
-	/*
-	if (pRadarToComposite.isLongLat()){
-		mout.warn("cropping with bboxR (radians):" ,  getBoundingBoxR()  );
-		bboxNatCommon.crop(getBoundingBoxR());
-		//deg2pix(bboxM.lowerLeft,  bboxPix.lowerLeft);
-		//deg2pix(bboxM.upperRight, bboxPix.upperRight);
-	}
-	else {
-		mout.warn("cropping with bboxM (metric): " ,  getBoundingBoxM()  );
-		bboxNatCommon.crop(getBoundingBoxM());
-	}*/
-	bboxInput.crop(getBoundingBoxM());
-
-	drain::Rectangle<int> bboxPix;
-	m2pix(bboxInput.lowerLeft,  bboxPix.lowerLeft);
-	m2pix(bboxInput.upperRight, bboxPix.upperRight);
-	mout.debug("cropped, data:", bboxInput, ", pix area: ", bboxPix);
-
-	//mout.warn() << "Should use:" <<  bboxPix << ", in " << getFrameWidth() << 'x' << getFrameHeight() << '\n';
-
-	//if (drain::Debug > 4){
-	mout.debug();
-	//mout << "Composite" << composite << '\n';
-	mout << "Composite (cropped) " << *this;
-	mout << " geom: " << accArray.getWidth() << 'x' << accArray.getHeight() << '\n';
-	mout << "Proj:\n" << pRadarToComposite << '\n';
-	mout << "Pix area:\n" << bboxPix << '\n';
-	mout << mout.endl;
-
-	mout.debug("allocating");
-	allocate();
-	//mout.debug2("allocated" );
-	//std::cerr << count << std::endl;
-
-	/// -------------------------------------------------------
-	/// DATA PROEJCTION (MAIN LOOP)
 	mout.debug("projecting");
 	const int bins  = srcData.data.getWidth();  // TODO odimize
 	const int beams = srcData.data.getHeight(); // TODO odimize
@@ -502,10 +264,10 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 			//	std::cerr << " Pix (" << i << ',' << j << "),\t=>(" << x << ',' << y << "),\t range=" << range << ",\t bin=" << b << "\n";
 
-			/// TODO: check nodata
 			if ((b >= 0) && (b < bins)){  // (if non-undetectValue rstart)
+
 				azimuth = atan2(pMetric.x, pMetric.y);  // notice x <=> y  in radars
-				//a = (static_cast<int>(azimuth*RAD2J)+beams) % beams;
+
 				a = static_cast<int>(azimuth * RAD2J);
 				if (a < 0)
 					a += beams;
@@ -545,7 +307,208 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		}
 		// if (((pComp.y % 15) ==0)) std::cerr << "#\n";
 	}
-		// TODO: interpolation (for INJECTION)
+
+
+}
+
+
+void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, double priorWeight, bool projAEQD) {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (drain::Logger::TIMING){
+		SourceODIM source(srcData.odim.source);
+		mout.startTiming(source.NOD);
+	}
+
+	//const DataSet<PolarSrc> konsta(srcData.getTree()["dataset1"]);  // TODO REMOVE XX
+
+	if (!projGeo2Native.isSet()){
+		mout.debug("projGeo2Native src: ", projGeo2Native.getProjectionSrc());
+		mout.info("projGeo2Native dst: projection unset, using AEQD");
+		projAEQD = true;
+	}
+
+	odim.object = "COMP";
+
+	// Various checks
+
+	checkQuantity(srcData.odim.quantity);
+
+	checkCompositingMethod(srcData.odim);
+
+	if (srcData.odim.rscale <= 0.0){
+		mout.advice("Consider quick fix, like --/dataset1/where:rscale=500");
+		mout.fail("Illegal or missing bin length (where:rscale): ", srcData.odim.rscale);
+		return;
+	}
+
+	if (srcData.odim.area.width <= 0.0){
+		mout.advice("Consider quick fix, like --/dataset1/where:nbins=", srcData.data.getWidth());
+		mout.fail("Illegal or missing bin count (where:nbins): ", srcData.odim.area.width);
+		srcData.odim.area.width = srcData.data.getWidth();
+		mout.warn("Setting where:nbins=", srcData.odim.area.width);
+	}
+
+	if (srcData.odim.area.height <= 0.0){
+		mout.advice("Consider quick fix, like --/dataset1/where:nrays=", srcData.data.getHeight());
+		mout.fail("Illegal or missing beam count (where:nrays): ", srcData.odim.area.height);
+		srcData.odim.area.height = srcData.data.getHeight();
+		mout.warn("Setting where:nrays=", srcData.odim.area.height);
+	}
+
+	if (srcData.odim.lat == 0.0){
+		mout.warn("Suspicious latitude (where:lat): 0.0");
+	}
+
+	if (srcData.odim.lon == 0.0){
+		mout.warn("Suspicious longitude (where:long): 0.0");
+	}
+
+	ProductBase::applyODIM(this->odim, srcData.odim);
+
+
+	//const bool USE_PRIOR_WEIGHT = (priorWeight > 0.0);
+
+	const bool USE_QUALITY_FIELD = (priorWeight > 0.0) && !srcQuality.data.isEmpty(); // && (odim.quantity == "DBZH"); // quantity != QIND
+
+
+	if (USE_QUALITY_FIELD) {
+		mout.info(" using input q: " , EncodingODIM(srcQuality.odim) );
+	}
+	else if (priorWeight > 0.0) { // exclusive?
+		mout.info(" using input weight=" , priorWeight );
+		// TODO
+		// mout.info() << "input quality exists=" << srcQuality.data.isEmpty() << ',';
+	}
+	else {
+		mout.info(" quality weighting not applied" );
+		if (srcQuality.data.isEmpty())
+			mout.note(" (input quality would be available) " );
+	}
+
+	/// GEOGRAPHIC DEFINITIONS: USE THOSE OF THE MAIN COMPOSITE, OR USE AEQD FOR SINGLE RADAR
+	RadarProj pRadarToComposite(srcData.odim.lon, srcData.odim.lat);
+	// pRadarToComposite.setSiteLocationDeg(srcData.odim.lon, srcData.odim.lat);
+
+	if (odim.source.empty())
+		odim.source = srcData.odim.source; // for tile (single-radar "composite")
+
+	if (! geometryIsSet()){
+		setGeometry(500, 500);
+		mout.info("Size not given, using default: ", this->getFrameWidth(), ',', this->getFrameHeight() );
+	}
+
+	mout.info("Info: \"", *this, '"');
+	//mout.debug2("undetectValue=" , undetectValue );
+
+	// Defined here, because later used for data update.
+	//drain::Rectangle<double> bboxM;
+
+	drain::Rectangle<double> bboxInput;
+
+
+	if (projAEQD || !isDefined()){
+
+		if (projAEQD){
+			mout.info("Using default projection AEQD (azimuthal equidistant).");
+			const std::string & aeqdStr = pRadarToComposite.getProjectionSrc();
+			// mout.debug(aeqdStr );
+			setProjection(aeqdStr);
+		}
+
+		pRadarToComposite.setProjectionDst(getProjection());
+
+		double range = PolarODIM::defaultRange;
+		if (range > 0.0){
+			mout.info("Using predefined range: " , range );
+			// pRadarToComposite.determineBoundingBoxM(PolarODIM::defaultRange, bboxM);
+		}
+		else {
+			range = srcData.odim.getMaxRange(false);
+			mout.info("Using maximum range: ", range);
+			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(true), bboxM);
+		}
+
+		mout.debug("Range:", range, " (max: ", srcData.odim.getMaxRange(true), ')');
+
+		//drain::Rectangle<double> bboxNat;
+		pRadarToComposite.determineBoundingBoxM(range, bboxInput);
+
+		mout.accept("Detected 'native' input BBOX: ", bboxInput);
+
+		setBoundingBoxM(bboxInput);
+
+		// mout.note("Now this: " , *this );
+
+	}
+	else {
+		mout.info("Using user-defined projection: ", getProjection());
+		pRadarToComposite.setProjectionDst(getProjection());
+		pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(), bboxInput);
+
+		if (cropping){
+			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxInput); // ALREADY?
+			mout.debug("Orig: ", getBoundingBoxM());
+			mout.debug("Cropping with ", srcData.odim.getMaxRange(), " range with bbox=", bboxInput );
+			cropWithM(bboxInput);
+			mout.info("Cropped to: ", getBoundingBoxM());
+			if (getBoundingBoxM().getArea() == 0){
+				mout.info("Cropping returned empty area." );
+				mout.note("Data outside bounding box, returning" );
+				allocate(); // ?
+				updateGeoData();
+				return;
+			}
+		}
+
+	}
+	/// Note: area not yet defined.
+
+	// mout.warn("range: " , (srcData.odim.getMaxRange() / 1000.0) , " km ");
+	if (!pRadarToComposite.isSet()){
+		mout.error("source or dst projection is unset " );
+		return;
+	}
+
+	if (mout.isDebug(1)){
+		/// Check mapping for the origin (= location of the radar)?
+		drain::Point2D<double> aeqd;
+		drain::Point2D<double> dest;
+
+		aeqd   = {0,0};
+		pRadarToComposite.projectFwd(aeqd.x, aeqd.y, dest.x, dest.y);
+		mout.special("Test origin", aeqd, "mapping: ", dest);
+
+		aeqd   = {0, 100000};
+		pRadarToComposite.projectFwd(aeqd.x, aeqd.y, dest.x, dest.y);
+		mout.special("Test ", aeqd, " (100 km North) : ", dest);
+
+		aeqd   = {-50000,0};
+		pRadarToComposite.projectFwd(aeqd.x, aeqd.y, dest.x, dest.y);
+		mout.special("Test ", aeqd, " (50 km West) : ", dest);
+	}
+
+	bboxInput.crop(getBoundingBoxM());
+
+	drain::Rectangle<int> bboxPix;
+	m2pix(bboxInput.lowerLeft,  bboxPix.lowerLeft);
+	m2pix(bboxInput.upperRight, bboxPix.upperRight);
+	mout.debug("cropped, data:", bboxInput, ", pix area: ", bboxPix);
+
+	//mout.warn() << "Should use:" <<  bboxPix << ", in " << getFrameWidth() << 'x' << getFrameHeight() << '\n';
+	mout.debug("Composite (cropped) ", *this, " geom: ", accArray.getGeometry(), "\nProj:\n", pRadarToComposite, "\n Pix area:\n", bboxPix, '\n');
+
+	mout.debug("allocating");
+	allocate();
+	//mout.debug2("allocated" );
+	//std::cerr << count << std::endl;
+
+	/// -------------------------------------------------------
+	/// DATA PROJECTION (MAIN LOOP)
+	addPolarInnerLoop(srcData, srcQuality, priorWeight, pRadarToComposite, bboxPix);
+	/// -------------------------------------------------------
+	// TODO: interpolation (for INJECTION)
 
 
 	drain::Rectangle<double> bboxD;

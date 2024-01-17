@@ -478,6 +478,9 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 	else if (H5Tequal(datatype, H5T_NATIVE_INT)){
 		image.initialize(typeid(int), width,height, channels);
 	}
+	else if (H5Tequal(datatype, H5T_NATIVE_UINT)){
+		image.initialize(typeid(unsigned int), width,height, channels);
+	}
 	/// Added 2016 for sclutter
 	else if (H5Tequal(datatype, H5T_NATIVE_LONG)){
 		image.initialize(typeid(long int), width,height, channels);

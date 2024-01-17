@@ -468,13 +468,13 @@ public:
 		acc.extract(acc.odim, dstProduct, value);
 		acc.odim.ACCnum += acc.counter;
 
-		ODIM::copyToH5<ODIMPathElem::DATASET>(acc.odim, dstDataSetGroup); //@dstProduct odim.copyToDataSet(dstDataSetGroup);
+		ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(acc.odim, dstDataSetGroup); //@dstProduct odim.copyToDataSet(dstDataSetGroup);
 		// dst.odim.copyToData(dstDataGroup); ??
 		///// DataTools::updateCoordinatePolicy(dst, rack::polarLeft);
 		DataTools::updateInternalAttributes(dst); // why not start form "dataset1" ?
 
 		//mout.warn("ODIM lat" ,  acc.odim );
-		ODIM::copyToH5<ODIMPathElem::ROOT>(acc.odim, dst);
+		ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT>(acc.odim, dst);
 
 		ProductBase::setODIMsoftwareVersion(dst[ODIMPathElem::HOW].data.attributes);
 		//dst[ODIMPathElem::HOW].data.attributes["software"]   = __RACK__;

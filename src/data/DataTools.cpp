@@ -29,6 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include "drain/util/TreeUtils.h"
 #include "drain/util/Type.h"
 
 #include "hi5/Hi5.h"
@@ -71,6 +72,9 @@ void DataTools::updateInternalAttributes(Hi5Tree & src){
 				*/
 	}
 
+	// drain::TreeUtils::dump(src, std::cout);
+	// hi5::Hi5Base::writeText(src, std::cout);
+
 	updateInternalAttributes(src, properties);
 	//updateInternalAttributes(src, drain::FlexVariableMap());
 	//updateInternalAttributes(src, drain::VariableMap());
@@ -81,6 +85,14 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	/*
+	mout.special();
+	for (const auto & entry : src){
+		mout << entry.first << ',';
+	}
+	mout << mout.endl;
+	*/
+
 	//std::string path = parentAttributes.get("how:path","");
 	/*
 	mout.special(// "path: ", parentAttributes.get("how:path",""),
@@ -89,11 +101,10 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 	*/
 
 	/// Write to "hidden" variables of this node (src).
-	drain::FlexVariableMap & attributes = src.data.dataSet.properties;
-	// mout.special("my coordProp) ", attributes["coordPolicy"]);
+	drain::FlexVariableMap & localAttributes = src.data.dataSet.properties;
+	localAttributes.importMap(parentAttributes); // Init with upper level (parent) values
 
-	// Init with upper level state
-	attributes.importMap(parentAttributes); //, LOG_DEBUG+2);
+	// mout.special("my coordProp) ", attributes["coordPolicy"]);
 	// attributes.updateFromCastableMap(parentAttributes);
 	// std::cerr << "MAP now: " << a << "\n\n";
 	// mout.special("my coordPolicy) ", src.data.dataSet.getCoordinatePolicy());
@@ -101,15 +112,15 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 	/// Step 1: collect local values of \c /what, \c /where, and \c /how groups, overwriting attributes initialised to parent values.
 	std::stringstream sstr;
 	for (const auto & entry : src){
+		// mout.warn(" consider: ", entry.first);
 		if (entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-			const drain::VariableMap & a = entry.second.data.attributes;
-			for(const auto & e: a){
+			// mout.warn(" ok, from: ", entry.first);
+			const drain::VariableMap & groupAttributes = entry.second.data.attributes;
+			for(const auto & e: groupAttributes){
 				sstr.str("");
-				sstr << entry.first << ':' << e.first;
-				attributes[sstr.str()] = e.second;
-				//mout.warn(sstr.str() , '=' , it->second , " ... " , a[sstr.str()] , drain::Type::getTypeChar(it->second.getType()) );
-				//mout.warn("  ", sstr.str() , '=' , e.second , " ... (" , a[sstr.str()], ')' , drain::Type::getTypeChar(e.second.getType()) );
-				mout.warn("  ", sstr.str() , '=' , e.second , " ... [", drain::Type::getTypeChar(e.second.getType()), ']');
+				sstr << entry.first << ':' << e.first; // group name + ':' + group attr name (like "where:lon")
+				localAttributes[sstr.str()] = e.second; // = value
+				// mout.warn("  ", sstr.str() , '=' , e.second , " ... [", drain::Type::getTypeChar(e.second.getType()), ']');
 			}
 		}
 	}
@@ -128,37 +139,40 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 			drain::image::Image & img = entry.second.data.dataSet;
 			if (img.typeIsSet()){
 				// Non-standard
-				attributes["what:type"] = std::string(1u, drain::Type::getTypeChar(img.getType()));
+				localAttributes["what:type"] = std::string(1u, drain::Type::getTypeChar(img.getType()));
 				// Important: ensure Image has (scale,offset) as defined by above WHAT(gain,offset)
 				drain::ValueScaling & s = img.getScaling();
-				s.set(attributes.get("what:gain", s.scale), attributes.get("what:offset", s.offset));
+				s.set(localAttributes.get("what:gain", s.scale), localAttributes.get("what:offset", s.offset));
 				// Needed. As a side effect, empty data1.img may get a scaling...
-				attributes["scale"]  = s.scale;
-				attributes["offset"] = s.offset;
+				localAttributes["scale"]  = s.scale;
+				localAttributes["offset"] = s.offset;
 				//mout.warn(a.get("what:quantity", "?") , ", scaling " , img.getScaling() , ' ' , img );
 			}
 
 			if (img.getName().empty()){
-				img.setName(attributes.get("name",""));
+				img.setName(localAttributes.get("name",""));
 			}
 			//mout.warn("scaling1 " , entry.second.data.dataSet.getScaling() );
 		}
 
 
 		// mout.note("considering " , entry.first );
-		if (entry.first.belongsTo(ODIMPathElem::DATA_GROUPS | ODIMPathElem::ARRAY)){  // ){//
-			mout.warn(entry.first, " .... ");
+		if (entry.first.belongsTo(ODIMPathElem::DATA_GROUPS)){ // | ODIMPathElem::ARRAY)){  //
+			// mout.warn(entry.first, " .... ");
 			/*
 			a["how:path"] = path;
 			a["how:path"] << entry.first;
 			mout.special("pathy -> ", a["how:path"]);
 			*/
-			updateInternalAttributes(entry.second,  attributes); // policy,
+			updateInternalAttributes(entry.second,  localAttributes); // policy,
 		}
 
 		if (entry.first.is(ODIMPathElem::ARRAY)){
-			mout.warn("  --image ", entry.second.data.dataSet.getName(), " coordPolicy:", entry.second.data.dataSet.getCoordinatePolicy());
-			mout.warn("  --image ", entry.second.data.dataSet.getName(), " scaling: ",    entry.second.data.dataSet.getScaling());
+			if (!entry.second.data.dataSet.isEmpty()){
+				updateInternalAttributes(entry.second,  localAttributes); // policy,
+				// mout.warn("  --image ", entry.second.data.dataSet.getName(), " coordPolicy:", entry.second.data.dataSet.getCoordinatePolicy());
+				// mout.warn("  --image ", entry.second.data.dataSet.getName(), " scaling: ",    entry.second.data.dataSet.getScaling());
+			}
 		}
 
 	}

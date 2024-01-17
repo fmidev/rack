@@ -43,7 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "Coordinates.h"
 
 #include "RadarAccumulator.h"
-
+#include "RadarProj.h"
 
 namespace rack
 {
@@ -175,10 +175,15 @@ public:
 	void updateInputSelector(const std::string & select);
 
 	// With current settings, create simple "Polar volume" containing coordinates.
-	void createProjectionLookup(Hi5Tree & dst, const AreaGeometry & binGeometry = {500,360});
+	// void createProjectionLookup(Hi5Tree & dst, const AreaGeometry & binGeometry = {500,360});
+	void createBinIndex(Hi5Tree & dst);
 
+	void createBinIndex(Hi5Tree & dst, const PolarODIM & odim);
 
 protected:
+
+	void addPolarInnerLoop(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcQuality, double priorWeight,
+			const RadarProj & pRadarToComposite, const drain::Rectangle<int> & bboxPix);
 
 	void updateNodeMap(const std::string & node, int i, int j);
 

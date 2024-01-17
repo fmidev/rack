@@ -1011,9 +1011,9 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 		mout.note("Cartesian product detected" );
 		CartesianODIM odim; //(dstImage.properties);
 		deriveImageODIM(dstImage, odim);  // generalize in ODIM.h (or obsolete already)
-		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
-		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, ctx.polarInputHi5[dataSetElem]); // $ odim.copyToDataSet(ctx.inputHi5(dataSetPath));
-		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, ctx.polarInputHi5); // $ odim.copyToRoot(ctx.inputHi5);
+		ODIM::updateH5AttributeGroups<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
+		ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(odim, ctx.polarInputHi5[dataSetElem]); // $ odim.copyToDataSet(ctx.inputHi5(dataSetPath));
+		ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT>(odim, ctx.polarInputHi5); // $ odim.copyToRoot(ctx.inputHi5);
 		mout.unimplemented("swap HDF5 for Cartesian data" );
 	}
 	else {
@@ -1026,9 +1026,9 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 		}
 		PolarODIM odim;
 		deriveImageODIM(dstImage, odim);   // TODO generalize in ODIM.h (or obsolete already)
-		ODIM::copyToH5<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
-		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, ctx.polarInputHi5[dataSetElem]); // $odim.copyToDataSet(ctx.inputHi5(dataSetPath));
-		ODIM::copyToH5<ODIMPathElem::ROOT>(odim, ctx.polarInputHi5); // $ odim.copyToRoot(ctx.inputHi5);
+		ODIM::updateH5AttributeGroups<ODIMPathElem::DATA>(odim, dst); // $ odim.copyToData(dst);
+		ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(odim, ctx.polarInputHi5[dataSetElem]); // $odim.copyToDataSet(ctx.inputHi5(dataSetPath));
+		ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT>(odim, ctx.polarInputHi5); // $ odim.copyToRoot(ctx.inputHi5);
 	}
 
 	DataTools::updateInternalAttributes(ctx.polarInputHi5);

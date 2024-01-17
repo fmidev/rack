@@ -259,9 +259,9 @@ public:
 	~RootData(){
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.unimplemented("ODIM::copyToH5<ODIMPathElem::ROOT> odim design: ", this->odim);
+		mout.unimplemented("ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT> odim design: ", this->odim);
 
-		ODIM::copyToH5<ODIMPathElem::ROOT>(this->odim, this->tree);
+		ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT>(this->odim, this->tree);
 		DataTools::updateInternalAttributes(this->tree); // overrides anything?
 	};
 
@@ -438,7 +438,7 @@ public:
 	/// TODO: consider this to destructor
 	inline
 	void updateTree2(){
-		ODIM::copyToH5<ODIMPathElem::DATA>(this->odim, this->tree);
+		ODIM::updateH5AttributeGroups<ODIMPathElem::DATA>(this->odim, this->tree);
 		DataTools::updateInternalAttributes(this->tree); // Needed? The subtree is small... But for quality field perhaps.
 	}
 
@@ -545,8 +545,10 @@ public:
 	typedef std::map<std::string, DT > map_t;
 
 	// Experimental. Mainly for geometry (width, height) - but also for date+time or elangle?
+	/*
 	typedef typename DT::odim_t odim_t;
 	odim_t baseODIM;
+
 
 	inline
 	void setGeometry(size_t width, size_t height){
@@ -558,6 +560,7 @@ public:
 		baseODIM.setGeometry(geometry);
 	}
 	//typename DT::odim_t odim;// 2023/01 experimental
+	*/
 
 	/// Given a \c dataset subtree, like tree["dataset3"], constructs a data map of desired quantities.
 	DataGroup(typename DT::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
@@ -641,7 +644,7 @@ public:
 				DataSelector::getNextChild(this->tree, child);
 				mout.debug3("add: " , child , " [" , quantity , ']' );
 				it = this->insert(this->begin(), typename map_t::value_type(quantity, DT(this->getTree()[child], quantity)));  // WAS [path]
-				it->second.setGeometry(baseODIM.getGeometry());
+				// it->second.setGeometry(baseODIM.getGeometry());
 			}
 		}
 		return it->second;
@@ -763,7 +766,7 @@ public:
 	void updateTree3(const typename datatype_t::odim_t & odim){  //
 		//odim.copyToDataSet(this->tree);
 		//if (!DataTools::removeIfExcluded(this->tree))
-		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, this->tree);
+		ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(odim, this->tree);
 		DataTools::updateInternalAttributes(this->tree); // images, including DataSet.data, TODO: skip children
 	}
 
@@ -771,7 +774,7 @@ public:
 	inline
 	void updateTree3(const typename datatype_t::odim_t & odim) const {  //
 		std::cout << "updateTree3 const \n";
-		//ODIM::copyToH5<ODIMPathElem::DATASET>(odim, tree);
+		//ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(odim, tree);
 	}
 	*/
 
@@ -1170,7 +1173,7 @@ public:
 	void updateTree3(const typename DT::odim_t & odim){  //
 		//odim.copyToDataSet(this->tree);
 		//if (!DataTools::removeIfExcluded(this->tree))
-		ODIM::copyToH5<ODIMPathElem::DATASET>(odim, this->tree);
+		ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(odim, this->tree);
 		DataTools::updateInternalAttributes(this->tree); // TEST2019/09 // images, including DataSet.data, TODO: skip children
 		//DataTools::updateInternalAttributes(this->tree, drain::FlexVariableMap()); // TEST2019/09 // images, including DataSet.data, TODO: skip children
 	}
@@ -1179,7 +1182,7 @@ public:
 	inline
 	void updateTree3(const typename DT::odim_t & odim) const {  //
 		std::cout << "updateTree3 const \n";
-		//ODIM::copyToH5<ODIMPathElem::DATASET>(odim, tree);
+		//ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(odim, tree);
 	}
 
 

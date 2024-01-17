@@ -969,7 +969,7 @@ void DataSelector::swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::gro
 
 	ODIMPathElem dstElem(groupType, 1);
 	DataSelector::getNextChild(dst, dstElem);
-	mout.note("Swapping: ... dst:'", dstElem, "' group type: ", groupType, " note: odim?"); // see quality comb..
+	mout.debug("Swapping: ... dst:'", dstElem, "' group type: ", groupType, " note: odim?"); // see quality comb..
 	// Create empty dst[dstElem] and swap it...
 	dst[dstElem].swap(srcGroup);
 	//DataTools::updateInternalAttributes(ctx.polarInputHi5);

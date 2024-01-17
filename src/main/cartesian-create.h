@@ -208,7 +208,7 @@ public:
 		if (!ctx.polarInputHi5.empty())
 			mout.warn("polar input not empty");
 
-		composite.createProjectionLookup(ctx.polarInputHi5);
+		composite.createBinIndex(ctx.polarInputHi5);
 
 
 	}

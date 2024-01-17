@@ -255,7 +255,7 @@ public:
 	 */
 	template <group_t G, class T>
 	static inline
-	void copyToH5(const T &odim, Hi5Tree & dst) {
+	void updateH5AttributeGroups(const T &odim, Hi5Tree & dst) {
 		static const T odimLimited(G);
 		static const std::list<std::string> & keys = odimLimited.getKeyList();
 		//odim.copyTo(odimLimited.getKeyList(), dst);
@@ -264,7 +264,7 @@ public:
 
 	template <group_t G, class T>
 	static inline
-	void copyToH5(const T &odim, const Hi5Tree & dst) {
+	void updateH5AttributeGroups(const T &odim, const Hi5Tree & dst) {
 		//static T odimLimited(G);
 		//odim.copyTo(odimLimited.getKeyList(), dst);
 	}

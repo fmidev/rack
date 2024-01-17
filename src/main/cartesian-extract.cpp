@@ -100,7 +100,7 @@ void CartesianSun::exec() const {
 	// Still "borrowing" composite, yet not one.
 	dstData.odim.updateGeoInfo(ctx.composite);
 
-	ODIM::copyToH5<ODIMPathElem::ROOT>(dstData.odim, ctx.cartesianHi5); // od
+	ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT>(dstData.odim, ctx.cartesianHi5); // od
 
 	ctx.currentHi5 = &ctx.cartesianHi5;
 	DataTools::updateInternalAttributes(ctx.cartesianHi5);

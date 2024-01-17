@@ -76,6 +76,17 @@ void PolarODIM::updateLenient(const PolarODIM & odim){
 
 	ODIM::updateLenient(odim);
 
+	if (rscale == 0.0){
+		rscale = odim.rscale;
+	}
+
+	/*
+	if (rstart == 0){
+		rstart = odim.rstart;
+	}
+	*/
+
+
 	//if (NI == 0.0)
 	odim.getNyquist(LOG_INFO);
 
