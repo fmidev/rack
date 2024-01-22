@@ -22,66 +22,91 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
-
-#include "drain/util/Log.h"
-// #include "File.h"  // debugging
-
-#include "AccumulationArray.h"
-
-
-
-// TODO: image/
-/** See also radar::Compositor
- * 
  */
+
+//#include <sstream>
+#include <ostream>
+#include <stdexcept>
+
+#include "TextStyle.h"
+
 namespace drain
 {
 
-namespace image
-{
+template <>
+const std::map<TextStyle::Colour,int> & TextStyleVT100::getCodeMap(){
 
-void AccumulationArray::setGeometry(size_t width, size_t height){
+	static
+	const std::map<TextStyle::Colour,int> map = {
+			{BLACK, 30},
+			{RED, 31},
+			{GREEN, 32},
+			{YELLOW, 33},
+			{BLUE, 34},
+			{PURPLE, 35},
+			{CYAN, 36},
+			{WHITE, 37},
+			{NO_COLOR, 39}
+			/*
+			{BLACK_BG, 40},
+			{RED_BG, 41},
+			{GREEN_BG, 42},
+			{YELLOW_BG, 43},
+			{BLUE_BG, 44},
+			{MAGENTA_BG, 45},
+			{CYAN_BG, 46},
+			{WHITE_BG, 47},
+			{DEFAULT_BG, 49}
+			*/
+	};
 
-	geometry.set(width, height);
-
-	data.setGeometry(geometry);
-	weight.setGeometry(geometry);
-	count.setGeometry(geometry);
-	data2.setGeometry(geometry);
-
-	//coordinateHandler.setBounds(width,height);
-	// std::cout << __FILE__ << ':' << __FUNCTION__ << '(' << width << ',' << height << ')' << '\n';
-	coordinateHandler.setLimits(width, height);
-	// std::cout << __FILE__ << ':' << __FUNCTION__ << ':' << coordinateHandler << '\n';
-	// std::cout << __FILE__ << ':' << __FUNCTION__ << ':' << getCoordinateHandler() << '\n';
+	return map;
 }
 
-void AccumulationArray::clear(){
-	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-	data.clear();
-	weight.clear();
-	count.clear();
-	data2.clear();
+template <>
+const std::map<TextStyle::Style,int> & TextStyleVT100::getCodeMap(){
+
+	static
+	const std::map<TextStyle::Style,int> map = {
+			{NO_STYLE, 0},
+			{ITALIC, 3},
+			{BOLD, 1},
+			{DIM, 2},
+			{REVERSE, 7}
+	};
+
+	return map;
 }
 
+// enum Style {NO_STYLE=0, ITALIC=1, BOLD=2, DIM=4, REVERSE=8}; // DEFAULT,
+// enum Line {NO_LINE=0, UNDERLINE=1, DOUBLE_UNDERLINE=2, OVERLINE=4};
 
+template <>
+const std::map<TextStyle::Line,int> & TextStyleVT100::getCodeMap(){
 
+	static
+	const std::map<TextStyle::Line,int> map = {
+			{NO_LINE, 0},
+			{UNDERLINE, 4},
+			{DOUBLE_UNDERLINE, 21}, // Double underline
+			{OVERLINE, 9}
+	};
 
-std::ostream & operator<<(std::ostream & ostr, const AccumulationArray & accArray){
-	ostr << "AccumulationArray geom: " << accArray.getGeometry() << ' ';
-	return ostr;
+	return map;
 }
 
+/*
+template <>
+struct TypeName<TextStyle::Style> {
+    static const char* get(){ return "TextStyle::Style"; }
+};
+*/
 
 
-}
 
-}
-
-// Drain
+} // drain::

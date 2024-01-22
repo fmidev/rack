@@ -124,6 +124,8 @@ void AccumulationMethod::extractValue(const AccumulationArray & accArray, const 
 	double value;
 	double weight;
 
+
+
 	if (crop.empty()){
 		mout.debug("No cropping, computing in direct mode (quick)");
 		const size_t s = dst.getVolume();
@@ -397,6 +399,10 @@ void AverageMethod::extractValue(const AccumulationArray & accArray, const Accum
 	double value;
 	double weight;
 
+	// mout.attention("acc geom: ", accArray.getGeometry());
+	// mout.attention("dst geom: ", dst.getGeometry());
+	// dst.fill(123 + 0x8000);
+
 	// Marker for bins having data (count > 0), but unusable value,
 	const double noReadingMarker = coder.getNoReadingMarker();
 	// const double minValue = Type::call<typeMin, double>(dst.getType()); // dst.scaling.getMin<double>();
@@ -560,13 +566,13 @@ void WeightedAverageMethod::updateBean() const {
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (p<0.0){
-		mout.error() << "p negative" << mout.endl;
+		mout.error("p negative" );
 	}
 	USE_P = (p > 0.0) && (p != 1.0);
 	pInv = USE_P ? 1.0/p : 1.0;
 
 	if (r < 0.0){
-		mout.error() << "r negative" << mout.endl;
+		mout.error("r negative" );
 	}
 	USE_R = (r > 0.0) && (r != 1.0);
 	rInv  = USE_R ? 1.0/r : 1.0;

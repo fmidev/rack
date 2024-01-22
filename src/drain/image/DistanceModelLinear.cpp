@@ -54,14 +54,24 @@ void DistanceModelLinear::setRadius(float horz, float vert, float horzLeft, floa
 
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	this->horzRadius.set(horz, horzLeft); // forward   = horz;
-	this->vertRadius.set(vert, vertUp); // forward  = vert;
+	/// NEW 2024
+	if (std::isnan(vert))
+		vert = horz;
 
-	mout.debug() << this->getParameters() << mout.endl;
-	mout.debug() << "Radii: " << horzRadius << ", " << vertRadius << mout; // ", " << diag << mout.endl;
+	if (std::isnan(horzLeft))
+		horzLeft = horz;
+
+	if (std::isnan(vertUp))
+		vertUp = vert;
+
+	this->horzRadius.set(horz, horzLeft); // forward   = horz;
+	this->vertRadius.set(vert, vertUp);   // forward  = vert;
+
+	mout.debug(this->getParameters() );
+	mout.debug("Radii: " , horzRadius , ", " , vertRadius ); // ", " << diag << mout.endl;
 
 	if (getMax() == 0.0){
-		mout.warn() << "max unset " << mout.endl; // ", " << diag << mout.endl;
+		mout.warn("max unset " ); // ", " << diag << mout.endl;
 	}
 
 	// Decrements
@@ -73,7 +83,7 @@ void DistanceModelLinear::setRadius(float horz, float vert, float horzLeft, floa
 
 	setDecrement(hRight, vDown, hLeft, vUp);  // handles diag and knight
 
-	mout.debug() << "Decs: " << this->horzDec << ", " << this->vertDec << mout;
+	mout.debug("Decs: " , this->horzDec , ", " , this->vertDec );
 
 }
 
@@ -105,7 +115,7 @@ void DistanceModelLinear::setDecrement(float horz, float vert, float horzLeft, f
 	vertDec.forward  = checkDec(vert,   horzDec.forward);
 	vertDec.backward = checkDec(vertUp, vertDec.forward);
 
-	mout.debug() << "Decrements " << horzDec << ',' << vertDec << mout; // ", " << diag << mout.endl;
+	mout.special("decrements: ", horzDec, ',', vertDec); //
 
 
 }
@@ -125,10 +135,5 @@ DistanceElement DistanceModelLinear::getElement(short dx, short dy, bool forward
 }
 
 
-
-
-}
-}
-
-
-// Drain
+} // image::
+} // drain::

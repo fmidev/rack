@@ -43,7 +43,7 @@ void QualityOp::getDstConf(const ImageConf &src, ImageConf & dst) const {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
 
-	mout.debug3() << "src: " << src << mout.endl;
+	mout.debug3("src: " , src );
 
 	mout.unimplemented("overlap check possibly missing" );
 	/*

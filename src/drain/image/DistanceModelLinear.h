@@ -50,7 +50,7 @@ class DistanceModelLinear : public DistanceModel
 
 public:
 
-	DistanceModelLinear() : DistanceModel(__FUNCTION__){
+	DistanceModelLinear() : DistanceModel(__FUNCTION__, "Linearly decreasing intensities - applies decrements."){
 		//setRadius(widths[0], heights[0]);
 	};
 

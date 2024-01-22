@@ -231,7 +231,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 
 		mout.ok("using path: '" , path , "'" );
 
-		drain::image::Image & img = src(path)[ODIMPathElem::ARRAY].data.dataSet;
+		drain::image::Image & img = src(path)[ODIMPathElem::ARRAY].data.image;
 		mout.info(img.getProperties().get("what:quantity", "?") , ", scaling: " , img.getScaling() , "  " , img );
 		// mout.attention("coordPolicy: " , img.getCoordinatePolicy());
 
@@ -411,7 +411,7 @@ bool RackContext::guessDatasetGroup(const Hi5Tree & src, ODIMPathElem & pathElem
 	pathElem.set(ODIMPathElem::DATASET, 1);
 	//ODIMPathElem parent(ODIMPathElem::DATASET, 1);
 	if (appendResults.is(ODIMPathElem::DATASET)){
-		DataSelector::getNextChild(src, pathElem);
+		ODIMPathTools::getNextChild(src, pathElem);
 		/*
 		if (pathElem == currentPath.front()){
 			mout.note("this path could have been set automatically: " , currentPath );
@@ -420,7 +420,7 @@ bool RackContext::guessDatasetGroup(const Hi5Tree & src, ODIMPathElem & pathElem
 		return true;
 	}
 	else if (appendResults.is(ODIMPathElem::DATA)){
-		DataSelector::getLastChild(src, pathElem);
+		ODIMPathTools::getLastChild(src, pathElem);
 		if (pathElem.index == 0){
 			pathElem.index = 1;
 		}

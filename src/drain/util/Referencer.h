@@ -123,9 +123,10 @@ public:
 			this->setPtr(p);
 		}
 		catch (const std::exception & e){
-			// std::cerr << "Reference & link: unsupported type?" << std::endl;
+			std::cerr << __FILE__ << ':' << __FUNCTION__ << ": unsupported type: " << typeid(F).name() << std::endl;
 			// throw e;
-			throw DrainException(__FILE__, ':', __FUNCTION__,": unsupported type: ", typeid(F).name());
+			throw std::runtime_error("unsupported type");
+			//throw DrainException(__FILE__, ':', __FUNCTION__,": unsupported type: ", typeid(F).name());
 		}
 		return *this;
 	}

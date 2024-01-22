@@ -41,6 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <set>
 
 // #include "Sprinter.h": cannot use Sprinter, as long as SprinterLayouit uses UniTuple...
+#include "StringBuilder.h"
 #include "TypeUtils.h"
 
 namespace drain {

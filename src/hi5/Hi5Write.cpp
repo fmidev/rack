@@ -116,7 +116,7 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 
 	const hi5::NodeHi5 & node = tree.data;
 	const drain::VariableMap  & attributes = node.attributes;
-	const drain::image::Image & image = node.dataSet;
+	const drain::image::Image & image = node.image;
 
 	if (node.exclude){ // attributes["~tmp~"].getS
 		mout.debug2() << "skipping temporary object " << path << mout.endl;

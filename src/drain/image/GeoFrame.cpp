@@ -95,12 +95,12 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 	if (BBox::isMetric({lonLL, latLL}) || BBox::isMetric({lonUR, latUR})){
 	// if (isMetric(lonLL, 180.0) || isMetric(latLL, 90.0) || isMetric(lonUR, 180.0) || isMetric(latUR, 90.0)){
 
-		//mout.note() << "experimental: setting metric bbox: " << mout.endl; // << resources.bbox
-		//mout.note() << lonLL << ' ' << latLL << ' ' << lonUR << ' ' << latUR << mout.endl;
+		//mout.note("experimental: setting metric bbox: " ); // << resources.bbox
+		//mout.note(lonLL , ' ' , latLL , ' ' , lonUR , ' ' , latUR );
 
 		if (!projectionIsSet()){
 			mout.advice("For best accuracy, set projection before metric bbox");
-			//mout.error() << "projection must be set prior to setting metric bbox (" << ")" << mout.endl;
+			//mout.error("projection must be set prior to setting metric bbox (" , ")" );
 			//return;
 		}
 
@@ -111,7 +111,7 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 
 		setBoundingBoxM(lonLL, latLL, lonUR, latUR); // essentially modifies BoxR and BoxD
 
-		mout.special() << "setting metric bbox: " << getBoundingBoxM() << mout.endl; // << resources.bbox
+		mout.special("setting metric bbox: " , getBoundingBoxM() ); // << resources.bbox
 
 	}
 	else {
@@ -257,10 +257,10 @@ void GeoFrame::updateBoundingBoxM(){
 	}
 	else {
 		// drain::Logger mout(__FILE__, __FUNCTION__);
-		// mout.debug() << "could not (yet) set metric/native bbox" << mout.endl;
+		// mout.debug("could not (yet) set metric/native bbox" );
 		// warn?
 		if (isLongLat()){ // ie. native coords went radial above
-			//mout.warn() << "LAN-LON.. could set R native bbox" << mout.endl;
+			//mout.warn("LAN-LON.. could set R native bbox" );
 			bBoxNative.assign(bBoxD);
 		}
 	}
@@ -281,7 +281,7 @@ void GeoFrame::updateBoundingBoxM(){
 /*
 void GeoFrame::setProjection(const std::string &s){
 	// const bool PROJ_SET = projectionIsSet();
-	//mout.special() << "(metric) Area: " << bBoxNative.getArea() << mout;
+	//mout.special("(metric) Area: " , bBoxNative.getArea() );
 	projGeo2Native.setProjectionDst(s);
 }
 */
@@ -306,7 +306,7 @@ void GeoFrame::updateProjection(){
 			/*
 			if (PROJ_SET) {
 				// Problem: if proj is changed, which bbox should be used as a basis for adjusting the others?
-				//mout.warn() << "Re-adjusting Metric Bounding Box (" << bBoxNative << "), risk of loosing precision" << mout;
+				//mout.warn("Re-adjusting Metric Bounding Box (" , bBoxNative , "), risk of loosing precision" );
 				mout.warn("Using previous metric BBox (", bBoxNative, ") as reference");
 			}
 			*/
@@ -370,7 +370,7 @@ void GeoFrame::updateScaling()
 		//mout.warn() << "Tryng to update scaling prior to setting projection";
 	}
 
-	//mout.warn() << " scaling " << xScale << ',' << yScale << mout.endl;
+	//mout.warn(" scaling " , xScale , ',' , yScale );
 
 }
 
@@ -378,14 +378,14 @@ void GeoFrame::updateScaling()
 void GeoFrame::cropWithM(double xLL, double yLL, double xUR, double yUR) {
 
 	Logger mout(__FILE__, __FUNCTION__);
-	//mout.warn() << "me " << *this << mout.endl;
+	//mout.warn("me " , *this );
 
 	Rectangle<int> frame(0, 0, getFrameWidth(), getFrameHeight());
 
 	Rectangle<int> cropper;
 	m2pix(xLL,yLL, cropper.lowerLeft.x,  cropper.upperRight.y); // j swapped  "upside down"
 	m2pix(xUR,yUR, cropper.upperRight.x, cropper.lowerLeft.y);  // j swapped  "upside down"
-	//mout.warn() << " frame:" << frame <<  " crop0:" << cropper << mout.endl;
+	//mout.warn(" frame:" , frame ,  " crop0:" , cropper );
 
 	// Why both? Perhaps just rounding
 	cropper.lowerLeft.x--;
@@ -393,13 +393,13 @@ void GeoFrame::cropWithM(double xLL, double yLL, double xUR, double yUR) {
 	cropper.upperRight.x++;
 	cropper.upperRight.y++;
 	frame.crop(cropper);
-	//mout.warn()  << " crop:" << cropper << " => frame:" << frame << mout.endl;
-	//mout.warn()  << " fatal:" << (frameHeight-1) << '-' <<  frame.upperRight.y << '*' << yScale << '+' << bBoxNative.lowerLeft.y << mout.endl;
+	//mout.warn(" crop:" , cropper , " => frame:" , frame );
+	//mout.warn(" fatal:" , (frameHeight-1) , '-' ,  frame.upperRight.y , '*' , yScale , '+' , bBoxNative.lowerLeft.y );
 
 	pix2LLm(frame.lowerLeft.x,  frame.upperRight.y,  xLL, yLL); // j swapped  "upside down"
 	pix2LLm(frame.upperRight.x, frame.lowerLeft.y,   xUR, yUR); // j swapped  "upside down"
 
-	// mout.warn()  << xLL << ',' << yLL << '\t' << xUR << ',' << yUR << mout.endl;
+	// mout.warn(xLL , ',' , yLL , '\t' , xUR , ',' , yUR );
 
 	/// Reset area and rescale
 	setBoundingBoxM(xLL, yLL, xUR, yUR);

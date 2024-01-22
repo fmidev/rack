@@ -85,7 +85,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 	CartesianODIM odim(src);
 	src.properties["how:angles"].toSequence(odim.angles); // std::vector cannot be linked
 
-	mout.attention(src.properties);
+	// mout.attention(src.properties); // or debug
 	//mout.attention(odim);
 
 	drain::Time t;

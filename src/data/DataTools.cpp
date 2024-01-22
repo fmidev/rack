@@ -43,8 +43,8 @@ using namespace hi5;
 
 void DataTools::updateInternalAttributes(Hi5Tree & src){
 
-	//src.data.dataSet.properties.clear();
-	drain::FlexVariableMap & properties = src.data.dataSet.properties;
+	//src.data.image.properties.clear();
+	drain::FlexVariableMap & properties = src.data.image.properties;
 	//properties.clear(); // TODO: should not remove linked variables!
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -53,23 +53,13 @@ void DataTools::updateInternalAttributes(Hi5Tree & src){
 	// NOTE: is essentially recursive, through linked variables.
 
 	std::string object = src[ODIMPathElem::WHAT].data.attributes.get("object", "");
-	if (object == "PVOL"){
-		src.data.dataSet.setCoordinatePolicy(polarLeftCoords);
-		/*
-				drain::image::CoordinatePolicy::POLAR,
-				drain::image::CoordinatePolicy::WRAP,
-				drain::image::CoordinatePolicy::LIMIT,
-				drain::image::CoordinatePolicy::WRAP);
-				*/
+	if ((object == "PVOL") || (object == "SCAN")){
+		src.data.image.setCoordinatePolicy(polarLeftCoords);
 	}
-	else {
-		src.data.dataSet.setCoordinatePolicy(limitCoords);
-		/*
-				drain::image::CoordinatePolicy::LIMIT,
-				drain::image::CoordinatePolicy::LIMIT,
-				drain::image::CoordinatePolicy::LIMIT,
-				drain::image::CoordinatePolicy::LIMIT);
-				*/
+	else if (!object.empty()){
+		// In image processing ops, data is "generalized" to ODIM (from PolarODIM and CartesianODIM)
+		// So, explicit setting of coord policy should be avoided
+		src.data.image.setCoordinatePolicy(limitCoords);
 	}
 
 	// drain::TreeUtils::dump(src, std::cout);
@@ -97,17 +87,17 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 	/*
 	mout.special(// "path: ", parentAttributes.get("how:path",""),
 			//" coordPolicy:", parentAttributes["coordPolicy"],
-			" my coordPolicy( ", src.data.dataSet.getCoordinatePolicy());
+			" my coordPolicy( ", src.data.image.getCoordinatePolicy());
 	*/
 
 	/// Write to "hidden" variables of this node (src).
-	drain::FlexVariableMap & localAttributes = src.data.dataSet.properties;
+	drain::FlexVariableMap & localAttributes = src.data.image.properties;
 	localAttributes.importMap(parentAttributes); // Init with upper level (parent) values
 
 	// mout.special("my coordProp) ", attributes["coordPolicy"]);
 	// attributes.updateFromCastableMap(parentAttributes);
 	// std::cerr << "MAP now: " << a << "\n\n";
-	// mout.special("my coordPolicy) ", src.data.dataSet.getCoordinatePolicy());
+	// mout.special("my coordPolicy) ", src.data.image.getCoordinatePolicy());
 
 	/// Step 1: collect local values of \c /what, \c /where, and \c /how groups, overwriting attributes initialised to parent values.
 	std::stringstream sstr;
@@ -131,12 +121,12 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 		if (entry.first.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 			if (!entry.second.data.exclude){
 				mout.debug3(entry.first , " => ensure '/data' groups  " );
-				entry.second[ODIMPathElem::ARRAY].data.dataSet;
+				entry.second[ODIMPathElem::ARRAY].data.image;
 			}
 		}
 		else if (entry.first.is(ODIMPathElem::ARRAY)){
 
-			drain::image::Image & img = entry.second.data.dataSet;
+			drain::image::Image & img = entry.second.data.image;
 			if (img.typeIsSet()){
 				// Non-standard
 				localAttributes["what:type"] = std::string(1u, drain::Type::getTypeChar(img.getType()));
@@ -152,7 +142,7 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 			if (img.getName().empty()){
 				img.setName(localAttributes.get("name",""));
 			}
-			//mout.warn("scaling1 " , entry.second.data.dataSet.getScaling() );
+			//mout.warn("scaling1 " , entry.second.data.image.getScaling() );
 		}
 
 
@@ -168,10 +158,10 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 		}
 
 		if (entry.first.is(ODIMPathElem::ARRAY)){
-			if (!entry.second.data.dataSet.isEmpty()){
+			if (!entry.second.data.image.isEmpty()){
 				updateInternalAttributes(entry.second,  localAttributes); // policy,
-				// mout.warn("  --image ", entry.second.data.dataSet.getName(), " coordPolicy:", entry.second.data.dataSet.getCoordinatePolicy());
-				// mout.warn("  --image ", entry.second.data.dataSet.getName(), " scaling: ",    entry.second.data.dataSet.getScaling());
+				// mout.warn("  --image ", entry.second.data.image.getName(), " coordPolicy:", entry.second.data.image.getCoordinatePolicy());
+				// mout.warn("  --image ", entry.second.data.image.getName(), " scaling: ",    entry.second.data.image.getScaling());
 			}
 		}
 
@@ -179,7 +169,7 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 
 
 	// if (src.hasChild(ODIMPathElem::ARRAY))
-	//   mout.warn("scaling3 " , src[ODIMPathElem::ARRAY].data.dataSet.getScaling() );
+	//   mout.warn("scaling3 " , src[ODIMPathElem::ARRAY].data.image.getScaling() );
 	// std::cerr << "### updateAttributes"
 }
 
@@ -223,7 +213,7 @@ void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::Coordi
 
 	return;
 
-	drain::image::Image & data = src.data.dataSet;
+	drain::image::Image & data = src.data.image;
 
 	if (!data.isEmpty()){
 		data.setCoordinatePolicy(policy);

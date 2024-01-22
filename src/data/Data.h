@@ -252,21 +252,21 @@ public:
 
 	RootData(typename DT::tree_t & tree) : TreeWrapper<DT>(tree) {
 		// experimental
-		this->odim.copyFrom(tree.data.dataSet);
+		this->odim.copyFrom(tree.data.image);
 	};
 
 	virtual inline
 	~RootData(){
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.unimplemented("ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT> odim design: ", this->odim);
+		mout.experimental<LOG_DEBUG>("invoking ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT>()");
+		mout.experimental<LOG_DEBUG-1>("root odim: ", this->odim);
 
 		ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT>(this->odim, this->tree);
 		DataTools::updateInternalAttributes(this->tree); // overrides anything?
 	};
 
 	// Metadata structure
-	// odim_t odim;
 	typename DT::odim_t odim;
 
 };
@@ -291,26 +291,28 @@ public:
 
 	// NEW
 	inline
-	PlainData(typename DT::tree_t & tree) : TreeWrapper<DT>(tree),
-	data(tree["data"].data.dataSet),
-	odim(data, data.properties.get("what:quantity",""))
+	PlainData(typename DT::tree_t & tree) :
+		TreeWrapper<DT>(tree),
+		data(tree[ODIMPathElem::ARRAY].data.image), // "data"
+		odim(data, data.properties.get("what:quantity",""))
 	{
 		//data.setScaling(odim.scaling.scale, odim.scaling.offset);
 	}
 
 	/// Constructor referring to HDF5 structure
-	PlainData(typename DT::tree_t & tree, const std::string & quantity) : TreeWrapper<DT>(tree),
-			data(tree["data"].data.dataSet),
-			odim(data, quantity) // reads data.properties?
-			{
+	PlainData(typename DT::tree_t & tree, const std::string & quantity) :
+		TreeWrapper<DT>(tree),
+		data(tree[ODIMPathElem::ARRAY].data.image), // "data"
+		odim(data, quantity) // reads data.properties?
+	{
 				//data.setScaling(odim.scaling.scale, odim.scaling.offset);
-			}
+	}
 
 	/// Copy constructor, also for referencing non-const as const.
 	/**
 	 *   Compiler returns error if odim types ar incompatible.
 	PlainData(const PlainData<DT> & d) : TreeWrapper<DT>(d.getTree()),
-		data(this->tree["data"].data.dataSet),
+		data(this->tree["data"].data.image),
 		odim(data)  // NEW
 	{
 	}
@@ -318,7 +320,7 @@ public:
 
 	template <typename DT2>
 	PlainData(const PlainData<DT2> & d) : TreeWrapper<DT>(d.getTree()),
-		data(this->tree["data"].data.dataSet),
+		data(this->tree[ODIMPathElem::ARRAY].data.image), // "data"
 		// odim(d.odim) // OLD
 		odim(data)  // NEW
 	{
@@ -564,7 +566,7 @@ public:
 
 	/// Given a \c dataset subtree, like tree["dataset3"], constructs a data map of desired quantities.
 	DataGroup(typename DT::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
-		// TreeWrapper<typename DT::datatype_t>(tree), odim(tree.data.dataSet) {
+		// TreeWrapper<typename DT::datatype_t>(tree), odim(tree.data.image) {
 		TreeWrapper<typename DT::datatype_t>(tree) {
 		init(tree, *this, quantityRegExp);
 	}
@@ -577,7 +579,7 @@ public:
 	*/
 
 	DataGroup(const datagroup_t & src) :
-		// TreeWrapper<typename DT::datatype_t>(src.tree), odim(src.tree.data.dataSet) {
+		// TreeWrapper<typename DT::datatype_t>(src.tree), odim(src.tree.data.image) {
 		TreeWrapper<typename DT::datatype_t>(src.tree){
 		adapt(src, *this);  // ALERT: includes all the quantities, even thoug src contained only some of them
 	}
@@ -641,7 +643,7 @@ public:
 			else {
 				//mout.note("not found, creating new data array" );
 				ODIMPathElem child(G);
-				DataSelector::getNextChild(this->tree, child);
+				ODIMPathTools::getNextChild(this->tree, child);
 				mout.debug3("add: " , child , " [" , quantity , ']' );
 				it = this->insert(this->begin(), typename map_t::value_type(quantity, DT(this->getTree()[child], quantity)));  // WAS [path]
 				// it->second.setGeometry(baseODIM.getGeometry());
@@ -813,21 +815,20 @@ protected:
 		{
 			// add UKMO
 
-			//const std::string datasetQuantity = t["what"].data.attributes.get("quantity", "");
 			const std::string datasetQuantity = t[ODIMPathElem::WHAT].data.attributes.get("quantity", "");
 
-
-			for (typename DT::tree_iter_t it=t.begin(); it!=t.end(); ++it){
+			//for (typename DT::tree_iter_t it=t.begin(); it!=t.end(); ++it){
+			for (auto & entry: t){
 
 				/// Accept groups of type G only
-				if (! (it->first.is(G))){
+				if (! (entry.first.is(G))){
 					//mout.warn("skip '" , it->first , "' \t group != " , G );
 					continue;
 				}
 
 				//const std::string dataQuantity = it->second["what"].data.attributes["quantity"];
 				//const std::string dataQuantity = it->second[ODIMPathElem::WHAT].data.attributes["quantity"];
-				const std::string dataQuantity = it->second[ODIMPathElem::WHAT].data.attributes.get("quantity", ""); // otherways comes "null"
+				const std::string dataQuantity = entry.second[ODIMPathElem::WHAT].data.attributes.get("quantity", ""); // otherways comes "null"
 
 				const std::string & quantity = !dataQuantity.empty() ? dataQuantity : datasetQuantity;
 
@@ -836,32 +837,38 @@ protected:
 					if (!quantityRegExp.test(quantity)){
 						//if (it->second.hasChild("quality1"))
 						//	mout.warn(it->first , "...rejecting, but has quality?" );
-						mout.debug3("rejected '" , it->first , "' [" , quantity , "] !~" , quantityRegExp.toStr() );
+						mout.debug3("rejected '" , entry.first , "' [" , quantity , "] !~" , quantityRegExp.toStr() );
 						continue;
 					}
 				}
 
-				mout.debug3("accept '" , it->first , "' [" , quantity , ']' );
+				mout.accept<LOG_DEBUG+2>("accept '", entry.first, "' [", quantity, ']' );
 
+				/*
+				mout.warn(entry.first, " 1st -> ", entry.second[ODIMPathElem::ARRAY].data.image);
+				mout.fail("type", drain::TypeName<DT>::get());
+				DT(entry.second, quantity);
+				mout.warn(entry.first, " 1bst-> ", entry.second[ODIMPathElem::ARRAY].data.image);
+				*/
 
 				if (quantity.empty()){
 					//drain::Logger mout("DataSet", __FUNCTION__);
-					mout.info("quantities dataset:'" , datasetQuantity , "', data:'" , dataQuantity , "'");
-					mout.warn("undefined quantity in " , it->first , ", using key=" , it->first );
+					mout.info("quantities dataset:'", datasetQuantity, "', data:'", dataQuantity, "'");
+					mout.warn("undefined quantity in ", entry.first, ", using key=", entry.first );
 					// Assign by path component "data3"
-					dst.insert(typename map_t::value_type(it->first, DT(it->second, it->first)));
+					dst.insert(typename map_t::value_type(entry.first, DT(entry.second, entry.first)));
 					//associate(dst, it->first, it->second);
 				}
 				else {
 					if (dst.find(quantity) != dst.end()){ // already created
 						//drain::Logger mout("DataSet", __FUNCTION__);
-						mout.warn("quantity '" , quantity , "' replaced same quantity at " , it->first );
+						mout.warn("quantity '" , quantity , "' replaced same quantity at " , entry.first );
 					}
-					dst.insert(typename map_t::value_type(quantity, DT(it->second, quantity)));
+					dst.insert(typename map_t::value_type(quantity, DT(entry.second, quantity)));
 					//typename datagroup_t::reverse_iterator rit = dst.rend();
 					//mout.warn("last '" , "' [" , quantity , '=' , rit->first , ']' , rit->second );
 					//dst[quantity] = T(it->second);
-					//associate(dst, quantity, it->second);t.
+					// mout.warn(entry.first, " 2nd -> ", entry.second[ODIMPathElem::ARRAY].data.image);
 				}
 			}
 		} // end pragma
@@ -888,13 +895,19 @@ protected:
 			mout.debug3("src empty" );
 			return src.tree;
 		}
+		else {
+			for (const auto & entry: src){
+				dst.insert(entry);
+			}
+		}
 
-
+		/*
 		for (typename datagroup_t::const_iterator it=src.begin(); it!=src.end(); ++it){
 			//dst.insert(typename map_t::value_type(it->first, D(it->second, it->first)));
 			//dst.insert(typename map_t::value_type(it->first, D(it->second)));
 			dst.insert(typename map_t::value_type(it->first, it->second));
 		}
+		*/
 		mout.debug3("adapted ", dst.size(), " data items; ", src.begin()->first, "...");
 
 		//return t

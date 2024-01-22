@@ -37,9 +37,21 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 #include "Flags.h"
+#include "TextStyle.h"
 
 namespace drain
 {
+
+// For some odd reason this cannot be in TextStyle (see .debug() )
+template <>
+struct TypeName<TextStyle::Colour>;
+
+template <>
+struct TypeName<TextStyle::Line>;
+
+template <>
+struct TypeName<TextStyle::Style>;
+
 
 /// Utility for scanning text segments
 /**
@@ -56,17 +68,12 @@ protected:
 public:
 
 	//enum Colour {NONE=0, DEFAULT=1, BLACK=2, GRAY=4, RED=8, GREEN=16, YELLOW=32, BLUE=64, PURPLE=128, CYAN=256, WHITE=512};
-	enum Colour {NO_COLOR=0, BLACK, GRAY, RED, GREEN, YELLOW, BLUE, PURPLE, CYAN, WHITE};
 
-	enum Style {NO_STYLE=0, ITALIC=1, BOLD=2, DIM=4, REVERSE=8}; // DEFAULT,
+	typedef drain::EnumFlagger<drain::SingleFlagger<TextStyle::Colour> > ColourFlag;
 
-	enum Line {NO_LINE=0, UNDERLINE=1, DOUBLE_UNDERLINE=2, OVERLINE=4};
+	typedef drain::EnumFlagger<drain::MultiFlagger<TextStyle::Style> > StyleFlags;
 
-	typedef drain::EnumFlagger<drain::SingleFlagger<Colour> > ColourFlag;
-
-	typedef drain::EnumFlagger<drain::MultiFlagger<Style> > StyleFlags;
-
-	typedef drain::EnumFlagger<drain::SingleFlagger<Line> > LineFlag;
+	typedef drain::EnumFlagger<drain::SingleFlagger<TextStyle::Line> > LineFlag;
 
 
 	/// Read input stream until any char in \c endChars is encountered. The end char will not be included, but passed in input stream.
@@ -80,7 +87,7 @@ public:
 	//std::map<std::type_info,size_t> state;
 
 	inline
-	TextDecorator() : separator(","), color(NO_COLOR){
+	TextDecorator() : separator(","), color(TextStyle::NO_COLOR){
 		reset(); // ??
 	}
 
@@ -180,19 +187,19 @@ public:
 
 	/// Change the current color setting.
 	inline
-	void add(Colour c){
+	void add(TextStyle::Colour c){
 		color.set(c);
 	}
 
 	/// Change the current line setting.
 	inline
-	void add(Line l){
+	void add(TextStyle::Line l){
 		line.set(l);
 	}
 
 	/// Change the current current style setting.
 	inline
-	void add(Style s){
+	void add(TextStyle::Style s){
 		style.add(s);
 	}
 
@@ -228,6 +235,8 @@ protected:
 
 };
 
+
+
 inline
 std::ostream & operator<<(std::ostream & ostr, const TextDecorator & decorator){
 	//decorator.debug(ostr);
@@ -241,51 +250,16 @@ std::ostream & operator<<(std::ostream & ostr, const TextDecorator & decorator){
 
 
 
-
-
-
 class TextDecoratorVt100 : public drain::TextDecorator {
 
 public:
 
-	typedef std::map<drain::TextDecorator::Colour,int> color_codemap_t;
-	typedef std::map<drain::TextDecorator::Style,int>  style_codemap_t;
-	typedef std::map<drain::TextDecorator::Line,int> line_codemap_t;
 
-	static
-	const color_codemap_t color_codemap;
-
-	static
-	const style_codemap_t style_codemap;
-
-	static
-	const line_codemap_t line_codemap;
 
 	virtual inline
 	~TextDecoratorVt100(){
 	}
 
-	template <class T>
-	static
-	const std::map<T,int> & getCodeMap();
-
-	template <class T>
-	static
-	int getIntCode(const T & enumCode){
-
-		typedef std::map<T,int> codemap_t;
-
-		const codemap_t & map = getCodeMap<T>();
-
-		typename codemap_t::const_iterator it = map.find(enumCode);
-		if (it != map.end()){
-			return it->second;
-		}
-		else {
-			throw std::runtime_error(drain::StringBuilder(__FILE__, '/', __FUNCTION__, ": no such enumCode: ", enumCode)); // TYPE!
-			return 0; // drain::TextDecorator::Colour::NO_COLOR;
-		}
-	}
 
 protected:
 
@@ -298,8 +272,6 @@ protected:
 
 };
 
-template <>
-const std::map<TextDecorator::Colour,int> & TextDecoratorVt100::getCodeMap();
 
 } // ::drain
 

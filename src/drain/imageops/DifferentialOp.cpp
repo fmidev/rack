@@ -139,7 +139,7 @@ void GradientOp::traverse(const Channel &src, Channel &dst, int di, int dj) cons
 	const ftype spanCoeff = 0.5/static_cast<ftype>(abs(di)+abs(dj));
 
 	mout.debug(this->getParameters() );
-	mout.debug2() << "spanCoeff:" << spanCoeff << ", SCALE:" << (int)SCALE << mout.endl;
+	mout.debug2("spanCoeff:" , spanCoeff , ", SCALE:" , (int)SCALE );
 
 	Point2D<int> pLo;
 	Point2D<int> pHi;

@@ -162,7 +162,7 @@ public:
 	unsigned int getHeight() const { return geometry.height; };
 
 	inline
-	const CoordinateHandler2D getCoordinateHandler() const {
+	const CoordinateHandler2D & getCoordinateHandler() const {
 		return coordinateHandler;
 	};
 

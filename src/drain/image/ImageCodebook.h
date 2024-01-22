@@ -96,8 +96,8 @@ public:
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
 
-		//mout.warn() << "first entry: " << sprinter(*pal.begin()) << mout;
-		//mout.warn() << "last  entry: " << sprinter(*pal.rbegin()) << mout;
+		//mout.warn("first entry: " , sprinter(*pal.begin()) );
+		//mout.warn("last  entry: " , sprinter(*pal.rbegin()) );
 
 		lookUp.byteSize = drain::Type::call<drain::sizeGetter>(type);
 
@@ -108,7 +108,7 @@ public:
 				double  last = this->rbegin()->first;
 				if ((first >= 0.0) && (last <= 255.0)){
 					lookUp.bitShift	= 0;
-					mout.note() << "short int, but not using 16 bits, coping with 256 entries" << mout;
+					mout.note("short int, but not using 16 bits, coping with 256 entries" );
 				}
 				else
 					lookUp.bitShift	= 6;
@@ -121,7 +121,7 @@ public:
 			lookUp.bitShift	= 0;
 		}
 		else {
-			mout.note() << "not supported for type " << drain::Type::getTypeChar(type) << mout.endl;
+			mout.note("not supported for type " , drain::Type::getTypeChar(type) );
 			lookUp.byteSize = 0;
 			lookUp.bitShift = 0;
 			lookUp.clear();
@@ -129,7 +129,7 @@ public:
 		}
 
 		const int n = (1 << (lookUp.byteSize*8 - lookUp.bitShift));
-		mout.debug() << "type=" << drain::Type::getTypeChar(type) << ", creating " << n << " lookup entries" << mout.endl;
+		mout.debug("type=" , drain::Type::getTypeChar(type) , ", creating " , n , " lookup entries" );
 
 		typename cont_t::const_iterator itLower = this->begin();
 
@@ -145,14 +145,14 @@ public:
 			index = static_cast<int>(scaling.inv(it->first));
 
 			if (index < 0){
-				mout.warn() << "underflow threshold " << it->first << " mapped to negative index " << index << " (before bitShift), skipping " << mout.endl;
+				mout.warn("underflow threshold " , it->first , " mapped to negative index " , index , " (before bitShift), skipping " );
 				continue;
 			}
 
 			index = (index >> lookUp.bitShift);
 
 			if (index >= n){
-				mout.warn() << "overflow: threshold " << it->first << " mapped to index (" << index << ") > max (" << (n-1) << "), skipping " << mout.endl;
+				mout.warn("overflow: threshold " , it->first , " mapped to index (" , index , ") > max (" , (n-1) , "), skipping " );
 				continue;
 			}
 
@@ -162,7 +162,7 @@ public:
 				mout << mout.endl;
 			}
 			else {
-				mout.note() << "accuracy loss: skipped entry [" << index << "] => " << it->first << mout.endl;
+				mout.note("accuracy loss: skipped entry [" , index , "] => " , it->first );
 			}
 
 			/// Fill up interval [indexLower, index[

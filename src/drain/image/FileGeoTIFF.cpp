@@ -227,7 +227,7 @@ void FileGeoTIFF::open(const std::string & path, const std::string & mode){
 		gtif = GTIFNew(tif);
 		if (!isOpen()){
 			mout.error("failed creating GeoTIFF file from TIFF object");
-			//mout.error() << "failed creating GeoTIFF file from TIFF object, path=" << path << mout.endl;
+			//mout.error("failed creating GeoTIFF file from TIFF object, path=" , path );
 		}
 		//mout.attention("GeoTIFF version: ", gtif->hdr_version, '.', gtif->hdr_rev_major,  '.', gtif->hdr_rev_minor,  '.', gtif->hdr_num_keys);
 		//open();
@@ -242,7 +242,7 @@ void FileGeoTIFF::open(){
 	if (!isOpen()){
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.error("failed creating GeoTIFF file from TIFF object");
-		//mout.error() << "failed creating GeoTIFF file from TIFF object, path=" << path << mout.endl;
+		//mout.error("failed creating GeoTIFF file from TIFF object, path=" , path );
 	}
 	else {
 		// gtif
@@ -396,8 +396,8 @@ void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 	mout.debug("ScaleX: ", pixscale[0], ' ', bbox.getWidth(), ' ', frame.getFrameWidth()); // << ' ' << width
 	mout.debug("ScaleY: ", pixscale[1]);
 	// printf("$(( %.10f - %.10f )) = %.10f", bbox.upperRight.x, bbox.lowerLeft.x, bbox.getWidth());
-	// mout.debug() << "Noh: " << (static_cast<double>(1280000) / static_cast<double>(1280)) << mout.endl;
-	// mout.debug() << "Noh: " << (static_cast<double>(bbox.getWidth()) / static_cast<double>(frame.getFrameWidth())) << mout.endl;
+	// mout.debug("Noh: " , (static_cast<double>(1280000) / static_cast<double>(1280)) );
+	// mout.debug("Noh: " , (static_cast<double>(bbox.getWidth()) / static_cast<double>(frame.getFrameWidth())) );
 
 	setField(TIFFTAG_GEOPIXELSCALE, pixscale);
 

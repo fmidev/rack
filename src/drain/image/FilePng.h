@@ -112,7 +112,7 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.debug() << "path='" << path << "'" << mout.endl;
+	mout.debug("path='" , path , "'" );
 
 
 	// Try to open the file
@@ -164,7 +164,7 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 
 	/// Main action
 	//if (drain::Debug > 2)
-	mout.debug3() << "reading data" << mout.endl;
+	mout.debug3("reading data" );
 
 	png_read_png(png_ptr, info_ptr, png_transforms, NULL);
 
@@ -173,7 +173,7 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 
 
 	/// Read comments
-	mout.debug3() << "reading image comments" << mout.endl;
+	mout.debug3("reading image comments" );
 	int num_text = 0;
 	png_textp text_ptr = NULL;
 	png_get_text(png_ptr, info_ptr,&text_ptr, &num_text);
@@ -205,7 +205,7 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 	}
 
 	//image.setType(t);
-	mout.debug() << "initialize, type " << image.getType().name() << mout.endl;
+	mout.debug("initialize, type " , image.getType().name() );
 
 	/// Copy to drain::Image
 	const unsigned int width  = png_get_image_width(png_ptr, info_ptr);
@@ -252,7 +252,7 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 	}
 	else {
 		image.setLimits(info_ptr->pcal_X0, info_ptr->pcal_X1);
-		mout.note() << "setting physical scale: " << image << mout.endl;
+		mout.note("setting physical scale: " , image );
 	}
 
 #endif
@@ -271,17 +271,17 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 	const bool from8to16 = (inputBitDepth == 8) && (targetBitDepth == 16);
 
 	if (from8to8) {
-		mout.debug() << "8-bit input, 8-bit target, easy..." << mout;
+		mout.debug("8-bit input, 8-bit target, easy..." );
 	}
 	else if (from8to16) {
-		mout.note() << "-bit input, 16-bit target, rescaling..." << mout;
+		mout.note("-bit input, 16-bit target, rescaling..." );
 	}
 	else {
 		if ((inputBitDepth == 16) && (targetBitDepth == 16)){
-			mout.debug() << "16-bit input, 16-bit target, ok..." << mout;
+			mout.debug("16-bit input, 16-bit target, ok..." );
 		}
 		else {
-			mout.warn() << inputBitDepth << "-bit input, "<< targetBitDepth << "-bit target, problems ahead?" << mout;
+			mout.warn(inputBitDepth , "-bit input, ", targetBitDepth , "-bit target, problems ahead?" );
 		}
 	}
 

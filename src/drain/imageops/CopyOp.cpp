@@ -67,14 +67,14 @@ void CopyOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 	}
 
-	mout.debug2() << " src:       " << src << mout.endl;
+	mout.debug2(" src:       " , src );
 	/*
 	 drain::ValueScaling s;
 	  s.adoptScaling(src.getScaling(), src.getType(), dst.getType());
 	  dst.setScaling(s);
 	*/
 	dst.adoptScaling(src, src.getType(), dst.getType());
-	mout.debug2() << " dst:       " << dst << mout.endl;
+	mout.debug2(" dst:       " , dst );
 
 	mout.warn(" dst(orig): " , dst );
 
@@ -82,7 +82,7 @@ void CopyOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 
 void CopyOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(ImageOp)[const ImageFrame &, Image &]", __FUNCTION__);
-	mout.debug2() << "calling makeCompatible()" << mout.endl;
+	mout.debug2("calling makeCompatible()" );
 	makeCompatible(srcFrame.getConf(), dstImage);
 	ImageView dst2; //(dstImage, functor.dstView);
 	dst2.setView(dstImage, functor.dstView);
@@ -123,10 +123,10 @@ void CopyOp::makeCompatible(const ImageFrame & src, Image & dst) const {
 
 	}
 
-	mout.debug2() << " src:       " << src << mout.endl;
-	mout.debug3() << " dst(orig): " << dst << mout.endl;
+	mout.debug2(" src:       " , src );
+	mout.debug3(" dst(orig): " , dst );
 	dst.adoptScaling(src.getConf());
-	mout.debug2() << " dst:       " << dst << mout.endl;
+	mout.debug2(" dst:       " , dst );
 
 }
 */

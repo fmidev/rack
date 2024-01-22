@@ -49,9 +49,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "main/rack.h"
 #include "hi5/Hi5.h"
-#include "data/ODIM.h"
 #include "data/DataSelector.h"
 #include "data/Data.h"
+#include "data/ODIM.h"
+#include "data/ODIMPathTools.h"
 #include "data/Quantity.h" // NEW
 
 #include "hi5/Hi5Write.h" // debugging
@@ -203,7 +204,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 			dataSetPath.index = ProductBase::appendResults.getIndex();
 		}
 		else {
-			DataSelector::getNextChild(dst, dataSetPath);
+			ODIMPathTools::getNextChild(dst, dataSetPath);
 		}
 	}
 	else if (ProductBase::appendResults.is(ODIMPathElem::DATA)){

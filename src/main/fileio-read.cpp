@@ -45,12 +45,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "hi5/Hi5.h"
 #include "hi5/Hi5Read.h"
 #include "data/ODIM.h"
+#include "data/ODIMPathTools.h"
+
 #include "fileio.h"
 #include "fileio-read.h"
-
-
-
-
 
 
 namespace rack {
@@ -146,7 +144,10 @@ void CmdInputFile::exec() const {
 	}
 
 
-	ctx.select.clear(); // NEW: "starts a product pipe". monitor effects of this
+	if (!ctx.SCRIPT_DEFINED){
+		mout.deprecating<LOG_NOTICE>("clearing selector - in future, may be changed");
+		ctx.select.clear(); // NEW: "starts a product pipe". monitor effects of this
+	}
 
 	//mout.note("resources.getUpdatedStatusMap()" );
 	//mout.note("ctx.getStatusMap()" );
@@ -198,7 +199,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);  // NO QUALITY?
 		selector.setParameters(ctx.inputSelect);
-		mout.special("selector: ", selector, ", matcher=", selector.pathMatcher);
+		mout.special<LOG_INFO>("Input selector: ", selector, ", matcher=", selector.pathMatcher);
 
 
 		ODIMPathList paths;
@@ -232,7 +233,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 
 	if (!ctx.inputSelect.empty()){ // or stg like: hi5::Reader::MARKED
-		mout.special("Input selection: removing excluded subtrees");
+		mout.experimental<LOG_DEBUG>("Input selection: removing excluded subtrees");
 		hi5::Hi5Base::deleteExcluded(srcTmp);
 		// drain::TreeUtils::dump(srcTmp, std::cout, CmdOutputTree::dataToStream); // true
 		if (ctx.SCRIPT_DEFINED){
@@ -252,9 +253,6 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 
 	DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only timestamp needed at this point?
-
-	// const bool SCRIPT_DEFINED = ctx.getStatus("script"); //  ((this->section & TRIGGER_SECTION) && ctx.getStatus("script"));
-	// const bool SCRIPT_DEFINED = ctx.SCRIPT_DEFINED;
 
 
 	mout.debug("Derive file type (what:object)");
@@ -369,9 +367,9 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 
 
 		ODIMPathElem parent(ODIMPathElem::DATASET);
-		DataSelector::getLastChild(dstRoot, parent);
+		ODIMPathTools::getLastChild(dstRoot, parent);
 		if (parent.getIndex()==0)
-			parent.index = 1;
+			parent.index = 1; // NOT NEEDED!
 
 		Hi5Tree & dst = dstRoot[parent];
 
@@ -416,7 +414,7 @@ void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 
 		ODIMPathElem p(it->first); // possibly: what, where, how
 		if (p.isIndexed()){
-			DataSelector::getNextChild(dst, p);
+			ODIMPathTools::getNextChild(dst, p);
 			mout.note(" appending ", p);
 			dst[p].swap(it->second);
 		}
@@ -759,10 +757,10 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 	typedef std::map<std::string, ODIMPathElem> quantity_map;
 
 	quantity_map srcQualityPaths;
-	DataSelector::getChildren(src, srcQualityPaths, ODIMPathElem::QUALITY);  // consider children
+	ODIMPathTools::getChildren(src, srcQualityPaths, ODIMPathElem::QUALITY);  // consider children
 
 	quantity_map dstQualityPaths;
-	DataSelector::getChildren(dst, dstQualityPaths, ODIMPathElem::QUALITY);
+	ODIMPathTools::getChildren(dst, dstQualityPaths, ODIMPathElem::QUALITY);
 
 	for (quantity_map::const_iterator it = srcQualityPaths.begin(); it != srcQualityPaths.end(); ++it) {
 
@@ -821,7 +819,7 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 			}
 
 			ODIMPathElem dstChild(ODIMPathElem::QUALITY);
-			DataSelector::getNextChild(dst, dstChild);
+			ODIMPathTools::getNextChild(dst, dstChild);
 
 			mout.note("Adding quality [", quantity , "] directly to ./" , dstChild  );
 
@@ -920,19 +918,19 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 	/// Search last dataset
 	ODIMPathElem dataSetElem(ODIMPathElem::DATASET);
-	DataSelector::getLastChild(ctx.polarInputHi5, dataSetElem);
+	ODIMPathTools::getLastChild(ctx.polarInputHi5, dataSetElem);
 	if (dataSetElem.getIndex() == 0)
 		dataSetElem.index = 1;
 
 	/// Search new data[n] in the dataset found
 	ODIMPathElem dataElem(ODIMPathElem::DATA);
 	// TODO: append cmd?
-	DataSelector::getLastChild(ctx.polarInputHi5[dataSetElem], dataElem);
+	ODIMPathTools::getLastChild(ctx.polarInputHi5[dataSetElem], dataElem);
 	if (dataElem.getIndex() == 0)
 		dataElem.index = 1;
 
 	mout.debug("Found path " , dataSetElem , '>' , dataElem );
-	if (!ctx.polarInputHi5[dataSetElem][dataElem][ODIMPathElem::ARRAY].data.dataSet.isEmpty()){
+	if (!ctx.polarInputHi5[dataSetElem][dataElem][ODIMPathElem::ARRAY].data.image.isEmpty()){
 		mout.debug("Path " , dataSetElem , '>' , dataElem , "/data contains data already, searching further..." );
 		//DataSelector::getNextOrdinalPath(ctx.inputHi5, pathSearch, dataPath);
 		++dataElem.index;
@@ -945,7 +943,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	mout.warn(ctx.polarInputHi5[ODIMPathElem::WHAT] );
 
 	Hi5Tree & dst = ctx.polarInputHi5[dataSetElem][dataElem];
-	drain::image::Image & dstImage = dst[ODIMPathElem::ARRAY].data.dataSet;
+	drain::image::Image & dstImage = dst[ODIMPathElem::ARRAY].data.image;
 	//mout.special("WHAT");
 	drain::image::ImageFile::read(dstImage, fullFilename);
 	//const drain::image::Geometry & g = dstImage.getGeometry();

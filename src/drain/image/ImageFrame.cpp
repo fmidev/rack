@@ -56,7 +56,7 @@ void ImageFrame::init(){
 
 	properties["coordinatePolicy"].link(getCoordinatePolicy().tuple()).fillArray = true;
 
-	// mout.warn() << properties["coordinatePolicy"] << mout.endl;
+	// mout.warn(properties["coordinatePolicy"] );
 }
 
 void ImageFrame::setStorageType(const std::type_info &type){
@@ -74,16 +74,16 @@ void ImageFrame::adjustBuffer(){
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	/*
-	mout.warn() << "Area: " << area << '=' <<  area.getArea() << mout;
-	mout.warn() << "Chns: " << channels << '=' <<  channels.getChannelCount() << mout;
-	mout.warn() << geometry << '=' <<  getVolume() << '@' <<  encoding.byteSize << mout;
+	mout.warn("Area: " , area , '=' ,  area.getArea() );
+	mout.warn("Chns: " , channels , '=' ,  channels.getChannelCount() );
+	mout.warn(geometry , '=' ,  getVolume() , '@' ,  encoding.byteSize );
 	*/
 
 	const size_t s = getVolume() * conf.byteSize;
 
 	if (s > 0){
-		//mout.warn() << "size=" << s << "\t = " << getVolume() << '*' << encoding.byteSize << mout.endl;
-		//mout.warn() << getConf() << mout.endl;
+		//mout.warn("size=" , s , "\t = " , getVolume() , '*' , encoding.byteSize );
+		//mout.warn(getConf() );
 	}
 
 	try {
@@ -132,9 +132,9 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 	//conf.linkScaling(src.getScaling());    // NOTE: links also phys range
 	propertiesPtr = & src.getProperties(); // what about scaling etc ref variables?
 
-	// mout.fail() << "src:  " << src << mout;
-	// mout.fail() << "src.sc: " << src.getScaling() << mout;
-	// mout.fail() << "cnf.sc: " << conf << mout;
+	// mout.fail("src:  " , src );
+	// mout.fail("src.sc: " , src.getScaling() );
+	// mout.fail("cnf.sc: " , conf );
 
 	// GEOMETRY
 	if (catenate){
@@ -197,9 +197,9 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 	*/
 
 	/*
-	mout.fail() << "cnf<  : " << conf << mout;
+	mout.fail("cnf<  : " , conf );
 	const ValueScaling & sc = conf.getScaling();
-	mout.fail() << "cnf>  : " << conf << mout;
+	mout.fail("cnf>  : " , conf );
 	*/
 
 }
@@ -207,11 +207,11 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 void ImageFrame::copyData(const ImageFrame & src){
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-	mout.debug() << "start" << mout;
+	mout.debug("start" );
 
 	if (getGeometry() != src.getGeometry()){
-		mout.warn() <<  "conflicting geometries: " << *this << mout;
-		mout.error() << "conflicting geometries: " << src.getGeometry() << " vs " << getGeometry() << mout;
+		mout.warn("conflicting geometries: " , *this );
+		mout.error("conflicting geometries: " , src.getGeometry() , " vs " , getGeometry() );
 		return;
 	}
 

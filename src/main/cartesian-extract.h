@@ -52,20 +52,12 @@ public:
 		parameters.copyStruct(cmd.parameters, cmd, *this);
 	}
 
-	virtual // inline
-	void exec() const; /* {
-
-		RackContext & ctx = getContext<RackContext>();
-		//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		drain::Logger mout(ctx.log, __FUNCTION__, getName());
-
-		Composite & composite = ctx.getComposite(RackContext::PRIVATE); // check thread safety
-		extract(composite, channels, bbox);
-	}
-	*/
+	virtual
+	void exec() const;
 
 protected:
 
+	// TODO: replace with MultiFlagEnum etc. D=DATA
 	std::string channels;
 	drain::Rectangle<double> bbox;
 

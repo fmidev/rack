@@ -38,6 +38,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "hi5/Hi5.h"
 #include "DataSelector.h"
 
+#include "ODIMPathTools.h"
+
 
 namespace rack {
 
@@ -103,7 +105,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 		ODIMPath path(basepath, currentElem);
 		//mout.debug3("currentElem='" , currentElem , "'" );
 
-		const drain::image::Image & data    = entry.second.data.dataSet; // for ODIM
+		const drain::image::Image & data    = entry.second.data.image; // for ODIM
 		const drain::FlexVariableMap & props = data.getProperties();
 
 
@@ -155,7 +157,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 				}
 			}
 			else {
-				mout.reject<LOG_NOTICE>("DATASET contained no matching groups: ", path );
+				mout.reject<LOG_DEBUG>("DATASET contained no matching groups: ", path );
 			}
 
 		}
@@ -296,15 +298,15 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 			//if (retrieved.find(elem) != retrieved.end()){
 			// Speedup: vector<bool> found(n, false);  found[elem.getIndex()] == true;
 			if (std::find(accepted.begin(), accepted.end(), elem) == accepted.end()){
-				const drain::image::Image & data    = src[elem].data.dataSet;
+				const drain::image::Image & data    = src[elem].data.image;
 				const drain::FlexVariableMap & props = data.getProperties();
 				accepted.push_back(ODIMPathElem2(elem, props.get("where:elangle", 0.0), props.get("what:startdate",""), props.get("what:starttime","")));
 			}
 			/*
 			if (accepted.find(elem) != accepted.end()){
 				mout.debug(elem);
-				const drain::image::Image & data    = entry.second.data.dataSet;
-				const drain::image::Image & data    = src[elem].data.dataSet;
+				const drain::image::Image & data    = entry.second.data.image;
+				const drain::image::Image & data    = src[elem].data.image;
 				const drain::FlexVariableMap & props = data.getProperties();
 				accepted.push_back(ODIMPathElem2(elem, props.get("where:elangle", 0.0), props.get("what:startdate",""), props.get("what:starttime","")));
 			}
@@ -718,7 +720,7 @@ void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathList)
 }
 
 
-
+/*
 void DataSelector::getPathsByElangleFOO(const Hi5Tree & src, std::map<double,ODIMPath> & paths) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -742,39 +744,10 @@ void DataSelector::getPathsByTimeFOO(const Hi5Tree & src, std::map<std::string,O
 	//pruneMap(paths, order.operation);
 	//mout.attention("remaining: ", drain::sprinter(paths));
 }
-
-/*
-void DataSelector::pruneMap(std::list<ODIMPath> & pathContainer, DataOrder::Oper oper) const { // default DataOrder::Oper::MIN
-
-	// Number of paths kept.
-	unsigned int n = count <= pathContainer.size() ? count : pathContainer.size();
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	auto it = pathContainer.begin();
-	if (oper == DataOrder::Oper::MIN){
-		// Jump over n keys.
-		std::advance(it, n);
-		for (auto it2 = it; it2 != pathContainer.end(); ++it2){
-			mout.attention("deleting ", *it2);
-		}
-		pathContainer.erase(it, pathContainer.end());
-	}
-	else if (oper == DataOrder::Oper::MAX){
-		// Jump towards end, so that n keys remain
-		std::advance(it, pathContainer.size()-n);
-		for (auto it2 = pathContainer.begin(); it2 != it; ++it2){
-			mout.attention("deleting ", *it2);
-		}
-		pathContainer.erase(pathContainer.begin(), it);
-	}
-	else {
-		throw std::runtime_error("Order oper neither MIN nor MAX: ");
-	}
-
-}
 */
 
+
+/*
 bool DataSelector::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //, (ODIMPathElem::group_t g
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -797,7 +770,9 @@ bool DataSelector::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //,
 	return child.getIndex() > 0;
 
 }
+*/
 
+/*
 bool DataSelector::getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMPathElem::index_t iMax){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -818,10 +793,10 @@ bool DataSelector::getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMP
 
 	return false;
 }
+*/
 
 
-
-
+/*
 bool DataSelector::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -842,20 +817,24 @@ bool DataSelector::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 		return false;
 	}
 }
+*/
 
 bool DataSelector::getPath(const Hi5Tree & src, ODIMPath & path) const {
-	std::list<ODIMPath> pathContainer;
-	getPaths(src, pathContainer);
-	if (pathContainer.empty()){
+
+	std::list<ODIMPath> paths;
+	//getPaths(src, pathContainer);
+	selectPaths(src, paths);
+	if (paths.empty()){
 		return false;
 	}
 	else {
 		/*
-		for (ODIMPath & p: pathContainer){
+		for (ODIMPath & p: paths){
 			std::cerr << __FUNCTION__ << ':' << p << '\n';
 		}
 		*/
-		path = pathContainer.front();
+
+		path = paths.front();
 		return true;
 	}
 }
@@ -864,12 +843,14 @@ bool DataSelector::getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 
 	drain::Logger mout(__FUNCTION__, getName());
 
+	// TODO: obsolete – warn? /redesign
+
 	if (count > 1){
-		mout .debug3() << "count=" << count << ", but only 1 path will be used " << mout.endl;
+		mout.debug3("count=", count, ", but only 1 path will be used ");
 	}
 
 	if (true){
-		mout.warn("check group " , group , " vs back() of path: " , path );
+		mout.warn("check group ", group, " vs back() of path: ", path);
 	}
 
 	ODIMPathList paths;
@@ -882,8 +863,7 @@ bool DataSelector::getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 	else {
 
 		if (paths.size() > 1){
-			mout .debug3() << "found " << paths.size() << " paths , ";
-			mout << " using only one: '" << path << "'" << mout.endl;
+			mout.debug3("found ", paths.size(), " paths, using only one: '", path, "'");
 		}
 
 		path = paths.back();
@@ -894,8 +874,7 @@ bool DataSelector::getLastPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 
 		ODIMPathElem & elem = path.back();
 		if (group != elem.getType()){
-			mout.warn() << "multiple-group filter (" << group << "), ";
-			mout << "returning (" << elem.getType() << "):  " << path << mout.endl;
+			mout.warn("multiple-group filter (", group, "), returning (", elem.getType(), "):  ", path);
 		}
 		return true;
 	}
@@ -915,19 +894,19 @@ bool DataSelector::getNextPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 		if (elem.isIndexed()){
 			++elem.index;
 			if (group != elem.getType()){
-				mout.warn() << "requested group " << group << ", ";
-				mout << "returning (" << elem.getType() << "): " << path << mout.endl;
+				mout.warn("requested group ", group, ", returning (type=", elem.getType(), "): ", path);
 			}
 			return true;
 		}
 		else {
-			mout.warn("leaf element '" , elem , "' not indexed type" );
+			mout.warn("leaf element '", elem, "' not indexed type");
 			return false;
 		}
 	}
 }
 
 // Todo: rename... getChildren by quantity? Also, WHAT + "quantity" needed?
+/*
 bool DataSelector::getChildren(const Hi5Tree & tree, std::map<std::string,ODIMPathElem> & children, ODIMPathElem::group_t groups){
 
 	//for (Hi5Tree::const_iterator it = tree.begin(); it != tree.end(); ++it){
@@ -935,13 +914,14 @@ bool DataSelector::getChildren(const Hi5Tree & tree, std::map<std::string,ODIMPa
 
 		// const ODIMPathElem & elem = it->first;
 		if (entry.first.belongsTo(groups)){
-			//children[tree[entry.first].data.dataSet.properties["what:quantity"]] = entry.first;
-			children[entry.second.data.dataSet.properties["what:quantity"]] = entry.first;
+			//children[tree[entry.first].data.image.properties["what:quantity"]] = entry.first;
+			children[entry.second.data.image.properties["what:quantity"]] = entry.first;
 		}
 
 	}
 	return !children.empty();
 }
+*/
 
 void DataSelector::swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree & dst){
 
@@ -968,7 +948,8 @@ void DataSelector::swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::gro
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	ODIMPathElem dstElem(groupType, 1);
-	DataSelector::getNextChild(dst, dstElem);
+	//DataSelector::getNextChild(dst, dstElem);
+	ODIMPathTools::getNextChild(dst, dstElem);
 	mout.debug("Swapping: ... dst:'", dstElem, "' group type: ", groupType, " note: odim?"); // see quality comb..
 	// Create empty dst[dstElem] and swap it...
 	dst[dstElem].swap(srcGroup);

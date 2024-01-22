@@ -255,8 +255,8 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	// mout.debug("Starting" );
 
-	mout.debug2() << src << mout.endl;
-	mout.debug2() << dst << mout.endl;
+	mout.debug2(src );
+	mout.debug2(dst );
 
 	const Channel & srcChannel = src.get(0);
 	if (src.size() > 1){

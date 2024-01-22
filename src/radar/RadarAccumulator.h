@@ -173,7 +173,7 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 	drain::Logger mout("RadarAccumulator", __FUNCTION__);
 
 	if (!srcQuality.data.isEmpty()){
-		mout.info() << "Quality data available with input; using quality as weights in compositing." << mout.endl;
+		mout.info("Quality data available with input; using quality as weights in compositing.");
 		DataCoder converter(srcData.odim, srcQuality.odim);
 		// uses also DataCoder::undetectQualityCoeff
 		AC::addData(srcData.data, srcQuality.data, converter, weight, i0, j0);

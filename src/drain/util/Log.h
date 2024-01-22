@@ -47,6 +47,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <vector>
 
+#include "TextStyle.h"
+
 #include "StringBuilder.h"
 
 /*
@@ -97,7 +99,18 @@ struct Notification {
 		set(key, vt100color);
 	};
 
-	//void set(const std::string & key="", const std::string & vt100color="");
+	template <typename ... T>
+	Notification(const std::string & key="", const T &... args){
+
+		this->key = key;
+
+		TextStyleVT100 vt100;
+		std::stringstream sstr;
+		//vt100.write(sstr, args..., key);
+		vt100.append(sstr, args...);
+		vt100color = sstr.str();
+	};
+
 
 	void set(const std::string & key, int vt100color);
 
@@ -397,17 +410,19 @@ public:
 	inline
 	Logger & warn(const TT &... args){
 		// warn();
-		initMessage<LOG_WARNING>();
+		static const Notification notif(__FUNCTION__, TextStyle::YELLOW, TextStyle::BOLD);
+		initMessage<LOG_WARNING>(notif);
 		flush(args...);
 		return *this;
 	};
 
 	/// Warning on user's convention or action that can potentially cause errors or confusions.
-	template<typename ... TT>
+	template<int L=LOG_WARNING,typename ... TT>
 	inline
 	Logger & discouraged(const TT &... args){
-		static const Notification notif(__FUNCTION__, 35);
-		initMessage<LOG_WARNING>(notif);
+		//static const Notification notif(__FUNCTION__, 35);
+		static const Notification notif(__FUNCTION__, TextStyle::YELLOW, TextStyle::DIM);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -417,7 +432,8 @@ public:
 	template<int L=LOG_WARNING,typename ... TT>
 	inline
 	Logger & fail(const TT &... args){
-		static const Notification notif(__FUNCTION__, 33);
+		//static const Notification notif(__FUNCTION__, 33);
+		static const Notification notif(__FUNCTION__, TextStyle::YELLOW, TextStyle::DIM);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
@@ -425,11 +441,12 @@ public:
 
 	/// Feature has been removed. Special type of Logger::warn().  \see Logger::deprecating().
 	//  Valid alternative should be displayed.
-	template<typename ... TT>
+	template<int L=LOG_WARNING,typename ... TT>
 	inline
 	Logger & obsolete(const TT &... args){
-		static const Notification notif(__FUNCTION__, 35);
-		initMessage<LOG_WARNING>(notif);
+		//static const Notification notif(__FUNCTION__, 35);
+		static const Notification notif(__FUNCTION__, TextStyle::PURPLE, TextStyle::DIM, TextStyle::UNDERLINE);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -438,7 +455,7 @@ public:
 	template<int L=LOG_WARNING,typename ... TT>
 	inline
 	Logger & attention(const TT &... args){
-		static const Notification notif(__FUNCTION__, 46);
+		static const Notification notif(__FUNCTION__, TextStyle::CYAN, TextStyle::REVERSE, TextStyle::DIM); // 46);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
@@ -451,8 +468,9 @@ public:
 	template<typename ... TT>
 	inline
 	Logger & note(const TT &... args){
-		//note();
-		initMessage<LOG_NOTICE>();
+		static const Notification notif(__FUNCTION__, TextStyle::BOLD);
+		initMessage<LOG_NOTICE>(notif);
+		//initMessage<LOG_NOTICE>();
 		flush(args...);
 		return *this;
 	};
@@ -462,18 +480,18 @@ public:
 	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & unimplemented(const TT &... args){
-		static const Notification notif(__FUNCTION__, 35);
+		static const Notification notif(__FUNCTION__, TextStyle::YELLOW, TextStyle::OVERLINE); // , 35);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
 
 	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
-	template<typename ... TT>
+	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & deprecating(const TT &... args){
-		static const Notification notif(__FUNCTION__, 33);
-		initMessage<LOG_NOTICE>(notif);
+		static const Notification notif(__FUNCTION__, TextStyle::YELLOW, TextStyle::DIM, TextStyle::UNDERLINE); //33);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -482,35 +500,27 @@ public:
 	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & special(const TT &... args){
-		static const Notification notif(__FUNCTION__, 36);
+		static const Notification notif(__FUNCTION__, TextStyle::CYAN); //36);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
 
-	/*
-	inline
-	Logger & experimental(){
-		static const Notification notif(__FUNCTION__, 94);
-		return initMessage<LOG_NOTICE>(notif);
-		// return *this;
-	};
-	*/
 
 	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & experimental(const TT &... args){
-		static const Notification notif(__FUNCTION__, 94);
+		static const Notification notif(__FUNCTION__, TextStyle::BLUE, TextStyle::BOLD); // 94);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
 
-	template<typename ... TT>
+	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & advice(const TT &... args){
-		static const Notification notif(__FUNCTION__, 40);
-		initMessage<LOG_NOTICE>(notif);
+		static const Notification notif(__FUNCTION__, TextStyle::UNDERLINE);// 40);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -529,7 +539,7 @@ public:
 	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & ok(const TT &... args){
-		static const Notification notif(__FUNCTION__, 32);
+		static const Notification notif(__FUNCTION__, TextStyle::GREEN); //32);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
@@ -538,7 +548,8 @@ public:
 	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & accept(const TT &... args){
-		static const Notification notif(__FUNCTION__, 42);
+		//static const Notification notif(__FUNCTION__, 42);
+		static const Notification notif(__FUNCTION__, TextStyle::GREEN, TextStyle::REVERSE, TextStyle::DIM);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
@@ -547,7 +558,8 @@ public:
 	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & reject(const TT &... args){
-		static const Notification notif(__FUNCTION__, 41);
+		// static const Notification notif(__FUNCTION__, 41);
+		static const Notification notif(__FUNCTION__, TextStyle::RED, TextStyle::REVERSE, TextStyle::DIM);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
@@ -557,7 +569,8 @@ public:
 	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & success(const TT &... args){
-		static const Notification notif(__FUNCTION__, 92);
+		// static const Notification notif(__FUNCTION__, 92);
+		static const Notification notif(__FUNCTION__, TextStyle::GREEN, TextStyle::DIM);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
@@ -565,11 +578,12 @@ public:
 
 
 	/// Like advice, but weaker.
-	template<typename ... TT>
+	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & hint(const TT &... args){
-		static const Notification notif(__FUNCTION__, 40);
-		initMessage<LOG_INFO>(notif);
+		// static const Notification notif(__FUNCTION__, 40);
+		static const Notification notif(__FUNCTION__, TextStyle::CYAN, TextStyle::DIM, TextStyle::UNDERLINE);
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -605,7 +619,8 @@ public:
 	template<typename ... TT>
 	inline
 	Logger & debug(const TT &... args){
-		initMessage<LOG_DEBUG>();
+		static const Notification notif(__FUNCTION__, TextStyle::DIM);
+		initMessage<LOG_DEBUG>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -614,7 +629,8 @@ public:
 	template<typename ... TT>
 	inline
 	Logger & debug2(const TT &... args){
-		initMessage<LOG_DEBUG+1>();
+		static const Notification notif(__FUNCTION__, TextStyle::DIM, TextStyle::ITALIC);
+		initMessage<LOG_DEBUG+1>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -622,19 +638,21 @@ public:
 	template<typename ... TT>
 	inline
 	Logger & debug3(const TT &... args){
-		initMessage<LOG_DEBUG+2>();
+		static const Notification notif(__FUNCTION__, TextStyle::CYAN, TextStyle::DIM, TextStyle::ITALIC);
+		initMessage<LOG_DEBUG+2>(notif);
 		flush(args...);
 		return *this;
 	};
 
 
-
+	/*
 	inline
 	Logger & debug(level_t level){
 		static const Notification notif("DEBUG*", 49);
 		return initMessage<LOG_DEBUG+1>(notif); // obsolete
 		//return *this;
 	};
+	*/
 
 	inline
 	Logger & log(level_t level){

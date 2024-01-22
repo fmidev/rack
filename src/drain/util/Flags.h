@@ -809,7 +809,8 @@ private:
 
 template <typename E>
 void drain::FlaggerBase<E>::debug(std::ostream & ostr) const {
-	ostr << typeid(drain::FlaggerBase<E>).name() << ": value=" << getValue() << ", ";
+	//ostr << typeid(drain::FlaggerBase<E>).name() << ": value=" << getValue() << ", ";
+	ostr << drain::TypeName<E>::get() << ": value=" << getValue() << ", ";
 	FlagResolver::keysToStream(getDict(), getValue(), ostr) << ", ";
 	ostr <<  " dict: " << getDict();
 }

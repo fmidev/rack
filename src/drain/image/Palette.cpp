@@ -219,7 +219,7 @@ void Palette::update() const {
 
 		const PaletteEntry & entry = it->second;
 
-		//mout.note() << " e" << it->first << '\t' << entry.color.size() << mout.endl;
+		//mout.note(" e" , it->first , '\t' , entry.color.size() );
 
 		if (entry.color.size() > i)
 			i = entry.color.size();
@@ -387,7 +387,7 @@ void Palette::loadTXT(std::istream & ifstr){
 
 	/*
 	if (!ifstr.good()){
-		mout.error() << " reading file failed" << mout.endl;
+		mout.error(" reading file failed" );
 	};
 	*/
 
@@ -424,12 +424,12 @@ void Palette::loadTXT(std::istream & ifstr){
 			i = line.find_first_not_of(" \t", i);
 			if (i == std::string::npos) // line contains only '#'
 				continue;
-			//mout.note() << "i=" << i << mout.endl;
+			//mout.note("i=" , i );
 
 			size_t j = line.find_last_not_of(" \t");
 			if (j == std::string::npos) // when?
 				continue;
-			//mout.note() << "j=" << j << mout.endl;
+			//mout.note("j=" , j );
 			// labelPrev = label;
 			labelPrev = label;
 
@@ -455,7 +455,7 @@ void Palette::loadTXT(std::istream & ifstr){
 			i = 0;
 		}
 
-		//mout.note() << "remaining line '" << line.substr(i) << "'" << mout.endl;
+		//mout.note("remaining line '" , line.substr(i) , "'" );
 
 		std::istringstream data(line.substr(i));
 		if (SPECIAL){
@@ -514,7 +514,7 @@ void Palette::loadTXT(std::istream & ifstr){
 
 		entry.checkAlpha();
 
-		//mout.note() << "got " << colours.getElementCount() << '/' << entry.color.size() << " colours" << mout.endl;
+		//mout.note("got " , colours.getElementCount() , '/' , entry.color.size() , " colours" );
 
 		// TODO!
 		// if (entry.color.size() == 4)
@@ -636,7 +636,7 @@ void Palette::updateDictionary(){
 	this->dictionary.clear();
 
 	for (Palette::const_iterator it = begin(); it != end(); ++it){
-		mout.info() << "add " << it->first << ' ' << it->second.label << mout.endl;
+		mout.info("add " , it->first , ' ' , it->second.label );
 		this->dictionary.add(it->first, it->second.code);
 	}
 
@@ -978,7 +978,7 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 	entryWrapper["color"].setOutputSeparator(',');
 	*/
 
-	//mout.warn() << "color: " << entryWrapper["color"] << mout.endl;
+	//mout.warn("color: " , entryWrapper["color"] );
 	//entryWrapper["color"].toJSON();
 
 	drain::StringMapper mapper;
@@ -999,7 +999,7 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 
 	for (Palette::const_iterator it = begin(); it != end(); ++it){
 		if (!it->second.hidden){
-			mout.warn() << it->second.code << mout.endl;
+			mout.warn(it->second.code );
 			//entry.map.append(it->second.map, true);
 			entry = it->second; // if color.size() != 3 ??
 			//entry.id = "koe";
@@ -1032,19 +1032,19 @@ void Palette::refine(size_t n){
 
 	Palette::iterator it = begin();
 	if (it == end()){
-		mout.warn() << "empty palette" << mout.endl;
+		mout.warn("empty palette" );
 		return;
 	}
 
 	Palette::iterator it0 = it;
 	++it;
 	if (it == end()){
-		mout.warn() << "single entry palette, skipping" << mout.endl;
+		mout.warn("single entry palette, skipping" );
 		return;
 	}
 
 	if (n < size()){
-		mout.warn() << "contains already" << size() << " elements " << mout.endl;
+		mout.warn("contains already" , size() , " elements " );
 		return;
 	}
 

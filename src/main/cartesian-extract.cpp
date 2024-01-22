@@ -50,6 +50,7 @@ void CartesianExtract::exec() const {
 
 	Composite & composite = ctx.getComposite(RackContext::PRIVATE); // check thread safety
 	extract(composite, channels, bbox);
+
 }
 
 

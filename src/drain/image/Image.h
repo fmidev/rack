@@ -189,7 +189,7 @@ public:
 	Image(const std::type_info & t = typeid(unsigned char), const Geometry & g = Geometry()){  //: buffer(1), bufferPtr(&buffer[0]), segmentBegin(&buffer[0]), segmentEnd(&buffer[0]) {
 		//Logger mout(getImgLog(), "Image(T, g)", __FUNCTION__);
 		initialize(t,g);
-		//mout.warn() << *this << mout.endl;
+		//mout.warn(*this );
 	};
 
 	/// The constructor for an image of given type and size.
@@ -198,7 +198,7 @@ public:
 		// : buffer(1), bufferPtr(&buffer[0]), segmentBegin(&buffer[0]), segmentEnd(&buffer[0]) {
 		//Logger mout(getImgLog(), "Image(T, w,h,c,ca)", __FUNCTION__);
 		initialize(t, Geometry(width, height, channelCount, alphaChannelCount));
-		//mout.warn() << *this << mout.endl;
+		//mout.warn(*this );
 	};
 
 	/// The constructor for \c unsigned \c char image of given size.
@@ -207,7 +207,7 @@ public:
 		// buffer(1), bufferPtr(&buffer[0]), segmentBegin(&buffer[0]), segmentEnd(&buffer[0]) {
 		//Logger mout(getImgLog(), "Image(w,h,c,ca)", __FUNCTION__);
 		initialize(typeid(unsigned char), width, height, channelCount, alphaChannelCount);
-		//mout.warn() << *this << mout.endl;
+		//mout.warn(*this );
 	};
 
 	/// Copies the geometry of another image.
@@ -239,7 +239,7 @@ public:
 		}
 		else if (conf.getChannelCount() > 1){
 			Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-			mout.warn() << "several channels (" << conf.getChannelCount() << "), returning first." << mout.endl;
+			mout.warn("several channels (" , conf.getChannelCount() , "), returning first." );
 		}
 		return getChannel(0);
 	}
@@ -253,7 +253,7 @@ public:
 		}
 		else if (conf.getChannelCount() > 1){
 			Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-			mout.warn() << "several channels (" << conf.getChannelCount() << "), returning first." << mout.endl;
+			mout.warn("several channels (" , conf.getChannelCount() , "), returning first." );
 		}
 		return getChannel(0);
 	}
@@ -268,7 +268,7 @@ public:
 		Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		setStorageType(type);
 		if (!conf.isEmpty()){
-			mout.note() << "STYLE/ changing type of allocated image" << mout.endl;
+			mout.note("STYLE/ changing type of allocated image" );
 		}
 		conf.setGeometry(getGeometry());
 	};

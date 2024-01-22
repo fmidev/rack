@@ -51,6 +51,19 @@ void DistanceModel::update(){
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
+	pixelAdjacency.set(pixelAdjacencyStr);
+
+	setRadius(horzRadius.forward, vertRadius.forward, horzRadius.backward, vertRadius.backward);
+
+	updateBean();
+
+}
+
+void DistanceModel::updateBean() const {
+
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+
 	static
 	const std::map<std::string,std::string> compatibilityMap = {
 			{"0","4-CONNECTED"},
@@ -67,9 +80,7 @@ void DistanceModel::update(){
 		}
 	}
 
-	pixelAdjacency.set(pixelAdjacencyStr);
 	pixelAdjacencyStr = pixelAdjacency.getDict().getKey(pixelAdjacency.getValue());
-	setRadius(horzRadius.forward, vertRadius.forward, horzRadius.backward, vertRadius.backward);
 }
 
 void DistanceModel::createChain(DistanceNeighbourhood & chain, PIXEL_ADJACENCY topology, bool forward) const {

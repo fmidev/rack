@@ -119,11 +119,11 @@ public:
 	void setType(const std::type_info & t){
 
 		if (t == typeid(bool)){
-			//mout.warn() << "storage type 'bool' not supported, using 'unsigned char'" << mout.endl;
+			//mout.warn("storage type 'bool' not supported, using 'unsigned char'" );
 			setType(typeid(unsigned char)); // re-invoke
 		}
 		else if (t == typeid(std::string)){
-			//mout.error() << "storage type 'std::string' not applicable to images" << mout.endl;
+			//mout.error("storage type 'std::string' not applicable to images" );
 			//setType(typeid(unsigned char));
 			throw std::runtime_error("storage type 'std::string' not applicable to images");
 			return;
@@ -342,8 +342,7 @@ public:
 
 
 	inline
-	ImageConf(const ImageConf & conf) : Encoding(conf), Geometry(conf)
-	{
+	ImageConf(const ImageConf & conf) : Encoding(conf), Geometry(conf), coordinatePolicy(conf.getCoordinatePolicy()) {
 	}
 
 

@@ -237,7 +237,7 @@ void FastOpticalFlow2Op::computeDifferentials(const ImageTray<const Channel> & s
 
 	// ! Scale should be set already in getSrc().
 	const double scale = src.get().getConf().requestPhysicalMax(10.0); // easily returns 255.0 for unsigned char images
-	mout.debug2() << " src: " << src1 << mout.endl;
+	mout.debug2(" src: " , src1 );
 
 	for (size_t i = 0; i < dst.size(); ++i) {
 		Channel & d = dst.get(i);

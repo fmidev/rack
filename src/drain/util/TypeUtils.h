@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <limits>
 
 #include "Type.h"
-#include "Log.h"
+//#include "Log.h"
 
 namespace drain {
 
@@ -172,8 +172,12 @@ template <typename T>
 struct TypeName<std::initializer_list<T> > {
 	static const char* get(){
 		static std::string name;
-		if (name.empty())
-			name = drain::StringBuilder("std::initializer_list<", drain::TypeName<T>::get(), ">");
+		if (name.empty()){
+			name = "std::initializer_list<";
+			name += drain::TypeName<T>::get();
+			name += ">";
+			//name = drain::StringBuilder("std::initializer_list<", drain::TypeName<T>::get(), ">");
+		}
 		return name.c_str();
 	}
 };
@@ -194,8 +198,12 @@ template <typename T>
 struct TypeName<std::vector<T> > {
 	static const char* get(){
 		static std::string name;
-		if (name.empty())
-			name = drain::StringBuilder("std::vector<", drain::TypeName<T>::get(), ">");
+		if (name.empty()){
+			//name = drain::StringBuilder("std::vector<", drain::TypeName<T>::get(), ">");
+			name = "std::vector<"; // + drain::TypeName<T>::get() + ">";
+			name += drain::TypeName<T>::get();
+			name += ">";
+		}
 		return name.c_str();
 	}
 };

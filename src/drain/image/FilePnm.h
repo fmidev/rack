@@ -134,13 +134,13 @@ void FilePnm::read(T & image, const std::string & path, const CommentReader & co
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.info() << "path='" << path << "'" << mout.endl;
+	mout.info("path='" , path , "'" );
 
 	std::ifstream infile;
 	infile.open(path.c_str(), std::ios::in);
 
 	if (!infile){
-		mout.warn() << "opening file '" << path << "' failed" << mout.endl;
+		mout.warn("opening file '" , path , "' failed" );
 		return;
 	}
 
@@ -148,8 +148,8 @@ void FilePnm::read(T & image, const std::string & path, const CommentReader & co
 	//infile >> magic;
 
 	if (infile.get() != 'P'){
-		mout.warn() << "file does not start with  'P' (magic code)" << mout.endl;
-		mout.error() << "not an PNM file" << mout.endl;
+		mout.warn("file does not start with  'P' (magic code)" );
+		mout.error("not an PNM file" );
 		return;
 	}
 
@@ -184,10 +184,10 @@ void FilePnm::read(T & image, const std::string & path, const CommentReader & co
 		channels = 3;
 		break;
 	default:
-		mout.error() << "unrecognized PPM type" << mout.endl;
+		mout.error("unrecognized PPM type" );
 	}
 
-	mout.note() << "PNM type: P" <<  c << " (" << channels  << " channels)" << mout.endl;
+	mout.note("PNM type: P" ,  c , " (" , channels  , " channels)" );
 
 	while ((c = infile.get()) != '\n'){
 		// ?
@@ -198,7 +198,7 @@ void FilePnm::read(T & image, const std::string & path, const CommentReader & co
 		while ((c = infile.get()) !='\n' ){
 			// std::cout << c;
 			if (infile.eof())
-				mout.error() << "Premature end of file" << mout.endl;
+				mout.error("Premature end of file" );
 		}
 		std::list<std::string> assignment;
 		drain::StringTools::split(sstr.str(), assignment, "=", " \t'\"");
@@ -215,7 +215,7 @@ void FilePnm::read(T & image, const std::string & path, const CommentReader & co
 
 	image.initialize(typeid(unsigned char), width, height, channels);
 
-	mout.debug() << image << mout.endl;
+	mout.debug(image );
 
 	readFrame(image, infile);
 

@@ -42,12 +42,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/ReferenceMap.h"
 #include "drain/util/RegExp.h"
 #include "drain/util/Sprinter.h"
-
 #include "drain/util/Variable.h"
-#include "ODIM.h"
-#include "PolarODIM.h" // elangle
 
+#include "ODIM.h"
+#include "ODIMPathTools.h"
 #include "ODIMPathMatcher.h"
+#include "PolarODIM.h" // elangle
 
 
 namespace rack {
@@ -372,33 +372,36 @@ public:
 
 
 	/// Searches the children of child.getType(), or g if given, and stores the one with largest index.
-	static
-	bool getLastChild(const Hi5Tree & tree, ODIMPathElem & child); //, (ODIMPathElem::group_t g =  ODIMPathElem::NONE);
+	/**
+	 *
+	 static
+	 bool getLastChild(const Hi5Tree & tree, ODIMPathElem & child); //, (ODIMPathElem::group_t g =  ODIMPathElem::NONE);
+	 */
 
 	/// Searches children of given type, returns a non-existing child with index greater than child.index.
 	/**
 	 *   Unused indices may be returned.
-	 */
 	static
 	bool getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMPathElem::index_t iMax=0xff);
+	 */
 
 	/// Derive a child with index one greater than the largest index encountered.
 	/**
 	 *  \param tree - parent structure
 	 *  \param child - child to be set index = last+1, hence 1 if none found.
 	 *  \return - true if child's index was incremented (ie.)
-	 */
 	static
 	bool getNextChild(const Hi5Tree & tree, ODIMPathElem & child);
+	 */
 
 	//static 	bool getNextDescendant(Hi5Tree & tree, (ODIMPathElem::group_t g, ODIMPath & path);
 
 	/// Searches children of given type, returns a non-existing child with index greater than child.index.
 	/**
 	 *   Unused indices may be returned.
-	 */
 	static
 	bool getChildren(const Hi5Tree & tree, std::map<std::string,ODIMPathElem> & children, ODIMPathElem::group_t groups);
+	 */
 
 
 
@@ -424,13 +427,13 @@ protected:
 	/**
 	 *  \param l - container for paths
 	 *  \param props - unused (in this variant, for lists)
-	 */
 	static inline
 	void addPathFOO(std::list<ODIMPath> & l, const drain::FlexVariableMap & props, const ODIMPath &path){
 		//PolarODIM odim;
 		//odim.updateFromCastableMap(props);
 		l.push_back(path);
 	}
+	 */
 
 	/// Add path to a map, using elevation angle as index. (Assumes polar data)
 	/**
@@ -438,34 +441,34 @@ protected:
 	 *
 	 *  \param m - container for paths
 	 *  \param props - metadata containing \c where:elangle
-	 */
 	static inline
 	void addPathFOO(std::map<double,ODIMPath> & m, const drain::FlexVariableMap & props, const ODIMPath &path){
 		PolarODIM odim(ODIMPathElem::DATASET); // minimise references - only where:elangle needed
 		odim.updateFromCastableMap(props);  // where:elangle
 		m[odim.elangle] = path;
 	}
+	 */
 
 	/// Add path to a map, using timestamp (\c what:startdate + \c what:starttime ) as index. (Assumes polar data)
 	/**
 	 *  \param m - container for paths
 	 *  \param props - metadata containing \c what:startdate + \c what:starttime
-	 */
 	static inline
 	void addPathFOO(std::map<std::string,ODIMPath> & m, const drain::FlexVariableMap & props, const ODIMPath &path){
 		PolarODIM odim(ODIMPathElem::DATASET); // minimise references - only what:startdate and what:starttime
 		odim.updateFromCastableMap(props); // what:startdate &  what:starttime
 		m[odim.startdate + odim.starttime] = path;
 	}
+	 */
 
 
 	/**
 	 *  \param pathContainer – std::map<double,ODIMPath> or std::map<std::string,ODIMPath> for ELANGLE and TIME, respectively.
 	 *
 	 *  \param MAX: MIN or MAX use keys with greatest values: latest TIME or highest ELANGLE
-	 */
 	template <class M>
 	void copyPathsFOO(M & pathMap, DataOrder::Oper oper, std::list<ODIMPath> & mapList) const ;
+	 */
 	// void pruneMap(std::list<ODIMPath> & pathContainer, DataOrder::Oper oper=DataOrder::Oper::MIN) const ;
 
 // EXPERIMENTAL
@@ -496,7 +499,7 @@ public:
 
 /**
  *   oper – MIN or MAX, enums of DataOrder::Oper
- */
+
 template <class M>
 void DataSelector::copyPathsFOO(M & pathMap, DataOrder::Oper oper, std::list<ODIMPath> & pathList) const {
 
@@ -528,6 +531,7 @@ void DataSelector::copyPathsFOO(M & pathMap, DataOrder::Oper oper, std::list<ODI
 
 
 }
+ */
 
 /**
  *   oper – MIN or MAX, enums of DataOrder::Oper
@@ -606,6 +610,7 @@ bool DataSelector::getPathsOLD(const Hi5Tree & src, T & pathContainer) const {
 // TODO: redesign with
 // getPaths_DS() level 1
 // getPaths_DQ() level 2+
+/*
 template <class T>
 void DataSelector::getMainPathsFOO(const Hi5Tree & src, T & pathContainer, bool LIMIT_COUNT) const {
 
@@ -623,7 +628,7 @@ void DataSelector::getMainPathsFOO(const Hi5Tree & src, T & pathContainer, bool 
 		mout.debug3("currentElem='" , currentElem , "'" );
 
 		// can be moved inside DATASET scope if no other groups included in path (in future?)
-		const drain::image::Image & data    = entry.second.data.dataSet; // for ODIM
+		const drain::image::Image & data    = entry.second.data.image; // for ODIM
 		const drain::FlexVariableMap & props = data.getProperties();
 
 		ODIMPath path(currentElem);
@@ -689,8 +694,9 @@ void DataSelector::getMainPathsFOO(const Hi5Tree & src, T & pathContainer, bool 
 
 	//return true; //...
 }
+*/
 
-
+/*
 template <class T>
 bool DataSelector::getSubPathsFOO(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const {
 
@@ -709,7 +715,7 @@ bool DataSelector::getSubPathsFOO(const Hi5Tree & src, T & pathContainer, const 
 
 		const ODIMPathElem & currentElem = entry.first;
 		mout.debug3("currentElem='" , currentElem , "'" );
-		const drain::image::Image    & data  = entry.second.data.dataSet; // for ODIM
+		const drain::image::Image    & data  = entry.second.data.image; // for ODIM
 		const drain::FlexVariableMap & props = data.getProperties();
 
 		ODIMPath p(path, currentElem);
@@ -799,16 +805,7 @@ bool DataSelector::getSubPathsFOO(const Hi5Tree & src, T & pathContainer, const 
 		else {
 			mout.debug(" skipping special: " , path , " / " , currentElem );
 		}
-		/*
-		   else if (currentElem.is(ODIMPathElem::ARRAY)){
-			if (pathMatcher.match(p)){
-				mout.debug3(" adding" , path , " / " , currentElem );
-				addPath(pathContainer, props, p);
-			}
-		  }
-
-		 */
-		groupsOK |= quantityFound;
+	groupsOK |= quantityFound;
 	}
 
 	if (quantityRequired){ //  && groupsOK
@@ -816,7 +813,7 @@ bool DataSelector::getSubPathsFOO(const Hi5Tree & src, T & pathContainer, const 
 	}
 	return groupsOK;
 }
-
+*/
 
 
 inline

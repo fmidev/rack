@@ -87,7 +87,11 @@ public:
 	// Copy constructor
 	inline
 	CoordinateHandler2D(const CoordinateHandler2D &handler){
-		setLimits(handler.xRange.min, handler.yRange.min, handler.xRange.max, handler.yRange.max); // +1
+		// setLimits(handler.xRange.min, handler.yRange.min, handler.xRange.max+1, handler.yRange.max+1); // +1
+		// setLimits(handler.xRange.min, handler.yRange.min, handler.xRange.max+1, handler.yRange.max+1); // +1
+		xRange.set(handler.getXRange());
+		yRange.set(handler.getYRange());
+		area.set(handler.area);
 		setPolicy(handler.getPolicy());
 	}
 

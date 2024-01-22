@@ -136,7 +136,7 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 
 	const ODIMPathElem & e = path.back();
 
-	const drain::FlexVariableMap & attr = group.data.dataSet.properties;
+	const drain::FlexVariableMap & attr = group.data.image.properties;
 
 	const std::string quantity = attr.get("what:quantity", ""); // what["quantity"].toStr();
 
@@ -155,9 +155,9 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 		label << ':' << ' ' << quantity << ' ';
 	}
 
-	if (!group.data.dataSet.isEmpty()){
+	if (!group.data.image.isEmpty()){
 		//ostr << "| <IMG>";
-		label << group.data.dataSet.getGeometry();
+		label << group.data.image.getGeometry();
 	}
 	if (!group.data.attributes.empty()){
 		//ostr << '|' << "<ATTR>";

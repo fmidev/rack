@@ -81,7 +81,7 @@ void CoordinateHandler2D::setPolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yU
 		// break;
 	else // if (xUnderFlowPolicy ==  CoordinatePolicy::UNDEFINED)
 	{  // default:
-		mout.warn() << "undefined xUnderFlowPolicy" << xUnderFlowPolicy << mout.endl;
+		mout.warn("undefined xUnderFlowPolicy" , xUnderFlowPolicy );
 		handleXUnderFlow = & CoordinateHandler2D::skipUndefined;
 		// break;
 	}
@@ -101,7 +101,7 @@ void CoordinateHandler2D::setPolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yU
 		// break;
 	else // if (yUnderFlowPolicy ==  CoordinatePolicy::UNDEFINED)
 	{  // default:
-		mout.warn() << "undefined yUnderFlowPolicy" << yUnderFlowPolicy<< mout.endl;
+		mout.warn("undefined yUnderFlowPolicy" , yUnderFlowPolicy);
 		handleYUnderFlow = & CoordinateHandler2D::skipUndefined;
 		// break;
 	}
@@ -121,7 +121,7 @@ void CoordinateHandler2D::setPolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yU
 		// break;
 	else  // if ( ==  CoordinatePolicy::UNDEFINED)
 	{  // default:
-		mout.warn() << "undefined xOverFlowPolicy" << xOverFlowPolicy << mout.endl;
+		mout.warn("undefined xOverFlowPolicy" , xOverFlowPolicy );
 		handleXOverFlow = & CoordinateHandler2D::skipUndefined;
 		// break;
 	}
@@ -141,7 +141,7 @@ void CoordinateHandler2D::setPolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yU
 		// break;
 	else // if ( ==  CoordinatePolicy::UNDEFINED)
 	{  // default:
-		mout.warn() << "undefined yOverFlowPolicy" << yOverFlowPolicy << mout.endl;
+		mout.warn("undefined yOverFlowPolicy" , yOverFlowPolicy );
 		handleYOverFlow = & CoordinateHandler2D::skipUndefined;
 	}
 

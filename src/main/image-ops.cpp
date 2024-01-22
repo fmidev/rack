@@ -278,7 +278,31 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		/// This makes using QIND difficult...
 		mout.info("using: ", datasetElem, " / [", datasetSelector.quantity, "]");
 
+		/*
+		mout.fail("1st src coords: ", dst["dataset1"]["data1"]["data"].data.image.getCoordinatePolicy());
+
+		// Data<dst_t> foo(dst[datasetElem]["data1"], datasetSelector.quantity);
+		// mout.fail("1b  src coords: ", foo.data.getCoordinatePolicy());
+		Data<dst_t> koe(dst[datasetElem]["data1"], "DBZH");
+
+		mout.fail("2st  src coords: ", dst["dataset1"]["data1"]["data"].data.image.getCoordinatePolicy());
+
+		DataTools::updateInternalAttributes(dst["dataset1"]["data1"]);
+
+		mout.fail("2ast src coords: ", dst["dataset1"]["data1"]["data"].data.image.getCoordinatePolicy());
+
+		{
+			mout.fail("type", drain::TypeName<Data<dst_t> >::get());
+			Data<dst_t> koe(dst[datasetElem]["data1"], "DBZH");
+		}
+		mout.fail("2bst src coords: ", dst["dataset1"]["data1"]["data"].data.image.getCoordinatePolicy());
+		*/
+
 		DataSet<dst_t> dstDataSet(dst[datasetElem], datasetSelector.quantity);
+
+		// mout.fail("3rd src coords: ", dst["dataset1"]["data1"]["data"].data.image.getCoordinatePolicy());
+
+		// mout.unimplemented<LOG_ERR>("Stop here");
 
 		const size_t QUANTITY_COUNT = dstDataSet.size();
 
@@ -288,13 +312,13 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			// mout.unimplemented("Still missing: ODIMPathElem::QUALITY ?"); // FIX!
 		}
 
-		mout.attention("ctx.qualityGroups:", ctx.qualityGroups, ", DATASET=", ODIMPathElem::DATASET, ", dstDataSet.hasQuality: ", dstDataSet.hasQuality());
+		mout.attention("ctx.qualityGroups~", ctx.qualityGroups, ", DATASET~", ODIMPathElem::DATASET, ", dstDataSet.hasQuality: ", dstDataSet.hasQuality());
 
 		bool DATASET_QUALITY = (ctx.qualityGroups & ODIMPathElem::DATASET) && dstDataSet.hasQuality(); //
 		bool SPECIFIC_QUALITY_FOUND    = false;
 		bool SPECIFIC_QUALITY_MISSING  = false;
 
-		mout.debug2("path: " , path , " contains " , QUANTITY_COUNT , " quantities, and... " , (DATASET_QUALITY ? " has":" has no") ,  " dataset quality (ok)" );
+		mout.debug2("path: ", path, " contains ", QUANTITY_COUNT, " quantities, and... ", (DATASET_QUALITY ? " has":" has no"), " dataset quality (ok)");
 
 		if (QUANTITY_COUNT == 0){
 			mout.warn("no quantities with quantity regExp ", datasetSelector.quantity, " to process, skipping");
@@ -335,6 +359,9 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			// Yes, of dst type, but used as src
 			Data<dst_t> & srcData = dstDataSet.getData(quantity);
 
+			mout.fail("src coords: ", srcData.data.getCoordinatePolicy());
+
+
 			/// SOURCE: Add src data (always from h5 struct)
 			srcData.data.setScaling(srcData.odim.scaling);
 			drain::ValueScaling & scaling = srcData.data.getScaling();
@@ -361,7 +388,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				//mout.warn("src scaling: " , srcData.data.getScaling() );
 			}
 
-			mout.debug("src :", srcData.data, ' ', EncodingODIM(srcData.odim));
+			mout.debug("src: ", srcData.data, ' ', EncodingODIM(srcData.odim));
 
 			srcTray.appendImage(srcData.data);
 

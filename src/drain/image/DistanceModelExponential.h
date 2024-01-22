@@ -56,7 +56,7 @@ class DistanceModelExponential : public DistanceModel {
 
 public:
 
-	DistanceModelExponential() : DistanceModel(__FUNCTION__){
+	DistanceModelExponential() : DistanceModel(__FUNCTION__, "Exponentially decreasing intensities. Set half-decay radii."){
 		setRadius(horzRadius.forward, vertRadius.forward);
 	};
 

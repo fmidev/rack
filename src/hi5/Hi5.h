@@ -75,11 +75,11 @@ struct NodeHi5 {
 
 	typedef drain::image::Image image_type;
 
-	drain::image::Image dataSet;
+	drain::image::Image image;
 
 	// Required, but not much needed.
 	bool empty() const {
-		return (dataSet.isEmpty() && attributes.empty());
+		return (image.isEmpty() && attributes.empty());
 	}
 
 	drain::VariableMap  attributes;

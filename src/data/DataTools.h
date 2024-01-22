@@ -102,8 +102,8 @@ public:
 	void updateInternalAttributes(Hi5Tree & src);
 	/*
 	{
-		src.data.dataSet.properties.clear();
-		src.data.dataSet.setCoordinatePolicy(4,3,2,1);
+		src.data.image.properties.clear();
+		src.data.image.setCoordinatePolicy(4,3,2,1);
 		updateInternalAttributes(src, drain::FlexVariableMap());
 		//updateInternalAttributes(src, drain::VariableMap());
 	}

@@ -249,16 +249,17 @@ void EncodingODIM::copyFrom(const drain::image::Image & data){
 
 	const drain::FlexVariableMap & m = data.getProperties();
 
-	for (drain::FlexVariableMap::const_iterator it = m.begin(); it != m.end(); ++it){
+	//for (drain::FlexVariableMap::const_iterator it = m.begin(); it != m.end(); ++it){
+	for (const auto & entry: m){
 
-		const EncodingODIM::iterator oit = find(it->first);
+		const EncodingODIM::iterator oit = find(entry.first);
 
 		if (oit != end()){
-			const drain::FlexibleVariable & srcValue = it->second;
+			const drain::FlexibleVariable & srcValue = entry.second;
 			const std::type_info & t = srcValue.getType();
 			drain::Castable & dstValue = oit->second;
 			// std::cerr << key << " type=" << t.name() << '\n';
-			mout.debug3("setting '" , it->first , "'=" , srcValue  , '|' , drain::Type::getTypeChar(t) );
+			mout.debug3("setting '" , entry.first , "'=" , srcValue  , '|' , drain::Type::getTypeChar(t) );
 
 			if (t == typeid(double)){
 				dstValue = static_cast<double>(srcValue);
@@ -269,11 +270,12 @@ void EncodingODIM::copyFrom(const drain::image::Image & data){
 				dstValue = srcValue;
 		}
 		else {
-			mout.debug3("img property '" , it->first , "' not supported by ODIM" );
+			mout.reject<LOG_DEBUG+2>("img property '" , entry.first , "' unsupported by EncodingODIM" );
 		}
 
 	}
 	type = drain::Type::getTypeChar(data.getType());
+	//mout.attention("copyFrom:", data);
 }
 
 

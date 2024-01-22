@@ -207,32 +207,16 @@ public:
 
 	void update();
 
-	/*
-	inline
-	void update(){
-		//setTopology(topology);
-		pixelAdjacency.set(pixelAdjacencyStr);
-		pixelAdjacencyStr = pixelAdjacency.getDict().getKey(pixelAdjacency.getValue());
-		setRadius(horzRadius.forward, vertRadius.forward, horzRadius.backward, vertRadius.backward);
-	}
-	*/
-
+	virtual
+	void updateBean() const;
 
 	/// Sets the topology of the computation grid: 0=diamond, 1=diagonal, 2=extended (chess knight steps)
 	inline
 	void setTopology(PIXEL_ADJACENCY topology){
-		// this->topology = topology;
-		// EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict.getKeys()
 		pixelAdjacency.set(topology);
-		pixelAdjacencyStr = pixelAdjacency.getDict().getKey(topology);
-				//pixelAdjacency;
+		updateBean();
+		//pixelAdjacencyStr = pixelAdjacency.getDict().getKey(topology);
 	};
-	/*
-	inline
-	void setTopology(topol_t topology){
-		this->topology = topology;
-	};
-	*/
 
 
 	/// Creates a list of DistanceElements
@@ -262,7 +246,7 @@ protected:
 	 *
 	 *  By default, the geometry is octagonal, applying 8-distance.
 	*/
-	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), horzRadius(10.0, 10.0), vertRadius(-1.0, -1.0) {
+	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), horzRadius(11.0, 12.0), vertRadius(-1.0, -1.0) {
 		parameters.link("width",  horzRadius.tuple(), "pix").fillArray = true;
 		parameters.link("height", vertRadius.tuple(), "pix").fillArray = true;
 		//parameters.link("topology", topology=PIX_ADJACENCY_KNIGHT, "0|1|2");
@@ -273,7 +257,7 @@ protected:
 		// ? update();
 		setMax(255); // warning
 		// drain::Logger mout(getImgLog(), __FUNCTION__, getName());
-		// mout.warn() << *this << mout.endl;
+		// mout.warn(*this );
 	};
 
 	DistanceModel(const DistanceModel & dm) : BeanLike(dm), horzRadius(dm.horzRadius), vertRadius(dm.vertRadius){
@@ -298,6 +282,7 @@ protected:
 
 	/// Needed internally to get diag decrement larger than horz/vert decrements. (Not used for scaling).
 	float maxCodeValue;
+
 
 
 };

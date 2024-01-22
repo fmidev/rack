@@ -66,7 +66,7 @@ char Sampler::getCommentChar() const {
 			int i = 0;
 			drain::StringTools::convert(commentPrefix, i);
 			if ((i < 32) || (i > 128))
-				mout.warn() << "commentChar bytevalue: " << i << " > commentChar=" << (char)i << mout.endl;
+				mout.warn("commentChar bytevalue: " , i , " > commentChar=" , (char)i );
 			return i;
 		}
 	}
@@ -87,7 +87,7 @@ std::string Sampler::getFormat(const std::string & formatStr) const {
 
 	/// If format not explicitly set, use all the variables => create default format.
 	//if (!FORMAT){
-	mout.debug() << "format not given, using default (all the quantities)" << mout.endl;
+	mout.debug("format not given, using default (all the quantities)" );
 	std::stringstream sstr;
 	const std::list<std::string> & keys = variableMap.getKeyList();
 	char separator = 0;
@@ -102,10 +102,10 @@ std::string Sampler::getFormat(const std::string & formatStr) const {
 			}
 		}
 		else {
-			mout.warn() << "empty quantity" << mout.endl;
+			mout.warn("empty quantity" );
 		}
 	}
-	mout.note() << "format: using default: " << sstr.str() << mout.endl;
+	mout.note("format: using default: " , sstr.str() );
 	return sstr.str();
 }
 

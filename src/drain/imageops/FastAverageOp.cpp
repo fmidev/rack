@@ -86,7 +86,7 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 		SlidingStripeAverage<SlidingStripe<WindowConfig, WindowCore, true> > window1(width); // <WindowConfig>
 		window1.setSrcFrame(src);
 		window1.setDstFrame(tmp);
-		mout.debug2() << window1 << mout.endl;
+		mout.debug2(window1 );
 		window1.run();
 		mout.special(window1 );
 	}
@@ -97,10 +97,10 @@ void FastAverageOp::traverseChannel(const Channel & src, Channel &dst) const {
 
 	if (height > 1){
 		SlidingStripeAverage<SlidingStripe<WindowConfig, WindowCore, false> > window2(height); // <WindowConfig>
-		mout.debug2() << window2 << mout.endl;
+		mout.debug2(window2 );
 		window2.setSrcFrame(tmp);
 		window2.setDstFrame(dst);
-		mout.debug2() << window2 << mout.endl;
+		mout.debug2(window2 );
 		window2.run();
 	}
 	else {

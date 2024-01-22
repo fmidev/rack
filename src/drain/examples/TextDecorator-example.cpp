@@ -21,7 +21,7 @@
  */
  
 /*
-REQUIRE:    drain/util/{Log,Flags,Sprinter,String,TextDecorator}.cpp
+REQUIRE:    drain/util/{Log,Flags,Sprinter,String,TextDecorator,TextStyle}.cpp
 pikamake.sh drain/examples/TextDecorator-example.cpp
 
  */
@@ -36,8 +36,21 @@ pikamake.sh drain/examples/TextDecorator-example.cpp
 
 int main(int argc, char **argv){
 
+	drain::TextStyleVT100 vt100;
+
+	vt100.set(drain::TextStyle::BLUE, drain::TextStyle::UNDERLINE);
+
+	std::stringstream sstr;
+	vt100.write(sstr, drain::TextStyle::BLUE, "Kokeilu", " jatkuu..", drain::TextStyle::RED, "...valkoisena",
+			drain::TextStyle::BOLD, " kuuna ",
+			drain::TextStyle::UNDERLINE, drain::TextStyle::DIM, "haaleana", drain::TextStyle::REVERSE, " reverssinä ",
+			drain::TextStyle::BOLD, " polttosena ", drain::TextStyle::GREEN);
+
+	std::cout << sstr.str() << std::endl;
+
 	drain::TextDecorator mika;
 	mika.debug(std::cout);
+
 
 
 	if (argc < 0){
@@ -48,7 +61,7 @@ int main(int argc, char **argv){
 	}
 
 
-	mika.set(drain::TextDecorator::UNDERLINE, drain::TextDecorator::RED, drain::TextDecorator::GREEN, drain::TextDecorator::ITALIC);
+	mika.set(drain::TextStyle::UNDERLINE, drain::TextStyle::RED, drain::TextStyle::GREEN, drain::TextStyle::ITALIC);
 	//std::cout << "Moi" << '\n';
 
 	std::cout << mika << '\n';

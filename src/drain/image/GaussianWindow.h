@@ -95,22 +95,22 @@ public:
 		const double radiusAbs  = this->conf.radius * static_cast<value_t>(n)*0.5;
 		const double radiusAbs2 = radiusAbs*radiusAbs;
 		if (radiusAbs <= 0.0){
-			mout.error() << "Zero radius2: " << radiusAbs << mout.endl;
+			mout.error("Zero radius2: " , radiusAbs );
 		}
 
 		int iNorm;
-		mout.debug() << "frame:" << this->conf.frame << mout.endl;
+		mout.debug("frame:" , this->conf.frame );
 		for (int i = 0; i < n; ++i) {
 			iNorm = (i + bias);
 			f = exp2(-static_cast<double>(iNorm*iNorm) / radiusAbs2);
 			lookUp[i]  = f;
 			weightSum += f;
-			mout.debug() << i << '\t' << iNorm << '\t' << f << '\t' << weightSum << mout.endl;
+			mout.debug(i , '\t' , iNorm , '\t' , f , '\t' , weightSum );
 		}
-		mout.debug() << "weightSum = " << weightSum << mout.endl;
+		mout.debug("weightSum = " , weightSum );
 
 		scaleResult = this->src.getScaling().getScale() / this->dst.getScaling().getScale();
-		mout.debug() << "scale = " << scaleResult << mout.endl;
+		mout.debug("scale = " , scaleResult );
 
 		//this->coordinateHandler.setLimits(srcWidth, srcHeight);
 		//this->coordinateHandler.setLimits(this->src.getWidth(), this->src.getHeight());
@@ -129,7 +129,7 @@ protected:
 	void setSize(size_t width, size_t height){
 		drain::Logger mout(getImgLog(), "SlidingStripe", __FUNCTION__);
 		if (height > 1)
-			mout.warn() << "horz stripe, height(" << height << ") discarded" << mout.endl;
+			mout.warn("horz stripe, height(" , height , ") discarded" );
 		Window<GaussianWindowConf,R>::setSize(width, 1);
 	}
 

@@ -55,6 +55,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/DataSelector.h"
 #include "data/ODIM.h"
 #include "data/ODIMPath.h"
+#include "data/ODIMPathTools.h"
 #include "data/QuantityMap.h"
 
 #include "hi5/Hi5.h"
@@ -389,10 +390,10 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	mout.note("appendResults path: " ,  ProductBase::appendResults );
 	if (ProductBase::appendResults.getType() == ODIMPathElem::DATASET){
-		DataSelector::getNextChild(dst, parent);
+		ODIMPathTools::getNextChild(dst, parent);
 	}
 
-	DataSelector::getNextChild(dst[parent], child);
+	ODIMPathTools::getNextChild(dst[parent], child);
 
 	mout.note("storing product in path: " ,  parent , '|' , child );
 	//mout.debug3("storing product in path: "  , dataSetPath );

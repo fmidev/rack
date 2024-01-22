@@ -271,7 +271,7 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 
 			statusMap["what:path"] = sprinter(path).str();
 			// NEW 2021
-			const drain::image::Image & img = src(path)[ODIMPathElem::ARRAY].data.dataSet;
+			const drain::image::Image & img = src(path)[ODIMPathElem::ARRAY].data.image;
 			if (!img.isEmpty()){
 				const std::type_info & t = img.getType();
 				statusMap["what:type"] = std::string(1u, drain::Type::getTypeChar(t));

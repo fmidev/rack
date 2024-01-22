@@ -205,14 +205,14 @@ public:
 		drain::Logger mout(__FUNCTION__, getName());
 
 		if (images.empty()){
-			mout.error() << "no image data (channels) provided: " << mout.endl;
+			mout.error("no image data (channels) provided: " );
 			return;
 		}
 
 		// Save initial formatting data
 
-		//mout.special() << "fieldWidth: " << fieldWidth << ", fillChar=" << fillChar << mout;
-		mout.debug2() << "variables (initially): " << variableMap.getKeys() << mout.endl;
+		//mout.special("fieldWidth: " , fieldWidth , ", fillChar=" , fillChar );
+		mout.debug2("variables (initially): " , variableMap.getKeys() );
 
 		/// Final formatter defined here, to copy ostr precision etc.
 		// Note: supports leading minus sign
@@ -222,21 +222,21 @@ public:
 		std::string format = getFormat(formatStr);
 		formatter.parse(format, true); // convert escaped, eg. "\\n" -> "\n"
 		formatter.iosFormat.copyFrom(ostr);
-		mout.special() << "iosFormat: " << formatter.iosFormat << mout;
+		mout.special("iosFormat: " , formatter.iosFormat );
 
 		// std::string format = getFormat(formatStr);
 
 		// Service: associate file keys with data
-		// mout.debug() << "check minus" << mout.endl;
+		// mout.debug("check minus" );
 		std::map<std::string, double> values;
 		static const std::string minusStr("-");
 		for (typename std::map<std::string, D>::const_iterator it = images.begin(); it != images.end(); ++it){
 			const std::string & key = it->first;
-			mout.debug2() << "referencing: " << key << ',' << minusStr << key << mout.endl;
+			mout.debug2("referencing: " , key , ',' , minusStr , key );
 			variableMap.link(key, values[key]=0);
 			variableMap.link(minusStr+key, values[minusStr+key]=0);
 		}
-		mout.debug() << "variables: " << variableMap << mout.endl;
+		mout.debug("variables: " , variableMap );
 
 
 
@@ -333,8 +333,8 @@ public:
 			}
 			// formatter.expand(map, true);
 		}
-		mout.debug() << "last values: " << variableMap << mout.endl;
-		//mout.warn() << "formatter " << formatter << mout.endl;
+		mout.debug("last values: " , variableMap );
+		//mout.warn("formatter " , formatter );
 
 	}
 

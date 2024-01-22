@@ -80,17 +80,17 @@ void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const
 		ostr << '\n';
 	}
 
-	if (dataSet.getVolume() > 0){
+	if (image.getVolume() > 0){
 
 		ostr << prefix;
 		//if (exclude) ostr << '~';
 		ostr << ':';
 		//'\t';
 		//mout.note() << dataSet.getGeometry() << mout.endl;
-		if (dataSet.getGeometry().channels.getChannelCount() <= 1)
-			ostr << "image=[" << dataSet.getWidth() << ',' << dataSet.getHeight() << ']';
+		if (image.getGeometry().channels.getChannelCount() <= 1)
+			ostr << "image=[" << image.getWidth() << ',' << image.getHeight() << ']';
 		else
-			ostr << "image=[" << dataSet.getWidth() << ',' << dataSet.getHeight() << ',' << dataSet.getChannelCount() << ']';
+			ostr << "image=[" << image.getWidth() << ',' << image.getHeight() << ',' << image.getChannelCount() << ']';
 		// TODO:
 		// ostr  << ' ' << '[' << drain::Type::getTypeChar(dataSet.getType()) << '@' << dataSet.getEncoding().getElementSize() << ']' << '\n';  // like typeInfo above
 		// ostr << " # " << drain::Type::call<drain::complexName>(dataSet.getType());
@@ -260,7 +260,7 @@ drain::image::Image & Hi5Base::getPalette(Hi5Tree & dst){
 
 	//Hi5Tree & palette = dst["palette"];
 
-	drain::image::Image & data = dst.data.dataSet;
+	drain::image::Image & data = dst.data.image;
 	if (data.isEmpty()){
 		data.setType<unsigned char>();
 		data.setGeometry(3, 256);
@@ -375,26 +375,26 @@ void Hi5Base::assignAttribute(Hi5Tree & dst, const std::string & assignment){
 		return;
 
 	if (attrKey == "image"){
-		n.dataSet.setType<unsigned char>();
+		n.image.setType<unsigned char>();
 
 		drain::Variable v;
 		drain::JSON::readValue(attrValue, v);
 		switch (v.getElementCount()) {
 			case 3:
-				n.dataSet.setGeometry(v.get<size_t>(0), v.get<size_t>(1), v.get<size_t>(2));
+				n.image.setGeometry(v.get<size_t>(0), v.get<size_t>(1), v.get<size_t>(2));
 				break;
 			case 2:
-				n.dataSet.setGeometry(v.get<size_t>(0), v.get<size_t>(1));
+				n.image.setGeometry(v.get<size_t>(0), v.get<size_t>(1));
 				break;
 			case 1:
-				n.dataSet.setGeometry(v.get<size_t>(0), v.get<size_t>(0));
+				n.image.setGeometry(v.get<size_t>(0), v.get<size_t>(0));
 				mout.warn() << "image height not given, assuming height=width=" << v.get<size_t>(0) << mout.endl;
 				break;
 			default:
 				mout.warn() << "wrong number of dimensions for image data: " << v << mout.endl;
 				break;
 		}
-		//n.dataSet.setGeometry(v.get<size_t>(0), v.get<size_t>(1));
+		//n.image.setGeometry(v.get<size_t>(0), v.get<size_t>(1));
 		// What if dim < 2
 	}
 	else { // non-image
@@ -458,7 +458,7 @@ void Hi5Base::deleteExcluded(Hi5Tree &src){
 			elems.push_back(entry.first);
 		}
 		else {
-			mout.special("traverse subtree: ", entry.first);
+			mout.special<LOG_DEBUG>("traverse subtree: ", entry.first);
 			deleteExcluded(entry.second);
 		}
 	}
@@ -466,7 +466,7 @@ void Hi5Base::deleteExcluded(Hi5Tree &src){
 	for (const rack::ODIMPathElem & elem: elems){
 		//Hi5Tree::path_t p;
 		//p << elem;
-		mout.reject("delete group: ", elem);
+		mout.reject<LOG_DEBUG>("delete group: ", elem);
 		//src.erase(p);
 		src.getChildren().erase(elem);
 	}

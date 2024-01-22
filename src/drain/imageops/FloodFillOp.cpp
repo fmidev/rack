@@ -124,7 +124,7 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 	}
 
 	if (Type::call<typeIsFloat>(src.getType()) || Type::call<typeIsFloat>(dst.getType()) ) {
-		mout.debug2() << "type: double" << mout.endl;
+		mout.debug2("type: double" );
 		//SegmentProber<double,double,SegmentProberConf<double,double> > fill(src, dst);
 		FillProber fill(src, dst);
 		//PickySegmentProber fill(src, dst);
@@ -134,7 +134,7 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 		fill.probe(point.x, point.y);
 	}
 	else {
-		mout.debug2() << "type: integral" << mout.endl;
+		mout.debug2("type: integral" );
 		FillProber fill(src, dst);
 		//SegmentProber<int,int,SegmentProberConf<int,int> > fill(src, dst);
 		//PickySegmentProber fill(src, dst);

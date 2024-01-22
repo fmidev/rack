@@ -135,7 +135,7 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 	prober.init();
 
 	const UnaryFunctor & functor = getFunctor(dst.getConf().getTypeMax<double>());  // what if dst float?
-	mout.debug2() << functor.getName() << ':' << functor << mout.endl;
+	mout.debug2(functor.getName() , ':' , functor );
 
 	const float prescale = dst.getConf().getTypeMax<float>();
 

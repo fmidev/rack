@@ -41,7 +41,7 @@ Channel & MultiChannel::getChannel(size_t i){
 
 	if (i >= getChannelCount()){
 		Logger mout(getImgLog(), "MultiChannel", __FUNCTION__);
-		mout.error() << "channel index (" << i << ") overflow (" << getChannelCount() << " channels)" << mout.endl;
+		mout.error("channel index (" , i , ") overflow (" , getChannelCount() , " channels)" );
 	}
 
 	updateChannelVector();
@@ -54,7 +54,7 @@ const Channel & MultiChannel::getChannel(size_t i) const {
 
 	if (i >= getChannelCount()){
 		Logger mout(getImgLog(), "MultiChannel", __FUNCTION__);
-		mout.error() << "channel index (" << i << ") overflow (" << getChannelCount() << " channels)" << mout.endl;
+		mout.error("channel index (" , i , ") overflow (" , getChannelCount() , " channels)" );
 	}
 
 	updateChannelVector();
@@ -66,7 +66,7 @@ Channel & MultiChannel::getAlphaChannel(size_t k){
 
 	if (k >= getAlphaChannelCount()){
 		Logger mout(getImgLog(), "MultiChannel", __FUNCTION__);
-		mout.error() << "channel index (" << k << ") overflow (" << getAlphaChannelCount() << " alpha channels)" << mout.endl;
+		mout.error("channel index (" , k , ") overflow (" , getAlphaChannelCount() , " alpha channels)" );
 	}
 
 	updateChannelVector();
@@ -79,7 +79,7 @@ const Channel & MultiChannel::getAlphaChannel(size_t k) const {
 
 	if (k >= getAlphaChannelCount()){
 		Logger mout(getImgLog(), "MultiChannel", __FUNCTION__);
-		mout.error() << "channel index (" << k << ") overflow (" << getAlphaChannelCount() << " alpha channels)" << mout.endl;
+		mout.error("channel index (" , k , ") overflow (" , getAlphaChannelCount() , " alpha channels)" );
 	}
 
 	updateChannelVector();
@@ -106,7 +106,7 @@ void MultiChannel::updateChannelVector() const {
 		// Test if segment viewed already (lazy init, prevents from re-scaling
 		// This way only new ones initialized, to prevent resetting channel specific scalings (and coord policies).
 		if (ChannelView(*this,k).hasSameSegment(channel)){
-			mout.debug2() << "channel[" << k << "] exists, scaling: " << channel.getScaling() << mout.endl;
+			mout.debug2("channel[" , k , "] exists, scaling: " , channel.getScaling() );
 		}
 		else {
 			// links scaling to target image: channel.scalingPtr = this->scaling;
@@ -119,7 +119,7 @@ void MultiChannel::updateChannelVector() const {
 					const std::type_info & t = channel.getType();
 					if (Type::call<typeIsSmallInt>(t)){
 						channel.getScaling().setPhysicalScale(t, 0.0, 1.0);
-						mout.debug() << "channel[" << k << "]: alpha scaling  " << channel.getScaling() << mout.endl;
+						mout.debug("channel[" , k , "]: alpha scaling  " , channel.getScaling() );
 					}
 				}
 			}

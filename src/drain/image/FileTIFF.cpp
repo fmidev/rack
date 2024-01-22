@@ -94,7 +94,7 @@ void FileTIFF::setDefaults(){ //const drain::image::ImageConf & src){ // int til
 	setField(TIFFTAG_IMAGEWIDTH,width);
 	setField(TIFFTAG_IMAGELENGTH,height);
 	const drain::Type t(src.getType());
-	mout.debug() << " bytes=" << drain::Type::call<drain::sizeGetter>(t) << mout.endl;
+	mout.debug(" bytes=" , drain::Type::call<drain::sizeGetter>(t) );
 	switch ((const char)t) {
 		case 'C':
 			// no break
@@ -103,7 +103,7 @@ void FileTIFF::setDefaults(){ //const drain::image::ImageConf & src){ // int til
 			break;
 		default:
 			TIFFSetField(tif, TIFFTAG_BITSPERSAMPLE, 8);
-			mout.warn() << "unsupported storage type=" <<  drain::Type::getTypeChar(t) << ", trying 8 bit mode"<< mout.endl;
+			mout.warn("unsupported storage type=" ,  drain::Type::getTypeChar(t) , ", trying 8 bit mode");
 	}
 	*/
 
@@ -208,10 +208,10 @@ void FileTIFF::writeImageData(const drain::image::Image & src) //, int tileWidth
 			tile.setType<unsigned short int>();
 		tile.setGeometry(tileWidth, tileHeight);
 
-		mout.info() << "tiled mode:"  << tile << ", bits=" << bitspersample << mout.endl;
+		mout.info("tiled mode:"  , tile , ", bits=" , bitspersample );
 
 		if ((!UCHAR8) && (width % tileWidth)){
-			mout.warn() << "16bit image, width != N*tileWidth (" << tileWidth <<"), errors may occur (libgeotiff problem?)" << mout.endl;
+			mout.warn("16bit image, width != N*tileWidth (" , tileWidth ,"), errors may occur (libgeotiff problem?)" );
 		}
 
 		/// current tile-widths
@@ -241,7 +241,7 @@ void FileTIFF::writeImageData(const drain::image::Image & src) //, int tileWidth
 				// Copy image data to tile
 				if ((w>0) && (h>0)){
 					//if (!UCHAR8){tile.setGeometry(w, h);}
-					mout.debug2() << "TILE:" << k << ',' <<  l << '\t' << w << 'x' << h << mout.endl;
+					mout.debug2("TILE:" , k , ',' ,  l , '\t' , w , 'x' , h );
 					for (int j=0; j<h; ++j){
 						for (int i=0; i<w; ++i){
 							//buffer[j*tileWidth + i] = src.get<int>(iOffset+i, jOffset+j);
@@ -303,7 +303,7 @@ void FileTIFF::writeImageData(const drain::image::Image & src) //, int tileWidth
 void FileTIFF::write(const std::string &path, const drain::image::Image & src){
 
 	// drain::Logger mout(__FILE__, __FUNCTION__);
-	// mout.note() << src.properties << mout.endl;
+	// mout.note(src.properties );
 
 	FileTIFF file(path, "w");
 	file.setDefaults();

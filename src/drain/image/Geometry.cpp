@@ -50,7 +50,7 @@ size_t Geometry::getChannelIndex(const std::string & index) const {
 
 
 	if (index.empty()){
-		mout.warn() << "index str empty, returning 0" << mout.endl;
+		mout.warn("index str empty, returning 0" );
 		return 0;
 	}
 
@@ -78,7 +78,7 @@ size_t Geometry::getChannelIndex(const std::string & index) const {
 	}
 
 	if (i >= getChannelCount()){
-		mout.warn() << "index " << i << " larger than channelCount " << getChannelCount() << mout.endl;
+		mout.warn("index " , i , " larger than channelCount " , getChannelCount() );
 	}
 
 	return i;

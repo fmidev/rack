@@ -90,12 +90,12 @@ public:
 
 		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
 
-		mout.debug3() << "calling initialize" << mout.endl;
+		mout.debug3("calling initialize" );
 		initialize();
 
 		//this->myFunctor.updateBean();
-		mout.debug2() << (*this) << mout.endl;
-		//mout.warn() << "final functor:" << this->myFunctor << mout.endl;
+		mout.debug2((*this) );
+		//mout.warn("final functor:" , this->myFunctor );
 		/*
 		for (int i=0; i<50; ++i){
 			std::cerr << __FUNCTION__ << i << '\t' << this->myFunctor(i) << '\n';
@@ -103,16 +103,16 @@ public:
 		*/
 
 		(this->*fill)();
-		mout.debug3() << "SCALE=" << (int)this->SCALE << mout.endl;
+		mout.debug3("SCALE=" , (int)this->SCALE );
 		write();
 
 		if (this->isHorizontal()){
-			mout.debug2() << "start slideHorz" << mout.endl;
+			mout.debug2("start slideHorz" );
 			slideHorz();
-			mout.debug2() << "end slideHorz" << mout.endl;
+			mout.debug2("end slideHorz" );
 		}
 		else {
-			mout.debug2() << "slideVert" << mout.endl;
+			mout.debug2("slideVert" );
 			slideVert();
 		}
 	}
@@ -124,15 +124,15 @@ public:
 	void runHorz(){
 
 		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
-		mout.debug3() << "start" << mout.endl;
+		mout.debug3("start" );
 
-		mout.debug3() << "initialize" << mout.endl;
+		mout.debug3("initialize" );
 		initialize();
 
-		mout.debug3() << (*this) << mout.endl;
+		mout.debug3((*this) );
 
 		fill();
-		mout.debug3() << "SCALE=" << (int)this->SCALE << mout.endl;
+		mout.debug3("SCALE=" , (int)this->SCALE );
 		write();
 
 		mout .debug3() << "slideHorz" << mout.endl;
@@ -146,15 +146,15 @@ public:
 	void runVert(){
 
 		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
-		mout.debug3() << "start" << mout.endl;
+		mout.debug3("start" );
 
-		mout.debug3() << "initialize" << mout.endl;
+		mout.debug3("initialize" );
 		initialize();
 
-		mout.debug3() << (*this) << mout.endl;
+		mout.debug3((*this) );
 
 		fill();
-		mout.debug3() << "SCALE=" << (int)this->SCALE << mout.endl;
+		mout.debug3("SCALE=" , (int)this->SCALE );
 		write();
 
 		mout .debug3() << "slideVert" << mout.endl;
@@ -166,7 +166,7 @@ public:
 	virtual
 	void debug(){
 		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
-		mout.warn() << "Using apply() recommended for debugging only." << mout.endl;
+		mout.warn("Using apply() recommended for debugging only." );
 		Window<C,R>::run();
 	}
 
@@ -284,7 +284,7 @@ protected:
 	/**
 	 *  High-level functionality of a sliding window.
 	 *
-	 *  @return true, if the new location is within im		mout.debug3() << window << mout.endl;
+	 *  @return true, if the new location is within im		mout.debug3(window );
 	 *  age, otherways false.
 	 */
 	inline // FINAL
@@ -389,7 +389,7 @@ protected:
 	void fillBoth(){
 		//drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
 		this->clear();
-		//mout.warn() << "init window" << mout.endl;
+		//mout.warn("init window" );
 		for (int i = this->iRange.min; i <= this->iRange.max; i++) {
 			for (int j = this->jRange.min; j <= this->jRange.max; j++) {
 				this->locationTmp.setLocation(this->location.x+i, this->location.y+j);
@@ -569,16 +569,16 @@ protected:
 
 		drain::Logger mout(getImgLog(), "SlidingStripe", __FUNCTION__);
 		//if (height > 1)
-		//	mout.warn() << "horz stripe, height(" << height << ") discarded" << mout.endl;
+		//	mout.warn("horz stripe, height(" , height , ") discarded" );
 		//SlidingWindow<C,R>::setSize(width, 1);
 		if (DIR){
 			if (height > 1)
-				mout.warn() << "horz stripe, height(" << height << ") discarded" << mout.endl;
+				mout.warn("horz stripe, height(" , height , ") discarded" );
 			SlidingWindow<C,R>::setSize(width, 1);
 		}
 		else {
 			if (width > 1)
-				mout.warn() << "vert stripe, width("  << width << ") discarded" << mout.endl;
+				mout.warn("vert stripe, width("  , width , ") discarded" );
 			SlidingWindow<C,R>::setSize(1, height);
 		}
 

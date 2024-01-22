@@ -989,7 +989,6 @@ public:
 
 		for (auto & entry: dstH5){
 
-
 			mout.debug("considering: ", entry.first);
 
 			if (!entry.first.is(ODIMPathElem::DATASET))  //{ // && selector.dataset.contains(it->first.getIndex())){
@@ -997,16 +996,10 @@ public:
 
 			for (auto & subEntry: entry.second){
 
-			// for (Hi5Tree::iterator dit = it->second.begin(); dit != it->second.end(); ++dit){
-
 				if (!subEntry.first.belongsTo(ODIMPathElem::DATA|ODIMPathElem::QUALITY))
 					continue;
 
-				// DataSet<DT> dstDataSet(it->second);
-
-				//for (typename DataSet<DT>::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
-
-				mout.debug(subEntry.first, ":\n", subEntry.second);
+				mout.debug(subEntry.first, " tree:\n", subEntry.second);
 				PlainData<DT> dstData(subEntry.second);
 				//PlainData<DT> & dstData = dit->second;
 
@@ -1078,6 +1071,9 @@ public:
 		ODIM::copyToH5<ODIMPathElem::ROOT>(rootODIM, dstH5);
 		mout.special(dstH5 );
 		*/
+
+		//mout.attention("DataTools::updateInternalAttributes");
+
 		DataTools::updateInternalAttributes(dstH5);
 		//hi5::Writer::writeFile("disto.h5", dstH5);
 
@@ -1872,7 +1868,7 @@ void CmdValidate::exec() const {
 			}
 
 			const Hi5Tree & t = src(path); // (*ctx.currentHi5)(*it);
-			if (t.data.dataSet.isEmpty()){
+			if (t.data.image.isEmpty()){
 				// std::cout << " GROUP" << '\n';
 				// const drain::VariableMap & a = t.data.attributes;
 				//for (drain::VariableMap::const_iterator ait=a.begin(); ait!=a.end(); ++ait){

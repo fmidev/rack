@@ -34,43 +34,61 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 
 //#include "Log.h"
+#include "TypeUtils.h"
+#include "TextStyle.h"
 
 #include "TextDecorator.h"
+
 
 
 namespace drain
 {
 
-
 template <>
-const drain::FlaggerDict drain::EnumDict<TextDecorator::Style>::dict = {
-		{"ITALIC", TextDecorator::ITALIC},
-		{"BOLD", TextDecorator::BOLD},
-		{"DIM", TextDecorator::DIM},
-		{"INVERSE", TextDecorator::REVERSE}, // VT100 8
-//		{"", TextDecorator::},
+struct TypeName<TextStyle::Colour> {
+    static const char* get(){ return "TextStyle::Colour"; }
 };
 
 template <>
-const drain::FlaggerDict drain::EnumDict<TextDecorator::Colour>::dict = {
-		{"BLACK", TextDecorator::BLACK},
-		{"GRAY", TextDecorator::GRAY},
-		{"WHITE", TextDecorator::WHITE},
-		{"RED",   TextDecorator::RED},
-		{"GREEN", TextDecorator::GREEN},
-		{"YELLOW", TextDecorator::YELLOW},
-		{"BLUE",  TextDecorator::BLUE},
-		{"CYAN",  TextDecorator::CYAN},
-		{"PURPLE", TextDecorator::PURPLE}
-		//		{"", TextDecorator::}
+struct TypeName<TextStyle::Line> {
+    static const char* get(){ return "TextStyle::Line"; }
 };
 
 template <>
-const drain::FlaggerDict drain::EnumDict<TextDecorator::Line>::dict = {
-		{"NO_LINE", TextDecorator::NO_LINE}, // deprecating
-		{"UNDERLINE", TextDecorator::UNDERLINE},
-		{"DOUBLE_UNDERLINE", TextDecorator::DOUBLE_UNDERLINE},
-		{"OVERLINE", TextDecorator::OVERLINE},
+struct TypeName<TextStyle::Style> {
+    static const char* get(){ return "TextStyle::Style"; }
+};
+
+
+template <>
+const drain::FlaggerDict drain::EnumDict<TextStyle::Style>::dict = {
+		{"ITALIC", TextStyle::ITALIC},
+		{"BOLD", TextStyle::BOLD},
+		{"DIM", TextStyle::DIM},
+		{"INVERSE", TextStyle::REVERSE}, // VT100 8
+//		{"", TextStyle::},
+};
+
+template <>
+const drain::FlaggerDict drain::EnumDict<TextStyle::Colour>::dict = {
+		{"BLACK", TextStyle::BLACK},
+		{"GRAY", TextStyle::GRAY},
+		{"WHITE", TextStyle::WHITE},
+		{"RED",   TextStyle::RED},
+		{"GREEN", TextStyle::GREEN},
+		{"YELLOW", TextStyle::YELLOW},
+		{"BLUE",  TextStyle::BLUE},
+		{"CYAN",  TextStyle::CYAN},
+		{"PURPLE", TextStyle::PURPLE}
+		//		{"", TextStyle::}
+};
+
+template <>
+const drain::FlaggerDict drain::EnumDict<TextStyle::Line>::dict = {
+		{"NO_LINE", TextStyle::NO_LINE}, // deprecating
+		{"UNDERLINE", TextStyle::UNDERLINE},
+		{"DOUBLE_UNDERLINE", TextStyle::DOUBLE_UNDERLINE},
+		{"OVERLINE", TextStyle::OVERLINE},
 //		{"", TextDecorator::},
 };
 
@@ -117,35 +135,6 @@ void TextDecorator::addKey(const std::string & key){
 	return;
 }
 
-
-std::ostream & TextDecoratorVt100::_begin(std::ostream & ostr) const {
-
-	std::list<int> codes;
-
-	if (style)
-		codes.push_back(getIntCode<Style>(style.value));
-
-	if (color)
-		codes.push_back(getIntCode<Colour>(color.value));
-
-	if (line)
-		codes.push_back(getIntCode<Line>(line.value));
-
-	if (!codes.empty()){
-		ostr << "\033[";
-		ostr << drain::StringTools::join(codes,';'); // consider SprinterLayout(";");
-		ostr << 'm'; //  << "\]";
-	}
-
-	return ostr;
-}
-
-std::ostream & TextDecoratorVt100::_end(std::ostream & ostr) const {
-	ostr << "\033[0m";
-	return ostr;
-}
-
-
 /**
  *
  *
@@ -165,67 +154,37 @@ void TextDecorator::debug(std::ostream & ostr) const {
 
 
 
-template <>
-const std::map<TextDecorator::Colour,int> & TextDecoratorVt100::getCodeMap(){
+std::ostream & TextDecoratorVt100::_begin(std::ostream & ostr) const {
 
-	static
-	const std::map<TextDecorator::Colour,int> map = {
-			{BLACK, 30},
-			{RED, 31},
-			{GREEN, 32},
-			{YELLOW, 33},
-			{BLUE, 34},
-			{PURPLE, 35},
-			{CYAN, 36},
-			{WHITE, 37},
-			{NO_COLOR, 39}
-			/*
-			{BLACK_BG, 40},
-			{RED_BG, 41},
-			{GREEN_BG, 42},
-			{YELLOW_BG, 43},
-			{BLUE_BG, 44},
-			{MAGENTA_BG, 45},
-			{CYAN_BG, 46},
-			{WHITE_BG, 47},
-			{DEFAULT_BG, 49}
-			*/
-	};
+	std::list<int> codes;
 
-	return map;
+	if (style)
+		codes.push_back(TextStyleVT100::getIntCode<TextStyle::Style>(style.value));
+
+	if (color)
+		codes.push_back(TextStyleVT100::getIntCode<TextStyle::Colour>(color.value));
+
+	if (line)
+		codes.push_back(TextStyleVT100::getIntCode<TextStyle::Line>(line.value));
+
+	if (!codes.empty()){
+		ostr << "\033[";
+		ostr << drain::StringTools::join(codes,';'); // consider SprinterLayout(";");
+		ostr << 'm'; //  << "\]";
+	}
+
+	return ostr;
 }
 
-template <>
-const std::map<TextDecorator::Style,int> & TextDecoratorVt100::getCodeMap(){
-
-	static
-	const std::map<TextDecorator::Style,int> map = {
-			{NO_STYLE, 0},
-			{ITALIC, 3},
-			{BOLD, 1},
-			{DIM, 2},
-			{REVERSE, 7}
-	};
-
-	return map;
+std::ostream & TextDecoratorVt100::_end(std::ostream & ostr) const {
+	ostr << "\033[0m";
+	return ostr;
 }
 
-// enum Style {NO_STYLE=0, ITALIC=1, BOLD=2, DIM=4, REVERSE=8}; // DEFAULT,
-// enum Line {NO_LINE=0, UNDERLINE=1, DOUBLE_UNDERLINE=2, OVERLINE=4};
 
-template <>
-const std::map<TextDecorator::Line,int> & TextDecoratorVt100::getCodeMap(){
 
-	static
-	const std::map<TextDecorator::Line,int> map = {
-			{NO_LINE, 0},
-			{UNDERLINE, 4},
-			{DOUBLE_UNDERLINE, 21}, // Double unnderline
-			{OVERLINE, 9}
-	};
 
-	return map;
-}
+
 
 
 } // drain::

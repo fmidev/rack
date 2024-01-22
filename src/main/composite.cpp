@@ -34,16 +34,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Log.h"
 #include "drain/util/Output.h" // debugging threads
-
-///#include "drain/prog/Command.h"
-///
 #include "drain/prog/CommandInstaller.h"
 
-
 #include "data/SourceODIM.h"
+#include "data/ODIMPathTools.h"
 
 #include "resources.h"  // for RackContext?
-
 #include "composite.h"  // for cmdFormat called by
 #include "cartesian-add.h"
 #include "cartesian-extract.h"
@@ -52,9 +48,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "cartesian-grid.h"
 #include "cartesian-motion.h"
 #include "cartesian-plot.h"
-
-
-
 
 namespace rack {
 
@@ -308,7 +301,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			return;
 		}
 
-		mout.info("Using input path:", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
+		mout.info("Using input path: ", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
 
 		ODIMPathElem current = dataPath.back();
 		ODIMPath parent = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
@@ -331,7 +324,10 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 				const std::string & encoding = composite.getTargetEncoding();
 				if (encoding.empty()){
 					// This is somewhat disturbing but perhaps worth it.
-					mout.note("adapting encoding of first input: " , EncodingODIM(composite.odim) );
+					if (projectAEQD)
+						mout.debug("adapting encoding of input: " , EncodingODIM(composite.odim) );
+					else
+						mout.note("adapting encoding of first input: " , EncodingODIM(composite.odim) );
 				}
 				mout.debug("storing metadata: " , composite.odim );
 				ProductBase::completeEncoding(composite.odim, encoding); // note, needed even if encoding==""
@@ -616,6 +612,12 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 	RackResources & resources = getResources();
 
+	if (!composite.isDefined()){
+		mout.hint("consider --cInit");
+		mout.fail("empty composite, skipping extraction");
+		return;
+	}
+
 	// Composite & composite = getComposite();
 	// Append results - why not, but Cartesian was typically used for subcompositing
 	// ctx.cartesianHi5.clear();
@@ -626,9 +628,9 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 	ODIMPathElem parent(ODIMPathElem::DATASET, 1);
 	if (ctx.appendResults.is(ODIMPathElem::DATASET))
-		DataSelector::getNextChild(ctx.cartesianHi5, parent);
+		ODIMPathTools::getNextChild(ctx.cartesianHi5, parent);
 	else if (ctx.appendResults.is(ODIMPathElem::DATA)){
-		DataSelector::getLastChild(ctx.cartesianHi5, parent);
+		ODIMPathTools::getLastChild(ctx.cartesianHi5, parent);
 		if (parent.index == 0){
 			parent.index = 1;
 		}
@@ -637,7 +639,7 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		ctx.cartesianHi5.clear(); // don't append, overwrite...
 
 	path << parent; // ?
-	mout.debug("dst path: ", path );
+	mout.debug("composite dst path: ", path );
 
 	Hi5Tree & dstGroup = ctx.cartesianHi5(path);
 	DataSet<CartesianDst> dstProduct(dstGroup);

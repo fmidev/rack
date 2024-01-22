@@ -289,15 +289,18 @@ public:
 
 		// acc.dataSelector.path = "data[0-9]+$";
 		// acc.dataSelector.path = ""; // remove after deprecated
+		mout.debug("ctx.select for acc: ", ctx.select);
 
-		if (acc.dataSelector.quantity.empty())
-			acc.dataSelector.quantity = "^(DBZH|RATE)$";
+		if (acc.dataSelector.quantity.empty()){
+			acc.dataSelector.setQuantity("^(DBZH|RATE)$");
+		}
 
 		/// OR: resources.baseCtx().select
 		acc.dataSelector.consumeParameters(ctx.select);
+		acc.dataSelector.count = 1;
 
 		mout.debug(acc );
-		mout.info(acc.dataSelector );
+		mout.debug(acc.dataSelector);
 		mout.debug("DataCoder::undetectQualityCoeff: " , DataCoder::undetectQualityCoeff );
 
 
@@ -307,11 +310,13 @@ public:
 		//mout.note("selector: " , selector );
 
 		ODIMPath path;
-		acc.dataSelector.pathMatcher.set(ODIMPathElem::DATASET); // .setElems(
+		//acc.dataSelector.pathMatcher.set(ODIMPathElem::DATASET, ODIMPathElem::DATA); // TODO: could be QUALITY ?
+
 		acc.dataSelector.getPath(src, path);  //, ODIMPathElem::DATASET); //, true);
 
-		const DataSet<PolarSrc> srcDataSet(src(path));
-		const Data<PolarSrc>  & srcData = srcDataSet.getFirstData();
+		const DataSet<PolarSrc> srcDataSet(src(path.front()));
+		const Data<PolarSrc>  srcData(src(path));
+		//const Data<PolarSrc>  & srcData = srcDataSet.getFirstData(); // WRONG!
 		// mout.note("input ACCnum " , srcData.odim.ACCnum );
 
 		if (srcData.data.isEmpty()){
@@ -319,7 +324,7 @@ public:
 			return;
 		}
 
-		mout.info("using path=" , path , ", quantity=" , srcData.odim.quantity );
+		mout.info("using path=", path, ", quantity=", srcData.odim.quantity );
 
 		const bool LOCAL_QUALITY = srcData.hasQuality();
 		if (LOCAL_QUALITY)
@@ -328,16 +333,17 @@ public:
 		const PlainData<PolarSrc> & srcQuality = LOCAL_QUALITY ? srcData.getQualityData() : srcDataSet.getQualityData();
 		mout.debug("quality: " , srcQuality.odim );
 
-
 		if ((acc.accArray.getWidth()==0) || (acc.accArray.getHeight()==0)){
 			//acc.odim.update(srcData.odim);
+			//mout.attention("area: ", srcData.odim.area);
 			acc.accArray.setGeometry(srcData.odim.area.width, srcData.odim.area.height);
-			acc.odim.type = "S";
-			acc.odim.area.width  = srcData.odim.area.width;
+			acc.odim.type = "S"; // encoding optional (below)
+			acc.odim.area.width   = srcData.odim.area.width;
 			acc.odim.area.height  = srcData.odim.area.height;
 			acc.odim.rscale = srcData.odim.rscale;
 			acc.odim.scaling.scale = 0.0; // !!
 			acc.odim.ACCnum = 0;
+			// mout.attention("coordHandler: ", acc.accArray.getCoordinateHandler());
 		}
 		else if ((srcData.odim.area.width != acc.accArray.getWidth()) || (srcData.odim.area.height != acc.accArray.getHeight())){
 			mout.warn() << "Input geometry (" << srcData.odim.area.width << 'x' << srcData.odim.area.height << ')';

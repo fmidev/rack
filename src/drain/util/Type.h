@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 #include <stdexcept>
 
-#include "Log.h"
+//#include "Log.h"
 #include "RegExp.h"
 
 namespace drain {
@@ -163,8 +163,11 @@ public:
 			return typeid(void);
 		default:
 			//Logger mout("Type", std::string(__FUNCTION__)+"(char c)");
-			Logger mout(__FILE__, __FUNCTION__);
-			mout.error(" undefined type: '" , t , "'=" , (int)t );
+			//Logger mout(__FILE__, __FUNCTION__);
+			//mout.error(" undefined type: '" , t , "'=" , (int)t );
+			std::cerr << __FILE__ << ' ' << __FUNCTION__ << " undefined type: '" << t << "'=" << (int)t << std::endl;
+			//mout.error(" undefined type: '" , t , "'=" , (int)t );
+			throw std::runtime_error("undefined type");
 			return typeid(void);
 		}
 
@@ -267,8 +270,11 @@ public:
 		}
 		*/
 		else {
-			Logger mout(__FILE__, __FUNCTION__);
-			mout.error("unimplemented type: ...", t.name(), " NOTE: enums suppressed");
+			std::cerr << __FILE__ << ' ' << __FUNCTION__ << "unimplemented type: ..." << t.name() << std::endl;
+			//mout.error(" undefined type: '" , t , "'=" , (int)t );
+			throw std::runtime_error("unimplemented type: ...");
+			//Logger mout(__FILE__, __FUNCTION__);
+			// mout.error("unimplemented type: ...", t.name(), " NOTE: enums suppressed");
 			//return T(); //F::template callback<char,T>();
 			// Problem with ref types
 			return F::template callback<char,T>();
@@ -363,8 +369,12 @@ public:
 		}
 		*/
 		else {
-			Logger mout(__FILE__, __FUNCTION__);
-			mout.error("unimplemented type: ...", t.name(), " NOTE: enums suppressed");
+			std::cerr << __FILE__ << ' ' << __FUNCTION__ << "unimplemented type: ..." << t.name() << std::endl;
+			//mout.error(" undefined type: '" , t , "'=" , (int)t );
+			throw std::runtime_error("unimplemented type: ...");
+
+			//Logger mout(__FILE__, __FUNCTION__);
+			//mout.error("unimplemented type: ...", t.name(), " NOTE: enums suppressed");
 			// throw std::runtime_error(std::string(": unimplemented type: ") + t.name() + " NOTE: enums suppressed");
 			return;
 		}

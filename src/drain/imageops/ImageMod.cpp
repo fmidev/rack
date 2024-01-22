@@ -51,7 +51,7 @@ void ImageMod::process(Image & dst) const {
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageModifier::)", __FUNCTION__);
 	initialize(dst);
 	//ImageFrame & dstFrame = dst;
-	mout.debug2() << "forwarding to: traverseChannel(Channel &)" << mout.endl;
+	mout.debug2("forwarding to: traverseChannel(Channel &)" );
 	ImageTray<Channel> dstTray;
 	dstTray.setChannels(dst);
 
@@ -61,7 +61,7 @@ void ImageMod::process(Image & dst) const {
 /*
 void ImageMod::traverse rame(ImageFrame & dst) const {
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageModifier::)", __FUNCTION__);
-	mout.debug2() << "forwarding to: applyAsChannelTray(Channel &)" << mout.endl;
+	mout.debug2("forwarding to: applyAsChannelTray(Channel &)" );
 	traverseChannels(dst);
 }
 */
@@ -74,14 +74,14 @@ void ImageMod::traverse rame(ImageFrame & dst) const {
 	Tray<ImageFrame> frameDst;
 
 	for (typename Tray<Image>::map_t::iterator it = dst.begin(); it != dst.end(); ++it){
-		mout.debug3() << "initializing image #" << it->first << mout.endl;
+		mout.debug3("initializing image #" , it->first );
 		initialize(it->second);
 		ImageFrame & data  = it->second;
-		mout.debug3() << "appending image #" << it->first << mout.endl;
+		mout.debug3("appending image #" , it->first );
 		frameDst.append(data);
 	}
 
-	mout.debug2() << "forwarding to traverseFrame(Tray<ImageFrame> &)" << mout.endl;
+	mout.debug2("forwarding to traverseFrame(Tray<ImageFrame> &)" );
 	traverseFrame(frameDst);
 
 }
@@ -101,7 +101,7 @@ void ImageMod::processImages(Tray<Image> & dst) const {
 		ImageTray<Channel> channelDst(it->second);
 		if (MULTICHANNEL)
 			mout.note("input contains several images, and calling traverseFrame(ImageTray<ChannelFrame> &)" );
-		mout.debug3() << "appending image #" << it->first << mout.endl;
+		mout.debug3("appending image #" , it->first );
 		//channelDst.append(it->second);
 		traverseChannels(channelDst);
 		if (it->second.getChannelCount() > 1)
@@ -122,7 +122,7 @@ void ImageMod::processImages(Tray<Image> & dst) const {
 		ImageTray<Channel> channelDst;
 		if (MULTICHANNEL)
 			mout.note("input contains several images, and calling traverseFrame(ImageTray<ChannelFrame> &)" );
-		mout.debug3() << "appending image #" << it->first << mout.endl;
+		mout.debug3("appending image #" , it->first );
 		channelDst.append(it->second);
 		traverseFrame(channelDst);
 		if (it->second.getChannelCount() > 1)
@@ -134,7 +134,7 @@ void ImageMod::processImages(Tray<Image> & dst) const {
 
 void ImageMod::traverseChannels(ImageTray<Channel> & dst) const {
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL this->name+"(ImageModifier::)", __FUNCTION__);
-	mout.debug2() << "forwarding to: processChannelsSeparately(Channel &)" << mout.endl;
+	mout.debug2("forwarding to: processChannelsSeparately(Channel &)" );
 	processChannelsSeparately(dst);
 }
 
@@ -148,7 +148,7 @@ void ImageMod::processChannelsSeparately(ImageTray<Channel> & dst) const {
 		ImageTray<Channel>::map_t::iterator ait = dst.alpha.begin();
 
 		for (ImageTray<Channel>::map_t::iterator dit = dst.begin(); dit != dst.end(); ++dit){
-			mout.debug2() << "invoke traverseFrame(d,a) for image #" << dit->first << mout.endl;
+			mout.debug2("invoke traverseFrame(d,a) for image #" , dit->first );
 			Channel & data  = dit->second;
 			Channel & alpha = ait->second;
 			traverseChannel(data, alpha);
@@ -160,7 +160,7 @@ void ImageMod::processChannelsSeparately(ImageTray<Channel> & dst) const {
 	}
 	else {
 		for (ImageTray<Channel>::map_t::iterator it = dst.begin(); it != dst.end(); ++it){
-			mout.debug2() << "invoke traverseFrame(d) for image #" << it->first << mout.endl;
+			mout.debug2("invoke traverseFrame(d) for image #" , it->first );
 			Channel & data  = it->second;
 			//initialize(data);
 			traverseChannel(data);

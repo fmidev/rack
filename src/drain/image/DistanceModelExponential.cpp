@@ -56,11 +56,22 @@ void DistanceModelExponential::setRadius(float horz, float vert, float horzLeft,
 	// NEW : nominators now 1.0 => 2.0 to match better with linear half-widths
 	drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
+	/// NEW 2024
+	if (std::isnan(vert))
+		vert = horz;
+
+	if (std::isnan(horzLeft))
+		horzLeft = horz;
+
+	if (std::isnan(vertUp))
+		vertUp = vert;
+
+
 	// Store all
 	this->horzRadius.set(horz, horzLeft); // forward   = horz;
 	this->vertRadius.set(vert, vertUp); // forward  = vert;
 
-	//mout.warn() << "Radii: " << this->horzRadius << ", " << this->vertRadius << mout; // ", " << diag << mout.endl;
+	//mout.warn("Radii: " , this->horzRadius , ", " , this->vertRadius ); // ", " << diag << mout.endl;
 
 	float hRight = radius2Dec(horz,     0.5);
 	float hLeft  = radius2Dec(horzLeft, hRight);
@@ -69,7 +80,7 @@ void DistanceModelExponential::setRadius(float horz, float vert, float horzLeft,
 
 	setDecrement(hRight, vDown, hLeft, vUp);
 
-	// mout.warn() << "Decs: " << this->horzDec << ", " << this->vertDec << mout; // ", " << diag << mout.endl;
+	// mout.warn("Decs: " , this->horzDec , ", " , this->vertDec ); // ", " << diag << mout.endl;
 
 }
 
@@ -85,7 +96,7 @@ float DistanceModelExponential::checkDec(float d, float dDefault) const {
 	else {
 		if (d > 1.0){
 			drain::Logger mout(getImgLog(), __FUNCTION__, getName());
-			mout.warn() << "decay ("<< d << ") greater than 1.0, setting it to 1.0." << mout.endl;
+			mout.warn("decay (", d , ") greater than 1.0, setting it to 1.0." );
 			d = 1.0;
 		}
 		return d;

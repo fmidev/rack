@@ -218,18 +218,18 @@ public:
 		Logger mout(getImgLog(), "WindowCore", __FUNCTION__);
 
 		if (srcTray.empty()){
-			mout.error() << "src: no channels" << mout.endl;
+			mout.error("src: no channels" );
 			return;
 		}
 
 		if (srcTray.size() > 1){
-			mout.warn()  << "src: multiple channels" << mout.endl;
+			mout.warn("src: multiple channels" );
 		}
 
-		//mout.warn()  << "scale:" << srcTray.get(0).getScaling() << mout.endl;
-		//mout.note()  << "scale:" << srcTray.get(0).getChannel(0).getScaling() << mout.endl;
+		//mout.warn("scale:" , srcTray.get(0).getScaling() );
+		//mout.note("scale:" , srcTray.get(0).getChannel(0).getScaling() );
 		src.setView(srcTray.get(0));
-		//mout.warn()  << "scale:" << src.getScaling() << mout.endl;
+		//mout.warn("scale:" , src.getScaling() );
 
 		if (!srcTray.alpha.empty()){
 			setSrcFrameWeight(srcTray.getAlpha(0));
@@ -245,12 +245,12 @@ public:
 		Logger mout(getImgLog(), "GaussianStripe", __FUNCTION__);
 
 		if (dstTray.empty()){
-			mout.error() << "dst: no channels" << mout.endl;
+			mout.error("dst: no channels" );
 			return;
 		}
 
 		if (dstTray.size() > 1){
-			mout.warn()  << "dst: multiple channels" << mout.endl;
+			mout.warn("dst: multiple channels" );
 		}
 
 		dst.setView(dstTray.get(0));
@@ -265,13 +265,13 @@ public:
 	virtual inline
 	void setSrcFrameWeight(const ImageFrame & srcW){
 		Logger mout(getImgLog(), "WindowCore", __FUNCTION__);
-		mout.warn() << "Not implemented" << mout.endl;
+		mout.warn("Not implemented" );
 	};
 
 	virtual inline
 	void setDstFrameWeight(ImageFrame & dstW){
 		Logger mout(getImgLog(), "WindowCore", __FUNCTION__);
-		mout.warn() << "Not implemented" << mout.endl;
+		mout.warn("Not implemented" );
 	};
 
 	/*
@@ -346,7 +346,7 @@ public:
 
 		drain::Logger mout(getImgLog(), "MultiChannelWindowCore", __FUNCTION__);
 
-		mout.debug()  << "setting srcTray" << mout.endl;
+		mout.debug("setting srcTray" );
 
 		//this->srcTray.clear();
 		this->srcTray.copy(srcTray);
@@ -354,7 +354,7 @@ public:
 			this->src.setView(srcTray.get());
 		}
 		else {
-			mout.warn()  << "setting empty srcTray" << mout.endl;
+			mout.warn("setting empty srcTray" );
 		}
 
 
@@ -362,10 +362,10 @@ public:
 			this->srcWeight.setView(srcTray.alpha.get());
 		}
 		else {
-			mout.debug()  << "no srcTray.alpha" << mout.endl;
+			mout.debug("no srcTray.alpha" );
 		}
 
-		mout.debug2() << this->srcTray << mout.endl;
+		mout.debug2(this->srcTray );
 
 	};
 
@@ -374,7 +374,7 @@ public:
 
 		drain::Logger mout(getImgLog(), "MultiChannelWindowCore", __FUNCTION__);
 
-		mout.debug()  << "setting dstTray" << mout.endl;
+		mout.debug("setting dstTray" );
 
 		//this->dstTray.clear();
 		this->dstTray.copy(dstTray);
@@ -382,7 +382,7 @@ public:
 			this->dst.setView(this->dstTray.get());
 		}
 		else {
-			mout.warn()  << "setting empty dstTray" << mout.endl;
+			mout.warn("setting empty dstTray" );
 		}
 
 
@@ -390,16 +390,16 @@ public:
 			this->dstWeight.setView(this->dstTray.alpha.get());
 		}
 		else {
-			mout.debug()  << "no srcTray.alpha" << mout.endl;
-			// mout.warn()  << "setting empty srcTray" << mout.endl;
+			mout.debug("no srcTray.alpha" );
+			// mout.warn("setting empty srcTray" );
 		}
 
-		mout.debug2() << this->dstTray << mout.endl;
+		mout.debug2(this->dstTray );
 
 		/*
 		if (dstTray.size() != 2){
-			mout.note() << dstTray << mout.endl;
-			mout.error()  << "dst should have exactly 2 image channels" << mout.endl;
+			mout.note(dstTray );
+			mout.error("dst should have exactly 2 image channels" );
 		}
 		*/
 

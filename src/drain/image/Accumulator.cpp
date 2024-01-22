@@ -65,17 +65,17 @@ void Accumulator::setMethod(const std::string & name, const std::string & params
 		return;
 	}
 	else if (name == "MIN"){
-		mout.deprecating() << "'MIN' => using 'MINIMUM'" << mout.endl;
+		mout.deprecating("'MIN' => using 'MINIMUM'" );
 		setMethod("MINIMUM", params);
 		return;
 	}
 	else if (name == "MAX"){
-		mout.deprecating() << "'MAX' => using 'MAXIMUM'" << mout.endl;
+		mout.deprecating("'MAX' => using 'MAXIMUM'" );
 		setMethod("MAXIMUM", params);
 		return;
 	}
 	else if (name == "OVERWRITE"){
-		mout.note() << "'OVERWRITE' => using 'LATEST'" << mout.endl;
+		mout.note("'OVERWRITE' => using 'LATEST'" );
 		setMethod("LATEST", params);
 		return;
 	}
@@ -126,19 +126,20 @@ void Accumulator::setMethod(const std::string & method){
 
 void Accumulator::addData(const Image & srcData, const AccumulationConverter & converter, double priorWeight, int iOffset, int jOffset){
 
-	Logger mout(getImgLog(), "Accumulator",__FUNCTION__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	const unsigned int width  = srcData.getWidth();
 	const unsigned int height = srcData.getHeight();
-	// mout.debug() << width << 'x' << height << '@' << iOffset << ',' << jOffset << mout.endl;
+	// mout.debug(width , 'x' , height , '@' , iOffset , ',' , jOffset );
 	size_t a;
 	double value;
 	double weight;
 	converter.encodeWeight(priorWeight);  // important
-	//mout.warn() << "converter: " << converter << mout.endl;
+	//mout.warn("converter: " , converter );
 	Point2D<int> p;
 	const CoordinateHandler2D & coordHandler = accArray.getCoordinateHandler();
 
+	// mout.attention("coordHandler: ", coordHandler);
 
 	for (unsigned int i = 0; i < width; ++i) {
 		for (unsigned int j = 0; j < height; ++j) {
@@ -157,6 +158,8 @@ void Accumulator::addData(const Image & srcData, const AccumulationConverter & c
 
 void Accumulator::addData(const Image & src, const Image & srcQuality, const AccumulationConverter & converter, double priorWeight, int iOffset, int jOffset){
 
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
 	const unsigned int width  = src.getWidth();
 	const unsigned int height = src.getHeight();
 	size_t a;
@@ -164,6 +167,9 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Acc
 	double weight;
 	Point2D<int> p;
 	const CoordinateHandler2D & coordHandler = accArray.getCoordinateHandler();
+
+	//mout.attention("coordHandler: ", coordHandler);
+
 
 	for (unsigned int i = 0; i < width; ++i) {
 		for (unsigned int j = 0; j < height; ++j) {
@@ -218,6 +224,7 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 		mout.note("final crop [LL UR]: ", finalCrop, ", dst geom:", dst.getGeometry());
 	}
 
+
 	/*
 	if ((dst.getWidth() != accArray.getWidth()) || (dst.getHeight() != accArray.getHeight())){
 		mout.attention("Deprecating code - resize handled better by initDst");
@@ -256,7 +263,7 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 			break;
 		case 's':
 		case 'S':
-			//mout.warn() << coder << mout.endl;
+			//mout.warn(coder );
 			methodPtr->extractDev(accArray, coder, dst, finalCrop);
 			//methodPtr->extractDev(dst, params.scale, params.bias, params.NODATA);
 			break;

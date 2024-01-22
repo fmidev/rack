@@ -198,13 +198,13 @@ public:
 		Logger mout(getImgLog(), "Tray<T>", __FUNCTION__);
 
 		if (this->empty()){
-			mout.warn() << "empty (no frames), leaving coordHandler intact" << mout.endl;
+			mout.warn("empty (no frames), leaving coordHandler intact" );
 			return;
 		}
 
 		if (!this->checkGeometry()){
-			mout.warn() << "non-uniform geometry:" <<  mout.endl;
-			mout.note() << *this       << mout.endl;
+			mout.warn("non-uniform geometry:" );
+			mout.note(*this       );
 		}
 
 		const Geometry & g = getGeometry();

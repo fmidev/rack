@@ -630,13 +630,14 @@ bool CmdOutputTree::dataToStream(const Hi5Tree::node_data_t & data, std::ostream
 		return false;
 	}
 
-	const drain::image::ImageFrame & img = data.dataSet;
+	const drain::image::ImageFrame & img = data.image;
 	if (!img.isEmpty()){
 		// if (data.attributes.hasKey("image")){
 		ostr << img.getWidth() << ',' << img.getHeight() << ' ';
 		ostr << drain::Type::call<drain::compactName>(img.getType());
 		ostr << '[' << (8*drain::Type::call<drain::sizeGetter>(img.getType())) << ']';
 		//<< drain::Type::call<drain::complexName>(img.getType());
+		ostr << ' ' << img.getCoordinatePolicy() << ' ';
 		empty = false;
 		//}
 	}
@@ -705,7 +706,7 @@ public:
 
 			//const ODIMPath & path = (*it); // modified below
 			hi5::NodeHi5 & node = src(path)[ODIMPathElem::ARRAY].data;
-			drain::image::Image & img = node.dataSet;
+			drain::image::Image & img = node.image;
 
 			mout.debug("testing: " , path , " => /data" );
 

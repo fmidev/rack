@@ -141,14 +141,14 @@ FilePnm::FileType FilePnm::readHeader(drain::image::ImageConf & conf, drain::Fle
 		infile >> maxValue;
 
 	if (maxValue < 100){
-		mout.warn() << "suspicious max value:" <<  maxValue << mout.endl;
+		mout.warn("suspicious max value:" ,  maxValue );
 	}
 
 	if (maxValue > 0xff){
 		if (maxValue > 0xffff){
-			mout.warn() << "suspiciously large max value:" <<  maxValue << mout.endl;
+			mout.warn("suspiciously large max value:" ,  maxValue );
 		}
-		mout.note() << "max value (" <<  maxValue << ") over 256, using 16 bits (unsigned)"<< mout.endl;
+		mout.note("max value (" ,  maxValue , ") over 256, using 16 bits (unsigned)");
 		conf.setType(typeid(unsigned short));
 	}
 
@@ -176,26 +176,26 @@ void FilePnm::read(Image & image, const std::string & path) {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.debug2() << "path='" << path << "'" << mout.endl;
+	mout.debug2("path='" , path , "'" );
 
 	Input infile(path);
 	// std::ifstream infile;
 	// infile.open(path.c_str(), std::ios::in);
 
 	if (!infile){
-		mout.warn() << "opening file '" << path << "' failed" << mout.endl;
+		mout.warn("opening file '" , path , "' failed" );
 		return;
 	}
 
 	ImageConf conf;
 	FileType fileType = readHeader(conf, image.properties, infile);
-	//mout.debug() << "conf: " << conf << mout.endl;
-	//mout.debug() << "prop: " << image.properties << mout.endl;
+	//mout.debug("conf: " , conf );
+	//mout.debug("prop: " , image.properties );
 
 	// Resize
 	image.setConf(conf);
 
-	mout.debug2() << image << mout.endl;
+	mout.debug2(image );
 	readFrame(image, infile, fileType);
 	/*
 	switch (fileType) {
@@ -208,9 +208,9 @@ void FilePnm::read(Image & image, const std::string & path) {
 			readFrameASCII(image, infile);
 			break;
 		default:
-			mout.unimplemented() << conf << mout;
-			mout.unimplemented() << "PBM file type: " << fileType << mout;
-			mout.error() << "Unsupported file type" << mout;
+			mout.unimplemented(conf );
+			mout.unimplemented("PBM file type: " , fileType );
+			mout.error("Unsupported file type" );
 			break;
 	}
 	*/
@@ -222,7 +222,7 @@ void FilePnm::readFrame(ImageFrame & image, const std::string & path) {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.info() << "reading image: " << image << ", file=" << path << mout.endl;
+	mout.info("reading image: " , image , ", file=" , path );
 
 	/*
 	std::ifstream infile;
@@ -230,7 +230,7 @@ void FilePnm::readFrame(ImageFrame & image, const std::string & path) {
 
 	if (!infile){
 		infile.close();
-		mout.warn() << "opening file '" << path << "' failed" << mout.endl;
+		mout.warn("opening file '" , path , "' failed" );
 		return;
 	}
 	*/
@@ -240,8 +240,8 @@ void FilePnm::readFrame(ImageFrame & image, const std::string & path) {
 	ImageConf conf;
 
 	FileType fileType = readHeader(conf, image.properties, infile);
-	mout.debug() << "conf: " << conf << mout.endl;
-	mout.debug() << "prop: " << image.properties << mout.endl;
+	mout.debug("conf: " , conf );
+	mout.debug("prop: " , image.properties );
 
 	readFrame(image, infile, fileType);
 
@@ -260,7 +260,7 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile, FileType file
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.info() << "reading to frame: " << image << mout.endl;
+	mout.info("reading to frame: " , image );
 
 	//const size_t channels = image.getChannelCount();
 
@@ -278,11 +278,11 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile, FileType file
 		}
 		drain::TextReader::scanSegment(infile, " \t\n\r");
 
-		// mout.debug() << "read " << i << " bytes" << mout.endl;
+		// mout.debug("read " , i , " bytes" );
 		ARRAY_FULL = (it==eit);
 
 		if (it != eit){
-			mout.warn() << "premature end of file: " << image << mout.endl;
+			mout.warn("premature end of file: " , image );
 		}
 	}
 	else if (fileType == PGM_RAW){
@@ -291,7 +291,7 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile, FileType file
 			*it = infile.get();
 			++it;
 		}
-		// mout.debug() << "read " << i << " bytes" << mout.endl;
+		// mout.debug("read " , i , " bytes" );
 		ARRAY_FULL = (it==eit);
 	}
 	else if (fileType == PPM_ASC){
@@ -314,7 +314,7 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile, FileType file
 		ARRAY_FULL = (bit==eit);
 
 		if (bit != eit){
-			mout.warn() << "premature end of file: " << image << mout.endl;
+			mout.warn("premature end of file: " , image );
 		}
 	}
 	else if (fileType == PPM_RAW){
@@ -333,23 +333,23 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile, FileType file
 
 		ARRAY_FULL = (bit==eit);
 		if (bit != eit){
-			mout.warn() << "premature end of file: " << image << mout.endl;
+			mout.warn("premature end of file: " , image );
 		}
 
 	}
 	else {
-		mout.unimplemented() << image.getConf() << mout;
-		mout.unimplemented() << "PBM file type: " << fileType << mout;
-		mout.error() << "Unsupported file type" << mout;
-		//mout.error() << "Sorry, PNM image with " << channels << " channels not implemented" << mout.endl;
+		mout.unimplemented(image.getConf() );
+		mout.unimplemented("PBM file type: " , fileType );
+		mout.error("Unsupported file type" );
+		//mout.error("Sorry, PNM image with " , channels , " channels not implemented" );
 	}
 
 
 	if (infile.peek() != EOF)
-		mout.warn() << " spurious bytes at end of file?" << mout.endl;
+		mout.warn(" spurious bytes at end of file?" );
 
 	if (!ARRAY_FULL){
-		mout.warn() << "premature end of file: " << image << mout.endl;
+		mout.warn("premature end of file: " , image );
 	}
 
 
@@ -360,9 +360,9 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile, FileType file
 			// c =
 			infile.get();
 			++i;
-			//mout.warn() <<  ++i << "\t'" << (char)c << "'" << mout.endl;
+			//mout.warn(++i , "\t'" , (char)c , "'" );
 		}
-		mout.warn() << i << " spurious bytes in end of file" << mout.endl;
+		mout.warn(i , " spurious bytes in end of file" );
 	}
 	*/
 
@@ -375,7 +375,7 @@ void FilePnm::readFrameASCII(ImageFrame & image, std::istream & infile){
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.info() << "reading to frame: " << image << mout.endl;
+	mout.info("reading to frame: " , image );
 
 	const size_t channels = image.getChannelCount();
 
@@ -389,9 +389,9 @@ void FilePnm::readFrameASCII(ImageFrame & image, std::istream & infile){
 			*it = i;
 			++it;			// ++i;
 		}
-		// mout.debug() << "read " << i << " bytes" << mout.endl;
+		// mout.debug("read " , i , " bytes" );
 		if (it != eit){
-			mout.warn() << "premature end of file: " << image << mout.endl;
+			mout.warn("premature end of file: " , image );
 		}
 	}
 	else if (channels == 3){
@@ -410,17 +410,17 @@ void FilePnm::readFrameASCII(ImageFrame & image, std::istream & infile){
 		}
 
 		if (bit != eit){
-			mout.warn() << "premature end of file: " << image << mout.endl;
+			mout.warn("premature end of file: " , image );
 		}
 
 	}
 	else {
-		mout.error() << "Sorry, PNM image with " << channels << " channels not implemented" << mout.endl;
+		mout.error("Sorry, PNM image with " , channels , " channels not implemented" );
 	}
 
 
 	if (infile.peek() != EOF)
-		mout.warn() << " spurious bytes at end of file?" << mout.endl;
+		mout.warn(" spurious bytes at end of file?" );
 
 
 }
@@ -439,11 +439,11 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	Logger mout(getImgLog(), "FilePnm", __FUNCTION__);
 
 	if (image.isEmpty()){
-		mout.warn() << "empty image, skipping" << mout.endl;
+		mout.warn("empty image, skipping" );
 		return;  // -1
 	}
 
-	mout.debug() << "Path: " << path << mout.endl;
+	mout.debug("Path: " , path );
 
 
 	const int width    = image.getWidth();
@@ -462,9 +462,9 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	mout.experimental("Extension check, regexp=", fileInfo.extensionRegexp);
 	if (!fileInfo.extensionRegexp.execute(filepath.extension, result)){
 		colorTypeChar = result[1].at(0);
-		//mout.experimental() << "file char: " << result[1] << mout.endl;
+		//mout.experimental("file char: " , result[1] );
 	}
-	// mout.warn() << "Result: " <<	sprinter(result) << mout.endl;
+	// mout.warn("Result: " ,	sprinter(result) );
 	mout.experimental("Result: ", sprinter(result), " color type char: ",  colorTypeChar);
 
 	switch (channels) {
@@ -478,7 +478,7 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		}
 		break;
 	case 2:
-		mout.warn() << "two-channel image, writing channel 0" << mout.endl;
+		mout.warn("two-channel image, writing channel 0" );
 		// no break
 	case 1:
 		storage_type = PGM_RAW;
@@ -487,11 +487,11 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		}
 		break;
 	case 0:
-		mout.warn() << "zero-channel image" << mout.endl;
+		mout.warn("zero-channel image" );
 		//fclose(fp);
 		return;
 	default:
-		mout.error()  << "unsupported channel count: " << channels << mout;
+		mout.error("unsupported channel count: " , channels );
 		// throw std::runtime_error(s.toStr());
 	}
 
@@ -499,7 +499,7 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	std::ofstream & ofstr = output;
 
 	/// FILE HEADER
-	mout.debug() << "magic code: P" << storage_type << mout;
+	mout.debug("magic code: P" , storage_type );
 	ofstr << 'P' << storage_type << '\n';
 
 	mout.debug("writing comments (metadata)");
@@ -524,7 +524,7 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	if (drain::Type::call<drain::typeIsSmallInt>(type))
 		ofstr << maxValue << '\n';
 	else {
-		mout.error()  << "unimplemented: double type image (needs scaling) " << mout.endl;
+		mout.error("unimplemented: double type image (needs scaling) " );
 		ofstr << 255 << '\n';
 	}
 
@@ -535,7 +535,7 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	switch (storage_type) {
 	case PGM_RAW:
 		if (SINGLE_BYTE){
-			mout.note()  << "PGM_RAW, 8 bits" << mout.endl;
+			mout.note("PGM_RAW, 8 bits" );
 			for (j = 0; j < height; ++j) {
 				for (i = 0; i < width; ++i) {
 					ofstr.put(image.get<unsigned char>(i,j));
@@ -544,9 +544,9 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 			}
 		}
 		else {
-			mout.note()  << "PGM_RAW, 16 bits" << mout.endl;
+			mout.note("PGM_RAW, 16 bits" );
 			if (maxValue > 0xffff){
-				mout.warn()  << "storage type over 16 bits (max value > 0xffff) unsupported" << mout.endl;
+				mout.warn("storage type over 16 bits (max value > 0xffff) unsupported" );
 			}
 			for (j = 0; j < height; ++j) {
 				for (i = 0; i < width; ++i) {
@@ -559,7 +559,7 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		}
 		break;
 	case PGM_ASC:
-		mout.note()  << "PGM_ASC" << mout.endl;
+		mout.note("PGM_ASC" );
 		for (j = 0; j < height; ++j) {
 			for (i = 0; i < width; ++i) {
 				ofstr << image.get<int>(i,j) << ' ';
@@ -568,11 +568,11 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		}
 		break;
 	default:
-		mout.error()  << "PBM/binary types: unimplemented code"<< mout.endl;
+		mout.error("PBM/binary types: unimplemented code");
 		break;
 	}
 
-	mout.debug2() << "Closing file" << mout.endl;
+	mout.debug2("Closing file" );
 	ofstr.close();
 
 }

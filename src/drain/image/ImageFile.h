@@ -57,14 +57,14 @@ public:
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		if (FilePnm::fileNameRegExp.test(path)){
-			mout.debug() << "file format: PNM" << mout.endl;
+			mout.debug("file format: PNM" );
 			FilePnm::read(img, path); // , commentReader
 		}
 		else {
 			if (FilePng::fileNameRegExp.test(path))
-				mout.debug() << "file format: PNG" << mout.endl;
+				mout.debug("file format: PNG" );
 			else
-				mout.warn() << "unrecognized extension, assuming PNG" << mout.endl;
+				mout.warn("unrecognized extension, assuming PNG" );
 			FilePng::read(img, path); // , commentReader
 		}
 	}
@@ -79,15 +79,15 @@ public:
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		if (FilePng::fileNameRegExp.test(path)){
-			mout.debug() << "file format: PNG" << mout.endl;
+			mout.debug("file format: PNG" );
 			FilePng::read(img, path);
 		}
 		else if (FilePnm::fileNameRegExp.test(path)){
-			mout.debug() << "file format: PNM" << mout.endl;
+			mout.debug("file format: PNM" );
 			FilePnm::readFrame(img, path);
 		}
 		else {
-			mout.warn() << "unrecognized extension, assuming png" << mout.endl;
+			mout.warn("unrecognized extension, assuming png" );
 			FilePng::read(img, path);
 		}
 	}
@@ -116,15 +116,15 @@ public:
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 		if (FilePng::fileNameRegExp.test(path)){
-			mout.debug() << "file format: PNG" << mout.endl;
+			mout.debug("file format: PNG" );
 			FilePng::write(img, path);
 		}
 		else if (FilePnm::fileNameRegExp.test(path)){
-			mout.debug() << "file format: PNM" << mout.endl;
+			mout.debug("file format: PNM" );
 			FilePnm::write(img, path);
 		}
 		else {
-			mout.warn() << "unrecognized extension, assuming png" << mout.endl;
+			mout.warn("unrecognized extension, assuming png" );
 			FilePng::write(img, path);
 		}
 	}

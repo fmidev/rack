@@ -158,9 +158,10 @@ protected:
 	//int topology;
 
 	DistanceTransformOp(const std::string &name, const std::string &description, float width, float height,
+	//DistanceTransformOp(const std::string &name, float width, float height,
 			DistanceModel::topol_t topology=DistanceModel::KNIGHT) : // PIX_ADJACENCY_
-		ImageOp(name, description) {
-		parameters.append(this->distanceModel.getParameters());
+		ImageOp(name, description) { // TODO: from model
+		parameters.append(distanceModel.getParameters());
 		distanceModel.setTopology(topology);
 		distanceModel.setRadius(width, height, width, height);
 	};
@@ -242,7 +243,7 @@ Range<int> DistanceTransformOp<T>::getVertRange(const CoordinateHandler2D & coor
 
 	Range<int> yRange = coordinateHandler.getYRange();
 
-	// mout.warn("yRange: " , yRange );
+	//mout.warn("yRange: " , yRange );
 
 	const Bidirectional<float> & radiusVert = getDistanceModel().getRadiusVert();
 
@@ -254,6 +255,8 @@ Range<int> DistanceTransformOp<T>::getVertRange(const CoordinateHandler2D & coor
 
 	if (coordinateHandler.policy.yOverFlowPolicy == CoordinatePolicy::WRAP)
 		yRange.max += radiusVert.forward;
+
+	// mout.warn("yRange: " , yRange );
 
 	return yRange;
 
@@ -290,6 +293,8 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	DistanceNeighbourhood chain;
 	this->distanceModel.createChain(chain, true);
 
+	mout.warn("coordPolicy: ", src.getCoordinatePolicy());
+
 	CoordinateHandler2D coordinateHandler(src); // TODO: change param to ImageConf
 	mout.debug2("coordHandler:", coordinateHandler);
 
@@ -298,7 +303,7 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	//const ValueScaling src2dst(src.getScaling(), dst.getScaling());
 
 	for (double d: {0.0, 0.5, 1.0, 255.0, 65535.0}){
-		mout.special(d, " => ", src2dst.fwd(d), " inv:", src2dst.inv(d));
+		mout.special(d, " =>\t", src2dst.fwd(d), " inv:", src2dst.inv(d));
 	}
 
 	// proximity (inverted distance)
@@ -312,9 +317,9 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	Point2D<int> p;
 	Point2D<int> pSafe;
 
-	Range<int> xRange = getHorzRange(coordinateHandler); //coordinateHandler.getXRange();
-	Range<int> yRange = getVertRange(coordinateHandler); // coordinateHandler.getYRange();
-	mout.special(xRange , ',' , yRange );
+	Range<int> xRange = getHorzRange(coordinateHandler);
+	Range<int> yRange = getVertRange(coordinateHandler);
+	mout.special(xRange, " - ", yRange);
 
 	// Experimental (element horz/vert topology not yet implemented)
 	// Possibly wrong...  not interchangible due to to scanning element geometry?

@@ -1170,7 +1170,7 @@ public:
 			mout.debug("dst image: " , *it , '|' , ODIMPathElem::ARRAY );
 			Hi5Tree & dst = src(*it);
 			//drain::image::Image & channel = (*ctx.currentHi5)(it->second)["data"].data.dataSet;
-			drain::image::Channel & channel = dst[ODIMPathElem::ARRAY].data.dataSet.getChannel(0);
+			drain::image::Channel & channel = dst[ODIMPathElem::ARRAY].data.image.getChannel(0);
 			if (channel.isEmpty()){
 				mout.warn("empty image in " , *it , "/data, skipping" );
 				continue;
@@ -1189,7 +1189,7 @@ public:
 				//path << ODIMPathElem(ODIMPathElem::ARRAY);
 				mout.special("associated quality field for [", *it , "] found in " , path );
 				if (tray.alpha.empty()){
-					drain::image::Channel & quality = dst(path).data.dataSet.getChannel(0);
+					drain::image::Channel & quality = dst(path).data.image.getChannel(0);
 					tray.appendAlpha(quality);
 				}
 				else {

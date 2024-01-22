@@ -76,12 +76,12 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (image.isEmpty()){
-		mout.warn() << "empty image, skipping" << mout.endl;
+		mout.warn("empty image, skipping" );
 		return;  // -1
 	}
 
 	mout.debug("Path: ", path);
-	//mout.warn()  << "img: " << image << mout.endl;
+	//mout.warn("img: " , image );
 
 	FILE *fp = fopen(path.c_str(), "wb");
 	if (!fp){
@@ -94,7 +94,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	if (!png_ptr){
 		png_destroy_write_struct(&png_ptr,(png_infopp)NULL); // ? destroy null?
 		fclose(fp);
-		mout.error() << "could not allocate memory for file: " << path << mout.endl;
+		mout.error("could not allocate memory for file: " , path );
 		//throw std::runtime_error(std::string("FilePng: could not allocate memory for: ")+path);
 	}
 
@@ -102,7 +102,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	if (!info_ptr){
 	   png_destroy_write_struct(&png_ptr,(png_infopp)NULL);
 	   fclose(fp);
-	   mout.error() << "could not allocate memory for file: " << path << mout.endl;
+	   mout.error("could not allocate memory for file: " , path );
 	   //throw std::runtime_error(std::string("FilePng: could not allocate toOStr memory for: ")+path);
 	}
 
@@ -141,11 +141,11 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 		}
 		break;
 	case 0:
-		mout.warn() << "zero-channel image" << mout.endl;
+		mout.warn("zero-channel image" );
 		fclose(fp);
 		return;
 	default:
-		mout.error()  << "unsupported channel count: " << channels << mout.endl;
+		mout.error("unsupported channel count: " , channels );
 		//throw std::runtime_error(s.toStr());
 	}
 
@@ -174,13 +174,13 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	const int byte_depth = image.getConf().getElementSize(); //sizeof(T);
 	const int bit_depth  = (byte_depth == 1) ? 8 : 16;
 
-	// mout.debug() << image.getGeometry() << ", orig byte_depth=" << byte_depth << ", bit_depth=" << bit_depth << mout.endl;
-	//mout.debug() << "orig storage type byte_depth=" << byte_depth << ", using bit_depth=" << bit_depth << mout.endl;
+	// mout.debug(image.getGeometry() , ", orig byte_depth=" , byte_depth , ", bit_depth=" , bit_depth );
+	//mout.debug("orig storage type byte_depth=" , byte_depth , ", using bit_depth=" , bit_depth );
 	/*
 	if (byte_depth > 2)
 		mout.info();
 	else */
-	mout.debug() << "source image " << byte_depth << "-byte data, writing " << (bit_depth/8) << "-byte (" << bit_depth << "bit) png" << mout;
+	mout.debug("source image " , byte_depth , "-byte data, writing " , (bit_depth/8) , "-byte (" , bit_depth , "bit) png" );
 	// converting to 2 bytes (16bit uInt).\n" << mout.endl;
 
 	// Set header information
@@ -225,7 +225,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 
 
 	// Comment texts (optional)
-	mout.debug3() << "Adding comments " << mout.endl;
+	mout.debug3("Adding comments " );
 	std::map<std::string,std::string> comments;
 	comments["Creation_time"] = drain::Time().str();
 	// comments["Scaling"] = image.getScaling().toStr(); // FUTURE: only after known (below)
@@ -283,7 +283,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 
 	// Copy data to png array.
 	mout.debug2("Src: ", image);
-	//mout.note() << "Image of type " << image.getType2() << ", scaling: " << image.getScaling() << mout.endl;
+	//mout.note("Image of type " , image.getType2() , ", scaling: " , image.getScaling() );
 	mout.debug2("Copy data to png array, width=", width, ", height=", height, " channels=", channels);
 	png_byte *row;
 	for (int k = 0; k < channels; ++k) {
@@ -293,9 +293,9 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 
 		// 8 bit
 		if (byte_depth == 1){
-			// mout.debug2() << "8 bits, height=" << height << " width=" << width << mout.endl;
+			// mout.debug2("8 bits, height=" , height , " width=" , width );
 			for (int j = 0; j < height; ++j) {
-				//mout.debug2() << " j=" << j << mout;
+				//mout.debug2(" j=" , j );
 				row = data[j];
 				for (int i = 0; i < width; ++i) {
 					//data[j]
@@ -318,7 +318,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 		// More bytes...
 		else {
 
-			//mout.note() << "Image of type " << image.getType2() << ", scaling: " << image.getScaling() << mout.endl;
+			//mout.note("Image of type " , image.getType2() , ", scaling: " , image.getScaling() );
 			//  << ", coeff=" << coeff; // << byte_depth << " bytes, "
 
 			drain::ValueScaling scalingDst;
@@ -328,8 +328,8 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 
 			drain::ValueScaling conv;
 			conv.setConversionScale(image.getScaling(), scalingDst);
-			mout.special() << "Converting [" << drain::Type::getTypeChar(image.getType()) << "] to 16b array, scaling: " << scalingDst << mout.endl;
-			mout.debug() << "Direct conversion: " << conv << mout.endl;
+			mout.special("Converting [" , drain::Type::getTypeChar(image.getType()) , "] to 16b array, scaling: " , scalingDst );
+			mout.debug("Direct conversion: " , conv );
 
 			int i0, value;
 			for (int i = 0; i < width; ++i) {

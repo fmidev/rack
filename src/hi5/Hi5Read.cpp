@@ -183,7 +183,7 @@ Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, 
 				} else {
 					//mout.startTiming("h5DatasetToImage");
 					h5DatasetToImage(file_id, p,
-							((hi5::NodeHi5&) subtree).dataSet);
+							((hi5::NodeHi5&) subtree).image);
 				}
 			}
 			break;

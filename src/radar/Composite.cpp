@@ -40,6 +40,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "data/DataCoder.h"
 #include "data/SourceODIM.h"
+#include "data/ODIMPathTools.h"
+
 #include "product/ProductOp.h"
 
 //#include "Geometry.h"
@@ -124,7 +126,7 @@ void Composite::createBinIndex(Hi5Tree & dst, const PolarODIM & odim){ //const A
 
 		ODIMPathElem elem(ODIMPathElem::DATASET); // "dataset" + <n>
 		mout.attention("Creating groups");
-		DataSelector::getNewChild(dst, elem);
+		ODIMPathTools::getNewChild(dst, elem);
 		mout.attention("Creating ");
 		DataSet<PolarDst> polar(dst[elem]);  //ODIMPathElem::DATASET
 

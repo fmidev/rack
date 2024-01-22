@@ -147,10 +147,10 @@ void RunLengthVertOp::traverseChannel(const Channel &src, Channel &dst) const {
 	const double thresholdAbs = src.getScaling().inv(threshold);
 
 	mout.warn("src.sc: " , src.getScaling() , ",  thresholdAbs: " , thresholdAbs );
-	mout.debug2() << "coordHandler: " << handler << mout.endl;
-	mout.debug2() << "lengthMax=" << lengthMax << mout.endl;
-	mout.debug2() << "src: " << src << mout.endl;
-	mout.debug2() << "dst: " << dst << mout.endl;
+	mout.debug2("coordHandler: " , handler );
+	mout.debug2("lengthMax=" , lengthMax );
+	mout.debug2("src: " , src );
+	mout.debug2("dst: " , dst );
 
 
 	for (int i=0; i<width; i++){

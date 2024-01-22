@@ -105,8 +105,8 @@ void ImageOp::makeCompatible2(const ImageFrame & src1, const ImageFrame & src2, 
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
 
-	mout.debug3() << "src1: " << src1 << mout.endl;
-	mout.debug3() << "src2: " << src2 << mout.endl;
+	mout.debug3("src1: " , src1 );
+	mout.debug3("src2: " , src2 );
 
 	if (dst.hasOverlap(src1)){
 		mout.info("dst is src1 or has overlap, leaving unmodified" );
@@ -131,7 +131,7 @@ void ImageOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 		return;
 	}
 	else {
-		mout.debug2() << "passed overlap test (directly or using tmp)" << mout.endl;
+		mout.debug2("passed overlap test (directly or using tmp)" );
 	}
 
 	mout.debug("srcFrame:     " , srcFrame );
@@ -180,7 +180,7 @@ bool ImageOp::processOverlappingWithTemp(const ImageFrame & srcFrame, Image & ds
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__); //REPL getImgLog(), name+"(ImageOp)", __FUNCTION__);
 
-	mout.debug2() << "checking tmp" << mout.endl;
+	mout.debug2("checking tmp" );
 
 	if (srcFrame.hasOverlap(dstImage)){
 		mout.debug("overlapping images, tmp image used" );
@@ -226,13 +226,13 @@ bool ImageOp::processOverlappingWithTemp(const ImageTray<const Channel> & srcCha
 		dstImages.alpha.createVector(tmpAlpha);
 		dstImagesTmp.alpha.copyVector(tmpAlpha);
 
-		mout.debug2() << "created dstImagesTmp:" << dstImagesTmp << mout.endl;
+		mout.debug2("created dstImagesTmp:" , dstImagesTmp );
 
 		mout.debug("re-calling processConditional(srcChannels, dstImagesTmp, checkOvelap=FALSE)" );
 
 		process(srcChannels, dstImagesTmp, false); // ("false" only speeds up; "true" should not lead to recursion anyway)
 
-		mout.debug2() << "copying tmp images back" << mout.endl;
+		mout.debug2("copying tmp images back" );
 		ImageTray<Image>::map_t::iterator tit = dstImagesTmp.begin();
 		ImageTray<Image>::map_t::iterator dit = dstImages.begin();
 		while ((tit != dstImagesTmp.end()) && (dit != dstImages.end())){
@@ -241,7 +241,7 @@ bool ImageOp::processOverlappingWithTemp(const ImageTray<const Channel> & srcCha
 			++tit;
 		}
 
-		mout.debug2() << "copying tmp alpha back" << mout.endl;
+		mout.debug2("copying tmp alpha back" );
 		ImageTray<Image>::map_t::iterator tait = dstImagesTmp.alpha.begin();
 		ImageTray<Image>::map_t::iterator dait = dstImages.alpha.begin();
 		while ((tait != dstImagesTmp.alpha.end()) && (dait != dstImages.alpha.end())){
@@ -252,7 +252,7 @@ bool ImageOp::processOverlappingWithTemp(const ImageTray<const Channel> & srcCha
 		return true;
 	}
 	else {
-		mout.debug2() << "no overlap" << mout.endl;
+		mout.debug2("no overlap" );
 		return false;
 	}
 
@@ -270,12 +270,12 @@ void ImageOp::process(const ImageTray<const Channel> & srcChannels, ImageTray<Im
 			return;
 	}
 	else {
-		mout.debug2() << "skipping overlap check" << mout.endl;
+		mout.debug2("skipping overlap check" );
 	}
 
 	mout.debug("entering main loop (completed checkOverlap)" );
 
-	mout.debug2() << "Creating dst tray of channels" << mout.endl;
+	mout.debug2("Creating dst tray of channels" );
 	ImageTray<Channel> dstChannels;
 	bool alphasCompatible = false;
 
@@ -321,8 +321,8 @@ void ImageOp::process(const ImageTray<const Channel> & srcChannels, ImageTray<Im
 
 	}
 
-	mout.debug2() << "src: " << srcChannels << mout.endl;
-	mout.debug2() << "dst: " << dstChannels << mout.endl;
+	mout.debug2("src: " , srcChannels );
+	mout.debug2("dst: " , dstChannels );
 
 	mout.debug("calling traverseChannels" );
 
@@ -396,7 +396,7 @@ void ImageOp::traverseChannelsSeparately(const ImageTray<const Channel> & src, I
 
 			const Channel & srcData  = sit->second;
 			Channel & dstData  = dit->second;
-			//mout.debug2() << "dst: " << dstData << mout.endl;
+			//mout.debug2("dst: " , dstData );
 			traverseChannel(srcData, dstData); // apply
 
 			if (++sit == src.end())
@@ -436,7 +436,7 @@ void ImageOp::traverseChannelsEqually(const ImageTray<const Channel> & src, Imag
 	initializeParameters(sit->second, dit->second);
 
 	while (sit != src.end()){
-		mout.debug2() << "invoke traverseChannel(src, dst) for Channel #" << sit->first << mout.endl;
+		mout.debug2("invoke traverseChannel(src, dst) for Channel #" , sit->first );
 		traverseChannel(sit->second, dit->second); // apply
 		++sit, ++dit;
 	}
@@ -445,7 +445,7 @@ void ImageOp::traverseChannelsEqually(const ImageTray<const Channel> & src, Imag
 	ImageTray<Channel>::map_t::iterator dait = dst.alpha.begin();
 
 	while (sait != src.alpha.end()){
-		mout.debug2() << "invoke traverseChannel(srcAlpha, dstAlpha) for Channel #" << dit->first << mout.endl;
+		mout.debug2("invoke traverseChannel(srcAlpha, dstAlpha) for Channel #" , dit->first );
 		traverseChannel(sait->second, dait->second); // apply
 		++sait, ++dait;
 	}
@@ -479,7 +479,7 @@ void ImageOp::traverseChannelsRepeated(const ImageTray<const Channel> & src, Ima
 		//while (true){
 		for (size_t i = 0; i < n; ++i) {
 
-			mout.debug2() << "invoke traverseChannel(src, srcAlpha, dst, dstAlpha) for Channel #" << dit->first << mout.endl;
+			mout.debug2("invoke traverseChannel(src, srcAlpha, dst, dstAlpha) for Channel #" , dit->first );
 
 			const Channel & srcData  = sit->second;
 			const Channel & srcAlpha = sait->second;
@@ -509,7 +509,7 @@ void ImageOp::traverseChannelsRepeated(const ImageTray<const Channel> & src, Ima
 
 		for (size_t i = 0; i < n; ++i) {
 
-			mout.debug2() << "invoking traverseChannel(src, dst) for Channel #" << dit->first << mout.endl;
+			mout.debug2("invoking traverseChannel(src, dst) for Channel #" , dit->first );
 
 			const Channel & srcData  = sit->second;
 			Channel & dstData  = dit->second;

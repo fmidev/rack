@@ -32,10 +32,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-#include <drain/image/ImageFile.h>
+#include "drain/image/ImageFile.h"
 #include "drain/util/Log.h"
 
 #include "hi5/Hi5.h"
+#include "data/ODIMPathTools.h"
 #include "data/QuantityMap.h"
 #include "product/DataConversionOp.h"
 
@@ -268,7 +269,7 @@ void CartesianOpticalFlow::getDiff(size_t width, size_t height, double max, Imag
 	channels.clear();
 
 	ODIMPathElem parent(ODIMPathElem::DATASET, 1);
-	DataSelector::getNextChild(ctx.cartesianHi5, parent);
+	ODIMPathTools::getNextChild(ctx.cartesianHi5, parent);
 
 	mout.info("storing diff channels to: " , parent );
 
@@ -339,14 +340,14 @@ void CartesianOpticalFlow::getMotion(size_t width, size_t height, ImageTray<Chan
 	// std::string path="dataset1";
 	// DataSelector::getNextOrdinalPath(ctx.cartesianHi5, "dataset[0-9]/?$", path);
 	ODIMPathElem parent(ODIMPathElem::DATASET, 1);
-	DataSelector::getNextChild(ctx.cartesianHi5, parent);
+	ODIMPathTools::getNextChild(ctx.cartesianHi5, parent);
 
 	mout.debug("appending " , parent );
 
 	/// Copy metadata from dataset1 (src1 ~ src2)
 	CartesianODIM odim;
-	odim.updateFromMap(ctx.cartesianHi5.data.dataSet.properties); // projdef
-	odim.updateFromMap(ctx.cartesianHi5["dataset1"].data.dataSet.properties); // needed?
+	odim.updateFromMap(ctx.cartesianHi5.data.image.properties); // projdef
+	odim.updateFromMap(ctx.cartesianHi5["dataset1"].data.image.properties); // needed?
 	//mout.debug("prop " , ctx.cartesianHi5.data.dataSet.properties );
 	mout.debug("odim: " , odim );
 

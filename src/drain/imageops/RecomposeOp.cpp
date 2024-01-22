@@ -129,7 +129,7 @@ void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 
 		viewStr = views[v];
 		view.setView(srcFrame, viewStr);
-		mout.debug3() << "view:" << viewStr << ':' << view << mout;
+		mout.debug3("view:" , viewStr , ':' , view );
 
 
 		// dst
@@ -160,7 +160,7 @@ void RecomposeOp::process(const ImageFrame & srcFrame, Image & dstImage) const {
 			}
 
 			if (BORDER){
-				mout.debug2() << "border" << mout;
+				mout.debug2("border" );
 				for (size_t i = 0; i < width; i++) {
 					//a = src.address(i,j);
 					dst.put(addressOffset + i, gray);

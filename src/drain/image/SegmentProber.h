@@ -142,9 +142,9 @@ public:
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		handler.set(src.getGeometry(), src.getCoordinatePolicy());
 		// src.adjustCoordinateHandler(handler);
-		mout.debug() << handler << mout.endl;
-		mout.debug2() <<  src << mout.endl;
-		mout.debug2() << *dst << mout.endl;
+		mout.debug(handler );
+		mout.debug2(src );
+		mout.debug2(*dst );
 
 	}
 
@@ -169,7 +169,7 @@ public:
 			/*
 			if (isValidPos(i,j)){
 				Logger mout(getImgLog(), "SegmentProber", __FUNCTION__);
-				mout.warn() << "accept: " << i << ',' << j << "\t=" << src.get<double>(i,j) << '\t' << dst->get<double>(i,j) << mout.endl;
+				mout.warn("accept: " , i , ',' , j , "\t=" , src.get<double>(i,j) , '\t' , dst->get<double>(i,j) );
 			}
 			*/
 			probe4(i,j);
@@ -233,7 +233,7 @@ protected:
 		if (mout.isDebug(10)){
 			++ counter;
 			if ((counter % 63) == 0){
-				mout.note() << counter << mout.endl;
+				mout.note(counter );
 				if (mout.isDebug(20)){
 					drain::image::FilePng::writeIndexed(*dst, "SegmentProber");
 				}

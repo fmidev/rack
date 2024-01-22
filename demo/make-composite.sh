@@ -111,10 +111,12 @@ decay=${DECAY:+"$ctime --cTimeDecay $DECAY"}
 # SCHEME=tile
 #
 # Composite from tiles
-# SCHEME=tiled
+# SCHEME=tiley
 
-inprefix=${INPREFIX:+"--inputPrefix $INPREFIX"} # inputPrefix
-outprefix=${OUTPREFIX:+"--outputPrefix $OUTPREFIX"} # inputPrefix
+log=${LOG:+"--log '$LOG'"} # timing=true
+inselect=${INSELECT:+"--inputSelect '$INSELECT'"} # inputPrefix
+inprefix=${INPREFIX:+"--inputPrefix '$INPREFIX'"} # inputPrefix
+outprefix=${OUTPREFIX:+"--outputPrefix '$OUTPREFIX'"} # inputPrefix
 
 #OUTDIR=${OUTDIR:-'.'}
 
@@ -224,7 +226,7 @@ else
 fi
 
 # PART 1: Initial part    # --encoding $CTYPE
-command="$RACK $debug $decay --cMethod $METHOD $undetect  $INIT $NEWLINE $inprefix $outprefix $verbose" 
+command="$RACK $debug $log $decay --cMethod $METHOD $undetect  $INIT $NEWLINE $inselect $inprefix $outprefix $verbose" 
 
 
 # Routine applied to each input volume (in default and TILE schemes).
