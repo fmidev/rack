@@ -83,7 +83,7 @@ public:
 		//allowedEncoding.link("gain", odim.scaling.scale, 0.5);
 		//allowedEncoding.link("offset", odim.scaling.offset, -32.0);
 
-		dataSelector.quantity = "^DBZH$";
+		dataSelector.setQuantities("^DBZH$");
 
 	}
 

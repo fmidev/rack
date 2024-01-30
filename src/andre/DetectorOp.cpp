@@ -87,7 +87,7 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 
 	const std::string & CLASSNAME = getOutputQuantity();
 
-	mout.attention(CLASSNAME);
+	mout.attention<LOG_DEBUG>("start CLASSNAME=", CLASSNAME);
 
 	/*
 	for (const auto & entry: srcVolume){

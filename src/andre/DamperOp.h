@@ -69,7 +69,7 @@ public:
 	DamperOp(double threshold=0.5, double undetectThreshold=0.1, double minValue = NAN) :  // double slope=0.0,
 		RemoverOp(__FUNCTION__,"Removes anomalies with fuzzy deletion operator."){
 
-		dataSelector.quantity = "^DBZH$";
+		dataSelector.setQuantities("^DBZH$");
 
 		parameters.link("threshold", this->threshold = threshold);
 		parameters.link("undetectThreshold", this->undetectThreshold = undetectThreshold);

@@ -42,6 +42,10 @@ namespace drain {
 
 int NodeXML::nextID = 0;
 
+
+NodeXML::NodeXML(const NodeXML & node) : id(++NodeXML::nextID) {
+	copyStruct(node, node, *this, RESERVE); // This may corrupt (yet unconstructed) object?
+}
 //static
 
 }  // namespace drain

@@ -57,86 +57,32 @@ const ODIMPathElem::group_t ODIMPathElem::ALL_LEVELS; // = ODIMPathElem::ROOT | 
 // const ODIMPathElem::group_t ODIMPathElem::_SCAN;
 // const ODIMPathElem::group_t ODIMPathElem::_MOMENT;
 
+const ODIMPathElem::index_t ODIMPathElem::INDEX_MAX = std::numeric_limits<unsigned short int>::max(); // 0xffff: enough for DATA, DATASET, QUANTITY
 
-const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
-
-	static ODIMPathElem::dict_t dict = {
-			{"*", NONE},
-			{"", ROOT},
-			{"dataset", DATASET},
-			// NOTE: when searching by key  "data", ARRAY  will be found (first) and returned
-			// NOTE: when searching by value ARRAY, "data" will be found (first) and returned
-			{"data",    ARRAY},
-			{"data",    DATA},
-			{"quality", QUALITY},
-			{"OTHER",   OTHER},
-			{"what",    WHAT},
-			{"where",   WHERE},
-			{"how",     HOW},
-			{"palette", PALETTE},
-			{"legend",  LEGEND}
-	//		{"scan",     _SCAN},
-	//		{"moment_",  _MOMENT}
-	};
-
-	return dict;
-
+void ODIMPathElem::reset(){
+	group = 0;
+	index = 0;
+	//prefix = "";
 }
 
-
-
-void ODIMPathElem::extractIndex(const std::string &s){
-	std::stringstream sstr(s);
-	sstr >> this->index;
-}
-
-bool ODIMPathElem::extractPrefix(const std::string & prefix, bool indexed){
+// TODO: remove return value!
+//bool
+void ODIMPathElem::add(const std::string &s){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	static
-	const dict_t & d = ODIMPathElem::getDictionary(); // New here
+	//mout.attention("setting: ", s);
 
-	// plain match (esp. "dataset" and "quality" without indices
-	dict_t::const_iterator pit = d.end();
-
-	/// Check first if prefix AND index match.
-	for (dict_t::const_iterator it=d.begin(); it!=d.end(); ++it){
-
-		if (prefix == it->first) {
-
-			// test only if indexed-modes match (this actually only is for data vs data1...N)
-			if (indexed == isIndexed(it->second)) {
-				// it->first is the group prefix [string]
-				this->group = it->second;
-				return true;
-			}
-
-			// well, prefix matched anyway, so save as a secondary match
-			pit = it;
-		}
-
-	}
-
-	if (pit != d.end()){
-		this->group = pit->second;
-		mout.warn(" -> setting implicit/lenient " , prefix , '=' , this->group );
-		return true;
-	}
-
-	return false;
-
-}
-
-
-bool ODIMPathElem::set(const std::string &s){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
+	/*
 	this->group = ROOT; // or none?
-	this->index = 0;
+
+	// ?? Require explicit indexing.
+	// ?? ODIMPathMatcher uses mixed groups, so "data2|what" should result index=2, not index=0.
+	// this->index = 0;
 	bool INDEXED = false; // to separate data and data1
 	this->str = "";
+	*/
+	bool INDEXED = false; // to separate data and data1
 
 	// Try removing this...
 	/*
@@ -157,9 +103,12 @@ bool ODIMPathElem::set(const std::string &s){
 	// Separate prefix (alphabets) and index (digits)
 	std::string::const_iterator it = s.begin();
 	while (it != s.end()){
-		if ((*it==':') || ((*it>='0') && (*it<='9'))){ // testing colon is "forward declaration" of index range
+		// Testing colon is "forward definition" of index range applied by ODIMPathMatcher
+		if ((*it==':') || ((*it>='0') && (*it<='9'))){
 			//if ((*it<'a') || (*it>'z')){ // to detect ':' if path elem mathcing
-			extractIndex(std::string(it, s.end()));
+			// index_t i = 0;
+			extractIndex(std::string(it, s.end())); // virtual
+			// this->index |= i;
 			INDEXED = true;
 			break;
 		}
@@ -167,17 +116,73 @@ bool ODIMPathElem::set(const std::string &s){
 	}
 
 
+	//mout.attention("setting: ", s, " --> ", std::string(s.begin(), it));
+
+
 	if (extractPrefix(std::string(s.begin(), it), INDEXED))
-		return true;
+		return; // true;
 
 	this->group = OTHER;  //(INDEXED) ? ODIMPathElem::OTHER_INDEXED :
 	this->str = s;
 
 	mout.note("non-standard path element: " , *this );
 
+	//return false;
+
+}
+
+template <>
+void ODIMPathElem::extractIndex(const std::string &s, ODIMPathElem::index_t & idx){
+	std::stringstream sstr(s);
+	sstr >> idx;
+}
+
+
+void ODIMPathElem::extractIndex(const std::string &s){
+	//std::stringstream sstr(s);
+	//sstr >> this->index;
+	extractIndex(s, this->index);
+}
+
+bool ODIMPathElem::extractPrefix(const std::string & prefix, bool indexed){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	static
+	const dict_t & d = ODIMPathElem::getDictionary(); // New here
+
+	// plain match (esp. "dataset" and "quality" without indices
+	dict_t::const_iterator pit = d.end();
+
+	/// Check first if prefix AND index match.
+	for (dict_t::const_iterator it=d.begin(); it!=d.end(); ++it){
+
+		if (prefix == it->first) {
+
+			// ODIM oddity. Test only if indexed-modes match (this actually only is for data vs data1...N)
+			if (indexed == isIndexed(it->second)) {
+				// it->first is the group prefix [string]
+				this->group |= it->second;
+				return true;
+			}
+
+			// well, prefix matched anyway, so save as a secondary match
+			pit = it;
+		}
+
+	}
+
+	if (pit != d.end()){
+		this->group |= pit->second;
+		mout.debug(" -> recognized indexed group " , prefix , '=' , this->group );
+		return true;
+	}
+
 	return false;
 
 }
+
+
 
 const std::string & ODIMPathElem::getKey(group_t group)  {
 
@@ -276,6 +281,57 @@ bool operator<(const ODIMPathElem & e1, const ODIMPathElem & e2){
 	return false;
 
 }
+
+const ODIMPathElem::dict_t & ODIMPathElem::getDictionary(){
+
+	static ODIMPathElem::dict_t dict = {
+			{"*", NONE},
+			{"", ROOT},
+			{"dataset", DATASET},
+			// NOTE: when searching by key  "data", ARRAY  will be found (first) and returned
+			// NOTE: when searching by value ARRAY, "data" will be found (first) and returned
+			{"data",    ARRAY},
+			{"data",    DATA},
+			{"quality", QUALITY},
+			{"OTHER",   OTHER},
+			{"what",    WHAT},
+			{"where",   WHERE},
+			{"how",     HOW},
+			{"palette", PALETTE},
+			{"legend",  LEGEND}
+	//		{"scan",     _SCAN},
+	//		{"moment_",  _MOMENT}
+	};
+
+	return dict;
+
+}
+
+/*
+ODIMPathElem::operator const std::string &() const {
+	if (this->group != OTHER){ // for OTHER, its already set.
+		std::stringstream sstr;
+		toStream(sstr);
+		//sstr << *this;
+		str = sstr.str();
+	}
+	return str;
+}
+*/
+
+
+std::ostream & ODIMPathElem::toStream(std::ostream & ostr) const {
+
+	/// Step 1: prefix (by group type)
+	ostr << getPrefix();
+
+	/// Step 2: index
+	if (isIndexed())
+		ostr << getIndex();
+
+	return ostr; // p.toStream(ost
+}
+
 
 // Experimental naming.
 ODIMPathElem odimROOT(ODIMPathElem::ROOT);

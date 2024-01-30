@@ -56,7 +56,7 @@ public:
 	DetectorOp(__FUNCTION__, "Create rectangular fake anomaly (value) and 'detect' it with desired probability (prob).", "nonmet.clutter"){
 		//RemoverOp(__FUNCTION__, "Create rectangular fake anomaly (value) and 'detect' it with desired probability (prob)."){ // Optional postprocessing: morphological closing.
 
-		dataSelector.quantity = "^DBZH$";
+		dataSelector.setQuantities("^DBZH$");
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
 

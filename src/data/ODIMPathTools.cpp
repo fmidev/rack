@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-bool ODIMPathTools::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //, (ODIMPathElem::group_t g
+bool ODIMPathTools::getLastChild(const Hi5Tree & tree, ODIMPathElem & child, bool create){ //, (ODIMPathElem::group_t g
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -51,13 +51,18 @@ bool ODIMPathTools::getLastChild(const Hi5Tree & tree, ODIMPathElem & child){ //
 	}
 
 	child.index = 0; // needed
-	for (Hi5Tree::const_iterator it = tree.begin(); it != tree.end(); ++it){
+	//for (Hi5Tree::const_iterator it = tree.begin(); it != tree.end(); ++it){
+	for (const auto & entry: tree.getChildren()){
 
-		if (it->first.getType() == child.getType()){
-			child.index = std::max(child.getIndex(), it->first.getIndex());
-			mout .debug3() << "considering (" << child << ")" << mout.endl;
+		if (entry.first.getType() == child.getType()){
+			child.index = std::max(child.getIndex(), entry.first.getIndex());
+			mout.debug3("considering (", child, ")");
 		}
 
+	}
+
+	if (create && (child.index == 0)){
+		child.index = 1;
 	}
 
 	return child.getIndex() > 0;

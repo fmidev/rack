@@ -388,7 +388,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 
 		if (type == DATA){
 
-			mout.debug("DATA/" , field );
+			mout.debug("DATA/" , field, " [", odimFinal.quantity, ']');
 			//mout.warn(dstData.odim );
 			pdata_dst_t & dstData = dstProduct.getData(odimFinal.quantity);
 			dstData.odim.importMap(odimFinal);
@@ -398,14 +398,13 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 			this->Accumulator::extractField(field, dataCoder, dstData.data, crop);
 		}
 		else {
-			mout.debug("QUALITY/" , field );
+			mout.debug("QUALITY/" , field , " [", odimQuality.quantity, ']');
 			//pdata_dst_t & dstData = dstProduct.getData(odimFinal.quantity);
 			typedef QualityDataSupport<DstType<OD> > q_data_t;
 			q_data_t & qualityOwner = (DATA_SPECIFIC_QUALITY) ? (q_data_t &) dstProduct.getData(odimFinal.quantity) : (q_data_t &) dstProduct;
 			pdata_dst_t & dstData = qualityOwner.getQualityData(odimQuality.quantity);
 			dstData.odim.updateFromMap(odimQuality);
 			mout.debug3("dstData: " , dstData );
-			//dstData.odim.importMap(odimQuality);
 			this->Accumulator::extractField(field, dataCoder, dstData.data, crop);
 		}
 

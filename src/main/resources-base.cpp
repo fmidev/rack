@@ -116,7 +116,7 @@ Hi5Tree & Hdf5Context::getMyHi5(h5_role::value_t filter) {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug("filter=", filter, h5_role::getShared().getKeys(filter, '|'));
+	mout.debug("filter=", h5_role::getShared().getKeys(filter, '|'), " (", filter, ')');
 
 	/*
 	if (!(filter & (POLAR|CARTESIAN))){
@@ -237,14 +237,15 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 
 		mout.debug("(Not empty)");
 
-		DataSelector selector(ODIMPathElem::DATA);
-		mout.debug2("selector orderFlags=", selector.order.str);
+		//DataSelector selector(ODIMPathElem::DATA);
+		DataSelector selector(ODIMPathElem::DATA, ODIMPathElem::ARRAY);
+		mout.debug2("selector orderFlags=", selector.getOrder());
 		//mout.special("selector orderFlags.value=", selector.orderFlags.value );
 		//mout.special("selector orderFlags.own=",   selector.orderFlags.ownValue );
 
 		// Do not consume (ie. leave value)
 		selector.setParameters(select);
-		selector.count = 1; // Because just one path wanted (below)
+		selector.setMaxCount(1); // Because just one path wanted (below)
 
 		mout.debug("status metadata selector: ", selector, " <- '", select, "'"); //, ", orderFlags=", selector.order.str);
 		// mout.debug("status metadata selector: ", selector, " <- ", select, "orderFlags=", selector.orderFlags);
@@ -255,8 +256,8 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 		mout.debug(path);
 
 		if (path.empty()){
-			mout.special(selector); // ,"'"
-			mout.note("data exists, but no data groups found with selector: ", selector); // ,"'"
+			// mout.special(selector); // ,"'"
+			mout.note("h5 data exists, but no data groups found with selector: ", selector); // ,"'"
 		}
 		else {
 			mout.debug("using path=" , path );

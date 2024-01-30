@@ -63,7 +63,7 @@ public:
 		parameters.link("replace", this->replace = "nodata", "nodata|undetect|<physical_value>");
 		parameters.link("clearQuality", this->clearQuality = true);
 		// dataSelector.path = ".*da ta[0-9]+/?$";
-		dataSelector.quantity = "^DBZH$"; //|TV|VRAD|RHOHV|LDR|PHIDP|KDP";
+		dataSelector.setQuantities("^DBZH$"); //|TV|VRAD|RHOHV|LDR|PHIDP|KDP";
 	};
 
 	/// NEW POLICY => DetectorOpNEW
@@ -101,8 +101,8 @@ protected:
 	/** Constructor for derived classes.
 	 */
 	RemoverOp(const std::string &name, const std::string & description) :
-		AndreOp(name, description){
-		dataSelector.quantity = "^[A-Z]+";
+		AndreOp(name, description), threshold(0.5), clearQuality(false){
+		dataSelector.setQuantities("^[A-Z_]+");
 	};
 
 private:

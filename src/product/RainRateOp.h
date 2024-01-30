@@ -103,8 +103,8 @@ public:
 		//RackOp("RainRate",	"Computes rain rate [mm/h] from reflectance [dBZ].") {
 		PolarProductOp(__FUNCTION__,	"Estimates precipitation rate [mm/h] from reflectance [dBZ].") {
 
-		dataSelector.quantity = "^DBZH$";
-		dataSelector.count = 1;
+		dataSelector.setQuantities("^DBZH$");
+		dataSelector.setMaxCount(1);
 
 		odim.product = "SURF";
 		odim.quantity = "RATE";

@@ -144,7 +144,13 @@ void writeGroupToDot(std::ostream & ostr, const Hi5Tree & group, int & index,
 	drain::Variable & label = node.attributes["label"];
 	label.setType(typeid(std::string)); // MUST!
 	label.setSeparator(0);
-	label = e;
+	std::stringstream sstr;
+	sstr << e.getPrefix();
+	if (e.isIndexed())
+		ostr << e.getIndex();
+	//e.toStream(sstr);
+	label = sstr.str();
+	//label = (const std::string &)e;
 	//ostr << "label=\"";
 	//ostr << e ; //<< '|';
 	if (e.is(ODIMPathElem::DATASET)){

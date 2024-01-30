@@ -346,7 +346,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	//for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 	for (const ODIMPath & path: dataPaths){
 		mout.debug3("add: " , index , '\t' , path  );
-		sweeps.insert(typename DataSetMap<src_t>::value_type("indexxx", DataSet<src_t>(src(path), drain::RegExp(this->dataSelector.quantity) )));  // Something like: sweeps[elangle] = src[parent] .
+		sweeps.insert(typename DataSetMap<src_t>::value_type("indexxx", DataSet<src_t>(src(path), drain::RegExp(this->dataSelector.getQuantity()) )));  // Something like: sweeps[elangle] = src[parent] .
 	}
 
 

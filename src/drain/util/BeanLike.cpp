@@ -35,11 +35,13 @@ namespace drain
 {
 
 	std::ostream & BeanLike::toStream(std::ostream & ostr, bool compact) const {
-		ostr << name << ": " << description << '\n';
+		ostr << name << ": " << description;
 		if (compact){
-			ostr << '\t' << parameters << '\n';
+			ostr << ' ' << parameters; //  << '\n'; // ?
 		}
 		else {
+			ostr << '\n';
+			ostr << '\t' << parameters << '\n';
 			for (const std::string & key: getParameters().getKeyList()){
 				const Referencer & param = parameters.at(key);
 				std::cout << '\t' << key << ':' << param << '\n';

@@ -41,6 +41,31 @@ void parse(const std::string & path){
 }
 */
 
+
+//bool
+void ODIMPathElemMatcher::set(const std::string &s){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	// mout.special<LOG_NOTICE>("setting: ", s, " --> ", std::string(s.begin(), it));
+
+	reset();
+
+	std::vector<std::string> args;
+	drain::StringTools::split(s, args, '|'); // For now. (Future extension: '/' ?)
+
+	// bool other = false;
+	for (std::string & arg: args){
+		// other |= !
+		add(arg);
+	}
+
+	// mout.special<LOG_NOTICE>("set: ", s, " --> ", *this);
+
+
+	return; // !other;
+}
+
+
 bool ODIMPathMatcher::ensureLimitingSlash(){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -67,29 +92,44 @@ bool ODIMPathMatcher::ensureLimitingSlash(){
 }
 
 void ODIMPathElemMatcher::extractIndex(const std::string &s){
+	ODIMPathElemMatcher::idx_range_t indexRange;
+	ODIMPathElem::extractIndex(s, indexRange);
+	this->index    = indexRange.min;
+	this->indexMax = indexRange.max;
+}
 
+/*
+template <>
+char drain::TextReader::scanSegmentToValue(std::istream & istr, const std::string & endChars, ODIMPathElemMatcher::idx_range_t & dst){
+}
+*/
+
+template <>
+void ODIMPathElem::extractIndex(const std::string &s, ODIMPathElemMatcher::idx_range_t & idx){
+
+	//std::stringstream sstr(s);
+	//sstr >> idx;
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	std::stringstream sstr(s);
 
-	//mout.warn("str: ", s, "...");
-	this->index = 0;
-	this->indexMax = 0xffff;
-	char c = drain::TextReader::scanSegmentToValue(sstr, ":", this->index);
+	idx.set(0, INDEX_MAX);
+
+	char c = drain::TextReader::scanSegmentToValue(sstr, ":", idx.min);
 	if (c == ':'){
 		sstr.get(); // swallow ':'
-		sstr >> this->indexMax; // can this fail? For example with "1:"
+		sstr >> idx.max; // can this fail? For example with "1:"
 		//mout.warn("extracted maxIndex ", this->indexMax, " c=", c);
 	}
 	else {
 		// mout.warn("max == index == ", this->index);
-		this->indexMax = this->index;
+		idx.max = idx.min;
 	}
 
 
-	if (this->indexMax < this->index){
-		mout.warn("indexMax(", this->indexMax, ") < index(", this->index, "), adjusting indexMax=", this->index);
-		this->indexMax = this->index;
+	if (idx.max < idx.min){
+		mout.warn("indexMax(", idx.max, ") < index(", idx.min, "), adjusting indexMax=", idx.min);
+		idx.max = idx.min;
 		//mout.warn( << " -> setting " << *this);;
 	}
 
@@ -163,11 +203,14 @@ bool ODIMPathElemMatcher::test(const ODIMPathElem & elem) const {
 		//mout.warn();
 		// mout.debug2() <<  this->index  << '(' << elem.index <<  ')' <<  this->indexMax << '!';
 		if (elem.index < this->index){
-			mout.debug2(this->index, '(', elem.index,  ')', this->indexMax, "! below ", this->index, '!');
+			mout.debug2("supplied index=", elem.index, " below ", this->index, "; range [", this->index, ':', this->indexMax, ']');
+			//mout.debug2(this->index, '(', elem.index,  ')', this->indexMax, "! below ", this->index, '!');
 			return false;
 		}
 		else if (elem.index > this->indexMax){
-			mout.debug2(this->index, '(', elem.index,  ')', this->indexMax, "! above ", this->indexMax, '!');
+			mout.debug2("supplied index=", elem.index, " is above max ", this->indexMax, "; range [", this->index, ':', this->indexMax, ']');
+			// mout.debug2(*this, ", see also:");
+			// this->toStream(std::cerr);
 			return false;
 		}
 		else
@@ -180,27 +223,14 @@ bool ODIMPathElemMatcher::test(const ODIMPathElem & elem) const {
 }
 
 
-std::ostream & ODIMPathElemMatcher::toStream(std::ostream & ostr) const {
-
-	//for (dict_t::const_iterator it = dictionary.begin(); it != dictionary.end(); ++it){}
-	ostr << flags; // << flags.value;
-	//flags.keysToStream(ostr); // '|' !
-
-	// returns true if any of thflagsem elems is indexed (DATASET | DATA | QUALITY);
-	if (ODIMPathElem::isIndexed(flags.value))
-		ostr << this->index << ':' << this->indexMax;
-
-	return ostr;
-}
-
 
 
 
 /// Checks if corresponds to a single path, implying that all the index ranges are singletons.
 bool ODIMPathMatcher::isLiteral() const {
 
-	for (const_iterator it=this->begin(); it!=this->end(); ++it){
-		if (!it->isSingle())
+	for (const ODIMPathElemMatcher & elem: *this){
+		if (!elem.isSingle())
 			return false;
 	}
 
@@ -208,13 +238,14 @@ bool ODIMPathMatcher::isLiteral() const {
 }
 
 /// Extracts a single, "deterministic" path only. TODO: enumerate, extract maximally N branches.
-void ODIMPathMatcher::extract(ODIMPath & path) const {
+void ODIMPathMatcher::extractPath(ODIMPath & path) const {
+
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	for (const auto & entry: *this){
-		if (!entry.isSingle())
-			mout.warn("elem has range: ", entry, ", using min index=", entry.index);
-		path.appendElem(entry);
+	for (const ODIMPathElemMatcher & elem: *this){
+		if (!elem.isSingle())
+			mout.warn("elem has range: ", elem, ", using min index=", elem.index);
+		path.appendElem(elem);
 	}
 }
 
@@ -222,7 +253,7 @@ void ODIMPathMatcher::extract(ODIMPath & path) const {
 // const rack::ODIMPathMatcher & matcher
 bool ODIMPathMatcher::match(const rack::ODIMPath & path) const {
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	//drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (this->empty())
 		return true;
@@ -306,6 +337,63 @@ bool ODIMPathMatcher::matchElem(const rack::ODIMPathElem & elem, bool defaultVal
 	*/
 
 	return defaultValue;
+}
+
+
+std::ostream & ODIMPathElemMatcher::toStream(std::ostream & ostr) const {
+
+	// for (dict_t::const_iterator it = dictionary.begin(); it != dictionary.end(); ++it){}
+	// ostr << flags; // << flags.value;
+	// ostr << " or...";
+	static const dict_t & dict = getDictionary();
+	// ostr << 'G' << this->group << '=';
+	char sep=0;
+	for (group_t g: {WHAT, WHERE, HOW}){
+		if ((this->group & g) == g){
+			if (sep)
+				ostr << sep;
+			else
+				sep = '|'; // Matcher Syntax
+			ostr << dict.getKey(g);
+		}
+	}
+	/*
+	if (this->isIndexed(group) && this->belongsTo(ATTRIBUTE_GROUPS)){
+		ostr << '+';
+	}
+	*/
+	for (group_t g: {DATASET, DATA, QUALITY}){
+		if ((this->group & g) == g){
+			if (sep)
+				ostr << sep;
+			else
+				sep = '|'; // Matcher Syntax
+			ostr << dict.getKey(g);
+
+			if (index > 0){
+				ostr << index;
+			}
+			else if (indexMax == 0){
+				ostr << "00:00"; // alert
+			}
+
+			if (indexMax != index){
+				ostr << ':';
+				if (indexMax != INDEX_MAX) // TODO: default not implemented yet
+					ostr << indexMax;
+			}
+		}
+	}
+
+	// Returns true if any of the elements is indexed, ie, DATASET, DATA or QUALITY.
+	/*
+	if (ODIMPathElem::isIndexed(flags.value)){
+		ostr << '#';
+		ostr << this->index << ':' << this->indexMax;
+	}
+	*/
+
+	return ostr;
 }
 
 }  // namespace rack

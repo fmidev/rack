@@ -82,7 +82,7 @@ protected:
 		parameters.link("width", this->widthM = widthM, "metres");
 		parameters.link("height", this->heightD = heightD, "degrees");
 
-		dataSelector.count = 1;
+		dataSelector.setMaxCount(1);
 		VVP = false;
 		odim.type = "S";
 		odim.product = "AMV"; // ?
@@ -114,7 +114,7 @@ public:
 		parameters.link("altitudeWeight", altitudeWeight, "Functor:a:b:c..."); // ??
 		//parameters.link("testSigns", testSigns = 3, "bits");
 
-		dataSelector.count = 1;
+		dataSelector.setMaxCount(1);
 		//dataSelector.selectPRF = DataSelector::Prf::ANY; // consider double
 
 		odim.type = "S";

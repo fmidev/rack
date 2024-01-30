@@ -141,7 +141,7 @@ public:
 	/// Palette data (to be linked). EXPERIMENTAL
 	static const group_t PALETTE = 256;
 
-	/// Palette data (to be linked). EXPERIMENTAL
+	/// Metadata array describing values in the image data (DATA). EXPERIMENTAL
 	static const group_t LEGEND = 512;
 
 	/// User defined group, name stored as a separate string. The string may still contain numbers, but no indices will be extracted.
@@ -149,10 +149,8 @@ public:
 	 *   Not indexed.
 	 */
 	//static const group_t OTHER   = 255 ^ IS_INDEXED; // OTHER is not indexed...
-	static const group_t OTHER   = 1024; // OTHER is not indexed...
-
+	static const group_t OTHER   = 1024; // Assume OTHER is not indexed.
 	//static const group_t _SCAN   = 2048; // Extension
-
 	//static const group_t _MOMENT = 4096; // Extension
 
 
@@ -175,15 +173,26 @@ public:
 	const dict_t & getDictionary();
 
 	group_t group;
-	typedef int index_t;
+
 
 	// Running index of the element. Applied also as a lower limit in path matching.
+	typedef int index_t;
 	index_t index;
 
+	static
+	const index_t INDEX_MAX;
 
+
+	// Change 2024/01: default index 0->1
 	inline
-	ODIMPathElem(group_t group = ROOT, index_t index = 0) : group(group), index(index){ //, indexMax(index) {  // root=NONE
+	ODIMPathElem(group_t group = ROOT, index_t index = 1) : group(group), index(index){
 	}
+
+	/*
+	inline
+	ODIMPathElem(group_t group, index_t index) : group(group), index(index){ //, indexMax(index) {  // root=NONE
+	}
+	*/
 
 	inline
 	ODIMPathElem(const ODIMPathElem &e) : group(e.group), index(e.index){ // , indexMax(e.indexMax) {
@@ -203,6 +212,8 @@ public:
 
 	inline
 	~ODIMPathElem(){};
+
+	void reset();
 
 	/// Redirects to set(const std::string &) .
 	/**
@@ -228,7 +239,11 @@ public:
 		return *this;
 	}
 
+	// ?? Require explicit indexing.
+	// ?? ODIMPathMatcher uses mixed groups, so "data2|what" should result index=2, not index=0.
+
 	/// The fundamental assignment operator
+	/*
 	virtual inline
 	bool set(group_t g, index_t i = 0){
 		group = g;
@@ -241,6 +256,22 @@ public:
 		}
 		return (g != ODIMPathElem::OTHER);
 	}
+	*/
+
+	/// The fundamental assignment operator
+	virtual inline
+	//bool
+	void set(group_t g, index_t i = 0){
+		group = g;
+		index = i;
+		//indexMax = i; // not relevant, or check
+		if ((i>0) && !isIndexed(g)){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.note("index (" , i , ") given for non-indexed element:" , *this );
+			return; // false;
+		}
+		return; // (g != ODIMPathElem::OTHER);
+	}
 
 	/// Assign a string to this path element.
 	/**
@@ -250,8 +281,12 @@ public:
 	 *
 	 *   \return - true if a valid ODIM path element was created
 	 */
-	virtual
-	bool set(const std::string &s);
+	virtual inline
+	void set(const std::string &s){
+		reset();
+		//return
+		add(s);
+	}
 
 	/// Abbreviation of (group == NONE)
 	inline
@@ -322,14 +357,29 @@ public:
 		return getKey(this->group);
 	}
 
-	/// Writes the name, including the index, to output stream.
-	// virtual	std::ostream & toStream(std::ostream & sstr) const;
+	/// For string presentation.
+	virtual
+	std::ostream & toStream(std::ostream & sstr) const;
 
+	/// Writes the name, including the index, to output stream.
+	//  virtual std::ostream & toStream(std::ostream & sstr) const;
+
+	/*
+	inline
+	const std::string & getStr() const {
+		std::stringstream sstr;
+		toStream(sstr);
+		//sstr << *this;
+		str = sstr.str();
+		return str;
+	}
+	*/
+	//inline
 	operator const std::string &() const {
 		if (this->group != OTHER){ // for OTHER, its already set.
 			std::stringstream sstr;
-			// toStream(sstr);
-			sstr << *this;
+			toStream(sstr);
+			//sstr << *this;
 			str = sstr.str();
 		}
 		return str;
@@ -341,17 +391,29 @@ public:
 
 protected:
 
+	//bool
+	void add(const std::string &s);
+
+
 	/// Given a string starting with a numeral, try to extract the index.
 	//  In ODIMPathMatcher, an index range will be extracted.
 	virtual
 	void extractIndex(const std::string &s);
 
+	// Experimental. for index int and Range!
+	template <class T>
+	static
+	void extractIndex(const std::string &s, T & idx);
 
 	mutable
 	std::string str;
 
 
 };
+
+template <>
+void ODIMPathElem::extractIndex(const std::string &s, ODIMPathElem::index_t & idx);
+
 
 extern ODIMPathElem odimROOT;
 extern ODIMPathElem odimWHERE;
@@ -371,15 +433,8 @@ bool operator!=(const ODIMPathElem & e1, const ODIMPathElem & e2){
 
 inline
 std::ostream & operator<<(std::ostream & ostr, const ODIMPathElem & p) {
-
-	/// Step 1: prefix (by group type)
-	ostr << p.getPrefix();
-
-	/// Step 2: index
-	if (p.isIndexed())
-		ostr << p.getIndex();
-
-	return ostr; // p.toStream(ostr);
+	p.toStream(ostr);
+	return ostr;
 }
 
 inline

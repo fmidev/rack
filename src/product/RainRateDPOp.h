@@ -63,8 +63,8 @@ public:
 		dbzRange(30.0, 50.0), kdpRange(0.25, 0.35), zdrRange(0.15, 0.25)
 		{
 
-		dataSelector.quantity = "^(DBZH|RHOHV|KDP|ZDR|QIND)$";
-		dataSelector.count = 1;
+		dataSelector.setQuantities("^(DBZH|RHOHV|KDP|ZDR|QIND)$");
+		dataSelector.setMaxCount(1);
 
 		odim.product = "SURF";
 		odim.quantity = "RATE";

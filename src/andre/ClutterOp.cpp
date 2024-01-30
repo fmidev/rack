@@ -95,8 +95,8 @@ const Hi5Tree & ClutterOp::getClutterMap(const PolarODIM & odim) const {
 	DataSelector selector(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 	// selector.quantity = this->quantity; // "CLUTTER";
 	// selector.setParameters("");
-	//selector.setParameter("quantity", quantity);
-	selector.setQuantity(quantity);
+	// selector.setParameter("quantity", quantity);
+	selector.setQuantities(quantity);
 	mout.debug("selector " , selector ); // TODO protect quantity
 
 	//selector.ensureDataGroup();

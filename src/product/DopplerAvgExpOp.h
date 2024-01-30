@@ -162,15 +162,10 @@ public:
 		parameters.link("vertExtension", vertExt = 0, "pix");
 		//parameters.link("decay", decay = 0.8, "[0.0,1.0]");
 		//parameters.link("smoothNess", smoothNess = 0.5, "[0.0,1.0]"); // neighbor weight
-		dataSelector.count = 1;
+		dataSelector.setMaxCount(1);
 
-		//dataSelector.quantity = "VRAD[H]?";
-		//dataSelector.quantity = "DBZH";
-		dataSelector.quantity = "^VRADH?$"; // avoid VRADDH
-		odim.quantity = "VRAD";
-		//odim.quantity = "DBZH";
-		odim.type = "S";
-		// odim.type = "C";
+		//dataSelector.setQuantity("VRAD[H]?");
+		//dataSelector.setQuantity("C");
 	}
 
 	virtual

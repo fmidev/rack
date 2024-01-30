@@ -72,7 +72,7 @@ public:
 		odim.quantity = "DBZH";
 		odim.scaling.offset = 0;
 
-		dataSelector.quantity = "DBZ.*";
+		dataSelector.setQuantities("DBZ.*");
 
 	};
 

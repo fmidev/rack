@@ -58,7 +58,7 @@ public:
 	CCorOp(drain::Range<double> threshold={10,30}) :
 		DetectorOp(__FUNCTION__,"Detects clutter. Based on difference of DBZH and TH. At halfwidth PROB=0.5. Universal.", "clutter.ccor"){ // Optional postprocessing: morphological closing.
 		//dataSelector.path = ". */da ta[0-9]+/?$";
-		dataSelector.quantity = "^(TH|DBZH)$";
+		dataSelector.setQuantities("^(TH|DBZH)$");
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
 		parameters.link("threshold", this->threshold.tuple() = threshold, "dBZ range");

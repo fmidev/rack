@@ -157,6 +157,8 @@ public:
 	std::string layout;
 	std::string filename;
 
+	void appendImage(TreeSVG & group, const std::string & prefix, drain::VariableMap & vmap,
+			const drain::Point2D<double> & location, const drain::image::Image & image, drain::BBox & bbox) const;
 };
 
 

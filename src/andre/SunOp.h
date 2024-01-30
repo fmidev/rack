@@ -63,7 +63,7 @@ public:
 		DetectorOp(__FUNCTION__,"Draw the sun beam", "sun"){
 		parameters.link("beamWidth", this->beamWidth = beamWidth, "deg");
 		parameters.link("sensitivity", this->sensitivity = sensitivity, "0...1");
-		dataSelector.quantity = "^DBZH$";
+		dataSelector.setQuantities("^DBZH$");
 	};
 
 

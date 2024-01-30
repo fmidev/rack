@@ -48,6 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ODIMPathTools.h"
 #include "ODIMPathMatcher.h"
 #include "PolarODIM.h" // elangle
+#include "QuantitySelector.h"
 
 
 namespace rack {
@@ -92,20 +93,25 @@ struct DataOrder { //: public drain::BeanLike {
 		str = criterion.str() + separator + operation.str();
 	}
 
-
 	std::string str;
 
 };
 
 
-
+inline
+std::ostream & operator<<(std::ostream & ostr, const DataOrder & order){
+	ostr << order.str;
+	return ostr;
+}
 
 /// Tool for selecting datasets based on paths, quantities and min/max elevations.
 /**
  *  \see rack::CmdSelect
- */
-class DataSelector : public drain::BeanLike {
+ */  // QuantitySelector,
+class DataSelector: public drain::BeanLike  {
 public:
+
+	friend class drain::ReferenceMap;
 
 	/// Pulse repetition frequency mode
 	enum Prf {SINGLE=1, DOUBLE=2, ANY=3};
@@ -143,6 +149,16 @@ public:
 	virtual ~DataSelector();
 
 
+	/// Sets parameters in predefined order or sets specified parameters. (Python style calling alternatives.)
+	//  *   - \c index - integer value, only changing the \c index member. ???
+	/**
+	 *  \param parameters - the parameters to be changed, using some of the syntaxes:
+	 *   - \c path,quantity,index,count>,elangleMin,elangleMax (complete or partial list of parameter values, in this order)
+	 *   - \c parameter1=value1,parameter2=value2,parameter3=value3   (specific assignments as a list)
+	 *   The regular expressions should not contain comma (,).
+	 *   \param specific - if true, the specific assignments are supported
+	 */
+
 
 	// Experimental. Raise to beanlike?
 	/// Set parameters if args not empty then clear args.
@@ -163,85 +179,100 @@ public:
 		}
 	}
 
+	template<typename ... TT>
+	inline
+	void setPathMatcher(TT... args){
+		pathMatcher.set(args...);
+	}
 
-	void setQuantity(const std::string & s);
+	inline
+	const ODIMPathMatcher & getPathMatcher() const {
+		return pathMatcher;
+	}
 
-	void updateQuantity() const ;
+	/// "Drop leading slashes", ie. remove leading empty elements.
+	inline
+	void trimPathMatcher(){
+		return pathMatcher.trimHead(true);
+	}
 
-	bool testQuantity(const std::string & s) const;
+
+	void setQuantities(const std::string & s); // todo: rename (here only) quantities?
+
+	void setQuantityRegExp(const std::string & s); // todo: rename (here only) quantities?
+
+	inline
+	bool quantityIsSet() const {
+		return quantitySelector.isSet() || qualitySelector.isSet();
+	}
+
+	inline
+	const std::string & getQuantity() const {
+		return quantities;
+	}
+
+	inline
+	const QuantitySelector & getQuantitySelector() const {
+		return quantitySelector;
+	}
+
+	inline
+	const QuantitySelector & getQualitySelector() const {
+		return qualitySelector;
+	}
+
+	inline
+	void setMaxCount(unsigned int i){
+		count = i;
+	}
+
+	inline
+	unsigned int getMaxCount() const {
+		return count;
+	}
+
 
 	inline
 	void setPrf(const std::string & s){
 		this->prf = s;
-		this->selectPRF.set(s);
+		this->prfSelector.set(s);
 	}
 
 	inline
 	void setPrf(Prf prf){
-		this->selectPRF.set(prf);
-		this->prf = this->selectPRF.str();
+		this->prfSelector.set(prf);
+		this->prf = this->prfSelector.str();
 		//this->updateBean();
 	}
 
 	template<typename ... TT>
+	inline
 	void setOrder(const TT &... args) {
 		this->order.set(args...);
 	}
 
-	/// Regular expression of accepted paths, for example ".*/data$". Deprecated
+	inline
+	const DataOrder & getOrder() const {
+		return order;
+	}
+
+
+
+
+	/// Collect paths with all the criteria: path, elevation(range), PRF, quantity...
 	/**
-	 *  \deprecated Use \c dataset and \c data parameters instead
+	 *
+	 *
 	 */
-	//mutable
-	std::string path; // temporary!
-
-	mutable
-	ODIMPathMatcher pathMatcher;
-
-	/// Regular expression of accepted PolarODIM what::quantity, for example "DBZ.?" .
-	// TODO: protect
-	std::string quantity;
-
-	/// The maximum length of the list of matching keys.
-	unsigned int count;
-
-	/// The minimum and maximum elevation angle (applicable with volume scan data only).
-	drain::Range<double> elangle;
-
-	mutable DataOrder order;
-
-	/// Reject or accept VRAD(VH)
-	std::string prf;
-
-	mutable
-	drain::EnumFlagger<drain::SingleFlagger<Prf> > selectPRF;
-
-	// TODO add filter, allowing ODIMPathElem::group_t == QUALITY
-	static
-	void getTimeMap(const Hi5Tree & srcRoot, ODIMPathElemMap & m);
-
-	// TODO add filter, allowing ODIMPathElem::group_t == QUALITY
-	static
-	void getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m);
-
-
-protected:
-
-
-	/// Data quantity (excluding quality data, like QIND or CLASS)
-	mutable // called by updateBean()
-	drain::RegExp quantityRegExp;
-
-	/// Quality quantity, like QIND or CLASS
-	mutable
-	drain::RegExp qualityRegExp;
+	void selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const;
 
 
 
 public:
 
-
-
+	// TODO add filter, allowing ODIMPathElem::group_t == QUALITY
+	static
+	void getTimeMap(const Hi5Tree & srcRoot, ODIMPathElemMap & m);
 
 	/// Convert path and quantity strings to pathMatcher and quantity regexps, respectively.
 	virtual
@@ -289,67 +320,8 @@ public:
 	 */
 
 	/// Select paths based on path matching, as well as on quantity and elevation matching when applicable.
-	/**
-	 *
-	 *  \param src - HDF5 data structure
-	 *  \param pathContainer - container for paths to be found
-	 *
-	 *  Calls getSubPaths
-	template <class T>
-	bool getPathsOLD(const Hi5Tree & src, T & pathContainer) const;
-	 */
-
 	void getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const;
-	//bool getPaths(const Hi5Tree & src, T & pathContainer, const ODIMPath & path = ODIMPath()) const;
 
-	/// Collect top-level paths, ie. \c /dataset paths and directly rooted \c /what \c /where and \c /how paths
-	/**
-	 *  \param pathContainer – list or map (ordered by timestamp or angle)
-	 *  \param LIMIT_COUNT – if true, use 'count' to limit number of datasets.
-	 */
-	template <class T>
-	void getMainPathsFOO(const Hi5Tree & src, T & pathContainer, bool LIMIT_COUNT=true) const;
-
-	/** Checks dataset elevation angles. Applicable only with measurement volume data.
-	 *
-	 */
-	void getPathsByElangleFOO(const Hi5Tree & src, std::map<double,ODIMPath>    & paths) const;
-
-	/** Checks dataset elevation start times. Applicable only with measurement volume data.
-	 *
-	 */
-	void getPathsByTimeFOO(const  Hi5Tree  &  src, std::map<std::string,ODIMPath> & paths) const;
-
-	/// Swap branches such that dst gets a /dataset or /data with a new index.
-	/**
-	 *  Contents of \c src[srcElem] will be swapped with \c dst[dstElem] such that dstElem has an index greater than any index prior to the operation.
-	 *
-	 *  After the operation \c src[srcElem] contains an empty object that was created under \c dst for swapping.
-	 *
-	 *  Stylistic note: semantically this should belong to DataTools, but essentially calls getNextChild() hence is kept here.
-	 *  Also, DataTools stays independent from DataSelector.
-	 */
-	static
-	void swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree & dst);
-
-	/// Like swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree & dst), but src already at the level.
-	static
-	void swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::group_t groupType);
-
-
-protected:
-
-	/// Continue path matching started with getMainPaths()
-	/**
-	 *
-	 *  \param src - HDF5 data structure
-	 *  \param pathContainer - container for paths to be found
-	 *  \param path - search path, dataset<n> by default
-	 */
-	template <class T>
-	bool getSubPathsFOO(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const;
-
-public:
 
 	/// Returns the first path encountered with selector attributes and given groupFilter .
 	/**
@@ -371,107 +343,77 @@ public:
 	bool getNextPath(const Hi5Tree & src, ODIMPath & path, ODIMPathElem::group_t group = ODIMPathElem::DATA ) const;
 
 
-	/// Searches the children of child.getType(), or g if given, and stores the one with largest index.
+
+
+	/// Swap branches such that dst gets a /dataset or /data with a new index.
 	/**
+	 *  Contents of \c src[srcElem] will be swapped with \c dst[dstElem] such that dstElem has an index greater than any index prior to the operation.
 	 *
-	 static
-	 bool getLastChild(const Hi5Tree & tree, ODIMPathElem & child); //, (ODIMPathElem::group_t g =  ODIMPathElem::NONE);
+	 *  After the operation \c src[srcElem] contains an empty object that was created under \c dst for swapping.
+	 *
+	 *  Stylistic note: semantically this should belong to DataTools, but essentially calls getNextChild() hence is kept here.
+	 *  Also, DataTools stays independent from DataSelector.
 	 */
-
-	/// Searches children of given type, returns a non-existing child with index greater than child.index.
-	/**
-	 *   Unused indices may be returned.
 	static
-	bool getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMPathElem::index_t iMax=0xff);
-	 */
+	void swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree & dst);
 
-	/// Derive a child with index one greater than the largest index encountered.
-	/**
-	 *  \param tree - parent structure
-	 *  \param child - child to be set index = last+1, hence 1 if none found.
-	 *  \return - true if child's index was incremented (ie.)
+	/// Like swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree & dst), but src already at the level.
 	static
-	bool getNextChild(const Hi5Tree & tree, ODIMPathElem & child);
-	 */
-
-	//static 	bool getNextDescendant(Hi5Tree & tree, (ODIMPathElem::group_t g, ODIMPath & path);
-
-	/// Searches children of given type, returns a non-existing child with index greater than child.index.
-	/**
-	 *   Unused indices may be returned.
-	static
-	bool getChildren(const Hi5Tree & tree, std::map<std::string,ODIMPathElem> & children, ODIMPathElem::group_t groups);
-	 */
-
-
-
-	/// Sets parameters in predefined order or sets specified parameters. (Python style calling alternatives.)
-	//  *   - \c index - integer value, only changing the \c index member. ???
-	/**
-	 *  \param parameters - the parameters to be changed, using some of the syntaxes:
-	 *   - \c path,quantity,index,count>,elangleMin,elangleMax (complete or partial list of parameter values, in this order)
-	 *   - \c parameter1=value1,parameter2=value2,parameter3=value3   (specific assignments as a list)
-	 *   The regular expressions should not contain comma (,).
-	 *   \param specific - if true, the specific assignments are supported
-	 */
-
+	void swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::group_t groupType);
 
 
 protected:
 
 
+	/// Regular expression of accepted paths, for example ".*/data$". Deprecated
+	/**
+	 *  \deprecated Use \c dataset and \c data parameters instead
+	 */
+	//mutable
+	std::string path; // temporary!
+
+	mutable
+	ODIMPathMatcher pathMatcher;
+
+	/// Comma-separated list of conventional quantities and quality quantities.
+	std::string quantities;
+
+	mutable
+	QuantitySelector quantitySelector;
+
+	mutable
+	QuantitySelector qualitySelector;
+
+
+	/// The maximum length of the list of matching keys.
+	unsigned int count;
+
+
+	/// The minimum and maximum elevation angle (applicable with volume scan data only).
+	drain::Range<double> elangle;
+
+	mutable DataOrder order;
+
+	/// Reject or accept VRAD(VH)
+	std::string prf;
+
+	mutable
+	drain::EnumFlagger<drain::SingleFlagger<Prf> > prfSelector;
+
+	/// Continue path matching started with getMainPaths()
+	/**
+	 *
+	 *  \param src - HDF5 data structure
+	 *  \param pathContainer - container for paths to be found
+	 *  \param path - search path, dataset<n> by default
+	template <class T>
+	bool getSubPathsFOO(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const;
+	 */
+
+	void updateQuantities() const ;
+
 	/// Sets the default values and sets references.
 	void init();
-
-	/// Collects paths to a list.
-	/**
-	 *  \param l - container for paths
-	 *  \param props - unused (in this variant, for lists)
-	static inline
-	void addPathFOO(std::list<ODIMPath> & l, const drain::FlexVariableMap & props, const ODIMPath &path){
-		//PolarODIM odim;
-		//odim.updateFromCastableMap(props);
-		l.push_back(path);
-	}
-	 */
-
-	/// Add path to a map, using elevation angle as index. (Assumes polar data)
-	/**
-	 *  Traverses down the tree and returns matching paths as a list or map (ordered by elevation).
-	 *
-	 *  \param m - container for paths
-	 *  \param props - metadata containing \c where:elangle
-	static inline
-	void addPathFOO(std::map<double,ODIMPath> & m, const drain::FlexVariableMap & props, const ODIMPath &path){
-		PolarODIM odim(ODIMPathElem::DATASET); // minimise references - only where:elangle needed
-		odim.updateFromCastableMap(props);  // where:elangle
-		m[odim.elangle] = path;
-	}
-	 */
-
-	/// Add path to a map, using timestamp (\c what:startdate + \c what:starttime ) as index. (Assumes polar data)
-	/**
-	 *  \param m - container for paths
-	 *  \param props - metadata containing \c what:startdate + \c what:starttime
-	static inline
-	void addPathFOO(std::map<std::string,ODIMPath> & m, const drain::FlexVariableMap & props, const ODIMPath &path){
-		PolarODIM odim(ODIMPathElem::DATASET); // minimise references - only what:startdate and what:starttime
-		odim.updateFromCastableMap(props); // what:startdate &  what:starttime
-		m[odim.startdate + odim.starttime] = path;
-	}
-	 */
-
-
-	/**
-	 *  \param pathContainer – std::map<double,ODIMPath> or std::map<std::string,ODIMPath> for ELANGLE and TIME, respectively.
-	 *
-	 *  \param MAX: MIN or MAX use keys with greatest values: latest TIME or highest ELANGLE
-	template <class M>
-	void copyPathsFOO(M & pathMap, DataOrder::Oper oper, std::list<ODIMPath> & mapList) const ;
-	 */
-	// void pruneMap(std::list<ODIMPath> & pathContainer, DataOrder::Oper oper=DataOrder::Oper::MIN) const ;
-
-// EXPERIMENTAL
 
 
 	/// Collect paths (only) with criteria: path, elevation(range), PRF, quantity.
@@ -485,337 +427,20 @@ protected:
 	void prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const;
 
 
-public:
-
-	/// Collect paths with all the criteria: path, elevation(range), PRF, quantity...
-	/**
-	 *
-	 *
-	 */
-	void selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const;
 
 };
 
+std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector);
 
-/**
- *   oper – MIN or MAX, enums of DataOrder::Oper
-
-template <class M>
-void DataSelector::copyPathsFOO(M & pathMap, DataOrder::Oper oper, std::list<ODIMPath> & pathList) const {
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	drain::Range<int> range; // (1, pathContainer.size());
-
-	if (order.operation == DataOrder::MIN){
-		range.set(1, count);
-	}
-	else if (order.operation == DataOrder::MAX){
-		range.set(1+ pathMap.size()-count, pathMap.size());
-	}
-
-	mout.attention("range: ", range);
-
-	int i = 1;
-
-	for (const auto & entry: pathMap){
-		if (range.contains(i)){
-			mout.accept(entry.first, '\t', entry.second);
-			pathList.push_back(entry.second);
-		}
-		else {
-			mout.reject(entry.first, '\t', entry.second);
-		}
-		++i;
-	}
-
-
-}
- */
-
-/**
- *   oper – MIN or MAX, enums of DataOrder::Oper
- */
 /*
-template <class M>
-void DataSelector::pruneMap(M & pathContainer, DataOrder::Oper oper) const {
-
-	// Number of paths kept.
-	unsigned int n = count <= pathContainer.size() ? count : pathContainer.size();
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	typename M::iterator it = pathContainer.begin();
-	if (oper == DataOrder::Oper::MIN){
-		// Jump over n keys.
-		std::advance(it, n);
-		for (typename M::iterator it2 = it; it2 != pathContainer.end(); ++it2){
-			mout.attention("deleting ", it2->first());
-		}
-		pathContainer.erase(it, pathContainer.end());
-	}
-	else if (oper == DataOrder::Oper::MAX){
-		// Jump towards end, so that n keys remain
-		std::advance(it, pathContainer.size()-n);
-		for (typename M::iterator it2 = pathContainer.begin(); it2 != it; ++it2){
-			mout.attention("deleting ", it2->first());
-		}
-		pathContainer.erase(pathContainer.begin(), it);
-	}
-	else {
-		throw std::runtime_error("Order oper neither MIN nor MAX: ");
-	}
-
+inline
+std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector){
+	selector.toStream(ostr);
+	return ostr;
 }
 */
 
 /*
-template <class T>
-bool DataSelector::getPathsOLD(const Hi5Tree & src, T & pathContainer) const {
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	if (orderFlags.isSet(TIME)){
-		mout.special(__FUNCTION__, ':', orderFlags);
-		std::map<std::string,ODIMPath> m;
-		getPathsByTime(src, m);
-		pruneMap(m, orderFlags.isSet(MAX));
-		//return map2list(m, pathContainer, false);
-		for (const auto & entry: m){
-			//mout.special(entry);
-			mout.special(entry.first, '\t', entry.second);
-			addPath4(pathContainer, entry.first, entry.second);
-		}
-	}
-	else if (orderFlags.isSet(ELANGLE)){
-		mout.special(__FUNCTION__, ':', orderFlags);
-		std::map<double,ODIMPath> m;
-		getPathsByElangle(src, m);
-		pruneMap(m, orderFlags.isSet(MAX));
-		for (const auto & entry: m){
-			mout.special(entry.first, '\t', entry.second);
-			addPath4(pathContainer, entry.first, entry.second);
-		}
-	}
-	else {
-		getMainPaths(src, pathContainer);
-	}
-
-	return true;
-}
-*/
-
-
-
-// TODO: redesign with
-// getPaths_DS() level 1
-// getPaths_DQ() level 2+
-/*
-template <class T>
-void DataSelector::getMainPathsFOO(const Hi5Tree & src, T & pathContainer, bool LIMIT_COUNT) const {
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	// Current search point const Hi5Tree & s = src;
-
-	/// For book keeping of traversed datasets
-	std::set<ODIMPathElem::index_t> dataSetIndices;
-
-	//for (Hi5Tree::const_iterator it = s.begin(); it != s.end(); ++it) {
-	for (const auto & entry: src) {
-
-		const ODIMPathElem & currentElem = entry.first;
-		mout.debug3("currentElem='" , currentElem , "'" );
-
-		// can be moved inside DATASET scope if no other groups included in path (in future?)
-		const drain::image::Image & data    = entry.second.data.image; // for ODIM
-		const drain::FlexVariableMap & props = data.getProperties();
-
-		ODIMPath path(currentElem);
-
-		// Check ELANGLE (in datasets) or quantity (in data/quality)
-		if (currentElem.is(ODIMPathElem::DATASET)){
-
-			if (!pathMatcher.matchElem(currentElem, true)){
-				// pathMatcher does not accept this dataset<N> at all
-				mout.reject(currentElem);
-				continue;
-			}
-
-			if ((LIMIT_COUNT) && (dataSetIndices.size() >= count)){
-				mout.debug2("dataset count " , dataSetIndices.size() , ">=" , count , ") already completed for " , currentElem );
-				continue;
-			}
-
-			if (props.hasKey("where:elangle")){
-				double e = props["where:elangle"];
-				if (!elangle.contains(e)){
-					mout.debug("elangle ",e," outside range ",elangle);
-					continue;
-				}
-			}
-
-			if (getSubPathsFOO(src, pathContainer, path)){
-				// Add this data set path
-				if (pathMatcher.match(path)){
-					mout.debug2(" path matches (subtree OK) " , path );
-					addPathFOO(pathContainer, props, path);
-				}
-				dataSetIndices.insert(currentElem.index);
-			}
-
-			//continue;
-		}
-		//else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::DATA)){
-		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){ // 2021/04
-
-			if (currentElem.is(ODIMPathElem::DATA)){
-				mout.warn(" DATA_GROUP '" , currentElem , "' directly under root"  );
-			}
-
-			if (getSubPathsFOO(src, pathContainer, ODIMPath())){
-				// added qualityX ...
-			}
-
-		}
-		else if (currentElem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-			// Consider policy..
-			//mout.warn(" skipping ATTRIBUTE_GROUP: /" , currentElem );
-			if (pathMatcher.match(path)){
-				addPathFOO(pathContainer, props, path);
-			}
-			// addPath(pathContainer, v, path); // ?
-		}
-		else {
-			mout.warn(" skipping odd group: /" , currentElem );
-		}
-
-	}
-
-	//return true; //...
-}
-*/
-
-/*
-template <class T>
-bool DataSelector::getSubPathsFOO(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const {
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	const bool quantityRequired = quantityRegExp.isSet() || qualityRegExp.isSet();
-
-	bool groupsOK = !quantityRequired;
-
-	//const Hi5Tree & s = src(path);
-
-	//for (Hi5Tree::const_iterator it = s.begin(); it != s.end(); ++it) {
-	for (const auto & entry: src(path)) {
-
-		bool quantityFound = !quantityRequired;
-
-		const ODIMPathElem & currentElem = entry.first;
-		mout.debug3("currentElem='" , currentElem , "'" );
-		const drain::image::Image    & data  = entry.second.data.image; // for ODIM
-		const drain::FlexVariableMap & props = data.getProperties();
-
-		ODIMPath p(path, currentElem);
-
-		//
-		if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-
-			if (quantityRequired){
-
-				if (props.hasKey("what:quantity")){
-
-					const std::string quantity = props["what:quantity"].toStr();
-
-					if (qualityRegExp.isSet()){ // NOTE: at least, do not test quantity after this!
-						//quantityOk = false;
-						if (currentElem.is(ODIMPathElem::QUALITY) && qualityRegExp.test(quantity)){
-							mout.note("QUALITY quantity matches: [" , quantity , "]" );
-							//quantityOk    = true;
-							quantityFound = true;
-						}
-					}
-					else if (quantityRegExp.test(quantity)){
-						mout.debug2("quantity matches: [" , quantity , "]: " , path , '|' , currentElem );
-						//quantityOk    = true;
-						quantityFound = true;
-					}
-					else {
-						mout.debug3("unmatching DATA quantity  [" ,  quantity , "], skipping" );
-						// NO continue; have to descend for quality (QIND) below!
-						// continue;
-						// recursion continues below
-					}
-
-					if (quantityFound && (selectPRF != ANY)){
-						double lowPRF   = props.get("how:lowprf",  0.0);
-						double hightPRF = props.get("how:highprf", lowPRF);
-						bool IS_DUAL_PRF = (lowPRF != hightPRF);
-						if (selectPRF == Prf::DOUBLE){
-							if (!IS_DUAL_PRF){
-								mout.experimental("dualPRF required, rejecting [" , quantity , "] at " , p );
-								quantityFound = false;
-							}
-						}
-						else {
-							if (IS_DUAL_PRF){
-								mout.experimental("dualPRF rejected:  [" , quantity , "] at " , p );
-								quantityFound = false;
-							}
-						}
-					}
-
-				}
-				else {
-
-					if (currentElem.is(ODIMPathElem::DATA))
-						mout.warn();
-					else
-						mout.info();
-					mout << "quantity missing in (image) metadata of " << path << '/' << currentElem << mout.endl;
-
-					// continue?
-				}
-
-			}
-
-
-			if (quantityFound && pathMatcher.match(p)){
-				addPathFOO(pathContainer, props, p);
-			}
-
-			// Recursion, possibly finding quality quantity
-			quantityFound |=  getSubPathsFOO(src, pathContainer, p);
-
-		}
-		else if (currentElem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS | ODIMPathElem::ARRAY)){
-			// mout.warn(" ATTRIBUTE_GROUP: " , path , " / " , currentElem );
-			if (pathMatcher.match(p)){
-				//mout.debug3("adding " , path , " / " , currentElem );
-				mout.accept("adding " , path , " / " , currentElem );
-				addPathFOO(pathContainer, props, p);
-			}
-		}
-		else if (currentElem.is(ODIMPathElem::DATASET)){
-			mout.warn(" NESTING DATASET_GROUP: " , path , " / " , currentElem );
-			// addPath(pathContainer, v, path); // ?
-		}
-		else {
-			mout.debug(" skipping special: " , path , " / " , currentElem );
-		}
-	groupsOK |= quantityFound;
-	}
-
-	if (quantityRequired){ //  && groupsOK
-		mout.attention("Quantity [", quantityRegExp , ':', qualityRegExp, "] was required. Found: ", groupsOK);
-	}
-	return groupsOK;
-}
-*/
-
-
 inline
 std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector){
 	drain::Sprinter::toStream(ostr, selector.getParameters().getMap(), drain::Sprinter::cmdLineLayout);
@@ -825,6 +450,7 @@ std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector){
 	// ostr << ", order=" << selector.order.str;
 	return ostr;
 }
+*/
 
 
 // Experimental

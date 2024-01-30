@@ -81,7 +81,7 @@ public:
 		//parameters.link("sensitivity",  this->sensitivity,  sensitivity);
 		// parameters.link("enhancement",  this->enhancement,  enhancement);
 		// parameters.link("eHeight",  this->eHeight, eHeight);
-		dataSelector.quantity = "DBZ.*";
+		dataSelector.setQuantities("DBZH"); // ,"DBZV
 		//double d =
 	}
 

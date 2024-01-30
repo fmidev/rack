@@ -55,8 +55,8 @@ protected:
 	inline
 	GliderOp(const std::string & name, const std::string & description, const std::string & classCode) :
 		DetectorOp(name, description, classCode), dbzPeak(+5),  VRAD_FLIP(false), zdrAbsMin(+2.0)  {
-		dataSelector.quantity = "^(DBZH|VRAD|VRADH|RHOHV|ZDR)$";
-		dataSelector.count = 1;
+		dataSelector.setQuantityRegExp("^(DBZH|VRAD|VRADH|RHOHV|ZDR)$");
+		dataSelector.setMaxCount(1);
 	};
 
 	/**

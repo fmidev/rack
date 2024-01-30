@@ -55,8 +55,8 @@ public:
 		parameters.link("threshold", this->conf.contributionThreshold = 0.5, "percentage");
 		parameters.link("invertPolar", this->conf.invertPolar = false, "cart/polar");
 
-		dataSelector.quantity = "^DBZH$";
-		dataSelector.count = 1;
+		dataSelector.setQuantities("^DBZH$");
+		dataSelector.setMaxCount(1);
 
 	};
 

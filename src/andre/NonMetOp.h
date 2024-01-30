@@ -59,7 +59,7 @@ public:
 	NonMetOp(double threshold=0.4, double thresholdWidth=0.2, double windowWidth=0.0, double windowHeight=0.0, double medianPos=0.95) :
 		DetectorOp(__FUNCTION__,"Detects clutter. Based on dual-pol parameter RhoHV . Optional postprocessing: morphological closing. Universal.", "nonmet"){
 
-		dataSelector.quantity = "RHOHV";
+		dataSelector.setQuantities("RHOHV");
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
 

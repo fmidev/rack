@@ -52,7 +52,7 @@ class DrawingOp : public PolarProductOp {
 public:
 
 	DrawingOp(const std::string & name, const std::string &description) : PolarProductOp(name, description){
-		dataSelector.quantity = "";
+		dataSelector.setQuantities("");
 	}
 
 	DrawingOp() : PolarProductOp("DrawingOp", "Visualise a direction[azm,r,r2], range[r,r2], sector[azm,azm2,r,r2] or arc[azm,azm2,r].") {
@@ -72,8 +72,8 @@ public:
 		link("bin2", w.bin2, 0, "index");
 		*/
 		parameters.link("marker", this->marker = 255, "intensity");
-		dataSelector.quantity = "";
-		dataSelector.count = 1;
+		dataSelector.setQuantities("");
+		dataSelector.setMaxCount(1);
 	};
 
 	virtual ~DrawingOp();

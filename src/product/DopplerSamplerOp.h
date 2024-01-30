@@ -52,8 +52,8 @@ public:
 
 	DopplerSamplerOp() : DopplerOp(__FUNCTION__, "Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)") {
 		parameters.append(w.getParameters());
-		//dataSelector.quantity = "^(VRAD|VRADH)$";
-		//dataSelector.count = 1;
+		//dataSelector.setQuantity("^(VRAD|VRADH)$");
+		//dataSelector.setMaxCount(1);
 	};
 
 	virtual inline ~DopplerSamplerOp(){};
@@ -64,8 +64,8 @@ public:
 protected:
 
 	DopplerSamplerOp(const std::string & name, const std::string &description) : DopplerOp(name, description){
-		//dataSelector.quantity = "VRAD";
-		//dataSelector.count = 1;
+		//dataSelector.setQuantity("VRAD");
+		//dataSelector.setMaxCount(1);
 	}
 
 	virtual
@@ -81,7 +81,7 @@ public:
 
 	DopplerDiffPlotterOp() : DopplerSamplerOp(__FUNCTION__, "Plots differences in VRAD data as fucntion of azimuth") {
 		parameters.append(w.getParameters());
-		dataSelector.count = 1;
+		dataSelector.setMaxCount(1);
 	}
 
 	// Outputs u and v both, so dst dataSET needed

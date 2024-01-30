@@ -230,11 +230,15 @@ public:
 		if (!elem.empty()){
 			// Always allow non-empty element
 			// std::cerr << __FUNCTION__ << ":" << elem << '\n';
-			if (!separator.acceptRepeated)
-				removeTrailing();
+			if (!separator.acceptRepeated){
+				//std::cerr << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << ":" << " validate " << *this << " + " << elem << '\n';
+				//removeTrailing();
+				trimTail();
+			}
+				//stripTail();
 			this->push_back(elem);
 		}
-		// elem EMPTY:
+		// elem is EMPTY: -----------------------------------------------------------
 		else if (this->empty()){
 			if (separator.acceptLeading)
 				this->push_back(elem); // empty
@@ -265,7 +269,39 @@ public:
 	}
 
 
-	/// Removes trailing empty elements, except for the root itself.
+	/// Removes leading empty elements. The resulting string presentation will not start with the separator.
+	/**
+	 *  After this operation there is no root, ie. there is no leading separator.
+	 *
+	 */
+	void trimHead(bool COMPLETE=false){
+		const size_t minLength = COMPLETE ? 0 : 1;
+		while (this->size() > minLength){
+		//while (!this->empty()){
+			if (!this->front().empty()){
+				return;
+			}
+			this->pop_front();
+			//this->trimHead();
+		}
+	}
+
+
+	/// Removes trailing empty elements. The resulting string presentation will not end with the separator.
+	void trimTail(bool COMPLETE=false){ //
+		const size_t minLength = COMPLETE ? 0 : 1;
+		while (this->size() > minLength){
+		//while (!this->empty()){
+			if (!this->back().empty()){
+				return;
+			}
+			this->pop_back();
+			//this->trimTail();
+		}
+	}
+
+	/// ORIGINAL. Removes trailing empty elements, except for the root itself.
+	/** keep this for a while
 	void removeTrailing(){
 		if ((this->size() > 1)){
 			if (this->back().empty()){
@@ -274,6 +310,69 @@ public:
 			}
 		}
 	}
+	*/
+
+	/// Remove duplicates of empty elements from the start and the end.
+	/**
+	 */
+	inline
+	void simplify(){
+		simplifyHead();
+		simplifyTail();
+	}
+
+	/// Remove duplicates of empty elements from the start.
+	/**
+	 */
+	void simplifyHead(){
+
+		if (this->empty())
+			return;
+
+		if (this->front().empty()){
+			typename path_t::const_iterator it0 = ++this->begin();
+			typename path_t::const_iterator it = it0;
+			while (it != this->end()) {
+				if (!it->empty()){
+					break;
+				}
+				++it;
+			}
+			if (it != it0)
+				this->erase(it0,it);
+		}
+
+
+	}
+
+	/// Remove duplicates of empty elements from the end.
+	/**
+	 */
+	void simplifyTail(){
+
+		if (this->empty())
+			return;
+
+		if (this->back().empty()){
+			typename path_t::const_iterator it0 = --this->end();
+			typename path_t::const_iterator it = it0;
+
+			while (it != this->begin()) {
+				--it;
+				if (!it->empty()){
+					++it;
+					break;
+				}
+			}
+
+			if (it != it0)
+				this->erase(it,it0);
+		}
+
+
+	}
+
+
 
 public:
 

@@ -70,7 +70,7 @@ protected:
 
 	GapFillOpBase(const std::string &name, const std::string &description) :
 		RemoverOp(name, description){
-		dataSelector.quantity = "^DBZH$";
+		dataSelector.setQuantities("^DBZH$");
 	};
 
 

@@ -55,7 +55,7 @@ public:
 	DopplerOp() : PolarProductOp(__FUNCTION__, "Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)") {
 		parameters.append(w.getParameters());
 		dataSelector.quantity = "^(VRAD|VRADH)$";
-		dataSelector.count = 1;
+		dataSelector.setMaxCount(1);
 	};
 	*/
 
@@ -86,8 +86,8 @@ protected:
 
 	DopplerOp(const std::string & name, const std::string &description) : PolarProductOp(name, description){
 		//dataSelector.quantity = "VRADH?";
-		dataSelector.quantity = "^VRADH?$"; // avoid VRADDH
-		dataSelector.count = 1;
+		dataSelector.setQuantities("^VRADH?$"); // avoid VRADDH
+		dataSelector.setMaxCount(1);
 		// dataSelector.selectPRF = DataSelector::Prf::DOUBLE;
 	}
 
@@ -113,9 +113,9 @@ public:
 		//parameters.link("width", this->widthM = widthM, "metres");
 		parameters.link("dMax", this->dMax = dMax, "m/s");
 
-		dataSelector.quantity = "VRAD.*";
+		dataSelector.setQuantities("VRAD.*");
 
-		dataSelector.count = 1;
+		dataSelector.setMaxCount(1);
 
 		odim.type = "S";
 		odim.quantity = "VRAD_DIFF";
@@ -147,8 +147,8 @@ public:
 		parameters.link("match", matchOriginal=0, "flag(aliased=1,nodata=2)"); // ALIASED=1, NODATA=2
 		parameters.link("quantity", odim.quantity = "VRAD", "output-quantity");
 
-		dataSelector.count = 1;
-		dataSelector.quantity = "^(AMVU|AMVV|VRAD)$";
+		dataSelector.setMaxCount(1);
+		dataSelector.setQuantities("^(AMVU|AMVV|VRAD)$");
 
 		//odim.quantity; // VRAD_C
 		odim.type = "S";
@@ -177,8 +177,8 @@ public:
 		parameters.link("threshold", relative_NI_threshold=0.9, "relative speed");
 		//parameters.link("quantity", odim.quantity = "VRAD", "output-quantity");
 
-		dataSelector.count = 1;
-		dataSelector.quantity = "^VRAD";
+		dataSelector.setMaxCount(1);
+		dataSelector.setQuantities("^VRAD");
 
 		odim.quantity = "VRAD";
 		odim.type = "S";

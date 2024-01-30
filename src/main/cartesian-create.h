@@ -76,23 +76,24 @@ public:
 			composite.accArray.clear();
 		}
 
+		// mout.attention("start add: ", composite.getTargetEncoding(), " odim.quantity=", composite.odim.quantity, " sel:", composite.dataSelector);
+		composite.odim.quantity = "";
+
 		add(composite, RackContext::POLAR|RackContext::CURRENT, true);
-
-		//ctx.select.clear();
-
-		// 2021/06/23
-		// 2022/10
-		//ctx.composite
 
 		if (ctx.statusFlags.value > 0){
 			mout.warn("errors (", ctx.statusFlags, "), skipping extraction");
 			return;
 		}
 
+		// mout.attention("extract dw");
 		extract(composite, "dw");
 
-		composite.dataSelector.quantity.clear();
+		// When are these needed? Upon one-liner DBZH, VRAD singles?
+		composite.dataSelector.setQuantities(""); // why quantity only?
+		// mout.experimental("quantity ["," clearance removed");
 		composite.odim.quantity.clear();
+
 		// mout.attention("angles: ", drain::sprinter(composite.odim.angles, "<>"));
 
 		// better without...

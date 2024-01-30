@@ -64,9 +64,9 @@ public:
 		odim.product = "FUNCTOR";
 		odim.quantity = "UNKNOWN";
 
-		dataSelector.quantity = "";
+		dataSelector.setQuantities("");
 		//dataSelector.path = "dataset[0-9]+/data[0-9]+/?$";  // NOTE! A dataset for each elevation groups; should suffit for nbins and rscale. However, if a user wants to use quantity, /dataN/ should be reached.
-		dataSelector.count = 1;
+		dataSelector.setMaxCount(1);
 
 
 		parameters.link("ftor", ftorSetup, "Functor:a:b:c..."); // See DopplerDealiasOp

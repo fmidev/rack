@@ -56,7 +56,7 @@ public:
 	DetectorOp(const std::string & name = __FUNCTION__, const std::string &description = "", unsigned short code = 0) : AndreOp(name,description), classCode(code ? code : 128+(++_count)) {
 		// dataSelector.path = ". * /da ta[0-9]+/?$";
 		// dataSelector.quantity = "DBZ.*";
-		dataSelector.quantity = "^DBZH$";
+		dataSelector.setQuantity("^DBZH$");
 		// cumulateDetections = MAX;
 		REQUIRE_STANDARD_DATA = true;
 		UNIVERSAL = false;
@@ -70,7 +70,7 @@ public:
 
 		// dataSelector.path = ". * /da ta[0-9]+/?$";
 		//dataSelector.quantity = "DBZ.*";
-		dataSelector.quantity = "^DBZH$";
+		dataSelector.setQuantityRegExp("^DBZH$");
 		//cumulateDetections = MAX;
 		REQUIRE_STANDARD_DATA = true;
 		UNIVERSAL = false;

@@ -92,7 +92,7 @@ public:
 		this->allowedEncoding.link("what:nodata", this->odim.nodata = nodata);
 
 		//this->dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET, ODIMPathElem::DATA);
-		this->dataSelector.pathMatcher.set(ODIMPathElem::DATASET, ODIMPathElem::DATA);
+		this->dataSelector.setPathMatcher(ODIMPathElem::DATASET, ODIMPathElem::DATA);
 
 	}
 
@@ -205,7 +205,7 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	// Parents are needed because converted data are stored in parallel.
 	std::set<ODIMPathElem> parents;
 
-	const drain::RegExp quantityRegExp(this->dataSelector.quantity);
+	const drain::RegExp quantityRegExp(this->dataSelector.getQuantity());
 
 	mout.special("quantityRegExp: ", quantityRegExp);
 

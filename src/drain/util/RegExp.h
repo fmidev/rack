@@ -80,6 +80,7 @@ public:
 	//    bool exp(const char *toStr);
 	bool setExpression(const std::string & str, int flags = REG_EXTENDED);
 
+	// Compare with \see reset()
 	inline 
 	void clear(){ writableResult.clear(); };
 
@@ -87,6 +88,19 @@ public:
 	bool isSet() const {
 		return !regExpString.empty();
 	};
+
+	inline
+	void reset(){
+		setExpression("");
+	};
+
+	/// Returns true, if expression is empty.
+	inline
+	bool empty() const {
+		return regExpString.empty();
+	};
+
+
 
 	void setFlags(int flags){
 		this->flags = flags;

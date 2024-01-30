@@ -303,7 +303,7 @@ void GliderOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 	mout.success(" -> dstData: " , dstData );
 
 	if (dstData.data.isEmpty()){
-		mout.error() << "could not find input data; quantity=" << dataSelector.quantity;
+		mout.error("could not find input data; quantity=", dataSelector.getQuantity());
 	}
 	else {
 		if (overallScale < 1.0){

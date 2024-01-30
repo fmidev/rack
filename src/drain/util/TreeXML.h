@@ -62,11 +62,13 @@ public:
 	//typedef ReferenceMap map_t;
 	typedef ReferenceMap2<FlexibleVariable> map_t;
 
-	NodeXML(){
-		id = nextID;
-		++nextID;
+	inline
+	NodeXML() : id(++nextID){
 	};
 
+	NodeXML(const NodeXML & node);
+
+	inline
 	~NodeXML(){};
 
 	//typedef FlexVariableMap map_t;
@@ -81,6 +83,21 @@ public:
 	void set(const std::string & key, const T &value){
 		(*this)[key] = value;
 	}
+
+	inline
+	void set(const std::initializer_list<std::pair<const char *, const drain::Variable> > &l){
+		drain::SmartMapTools::setValues<map_t,true>((map_t &)*this, l);       // add new keys
+		// drain::SmartMapTools::setValues<map_t,false>((map_t &)*this, l);   // update only
+	}
+
+	inline
+    NodeXML & operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
+		set(l);
+		return *this;
+	}
+
+
+
 	template <class T>
 	static inline
 	void attribToStream(std::ostream &ostr, const std::string & key, const T &value){
@@ -89,7 +106,7 @@ public:
 
 	template <class T>
 	static
-	std::ostream & toStream(std::ostream &ostr, const T & t, const std::string & defaultTag = "");
+	std::ostream & toStream(std::ostream &ostr, const T & t, const std::string & defaultTag = "", int indent=0);
 
 	std::string ctext;
 
@@ -123,11 +140,12 @@ typedef drain::UnorderedMultiTree<NodeXML,false> TreeXML;
  *
  */
 template <class T>
-std::ostream & NodeXML::toStream(std::ostream & ostr, const T & tree, const std::string & defaultTag){
+std::ostream & NodeXML::toStream(std::ostream & ostr, const T & tree, const std::string & defaultTag, int indent){
 
 	const typename T::container_t & children = tree.getChildren();
 
 	// OPEN TAG
+	std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
 	ostr << '<';
 	//<< tree.data.tag << ' ';
 	if (tree->getTag().empty())
@@ -171,10 +189,11 @@ std::ostream & NodeXML::toStream(std::ostream & ostr, const T & tree, const std:
 
 		/// iterate children - note the use of default tag
 		for (const auto & entry: children){
-			toStream(ostr, entry.second, entry.first);
+			toStream(ostr, entry.second, entry.first, indent+1); // no ++
 			//ostr << *it;
 		}
 		// add end </TAG>
+		std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
 		ostr << '<' << '/' << tree->getTag() << '>';
 		ostr << '\n';  // TODO nextline
 

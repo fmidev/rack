@@ -329,7 +329,7 @@ class CmdSelectQuantity : public  drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdSelectQuantity() : drain::SimpleCommand<std::string>(__FUNCTION__, "Like --select quantity=... but with patterns (not regexps)", "quantities","","quantity[,quantity2,...]"){
+	CmdSelectQuantity() : drain::SimpleCommand<std::string>(__FUNCTION__, "Like --select quantity=... with patterns (not regexps)", "quantities","","quantity[,quantity2,...]"){
 
 	};
 
@@ -353,7 +353,7 @@ public:
 			ctx.select = "quantity=^(" + quantity + ")$";
 		}
 		else {
-			mout.warn("quantity-specific quality [", qualityQuantity, "]: strict check unimplemented for [", quantity, "]");
+			mout.experimental("quantity-specific quality [", qualityQuantity, "] -> [", quantity, "]: strict check unimplemented");
 			ctx.select = "path=data:/quality:,quantity=^(" + qualityQuantity + ")$";  //???
 		}
 
@@ -474,12 +474,12 @@ public:
 		DataSelector selector(ODIMPathElem::DATASET);
 		selector.consumeParameters(ctx.select);
 
-		if (selector.quantity.empty()){
-			selector.quantity = "^DBZH";
-			mout.note("selector quantity unset, setting " , selector.quantity );
+		if (!selector.quantityIsSet()){
+			selector.setQuantities("^DBZH");
+			mout.note("selector quantity unset, setting " , selector.getQuantity() );
 		}
 
-		const drain::RegExp quantityRegExp(selector.quantity);
+		const drain::RegExp quantityRegExp(selector.getQuantity());
 
 		Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT);
 
@@ -639,7 +639,7 @@ public:
 		mout.info("delete existing no-save structures ");
 		hi5::Hi5Base::deleteExcluded(dst);
 
-		mout.debug("selector: ", selector, ", matcher=", selector.pathMatcher);
+		mout.debug("selector: ", selector, ", matcher=", selector.getPathMatcher());
 
 		ODIMPathList paths;
 		selector.getPaths(dst, paths);
@@ -1214,12 +1214,12 @@ public:
 
 		std::vector<std::string> result;
 		if (re.execute(value, result)){
-			selector.pathMatcher.set(value);
-			mout.debug("pathMatcher: " , selector.pathMatcher );
+			selector.setPathMatcher(value);
+			mout.debug("pathMatcher: " , selector.getPathMatcher());
 		}
 		else {
-			selector.pathMatcher.set(result[1]);
-			mout.info("pathMatcher: " , selector.pathMatcher );
+			selector.setPathMatcher(result[1]);
+			mout.info("pathMatcher: " , selector.getPathMatcher());
 			mout.debug("selector: " , selector );
 			assignment = result[3];
 			mout.debug2("assignment:  " , assignment    );
@@ -1229,10 +1229,10 @@ public:
 		ODIMPathList paths;
 		selector.getPaths(src, paths);
 		if (paths.empty()){
-			mout.debug("no paths found, so trying creating one:" , selector.pathMatcher  );
-			mout.debug2("isLiteral:  " , selector.pathMatcher.isLiteral() );
+			mout.debug("no paths found, so trying creating one:" , selector.getPathMatcher());
+			mout.debug2("isLiteral:  " , selector.getPathMatcher().isLiteral() );
 			ODIMPath path;
-			selector.pathMatcher.extract(path);
+			selector.getPathMatcher().extractPath(path);
 			paths.push_back(path);
 		}
 
@@ -2163,7 +2163,7 @@ public:
 				// Select desired quantities. Note: on purpose, getResources().select not cleared by this operation
 				DataSelector selector;
 				selector.setParameters(ctx.select);
-				const drain::RegExp regExp(selector.quantity);
+				const drain::RegExp regExp(selector.getQuantity());
 				bool match = false;
 				for (QuantityMap::const_iterator it = m.begin(); it != m.end(); ++it){
 					if (regExp.test(it->first)){
@@ -2397,7 +2397,7 @@ class CmdInputFilter : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdInputFilter() : drain::SimpleCommand<std::string>(__FUNCTION__, "Partial file read", "ATTRIBUTES", "3",
+	CmdInputFilter() : drain::SimpleCommand<std::string>(__FUNCTION__, "Partial file read. You probably search for --inputSelect", "ATTRIBUTES", "3",
 			sprinter(drain::EnumDict<hi5::Reader::Mode>::dict, "|").str()) {
 	}
 
@@ -2410,6 +2410,25 @@ public:
 		ctx.inputFilter.set(value);
 	}
 };
+
+/*
+class CmdEcho : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdEcho() : drain::SimpleCommand<std::string>(__FUNCTION__, "Write to stdout", "string", "") {
+	}
+
+	void exec() const {
+
+		drain::Logger mout(ctx.log, __FILE__, getName());
+		// TODO: external Notication("echo", wau!)
+		mout.attention<LOG_WARNING>(value);
+	}
+
+}
+*/
+
 
 class CmdPause : public drain::SimpleCommand<std::string> {
 
@@ -2573,6 +2592,8 @@ HiddenModule::HiddenModule(){ //
 
 	// install<CmdTrigger>();
 	install<CmdPause>();
+
+	// install<CmdEcho>(); consider CmdRemark
 
 	install<CmdInputFilter>();
 

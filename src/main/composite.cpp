@@ -272,13 +272,13 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 			composite.dataSelector.updateBean(); // quantity
 
-			if (composite.dataSelector.count != 1){
-				mout.warn("composite.dataSelector.count ", composite.dataSelector.count, " > 1"); // , setting to 1.");
-				//composite.dataSelector.count = 1;
+			if (composite.dataSelector.getMaxCount() != 1){
+				mout.warn("composite.dataSelector.count ", composite.dataSelector.getMaxCount(), " > 1"); // , setting to 1.");
+				//composite.dataSelector.setMaxCount(1);
 			}
 		}
 
-		mout.info("composite.dataSelector: ", composite.dataSelector );
+		mout.debug("composite.dataSelector: ", composite.dataSelector );
 
 		ODIMPath dataPath;
 		composite.dataSelector.getPath(src, dataPath);
@@ -472,9 +472,9 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	// NOTE: DATASET path needed for quality selection (below)
 	ODIMPath dataPath;
 	//composite.dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
-	if (composite.dataSelector.count != 1){
-		mout.warn("composite.dataSelector.count ", composite.dataSelector.count, " > 1"); // , setting to 1.");
-		//composite.dataSelector.count = 1;
+	if (composite.dataSelector.getMaxCount() != 1){
+		mout.warn("composite.dataSelector.count=", composite.dataSelector.getMaxCount(), " > 1"); // , setting to 1.");
+		//composite.dataSelector.setMaxCount(1);
 	}
 
 	composite.dataSelector.getPath(src, dataPath);
@@ -490,10 +490,10 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	//const ODIMPath & p = dataPath;
 	mout.info("using: dataset path:  " , dataPath );
 
-	const DataSet<CartesianSrc> cartDataSetSrc(src(dataPath), composite.dataSelector.quantity);
+	const DataSet<CartesianSrc> cartDataSetSrc(src(dataPath), composite.dataSelector.getQuantity());
 
 	if (cartDataSetSrc.empty()){
-		mout.warn("Empty dataset(s), skipping. Selector.quantity (regexp): '" , composite.dataSelector.quantity , "'" );
+		mout.warn("Empty dataset(s), skipping. Selector.quantity (regexp): '" , composite.dataSelector.getQuantity() , "'" );
 		return;
 	}
 
@@ -623,22 +623,28 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	// ctx.cartesianHi5.clear();
 	// resources.setSource(ctx.cartesianHi5, *this);
 
-	//ODIMPath path("dataset1");
-	ODIMPath path;
+	// ODIMPath path("dataset1");
+	// ODIMPath path;
 
-	ODIMPathElem parent(ODIMPathElem::DATASET, 1);
-	if (ctx.appendResults.is(ODIMPathElem::DATASET))
+	ODIMPathElem parent(ODIMPathElem::DATASET); // IDX24 , 1);
+	if (ctx.appendResults.is(ODIMPathElem::DATASET)){
 		ODIMPathTools::getNextChild(ctx.cartesianHi5, parent);
+		//path << parent;
+	}
 	else if (ctx.appendResults.is(ODIMPathElem::DATA)){
-		ODIMPathTools::getLastChild(ctx.cartesianHi5, parent);
+		ODIMPathTools::getLastChild(ctx.cartesianHi5, parent, true);  // <- CREATE
+
+		/*
 		if (parent.index == 0){
 			parent.index = 1;
 		}
+		*/
 	}
 	else
 		ctx.cartesianHi5.clear(); // don't append, overwrite...
 
-	path << parent; // ?
+	// path << parent; // ?
+	ODIMPath path(parent); // IDX24
 	mout.debug("composite dst path: ", path );
 
 	Hi5Tree & dstGroup = ctx.cartesianHi5(path);

@@ -119,10 +119,10 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 	drain::Output ofstr(filename);
 
 	DataSelector selector;
-	selector.pathMatcher.set(ODIMPathElem::DATASET);
+	selector.setPathMatcher(ODIMPathElem::DATASET);
 	selector.setParameters(ctx.select);
 	//selector.convertRegExpToRanges();
-	selector.count = 1;
+	selector.setMaxCount(1);
 	//selector.data.second = 0;
 	mout.special("selector: " , selector );
 
@@ -144,7 +144,7 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 	if (ctx.currentHi5 == ctx.currentPolarHi5){
 
 		mout.debug("sampling polar data" );
-		const DataSet<PolarSrc> dataset(srcDataSet, drain::RegExp(selector.quantity));
+		const DataSet<PolarSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
 		mout.info("data: " , dataset );
 
 		sampleData<PolarDataPicker>(dataset, sampler, ctx.formatStr, ofstr);
@@ -153,7 +153,7 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 	else {
 
 		mout.debug("sampling Cartesian data: " );
-		const DataSet<CartesianSrc> dataset(srcDataSet, drain::RegExp(selector.quantity));
+		const DataSet<CartesianSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
 		mout.info("data: " , dataset );
 		/*
 			for (DataSet<CartesianSrc>::const_iterator it = dataset.begin(); it != dataset.end(); ++it){

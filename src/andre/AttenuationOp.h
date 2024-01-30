@@ -80,8 +80,8 @@ public:
 
 
 		UNIVERSAL = true;
-		dataSelector.quantity = "DBZH$";
-		dataSelector.count = 1;
+		dataSelector.setQuantityRegExp("^DBZH$");
+		dataSelector.setMaxCount(1);
 		REQUIRE_STANDARD_DATA = false;
 
 

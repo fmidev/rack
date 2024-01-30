@@ -68,9 +68,10 @@ PolarProductOp::PolarProductOp(const std::string & name, const std::string & des
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	//mout.debug(dataSelector);
-	//dataSelector.order.set(DataOrder::ELANGLE, DataOrder::MIN);
-	dataSelector.order.set(DataOrder::DATA, DataOrder::MIN);
-	dataSelector.selectPRF.set(DataSelector::Prf::SINGLE);
+	//dataSelector.order.set(DataOrder::DATA, DataOrder::MIN);
+	dataSelector.setOrder(DataOrder::DATA, DataOrder::MIN);
+	dataSelector.setPrf(DataSelector::Prf::SINGLE);
+	//dataSelector.prfSelector.set(DataSelector::Prf::SINGLE);
 	dataSelector.updateBean();
 	mout.debug2(dataSelector);
 

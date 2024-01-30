@@ -67,7 +67,7 @@ public:
 		// parameters.link("devAltitude", this->devAltitude = devAltitude, "metres");
 		parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "MAXIMUM|AVERAGE|WAVG:2:2|MAXW");
 
-		dataSelector.quantity = "^DBZH$";
+		dataSelector.setQuantities("^DBZH$");
 		odim.product = "MAX";
 		odim.quantity = "DBZH";
 

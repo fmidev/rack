@@ -54,7 +54,7 @@ public:
 	SunShineOp() : // const std::string & type="S", double gain=100.0, long int nbins=0, double rscale=0) :
 		PolarProductOp(__FUNCTION__, "Computes the sun position")
 	{
-		dataSelector.count = 1;  // or 0?  does not need input data arrays
+		dataSelector.setMaxCount(1);  // or 0?  does not need input data arrays
 
 		odim.product = "SUNSHINE";
 		odim.area.width = 500;
@@ -70,7 +70,7 @@ public:
 		parameters.link("quantity", odim.quantity="SUNSHINE");
 
 		odim.quantity = "SUNSHINE";
-		//dataSelector.quantity = "";
+		//dataSelector.setQuantity("");
 		// NOTE! A dataset for each elevation groups; should suffit for nbins and rscale.
 		// However, if a user wants to use quantity, /dataN/ should be reached.
 

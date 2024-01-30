@@ -72,8 +72,8 @@ public:
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
 
-		dataSelector.quantity = "";  // or FREQ?
-		dataSelector.count = 1;
+		dataSelector.setQuantities("");  // or FREQ?
+		dataSelector.setMaxCount(1);
 
 		parameters.link("decay", this->decay = decay, "per 1000m");
 		parameters.link("gamma", this->gamma = gamma, "brightness");

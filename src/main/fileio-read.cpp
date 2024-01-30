@@ -145,8 +145,10 @@ void CmdInputFile::exec() const {
 
 
 	if (!ctx.SCRIPT_DEFINED){
-		mout.deprecating<LOG_NOTICE>("clearing selector - in future, may be changed");
-		ctx.select.clear(); // NEW: "starts a product pipe". monitor effects of this
+		if (!ctx.select.empty()){
+			mout.deprecating<LOG_NOTICE>("clearing selector - in future, may be changed");
+			ctx.select.clear(); // NEW: "starts a product pipe". monitor effects of this
+		}
 	}
 
 	//mout.note("resources.getUpdatedStatusMap()" );
@@ -199,21 +201,16 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);  // NO QUALITY?
 		selector.setParameters(ctx.inputSelect);
-		mout.special<LOG_INFO>("Input selector: ", selector, ", matcher=", selector.pathMatcher);
+		mout.special<LOG_INFO>("Input selector: ", selector, ", matcher=", selector.getPathMatcher());
 
+		if (selector.getPathMatcher().empty()){
+			mout.hint<LOG_NOTICE>("input selector: pathMatcher empty, consider path=data at least?");
+		}
 
 		ODIMPathList paths;
 		selector.selectPaths(srcTmp, paths);
 
 		for (const ODIMPath & path: paths){
-			/*
-			mout.special("set included THROUGH path: ", path, ", leaf would suffit?");
-			ODIMPath p;
-			for (const ODIMPathElem & elem: path){
-				p << elem;
-				srcTmp(p).data.exclude = false;
-			}
-			*/
 			if (srcTmp.hasPath(path)){ // otherwise path query would create one...
 				mout.accept("including: ", path); // marking for save...
 				DataTools::markExcluded(srcTmp, path, false);
@@ -367,9 +364,9 @@ void CmdInputFile::appendCartesianH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const
 
 
 		ODIMPathElem parent(ODIMPathElem::DATASET);
-		ODIMPathTools::getLastChild(dstRoot, parent);
-		if (parent.getIndex()==0)
-			parent.index = 1; // NOT NEEDED!
+		ODIMPathTools::getLastChild(dstRoot, parent, true); // <- CREATE
+		// if (parent.getIndex()==0)
+		//	 parent.index = 1; // NOT NEEDED!
 
 		Hi5Tree & dst = dstRoot[parent];
 
@@ -410,20 +407,21 @@ void CmdInputFile::attachCartesianH5(Hi5Tree & src, Hi5Tree & dst) const {
 	//DataSelector::getLastChild(dst, p);
 
 	/// TODO: New-iter
-	for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
+	//for (Hi5Tree::iterator it = src.begin(); it != src.end(); ++it){
+	for (auto & entry: src){
 
-		ODIMPathElem p(it->first); // possibly: what, where, how
+		ODIMPathElem p(entry.first); // possibly: what, where, how
 		if (p.isIndexed()){
 			ODIMPathTools::getNextChild(dst, p);
 			mout.note(" appending ", p);
-			dst[p].swap(it->second);
+			dst[p].swap(entry.second);
 		}
 		else {
-			mout.note(" replacing " , it->first );
-			dst[it->first].swap(it->second);   // overwrite what, where,
+			mout.note("replacing ", entry.first);
+			dst[entry.first].swap(entry.second);   // overwrite what, where,
 		}
 
-		src[it->first].data.exclude = true;
+		src[entry.first].data.exclude = true;
 
 	}
 
@@ -485,8 +483,8 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 			Hi5Tree & dstDataSet = dstRoot[tit->second];
 
 			ODIMPathElemMap srcQuantityGroups, dstQuantityGroups;
-			DataSelector::getQuantityMap(srcDataSet, srcQuantityGroups);
-			DataSelector::getQuantityMap(dstDataSet, dstQuantityGroups);
+			QuantitySelector::getQuantityMap(srcDataSet, srcQuantityGroups);
+			QuantitySelector::getQuantityMap(dstDataSet, dstQuantityGroups);
 
 			for (const auto & quantityGroup: srcQuantityGroups){
 				// Hi5Tree & srcData = srcDataSet[quantityGroup.second];
@@ -918,16 +916,16 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 	/// Search last dataset
 	ODIMPathElem dataSetElem(ODIMPathElem::DATASET);
-	ODIMPathTools::getLastChild(ctx.polarInputHi5, dataSetElem);
-	if (dataSetElem.getIndex() == 0)
-		dataSetElem.index = 1;
+	ODIMPathTools::getLastChild(ctx.polarInputHi5, dataSetElem, true); // <- CREATE
+	// if (dataSetElem.getIndex() == 0)
+	//	dataSetElem.index = 1;
 
 	/// Search new data[n] in the dataset found
 	ODIMPathElem dataElem(ODIMPathElem::DATA);
 	// TODO: append cmd?
-	ODIMPathTools::getLastChild(ctx.polarInputHi5[dataSetElem], dataElem);
-	if (dataElem.getIndex() == 0)
-		dataElem.index = 1;
+	ODIMPathTools::getLastChild(ctx.polarInputHi5[dataSetElem], dataElem, true); // <- CREATE
+	// if (dataElem.getIndex() == 0)
+	//	dataElem.index = 1;
 
 	mout.debug("Found path " , dataSetElem , '>' , dataElem );
 	if (!ctx.polarInputHi5[dataSetElem][dataElem][ODIMPathElem::ARRAY].data.image.isEmpty()){

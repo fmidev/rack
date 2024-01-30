@@ -66,8 +66,8 @@ public:
 		parameters.link("probability", this->probability = 0.8, "'resulting' probability");
 		//parameters.link("qualityThreshold", this->qualityThreshold = 0.95, "minimum quality");
 		UNIVERSAL = true;
-		dataSelector.quantity = "DBZH$";
-		dataSelector.count = 1;
+		dataSelector.setQuantities("DBZH$");
+		dataSelector.setMaxCount(1);
 		REQUIRE_STANDARD_DATA = false;
 	};
 
@@ -108,8 +108,8 @@ public:
 		parameters.link("dbz", this->dbz = dbz, "dBZ");
 		parameters.link("dbzSpan", this->dbzSpan = dbzSpan, "dBZ");
 
-		dataSelector.quantity = "DBZH$";
-		dataSelector.count = 1;
+		dataSelector.setQuantityRegExp("DBZH$");
+		dataSelector.setMaxCount(1);
 		REQUIRE_STANDARD_DATA = false;
 	};
 

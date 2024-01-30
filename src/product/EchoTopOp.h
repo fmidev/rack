@@ -58,7 +58,7 @@ public:
 		odim.quantity = "HGHT";
 		odim.type = "C";
 
-		dataSelector.quantity = "^DBZH$";
+		dataSelector.setQuantities("^DBZH$");
 
 	};
 

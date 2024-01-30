@@ -62,8 +62,8 @@ public:
 		DetectorOp(__FUNCTION__, "Detects suspicious variance in Doppler speed (VRAD).", "nonmet.biol.dopplernoise"){
 
 		// dataSelector.path = "da ta[0-9]+/?$";
-		dataSelector.quantity = "^(VRAD|VRADH)$";
-		dataSelector.count = 1;
+		dataSelector.setQuantityRegExp("^(VRAD|VRADH)$");
+		dataSelector.setMaxCount(1);
 
 		parameters.link("speedDevThreshold", this->speedDevThreshold = speedDevThreshold, "Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)");
 		parameters.link("windowWidth", this->conf.widthM = windowWidthM, "window width, beam-directional (m)"); //, "[m]");

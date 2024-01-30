@@ -73,7 +73,7 @@ public:
 		parameters.link("maxAltitude", this->maxAltitude = maxAltitude, "m");
 		parameters.link("reflDev", this->reflDev = reflDev, "dBZ");
 		parameters.link("devAltitude", this->devAltitude = devAltitude, "m");
-		dataSelector.quantity = "DBZH$";
+		dataSelector.setQuantities("DBZH");
 		REQUIRE_STANDARD_DATA = false;
 	};
 

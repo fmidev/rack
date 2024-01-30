@@ -89,6 +89,20 @@ public:
 	static
 	const drain::FileInfo fileinfo;
 
+	inline
+	NodeSVG & operator=(const NodeSVG & n){
+		drain::SmartMapTools::setValues<map_t>((map_t &)*this, n);
+		return *this;
+	}
+
+	inline
+	NodeSVG & operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
+		set(l);
+		return *this;
+	}
+
+
+
 protected:
 
 	// svg:
@@ -105,6 +119,13 @@ protected:
 };
 
 
+/*
+template <>
+TreeSVG & TreeSVG::operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > & l){
+	// data.set(l);
+	return *this;
+}
+*/
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeSVG & t){

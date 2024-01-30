@@ -65,8 +65,13 @@ using namespace drain;
 Composite::Composite() :  decay(1.0), cropping(false)
 {
 
-	dataSelector.quantity = ""; // "DBZH";
-	//dataSelector.path = ".*/(data|quality)[0-9]+/?$";  // groups  .. but quality??
+
+	//dataSelector.setPathMatcher(ODIMPathElem::DATA); // 2024/01
+	//dataSelector.setQuantities(""); // "DBZH";
+	dataSelector.setQuantityRegExp(""); // "DBZH";
+	//dataSelector.setParameter("path", "data:");
+	dataSelector.setMaxCount(1);
+	// dataSelector.order = "ELANGLE:MIN";  // Should be separately for cart and polar data?
 
 	//odim.link("type", odim.type = drain::Type::getTypeChar(typeid(void)));
 	//odim.link("type", odim.type = "C");
@@ -79,8 +84,6 @@ Composite::Composite() :  decay(1.0), cropping(false)
 
 	odim.scaling.scale = 0.0;
 
-	dataSelector.count = 1;
-	// dataSelector.order = "ELANGLE:MIN";  // Should be separately for cart and polar data?
 	//static DataCoder converter;
 	//setConverter(converter);
 
@@ -613,7 +616,9 @@ void Composite::updateInputSelector(const std::string & select){
 
 	if (!select.empty()){
 		// mout.warn("Setting selector=" , resources.select );
-		const std::string quantityOrig(dataSelector.quantity);
+		// const std::string quantityOrig(dataSelector.quantity);
+		mout.experimental("Changed code: quantityOrig => odim.quantity=", odim.quantity);
+		const std::string quantityOrig(odim.quantity);
 
 		//composite.dataSelector.setParameters(resources.baseCtx().select);
 		dataSelector.setParameters(select);  // consume (clear)?
@@ -624,7 +629,9 @@ void Composite::updateInputSelector(const std::string & select){
 
 		// TODO: selecor.quantity is allowed to be regExp?
 		// TODO: what if one wants to add TH or DBZHC in a DBZH composite?
-		if (!quantityOrig.empty() && (quantityOrig != dataSelector.quantity)){
+		//if (!quantityOrig.empty() && (quantityOrig != dataSelector.quantity)){
+		if (!quantityOrig.empty() && !dataSelector.getQuantitySelector().testQuantity(quantityOrig)){
+			mout.warn("quantityOrig=", quantityOrig, " !~ ", dataSelector.getQuantity());
 			mout.warn("quantity selector changed, resetting accumulation array" );
 			accArray.clear();
 			odim.quantity.clear();
@@ -632,9 +639,10 @@ void Composite::updateInputSelector(const std::string & select){
 		}
 	}
 	else {
-		if (dataSelector.quantity.empty()){
+		if (!dataSelector.quantityIsSet()){
 			mout.info("Setting selector quantity=" , odim.quantity );
-			dataSelector.quantity = odim.quantity; // consider "^"+...+"$"
+			dataSelector.setQuantities(odim.quantity);
+			//dataSelector.quantity = odim.quantity; // consider "^"+...+"$"
 			//
 		}
 	}

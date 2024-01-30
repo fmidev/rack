@@ -70,7 +70,7 @@ CappiOp::CappiOp(double altitude, bool aboveSeaLevel, double beamWidth, double w
 	parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "string");
 	//parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
 
-	dataSelector.setQuantity("^DBZH$");
+	dataSelector.setQuantities("^DBZH$");
 	dataSelector.setPrf(DataSelector::Prf::SINGLE);
 	//dataSelector.updateBean();
 

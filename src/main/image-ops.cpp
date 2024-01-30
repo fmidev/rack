@@ -155,20 +155,26 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 	drain::Logger mout(ctx.log, __FUNCTION__, bean.getName()+"[ImageOpExec]"); // = resources.mout;
 
 	DataSelector datasetSelector(ODIMPathElem::DATASET); // -> ends with DATASET
-	// datasetSelector.count = 1; OLD
-	datasetSelector.count = 0; // NEW 2023
+	// datasetSelector.setMaxCount(1); OLD
+	datasetSelector.setMaxCount(0); //??  NEW 2023
 	datasetSelector.consumeParameters(ctx.select);
 	mout.debug("selector init: ", datasetSelector);
 
-
+	// TODO: use path::trimHead()
+	if (datasetSelector.getPathMatcher().front().isRoot()){
+		datasetSelector.trimPathMatcher();
+		mout.note("stripped pathMatcher root: ", datasetSelector.getPathMatcher());
+	}
+	/*
 	while ((!datasetSelector.pathMatcher.empty()) && datasetSelector.pathMatcher.front().isRoot()){
 		datasetSelector.pathMatcher.pop_front();
-		mout.note("stripped pathMatcher root: /", datasetSelector.pathMatcher, " -> ", datasetSelector.pathMatcher);
+		mout.note("stripped pathMatcher root: /", datasetSelector.getPathMatcher(), " -> ", datasetSelector.getPathMatcher());
 	}
+	*/
 
-	const bool USE_DEFAULT_DATASET_COUNT = (datasetSelector.count == 0);
+	const bool USE_DEFAULT_DATASET_COUNT = (datasetSelector.getMaxCount() == 0);
 	if (USE_DEFAULT_DATASET_COUNT){
-		datasetSelector.count = 100; // Arbitrary? Consider --iResize 500,360 for a full volume, easily over 100 data arrays.
+		datasetSelector.setMaxCount(100); // Arbitrary? Consider --iResize 500,360 for a full volume, easily over 100 data arrays.
 		// mout.attention("setting  datasetSelector.count = ", datasetSelector.count);
 	}
 
@@ -184,8 +190,8 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		return;
 	}
 
-	if ((USE_DEFAULT_DATASET_COUNT) && (paths.size() == datasetSelector.count)){
-		mout.attention("maximum number (", datasetSelector.count, ") of paths retrieved using default limit, consider explicit --select count=<n>,..." );
+	if ((USE_DEFAULT_DATASET_COUNT) && (paths.size() == datasetSelector.getMaxCount())){
+		mout.attention("maximum number (", datasetSelector.getMaxCount(), ") of paths retrieved using default limit, consider explicit --select count=<n>,..." );
 	}
 
 	// DST properties
@@ -276,7 +282,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		const ODIMPathElem & datasetElem = path.front(); // *path.begin();
 
 		/// This makes using QIND difficult...
-		mout.info("using: ", datasetElem, " / [", datasetSelector.quantity, "]");
+		mout.info("using: ", datasetElem, " / [", datasetSelector.getQuantity(), "]");
 
 		/*
 		mout.fail("1st src coords: ", dst["dataset1"]["data1"]["data"].data.image.getCoordinatePolicy());
@@ -298,7 +304,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		mout.fail("2bst src coords: ", dst["dataset1"]["data1"]["data"].data.image.getCoordinatePolicy());
 		*/
 
-		DataSet<dst_t> dstDataSet(dst[datasetElem], datasetSelector.quantity);
+		DataSet<dst_t> dstDataSet(dst[datasetElem], datasetSelector.getQuantity());
 
 		// mout.fail("3rd src coords: ", dst["dataset1"]["data1"]["data"].data.image.getCoordinatePolicy());
 
@@ -321,7 +327,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		mout.debug2("path: ", path, " contains ", QUANTITY_COUNT, " quantities, and... ", (DATASET_QUALITY ? " has":" has no"), " dataset quality (ok)");
 
 		if (QUANTITY_COUNT == 0){
-			mout.warn("no quantities with quantity regExp ", datasetSelector.quantity, " to process, skipping");
+			mout.warn("no quantities with quantity regExp ", datasetSelector.getQuantity(), " to process, skipping");
 			if (DATASET_QUALITY)
 				mout.warn("yet dataset-level quality exists... '", dstDataSet.getQuality(), "'");
 			return;
@@ -713,7 +719,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		// TODO: warn if a single data array resized - Rack supports no variable-sized data arrays (in ODIM metadata)
 
 		if (object.toStr() == "COMP"){
-			updateGeometryODIM<CartesianODIM>(dst(path), datasetSelector.quantity, geometry);
+			updateGeometryODIM<CartesianODIM>(dst(path), datasetSelector.getQuantity(), geometry); // WRONG - quantity regexp?
 			// Non-standard (ODYSSEY) (ODIM suggests dataset1-level xsize, ysize)
 			drain::VariableMap & where = dst[ODIMPathElem::WHAT].data.attributes;
 			geometryOrig.setArea(where["xsize"], where["ysize"]);
@@ -729,7 +735,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			drain::VariableMap & where = dst(path)[ODIMPathElem::WHERE].data.attributes;
 			geometryOrig.setArea(where["nbins"], where["nrays"]);
 			mout.debug2("where0: ", where);
-			updateGeometryODIM<PolarODIM>(dst(path), datasetSelector.quantity, geometry);
+			updateGeometryODIM<PolarODIM>(dst(path), datasetSelector.getQuantity(), geometry);
 			mout.warn("geom: ", geometry);
 			where["nbins"] = geometry.getWidth();
 			where["nrays"] = geometry.getHeight();

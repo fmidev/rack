@@ -192,14 +192,14 @@ public:
 	 */
 	template <class T>
 	//std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> &m, bool keepUnknowns=false) const {
-	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> &m, char replace = 0) const {
+	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = 0) const {
 
 		for (const Stringlet & stringlet: *this){
 			//const Stringlet & stringlet = *it;
 			if (stringlet.isVariable()){
 				// Find the entry in the map
-				typename std::map<std::string, T >::const_iterator mit = m.find(stringlet);
-				if (mit != m.end()){
+				typename std::map<std::string, T >::const_iterator mit = variables.find(stringlet);
+				if (mit != variables.end()){
 					iosFormat.copyTo(ostr);
 					//ostr.width(width);
 					//std::cerr << __FILE__ << " assign -> " << stringlet << std::endl;

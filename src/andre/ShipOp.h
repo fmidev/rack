@@ -64,7 +64,7 @@ public:
 		parameters.link("reflDev", this->reflDev = reflDev, "dBZ");
 		parameters.link("windowWidth", this->windowWidth = windowWidth, "m");
 		parameters.link("windowHeight", this->windowHeight = windowHeight, "deg");
-		dataSelector.quantity = "^DBZH$";
+		dataSelector.setQuantities("^DBZH$");
 		REQUIRE_STANDARD_DATA = false;
 		// REQUIRE_STANDARD_DATA = true;  // HighPassOp
 	};

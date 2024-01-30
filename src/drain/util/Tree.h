@@ -324,7 +324,7 @@ public:
 
 	template <class S>
 	inline
-	tree_t & operator=(std::initializer_list<S> l){
+	tree_t & operator=(const std::initializer_list<S> &l){
 		data = l;
 		if (EXCLUSIVE){
 			clearChildren();

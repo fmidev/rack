@@ -193,18 +193,20 @@ ODIMPath RackContext::findImage(){ //RackContext & ctx){
 
 	drain::Logger mout(this->log, __FILE__, __FUNCTION__);
 
-	DataSelector imageSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY); // TODO: modify PathMatcher output to "data|quality" instead of "other".
+	//DataSelector imageSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY); // TODO: modify PathMatcher output to "data|quality" instead of "other".
+	DataSelector imageSelector;
+	mout.accept("Image selector1: ", imageSelector);
 	// mout.accept("Image selector", imageSelector);
 
 	imageSelector.consumeParameters(this->select);
-	if (imageSelector.count > 1){
-		mout.debug("Adjusting image selector.count=", imageSelector.count, " to 1");
-		imageSelector.count = 1;
+	if (imageSelector.getMaxCount() > 1){
+		mout.debug("Adjusting image selector.count=", imageSelector.getMaxCount(), " to 1");
+		imageSelector.setMaxCount(1);
 	}
 	// mout.special("Image selector", imageSelector);
 
 	imageSelector.ensureDataGroup();
-	// mout.accept("Image selector", imageSelector);
+	mout.accept("Image selector2: ", imageSelector);
 	return findImage(imageSelector); //ctx,
 }
 
@@ -216,6 +218,9 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 	drain::Logger mout(this->log, __FILE__, __FUNCTION__);
 
 	// NOTE  ODIMPathElem::ARRAY ie. "/data" cannot be searched, so it is added under DATA or QUALITY path.
+
+	mout.experimental("imageSelector: ", imageSelector);
+
 
 	Hi5Tree & src = this->getHi5(RackContext::CURRENT|RackContext::PRIVATE, RackContext::CURRENT|RackContext::SHARED);
 

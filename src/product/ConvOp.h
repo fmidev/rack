@@ -125,11 +125,11 @@ public:
 		allowedEncoding.link("nbins", odim.area.width = 0l);
 		allowedEncoding.link("rscale", odim.rscale = 0.0);
 
-		// Larissa
+
 		allowedEncoding.link("undetect", odim.undetect = 0.0);
 		allowedEncoding.link("nodata",   odim.nodata = 0.0);
 
-		dataSelector.quantity = "^DBZH$";
+		dataSelector.setQuantities("^DBZH$");
 
 		odim.product = "CONVECTION";
 		odim.quantity = "PROB";

@@ -89,7 +89,7 @@ protected:
 	/// Default constructor
 	inline
 	ProductBase(const std::string &name, const std::string & description) : drain::BeanLike(name, description){
-		dataSelector.pathMatcher.set(ODIMPathElem::DATASET);
+		dataSelector.setPathMatcher(ODIMPathElem::DATASET);
 		dataSelector.updateBean();
 	}
 

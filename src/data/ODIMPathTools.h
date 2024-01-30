@@ -65,14 +65,14 @@ public:
 
 	/// Searches the children of child.getType(), or g if given, and stores the one with largest index.
 	static
-	bool getLastChild(const Hi5Tree & tree, ODIMPathElem & child); //, (ODIMPathElem::group_t g =  ODIMPathElem::NONE);
+	bool getLastChild(const Hi5Tree & tree, ODIMPathElem & child, bool create = false); //, (ODIMPathElem::group_t g =  ODIMPathElem::NONE);
 
 	/// Searches children of given type, returns a non-existing child with index greater than child.index.
 	/**
 	 *   Unused indices may be returned.
 	 */
 	static
-	bool getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMPathElem::index_t iMax=0xff);
+	bool getNewChild(const Hi5Tree & tree, ODIMPathElem & child, ODIMPathElem::index_t iMax=ODIMPathElem::INDEX_MAX);
 
 	/// Derive a child with index one greater than the largest index encountered.
 	/**

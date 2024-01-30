@@ -181,6 +181,15 @@ public:
 		}
 	}
 
+
+	template <class M, bool STRICT=true>
+	static
+	void setValues(M & dst, const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
+		for (const auto & entry: l){
+			drain::SmartMapTools::setValue<M,Variable,STRICT>(dst, entry.first, entry.second);
+		}
+	}
+
 	/// Assign values from list, accepting strict "<key>=<value>" format, no positional arguments.
 	/**
 	 *  \tparam M - map type

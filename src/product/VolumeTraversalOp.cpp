@@ -80,7 +80,7 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	if (dataPaths.size() == 0)
 		mout.note("no dataPaths matching selector: "  , this->dataSelector );
 
-	drain::RegExp quantityRegExp(this->dataSelector.quantity); // DataSet objects (further below)
+	drain::RegExp quantityRegExp(this->dataSelector.getQuantity()); // DataSet objects (further below)
 
 
 	//std::stringstream key;
@@ -100,6 +100,7 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		// User may have modified dataselector so that odd paths appear
 
 		if (!path.front().is(ODIMPathElem::DATASET)){
+			mout.warn("Stripping trailing non-DATASET path elem (", path,"), obtained with selector: ", this->dataSelector);
 			path.pop_front();
 			if (path.empty()){
 				mout.warn("odd 2nd path elem (...), with selector: ", this->dataSelector);

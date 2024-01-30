@@ -49,7 +49,7 @@ std::string NodeSVG::svg("http://www.w3.org/2000/svg");
 
 // NodeSVG::NodeSVG(){	setType(UNDEFINED);}
 
-NodeSVG::NodeSVG(const NodeSVG & node) : x(0), y(0), width(0), height(0) {
+NodeSVG::NodeSVG(const NodeSVG & node) : x(0), y(0), width(0), height(0), radius(0) {
 	copyStruct(node, node, *this, RESERVE);
 }
 
@@ -102,7 +102,8 @@ void NodeSVG::setType(type t) {
 		link("y", y = 0);
 		link("width", width = 0);
 		link("height", height = 0);
-		link("xlink:href", text_anchor);
+		//link("xlink:href", text_anchor);
+		link("href", text_anchor);
 		break;
 	case CTEXT:
 		tag = "";

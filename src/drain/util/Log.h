@@ -475,6 +475,16 @@ public:
 		return *this;
 	};
 
+	/// A weak warning about something going possibly wrong
+	template<int L=LOG_NOTICE,typename ... TT>
+	inline
+	Logger & suspicious(const TT &... args){
+		static const Notification notif(__FUNCTION__, TextStyle::YELLOW, TextStyle::DIM);
+		initMessage<L>(notif);
+		flush(args...);
+		return *this;
+	};
+
 
 	///  Feature to be done. Special type of Logger::note(). \see Logger::obsolete().
 	template<int L=LOG_NOTICE,typename ... TT>
@@ -531,7 +541,9 @@ public:
 	template<typename ... TT>
 	inline
 	Logger & info(const TT &... args){
-		initMessage<LOG_INFO>();
+		static const Notification notif(__FUNCTION__, TextStyle::WHITE); //32);
+		initMessage<LOG_INFO>(notif);
+		// initMessage<LOG_INFO>();
 		flush(args...);
 		return *this;
 	};
@@ -545,6 +557,7 @@ public:
 		return *this;
 	};
 
+	/// Some input has been accepted, for example by a syntax.
 	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & accept(const TT &... args){
@@ -555,6 +568,24 @@ public:
 		return *this;
 	};
 
+	/// Report a conditional accept/reject, to be completed next.
+	/**
+	 *   This message can be sent for example before continuing a further, confirmative check.
+	 */
+	template<int L=LOG_INFO,typename ... TT>
+	inline
+	Logger & pending(const TT &... args){
+		//static const Notification notif(__FUNCTION__, 42);
+		static const Notification notif(__FUNCTION__, TextStyle::YELLOW, TextStyle::REVERSE, TextStyle::DIM);
+		initMessage<L>(notif);
+		flush(args...);
+		return *this;
+	};
+
+	/// Some input has been rejected, for example by a syntax.
+	/**
+	 *   This message does not indicate error.
+	 */
 	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & reject(const TT &... args){
@@ -566,6 +597,7 @@ public:
 	};
 
 
+	/// Some processing step has completed with desired result.
 	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & success(const TT &... args){

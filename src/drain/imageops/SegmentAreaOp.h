@@ -187,8 +187,8 @@ void SegmentAreaOp<S,D,T>::traverseChannel(const Channel & src, Channel & dst) c
 
 	const UnaryFunctor & ftor = getFunctor(scale); // scale problematic, but needed for const Ftor
 
-	mout.warn("Scale: " , scale );
-	mout.warn("Final functor: " , ftor.getName() , '(' , ftor.getParameters() , ')' );
+	mout.debug("Scale: " , scale );
+	mout.debug("Final functor: " , ftor.getName() , '(' , ftor.getParameters() , ')' );
 	/*
 	mout.warn("Functor: 1 =>" , ftor(1.0) );
 	mout.warn("Functor: 100 =>" , ftor(100.0) );

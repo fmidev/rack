@@ -291,13 +291,13 @@ public:
 		// acc.dataSelector.path = ""; // remove after deprecated
 		mout.debug("ctx.select for acc: ", ctx.select);
 
-		if (acc.dataSelector.quantity.empty()){
-			acc.dataSelector.setQuantity("^(DBZH|RATE)$");
+		if (!acc.dataSelector.quantityIsSet()){
+			acc.dataSelector.setQuantities("^(DBZH|RATE)$");
 		}
 
 		/// OR: resources.baseCtx().select
 		acc.dataSelector.consumeParameters(ctx.select);
-		acc.dataSelector.count = 1;
+		acc.dataSelector.setMaxCount(1);
 
 		mout.debug(acc );
 		mout.debug(acc.dataSelector);
@@ -310,7 +310,7 @@ public:
 		//mout.note("selector: " , selector );
 
 		ODIMPath path;
-		//acc.dataSelector.pathMatcher.set(ODIMPathElem::DATASET, ODIMPathElem::DATA); // TODO: could be QUALITY ?
+		//acc.dataSelector.setPathMatcher(ODIMPathElem::DATASET, ODIMPathElem::DATA); // TODO: could be QUALITY ?
 
 		acc.dataSelector.getPath(src, path);  //, ODIMPathElem::DATASET); //, true);
 

@@ -48,15 +48,15 @@ BeamAltitudeOp::BeamAltitudeOp() : // const std::string & type="S", double gain=
 
 	odim.product  = "ALTITUDE";
 	odim.quantity = "HGHT";
+	odim.area.height = 1;
 
-	dataSelector.quantity = "";
-	dataSelector.count = 1;
+	dataSelector.setQuantities("");
+	dataSelector.setMaxCount(1);
 
 	this->allowedEncoding.link("type",   odim.type = "C");
 	this->allowedEncoding.link("gain",   odim.scaling.scale = 0.1);
 	this->allowedEncoding.link("offset", odim.scaling.offset = 0.0);
 
-	odim.area.height = 1;
 
 	// allowedEncoding.link("type", odim.type, "S");
 	// allowedEncoding.link("gain", odim.scaling.scale, 0.001);

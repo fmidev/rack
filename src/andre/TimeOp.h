@@ -60,7 +60,7 @@ public:
 		UNIVERSAL = true;
 		REQUIRE_STANDARD_DATA = false;
 
-		dataSelector.quantity = "^[A-Z]+$";  // Any quantity is ok...
+		dataSelector.setQuantities("^[A-Z_]+$");  // Any quantity is ok...
 
 	}
 

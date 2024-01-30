@@ -92,11 +92,11 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 	//ctx.select.clear();
 
 	mout.debug2(selector );
-	const drain::RegExp quantityRegExp(selector.quantity);
+	const drain::RegExp quantityRegExp(selector.getQuantity());
 	const bool USE_COUNT = quantityRegExp.test("COUNT");
 	// mout.debug3("use count" , static_cast<int>(USE_COUNT) );
 
-	const DataSet<PolarSrc> product(src["dataset1"], drain::RegExp(selector.quantity));
+	const DataSet<PolarSrc> product(src["dataset1"], drain::RegExp(selector.getQuantity()));
 	//const DataSet<> product((*ctx.currentHi5), selector);
 
 	std::string mainQuantity; // = product.getFirstData().odim.quantity;

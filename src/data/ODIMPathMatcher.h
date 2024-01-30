@@ -34,6 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "drain/util/Dictionary.h"
 
+#include "drain/util/Range.h"
+
 #include "ODIMPath.h"
 
 
@@ -48,18 +50,8 @@ class ODIMPathElemMatcher : public ODIMPathElem {
 
 public:
 
-	/*
-	typedef ODIMPathElem::index_t index_t;
-	typedef ODIMPathElem::group_t group_t;
-
-	group_t group;
-	// Running index of the element. Applied also as a lower limit in path matching.
-	index_t index;
-	*/
-
-
 	inline
-	ODIMPathElemMatcher(ODIMPathElem::group_t groups = ROOT, index_t index = 0, index_t indexMax = 0xffff) :
+	ODIMPathElemMatcher(ODIMPathElem::group_t groups = ROOT, index_t index = 0, index_t indexMax = INDEX_MAX) :
 		// ODIMPathElem(group, index),
 		// index(index),
 		// indexMax(indexMax),
@@ -89,7 +81,7 @@ public:
 		flags(this->group, ODIMPathElem::getDictionary(), '|') {
 		this->group  = e.group; // needed?
 		this->index = e.index;
-		this->indexMax = 0xffff; // ??
+		this->indexMax = INDEX_MAX; // ??
 	}
 
 	inline
@@ -97,22 +89,23 @@ public:
 		//  index(0),
 		// indexMax(0xffff),
 		flags(this->group, ODIMPathElem::getDictionary(), '|') {
+		// TODO: virtual reset(){}
 		group = 0;
 		index = 0;
-		this->indexMax = 0xffff;
+		this->indexMax = INDEX_MAX;
 		set(s);
 	}
 
+	virtual
+	~ODIMPathElemMatcher(){};
+
 	//  ambiguous! index 5 could mean range 5:5 or 0:0xffff ?
-	/*
-	inline
-	ODIMPathElemMatcher & operator=(const ODIMPathElemMatcher & elem){
-		index = 0;
-		indexMax = 0xffff;
-		group = elem.getType();
-		return *this;
-	}
-	*/
+
+
+	virtual
+	//bool
+	void set(const std::string &s);
+
 
 	inline
 	bool isSingle() const {
@@ -122,7 +115,7 @@ public:
 	inline
 	ODIMPathElemMatcher & operator=(ODIMPathElem::group_t g){
 		index = 0;
-		indexMax = 0xffff;
+		indexMax = INDEX_MAX;
 		group = g;
 		return *this;
 	}
@@ -130,7 +123,7 @@ public:
 	inline
 	ODIMPathElemMatcher & operator=(const std::string &s){
 		index = 0;
-		indexMax = 0xffff;
+		indexMax = INDEX_MAX;
 		set(s);
 		return *this;
 	}
@@ -147,6 +140,9 @@ public:
 	virtual
 	std::ostream & toStream(std::ostream & sstr) const;
 
+	// FUTURE extension:
+	typedef drain::Range<index_t> idx_range_t;
+
 
 protected:
 
@@ -160,6 +156,22 @@ protected:
 
 
 };
+
+
+// Note: Elem, not MatcherElem
+template <>
+void ODIMPathElem::extractIndex(const std::string &s, ODIMPathElemMatcher::idx_range_t & idx);
+
+inline
+std::ostream & operator<<(std::ostream & ostr, const ODIMPathElemMatcher & p) {
+	p.toStream(ostr);
+	return ostr;
+}
+
+//template <>
+//char drain::TextReader::scanSegmentToValue(std::istream & istr, const std::string & endChars, ODIMPathElemMatcher::idx_range_t & dst);
+
+
 
 /// Structure for testing if a path matches a given sequence of path elements.
 /**
@@ -201,6 +213,7 @@ public:
 		// assign(path);
 	}
 
+
 	/// Resolves "where|where"
 	//  void parse(const std::string & path);
 
@@ -212,7 +225,7 @@ public:
 	bool isLiteral() const;
 
 	/// Convert to a single path, assuming uniqueness. Future option: extract all the enumerated paths.
-	void extract(ODIMPath & path) const;
+	void extractPath(ODIMPath & path) const;
 
 	/// Match the leading part of \c path , if \c matcher starts with root. Else, match the trailing part.
 	bool match(const rack::ODIMPath & path) const;
@@ -227,6 +240,7 @@ public:
 	bool matchElem(const rack::ODIMPathElem & elem, bool defaultValue = true) const;
 
 };
+
 
 
 }  // namespace rack
