@@ -43,7 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-
+/*
 void Notification::set(const std::string & key, int vt100color){
 	this->key = key;
 	if (vt100color > 0){
@@ -54,7 +54,7 @@ void Notification::set(const std::string & key, int vt100color){
 	else
 		this->vt100color = "\033[0m"; // VT100_RESET
 }
-
+*/
 
 Log & getLog(){
 
@@ -86,7 +86,17 @@ Log & getImgLog(){
 #define	LOG_INFO	6	// informational //                 //  Read/Write File, start/end of operator
 #define	LOG_DEBUG	7	// debug-level messages             //  Store variable
 */
-
+const Log::status_dict_t Log::statusDict = {
+		{LOG_EMERG, "EMERGENGY"},
+	//	{LOG_ALERT,   "ALERT"},
+	//	{2, "CRITICAL"},
+		{LOG_ERR,     "ERROR"},
+		{LOG_WARNING, "WARNING"},
+		{LOG_NOTICE,  "NOTE"},
+		{LOG_INFO,    "INFO"},
+		{LOG_DEBUG,   "DEBUG"}
+};
+/*
 const Log::notif_dict_t & Log::getDict(){
 	static Log::notif_dict_t dict;
 	if (dict.empty()){
@@ -105,6 +115,7 @@ const Log::notif_dict_t & Log::getDict(){
 	}
 	return dict;
 }
+*/
 
 /*
 void Notification::set(const std::string & key, const std::string & vt100color){
@@ -130,6 +141,16 @@ void Log::setVerbosity(const std::string & level){
 		return;
 	}
 
+	const drain::Log::status_dict_t & dict = statusDict;
+	for (const auto & entry: statusDict){
+		if (level == entry.second){
+			setVerbosity(entry.first);
+			return;
+		}
+
+	}
+
+	/*
 	const drain::Log::notif_dict_t & dict = getDict();
 	for (size_t i=0; i<dict.size(); ++i){
 		const drain::Notification & notif = dict[i];
@@ -140,16 +161,21 @@ void Log::setVerbosity(const std::string & level){
 			return;
 		}
 	}
+	*/
 	//std::cout << "failed:" << level << '\n';
 
 	throw std::runtime_error(level + " - no such error level"); // + drain::sprinter(getDict()));
 }
 
 void Log::flush(level_t level, const std::string & prefix, const std::stringstream & sstr){
+	static const Notification notif("UNDEFINED", TextStyle::RED, TextStyle::BOLD);
 
 	if (level > verbosityLevel)
 		return; // !
 
+	flush(level, notif, prefix, sstr);
+
+	/*
 	static
 	const notif_dict_t & dict = getDict();
 
@@ -161,7 +187,7 @@ void Log::flush(level_t level, const std::string & prefix, const std::stringstre
 		const static Notification unknown("???", 35);
 		flush(level, unknown, prefix, sstr);
 	}
-
+	*/
 
 }
 

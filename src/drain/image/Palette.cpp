@@ -635,9 +635,10 @@ void Palette::updateDictionary(){
 
 	this->dictionary.clear();
 
-	for (Palette::const_iterator it = begin(); it != end(); ++it){
-		mout.info("add " , it->first , ' ' , it->second.label );
-		this->dictionary.add(it->first, it->second.code);
+	//for (Palette::const_iterator it = begin(); it != end(); ++it){
+	for (const auto & entry: *this){
+		mout.info("add ", entry.first, ' ', entry.second.label);
+		this->dictionary.add(entry.first, entry.second.code);
 	}
 
 

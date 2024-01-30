@@ -45,11 +45,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <syslog.h>
 
-#include <vector>
-
-#include "TextStyle.h"
+//#include <vector>
+#include <map>
 
 #include "StringBuilder.h"
+#include "TextStyle.h"
 
 /*
 #define	LOG_EMERG	0	// system is unusable //
@@ -95,12 +95,14 @@ namespace drain {
 
 struct Notification {
 
+	/*
 	Notification(const std::string & key="", int vt100color=35){
 		set(key, vt100color);
 	};
+	*/
 
 	template <typename ... T>
-	Notification(const std::string & key="", const T &... args){
+	Notification(const std::string & key, const T &... args){
 
 		this->key = key;
 
@@ -112,7 +114,7 @@ struct Notification {
 	};
 
 
-	void set(const std::string & key, int vt100color);
+	//void set(const std::string & key, int vt100color);
 
 
 	std::string key;
@@ -150,7 +152,11 @@ public:
 	/// Log verbosity level type
 	typedef unsigned short level_t;
 
-	typedef std::vector<Notification> notif_dict_t;
+	//typedef std::vector<Notification> notif_dict_t;
+	typedef std::map<int,std::string> status_dict_t;
+
+	const
+	static status_dict_t statusDict;
 
 	// experimental
 	int id = 0;
@@ -251,8 +257,8 @@ public:
 
 	bool VT100;
 
-	static
-	const notif_dict_t & getDict();
+	// static
+	// const notif_dict_t & getDict();
 
 protected:
 
@@ -352,7 +358,8 @@ public:
 	template <int L, typename ... TT>
 	inline
 	Logger & start(const TT &... args){
-		initMessage<L>();
+		static const Notification notif(__FUNCTION__, TextStyle::DIM); //, TextStyle::BOLD
+		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -362,7 +369,8 @@ public:
 	template<typename ... TT>
 	inline
 	Logger & quit(const TT &... args){
-		initMessage<LOG_EMERG>();
+		static const Notification notif(__FUNCTION__, TextStyle::PURPLE, TextStyle::REVERSE, TextStyle::BOLD);
+		initMessage<LOG_EMERG>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -371,7 +379,8 @@ public:
 	template<typename ... TT>
 	inline
 	Logger & alert(const TT &... args){
-		initMessage<LOG_ALERT>();
+		static const Notification notif(__FUNCTION__, TextStyle::PURPLE, TextStyle::BOLD);
+		initMessage<LOG_ALERT>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -380,7 +389,8 @@ public:
 	template<typename ... TT>
 	inline
 	Logger & critical(const TT &... args){
-		initMessage<LOG_CRIT>();
+		static const Notification notif(__FUNCTION__, TextStyle::RED, TextStyle::REVERSE);
+		initMessage<LOG_CRIT>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -396,8 +406,9 @@ public:
 	template<typename ... TT>
 	inline
 	Logger & error(const TT &... args){
+		static const Notification notif(__FUNCTION__, TextStyle::RED, TextStyle::BOLD);
 		// error();
-		initMessage<LOG_ERR>();
+		initMessage<LOG_ERR>(notif);
 		flush(args...);
 		return *this;
 	};
@@ -912,6 +923,7 @@ protected:
 	}
 	//void initMessage(level_t level);
 
+	/*
 	template <level_t L>
 	Logger & initMessage(){
 
@@ -923,10 +935,13 @@ protected:
 		this->message.str("");
 		return *this;
 	}
+	*/
+
 
 	inline
 	Logger & initMessage(level_t level){
-		this->notif_ptr = & Log::getDict()[level];
+		static const Notification notif(__FUNCTION__); // TextStyle::DIM, TextStyle::ITALIC);
+		this->notif_ptr = & notif; // Log::getDict()[level];
 		this->level = level;
 		this->message.str("");
 		return *this;
