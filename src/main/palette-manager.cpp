@@ -71,7 +71,7 @@ namespace rack {
 			;
 
 			m["DBZ"] =
-			#include "palette/palette-DBZH.inc"
+			#include "palette/palette-DBZ.inc"
 			;
 			m.addAlias("DBZ", "DBZH");
 			m.addAlias("DBZ", "DBZV");

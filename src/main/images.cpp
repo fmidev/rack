@@ -885,11 +885,18 @@ public:
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		if (key == "list"){
-			for (const auto & entry: drain::image::PaletteOp::getPaletteMap()){
-				mout.note(entry.first, " <=> ", entry.second.title);
+			std::cout << "Entries:\n";
+			const drain::image::PaletteMap & m = drain::image::PaletteOp::getPaletteMap();
+			for (const auto & entry: m){
+				//mout.note(entry.first, " <=> ", entry.second.title);
+				std::cout << "  " << entry.first << " - " <<  entry.second.title << '\n';
+				// dict TODO: dict: m.aliases.getValues(list, keys), (.. key)
 			}
-			for (const auto & entry: drain::image::PaletteOp::getPaletteMap().aliases){
-				mout.note(entry.first, " alias ", entry.second);
+			std::cout << "Aliases:\n";
+
+			for (const auto & entry: m.aliases){
+				std::cout << "  " << entry.first << " -> " <<  entry.second << '\n';
+				//mout.note(entry.first, " alias ", entry.second);
 			}
 		}
 		else {
