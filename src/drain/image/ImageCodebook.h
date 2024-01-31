@@ -152,17 +152,15 @@ public:
 			index = (index >> lookUp.bitShift);
 
 			if (index >= n){
-				mout.warn("overflow: threshold " , it->first , " mapped to index (" , index , ") > max (" , (n-1) , "), skipping " );
+				mout.warn("overflow: threshold ", it->first, " mapped to index (", index, ") > max (", (n-1), "), skipping " );
 				continue;
 			}
 
 			if (indexLower < index){
-				mout.debug() << "adding index range [" << indexLower << '-' << index << "[ -> ";
-				mout << "(" << itLower->first << ") => {" << itLower->second << '}';
-				mout << mout.endl;
+				mout.debug("adding index range [", indexLower, '-', index, "[ -> (", itLower->first, ") => {", itLower->second, '}');
 			}
 			else {
-				mout.note("accuracy loss: skipped entry [" , index , "] => " , it->first );
+				mout.note("accuracy loss: skipped entry [" , index , "] => ", it->first );
 			}
 
 			/// Fill up interval [indexLower, index[

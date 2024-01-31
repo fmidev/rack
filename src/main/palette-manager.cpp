@@ -70,9 +70,14 @@ namespace rack {
 			#include "palette/palette-DBZHSTDDEV.inc"
 			;
 
-			m["DBZH"] =
+			m["DBZ"] =
 			#include "palette/palette-DBZH.inc"
 			;
+			m.addAlias("DBZ", "DBZH");
+			m.addAlias("DBZ", "DBZV");
+			m.addAlias("DBZ", "TH");
+			m.addAlias("DBZ", "TV");
+			m.addAlias("DBZ", "T"); // ?
 
 			m["FLASH"] =
 			#include "palette/palette-FLASH.inc"
@@ -117,6 +122,8 @@ namespace rack {
 			m["VRAD"] =
 			#include "palette/palette-VRAD.inc"
 			;
+			m.addAlias("VRAD", "VRADH");
+			m.addAlias("VRAD", "VRADV");
 
 			m["ZDR"] =
 			#include "palette/palette-ZDR.inc"

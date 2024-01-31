@@ -32,11 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.83"
+#define __RACK_VERSION__ "7.9"
 
 /**
- *   Version 7.84
+ *   Version 7.9
  *   -- Palette aliases, like DBZH->DBZ, DBHV->DBZ, TH->DBZ, TV-> ...
+ *   -- Fixed PGM 16bit read/write bugs
+ *   -- DataSelector supports list and regexp: --selectQuantity 'DBZH,DBZV,TH,^DBZH.*$'
  *
  *   Version 7.83
  *   -- Revised ODIMElement, ODIMElementMatcher, DataSelector, QuantitySelector

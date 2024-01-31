@@ -56,8 +56,8 @@ FilePnm::FileType FilePnm::readHeader(drain::image::ImageConf & conf, drain::Fle
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (infile.get() != 'P'){
-		mout.warn() << "file does not start with  'P' (magic code)" << mout.endl;
-		mout.error() << "not an PNM file" << mout.endl;
+		mout.warn("file does not start with  'P' (magic code)" );
+		mout.error("not an PNM file" );
 		return UNDEFINED;
 	}
 
@@ -97,46 +97,56 @@ FilePnm::FileType FilePnm::readHeader(drain::image::ImageConf & conf, drain::Fle
 		channels = 3;
 		break;
 	default:
-		mout.error() << "unrecognized PPM type" << mout.endl;
+		mout.error("unrecognized PPM type" );
 		return fileType;
 	}
 
-	mout.info() << "PNM type: P" <<  (char)c << " (" << channels  << " channels)" << mout.endl;
-
-	// Jump to end of line.
-	drain::TextReader::scanSegment(infile, "\n");  // NEW
+	mout.info("PNM type: P" ,  (char)c , " (" , channels  , " channels)" );
 
 	std::string key;
 	std::stringstream sstr;
 
+	// Jump to end of line.,
+	drain::TextReader::skipWhiteSpace(infile);
+	//drain::TextReader::scanSegment(infile, "\n", sstr);  // NEW
+	//mout.warn("Remains: '", sstr.str(), "' peek=", (char)infile.peek());
+	//sstr.str("");
+	//infile.get();
+
 	// Read comment lines
 	while (infile.peek() == '#'){
 		infile.get(); // swallow '#'
-		while ((c = infile.get()) !='\n' ){
+		while ((c=infile.get()) !='\n' ){
 
 			if (c == '='){
 				key = drain::StringTools::trim(sstr.str());
+				//mout.warn("key: ", key);
 				sstr.str("");
 			}
 			else
 				sstr.put(c);
 
-			if (infile.eof())
-				mout.error() << "Premature end of file" << mout.endl;
+			if (infile.eof()){
+				mout.error("Premature end of file: ");
+			}
+
 		}
 		if (!key.empty()){
-			mout.debug2() << "Comment: " << key << ": " <<  sstr.str() << mout.endl;
+			mout.debug2("Comment: " , key , ": " ,  sstr.str() );
 			//ValueReader::scanValue(sstr.str(), properties[key]);
 			JSON::readValue(sstr.str(), properties[key]);
 		}
 		else {
-			mout.note() << "Comment:" <<  sstr.str() << mout.endl;
+			mout.note("Comment:" ,  sstr.str() );
 		}
+		// mout.attention(sstr.str());
 		sstr.str("");
 	}
-	// mout.note() << "Done" << mout.endl;
+	// mout.note("Done" );
 	infile >> width;
 	infile >> height;
+	// mout.attention("size: ", width, 'x', height);
+
 	if ((fileType != PBM_ASC) && (fileType != PBM_RAW))
 		infile >> maxValue;
 
@@ -148,19 +158,18 @@ FilePnm::FileType FilePnm::readHeader(drain::image::ImageConf & conf, drain::Fle
 		if (maxValue > 0xffff){
 			mout.warn("suspiciously large max value:" ,  maxValue );
 		}
-		mout.note("max value (" ,  maxValue , ") over 256, using 16 bits (unsigned)");
+		mout.note("max value (" ,  maxValue , ") over 255, using 16 bits (unsigned)");
 		conf.setType(typeid(unsigned short));
 	}
 
-	drain::TextReader::scanSegment(infile, "\n");
+	// drain::TextReader::scanSegment(infile, "\n");
+	drain::TextReader::skipWhiteSpace(infile);
 
 	// Under constr
 	// conf.encoding.setType();
 	// conf.encoding.scaling.setPhysicalMax(maxValue);
 	if (properties.hasKey("coordinatePolicy")){
 		std::vector<int> policy;
-		//properties["coordinatePolicy"].toSequence(policy);
-		//conf.coordinatePolicy.set(policy);
 		properties["coordinatePolicy"].toSequence(policy);
 		conf.coordinatePolicy.assignSequence(policy);
 	}
@@ -189,7 +198,7 @@ void FilePnm::read(Image & image, const std::string & path) {
 
 	ImageConf conf;
 	FileType fileType = readHeader(conf, image.properties, infile);
-	//mout.debug("conf: " , conf );
+	mout.debug("conf: ", conf );
 	//mout.debug("prop: " , image.properties );
 
 	// Resize
@@ -197,23 +206,6 @@ void FilePnm::read(Image & image, const std::string & path) {
 
 	mout.debug2(image );
 	readFrame(image, infile, fileType);
-	/*
-	switch (fileType) {
-		case PGM_RAW:
-		case PPM_RAW:
-			readFrame(image, infile);
-			break;
-		case PGM_ASC:
-		case PPM_ASC:
-			readFrameASCII(image, infile);
-			break;
-		default:
-			mout.unimplemented(conf );
-			mout.unimplemented("PBM file type: " , fileType );
-			mout.error("Unsupported file type" );
-			break;
-	}
-	*/
 
 }
 
@@ -223,17 +215,6 @@ void FilePnm::readFrame(ImageFrame & image, const std::string & path) {
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.info("reading image: " , image , ", file=" , path );
-
-	/*
-	std::ifstream infile;
-	infile.open(path.c_str(), std::ios::in);
-
-	if (!infile){
-		infile.close();
-		mout.warn("opening file '" , path , "' failed" );
-		return;
-	}
-	*/
 
 	Input infile(path);
 
@@ -261,10 +242,14 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile, FileType file
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.info("reading to frame: " , image );
-
-	//const size_t channels = image.getChannelCount();
+	// const size_t channels = image.getChannelCount();
 
 	bool ARRAY_FULL = false;
+
+	const int BYTES = Type::call<drain::sizeGetter>(image.getType());
+	// drain::Type::call<drain::typeMax, int>(image.getType());
+	// image.getType();
+	//const bool  = (bytes==2);
 
 	const ImageFrame::iterator eit = image.end();
 
@@ -286,10 +271,22 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile, FileType file
 		}
 	}
 	else if (fileType == PGM_RAW){
-		ImageFrame::iterator        it = image.begin();
-		while ((!infile.eof()) && (it != eit)){
-			*it = infile.get();
-			++it;
+		// ONLY FOR int8 and uint16 dst img!
+		ImageFrame::iterator it = image.begin();
+		if (BYTES == 1){
+			while ((!infile.eof()) && (it != eit)){
+				*it = infile.get();
+				++it;
+			}
+		}
+		else {
+			int data;
+			while ((!infile.eof()) && (it != eit)){
+				data =  (infile.get()<<8);
+				data |= infile.get();
+				*it = data;
+				++it;
+			}
 		}
 		// mout.debug("read " , i , " bytes" );
 		ARRAY_FULL = (it==eit);
@@ -548,12 +545,13 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 			if (maxValue > 0xffff){
 				mout.warn("storage type over 16 bits (max value > 0xffff) unsupported" );
 			}
+			// TODO : scalar iter
 			for (j = 0; j < height; ++j) {
 				for (i = 0; i < width; ++i) {
 					value = image.get<unsigned short>(i,j);
+					ofstr.put((value>>8) & 0xff);  // check order!
 					ofstr.put(value & 0xff);
-					value = (value >> 8);
-					ofstr.put(value & 0xff);  // check order!
+					//valueHi = (value >> 8);
 				}
 			}
 		}

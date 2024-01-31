@@ -936,9 +936,9 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	}
 
 	// Perhaps explicitly set already
-	std::string object = ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["object"];
+	std::string object = ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes.get("object", "");
 
-	mout.warn(ctx.polarInputHi5[ODIMPathElem::WHAT] );
+	//mout.warn(ctx.polarInputHi5[ODIMPathElem::WHAT]);
 
 	Hi5Tree & dst = ctx.polarInputHi5[dataSetElem][dataElem];
 	drain::image::Image & dstImage = dst[ODIMPathElem::ARRAY].data.image;
@@ -949,18 +949,16 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 	// Non-const, modifications may follow
 	drain::FlexVariableMap & attr = dstImage.properties;
 
-
 	// No information, img has always (linked) attributes.
 	// mout.info("Image has metadata: " , drain::Variable(!attr.empty()) );
-	//mout.info(d );
+	// mout.info(d );
 
-	mout.note(attr );
-		//mout.warn() << "object empty,: '" <<
-	drain::Variable & obj = attr["what:object"];
+	// mout.note(attr);
+	drain::FlexibleVariable & obj = attr["what:object"];
 	if (!obj.empty()){
 		if (object.empty()){
 			if (obj != object){
-				mout.warn("overwriting what:object '" , object , "' -> '" , obj , "'" );
+				mout.debug("modifying what:object '" , object , "' -> '" , obj , "'" );
 			}
 			object = obj.toStr();
 		}
@@ -970,6 +968,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 
 
 	if (object.empty()){
+		// unneeded? See above...
 		object = ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["object"].toStr();
 	}
 
@@ -1018,7 +1017,7 @@ void CmdInputFile::readImageFile(const std::string & fullFilename) const {
 		}
 		else {
 			ctx.polarInputHi5["what"].data.attributes["object"] = "SCAN";
-			mout.warn("No what:object in metadata, assuming SCAN (Polar scan)" );
+			mout.warn("metadata: what:object=", object, ", assuming SCAN (Polar scan)" );
 		}
 		PolarODIM odim;
 		deriveImageODIM(dstImage, odim);   // TODO generalize in ODIM.h (or obsolete already)

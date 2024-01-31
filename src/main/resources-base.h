@@ -59,7 +59,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-typedef std::map<std::string, std::map<unsigned short, drain::image::Palette> >  PaletteMap;
+// typedef std::map<std::string, std::map<unsigned short, drain::image::Palette> >  PaletteMap;
 
 
 // Consider moving ImageKit here?
@@ -135,21 +135,6 @@ public:
 		return drain::image::PaletteOp::getPalette(key);
 	}
 
-	// OLD
-	// drain::image::Palette palette;
-
-	/*
-	Palette & getPalette(const std::string & quantity, unsigned short colors){
-		PaletteMap & pMap = drain::Static::get<PaletteMap>();
-
-		Palette & p = pMap[quantity][colors];
-
-		if (p.empty()){
-			p.load(quantity, true);
-		}
-		return p;
-	}
-	*/
 
 	struct {
 		drain::Point2D<unsigned short> tilesize = 256;

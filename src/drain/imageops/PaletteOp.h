@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef PALETTEOP_H_
 #define PALETTEOP_H_
 
+#include <map>
 #include "drain/util/Bank.h"
 #include "drain/image/Palette.h"
 
@@ -146,7 +147,8 @@ public:
 		return paletteMap;
 	};
 	*/
-	typedef	std::map<std::string,drain::image::Palette> palette_map_t;
+	//typedef	std::map<std::string,drain::image::Palette> palette_map_t;
+	typedef	PaletteMap palette_map_t;
 
 	/// Returns a static palette map which is initially empty.
 	static

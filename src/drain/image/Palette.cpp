@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <sstream>
 #include <list>
+#include <map>
 
 // #include "drain/util/FilePath.h"
 #include "drain/util/Input.h"
@@ -103,7 +104,7 @@ void Palette::addEntry(double min, double red, double green, double blue, const 
 	entry.code = id;
 	entry.label = label;
 
-	dictionary.add(min, id);
+// 	dictionary.add(min, id);
 
 }
 
@@ -203,28 +204,29 @@ void Palette::update() const {
 	size_t i = 0;
 	size_t a = 0;
 
-	for (std::map<std::string,PaletteEntry >::const_iterator it = specialCodes.begin(); it != specialCodes.end(); ++it){
+	//for (std::map<std::string,PaletteEntry >::const_iterator it = specialCodes.begin(); it != specialCodes.end(); ++it){
+	for (const auto & entry: specialCodes){
 
-		const PaletteEntry & entry = it->second;
+		// const PaletteEntry & entry = it->second;
 
-		if (entry.color.size() > i)
-			i = entry.color.size();
+		if (entry.second.color.size() > i)
+			i = entry.second.color.size();
 
-		if (entry.alpha < 255.0)
+		if (entry.second.alpha < 255.0)
 			a = 1;
 
 	}
 
-	for (Palette::const_iterator it = begin(); it != end(); ++it){
+	//for (Palette::const_iterator it = begin(); it != end(); ++it){
+	for (const auto & entry: *this){
 
-		const PaletteEntry & entry = it->second;
+		// const PaletteEntry & entry = it->second;
+		// mout.note(" e" , it->first , '\t' , entry.color.size() );
 
-		//mout.note(" e" , it->first , '\t' , entry.color.size() );
+		if (entry.second.color.size() > i)
+			i = entry.second.color.size();
 
-		if (entry.color.size() > i)
-			i = entry.color.size();
-
-		if (entry.alpha < 255.0)
+		if (entry.second.alpha < 255.0)
 			a = 1;
 
 	}
@@ -375,7 +377,7 @@ void Palette::load(const std::string & filename, bool flexible){
 
 	mout.special("Title: ", this->title);
 
-	updateDictionary();
+	//updateDictionary();
 
 
 }
@@ -383,7 +385,7 @@ void Palette::load(const std::string & filename, bool flexible){
 
 void Palette::loadTXT(std::istream & ifstr){
 
-	Logger mout(getImgLog(), "Palette", __FUNCTION__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	/*
 	if (!ifstr.good()){
@@ -534,7 +536,7 @@ void Palette::loadTXT(std::istream & ifstr){
 
 void Palette::loadJSON(std::istream & ifstr){
 
-	Logger mout(getImgLog(), "Palette", __FUNCTION__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	reset();
 
@@ -629,6 +631,7 @@ void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 	}
 }
 
+/*
 void Palette::updateDictionary(){
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
@@ -641,8 +644,8 @@ void Palette::updateDictionary(){
 		this->dictionary.add(entry.first, entry.second.code);
 	}
 
-
 }
+*/
 
 void Palette::write(const std::string & filename) const {
 
@@ -1020,7 +1023,7 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 
 void Palette::refine(size_t n){
 
-	Logger mout(getImgLog(), "Palette", __FUNCTION__);
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	if (n==0)
 		n = refinement;
@@ -1031,51 +1034,56 @@ void Palette::refine(size_t n){
 	}
 
 
-	Palette::iterator it = begin();
-	if (it == end()){
+	//Palette::iterator it = begin();
+	if (this->empty()){
 		mout.warn("empty palette" );
 		return;
 	}
 
-	Palette::iterator it0 = it;
-	++it;
-	if (it == end()){
-		mout.warn("single entry palette, skipping" );
+	//Palette::iterator it0 = it;
+	//++it;
+	//if (it == end()){
+	if (this->size() == 1){
+		mout.warn("single-entry palette, skipping" );
 		return;
 	}
 
 	if (n < size()){
-		mout.warn("contains already" , size() , " elements " );
+		mout.warn("request ", n, " colours but has already", size(), ", returning");
 		return;
 	}
 
 	/// Number of colors.
-	const size_t s = it->second.color.size();
+	const size_t colors = begin()->second.color.size();
 
-	/// New number of entries.
-	const size_t n2 = n / (size()-1);
-	const float e = 1.0f / static_cast<float>(n2);
-	float c;
-	while (it != end()){
+	/// New number of entries between two current entries.
+	const size_t steps = n / (size()-1);
+	const double e = 1.0 / static_cast<double>(steps);
+	double coeff;
 
-		const double & f  = it->first;
-		PaletteEntry & p  = it->second;
+	double fNew;
+	std::vector<double> debugIntervals(steps);
 
-		const double & f0 = it0->first;
-		PaletteEntry & p0 = it0->second;
+	const ImageCodeMap<PaletteEntry>::cont_t::value_type *lastEntry = nullptr;
+	for (const auto & entry: *this){
 
-		//std::cout << '-' << p0 << "\n>" << p << std::endl;
-		for (size_t i = 1; i < n2; ++i) {
-			c = e * static_cast<float>(i);
-			PaletteEntry & pNew = (*this)[0.01f * round(100.0*(f0 + c*(f-f0)))];
-			// pNew.color.resize(s);
-			for (size_t j = 0; j < s; ++j) {
-				pNew.color[j] = c*p.color[j] + (1.0f-c)*p0.color[j];
+		if (lastEntry != nullptr){
+			for (size_t i = 1; i < steps; ++i) {
+				coeff = e * static_cast<float>(i);
+				fNew = 0.01 * round(100.0*(lastEntry->first + coeff*(entry.first-lastEntry->first)));
+				debugIntervals[i] = fNew;
+				PaletteEntry & pNew = (*this)[fNew]; // 0.01f * round(100.0*(lastEntry->first + c*(entry.first-lastEntry->first)))];
+				// pNew.color.resize(s);
+				for (size_t k=0; k<colors; ++k) {
+					pNew.color[k] = (1.0-coeff)*lastEntry->second.color[k] + coeff*entry.second.color[k] ;
+				}
 			}
+			mout.warn("current: [", lastEntry->first, ',',  entry.first, "[: ", drain::sprinter(debugIntervals));
 		}
-		it0 = it;
-		++it;
+		lastEntry = & entry;
+
 	}
+	mout.warn("refined palette contains ", size(), " entries (colours)");
 
 }
 
@@ -1087,15 +1095,6 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 	svg->setType(NodeSVG::SVG);
 	// svg->set("id", title);
 	// TODO font-size:  font-face:
-
-	/*  Moved below, and "header" -> "title"
-	TreeSVG & header = svg["header"];
-	header->setType(NodeSVG::TEXT);
-	header->set("x", lineheight/4);
-	header->set("y", (headerHeight * 9) / 10);
-	header->ctext = title;
-	header->set("style","font-size:20");
-	*/
 
 	TreeSVG & background = svg["bg"];
 	background->setType(NodeSVG::RECT);
@@ -1123,15 +1122,19 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 	std::stringstream name;
 	std::stringstream style;
 	std::stringstream threshold;
+	size_t precision = 2; // for threshold
+	// const auto default_precision{std::cout.precision()};
 
 	Palette::const_iterator it = begin();
 	std::map<std::string,PaletteEntry >::const_iterator itSpecial = specialCodes.begin();
 
+	// TODO: extract createLegendEntry and traverse specials separately
+
 	while ((it != end()) || (itSpecial != specialCodes.end())){
 
-		bool specialEntries = (itSpecial != specialCodes.end());
+		bool special = (itSpecial != specialCodes.end());
 
-		const PaletteEntry & entry = specialEntries ? itSpecial->second : it->second;
+		const PaletteEntry & entry = special ? itSpecial->second : it->second;
 
 		if (!entry.hidden){
 
@@ -1180,8 +1183,9 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 			TreeSVG & thr = child["th"];
 			thr->setType(NodeSVG::TEXT);
 			threshold.str("");
-			if (!specialEntries)
-				threshold << it->first;
+			if (!special){
+				threshold << std::setprecision(precision) << it->first;
+			}
 
 			thr->ctext = threshold.str();
 			thr->set("text-anchor", "end");
@@ -1204,12 +1208,14 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 
 		}
 
-		if (specialEntries)
+		if (special)
 			++itSpecial;
 		else
 			++it;
 		//ostr << '\n';
 	}
+
+	//ostr << std::setprecision(default_precision);
 
 	const int height = headerHeight + index*lineheight;
 

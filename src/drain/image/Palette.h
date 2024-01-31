@@ -36,10 +36,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "TreeSVG.h"
 
 #include "drain/util/BeanLike.h"
-#include "drain/util/Dictionary.h" // temporary ?
+// #include "drain/util/Dictionary.h" // temporary ?
 #include "drain/util/JSON.h"
 #include "drain/util/UniTuple.h"
 
+#include "drain/util/Dictionary.h"
 #include "Legend.h"
 #include "PaletteEntry.h"
 
@@ -157,13 +158,9 @@ public:
 	/// Extend palette to contain n entries ("colors") by adding intermediate entries.
 	void refine(size_t n=0);
 
-	typedef drain::Dictionary<key_t, std::string> dict_t;
+	// typedef drain::Dictionary<key_t, std::string> dict_t;
 
-	/// Container for special codes
-	dict_t dictionary; // deprecating!
-
-	///
-	void updateDictionary();
+	/// void updateDictionary();
 
 	/// Request for future refinement, ie. refine() call upon next load().
 	/** It is upto applications to use this.
@@ -175,6 +172,10 @@ public:
 	std::string comment;
 
 protected:
+
+	/// Container for special codes ??
+	// dict_t dictionary; // deprecating!
+
 
 	void update() const;
 
@@ -195,13 +196,40 @@ std::ostream & operator<<(std::ostream &ostr, const Palette & p){
 }
 
 
+
+
+class PaletteMap : public std::map<std::string,drain::image::Palette> {
+
+public:
+
+	inline
+	Palette & get(const std::string & key){
+		if (aliases.hasKey(key)){
+			return (*this)[aliases.getValue(key)];
+		}
+		else {
+			return (*this)[key];
+		}
+	}
+
+	inline
+	void addAlias(const std::string & key, const std::string & aliasKey){
+		aliases.add(aliasKey,key);
+	}
+
+// protected:
+
+	drain::Dictionary<std::string, std::string> aliases;
+	// std::map<std::string,std::string> aliasMap;
+
+};
+
 } // image::
 
 template <>
 std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image::Palette & map, const drain::SprinterLayout & layout);
 
 } // drain::
-
 
 
 #endif

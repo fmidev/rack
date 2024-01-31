@@ -102,7 +102,8 @@ Palette & PaletteOp::loadPalette(const std::string & key){
 	Logger mout(__FILE__, __FUNCTION__);
 	// Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	Palette & palette = getPaletteMap()[key];
+	//Palette & palette = getPaletteMap()[key];
+	Palette & palette = getPaletteMap().get(key);
 	#pragma omp critical
 	{
 		palette.load(key, true);
@@ -121,7 +122,8 @@ Palette & PaletteOp::getPalette(const std::string & key) {
 	Logger mout(__FILE__, __FUNCTION__);
 	// Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	Palette & palette = getPaletteMap()[key];
+	//Palette & palette = getPaletteMap()[key];
+	Palette & palette = getPaletteMap().get(key);
 
 	if (key.empty()){
 		mout.experimental("Returning generic palette (empty quantity: [])");
@@ -149,9 +151,10 @@ Palette & PaletteOp::getPalette(const std::string & key) {
 	*/
 }
 
-std::map<std::string,drain::image::Palette> & PaletteOp::getPaletteMap(){
+//std::map<std::string,drain::image::Palette>
+PaletteMap & PaletteOp::getPaletteMap(){
 	static
-	std::map<std::string,drain::image::Palette> paletteMap;
+	PaletteMap paletteMap;
 	return paletteMap;
 };
 
@@ -307,12 +310,13 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 	// intensity (gray level)
 	double d;
 	// lower bound
-	Palette::const_iterator it;
+	// Palette::const_iterator it;
 	// upped bound
-	Palette::const_iterator itLast;
+	Palette::const_iterator pit;
 
 	size_t k;
-	Palette::const_iterator cit;
+	size_t address;
+	// Palette::const_iterator cit;
 
 	if (UCHAR || USHORT){
 
@@ -337,28 +341,30 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 			for (size_t j = 0; j < height; ++j) {
 
-				d = srcChannel.get<double>(i,j);
+				address = srcChannel.address(i,j);
+				d = srcChannel.get<double>(address);
 
 				// Check if special handling is needed
+				// TODO: special codes could be in lut?
 				if (SPECIAL_CODES){  // PolarODIM
-					cit = specialCodes.find(d);
-					if (cit != specialCodes.end()){
+					pit = specialCodes.find(d);
+					if (pit != specialCodes.end()){
 						for (k = 0; k < channelCount; ++k)
-							dst.get(k).put(i,j, cit->second.color[k]);
+							dst.get(k).put(i,j, pit->second.color[k]);
 						continue;
 					}
 				}
 
 				// If needed, prescale to fit number of entries
 				if (UCHAR){
-					itLast = lut[static_cast<int>(d)];
+					pit = lut[static_cast<int>(d)];
 				}
 				else { // if (USHORT){
-					itLast = lut[static_cast<int>(d) >> lut.bitShift];
+					pit = lut[static_cast<int>(d) >> lut.bitShift];
 				}
 
 				for (k = 0; k < channelCount; ++k)
-					dst.get(k).put(i,j, itLast->second.color[k]);
+					dst.get(k).put(address, pit->second.color[k]);
 
 			}
 		}
@@ -374,10 +380,10 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 			mout.debug() << '\n';
 			for (size_t  i = 0; i < 25; ++i) {
 				mout << i << '>' << scaling.fwd(i) << '\t';
-				itLast = pal.retrieve(scaling.fwd(i));
-				mout << itLast->first << '\t';
+				pit = pal.retrieve(scaling.fwd(i));
+				mout << pit->first << '\t';
 				for (k = 0; k < channelCount; ++k)
-					mout << itLast->second.color[k] << '\t';
+					mout << pit->second.color[k] << '\t';
 				mout << '\n';
 			}
 			mout << mout.endl;
@@ -390,23 +396,23 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 				d = srcChannel.get<double>(i,j);
 
 				if (SPECIAL_CODES){  // PolarODIM
-					cit = specialCodes.find(d);
-					if (cit != specialCodes.end()){
+					pit = specialCodes.find(d);
+					if (pit != specialCodes.end()){
 						for (k = 0; k < channelCount; ++k)
-							dst.get(k).put(i,j, cit->second.color[k]);
+							dst.get(k).put(i,j, pit->second.color[k]);
 						continue;
 					}
 				}
 
 				if (SCALED){
-					itLast = pal.retrieve(scaling.fwd(d));
+					pit = pal.retrieve(scaling.fwd(d));
 				}
 				else {
-					itLast = pal.retrieve(d);
+					pit = pal.retrieve(d);
 				}
 
 				for (k = 0; k < channelCount; ++k)
-					dst.get(k).put(i,j, itLast->second.color[k]);
+					dst.get(k).put(i,j, pit->second.color[k]);
 
 			}
 		}

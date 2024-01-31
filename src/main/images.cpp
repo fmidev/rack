@@ -888,6 +888,9 @@ public:
 			for (const auto & entry: drain::image::PaletteOp::getPaletteMap()){
 				mout.note(entry.first, " <=> ", entry.second.title);
 			}
+			for (const auto & entry: drain::image::PaletteOp::getPaletteMap().aliases){
+				mout.note(entry.first, " alias ", entry.second);
+			}
 		}
 		else {
 			mout.note("Palette: [", key, "]");
