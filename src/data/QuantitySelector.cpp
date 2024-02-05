@@ -45,24 +45,71 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+
+void QuantityMatcher::set(const std::string & s){
+	reset();
+	isRegExp = false;
+	if (s.empty()){
+		return;
+	}
+	else if (s.find_first_of("^?*[]()$") != std::string::npos){
+		isRegExp = true;
+		setExpression(s);
+	}
+	else {
+		isRegExp = false;
+		regExpString = s;
+	}
+}
+
+bool QuantityMatcher::test(const std::string & s) const {
+	if (isRegExp){
+		return RegExp::test(s);
+	}
+	else {
+		return value == s; // string comparison
+	}
+}
+
 /*
-void QuantitySelector::setQuantity(const std::string & quantity){
-	this->quantity = quantity;
-	//updateQuantity();
+bool QuantityMatcher::validateKey(const std::string & key){
+	static const drain::RegExp re("^[A-Z]+[A-Z0-9_\\-]*$");
+	return re.test(key);
 }
 */
 
 
+void QuantitySelector::setQuantities(const std::string & args){ //, const std::string & separators){
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	clear();
+	std::vector<std::string> argv;
+	//const char s =
+	drain::StringTools::split(args, argv, ",:"); //separators);
+	for (const std::string & arg: argv){
+		// mout.attention("adapting: ", arg, " split by '", separators, "'");
+		adaptQuantity(arg);
+	}
+
+	/* problematic. Keep for a while
+		if (s == ':'){
+			mout.deprecating("usage of colon ':' as quantity separator ");
+		}
+	 */
+}
+
+
+/*
 void QuantitySelector::setQuantityRegExp(const std::string & r){
 
-	if (!quantities.empty()){
+	if (!empty()){ // quantities.
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.note("Adding regExp=", r, ", also listed quantities exist: "); // , quantities
 	}
 
-	this->regExp.setExpression(r);
-
+	// this->regExp.setExpression(r);
+	adaptQuantity(r);
 }
+*/
 
 
 /** In future, the recommended way to define desired/accepted quanties is a comma-separated list of keys.
@@ -70,22 +117,25 @@ void QuantitySelector::setQuantityRegExp(const std::string & r){
  */
 void QuantitySelector::adaptQuantity(const std::string & s){
 
+
 	if (s.empty()){
 		return;
 	}
+	else {
+		// quantities.
+		push_back(QuantityMatcher());
+		// quantities.
+		back().set(s);
+	}
+
+	/*
 	else if (s.find_first_of("^?*[]()$") == std::string::npos){
 		quantities.push_back(s);
 	}
 	else {
-		/*
-		if (regExp.isSet()){
-			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.warn("Overriding regExp '", regExp, " with ", s, "'");
-		}
-		*/
 		regExp.setExpression(s);
 	}
-
+	*/
 }
 
 
@@ -93,8 +143,24 @@ void QuantitySelector::adaptQuantity(const std::string & s){
 
 bool QuantitySelector::testQuantity(const std::string & s) const {
 
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (empty()){
+		return true; // or defaultValue? TODO
+	}
+	else {
+		for (const auto & q: *this){
+			// mout.experimental("testing [", s, "] vs [", q, "]");
+			if (q == s){
+				return true;
+			}
+		}
+	}
+
+	return false;
+	/*
 	for (const std::string & q: quantities){
-		//mout.experimental("testing [", s, "] vs [", q, "]");
+		// mout.experimental("testing [", s, "] vs [", q, "]");
 		if (s == q){
 			return true;
 		}
@@ -102,7 +168,7 @@ bool QuantitySelector::testQuantity(const std::string & s) const {
 
 	if (regExp.empty()){
 		// Important here: if quantities listed, but none matched, return false.
-		// That is, return true only if both tests are empty.
+		// Hence: return true only if both tests are empty.
 		return quantities.empty();
 	}
 	else {
@@ -110,6 +176,7 @@ bool QuantitySelector::testQuantity(const std::string & s) const {
 		//mout.attention<LOG_NOTICE>("unmatched quantities, testing ", s ," regExp: ", regExp);
 		return regExp.test(s);
 	}
+	*/
 
 }
 
@@ -124,15 +191,16 @@ void QuantitySelector::getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMa
 
 };
 
-
+/*
 void QuantitySelector::addQuantity(){
 }
+*/
 
 void QuantitySelector::toStream(std::ostream & ostr) const {
-	drain::Sprinter::sequenceToStream(ostr, quantities, drain::Sprinter::cmdLineLayout);
-	if (regExp.isSet() && !quantities.empty())
-		ostr << drain::Sprinter::cmdLineLayout.arrayChars.separator;
-	ostr << regExp;
+	drain::Sprinter::sequenceToStream(ostr, *this, drain::Sprinter::cmdLineLayout);
+	//if (regExp.isSet() && !empty())
+	//	ostr << drain::Sprinter::cmdLineLayout.arrayChars.separator;
+	// ostr << regExp.toStr();
 }
 
 }  // rack::

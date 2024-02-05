@@ -283,7 +283,7 @@ class rack::PlainData&lt; DT &gt;</h3>
 <p>Copy constructor, also for referencing non-const as const. </p>
 <pre class="fragment"> Compiler returns error if odim types ar incompatible.
 </pre><p> PlainData(const PlainData&lt;DT&gt; &amp; d) : <a class="el" href="classrack_1_1TreeWrapper.html" title="Base class for all kinds of radar data.">TreeWrapper</a></p>
-<p>(d.getTree()), data(this-&gt;tree["data"].data.dataSet), odim(data) // NEW { } </p>
+<p>(d.getTree()), data(this-&gt;tree["data"].data.image), odim(data) // NEW { } </p>
 
 </div>
 </div>

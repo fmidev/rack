@@ -149,7 +149,7 @@ $(function() {
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        parameters.link(<span class="stringliteral">&quot;width&quot;</span>, this-&gt;widthM = widthM, <span class="stringliteral">&quot;metres&quot;</span>);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        parameters.link(<span class="stringliteral">&quot;height&quot;</span>, this-&gt;heightD = heightD, <span class="stringliteral">&quot;degrees&quot;</span>);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        dataSelector.count = 1;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        dataSelector.setMaxCount(1);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        VVP = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        odim.type = <span class="stringliteral">&quot;S&quot;</span>;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        odim.product = <span class="stringliteral">&quot;AMV&quot;</span>; <span class="comment">// ?</span></div>
@@ -172,7 +172,7 @@ $(function() {
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        parameters.link(<span class="stringliteral">&quot;altitudeWeight&quot;</span>, altitudeWeight, <span class="stringliteral">&quot;Functor:a:b:c...&quot;</span>); <span class="comment">// ??</span></div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="comment">//parameters.link(&quot;testSigns&quot;, testSigns = 3, &quot;bits&quot;);</span></div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        dataSelector.count = 1;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        dataSelector.setMaxCount(1);</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="comment">//dataSelector.selectPRF = DataSelector::Prf::ANY; // consider double</span></div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        odim.type = <span class="stringliteral">&quot;S&quot;</span>;</div>
@@ -192,8 +192,8 @@ $(function() {
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DOPPLERInversionOP_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1114</div></div>
-<div class="ttc" id="aclassrack_1_1Data_html"><div class="ttname"><a href="classrack_1_1Data.html">rack::Data</a></div><div class="ttdoc">Data structure consisting of plain data and an optional quality data.</div><div class="ttdef"><b>Definition:</b> Data.h:1045</div></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1130</div></div>
+<div class="ttc" id="aclassrack_1_1Data_html"><div class="ttname"><a href="classrack_1_1Data.html">rack::Data</a></div><div class="ttdoc">Data structure consisting of plain data and an optional quality data.</div><div class="ttdef"><b>Definition:</b> Data.h:1061</div></div>
 <div class="ttc" id="aclassrack_1_1DopplerInversionOp_html"><div class="ttname"><a href="classrack_1_1DopplerInversionOp.html">rack::DopplerInversionOp</a></div><div class="ttdoc">Derives two-dimensional wind (u,v) from Doppler data.</div><div class="ttdef"><b>Definition:</b> DopplerInversionOp.h:101</div></div>
 <div class="ttc" id="aclassrack_1_1DopplerInversionOp_html_aad07f397bedc59f9bd1fcbe4ad5e15e0"><div class="ttname"><a href="classrack_1_1DopplerInversionOp.html#aad07f397bedc59f9bd1fcbe4ad5e15e0">rack::DopplerInversionOp::DopplerInversionOp</a></div><div class="ttdeci">DopplerInversionOp(int widthM=500, double heightD=3.0, double nyquistVelocity=0.0)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> DopplerInversionOp.h:109</div></div>
 <div class="ttc" id="aclassrack_1_1DopplerOp_html"><div class="ttname"><a href="classrack_1_1DopplerOp.html">rack::DopplerOp</a></div><div class="ttdoc">Base class for computing products using Doppler speed [VRAD] data.</div><div class="ttdef"><b>Definition:</b> DopplerOp.h:49</div></div>

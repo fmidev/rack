@@ -614,7 +614,7 @@ public:
 
 		// The intensities will  be mapped first: f' = gain*f + offset
 		const drain::FlexVariableMap  & props = graySrc.getProperties();
-		mout.debug("input properties: " , props );
+		mout.debug("input properties: ", props);
 		/*
 		const drain::FlexVariable & nodata = props["what:nodata"];
 		double d = nodata;
@@ -630,13 +630,14 @@ public:
 		const PolarODIM imgOdim(graySrc); // Uses Castable, so type-consistent
 		mout.info("input encoding: ", EncodingODIM(imgOdim));
 
+		static const QuantitySelector vradTest("VRAD", "VRADH", "VRADV"); // , "^VRAD.*");
 
-		if (imgOdim.quantity.substr(0,4) != "VRAD"){
-			op.scale   = imgOdim.scaling.scale;   // props.get("what:gain", 1.0);
-			op.offset  = imgOdim.scaling.offset; // props.get("what:offset",0.0);
-		}
-		else { // rescale relative to NI (percentage -100% ... +100%)
+		mout.attention("vradTest: ", vradTest, " vs ", imgOdim.quantity);
 
+
+		if (vradTest.testQuantity(imgOdim.quantity)){
+			//if (imgOdim.quantity.substr(0,4) == "VRAD"){
+			// rescale relative to NI (percentage -100% ... +100%)
 			const double NI = imgOdim.getNyquist(); //props["how:NI"];
 			if (NI != 0.0){
 				mout.special("Doppler speed (VRAD), using relative scale, NI=" , NI , " orig NI=" , props["how:NI"] );
@@ -655,6 +656,10 @@ public:
 			else {
 				mout.fail("No Nyquist velocity (NI) found in metadata." );
 			}
+		}
+		else {
+			op.scale   = imgOdim.scaling.scale;   // props.get("what:gain", 1.0);
+			op.offset  = imgOdim.scaling.offset; // props.get("what:offset",0.0);
 		}
 
 		// mout.debug(imgOdim );
@@ -933,11 +938,11 @@ public:
 
 };
 
-class CmdPaletteIn : public drain::SimpleCommand<std::string> {
+class CmdPaletteInput : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdPaletteIn() : drain::SimpleCommand<std::string>(__FUNCTION__, "Load palette.", "filename", "", "<filename>.[txt|json]") {
+	CmdPaletteInput() : drain::SimpleCommand<std::string>(__FUNCTION__, "Load palette.", "filename", "", "<filename>.[txt|json]") {
 	};
 
 	virtual
@@ -947,15 +952,14 @@ public:
 
 	void load(const std::string &s) const {
 
-		static
-		const drain::RegExp re("^[A-Z][A-Z_0-9\\-]+[A-Z0-9]$"); // Nearly duplicate code, see Palette::load
-
 		RackContext & ctx = getContext<RackContext>();
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		//ctx.palette.load(s);
 
-		// NEW
+		// Consider QuantityMatcher checking suspicious name : validate(key) etc.?
+		static
+		const drain::RegExp re("^[A-Z][A-Z_0-9\\-]+[A-Z0-9]$"); // Nearly duplicate code, see Palette::load
+
 		if (re.test(s)){
 			mout.note("Checking palette [", s,"]");
 			ctx.getPalette(s).load(s, true);
@@ -970,11 +974,11 @@ public:
 
 };
 
-class CmdPaletteOut : public drain::SimpleCommand<> {
+class CmdPaletteOutput : public drain::SimpleCommand<> {
 
 public:
 
-	CmdPaletteOut() : drain::SimpleCommand<>(__FUNCTION__, "Save palette as TXT, JSON or SVG.", "filename", "") {
+	CmdPaletteOutput() : drain::SimpleCommand<>(__FUNCTION__, "Save palette as TXT, JSON or SVG.", "filename", "") {
 	};
 
 	void exec() const {
@@ -1240,7 +1244,7 @@ ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) { // :{ // 
 	install<CmdPalette>();
 	install<CmdImageAlpha>();
 	install<CmdImageTransp>();
-	install<CmdPaletteOut>("legendOut"); // Same as --iPaletteOut below
+	install<CmdPaletteOutput>("legendOut"); // Same as --iPaletteOut below
 	install<CmdImageFlatten>();
 	install<CmdImagePhysical>("iPhysical"); // perhaps should be imagePhysical!
 	install<CmdImagePhysical>("imagePhysical");
@@ -1249,18 +1253,14 @@ ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) { // :{ // 
 	/// WAS: with prefix 'i', like image operators
 	// drain::CommandInstaller<'i',ImageSection> installer2(drain::getCommandBank());
 	install<CmdPaletteConf>();
-	install<CmdPaletteIn>();
-	install<CmdPaletteOut>();
+	install<CmdPaletteInput>("paletteIn");
+	install<CmdPaletteOutput>("paletteOut");
 	install<CmdPaletteRefine>();
 	install<CmdPlot>();
 	install<CmdImageBox>();
 
-
+	// Load map
 	PaletteManager::getMap();
-
-
-
-
 
 };
 

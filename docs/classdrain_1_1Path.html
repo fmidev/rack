@@ -172,10 +172,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a77f782fea0a3f0646bd1e8f5af97e4ad">isRoot</a> () const</td></tr>
 <tr class="memdesc:a77f782fea0a3f0646bd1e8f5af97e4ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Note that an empty path is not a root. <br /></td></tr>
 <tr class="separator:a77f782fea0a3f0646bd1e8f5af97e4ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adab66a14b823a10aec91d583ae0e64a4"><td class="memItemLeft" align="right" valign="top"><a id="adab66a14b823a10aec91d583ae0e64a4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#adab66a14b823a10aec91d583ae0e64a4">removeTrailing</a> ()</td></tr>
-<tr class="memdesc:adab66a14b823a10aec91d583ae0e64a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes trailing empty elements, except for the root itself. <br /></td></tr>
-<tr class="separator:adab66a14b823a10aec91d583ae0e64a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada8b6fb3840daf16e30b9459877f5aad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#ada8b6fb3840daf16e30b9459877f5aad">trimHead</a> (bool COMPLETE=false)</td></tr>
+<tr class="memdesc:ada8b6fb3840daf16e30b9459877f5aad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes leading empty elements. The resulting string presentation will not start with the separator.  <a href="classdrain_1_1Path.html#ada8b6fb3840daf16e30b9459877f5aad">More...</a><br /></td></tr>
+<tr class="separator:ada8b6fb3840daf16e30b9459877f5aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf80c1dec12e6ba79a26261728eb207c"><td class="memItemLeft" align="right" valign="top"><a id="acf80c1dec12e6ba79a26261728eb207c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#acf80c1dec12e6ba79a26261728eb207c">trimTail</a> (bool COMPLETE=false)</td></tr>
+<tr class="memdesc:acf80c1dec12e6ba79a26261728eb207c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes trailing empty elements. The resulting string presentation will not end with the separator. <br /></td></tr>
+<tr class="separator:acf80c1dec12e6ba79a26261728eb207c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c76e869690a7595aa5b5f805c870fcf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a0c76e869690a7595aa5b5f805c870fcf">simplify</a> ()</td></tr>
+<tr class="memdesc:a0c76e869690a7595aa5b5f805c870fcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">ORIGINAL. Removes trailing empty elements, except for the root itself.  <a href="classdrain_1_1Path.html#a0c76e869690a7595aa5b5f805c870fcf">More...</a><br /></td></tr>
+<tr class="separator:a0c76e869690a7595aa5b5f805c870fcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5473053a3797654293892167aa024400"><td class="memItemLeft" align="right" valign="top"><a id="a5473053a3797654293892167aa024400"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a5473053a3797654293892167aa024400">simplifyHead</a> ()</td></tr>
+<tr class="memdesc:a5473053a3797654293892167aa024400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove duplicates of empty elements from the start. <br /></td></tr>
+<tr class="separator:a5473053a3797654293892167aa024400"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19eda7c95dfe6840af65295c322b937f"><td class="memItemLeft" align="right" valign="top"><a id="a19eda7c95dfe6840af65295c322b937f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a19eda7c95dfe6840af65295c322b937f">simplifyTail</a> ()</td></tr>
+<tr class="memdesc:a19eda7c95dfe6840af65295c322b937f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove duplicates of empty elements from the end. <br /></td></tr>
+<tr class="separator:a19eda7c95dfe6840af65295c322b937f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeabf59e0748328df663be731c1ec1f09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Path.html">path_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#aeabf59e0748328df663be731c1ec1f09">operator=</a> (const <a class="el" href="classdrain_1_1Path.html">path_t</a> &amp;p)</td></tr>
 <tr class="memdesc:aeabf59e0748328df663be731c1ec1f09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns a path directly with std::list assignment.  <a href="classdrain_1_1Path.html#aeabf59e0748328df663be731c1ec1f09">More...</a><br /></td></tr>
 <tr class="separator:aeabf59e0748328df663be731c1ec1f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -363,6 +377,63 @@ class drain::Path&lt; T, SEP, ALEAD, AREPEAT, ATRAIL &gt;</h3>
 
 <p>Assigns a path directly with std::list assignment. </p>
 <p>Should be safe, because separator policy is the same. </p>
+
+</div>
+</div>
+<a id="a0c76e869690a7595aa5b5f805c870fcf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c76e869690a7595aa5b5f805c870fcf">&#9670;&nbsp;</a></span>simplify()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void simplify </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ORIGINAL. Removes trailing empty elements, except for the root itself. </p>
+<p>keep this for a while void removeTrailing(){ if ((this-&gt;size() &gt; 1)){ if (this-&gt;back().empty()){ this-&gt;pop_back(); removeTrailing(); } } } Remove duplicates of empty elements from the start and the end. </p>
+
+</div>
+</div>
+<a id="ada8b6fb3840daf16e30b9459877f5aad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada8b6fb3840daf16e30b9459877f5aad">&#9670;&nbsp;</a></span>trimHead()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void trimHead </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>COMPLETE</em> = <code>false</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Removes leading empty elements. The resulting string presentation will not start with the separator. </p>
+<p>After this operation there is no root, ie. there is no leading separator. </p>
 
 </div>
 </div>

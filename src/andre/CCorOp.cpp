@@ -54,19 +54,20 @@ void CCorOp::runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & d
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	//mout.debug(parameters );
 
-	// TODO: select H or V
+	// NEW: In priority order
+	QuantitySelector TOTAL("TH","TV","T");
+	QuantitySelector DBZ("DBZH","DBZV","DBZ");
 
-	const Data<PolarSrc> & srcTH   = src.getData("TH");
-	const Data<PolarSrc> & srcDBZH = src.getData("DBZH");
+	const Data<PolarSrc> & srcTH   = src.getData(TOTAL); // ("TH");
+	const Data<PolarSrc> & srcDBZH = src.getData(DBZ); // ("DBZH");
 
 	if (srcTH.data.isEmpty()){
-		mout.warn("input data of TH missing, giving up." );
-		// or error flag?
+		mout.warn("total Z input data (", TOTAL, ")  missing, giving up." );
 		return;
 	}
 
 	if (srcDBZH.data.isEmpty()){
-		mout.warn("input data of DBZH missing, giving up." );
+		mout.warn("dBZ input data (", DBZ, ") missing, giving up." );
 		return;
 	}
 
@@ -122,16 +123,22 @@ void CCorOp::runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & d
 				th = srcTH.odim.scaleForward(th);
 				//if (!srcDBZH.odim.isValue(dbzh)){
 				if (dbzh == srcDBZH.odim.undetect){
-					dbzh = -32.0; // TODO: should be distance dependent
+					// dbzh = -32.0; // TODO: should be distance dependent
+					diff = th - (-32.0);
+				}
+				else if (mask){
+					// skip any bins valid dbzh (not nodata or undectec)
+					diff = 0;
 				}
 				else {
 					dbzh = srcDBZH.odim.scaleForward(dbzh);
+					diff = th - dbzh;
 				}
-				diff = th - dbzh;
-				// *it  = QMAX - fuzzyBell(diff);
 				*it  = fuzzyStep(diff);
-				if (diff > 0.0) // attn correction COULD make dBZ > t
+				// *it  = QMAX - fuzzyBell(diff);
+				if (diff > 0.0){ // attn correction COULD make dBZ > t
 					*cit = dstDiff.odim.scaleInverse(diff);
+				}
 				else
 					*cit = dstDiff.odim.nodata;
 			}

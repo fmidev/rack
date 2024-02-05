@@ -230,6 +230,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathMatcher.html">ODIMPathMatcher</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure for testing if a path matches a given sequence of path elements.  <a href="classrack_1_1ODIMPathMatcher.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathTools.html">ODIMPathTools</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tool for selecting datasets based on paths, quantities and min/max elevations.  <a href="classrack_1_1ODIMPathTools.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMNodeValidator.html">ODIMNodeValidator</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMValidator.html">ODIMValidator</a></td></tr>
@@ -244,6 +247,9 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure for defining.  <a href="classrack_1_1Quantity.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantitySelector.html">QuantitySelector</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility for selecting a quantity label <a class="el" href="classBase.html">Base</a> class for <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a>.  <a href="classrack_1_1QuantitySelector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SourceODIM.html">SourceODIM</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -818,9 +824,6 @@ typedef std::vector&lt; <a class="el" href="classrack_1_1ODIMPathElem.html">ODIM
 typedef <a class="el" href="classdrain_1_1CommandInstaller.html">drain::CommandInstaller</a>&lt; 'a', <a class="el" href="structrack_1_1AnDReSection.html">AnDReSection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a2c77789755b24e30206e39ca8b27321e">AnDReInstaller</a></td></tr>
 <tr class="memdesc:a2c77789755b24e30206e39ca8b27321e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keep combined OBSOLETE? <br /></td></tr>
 <tr class="separator:a2c77789755b24e30206e39ca8b27321e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5755912eeabf8d18117d871b26c33d06"><td class="memItemLeft" align="right" valign="top"><a id="a5755912eeabf8d18117d871b26c33d06"></a>
-typedef std::map&lt; std::string, std::map&lt; unsigned short, drain::image::Palette &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>PaletteMap</b></td></tr>
-<tr class="separator:a5755912eeabf8d18117d871b26c33d06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -843,9 +846,12 @@ template&lt;typename DT &gt; </td></tr>
 <tr class="memitem:a6b81a0bc901c9d0aaa3421369509a49e"><td class="memItemLeft" align="right" valign="top"><a id="a6b81a0bc901c9d0aaa3421369509a49e"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1DataCoder.html">DataCoder</a> &amp;coder)</td></tr>
 <tr class="separator:a6b81a0bc901c9d0aaa3421369509a49e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa02ac1372d0a69c74ebba6eefa5e269e"><td class="memItemLeft" align="right" valign="top"><a id="aa02ac1372d0a69c74ebba6eefa5e269e"></a>
+<tr class="memitem:ac42ee26fd356179bedeee831bbcd24ea"><td class="memItemLeft" align="right" valign="top"><a id="ac42ee26fd356179bedeee831bbcd24ea"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector)</td></tr>
-<tr class="separator:aa02ac1372d0a69c74ebba6eefa5e269e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ac42ee26fd356179bedeee831bbcd24ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88e2616ee90b5229a72b9b4687a54b9c"><td class="memItemLeft" align="right" valign="top"><a id="a88e2616ee90b5229a72b9b4687a54b9c"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="structrack_1_1DataOrder.html">DataOrder</a> &amp;order)</td></tr>
+<tr class="separator:a88e2616ee90b5229a72b9b4687a54b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b2590e5e63cb556730a0d2f6f82173f"><td class="memItemLeft" align="right" valign="top"><a id="a2b2590e5e63cb556730a0d2f6f82173f"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;odim)</td></tr>
 <tr class="separator:a2b2590e5e63cb556730a0d2f6f82173f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -856,7 +862,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a3057539c7dfb3a4859e8df1adca566f1">operator&lt;</a> (const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;e1, const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;e2)</td></tr>
 <tr class="memdesc:a3057539c7dfb3a4859e8df1adca566f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Important! <br /></td></tr>
 <tr class="separator:a3057539c7dfb3a4859e8df1adca566f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93fe79d781da647da1b543bc45b80ca7"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a93fe79d781da647da1b543bc45b80ca7">operator&lt;&lt;</a> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;p)</td></tr>
+<tr class="memitem:a93fe79d781da647da1b543bc45b80ca7"><td class="memItemLeft" align="right" valign="top"><a id="a93fe79d781da647da1b543bc45b80ca7"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;p)</td></tr>
 <tr class="separator:a93fe79d781da647da1b543bc45b80ca7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0df6d4e6c2bc144e5bb2947359c55b6c"><td class="memItemLeft" align="right" valign="top"><a id="a0df6d4e6c2bc144e5bb2947359c55b6c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;e1, const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;e2)</td></tr>
@@ -867,6 +874,9 @@ std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 <tr class="memitem:ae454b27301ab89f6c05727018883a0b8"><td class="memItemLeft" align="right" valign="top"><a id="ae454b27301ab89f6c05727018883a0b8"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1ODIMPathElem2.html">ODIMPathElem2</a> &amp;elem)</td></tr>
 <tr class="separator:ae454b27301ab89f6c05727018883a0b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b238aaae5f44ef8eb290bc68828da4d"><td class="memItemLeft" align="right" valign="top"><a id="a5b238aaae5f44ef8eb290bc68828da4d"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a> &amp;p)</td></tr>
+<tr class="separator:a5b238aaae5f44ef8eb290bc68828da4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e73f7941fee7b818b62371508b64dfe"><td class="memItemLeft" align="right" valign="top"><a id="a6e73f7941fee7b818b62371508b64dfe"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1ODIMNodeValidator.html">ODIMNodeValidator</a> &amp;v)</td></tr>
 <tr class="separator:a6e73f7941fee7b818b62371508b64dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -879,6 +889,9 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 <tr class="memitem:af574df5b6fe871b9206804379efb2abd"><td class="memItemLeft" align="right" valign="top"><a id="af574df5b6fe871b9206804379efb2abd"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a> &amp;map)</td></tr>
 <tr class="separator:af574df5b6fe871b9206804379efb2abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e55e4f9f9e74777b098f05e32c16e81"><td class="memItemLeft" align="right" valign="top"><a id="a3e55e4f9f9e74777b098f05e32c16e81"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1QuantitySelector.html">QuantitySelector</a> &amp;selector)</td></tr>
+<tr class="separator:a3e55e4f9f9e74777b098f05e32c16e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a728404ae9be158f1e5f4fe1d799838b7"><td class="memItemLeft" align="right" valign="top"><a id="a728404ae9be158f1e5f4fe1d799838b7"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>quoted</b> (const <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path)</td></tr>
 <tr class="separator:a728404ae9be158f1e5f4fe1d799838b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -981,6 +994,8 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <p>Rack is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Rack. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
 <p>#include "drain/prog/Command.h"</p>
+<p>Version 7.9 &ndash; Palette aliases, like DBZH-&gt;DBZ, DBHV-&gt;DBZ, TH-&gt;DBZ, TV-&gt; ... &ndash; Fixed PGM 16bit read/write bugs &ndash; <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a> supports list and regexp: &ndash;selectQuantity 'DBZH,DBZV,TH,^DBZH.*$'</p>
+<p>Version 7.83 &ndash; Revised ODIMElement, ODIMElementMatcher, <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a>, <a class="el" href="classrack_1_1QuantitySelector.html" title="Utility for selecting a quantity label Base class for DataSelector.">QuantitySelector</a></p>
 <p>Version 7.81 &ndash; Further revised/simplified <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a></p>
 <p>Version 7.8 &ndash; Revised <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a>: #selectPaths() &ndash; New functionality: selective read &ndash;inputSelect &ndash; Log: adjustable sublevels: accept&lt;LOG_DEBUG&gt;(...) , fail&lt;LOG_INFO&gt;(...) &ndash; Revised definitions: Variable, ReferenceVariable, FlexibleVariable &ndash; Image processing: keys instead of numeric indices &ndash; Check rscale, nbins, nrays in compositing</p>
 <p>Version 7.79 &ndash; DistanceTransform: literal keywords: "4-CONNECTED", "8-CONNECTED", "16-CONNECTED",</p>
@@ -1157,48 +1172,8 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
  
 </div>
 </div>
-<a id="a93fe79d781da647da1b543bc45b80ca7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a93fe79d781da647da1b543bc45b80ca7">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>ostr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;&#160;</td>
-          <td class="paramname"><em>p</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Step 1: prefix (by group type)</p>
-<p>Step 2: index</p>
-<p>Step 1: prefix (by group type)</p>
-<p>Step 2: index</p>
-
-</div>
-</div>
 <a id="a9da7fe6d7ac333840a874ef95845f1e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9da7fe6d7ac333840a874ef95845f1e2">&#9670;&nbsp;</a></span>operator&lt;&lt;() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9da7fe6d7ac333840a874ef95845f1e2">&#9670;&nbsp;</a></span>operator&lt;&lt;()</h2>
 
 <div class="memitem">
 <div class="memproto">

@@ -181,8 +181,10 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>getTimeDifferenceMi
 <tr class="memitem:a8dd77f97e1b2e35e9b6c7cdc58ddb2b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Composite.html#a8dd77f97e1b2e35e9b6c7cdc58ddb2b5">updateInputSelector</a> (const std::string &amp;select)</td></tr>
 <tr class="memdesc:a8dd77f97e1b2e35e9b6c7cdc58ddb2b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set input selector. See @DataSelector .  <a href="classrack_1_1Composite.html#a8dd77f97e1b2e35e9b6c7cdc58ddb2b5">More...</a><br /></td></tr>
 <tr class="separator:a8dd77f97e1b2e35e9b6c7cdc58ddb2b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44ddf5e5b7cef48efdf391e670efce02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Composite.html#a44ddf5e5b7cef48efdf391e670efce02">createProjectionLookup</a> (Hi5Tree &amp;dst, const <a class="el" href="classdrain_1_1Frame2D.html">AreaGeometry</a> &amp;binGeometry={500, 360})</td></tr>
-<tr class="separator:a44ddf5e5b7cef48efdf391e670efce02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e839b032686b5a904e5e8f97f9314b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Composite.html#a7e839b032686b5a904e5e8f97f9314b8">createBinIndex</a> (Hi5Tree &amp;dst)</td></tr>
+<tr class="separator:a7e839b032686b5a904e5e8f97f9314b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3daf54ce62b5dbad17a9f77ef93bfc8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Composite.html#ae3daf54ce62b5dbad17a9f77ef93bfc8">createBinIndex</a> (Hi5Tree &amp;dst, const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;<a class="el" href="classrack_1_1RadarAccumulator.html#a1ad53a87806b527f8bd6307d25d71fb8">odim</a>)</td></tr>
+<tr class="separator:ae3daf54ce62b5dbad17a9f77ef93bfc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1RadarAccumulator"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1RadarAccumulator')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1RadarAccumulator.html">RadarAccumulator&lt; drain::image::AccumulatorGeo, CartesianODIM &gt;</a></td></tr>
 <tr class="memitem:a5fd2fd7fc7c488d4f7b9b79a49255a8c inherit pub_methods_classrack_1_1RadarAccumulator"><td class="memItemLeft" align="right" valign="top"><a id="a5fd2fd7fc7c488d4f7b9b79a49255a8c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarAccumulator.html#a5fd2fd7fc7c488d4f7b9b79a49255a8c">RadarAccumulator</a> ()</td></tr>
@@ -488,6 +490,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a68f91002b67512ba42f64e8cf1492b1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Composite.html#a68f91002b67512ba42f64e8cf1492b1b">addPolarInnerLoop</a> (const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcData, const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcQuality, double priorWeight, const <a class="el" href="classrack_1_1RadarProj.html">RadarProj</a> &amp;pRadarToComposite, const <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; int &gt; &amp;bboxPix)</td></tr>
+<tr class="separator:a68f91002b67512ba42f64e8cf1492b1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af95544f2b101c46ce929f04535bc9fea"><td class="memItemLeft" align="right" valign="top"><a id="af95544f2b101c46ce929f04535bc9fea"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>updateNodeMap</b> (const std::string &amp;node, int i, int j)</td></tr>
 <tr class="separator:af95544f2b101c46ce929f04535bc9fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -725,12 +729,66 @@ Handling special codes undetect and nodata</h1>
 <p>GEOGRAPHIC DEFINITIONS: USE THOSE OF THE MAIN COMPOSITE, OR USE AEQD FOR SINGLE RADAR</p>
 <p>Note: area not yet defined.</p>
 <p>Check mapping for the origin (= location of the radar)?</p>
-<p>Limit to data extent</p>
-<p>Area for main loop</p>
 <hr  />
-<p> DATA PROEJCTION (MAIN LOOP)</p>
+<p> DATA PROJECTION (MAIN LOOP)</p>
+<hr  />
+
+</div>
+</div>
+<a id="a68f91002b67512ba42f64e8cf1492b1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68f91002b67512ba42f64e8cf1492b1b">&#9670;&nbsp;</a></span>addPolarInnerLoop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void addPolarInnerLoop </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>srcData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>srcQuality</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>priorWeight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classrack_1_1RadarProj.html">RadarProj</a> &amp;&#160;</td>
+          <td class="paramname"><em>pRadarToComposite</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>bboxPix</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<hr  />
+<p> DATA PROJECTION (MAIN LOOP)</p>
 <p>if (((pComp.y%15)==0) &amp;&amp; ((pComp.x % 15) ==0)){ std::cerr &lt;&lt; pMetric.x &lt;&lt; ' '; };</p>
-<p>TODO: check nodata</p>
 
 </div>
 </div>
@@ -755,14 +813,33 @@ Handling special codes undetect and nodata</h1>
 
 </div>
 </div>
-<a id="a44ddf5e5b7cef48efdf391e670efce02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44ddf5e5b7cef48efdf391e670efce02">&#9670;&nbsp;</a></span>createProjectionLookup()</h2>
+<a id="a7e839b032686b5a904e5e8f97f9314b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e839b032686b5a904e5e8f97f9314b8">&#9670;&nbsp;</a></span>createBinIndex() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void createProjectionLookup </td>
+          <td class="memname">void createBinIndex </td>
+          <td>(</td>
+          <td class="paramtype">Hi5Tree &amp;&#160;</td>
+          <td class="paramname"><em>dst</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Automatically creates some metadata.</p>
+
+</div>
+</div>
+<a id="ae3daf54ce62b5dbad17a9f77ef93bfc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3daf54ce62b5dbad17a9f77ef93bfc8">&#9670;&nbsp;</a></span>createBinIndex() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void createBinIndex </td>
           <td>(</td>
           <td class="paramtype">Hi5Tree &amp;&#160;</td>
           <td class="paramname"><em>dst</em>, </td>
@@ -770,8 +847,8 @@ Handling special codes undetect and nodata</h1>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Frame2D.html">AreaGeometry</a> &amp;&#160;</td>
-          <td class="paramname"><em>binGeometry</em> = <code>{500,360}</code>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;&#160;</td>
+          <td class="paramname"><em>odim</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

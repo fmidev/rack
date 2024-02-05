@@ -565,10 +565,13 @@ public:
 	*/
 
 	/// Given a \c dataset subtree, like tree["dataset3"], constructs a data map of desired quantities.
-	DataGroup(typename DT::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
+
+	// DataGroup(typename DT::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
+	DataGroup(typename DT::tree_t & tree, const QuantitySelector & slct = QuantitySelector()) :
 		// TreeWrapper<typename DT::datatype_t>(tree), odim(tree.data.image) {
 		TreeWrapper<typename DT::datatype_t>(tree) {
-		init(tree, *this, quantityRegExp);
+		//init(tree, *this, quantityRegExp);
+		init(tree, *this, slct);
 	}
 
 	/*
@@ -608,8 +611,12 @@ public:
 		return (this->find(quantity) != this->end());
 	}
 
-
 	const data_t & getData(const std::string & quantity) const {
+		return getData(quantity.c_str());
+	}
+
+
+	const data_t & getData(const char *quantity) const {
 
 		//drain::Logger mout(__FILE__, __FUNCTION__); //
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G) + "}");
@@ -626,8 +633,12 @@ public:
 		}
 	}
 
-
 	data_t & getData(const std::string & quantity) {
+		return getData(quantity.c_str());
+	}
+
+
+	data_t & getData(const char *quantity) {
 
 		//drain::Logger mout(__FILE__, __FUNCTION__); //REPL "DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G) + "}");
@@ -653,21 +664,32 @@ public:
 
 	}
 
-	const data_t& getData(const drain::RegExp & regExp) const {
+	//const data_t& getData(const drain::RegExp & regExp) const {
+	const data_t& getData(const QuantitySelector & slct) const {
 
 		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G)+"(RegExp) {const}", __FUNCTION__);
-		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
+		drain::Logger mout("getData(QuantitySelector)", "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
-		//mout.warn("const " );
-
-		for (typename datagroup_t::const_iterator it = this->begin(); it != this->end(); ++it){
-			if (regExp.test(it->first)){
-				mout.debug("quantity " , it->first , " matches " , regExp );
-				return it->second;
+		// NEW
+		for (const QuantityMatcher & m: slct.getList()){
+			for (const auto & entry: *this){
+				if (m.test(entry.first)){
+					mout.debug("quantity " , entry.first , " matches " , slct);
+					return entry.second;
+				}
 			}
 		}
 
-		mout.note("no quantity match for " , regExp );
+		/*  OLD
+		for (typename datagroup_t::const_iterator it = this->begin(); it != this->end(); ++it){
+			if (slct.testQuantity(it->first)){
+				mout.debug("quantity " , it->first , " matches " , slct);
+				return it->second;
+			}
+		}
+		*/
+
+		mout.note("no quantity matched with " , slct);
 
 		return getEmpty();
 
@@ -796,20 +818,22 @@ protected:
 	 * 	\param quantityRegExp - optional quantity filter, if only a subset is desired.
 	 */
 	static
-	typename DT::tree_t & init(typename DT::tree_t & t, datagroup_t & dst, const drain::RegExp & quantityRegExp = drain::RegExp()){
+	typename DT::tree_t & init(typename DT::tree_t & t, datagroup_t & dst, const QuantitySelector & slct = QuantitySelector()){
+	// typename DT::tree_t & init(typename DT::tree_t & t, datagroup_t & dst, const drain::RegExp & quantityRegExp = drain::RegExp()){
 
 		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
-		const bool USE_REGEXP = quantityRegExp.isSet();
+		//const bool USE_REGEXP = quantityRegExp.isSet();
+		const bool USE_SELECTOR = slct.isSet();
 
 		// Number of potential groups for debug note at end
 		unsigned short counter = 0;
 
-		mout.debug3()<< "collecting data items";
-		if (USE_REGEXP)
-			mout << ", RegExp=" << quantityRegExp.toStr();
-		mout << mout.endl;
+		mout.debug3("collecting data items, selector='", slct, "'");
+		//if (USE_REGEXP)
+		//	mout << ", regExp=" << quantityRegExp.toStr();
+		//mout << mout.endl;
 
 		// #pragma omp critical //(h5insert2)
 		{
@@ -832,6 +856,18 @@ protected:
 
 				const std::string & quantity = !dataQuantity.empty() ? dataQuantity : datasetQuantity;
 
+				if (USE_SELECTOR){
+					++counter; // candidate count
+					if (!slct.testQuantity(quantity)){
+					//if (!quantityRegExp.test(quantity)){
+						//if (it->second.hasChild("quality1"))
+						//	mout.warn(it->first , "...rejecting, but has quality?" );
+						mout.debug3("rejected '" , entry.first , "' [" , quantity , "] !~" , slct ); // quantityRegExp.toStr()
+						continue;
+					}
+				}
+
+				/*
 				if (USE_REGEXP){
 					++counter; // candidate count
 					if (!quantityRegExp.test(quantity)){
@@ -841,6 +877,7 @@ protected:
 						continue;
 					}
 				}
+				*/
 
 				mout.accept<LOG_DEBUG+2>("accept '", entry.first, "' [", quantity, ']' );
 
@@ -873,8 +910,9 @@ protected:
 			}
 		} // end pragma
 
-		if (USE_REGEXP)
-			mout.debug3("matched " , dst.size() , "(out of " , counter , ") data items with RegExp=/" , quantityRegExp.toStr() , '/' );
+		if (USE_SELECTOR)
+			mout.debug3("matched " , dst.size() , "(out of " , counter , ") data items with selector: " , slct , '/' );
+			//mout.debug3("matched " , dst.size() , "(out of " , counter , ") data items with RegExp=/" , quantityRegExp.toStr() , '/' );
 		else
 			mout.debug3("collected " , dst.size() , " data items" );
 
@@ -983,10 +1021,12 @@ public:
 	 *  \return - \c data[i]/quality[j] for which \c quantity=[quantity]
 	 *
 	 */
+	/*
 	inline
 	const plaindata_t & getQualityData(const drain::RegExp & quantityRE) const {
 		return this->quality.getData(quantityRE);
 	}
+	*/
 
 
 	/// Finds associated quality data - maybe empty and unscaled.
@@ -1136,9 +1176,12 @@ public:
 	typedef typename datagroup_t::map_t  map_t;
 
 
+	inline
 	/// Given a \c dataset subtree, like tree["dataset3"], constructs a data map of desired quantities.
-	DataSet(typename data_t::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
-		datagroup_t(tree, quantityRegExp), QualityDataSupport<DT>(tree)
+	//DataSet(typename data_t::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
+	DataSet(typename data_t::tree_t & tree, const QuantitySelector & slct = QuantitySelector()) :
+		//datagroup_t(tree, quantityRegExp), QualityDataSupport<DT>(tree)
+		datagroup_t(tree, slct), QualityDataSupport<DT>(tree)
 		{
 	}
 

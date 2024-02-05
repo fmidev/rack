@@ -102,8 +102,10 @@ void NodeSVG::setType(type t) {
 		link("y", y = 0);
 		link("width", width = 0);
 		link("height", height = 0);
-		//link("xlink:href", text_anchor);
-		link("href", text_anchor);
+		// if (version == 1) {
+		link("xlink:href", text_anchor);
+		// if (version > 2.x ?) {
+		//link("href", text_anchor);
 		break;
 	case CTEXT:
 		tag = "";

@@ -52,99 +52,185 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-/// Utility for selecting a quantity label    Base class for DataSelector.
-class QuantitySelector { // string temporary ?
+class QuantityMatcher : protected drain::RegExp {
 
 public:
 
+	const std::string & value;
+
+	inline
+	QuantityMatcher(const std::string & s = "") : value(regExpString), isRegExp(false){
+		set(s);
+	}
+
+	inline
+	QuantityMatcher(const QuantityMatcher & matcher) : value(regExpString), isRegExp(false){
+		set(matcher.value);
+	}
+
+	void set(const std::string & s);
+
+	inline
+	bool operator==(const std::string &s) const {
+		return test(s);
+	}
+
+	inline
+	bool operator==(const char *s) const {
+		return test(s);
+	}
+
+	bool test(const std::string & s) const;
+
+	/// Checks if the key conforms to ODIM convention: DBZH, VRAD, etc. (capital letters, underscores)
+	/**
+	 *  This is used for example by PaletteOp
+	 *
+	 *	static bool validateKey(const std::string & key);
+	 *
+	 */
+
+protected:
+
+	bool isRegExp;
+
+
+};
+
+
+inline
+std::ostream & operator<<(std::ostream & ostr, const QuantityMatcher & m){
+	ostr << m.value;
+	return ostr;
+}
+
+
+/// Utility for selecting a quantity label    Base class for DataSelector.
+class QuantitySelector : public std::list<QuantityMatcher> { // string temporary ?
+
+public:
+
+	//typedef std::list<std::string> quantity_list;
+	typedef std::list<QuantityMatcher> quantity_list;
+
+	/// Basic constructor
 	template<typename ... TT>
 	inline
 	QuantitySelector(const TT &... args){
-		setQuantity(args...);
+		// reset not needed
+		addQuantity(args...);
 	};
 
+	/// Copy constructor. Copies the list of quantities.
+	inline
+	QuantitySelector(const QuantitySelector &slct) : std::list<QuantityMatcher>(slct) {
+	};
+
+
+	/// Destructor
 	virtual inline
 	~QuantitySelector(){};
 
+
+	/// Define the list of accepted quantities.
+	/**
+	 *
+	 *  \param arg  - this first arg can be also a comma-separated list of quantities - literals or regExps.
+	 *  \param args - separate list of quantities - literals or regExps.
+	 */
 	template <typename ...TT>
-	void setQuantity(const TT & ... args){
-		clear();
+	void setQuantity(const std::string & arg, const TT & ... args){
+		//clear();
+		setQuantities(arg); // split and adapt
 		addQuantity(args...);
 	}
 
+	/// Define the list of accepted quantities as a string.
+	/**
+	 *  \param args - comma-separated list of quantities: literals or regexps.
+	 *  \param separators - can be also ",:" and contain ':' if that is not used in the regexps.
+	 */
+	void setQuantities(const std::string & args); // , const std::string & separators = ","
 
-	void setQuantityRegExp(const std::string & r);
-
+	/// Define a syntax for quantity key. Will be checked if listed quantity keys do not match.
+	/**
+	 *  \param r - regular expression, like "^DBZ[HV]?C?$
+	 */
+	// void setQuantityRegExp(const std::string & r);
 	template <typename T, typename ...TT>
 	void addQuantity(const T & arg, const TT & ... args){
 		adaptQuantity(arg);
 		addQuantity(args...);
 	}
 
-	inline
-	void clear(){
-		regExp.clear();
-		quantities.clear();
-	}
 
 	bool testQuantity(const std::string & s) const;
 
 	inline
 	bool isSet() const {
-		return (regExp.isSet() || !quantities.empty()) ;
+		return !empty();
+		//return (regExp.isSet() || !quantities.empty()) ;
 	}
 
 	/// Returns the fistt (the primary) quantity.
 	//Deprecating? Consider quantityMatcher
 	inline
 	const std::string & getQuantity() const { // rename getQuantities
-		// static const std::string empty;
-		if (quantities.empty()){
-			return regExp.toStr();
+		static const std::string dummy;
+
+		if (empty()){
+			return dummy;
+			//return regExp.toStr();
 		}
 		else {
-			return quantities.front();
+			//return quantities.front().value;
+			return front().value;
 		}
 	}
 
+	/*
 	inline
 	const QuantitySelector & getQuantitySelector() const {
 		return *this;
 	}
+	*/
+
+	inline
+	const quantity_list & getList() const {
+		return *this;
+		//return quantities;
+	}
+
+	/*
+	inline
+	const drain::RegExp & getRegExp() const {
+		return regExp;
+	}
+	*/
 
 	// TODO add filter, allowing ODIMPathElem::group_t == QUALITY
 	static
 	void getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m);
 
-	typedef std::list<std::string> quantity_list;
-
 	void toStream(std::ostream & ostr) const ;
-
 
 
 protected:
 
+	// inline
+	// void setQuantity(){};
 
-	void addQuantity();
-
-
-	virtual inline
-	void appendQuantity(const drain::RegExp & r){
-		// DETECT regexp
-		// regExp.set(r);
-	}
-
-
-private:
+	inline
+	void addQuantity(){};
 
 	void adaptQuantity(const std::string & s);
 
 	/// Data quantity (excluding quality data, like QIND or CLASS)
-	mutable // called by updateBean()?
-	drain::RegExp regExp;
+	//mutable // called by updateBean()?
+	//drain::RegExp regExp;
 
 	//mutable
-	quantity_list quantities;
+	// quantity_list quantities;
 
 
 };

@@ -160,7 +160,7 @@ $(function() {
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        allowedEncoding.link(<span class="stringliteral">&quot;gain&quot;</span>, odim.scaling.scale);</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        allowedEncoding.link(<span class="stringliteral">&quot;offset&quot;</span>, odim.scaling.offset);</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        dataSelector.quantity = <span class="stringliteral">&quot;^DBZH$&quot;</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;^DBZH$&quot;</span>);</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
@@ -196,13 +196,13 @@ $(function() {
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RACKOP_H_ */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">// Rack</span></div>
-<div class="ttc" id="aclassrack_1_1DataSetMap_html"><div class="ttname"><a href="classrack_1_1DataSetMap.html">rack::DataSetMap</a></div><div class="ttdef"><b>Definition:</b> Data.h:1252</div></div>
-<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1114</div></div>
+<div class="ttc" id="aclassrack_1_1DataSetMap_html"><div class="ttname"><a href="classrack_1_1DataSetMap.html">rack::DataSetMap</a></div><div class="ttdef"><b>Definition:</b> Data.h:1268</div></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1130</div></div>
 <div class="ttc" id="aclassrack_1_1PlainData_html"><div class="ttname"><a href="classrack_1_1PlainData.html">rack::PlainData</a></div><div class="ttdoc">Essential class for storing radar data.</div><div class="ttdef"><b>Definition:</b> Data.h:285</div></div>
 <div class="ttc" id="aclassrack_1_1PolarODIM_html"><div class="ttname"><a href="classrack_1_1PolarODIM.html">rack::PolarODIM</a></div><div class="ttdoc">Metadata structure for single-radar data (polar scans, volumes and products).</div><div class="ttdef"><b>Definition:</b> PolarODIM.h:44</div></div>
 <div class="ttc" id="aclassrack_1_1PseudoRhiOp_html"><div class="ttname"><a href="classrack_1_1PseudoRhiOp.html">rack::PseudoRhiOp</a></div><div class="ttdoc">Pseudo Range-Height indicator.</div><div class="ttdef"><b>Definition:</b> PseudoRhiOp.h:51</div></div>
 <div class="ttc" id="aclassrack_1_1PseudoRhiOp_html_ab130d33f06d9ebd4c579a364f2d76dd0"><div class="ttname"><a href="classrack_1_1PseudoRhiOp.html#ab130d33f06d9ebd4c579a364f2d76dd0">rack::PseudoRhiOp::relativeBeamPower</a></div><div class="ttdeci">static double relativeBeamPower(double angle, double beamWidth2)</div><div class="ttdef"><b>Definition:</b> PseudoRhiOp.h:120</div></div>
-<div class="ttc" id="aclassrack_1_1VolumeOp_html"><div class="ttname"><a href="classrack_1_1VolumeOp.html">rack::VolumeOp</a></div><div class="ttdoc">Base class for radar data processors.</div><div class="ttdef"><b>Definition:</b> VolumeOp.h:87</div></div>
+<div class="ttc" id="aclassrack_1_1VolumeOp_html"><div class="ttname"><a href="classrack_1_1VolumeOp.html">rack::VolumeOp</a></div><div class="ttdoc">Base class for radar data processors.</div><div class="ttdef"><b>Definition:</b> VolumeOp.h:88</div></div>
 <div class="ttc" id="anamespacedrain_1_1image_html"><div class="ttname"><a href="namespacedrain_1_1image.html">drain::image</a></div><div class="ttdoc">Namespace for images and image processing tools.</div><div class="ttdef"><b>Definition:</b> AccumulationArray.cpp:47</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 </div><!-- fragment --></div><!-- contents -->

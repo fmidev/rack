@@ -126,7 +126,7 @@ $(function() {
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="classrack_1_1SunShineOp.html">SunShineOp</a>() : <span class="comment">// const std::string &amp; type=&quot;S&quot;, double gain=100.0, long int nbins=0, double rscale=0) :</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(__FUNCTION__, <span class="stringliteral">&quot;Computes the sun position&quot;</span>)</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        dataSelector.count = 1;  <span class="comment">// or 0?  does not need input data arrays</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        dataSelector.setMaxCount(1);  <span class="comment">// or 0?  does not need input data arrays</span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        odim.product = <span class="stringliteral">&quot;SUNSHINE&quot;</span>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        odim.area.width = 500;</div>
@@ -142,7 +142,7 @@ $(function() {
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        parameters.link(<span class="stringliteral">&quot;quantity&quot;</span>, odim.quantity=<span class="stringliteral">&quot;SUNSHINE&quot;</span>);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        odim.quantity = <span class="stringliteral">&quot;SUNSHINE&quot;</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="comment">//dataSelector.quantity = &quot;&quot;;</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="comment">//dataSelector.setQuantity(&quot;&quot;);</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="comment">// NOTE! A dataset for each elevation groups; should suffit for nbins and rscale.</span></div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="comment">// However, if a user wants to use quantity, /dataN/ should be reached.</span></div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
@@ -173,7 +173,7 @@ $(function() {
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/*POLARCappi_H_*/</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">// Rack</span></div>
-<div class="ttc" id="aclassrack_1_1Data_html"><div class="ttname"><a href="classrack_1_1Data.html">rack::Data</a></div><div class="ttdoc">Data structure consisting of plain data and an optional quality data.</div><div class="ttdef"><b>Definition:</b> Data.h:1045</div></div>
+<div class="ttc" id="aclassrack_1_1Data_html"><div class="ttname"><a href="classrack_1_1Data.html">rack::Data</a></div><div class="ttdoc">Data structure consisting of plain data and an optional quality data.</div><div class="ttdef"><b>Definition:</b> Data.h:1061</div></div>
 <div class="ttc" id="aclassrack_1_1PolarProductOp_html"><div class="ttname"><a href="classrack_1_1PolarProductOp.html">rack::PolarProductOp</a></div><div class="ttdoc">Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input.</div><div class="ttdef"><b>Definition:</b> PolarProductOp.h:61</div></div>
 <div class="ttc" id="aclassrack_1_1SunShineOp_html"><div class="ttname"><a href="classrack_1_1SunShineOp.html">rack::SunShineOp</a></div><div class="ttdoc">A single-ray &quot;product&quot; storing the altitude at each bin.</div><div class="ttdef"><b>Definition:</b> SunShineOp.h:50</div></div>
 <div class="ttc" id="anamespacedrain_1_1image_html"><div class="ttname"><a href="namespacedrain_1_1image.html">drain::image</a></div><div class="ttdoc">Namespace for images and image processing tools.</div><div class="ttdef"><b>Definition:</b> AccumulationArray.cpp:47</div></div>

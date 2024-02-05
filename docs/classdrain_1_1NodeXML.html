@@ -115,6 +115,9 @@ typedef <a class="el" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2</a>&
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:adbfe1c360837678c4a64b6522ed2aa45"><td class="memItemLeft" align="right" valign="top"><a id="adbfe1c360837678c4a64b6522ed2aa45"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>NodeXML</b> (const <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;node)</td></tr>
+<tr class="separator:adbfe1c360837678c4a64b6522ed2aa45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c828f737d77b497c80f2c64f915fbcf"><td class="memItemLeft" align="right" valign="top"><a id="a2c828f737d77b497c80f2c64f915fbcf"></a>
 const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTag</b> () const</td></tr>
 <tr class="separator:a2c828f737d77b497c80f2c64f915fbcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,6 +125,12 @@ const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>ge
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a9ca0ccc3c82a12e5e58490f9daccdca8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (const std::string &amp;key, const T &amp;value)</td></tr>
 <tr class="separator:a9ca0ccc3c82a12e5e58490f9daccdca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af053c4abf8587130e0cb336553e64b21"><td class="memItemLeft" align="right" valign="top"><a id="af053c4abf8587130e0cb336553e64b21"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="classdrain_1_1Variable.html">drain::Variable</a> &gt; &gt; &amp;l)</td></tr>
+<tr class="separator:af053c4abf8587130e0cb336553e64b21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99ef01904fcf8e364b424efcd3d6a225"><td class="memItemLeft" align="right" valign="top"><a id="a99ef01904fcf8e364b424efcd3d6a225"></a>
+<a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="classdrain_1_1Variable.html">drain::Variable</a> &gt; &gt; &amp;l)</td></tr>
+<tr class="separator:a99ef01904fcf8e364b424efcd3d6a225"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memItemLeft" align="right" valign="top"><a id="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</td></tr>
 <tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,9 +141,9 @@ Static Public Member Functions</h2></td></tr>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a745d08ea60b11e2013eb3f0248dd52ac"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>attribToStream</b> (std::ostream &amp;ostr, const std::string &amp;key, const T &amp;value)</td></tr>
 <tr class="separator:a745d08ea60b11e2013eb3f0248dd52ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbf3391bf859e812ca07c7133c7f7efb"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:afbf3391bf859e812ca07c7133c7f7efb"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#afbf3391bf859e812ca07c7133c7f7efb">toStream</a> (std::ostream &amp;ostr, const T &amp;t, const std::string &amp;defaultTag=&quot;&quot;)</td></tr>
-<tr class="separator:afbf3391bf859e812ca07c7133c7f7efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5b08063ab4666fffe33bc0e20d1e1c3"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:aa5b08063ab4666fffe33bc0e20d1e1c3"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#aa5b08063ab4666fffe33bc0e20d1e1c3">toStream</a> (std::ostream &amp;ostr, const T &amp;t, const std::string &amp;defaultTag=&quot;&quot;, int indent=0)</td></tr>
+<tr class="separator:aa5b08063ab4666fffe33bc0e20d1e1c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -314,8 +323,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> (cha
 <tr class="separator:ac2236179b2770b16ac72abb636634efd inherit pro_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="afbf3391bf859e812ca07c7133c7f7efb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbf3391bf859e812ca07c7133c7f7efb">&#9670;&nbsp;</a></span>toStream()</h2>
+<a id="aa5b08063ab4666fffe33bc0e20d1e1c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5b08063ab4666fffe33bc0e20d1e1c3">&#9670;&nbsp;</a></span>toStream()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -339,7 +348,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> (cha
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>defaultTag</em> = <code>&quot;&quot;</code>&#160;</td>
+          <td class="paramname"><em>defaultTag</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>indent</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

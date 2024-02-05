@@ -1,8 +1,8 @@
 var searchData=
 [
   ['damperop_387',['DamperOp',['../classrack_1_1DamperOp.html#a54337b4dc9bcfe46a76b098011be0ff9',1,'rack::DamperOp::DamperOp()'],['../classrack_1_1DamperOp.html',1,'DamperOp']]],
-  ['data_388',['DATA',['../classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f',1,'rack::ODIMPathElem']]],
-  ['data_389',['data',['../classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67',1,'drain::DRAIN_TREE_NAME::data()'],['../classdrain_1_1image_1_1AccumulationArray.html#a1cbd022800989bd92fa1cd54b0d05d27',1,'drain::image::AccumulationArray::data()']]],
+  ['data_388',['data',['../classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67',1,'drain::DRAIN_TREE_NAME::data()'],['../classdrain_1_1image_1_1AccumulationArray.html#a1cbd022800989bd92fa1cd54b0d05d27',1,'drain::image::AccumulationArray::data()']]],
+  ['data_389',['DATA',['../classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f',1,'rack::ODIMPathElem']]],
   ['data_390',['Data',['../classrack_1_1Data.html',1,'rack']]],
   ['data2_391',['data2',['../classdrain_1_1image_1_1AccumulationArray.html#a744c0e80e0a791d32c1bbd833afd7738',1,'drain::image::AccumulationArray']]],
   ['data_5fgroups_392',['DATA_GROUPS',['../classrack_1_1ODIMPathElem.html#ab8c31771d3dd020765063e9e14f03df4',1,'rack::ODIMPathElem']]],
@@ -57,7 +57,7 @@ var searchData=
   ['deleteexcluded_441',['deleteExcluded',['../classhi5_1_1Hi5Base.html#a6ffc3d791e1d56c407fa7806081bf948',1,'hi5::Hi5Base']]],
   ['delink_442',['delink',['../classdrain_1_1ReferenceMap.html#ab887035f69b8c9d392d3c2a5de894d55',1,'drain::ReferenceMap']]],
   ['deprecated_20list_443',['Deprecated List',['../deprecated.html',1,'']]],
-  ['deprecating_444',['deprecating',['../classdrain_1_1Logger.html#ad30680a13f3aecbb354c0763560f1506',1,'drain::Logger']]],
+  ['deprecating_444',['deprecating',['../classdrain_1_1Logger.html#a083cb0ca55f83236c9a5c3a4e8c7f855',1,'drain::Logger']]],
   ['derivativedbz_445',['derivativeDBZ',['../classrack_1_1JammingOp.html#a387e6ea6daae7c2974928e69e4523b81',1,'rack::JammingOp']]],
   ['derivecmdname_446',['deriveCmdName',['../classdrain_1_1CommandBank.html#afe12f5ad6907164ef8e296967f9f0efa',1,'drain::CommandBank']]],
   ['derivedifference_447',['deriveDifference',['../classrack_1_1PolarODIM.html#ae2838d7a548a05e7cdc9427562634404',1,'rack::PolarODIM']]],
@@ -80,7 +80,7 @@ var searchData=
   ['dictionaryptr_464',['DictionaryPtr',['../classdrain_1_1DictionaryPtr.html',1,'drain']]],
   ['diff_465',['diff',['../classdrain_1_1image_1_1DistanceElement.html#a8b6b514797305858e0a8522260c08361',1,'drain::image::DistanceElement']]],
   ['differentialop_466',['DifferentialOp',['../classdrain_1_1image_1_1DifferentialOp.html',1,'drain::image']]],
-  ['discouraged_467',['discouraged',['../classdrain_1_1Logger.html#acfa5696605915e294d194619c5212a1c',1,'drain::Logger']]],
+  ['discouraged_467',['discouraged',['../classdrain_1_1Logger.html#aceade9e146997e555f046a7422fe2665',1,'drain::Logger']]],
   ['distanceelement_468',['DistanceElement',['../classdrain_1_1image_1_1DistanceElement.html',1,'drain::image']]],
   ['distancefunction_469',['distanceFunction',['../classdrain_1_1Som.html#a240a444235c7161ecd0e3fbad88a2473',1,'drain::Som']]],
   ['distancemodel_470',['DistanceModel',['../classdrain_1_1image_1_1DistanceModel.html#a3430dc22b6f95463ca1c9a8d14a2e181',1,'drain::image::DistanceModel::DistanceModel()'],['../classdrain_1_1image_1_1DistanceModel.html',1,'DistanceModel']]],

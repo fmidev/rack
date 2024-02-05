@@ -239,6 +239,7 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 
 		//DataSelector selector(ODIMPathElem::DATA);
 		DataSelector selector(ODIMPathElem::DATA, ODIMPathElem::ARRAY);
+		// mout.attention("status metadat0: ", select, " -> '", selector, "'"); //, ", orderFlags=", selector.order.str);
 		mout.debug2("selector orderFlags=", selector.getOrder());
 		//mout.special("selector orderFlags.value=", selector.orderFlags.value );
 		//mout.special("selector orderFlags.own=",   selector.orderFlags.ownValue );
@@ -247,7 +248,7 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 		selector.setParameters(select);
 		selector.setMaxCount(1); // Because just one path wanted (below)
 
-		mout.debug("status metadata selector: ", selector, " <- '", select, "'"); //, ", orderFlags=", selector.order.str);
+		// mout.attention("status metadata: ", select, " -> '", selector, "'"); //, ", orderFlags=", selector.order.str);
 		// mout.debug("status metadata selector: ", selector, " <- ", select, "orderFlags=", selector.orderFlags);
 
 		ODIMPath path;

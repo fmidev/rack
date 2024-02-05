@@ -120,7 +120,7 @@ $(function() {
 <div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classrack_1_1NonMetOp.html#a6acee5f7f3b48da83d35d4106edf32de">   59</a></span>&#160;    <a class="code" href="classrack_1_1NonMetOp.html#a6acee5f7f3b48da83d35d4106edf32de">NonMetOp</a>(<span class="keywordtype">double</span> threshold=0.4, <span class="keywordtype">double</span> thresholdWidth=0.2, <span class="keywordtype">double</span> windowWidth=0.0, <span class="keywordtype">double</span> windowHeight=0.0, <span class="keywordtype">double</span> medianPos=0.95) :</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="classrack_1_1DetectorOp.html">DetectorOp</a>(__FUNCTION__,<span class="stringliteral">&quot;Detects clutter. Based on dual-pol parameter RhoHV . Optional postprocessing: morphological closing. Universal.&quot;</span>, <span class="stringliteral">&quot;nonmet&quot;</span>){</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        dataSelector.quantity = <span class="stringliteral">&quot;RHOHV&quot;</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;RHOHV&quot;</span>);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        REQUIRE_STANDARD_DATA = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        UNIVERSAL = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>

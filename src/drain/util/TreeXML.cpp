@@ -40,14 +40,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+template <>
+TreeXML & TreeXML::addChild(const TreeXML::key_t & key){
+	drain::Logger mout(__FILE__,__FUNCTION__);
+	mout.unimplemented("replace TreeXML::addChild");
+	return *this;
+}
+
 int NodeXML::nextID = 0;
 
 
 NodeXML::NodeXML(const NodeXML & node) : id(++NodeXML::nextID) {
 	copyStruct(node, node, *this, RESERVE); // This may corrupt (yet unconstructed) object?
 }
-//static
 
-}  // namespace drain
-
-// Rack
+}  // drain::

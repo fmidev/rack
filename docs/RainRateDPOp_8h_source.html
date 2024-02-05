@@ -125,8 +125,8 @@ $(function() {
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        dbzRange(30.0, 50.0), kdpRange(0.25, 0.35), zdrRange(0.15, 0.25)</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        {</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        dataSelector.quantity = <span class="stringliteral">&quot;^(DBZH|RHOHV|KDP|ZDR|QIND)$&quot;</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        dataSelector.count = 1;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;^(DBZH|RHOHV|KDP|ZDR|QIND)$&quot;</span>);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        dataSelector.setMaxCount(1);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        odim.product = <span class="stringliteral">&quot;SURF&quot;</span>;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        odim.quantity = <span class="stringliteral">&quot;RATE&quot;</span>;</div>
@@ -208,8 +208,8 @@ $(function() {
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">// Rack</span></div>
 <div class="ttc" id="aclassdrain_1_1Fuzzifier_html"><div class="ttname"><a href="classdrain_1_1Fuzzifier.html">drain::Fuzzifier</a></div><div class="ttdoc">A base class for fuzzy functions; also an unary functor.</div><div class="ttdef"><b>Definition:</b> Fuzzy.h:55</div></div>
 <div class="ttc" id="aclassdrain_1_1Range_html"><div class="ttname"><a href="classdrain_1_1Range.html">drain::Range&lt; double &gt;</a></div></div>
-<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1114</div></div>
-<div class="ttc" id="aclassrack_1_1Data_html"><div class="ttname"><a href="classrack_1_1Data.html">rack::Data</a></div><div class="ttdoc">Data structure consisting of plain data and an optional quality data.</div><div class="ttdef"><b>Definition:</b> Data.h:1045</div></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1130</div></div>
+<div class="ttc" id="aclassrack_1_1Data_html"><div class="ttname"><a href="classrack_1_1Data.html">rack::Data</a></div><div class="ttdoc">Data structure consisting of plain data and an optional quality data.</div><div class="ttdef"><b>Definition:</b> Data.h:1061</div></div>
 <div class="ttc" id="aclassrack_1_1DoubleParamPrecip_html"><div class="ttname"><a href="classrack_1_1DoubleParamPrecip.html">rack::DoubleParamPrecip</a></div><div class="ttdef"><b>Definition:</b> Precipitation.h:121</div></div>
 <div class="ttc" id="aclassrack_1_1PlainData_html"><div class="ttname"><a href="classrack_1_1PlainData.html">rack::PlainData</a></div><div class="ttdoc">Essential class for storing radar data.</div><div class="ttdef"><b>Definition:</b> Data.h:285</div></div>
 <div class="ttc" id="aclassrack_1_1PolarProductOp_html"><div class="ttname"><a href="classrack_1_1PolarProductOp.html">rack::PolarProductOp</a></div><div class="ttdoc">Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input.</div><div class="ttdef"><b>Definition:</b> PolarProductOp.h:61</div></div>

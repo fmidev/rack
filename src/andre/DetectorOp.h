@@ -70,7 +70,8 @@ public:
 
 		// dataSelector.path = ". * /da ta[0-9]+/?$";
 		//dataSelector.quantity = "DBZ.*";
-		dataSelector.setQuantityRegExp("^DBZH$");
+		//dataSelector.setQuantityRegExp("^DBZH$");
+		dataSelector.setQuantities("DBZH:DBZ");
 		//cumulateDetections = MAX;
 		REQUIRE_STANDARD_DATA = true;
 		UNIVERSAL = false;
@@ -115,7 +116,7 @@ public:
 	virtual inline
 	void computeProducts(const DataSetMap<PolarSrc> & srcVolume, DataSetMap<PolarDst> & dstVolume) const {
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.unimplemented("TODO... redirecting...");
+		mout.unimplemented<LOG_INFO>("TODO... redirecting...");
 		runDetection(srcVolume, dstVolume);
 	}
 

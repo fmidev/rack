@@ -91,7 +91,7 @@ $(function() {
 <div class="line"><span class="comment"></span> </div>
 <div class="line"><span class="comment"> */</span></div>
 <div class="line"><span class="comment">/*</span></div>
-<div class="line"><span class="comment"> REQUIRE: drain/util/{Log,Caster,Castable,FileInfo,FlexibleVariable,RegExp,Referencer,Sprinter,String,TreeXML,Type,Variable}.cpp</span></div>
+<div class="line"><span class="comment"> REQUIRE: drain/util/{Log,Caster,Castable,FileInfo,FlexibleVariable,RegExp,Referencer,Sprinter,String,TextStyle,TreeXML,Type,Variable}.cpp</span></div>
 <div class="line"><span class="comment"> REQUIRE: drain/image/TreeSVG.cpp</span></div>
 <div class="line"><span class="comment"></span> </div>
 <div class="line"><span class="comment">g ++ -I. drain/examples/TreeSVG-example.cpp drain/util/{Log,Caster,Castable,JSONwriter,RegExp,String,TreeXML,Type}.cpp   drain/image/TreeSVG.cpp  -o TreeSVG-example</span></div>
@@ -140,6 +140,18 @@ $(function() {
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"> </div>
+<div class="line"><span class="comment">/*</span></div>
+<div class="line"><span class="comment">void fct(drain::image::NodeSVG &amp; node, const std::initializer_list&lt;std::pair&lt;const char *, const drain::Variable&gt; &gt; &amp;l){</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">    drain::FlexVariableMap m;</span></div>
+<div class="line"><span class="comment">    drain::SmartMapTools::setValues(m, l);</span></div>
+<div class="line"><span class="comment">    std::cout &lt;&lt; m  &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><span class="comment"></span> </div>
+<div class="line"><span class="comment">    node.set(l);</span></div>
+<div class="line"><span class="comment">}</span></div>
+<div class="line"><span class="comment">*/</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">//</span></div>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv){</div>
@@ -151,12 +163,24 @@ $(function() {
 <div class="line"><span class="comment">        return 1;</span></div>
 <div class="line"><span class="comment">    }</span></div>
 <div class="line"><span class="comment">    */</span></div>
-<div class="line"> </div>
+<div class="line">    <span class="comment">/*</span></div>
+<div class="line"><span class="comment">     *</span></div>
+<div class="line"><span class="comment">    TreeSVG svg0;</span></div>
+<div class="line"><span class="comment">    Periaatteessa näin. Jos noden voi</span></div>
+<div class="line"><span class="comment">    svg0 = {</span></div>
+<div class="line"><span class="comment">            {&quot;width&quot;, 100},</span></div>
+<div class="line"><span class="comment">            {&quot;heigh&quot;, 100},</span></div>
+<div class="line"><span class="comment">    };</span></div>
+<div class="line"><span class="comment">    cout &lt;&lt; svg0;</span></div>
+<div class="line"><span class="comment">    */</span></div>
 <div class="line"> </div>
 <div class="line">    TreeSVG svg;</div>
 <div class="line">    svg-&gt;setType(NodeSVG::SVG);</div>
 <div class="line">    svg-&gt;set(<span class="stringliteral">&quot;width&quot;</span>, 100);</div>
 <div class="line">    svg-&gt;set(<span class="stringliteral">&quot;height&quot;</span>, 200);</div>
+<div class="line">    svg.data = {{<span class="stringliteral">&quot;height&quot;</span>, 222}, {<span class="stringliteral">&quot;width&quot;</span>,<span class="stringliteral">&quot;111&quot;</span>}, {<span class="stringliteral">&quot;MAMBO&quot;</span>, <span class="keyword">false</span>}};</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// svg = {{&quot;height&quot;, 333}, {&quot;width&quot;, &quot;444&quot;}, {&quot;BIMBO&quot;, true}};  (under construction... template problems)</span></div>
 <div class="line"> </div>
 <div class="line">    svg[<span class="stringliteral">&quot;first&quot;</span>]-&gt;setType(NodeSVG::GROUP);</div>
 <div class="line">    svg[<span class="stringliteral">&quot;first&quot;</span>]-&gt;set(<span class="stringliteral">&quot;style&quot;</span>, <span class="stringliteral">&quot;fill:red&quot;</span>);</div>

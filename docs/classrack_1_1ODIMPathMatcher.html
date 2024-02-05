@@ -130,9 +130,9 @@ template&lt;typename ... T&gt; </td></tr>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathMatcher.html#a023f1517a499509055441ff871d563df">isLiteral</a> () const</td></tr>
 <tr class="memdesc:a023f1517a499509055441ff871d563df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if corresponds to a single path, implying that all the index ranges are singletons. <br /></td></tr>
 <tr class="separator:a023f1517a499509055441ff871d563df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1d5bf3767f77ba05595c18cd5a6fbf7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathMatcher.html#ad1d5bf3767f77ba05595c18cd5a6fbf7">extract</a> (<a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path) const</td></tr>
-<tr class="memdesc:ad1d5bf3767f77ba05595c18cd5a6fbf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to a single path, assuming uniqueness. Future option: extract all the enumerated paths.  <a href="classrack_1_1ODIMPathMatcher.html#ad1d5bf3767f77ba05595c18cd5a6fbf7">More...</a><br /></td></tr>
-<tr class="separator:ad1d5bf3767f77ba05595c18cd5a6fbf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa015c6cbbebb3ce748e43d001ef5fdb6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathMatcher.html#aa015c6cbbebb3ce748e43d001ef5fdb6">extractPath</a> (<a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path) const</td></tr>
+<tr class="memdesc:aa015c6cbbebb3ce748e43d001ef5fdb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to a single path, assuming uniqueness. Future option: extract all the enumerated paths.  <a href="classrack_1_1ODIMPathMatcher.html#aa015c6cbbebb3ce748e43d001ef5fdb6">More...</a><br /></td></tr>
+<tr class="separator:aa015c6cbbebb3ce748e43d001ef5fdb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af401e10cb74c00e9b29975682c36e630"><td class="memItemLeft" align="right" valign="top"><a id="af401e10cb74c00e9b29975682c36e630"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathMatcher.html#af401e10cb74c00e9b29975682c36e630">match</a> (const <a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp;path) const</td></tr>
 <tr class="memdesc:af401e10cb74c00e9b29975682c36e630"><td class="mdescLeft">&#160;</td><td class="mdescRight">Match the leading part of <code>path</code> , if <code>matcher</code> starts with root. Else, match the trailing part. <br /></td></tr>
@@ -198,10 +198,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a77f782fea0a3f0646bd1e8f5af97e4ad">isRoot</a> () const</td></tr>
 <tr class="memdesc:a77f782fea0a3f0646bd1e8f5af97e4ad inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Note that an empty path is not a root. <br /></td></tr>
 <tr class="separator:a77f782fea0a3f0646bd1e8f5af97e4ad inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adab66a14b823a10aec91d583ae0e64a4 inherit pub_methods_classdrain_1_1Path"><td class="memItemLeft" align="right" valign="top"><a id="adab66a14b823a10aec91d583ae0e64a4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#adab66a14b823a10aec91d583ae0e64a4">removeTrailing</a> ()</td></tr>
-<tr class="memdesc:adab66a14b823a10aec91d583ae0e64a4 inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes trailing empty elements, except for the root itself. <br /></td></tr>
-<tr class="separator:adab66a14b823a10aec91d583ae0e64a4 inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada8b6fb3840daf16e30b9459877f5aad inherit pub_methods_classdrain_1_1Path"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#ada8b6fb3840daf16e30b9459877f5aad">trimHead</a> (bool COMPLETE=false)</td></tr>
+<tr class="memdesc:ada8b6fb3840daf16e30b9459877f5aad inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes leading empty elements. The resulting string presentation will not start with the separator.  <a href="classdrain_1_1Path.html#ada8b6fb3840daf16e30b9459877f5aad">More...</a><br /></td></tr>
+<tr class="separator:ada8b6fb3840daf16e30b9459877f5aad inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf80c1dec12e6ba79a26261728eb207c inherit pub_methods_classdrain_1_1Path"><td class="memItemLeft" align="right" valign="top"><a id="acf80c1dec12e6ba79a26261728eb207c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#acf80c1dec12e6ba79a26261728eb207c">trimTail</a> (bool COMPLETE=false)</td></tr>
+<tr class="memdesc:acf80c1dec12e6ba79a26261728eb207c inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes trailing empty elements. The resulting string presentation will not end with the separator. <br /></td></tr>
+<tr class="separator:acf80c1dec12e6ba79a26261728eb207c inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c76e869690a7595aa5b5f805c870fcf inherit pub_methods_classdrain_1_1Path"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a0c76e869690a7595aa5b5f805c870fcf">simplify</a> ()</td></tr>
+<tr class="memdesc:a0c76e869690a7595aa5b5f805c870fcf inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">ORIGINAL. Removes trailing empty elements, except for the root itself.  <a href="classdrain_1_1Path.html#a0c76e869690a7595aa5b5f805c870fcf">More...</a><br /></td></tr>
+<tr class="separator:a0c76e869690a7595aa5b5f805c870fcf inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5473053a3797654293892167aa024400 inherit pub_methods_classdrain_1_1Path"><td class="memItemLeft" align="right" valign="top"><a id="a5473053a3797654293892167aa024400"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a5473053a3797654293892167aa024400">simplifyHead</a> ()</td></tr>
+<tr class="memdesc:a5473053a3797654293892167aa024400 inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove duplicates of empty elements from the start. <br /></td></tr>
+<tr class="separator:a5473053a3797654293892167aa024400 inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19eda7c95dfe6840af65295c322b937f inherit pub_methods_classdrain_1_1Path"><td class="memItemLeft" align="right" valign="top"><a id="a19eda7c95dfe6840af65295c322b937f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a19eda7c95dfe6840af65295c322b937f">simplifyTail</a> ()</td></tr>
+<tr class="memdesc:a19eda7c95dfe6840af65295c322b937f inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove duplicates of empty elements from the end. <br /></td></tr>
+<tr class="separator:a19eda7c95dfe6840af65295c322b937f inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeabf59e0748328df663be731c1ec1f09 inherit pub_methods_classdrain_1_1Path"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Path.html">path_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#aeabf59e0748328df663be731c1ec1f09">operator=</a> (const <a class="el" href="classdrain_1_1Path.html">path_t</a> &amp;p)</td></tr>
 <tr class="memdesc:aeabf59e0748328df663be731c1ec1f09 inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns a path directly with std::list assignment.  <a href="classdrain_1_1Path.html#aeabf59e0748328df663be731c1ec1f09">More...</a><br /></td></tr>
 <tr class="separator:aeabf59e0748328df663be731c1ec1f09 inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,14 +305,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ad1d5bf3767f77ba05595c18cd5a6fbf7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1d5bf3767f77ba05595c18cd5a6fbf7">&#9670;&nbsp;</a></span>extract()</h2>
+<a id="aa015c6cbbebb3ce748e43d001ef5fdb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa015c6cbbebb3ce748e43d001ef5fdb6">&#9670;&nbsp;</a></span>extractPath()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void extract </td>
+          <td class="memname">void extractPath </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;&#160;</td>
           <td class="paramname"><em>path</em></td><td>)</td>

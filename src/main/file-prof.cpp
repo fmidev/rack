@@ -92,27 +92,30 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 	//ctx.select.clear();
 
 	mout.debug2(selector );
-	const drain::RegExp quantityRegExp(selector.getQuantity());
-	const bool USE_COUNT = quantityRegExp.test("COUNT");
+	const QuantitySelector & slct = selector.getQuantitySelector();
+	// const drain::RegExp quantityRegExp(selector.getQuantity());
+	const bool USE_COUNT = slct.testQuantity("COUNT");
 	// mout.debug3("use count" , static_cast<int>(USE_COUNT) );
 
-	const DataSet<PolarSrc> product(src["dataset1"], drain::RegExp(selector.getQuantity()));
+	const DataSet<PolarSrc> product(src["dataset1"], slct); // drain::RegExp(selector.getQuantity()));
 	//const DataSet<> product((*ctx.currentHi5), selector);
 
 	std::string mainQuantity; // = product.getFirstData().odim.quantity;
 
-	const drain::RegExp mainQuantityRegExp("HGHT");
+	//const drain::RegExp mainQuantityRegExp("HGHT");
+	QuantitySelector mainQuantitySlct("HGHT");
 
-	for (DataSet<PolarSrc>::const_iterator it = product.begin(); it != product.end(); ++it){
-		if ((it->second.data.getWidth()!=1) && (it->second.data.getHeight()!=1)){
-			mout.warn("skipping non-1D data, quantity: " , it->first );
+	//for (DataSet<PolarSrc>::const_iterator it = product.begin(); it != product.end(); ++it){
+	for (const auto & entry: product){
+		if ((entry.second.data.getWidth()!=1) && (entry.second.data.getHeight()!=1)){
+			mout.warn("skipping non-1D data, quantity: " , entry.first );
 			continue;
 		}
 		if (mainQuantity.empty()){
-			mainQuantity = it->first;
+			mainQuantity = entry.first;
 		}
-		else if (mainQuantityRegExp.test(it->first)){
-			mainQuantity = it->first;
+		else if (mainQuantitySlct.testQuantity(entry.first)){
+			mainQuantity = entry.first;
 			mout.debug3("picked main quantity: " , mainQuantity );
 			break;
 		}

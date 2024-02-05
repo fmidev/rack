@@ -219,7 +219,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 
 	// NOTE  ODIMPathElem::ARRAY ie. "/data" cannot be searched, so it is added under DATA or QUALITY path.
 
-	mout.experimental("imageSelector: ", imageSelector);
+	mout.experimental<LOG_DEBUG>("findImage / imageSelector: ", imageSelector);
 
 
 	Hi5Tree & src = this->getHi5(RackContext::CURRENT|RackContext::PRIVATE, RackContext::CURRENT|RackContext::SHARED);
@@ -288,6 +288,12 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 		path = findImage();
 		mout.info("selected image at: ", path);
 	}
+
+	/*
+	if (ctx.superSelector){
+
+	}
+	*/
 
 	if (!ctx.targetEncoding.empty()){
 		if (ctx.currentImage != NULL){

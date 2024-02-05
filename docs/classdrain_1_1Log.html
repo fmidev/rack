@@ -73,6 +73,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1Log-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -91,9 +92,9 @@ Public Types</h2></td></tr>
 typedef unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Log.html#a034d684c2bb4195c725dae147ac44a4f">level_t</a></td></tr>
 <tr class="memdesc:a034d684c2bb4195c725dae147ac44a4f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger.">Log</a> verbosity level type. <br /></td></tr>
 <tr class="separator:a034d684c2bb4195c725dae147ac44a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e5b9f7d4b5abcad2729f2d7928a0f03"><td class="memItemLeft" align="right" valign="top"><a id="a0e5b9f7d4b5abcad2729f2d7928a0f03"></a>
-typedef std::vector&lt; <a class="el" href="structdrain_1_1Notification.html">Notification</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>notif_dict_t</b></td></tr>
-<tr class="separator:a0e5b9f7d4b5abcad2729f2d7928a0f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ed171cac59806166634634bf7fbbe36"><td class="memItemLeft" align="right" valign="top"><a id="a6ed171cac59806166634634bf7fbbe36"></a>
+typedef std::map&lt; int, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>status_dict_t</b></td></tr>
+<tr class="separator:a6ed171cac59806166634634bf7fbbe36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -139,9 +140,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ad7bf610770b2dc36356b8ca4a7bacee1"><td class="memItemLeft" align="right" valign="top"><a id="ad7bf610770b2dc36356b8ca4a7bacee1"></a>
 static long&#160;</td><td class="memItemRight" valign="bottom"><b>getMilliseconds</b> ()</td></tr>
 <tr class="separator:ad7bf610770b2dc36356b8ca4a7bacee1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2c4bc41d9ae36f62f01c13023de25ac"><td class="memItemLeft" align="right" valign="top"><a id="af2c4bc41d9ae36f62f01c13023de25ac"></a>
-static const notif_dict_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDict</b> ()</td></tr>
-<tr class="separator:af2c4bc41d9ae36f62f01c13023de25ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -151,6 +149,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>id</b> = 0</td></tr>
 <tr class="memitem:ae19809959ff8d9f16b9d92fe0e45af26"><td class="memItemLeft" align="right" valign="top"><a id="ae19809959ff8d9f16b9d92fe0e45af26"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>VT100</b></td></tr>
 <tr class="separator:ae19809959ff8d9f16b9d92fe0e45af26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a07ae9d94979dc8e320bd0eaa73d478d2"><td class="memItemLeft" align="right" valign="top">static const status_dict_t&#160;</td><td class="memItemRight" valign="bottom"><b>statusDict</b></td></tr>
+<tr class="separator:a07ae9d94979dc8e320bd0eaa73d478d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -175,7 +178,7 @@ long&#160;</td><td class="memItemRight" valign="bottom"><b>millisecondsStart</b>
 </div><!-- fragment --><div class="fragment"><div class="line">debug.error() &lt;&lt; <span class="stringliteral">&quot; overflow error, value=&quot;</span> &lt;&lt; 5 &lt;&lt; debug.endl();</div>
 </div><!-- fragment --><div class="fragment"><div class="line"><a class="code" href="classdrain_1_1Log.html#a139dc5433c7b26b6bc26affbd7dad450">Log</a> monitor;</div>
 <div class="line">Logger mout(monitor, <span class="stringliteral">&quot;FunctionName&quot;</span>) ;</div>
-<div class="ttc" id="aclassdrain_1_1Log_html_a139dc5433c7b26b6bc26affbd7dad450"><div class="ttname"><a href="classdrain_1_1Log.html#a139dc5433c7b26b6bc26affbd7dad450">drain::Log::Log</a></div><div class="ttdeci">Log(std::ostream &amp;ostr=std::cerr, int verbosityLevel=LOG_WARNING)</div><div class="ttdef"><b>Definition:</b> Log.h:150</div></div>
+<div class="ttc" id="aclassdrain_1_1Log_html_a139dc5433c7b26b6bc26affbd7dad450"><div class="ttname"><a href="classdrain_1_1Log.html#a139dc5433c7b26b6bc26affbd7dad450">drain::Log::Log</a></div><div class="ttdeci">Log(std::ostream &amp;ostr=std::cerr, int verbosityLevel=LOG_WARNING)</div><div class="ttdef"><b>Definition:</b> Log.h:169</div></div>
 </div><!-- fragment --><p> TODO: add direct feed, perhaps Log::error() could instantiate a source? </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a139dc5433c7b26b6bc26affbd7dad450"></a>
@@ -213,6 +216,39 @@ long&#160;</td><td class="memItemRight" valign="bottom"><b>millisecondsStart</b>
 </div><div class="memdoc">
 <dl class="section user"><dt>level - verbosity</dt><dd></dd></dl>
 
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a07ae9d94979dc8e320bd0eaa73d478d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07ae9d94979dc8e320bd0eaa73d478d2">&#9670;&nbsp;</a></span>statusDict</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const Log::status_dict_t statusDict</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">        {LOG_EMERG, <span class="stringliteral">&quot;EMERGENGY&quot;</span>},</div>
+<div class="line">    </div>
+<div class="line">    </div>
+<div class="line">        {LOG_ERR,     <span class="stringliteral">&quot;ERROR&quot;</span>},</div>
+<div class="line">        {LOG_WARNING, <span class="stringliteral">&quot;WARNING&quot;</span>},</div>
+<div class="line">        {LOG_NOTICE,  <span class="stringliteral">&quot;NOTE&quot;</span>},</div>
+<div class="line">        {LOG_INFO,    <span class="stringliteral">&quot;INFO&quot;</span>},</div>
+<div class="line">        {LOG_DEBUG,   <span class="stringliteral">&quot;DEBUG&quot;</span>}</div>
+<div class="line">}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

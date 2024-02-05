@@ -89,74 +89,10 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 
 	mout.attention<LOG_DEBUG>("start CLASSNAME=", CLASSNAME);
 
-	/*
-	for (const auto & entry: srcVolume){
-
-		mout.attention("entry: ", entry.first, ':', entry.second);
-
-		const DataSet<PolarSrc> & srcDataSet = entry.second;
-
-		// mout.attention(srcDataSet.odim);
-		const drain::Castable & c = srcDataSet.getWhere()["elangle"];
-		double d = c;
-		mout.debug("metadata: elangle: ", d);
-
-
-		DataSet<PolarDst> & dstDataSet =  dstVolume[entry.first];  //itd->second;
-
-		const Data<PolarSrc> & srcData = srcDataSet.getFirstData();
-		if (srcData.data.isEmpty()){
-			mout.warn("empty srcData [" , srcDataSet.begin()->first , "]: " , srcData );
-			return;
-		}
-		else if (!srcData.data.typeIsSet()){
-			mout.warn("unset type in srcData [" , srcDataSet.begin()->first , "]: " , srcData );
-			return;
-		}
-
-		if (srcData.odim.area.empty()){ // width==0) || (srcData.odim.area.height==0)){
-			mout.warn("empty geom in odim of srcData [" , srcDataSet.begin()->first , "]: " , srcData.odim );
-			return;
-		}
-
-		// Note: if a detector is run like a product, this should CREATE data.
-
-		Data<PolarDst> & dstData = dstDataSet.getFirstData(); // only for appending QIND and CLASS
-
-
-		mout.debug("CLASSNAME=", CLASSNAME, " universal=", SUPPORT_UNIVERSAL, '&', UNIVERSAL );
-
-		//const std::string QIND = "QIND"; // (SUPPORT_UNIVERSAL && UNIVERSAL)? "QIND" : "qind";
-
-		/// TODO: UNIVERSAL and several inputs?
-		// OVERALL QUALITY (PROB.)
-		PlainData<PolarDst> & dstQind = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData("QIND") : dstData.getQualityData("QIND"); // of first data (eg. TH)
-		initDataDst(srcData, dstQind, "QIND");
-
-		// OVERALL QUALITY FIELD
-		PlainData<PolarDst> & dstClass = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData("CLASS") : dstData.getQualityData("CLASS"); // TODO: local (not only univ.)
-		initDataDst(srcData, dstClass, "CLASS");
-
-		// PROBABILITY OF THE CLASS APPROXIMATED BY THIS DETECTOR
-		PlainData<PolarDst> & dstProb = (SUPPORT_UNIVERSAL && UNIVERSAL) ? dstDataSet.getQualityData(CLASSNAME) : dstData.getQualityData(CLASSNAME);
-		//dstProb.tree.data.exclude = !DetectorOp::STORE;
-		initDataDst(srcData, dstProb);
-		mout.debug("outputDataVerbosity ", outputDataVerbosity);
-		dstProb.setExcluded(outputDataVerbosity==0);
-
-		//mout.warn("dstProb: " , dstProb );
-		/// MAIN COMMAND
-		processDataSet(srcDataSet, dstProb,  dstDataSet);
-
-
-		//QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, CLASSNAME, classCode);
-		QualityCombinerOp::updateOverallDetection(dstProb.data, dstQind, dstClass, CLASSNAME, classCode);
-		//File::write(dstQind.data, "dstQind2.png");
-		//File::write(dstClass.data, "dstClass2.png");
-		//mout.note(dstDataSet );
-
+	if (srcVolume.empty()){
+		mout.fail("DataSetMap empty - no data to process");
+		return;
 	}
-	*/
 
 	//DataSetMap<PolarSrc>::const_iterator its = srcDataSets.begin();
 	//DataSetMap<PolarDst>::iterator       itd = dstDataSets.begin();
@@ -174,6 +110,11 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 
 			const DataSet<PolarSrc> & srcDataSet = its->second;
 
+			if (srcDataSet.empty()){
+				mout.fail("DataSet {", its->first, "} empty");
+				return;
+			}
+
 			// mout.attention(srcDataSet.odim);
 			const drain::Castable & c = srcDataSet.getWhere()["elangle"];
 			double d = c;
@@ -183,6 +124,7 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 			DataSet<PolarDst> & dstDataSet = itd->second;
 
 			const Data<PolarSrc> & srcData = srcDataSet.getFirstData();
+
 			if (srcData.data.isEmpty()){
 				mout.warn("empty srcData [" , srcDataSet.begin()->first , "]: " , srcData );
 				return;
@@ -195,7 +137,6 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 				mout.warn("empty geom in odim of srcData [" , srcDataSet.begin()->first , "]: " , srcData.odim );
 				return;
 			}
-
 			// Note: if a detector is run like a product, this should CREATE data.
 
 			Data<PolarDst> & dstData = dstDataSet.getFirstData(); // only for appending QIND and CLASS
@@ -248,7 +189,7 @@ void DetectorOp::runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<Po
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.info("start");
+	mout.debug("start");
 	//mout.warn("start" );
 
 	if (srcDataSet.size() == 0){

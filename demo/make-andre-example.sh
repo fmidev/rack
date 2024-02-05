@@ -92,7 +92,7 @@ while [ ${#*} != 0 ]; do
 	ANOM_IMG_PANEL=$ANOM_BASE-panel.png
 
 	echo "# Longer test" # -o $VOLUME_IMG
-	select="-Q '*${QUANTITY}*'" # +"OP"
+	select="-Q '.*${QUANTITY}.*'" # +"OP"
 	#cmd="rack $VOLUME   --store intermediate=1 --$aDETECTOR $VALUES $select -o $ANOM_IMG $select --cSize 500 --encoding C,0.004,-0.004,0,16  -c -o $ANOM_IMG_CART"
 	cmd="rack $VOLUME   --store intermediate=1 --$aDETECTOR '$VALUES' $select -o $ANOM_IMG $select --cSize 500   -c -o $ANOM_IMG_CART"
 

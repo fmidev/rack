@@ -55,7 +55,8 @@ protected:
 	inline
 	GliderOp(const std::string & name, const std::string & description, const std::string & classCode) :
 		DetectorOp(name, description, classCode), dbzPeak(+5),  VRAD_FLIP(false), zdrAbsMin(+2.0)  {
-		dataSelector.setQuantityRegExp("^(DBZH|VRAD|VRADH|RHOHV|ZDR)$");
+		//dataSelector.setQuantityRegExp("^(DBZH|VRAD|VRADH|RHOHV|ZDR)$");
+		dataSelector.setQuantities("DBZH:VRAD:VRADH:RHOHV:ZDR");
 		dataSelector.setMaxCount(1);
 	};
 
@@ -78,7 +79,7 @@ protected:
 	 */
 
 	inline
-	GliderOp(const GliderOp & op) : DetectorOp(op), VRAD_FLIP(false) {
+	GliderOp(const GliderOp & op) : DetectorOp(op), dbzPeak(0.0), VRAD_FLIP(false), zdrAbsMin(+2.0) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	};
 

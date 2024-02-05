@@ -185,9 +185,8 @@ public:
 			ctx.andreSelect = ctx.select;
 			ctx.select.clear();
 		}
-
-		if (!ctx.andreSelect.empty()){
-			mout.info("AnDRe data selector is set: ", ctx.andreSelect);
+		else if (!ctx.andreSelect.empty()){
+			mout.info("using previously set AnDRe selector: ", ctx.andreSelect);
 			this->bean.dataSelector.setParameters(ctx.andreSelect);
 			mout.debug2("-> new values: " , this->bean.getDataSelector() );
 		}
@@ -209,7 +208,7 @@ public:
 		//mout.timestamp("BEGIN_ANDRE");
 
 		mout.debug("Running:  ", this->bean);
-		mout.info("AnDRe selector: ", ctx.andreSelect);
+		mout.debug("AnDRe selector: ", ctx.andreSelect);
 
 		// For AnDRe ops, src serves also as dst.  UNNEEDED NOW, with own run() ?
 		Hi5Tree & dst = ctx.getHi5(
@@ -253,7 +252,7 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );
 
 
-		mout.unimplemented("...Applying UNIVERSAL" );
+		mout.unimplemented<LOG_INFO>("Applying UNIVERSAL");
 
 		this->AnDReCommand<OP>::update(); // ? why down here
 

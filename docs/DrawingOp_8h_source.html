@@ -119,7 +119,7 @@ $(function() {
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="classrack_1_1DrawingOp.html">DrawingOp</a>(<span class="keyword">const</span> std::string &amp; name, <span class="keyword">const</span> std::string &amp;description) : <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(name, description){</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        dataSelector.quantity = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="classrack_1_1DrawingOp.html">DrawingOp</a>() : <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(<span class="stringliteral">&quot;DrawingOp&quot;</span>, <span class="stringliteral">&quot;Visualise a direction[azm,r,r2], range[r,r2], sector[azm,azm2,r,r2] or arc[azm,azm2,r].&quot;</span>) {</div>
@@ -139,8 +139,8 @@ $(function() {
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">        link(&quot;bin2&quot;, w.bin2, 0, &quot;index&quot;);</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">        */</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        parameters.link(<span class="stringliteral">&quot;marker&quot;</span>, this-&gt;marker = 255, <span class="stringliteral">&quot;intensity&quot;</span>);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        dataSelector.quantity = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        dataSelector.count = 1;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        dataSelector.setMaxCount(1);</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    };</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classrack_1_1DrawingOp.html">DrawingOp</a>();</div>
@@ -176,7 +176,7 @@ $(function() {
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RACKOP_H_ */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">// Rack</span></div>
-<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1114</div></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1130</div></div>
 <div class="ttc" id="aclassrack_1_1DrawingOp_html"><div class="ttname"><a href="classrack_1_1DrawingOp.html">rack::DrawingOp</a></div><div class="ttdoc">Select and visualise a direction, range, sector or arc.</div><div class="ttdef"><b>Definition:</b> DrawingOp.h:51</div></div>
 <div class="ttc" id="aclassrack_1_1PolarProductOp_html"><div class="ttname"><a href="classrack_1_1PolarProductOp.html">rack::PolarProductOp</a></div><div class="ttdoc">Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input.</div><div class="ttdef"><b>Definition:</b> PolarProductOp.h:61</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>

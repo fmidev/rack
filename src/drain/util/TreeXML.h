@@ -51,6 +51,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
+class StyleXML : public ReferenceMap2<FlexibleVariable> {
+
+public:
+
+	inline
+	StyleXML(){};
+
+};
 
 //class NodeXML : protected ReferenceMap {
 class NodeXML : protected ReferenceMap2<FlexibleVariable> {
@@ -90,6 +98,23 @@ public:
 		// drain::SmartMapTools::setValues<map_t,false>((map_t &)*this, l);   // update only
 	}
 
+	typedef std::set<std::string> class_list;
+	class_list classList;
+
+	template <typename ... TT>
+	inline
+	void setClass(const std::string & s, const TT &... args) {
+		classList.insert(s);
+		setClass(args...);
+	}
+
+	inline
+	void setClass(){}
+
+	// TODO: handle attrib set("class", ...) -> setCLass
+
+	// TODO: handle attrib set("style", ...) -> setStyle
+
 	inline
     NodeXML & operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
 		set(l);
@@ -118,6 +143,26 @@ public:
 		//return ReferenceMap::empty();
 	}
 
+	/// Make this node commented.
+	/**
+	 *   \param text - if given, replaces current CTEXT.
+	 *
+	 */
+	inline
+	void comment(const std::string & text = "") {
+		if (id > 0){
+			id = -id;
+		}
+		if (!text.empty()){
+			ctext = text;
+		}
+	}
+
+	inline
+	bool isComment() {
+		return (id < 0);
+	}
+
 protected:
 
 	static int nextID;
@@ -131,6 +176,9 @@ protected:
 // #define TreeXML drain::Tree<std::string,NodeXML>  // , std::less<std::basic_std::string<char>
 // typedef drain::Tree<std::string,NodeXML> TreeXML;
 typedef drain::UnorderedMultiTree<NodeXML,false> TreeXML;
+
+template <>
+TreeXML & TreeXML::addChild(const TreeXML::key_t & key);
 
 
 /**
@@ -146,6 +194,14 @@ std::ostream & NodeXML::toStream(std::ostream & ostr, const T & tree, const std:
 
 	// OPEN TAG
 	std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
+
+	// isComment()
+	if (tree->id < 0){
+		ostr << "<!-- " << tree->getTag() << ' ' << tree->ctext << " /-->\n";
+		return ostr;
+	}
+
+
 	ostr << '<';
 	//<< tree.data.tag << ' ';
 	if (tree->getTag().empty())
@@ -158,15 +214,20 @@ std::ostream & NodeXML::toStream(std::ostream & ostr, const T & tree, const std:
 			//ostr << "name=\"" << defaultTag << '"' << ' ';
 	}
 
-	if (tree.data.id >= 0)
-		attribToStream(ostr, "id", tree.data.id);
+	if (tree->id >= 0){
+		if (!tree->classList.empty()){
+			ostr << "class=\"";
+			std::copy(tree->classList.begin(), tree->classList.end(), std::ostream_iterator<std::string>(ostr, " "));
+			ostr << "\" ";
+		}
+		attribToStream(ostr, "id", tree->id);
 		//ostr << "id=\"" << tree.data.id << '"' << ' ';
+	}
 
 	/// iterate attributes
 	for (const typename T::node_data_t::key_t & key: tree.data.getKeyList()){
-
 		std::stringstream sstr;
-		sstr << tree.data[key];
+		sstr << tree.data[key];  // consider checking 0, not only empty string "".
 		if (!sstr.str().empty()){
 			attribToStream(ostr, key, sstr.str());
 			// ostr << key << "=\"" << sstr.str() << '"' << ' ';

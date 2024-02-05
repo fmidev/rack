@@ -273,18 +273,18 @@ $(function() {
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">Logger</a> mout(getImgLog(), <span class="stringliteral">&quot;WindowCore&quot;</span>, __FUNCTION__);</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="keywordflow">if</span> (srcTray.empty()){</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">error</a>() &lt;&lt; <span class="stringliteral">&quot;src: no channels&quot;</span> &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">error</a>(<span class="stringliteral">&quot;src: no channels&quot;</span> );</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        }</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="keywordflow">if</span> (srcTray.size() &gt; 1){</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>()  &lt;&lt; <span class="stringliteral">&quot;src: multiple channels&quot;</span> &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;src: multiple channels&quot;</span> );</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        }</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; </div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="comment">//mout.warn()  &lt;&lt; &quot;scale:&quot; &lt;&lt; srcTray.get(0).getScaling() &lt;&lt; mout.endl;</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="comment">//mout.note()  &lt;&lt; &quot;scale:&quot; &lt;&lt; srcTray.get(0).getChannel(0).getScaling() &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="comment">//mout.warn(&quot;scale:&quot; , srcTray.get(0).getScaling() );</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="comment">//mout.note(&quot;scale:&quot; , srcTray.get(0).getChannel(0).getScaling() );</span></div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        src.<a class="code" href="classdrain_1_1image_1_1ImageView.html#a3279893ea1f153968983da0987063aa2">setView</a>(srcTray.<a class="code" href="classdrain_1_1image_1_1Tray.html#a7d47c57d27419837b172d8932359cbe7">get</a>(0));</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="comment">//mout.warn()  &lt;&lt; &quot;scale:&quot; &lt;&lt; src.getScaling() &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="comment">//mout.warn(&quot;scale:&quot; , src.getScaling() );</span></div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <span class="keywordflow">if</span> (!srcTray.alpha.empty()){</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;            setSrcFrameWeight(srcTray.<a class="code" href="classdrain_1_1image_1_1ImageTray.html#ae7bbcbb6839e9d90c040851a16a743d7">getAlpha</a>(0));</div>
@@ -299,12 +299,12 @@ $(function() {
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">Logger</a> mout(getImgLog(), <span class="stringliteral">&quot;GaussianStripe&quot;</span>, __FUNCTION__);</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        <span class="keywordflow">if</span> (dstTray.empty()){</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">error</a>() &lt;&lt; <span class="stringliteral">&quot;dst: no channels&quot;</span> &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">error</a>(<span class="stringliteral">&quot;dst: no channels&quot;</span> );</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        }</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        <span class="keywordflow">if</span> (dstTray.size() &gt; 1){</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>()  &lt;&lt; <span class="stringliteral">&quot;dst: multiple channels&quot;</span> &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;dst: multiple channels&quot;</span> );</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        }</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        dst.<a class="code" href="classdrain_1_1image_1_1ImageView.html#a3279893ea1f153968983da0987063aa2">setView</a>(dstTray.<a class="code" href="classdrain_1_1image_1_1Tray.html#a7d47c57d27419837b172d8932359cbe7">get</a>(0));</div>
@@ -319,13 +319,13 @@ $(function() {
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keywordtype">void</span> setSrcFrameWeight(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp; srcW){</div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">Logger</a> mout(getImgLog(), <span class="stringliteral">&quot;WindowCore&quot;</span>, __FUNCTION__);</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>() &lt;&lt; <span class="stringliteral">&quot;Not implemented&quot;</span> &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;Not implemented&quot;</span> );</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    };</div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keywordtype">void</span> setDstFrameWeight(<a class="code" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp; dstW){</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">Logger</a> mout(getImgLog(), <span class="stringliteral">&quot;WindowCore&quot;</span>, __FUNCTION__);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>() &lt;&lt; <span class="stringliteral">&quot;Not implemented&quot;</span> &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;Not implemented&quot;</span> );</div>
 <div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    };</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="comment">/*</span></div>
@@ -399,7 +399,7 @@ $(function() {
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(getImgLog(), <span class="stringliteral">&quot;MultiChannelWindowCore&quot;</span>, __FUNCTION__);</div>
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; </div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>()  &lt;&lt; <span class="stringliteral">&quot;setting srcTray&quot;</span> &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;setting srcTray&quot;</span> );</div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160; </div>
 <div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="comment">//this-&gt;srcTray.clear();</span></div>
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        this-&gt;srcTray.<a class="code" href="classdrain_1_1image_1_1ImageTray.html#a74dad6a92dc629a58c27b9603c41b596">copy</a>(srcTray);</div>
@@ -407,7 +407,7 @@ $(function() {
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;            this-&gt;src.<a class="code" href="classdrain_1_1image_1_1ImageView.html#a3279893ea1f153968983da0987063aa2">setView</a>(srcTray.<a class="code" href="classdrain_1_1image_1_1Tray.html#a7d47c57d27419837b172d8932359cbe7">get</a>());</div>
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        }</div>
 <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>()  &lt;&lt; <span class="stringliteral">&quot;setting empty srcTray&quot;</span> &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;setting empty srcTray&quot;</span> );</div>
 <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        }</div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160; </div>
 <div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160; </div>
@@ -415,10 +415,10 @@ $(function() {
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;            this-&gt;srcWeight.<a class="code" href="classdrain_1_1image_1_1ImageView.html#a3279893ea1f153968983da0987063aa2">setView</a>(srcTray.alpha.get());</div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        }</div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>()  &lt;&lt; <span class="stringliteral">&quot;no srcTray.alpha&quot;</span> &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;no srcTray.alpha&quot;</span> );</div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        }</div>
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160; </div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">debug2</a>() &lt;&lt; this-&gt;srcTray &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">debug2</a>(this-&gt;srcTray );</div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    };</div>
 <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160; </div>
@@ -426,7 +426,7 @@ $(function() {
 <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(getImgLog(), <span class="stringliteral">&quot;MultiChannelWindowCore&quot;</span>, __FUNCTION__);</div>
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160; </div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>()  &lt;&lt; <span class="stringliteral">&quot;setting dstTray&quot;</span> &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;setting dstTray&quot;</span> );</div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160; </div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        <span class="comment">//this-&gt;dstTray.clear();</span></div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        this-&gt;dstTray.<a class="code" href="classdrain_1_1image_1_1ImageTray.html#a74dad6a92dc629a58c27b9603c41b596">copy</a>(dstTray);</div>
@@ -434,7 +434,7 @@ $(function() {
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;            this-&gt;dst.<a class="code" href="classdrain_1_1image_1_1ImageView.html#a3279893ea1f153968983da0987063aa2">setView</a>(this-&gt;dstTray.<a class="code" href="classdrain_1_1image_1_1Tray.html#a7d47c57d27419837b172d8932359cbe7">get</a>());</div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        }</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>()  &lt;&lt; <span class="stringliteral">&quot;setting empty dstTray&quot;</span> &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;setting empty dstTray&quot;</span> );</div>
 <div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        }</div>
 <div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; </div>
 <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
@@ -442,16 +442,16 @@ $(function() {
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;            this-&gt;dstWeight.<a class="code" href="classdrain_1_1image_1_1ImageView.html#a3279893ea1f153968983da0987063aa2">setView</a>(this-&gt;dstTray.alpha.get());</div>
 <div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        }</div>
 <div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>()  &lt;&lt; <span class="stringliteral">&quot;no srcTray.alpha&quot;</span> &lt;&lt; mout.endl;</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;            <span class="comment">// mout.warn()  &lt;&lt; &quot;setting empty srcTray&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;no srcTray.alpha&quot;</span> );</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;            <span class="comment">// mout.warn(&quot;setting empty srcTray&quot; );</span></div>
 <div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        }</div>
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160; </div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">debug2</a>() &lt;&lt; this-&gt;dstTray &lt;&lt; mout.endl;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">debug2</a>(this-&gt;dstTray );</div>
 <div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
 <div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        <span class="comment">/*</span></div>
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="comment">        if (dstTray.size() != 2){</span></div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="comment">            mout.note() &lt;&lt; dstTray &lt;&lt; mout.endl;</span></div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="comment">            mout.error()  &lt;&lt; &quot;dst should have exactly 2 image channels&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="comment">            mout.note(dstTray );</span></div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="comment">            mout.error(&quot;dst should have exactly 2 image channels&quot; );</span></div>
 <div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="comment">        }</span></div>
 <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<span class="comment">        */</span></div>
 <div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160; </div>
@@ -715,11 +715,11 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Bank_html_a083b3118c64246c86cdf47a290bc1eae"><div class="ttname"><a href="classdrain_1_1Bank.html#a083b3118c64246c86cdf47a290bc1eae">drain::Bank&lt; T, std::string &gt;::map_t</a></div><div class="ttdeci">std::map&lt; std::string, cloner_t * &gt; map_t</div><div class="ttdoc">Base class.</div><div class="ttdef"><b>Definition:</b> Bank.h:77</div></div>
 <div class="ttc" id="aclassdrain_1_1BeanLike_html_ad787848856e54c759b43a030b826ea96"><div class="ttname"><a href="classdrain_1_1BeanLike.html#ad787848856e54c759b43a030b826ea96">drain::BeanLike::setParameters</a></div><div class="ttdeci">void setParameters(std::initializer_list&lt; std::pair&lt; const char *, const Variable &gt; &gt; l)</div><div class="ttdoc">Grants access to (if above hidden)</div><div class="ttdef"><b>Definition:</b> BeanLike.h:102</div></div>
 <div class="ttc" id="aclassdrain_1_1Frame2D_html"><div class="ttname"><a href="classdrain_1_1Frame2D.html">drain::Frame2D&lt; int &gt;</a></div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:288</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:385</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:398</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Public, yet typically used &quot;internally&quot;, when TIMING=true.</div><div class="ttdef"><b>Definition:</b> Log.h:607</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_af416e5b9affca110fdf5a3a5dd3ba9bc"><div class="ttname"><a href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">drain::Logger::debug2</a></div><div class="ttdeci">Logger &amp; debug2(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition:</b> Log.h:616</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:307</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:408</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:422</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Public, yet typically used &quot;internally&quot;, when TIMING=true.</div><div class="ttdef"><b>Definition:</b> Log.h:664</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_af416e5b9affca110fdf5a3a5dd3ba9bc"><div class="ttname"><a href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">drain::Logger::debug2</a></div><div class="ttdeci">Logger &amp; debug2(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition:</b> Log.h:674</div></div>
 <div class="ttc" id="aclassdrain_1_1Range_html"><div class="ttname"><a href="classdrain_1_1Range.html">drain::Range&lt; int &gt;</a></div></div>
 <div class="ttc" id="aclassdrain_1_1SmartMap_html_a8dfbff0fda4c400c3edcd0ae920f573d"><div class="ttname"><a href="classdrain_1_1SmartMap.html#a8dfbff0fda4c400c3edcd0ae920f573d">drain::SmartMap::importCastableMap</a></div><div class="ttdeci">void importCastableMap(const drain::SmartMap&lt; T2 &gt; &amp;m)</div><div class="ttdoc">Assign values from a map, possibly extending the map.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:272</div></div>
 <div class="ttc" id="aclassdrain_1_1UniCloner_html"><div class="ttname"><a href="classdrain_1_1UniCloner.html">drain::UniCloner</a></div><div class="ttdoc">Creates an entry of desired type and destroys it upon exit.</div><div class="ttdef"><b>Definition:</b> Bank.h:474</div></div>

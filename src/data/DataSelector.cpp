@@ -124,7 +124,7 @@ DataSelector::~DataSelector() {
 
 std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector){
 	selector.toStream(ostr);
-	ostr << '{' << selector.getQuantitySelector() << " / " << selector.getQualitySelector() << '}';
+	// ostr << '{' << selector.getQuantitySelector() << " / " << selector.getQualitySelector() << '}';
 	return ostr;
 }
 
@@ -174,12 +174,11 @@ void DataSelector::reset() {
 }
 
 
-
+/// Updates member objects with their corresponding variable values .
 void DataSelector::updateBean() const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	updateQuantities();
 
 	if (!path.empty()){
 
@@ -201,8 +200,10 @@ void DataSelector::updateBean() const {
 		//path.clear();
 	}
 
-	//path = pathMatcher; // Note: this (over)simplifies data|quality: to data|quality (discards explicit index)
-
+	// path = pathMatcher; // Note: this (over)simplifies data|quality: to data|quality (discards explicit index)
+	// quantities
+	// setQuantities(quantities, ":");
+	updateQuantities(); // ":"
 
 	// mout.special("quantities [" , quantities ,"], " , "pathMatcher: " , path , " => " , pathMatcher   );
 
@@ -272,70 +273,77 @@ void DataSelector::ensureDataGroup(){
 
 }
 
+void DataSelector::setQuantities(const std::string & quantities){ // , const std::string & separators
+	this->quantities = quantities;
+	//updateQuantities(separators);
+	updateQuantities();
+}
+
 
 // Cf with
-void DataSelector::updateQuantities() const {
+void DataSelector::updateQuantities() const { // const std::string & separators
 
 	drain::Logger mout(__FILE__,__FUNCTION__);
 	// Don't call updateBean(), it calls this...
 
 	// Check if contains separator ':' and regexp(s):
-	if (quantities.find(':') != std::string::npos){
-		if (quantities.find_first_of("^?*[]()$") != std::string::npos){ //
-			mout.attention<LOG_WARNING>("defining complex quantity selection");
-			mout.advice<LOG_WARNING>("consider --select ... without quantities followed by --selectQuantity q1,q2,q3,...");
-			mout.advice<LOG_WARNING>("use ':' to separate quantities and '/' to prefix QUALITY quantities");
-			mout.error("unsupported or ambiguous quality selection: ", quantities);
+	/*
+	size_t pos = quantities.find(':');
+	if (pos != std::string::npos){
+
+		if (separators.find(':') != std::string::npos){
+			if (quantities.find_first_of("^?*[]()$") != std::string::npos){ //
+				mout.warn("RegExp (", quantities.substr(pos, pos+5), "...) a string to be split by separators '", separators, "'");
+				mout.advice<LOG_WARNING>("consider --select ... without quantities followed by --selectQuantity q1,q2,q3,...");
+				mout.hint<LOG_WARNING>("use ':' to separate quantities and '/' to prefix QUALITY quantities");
+				// mout.error("unsupported or ambiguous quality selection: ", quantities);
+			}
 		}
-	}
 
-
-	std::vector<std::string> args;
-	drain::StringTools::split(quantities, args, ":");  // experimental
-	if (args.size() == 2){
-		// Consider --qualityQuantity
-		if (args[1] == "QIND"){
+		if (quantities.substr(pos) == ":QIND"){
 			mout.attention<LOG_WARNING>("selection syntax has changed");
 			mout.advice<LOG_WARNING>("use ':' to separate quantities and '/' to prefix QUALITY quantities");
-			mout.advice<LOG_WARNING>("use ",  args[0],'/',args[1], " instead of ", args[0],':',args[1]);
+			std::string s(quantities);
+			s.at(pos) = '/';
+			mout.advice<LOG_WARNING>("use ", s, " instead of ", quantities);
 		}
-		//mout.deprecating("in future, slash '/' will replace colon ':' in argument (" , quantities, ")");
+
 	}
+	*/
 
-	for (const std::string & arg: args){
 
-		std::vector<std::string> a;
-		drain::StringTools::split(arg, a, "/");  // experimental
+	// Phase 1: split qty vs QUALITY
+	//std::vector<std::string> args;
+	std::string args, qargs;
+	drain::StringTools::split2(quantities, args, qargs, '/'); // ':' general separator; ',' only through --setQuantity because --select uses ',' as separator.
+	quantitySelector.setQuantities(args); //, separators);
+	//mout.special<LOG_WARNING>("quantities", args, " -> ", quantitySelector);
+	qualitySelector.setQuantities(qargs); //, separators);
+	// 	mout.special<LOG_WARNING>("qualities ", qargs, " -> ", qualitySelector);
 
-		switch (a.size()) {
-		case 2:
-			qualitySelector.setQuantity(a[1]);
-			mout.accept<LOG_NOTICE>("setting quantity+quality: ", a[0], '+', a[1]);
-			// no break
-		case 1:
-			quantitySelector.setQuantity(a[0]);
-			break;
-		default:
-			mout.warn("could not parse quantity='" , quantities , "', should be <quantity> or [<quantity>]/<quality>" );
-			break;
-		}
+	//this->quantities = quantities;
+	//updateQuantities();
+
+
+	std::stringstream sstr;
+	sstr << quantitySelector;
+	if (qualitySelector.isSet()){
+		sstr << '/' << qualitySelector;
 	}
+	quantities = sstr.str();
 
 }
 
-void DataSelector::setQuantities(const std::string & quantities){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	this->quantities = quantities;
-	updateQuantities();
-
-}
 
 void DataSelector::setQuantityRegExp(const std::string & quantities){
+
+	drain::Logger mout(__FILE__,__FUNCTION__);
 	//setQuantityRegExp(quantities);
+	mout.deprecating<LOG_DEBUG+1>("selection syntax has changed, use setQuantities() ");
 	quantitySelector.setQuantity(quantities);
 }
+
 
 /// PRESELECT
 /*
@@ -357,7 +365,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (basepath.empty()){ // = debug start
-		mout.attention<LOG_DEBUG>("start: quantities: ", getQuantity());
+		mout.attention<LOG_DEBUG>("collectPaths quantities: '", getQuantity(), "'");
 		// mout.attention<LOG_DEBUG>("start: quantity:   ", quantitySelector);
 		// mout.attention<LOG_DEBUG>("start: quality:    ", qualitySelector);
 		if (quantitySelector.isSet()){
@@ -366,6 +374,8 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 		if (qualitySelector.isSet()){
 			// mout.attention<LOG_DEBUG>("start: quality: ", qualitySelector);
 		}
+		mout.debug("starting with: ", quantitySelector); //, " re=", quantitySelector.getRegExp());
+
 	}
 
 	// mout.attention<LOG_INFO>("quantityRegExp: ", quantityRegExp,  ", qualityRegExp: ", qualityRegExp);
@@ -457,7 +467,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 					}
 					else {
 						checkSubGroup = !qualitySelector.isSet(); // consider -Q QIND or --select quality=QIND
-						mout.special<LOG_DEBUG+1>("DATA: unmatching [", retrievedQuantity, "] at ", path, ", checkSubGroup='", checkSubGroup, "'");
+						mout.special<LOG_DEBUG+1>("DATA: unmatching quantity [", retrievedQuantity, "] at ", path, ", checkSubGroup='", checkSubGroup, "'");
 						// mout.reject<LOG_NOTICE>("<",quantitySelector, ">");
 						// mout.reject<LOG_NOTICE>("DATA [", retrievedQuantity, "] at ", path);
 					}
@@ -522,7 +532,12 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 			}
 
 			if (checkSubGroup){
-				mout.pending("continuing to subgroup:" ,  path);
+				if (currentElem.belongsTo(ODIMPathElem::DATA|ODIMPathElem::QUALITY)){
+					mout.pending("DATA/QUALITY group ", path, " -> continuing to subgroups");
+				}
+				else {
+					mout.pending<LOG_DEBUG>("continuing to subgroup:" ,  path);
+				}
 				result |= collectPaths(src, pathContainer, path);
 			}
 
@@ -738,6 +753,7 @@ void DataSelector::getTimeMap(const Hi5Tree & srcRoot, ODIMPathElemMap & m){
 
 
 // Resets, set given parameters and derives missing parameters.
+/*
 void DataSelector::deriveParameters(const std::string & parameters, bool clear){ //, ODIMPathElem::group_t defaultGroups){
 
 	// drain::Logger mout(__FILE__, __FUNCTION__);
@@ -753,6 +769,7 @@ void DataSelector::deriveParameters(const std::string & parameters, bool clear){
 
 	return; // groups.value;
 }
+*/
 
 
 void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathList) const {
@@ -767,7 +784,6 @@ void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathList)
 bool DataSelector::getPath(const Hi5Tree & src, ODIMPath & path) const {
 
 	std::list<ODIMPath> paths;
-	//getPaths(src, pathContainer);
 	selectPaths(src, paths);
 	if (paths.empty()){
 		return false;
@@ -778,6 +794,25 @@ bool DataSelector::getPath(const Hi5Tree & src, ODIMPath & path) const {
 			std::cerr << __FUNCTION__ << ':' << p << '\n';
 		}
 		*/
+		// TODO! if several quantities,  traverse list of quantities, give the first match
+		drain::Logger mout(__FILE__, __FUNCTION__);
+
+		const QuantitySelector::quantity_list & l = quantitySelector.getList();
+
+		if (!(path.back().is(ODIMPathElem::DATASET) || l.empty())){
+			// mout.experimental("could use quantity order here: ", path, " qty:", l.front().value);
+			mout.debug("checking quantity once more...");
+			for (const QuantityMatcher & m: l){
+				for (ODIMPath & p: paths){
+					std::string q = src(p).data.image.properties.get("what:quantity", "");
+					if (m == q){
+						mout.special("selecting preferred quantity [", q,"] = '", m, "': ", p);
+						path = p;
+						return true;
+					}
+				}
+			}
+		}
 
 		path = paths.front();
 		return true;

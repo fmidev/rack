@@ -55,18 +55,21 @@ public:
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	inline
-	CCorOp(drain::Range<double> threshold={10,30}) :
+	CCorOp(drain::Range<double> threshold={10,30}, bool mask=false) :
 		DetectorOp(__FUNCTION__,"Detects clutter. Based on difference of DBZH and TH. At halfwidth PROB=0.5. Universal.", "clutter.ccor"){ // Optional postprocessing: morphological closing.
 		//dataSelector.path = ". */da ta[0-9]+/?$";
-		dataSelector.setQuantities("^(TH|DBZH)$");
+		//dataSelector.setQuantities("^(TH|DBZH)$");
+		dataSelector.setQuantities("TH:DBZH"); // TODO:
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
 		parameters.link("threshold", this->threshold.tuple() = threshold, "dBZ range");
-		//parameters.link("mode", this->mode = true);
+		parameters.link("mask", this->mask = mask, "Doppler-cleared only");
 		//parameters.link("storeDiff", storeDiff = false);
 	};
 
 	drain::Range<double> threshold;
+
+	bool mask;
 
 	virtual
 	void runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dst, DataSet<PolarDst> & aux) const;

@@ -275,6 +275,8 @@ public:
 		ctx.currentPolarHi5 = & dst; // if cartesian, be careful with this...
 		ctx.currentHi5      = & dst;
 
+		mout.special("modified code: currentImage");
+		ctx.findImage();
 		// mout.timestamp("END_PRODUCT");
 
 		// hi5::Writer::writeFile("test2.h5", dst);

@@ -73,10 +73,10 @@ $(function() {
 </ul>
 </li>
 <li class="level1"><a href="#palette">Creating coloured images</a></li>
-<li class="level1"><a href="#autotoc_md91">File path arguments containing a directory part start a palette file load from the full path.</a></li>
-<li class="level1"><a href="#autotoc_md92">Plain filenames of format \c palette-&lt;QUANTITY&gt;.txt start a file load from current dir, and if that fails, a retry from  \c palette/palette-&lt;QUANTITY&gt;.txt</a></li>
-<li class="level1"><a href="#autotoc_md93">Given quantity (like \C DBZH ) as argument, Rack primarily searches for built-in palette associated with the quanity, and then \c palette/palette-&lt;QUANTITY&gt;.txt</a></li>
-<li class="level1"><a href="#autotoc_md94">Given argument \c &#39;default&#39;, \b Rack automatically replaces the argument with current \c ${what:quantity} retrieved from metadata,</a></li>
+<li class="level1"><a href="#autotoc_md88">File path arguments containing a directory part start a palette file load from the full path.</a></li>
+<li class="level1"><a href="#autotoc_md89">Plain filenames of format \c palette-&lt;QUANTITY&gt;.txt start a file load from current dir, and if that fails, a retry from  \c palette/palette-&lt;QUANTITY&gt;.txt</a></li>
+<li class="level1"><a href="#autotoc_md90">Given quantity (like \C DBZH ) as argument, Rack primarily searches for built-in palette associated with the quanity, and then \c palette/palette-&lt;QUANTITY&gt;.txt</a></li>
+<li class="level1"><a href="#autotoc_md91">Given argument \c &#39;default&#39;, \b Rack automatically replaces the argument with current \c ${what:quantity} retrieved from metadata,</a></li>
 <li class="level1"><a href="#transparency">Adding transparency</a></li>
 <li class="level1"><a href="#drainimage">Image processing commands</a><ul><li class="level2"><a href="#howimages">How it works internally</a></li>
 <li class="level2"><a href="#imageOps">List of image operators</a></li>
@@ -106,13 +106,13 @@ Creating coloured images</h1>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH -c --palette palette-DBZH.txt         -o coloured.png</div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH -c --palette palette/palette-DBZH.txt -o coloured.png</div>
 </div><!-- fragment --><p>Notes on the argument of <code>&ndash;palette</code> command:</p>
-<h1><a class="anchor" id="autotoc_md91"></a>
+<h1><a class="anchor" id="autotoc_md88"></a>
 File path arguments containing a directory part start a palette file load from the full path.</h1>
-<h1><a class="anchor" id="autotoc_md92"></a>
+<h1><a class="anchor" id="autotoc_md89"></a>
 Plain filenames of format \c palette-&lt;QUANTITY&gt;.txt start a file load from current dir, and if that fails, a retry from  \c palette/palette-&lt;QUANTITY&gt;.txt</h1>
-<h1><a class="anchor" id="autotoc_md93"></a>
+<h1><a class="anchor" id="autotoc_md90"></a>
 Given quantity (like \C DBZH ) as argument, Rack primarily searches for built-in palette associated with the quanity, and then \c palette/palette-&lt;QUANTITY&gt;.txt</h1>
-<h1><a class="anchor" id="autotoc_md94"></a>
+<h1><a class="anchor" id="autotoc_md91"></a>
 Given argument \c 'default', \b Rack automatically replaces the argument with current \c ${what:quantity} retrieved from metadata,</h1>
 <p>and starts a search as above.</p>
 <p>A palette file consisting of lines that contain a threshold followed by red, green and blue values. The format is compatible with that of <code>color-relief</code> command used by <code>gdaldem</code> (<a href="https://gdal.org/programs/gdaldem.html">https://gdal.org/programs/gdaldem.html</a>) The file may contain comments escaped by a hash. For example, a file containing </p><div class="fragment"><div class="line"><span class="preprocessor"># Reflectivity dBZ</span></div>
@@ -125,9 +125,9 @@ Given argument \c 'default', \b Rack automatically replaces the argument with cu
 <div class="line">@ 255 255 255 </div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># noise</span></div>
-<div class="line">-32.0   0   0   0  </div>
-<div class="line">-24.0   60 140 200</div>
-<div class="line">-16.0   10 155 225</div>
+<div class="line">-32.0   60 96  192</div>
+<div class="line">-24.0   40 128 208  </div>
+<div class="line">-16.0   10 170 208</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># insects</span></div>
 <div class="line">-8.0    5 205 170</div>

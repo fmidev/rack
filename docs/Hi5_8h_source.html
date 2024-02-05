@@ -141,11 +141,11 @@ $(function() {
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> <a class="code" href="classdrain_1_1image_1_1Image.html">image_type</a>;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> dataSet;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> image;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// Required, but not much needed.</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">bool</span> empty()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">return</span> (dataSet.isEmpty() &amp;&amp; attributes.empty());</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">return</span> (image.isEmpty() &amp;&amp; attributes.empty());</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="classdrain_1_1VariableMap.html">drain::VariableMap</a>  attributes;</div>
@@ -441,9 +441,9 @@ $(function() {
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160; </div>
 <div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdrain_1_1FileInfo_html"><div class="ttname"><a href="classdrain_1_1FileInfo.html">drain::FileInfo</a></div><div class="ttdef"><b>Definition:</b> FileInfo.h:47</div></div>
-<div class="ttc" id="aclassdrain_1_1Log_html"><div class="ttname"><a href="classdrain_1_1Log.html">drain::Log</a></div><div class="ttdoc">Handler for notifications sent by a Logger.</div><div class="ttdef"><b>Definition:</b> Log.h:133</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:288</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aeb3c91bdc0a90e6703ba27510bddb101"><div class="ttname"><a href="classdrain_1_1Logger.html#aeb3c91bdc0a90e6703ba27510bddb101">drain::Logger::start</a></div><div class="ttdeci">Logger &amp; start(const TT &amp;... args)</div><div class="ttdoc">General.</div><div class="ttdef"><b>Definition:</b> Log.h:341</div></div>
+<div class="ttc" id="aclassdrain_1_1Log_html"><div class="ttname"><a href="classdrain_1_1Log.html">drain::Log</a></div><div class="ttdoc">Handler for notifications sent by a Logger.</div><div class="ttdef"><b>Definition:</b> Log.h:148</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:307</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aeb3c91bdc0a90e6703ba27510bddb101"><div class="ttname"><a href="classdrain_1_1Logger.html#aeb3c91bdc0a90e6703ba27510bddb101">drain::Logger::start</a></div><div class="ttdeci">Logger &amp; start(const TT &amp;... args)</div><div class="ttdoc">General.</div><div class="ttdef"><b>Definition:</b> Log.h:360</div></div>
 <div class="ttc" id="aclassdrain_1_1Path_html"><div class="ttname"><a href="classdrain_1_1Path.html">drain::Path</a></div><div class="ttdef"><b>Definition:</b> Path.h:112</div></div>
 <div class="ttc" id="aclassdrain_1_1SmartMap_html_af96c05d0eecedaf1550432f0b74eb304"><div class="ttname"><a href="classdrain_1_1SmartMap.html#af96c05d0eecedaf1550432f0b74eb304">drain::SmartMap::importMap</a></div><div class="ttdeci">void importMap(const std::map&lt; std::string, S &gt; &amp;m)</div><div class="ttdoc">Assign values from a map, overriding existing entries.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:253</div></div>
 <div class="ttc" id="aclassdrain_1_1TreeUtils_html_a08681335d22699f895c047baa07fa336"><div class="ttname"><a href="classdrain_1_1TreeUtils.html#a08681335d22699f895c047baa07fa336">drain::TreeUtils::getPaths</a></div><div class="ttdeci">static void getPaths(const TR &amp;tree, S &amp;container)</div><div class="ttdoc">Returns a list of the node names matching a pattern. The trailing '/' is NOT appended ie....</div><div class="ttdef"><b>Definition:</b> TreeUtils.h:152</div></div>

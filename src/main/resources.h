@@ -88,6 +88,8 @@ public:
 	static
 	const drain::StringMapper variableMapper;
 
+	// DataSelector superSelector;
+
 	//static
 	//const drain::RegExp variableMapperSyntax;inputFilter
 	//drain::SingleFlagger<Reader::Mode>
@@ -195,9 +197,11 @@ public:
 	void convertGrayImage(const drain::image::Image & srcImage); // RackContext & ctx,
 
 	virtual inline
-	drain::VariableMap & getStatusMap(){
-		Context::updateStatus();
-		updateStatus();
+	drain::VariableMap & getStatusMap(bool update=true){
+		if (update){
+			Context::updateStatus();
+			updateStatus();
+		}
 		return statusMap;
 	};
 

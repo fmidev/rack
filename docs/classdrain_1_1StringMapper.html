@@ -130,10 +130,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:af332cacd232281cb44d7a1bb83782e2d"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#af332cacd232281cb44d7a1bb83782e2d">toStream</a> (std::ostream &amp;ostr) const</td></tr>
 <tr class="memdesc:af332cacd232281cb44d7a1bb83782e2d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Output.html" title="Output utility. Opens stdout with &quot;-&quot;. Closes upon destruction.">Output</a> a concatenated chain of stringlets: literals as such and variables surrounded with "${" and "}".  <a href="classdrain_1_1StringMapper.html#af332cacd232281cb44d7a1bb83782e2d">More...</a><br /></td></tr>
 <tr class="separator:af332cacd232281cb44d7a1bb83782e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac34c534cedf2fafac11d12bb44acc9d0"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:ac34c534cedf2fafac11d12bb44acc9d0"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#ac34c534cedf2fafac11d12bb44acc9d0">toStream</a> (std::ostream &amp;ostr, const std::map&lt; std::string, T &gt; &amp;m, char replace=0) const</td></tr>
-<tr class="memdesc:ac34c534cedf2fafac11d12bb44acc9d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables in the last.  <a href="classdrain_1_1StringMapper.html#ac34c534cedf2fafac11d12bb44acc9d0">More...</a><br /></td></tr>
-<tr class="separator:ac34c534cedf2fafac11d12bb44acc9d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae79d6a55b15ba804ba917c2565e7d572"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ae79d6a55b15ba804ba917c2565e7d572"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#ae79d6a55b15ba804ba917c2565e7d572">toStream</a> (std::ostream &amp;ostr, const std::map&lt; std::string, T &gt; &amp;variables, int replace=0) const</td></tr>
+<tr class="memdesc:ae79d6a55b15ba804ba917c2565e7d572"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables in the last.  <a href="classdrain_1_1StringMapper.html#ae79d6a55b15ba804ba917c2565e7d572">More...</a><br /></td></tr>
+<tr class="separator:ae79d6a55b15ba804ba917c2565e7d572"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac379eeb7ccd32cc30e4a0c227dacafec"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:ac379eeb7ccd32cc30e4a0c227dacafec"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#ac379eeb7ccd32cc30e4a0c227dacafec">toStr</a> (const std::map&lt; std::string, T &gt; &amp;m, int replaceChar=-1) const</td></tr>
 <tr class="memdesc:ac379eeb7ccd32cc30e4a0c227dacafec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables in the last parsed std::string to a std::string.  <a href="classdrain_1_1StringMapper.html#ac379eeb7ccd32cc30e4a0c227dacafec">More...</a><br /></td></tr>
@@ -369,8 +369,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac34c534cedf2fafac11d12bb44acc9d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac34c534cedf2fafac11d12bb44acc9d0">&#9670;&nbsp;</a></span>toStream() <span class="overload">[2/2]</span></h2>
+<a id="ae79d6a55b15ba804ba917c2565e7d572"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae79d6a55b15ba804ba917c2565e7d572">&#9670;&nbsp;</a></span>toStream() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -388,12 +388,12 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::map&lt; std::string, T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>m</em>, </td>
+          <td class="paramname"><em>variables</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char&#160;</td>
+          <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>replace</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>

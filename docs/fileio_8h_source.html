@@ -219,38 +219,41 @@ $(function() {
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    std::string layout;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    std::string filename;</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;};</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">// Tree and Dot</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">class CmdOutputTreeConf : public drain::BasicCommand {</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">public:</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">    inline</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">    CmdOutputTreeConf() : drain::BasicCommand(__FUNCTION__, &quot;Configure output format of tree structures.&quot;) {</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">        // parameters.link(&quot;attributes&quot;, attributeStr, &quot;attributes:&quot; + drain::sprinter(getAttributes(), drain::Sprinter::pythonLayout));</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">        //parameters.link(&quot;height&quot;, height = 0, &quot;pixels&quot;);</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">    };</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">    void exec() const;</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">    //std::map&lt;std::string,std::string&gt; attributes;</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">};</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="classrack_1_1FileModule.html">  178</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1FileModule.html">FileModule</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1CommandModule.html">drain::CommandModule</a>&lt;&gt; { <span class="comment">// : public drain::CommandGroup {</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keywordtype">void</span> appendImage(TreeSVG &amp; group, <span class="keyword">const</span> std::string &amp; prefix, <a class="code" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp; vmap,</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="keyword">const</span> <a class="code" href="structdrain_1_1Point2D.html">drain::Point2D&lt;double&gt;</a> &amp; location, <span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp; image, <a class="code" href="classdrain_1_1BBox.html">drain::BBox</a> &amp; bbox) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;};</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">// Tree and Dot</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">class CmdOutputTreeConf : public drain::BasicCommand {</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">public:</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">    CmdOutputTreeConf() : drain::BasicCommand(__FUNCTION__, &quot;Configure output format of tree structures.&quot;) {</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">        // parameters.link(&quot;attributes&quot;, attributeStr, &quot;attributes:&quot; + drain::sprinter(getAttributes(), drain::Sprinter::pythonLayout));</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">        //parameters.link(&quot;height&quot;, height = 0, &quot;pixels&quot;);</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">    };</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">    void exec() const;</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">    //std::map&lt;std::string,std::string&gt; attributes;</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment">};</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00180"></a><span class="lineno"><a class="line" href="classrack_1_1FileModule.html">  180</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1FileModule.html">FileModule</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1CommandModule.html">drain::CommandModule</a>&lt;&gt; { <span class="comment">// : public drain::CommandGroup {</span></div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <a class="code" href="classrack_1_1FileModule.html">FileModule</a>(<a class="code" href="classdrain_1_1CommandBank.html">drain::CommandBank</a> &amp; bank = <a class="code" href="namespacedrain.html#a569239d05d6fef65d2712f8239abfd65">drain::getCommandBank</a>());</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="comment">//virtual void initialize();</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;};</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <a class="code" href="classrack_1_1FileModule.html">FileModule</a>(<a class="code" href="classdrain_1_1CommandBank.html">drain::CommandBank</a> &amp; bank = <a class="code" href="namespacedrain.html#a569239d05d6fef65d2712f8239abfd65">drain::getCommandBank</a>());</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="comment">//virtual void initialize();</span></div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;}</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;};</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;}</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment">// Rack</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">// Rack</span></div>
+<div class="ttc" id="aclassdrain_1_1BBox_html"><div class="ttname"><a href="classdrain_1_1BBox.html">drain::BBox</a></div><div class="ttdoc">Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ...</div><div class="ttdef"><b>Definition:</b> BoundingBox.h:46</div></div>
 <div class="ttc" id="aclassdrain_1_1BasicCommand_html"><div class="ttname"><a href="classdrain_1_1BasicCommand.html">drain::BasicCommand</a></div><div class="ttdoc">Simple implementation of Command: adds name , description and parameters .</div><div class="ttdef"><b>Definition:</b> Command.h:201</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandBank_html"><div class="ttname"><a href="classdrain_1_1CommandBank.html">drain::CommandBank</a></div><div class="ttdoc">Container and execution tools for commands derived from Command.</div><div class="ttdef"><b>Definition:</b> CommandBank.h:54</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandModule_html"><div class="ttname"><a href="classdrain_1_1CommandModule.html">drain::CommandModule</a></div><div class="ttdoc">Combines command installation and sectioning.</div><div class="ttdef"><b>Definition:</b> CommandInstaller.h:159</div></div>
@@ -258,17 +261,18 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1RegExp_html"><div class="ttname"><a href="classdrain_1_1RegExp.html">drain::RegExp</a></div><div class="ttdef"><b>Definition:</b> RegExp.h:58</div></div>
 <div class="ttc" id="aclassdrain_1_1SimpleCommand_html"><div class="ttname"><a href="classdrain_1_1SimpleCommand.html">drain::SimpleCommand</a></div><div class="ttdoc">A single-parameter command.</div><div class="ttdef"><b>Definition:</b> Command.h:277</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableMap_html"><div class="ttname"><a href="classdrain_1_1VariableMap.html">drain::VariableMap</a></div><div class="ttdoc">A map of Variables.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:56</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Image_html"><div class="ttname"><a href="classdrain_1_1image_1_1Image.html">drain::image::Image</a></div><div class="ttdoc">Class for multi-channel digital images. Supports dynamic typing with base types (char,...</div><div class="ttdef"><b>Definition:</b> Image.h:183</div></div>
 <div class="ttc" id="aclassrack_1_1CmdOutputFile_html"><div class="ttname"><a href="classrack_1_1CmdOutputFile.html">rack::CmdOutputFile</a></div><div class="ttdef"><b>Definition:</b> fileio.h:80</div></div>
 <div class="ttc" id="aclassrack_1_1CmdOutputFile_html_a157ca5a9eeee3cc6e78a2ab4ef198e43"><div class="ttname"><a href="classrack_1_1CmdOutputFile.html#a157ca5a9eeee3cc6e78a2ab4ef198e43">rack::CmdOutputFile::writeProfile</a></div><div class="ttdeci">void writeProfile(const Hi5Tree &amp;src, const std::string &amp;filename) const</div><div class="ttdef"><b>Definition:</b> file-prof.cpp:78</div></div>
 <div class="ttc" id="aclassrack_1_1CmdOutputFile_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classrack_1_1CmdOutputFile.html#a777533ac38260c4f3ff96e64c87256c8">rack::CmdOutputFile::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> fileio.cpp:270</div></div>
 <div class="ttc" id="aclassrack_1_1CmdOutputFile_html_a93f1a90e51c5627d6981dfa0b2a69f93"><div class="ttname"><a href="classrack_1_1CmdOutputFile.html#a93f1a90e51c5627d6981dfa0b2a69f93">rack::CmdOutputFile::writeSamples</a></div><div class="ttdeci">void writeSamples(const Hi5Tree &amp;src, const std::string &amp;filename) const</div><div class="ttdef"><b>Definition:</b> file-sample.cpp:110</div></div>
 <div class="ttc" id="aclassrack_1_1CmdOutputPanel_html"><div class="ttname"><a href="classrack_1_1CmdOutputPanel.html">rack::CmdOutputPanel</a></div><div class="ttdef"><b>Definition:</b> fileio.h:139</div></div>
-<div class="ttc" id="aclassrack_1_1CmdOutputPanel_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classrack_1_1CmdOutputPanel.html#a777533ac38260c4f3ff96e64c87256c8">rack::CmdOutputPanel::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdef"><b>Definition:</b> fileio.cpp:465</div></div>
+<div class="ttc" id="aclassrack_1_1CmdOutputPanel_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classrack_1_1CmdOutputPanel.html#a777533ac38260c4f3ff96e64c87256c8">rack::CmdOutputPanel::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdef"><b>Definition:</b> fileio.cpp:513</div></div>
 <div class="ttc" id="aclassrack_1_1CmdOutputTree_html"><div class="ttname"><a href="classrack_1_1CmdOutputTree.html">rack::CmdOutputTree</a></div><div class="ttdef"><b>Definition:</b> fileio.h:103</div></div>
-<div class="ttc" id="aclassrack_1_1CmdOutputTree_html_a60f35e71066ffc64ca61692ff6133adc"><div class="ttname"><a href="classrack_1_1CmdOutputTree.html#a60f35e71066ffc64ca61692ff6133adc">rack::CmdOutputTree::dataToStream</a></div><div class="ttdeci">static bool dataToStream(const Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</div><div class="ttdoc">Tree attribute formatter.</div><div class="ttdef"><b>Definition:</b> fileio.cpp:609</div></div>
-<div class="ttc" id="aclassrack_1_1CmdOutputTree_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classrack_1_1CmdOutputTree.html#a777533ac38260c4f3ff96e64c87256c8">rack::CmdOutputTree::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> fileio.cpp:550</div></div>
-<div class="ttc" id="aclassrack_1_1FileModule_html"><div class="ttname"><a href="classrack_1_1FileModule.html">rack::FileModule</a></div><div class="ttdef"><b>Definition:</b> fileio.h:178</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a1bcf55f2343d69451d57df6c51bfe7cc"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a1bcf55f2343d69451d57df6c51bfe7cc">rack::ODIMPathElem::IS_INDEXED</a></div><div class="ttdeci">static const group_t IS_INDEXED</div><div class="ttdoc">Group index mask for groups that have an index.</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:160</div></div>
+<div class="ttc" id="aclassrack_1_1CmdOutputTree_html_a60f35e71066ffc64ca61692ff6133adc"><div class="ttname"><a href="classrack_1_1CmdOutputTree.html#a60f35e71066ffc64ca61692ff6133adc">rack::CmdOutputTree::dataToStream</a></div><div class="ttdeci">static bool dataToStream(const Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</div><div class="ttdoc">Tree attribute formatter.</div><div class="ttdef"><b>Definition:</b> fileio.cpp:695</div></div>
+<div class="ttc" id="aclassrack_1_1CmdOutputTree_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classrack_1_1CmdOutputTree.html#a777533ac38260c4f3ff96e64c87256c8">rack::CmdOutputTree::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> fileio.cpp:635</div></div>
+<div class="ttc" id="aclassrack_1_1FileModule_html"><div class="ttname"><a href="classrack_1_1FileModule.html">rack::FileModule</a></div><div class="ttdef"><b>Definition:</b> fileio.h:180</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a1bcf55f2343d69451d57df6c51bfe7cc"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a1bcf55f2343d69451d57df6c51bfe7cc">rack::ODIMPathElem::IS_INDEXED</a></div><div class="ttdeci">static const group_t IS_INDEXED</div><div class="ttdoc">Group index mask for groups that have an index.</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:158</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a6c2f7fb3caa4f55a775b942ca5c0946c"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">rack::ODIMPathElem::group_t</a></div><div class="ttdeci">drain::Flagger::value_t group_t</div><div class="ttdoc">In H5, &quot;groups&quot; correspond to &quot;directories&quot; or &quot;folders&quot; in Unix and Windows.</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:93</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a7e8d276c4a8ea4d800d9b084f21aa339"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339">rack::ODIMPathElem::ROOT</a></div><div class="ttdeci">static const group_t ROOT</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:101</div></div>
 <div class="ttc" id="anamespacedrain_html_a569239d05d6fef65d2712f8239abfd65"><div class="ttname"><a href="namespacedrain.html#a569239d05d6fef65d2712f8239abfd65">drain::getCommandBank</a></div><div class="ttdeci">CommandBank &amp; getCommandBank()</div><div class="ttdoc">Global program command registry. Optional utility.</div><div class="ttdef"><b>Definition:</b> CommandBank.cpp:51</div></div>
@@ -277,6 +281,7 @@ $(function() {
 <div class="ttc" id="anamespacerack_html_a2cda91b3da2d6f2815439749807e5da5"><div class="ttname"><a href="namespacerack.html#a2cda91b3da2d6f2815439749807e5da5">rack::textFileExtension</a></div><div class="ttdeci">const drain::RegExp textFileExtension(&quot;.*\\.(txt)$&quot;, REG_EXTENDED|REG_ICASE)</div><div class="ttdoc">Syntax for recognising hdf5 files.</div><div class="ttdef"><b>Definition:</b> fileio.h:70</div></div>
 <div class="ttc" id="anamespacerack_html_a3aebdfefe173f811b4d1ee3e4068caee"><div class="ttname"><a href="namespacerack.html#a3aebdfefe173f811b4d1ee3e4068caee">rack::h5FileExtension</a></div><div class="ttdeci">const drain::RegExp h5FileExtension</div><div class="ttdoc">Syntax for recognising hdf5 files.</div></div>
 <div class="ttc" id="anamespacerack_html_ae24579491e45b3ad1f1b50479a3119fc"><div class="ttname"><a href="namespacerack.html#ae24579491e45b3ad1f1b50479a3119fc">rack::sampleFileExtension</a></div><div class="ttdeci">const drain::RegExp sampleFileExtension(&quot;.*\\.(dat)$&quot;, REG_EXTENDED|REG_ICASE)</div><div class="ttdoc">Syntax for sparsely resampled data.</div><div class="ttdef"><b>Definition:</b> fileio.h:78</div></div>
+<div class="ttc" id="astructdrain_1_1Point2D_html"><div class="ttname"><a href="structdrain_1_1Point2D.html">drain::Point2D&lt; double &gt;</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

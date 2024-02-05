@@ -425,14 +425,14 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> (cha
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a1c0303a3ce630915056eb914cc6ffb25"><td class="memTemplParams" colspan="2">template&lt;group_t G, class T &gt; </td></tr>
-<tr class="memitem:a1c0303a3ce630915056eb914cc6ffb25"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#a1c0303a3ce630915056eb914cc6ffb25">copyToH5</a> (const T &amp;odim, Hi5Tree &amp;dst)</td></tr>
-<tr class="memdesc:a1c0303a3ce630915056eb914cc6ffb25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> metadata to WHAT, WHERE and HOW groups.  <a href="classrack_1_1ODIM.html#a1c0303a3ce630915056eb914cc6ffb25">More...</a><br /></td></tr>
-<tr class="separator:a1c0303a3ce630915056eb914cc6ffb25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9fea6cff62de987ef9d3310feed01c7"><td class="memTemplParams" colspan="2"><a id="ad9fea6cff62de987ef9d3310feed01c7"></a>
+<tr class="memitem:aa96a5a5713f0f07d5945d135756ae2a8"><td class="memTemplParams" colspan="2">template&lt;group_t G, class T &gt; </td></tr>
+<tr class="memitem:aa96a5a5713f0f07d5945d135756ae2a8"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#aa96a5a5713f0f07d5945d135756ae2a8">updateH5AttributeGroups</a> (const T &amp;odim, Hi5Tree &amp;dst)</td></tr>
+<tr class="memdesc:aa96a5a5713f0f07d5945d135756ae2a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> metadata to WHAT, WHERE and HOW groups.  <a href="classrack_1_1ODIM.html#aa96a5a5713f0f07d5945d135756ae2a8">More...</a><br /></td></tr>
+<tr class="separator:aa96a5a5713f0f07d5945d135756ae2a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ca2d9d81c09d27c400c510ff15674e6"><td class="memTemplParams" colspan="2"><a id="a9ca2d9d81c09d27c400c510ff15674e6"></a>
 template&lt;group_t G, class T &gt; </td></tr>
-<tr class="memitem:ad9fea6cff62de987ef9d3310feed01c7"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>copyToH5</b> (const T &amp;odim, const Hi5Tree &amp;dst)</td></tr>
-<tr class="separator:ad9fea6cff62de987ef9d3310feed01c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ca2d9d81c09d27c400c510ff15674e6"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>updateH5AttributeGroups</b> (const T &amp;odim, const Hi5Tree &amp;dst)</td></tr>
+<tr class="separator:a9ca2d9d81c09d27c400c510ff15674e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classrack_1_1EncodingODIM"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classrack_1_1EncodingODIM')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a></td></tr>
 <tr class="memitem:a4fe9ea39b05471f7f8480480800f70b1 inherit pub_static_methods_classrack_1_1EncodingODIM"><td class="memItemLeft" align="right" valign="top"><a id="a4fe9ea39b05471f7f8480480800f70b1"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EncodingODIM.html#a4fe9ea39b05471f7f8480480800f70b1">haveSimilarEncoding</a> (const <a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;odim1, const <a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;odim2)</td></tr>
@@ -651,8 +651,35 @@ static const ODIMPathElemSeq &amp;&#160;</td><td class="memItemRight" valign="bo
 </ol>
 <p>Typically used in creating and writing a product. See also: LinearScaling (could be used as base class?) </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1c0303a3ce630915056eb914cc6ffb25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c0303a3ce630915056eb914cc6ffb25">&#9670;&nbsp;</a></span>copyToH5()</h2>
+<a id="ab10b691f99e2571ced30081d0c247259"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab10b691f99e2571ced30081d0c247259">&#9670;&nbsp;</a></span>distinguishNodata()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool distinguishNodata </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>quantityPrefix</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If nodata==undetect, set nodata=maxValue (hoping its not nodata...) </p>
+<p>This oddity is needed because some manufactures do not distinguish between undetect and nodata (esp. with VRAD).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">quantity</td><td>- set only if quantity starts with this string. So "VRAD" covers "VRADH" and "VRADV", for example. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa96a5a5713f0f07d5945d135756ae2a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa96a5a5713f0f07d5945d135756ae2a8">&#9670;&nbsp;</a></span>updateH5AttributeGroups()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -661,7 +688,7 @@ static const ODIMPathElemSeq &amp;&#160;</td><td class="memItemRight" valign="bo
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void copyToH5 </td>
+          <td class="memname">static void updateH5AttributeGroups </td>
           <td>(</td>
           <td class="paramtype">const T &amp;&#160;</td>
           <td class="paramname"><em>odim</em>, </td>
@@ -697,33 +724,6 @@ static const ODIMPathElemSeq &amp;&#160;</td><td class="memItemRight" valign="bo
 <div class="line">- ODIM::copyToH5&lt;ODIMPathElem::DATASET&gt;(odim, resources.inputHi5(dataSetPath));</div>
 <div class="line">- ODIM::copyToH5&lt;ODIMPathElem::DATA&gt;(odim, dst);</div>
 </div><!-- fragment --><p>relevant for data level, eg. <code>/dataset2</code>, <code>data4</code>, and root. </p>
-
-</div>
-</div>
-<a id="ab10b691f99e2571ced30081d0c247259"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab10b691f99e2571ced30081d0c247259">&#9670;&nbsp;</a></span>distinguishNodata()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool distinguishNodata </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>quantityPrefix</em> = <code>&quot;&quot;</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>If nodata==undetect, set nodata=maxValue (hoping its not nodata...) </p>
-<p>This oddity is needed because some manufactures do not distinguish between undetect and nodata (esp. with VRAD).</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">quantity</td><td>- set only if quantity starts with this string. So "VRAD" covers "VRADH" and "VRADV", for example. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

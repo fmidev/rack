@@ -205,9 +205,10 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	// Parents are needed because converted data are stored in parallel.
 	std::set<ODIMPathElem> parents;
 
-	const drain::RegExp quantityRegExp(this->dataSelector.getQuantity());
+	//const drain::RegExp quantityRegExp(this->dataSelector.getQuantity());
+	const QuantitySelector & slct = this->dataSelector.getQuantitySelector();
 
-	mout.special("quantityRegExp: ", quantityRegExp);
+	mout.special("slct: ", slct);
 
 	// copy
 	for (ODIMPath & path: dataPaths){
@@ -227,9 +228,9 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 			}
 			mout.note("now handling: ", parent);
 			parents.insert(parent);
-			// DataSet<src_t> srcDataSet(src(path), quantityRegExp);
+			// DataSet<src_t> srcDataSet(src(path), slct);
 			// DataSet<dst_t> dstDataSet(dst(path));
-			DataSet<src_t> srcDataSet(src[parent], quantityRegExp);
+			DataSet<src_t> srcDataSet(src[parent], slct);
 			DataSet<dst_t> dstDataSet(dst[parent]);
 			processDataSet(srcDataSet, dstDataSet);
 		}

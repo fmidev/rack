@@ -182,9 +182,9 @@ void DopplerWindowOp<W>::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	const drain::RegExp quantityRe(dataSelector.getQuantity()); // "VRADH?";
+	//const drain::RegExp quantityRe(dataSelector.getQuantity()); // "VRADH?";
 
-	const Data<PolarSrc> & vradSrc = srcSweep.getData(quantityRe); // consider data selector?
+	const Data<PolarSrc> & vradSrc = srcSweep.getData(dataSelector.getQuantitySelector()); //  (quantityRe); // consider data selector?
 
 	if (vradSrc.data.isEmpty()){
 		mout.warn("VRAD missing" );

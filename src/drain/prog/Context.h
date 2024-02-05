@@ -105,15 +105,17 @@ public:
 	 *   The basic version saves id, status flags and (expanded) logFile name
 	 */
 	virtual inline
-	drain::VariableMap & getStatusMap(){
-		updateStatus();
+	drain::VariableMap & getStatusMap(bool update=true){
+		if (update){
+			updateStatus();
+		}
 		return statusMap;
 	};
 
 
 	inline
-	const Variable & getStatus(const std::string & key) const {
-		updateStatus();
+	const Variable & getStatus(const std::string & key, bool update) const {
+		updateStatus(update);
 		return statusMap[key];
 		//return static_cast<T>(statusMap[key]);
 	};
@@ -153,11 +155,11 @@ protected:
 	mutable
 	drain::VariableMap statusMap;
 
-	void updateStatus() const {
-		//statusMap["logFile"]     = logFile;
-		statusMap["statusFlags"] = statusFlags.value;
-		statusMap["statusKeys"] = statusFlags.getKeys();
-		//return statusMap;
+	void updateStatus(bool update=true) const {
+		if (update){
+			statusMap["statusFlags"] = statusFlags.value;
+			statusMap["statusKeys"] = statusFlags.getKeys();
+		}
 	};
 
 private:

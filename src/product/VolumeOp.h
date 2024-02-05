@@ -174,7 +174,8 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		if (sweeps.find(datetime) == sweeps.end()){
 			mout.debug2("adding time=", datetime, ':', parent);
 			// Consider removing RegExp form datasets?
-			sweeps.insert(DataSetMap<PolarSrc>::value_type(datetime, DataSet<PolarSrc>(srcDataSet, drain::RegExp(this->dataSelector.getQuantity()))));
+			//sweeps.insert(DataSetMap<PolarSrc>::value_type(datetime, DataSet<PolarSrc>(srcDataSet, drain::RegExp(this->dataSelector.getQuantity()))));
+			sweeps.insert(DataSetMap<PolarSrc>::value_type(datetime, DataSet<PolarSrc>(srcDataSet, this->dataSelector.getQuantitySelector())));
 		}
 		else {
 			mout.warn("datetime =", datetime, " already added?, skipping ",  parent);

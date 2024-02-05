@@ -65,10 +65,6 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug2("start" );
 
-	/*
-	DataSetMap<PolarSrc> srcDataSets;
-	DataSetMap<PolarDst> dstDataSets;
-	*/
 	DataSetMap<PolarSrc> srcDataSets;
 	DataSetMap<PolarDst> dstDataSets;
 
@@ -78,10 +74,10 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	mout.note("Initially " , dataPaths.size() , " paths with " , this->dataSelector );
 
 	if (dataPaths.size() == 0)
-		mout.note("no dataPaths matching selector: "  , this->dataSelector );
+		mout.warn("no dataPaths matching selector: "  , this->dataSelector );
 
-	drain::RegExp quantityRegExp(this->dataSelector.getQuantity()); // DataSet objects (further below)
-
+	//drain::RegExp quantityRegExp(this->dataSelector.getQuantity()); // DataSet objects (further below)
+	QuantitySelector slct(this->dataSelector.getQuantitySelector()); // DataSet objects (further below)
 
 	//std::stringstream key;
 
@@ -134,7 +130,7 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		mout.debug3("parent: " , parent );
 
 		const drain::VariableMap & what = src[parent][ODIMPathElem::WHAT].data.attributes;
-		std::string datetime = what["startdate"].toStr() + what["starttime"].toStr();
+		std::string datetime = what["startdate"].toStr() + "_" + what["starttime"].toStr();
 
 
 		const drain::VariableMap & where = src[parent][ODIMPathElem::WHERE].data.attributes;
@@ -149,12 +145,12 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 			// Something like: sweeps[elangle] = src[parent] .
 
 			/// its and itd for debugging
-			// srcDataSets.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(src[*pit], quantityRegExp)));
-			// dstDataSets.insert(DataSetMap<PolarDst>::value_type(elangle, DataSet<PolarDst>(dst[*pit], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
+			// srcDataSets.insert(DataSetMap<PolarSrc>::value_type(elangle, DataSet<PolarSrc>(src[*pit], slct)));
+			// dstDataSets.insert(DataSetMap<PolarDst>::value_type(elangle, DataSet<PolarDst>(dst[*pit], slct)));  // Something like: sweeps[elangle] = src[parent] .
 
-			srcDataSets.insert(DataSetMap<PolarSrc>::value_type(datetime, DataSet<PolarSrc>(src[parent], quantityRegExp)));
+			srcDataSets.insert(DataSetMap<PolarSrc>::value_type(datetime, DataSet<PolarSrc>(src[parent], slct)));
 
-			dstDataSets.insert(DataSetMap<PolarDst>::value_type(datetime, DataSet<PolarDst>(dst[parent], quantityRegExp)));  // Something like: sweeps[elangle] = src[parent] .
+			dstDataSets.insert(DataSetMap<PolarDst>::value_type(datetime, DataSet<PolarDst>(dst[parent], slct)));  // Something like: sweeps[elangle] = src[parent] .
 
 			// elangles << elangle;
 

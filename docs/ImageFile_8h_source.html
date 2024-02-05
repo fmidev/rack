@@ -131,14 +131,14 @@ $(function() {
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">        drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">        if (FilePnm::fileNameRegExp.test(path)){</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">            mout.debug() &lt;&lt; &quot;file format: PNM&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">            mout.debug(&quot;file format: PNM&quot; );</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">            FilePnm::read(img, path); // , commentReader</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">        }</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">        else {</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">            if (FilePng::fileNameRegExp.test(path))</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">                mout.debug() &lt;&lt; &quot;file format: PNG&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">                mout.debug(&quot;file format: PNG&quot; );</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">            else</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">                mout.warn() &lt;&lt; &quot;unrecognized extension, assuming PNG&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">                mout.warn(&quot;unrecognized extension, assuming PNG&quot; );</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">            FilePng::read(img, path); // , commentReader</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">        }</span></div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">    }</span></div>
@@ -153,15 +153,15 @@ $(function() {
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">        drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">        if (FilePng::fileNameRegExp.test(path)){</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">            mout.debug() &lt;&lt; &quot;file format: PNG&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">            mout.debug(&quot;file format: PNG&quot; );</span></div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">            FilePng::read(img, path);</span></div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">        }</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">        else if (FilePnm::fileNameRegExp.test(path)){</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">            mout.debug() &lt;&lt; &quot;file format: PNM&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">            mout.debug(&quot;file format: PNM&quot; );</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">            FilePnm::readFrame(img, path);</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">        }</span></div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">        else {</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">            mout.warn() &lt;&lt; &quot;unrecognized extension, assuming png&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">            mout.warn(&quot;unrecognized extension, assuming png&quot; );</span></div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">            FilePng::read(img, path);</span></div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">        }</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">    }</span></div>
@@ -190,15 +190,15 @@ $(function() {
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">        drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);</span></div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">        if (FilePng::fileNameRegExp.test(path)){</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">            mout.debug() &lt;&lt; &quot;file format: PNG&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">            mout.debug(&quot;file format: PNG&quot; );</span></div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">            FilePng::write(img, path);</span></div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">        }</span></div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">        else if (FilePnm::fileNameRegExp.test(path)){</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">            mout.debug() &lt;&lt; &quot;file format: PNM&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">            mout.debug(&quot;file format: PNM&quot; );</span></div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">            FilePnm::write(img, path);</span></div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">        }</span></div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">        else {</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">            mout.warn() &lt;&lt; &quot;unrecognized extension, assuming png&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">            mout.warn(&quot;unrecognized extension, assuming png&quot; );</span></div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">            FilePng::write(img, path);</span></div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">        }</span></div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">    }</span></div>

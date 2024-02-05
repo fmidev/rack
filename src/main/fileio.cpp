@@ -340,6 +340,8 @@ void CmdOutputFile::exec() const {
 		// Optional on-the-fly conversions: handle ctx.select and ctx.targetEncoding, if defined.
 		const drain::image::Image & src = ctx.updateCurrentImage();
 
+		mout.info("Retrieved image: ", src, " [", src.properties.get("what:quantity", ""), "]");
+
 		if (src.isEmpty()){
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 			mout.warn("empty data, skipped");
@@ -462,18 +464,21 @@ void CmdOutputFile::exec() const {
 };
 
 
+/**
+ *
+ */
 void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, drain::VariableMap & variables,
 		const drain::Point2D<double> & upperLeft, const drain::image::Image & image, drain::BBox & bbox) const {
 
-	static const drain::StringMapper basename("${PREFIX}-${NOD}-${what:product}-${what:quantity}-${LABEL}", "[a-zA-Z0-9:_]+");
+	static const drain::StringMapper basename("${outputPrefix}${PREFIX}-${NOD}-${what:product}-${what:quantity}-${LABEL}", "[a-zA-Z0-9:_]+");
 
 	variables["LABEL"] = label;
-	std::string fn = basename.toStr(variables) + ".png";
-	/*
+	std::string fn = basename.toStr(variables,'X') + ".png";
+
 	basename.toStream(std::cout, variables, 0); std::cout << '\n';
 	basename.toStream(std::cout, variables, 'X'); std::cout << '\n';
 	basename.toStream(std::cout, variables, -1); std::cout << '\n';
-	*/
+
 
 	//drain::Point2D<double> upperRight(upperLeft.x + image.getWidth(), upperLeft.y + image.getWidth(), );
 	double w = image.getWidth();
@@ -503,8 +508,18 @@ void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, dra
 	imageElem->set("href", fn);
 	drain::image::FilePng::write(image, fn);
 
+	drain::image::TreeSVG & title = imageElem["title"];
+	title->setType(NodeSVG::TITLE);
+	title->ctext = label + " (experimental) ";
+
+	//title->setType(NodeSVG:);
+	drain::image::TreeSVG & comment = imageElem["comment"];
+	comment->comment("label:" + label);
+
+	// comment->setType(NodeXML::COMM)
 
 }
+
 
 /**
  *
@@ -550,12 +565,13 @@ void CmdOutputPanel::exec() const {
 	drain::VariableMap & variables = ctx.getStatusMap();
 	variables["PREFIX"] = "PANEL";
 
+
 	// drain::StringMapper basename("${PREFIX}-${NOD}-${what:product}-${what:quantity}");
 	// drain::BBox bboxAll;
 	drain::BBox bbox;
 	drain::Point2D<double> upperLeft(0,0);
 
-	ctx.updateCurrentImage();
+	//ctx.updateCurrentImage();
 	const drain::image::Image & src = ctx.getCurrentImage();
 	appendImage(main, "color", variables, upperLeft, src, bbox);
 	mout.attention("prev. BBOX: ", bbox);
@@ -650,7 +666,7 @@ void CmdOutputTree::exec() const {
 		drain::StringMapper mapper(RackContext::variableMapper);
 		mapper.parse(ctx.outputPrefix + value);
 		filename = mapper.toStr(ctx.getStatusMap());
-		mout.note("writing: '", filename, "'");
+		mout.note("writing tree: '", filename, "'");
 	}
 
 	drain::Output output(filename);

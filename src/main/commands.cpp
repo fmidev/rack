@@ -103,7 +103,7 @@ public:
  *
  */
 
-class CmdBaseSelective : public drain::SimpleCommand<> {
+class CmdBaseSelective : public drain::SimpleCommand<std::string> {
 
 protected:
 
@@ -112,8 +112,15 @@ protected:
 		// TODO: "list out" the sub-parameter help. See --help select
 	};
 
+	CmdBaseSelective(const CmdBaseSelective & cmd) : drain::SimpleCommand<>(cmd){
+	};
+
+
+	mutable
+	DataSelector mySelector;
 
 };
+
 
 /// Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection criteria.
 /**
@@ -151,40 +158,45 @@ protected:
 	\see #rack::DataSelector (code)
 
 */
-class CmdSelect : public drain::BasicCommand {
+class CmdSelect : public CmdBaseSelective { //drain::BasicCommand {
 
 public:
 
-	CmdSelect() : drain::BasicCommand(__FUNCTION__, "Data selector for the next computation"){
-		parameters.append(testSelector.getParameters());
+	CmdSelect() : CmdBaseSelective(__FUNCTION__, "Data selector for the next computation"){
+		//parameters.append(testSelector.getParameters());
 
 	};
 
-	CmdSelect(const CmdSelect & cmd) : drain::BasicCommand(cmd) {
-		parameters.append(testSelector.getParameters());
+	CmdSelect(const CmdSelect & cmd) : CmdBaseSelective(cmd) {
+		//parameters.append(testSelector.getParameters());
 		parameters.updateFromMap(cmd.getParameters());
 	};
 
-	/// Actions upon creating Program lines. Should not change anything outsde this command.
-	virtual
-	void setParameters(const std::string & args){
-		// RackContext & ctx = getContext<RackContext>();
-		// drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
-		testSelector.setParameters(args); // will alert early
-		value = args;
-	}
 
 	void exec() const {
 		RackContext & ctx = getContext<RackContext>();
 		//drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
+		drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
+		mySelector.reset();
+		// consider "reset" as a special argument.
+		try {
+			mySelector.setParameters(value); // will alert early
+			// mout.special<LOG_NOTICE>("ctx.selector: ", ctx.superSelector.getQuantity());
+			// ctx.superSelector.getQuantitySelector();
+		} catch (const std::exception & e) {
+			mout.error("syntax error in selection string: ", value);
+		}
+		mout.special<LOG_NOTICE>("ctx.selector: ", mySelector);
+		// mout.special<LOG_INFO>("ctx.selector, quantity: ", ctx.superSelector.getQuantitySelector());
+		// mout.special<LOG_INFO>("ctx.selector, quality: ",  ctx.superSelector.getQualitySelector());
 		ctx.select = value;
 		//mout.warn("ctx.select=", ctx.select, "...");
 	}
 
 private:
 
-	DataSelector testSelector;
-	std::string value;
+	// DataSelector testSelector;
+	// std::string value;
 
 };
 
@@ -269,7 +281,7 @@ rack volume.h5 --select 'quantity=DBZH,elangle=0.5:4.0'   <commands>
 
 */
 
-
+/*
 class CmdSelectOld : public  CmdBaseSelective { //drain::BasicCommand {
 
 public:
@@ -318,6 +330,7 @@ public:
 
 
 };
+*/
 
 /// Set selection criteria strictly to one \c quantity .
 /**
@@ -340,22 +353,39 @@ public:
 
 		drain::Logger mout(ctx.log, getName().c_str());
 
-		std::string quantity;
-		std::string qualityQuantity;
+		// NEW
+		std::string checkedValue(value);
+		//ctx.superSelector.reset();
+		mySelector.reset();
 
-		drain::StringTools::split2(value, quantity, qualityQuantity,"/");
-		drain::StringTools::replace(transTable, quantity);
-		drain::StringTools::replace(transTable, qualityQuantity);
-
-
-		if (qualityQuantity.empty()){
-			//mout.warn("s"  );
-			ctx.select = "quantity=^(" + quantity + ")$";
+		try {
+			// Setting test selector here will alert early
+			mySelector.setQuantities(checkedValue); // ","
+			//ctx.superSelector.getQuantitySelector();
+		} catch (const std::exception & e) {
+			mout.obsolete(checkedValue,  " - pattern matching has been replaced by RegExp matching: * -> .*, ? -> .? etc.");
+			mout.warn("msg: ", e.what());
+			drain::StringTools::replace(transTable, checkedValue);
+			//mout.warn("syntax error in selection string: ", value);
+			try {
+				mout.special("retrying with '", checkedValue, "'");
+				mySelector.setQuantities(checkedValue);
+				//ctx.superSelector.getQuantitySelector();
+			} catch (const std::exception & e) {
+				mout.warn("msg: ", e.what());
+				mout.error("syntax error in selection string: ", value, " or ", checkedValue);
+				ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR); // resources.dataOk = false;
+				return;
+			}
 		}
-		else {
-			mout.experimental("quantity-specific quality [", qualityQuantity, "] -> [", quantity, "]: strict check unimplemented");
-			ctx.select = "path=data:/quality:,quantity=^(" + qualityQuantity + ")$";  //???
-		}
+		/*
+		mout.special<LOG_NOTICE>("ctx.selector: ", ctx.superSelector);
+		mout.special<LOG_INFO>("ctx.selector, quantity: ", ctx.superSelector.getQuantitySelector());
+		mout.special<LOG_INFO>("ctx.selector, quality: ",  ctx.superSelector.getQualitySelector());
+		mout.special<LOG_NOTICE>("ctx.selector: qualities: ", ctx.superSelector.getQuantity());
+		*/
+		ctx.select = std::string("quantity=") + checkedValue;
+		mout.special<LOG_DEBUG>("revised ctx.select: ", ctx.select);
 
 		ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR); // resources.dataOk = false;
 
@@ -365,11 +395,55 @@ protected:
 
 	static const std::map<std::string,std::string> transTable; // = {{",", "|"}};
 
+	//mutable
+	//DataSelector testSelector;
 
+	mutable
+	DataSelector mySelector; // TODO: join with SelectiveBase?
 };
 
 const std::map<std::string,std::string> CmdSelectQuantity::transTable = {{",", "|"}, {"*",".*"}, {"?","."}};
 
+/// Modifies metadata (data attributes).
+/**
+
+\~exec
+	make setODIM.hlp
+\~
+
+\include setODIM.hlp
+
+\param assignment - source path consisting of group path, attribute key and value
+
+A full path consist of a slash-separated group path elements followed by an attribute key separated by colon.
+
+Examples:
+\include example-assign.inc
+
+ */
+class CmdSet : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdSet() : drain::SimpleCommand<std::string>(__FUNCTION__, "Set general-purpose variables",
+			"assignment", "", "key=value") {
+	};
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		// std::list<std::string args>... multiple possible, but separator escape problem?
+		std::string k;
+		std::string v;
+		drain::StringTools::split2(value, k, v, '=');
+
+		ctx.getStatusMap(false)[k] = v;
+
+	};
+
+};
 
 /// Convert data with desired encoding
 /**
@@ -459,7 +533,11 @@ public:
 		//parameters.link("quantity", quantity="", "ODIM code");
 	};
 
-	CmdCreateDefaultQuality(const CmdCreateDefaultQuality & cmd) : drain::BasicCommand(cmd) {
+	CmdCreateDefaultQuality(const CmdCreateDefaultQuality & cmd) : drain::BasicCommand(cmd),
+			dataQuality(std::numeric_limits<double>::quiet_NaN()),
+			undetectQuality(std::numeric_limits<double>::quiet_NaN()),
+			nodataQuality(std::numeric_limits<double>::quiet_NaN())
+			{
 		parameters.copyStruct(cmd.parameters, cmd, *this);
 	}
 
@@ -479,7 +557,8 @@ public:
 			mout.note("selector quantity unset, setting " , selector.getQuantity() );
 		}
 
-		const drain::RegExp quantityRegExp(selector.getQuantity());
+		//const drain::RegExp quantityRegExp(selector.getQuantity());
+		const QuantitySelector & slct = selector.getQuantitySelector();
 
 		Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT);
 
@@ -491,10 +570,10 @@ public:
 		mout.note(std::isnan(nodataQuality) );
 
 		if (& dst == ctx.currentPolarHi5){
-			processStructure<PolarODIM>(dst, paths, quantityRegExp);
+			processStructure<PolarODIM>(dst, paths, slct);
 		}
 		else if (& dst == &ctx.cartesianHi5){
-			processStructure<CartesianODIM>(dst, paths, quantityRegExp);
+			processStructure<CartesianODIM>(dst, paths, slct);
 		}
 		else {
 			drain::Logger mout(ctx.log, __FUNCTION__, getName());
@@ -507,7 +586,8 @@ public:
 
 
 	template <class OD>
-	void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const drain::RegExp & quantityRegExp) const {
+	//void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const drain::RegExp & slct) const {
+	void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const QuantitySelector & slct) const {
 
 		RackContext & ctx = getContext<RackContext>();
 
@@ -536,7 +616,7 @@ public:
 			//QualityDataSupport<DT> quality(dst);
 
 			if (path.back().is(ODIMPathElem::DATASET)){
-				DataSet<DT> dstDataSet(dst, quantityRegExp);
+				DataSet<DT> dstDataSet(dst, slct);
 				PlainData<DT> & dstData = dstDataSet.getFirstData();
 				PlainData<DT> & dstQuality = dstDataSet.getQualityData();
 				dstData.createSimpleQualityData(dstQuality, dataQuality, undetectQuality, nodataQuality);
@@ -554,7 +634,7 @@ public:
 			//mout.warn(quality  );
 
 			/*
-			DataSet<DT> dstDataSet(dstDataSetH5, quantityRegExp);
+			DataSet<DT> dstDataSet(dstDataSetH5, slct);
 			if (quantitySpecific){
 				for (typename DataSet<DT>::iterator it2 = dstDataSet.begin(); it2!=dstDataSet.end(); ++it2){
 					mout.debug('\t' , it2->first  );
@@ -2341,6 +2421,8 @@ MainModule::MainModule(){ //
 
 	// Independent commands
 	install<CmdSelect>('s');
+	install<CmdSelectQuantity>('Q');
+	install<CmdSet>();
 	install<drain::CmdStatus>();
 
 	install<CmdEncoding>('e');
@@ -2350,7 +2432,7 @@ MainModule::MainModule(){ //
 
 	//installer.install<CmdSleep> cmdSleep;
 	install<drain::CmdFormat>();
-	install<drain::CmdFormatFile<RackContext> > ();
+	install<drain::CmdFormatFile<RackContext> >();
 
 	install<drain::CmdDebug>();
 	install<VerboseCmd>('v');
@@ -2360,35 +2442,26 @@ MainModule::MainModule(){ //
 
 	install<UndetectWeight>();
 
-
-	install<CmdSelectQuantity>('Q');
 	install<CmdCheckType>();
 	install<CmdValidate>();
 
-	install<CmdCompleteODIM>();
 	install<CmdConvert>();
 	install<CmdDelete>();
-	install<CmdDumpMap>();
-	//RackLetAdapter<CmdDumpEchoClasses> cmdDumpEchoClasses; // obsolete?
+	install<CmdMove>();
 
+	install<CmdDumpMap>();
 
 	install<CmdJSON>();
 	install<CmdKeep>();
 
-	install<CmdMove>();
 	install<CmdSetODIM>();
+	install<CmdCompleteODIM>();
 	install<CmdVersion>();
 
-
 	install<CmdAppend>();
-
 	install<CmdStore>();
 
-
-
 	install<CmdQuantityConf>();
-
-
 	install<CmdCreateDefaultQuality>();
 
 }
@@ -2597,7 +2670,7 @@ HiddenModule::HiddenModule(){ //
 
 	install<CmdInputFilter>();
 
-	install<CmdSelectOld>();
+	// install<CmdSelectOld>();
 
 	install<CmdTest2>("restart", 'R');
 

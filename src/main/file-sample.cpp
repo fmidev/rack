@@ -144,7 +144,8 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 	if (ctx.currentHi5 == ctx.currentPolarHi5){
 
 		mout.debug("sampling polar data" );
-		const DataSet<PolarSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
+		//const DataSet<PolarSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
+		const DataSet<PolarSrc> dataset(srcDataSet, selector.getQuantitySelector());
 		mout.info("data: " , dataset );
 
 		sampleData<PolarDataPicker>(dataset, sampler, ctx.formatStr, ofstr);
@@ -153,7 +154,8 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 	else {
 
 		mout.debug("sampling Cartesian data: " );
-		const DataSet<CartesianSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
+		//const DataSet<CartesianSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
+		const DataSet<CartesianSrc> dataset(srcDataSet, selector.getQuantitySelector());
 		mout.info("data: " , dataset );
 		/*
 			for (DataSet<CartesianSrc>::const_iterator it = dataset.begin(); it != dataset.end(); ++it){

@@ -182,13 +182,13 @@ $(function() {
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">    drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);</span></div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">    mout.info() &lt;&lt; &quot;path=&#39;&quot; &lt;&lt; path &lt;&lt; &quot;&#39;&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">    mout.info(&quot;path=&#39;&quot; , path , &quot;&#39;&quot; );</span></div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">    std::ifstream infile;</span></div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">    infile.open(path.c_str(), std::ios::in);</span></div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">    if (!infile){</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">        mout.warn() &lt;&lt; &quot;opening file &#39;&quot; &lt;&lt; path &lt;&lt; &quot;&#39; failed&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">        mout.warn(&quot;opening file &#39;&quot; , path , &quot;&#39; failed&quot; );</span></div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">        return;</span></div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">    }</span></div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment"></span> </div>
@@ -196,8 +196,8 @@ $(function() {
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">    //infile &gt;&gt; magic;</span></div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">    if (infile.get() != &#39;P&#39;){</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">        mout.warn() &lt;&lt; &quot;file does not start with  &#39;P&#39; (magic code)&quot; &lt;&lt; mout.endl;</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">        mout.error() &lt;&lt; &quot;not an PNM file&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">        mout.warn(&quot;file does not start with  &#39;P&#39; (magic code)&quot; );</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">        mout.error(&quot;not an PNM file&quot; );</span></div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">        return;</span></div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">    }</span></div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment"></span> </div>
@@ -232,10 +232,10 @@ $(function() {
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">        channels = 3;</span></div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">        break;</span></div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">    default:</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment">        mout.error() &lt;&lt; &quot;unrecognized PPM type&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment">        mout.error(&quot;unrecognized PPM type&quot; );</span></div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">    }</span></div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">    mout.note() &lt;&lt; &quot;PNM type: P&quot; &lt;&lt;  c &lt;&lt; &quot; (&quot; &lt;&lt; channels  &lt;&lt; &quot; channels)&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">    mout.note(&quot;PNM type: P&quot; ,  c , &quot; (&quot; , channels  , &quot; channels)&quot; );</span></div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">    while ((c = infile.get()) != &#39;\n&#39;){</span></div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">        // ?</span></div>
@@ -246,7 +246,7 @@ $(function() {
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">        while ((c = infile.get()) !=&#39;\n&#39; ){</span></div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">            // std::cout &lt;&lt; c;</span></div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">            if (infile.eof())</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">                mout.error() &lt;&lt; &quot;Premature end of file&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">                mout.error(&quot;Premature end of file&quot; );</span></div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">        }</span></div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment">        std::list&lt;std::string&gt; assignment;</span></div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">        drain::StringTools::split(sstr.str(), assignment, &quot;=&quot;, &quot; \t&#39;\&quot;&quot;);</span></div>
@@ -263,7 +263,7 @@ $(function() {
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">    image.initialize(typeid(unsigned char), width, height, channels);</span></div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">    mout.debug() &lt;&lt; image &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">    mout.debug(image );</span></div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment">    readFrame(image, infile);</span></div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment"></span> </div>
@@ -285,9 +285,9 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1FileInfo_html"><div class="ttname"><a href="classdrain_1_1FileInfo.html">drain::FileInfo</a></div><div class="ttdef"><b>Definition:</b> FileInfo.h:47</div></div>
 <div class="ttc" id="aclassdrain_1_1FlexVariableMap_html"><div class="ttname"><a href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a></div><div class="ttdoc">A map of FlexVariable:s.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:115</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1FilePnm_html"><div class="ttname"><a href="classdrain_1_1image_1_1FilePnm.html">drain::image::FilePnm</a></div><div class="ttdoc">For reading and writing images in PNM format.</div><div class="ttdef"><b>Definition:</b> FilePnm.h:59</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1FilePnm_html_a0cbbcdd5455b722eea871acf51d268af"><div class="ttname"><a href="classdrain_1_1image_1_1FilePnm.html#a0cbbcdd5455b722eea871acf51d268af">drain::image::FilePnm::write</a></div><div class="ttdeci">static void write(const ImageFrame &amp;image, const std::string &amp;path)</div><div class="ttdoc">Read image array after essential metadata (type and geometry) has been processed.</div><div class="ttdef"><b>Definition:</b> FilePnm.cpp:437</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1FilePnm_html_a1a2a487c00fc6bd74e9be816a2bf1efd"><div class="ttname"><a href="classdrain_1_1image_1_1FilePnm.html#a1a2a487c00fc6bd74e9be816a2bf1efd">drain::image::FilePnm::read</a></div><div class="ttdeci">static void read(Image &amp;image, const std::string &amp;path)</div><div class="ttdoc">Reads a pnm file to an image.</div><div class="ttdef"><b>Definition:</b> FilePnm.cpp:175</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1FilePnm_html_a34e327b230a005ed6ae0428e291f771b"><div class="ttname"><a href="classdrain_1_1image_1_1FilePnm.html#a34e327b230a005ed6ae0428e291f771b">drain::image::FilePnm::readFrame</a></div><div class="ttdeci">static void readFrame(ImageFrame &amp;image, const std::string &amp;path)</div><div class="ttdoc">Read image array, assuming type and geometry already set.</div><div class="ttdef"><b>Definition:</b> FilePnm.cpp:221</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1FilePnm_html_a0cbbcdd5455b722eea871acf51d268af"><div class="ttname"><a href="classdrain_1_1image_1_1FilePnm.html#a0cbbcdd5455b722eea871acf51d268af">drain::image::FilePnm::write</a></div><div class="ttdeci">static void write(const ImageFrame &amp;image, const std::string &amp;path)</div><div class="ttdoc">Read image array after essential metadata (type and geometry) has been processed.</div><div class="ttdef"><b>Definition:</b> FilePnm.cpp:434</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1FilePnm_html_a1a2a487c00fc6bd74e9be816a2bf1efd"><div class="ttname"><a href="classdrain_1_1image_1_1FilePnm.html#a1a2a487c00fc6bd74e9be816a2bf1efd">drain::image::FilePnm::read</a></div><div class="ttdeci">static void read(Image &amp;image, const std::string &amp;path)</div><div class="ttdoc">Reads a pnm file to an image.</div><div class="ttdef"><b>Definition:</b> FilePnm.cpp:184</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1FilePnm_html_a34e327b230a005ed6ae0428e291f771b"><div class="ttname"><a href="classdrain_1_1image_1_1FilePnm.html#a34e327b230a005ed6ae0428e291f771b">drain::image::FilePnm::readFrame</a></div><div class="ttdeci">static void readFrame(ImageFrame &amp;image, const std::string &amp;path)</div><div class="ttdoc">Read image array, assuming type and geometry already set.</div><div class="ttdef"><b>Definition:</b> FilePnm.cpp:213</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1FilePnm_html_a6d1a9cfecc377cbd84c3d1b8db9096b0"><div class="ttname"><a href="classdrain_1_1image_1_1FilePnm.html#a6d1a9cfecc377cbd84c3d1b8db9096b0">drain::image::FilePnm::readHeader</a></div><div class="ttdeci">static FileType readHeader(drain::image::ImageConf &amp;conf, drain::FlexVariableMap &amp;properties, std::istream &amp;infile)</div><div class="ttdoc">Read image array after essential metadata (type and geometry) has been processed.</div><div class="ttdef"><b>Definition:</b> FilePnm.cpp:54</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1FilePnm_html_aefc06af35d230ebe8d66e306c7362df1"><div class="ttname"><a href="classdrain_1_1image_1_1FilePnm.html#aefc06af35d230ebe8d66e306c7362df1">drain::image::FilePnm::fileInfo</a></div><div class="ttdeci">static const FileInfo fileInfo</div><div class="ttdoc">Syntax for recognising pnm files.</div><div class="ttdef"><b>Definition:</b> FilePnm.h:76</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageConf_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageConf.html">drain::image::ImageConf</a></div><div class="ttdoc">Struct for image (excluding data)</div><div class="ttdef"><b>Definition:</b> ImageConf.h:331</div></div>

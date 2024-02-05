@@ -81,15 +81,15 @@ $(function() {
 <li><code>latest</code> if default branch</li>
 <li><code>${commit_info.short_sha}</code></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md31"></a>
+<h1><a class="anchor" id="autotoc_md22"></a>
 Local build</h1>
 <p>This section explains how a Docker image is build on command line. The required commands are defined in [Makefile](Makefile) and invoked with <code>make</code> command.</p>
-<h2><a class="anchor" id="autotoc_md32"></a>
+<h2><a class="anchor" id="autotoc_md23"></a>
 Basic build commands</h2>
 <p>An image is constructed by entering <code>rack/src</code> directory and issuing:</p>
 <div class="fragment"><div class="line">make docker-image</div>
 </div><!-- fragment --><p>Essentially, a command like this one will be run: </p><div class="fragment"><div class="line">docker --config docker-conf-&lt;hostname&gt;  build . --build-arg CONF_DIR=docker-conf-&lt;hostname&gt; --file Dockerfile.ubuntu20  --tag rack_ubuntu20:7.79</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md33"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md24"></a>
 Proxy settings</h2>
 <p>Proxy settings are often required for a build to run. Therefore, the process creates a separare configuration dir, <code>./docker-conf-${HOSTNAME}</code> by default. The directory contains the following files:</p>
 <ul>
@@ -109,11 +109,11 @@ Proxy settings</h2>
 </ul>
 <p>One may create, then edit and use alternative configuration directories, issued in a <code>make</code> parameter as follows:</p>
 <div class="fragment"><div class="line">make docker-image DOCKER_CONF_DIR=docker-conf-external</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md34"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md25"></a>
 Testing</h2>
 <p>After building an image, it is good to test that <code>rack</code> command is found and works, at least responses to basic commands. </p><div class="fragment"><div class="line">make docker-image-test</div>
 </div><!-- fragment --><p>One can also do this directly, issuing commands like: </p><div class="fragment"><div class="line">docker run -t &quot;rack_ubuntu20:7.79&quot; rack --version</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md35"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md26"></a>
 Uploading to Quay.io</h2>
 <p>(Currently, this part is FMI specific and used only by the developers.) </p><div class="fragment"><div class="line">make docker-image-push</div>
 </div><!-- fragment --> </div></div><!-- contents -->

@@ -125,8 +125,8 @@ $(function() {
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="classrack_1_1DetectorOp.html">DetectorOp</a>(__FUNCTION__, <span class="stringliteral">&quot;Detects suspicious variance in Doppler speed (VRAD).&quot;</span>, <span class="stringliteral">&quot;nonmet.biol.dopplernoise&quot;</span>){</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="comment">// dataSelector.path = &quot;da ta[0-9]+/?$&quot;;</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        dataSelector.quantity = <span class="stringliteral">&quot;^(VRAD|VRADH)$&quot;</span>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        dataSelector.count = 1;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        dataSelector.setQuantityRegExp(<span class="stringliteral">&quot;^(VRAD|VRADH)$&quot;</span>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        dataSelector.setMaxCount(1);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        parameters.link(<span class="stringliteral">&quot;speedDevThreshold&quot;</span>, this-&gt;speedDevThreshold = speedDevThreshold, <span class="stringliteral">&quot;Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)&quot;</span>);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        parameters.link(<span class="stringliteral">&quot;windowWidth&quot;</span>, this-&gt;conf.widthM = windowWidthM, <span class="stringliteral">&quot;window width, beam-directional (m)&quot;</span>); <span class="comment">//, &quot;[m]&quot;);</span></div>

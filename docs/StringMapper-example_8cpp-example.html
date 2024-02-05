@@ -92,7 +92,7 @@ $(function() {
 <div class="line"><span class="comment"> */</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">/*</span></div>
-<div class="line"><span class="comment">REQUIRE: drain/util/{Caster,Castable,FileInfo,JSON,RegExp,Sprinter,String,StringMapper,TextReader,Type,Variable,Log}.cpp</span></div>
+<div class="line"><span class="comment">REQUIRE: drain/util/{Caster,Castable,FileInfo,JSON,RegExp,Sprinter,String,StringMapper,TextReader,TextStyle,Type,Variable,Log}.cpp</span></div>
 <div class="line"><span class="comment"></span> </div>
 <div class="line"><span class="comment">g+s+ -I. drain/examples/StringMapper-example.cpp drain/util/{Caster,Castable,JSONwriter,RegExp,String,StringMapper,Type,Variable,Log}.cpp -o StringMapper-example</span></div>
 <div class="line"><span class="comment"> */</span></div>
@@ -118,11 +118,11 @@ $(function() {
 <div class="line"> </div>
 <div class="line">    mapper.setValidChars(argv[1]);</div>
 <div class="line"> </div>
-<div class="line">    mout.special() &lt;&lt; mapper &lt;&lt; mout.endl;</div>
+<div class="line">    mout.special(mapper);</div>
 <div class="line"> </div>
 <div class="line">    mapper.parse(argv[2]);</div>
 <div class="line"> </div>
-<div class="line">    mout.warn() &lt;&lt; mapper &lt;&lt; mout.endl;</div>
+<div class="line">    mout.warn(mapper);</div>
 <div class="line"> </div>
 <div class="line">    std::map&lt;std::string,std::string&gt; m;</div>
 <div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 3; i &lt; argc; ++i) {</div>

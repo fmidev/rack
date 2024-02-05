@@ -138,6 +138,10 @@ const <a class="el" href="classdrain_1_1Bidirectional.html">Bidirectional</a>&lt
 <tr class="memitem:ac5c54df7ed3b930268c8d7752c101725 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a id="ac5c54df7ed3b930268c8d7752c101725"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>update</b> ()</td></tr>
 <tr class="separator:ac5c54df7ed3b930268c8d7752c101725 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17ef1f4d6f9b665a3a69ad7fea930f29 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a id="a17ef1f4d6f9b665a3a69ad7fea930f29"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a17ef1f4d6f9b665a3a69ad7fea930f29">updateBean</a> () const</td></tr>
+<tr class="memdesc:a17ef1f4d6f9b665a3a69ad7fea930f29 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after <a class="el" href="classdrain_1_1BeanLike.html#ad787848856e54c759b43a030b826ea96" title="Grants access to (if above hidden)">setParameters()</a> <br /></td></tr>
+<tr class="separator:a17ef1f4d6f9b665a3a69ad7fea930f29 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08f192569de5a4a19e371dcf966f6ab0 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="memItemLeft" align="right" valign="top"><a id="a08f192569de5a4a19e371dcf966f6ab0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a08f192569de5a4a19e371dcf966f6ab0">setTopology</a> (PIXEL_ADJACENCY topology)</td></tr>
 <tr class="memdesc:a08f192569de5a4a19e371dcf966f6ab0 inherit pub_methods_classdrain_1_1image_1_1DistanceModel"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the topology of the computation grid: 0=diamond, 1=diagonal, 2=extended (chess knight steps) <br /></td></tr>
@@ -239,10 +243,6 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>checkDec</b> (float 
 <tr class="memitem:a55071108918aaae58d9cc5a68b414db2 inherit pro_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="a55071108918aaae58d9cc5a68b414db2"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>BeanLike</b> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
 <tr class="separator:a55071108918aaae58d9cc5a68b414db2 inherit pro_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3d20dd7e09a23bd60ca27e78227e245 inherit pro_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="ad3d20dd7e09a23bd60ca27e78227e245"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a> () const</td></tr>
-<tr class="memdesc:ad3d20dd7e09a23bd60ca27e78227e245 inherit pro_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after <a class="el" href="classdrain_1_1BeanLike.html#ad787848856e54c759b43a030b826ea96" title="Grants access to (if above hidden)">setParameters()</a> <br /></td></tr>
-<tr class="separator:ad3d20dd7e09a23bd60ca27e78227e245 inherit pro_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -412,6 +412,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <li>negative value: no decay; continue to infinity with constant value</li>
 <li>zero: sharp decay, value is zero in neighboring pixels </li>
 </ul>
+<p>NEW 2024</p>
 
 <p>Implements <a class="el" href="classdrain_1_1image_1_1DistanceModel.html#a61be6d96b330ff9114e3bf9f7c96c2ff">DistanceModel</a>.</p>
 

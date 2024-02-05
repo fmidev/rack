@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "7.9"
+#define __RACK_VERSION__ "8.0"
 
 /**
+ *   Version 8.0
+ *   -- Revised quantity selection: list of strings/regExps.
+ *
  *   Version 7.9
  *   -- Palette aliases, like DBZH->DBZ, DBHV->DBZ, TH->DBZ, TV-> ...
  *   -- Fixed PGM 16bit read/write bugs

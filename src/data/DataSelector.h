@@ -196,8 +196,8 @@ public:
 		return pathMatcher.trimHead(true);
 	}
 
-
-	void setQuantities(const std::string & s); // todo: rename (here only) quantities?
+	/// Sets basic quantities and quality quantities. These sets are separated by '/'.
+	void setQuantities(const std::string & s); // , const std::string & separators = ","); // todo: rename (here only) quantities?
 
 	void setQuantityRegExp(const std::string & s); // todo: rename (here only) quantities?
 
@@ -206,6 +206,11 @@ public:
 		return quantitySelector.isSet() || qualitySelector.isSet();
 	}
 
+	/// Retrieve quantity list and regular expression, if defined.
+	/**
+	 *
+	 *
+	 */
 	inline
 	const std::string & getQuantity() const {
 		return quantities;
@@ -257,8 +262,6 @@ public:
 	}
 
 
-
-
 	/// Collect paths with all the criteria: path, elevation(range), PRF, quantity...
 	/**
 	 *
@@ -267,14 +270,16 @@ public:
 	void selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const;
 
 
-
-public:
-
 	// TODO add filter, allowing ODIMPathElem::group_t == QUALITY
 	static
 	void getTimeMap(const Hi5Tree & srcRoot, ODIMPathElemMap & m);
 
-	/// Convert path and quantity strings to pathMatcher and quantity regexps, respectively.
+
+	/// Updates member objects with their corresponding variable values .
+	/**
+	 *   Converts path and quantity strings to pathMatcher and quantity regexps, respectively.
+	 *
+	 */
 	virtual
 	void updateBean() const;
 
@@ -294,9 +299,9 @@ public:
 	 *   \param parameters - string containing parameters, like "dataset=1:3,quantity=DBZH"
 	 *   \param clear      - first reset to default state
 	 *   // groups set, if not given in \c parameters
-	 */
 	virtual
 	void deriveParameters(const std::string & parameters, bool clear=true);// , ODIMPathElem::group_t defaultGroups = (ODIMPathElem::DATA | ODIMPathElem::QUALITY)); //, char assignmentSymbol='=', char separatorSymbol=0);
+	 */
 
 
 
@@ -375,7 +380,8 @@ protected:
 	mutable
 	ODIMPathMatcher pathMatcher;
 
-	/// Comma-separated list of conventional quantities and quality quantities.
+	/// Comma-separated list of conventional quantities, optionally followed by '/', and quality quantities.
+	mutable
 	std::string quantities;
 
 	mutable
@@ -410,7 +416,8 @@ protected:
 	bool getSubPathsFOO(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const;
 	 */
 
-	void updateQuantities() const ;
+	void updateQuantities() const; // todo: rename (here only) quantities?
+	// void updateQuantities(const std::string & separators = ",") const ;
 
 	/// Sets the default values and sets references.
 	void init();
@@ -432,25 +439,6 @@ protected:
 
 std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector);
 
-/*
-inline
-std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector){
-	selector.toStream(ostr);
-	return ostr;
-}
-*/
-
-/*
-inline
-std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector){
-	drain::Sprinter::toStream(ostr, selector.getParameters().getMap(), drain::Sprinter::cmdLineLayout);
-	ostr << ", matcher=" << selector.pathMatcher;
-	// ostr << selector.getParameters() << ", matcher=" << selector.pathMatcher;
-	// ostr << ", orderFlags=" << selector.orderFlags;
-	// ostr << ", order=" << selector.order.str;
-	return ostr;
-}
-*/
 
 
 // Experimental

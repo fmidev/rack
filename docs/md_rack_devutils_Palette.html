@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rack: Rack – internal dev utils and data</title>
+<title>rack: Palettes</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,28 +65,10 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Rack – internal dev utils and data </div>  </div>
+<div class="title">Palettes </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This directory contains miscellaneous resources for Rack development</p>
-<ul>
-<li>Data files, mostly originating from radar (Not intended for public sharing)</li>
-<li>Tests not having value as examples in the documentation</li>
-<li>Tools and instructions for reloading public data</li>
-<li>Graphic design elements</li>
-</ul>
-<p>Notice: general programming utilities, including image processing operators, are part of the <em>drain</em> library. The related tests and utilities are a separate <a href="https://github.fmi.fi/mpeura/drainage">drainage</a> package.</p>
-<h1><a class="anchor" id="autotoc_md20"></a>
-Links</h1>
-<ul>
-<li><code>Rack</code> <a href="https://github.com/fmidev/rack">code repository</a></li>
-<li><code>Rack</code> <a href="https://fmidev.github.io/rack/">documentation</a></li>
-</ul>
-<h1><a class="anchor" id="autotoc_md21"></a>
-Some development routines and work flows</h1>
-<h2><a class="anchor" id="autotoc_md22"></a>
-Palettes</h2>
-<p>Rack uses palettes for colouring 2D data, that is, in mapping data values (intensities) to RGB colours. Palettes also serve in <em>anomaly detection</em> – for mapping data values (numerical class codes) to echo class identifiers (strings).</p>
+<div class="textblock"><p>Rack uses palettes for colouring 2D data, that is, in mapping data values (intensities) to RGB colours. Palettes also serve in <em>anomaly detection</em> – for mapping data values (numerical class codes) to echo class identifiers (strings).</p>
 <p>In development, <em>palettes are primarily stored as plain text files</em> with extension <code>.txt</code> and converted to C++ include code.</p>
 <p>Resources:</p>
 <ul>
@@ -98,11 +80,14 @@ Palettes</h2>
 <p><em>Workflow: suggestion 1</em></p>
 <ol type="1">
 <li>Edit <code>.txt</code> palette in directory palette/ directly with a text editor. Example: <code>palette/palette-DBZH.txt</code> .</li>
-<li>Then, preview the results in SVG format, for example as follows: <div class="fragment"><div class="line">rack --paletteIn palette/palette-DBZH.txt --paletteOut out.svg --paletteOut out.inc; display out.svg;</div>
+<li>Then, preview the results in SVG format, for example as follows: <div class="fragment"><div class="line">rack --paletteIn palette/palette-DBZH.txt --paletteOut palette-DBZH.inc --paletteOut out.svg  &amp;&amp;  display out.svg;</div>
 </div><!-- fragment --></li>
-<li>Repeat 2.-3. until satisfied. Consider using refresh in viewing: <code>display -update 1 out.svg</code>.</li>
-<li>Copy the <code>.inc</code> file to directory <code>src//main/palette</code> .</li>
-<li>Build <code>Rack</code>.</li>
+<li>Repeat 2.-3. until satisfied.</li>
+<li>Optionally, check differences with <code>diff src/main/palette/palette-DBZH.inc palette-DBZH.inc</code></li>
+</ol>
+<ol type="1">
+<li>Copy the <code>.inc</code> file to directory <code>src/main/palette</code> .</li>
+<li>Rebuild <code>Rack</code>.</li>
 </ol>
 <p><em>Workflow: suggestion 2</em></p>
 <p>Use HTML/JavaScript based tool at <a href="http://dev.tutka.fmi.fi/products/radar/share/palette/dvice-palette-demo.html">dev.tutka.fmi.fi</a>.</p>
