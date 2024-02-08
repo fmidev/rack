@@ -35,6 +35,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_VERSION__ "8.1"
 
 /**
+ *   Version 8.1
+ *   -- Program output tracking
+ *   -- SVG, XML development
+ *
  *   Version 8.0
  *   -- Revised quantity selection: list of strings/regExps.
  *

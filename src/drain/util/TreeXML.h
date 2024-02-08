@@ -77,8 +77,11 @@ public:
 
 	inline
 	NodeXML() : id(++nextID){
-		link("id", id);
+		// link("id", id);
 	};
+
+	static
+	const std::map<T,std::string> tags;
 
 
 	NodeXML(const NodeXML & node) : id(++NodeXML::nextID) {
@@ -192,7 +195,7 @@ public:
 	}
 
 	inline
-	bool isComment() {
+	bool isComment() const {
 		return (id < 0);
 	}
 
@@ -231,26 +234,23 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 	// OPEN TAG
 	std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
 
-	// isComment()
-	if (tree->id < 0){
-		ostr << "<!-- " << tree->getTag() << ' ' << tree->ctext << " /-->\n";
-		return ostr;
+	//
+	if (tree->isComment()){
+		//ostr << "<!-- " << tree->getTag() << ' ' << tree->ctext << " /-->\n";
+		ostr << "<!-- " << tree->getTag() << ' ' << tree->ctext; // << " /-->\n";
+		//return ostr;
 	}
-
-
-	ostr << '<';
-	//<< tree.data.tag << ' ';
-	if (tree->getTag().empty())
-		ostr << defaultTag << ' ';
+	else if (tree->getTag().empty())
+		ostr << '<' << defaultTag << ' ';
 	else {
-		ostr << tree->getTag() << ' ';
+		ostr << '<' << tree->getTag() << ' ';
 		// TODO if (tree.data.name.empty()) ?
 		if (!defaultTag.empty())
 			attribToStream(ostr, "name", defaultTag);
 			//ostr << "name=\"" << defaultTag << '"' << ' ';
 	}
 
-	if (tree->id >= 0){
+	// if (tree->id >= 0){
 		if (!tree->classList.empty()){
 			ostr << "class=\"";
 			std::copy(tree->classList.begin(), tree->classList.end(), std::ostream_iterator<std::string>(ostr, " "));
@@ -258,9 +258,9 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 		}
 		// attribToStream(ostr, "id", tree->id); // problem for palette?
 		//ostr << "id=\"" << tree.data.id << '"' << ' ';
-	}
+	// }
 
-	/// iterate attributes
+	/// iterate attributes - note: also for comment
 	for (const typename T::node_data_t::key_t & key: tree.data.getKeyList()){
 		std::stringstream sstr;
 		sstr << tree.data[key];  // consider checking 0, not only empty string "".
@@ -271,7 +271,10 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 
 	}
 
-	if ((children.size() == 0) && tree->ctext.empty() ){ // OR no ctext!
+	if (tree->isComment()){
+		ostr << " /-->\n";
+	}
+	else if ((children.size() == 0) && tree->ctext.empty() ){ // OR no ctext!
 		// close TAG
 		ostr << '/' << '>';
 		ostr << '\n';
@@ -290,7 +293,9 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 			//ostr << *it;
 		}
 		// add end </TAG>
-		std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
+		if (!children.empty()){
+			std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
+		}
 		ostr << '<' << '/' << tree->getTag() << '>';
 		ostr << '\n';  // TODO nextline
 

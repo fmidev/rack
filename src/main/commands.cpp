@@ -2659,9 +2659,16 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		std::cout << ctx.xmlTrack << '\n';
+		// tODO: detect bounding box
+
+		drain::Output ofstr(value);
+		ofstr << ctx.xmlTrack << '\n';
 
 	}
+
+
+
+
 };
 
 

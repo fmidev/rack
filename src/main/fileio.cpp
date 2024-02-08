@@ -324,18 +324,23 @@ void CmdOutputFile::exec() const {
 	// drain::image::TreeSVG & xmlOutputGroup = ctx.xmlTrack["group"];
 
 	// xmlOutputGroup.hasChild(key)
+	// ctx.xmlTrack->setType(BaseSVG::UNDEFINED);
+	// ctx.xmlTrack->setType(BaseSVG::SVG);
 
 	drain::image::TreeSVG & track = ctx.xmlTrack["outputs"]; //["file"];
-	track->setType(NodeSVG::GROUP); // ensureType?
+	ctx.xmlTrack["outputs"](NodeSVG::GROUP);
+	//track->setType(NodeSVG::GROUP); // ensureType?
 	track->set("name", "outputs");
 
+	/*
 	const std::string key = STD_OUTPUT ? "stdout" : path.basename;
 	if (!track.hasChild(key)){
-		drain::image::TreeSVG & b = track[key];
+		drain::image::TreeSVG & b = track[key](NodeSVG::GROUP);
 		b->set("name", path.basename);
-		b->setType(NodeSVG::GROUP);
+		// b->setType;
 	}
 	drain::image::TreeSVG & baseGroup = track[key]; // track.retrieveChild(key);
+	*/
 
 	if (!STD_OUTPUT){
 		track.data.set("id", path.basename);
@@ -356,12 +361,11 @@ void CmdOutputFile::exec() const {
 		mout.info("File format: HDF5");
 		src.data.attributes["Conventions"] = "ODIM_H5/V2_2"; // CHECK
 		hi5::Writer::writeFile(filename, src); //*ctx.currentHi5);
-		// ctx.outputPrefix + value
-		drain::image::NodeSVG & node = baseGroup["h5"].data;
-		node.setType(BaseSVG::TEXT);
-		node.set("object", src.data.attributes["object"]);
-		node.set("base", path.basename);
-		//attribs.updateFromCastableMap(src.data.attributes);
+		/*
+		drain::image::TreeSVG & h5 = baseGroup["h5"](BaseSVG::TEXT);
+		h5->set("object", src.data.attributes["object"]);
+		h5->set("base", path.basename);
+		*/
 	}
 	else if (IMAGE_PNG || IMAGE_PNM || IMAGE_TIF) {
 
@@ -380,11 +384,30 @@ void CmdOutputFile::exec() const {
 			mout.warn("empty data, skipped");
 			return;
 		}
-		drain::image::TreeSVG & imageGroup = baseGroup[path.basename+"."+path.extension];
-		imageGroup->setType(BaseSVG::IMAGE);
-		imageGroup->set("name", path.extension);
-		imageGroup["TITLE"]->setType(drain::image::BaseSVG::TITLE);
-		imageGroup["TITLE"]->ctext = path.basename;
+
+		drain::StringMapper dataIDSyntax(RackContext::variableMapper);
+		// drain::StringMapper dataIDSyntax("${what:date}_${what:time} ${what:product}", "^[A-Za-z0-9_:]*$");
+		dataIDSyntax.parse("${what:date}_${what:time}_${what:source}");
+		//std::string dataID = dataIDSyntax.toStr(ctx.getStatusMap(true), 'x');
+		std::string dataID = dataIDSyntax.toStr(src.properties, 'x');
+
+		drain::image::TreeSVG & baseGroup = track[dataID](BaseSVG::GROUP); // track.retrieveChild(key);
+		baseGroup->setClass("imagecol");
+
+		drain::StringMapper imageIDSyntax(RackContext::variableMapper);
+		imageIDSyntax.parse("${what:product}_${what:quantity}");
+		std::string imageID = imageIDSyntax.toStr(src.properties);
+
+		drain::image::TreeSVG & imageGroup = baseGroup[imageID](BaseSVG::IMAGE);
+		//drain::image::TreeSVG & imageGroup = baseGroup[path.basename+"."+path.extension](BaseSVG::IMAGE);
+		imageGroup->set("width", src.getWidth());
+		imageGroup->set("height", src.getHeight());
+		imageGroup->set("href", path.str());
+		imageGroup->set("xlink:href", path.str());
+		//imageGroup->setType;
+		//imageGroup->set("name", path.extension);
+		imageGroup["basename"](drain::image::BaseSVG::TITLE)(path.basename);
+
 
 		//drain::image::NodeSVG & baseGroup = track["image"].data;
 
@@ -397,19 +420,23 @@ void CmdOutputFile::exec() const {
 			ctx.formatStr.clear(); // OK?
 		}
 
-		drain::image::TreeSVG & text = imageGroup["text"];
-		text->setType(NodeSVG::TEXT);
-
+		drain::image::TreeSVG & text = baseGroup["text"](NodeSVG::TEXT);
+		text->set("x", 30);
+		text->set("y", 30);
 		const std::list<std::string> & mains = DataTools::getMainAttributes();
 		for (const std::string & k: mains){
 			if (src.properties.hasKey(k)){
-				drain::image::TreeSVG & tspan = text[k];
-				tspan->setType(NodeSVG::TSPAN);
-				tspan->classList.insert(drain::StringTools::replace(k, ":", "_"));
-				tspan->ctext = src.properties.get(k, "");
+				size_t i = k.find(':');
+				std::string kShort = i==std::string::npos ? k : k.substr(i+1);
+				drain::image::TreeSVG & tspan = text[kShort](NodeSVG::TSPAN)(src.properties.get(k, ""));
+				tspan->setClass(kShort);
+				// tspan->ctext = src.properties.get(k, "");
 			}
 		}
 
+		if (!IMAGE_PNG){
+			imageGroup->comment();
+		}
 
 		if (IMAGE_PNG || IMAGE_PNM){
 			mout.debug("PNG or PGM format, using ImageFile::write");
@@ -418,6 +445,7 @@ void CmdOutputFile::exec() const {
 		else if (IMAGE_TIF) {
 #ifndef USE_GEOTIFF_NO
 			// see FileGeoTiff::tileWidth
+			//imageGroup->comment();
 			CmdGeoTiff::write(src, filename);
 			//FileGeoTIFF::write(filename, src); //, geoTIFF.width, geoTIFF.height);
 			//

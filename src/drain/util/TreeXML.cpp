@@ -41,6 +41,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 template <>
+const std::map<int,std::string> NodeXML<int>::tags = {
+		{0, ""}
+};
+
+// Experimental
+template <>
 TreeXML & TreeXML::addChild(const TreeXML::key_t & key){
 	drain::Logger mout(__FILE__,__FUNCTION__);
 	mout.unimplemented("replace TreeXML::addChild");

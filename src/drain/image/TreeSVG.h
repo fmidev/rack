@@ -107,6 +107,12 @@ public:
 	}
 
 	inline
+	NodeSVG & operator=(const tag_t & type){
+		setType(type);
+		return *this;
+	}
+
+	inline
 	NodeSVG & operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
 		set(l);
 		return *this;
@@ -119,6 +125,8 @@ protected:
 	// svg:
 	int x;
 	int y;
+	//std::string width; // can be "240px" or "90%" ?
+	//std::string height;
 	int width;
 	int height;
 	int radius;
@@ -138,6 +146,8 @@ TreeSVG & TreeSVG::operator=(const std::initializer_list<std::pair<const char *,
 }
 */
 
+
+
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeSVG & t){
 	  return NodeSVG::toStream(ostr, t);
@@ -147,6 +157,25 @@ std::ostream & operator<<(std::ostream &ostr, const TreeSVG & t){
 }  // image::
 
 }  // drain::
+
+template <>
+template <>
+inline
+drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::BaseSVG::tag_t & type){
+	this->data.setType(type);
+	return *this;
+}
+
+template <>
+template <>
+inline
+drain::image::TreeSVG & drain::image::TreeSVG::operator()(const std::string & text){
+	//if (this->data.)
+	this->data.ctext = text;
+	return *this;
+}
+
+
 
 #endif // TREESVG_H_
 

@@ -36,18 +36,24 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "rack.h"
 #include "resources.h"
 
-// using namespace drain;
-// using namespace drain::image;
 
 namespace rack {
 
-
-RackContext::RackContext() : drain::SmartContext(__FUNCTION__){
+RackContext::RackContext() : drain::SmartContext(__FUNCTION__) {
 	statusMap["version"] = __RACK_VERSION__;
 	statusMap["rackContext"] = "BASE";
+	xmlTrack->setType(drain::image::BaseSVG::SVG); //, xmlTrack(drain::image::BaseSVG::SVG)
+	xmlTrack->set("width", 600);
+	xmlTrack->set("height", 600);
 }
 
 RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), ImageContext(ctx), Hdf5Context(ctx){
+	drain::Logger mout( __FILE__, __FUNCTION__);
+	mout.special("copying ", __FUNCTION__);
+
+	// , xmlTrack(drain::image::BaseSVG::SVG)
+	xmlTrack->setType(drain::image::BaseSVG::SVG);
+
 	statusMap["version"] = __RACK_VERSION__;
 	statusMap["rackContext"] = "CLONED";
 	inputPrefix = ctx.inputPrefix;

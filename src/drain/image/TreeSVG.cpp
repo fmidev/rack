@@ -50,11 +50,15 @@ std::string NodeSVG::svg("http://www.w3.org/2000/svg");
 // NodeSVG::NodeSVG(){	setType(UNDEFINED);}
 
 NodeSVG::NodeSVG(const NodeSVG & node) : x(0), y(0), width(0), height(0), radius(0) {
-	copyStruct(node, node, *this, RESERVE);
+	//copyStruct(node, node, *this, RESERVE);
+	copyStruct(node, node, *this, LINK);
+	type = UNDEFINED;
+	setType(node.getType());
 }
 
 
 NodeSVG::NodeSVG(tag_t t){
+	type = UNDEFINED;
 	setType(t);
 }
 
@@ -71,6 +75,8 @@ void NodeSVG::setType(const tag_t & t) {
 		link("y", y = 0);
 		link("width", width = 0);
 		link("height", height = 0);
+		//link("width", width = "0");
+		//link("height", height = "0");
 		link("xmlns", NodeSVG::svg);
 		link("xmlns:svg", NodeSVG::svg);
 		link("xmlns:xlink", NodeSVG::xlink);
@@ -87,6 +93,8 @@ void NodeSVG::setType(const tag_t & t) {
 		link("y", y = 0);
 		link("width", width = 0);
 		link("height", height = 0);
+		// link("width", width = "0");
+		// link("height", height = "0");
 		break;
 	case CIRC:
 		tag = "circ";
@@ -100,6 +108,8 @@ void NodeSVG::setType(const tag_t & t) {
 		link("y", y = 0);
 		link("width", width = 0);
 		link("height", height = 0);
+		//link("width", width = "0");
+		// link("height", height = "0");
 		// if (version == 1) {
 		link("xlink:href", text_anchor);
 		// if (version > 2.x ?) {
