@@ -60,35 +60,67 @@ public:
 
 };
 
-//class NodeXML : protected ReferenceMap {
+/**
+ *  \tparam T - index type; may be enum.
+ */
+template <class T=int>
 class NodeXML : protected ReferenceMap2<FlexibleVariable> {
-//class NodeXML : protected RefMap<> {
-//class NodeXML : protected FlexVariableMap{
+
 
 public:
+
+	typedef T elem_t;
+	elem_t type;
 
 	//typedef ReferenceMap map_t;
 	typedef ReferenceMap2<FlexibleVariable> map_t;
 
 	inline
 	NodeXML() : id(++nextID){
+		link("id", id);
 	};
 
-	NodeXML(const NodeXML & node);
+
+	NodeXML(const NodeXML & node) : id(++NodeXML::nextID) {
+		copyStruct(node, node, *this, RESERVE); // This may corrupt (yet unconstructed) object?
+	}
 
 	inline
 	~NodeXML(){};
 
-	//typedef FlexVariableMap map_t;
-	// std::string id;  // int?
-	// std::string name;
+	virtual
+	void setType(const elem_t &t){
+		type = t;
+	}
+
+	inline
+	const elem_t & getType() const {
+		return type;
+	};
+
 
 	inline
 	const std::string & getTag() const {return tag;};
 
-	template <class T>
+
+	//typedef FlexVariableMap map_t;
+	// std::string id;  // int?
+	// std::string name;
 	inline
-	void set(const std::string & key, const T &value){
+	const map_t & getMap() const {
+		return *this;
+	};
+
+	// Maybe controversial. Helps importing sets of variables.
+	inline
+	map_t & getMap(){
+		return *this;
+	};
+
+
+	template <class V>
+	inline
+	void set(const std::string & key, const V & value){
 		(*this)[key] = value;
 	}
 
@@ -123,15 +155,16 @@ public:
 
 
 
-	template <class T>
+	template <class V>
 	static inline
-	void attribToStream(std::ostream &ostr, const std::string & key, const T &value){
+	void attribToStream(std::ostream &ostr, const std::string & key, const V &value){
 		ostr << key << '=' << '"' << value << '"' << ' ';
 	}
 
-	template <class T>
+	/// "Forward definition" of Tree::toOstream
+	template <class V>
 	static
-	std::ostream & toStream(std::ostream &ostr, const T & t, const std::string & defaultTag = "", int indent=0);
+	std::ostream & toStream(std::ostream &ostr, const V & t, const std::string & defaultTag = "", int indent=0);
 
 	std::string ctext;
 
@@ -175,11 +208,13 @@ protected:
 
 // #define TreeXML drain::Tree<std::string,NodeXML>  // , std::less<std::basic_std::string<char>
 // typedef drain::Tree<std::string,NodeXML> TreeXML;
-typedef drain::UnorderedMultiTree<NodeXML,false> TreeXML;
+typedef drain::UnorderedMultiTree<NodeXML<>,false> TreeXML;
 
 template <>
 TreeXML & TreeXML::addChild(const TreeXML::key_t & key);
 
+template <class N>
+int NodeXML<N>::nextID = 0;
 
 /**
  *   \param defaultTag - important for
@@ -187,8 +222,9 @@ TreeXML & TreeXML::addChild(const TreeXML::key_t & key);
  *   Consider indentation: std::fill_n(std::ostream_iterator<char>(std::cout), 2*i, ' '); ?
  *
  */
+template <class N>
 template <class T>
-std::ostream & NodeXML::toStream(std::ostream & ostr, const T & tree, const std::string & defaultTag, int indent){
+std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const std::string & defaultTag, int indent){
 
 	const typename T::container_t & children = tree.getChildren();
 
@@ -220,7 +256,7 @@ std::ostream & NodeXML::toStream(std::ostream & ostr, const T & tree, const std:
 			std::copy(tree->classList.begin(), tree->classList.end(), std::ostream_iterator<std::string>(ostr, " "));
 			ostr << "\" ";
 		}
-		attribToStream(ostr, "id", tree->id);
+		// attribToStream(ostr, "id", tree->id); // problem for palette?
 		//ostr << "id=\"" << tree.data.id << '"' << ' ';
 	}
 
@@ -267,7 +303,7 @@ std::ostream & NodeXML::toStream(std::ostream & ostr, const T & tree, const std:
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeXML & t){
-	  return NodeXML::toStream(ostr, t, "");
+	  return TreeXML::node_data_t::toStream(ostr, t, "");
 }
 
 

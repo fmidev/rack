@@ -59,11 +59,15 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	}
 
 	const DataSet<PolarSrc> & firstSweep =  srcSweeps.begin()->second;
-	const Data<PolarSrc> & srcData = firstSweep.getFirstData();
+	const Data<PolarSrc> & srcData = firstSweep.getData(dataSelector.getQuantitySelector()); // firstSweep.getFirstData();
 	const std::string & quantity = srcData.odim.quantity;
+
+	/* OLD
 	if (firstSweep.size() > 1){
 		mout.info("several quantities, using the first one :" , quantity );
 	}
+	*/
+	mout.special("selected [", quantity, "]");
 
 
 	// Consider EchoTop, with DBZH input and HGHT output; but CAPPI should adapt to input quantity

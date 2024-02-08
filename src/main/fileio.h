@@ -111,26 +111,6 @@ public:
 
 	void exec() const;
 
-	/// Tree attribute formatter
-	/**
-	 *  Applied by drain::TreeUtils::dump()
-	 *
-	 *  \return – true, if data is empty, ie. no attributes or data array.
-	 */
-	static
-	bool dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr);
-
-	static inline
-	drain::VariableMap & getAttributes(){
-		return attributes;
-	}
-	// std::list<std::string>
-	// std::map<std::string,std::string>
-
-protected:
-
-	static // std::list<std::string>
-	drain::VariableMap attributes;
 
 };
 

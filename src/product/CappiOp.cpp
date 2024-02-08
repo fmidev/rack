@@ -70,14 +70,14 @@ CappiOp::CappiOp(double altitude, bool aboveSeaLevel, double beamWidth, double w
 	parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "string");
 	//parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
 
-	dataSelector.setQuantities("^DBZH$");
+	//dataSelector.setQuantities("^DBZH$");
+	dataSelector.setQuantities("DBZH:DBZHC:DBZ:DBZV");
+	// NOTE: caused problems with some BALTRAD radars
 	dataSelector.setPrf(DataSelector::Prf::SINGLE);
-	//dataSelector.updateBean();
 
 	odim.product  = "PCAPPI";
 	odim.type = "";
-	odim.quantity = "DBZH";
-
+	odim.quantity = "DBZH"; // <- NOTE: only a default, for palette automagics?
 
 };
 

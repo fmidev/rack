@@ -50,6 +50,16 @@ class NodeSVG;
 typedef drain::UnorderedMultiTree<NodeSVG> TreeSVG;
 
 
+struct BaseSVG {
+
+	enum tag_t { UNDEFINED, SVG, TITLE, CTEXT, GROUP, TEXT, TSPAN, RECT, CIRC, LINE, IMAGE }; // check CTEXT, maybe implement in XML
+
+	typedef NodeSVG node_t;
+
+	typedef TreeSVG tree_t;
+
+};
+
 /// A node structure for drain::UnorderedMultiTree<NodeSVG>, compatible with TreeXML
 /**
   \example TreeSVG-example.cpp
@@ -57,14 +67,14 @@ typedef drain::UnorderedMultiTree<NodeSVG> TreeSVG;
   \see drain::TreeXML
 
  */
-class NodeSVG: public NodeXML {
+class NodeSVG: public BaseSVG, public NodeXML<BaseSVG::tag_t> {
 public:
 
 	//typedef drain::Tree<NodeSVG> tree_t;
 
-	enum type { UNDEFINED, SVG, TITLE, CTEXT, GROUP, TEXT, RECT, CIRC, LINE, IMAGE }; // check CTEXT, maybe implement in XML
+	//enum type { UNDEFINED, SVG, TITLE, CTEXT, GROUP, TEXT, RECT, CIRC, LINE, IMAGE }; // check CTEXT, maybe implement in XML
 
-	NodeSVG(type t = UNDEFINED);
+	NodeSVG(tag_t t = BaseSVG::UNDEFINED);
 
 	/// Copy constructor.
 	NodeSVG(const NodeSVG & node);
@@ -72,7 +82,8 @@ public:
 	inline virtual
 	~NodeSVG(){};
 
-	void setType(type t);
+	virtual
+	void setType(const tag_t & type);
 
 	static
 	std::ostream & toStream(std::ostream &ostr, const TreeSVG & t);

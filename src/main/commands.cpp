@@ -2644,6 +2644,27 @@ public:
 };
 
 
+class CmdDumpXML : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdDumpXML() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dump XML track") {
+		//parameters.link("level", level = 5);
+	}
+
+
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		std::cout << ctx.xmlTrack << '\n';
+
+	}
+};
+
+
 /*
 class CmdTrigger : public drain::BasicCommand {
 
@@ -2675,6 +2696,8 @@ HiddenModule::HiddenModule(){ //
 	install<CmdTest2>("restart", 'R');
 
 	install<CmdHdf5Test>("getMyH5");
+
+	install<CmdDumpXML>();
 
 }
 

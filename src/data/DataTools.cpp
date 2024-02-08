@@ -29,6 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include "drain/util/TextDecorator.h"
 #include "drain/util/TreeUtils.h"
 #include "drain/util/Type.h"
 
@@ -40,6 +41,123 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 using namespace hi5;
+
+std::list<std::string> & DataTools::getMainAttributes(){
+
+	static std::list<std::string> mainAttributes = {
+			"what:product",
+			"what:prodpars",
+			"what:object",
+			"what:date",
+			"what:time",
+			"what:quantity",
+			"where:BBOX",
+			"how:angles:0.3",
+			"NOD",
+			"where:lat",
+			"where:lon",
+			"how:highprf",
+			"how:lowprf",
+	};
+
+	return mainAttributes;
+}
+
+/// List of most important ODIM attributes (with style suggestion).
+/**
+ *
+ */
+drain::VariableMap & DataTools::getAttributeStyles(){
+
+	static
+	drain::VariableMap attributeStyles = {
+		{"format", "vt100"}, // "txt", "html" ?
+		{"image", "BLUE"},
+		{"data", "BOLD"},
+		{"object", "WHITE"},
+		{"quantity", "BOLD:GREEN"},
+		{"date", "RED:UNDERLINE"},
+		{"time", "RED"},
+		{"startdate", "RED:UNDERLINE"},
+		{"starttime", "RED"},
+		{"hiPRF", "YELLOW:DIM"},
+		{"source", "YELLOW:DIM"},
+		{"lon", "YELLOW:DIM"},
+		{"lat", "YELLOW:DIM"},
+		{"xsize", "YELLOW:DIM"},
+		{"ysize", "YELLOW:DIM"},
+		{"rscale", "YELLOW:DIM"},
+		{"elangle", "ITALIC:YELLOW"},
+		{"gain", "ITALIC:YELLOW"},
+		{"offset", "ITALIC:YELLOW"},
+		{"nodata", "DIM:YELLOW"},
+		{"undetect", "DIM:YELLOW"},
+		{"task_args", "CYAN"},
+		{"legend", "PURPLE"}
+	};
+
+	return attributeStyles;
+
+};
+
+
+bool DataTools::treeToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr){
+
+	// Shared TextDecorator!
+	// RackContext & ctx = getResources().getContext<RackContext>();
+
+	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	//mout.unimplemented("Future option... ");
+
+	bool empty = true;
+
+	drain::VariableMap & attrs = DataTools::getAttributeStyles();
+
+	drain::TextDecorator noDeco;
+	drain::TextDecoratorVt100 vt100Deco;
+
+	drain::TextDecorator & decorator = attrs.get("format", "") == "vt100" ? vt100Deco : noDeco;
+	decorator.setSeparator(":");
+
+	if (data.exclude){
+		ostr << "~";
+		return false;
+	}
+
+	const drain::image::ImageFrame & img = data.image;
+	if (!img.isEmpty()){
+		// if (data.attributes.hasKey("image")){
+		ostr << img.getWidth() << ',' << img.getHeight() << ' ';
+		ostr << drain::Type::call<drain::compactName>(img.getType());
+		ostr << '[' << (8*drain::Type::call<drain::sizeGetter>(img.getType())) << ']';
+		//<< drain::Type::call<drain::complexName>(img.getType());
+		ostr << ' ' << img.getCoordinatePolicy() << ' ';
+		empty = false;
+		//}
+	}
+	// else ...
+	char sep = 0;
+
+	for (const auto & entry: attrs){
+		if (data.attributes.hasKey(entry.first)){
+			if (sep)
+				ostr << sep << ' ';
+			else
+				sep = ',';
+			//decorator.set(entry.second);
+			decorator.begin(ostr, entry.second);
+			ostr << entry.first << '=' << data.attributes[entry.first];
+			decorator.end(ostr);
+			//decorator.reset();
+			empty = false;
+		}
+	}
+
+	return empty;
+
+}
+
 
 void DataTools::updateInternalAttributes(Hi5Tree & src){
 

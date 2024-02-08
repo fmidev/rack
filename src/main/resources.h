@@ -205,8 +205,12 @@ public:
 		return statusMap;
 	};
 
-	// Story
-	drain::image::TreeSVG svg;
+
+	// Track
+	drain::image::TreeSVG xmlTrack;
+	//drain::TreeXML xmlTrack;
+
+
 
 //private:
 protected:

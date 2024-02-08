@@ -47,11 +47,7 @@ TreeXML & TreeXML::addChild(const TreeXML::key_t & key){
 	return *this;
 }
 
-int NodeXML::nextID = 0;
+//int NodeXML::nextID = 0;
 
-
-NodeXML::NodeXML(const NodeXML & node) : id(++NodeXML::nextID) {
-	copyStruct(node, node, *this, RESERVE); // This may corrupt (yet unconstructed) object?
-}
 
 }  // drain::

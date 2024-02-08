@@ -63,7 +63,7 @@ namespace drain
 namespace image
 {
 
-NodeGDAL::NodeGDAL(type t){
+NodeGDAL::NodeGDAL(const tag_t &  t){
 	setType(t);
 	this->id = -1;
 	//this->name = "~";
@@ -77,7 +77,7 @@ NodeGDAL::NodeGDAL(const NodeGDAL & node){
 }
 
 
-void NodeGDAL::setType(type t){
+void NodeGDAL::setType(const tag_t & t){
 
 	if (t == ROOT){
 		tag = "GDALMetadata";

@@ -180,7 +180,7 @@ public:
 #endif
 		else if ((format == "tre")||(format == "dot")){
 			static drain::SprinterLayout layout("[|]", ",", "=", "");
-			drain::VariableMap & vmap = CmdOutputTree::getAttributes();
+			drain::VariableMap & vmap = DataTools::getAttributeStyles();
 			if (!params.empty()){
 				mout.info("current values: ", drain::sprinter(vmap, layout));
 				vmap.clear();
@@ -320,6 +320,34 @@ void CmdOutputFile::exec() const {
 
 	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT); // mostly shared (unneeded in image output, but fast anyway)
 
+	// const std::string fileKey = STD_OUTPUT ? "stdout" : path.basename;
+	// drain::image::TreeSVG & xmlOutputGroup = ctx.xmlTrack["group"];
+
+	// xmlOutputGroup.hasChild(key)
+
+	drain::image::TreeSVG & track = ctx.xmlTrack["outputs"]; //["file"];
+	track->setType(NodeSVG::GROUP); // ensureType?
+	track->set("name", "outputs");
+
+	const std::string key = STD_OUTPUT ? "stdout" : path.basename;
+	if (!track.hasChild(key)){
+		drain::image::TreeSVG & b = track[key];
+		b->set("name", path.basename);
+		b->setType(NodeSVG::GROUP);
+	}
+	drain::image::TreeSVG & baseGroup = track[key]; // track.retrieveChild(key);
+
+	if (!STD_OUTPUT){
+		track.data.set("id", path.basename);
+		if (!ctx.outputPrefix.empty())
+			track.data.set("outputPrefix", ctx.outputPrefix);
+		// TODO: outDir
+		//	track.data.set("outputPrefix", ctx.outputPrefix);
+		//track.data.set("prefix", path.basename);
+	}
+	//track.data.set("id", STD_OUTPUT ? "stdout" : path.basename);
+	std::list<std::string> keys = {"what:lon", "here"};
+
 	//if (h5FileExtension.test(value)){
 	if (hi5::fileInfo.checkPath(value) || NO_EXTENSION){
 		if (NO_EXTENSION){
@@ -329,7 +357,11 @@ void CmdOutputFile::exec() const {
 		src.data.attributes["Conventions"] = "ODIM_H5/V2_2"; // CHECK
 		hi5::Writer::writeFile(filename, src); //*ctx.currentHi5);
 		// ctx.outputPrefix + value
-
+		drain::image::NodeSVG & node = baseGroup["h5"].data;
+		node.setType(BaseSVG::TEXT);
+		node.set("object", src.data.attributes["object"]);
+		node.set("base", path.basename);
+		//attribs.updateFromCastableMap(src.data.attributes);
 	}
 	else if (IMAGE_PNG || IMAGE_PNM || IMAGE_TIF) {
 
@@ -342,11 +374,19 @@ void CmdOutputFile::exec() const {
 
 		mout.info("Retrieved image: ", src, " [", src.properties.get("what:quantity", ""), "]");
 
+
 		if (src.isEmpty()){
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 			mout.warn("empty data, skipped");
 			return;
 		}
+		drain::image::TreeSVG & imageGroup = baseGroup[path.basename+"."+path.extension];
+		imageGroup->setType(BaseSVG::IMAGE);
+		imageGroup->set("name", path.extension);
+		imageGroup["TITLE"]->setType(drain::image::BaseSVG::TITLE);
+		imageGroup["TITLE"]->ctext = path.basename;
+
+		//drain::image::NodeSVG & baseGroup = track["image"].data;
 
 		if (!ctx.formatStr.empty()){
 			mout.special("formatting comments");
@@ -356,6 +396,20 @@ void CmdOutputFile::exec() const {
 			dst.properties[""] = statusFormatter.toStr(ctx.getStatusMap(), 0);
 			ctx.formatStr.clear(); // OK?
 		}
+
+		drain::image::TreeSVG & text = imageGroup["text"];
+		text->setType(NodeSVG::TEXT);
+
+		const std::list<std::string> & mains = DataTools::getMainAttributes();
+		for (const std::string & k: mains){
+			if (src.properties.hasKey(k)){
+				drain::image::TreeSVG & tspan = text[k];
+				tspan->setType(NodeSVG::TSPAN);
+				tspan->classList.insert(drain::StringTools::replace(k, ":", "_"));
+				tspan->ctext = src.properties.get(k, "");
+			}
+		}
+
 
 		if (IMAGE_PNG || IMAGE_PNM){
 			mout.debug("PNG or PGM format, using ImageFile::write");
@@ -414,7 +468,7 @@ void CmdOutputFile::exec() const {
 	else if (path.extension == "TRE"){
 		mout.advice("Use dedicated --outputTree to apply formatting");
 		drain::Output output(path.str());
-		drain::TreeUtils::dump<Hi5Tree,true>(src, output, CmdOutputTree::dataToStream);
+		drain::TreeUtils::dump<Hi5Tree,true>(src, output, DataTools::treeToStream);
 	}
 	else {
 
@@ -493,7 +547,7 @@ void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, dra
 
 
 	drain::image::TreeSVG & imageElem = group[label];
-	imageElem->setType(NodeSVG::IMAGE);
+	imageElem->setType(BaseSVG::IMAGE);
 	imageElem->set("x", upperLeft.x);
 	imageElem->set("y", upperLeft.y);
 	imageElem->set("width",  w);
@@ -509,7 +563,7 @@ void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, dra
 	drain::image::FilePng::write(image, fn);
 
 	drain::image::TreeSVG & title = imageElem["title"];
-	title->setType(NodeSVG::TITLE);
+	title->setType(BaseSVG::TITLE);
 	title->ctext = label + " (experimental) ";
 
 	//title->setType(NodeSVG:);
@@ -552,12 +606,12 @@ void CmdOutputPanel::exec() const {
 	}
 
 	//TreeSVG &  // = svg["bg"];
-	TreeSVG svg(NodeSVG::SVG);
-	// TreeSVG svg; // (NodeSVG::SVG); REDO this, check copy constr!
-	svg->setType(NodeSVG::SVG);
+	TreeSVG svg(BaseSVG::SVG);
+	// TreeSVG svg; // (BaseSVG::SVG); REDO this, check copy constr!
+	svg->setType(BaseSVG::SVG);
 
 	TreeSVG & main = svg["main"];
-	main->setType(NodeSVG::GROUP);
+	main->setType(BaseSVG::GROUP);
 	// main->set("style", "fill:green");
 	// main->set("jimbo", 126);
 	// main->set("jimboz", true);
@@ -598,7 +652,7 @@ void CmdOutputPanel::exec() const {
 
 	/*
 	TreeSVG::node_data_t & rect = svg["main"];
-	main.setType(NodeSVG::RECT);
+	main.setType(BaseSVG::RECT);
 	main.set("x", 0);
 	main.set("y", 0);
 	//main.set("style", "fill:white opacity:0.8"); // not supported by some SVG renderers
@@ -607,7 +661,7 @@ void CmdOutputPanel::exec() const {
 	*/
 	/*
 	TreeSVG & image = main["image1"];
-	image->setType(NodeSVG::IMAGE);
+	image->setType(BaseSVG::IMAGE);
 	image->set("x", 0);
 	image->set("y", 0);
 	image->set("width",  src.getWidth());
@@ -618,7 +672,7 @@ void CmdOutputPanel::exec() const {
 
 	/*
 	TreeSVG & header = svg["title"];
-	header->setType(NodeSVG::TEXT);
+	header->setType(BaseSVG::TEXT);
 	header->set("x", lineheight/4);
 	header->set("y", (headerHeight * 9) / 10);
 	header->ctext = title;
@@ -670,7 +724,7 @@ void CmdOutputTree::exec() const {
 	}
 
 	drain::Output output(filename);
-	drain::TreeUtils::dump(ctx.getHi5(RackContext::CURRENT), output, CmdOutputTree::dataToStream);
+	drain::TreeUtils::dump(ctx.getHi5(RackContext::CURRENT), output, DataTools::treeToStream);
 
 }
 
@@ -678,92 +732,8 @@ void CmdOutputTree::exec() const {
 // See drain::TextDecorator::VT100
 // std::map<std::string,std::string>
 
-// Consider ODIMutils etc.
-drain::VariableMap CmdOutputTree::attributes = {
-		{"format", "vt100"}, // "txt", "html" ?
-		{"image", "BLUE"},
-		{"data", "BOLD"},
-		{"object", "WHITE"},
-		{"quantity", "BOLD:GREEN"},
-		{"date", "RED:UNDERLINE"},
-		{"time", "RED"},
-		{"startdate", "RED:UNDERLINE"},
-		{"starttime", "RED"},
-		{"hiPRF", "YELLOW:DIM"},
-		{"source", "YELLOW:DIM"},
-		{"lon", "YELLOW:DIM"},
-		{"lat", "YELLOW:DIM"},
-		{"xsize", "YELLOW:DIM"},
-		{"ysize", "YELLOW:DIM"},
-		{"rscale", "YELLOW:DIM"},
-		{"elangle", "ITALIC:YELLOW"},
-		{"gain", "ITALIC:YELLOW"},
-		{"offset", "ITALIC:YELLOW"},
-		{"nodata", "DIM:YELLOW"},
-		{"undetect", "DIM:YELLOW"},
-		{"task_args", "CYAN"},
-		{"legend", "PURPLE"}
-};
 
 
-
-
-bool CmdOutputTree::dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr){
-
-	// Shared TextDecorator!
-	// RackContext & ctx = getResources().getContext<RackContext>();
-
-	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-	//mout.unimplemented("Future option... ");
-
-	bool empty = true;
-
-	drain::VariableMap & attrs = CmdOutputTree::getAttributes();
-
-	drain::TextDecorator noDeco;
-	drain::TextDecoratorVt100 vt100Deco;
-
-	drain::TextDecorator & decorator = attrs.get("format", "") == "vt100" ? vt100Deco : noDeco;
-	decorator.setSeparator(":");
-
-	if (data.exclude){
-		ostr << "~";
-		return false;
-	}
-
-	const drain::image::ImageFrame & img = data.image;
-	if (!img.isEmpty()){
-		// if (data.attributes.hasKey("image")){
-		ostr << img.getWidth() << ',' << img.getHeight() << ' ';
-		ostr << drain::Type::call<drain::compactName>(img.getType());
-		ostr << '[' << (8*drain::Type::call<drain::sizeGetter>(img.getType())) << ']';
-		//<< drain::Type::call<drain::complexName>(img.getType());
-		ostr << ' ' << img.getCoordinatePolicy() << ' ';
-		empty = false;
-		//}
-	}
-	// else ...
-	char sep = 0;
-
-	for (const auto & entry: attrs){
-		if (data.attributes.hasKey(entry.first)){
-			if (sep)
-				ostr << sep << ' ';
-			else
-				sep = ',';
-			//decorator.set(entry.second);
-			decorator.begin(ostr, entry.second);
-			ostr << entry.first << '=' << data.attributes[entry.first];
-			decorator.end(ostr);
-			//decorator.reset();
-			empty = false;
-		}
-	}
-
-	return empty;
-
-}
 
 class CmdOutputRawImages : public drain::SimpleCommand<std::string> {
 

@@ -54,11 +54,15 @@ NodeSVG::NodeSVG(const NodeSVG & node) : x(0), y(0), width(0), height(0), radius
 }
 
 
-NodeSVG::NodeSVG(type t){
+NodeSVG::NodeSVG(tag_t t){
 	setType(t);
 }
 
-void NodeSVG::setType(type t) {
+void NodeSVG::setType(const tag_t & t) {
+
+	if (type == t){
+		return; // lazy
+	}
 
 	switch (t) {
 	case SVG:
@@ -76,12 +80,6 @@ void NodeSVG::setType(type t) {
 		break;
 	case GROUP:
 		tag = "g";
-		break;
-	case TEXT:
-		tag = "text";
-		link("x", x = 0);
-		link("y", y = 0);
-		link("text-anchor", text_anchor = "");
 		break;
 	case RECT:
 		tag = "rect";
@@ -107,6 +105,16 @@ void NodeSVG::setType(type t) {
 		// if (version > 2.x ?) {
 		//link("href", text_anchor);
 		break;
+	case TEXT:
+		tag = "text";
+		link("x", x = 0);
+		link("y", y = 0);
+		link("text-anchor", text_anchor = "");
+		break;
+	case TSPAN:
+		tag = "tspan";
+		//link("text-anchor", text_anchor = "");
+		break;
 	case CTEXT:
 		tag = "";
 		//link("x", x, 0);
@@ -116,7 +124,7 @@ void NodeSVG::setType(type t) {
 		return;
 	}
 
-	//if ((t = TEXT)||(t == TEXT)){
+	// DEPRECATING: see separate STYLE and CLASS?
 	link("style", style = "");
 	link("fill", fill = "");
 	link("opacity", opacity = ""); // string, so silent if empty

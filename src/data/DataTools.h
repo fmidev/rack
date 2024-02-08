@@ -143,7 +143,38 @@ public:
 	static
 	void markExcluded(Hi5Tree &src, const Hi5Tree::path_t & path, bool exclude=true);
 
+	/// Tree attribute formatter
+	/**
+	 *  Applied by drain::TreeUtils::dump(). Example:
+	 *
+	 * \code
+	 *  drain::Output output(filename);
+	 *  drain::TreeUtils::dump(ctx.getHi5(RackContext::CURRENT), output, DataTools::treeToStream);
+	 * \endcode
+	 *
+	 *
+	 *  \return – true, if data is empty, ie. no attributes or data array.
+	 */
+	static
+	bool treeToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr);
+
+
+	static
+	std::list<std::string> & getMainAttributes();
+
+	/// List of most important ODIM attributes (with style suggestion).
+	/**
+	 *
+	 */
+	static
+	drain::VariableMap & getAttributeStyles();
+	// std::list<std::string>
+	// std::map<std::string,std::string>
+
 protected:
+
+	// static
+	// drain::VariableMap attributeStyles;
 
 	/// Removes the children of the tree if Node::exclude is set.
 	/**

@@ -50,14 +50,20 @@ namespace drain
 namespace image
 {
 
+struct BaseGDAL {
+
+	enum tag_t { UNDEFINED, ROOT, ITEM, USER }; // check CTEXT, maybe implement in XML
+
+};
+
 // https://www.awaresystems.be/imaging/tiff/tifftags/gdal_metadata.html
-class NodeGDAL: public drain::NodeXML {
+class NodeGDAL: public BaseGDAL, public drain::NodeXML<BaseGDAL::tag_t> {
 public:
 
-	enum type { UNDEFINED, ROOT, ITEM, USER }; // check CTEXT, maybe implement in XML
+	//enum type { UNDEFINED, ROOT, ITEM, USER }; // check CTEXT, maybe implement in XML
 
 	/// Constructor
-	NodeGDAL(type t = USER);
+	NodeGDAL(const tag_t & t = BaseGDAL::USER);
 
 	/// Copy constructor
 	NodeGDAL(const NodeGDAL & node);
@@ -70,7 +76,8 @@ public:
 	// Set user attribute
 	void setText(const std::string & value);
 
-	void setType(type t);
+	virtual
+	void setType(const tag_t & t);
 
 protected:
 
@@ -92,7 +99,8 @@ typedef drain::UnorderedMultiTree<NodeGDAL> TreeGDAL;
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
-	return drain::NodeXML::toStream(ostr, tree);
+	//return drain::NodeXML::toStream(ostr, tree);
+	return TreeGDAL::node_data_t::toStream(ostr, tree);
 }
 
 
@@ -108,11 +116,11 @@ public:
 	// static epsg_map_t epsgConf;
 
 	FileGeoTIFF() : FileTIFF(), gtif(nullptr){
-		gdalInfo.data.setType(NodeGDAL::ROOT);
+		gdalInfo.data.setType(BaseGDAL::tag_t::ROOT);
 	}
 
 	FileGeoTIFF(const std::string & path, const std::string & mode = "w") : FileTIFF(), gtif(nullptr){
-		gdalInfo.data.setType(NodeGDAL::ROOT);
+		gdalInfo.data.setType(BaseGDAL::tag_t::ROOT);
 		open(path, mode);
 	}
 
