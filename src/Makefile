@@ -101,6 +101,8 @@ docker-image-push: docker
 	docker login quay.io
 	docker push "quay.io/fmi/rack:${VERSION}"
 
+docker-clean:
+	docker system prune -f
 
 clean:
 	rm -fv Release/rack Release/*/*.o Release/drain/*/*.o 
