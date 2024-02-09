@@ -63,14 +63,27 @@ namespace drain
 namespace image
 {
 
+
+template <>
+std::map<NodeGDAL::tag_t,std::string> NodeXML<BaseGDAL::tag_t>::tags = {
+	{drain::image::BaseGDAL::UNDEFINED,	"UNDEFINED"},
+	{drain::image::BaseGDAL::ROOT,	    "GDALMetadata"},
+	{drain::image::BaseGDAL::ITEM,	    "Item"},
+	{drain::image::BaseGDAL::USER,	    "Item"},
+	{drain::image::BaseGDAL::OFFSET,	"Item"},
+	{drain::image::BaseGDAL::SCALE,	    "Item"},
+	{drain::image::BaseGDAL::UNITS,	    "Item"},
+};
+
 NodeGDAL::NodeGDAL(const tag_t &  t){
 	setType(t);
-	this->id = -1;
+	//this->id = -1;
 	//this->name = "~";
 }
 
 NodeGDAL::NodeGDAL(const NodeGDAL & node){
-	this->id = -1;
+	// this->id = -1;
+	setType(node.getType());
 	tag = node.tag;
 	sample = 0;
 	copyStruct(node, node, *this);
@@ -78,6 +91,8 @@ NodeGDAL::NodeGDAL(const NodeGDAL & node){
 
 
 void NodeGDAL::setType(const tag_t & t){
+
+	type = t;
 
 	if (t == ROOT){
 		tag = "GDALMetadata";
@@ -264,7 +279,7 @@ void FileGeoTIFF::writeMetadata(){
 
 		std::stringstream sstr;
 		sstr << gdalInfo;
-		mout.debug(sstr.str());
+		mout.special<LOG_INFO>(sstr.str());
 		setField(TIFFTAG_GDAL_METADATA, sstr.str());
 
 		GTIFWriteKeys(gtif);
@@ -299,6 +314,7 @@ void FileGeoTIFF::setGdalScale(double scale, double offset){
 	// void FileGeoTIFF::setGdalMetaData(double nodata, double scale, double offset){
 	// drain::Logger mout(__FILE__, __FUNCTION__);
 	gdalInfo["SCALE"]->setGDAL(scale, 0, "scale");
+	//gdalInfo["SCALE"]->setGDAL(scale, 0, "scale");
 	gdalInfo["OFFSET"]->setGDAL(offset, 0, "offset");
 }
 

@@ -49,6 +49,22 @@ std::string NodeSVG::svg("http://www.w3.org/2000/svg");
 
 // NodeSVG::NodeSVG(){	setType(UNDEFINED);}
 
+
+template <>
+std::map<BaseSVG::tag_t,std::string> NodeXML<BaseSVG::tag_t>::tags = {
+	{drain::image::BaseSVG::UNDEFINED,	"UNDEFINED"},
+	{drain::image::BaseSVG::SVG,   "svg"},
+	{drain::image::BaseSVG::TITLE, "title"},
+	{drain::image::BaseSVG::CTEXT, "ctext"},
+	{drain::image::BaseSVG::GROUP, "group"},
+	{drain::image::BaseSVG::TEXT,  "text"},
+	{drain::image::BaseSVG::TSPAN, "tspan"},
+	{drain::image::BaseSVG::RECT,  "rect"},
+	{drain::image::BaseSVG::CIRC,  "circ"},
+	{drain::image::BaseSVG::LINE,  "line"},
+	{drain::image::BaseSVG::IMAGE, "image"}
+};
+
 NodeSVG::NodeSVG(const NodeSVG & node) : x(0), y(0), width(0), height(0), radius(0) {
 	//copyStruct(node, node, *this, RESERVE);
 	copyStruct(node, node, *this, LINK);
@@ -67,6 +83,8 @@ void NodeSVG::setType(const tag_t & t) {
 	if (type == t){
 		return; // lazy
 	}
+
+	type = t;
 
 	switch (t) {
 	case SVG:

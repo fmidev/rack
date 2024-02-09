@@ -58,6 +58,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/DataTools.h"
 #include "data/ODIMPath.h"
 #include "data/PolarODIM.h"
+#include "data/SourceODIM.h"
 #include "hi5/Hi5.h"
 #include "hi5/Hi5Write.h"
 #include "product/ProductOp.h"
@@ -385,11 +386,13 @@ void CmdOutputFile::exec() const {
 			return;
 		}
 
+
 		drain::StringMapper dataIDSyntax(RackContext::variableMapper);
 		// drain::StringMapper dataIDSyntax("${what:date}_${what:time} ${what:product}", "^[A-Za-z0-9_:]*$");
-		dataIDSyntax.parse("${what:date}_${what:time}_${what:source}");
+		dataIDSyntax.parse("${what:date}_${what:time}_");
 		//std::string dataID = dataIDSyntax.toStr(ctx.getStatusMap(true), 'x');
-		std::string dataID = dataIDSyntax.toStr(src.properties, 'x');
+		std::string dataID = dataIDSyntax.toStr(src.properties, 'x') + SourceODIM(src.properties.get("what:source","")).getSourceCode();
+
 
 		drain::image::TreeSVG & baseGroup = track[dataID](BaseSVG::GROUP); // track.retrieveChild(key);
 		baseGroup->setClass("imagecol");

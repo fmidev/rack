@@ -52,7 +52,7 @@ namespace image
 
 struct BaseGDAL {
 
-	enum tag_t { UNDEFINED, ROOT, ITEM, USER }; // check CTEXT, maybe implement in XML
+	enum tag_t { UNDEFINED=0, ROOT, ITEM, USER, OFFSET, SCALE, UNITS}; // check CTEXT, maybe implement in XML
 
 };
 
@@ -69,6 +69,13 @@ public:
 	NodeGDAL(const NodeGDAL & node);
 
 	void setGDAL(const drain::Variable & ctext, int sample=0, const std::string & role = "");
+
+	template <class T>
+	inline
+	NodeGDAL & operator=(const T & x){
+		setText(x);
+		return *this;
+	}
 
 	// Set user attribute
 	void setText(const drain::Variable & value);

@@ -36,8 +36,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Log.h"
 #include "drain/util/StringBuilder.h"
-#include "main/rack.h"
 
+#include "data/SourceODIM.h"
+#include "rack.h"
 #include "fileio-geotiff.h"
 
 namespace rack {
@@ -197,13 +198,13 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 		//mout.special("GDAL info end");
 
 		drain::Variable imagetype("Weather Radar");
-		if (odim.ACCnum > 1)
-			imagetype << "Composite (" <<  odim.source << ')'; // todo: check commas
+		if (odim.ACCnum > 2) // TODO: fix bug... acc=2 for one...
+			imagetype << "Composite (" <<  odim.source << ") [#" << odim.ACCnum << "]"; // todo: check commas
 		else
-			imagetype <<  odim.source;
+			imagetype <<  SourceODIM(odim.source).getSourceCode();
 		file.gdalInfo["IMAGETYPE"].data.setText(imagetype);
 		file.gdalInfo["TITLE"].data.setText(odim.product+':'+odim.prodpar);
-		file.gdalInfo["UNITS"].data.setText(odim.quantity);
+		file.gdalInfo["UNITS"] = odim.quantity; // .data.setText( );
 		// file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
 		file.writeMetadata(); // Metadata first, for cloud optimized GeoTIFF, COG.
 	}

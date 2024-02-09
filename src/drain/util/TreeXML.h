@@ -69,6 +69,7 @@ class NodeXML : protected ReferenceMap2<FlexibleVariable> {
 
 public:
 
+	/// TAG type, or CTEXT or undefined.
 	typedef T elem_t;
 	elem_t type;
 
@@ -76,12 +77,15 @@ public:
 	typedef ReferenceMap2<FlexibleVariable> map_t;
 
 	inline
-	NodeXML() : id(++nextID){
+	NodeXML(const elem_t & t = elem_t(0)) : id(++nextID){
+		type = t;
 		// link("id", id);
 	};
 
+	typedef std::map<T,std::string> tag_map_t;
+
 	static
-	const std::map<T,std::string> tags;
+	tag_map_t tags;
 
 
 	NodeXML(const NodeXML & node) : id(++NodeXML::nextID) {
@@ -103,12 +107,23 @@ public:
 
 
 	inline
-	const std::string & getTag() const {return tag;};
+	const std::string & getTag2() const {
+		return tag;
+	};
+
+	inline
+	const std::string & getTag() const {
+		typename tag_map_t::const_iterator it = tags.find(type);
+		if (it != tags.end()){
+			return it->second;
+		}
+		else {
+			throw std::runtime_error(drain::StringBuilder(__FILE__, __FUNCTION__, ": unknown TAG enum value: ", static_cast<int>(type)));
+		}
+		// return tags[type];
+	};
 
 
-	//typedef FlexVariableMap map_t;
-	// std::string id;  // int?
-	// std::string name;
 	inline
 	const map_t & getMap() const {
 		return *this;
@@ -133,9 +148,6 @@ public:
 		// drain::SmartMapTools::setValues<map_t,false>((map_t &)*this, l);   // update only
 	}
 
-	typedef std::set<std::string> class_list;
-	class_list classList;
-
 	template <typename ... TT>
 	inline
 	void setClass(const std::string & s, const TT &... args) {
@@ -146,16 +158,11 @@ public:
 	inline
 	void setClass(){}
 
-	// TODO: handle attrib set("class", ...) -> setCLass
-
-	// TODO: handle attrib set("style", ...) -> setStyle
-
 	inline
     NodeXML & operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
 		set(l);
 		return *this;
 	}
-
 
 
 	template <class V>
@@ -169,14 +176,12 @@ public:
 	static
 	std::ostream & toStream(std::ostream &ostr, const V & t, const std::string & defaultTag = "", int indent=0);
 
+	// Consider either/or
 	std::string ctext;
 
 	inline
 	bool empty() const {
 		return map_t::empty();
-		//return FlexVariableMap::empty();
-		//return this->(FlexVariableMap::empty)();
-		//return ReferenceMap::empty();
 	}
 
 	/// Make this node commented.
@@ -202,8 +207,15 @@ public:
 protected:
 
 	static int nextID;
-	std::string tag;
+
+	// TODO: change to string, still allowing numerics
 	int id;
+
+	// TODO: consider TAG from dict?
+	std::string tag;
+
+	typedef std::set<std::string> class_list;
+	class_list classList;
 
 };
 
@@ -231,31 +243,28 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 
 	const typename T::container_t & children = tree.getChildren();
 
-	// OPEN TAG
+	// Indent
 	std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
 
-	//
+	// Start dag
 	if (tree->isComment()){
-		//ostr << "<!-- " << tree->getTag() << ' ' << tree->ctext << " /-->\n";
 		ostr << "<!-- " << tree->getTag() << ' ' << tree->ctext; // << " /-->\n";
-		//return ostr;
 	}
 	else if (tree->getTag().empty())
 		ostr << '<' << defaultTag << ' ';
 	else {
 		ostr << '<' << tree->getTag() << ' ';
-		// TODO if (tree.data.name.empty()) ?
+		// TODO check GDAL XML
 		if (!defaultTag.empty())
 			attribToStream(ostr, "name", defaultTag);
-			//ostr << "name=\"" << defaultTag << '"' << ' ';
 	}
 
 	// if (tree->id >= 0){
-		if (!tree->classList.empty()){
-			ostr << "class=\"";
-			std::copy(tree->classList.begin(), tree->classList.end(), std::ostream_iterator<std::string>(ostr, " "));
-			ostr << "\" ";
-		}
+	if (!tree->classList.empty()){
+		ostr << "class=\"";
+		std::copy(tree->classList.begin(), tree->classList.end(), std::ostream_iterator<std::string>(ostr, " "));
+		ostr << "\" ";
+	}
 		// attribToStream(ostr, "id", tree->id); // problem for palette?
 		//ostr << "id=\"" << tree.data.id << '"' << ' ';
 	// }

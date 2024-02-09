@@ -41,8 +41,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 template <>
-const std::map<int,std::string> NodeXML<int>::tags = {
-		{0, ""}
+std::map<int,std::string> NodeXML<int>::tags = {
+		{0, "UNDEFINED"},
+		{1, ""} // CTEXT
 };
 
 // Experimental
