@@ -52,7 +52,7 @@ namespace image
 
 struct BaseGDAL {
 
-	enum tag_t { UNDEFINED=0, ROOT, ITEM, USER, OFFSET, SCALE, UNITS}; // check CTEXT, maybe implement in XML
+	enum tag_t { UNDEFINED=0, ROOT, ITEM, USER}; // , OFFSET, SCALE, UNITS}; // check CTEXT, maybe implement in XML
 
 };
 

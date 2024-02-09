@@ -87,7 +87,8 @@ echo $cmd
 eval $cmd
 #fi
 
-cmd="convert +append $OUTFILE_RGB $OUTFILE_LEGEND $OUTFILE_PROD"
+# cmd="convert +append $OUTFILE_RGB $OUTFILE_LEGEND $OUTFILE_PROD"
+cmd="convert +append $OUTFILE_LEGEND  $OUTFILE_RGB $OUTFILE_PROD"
 echo $cmd
 eval $cmd
 

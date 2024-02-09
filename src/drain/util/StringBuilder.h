@@ -54,7 +54,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 // TODO:
-// template <char SEP>
+template <char SEP=0>
 class StreamBuilder : public std::stringstream {
 
 public:
@@ -72,6 +72,8 @@ public:
 	template<class T, typename ... TT>
 	StreamBuilder & add(const T & arg, const TT &... args) {
 		*this << arg;
+		if (SEP)
+			*this << (SEP);
 		return add(args...);
 	}
 
@@ -129,7 +131,7 @@ public:
 
 protected:
 
-	drain::StreamBuilder streamBuilder;
+	drain::StreamBuilder<> streamBuilder;
 
 };
 

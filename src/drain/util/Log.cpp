@@ -141,7 +141,7 @@ void Log::setVerbosity(const std::string & level){
 		return;
 	}
 
-	const drain::Log::status_dict_t & dict = statusDict;
+	// const drain::Log::status_dict_t & dict = statusDict;
 	for (const auto & entry: statusDict){
 		if (level == entry.second){
 			setVerbosity(entry.first);

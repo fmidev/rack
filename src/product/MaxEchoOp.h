@@ -58,8 +58,8 @@ public:
 
 	/// Todo: rscale*,nbins*,nrays*,beamwidth*
 	//MaxEchoOp(double altitude=1000.0, double devAltitude=500.0, const std::string & accumulationMethod = "MAXIMUM"): //"WAVG,8,1,-32") :
-	MaxEchoOp(const drain::Range<double> & altitude = {500.0,1500.0}, const std::string & accumulationMethod = "MAXIMUM"): //"WAVG,8,1,-32") :
-		CumulativeProductOp("MaxEcho","Computes...", accumulationMethod) //"WAVG,2,2,-32") "MAXW") //
+	MaxEchoOp(const drain::Range<double> & altitude = {1000.0,9000.0}, const std::string & accumulationMethod = "MAXIMUM"): //"WAVG,8,1,-32") :
+		CumulativeProductOp("MaxEcho","Computes maximum dBZ inside altitude range", accumulationMethod) //"WAVG,2,2,-32") "MAXW") //
 		{
 
 		parameters.link("altitude", this->altitude.tuple() = altitude, "metres").fillArray = true;
@@ -67,9 +67,9 @@ public:
 		// parameters.link("devAltitude", this->devAltitude = devAltitude, "metres");
 		parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "MAXIMUM|AVERAGE|WAVG:2:2|MAXW");
 
-		dataSelector.setQuantities("^DBZH$");
+		dataSelector.setQuantities("DBZH:DBZ:DBZV"); // ("^DBZH$");
 		odim.product = "MAX";
-		odim.quantity = "DBZH";
+		// odim.quantity = "DBZH";
 
 	};
 

@@ -70,9 +70,9 @@ std::map<NodeGDAL::tag_t,std::string> NodeXML<BaseGDAL::tag_t>::tags = {
 	{drain::image::BaseGDAL::ROOT,	    "GDALMetadata"},
 	{drain::image::BaseGDAL::ITEM,	    "Item"},
 	{drain::image::BaseGDAL::USER,	    "Item"},
-	{drain::image::BaseGDAL::OFFSET,	"Item"},
-	{drain::image::BaseGDAL::SCALE,	    "Item"},
-	{drain::image::BaseGDAL::UNITS,	    "Item"},
+//	{drain::image::BaseGDAL::OFFSET,	"Item"},
+//	{drain::image::BaseGDAL::SCALE,	    "Item"},
+//	{drain::image::BaseGDAL::UNITS,	    "Item"},
 };
 
 NodeGDAL::NodeGDAL(const tag_t &  t){

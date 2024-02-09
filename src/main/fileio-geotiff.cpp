@@ -202,8 +202,8 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 			imagetype << "Composite (" <<  odim.source << ") [#" << odim.ACCnum << "]"; // todo: check commas
 		else
 			imagetype <<  SourceODIM(odim.source).getSourceCode();
-		file.gdalInfo["IMAGETYPE"].data.setText(imagetype);
-		file.gdalInfo["TITLE"].data.setText(odim.product+':'+odim.prodpar);
+		file.gdalInfo["IMAGETYPE"] = imagetype;
+		file.gdalInfo["TITLE"] = odim.product+':'+odim.prodpar;
 		file.gdalInfo["UNITS"] = odim.quantity; // .data.setText( );
 		// file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
 		file.writeMetadata(); // Metadata first, for cloud optimized GeoTIFF, COG.

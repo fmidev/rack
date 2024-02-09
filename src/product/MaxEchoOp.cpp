@@ -68,6 +68,10 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 	}
 	double altitudeCenter = 0.5*(altitude.min + altitude.max);
 	double altitudeSpan   = 0.5 * altitude.span();
+	if (altitudeSpan < 100.0){
+		altitudeSpan = 500.0;
+		mout.warn("altitide range too narrow: ", altitude.tuple(), ", tuning it: ", altitudeCenter-altitudeSpan, ':', altitudeCenter+altitudeSpan);
+	}
 
 	drain::FuzzyBell<double> altitudeQuality(altitudeCenter, altitudeSpan, 1.0);
 
@@ -101,6 +105,7 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 	/// Direct pixel address in the accumulation arrey.
 	size_t address;
 
+	mout.special<LOG_WARNING>(" ----- elangle: ", sweep.odim.elangle);
 	for (size_t i = 0; i < accumulator.accArray.getWidth(); ++i) {
 
 		// Ground angle
@@ -108,9 +113,9 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 
 		altitudeBin = Geometry::heightFromEtaBeta(eta, beta);
 		weight = altitudeQuality(altitudeBin);
-		//if ()
-		//weight = 0.7654321;
-		//weight = weight*weight;
+
+		if (weight > 0.1)
+			mout.special<LOG_WARNING>(" altitude, weight: ", altitudeBin, "m\t", weight);
 
 		binDistance = Geometry::beamFromEtaBeta(eta, beta);
 		iSweep = sweep.odim.getBinIndex(binDistance);
