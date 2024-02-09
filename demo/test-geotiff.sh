@@ -38,6 +38,18 @@ function TEST_TIFF(){
     if [ $? != 0 ]; then
 	echo "GDAL error with projdef='$projdef' ($outfile)"
     fi
+
+    # Test gain, offset - should be always with radar data
+
+    for RE in '^\s\+NoData\sValue=[0-9]\+\s*$' '^\s\+Offset:.*\sScale:.*\s*$' ; do
+	grep "$RE" $filebase.tmp
+	if [ $? != 0 ]; then
+	    echo "Metadata test failed for regExp $RE ($filebase.tmp)"
+	    exit 1
+	fi
+    done
+
+    
     cat $filebase.tmp | fgrep -v 'Files:' > $file_gdal
 
 
