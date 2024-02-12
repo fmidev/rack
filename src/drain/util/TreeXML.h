@@ -105,11 +105,12 @@ public:
 		return type;
 	};
 
-
+	/*
 	inline
 	const std::string & getTag2() const {
 		return tag;
 	};
+	*/
 
 	inline
 	const std::string & getTag() const {
@@ -212,7 +213,7 @@ protected:
 	int id;
 
 	// TODO: consider TAG from dict?
-	std::string tag;
+	// std::string tag;
 
 	typedef std::set<std::string> class_list;
 	class_list classList;

@@ -84,7 +84,7 @@ NodeGDAL::NodeGDAL(const tag_t &  t){
 NodeGDAL::NodeGDAL(const NodeGDAL & node){
 	// this->id = -1;
 	setType(node.getType());
-	tag = node.tag;
+	// tag = node.tag;
 	sample = 0;
 	copyStruct(node, node, *this);
 }
@@ -95,15 +95,15 @@ void NodeGDAL::setType(const tag_t & t){
 	type = t;
 
 	if (t == ROOT){
-		tag = "GDALMetadata";
+		//tag = "GDALMetadata";
 	}
 	else if (t == ITEM){
-		tag = "Item";
+		// tag = "Item";
 		link("sample", sample = 0);
 		link("role",   role   = "");
 	}
 	else { // USER
-		tag = "Item";
+		//tag = "Item";
 		// link("name", name);
 		// link("role",   role = "");
 	}

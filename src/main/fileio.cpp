@@ -519,9 +519,6 @@ void CmdOutputFile::exec() const {
 
 			ODIMPathList paths;
 
-			//mout.attention(ctx.getName());
-			//mout.warn("ctx.select=", ctx.select);
-
 			if (!ctx.select.empty()){
 				DataSelector selector;
 				selector.consumeParameters(ctx.select);
@@ -540,8 +537,20 @@ void CmdOutputFile::exec() const {
 			mout.debug("formatting text output" );
 			drain::StringMapper statusFormatter(RackContext::variableMapper);
 			statusFormatter.parse(ctx.formatStr, true);
-			statusFormatter.toStream(output, ctx.getStatusMap());
-			// ctx.formatStr.clear(); // ?
+
+			// OLD statusFormatter.toStream(output, ctx.getStatusMap());
+
+			// NEW
+			ODIMPathList paths;
+			DataSelector selector(ODIMPathElem::DATASET,ODIMPathElem::DATA);
+			// selector.setPathMatcher(ODIMPathElem::DATASET,ODIMPathElem::DATA);
+			selector.consumeParameters(ctx.select);
+			mout.debug(selector);
+			selector.getPaths(src, paths);
+			for (const ODIMPath & path: paths){
+				//output << path << ':' << src(path).data.attributes << '\n';
+				statusFormatter.toStream(output, src(path).data.image.properties);
+			}
 		}
 
 	}

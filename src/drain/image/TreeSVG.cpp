@@ -67,8 +67,8 @@ std::map<BaseSVG::tag_t,std::string> NodeXML<BaseSVG::tag_t>::tags = {
 
 NodeSVG::NodeSVG(const NodeSVG & node) : x(0), y(0), width(0), height(0), radius(0) {
 	//copyStruct(node, node, *this, RESERVE);
-	copyStruct(node, node, *this, LINK);
 	type = UNDEFINED;
+	copyStruct(node, node, *this, LINK); // <-- risky! may link Variable contents?
 	setType(node.getType());
 }
 
@@ -88,7 +88,7 @@ void NodeSVG::setType(const tag_t & t) {
 
 	switch (t) {
 	case SVG:
-		tag = "svg";
+		//tag = "svg";
 		link("x", x = 0);
 		link("y", y = 0);
 		link("width", width = 0);
@@ -100,13 +100,13 @@ void NodeSVG::setType(const tag_t & t) {
 		link("xmlns:xlink", NodeSVG::xlink);
 		break;
 	case TITLE:
-		tag = "title";
+		//tag = "title";
 		break;
 	case GROUP:
-		tag = "g";
+		// tag = "g";
 		break;
 	case RECT:
-		tag = "rect";
+		// tag = "rect";
 		link("x", x = 0);
 		link("y", y = 0);
 		link("width", width = 0);
@@ -115,13 +115,13 @@ void NodeSVG::setType(const tag_t & t) {
 		// link("height", height = "0");
 		break;
 	case CIRC:
-		tag = "circ";
+		// tag = "circ";
 		link("x", x = 0);
 		link("y", y = 0);
 		link("radius", radius = 0);
 		break;
 	case IMAGE:
-		tag = "image";
+		// tag = "image";
 		link("x", x = 0);
 		link("y", y = 0);
 		link("width", width = 0);
@@ -134,17 +134,17 @@ void NodeSVG::setType(const tag_t & t) {
 		//link("href", text_anchor);
 		break;
 	case TEXT:
-		tag = "text";
+		// tag = "text";
 		link("x", x = 0);
 		link("y", y = 0);
 		link("text-anchor", text_anchor = "");
 		break;
 	case TSPAN:
-		tag = "tspan";
+		// tag = "tspan";
 		//link("text-anchor", text_anchor = "");
 		break;
 	case CTEXT:
-		tag = "";
+		// tag = "";
 		//link("x", x, 0);
 		break;
 	case UNDEFINED:
