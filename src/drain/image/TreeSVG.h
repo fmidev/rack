@@ -47,8 +47,9 @@ namespace image {
 
 class NodeSVG;
 
-typedef drain::UnorderedMultiTree<NodeSVG> TreeSVG;
-
+//typedef drain::UnorderedMultiTree<NodeSVG> TreeSVG;
+typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
+// cf.  drain::UnorderedMultiTree<NodeXML<E>,false, NodeXML<>::path_t>
 
 struct BaseSVG {
 
@@ -158,6 +159,18 @@ std::ostream & operator<<(std::ostream &ostr, const TreeSVG & t){
 }  // image::
 
 }  // drain::
+
+/*
+template <>
+struct drain::TypeName<drain::image::TreeSVG> {
+    static const char* get(){ return "TreeSVG"; }
+};
+*/
+
+template <>
+struct drain::TypeName<drain::image::NodeSVG> {
+    static const char* get(){ return "SVG"; }
+};
 
 template <>
 template <>

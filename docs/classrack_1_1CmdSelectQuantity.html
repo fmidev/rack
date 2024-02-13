@@ -338,7 +338,7 @@ template&lt;class T &gt; </td></tr>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select elangle=1.5,quantity=DBZH -o volume-DBZH.png</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># For image output, select VRAD of the lowest dual-PRF scan </span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=VRAD,order=ELANGLE:MIN,prf=DOUBLE -o volume-VRAD.png</div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=VRAD:VRADH,order=ELANGLE:MIN,prf=DOUBLE -o volume-VRAD.png</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># For image output, select ZDR of the highest single-PRF scan </span></div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=ZDR,count=1,order=ELANGLE:MAX,prf=SINGLE -o volume-ZDR.png</div>
@@ -346,8 +346,8 @@ template&lt;class T &gt; </td></tr>
 <div class="line"><span class="preprocessor"># For single-image output, select DBZH of the lowest scan (from 90 6.5 2.4 1.8 1.2 0.59)</span></div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH,order=ELANGLE:MIN -o volume-DBZH2.png</div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor"># For single-image output, select DBZH of the highest scan (from 90 6.5 2.4 1.8 1.2 0.59)</span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH,order=ELANGLE:MAX -o volume-DBZH3.png</div>
+<div class="line"><span class="preprocessor"># For single-image output, select dBZ - preferably total dBZ - of the highest scan (from 90 6.5 2.4 1.8 1.2 0.59)</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=TH:TV:T:DBZH:DBZ,order=ELANGLE:MAX -o volume-DBZH3.png</div>
 <div class="line"> </div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 </div><!-- fragment --><p> Note that escaping special characters like '|' is often required on command line.</p>

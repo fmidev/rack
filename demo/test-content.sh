@@ -26,7 +26,7 @@ EXCLUDE dataset1/ data1/
 
 TITLE "For image output, select VRAD of the lowest dual-PRF scan "
 OUTFILE='volume-VRAD.png'
-TEST    --select 'quantity=VRAD,order=ELANGLE:MIN,prf=DOUBLE'
+TEST    --select 'quantity=VRAD:VRADH,order=ELANGLE:MIN,prf=DOUBLE'
 REQUIRE dataset7
 EXCLUDE dataset[1-6]/
 
@@ -46,9 +46,9 @@ TEST    --select 'quantity=DBZH,order=ELANGLE:MIN'
 REQUIRE dataset6
 #EXCLUDE dataset[1-5]
 
-TITLE "For single-image output, select DBZH of the highest scan (from 90 6.5 2.4 1.8 1.2 0.59)"
+TITLE "For single-image output, select dBZ - preferably total dBZ - of the highest scan (from 90 6.5 2.4 1.8 1.2 0.59)"
 OUTFILE='volume-DBZH3.png'
-TEST    --select 'quantity=DBZH,order=ELANGLE:MAX'
+TEST    --select 'quantity=TH:TV:T:DBZH:DBZ,order=ELANGLE:MAX'
 REQUIRE dataset1
 #EXCLUDE dataset[1-5]
 

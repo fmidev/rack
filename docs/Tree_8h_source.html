@@ -224,513 +224,526 @@ $(function() {
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="preprocessor">        #endif</span></div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    }</div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <span class="keyword">const</span> std::string className(){</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keyword">const</span> std::string s = <a class="code" href="classdrain_1_1StringBuilder.html">drain::StringBuilder&lt;&gt;</a>(</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                isOrdered()?<span class="stringliteral">&quot;Ordered&quot;</span>:<span class="stringliteral">&quot;Unordered&quot;</span>,</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                        isMulti()?<span class="stringliteral">&quot;Multi&quot;</span>:<span class="stringliteral">&quot;&quot;</span>,<span class="stringliteral">&quot;Tree&quot;</span>,</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                                isExclusive()?<span class="stringliteral">&quot;(Exclusive)&quot;</span>:<span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;                                        <span class="charliteral">&#39;&lt;&#39;</span>, drain::Type::call&lt;drain::simpleName&gt;(<span class="keyword">typeid</span>(node_data_t)), <span class="charliteral">&#39;&gt;&#39;</span>);</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="keywordflow">return</span> s;</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    }</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; </div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment">    static inline</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment">    const std::string className(){</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">        const std::string s = drain::StringBuilder&lt;&gt;(</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment">                isOrdered()?&quot;Ordered&quot;:&quot;Unordered&quot;,</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">                        isMulti()?&quot;Multi&quot;:&quot;&quot;,&quot;Tree&quot;,</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">                                isExclusive()?&quot;(Exclusive)&quot;:&quot;&quot;,</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">                                        &#39;&lt;&#39;, drain::Type::call&lt;drain::simpleName&gt;(typeid(node_data_t)), &#39;&gt;&#39;);</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">        return s;</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">    */</span></div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="comment">// TODO: what to do with the separator?</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00304"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#aa87005d0a649ff994a930ece643bc3f1">  304</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#aa87005d0a649ff994a930ece643bc3f1">operator=</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;t){</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a> = t.<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <span class="comment">//if (EXCLUSIVE){ ...or consider deep copy?</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">clearChildren</a>();</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <span class="comment">//}</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    };</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="comment">// Needed? See next.</span></div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="comment">/* THIS CAUSES PROBLEMS. with int x = tree; vs. tree = x;</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="comment">    inline</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="comment">    tree_t &amp; operator=(const node_data_t &amp;v){</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="comment">        data = v;</span></div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment">        if (EXCLUSIVE){</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="comment">            clearChildren();</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment">        return *this;</span></div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="comment">    };</span></div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; </div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> S&gt;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#ae23d30ba55599544b7b9e28b5286e7a0">  327</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ae23d30ba55599544b7b9e28b5286e7a0">operator=</a>(<span class="keyword">const</span> std::initializer_list&lt;S&gt; &amp;l){</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a> = l;</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        <span class="keywordflow">if</span> (EXCLUSIVE){</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;            <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">clearChildren</a>();</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        }</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    }</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160; </div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T2&gt;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00338"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#aca9ab41ff7a5b932760a76fe64f1950e">  338</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#aca9ab41ff7a5b932760a76fe64f1950e">operator=</a>(<span class="keyword">const</span> T2 &amp;v){</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a> = v;</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <span class="keywordflow">if</span> (EXCLUSIVE){</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;            <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">clearChildren</a>();</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        }</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    }</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; </div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <span class="comment">// TODO: what to do with the separator?</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#aa87005d0a649ff994a930ece643bc3f1">  306</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#aa87005d0a649ff994a930ece643bc3f1">operator=</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;t){</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a> = t.<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <span class="comment">//if (EXCLUSIVE){ ...or consider deep copy?</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">clearChildren</a>();</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="comment">//}</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    };</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; </div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="comment">// Needed? See next.</span></div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="comment">/* THIS CAUSES PROBLEMS. with int x = tree; vs. tree = x;</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment">    tree_t &amp; operator=(const node_data_t &amp;v){</span></div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="comment">        data = v;</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="comment">        if (EXCLUSIVE){</span></div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment">            clearChildren();</span></div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="comment">        return *this;</span></div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="comment">    };</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160; </div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> S&gt;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00329"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#ae23d30ba55599544b7b9e28b5286e7a0">  329</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ae23d30ba55599544b7b9e28b5286e7a0">operator=</a>(<span class="keyword">const</span> std::initializer_list&lt;S&gt; &amp;l){</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a> = l;</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        <span class="keywordflow">if</span> (EXCLUSIVE){</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;            <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">clearChildren</a>();</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        }</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    }</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; </div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T2&gt;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00340"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#aca9ab41ff7a5b932760a76fe64f1950e">  340</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#aca9ab41ff7a5b932760a76fe64f1950e">operator=</a>(<span class="keyword">const</span> T2 &amp;v){</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a> = v;</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        <span class="keywordflow">if</span> (EXCLUSIVE){</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;            <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">clearChildren</a>();</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        }</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    }</div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160; </div>
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; </div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keyword">operator</span> <span class="keyword">const</span> node_data_t &amp;() <span class="keyword">const</span> {</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    };</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160; </div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <span class="keyword">operator</span> node_data_t &amp;(){</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    };</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160; </div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <span class="comment">// TODO fix/enhance?</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> DD&gt;</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <span class="keyword">operator</span> DD()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    };</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160; </div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00369"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a70b557f9e1e745fe062ec9d7d2bc5cca">  369</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a70b557f9e1e745fe062ec9d7d2bc5cca">operator[]</a>(<span class="keyword">const</span> key_t &amp; key){</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        <span class="keywordflow">return</span> retrieveChild(key);</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    }</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160; </div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00375"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a6ec562e4d0e0bb88b064fdd1e5852b2f">  375</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a6ec562e4d0e0bb88b064fdd1e5852b2f">operator[]</a>(<span class="keyword">const</span> key_t &amp; key)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        <span class="keywordflow">return</span> retrieveChild(key);</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    }</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160; </div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; </div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160; </div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="keyword">operator</span> <span class="keyword">const</span> node_data_t &amp;() <span class="keyword">const</span> {</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    };</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160; </div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    <span class="keyword">operator</span> node_data_t &amp;(){</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    };</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160; </div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <span class="comment">// TODO fix/enhance?</span></div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> DD&gt;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    <span class="keyword">operator</span> DD()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    };</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160; </div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00371"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a70b557f9e1e745fe062ec9d7d2bc5cca">  371</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a70b557f9e1e745fe062ec9d7d2bc5cca">operator[]</a>(<span class="keyword">const</span> key_t &amp; key){</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        <span class="keywordflow">return</span> retrieveChild(key);</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    }</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00377"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a6ec562e4d0e0bb88b064fdd1e5852b2f">  377</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a6ec562e4d0e0bb88b064fdd1e5852b2f">operator[]</a>(<span class="keyword">const</span> key_t &amp; key)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        <span class="keywordflow">return</span> retrieveChild(key);</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    }</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160; </div>
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160; </div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00385"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">  385</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">operator()</a>(<span class="keyword">const</span> path_t &amp; path){</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(path.begin(), path.end());</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    }</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> S&gt;</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    tree_t &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">operator()</a>(<span class="keyword">const</span> S &amp; path){</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">operator()</a>(path_t(path));</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    }</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160; </div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160; </div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">  387</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">operator()</a>(<span class="keyword">const</span> path_t &amp; path){</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(path.begin(), path.end());</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    }</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160; </div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> S&gt;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    tree_t &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">operator()</a>(<span class="keyword">const</span> S &amp; path){</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">operator()</a>(path_t(path));</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    }</div>
 <div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160; </div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00400"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a193f0eeca6ea922da1389e30c1999987">  400</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a193f0eeca6ea922da1389e30c1999987">operator()</a>(<span class="keyword">const</span> path_t &amp; path)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(path.begin(), path.end());</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    }</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160; </div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    <span class="comment">// Try removing this...</span></div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> S&gt;</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00411"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a6ccdc751cc21995312d3148a298a9619">  411</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a6ccdc751cc21995312d3148a298a9619">operator()</a>(<span class="keyword">const</span> S &amp; path)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">operator()</a>(path_t(path));</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    }</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160; </div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160; </div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00402"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a193f0eeca6ea922da1389e30c1999987">  402</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a193f0eeca6ea922da1389e30c1999987">operator()</a>(<span class="keyword">const</span> path_t &amp; path)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(path.begin(), path.end());</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    }</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160; </div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    <span class="comment">// Try removing this...</span></div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> S&gt;</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00413"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a6ccdc751cc21995312d3148a298a9619">  413</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a6ccdc751cc21995312d3148a298a9619">operator()</a>(<span class="keyword">const</span> S &amp; path)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">operator()</a>(path_t(path));</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    }</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160; </div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160; </div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00423"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#ac8bb3912a3ce86b15842e79d0b421204">  423</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ac8bb3912a3ce86b15842e79d0b421204">clear</a>(){</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#abd4e5c937c4b98dd42745acb33815cdf">clearData</a>();</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">clearChildren</a>();</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    };</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160; </div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00434"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#abd4e5c937c4b98dd42745acb33815cdf">  434</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#abd4e5c937c4b98dd42745acb33815cdf">clearData</a>(){</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        <span class="comment">// Future option: data.clear() (applies to many stl classes, like strings and containers)</span></div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a> = <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ad81eda48b7d1733baafec91d9dd76d72">getEmpty</a>().<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    };</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160; </div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160; </div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00425"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#ac8bb3912a3ce86b15842e79d0b421204">  425</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ac8bb3912a3ce86b15842e79d0b421204">clear</a>(){</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#abd4e5c937c4b98dd42745acb33815cdf">clearData</a>();</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">clearChildren</a>();</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    };</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160; </div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00436"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#abd4e5c937c4b98dd42745acb33815cdf">  436</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#abd4e5c937c4b98dd42745acb33815cdf">clearData</a>(){</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;        <span class="comment">// Future option: data.clear() (applies to many stl classes, like strings and containers)</span></div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a> = <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ad81eda48b7d1733baafec91d9dd76d72">getEmpty</a>().<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;    };</div>
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160; </div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00446"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">  446</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">clearChildren</a>(){ <span class="comment">// RAISE/virtualize</span></div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;        children.clear();</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    };</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160; </div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160; </div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00448"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">  448</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">clearChildren</a>(){ <span class="comment">// RAISE/virtualize</span></div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;        children.clear();</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    };</div>
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160; </div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;    <span class="comment">// ??-&gt; If an ending slash is included, then groups but no datasets will be erased. (?)</span></div>
-<div class="line"><a name="l00457"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#aa3b723ff8f1045f2b4c2a8fae13c3989">  457</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#aa3b723ff8f1045f2b4c2a8fae13c3989">erase</a>(<span class="keyword">const</span> path_t &amp; path){ <span class="comment">// RAISE/virtualize</span></div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160; </div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;        <span class="comment">// drain::Logger mout(__FILE__, __FUNCTION__);</span></div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160; </div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    <span class="comment">// ??-&gt; If an ending slash is included, then groups but no datasets will be erased. (?)</span></div>
+<div class="line"><a name="l00459"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#aa3b723ff8f1045f2b4c2a8fae13c3989">  459</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#aa3b723ff8f1045f2b4c2a8fae13c3989">erase</a>(<span class="keyword">const</span> path_t &amp; path){ <span class="comment">// RAISE/virtualize</span></div>
 <div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160; </div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;        <span class="comment">// Idea: first assign the leaf, and step one back.</span></div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;        <span class="keyword">typename</span> path_t::const_iterator it = path.end();</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;        <span class="keywordflow">if</span> (it == path.begin())</div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;            <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;            --it;</div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;            <span class="comment">// Now &#39;it&#39; points to the leaf.</span></div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160; </div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;            <span class="comment">// Safe (identity) if it == path.begin():</span></div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;            <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; parent = this-&gt;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(path.begin(), it);</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;            parent.children.erase(*it);</div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160; </div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;            <span class="comment">/*</span></div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="comment">            if (it == path.begin()){ // path size = 1 (direct child path)</span></div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;<span class="comment">                children.erase(*it); // native STL container method</span></div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="comment">            }</span></div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;<span class="comment">            else { // path size &gt; 1</span></div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;<span class="comment">                mout.deprecating(&quot;consider: tree(&quot;, path, &quot;).clear()&quot;);</span></div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;<span class="comment">                //mout.error(&quot;use: tree(&quot;, path, &quot;).clear()&quot;);</span></div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;<span class="comment">                tree_t &amp; parent = this-&gt;get(path.begin(), it);</span></div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="comment">                parent.children.erase(*it); // native STL container method</span></div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;<span class="comment">            }</span></div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;<span class="comment">            */</span></div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;        }</div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160; </div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;    }</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;        <span class="comment">// drain::Logger mout(__FILE__, __FUNCTION__);</span></div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160; </div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;        <span class="comment">// Idea: first assign the leaf, and step one back.</span></div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;        <span class="keyword">typename</span> path_t::const_iterator it = path.end();</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;        <span class="keywordflow">if</span> (it == path.begin())</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;            --it;</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;            <span class="comment">// Now &#39;it&#39; points to the leaf.</span></div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160; </div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;            <span class="comment">// Safe (identity) if it == path.begin():</span></div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;            <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; parent = this-&gt;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(path.begin(), it);</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;            parent.children.erase(*it);</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160; </div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;            <span class="comment">/*</span></div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="comment">            if (it == path.begin()){ // path size = 1 (direct child path)</span></div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;<span class="comment">                children.erase(*it); // native STL container method</span></div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;<span class="comment">            }</span></div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;<span class="comment">            else { // path size &gt; 1</span></div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;<span class="comment">                mout.deprecating(&quot;consider: tree(&quot;, path, &quot;).clear()&quot;);</span></div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="comment">                //mout.error(&quot;use: tree(&quot;, path, &quot;).clear()&quot;);</span></div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;<span class="comment">                tree_t &amp; parent = this-&gt;get(path.begin(), it);</span></div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;<span class="comment">                parent.children.erase(*it); // native STL container method</span></div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<span class="comment">            }</span></div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;<span class="comment">            */</span></div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;        }</div>
 <div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160; </div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00491"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#ad81eda48b7d1733baafec91d9dd76d72">  491</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ad81eda48b7d1733baafec91d9dd76d72">getEmpty</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;        <span class="keywordflow">return</span> emptyNode;</div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;    }</div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160; </div>
-<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;    <span class="comment">// Note: Current implementation does not check node (data). Could apply:</span></div>
-<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;    <span class="comment">// Ambiguous?</span></div>
-<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00499"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a">  499</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a">empty</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;        <span class="comment">// consider #ifdef DRAIN_TREE_SMART_DATA</span></div>
-<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;        <span class="comment">// return (data.empty() &amp;&amp; children.empty())</span></div>
-<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;        <span class="comment">// #else</span></div>
-<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;        <span class="comment">//  data == defaultNode.data?</span></div>
-<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        <span class="keywordflow">return</span> (<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>.empty() &amp;&amp; !hasChildren());</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;        <span class="comment">// endif</span></div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;    };</div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160; </div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;    <span class="keywordtype">bool</span> hasChildren()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;        <span class="keywordflow">return</span> !children.empty();</div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;    }</div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160; </div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;    }</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160; </div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00493"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#ad81eda48b7d1733baafec91d9dd76d72">  493</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ad81eda48b7d1733baafec91d9dd76d72">getEmpty</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;        <span class="keywordflow">return</span> emptyNode;</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    }</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160; </div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;    <span class="comment">// Note: Current implementation does not check node (data). Could apply:</span></div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;    <span class="comment">// Ambiguous?</span></div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00501"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a">  501</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a">empty</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;        <span class="comment">// consider #ifdef DRAIN_TREE_SMART_DATA</span></div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;        <span class="comment">// return (data.empty() &amp;&amp; children.empty())</span></div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;        <span class="comment">// #else</span></div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;        <span class="comment">//  data == defaultNode.data?</span></div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;        <span class="keywordflow">return</span> (<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>.empty() &amp;&amp; !hasChildren());</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;        <span class="comment">// endif</span></div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;    };</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160; </div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;    <span class="keywordtype">bool</span> hasChildren()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;        <span class="keywordflow">return</span> !children.empty();</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;    }</div>
 <div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160; </div>
-<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00528"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a005a8565608b53d552ed49c05a9e3361">  528</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a005a8565608b53d552ed49c05a9e3361">hasChildren</a>(<span class="keyword">const</span> key_t &amp;key)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160; </div>
-<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;<span class="preprocessor">        #ifdef DRAIN_TREE_ORDERED  </span><span class="comment">// map</span></div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160; </div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00530"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a005a8565608b53d552ed49c05a9e3361">  530</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a005a8565608b53d552ed49c05a9e3361">hasChildren</a>(<span class="keyword">const</span> key_t &amp;key)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160; </div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;        <span class="keywordflow">if</span> (!isMulti()){</div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;            <span class="keywordflow">return</span> (children.find(key) == children.end()) ? 0 : 1;</div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;        }</div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;        <span class="comment">// no-break for OrderedMultipleTree</span></div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160; </div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;<span class="preprocessor">        #endif</span></div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;<span class="preprocessor">        #ifdef DRAIN_TREE_ORDERED  </span><span class="comment">// map</span></div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160; </div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;        <span class="keywordflow">if</span> (!isMulti()){</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;            <span class="keywordflow">return</span> (children.find(key) == children.end()) ? 0 : 1;</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;        }</div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;        <span class="comment">// no-break for OrderedMultipleTree</span></div>
 <div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160; </div>
-<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;        <span class="comment">// OrderedMultipleTree (passed through from the above #ifdef-#endif)</span></div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;<span class="preprocessor">        #endif</span></div>
 <div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160; </div>
-<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        <span class="comment">// OrderedMultipleTree</span></div>
-<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;        <span class="comment">// UnorderedMultipleTree</span></div>
-<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160; </div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        <span class="keywordtype">size_t</span> count = 0;</div>
-<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: children){</div>
-<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;            <span class="keywordflow">if</span> (entry.first == key){</div>
-<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;                ++count;</div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;            }</div>
-<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;        }</div>
-<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;        <span class="keywordflow">return</span> count;</div>
-<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160; </div>
-<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;    };</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        <span class="comment">// OrderedMultipleTree (passed through from the above #ifdef-#endif)</span></div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160; </div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;        <span class="comment">// OrderedMultipleTree</span></div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        <span class="comment">// UnorderedMultipleTree</span></div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160; </div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;        <span class="keywordtype">size_t</span> count = 0;</div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: children){</div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;            <span class="keywordflow">if</span> (entry.first == key){</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;                ++count;</div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;            }</div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;        }</div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;        <span class="keywordflow">return</span> count;</div>
 <div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160; </div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;    };</div>
 <div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160; </div>
-<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00564"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#ac729ceb49af576a8ddac20f4bb8e3f45">  564</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ac729ceb49af576a8ddac20f4bb8e3f45">hasChild</a>(<span class="keyword">const</span> key_t &amp;key)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;<span class="preprocessor">        #ifdef DRAIN_TREE_ORDERED  </span><span class="comment">// map</span></div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160; </div>
-<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;        <span class="keywordflow">return</span> (children.find(key) != children.end());</div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160; </div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00566"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#ac729ceb49af576a8ddac20f4bb8e3f45">  566</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ac729ceb49af576a8ddac20f4bb8e3f45">hasChild</a>(<span class="keyword">const</span> key_t &amp;key)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;<span class="preprocessor">        #ifdef DRAIN_TREE_ORDERED  </span><span class="comment">// map</span></div>
 <div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160; </div>
-<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;<span class="preprocessor">        #else</span></div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;        <span class="keywordflow">return</span> (children.find(key) != children.end());</div>
 <div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160; </div>
-<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: children){</div>
-<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;            <span class="keywordflow">if</span> (entry.first == key){</div>
-<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;            }</div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;        }</div>
-<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160; </div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;<span class="preprocessor">        #endif</span></div>
-<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;    };</div>
-<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160; </div>
-<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160; </div>
-<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;    <span class="keywordtype">bool</span> hasPath(<span class="keyword">const</span> path_t &amp; path)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;        <span class="keywordflow">return</span> hasPath(path.begin(), path.end());</div>
-<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;    }</div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160; </div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160; </div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;<span class="preprocessor">        #else</span></div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160; </div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: children){</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;            <span class="keywordflow">if</span> (entry.first == key){</div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;            }</div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;        }</div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160; </div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;<span class="preprocessor">        #endif</span></div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;    };</div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160; </div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160; </div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;    <span class="keywordtype">bool</span> hasPath(<span class="keyword">const</span> path_t &amp; path)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;        <span class="keywordflow">return</span> hasPath(path.begin(), path.end());</div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;    }</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160; </div>
 <div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160; </div>
-<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00599"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a64d264e4a7eb7b072927683b62553d9d">  599</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a64d264e4a7eb7b072927683b62553d9d">addChild</a>(<span class="keyword">const</span> key_t &amp; key){</div>
-<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160; </div>
-<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;        <span class="keywordflow">if</span> (key.empty()) <span class="comment">// Should be exceptional... Warning?</span></div>
-<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160; </div>
-<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;        <span class="keywordflow">if</span> (EXCLUSIVE)</div>
-<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;            this-&gt;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#abd4e5c937c4b98dd42745acb33815cdf">clearData</a>();</div>
-<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160; </div>
-<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;<span class="preprocessor">        #ifdef DRAIN_TREE_ORDERED</span></div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;        iterator it = children.find(key);</div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;        <span class="keywordflow">if</span> (it != children.end()){</div>
-<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;            <span class="keywordflow">return</span> it-&gt;second;</div>
-<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;        }</div>
-<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;            <span class="keywordflow">return</span> children.insert(children.begin(), pair_t(key, <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a>()))-&gt;second;</div>
-<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        }</div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        <span class="comment">//return children[key];</span></div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160; </div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;<span class="preprocessor">        #else</span></div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160; </div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00601"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a64d264e4a7eb7b072927683b62553d9d">  601</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a64d264e4a7eb7b072927683b62553d9d">addChild</a>(<span class="keyword">const</span> key_t &amp; key){</div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160; </div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;        <span class="keywordflow">if</span> (key.empty()) <span class="comment">// Should be exceptional... Warning?</span></div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160; </div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;        <span class="keywordflow">if</span> (EXCLUSIVE)</div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;            this-&gt;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#abd4e5c937c4b98dd42745acb33815cdf">clearData</a>();</div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160; </div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;<span class="preprocessor">        #ifdef DRAIN_TREE_ORDERED</span></div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;        iterator it = children.find(key);</div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;        <span class="keywordflow">if</span> (it != children.end()){</div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;            <span class="keywordflow">return</span> it-&gt;second;</div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;        }</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;            <span class="keywordflow">return</span> children.insert(children.begin(), pair_t(key, <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a>()))-&gt;second;</div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        }</div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;        <span class="comment">//return children[key];</span></div>
 <div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160; </div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;        <span class="comment">// Try searching first</span></div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;        <span class="keywordflow">if</span> (!isMulti()){</div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; entry: children){</div>
-<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;                <span class="keywordflow">if</span> (entry.first == key){</div>
-<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;                    <span class="keywordflow">return</span> entry.second;</div>
-<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;                }</div>
-<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;            }</div>
-<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;        }</div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160; </div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;        <span class="comment">// Add:</span></div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;        children.push_back(pair_t(key, <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a>()));</div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;        <span class="keywordflow">return</span> children.back().second;</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160; </div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;<span class="preprocessor">        #endif</span></div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;    };</div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160; </div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160; </div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    <span class="comment">// retrieveChild(key, create ALWAYS / IF_NOT_FOUND</span></div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;<span class="preprocessor">        #else</span></div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160; </div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;        <span class="comment">// Try searching first</span></div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;        <span class="keywordflow">if</span> (!isMulti()){</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; entry: children){</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;                <span class="keywordflow">if</span> (entry.first == key){</div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;                    <span class="keywordflow">return</span> entry.second;</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;                }</div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;            }</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;        }</div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160; </div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;        <span class="comment">// Add:</span></div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;        children.push_back(pair_t(key, <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a>()));</div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;        <span class="keywordflow">return</span> children.back().second;</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160; </div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;<span class="preprocessor">        #endif</span></div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;    };</div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160; </div>
 <div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160; </div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;    tree_t &amp; retrieveChild(<span class="keyword">const</span> key_t &amp; key){</div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160; </div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;        <span class="keywordflow">if</span> (key.empty())</div>
-<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160; </div>
-<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;        <span class="comment">// ! if (EXCLUSIVE) this-&gt;clearData();</span></div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;    <span class="comment">// retrieveChild(key, create ALWAYS / IF_NOT_FOUND</span></div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160; </div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;    tree_t &amp; retrieveChild(<span class="keyword">const</span> key_t &amp; key){</div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160; </div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;        <span class="keywordflow">if</span> (key.empty())</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160; </div>
-<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;<span class="preprocessor">        #ifdef DRAIN_TREE_ORDERED</span></div>
-<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;        <span class="comment">// Old policy restored; keys must implement empty(), an empty key is indentified to the current node.</span></div>
-<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160; </div>
-<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;        <span class="comment">// return children[key];</span></div>
-<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;        iterator it = children.find(key);</div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;        <span class="keywordflow">if</span> (it != children.end()){</div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;            <span class="keywordflow">return</span> it-&gt;second;</div>
-<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;        }</div>
-<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;            <span class="keywordflow">return</span> children.insert(children.begin(), pair_t(key, tree_t()))-&gt;second;</div>
-<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        }</div>
-<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160; </div>
-<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;<span class="preprocessor">        #else</span></div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;        <span class="comment">// ! if (EXCLUSIVE) this-&gt;clearData();</span></div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160; </div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;<span class="preprocessor">        #ifdef DRAIN_TREE_ORDERED</span></div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;        <span class="comment">// Old policy restored; keys must implement empty(), an empty key is indentified to the current node.</span></div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160; </div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;        <span class="comment">// return children[key];</span></div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;        iterator it = children.find(key);</div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;        <span class="keywordflow">if</span> (it != children.end()){</div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;            <span class="keywordflow">return</span> it-&gt;second;</div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;        }</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;            <span class="keywordflow">return</span> children.insert(children.begin(), pair_t(key, tree_t()))-&gt;second;</div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        }</div>
 <div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160; </div>
-<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; entry: children){</div>
-<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;            <span class="keywordflow">if</span> (entry.first == key){</div>
-<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;                <span class="keywordflow">return</span> entry.second;</div>
-<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;            }</div>
-<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;        }</div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        <span class="comment">// if (EXCLUSIVE)   this-&gt;clearData();</span></div>
-<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;        children.push_back(pair_t(key, tree_t()));</div>
-<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;        <span class="keywordflow">return</span> children.back().second;</div>
-<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160; </div>
-<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;<span class="preprocessor">        #endif</span></div>
-<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;    };</div>
-<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160; </div>
-<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160; </div>
-<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;    <span class="keyword">const</span> tree_t &amp; retrieveChild(<span class="keyword">const</span> key_t &amp; key)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160; </div>
-<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;        <span class="keywordflow">if</span> (key.empty())</div>
-<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160; </div>
-<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;<span class="preprocessor">        #ifdef DRAIN_TREE_ORDERED</span></div>
-<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;        <span class="keyword">const</span> const_iterator it = children.find(key);</div>
-<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;        <span class="keywordflow">if</span> (it != children.end()){</div>
-<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;            <span class="keywordflow">return</span> it-&gt;second;</div>
-<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;        }</div>
-<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;<span class="preprocessor">        #else  </span><span class="comment">// traverse</span></div>
-<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: children){</div>
-<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;            <span class="keywordflow">if</span> (entry.first == key){</div>
-<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;                <span class="keywordflow">return</span> entry.second;</div>
-<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;            }</div>
-<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;        }</div>
-<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;<span class="preprocessor">        #endif</span></div>
-<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160; </div>
-<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ad81eda48b7d1733baafec91d9dd76d72">getEmpty</a>();</div>
-<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;    };</div>
-<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160; </div>
-<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160; </div>
+<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;<span class="preprocessor">        #else</span></div>
+<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160; </div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp; entry: children){</div>
+<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;            <span class="keywordflow">if</span> (entry.first == key){</div>
+<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;                <span class="keywordflow">return</span> entry.second;</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;            }</div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;        }</div>
+<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;        <span class="comment">// if (EXCLUSIVE)   this-&gt;clearData();</span></div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;        children.push_back(pair_t(key, tree_t()));</div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;        <span class="keywordflow">return</span> children.back().second;</div>
+<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160; </div>
+<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;<span class="preprocessor">        #endif</span></div>
+<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;    };</div>
+<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160; </div>
+<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160; </div>
+<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;    <span class="keyword">const</span> tree_t &amp; retrieveChild(<span class="keyword">const</span> key_t &amp; key)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160; </div>
+<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;        <span class="keywordflow">if</span> (key.empty())</div>
+<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160; </div>
+<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;<span class="preprocessor">        #ifdef DRAIN_TREE_ORDERED</span></div>
+<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;        <span class="keyword">const</span> const_iterator it = children.find(key);</div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;        <span class="keywordflow">if</span> (it != children.end()){</div>
+<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;            <span class="keywordflow">return</span> it-&gt;second;</div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;        }</div>
+<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;<span class="preprocessor">        #else  </span><span class="comment">// traverse</span></div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: children){</div>
+<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;            <span class="keywordflow">if</span> (entry.first == key){</div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;                <span class="keywordflow">return</span> entry.second;</div>
+<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;            }</div>
+<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;        }</div>
+<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;<span class="preprocessor">        #endif</span></div>
+<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160; </div>
+<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ad81eda48b7d1733baafec91d9dd76d72">getEmpty</a>();</div>
+<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;    };</div>
 <div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160; </div>
 <div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160; </div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;<span class="comment">//#endif</span></div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160; </div>
 <div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160; </div>
-<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160; </div>
-<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;<span class="comment">// Functions perhaps less relevant</span></div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;<span class="comment">//#endif</span></div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160; </div>
 <div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160; </div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;<span class="comment">// Functions perhaps less relevant</span></div>
 <div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160; </div>
-<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00708"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a36d7cfb67428f2e005da6149f4dc9648">  708</a></span>&#160;    container_t &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36d7cfb67428f2e005da6149f4dc9648">getChildren</a>() { <span class="keywordflow">return</span> children; };</div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160; </div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00712"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a5e1a48400f69dd6a9a843bdecd519934">  712</a></span>&#160;    <span class="keyword">const</span> container_t &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a5e1a48400f69dd6a9a843bdecd519934">getChildren</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> children; };</div>
-<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160; </div>
-<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160; </div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160; </div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00710"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a36d7cfb67428f2e005da6149f4dc9648">  710</a></span>&#160;    container_t &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36d7cfb67428f2e005da6149f4dc9648">getChildren</a>() { <span class="keywordflow">return</span> children; };</div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160; </div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00714"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a5e1a48400f69dd6a9a843bdecd519934">  714</a></span>&#160;    <span class="keyword">const</span> container_t &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a5e1a48400f69dd6a9a843bdecd519934">getChildren</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> children; };</div>
 <div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160; </div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;    <span class="comment">// consider...</span></div>
-<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00719"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a36d3dd8e0c798396168b2dbdd30b2a40">  719</a></span>&#160;    <span class="keyword">const</span> node_data_t *<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36d3dd8e0c798396168b2dbdd30b2a40">operator-&gt;</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;        <span class="keywordflow">return</span> &amp;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
-<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;    };</div>
-<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160; </div>
-<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;    <span class="comment">// consider...</span></div>
-<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;    node_data_t *<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36d3dd8e0c798396168b2dbdd30b2a40">operator-&gt;</a>(){</div>
-<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;        <span class="keywordflow">return</span> &amp;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
-<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;    };</div>
-<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160; </div>
-<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00731"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a11d598ca144b69a123f2e2d9ee42af3d">  731</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a11d598ca144b69a123f2e2d9ee42af3d">swap</a>(<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;t){</div>
-<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;        children.swap(t.children);</div>
-<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;    }</div>
-<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160; </div>
-<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160; </div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160; </div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160; </div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;    <span class="comment">// consider...</span></div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00721"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a36d3dd8e0c798396168b2dbdd30b2a40">  721</a></span>&#160;    <span class="keyword">const</span> node_data_t *<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36d3dd8e0c798396168b2dbdd30b2a40">operator-&gt;</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;        <span class="keywordflow">return</span> &amp;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;    };</div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160; </div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;    <span class="comment">// consider...</span></div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;    node_data_t *<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36d3dd8e0c798396168b2dbdd30b2a40">operator-&gt;</a>(){</div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;        <span class="keywordflow">return</span> &amp;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>;</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;    };</div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160; </div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00733"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a11d598ca144b69a123f2e2d9ee42af3d">  733</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a11d598ca144b69a123f2e2d9ee42af3d">swap</a>(<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;t){</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;        children.swap(t.children);</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;    }</div>
 <div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160; </div>
-<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160; </div>
 <div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160; </div>
-<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160; </div>
-<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;    container_t children;</div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160; </div>
 <div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160; </div>
-<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    <span class="keyword">const</span> tree_t emptyNode;</div>
-<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160; </div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;    container_t children;</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160; </div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;    <span class="keyword">const</span> tree_t emptyNode;</div>
 <div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160; </div>
-<div class="line"><a name="l00750"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a91080c09ebdb9bd501d9c244aec87d7a">  750</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a91080c09ebdb9bd501d9c244aec87d7a">hasPath</a>(<span class="keyword">typename</span> path_t::const_iterator it, <span class="keyword">typename</span> path_t::const_iterator eit)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160; </div>
-<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;        <span class="keywordflow">if</span> (it == eit) <span class="comment">// empty path</span></div>
-<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160; </div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;        <span class="keyword">const</span> <span class="keyword">typename</span> path_t::elem_t elem = *it;</div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160; </div>
+<div class="line"><a name="l00752"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a91080c09ebdb9bd501d9c244aec87d7a">  752</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a91080c09ebdb9bd501d9c244aec87d7a">hasPath</a>(<span class="keyword">typename</span> path_t::const_iterator it, <span class="keyword">typename</span> path_t::const_iterator eit)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160; </div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;        <span class="keywordflow">if</span> (it == eit) <span class="comment">// empty path</span></div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160; </div>
-<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;        <span class="keywordflow">if</span> (elem.empty())</div>
-<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;            <span class="keywordflow">return</span> hasPath(++it, eit);</div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ac729ceb49af576a8ddac20f4bb8e3f45">hasChild</a>(elem))</div>
-<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160; </div>
-<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;        <span class="keywordflow">return</span> this-&gt;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a70b557f9e1e745fe062ec9d7d2bc5cca">operator []</a>(elem).hasPath(++it, eit);</div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;        <span class="keyword">const</span> <span class="keyword">typename</span> path_t::elem_t elem = *it;</div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160; </div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;        <span class="keywordflow">if</span> (elem.empty())</div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;            <span class="keywordflow">return</span> hasPath(++it, eit);</div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ac729ceb49af576a8ddac20f4bb8e3f45">hasChild</a>(elem))</div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160; </div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;    }</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;        <span class="keywordflow">return</span> this-&gt;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a70b557f9e1e745fe062ec9d7d2bc5cca">operator []</a>(elem).hasPath(++it, eit);</div>
 <div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160; </div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;    }</div>
 <div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160; </div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00770"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">  770</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(<span class="keyword">typename</span> path_t::const_iterator it, <span class="keyword">typename</span> path_t::const_iterator eit) {</div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160; </div>
-<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;        <span class="comment">// Path empty =&gt; self-reference</span></div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;        <span class="keywordflow">if</span> (it == eit)</div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160; </div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;        <span class="comment">// Path element is empty =&gt; proceed to next element</span></div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;        <span class="keywordflow">if</span> (it-&gt;empty())</div>
-<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(++it, eit);</div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160; </div>
-<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; child = <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a70b557f9e1e745fe062ec9d7d2bc5cca">operator[]</a>(*it);</div>
-<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;        <span class="keywordflow">return</span> child.<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(++it, eit);</div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160; </div>
-<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;    }</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160; </div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00772"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">  772</a></span>&#160;    <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(<span class="keyword">typename</span> path_t::const_iterator it, <span class="keyword">typename</span> path_t::const_iterator eit) {</div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160; </div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;        <span class="comment">// Path empty =&gt; self-reference</span></div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;        <span class="keywordflow">if</span> (it == eit)</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160; </div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;        <span class="comment">// Path element is empty =&gt; proceed to next element</span></div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;        <span class="keywordflow">if</span> (it-&gt;empty())</div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(++it, eit);</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160; </div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;        <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; child = <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a70b557f9e1e745fe062ec9d7d2bc5cca">operator[]</a>(*it);</div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;        <span class="keywordflow">return</span> child.<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(++it, eit);</div>
 <div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160; </div>
-<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160; </div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;    }</div>
 <div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160; </div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160; </div>
 <div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160; </div>
-<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00792"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#afbd15ea05f30119d6a670151ed7c6870">  792</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#afbd15ea05f30119d6a670151ed7c6870">get</a>(<span class="keyword">typename</span> path_t::const_iterator it, <span class="keyword">typename</span> path_t::const_iterator eit)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160; </div>
-<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;        <span class="comment">// Path empty =&gt; self-reference</span></div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;        <span class="keywordflow">if</span> (eit == it) <span class="comment">// order, 2023/04</span></div>
-<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160; </div>
-<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;        <span class="comment">// Path element is empty =&gt; skip it (proceed to next element)</span></div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;        <span class="keywordflow">if</span> (it-&gt;empty())</div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(++it, eit);</div>
-<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160; </div>
-<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;        <span class="keyword">typename</span> tree_t::const_iterator child_it = this-&gt;children.find(*it);</div>
-<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;        <span class="keywordflow">if</span> (child_it == this-&gt;children.end())</div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ad81eda48b7d1733baafec91d9dd76d72">getEmpty</a>();</div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;            <span class="keywordflow">return</span> child_it-&gt;second.get(++it, eit);</div>
-<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160; </div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;<span class="comment">        if (!hasChild(*it))</span></div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;<span class="comment">            return getEmpty();</span></div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;<span class="comment">        const tree_t &amp; child = operator[](*it); // use find? Or better, direct child[key]</span></div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;<span class="comment">        //const tree_t &amp; child = this-&gt;children[*it]; // use find? Or better, direct child[key] 2023/04</span></div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;<span class="comment">        return child.get(++it, eit);</span></div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;<span class="comment">        */</span></div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    }</div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160; </div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160; </div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160; </div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00794"></a><span class="lineno"><a class="line" href="classdrain_1_1DRAIN__TREE__NAME.html#afbd15ea05f30119d6a670151ed7c6870">  794</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#afbd15ea05f30119d6a670151ed7c6870">get</a>(<span class="keyword">typename</span> path_t::const_iterator it, <span class="keyword">typename</span> path_t::const_iterator eit)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160; </div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;        <span class="comment">// Path empty =&gt; self-reference</span></div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;        <span class="keywordflow">if</span> (eit == it) <span class="comment">// order, 2023/04</span></div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;            <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160; </div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;        <span class="comment">// Path element is empty =&gt; skip it (proceed to next element)</span></div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;        <span class="keywordflow">if</span> (it-&gt;empty())</div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a>(++it, eit);</div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160; </div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;        <span class="keyword">typename</span> tree_t::const_iterator child_it = this-&gt;children.find(*it);</div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;        <span class="keywordflow">if</span> (child_it == this-&gt;children.end())</div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html#ad81eda48b7d1733baafec91d9dd76d72">getEmpty</a>();</div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;            <span class="keywordflow">return</span> child_it-&gt;second.get(++it, eit);</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160; </div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;<span class="comment">        if (!hasChild(*it))</span></div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;<span class="comment">            return getEmpty();</span></div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;<span class="comment">        const tree_t &amp; child = operator[](*it); // use find? Or better, direct child[key]</span></div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;<span class="comment">        //const tree_t &amp; child = this-&gt;children[*it]; // use find? Or better, direct child[key] 2023/04</span></div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;<span class="comment">        return child.get(++it, eit);</span></div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;    }</div>
 <div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160; </div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;};</div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160; </div>
 <div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160; </div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keywordtype">bool</span> EXCLUSIVE, <span class="keyword">class</span> P&gt;</div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;<span class="keyword">const</span> DRAIN_TREE_NAME&lt;T,EXCLUSIVE, P&gt; DRAIN_TREE_NAME&lt;T,EXCLUSIVE,P&gt;::emptyNode;</div>
-<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160; </div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;<span class="comment">/* TODO ..</span></div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;<span class="comment">template &lt;&gt;</span></div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;<span class="comment">struct TypeName&lt;TextStyle::Colour&gt; {</span></div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="comment">    static const char* get(){ return &quot;TextStyle::Colour&quot;; }</span></div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="comment">};</span></div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160; </div>
-<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160; </div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;<span class="comment">//template &lt;&gt;</span></div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keywordtype">bool</span> EXCLUSIVE, <span class="keyword">class</span> P&gt;</div>
-<div class="line"><a name="l00835"></a><span class="lineno"><a class="line" href="structdrain_1_1TypeName_3_01DRAIN__TREE__NAME_3_01T_00_01EXCLUSIVE_00_01P_01_4_01_4.html">  835</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structdrain_1_1TypeName.html">TypeName</a>&lt;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">DRAIN_TREE_NAME</a>&lt;T,EXCLUSIVE, P&gt; &gt; {</div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* get(){ <span class="keywordflow">return</span> <span class="stringliteral">&quot;TreeNameUnderConstr&quot;</span>; }</div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;};</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;};</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160; </div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keywordtype">bool</span> EXCLUSIVE, <span class="keyword">class</span> P&gt;</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;<span class="keyword">const</span> DRAIN_TREE_NAME&lt;T,EXCLUSIVE, P&gt; DRAIN_TREE_NAME&lt;T,EXCLUSIVE,P&gt;::emptyNode;</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160; </div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;<span class="comment">/* TODO ..</span></div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="comment">struct TypeName&lt;TextStyle::Colour&gt; {</span></div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;<span class="comment">    static const char* get(){ return &quot;TextStyle::Colour&quot;; }</span></div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;<span class="comment">};</span></div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160; </div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160; </div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160; </div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keywordtype">bool</span> EXCLUSIVE, <span class="keyword">class</span> P&gt;</div>
+<div class="line"><a name="l00837"></a><span class="lineno"><a class="line" href="structdrain_1_1TypeName_3_01DRAIN__TREE__NAME_3_01T_00_01EXCLUSIVE_00_01P_01_4_01_4.html">  837</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structdrain_1_1TypeName.html">TypeName</a>&lt;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">DRAIN_TREE_NAME</a>&lt;T,EXCLUSIVE, P&gt; &gt; {</div>
 <div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160; </div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160; </div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">DRAIN_TREE_NAME&lt;T,EXCLUSIVE, P&gt;</a> <a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a>;</div>
 <div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160; </div>
 <div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160; </div>
-<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;} <span class="comment">// drain::</span></div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* get(){</div>
 <div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160; </div>
-<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160; </div>
-<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160; </div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> std::string name = <a class="code" href="classdrain_1_1StringBuilder.html">drain::StringBuilder&lt;&gt;</a>(</div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;                tree_t::isOrdered()?<span class="stringliteral">&quot;Ordered&quot;</span>:<span class="stringliteral">&quot;Unordered&quot;</span>,</div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;                        tree_t::isMulti()?<span class="stringliteral">&quot;Multi&quot;</span>:<span class="stringliteral">&quot;&quot;</span>,<span class="stringliteral">&quot;Tree&quot;</span>,</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;                                tree_t::isExclusive()?<span class="stringliteral">&quot;(Exclusive)&quot;</span>:<span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;                                        <span class="charliteral">&#39;&lt;&#39;</span>, <a class="code" href="structdrain_1_1TypeName.html">TypeName&lt;typename tree_t::node_data_t&gt;::get</a>(), <span class="charliteral">&#39;&gt;&#39;</span>); <span class="comment">// recursion...</span></div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;                                                <span class="comment">//&#39;&lt;&#39;, drain::Type::call&lt;drain::simpleName&gt;(typeid(typename tree_t::node_data_t)), &#39;&gt;&#39;);</span></div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;        <span class="keywordflow">return</span> name.c_str();</div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;        <span class="comment">//return &quot;TreeNameUnderConstr&quot;;</span></div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    }</div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;};</div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160; </div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160; </div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;} <span class="comment">// drain::</span></div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160; </div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160; </div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html">drain::DRAIN_TREE_NAME</a></div><div class="ttdoc">A templated class for directed rooted trees.</div><div class="ttdef"><b>Definition:</b> Tree.h:185</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a005a8565608b53d552ed49c05a9e3361"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a005a8565608b53d552ed49c05a9e3361">drain::DRAIN_TREE_NAME::hasChildren</a></div><div class="ttdeci">virtual int hasChildren(const key_t &amp;key) const</div><div class="ttdoc">The number of children with name key.</div><div class="ttdef"><b>Definition:</b> Tree.h:528</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a091c6265950643e307d70411dab30bc7"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">drain::DRAIN_TREE_NAME::clearChildren</a></div><div class="ttdeci">void clearChildren()</div><div class="ttdoc">Clears the children of this node. Does not clear data.</div><div class="ttdef"><b>Definition:</b> Tree.h:446</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a11d598ca144b69a123f2e2d9ee42af3d"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a11d598ca144b69a123f2e2d9ee42af3d">drain::DRAIN_TREE_NAME::swap</a></div><div class="ttdeci">void swap(tree_t &amp;t)</div><div class="ttdoc">Replace children (but no data?)</div><div class="ttdef"><b>Definition:</b> Tree.h:731</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a193f0eeca6ea922da1389e30c1999987"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a193f0eeca6ea922da1389e30c1999987">drain::DRAIN_TREE_NAME::operator()</a></div><div class="ttdeci">const tree_t &amp; operator()(const path_t &amp;path) const</div><div class="ttdoc">Returns a descendant.</div><div class="ttdef"><b>Definition:</b> Tree.h:400</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a005a8565608b53d552ed49c05a9e3361"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a005a8565608b53d552ed49c05a9e3361">drain::DRAIN_TREE_NAME::hasChildren</a></div><div class="ttdeci">virtual int hasChildren(const key_t &amp;key) const</div><div class="ttdoc">The number of children with name key.</div><div class="ttdef"><b>Definition:</b> Tree.h:530</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a091c6265950643e307d70411dab30bc7"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">drain::DRAIN_TREE_NAME::clearChildren</a></div><div class="ttdeci">void clearChildren()</div><div class="ttdoc">Clears the children of this node. Does not clear data.</div><div class="ttdef"><b>Definition:</b> Tree.h:448</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a11d598ca144b69a123f2e2d9ee42af3d"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a11d598ca144b69a123f2e2d9ee42af3d">drain::DRAIN_TREE_NAME::swap</a></div><div class="ttdeci">void swap(tree_t &amp;t)</div><div class="ttdoc">Replace children (but no data?)</div><div class="ttdef"><b>Definition:</b> Tree.h:733</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a193f0eeca6ea922da1389e30c1999987"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a193f0eeca6ea922da1389e30c1999987">drain::DRAIN_TREE_NAME::operator()</a></div><div class="ttdeci">const tree_t &amp; operator()(const path_t &amp;path) const</div><div class="ttdoc">Returns a descendant.</div><div class="ttdef"><b>Definition:</b> Tree.h:402</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a1fc71669d8d9e77d86e749b72e7ec162"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a1fc71669d8d9e77d86e749b72e7ec162">drain::DRAIN_TREE_NAME::end</a></div><div class="ttdeci">container_t::const_iterator end() const</div><div class="ttdoc">Child iterator pointing beyond the last child.</div><div class="ttdef"><b>Definition:</b> Tree.h:251</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a36d3dd8e0c798396168b2dbdd30b2a40"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a36d3dd8e0c798396168b2dbdd30b2a40">drain::DRAIN_TREE_NAME::operator-&gt;</a></div><div class="ttdeci">const node_data_t * operator-&gt;() const</div><div class="ttdoc">New.</div><div class="ttdef"><b>Definition:</b> Tree.h:719</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a36d7cfb67428f2e005da6149f4dc9648"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a36d7cfb67428f2e005da6149f4dc9648">drain::DRAIN_TREE_NAME::getChildren</a></div><div class="ttdeci">container_t &amp; getChildren()</div><div class="ttdoc">Returns the map containing the children.</div><div class="ttdef"><b>Definition:</b> Tree.h:708</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a36d3dd8e0c798396168b2dbdd30b2a40"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a36d3dd8e0c798396168b2dbdd30b2a40">drain::DRAIN_TREE_NAME::operator-&gt;</a></div><div class="ttdeci">const node_data_t * operator-&gt;() const</div><div class="ttdoc">New.</div><div class="ttdef"><b>Definition:</b> Tree.h:721</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a36d7cfb67428f2e005da6149f4dc9648"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a36d7cfb67428f2e005da6149f4dc9648">drain::DRAIN_TREE_NAME::getChildren</a></div><div class="ttdeci">container_t &amp; getChildren()</div><div class="ttdoc">Returns the map containing the children.</div><div class="ttdef"><b>Definition:</b> Tree.h:710</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a36fa01075ecacd03b83c14c5385d7a67"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">drain::DRAIN_TREE_NAME::data</a></div><div class="ttdeci">node_data_t data</div><div class="ttdoc">Contents (data) of the node.</div><div class="ttdef"><b>Definition:</b> Tree.h:213</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a40f2c4878612b3e120667b10a121e864"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a40f2c4878612b3e120667b10a121e864">drain::DRAIN_TREE_NAME::begin</a></div><div class="ttdeci">container_t::iterator begin()</div><div class="ttdoc">Child iterator pointing to the first child.</div><div class="ttdef"><b>Definition:</b> Tree.h:255</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a4dae8dd37aee6af0b9391c031cca8232"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">drain::DRAIN_TREE_NAME::operator()</a></div><div class="ttdeci">tree_t &amp; operator()(const path_t &amp;path)</div><div class="ttdoc">Returns a descendant. Creates one if not existing already.</div><div class="ttdef"><b>Definition:</b> Tree.h:385</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a5dc9d7494d137f8725d90c21d037fe4a"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a">drain::DRAIN_TREE_NAME::empty</a></div><div class="ttdeci">virtual bool empty() const</div><div class="ttdoc">Check if the tree structure is empty.</div><div class="ttdef"><b>Definition:</b> Tree.h:499</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a5e1a48400f69dd6a9a843bdecd519934"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a5e1a48400f69dd6a9a843bdecd519934">drain::DRAIN_TREE_NAME::getChildren</a></div><div class="ttdeci">const container_t &amp; getChildren() const</div><div class="ttdoc">Returns the map containing the children.</div><div class="ttdef"><b>Definition:</b> Tree.h:712</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a64d264e4a7eb7b072927683b62553d9d"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a64d264e4a7eb7b072927683b62553d9d">drain::DRAIN_TREE_NAME::addChild</a></div><div class="ttdeci">virtual tree_t &amp; addChild(const key_t &amp;key)</div><div class="ttdoc">Add a child node. If unordered and UNIQUE, reuse existing nodes.</div><div class="ttdef"><b>Definition:</b> Tree.h:599</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a6ccdc751cc21995312d3148a298a9619"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a6ccdc751cc21995312d3148a298a9619">drain::DRAIN_TREE_NAME::operator()</a></div><div class="ttdeci">const tree_t &amp; operator()(const S &amp;path) const</div><div class="ttdoc">Returns a descendant.</div><div class="ttdef"><b>Definition:</b> Tree.h:411</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a6ec562e4d0e0bb88b064fdd1e5852b2f"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a6ec562e4d0e0bb88b064fdd1e5852b2f">drain::DRAIN_TREE_NAME::operator[]</a></div><div class="ttdeci">const tree_t &amp; operator[](const key_t &amp;key) const</div><div class="ttdoc">Child addressing operator.</div><div class="ttdef"><b>Definition:</b> Tree.h:375</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a70b557f9e1e745fe062ec9d7d2bc5cca"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a70b557f9e1e745fe062ec9d7d2bc5cca">drain::DRAIN_TREE_NAME::operator[]</a></div><div class="ttdeci">tree_t &amp; operator[](const key_t &amp;key)</div><div class="ttdoc">Child addressing operator.</div><div class="ttdef"><b>Definition:</b> Tree.h:369</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a4dae8dd37aee6af0b9391c031cca8232"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">drain::DRAIN_TREE_NAME::operator()</a></div><div class="ttdeci">tree_t &amp; operator()(const path_t &amp;path)</div><div class="ttdoc">Returns a descendant. Creates one if not existing already.</div><div class="ttdef"><b>Definition:</b> Tree.h:387</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a5dc9d7494d137f8725d90c21d037fe4a"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a">drain::DRAIN_TREE_NAME::empty</a></div><div class="ttdeci">virtual bool empty() const</div><div class="ttdoc">Check if the tree structure is empty.</div><div class="ttdef"><b>Definition:</b> Tree.h:501</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a5e1a48400f69dd6a9a843bdecd519934"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a5e1a48400f69dd6a9a843bdecd519934">drain::DRAIN_TREE_NAME::getChildren</a></div><div class="ttdeci">const container_t &amp; getChildren() const</div><div class="ttdoc">Returns the map containing the children.</div><div class="ttdef"><b>Definition:</b> Tree.h:714</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a64d264e4a7eb7b072927683b62553d9d"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a64d264e4a7eb7b072927683b62553d9d">drain::DRAIN_TREE_NAME::addChild</a></div><div class="ttdeci">virtual tree_t &amp; addChild(const key_t &amp;key)</div><div class="ttdoc">Add a child node. If unordered and UNIQUE, reuse existing nodes.</div><div class="ttdef"><b>Definition:</b> Tree.h:601</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a6ccdc751cc21995312d3148a298a9619"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a6ccdc751cc21995312d3148a298a9619">drain::DRAIN_TREE_NAME::operator()</a></div><div class="ttdeci">const tree_t &amp; operator()(const S &amp;path) const</div><div class="ttdoc">Returns a descendant.</div><div class="ttdef"><b>Definition:</b> Tree.h:413</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a6ec562e4d0e0bb88b064fdd1e5852b2f"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a6ec562e4d0e0bb88b064fdd1e5852b2f">drain::DRAIN_TREE_NAME::operator[]</a></div><div class="ttdeci">const tree_t &amp; operator[](const key_t &amp;key) const</div><div class="ttdoc">Child addressing operator.</div><div class="ttdef"><b>Definition:</b> Tree.h:377</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a70b557f9e1e745fe062ec9d7d2bc5cca"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a70b557f9e1e745fe062ec9d7d2bc5cca">drain::DRAIN_TREE_NAME::operator[]</a></div><div class="ttdeci">tree_t &amp; operator[](const key_t &amp;key)</div><div class="ttdoc">Child addressing operator.</div><div class="ttdef"><b>Definition:</b> Tree.h:371</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a77d888f8b37470421e92957c30e7d3ae"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a77d888f8b37470421e92957c30e7d3ae">drain::DRAIN_TREE_NAME::DRAIN_TREE_NAME</a></div><div class="ttdeci">DRAIN_TREE_NAME(const DRAIN_TREE_NAME &amp;t)</div><div class="ttdoc">Copy constructor; copy only node data at the root.</div><div class="ttdef"><b>Definition:</b> Tree.h:210</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a7e00c02ca0ac1a336e27204e3d40ab5f"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">drain::DRAIN_TREE_NAME::get</a></div><div class="ttdeci">tree_t &amp; get(typename path_t::const_iterator it, typename path_t::const_iterator eit)</div><div class="ttdoc">Returns a descendant. Creates one, if not present.</div><div class="ttdef"><b>Definition:</b> Tree.h:770</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a91080c09ebdb9bd501d9c244aec87d7a"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a91080c09ebdb9bd501d9c244aec87d7a">drain::DRAIN_TREE_NAME::hasPath</a></div><div class="ttdeci">bool hasPath(typename path_t::const_iterator it, typename path_t::const_iterator eit) const</div><div class="ttdoc">Checks if there is a node with a given path name.</div><div class="ttdef"><b>Definition:</b> Tree.h:750</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_aa3b723ff8f1045f2b4c2a8fae13c3989"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#aa3b723ff8f1045f2b4c2a8fae13c3989">drain::DRAIN_TREE_NAME::erase</a></div><div class="ttdeci">void erase(const path_t &amp;path)</div><div class="ttdoc">Deletes a descendant node and hence its subtrees.</div><div class="ttdef"><b>Definition:</b> Tree.h:457</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_aa87005d0a649ff994a930ece643bc3f1"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#aa87005d0a649ff994a930ece643bc3f1">drain::DRAIN_TREE_NAME::operator=</a></div><div class="ttdeci">tree_t &amp; operator=(const tree_t &amp;t)</div><div class="ttdoc">Copies the data of another node. Does not copy the children.</div><div class="ttdef"><b>Definition:</b> Tree.h:304</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a7e00c02ca0ac1a336e27204e3d40ab5f"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">drain::DRAIN_TREE_NAME::get</a></div><div class="ttdeci">tree_t &amp; get(typename path_t::const_iterator it, typename path_t::const_iterator eit)</div><div class="ttdoc">Returns a descendant. Creates one, if not present.</div><div class="ttdef"><b>Definition:</b> Tree.h:772</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a91080c09ebdb9bd501d9c244aec87d7a"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a91080c09ebdb9bd501d9c244aec87d7a">drain::DRAIN_TREE_NAME::hasPath</a></div><div class="ttdeci">bool hasPath(typename path_t::const_iterator it, typename path_t::const_iterator eit) const</div><div class="ttdoc">Checks if there is a node with a given path name.</div><div class="ttdef"><b>Definition:</b> Tree.h:752</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_aa3b723ff8f1045f2b4c2a8fae13c3989"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#aa3b723ff8f1045f2b4c2a8fae13c3989">drain::DRAIN_TREE_NAME::erase</a></div><div class="ttdeci">void erase(const path_t &amp;path)</div><div class="ttdoc">Deletes a descendant node and hence its subtrees.</div><div class="ttdef"><b>Definition:</b> Tree.h:459</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_aa87005d0a649ff994a930ece643bc3f1"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#aa87005d0a649ff994a930ece643bc3f1">drain::DRAIN_TREE_NAME::operator=</a></div><div class="ttdeci">tree_t &amp; operator=(const tree_t &amp;t)</div><div class="ttdoc">Copies the data of another node. Does not copy the children.</div><div class="ttdef"><b>Definition:</b> Tree.h:306</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_aad38ef804f0ccedc2ff064214fef789c"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#aad38ef804f0ccedc2ff064214fef789c">drain::DRAIN_TREE_NAME::DRAIN_TREE_NAME</a></div><div class="ttdeci">DRAIN_TREE_NAME()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> Tree.h:202</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_abd4e5c937c4b98dd42745acb33815cdf"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#abd4e5c937c4b98dd42745acb33815cdf">drain::DRAIN_TREE_NAME::clearData</a></div><div class="ttdeci">void clearData()</div><div class="ttdef"><b>Definition:</b> Tree.h:434</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_ac729ceb49af576a8ddac20f4bb8e3f45"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#ac729ceb49af576a8ddac20f4bb8e3f45">drain::DRAIN_TREE_NAME::hasChild</a></div><div class="ttdeci">virtual bool hasChild(const key_t &amp;key) const</div><div class="ttdoc">Check if the tree node has a direct descendant with name key.</div><div class="ttdef"><b>Definition:</b> Tree.h:564</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_ac8bb3912a3ce86b15842e79d0b421204"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#ac8bb3912a3ce86b15842e79d0b421204">drain::DRAIN_TREE_NAME::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clear children and node data.</div><div class="ttdef"><b>Definition:</b> Tree.h:423</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_aca9ab41ff7a5b932760a76fe64f1950e"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#aca9ab41ff7a5b932760a76fe64f1950e">drain::DRAIN_TREE_NAME::operator=</a></div><div class="ttdeci">tree_t &amp; operator=(const T2 &amp;v)</div><div class="ttdoc">Assigns a value to contents.</div><div class="ttdef"><b>Definition:</b> Tree.h:338</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_abd4e5c937c4b98dd42745acb33815cdf"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#abd4e5c937c4b98dd42745acb33815cdf">drain::DRAIN_TREE_NAME::clearData</a></div><div class="ttdeci">void clearData()</div><div class="ttdef"><b>Definition:</b> Tree.h:436</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_ac729ceb49af576a8ddac20f4bb8e3f45"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#ac729ceb49af576a8ddac20f4bb8e3f45">drain::DRAIN_TREE_NAME::hasChild</a></div><div class="ttdeci">virtual bool hasChild(const key_t &amp;key) const</div><div class="ttdoc">Check if the tree node has a direct descendant with name key.</div><div class="ttdef"><b>Definition:</b> Tree.h:566</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_ac8bb3912a3ce86b15842e79d0b421204"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#ac8bb3912a3ce86b15842e79d0b421204">drain::DRAIN_TREE_NAME::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clear children and node data.</div><div class="ttdef"><b>Definition:</b> Tree.h:425</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_aca9ab41ff7a5b932760a76fe64f1950e"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#aca9ab41ff7a5b932760a76fe64f1950e">drain::DRAIN_TREE_NAME::operator=</a></div><div class="ttdeci">tree_t &amp; operator=(const T2 &amp;v)</div><div class="ttdoc">Assigns a value to contents.</div><div class="ttdef"><b>Definition:</b> Tree.h:340</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_acd233a567e2ef795e98c75cdb37336db"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#acd233a567e2ef795e98c75cdb37336db">drain::DRAIN_TREE_NAME::begin</a></div><div class="ttdeci">container_t::const_iterator begin() const</div><div class="ttdoc">Child iterator pointing to the first child.</div><div class="ttdef"><b>Definition:</b> Tree.h:247</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_acdbe1b3241957d4062ec8683399520a4"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#acdbe1b3241957d4062ec8683399520a4">drain::DRAIN_TREE_NAME::end</a></div><div class="ttdeci">container_t::iterator end()</div><div class="ttdoc">Child iterator end.</div><div class="ttdef"><b>Definition:</b> Tree.h:259</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_ad3a1bd0813a2b60907a814cb300d3da3"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#ad3a1bd0813a2b60907a814cb300d3da3">drain::DRAIN_TREE_NAME::DRAIN_TREE_NAME</a></div><div class="ttdeci">DRAIN_TREE_NAME(const node_data_t &amp;data)</div><div class="ttdoc">Copy constructor; copy only node data at the root.</div><div class="ttdef"><b>Definition:</b> Tree.h:206</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_ad81eda48b7d1733baafec91d9dd76d72"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#ad81eda48b7d1733baafec91d9dd76d72">drain::DRAIN_TREE_NAME::getEmpty</a></div><div class="ttdeci">virtual const tree_t &amp; getEmpty() const</div><div class="ttdef"><b>Definition:</b> Tree.h:491</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_ae23d30ba55599544b7b9e28b5286e7a0"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#ae23d30ba55599544b7b9e28b5286e7a0">drain::DRAIN_TREE_NAME::operator=</a></div><div class="ttdeci">tree_t &amp; operator=(const std::initializer_list&lt; S &gt; &amp;l)</div><div class="ttdoc">Assigns value to contents.</div><div class="ttdef"><b>Definition:</b> Tree.h:327</div></div>
-<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_afbd15ea05f30119d6a670151ed7c6870"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#afbd15ea05f30119d6a670151ed7c6870">drain::DRAIN_TREE_NAME::get</a></div><div class="ttdeci">const tree_t &amp; get(typename path_t::const_iterator it, typename path_t::const_iterator eit) const</div><div class="ttdoc">Given the descendant pointed to by a given path segment.</div><div class="ttdef"><b>Definition:</b> Tree.h:792</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_ad81eda48b7d1733baafec91d9dd76d72"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#ad81eda48b7d1733baafec91d9dd76d72">drain::DRAIN_TREE_NAME::getEmpty</a></div><div class="ttdeci">virtual const tree_t &amp; getEmpty() const</div><div class="ttdef"><b>Definition:</b> Tree.h:493</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_ae23d30ba55599544b7b9e28b5286e7a0"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#ae23d30ba55599544b7b9e28b5286e7a0">drain::DRAIN_TREE_NAME::operator=</a></div><div class="ttdeci">tree_t &amp; operator=(const std::initializer_list&lt; S &gt; &amp;l)</div><div class="ttdoc">Assigns value to contents.</div><div class="ttdef"><b>Definition:</b> Tree.h:329</div></div>
+<div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_afbd15ea05f30119d6a670151ed7c6870"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#afbd15ea05f30119d6a670151ed7c6870">drain::DRAIN_TREE_NAME::get</a></div><div class="ttdeci">const tree_t &amp; get(typename path_t::const_iterator it, typename path_t::const_iterator eit) const</div><div class="ttdoc">Given the descendant pointed to by a given path segment.</div><div class="ttdef"><b>Definition:</b> Tree.h:794</div></div>
 <div class="ttc" id="aclassdrain_1_1Path_html"><div class="ttname"><a href="classdrain_1_1Path.html">drain::Path</a></div><div class="ttdef"><b>Definition:</b> Path.h:112</div></div>
 <div class="ttc" id="aclassdrain_1_1StringBuilder_html"><div class="ttname"><a href="classdrain_1_1StringBuilder.html">drain::StringBuilder</a></div><div class="ttdef"><b>Definition:</b> StringBuilder.h:91</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Dictionary-example.cpp:66</div></div>

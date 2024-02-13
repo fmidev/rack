@@ -262,6 +262,18 @@ protected:
 
 
 typedef drain::UnorderedMultiTree<NodeXML<>,false, NodeXML<>::path_t> TreeXML;
+
+// NOTE: template will not match for subclasses of NodeXML<E>
+template <class E, bool EX, class P>
+struct TypeName< drain::UnorderedMultiTree<NodeXML<E>,EX,P> > {
+
+    static const char* get(){
+    	//static const std::string name = drain::StringBuilder<>("Tree<", TypeName<E>::get(), ">");
+    	static const std::string name = drain::StringBuilder<>("TreeXML<", TypeName<E>::get(), ">");
+    	return name.c_str();
+    }
+};
+
 //typedef drain::UnorderedMultiTree<NodeXML<>,false> TreeXML;
 
 template <>

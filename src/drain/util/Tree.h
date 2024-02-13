@@ -284,6 +284,7 @@ public:
 		#endif
 	}
 
+	/*
 	static inline
 	const std::string className(){
 		const std::string s = drain::StringBuilder<>(
@@ -293,6 +294,7 @@ public:
 										'<', drain::Type::call<drain::simpleName>(typeid(node_data_t)), '>');
 		return s;
 	}
+	*/
 
 	/// Copies the data of another node. Does not copy the children.
 	/**
@@ -830,16 +832,27 @@ struct TypeName<TextStyle::Colour> {
 */
 
 
-//template <>
+
 template <class T, bool EXCLUSIVE, class P>
 struct TypeName<DRAIN_TREE_NAME<T,EXCLUSIVE, P> > {
-    static const char* get(){ return "TreeNameUnderConstr"; }
+
+	typedef DRAIN_TREE_NAME<T,EXCLUSIVE, P> tree_t;
+
+
+    static const char* get(){
+
+    	static const std::string name = drain::StringBuilder<>(
+    			tree_t::isOrdered()?"Ordered":"Unordered",
+    					tree_t::isMulti()?"Multi":"","Tree",
+    							tree_t::isExclusive()?"(Exclusive)":"",
+    									'<', TypeName<typename tree_t::node_data_t>::get(), '>'); // recursion...
+    											//'<', drain::Type::call<drain::simpleName>(typeid(typename tree_t::node_data_t)), '>');
+    	return name.c_str();
+    	//return "TreeNameUnderConstr";
+    }
 };
 
 
-
-
 } // drain::
-
 
 
