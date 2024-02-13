@@ -126,9 +126,9 @@ Collaboration diagram for CCorOp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afe77cb439ceeb56ed2b124f75b79b52a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CCorOp.html#afe77cb439ceeb56ed2b124f75b79b52a">CCorOp</a> (<a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; threshold={10, 30})</td></tr>
-<tr class="memdesc:afe77cb439ceeb56ed2b124f75b79b52a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes sizes of segments having intensity over minDBZ.  <a href="classrack_1_1CCorOp.html#afe77cb439ceeb56ed2b124f75b79b52a">More...</a><br /></td></tr>
-<tr class="separator:afe77cb439ceeb56ed2b124f75b79b52a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad70f32d5ba03285787ce61fa5e14107a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CCorOp.html#ad70f32d5ba03285787ce61fa5e14107a">CCorOp</a> (<a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; threshold={10, 30}, bool mask=false)</td></tr>
+<tr class="memdesc:ad70f32d5ba03285787ce61fa5e14107a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes sizes of segments having intensity over minDBZ.  <a href="classrack_1_1CCorOp.html#ad70f32d5ba03285787ce61fa5e14107a">More...</a><br /></td></tr>
+<tr class="separator:ad70f32d5ba03285787ce61fa5e14107a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc961d4922ec08a6741b4ad8f153ba00"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CCorOp.html#abc961d4922ec08a6741b4ad8f153ba00">runDetection</a> (const <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;src, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dst, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;aux) const</td></tr>
 <tr class="memdesc:abc961d4922ec08a6741b4ad8f153ba00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process as sweep (data in one elevation angle)  <a href="classrack_1_1CCorOp.html#abc961d4922ec08a6741b4ad8f153ba00">More...</a><br /></td></tr>
 <tr class="separator:abc961d4922ec08a6741b4ad8f153ba00"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -315,6 +315,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a853571a7aaaaed9bae45f4076ae5353a"><td class="memItemLeft" align="right" valign="top"><a id="a853571a7aaaaed9bae45f4076ae5353a"></a>
 <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>threshold</b></td></tr>
 <tr class="separator:a853571a7aaaaed9bae45f4076ae5353a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea8b125da73831a723cfb9a8ce48f2d7"><td class="memItemLeft" align="right" valign="top"><a id="aea8b125da73831a723cfb9a8ce48f2d7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>mask</b></td></tr>
+<tr class="separator:aea8b125da73831a723cfb9a8ce48f2d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classrack_1_1DetectorOp"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classrack_1_1DetectorOp')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classrack_1_1DetectorOp.html">DetectorOp</a></td></tr>
 <tr class="memitem:a1106555509358d312734dccc0e61c8f5 inherit pub_attribs_classrack_1_1DetectorOp"><td class="memItemLeft" align="right" valign="top">const drain::image::Palette::value_type &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DetectorOp.html#a1106555509358d312734dccc0e61c8f5">classEntry</a></td></tr>
 <tr class="memdesc:a1106555509358d312734dccc0e61c8f5 inherit pub_attribs_classrack_1_1DetectorOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index applied in the legend of the classification results.  <a href="classrack_1_1DetectorOp.html#a1106555509358d312734dccc0e61c8f5">More...</a><br /></td></tr>
@@ -501,8 +504,8 @@ static unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>
 <tr class="separator:ac7a886214c68cd701a2a5b3e8a86b963 inherit pro_static_attribs_classrack_1_1DetectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="afe77cb439ceeb56ed2b124f75b79b52a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe77cb439ceeb56ed2b124f75b79b52a">&#9670;&nbsp;</a></span>CCorOp()</h2>
+<a id="ad70f32d5ba03285787ce61fa5e14107a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad70f32d5ba03285787ce61fa5e14107a">&#9670;&nbsp;</a></span>CCorOp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -514,8 +517,18 @@ static unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>
           <td class="memname"><a class="el" href="classrack_1_1CCorOp.html">CCorOp</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt;&#160;</td>
-          <td class="paramname"><em>threshold</em> = <code>{10,30}</code></td><td>)</td>
+          <td class="paramname"><em>threshold</em> = <code>{10,30}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>mask</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>

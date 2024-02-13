@@ -88,8 +88,7 @@ $(function() {
 <div class="image">
 <img src="rack-logo-384x192.png" alt=""/>
 </div>
- <div class="fragment"><div class="line">Version 7.9</div>
-</div><!-- fragment --><h1><a class="anchor" id="intro"></a>
+ <div class="fragment"></div><!-- fragment --><h1><a class="anchor" id="intro"></a>
 Introduction</h1>
 <p><b>Rack</b> is a command-line program for processing weather radar data. It uses raw measurement data as input and generates <a class="el" href="productspage.html">Meteorological products</a> as well as <a class="el" href="compositespage.html">Cartesian conversions and composites</a> . <b>Rack</b> also provides methods for <a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a> . Quality information is supported throughout the processing chain. <b>Rack</b> also supports <a class="el" href="imagespage.html">Working with images</a> , like applying colors and transparency.</p>
 <p><b>Rack</b> is based on code developed at the Finnish Meteorological Institute since 2001. Part of the development work has been supported by the BALTRAD project (2009-2014), see <a href="http://www.baltrad.eu">http://www.baltrad.eu</a> . The program can be downloaded from <a href="https://github.com/fmidev/rack">https://github.com/fmidev/rack</a> .</p>
@@ -147,26 +146,17 @@ Data remapped with <code>--cCreate</code> , further coloured with <code>--palett
 <p>Inside <b>Rack</b> , a single-radar Cartesian product is technically similar to a radar composite &ndash; it is a single-radar "composite". The related commands are prefixed with <code>'c'</code>. Composite generation, projections, methods, and other options are explained in further detail in section <a class="el" href="compositespage.html">Cartesian conversions and composites</a> .</p>
 <h2><a class="anchor" id="selecting"></a>
 Selecting data</h2>
-<p>Selecting data can be done with command <code>&ndash;select</code> .</p>
-<div class="fragment"><div class="line">--select, -s  &lt;path&gt;,&lt;quantity&gt;,&lt;elangle&gt;,&lt;count&gt;,&lt;order&gt;,&lt;prf&gt;  (Section: general)</div>
-<div class="line">  Data selector for the next computation</div>
-<div class="line">    path= [[/]dataset&lt;i&gt;[/data&lt;j&gt;|/quality&lt;j&gt;]]</div>
-<div class="line">    quantity= [DBZH|VRAD|RHOHV|...]</div>
-<div class="line">    elangle=-90:90 [min[:max]]</div>
-<div class="line">    count=1000 </div>
-<div class="line">    order=DATA:MIN [[&quot;DATA&quot;,&quot;ELANGLE&quot;,&quot;TIME&quot;]:[&quot;MIN&quot;,&quot;MAX&quot;]]</div>
-<div class="line">    prf=ANY [[&quot;ANY&quot;,&quot;SINGLE&quot;,&quot;DOUBLE&quot;]]</div>
-</div><!-- fragment --><p>This command determines the data to be applied in subsequent input read or product generation commands.</p>
+<p>This command determines the data to be applied in subsequent input read or product generation commands.</p>
 <p>In <b>Rack</b>, many operations implictly select a subset of available data instead of using it all. For example, in computing a Pseudo CAPPI image, <code>DBZH</code> data from single-PRF sweeps is used by default.</p>
-<p><b>Synopsis</b> </p><div class="fragment"><div class="line">--select, -s  &lt;path&gt;,&lt;quantity&gt;,&lt;elangle&gt;,&lt;count&gt;,&lt;order&gt;,&lt;prf&gt;  (Section: general)</div>
-<div class="line">  Data selector for the next computation</div>
-<div class="line">    path= [[/]dataset&lt;i&gt;[/data&lt;j&gt;|/quality&lt;j&gt;]]</div>
-<div class="line">    quantity= [DBZH|VRAD|RHOHV|...]</div>
-<div class="line">    elangle=-90:90 [min[:max]]</div>
-<div class="line">    count=1000 </div>
-<div class="line">    order=DATA:MIN [[&quot;DATA&quot;,&quot;ELANGLE&quot;,&quot;TIME&quot;]:[&quot;MIN&quot;,&quot;MAX&quot;]]</div>
-<div class="line">    prf=ANY [[&quot;ANY&quot;,&quot;SINGLE&quot;,&quot;DOUBLE&quot;]]</div>
-</div><!-- fragment --><p>This option is useful in selecting data for:</p>
+<p><b>Synopsis</b> </p><div class="fragment"></div><!-- fragment --><p>Remarks on the options:</p>
+<ul>
+<li><code>path</code> argument defines a path <em>segment</em> to be matched, with desired index ranges (example: <code>dataset2:4/data3</code>:8 )</li>
+<li>in <code>path</code> argument, a leading slash fixes the matching to the root (example: \ c /dataset:/data: ), otherwise the tail part is matched</li>
+<li><code>quantity</code> argument accepts a list of strings separated by semicolon ':'</li>
+<li>each item in a <code>quantity</code> argument list can be a literal string like \C DBZH or a regular experession like <code>^DBZ</code>[HV]?$</li>
+</ul>
+<p>See example sets below!</p>
+<p>This option is useful in selecting data for:</p>
 <ul>
 <li>partial reading a large input file (see <a class="el" href="fileiopage.html">File input and output</a> ).</li>
 <li>a meteorological product (see <a class="el" href="productspage.html">Meteorological products</a> ).</li>
@@ -234,7 +224,71 @@ CmdSetODIM </dd>
 <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">rack::DataSelector</a> (code)</dd></dl>
 <h3><a class="anchor" id="selectquantity"></a>
 Selecting by quantity only</h3>
-<p>Selecting quantities only is frequently needed, so there is a dedicated command <code>&ndash;selectQuantity</code> (<code>-Q</code> ) which accepts comma-separated simple patterns (with * and ?) instead of regular expressions. For example, <code>-Q</code> <code>DBZH*</code>,QIND is equal to <code>&ndash;select</code> <code>quantity='^</code>(DBZH.*|QIND)$' .</p>
+<p>Most commands apply implicit input data selection criteria, typically involving data paths, quantities and/or elevation angles.</p>
+<p>Like in general in <b>Rack</b>, the parameters of <code>&ndash;select</code> are positional (ordered), meaning that they can be issued as a comma-separated string without explicit names (keywords), as long as they are given in order. The parameters are:</p>
+<ul>
+<li><code>path</code> is a string of path elements, separated by slash '/' and consisting of:<ul>
+<li>a leading single slash '/', if rooted matching is desired ie. leading parts of the paths are tested; otherwise trailing parts</li>
+<li><code>what</code> , <code>where</code>, <code>how</code> - ie. the groups containing attributes</li>
+<li><code> dataset{min}:{max} </code>, <code> data{min}:{max}</code> , <code> quality{min}:{max}</code> - indexed groups containing subgroups for actual data and attributes</li>
+<li><code>data</code> - unindexed groups containing actual data arrays</li>
+<li><em>combined</em> <em>selection</em> <em>elements</em> created by concatenating above elements with pipe '|' representing logical OR function (requires escaping on command line)<ul>
+<li>example: <code>what|where|dataset1:3</code></li>
+</ul>
+</li>
+<li>in index ranges, values can be omitted, using invoking default minimum (1) and maximum (0xffff = 65535) as follows:<ul>
+<li><code>data:</code> equals <code>data1:65535</code>; further the colon ':' can be omitted for <code>dataset</code> and <code>quality</code> (but not for <code>data:</code> , to bypass naming conflict inherent in ODIM )</li>
+<li><code>data{index}</code> equals <code> data{index}:{index}</code> (ie. exact match)</li>
+<li><code>data{index}:</code> equals <code> data{index}:65535</code></li>
+<li><code>data:{index}</code> equals <code> data1:{index}</code></li>
+</ul>
+</li>
+<li>in each combined selection element, only one index range can be given, referring to all indexed elements, and it must be given as the last segment<ul>
+<li>example: <code>what|data|quality1:5</code> matches <code>what</code>, <code>data1:5</code> and <code>quality1:5</code></li>
+<li>example: <code>what|where|dataset1:3/what|data1:8</code> &ndash; index ranges <em>can</em> <em>vary</em> on different levels, ie. in slash-separated elements</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>quantity</code> is a regular expression<ul>
+<li>example: <code>^DBZH$</code>, accepting <code>DBZH</code> only</li>
+<li>example: <code>(DBZH|TH)</code> accepts <code>DBZH</code> and <code>TH</code> , but also <code>DBZHC</code> and <code>WIDTH</code> ...</li>
+<li>future option: two regular expressions separated by a slash, the latter regExp determining the desired quality quantities</li>
+</ul>
+</li>
+<li><code>elangle</code> defines the range of antenna elevations accepted, range limits included<ul>
+<li>unlike with path selectors, <code>elangle={angle}</code> abbreviates <code>elangle={angle}:90</code> (not <code>elangle={angle}:{angle}</code>)</li>
+<li>notice that metadata may contain floating point values like 1.000004723, use <code>count=1</code> to pick a single one within a range</li>
+</ul>
+</li>
+<li><code>count</code> is the upper limit of accepted indices of <code>dataset</code> ; typically used with <code>elangle</code> </li>
+<li><code>order</code> defines criteria <code></code>(DATA|TIME|ELANGLE) and operation <code></code>(MIN|MAX) in selecting data, applied with <code>count</code>. Note that the lowest elevations can be measured the latest, appearing as <code>dataset</code> 's with highest indices.</li>
+<li><code>dualPRF</code> determines if sweeps using dual pulse repetition frequency is required (1), accepted like single one (0), or excluded (-1).</li>
+</ul>
+<p>The selection functionality is best explained with examples.</p>
+<div class="fragment"><div class="line"><span class="preprocessor"># For a Pseudo CAPPI product, change default input selection</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;quantity=^TH$,elangle=1.5:10,count=3&#39;</span> --pCappi 1500 -o pCappi-TH-1500m.h5</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># For image output, select DBZH  </span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select elangle=1.5,quantity=DBZH -o volume-DBZH.png</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># For image output, select VRAD of the lowest dual-PRF scan </span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=VRAD,order=ELANGLE:MIN,prf=DOUBLE -o volume-VRAD.png</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># For image output, select ZDR of the highest single-PRF scan </span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=ZDR,count=1,order=ELANGLE:MAX,prf=SINGLE -o volume-ZDR.png</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># For single-image output, select DBZH of the lowest scan (from 90 6.5 2.4 1.8 1.2 0.59)</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH,order=ELANGLE:MIN -o volume-DBZH2.png</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># For single-image output, select DBZH of the highest scan (from 90 6.5 2.4 1.8 1.2 0.59)</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH,order=ELANGLE:MAX -o volume-DBZH3.png</div>
+<div class="line"> </div>
+</div><!-- fragment --><p> Note that escaping special characters like '|' is often required on command line.</p>
+<p>Often, the first data array matching the criteria are used.</p>
+<p>One can explicitly change the criteria with <code>&ndash;select</code> (<code>-s</code>) command . For example, in data conversions one may wish to focus on certain quantity &ndash; like <code>DBZH</code> or <code>VRAD</code> &ndash; not all the data.</p>
+<p>The selection command can be applied the most commands processing data. In computing meteorological products (<a class="el" href="productspage.html#products">Product generation</a>) an compositing, it affects the following product only. In case of anomaly detectors (<a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a>), it applies to all subsequent operators.</p>
+<p>Note that some processing commands may not support explicit data selection. Set selection criteria strictly to one <code>quantity</code> . Selecting quantities only is frequently needed, so there is a dedicated command <code>&ndash;selectQuantity</code> (<code>-Q</code> ) which accepts comma-separated simple patterns (with * and ?) instead of regular expressions. For example, <code>-Q</code> <code>DBZH*</code>,QIND is equal to <code>&ndash;select</code> <code>quantity='^</code>(DBZH.*|QIND)$' .</p>
 <div class="image">
 <img src="ppi-RHOHV-panel.png" alt=""/>
 <div class="caption">

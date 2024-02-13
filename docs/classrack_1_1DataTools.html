@@ -111,6 +111,16 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>updateCoordina
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#a09c5875ce5f5445a0d63051617f246fa">markExcluded</a> (Hi5Tree &amp;src, const Hi5Tree::path_t &amp;path, bool exclude=true)</td></tr>
 <tr class="memdesc:a09c5875ce5f5445a0d63051617f246fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">(Un)mark groups along a path for deletion by #Hi5Base::deleteExcluded() <br /></td></tr>
 <tr class="separator:a09c5875ce5f5445a0d63051617f246fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7fcd0bdf230be48f91d6d6d9db5b9de"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">treeToStream</a> (const Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</td></tr>
+<tr class="memdesc:ad7fcd0bdf230be48f91d6d6d9db5b9de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tree attribute formatter.  <a href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">More...</a><br /></td></tr>
+<tr class="separator:ad7fcd0bdf230be48f91d6d6d9db5b9de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5717649711955e5f363106d61c79bc9f"><td class="memItemLeft" align="right" valign="top"><a id="a5717649711955e5f363106d61c79bc9f"></a>
+static std::list&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMainAttributes</b> ()</td></tr>
+<tr class="separator:a5717649711955e5f363106d61c79bc9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2b878497682897ce3d31f72d5bee6c5"><td class="memItemLeft" align="right" valign="top"><a id="aa2b878497682897ce3d31f72d5bee6c5"></a>
+static <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#aa2b878497682897ce3d31f72d5bee6c5">getAttributeStyles</a> ()</td></tr>
+<tr class="memdesc:aa2b878497682897ce3d31f72d5bee6c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of most important <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> attributes (with style suggestion). <br /></td></tr>
+<tr class="separator:aa2b878497682897ce3d31f72d5bee6c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
@@ -252,6 +262,51 @@ Static Protected Member Functions</h2></td></tr>
 <p>Removes the children of the tree if Node::exclude is set. </p>
 <pre class="fragment">\return - true if children were removed
 </pre><p> static bool removeIfExcluded_REMOVE(Hi5Tree &amp; dst); Does nothing </p><dl class="section return"><dt>Returns</dt><dd>- false (always, as nothing will be removed) </dd></dl>
+
+</div>
+</div>
+<a id="ad7fcd0bdf230be48f91d6d6d9db5b9de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7fcd0bdf230be48f91d6d6d9db5b9de">&#9670;&nbsp;</a></span>treeToStream()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool treeToStream </td>
+          <td>(</td>
+          <td class="paramtype">const Hi5Tree::node_data_t &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tree attribute formatter. </p>
+<p>Applied by <a class="el" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102" title="Debugging utility - dumps the structure of the tree (not the contents).">drain::TreeUtils::dump()</a>. Example:</p>
+<div class="fragment"><div class="line"><a class="code" href="classdrain_1_1Output.html">drain::Output</a> output(filename);</div>
+<div class="line"><a class="code" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">drain::TreeUtils::dump</a>(ctx.getHi5(RackContext::CURRENT), output, <a class="code" href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">DataTools::treeToStream</a>);</div>
+<div class="ttc" id="aclassdrain_1_1Output_html"><div class="ttname"><a href="classdrain_1_1Output.html">drain::Output</a></div><div class="ttdoc">Output utility. Opens stdout with &quot;-&quot;. Closes upon destruction.</div><div class="ttdef"><b>Definition:</b> Output.h:55</div></div>
+<div class="ttc" id="aclassdrain_1_1TreeUtils_html_a589a266c64101a3a0441be1cad6ee102"><div class="ttname"><a href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">drain::TreeUtils::dump</a></div><div class="ttdeci">static bool dump(const TR &amp;tree, std::ostream &amp;ostr=std::cout, bool(*callBack)(const typename TR::node_data_t &amp;, std::ostream &amp;)=TreeUtils::dataDumper, const std::string &amp;indent=&quot;&quot;)</div><div class="ttdoc">Debugging utility - dumps the structure of the tree (not the contents).</div><div class="ttdef"><b>Definition:</b> TreeUtils.h:217</div></div>
+<div class="ttc" id="aclassrack_1_1DataTools_html_ad7fcd0bdf230be48f91d6d6d9db5b9de"><div class="ttname"><a href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">rack::DataTools::treeToStream</a></div><div class="ttdeci">static bool treeToStream(const Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</div><div class="ttdoc">Tree attribute formatter.</div><div class="ttdef"><b>Definition:</b> DataTools.cpp:104</div></div>
+</div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>– true, if data is empty, ie. no attributes or data array. </dd></dl>
 
 </div>
 </div>

@@ -806,7 +806,7 @@ bool DataSelector::getPath(const Hi5Tree & src, ODIMPath & path) const {
 				for (ODIMPath & p: paths){
 					std::string q = src(p).data.image.properties.get("what:quantity", "");
 					if (m == q){
-						mout.special("found preferred [", q,"] matching '", m, "' at: ", p);
+						mout.special<LOG_INFO>("found preferred [", q,"] matching '", m, "' at: ", p);
 						path = p;
 						return true;
 					}

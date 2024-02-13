@@ -130,10 +130,10 @@ typedef DT::tree_iter_t&#160;</td><td class="memItemRight" valign="bottom"><b>tr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abdc5f2aee7880b6ee2ce42a55d1a73ad"><td class="memItemLeft" align="right" valign="top"><a id="abdc5f2aee7880b6ee2ce42a55d1a73ad"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataGroup.html#abdc5f2aee7880b6ee2ce42a55d1a73ad">DataGroup</a> (typename DT::tree_t &amp;<a class="el" href="classrack_1_1TreeWrapper.html#ab29b3410f1b085a954d78622b270613f">tree</a>, const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;quantityRegExp=<a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>())</td></tr>
-<tr class="memdesc:abdc5f2aee7880b6ee2ce42a55d1a73ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a <code>dataset</code> subtree, like tree["dataset3"], constructs a data map of desired quantities. <br /></td></tr>
-<tr class="separator:abdc5f2aee7880b6ee2ce42a55d1a73ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb13ef70a690e0b53d86241f169d5db3"><td class="memItemLeft" align="right" valign="top"><a id="afb13ef70a690e0b53d86241f169d5db3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataGroup.html#afb13ef70a690e0b53d86241f169d5db3">DataGroup</a> (typename DT::tree_t &amp;<a class="el" href="classrack_1_1TreeWrapper.html#ab29b3410f1b085a954d78622b270613f">tree</a>, const <a class="el" href="classrack_1_1QuantitySelector.html">QuantitySelector</a> &amp;slct=<a class="el" href="classrack_1_1QuantitySelector.html">QuantitySelector</a>())</td></tr>
+<tr class="memdesc:afb13ef70a690e0b53d86241f169d5db3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a <code>dataset</code> subtree, like tree["dataset3"], constructs a data map of desired quantities. <br /></td></tr>
+<tr class="separator:afb13ef70a690e0b53d86241f169d5db3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b5156016e6403c82f080f22b2a6b97e"><td class="memItemLeft" align="right" valign="top"><a id="a4b5156016e6403c82f080f22b2a6b97e"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DataGroup</b> (const <a class="el" href="classrack_1_1DataGroup.html">datagroup_t</a> &amp;src)</td></tr>
 <tr class="separator:a4b5156016e6403c82f080f22b2a6b97e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,12 +143,18 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>has</b> (const std::s
 <tr class="memitem:a676db4bb69169d788c7f15568c0200f5"><td class="memItemLeft" align="right" valign="top"><a id="a676db4bb69169d788c7f15568c0200f5"></a>
 const data_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getData</b> (const std::string &amp;quantity) const</td></tr>
 <tr class="separator:a676db4bb69169d788c7f15568c0200f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab63667c3dcbfbb982cd3300e2152b450"><td class="memItemLeft" align="right" valign="top"><a id="ab63667c3dcbfbb982cd3300e2152b450"></a>
+const data_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getData</b> (const char *quantity) const</td></tr>
+<tr class="separator:ab63667c3dcbfbb982cd3300e2152b450"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a68620f3cdd4f1efe2ad1098ccf793e"><td class="memItemLeft" align="right" valign="top"><a id="a6a68620f3cdd4f1efe2ad1098ccf793e"></a>
 data_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getData</b> (const std::string &amp;quantity)</td></tr>
 <tr class="separator:a6a68620f3cdd4f1efe2ad1098ccf793e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a847d393416e44f3cfbef26a9b7e97b9c"><td class="memItemLeft" align="right" valign="top"><a id="a847d393416e44f3cfbef26a9b7e97b9c"></a>
-const data_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getData</b> (const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;regExp) const</td></tr>
-<tr class="separator:a847d393416e44f3cfbef26a9b7e97b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fa1fb9989a33a2ca552a2f0876facd4"><td class="memItemLeft" align="right" valign="top"><a id="a6fa1fb9989a33a2ca552a2f0876facd4"></a>
+data_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getData</b> (const char *quantity)</td></tr>
+<tr class="separator:a6fa1fb9989a33a2ca552a2f0876facd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adff0a06cf1380f9525a3dd8767d5674c"><td class="memItemLeft" align="right" valign="top"><a id="adff0a06cf1380f9525a3dd8767d5674c"></a>
+const data_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getData</b> (const <a class="el" href="classrack_1_1QuantitySelector.html">QuantitySelector</a> &amp;slct) const</td></tr>
+<tr class="separator:adff0a06cf1380f9525a3dd8767d5674c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb3ef6e3ac270a981bb09a06574618e6"><td class="memItemLeft" align="right" valign="top">data_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataGroup.html#adb3ef6e3ac270a981bb09a06574618e6">create</a> (const std::string &amp;quantity, const std::string &amp;templateQuantity, const std::string &amp;encodingParams)</td></tr>
 <tr class="memdesc:adb3ef6e3ac270a981bb09a06574618e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates (or overrides) data array for <code>quantity</code> and scales it.  <a href="classrack_1_1DataGroup.html#adb3ef6e3ac270a981bb09a06574618e6">More...</a><br /></td></tr>
 <tr class="separator:adb3ef6e3ac270a981bb09a06574618e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,9 +204,9 @@ Static Protected Member Functions</h2></td></tr>
 <tr class="memitem:a5abc001af14285affd17623de8d84ade"><td class="memItemLeft" align="right" valign="top"><a id="a5abc001af14285affd17623de8d84ade"></a>
 static const data_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getEmpty</b> ()</td></tr>
 <tr class="separator:a5abc001af14285affd17623de8d84ade"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dd3b8b6df79002990bb72c690eb5b49"><td class="memItemLeft" align="right" valign="top">static DT::tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataGroup.html#a2dd3b8b6df79002990bb72c690eb5b49">init</a> (typename DT::tree_t &amp;t, <a class="el" href="classrack_1_1DataGroup.html">datagroup_t</a> &amp;dst, const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;quantityRegExp=<a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>())</td></tr>
-<tr class="memdesc:a2dd3b8b6df79002990bb72c690eb5b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a <code>dataset</code> h5 subtree, like tree["dataset3"], collects all (or desired) quantities to a data object.  <a href="classrack_1_1DataGroup.html#a2dd3b8b6df79002990bb72c690eb5b49">More...</a><br /></td></tr>
-<tr class="separator:a2dd3b8b6df79002990bb72c690eb5b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ee2acd18088bb46da4487be93c1da1a"><td class="memItemLeft" align="right" valign="top">static DT::tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataGroup.html#a1ee2acd18088bb46da4487be93c1da1a">init</a> (typename DT::tree_t &amp;t, <a class="el" href="classrack_1_1DataGroup.html">datagroup_t</a> &amp;dst, const <a class="el" href="classrack_1_1QuantitySelector.html">QuantitySelector</a> &amp;slct=<a class="el" href="classrack_1_1QuantitySelector.html">QuantitySelector</a>())</td></tr>
+<tr class="memdesc:a1ee2acd18088bb46da4487be93c1da1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a <code>dataset</code> h5 subtree, like tree["dataset3"], collects all (or desired) quantities to a data object.  <a href="classrack_1_1DataGroup.html#a1ee2acd18088bb46da4487be93c1da1a">More...</a><br /></td></tr>
+<tr class="separator:a1ee2acd18088bb46da4487be93c1da1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ff2b7d9d7f80be36cbd360fbbdb318e"><td class="memItemLeft" align="right" valign="top"><a id="a3ff2b7d9d7f80be36cbd360fbbdb318e"></a>
 static DT::tree_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>adapt</b> (const <a class="el" href="classrack_1_1DataGroup.html">datagroup_t</a> &amp;src, <a class="el" href="classrack_1_1DataGroup.html">datagroup_t</a> &amp;dst)</td></tr>
 <tr class="separator:a3ff2b7d9d7f80be36cbd360fbbdb318e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,8 +300,8 @@ class rack::DataGroup&lt; DT, G &gt;</h3>
 
 </div>
 </div>
-<a id="a2dd3b8b6df79002990bb72c690eb5b49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2dd3b8b6df79002990bb72c690eb5b49">&#9670;&nbsp;</a></span>init()</h2>
+<a id="a1ee2acd18088bb46da4487be93c1da1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ee2acd18088bb46da4487be93c1da1a">&#9670;&nbsp;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -318,8 +324,8 @@ class rack::DataGroup&lt; DT, G &gt;</h3>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp;&#160;</td>
-          <td class="paramname"><em>quantityRegExp</em> = <code><a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>()</code>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classrack_1_1QuantitySelector.html">QuantitySelector</a> &amp;&#160;</td>
+          <td class="paramname"><em>slct</em> = <code><a class="el" href="classrack_1_1QuantitySelector.html">QuantitySelector</a>()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

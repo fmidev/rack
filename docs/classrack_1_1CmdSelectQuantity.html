@@ -70,6 +70,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="classrack_1_1CmdSelectQuantity-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -77,14 +78,14 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Set selection criteria strictly to one <code>quantity</code> .  
+<p>Tool for selecting data for next command(s), based on paths, quantities and elevations.  
  <a href="classrack_1_1CmdSelectQuantity.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for CmdSelectQuantity:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1CmdSelectQuantity__inherit__graph.png" border="0" usemap="#aCmdSelectQuantity_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCmdSelectQuantity_inherit__map" id="aCmdSelectQuantity_inherit__map">
-<area shape="rect" title="Set selection criteria strictly to one quantity ." alt="" coords="16,319,164,345"/>
+<area shape="rect" title="Tool for selecting data for next command(s), based on paths, quantities and elevations." alt="" coords="16,319,164,345"/>
 <area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="5,229,175,271"/>
 <area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="28,155,152,181"/>
 <area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="45,80,135,107"/>
@@ -96,10 +97,10 @@ Collaboration diagram for CmdSelectQuantity:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1CmdSelectQuantity__coll__graph.png" border="0" usemap="#aCmdSelectQuantity_coll__map" alt="Collaboration graph"/></div>
 <map name="aCmdSelectQuantity_coll__map" id="aCmdSelectQuantity_coll__map">
-<area shape="rect" title="Set selection criteria strictly to one quantity ." alt="" coords="235,1087,383,1113"/>
-<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="224,996,393,1037"/>
-<area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="247,920,371,947"/>
-<area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="201,831,291,857"/>
+<area shape="rect" title="Tool for selecting data for next command(s), based on paths, quantities and elevations." alt="" coords="439,1169,587,1196"/>
+<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="348,1065,517,1107"/>
+<area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="235,961,359,988"/>
+<area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="207,838,296,865"/>
 <area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="170,755,263,781"/>
 <area shape="rect" href="classdrain_1_1Context.html" title=" " alt="" coords="176,665,249,692"/>
 <area shape="rect" href="classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,576,160,603"/>
@@ -114,9 +115,24 @@ Collaboration diagram for CmdSelectQuantity:</div>
 <area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="351,157,447,184"/>
 <area shape="rect" href="classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="335,81,463,108"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="323,5,475,32"/>
-<area shape="rect" href="classdrain_1_1ReferenceMap.html" title=" " alt="" coords="320,831,436,857"/>
+<area shape="rect" href="classdrain_1_1ReferenceMap.html" title=" " alt="" coords="323,838,439,865"/>
+<area shape="rect" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="383,961,464,988"/>
 <area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="289,755,480,781"/>
 <area shape="rect" title=" " alt="" coords="273,665,499,692"/>
+<area shape="rect" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations." alt="" coords="629,1073,735,1099"/>
+<area shape="rect" href="classrack_1_1ODIMPathMatcher.html" title="Structure for testing if a path matches a given sequence of path elements." alt="" coords="1210,961,1349,988"/>
+<area shape="rect" href="classdrain_1_1Path.html" title=" " alt="" coords="1341,838,1572,865"/>
+<area shape="rect" title=" " alt="" coords="1345,755,1568,781"/>
+<area shape="rect" href="classrack_1_1QuantitySelector.html" title="Utility for selecting a quantity label Base class for DataSelector." alt="" coords="489,961,619,988"/>
+<area shape="rect" title=" " alt="" coords="463,838,645,865"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="591,896,773,937"/>
+<area shape="rect" href="classdrain_1_1SingleFlagger.html" title=" " alt="" coords="742,755,891,781"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="719,831,914,872"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="938,831,1125,872"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="746,665,887,692"/>
+<area shape="rect" href="structrack_1_1DataOrder.html" title=" " alt="" coords="783,961,872,988"/>
+<area shape="rect" href="classdrain_1_1Range.html" title=" " alt="" coords="947,961,1084,988"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="1149,838,1317,865"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -225,6 +241,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:aad9d40ff731f18d8a1899d52a1fc1cb5 inherit pub_methods_classdrain_1_1Contextual"><td class="mdescLeft">&#160;</td><td class="mdescRight">If context has been set, returns it through a cast to base class <a class="el" href="classdrain_1_1Context.html">Context</a>.  <a href="classdrain_1_1Contextual.html#aad9d40ff731f18d8a1899d52a1fc1cb5">More...</a><br /></td></tr>
 <tr class="separator:aad9d40ff731f18d8a1899d52a1fc1cb5 inherit pub_methods_classdrain_1_1Contextual"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:ae1dfcfdd5e23dca9af2145367db69468"><td class="memItemLeft" align="right" valign="top"><a id="ae1dfcfdd5e23dca9af2145367db69468"></a>
+<a class="el" href="classrack_1_1DataSelector.html">DataSelector</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mySelector</b></td></tr>
+<tr class="separator:ae1dfcfdd5e23dca9af2145367db69468"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classdrain_1_1BasicCommand"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1BasicCommand')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1BasicCommand.html">BasicCommand</a></td></tr>
+<tr class="memitem:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a id="ac673bc430bdc3fdaa09f7becf98ef267"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
+<tr class="separator:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f6aed3e388afb968642d5e6199f767f inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a id="a0f6aed3e388afb968642d5e6199f767f"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>description</b></td></tr>
+<tr class="separator:a0f6aed3e388afb968642d5e6199f767f inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a id="ac7902d0c7488500c9f16503fd3889604"></a>
+<a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a>&#160;</td><td class="memItemRight" valign="bottom"><b>parameters</b></td></tr>
+<tr class="separator:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classdrain_1_1Contextual"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1Contextual')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td></tr>
+<tr class="memitem:aa93503d4d64d09604ec306f58e6f03b5 inherit pro_attribs_classdrain_1_1Contextual"><td class="memItemLeft" align="right" valign="top"><a id="aa93503d4d64d09604ec306f58e6f03b5"></a>
+<a class="el" href="classdrain_1_1Context.html">Context</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>contextPtr</b></td></tr>
+<tr class="separator:aa93503d4d64d09604ec306f58e6f03b5 inherit pro_attribs_classdrain_1_1Contextual"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
 <tr class="memitem:a6214d2c8055238be6e9c31b7e9b811c3"><td class="memItemLeft" align="right" valign="top"><a id="a6214d2c8055238be6e9c31b7e9b811c3"></a>
@@ -250,24 +286,75 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a7fdc87e0fba5fd4742ddaa9f6e1067b2 inherit pro_methods_classdrain_1_1BasicCommand"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>importParams</b> (const T &amp;cmd)</td></tr>
 <tr class="separator:a7fdc87e0fba5fd4742ddaa9f6e1067b2 inherit pro_methods_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classdrain_1_1BasicCommand"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1BasicCommand')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1BasicCommand.html">BasicCommand</a></td></tr>
-<tr class="memitem:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a id="ac673bc430bdc3fdaa09f7becf98ef267"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
-<tr class="separator:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f6aed3e388afb968642d5e6199f767f inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a id="a0f6aed3e388afb968642d5e6199f767f"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>description</b></td></tr>
-<tr class="separator:a0f6aed3e388afb968642d5e6199f767f inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a id="ac7902d0c7488500c9f16503fd3889604"></a>
-<a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a>&#160;</td><td class="memItemRight" valign="bottom"><b>parameters</b></td></tr>
-<tr class="separator:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classdrain_1_1Contextual"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1Contextual')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td></tr>
-<tr class="memitem:aa93503d4d64d09604ec306f58e6f03b5 inherit pro_attribs_classdrain_1_1Contextual"><td class="memItemLeft" align="right" valign="top"><a id="aa93503d4d64d09604ec306f58e6f03b5"></a>
-<a class="el" href="classdrain_1_1Context.html">Context</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>contextPtr</b></td></tr>
-<tr class="separator:aa93503d4d64d09604ec306f58e6f03b5 inherit pro_attribs_classdrain_1_1Contextual"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Set selection criteria strictly to one <code>quantity</code> . </p>
-<p>Selecting quantities only is frequently needed, so there is a dedicated command <code>&ndash;selectQuantity</code> (<code>-Q</code> ) which accepts comma-separated simple patterns (with * and ?) instead of regular expressions. For example, <code>-Q</code> <code>DBZH*</code>,QIND is equal to <code>&ndash;select</code> <code>quantity='^</code>(DBZH.*|QIND)$' . </p>
+<div class="textblock"><p>Tool for selecting data for next command(s), based on paths, quantities and elevations. </p>
+<p>Most commands apply implicit input data selection criteria, typically involving data paths, quantities and/or elevation angles.</p>
+<p>Like in general in <b>Rack</b>, the parameters of <code>&ndash;select</code> are positional (ordered), meaning that they can be issued as a comma-separated string without explicit names (keywords), as long as they are given in order. The parameters are:</p>
+<ul>
+<li><code>path</code> is a string of path elements, separated by slash '/' and consisting of:<ul>
+<li>a leading single slash '/', if rooted matching is desired ie. leading parts of the paths are tested; otherwise trailing parts</li>
+<li><code>what</code> , <code>where</code>, <code>how</code> - ie. the groups containing attributes</li>
+<li><code> dataset{min}:{max} </code>, <code> data{min}:{max}</code> , <code> quality{min}:{max}</code> - indexed groups containing subgroups for actual data and attributes</li>
+<li><code>data</code> - unindexed groups containing actual data arrays</li>
+<li><em>combined</em> <em>selection</em> <em>elements</em> created by concatenating above elements with pipe '|' representing logical OR function (requires escaping on command line)<ul>
+<li>example: <code>what|where|dataset1:3</code></li>
+</ul>
+</li>
+<li>in index ranges, values can be omitted, using invoking default minimum (1) and maximum (0xffff = 65535) as follows:<ul>
+<li><code>data:</code> equals <code>data1:65535</code>; further the colon ':' can be omitted for <code>dataset</code> and <code>quality</code> (but not for <code>data:</code> , to bypass naming conflict inherent in <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> )</li>
+<li><code>data{index}</code> equals <code> data{index}:{index}</code> (ie. exact match)</li>
+<li><code>data{index}:</code> equals <code> data{index}:65535</code></li>
+<li><code>data:{index}</code> equals <code> data1:{index}</code></li>
+</ul>
+</li>
+<li>in each combined selection element, only one index range can be given, referring to all indexed elements, and it must be given as the last segment<ul>
+<li>example: <code>what|data|quality1:5</code> matches <code>what</code>, <code>data1:5</code> and <code>quality1:5</code></li>
+<li>example: <code>what|where|dataset1:3/what|data1:8</code> &ndash; index ranges <em>can</em> <em>vary</em> on different levels, ie. in slash-separated elements</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>quantity</code> is a regular expression<ul>
+<li>example: <code>^DBZH$</code>, accepting <code>DBZH</code> only</li>
+<li>example: <code>(DBZH|TH)</code> accepts <code>DBZH</code> and <code>TH</code> , but also <code>DBZHC</code> and <code>WIDTH</code> ...</li>
+<li>future option: two regular expressions separated by a slash, the latter regExp determining the desired quality quantities</li>
+</ul>
+</li>
+<li><code>elangle</code> defines the range of antenna elevations accepted, range limits included<ul>
+<li>unlike with path selectors, <code>elangle={angle}</code> abbreviates <code>elangle={angle}:90</code> (not <code>elangle={angle}:{angle}</code>)</li>
+<li>notice that metadata may contain floating point values like 1.000004723, use <code>count=1</code> to pick a single one within a range</li>
+</ul>
+</li>
+<li><code>count</code> is the upper limit of accepted indices of <code>dataset</code> ; typically used with <code>elangle</code> </li>
+<li><code>order</code> defines criteria <code></code>(DATA|TIME|ELANGLE) and operation <code></code>(MIN|MAX) in selecting data, applied with <code>count</code>. Note that the lowest elevations can be measured the latest, appearing as <code>dataset</code> 's with highest indices.</li>
+<li><code>dualPRF</code> determines if sweeps using dual pulse repetition frequency is required (1), accepted like single one (0), or excluded (-1).</li>
+</ul>
+<p>The selection functionality is best explained with examples.</p>
+<div class="fragment"><div class="line"><span class="preprocessor"># For a Pseudo CAPPI product, change default input selection</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;quantity=^TH$,elangle=1.5:10,count=3&#39;</span> --pCappi 1500 -o pCappi-TH-1500m.h5</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># For image output, select DBZH  </span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select elangle=1.5,quantity=DBZH -o volume-DBZH.png</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># For image output, select VRAD of the lowest dual-PRF scan </span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=VRAD,order=ELANGLE:MIN,prf=DOUBLE -o volume-VRAD.png</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># For image output, select ZDR of the highest single-PRF scan </span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=ZDR,count=1,order=ELANGLE:MAX,prf=SINGLE -o volume-ZDR.png</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># For single-image output, select DBZH of the lowest scan (from 90 6.5 2.4 1.8 1.2 0.59)</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH,order=ELANGLE:MIN -o volume-DBZH2.png</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># For single-image output, select DBZH of the highest scan (from 90 6.5 2.4 1.8 1.2 0.59)</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH,order=ELANGLE:MAX -o volume-DBZH3.png</div>
+<div class="line"> </div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
+</div><!-- fragment --><p> Note that escaping special characters like '|' is often required on command line.</p>
+<p>Often, the first data array matching the criteria are used.</p>
+<p>One can explicitly change the criteria with <code>&ndash;select</code> (<code>-s</code>) command . For example, in data conversions one may wish to focus on certain quantity &ndash; like <code>DBZH</code> or <code>VRAD</code> &ndash; not all the data.</p>
+<p>The selection command can be applied the most commands processing data. In computing meteorological products (<a class="el" href="productspage.html#products">Product generation</a>) an compositing, it affects the following product only. In case of anomaly detectors (<a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a>), it applies to all subsequent operators.</p>
+<p>Note that some processing commands may not support explicit data selection. Set selection criteria strictly to one <code>quantity</code> . Selecting quantities only is frequently needed, so there is a dedicated command <code>&ndash;selectQuantity</code> (<code>-Q</code> ) which accepts comma-separated simple patterns (with * and ?) instead of regular expressions. For example, <code>-Q</code> <code>DBZH*</code>,QIND is equal to <code>&ndash;select</code> <code>quantity='^</code>(DBZH.*|QIND)$' . </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/main/commands.cpp</li>
 </ul>

@@ -401,15 +401,57 @@ void CmdOutputFile::exec() const {
 		imageIDSyntax.parse("${what:product}_${what:quantity}");
 		std::string imageID = imageIDSyntax.toStr(src.properties);
 
-		drain::image::TreeSVG & imageGroup = baseGroup[imageID](BaseSVG::IMAGE);
+		drain::image::TreeSVG & imageGroup = baseGroup[imageID](BaseSVG::GROUP);
+		imageGroup->setClass("MAIN");
+		drain::image::TreeSVG & imageElem = imageGroup[path.extension](BaseSVG::IMAGE);
+		// drain::image::TreeSVG & imageGroup = imageGroup0[imageID](BaseSVG::IMAGE);
 		//drain::image::TreeSVG & imageGroup = baseGroup[path.basename+"."+path.extension](BaseSVG::IMAGE);
-		imageGroup->set("width", src.getWidth());
-		imageGroup->set("height", src.getHeight());
-		imageGroup->set("href", path.str());
-		imageGroup->set("xlink:href", path.str());
+		imageElem->set("width", src.getWidth());
+		imageElem->set("height", src.getHeight());
+		// imageElem->set("href", path.str());
+		imageElem->set("xlink:href", path.str());
 		//imageGroup->setType;
 		//imageGroup->set("name", path.extension);
-		imageGroup["basename"](drain::image::BaseSVG::TITLE)(path.basename);
+		imageElem["basename"](drain::image::BaseSVG::TITLE)(path.basename);
+
+		if (src.getChannelCount() > 1){
+			const std::string quantity = src.properties.get("what:quantity", "");
+
+			drain::image::TreeSVG & paletteGroup = imageGroup[quantity](NodeSVG::GROUP);
+			paletteGroup->setClass("palette");
+			paletteGroup["placeholder"](NodeSVG::COMMENT)->ctext = " kommentti!";
+		}
+
+		//drain::BBox bbox;
+		//drain::Rectangle<int> rect;
+		int width = 0;
+		int height = 0;
+		for (auto & entry : imageGroup.getChildren()){ //
+			drain::image::TreeSVG & t = entry.second;
+			if (t->getType() == BaseSVG::IMAGE){
+				height += t->get("height", 0);
+				width = std::max(width, t->get("width", 0));
+				//rect.lowerLeft.y -= entry.second->getMap().get("height", 0);
+				//rect.upperRight.x = std::max(rect.upperRight.x, entry.second->getMap().get("width", 0));
+			}
+		}
+
+		track->set("width",  width);
+		track->set("height", height);
+		track->set("viewBox", (const std::string &)drain::StringBuilder<' '>(0, 0, width, height));
+
+		//imageGroup->set("bbox", rect.toStr(','));
+		int startj = height;
+		imageGroup->set("lev", width);
+		imageGroup->set("kork", height);
+		for (auto & entry : imageGroup.getChildren()){ //
+			drain::image::TreeSVG & t = entry.second;
+			if (t->getType() == BaseSVG::IMAGE){
+				startj -= t->get("height", 0);
+				t->set("y", startj);
+			}
+		}
+
 
 
 		//drain::image::NodeSVG & baseGroup = track["image"].data;
@@ -426,6 +468,7 @@ void CmdOutputFile::exec() const {
 		drain::image::TreeSVG & text = baseGroup["text"](NodeSVG::TEXT);
 		text->set("x", 30);
 		text->set("y", 30);
+		text->setClass("TOP");
 		const std::list<std::string> & mains = DataTools::getMainAttributes();
 		for (const std::string & k: mains){
 			if (src.properties.hasKey(k)){
@@ -437,8 +480,14 @@ void CmdOutputFile::exec() const {
 			}
 		}
 
+		NodeSVG::path_list_t result;
+		NodeSVG::findByClass(track, "palette", result);
+		for (const NodeSVG::path_t & path: result){
+			mout.special(path);
+		}
+
 		if (!IMAGE_PNG){
-			imageGroup->comment();
+			imageElem->setComment();
 		}
 
 		if (IMAGE_PNG || IMAGE_PNM){
@@ -608,7 +657,7 @@ void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, dra
 
 	//title->setType(NodeSVG:);
 	drain::image::TreeSVG & comment = imageElem["comment"];
-	comment->comment("label:" + label);
+	comment->setComment("label:" + label);
 
 	// comment->setType(NodeXML::COMM)
 

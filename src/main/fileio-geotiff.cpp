@@ -114,7 +114,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 
 	// http://www.gdal.org/frmt_gtiff.html
 	// Optional
-	file.setField(TIFFTAG_SOFTWARE,(const std::string &) drain::StringBuilder(__RACK__," ",__RACK_VERSION__));
+	file.setField(TIFFTAG_SOFTWARE,(const std::string &) drain::StringBuilder<>(__RACK__," ",__RACK_VERSION__));
 	//file.setField(TIFFTAG_SOFTWARE, drain::StringBuilder(__RACK__," ",__RACK_VERSION__));
 
 	file.setDefaults();
@@ -131,7 +131,6 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 		// usr/include/gdal/rawdataset.h
 		// Non-standard http://www.gdal.org/frmt_gtiff.html
 
-		//file.setGdalMetaData(prop["what:nodata"], prop.get("what:gain", 1.0), prop.get("what:offset", 0.0));
 		std::string nodata;
 		drain::StringTools::import(odim.nodata, nodata);
 		file.setGdalScale(odim.scaling.scale, odim.scaling.offset);
@@ -177,7 +176,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 					bboxM.assignSequence(v);
 					//frame.setBoundingBoxM(v[0], v[1], v[2], v[3]);
 					frame.setBoundingBoxM(bboxM);
-					mout.note() << "Setting exact (metric) BBOX=";
+					mout.info() << "Setting exact (metric) BBOX=";
 					mout.precision(20);
 					mout << frame.getBoundingBoxM() << mout;
 				}

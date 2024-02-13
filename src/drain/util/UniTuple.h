@@ -392,7 +392,7 @@ struct TypeName<UniTuple<T,N> > {
 	static const char* get(){
 		static std::string name;
 		if (name.empty())
-			name = drain::StringBuilder("UniTuple<", drain::TypeName<T>::get(), ',', N, ">");
+			name = drain::StringBuilder<>("UniTuple<", drain::TypeName<T>::get(), ',', N, ">");
 		return name.c_str();
 	}
 };

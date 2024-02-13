@@ -226,7 +226,7 @@ $(function() {
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <span class="keyword">const</span> std::string className(){</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keyword">const</span> std::string s = <a class="code" href="classdrain_1_1StringBuilder.html">drain::StringBuilder</a>(</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keyword">const</span> std::string s = <a class="code" href="classdrain_1_1StringBuilder.html">drain::StringBuilder&lt;&gt;</a>(</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                isOrdered()?<span class="stringliteral">&quot;Ordered&quot;</span>:<span class="stringliteral">&quot;Unordered&quot;</span>,</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;                        isMulti()?<span class="stringliteral">&quot;Multi&quot;</span>:<span class="stringliteral">&quot;&quot;</span>,<span class="stringliteral">&quot;Tree&quot;</span>,</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                                isExclusive()?<span class="stringliteral">&quot;(Exclusive)&quot;</span>:<span class="stringliteral">&quot;&quot;</span>,</div>
@@ -677,20 +677,27 @@ $(function() {
 <div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keywordtype">bool</span> EXCLUSIVE, <span class="keyword">class</span> P&gt;</div>
 <div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;<span class="keyword">const</span> DRAIN_TREE_NAME&lt;T,EXCLUSIVE, P&gt; DRAIN_TREE_NAME&lt;T,EXCLUSIVE,P&gt;::emptyNode;</div>
 <div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160; </div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160; </div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;<span class="comment">/* incomplete (virtual)</span></div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;<span class="comment">template &lt;class T, bool EXCLUSIVE, bool UNIQUE, class P&gt;</span></div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="comment">   const Tree&lt;T,EXCLUSIVE,UNIQUE,P&gt; Tree&lt;T,EXCLUSIVE,UNIQUE,P&gt;::emptyNode;</span></div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;<span class="comment">/* TODO ..</span></div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;<span class="comment">struct TypeName&lt;TextStyle::Colour&gt; {</span></div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="comment">    static const char* get(){ return &quot;TextStyle::Colour&quot;; }</span></div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="comment">};</span></div>
 <div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160; </div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160; </div>
-<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160; </div>
-<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160; </div>
-<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;} <span class="comment">// drain::</span></div>
-<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160; </div>
-<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160; </div>
-<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160; </div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160; </div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;<span class="comment">//template &lt;&gt;</span></div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keywordtype">bool</span> EXCLUSIVE, <span class="keyword">class</span> P&gt;</div>
+<div class="line"><a name="l00835"></a><span class="lineno"><a class="line" href="structdrain_1_1TypeName_3_01DRAIN__TREE__NAME_3_01T_00_01EXCLUSIVE_00_01P_01_4_01_4.html">  835</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structdrain_1_1TypeName.html">TypeName</a>&lt;<a class="code" href="classdrain_1_1DRAIN__TREE__NAME.html">DRAIN_TREE_NAME</a>&lt;T,EXCLUSIVE, P&gt; &gt; {</div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* get(){ <span class="keywordflow">return</span> <span class="stringliteral">&quot;TreeNameUnderConstr&quot;</span>; }</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;};</div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160; </div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160; </div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160; </div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160; </div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;} <span class="comment">// drain::</span></div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160; </div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160; </div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160; </div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html">drain::DRAIN_TREE_NAME</a></div><div class="ttdoc">A templated class for directed rooted trees.</div><div class="ttdef"><b>Definition:</b> Tree.h:185</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a005a8565608b53d552ed49c05a9e3361"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a005a8565608b53d552ed49c05a9e3361">drain::DRAIN_TREE_NAME::hasChildren</a></div><div class="ttdeci">virtual int hasChildren(const key_t &amp;key) const</div><div class="ttdoc">The number of children with name key.</div><div class="ttdef"><b>Definition:</b> Tree.h:528</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a091c6265950643e307d70411dab30bc7"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">drain::DRAIN_TREE_NAME::clearChildren</a></div><div class="ttdeci">void clearChildren()</div><div class="ttdoc">Clears the children of this node. Does not clear data.</div><div class="ttdef"><b>Definition:</b> Tree.h:446</div></div>
@@ -725,8 +732,9 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_ae23d30ba55599544b7b9e28b5286e7a0"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#ae23d30ba55599544b7b9e28b5286e7a0">drain::DRAIN_TREE_NAME::operator=</a></div><div class="ttdeci">tree_t &amp; operator=(const std::initializer_list&lt; S &gt; &amp;l)</div><div class="ttdoc">Assigns value to contents.</div><div class="ttdef"><b>Definition:</b> Tree.h:327</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_afbd15ea05f30119d6a670151ed7c6870"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#afbd15ea05f30119d6a670151ed7c6870">drain::DRAIN_TREE_NAME::get</a></div><div class="ttdeci">const tree_t &amp; get(typename path_t::const_iterator it, typename path_t::const_iterator eit) const</div><div class="ttdoc">Given the descendant pointed to by a given path segment.</div><div class="ttdef"><b>Definition:</b> Tree.h:792</div></div>
 <div class="ttc" id="aclassdrain_1_1Path_html"><div class="ttname"><a href="classdrain_1_1Path.html">drain::Path</a></div><div class="ttdef"><b>Definition:</b> Path.h:112</div></div>
-<div class="ttc" id="aclassdrain_1_1StringBuilder_html"><div class="ttname"><a href="classdrain_1_1StringBuilder.html">drain::StringBuilder</a></div><div class="ttdef"><b>Definition:</b> StringBuilder.h:87</div></div>
+<div class="ttc" id="aclassdrain_1_1StringBuilder_html"><div class="ttname"><a href="classdrain_1_1StringBuilder.html">drain::StringBuilder</a></div><div class="ttdef"><b>Definition:</b> StringBuilder.h:91</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Dictionary-example.cpp:66</div></div>
+<div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdef"><b>Definition:</b> TypeUtils.h:106</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

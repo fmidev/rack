@@ -1,10 +1,8 @@
-<map id="NodeXML" name="NodeXML">
-<area shape="rect" id="node1" title=" " alt="" coords="177,244,261,271"/>
-<area shape="rect" id="node5" href="$classNodeHTML.html" title=" " alt="" coords="5,319,99,345"/>
-<area shape="rect" id="node6" href="$classdrain_1_1NodeSLD.html" title=" " alt="" coords="123,319,205,345"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1NodeGDAL.html" title=" " alt="" coords="229,319,321,345"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1NodeSVG.html" title=" " alt="" coords="345,319,428,345"/>
-<area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="89,169,348,196"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="107,95,331,121"/>
-<area shape="rect" id="node4" title=" " alt="" coords="123,5,314,47"/>
+<map id="NodeXML&lt; T &gt;" name="NodeXML&lt; T &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="73,244,196,271"/>
+<area shape="rect" id="node5" href="$classNodeHTML.html" title=" " alt="" coords="32,319,125,345"/>
+<area shape="rect" id="node6" href="$classdrain_1_1NodeSLD.html" title=" " alt="" coords="150,319,231,345"/>
+<area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,169,264,196"/>
+<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,95,247,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="39,5,230,47"/>
 </map>

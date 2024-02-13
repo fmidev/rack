@@ -286,7 +286,7 @@ public:
 
 	static inline
 	const std::string className(){
-		const std::string s = drain::StringBuilder(
+		const std::string s = drain::StringBuilder<>(
 				isOrdered()?"Ordered":"Unordered",
 						isMulti()?"Multi":"","Tree",
 								isExclusive()?"(Exclusive)":"",
@@ -822,92 +822,20 @@ protected:
 template <class T, bool EXCLUSIVE, class P>
 const DRAIN_TREE_NAME<T,EXCLUSIVE, P> DRAIN_TREE_NAME<T,EXCLUSIVE,P>::emptyNode;
 
-
-/* incomplete (virtual)
-template <class T, bool EXCLUSIVE, bool UNIQUE, class P>
-   const Tree<T,EXCLUSIVE,UNIQUE,P> Tree<T,EXCLUSIVE,UNIQUE,P>::emptyNode;
-}
+/* TODO ..
+template <>
+struct TypeName<TextStyle::Colour> {
+    static const char* get(){ return "TextStyle::Colour"; }
+};
 */
 
-/**
 
-/// A tree with unique children in order. // bool UNIQUE=false,
-template <class D, bool EXCLUSIVE=false, class P=drain::Path<std::string,'/'> >
-class OrderedTree : public Tree<D,EXCLUSIVE,true,P> {
-
-public:
-
-	// Repeated ("inherited") types
-	typedef Tree<D,EXCLUSIVE,true,P> tree_t;
-	typedef typename tree_t::node_data_t node_data_t;
-	typedef typename tree_t::path_t path_t;
-	typedef typename tree_t::key_t  key_t;
-	//typedef typename tree_t::pair_t pair_t;
-
-	// Local types
-	typedef OrderedTree<D,EXCLUSIVE,P> ord_tree_t;
-	typedef std::map<key_t,ord_tree_t>  container_t;
-	typedef std::pair<key_t,ord_tree_t> ord_pair_t;
-
-	typedef typename container_t::iterator iterator;
-	typedef typename container_t::const_iterator  const_iterator;
-
-	inline
-	OrderedTree(){};
-
-	inline
-	OrderedTree(const OrderedTree & tree): tree_t(tree){};
-
-	inline
-	OrderedTree(const node_data_t & data): tree_t(data){};
-
-
-
-
-
-
-};
-template <class D, bool E, class P>
-const OrderedTree<D,E,P> OrderedTree<D,E,P>::emptyNode;
-
-/// A tree with children in the order they have been inserted.
-template <class D, bool EXCLUSIVE=false, bool UNIQUE=true, class P=drain::Path<std::string,'/'> >
-class UnorderedTree : public drain::Tree<D, EXCLUSIVE, UNIQUE, P> {
-
-public:
-
-	/// Repeated ("inherited") types
-	typedef drain::Tree<D,EXCLUSIVE, UNIQUE, P> tree_t;
-	typedef typename tree_t::node_data_t node_data_t;
-	typedef typename tree_t::path_t path_t;
-	typedef typename tree_t::key_t  key_t;
-	//typedef typename tree_t::pair_t pair_t;
-
-	// Local types
-	typedef UnorderedTree<D,EXCLUSIVE, UNIQUE, P> unord_tree_t;
-	typedef std::pair<key_t,unord_tree_t> unord_pair_t;
-
-	typedef std::list<unord_pair_t> container_t;
-
-	inline
-	UnorderedTree(){};
-
-	inline
-	UnorderedTree(const UnorderedTree & tree): tree_t(tree){};
-
-	inline
-	UnorderedTree(const node_data_t & data): tree_t(data){};
-
-
-
+//template <>
+template <class T, bool EXCLUSIVE, class P>
+struct TypeName<DRAIN_TREE_NAME<T,EXCLUSIVE, P> > {
+    static const char* get(){ return "TreeNameUnderConstr"; }
 };
 
-
-
-template <class D, bool E, bool U, class P>
-const UnorderedTree<D,E,U,P> UnorderedTree<D,E,U,P>::emptyNode;
- *
- */
 
 
 

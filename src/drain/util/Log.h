@@ -293,7 +293,7 @@ public:
 
 	// Either this or previous is unneeded?
 	template<typename T,typename ... TT>
-	DrainException(const T &elem, const TT &... rest) : std::runtime_error(drain::StringBuilder(elem, rest...)){
+	DrainException(const T &elem, const TT &... rest) : std::runtime_error(drain::StringBuilder<>(elem, rest...)){
 	}
 
 

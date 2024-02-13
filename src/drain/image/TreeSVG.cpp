@@ -53,9 +53,10 @@ std::string NodeSVG::svg("http://www.w3.org/2000/svg");
 template <>
 std::map<BaseSVG::tag_t,std::string> NodeXML<BaseSVG::tag_t>::tags = {
 	{drain::image::BaseSVG::UNDEFINED,	"UNDEFINED"},
+	{drain::image::BaseSVG::COMMENT, "#"},
+	{drain::image::BaseSVG::CTEXT, ""},
 	{drain::image::BaseSVG::SVG,   "svg"},
 	{drain::image::BaseSVG::TITLE, "title"},
-	{drain::image::BaseSVG::CTEXT, ""},
 	{drain::image::BaseSVG::GROUP, "g"},
 	{drain::image::BaseSVG::TEXT,  "text"},
 	{drain::image::BaseSVG::TSPAN, "tspan"},
@@ -98,6 +99,12 @@ void NodeSVG::setType(const tag_t & t) {
 		link("xmlns", NodeSVG::svg);
 		link("xmlns:svg", NodeSVG::svg);
 		link("xmlns:xlink", NodeSVG::xlink);
+		break;
+	case COMMENT:
+		setComment();
+		break;
+	case CTEXT:
+		// tag = "";
 		break;
 	case TITLE:
 		//tag = "title";
@@ -142,10 +149,6 @@ void NodeSVG::setType(const tag_t & t) {
 	case TSPAN:
 		// tag = "tspan";
 		//link("text-anchor", text_anchor = "");
-		break;
-	case CTEXT:
-		// tag = "";
-		//link("x", x, 0);
 		break;
 	case UNDEFINED:
 	default:

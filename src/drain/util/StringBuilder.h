@@ -86,6 +86,8 @@ public:
 
 };
 
+
+template <char SEP=0>
 class StringBuilder : public std::string {
 
 public:

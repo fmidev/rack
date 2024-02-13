@@ -351,8 +351,9 @@ Detection results of <code>--aAttenuation</code> .</div></div>
 <h2><a class="anchor" id="aCCor"></a>
 Using Doppler filtering result</h2>
 <p>If both the total reflectivity (<code>TH</code> ) and Doppler filtered reflectivity are available, their difference provides information where the radar has detected static i.e. suspicious targets. The <code>CCor</code> operator computes the diffence between these and fuzzifies the result such that at the given threshold reflecitivy difference the probability of anomaly is 0.5.</p>
-<div class="fragment"><div class="line">rack volume.h5 --aCCor &#39;10:30&#39; -o aCCor.h5</div>
+<div class="fragment"><div class="line">rack volume.h5 --aCCor &#39;10:30,false&#39; -o aCCor.h5</div>
 <div class="line">  % threshold=10:30 [dBZ range]</div>
+<div class="line">  % mask=false [Doppler-cleared only]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-cCor.png" alt=""/>
 <div class="caption">

@@ -131,7 +131,7 @@ void TextDecorator::addKey(const std::string & key){
 		line.set(key);
 		return;
 	}
-	throw std::runtime_error(drain::StringBuilder(__FILE__, '/', __FUNCTION__, ": no such key: ", key));
+	throw std::runtime_error(drain::StringBuilder<':'>(__FILE__, __FUNCTION__, " no such key", key));
 	return;
 }
 

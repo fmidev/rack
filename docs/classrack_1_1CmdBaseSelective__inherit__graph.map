@@ -1,9 +1,9 @@
 <map id="CmdBaseSelective" name="CmdBaseSelective">
-<area shape="rect" id="node1" title=" " alt="" coords="94,304,238,331"/>
-<area shape="rect" id="node6" href="$classrack_1_1CmdDelete.html" title="Remove parts of a hierarchical data structure." alt="" coords="5,379,100,405"/>
-<area shape="rect" id="node7" href="$classrack_1_1CmdKeep.html" title="Remove parts of a hierarchical data structure." alt="" coords="124,379,208,405"/>
-<area shape="rect" id="node8" href="$classrack_1_1CmdSelectOld.html" title="Tool for selecting data for next command(s), based on paths, quantities and elevations." alt="" coords="233,379,347,405"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title="A single&#45;parameter command." alt="" coords="80,229,252,256"/>
+<area shape="rect" id="node1" title=" " alt="" coords="94,319,238,345"/>
+<area shape="rect" id="node6" href="$classrack_1_1CmdDelete.html" title="Remove parts of a hierarchical data structure." alt="" coords="5,393,100,420"/>
+<area shape="rect" id="node7" href="$classrack_1_1CmdKeep.html" title="Remove parts of a hierarchical data structure." alt="" coords="124,393,208,420"/>
+<area shape="rect" id="node8" href="$classrack_1_1CmdSelect.html" title="Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection cri..." alt="" coords="232,393,324,420"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="81,229,251,271"/>
 <area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="104,155,228,181"/>
 <area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="121,80,211,107"/>
 <area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="119,5,213,32"/>

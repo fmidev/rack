@@ -117,39 +117,42 @@ $(function() {
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classrack_1_1CCorOp.html#afe77cb439ceeb56ed2b124f75b79b52a">   58</a></span>&#160;    <a class="code" href="classrack_1_1CCorOp.html#afe77cb439ceeb56ed2b124f75b79b52a">CCorOp</a>(<a class="code" href="classdrain_1_1Range.html">drain::Range&lt;double&gt;</a> threshold={10,30}) :</div>
+<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classrack_1_1CCorOp.html#ad70f32d5ba03285787ce61fa5e14107a">   58</a></span>&#160;    <a class="code" href="classrack_1_1CCorOp.html#ad70f32d5ba03285787ce61fa5e14107a">CCorOp</a>(<a class="code" href="classdrain_1_1Range.html">drain::Range&lt;double&gt;</a> threshold={10,30}, <span class="keywordtype">bool</span> mask=<span class="keyword">false</span>) :</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <a class="code" href="classrack_1_1DetectorOp.html#a2f50e39be9c0a4d5a12b076800615d7e">DetectorOp</a>(__FUNCTION__,<span class="stringliteral">&quot;Detects clutter. Based on difference of DBZH and TH. At halfwidth PROB=0.5. Universal.&quot;</span>, <span class="stringliteral">&quot;clutter.ccor&quot;</span>){ <span class="comment">// Optional postprocessing: morphological closing.</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="comment">//dataSelector.path = &quot;. */da ta[0-9]+/?$&quot;;</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;^(TH|DBZH)$&quot;</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="classrack_1_1DetectorOp.html#a788a9f0fa011968823f828262808b703">REQUIRE_STANDARD_DATA</a> = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="classrack_1_1DetectorOp.html#ac7d73861600b8d982afcbab299b339fa">UNIVERSAL</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        parameters.link(<span class="stringliteral">&quot;threshold&quot;</span>, this-&gt;threshold.tuple() = threshold, <span class="stringliteral">&quot;dBZ range&quot;</span>);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="comment">//parameters.link(&quot;mode&quot;, this-&gt;mode = true);</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="comment">//parameters.link(&quot;storeDiff&quot;, storeDiff = false);</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    };</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="classdrain_1_1Range.html">drain::Range&lt;double&gt;</a> threshold;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1CCorOp.html#abc961d4922ec08a6741b4ad8f153ba00">runDetection</a>(<span class="keyword">const</span> DataSet&lt;PolarSrc&gt; &amp; src, PlainData&lt;PolarDst&gt; &amp; dst, DataSet&lt;PolarDst&gt; &amp; aux) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="comment">//dataSelector.setQuantities(&quot;^(TH|DBZH)$&quot;);</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;TH:DBZH&quot;</span>); <span class="comment">// TODO:</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="classrack_1_1DetectorOp.html#a788a9f0fa011968823f828262808b703">REQUIRE_STANDARD_DATA</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <a class="code" href="classrack_1_1DetectorOp.html#ac7d73861600b8d982afcbab299b339fa">UNIVERSAL</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        parameters.link(<span class="stringliteral">&quot;threshold&quot;</span>, this-&gt;threshold.tuple() = threshold, <span class="stringliteral">&quot;dBZ range&quot;</span>);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        parameters.link(<span class="stringliteral">&quot;mask&quot;</span>, this-&gt;mask = mask, <span class="stringliteral">&quot;Doppler-cleared only&quot;</span>);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="comment">//parameters.link(&quot;storeDiff&quot;, storeDiff = false);</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    };</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="classdrain_1_1Range.html">drain::Range&lt;double&gt;</a> threshold;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">bool</span> mask;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;};</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1CCorOp.html#abc961d4922ec08a6741b4ad8f153ba00">runDetection</a>(<span class="keyword">const</span> DataSet&lt;PolarSrc&gt; &amp; src, PlainData&lt;PolarDst&gt; &amp; dst, DataSet&lt;PolarDst&gt; &amp; aux) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;};</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">// Rack</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">// Rack</span></div>
 <div class="ttc" id="aclassdrain_1_1Range_html"><div class="ttname"><a href="classdrain_1_1Range.html">drain::Range&lt; double &gt;</a></div></div>
 <div class="ttc" id="aclassrack_1_1CCorOp_html"><div class="ttname"><a href="classrack_1_1CCorOp.html">rack::CCorOp</a></div><div class="ttdef"><b>Definition:</b> CCorOp.h:43</div></div>
 <div class="ttc" id="aclassrack_1_1CCorOp_html_abc961d4922ec08a6741b4ad8f153ba00"><div class="ttname"><a href="classrack_1_1CCorOp.html#abc961d4922ec08a6741b4ad8f153ba00">rack::CCorOp::runDetection</a></div><div class="ttdeci">virtual void runDetection(const DataSet&lt; PolarSrc &gt; &amp;src, PlainData&lt; PolarDst &gt; &amp;dst, DataSet&lt; PolarDst &gt; &amp;aux) const</div><div class="ttdoc">Process as sweep (data in one elevation angle)</div><div class="ttdef"><b>Definition:</b> CCorOp.cpp:52</div></div>
-<div class="ttc" id="aclassrack_1_1CCorOp_html_afe77cb439ceeb56ed2b124f75b79b52a"><div class="ttname"><a href="classrack_1_1CCorOp.html#afe77cb439ceeb56ed2b124f75b79b52a">rack::CCorOp::CCorOp</a></div><div class="ttdeci">CCorOp(drain::Range&lt; double &gt; threshold={10, 30})</div><div class="ttdoc">Computes sizes of segments having intensity over minDBZ.</div><div class="ttdef"><b>Definition:</b> CCorOp.h:58</div></div>
+<div class="ttc" id="aclassrack_1_1CCorOp_html_ad70f32d5ba03285787ce61fa5e14107a"><div class="ttname"><a href="classrack_1_1CCorOp.html#ad70f32d5ba03285787ce61fa5e14107a">rack::CCorOp::CCorOp</a></div><div class="ttdeci">CCorOp(drain::Range&lt; double &gt; threshold={10, 30}, bool mask=false)</div><div class="ttdoc">Computes sizes of segments having intensity over minDBZ.</div><div class="ttdef"><b>Definition:</b> CCorOp.h:58</div></div>
 <div class="ttc" id="aclassrack_1_1DetectorOp_html"><div class="ttname"><a href="classrack_1_1DetectorOp.html">rack::DetectorOp</a></div><div class="ttdoc">Base class for anomaly detectors.</div><div class="ttdef"><b>Definition:</b> DetectorOp.h:49</div></div>
 <div class="ttc" id="aclassrack_1_1DetectorOp_html_a2f50e39be9c0a4d5a12b076800615d7e"><div class="ttname"><a href="classrack_1_1DetectorOp.html#a2f50e39be9c0a4d5a12b076800615d7e">rack::DetectorOp::DetectorOp</a></div><div class="ttdeci">DetectorOp(const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;, const std::string &amp;echoClass=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> DetectorOp.h:66</div></div>
-<div class="ttc" id="aclassrack_1_1DetectorOp_html_a788a9f0fa011968823f828262808b703"><div class="ttname"><a href="classrack_1_1DetectorOp.html#a788a9f0fa011968823f828262808b703">rack::DetectorOp::REQUIRE_STANDARD_DATA</a></div><div class="ttdeci">bool REQUIRE_STANDARD_DATA</div><div class="ttdoc">Set to true if operator expects fixed background intensities instead of &quot;nodata&quot; defined by the Polar...</div><div class="ttdef"><b>Definition:</b> DetectorOp.h:218</div></div>
-<div class="ttc" id="aclassrack_1_1DetectorOp_html_ac7d73861600b8d982afcbab299b339fa"><div class="ttname"><a href="classrack_1_1DetectorOp.html#ac7d73861600b8d982afcbab299b339fa">rack::DetectorOp::UNIVERSAL</a></div><div class="ttdeci">bool UNIVERSAL</div><div class="ttdoc">If true, applies also to quantities str than the one used in detection. The detection and the accumul...</div><div class="ttdef"><b>Definition:</b> DetectorOp.h:177</div></div>
+<div class="ttc" id="aclassrack_1_1DetectorOp_html_a788a9f0fa011968823f828262808b703"><div class="ttname"><a href="classrack_1_1DetectorOp.html#a788a9f0fa011968823f828262808b703">rack::DetectorOp::REQUIRE_STANDARD_DATA</a></div><div class="ttdeci">bool REQUIRE_STANDARD_DATA</div><div class="ttdoc">Set to true if operator expects fixed background intensities instead of &quot;nodata&quot; defined by the Polar...</div><div class="ttdef"><b>Definition:</b> DetectorOp.h:219</div></div>
+<div class="ttc" id="aclassrack_1_1DetectorOp_html_ac7d73861600b8d982afcbab299b339fa"><div class="ttname"><a href="classrack_1_1DetectorOp.html#ac7d73861600b8d982afcbab299b339fa">rack::DetectorOp::UNIVERSAL</a></div><div class="ttdeci">bool UNIVERSAL</div><div class="ttdoc">If true, applies also to quantities str than the one used in detection. The detection and the accumul...</div><div class="ttdef"><b>Definition:</b> DetectorOp.h:178</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

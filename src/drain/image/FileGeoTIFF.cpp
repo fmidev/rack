@@ -277,9 +277,11 @@ void FileGeoTIFF::writeMetadata(){
 		};
 		TIFFMergeFieldInfo(tif, xtiffFieldInfo, 1);
 
+		// Write metadata in XML format
 		std::stringstream sstr;
-		sstr << gdalInfo;
-		mout.special<LOG_INFO>(sstr.str());
+		NodeGDAL::toStream(sstr, gdalInfo);
+		//sstr << gdalInfo;
+		mout.special<LOG_INFO>("GDAL XML metadata:\n", sstr.str());
 		setField(TIFFTAG_GDAL_METADATA, sstr.str());
 
 		GTIFWriteKeys(gtif);

@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classdrain_1_1Registry.html" title="A container for storing global objects like functors, operators or commands. Supports aliases." alt="" coords="5,5,120,32"/>
+<area shape="rect" id="node1" href="$structdrain_1_1image_1_1SamplePicker.html" title="Interprets data values for Sampler." alt="" coords="5,93,116,120"/>
+<area shape="rect" id="node2" href="$classrack_1_1RadarDataPicker.html" title=" " alt="" coords="164,5,393,32"/>
+<area shape="rect" id="node4" href="$classrack_1_1RadarDataPicker.html" title=" " alt="" coords="175,57,382,98"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageReader.html" title="Reads image channels, returning scaled (physical) values." alt="" coords="224,123,333,149"/>
+<area shape="rect" id="node7" href="$classrack_1_1RadarDataPicker.html" title="Base class for utilities traversing radar data with Sampler." alt="" coords="189,173,369,200"/>
+<area shape="rect" id="node3" href="$classrack_1_1PolarDataPicker.html" title=" " alt="" coords="456,5,581,32"/>
+<area shape="rect" id="node5" href="$classrack_1_1CartesianDataPicker.html" title=" " alt="" coords="441,64,596,91"/>
 </map>

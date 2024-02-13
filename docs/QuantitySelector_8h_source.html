@@ -126,115 +126,188 @@ $(function() {
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classrack_1_1QuantitySelector.html">   56</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1QuantitySelector.html">QuantitySelector</a> { <span class="comment">// string temporary ?</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... TT&gt;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classrack_1_1QuantityMatcher.html">   55</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1QuantityMatcher.html">QuantityMatcher</a> : <span class="keyword">protected</span> <a class="code" href="classdrain_1_1RegExp.html">drain::RegExp</a> {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> std::string &amp; value;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="classrack_1_1QuantitySelector.html">QuantitySelector</a>(<span class="keyword">const</span> TT &amp;... args){</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        setQuantity(args...);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    };</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="classrack_1_1QuantityMatcher.html">QuantityMatcher</a>(<span class="keyword">const</span> std::string &amp; s = <span class="stringliteral">&quot;&quot;</span>) : value(regExpString), <a class="code" href="classrack_1_1QuantityMatcher.html#a4f192cce90d42e8ef9f3356366259124">isRegExp</a>(<span class="keyword">false</span>){</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        set(s);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    ~<a class="code" href="classrack_1_1QuantitySelector.html">QuantitySelector</a>(){};</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> ...TT&gt;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span> setQuantity(<span class="keyword">const</span> TT &amp; ... args){</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        clear();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        addQuantity(args...);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> setQuantityRegExp(<span class="keyword">const</span> std::string &amp; r);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="classrack_1_1QuantityMatcher.html">QuantityMatcher</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1QuantityMatcher.html">QuantityMatcher</a> &amp; matcher) : value(regExpString), <a class="code" href="classrack_1_1QuantityMatcher.html#a4f192cce90d42e8ef9f3356366259124">isRegExp</a>(<span class="keyword">false</span>){</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        set(matcher.value);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> set(<span class="keyword">const</span> std::string &amp; s);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> std::string &amp;s)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">return</span> test(s);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ...TT&gt;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> addQuantity(<span class="keyword">const</span> T &amp; arg, <span class="keyword">const</span> TT &amp; ... args){</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        adaptQuantity(arg);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        addQuantity(args...);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span> clear(){</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        regExp.clear();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        quantities.clear();</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">bool</span> testQuantity(<span class="keyword">const</span> std::string &amp; s) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">bool</span> isSet()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">return</span> (regExp.isSet() || !quantities.empty()) ;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <span class="keywordtype">char</span> *s)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">return</span> test(s);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    }</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">bool</span> test(<span class="keyword">const</span> std::string &amp; s) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="classrack_1_1QuantityMatcher.html#a4f192cce90d42e8ef9f3356366259124">   95</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classrack_1_1QuantityMatcher.html#a4f192cce90d42e8ef9f3356366259124">isRegExp</a>;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="comment">//Deprecating? Consider quantityMatcher</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classrack_1_1QuantitySelector.html#a492861a0e6c9a4d28f161c813ce9e427">  100</a></span>&#160;    <span class="keyword">const</span> std::string &amp; <a class="code" href="classrack_1_1QuantitySelector.html#a492861a0e6c9a4d28f161c813ce9e427">getQuantity</a>()<span class="keyword"> const </span>{ <span class="comment">// rename getQuantities</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="comment">// static const std::string empty;</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">if</span> (quantities.empty()){</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <span class="keywordflow">return</span> regExp.toStr();</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keywordflow">return</span> quantities.front();</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    }</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keyword">const</span> <a class="code" href="classrack_1_1QuantitySelector.html">QuantitySelector</a> &amp; getQuantitySelector()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="comment">// TODO add filter, allowing ODIMPathElem::group_t == QUALITY</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordtype">void</span> getQuantityMap(<span class="keyword">const</span> Hi5Tree &amp; srcDataset, <a class="code" href="namespacerack.html#a341f7354d658d71d6c2bf12547f17b3f">ODIMPathElemMap</a> &amp; m);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">typedef</span> std::list&lt;std::string&gt; quantity_list;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordtype">void</span> toStream(std::ostream &amp; ostr) <span class="keyword">const</span> ;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;};</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;std::ostream &amp; <a class="code" href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classrack_1_1QuantityMatcher.html">QuantityMatcher</a> &amp; m){</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    ostr &lt;&lt; m.value;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="classrack_1_1QuantitySelector.html">  109</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1QuantitySelector.html">QuantitySelector</a> : <span class="keyword">public</span> std::list&lt;QuantityMatcher&gt; { <span class="comment">// string temporary ?</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="comment">//typedef std::list&lt;std::string&gt; quantity_list;</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keyword">typedef</span> std::list&lt;QuantityMatcher&gt; quantity_list;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... TT&gt;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="classrack_1_1QuantitySelector.html#a043ab18751489fecae1c4430c287e190">  119</a></span>&#160;    <a class="code" href="classrack_1_1QuantitySelector.html#a043ab18751489fecae1c4430c287e190">QuantitySelector</a>(<span class="keyword">const</span> TT &amp;... args){</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="comment">// reset not needed</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <a class="code" href="classrack_1_1QuantitySelector.html#a512e85812ab86fdf976a91138feeb3ae">addQuantity</a>(args...);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    };</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordtype">void</span> addQuantity();</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="classrack_1_1QuantitySelector.html#a4faf844e04a27b72ea3459228b2e2411">  126</a></span>&#160;    <a class="code" href="classrack_1_1QuantitySelector.html#a4faf844e04a27b72ea3459228b2e2411">QuantitySelector</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1QuantitySelector.html">QuantitySelector</a> &amp;slct) : std::list&lt;<a class="code" href="classrack_1_1QuantityMatcher.html">QuantityMatcher</a>&gt;(slct) {</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    };</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordtype">void</span> appendQuantity(<span class="keyword">const</span> <a class="code" href="classdrain_1_1RegExp.html">drain::RegExp</a> &amp; r){</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="comment">// DETECT regexp</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <span class="comment">// regExp.set(r);</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    }</div>
+<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="classrack_1_1QuantitySelector.html#a13c9c2d0130e2c0777b2560b7e55fd13">  132</a></span>&#160;    <a class="code" href="classrack_1_1QuantitySelector.html#a13c9c2d0130e2c0777b2560b7e55fd13">~QuantitySelector</a>(){};</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordtype">void</span> adaptQuantity(<span class="keyword">const</span> std::string &amp; s);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keyword">mutable</span> <span class="comment">// called by updateBean()?</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <a class="code" href="classdrain_1_1RegExp.html">drain::RegExp</a> regExp;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="comment">//mutable</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    quantity_list quantities;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> ...TT&gt;</div>
+<div class="line"><a name="l00142"></a><span class="lineno"><a class="line" href="classrack_1_1QuantitySelector.html#a0c063984cf63b07a032e43906c5e318f">  142</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1QuantitySelector.html#a0c063984cf63b07a032e43906c5e318f">setQuantity</a>(<span class="keyword">const</span> std::string &amp; arg, <span class="keyword">const</span> TT &amp; ... args){</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="comment">//clear();</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <a class="code" href="classrack_1_1QuantitySelector.html#a8d8ceb9de062d1060450fe1a6e855d22">setQuantities</a>(arg); <span class="comment">// split and adapt</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <a class="code" href="classrack_1_1QuantitySelector.html#a512e85812ab86fdf976a91138feeb3ae">addQuantity</a>(args...);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    }</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;};</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;std::ostream &amp; <a class="code" href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> QuantitySelector &amp; selector){</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="comment">//drain::Sprinter::toStream(ostr, selector.quantities, drain::Sprinter::cmdLineLayout);</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="comment">// ostr &lt;&lt; &quot;, order=&quot; &lt;&lt; selector.order.str;</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    selector.toStream(ostr);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;}</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;} <span class="comment">// rack::</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DATASELECTOR_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1QuantitySelector.html#a8d8ceb9de062d1060450fe1a6e855d22">setQuantities</a>(<span class="keyword">const</span> std::string &amp; args); <span class="comment">// , const std::string &amp; separators = &quot;,&quot;</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="comment">// void setQuantityRegExp(const std::string &amp; r);</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ...TT&gt;</div>
+<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="classrack_1_1QuantitySelector.html#a512e85812ab86fdf976a91138feeb3ae">  161</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1QuantitySelector.html#a512e85812ab86fdf976a91138feeb3ae">addQuantity</a>(<span class="keyword">const</span> T &amp; arg, <span class="keyword">const</span> TT &amp; ... args){</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <a class="code" href="classrack_1_1QuantitySelector.html#acbffbb45dad7dbfcaf3194e9511ac15f">adaptQuantity</a>(arg);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <a class="code" href="classrack_1_1QuantitySelector.html#a512e85812ab86fdf976a91138feeb3ae">addQuantity</a>(args...);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    }</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordtype">bool</span> testQuantity(<span class="keyword">const</span> std::string &amp; s) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keywordtype">bool</span> isSet()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keywordflow">return</span> !empty();</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="comment">//return (regExp.isSet() || !quantities.empty()) ;</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    }</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="comment">//Deprecating? Consider quantityMatcher</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="classrack_1_1QuantitySelector.html#a492861a0e6c9a4d28f161c813ce9e427">  178</a></span>&#160;    <span class="keyword">const</span> std::string &amp; <a class="code" href="classrack_1_1QuantitySelector.html#a492861a0e6c9a4d28f161c813ce9e427">getQuantity</a>()<span class="keyword"> const </span>{ <span class="comment">// rename getQuantities</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> std::string dummy;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        <span class="keywordflow">if</span> (empty()){</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="keywordflow">return</span> dummy;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="comment">//return regExp.toStr();</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        }</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            <span class="comment">//return quantities.front().value;</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            <span class="keywordflow">return</span> front().value;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        }</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    }</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">    const QuantitySelector &amp; getQuantitySelector() const {</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">        return *this;</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keyword">const</span> quantity_list &amp; getList()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="comment">//return quantities;</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    }</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">    const drain::RegExp &amp; getRegExp() const {</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="comment">        return regExp;</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="comment">// TODO add filter, allowing ODIMPathElem::group_t == QUALITY</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordtype">void</span> getQuantityMap(<span class="keyword">const</span> Hi5Tree &amp; srcDataset, <a class="code" href="namespacerack.html#a341f7354d658d71d6c2bf12547f17b3f">ODIMPathElemMap</a> &amp; m);</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="keywordtype">void</span> toStream(std::ostream &amp; ostr) <span class="keyword">const</span> ;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="comment">// inline</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="comment">// void setQuantity(){};</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keywordtype">void</span> addQuantity(){};</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1QuantitySelector.html#acbffbb45dad7dbfcaf3194e9511ac15f">adaptQuantity</a>(<span class="keyword">const</span> std::string &amp; s);</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="comment">//mutable // called by updateBean()?</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="comment">//drain::RegExp regExp;</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="comment">//mutable</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="comment">// quantity_list quantities;</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;};</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;std::ostream &amp; <a class="code" href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> QuantitySelector &amp; selector){</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="comment">//drain::Sprinter::toStream(ostr, selector.quantities, drain::Sprinter::cmdLineLayout);</span></div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="comment">// ostr &lt;&lt; &quot;, order=&quot; &lt;&lt; selector.order.str;</span></div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    selector.toStream(ostr);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;}</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;} <span class="comment">// rack::</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DATASELECTOR_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassdrain_1_1RegExp_html"><div class="ttname"><a href="classdrain_1_1RegExp.html">drain::RegExp</a></div><div class="ttdef"><b>Definition:</b> RegExp.h:58</div></div>
-<div class="ttc" id="aclassrack_1_1QuantitySelector_html"><div class="ttname"><a href="classrack_1_1QuantitySelector.html">rack::QuantitySelector</a></div><div class="ttdoc">Utility for selecting a quantity label Base class for DataSelector.</div><div class="ttdef"><b>Definition:</b> QuantitySelector.h:56</div></div>
-<div class="ttc" id="aclassrack_1_1QuantitySelector_html_a492861a0e6c9a4d28f161c813ce9e427"><div class="ttname"><a href="classrack_1_1QuantitySelector.html#a492861a0e6c9a4d28f161c813ce9e427">rack::QuantitySelector::getQuantity</a></div><div class="ttdeci">const std::string &amp; getQuantity() const</div><div class="ttdoc">Returns the fistt (the primary) quantity.</div><div class="ttdef"><b>Definition:</b> QuantitySelector.h:100</div></div>
+<div class="ttc" id="aclassrack_1_1QuantityMatcher_html"><div class="ttname"><a href="classrack_1_1QuantityMatcher.html">rack::QuantityMatcher</a></div><div class="ttdef"><b>Definition:</b> QuantitySelector.h:55</div></div>
+<div class="ttc" id="aclassrack_1_1QuantityMatcher_html_a4f192cce90d42e8ef9f3356366259124"><div class="ttname"><a href="classrack_1_1QuantityMatcher.html#a4f192cce90d42e8ef9f3356366259124">rack::QuantityMatcher::isRegExp</a></div><div class="ttdeci">bool isRegExp</div><div class="ttdoc">Checks if the key conforms to ODIM convention: DBZH, VRAD, etc. (capital letters, underscores)</div><div class="ttdef"><b>Definition:</b> QuantitySelector.h:95</div></div>
+<div class="ttc" id="aclassrack_1_1QuantitySelector_html"><div class="ttname"><a href="classrack_1_1QuantitySelector.html">rack::QuantitySelector</a></div><div class="ttdoc">Utility for selecting a quantity label Base class for DataSelector.</div><div class="ttdef"><b>Definition:</b> QuantitySelector.h:109</div></div>
+<div class="ttc" id="aclassrack_1_1QuantitySelector_html_a043ab18751489fecae1c4430c287e190"><div class="ttname"><a href="classrack_1_1QuantitySelector.html#a043ab18751489fecae1c4430c287e190">rack::QuantitySelector::QuantitySelector</a></div><div class="ttdeci">QuantitySelector(const TT &amp;... args)</div><div class="ttdoc">Basic constructor.</div><div class="ttdef"><b>Definition:</b> QuantitySelector.h:119</div></div>
+<div class="ttc" id="aclassrack_1_1QuantitySelector_html_a0c063984cf63b07a032e43906c5e318f"><div class="ttname"><a href="classrack_1_1QuantitySelector.html#a0c063984cf63b07a032e43906c5e318f">rack::QuantitySelector::setQuantity</a></div><div class="ttdeci">void setQuantity(const std::string &amp;arg, const TT &amp;... args)</div><div class="ttdoc">Define the list of accepted quantities.</div><div class="ttdef"><b>Definition:</b> QuantitySelector.h:142</div></div>
+<div class="ttc" id="aclassrack_1_1QuantitySelector_html_a13c9c2d0130e2c0777b2560b7e55fd13"><div class="ttname"><a href="classrack_1_1QuantitySelector.html#a13c9c2d0130e2c0777b2560b7e55fd13">rack::QuantitySelector::~QuantitySelector</a></div><div class="ttdeci">virtual ~QuantitySelector()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> QuantitySelector.h:132</div></div>
+<div class="ttc" id="aclassrack_1_1QuantitySelector_html_a492861a0e6c9a4d28f161c813ce9e427"><div class="ttname"><a href="classrack_1_1QuantitySelector.html#a492861a0e6c9a4d28f161c813ce9e427">rack::QuantitySelector::getQuantity</a></div><div class="ttdeci">const std::string &amp; getQuantity() const</div><div class="ttdoc">Returns the fistt (the primary) quantity.</div><div class="ttdef"><b>Definition:</b> QuantitySelector.h:178</div></div>
+<div class="ttc" id="aclassrack_1_1QuantitySelector_html_a4faf844e04a27b72ea3459228b2e2411"><div class="ttname"><a href="classrack_1_1QuantitySelector.html#a4faf844e04a27b72ea3459228b2e2411">rack::QuantitySelector::QuantitySelector</a></div><div class="ttdeci">QuantitySelector(const QuantitySelector &amp;slct)</div><div class="ttdoc">Copy constructor. Copies the list of quantities.</div><div class="ttdef"><b>Definition:</b> QuantitySelector.h:126</div></div>
+<div class="ttc" id="aclassrack_1_1QuantitySelector_html_a512e85812ab86fdf976a91138feeb3ae"><div class="ttname"><a href="classrack_1_1QuantitySelector.html#a512e85812ab86fdf976a91138feeb3ae">rack::QuantitySelector::addQuantity</a></div><div class="ttdeci">void addQuantity(const T &amp;arg, const TT &amp;... args)</div><div class="ttdoc">Define a syntax for quantity key. Will be checked if listed quantity keys do not match.</div><div class="ttdef"><b>Definition:</b> QuantitySelector.h:161</div></div>
+<div class="ttc" id="aclassrack_1_1QuantitySelector_html_a8d8ceb9de062d1060450fe1a6e855d22"><div class="ttname"><a href="classrack_1_1QuantitySelector.html#a8d8ceb9de062d1060450fe1a6e855d22">rack::QuantitySelector::setQuantities</a></div><div class="ttdeci">void setQuantities(const std::string &amp;args)</div><div class="ttdoc">Define the list of accepted quantities as a string.</div><div class="ttdef"><b>Definition:</b> QuantitySelector.cpp:82</div></div>
+<div class="ttc" id="aclassrack_1_1QuantitySelector_html_acbffbb45dad7dbfcaf3194e9511ac15f"><div class="ttname"><a href="classrack_1_1QuantitySelector.html#acbffbb45dad7dbfcaf3194e9511ac15f">rack::QuantitySelector::adaptQuantity</a></div><div class="ttdeci">void adaptQuantity(const std::string &amp;s)</div><div class="ttdef"><b>Definition:</b> QuantitySelector.cpp:118</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 <div class="ttc" id="anamespacerack_html_a341f7354d658d71d6c2bf12547f17b3f"><div class="ttname"><a href="namespacerack.html#a341f7354d658d71d6c2bf12547f17b3f">rack::ODIMPathElemMap</a></div><div class="ttdeci">std::map&lt; std::string, ODIMPathElem &gt; ODIMPathElemMap</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:459</div></div>
 <div class="ttc" id="anamespacerack_html_a9da7fe6d7ac333840a874ef95845f1e2"><div class="ttname"><a href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition:</b> Data.h:519</div></div>

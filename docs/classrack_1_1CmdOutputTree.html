@@ -70,8 +70,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="classrack_1_1CmdOutputTree-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">CmdOutputTree Class Reference</div>  </div>
@@ -94,27 +92,27 @@ Collaboration diagram for CmdOutputTree:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1CmdOutputTree__coll__graph.png" border="0" usemap="#aCmdOutputTree_coll__map" alt="Collaboration graph"/></div>
 <map name="aCmdOutputTree_coll__map" id="aCmdOutputTree_coll__map">
-<area shape="rect" title=" " alt="" coords="41,1087,163,1113"/>
-<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="131,996,300,1037"/>
-<area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="167,920,291,947"/>
-<area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="184,831,273,857"/>
-<area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="182,755,275,781"/>
-<area shape="rect" href="classdrain_1_1Context.html" title=" " alt="" coords="192,665,265,692"/>
+<area shape="rect" title=" " alt="" coords="247,1087,370,1113"/>
+<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="224,996,393,1037"/>
+<area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="247,920,371,947"/>
+<area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="201,831,291,857"/>
+<area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="170,755,263,781"/>
+<area shape="rect" href="classdrain_1_1Context.html" title=" " alt="" coords="176,665,249,692"/>
 <area shape="rect" href="classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,576,160,603"/>
 <area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="23,493,195,519"/>
 <area shape="rect" title=" " alt="" coords="5,409,212,436"/>
-<area shape="rect" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="211,576,257,603"/>
-<area shape="rect" href="classdrain_1_1StatusFlags.html" title=" " alt="" coords="281,576,379,603"/>
-<area shape="rect" href="classdrain_1_1GlobalFlags.html" title=" " alt="" coords="253,485,407,527"/>
-<area shape="rect" href="classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="295,409,365,436"/>
-<area shape="rect" href="classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="231,320,338,347"/>
-<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="362,320,479,347"/>
-<area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="373,157,469,184"/>
-<area shape="rect" href="classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="357,81,485,108"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="345,5,497,32"/>
+<area shape="rect" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="190,576,235,603"/>
+<area shape="rect" href="classdrain_1_1StatusFlags.html" title=" " alt="" coords="259,576,358,603"/>
+<area shape="rect" href="classdrain_1_1GlobalFlags.html" title=" " alt="" coords="231,485,386,527"/>
+<area shape="rect" href="classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="273,409,344,436"/>
+<area shape="rect" href="classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="210,320,317,347"/>
+<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="341,320,458,347"/>
+<area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="351,157,447,184"/>
+<area shape="rect" href="classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="335,81,463,108"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="323,5,475,32"/>
 <area shape="rect" href="classdrain_1_1ReferenceMap.html" title=" " alt="" coords="320,831,436,857"/>
-<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="304,755,495,781"/>
-<area shape="rect" title=" " alt="" coords="289,665,515,692"/>
+<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="289,755,480,781"/>
+<area shape="rect" title=" " alt="" coords="273,665,499,692"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -223,27 +221,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:aad9d40ff731f18d8a1899d52a1fc1cb5 inherit pub_methods_classdrain_1_1Contextual"><td class="mdescLeft">&#160;</td><td class="mdescRight">If context has been set, returns it through a cast to base class <a class="el" href="classdrain_1_1Context.html">Context</a>.  <a href="classdrain_1_1Contextual.html#aad9d40ff731f18d8a1899d52a1fc1cb5">More...</a><br /></td></tr>
 <tr class="separator:aad9d40ff731f18d8a1899d52a1fc1cb5 inherit pub_methods_classdrain_1_1Contextual"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a60f35e71066ffc64ca61692ff6133adc"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdOutputTree.html#a60f35e71066ffc64ca61692ff6133adc">dataToStream</a> (const Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</td></tr>
-<tr class="memdesc:a60f35e71066ffc64ca61692ff6133adc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tree attribute formatter.  <a href="classrack_1_1CmdOutputTree.html#a60f35e71066ffc64ca61692ff6133adc">More...</a><br /></td></tr>
-<tr class="separator:a60f35e71066ffc64ca61692ff6133adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47d32c91e9481195e09f940f3914b825"><td class="memItemLeft" align="right" valign="top"><a id="a47d32c91e9481195e09f940f3914b825"></a>
-static <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttributes</b> ()</td></tr>
-<tr class="separator:a47d32c91e9481195e09f940f3914b825"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_methods_classdrain_1_1Contextual"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classdrain_1_1Contextual')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td></tr>
 <tr class="memitem:a800009740f208898bd0dbe3f42c39531 inherit pub_static_methods_classdrain_1_1Contextual"><td class="memTemplParams" colspan="2"><a id="a800009740f208898bd0dbe3f42c39531"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a800009740f208898bd0dbe3f42c39531 inherit pub_static_methods_classdrain_1_1Contextual"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="structdrain_1_1Cloner.html">Cloner</a>&lt; <a class="el" href="classdrain_1_1Context.html">Context</a>, T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getCloner</b> ()</td></tr>
 <tr class="separator:a800009740f208898bd0dbe3f42c39531 inherit pub_static_methods_classdrain_1_1Contextual"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
-Static Protected Attributes</h2></td></tr>
-<tr class="memitem:ad6dd565e2de7172fa0fbcca0f8b42f5d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a>&#160;</td><td class="memItemRight" valign="bottom"><b>attributes</b></td></tr>
-<tr class="separator:ad6dd565e2de7172fa0fbcca0f8b42f5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1SimpleCommand"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1SimpleCommand')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1SimpleCommand.html">SimpleCommand&lt; std::string &gt;</a></td></tr>
 <tr class="memitem:a4fc7f59e3113e19697159919a5aad095 inherit pub_attribs_classdrain_1_1SimpleCommand"><td class="memItemLeft" align="right" valign="top"><a id="a4fc7f59e3113e19697159919a5aad095"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
@@ -271,95 +255,6 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <a class="el" href="classdrain_1_1Context.html">Context</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>contextPtr</b></td></tr>
 <tr class="separator:aa93503d4d64d09604ec306f58e6f03b5 inherit pro_attribs_classdrain_1_1Contextual"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a60f35e71066ffc64ca61692ff6133adc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60f35e71066ffc64ca61692ff6133adc">&#9670;&nbsp;</a></span>dataToStream()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool dataToStream </td>
-          <td>(</td>
-          <td class="paramtype">const Hi5Tree::node_data_t &amp;&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>ostr</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Tree attribute formatter. </p>
-<p>Applied by <a class="el" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102" title="Debugging utility - dumps the structure of the tree (not the contents).">drain::TreeUtils::dump()</a></p>
-<dl class="section return"><dt>Returns</dt><dd>– true, if data is empty, ie. no attributes or data array. </dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ad6dd565e2de7172fa0fbcca0f8b42f5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6dd565e2de7172fa0fbcca0f8b42f5d">&#9670;&nbsp;</a></span>attributes</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> attributes</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">        {<span class="stringliteral">&quot;format&quot;</span>, <span class="stringliteral">&quot;vt100&quot;</span>}, </div>
-<div class="line">        {<span class="stringliteral">&quot;image&quot;</span>, <span class="stringliteral">&quot;BLUE&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;data&quot;</span>, <span class="stringliteral">&quot;BOLD&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;object&quot;</span>, <span class="stringliteral">&quot;WHITE&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;quantity&quot;</span>, <span class="stringliteral">&quot;BOLD:GREEN&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;date&quot;</span>, <span class="stringliteral">&quot;RED:UNDERLINE&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;time&quot;</span>, <span class="stringliteral">&quot;RED&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;startdate&quot;</span>, <span class="stringliteral">&quot;RED:UNDERLINE&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;starttime&quot;</span>, <span class="stringliteral">&quot;RED&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;hiPRF&quot;</span>, <span class="stringliteral">&quot;YELLOW:DIM&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;source&quot;</span>, <span class="stringliteral">&quot;YELLOW:DIM&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;lon&quot;</span>, <span class="stringliteral">&quot;YELLOW:DIM&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;lat&quot;</span>, <span class="stringliteral">&quot;YELLOW:DIM&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;xsize&quot;</span>, <span class="stringliteral">&quot;YELLOW:DIM&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;ysize&quot;</span>, <span class="stringliteral">&quot;YELLOW:DIM&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;rscale&quot;</span>, <span class="stringliteral">&quot;YELLOW:DIM&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;elangle&quot;</span>, <span class="stringliteral">&quot;ITALIC:YELLOW&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;gain&quot;</span>, <span class="stringliteral">&quot;ITALIC:YELLOW&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;offset&quot;</span>, <span class="stringliteral">&quot;ITALIC:YELLOW&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;nodata&quot;</span>, <span class="stringliteral">&quot;DIM:YELLOW&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;undetect&quot;</span>, <span class="stringliteral">&quot;DIM:YELLOW&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;task_args&quot;</span>, <span class="stringliteral">&quot;CYAN&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;legend&quot;</span>, <span class="stringliteral">&quot;PURPLE&quot;</span>}</div>
-<div class="line">}</div>
-</div><!-- fragment -->
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/main/<a class="el" href="fileio_8h_source.html">fileio.h</a></li>
 <li>src/main/fileio.cpp</li>

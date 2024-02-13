@@ -52,7 +52,7 @@ typedef drain::UnorderedMultiTree<NodeSVG> TreeSVG;
 
 struct BaseSVG {
 
-	enum tag_t { UNDEFINED = 0, SVG, TITLE, CTEXT, GROUP, TEXT, TSPAN, RECT, CIRC, LINE, IMAGE }; // check CTEXT, maybe implement in XML
+	enum tag_t { UNDEFINED = 0, COMMENT, CTEXT, SVG, TITLE, GROUP, TEXT, TSPAN, RECT, CIRC, LINE, IMAGE }; // check CTEXT, maybe implement in XML
 
 	typedef NodeSVG node_t;
 

@@ -133,6 +133,15 @@ protected:
 	\b Synopsis
 	\include select.hlp
 
+	Remarks on the options:
+
+	- \c path argument defines a path \e segment to be matched, with desired index ranges (example: \c dataset2:4/data3:8 )
+	- in \c path argument, a leading slash fixes the matching to the root (example: \ c /dataset:/data: ), otherwise the tail part is matched
+    - \c quantity argument accepts a list of strings separated by semicolon ':'
+    - each item in a \c quantity argument list can be a literal string like \C DBZH or a regular experession like \c ^DBZ[HV]?$
+
+    See example sets below!
+
 	This option is useful in selecting data for:
 
 	- partial reading a large input file (see \ref fileiopage ).

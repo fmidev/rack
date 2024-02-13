@@ -1,7 +1,8 @@
 <map id="NodeGDAL" name="NodeGDAL">
-<area shape="rect" id="node1" title=" " alt="" coords="89,319,181,345"/>
-<area shape="rect" id="node2" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="93,244,177,271"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,169,264,196"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,95,247,121"/>
-<area shape="rect" id="node5" title=" " alt="" coords="39,5,230,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="83,333,175,360"/>
+<area shape="rect" id="node2" href="$structdrain_1_1image_1_1BaseGDAL.html" title=" " alt="" coords="5,251,96,278"/>
+<area shape="rect" id="node3" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="121,244,295,285"/>
+<area shape="rect" id="node4" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="79,169,337,196"/>
+<area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="96,95,320,121"/>
+<area shape="rect" id="node6" title=" " alt="" coords="113,5,303,47"/>
 </map>

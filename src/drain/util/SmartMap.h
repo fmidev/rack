@@ -149,7 +149,7 @@ public:
 	 *  \return - the value, if set; else the default value.
 	 */
 	template <class T2>
-	T2 get(const std::string &key, T2 defaultValue) const {
+	T2 get(const std::string &key, const T2 &defaultValue) const { //T2 defaultValue) const {
 		const_iterator it = this->find(key);
 		if (it == this->end())
 			return defaultValue;

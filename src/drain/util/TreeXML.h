@@ -69,9 +69,12 @@ class NodeXML : protected ReferenceMap2<FlexibleVariable> {
 
 public:
 
-	/// TAG type, or CTEXT or undefined.
+	/// Tag type, CTEXT or COMMENT.
 	typedef T elem_t;
 	elem_t type;
+
+	/// Tree path type.
+	typedef drain::Path<std::string,'/'> path_t;
 
 	//typedef ReferenceMap map_t;
 	typedef ReferenceMap2<FlexibleVariable> map_t;
@@ -94,6 +97,11 @@ public:
 
 	inline
 	~NodeXML(){};
+
+
+	// Consider either/or
+	std::string ctext;
+
 
 	virtual
 	void setType(const elem_t &t){
@@ -119,7 +127,7 @@ public:
 			return it->second;
 		}
 		else {
-			throw std::runtime_error(drain::StringBuilder(__FILE__, __FUNCTION__, ": unknown TAG enum value: ", static_cast<int>(type)));
+			throw std::runtime_error(drain::StringBuilder<>(__FILE__, __FUNCTION__, ": unknown TAG enum value: ", static_cast<int>(type)));
 		}
 		// return tags[type];
 	};
@@ -149,6 +157,24 @@ public:
 		// drain::SmartMapTools::setValues<map_t,false>((map_t &)*this, l);   // update only
 	}
 
+	inline
+	std::string get(const std::string & key, const char * defaultValue) const {
+		return map_t::get(key, defaultValue);
+	}
+
+	template <class V>
+	inline
+	V get(const std::string & key, const V & defaultValue) const {
+		return map_t::get(key, defaultValue);
+	}
+
+	template <class V>
+	inline
+	const drain::FlexibleVariable & get(const std::string & key) const {
+		return (*this)[key];
+	}
+
+
 	template <typename ... TT>
 	inline
 	void setClass(const std::string & s, const TT &... args) {
@@ -156,8 +182,12 @@ public:
 		setClass(args...);
 	}
 
+
 	inline
-	void setClass(){}
+	bool hasClass(const std::string & cls) {
+		return (classList.find(cls) != classList.end());
+	}
+
 
 	inline
     NodeXML & operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
@@ -166,19 +196,13 @@ public:
 	}
 
 
-	template <class V>
-	static inline
-	void attribToStream(std::ostream &ostr, const std::string & key, const V &value){
-		ostr << key << '=' << '"' << value << '"' << ' ';
-	}
+	typedef std::list<path_t> path_list_t;
 
 	/// "Forward definition" of Tree::toOstream
 	template <class V>
 	static
-	std::ostream & toStream(std::ostream &ostr, const V & t, const std::string & defaultTag = "", int indent=0);
-
-	// Consider either/or
-	std::string ctext;
+	const path_list_t & findByClass(const V & t, const std::string & tag,
+			path_list_t & result = path_list_t(), const path_t & path = path_t());
 
 	inline
 	bool empty() const {
@@ -191,7 +215,7 @@ public:
 	 *
 	 */
 	inline
-	void comment(const std::string & text = "") {
+	void setComment(const std::string & text = "") {
 		if (id > 0){
 			id = -id;
 		}
@@ -205,7 +229,21 @@ public:
 		return (id < 0);
 	}
 
+	/// "Forward definition" of Tree::toOstream
+	template <class V>
+	static
+	std::ostream & toStream(std::ostream &ostr, const V & t, const std::string & defaultTag = "", int indent=0);
+
 protected:
+
+	inline
+	void setClass(){}
+
+	template <class V>
+	static inline
+	void attribToStream(std::ostream &ostr, const std::string & key, const V &value){
+		ostr << key << '=' << '"' << value << '"' << ' ';
+	}
 
 	static int nextID;
 
@@ -222,15 +260,31 @@ protected:
 
 
 
-// #define TreeXML drain::Tree<std::string,NodeXML>  // , std::less<std::basic_std::string<char>
-// typedef drain::Tree<std::string,NodeXML> TreeXML;
-typedef drain::UnorderedMultiTree<NodeXML<>,false> TreeXML;
+
+typedef drain::UnorderedMultiTree<NodeXML<>,false, NodeXML<>::path_t> TreeXML;
+//typedef drain::UnorderedMultiTree<NodeXML<>,false> TreeXML;
 
 template <>
 TreeXML & TreeXML::addChild(const TreeXML::key_t & key);
 
 template <class N>
 int NodeXML<N>::nextID = 0;
+
+
+template <class N>
+template <class T>
+const NodeXML<>::path_list_t & NodeXML<N>::findByClass(const T & t, const std::string & cls,
+		NodeXML<>::path_list_t & result, const path_t & path){
+
+	if (t->classList.find(cls) != t->classList.end()){
+		result.push_back(path);
+	}
+
+	for (const auto & entry: t){
+		findByClass(entry.second, cls, result, path_t(path, entry.first));
+	}
+	return result;
+}
 
 /**
  *   \param defaultTag - important for
