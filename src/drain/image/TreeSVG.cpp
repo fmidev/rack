@@ -190,7 +190,7 @@ struct drain::TypeName<drain::image::NodeSVG> {
 
 template <>
 template <>
-inline
+// inline
 drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::BaseSVG::tag_t & type){
 	this->data.setType(type);
 	return *this;
@@ -198,7 +198,7 @@ drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::Ba
 
 template <>
 template <>
-inline
+// inline
 drain::image::TreeSVG & drain::image::TreeSVG::operator()(const std::string & text){
 	//if (this->data.)
 	this->data.ctext = text;

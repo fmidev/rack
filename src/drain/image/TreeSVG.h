@@ -177,29 +177,31 @@ struct drain::TypeName<drain::image::TreeSVG> {
 };
 */
 
+namespace drain {
+
 template <>
-struct drain::TypeName<drain::image::NodeSVG>; /* {
+struct drain::TypeName<image::NodeSVG>; /* {
     static const char* get(){ return "SVG"; }
 };*/
 
 template <>
 template <>
-inline
-drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::BaseSVG::tag_t & type); /*{
+// inline
+image::TreeSVG & image::TreeSVG::operator()(const image::BaseSVG::tag_t & type); /*{
 	this->data.setType(type);
 	return *this;
 }*/
 
 template <>
 template <>
-inline
-drain::image::TreeSVG & drain::image::TreeSVG::operator()(const std::string & text); /*{
+// inline
+image::TreeSVG & image::TreeSVG::operator()(const std::string & text); /*{
 	//if (this->data.)
 	this->data.ctext = text;
 	return *this;
 }*/
 
-
+}
 
 
 #endif // TREESVG_H_
