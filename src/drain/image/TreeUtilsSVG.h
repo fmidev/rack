@@ -35,8 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#ifndef DRAIN_TREE_UTILS_SVG_H_
-#define DRAIN_TREE_UTILS_SVG_H_
+#ifndef DRAIN_TREE_UTILS_SVG
+#define DRAIN_TREE_UTILS_SVG
 
 //#include <drain/util/Rectangle.h>
 

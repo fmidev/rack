@@ -35,8 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#ifndef DRAIN_TREESVG_H_
-#define DRAIN_TREESVG_H_
+#ifndef DRAIN_TREE_SVG
+#define DRAIN_TREE_SVG
 
 #include "drain/util/FileInfo.h"
 #include "drain/util/TreeXML.h"
@@ -142,6 +142,14 @@ protected:
 
 };
 
+
+
+
+}  // image::
+
+}  // drain::
+
+
 //static
 //NodeXML<BaseSVG::tag_t>::tags;
 /*
@@ -151,14 +159,6 @@ TreeSVG & TreeSVG::operator=(const std::initializer_list<std::pair<const char *,
 	return *this;
 }
 */
-
-
-
-
-}  // image::
-
-}  // drain::
-
 
 /**
  *
@@ -178,26 +178,27 @@ struct drain::TypeName<drain::image::TreeSVG> {
 */
 
 template <>
-struct drain::TypeName<drain::image::NodeSVG> {
+struct drain::TypeName<drain::image::NodeSVG>; /* {
     static const char* get(){ return "SVG"; }
-};
+};*/
 
 template <>
 template <>
 inline
-drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::BaseSVG::tag_t & type){
+drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::BaseSVG::tag_t & type); /*{
 	this->data.setType(type);
 	return *this;
-}
+}*/
 
 template <>
 template <>
 inline
-drain::image::TreeSVG & drain::image::TreeSVG::operator()(const std::string & text){
+drain::image::TreeSVG & drain::image::TreeSVG::operator()(const std::string & text); /*{
 	//if (this->data.)
 	this->data.ctext = text;
 	return *this;
-}
+}*/
+
 
 
 

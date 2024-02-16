@@ -37,8 +37,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-#ifndef TREEXML_H_
-#define TREEXML_H_
+#ifndef TREE_XML
+#define TREE_XML
 
 #include <ostream>
 #include "ReferenceMap.h"

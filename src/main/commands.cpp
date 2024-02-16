@@ -2672,7 +2672,8 @@ public:
 		// tODO: detect bounding box
 
 		drain::Output ofstr(value);
-		ofstr << ctx.xmlTrack << '\n';
+		drain::image::NodeSVG::toStream(ofstr, ctx.xmlTrack);
+		//ofstr << ctx.xmlTrack << '\n';
 
 	}
 

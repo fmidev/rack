@@ -178,7 +178,30 @@ std::ostream & NodeSVG::toStream(std::ostream &ostr, const TreeSVG & tree){
 }
 
 
-
 }  // image::
 
 }  // drain::
+
+
+template <>
+struct drain::TypeName<drain::image::NodeSVG> {
+    static const char* get(){ return "SVG"; }
+};
+
+template <>
+template <>
+inline
+drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::BaseSVG::tag_t & type){
+	this->data.setType(type);
+	return *this;
+}
+
+template <>
+template <>
+inline
+drain::image::TreeSVG & drain::image::TreeSVG::operator()(const std::string & text){
+	//if (this->data.)
+	this->data.ctext = text;
+	return *this;
+}
+
