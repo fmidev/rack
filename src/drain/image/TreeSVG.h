@@ -154,15 +154,21 @@ TreeSVG & TreeSVG::operator=(const std::initializer_list<std::pair<const char *,
 
 
 
-inline
-std::ostream & operator<<(std::ostream &ostr, const TreeSVG & t){
-	  return NodeSVG::toStream(ostr, t);
-}
-
 
 }  // image::
 
 }  // drain::
+
+
+/**
+ *
+ *  Depending on C++ compiler, this operator cannot be defined inside drain::image scope.
+ */
+inline
+std::ostream & operator<<(std::ostream &ostr, const drain::image::TreeSVG & t){
+	  return drain::image::NodeSVG::toStream(ostr, t);
+}
+
 
 /*
 template <>

@@ -35,6 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_VERSION__ "8.13"
 
 /**
+ *   Version 8.13
+ *   -- Fixed SegmentProber POLAR bug
+ *
  *   Version 8.12
  *   -- SVG output panel: --outputConf svg[:<params>] --outputFile <basename>.svg
  *
