@@ -58,7 +58,7 @@ Note: current designed for SegmentProber.
 
 \code
 drainage shapes.png --iSegmentArea 64:255 -o segmentArea.png
-drainage image-gray.png --physicalRange 0:1 --iSegmentArea 0.5 -o segmentAreaPhys.png
+drainage image-gray.png --physicalRange 0:1 --iSegmentArea 0.5:01 -o segmentAreaPhys.png
 \endcode
 
 \code

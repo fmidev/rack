@@ -162,7 +162,7 @@ public:
 		bool HORZ_MODE = ((cp.xUnderFlowPolicy != EdgePolicy::POLAR) && (cp.xOverFlowPolicy != EdgePolicy::POLAR));
 
 		if (HORZ_MODE){
-			mout.warn("Horz Probe");
+			mout.debug("Horz Probe");
 			for (size_t i=0; i<src.getWidth(); ++i){
 				for (size_t j=0; j<src.getHeight(); ++j){
 					probe(i,j, true);
@@ -176,7 +176,7 @@ public:
 			}
 		}
 		else {
-			mout.warn("Vert Probe");
+			mout.debug("Vert Probe");
 			for (size_t j=0; j<src.getHeight(); ++j){
 				for (size_t i=0; i<src.getWidth(); ++i){
 					probe(i,j, false);
