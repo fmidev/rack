@@ -91,7 +91,7 @@ void JammingOp::runDetector(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 
 	Image stdDev; //(typeid(float), src.getGeometry());
 
-	SlidingWindowHistogramOp slidingOp(7,1,"d");
+	SlidingWindowHistogramOp slidingOp(7,1,"d"); // std deviation
 	slidingOp.makeCompatible(src.data.getConf(), stdDev);
 
 	ImageTray<const Channel> srcTray;
@@ -181,7 +181,7 @@ void JammingOp::runDetector(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 			continue;
 
 		/// Step 2: refit
-		if (weightLower != 1.0){
+		if (refit){ // weightLower != 1.0
 			sum = 0.0;
 			sumWeights = 0.0;
 			for (size_t i = iStart; i < width; ++i) {

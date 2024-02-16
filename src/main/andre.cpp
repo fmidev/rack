@@ -178,17 +178,18 @@ public:
 		RackContext & ctx = this->template getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );
 
-		mout.debug("Applying data selector and targetEncoding ");
+		mout.attention("Applying data selector and targetEncoding ");
 
 		if (!ctx.select.empty()){
 			mout.info("Storing AnDRe selector: ", ctx.select);
 			ctx.andreSelect = ctx.select;
 			ctx.select.clear();
 		}
-		else if (!ctx.andreSelect.empty()){
-			mout.info("using previously set AnDRe selector: ", ctx.andreSelect);
+		//else
+		if (!ctx.andreSelect.empty()){
+			mout.note("using AnDRe selector: ", ctx.andreSelect); // previously set
 			this->bean.dataSelector.setParameters(ctx.andreSelect);
-			mout.debug2("-> new values: " , this->bean.getDataSelector() );
+			mout.info("-> new values: " , this->bean.getDataSelector() );
 		}
 
 		// NEW (Bug fix) 2022/07/10

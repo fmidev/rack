@@ -51,21 +51,40 @@ namespace image {
 
 
 
-typedef unsigned short coord_pol_t;
+//typedef unsigned short coord_pol_t;
 
-typedef drain::Dictionary<std::string,coord_pol_t> coord_policy_dict_t;
+struct EdgePolicy {
+
+	typedef unsigned short index_t;
+
+	static const EdgePolicy::index_t UNDEFINED;// = 0;
+	static const EdgePolicy::index_t LIMIT;    // = 1;
+	static const EdgePolicy::index_t WRAP; 	   // = 2;
+	static const EdgePolicy::index_t MIRROR;   // = 3;
+	static const EdgePolicy::index_t POLAR;    // = 4;
+
+	typedef drain::Dictionary<std::string,index_t> dict_t;
+
+	static
+	const dict_t dict; // Unused, future option
+
+};
 
 
-//typedef drain::GlobalFlags<coord_pol_t> coord_policy_flags;
+
+//typedef drain::Dictionary<std::string,EdgePolicy::index_t> coord_policy_dict_t;
+
+
+//typedef drain::GlobalFlags<EdgePolicy::index_t> coord_policy_flags;
 
 // Only 2D, or templated?
 /*
 struct CoordinatePolicyFlags {
-	static const coord_pol_t UNDEFINED = 0;
-	static const coord_pol_t LIMIT;
-	static const coord_pol_t WRAP;
-	static const coord_pol_t MIRROR;
-	static const coord_pol_t POLAR;
+	static const EdgePolicy::index_t UNDEFINED = 0;
+	static const EdgePolicy::index_t LIMIT;
+	static const EdgePolicy::index_t WRAP;
+	static const EdgePolicy::index_t MIRROR;
+	static const EdgePolicy::index_t POLAR;
 };
 */
 
@@ -76,7 +95,7 @@ typedef enum { // consider GlobalFlagger
 	WRAP = 2,
 	MIRROR = 3,
 	POLAR = 4
-} coord_pol_t;
+} EdgePolicy::index_t;
 */
 
 //typedef drain::GlobalFlags<Coordinates> coord_policy_flags;
@@ -85,26 +104,23 @@ typedef enum { // consider GlobalFlagger
 /**
  *
  */
-class CoordinatePolicy : public UniTuple<coord_pol_t,4> {
+class CoordinatePolicy : public UniTuple<EdgePolicy::index_t,4> {
 
 public:
 
-	coord_pol_t & xUnderFlowPolicy;
-	coord_pol_t & yUnderFlowPolicy;
-	coord_pol_t & xOverFlowPolicy;
-	coord_pol_t & yOverFlowPolicy;
+	EdgePolicy::index_t & xUnderFlowPolicy;
+	EdgePolicy::index_t & yUnderFlowPolicy;
+	EdgePolicy::index_t & xOverFlowPolicy;
+	EdgePolicy::index_t & yOverFlowPolicy;
 
 
 	// Don't use enum (difficult to export/import).
-	static const coord_pol_t UNDEFINED;// = 0;
-	static const coord_pol_t LIMIT;    // = 1;
-	static const coord_pol_t WRAP; 	   // = 2;
-	static const coord_pol_t MIRROR;   // = 3;
-	static const coord_pol_t POLAR;    // = 4;
+
+	//static const drain::FlaggerBase<EdgePolicy::index_t>::dict_t dict;
 
 
 	inline
-	CoordinatePolicy(coord_pol_t p = LIMIT) :
+	CoordinatePolicy(EdgePolicy::index_t p = EdgePolicy::LIMIT) :
 		xUnderFlowPolicy(next()), yUnderFlowPolicy(next()), xOverFlowPolicy(next()), yOverFlowPolicy(next()) {
 		fill(p); // or set(p, p, p, p); // No auto fill.
 	};
@@ -116,7 +132,7 @@ public:
 	};
 
 	inline
-	CoordinatePolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yUnderFlowPolicy, coord_pol_t xOverFlowPolicy, coord_pol_t yOverFlowPolicy) : //v(4, LIMIT), xUnderFlowPolicy(v[0]), yUnderFlowPolicy(v[1]), xOverFlowPolicy(v[2]), yOverFlowPolicy(v[3]) {
+	CoordinatePolicy(EdgePolicy::index_t xUnderFlowPolicy, EdgePolicy::index_t yUnderFlowPolicy, EdgePolicy::index_t xOverFlowPolicy, EdgePolicy::index_t yOverFlowPolicy) : //v(4, LIMIT), xUnderFlowPolicy(v[0]), yUnderFlowPolicy(v[1]), xOverFlowPolicy(v[2]), yOverFlowPolicy(v[3]) {
 		xUnderFlowPolicy(next()), yUnderFlowPolicy(next()), xOverFlowPolicy(next()), yOverFlowPolicy(next()) {
 		set(xUnderFlowPolicy, yUnderFlowPolicy, xOverFlowPolicy, yOverFlowPolicy);
 	};
@@ -129,19 +145,17 @@ public:
 
 	inline
 	bool isSet(){
-		for (coord_pol_t p: tuple()){
-			if (p == UNDEFINED)
+		for (EdgePolicy::index_t p: tuple()){
+			if (p == EdgePolicy::UNDEFINED)
 				return false;
 		}
 		return true;
 	}
 
-	static
-	coord_policy_dict_t & dict; // Unused, future option
 
 };
 
-
+std::ostream & operator<<(std::ostream & ostr, const CoordinatePolicy & policy);
 
 } // image
 

@@ -69,9 +69,15 @@ class NodeXML : protected ReferenceMap2<FlexibleVariable> {
 
 public:
 
+
 	/// Tag type, CTEXT or COMMENT.
 	typedef T elem_t;
 	elem_t type;
+
+
+	static const int UNDEFINED;
+	static const int COMMENT;
+	static const int CTEXT;
 
 	/// Tree path type.
 	typedef drain::Path<std::string,'/'> path_t;
@@ -102,7 +108,6 @@ public:
 	// Consider either/or
 	std::string ctext;
 
-
 	virtual
 	void setType(const elem_t &t){
 		type = t;
@@ -111,6 +116,11 @@ public:
 	inline
 	const elem_t & getType() const {
 		return type;
+	};
+
+	inline
+	bool typeIs(const elem_t &t) const {
+		return type == t;
 	};
 
 	/*
@@ -168,24 +178,33 @@ public:
 		return map_t::get(key, defaultValue);
 	}
 
-	template <class V>
 	inline
 	const drain::FlexibleVariable & get(const std::string & key) const {
 		return (*this)[key];
 	}
 
+	/*
+	inline
+	const drain::FlexibleVariable & get(const std::string & key) const {
+		return (*this)[key];
+	}
+	*/
 
 	template <typename ... TT>
 	inline
-	void setClass(const std::string & s, const TT &... args) {
+	void addClass(const std::string & s, const TT &... args) {
 		classList.insert(s);
 		setClass(args...);
 	}
 
+	inline
+	bool hasClass(const std::string & cls) const {
+		return (classList.find(cls) != classList.end());
+	}
 
 	inline
-	bool hasClass(const std::string & cls) {
-		return (classList.find(cls) != classList.end());
+	void clearClasses(){
+		classList.clear();
 	}
 
 
@@ -209,24 +228,57 @@ public:
 		return map_t::empty();
 	}
 
-	/// Make this node commented.
+	/// Make this node a comment. Contained tree will not appear.
 	/**
 	 *   \param text - if given, replaces current CTEXT.
 	 *
 	 */
 	inline
 	void setComment(const std::string & text = "") {
+
+		setType((elem_t)COMMENT);
+
+		if ((int)getType() != COMMENT){ //cross-check
+
+			throw std::runtime_error(drain::TypeName<NodeXML<T> >::str() + ": COMMENT not supported");
+		}
+		/*
 		if (id > 0){
 			id = -id;
 		}
 		if (!text.empty()){
-			ctext = text;
+			ctext = text
 		}
+		*/
+		ctext = text;
+	}
+
+	/// Make this node commented.
+	/**
+	 *   \param text - if given, replaces current CTEXT.
+	 *
+	 */
+	inline
+	void setText(const std::string & text = "") {
+
+		setType((elem_t)CTEXT);
+
+		if ((int)getType() != CTEXT){ //cross-check
+			throw std::runtime_error(drain::TypeName<NodeXML<T> >::str() + ": CTEXT not supported");
+		}
+
+		ctext = text;
+
 	}
 
 	inline
 	bool isComment() const {
-		return (id < 0);
+		return typeIs((elem_t)COMMENT);
+	}
+
+	inline
+	bool isText() const {
+		return typeIs((elem_t)CTEXT);
 	}
 
 	/// "Forward definition" of Tree::toOstream
@@ -258,6 +310,14 @@ protected:
 
 };
 
+template <class T>
+const int NodeXML<T>::UNDEFINED(0);
+
+template <class T>
+const int NodeXML<T>::COMMENT(1);
+
+template <class T>
+const int NodeXML<T>::CTEXT(2);
 
 
 
@@ -267,10 +327,14 @@ typedef drain::UnorderedMultiTree<NodeXML<>,false, NodeXML<>::path_t> TreeXML;
 template <class E, bool EX, class P>
 struct TypeName< drain::UnorderedMultiTree<NodeXML<E>,EX,P> > {
 
+    static const std::string & str(){
+    	static const std::string name = drain::StringBuilder<>("TreeXML<", TypeName<E>::get(), ">");
+    	return name;
+    }
+
     static const char* get(){
     	//static const std::string name = drain::StringBuilder<>("Tree<", TypeName<E>::get(), ">");
-    	static const std::string name = drain::StringBuilder<>("TreeXML<", TypeName<E>::get(), ">");
-    	return name.c_str();
+    	return str().c_str();
     }
 };
 

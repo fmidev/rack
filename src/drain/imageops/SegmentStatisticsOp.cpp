@@ -153,6 +153,8 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 	typedef drain::typeLimiter<size_t> Limiter;
 	Limiter::value_t limiter = Type::call<Limiter>(dst.getType());
 
+	const CoordinatePolicy & cp = src.getCoordinatePolicy();
+	const bool HORZ = ((cp.xUnderFlowPolicy != EdgePolicy::POLAR) && (cp.xOverFlowPolicy != EdgePolicy::POLAR));
 
 	const SegmentStatistics & s = prober.statistics;
 	/// TODO: handle std::exceptions better
@@ -162,7 +164,7 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 			//if ((drain::Debug > 5) && ((i&15)==0) && ((j&15)==0)) std::cerr << i << ',' << j << "\n";
 
 			// STAGE 1: detect statistics.
-			prober.probe(i,j);  // painting with '1' does not disturb dst
+			prober.probe(i,j, HORZ);  // painting with '1' does not disturb dst
 
 			if (s.getSize() > 0){
 
@@ -235,7 +237,7 @@ void SegmentStatisticsOp::traverseChannels(const ImageTray<const Channel> & srcT
 					//std::cerr << " fill VIS=" << floodFill.isVisited(i,j) << '\n';
 					//std::cerr << " SEG=" << prober.isValidSegment(i,j) << '|' << floodFill.isValidSegment(i,j) << '\t';
 					//std::cerr << " src=" << src.get<double>(i,j) << '[' << prober.conf.anchorMin << ',' << prober.conf.anchorMax <<  ']'<< '\t';
-					floodFill.probe(i,j);
+					floodFill.probe(i,j, HORZ);
 					//std::cerr << " size=" << floodFill.count << '\n';
 					//floodFill.fill(i,j,size&254,min,max);
 					//std::cerr << "filled\n";

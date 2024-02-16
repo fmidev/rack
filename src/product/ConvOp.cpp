@@ -69,7 +69,7 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug2("start" );
 
-	//const CoordinatePolicy polarCoordPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP);
+	//const CoordinatePolicy polarCoordPolicy(EdgePolicy::POLAR, EdgePolicy::WRAP, EdgePolicy::LIMIT,EdgePolicy::WRAP);
 
 	/// Use always maxEcho (consider changing to cappi?)
 	/// cell and echo top are optional, but used by default.

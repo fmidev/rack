@@ -2668,6 +2668,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
+		mout.deprecating("use -o <file>.svg");
 		// tODO: detect bounding box
 
 		drain::Output ofstr(value);

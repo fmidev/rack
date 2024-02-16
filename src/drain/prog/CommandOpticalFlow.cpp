@@ -48,7 +48,7 @@ void CmdOpticalFlowBase::getDiff(size_t width, size_t height, double max, ImageT
 		static Image diff(typeid(double));
 		diff.setName("Diff");
 		//diff.initialize(typeid(double), width, height, 3, 1);
-		diff.setCoordinatePolicy(CoordinatePolicy::LIMIT);
+		diff.setCoordinatePolicy(EdgePolicy::LIMIT);
 		diff.setGeometry(width, height, bean.getDiffChannelCount());
 
 		//diff.setPhysicalScale(-max,+max);

@@ -659,11 +659,12 @@ void Palette::write(const std::string & filename) const {
 
 	drain::Output ofstr(filename);
 
-	if (NodeSVG::fileinfo.checkExtension(filepath.extension)){ // .svg
+	if (NodeSVG::fileInfo.checkExtension(filepath.extension)){ // .svg
 		mout.debug("writing SVG legend");
 		TreeSVG svg;
 		exportSVGLegend(svg, true);
-		ofstr << svg;
+		// ofstr << svg;
+		NodeSVG::toStream(ofstr, svg);
 	}
 	else if (drain::JSON::fileInfo.checkExtension(filepath.extension)){ // .json
 		mout.debug("exporting JSON palette");

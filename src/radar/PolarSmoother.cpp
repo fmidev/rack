@@ -50,7 +50,7 @@ namespace rack
 void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image & src, drain::image::Image & dst, double radiusMetres){
 
 	drain::Logger mout("PolarSmoother", __FUNCTION__);
-	CoordinatePolicy polar(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP);
+	CoordinatePolicy polar(EdgePolicy::POLAR, EdgePolicy::WRAP, EdgePolicy::LIMIT,EdgePolicy::WRAP);
 
 	Image srcWeighted;
 	Image tmp;

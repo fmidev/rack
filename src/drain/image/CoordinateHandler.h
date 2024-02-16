@@ -161,11 +161,11 @@ public:
 	};
 
 	/// Assigns internal function pointers.
-	void setPolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yUnderFlowPolicy,  coord_pol_t xOverFlowPolicy, coord_pol_t yOverFlowPolicy);
+	void setPolicy(EdgePolicy::index_t xUnderFlowPolicy, EdgePolicy::index_t yUnderFlowPolicy,  EdgePolicy::index_t xOverFlowPolicy, EdgePolicy::index_t yOverFlowPolicy);
 
 	/// Set the same policy in all the directions.
 	inline
-	void setPolicy(coord_pol_t p){
+	void setPolicy(EdgePolicy::index_t p){
 		setPolicy(p, p, p, p);
 	}
 

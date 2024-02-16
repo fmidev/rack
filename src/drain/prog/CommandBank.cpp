@@ -209,7 +209,7 @@ void CommandBank::scriptify(const std::string & line, Script & script) const{
 
 	typedef std::list<std::string> list_t;
 	list_t l;
-	//drain::StringTools::split(line, l, " ");
+
 	std::stringstream sstr(line);
 	while (sstr) {
 		l.push_back("");
@@ -242,6 +242,12 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 	}
 
 	if (arg.at(0) == '-'){
+
+		if (arg.length()==1){
+			mout.error("Unsupported single char '-', command expected");
+			return false;
+		}
+
 		const std::string & key = resolveFull(arg); // handle leading hyphens and aliases
 		if (!key.empty()){
 			//const drain::ReferenceMap & params = get(key).getParameters();

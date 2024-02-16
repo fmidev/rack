@@ -42,7 +42,7 @@ namespace drain {
 
 namespace image {
 
-const drain::FileInfo NodeSVG::fileinfo("svg");
+const drain::FileInfo NodeSVG::fileInfo("svg");
 
 std::string NodeSVG::xlink("http://www.w3.org/1999/xlink");
 std::string NodeSVG::svg("http://www.w3.org/2000/svg");
@@ -68,14 +68,14 @@ std::map<BaseSVG::tag_t,std::string> NodeXML<BaseSVG::tag_t>::tags = {
 
 NodeSVG::NodeSVG(const NodeSVG & node) : x(0), y(0), width(0), height(0), radius(0) {
 	//copyStruct(node, node, *this, RESERVE);
-	type = UNDEFINED;
+	type = elem_t::UNDEFINED;
 	copyStruct(node, node, *this, LINK); // <-- risky! may link Variable contents?
 	setType(node.getType());
 }
 
 
 NodeSVG::NodeSVG(tag_t t){
-	type = UNDEFINED;
+	type = elem_t::UNDEFINED;
 	setType(t);
 }
 
@@ -88,6 +88,15 @@ void NodeSVG::setType(const tag_t & t) {
 	type = t;
 
 	switch (t) {
+	case elem_t::UNDEFINED:
+		break;
+	case elem_t::COMMENT:
+		setComment();
+		break;
+	case elem_t::CTEXT:
+		setText();
+		// tag = "";
+		break;
 	case SVG:
 		//tag = "svg";
 		link("x", x = 0);
@@ -99,12 +108,6 @@ void NodeSVG::setType(const tag_t & t) {
 		link("xmlns", NodeSVG::svg);
 		link("xmlns:svg", NodeSVG::svg);
 		link("xmlns:xlink", NodeSVG::xlink);
-		break;
-	case COMMENT:
-		setComment();
-		break;
-	case CTEXT:
-		// tag = "";
 		break;
 	case TITLE:
 		//tag = "title";
@@ -150,7 +153,6 @@ void NodeSVG::setType(const tag_t & t) {
 		// tag = "tspan";
 		//link("text-anchor", text_anchor = "");
 		break;
-	case UNDEFINED:
 	default:
 		return;
 	}

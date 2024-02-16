@@ -71,10 +71,12 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
 	this->dataSelector.getPaths(src, dataPaths); //, ODIMPathElem::DATA);
 
-	mout.note("Initially " , dataPaths.size() , " paths with " , this->dataSelector );
 
 	if (dataPaths.size() == 0)
 		mout.warn("no dataPaths matching selector: "  , this->dataSelector );
+	else
+		mout.note("Initially " , dataPaths.size() , " paths with " , this->dataSelector );
+
 
 	//drain::RegExp quantityRegExp(this->dataSelector.getQuantity()); // DataSet objects (further below)
 	QuantitySelector slct(this->dataSelector.getQuantitySelector()); // DataSet objects (further below)

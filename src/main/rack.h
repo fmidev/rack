@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.11"
+#define __RACK_VERSION__ "8.12"
 
 /**
+ *   Version 8.12
+ *   -- SVG output panel: --outputConf svg[:<params>] --outputFile <basename>.svg
+ *
  *   Version 8.11
  *   -- Fixed SVG GROUP bug
  *

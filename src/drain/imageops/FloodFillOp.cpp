@@ -116,12 +116,17 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 	mout.debug(*this );
 
 	CoordinateHandler2D preHandler(src.getGeometry());
-	preHandler.setPolicy(CoordinatePolicy::WRAP);
+	preHandler.setPolicy(EdgePolicy::WRAP);
 	mout.debug(preHandler );
 	Point2D<int> point(startPoint);
 	if (preHandler.handle(point)){
 		mout.info("tuned coordinates => (" , point , ')' );
 	}
+
+
+	const CoordinatePolicy & cp = src.getCoordinatePolicy();
+	const bool HORZ = ((cp.xUnderFlowPolicy != EdgePolicy::POLAR) && (cp.xOverFlowPolicy != EdgePolicy::POLAR));
+
 
 	if (Type::call<typeIsFloat>(src.getType()) || Type::call<typeIsFloat>(dst.getType()) ) {
 		mout.debug2("type: double" );
@@ -131,7 +136,7 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 		fill.conf.updateFromMap(conf);
 		fill.conf.markerValue = dst.getScaling().inv(conf.markerValue);
 		fill.init();
-		fill.probe(point.x, point.y);
+		fill.probe(point.x, point.y, HORZ);
 	}
 	else {
 		mout.debug2("type: integral" );
@@ -145,7 +150,7 @@ void FloodFillOp::traverseChannel(const Channel & src, Channel & dst) const {
 		//mout.warn(conf , '>' , conf.markerValue );
 		mout.debug(fill , '>' , fill.conf.markerValue );
 		//fill.count = 0;
-		fill.probe(point.x, point.y);
+		fill.probe(point.x, point.y, HORZ);
 
 		//fill.scan();
 		//mout.warn("fill.count: " , fill.count );

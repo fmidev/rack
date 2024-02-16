@@ -61,7 +61,7 @@ namespace drain {
  *  Note that technically, accepting leading, intermediate or trailing separators means also
  *  accepting \e empty path elements, respectively.
  *
- *  When using strings as path elements, the root is identfied with an empty string -- not actually with the separator char like '/'.
+ *  When using strings as path elements, the root is identified with an empty string -- not actually with the separator char like '/'.
  *
  */
 struct PathSeparatorPolicy : UniTuple<bool,3> {
@@ -125,27 +125,33 @@ public:
 	Path() : separator(SEP, ALEAD, AREPEAT, ATRAIL){
 	};
 
+	/// Initialize with a path.
+	// All the elements are treated as paths.
 	template <typename ... TT>
 	inline
-	Path(const path_t & arg, const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: separator(separator) {
+	Path(const path_t & arg, const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){
 		append(arg, args...);
 	};
 
-	///
+	/// Initialize with a path.
+	// All the elements are treated as paths.
 	template <typename ... TT>
 	inline
-	Path(const std::string & arg, const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: separator(separator) {
+	Path(const std::string & arg, const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){
 		append(arg, args...);
 	};
 
+	/// Initialize with a path.
+	// All the elements are treated as paths.
 	template <typename ... TT>
 	inline
-	Path(const char * arg, const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){ //: separator(separator) {
+	Path(const char * arg, const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){
 		append(arg, args...);
-		//assign(s); // , sep) <- consider split here!
 	};
+
 
 	/// Why the three above instead of this?
+	//  Answer: to prevent elem and string
 	/*
 	template <typename ... TT>
 	inline
@@ -179,13 +185,11 @@ public:
 	template <typename T2, typename ... TT>
 	void append(const T2 & arg, const TT &... args) {
 		_append(arg); // replace with appendElem(elem), remove _append?
-		//_appendPath(arg);
 		append(args...);
 	}
 
 	template <typename ... TT>
 	void append(const path_t &p, const TT &... args) {
-		//appendPath(p);
 		this->insert(this->end(), p.begin(), p.end());
 		append(args...);
 	}
@@ -203,24 +207,16 @@ public:
 	}
 
 
-	/// "Default" append function.
-	void _append(const elem_t &elem){
-		appendElem(elem);
-	}
-
-
-	//  Handler for all the rest (non elem_t) arguments.
-	/// Handler for all the rest args, assumed convertable to elem_t.
-	template <typename T2>
-	void _append(const T2 & p){
-		appendElem(p);
-		//_appendPath(p);
-	}
-
 	/// Specialized handler for strings (note, possibly: elem_t==std:::string)
 	inline
 	void appendPath(const char *p){
 		_appendPath(p, 0);
+	}
+
+	// Reverse convenience...
+	inline
+	void appendPath(const path_t &p){
+		appendPath(p);
 	}
 
 
@@ -374,9 +370,6 @@ public:
 
 
 
-public:
-
-
 	/// Assigns a path directly with std::list assignment.
 	/**
 	 *  Should be safe, because separator policy is the same.
@@ -518,6 +511,20 @@ public:
 	}
 
 protected:
+
+	/// "Default" append function.
+	void _append(const elem_t &elem){
+		appendElem(elem);
+	}
+
+
+	//  Handler for all the rest (non elem_t) arguments.
+	/// Handler for all the rest args, assumed convertable to elem_t.
+	template <typename T2>
+	void _append(const T2 & p){
+		appendElem(p);
+		//_appendPath(p);
+	}
 
 	/// Extract elements from the string, starting at position i.
 	void _appendPath(const std::string & p, size_t start=0){

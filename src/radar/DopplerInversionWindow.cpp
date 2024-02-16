@@ -85,7 +85,7 @@ void DopplerInversionWindow::initialize(){
 		}
 	}
 
-	//coordinateHandler.setPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP); // move to Op?
+	//coordinateHandler.setPolicy(EdgePolicy::POLAR, EdgePolicy::WRAP, EdgePolicy::LIMIT,EdgePolicy::WRAP); // move to Op?
 
 	if (!functorSetup.empty()){
 		const drain::FunctorBank & functorBank = drain::getFunctorBank();

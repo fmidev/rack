@@ -107,6 +107,13 @@ struct TypeName
     static const char* get(){
         return typeid(T).name();
     }
+
+    // Recommended... See also: TreeXML
+    static const std::string & str(){
+    	static const std::string name(typeid(T).name());
+        return name;
+    }
+
 };
 
 /// Add a specialization for each type of those you want to support.

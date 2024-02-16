@@ -59,7 +59,7 @@ const coord_overflow_t  CoordinateHandler2D::IRREVERSIBLE; //=coord_overflow_fla
 
 
 
-void CoordinateHandler2D::setPolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yUnderFlowPolicy, coord_pol_t xOverFlowPolicy, coord_pol_t yOverFlowPolicy){
+void CoordinateHandler2D::setPolicy(EdgePolicy::index_t xUnderFlowPolicy, EdgePolicy::index_t yUnderFlowPolicy, EdgePolicy::index_t xOverFlowPolicy, EdgePolicy::index_t yOverFlowPolicy){
 
 	Logger mout(getImgLog(), "CoordinateHandler2D", __FUNCTION__);
 
@@ -67,19 +67,19 @@ void CoordinateHandler2D::setPolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yU
 	policy.set(xUnderFlowPolicy, yUnderFlowPolicy, xOverFlowPolicy, yOverFlowPolicy);
 
 	//switch (xUnderFlowPolicy){
-	if (xUnderFlowPolicy ==  CoordinatePolicy::LIMIT)
+	if (xUnderFlowPolicy ==  EdgePolicy::LIMIT)
 		handleXUnderFlow = & CoordinateHandler2D::limitXUnderFlow;
 		// break;
-	else if (xUnderFlowPolicy ==  CoordinatePolicy::WRAP)
+	else if (xUnderFlowPolicy ==  EdgePolicy::WRAP)
 		handleXUnderFlow = & CoordinateHandler2D::wrapXUnderFlow;
 		// break;
-	else if (xUnderFlowPolicy ==  CoordinatePolicy::MIRROR)
+	else if (xUnderFlowPolicy ==  EdgePolicy::MIRROR)
 		handleXUnderFlow = & CoordinateHandler2D::mirrorXUnderFlow;
 		// break;
-	else if (xUnderFlowPolicy ==  CoordinatePolicy::POLAR)
+	else if (xUnderFlowPolicy ==  EdgePolicy::POLAR)
 		handleXUnderFlow = & CoordinateHandler2D::polarXUnderFlow;
 		// break;
-	else // if (xUnderFlowPolicy ==  CoordinatePolicy::UNDEFINED)
+	else // if (xUnderFlowPolicy ==  EdgePolicy::UNDEFINED)
 	{  // default:
 		mout.warn("undefined xUnderFlowPolicy" , xUnderFlowPolicy );
 		handleXUnderFlow = & CoordinateHandler2D::skipUndefined;
@@ -87,19 +87,19 @@ void CoordinateHandler2D::setPolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yU
 	}
 
 	//switch (yUnderFlowPolicy){
-	if (yUnderFlowPolicy ==  CoordinatePolicy::LIMIT)
+	if (yUnderFlowPolicy ==  EdgePolicy::LIMIT)
 		handleYUnderFlow = & CoordinateHandler2D::limitYUnderFlow;
 		// break;
-	else if (yUnderFlowPolicy ==  CoordinatePolicy::WRAP)
+	else if (yUnderFlowPolicy ==  EdgePolicy::WRAP)
 		handleYUnderFlow = & CoordinateHandler2D::wrapYUnderFlow;
 		// break;
-	else if (yUnderFlowPolicy ==  CoordinatePolicy::MIRROR)
+	else if (yUnderFlowPolicy ==  EdgePolicy::MIRROR)
 		handleYUnderFlow = & CoordinateHandler2D::mirrorYUnderFlow;
 		// break;
-	else if (yUnderFlowPolicy ==  CoordinatePolicy::POLAR)
+	else if (yUnderFlowPolicy ==  EdgePolicy::POLAR)
 		handleYUnderFlow = & CoordinateHandler2D::polarYUnderFlow;
 		// break;
-	else // if (yUnderFlowPolicy ==  CoordinatePolicy::UNDEFINED)
+	else // if (yUnderFlowPolicy ==  EdgePolicy::UNDEFINED)
 	{  // default:
 		mout.warn("undefined yUnderFlowPolicy" , yUnderFlowPolicy);
 		handleYUnderFlow = & CoordinateHandler2D::skipUndefined;
@@ -107,19 +107,19 @@ void CoordinateHandler2D::setPolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yU
 	}
 
 	//switch (xOverFlowPolicy){
-	if (xOverFlowPolicy ==  CoordinatePolicy::LIMIT)
+	if (xOverFlowPolicy ==  EdgePolicy::LIMIT)
 		handleXOverFlow = & CoordinateHandler2D::limitXOverFlow;
 		// break;
-	else if (xOverFlowPolicy ==  CoordinatePolicy::WRAP)
+	else if (xOverFlowPolicy ==  EdgePolicy::WRAP)
 		handleXOverFlow = & CoordinateHandler2D::wrapXOverFlow;
 		// break;
-	else if (xOverFlowPolicy ==  CoordinatePolicy::MIRROR)
+	else if (xOverFlowPolicy ==  EdgePolicy::MIRROR)
 		handleXOverFlow = & CoordinateHandler2D::mirrorXOverFlow;
 		// break;
-	else if (xOverFlowPolicy ==  CoordinatePolicy::POLAR)
+	else if (xOverFlowPolicy ==  EdgePolicy::POLAR)
 		handleXOverFlow = & CoordinateHandler2D::polarXOverFlow;
 		// break;
-	else  // if ( ==  CoordinatePolicy::UNDEFINED)
+	else  // if ( ==  EdgePolicy::UNDEFINED)
 	{  // default:
 		mout.warn("undefined xOverFlowPolicy" , xOverFlowPolicy );
 		handleXOverFlow = & CoordinateHandler2D::skipUndefined;
@@ -127,19 +127,19 @@ void CoordinateHandler2D::setPolicy(coord_pol_t xUnderFlowPolicy, coord_pol_t yU
 	}
 
 	//switch (yOverFlowPolicy){
-	if (yOverFlowPolicy ==  CoordinatePolicy::LIMIT)
+	if (yOverFlowPolicy ==  EdgePolicy::LIMIT)
 		handleYOverFlow = & CoordinateHandler2D::limitYOverFlow;
 		// break;
-	else if (yOverFlowPolicy ==  CoordinatePolicy::WRAP)
+	else if (yOverFlowPolicy ==  EdgePolicy::WRAP)
 		handleYOverFlow = & CoordinateHandler2D::wrapYOverFlow;
 		// break;
-	else if (yOverFlowPolicy ==  CoordinatePolicy::MIRROR)
+	else if (yOverFlowPolicy ==  EdgePolicy::MIRROR)
 		handleYOverFlow = & CoordinateHandler2D::mirrorYOverFlow;
 		// break;
-	else if (yOverFlowPolicy ==  CoordinatePolicy::POLAR)
+	else if (yOverFlowPolicy ==  EdgePolicy::POLAR)
 		handleYOverFlow = & CoordinateHandler2D::polarYOverFlow;
 		// break;
-	else // if ( ==  CoordinatePolicy::UNDEFINED)
+	else // if ( ==  EdgePolicy::UNDEFINED)
 	{  // default:
 		mout.warn("undefined yOverFlowPolicy" , yOverFlowPolicy );
 		handleYOverFlow = & CoordinateHandler2D::skipUndefined;

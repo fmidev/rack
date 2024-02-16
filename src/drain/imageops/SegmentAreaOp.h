@@ -196,6 +196,16 @@ void SegmentAreaOp<S,D,T>::traverseChannel(const Channel & src, Channel & dst) c
 	*/
 	//mout.debug2();
 
+	const CoordinatePolicy & cp = src.getCoordinatePolicy();
+	const bool HORZ_MODE = ((cp.xUnderFlowPolicy != EdgePolicy::POLAR) && (cp.xOverFlowPolicy != EdgePolicy::POLAR));
+
+	if (HORZ_MODE){
+		mout.attention("scan HORIZONTAL, coordPolicy=", cp);
+	}
+	else {
+		mout.attention("scan VERTICAL, coordPolicy=", cp);
+	}
+
 	typedef drain::typeLimiter<dst_t> Limiter;
 	typename Limiter::value_t limit = dst.getConf().getLimiter<dst_t>();
 
@@ -207,7 +217,8 @@ void SegmentAreaOp<S,D,T>::traverseChannel(const Channel & src, Channel & dst) c
 		for (size_t j=0; j<height; j++){
 
 			// STAGE 1: detect size.
-			sizeProber.probe(i,j);
+			//if (HORZ_MODE)
+			sizeProber.probe(i,j, HORZ_MODE);
 
 			if (sizeProber.size > 0){
 
@@ -220,7 +231,7 @@ void SegmentAreaOp<S,D,T>::traverseChannel(const Channel & src, Channel & dst) c
 				// mout << " size=" << sizeProber.size << " => "<< sizeMapped << mout.endl;
 
 				floodFill.conf.markerValue = sizeMapped;
-				floodFill.probe(i,j);
+				floodFill.probe(i,j, HORZ_MODE);
 
 			}
 		}

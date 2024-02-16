@@ -133,7 +133,7 @@ public:
 
 protected:
 
-	drain::StreamBuilder<> streamBuilder;
+	drain::StreamBuilder<SEP> streamBuilder;
 
 };
 

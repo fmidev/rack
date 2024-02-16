@@ -86,8 +86,17 @@ public:
 			return;
 		}
 
+		QuantityMatcher qualityMatcher("QIND"); // coming op: other
+
+		if (qualityMatcher.test(composite.odim.quantity)){
+			mout.note("Quality [", composite.odim.quantity, "] as input: extracting data only");
+			extract(composite, "d");
+		}
+		else {
+			extract(composite, "dw");
+		}
 		// mout.attention("extract dw");
-		extract(composite, "dw");
+
 
 		// When are these needed? Upon one-liner DBZH, VRAD singles?
 		composite.dataSelector.setQuantities(""); // why quantity only?

@@ -115,26 +115,25 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 				return;
 			}
 
-			// mout.attention(srcDataSet.odim);
-			const drain::Castable & c = srcDataSet.getWhere()["elangle"];
-			double d = c;
-			mout.debug("metadata: elangle: ", d);
+			const std::string & key = srcDataSet.begin()->first;
 
 
 			DataSet<PolarDst> & dstDataSet = itd->second;
 
 			const Data<PolarSrc> & srcData = srcDataSet.getFirstData();
 
+			mout.special<LOG_DEBUG>("dataset elangle: ", srcDataSet.getWhere()["elangle"], " / data[", key, "] = [", srcData.odim.quantity, ']');
+
 			if (srcData.data.isEmpty()){
-				mout.warn("empty srcData [" , srcDataSet.begin()->first , "]: " , srcData );
+				mout.warn("empty srcData [", key, "]: ", srcData);
 				return;
 			}
 			else if (!srcData.data.typeIsSet()){
-				mout.warn("unset type in srcData [" , srcDataSet.begin()->first , "]: " , srcData );
+				mout.warn("unset type in srcData [", key, "]: ", srcData);
 				return;
 			}
 			if ((srcData.odim.area.width==0) || (srcData.odim.area.height==0)){
-				mout.warn("empty geom in odim of srcData [" , srcDataSet.begin()->first , "]: " , srcData.odim );
+				mout.warn("empty geom in odim of srcData [", key, "]: ", srcData.odim);
 				return;
 			}
 			// Note: if a detector is run like a product, this should CREATE data.
@@ -142,7 +141,7 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 			Data<PolarDst> & dstData = dstDataSet.getFirstData(); // only for appending QIND and CLASS
 
 
-			mout.debug("CLASSNAME=", CLASSNAME, " universal=", SUPPORT_UNIVERSAL, '&', UNIVERSAL );
+			mout.special<LOG_DEBUG>("CLASSNAME=", CLASSNAME, " universal=", SUPPORT_UNIVERSAL, '&', UNIVERSAL );
 
 			/// TODO: UNIVERSAL and several inputs?
 			// OVERALL QUALITY (PROB.)

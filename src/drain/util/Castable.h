@@ -1113,6 +1113,37 @@ std::ostream & operator<<(std::ostream &ostr, const Castable &c){
 	//return Sprinter::toStream(ostr, c, Sprinter::plainLayout);
 }
 
+/// Arithmetics: addition
+template <class T>
+inline
+T & operator+=(T & x, const Castable &c){
+	x += c.get<T>(0);
+	return x;
+}
+
+/// Arithmetics: subtraction
+template <class T>
+inline
+T & operator-=(T & x, const Castable &c){
+	x -= c.get<T>(0);
+	return x;
+}
+
+/// Arithmetics: addition
+template <class T>
+inline
+T & operator*=(T & x, const Castable &c){
+	x *= c.get<T>(0);
+	return x;
+}
+
+/// Arithmetics: subtraction
+template <class T>
+inline
+T & operator/=(T & x, const Castable &c){
+	x /= c.get<T>(0);
+	return x;
+}
 
 
 }  // namespace drain

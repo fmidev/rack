@@ -115,7 +115,7 @@ void DistanceModelLinear::setDecrement(float horz, float vert, float horzLeft, f
 	vertDec.forward  = checkDec(vert,   horzDec.forward);
 	vertDec.backward = checkDec(vertUp, vertDec.forward);
 
-	mout.special("decrements: ", horzDec, ',', vertDec); //
+	mout.debug("decrements: ", horzDec, ',', vertDec); //
 
 
 }

@@ -46,7 +46,7 @@ namespace rack {
 
 using namespace drain::image;
 
-const CoordinatePolicy PolarProductOp::polarCoordPolicy(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT,CoordinatePolicy::WRAP);
+const CoordinatePolicy PolarProductOp::polarCoordPolicy(EdgePolicy::POLAR, EdgePolicy::WRAP, EdgePolicy::LIMIT,EdgePolicy::WRAP);
 
 PolarProductOp::PolarProductOp(const std::string & name, const std::string & description) : VolumeOp<PolarODIM>(name, description) {
 

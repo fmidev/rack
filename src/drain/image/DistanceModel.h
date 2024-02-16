@@ -252,7 +252,7 @@ protected:
 		//parameters.link("topology", topology=PIX_ADJACENCY_KNIGHT, "0|1|2");
 
 		//parameters.link("topology", pixelAdjacencyStr = "KNIGHT", "0|1|2");
-		parameters.link("topology", pixelAdjacencyStr = "KNIGHT", sprinter(EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict.getKeys()).str());
+		parameters.link("topology", pixelAdjacencyStr = "16-CONNECTED", sprinter(EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict.getKeys()).str());
 		//drain::sprinter(drain::EnumDict<DataOrder::Oper>::dict.getKeys()).str()
 		// ? update();
 		setMax(255); // warning

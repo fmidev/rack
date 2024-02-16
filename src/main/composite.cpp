@@ -176,7 +176,6 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 
 	mout.debug("add C #" + ctx.getName());
 
-	//const Hi5Tree & src = ctx.getHi5(RackContext::CARTESIAN | RackContext::POLAR | RackContext::CURRENT);
 	const Hi5Tree & src = ctx.getHi5(inputFilter);
 
 	if (src.empty()){

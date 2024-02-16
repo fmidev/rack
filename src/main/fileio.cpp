@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Log.h"
 #include "drain/util/FilePath.h"
+#include "drain/util/Frame.h"
 #include "drain/util/Output.h"
 #include "drain/util/StringMapper.h"
 #include "drain/util/TreeOrdered.h"
@@ -44,6 +45,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/image/FilePng.h"
 #include "drain/image/FilePnm.h"
 #include "drain/image/FileGeoTIFF.h"
+#include "drain/image/TreeSVG.h"
+#include "drain/image/TreeUtilsSVG.h"
 
 #include "drain/image/Image.h"
 #include "drain/imageops/ImageModifierPack.h"
@@ -100,18 +103,23 @@ public:
 	CmdOutputConf() : drain::SimpleCommand<std::string>(__FUNCTION__, "Format (h5|tif|png|tre|dot) specific configurations", "value", "<format>:<key>=value>,conf...") {
 
 		hdf5Conf.link("compression", hi5::Writer::compressionLevel);
-
 		pngConf.link("compression", drain::image::FilePng::compressionLevel);
+
+		// TreeUtilsSVG::defaultOrientation.value
+		svgConf.link("group",       TreeUtilsSVG::defaultGroupName);
+		svgConf.link("orientation", svgConf_Orientation, drain::sprinter(TreeUtilsSVG::defaultOrientation.getDict().getKeys()).str());
+		svgConf.link("direction",   svgConf_Direction,   drain::sprinter(TreeUtilsSVG::defaultDirection.getDict().getKeys()).str());
+		// TreeUtilsSVG::defaultDirection.value);
+
+
 
 #ifndef USE_GEOTIFF_NO
 		gtiffConf.link("tile", FileTIFF::defaultTile.tuple(), "<width>[:<height>]");
 		// Compression METHOD
 		gtiffConf.link("compression", FileTIFF::defaultCompression, drain::sprinter(FileTIFF::getCompressionDict(), "|", "<>").str());
 		// gtiffConf.link("level", FileTIFF::defaultCompressionLevel, "1..10");
-		// gtiffConf.link("strict", FileGeoTIFF::strictCompliance, "stop on GeoTIFF incompliancy");
 		gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.str(), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str()); // drain::sprinter(FileGeoTIFF::flagger.getDict(), "|", "<>").str());
-		// gtiffConf.link("compliance", FileGeoTIFF::compliance, drain::sprinter(drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict, "|", "<>").str()); // "raw" object (segfaul risk)
-		// gtiffConf.link("plainEPSG", FileGeoTIFF::plainEPSG, "use EPSG only, if code supported");
+
 #endif
 
 	};
@@ -121,7 +129,7 @@ public:
 		hdf5Conf.copyStruct(cmd.hdf5Conf,   cmd, *this, drain::ReferenceMap::LINK);
 		pngConf.copyStruct(cmd.pngConf,     cmd, *this, drain::ReferenceMap::LINK);
 		gtiffConf.copyStruct(cmd.gtiffConf, cmd, *this, drain::ReferenceMap::LINK);
-
+		svgConf.copyStruct(cmd.svgConf, cmd, *this,     drain::ReferenceMap::LINK); //,
 	}
 
 	// std::string format;
@@ -151,7 +159,7 @@ public:
 		// mout.note("params: ", params);
 
 		if (format.empty()){
-			mout.error("no format (h5,png,tif) given");
+			mout.error("no format (h5,png,svg,tif) given");
 			return;
 		}
 
@@ -171,6 +179,13 @@ public:
 		}
 		else if (drain::image::FilePnm::fileInfo.checkExtension(format)){
 			mout.unimplemented("(no parameters supported for PPM/PGM )");
+		}
+		else if (drain::image::NodeSVG::fileInfo.checkExtension(format)){
+			// read params
+			handleParams(svgConf, params);
+			// write params
+			TreeUtilsSVG::defaultOrientation.set(svgConf_Orientation);
+			TreeUtilsSVG::defaultDirection.set(svgConf_Direction);
 		}
 #ifndef USE_GEOTIFF_NO
 		else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
@@ -210,10 +225,12 @@ public:
 		else {
 			const drain::ReferenceMap::unitmap_t & umap = rmap.getUnitMap();
 			// drain::Sprinter::toStream(std::cout, gtiffConf, layout);
-			for (const auto & entry: rmap){
-				std::cout << entry.first << '=' << entry.second;
+			//for (const auto & entry: rmap){
+			for (const std::string & key: rmap.getKeyList()){
+				//std::cout << entry.first << '=' << entry.second;
+				std::cout << key << '=' << rmap.get(key, "");
 				// if (rmap) UNITMAP
-				drain::ReferenceMap::unitmap_t::const_iterator it = umap.find(entry.first);
+				drain::ReferenceMap::unitmap_t::const_iterator it = umap.find(key);
 				if (it != umap.end()){
 					std::cout << ' ' << '(' << it->second << ')';
 				}
@@ -230,6 +247,11 @@ public:
 
 	mutable
 	drain::ReferenceMap gtiffConf;
+
+	mutable
+	drain::ReferenceMap svgConf;
+	std::string svgConf_Orientation;
+	std::string svgConf_Direction;
 
 
 };
@@ -391,70 +413,66 @@ void CmdOutputFile::exec() const {
 		// drain::StringMapper dataIDSyntax("${what:date}_${what:time} ${what:product}", "^[A-Za-z0-9_:]*$");
 		dataIDSyntax.parse("${what:date}_${what:time}_");
 		//std::string dataID = dataIDSyntax.toStr(ctx.getStatusMap(true), 'x');
-		std::string dataID = dataIDSyntax.toStr(src.properties, 'x') + SourceODIM(src.properties.get("what:source","")).getSourceCode();
+		std::string dataID = TreeUtilsSVG::defaultGroupName;
+		// dataIDSyntax.toStr(src.properties, 'x') + SourceODIM(src.properties.get("what:source","")).getSourceCode();
 
 
 		drain::image::TreeSVG & baseGroup = track[dataID](BaseSVG::GROUP); // track.retrieveChild(key);
-		baseGroup->setClass("imagecol");
+		baseGroup->addClass("imagecol");
 
 		drain::StringMapper imageIDSyntax(RackContext::variableMapper);
-		imageIDSyntax.parse("${what:product}_${what:quantity}");
+		//imageIDSyntax.parse("${what:product}_${what:quantity}");
+		imageIDSyntax.parse("${what:product}"); // _${where:elangle}
+		//imageIDSyntax.parse("${what:product}_");
 		std::string imageID = imageIDSyntax.toStr(src.properties);
+		/*
+		std::string quantity = src.properties["what:quantity"];
+		const size_t i = quantity.find('|');
+		if (i != std::string::npos){
+			quantity = quantity.substr(0, i);
+		}
+		imageID += quantity;
+		*/
+		//const size_t i = imageID.find('|');
+		//std::string groupID(imageID,0,i);
 
 		drain::image::TreeSVG & imageGroup = baseGroup[imageID](BaseSVG::GROUP);
-		imageGroup->setClass("MAIN");
-		drain::image::TreeSVG & imageElem = imageGroup[path.extension](BaseSVG::IMAGE);
+		imageGroup->addClass("MAIN");
+
+
+		drain::image::TreeSVG & imageElem = imageGroup[path.basename+'.'+path.extension](BaseSVG::IMAGE);
 		// drain::image::TreeSVG & imageGroup = imageGroup0[imageID](BaseSVG::IMAGE);
-		//drain::image::TreeSVG & imageGroup = baseGroup[path.basename+"."+path.extension](BaseSVG::IMAGE);
+		// drain::image::TreeSVG & imageGroup = baseGroup[path.basename+"."+path.extension](BaseSVG::IMAGE);
 		imageElem->set("width", src.getWidth());
 		imageElem->set("height", src.getHeight());
 		// imageElem->set("href", path.str());
 		imageElem->set("xlink:href", path.str());
-		//imageGroup->setType;
-		//imageGroup->set("name", path.extension);
 		imageElem["basename"](drain::image::BaseSVG::TITLE)(path.basename);
+
+		if (!IMAGE_PNG){
+			imageElem->setComment();
+		}
 
 		if (src.getChannelCount() > 1){
 			const std::string quantity = src.properties.get("what:quantity", "");
 
 			drain::image::TreeSVG & paletteGroup = imageGroup[quantity](NodeSVG::GROUP);
-			paletteGroup->setClass("palette");
-			paletteGroup["placeholder"](NodeSVG::COMMENT)->ctext = " kommentti!";
+			paletteGroup->addClass("palette");
+			//paletteGroup["placeholder"](drain::image::NodeSVG::COMMENT)->ctext = " kommentti!";
+			paletteGroup["placeholder"](drain::image::NodeSVG::elem_t::COMMENT)->ctext = " kommentti!";
 		}
 
 		//drain::BBox bbox;
-		//drain::Rectangle<int> rect;
-		int width = 0;
-		int height = 0;
-		for (auto & entry : imageGroup.getChildren()){ //
-			drain::image::TreeSVG & t = entry.second;
-			if (t->getType() == BaseSVG::IMAGE){
-				height += t->get("height", 0);
-				width = std::max(width, t->get("width", 0));
-				//rect.lowerLeft.y -= entry.second->getMap().get("height", 0);
-				//rect.upperRight.x = std::max(rect.upperRight.x, entry.second->getMap().get("width", 0));
-			}
-		}
+		//drain::Rectangle<int> bbox;
+		drain::Frame2D<int> frame;
+		TreeUtilsSVG::determineBBox(imageGroup, frame); // , TreeUtilsSVG::VERT);
+		TreeUtilsSVG::align(imageGroup, frame); // , TreeUtilsSVG::VERT, TreeUtilsSVG::DECR);
 
-		track->set("width",  width);
-		track->set("height", height);
-		track->set("viewBox", (const std::string &)drain::StringBuilder<' '>(0, 0, width, height));
+		ctx.xmlTrack->set("width",  frame.getWidth());
+		ctx.xmlTrack->set("height", frame.getHeight());
+		// track->set("viewBox", (const std::string &)drain::StringBuilder<' '>(0, 0, width, height));
+		ctx.xmlTrack->set("viewBox", (const std::string &)drain::StringBuilder<' '>(0, 0, frame.width, frame.height));
 
-		//imageGroup->set("bbox", rect.toStr(','));
-		int startj = height;
-		imageGroup->set("lev", width);
-		imageGroup->set("kork", height);
-		for (auto & entry : imageGroup.getChildren()){ //
-			drain::image::TreeSVG & t = entry.second;
-			if (t->getType() == BaseSVG::IMAGE){
-				startj -= t->get("height", 0);
-				t->set("y", startj);
-			}
-		}
-
-
-
-		//drain::image::NodeSVG & baseGroup = track["image"].data;
 
 		if (!ctx.formatStr.empty()){
 			mout.special("formatting comments");
@@ -468,14 +486,14 @@ void CmdOutputFile::exec() const {
 		drain::image::TreeSVG & text = baseGroup["text"](NodeSVG::TEXT);
 		text->set("x", 30);
 		text->set("y", 30);
-		text->setClass("TOP");
+		text->addClass("TOP");
 		const std::list<std::string> & mains = DataTools::getMainAttributes();
 		for (const std::string & k: mains){
 			if (src.properties.hasKey(k)){
 				size_t i = k.find(':');
 				std::string kShort = i==std::string::npos ? k : k.substr(i+1);
 				drain::image::TreeSVG & tspan = text[kShort](NodeSVG::TSPAN)(src.properties.get(k, ""));
-				tspan->setClass(kShort);
+				tspan->addClass(kShort);
 				// tspan->ctext = src.properties.get(k, "");
 			}
 		}
@@ -486,9 +504,6 @@ void CmdOutputFile::exec() const {
 			mout.special(path);
 		}
 
-		if (!IMAGE_PNG){
-			imageElem->setComment();
-		}
 
 		if (IMAGE_PNG || IMAGE_PNM){
 			mout.debug("PNG or PGM format, using ImageFile::write");
@@ -513,6 +528,13 @@ void CmdOutputFile::exec() const {
 		}
 
 	}
+	else if (drain::image::NodeSVG::fileInfo.checkPath(path)) {
+		mout.experimental("writing SVG file: ", path);
+		drain::Output ofstr(value);
+		drain::image::NodeSVG::toStream(ofstr, ctx.xmlTrack);
+		// ofstr << ctx.xmlTrack << '\n';
+		// mout.unimplemented("not support yet, use --outputPanel / dumpXML");
+	}
 	else if (arrayFileExtension.test(filename)){
 
 		/// Currently designed only for vertical profiles produced by VerticalProfileOp (\c --pVerticalProfile )
@@ -524,9 +546,6 @@ void CmdOutputFile::exec() const {
 
 		writeSamples(src, filename);
 
-	}
-	else if (drain::image::NodeSVG::fileinfo.checkPath(path)) {
-		mout.unimplemented("not support yet, use --outputPanel");
 	}
 	else if (dotFileExtension.test(value)) {
 
@@ -778,9 +797,9 @@ void CmdOutputPanel::exec() const {
 
 	const std::string s = filename.empty() ? layout+".svg" : filename;
 
-	if (!NodeSVG::fileinfo.checkPath(s)){ // .svg
+	if (!NodeSVG::fileInfo.checkPath(s)){ // .svg
 		mout.fail("suspicious extension for SVG file: ", s);
-		mout.advice("extensionRegexp: ", NodeSVG::fileinfo.extensionRegexp);
+		mout.advice("extensionRegexp: ", NodeSVG::fileInfo.extensionRegexp);
 	}
 
 	drain::Output ofstr(s);

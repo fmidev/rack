@@ -227,10 +227,10 @@ Range<int> DistanceTransformOp<T>::getHorzRange(const CoordinateHandler2D & coor
 	Range<int> xRange = coordinateHandler.getXRange();
 	const Bidirectional<float> & radiusHorz = getDistanceModel().getRadiusHorz();
 
-	if (coordinateHandler.policy.xUnderFlowPolicy == CoordinatePolicy::WRAP)
+	if (coordinateHandler.policy.xUnderFlowPolicy == EdgePolicy::WRAP)
 		xRange.min -= radiusHorz.backward;
 
-	if (coordinateHandler.policy.xOverFlowPolicy == CoordinatePolicy::WRAP)
+	if (coordinateHandler.policy.xOverFlowPolicy == EdgePolicy::WRAP)
 		xRange.max += radiusHorz.forward;
 
 	return xRange;
@@ -250,10 +250,10 @@ Range<int> DistanceTransformOp<T>::getVertRange(const CoordinateHandler2D & coor
 	// mout.warn("radiusVert: " , radiusVert );
 
 
-	if (coordinateHandler.policy.yUnderFlowPolicy == CoordinatePolicy::WRAP)
+	if (coordinateHandler.policy.yUnderFlowPolicy == EdgePolicy::WRAP)
 		yRange.min -= radiusVert.backward;
 
-	if (coordinateHandler.policy.yOverFlowPolicy == CoordinatePolicy::WRAP)
+	if (coordinateHandler.policy.yOverFlowPolicy == EdgePolicy::WRAP)
 		yRange.max += radiusVert.forward;
 
 	// mout.warn("yRange: " , yRange );

@@ -39,13 +39,31 @@ namespace drain {
 
 namespace image {
 
-coord_policy_dict_t & CoordinatePolicy::dict = drain::Static::get<coord_policy_dict_t>();
+const EdgePolicy::index_t EdgePolicy::UNDEFINED = 0; //(0);
+const EdgePolicy::index_t EdgePolicy::LIMIT = 1; // EdgePolicy::dict.add("LIMIT", 1).second; // = drain::Static::get<coord_policy_dict_t>().add("LIMIT", 1).second;
+const EdgePolicy::index_t EdgePolicy::WRAP  = 2; //  = EdgePolicy::dict.add("WRAP"  ,2).second;
+const EdgePolicy::index_t EdgePolicy::MIRROR= 3; //= EdgePolicy::dict.add("MIRROR",3).second;
+const EdgePolicy::index_t EdgePolicy::POLAR = 4; // = EdgePolicy::dict.add("POLAR", 4).second;
 
-const coord_pol_t CoordinatePolicy::UNDEFINED = 0; //(0);
-const coord_pol_t CoordinatePolicy::LIMIT = 1; // CoordinatePolicy::dict.add("LIMIT", 1).second; // = drain::Static::get<coord_policy_dict_t>().add("LIMIT", 1).second;
-const coord_pol_t CoordinatePolicy::WRAP  = 2; //  = CoordinatePolicy::dict.add("WRAP"  ,2).second;
-const coord_pol_t CoordinatePolicy::MIRROR= 3; //= CoordinatePolicy::dict.add("MIRROR",3).second;
-const coord_pol_t CoordinatePolicy::POLAR = 4; // = CoordinatePolicy::dict.add("POLAR", 4).second;
+const EdgePolicy::dict_t EdgePolicy::dict =  {  //drain::Static::get<coord_policy_dict_t>();
+		{"UNDEFINED", UNDEFINED},
+		{"LIMIT",     LIMIT},
+		{"WRAP",      WRAP},
+		{"MIRROR",    MIRROR},
+		{"POLAR",     POLAR},
+};
+
+std::ostream & operator<<(std::ostream & ostr, const CoordinatePolicy & policy){
+	char sep = 0;
+	for (EdgePolicy::index_t p: policy.tuple()){
+		if (sep)
+			ostr << sep;
+		else
+			sep = ',';
+		ostr << EdgePolicy::dict.getKey(p);
+	}
+	return ostr;
+}
 
 
 } // image

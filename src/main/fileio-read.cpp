@@ -503,8 +503,16 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 			}
 
 			// Update general quality, i.e. dataset level quality
-			mout.special("Updating dataset level quality: '", timeGroup.first, "' -- ", timeGroup.second);
-			updateQuality(srcDataSet, dstDataSet);
+
+			//QualityDataSupport<BasicDst> srcQ(srcDataSet);
+			if (QualityDataSupport<BasicDst>(srcDataSet).getQuality().empty()){
+				mout.debug("No quality fields, ok");
+			}
+			else {
+				mout.special("Updating dataset level quality: '", timeGroup.first, "' -- ", timeGroup.second);
+				updateQuality(srcDataSet, dstDataSet);
+			}
+
 
 		}
 	}
@@ -651,8 +659,18 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
+
 	{
-		mout.special("Step 1: Append missing quality fields ");  // other than QIND or CLASS
+		QualityDataSupport<BasicDst> srcQ(src);
+		if (srcQ.getQuality().empty()){
+			mout.debug("No quality fields, ok");
+			return;
+		}
+	}
+
+
+	{
+		mout.special<LOG_INFO>("Step 1: Append missing quality fields ");  // other than QIND or CLASS
 
 		//DataTools::updateInternalAttributes(src); // NEEDED?
 
@@ -690,7 +708,7 @@ void CmdInputFile::updateQuality(Hi5Tree & src, Hi5Tree & dst) const {
 
 	{
 
-		mout.special("Step 2: Join quality fields QIND and CLASS");
+		mout.special<LOG_INFO>("Step 2: Join quality fields QIND and CLASS");
 
 		// TODO:
 		// Future option: templated Polar/Cart

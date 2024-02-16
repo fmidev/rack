@@ -77,7 +77,6 @@ public:
 	 */
 	template <class M,class V,bool STRICT=true>
 	static
-	//void setValue(std::map<std::string,T> & dst, const std::string & key, const V & value) {
 	void setValue(M & dst, const std::string & key, const V & value) {
 		if (STRICT){
 			dst[key] = value;  // throws exception in derived classes!
@@ -92,6 +91,15 @@ public:
 				//std::cerr << __FILE__ << ':' << __FUNCTION__ << ": key '" << key << "' not found\n";
 			}
 		}
+	}
+
+	template <class M,class V>
+	static inline
+	void setValue(M & dst, const std::string & key, const V & value, bool STRICT) {
+		if (STRICT)
+			setValue<M,V,true>(dst, key, value);
+		else
+			setValue<M,V,false>(dst, key, value);
 	}
 
 

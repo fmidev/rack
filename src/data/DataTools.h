@@ -121,8 +121,8 @@ public:
 
 
 	static
-	void updateCoordinatePolicy(Hi5Tree & src, const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(drain::image::CoordinatePolicy::LIMIT));
-	//void updateCoordinatePolicy(Hi5Tree & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
+	void updateCoordinatePolicy(Hi5Tree & src, const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(drain::image::EdgePolicy::LIMIT));
+	//void updateCoordinatePolicy(Hi5Tree & src, const CoordinatePolicy & policy = CoordinatePolicy(EdgePolicy::LIMIT));
 
 	// static
 	// bool dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr);
@@ -218,12 +218,15 @@ protected:
 template <class M>
 void DataTools::getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & p, M & attributes, bool updateOnly){
 
-	drain::Logger mout("DataTools", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (p.empty() || !p.front().isRoot()){
-		mout.debug("add root and restart with path= '" , p , "'" );
-		Hi5Tree::path_t pRooted(p);
-		pRooted.push_front(Hi5Tree::path_t::elem_t::ROOT);
+		mout.attention("add root and restart with path= '" , p , "'  (revised code)" );
+		//Hi5Tree::path_t pRooted(Hi5Tree::path_t(Hi5Tree::path_t::elem_t::ROOT), p);
+		Hi5Tree::path_t pRooted;
+		pRooted.appendElem(Hi5Tree::path_t::elem_t::ROOT);
+		pRooted.append(p);
+		// pRooted.push_front(Hi5Tree::path_t::elem_t::ROOT);
 		DataTools::getAttributes(src, pRooted, attributes, updateOnly);
 		return;
 	}
@@ -233,31 +236,42 @@ void DataTools::getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & p, M &
 	Hi5Tree::path_t path;
 	std::stringstream sstr;
 
-	for (Hi5Tree::path_t::const_iterator pit = p.begin(); pit != p.end(); ++pit){
+	//for (Hi5Tree::path_t::const_iterator pit = p.begin(); pit != p.end(); ++pit){
+	for (Hi5Tree::path_t::elem_t elem: p){
 
-		path << *pit;
+		path.appendElem(elem); // *pit;
 
 		mout.debug("check='" , path , "'" );
 
 		const Hi5Tree & s = src(path);
 
-		for (ODIMPathElemSeq::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
+		//for (ODIMPathElemSeq::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){
+		for (const ODIMPathElem & elem: EncodingODIM::attributeGroups){
 
-			const hi5::NodeHi5 & group = s[*git].data;
+			const hi5::NodeHi5 & group = s[elem].data;
 
-			for(drain::VariableMap::const_iterator ait = group.attributes.begin(); ait != group.attributes.end(); ait++){
+			//for(drain::VariableMap::const_iterator ait = group.attributes.begin(); ait != group.attributes.end(); ait++){
+			for(const auto & entry: group.attributes){
 
 				sstr.str("");
-				sstr << *git << ':' << ait->first;
+				sstr << elem << ':' << entry.first;  // key
 				//mout.debug(8) << "getAttributes: " << sstr.toStr() << '=' << it->second << mout.endl;
 
-				if (!updateOnly)
-					attributes[sstr.str()] = ait->second;
-				else {
+				//drain::SmartMapTools::setValue(attributes, sstr.str(), entry.second);
+				drain::SmartMapTools::setValue(attributes, sstr.str(), entry.second, !updateOnly);
+				/*
+				if (updateOnly){
+					//drain::SmartMapTools::setValue<false>(attributes, sstr.str(), entry.second);
+
 					typename M::iterator it = attributes.find(sstr.str());
-					if (it != attributes.end())
-						it->second = ait->second;
+										if (it != attributes.end())
+											it->second = entry.second;
 				}
+				else {
+					// drain::SmartMapTools::setValue<true>(attributes, sstr.str(), entry.second);
+					attributes[sstr.str()] = entry.second; // value
+				}
+				*/
 			}
 		}
 

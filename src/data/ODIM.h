@@ -225,7 +225,7 @@ public:
 	virtual inline
 	const drain::image::CoordinatePolicy & getCoordinatePolicy() const {
 		//using namespace drain::image;
-		static const drain::image::CoordinatePolicy policy(drain::image::CoordinatePolicy::LIMIT);
+		static const drain::image::CoordinatePolicy policy(drain::image::EdgePolicy::LIMIT);
 		return policy;
 		//return rack::limit;
 	}

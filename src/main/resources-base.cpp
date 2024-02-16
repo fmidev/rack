@@ -238,7 +238,8 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
 		mout.debug("(Not empty)");
 
 		//DataSelector selector(ODIMPathElem::DATA);
-		DataSelector selector(ODIMPathElem::DATA, ODIMPathElem::ARRAY);
+		// DataSelector selector(ODIMPathElem::DATA, ODIMPathElem::ARRAY);
+		DataSelector selector(ODIMPathElem::DATA|ODIMPathElem::QUALITY, ODIMPathElem::ARRAY);
 		// mout.attention("status metadat0: ", select, " -> '", selector, "'"); //, ", orderFlags=", selector.order.str);
 		mout.debug2("selector orderFlags=", selector.getOrder());
 		//mout.special("selector orderFlags.value=", selector.orderFlags.value );

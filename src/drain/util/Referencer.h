@@ -182,6 +182,7 @@ public:
 
 };
 
+/*
 template <>
 struct TypeName<ReferenceBase<Castable> > {
     static const char* get(){ return "ReferenceBase<Castable>"; }
@@ -191,6 +192,14 @@ template <>
 struct TypeName<ReferenceBase<Variable> > {
     static const char* get(){ return "ReferenceBase<Variable>"; }
 };
+*/
+
+template <>
+const char* TypeName<ReferenceBase<Castable> >::get();
+
+template <>
+const char* TypeName<ReferenceBase<Variable> >::get();
+
 
 
 class Referencer : public ReferenceBase<Castable> {

@@ -155,14 +155,45 @@ public:
 	 *
 	 */
 	void scan(){
-		for (size_t i=0; i<src.getWidth(); ++i)
-			for (size_t j=0; j<src.getHeight(); ++j)
-				probe(i,j);
+
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+		const CoordinatePolicy & cp = handler.getPolicy();
+		bool HORZ_MODE = ((cp.xUnderFlowPolicy != EdgePolicy::POLAR) && (cp.xOverFlowPolicy != EdgePolicy::POLAR));
+
+		if (HORZ_MODE){
+			mout.warn("Horz Probe");
+			for (size_t i=0; i<src.getWidth(); ++i){
+				for (size_t j=0; j<src.getHeight(); ++j){
+					probe(i,j, true);
+					//probeH(i,j);
+					/*
+					clear();
+					if (handler.validate(i, j)){
+						scanHorzProbeVert(i,j);
+					}*/
+				}
+			}
+		}
+		else {
+			mout.warn("Vert Probe");
+			for (size_t j=0; j<src.getHeight(); ++j){
+				for (size_t i=0; i<src.getWidth(); ++i){
+					probe(i,j, false);
+					/*clear();
+					if (handler.validate(i, j)){
+						scanVertProbeHorz(i,j);
+					}
+					*/
+				}
+			}
+		}
 	}
 
 
-	/// Start probing
-	void probe(int i, int j){
+	/// Start probings
+	void probe(int i, int j, bool HORIZONTAL){
+
 
 		clear();
 		if (handler.validate(i, j)){
@@ -172,7 +203,10 @@ public:
 				mout.warn("accept: " , i , ',' , j , "\t=" , src.get<double>(i,j) , '\t' , dst->get<double>(i,j) );
 			}
 			*/
-			probe4(i,j);
+			if (HORIZONTAL)
+				scanHorzProbeVert(i,j);
+			else
+				scanVertProbeHorz(i,j);
 		}
 
 	};
@@ -225,21 +259,6 @@ protected:
 	///  Application dependent operation performed in each segment location (i,j).
 	virtual	inline
 	void update(int i, int j){
-		/*
-		Logger mout(getImgLog(), "SegmentProber", __FUNCTION__);
-
-		//static size_t size = 0;
-		static size_t counter = 0;
-		if (mout.isDebug(10)){
-			++ counter;
-			if ((counter % 63) == 0){
-				mout.note(counter );
-				if (mout.isDebug(20)){
-					drain::image::FilePng::writeIndexed(*dst, "SegmentProber");
-				}
-			}
-		}
-		*/
 	};
 
 
@@ -284,14 +303,16 @@ protected:
 
 
 	/// Try to move; change coords in success, else keep them intact.
-	bool move(int & i, int & j, int di, int dj) {
+	template <int DI, int DJ>
+	inline
+	bool move(int & i, int & j){ //, int DI, int DJ) {
 
 		// Save
 		const int i0 = i;
 		const int j0 = j;
 
-		i += di;
-		j += dj;
+		i += DI;
+		j += DJ;
 
 		// Drop isValidSegment
 		if (handler.validate(i,j)) // must be first, changes coords
@@ -315,7 +336,7 @@ protected:
 s	 *   the horizontal direction is handled sequentially whereas the vertical direction handled recursively.
 	 *  Compared to fully recursive approach, this technique preserves the speed but offers smaller consumption of memory.
 	 */
-	void probe4(int i, int j) {
+	void scanHorzProbeVert(int i, int j) {
 
 		if (!isValidPos(i,j))
 			return;
@@ -327,7 +348,7 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 
 		/// Scan right. Note than i may wrap beyond image width.
 		int iEnd;
-		while (move(i,j, 1,0)){
+		while (move<1,0>(i,j)){ //(move(i,j, 1,0)){
 			visit(i,j);
 		}
 		iEnd = i;
@@ -338,7 +359,7 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 		/// Scan left
 		i=i0;
 		j=j0;
-		while (move(i,j, -1,0)){
+		while (move<-1,0>(i,j)){ //(move(i,j, -1,0)){
 			visit(i, j);
 		}
 		// Now i is the minimum valid i coordinate.
@@ -354,19 +375,73 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 			j2 = j-1;
 			if (handler.validate(i2, j2))
 				if (isValidMove(i,j, i2,j2))
-					probe4(i2,j2);
+					scanHorzProbeVert(i2,j2);
 			i2 = i;
 			j2 = j+1;
 			if (handler.validate(i2, j2))
 				if (isValidMove(i,j, i2,j2))
-					probe4(i2,j2);
+					scanHorzProbeVert(i2,j2);
 			++i;
 			handler.validate(i, j); // check?
 		}; // while (i != iEnd);
 
 	}
 
+
+	void scanVertProbeHorz(int i, int j) {
+
+		if (!isValidPos(i,j))
+			return;
+
+		visit(i,j); // mark & update
+
+		const int i0 = i;
+		const int j0 = j;
+
+		/// Scan DOWN. Note than j may wrap beyond image height.
+		int jEnd;
+		while (move<0,1>(i,j)){ //(move(i,j, 1,0)){
+			visit(i,j);
+		}
+		jEnd = j;
+		// Now jEnd is the last (~maximum) valid i coordinate.
+
+		// Rewrite code?: iMax should support wrapping, so 200...256...10.
+
+		/// Scan UP
+		i=i0;
+		j=j0;
+		while (move<0,-1>(i,j)){ //(move(i,j, -1,0)){
+			visit(i, j);
+		}
+		// Now j is the first (~minimum) valid j coordinate.
+
+
+		/// Scan again, continuing one step above and below.
+		int i2, j2;
+		bool done = false;
+		while (!done){
+			done = (j == jEnd);
+			j2 = j;
+			// Test left side
+			i2 = i-1;
+			if (handler.validate(i2, j2))
+				if (isValidMove(i,j, i2,j2))
+					scanVertProbeHorz(i2,j2);
+			j2 = j;
+			// Test right side
+			i2 = i+1;
+			if (handler.validate(i2, j2))
+				if (isValidMove(i,j, i2,j2))
+					scanVertProbeHorz(i2,j2);
+			++j;
+			handler.validate(i, j); // check?
+		};
+
+	}
+
 };
+
 
 
 template <class S, class D, class C>

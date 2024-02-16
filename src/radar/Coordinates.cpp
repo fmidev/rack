@@ -44,17 +44,17 @@ namespace rack {
 
 // could be needed also in Data.h
 const drain::image::CoordinatePolicy polarLeftCoords(
-		drain::image::CoordinatePolicy::POLAR,
-		drain::image::CoordinatePolicy::WRAP,
-		drain::image::CoordinatePolicy::LIMIT,
-		drain::image::CoordinatePolicy::WRAP);
+		drain::image::EdgePolicy::POLAR,
+		drain::image::EdgePolicy::WRAP,
+		drain::image::EdgePolicy::LIMIT,
+		drain::image::EdgePolicy::WRAP);
 
 // could be needed also in Data.h
 const drain::image::CoordinatePolicy limitCoords(
-		drain::image::CoordinatePolicy::LIMIT,
-		drain::image::CoordinatePolicy::LIMIT,
-		drain::image::CoordinatePolicy::LIMIT,
-		drain::image::CoordinatePolicy::LIMIT);
+		drain::image::EdgePolicy::LIMIT,
+		drain::image::EdgePolicy::LIMIT,
+		drain::image::EdgePolicy::LIMIT,
+		drain::image::EdgePolicy::LIMIT);
 
 /*
 void RadarProj::determineBoundingBoxM(double range, double & xLL, double & yLL, double & xUR, double & yUR) const {

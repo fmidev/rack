@@ -106,7 +106,7 @@ public:
 	virtual inline
 	const drain::image::CoordinatePolicy & getCoordinatePolicy() const {
 		using namespace drain::image;
-		static const CoordinatePolicy polarLeft(CoordinatePolicy::POLAR, CoordinatePolicy::WRAP, CoordinatePolicy::LIMIT, CoordinatePolicy::WRAP);
+		static const CoordinatePolicy polarLeft(EdgePolicy::POLAR, EdgePolicy::WRAP, EdgePolicy::LIMIT, EdgePolicy::WRAP);
 		return polarLeft;
 	}
 

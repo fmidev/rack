@@ -82,11 +82,11 @@ class ImageCoordPolicy : public ImageMod {
 
 public:
 	/*
-	const int CoordinatePolicy::UNDEFINED(0);
-	const int CoordinatePolicy::LIMIT(1);
-	const int CoordinatePolicy::WRAP(2);
-	const int CoordinatePolicy::MIRROR(3);
-	const int CoordinatePolicy::POLAR(4);
+	const int EdgePolicy::UNDEFINED(0);
+	const int EdgePolicy::LIMIT(1);
+	const int EdgePolicy::WRAP(2);
+	const int EdgePolicy::MIRROR(3);
+	const int EdgePolicy::POLAR(4);
 	*/
 
 	ImageCoordPolicy() : ImageMod(__FUNCTION__, "Coordinate under/overflow policy: 0=UNDEFINED, 1=LIMIT, 2=WRAP, 3=MIRROR, 4=POLAR"){

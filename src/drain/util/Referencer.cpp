@@ -34,6 +34,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Variable.h"
 #include "Referencer.h"
 
+namespace drain {
+template <>
+const char* TypeName<ReferenceBase<Castable> >::get(){
+	return "ReferenceBase<Castable>";
+}
+
+template <>
+const char* drain::TypeName<drain::ReferenceBase<drain::Variable> >::get(){
+	return "ReferenceBase<Variable>";
+};
+
+}
+
 /// Methods shared with Variable, Referencer, FlexibleVariable
 #define SmartVariable Referencer
 #include "SmartVariable.ipp"
