@@ -30,9 +30,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 //#include <exception>
-#include <drain/image/ImageFile.h>
 #include <fstream>
 #include <iostream>
+#include <sys/stat.h>
 
 #include "drain/util/Log.h"
 #include "drain/util/FilePath.h"
@@ -42,6 +42,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/TreeOrdered.h"
 #include "drain/util/TextDecorator.h"
 #include "drain/util/Variable.h"
+#include "drain/util/TreeHTML.h"
+//#include <drain/image/ImageFile.h>
 #include "drain/image/FilePng.h"
 #include "drain/image/FilePnm.h"
 #include "drain/image/FileGeoTIFF.h"
@@ -534,6 +536,221 @@ void CmdOutputFile::exec() const {
 		drain::image::NodeSVG::toStream(ofstr, ctx.xmlTrack);
 		// ofstr << ctx.xmlTrack << '\n';
 		// mout.unimplemented("not support yet, use --outputPanel / dumpXML");
+	}
+	else if (drain::NodeHTML::fileInfo.checkPath(path)) {
+		mout.special("writing HTML file: ", path);
+
+		if (!path.dir.empty()){
+			mout.special("making dir: ", path.dir);
+			drain::FilePath::mkdir(path.dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		}
+
+
+		if (!ctx.select.empty()){
+			// Initially, mark all paths excluded.
+			DataTools::markExcluded(src, true);
+
+			DataSelector selector;
+			selector.setParameters(ctx.select);
+			mout.special("selector for saved paths: ", selector);
+
+			ODIMPathList savedPaths;
+			selector.getPaths(src, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+
+			for (const ODIMPath & path: savedPaths){
+				DataTools::markExcluded(src, path, false);
+				// ARRAY's: compare with CmdKeep
+			}
+		}
+
+
+		class TreeXMLvisitor {
+
+		public:
+
+			drain::TreeHTML html;
+
+			//template <class T>
+			int visit(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
+
+				drain::Logger submout(__FILE__, __FUNCTION__);
+
+				// Yes.
+				const Hi5Tree & t = tree(odimPath);
+
+				// std::cout << path << ':'  << '\n'; // << tree(path).data
+
+				if (t.data.exclude){
+					submout.warn("excluding ", odimPath);
+					return 1;
+				}
+
+				if (!odimPath.empty()){
+				}
+
+				submout.special("visiting ", odimPath);
+
+				if (html->isUndefined()){
+
+					// submout.ok("initializing HTML");
+					html(drain::BaseHTML::HTML);
+
+					// submout.ok("adding HEAD");
+					drain::TreeHTML & head = html["head"](drain::BaseHTML::HEAD); //  << drain::NodeHTML::entry<drain::NodeHTML::HEAD>();
+
+					// submout.ok("adding TITLE");
+					head["title"](drain::BaseHTML::TITLE) = "HDF5 file";
+
+					drain::TreeHTML & style = head["style"](drain::BaseHTML::STYLE);
+					style->set("ul, #myUL", "list-style-type: none");
+					style->set("#myUL", "margin:0;padding:0");
+					style[".caret-down::before"]->set({{"transform", "rotate(90deg)"}, {"margin",0}, {"padding",0}});
+					style["#myUL"]->set("margin:0;padding:0");
+					style["#myUL"]->set("fargin", 1.0);
+					style["#myUL"]->set("fadding", 1.0);
+
+					//head.ensureChild(drain::NodeHTML::entry<drain::NodeHTML::TITLE>()) = "HDF5 file";
+					//head.ensureChild(drain::NodeHTML::entry<drain::NodeXML<>::COMMENT >()) = RACK_BASE;
+					//html(body)(drain::NodeHTML::BODY);
+					//html << std::pair<hp_elem,drain::NodeHTML>("body", drain::NodeHTML::BODY);
+
+					html["body"](drain::BaseHTML::BODY);
+
+					submout.accept(html);
+
+				}
+
+				drain::TreeHTML & body = html["body"];
+
+				// ensureChild(drain::NodeHTML::entry<drain::NodeHTML::BODY>());
+
+				drain::TreeHTML::path_t htmlPath;
+				// drain::TreeHTML::path_t htmlParentPath;
+
+				// Expand the path to html path UL->LI->UL-> by adding an element (LI) after each
+				for (const ODIMPathElem & e: odimPath){
+
+					htmlPath.appendElem("ul");
+					// submout.ok("checking path: ", htmlPath);
+
+					const std::string & estr = e.str();
+
+					drain::TreeHTML & group = body(htmlPath)(drain::BaseHTML::UL);
+					// group->setType(drain::NodeHTML::UL);
+					if (group->isUndefined()){
+						group->setType(drain::BaseHTML::UL);
+						//group->set("name", htmlPath);
+						group->set("hdf5", odimPath);
+						group->addClass(estr+"Parent");
+					}
+
+					htmlPath.appendElem(estr);
+					// htmlPath << e;  // hdf5 elem -> html elem >> html path
+					// submout.ok("extending path: ", htmlPath);
+					bool EXISTS = body.hasPath(htmlPath);
+					drain::TreeHTML & item = body(htmlPath); // (drain::NodeHTML::LI);
+					if (item->isUndefined()){
+						item->setType(drain::BaseHTML::LI);
+						item->set("name", estr);
+						item->addClass(e.getPrefix());
+					}
+					else {
+						submout.attention("LI group existed=", (EXISTS?"yes":"no"), ", ", item.data, " at ", htmlPath);
+					}
+				}
+
+
+				return 0;
+
+				submout.accept("traversing path: ", odimPath, " -> html: ", htmlPath);
+
+				drain::TreeHTML & current = body(htmlPath);
+
+				// submout.attention("stripping... ", htmlPath);
+				//htmlPath.pop_back();
+				// submout.attention("       to... ", htmlPath);
+				// drain::TreeHTML & parent  = body(htmlPath);
+
+				drain::TreeHTML & parent  = current;
+
+				if (body->isComment()){
+					submout.error(__LINE__, " BODY elem became comment: at ", odimPath);
+					return 1;
+				}
+				else {
+					submout.special(__LINE__, " BODY elem  ", body->getType());
+				}
+
+				const ODIMPathElem & elem = odimPath.back();
+
+				current->set("h5", odimPath);
+
+				if (elem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+					drain::TreeHTML & table = parent["metadata"](drain::BaseHTML::TABLE);
+					// NOTE: shared table for what, where, how
+					for (const auto & attr: t.data.attributes){
+						drain::TreeHTML & row = table[attr.first](drain::BaseHTML::TR);
+						row["key"](drain::BaseHTML::TH)->setText(attr.first);
+						row["value"](drain::BaseHTML::TD) = (attr.second);
+						std::cout << '\t' << attr.first << ':' << attr.second << '\n'; // << tree(path).data
+					}
+					// return 1;
+				}
+				else if (elem.belongsTo(ODIMPathElem::DATA_GROUPS)){
+
+					drain::TreeHTML & caret = current["ul"](drain::BaseHTML::UL);
+					caret->setText(odimPath.str());
+					caret->addClass("caret");
+					return 0;
+					//current["m"]->setComment(elem);
+				}
+				else if (elem.is(ODIMPathElem::ARRAY)){
+					if (!t.data.empty()){
+						drain::TreeHTML & img = parent["i"](drain::BaseHTML::IMG);
+						//img.set("width", ...)
+						std::string filename = elem;
+						filename += ".png";
+						img->set("href", filename);
+					}
+					//return 1;
+				}
+				else {
+					// current["skip"]->setText("skipped elem" );
+				}
+
+				if (body->isComment()){
+					submout.error(__LINE__, " BODY elem became comment: at ", odimPath);
+					return 1;
+				}
+
+
+
+
+				for (const auto & attr: t.data.attributes){
+					std::cout << '\t' << attr.first << ':' << attr.second << '\n'; // << tree(path).data
+				}
+
+				return 0;
+			}
+
+		};
+
+		TreeXMLvisitor handler;
+		drain::TreeUtils::traverse(handler, src);
+
+		mout.warn(handler.html.data);
+		drain::TreeUtils::dump(handler.html);
+
+		drain::Output outfile("-");
+		drain::NodeHTML::toStream(outfile, handler.html, "html");
+
+		if (!ctx.select.empty()){
+			mout.debug("resetting selector");
+			ctx.select.clear();
+			mout.debug("marking data structure fully included");
+			DataTools::markExcluded(src, false);
+		}
+
 	}
 	else if (arrayFileExtension.test(filename)){
 

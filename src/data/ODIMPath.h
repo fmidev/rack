@@ -197,7 +197,7 @@ public:
 	inline
 	ODIMPathElem(const ODIMPathElem &e) : group(e.group), index(e.index){ // , indexMax(e.indexMax) {
 		if (e.group == OTHER)
-			str = e.str;
+			currentStr = e.currentStr;
 	}
 
 	inline
@@ -364,6 +364,17 @@ public:
 	/// Writes the name, including the index, to output stream.
 	//  virtual std::ostream & toStream(std::ostream & sstr) const;
 
+
+	const std::string & str() const {
+		if (this->group != OTHER){ // for OTHER, its already set.
+			std::stringstream sstr;
+			toStream(sstr);
+			//sstr << *this;
+			currentStr = sstr.str();
+		}
+		return currentStr;
+	}
+
 	/*
 	inline
 	const std::string & getStr() const {
@@ -374,15 +385,9 @@ public:
 		return str;
 	}
 	*/
-	//inline
+	inline
 	operator const std::string &() const {
-		if (this->group != OTHER){ // for OTHER, its already set.
-			std::stringstream sstr;
-			toStream(sstr);
-			//sstr << *this;
-			str = sstr.str();
-		}
-		return str;
+		return str();
 	}
 
 	/// Given the non-numeric prefix of a group, like "dataset" or "data", set the group.
@@ -406,7 +411,7 @@ protected:
 	void extractIndex(const std::string &s, T & idx);
 
 	mutable
-	std::string str;
+	std::string currentStr;
 
 
 };

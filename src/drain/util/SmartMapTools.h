@@ -43,9 +43,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Log.h"
 #include "Castable.h"
-#include "String.h"
-
 #include "Sprinter.h"
+#include "String.h"
+#include "Variable.h"
 
 
 namespace drain {
@@ -173,6 +173,19 @@ public:
 	static
 	void setValues(M & dst, const std::list<std::string> & values, char equalSign='=') {
 		for (const std::string & entry: values){
+			if (entry.empty()){
+				Logger mout(__FILE__, __FUNCTION__);
+				if (values.size()==1){
+					//std::cerr << __FILE__ << ':' << __
+					mout.experimental("clearing a map of ",  dst.size(), " elements");
+					dst.clear();
+					return;
+				}
+				else {
+					mout.warn("parameter list contained an empty value");
+					continue;
+				}
+			}
 			const size_t i = entry.find(equalSign);
 			if (i != std::string::npos){
 				if (i == (entry.length()-1)){
@@ -183,6 +196,9 @@ public:
 				}
 			}
 			else {
+				for (const std::string & e: values){
+					std::cerr << '"' << e << '"' << std::endl;
+				}
 				// TODO: warn dump
 				throw std::runtime_error(entry + ": positional args without keys");
 			}
@@ -192,7 +208,7 @@ public:
 
 	template <class M, bool STRICT=true>
 	static
-	void setValues(M & dst, const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
+	void setValues(M & dst, const std::initializer_list<Variable::init_pair_t > &l){
 		for (const auto & entry: l){
 			drain::SmartMapTools::setValue<M,Variable,STRICT>(dst, entry.first, entry.second);
 		}

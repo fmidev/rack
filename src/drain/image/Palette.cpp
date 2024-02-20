@@ -1097,8 +1097,8 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 	// svg->set("id", title);
 	// TODO font-size:  font-face:
 
-	TreeSVG & background = svg["bg"];
-	background->setType(NodeSVG::RECT);
+	TreeSVG & background = svg["bg"](NodeSVG::RECT);
+	// background->setType(NodeSVG::RECT);
 	background->set("x", 0);
 	background->set("y", 0);
 	//background->set("style", "fill:white opacity:0.8"); // not supported by some SVG renderers
@@ -1107,13 +1107,10 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 	// width and height are set in the end (element slot reserved here,for rendering order)
 
 
-	TreeSVG & header = svg["title"];
-	header->setType(NodeSVG::TEXT);
+	TreeSVG & header = svg["title"](NodeSVG::TEXT) = title;
 	header->set("x", lineheight/4);
 	header->set("y", (headerHeight * 9) / 10);
-	header->ctext = title;
-	header->set("style","font-size:20");
-
+	header->setStyle("font-size", 20);
 
 	int index = 0;
 	int width = 150;
@@ -1126,8 +1123,17 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 	size_t precision = 2; // for threshold
 	// const auto default_precision{std::cout.precision()};
 
+	bool INTEGER = true;
+	for (const auto & entry: *this){
+		if (trunc(entry.first) != entry.first){
+			INTEGER = false;
+			break;
+		}
+	}
+	svg["comment"]->setComment().set("integer", INTEGER);
+
 	Palette::const_iterator it = begin();
-	std::map<std::string,PaletteEntry >::const_iterator itSpecial = specialCodes.begin();
+	std::map<std::string,PaletteEntry>::const_iterator itSpecial = specialCodes.begin();
 
 	// TODO: extract createLegendEntry and traverse specials separately
 
@@ -1144,19 +1150,18 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 			name.fill('0');
 			name.width(2);
 			name << index;
-			TreeSVG & child = svg[name.str()];
-			child->setType(NodeSVG::GROUP);
+			TreeSVG & child = svg[name.str()](NodeSVG::GROUP);
+			//child->setType(NodeSVG::GROUP);
 
-			TreeSVG & t = child["title"];
-			t->setType(NodeSVG::TITLE);
-			// t->ctext =
-			t->ctext = name.str(); // + threshold.str();
+			TreeSVG & t = child["title"](NodeSVG::TITLE) = name.str();
+			// t->setType(NodeSVG::TITLE);
+			// t->ctext = name.str(); // + threshold.str();
 
 			//y = up ? height - (index+1) * lineheight : index * lineheight;
 			y = headerHeight + index*lineheight;
 
-			TreeSVG & rect = child["r"];
-			rect->setType(NodeSVG::RECT);
+			TreeSVG & rect = child["r"](NodeSVG::RECT);
+			// rect->setType(NodeSVG::RECT);
 			rect->set("x", 0);
 			rect->set("y", y);
 			rect->set("width", lineheight*1.7);
@@ -1179,30 +1184,33 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 				style << "fill:rgb(" << color[0] << ',' << color[0] << ',' << color[0] << ");";
 				break;
 			}
-			rect->set("style", style.str());
+			//rect->set("style", style.str());
+			rect->setStyle(style.str());
 
-			TreeSVG & thr = child["th"];
-			thr->setType(NodeSVG::TEXT);
-			threshold.str("");
 			if (!special){
-				threshold << std::setprecision(precision) << it->first;
+				threshold.str(" ");
+				// TODO: integers
+				if (INTEGER)
+					threshold << it->first;
+				else
+					threshold << std::setprecision(precision) << it->first;
+				t->ctext += threshold.str();
+				TreeSVG & thr = child["th"](NodeSVG::TEXT) = threshold.str();
+				thr->set("text-anchor", "end");
+				thr->set("x", lineheight*1.5);
+				thr->set("y", y + lineheight-1);
 			}
 
-			thr->ctext = threshold.str();
-			thr->set("text-anchor", "end");
-			thr->set("x", lineheight*1.5);
-			thr->set("y", y + lineheight-1);
+			if (!entry.label.empty()){
 
-			TreeSVG & text = child["t"];
-			text->setType(NodeSVG::TEXT);
-			text->ctext = entry.label;
-			text->set("x", 2*lineheight);
-			text->set("y", y + lineheight-1);
+				t->ctext += ' ';
+				t->ctext += entry.label;
 
-			t->ctext += ' ';
-			t->ctext += threshold.str();
-			t->ctext += ' ';
-			t->ctext += entry.label;
+				TreeSVG & text = child["t"](NodeSVG::TEXT) = entry.label;
+				text->set("x", 2*lineheight);
+				text->set("y", y + lineheight-1);
+			}
+
 
 			//ostr << it->first << ':';
 			++index;

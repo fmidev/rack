@@ -21,10 +21,9 @@
  */
  
 /*
-REQUIRE:    drain/util/{Log,TextReader}.cpp
+REQUIRE:    drain/util/{Log,TextReader,TextStyle}.cpp
 pikamake.sh drain/examples/TextReader-example.cpp
 
-// Flags,Sprinter,String,
  */
 
 #include <sstream>

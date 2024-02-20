@@ -41,7 +41,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef USE_GEOTIFF_NO
 
 
-//#include "drain/util/Log.h"
 #include "drain/util/StringBuilder.h"
 #include "drain/image/AccumulatorGeo.h"
 
@@ -62,76 +61,6 @@ namespace drain
 
 namespace image
 {
-
-
-template <>
-std::map<NodeGDAL::tag_t,std::string> NodeXML<BaseGDAL::tag_t>::tags = {
-	{drain::image::BaseGDAL::UNDEFINED,	"UNDEFINED"},
-	{drain::image::BaseGDAL::ROOT,	    "GDALMetadata"},
-	{drain::image::BaseGDAL::ITEM,	    "Item"},
-	{drain::image::BaseGDAL::USER,	    "Item"},
-//	{drain::image::BaseGDAL::OFFSET,	"Item"},
-//	{drain::image::BaseGDAL::SCALE,	    "Item"},
-//	{drain::image::BaseGDAL::UNITS,	    "Item"},
-};
-
-NodeGDAL::NodeGDAL(const tag_t &  t){
-	setType(t);
-	//this->id = -1;
-	//this->name = "~";
-}
-
-NodeGDAL::NodeGDAL(const NodeGDAL & node){
-	// this->id = -1;
-	setType(node.getType());
-	// tag = node.tag;
-	sample = 0;
-	copyStruct(node, node, *this);
-}
-
-
-void NodeGDAL::setType(const tag_t & t){
-
-	type = t;
-
-	if (t == ROOT){
-		//tag = "GDALMetadata";
-	}
-	else if (t == ITEM){
-		// tag = "Item";
-		link("sample", sample = 0);
-		link("role",   role   = "");
-	}
-	else { // USER
-		//tag = "Item";
-		// link("name", name);
-		// link("role",   role = "");
-	}
-
-}
-
-void NodeGDAL::setGDAL(const drain::Variable & ctext, int sample, const std::string & role){
-
-	setType(ITEM);
-	this->ctext  = ctext.toStr();
-	this->sample = sample;
-	this->role   = role;
-
-	/*
-	for (drain::ReferenceMap::const_iterator it = this->begin(); it != this->end(); it++){
-		std::cerr << tag << '=' << it->first << ':' << it->second << '\n';
-	};
-	*/
-
-}
-
-void NodeGDAL::setText(const drain::Variable & value){
-	this->ctext  = value.toStr();
-}
-
-void NodeGDAL::setText(const std::string & text){
-	this->ctext  = text;
-}
 
 FileGeoTIFF::complianceFlagger FileGeoTIFF::compliancyFlagger(EPSG);
 std::string FileGeoTIFF::compliancy; // = FileGeoTIFF::flagger.str()
@@ -315,9 +244,10 @@ void FileGeoTIFF::setGdalScale(double scale, double offset){
 	// TODO: separate code without nodata marker?
 	// void FileGeoTIFF::setGdalMetaData(double nodata, double scale, double offset){
 	// drain::Logger mout(__FILE__, __FUNCTION__);
-	gdalInfo["SCALE"]->setGDAL(scale, 0, "scale");
-	//gdalInfo["SCALE"]->setGDAL(scale, 0, "scale");
-	gdalInfo["OFFSET"]->setGDAL(offset, 0, "offset");
+	setGdal("SCALE", scale, 0);
+	setGdal("OFFSET", offset, 0);
+	// gdalInfo["SCALE"]->setGDAL(scale, 0, "scale");
+	// gdalInfo["OFFSET"]->setGDAL(offset, 0, "offset");
 }
 
 void FileGeoTIFF::setGdalNoData(const std::string & nodata){
@@ -587,6 +517,16 @@ void FileGeoTIFF::setProjectionLongLat(){
 
 
 } // image::
+
+
+template <>
+template <>
+// inline
+image::TreeGDAL & image::TreeGDAL::operator()(const image::NodeGDAL::tag_t & type){
+	this->data.setType(type);
+	return *this;
+}
+
 
 } // drain::
 

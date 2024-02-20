@@ -385,10 +385,13 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 	for (const auto & entry: src(basepath)) {
 
 		const ODIMPathElem & currentElem = entry.first;
-		ODIMPath path(basepath, currentElem);
+
+		//ODIMPath path(basepath, currentElem);
+		ODIMPath path(basepath); //, currentElem);
+		path.appendElem(currentElem);
 		//mout.debug3("currentElem='" , currentElem , "'" );
 
-		mout.debug2("Considering: ", basepath, "//", currentElem);
+		mout.ok<LOG_INFO>("Considering: ", basepath, "//", currentElem);
 
 		const drain::image::Image & data    = entry.second.data.image; // for ODIM
 		const drain::FlexVariableMap & props = data.getProperties();

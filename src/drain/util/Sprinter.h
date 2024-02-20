@@ -176,7 +176,10 @@ struct TypeLayout : public TypeLayoutBase{
 };
 
 
-/*
+/**
+
+   // array,map,pair,string,key, mapPair
+
     Consider printing a map structure
     - as a map:  {key:value, key2:value2, ... }
     - as a list or pairs: [(key,value), (key2,value2), ...]

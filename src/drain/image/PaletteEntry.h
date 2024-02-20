@@ -133,7 +133,7 @@ public:
 	 *  \endcode
 	 *
 	 */
-	PaletteEntry(const std::initializer_list<std::pair<const char *, const drain::Variable> > & args);
+	PaletteEntry(const std::initializer_list<Variable::init_pair_t > & args);
 
 	/// Special dummy constructor for reading a title or other metadata related to Palette.
 	/**

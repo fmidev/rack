@@ -80,7 +80,7 @@ PaletteEntry::PaletteEntry(const color_t & color, value_t alpha, bool hidden) :
 }
 
 
-PaletteEntry::PaletteEntry(const std::initializer_list<std::pair<const char *, const drain::Variable> > & args) :
+PaletteEntry::PaletteEntry(const std::initializer_list<Variable::init_pair_t > & args) :
 		BeanLike(__FUNCTION__), alpha(255.0), hidden(false) {
 	init();
 	/*

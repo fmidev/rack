@@ -47,9 +47,7 @@ namespace image {
 
 class NodeSVG;
 
-//typedef drain::UnorderedMultiTree<NodeSVG> TreeSVG;
 typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
-// cf.  drain::UnorderedMultiTree<NodeXML<E>,false, NodeXML<>::path_t>
 
 struct BaseSVG {
 
@@ -57,11 +55,13 @@ struct BaseSVG {
 		UNDEFINED=NodeXML<>::UNDEFINED,
 		COMMENT=NodeXML<>::COMMENT,
 		CTEXT=NodeXML<>::CTEXT,
+		STYLE=NodeXML<>::STYLE,
+		SCRIPT=NodeXML<>::SCRIPT,
 		SVG, TITLE, GROUP, TEXT, TSPAN, RECT, CIRC, LINE, IMAGE }; // check CTEXT, maybe implement in XML
 
-	typedef NodeSVG node_t;
+	// typedef NodeSVG node_t;
 
-	typedef TreeSVG tree_t;
+	// typedef TreeSVG tree_t;
 
 };
 
@@ -75,10 +75,9 @@ struct BaseSVG {
 class NodeSVG: public BaseSVG, public NodeXML<BaseSVG::tag_t> {
 public:
 
-	//typedef drain::Tree<NodeSVG> tree_t;
+	// typedef NodeXML<BaseSVG::tag_t> xml_node_t;
 
-	//enum type { UNDEFINED, SVG, TITLE, CTEXT, GROUP, TEXT, RECT, CIRC, LINE, IMAGE }; // check CTEXT, maybe implement in XML
-
+	/// Default constructor. Create a node of given type.
 	NodeSVG(tag_t t = BaseSVG::UNDEFINED);
 
 	/// Copy constructor.
@@ -87,11 +86,67 @@ public:
 	inline virtual
 	~NodeSVG(){};
 
+	///
 	virtual
 	void setType(const tag_t & type);
 
-	static
-	std::ostream & toStream(std::ostream &ostr, const TreeSVG & t);
+	/* Consider this later, for user-defined (not enumerated) tag types.
+	virtual
+	void setType(const std::string & type);
+	*/
+
+	/// Copy data from a node. (Does not copy subtree.)
+	inline
+	NodeSVG & operator=(const NodeSVG & n){
+		drain::SmartMapTools::setValues<map_t>((map_t &)*this, n);
+		return *this;
+	}
+
+	/// Set type.
+	inline
+	NodeSVG & operator=(const tag_t & type){
+		setType(type);
+		return *this;
+	}
+
+	/// Set text (CTEXT).
+	inline
+	NodeSVG & operator=(const char *s){
+		setText(s);
+		return *this;
+	}
+
+	/// Set text (CTEXT).
+	inline
+	NodeSVG & operator=(const std::string &s){
+		setText(s);
+		return *this;
+	}
+
+	/// Set attributes.
+	inline
+	NodeSVG & operator=(const std::initializer_list<Variable::init_pair_t > &l){
+		set(l);
+		return *this;
+	}
+
+	//static
+	//std::ostream & toStream(std::ostream &ostr, const TreeSVG & t);
+
+	/*
+	static // virtual
+	inline
+	std::ostream & docTypeToStream(std::ostream &ostr){
+		ostr << "<?xml ";
+		attribToStream(ostr, "version",  "1.0");
+		attribToStream(ostr, "encoding", "UTF-8");
+		attribToStream(ostr, "standalone", "no");
+		//attribToStream(ostr, "standalone", "yes");
+		ostr << "?>";
+		ostr << '\n';
+		return ostr;
+	}
+	*/
 
 	/// In opening SVG tag, referred to by attribute "xmlns:xlink"
 	static
@@ -101,28 +156,8 @@ public:
 	static
 	std::string svg;
 
-
 	static
 	const drain::FileInfo fileInfo;
-
-	inline
-	NodeSVG & operator=(const NodeSVG & n){
-		drain::SmartMapTools::setValues<map_t>((map_t &)*this, n);
-		return *this;
-	}
-
-	inline
-	NodeSVG & operator=(const tag_t & type){
-		setType(type);
-		return *this;
-	}
-
-	inline
-	NodeSVG & operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
-		set(l);
-		return *this;
-	}
-
 
 
 protected:
@@ -135,7 +170,7 @@ protected:
 	int width;
 	int height;
 	int radius;
-	std::string style;
+	// std::string style;
 	std::string fill;
 	std::string opacity; // empty
 	std::string text_anchor;
@@ -160,14 +195,22 @@ TreeSVG & TreeSVG::operator=(const std::initializer_list<std::pair<const char *,
 }
 */
 
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const drain::image::TreeSVG & tree){
+	return drain::NodeXML<>::docToStream(ostr, tree);
+	//return drain::image::TreeSVG::node_data_t::docToStream(ostr, tree);
+}
+
+
 /**
  *
  *  Depending on C++ compiler, this operator cannot be defined inside drain::image scope.
- */
 inline
-std::ostream & operator<<(std::ostream &ostr, const drain::image::TreeSVG & t){
-	  return drain::image::NodeSVG::toStream(ostr, t);
+std::ostream & operator<<(std::ostream &ostr, const drain::image::TreeSVG & tree){
+	return drain::NodeXML<>::docToStream(ostr, tree);
 }
+ */
 
 
 /*
@@ -180,9 +223,18 @@ struct drain::TypeName<drain::image::TreeSVG> {
 namespace drain {
 
 template <>
-struct drain::TypeName<image::NodeSVG>; /* {
+inline
+const char* TypeName<image::NodeSVG>::get(){
+	return "SVG";
+}
+
+
+//template <>
+//struct drain::TypeName<image::NodeSVG>;
+/* {
     static const char* get(){ return "SVG"; }
-};*/
+};
+*/
 
 template <>
 template <>

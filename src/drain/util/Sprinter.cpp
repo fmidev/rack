@@ -76,7 +76,7 @@ TypeLayout & TypeLayout::setLayout(const char *layout){
 		//set('{', ',', '}'); // ok?
 		break;
 	default:
-		throw std::runtime_error("TypeLayout unsupported layout");
+		throw std::runtime_error("TypeLayout unsupported layout (over 3 chars)");
 	}
 
 	// std::cout << layout << '(' << ::strlen(layout) << ')' << *this << '\n';

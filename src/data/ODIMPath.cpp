@@ -123,7 +123,7 @@ void ODIMPathElem::add(const std::string &s){
 		return; // true;
 
 	this->group = OTHER;  //(INDEXED) ? ODIMPathElem::OTHER_INDEXED :
-	this->str = s;
+	this->currentStr = s;
 
 	mout.note("non-standard path element: " , *this );
 
@@ -205,7 +205,7 @@ const std::string & ODIMPathElem::getPrefix() const {
 		return getKey();
 	}
 	else {
-		return this->str;
+		return this->currentStr;
 	}
 
 }

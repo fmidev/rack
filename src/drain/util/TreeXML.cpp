@@ -40,12 +40,37 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+// array,map,pair,string,key, mapPair  [+AfillB:ared 2pxb-;+AopacityB:0.33-;+AscaleB:0.5-]
+const SprinterLayout StyleXML::styleLineLayout(";", ";",  ":", "", ""); //, "\"\"", "''", ":");
+
+// The record starts by \n, separates entries with \n, and finishes with a \n.
+// Every key, like "table" is prefixed woth \t and suffixed with space ' '.
+const SprinterLayout StyleXML::styleRecordLayout("\n\n\n", "", "","{\n}",  "\t ", "{ }"); // , "{>", "  ", ":"// ??? ("[,]", "{,}",  "(,)", "\"\"", "''", ":");
+
+const SprinterLayout StyleXML::styleRecordLayoutActual("{\n}","(.)", " :;","","\t ");
+// Consider making <STYLE-ITEM> elements, with name (composed of tag(s?) , and attribs like
+
+//
+/*
+const SprinterLayout Sprinter::pythonLayout("[,]", "{,}",  "(,)", "\"\"", "''", ":"); // last ':' means plain map entries (not tuples as in C++)
+*/
 
 template <>
 std::map<int,std::string> NodeXML<int>::tags = {
 		{0, "UNDEFINED"},
 		{1, "#ctext"},   // CTEXT     - the tag should never appear
-		{2, "#comment"}  // COMMMENT  - the tag should never appear
+		{2, "#comment"},  // COMMMENT  - the tag should never appear
+		{3, "style"},  // // Consider making <STYLE-ITEM> elements, with name (composed of tag(s?) , and attribs like
+		{4, "record"},  // future extension
+		{5, "script"}  // COMMMENT  - the tag should never appear
+};
+
+template <>
+NodeXML<int>::xmldoc_attrib_map_t NodeXML<int>::xmldoc_attribs = {
+		{"version",  "1.0"},
+		{"encoding", "UTF-8"},
+		// "standalone", "no");
+		{"data-remark", "xml"}
 };
 
 // Experimental

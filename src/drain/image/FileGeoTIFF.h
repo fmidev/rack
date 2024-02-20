@@ -35,13 +35,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #ifndef USE_GEOTIFF_NO
 
-#include "drain/util/Flags.h"
-#include "drain/util/TreeXML.h"
-
-
 #include <geotiff.h>
 #include <geotiffio.h>
 #include <geo_normalize.h>
+
+#include "drain/util/Flags.h"
+//#include "drain/util/TreeXML.h"
+#include "FileGdalSVG.h"
+
 
 
 namespace drain
@@ -50,63 +51,15 @@ namespace drain
 namespace image
 {
 
-struct BaseGDAL {
-
-	enum tag_t { UNDEFINED=0, ROOT, ITEM, USER}; // , OFFSET, SCALE, UNITS}; // check CTEXT, maybe implement in XML
-
-};
-
-// https://www.awaresystems.be/imaging/tiff/tifftags/gdal_metadata.html
-class NodeGDAL: public BaseGDAL, public drain::NodeXML<BaseGDAL::tag_t> {
-public:
-
-	//enum type { UNDEFINED, ROOT, ITEM, USER }; // check CTEXT, maybe implement in XML
-
-	/// Constructor
-	NodeGDAL(const tag_t & t = BaseGDAL::USER);
-
-	/// Copy constructor
-	NodeGDAL(const NodeGDAL & node);
-
-	void setGDAL(const drain::Variable & ctext, int sample=0, const std::string & role = "");
-
-	template <class T>
-	inline
-	NodeGDAL & operator=(const T & x){
-		setText(x);
-		return *this;
-	}
-
-	// Set user attribute
-	void setText(const drain::Variable & value);
-
-	// Set user attribute
-	void setText(const std::string & value);
-
-	virtual
-	void setType(const tag_t & t);
-
-protected:
-
-	/// Standard GDAL attribute
-	int sample;
-
-	/// Standard GDAL attribute
-	std::string role;
-
-	// Multi-purpose key
-	// std::string value;
-
-
-};
-
-
 
 typedef drain::UnorderedMultiTree<NodeGDAL> TreeGDAL;
+
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
 	//return drain::NodeXML::toStream(ostr, tree);
+	//return drain::NodeXML<>::docToStream(ostr, tree);
+	// return drain::NodeXML<>::toStream(ostr, tree);
 	return TreeGDAL::node_data_t::toStream(ostr, tree);
 }
 
@@ -204,6 +157,35 @@ public:
 	 */
 	void setGdalNoData(const std::string & nodata);
 
+
+	template <class T>
+	void setGdal(const std::string & key, const T & value, int sample=-1, const std::string & role = ""){
+
+		NodeGDAL gdalItem =  gdalInfo[key](NodeGDAL::ITEM).data;
+
+		gdalItem.name = key;
+		gdalItem.setText(value);
+		/*
+		this->name   = name;
+		this->ctext  = ctext.toStr();
+		this->sample = sample;
+		*/
+
+		if (sample >= 0){
+			gdalItem.sample = sample;
+			if (role.empty()){
+				gdalItem.role = key;
+				drain::StringTools::lowerCase(gdalItem.role);
+			}
+			else {
+				gdalItem.role = role;
+			}
+		}
+
+		gdalItem.set("name", gdalItem.name); // KLUDGE
+		gdalItem.set("role", gdalItem.role); // KLUDGE
+	}
+
 	/// Sets projection and bounding box. Adjusts spatial resolution accordingly.
 	/**
 	 *
@@ -275,6 +257,20 @@ void FileGeoTIFF::setGeoTiffField(geokey_t tag, const std::string & value){
 template <>
 const drain::FlaggerDict drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict;
 
+} // image::
+
+
+template <>
+template <>
+image::TreeGDAL & image::TreeGDAL::operator()(const image::NodeGDAL::tag_t & type);
+
+
+} // drain::
+#endif
+
+#endif
+
+
 /*
 
 template <>
@@ -315,10 +311,3 @@ tagtype_t  FileGeoTIFF::getTagType<signed long>(){ return TYPE_SLONG;};
 //inline getTagType<>(){ return TYPE_UNKNOWN);
 //inline getTagType<>(){ return TYPE_RATIONAL);
 */
-
-} // image::
-
-} // drain::
-#endif
-
-#endif

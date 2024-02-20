@@ -76,7 +76,7 @@ public:
 	 *  \endcode
 	 */
 	inline
-	VariableMap(std::initializer_list<std::pair<const char *, Variable> > inits) : SmartMap<Variable>(','){
+	VariableMap(std::initializer_list<Variable::init_pair_t > inits) : SmartMap<Variable>(','){
 		//importMap(v);
 		for (const auto & entry: inits){
 			(*this)[entry.first] = entry.second;
@@ -88,7 +88,7 @@ public:
 	 *
 	 */
 	inline
-	VariableMap(std::pair<const char *, Variable> & entry) : SmartMap<Variable>(','){
+	VariableMap(Variable::init_pair_t & entry) : SmartMap<Variable>(','){
 		(*this)[entry.first] = entry.second;
 	};
 

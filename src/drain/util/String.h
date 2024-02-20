@@ -444,6 +444,7 @@ T StringTools::convert(const std::string &s){
 template <>
 inline
 std::string & StringTools::import(const std::string & src, std::string & dst){
+	dst = src;
 	return dst;
 }
 

@@ -345,7 +345,27 @@ public:
 		return *this;
 	}
 
+	/// Experimental. Given pair<elem, data> assigns child[elem] = data;
+	typedef std::pair<key_t,node_data_t> node_pair_t;
+	inline
+	tree_t & operator<<(const node_pair_t & entry){
+		if (EXCLUSIVE){
+			clearData();
+		}
+		tree_t & child = retrieveChild(entry.first);
+		child.data = entry.second;
+		return child;
+	}
 
+	inline
+	tree_t & ensureChild(const node_pair_t & entry){
+		if (hasChild(entry.first)){
+			return retrieveChild(entry.first);
+		}
+		else {
+			return (*this << entry);
+		}
+	}
 
 
 	inline
@@ -695,12 +715,7 @@ x	 *  \see clearData()
 	};
 
 
-
-
-//#endif
-
-
-// Functions perhaps less relevant
+	// Functions perhaps less relevant ....................................
 
 	/// Returns the map containing the children.
 	/**
@@ -715,14 +730,14 @@ x	 *  \see clearData()
 
 
 
-	/// New
-	// consider...
+	// New
+	/// Fast access to data, applied widely in TreeXML (HTML/SVG)
 	inline
 	const node_data_t *operator->() const {
 		return &data;
 	};
 
-	// consider...
+	/// Fast access to data, applied widely in TreeXML (HTML/SVG)
 	inline
 	node_data_t *operator->(){
 		return &data;
@@ -734,10 +749,7 @@ x	 *  \see clearData()
 		children.swap(t.children);
 	}
 
-
-
 protected:
-
 
 	container_t children;
 
@@ -801,11 +813,24 @@ protected:
 		if (it->empty())
 			return get(++it, eit);
 
+		// NEW ~faulty? data1/data1/data1/...
+
+		if (hasChild(*it)){
+			//return retrieveChild(*it); <- ADD <- .get(++it, eit); ?
+			return retrieveChild(*it).get(++it, eit);
+		}
+		else {
+			return getEmpty();
+		}
+
+		// OLD (limited to map container, reconsider NEW, above!)
+		/*
 		typename tree_t::const_iterator child_it = this->children.find(*it);
 		if (child_it == this->children.end())
 			return getEmpty();
 		else
 			return child_it->second.get(++it, eit);
+		*/
 
 		/*
 		if (!hasChild(*it))
@@ -824,22 +849,16 @@ protected:
 template <class T, bool EXCLUSIVE, class P>
 const DRAIN_TREE_NAME<T,EXCLUSIVE, P> DRAIN_TREE_NAME<T,EXCLUSIVE,P>::emptyNode;
 
-/* TODO ..
-template <>
-struct TypeName<TextStyle::Colour> {
-    static const char* get(){ return "TextStyle::Colour"; }
-};
-*/
 
 
-
+// Certified.
 template <class T, bool EXCLUSIVE, class P>
 struct TypeName<DRAIN_TREE_NAME<T,EXCLUSIVE, P> > {
 
 	typedef DRAIN_TREE_NAME<T,EXCLUSIVE, P> tree_t;
 
-
-    static const char* get(){
+    static
+	const std::string & str(){
 
     	static const std::string name = drain::StringBuilder<>(
     			tree_t::isOrdered()?"Ordered":"Unordered",
@@ -847,9 +866,14 @@ struct TypeName<DRAIN_TREE_NAME<T,EXCLUSIVE, P> > {
     							tree_t::isExclusive()?"(Exclusive)":"",
     									'<', TypeName<typename tree_t::node_data_t>::get(), '>'); // recursion...
     											//'<', drain::Type::call<drain::simpleName>(typeid(typename tree_t::node_data_t)), '>');
-    	return name.c_str();
-    	//return "TreeNameUnderConstr";
+    	return name;
     }
+
+    static
+	const char* get(){
+    	return str().c_str();
+    };
+
 };
 
 

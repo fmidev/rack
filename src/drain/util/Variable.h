@@ -109,6 +109,8 @@ public:
 	typedef CastableIterator const_iterator;
 	typedef CastableIterator iterator;
 
+	typedef std::pair<const char *,const drain::Variable> init_pair_t;
+
 	/// Default constructor generates an empty array.
 	inline
 	Variable(const std::type_info &t = typeid(void)) {

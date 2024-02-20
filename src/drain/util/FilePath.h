@@ -39,6 +39,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 #include <sstream>
 #include <list>
+#include <sys/stat.h>
+
 
 #include "RegExp.h"
 #include "Path.h"
@@ -142,6 +144,15 @@ public:
 		//this->insert(this->end(), path.begin(), path.end());
 		return *this;
 	}
+
+	static inline
+	int mkdir(const std::string & dirpath, int flags = S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH){
+		return mkdir(FilePath::path_t(dirpath), flags);
+	}
+
+	// Note: Path, not FilePath
+	static
+	int mkdir(const FilePath::path_t & dirpath, int flags = S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
 
 };

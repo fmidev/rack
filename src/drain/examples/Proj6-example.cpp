@@ -21,7 +21,7 @@
  */
 
 /*
- REQUIRE: drain/util/{Log,Sprinter,String,Proj6}.cpp
+ REQUIRE: drain/util/{Log,Proj6,Sprinter,String,TextStyle}.cpp
  LIBS: -lproj
  */
 #include <cmath>

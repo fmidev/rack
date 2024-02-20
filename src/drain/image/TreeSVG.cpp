@@ -42,6 +42,14 @@ namespace drain {
 
 namespace image {
 
+template <>
+NodeSVG::xmldoc_attrib_map_t NodeSVG::xml_node_t::xmldoc_attribs = {
+		{"version",  "1.0"},
+		{"encoding", "UTF-8"},
+		{"standalone", "no"},
+		{"data-remark", "svg"}
+};
+
 const drain::FileInfo NodeSVG::fileInfo("svg");
 
 std::string NodeSVG::xlink("http://www.w3.org/1999/xlink");
@@ -66,18 +74,18 @@ std::map<BaseSVG::tag_t,std::string> NodeXML<BaseSVG::tag_t>::tags = {
 	{drain::image::BaseSVG::IMAGE, "image"}
 };
 
-NodeSVG::NodeSVG(const NodeSVG & node) : x(0), y(0), width(0), height(0), radius(0) {
-	//copyStruct(node, node, *this, RESERVE);
-	type = elem_t::UNDEFINED;
-	copyStruct(node, node, *this, LINK); // <-- risky! may link Variable contents?
-	setType(node.getType());
-}
-
 
 NodeSVG::NodeSVG(tag_t t){
 	type = elem_t::UNDEFINED;
 	setType(t);
 }
+
+NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), x(0), y(0), width(0), height(0), radius(0) {
+	copyStruct(node, node, *this, LINK); // <-- risky! may link Variable contents?
+	// type = elem_t::UNDEFINED; // = force fresh setType below
+	setType(node.getType());
+}
+
 
 void NodeSVG::setType(const tag_t & t) {
 
@@ -91,10 +99,10 @@ void NodeSVG::setType(const tag_t & t) {
 	case elem_t::UNDEFINED:
 		break;
 	case elem_t::COMMENT:
-		setComment();
+		// setComment();
 		break;
 	case elem_t::CTEXT:
-		setText();
+		// setText();
 		// tag = "";
 		break;
 	case SVG:
@@ -158,35 +166,31 @@ void NodeSVG::setType(const tag_t & t) {
 	}
 
 	// DEPRECATING: see separate STYLE and CLASS?
-	link("style", style = "");
+	// link("style", style = "");
 	link("fill", fill = "");
 	link("opacity", opacity = ""); // string, so silent if empty
 
 
 }
 
+/*
 std::ostream & NodeSVG::toStream(std::ostream &ostr, const TreeSVG & tree){
-	//ostr << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>";
-	ostr << "<?xml ";
-	attribToStream(ostr, "version",  "1.0");
-	attribToStream(ostr, "encoding", "UTF-8");
-	attribToStream(ostr, "standalone", "no");
-	ostr << "?>";
-	ostr << '\n';
 	NodeXML::toStream(ostr, tree);
 	return ostr;
 }
+*/
 
 
 }  // image::
 
 }  // drain::
 
-
+/*
 template <>
 struct drain::TypeName<drain::image::NodeSVG> {
     static const char* get(){ return "SVG"; }
 };
+*/
 
 template <>
 template <>

@@ -31,8 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "Path.h"
 
 
-#include <stdexcept>
 #include <iostream>
+#include <stdexcept>
+#include <sys/stat.h>
 
 #include "Log.h"
 
@@ -138,5 +139,84 @@ void FilePath::set(const std::string & s){
 	}
 }
 
+
+int FilePath::mkdir(const FilePath::path_t & dir, int flags){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+
+	if (dir.empty()){
+		// Well, does not check is current dir is writable.
+		return 0;
+	}
+
+	FilePath::path_t p;
+	for (const FilePath::path_t::elem_t & elem: dir){
+
+		if ((elem == ".")){
+			continue;
+		}
+		else {
+			p << elem;
+
+			std::string pstr = p.str();
+
+			mout.attention("mkdir: ensure ", pstr);
+
+			struct stat s;
+			if (stat(pstr.c_str(), &s) == 0){
+				if (s.st_mode & S_IFDIR){
+					// it's a directory
+					mout.ok<LOG_DEBUG>("dir exits: ", pstr);
+				}
+				else if (s.st_mode & S_IFREG){
+					// it's a file
+					mout.fail<LOG_ERR>("path exits, but is a file: ", pstr);
+					return -1;
+				}
+				else {
+					// something else
+					mout.fail<LOG_ERR>("path exits, but is a not a dir: ", pstr);
+					return -1;
+				}
+			}
+			else {
+				int result = ::mkdir(pstr.c_str(), flags);
+				if (result != 0){
+					if( errno == EEXIST ) {
+						mout.note("dir exists already:" , pstr);
+					} else {
+						mout.error("cannot create dir: ", pstr, ", errno: ", strerror(errno));
+					}
+					return result;
+				}
+			}
+
+		}
+
+	}
+
+	return 0;
+
+	/*
+
+	if (!path.dir.empty()){
+		if ((path.dir.front() != ".") && (path.dir.front() != "..")){
+			mout.note("creating dir", path.dir);
+			if (mkdir(path.dir.str().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) == -1){
+				if( errno == EEXIST ) {
+					mout.note("dir exists already");
+				} else {
+					// something else
+					mout.error("cannot create dir: ", path.dir, ", errno: ", strerror(errno));
+					// std::cout << "cannot create sessionnamefolder error:" << strerror(errno) << std::endl;
+					// throw std::runtime_error( strerror(errno) );
+				}
+			}
+		}
+	}
+	*/
+
+}
 
 } // drain::

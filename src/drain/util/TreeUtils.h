@@ -189,6 +189,31 @@ public:
 	}
 
 
+	/// Traverse tree, visiting each node as a prefix operation.
+	/**
+	 *  \tparam H - object with method visit(tree, path).
+	 *  \tparam T - tree type, can be const
+	 */
+	template <class T, class H>
+	static void traverse(H & handler, T & tree, const typename T::path_t & path = typename T::path_t()){
+
+		/// TODO: more codes than non-zero
+		if (handler.visit(tree, path)){
+			std::cout << "SKIP: " << path << ':'  << '\n'; // << tree(path).data
+			return;
+		}
+		// std::cout << "OK:   " << path << ':'  << '\n'; // << tree(path).data
+
+
+		// Recursion
+		for (auto & entry: tree.getChildren()){
+			const typename T::path_t p(path, entry.first);
+			traverse(handler, entry.second, p);
+		}
+
+	};
+
+
 	/*
 	template <class TR>
 	static
@@ -200,7 +225,7 @@ public:
 	template <class T>
 	static
 	bool dataDumper(const T & data, std::ostream &ostr){
-		ostr << data << '*';
+		ostr << data << ' ';
 		return true;
 	}
 

@@ -99,7 +99,7 @@ public:
 	};
 	*/
 	inline
-	void setParameters(std::initializer_list<std::pair<const char *, const Variable> > l){
+	void setParameters(std::initializer_list<Variable::init_pair_t > l){
 		for (const auto & entry: l){
 			setParameter(entry.first, entry.second);
 			//parameters[entry.first] = entry.second;
