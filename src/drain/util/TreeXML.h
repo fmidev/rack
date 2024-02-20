@@ -437,7 +437,7 @@ public:
 		if (isUndefined()){
 			mout.suspicious("setting style for undefined elem: ", *this);
 		}
-		else {
+		else if (type == STYLE){
 			mout.warn("setting style for STYLE elem: ", *this);
 		}
 		SmartMapTools::setValues(style, StringTools::trim(value, "; \t\n"), ';', ':');

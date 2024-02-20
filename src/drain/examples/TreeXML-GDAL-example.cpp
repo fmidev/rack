@@ -51,7 +51,7 @@
 int main(int argc, char **argv){
 
 	// std::cout << drain::TypeName<Tree>::get() << '/' << drain::TypeName<NodeHTML>::get() << " demo \n";
-
+	std::cout << drain::TypeName<drain::image::TreeGDAL>::get() << '/' << drain::TypeName<drain::image::NodeGDAL>::get() << " demo \n";
 	/*
 	if (argc==1){
 		cerr << "Usage:   " << argv[0] << " <keychars> <sample-string>  <key>=<value> <key2>=<value2> ..." << endl;

@@ -519,14 +519,6 @@ void FileGeoTIFF::setProjectionLongLat(){
 } // image::
 
 
-template <>
-template <>
-// inline
-image::TreeGDAL & image::TreeGDAL::operator()(const image::NodeGDAL::tag_t & type){
-	this->data.setType(type);
-	return *this;
-}
-
 
 } // drain::
 

@@ -106,6 +106,17 @@ protected:
 };
 
 
+typedef drain::UnorderedMultiTree<NodeGDAL> TreeGDAL;
+
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
+	//return drain::NodeXML::toStream(ostr, tree);
+	//return drain::NodeXML<>::docToStream(ostr, tree);
+	// return drain::NodeXML<>::toStream(ostr, tree);
+	return TreeGDAL::node_data_t::toStream(ostr, tree);
+}
+
 
 
 /*
@@ -121,7 +132,53 @@ std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
 
 } // image::
 
+
+template <>
+inline
+const char* TypeName<image::NodeGDAL>::get(){
+	return "XML-GDAL";
+}
+
+
+//template <>
+//struct drain::TypeName<image::NodeSVG>;
+/* {
+    static const char* get(){ return "SVG"; }
+};
+*/
+
+template <>
+template <>
+inline
+image::TreeGDAL & image::TreeGDAL::operator()(const image::NodeGDAL::tag_t & type){
+	this->data.setType(type);
+	return *this;
+}
+
+
+/// Note: this overrides path based addressing of descendants
+template <>
+template <>
+inline
+image::TreeGDAL & image::TreeGDAL::operator()(const std::string & name){
+	this->data.name = name;
+	return *this;
+}
+
+/// Note: this overrides path based addressing of descendants
+/*
+template <>
+template <>
+inline
+image::TreeGDAL & image::TreeGDAL::operator()(const char *name){
+	this->data.name = name;
+	return *this;
+}
+*/
+
 } // drain::
+
+
 
 #endif
 

@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Flags.h"
 //#include "drain/util/TreeXML.h"
-#include "FileGdalSVG.h"
+#include "TreeXML-GDAL.h"
 
 
 
@@ -51,17 +51,6 @@ namespace drain
 namespace image
 {
 
-
-typedef drain::UnorderedMultiTree<NodeGDAL> TreeGDAL;
-
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
-	//return drain::NodeXML::toStream(ostr, tree);
-	//return drain::NodeXML<>::docToStream(ostr, tree);
-	// return drain::NodeXML<>::toStream(ostr, tree);
-	return TreeGDAL::node_data_t::toStream(ostr, tree);
-}
 
 
 /** Extends TIFF by adding geo information in the metadata

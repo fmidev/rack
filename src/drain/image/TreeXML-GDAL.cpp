@@ -36,26 +36,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
  */
 
-#include "FileGeoTIFF.h"
-
-#ifndef USE_GEOTIFF_NO
+#include "TreeXML-GDAL.h"
 
 
 //#include "drain/util/Log.h"
 #include "drain/util/StringBuilder.h"
 #include "drain/image/AccumulatorGeo.h"
 
-//int rack::FileGeoTIFF::compression(1); // = NONE, but see below
-
-// https://en.wikipedia.org/wiki/TIFF
-// https://www.awaresystems.be/imaging/tiff/tifftags/gdal_nodata.html
-#ifndef TIFFTAG_GDAL_METADATA //# ASCII tag (code 42113
-#define TIFFTAG_GDAL_METADATA 42112 // 0xa481 // 42113
-#endif
-
-#ifndef TIFFTAG_GDAL_NODATA //# ASCII tag (code 42113
-#define TIFFTAG_GDAL_NODATA 42113 // 0xa481 // 42113
-#endif
 
 namespace drain
 {
@@ -171,6 +158,6 @@ void NodeGDAL::setText(const std::string & text){
 
 
 
-} // drain::
 
-#endif
+
+} // drain::
