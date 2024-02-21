@@ -178,14 +178,28 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 	RackContext & ctx = getContext<RackContext>();
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
 	// mout.debug("start: " , fullFilename );
 
 	mout.debug("thread #", ctx.getId(), ": reading ", fullFilename);
 
-
 	// InputSelect needed?
 	Hi5Tree srcTmp;
+
+	if (!ctx.select.empty()){// supply ' ' to clear the inputSelector. (temporary fall-back solution)
+		ctx.select = drain::StringTools::trim(ctx.select);
+		if (!ctx.select.empty()){
+			ctx.inputSelect = ctx.select;
+			ctx.select = "";
+			mout.experimental("Saved selection (", ctx.inputSelect, ") as input selector.");
+		}
+		else {
+			if (!ctx.inputSelect.empty()){
+				mout.experimental("Clearing input selector '", ctx.inputSelect, "'");
+			}
+			ctx.inputSelect = "";
+		}
+	}
+
 
 	if (!ctx.inputSelect.empty()){
 		//mout.special() << "Input selector (" << ctx.select << ") applies, pre-reading attributes first:\n";
