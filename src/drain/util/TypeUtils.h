@@ -118,6 +118,48 @@ struct TypeName
 
 /// Add a specialization for each type of those you want to support.
 //  (Unless the string returned by typeid is sufficient.)
+
+
+template <>
+inline
+const char* TypeName<void>::get(){ return "void"; };
+
+
+//template <>
+// inline const char*  TypeName<bool>::get(){ return "void"; };
+
+template <>
+inline const char* TypeName<bool>::get(){ return "bool"; };
+
+template <>
+inline const char* TypeName<char>:: get(){ return "char"; };
+
+template <>
+inline const char* TypeName<int>:: get(){ return "int"; };
+
+template <>
+inline const char* TypeName<long>:: get(){ return "long"; };
+
+template <>
+inline const char* TypeName<unsigned long>:: get(){ return "unsigned long"; };
+
+template <>
+inline const char* TypeName<float>:: get(){ return "float"; };
+
+template <>
+inline const char* TypeName<double>:: get(){ return "double"; };
+
+template <>
+inline const char* TypeName<char *>:: get(){ return "char *"; };
+
+template <>
+inline const char* TypeName<const char *>:: get(){ return "const char *"; };
+
+template <>
+inline const char* TypeName<std::string>:: get(){ return "string"; };
+
+
+/*
 template <>
 struct TypeName<void> {
     static const char* get(){ return "void"; }
@@ -173,6 +215,7 @@ template <>
 struct TypeName<std::string> {
     static const char* get(){ return "string"; }
 };
+*/
 
 
 template <typename T>

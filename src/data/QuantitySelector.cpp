@@ -62,6 +62,16 @@ void QuantityMatcher::set(const std::string & s){
 	}
 }
 
+const std::string & QuantityMatcher::getType() const {
+	//const std::string re("regExp");
+	//const std::ring str("string");
+	if (isRegExp)
+		return drain::TypeName<drain::RegExp>::str();
+	else
+		return drain::TypeName<std::string>::str();
+}
+
+
 bool QuantityMatcher::test(const std::string & s) const {
 	if (isRegExp){
 		return RegExp::test(s);

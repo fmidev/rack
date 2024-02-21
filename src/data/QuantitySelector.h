@@ -82,6 +82,8 @@ public:
 
 	bool test(const std::string & s) const;
 
+	const std::string & getType() const;
+
 	/// Checks if the key conforms to ODIM convention: DBZH, VRAD, etc. (capital letters, underscores)
 	/**
 	 *  This is used for example by PaletteOp
