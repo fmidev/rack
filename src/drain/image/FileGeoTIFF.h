@@ -65,11 +65,13 @@ public:
 	// static epsg_map_t epsgConf;
 
 	FileGeoTIFF() : FileTIFF(), gtif(nullptr){
-		gdalInfo.data.setType(BaseGDAL::tag_t::ROOT);
+		//gdalInfo.data.setType(GDAL::tag_t::ROOT);
+		gdalMetadata(GDAL::tag_t::ROOT);
 	}
 
 	FileGeoTIFF(const std::string & path, const std::string & mode = "w") : FileTIFF(), gtif(nullptr){
-		gdalInfo.data.setType(BaseGDAL::tag_t::ROOT);
+		//gdalInfo.data.setType(GDAL::tag_t::ROOT);
+		gdalMetadata(GDAL::tag_t::ROOT);
 		open(path, mode);
 	}
 
@@ -134,7 +136,7 @@ public:
 	/// Use EPSG specific support only, if found. Else use also fromProj4Str().
 	// static	bool plainEPSG;
 
-	TreeGDAL gdalInfo;
+	TreeGDAL gdalMetadata;
 	/**
 	 *  \param nodata - yes, string...
 	 */
@@ -150,10 +152,15 @@ public:
 	template <class T>
 	void setGdal(const std::string & key, const T & value, int sample=-1, const std::string & role = ""){
 
-		NodeGDAL gdalItem =  gdalInfo[key](NodeGDAL::ITEM).data;
+		TreeGDAL & elem =  gdalMetadata[key](GDAL::ITEM);
+		//elem->setType(GDAL::UNDEFINED);
+		//elem->setType(GDAL::ITEM);
 
-		gdalItem.name = key;
-		gdalItem.setText(value);
+		//NodeGDAL gdalItem =  gdalMetadata[key](NodeGDAL::ITEM).data;
+
+		NodeGDAL & item =  elem.data;
+		item.name = key;
+		item.setText(value);
 		/*
 		this->name   = name;
 		this->ctext  = ctext.toStr();
@@ -161,18 +168,19 @@ public:
 		*/
 
 		if (sample >= 0){
-			gdalItem.sample = sample;
+			//item.sample = sample;
+			item.set("sample", sample); // create Variable
 			if (role.empty()){
-				gdalItem.role = key;
-				drain::StringTools::lowerCase(gdalItem.role);
+				item.role = key;
+				drain::StringTools::lowerCase(item.role);
 			}
 			else {
-				gdalItem.role = role;
+				item.role = role;
 			}
 		}
 
-		gdalItem.set("name", gdalItem.name); // KLUDGE
-		gdalItem.set("role", gdalItem.role); // KLUDGE
+		//item.set("name", "gdalItem.name"); // KLUDGE
+		//iItem.set("role", "gdalItem.role"); // KLUDGE
 	}
 
 	/// Sets projection and bounding box. Adjusts spatial resolution accordingly.
@@ -249,10 +257,11 @@ const drain::FlaggerDict drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict;
 } // image::
 
 
+/*
 template <>
 template <>
 image::TreeGDAL & image::TreeGDAL::operator()(const image::NodeGDAL::tag_t & type);
-
+*/
 
 } // drain::
 #endif

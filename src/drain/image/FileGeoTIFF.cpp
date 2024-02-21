@@ -208,9 +208,13 @@ void FileGeoTIFF::writeMetadata(){
 
 		// Write metadata in XML format
 		std::stringstream sstr;
-		NodeGDAL::toStream(sstr, gdalInfo);
-		//sstr << gdalInfo;
+		NodeGDAL::toStream(sstr, gdalMetadata);
+		//sstr << gdalMetadata;
 		mout.special<LOG_INFO>("GDAL XML metadata:\n", sstr.str());
+		if (mout.isDebug()){
+			mout.special<LOG_INFO>("GDAL XML tree:\n");
+			TreeUtils::dump(gdalMetadata, std::cerr);
+		}
 		setField(TIFFTAG_GDAL_METADATA, sstr.str());
 
 		GTIFWriteKeys(gtif);
@@ -246,8 +250,8 @@ void FileGeoTIFF::setGdalScale(double scale, double offset){
 	// drain::Logger mout(__FILE__, __FUNCTION__);
 	setGdal("SCALE", scale, 0);
 	setGdal("OFFSET", offset, 0);
-	// gdalInfo["SCALE"]->setGDAL(scale, 0, "scale");
-	// gdalInfo["OFFSET"]->setGDAL(offset, 0, "offset");
+	// gdalMetadata["SCALE"]->setGDAL(scale, 0, "scale");
+	// gdalMetadata["OFFSET"]->setGDAL(offset, 0, "offset");
 }
 
 void FileGeoTIFF::setGdalNoData(const std::string & nodata){

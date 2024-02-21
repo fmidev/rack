@@ -44,7 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-
+// Consider more general key matcher?
 
 void QuantityMatcher::set(const std::string & s){
 	reset();
@@ -52,7 +52,7 @@ void QuantityMatcher::set(const std::string & s){
 	if (s.empty()){
 		return;
 	}
-	else if (s.find_first_of("^?*[]()$") != std::string::npos){
+	else if (s.find_first_of("^.?*[]()$") != std::string::npos){
 		isRegExp = true;
 		setExpression(s);
 	}

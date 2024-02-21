@@ -52,28 +52,25 @@ namespace image
 
 
 template <>
-std::map<NodeGDAL::tag_t,std::string> NodeXML<BaseGDAL::tag_t>::tags = {
-	{drain::image::BaseGDAL::UNDEFINED,	"UNDEFINED"},
-	{drain::image::BaseGDAL::ROOT,	    "GDALMetadata"},
-	{drain::image::BaseGDAL::ITEM,	    "Item"},
-	{drain::image::BaseGDAL::USER,	    "Item"},
-//	{drain::image::BaseGDAL::OFFSET,	"Item"},
-//	{drain::image::BaseGDAL::SCALE,	    "Item"},
-//	{drain::image::BaseGDAL::UNITS,	    "Item"},
+std::map<NodeGDAL::tag_t,std::string> NodeXML<GDAL::tag_t>::tags = {
+	{drain::image::GDAL::UNDEFINED,	"UNDEFINED"},
+	{drain::image::GDAL::ROOT,	    "GDALMetadata"},
+	{drain::image::GDAL::ITEM,	    "Item"},
+	{drain::image::GDAL::USER,	    "Item"},
+//	{drain::image::GDAL::OFFSET,	"Item"},
+//	{drain::image::GDAL::SCALE,	    "Item"},
+//	{drain::image::GDAL::UNITS,	    "Item"},
 };
 
-NodeGDAL::NodeGDAL(const tag_t &  t){
+NodeGDAL::NodeGDAL(const tag_t & t) : xml_node_t(){ // , sample(-1)
 	setType(t);
-	//this->id = -1;
-	//this->name = "~";
+	// name = "test" + getTag();
 }
 
-NodeGDAL::NodeGDAL(const NodeGDAL & node){
-	// this->id = -1;
-	setType(node.getType());
-	// tag = node.tag;
-	sample = 0;
+NodeGDAL::NodeGDAL(const NodeGDAL & node) : xml_node_t(){ // , sample(-1)
+	type = GDAL::UNDEFINED;
 	copyStruct(node, node, *this);
+	setType(node.getType());
 }
 
 
@@ -81,20 +78,24 @@ void NodeGDAL::setType(const tag_t & t){
 
 	type = t;
 
+	link("name", name);
+
 	if (t == ROOT){
-		//tag = "GDALMetadata";
 	}
 	else if (t == ITEM){
-		// tag = "Item";
-		link("sample", sample = 0);
-		link("role",   role   = "");
-		link("name",   name   = "");
+		//	link("sample", sample = "0"); //  = -1);
+		link("role",   role = "");
+		link("name",   name); // don't change!  = ""
 	}
 	else { // USER
+		clear(); // clearLinks could be better?
 		//tag = "Item";
 		// link("name", name);
 		// link("role",   role = "");
 	}
+
+	// Logger mout(__FILE__, __FUNCTION__);
+	// mout.warn("setType: ", getTag(), " name:", name);
 
 }
 
@@ -129,28 +130,13 @@ void NodeGDAL::setGDAL(const std::string & name, const drain::Variable & ctext){
 	setType(ITEM);
 	this->name   = name;
 	this->ctext  = ctext.toStr();
-
-}
-*/
 //this->sample = sample;
 //this->role   = role;
-// drain::StringTools::upperCase(this->name);
 
-/*
-for (drain::ReferenceMap::const_iterator it = this->begin(); it != this->end(); it++){
-	std::cerr << tag << '=' << it->first << ':' << it->second << '\n';
-};
-*/
-
-/*
-void NodeGDAL::setText(const drain::Variable & value){
-	this->ctext  = value.toStr();
-}
-
-void NodeGDAL::setText(const std::string & text){
-	this->ctext  = text;
 }
 */
+
+
 
 
 

@@ -31,10 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // TODO: check
 #ifndef DRAIN_TREE_UTILS
-#define DRAIN_TREE_UTILS "2.0"
-
-// "Use TreeOrdered.h or TreeUnordered.h to include this file."
-
+#define DRAIN_TREE_UTILS "2.1"
 
 
 #include <iterator>
@@ -45,74 +42,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Log.h"
 #include "Path.h"
 #include "String.h"
-//#include "RegExp.h"
-//#include "Options.h"
 
 namespace drain {
 
 
 
-/// Unordered tree based on std::map.
+/// Collection of functions for investigating and processing trees.
 /**
  *
  *  \tparam K - key type, implementing method empty() and cast from/to std::string.
  *  \tparam T - value type
  *  \tparam C - comparison functor, implementing less-than relation
  *
- *  tree[] returns childs only (complains separators, for some time)
- *  tree() returns descendants, allows deep paths.
- *
- *  Child nodes can be addressed with operator[] with std::string valued keys:
- *  \code
- *  Tree<float> t;
- *  t["firstChild"];
- *  \endcode
- *  The keys can be retrieved to a list with getKeys().
- *
- *  Alternatively, one may iterate the children directly:
- *  \code
- *  std::map<std::string,Tree<int> >::iterator it = tree.begin();
- *  while (it != tree.end()){
- *    std::cout << it->first << ' ' << it->second << '\n';
- *    ++it;
- *  }
- *  \endcode
- *
- *  As the operator[] returns a reference, it may be used recursively:
- *  \code
- *  t["firstChild"]["a"]["bb"];
- *  \endcode
- *
- *  Tree also recognizes a path separator, which is '/' by default.
- *  Hence, the node created in the above example could be likewise
- *  created or addressed as:
- *  \code
- *  t("firstChild/a/bb")
- *  \endcode
- *
- *
- *  Each node contains data of type T. It may be unused (empty), that is, a node can be used only as a branching point.
- *
- *  \code
- *  Tree<std::string> t;
- *  t.data = "Hello world";
- *  std::string s = t;  // Now contains "Hello world".
- *  \endcode
- *  (Direct assignments to and from the node data has been supported, but is now \b disabled for c++
- *  compatibility reasons.)
- *
- *  Also direct referencing of the node data is now \b disabled:
- *  \code
- *  Tree<std::string> t;
- *  t = "Hello world";
- *  Tree<std::string> &r = t; // Refers to tree.
- *  std::string &s = t;       // Refers to data, "Hello world".
- *  \endcode
- *
  */
-
-// Example:
-// typedef drain::Tree<hi5::NodeHi5, rack::ODIMPath, rack::ODIMPathLess> Hi5Tree;
 class TreeUtils {
 public:
 
@@ -191,6 +133,8 @@ public:
 
 	/// Traverse tree, visiting each node as a prefix operation.
 	/**
+	 *  Simple version.
+	 *
 	 *  \tparam H - object with method visit(tree, path).
 	 *  \tparam T - tree type, can be const
 	 */
@@ -214,14 +158,7 @@ public:
 	};
 
 
-	/*
-	template <class TR>
-	static
-	typename TR::const_iterator find2(const TR & tree, const key_t & key){
-
-	}
-	*/
-
+	/// Default implementation for recursive dump()
 	template <class T>
 	static
 	bool dataDumper(const T & data, std::ostream &ostr){
@@ -229,8 +166,10 @@ public:
 		return true;
 	}
 
-	/// Debugging utility - dumps the structure of the tree (not the contents).
+	/// Render a tree using character graphics.
 	/**
+	 *  Debugging utility - dumps the structure of the tree (not the contents).
+	 *
 	 *  \tparam TR - tree type
 	 *  \tparam SKIP - skip empty branches (FUTURE OPTION)
 	 *
@@ -271,12 +210,7 @@ public:
 		// for (const auto & entry: tree.begin()){
 		for (typename TR::container_t::const_iterator it = tree.begin(); it != tree.end(); it++){
 
-			//empty = false; // has subtree(s)
-
-			// std::stringstream ostrChild;  (FUTURE OPTION)
 			std::ostream & ostrChild = ostr; // for now...
-
-			//const auto & entry = *it;
 
 			std::string indent2;
 			if (it == --tree.end()){

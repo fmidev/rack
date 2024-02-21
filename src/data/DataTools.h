@@ -221,7 +221,7 @@ void DataTools::getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & p, M &
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (p.empty() || !p.front().isRoot()){
-		mout.attention("add root and restart with path= '" , p , "'  (revised code)" );
+		mout.debug("add root and restart with path= '" , p , "'  (revised code)" );
 		//Hi5Tree::path_t pRooted(Hi5Tree::path_t(Hi5Tree::path_t::elem_t::ROOT), p);
 		Hi5Tree::path_t pRooted;
 		pRooted.appendElem(Hi5Tree::path_t::elem_t::ROOT);

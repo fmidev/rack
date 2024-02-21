@@ -179,6 +179,21 @@ while (( $line <= iEnd )); do
     cmdbase=${cmd%-o*} # without output
     output=${cmd##*-o} # remaining part (output file)
     extension=( ${output##*.} ) # extension, trailing white space trimmed
+
+    # SVG validation and conversion. 
+    if [ $extension == 'svg' ]; then
+	convert $output $output.png
+	if [ $? != 0 ]; then
+	    echo -e "$VT100_RED SVG conversion failed  $VT100_END"
+	    exit 2
+	fi
+	xmllint --noout "$output"
+	if [ $? != 0 ]; then
+	    echo -e "$VT100_RED XML validation failed for $output  $VT100_END"
+	    exit 3
+	fi
+    fi
+    
     # Note: scripts problematic, so skipped.
     if [ "$cmdbase" != "$cmd" ] && [ "${cmd/--script/}" != "$cmd" ] && [ "${cmd//[\[\]]/}" != "$cmd" ] ; then
 	# cmd="$cmdbase --outputPrefix $OUTDIR/ -o $output "

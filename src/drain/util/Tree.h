@@ -379,11 +379,13 @@ public:
 	};
 
 	// TODO fix/enhance?
+	/*
 	template <class DD>
 	inline
 	operator DD() const {
 		return data;
 	};
+	*/
 
 
 	/// Child addressing operator
@@ -401,39 +403,67 @@ public:
 
 	/// Returns a descendant. Creates one if not existing already.
 	/**
-	 *  \tparam - K2 key type of applied Path class
+	 *  \param path - the path from the current node to the child node.
+	 *
+	 *  This function, using native path_t type, should be reserved for this semantic
+	 *  by not redefining (specialising) this function in template classes.
+	 *
 	 */
 	inline
 	tree_t & operator()(const path_t & path){
 		return get(path.begin(), path.end());
 	}
 
+	/// Returns a descendant. Creates one if not existing already.
+	/**
+	 *  \param path - the path from the current node to the child node.
+	 *
+	 *  This function, not using native path_t type, can be redefined in template classes.
+	 *  For example, an important attribute can be set using this method.
+	 *  Method operator()(const char *arg) should be redefined to produce equivalent
+	 *  result with <code>const string &arg</code>.
+	 */
 	template <class S>
 	inline
-	tree_t & operator()(const S & path){
-		return operator()(path_t(path));
+	tree_t & operator()(const S & arg){
+		return operator()(path_t(arg));
 	}
 
-	/// Returns a descendant.
+	/// Redirects the call to operator()(const std::string & arg) .
 	/**
-	 *  \tparam - K2 key type of applied Path class
+	 *  \param arg - by default, the path from the current node to the child node.
+	 *
+	 */
+	inline
+	tree_t & operator()(const char *arg){
+		return operator()(std::string(arg));
+	}
+
+	/// Returns a descendant if that exists, else returns an empty node. Otherwise like non-const counterpart.
+	/**
+	 *  \param path - the path from the current node to the child node.
+	 *
+	 *  This function, using *native* path_t type, should be reserved for this semantic
+	 *  by not redefining (specialising) this function in template classes.
+	 *
 	 */
 	inline
 	const tree_t & operator()(const path_t & path) const {
 		return get(path.begin(), path.end());
 	}
 
-	// Try removing this...
-	/// Returns a descendant.
-	/**
-	 *  \tparam - K2 key type of applied Path class
-	 */
+	/// Returns a descendant if that exists, else returns an empty node. Otherwise like non-const counterpart.
 	template <class S>
 	inline
-	const tree_t & operator()(const S & path) const {
-		return operator()(path_t(path));
+	const tree_t & operator()(const S & arg) const {
+		return operator()(path_t(arg));
 	}
 
+	/// Redirects the call to operator()(const std::string & arg) .
+	inline
+	const tree_t & operator()(const char *arg) const {
+		return operator()(std::string(arg));
+	}
 
 	/// Clear children and node data.
 	/**

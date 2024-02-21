@@ -118,6 +118,9 @@ public:
 typedef NodeHTML::xml_tree_t TreeHTML;
 // typedef drain::UnorderedMultiTree<NodeHTML,false, NodeHTML::path_t> TreeHTML;
 
+
+
+
 inline
 std::ostream & operator<<(std::ostream &ostr, const NodeHTML & node){
 	return drain::Sprinter::toStream(ostr, node.getAttributes());
@@ -130,30 +133,19 @@ std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
 }
 
 
-
 template <>
 inline
-const char* TypeName<NodeHTML::xml_tree_t>::get(){
+const char* TypeName<NodeHTML>::get(){
 	return "HTML";
 }
 
-// NOTE: template would not match for subclasses of NodeHTML<E>
-/*
-template <bool EX, class P>
-struct TypeName< drain::UnorderedMultiTree<NodeHTML,EX,P> > {
+template <>
+inline
+const char* TypeName<BaseHTML::tag_t>::get(){
+	return "HTML";
+}
 
-    static const std::string & str(){
-    	static const std::string name("TreeHTML");
-    	return name;
-    }
 
-    static const char* get(){
-    	return str().c_str();
-    }
-};
-*/
-
-//typedef drain::UnorderedMultiTree<NodeHTML<>,false> TreeHTML;
 
 /** Example/ experimental template specif
 template <>

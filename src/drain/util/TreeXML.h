@@ -610,7 +610,9 @@ template <class N>
 inline
 std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
 	ostr << node.getTag() << '[' << (unsigned int)node.getType() << ']' << ' ';
-	drain::Sprinter::toStream(ostr, node.getAttributes(), drain::Sprinter::jsonLayout);
+	// drain::Sprinter::toStream(ostr, node.getAttributes(), drain::Sprinter::jsonLayout);
+	// drain::Sprinter::toStream(ostr, node.getAttributes().getMap(), drain::Sprinter::jsonLayout);
+	drain::Sprinter::toStream(ostr, node.getAttributes().getMap(), drain::Sprinter::xmlAttributeLayout);
 	return ostr;
 }
 

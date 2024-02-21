@@ -35,6 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_VERSION__ "8.14"
 
 /**
+ *   Version 8.14
+ *   -- QuantityMatcher: period '.' added to regExp-recognising-regExp:  "^.?*[]()$"
+ *
  *   Version 8.13
  *   -- Streamlined XML/SVG/HTML classes
  *

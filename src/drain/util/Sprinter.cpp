@@ -107,6 +107,12 @@ const SprinterLayout Sprinter::cmdLineLayout = {":", ",", "=", ""};
  */
 const SprinterLayout Sprinter::jsonLayout("[,]", "{,}", ":", "\"\"", "\"\"");
 
+/// Like JSON layout, but keys without hyphens.
+const SprinterLayout Sprinter::jsLayout("[,]", "{,}", ":", "\"\"", "");
+
+///
+const SprinterLayout Sprinter::xmlAttributeLayout("[,]", " ", ":", "\"\"", "");
+
 } // namespace drain
 
 

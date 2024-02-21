@@ -464,11 +464,11 @@ void CmdOutputFile::exec() const {
 			paletteGroup["placeholder"](drain::image::NodeSVG::elem_t::COMMENT)->ctext = " kommentti!";
 		}
 
-		//drain::BBox bbox;
-		//drain::Rectangle<int> bbox;
+
+		/// TODO: move auto aligns to svg write phase (below)
 		drain::Frame2D<int> frame;
-		TreeUtilsSVG::determineBBox(imageGroup, frame); // , TreeUtilsSVG::VERT);
-		TreeUtilsSVG::align(imageGroup, frame); // , TreeUtilsSVG::VERT, TreeUtilsSVG::DECR);
+		TreeUtilsSVG::determineBBox(imageGroup, frame);
+		TreeUtilsSVG::align(imageGroup, frame);
 
 		ctx.xmlTrack->set("width",  frame.getWidth());
 		ctx.xmlTrack->set("height", frame.getHeight());

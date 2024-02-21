@@ -269,6 +269,12 @@ public:
 	 */
 	static const SprinterLayout jsonLayout;
 
+	/// JavaScript layout. Like JSON layout, but keys without hyphens.
+	static const SprinterLayout jsLayout;
+
+	/// Like attributes in XML (HTML, SVG, ...) tags
+	static const SprinterLayout xmlAttributeLayout;
+
 	/// C++ code initializer list style: all objects with {...}, with comma ',' separator.
 	/**
 	 *   # arrays  as {value, ...}

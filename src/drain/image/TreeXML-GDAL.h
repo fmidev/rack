@@ -41,13 +41,14 @@ namespace drain
 namespace image
 {
 
-struct BaseGDAL {
+struct GDAL {
 
 	// Small
 	enum tag_t {
+		// Small indices reserved for basic XML
 		UNDEFINED=drain::NodeXML<>::UNDEFINED,
 		CTEXT=drain::NodeXML<>::CTEXT,
-		// Small indiced reserved for base XML
+		// GDAL
 		ROOT=10,
 		ITEM=11,
 		USER=12}; // , OFFSET, SCALE, UNITS}; // check CTEXT, maybe implement in XML
@@ -55,20 +56,17 @@ struct BaseGDAL {
 };
 
 // https://www.awaresystems.be/imaging/tiff/ti fftags/gdal_metadata.html
-class NodeGDAL: public BaseGDAL, public drain::NodeXML<BaseGDAL::tag_t> {
+class NodeGDAL: public GDAL, public drain::NodeXML<GDAL::tag_t> {
 public:
 
-	//enum type { UNDEFINED, ROOT, ITEM, USER }; // check CTEXT, maybe implement in XML
-
 	/// Constructor
-	NodeGDAL(const tag_t & t = BaseGDAL::USER);
+	NodeGDAL(const tag_t & t = GDAL::ITEM);
 
 	/// Copy constructor
 	NodeGDAL(const NodeGDAL & node);
 
 	// void setGDAL(const std::string & name, const drain::Variable & ctext, int sample, const std::string & role = "");
-	//void setGDAL(const drain::Variable & ctext, int sample=0, const std::string & role = "");
-
+	// void setGDAL(const drain::Variable & ctext, int sample=0, const std::string & role = "");
 	// void setGDAL(const std::string & name, const drain::Variable & ctext);
 
 	template <class T>
@@ -78,60 +76,37 @@ public:
 		return *this;
 	}
 
-	/*
-	// Set user attribute
-	void setText(const drain::Variable & value);
-
-	// Set user attribute
-	void setText(const std::string & value);
-	*/
-
 	virtual
 	void setType(const tag_t & t);
 
 
+	// Multi-purpose key
+	std::string name;
 
 	/// Standard GDAL attribute
-	int sample;
+	std::string sample;  // string, to allow empty (unset) value
 
 	/// Standard GDAL attribute
 	std::string role;
 
-	// Multi-purpose key
-	// std::string value;
-	std::string name;
-
-protected:
-
 };
 
-
-typedef drain::UnorderedMultiTree<NodeGDAL> TreeGDAL;
-
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
-	//return drain::NodeXML::toStream(ostr, tree);
-	//return drain::NodeXML<>::docToStream(ostr, tree);
-	// return drain::NodeXML<>::toStream(ostr, tree);
-	return TreeGDAL::node_data_t::toStream(ostr, tree);
-}
-
-
-
-/*
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const TreeGDAL & tree){
-	//return drain::NodeXML::toStream(ostr, tree);
-	//return drain::NodeXML<>::docToStream(ostr, tree);
-	// return drain::NodeXML<>::toStream(ostr, tree);
-	return TreeGDAL::node_data_t::toStream(ostr, tree);
-}
-*/
+//typedef NodeGDAL::xml_tree_t TreeGDAL;
+typedef drain::UnorderedMultiTree<image::NodeGDAL> TreeGDAL;
 
 } // image::
 
+
+/// Write tree using XML notation.
+/**
+ *   This function does not write the XML header containing document type info.
+ *   \see NodeXML::toStream()
+ *   \see NodeXML::docToStream()
+ */
+inline
+std::ostream & operator<<(std::ostream & ostr, const image::TreeGDAL & tree){
+	return image::TreeGDAL::node_data_t::toStream(ostr, tree);
+}
 
 template <>
 inline
@@ -139,21 +114,23 @@ const char* TypeName<image::NodeGDAL>::get(){
 	return "XML-GDAL";
 }
 
+template <>
+inline
+const char* TypeName<image::GDAL::tag_t>::get(){
+	return "XML-GDAL2";
+}
 
-//template <>
-//struct drain::TypeName<image::NodeSVG>;
-/* {
-    static const char* get(){ return "SVG"; }
-};
-*/
-
+/// Note: this overrides path based addressing of descendants
 template <>
 template <>
 inline
-image::TreeGDAL & image::TreeGDAL::operator()(const image::NodeGDAL::tag_t & type){
+image::TreeGDAL & image::TreeGDAL::operator()(const image::GDAL::tag_t & type){
 	this->data.setType(type);
 	return *this;
 }
+
+/*
+SUPRESSED. Semantics become unclear, esp. if calling: const version of x& = tree("name") which returns a tree.
 
 
 /// Note: this overrides path based addressing of descendants
@@ -164,17 +141,10 @@ image::TreeGDAL & image::TreeGDAL::operator()(const std::string & name){
 	this->data.name = name;
 	return *this;
 }
-
-/// Note: this overrides path based addressing of descendants
-/*
-template <>
-template <>
-inline
-image::TreeGDAL & image::TreeGDAL::operator()(const char *name){
-	this->data.name = name;
-	return *this;
-}
 */
+
+
+
 
 } // drain::
 

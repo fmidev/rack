@@ -28,14 +28,9 @@
  */
 #include <iostream>
 #include "drain/util/Log.h"
-// #include "drain/util/TreeUnordered.h"
 #include "drain/util/TreeUtils.h"
 #include "drain/image/TreeXML-GDAL.h"
-//#include "drain/util/Type.h"
 
-// using namespace std;
-
-// using namespace drain;
 
 /*
  <GDALMetadata >
@@ -51,7 +46,10 @@
 int main(int argc, char **argv){
 
 	// std::cout << drain::TypeName<Tree>::get() << '/' << drain::TypeName<NodeHTML>::get() << " demo \n";
-	std::cout << drain::TypeName<drain::image::TreeGDAL>::get() << '/' << drain::TypeName<drain::image::NodeGDAL>::get() << " demo \n";
+	std::cout << drain::TypeName<drain::image::TreeGDAL>::get() << " demo \n";
+	std::cout << "Tag enum type: " << drain::TypeName<drain::image::GDAL>::get() << '\n';
+
+
 	/*
 	if (argc==1){
 		cerr << "Usage:   " << argv[0] << " <keychars> <sample-string>  <key>=<value> <key2>=<value2> ..." << endl;
@@ -60,9 +58,9 @@ int main(int argc, char **argv){
 	}
 	*/
 
-	drain::image::TreeGDAL gdal(drain::image::BaseGDAL::ROOT);
-	gdal["first"](drain::image::NodeGDAL::ITEM) = "setting";
-	gdal("second") = 12.345;
+	drain::image::TreeGDAL gdal(drain::image::GDAL::ROOT);
+	gdal["first"](drain::image::GDAL::ITEM) = "setting";
+	gdal(std::string("second"))(drain::image::GDAL::ITEM) = 12.345;
 
 	drain::image::TreeGDAL & sub = gdal["first"];
 	sub("John") = 123.455;
