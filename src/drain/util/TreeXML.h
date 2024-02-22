@@ -90,14 +90,16 @@ public:
 	typedef ReferenceMap2<FlexibleVariable> map_t;
 
 	inline
-	NodeXML(const elem_t & t = elem_t(0)) : id(++nextID){
+	NodeXML(const elem_t & t = elem_t(0)){
 		type = t;
+		drain::StringTools::import(++nextID, id);
 		// link("id", id);
 	};
 
-	// Use default constr in derived classes.
+	// Note: use default constructor in derived classes.
 	inline
-	NodeXML(const NodeXML & node) : id(++NodeXML::nextID) {
+	NodeXML(const NodeXML & node){
+		drain::StringTools::import(++nextID, id);
 		copyStruct(node, node, *this, RESERVE); // This may corrupt (yet unconstructed) object?
 		type = node.getType();
 	}
@@ -478,6 +480,17 @@ public:
 	typedef std::list<path_t> path_list_t;
 
 	/// "Forward definition"
+	/**
+	 *   By definition, id attributes should be unique. This function nevertheless returns a list
+	 *   for easy handling of cases with zero or more than one elements found.
+	 */
+	//   This could also be in TreeXMLutilities
+	template <class V>
+	static
+	const path_list_t & findById(const V & t, const std::string & tag, path_list_t & result = path_list_t(), const path_t & path = path_t());
+
+	/// "Forward definition"
+	//   This could also be in TreeXMLutilities
 	template <class V>
 	static
 	const path_list_t & findByClass(const V & t, const std::string & tag, path_list_t & result = path_list_t(), const path_t & path = path_t());
@@ -540,8 +553,8 @@ protected:
 
 	static int nextID;
 
-	// TODO: change to string, still allowing numerics
-	int id;
+	// String, still easily allowing numbers through set("id", ...)
+	std::string id;
 
 	// TODO: consider TAG from dict?
 	// std::string tag;
@@ -592,8 +605,22 @@ int NodeXML<N>::nextID = 0;
 
 template <class N>
 template <class T>
-const NodeXML<>::path_list_t & NodeXML<N>::findByClass(const T & t, const std::string & cls,
-		NodeXML<>::path_list_t & result, const path_t & path){
+const NodeXML<>::path_list_t & NodeXML<N>::findById(const T & t, const std::string & id, NodeXML<>::path_list_t & result, const path_t & path){
+
+	if (t->id == id){
+		result.push_back(path);
+	}
+
+	for (const auto & entry: t){
+		findByClass(entry.second, id, result, path_t(path, entry.first));
+	}
+
+	return result;
+}
+
+template <class N>
+template <class T>
+const NodeXML<>::path_list_t & NodeXML<N>::findByClass(const T & t, const std::string & cls, NodeXML<>::path_list_t & result, const path_t & path){
 
 	if (t->classList.find(cls) != t->classList.end()){
 		result.push_back(path);

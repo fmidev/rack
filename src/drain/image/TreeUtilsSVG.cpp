@@ -105,8 +105,6 @@ void TreeUtilsSVG::align(TreeSVG & group, drain::Frame2D<int> & frame, Orientati
 		direction = TreeUtilsSVG::defaultDirection;
 	}
 
-	// const bool VERTICAL   = (orientation==VERT);
-	// const bool DECREASING = (direction==DECR);
 
 	mout.attention("aligning elems of ", group->get("name", "?"));
 

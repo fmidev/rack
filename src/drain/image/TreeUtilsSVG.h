@@ -80,17 +80,6 @@ template <>
 const drain::EnumDict<TreeUtilsSVG::Direction>::dict_t  drain::EnumDict<TreeUtilsSVG::Direction>::dict;
 
 
-//static
-//NodeXML<BaseSVG::tag_t>::tags;
-/*
-template <>
-TreeSVG & TreeSVG::operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > & l){
-	// data.set(l);
-	return *this;
-}
-*/
-
-
 
 }  // image::
 

@@ -57,11 +57,9 @@ struct BaseSVG {
 		CTEXT=NodeXML<>::CTEXT,
 		STYLE=NodeXML<>::STYLE,
 		SCRIPT=NodeXML<>::SCRIPT,
-		SVG, TITLE, GROUP, TEXT, TSPAN, RECT, CIRC, LINE, IMAGE }; // check CTEXT, maybe implement in XML
+		SVG, CIRC, GROUP, LINE, IMAGE, METADATA, RECT, TEXT, TITLE, TSPAN };
+	// check CTEXT, maybe implement in XML
 
-	// typedef NodeSVG node_t;
-
-	// typedef TreeSVG tree_t;
 
 };
 
@@ -130,23 +128,6 @@ public:
 		return *this;
 	}
 
-	//static
-	//std::ostream & toStream(std::ostream &ostr, const TreeSVG & t);
-
-	/*
-	static // virtual
-	inline
-	std::ostream & docTypeToStream(std::ostream &ostr){
-		ostr << "<?xml ";
-		attribToStream(ostr, "version",  "1.0");
-		attribToStream(ostr, "encoding", "UTF-8");
-		attribToStream(ostr, "standalone", "no");
-		//attribToStream(ostr, "standalone", "yes");
-		ostr << "?>";
-		ostr << '\n';
-		return ostr;
-	}
-	*/
 
 	/// In opening SVG tag, referred to by attribute "xmlns:xlink"
 	static

@@ -91,6 +91,9 @@ public:
 	};
 
 	inline
+	~Caster(){};
+
+	inline
 	void link(void *p, const std::type_info &t){
 		ptr = p;
 		setType(t);

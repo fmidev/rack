@@ -73,6 +73,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "fileio.h"
 #include "fileio-read.h"
 #include "fileio-geotiff.h"
+#include "fileio-xml.h"
 #include "file-hist.h"
 #include "images.h"  // ImageSection
 
@@ -846,6 +847,7 @@ void CmdOutputFile::exec() const {
 /**
  *
  */
+/*
 void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, drain::VariableMap & variables,
 		const drain::Point2D<double> & upperLeft, const drain::image::Image & image, drain::BBox & bbox) const {
 
@@ -877,12 +879,6 @@ void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, dra
 	imageElem->set("y", upperLeft.y);
 	imageElem->set("width",  w);
 	imageElem->set("height", h);
-	/*
-	imageElem->x = upperLeft.x;
-	imageElem->y = upperLeft.y;
-	imageElem->width  = image.getWidth();
-	imageELem->height = image.getHeight();
-	*/
 	//imageElem->set("xlink:href", fn);
 	imageElem->set("href", fn);
 	drain::image::FilePng::write(image, fn);
@@ -898,12 +894,11 @@ void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, dra
 	// comment->setType(NodeXML::COMM)
 
 }
-
+*/
 
 /**
  *
  *   \see Palette::exportSVGLegend()
- */
 void CmdOutputPanel::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
@@ -913,12 +908,6 @@ void CmdOutputPanel::exec() const {
 	// mout.attention(ctx.getName());
 	// mout.warn("ctx.select=", ctx.select);
 
-	/*
-	if (value.empty()){
-		mout.error("File name missing. (Use '-' for stdout.)" );
-		return;
-	}
-	*/
 
 	if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR)){
 		mout.warn("input failed, skipping");
@@ -975,34 +964,6 @@ void CmdOutputPanel::exec() const {
 	ctx.getCurrentGrayImage();
 
 
-	/*
-	TreeSVG::node_data_t & rect = svg["main"];
-	main.setType(BaseSVG::RECT);
-	main.set("x", 0);
-	main.set("y", 0);
-	//main.set("style", "fill:white opacity:0.8"); // not supported by some SVG renderers
-	main.set("fill", "white");
-	main.set("opacity", 0.8);
-	*/
-	/*
-	TreeSVG & image = main["image1"];
-	image->setType(BaseSVG::IMAGE);
-	image->set("x", 0);
-	image->set("y", 0);
-	image->set("width",  src.getWidth());
-	image->set("height", src.getHeight());
-	//image->set("xlink:href", "image.png");
-	 * image->set("href", "image.png");
-	*/
-
-	/*
-	TreeSVG & header = svg["title"];
-	header->setType(BaseSVG::TEXT);
-	header->set("x", lineheight/4);
-	header->set("y", (headerHeight * 9) / 10);
-	header->ctext = title;
-	header->set("style","font-size:20");
-	*/
 
 	if (layout.empty() || layout == "basic"){
 		//TreeSVG & radar = image["radar"];
@@ -1026,6 +987,7 @@ void CmdOutputPanel::exec() const {
 
 
 }
+*/
 
 void CmdOutputTree::exec() const {
 

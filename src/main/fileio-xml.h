@@ -29,8 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef RACK_FILE_IO
-#define RACK_FILE_IO
+#ifndef RACK_FILE_IO_XML
+#define RACK_FILE_IO_XML
 
 #include <string>
 
@@ -47,36 +47,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-/// Syntax for recognising hdf5 files.
-//  Edited 2017/07 such that also files without extension are considered h5 files.
-extern
-const drain::RegExp h5FileExtension;
-
-/// Syntax for recognising GeoTIFF files.
-//extern
-//const drain::RegExp tiffFileExtension;
-//const drain::FileInfo fileInfoTIFF;
-
-/// Syntax for recognising Portable Networks Image image file.
-//extern
-//const drain::RegExp pngFileExtension;
-
-/// Syntax for recognising PNM (PGM,PPM) image file.
-//extern
-//const drain::RegExp pnmFileExtension;
-
-/// Syntax for recognising text files.
-extern
-const drain::RegExp textFileExtension;
-
-/// Syntax for recognising numeric array files (in plain text format anyway).
-extern
-const drain::RegExp arrayFileExtension;
-
-/// Syntax for sparsely resampled data.
-extern
-const drain::RegExp sampleFileExtension;
-
+/*
 class CmdOutputFile : public drain::SimpleCommand<std::string> {
 
 public:
@@ -100,22 +71,19 @@ public:
 
 };
 
-class CmdOutputTree : public drain::SimpleCommand<std::string> {
+*/
+
+/// SVG panel utils
+class CmdBaseSVG : public drain::BasicCommand {
+
 
 public:
-
-	inline
-	CmdOutputTree() : drain::SimpleCommand<>(__FUNCTION__, "Output data as simple tree structure.",
-			"filename", "", "<filename>|-") {
-	};
-
 	void exec() const;
-
 
 };
 
 
-/*
+/// SVG panel
 class CmdOutputPanel : public drain::BasicCommand {
 
 public:
@@ -140,20 +108,10 @@ public:
 	void appendImage(TreeSVG & group, const std::string & prefix, drain::VariableMap & vmap,
 			const drain::Point2D<double> & location, const drain::image::Image & image, drain::BBox & bbox) const;
 };
-*/
 
 
-class FileModule : public drain::CommandModule<> { // : public drain::CommandGroup {
+} // rack::
 
-public:
-
-	FileModule(drain::CommandBank & bank = drain::getCommandBank());
-	//virtual void initialize();
-
-};
-
-}
 
 #endif
 
-// Rack
