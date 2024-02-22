@@ -61,6 +61,13 @@ public:
 
 };
 
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
+	drain::Sprinter::toStream(ostr, style.getMap(), drain::Sprinter::xmlAttributeLayout);
+	return ostr;
+}
+
 /**
  *  \tparam T - index type; may be enum.
  */
@@ -408,8 +415,6 @@ public:
 	NodeXML & setText(const S & value) {
 		if (isUndefined()){
 			setType((elem_t)CTEXT);
-
-			//if ((int)getType() != CTEXT){ //cross-check
 			if (!isCText()){ //cross-check
 				throw std::runtime_error(drain::TypeName<NodeXML<T> >::str() + ": CTEXT not supported");
 			}
@@ -636,10 +641,34 @@ const NodeXML<>::path_list_t & NodeXML<N>::findByClass(const T & t, const std::s
 template <class N>
 inline
 std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
-	ostr << node.getTag() << '[' << (unsigned int)node.getType() << ']' << ' ';
+	ostr << node.getTag() << '<' << (unsigned int)node.getType() << '>' << ' ';
 	// drain::Sprinter::toStream(ostr, node.getAttributes(), drain::Sprinter::jsonLayout);
 	// drain::Sprinter::toStream(ostr, node.getAttributes().getMap(), drain::Sprinter::jsonLayout);
-	drain::Sprinter::toStream(ostr, node.getAttributes().getMap(), drain::Sprinter::xmlAttributeLayout);
+	//
+	if (!node.getAttributes().empty()){
+		drain::Sprinter::toStream(ostr, node.getAttributes().getMap(), drain::Sprinter::xmlAttributeLayout);
+		ostr << ' ';
+	}
+	if (!node.classList.empty()){
+		ostr << '[';
+		drain::Sprinter::toStream(ostr, node.classList, drain::Sprinter::pythonLayout);
+		ostr << ']' << ' ';
+	}
+	if (!node.style.empty()){
+		ostr << '{';
+		drain::Sprinter::toStream(ostr, node.style);
+		ostr << '}' << ' ';
+	}
+	if (!node.ctext.empty()){
+		ostr << "'";
+		if (node.ctext.length() > 20){
+			ostr << node.ctext.substr(0, 15);
+		}
+		else {
+			ostr << node.ctext;
+		}
+		ostr << "'";
+	}
 	return ostr;
 }
 
@@ -726,7 +755,7 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 	else if (tree->isCText()){
 		ostr << '\n';
 	}
-	else if (!tree->typeIs((elem_t)STYLE) && (children.empty()) && tree->ctext.empty() ){ // OR no ctext!
+	else if ((!tree->typeIs((elem_t)STYLE)) && (children.empty()) && tree->ctext.empty() ){ // OR no ctext!
 		// close TAG
 		ostr << "/>\n";
 		//ostr << '/' << '>';
@@ -736,7 +765,16 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 		// close starting TAG
 		ostr << '>';
 
+		/*
+		if (!tree->style.empty()){
+			ostr << "<!-- STYLE? ";
+			drain::Sprinter::toStream(ostr, tree->style.getMap(), drain::Sprinter::xmlAttributeLayout);
+			ostr << "/-->\n";
+		}
+		*/
+
 		if (tree->typeIs((elem_t)STYLE)){
+			ostr << "<![CDATA[ ";
 			if (!tree->getAttributes().empty()){
 				ostr << "\n\t<!-- DISCARDED attribs ";
 				drain::Logger mout(__FILE__,__FUNCTION__);
@@ -780,10 +818,8 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 				}
 				// Sprinter::sequenceToStream(ostr, entry.second->style, StyleXML::styleRecordLayout);
 			}
-			// ostr << '\n';
-			//ostr << "<!-- läbäl /-->" << '\n';
-			// Sprinter::sequenceToStream(ostr, tree.getChildren(), StyleXML::styleRecordLayout);
-			//Sprinter::mapToStream(ostr, tree->style, StyleXML::styleLineLayout);
+			ostr << "]]\n";
+			// end STYLE defs
 		}
 		else {
 

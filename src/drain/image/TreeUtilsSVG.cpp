@@ -74,8 +74,8 @@ void TreeUtilsSVG::determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, O
 	//frame.height = 0;
 	for (const auto & entry : group.getChildren()){ //
 		const drain::image::TreeSVG & elem = entry.second;
-		if (elem->getType() == BaseSVG::IMAGE){
-			if (!elem->hasClass("FLOATING")){
+		if ((elem->getType() == svg::IMAGE) || (elem->getType() == svg::RECT)){
+			if (!elem->hasClass("FLOAT")){
 				if (orientation == HORZ){
 					frame.width  += elem->get("width");
 					frame.height  = std::max(frame.height, elem->get("height", 0));
@@ -93,9 +93,11 @@ void TreeUtilsSVG::determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, O
 }
 
 // drain::Rectangle<int> & bbox
-void TreeUtilsSVG::align(TreeSVG & group, drain::Frame2D<int> & frame, Orientation orientation, Direction direction){
+void TreeUtilsSVG::align(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start, Orientation orientation, Direction direction){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	mout.attention("aligning elems of ", group->get("name", "?"));
 
 	if (orientation == UNDEFINED_ORIENTATION){
 		orientation = TreeUtilsSVG::defaultOrientation;
@@ -105,41 +107,58 @@ void TreeUtilsSVG::align(TreeSVG & group, drain::Frame2D<int> & frame, Orientati
 		direction = TreeUtilsSVG::defaultDirection;
 	}
 
-
-	mout.attention("aligning elems of ", group->get("name", "?"));
-
 	// Loop: stack horizontally or vertically.
 	Point2D<int> pos;
 	pos.x = ((orientation==VERT) || (direction==INCR)) ? 0 : frame.width;
 	pos.y = ((orientation==HORZ) || (direction==INCR)) ? 0 : frame.height;
+
+	pos.x += start.x;
+	pos.y += start.y;
+
+	int w = 0;
+	int h = 0;
 
 	for (auto & entry : group.getChildren()){ //
 
 		TreeSVG & elem = entry.second;
 		NodeSVG::elem_t t = elem->getType();
 
-		if ((t == BaseSVG::IMAGE) || (t == BaseSVG::RECT)){
+		if (elem->hasClass("FIXED"))
+			continue;
+
+		if ((t == svg::IMAGE) || (t == svg::RECT) || (t == svg::TEXT)){
 			// mout.attention("  elem ", elem->get("name", "?"), ": init pos", pos);
 
-			int w = elem->get("width", 0);
-			int h = elem->get("height",0);
 
-			if (direction==DECR){
-				if (orientation==HORZ)
-					pos.x -= w;
-				else
-					pos.y -= h;
+			if (!elem->hasClass("FLOAT")){
+				if (direction==INCR){
+					if (orientation==HORZ)
+						pos.x += w;
+					else
+						pos.y += h;
+				}
+
+				w = elem->get("width", 0);
+				h = elem->get("height",0);
+
+				if (direction==DECR){
+					if (orientation==HORZ)
+						pos.x -= w;
+					else
+						pos.y -= h;
+				}
 			}
 
-			elem->set("x", pos.x);
-			elem->set("y", pos.y);
-
-			if (direction==INCR){
-				if (orientation==HORZ)
-					pos.x += w;
-				else
-					pos.y += h;
+			if (t == svg::TEXT){
+				elem->set("x", pos.x);
+				elem->set("y", pos.y + 20); // fonts
 			}
+			else {
+				elem->set("x", pos.x);
+				elem->set("y", pos.y);
+			}
+
+
 		}
 	}
 

@@ -66,9 +66,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/DataConversionOp.h"
 #include "resources.h"
 #include "images.h"
-//#include "image-kit.h"
+#include "fileio-xml.h"
 
-#include "image-ops.h"
+#include "image-ops.h" // why
 
 
 // #include <pthread.h>
@@ -992,7 +992,19 @@ public:
 		const drain::image::Palette & palette = ctx.getPalette();
 
 		if (ctx.formatStr.empty()){
-			palette.write(ctx.outputPrefix + value);
+
+			drain::FilePath filepath(ctx.outputPrefix + value);
+			if (NodeSVG::fileInfo.checkExtension(filepath.extension)){ // .svg
+				mout.special("writing SVG legend");
+				TreeSVG svg;
+				palette.exportSVGLegend(svg, true);
+				CmdBaseSVG::addImage(ctx, svg, filepath);
+				drain::Output ofstr(filepath.str());
+				NodeSVG::toStream(ofstr, svg);
+			}
+			else {
+				palette.write(ctx.outputPrefix + value);
+			}
 		}
 		else {
 			mout.warn("user defined format, extension not checked: ", ctx.formatStr);

@@ -119,8 +119,13 @@ public:
 	drain::image::Image grayImage;
 	drain::image::Image colorImage;
 
-	// New
 	std::string paletteKey;
+
+
+	// New: SVG
+	std::string svgGroup;
+	drain::image::TreeSVG svgTrack;
+	//drain::TreeXML xmlTrack;
 
 	// New
 	inline

@@ -67,7 +67,7 @@ struct TreeUtilsSVG {
 
 	/// Stack IMAGE and RECT elements within the frame (width x height)
 	static
-	void align(TreeSVG & group, drain::Frame2D<int> & frame, Orientation orientation=UNDEFINED_ORIENTATION, Direction direction=UNDEFINED_DIRECTION);
+	void align(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start={0,0}, Orientation orientation=UNDEFINED_ORIENTATION, Direction direction=UNDEFINED_DIRECTION);
 
 
 

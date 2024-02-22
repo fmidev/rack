@@ -49,7 +49,7 @@ class NodeSVG;
 
 typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
 
-struct BaseSVG {
+struct svg {
 
 	enum tag_t {
 		UNDEFINED=NodeXML<>::UNDEFINED,
@@ -70,13 +70,13 @@ struct BaseSVG {
   \see drain::TreeXML
 
  */
-class NodeSVG: public BaseSVG, public NodeXML<BaseSVG::tag_t> {
+class NodeSVG: public svg, public NodeXML<svg::tag_t> {
 public:
 
-	// typedef NodeXML<BaseSVG::tag_t> xml_node_t;
+	// typedef NodeXML<svg::tag_t> xml_node_t;
 
 	/// Default constructor. Create a node of given type.
-	NodeSVG(tag_t t = BaseSVG::UNDEFINED);
+	NodeSVG(tag_t t = svg::UNDEFINED);
 
 	/// Copy constructor.
 	NodeSVG(const NodeSVG & node);
@@ -167,7 +167,7 @@ protected:
 
 
 //static
-//NodeXML<BaseSVG::tag_t>::tags;
+//NodeXML<SVG::tag_t>::tags;
 /*
 template <>
 TreeSVG & TreeSVG::operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > & l){
@@ -220,19 +220,17 @@ const char* TypeName<image::NodeSVG>::get(){
 template <>
 template <>
 // inline
-image::TreeSVG & image::TreeSVG::operator()(const image::BaseSVG::tag_t & type); /*{
+image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
+/*{
 	this->data.setType(type);
 	return *this;
 }*/
 
+/*
 template <>
 template <>
-// inline
-image::TreeSVG & image::TreeSVG::operator()(const std::string & text); /*{
-	//if (this->data.)
-	this->data.ctext = text;
-	return *this;
-}*/
+image::TreeSVG & image::TreeSVG::operator()(const std::string & text);
+*/
 
 }
 

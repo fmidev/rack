@@ -78,7 +78,21 @@ class CmdBaseSVG : public drain::BasicCommand {
 
 
 public:
+
 	void exec() const;
+
+	static
+	void addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath);
+
+	/// Currently, uses file link (does not embed)
+	static
+	void addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath);
+	// const drain::image::ImageConf & imageConf
+
+	// Re-align elements etc
+	static
+	void completeSVG(RackContext & ctx);
+
 
 };
 

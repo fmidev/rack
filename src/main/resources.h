@@ -206,9 +206,6 @@ public:
 	};
 
 
-	// Track
-	drain::image::TreeSVG xmlTrack;
-	//drain::TreeXML xmlTrack;
 
 
 

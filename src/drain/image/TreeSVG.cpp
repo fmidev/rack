@@ -59,19 +59,20 @@ std::string NodeSVG::svg("http://www.w3.org/2000/svg");
 
 
 template <>
-std::map<BaseSVG::tag_t,std::string> NodeXML<BaseSVG::tag_t>::tags = {
-	{drain::image::BaseSVG::UNDEFINED,	"UNDEFINED"},
-	{drain::image::BaseSVG::COMMENT, "#"},
-	{drain::image::BaseSVG::CTEXT, ""},
-	{drain::image::BaseSVG::SVG,   "svg"},
-	{drain::image::BaseSVG::TITLE, "title"},
-	{drain::image::BaseSVG::GROUP, "g"},
-	{drain::image::BaseSVG::TEXT,  "text"},
-	{drain::image::BaseSVG::TSPAN, "tspan"},
-	{drain::image::BaseSVG::RECT,  "rect"},
-	{drain::image::BaseSVG::CIRC,  "circ"},
-	{drain::image::BaseSVG::LINE,  "line"},
-	{drain::image::BaseSVG::IMAGE, "image"}
+std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
+	{drain::image::svg::UNDEFINED,	"UNDEFINED"},
+	{drain::image::svg::COMMENT, "#"},
+	{drain::image::svg::CTEXT, ""},
+	{drain::image::svg::SVG,   "svg"},
+	{drain::image::svg::CIRC,  "circ"},
+	{drain::image::svg::GROUP, "g"},
+	{drain::image::svg::IMAGE, "image"},
+	{drain::image::svg::LINE,  "line"},
+	{drain::image::svg::METADATA,  "metadata"},
+	{drain::image::svg::RECT,  "rect"},
+	{drain::image::svg::TEXT,  "text"},
+	{drain::image::svg::TITLE, "title"},
+	{drain::image::svg::TSPAN, "tspan"},
 };
 
 
@@ -147,7 +148,7 @@ void NodeSVG::setType(const tag_t & t) {
 		//link("width", width = "0");
 		// link("height", height = "0");
 		// if (version == 1) {
-		link("xlink:href", text_anchor);
+		link("xlink:href", url); // text_anchor
 		// if (version > 2.x ?) {
 		//link("href", text_anchor);
 		break;
@@ -155,7 +156,7 @@ void NodeSVG::setType(const tag_t & t) {
 		// tag = "text";
 		link("x", x = 0);
 		link("y", y = 0);
-		link("text-anchor", text_anchor = "");
+		// link("text-anchor", text_anchor = "");
 		break;
 	case TSPAN:
 		// tag = "tspan";
@@ -167,8 +168,8 @@ void NodeSVG::setType(const tag_t & t) {
 
 	// DEPRECATING: see separate STYLE and CLASS?
 	// link("style", style = "");
-	link("fill", fill = "");
-	link("opacity", opacity = ""); // string, so silent if empty
+	//link("fill", fill = "");
+	//link("opacity", opacity = ""); // string, so silent if empty
 
 
 }
@@ -195,17 +196,18 @@ struct drain::TypeName<drain::image::NodeSVG> {
 template <>
 template <>
 // inline
-drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::BaseSVG::tag_t & type){
+drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::svg::tag_t & type){
 	this->data.setType(type);
 	return *this;
 }
 
+
+/*
 template <>
 template <>
-// inline
 drain::image::TreeSVG & drain::image::TreeSVG::operator()(const std::string & text){
-	//if (this->data.)
 	this->data.ctext = text;
 	return *this;
 }
+*/
 

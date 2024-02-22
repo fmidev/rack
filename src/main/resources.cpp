@@ -42,9 +42,9 @@ namespace rack {
 RackContext::RackContext() : drain::SmartContext(__FUNCTION__) {
 	statusMap["version"] = __RACK_VERSION__;
 	statusMap["rackContext"] = "BASE";
-	xmlTrack->setType(drain::image::BaseSVG::SVG); //, xmlTrack(drain::image::BaseSVG::SVG)
-	xmlTrack->set("width", 600);
-	xmlTrack->set("height", 600);
+	svgTrack->setType(drain::image::svg::SVG); //, xmlTrack(drain::image::BaseSVG::SVG)
+	svgTrack->set("width", 600);
+	svgTrack->set("height", 600);
 }
 
 RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), ImageContext(ctx), Hdf5Context(ctx){
@@ -52,7 +52,7 @@ RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), Ima
 	mout.special("copying ", __FUNCTION__);
 
 	// , xmlTrack(drain::image::BaseSVG::SVG)
-	xmlTrack->setType(drain::image::BaseSVG::SVG);
+	svgTrack->setType(drain::image::svg::SVG);
 
 	statusMap["version"] = __RACK_VERSION__;
 	statusMap["rackContext"] = "CLONED";

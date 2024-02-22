@@ -111,7 +111,7 @@ const SprinterLayout Sprinter::jsonLayout("[,]", "{,}", ":", "\"\"", "\"\"");
 const SprinterLayout Sprinter::jsLayout("[,]", "{,}", ":", "\"\"", "");
 
 ///
-const SprinterLayout Sprinter::xmlAttributeLayout("[,]", " ", ":", "\"\"", "");
+const SprinterLayout Sprinter::xmlAttributeLayout("[,]", " ", "=", "", "");
 
 } // namespace drain
 

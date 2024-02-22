@@ -43,12 +43,14 @@ namespace rack {
 // const drain::StatusFlags::value_t RackContext::BBOX_STATUS =   StatusFlags::add("BBOX");
 
 ImageContext::ImageContext(): imagePhysical(true), qualityGroups(ODIMPathElem::NONE),
+		svgGroup("main"),
 		currentImage(nullptr), currentGrayImage(nullptr) {
 }
 
 ImageContext::ImageContext(const ImageContext & ctx):
 		imagePhysical(ctx.imagePhysical),
 		qualityGroups(ctx.qualityGroups),
+		svgGroup(ctx.svgGroup),
 		currentImage(ctx.currentImage),
 		currentGrayImage(ctx.currentGrayImage) {
 }
