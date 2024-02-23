@@ -78,6 +78,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Output.h"
 #include "drain/util/StringMapper.h"
 #include "drain/util/TreeXML.h"
+#include "drain/util/TreeHTML.h"
 
 #include "drain/image/FilePng.h"
 #include "drain/image/TreeUtilsSVG.h"
@@ -85,6 +86,152 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "fileio-xml.h"  // ImageSection
 
 namespace rack {
+
+
+int TitleCollectorSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
+
+	std::cerr << __FUNCTION__ << ':' << path << std::endl;
+
+	TreeSVG & current = tree(path);
+
+	if (current->getType()==svg::METADATA){
+		return 0;
+	}
+
+	/*
+	for (auto & entry: current.getChildren()){
+		// std::cerr << " check " << entry.first << std::endl;
+		if (entry.second.hasChild("metadata")){
+			// Update me, the parent of this child
+			//current["metadata"]->ge
+			TreeSVG & metadata = current["metadata"](svg::METADATA);
+			for (const auto & attr: entry.second["metadata"]->getAttributes()){
+				metadata->set(attr.first, attr.second);
+			}
+		}
+	}
+	*/
+
+	return 0;
+}
+
+
+
+int TitleCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
+
+
+	unsigned short count = 0;
+	variableStat_t stat;
+
+	TreeSVG & current = tree(path);
+
+	if (!((current->getType()==svg::GROUP) || (current->getType()==svg::IMAGE))){ // At least METADATA must be skipped...
+		return 0;
+	}
+
+	std::cerr << __FUNCTION__ << ':' << path << std::endl;
+
+	// Risk: infinite loop in recursion.
+	// TreeSVG & gMeta = current["metadata"](svg::METADATA);
+	for (auto & entry: current.getChildren()){
+		// std::cerr << " check " << entry.first << std::endl;
+		if (entry.second.hasChild("metadata")){
+			// Update me, the parent of this child
+			//current["metadata"]->ge
+			TreeSVG & metadata = current["metadata"](svg::METADATA);
+			for (const auto & attr: entry.second["metadata"]->getAttributes()){
+				metadata->set(attr.first, attr.second);
+			}
+		}
+	}
+
+
+	for (auto & entry: current.getChildren()){
+		// std::cerr << " check " << entry.first << std::endl;
+		svg::tag_t type = entry.second->getType();
+		if ((type == svg::IMAGE)||(type == svg::GROUP)){
+			if (entry.second.hasChild("metadata")){
+				++count;
+				TreeSVG & imeta = entry.second["metadata"];
+				// TreeSVG & icomm = entry.second["comment"](svg::COMMENT);
+				for (const auto & attr: imeta->getAttributes()){
+					std::string s = drain::StringBuilder<>(attr.first,'=',attr.second);
+					imeta->addClass(s);
+					// gMeta->set(attr.first, attr.second);
+					++stat[s];
+				}
+			}
+		}
+	}
+
+	// std::cerr << "\t adding COMMENT " << std::endl;
+	TreeSVG & shared = current["comment"](svg::COMMENT);
+	shared->set("name", "shared-metadata");
+
+	for (const auto & e: stat){
+		// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
+		if (e.second == count){
+			shared->addClass(e.first);
+		}
+	}
+
+	//std::cerr << "returning\n";
+
+	// Revisit children, remove shared metadata
+	for (auto & entry: current.getChildren()){
+		// std::cerr << " check " << entry.first << std::endl;
+		svg::tag_t type = entry.second->getType();
+		if ((type == svg::IMAGE)||(type == svg::GROUP)){
+			if (entry.second.hasChild("metadata")){
+				TreeSVG & imeta = entry.second["metadata"];
+				for (const auto & cls: shared->classList){
+					imeta->removeClass(cls); // safe for non-existing as well
+
+				}
+				/// Add titles, if specific attributes exist
+				if (!imeta->classList.empty()){
+
+					std::string name = entry.second->get("name", "undef");
+					int x = entry.second->get("x",0);
+					int y = entry.second->get("y",0);
+
+					TreeSVG & titleBox = current[name+"-TitleBox"](NodeSVG::RECT);
+					titleBox->addClass("FLOAT");
+					titleBox->set("x", x);
+					titleBox->set("y", y);
+					titleBox->set("name", name);
+					titleBox->set("width", 200);
+					titleBox->set("height", 30);
+					titleBox->setStyle("fill:darkblue; opacity:0.5;");
+
+
+					TreeSVG & text = current[name+"-Title"](svg::TEXT);
+					text->set("x", x + 10);
+					text->set("y", y + 20);
+					//text->set("text-anchor", "reijo");
+					text->set("name", name);
+					// text->setText(path.str());
+					for (const auto & cls: imeta->classList){
+						// Yes, split it back...
+						std::string key, value;
+						drain::StringTools::split2(cls, key, value, '=');
+						TreeSVG & tspan = text[key](svg::TSPAN);
+						tspan->addClass(key);
+						tspan->ctext += (value+' ');
+						entry.second->set(key, "*"); // TODO: remove attribute
+					}
+				}
+			}
+		}
+	}
+
+
+	return 0;
+
+
+}
+
+
 
 
 // NOTE: Part of SVG processing is  CmdOutputConf
@@ -100,6 +247,13 @@ void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, co
 
 	drain::image::TreeSVG & track = ctx.svgTrack["outputs"](NodeSVG::GROUP);
 
+	//stroke:white; stroke-width:0.5em; fill:black; paint-order:stroke; stroke-linejoin:round
+
+	if (!track.hasChild("style")){
+		//drain::image::TreeSVG & style = track["style"](svg::STYLE);
+		// style->set("text", "stroke:white; stroke-width:0.5em; fill:black; paint-order:stroke; stroke-linejoin:round");
+	}
+
 	// Ensure (repeatedly)
 	/*
 	drain::image::TreeSVG & mainHeader = track["mainHeader"](NodeSVG::RECT);
@@ -114,12 +268,14 @@ void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, co
 	// Ensure (repeatedly)
 	group->addClass("imageSet");
 	group->set("id", ctx.svgGroup);
+	group->set("name", ctx.svgGroup);
 
 
 
 	// group = filepath.basename + "Group";
 
 	drain::image::TreeSVG & image = group[filepath.basename](NodeSVG::IMAGE); // +EXT!
+	image->set("name", filepath.basename);
 	image->set("width", src.getWidth());
 	image->set("height", src.getHeight());
 	image->set("xlink:href", filepath);
@@ -138,12 +294,14 @@ void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, co
 		}
 	}
 
+	/*
 	TreeSVG & titleBox = group[filepath.basename+"-title"](NodeSVG::RECT);
 	titleBox->addClass("FLOAT");
+	titleBox->set("name", filepath.basename+"-title");
 	titleBox->set("width", src.getWidth()/4);
 	titleBox->set("height", 30);
 	titleBox->setStyle("fill:darkblue; opacity:0.5;");
-
+	*/
 
 	// Ensure (repeatedly). This will be on top of the FIRST image of row/column?
 	/*
@@ -161,8 +319,8 @@ void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::TreeSVG & svg, 
 	drain::image::TreeSVG & track = ctx.svgTrack["outputs"](NodeSVG::GROUP);
 
 	drain::image::TreeSVG & group = track[ctx.svgGroup](NodeSVG::GROUP);
+	group->addClass("imageSet");
 	group->set("id", ctx.svgGroup);
-	group->set("class", "imageSet");
 
 	drain::image::TreeSVG & image = group[filepath.basename](NodeSVG::IMAGE); // +EXT!
 	image->addClass("float legend");
@@ -196,7 +354,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 		TreeUtilsSVG::determineBBox(group, frame);
 
 		// METADATA -> title
-		if (true){
+		if (false){
 			TreeSVG & titleBox = group["titleBox"](NodeSVG::RECT);
 			titleBox->addClass("FIXED");
 			titleBox->set("width", frame.width);
@@ -234,6 +392,12 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 
 		drain::image::TreeUtilsSVG::align(group, frame, start, orientation, direction);
 
+		/// Collect
+		/*
+		TitleCollectorSVG titleCollecor;
+		drain::TreeUtils::traverse(titleCollecor, group);
+		*/
+
 		if (orientation == TreeUtilsSVG::HORZ){
 			// Jump to the next "row"
 			start.x = 0;
@@ -250,11 +414,32 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 		}
 		// drain::TreeUtils::dump(group);
 
+
+
 	}
 
+	/// Collect
+	TitleCollectorSVG titleCollector;
+	drain::TreeUtils::traverse(titleCollector, ctx.svgTrack);
+
+	TreeSVG & headerRect = ctx.svgTrack["headerRect"](svg::RECT);
+	headerRect->setStyle("fill:slateblue");
+	headerRect->setStyle("opacity:0.25");
+	headerRect->set("x", 0);
+	headerRect->set("y", -titleCollector.mainHeaderHeight);
+	headerRect->set("width",  mainFrame.getWidth());
+	headerRect->set("height", titleCollector.mainHeaderHeight);
+
+	TreeSVG & headerText = ctx.svgTrack["headerText"](svg::TEXT);
+	headerText->set("x", 5);
+	headerText->set("y", -3);
+	headerText->set("style", "fill:blue; stroke:red");
+	headerText->setText("Radar image");
+
+
 	ctx.svgTrack->set("width",  mainFrame.getWidth());
-	ctx.svgTrack->set("height", mainFrame.getHeight());
-	ctx.svgTrack->set("viewBox", (const std::string &)drain::StringBuilder<' '>(0, 0, mainFrame.width, mainFrame.height));
+	ctx.svgTrack->set("height", mainFrame.getHeight() + titleCollector.mainHeaderHeight);
+	ctx.svgTrack->set("viewBox", (const std::string &)drain::StringBuilder<' '>(0, -titleCollector.mainHeaderHeight, mainFrame.width, mainFrame.height));
 
 }
 
@@ -465,6 +650,169 @@ void CmdOutputPanel::exec() const {
 // See drain::TextDecorator::VT100
 // std::map<std::string,std::string>
 
+
+
+int H5HTMLvisitor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
+
+	drain::Logger submout(__FILE__, __FUNCTION__);
+
+	// Yes.
+	const Hi5Tree & t = tree(odimPath);
+
+	// std::cout << path << ':'  << '\n'; // << tree(path).data
+
+	if (t.data.exclude){
+		submout.warn("excluding ", odimPath);
+		return 1;
+	}
+
+	if (!odimPath.empty()){
+	}
+
+	submout.special("visiting ", odimPath);
+
+	if (html->isUndefined()){
+
+		// submout.ok("initializing HTML");
+		html(drain::BaseHTML::HTML);
+
+		// submout.ok("adding HEAD");
+		drain::TreeHTML & head = html["head"](drain::BaseHTML::HEAD); //  << drain::NodeHTML::entry<drain::NodeHTML::HEAD>();
+
+		// submout.ok("adding TITLE");
+		head["title"](drain::BaseHTML::TITLE) = "HDF5 file";
+
+		drain::TreeHTML & style = head["style"](drain::BaseHTML::STYLE);
+		style->set("ul, #myUL", "list-style-type: none");
+		style->set("#myUL", "margin:0;padding:0");
+		style[".caret-down::before"]->set({{"transform", "rotate(90deg)"}, {"margin",0}, {"padding",0}});
+		style["#myUL"]->set("margin:0;padding:0");
+		style["#myUL"]->set("fargin", 1.0);
+		style["#myUL"]->set("fadding", 1.0);
+
+		//head.ensureChild(drain::NodeHTML::entry<drain::NodeHTML::TITLE>()) = "HDF5 file";
+		//head.ensureChild(drain::NodeHTML::entry<drain::NodeXML<>::COMMENT >()) = RACK_BASE;
+		//html(body)(drain::NodeHTML::BODY);
+		//html << std::pair<hp_elem,drain::NodeHTML>("body", drain::NodeHTML::BODY);
+
+		html["body"](drain::BaseHTML::BODY);
+
+		submout.accept(html);
+
+	}
+
+	drain::TreeHTML & body = html["body"];
+
+	// ensureChild(drain::NodeHTML::entry<drain::NodeHTML::BODY>());
+
+	drain::TreeHTML::path_t htmlPath;
+	// drain::TreeHTML::path_t htmlParentPath;
+
+	// Expand the path to html path UL->LI->UL-> by adding an element (LI) after each
+	for (const ODIMPathElem & e: odimPath){
+
+		htmlPath.appendElem("ul");
+		// submout.ok("checking path: ", htmlPath);
+
+		const std::string & estr = e.str();
+
+		drain::TreeHTML & group = body(htmlPath)(drain::BaseHTML::UL);
+		// group->setType(drain::NodeHTML::UL);
+		if (group->isUndefined()){
+			group->setType(drain::BaseHTML::UL);
+			//group->set("name", htmlPath);
+			group->set("hdf5", odimPath);
+			group->addClass(estr+"Parent");
+		}
+
+		htmlPath.appendElem(estr);
+		// htmlPath << e;  // hdf5 elem -> html elem >> html path
+		// submout.ok("extending path: ", htmlPath);
+		bool EXISTS = body.hasPath(htmlPath);
+		drain::TreeHTML & item = body(htmlPath); // (drain::NodeHTML::LI);
+		if (item->isUndefined()){
+			item->setType(drain::BaseHTML::LI);
+			item->set("name", estr);
+			item->addClass(e.getPrefix());
+		}
+		else {
+			submout.attention("LI group existed=", (EXISTS?"yes":"no"), ", ", item.data, " at ", htmlPath);
+		}
+	}
+
+
+	return 0;
+
+	submout.accept("traversing path: ", odimPath, " -> html: ", htmlPath);
+
+	drain::TreeHTML & current = body(htmlPath);
+
+	// submout.attention("stripping... ", htmlPath);
+	//htmlPath.pop_back();
+	// submout.attention("       to... ", htmlPath);
+	// drain::TreeHTML & parent  = body(htmlPath);
+
+	drain::TreeHTML & parent  = current;
+
+	if (body->isComment()){
+		submout.error(__LINE__, " BODY elem became comment: at ", odimPath);
+		return 1;
+	}
+	else {
+		submout.special(__LINE__, " BODY elem  ", body->getType());
+	}
+
+	const ODIMPathElem & elem = odimPath.back();
+
+	current->set("h5", odimPath);
+
+	if (elem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+		drain::TreeHTML & table = parent["metadata"](drain::BaseHTML::TABLE);
+		// NOTE: shared table for what, where, how
+		for (const auto & attr: t.data.attributes){
+			drain::TreeHTML & row = table[attr.first](drain::BaseHTML::TR);
+			row["key"](drain::BaseHTML::TH)->setText(attr.first);
+			row["value"](drain::BaseHTML::TD) = (attr.second);
+			std::cout << '\t' << attr.first << ':' << attr.second << '\n'; // << tree(path).data
+		}
+		// return 1;
+	}
+	else if (elem.belongsTo(ODIMPathElem::DATA_GROUPS)){
+
+		drain::TreeHTML & caret = current["ul"](drain::BaseHTML::UL);
+		caret->setText(odimPath.str());
+		caret->addClass("caret");
+		return 0;
+		//current["m"]->setComment(elem);
+	}
+	else if (elem.is(ODIMPathElem::ARRAY)){
+		if (!t.data.empty()){
+			drain::TreeHTML & img = parent["i"](drain::BaseHTML::IMG);
+			//img.set("width", ...)
+			std::string filename = elem;
+			filename += ".png";
+			img->set("href", filename);
+		}
+		//return 1;
+	}
+	else {
+		// current["skip"]->setText("skipped elem" );
+	}
+
+	if (body->isComment()){
+		submout.error(__LINE__, " BODY elem became comment: at ", odimPath);
+		return 1;
+	}
+
+
+
+
+	for (const auto & attr: t.data.attributes){
+		std::cout << '\t' << attr.first << ':' << attr.second << '\n'; // << tree(path).data
+	}
+
+	return 0;
+}
 
 
 

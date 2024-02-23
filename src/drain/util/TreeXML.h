@@ -206,12 +206,9 @@ public:
 			// consider empty
 			static std::string dummy;
 			dummy = drain::StringBuilder<>("UNKNOWN-", index);
-			// drain::Static
-			// static const std::string dummy("UNKNOWN");
 			return dummy;
 			// throw std::runtime_error(drain::StringBuilder<':'>(__FILE__, __FUNCTION__, " tag [", static_cast<int>(index), "] missing from dictionary"));
 		}
-		// return tags[type];
 	};
 
 
@@ -219,16 +216,6 @@ public:
 	inline
 	const std::string & getTag() const {
 		return getTag(type); // risky? converts enum to int .. and back.
-		/*
-		typename tag_map_t::const_iterator it = tags.find(type);
-		if (it != tags.end()){
-			return it->second;
-		}
-		else {
-			throw std::runtime_error(drain::StringBuilder<':'>(__FILE__, __FUNCTION__, " unknown TAG enum value", static_cast<int>(type)));
-		}
-		*/
-		// return tags[type];
 	};
 
 
@@ -286,6 +273,7 @@ public:
 
 	inline
 	void set(const std::initializer_list<Variable::init_pair_t > &l){
+		// TODO: redirect to set(key,value), for consistency
 		if (type == STYLE){
 			drain::SmartMapTools::setValues(style, l);
 		}
@@ -305,6 +293,12 @@ public:
 		else if (key == "style"){
 			// Modify collection
 			setStyle(value);
+		}
+		else if (key == "class"){
+			// mout.warn<LOG_DEBUG>("class");
+			std::string cls;
+			drain::StringTools::import(value, cls);
+			addClass(cls);
 		}
 		else {
 			(*this)[key] = value;
@@ -335,16 +329,25 @@ public:
 
 	/// Style class
 
+
 	template <typename ... TT>
 	inline
 	void addClass(const std::string & s, const TT &... args) {
 		classList.insert(s);
-		setClass(args...);
+		addClass(args...);
 	}
 
 	inline
 	bool hasClass(const std::string & cls) const {
 		return (classList.find(cls) != classList.end());
+	}
+
+	inline
+	void removeClass(const std::string & s) {
+		class_list::iterator it = classList.find(s);
+		if (it != classList.end()){
+			classList.erase(it);
+		}
 	}
 
 	inline
@@ -548,7 +551,7 @@ protected:
 	static xmldoc_attrib_map_t xmldoc_attribs;
 
 	inline
-	void setClass(){}
+	void addClass(){}
 
 	template <class V>
 	static inline

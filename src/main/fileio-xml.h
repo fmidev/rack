@@ -34,11 +34,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
-#include "drain/util/RegExp.h"
 #include "drain/prog/CommandBank.h"
 #include "drain/prog/CommandInstaller.h"
 
 #include "drain/util/FileInfo.h"
+#include "drain/util/RegExp.h"
+#include "drain/util/TreeHTML.h"
+
 //#include "drain/image/FileGeoTIFF.h"
 
 #include "hi5/Hi5.h"
@@ -73,6 +75,45 @@ public:
 
 */
 
+
+/**
+ *
+ */
+class TitleCollectorSVG {
+
+public:
+
+	int mainHeaderHeight;
+
+	inline
+	TitleCollectorSVG() : mainHeaderHeight(30) {
+	};
+
+	typedef std::map<std::string, unsigned short> variableStat_t;
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & odimPath);
+
+	inline
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & odimPath);
+
+};
+
+
+class H5HTMLvisitor {
+
+public:
+
+	drain::TreeHTML html;
+
+	int visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath);
+
+	inline
+	int visitPostfix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
+		return 0;
+	};
+
+};
+
 /// SVG panel utils
 class CmdBaseSVG : public drain::BasicCommand {
 
@@ -88,6 +129,11 @@ public:
 	static
 	void addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath);
 	// const drain::image::ImageConf & imageConf
+
+
+	/// Traverse groups, collecting info, recognizing common (shared) variables and pruning them recursively.
+	static
+	void generateTitles(RackContext & ctx);
 
 	// Re-align elements etc
 	static
