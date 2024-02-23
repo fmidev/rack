@@ -79,6 +79,46 @@ public:
 /**
  *
  */
+class MetaDataCollectorSVG {
+
+public:
+
+	inline
+	MetaDataCollectorSVG() {
+	};
+
+	typedef std::map<std::string, unsigned short> variableStat_t;
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path);
+
+	inline
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path);
+
+};
+
+/**
+ *
+ */
+class MetaDataPrunerSVG {
+
+public:
+
+	inline
+	MetaDataPrunerSVG() {
+	};
+
+	typedef std::map<std::string, unsigned short> variableStat_t;
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path);
+
+	inline
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path);
+
+};
+
+/**
+ *
+ */
 class TitleCollectorSVG {
 
 public:
@@ -91,7 +131,10 @@ public:
 
 	typedef std::map<std::string, unsigned short> variableStat_t;
 
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & odimPath);
+	inline
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & odimPath){
+		return 0;
+	}
 
 	inline
 	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & odimPath);

@@ -306,6 +306,13 @@ public:
 
 	}
 
+	inline
+	void remove(const std::string & s){
+		iterator it = this->find(s);
+		if (it != this->end()){
+			this->erase(it);
+		}
+	}
 
 
 
@@ -653,9 +660,10 @@ std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
 		ostr << ' ';
 	}
 	if (!node.classList.empty()){
-		ostr << '[';
+		//ostr << '['; // has already braces []
 		drain::Sprinter::toStream(ostr, node.classList, drain::Sprinter::pythonLayout);
-		ostr << ']' << ' ';
+		//ostr << ']' << ' ';
+		ostr << ' ';
 	}
 	if (!node.style.empty()){
 		ostr << '{';

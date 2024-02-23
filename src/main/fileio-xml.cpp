@@ -88,7 +88,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-int TitleCollectorSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
+int MetaDataCollectorSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
+	return 0;
+}
+
+
+int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 	std::cerr << __FUNCTION__ << ':' << path << std::endl;
 
@@ -98,23 +103,97 @@ int TitleCollectorSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path)
 		return 0;
 	}
 
-	/*
 	for (auto & entry: current.getChildren()){
-		// std::cerr << " check " << entry.first << std::endl;
-		if (entry.second.hasChild("metadata")){
-			// Update me, the parent of this child
-			//current["metadata"]->ge
+		TreeSVG & child = entry.second;
+		if (child.hasChild("metadata")){
 			TreeSVG & metadata = current["metadata"](svg::METADATA);
 			for (const auto & attr: entry.second["metadata"]->getAttributes()){
 				metadata->set(attr.first, attr.second);
 			}
 		}
 	}
-	*/
+
+	return 0;
+
+}
+
+
+int MetaDataPrunerSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
+
+	// std::cerr << __FUNCTION__ << ':' << path << std::endl;
+
+
+
 
 	return 0;
 }
 
+
+int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
+
+
+	TreeSVG & current = tree(path);
+
+	if (current->getType()==svg::METADATA){
+		return 0;
+	}
+
+	if (!current.hasChild("metadata")){
+		return 0; // 1? no...
+	}
+
+	/// Collective (union)
+	TreeSVG & metadata = current["metadata"](svg::METADATA);
+
+
+
+	typedef std::map<std::string, unsigned short> variableStat_t;
+	variableStat_t stat;
+	/// Number of children having metadata.
+	int count = 0;
+
+	/// Check which attr(key,value) is shared by all the children.
+	for (auto & entry: current.getChildren()){
+		TreeSVG & child = entry.second;
+		if (child.hasChild("metadata")){
+			++count;
+			TreeSVG & childMetadata = entry.second["metadata"](svg::METADATA);
+			for (const auto & attr: childMetadata->getAttributes()){
+				// tehty jo metadata->set(attr.first, attr.second);
+				std::string s = drain::StringBuilder<>(attr.first,'=',attr.second);
+				++stat[s];
+			}
+		}
+	}
+
+	/// Collective (union)
+	//TreeSVG & metadataPruned = current["metadataPruned"](svg::METADATA);
+	//metadataPruned->set("name", "metadataPruned");
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	// metadata->getAttributes().clear();
+	mout.pending<LOG_WARNING>("pruning: ", path.str());
+	for (const auto & e: stat){
+		// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
+		std::string key, value;
+		drain::StringTools::split2(e.first, key, value, '=');
+		if (e.second == count){
+			mout.accept<LOG_WARNING>(e.first, ' ', path.str());
+			metadata->addClass(e.first);
+			//metadata->set(key, value); // NOTE: strings?
+		}
+		else {
+			mout.reject<LOG_WARNING>(e.first, ' ', path.str());
+			metadata->removeClass(e.first);
+			metadata->remove(key);
+			// metadata->set(key, value); // NOTE: strings?
+		}
+	}
+
+
+	return 0;
+
+}
 
 
 int TitleCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
@@ -129,7 +208,7 @@ int TitleCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 		return 0;
 	}
 
-	std::cerr << __FUNCTION__ << ':' << path << std::endl;
+	// std::cerr << __FUNCTION__ << ':' << path << std::endl;
 
 	// Risk: infinite loop in recursion.
 	// TreeSVG & gMeta = current["metadata"](svg::METADATA);
@@ -171,7 +250,12 @@ int TitleCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 	for (const auto & e: stat){
 		// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
 		if (e.second == count){
+			//mout.accept(e.first, ' ', path.str());
 			shared->addClass(e.first);
+		}
+		else {
+			// mout.reject(e.first, ' ', path.str());
+			shared->removeClass(e.first);
 		}
 	}
 
@@ -419,8 +503,17 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 	}
 
 	/// Collect
+	MetaDataCollectorSVG metadataCollector;
+	drain::TreeUtils::traverse(metadataCollector, ctx.svgTrack);
+	drain::TreeUtils::dump(ctx.svgTrack);
+
+
+	MetaDataPrunerSVG metadataPruner;
+	drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
+	drain::TreeUtils::dump(ctx.svgTrack);
+
 	TitleCollectorSVG titleCollector;
-	drain::TreeUtils::traverse(titleCollector, ctx.svgTrack);
+	//drain::TreeUtils::traverse(titleCollector, ctx.svgTrack);
 
 	TreeSVG & headerRect = ctx.svgTrack["headerRect"](svg::RECT);
 	headerRect->setStyle("fill:slateblue");
