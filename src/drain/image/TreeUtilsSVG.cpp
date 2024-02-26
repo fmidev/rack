@@ -61,6 +61,8 @@ const drain::EnumDict<TreeUtilsSVG::Direction>::dict_t  drain::EnumDict<TreeUtil
 
 std::string TreeUtilsSVG::defaultGroupName("main");
 
+std::string TreeUtilsSVG::defaultTitle("");
+
 
 // drain::Rectangle<int> & bbox
 void TreeUtilsSVG::determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, Orientation orientation){
@@ -97,7 +99,7 @@ void TreeUtilsSVG::align(TreeSVG & group, const drain::Frame2D<int> & frame, con
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.attention("aligning elems of ", group->get("name", "?"));
+	mout.debug("aligning elems of group ", group->get("name", "?"));
 
 	if (orientation == UNDEFINED_ORIENTATION){
 		orientation = TreeUtilsSVG::defaultOrientation;

@@ -69,7 +69,8 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 		link("how:nodes", nodes = "");
 
-		link("how:EPSG", epsg = 0);
+		// link("how:EPSG", epsg = 0);
+		link("what:EPSG", epsg = 0);
 	}
 
 

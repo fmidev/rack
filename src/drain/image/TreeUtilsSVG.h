@@ -61,6 +61,8 @@ struct TreeUtilsSVG {
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
 	static std::string defaultGroupName;
 
+	static std::string defaultTitle;
+
 	/// Computes the width and height for a bounding box covering non-overlappin IMAGE and RECT elements.
 	static
 	void determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, Orientation orientation=UNDEFINED_ORIENTATION);

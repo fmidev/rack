@@ -546,34 +546,43 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 	// REUSE:
 	start = {0,0};
 
-	TitleCreatorSVG titleCollector;
-	drain::TreeUtils::traverse(titleCollector, ctx.svgTrack);
+	if (TreeUtilsSVG::defaultTitle != "none"){
 
-	if (track.hasChild("metadata")){
-		TreeSVG & headerRect = ctx.svgTrack["headerRect"](svg::RECT);
-		headerRect->setStyle("fill:slateblue");
-		headerRect->setStyle("opacity:0.25");
-		headerRect->set("x", 0);
-		headerRect->set("y", -titleCollector.mainHeaderHeight);
-		headerRect->set("width",  mainFrame.getWidth());
-		headerRect->set("height", titleCollector.mainHeaderHeight);
+		TitleCreatorSVG titleCollector;
+		drain::TreeUtils::traverse(titleCollector, ctx.svgTrack);
 
-		TreeSVG & headerText = ctx.svgTrack["headerText"](svg::TEXT);
-		headerText->set("x", 8);
-		headerText->set("y", -8);
-		headerText->setStyle({
-			{"font-size", "2.5em"},
-			{"stroke", "none"},
-			{"fill", "black"}
-		}); // fill:black;
-		// headerText->setText("Radar image");
-		for (const auto & entry: track["metadata"]->getAttributes()){
-			headerText->ctext += entry.second.toStr();
-			headerText->ctext += ' ';
+		if (track.hasChild("metadata")){
+			TreeSVG & headerRect = ctx.svgTrack["headerRect"](svg::RECT);
+			headerRect->setStyle("fill:slateblue");
+			headerRect->setStyle("opacity:0.25");
+			headerRect->set("x", 0);
+			headerRect->set("y", -titleCollector.mainHeaderHeight);
+			headerRect->set("width",  mainFrame.getWidth());
+			headerRect->set("height", titleCollector.mainHeaderHeight);
+
+			TreeSVG & headerText = ctx.svgTrack["headerText"](svg::TEXT);
+			headerText->set("x", 8);
+			headerText->set("y", -8);
+			headerText->setStyle({
+				{"font-size", "2.5em"},
+				{"stroke", "none"},
+				{"fill", "black"}
+			}); // fill:black;
+			// headerText->setText("Radar image");
+
+			if (!TreeUtilsSVG::defaultTitle.empty()){
+				//TreeSVG & tspan =  headerText["mainHeader"](svg::TSPAN);
+				headerText->ctext += TreeUtilsSVG::defaultTitle;
+				headerText->ctext += ' ';
+			}
+			for (const auto & entry: track["metadata"]->getAttributes()){
+				headerText->ctext += entry.second.toStr();
+				headerText->ctext += ' ';
+			}
+
+			mainFrame.height +=  titleCollector.mainHeaderHeight;
+			start.y           = -titleCollector.mainHeaderHeight;
 		}
-
-		mainFrame.height +=  titleCollector.mainHeaderHeight;
-		start.y           = -titleCollector.mainHeaderHeight;
 	}
 
 

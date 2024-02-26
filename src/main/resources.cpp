@@ -250,8 +250,9 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 		if (!img.isEmpty()){
 			// WHY TWICE?
 			DataTools::getAttributes(src, path, img.properties); // for image processing ops?
-			if (!(img.getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(img.getType()))){ // CHECK LOGIC!
-				mout.warn("no physical scaling, consider --encoding C or --encoding S" );
+			const std::type_info & t = img.getType();
+			if (!(img.getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(t))){ // CHECK LOGIC!
+				mout.warn("storage type '", drain::Type::call<drain::simpleName>(t),  "', no physical scaling, consider --encoding C or --encoding S" );
 			}
 			img.properties["path"] = drain::sprinter(path,"/").str();
 		}
@@ -308,13 +309,13 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 	if (!ctx.targetEncoding.empty()){
 		if (ctx.currentImage != NULL){
 			if (ctx.currentGrayImage == &ctx.grayImage){
-				mout.warn("re-converting gray image...");
+				mout.warn("Re-converting gray image...");
 			}
 			else {
-				mout.advice("Use --convert to change encoding in HDF5 struct");
-				mout.note("Converting encoding...");
+				mout.hint<LOG_INFO>("Use --convert to change encoding in HDF5 struct");
+				mout.info("Converting encoding...");
 			}
-			mout.attention("converting GrayImage: ", path, ": ", ctx.currentGrayImage->getCoordinatePolicy());
+			mout.info("Converting GrayImage: ", path, " coord policy: ", ctx.currentGrayImage->getCoordinatePolicy());
 			RackContext::convertGrayImage(*currentGrayImage); // ctx, *ctx.
 		}
 	}
@@ -353,8 +354,8 @@ void RackContext::convertGrayImage(const drain::image::Image & srcImage){ // Rac
 		mout.error("no scaling:", (const EncodingODIM &)srcOdim);
 	}
 
-	mout.special("srcEncoding: ", EncodingODIM(srcOdim));
-	mout.special("srcCoords: ", srcImage.getCoordinatePolicy());
+	mout.special<LOG_DEBUG>("srcEncoding: ", EncodingODIM(srcOdim));
+	mout.special<LOG_DEBUG>("srcCoords: ", srcImage.getCoordinatePolicy());
 
 	/// TODO: wrap this and --convert to same code
 	DataConversionOp<ODIM> op;

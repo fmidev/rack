@@ -211,7 +211,7 @@ void FileTIFF::writeImageData(const drain::image::Image & src) //, int tileWidth
 		mout.info("tiled mode:"  , tile , ", bits=" , bitspersample );
 
 		if ((!UCHAR8) && (width % tileWidth)){
-			mout.warn("16bit image, width != N*tileWidth (" , tileWidth ,"), errors may occur (libgeotiff problem?)" );
+			mout.hint("16bit image, width != N*tileWidth (" , tileWidth ,"), edge rendering errors in some applications (libgeotiff issue?)" );
 		}
 
 		/// current tile-widths

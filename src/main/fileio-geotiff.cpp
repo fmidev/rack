@@ -181,7 +181,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 					mout << frame.getBoundingBoxM() << mout;
 				}
 				else {
-					mout.warn("where:BBOX_native (", p, ") missing or invalid, using bbox in degrees (approximative)");
+					mout.info("where:BBOX_native=[", p, "] missing or invalid, using bbox in degrees (approximative)");
 					// frame.setBoundingBoxD(bboxD);
 					frame.setBoundingBoxD(odim.getBoundingBoxD());
 				}

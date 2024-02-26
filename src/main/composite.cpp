@@ -546,20 +546,23 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	/// If compositing scope is undefined, use that of the tile.
 	if (!composite.isDefined()){
 
-		mout.note("Using input properties: " );
-		mout.note("\t --cProj '" , cartSrc.odim.projdef , "'" );
+		mout.info("Using input properties: " );
+		mout.info("\t --cProj '" , cartSrc.odim.projdef , "'" );
 		composite.setProjection(cartSrc.odim.projdef); // Projector::FORCE_CRS
 
 		if (composite.getFrameWidth()*composite.getFrameHeight() == 0){
 			composite.setGeometry(cartSrc.odim.area.width, cartSrc.odim.area.height);
-			mout.note("\t --cSize '" , composite.getFrameWidth() , 'x' , composite.getFrameHeight() , "'" );
+			mout.info("\t --cSize '" , composite.getFrameWidth() , 'x' , composite.getFrameHeight() , "'" );
 		}
 
 		composite.setBoundingBoxD(cartSrc.odim.getBoundingBoxD());
 		//composite.setBoundingBoxD(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
-		mout.note("\t --cBBox '" , composite.getBoundingBoxD() , "'" );
-		if (!composite.projGeo2Native.isLongLat())
-			mout.note("\t --cBBox '" , composite.getBoundingBoxM() , "'" );
+		mout.info("\t --cBBox '" , composite.getBoundingBoxD() , "' # degrees" );
+		if (!composite.projGeo2Native.isLongLat()){
+			std::streamsize p = mout.precision(20);
+			mout.info("\t --cBBox '" , composite.getBoundingBoxM() , "' # metric" );
+			mout.precision(p);
+		}
 				//mout.note("Using bounding box of the input: " , composite.getBoundingBoxD() );
 
 		// mout.warn("Defined composite: " , composite );
@@ -750,7 +753,8 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	// short epsg = drain::Proj6::pickEpsgCode(composite.getProjection());
 	short epsg = composite.projGeo2Native.getDst().getEPSG();
 	if (epsg > 0){
-		where["EPSG"] = epsg;
+		mout.deprecating<LOG_DEBUG>("/how:EPSG migrated to where:EPSG");
+		// where["EPSG"] = epsg;
 		/*
 		where["projdef2"] = " ";
 		where["projdef2"].setInputSeparator(' ');

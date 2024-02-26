@@ -256,12 +256,50 @@ public:
 
 	};
 
-	/// Note that an empty path is not a root.
-	//  Todo: also accept empty path as a root? Perhaps no, because appending may cause relative.
+	/// Returns true, if the path as only one element which is empty. An empty path is not a root.
+	//
+	/**
+	 *
+	 *
+	 *  \see hasRoot()
+	 *  \see ODIMPath::isRoot()
+	 *
+	 *  Todo: also accept empty path as a root? Perhaps no, because appending creates a relative path.
+	 */
 	inline
 	bool isRoot() const {
 		return ((this->size()==1) && this->front().empty());
 		//return separator.acceptLeading && ((this->size()==1) && this->front().empty());
+	}
+
+	/// Returns true, if the path is not empty and the  first element is empty.
+	/**
+	 *
+	 *  \see isRoot()
+	 *
+	 */
+	inline
+	bool hasRoot() const {
+		if (!this->empty()){
+			return this->front().empty();
+		}
+		else {
+			return false;
+		}
+	}
+
+	/// Returns true, if the path is not empty and the  first element is empty.
+	/**
+	 *
+	 *  \see isRoot()
+	 *
+	 */
+	inline
+	path_t & ensureRoot(){
+		if (!this->hasRoot()){
+			this->push_front(elem_t());
+		}
+		return *this;
 	}
 
 

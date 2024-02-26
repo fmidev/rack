@@ -210,7 +210,7 @@ public:
 		set(s);
 	}
 
-	inline
+	virtual inline
 	~ODIMPathElem(){};
 
 	void reset();

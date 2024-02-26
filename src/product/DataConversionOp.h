@@ -250,7 +250,7 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 
 	//const std::string extension("_X");
 
-	mout.attention("number of layers (sub groups of DataSet): ", srcSweep.size());
+	mout.debug("number of layers (sub groups of DataSet): ", srcSweep.size());
 
 	// Traverse quantities
 	//for (typename DataSet<src_t>::const_iterator it = srcSweep.begin(); it != srcSweep.end(); ++it){
@@ -271,7 +271,7 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 		const Data<src_t> & srcData = entry.second;
 		Data<dst_t>       & dstData = dstProduct.getData(quantityTmp); // todo: getNewData
 		//dstProduct.getData(quantity).setExcluded(true);
-		mout.attention("srcData: ", entry.second);
+		mout.attention<LOG_DEBUG>("srcData: ", entry.second);
 
 		mout.debug2(EncodingODIM(this->odim));
 		//mout.toOStr() << "src " << (long int) &(srcData.data) << EncodingODIM(srcData.odim) << mout.endl;
@@ -311,7 +311,7 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 			//const M srcODIM(srcData.odim); // Copy, because src may be modified next
 			const M srcODIM(srcData.data); // Copy, because src may be modified next
 			mout.attention("srcData.odim: ", srcData.odim);
-			mout.attention("srcODIM:   z   ", srcODIM);
+			mout.attention("srcODIM:      ", srcODIM);
 			dstData.odim.quantity = quantity;
 			dstData.odim.updateLenient(srcODIM); // <= dstData.odim.NI = srcData.odim.NI; // if Cart?
 			ProductBase::completeEncoding(dstData.odim, this->targetEncoding);
@@ -369,8 +369,8 @@ void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image:
 
 	const drain::image::Geometry g(srcImage.getGeometry());
 
-	mout.attention("srcOdim",   srcOdim);
-	mout.attention("srcImage", srcImage);
+	mout.attention<LOG_DEBUG>("srcOdim  ",   srcOdim);
+	mout.attention<LOG_DEBUG>("srcImage:", srcImage);
 
 	if (srcImage.hasOverlap(dstImage)){
 		if ((t.getType() != srcImage.getType()) || (g != dstImage.getGeometry())){
@@ -407,8 +407,8 @@ void DataConversionOp<M>::processImage(const ODIM & srcOdim, const drain::image:
 		traverseImageFrame(srcOdim, srcImage, dstOdim, dstImage);
 	}
 
-	mout.attention("dstOdim",   dstOdim);
-	mout.attention("dstImage", dstImage);
+	mout.attention<LOG_DEBUG>("dstOdim:  ",   dstOdim);
+	mout.attention<LOG_DEBUG>("dstImage: ", dstImage);
 
 
 }

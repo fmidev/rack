@@ -114,6 +114,7 @@ public:
 		svgConf.link("group", ctx.svgGroup); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 		svgConf.link("orientation", svgConf_Orientation, drain::sprinter(TreeUtilsSVG::defaultOrientation.getDict().getKeys()).str());
 		svgConf.link("direction",   svgConf_Direction,   drain::sprinter(TreeUtilsSVG::defaultDirection.getDict().getKeys()).str());
+		svgConf.link("group", drain::image::TreeUtilsSVG::defaultTitle); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 		// TreeUtilsSVG::defaultDirection.value);
 
 

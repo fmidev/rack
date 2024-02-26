@@ -406,7 +406,8 @@ void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
 		}
 		else {
 			mout.warn("Failed in setting GeoTIFF projection: ", dstProj);
-			mout.advice("Consider EPSG codes for projections in GeoTIFF, eg. PROJ.4 string '+init=epsg:3035'");
+			//mout.advice("Consider EPSG codes for projections in GeoTIFF, eg. PROJ.4 string '+init=epsg:3035'");
+			mout.advice("For GeoTIFF outputs, try setting EPSG codes '--cProj 3035' instead of of PROJ4 strings.");
 			mout.advice("Consider: gdal_translate -a_srs '", dstProj, "' file.tif out.tif");
 			if (FileGeoTIFF::compliancyFlagger.isSet(FileGeoTIFF::STRICT)){
 				mout.error("GeoTIFF error under strict compliance (requested by user)");

@@ -220,6 +220,14 @@ void DataTools::getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & p, M &
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	if (p.hasRoot()){
+		mout.debug("add root and restart with path= '" , p , "'  (revised code)" );
+		Hi5Tree::path_t pRooted(p);
+		pRooted.ensureRoot();
+		DataTools::getAttributes(src, pRooted, attributes, updateOnly);
+		return;
+	}
+	/*
 	if (p.empty() || !p.front().isRoot()){
 		mout.debug("add root and restart with path= '" , p , "'  (revised code)" );
 		//Hi5Tree::path_t pRooted(Hi5Tree::path_t(Hi5Tree::path_t::elem_t::ROOT), p);
@@ -230,6 +238,7 @@ void DataTools::getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & p, M &
 		DataTools::getAttributes(src, pRooted, attributes, updateOnly);
 		return;
 	}
+	*/
 
 	mout.debug("path= '" , p , "'" );
 
