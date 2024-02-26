@@ -80,6 +80,23 @@ template <>
 const drain::EnumDict<TreeUtilsSVG::Direction>::dict_t  drain::EnumDict<TreeUtilsSVG::Direction>::dict;
 
 
+/**
+ *
+class AttributeCheckerXML {
+
+public:
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path);
+
+	inline
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
+		return 0;
+	}
+
+};
+ */
+
+
 
 }  // image::
 

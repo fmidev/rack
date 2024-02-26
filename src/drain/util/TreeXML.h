@@ -484,10 +484,25 @@ public:
 		}
 	}
 
+	/* ?????????
 	inline
 	void setStyle(const std::string & key, const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
 		drain::SmartMapTools::setValues(style, l);
 	}
+	*/
+
+	inline
+	void setStyle(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
+		drain::SmartMapTools::setValues(style, l);
+	}
+
+	/*
+	inline
+	void setStyle(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
+
+	}
+	*/
+
 
 	typedef std::set<std::string> class_list;
 	class_list classList;
@@ -550,6 +565,12 @@ public:
 		static const std::pair<key_t,NodeXML<T> > nodeEntry(getTag(E), elem); // note: converts tag (string) to key_t if needed.
 		return nodeEntry;
 	}
+
+	inline
+	static int getCount(){
+		return nextID;
+	}
+
 
 protected:
 
@@ -785,7 +806,7 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 		*/
 
 		if (tree->typeIs((elem_t)STYLE)){
-			ostr << "<![CDATA[ ";
+			// ostr << "<![CDATA[ ";
 			if (!tree->getAttributes().empty()){
 				ostr << "\n\t<!-- DISCARDED attribs ";
 				drain::Logger mout(__FILE__,__FUNCTION__);
@@ -829,7 +850,7 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 				}
 				// Sprinter::sequenceToStream(ostr, entry.second->style, StyleXML::styleRecordLayout);
 			}
-			ostr << "]]\n";
+			// ostr << "]]\n";
 			// end STYLE defs
 		}
 		else {

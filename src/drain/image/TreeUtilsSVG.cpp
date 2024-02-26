@@ -126,8 +126,16 @@ void TreeUtilsSVG::align(TreeSVG & group, const drain::Frame2D<int> & frame, con
 		if (elem->hasClass("FIXED"))
 			continue;
 
+
+
 		if ((t == svg::IMAGE) || (t == svg::RECT) || (t == svg::TEXT)){
 			// mout.attention("  elem ", elem->get("name", "?"), ": init pos", pos);
+
+			/*
+			if (elem->hasClass("header")){ // or "maxWidth"   or rect?
+				elem->set("width",  frame.width);
+			}
+			*/
 
 
 			if (!elem->hasClass("FLOAT")){
@@ -158,12 +166,47 @@ void TreeUtilsSVG::align(TreeSVG & group, const drain::Frame2D<int> & frame, con
 				elem->set("y", pos.y);
 			}
 
-
 		}
+
+
 	}
 
 
 }
+
+/**
+ *
+ */
+/*
+
+int  AttributeCheckerXML::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
+
+	TreeSVG & current = tree(path);
+
+	TreeSVG::node_data_t::map_t & attributes = current->getAttributes();
+	for (const std::string & key: attributes.getKeyList()){
+		std::string keyChecked(key);
+		bool CHANGED = false;
+		for (char &c: keyChecked){
+			if ( ((c>='a') && (c<='z')) || ((c>='A') && (c<='Z')) || ((c>='0') && (c<='9')) || (c=='_') || (c=='-')){
+				// ok
+			}
+			else {
+				CHANGED = true;
+				c = '_';
+			}
+		}
+		if (CHANGED){
+			attributes[keyChecked] = attributes[key];
+			attributes.erase(key);
+		}
+	};
+
+	return 0;
+
+}
+	*/
+
 
 
 }  // image::

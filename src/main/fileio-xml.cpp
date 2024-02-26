@@ -83,6 +83,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/image/FilePng.h"
 #include "drain/image/TreeUtilsSVG.h"
 
+#include "data/SourceODIM.h" // for NOD
 #include "fileio-xml.h"  // ImageSection
 
 namespace rack {
@@ -95,7 +96,7 @@ int MetaDataCollectorSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & pa
 
 int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
-	std::cerr << __FUNCTION__ << ':' << path << std::endl;
+	// std::cerr << __FUNCTION__ << ':' << path << std::endl;
 
 	TreeSVG & current = tree(path);
 
@@ -103,13 +104,17 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 		return 0;
 	}
 
+	// Experimental
 	for (auto & entry: current.getChildren()){
 		TreeSVG & child = entry.second;
 		if (child.hasChild("metadata")){
 			TreeSVG & metadata = current["metadata"](svg::METADATA);
+			metadata->getAttributes().importCastableMap(entry.second["metadata"]->getAttributes());
+			/*
 			for (const auto & attr: entry.second["metadata"]->getAttributes()){
 				metadata->set(attr.first, attr.second);
 			}
+			*/
 		}
 	}
 
@@ -122,40 +127,28 @@ int MetaDataPrunerSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path)
 
 	// std::cerr << __FUNCTION__ << ':' << path << std::endl;
 
-
-
-
 	return 0;
 }
 
 
 int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
-
 	TreeSVG & current = tree(path);
 
-	if (current->getType()==svg::METADATA){
+	//if (!((current->getType()==svg::GROUP) || (current->getType()==svg::IMAGE))){ // At least METADATA must be skipped...
+	if (current->getType() != svg::GROUP){ // At least METADATA must be skipped...
 		return 0;
 	}
 
-	if (!current.hasChild("metadata")){
-		return 0; // 1? no...
-	}
-
-	/// Collective (union)
-	TreeSVG & metadata = current["metadata"](svg::METADATA);
-
-
-
 	typedef std::map<std::string, unsigned short> variableStat_t;
 	variableStat_t stat;
-	/// Number of children having metadata.
+	/// Number of children having (any) metadata.
 	int count = 0;
 
 	/// Check which attr(key,value) is shared by all the children.
 	for (auto & entry: current.getChildren()){
 		TreeSVG & child = entry.second;
-		if (child.hasChild("metadata")){
+		if (child.hasChild("metadata") && !child->hasClass("legend")){ // or has "data"?
 			++count;
 			TreeSVG & childMetadata = entry.second["metadata"](svg::METADATA);
 			for (const auto & attr: childMetadata->getAttributes()){
@@ -166,27 +159,50 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 		}
 	}
 
+	TreeSVG & metadata = current["metadata"](svg::METADATA);
 	/// Collective (union)
-	//TreeSVG & metadataPruned = current["metadataPruned"](svg::METADATA);
-	//metadataPruned->set("name", "metadataPruned");
+	// TreeSVG & metadata = current["metadataPlain"](svg::METADATA);
+	// metadata->getAttributes().clear();
+	// metadata->set("name", "simple");
+
+	TreeSVG & debugAccepted = current["accepted"](svg::COMMENT);
+	debugAccepted->ctext = "Accepted (shared): ";
+
+	TreeSVG & debugRejected = current["rejected"](svg::COMMENT);
+	debugRejected->ctext = "Rejected (specific): ";
+
+	/// Collective (union)
+	//  TreeSVG & metadataPruned = current["metadataPruned"](svg::METADATA);
+	//  metadataPruned->set("name", "metadataPruned");
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// metadata->getAttributes().clear();
-	mout.pending<LOG_WARNING>("pruning: ", path.str());
+	mout.pending<LOG_DEBUG>("pruning: ", drain::sprinter(stat), path.str());
 	for (const auto & e: stat){
+		mout.pending<LOG_DEBUG>('\t', e.first, ':', e.second);
+
 		// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
 		std::string key, value;
 		drain::StringTools::split2(e.first, key, value, '=');
 		if (e.second == count){
-			mout.accept<LOG_WARNING>(e.first, ' ', path.str());
-			metadata->addClass(e.first);
-			//metadata->set(key, value); // NOTE: strings?
+			mout.accept<LOG_DEBUG>('\t', e.first, ' ', path.str());
+			// debugAccepted->ctext += e.first; // set(key, value);
+			debugAccepted->set(key, value);
+
+			metadata->set(key, value); // NOTE: becoming strings (consider type dict?)
+			for (auto & entry: current.getChildren()){
+				TreeSVG & child = entry.second;
+				if (child.hasChild("metadata")){
+					TreeSVG & childMetadata = entry.second["metadata"](svg::METADATA);
+					childMetadata -> remove(key);
+				}
+			}
+
 		}
 		else {
-			mout.reject<LOG_WARNING>(e.first, ' ', path.str());
-			metadata->removeClass(e.first);
-			metadata->remove(key);
-			// metadata->set(key, value); // NOTE: strings?
+			mout.reject<LOG_DEBUG>('\t', e.first, ' ', path.str());
+			//debugRejected->ctext += e.first; // set(key, value);
+			debugRejected->set(key, value);
 		}
 	}
 
@@ -196,122 +212,112 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 }
 
 
-int TitleCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 
-	unsigned short count = 0;
-	variableStat_t stat;
+int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
+
 
 	TreeSVG & current = tree(path);
 
-	if (!((current->getType()==svg::GROUP) || (current->getType()==svg::IMAGE))){ // At least METADATA must be skipped...
+	/*
+	if (current->getType() != svg::GROUP){ // At least METADATA must be skipped...
+		return 0;
+	}
+	*/
+
+	if (!((current->getType()==svg::GROUP) || (current->getType()==svg::IMAGE))){
 		return 0;
 	}
 
-	// std::cerr << __FUNCTION__ << ':' << path << std::endl;
+	if (!current.hasChild("metadata")){
+		return 0;
+	}
 
-	// Risk: infinite loop in recursion.
-	// TreeSVG & gMeta = current["metadata"](svg::METADATA);
-	for (auto & entry: current.getChildren()){
-		// std::cerr << " check " << entry.first << std::endl;
-		if (entry.second.hasChild("metadata")){
-			// Update me, the parent of this child
-			//current["metadata"]->ge
-			TreeSVG & metadata = current["metadata"](svg::METADATA);
-			for (const auto & attr: entry.second["metadata"]->getAttributes()){
-				metadata->set(attr.first, attr.second);
-			}
-		}
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+
+	TreeSVG & metadata = current["metadata"];
+
+	if (metadata->getAttributes().empty()){
+		mout.debug("title skipped, metadata empty under: ", path);
+		return 0;
 	}
 
 
-	for (auto & entry: current.getChildren()){
-		// std::cerr << " check " << entry.first << std::endl;
-		svg::tag_t type = entry.second->getType();
-		if ((type == svg::IMAGE)||(type == svg::GROUP)){
-			if (entry.second.hasChild("metadata")){
-				++count;
-				TreeSVG & imeta = entry.second["metadata"];
-				// TreeSVG & icomm = entry.second["comment"](svg::COMMENT);
-				for (const auto & attr: imeta->getAttributes()){
-					std::string s = drain::StringBuilder<>(attr.first,'=',attr.second);
-					imeta->addClass(s);
-					// gMeta->set(attr.first, attr.second);
-					++stat[s];
-				}
-			}
+	//if ((current->getType() == svg::GROUP) && (current->hasClass("imageSet"))){ // = row or column
+	/*
+	if (false){ // = row or column
+		// Row / column stuff?
+		int x = NodeSVG::xml_node_t::getCount() * 2;
+		int y = x;
+
+		TreeSVG & titleBox = current["titleBox"](NodeSVG::RECT);
+		titleBox->set("name", "titleBox");
+		titleBox->set("x", x);
+		titleBox->set("y", y);
+		titleBox->set("width", 200);
+		titleBox->set("height", 30);
+		titleBox->addClass("imageSetTitle");
+		titleBox->setStyle("fill:darkblue; opacity:0.5;");
+
+		TreeSVG & text = current["titleText"](svg::TEXT);
+		text->set("name", "titleText");
+		text->set("x", x + 2);
+		text->set("y", y + 20);
+		//text->set("text-anchor", "reijo");
+		// text->setText(path.str());
+		for (const auto & attr: metadata->getAttributes()){
+			// consider str replace
+			TreeSVG & tspan = text[attr.first](svg::TSPAN);
+			tspan->addClass(attr.first);
+			tspan->ctext = attr.second.toStr();
+			tspan->ctext += "&#160;"; // space
+			//entry.second->set(key, "*"); // TODO: remove attribute
 		}
+
+		return 0;
 	}
+	else */
+	if (current->getType() == svg::IMAGE){
 
-	// std::cerr << "\t adding COMMENT " << std::endl;
-	TreeSVG & shared = current["comment"](svg::COMMENT);
-	shared->set("name", "shared-metadata");
+		TreeSVG::path_t parentPath;
+		parentPath.append(path);
+		parentPath.pop_back();
+		if (parentPath.empty()){
+			mout.warn("IMAGE elem directy under root?");
+			return 1;
+		}
 
-	for (const auto & e: stat){
-		// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
-		if (e.second == count){
-			//mout.accept(e.first, ' ', path.str());
-			shared->addClass(e.first);
+		TreeSVG & parent = tree(parentPath);
+
+		// Start from image coords.
+		int x = current->get("x", 0);
+		int y = current->get("y", 0);
+
+		std::string name = current->get("name", "img?");
+		name += ":Title";
+		TreeSVG & text = parent[name](svg::TEXT);
+		text->set("name", name);
+		text->set("x", x + 2);
+		text->set("y", y + 20);
+		//text->setStyle("fill", "slateblue");
+		text->setStyle("fill", "darkblue");
+		// text->setStyle("stroke:white; stroke-width:0.5em; fill:black; paint-order:stroke; stroke-linejoin:round");
+		text->addClass("imageTitle");
+
+		for (const auto & attr: metadata->getAttributes()){
+			// consider str replace
+			TreeSVG & tspan = text[attr.first](svg::TSPAN);
+			tspan->addClass(attr.first);
+			tspan->ctext = attr.second.toStr();
+			tspan->ctext += "&#160;"; //'_';
+			//entry.second->set(key, "*"); // TODO: remove attribute
 		}
-		else {
-			// mout.reject(e.first, ' ', path.str());
-			shared->removeClass(e.first);
-		}
+
+
 	}
-
-	//std::cerr << "returning\n";
-
-	// Revisit children, remove shared metadata
-	for (auto & entry: current.getChildren()){
-		// std::cerr << " check " << entry.first << std::endl;
-		svg::tag_t type = entry.second->getType();
-		if ((type == svg::IMAGE)||(type == svg::GROUP)){
-			if (entry.second.hasChild("metadata")){
-				TreeSVG & imeta = entry.second["metadata"];
-				for (const auto & cls: shared->classList){
-					imeta->removeClass(cls); // safe for non-existing as well
-
-				}
-				/// Add titles, if specific attributes exist
-				if (!imeta->classList.empty()){
-
-					std::string name = entry.second->get("name", "undef");
-					int x = entry.second->get("x",0);
-					int y = entry.second->get("y",0);
-
-					TreeSVG & titleBox = current[name+"-TitleBox"](NodeSVG::RECT);
-					titleBox->addClass("FLOAT");
-					titleBox->set("x", x);
-					titleBox->set("y", y);
-					titleBox->set("name", name);
-					titleBox->set("width", 200);
-					titleBox->set("height", 30);
-					titleBox->setStyle("fill:darkblue; opacity:0.5;");
-
-
-					TreeSVG & text = current[name+"-Title"](svg::TEXT);
-					text->set("x", x + 10);
-					text->set("y", y + 20);
-					//text->set("text-anchor", "reijo");
-					text->set("name", name);
-					// text->setText(path.str());
-					for (const auto & cls: imeta->classList){
-						// Yes, split it back...
-						std::string key, value;
-						drain::StringTools::split2(cls, key, value, '=');
-						TreeSVG & tspan = text[key](svg::TSPAN);
-						tspan->addClass(key);
-						tspan->ctext += (value+' ');
-						entry.second->set(key, "*"); // TODO: remove attribute
-					}
-				}
-			}
-		}
-	}
-
 
 	return 0;
-
 
 }
 
@@ -326,37 +332,65 @@ int TitleCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
  *
  */
 
+void CmdBaseSVG::createTitleBox(TreeSVG & tree){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	/*
+	// const std::string TITLE_BOX;
+	if (tree.hasChild("titlebox")){
+		return; //  tree;
+	}
+
+	TreeSVG & titleBox = tree["titlebox"](svg::RECT); // GROUP?
+	titleBox->set("name", "titleBox");
+	titleBox->set("x", 0);
+	titleBox->set("y", 0);
+	titleBox->set("width", 200);
+	titleBox->set("height", 60);
+	titleBox->addClass("imageSetTitle", "header");
+	titleBox->setStyle("fill:darkblue; opacity:0.5;");
+	titleBox->setText(tree->get("name", ""));
+	*/
+}
+
+drain::image::TreeSVG & CmdBaseSVG::getMain(RackContext & ctx){
+
+	if (!ctx.svgTrack.hasChild("style")){
+		drain::image::TreeSVG & style = ctx.svgTrack["style"](svg::STYLE);
+		//style["text"] = ("stroke:white; stroke-width:0.5em; stroke-opacity:0.25; fill:black; paint-order:stroke; stroke-linejoin:round");
+		style["text"] = ("fill:black");
+		style[".imageTitle"] = "font-size:1.5em; stroke:white; stroke-opacity:0.5; stroke-width:0.6em; fill:darkslateblue; fill-opacity:1; paint-order:stroke; stroke-linejoin:round";
+		//style[".imageTitle"] = "font-size:1.5em; stroke:white; stroke-opacity:0.25; stroke-width:0.5em; fill:darkslateblue; fill-opacity:1; paint-order:stroke; stroke-linejoin:round";
+		// style["text"] = ("stroke:white; stroke-width:1em; stroke-opacity:0.25; fill:black; paint-order:stroke; stroke-linejoin:round");
+	}
+
+	return 	ctx.svgTrack["outputs"](NodeSVG::GROUP);
+
+}
+
+drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what about prefix?
+
+
+	drain::image::TreeSVG & track = getMain(ctx);
+
+	if (!track.hasChild(ctx.svgGroup)){
+		drain::image::TreeSVG & group = track[ctx.svgGroup](NodeSVG::GROUP);
+		// Ensure (repeatedly)
+		group->addClass("imageSet");
+		group->set("id", ctx.svgGroup);
+		group->set("name", ctx.svgGroup);
+	}
+
+	return track[ctx.svgGroup](NodeSVG::GROUP);
+
+}
+
 
 void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
 
-	drain::image::TreeSVG & track = ctx.svgTrack["outputs"](NodeSVG::GROUP);
 
-	//stroke:white; stroke-width:0.5em; fill:black; paint-order:stroke; stroke-linejoin:round
-
-	if (!track.hasChild("style")){
-		//drain::image::TreeSVG & style = track["style"](svg::STYLE);
-		// style->set("text", "stroke:white; stroke-width:0.5em; fill:black; paint-order:stroke; stroke-linejoin:round");
-	}
-
-	// Ensure (repeatedly)
-	/*
-	drain::image::TreeSVG & mainHeader = track["mainHeader"](NodeSVG::RECT);
-	mainHeader->setStyle("fill:beige;opacity:0.5");
-	mainHeader->set("width", "200");
-	mainHeader->set("height", "30");
-	*/
-	//mainHeader->addClass("FLOAT");
-
-
-	drain::image::TreeSVG & group = track[ctx.svgGroup](NodeSVG::GROUP);
-	// Ensure (repeatedly)
-	group->addClass("imageSet");
-	group->set("id", ctx.svgGroup);
-	group->set("name", ctx.svgGroup);
-
-
-
-	// group = filepath.basename + "Group";
+	drain::image::TreeSVG & group = getCurrentGroup(ctx);
 
 	drain::image::TreeSVG & image = group[filepath.basename](NodeSVG::IMAGE); // +EXT!
 	image->set("name", filepath.basename);
@@ -366,48 +400,38 @@ void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, co
 	image["basename"](drain::image::svg::TITLE) = filepath.basename;
 
 	// Metadata:
-	for (const auto key: {"what:site", "what:object", "what:date", "what:time", "where:lat", "where:lon", "where:elangle", "where:elangles"}){
+	// drain::FlexVariableMap & props = src.properties;
+	drain::image::TreeSVG & metadata = image["metadata"](NodeSVG::METADATA);
+
+	// Note assign: char * -> string  , "where:lat", "where:lon"
+	if (src.properties.hasKey("what:source")){
+		SourceODIM odim(src.properties.get("what:source",""));
+		// metadata->set("source", odim.getSourceCode());
+		metadata->set("NOD", odim.NOD);
+		metadata->set("PLC", odim.PLC);
+	}
+	for (const std::string key: {"what:date", "what:time", "what:object", "what:quantity", "where:elangle", "where:elangles"}){
 		if (src.properties.hasKey(key)){
-			drain::image::TreeSVG & metadata = image["metadata"](NodeSVG::METADATA);
-			metadata->set(key, src.properties.get(key, ""));
-			/*
-			drain::image::TreeSVG & metadata = image[key](NodeSVG::METADATA);
-			metadata->set("key", key);
-			metadata = src.properties.get(key, "");
-			*/
+			size_t i = key.find(':');
+			if (i == std::string::npos){
+				metadata->set(key, src.properties[key]);
+			}
+			else {
+				metadata->set(key.substr(i+1), src.properties[key]);
+			}
+
 		}
 	}
 
-	/*
-	TreeSVG & titleBox = group[filepath.basename+"-title"](NodeSVG::RECT);
-	titleBox->addClass("FLOAT");
-	titleBox->set("name", filepath.basename+"-title");
-	titleBox->set("width", src.getWidth()/4);
-	titleBox->set("height", 30);
-	titleBox->setStyle("fill:darkblue; opacity:0.5;");
-	*/
-
-	// Ensure (repeatedly). This will be on top of the FIRST image of row/column?
-	/*
-	drain::image::TreeSVG & imageHeader = group["imageHeader"](NodeSVG::RECT);
-	imageHeader->addClass("FLOAT");
-	imageHeader->setStyle("fill:pink;opacity:0.75");
-	imageHeader->set("width", "200");
-	imageHeader->set("height", "10");
-	*/
 }
 
 
 void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath){ // what about prefix?
 
-	drain::image::TreeSVG & track = ctx.svgTrack["outputs"](NodeSVG::GROUP);
-
-	drain::image::TreeSVG & group = track[ctx.svgGroup](NodeSVG::GROUP);
-	group->addClass("imageSet");
-	group->set("id", ctx.svgGroup);
+	drain::image::TreeSVG & group = getCurrentGroup(ctx);
 
 	drain::image::TreeSVG & image = group[filepath.basename](NodeSVG::IMAGE); // +EXT!
-	image->addClass("float legend");
+	image->addClass("float", "legend");
 	image->set("width", svg->get("width", 0));
 	image->set("height", svg->get("height", 0));
 	image->set("xlink:href", filepath);
@@ -420,15 +444,15 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	drain::image::TreeSVG & track = ctx.svgTrack["outputs"](NodeSVG::GROUP);
+	drain::image::TreeSVG & track = getMain(ctx);
 
 	drain::image::NodeSVG::path_list_t pathList;
 	drain::image::NodeSVG::findByClass(track, "imageSet", pathList);
 
+	/// Clumsy
 	drain::image::TreeUtilsSVG::Orientation orientation = TreeUtilsSVG::defaultOrientation;
 	drain::image::TreeUtilsSVG::Direction   direction   = TreeUtilsSVG::defaultDirection;
 
-	int titleBoxHeight = 30;
 	drain::Frame2D<int> mainFrame;
 	drain::Point2D<int> start(0,0);
 	for (drain::image::NodeSVG::path_t & p: pathList){
@@ -439,6 +463,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 
 		// METADATA -> title
 		if (false){
+			/*
 			TreeSVG & titleBox = group["titleBox"](NodeSVG::RECT);
 			titleBox->addClass("FIXED");
 			titleBox->set("width", frame.width);
@@ -454,8 +479,9 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 			}
 			TreeSVG & titleText = group["titleText"](NodeSVG::TEXT);
 			titleText->addClass("FLOAT");
-			titleText->setStyle("stroke:green");
+			// titleText->setStyle("stroke:darkgreen; font-size: 25");
 			titleText = "Radar data";
+			*/
 		}
 
 		/*
@@ -503,57 +529,64 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 	}
 
 	/// Collect
+	/*
 	MetaDataCollectorSVG metadataCollector;
 	drain::TreeUtils::traverse(metadataCollector, ctx.svgTrack);
 	drain::TreeUtils::dump(ctx.svgTrack);
-
+	*/
 
 	MetaDataPrunerSVG metadataPruner;
 	drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
-	drain::TreeUtils::dump(ctx.svgTrack);
 
-	TitleCollectorSVG titleCollector;
-	//drain::TreeUtils::traverse(titleCollector, ctx.svgTrack);
+	if (mout.isDebug()){
+		mout.special("dumping SVG tree");
+		drain::TreeUtils::dump(ctx.svgTrack);
+	}
 
-	TreeSVG & headerRect = ctx.svgTrack["headerRect"](svg::RECT);
-	headerRect->setStyle("fill:slateblue");
-	headerRect->setStyle("opacity:0.25");
-	headerRect->set("x", 0);
-	headerRect->set("y", -titleCollector.mainHeaderHeight);
-	headerRect->set("width",  mainFrame.getWidth());
-	headerRect->set("height", titleCollector.mainHeaderHeight);
+	// REUSE:
+	start = {0,0};
 
-	TreeSVG & headerText = ctx.svgTrack["headerText"](svg::TEXT);
-	headerText->set("x", 5);
-	headerText->set("y", -3);
-	headerText->set("style", "fill:blue; stroke:red");
-	headerText->setText("Radar image");
+	TitleCreatorSVG titleCollector;
+	drain::TreeUtils::traverse(titleCollector, ctx.svgTrack);
+
+	if (track.hasChild("metadata")){
+		TreeSVG & headerRect = ctx.svgTrack["headerRect"](svg::RECT);
+		headerRect->setStyle("fill:slateblue");
+		headerRect->setStyle("opacity:0.25");
+		headerRect->set("x", 0);
+		headerRect->set("y", -titleCollector.mainHeaderHeight);
+		headerRect->set("width",  mainFrame.getWidth());
+		headerRect->set("height", titleCollector.mainHeaderHeight);
+
+		TreeSVG & headerText = ctx.svgTrack["headerText"](svg::TEXT);
+		headerText->set("x", 8);
+		headerText->set("y", -8);
+		headerText->setStyle({
+			{"font-size", "2.5em"},
+			{"stroke", "none"},
+			{"fill", "black"}
+		}); // fill:black;
+		// headerText->setText("Radar image");
+		for (const auto & entry: track["metadata"]->getAttributes()){
+			headerText->ctext += entry.second.toStr();
+			headerText->ctext += ' ';
+		}
+
+		mainFrame.height +=  titleCollector.mainHeaderHeight;
+		start.y           = -titleCollector.mainHeaderHeight;
+	}
 
 
-	ctx.svgTrack->set("width",  mainFrame.getWidth());
-	ctx.svgTrack->set("height", mainFrame.getHeight() + titleCollector.mainHeaderHeight);
-	ctx.svgTrack->set("viewBox", (const std::string &)drain::StringBuilder<' '>(0, -titleCollector.mainHeaderHeight, mainFrame.width, mainFrame.height));
+	ctx.svgTrack->set("width",  mainFrame.width);
+	ctx.svgTrack->set("height", mainFrame.height);
+	const std::string viewBox = drain::StringBuilder<' '>(start.x, start.y, mainFrame.width, mainFrame.height);
+	ctx.svgTrack->set("viewBox", viewBox);
 
 }
 
 
 
 
-
-void CmdBaseSVG::exec() const {
-
-	RackContext & ctx = getContext<RackContext>();
-
-	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-
-	drain::image::TreeSVG & track = ctx.svgTrack["outputs"]; //["file"];
-	ctx.svgTrack["outputs"](NodeSVG::GROUP);
-	//track->setType(NodeSVG::GROUP); // ensureType?
-	track->set("name", "outputs");
-
-
-};
 
 
 /**

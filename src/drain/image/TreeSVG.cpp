@@ -70,6 +70,7 @@ std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
 	{drain::image::svg::LINE,  "line"},
 	{drain::image::svg::METADATA,  "metadata"},
 	{drain::image::svg::RECT,  "rect"},
+	{drain::image::svg::STYLE,  "style"},
 	{drain::image::svg::TEXT,  "text"},
 	{drain::image::svg::TITLE, "title"},
 	{drain::image::svg::TSPAN, "tspan"},

@@ -119,17 +119,16 @@ public:
 /**
  *
  */
-class TitleCollectorSVG {
+class TitleCreatorSVG {
 
 public:
 
 	int mainHeaderHeight;
 
 	inline
-	TitleCollectorSVG() : mainHeaderHeight(30) {
+	TitleCreatorSVG() : mainHeaderHeight(50) {
 	};
 
-	typedef std::map<std::string, unsigned short> variableStat_t;
 
 	inline
 	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & odimPath){
@@ -163,7 +162,15 @@ class CmdBaseSVG : public drain::BasicCommand {
 
 public:
 
-	void exec() const;
+	// void exec() const;
+
+	static
+	drain::image::TreeSVG & getMain(RackContext & ctx);
+
+
+	static
+	drain::image::TreeSVG & getCurrentGroup(RackContext & ctx);
+
 
 	static
 	void addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath);
@@ -182,6 +189,11 @@ public:
 	static
 	void completeSVG(RackContext & ctx);
 
+protected:
+
+	// Under construction...
+	static
+	void createTitleBox(TreeSVG & tree);
 
 };
 
