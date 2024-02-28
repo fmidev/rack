@@ -67,9 +67,9 @@ public:
 	typedef PlainData<DstType<OD> >       pdata_dst_t;
 
 	/// Default constructor
-	RadarAccumulator() : dataSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY), defaultQuality(0.5), counter(0) { //, undetectValue(-52.0) {
+	RadarAccumulator() : dataSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY), defaultQuality(0.5){ //, counter(0) , undetectValue(-52.0) {
 		odim.type.clear();
-		//odim.ACCnum = 0;
+		odim.ACCnum = 0; // NEW
 	}
 
 	virtual
@@ -77,11 +77,18 @@ public:
 
 	/// Adds data that is in the same coordinate system as the accumulator. Weighted with quality.
 	/*
-	 *  Both the input data and the accumulation array are in the same coordinate system.
+	 *  Counter example: this method is \i not called when polar data is added to a Cartesian composite.
+	 *
+	 *  \param i0 - offset in horizontal direction
+	 *  \param j0 - offset in vertical direction
 	 */
 	void addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, double weight, int i0, int j0);
 
-	/// Adds data that is in the same coordinate system as the accumulator. Weighted with quality and count.
+	/// Adds data that is in the same coordinate system as the accumulator.
+	/*
+	 *
+	 *  Counter example: this method is \i not called when polar data is added to a Cartesian composite.
+	 */
 	void addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, const pdata_src_t & srcCount);
 
 	/**
@@ -107,7 +114,9 @@ public:
 	double defaultQuality;
 
 	/// Book keeping for new data. Finally, in extraction phase, added to odid.ACCnum .
-	size_t counter;
+	// REPLACED by odim.ACCnum
+	// size_t counter;
+
 
 	/// Not critical. If set, needed to warn if input data does not match the expected / potential targetEncoding
 	inline
@@ -170,7 +179,7 @@ protected:
 template  <class AC, class OD>
 void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, double weight, int i0, int j0){
 
-	drain::Logger mout("RadarAccumulator", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (!srcQuality.data.isEmpty()){
 		mout.info("Quality data available with input; using quality as weights in compositing.");
@@ -188,7 +197,10 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 		AC::addData(srcData.data, converter, weight, i0, j0);
 	}
 
-	counter += std::max(1L, srcData.odim.ACCnum);
+	odim.ACCnum += std::max(1L, srcData.odim.ACCnum);
+	// counter += std::max(1L, srcData.odim.ACCnum);
+	// odim.ACCnum = counter; // TODO remove counter?
+
 	odim.updateLenient(srcData.odim); // Time, date, new
 
 	//mout.note("after:  " , this->odim );
@@ -203,7 +215,8 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 	DataCoder converter(srcData.odim, srcQuality.odim);
 	AC::addData(srcData.data, srcQuality.data, srcCount.data, converter);
 	odim.updateLenient(srcData.odim); // Time, date, new
-	counter = std::max(1L, srcData.odim.ACCnum);
+	// counter = std::max(1L, srcData.odim.ACCnum);
+	odim.ACCnum += std::max(1L, srcData.odim.ACCnum);
 }
 
 

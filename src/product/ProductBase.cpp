@@ -239,8 +239,15 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 				mout.info(); // Pretty safe, only precision issues possible
 			mout << "No explicit config for storage type '" << dstODIM.type << "' for quantity [" << dstODIM.quantity << "], guessing: " << EncodingODIM(dstODIM) << mout.endl;
 		}
-		else
-			mout.warn("unknown quantity " , dstODIM.quantity , ", guessing: " , EncodingODIM(dstODIM) );
+		else {
+			if (encoding.empty()){
+				mout.warn("unknown quantity [" , dstODIM.quantity , "], guessing: " , EncodingODIM(dstODIM) );
+			}
+			else {
+				mout.note("unknown quantity [" , dstODIM.quantity , "], setting: " , EncodingODIM(dstODIM) );
+			}
+		}
+
 	}
 }
 

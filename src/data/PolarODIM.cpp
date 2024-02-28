@@ -46,6 +46,8 @@ void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		link("where:lat", lat = 0.0);
 		link("where:height", height = 0.0);
 		link("how:freeze", freeze = 10.0);
+
+		link("how:ACCnum", ACCnum = 0); // NEW
 	}
 
 	if (initialize & ODIMPathElem::DATASET){

@@ -141,6 +141,25 @@ public:
 		return *this;
 	};
 
+	inline
+	void clearVariables(){
+		iterator it = this->begin();
+		while (true){
+			if (!it->second.isReference()){
+				iterator dit = it;
+				++it;
+				this->erase(dit);
+			}
+			else {
+				++it;
+			}
+
+			if (it == this->end()){
+				break;
+			}
+
+		};
+	}
 
 };
 

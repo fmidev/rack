@@ -43,6 +43,8 @@ const std::string ODIM::timeformat("%H%M%S");
 
 void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
+	ACCnum = 0;
+
 	// TODO: consider attribs under ODIMPathElem::WHAT, ODIMPathElem::WHERE, ODIMPathElem::HOW ?
 	if (initialize & ODIMPathElem::ROOT){
 		link("what:object", object = "");

@@ -836,8 +836,10 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 					ostr << fill << "  " << entry.first << " {\n";
 					for (const auto & attr: entry.second->getAttributes()){
 						ostr << fill  << "    ";
-						Sprinter::pairToStream(ostr, attr, StyleXML::styleRecordLayout); // {" :;"}
-						//attr.first << ':' attr.first << ':';
+						ostr << attr.first << ':' << attr.second << ';';
+						//Sprinter::pairToStream(ostr, attr, StyleXML::styleLineLayout); // {" :;"}
+						// Sprinter::pairToStream(ostr, attr, StyleXML::styleRecordLayout); // {" :;"}
+						// attr.first << ':' attr.first << ':';
 						ostr << '\n';
 					}
 					ostr << fill << "  }\n";

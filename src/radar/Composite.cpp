@@ -617,13 +617,13 @@ void Composite::updateInputSelector(const std::string & select){
 	if (!select.empty()){
 		// mout.warn("Setting selector=" , resources.select );
 		// const std::string quantityOrig(dataSelector.quantity);
-		mout.experimental("Changed code: quantityOrig => odim.quantity=", odim.quantity);
+		mout.experimental<LOG_DEBUG>("Changed code: quantityOrig => odim.quantity=", odim.quantity);
 		const std::string quantityOrig(odim.quantity);
 
 		//composite.dataSelector.setParameters(resources.baseCtx().select);
 		dataSelector.setParameters(select);  // consume (clear)?
 
-		mout.debug("Applied: ", select, " -> ", dataSelector);
+		mout.debug("Composite selector: ", select, " -> ", dataSelector);
 		//resources.select = "quantity=" + composite.dataSelector.quantity;
 		//resources.select.clear(); // PROBLEMS HERE?
 

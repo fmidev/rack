@@ -282,6 +282,8 @@ public:
 
 		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
 
+		RadarAccumulator<Accumulator,PolarODIM>	& acc2 = drain::Static::get<RadarAccumulator<Accumulator,PolarODIM> >();
+
 		//if (!acc.isMethodSet()){
 		acc.setMethod("AVERAGE"); // TODO: add pMethod command?
 		//}
@@ -314,10 +316,15 @@ public:
 
 		acc.dataSelector.getPath(src, path);  //, ODIMPathElem::DATASET); //, true);
 
+		/*
+		mout.attention("srcData /how:ACCnum=", src["how"].data.attributes["ACCnum"]);
+		mout.attention("srcData attributes=", src["how"].data.attributes);
+		mout.attention("srcData imageprops=", src.data.image.properties);
+		*/
+
 		const DataSet<PolarSrc> srcDataSet(src(path.front()));
 		const Data<PolarSrc>  srcData(src(path));
-		//const Data<PolarSrc>  & srcData = srcDataSet.getFirstData(); // WRONG!
-		// mout.note("input ACCnum " , srcData.odim.ACCnum );
+
 
 		if (srcData.data.isEmpty()){
 			mout.warn("No data found with selector:" , acc.dataSelector , ", skipping..." );
@@ -355,7 +362,16 @@ public:
 			return;
 		}
 
+
+		//mout.attention("srcData.odim  ACCnum=", srcData.odim.ACCnum, " time=", srcData.odim.date, srcData.odim.time, " path=", path);
+
+		if (srcData.odim.ACCnum == 0){
+			// mout.attention("Treating srcData.odim.ACCnum = 1");
+			// srcData.odim.ACCnum = 1;
+		}
+
 		mout.debug("Encoding:" , EncodingODIM(acc.odim) );
+
 		ProductBase::applyODIM(acc.odim, srcData.odim, true);
 		if (!resources.baseCtx().targetEncoding.empty()){
 			// ProductBase::completeEncoding(acc.odim, resources.baseCtx().targetEncoding);
@@ -393,7 +409,7 @@ public:
 		}
 		else {
 			if (coeff != 1.0)
-				mout.note("No COUNT field detected, ACCnum ", acc.odim.ACCnum , '+' , srcData.odim.ACCnum , ", using tuned weight: " , coeff , '*' , weight  );
+				mout.note("No COUNT field detected, ACCnums acc=", acc.odim.ACCnum , " + input=" , srcData.odim.ACCnum , " => using tuned weight: " , coeff , '*' , weight  );
 			acc.addData(srcData, srcQuality, coeff*weight, 0, 0);
 		}
 
@@ -472,7 +488,7 @@ public:
 		//acc.odim.ACCnum += acc.count;
 		//acc.count = 0; // NOTE CHECK - if data re-added?
 		acc.extract(acc.odim, dstProduct, value);
-		acc.odim.ACCnum += acc.counter;
+		// acc.odim.ACCnum += acc.counter;
 
 		ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(acc.odim, dstDataSetGroup); //@dstProduct odim.copyToDataSet(dstDataSetGroup);
 		// dst.odim.copyToData(dstDataGroup); ??

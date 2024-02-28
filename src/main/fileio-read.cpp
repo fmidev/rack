@@ -203,7 +203,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 	if (!ctx.inputSelect.empty()){
 		//mout.special() << "Input selector (" << ctx.select << ") applies, pre-reading attributes first:\n";
-		mout.experimental("Input selector (", ctx.inputSelect, ") set -> selective read.");
+		mout.info("Input selector (", ctx.inputSelect, ") set -> selective read.");
 		mout.debug("First, reading attributes only:\n");
 		hi5::Reader::readFile(fullFilename, srcTmp, hi5::Reader::ATTRIBUTES);
 
@@ -264,7 +264,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 
 	DataTools::updateInternalAttributes(srcTmp); // could be replaced, see below; only timestamp needed at this point?
-
+	// mout.suspicious("data.image.properties:", srcTmp.data.image.properties);
 
 	mout.debug("Derive file type (what:object)");
 	drain::Variable & object = srcTmp[ODIMPathElem::WHAT].data.attributes["object"]; // beware of swap later
@@ -324,9 +324,13 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		// TODO: force APPEND / REPLACE?
 		if (ctx.polarInputHi5.empty() || ctx.SCRIPT_DEFINED){
 			if (ctx.SCRIPT_DEFINED)
-				mout.info("script defined, reseting previous inputs (if exist)");
+				mout.info("script defined, resetting previous inputs (if exist)");
 				//mout.info("SCRIPT_DEFINED: ", ctx.SCRIPT_DEFINED, " thread:", ctx.getName());
 			ctx.polarInputHi5.swap(srcTmp);
+			ctx.polarInputHi5.data.image.properties.clearVariables();
+			// getResources().polarAccumulator.odim.ACCnum = 567;
+			// ctx.polarInputHi5.data.attributes["how:ACCnum"] = 234;
+			mout.suspicious("data.image.properties:", ctx.polarInputHi5.data.image.properties);
 		}
 		else {
 			// "Automatic" append. Consider timestamp difference limit?
@@ -334,14 +338,17 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 			const std::string sourceOld = ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["source"]; // Warning: Creates attribute, unless it exists
 			//mout.warn("Input: ", sourceNew, " Previous input: ", sourceOld, " same?: ", sourceNew==sourceOld);
 			if (sourceNew == sourceOld){
-				mout.debug("Unchanged input src '", sourceNew, "' -> update (append) volume");
+				mout.ok<LOG_NOTICE>("Unchanged input src '", sourceNew, "' -> update (append) volume");
 				appendPolarH5(srcTmp, ctx.polarInputHi5);
 			}
 			else {
-				mout.debug("New input src '", sourceNew, "' (previous '", sourceOld, "') -> replace previous with new");
+				mout.ok<LOG_NOTICE>("New input src '", sourceNew, "' (previous '", sourceOld, "') -> replace previous with new");
 				ctx.polarInputHi5.swap(srcTmp);
+				ctx.polarInputHi5.data.image.properties.clearVariables(); // ? ok
 			}
 		}
+
+		// ctx.polarInputHi5.data.attributes.clear(); //NEW
 
 		// mout.warn("next: updateCoordinatePolicy");
 		// DataTools::updateCoordinatePolicy(ctx.polarInputHi5, RackResources::polarLeft);

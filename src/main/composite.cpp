@@ -186,8 +186,8 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 	const RootData<SrcType<ODIM> > root(src);
 	mout.debug("Src root /what: " , root.getWhat() );
 
-	//mout.info("now: vmap" );
-	mout.debug("using selector: " , composite.dataSelector ); // consider: if composite.dataSelector...?
+	// mout.info("now: vmap" );
+	// already in Composite mout.debug("Using composite selector: " , composite.dataSelector ); // consider: if composite.dataSelector...?
 
 	/// Main
 	const drain::Variable & object = root.getWhat()["object"];
@@ -300,7 +300,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			return;
 		}
 
-		mout.info("Using input path: ", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
+		mout.note("Using input path: ", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
 
 		ODIMPathElem current = dataPath.back();
 		ODIMPath parent = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"

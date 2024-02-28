@@ -360,9 +360,20 @@ drain::image::TreeSVG & CmdBaseSVG::getMain(RackContext & ctx){
 		drain::image::TreeSVG & style = ctx.svgTrack["style"](svg::STYLE);
 		//style["text"] = ("stroke:white; stroke-width:0.5em; stroke-opacity:0.25; fill:black; paint-order:stroke; stroke-linejoin:round");
 		style["text"] = ("fill:black");
-		style[".imageTitle"] = "font-size:1.5em; stroke:white; stroke-opacity:0.5; stroke-width:0.6em; fill:darkslateblue; fill-opacity:1; paint-order:stroke; stroke-linejoin:round";
-		//style[".imageTitle"] = "font-size:1.5em; stroke:white; stroke-opacity:0.25; stroke-width:0.5em; fill:darkslateblue; fill-opacity:1; paint-order:stroke; stroke-linejoin:round";
-		// style["text"] = ("stroke:white; stroke-width:1em; stroke-opacity:0.25; fill:black; paint-order:stroke; stroke-linejoin:round");
+
+		style[".imageTitle"].data = {
+				{"font-size", "1.5em"},
+				{"stroke", "white"},
+				{"stroke-opacity", "0.75"},
+				{"stroke-width", "0.3em"},
+				{"fill", "darkslateblue"},
+				{"fill-opacity", "1"},
+				{"paint-order", "stroke"},
+				{"stroke-linejoin", "round"}
+		};
+
+		// style[".imageTitle2"] = "font-size:1.5em; stroke:white; stroke-opacity:0.5; stroke-width:0.3em; fill:darkslateblue; fill-opacity:1; paint-order:stroke; stroke-linejoin:round";
+		// drain::TreeUtils::dump(ctx.svgTrack);
 	}
 
 	return 	ctx.svgTrack["outputs"](NodeSVG::GROUP);
@@ -389,15 +400,18 @@ drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what 
 
 void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
 
-
 	drain::image::TreeSVG & group = getCurrentGroup(ctx);
 
-	drain::image::TreeSVG & image = group[filepath.basename](NodeSVG::IMAGE); // +EXT!
-	image->set("name", filepath.basename);
+	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
+
+	drain::image::TreeSVG & image = group[name](NodeSVG::IMAGE); // +EXT!
+	image->set("name", name);
 	image->set("width", src.getWidth());
 	image->set("height", src.getHeight());
 	image->set("xlink:href", filepath);
-	image["basename"](drain::image::svg::TITLE) = filepath.basename;
+	image["title"](drain::image::svg::TITLE) = filepath.basename;
+	// image["description"](drain::image::svg::TITLE) = src.getProperties();
+
 
 	// Metadata:
 	// drain::FlexVariableMap & props = src.properties;

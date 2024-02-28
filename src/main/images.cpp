@@ -632,7 +632,7 @@ public:
 
 		static const QuantitySelector vradTest("VRAD", "VRADH", "VRADV"); // , "^VRAD.*");
 
-		mout.attention("vradTest: ", vradTest, " vs ", imgOdim.quantity);
+		mout.special<LOG_DEBUG>("vradTest: ", vradTest, " vs ", imgOdim.quantity);
 
 
 		if (vradTest.testQuantity(imgOdim.quantity)){

@@ -70,10 +70,14 @@ public:
 
 		mout.debug("composite*: ", &composite, "accArray: ", composite.accArray);
 
-		if (composite.counter > 0){
-			mout.experimental("Clearing previous composite? N=", composite.counter, ")");
-			mout.note("Use --cAdd to add, instead");
+		// mout.attention("Composite counter N=", composite.odim.ACCnum, ")");
+
+		if (composite.odim.ACCnum > 0){ // .counter
+			// mout.experimental("Clearing previous composite? N=", composite.counter, ")");
+			// mout.experimental("Clearing previous composite? N=", composite.odim.ACCnum, ")");
+			mout.hint<LOG_DEBUG>("Clearing previous composite. If that was not meant, use --cAdd to add, instead.");
 			composite.accArray.clear();
+			// clear metadata?
 		}
 
 		// mout.attention("start add: ", composite.getTargetEncoding(), " odim.quantity=", composite.odim.quantity, " sel:", composite.dataSelector);
@@ -86,7 +90,7 @@ public:
 			return;
 		}
 
-		QuantityMatcher qualityMatcher("QIND"); // coming op: other
+		const QuantityMatcher qualityMatcher("QIND"); // coming op: other
 
 		if (qualityMatcher.test(composite.odim.quantity)){
 			mout.note("Quality [", composite.odim.quantity, "] as input: extracting data only");

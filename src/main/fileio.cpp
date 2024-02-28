@@ -352,27 +352,7 @@ void CmdOutputFile::exec() const {
 
 	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT); // mostly shared (unneeded in image output, but fast anyway)
 
-	// const std::string fileKey = STD_OUTPUT ? "stdout" : path.basename;
-	// drain::image::TreeSVG & xmlOutputGroup = ctx.xmlTrack["group"];
-
-	// xmlOutputGroup.hasChild(key)
-	// ctx.xmlTrack->setType(svg::UNDEFINED);
-	// ctx.xmlTrack->setType(svg::SVG);
-
-	drain::image::TreeSVG & track = ctx.svgTrack["outputs"]; //["file"];
-	ctx.svgTrack["outputs"](NodeSVG::GROUP);
-	//track->setType(NodeSVG::GROUP); // ensureType?
-	track->set("name", "outputs");
-
-	/*
-	const std::string key = STD_OUTPUT ? "stdout" : path.basename;
-	if (!track.hasChild(key)){
-		drain::image::TreeSVG & b = track[key](NodeSVG::GROUP);
-		b->set("name", path.basename);
-		// b->setType;
-	}
-	drain::image::TreeSVG & baseGroup = track[key]; // track.retrieveChild(key);
-	*/
+	drain::image::TreeSVG & track = CmdBaseSVG::getMain(ctx);
 
 	if (!STD_OUTPUT){
 		track.data.set("id", path.basename);

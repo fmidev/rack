@@ -32,12 +32,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.16"
+#define __RACK_VERSION__ "8.17"
 
 /**
+ *   Version 8.17
+ *   -- enhanced SVG output
+ *
+ *   Version 8.16.1
+ *   -- Fixed /what:EPSG -> /where:EPSG
+ *
  *   Version 8.16
  *   -- enhanced SVG output
- *   -- nonstandard /how/EPSG -> /where/EPSG
+ *   -- nonstandard /how:EPSG -> /where:EPSG
  *
  *   Version 8.15
  *   -- SVG output by extension (.svg).

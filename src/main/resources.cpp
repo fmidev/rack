@@ -252,7 +252,9 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 			DataTools::getAttributes(src, path, img.properties); // for image processing ops?
 			const std::type_info & t = img.getType();
 			if (!(img.getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(t))){ // CHECK LOGIC!
-				mout.warn("storage type '", drain::Type::call<drain::simpleName>(t),  "', no physical scaling, consider --encoding C or --encoding S" );
+				if (targetEncoding.empty()){
+					mout.warn("storage type '", drain::Type::call<drain::simpleName>(t),  "', no physical scaling, consider --encoding C or --encoding S" );
+				}
 			}
 			img.properties["path"] = drain::sprinter(path,"/").str();
 		}

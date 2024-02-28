@@ -29,6 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <set>
 #include "drain/util/TextDecorator.h"
 #include "drain/util/TreeUtils.h"
 #include "drain/util/Type.h"
@@ -58,6 +59,7 @@ std::list<std::string> & DataTools::getMainAttributes(){
 			"where:lon",
 			"how:highprf",
 			"how:lowprf",
+			"how:ACCnum",
 	};
 
 	return mainAttributes;
@@ -93,7 +95,8 @@ drain::VariableMap & DataTools::getAttributeStyles(){
 		{"nodata", "DIM:YELLOW"},
 		{"undetect", "DIM:YELLOW"},
 		{"task_args", "CYAN"},
-		{"legend", "PURPLE"}
+		{"ACCnum", "DIM:PURPLE"},
+		{"legend", "PURPLE"},
 	};
 
 	return attributeStyles;
@@ -161,12 +164,11 @@ bool DataTools::treeToStream(const Hi5Tree::node_data_t & data, std::ostream &os
 
 void DataTools::updateInternalAttributes(Hi5Tree & src){
 
-	//src.data.image.properties.clear();
-	drain::FlexVariableMap & properties = src.data.image.properties;
-	//properties.clear(); // TODO: should not remove linked variables!
-
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	drain::FlexVariableMap & properties = src.data.image.properties;
+	properties.clearVariables();
+	//properties.clear(); // should not remove references (linked variables)
 
 	// NOTE: is essentially recursive, through linked variables.
 
