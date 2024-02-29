@@ -867,65 +867,22 @@ drain::TreeHTML & H5HTMLextractor::getHtml(){
 		*/
 
 		drain::TreeHTML & style = head["style"](drain::BaseHTML::STYLE);
-		style["table,tr"] = "border:1px solid;";
-		style["table"] = "border-collapse:collapse; font-size:x-small; font-face:monotype";
-		style["th"] = "text-align:left;";
-		style["tr:nth-child(even)"] = "background-color: #f2f2f2;";
-		style[".where, .what"] = "background-color:blue; opacity:0.2";
-		style[".how"] = "fill:blue; opacity:0.5";
+		//style["table,tr"] = "border:1px solid;";
+		style["h1,h2,h3"] = "font-family: Helvetica, sans-serif;";
+		style["table,img"] = "border:1px solid;";
+		style["table"] = "border-collapse:collapse; font-size:small; font-family:monospace";
+		style["th"] = "text-align:left; font-decoration:none";
+		style["tr:nth-child(even)"] = "background-color: #f0f0f0;";
+		style[".where"] = "stroke-color:#4080f0";
+		style[".what"]  = "stroke-color:#40f0a0";
+		style[".how"]   = "stroke:blue; opacity:0.5";
 
 		addTogglerStyle(head);
-		//style2->set("type", "text/javascript");
-		// style2 = getSTYLE();
-
 		addTogglerScript(head);
-
-		//drain::TreeHTML & script = head["script2"](drain::BaseHTML::SCRIPT);
-		//script->set("type", "text/javascript");
+		// drain::TreeHTML & script = head["script2"](drain::BaseHTML::SCRIPT);
+		// script->set("type", "text/javascript");
 		// script->set("src", "toggle.js");
-		//script = getJS();
 
-		//  <link rel="stylesheet" href="styles.css">
-		//
-		//style->set("#myUL", "margin:0;padding:0");
-		//style[".caret-down::before"]->set({{"transform", "rotate(90deg)"}, {"margin",0}, {"padding",0}});
-
-		/*
-		style["ul, #myUL"] = "list-style-type: none";
-		style["#myUL"]->set("margin:0; padding:0;");
-		style[".caret"]->set("cursor:pointer; user-select:none;");
-		style[".caret::before"]->set("content:\"\25B6\"; color:black; display:inline-block; margin-right:6px;");
-		style[".caret-down::before"]->set("transform: rotate(90deg)");
-		style[".nested"]->set("display: none;");
-		style[".active"]->set("display: block;");
-		*/
-
-
-
-/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
-		//head.ensureChild(drain::NodeHTML::entry<drain::NodeHTML::TITLE>()) = "HDF5 file";
-		//head.ensureChild(drain::NodeHTML::entry<drain::NodeXML<>::COMMENT >()) = RACK_BASE;
-		//html(body)(drain::NodeHTML::BODY);
-		//html << std::pair<hp_elem,drain::NodeHTML>("body", drain::NodeHTML::BODY);
-
-
-		drain::TreeHTML & script1 = head["script"](drain::BaseHTML::SCRIPT);
-		script1->set("type", "text/javascript");
-		// script1->set("src", "toggle.js");
-		// script1->setText(" ");
-
-
-		/*
-		script = " function addTogglers(){\
-			var toggler = document.getElementsByClassName('caret'); \
-			var iii; \
-			for (var i = 0; i < toggler.length; i++) { \
-				toggler[i].addEventListener('click', function() { \
-					this.parentElement.querySelector('.nested').classList.toggle('active'); \
-					this.classList.toggle('caret-down'); \
-				}); \
-			} }";
-		*/
 
 		html["body"](drain::BaseHTML::BODY);
 		html["body"]->set("onload", "addTogglers()");
@@ -969,23 +926,7 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 
 		// submout.special(" elem ", e);
 
-		const std::string & estr = e.str();
-
-		// submout.special(" estr ", estr);
-		if (!htmlPath.empty()){
-			//
-			//if (e.belongsTo(ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-			if (true){
-			}
-			/*
-			else {
-				drain::TreeHTML & span = body(htmlPath)[estr+"comment"](drain::BaseHTML::COMMENT);
-				span = estr;
-			}
-			*/
-
-		}
-
+		const std::string & elemName = e.str();
 
 		htmlPath.appendElem("ul");
 		// submout.ok("checking path: ", htmlPath);
@@ -996,20 +937,19 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 			group->addClass("nested");
 		}
 
-		if (e.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-			//drain::TreeHTML & table = item[estr](drain::NodeHTML::TABLE);
-			// NOTE: parent group joins attribs:
-
+		if (e.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){  // what, where or how
+			// Attrib groups joins are joined together (instead of creating a separate table for each
 			drain::TreeHTML & table = group["attr"](drain::NodeHTML::TABLE);
 			for (const auto & attr: t.data.attributes){
-				drain::TreeHTML & tr = table[estr + attr.first](drain::NodeHTML::TR);
-				tr["key"](drain::NodeHTML::TH) = estr+':'+attr.first;
+				drain::TreeHTML & tr = table[elemName + attr.first](drain::NodeHTML::TR);
+				tr->addClass(elemName); // what, where or how
+				tr["key"](drain::NodeHTML::TH) = elemName+':'+attr.first;
 				tr["value"](drain::NodeHTML::TD) = attr.second;
 			}
-
+			return 1; // = do not traverse subtrees
 		}
 		else {
-			htmlPath.appendElem(estr);
+			htmlPath.appendElem(elemName);
 			drain::TreeHTML & item = body(htmlPath); // (drain::NodeHTML::LI);
 			if (item->isUndefined()){
 				item->setType(drain::BaseHTML::LI);
@@ -1017,20 +957,22 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 				if (e.is(ODIMPathElem::ARRAY)){
 					item->addClass("array");
 					drain::TreeHTML & img = item["img"](drain::NodeHTML::IMG);
-					std::string filename = odimPath.str()+ ".png";
+					const drain::image::Image & image = t.data.image;
+					drain::StringBuilder<> builder(odimPath.str(),'-',image.properties.get("what:quantity","unknown"),".png");
+					const std::string & filename = builder; // odimPath.str() + ' ' + image.properties.get("what:quantity","unknown") + ".png";
 					img->set("src", "radar.png");
 					img->set("alt", filename);
-					img->set("border", 1);
-					const drain::image::Image & image = t.data.image;
-					img->set("alt", image.getConf().str());
+					img->set("title", filename);
+					//img->set("border", 1);
+					//img->set("alt", image.getConf().str());
 					//item = estr; // text
 				}
 				else { // if ( !e.belongsTo(ODIMPathElem::DATA_GROUPS)){
-					drain::TreeHTML & span = body(htmlPath)[estr+"-span"]; // (drain::BaseHTML::SPAN);
+					drain::TreeHTML & span = body(htmlPath)[elemName+"-span"]; // (drain::BaseHTML::SPAN);
 					if (span->isUndefined()){
 						span->setType(drain::BaseHTML::SPAN);
 						span->addClass("caret");
-						span = estr+'/';
+						span = elemName+'/';
 					}
 				}
 
