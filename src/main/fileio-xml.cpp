@@ -867,10 +867,12 @@ drain::TreeHTML & H5HTMLextractor::getHtml(){
 		*/
 
 		drain::TreeHTML & style = head["style"](drain::BaseHTML::STYLE);
-		style["table,th"] = "border:1px solid;";
-		style["table"] = "border-collapse:collapse;";
-		style["th"] = "align:left;";
+		style["table,tr"] = "border:1px solid;";
+		style["table"] = "border-collapse:collapse; font-size:x-small; font-face:monotype";
+		style["th"] = "text-align:left;";
 		style["tr:nth-child(even)"] = "background-color: #f2f2f2;";
+		style[".where, .what"] = "background-color:blue; opacity:0.2";
+		style[".how"] = "fill:blue; opacity:0.5";
 
 		addTogglerStyle(head);
 		//style2->set("type", "text/javascript");
