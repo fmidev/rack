@@ -799,7 +799,53 @@ void CmdOutputPanel::exec() const {
 // See drain::TextDecorator::VT100
 // std::map<std::string,std::string>
 
-drain::TreeHTML & H5HTMLvisitor::getHtml(){
+
+
+drain::TreeHTML & H5HTMLextractor::addTogglerScript(drain::TreeHTML & head, const std::string key){
+	/// Original code from: https://www.w3schools.com/howto/howto_js_treeview.asp
+	static const drain::StringBuilder<'\n'> builder = {"",
+			"function addTogglers(){"
+			"  var toggler = document.getElementsByClassName('caret');",
+			"  for (var i = 0; i < toggler.length; i++) {",
+			"     toggler[i].addEventListener('click', function() {",
+			"        this.parentElement.querySelector('.nested').classList.toggle('active');",
+			"        this.classList.toggle('caret-down');",
+			"     });",
+			"  }",
+			"}",
+	};
+
+	drain::TreeHTML & script = head[key](drain::BaseHTML::SCRIPT);
+	script->set("type", "text/javascript");
+	script = builder.c_str();
+
+	return script;
+}
+
+drain::TreeHTML & H5HTMLextractor::addTogglerStyle(drain::TreeHTML & head, const std::string key){
+	/// Original code from: https://www.w3schools.com/howto/howto_js_treeview.asp
+	/*
+	static const drain::StringBuilder<'\n'> builder = {
+			"test",
+			123.456,
+			"test"
+	};
+	*/
+
+	drain::TreeHTML & style = head[key](drain::BaseHTML::STYLE);
+	// script->set("type", "text/javascript");
+	style["ul, #myUL"] = "list-style-type: none;";
+	style["#myUL"]->set("margin:0; padding:0;");
+	style[".caret"]->set("cursor:pointer; user-select:none;");
+	style[".caret::before"]->set("content:\"\\25B6\"; color:black; display:inline-block; margin-right:6px;");
+	style[".caret-down::before"]->set("transform: rotate(90deg);");
+	style[".nested"]->set("display: none;");
+	style[".active"]->set("display: block;");
+
+	return style;
+}
+
+drain::TreeHTML & H5HTMLextractor::getHtml(){
 
 	drain::Logger submout(__FILE__, __FUNCTION__);
 
@@ -814,15 +860,28 @@ drain::TreeHTML & H5HTMLvisitor::getHtml(){
 		// submout.ok("adding TITLE");
 		head["title"](drain::BaseHTML::TITLE) = "HDF5 file";
 
+		/*
 		drain::TreeHTML & styleLink = head["styleLink"](drain::BaseHTML::LINK);
 		styleLink->set("rel",  "stylesheet");
 		styleLink->set("href", "toggle.css");
+		*/
 
 		drain::TreeHTML & style = head["style"](drain::BaseHTML::STYLE);
 		style["table,th"] = "border:1px solid;";
 		style["table"] = "border-collapse:collapse;";
 		style["th"] = "align:left;";
 		style["tr:nth-child(even)"] = "background-color: #f2f2f2;";
+
+		addTogglerStyle(head);
+		//style2->set("type", "text/javascript");
+		// style2 = getSTYLE();
+
+		addTogglerScript(head);
+
+		//drain::TreeHTML & script = head["script2"](drain::BaseHTML::SCRIPT);
+		//script->set("type", "text/javascript");
+		// script->set("src", "toggle.js");
+		//script = getJS();
 
 		//  <link rel="stylesheet" href="styles.css">
 		//
@@ -847,10 +906,13 @@ drain::TreeHTML & H5HTMLvisitor::getHtml(){
 		//html(body)(drain::NodeHTML::BODY);
 		//html << std::pair<hp_elem,drain::NodeHTML>("body", drain::NodeHTML::BODY);
 
-		drain::TreeHTML & script = head["script"](drain::BaseHTML::SCRIPT);
-		script->set("type", "text/javascript");
-		script->set("src", "toggle.js");
-		script->setText(" ");
+
+		drain::TreeHTML & script1 = head["script"](drain::BaseHTML::SCRIPT);
+		script1->set("type", "text/javascript");
+		// script1->set("src", "toggle.js");
+		// script1->setText(" ");
+
+
 		/*
 		script = " function addTogglers(){\
 			var toggler = document.getElementsByClassName('caret'); \
@@ -875,7 +937,7 @@ drain::TreeHTML & H5HTMLvisitor::getHtml(){
 };
 
 
-int H5HTMLvisitor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
+int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
 
 	drain::Logger submout(__FILE__, __FUNCTION__);
 
@@ -957,6 +1019,8 @@ int H5HTMLvisitor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odi
 					img->set("src", "radar.png");
 					img->set("alt", filename);
 					img->set("border", 1);
+					const drain::image::Image & image = t.data.image;
+					img->set("alt", image.getConf().str());
 					//item = estr; // text
 				}
 				else { // if ( !e.belongsTo(ODIMPathElem::DATA_GROUPS)){
@@ -964,7 +1028,7 @@ int H5HTMLvisitor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odi
 					if (span->isUndefined()){
 						span->setType(drain::BaseHTML::SPAN);
 						span->addClass("caret");
-						span = estr+"-X";
+						span = estr+'/';
 					}
 				}
 

@@ -494,15 +494,19 @@ void CmdOutputFile::exec() const {
 
 
 
-		H5HTMLvisitor handler;
-		drain::TreeUtils::traverse(handler, src);
+		H5HTMLextractor extractor;
+		drain::TreeHTML & html = extractor.getHtml();
+		html["head"]["title"](drain::BaseHTML::TITLE) = path.basename;
+		html["body"]["header"](drain::BaseHTML::H1) = path.basename;
 
-		mout.warn(handler.getHtml().data);
-		drain::TreeUtils::dump(handler.getHtml());
+		drain::TreeUtils::traverse(extractor, src);
+
+		mout.warn(html.data);
+		drain::TreeUtils::dump(html);
 
 		drain::Output outfile(path.str());
-		//drain::NodeHTML::toStream(outfile, handler.getHtml());
-		outfile << handler.getHtml();
+		//drain::NodeHTML::toStream(outfile, html);
+		outfile << html;
 
 		if (!ctx.select.empty()){
 			mout.debug("resetting selector");

@@ -211,7 +211,7 @@ public:
 };
 
 
-class H5HTMLvisitor {
+class H5HTMLextractor {
 
 public:
 
@@ -225,9 +225,16 @@ public:
 		return 0;
 	};
 
+	static
+	drain::TreeHTML & addTogglerScript(drain::TreeHTML & head, const std::string key = "toggler-script");
+
+	static
+	drain::TreeHTML & addTogglerStyle(drain::TreeHTML & head, const std::string key = "toggler-style");
+
 protected:
 
 	drain::TreeHTML html;
+
 
 };
 

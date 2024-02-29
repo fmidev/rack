@@ -584,7 +584,7 @@ protected:
 	template <class V>
 	static inline
 	void attribToStream(std::ostream &ostr, const std::string & key, const V &value){
-		ostr << key << '=' << '"' << value << '"' << ' ';
+		ostr << ' ' << key << '=' << '"' << value << '"'; // << ' ';
 	}
 
 	static int nextID;
@@ -730,15 +730,16 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 		ostr << tree->ctext; // << " /-->\n";
 	}
 	else if (tree->getTag().empty())
-		ostr << '<' << defaultTag << ' ';
+		ostr << '<' << defaultTag; // << ' ';
 	else {
-		ostr << '<' << tree->getTag() << ' ';
+		ostr << '<' << tree->getTag(); // << ' ';
 		// TODO check GDAL XML
 		//if (!defaultTag.empty())
 		//	attribToStream(ostr, "name", defaultTag);
 	}
 
 	if (tree->typeIs((elem_t)STYLE)){
+		//ostr << ' ';
 		attribToStream(ostr, "data-mode", "experimental");
 		// Sprinter::sequenceToStream(ostr, tree->style, StyleXML::styleRecordLayout);
 		// ostr << "\n /-->";
@@ -746,9 +747,9 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 	else if (!tree->isCText()){
 		//char sep=' ';
 		if (!tree->classList.empty()){
-			ostr << "class=\"";
+			ostr << " class=\"";
 			std::copy(tree->classList.begin(), tree->classList.end(), std::ostream_iterator<std::string>(ostr, " "));
-			ostr << "\" ";
+			ostr << '"'; //ostr << "\"";
 		}
 
 		// Iterate attributes - note: also for comment
@@ -766,10 +767,10 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 
 		// TAG style
 		if (!tree->style.empty()){
-			ostr << "style=\"";
+			ostr << " style=\"";
 			Sprinter::sequenceToStream(ostr, tree->style, StyleXML::styleLineLayout);
 			//Sprinter::mapToStream(ostr, tree->style, StyleXML::styleLineLayout);
-			ostr << '"' << ' ';
+			ostr << '"'; // << ' ';
 		}
 
 
@@ -787,15 +788,18 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 	else if (tree->isCText()){
 		ostr << '\n';
 	}
-	else if ((!tree->typeIs((elem_t)STYLE)) && (children.empty()) && tree->ctext.empty() ){ // OR no ctext!
+	else if ((!tree->typeIs((elem_t)STYLE)) && (!tree->typeIs((elem_t)SCRIPT)) &&
+			(children.empty()) && tree->ctext.empty() ){ // OR no ctext!
 		// close TAG
 		ostr << "/>\n";
 		//ostr << '/' << '>';
 		//ostr << '\n';
 	}
 	else {
-		// close starting TAG
+		// close starting TAG ...
 		ostr << '>';
+
+		// ... and write contents
 
 		/*
 		if (!tree->style.empty()){
@@ -807,17 +811,22 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 
 		if (tree->typeIs((elem_t)STYLE)){
 			// https://www.w3.org/TR/xml/#sec-cdata-sect
-			ostr << "<![CDATA[ \n";
+			// ostr << "<![CDATA[ \n";
+			if (!tree->ctext.empty()){
+				// TODO: indent
+				ostr << fill << tree->ctext << '\n';
+			}
 			if (!tree->getAttributes().empty()){
-				ostr << "\n\t<!-- DISCARDED attribs ";
+				ostr << "\n\t /* <!-- DISCARDED attribs ";
 				drain::Logger mout(__FILE__,__FUNCTION__);
 				mout.warn("STYLE elem contains attributes, probably meant as style: ", tree.data);
 				Sprinter::toStream(ostr, tree->getAttributes()); //, StyleXML::styleRecordLayout
-				ostr << " /-->" << '\n';
+				ostr << " /--> */" << '\n';
 			}
 			if (!tree->style.empty()){
 				// ostr << "\n\t<!-- attribs /-->" << '\n';
-				ostr << fill << "<!-- style obj /-->" << '\n';
+				//ostr << fill << "<!-- style obj /-->" << '\n';
+				ostr << fill << "/** style obj **/" << '\n';
 				//ostr << fill;
 				//Sprinter::sequenceToStream(ostr, tree->style, StyleXML::styleRecordLayout);
 				for (const auto & attr: tree->style){
@@ -831,10 +840,11 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 				// ostr << '\n';
 			}
 			ostr << '\n';
-			ostr << fill << "<!-- elems /-->" << '\n';
+			// ostr << fill << "<!-- elems /-->" << '\n';
+			ostr << fill << "/* elems */" << '\n';
 			for (const auto & entry: tree.getChildren()){
 				if (!entry.second->getAttributes().empty()){
-					ostr << fill << "<!-- elem("<< entry.first << ") attribs /-->" << '\n';
+					//ostr << fill << "<!-- elem("<< entry.first << ") attribs /-->" << '\n';
 					ostr << fill << "  " << entry.first << " {\n";
 					for (const auto & attr: entry.second->getAttributes()){
 						ostr << fill  << "    ";
@@ -849,12 +859,13 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 					ostr << '\n';
 				}
 				if (!entry.second->ctext.empty()){
-					ostr << fill << "<!-- elem("<< entry.first << ") ctext /-->" << '\n';
+					//ostr << fill << "<!-- elem("<< entry.first << ") ctext /-->" << '\n';
 					ostr << fill << "  " << entry.first << " {" << entry.second->ctext << "}\n";
 				}
 				// Sprinter::sequenceToStream(ostr, entry.second->style, StyleXML::styleRecordLayout);
 			}
-			ostr << " ]]>\n"; // end CTEXT
+			ostr << "\n"; // end CTEXT
+			//ostr << " ]]>\n"; // end CTEXT
 			// end STYLE defs
 		}
 		else {
