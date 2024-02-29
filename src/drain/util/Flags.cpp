@@ -43,43 +43,5 @@ namespace drain {
 const typename FlagResolver::value_t FlagResolver::ALL = ~FlagResolver::value_t(0);
 
 
-const Flagger::dict_t::keylist_t & Flagger::keys() const {
-
-	#pragma omp critical
-	{
-		keyList.clear();
-		for (const dict_t::entry_t & entry: dictionary){
-			if ((entry.second > 0) && ((entry.second & value) == entry.second)){ // fully covered in value
-				keyList.push_back(entry.first);
-			}
-		}
-	}
-
-	return keyList;
-}
-
-
-/// Set flags
-void Flagger::assign(const key_t & args){
-
-	if (args.empty()){
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		// Should it reset or skip?
-		mout.warn("Skipping empty assignment" );
-		return;
-	}
-
-	if (args == "0"){
-		reset();
-		return;
-	}
-
-	value = getValue(args);
-
-}
-
-const drain::SprinterLayout Flagger::flagDictLayout(",", ";", "=","");
-
-
 
 } // drain::

@@ -61,7 +61,7 @@ struct BaseHTML {
 		CTEXT=NodeXML<>::CTEXT,
 		STYLE=NodeXML<>::STYLE,
 		SCRIPT=NodeXML<>::SCRIPT,
-		HTML, HEAD, BODY, A, DIV, H1, H2, IMG, LI, OL, P, SPAN, TABLE, TITLE, TR, TH, TD, UL}; // check CTEXT, maybe implement in XML
+		HTML, HEAD, BODY, A, BASE, DIV, H1, H2, H3, IMG, LI, LINK, OL, P, SPAN, TABLE, TITLE, TR, TH, TD, UL}; // check CTEXT, maybe implement in XML
 
 	// typedef NodeHTML xml_node_t;
 
@@ -129,7 +129,10 @@ std::ostream & operator<<(std::ostream &ostr, const NodeHTML & node){
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
-	return drain::NodeXML<>::docToStream(ostr, tree);
+	ostr << "<!DOCTYPE html>\n";
+	//return drain::NodeXML<>::docToStream(ostr, tree);
+	drain::NodeHTML::toStream(ostr, tree);
+	return ostr;
 }
 
 

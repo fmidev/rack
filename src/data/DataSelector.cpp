@@ -391,7 +391,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 		path.appendElem(currentElem);
 		//mout.debug3("currentElem='" , currentElem , "'" );
 
-		mout.ok<LOG_INFO>("Considering: ", basepath, "//", currentElem);
+		mout.pending<LOG_DEBUG+1>("Considering: ", basepath, "//", currentElem);
 
 		const drain::image::Image & data    = entry.second.data.image; // for ODIM
 		const drain::FlexVariableMap & props = data.getProperties();
@@ -715,7 +715,7 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 		// bool stemOk = false; // debugging
 		for (const ODIMPathElem & a: accepted){
 			if (stem == a){
-				mout.accept<LOG_DEBUG>("Finally accepting '", path, ", due to stem=", stem);
+				mout.accept<LOG_DEBUG+1>("Finally accepting '", path, ", due to stem=", stem);
 				finalPaths.push_back(path);
 				// stemOk = true;
 				break;

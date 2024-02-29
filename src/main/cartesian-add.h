@@ -69,6 +69,7 @@ public:
 
 		mout.debug("starting add(), thread #", ctx.getName());
 
+
 		add(composite, RackContext::CURRENT, true);
 
 		mout.debug("ended add(), thread #", ctx.getName());

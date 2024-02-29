@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef GLOBAL_FLAGS_H_
 #define GLOBAL_FLAGS_H_
 
-#include "Flags.h"
+#include "FlagsOld.h"
 #include "Static.h"
 
 namespace drain

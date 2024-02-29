@@ -282,7 +282,7 @@ public:
 
 		RadarAccumulator<Accumulator,PolarODIM>	& acc = resources.polarAccumulator;
 
-		RadarAccumulator<Accumulator,PolarODIM>	& acc2 = drain::Static::get<RadarAccumulator<Accumulator,PolarODIM> >();
+		// RadarAccumulator<Accumulator,PolarODIM>	& acc2 = drain::Static::get<RadarAccumulator<Accumulator,PolarODIM> >();
 
 		//if (!acc.isMethodSet()){
 		acc.setMethod("AVERAGE"); // TODO: add pMethod command?

@@ -70,6 +70,10 @@ public:
 
 		mout.debug("composite*: ", &composite, "accArray: ", composite.accArray);
 
+		composite.reset();
+		composite.dataSelector.reset();
+		composite.odim.clear();
+
 		// mout.attention("Composite counter N=", composite.odim.ACCnum, ")");
 
 		if (composite.odim.ACCnum > 0){ // .counter

@@ -48,8 +48,41 @@ namespace drain {
 
 namespace image {
 
+struct PanelConfSVG {
+
+	enum Orientation {UNDEFINED_ORIENTATION=0, HORZ, VERT};
+	typedef drain::EnumFlagger<drain::SingleFlagger<Orientation> > OrientationFlagger;
+	OrientationFlagger orientation;
+
+	enum Direction {UNDEFINED_DIRECTION=0, INCR, DECR};
+	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
+	DirectionFlagger direction;
+
+	enum Legend {NO_LEGEND=0, LEFT=1, RIGHT=2, EMBED=4};
+	typedef drain::EnumFlagger<drain::MultiFlagger<Legend> > LegendFlagger;
+	LegendFlagger legend;
+
+	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
+	// Current
+	std::string groupName;
+	int maxPerGroup;
+
+	std::string title;
+
+	inline
+	PanelConfSVG() : orientation(HORZ), direction(INCR), maxPerGroup(10){
+	}
+
+
+};
+
+
 struct TreeUtilsSVG {
 
+
+	static PanelConfSVG defaultConf;
+
+	/*
 	enum Orientation {UNDEFINED_ORIENTATION=0, HORZ, VERT};
 	typedef drain::EnumFlagger<drain::SingleFlagger<Orientation> > OrientationFlagger;
 	static OrientationFlagger defaultOrientation;
@@ -62,24 +95,26 @@ struct TreeUtilsSVG {
 	static std::string defaultGroupName;
 
 	static std::string defaultTitle;
+	*/
 
 	/// Computes the width and height for a bounding box covering non-overlappin IMAGE and RECT elements.
 	static
-	void determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, Orientation orientation=UNDEFINED_ORIENTATION);
+	void determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION);
 
 	/// Stack IMAGE and RECT elements within the frame (width x height)
 	static
-	void align(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start={0,0}, Orientation orientation=UNDEFINED_ORIENTATION, Direction direction=UNDEFINED_DIRECTION);
+	void align(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start={0,0},
+			PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION, PanelConfSVG::Direction direction=PanelConfSVG::UNDEFINED_DIRECTION);
 
 
 
 };
 
 template <>
-const drain::EnumDict<TreeUtilsSVG::Orientation>::dict_t  drain::EnumDict<TreeUtilsSVG::Orientation>::dict;
+const drain::EnumDict<PanelConfSVG::Orientation>::dict_t  drain::EnumDict<PanelConfSVG::Orientation>::dict;
 
 template <>
-const drain::EnumDict<TreeUtilsSVG::Direction>::dict_t  drain::EnumDict<TreeUtilsSVG::Direction>::dict;
+const drain::EnumDict<PanelConfSVG::Direction>::dict_t  drain::EnumDict<PanelConfSVG::Direction>::dict;
 
 
 /**

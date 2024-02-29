@@ -42,8 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Log.h"
 
 #include "drain/util/Path.h"
-#include "drain/util/Flags.h"
-//#include "drain/util/GlobalFlags.h"
+#include "drain/util/FlagsOld.h"
 
 
 namespace rack {

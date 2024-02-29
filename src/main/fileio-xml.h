@@ -141,20 +141,6 @@ public:
 };
 
 
-class H5HTMLvisitor {
-
-public:
-
-	drain::TreeHTML html;
-
-	int visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath);
-
-	inline
-	int visitPostfix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
-		return 0;
-	};
-
-};
 
 /// SVG panel utils
 class CmdBaseSVG : public drain::BasicCommand {
@@ -222,6 +208,27 @@ public:
 
 	void appendImage(TreeSVG & group, const std::string & prefix, drain::VariableMap & vmap,
 			const drain::Point2D<double> & location, const drain::image::Image & image, drain::BBox & bbox) const;
+};
+
+
+class H5HTMLvisitor {
+
+public:
+
+	// Returns the root of the HTML document, that is the <HTML> element. Prepares style etc. if not set already
+	drain::TreeHTML & getHtml();
+
+	int visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath);
+
+	inline
+	int visitPostfix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
+		return 0;
+	};
+
+protected:
+
+	drain::TreeHTML html;
+
 };
 
 

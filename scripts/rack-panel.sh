@@ -1,12 +1,13 @@
 #!/bin/bash
 
-INPUT_VOLUME=${1:-'volume.h5'}
-INPUT_VOLUME=${INPUT_VOLUME:-'volume.h5'}
-INPUT_BASENAME=${INPUT_VOLUME##*/}
-INPUT_BASENAME=${INPUT_BASENAME%.*}
+#INPUT_VOLUME=${1:-'volume.h5'}
+#INPUT_VOLUME=${INPUT_VOLUME:-'volume.h5'}
+#INPUT_BASENAME=${INPUT_VOLUME##*/}
+#INPUT_BASENAME=${INPUT_BASENAME%.*}
+#LABEL=${LABEL:-"$INPUT_BASENAME"}
+LABEL=${LABEL:-'rack-panel'}
 OUTDIR=$PWD
 LEGENDS=${LEGENDS:-'true'}
-LABEL=${LABEL:-"$INPUT_BASENAME"}
 DEMO=${DEMO:-0}
 
 OUTFILE=${OUTFILE:-"$PWD/$LABEL-panel.svg"}
@@ -14,41 +15,101 @@ FORMAT=${OUTFILE##*.}
 OUTFILE_SVG=${OUTFILE%.*}'.svg'
 OUTFILE_PNG=${OUTFILE%.*}'.png'
 OUTFILE_CMD=${OUTFILE%.*}'.cmd'
+CMD_ARGS="$*" # save for cmd file
 
-if [ $# == 0 ]; then
+function rack_panel_help(){
     echo '# Utility to create single-radar image panels'
     echo '# Usage: '
-    echo "${0} <input-volume.h5> [quantity] [quantity2]"
+    echo "${0} <volume.h5> [product] [quantity] [quantity2]"
+}
     
+
+if [ $# == 0 ]; then
+    rack_panel_help
 fi
 
-shift
+# shift
 
-EVEN=$(( $# % 2 == 0 ))
-LAYOUT=${LAYOUT:-'orientation=HORZ,direction=INCR'} 
+#EVEN=$(( $# % 2 == 0 ))
+LAYOUT=${LAYOUT:-'orientation=HORZ,direction=INCR'}
+MAX=10
+QUANTITY='DBZH'
 ENDLINE=`echo -e '#%'`
 
-cmd="rack $INPUT_VOLUME --outputConf svg:$LAYOUT $ENDLINE";
 
+
+# MAIN
+
+cmd="rack --outputConf svg:$LAYOUT $ENDLINE";
+
+COUNTER=0
 while [ $# != 0 ] ; do
-    QUANTITY=$1
-    cmd="$cmd -Q '$QUANTITY' -c --palette '$QUANTITY' "
-    if (( $EVEN )) && (( $# % 2 == 0 )); then
-	# Default: legend first, then radar image
-	cmd="$cmd --legendOut $OUTDIR/leg-$QUANTITY.svg --outputFile $OUTDIR/$LABEL-$QUANTITY.png $ENDLINE"
-    else
-	# Image first, then legend (ending the row)
-	cmd="$cmd --outputFile $OUTDIR/$LABEL-$QUANTITY.png --legendOut $OUTDIR/leg-$QUANTITY.svg $ENDLINE"
-	cmd="$cmd --outputConf 'svg:group=set$#' $ENDLINE";
-    fi
+
+    ARG=$1
     shift
+    
+    case $ARG in
+	--max)
+	    MAX=$1
+	    echo "# Setting MAX=$MAX"
+	    shift
+    	    continue
+	    ;;
+	[A-Z]*)
+	    echo $ARG quantity
+	    QUANTITY="$ARG"
+	    ;;
+	*.h5 | *.hdf)
+	    echo $ARG file
+	    INPUT_VOLUME=$ARG
+	    cmd="$cmd '$ARG' $ENDLINE"
+	    continue
+	    ;;
+	--p*)
+	    echo $ARG $1 command
+	    cmd="$cmd '$ARG' $1 $ENDLINE"
+	    shift
+	    continue
+	    ;;
+	*)
+	    echo "# could not read $ARG"
+	    continue
+    esac
+
+    if [ ! -v INPUT_VOLUME ]; then
+	echo "# Input not yet given, ok"
+	continue
+	#rack_panel_help
+	#exit 1
+    fi
+    
+    cmd="$cmd -Q '$QUANTITY' -c --palette '$QUANTITY' "
+    if (( MAX > 0 )) && (( COUNTER % MAX == 0 )); then
+	# Image first, then legend (ending the row)
+	cmd="$cmd --outputFile $OUTDIR/$LABEL-$QUANTITY-$COUNTER.png --legendOut $OUTDIR/leg-$QUANTITY.svg $ENDLINE"
+	# Start new line / column
+	cmd="$cmd --outputConf 'svg:group=set$COUNTER' $ENDLINE";
+    else
+	# Default: legend first, then radar image
+	cmd="$cmd --legendOut $OUTDIR/leg-$QUANTITY.svg --outputFile $OUTDIR/$LABEL-$QUANTITY-$COUNTER.png $ENDLINE"
+    fi
+
+    COUNTER=$(( ++COUNTER ))
 done
 
-cmd="$cmd --outputFile $OUTFILE_SVG $ENDLINE"
+cmd="$cmd --outputFile $OUTFILE_SVG "
 
-echo $cmd
-if (( $DEMO > 0 )); then
-    echo $cmd | tr '#%' '\\\n' > $OUTFILE_CMD
+
+
+if (( $DEMO == 0 )); then
+    echo $cmd | tr '#%' '\\\n'
+    echo
+else
+    echo "# $0 $CMD_ARGS" > $OUTFILE_CMD
+    echo >> $OUTFILE_CMD
+    echo $cmd | tr '#%' '\\\n' >> $OUTFILE_CMD
+    cat $OUTFILE_CMD
+    echo
 fi
 
 cmd=`echo $cmd | tr -d '#%'`
@@ -57,6 +118,7 @@ if [ $? != 0 ]; then
     echo "# Something went wrong, error code: $?"
     exit 1
 else
+    echo "# Created $OUTFILE_SVG"
     display $OUTFILE
 fi
 

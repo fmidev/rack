@@ -385,15 +385,15 @@ drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what 
 
 	drain::image::TreeSVG & track = getMain(ctx);
 
-	if (!track.hasChild(ctx.svgGroup)){
-		drain::image::TreeSVG & group = track[ctx.svgGroup](NodeSVG::GROUP);
+	if (!track.hasChild(ctx.svgPanelConf.groupName)){
+		drain::image::TreeSVG & group = track[ctx.svgPanelConf.groupName](NodeSVG::GROUP);
 		// Ensure (repeatedly)
 		group->addClass("imageSet");
-		group->set("id", ctx.svgGroup);
-		group->set("name", ctx.svgGroup);
+		group->set("id", ctx.svgPanelConf.groupName);
+		group->set("name", ctx.svgPanelConf.groupName);
 	}
 
-	return track[ctx.svgGroup](NodeSVG::GROUP);
+	return track[ctx.svgPanelConf.groupName](NodeSVG::GROUP);
 
 }
 
@@ -464,8 +464,8 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 	drain::image::NodeSVG::findByClass(track, "imageSet", pathList);
 
 	/// Clumsy
-	drain::image::TreeUtilsSVG::Orientation orientation = TreeUtilsSVG::defaultOrientation;
-	drain::image::TreeUtilsSVG::Direction   direction   = TreeUtilsSVG::defaultDirection;
+	// drain::image::TreeUtilsSVG::Orientation orientation = TreeUtilsSVG::defaultOrientation;
+	// drain::image::TreeUtilsSVG::Direction   direction   = TreeUtilsSVG::defaultDirection;
 
 	drain::Frame2D<int> mainFrame;
 	drain::Point2D<int> start(0,0);
@@ -514,7 +514,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 		*/
 
 
-		drain::image::TreeUtilsSVG::align(group, frame, start, orientation, direction);
+		drain::image::TreeUtilsSVG::align(group, frame, start, ctx.svgPanelConf.orientation, ctx.svgPanelConf.direction);
 
 		/// Collect
 		/*
@@ -522,7 +522,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 		drain::TreeUtils::traverse(titleCollecor, group);
 		*/
 
-		if (orientation == TreeUtilsSVG::HORZ){
+		if (ctx.svgPanelConf.orientation == drain::image::PanelConfSVG::HORZ){
 			// Jump to the next "row"
 			start.x = 0;
 			start.y += frame.height;
@@ -560,7 +560,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 	// REUSE:
 	start = {0,0};
 
-	if (TreeUtilsSVG::defaultTitle != "none"){
+	if (ctx.svgPanelConf.title != "none"){
 
 		TitleCreatorSVG titleCollector;
 		drain::TreeUtils::traverse(titleCollector, ctx.svgTrack);
@@ -584,9 +584,9 @@ void CmdBaseSVG::completeSVG(RackContext & ctx){
 			}); // fill:black;
 			// headerText->setText("Radar image");
 
-			if (!TreeUtilsSVG::defaultTitle.empty()){
+			if (! ctx.svgPanelConf.title.empty()){
 				//TreeSVG & tspan =  headerText["mainHeader"](svg::TSPAN);
-				headerText->ctext += TreeUtilsSVG::defaultTitle;
+				headerText->ctext += ctx.svgPanelConf.title;
 				headerText->ctext += ' ';
 			}
 			for (const auto & entry: track["metadata"]->getAttributes()){
@@ -799,6 +799,80 @@ void CmdOutputPanel::exec() const {
 // See drain::TextDecorator::VT100
 // std::map<std::string,std::string>
 
+drain::TreeHTML & H5HTMLvisitor::getHtml(){
+
+	drain::Logger submout(__FILE__, __FUNCTION__);
+
+	if (html->isUndefined()){
+
+		// submout.ok("initializing HTML");
+		html(drain::BaseHTML::HTML);
+
+		// submout.ok("adding HEAD");
+		drain::TreeHTML & head = html["head"](drain::BaseHTML::HEAD); //  << drain::NodeHTML::entry<drain::NodeHTML::HEAD>();
+
+		// submout.ok("adding TITLE");
+		head["title"](drain::BaseHTML::TITLE) = "HDF5 file";
+
+		drain::TreeHTML & styleLink = head["styleLink"](drain::BaseHTML::LINK);
+		styleLink->set("rel",  "stylesheet");
+		styleLink->set("href", "toggle.css");
+
+		drain::TreeHTML & style = head["style"](drain::BaseHTML::STYLE);
+		style["table,th"] = "border:1px solid;";
+		style["table"] = "border-collapse:collapse;";
+		style["th"] = "align:left;";
+		style["tr:nth-child(even)"] = "background-color: #f2f2f2;";
+
+		//  <link rel="stylesheet" href="styles.css">
+		//
+		//style->set("#myUL", "margin:0;padding:0");
+		//style[".caret-down::before"]->set({{"transform", "rotate(90deg)"}, {"margin",0}, {"padding",0}});
+
+		/*
+		style["ul, #myUL"] = "list-style-type: none";
+		style["#myUL"]->set("margin:0; padding:0;");
+		style[".caret"]->set("cursor:pointer; user-select:none;");
+		style[".caret::before"]->set("content:\"\25B6\"; color:black; display:inline-block; margin-right:6px;");
+		style[".caret-down::before"]->set("transform: rotate(90deg)");
+		style[".nested"]->set("display: none;");
+		style[".active"]->set("display: block;");
+		*/
+
+
+
+/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+		//head.ensureChild(drain::NodeHTML::entry<drain::NodeHTML::TITLE>()) = "HDF5 file";
+		//head.ensureChild(drain::NodeHTML::entry<drain::NodeXML<>::COMMENT >()) = RACK_BASE;
+		//html(body)(drain::NodeHTML::BODY);
+		//html << std::pair<hp_elem,drain::NodeHTML>("body", drain::NodeHTML::BODY);
+
+		drain::TreeHTML & script = head["script"](drain::BaseHTML::SCRIPT);
+		script->set("type", "text/javascript");
+		script->set("src", "toggle.js");
+		script->setText(" ");
+		/*
+		script = " function addTogglers(){\
+			var toggler = document.getElementsByClassName('caret'); \
+			var iii; \
+			for (var i = 0; i < toggler.length; i++) { \
+				toggler[i].addEventListener('click', function() { \
+					this.parentElement.querySelector('.nested').classList.toggle('active'); \
+					this.classList.toggle('caret-down'); \
+				}); \
+			} }";
+		*/
+
+		html["body"](drain::BaseHTML::BODY);
+		html["body"]->set("onload", "addTogglers()");
+
+		submout.accept(html);
+
+	}
+
+	return html;
+
+};
 
 
 int H5HTMLvisitor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
@@ -815,150 +889,107 @@ int H5HTMLvisitor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odi
 		return 1;
 	}
 
-	if (!odimPath.empty()){
-	}
-
 	submout.special("visiting ", odimPath);
 
-	if (html->isUndefined()){
+	drain::TreeHTML & htmlDoc = getHtml();
 
-		// submout.ok("initializing HTML");
-		html(drain::BaseHTML::HTML);
-
-		// submout.ok("adding HEAD");
-		drain::TreeHTML & head = html["head"](drain::BaseHTML::HEAD); //  << drain::NodeHTML::entry<drain::NodeHTML::HEAD>();
-
-		// submout.ok("adding TITLE");
-		head["title"](drain::BaseHTML::TITLE) = "HDF5 file";
-
-		drain::TreeHTML & style = head["style"](drain::BaseHTML::STYLE);
-		style->set("ul, #myUL", "list-style-type: none");
-		style->set("#myUL", "margin:0;padding:0");
-		style[".caret-down::before"]->set({{"transform", "rotate(90deg)"}, {"margin",0}, {"padding",0}});
-		style["#myUL"]->set("margin:0;padding:0");
-		style["#myUL"]->set("fargin", 1.0);
-		style["#myUL"]->set("fadding", 1.0);
-
-		//head.ensureChild(drain::NodeHTML::entry<drain::NodeHTML::TITLE>()) = "HDF5 file";
-		//head.ensureChild(drain::NodeHTML::entry<drain::NodeXML<>::COMMENT >()) = RACK_BASE;
-		//html(body)(drain::NodeHTML::BODY);
-		//html << std::pair<hp_elem,drain::NodeHTML>("body", drain::NodeHTML::BODY);
-
-		html["body"](drain::BaseHTML::BODY);
-
-		submout.accept(html);
-
-	}
-
-	drain::TreeHTML & body = html["body"];
-
-	// ensureChild(drain::NodeHTML::entry<drain::NodeHTML::BODY>());
+	drain::TreeHTML & body = htmlDoc["body"];
 
 	drain::TreeHTML::path_t htmlPath;
 	// drain::TreeHTML::path_t htmlParentPath;
 
+	body["ul"](drain::BaseHTML::UL); // prevent nested class
+
 	// Expand the path to html path UL->LI->UL-> by adding an element (LI) after each
 	for (const ODIMPathElem & e: odimPath){
+
+		// submout.special(" elem ", e);
+
+		const std::string & estr = e.str();
+
+		// submout.special(" estr ", estr);
+		if (!htmlPath.empty()){
+			//
+			//if (e.belongsTo(ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+			if (true){
+			}
+			/*
+			else {
+				drain::TreeHTML & span = body(htmlPath)[estr+"comment"](drain::BaseHTML::COMMENT);
+				span = estr;
+			}
+			*/
+
+		}
+
 
 		htmlPath.appendElem("ul");
 		// submout.ok("checking path: ", htmlPath);
 
-		const std::string & estr = e.str();
-
-		drain::TreeHTML & group = body(htmlPath)(drain::BaseHTML::UL);
-		// group->setType(drain::NodeHTML::UL);
+		drain::TreeHTML & group = body(htmlPath); //(drain::BaseHTML::UL);
 		if (group->isUndefined()){
 			group->setType(drain::BaseHTML::UL);
-			//group->set("name", htmlPath);
-			group->set("hdf5", odimPath);
-			group->addClass(estr+"Parent");
+			group->addClass("nested");
 		}
 
-		htmlPath.appendElem(estr);
-		// htmlPath << e;  // hdf5 elem -> html elem >> html path
-		// submout.ok("extending path: ", htmlPath);
-		bool EXISTS = body.hasPath(htmlPath);
-		drain::TreeHTML & item = body(htmlPath); // (drain::NodeHTML::LI);
-		if (item->isUndefined()){
-			item->setType(drain::BaseHTML::LI);
-			item->set("name", estr);
-			item->addClass(e.getPrefix());
+		if (e.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+			//drain::TreeHTML & table = item[estr](drain::NodeHTML::TABLE);
+			// NOTE: parent group joins attribs:
+
+			drain::TreeHTML & table = group["attr"](drain::NodeHTML::TABLE);
+			for (const auto & attr: t.data.attributes){
+				drain::TreeHTML & tr = table[estr + attr.first](drain::NodeHTML::TR);
+				tr["key"](drain::NodeHTML::TH) = estr+':'+attr.first;
+				tr["value"](drain::NodeHTML::TD) = attr.second;
+			}
+
 		}
 		else {
-			submout.attention("LI group existed=", (EXISTS?"yes":"no"), ", ", item.data, " at ", htmlPath);
+			htmlPath.appendElem(estr);
+			drain::TreeHTML & item = body(htmlPath); // (drain::NodeHTML::LI);
+			if (item->isUndefined()){
+				item->setType(drain::BaseHTML::LI);
+				// item->set("name", estr);
+				if (e.is(ODIMPathElem::ARRAY)){
+					item->addClass("array");
+					drain::TreeHTML & img = item["img"](drain::NodeHTML::IMG);
+					std::string filename = odimPath.str()+ ".png";
+					img->set("src", "radar.png");
+					img->set("alt", filename);
+					img->set("border", 1);
+					//item = estr; // text
+				}
+				else { // if ( !e.belongsTo(ODIMPathElem::DATA_GROUPS)){
+					drain::TreeHTML & span = body(htmlPath)[estr+"-span"]; // (drain::BaseHTML::SPAN);
+					if (span->isUndefined()){
+						span->setType(drain::BaseHTML::SPAN);
+						span->addClass("caret");
+						span = estr+"-X";
+					}
+				}
+
+			}
+			else {
+				bool EXISTS = body.hasPath(htmlPath);
+				submout.attention("LI group existed=", (EXISTS?"yes":"no"), ", ", item.data, " at ", htmlPath);
+			}
 		}
+
+
 	}
 
-
-	return 0;
-
-	submout.accept("traversing path: ", odimPath, " -> html: ", htmlPath);
-
-	drain::TreeHTML & current = body(htmlPath);
-
-	// submout.attention("stripping... ", htmlPath);
-	//htmlPath.pop_back();
-	// submout.attention("       to... ", htmlPath);
-	// drain::TreeHTML & parent  = body(htmlPath);
-
-	drain::TreeHTML & parent  = current;
-
+	// body[htmlPath.front()]->removeClass("nested"); // (drain::BaseHTML::UL)prevent nested class
+	// submout.special("10.0");
+	/*
 	if (body->isComment()){
 		submout.error(__LINE__, " BODY elem became comment: at ", odimPath);
 		return 1;
 	}
-	else {
-		submout.special(__LINE__, " BODY elem  ", body->getType());
-	}
-
-	const ODIMPathElem & elem = odimPath.back();
-
-	current->set("h5", odimPath);
-
-	if (elem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-		drain::TreeHTML & table = parent["metadata"](drain::BaseHTML::TABLE);
-		// NOTE: shared table for what, where, how
-		for (const auto & attr: t.data.attributes){
-			drain::TreeHTML & row = table[attr.first](drain::BaseHTML::TR);
-			row["key"](drain::BaseHTML::TH)->setText(attr.first);
-			row["value"](drain::BaseHTML::TD) = (attr.second);
-			std::cout << '\t' << attr.first << ':' << attr.second << '\n'; // << tree(path).data
-		}
-		// return 1;
-	}
-	else if (elem.belongsTo(ODIMPathElem::DATA_GROUPS)){
-
-		drain::TreeHTML & caret = current["ul"](drain::BaseHTML::UL);
-		caret->setText(odimPath.str());
-		caret->addClass("caret");
-		return 0;
-		//current["m"]->setComment(elem);
-	}
-	else if (elem.is(ODIMPathElem::ARRAY)){
-		if (!t.data.empty()){
-			drain::TreeHTML & img = parent["i"](drain::BaseHTML::IMG);
-			//img.set("width", ...)
-			std::string filename = elem;
-			filename += ".png";
-			img->set("href", filename);
-		}
-		//return 1;
-	}
-	else {
-		// current["skip"]->setText("skipped elem" );
-	}
-
-	if (body->isComment()){
-		submout.error(__LINE__, " BODY elem became comment: at ", odimPath);
-		return 1;
-	}
-
-
-
 
 	for (const auto & attr: t.data.attributes){
 		std::cout << '\t' << attr.first << ':' << attr.second << '\n'; // << tree(path).data
 	}
+	*/
 
 	return 0;
 }

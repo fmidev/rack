@@ -43,8 +43,9 @@ namespace rack {
 // const drain::StatusFlags::value_t RackContext::BBOX_STATUS =   StatusFlags::add("BBOX");
 
 ImageContext::ImageContext(): imagePhysical(true), qualityGroups(ODIMPathElem::NONE),
-		currentImage(nullptr), currentGrayImage(nullptr),
-		svgGroup("main"){
+		currentImage(nullptr), currentGrayImage(nullptr) {
+		// svgGroup("main"){
+		svgPanelConf.groupName = "main";
 		// drain::image::TreeSVG & style = svgTrack["style"](svg::STYLE);
 		//style["text"] = ("stroke:white; stroke-width:1em; stroke-opacity:0.25; fill:black; paint-order:stroke; stroke-linejoin:round");
 		// style[".imageTitle"] = "font-size:1.5em; stroke:white; stroke-width:10px; stroke-opacity:0.25; fill:black; paint-order:stroke; stroke-linejoin:round";
@@ -54,8 +55,9 @@ ImageContext::ImageContext(const ImageContext & ctx):
 		imagePhysical(ctx.imagePhysical),
 		qualityGroups(ctx.qualityGroups),
 		currentImage(ctx.currentImage),
-		currentGrayImage(ctx.currentGrayImage),
-		svgGroup("main") {
+		currentGrayImage(ctx.currentGrayImage){
+		//svgGroup("main") {
+	svgPanelConf.groupName = ctx.svgPanelConf.groupName;
 }
 
 // Note: for example Palette uses this to extract actual quantity

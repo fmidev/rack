@@ -36,16 +36,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 #include "drain/image/Image.h"
-//#include "drain/imageops/ImageModifierPack.h"
+#include "drain/image/TreeUtilsSVG.h"
 #include "drain/imageops/PaletteOp.h"
-//#include "drain/prog/CommandPack.h"
-//#include "drain/prog/CommandRegistry.h" // OLD
-//#include "drain/prog/CommandBankUtils.h"     // NEW
 
-//#include "drain/util/Rectangle.h"
-//#include "drain/util/RegExp.h"
-//#include "drain/util/StatusFlags.h"
-//#include "drain/util/TreeOrdered.h"
 #include "drain/util/Variable.h"
 #include "drain/util/Static.h"
 
@@ -53,13 +46,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/PolarODIM.h"
 #include "hi5/Hi5.h"
 
-//#include "radar/Composite.h"
-//#include "radar/RadarAccumulator.h"
-
 
 namespace rack {
-
-// typedef std::map<std::string, std::map<unsigned short, drain::image::Palette> >  PaletteMap;
 
 
 // Consider moving ImageKit here?
@@ -123,8 +111,11 @@ public:
 
 
 	// New: SVG
-	std::string svgGroup;
 	drain::image::TreeSVG svgTrack;
+	// std::string svgGroup;
+	drain::image::PanelConfSVG svgPanelConf;
+	// drain::image::PanelConfSVG::OrientationFlagger svgOrientation;
+	//drain::image::PanelConfSVG::DirectionFlagger svgDirection;
 	//drain::TreeXML xmlTrack;
 
 	// New

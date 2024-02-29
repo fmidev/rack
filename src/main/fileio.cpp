@@ -107,14 +107,17 @@ public:
 
 		hdf5Conf.link("compression", hi5::Writer::compressionLevel);
 		pngConf.link("compression", drain::image::FilePng::compressionLevel);
-
 		// TreeUtilsSVG::defaultOrientation.value
 		// svgConf.link("group",       TreeUtilsSVG::defaultGroupName);
 		RackContext & ctx = getContext<RackContext>();
-		svgConf.link("group", ctx.svgGroup); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
-		svgConf.link("orientation", svgConf_Orientation, drain::sprinter(TreeUtilsSVG::defaultOrientation.getDict().getKeys()).str());
-		svgConf.link("direction",   svgConf_Direction,   drain::sprinter(TreeUtilsSVG::defaultDirection.getDict().getKeys()).str());
-		svgConf.link("group", drain::image::TreeUtilsSVG::defaultTitle); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
+		svgConf.link("group", ctx.svgPanelConf.groupName); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
+		// svgConf.link("orientation", svgConfOrientation, drain::sprinter(drain::image::PanelConfSVG::orientation.getDict().getKeys()).str());
+		// svgConf.link("direction",   svgConfDirection,   drain::sprinter(drain::image::PanelConfSVG::direction.getDict().getKeys()).str());
+		svgConf.link("orientation", svgConfOrientation, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Orientation>::dict.getKeys()).str()); // init clash
+		svgConf.link("direction",   svgConfDirection,   drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Direction>::dict.getKeys()).str());   // init clash
+		svgConf.link("max", ctx.svgPanelConf.maxPerGroup, "max per row/column"); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
+		svgConf.link("legend", svgConfLegend, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Legend>::dict.getKeys()).str());
+		svgConf.link("title", ctx.svgPanelConf.title); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 		// TreeUtilsSVG::defaultDirection.value);
 
 
@@ -137,8 +140,8 @@ public:
 		gtiffConf.copyStruct(cmd.gtiffConf, cmd, *this, drain::ReferenceMap::LINK);
 		svgConf.copyStruct(cmd.svgConf, cmd, *this,     drain::ReferenceMap::LINK); //,
 
-		RackContext & ctx = getContext<RackContext>();
-		svgConf.link("group", ctx.svgGroup); // otherwise could be other/static ctx, because of LINK above ?
+		// RackContext & ctx = getContext<RackContext>();
+		//svgConf.link("group", ctx.svgPanelConf.groupName); // otherwise could be other/static ctx, because of LINK above ?
 	}
 
 	// std::string format;
@@ -193,8 +196,9 @@ public:
 			// read params
 			handleParams(svgConf, params);
 			// write params
-			TreeUtilsSVG::defaultOrientation.set(svgConf_Orientation);
-			TreeUtilsSVG::defaultDirection.set(svgConf_Direction);
+
+			ctx.svgPanelConf.orientation.set(svgConfOrientation);
+			ctx.svgPanelConf.direction.set(svgConfDirection);
 		}
 #ifndef USE_GEOTIFF_NO
 		else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
@@ -259,8 +263,9 @@ public:
 
 	mutable
 	drain::ReferenceMap svgConf;
-	std::string svgConf_Orientation;
-	std::string svgConf_Direction;
+	std::string svgConfOrientation;
+	std::string svgConfDirection;
+	std::string svgConfLegend;
 
 
 };
@@ -325,19 +330,19 @@ void CmdOutputFile::exec() const {
 		return;
 	}
 
-	std::string filename;
+	std::string filepath;
 
 	const bool STD_OUTPUT = value.empty() || (value == "-");
 
 	if (STD_OUTPUT){
-		filename = "-";
+		filepath = "-";
 	}
 	else {
 		//mout.warn(RackContext::variableMapper );
 		drain::StringMapper mapper(RackContext::variableMapper);
 		mapper.parse(ctx.outputPrefix + value);
-		filename = mapper.toStr(ctx.getStatusMap());
-		mout.note("writing: '" , filename , "'" );
+		filepath = mapper.toStr(ctx.getStatusMap());
+		mout.note("writing: '" , filepath , "'" );
 	}
 	// mout.note("filename: " , filename );
 
@@ -372,7 +377,7 @@ void CmdOutputFile::exec() const {
 		}
 		mout.info("File format: HDF5");
 		src.data.attributes["Conventions"] = "ODIM_H5/V2_2"; // CHECK
-		hi5::Writer::writeFile(filename, src); //*ctx.currentHi5);
+		hi5::Writer::writeFile(filepath, src); //*ctx.currentHi5);
 		/*
 		drain::image::TreeSVG & h5 = baseGroup["h5"](svg::TEXT);
 		h5->set("object", src.data.attributes["object"]);
@@ -389,7 +394,7 @@ void CmdOutputFile::exec() const {
 		const drain::image::Image & srcImage = ctx.updateCurrentImage();
 
 		if (IMAGE_PNG){
-			CmdBaseSVG::addImage(ctx, srcImage, path.str());
+			CmdBaseSVG::addImage(ctx, srcImage, filepath); // path.str()
 		}
 
 		mout.info("Retrieved image: ", srcImage, " [", srcImage.properties.get("what:quantity", ""), "]");
@@ -404,7 +409,7 @@ void CmdOutputFile::exec() const {
 		// drain::StringMapper dataIDSyntax("${what:date}_${what:time} ${what:product}", "^[A-Za-z0-9_:]*$");
 		dataIDSyntax.parse("${what:date}_${what:time}_");
 		//std::string dataID = dataIDSyntax.toStr(ctx.getStatusMap(true), 'x');
-		std::string dataID = TreeUtilsSVG::defaultGroupName;
+		std::string dataID = ctx.svgPanelConf.groupName;
 		// dataIDSyntax.toStr(src.properties, 'x') + SourceODIM(src.properties.get("what:source","")).getSourceCode();
 
 
@@ -428,13 +433,13 @@ void CmdOutputFile::exec() const {
 
 		if (IMAGE_PNG || IMAGE_PNM){
 			mout.debug("PNG or PGM format, using ImageFile::write");
-			drain::image::ImageFile::write(srcImage, filename);
+			drain::image::ImageFile::write(srcImage, filepath);
 		}
 		else if (IMAGE_TIF) {
 #ifndef USE_GEOTIFF_NO
 			// see FileGeoTiff::tileWidth
 			//imageGroup->comment();
-			CmdGeoTiff::write(srcImage, filename);
+			CmdGeoTiff::write(srcImage, filepath);
 			//FileGeoTIFF::write(filename, src); //, geoTIFF.width, geoTIFF.height);
 			//
 #else
@@ -445,7 +450,7 @@ void CmdOutputFile::exec() const {
 		else {
 			// This should be impossible
 			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR || drain::StatusFlags::OUTPUT_ERROR);
-			mout.error("unknown file name extension: ", filename);
+			mout.error("unknown file name extension: ", filepath);
 		}
 
 	}
@@ -455,6 +460,9 @@ void CmdOutputFile::exec() const {
 		CmdBaseSVG::completeSVG(ctx);
 
 		drain::image::NodeSVG::toStream(ofstr, ctx.svgTrack);
+		mout.hint<LOG_DEBUG>("For converting to PNG, consider: ");
+		mout.hint<LOG_DEBUG>("\t inkscape -o out.png ", path, "  # Relative paths ok");
+		mout.hint<LOG_DEBUG>("\t convert ", path, " out.png # Use full system paths");
 		// ofstr << ctx.xmlTrack << '\n';
 		// mout.unimplemented("not support yet, use --outputPanel / dumpXML");
 	}
@@ -489,11 +497,12 @@ void CmdOutputFile::exec() const {
 		H5HTMLvisitor handler;
 		drain::TreeUtils::traverse(handler, src);
 
-		mout.warn(handler.html.data);
-		drain::TreeUtils::dump(handler.html);
+		mout.warn(handler.getHtml().data);
+		drain::TreeUtils::dump(handler.getHtml());
 
-		drain::Output outfile("-");
-		drain::NodeHTML::toStream(outfile, handler.html, "html");
+		drain::Output outfile(path.str());
+		//drain::NodeHTML::toStream(outfile, handler.getHtml());
+		outfile << handler.getHtml();
 
 		if (!ctx.select.empty()){
 			mout.debug("resetting selector");
@@ -503,16 +512,16 @@ void CmdOutputFile::exec() const {
 		}
 
 	}
-	else if (arrayFileExtension.test(filename)){
+	else if (arrayFileExtension.test(value)){
 
 		/// Currently designed only for vertical profiles produced by VerticalProfileOp (\c --pVerticalProfile )
 		/// TODO: modify DataSet such that the quantities appear in desired order.
-		writeProfile(src, filename);
+		writeProfile(src, filepath);
 
 	}
 	else if (sampleFileExtension.test(value)){
 
-		writeSamples(src, filename);
+		writeSamples(src, filepath);
 
 	}
 	else if (dotFileExtension.test(value)) {
@@ -524,7 +533,7 @@ void CmdOutputFile::exec() const {
 			ctx.select.clear();
 		}
 
-		writeDotGraph(src, filename, ODIMPathElem::ALL_GROUPS);
+		writeDotGraph(src, filepath, ODIMPathElem::ALL_GROUPS);
 
 	}
 	else if (path.extension == "tre"){
@@ -541,11 +550,11 @@ void CmdOutputFile::exec() const {
 
 		mout.info("File format: text");
 
-		drain::Output output(filename);
+		drain::Output output(filepath);
 
 		if (ctx.formatStr.empty()){
 
-			if (textFileExtension.test(filename) || STD_OUTPUT){ // (value == "-")){
+			if (textFileExtension.test(filepath) || STD_OUTPUT){ // (value == "-")){
 				mout.info("Dumping HDF5 structure");
 			}
 			else {

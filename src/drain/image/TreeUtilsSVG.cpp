@@ -43,32 +43,43 @@ namespace drain {
 
 namespace image {
 
-TreeUtilsSVG::OrientationFlagger TreeUtilsSVG::defaultOrientation(TreeUtilsSVG::HORZ);
+//PanelConfSVG::OrientationFlagger TreeUtilsSVG::defaultOrientation(PanelConfSVG::HORZ);
 
 template <>
-const drain::EnumDict<TreeUtilsSVG::Orientation>::dict_t  drain::EnumDict<TreeUtilsSVG::Orientation>::dict = {
-		{"HORZ", drain::image::TreeUtilsSVG::HORZ},
-		{"VERT", drain::image::TreeUtilsSVG::VERT}
+const drain::EnumDict<PanelConfSVG::Orientation>::dict_t  drain::EnumDict<PanelConfSVG::Orientation>::dict = {
+		{"HORZ", drain::image::PanelConfSVG::HORZ},
+		{"VERT", drain::image::PanelConfSVG::VERT}
 };
 
-TreeUtilsSVG::DirectionFlagger   TreeUtilsSVG::defaultDirection(TreeUtilsSVG::INCR);
+// PanelConfSVG::DirectionFlagger   TreeUtilsSVG::irection(PanelConfSVG::INCR);
 
 template <>
-const drain::EnumDict<TreeUtilsSVG::Direction>::dict_t  drain::EnumDict<TreeUtilsSVG::Direction>::dict = {
-		{"INCR", drain::image::TreeUtilsSVG::INCR},
-		{"DECR", drain::image::TreeUtilsSVG::DECR}
+const drain::EnumDict<PanelConfSVG::Direction>::dict_t  drain::EnumDict<PanelConfSVG::Direction>::dict = {
+		{"INCR", drain::image::PanelConfSVG::INCR},
+		{"DECR", drain::image::PanelConfSVG::DECR}
 };
 
-std::string TreeUtilsSVG::defaultGroupName("main");
+template <>
+const drain::EnumDict<PanelConfSVG::Legend>::dict_t  drain::EnumDict<PanelConfSVG::Legend>::dict = {
+		{"NO", drain::image::PanelConfSVG::NO_LEGEND},
+		{"LEFT", drain::image::PanelConfSVG::LEFT},
+		{"RIGHT", drain::image::PanelConfSVG::RIGHT},
+		{"DUPLEX", drain::image::PanelConfSVG::LEFT | drain::image::PanelConfSVG::RIGHT},
+		//{"EMBED", drain::image::PanelConfSVG::EMBED},
+};
 
-std::string TreeUtilsSVG::defaultTitle("");
+//std::string TreeUtilsSVG::defaultGroupName("main");
+
+//std::string TreeUtilsSVG::defaultTitle("");
+
+PanelConfSVG TreeUtilsSVG::defaultConf;
 
 
 // drain::Rectangle<int> & bbox
-void TreeUtilsSVG::determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, Orientation orientation){
+void TreeUtilsSVG::determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, PanelConfSVG::Orientation orientation){
 
-	if (orientation == UNDEFINED_ORIENTATION){
-		orientation = TreeUtilsSVG::defaultOrientation;
+	if (orientation == PanelConfSVG::UNDEFINED_ORIENTATION){
+		orientation = defaultConf.orientation;
 	}
 
 	// Loop 1: detect collective width and height
@@ -78,7 +89,7 @@ void TreeUtilsSVG::determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, O
 		const drain::image::TreeSVG & elem = entry.second;
 		if ((elem->getType() == svg::IMAGE) || (elem->getType() == svg::RECT)){
 			if (!elem->hasClass("FLOAT")){
-				if (orientation == HORZ){
+				if (orientation == PanelConfSVG::HORZ){
 					frame.width  += elem->get("width");
 					frame.height  = std::max(frame.height, elem->get("height", 0));
 				}
@@ -95,24 +106,24 @@ void TreeUtilsSVG::determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, O
 }
 
 // drain::Rectangle<int> & bbox
-void TreeUtilsSVG::align(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start, Orientation orientation, Direction direction){
+void TreeUtilsSVG::align(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start, PanelConfSVG::Orientation orientation, PanelConfSVG::Direction direction){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug("aligning elems of group ", group->get("name", "?"));
 
-	if (orientation == UNDEFINED_ORIENTATION){
-		orientation = TreeUtilsSVG::defaultOrientation;
+	if (orientation == PanelConfSVG::UNDEFINED_ORIENTATION){
+		orientation = defaultConf.orientation;
 	}
 
-	if (direction == UNDEFINED_DIRECTION){
-		direction = TreeUtilsSVG::defaultDirection;
+	if (direction == PanelConfSVG::UNDEFINED_DIRECTION){
+		direction = defaultConf.direction;
 	}
 
 	// Loop: stack horizontally or vertically.
 	Point2D<int> pos;
-	pos.x = ((orientation==VERT) || (direction==INCR)) ? 0 : frame.width;
-	pos.y = ((orientation==HORZ) || (direction==INCR)) ? 0 : frame.height;
+	pos.x = ((orientation==PanelConfSVG::VERT) || (direction==PanelConfSVG::INCR)) ? 0 : frame.width;
+	pos.y = ((orientation==PanelConfSVG::HORZ) || (direction==PanelConfSVG::INCR)) ? 0 : frame.height;
 
 	pos.x += start.x;
 	pos.y += start.y;
@@ -141,8 +152,8 @@ void TreeUtilsSVG::align(TreeSVG & group, const drain::Frame2D<int> & frame, con
 
 
 			if (!elem->hasClass("FLOAT")){
-				if (direction==INCR){
-					if (orientation==HORZ)
+				if (direction==PanelConfSVG::INCR){
+					if (orientation==PanelConfSVG::HORZ)
 						pos.x += w;
 					else
 						pos.y += h;
@@ -151,8 +162,8 @@ void TreeUtilsSVG::align(TreeSVG & group, const drain::Frame2D<int> & frame, con
 				w = elem->get("width", 0);
 				h = elem->get("height",0);
 
-				if (direction==DECR){
-					if (orientation==HORZ)
+				if (direction==PanelConfSVG::DECR){
+					if (orientation==PanelConfSVG::HORZ)
 						pos.x -= w;
 					else
 						pos.y -= h;

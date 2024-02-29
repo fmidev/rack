@@ -806,7 +806,8 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 		*/
 
 		if (tree->typeIs((elem_t)STYLE)){
-			// ostr << "<![CDATA[ ";
+			// https://www.w3.org/TR/xml/#sec-cdata-sect
+			ostr << "<![CDATA[ \n";
 			if (!tree->getAttributes().empty()){
 				ostr << "\n\t<!-- DISCARDED attribs ";
 				drain::Logger mout(__FILE__,__FUNCTION__);
@@ -816,7 +817,7 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 			}
 			if (!tree->style.empty()){
 				// ostr << "\n\t<!-- attribs /-->" << '\n';
-				ostr << fill << "  <!-- std style /-->" << '\n';
+				ostr << fill << "<!-- style obj /-->" << '\n';
 				//ostr << fill;
 				//Sprinter::sequenceToStream(ostr, tree->style, StyleXML::styleRecordLayout);
 				for (const auto & attr: tree->style){
@@ -829,10 +830,11 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 				//Sprinter::sequenceToStream(ostr, entry.second->getAttributes(), StyleXML::styleRecordLayoutActual);
 				// ostr << '\n';
 			}
-			ostr << "\n\t<!-- elems /-->" << '\n';
+			ostr << '\n';
+			ostr << fill << "<!-- elems /-->" << '\n';
 			for (const auto & entry: tree.getChildren()){
 				if (!entry.second->getAttributes().empty()){
-					ostr << "\n\t<!-- elem("<< entry.first << ") attribs /-->" << '\n';
+					ostr << fill << "<!-- elem("<< entry.first << ") attribs /-->" << '\n';
 					ostr << fill << "  " << entry.first << " {\n";
 					for (const auto & attr: entry.second->getAttributes()){
 						ostr << fill  << "    ";
@@ -847,12 +849,12 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 					ostr << '\n';
 				}
 				if (!entry.second->ctext.empty()){
-					ostr << "\n\t<!-- elem("<< entry.first << ") ctext /-->" << '\n';
-					ostr << fill  << "  " << entry.first << " {" << entry.second->ctext << "}\n";
+					ostr << fill << "<!-- elem("<< entry.first << ") ctext /-->" << '\n';
+					ostr << fill << "  " << entry.first << " {" << entry.second->ctext << "}\n";
 				}
 				// Sprinter::sequenceToStream(ostr, entry.second->style, StyleXML::styleRecordLayout);
 			}
-			// ostr << "]]\n";
+			ostr << " ]]>\n"; // end CTEXT
 			// end STYLE defs
 		}
 		else {
