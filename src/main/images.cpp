@@ -66,7 +66,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/DataConversionOp.h"
 #include "resources.h"
 #include "images.h"
-#include "fileio-xml.h"
+#include "fileio-svg.h"
 
 #include "image-ops.h" // why
 
@@ -262,7 +262,7 @@ public:
 		// std::cerr << __FUNCTION__ << ' '; parameters.dump(std::cerr);
 	};
 
-	CmdImageTransp(const CmdImageTransp & cmd) : CmdImageAlphaBase(cmd) {
+	CmdImageTransp(const CmdImageTransp & cmd) : CmdImageAlphaBase(cmd), undetect(0.0), nodata(1.0) {
 		parameters.copyStruct(cmd.parameters, cmd, *this);
 		//std::cerr << __FUNCTION__ << " (copy)"; parameters.dump(std::cerr);
 	};

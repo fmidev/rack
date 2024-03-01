@@ -73,7 +73,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "fileio.h"
 #include "fileio-read.h"
 #include "fileio-geotiff.h"
-#include "fileio-xml.h"
+#include "fileio-svg.h"
+#include "fileio-html.h"
 #include "file-hist.h"
 #include "images.h"  // ImageSection
 
@@ -572,17 +573,18 @@ void CmdOutputFile::exec() const {
 
 			ODIMPathList paths;
 
+			DataSelector selector(ODIMPathElem::DATASET);
+			selector.consumeParameters(ctx.select); // special<LOG_DEBUG>
+			mout.warn("Revised code: always using selector in --format'ted output, current selector=", selector);
+			// mout.debug(selector);
+			selector.getPaths(src, paths);
+			/*
 			if (!ctx.select.empty()){
-				DataSelector selector;
-				selector.consumeParameters(ctx.select);
-				mout.debug(selector);
-				selector.getPaths(src, paths);
 			}
 			else {
 				drain::TreeUtils::getPaths(ctx.getHi5(RackContext::CURRENT), paths);
-				// ctx.getHi5(RackContext::CURRENT).getPaths(paths);
-				//ctx.currentHi5->getPaths(paths); // ALL
 			}
+			*/
 
 			hi5::Hi5Base::writeText(src, paths, output);
 		}

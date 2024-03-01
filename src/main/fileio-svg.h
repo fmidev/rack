@@ -29,8 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef RACK_FILE_IO_XML
-#define RACK_FILE_IO_XML
+#ifndef RACK_FILE_IO_SVG
+#define RACK_FILE_IO_SVG
 
 #include <string>
 
@@ -41,39 +41,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/RegExp.h"
 #include "drain/util/TreeHTML.h"
 
-//#include "drain/image/FileGeoTIFF.h"
 
 #include "hi5/Hi5.h"
 
 #include "resources.h"
 
 namespace rack {
-
-/*
-class CmdOutputFile : public drain::SimpleCommand<std::string> {
-
-public:
-
-	inline
-	CmdOutputFile() : drain::SimpleCommand<>(__FUNCTION__, "Output data to HDF5, text, image or GraphViz file. See also: --image, --outputRawImages.",
-			"filename", "", "<filename>.[h5|hdf5|png|pgm|txt|dat|mat|dot]|-") {
-	};
-
-	//void writeGeoTIFF(const drain::image::Image & src, const std::string & filename) const;
-
-	void writeProfile(const Hi5Tree & src, const std::string & filename) const;
-
-	void writeSamples(const Hi5Tree & src, const std::string & filename) const;
-
-	void writeDotGraph(const Hi5Tree & src, const std::string & filename, ODIMPathElem::group_t selector = (ODIMPathElem::ROOT | ODIMPathElem::IS_INDEXED)) const;
-
-	void exec() const;
-
-
-
-};
-
-*/
 
 
 /**
@@ -210,33 +183,6 @@ public:
 			const drain::Point2D<double> & location, const drain::image::Image & image, drain::BBox & bbox) const;
 };
 
-
-class H5HTMLextractor {
-
-public:
-
-	// Returns the root of the HTML document, that is the <HTML> element. Prepares style etc. if not set already
-	drain::TreeHTML & getHtml();
-
-	int visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath);
-
-	inline
-	int visitPostfix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
-		return 0;
-	};
-
-	static
-	drain::TreeHTML & addTogglerScript(drain::TreeHTML & head, const std::string key = "toggler-script");
-
-	static
-	drain::TreeHTML & addTogglerStyle(drain::TreeHTML & head, const std::string key = "toggler-style");
-
-protected:
-
-	drain::TreeHTML html;
-
-
-};
 
 
 } // rack::
