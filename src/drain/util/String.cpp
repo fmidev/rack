@@ -68,7 +68,7 @@ void StringTools::replace(const std::string &src, const std::string &search, con
 
 }
 
-void StringTools::replace(const std::map<std::string,std::string> & m, std::string & s, std::size_t pos){
+void StringTools::replace(const conv_map_t & m, std::string & s, std::size_t pos){
 
 	std::size_t len;
 	std::size_t step;

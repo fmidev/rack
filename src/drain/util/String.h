@@ -91,12 +91,15 @@ public:
 		return dst;
 	}
 
+	typedef std::map<std::string,std::string> conv_map_t;
+
 	/// Replaces instances appearing as map keys to map values.
 	/**
 	 *  \see RegExp::replace.
 	 */
+	// std::map<std::string,std::string>
 	static
-	void replace(const std::map<std::string,std::string> & m, std::string &s, std::size_t pos = 0);
+	void replace(const conv_map_t & m, std::string &s, std::size_t pos = 0);
 
 
 	/// In src, replaces instances of 'from' to 'to', storing the result in dst.

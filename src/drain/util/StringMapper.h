@@ -93,6 +93,41 @@ std::ostream & operator<<(std::ostream & ostr, const Stringlet & s) {
 		return ostr << (const std::string &) s;
 }
 
+
+
+
+//template <class T>
+class VariableHandler {
+
+public:
+
+        IosFormat iosFormat;
+
+        /// Default
+        /**
+         *  \return true if handles.
+         */
+        template <class T>
+        bool handle(const std::string & key, const std::map<std::string,T> & variables, std::ostream & ostr) const {
+                typename std::map<std::string,T>::const_iterator it = variables.find(key);
+                if (it != variables.end()){
+                        iosFormat.copyTo(ostr);
+                        //ostr.width(width);
+                        //std::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
+                        //std::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
+                        ostr <<  it->second;
+                        return true;
+                }
+                else {
+                        return false;
+                }
+        }
+
+};
+
+
+
+
 /**  Expands a std::string containing variables like "Hello, ${name}!" to a literal std::string.
  *   StringMapper parses a given std::string, it splits the std::string into segments containing
  *   literals and variables in turn.
@@ -158,12 +193,13 @@ public:
 
 	/// Interpret commond special chars tab '\t' and newline '\n'.
 	static
-	std::string & convertEscaped(std::string &s){
+	std::string & convertEscaped(std::string &s); /*{
 		std::string s2;
 		drain::StringTools::replace(s,  "\\t", "\t", s2);
 		drain::StringTools::replace(s2, "\\n", "\n",  s);
 		return s;
 	}
+	*/
 
 
 	/// Return true, if all the elements are literal.
@@ -194,10 +230,14 @@ public:
 	//std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> &m, bool keepUnknowns=false) const {
 	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = 0) const {
 
+
+		VariableHandler handler;
+
 		for (const Stringlet & stringlet: *this){
 			//const Stringlet & stringlet = *it;
 			if (stringlet.isVariable()){
 				// Find the entry in the map
+				/*
 				typename std::map<std::string, T >::const_iterator mit = variables.find(stringlet);
 				if (mit != variables.end()){
 					iosFormat.copyTo(ostr);
@@ -205,6 +245,10 @@ public:
 					//std::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
 					//std::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
 					ostr <<  mit->second;
+				}
+				*/
+				if (handler.handle(stringlet, variables, ostr)){
+					// ok, accepted and handled!
 				}
 				else if (replace){
 					//else if (keepUnknowns){ // = "recycle", add back "${variable}";
