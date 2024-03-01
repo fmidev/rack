@@ -536,10 +536,10 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 
 			if (checkSubGroup){
 				if (currentElem.belongsTo(ODIMPathElem::DATA|ODIMPathElem::QUALITY)){
-					mout.pending("DATA/QUALITY group ", path, " -> continuing to subgroups");
+					mout.pending<LOG_DEBUG+1>("DATA/QUALITY group ", path, " -> continuing to subgroups");
 				}
 				else {
-					mout.pending<LOG_DEBUG>("continuing to subgroup:" ,  path);
+					mout.pending<LOG_DEBUG+1>("continuing to subgroup:" ,  path);
 				}
 				result |= collectPaths(src, pathContainer, path);
 			}

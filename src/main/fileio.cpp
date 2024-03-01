@@ -573,18 +573,17 @@ void CmdOutputFile::exec() const {
 
 			ODIMPathList paths;
 
-			DataSelector selector(ODIMPathElem::DATASET);
-			selector.consumeParameters(ctx.select); // special<LOG_DEBUG>
-			mout.warn("Revised code: always using selector in --format'ted output, current selector=", selector);
-			// mout.debug(selector);
-			selector.getPaths(src, paths);
-			/*
 			if (!ctx.select.empty()){
+				DataSelector selector;
+				selector.consumeParameters(ctx.select); // special<LOG_DEBUG>
+				mout.warn("Revised code: always using selector in --format'ted output, current selector=", selector);
+				// mout.debug(selector);
+				selector.getPaths(src, paths);
 			}
 			else {
 				drain::TreeUtils::getPaths(ctx.getHi5(RackContext::CURRENT), paths);
 			}
-			*/
+
 
 			hi5::Hi5Base::writeText(src, paths, output);
 		}
@@ -597,14 +596,36 @@ void CmdOutputFile::exec() const {
 
 			// NEW
 			ODIMPathList paths;
-			DataSelector selector(ODIMPathElem::DATASET,ODIMPathElem::DATA);
+			DataSelector selector; //("dataset1/data1/");
+			// selector.setQuantities("DBZH:DBZ.*");
+			// DataSelector selector(ODIMPathElem::DATASET,ODIMPathElem::DATA);
 			// selector.setPathMatcher(ODIMPathElem::DATASET,ODIMPathElem::DATA);
-			selector.consumeParameters(ctx.select);
-			mout.debug(selector);
+			if (ctx.select.empty()){
+				// special<LOG_DEBUG>
+				selector.setPathMatcher("data1");
+				selector.setMaxCount(1);
+				mout.special<LOG_DEBUG>("Revised code: always using selector in --format'ted output, default selector=", selector);
+			}
+			else {
+				selector.consumeParameters(ctx.select);
+			}
+			//mout.debug(selector);
 			selector.getPaths(src, paths);
+
 			for (const ODIMPath & path: paths){
-				//output << path << ':' << src(path).data.attributes << '\n';
-				statusFormatter.toStream(output, src(path).data.image.properties);
+				mout.special<LOG_DEBUG+1>('\t', path);
+				// output << path << ':' << src(path).data.attributes << '\n';
+				drain::FlexVariableMap & vmap = src(path).data.image.properties;
+				/*
+				if (vmap.hasKey("what:source")){ // moved to DataTools::updateVariables()
+					SourceODIM odim(vmap.get("what:source", ""));
+					// mout.warn(odim);
+					vmap.importCastableMap(odim);
+					// mout.warn(vmap);
+				}
+				*/
+				//statusFormatter.toStream(output, src(path).data.image.properties);
+				statusFormatter.toStream(output, vmap);
 			}
 		}
 

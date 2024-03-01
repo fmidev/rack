@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "radar/Coordinates.h"
 
 #include "DataTools.h"
+#include "SourceODIM.h"
 
 namespace rack {
 
@@ -172,7 +173,9 @@ void DataTools::updateInternalAttributes(Hi5Tree & src){
 
 	// NOTE: is essentially recursive, through linked variables.
 
-	std::string object = src[ODIMPathElem::WHAT].data.attributes.get("object", "");
+	drain::VariableMap & what = src[ODIMPathElem::WHAT].data.attributes;
+
+	std::string object = what.get("object", "");
 	if ((object == "PVOL") || (object == "SCAN")){
 		src.data.image.setCoordinatePolicy(polarLeftCoords);
 	}
@@ -181,6 +184,10 @@ void DataTools::updateInternalAttributes(Hi5Tree & src){
 		// So, explicit setting of coord policy should be avoided
 		src.data.image.setCoordinatePolicy(limitCoords);
 	}
+
+	// Easier to do this only once?
+	SourceODIM odim(what.get("source", ""));
+	properties.importCastableMap(odim);
 
 	// drain::TreeUtils::dump(src, std::cout);
 	// hi5::Hi5Base::writeText(src, std::cout);
