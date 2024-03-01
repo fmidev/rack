@@ -11,23 +11,34 @@ help:
 #	@ X="`cat Makefile Makefile-doxygen | grep '^[a-z.-]\+:' | cut -d' ' -f1 | tr ':' '|' `" && echo make \[ $$X \]
 	@ X="`cat Makefile Makefile-doxygen | grep '^[a-z.-]\+:' | cut -d':' -f1 | tr ':' '|' `" && echo make \[ $$X \]
 
+# New
+all: 
+	@ echo "Using GeoTIFF: ${USE_GEOTIFF}"
+	./build.sh
 
-release: #unpack
+# Old, eclipse-imitating scheme
+release: make.tgz
 	@ echo "Using GeoTIFF: ${USE_GEOTIFF}"
 	tar xzf make.tgz 
 	cd Release; make CCFLAGS="${CCFLAGS}" LDFLAGS="${LDFLAGS}" USE_GEOTIFF="${USE_GEOTIFF}" -k all
 
+# For eclipse based 
+make.tgz: Release/
+	tar czf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
+
+cppcheck:
+	cppcheck --language=c++ --error-exitcode=1 --quiet */*.{h,cpp} drain/*/*.{h,cpp} 
+
 
 install:
-	@echo 'Quick test:'
-	Release/rack --help > /dev/null
-	mkdir -v --parents ${prefix}/bin
-	cp -vi Release/rack ${prefix}/bin/rack-$(shell Release/rack --version | head -1) && cd ${prefix}/bin; ln -s ./rack-$(shell Release/rack --version | head -1) ./rack || ln -si ./rack-$(shell Release/rack --version | head -1) ./rack
+	./install.sh
+#	@echo 'Quick test:'
+#	Release/rack --help > /dev/null
+#	mkdir -v --parents ${prefix}/bin
+#	cp -vi Release/rack ${prefix}/bin/rack-$(shell Release/rack --version | head -1) && cd ${prefix}/bin; ln -s ./rack-$(shell Release/rack --version | head -1) ./rack || ln -si ./rack-$(shell Release/rack --version | head -1) ./rack
 # alpine Linux 'ln' does not support -i
 
 
-#make.tgz: Release/
-#	tar czf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
 
 #tests:
 #	cd demo; ./make-tests.sh
@@ -108,7 +119,7 @@ docker-clean:
 
 clean:
 	rm -fv Release/rack Release/*/*.o Release/drain/*/*.o 
-
+	ls -d Build/ && rm -fv Build/*
 #include Makefile-doxygen
 
 
