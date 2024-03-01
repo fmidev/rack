@@ -60,21 +60,25 @@ namespace drain {
 //  Note: pathRegExp should be flexible, respectively
 //char FilePath::separator('/');
 
+/*
 FilePath::FilePath(const std::string & s){
 	//dir.separator.acceptLeading = true;
 	//dir.separator.acceptTrailing = false; //??
 	set(s);
 }
+*/
 
 FilePath::FilePath(const FilePath & p) : dir(p.dir), basename(p.basename), extension(p.extension){
 }
 
 
-void FilePath::set(const std::string & s){
+
+//void FilePath::set(const std::string & s){
+void FilePath::append(const std::string & s){
 
 	drain::Logger mout(__FILE__, __FUNCTION__); //REPL __FILE__, __FUNCTION__);
 
-	this->dir.clear();
+	//this->dir.clear();
 	this->basename.clear();
 	this->extension.clear();
 
@@ -100,7 +104,8 @@ void FilePath::set(const std::string & s){
 
 			if (result.size() == 4){
 				// this->dir.assign(result[2]);  // excludes trailing separator '/'
-				this->dir.set(result[2]);     // includes trailing separator '/'
+				// this->dir.set(result[2]);     // includes trailing separator '/'
+				this->dir.append(result[2]);
 				this->basename  = result[3];
 			}
 			else if (result.size() == 2){
@@ -146,7 +151,7 @@ int FilePath::mkdir(const FilePath::path_t & dir, int flags){
 
 
 	if (dir.empty()){
-		// Well, does not check is current dir is writable.
+		// Well, does not check if current dir is writable.
 		return 0;
 	}
 
@@ -161,7 +166,7 @@ int FilePath::mkdir(const FilePath::path_t & dir, int flags){
 
 			std::string pstr = p.str();
 
-			mout.attention("mkdir: ensure ", pstr);
+			mout.attention<LOG_DEBUG+1>("mkdir: ensure ", pstr);
 
 			struct stat s;
 			if (stat(pstr.c_str(), &s) == 0){

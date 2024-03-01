@@ -119,7 +119,10 @@ void CmdHistogram::exec() const {
 		if (dstWhat.hasKey("legend")){
 			mout.note("Found what:legend", dstWhat["legend"], " using it!");
 			//typedef std::map<int, std::string> legend;
-			dstWhat["legend"].toMap(leg, ',', ':'); // TOD
+			//dstWhat["legend"].toMap(leg, ',', ':'); // TOD
+			drain::Variable v;
+			v.toMap(leg, ',', ':');
+			//drain::SmartMapTools::setValues(leg, dstWhat["legend"], '', ':');
 		}
 		else {
 			setSpecialEntry(leg, dstData.odim.nodata,   "nodata");

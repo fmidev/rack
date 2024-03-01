@@ -330,7 +330,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 			ctx.polarInputHi5.data.image.properties.clearVariables();
 			// getResources().polarAccumulator.odim.ACCnum = 567;
 			// ctx.polarInputHi5.data.attributes["how:ACCnum"] = 234;
-			mout.suspicious("data.image.properties:", ctx.polarInputHi5.data.image.properties);
+			// mout.suspicious("data.image.properties:", ctx.polarInputHi5.data.image.properties);
 		}
 		else {
 			// "Automatic" append. Consider timestamp difference limit?

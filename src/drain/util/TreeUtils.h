@@ -143,7 +143,7 @@ public:
 
 		/// TODO: more codes than non-zero
 		if (handler.visitPrefix(tree, path)){
-			std::cout << "SKIP: " << path << ':'  << '\n'; // << tree(path).data
+			// std::cout << "SKIP: " << path << ':'  << '\n'; // << tree(path).data
 			return;
 		}
 		// std::cout << "OK:   " << path << ':'  << '\n'; // << tree(path).data
@@ -158,7 +158,7 @@ public:
 		}
 
 		if (handler.visitPostfix(tree, path)){
-			// What to do?
+			// What to do? Not much commands below ...
 		}
 
 

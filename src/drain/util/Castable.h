@@ -640,7 +640,8 @@ public:
 				sstr << i;
 				sstr >> key; // entry.first;
 				std::stringstream sstr2;
-				sstr2 << caster.get<typename T::value_type>(getPtr(i));
+				//sstr2 << caster.get<typename T::value_type>(getPtr(i)); // weirds
+				sstr2 << caster.get<typename T::mapped_type>(getPtr(i)); // weirds
 				sstr2 >> data;
 				map[key] = data;
 			}

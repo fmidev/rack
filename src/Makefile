@@ -82,6 +82,8 @@ ${DOCKER_CONF_DIR}/config.json ${DOCKER_CONF_DIR}/apt-proxy.conf: ${DOCKER_CONF_
 
 docker-image: Dockerfile.${BASE_IMAGE} ${DOCKER_CONF_DIR}/config.json  ${DOCKER_CONF_DIR}/apt-proxy.conf
 # Note: config precedes 'build' cmd
+	@ echo "Cleaning local ./Build"
+	rm -rf ./Build/*
 	@ echo "Note: Docker conf files:"
 	@ file ${DOCKER_CONF_DIR}/apt-proxy.conf
 	@ file ${DOCKER_CONF_DIR}/config.json

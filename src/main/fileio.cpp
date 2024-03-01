@@ -360,9 +360,9 @@ void CmdOutputFile::exec() const {
 	drain::image::TreeSVG & track = CmdBaseSVG::getMain(ctx);
 
 	if (!STD_OUTPUT){
-		track.data.set("id", path.basename);
+		track->set("id", path.basename);
 		if (!ctx.outputPrefix.empty())
-			track.data.set("outputPrefix", ctx.outputPrefix);
+			track->set("outputPrefix", ctx.outputPrefix);
 		// TODO: outDir
 		//	track.data.set("outputPrefix", ctx.outputPrefix);
 		//track.data.set("prefix", path.basename);
@@ -470,8 +470,8 @@ void CmdOutputFile::exec() const {
 		mout.special("writing HTML file: ", path);
 
 		if (!path.dir.empty()){
-			mout.special("making dir: ", path.dir);
-			drain::FilePath::mkdir(path.dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+			//mout.special("making dir: ", path.dir);
+			//drain::FilePath::mkdir(path.dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		}
 
 
@@ -498,11 +498,15 @@ void CmdOutputFile::exec() const {
 		drain::TreeHTML & html = extractor.getHtml();
 		html["head"]["title"](drain::BaseHTML::TITLE) = path.basename;
 		html["body"]["header"](drain::BaseHTML::H1) = path.basename;
+		html->set("id", path.basename);
+
 
 		drain::TreeUtils::traverse(extractor, src);
 
-		mout.warn(html.data);
-		drain::TreeUtils::dump(html);
+		if (mout.isDebug()){
+			mout.warn(html.data);
+			drain::TreeUtils::dump(html);
+		}
 
 		drain::Output outfile(path.str());
 		//drain::NodeHTML::toStream(outfile, html);

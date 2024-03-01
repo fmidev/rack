@@ -62,7 +62,13 @@ public:
 	typedef Path<std::string,'/',true,false,true> path_t;
 
 	/// Constructor
-	FilePath(const std::string & s = "");
+	//FilePath(const std::string & s = "");
+	template<typename ...TT>
+	inline
+	FilePath(const TT &... args){
+		set(args...);
+	}
+
 
 	/// Copy constructor
 	FilePath(const FilePath & s);
@@ -70,17 +76,44 @@ public:
 	inline
 	~FilePath(){};
 
+	inline
+	void clear(){
+		this->dir.clear();
+		this->basename.clear();
+		this->extension.clear();
+	}
 
-	void set(const std::string & s);
+	//void set(const std::string & s);
 
+	template<typename ...TT>
+	inline
+	void set(const TT &... args){
+		this->clear();
+		append(args...);
+	}
+
+	template<typename T, typename ...TT>
+	void append(const T & arg, const TT &... args){
+		this->dir.append(arg);
+		append(args...);
+		//set(elem);
+	}
+
+	/// Extracts at least filename. If the string contains leading dir elements, \i append them to \c this->dir .
+	/**
+	 *
+	 */
+	void append(const std::string & s);
+
+	inline
+	void append(){};
 	/*
-	template<typename ... TT>
-	void set(const TT &... rest, const std::string & elem){
-		//this->clear();
-		appendElems(rest...);
-		set(elem);
+	template<typename T>
+	void append(const T & arg){
+
 	}
 	*/
+
 
 	inline
 	bool operator==(const FilePath & p) const {
