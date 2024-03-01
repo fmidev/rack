@@ -2,7 +2,8 @@
 
 prefix=/opt
 
-USE_GEOTIFF=NO
+#USE_GEOTIFF=NO
+USE_GEOTIFF=YES
 
 # Change to acrual Rack version?
 VERSION=$(shell fgrep __RACK_VERSION__ main/rack.h | cut -d' ' -f 3 | tr -d '"' )
@@ -13,8 +14,7 @@ help:
 
 # New
 all: 
-	@ echo "Using GeoTIFF: ${USE_GEOTIFF}"
-	./build.sh
+	USE_GEOTIFF=${USE_GEOTIFF} ./build.sh
 
 # Old, eclipse-imitating scheme
 release: make.tgz
