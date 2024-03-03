@@ -60,10 +60,16 @@ RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), Ima
 	outputPrefix = ctx.outputPrefix;
 }
 
-/**  Colon (:) is included due to support group prefixed ODIM variable names, e.g, "where:lon"
+/**
+ *
+ *   Special chars accepted:
+ *   - colon (:) for ODIM variable names prefixed with "where:", "where:", and "how:"
+ *   - pipe  (|) for separating optional string processing
+ *   - colon (%) for time formatting (after pipe '|')
  *
  */
-const drain::StringMapper RackContext::variableMapper("", "[a-zA-Z0-9:_]+");
+//const drain::StringMapper RackContext::variableMapper("", "[a-zA-Z0-9][a-zA-Z0-9_:]*(\\|[^}]*)?");
+const drain::StringMapper RackContext::variableMapper("", "[a-zA-Z0-9][a-zA-Z0-9_:]*"); // NEW: post processing separated
 
 // sstr << "^(.*)\\$\\{(" << chars << ")\\}(.*)$";
 // const drain::RegExp RackContext::variableMapperSyntax("^(.*)\\$\\{[a-zA-Z0-9:_]+)\\}(.*)$", REG_EXTENDED);

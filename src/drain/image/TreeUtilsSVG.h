@@ -66,11 +66,12 @@ struct PanelConfSVG {
 	// Current
 	std::string groupName;
 	int maxPerGroup;
+	bool relativePaths;
 
 	std::string title;
 
 	inline
-	PanelConfSVG() : orientation(HORZ), direction(INCR), maxPerGroup(10){
+	PanelConfSVG() : orientation(HORZ), direction(INCR), maxPerGroup(10), relativePaths(true){
 	}
 
 

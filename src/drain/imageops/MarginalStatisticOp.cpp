@@ -53,7 +53,7 @@ void MarginalStatisticOp::process(const ImageFrame &src, const ImageFrame &weigh
 
 	//const double medianPos = parameters.get("medianPos", 0.50);
 
-	size_t i, j;
+	size_t i=0, j=0; // to please code checker
 
 	size_t & m = HORIZONTAL ? i : j;
 	size_t & n = HORIZONTAL ? j : i;
@@ -72,7 +72,7 @@ void MarginalStatisticOp::process(const ImageFrame &src, const ImageFrame &weigh
 	histogram.setSampleCount(mLimit);
 	histogram.setMedianPosition(medianPos);
 
-	size_t s;
+	size_t s = 0; // to please code checker
 	size_t & di = HORIZONTAL ? s : i;
 	size_t & dj = HORIZONTAL ? j : s;
 

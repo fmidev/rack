@@ -272,7 +272,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			composite.dataSelector.updateBean(); // quantity
 
 			if (composite.dataSelector.getMaxCount() != 1){
-				mout.warn("composite.dataSelector.count ", composite.dataSelector.getMaxCount(), " > 1"); // , setting to 1.");
+				mout.debug("composite.dataSelector.count ", composite.dataSelector.getMaxCount(), " > 1"); // , setting to 1.");
 				//composite.dataSelector.setMaxCount(1);
 			}
 		}
@@ -472,7 +472,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	ODIMPath dataPath;
 	//composite.dataSelector.pathMatcher.setElems(ODIMPathElem::DATASET);
 	if (composite.dataSelector.getMaxCount() != 1){
-		mout.warn("composite.dataSelector.count=", composite.dataSelector.getMaxCount(), " > 1"); // , setting to 1.");
+		mout.debug("composite.dataSelector.count=", composite.dataSelector.getMaxCount(), " > 1"); // , setting to 1.");
 		//composite.dataSelector.setMaxCount(1);
 	}
 

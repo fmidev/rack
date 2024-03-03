@@ -146,7 +146,7 @@ public:
 
 	// Re-align elements etc
 	static
-	void completeSVG(RackContext & ctx);
+	void completeSVG(RackContext & ctx, const drain::FilePath & filepath);
 
 protected:
 

@@ -186,8 +186,10 @@ void DataTools::updateInternalAttributes(Hi5Tree & src){
 	}
 
 	// Easier to do this only once?
-	SourceODIM odim(what.get("source", ""));
-	properties.importCastableMap(odim);
+	if (what.hasKey("source")){
+		SourceODIM odim(what["source"].toStr());
+		properties.importCastableMap(odim);
+	}
 
 	// drain::TreeUtils::dump(src, std::cout);
 	// hi5::Hi5Base::writeText(src, std::cout);

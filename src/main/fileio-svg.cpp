@@ -410,11 +410,30 @@ void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::TreeSVG & svg, 
 }
 
 // Re-align elements etc
-void CmdBaseSVG::completeSVG(RackContext & ctx){
+void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	drain::image::TreeSVG & track = getMain(ctx);
+
+
+	if (ctx.svgPanelConf.relativePaths){
+		drain::image::NodeSVG::path_list_t pathList;
+		drain::image::NodeSVG::findByTag(track, drain::image::svg::IMAGE, pathList);
+		const std::string dir = filepath.dir.str()+'/';
+		for (drain::image::NodeSVG::path_t & p: pathList){
+			drain::image::TreeSVG & image = track(p);
+			//drain::FilePath fp(image->get("xlink:href"));
+			std::string imagePath = image->get("xlink:href");
+			if (drain::StringTools::startsWith(imagePath, dir)){
+				image->set("xlink:href", imagePath.substr(dir.size()));
+			}
+			else {
+				mout.attention("could not set relative path: ", p, " href:", imagePath);
+			}
+			//mout.attention("path: ", p, " href:", image->get("xlink:href"));
+		}
+	}
 
 	drain::image::NodeSVG::path_list_t pathList;
 	drain::image::NodeSVG::findByClass(track, "imageSet", pathList);

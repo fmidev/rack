@@ -210,7 +210,7 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 
 					try {
 						if (!filepath.dir.empty()){
-							submout.attention("would make dir: ", filepath.dir);
+							submout.debug("ensuring dir: ", filepath.dir);
 							drain::FilePath::mkdir(filepath.dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 						}
 						drain::image::FilePng::write(image, filepath.str());

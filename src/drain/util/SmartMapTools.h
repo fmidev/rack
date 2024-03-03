@@ -43,6 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Log.h"
 #include "Castable.h"
+#include "Referencer.h"
 #include "Sprinter.h"
 #include "String.h"
 #include "Variable.h"
@@ -50,9 +51,58 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+/// General purpose tools for  handling values and keys of std::map<>
+class MapTools {
+
+public:
+
+	/// If the key is found, the value is returned as a reference.
+	/**
+	 *  \param m - map in which keys are searched
+	 *
+	 *  \tparam M - map type
+	 *  \tparam F - target value type
+	 */
+	template <class M>
+	static
+	const typename M::mapped_t & get(const M & m, const typename M::key_t & key){
+		typename M::const_iterator it = m.find(key);
+		if (it != m.end()){
+			return it->second;
+		}
+		else {
+			static const typename M::mapped_t empty;
+			return empty;
+		}
+	}
+
+
+	/// If the key is found, the value is assigned.
+	/**
+	 *  \param m - map in which keys are searched
+	 *
+	 *  \tparam M - map type
+	 *  \tparam F - target value type
+	 */
+	template <class M,class F>
+	static
+	void get(const M & m, const typename M::key_type & key, F & value){
+		typename M::const_iterator it = m.find(key);
+		if (it != m.end()){
+			drain::Referencer r(value);
+			r = it->second;
+			return; // false; // it->second;
+		}
+		else { //
+			return; //  true; // defaultValue;
+		}
+	}
+
+};
+
 /// A base class for smart maps providing methods for importing and exporting values, among others
 // Note: some update()'s may still be buggy
-class SmartMapTools {
+class SmartMapTools : public MapTools {
 
 public:
 
@@ -70,7 +120,9 @@ public:
 	}
 	*/
 
-	/// Set value of an element. If not STRICT, set only if ket exists.
+
+
+	/// Set value of an element. If not STRICT, set only if key exists ie update.
 	/**
 	 *  \tparam M - map type
 	 *  \tparam S - source element type

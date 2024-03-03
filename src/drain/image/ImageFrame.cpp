@@ -90,8 +90,10 @@ void ImageFrame::adjustBuffer(){
 		if (s > 0)
 			buffer.resize(s);
 		else {
+			// NEW NEW... code checker noticed...
+			buffer.resize(1); // unsafe buffer[0] below?
 			// NEW
-			buffer.resize(0); // unsafe buffer[0] below?
+			// buffer.resize(0); // unsafe buffer[0] below?
 			// OLD
 			// buffer.resize(1);
 		}
@@ -169,11 +171,11 @@ void ImageFrame::setView(const ImageFrame & src, size_t channelStart, size_t cha
 	setCoordinatePolicy(src.getCoordinatePolicy());
 
 	// DATA
-	bufferPtr    = & src.bufferPtr[address(channelStart*getArea()) * conf.byteSize];
+	bufferPtr    = & (src.bufferPtr[address(channelStart*getArea()) * conf.byteSize]);
 
 	// NOTE: (void *) needed, because bufferPtr is <unsigned char *> while these segment iterators vary.
-	segmentBegin = (void *)& bufferPtr[address(0)];
-	segmentEnd   = (void *)& bufferPtr[address(getVolume()) * conf.byteSize];
+	segmentBegin = (void *)& (bufferPtr[address(0)]);
+	segmentEnd   = (void *)& (bufferPtr[address(getVolume()) * conf.byteSize]);
 
 	segmentBegin.setType(src.getType());
 	segmentEnd.setType(src.getType());

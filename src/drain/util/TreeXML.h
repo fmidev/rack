@@ -523,6 +523,12 @@ public:
 	//   This could also be in TreeXMLutilities
 	template <class V>
 	static
+	const path_list_t & findByTag(const V & t, const T & tag, path_list_t & result = path_list_t(), const path_t & path = path_t());
+
+	/// "Forward definition"
+	//   This could also be in TreeXMLutilities
+	template <class V>
+	static
 	const path_list_t & findByClass(const V & t, const std::string & tag, path_list_t & result = path_list_t(), const path_t & path = path_t());
 
 
@@ -649,6 +655,24 @@ const NodeXML<>::path_list_t & NodeXML<N>::findById(const T & t, const std::stri
 
 	for (const auto & entry: t){
 		findByClass(entry.second, id, result, path_t(path, entry.first));
+	}
+
+	return result;
+}
+
+/**
+ *  \tparam Tree
+ */
+template <class N>
+template <class T>
+const NodeXML<>::path_list_t & NodeXML<N>::findByTag(const T & t, const N & tag, NodeXML<>::path_list_t & result, const path_t & path){
+
+	if (t->typeIs(tag)){
+		result.push_back(path);
+	}
+
+	for (const auto & entry: t){
+		findByTag(entry.second, tag, result, path_t(path, entry.first));
 	}
 
 	return result;

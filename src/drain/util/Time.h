@@ -55,23 +55,25 @@ class Time : private tm {
 public:
 
 	inline
-	Time() {
-		tm_sec = 0;			    /* Seconds.	[0-60] (1 leap second) */
-		tm_min = 0;			    /* Minutes.	[0-59] */
-		tm_hour = 0;			/* Hours.	[0-23] */
-		tm_mday = 1;			/* Day.		[1-31] */
-		tm_mon = 0;			    /* Month.	[0-11] */
-		tm_year = 0;			/* Year	- 1900.  */
-		tm_wday = 0;			/* Day of week.	[0-6] */
-		tm_yday = 0;			/* Days in year.[0-365]	*/
-		tm_isdst = 1;			/* DST.		[-1/0/1]*/
-		tm_gmtoff = 0;
-		tm_zone = "";
-		setTime();
+	Time(){
+		reset();
+	};
+
+	inline
+	Time(time_t unixSeconds){
+		reset();
+		setTime(unixSeconds);
+	};
+
+	inline
+	Time(const std::string &time, const std::string &format, bool STRICT=true){
+		reset();
+		setTime(time, format, STRICT);
 	};
 
 	inline
 	~Time(){};
+
 
 	/// Sets time to current UTC time.
 	inline
@@ -103,7 +105,7 @@ public:
 	 *
 	 *  The time can be adjusted using several subsequent calls.
 	 */
-	void setTime(const std::string &time, const std::string &format, bool strict=true);
+	void setTime(const std::string &time, const std::string &format, bool STRICT=true);
 
 	inline
 	void setTime(const tm &time){
@@ -132,6 +134,8 @@ public:
 
 	/// Returns the std::string using formatting as defined by strftime()
 	const std::string & str(const std::string & format = "") const;
+
+	void reset();
 
 	inline
 	void debug(){

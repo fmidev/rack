@@ -107,7 +107,7 @@ public:
 	  double d;
 	  double w;
 	  double sumD2 = 0.0;
-	  double sumW;
+	  double sumW = 0.0;
 
 	  for (int i = 0; i < a.size(); ++i) {
 		  d = a[i] - b[i];

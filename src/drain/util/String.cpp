@@ -38,6 +38,48 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+bool StringTools::startsWith(const std::string &s, const std::string & substring){
+
+	if (substring.size() > s.size()){
+		return false;
+	}
+
+	std::string::const_iterator  it = s.begin();
+	std::string::const_iterator sit = substring.begin();
+	while (sit != substring.end()){
+		if (*it != *sit){
+			return false;
+		}
+		++it;
+		++sit;
+	}
+
+	return true;
+}
+
+
+bool StringTools::endsWith(const std::string &s, const std::string & substring){
+
+	if (substring.size() > s.size()){
+		return false;
+	}
+
+	std::string::const_reverse_iterator  it = s.rbegin();
+	std::string::const_reverse_iterator sit = substring.rbegin();
+	while (sit != substring.rend()){
+		if (*it != *sit){
+			return false;
+		}
+		++it;
+		++sit;
+	}
+
+	return true;
+}
+// virtual
+// bool handle(const std::string & key, const std::map<std::string,T> & variables, std::ostream & ostr) const {
+
+
 void StringTools::replace(const std::string &src, const std::string &search, const std::string &to, std::string & dst){
 
 	if (&dst == &src){

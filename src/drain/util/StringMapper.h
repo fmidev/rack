@@ -39,9 +39,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "IosFormat.h"
 #include "Log.h"
+#include "SmartMapTools.h"
 #include "RegExp.h"
 #include "Sprinter.h"
 #include "String.h"
+#include "Time.h"
 #include "Variable.h"
 
 namespace drain {
@@ -96,32 +98,180 @@ std::ostream & operator<<(std::ostream & ostr, const Stringlet & s) {
 
 
 
-//template <class T>
+template <class T>
 class VariableHandler {
 
 public:
 
-        IosFormat iosFormat;
+	inline
+	~VariableHandler(){};
 
-        /// Default
-        /**
-         *  \return true if handles.
-         */
-        template <class T>
-        bool handle(const std::string & key, const std::map<std::string,T> & variables, std::ostream & ostr) const {
-                typename std::map<std::string,T>::const_iterator it = variables.find(key);
-                if (it != variables.end()){
-                        iosFormat.copyTo(ostr);
-                        //ostr.width(width);
-                        //std::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
-                        //std::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
-                        ostr <<  it->second;
-                        return true;
-                }
-                else {
-                        return false;
-                }
-        }
+	IosFormat iosFormat;
+
+	/// Default
+	/**
+	 *  \return true if handles.
+	 */
+	/*
+		typename std::map<std::string,T>::const_iterator it = variables.find(key);
+		if (it != variables.end()){
+			iosFormat.copyTo(ostr);
+			//ostr.width(width);
+			//std::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
+			//std::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
+			ostr <<  it->second;
+			return true;
+		}
+		else {
+			return false;
+		}
+	 */
+
+	/// Searches given key in a map, and if found, processes (formats) the value to ostream.  Return false, if variable not found.
+	/**
+	 *   Return false, if variable not found.
+	 *   Then, further processors may handle the variable tag (remove, change, leave it).
+	 */
+	virtual
+	bool handle(const std::string & key, const std::map<std::string,T> & variables, std::ostream & ostr) const {
+
+		drain::Logger mout(__FILE__, __FUNCTION__);
+
+		std::string k,format;
+		drain::StringTools::split2(key, k, format, '|');
+		// mout.attention("split '", key, "' to ", k, " + ", format);
+
+		const typename std::map<std::string,T>::const_iterator it = variables.find(k);
+		if (it == variables.end()) {
+			return false;
+		}
+
+
+		if (format.empty()){
+			iosFormat.copyTo(ostr);
+			//vostr.width(width);
+			//vstd::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
+			//vstd::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
+			ostr <<  it->second;
+			return true;
+		}
+		else {
+    		// mout.attention("delegating '", k, "' to formatVariable: ", format);
+			return formatVariable(k, variables, format, ostr);
+		}
+
+	}
+
+
+
+	// NOTE: must return false, if not found. Then, further processors may handle the variable tag (remove, change, leave it).
+	virtual
+	bool formatVariable(const std::string & key, const std::map<std::string,T> & variables, const std::string & format, std::ostream & ostr) const {
+
+		drain::Logger mout(__FILE__, __FUNCTION__);
+
+
+		const char firstChar = format.at(0);
+		const char lastChar = format.at(format.size()-1);
+
+    	if (firstChar == ':'){
+
+    		// mout.attention("substring extraction:", format);
+
+    		std::string s;
+    		drain::MapTools::get(variables, key, s);
+
+    		std::vector<size_t> v;
+    		drain::StringTools::split(format, v, ':');
+    		size_t pos   = 0;
+    		size_t count = s.size();
+
+    		switch (v.size()) {
+				case 3:
+					count = v[2];
+					// no break
+				case 2:
+					pos = v[1];
+					if (pos >= s.size()){
+						mout.warn("index ", pos, " greater than size (", s.size(), ") of string value '", s, "' of '", key, "'");
+						return true;
+					}
+					count = std::min(count, s.size()-pos);
+					ostr << s.substr(v[1], count);
+					break;
+				default:
+					mout.warn("unsupported formatting '", format, "' for variable '", key, "'");
+					mout.advice("use :startpos or :startpos:count for substring extraction");
+			}
+    		return true;
+
+    	}
+    	else if (firstChar == '%'){
+
+    		// mout.attention("string formatting: ", format);
+
+        	//else if (format.find('%') != std::string::npos){
+    		std::string s;
+    		drain::MapTools::get(variables, key, s);
+
+    		const size_t BUFFER_SIZE = 256;
+    		char buffer[BUFFER_SIZE];
+    		buffer[0] = '\0';
+    		size_t n = 0;
+
+    		switch (lastChar){
+    		case 's':
+    			n = std::sprintf(buffer, format.c_str(), s.c_str());
+    			break;
+    		case 'c':
+    			n = std::sprintf(buffer, format.c_str(), s.at(0)); // ?
+    			break;
+    		case 'p':
+    			mout.unimplemented("pointer type: ", format);
+    			break;
+    		case 'f':
+    		case 'F':
+    		case 'e':
+    		case 'E':
+    		case 'a':
+    		case 'A':
+    		case 'g':
+    		case 'G':
+    		{
+    			double d = NAN; //nand();
+    			drain::MapTools::get(variables, key, d);
+    			// ostr << d << '=';
+    			n = std::sprintf(buffer, format.c_str(), d);
+    		}
+    		break;
+    		case 'd':
+    		case 'i':
+    		case 'o':
+    		case 'u':
+    		case 'x':
+    		case 'X':
+    		{
+    			int i = 0;
+    			drain::MapTools::get(variables, key, i);
+    			ostr << i << '=';
+    			n = std::sprintf(buffer, format.c_str(), i);
+    		}
+    		break;
+    		default:
+    			mout.warn("formatting '", format, "' requested for '", key, "' : unsupported type key: ", lastChar);
+    		}
+
+    		ostr << buffer;
+    		if (n > BUFFER_SIZE){
+    			mout.fail("formatting with '", format, "' exceeded buffer size (", BUFFER_SIZE, ')');
+    		}
+
+    		// mout.warn("time formatting '", format, "' requested for '", k, "' not ending with 'time' or 'date'!");
+    	}
+
+    	return true;
+	}
+
 
 };
 
@@ -152,10 +302,9 @@ public:
 	// TODO validKeys?
 	StringMapper(
 			const std::string & format = "",
-			const std::string & validChars = "[a-zA-Z0-9_]+"
-			)
-//				fieldWidth(0),
-//				fillChar('0')
+			const std::string & validChars = "[a-zA-Z0-9_]+",
+			bool formatting=true
+			): formatting(formatting)
 	{
 		setValidChars(validChars);
 		regExp.setFlags(REG_EXTENDED);
@@ -164,23 +313,52 @@ public:
 		//regExp.setFlags(REG_EXTENDED); // ORDER? Should be before parse!?
 	};
 
-	/// Initialize with the given RegExp
-	StringMapper(const RegExp & regexp) : regExp(regexp)  { // fieldWidth(0),
+	/// Initialize with the given RegExp // REMOVE!
+	StringMapper(const RegExp & regexp, bool formatting=true) : formatting(formatting), regExp(regexp)  { // fieldWidth(0),
 			//fillChar('0'),
 		//((std::list<Stringlet> &)*this) = mapper;
 	}
 
 	/// Copy constructor copies the parsed string and the regExp
-	StringMapper(const StringMapper & mapper) : std::list<Stringlet>(mapper), regExp(mapper.regExp) { //  Buggy: regExp(mapper.regExp) {
+	StringMapper(const StringMapper & mapper) : std::list<Stringlet>(mapper), formatting(mapper.formatting), regExp(mapper.regExp) { //  Buggy: regExp(mapper.regExp) {
 	}
 
 
 	inline
 	StringMapper & setValidChars(const std::string & chars){
+		this->validChars = chars;
+		/*
 		std::stringstream sstr;
 		sstr << "^(.*)\\$\\{(" << chars << ")\\}(.*)$";
 		regExp.setExpression(sstr.str());
+		*/
+		updateRegExp();
 		return *this;
+	}
+
+	inline
+	StringMapper & enableFormatting(bool formatting){
+		if (this->formatting != formatting){
+			this->formatting = formatting;
+			updateRegExp();
+		}
+		else {
+			this->formatting = formatting;
+		}
+		return *this;
+	}
+
+
+	inline
+	void updateRegExp(){
+		std::stringstream sstr;
+		sstr << "^(.*)\\$\\{(" << validChars; //  << ")\\}(.*)$";
+		if (formatting){
+			 sstr << "(\\|[^}]*)?";
+		}
+		sstr << ")\\}(.*)$";
+		// std::cout << sstr.str() << '\n';
+		regExp.setExpression(sstr.str());
 	}
 
 	/// Converts a std::string containing variables like in "Hello, ${NAME}!" to a list of StringLet's.
@@ -193,13 +371,7 @@ public:
 
 	/// Interpret commond special chars tab '\t' and newline '\n'.
 	static
-	std::string & convertEscaped(std::string &s); /*{
-		std::string s2;
-		drain::StringTools::replace(s,  "\\t", "\t", s2);
-		drain::StringTools::replace(s2, "\\n", "\n",  s);
-		return s;
-	}
-	*/
+	std::string & convertEscaped(std::string &s);
 
 
 	/// Return true, if all the elements are literal.
@@ -227,27 +399,14 @@ public:
 	 *  \par clear - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
 	 */
 	template <class T>
-	//std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> &m, bool keepUnknowns=false) const {
-	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = 0) const {
-
-
-		VariableHandler handler;
+	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = 0, const VariableHandler<T> &handler = VariableHandler<T>()) const {
 
 		for (const Stringlet & stringlet: *this){
-			//const Stringlet & stringlet = *it;
+
 			if (stringlet.isVariable()){
-				// Find the entry in the map
-				/*
-				typename std::map<std::string, T >::const_iterator mit = variables.find(stringlet);
-				if (mit != variables.end()){
-					iosFormat.copyTo(ostr);
-					//ostr.width(width);
-					//std::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
-					//std::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
-					ostr <<  mit->second;
-				}
-				*/
+
 				if (handler.handle(stringlet, variables, ostr)){
+					// std::cerr << __FILE__ << " ok stringlet variable: " << stringlet << std::endl;
 					// ok, accepted and handled!
 				}
 				else if (replace){
@@ -264,7 +423,7 @@ public:
 						ostr << (char)replaceChar;
 					*/
 				}
-				else {
+				else { // replace == 0
 					// Skip unknown (unfound) key
 				}
 			}
@@ -341,6 +500,9 @@ protected:
 
 
 	StringMapper & parse(const std::string &s, RegExp &r);
+
+	std::string validChars;
+	bool formatting;
 
 	RegExp regExp;
 	//  | REG_NEWLINE |  RE_DOT_NEWLINE); // | RE_DOT_NEWLINE); //  | REG_NEWLINE |  RE_DOT_NEWLINE

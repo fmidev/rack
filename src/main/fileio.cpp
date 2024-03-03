@@ -119,6 +119,7 @@ public:
 		svgConf.link("max", ctx.svgPanelConf.maxPerGroup, "max per row/column"); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 		svgConf.link("legend", svgConfLegend, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Legend>::dict.getKeys()).str());
 		svgConf.link("title", ctx.svgPanelConf.title); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
+		svgConf.link("relativePaths", ctx.svgPanelConf.relativePaths);
 		// TreeUtilsSVG::defaultDirection.value);
 
 
@@ -301,7 +302,77 @@ public:
 		getContext<RackContext>().outputPrefix = value;
 	}
 };
-//extern drain::CommandEntry<CmdOutputPrefix> cmdOutputPrefix;
+
+
+// Expands ODIM variables to other
+/*
+ *
+ */
+class ODIMVariableHandler {
+
+public:
+
+        drain::IosFormat iosFormat;
+
+        /// Default
+        /**
+         *  \return true if handles.
+         */
+        template <class T>
+        bool handle(const std::string & key, const std::map<std::string,T> & variables, std::ostream & ostr) const {
+                typename std::map<std::string,T>::const_iterator it = variables.find(key);
+                if (it != variables.end()){
+                        iosFormat.copyTo(ostr);
+                        return true;
+                }
+                else {
+                        return false;
+                }
+        }
+
+};
+
+template <class T>
+class VariableFormatterODIM : public drain::VariableHandler<T>{
+
+public:
+
+	virtual inline
+	~VariableFormatterODIM(){};
+
+	/// Checks if variables have ODIM names (keys), and apply special formatting (currently with time stamps)
+	/**
+	 *
+	 */
+	virtual
+	bool formatVariable(const std::string & key, const std::map<std::string,T> & variables, const std::string & format, std::ostream & ostr) const {
+
+		// drain::Logger mout(__FILE__, __FUNCTION__);
+		// mout.warn("trying time format: ", key, " + ", format);
+
+		if (format.find('%') != std::string::npos){
+			// Time formatting or C-stype printf formatting.
+			if (drain::StringTools::endsWith(key, "date")){
+				std::string s;
+				drain::MapTools::get(variables, key, s);
+				// mout.warn("time format: ", key, " -> ", k, '+', format, " -> ", t.str(), " => ", t.str(key));
+				ostr << drain::Time(s, "%Y%d%m").str(format);
+				return true;
+			}
+			else if (drain::StringTools::endsWith(key, "time")){
+				std::string s;
+				drain::MapTools::get(variables, key, s);
+				// mout.warn("time format: ", key, " -> ", k, '+', format, " -> ", t.str(), " => ", t.str(key));
+				ostr << drain::Time(s, "%H%M%S").str(format);
+				return true;
+			}
+		}
+
+		return drain::VariableHandler<T>::formatVariable(key, variables, format, ostr); // basic/trad.
+	}
+
+
+};
 
 
 
@@ -331,25 +402,35 @@ void CmdOutputFile::exec() const {
 		return;
 	}
 
-	std::string filepath;
+	//
+	// std::string prefixFinal;
+	// std::string relativePathFinal = "-";
+
+	std::string filepath = "-";
 
 	const bool STD_OUTPUT = value.empty() || (value == "-");
 
-	if (STD_OUTPUT){
-		filepath = "-";
-	}
-	else {
-		//mout.warn(RackContext::variableMapper );
+	if (!STD_OUTPUT){
+		const drain::VariableMap & statusMap = ctx.getStatusMap();
 		drain::StringMapper mapper(RackContext::variableMapper);
 		mapper.parse(ctx.outputPrefix + value);
-		filepath = mapper.toStr(ctx.getStatusMap());
+		filepath = mapper.toStr(statusMap);
+		/*
+		if (!ctx.outputPrefix.empty()){
+			mapper.parse(ctx.outputPrefix);
+			prefixFinal = mapper.toStr(statusMap);
+		}
+		mapper.parse(value);
+		relativePathFinal = mapper.toStr(statusMap);
+		*/
 		mout.note("writing: '" , filepath , "'" );
 	}
 	// mout.note("filename: " , filename );
 
 	// TODO: generalize select
 	// TODO: generalize image pick (current or str) for png/tif
-	drain::FilePath path(value);
+	//drain::FilePath path(value);
+	drain::FilePath path(filepath);
 	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(path);
 	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(path);
 	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(path);
@@ -360,19 +441,11 @@ void CmdOutputFile::exec() const {
 
 	drain::image::TreeSVG & track = CmdBaseSVG::getMain(ctx);
 
-	if (!STD_OUTPUT){
-		track->set("id", path.basename);
-		if (!ctx.outputPrefix.empty())
-			track->set("outputPrefix", ctx.outputPrefix);
-		// TODO: outDir
-		//	track.data.set("outputPrefix", ctx.outputPrefix);
-		//track.data.set("prefix", path.basename);
-	}
 	//track.data.set("id", STD_OUTPUT ? "stdout" : path.basename);
 	std::list<std::string> keys = {"what:lon", "here"};
 
 	//if (h5FileExtension.test(value)){
-	if (hi5::fileInfo.checkPath(value) || NO_EXTENSION){
+	if (hi5::fileInfo.checkPath(path) || NO_EXTENSION){
 		if (NO_EXTENSION){
 			mout.discouraged("No file extension! Assuming HDF5...");
 		}
@@ -406,22 +479,23 @@ void CmdOutputFile::exec() const {
 			return;
 		}
 
+		/*
 		drain::StringMapper dataIDSyntax(RackContext::variableMapper);
 		// drain::StringMapper dataIDSyntax("${what:date}_${what:time} ${what:product}", "^[A-Za-z0-9_:]*$");
 		dataIDSyntax.parse("${what:date}_${what:time}_");
 		//std::string dataID = dataIDSyntax.toStr(ctx.getStatusMap(true), 'x');
 		std::string dataID = ctx.svgPanelConf.groupName;
 		// dataIDSyntax.toStr(src.properties, 'x') + SourceODIM(src.properties.get("what:source","")).getSourceCode();
-
+		*/
 
 		//drain::image::TreeSVG & baseGroup = track[dataID](svg::GROUP); // track.retrieveChild(key);
 		//baseGroup->addClass("imagecol");
 
+		/*
 		drain::StringMapper imageIDSyntax(RackContext::variableMapper);
-		//imageIDSyntax.parse("${what:product}_${what:quantity}");
 		imageIDSyntax.parse("${what:product}"); // _${where:elangle}
-		//imageIDSyntax.parse("${what:product}_");
 		std::string imageID = imageIDSyntax.toStr(srcImage.properties);
+		*/
 
 		if (!ctx.formatStr.empty()){
 			mout.special("formatting comments");
@@ -456,9 +530,19 @@ void CmdOutputFile::exec() const {
 
 	}
 	else if (drain::image::NodeSVG::fileInfo.checkPath(path)) {
+
+		// ctx.get
+		track->set("id", path.basename);
+		if (!ctx.outputPrefix.empty())
+			track->set("outputPrefix", ctx.outputPrefix);
+		// TODO: outDir
+		// track.data.set("outputPrefix", ctx.outputPrefix);
+		// track.data.set("prefix", path.basename);
+
 		mout.experimental("writing SVG file: ", path);
-		drain::Output ofstr(value);
-		CmdBaseSVG::completeSVG(ctx);
+		CmdBaseSVG::completeSVG(ctx, path.dir);
+
+		drain::Output ofstr(filepath);
 
 		drain::image::NodeSVG::toStream(ofstr, ctx.svgTrack);
 		mout.hint<LOG_DEBUG>("For converting to PNG, consider: ");
@@ -468,7 +552,8 @@ void CmdOutputFile::exec() const {
 		// mout.unimplemented("not support yet, use --outputPanel / dumpXML");
 	}
 	else if (drain::NodeHTML::fileInfo.checkPath(path)) {
-		mout.special("writing HTML file: ", path);
+
+		mout.special<LOG_DEBUG>("writing HTML file: ", path);
 
 		if (!path.dir.empty()){
 			//mout.special("making dir: ", path.dir);
@@ -482,7 +567,7 @@ void CmdOutputFile::exec() const {
 
 			DataSelector selector;
 			selector.setParameters(ctx.select);
-			mout.special("selector for saved paths: ", selector);
+			mout.special<LOG_DEBUG>("selector for saved paths: ", selector);
 
 			ODIMPathList savedPaths;
 			selector.getPaths(src, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
@@ -612,6 +697,9 @@ void CmdOutputFile::exec() const {
 			//mout.debug(selector);
 			selector.getPaths(src, paths);
 
+			//class OnDIMVariableHandler
+			VariableFormatterODIM<drain::FlexibleVariable> odimHandler;
+
 			for (const ODIMPath & path: paths){
 				mout.special<LOG_DEBUG+1>('\t', path);
 				// output << path << ':' << src(path).data.attributes << '\n';
@@ -625,7 +713,7 @@ void CmdOutputFile::exec() const {
 				}
 				*/
 				//statusFormatter.toStream(output, src(path).data.image.properties);
-				statusFormatter.toStream(output, vmap);
+				statusFormatter.toStream(output, vmap, 0, odimHandler);
 			}
 		}
 

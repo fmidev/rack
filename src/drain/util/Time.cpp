@@ -41,10 +41,26 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-void Time::setTime(const std::string &time, const std::string &format, bool strict){
+void Time::reset() {
+	tm_sec = 0;			    /* Seconds.	[0-60] (1 leap second) */
+	tm_min = 0;			    /* Minutes.	[0-59] */
+	tm_hour = 0;			/* Hours.	[0-23] */
+	tm_mday = 1;			/* Day.		[1-31] */
+	tm_mon = 0;			    /* Month.	[0-11] */
+	tm_year = 0;			/* Year	- 1900.  */
+	tm_wday = 0;			/* Day of week.	[0-6] */
+	tm_yday = 0;			/* Days in year.[0-365]	*/
+	tm_isdst = 1;			/* DST.		[-1/0/1]*/
+	tm_gmtoff = 0;
+	tm_zone = "";
+	setTime();
+};
+
+
+void Time::setTime(const std::string &time, const std::string &format, bool STRICT){
 	// setTime(0); reset seconds?
 	const char *t = strptime(time.c_str(), format.c_str(), (tm *)this);
-	if (strict && (t == NULL)){
+	if (STRICT && (t == NULL)){
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.error("parse error for '"  , time , "', format='" , format , "'" );
 		//throw std::runtime_error(std::string("setTime(): parse error for '") + time + "', format '" + format + "'");

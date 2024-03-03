@@ -117,8 +117,9 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 
 	// Try to open the file
 	FILE *fp = fopen(path.c_str(), "rb");
-	if (fp == NULL)
+	if (fp == NULL){
 		throw std::runtime_error(std::string("FilePng: could not open file: ") + path);
+	}
 
 	// For checking magic code (signature)
 	//const unsigned int PNG_BYTES_TO_CHECK=4;
@@ -126,23 +127,28 @@ void FilePng::read(T & image, const std::string & path, int png_transforms ) {
 	png_byte buf[PNG_BYTES_TO_CHECK];
 
 	/* Read in some of the signature bytes */
-	if (fread((void *)buf, size_t(1), PNG_BYTES_TO_CHECK, fp) != PNG_BYTES_TO_CHECK)
+	if (fread((void *)buf, size_t(1), PNG_BYTES_TO_CHECK, fp) != PNG_BYTES_TO_CHECK){
+		fclose(fp);
 		throw std::runtime_error(std::string("FilePng: suspicious size of file: ") + path);
+	}
 
 	/* Compare the first PNG_BYTES_TO_CHECK bytes of the signature.
 	   Return nonzero (true) if they match */
-	if (png_sig_cmp(buf, (png_size_t)0, PNG_BYTES_TO_CHECK) != 0)
-		throw std::runtime_error(std::string("FilePng: not a png file: ")+path);
-
+	if (png_sig_cmp(buf, (png_size_t)0, PNG_BYTES_TO_CHECK) != 0){
+		fclose(fp);
+		throw std::runtime_error(std::string("FilePng: not a png file: ") + path);
+	}
 
 
 	png_structp  png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!png_ptr){
+		fclose(fp);
 		throw std::runtime_error(std::string("FilePng: problem in allocating image memory for: ")+path);
 	}
 
 	png_infop info_ptr = png_create_info_struct(png_ptr);
 	if (!info_ptr){
+		fclose(fp);
 	    png_destroy_read_struct(&png_ptr,(png_infopp)NULL, (png_infopp)NULL);
 		throw std::runtime_error(std::string("FilePng: problem in allocating info memory for: ")+path);
 	}

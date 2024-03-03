@@ -54,6 +54,14 @@ class StringTools {
 
 public:
 
+	static
+	bool startsWith(const std::string &s, const std::string & substring);
+
+
+	static
+	bool endsWith(const std::string &s, const std::string & substring);
+
+
 	/// Turns n first characters uppercase. ASCII only.
 	/**
 	 */
