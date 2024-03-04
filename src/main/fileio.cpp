@@ -578,6 +578,11 @@ void CmdOutputFile::exec() const {
 			}
 		}
 
+		if (mout.isDebug()){
+			mout.attention("Source data:");
+			drain::TreeUtils::dump(src);
+		}
+
 
 
 		H5HTMLextractor extractor;
@@ -590,6 +595,7 @@ void CmdOutputFile::exec() const {
 		drain::TreeUtils::traverse(extractor, src);
 
 		if (mout.isDebug()){
+			mout.attention("Selected HTML data:");
 			mout.warn(html.data);
 			drain::TreeUtils::dump(html);
 		}
