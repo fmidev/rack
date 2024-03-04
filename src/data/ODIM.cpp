@@ -302,6 +302,17 @@ void ODIM::updateLenient(const ODIM & odim){
 		time = "000000";
 	}
 
+	// mout.attention("comparing ", startdate, '-', starttime, " <- ", odim.startdate, '-', odim.starttime);
+
+	if (!odim.startdate.empty()){
+		if (startdate.empty() || (odim.startdate < startdate)){
+			startdate = odim.startdate;
+			starttime = odim.starttime;
+		}
+		else if ((odim.startdate == startdate) && (odim.starttime < starttime)){
+			starttime = odim.starttime;
+		}
+	}
 
 	if (startdate.empty())
 		startdate = date; //"999999";
@@ -309,13 +320,15 @@ void ODIM::updateLenient(const ODIM & odim){
 	if (starttime.empty())
 		starttime = time; // "999999";
 
-	if (!odim.startdate.empty()){
-		if (odim.startdate < startdate){
-			startdate = odim.startdate;
-			starttime = odim.starttime;
+	// mout.note("comparing ", enddate, '-', endtime, " <- ", odim.enddate, '-', odim.endtime);
+
+	if (!odim.enddate.empty()){
+		if (enddate.empty() || (odim.enddate > enddate)){
+			enddate = odim.enddate;
+			endtime = odim.endtime;
 		}
-		else if ((odim.startdate == startdate) && (odim.starttime < starttime)){
-			starttime = odim.starttime;
+		else if ((odim.enddate == enddate) && (odim.endtime > endtime)){
+			endtime = odim.endtime;
 		}
 	}
 
@@ -325,15 +338,6 @@ void ODIM::updateLenient(const ODIM & odim){
 	if (endtime.empty())
 		endtime = time; // NEW
 
-	if (!odim.enddate.empty()){
-		if (odim.enddate > enddate){
-			enddate = odim.enddate;
-			endtime = odim.endtime;
-		}
-		else if ((odim.enddate == enddate) && (odim.endtime > endtime)){
-			endtime = odim.endtime;
-		}
-	}
 
 	if (source.empty())
 		source = odim.source;

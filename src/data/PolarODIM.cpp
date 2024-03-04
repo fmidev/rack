@@ -88,8 +88,6 @@ void PolarODIM::updateLenient(const PolarODIM & odim){
 	}
 	*/
 
-
-	//if (NI == 0.0)
 	odim.getNyquist(LOG_INFO);
 
 	if ((lat == 0.0) && (lon == 0.0)){
@@ -98,8 +96,7 @@ void PolarODIM::updateLenient(const PolarODIM & odim){
 		height = odim.height;
 	}
 
-
-	ODIM::updateLenient(odim);
+	// ODIM::updateLenient(odim); noticed (?) 2024/03
 
 
 }

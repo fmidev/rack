@@ -96,7 +96,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	//dstData.odim.NI =
 	srcData.odim.getNyquist(); // to prevent warning in the next cmd
 	dstData.odim.updateLenient(odim); // product
-	dstData.odim.updateLenient(srcData.odim); // date, time, etc
+	// dstData.odim.updateLenient(srcData.odim); // date, time, etc MOVED INSIDE LOOP 2024/03/+03
 	dstData.odim.prodpar = getParameters().getValues();
 
 	dstData.odim.angles.clear(); // DO NOT USE clear(), it changes address of 1st elem
@@ -118,9 +118,10 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 
 		processData(srcData, accumulator);
 
-		//mout.attention("elangle >> angles");
+		// mout.attention("elangle >>>", srcData.odim.elangle);
+		dstData.odim.updateLenient(srcData.odim);
 		dstData.odim.angles.push_back(srcData.odim.elangle);
-		//dstData.odim.angles.push_back(entry.first);
+		// mout.attention("elangle <<<", srcData.odim.elangle);
 
 	}
 

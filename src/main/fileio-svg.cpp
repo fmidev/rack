@@ -560,8 +560,13 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 			// headerText->setText("Radar image");
 
 			if (! ctx.svgPanelConf.title.empty()){
+				drain::StringMapper titleMapper(RackContext::variableMapper);
+				titleMapper.parse(ctx.svgPanelConf.title);
 				//TreeSVG & tspan =  headerText["mainHeader"](svg::TSPAN);
-				headerText->ctext += ctx.svgPanelConf.title;
+				//headerText->ctext += ctx.svgPanelConf.title; // XXX
+				const drain::VariableMap & v = ctx.getStatusMap();
+				// mout.attention(v);
+				headerText->ctext += titleMapper.toStr(v);
 				headerText->ctext += ' ';
 			}
 			for (const auto & entry: track["metadata"]->getAttributes()){
