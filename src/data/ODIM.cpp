@@ -186,7 +186,7 @@ void ODIM::copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const {
 
 
 
-bool ODIM::getTime(drain::Time & t, const std::string &dateStr, const std::string &timeStr) const {
+bool ODIM::getTime(drain::Time & t, const std::string &dateStr, const std::string &timeStr){ //  const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 

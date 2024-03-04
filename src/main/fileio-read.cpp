@@ -248,11 +248,11 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		hi5::Hi5Base::deleteExcluded(srcTmp);
 		// drain::TreeUtils::dump(srcTmp, std::cout, CmdOutputTree::dataToStream); // true
 		if (ctx.SCRIPT_DEFINED){
-			mout.note("Script defined. NOT clearing input data selector (", ctx.inputSelect, ')');
+			mout.debug("Script defined -> not clearing input data selector (", ctx.inputSelect, ')');
 			//mout.info(ctx.select);
 		}
 		else {
-			mout.note("Clearing input data selector (", ctx.inputSelect, ')');
+			mout.info("Clearing input data selector (", ctx.inputSelect, ')');
 			ctx.inputSelect.clear();
 		}
 	}
@@ -324,7 +324,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		// TODO: force APPEND / REPLACE?
 		if (ctx.polarInputHi5.empty() || ctx.SCRIPT_DEFINED){
 			if (ctx.SCRIPT_DEFINED)
-				mout.info("script defined, resetting previous inputs (if exist)");
+				mout.info("Script defined, resetting previous inputs (if exist)");
 				//mout.info("SCRIPT_DEFINED: ", ctx.SCRIPT_DEFINED, " thread:", ctx.getName());
 			ctx.polarInputHi5.swap(srcTmp);
 			ctx.polarInputHi5.data.image.properties.clearVariables();

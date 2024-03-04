@@ -118,7 +118,8 @@ public:
 
 	// TODO: string => ODIMPath
 	DataSelector(const std::string & path, const std::string & quantity,
-			unsigned int count = 1000, drain::Range<double> elangle = {-90.0, 90.0}, int dualPRF = 0);
+			unsigned int count = 1000, drain::Range<double> elangle = {-90.0, 90.0}, int dualPRF = 0,
+			drain::Range<int> timespan={0,0});
 			// double elangleMin = -90.0, double elangleMax = 90.0);
 
 	DataSelector(const std::string & parameters = "");
@@ -405,6 +406,9 @@ protected:
 
 	mutable
 	drain::EnumFlagger<drain::SingleFlagger<Prf> > prfSelector;
+
+	/// Time in seconds, compared to nominal time
+	drain::Range<int> timespan;
 
 	/// Continue path matching started with getMainPaths()
 	/**

@@ -72,7 +72,8 @@ DataSelector::DataSelector(
 		const std::string & quantities,
 		unsigned int count,
 		drain::Range<double> elangle,
-		int dualPRF
+		int dualPRF,
+		drain::Range<int> timespan
 		) : BeanLike(__FUNCTION__) { //, orderFlags(orderDict) {
 
 	//std::cerr << "DataSelector: " << quantity << " => " << this->quantity << std::endl;
@@ -87,6 +88,7 @@ DataSelector::DataSelector(
 	this->order.set(DataOrder::DATA, DataOrder::MIN);
 	//this->dualPRF = dualPRF;
 	this->prfSelector.set(Prf::ANY);
+
 
 	updateBean();
 
@@ -145,6 +147,7 @@ void DataSelector::init() {
 				);
 	//parameters.link("order", order.str, drain::sprinter(order.getParameters().getKeyList()).str());
 	parameters.link("prf", prf, drain::sprinter(drain::EnumDict<DataSelector::Prf>::dict.getKeys()).str());
+	parameters.link("timespan", timespan.tuple(), "range from nominal time [seconds]").fillArray = false;
 	// <-- TODO: develop to: enum PRF {"Single",1}, {"Dual",2}
 
 }
@@ -160,9 +163,10 @@ void DataSelector::reset() {
 	qualitySelector.clear();
 
 	//index = 0;
-	count = 1000;
+	//count = 1000;
+	count = 0xfff;
 
-	drain::Range<double> e =  {-90.0,+90.0};
+	static const drain::Range<double> e =  {-90.0,+90.0};
 	elangle = e; // {-90.0,+90.0}; // unflexible
 
 	//dualPRF = 0;
@@ -170,6 +174,8 @@ void DataSelector::reset() {
 	prf = prfSelector.str();
 
 	order.set(DataOrder::DATA, DataOrder::MIN);
+
+	timespan.tuple() = {0,0};
 
 }
 
@@ -430,6 +436,36 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 					continue;
 				}
 			}
+
+			if (timespan.max > 0){
+				if (props.hasKey("what:starttime")){
+					drain::Time nominal;
+					ODIM::getTime(nominal, props["what:date"], props["what:time"]);
+
+					drain::Time measured;
+					ODIM::getTime(measured, props["what:startdate"], props["what:starttime"]);
+
+					int delaySeconds = measured.getTime() - nominal.getTime();
+
+					if (timespan.span() > 0){ // from -300...300 for example
+						if (!timespan.contains(delaySeconds)){
+							mout.reject<LOG_NOTICE>("delay (", delaySeconds,") too outside timespan ", timespan);
+							continue;
+						}
+					}
+					else {
+						if (delaySeconds > timespan.max){
+							mout.reject<LOG_NOTICE>("delay (", delaySeconds,") larger than timespan.max=", timespan.max, " seconds");
+							continue;
+						}
+					}
+
+				}
+				else {
+					// DATASET has no time
+				}
+			}
+
 
 			//bool checkQualityGroup = !quantitySelector.isSet();
 

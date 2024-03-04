@@ -67,7 +67,7 @@ public:
 	typedef PlainData<DstType<OD> >       pdata_dst_t;
 
 	/// Default constructor
-	RadarAccumulator() : dataSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY), defaultQuality(0.5){ //, counter(0) , undetectValue(-52.0) {
+	RadarAccumulator() : dataSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY), defaultQuality(0.5), counter(0) { // , undetectValue(-52.0) {
 		odim.type.clear();
 		odim.ACCnum = 0; // NEW
 	}
@@ -113,9 +113,11 @@ public:
 	/// If source data has no quality field, this value is applied for (detected) data.
 	double defaultQuality;
 
-	/// Book keeping for new data. Finally, in extraction phase, added to odid.ACCnum .
-	// REPLACED by odim.ACCnum
-	// size_t counter;
+	/// Book-keeping for new data. Finally, in extraction phase, added to odim.ACCnum .
+	/**  Must be kept separate during accumulation. The accumulation array channel count keeps track of bin hits.
+	 *
+	 */
+	size_t counter;
 
 
 	/// Not critical. If set, needed to warn if input data does not match the expected / potential targetEncoding
@@ -197,11 +199,10 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 		AC::addData(srcData.data, converter, weight, i0, j0);
 	}
 
-	odim.ACCnum += std::max(1L, srcData.odim.ACCnum);
-	// counter += std::max(1L, srcData.odim.ACCnum);
-	// odim.ACCnum = counter; // TODO remove counter?
-
 	odim.updateLenient(srcData.odim); // Time, date, new
+	counter += std::max(1L, srcData.odim.ACCnum);
+	// odim.ACCnum += std::max(1L, srcData.odim.ACCnum); wrong
+	// odim.ACCnum = counter; // TODO remove counter?
 
 	//mout.note("after:  " , this->odim );
 
@@ -211,12 +212,13 @@ template  <class AC, class OD>
 void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, const pdata_src_t & srcCount){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	//mout.info() << "Quality data available with input; using quality as weights in compositing." << mout.endl;
+	// mout.info("Quality data available with input; using quality as weights in compositing.");
 	DataCoder converter(srcData.odim, srcQuality.odim);
 	AC::addData(srcData.data, srcQuality.data, srcCount.data, converter);
+
 	odim.updateLenient(srcData.odim); // Time, date, new
-	// counter = std::max(1L, srcData.odim.ACCnum);
-	odim.ACCnum += std::max(1L, srcData.odim.ACCnum);
+	counter = std::max(1L, srcData.odim.ACCnum);         // correct
+	// odim.ACCnum += std::max(1L, srcData.odim.ACCnum); // wrong
 }
 
 

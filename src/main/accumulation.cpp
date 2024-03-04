@@ -301,10 +301,9 @@ public:
 		acc.dataSelector.consumeParameters(ctx.select);
 		acc.dataSelector.setMaxCount(1);
 
-		mout.debug(acc );
+		mout.debug(acc);
 		mout.debug(acc.dataSelector);
 		mout.debug("DataCoder::undetectQualityCoeff: " , DataCoder::undetectQualityCoeff );
-
 
 		const Hi5Tree & src = ctx.getHi5(RackContext::CURRENT|RackContext::POLAR);
 
@@ -386,16 +385,16 @@ public:
 		const std::string & name = acc.getMethod().getName();
 		if ((name == "AVERAGE") || (name == "WAVG")){
 
-		 	mout.debug() << "avg-type method=" << acc.getMethod() << ' ';
+		 	mout.debug("avg-type method=", acc.getMethod());
 
 			if (acc.odim.ACCnum > 1){
-				mout << ", dividing weight by current ACCnum=" << acc.odim.ACCnum << ' ';
+				mout.info("dividing weight by current ACCnum=", acc.odim.ACCnum);
 				coeff = coeff / static_cast<double>(acc.odim.ACCnum);
 			}
 
 			if (srcData.odim.ACCnum > 1) {
 				coeff = coeff*static_cast<double>(srcData.odim.ACCnum);
-				mout << ", rescaling weight with src ACCnum=" << srcData.odim.ACCnum;
+				mout.info("rescaling weight with src ACCnum=", srcData.odim.ACCnum);
 			}
 
 			mout << mout.endl;
@@ -488,7 +487,7 @@ public:
 		//acc.odim.ACCnum += acc.count;
 		//acc.count = 0; // NOTE CHECK - if data re-added?
 		acc.extract(acc.odim, dstProduct, value);
-		// acc.odim.ACCnum += acc.counter;
+		acc.odim.ACCnum = acc.counter;
 
 		ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(acc.odim, dstDataSetGroup); //@dstProduct odim.copyToDataSet(dstDataSetGroup);
 		// dst.odim.copyToData(dstDataGroup); ??

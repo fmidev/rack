@@ -278,11 +278,13 @@ public:
 
 
 
-protected:
+//protected:
 
+	static
 	/// Retrieves the stored time. Returns true if successful, throws error if fail.
-	bool getTime(drain::Time & t, const std::string &dateStr, const std::string &timeStr) const;
+	bool getTime(drain::Time & t, const std::string &dateStr, const std::string &timeStr); // const;
 
+protected:
 
 	///
 	void copyTo(const std::list<std::string> & keys, Hi5Tree & dst) const;
