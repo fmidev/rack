@@ -73,7 +73,8 @@ CappiOp::CappiOp(double altitude, bool aboveSeaLevel, double beamWidth, double w
 	//dataSelector.setQuantities("^DBZH$");
 	dataSelector.setQuantities("DBZH:DBZHC:DBZ:DBZV");
 	// NOTE: caused problems with some BALTRAD radars
-	dataSelector.setPrf(DataSelector::Prf::SINGLE);
+	//dataSelector.setPrf(DataSelector::Prf::SINGLE);
+	dataSelector.setPrf(DataSelector::Prf::ANY);
 
 	odim.product  = "PCAPPI";
 	odim.type = "";
