@@ -391,6 +391,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 	if (!basepath.empty()){
 		mout.attention<LOG_INFO>("starting: ", basepath);
 		mout.attention<LOG_INFO>("    tree: ", src(basepath));
+		drain::TreeUtils::dump(src(basepath));
 	}
 
 	for (const auto & entry: src(basepath)) {
