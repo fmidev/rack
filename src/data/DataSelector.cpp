@@ -479,7 +479,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 
 
 			//bool checkQualityGroup = !quantitySelector.isSet();
-			mout.pending<LOG_DEBUG>("continuing down from ", path, "...");
+			mout.pending<LOG_DEBUG>("continuing down from '", basepath, "' + '/", currentElem, "' = '",  path, "'...");
 
 			if (collectPaths(src, pathContainer, path)){
 
