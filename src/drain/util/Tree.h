@@ -407,7 +407,6 @@ public:
 	 *
 	 *  This function, using native path_t type, should be reserved for this semantic
 	 *  by not redefining (specialising) this function in template classes.
-	 *
 	 */
 	inline
 	tree_t & operator()(const path_t & path){
@@ -432,11 +431,11 @@ public:
 	/// Redirects the call to operator()(const std::string & arg) .
 	/**
 	 *  \param arg - by default, the path from the current node to the child node.
-	 *
 	 */
 	inline
 	tree_t & operator()(const char *arg){
-		return operator()(std::string(arg));
+		return operator()(path_t(arg));
+		// return operator()(std::string(arg));
 	}
 
 	/// Returns a descendant if that exists, else returns an empty node. Otherwise like non-const counterpart.
@@ -445,7 +444,6 @@ public:
 	 *
 	 *  This function, using *native* path_t type, should be reserved for this semantic
 	 *  by not redefining (specialising) this function in template classes.
-	 *
 	 */
 	inline
 	const tree_t & operator()(const path_t & path) const {
@@ -462,7 +460,8 @@ public:
 	/// Redirects the call to operator()(const std::string & arg) .
 	inline
 	const tree_t & operator()(const char *arg) const {
-		return operator()(std::string(arg));
+		return operator()(path_t(arg));
+		//return operator()(std::string(arg));
 	}
 
 	/// Clear children and node data.
