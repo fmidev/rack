@@ -388,6 +388,11 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 
 	bool result = false;
 
+	if (!basepath.empty()){
+		mout.attention<LOG_INFO>("starting : ", basepath);
+		mout.attention<LOG_INFO>("starting : ", src(basepath));
+	}
+
 	for (const auto & entry: src(basepath)) {
 
 		const ODIMPathElem & currentElem = entry.first;
