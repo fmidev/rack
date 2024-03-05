@@ -424,6 +424,9 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 					continue; // yes, subtrees skipped ok
 				}
 			}
+			else {
+				mout.pending<LOG_DEBUG>("No PRF constrain (prf=", prfSelector, ")");
+			}
 
 			/*
 			if (!pathMatcher.matchElem(currentElem, true)){
@@ -439,6 +442,10 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 					mout.reject<LOG_DEBUG>("elangle ",e," outside range ",elangle);
 					continue;
 				}
+			}
+			else {
+				mout.suspicious<LOG_DEBUG>(props);
+				mout.fail<LOG_DEBUG>("props contain no where:elangle");
 			}
 
 			if (timespan.max > 0){
@@ -472,6 +479,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 
 
 			//bool checkQualityGroup = !quantitySelector.isSet();
+			mout.pending<LOG_DEBUG>("continuing down from ", path, "...");
 
 			if (collectPaths(src, pathContainer, path)){
 
