@@ -388,11 +388,13 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 
 	bool result = false;
 
+	/*  OLD g++ compiler problem: src(basepath)
 	if (!basepath.empty()){
 		mout.attention<LOG_INFO>("starting: ", basepath);
 		mout.attention<LOG_INFO>("    tree: ", src(basepath));
 		drain::TreeUtils::dump(src(basepath));
 	}
+	*/
 
 	for (const auto & entry: src(basepath)) {
 
@@ -450,7 +452,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 				}
 			}
 			else {
-				mout.suspicious<LOG_DEBUG>(props);
+				// mout.suspicious<LOG_DEBUG+1>(props);
 				mout.fail<LOG_DEBUG>("props contain no where:elangle");
 			}
 
@@ -485,7 +487,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 
 
 			//bool checkQualityGroup = !quantitySelector.isSet();
-			mout.pending<LOG_DEBUG>("continuing down from '", basepath, "' + '/", currentElem, "' = '",  path, "'...");
+			// mout.pending<LOG_DEBUG>("continuing down from '", basepath, "' + '/", currentElem, "' = '",  path, "'...");
 
 			if (collectPaths(src, pathContainer, path)){
 
