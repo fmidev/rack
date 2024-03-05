@@ -114,8 +114,9 @@ void MaxEchoOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accum
 		altitudeBin = Geometry::heightFromEtaBeta(eta, beta);
 		weight = altitudeQuality(altitudeBin);
 
-		if (weight > 0.1)
+		if ((i&15)==0 && (weight > 0.1)){
 			mout.special<LOG_WARNING>(" altitude, weight: ", altitudeBin, "m\t", weight);
+		}
 
 		binDistance = Geometry::beamFromEtaBeta(eta, beta);
 		iSweep = sweep.odim.getBinIndex(binDistance);
