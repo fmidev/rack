@@ -402,11 +402,15 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 		const drain::image::Image & data    = entry.second.data.image; // for ODIM
 		const drain::FlexVariableMap & props = data.getProperties();
 
+		if (props.empty()){
+			mout.attention("props empty at ", basepath, " -> /",  entry.first);
+		}
 
 		// Check ELANGLE (in datasets) or quantity (in data/quality)
 		if (currentElem.is(ODIMPathElem::DATASET)){
 
 			mout.debug2("DATASET = '" ,path , "'" );
+			//mout.debug2("DATASET = '" , props);
 
 			// PRF criterion applies?
 			if (prfSelector != ANY){
