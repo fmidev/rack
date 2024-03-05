@@ -300,7 +300,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			return;
 		}
 
-		mout.note("Using input path: ", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
+		mout.info("Using input path: ", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
 
 		ODIMPathElem current = dataPath.back();
 		ODIMPath parent = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
@@ -358,8 +358,8 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 						mout.note("time difference ", mins, " minutes");
 					}
 
-					mout.note("composite: ", tComposite.str());
-					mout.note("data:      ", tData.str());
+					mout.info("composite: ", tComposite.str());
+					mout.info("input:     ", tData.str());
 				}
 			}
 

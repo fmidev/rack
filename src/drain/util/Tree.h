@@ -378,15 +378,6 @@ public:
 		return data;
 	};
 
-	// TODO fix/enhance?
-	/*
-	template <class DD>
-	inline
-	operator DD() const {
-		return data;
-	};
-	*/
-
 
 	/// Child addressing operator
 	inline
@@ -410,6 +401,11 @@ public:
 	 */
 	inline
 	tree_t & operator()(const path_t & path){
+		/*
+		if (superDebug){
+			std::cout << __FILE__ << "tree_t & operator()(const path_t & path)" << '\n';
+		}
+		*/
 		return get(path.begin(), path.end());
 	}
 
@@ -588,7 +584,6 @@ x	 *  \see clearData()
 		#endif
 
 		// OrderedMultipleTree (passed through from the above #ifdef-#endif)
-
 		// OrderedMultipleTree
 		// UnorderedMultipleTree
 

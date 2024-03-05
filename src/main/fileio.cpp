@@ -356,7 +356,7 @@ public:
 				std::string s;
 				drain::MapTools::get(variables, key, s);
 				// mout.warn("time format: ", key, " -> ", k, '+', format, " -> ", t.str(), " => ", t.str(key));
-				ostr << drain::Time(s, "%Y%d%m").str(format);
+				ostr << drain::Time(s, "%Y%m%d").str(format);
 				return true;
 			}
 			else if (drain::StringTools::endsWith(key, "time")){
