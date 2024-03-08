@@ -125,6 +125,8 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 
 	}
 
+	// drain::image::FilePng::write(accumulator.accArray.data, "debug.png");
+
 	// mout.warn("eka: " , drain::sprinter(dstData.odim.angles) );
 
 	//if (mout.isDebug(LOG_DEBUG))

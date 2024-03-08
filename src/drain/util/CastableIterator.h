@@ -94,8 +94,10 @@ public:
 	/// Moves iterator to address pointed by &it. Changes the internal type accordingly.
 	inline
 	CastableIterator & operator=(const CastableIterator &it){
-		// std::cerr << "CastableIterator operator=(const & CastableIterator) \n";
-		setPtr(it.caster.ptr, it.getType());
+		if (&it != this){
+			// std::cerr << "CastableIterator operator=(const & CastableIterator) \n";
+			setPtr(it.caster.ptr, it.getType());
+		}
 		return *this;
 	}
 

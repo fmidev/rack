@@ -92,8 +92,11 @@ struct NodeHi5 {
 	};
 
 	inline
-	NodeHi5 & operator=(const hi5::NodeHi5 & n){
-		attributes.importMap(n.attributes); return *this;
+	NodeHi5 & operator=(const hi5::NodeHi5 & node){
+		if (&node != this){
+			attributes.importMap(node.attributes);
+		}
+		return *this;
 	};
 
 	//void writeText(std::ostream & ostr = std::cout, const std::string & prefix = "") const;

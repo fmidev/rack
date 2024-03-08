@@ -103,7 +103,9 @@ public:
 	template <class T>
 	inline
 	VariableMap & operator=(const std::map<std::string,T> & m){
-		importMap(m); // CastableMap?
+		if (&m != this->getMap()){
+			importMap(m); // CastableMap?
+		}
 		return *this;
 	}
 

@@ -195,25 +195,6 @@ while (( $line <= iEnd )); do
 	    cmd="$cmdbase -o $img -o $output"
 	fi
 
-	# SVG validation and conversion. 
-	if [ $extension == 'svg' ]; then
-	    cmd2="convert $output $output.png"
-	    echo $cmd2
-	    eval $cmd2
-	    if [ $? != 0 ]; then
-		echo -e "$VT100_RED SVG conversion failed  $VT100_END"
-		echo $0 $line '# <- restart with this'
-		exit 2
-	    fi
-	    cmd2="xmllint --noout $output"
-	    echo $cmd2
-	    eval $cmd2
-	    if [ $? != 0 ]; then
-		echo -e "$VT100_RED XML validation failed for $output  $VT100_END"
-		echo $0 $line '# <- restart with this'
-		exit 3
-	    fi
-	fi
 
     fi
     echo -e $VT100_ORANGE "$cmd" $VT100_END
@@ -246,6 +227,38 @@ while (( $line <= iEnd )); do
 
     fi
 
+    echo "Ext: '$extension' $output"
+    
+    # SVG validation and conversion. 
+    if [ $extension == 'svg' ]; then
+
+	arglast=( $cmd )
+	argcount=${#arglast[*]}
+	arglast=${arglast[$(( argpount - 1 ))]}
+	echo "arg last $arglast"
+	output=$arglast
+	
+	echo -e "$VT100_ORANGE also GENERATING PNG image: $img $VT100_END"
+	cmd2="convert $output $output.png"
+	echo $cmd2
+	eval $cmd2
+	if [ $? != 0 ]; then
+	    echo -e "$VT100_RED SVG conversion failed  $VT100_END"
+	    echo $0 $line '# <- restart with this'
+	    exit 2
+	fi
+
+	echo -e "$VT100_ORANGE checking XML syntax: $ouput $VT100_END"
+	cmd2="xmllint --noout $output"
+	echo $cmd2
+	eval $cmd2
+	if [ $? != 0 ]; then
+	    echo -e "$VT100_RED XML validation failed for $output  $VT100_END"
+	    echo $0 $line '# <- restart with this'
+	    exit 3
+	fi
+    fi
+    
     echo 
 
 done

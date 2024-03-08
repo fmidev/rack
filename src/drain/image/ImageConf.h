@@ -87,7 +87,9 @@ public:
 	}
 
 	Encoding & operator=(const Encoding & e){
-		setEncoding(e);
+		if (&e != this){
+			setEncoding(e);
+		}
 		return *this;
 	}
 

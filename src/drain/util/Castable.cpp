@@ -192,6 +192,11 @@ void Castable::info(std::ostream & ostr) const {
 
 Castable & Castable::assignCastable(const Castable &c){
 
+
+	if (&c == this){
+		return *this;
+	}
+
 	// If this ie. destination is a string, convert input.
 	if (c.getType() == typeid(void)){
 		// std::cerr << __FUNCTION__ << ": NEW: assign 'unset'\n";

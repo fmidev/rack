@@ -304,10 +304,12 @@ public:
 	// TODO: what to do with the separator?
 	inline
 	tree_t &operator=(const tree_t &t){
-		data = t.data;
-		//if (EXCLUSIVE){ ...or consider deep copy?
-		clearChildren();
-		//}
+		if (&t != this){
+			data = t.data;
+			//if (EXCLUSIVE){ ...or consider deep copy?
+			clearChildren();
+			//}
+		}
 		return *this;
 	};
 

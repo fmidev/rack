@@ -120,7 +120,7 @@ public:
 		svgConf.link("legend", svgConfLegend, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Legend>::dict.getKeys()).str());
 		svgConf.link("title", ctx.svgPanelConf.title); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 		svgConf.link("relativePaths", ctx.svgPanelConf.relativePaths);
-		// TreeUtilsSVG::defaultDirection.value);
+
 
 
 
@@ -349,6 +349,7 @@ public:
 
 		// drain::Logger mout(__FILE__, __FUNCTION__);
 		// mout.warn("trying time format: ", key, " + ", format);
+		// MOVE https://cplusplus.com/reference/cstdio/printf/ ->  drain::StringMapper /VariableHandler
 
 		if (format.find('%') != std::string::npos){
 			// Time formatting or C-stype printf formatting.
@@ -401,10 +402,6 @@ void CmdOutputFile::exec() const {
 		mout.warn("data error, skipping");
 		return;
 	}
-
-	//
-	// std::string prefixFinal;
-	// std::string relativePathFinal = "-";
 
 	std::string filepath = "-";
 

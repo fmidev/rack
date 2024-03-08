@@ -231,7 +231,9 @@ public:
 	 */
 	inline
 	Castable &operator=(const Castable &c){
-		assignCastable(c);
+		if (&c != this){
+			assignCastable(c);
+		}
 		return *this;
 	}
 

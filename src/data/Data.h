@@ -701,7 +701,7 @@ public:
 	 *	\param templateQuantity - predefined quantity the scaling of which is used in initialisation
 	 *	\param encodingParams (optional) - parameters overriding those of template quantity
 	 */
-	data_t & create(const std::string & quantity, const std::string & templateQuantity, const std::string & encodingParams) {
+	data_t & create(const std::string & quantity) { // , const std::string & templateQuantity, const std::string & encodingParams) {
 		data_t & d = getData(quantity);
 		d.setGeometry(0, 0); // in case existed already
 		//getQuantityMap().setQuantityDefaults(d, templateQuantity, encodingParams);

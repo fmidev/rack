@@ -322,17 +322,20 @@ public:
 	 */
 	inline virtual
 	void m2pix(double x, double y, int & i, int & j) const {
-		i = static_cast<int>(0.5+ (x - bBoxNative.lowerLeft.x) / xScale); //  xOffset
-		//j = frameHeight-1 - static_cast<int>(0.5+ (y - bBoxNative.lowerLeft.y) / yScale);
-		j = frameHeight-1 - static_cast<int>(0.5+ (y - bBoxNative.lowerLeft.y) / yScale);
+		// i = static_cast<int>(0.5+ (x - bBoxNative.lowerLeft.x) / xScale); //  xOffset
+		// j = frameHeight-1 - static_cast<int>(0.5+ (y - bBoxNative.lowerLeft.y) / yScale);
+		// j = frameHeight-1 - static_cast<int>(0.5+ (y - bBoxNative.lowerLeft.y) / yScale);
+		i = ::lround((x - bBoxNative.lowerLeft.x) / xScale); //  xOffset
+		j = frameHeight-1 - ::lround((y - bBoxNative.lowerLeft.y) / yScale);
 	}
 
 	inline virtual
 	void m2pix(const drain::Point2D<double> & pMetric, drain::Point2D<int> & pImage) const {
-		pImage.x = static_cast<int>(0.5+ (pMetric.x - bBoxNative.lowerLeft.x) / xScale); //  xOffset
-		//pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - bBoxNative.lowerLeft.y) / yScale);
-		pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - bBoxNative.lowerLeft.y) / yScale);
-
+		// pImage.x = static_cast<int>(0.5+ (pMetric.x - bBoxNative.lowerLeft.x) / xScale); //  xOffset
+		// pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - bBoxNative.lowerLeft.y) / yScale);
+		// pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - bBoxNative.lowerLeft.y) / yScale);
+		pImage.x = ::lround( (pMetric.x - bBoxNative.lowerLeft.x) / xScale); //  xOffset
+		pImage.y = frameHeight-1 - ::lround((pMetric.y - bBoxNative.lowerLeft.y) / yScale);
 	}
 
 
@@ -351,7 +354,6 @@ public:
 	void pix2m(int i, int j, double & x, double & y) const {
 		x = (static_cast<double>(i)+0.5)*xScale + bBoxNative.lowerLeft.x;
 		y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + bBoxNative.lowerLeft.y;
-		//y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + bBoxNative.lowerLeft.y;
 	}
 
 	inline
@@ -359,7 +361,6 @@ public:
 	void pix2m(const drain::Point2D<int> & pImage, drain::Point2D<double> & pMetric) const {
 		pMetric.x = (static_cast<double>(pImage.x)+0.5)*xScale + bBoxNative.lowerLeft.x;
 		pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + bBoxNative.lowerLeft.y;
-		//pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + bBoxNative.lowerLeft.y;
 	}
 
 	/// Scales image coordinates (i,j) to geographic map coordinates (x,y) of the lower left corner pixel.

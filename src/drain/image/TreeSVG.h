@@ -96,7 +96,9 @@ public:
 	/// Copy data from a node. (Does not copy subtree.)
 	inline
 	NodeSVG & operator=(const NodeSVG & n){
-		drain::SmartMapTools::setValues<map_t>((map_t &)*this, n);
+		if (&n != this){
+			drain::SmartMapTools::setValues<map_t>((map_t &)*this, n);
+		}
 		return *this;
 	}
 

@@ -251,11 +251,11 @@ void FileGeoTIFF::setGeoTiffField(geokey_t tag, const std::string & value){
 	GTIFKeySet(gtif, tag, TYPE_ASCII, value.size()+1, value.c_str());
 }
 
-template <>
-const drain::FlaggerDict drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict;
 
 } // image::
 
+template <>
+const drain::FlaggerDict drain::EnumDict<image::FileGeoTIFF::TiffCompliance>::dict;
 
 /*
 template <>

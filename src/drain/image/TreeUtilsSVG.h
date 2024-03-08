@@ -111,11 +111,6 @@ struct TreeUtilsSVG {
 
 };
 
-template <>
-const drain::EnumDict<PanelConfSVG::Orientation>::dict_t  drain::EnumDict<PanelConfSVG::Orientation>::dict;
-
-template <>
-const drain::EnumDict<PanelConfSVG::Direction>::dict_t  drain::EnumDict<PanelConfSVG::Direction>::dict;
 
 
 /**
@@ -137,6 +132,12 @@ public:
 
 
 }  // image::
+
+template <>
+const drain::EnumDict<image::PanelConfSVG::Orientation>::dict_t  drain::EnumDict<image::PanelConfSVG::Orientation>::dict;
+
+template <>
+const drain::EnumDict<image::PanelConfSVG::Direction>::dict_t  drain::EnumDict<image::PanelConfSVG::Direction>::dict;
 
 }  // drain::
 

@@ -88,7 +88,9 @@ public:
 
 	/// Proposed for tuples only; derived classes should not shadow this.
 	tuple_t & assign(const tuple_t & t){
-		assignSequence(t);
+		if (&t != this){
+			assignSequence(t);
+		}
 		return *this;
 	}
 
@@ -99,7 +101,9 @@ public:
 	}
 
 	tuple_t & operator=(const tuple_t &t){
-		assign(t);
+		if (&t != this){
+			assign(t);
+		}
 		return *this;
 	}
 
@@ -127,7 +131,9 @@ public:
 
 	///
 	tuple_t & set(const tuple_t & t){
-		assign(t);
+		if (&t != &this->tuple()){
+			assign(t);
+		}
 		return *this;
 	}
 

@@ -134,13 +134,11 @@ protected:
 
 };
 
+} // ::hi5
 
 //const drain::SingleFlagger<Reader::Mode>::dict_t Reader::dict = {{"ATTRIBUTES", ATTRIBUTES}, {"DATASETS", DATASETS}};
 template <>
-const drain::FlaggerDict drain::EnumDict<Reader::Mode>::dict;
-
-
-} // ::hi5
+const drain::FlaggerDict drain::EnumDict<hi5::Reader::Mode>::dict;
 
 
 #endif /* ImageH5_H_ */

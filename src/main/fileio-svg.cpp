@@ -418,6 +418,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 
 
 	if (ctx.svgPanelConf.relativePaths){
+	//if (true){
 		drain::image::NodeSVG::path_list_t pathList;
 		drain::image::NodeSVG::findByTag(track, drain::image::svg::IMAGE, pathList);
 		const std::string dir = filepath.dir.str()+'/';

@@ -124,8 +124,10 @@ public:
 
 	inline
 	ValueScaling & operator=(const drain::ValueScaling & scaling){
-		this->assign(scaling);
-		physRange.set(scaling.physRange);
+		if (&scaling != this){
+			this->assign(scaling);
+			physRange.set(scaling.physRange);
+		}
 		return *this;
 	}
 
