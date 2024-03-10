@@ -449,7 +449,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 		mout.debug("aligning: ", p);
 		drain::image::TreeSVG & group = track[p](NodeSVG::GROUP);
 		drain::Frame2D<int> frame;
-		TreeUtilsSVG::determineBBox(group, frame);
+		TreeUtilsSVG::determineBBox(group, frame, ctx.svgPanelConf.orientation);
 
 		// METADATA -> title
 		if (false){
@@ -486,9 +486,10 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 			titleText->setStyle("stroke", "lightblue");
 			titleText = "Radar data";
 
-		}
+			}
 		*/
 
+		mout.attention("Aligning: start:",  start.tuple(), ", frame: ", frame.tuple());
 
 		drain::image::TreeUtilsSVG::align(group, frame, start, ctx.svgPanelConf.orientation, ctx.svgPanelConf.direction);
 

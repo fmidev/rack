@@ -476,24 +476,6 @@ void CmdOutputFile::exec() const {
 			return;
 		}
 
-		/*
-		drain::StringMapper dataIDSyntax(RackContext::variableMapper);
-		// drain::StringMapper dataIDSyntax("${what:date}_${what:time} ${what:product}", "^[A-Za-z0-9_:]*$");
-		dataIDSyntax.parse("${what:date}_${what:time}_");
-		//std::string dataID = dataIDSyntax.toStr(ctx.getStatusMap(true), 'x');
-		std::string dataID = ctx.svgPanelConf.groupName;
-		// dataIDSyntax.toStr(src.properties, 'x') + SourceODIM(src.properties.get("what:source","")).getSourceCode();
-		*/
-
-		//drain::image::TreeSVG & baseGroup = track[dataID](svg::GROUP); // track.retrieveChild(key);
-		//baseGroup->addClass("imagecol");
-
-		/*
-		drain::StringMapper imageIDSyntax(RackContext::variableMapper);
-		imageIDSyntax.parse("${what:product}"); // _${where:elangle}
-		std::string imageID = imageIDSyntax.toStr(srcImage.properties);
-		*/
-
 		if (!ctx.formatStr.empty()){
 			mout.special("formatting comments");
 			drain::StringMapper statusFormatter(RackContext::variableMapper);

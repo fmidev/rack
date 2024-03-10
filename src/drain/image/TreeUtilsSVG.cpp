@@ -68,6 +68,15 @@ const drain::EnumDict<PanelConfSVG::Legend>::dict_t  drain::EnumDict<PanelConfSV
 		//{"EMBED", drain::image::PanelConfSVG::EMBED},
 };
 
+
+//PanelConfSVG::LegendFlagger PanelConfSVG::legend(drain::image::PanelConfSVG::RIGHT); // (PanelConfSVG::Legend::LEFT, PanelConfSVG::Legend::EMBED);
+
+/*
+PanelConfSVG::PanelConfSVG() : legend(drain::image::PanelConfSVG::RIGHT){
+};
+*/
+
+
 //std::string TreeUtilsSVG::defaultGroupName("main");
 
 //std::string TreeUtilsSVG::defaultTitle("");
@@ -78,8 +87,13 @@ PanelConfSVG TreeUtilsSVG::defaultConf;
 // drain::Rectangle<int> & bbox
 void TreeUtilsSVG::determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, PanelConfSVG::Orientation orientation){
 
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
 	if (orientation == PanelConfSVG::UNDEFINED_ORIENTATION){
 		orientation = defaultConf.orientation;
+		if (orientation == PanelConfSVG::UNDEFINED_ORIENTATION){
+			orientation = PanelConfSVG::HORZ;
+		}
 	}
 
 	// Loop 1: detect collective width and height
@@ -92,15 +106,19 @@ void TreeUtilsSVG::determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, P
 				if (orientation == PanelConfSVG::HORZ){
 					frame.width  += elem->get("width");
 					frame.height  = std::max(frame.height, elem->get("height", 0));
+					mout.warn("updated frame HORZ: ", frame.tuple());
 				}
 				else {
-					frame.width = std::max(frame.width, elem->get("width", 0));
+					frame.width   = std::max(frame.width, elem->get("width", 0));
 					frame.height += elem->get("height");
+					mout.warn("updated frame VERT: ", frame.tuple());
 				}
 			}
 		}
 		// recursion?
 	}
+
+	group->set("frame", frame.tuple());
 
 	// bbox.set(0, 0, width, height);
 }
@@ -114,22 +132,41 @@ void TreeUtilsSVG::align(TreeSVG & group, const drain::Frame2D<int> & frame, con
 
 	if (orientation == PanelConfSVG::UNDEFINED_ORIENTATION){
 		orientation = defaultConf.orientation;
+		if (orientation == PanelConfSVG::UNDEFINED_ORIENTATION){
+			orientation = PanelConfSVG::HORZ;
+		}
 	}
 
 	if (direction == PanelConfSVG::UNDEFINED_DIRECTION){
 		direction = defaultConf.direction;
+		if (direction == PanelConfSVG::UNDEFINED_DIRECTION){
+			direction = PanelConfSVG::INCR;
+		}
 	}
 
 	// Loop: stack horizontally or vertically.
-	Point2D<int> pos;
+	Point2D<int> pos(0,0);
+
+	if (direction==PanelConfSVG::DECR){
+
+		if (orientation==PanelConfSVG::HORZ){
+			pos.x = frame.width;
+		}
+		else if (orientation==PanelConfSVG::VERT){
+			pos.y = frame.height;
+		}
+	}
+	/* readability?
 	pos.x = ((orientation==PanelConfSVG::VERT) || (direction==PanelConfSVG::INCR)) ? 0 : frame.width;
 	pos.y = ((orientation==PanelConfSVG::HORZ) || (direction==PanelConfSVG::INCR)) ? 0 : frame.height;
+	*/
 
 	pos.x += start.x;
 	pos.y += start.y;
 
-	int w = 0;
-	int h = 0;
+	Point2D<int> offset;
+	// int widthPrev = 0;
+	// int offset.y = 0;
 
 	for (auto & entry : group.getChildren()){ //
 
@@ -137,9 +174,11 @@ void TreeUtilsSVG::align(TreeSVG & group, const drain::Frame2D<int> & frame, con
 		NodeSVG::elem_t t = elem->getType();
 
 		if (elem->hasClass("FIXED"))
-			continue;
+				continue;
 
-
+		// elem->addClass(FlagResolver::getKeys(drain::EnumDict<PanelConfSVG::Orientation>::dict, orientation, ' '));
+		//elem->addClass(PanelConfSVG::OrientationFlagger::getValueNEW("mika"));
+		elem->addClass(PanelConfSVG::OrientationFlagger::getKeysNEW2(orientation, ' '));
 
 		if ((t == svg::IMAGE) || (t == svg::RECT) || (t == svg::TEXT)){
 			// mout.attention("  elem ", elem->get("name", "?"), ": init pos", pos);
@@ -150,23 +189,23 @@ void TreeUtilsSVG::align(TreeSVG & group, const drain::Frame2D<int> & frame, con
 			}
 			*/
 
-
 			if (!elem->hasClass("FLOAT")){
+
 				if (direction==PanelConfSVG::INCR){
 					if (orientation==PanelConfSVG::HORZ)
-						pos.x += w;
+						pos.x += offset.x;
 					else
-						pos.y += h;
+						pos.y += offset.y;
 				}
 
-				w = elem->get("width", 0);
-				h = elem->get("height",0);
+				offset.x = elem->get("width", 0);
+				offset.y = elem->get("height",0);
 
 				if (direction==PanelConfSVG::DECR){
 					if (orientation==PanelConfSVG::HORZ)
-						pos.x -= w;
+						pos.x -= offset.x;
 					else
-						pos.y -= h;
+						pos.y -= offset.y;
 				}
 			}
 
@@ -177,6 +216,8 @@ void TreeUtilsSVG::align(TreeSVG & group, const drain::Frame2D<int> & frame, con
 			else {
 				elem->set("x", pos.x);
 				elem->set("y", pos.y);
+				elem->set("_offset", offset.tuple());
+				// elem->set("_offset", offset);
 			}
 
 		}

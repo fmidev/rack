@@ -547,9 +547,18 @@ public:
 	MultiFlagger(){
 	};
 
+	/*
 	inline
 	MultiFlagger(value_t v){
 		this->value = v;
+	};
+	*/
+
+	template <typename ... T>
+	inline
+	MultiFlagger(const T &... args){
+		set(args...);
+		// this->value = v;
 	};
 
 	virtual inline
@@ -600,6 +609,8 @@ public:
 		add(args...);
 	}
 
+
+
 	/// For exporting values.
 	virtual
 	const key_t & str() const {
@@ -607,6 +618,14 @@ public:
 		currentStr = FlagResolver::getKeys(dict, this->value, this->separator);
 		return currentStr;
 	}
+
+	/// Given only a numeric/enum value,
+	/*
+	virtual
+	std::string str(const value_t & value){
+		return FlagResolver::getKeys(this->getDict(), value, this->separator);
+	}
+	*/
 
 	/// For importing values. After assignment, update() should be called. Experimental
 	virtual
@@ -699,8 +718,15 @@ public:
 	EnumFlagger(){
 	}
 
+	/*
 	inline
 	EnumFlagger(value_t v): fbase_t(v) {
+	}
+	*/
+
+	template <typename ... T>
+	inline
+	EnumFlagger(const T & ... arg): fbase_t(arg...) { // designed for MultiFlagger
 	}
 
 
@@ -722,6 +748,19 @@ public:
 	value_t getValueNEW(const std::string & key){
 		return (value_t)EnumDict<value_t>::dict.getValue(key);
 	};
+
+	static inline
+	std::string getKeysNEW2(const value_t & value, char separator = ','){
+		return FlagResolver::getKeys(EnumDict<value_t>::dict, value, separator);
+	}
+
+	/**
+	 *  Dictionary throws except if key now found.
+	static
+	value_t getKeys(const value_t & value){
+		return (value_t)EnumDict<value_t>::dict.getValue(key);
+	};
+    */
 
 
 	template <class T>

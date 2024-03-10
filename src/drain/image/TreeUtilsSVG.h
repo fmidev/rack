@@ -52,15 +52,16 @@ struct PanelConfSVG {
 
 	enum Orientation {UNDEFINED_ORIENTATION=0, HORZ, VERT};
 	typedef drain::EnumFlagger<drain::SingleFlagger<Orientation> > OrientationFlagger;
-	OrientationFlagger orientation;
+	OrientationFlagger orientation = HORZ;
 
 	enum Direction {UNDEFINED_DIRECTION=0, INCR, DECR};
 	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
-	DirectionFlagger direction;
+	DirectionFlagger direction = INCR;
 
 	enum Legend {NO_LEGEND=0, LEFT=1, RIGHT=2, EMBED=4};
 	typedef drain::EnumFlagger<drain::MultiFlagger<Legend> > LegendFlagger;
-	LegendFlagger legend;
+	//LegendFlagger legend = LEFT | EMBED;
+	LegendFlagger legend; // (PanelConfSVG::Legend::LEFT, PanelConfSVG::Legend::EMBED);
 
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
 	// Current
@@ -71,7 +72,7 @@ struct PanelConfSVG {
 	std::string title;
 
 	inline
-	PanelConfSVG() : orientation(HORZ), direction(INCR), maxPerGroup(10), relativePaths(true){
+	PanelConfSVG() : orientation(HORZ), direction(INCR), legend(LEFT, EMBED), maxPerGroup(10), relativePaths(true){
 	}
 
 
