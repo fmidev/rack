@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 
 #include "drain/util/Log.h"
-//#include "drain/util/Point.h"
+#include "drain/util/Point.h" // for Box
 //#include "drain/util/Range.h"
 #include "drain/util/UniTuple.h"
 
@@ -128,7 +128,27 @@ public:
 
 };
 
-} // drain
-#endif
+/// Something that has coordinates (x,y) and dimensions (width, height).
+/**
+ *
+ */
+template <class T>
+struct Box : public drain::Point2D<T>, public drain::Frame2D<T> {
 
-// Drain
+public:
+
+	inline
+	Box(T x=0, T y=0, T width=0, T height=0) : drain::Point2D<T>(x, y), drain::Frame2D<T>(width, height)  {
+	}
+
+	inline
+	Box(const Box & box) : drain::Point2D<T>(box), drain::Frame2D<T>(box)  {
+	}
+
+
+};
+
+
+} // drain
+
+#endif

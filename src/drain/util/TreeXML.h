@@ -68,6 +68,58 @@ std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
 	return ostr;
 }
 
+
+class ClassListXML : public std::set<std::string> {
+
+public:
+
+	template <typename ... TT>
+	inline
+	ClassListXML(const TT &... args){
+		add(args...);
+	};
+
+	template <typename ... TT>
+	inline
+	void add(const std::string & clsName, const TT &... args) {
+		insert(clsName);
+		add(args...);
+	};
+
+	inline
+	bool has(const std::string & clsName) const {
+		return (find(clsName) != end());
+	};
+
+	inline
+	void remove(const std::string & clsName) {
+		iterator it = find(clsName);
+		if (it != end()){
+			erase(it);
+		}
+	};
+
+	/// Uses spaces as separators.
+	static
+	const SprinterLayout layout; //  = {" "}; // , "\n", "=", ""};
+
+protected:
+
+	inline
+	void add(){};
+
+};
+
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const ClassListXML & cls){
+	// static const SprinterLayout layout = {" "}; // , "\n", "=", ""};
+	Sprinter::sequenceToStream(ostr, (const std::set<std::string> &)cls, ClassListXML::layout);
+	return ostr;
+}
+
+
+
 /**
  *  \tparam T - index type; may be enum.
  */
@@ -336,25 +388,29 @@ public:
 
 	/// Style class
 
+	template <typename ... TT>
+	inline
+	void addClass(const TT &... args) {
+		classList.add(args...);
+	}
 
+	/*
 	template <typename ... TT>
 	inline
 	void addClass(const std::string & s, const TT &... args) {
 		classList.insert(s);
 		addClass(args...);
 	}
+	*/
 
 	inline
 	bool hasClass(const std::string & cls) const {
-		return (classList.find(cls) != classList.end());
+		return classList.has(cls);
 	}
 
 	inline
 	void removeClass(const std::string & s) {
-		class_list::iterator it = classList.find(s);
-		if (it != classList.end()){
-			classList.erase(it);
-		}
+		classList.remove(s);
 	}
 
 	inline
@@ -504,26 +560,50 @@ public:
 	*/
 
 
-	typedef std::set<std::string> class_list;
-	class_list classList;
+	// typedef std::set<std::string> class_list;
+	// class_list classList;
+
+	ClassListXML classList;
 
 	typedef std::list<path_t> path_list_t;
 
-	/// "Forward definition"
+	/// Find the first occurrence of given id using recursive breath-first search.
 	/**
-	 *   By definition, id attributes should be unique. This function nevertheless returns a list
-	 *   for easy handling of cases with zero or more than one elements found.
+	 *
+	 *   \param tree - source element,
+	 *   \param id   - id attribute to be searched for
+	 *   \param result - path of the element with required ID, if found.
+	 *   \param path - start path for the search.
+	 *   \return - \c true, if an element was found.
+	 *
+	 *
 	 */
 	//   This could also be in TreeXMLutilities
 	template <class V>
 	static
-	bool findById(const V & t, const std::string & tag, path_list_t & result, const path_t & path = path_t());
+	bool findById(const V & tree, const std::string & tag, typename V::path_t & result, const typename V::path_t & path = path_t());
+
+	/// Find all the occurrence of given ID using recursive breath-first search.
+	/**
+	 *   By definition, id attributes should be unique. This function nevertheless returns a list
+	 *   if user wants to handle more than one elements found.
+	 *
+	 *   \param tree - source element,
+	 *   \param id   - id attribute to be searched for
+	 *   \param result - path of pointing to
+	 *   \param path - start path for the search.
+	 *   \return - \c true, if an element was found.
+	 */
+	//   This could also be in TreeXMLutilities
+	template <class V>
+	static
+	bool findById(const V & tree, const std::string & tag, path_list_t & result, const path_t & path = path_t());
 
 	/// "Forward definition"
 	//   This could also be in TreeXMLutilities
 	template <class V>
 	static
-	bool findByTag(const V & t, const T & tag, path_list_t & result, const path_t & path = path_t());
+	bool findByTag(const V & tree, const T & tag, path_list_t & result, const path_t & path = path_t());
 
 	/// "Forward definition"
 	//   This could also be in TreeXMLutilities
@@ -578,14 +658,33 @@ public:
 	}
 
 
+	/// Makes ID a visible attribute.
+	inline
+	void setId(){
+		link("id", id);
+	}
+
+	/// Makes ID a visible attribute, with a given value.
+	inline
+	void setId(const std::string & s){
+		link("id", id = s);
+	}
+
+
+	/// Returns ID of this element. Hopefully a unique ID...
+	inline
+	const std::string & getId() const {
+		return id;
+	}
+
+
 protected:
 
 	typedef std::map<std::string,std::string> xmldoc_attrib_map_t;
 
 	static xmldoc_attrib_map_t xmldoc_attribs;
 
-	inline
-	void addClass(){}
+	//inline	void addClass(){}
 
 	template <class V>
 	static inline
@@ -647,6 +746,52 @@ int NodeXML<N>::nextID = 0;
 
 template <class N>
 template <class T>
+bool NodeXML<N>::findById(const T & t, const std::string & id, typename T::path_t & result, const typename T::path_t & path){
+
+	if (t->id == id){
+		result = path;
+		return true;
+	}
+
+	// Recursion
+	for (const auto & entry: t){
+		if (findById(entry.second, id, result, path_t(path, entry.first))){
+			return true;
+		}
+	}
+
+	return false;
+	//return !result.empty();
+}
+
+/*
+template <class V>
+static
+bool typename V::node_t::findById(const V & t, const std::string & tag, typename V::path_t & result, const typename V::path_t & path = typename V::path_t()){
+
+	return false;
+}
+*/
+/*
+template <class T>
+bool typename T::node_t::findById(const typename T & t, const std::string & id, typename T::path_t & result, const typename T::path_t & path){
+
+	if (t->id == id){
+		result = path;
+		return true;
+	}
+
+	for (const auto & entry: t){
+		return findByClass(entry.second, id, result, path_t(path, entry.first));
+	}
+
+	return false;
+	//return !result.empty();
+}
+*/
+
+template <class N>
+template <class T>
 bool NodeXML<N>::findById(const T & t, const std::string & id, NodeXML<>::path_list_t & result, const path_t & path){
 
 	if (t->id == id){
@@ -654,7 +799,7 @@ bool NodeXML<N>::findById(const T & t, const std::string & id, NodeXML<>::path_l
 	}
 
 	for (const auto & entry: t){
-		findByClass(entry.second, id, result, path_t(path, entry.first));
+		findById(entry.second, id, result, path_t(path, entry.first));
 	}
 
 	return !result.empty();
@@ -666,6 +811,8 @@ bool NodeXML<N>::findById(const T & t, const std::string & id, NodeXML<>::path_l
 template <class N>
 template <class T>
 bool NodeXML<N>::findByTag(const T & t, const N & tag, NodeXML<>::path_list_t & result, const path_t & path){
+
+	// const T & t = tree(path);
 
 	if (t->typeIs(tag)){
 		result.push_back(path);
@@ -683,11 +830,19 @@ template <class N>
 template <class T>
 bool NodeXML<N>::findByClass(const T & t, const std::string & cls, NodeXML<>::path_list_t & result, const path_t & path){
 
-	if (t->classList.find(cls) != t->classList.end()){
+	// drain::Logger mout(__FILE__,__FUNCTION__);
+
+	if (t->classList.has(cls)){
 		result.push_back(path);
 	}
+	/*
+	else {
+		mout.warn("excluding: ", path, ", has no class=", cls, ", yet has: ", t->classList);
+	}
+	*/
 
 	for (const auto & entry: t){
+		// mout.warn(t->get("name", "<name>"), "... continuing to: ", path_t(path, entry.first));
 		findByClass(entry.second, cls, result, path_t(path, entry.first));
 	}
 
@@ -695,6 +850,10 @@ bool NodeXML<N>::findByClass(const T & t, const std::string & cls, NodeXML<>::pa
 }
 
 
+/// Note: Not designed for XML output, this is more for debugging (in tree dumps),
+/**
+ *
+ */
 template <class N>
 inline
 std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
@@ -708,7 +867,8 @@ std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
 	}
 	if (!node.classList.empty()){
 		//ostr << '['; // has already braces []
-		drain::Sprinter::toStream(ostr, node.classList, drain::Sprinter::pythonLayout);
+		//drain::Sprinter::toStream(ostr, node.classList, drain::Sprinter::pythonLayout);
+		drain::Sprinter::toStream(ostr, node.classList, ClassListXML::layout);
 		//ostr << ']' << ' ';
 		ostr << ' ';
 	}
@@ -730,7 +890,7 @@ std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
 	return ostr;
 }
 
-/// Output function shared for all XML documents, ie versions defined in subclasses.
+/// XML output function shared for all XML documents, ie versions defined in subclasses.
 /**
  *  TODO: preamble/prologToStream()
  *
@@ -774,7 +934,8 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 		//char sep=' ';
 		if (!tree->classList.empty()){
 			ostr << " class=\"";
-			std::copy(tree->classList.begin(), tree->classList.end(), std::ostream_iterator<std::string>(ostr, " "));
+			drain::Sprinter::toStream(ostr, tree->classList, ClassListXML::layout);
+			// std::copy(tree->classList.begin(), tree->classList.end(), std::ostream_iterator<std::string>(ostr, " "));
 			ostr << '"'; //ostr << "\"";
 		}
 

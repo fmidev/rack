@@ -125,6 +125,20 @@ public:
 	Path() : separator(SEP, ALEAD, AREPEAT, ATRAIL){
 	};
 
+	/// Copy constructor.
+	inline
+	Path(const path_t & p) : std::list<T>(p), separator(p.separator){
+	};
+
+	/// Secondary copy constructor. Handy for creating a parent path, for example.
+	inline
+	Path(typename path_t::const_iterator it, typename path_t::const_iterator it2) : separator(SEP, ALEAD, AREPEAT, ATRAIL) {
+		while (it != it2){
+			append(*it);
+			++it;
+		}
+	};
+
 	/// Initialize with a path.
 	// All the elements are treated as paths.
 	template <typename ... TT>
@@ -160,10 +174,6 @@ public:
 	};
 	*/
 
-	/// Copy constructor.
-	inline
-	Path(const path_t & p) : std::list<T>(p), separator(p.separator){
-	};
 
 
 

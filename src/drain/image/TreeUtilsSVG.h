@@ -38,10 +38,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TREE_UTILS_SVG
 #define DRAIN_TREE_UTILS_SVG
 
-//#include <drain/util/Rectangle.h>
+//
 
 #include <drain/util/Frame.h>
 #include <drain/util/Flags.h>
+#include <drain/util/Rectangle.h>
 #include "TreeSVG.h"
 
 namespace drain {
@@ -99,15 +100,26 @@ struct TreeUtilsSVG {
 	static std::string defaultTitle;
 	*/
 
-	/// Computes the width and height for a bounding box covering non-overlappin IMAGE and RECT elements.
+	/// Returns the bounding box defined here as (x,y,width,height) of a single element.
+	static
+	bool getRect(TreeSVG & group, drain::Box<double> & rect);
+
+	/// Computes the width and height for a bounding box  IMAGE and RECT elements.
+	/**
+	 *  The result is the minimal bounding box that covers the IMAGE and RECT elements aligned non-overlapping in a row (orientation \c HORZ ) or a column (orientation \c VERT ).
+	 *
+	 */
 	static
 	void determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION);
 
-	/// Stack IMAGE and RECT elements within the frame (width x height)
+	/// Stack IMAGE and RECT elements within a frame (width x height) to a row or column
 	static
-	void align(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start={0,0},
+	void alignSequence(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start={0,0},
 			PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION, PanelConfSVG::Direction direction=PanelConfSVG::UNDEFINED_DIRECTION);
 
+	/// Moves TEXT elems to desired positions, esp corners (LEFT|RIGHT), (TOP|BOTTOM)
+	static
+	void alignText(TreeSVG & group);
 
 
 };

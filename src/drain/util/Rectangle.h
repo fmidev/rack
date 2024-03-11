@@ -52,6 +52,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+
+
+
 /// Rectange defined through lower left and upper right coordinates.
 /**
  *

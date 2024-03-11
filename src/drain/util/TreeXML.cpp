@@ -50,6 +50,9 @@ const SprinterLayout StyleXML::styleRecordLayout("\n\n\n", "", "","{\n}",  "\t "
 const SprinterLayout StyleXML::styleRecordLayoutActual("{\n}","(.)", " :;","","\t ");
 // Consider making <STYLE-ITEM> elements, with name (composed of tag(s?) , and attribs like
 
+/// Uses spaces as separators.
+const SprinterLayout ClassListXML::layout = {" ", "", "", ""}; // , "\n", "=", ""};
+
 //
 /*
 const SprinterLayout Sprinter::pythonLayout("[,]", "{,}",  "(,)", "\"\"", "''", ":"); // last ':' means plain map entries (not tuples as in C++)
