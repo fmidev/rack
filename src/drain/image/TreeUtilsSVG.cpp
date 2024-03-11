@@ -288,7 +288,7 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 						locationLabel += "-C";
 					}
 					else if (elem->hasClass("RIGHT")){
-						elem->set("x", box.width - textOffset.x);
+						elem->set("x",  box.x + box.width - textOffset.x);
 						elem->setStyle("text-anchor", "end");
 						locationLabel += "-R";
 					}
@@ -305,7 +305,7 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 						elem->set("y", box.y + 0.5*box.height + textOffset.y + fontSize*index); // FIX: should be SUM of invidual row widths
 					}
 					else if (elem->hasClass("BOTTOM")){
-						elem->set("y", box.height - textOffset.y - fontSize*index); // FIX: should be SUM of invidual row widths
+						elem->set("y", box.y + box.height - textOffset.y - fontSize*index); // FIX: should be SUM of invidual row widths
 					}
 					else { // Default: elem->hasClass("TOP")
 						elem->set("y", box.y + textOffset.y + fontSize*(index+1)); // FIX: should be SUM of invidual row widths

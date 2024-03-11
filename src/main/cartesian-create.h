@@ -73,6 +73,8 @@ public:
 		composite.reset();
 		composite.dataSelector.reset();
 		composite.odim.clear();
+		composite.nodeMap.clear();
+		//composite.odim.source.clear();
 
 		// mout.attention("Composite counter N=", composite.odim.ACCnum, ")");
 

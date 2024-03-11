@@ -813,13 +813,14 @@ public:
 
 			// Currently, copying is possible only afterwards
 			if (graySrc.hasAlphaChannel()){
-				mout.experimental("copying alpha channel " );
+				mout.experimental<LOG_INFO>("copying alpha channel " );
 				//data.data.setGeometry(graySrc.getGeometry(), 3, 1);
 				data.data.setAlphaChannelCount(1);
 				data.data.getAlphaChannel().copyData(graySrc.getAlphaChannel());
 			}
 
-
+			// NEW 2024/03
+			DataTools::updateInternalAttributes(dst);
 
 			size_t channels = data.data.getChannelCount();
 			if (channels == 0){

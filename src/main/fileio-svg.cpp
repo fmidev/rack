@@ -185,11 +185,7 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 
 TreeSVG & getTextElem(TreeSVG & parent, const TreeSVG & current, const std::string key){
 
-
-
-	// Start from image coords.
-
-	std::string name = current->get("name", "img?");
+	std::string name = current->get("name", "unknown-image");
 
 	static
 	const drain::ClassListXML timeClass = {"time", "date"};
@@ -215,8 +211,6 @@ TreeSVG & getTextElem(TreeSVG & parent, const TreeSVG & current, const std::stri
 		text->set("ref", current->getId());
 		text->set("x", x + 2);
 		text->set("y", y + 20);
-		// text->setStyle("fill", "darkblue"); // "slateblue");
-		// text->setStyle("stroke:white; stroke-width:0.5em; fill:black; paint-order:stroke; stroke-linejoin:round");
 		text->addClass("FLOAT", "imageTitle"); // "imageTitle" !
 	}
 
@@ -277,40 +271,6 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 	}
 
 
-	//if ((current->getType() == svg::GROUP) && (current->hasClass("imageSet"))){ // = row or column
-	/*
-	if (false){ // = row or column
-		// Row / column stuff?
-		int x = NodeSVG::xml_node_t::getCount() * 2;
-		int y = x;
-
-		TreeSVG & titleBox = current["titleBox"](NodeSVG::RECT);
-		titleBox->set("name", "titleBox");
-		titleBox->set("x", x);
-		titleBox->set("y", y);
-		titleBox->set("width", 200);
-		titleBox->set("height", 30);
-		titleBox->addClass("imageSetTitle");
-		titleBox->setStyle("fill:darkblue; opacity:0.5;");
-
-		TreeSVG & text = current["titleText"](svg::TEXT);
-		text->set("name", "titleText");
-		text->set("x", x + 2);
-		text->set("y", y + 20);
-		//text->set("text-anchor", "reijo");
-		// text->setText(path.str());
-		for (const auto & attr: metadata->getAttributes()){
-			// consider str replace
-			TreeSVG & tspan = text[attr.first](svg::TSPAN);
-			tspan->addClass(attr.first);
-			tspan->ctext = attr.second.toStr();
-			tspan->ctext += "&#160;"; // space
-			//entry.second->set(key, "*"); // TODO: remove attribute
-		}
-
-		return 0;
-	}
-	else */
 	if (current->getType() == svg::IMAGE){
 
 		TreeSVG::path_t parentPath(path.begin(), --path.end());
@@ -323,23 +283,6 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		}
 
 		TreeSVG & parent = tree(parentPath);
-
-		// Start from image coords.
-		/*
-		int x = current->get("x", 0);
-		int y = current->get("y", 0);
-
-		std::string name = current->get("name", "img?");
-		TreeSVG & text = parent[name+"_title"](svg::TEXT);
-		text->set("ref", name);
-		text->set("x", x + 2);
-		text->set("y", y + 20);
-		//text->setStyle("fill", "slateblue");
-		text->setStyle("fill", "darkblue");
-		// text->setStyle("stroke:white; stroke-width:0.5em; fill:black; paint-order:stroke; stroke-linejoin:round");
-		//text->addClass("imageTitle");
-		text->addClass("FLOAT", "TITLE");
-		 */
 
 		for (const auto & attr: metadata->getAttributes()){
 			// consider str replace
@@ -542,49 +485,11 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 		drain::Frame2D<int> frame;
 		TreeUtilsSVG::determineBBox(group, frame, ctx.svgPanelConf.orientation);
 
-		// METADATA -> title
-		if (false){
-			/*
-			TreeSVG & titleBox = group["titleBox"](NodeSVG::RECT);
-			titleBox->addClass("FIXED");
-			titleBox->set("width", frame.width);
-			titleBox->set("height", titleBoxHeight);
-			titleBox->setStyle("fill:darkblue; opacity:0.25;");
-			if (orientation == TreeUtilsSVG::HORZ){
-				titleBox->set("x", 0);
-				titleBox->set("y", start.y - 10);
-			}
-			else {
-				titleBox->set("x", start.x);
-				titleBox->set("y", 0);
-			}
-			TreeSVG & titleText = group["titleText"](NodeSVG::TEXT);
-			titleText->addClass("FLOAT");
-			// titleText->setStyle("stroke:darkgreen; font-size: 25");
-			titleText = "Radar data";
-			*/
-		}
-
-		/*
-		TreeSVG & titleBox = group["titleBox"](NodeSVG::RECT);
-		titleBox->addClass("FLOAT");
-		titleBox->setStyle("fill:darkslateblue; opacity:75%;");
-		if (orientation == TreeUtilsSVG::HORZ){
-			titleBox->set("width", frame.width);
-			titleBox->set("height", titleBoxHeight);
-			TreeSVG & titleText = group["titleText"](NodeSVG::TEXT);
-			titleText->addClass("FLOAT");
-			titleText->setStyle("stroke", "lightblue");
-			titleText = "Radar data";
-
-			}
-		*/
-
 		mout.attention("aligning sequence: start:",  start.tuple(), ", frame: ", frame.tuple());
 		drain::image::TreeUtilsSVG::alignSequence(group, frame, start, ctx.svgPanelConf.orientation, ctx.svgPanelConf.direction);
 
 
-		/// Collect
+		// Collect (unneeded)
 		/*
 		TitleCollectorSVG titleCollecor;
 		drain::TreeUtils::traverse(titleCollecor, group);
@@ -637,19 +542,29 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 		TitleCreatorSVG titleCollector;
 		drain::TreeUtils::traverse(titleCollector, ctx.svgTrack); // or mainTrack enough?
 
-		// IMAGE HEADER - positions
-		// mout.attention("aligning texts of: ", group -> getTag());
-		drain::image::TreeUtilsSVG::alignText(mainGroup);
 
-		// MAIN HEADER
+		// MAIN HEADER(s)
 		if (mainGroup.hasChild("metadata")){ // hmmm
+
 			TreeSVG & headerRect = ctx.svgTrack["headerRect"](svg::RECT);
-			headerRect->setStyle("fill:slateblue");
+			//headerRect->setStyle("fill:slateblue");
+			headerRect->setId();
+			headerRect->setStyle("fill:darkblue");
 			headerRect->setStyle("opacity:0.25");
 			headerRect->set("x", 0);
 			headerRect->set("y", -titleCollector.mainHeaderHeight);
 			headerRect->set("width",  mainFrame.getWidth());
 			headerRect->set("height", titleCollector.mainHeaderHeight);
+
+			TreeSVG & headerLeft = ctx.svgTrack["headerLeft"](svg::TEXT);
+			headerLeft->addClass("FLOAT", "LEFT");
+			headerLeft->set("ref", headerRect->getId());
+			headerLeft->setText("left");
+
+			TreeSVG & headerRight = ctx.svgTrack["headerRight"](svg::TEXT);
+			headerRight->addClass("FLOAT", "RIGHT");
+			headerRight->set("ref", headerRect->getId());
+			headerRight->setText("right");
 
 			TreeSVG & headerText = ctx.svgTrack["headerText"](svg::TEXT);
 			headerText->set("x", 8);
@@ -686,6 +601,9 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 
 		}
 
+		// IMAGE HEADER and MAIN HEADER positions
+		// mout.attention("aligning texts of: ", group -> getTag());
+		drain::image::TreeUtilsSVG::alignText(mainGroup);
 
 	}
 
