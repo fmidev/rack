@@ -54,20 +54,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/prog/CommandInstaller.h"
 
 
-#include "rack.h"
+
+#include "data/DataCoder.h"
 #include "data/ODIM.h"
 #include "data/ODIMValidator.h"
-#include "data/DataCoder.h"
+#include "data/VariableFormatterODIM.h"
 #include "hi5/Hi5.h"
 
 #include "product/DataConversionOp.h"
 #include "andre/DetectorOp.h"
 
+#include "rack.h"
 #include "resources.h"
 #include "commands.h"
 
-namespace rack {
 
+namespace rack {
 
 
 /// Utility. Consider long names, and then addShortKeys()
