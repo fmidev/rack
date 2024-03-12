@@ -58,7 +58,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/DataCoder.h"
 #include "data/ODIM.h"
 #include "data/ODIMValidator.h"
-#include "data/VariableFormatterODIM.h"
+// #include "data/VariableFormatterODIM.h"
 #include "hi5/Hi5.h"
 
 #include "product/DataConversionOp.h"
@@ -1605,9 +1605,8 @@ public:
 		drain::StringMapper statusFormatter(RackContext::variableMapper);
 		statusFormatter.parse(value+'\n', true);
 
-		//VariableFormatterODIM<drain::FlexibleVariable> odimHandler;
-		VariableFormatterODIM<drain::Variable> odimHandler;
-		statusFormatter.toStream(std::cout, ctx.getStatusMap(), 0, odimHandler);
+		// VariableFormatterODIM<drain::Variable> odimHandler;
+		statusFormatter.toStream(std::cout, ctx.getStatusMap(), 0, RackContext::variableFormatter);
 
 	}
 };
@@ -1651,7 +1650,8 @@ public:
 			else {
 				drain::StringMapper filenameFormatter(RackContext::variableMapper);
 				filenameFormatter.parse(ctx.outputPrefix + value, false);  //filename = mapper.toStr(ctx.getStatusMap());
-				outFileName = filenameFormatter.toStr(statusMap);
+				// Consider here or shared: VariableFormatterODIM<drain::Variable> odimHandler;
+				outFileName = filenameFormatter.toStr(statusMap, -1, RackContext::variableFormatter);
 				//outFileName = ctx.outputPrefix + value;
 			}
 			mout.info("writing " , outFileName );
@@ -1659,9 +1659,8 @@ public:
 			//mout.warn(ctx.getStatus() );
 			//std::ofstream ofstr(outFileName.c_str(), std::ios::out);
 			if (ofstr){
-				//VariableFormatterODIM<drain::FlexibleVariable> odimHandler;
-				VariableFormatterODIM<drain::Variable> odimHandler;
-				statusFormatter.toStream(ofstr, statusMap, 0, odimHandler);
+				// VariableFormatterODIM<drain::Variable> odimHandler;
+				statusFormatter.toStream(ofstr, statusMap, 0, RackContext::variableFormatter); // odimHandler);
 			}
 			else
 				mout.warn("write error: " , outFileName );

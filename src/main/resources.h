@@ -50,6 +50,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/DataSelector.h"
 #include "data/PolarODIM.h"
 #include "data/ProductConf.h"
+#include "data/VariableFormatterODIM.h"
 #include "radar/Composite.h"
 #include "radar/RadarAccumulator.h"
 
@@ -206,8 +207,11 @@ public:
 	};
 
 
+	static
+	const VariableFormatterODIM<drain::Variable> variableFormatter;
 
-
+	static
+	const VariableFormatterODIM<drain::FlexibleVariable> flexVariableFormatter;
 
 //private:
 protected:

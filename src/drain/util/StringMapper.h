@@ -420,9 +420,9 @@ public:
 	 *  \par clear - if true, expand undefined variables as empty std::strings, else leave variable entry
 	 */
 	template <class T>
-	std::string toStr(const std::map<std::string,T> &m, int replaceChar = -1) const {
+	std::string toStr(const std::map<std::string,T> &m, int replaceChar = -1, const VariableFormatter<T> & formatter = VariableFormatter<T>()) const {
 		std::stringstream s;
-		toStream(s, m, replaceChar);
+		toStream(s, m, replaceChar, formatter);
 		return s.str();
 	}
 

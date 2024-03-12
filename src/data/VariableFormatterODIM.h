@@ -57,23 +57,21 @@ public:
 	virtual
 	bool formatVariable(const std::string & key, const std::map<std::string,T> & variables, const std::string & format, std::ostream & ostr) const {
 
-		drain::Logger mout(__FILE__, __FUNCTION__);
+		// drain::Logger mout(__FILE__, __FUNCTION__);
 		// mout.warn("trying time format: ", key, " + ", format);
-		// MOVE https://cplusplus.com/reference/cstdio/printf/ ->  drain::StringMapper /VariableHandler
-
 		if (format.find('%') != std::string::npos){
-			// Time formatting or C-stype printf formatting.
+			// Time formatting (instead of C-stype printf formatting)
 			if (drain::StringTools::endsWith(key, "date")){
 				std::string s;
 				drain::MapTools::get(variables, key, s);
-				mout.warn("time format: ", key, " -> ", s, '+', format); //  " -> ", t.str(), " => ", t.str(key));
+				// mout.warn("time format: ", key, " -> ", s, '+', format); //  " -> ", t.str(), " => ", t.str(key));
 				ostr << drain::Time(s, "%Y%m%d").str(format);
 				return true;
 			}
 			else if (drain::StringTools::endsWith(key, "time")){
 				std::string s;
 				drain::MapTools::get(variables, key, s);
-				mout.warn("time format: ", key, " -> ", s, '+', format); // , " -> ", t.str(), " => ", t.str(key));
+				// mout.warn("time format: ", key, " -> ", s, '+', format); // , " -> ", t.str(), " => ", t.str(key));
 				ostr << drain::Time(s, "%H%M%S").str(format);
 				return true;
 			}

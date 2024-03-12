@@ -71,6 +71,11 @@ RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), Ima
 //const drain::StringMapper RackContext::variableMapper("", "[a-zA-Z0-9][a-zA-Z0-9_:]*(\\|[^}]*)?");
 const drain::StringMapper RackContext::variableMapper("", "[a-zA-Z0-9][a-zA-Z0-9_:]*"); // NEW: post processing separated
 
+const VariableFormatterODIM<drain::Variable> RackContext::variableFormatter;
+
+const VariableFormatterODIM<drain::FlexibleVariable> RackContext::flexVariableFormatter;
+
+
 // sstr << "^(.*)\\$\\{(" << chars << ")\\}(.*)$";
 // const drain::RegExp RackContext::variableMapperSyntax("^(.*)\\$\\{[a-zA-Z0-9:_]+)\\}(.*)$", REG_EXTENDED);
 

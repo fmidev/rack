@@ -89,22 +89,6 @@ void CmdInputFile::exec() const {
 
 	try {
 
-		/*
-		if (hi5::fileInfo.checkExtension(format)){ // "h5", "hdf", "hdf5"
-				handleParams(hdf5Conf, params);
-			}
-			else if (drain::image::FilePng::fileInfo.checkExtension(format)){
-				handleParams(pngConf, params);
-			}
-			else if (drain::image::FilePnm::fileInfo.checkExtension(format)){
-				mout.unimplemented("(no parameters supported for PPM/PGM )");
-			}
-			else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
-				handleParams(gtiffConf, params);
-				//mout.note("keys", gtiffConf.getKeys());
-			}
-		*/
-
 		if (hi5::fileInfo.checkExtension(path.extension) || NO_EXTENSION){
 			if (NO_EXTENSION){
 				mout.discouraged("No file extension! Assuming HDF5...");

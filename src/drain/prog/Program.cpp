@@ -76,7 +76,7 @@ void Program::run() const {
 		}
 
 		//Command & cmd = *(*it);
-		mout.warn() << "  executing " << entry.first << "-> " <<  cmd.getName() << '(' << cmd.getParameters() << ')' << mout.endl;
+		mout.warn("  executing ", entry.first, "-> ",  cmd.getName(), '(', cmd.getParameters(), ')');
 		//mout.note() << "  context: "  << cmd.getContext<>().getId() << mout.endl;
 		cmd.exec();
 	}

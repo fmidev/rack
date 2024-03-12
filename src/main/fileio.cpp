@@ -367,9 +367,10 @@ void CmdOutputFile::exec() const {
 
 	if (!STD_OUTPUT){
 		const drain::VariableMap & statusMap = ctx.getStatusMap();
-		drain::StringMapper mapper(RackContext::variableMapper);
-		mapper.parse(ctx.outputPrefix + value);
-		filepath = mapper.toStr(statusMap);
+		drain::StringMapper filenameMapper(RackContext::variableMapper);
+		filenameMapper.parse(ctx.outputPrefix + value);
+		// VariableFormatterODIM<drain::Variable> odimHandler;
+		filepath = filenameMapper.toStr(statusMap, -1, RackContext::variableFormatter); // odimHandler);
 		/*
 		if (!ctx.outputPrefix.empty()){
 			mapper.parse(ctx.outputPrefix);
@@ -641,7 +642,7 @@ void CmdOutputFile::exec() const {
 			selector.getPaths(src, paths);
 
 			//class OnDIMVariableHandler
-			VariableFormatterODIM<drain::FlexibleVariable> odimHandler;
+			// VariableFormatterODIM<drain::FlexibleVariable> odimHandler;
 
 			for (const ODIMPath & path: paths){
 				mout.special<LOG_DEBUG+1>('\t', path);
@@ -656,7 +657,7 @@ void CmdOutputFile::exec() const {
 				}
 				*/
 				//statusFormatter.toStream(output, src(path).data.image.properties);
-				statusFormatter.toStream(output, vmap, 0, odimHandler);
+				statusFormatter.toStream(output, vmap, 0, RackContext::flexVariableFormatter); // odimHandler);
 			}
 		}
 
