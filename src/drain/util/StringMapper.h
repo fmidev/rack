@@ -39,12 +39,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "IosFormat.h"
 #include "Log.h"
-#include "SmartMapTools.h"
+//#include "SmartMapTools.h"
 #include "RegExp.h"
 #include "Sprinter.h"
 #include "String.h"
 #include "Time.h"
 #include "Variable.h"
+#include "VariableFormatter.h"
 
 namespace drain {
 
@@ -97,41 +98,21 @@ std::ostream & operator<<(std::ostream & ostr, const Stringlet & s) {
 
 
 
-
+/*
 template <class T>
 class VariableHandler {
 
 public:
 
-	inline
+	inline virtual
 	~VariableHandler(){};
 
 	IosFormat iosFormat;
 
-	/// Default
-	/**
-	 *  \return true if handles.
-	 */
-	/*
-		typename std::map<std::string,T>::const_iterator it = variables.find(key);
-		if (it != variables.end()){
-			iosFormat.copyTo(ostr);
-			//ostr.width(width);
-			//std::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
-			//std::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
-			ostr <<  it->second;
-			return true;
-		}
-		else {
-			return false;
-		}
-	 */
 
 	/// Searches given key in a map, and if found, processes (formats) the value to ostream.  Return false, if variable not found.
-	/**
-	 *   Return false, if variable not found.
-	 *   Then, further processors may handle the variable tag (remove, change, leave it).
-	 */
+	//  Return false, if variable not found.
+	//  Then, further processors may handle the variable tag (remove, change, leave it).
 	virtual
 	bool handle(const std::string & key, const std::map<std::string,T> & variables, std::ostream & ostr) const {
 
@@ -274,7 +255,7 @@ public:
 
 
 };
-
+*/
 
 
 
@@ -399,7 +380,7 @@ public:
 	 *  \par clear - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
 	 */
 	template <class T>
-	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = 0, const VariableHandler<T> &handler = VariableHandler<T>()) const {
+	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = 0, const VariableFormatter<T> &handler = VariableFormatter<T>()) const {
 
 		for (const Stringlet & stringlet: *this){
 
