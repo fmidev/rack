@@ -1586,7 +1586,7 @@ class CmdEcho : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdEcho() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dumps a formatted std::string to stdout.", "format","","std::string") {
+	CmdEcho() : drain::SimpleCommand<std::string>(__FUNCTION__, "For testing. Dumps a formatted string to stdout.", "format","","std::string") {
 	};
 
 	void exec() const {
@@ -1602,7 +1602,10 @@ public:
 		//drain::StringMapper statusFormatter("[a-zA-Z0-9:_]+");
 		drain::StringMapper statusFormatter(RackContext::variableMapper);
 		statusFormatter.parse(value+'\n', true);
-		statusFormatter.toStream(std::cout, ctx.getStatusMap());
+
+		//VariableFormatterODIM<drain::FlexibleVariable> odimHandler;
+		VariableFormatterODIM<drain::Variable> odimHandler;
+		statusFormatter.toStream(std::cout, ctx.getStatusMap(), 0, odimHandler);
 
 	}
 };
@@ -1653,8 +1656,11 @@ public:
 			drain::Output ofstr(outFileName);
 			//mout.warn(ctx.getStatus() );
 			//std::ofstream ofstr(outFileName.c_str(), std::ios::out);
-			if (ofstr)
-				statusFormatter.toStream(ofstr, statusMap);
+			if (ofstr){
+				//VariableFormatterODIM<drain::FlexibleVariable> odimHandler;
+				VariableFormatterODIM<drain::Variable> odimHandler;
+				statusFormatter.toStream(ofstr, statusMap, 0, odimHandler);
+			}
 			else
 				mout.warn("write error: " , outFileName );
 			//strm.toStream(ofstr, cmdStatus.statusMap.exportMap());

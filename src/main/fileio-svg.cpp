@@ -392,7 +392,7 @@ drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what 
 
 void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
 
-	drain::image::TreeSVG & group = getCurrentGroup(ctx);
+	drain::image::TreeSVG & group = getCurrentGroup(ctx); // [filepath.basename+"_Group"](NodeSVG::GROUP);
 
 	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
 
@@ -417,7 +417,9 @@ void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, co
 		metadata->set("NOD", odim.NOD);
 		metadata->set("PLC", odim.PLC);
 	}
-	for (const std::string key: {"what:date", "what:time", "what:object", "what:quantity", "where:elangle", "where:elangles"}){
+
+	// "what:object",
+	for (const std::string key: {"what:date", "what:time", "what:quantity", "where:elangle", "prevCmdKey"}){
 		if (src.properties.hasKey(key)){
 			size_t i = key.find(':');
 			if (i == std::string::npos){
@@ -430,12 +432,16 @@ void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, co
 		}
 	}
 
+	// todo: description  : prevCmdKey "what:product", "what:prodpar", "how:angles"
+
 }
 
 
 void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath){ // what about prefix?
 
-	drain::image::TreeSVG & group = getCurrentGroup(ctx);
+	drain::image::TreeSVG & group = getCurrentGroup(ctx); //[filepath.basename+"_Group"](NodeSVG::GROUP);
+
+	//drain::image::TreeSVG & imageGroup = group[filepath.basename](NodeSVG::GROUP);
 
 	drain::image::TreeSVG & image = group[filepath.basename](NodeSVG::IMAGE); // +EXT!
 	image->addClass("float", "legend");

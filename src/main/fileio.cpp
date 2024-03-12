@@ -332,49 +332,6 @@ public:
 
 };
 
-template <class T>
-class VariableFormatterODIM : public drain::VariableHandler<T>{
-
-public:
-
-	virtual inline
-	~VariableFormatterODIM(){};
-
-	/// Checks if variables have ODIM names (keys), and apply special formatting (currently with time stamps)
-	/**
-	 *
-	 */
-	virtual
-	bool formatVariable(const std::string & key, const std::map<std::string,T> & variables, const std::string & format, std::ostream & ostr) const {
-
-		// drain::Logger mout(__FILE__, __FUNCTION__);
-		// mout.warn("trying time format: ", key, " + ", format);
-		// MOVE https://cplusplus.com/reference/cstdio/printf/ ->  drain::StringMapper /VariableHandler
-
-		if (format.find('%') != std::string::npos){
-			// Time formatting or C-stype printf formatting.
-			if (drain::StringTools::endsWith(key, "date")){
-				std::string s;
-				drain::MapTools::get(variables, key, s);
-				// mout.warn("time format: ", key, " -> ", k, '+', format, " -> ", t.str(), " => ", t.str(key));
-				ostr << drain::Time(s, "%Y%m%d").str(format);
-				return true;
-			}
-			else if (drain::StringTools::endsWith(key, "time")){
-				std::string s;
-				drain::MapTools::get(variables, key, s);
-				// mout.warn("time format: ", key, " -> ", k, '+', format, " -> ", t.str(), " => ", t.str(key));
-				ostr << drain::Time(s, "%H%M%S").str(format);
-				return true;
-			}
-		}
-
-		return drain::VariableHandler<T>::formatVariable(key, variables, format, ostr); // basic/trad.
-	}
-
-
-};
-
 
 
 void CmdOutputFile::exec() const {

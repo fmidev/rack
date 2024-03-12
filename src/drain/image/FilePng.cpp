@@ -96,6 +96,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 		fclose(fp);
 		mout.error("could not allocate memory for file: " , path );
 		//throw std::runtime_error(std::string("FilePng: could not allocate memory for: ")+path);
+		return;
 	}
 
 	png_infop info_ptr = png_create_info_struct(png_ptr);
@@ -104,6 +105,7 @@ void FilePng::write(const ImageFrame & image, const std::string & path){
 	   fclose(fp);
 	   mout.error("could not allocate memory for file: " , path );
 	   //throw std::runtime_error(std::string("FilePng: could not allocate toOStr memory for: ")+path);
+	   return;
 	}
 
 
