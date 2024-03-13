@@ -86,7 +86,7 @@ bool TreeUtilsSVG::getRect(TreeSVG & group, Box<double> & rect){
 
 }
 
-void TreeUtilsSVG::determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, PanelConfSVG::Orientation orientation){
+void TreeUtilsSVG::getBoundingFrame(TreeSVG & group, Frame2D<int> & frame, PanelConfSVG::Orientation orientation){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -97,9 +97,32 @@ void TreeUtilsSVG::determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, P
 		}
 	}
 
-	// Loop 1: detect collective width and height
+	NodeSVG::path_list_t paths;
+	// TODO / FIX: set of allowed tags, to get them in order of appearance.
+	NodeSVG::findByTags(group, {svg::IMAGE,svg::RECT} , paths);
+	//NodeSVG::findByTag(group, svg::RECT,  paths); // also SVG ? (legends)
+
 	frame.set(0, 0);
-	//frame.height = 0;
+
+	for (const NodeSVG::path_t  & p: paths){
+
+		const TreeSVG & elem = group(p);
+
+		if (!elem->hasClass("FLOAT")){
+			if (orientation == PanelConfSVG::HORZ){
+				frame.width  += elem->get("width");
+				frame.height  = std::max(frame.height, elem->get("height", 0));
+				mout.warn("updated frame HORZ: ", frame.tuple());
+			}
+			else {
+				frame.width   = std::max(frame.width, elem->get("width", 0));
+				frame.height += elem->get("height");
+				mout.warn("updated frame VERT: ", frame.tuple());
+			}
+		}
+	}
+
+	/*
 	for (const auto & entry : group.getChildren()){ //
 		const drain::image::TreeSVG & elem = entry.second;
 		if ((elem->getType() == svg::IMAGE) || (elem->getType() == svg::RECT)){
@@ -116,11 +139,13 @@ void TreeUtilsSVG::determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, P
 				}
 			}
 		}
-		// recursion?
 	}
+	*/
+
+	group->set("data-frame", frame.tuple());
 
 	if (mout.isDebug()){
-		group->set("_frame", frame.tuple());
+
 	}
 
 	// bbox.set(0, 0, width, height);
@@ -151,7 +176,6 @@ void TreeUtilsSVG::alignSequence(TreeSVG & group, const drain::Frame2D<int> & fr
 	Point2D<int> pos(0,0);
 
 	if (direction==PanelConfSVG::DECR){
-
 		if (orientation==PanelConfSVG::HORZ){
 			pos.x = frame.width;
 		}
@@ -168,16 +192,23 @@ void TreeUtilsSVG::alignSequence(TreeSVG & group, const drain::Frame2D<int> & fr
 	pos.y += start.y;
 
 	Point2D<int> offset;
-	// int widthPrev = 0;
-	// int offset.y = 0;
 
-	for (auto & entry : group.getChildren()){ //
+	NodeSVG::path_list_t paths;
 
-		TreeSVG & elem = entry.second;
+	NodeSVG::findByTags(group, {svg::IMAGE,svg::RECT,svg::TEXT}, paths);
+	//NodeSVG::findByTag(group, svg::RECT,  paths);
+	//NodeSVG::findByTag(group, svg::TEXT,  paths);
+
+	for (const NodeSVG::path_t  & p: paths){
+
+		TreeSVG & elem = group(p);
+	// for (auto & entry : group.getChildren()){ //
+		// TreeSVG & elem = entry.second;
+
 		NodeSVG::elem_t t = elem->getType();
 
 		if (elem->hasClass("FIXED"))
-				continue;
+			continue;
 
 		// elem->addClass(FlagResolver::getKeys(drain::EnumDict<PanelConfSVG::Orientation>::dict, orientation, ' '));
 		//elem->addClass(PanelConfSVG::OrientationFlagger::getValueNEW("mika"));

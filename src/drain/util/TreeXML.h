@@ -335,6 +335,20 @@ public:
 		}
 	}
 
+	template <class X>
+	inline
+	void set(const std::map<std::string, X> & args){
+		// TODO: redirect to set(key,value), for consistency
+		if (type == STYLE){
+			drain::SmartMapTools::setValues(style, args);
+		}
+		else {
+			drain::SmartMapTools::setValues<map_t,true>(getAttributes(), args);       // add new keys
+			// drain::SmartMapTools::setValues<map_t,false>((map_t &)*this, l);   // update only
+		}
+	}
+
+
 	template <class V>
 	inline
 	void set(const std::string & key, const V & value){
@@ -605,6 +619,13 @@ public:
 	static
 	bool findByTag(const V & tree, const T & tag, path_list_t & result, const path_t & path = path_t());
 
+
+	/// "Forward definition"
+	//   This could also be in TreeXMLutilities
+	template <class V>
+	static
+	bool findByTags(const V & tree, const std::set<T> & tags, path_list_t & result, const path_t & path = path_t());
+
 	/// "Forward definition"
 	//   This could also be in TreeXMLutilities
 	template <class V>
@@ -825,6 +846,29 @@ bool NodeXML<N>::findByTag(const T & t, const N & tag, NodeXML<>::path_list_t & 
 	//return result;
 	return !result.empty();
 }
+
+/**
+ *  \tparam Tree
+ */
+template <class N>
+template <class T>
+bool NodeXML<N>::findByTags(const T & t, const std::set<N> & tags, NodeXML<>::path_list_t & result, const path_t & path){
+
+	// const T & t = tree(path);
+
+	//if (t->typeIs(tag)){
+	if (tags.count(t->getType()) > 0){
+		result.push_back(path);
+	}
+
+	for (const auto & entry: t){
+		findByTags(entry.second, tags, result, path_t(path, entry.first));
+	}
+
+	//return result;
+	return !result.empty();
+}
+
 
 template <class N>
 template <class T>

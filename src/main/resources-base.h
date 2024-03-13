@@ -109,14 +109,9 @@ public:
 
 	std::string paletteKey;
 
-
 	// New: SVG
 	drain::image::TreeSVG svgTrack;
-	// std::string svgGroup;
 	drain::image::PanelConfSVG svgPanelConf;
-	// drain::image::PanelConfSVG::OrientationFlagger svgOrientation;
-	//drain::image::PanelConfSVG::DirectionFlagger svgDirection;
-	//drain::TreeXML xmlTrack;
 
 	// New
 	inline
@@ -131,10 +126,11 @@ public:
 		return drain::image::PaletteOp::getPalette(key);
 	}
 
-
+	/*
 	struct {
 		drain::Point2D<unsigned short> tilesize = 256;
 	} geotiff;
+	*/
 	/// Protected:
 
 	/// Given image pointer (null ok), get properties.

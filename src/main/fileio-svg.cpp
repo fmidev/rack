@@ -44,7 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-
+/*
 int MetaDataCollectorSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
 	return 0;
 }
@@ -66,17 +66,16 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 		if (child.hasChild("metadata")){
 			TreeSVG & metadata = current["metadata"](svg::METADATA);
 			metadata->getAttributes().importCastableMap(entry.second["metadata"]->getAttributes());
-			/*
 			for (const auto & attr: entry.second["metadata"]->getAttributes()){
-				metadata->set(attr.first, attr.second);
+				//metadata->set(attr.first, attr.second);
 			}
-			*/
 		}
 	}
 
 	return 0;
 
 }
+*/
 
 
 int MetaDataPrunerSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
@@ -85,6 +84,7 @@ int MetaDataPrunerSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path)
 
 	return 0;
 }
+
 
 
 int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
@@ -118,71 +118,115 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 		}
 	}
 
-	TreeSVG & metadata = current["metadata"](svg::METADATA);
-	/// Collective (union)
-	// TreeSVG & metadata = current["metadataPlain"](svg::METADATA);
-	// metadata->getAttributes().clear();
-	// metadata->set("name", "simple");
-	TreeSVG & debugAll = current["all"](svg::COMMENT);
-	debugAll->ctext = "All: ";
 
-	TreeSVG & debugAccepted = current["accepted"](svg::COMMENT);
-	debugAccepted->ctext = "SHARED: ";
+	if (count > 0){
 
-	TreeSVG & debugRejected = current["rejected"](svg::COMMENT);
-	debugRejected->ctext = "SPECIFIC: ";
+		TreeSVG & metadata = current["metadata"](svg::METADATA);
 
-	/// Collective (union)
-	//  TreeSVG & metadataPruned = current["metadataPruned"](svg::METADATA);
-	//  metadataPruned->set("name", "metadataPruned");
+		TreeSVG & debugShared = current["shared"](svg::DESC);
+		debugShared->ctext = "SHARED";
 
-	// metadata->getAttributes().clear();
-	mout.pending<LOG_DEBUG>("pruning: ", drain::sprinter(stat), path.str());
-	for (const auto & e: stat){
+		if (mout.isLevel(LOG_DEBUG)){
+			TreeSVG & debugAll = current["description"](svg::DESC);
+			debugAll->set("COUNT", count);
+			debugAll->ctext = "All";
 
-		mout.pending<LOG_DEBUG>('\t', e.first, ':', e.second);
+		}
 
-		debugAll->set(e.first, e.second);
+		/*
+		TreeSVG & debugExplicit = current["rejected"](svg::DESC);
+		debugExplicit->addClass("EXPLICIT");
+		debugAll->ctext += drain::sprinter(stat).str();
+		*/
 
-		// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
-		std::string key, value;
-		drain::StringTools::split2(e.first, key, value, '=');
-		if (e.second == count){
-			mout.accept<LOG_DEBUG>('\t', e.first, ' ', path.str());
-			// debugAccepted->ctext += e.first; // set(key, value);
-			debugAccepted->set(key, value);
-			// entry.second["metadata"](svg::METADATA);
-			// metadata -> set(key, value);
+		// metadata->getAttributes().clear();
+		mout.pending<LOG_DEBUG>("pruning: ", drain::sprinter(stat), path.str());
 
-			metadata->set(key, value); // NOTE: becoming strings (consider type dict?)
-			// metadata->set(key+value, "yes");
-			for (auto & entry: current.getChildren()){
-				TreeSVG & child = entry.second;
-				if (child.hasChild("metadata")){
-					TreeSVG & childMetadata = entry.second["metadata"](svg::METADATA);
-					childMetadata -> remove(key);
+		for (const auto & e: stat){
+
+			mout.pending<LOG_DEBUG>('\t', e.first, ':', e.second);
+
+			// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
+			std::string key, value;
+			drain::StringTools::split2(e.first, key, value, '=');
+			if (e.second == count){
+
+				mout.accept<LOG_DEBUG>('\t', e.first, ' ', path.str());
+
+				debugShared->set(key, value);
+				metadata->set(key, value); // NOTE: becoming strings (consider type dict?)
+
+				for (auto & entry: current.getChildren()){
+					TreeSVG & child = entry.second;
+					if (child.hasChild("metadata")){
+						TreeSVG & childMetadata = entry.second["metadata"](svg::METADATA);
+						childMetadata -> remove(key);
+					}
 				}
-				/*
-				entry.second["debugRemove"](svg::TITLE);
-				entry.second["debugRemove"]->ctext += e.first;
-				entry.second["debugRemove"]->ctext += ' ';
-				*/
+
 			}
+			else {
+				mout.reject<LOG_DEBUG>('\t', e.first, ' ', path.str());
+				// debugExplicit->ctext += e.first;
+			}
+		}
 
-		}
-		else {
-			mout.reject<LOG_DEBUG>('\t', e.first, ' ', path.str());
-			//debugRejected->ctext += e.first; // set(key, value);
-			debugRejected->set(key, value);
-		}
 	}
-
 
 	return 0;
 
 }
 
+TreeSVG & getTextElem(TreeSVG & current, const std::string key){
 
+	std::string name = current->get("name", "unknown-image");
+
+	static
+	const drain::ClassListXML timeClass = {"time", "date"};
+
+	static
+	const drain::ClassListXML locationClass = {"site", "src", "lat", "lon", "PLC", "NOD", "WMO"};
+
+	if (timeClass.has(key)){
+		name += "_TIME";
+	}
+
+	if (locationClass.has(key)){
+		name += "_LOC";
+	}
+
+
+	TreeSVG & text = current[name+"_title"];
+
+	const int x = current->get("x", 0);
+	const int y = current->get("y", 0);
+
+	if (text -> isUndefined()){
+		text -> setType(svg::TEXT);
+		// text->set("ref", current->getId());
+		text->set("ref", current["image"]->getId());
+		//text->set("ref", 0);
+		text->set("x", x + 2);
+		text->set("y", y + 20);
+		text->addClass("FLOAT", "imageTitle"); // "imageTitle" !
+	}
+
+	// TODO: align conf for TIME and LOCATION from svgConf
+	if (timeClass.has(key)){
+		text->addClass("TIME", "FLOAT", "BOTTOM", "LEFT");
+		text->set("y", y + 40); // temporary
+	}
+
+	if (locationClass.has(key)){
+		text->addClass("LOCATION", "FLOAT", "TOP", "RIGHT");
+		text->set("y", y + 60); // temporary
+	}
+
+	return text;
+}
+
+
+/*
 TreeSVG & getTextElem(TreeSVG & parent, const TreeSVG & current, const std::string key){
 
 	std::string name = current->get("name", "unknown-image");
@@ -225,20 +269,10 @@ TreeSVG & getTextElem(TreeSVG & parent, const TreeSVG & current, const std::stri
 		text->set("y", y + 60); // temporary
 	}
 
-	/*
-	if (!text->hasClass("RIGHT")){
-		text->addClass("LEFT"); // also "CENTER"?
-	}
-
-	if (!text->hasClass("BOTTOM")){
-		text->addClass("TOP"); // also "MIDDLE"?
-	}
-	*/
-
 	return text;
 
 }
-
+*/
 
 
 int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
@@ -246,15 +280,16 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 	TreeSVG & current = tree(path);
 
-	/*
 	if (current->getType() != svg::GROUP){ // At least METADATA must be skipped...
+		return 0;
+	}
+
+	/*
+	if (!((current->getType()==svg::GROUP) || (current->getType()==svg::IMAGE))){
 		return 0;
 	}
 	*/
 
-	if (!((current->getType()==svg::GROUP) || (current->getType()==svg::IMAGE))){
-		return 0;
-	}
 
 	if (!current.hasChild("metadata")){
 		return 0;
@@ -265,13 +300,50 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 	TreeSVG & metadata = current["metadata"];
 
-	if (metadata->getAttributes().empty()){
+
+	if (!metadata->getAttributes().empty()){
+
+		if (!current->classList.has("imageFrame")){
+			TreeSVG & desc = current["debug"](svg::DESC);
+			desc->ctext = drain::sprinter(metadata->getAttributes()).str();
+			return 0;
+		}
+
+
+		/*
+		TreeSVG & text = current["bottom-right"](svg::TEXT);
+		text->addClass("FLOAT BOTTOM imageTitle debug");
+		text->setText(metadata->getAttributes());
+		*/
+
+		for (const auto & attr: metadata->getAttributes()){
+			// consider str replace
+
+			TreeSVG & text = getTextElem(current, attr.first);
+			//text->set("ref", current["image"]->getId());
+
+			TreeSVG & tspan = text[attr.first](svg::TSPAN);
+			tspan->addClass(attr.first);
+			tspan->ctext = attr.second.toStr();
+			tspan->ctext += "&#160;"; //'_';
+			//entry.second->set(key, "*"); // TODO: remove attribute
+		}
+	}
+	else {
 		mout.debug("title skipped, metadata empty under: ", path);
+		// TreeSVG & text = current["mark"](svg::TEXT);
+		// text->setText(path.str() + " empty metadata...");
 		return 0;
 	}
 
+	return 0;
+
+	/*
+	mout.warn("considering: ", path, ' ', current->getTag());
 
 	if (current->getType() == svg::IMAGE){
+
+
 
 		TreeSVG::path_t parentPath(path.begin(), --path.end());
 		// std::copy(path.begin(), --(path.end()), parentPath);
@@ -279,10 +351,12 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 		if (parentPath.empty()){
 			mout.warn("IMAGE elem directy under root?");
+
 			return 1;
 		}
 
 		TreeSVG & parent = tree(parentPath);
+
 
 		for (const auto & attr: metadata->getAttributes()){
 			// consider str replace
@@ -300,6 +374,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 	}
 
 	return 0;
+	*/
 
 }
 
@@ -343,6 +418,13 @@ drain::image::TreeSVG & CmdBaseSVG::getMain(RackContext & ctx){
 		//style["text"] = ("stroke:white; stroke-width:0.5em; stroke-opacity:0.25; fill:black; paint-order:stroke; stroke-linejoin:round");
 		style["text"] = ("fill:black");
 
+		//style["group.imageFrame > rect"].data = {
+		style["rect.imageFrame"].data = {
+				{"stroke", "black"},
+				{"stroke-opacity", "0.25"},
+				{"stroke-width", "0.3em"}
+		};
+
 		style[".imageTitle"].data = {
 				{"font-size", "1.5em"},
 				{"stroke", "white"},
@@ -363,7 +445,6 @@ drain::image::TreeSVG & CmdBaseSVG::getMain(RackContext & ctx){
 				{"fill", "darkblue"}
 		};
 
-
 		// style[".imageTitle2"] = "font-size:1.5em; stroke:white; stroke-opacity:0.5; stroke-width:0.3em; fill:darkslateblue; fill-opacity:1; paint-order:stroke; stroke-linejoin:round";
 		// drain::TreeUtils::dump(ctx.svgTrack);
 	}
@@ -381,8 +462,9 @@ drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what 
 		drain::image::TreeSVG & group = track[ctx.svgPanelConf.groupName](NodeSVG::GROUP);
 		// Ensure (repeatedly)
 		group->addClass("imageSet");
-		group->set("id", ctx.svgPanelConf.groupName);
-		group->set("name", ctx.svgPanelConf.groupName);
+		group->setId(ctx.svgPanelConf.groupName);
+		// group->set("id", ctx.svgPanelConf.groupName);
+		// group->set("name", ctx.svgPanelConf.groupName);
 	}
 
 	return track[ctx.svgPanelConf.groupName](NodeSVG::GROUP);
@@ -392,11 +474,15 @@ drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what 
 
 void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
 
-	drain::image::TreeSVG & group = getCurrentGroup(ctx); // [filepath.basename+"_Group"](NodeSVG::GROUP);
-
+	// For each image an own group is created (for clarity, to contain also title TEXT's etc)
 	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
 
-	drain::image::TreeSVG & image = group[name](NodeSVG::IMAGE); // +EXT!
+	// drain::image::TreeSVG & group = getCurrentGroup(ctx)[filepath.basename+"_Group"](NodeSVG::GROUP);
+	// drain::image::TreeSVG & image = group[name](NodeSVG::IMAGE); // +EXT!
+	drain::image::TreeSVG & group = getCurrentGroup(ctx)[name](NodeSVG::GROUP);
+	group->addClass("imageFrame");
+
+	drain::image::TreeSVG & image = group["image"](NodeSVG::IMAGE); // +EXT!
 	image->setId(); // autom.
 	image->set("name", name);
 	image->set("width", src.getWidth());
@@ -405,20 +491,35 @@ void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, co
 	image["title"](drain::image::svg::TITLE) = filepath.basename;
 	// image["description"](drain::image::svg::TITLE) = src.getProperties();
 
+	drain::image::TreeSVG & rect = group["rect"](NodeSVG::RECT);
+	rect->addClass("FLOAT", "imageFrame");
+	rect->set("ref", image->getId());
+	rect->set("width", src.getWidth());
+	rect->set("height", src.getHeight());
+	// rect->set("stroke", "black");
+	rect->set("fill", "none"); // just to make sure...
+	//rect->set("opacity", 0.25);
+
+
+	/*
+	drain::image::TreeSVG & text = group["img-text-ul"](NodeSVG::TEXT);
+	text->addClass("FLOAT test");
+	text->set("ref", image->getId());
+	text->setText(filepath.basename);
+	*/
 
 	// Metadata:
-	// drain::FlexVariableMap & props = src.properties;
-	drain::image::TreeSVG & metadata = image["metadata"](NodeSVG::METADATA);
+	// drain::image::TreeSVG & metadata = image["metadata"](NodeSVG::METADATA);
+	drain::image::TreeSVG & metadata    = group["metadata"](svg::METADATA);
 
 	// Note assign: char * -> string  , "where:lat", "where:lon"
 	if (src.properties.hasKey("what:source")){
 		SourceODIM odim(src.properties.get("what:source",""));
-		// metadata->set("source", odim.getSourceCode());
 		metadata->set("NOD", odim.NOD);
 		metadata->set("PLC", odim.PLC);
 	}
 
-	// "what:object",
+	// TODO: 1) time formatting 2) priority (startdate, starttime)
 	for (const std::string key: {"what:date", "what:time", "what:quantity", "where:elangle", "prevCmdKey"}){
 		if (src.properties.hasKey(key)){
 			size_t i = key.find(':');
@@ -432,6 +533,8 @@ void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, co
 		}
 	}
 
+	drain::image::TreeSVG & description = group["description"](svg::DESC);
+	description->getAttributes().importCastableMap(metadata->getAttributes());
 	// todo: description  : prevCmdKey "what:product", "what:prodpar", "how:angles"
 
 }
@@ -459,12 +562,10 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 
 	drain::image::TreeSVG & mainGroup = getMain(ctx);
 
-
-	if (ctx.svgPanelConf.relativePaths){
-	//if (true){
+	if (!ctx.svgPanelConf.absolutePaths){
 		drain::image::NodeSVG::path_list_t pathList;
 		drain::image::NodeSVG::findByTag(mainGroup, drain::image::svg::IMAGE, pathList);
-		const std::string dir = filepath.dir.str()+'/';
+		const std::string dir = filepath.dir.str()+'/';  // <- consider plain, and remove leading slashes, or add only if non-empty.
 		for (drain::image::NodeSVG::path_t & p: pathList){
 			drain::image::TreeSVG & image = mainGroup(p);
 			//drain::FilePath fp(image->get("xlink:href"));
@@ -482,24 +583,18 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 	drain::image::NodeSVG::path_list_t pathList;
 	drain::image::NodeSVG::findByClass(mainGroup, "imageSet", pathList);
 
-
 	drain::Frame2D<int> mainFrame;
 	drain::Point2D<int> start(0,0);
+
 	for (drain::image::NodeSVG::path_t & p: pathList){
+
 		mout.debug("aligning: ", p);
 		drain::image::TreeSVG & group = mainGroup[p](NodeSVG::GROUP);
 		drain::Frame2D<int> frame;
-		TreeUtilsSVG::determineBBox(group, frame, ctx.svgPanelConf.orientation);
+		TreeUtilsSVG::getBoundingFrame(group, frame, ctx.svgPanelConf.orientation);
 
 		mout.attention("aligning sequence: start:",  start.tuple(), ", frame: ", frame.tuple());
 		drain::image::TreeUtilsSVG::alignSequence(group, frame, start, ctx.svgPanelConf.orientation, ctx.svgPanelConf.direction);
-
-
-		// Collect (unneeded)
-		/*
-		TitleCollectorSVG titleCollecor;
-		drain::TreeUtils::traverse(titleCollecor, group);
-		*/
 
 		if (ctx.svgPanelConf.orientation == drain::image::PanelConfSVG::HORZ){
 			// Jump to the next "row"
@@ -532,6 +627,9 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 		drain::TreeUtils::dump(ctx.svgTrack);
 	}
 
+	// drain::Output outfile("unpruned.svg");
+	// drain::image::NodeSVG::toStream(outfile, ctx.svgTrack);
+
 	MetaDataPrunerSVG metadataPruner;
 	drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
 
@@ -552,7 +650,9 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 		// MAIN HEADER(s)
 		if (mainGroup.hasChild("metadata")){ // hmmm
 
-			TreeSVG & headerRect = ctx.svgTrack["headerRect"](svg::RECT);
+			TreeSVG & headerGroup = ctx.svgTrack["headerGroup"](svg::GROUP);
+
+			TreeSVG & headerRect = headerGroup["headerRect"](svg::RECT);
 			//headerRect->setStyle("fill:slateblue");
 			headerRect->setId();
 			headerRect->setStyle("fill:darkblue");
@@ -562,23 +662,25 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 			headerRect->set("width",  mainFrame.getWidth());
 			headerRect->set("height", titleCollector.mainHeaderHeight);
 
-			TreeSVG & headerLeft = ctx.svgTrack["headerLeft"](svg::TEXT);
+			TreeSVG & headerLeft = headerGroup["headerLeft"](svg::TEXT);
 			headerLeft->addClass("FLOAT", "LEFT");
 			headerLeft->set("ref", headerRect->getId());
 			headerLeft->setText("left");
 
-			TreeSVG & headerRight = ctx.svgTrack["headerRight"](svg::TEXT);
+			TreeSVG & headerRight = headerGroup["headerRight"](svg::TEXT);
 			headerRight->addClass("FLOAT", "RIGHT");
 			headerRight->set("ref", headerRect->getId());
 			headerRight->setText("right");
 
-			TreeSVG & headerText = ctx.svgTrack["headerText"](svg::TEXT);
-			headerText->set("x", 8);
-			headerText->set("y", -8);
+			TreeSVG & headerText = headerGroup["headerText"](svg::TEXT);
+			headerText->addClass("FLOAT", "CENTER", "MIDDLE");
+			headerText->set("ref", headerRect->getId());
+			headerText->set("x", 50);
+			headerText->set("y", 60);
 			headerText->setStyle({
-				{"font-size", "2.5em"},
+				{"font-size", "3.5em"},
 				{"stroke", "none"},
-				{"fill", "black"}
+				{"fill", "darkblue"}
 			}); // fill:black;
 			// headerText->setText("Radar image");
 
@@ -604,6 +706,8 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 				mainFrame.height +=  titleCollector.mainHeaderHeight;
 				start.y           = -titleCollector.mainHeaderHeight;
 			}
+
+			drain::image::TreeUtilsSVG::alignText(headerGroup);
 
 		}
 

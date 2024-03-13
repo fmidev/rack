@@ -107,10 +107,19 @@ public:
 	inline
 	void exec() const {
 		RackContext & ctx = getContext<RackContext>();
-		if (height == 0)
+		if (height == 0){
+			ctx.getComposite(RackContext::PRIVATE).setGeometry(width, width);
+			ctx.getComposite(RackContext::SHARED ).setGeometry(width, width);
+		}
+		else {
+			ctx.getComposite(RackContext::PRIVATE).setGeometry(width, height);
+			ctx.getComposite(RackContext::SHARED ).setGeometry(width, height);
+		}
+		/*
 			ctx.composite.setGeometry(width, width);
 		else
 			ctx.composite.setGeometry(width, height);
+			*/
 	};
 
 protected:

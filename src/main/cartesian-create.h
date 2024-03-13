@@ -68,9 +68,10 @@ public:
 
 		Composite & composite = ctx.getComposite(RackContext::PRIVATE);
 
-		mout.debug("composite*: ", &composite, "accArray: ", composite.accArray);
+		mout.attention("composite*: ", &composite, " accArray: ", composite.accArray);
 
-		composite.reset();
+		//composite.reset();
+		composite.accArray.reset(); // Not frame, otherwise --cSize spoiled
 		composite.dataSelector.reset();
 		composite.odim.clear();
 		composite.nodeMap.clear();

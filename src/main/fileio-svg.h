@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/FileInfo.h"
 #include "drain/util/RegExp.h"
-#include "drain/util/TreeHTML.h"
+// #include "drain/util/TreeHTML.h"
 
 
 #include "hi5/Hi5.h"

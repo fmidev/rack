@@ -120,14 +120,11 @@ public:
 		svgConf.link("max", ctx.svgPanelConf.maxPerGroup, "max per row/column"); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 		svgConf.link("legend", svgConfLegend, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Legend>::dict.getKeys()).str());
 		svgConf.link("title", ctx.svgPanelConf.title); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
-		svgConf.link("relativePaths", ctx.svgPanelConf.relativePaths);
-
-
-
+		svgConf.link("absolutePaths", ctx.svgPanelConf.absolutePaths);
 
 #ifndef USE_GEOTIFF_NO
+
 		gtiffConf.link("tile", FileTIFF::defaultTile.tuple(), "<width>[:<height>]");
-		// Compression METHOD
 		gtiffConf.link("compression", FileTIFF::defaultCompression, drain::sprinter(FileTIFF::getCompressionDict(), "|", "<>").str());
 		// gtiffConf.link("level", FileTIFF::defaultCompressionLevel, "1..10");
 		gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.str(), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str()); // drain::sprinter(FileGeoTIFF::flagger.getDict(), "|", "<>").str());
@@ -147,15 +144,6 @@ public:
 		//svgConf.link("group", ctx.svgPanelConf.groupName); // otherwise could be other/static ctx, because of LINK above ?
 	}
 
-	// std::string format;
-	// std::string params;
-
-	/*
-	virtual inline
-	void set Parameters(const std::string & params, char assignmentSymbol=0) {
-		 drain::BasicCommand::setParameters(params, 0); // sep = ':'
-	}
-	 */
 
 	void exec() const {
 

@@ -68,12 +68,12 @@ struct PanelConfSVG {
 	// Current
 	std::string groupName;
 	int maxPerGroup;
-	bool relativePaths;
+	bool absolutePaths;
 
 	std::string title;
 
 	inline
-	PanelConfSVG() : orientation(HORZ), direction(INCR), legend(LEFT, EMBED), maxPerGroup(10), relativePaths(true){
+	PanelConfSVG() : orientation(HORZ), direction(INCR), legend(LEFT, EMBED), maxPerGroup(10), absolutePaths(false){
 	}
 
 
@@ -110,7 +110,7 @@ struct TreeUtilsSVG {
 	 *
 	 */
 	static
-	void determineBBox(TreeSVG & group, drain::Frame2D<int> & frame, PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION);
+	void getBoundingFrame(TreeSVG & group, drain::Frame2D<int> & frame, PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION);
 
 	/// Stack IMAGE and RECT elements within a frame (width x height) to a row or column
 	static
