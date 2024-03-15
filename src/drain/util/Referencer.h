@@ -33,10 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 
 
-//#include "Castable.h"
+#include "Convert.h"
 #include "Variable.h"
 #include "Sprinter.h"
-
 
 #ifndef DRAIN_REFERENCE_VARIABLE_NEW
 #define DRAIN_REFERENCE_VARIABLE_NEW
@@ -260,6 +259,32 @@ inline
 std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Referencer & v, const SprinterLayout & layout){
 	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
 };
+
+template <>
+template <class D>
+inline
+void Convert2<Referencer>::convert(const Referencer &src, D & dst){
+	dst = (const D &)src;
+	std::cout << "CONV:" << __FILE__ << src << " -> " << dst << '\n';
+}
+
+
+template <>
+inline
+void Convert2<Referencer>::convert(const char *src, Referencer & dst){
+	dst = src;
+	std::cout << "CONV:" << __FILE__ << src << " -> " << dst << '\n';
+}
+
+
+
+template <>
+template <class S>
+inline
+void Convert2<Referencer>::convert(const S &src, Referencer & dst){
+	dst = src;
+	std::cout << "CONV:" << __FILE__ << src << " -> " << dst << '\n';
+}
 
 
 }  // namespace drain

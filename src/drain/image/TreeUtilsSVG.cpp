@@ -112,12 +112,12 @@ void TreeUtilsSVG::getBoundingFrame(TreeSVG & group, Frame2D<int> & frame, Panel
 			if (orientation == PanelConfSVG::HORZ){
 				frame.width  += elem->get("width");
 				frame.height  = std::max(frame.height, elem->get("height", 0));
-				mout.warn("updated frame HORZ: ", frame.tuple());
+				// mout.warn("updated frame HORZ: ", frame.tuple());
 			}
 			else {
 				frame.width   = std::max(frame.width, elem->get("width", 0));
 				frame.height += elem->get("height");
-				mout.warn("updated frame VERT: ", frame.tuple());
+				// mout.warn("updated frame VERT: ", frame.tuple());
 			}
 		}
 	}
@@ -280,7 +280,7 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 		TreeSVG & elem =  group(path);
 		if (elem -> typeIs(NodeSVG::TEXT)){
 
-			mout.note("realign: ", path);
+			// mout.note("realign: ", path);
 
 			const std::string ref = elem->get("ref", "");
 			if (ref.empty()){
@@ -291,7 +291,7 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 
 			if (NodeSVG::findById(group, ref, p)){
 
-				mout.note("for TEXT.FLOAT(", path, ") found IMAGE/RECT '", ref, "'");
+				// mout.note("for TEXT.FLOAT(", path, ") found IMAGE/RECT '", ref, "'");
 
 				TreeSVG & frame = group(p);
 				Box<double> box;

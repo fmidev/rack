@@ -29,7 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-
+#include "drain/util/Convert.h"
 #include "drain/util/Output.h"
 #include "drain/util/StringMapper.h"
 #include "drain/util/TreeXML.h"
@@ -41,6 +41,38 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/SourceODIM.h" // for NOD
 
 #include "fileio-svg.h"
+
+
+/*
+namespace drain {
+
+
+template <>
+template <class D>
+void Convert2<FlexibleVariable>::convert(const FlexibleVariable &src, D & dst){
+	dst = (const D &)src;
+	std::cout << "CONV..." << src << " -> " << dst << '\n';
+}
+
+
+template <>
+void Convert2<FlexibleVariable>::convert(const char *src, FlexibleVariable & dst){
+	dst = src;
+	std::cout << "CONV..." << src << " -> " << dst << '\n';
+}
+
+
+
+template <>
+template <class S>
+void Convert2<FlexibleVariable>::convert(const S &src, FlexibleVariable & dst){
+	dst = src;
+	std::cout << "CONV..." << src << " -> " << dst << '\n';
+}
+
+
+}
+*/
 
 namespace rack {
 
@@ -177,102 +209,90 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 
 }
 
-TreeSVG & getTextElem(TreeSVG & current, const std::string key){
-
-	std::string name = current->get("name", "unknown-image");
+const std::string  & getTextClass(const std::string key){
 
 	static
-	const drain::ClassListXML timeClass = {"time", "date"};
+	const drain::ClassListXML timeClass = {"time", "date", "starttime"};
 
 	static
 	const drain::ClassListXML locationClass = {"site", "src", "lat", "lon", "PLC", "NOD", "WMO"};
 
 	if (timeClass.has(key)){
-		name += "_TIME";
+		static const std::string s("TIME");
+		return s;
+	}
+	else if (locationClass.has(key)){
+		static const std::string s("LOCATION");
+		return s;
+	}
+	else {
+		static const std::string empty;
+		return empty;
 	}
 
+
+}
+
+static
+const drain::ClassListXML timeClass = {"time", "date"};
+
+static
+const drain::ClassListXML locationClass = {"site", "src", "lat", "lon", "PLC", "NOD", "WMO"};
+
+
+/**
+ *  \param frame - IMAGE or RECT inside which the text will be aligned
+ */
+TreeSVG & getTextElem(const TreeSVG & frame, TreeSVG & current, const std::string key){
+
+
+	/*
+	std::string name = current->get("name", "unknown-image");
+	if (timeClass.has(key)){
+		name += "_TIME";
+	}
 	if (locationClass.has(key)){
 		name += "_LOC";
 	}
+	*/
 
 
-	TreeSVG & text = current[name+"_title"];
+	TreeSVG & text = current[key+"_title"];
 
-	const int x = current->get("x", 0);
-	const int y = current->get("y", 0);
+	// Temporary (until aligned)
+	const int x = frame->get("x", 0);
+	const int y = frame->get("y", 0);
 
 	if (text -> isUndefined()){
 		text -> setType(svg::TEXT);
-		// text->set("ref", current->getId());
-		text->set("ref", current["image"]->getId());
+		//text->set("ref", current["image"]->getId());
+		text->set("ref", frame->getId());
 		//text->set("ref", 0);
 		text->set("x", x + 2);
 		text->set("y", y + 20);
-		text->addClass("FLOAT", "imageTitle"); // "imageTitle" !
+		text->addClass("FLOAT"); // "imageTitle" !
 	}
 
 	// TODO: align conf for TIME and LOCATION from svgConf
+	/*
 	if (timeClass.has(key)){
-		text->addClass("TIME", "FLOAT", "BOTTOM", "LEFT");
+		text->addClass("TIME",  "BOTTOM", "LEFT"); // "FLOAT",
 		text->set("y", y + 40); // temporary
 	}
 
 	if (locationClass.has(key)){
-		text->addClass("LOCATION", "FLOAT", "TOP", "RIGHT");
+		text->addClass("LOCATION", "TOP", "RIGHT"); // "FLOAT",
 		text->set("y", y + 60); // temporary
 	}
+	*/
 
 	return text;
 }
 
 
-/*
-TreeSVG & getTextElem(TreeSVG & parent, const TreeSVG & current, const std::string key){
 
-	std::string name = current->get("name", "unknown-image");
 
-	static
-	const drain::ClassListXML timeClass = {"time", "date"};
 
-	static
-	const drain::ClassListXML locationClass = {"site", "src", "lat", "lon", "PLC", "NOD", "WMO"};
-
-	if (timeClass.has(key)){
-		name += "_TIME";
-	}
-
-	if (locationClass.has(key)){
-		name += "_LOC";
-	}
-
-	TreeSVG & text = parent[name+"_title"];
-
-	const int x = current->get("x", 0);
-	const int y = current->get("y", 0);
-
-	if (text -> isUndefined()){
-		text -> setType(svg::TEXT);
-		text->set("ref", current->getId());
-		text->set("x", x + 2);
-		text->set("y", y + 20);
-		text->addClass("FLOAT", "imageTitle"); // "imageTitle" !
-	}
-
-	// TODO: align conf for TIME and LOCATION from svgConf
-	if (timeClass.has(key)){
-		text->addClass("TIME", "FLOAT", "BOTTOM", "LEFT");
-		text->set("y", y + 40); // temporary
-	}
-
-	if (locationClass.has(key)){
-		text->addClass("LOCATION", "FLOAT", "TOP", "RIGHT");
-		text->set("y", y + 60); // temporary
-	}
-
-	return text;
-
-}
-*/
 
 
 int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
@@ -319,12 +339,51 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		for (const auto & attr: metadata->getAttributes()){
 			// consider str replace
 
-			TreeSVG & text = getTextElem(current, attr.first);
-			//text->set("ref", current["image"]->getId());
+			std::string key("title");
+			if (timeClass.has(attr.first)){
+				key += "-time";
+			}
+
+			if (locationClass.has(attr.first)){
+				key += "-location";
+			}
+
+			//TreeSVG & text = getTextElem(current["image"], current, attr.first);
+			TreeSVG & text = getTextElem(current["image"], current, key);
+			text->addClass("imageTitle");
+
+			if (timeClass.has(attr.first)){
+				text->addClass("TIME",  "BOTTOM", "LEFT"); // "FLOAT",
+				// text->set("y", y + 40); // temporary
+				/* TODO:
+				std::stringstream sstr;
+				formatVariable2(attr.second, ":2:3", sstr);
+				text->ctext = sstr.str();
+				*/
+			}
+
+			if (locationClass.has(attr.first)){
+				text->addClass("LOCATION", "TOP", "RIGHT"); // "FLOAT",
+				// text->set("y", y + 60); // temporary
+			}
+
 
 			TreeSVG & tspan = text[attr.first](svg::TSPAN);
-			tspan->addClass(attr.first);
-			tspan->ctext = attr.second.toStr();
+			//if (cls.empty())
+			//	tspan->addClass(cls);
+			tspan->addClass(attr.first); // allows user-specified style
+			//std::string value = attr.second;
+			std::string v, format;
+			drain::StringTools::split2(attr.second.toStr(), v, format, '|');
+			if (format.empty()){
+				tspan->ctext = v;
+			}
+			else {
+				std::stringstream sstr;
+				drain::VariableFormatter<NodeSVG::map_t::value_t>::formatValue(v, format, sstr);
+				tspan->ctext = sstr.str();
+			}
+			//tspan->ctext = attr.second.toStr();
 			tspan->ctext += "&#160;"; //'_';
 			//entry.second->set(key, "*"); // TODO: remove attribute
 		}
@@ -337,44 +396,6 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 	}
 
 	return 0;
-
-	/*
-	mout.warn("considering: ", path, ' ', current->getTag());
-
-	if (current->getType() == svg::IMAGE){
-
-
-
-		TreeSVG::path_t parentPath(path.begin(), --path.end());
-		// std::copy(path.begin(), --(path.end()), parentPath);
-		// parentPath.pop_back();
-
-		if (parentPath.empty()){
-			mout.warn("IMAGE elem directy under root?");
-
-			return 1;
-		}
-
-		TreeSVG & parent = tree(parentPath);
-
-
-		for (const auto & attr: metadata->getAttributes()){
-			// consider str replace
-
-			TreeSVG & text = getTextElem(parent, current, attr.first);
-
-			TreeSVG & tspan = text[attr.first](svg::TSPAN);
-			tspan->addClass(attr.first);
-			tspan->ctext = attr.second.toStr();
-			tspan->ctext += "&#160;"; //'_';
-			//entry.second->set(key, "*"); // TODO: remove attribute
-		}
-
-
-	}
-
-	return 0;
-	*/
 
 }
 
@@ -648,7 +669,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 
 
 		// MAIN HEADER(s)
-		if (mainGroup.hasChild("metadata")){ // hmmm
+		if (mainGroup.hasChild("metadata") || (ctx.svgPanelConf.title != "false")){ // hmmm
 
 			TreeSVG & headerGroup = ctx.svgTrack["headerGroup"](svg::GROUP);
 
@@ -662,6 +683,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 			headerRect->set("width",  mainFrame.getWidth());
 			headerRect->set("height", titleCollector.mainHeaderHeight);
 
+			/*  Future extension
 			TreeSVG & headerLeft = headerGroup["headerLeft"](svg::TEXT);
 			headerLeft->addClass("FLOAT", "LEFT");
 			headerLeft->set("ref", headerRect->getId());
@@ -671,6 +693,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 			headerRight->addClass("FLOAT", "RIGHT");
 			headerRight->set("ref", headerRect->getId());
 			headerRight->setText("right");
+			*/
 
 			TreeSVG & headerText = headerGroup["headerText"](svg::TEXT);
 			headerText->addClass("FLOAT", "CENTER", "MIDDLE");
@@ -681,25 +704,25 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 				{"font-size", "3.5em"},
 				{"stroke", "none"},
 				{"fill", "darkblue"}
-			}); // fill:black;
-			// headerText->setText("Radar image");
+			});
 
-			if (! ctx.svgPanelConf.title.empty()){
+			// Automatic
+			if (ctx.svgPanelConf.title.empty()){
+				// TODO: vars aligned by class (time, etc)
+				for (const auto & entry: mainGroup["metadata"]->getAttributes()){
+					headerText->ctext += entry.second.toStr();
+					headerText->ctext += ' ';
+				}
+
+			}
+			else if (ctx.svgPanelConf.title != "false"){
 				drain::StringMapper titleMapper(RackContext::variableMapper);
 				titleMapper.parse(ctx.svgPanelConf.title);
-				//TreeSVG & tspan =  headerText["mainHeader"](svg::TSPAN);
-				//headerText->ctext += ctx.svgPanelConf.title; // XXX
 				const drain::VariableMap & v = ctx.getStatusMap();
-				// mout.attention(v);
 				headerText->ctext += titleMapper.toStr(v);
 				headerText->ctext += ' ';
 			}
-
-			// TODO: vars aligned by class (time, etc)
-			for (const auto & entry: mainGroup["metadata"]->getAttributes()){
-				headerText->ctext += entry.second.toStr();
-				headerText->ctext += ' ';
-			}
+			// else title == "false"
 
 			// TODO: develop
 			if (! headerText->ctext.empty() ){

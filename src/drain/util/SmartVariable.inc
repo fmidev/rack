@@ -30,7 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
-
+//#include "Convert.h"
 // This file is included by: Variable.h Reference.h FlexibleVariable.h
 
 
@@ -175,3 +175,28 @@ SmartVariable &operator=(const UniTuple<T,N> & unituple){
 	assignContainer(unituple);
 	return *this;
 }
+
+/*
+template <>
+template <class D>
+void Convert2<SmartVariable>::convert(const SmartVariable &src, D & dst){
+	dst = (const D &)src;
+	std::cout << "CONV..." << src << " -> " << dst << '\n';
+}
+
+
+template <>
+void Convert2<SmartVariable>::convert(const char *src, SmartVariable & dst){
+	dst = src;
+	std::cout << "CONV..." << src << " -> " << dst << '\n';
+}
+
+
+
+template <>
+template <class S>
+void Convert2<SmartVariable>::convert(const S &src, SmartVariable & dst){
+	dst = src;
+	std::cout << "CONV..." << src << " -> " << dst << '\n';
+}
+*/

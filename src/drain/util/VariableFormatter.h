@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iterator>
 #include <sstream>
 
+#include "Convert.h"
 #include "IosFormat.h"
 #include "Log.h"
 #include "SmartMapTools.h"
@@ -118,6 +119,128 @@ public:
 	}
 
 
+	// template <class V>
+	static
+	bool formatValue(const T & value, const std::string & format, std::ostream & ostr) {
+
+		drain::Logger mout(__FILE__, __FUNCTION__);
+
+		const char firstChar = format.at(0);
+		const char lastChar = format.at(format.size()-1);
+
+		if (firstChar == ':'){
+			// mout.attention("substring extraction:", format);
+
+			std::string s;
+			drain::Convert2<T>::convert(value, s);
+			//drain::StringTools::import(variable, s);
+
+			std::vector<size_t> v;
+			drain::StringTools::split(format, v, ':');
+			size_t pos   = 0;
+			size_t count = s.size();
+
+			switch (v.size()) {
+			case 3:
+				count = v[2];
+				// no break
+			case 2:
+				pos = v[1];
+				if (pos >= s.size()){
+					mout.warn("index ", pos, " greater than size (", s.size(), ") of string value '", s, "' of '", value, "'");
+					return true;
+				}
+				count = std::min(count, s.size()-pos);
+				ostr << s.substr(v[1], count);
+				break;
+			default:
+				mout.warn("unsupported formatting '", format, "' for variable '", value, "'");
+				mout.advice("use :startpos or :startpos:count for substring extraction");
+			}
+			return true;
+
+		}
+		else if (firstChar == '%'){
+
+			// mout.attention("string formatting: ", format);
+
+			//else if (format.find('%') != std::string::npos){
+			//drain::MapTools::get(variables, key, s);
+
+			const size_t BUFFER_SIZE = 256;
+			char buffer[BUFFER_SIZE];
+			buffer[0] = '\0';
+			size_t n = 0;
+
+			switch (lastChar){
+			case 's':
+			{
+				std::string s;
+				drain::Convert2<T>::convert(value, s);
+				// drain::StringTools::import(variable, s);
+				n = std::sprintf(buffer, format.c_str(), s.c_str());
+			}
+			break;
+			case 'c':
+			{
+				std::string s;
+				drain::Convert2<T>::convert(value, s);
+				//drain::StringTools::import(variable, s);
+				n = std::sprintf(buffer, format.c_str(), s.at(0)); // ?
+			}
+			break;
+			case 'p':
+				mout.unimplemented("pointer type: ", format);
+				break;
+			case 'f':
+			case 'F':
+			case 'e':
+			case 'E':
+			case 'a':
+			case 'A':
+			case 'g':
+			case 'G':
+			{
+				double d = NAN; //nand()
+				drain::Convert2<T>::convert(value, d);
+				// drain::StringTools::import(variable, d);
+				//drain::MapTools::get(variables, key, d);
+				// ostr << d << '=';
+				n = std::sprintf(buffer, format.c_str(), d);
+			}
+			break;
+			case 'd':
+			case 'i':
+			case 'o':
+			case 'u':
+			case 'x':
+			case 'X':
+			{
+				int i = 0;
+				drain::Convert::convert(value, i);
+				// drain::convertAny(variable, i);
+				// drain::StringTools::import(variable, i);
+				// drain::MapTools::get(variables, key, i);
+				ostr << i << '=';
+				n = std::sprintf(buffer, format.c_str(), i);
+			}
+			break;
+			default:
+				mout.warn("formatting '", format, "' requested for '", value, "' : unsupported type key: ", lastChar);
+				return false; // could be also true, if seen as handled this way?
+			}
+
+			ostr << buffer;
+			if (n > BUFFER_SIZE){
+				mout.fail("formatting with '", format, "' exceeded buffer size (", BUFFER_SIZE, ')');
+			}
+
+			// mout.warn("time formatting '", format, "' requested for '", k, "' not ending with 'time' or 'date'!");
+		}
+
+		return true;
+	}
+
 
 	// NOTE: must return false, if not found. Then, further processors may handle the variable tag (remove, change, leave it).
 	virtual
@@ -125,7 +248,17 @@ public:
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
 
+		typename std::map<std::string,T>::const_iterator it = variables.find(key);
+		//auto it = variables.find();
 
+		if (it != variables.end()){
+			return formatValue(it->second, format, ostr);
+		}
+		else {
+			return false;
+		}
+
+		/*
 		const char firstChar = format.at(0);
 		const char lastChar = format.at(format.size()-1);
 
@@ -226,6 +359,8 @@ public:
     	}
 
     	return true;
+
+    	*/
 	}
 
 

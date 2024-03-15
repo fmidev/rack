@@ -90,7 +90,7 @@ public:
 		ptr = c.ptr;
 	};
 
-	inline
+	inline virtual
 	~Caster(){};
 
 	inline

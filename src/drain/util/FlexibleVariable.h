@@ -32,8 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include <iostream>
 
-
-//#include "Variable.h"
+#include "Convert.h"
 #include "Referencer.h"
 #include "SmartMap.h"
 #include "Sprinter.h"
@@ -223,6 +222,31 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::FlexibleVari
 
 
 
+template <>
+template <class D>
+inline
+void Convert2<FlexibleVariable>::convert(const FlexibleVariable &src, D & dst){
+	dst = (const D &)src;
+	std::cout << "CONV:" << __FILE__ << src << " -> " << dst << '\n';
+}
+
+
+template <>
+inline
+void Convert2<FlexibleVariable>::convert(const char *src, FlexibleVariable & dst){
+	dst = src;
+	std::cout << "CONV:" << __FILE__ << src << " -> " << dst << '\n';
+}
+
+
+
+template <>
+template <class S>
+inline
+void Convert2<FlexibleVariable>::convert(const S &src, FlexibleVariable & dst){
+	dst = src;
+	std::cout << "CONV:" << __FILE__ << src << " -> " << dst << '\n';
+}
 
 
 }  // namespace drain

@@ -39,6 +39,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Castable.h"
 #include "CastableIterator.h"
+#include "Convert.h"
+
 //#include "Referencer.h"
 #include "Sprinter.h"
 #include "String.h"
@@ -325,6 +327,31 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & x
 
 
 
+template <>
+template <class D>
+inline
+void Convert2<Variable>::convert(const Variable &src, D & dst){
+	dst = (const D &)src;
+	std::cout << "CONV:" << __FILE__ << src << " -> " << dst << '\n';
+}
+
+
+template <>
+inline
+void Convert2<Variable>::convert(const char *src, Variable & dst){
+	dst = src;
+	std::cout << "CONV:" << __FILE__ << src << " -> " << dst << '\n';
+}
+
+
+
+template <>
+template <class S>
+inline
+void Convert2<Variable>::convert(const S &src, Variable & dst){
+	dst = src;
+	std::cout << "CONV:" << __FILE__ << src << " -> " << dst << '\n';
+}
 
 
 } // drain

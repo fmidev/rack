@@ -219,6 +219,21 @@ protected:
 	// Keep this class-specific.
 	void updateStatus();
 
+	// typedef drain::Cloner<Context,RackContext> ctx_cloner_t;
+
+	// EXPERIMENTAL
+	static inline
+	RackContext & baseCtx() {
+		//return getContextCloner().getSourceOrig();
+		return drain::Static::get<RackContext>();
+	}
+
+	/*
+	static inline
+	ctx_cloner_t & getContextCloner(){
+		return getCloner<RackContext>();
+	}
+	*/
 
 };
 
@@ -232,19 +247,8 @@ public:
 
 	RackResources(); // : inputOk(true), dataOk(true), currentHi5(&inputHi5), currentPolarHi5(&inputHi5), currentImage(NULL), currentGrayImage(NULL) {};
 
-
-	/// Clears dst if source command varies. Keep for later reference...
-	// void setSource(Hi5Tree & dst, const drain::Command & cmd);
-
-
-	//static 	void updateCoordinatePolicy(Hi5Tree & src, const CoordinatePolicy & policy = CoordinatePolicy(CoordinatePolicy::LIMIT));
-
-
-
 	// Accumulator for data in polar coordinates
 	RadarAccumulator<Accumulator,PolarODIM> polarAccumulator;
-
-
 
 
 };
