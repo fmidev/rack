@@ -313,10 +313,28 @@ protected:
 
 };
 
+
+/*
 template <>
 struct TypeName<Variable> {
     static const char* get(){ return "Variable"; }
 };
+
+template <>
+inline
+const std::string & TypeName<Variable>::str(){
+	static const std::string s("Variable");
+	return s;
+}
+*/
+
+
+template <>
+const std::string TypeName<Variable>::name;
+
+
+
+
 
 
 template <>

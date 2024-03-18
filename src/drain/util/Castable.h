@@ -77,6 +77,8 @@ namespace drain {
  */
 class Castable  {
 
+// Optionally, constructors of this base class could be protected.
+// protected:
 public:
 
 	inline
@@ -109,6 +111,8 @@ public:
 		setSeparator();
 		setPtr(p);
 	}
+
+public:
 
 	inline virtual
 	~Castable(){};

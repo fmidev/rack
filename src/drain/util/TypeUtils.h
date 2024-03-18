@@ -104,20 +104,70 @@ size_t sizeGetter::getSize<void>(){
 template <typename T>
 struct TypeName
 {
-    static const char* get(){
-        return typeid(T).name();
-    }
 
     // Recommended... See also: TreeXML
     static const std::string & str(){
-    	static const std::string name(typeid(T).name());
+    	//static const std::string name(typeid(T).name());
         return name;
     }
 
+
+    /*
+    static const char* get(){
+    	return str().c_str();
+    	// infinite loop risk, if a class class get() from str(){...}
+    }
+    */
+
+
+    static const char* get(){
+        //return typeid(T).name();
+    	return name.c_str();
+    }
+
+
+    static const std::string name;
+
+
+
 };
+
+template <typename T>
+const std::string TypeName<T>::name;
 
 /// Add a specialization for each type of those you want to support.
 //  (Unless the string returned by typeid is sufficient.)
+
+
+template <>
+const std::string TypeName<bool>::name;
+
+template <>
+const std::string TypeName<char>::name;
+
+template <>
+const std::string TypeName<int>::name;
+
+template <>
+const std::string TypeName<long>::name;
+
+template <>
+const std::string TypeName<unsigned long>::name;
+
+template <>
+const std::string TypeName<float>::name;
+
+template <>
+const std::string TypeName<double>::name;
+
+template <>
+const std::string TypeName<char *>::name;
+
+template <>
+const std::string TypeName<const char *>::name;
+
+template <>
+const std::string TypeName<std::string>::name;
 
 
 template <>
@@ -483,6 +533,27 @@ public:
 
 };
 
+/*
+ *  Usage:
+ *
+ *  Type::call<drain::typeIsFundamental>(t)
+ *
+ */
+class typeIsFundamental {
+
+public:
+
+	typedef bool value_t;
+
+	/**
+	 *  \tparam S - selector type
+	 *  \tparam T - destination type (practically value_t)
+	 */
+	template <class S, class T>
+	static inline
+	T callback(){ return std::is_fundamental<S>::value; }
+
+};
 
 /**
  *  \tparam T - return type

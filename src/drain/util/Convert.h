@@ -95,29 +95,45 @@ public:
 		dst = src;
 	}
 
-
-	template <class S>
-	static
-	void convert(const S & src, T & dst){
-		std::stringstream sstr;
-		sstr << src;
-		sstr >> dst;
-	}
-
-	template <class D>
-	static
-	void convert(const T & src, D & dst){
-		std::stringstream sstr;
-		sstr << src;
-		sstr >> dst;
-	}
-
 	static
 	void convert(const char * src, T & dst){
 		std::stringstream sstr(src);
 		sstr >> dst;
 	}
 
+
+
+	template <class D>
+	static inline
+	void convert(const T & src, D & dst){
+		convertFrom(src, dst);
+	}
+
+
+	template <class S>
+	static inline
+	void convert(const S & src, T & dst){
+		convertTo(src, dst);
+	}
+
+
+	/// Convert with cast source type.
+	template <class D>
+	static
+	void convertFrom(const T & src, D & dst){
+		std::stringstream sstr;
+		sstr << src;
+		sstr >> dst;
+	}
+
+	/// Convert with cast target type.
+	template <class S>
+	static
+	void convertTo(const S & src, T & dst){
+		std::stringstream sstr;
+		sstr << src;
+		sstr >> dst;
+	}
 
 
 };
