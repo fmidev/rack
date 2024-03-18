@@ -1,11 +1,9 @@
 <map id="CoordinateHandler2D" name="CoordinateHandler2D">
-<area shape="rect" id="node1" title=" " alt="" coords="201,304,363,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Range.html" title=" " alt="" coords="5,200,116,227"/>
-<area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="73,103,208,130"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="141,200,269,227"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="293,200,425,227"/>
-<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="253,96,409,137"/>
-<area shape="rect" id="node7" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="433,103,579,130"/>
-<area shape="rect" id="node8" title=" " alt="" coords="437,5,575,47"/>
-<area shape="rect" id="node9" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="450,200,621,227"/>
+<area shape="rect" id="node1" title=" " alt="" coords="201,200,363,227"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Range.html" title=" " alt="" coords="5,96,116,123"/>
+<area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="107,13,241,39"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="141,96,269,123"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="293,96,425,123"/>
+<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="277,5,441,47"/>
+<area shape="rect" id="node7" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="450,96,621,123"/>
 </map>

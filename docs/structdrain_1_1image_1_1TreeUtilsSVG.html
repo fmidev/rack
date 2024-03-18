@@ -70,20 +70,129 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="structdrain_1_1image_1_1TreeUtilsSVG-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">TreeUtilsSVG Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="dynheader">
+Collaboration diagram for TreeUtilsSVG:</div>
+<div class="dyncontent">
+<div class="center"><img src="structdrain_1_1image_1_1TreeUtilsSVG__coll__graph.png" border="0" usemap="#aTreeUtilsSVG_coll__map" alt="Collaboration graph"/></div>
+<map name="aTreeUtilsSVG_coll__map" id="aTreeUtilsSVG_coll__map">
+<area shape="rect" title=" " alt="" coords="1000,78,1107,105"/>
+<area shape="rect" href="structdrain_1_1image_1_1PanelConfSVG.html" title=" " alt="" coords="756,78,871,105"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="395,5,632,47"/>
+<area shape="rect" href="classdrain_1_1SingleFlagger.html" title=" " alt="" coords="196,78,345,105"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="402,71,625,112"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,109,147,135"/>
+<area shape="rect" href="classdrain_1_1MultiFlagger.html" title=" " alt="" coords="199,133,342,159"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="411,136,615,177"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a4c4728e420f2168d1e6890dab2ead5ec"><td class="memItemLeft" align="right" valign="top"><a id="a4c4728e420f2168d1e6890dab2ead5ec"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>align</b> (TreeSVG &amp;group, <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; int &gt; &amp;bbox, bool horizontal=true, bool ascending=true)</td></tr>
-<tr class="separator:a4c4728e420f2168d1e6890dab2ead5ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69bfb275852c3870f3b7b6f9b5eecf7e"><td class="memItemLeft" align="right" valign="top"><a id="a69bfb275852c3870f3b7b6f9b5eecf7e"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1TreeUtilsSVG.html#a69bfb275852c3870f3b7b6f9b5eecf7e">getRect</a> (TreeSVG &amp;group, <a class="el" href="structdrain_1_1Box.html">drain::Box</a>&lt; double &gt; &amp;rect)</td></tr>
+<tr class="memdesc:a69bfb275852c3870f3b7b6f9b5eecf7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the bounding box defined here as (x,y,width,height) of a single element. <br /></td></tr>
+<tr class="separator:a69bfb275852c3870f3b7b6f9b5eecf7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18feddf7881f35bf815d4c40620ea1c8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1TreeUtilsSVG.html#a18feddf7881f35bf815d4c40620ea1c8">getBoundingFrame</a> (TreeSVG &amp;group, <a class="el" href="classdrain_1_1Frame2D.html">drain::Frame2D</a>&lt; int &gt; &amp;frame, PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION)</td></tr>
+<tr class="memdesc:a18feddf7881f35bf815d4c40620ea1c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the width and height for a bounding box IMAGE and RECT elements.  <a href="structdrain_1_1image_1_1TreeUtilsSVG.html#a18feddf7881f35bf815d4c40620ea1c8">More...</a><br /></td></tr>
+<tr class="separator:a18feddf7881f35bf815d4c40620ea1c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa50471738eddbd558b36e4030a0cebf"><td class="memItemLeft" align="right" valign="top"><a id="aaa50471738eddbd558b36e4030a0cebf"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1TreeUtilsSVG.html#aaa50471738eddbd558b36e4030a0cebf">alignSequence</a> (TreeSVG &amp;group, const <a class="el" href="classdrain_1_1Frame2D.html">drain::Frame2D</a>&lt; int &gt; &amp;frame, const <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;start={0, 0}, PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION, PanelConfSVG::Direction direction=PanelConfSVG::UNDEFINED_DIRECTION)</td></tr>
+<tr class="memdesc:aaa50471738eddbd558b36e4030a0cebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stack IMAGE and RECT elements within a frame (width x height) to a row or column. <br /></td></tr>
+<tr class="separator:aaa50471738eddbd558b36e4030a0cebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb4ad17e9eb69d30b82fabcad46673e0"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1TreeUtilsSVG.html#aeb4ad17e9eb69d30b82fabcad46673e0">alignText</a> (TreeSVG &amp;group)</td></tr>
+<tr class="memdesc:aeb4ad17e9eb69d30b82fabcad46673e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves TEXT elems to desired positions, esp corners (LEFT|RIGHT), (TOP|BOTTOM)  <a href="structdrain_1_1image_1_1TreeUtilsSVG.html#aeb4ad17e9eb69d30b82fabcad46673e0">More...</a><br /></td></tr>
+<tr class="separator:aeb4ad17e9eb69d30b82fabcad46673e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a6bd17fced83d4a9d0a47dfc10162414d"><td class="memItemLeft" align="right" valign="top"><a id="a6bd17fced83d4a9d0a47dfc10162414d"></a>
+static <a class="el" href="structdrain_1_1image_1_1PanelConfSVG.html">PanelConfSVG</a>&#160;</td><td class="memItemRight" valign="bottom"><b>defaultConf</b></td></tr>
+<tr class="separator:a6bd17fced83d4a9d0a47dfc10162414d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aeb4ad17e9eb69d30b82fabcad46673e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb4ad17e9eb69d30b82fabcad46673e0">&#9670;&nbsp;</a></span>alignText()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void alignText </td>
+          <td>(</td>
+          <td class="paramtype">TreeSVG &amp;&#160;</td>
+          <td class="paramname"><em>group</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Moves TEXT elems to desired positions, esp corners (LEFT|RIGHT), (TOP|BOTTOM) </p>
+<p>Book keeping</p>
+
+</div>
+</div>
+<a id="a18feddf7881f35bf815d4c40620ea1c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18feddf7881f35bf815d4c40620ea1c8">&#9670;&nbsp;</a></span>getBoundingFrame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getBoundingFrame </td>
+          <td>(</td>
+          <td class="paramtype">TreeSVG &amp;&#160;</td>
+          <td class="paramname"><em>group</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Frame2D.html">drain::Frame2D</a>&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>frame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">PanelConfSVG::Orientation&#160;</td>
+          <td class="paramname"><em>orientation</em> = <code>PanelConfSVG::UNDEFINED_ORIENTATION</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Computes the width and height for a bounding box IMAGE and RECT elements. </p>
+<p>The result is the minimal bounding box that covers the IMAGE and RECT elements aligned non-overlapping in a row (orientation <code>HORZ</code> ) or a column (orientation <code>VERT</code> ). </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
 <li>src/drain/image/<a class="el" href="TreeUtilsSVG_8h_source.html">TreeUtilsSVG.h</a></li>
+<li>src/drain/image/TreeUtilsSVG.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

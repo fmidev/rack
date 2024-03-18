@@ -1,8 +1,7 @@
 <map id="CmdProcessFile" name="CmdProcessFile">
 <area shape="rect" id="node1" title=" " alt="" coords="246,1072,371,1099"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="97,996,305,1023"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="205,996,413,1023"/>
 <area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="247,920,371,947"/>
-<area shape="rect" id="node22" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="329,996,510,1023"/>
 <area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="201,831,291,857"/>
 <area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="170,755,263,781"/>
 <area shape="rect" id="node6" href="$classdrain_1_1Context.html" title=" " alt="" coords="176,665,249,692"/>

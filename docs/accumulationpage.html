@@ -81,15 +81,16 @@ Accumulation products</h1>
 <p>Internally, the accumulation process uses the same modules as in compositing: an accumulation array is first updated, and finally an accumulation product is extracted.</p>
 <h2><a class="anchor" id="acc_polar"></a>
 Accumulation products</h2>
-<p>Basically, data in polar coordinates (ie. sweeps or polar products) can be accumulated to an array by issuing input files proceded with <code>&ndash;pAdd</code> command, one by one. More conveniently the command is set with <code>&ndash;script</code> and the inputs are given as a list. Finally, the accumulated data is extracted with <code>&ndash;pExtract</code> . For example: <br  />
+<p>Basically, data in polar coordinates (ie. sweeps or polar products) can be accumulated to an array by issuing input files proceeded with <code>&ndash;pAdd</code> command, one by one. More conveniently the command is set with <code>&ndash;script</code> and the inputs are given as a list. Finally, the accumulated data is extracted with <code>&ndash;pExtract</code> . For example: <br  />
 </p>
 <div class="fragment"><div class="line"><span class="preprocessor"># &#39;Undetect&#39; values replaced with physical low value</span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a>                    --script <span class="stringliteral">&#39;--pAdd&#39;</span> data-acc/2017*.h5 --encoding C --pExtract <span class="stringliteral">&#39;dw&#39;</span> -o accumulated0.h5</div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> --select /dataset1,quantity=DBZH                  --script <span class="stringliteral">&#39;--pAdd&#39;</span> data-acc/2017*.h5 --encoding C --pExtract <span class="stringliteral">&#39;dw&#39;</span> -o accumulated0.h5</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># &#39;Undetect&#39; values discarded</span></div>
-<div class="line"><span class="preprocessor">rack --undetectWeight 0 --script &#39;--pAdd&#39; data-acc/2017*.h5 --encoding C --pExtract &#39;dw&#39; -o accumulated1.h5</span></div>
+<div class="line"><span class="preprocessor">rack --select /dataset1,quantity=DBZH --undetectWeight 0 --script &#39;--pAdd&#39; data-acc/2017*.h5 --encoding C --pExtract &#39;dw&#39; -o accumulated1.h5</span></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
-</div><!-- fragment --><div class="image">
+</div><!-- fragment --><p>In these examples, input selector <code>&ndash;select</code> <code>/dataset1</code>,quantity=DBZH is used for faster file read.</p>
+<div class="image">
 <img src="acc-input.png" alt=""/>
 <div class="caption">
 Input data for accumulation (<code>DBZH</code> ).</div></div>
@@ -101,10 +102,10 @@ Result of accumulation: with (left) or without (right) <code>undetect</code> rep
  <p>The desired data storage type and encoding can be set with <code>&ndash;encoding</code> command. Issuing it explicitly (before <code>&ndash;pAdd</code> command) prevents warnings of a limited value range.</p>
 <p>Accumulation can be incremental, that is, one may continue accumulation on a previously computed result. The new data will be assigned weight 1/N which normalizes the accumulation. <br  />
  For example, the above set of 25 volumes can be accumulated as follows, as monthly sets: </p><div class="fragment"><div class="line"><span class="preprocessor"># Cold start</span></div>
-<div class="line"><a class="code" href="namespacerack.html">rack</a> --undetectWeight 0 --script <span class="stringliteral">&#39;--pAdd&#39;</span>        data-acc/20170[2-5]*.h5 --pExtract <span class="stringliteral">&#39;dw&#39;</span> -o acc-part.h5</div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> --select /dataset1,quantity=DBZH --undetectWeight 0 --script <span class="stringliteral">&#39;--pAdd&#39;</span>        data-acc/20170[2-5]*.h5 --pExtract <span class="stringliteral">&#39;dw&#39;</span> -o acc-part.h5</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># Warm start: read previous accumulation as a background</span></div>
-<div class="line"><span class="preprocessor">rack --undetectWeight 0 --script &#39;--pAdd&#39; acc-part.h5 data-acc/201706*.h5     --pExtract &#39;dw&#39; -o accumulated.h5</span></div>
+<div class="line"><span class="preprocessor">rack --select /dataset1,quantity=DBZH --undetectWeight 0 --script &#39;--pAdd&#39; acc-part.h5 data-acc/201706*.h5     --pExtract &#39;dw&#39; -o accumulated.h5</span></div>
 </div><!-- fragment --><p>By default, quantities <code>DBZH</code> and <code>RATE</code> are used for accumulation. This can be changed with <code>&ndash;select</code> . For example, accumulation of total reflectivity (<code>TH</code> ) is obtained with: <br  />
  </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --encoding S --select <span class="stringliteral">&#39;quantity=^TH$&#39;</span> --script <span class="stringliteral">&#39;--pAdd&#39;</span> &lt;files&gt;  --pExtract <span class="stringliteral">&#39;dw&#39;</span> -o accumulated.h5 </div>
 </div><!-- fragment --><h2><a class="anchor" id="create_cluttermap"></a>

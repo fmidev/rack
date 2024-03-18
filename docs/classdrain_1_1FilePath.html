@@ -71,6 +71,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classdrain_1_1FilePath-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -101,16 +102,32 @@ typedef <a class="el" href="classdrain_1_1Path.html">Path</a>&lt; std::string,'/
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aee152cf6013567300f417a1db77c28b3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FilePath.html#aee152cf6013567300f417a1db77c28b3">FilePath</a> (const std::string &amp;s=&quot;&quot;)</td></tr>
-<tr class="memdesc:aee152cf6013567300f417a1db77c28b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classdrain_1_1FilePath.html#aee152cf6013567300f417a1db77c28b3">More...</a><br /></td></tr>
-<tr class="separator:aee152cf6013567300f417a1db77c28b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7f167fad2393b34ec51acbf5a058488"><td class="memItemLeft" align="right" valign="top"><a id="ae7f167fad2393b34ec51acbf5a058488"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FilePath.html#ae7f167fad2393b34ec51acbf5a058488">FilePath</a> (const <a class="el" href="classdrain_1_1FilePath.html">FilePath</a> &amp;s)</td></tr>
-<tr class="memdesc:ae7f167fad2393b34ec51acbf5a058488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="memitem:a5cb3b000f0e35b8b9aad8a39e9bff192"><td class="memTemplParams" colspan="2"><a id="a5cb3b000f0e35b8b9aad8a39e9bff192"></a>
+template&lt;typename ... TT&gt; </td></tr>
+<tr class="memitem:a5cb3b000f0e35b8b9aad8a39e9bff192"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1FilePath.html#a5cb3b000f0e35b8b9aad8a39e9bff192">FilePath</a> (const TT &amp;... args)</td></tr>
+<tr class="memdesc:a5cb3b000f0e35b8b9aad8a39e9bff192"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
+<tr class="separator:a5cb3b000f0e35b8b9aad8a39e9bff192"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7f167fad2393b34ec51acbf5a058488"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FilePath.html#ae7f167fad2393b34ec51acbf5a058488">FilePath</a> (const <a class="el" href="classdrain_1_1FilePath.html">FilePath</a> &amp;s)</td></tr>
+<tr class="memdesc:ae7f167fad2393b34ec51acbf5a058488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="classdrain_1_1FilePath.html#ae7f167fad2393b34ec51acbf5a058488">More...</a><br /></td></tr>
 <tr class="separator:ae7f167fad2393b34ec51acbf5a058488"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2924f6cc1546444425b9f08c2ca42327"><td class="memItemLeft" align="right" valign="top"><a id="a2924f6cc1546444425b9f08c2ca42327"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const std::string &amp;s)</td></tr>
-<tr class="separator:a2924f6cc1546444425b9f08c2ca42327"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8bb3912a3ce86b15842e79d0b421204"><td class="memItemLeft" align="right" valign="top"><a id="ac8bb3912a3ce86b15842e79d0b421204"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
+<tr class="separator:ac8bb3912a3ce86b15842e79d0b421204"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a481b8a81ec4de786dbadac46564b6301"><td class="memTemplParams" colspan="2"><a id="a481b8a81ec4de786dbadac46564b6301"></a>
+template&lt;typename ... TT&gt; </td></tr>
+<tr class="memitem:a481b8a81ec4de786dbadac46564b6301"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (const TT &amp;... args)</td></tr>
+<tr class="separator:a481b8a81ec4de786dbadac46564b6301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8acfba9a59a30ef3e1cdcb47eeb1ef32"><td class="memTemplParams" colspan="2"><a id="a8acfba9a59a30ef3e1cdcb47eeb1ef32"></a>
+template&lt;typename T , typename ... TT&gt; </td></tr>
+<tr class="memitem:a8acfba9a59a30ef3e1cdcb47eeb1ef32"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>append</b> (const T &amp;arg, const TT &amp;... args)</td></tr>
+<tr class="separator:a8acfba9a59a30ef3e1cdcb47eeb1ef32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92efe8f216f542e174158bccc7a74725"><td class="memItemLeft" align="right" valign="top"><a id="a92efe8f216f542e174158bccc7a74725"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FilePath.html#a92efe8f216f542e174158bccc7a74725">append</a> (const std::string &amp;s)</td></tr>
+<tr class="memdesc:a92efe8f216f542e174158bccc7a74725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts at least filename. If the string contains leading dir elements, \i append them to <code>this-&gt;dir</code> . <br /></td></tr>
+<tr class="separator:a92efe8f216f542e174158bccc7a74725"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad680a12a996d3e8e592d522751bffba6"><td class="memItemLeft" align="right" valign="top"><a id="ad680a12a996d3e8e592d522751bffba6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> ()</td></tr>
+<tr class="separator:ad680a12a996d3e8e592d522751bffba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d0474a069291d69a17d6949ae0914f6"><td class="memItemLeft" align="right" valign="top"><a id="a9d0474a069291d69a17d6949ae0914f6"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classdrain_1_1FilePath.html">FilePath</a> &amp;p) const</td></tr>
 <tr class="separator:a9d0474a069291d69a17d6949ae0914f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -124,6 +141,15 @@ virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><b>str</b
 <tr class="memitem:aff2518a71df07cb0b2031c25164077a0"><td class="memItemLeft" align="right" valign="top"><a id="aff2518a71df07cb0b2031c25164077a0"></a>
 <a class="el" href="classdrain_1_1FilePath.html">FilePath</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (const <a class="el" href="classdrain_1_1FilePath.html">FilePath</a> &amp;path)</td></tr>
 <tr class="separator:aff2518a71df07cb0b2031c25164077a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aa38a276e5e5f22836e1f33bd5bb9175c"><td class="memItemLeft" align="right" valign="top"><a id="aa38a276e5e5f22836e1f33bd5bb9175c"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>mkdir</b> (const std::string &amp;dirpath, int flags=S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH)</td></tr>
+<tr class="separator:aa38a276e5e5f22836e1f33bd5bb9175c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aea6eecf3077497ac0a9b6356c309b5"><td class="memItemLeft" align="right" valign="top"><a id="a8aea6eecf3077497ac0a9b6356c309b5"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>mkdir</b> (const <a class="el" href="classdrain_1_1Path.html">FilePath::path_t</a> &amp;dirpath, int flags=S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH)</td></tr>
+<tr class="separator:a8aea6eecf3077497ac0a9b6356c309b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -145,8 +171,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>extension</b><
 <li><code>ext</code> - extension, without dot (png, txt </li>
 </ul>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aee152cf6013567300f417a1db77c28b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee152cf6013567300f417a1db77c28b3">&#9670;&nbsp;</a></span>FilePath()</h2>
+<a id="ae7f167fad2393b34ec51acbf5a058488"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7f167fad2393b34ec51acbf5a058488">&#9670;&nbsp;</a></span>FilePath()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -154,14 +180,14 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>extension</b><
         <tr>
           <td class="memname"><a class="el" href="classdrain_1_1FilePath.html">FilePath</a> </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>s</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1FilePath.html">FilePath</a> &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor. </p>
+<p>Copy constructor. </p>
 <p>In Linux and Unix... </p>
 
 </div>

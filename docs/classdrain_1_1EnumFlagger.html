@@ -112,21 +112,24 @@ typedef fbase_t::value_t&#160;</td><td class="memItemRight" valign="bottom"><b>v
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a34264196857f258291c738d427c8985e"><td class="memItemLeft" align="right" valign="top"><a id="a34264196857f258291c738d427c8985e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>EnumFlagger</b> (value_t v)</td></tr>
-<tr class="separator:a34264196857f258291c738d427c8985e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5acfd3b94fbbf9f4d0acf3f5073535ee"><td class="memTemplParams" colspan="2"><a id="a5acfd3b94fbbf9f4d0acf3f5073535ee"></a>
+template&lt;typename ... T&gt; </td></tr>
+<tr class="memitem:a5acfd3b94fbbf9f4d0acf3f5073535ee"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>EnumFlagger</b> (const T &amp;... arg)</td></tr>
+<tr class="separator:a5acfd3b94fbbf9f4d0acf3f5073535ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a611e24d7f1766cfa1a8f5a652a9b494c"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classdrain_1_1FlaggerBase.html">FlaggerBase</a>&lt; value_t &gt;::dict_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1EnumFlagger.html#a611e24d7f1766cfa1a8f5a652a9b494c">getDict</a> () const</td></tr>
 <tr class="memdesc:a611e24d7f1766cfa1a8f5a652a9b494c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the static dictionary created for this <code>value_t</code> .  <a href="classdrain_1_1EnumFlagger.html#a611e24d7f1766cfa1a8f5a652a9b494c">More...</a><br /></td></tr>
 <tr class="separator:a611e24d7f1766cfa1a8f5a652a9b494c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8760b97e03579776f26dbd920937bf3c"><td class="memTemplParams" colspan="2"><a id="a8760b97e03579776f26dbd920937bf3c"></a>
-template&lt;class T &gt; </td></tr>
-<tr class="memitem:a8760b97e03579776f26dbd920937bf3c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt; F &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator=</b> (const T &amp;v)</td></tr>
+<tr class="memitem:a8760b97e03579776f26dbd920937bf3c"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a8760b97e03579776f26dbd920937bf3c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt; F &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1EnumFlagger.html#a8760b97e03579776f26dbd920937bf3c">operator=</a> (const T &amp;v)</td></tr>
 <tr class="separator:a8760b97e03579776f26dbd920937bf3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ae69d7619cbe4f7c36f499d1f8d511f67"><td class="memItemLeft" align="right" valign="top">static value_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1EnumFlagger.html#ae69d7619cbe4f7c36f499d1f8d511f67">getValueNEW</a> (const std::string &amp;key)</td></tr>
 <tr class="separator:ae69d7619cbe4f7c36f499d1f8d511f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc53f328ca3f77f51476573816a946db"><td class="memItemLeft" align="right" valign="top"><a id="adc53f328ca3f77f51476573816a946db"></a>
+static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getKeysNEW2</b> (const value_t &amp;value, char separator=',')</td></tr>
+<tr class="separator:adc53f328ca3f77f51476573816a946db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class F&gt;<br />
@@ -194,6 +197,34 @@ class drain::EnumFlagger&lt; F &gt;</h3>
 </table>
 </div><div class="memdoc">
 <p><a class="el" href="classdrain_1_1Dictionary.html" title="Two-way mapping between strings and objects of template class T.">Dictionary</a> throws except if key now found. </p>
+
+</div>
+</div>
+<a id="a8760b97e03579776f26dbd920937bf3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8760b97e03579776f26dbd920937bf3c">&#9670;&nbsp;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt;F&gt;&amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Dictionary throws except if key now found.
+</pre><p> static value_t getKeys(const value_t &amp; value){ return (value_t)EnumDict&lt;value_t&gt;::dict.getValue(key); }; </p>
 
 </div>
 </div>

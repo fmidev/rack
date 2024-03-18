@@ -1,6 +1,6 @@
 <map id="CmdOutputConf" name="CmdOutputConf">
-<area shape="rect" id="node1" title=" " alt="" coords="259,1129,385,1156"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="176,1039,345,1080"/>
+<area shape="rect" id="node1" title=" " alt="" coords="259,1144,385,1171"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="176,1053,345,1095"/>
 <area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="199,920,323,947"/>
 <area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="180,831,269,857"/>
 <area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="170,755,263,781"/>

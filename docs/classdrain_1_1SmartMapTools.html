@@ -81,6 +81,24 @@ $(function() {
  <a href="classdrain_1_1SmartMapTools.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="SmartMapTools_8h_source.html">SmartMapTools.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SmartMapTools:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdrain_1_1SmartMapTools__inherit__graph.png" border="0" usemap="#aSmartMapTools_inherit__map" alt="Inheritance graph"/></div>
+<map name="aSmartMapTools_inherit__map" id="aSmartMapTools_inherit__map">
+<area shape="rect" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="5,80,128,107"/>
+<area shape="rect" href="classdrain_1_1MapTools.html" title="General purpose tools for handling values and keys of std::map&lt;&gt;" alt="" coords="25,5,108,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for SmartMapTools:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdrain_1_1SmartMapTools__coll__graph.png" border="0" usemap="#aSmartMapTools_coll__map" alt="Collaboration graph"/></div>
+<map name="aSmartMapTools_coll__map" id="aSmartMapTools_coll__map">
+<area shape="rect" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="5,80,128,107"/>
+<area shape="rect" href="classdrain_1_1MapTools.html" title="General purpose tools for handling values and keys of std::map&lt;&gt;" alt="" coords="25,5,108,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -94,6 +112,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a05cccf8a463da2339d30d472ac21d14f"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMapTools.html#a05cccf8a463da2339d30d472ac21d14f">setValue</a> (M &amp;dst, const std::string &amp;key, const V &amp;value)</td></tr>
 <tr class="memdesc:a05cccf8a463da2339d30d472ac21d14f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility for "guessing" key order. Derived classes will redefine this e.g. for ordered maps.  <a href="classdrain_1_1SmartMapTools.html#a05cccf8a463da2339d30d472ac21d14f">More...</a><br /></td></tr>
 <tr class="separator:a05cccf8a463da2339d30d472ac21d14f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86d51088df1c2202eeeea911acf2f5eb"><td class="memTemplParams" colspan="2"><a id="a86d51088df1c2202eeeea911acf2f5eb"></a>
+template&lt;class M , class V &gt; </td></tr>
+<tr class="memitem:a86d51088df1c2202eeeea911acf2f5eb"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setValue</b> (M &amp;dst, const std::string &amp;key, const V &amp;value, bool STRICT)</td></tr>
+<tr class="separator:a86d51088df1c2202eeeea911acf2f5eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49e263737a2ce5321b7eb976b58992cc"><td class="memTemplParams" colspan="2">template&lt;class M , class V &gt; </td></tr>
 <tr class="memitem:a49e263737a2ce5321b7eb976b58992cc"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMapTools.html#a49e263737a2ce5321b7eb976b58992cc">updateValue</a> (M &amp;dst, const std::string &amp;key, const V &amp;value)</td></tr>
 <tr class="memdesc:a49e263737a2ce5321b7eb976b58992cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set value only if <code>key</code> exists.  <a href="classdrain_1_1SmartMapTools.html#a49e263737a2ce5321b7eb976b58992cc">More...</a><br /></td></tr>
@@ -115,10 +137,10 @@ template&lt;class M , class S , bool STRICT = true&gt; </td></tr>
 <tr class="memitem:a4169240f25e31491042b872e569135d7"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMapTools.html#a4169240f25e31491042b872e569135d7">setValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;values, char equalSign='=')</td></tr>
 <tr class="memdesc:a4169240f25e31491042b872e569135d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting strict "&lt;key&gt;=&lt;value&gt;" format, no positional arguments.  <a href="classdrain_1_1SmartMapTools.html#a4169240f25e31491042b872e569135d7">More...</a><br /></td></tr>
 <tr class="separator:a4169240f25e31491042b872e569135d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaac7d25e6ad71cd4a4c7e581d4537c18"><td class="memTemplParams" colspan="2"><a id="aaac7d25e6ad71cd4a4c7e581d4537c18"></a>
+<tr class="memitem:aa57ed96bc4a650a1889ebf2e28fc5bfc"><td class="memTemplParams" colspan="2"><a id="aa57ed96bc4a650a1889ebf2e28fc5bfc"></a>
 template&lt;class M , bool STRICT = true&gt; </td></tr>
-<tr class="memitem:aaac7d25e6ad71cd4a4c7e581d4537c18"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setValues</b> (M &amp;dst, const std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="classdrain_1_1Variable.html">drain::Variable</a> &gt; &gt; &amp;l)</td></tr>
-<tr class="separator:aaac7d25e6ad71cd4a4c7e581d4537c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa57ed96bc4a650a1889ebf2e28fc5bfc"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setValues</b> (M &amp;dst, const std::initializer_list&lt; Variable::init_pair_t &gt; &amp;l)</td></tr>
+<tr class="separator:aa57ed96bc4a650a1889ebf2e28fc5bfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a703cf0bf1a1d3d952f6d2be3f91c3625"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
 <tr class="memitem:a703cf0bf1a1d3d952f6d2be3f91c3625"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMapTools.html#a703cf0bf1a1d3d952f6d2be3f91c3625">updateValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;values, char equals='=')</td></tr>
 <tr class="memdesc:a703cf0bf1a1d3d952f6d2be3f91c3625"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting strict "&lt;key&gt;=&lt;value&gt;" format, no positional arguments.  <a href="classdrain_1_1SmartMapTools.html#a703cf0bf1a1d3d952f6d2be3f91c3625">More...</a><br /></td></tr>
@@ -151,6 +173,15 @@ template&lt;class M , bool STRICT = true&gt; </td></tr>
 <tr class="memitem:a1fd83c85091df3d7e59c384a0bbb4f39"><td class="memTemplParams" colspan="2">template&lt;class M , class V &gt; </td></tr>
 <tr class="memitem:a1fd83c85091df3d7e59c384a0bbb4f39"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMapTools.html#a1fd83c85091df3d7e59c384a0bbb4f39">setValues</a> (M &amp;dst, std::initializer_list&lt; V &gt; values)</td></tr>
 <tr class="separator:a1fd83c85091df3d7e59c384a0bbb4f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classdrain_1_1MapTools"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classdrain_1_1MapTools')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classdrain_1_1MapTools.html">MapTools</a></td></tr>
+<tr class="memitem:a29d2e5732b77b53894654689fd42fc30 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
+<tr class="memitem:a29d2e5732b77b53894654689fd42fc30 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplItemLeft" align="right" valign="top">static const M::mapped_t &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a29d2e5732b77b53894654689fd42fc30">get</a> (const M &amp;m, const typename M::key_t &amp;key)</td></tr>
+<tr class="memdesc:a29d2e5732b77b53894654689fd42fc30 inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the key is found, the value is returned as a reference.  <a href="classdrain_1_1MapTools.html#a29d2e5732b77b53894654689fd42fc30">More...</a><br /></td></tr>
+<tr class="separator:a29d2e5732b77b53894654689fd42fc30 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebc80be1bbe44103f53e281061a1ef5e inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplParams" colspan="2">template&lt;class M , class F &gt; </td></tr>
+<tr class="memitem:aebc80be1bbe44103f53e281061a1ef5e inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#aebc80be1bbe44103f53e281061a1ef5e">get</a> (const M &amp;m, const typename M::key_type &amp;key, F &amp;value)</td></tr>
+<tr class="memdesc:aebc80be1bbe44103f53e281061a1ef5e inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the key is found, the value is assigned.  <a href="classdrain_1_1MapTools.html#aebc80be1bbe44103f53e281061a1ef5e">More...</a><br /></td></tr>
+<tr class="separator:aebc80be1bbe44103f53e281061a1ef5e inherit pub_static_methods_classdrain_1_1MapTools"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A base class for smart maps providing methods for importing and exporting values, among others. </p>
@@ -196,7 +227,7 @@ template&lt;class M , bool STRICT = true&gt; </td></tr>
 </div><div class="memdoc">
 
 <p>Utility for "guessing" key order. Derived classes will redefine this e.g. for ordered maps. </p>
-<p>Set value of an element. If not STRICT, set only if ket exists. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+<p>Set value of an element. If not STRICT, set only if key exists ie update. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">M</td><td>- map type </td></tr>
     <tr><td class="paramname">S</td><td>- source element type </td></tr>

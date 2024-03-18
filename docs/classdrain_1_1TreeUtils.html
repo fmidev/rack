@@ -76,7 +76,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Unordered tree based on std::map.  
+<p>Collection of functions for investigating and processing trees.  
  <a href="classdrain_1_1TreeUtils.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="TreeUtils_8h_source.html">TreeUtils.h</a>&gt;</code></p>
@@ -99,13 +99,18 @@ Static Public Member Functions</h2></td></tr>
 template&lt;class T1 , class T2 &gt; </td></tr>
 <tr class="memitem:ab242858aea31a4ceee8a95d88aab845a"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>deepCopy</b> (const T1 &amp;srcTree, T2 &amp;dstTree)</td></tr>
 <tr class="separator:ab242858aea31a4ceee8a95d88aab845a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e1b2b368b1024fde39460ef38d8b0ca"><td class="memTemplParams" colspan="2">template&lt;class T , class H &gt; </td></tr>
+<tr class="memitem:a5e1b2b368b1024fde39460ef38d8b0ca"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1TreeUtils.html#a5e1b2b368b1024fde39460ef38d8b0ca">traverse</a> (H &amp;handler, T &amp;tree, const typename T::path_t &amp;path=typename T::path_t())</td></tr>
+<tr class="memdesc:a5e1b2b368b1024fde39460ef38d8b0ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse tree, visiting each node as a prefix operation.  <a href="classdrain_1_1TreeUtils.html#a5e1b2b368b1024fde39460ef38d8b0ca">More...</a><br /></td></tr>
+<tr class="separator:a5e1b2b368b1024fde39460ef38d8b0ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d5a5ee8ef6b4170ff78b0da10d11d75"><td class="memTemplParams" colspan="2"><a id="a3d5a5ee8ef6b4170ff78b0da10d11d75"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:a3d5a5ee8ef6b4170ff78b0da10d11d75"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>dataDumper</b> (const T &amp;data, std::ostream &amp;ostr)</td></tr>
+<tr class="memitem:a3d5a5ee8ef6b4170ff78b0da10d11d75"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1TreeUtils.html#a3d5a5ee8ef6b4170ff78b0da10d11d75">dataDumper</a> (const T &amp;data, std::ostream &amp;ostr)</td></tr>
+<tr class="memdesc:a3d5a5ee8ef6b4170ff78b0da10d11d75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation for recursive <a class="el" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102" title="Render a tree using character graphics.">dump()</a> <br /></td></tr>
 <tr class="separator:a3d5a5ee8ef6b4170ff78b0da10d11d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a589a266c64101a3a0441be1cad6ee102"><td class="memTemplParams" colspan="2">template&lt;class TR , bool SKIP_EMPTY = false&gt; </td></tr>
-<tr class="memitem:a589a266c64101a3a0441be1cad6ee102"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">dump</a> (const TR &amp;tree, std::ostream &amp;ostr=std::cout, bool(*callBack)(const typename TR::node_data_t &amp;, std::ostream &amp;)=TreeUtils::dataDumper, const std::string &amp;indent=&quot;&quot;)</td></tr>
-<tr class="memdesc:a589a266c64101a3a0441be1cad6ee102"><td class="mdescLeft">&#160;</td><td class="mdescRight">Debugging utility - dumps the structure of the tree (not the contents).  <a href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">More...</a><br /></td></tr>
+<tr class="memitem:a589a266c64101a3a0441be1cad6ee102"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">dump</a> (const TR &amp;tree, std::ostream &amp;ostr=std::cout, bool(*callBack)(const typename TR::node_data_t &amp;, std::ostream &amp;)=<a class="el" href="classdrain_1_1TreeUtils.html#a3d5a5ee8ef6b4170ff78b0da10d11d75">TreeUtils::dataDumper</a>, const std::string &amp;indent=&quot;&quot;)</td></tr>
+<tr class="memdesc:a589a266c64101a3a0441be1cad6ee102"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render a tree using character graphics.  <a href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">More...</a><br /></td></tr>
 <tr class="separator:a589a266c64101a3a0441be1cad6ee102"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4970a288b19248cec045228e77c32806"><td class="memTemplParams" colspan="2"><a id="a4970a288b19248cec045228e77c32806"></a>
 template&lt;class TR &gt; </td></tr>
@@ -123,36 +128,16 @@ template&lt;class TR &gt; </td></tr>
 <tr class="separator:a6c73fa97c7ecee265cc2a936ea142c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Unordered tree based on std::map. </p>
+<div class="textblock"><p>Collection of functions for investigating and processing trees. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">K</td><td>- key type, implementing method empty() and cast from/to std::string. </td></tr>
     <tr><td class="paramname">T</td><td>- value type </td></tr>
-    <tr><td class="paramname">C</td><td>- comparison functor, implementing less-than relation</td></tr>
+    <tr><td class="paramname">C</td><td>- comparison functor, implementing less-than relation </td></tr>
   </table>
   </dd>
 </dl>
-<p>tree[] returns childs only (complains separators, for some time) tree() returns descendants, allows deep paths.</p>
-<p>Child nodes can be addressed with operator[] with std::string valued keys: </p><div class="fragment"><div class="line">Tree&lt;float&gt; t;</div>
-<div class="line">t[<span class="stringliteral">&quot;firstChild&quot;</span>];</div>
-</div><!-- fragment --><p> The keys can be retrieved to a list with getKeys().</p>
-<p>Alternatively, one may iterate the children directly: </p><div class="fragment"><div class="line">std::map&lt;std::string,Tree&lt;int&gt; &gt;::iterator it = tree.begin();</div>
-<div class="line"><span class="keywordflow">while</span> (it != tree.end()){</div>
-<div class="line">  std::cout &lt;&lt; it-&gt;first &lt;&lt; <span class="charliteral">&#39; &#39;</span> &lt;&lt; it-&gt;second &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line">  ++it;</div>
-<div class="line">}</div>
-</div><!-- fragment --><p>As the operator[] returns a reference, it may be used recursively: </p><div class="fragment"><div class="line">t[<span class="stringliteral">&quot;firstChild&quot;</span>][<span class="stringliteral">&quot;a&quot;</span>][<span class="stringliteral">&quot;bb&quot;</span>];</div>
-</div><!-- fragment --><p>Tree also recognizes a path separator, which is '/' by default. Hence, the node created in the above example could be likewise created or addressed as: </p><div class="fragment"><div class="line">t(<span class="stringliteral">&quot;firstChild/a/bb&quot;</span>)</div>
-</div><!-- fragment --><p>Each node contains data of type T. It may be unused (empty), that is, a node can be used only as a branching point.</p>
-<div class="fragment"><div class="line">Tree&lt;std::string&gt; t;</div>
-<div class="line">t.data = <span class="stringliteral">&quot;Hello world&quot;</span>;</div>
-<div class="line">std::string s = t;  <span class="comment">// Now contains &quot;Hello world&quot;.</span></div>
-</div><!-- fragment --><p> (Direct assignments to and from the node data has been supported, but is now <b>disabled</b> for c++ compatibility reasons.)</p>
-<p>Also direct referencing of the node data is now <b>disabled:</b> </p><div class="fragment"><div class="line">Tree&lt;std::string&gt; t;</div>
-<div class="line">t = <span class="stringliteral">&quot;Hello world&quot;</span>;</div>
-<div class="line">Tree&lt;std::string&gt; &amp;r = t; <span class="comment">// Refers to tree.</span></div>
-<div class="line">std::string &amp;s = t;       <span class="comment">// Refers to data, &quot;Hello world&quot;.</span></div>
-</div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a589a266c64101a3a0441be1cad6ee102"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a589a266c64101a3a0441be1cad6ee102">&#9670;&nbsp;</a></span>dump()</h2>
 
@@ -178,7 +163,7 @@ template&lt;class TR &gt; </td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool(*)(const typename TR::node_data_t &amp;, std::ostream &amp;)&#160;</td>
-          <td class="paramname"><em>callBack</em> = <code>TreeUtils::dataDumper</code>, </td>
+          <td class="paramname"><em>callBack</em> = <code><a class="el" href="classdrain_1_1TreeUtils.html#a3d5a5ee8ef6b4170ff78b0da10d11d75">TreeUtils::dataDumper</a></code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -199,7 +184,8 @@ template&lt;class TR &gt; </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Debugging utility - dumps the structure of the tree (not the contents). </p>
+<p>Render a tree using character graphics. </p>
+<p>Debugging utility - dumps the structure of the tree (not the contents).</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">TR</td><td>- tree type </td></tr>
@@ -208,6 +194,8 @@ template&lt;class TR &gt; </td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>- true if empty, false if groups exist or data non-empty (FUTURE OPTION) </dd></dl>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="TreeSVG-example_8cpp-example.html#a2">TreeSVG-example.cpp</a>.</dd>
+</dl>
 
 </div>
 </div>
@@ -347,6 +335,59 @@ template&lt;class TR &gt; </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a5e1b2b368b1024fde39460ef38d8b0ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e1b2b368b1024fde39460ef38d8b0ca">&#9670;&nbsp;</a></span>traverse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void traverse </td>
+          <td>(</td>
+          <td class="paramtype">H &amp;&#160;</td>
+          <td class="paramname"><em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const typename T::path_t &amp;&#160;</td>
+          <td class="paramname"><em>path</em> = <code>typename&#160;T::path_t()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Traverse tree, visiting each node as a prefix operation. </p>
+<p>Simple version.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">H</td><td>- object with method visit(tree, path). </td></tr>
+    <tr><td class="paramname">T</td><td>- tree type, can be const </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>TODO: more codes than non-zero</p>
 
 </div>
 </div>

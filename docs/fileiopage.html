@@ -74,6 +74,8 @@ $(function() {
 <li class="level1"><a href="#fileio_img">Reading and writing image files</a><ul><li class="level2"><a href="#geotiff_remarks">Remarks on GeoTIFF images</a></li>
 </ul>
 </li>
+<li class="level1"><a href="#fileio_svg">Writing SVG files</a></li>
+<li class="level1"><a href="#fileio_html">Writing HTML files</a></li>
 <li class="level1"><a href="#histograms">Histograms</a></li>
 <li class="level1"><a href="#graphs">Illustrating data structure</a></li>
 <li class="level1"><a href="#file_quality">Reading and combining quality data</a></li>
@@ -198,6 +200,51 @@ Correctly (8-bit) and incorrectly (16-bit) rendered images.</div></div>
 <div class="line">  GeoTIFF tile size. Deprecating?, use --outputConf tif:tile=&lt;width&gt;:&lt;height&gt;,compression=LZW</div>
 <div class="line">    tile=256:256 </div>
 <div class="line">    compression= [{{NONE,1},{LZW,5},{DEFLATE,32946},{PACKBITS,32773}}]</div>
+</div><!-- fragment --><h1><a class="anchor" id="fileio_svg"></a>
+Writing SVG files</h1>
+<p><b>Experimental</b>. Latest versions of <b>Rack</b> support presenting generated PNG images collectively by means of Scalable Vector Graphics (SVG). Alignment of the elements is done horizontally or vertically. All the PNG images that have been written with <code>-o</code> / <code>&ndash;outputImage</code> are included automatically in the SVG file. Example:</p>
+<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5  --pCappi 500  -c -o $PWD/cappi-gray.png --palette <span class="stringliteral">&#39;&#39;</span> -o $PWD/cappi-rgb.png --outputConf relativePaths=<span class="keyword">false</span> -o display-cappi.svg</div>
+</div><!-- fragment --><div class="image">
+<img src="display-cappi.svg.png" alt=""/>
+<div class="caption">
+SVG panel</div></div>
+ <p>By default, images are positioned horizontally, from left to right. This can be changed with <code>&ndash;outputConf</code> <code>svg</code> , selecting <code>orientation</code> as <code>HORZ</code> or <code>VERT</code> and coordinate <code>direction</code> as increasing (<code>INCR</code> ) or decreasing (<code>DECR</code> ).</p>
+<div class="fragment"><div class="line">group=main ()</div>
+<div class="line">orientation= ([&quot;HORZ&quot;,&quot;VERT&quot;])</div>
+<div class="line">direction= ([&quot;INCR&quot;,&quot;DECR&quot;])</div>
+<div class="line">max=10 (max per row/column)</div>
+<div class="line">legend= ([&quot;NO&quot;,&quot;LEFT&quot;,&quot;RIGHT&quot;,&quot;DUPLEX&quot;])</div>
+<div class="line">title= ()</div>
+<div class="line">absolutePaths=false ()</div>
+</div><!-- fragment --><p>Example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --pCappi 500 -o $PWD/cappi-polar-DBZH.png  -c --palette <span class="stringliteral">&#39;&#39;</span> -o $PWD/cappi-rgb.png --outputConf svg:orientation=VERT,direction=DECR,absolutePaths=<span class="keyword">true</span> -o display2-cappi.svg</div>
+</div><!-- fragment --><div class="image">
+<img src="display2-cappi.svg.png" alt=""/>
+<div class="caption">
+SVG panel</div></div>
+ <p>Example: time series </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputConf svg:absolutePaths=<span class="keyword">true</span> --outputPrefix $PWD/ --cSize 300 --script <span class="stringliteral">&#39;-Q DBZH -c --palette &quot;&quot; -o out-${what:date|%Y%m%d}.png&#39;</span> --outputConf svg:group=May  data-acc/201705?51200_*.h5 --outputConf svg:group=June  data-acc/201706?51200_*.h5  -o time-series.svg</div>
+</div><!-- fragment --><div class="image">
+<img src="display2-cappi.svg.png" alt=""/>
+<div class="caption">
+SVG panel</div></div>
+ <p>Remark. In future versions:</p><ul>
+<li>the parameters of <code>&ndash;outputConf</code> <code>svg</code> may change.</li>
+<li>title formatting supported (using -c &ndash;format )</li>
+</ul>
+<h1><a class="anchor" id="fileio_html"></a>
+Writing HTML files</h1>
+<p><b>Experimental</b>. The current data structure can be written to a HTML file which displays the data in a clickable tree. The data arrays are stored in PNG files in sub directory named with the basename of the output file. The structure of the directory repeats the hierarchy of the original HDF5-ODIM data.</p>
+<p>Examples:</p>
+<div class="fragment"><div class="line"><span class="preprocessor"># Store full data structure</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 -o volume-full.html</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># Store selected parts of the structure</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --outputPrefix $PWD/ --select /dataset1:2/data2:4/data  -o volume-partial.html</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># Generate and store a Pseudo CAPPI product</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --pCappi 1500 -c -o pCappi-1500m.html</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># Generate a coloured Pseudo CAPPI product and store it </span></div>
+<div class="line"><span class="preprocessor">rack volume.h5 --pCappi 1500 -c --encoding quantity=&#39;DBZH&#39;  --palette &#39;default&#39; -o pCappi-1500m-RGB.html</span></div>
 </div><!-- fragment --><h1><a class="anchor" id="histograms"></a>
 Histograms</h1>
 <div class="fragment"><div class="line">--histogram  &lt;count&gt;,&lt;range&gt;,&lt;filename&gt;,&lt;attribute&gt;  (Section: general)</div>

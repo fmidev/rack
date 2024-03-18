@@ -157,6 +157,10 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a30280a2454d72fdff47f496da96f4758"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a30280a2454d72fdff47f496da96f4758">setGdalNoData</a> (const std::string &amp;nodata)</td></tr>
 <tr class="memdesc:a30280a2454d72fdff47f496da96f4758"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is between Tiff and GeoTiff?  <a href="classdrain_1_1image_1_1FileGeoTIFF.html#a30280a2454d72fdff47f496da96f4758">More...</a><br /></td></tr>
 <tr class="separator:a30280a2454d72fdff47f496da96f4758"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52ed3f5cc2d2272c62a23d3d9cd0f91e"><td class="memTemplParams" colspan="2"><a id="a52ed3f5cc2d2272c62a23d3d9cd0f91e"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a52ed3f5cc2d2272c62a23d3d9cd0f91e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setGdal</b> (const std::string &amp;key, const T &amp;value, int sample=-1, const std::string &amp;role=&quot;&quot;)</td></tr>
+<tr class="separator:a52ed3f5cc2d2272c62a23d3d9cd0f91e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50b82e0f609c5f08e6edbd7b81b5a288"><td class="memItemLeft" align="right" valign="top"><a id="a50b82e0f609c5f08e6edbd7b81b5a288"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a50b82e0f609c5f08e6edbd7b81b5a288">setGeoMetaData</a> (const <a class="el" href="classdrain_1_1image_1_1GeoFrame.html">drain::image::GeoFrame</a> &amp;frame)</td></tr>
 <tr class="memdesc:a50b82e0f609c5f08e6edbd7b81b5a288"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets projection and bounding box. Adjusts spatial resolution accordingly. <br /></td></tr>
@@ -215,10 +219,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setDefaults</b> ()</t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:af6bbc56dbc92c21d241ea4dea4ba8512"><td class="memItemLeft" align="right" valign="top"><a id="af6bbc56dbc92c21d241ea4dea4ba8512"></a>
-TreeGDAL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#af6bbc56dbc92c21d241ea4dea4ba8512">gdalInfo</a></td></tr>
-<tr class="memdesc:af6bbc56dbc92c21d241ea4dea4ba8512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use EPSG specific support only, if found. Else use also fromProj4Str(). <br /></td></tr>
-<tr class="separator:af6bbc56dbc92c21d241ea4dea4ba8512"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6be8b8cab27c07b2720236529d5a50f6"><td class="memItemLeft" align="right" valign="top"><a id="a6be8b8cab27c07b2720236529d5a50f6"></a>
+TreeGDAL&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a6be8b8cab27c07b2720236529d5a50f6">gdalMetadata</a></td></tr>
+<tr class="memdesc:a6be8b8cab27c07b2720236529d5a50f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use EPSG specific support only, if found. Else use also fromProj4Str(). <br /></td></tr>
+<tr class="separator:a6be8b8cab27c07b2720236529d5a50f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>

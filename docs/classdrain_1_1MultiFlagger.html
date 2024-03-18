@@ -83,10 +83,11 @@ Inheritance diagram for MultiFlagger&lt; E &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1MultiFlagger__inherit__graph.png" border="0" usemap="#aMultiFlagger_3_01E_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="aMultiFlagger_3_01E_01_4_inherit__map" id="aMultiFlagger_3_01E_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="195,50,337,77"/>
-<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="385,5,579,47"/>
-<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="389,71,575,127"/>
-<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,50,147,77"/>
+<area shape="rect" title=" " alt="" coords="195,78,337,105"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="385,5,589,47"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="391,71,584,112"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="394,137,581,193"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,78,147,105"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -132,9 +133,10 @@ typedef dict_t::value_t&#160;</td><td class="memItemRight" valign="bottom"><b>dv
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a52911e5569f44fe6b2eef694842dcfbb"><td class="memItemLeft" align="right" valign="top"><a id="a52911e5569f44fe6b2eef694842dcfbb"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MultiFlagger</b> (<a class="el" href="classdrain_1_1MultiFlagger.html#ad0c36de75d26fda5ca80a5219a2b1bc9">value_t</a> v)</td></tr>
-<tr class="separator:a52911e5569f44fe6b2eef694842dcfbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c2e993a2b2435a80d9cd99004ae342d"><td class="memTemplParams" colspan="2"><a id="a9c2e993a2b2435a80d9cd99004ae342d"></a>
+template&lt;typename ... T&gt; </td></tr>
+<tr class="memitem:a9c2e993a2b2435a80d9cd99004ae342d"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>MultiFlagger</b> (const T &amp;... args)</td></tr>
+<tr class="separator:a9c2e993a2b2435a80d9cd99004ae342d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a732cafb73bda6315ebb8ee85dc0e1c46"><td class="memTemplParams" colspan="2">template&lt;typename ... T&gt; </td></tr>
 <tr class="memitem:a732cafb73bda6315ebb8ee85dc0e1c46"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MultiFlagger.html#a732cafb73bda6315ebb8ee85dc0e1c46">set</a> (const T &amp;... args)</td></tr>
 <tr class="memdesc:a732cafb73bda6315ebb8ee85dc0e1c46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set bits, accepting numeric values or keys.  <a href="classdrain_1_1MultiFlagger.html#a732cafb73bda6315ebb8ee85dc0e1c46">More...</a><br /></td></tr>
@@ -149,8 +151,11 @@ template&lt;typename T , typename ... TT&gt; </td></tr>
 <tr class="separator:a1aac1fabe77a9759d4e4a344f9597061"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f1053d6f7fa0ebc029e218fc4e0be86"><td class="memItemLeft" align="right" valign="top"><a id="a4f1053d6f7fa0ebc029e218fc4e0be86"></a>
 virtual const <a class="el" href="classdrain_1_1MultiFlagger.html#ac94432274d27846064e98aaec0219f68">key_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1MultiFlagger.html#a4f1053d6f7fa0ebc029e218fc4e0be86">str</a> () const</td></tr>
-<tr class="memdesc:a4f1053d6f7fa0ebc029e218fc4e0be86"><td class="mdescLeft">&#160;</td><td class="mdescRight">String corresponding the current value. Returns empty, if not found. <br /></td></tr>
+<tr class="memdesc:a4f1053d6f7fa0ebc029e218fc4e0be86"><td class="mdescLeft">&#160;</td><td class="mdescRight">For exporting values. <br /></td></tr>
 <tr class="separator:a4f1053d6f7fa0ebc029e218fc4e0be86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea52988ceb966771f31ac28fbaabf975"><td class="memItemLeft" align="right" valign="top">virtual std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1MultiFlagger.html#aea52988ceb966771f31ac28fbaabf975">str</a> ()</td></tr>
+<tr class="memdesc:aea52988ceb966771f31ac28fbaabf975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given only a numeric/enum value,.  <a href="classdrain_1_1MultiFlagger.html#aea52988ceb966771f31ac28fbaabf975">More...</a><br /></td></tr>
+<tr class="separator:aea52988ceb966771f31ac28fbaabf975"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1FlaggerBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1FlaggerBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1FlaggerBase.html">FlaggerBase&lt; E &gt;</a></td></tr>
 <tr class="memitem:a0a974a41dd6521ba050b14abc0e11b58 inherit pub_methods_classdrain_1_1FlaggerBase"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a0a974a41dd6521ba050b14abc0e11b58">FlaggerBase</a> (value_t &amp;v)</td></tr>
 <tr class="memdesc:a0a974a41dd6521ba050b14abc0e11b58 inherit pub_methods_classdrain_1_1FlaggerBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Own value will be unused (and invisible).  <a href="classdrain_1_1FlaggerBase.html#a0a974a41dd6521ba050b14abc0e11b58">More...</a><br /></td></tr>
@@ -197,7 +202,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> (std::ostre
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a72f10c9e9a40d72ecf1205c43153b9ca"><td class="memItemLeft" align="right" valign="top"><a id="a72f10c9e9a40d72ecf1205c43153b9ca"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> ()</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1MultiFlagger.html#a72f10c9e9a40d72ecf1205c43153b9ca">add</a> ()</td></tr>
+<tr class="memdesc:a72f10c9e9a40d72ecf1205c43153b9ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">This should be called after assigning a string to &amp; <a class="el" href="classdrain_1_1MultiFlagger.html#aea52988ceb966771f31ac28fbaabf975" title="Given only a numeric/enum value,.">str()</a> . <br /></td></tr>
 <tr class="separator:a72f10c9e9a40d72ecf1205c43153b9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14e77a54f888589dca4ae2b2e1e9f5dd"><td class="memItemLeft" align="right" valign="top"><a id="a14e77a54f888589dca4ae2b2e1e9f5dd"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>addOne</b> (const <a class="el" href="classdrain_1_1MultiFlagger.html#ad0c36de75d26fda5ca80a5219a2b1bc9">value_t</a> &amp;value)</td></tr>
@@ -208,9 +214,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addOne</b> (const <a 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:ad7fbb254c18a66be803513d53e6aec3f"><td class="memItemLeft" align="right" valign="top"><a id="ad7fbb254c18a66be803513d53e6aec3f"></a>
-<a class="el" href="classdrain_1_1MultiFlagger.html#ac94432274d27846064e98aaec0219f68">key_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>currentStr</b></td></tr>
-<tr class="separator:ad7fbb254c18a66be803513d53e6aec3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ab952a59b030acd42c6ce1449bfdc81"><td class="memItemLeft" align="right" valign="top"><a id="a7ab952a59b030acd42c6ce1449bfdc81"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>currentStr</b></td></tr>
+<tr class="separator:a7ab952a59b030acd42c6ce1449bfdc81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -289,6 +295,34 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></t
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aea52988ceb966771f31ac28fbaabf975"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea52988ceb966771f31ac28fbaabf975">&#9670;&nbsp;</a></span>str()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::string&amp; str </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Given only a numeric/enum value,. </p>
+<p>For importing values. After assignment, update() should be called. Experimental </p>
 
 </div>
 </div>

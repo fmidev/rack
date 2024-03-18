@@ -1,0 +1,4 @@
+<map id="MapTools" name="MapTools">
+<area shape="rect" id="node1" title="General purpose tools for handling values and keys of std::map&lt;&gt;" alt="" coords="25,5,108,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SmartMapTools.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="5,80,128,107"/>
+</map>

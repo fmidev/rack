@@ -69,6 +69,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classdrain_1_1StringTools-members.html">List of all members</a>  </div>
@@ -77,6 +78,12 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a2d80fe454ac594a3c9e6b114368ff718"><td class="memItemLeft" align="right" valign="top"><a id="a2d80fe454ac594a3c9e6b114368ff718"></a>
+typedef std::map&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>conv_map_t</b></td></tr>
+<tr class="separator:a2d80fe454ac594a3c9e6b114368ff718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad1c087b170dc23ddfad34082b91b53a6"><td class="memTemplParams" colspan="2"><a id="ad1c087b170dc23ddfad34082b91b53a6"></a>
@@ -94,6 +101,12 @@ template&lt;&gt; </td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a61072d7f311ecd535d4d384ce4696786"><td class="memItemLeft" align="right" valign="top"><a id="a61072d7f311ecd535d4d384ce4696786"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>startsWith</b> (const std::string &amp;s, const std::string &amp;substring)</td></tr>
+<tr class="separator:a61072d7f311ecd535d4d384ce4696786"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42a1f26c939411d67d2a74ae448727b6"><td class="memItemLeft" align="right" valign="top"><a id="a42a1f26c939411d67d2a74ae448727b6"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>endsWith</b> (const std::string &amp;s, const std::string &amp;substring)</td></tr>
+<tr class="separator:a42a1f26c939411d67d2a74ae448727b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7189823e2a2ac9c38249aadabb4412b1"><td class="memItemLeft" align="right" valign="top">static std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a7189823e2a2ac9c38249aadabb4412b1">upperCase</a> (std::string &amp;s, size_t n=std::numeric_limits&lt; size_t &gt;::max())</td></tr>
 <tr class="memdesc:a7189823e2a2ac9c38249aadabb4412b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns n first characters uppercase. ASCII only.  <a href="classdrain_1_1StringTools.html#a7189823e2a2ac9c38249aadabb4412b1">More...</a><br /></td></tr>
 <tr class="separator:a7189823e2a2ac9c38249aadabb4412b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,9 +123,9 @@ static char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="separator:af4e164115421b2169ea6bdbb27baead6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73aff7f4c0a9d10e27619bdc27f03250"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a73aff7f4c0a9d10e27619bdc27f03250">replace</a> (const std::string &amp;src, const std::string &amp;from, const std::string &amp;to)</td></tr>
 <tr class="separator:a73aff7f4c0a9d10e27619bdc27f03250"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5873022b7a94983670dccc2b41c8a23a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a5873022b7a94983670dccc2b41c8a23a">replace</a> (const std::map&lt; std::string, std::string &gt; &amp;m, std::string &amp;s, std::size_t pos=0)</td></tr>
-<tr class="memdesc:a5873022b7a94983670dccc2b41c8a23a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces instances appearing as map keys to map values.  <a href="classdrain_1_1StringTools.html#a5873022b7a94983670dccc2b41c8a23a">More...</a><br /></td></tr>
-<tr class="separator:a5873022b7a94983670dccc2b41c8a23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9601d9886a9cb4e035dc0928640cad5d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a9601d9886a9cb4e035dc0928640cad5d">replace</a> (const conv_map_t &amp;m, std::string &amp;s, std::size_t pos=0)</td></tr>
+<tr class="memdesc:a9601d9886a9cb4e035dc0928640cad5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces instances appearing as map keys to map values.  <a href="classdrain_1_1StringTools.html#a9601d9886a9cb4e035dc0928640cad5d">More...</a><br /></td></tr>
+<tr class="separator:a9601d9886a9cb4e035dc0928640cad5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad67b8f3ca5389f4c342eac716e0850b0"><td class="memItemLeft" align="right" valign="top"><a id="ad67b8f3ca5389f4c342eac716e0850b0"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#ad67b8f3ca5389f4c342eac716e0850b0">replace</a> (const std::string &amp;src, const std::string &amp;from, const std::string &amp;to, std::string &amp;dst)</td></tr>
 <tr class="memdesc:ad67b8f3ca5389f4c342eac716e0850b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">In src, replaces instances of 'from' to 'to', storing the result in dst. <br /></td></tr>
@@ -159,7 +172,7 @@ template&lt;class T &gt; </td></tr>
 <tr class="separator:ad3df59f00593c599f2ffd2e021b6a8ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d60a294430beeb5acd44c59156d3f9d"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a2d60a294430beeb5acd44c59156d3f9d"><td class="memTemplItemLeft" align="right" valign="top">static const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a2d60a294430beeb5acd44c59156d3f9d">lazyConvert</a> (const std::string &amp;s, T &amp;tmp)</td></tr>
-<tr class="memdesc:a2d60a294430beeb5acd44c59156d3f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert only if needed. If T is std::string, returns s directly.  <a href="classdrain_1_1StringTools.html#a2d60a294430beeb5acd44c59156d3f9d">More...</a><br /></td></tr>
+<tr class="memdesc:a2d60a294430beeb5acd44c59156d3f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="Utility class with static conversions.">Convert</a> only if needed. If T is std::string, returns s directly.  <a href="classdrain_1_1StringTools.html#a2d60a294430beeb5acd44c59156d3f9d">More...</a><br /></td></tr>
 <tr class="separator:a2d60a294430beeb5acd44c59156d3f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -364,7 +377,7 @@ template&lt;class T &gt; </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Convert only if needed. If T is std::string, returns s directly. </p>
+<p><a class="el" href="classdrain_1_1Convert.html" title="Utility class with static conversions.">Convert</a> only if needed. If T is std::string, returns s directly. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">str</td><td>- input string </td></tr>
@@ -422,8 +435,8 @@ template&lt;class T &gt; </td></tr>
 
 </div>
 </div>
-<a id="a5873022b7a94983670dccc2b41c8a23a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5873022b7a94983670dccc2b41c8a23a">&#9670;&nbsp;</a></span>replace() <span class="overload">[1/2]</span></h2>
+<a id="a9601d9886a9cb4e035dc0928640cad5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9601d9886a9cb4e035dc0928640cad5d">&#9670;&nbsp;</a></span>replace() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -434,7 +447,7 @@ template&lt;class T &gt; </td></tr>
         <tr>
           <td class="memname">void replace </td>
           <td>(</td>
-          <td class="paramtype">const std::map&lt; std::string, std::string &gt; &amp;&#160;</td>
+          <td class="paramtype">const conv_map_t &amp;&#160;</td>
           <td class="paramname"><em>m</em>, </td>
         </tr>
         <tr>

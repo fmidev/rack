@@ -1,9 +1,11 @@
 <map id="Castable" name="Castable">
-<area shape="rect" id="node1" title=" " alt="" coords="260,5,339,32"/>
-<area shape="rect" id="node2" href="$classdrain_1_1ReferenceBase.html" title=" " alt="" coords="5,80,212,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1CastableIterator.html" title=" " alt="" coords="236,80,363,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Variable.html" title=" " alt="" coords="387,80,462,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Referencer.html" title=" " alt="" coords="62,155,155,181"/>
-<area shape="rect" id="node6" href="$classdrain_1_1ReferenceBase.html" title=" " alt="" coords="323,155,526,181"/>
-<area shape="rect" id="node7" href="$classdrain_1_1FlexibleVariable.html" title=" " alt="" coords="361,229,488,256"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,107,84,133"/>
+<area shape="rect" id="node2" href="$classdrain_1_1ReferenceBase.html" title=" " alt="" coords="132,5,339,32"/>
+<area shape="rect" id="node4" href="$classdrain_1_1CastableIterator.html" title=" " alt="" coords="172,56,299,83"/>
+<area shape="rect" id="node5" href="$classdrain_1_1ReferenceBase.html" title="Intermediate class supporting link() in various forms." alt="" coords="156,107,315,133"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Variable.html" title=" " alt="" coords="198,157,273,184"/>
+<area shape="rect" id="node9" href="$classdrain_1_1VariableBase.html" title=" " alt="" coords="163,208,308,235"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Referencer.html" title=" " alt="" coords="441,5,535,32"/>
+<area shape="rect" id="node7" href="$classdrain_1_1ReferenceBase.html" title=" " alt="" coords="387,157,589,184"/>
+<area shape="rect" id="node8" href="$classdrain_1_1FlexibleVariable.html" title=" " alt="" coords="637,157,764,184"/>
 </map>

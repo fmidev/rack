@@ -164,8 +164,8 @@ $(function() {
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">void</span> updateCoordinatePolicy(Hi5Tree &amp; src, <span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a> &amp; policy = <a class="code" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a>(drain::image::CoordinatePolicy::LIMIT));</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="comment">//void updateCoordinatePolicy(Hi5Tree &amp; src, const CoordinatePolicy &amp; policy = CoordinatePolicy(CoordinatePolicy::LIMIT));</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">void</span> updateCoordinatePolicy(Hi5Tree &amp; src, <span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a> &amp; policy = <a class="code" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a>(drain::image::EdgePolicy::LIMIT));</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="comment">//void updateCoordinatePolicy(Hi5Tree &amp; src, const CoordinatePolicy &amp; policy = CoordinatePolicy(EdgePolicy::LIMIT));</span></div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="comment">// static</span></div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="comment">// bool dataToStream(const Hi5Tree::node_data_t &amp; data, std::ostream &amp;ostr);</span></div>
@@ -222,134 +222,161 @@ $(function() {
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> M&gt;</div>
 <div class="line"><a name="l00219"></a><span class="lineno"><a class="line" href="classrack_1_1DataTools.html#adc1f4a069d8e97375ee297daf00120c4">  219</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataTools.html#adc1f4a069d8e97375ee297daf00120c4">DataTools::getAttributes</a>(<span class="keyword">const</span> Hi5Tree &amp;src, <span class="keyword">const</span> Hi5Tree::path_t &amp; p, M &amp; attributes, <span class="keywordtype">bool</span> updateOnly){</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(<span class="stringliteral">&quot;DataTools&quot;</span>, __FUNCTION__);</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keywordflow">if</span> (p.empty() || !p.front().isRoot()){</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;add root and restart with path= &#39;&quot;</span> , p , <span class="stringliteral">&quot;&#39;&quot;</span> );</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        Hi5Tree::path_t pRooted(p);</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        pRooted.push_front(Hi5Tree::path_t::elem_t::ROOT);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <a class="code" href="classrack_1_1DataTools.html#adc1f4a069d8e97375ee297daf00120c4">DataTools::getAttributes</a>(src, pRooted, attributes, updateOnly);</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    }</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;path= &#39;&quot;</span> , p , <span class="stringliteral">&quot;&#39;&quot;</span> );</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="comment">    if (p.hasRoot()){</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="comment">        mout.debug(&quot;add root and restart with path= &#39;&quot; , p , &quot;&#39;  (revised code)&quot; );</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="comment">        Hi5Tree::path_t pRooted(p);</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment">        pRooted.ensureRoot();</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment">        DataTools::getAttributes(src, pRooted, attributes, updateOnly);</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="comment">        return;</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="comment">    */</span></div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    Hi5Tree::path_t path;</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    std::stringstream sstr;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordflow">for</span> (Hi5Tree::path_t::const_iterator pit = p.begin(); pit != p.end(); ++pit){</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        path &lt;&lt; *pit;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;check=&#39;&quot;</span> , path , <span class="stringliteral">&quot;&#39;&quot;</span> );</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <span class="keyword">const</span> Hi5Tree &amp; s = src(path);</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keywordflow">if</span> (p.empty() || !p.front().isRoot()){</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;add root and restart with path= &#39;&quot;</span> , p , <span class="stringliteral">&quot;&#39;  (revised code)&quot;</span> );</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        <span class="comment">//Hi5Tree::path_t pRooted(Hi5Tree::path_t(Hi5Tree::path_t::elem_t::ROOT), p);</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        Hi5Tree::path_t pRooted;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        pRooted.appendElem(Hi5Tree::path_t::elem_t::ROOT);</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        pRooted.append(p);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="comment">// pRooted.push_front(Hi5Tree::path_t::elem_t::ROOT);</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        <a class="code" href="classrack_1_1DataTools.html#adc1f4a069d8e97375ee297daf00120c4">DataTools::getAttributes</a>(src, pRooted, attributes, updateOnly);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    }</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keywordflow">for</span> (ODIMPathElemSeq::const_iterator git = <a class="code" href="classrack_1_1EncodingODIM.html#a6ffa197e53e449b00a626f72e7522661">EncodingODIM::attributeGroups</a>.begin(); git != <a class="code" href="classrack_1_1EncodingODIM.html#a6ffa197e53e449b00a626f72e7522661">EncodingODIM::attributeGroups</a>.end(); ++git){</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;            <span class="keyword">const</span> <a class="code" href="structhi5_1_1NodeHi5.html">hi5::NodeHi5</a> &amp; group = s[*git].data;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            <span class="keywordflow">for</span>(drain::VariableMap::const_iterator ait = group.attributes.begin(); ait != group.attributes.end(); ait++){</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;path= &#39;&quot;</span> , p , <span class="stringliteral">&quot;&#39;&quot;</span> );</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    Hi5Tree::path_t path;</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    std::stringstream sstr;</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;                sstr.str(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;                sstr &lt;&lt; *git &lt;&lt; <span class="charliteral">&#39;:&#39;</span> &lt;&lt; ait-&gt;first;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                <span class="comment">//mout.debug(8) &lt;&lt; &quot;getAttributes: &quot; &lt;&lt; sstr.toStr() &lt;&lt; &#39;=&#39; &lt;&lt; it-&gt;second &lt;&lt; mout.endl;</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                <span class="keywordflow">if</span> (!updateOnly)</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                    attributes[sstr.str()] = ait-&gt;second;</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                    <span class="keyword">typename</span> M::iterator it = attributes.find(sstr.str());</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                    <span class="keywordflow">if</span> (it != attributes.end())</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                        it-&gt;second = ait-&gt;second;</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;                }</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;            }</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        }</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="comment">//for (Hi5Tree::path_t::const_iterator pit = p.begin(); pit != p.end(); ++pit){</span></div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keywordflow">for</span> (Hi5Tree::path_t::elem_t elem: p){</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        path.appendElem(elem); <span class="comment">// *pit;</span></div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;check=&#39;&quot;</span> , path , <span class="stringliteral">&quot;&#39;&quot;</span> );</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;        <span class="keyword">const</span> Hi5Tree &amp; s = src(path);</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="comment">//for (ODIMPathElemSeq::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp; elem: <a class="code" href="classrack_1_1EncodingODIM.html#a6ffa197e53e449b00a626f72e7522661">EncodingODIM::attributeGroups</a>){</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            <span class="keyword">const</span> <a class="code" href="structhi5_1_1NodeHi5.html">hi5::NodeHi5</a> &amp; group = s[elem].data;</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="comment">// ++pit;</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="comment">//  if (pit == p.end())</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="comment">// return;</span></div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="comment">//   path &lt;&lt; *pit;</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    }</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            <span class="comment">//for(drain::VariableMap::const_iterator ait = group.attributes.begin(); ait != group.attributes.end(); ait++){</span></div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            <span class="keywordflow">for</span>(<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: group.attributes){</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                sstr.str(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                sstr &lt;&lt; elem &lt;&lt; <span class="charliteral">&#39;:&#39;</span> &lt;&lt; entry.first;  <span class="comment">// key</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                <span class="comment">//mout.debug(8) &lt;&lt; &quot;getAttributes: &quot; &lt;&lt; sstr.toStr() &lt;&lt; &#39;=&#39; &lt;&lt; it-&gt;second &lt;&lt; mout.endl;</span></div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;}</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment">template &lt;class M&gt;</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="comment">void DataTools::getAttributesOLD(const Hi5Tree &amp;src, const std::string &amp; path, M &amp; attributes, bool updateOnly){</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="comment">    drain::Logger mout(&quot;DataTools&quot;, __FUNCTION__);</span></div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">    //drain::VariableMap::const_iterator it;</span></div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment">    int iStart = 0;</span></div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment">    if (!path.empty())</span></div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">        if (path[0] == &#39;/&#39;)</span></div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="comment">            iStart = 1;</span></div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="comment">    mout.debug(5) &lt;&lt; &quot;&#39;&quot; &lt;&lt; path &lt;&lt; &quot;&#39;&quot; &lt;&lt; mout.endl;</span></div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="comment">    std::stringstream sstr; // for speed</span></div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment">    std::string s;</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">    size_t i = 0;</span></div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">    while(true){</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">        const std::string subpath = path.substr(iStart, i);  // with i=npos</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">        mout.debug(5) &lt;&lt; &quot;&#39;&quot; &lt;&lt; subpath &lt;&lt; &quot;&#39;\t&quot; &lt;&lt; i &lt;&lt; mout.endl;</span></div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">        //attributes[std::string(&quot;@&quot;)+subpath] = 0;</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">        const Hi5Tree &amp; s = src(subpath);</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment">        for (std::set&lt;ODIMPathElem&gt;::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">            const hi5::NodeHi5 &amp; group = s[*git].data;</span></div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">            for(drain::VariableMap::const_iterator ait = group.attributes.begin(); ait != group.attributes.end(); ait++){</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">                sstr.str(&quot;&quot;);</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">                sstr &lt;&lt; *git &lt;&lt; &#39;:&#39; &lt;&lt; ait-&gt;first;</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment">                //mout.debug(8) &lt;&lt; &quot;getAttributes: &quot; &lt;&lt; sstr.toStr() &lt;&lt; &#39;=&#39; &lt;&lt; it-&gt;second &lt;&lt; mout.endl;</span></div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="comment">                if (!updateOnly)</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment">                    attributes[sstr.str()] = ait-&gt;second;</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment">                else {</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="comment">                    typename M::iterator it = attributes.find(sstr.str());</span></div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="comment">                    if (it != attributes.end())</span></div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="comment">                        it-&gt;second = ait-&gt;second;</span></div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="comment">                }</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="comment">            }</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="comment">        if (i == std::string::npos){</span></div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="comment">            //if (drain::Debug &gt; 4){ std::cerr &lt;&lt; &quot;attributes &quot; &lt;&lt; attributes &lt;&lt; &#39;\n&#39;;  }</span></div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment">            return;</span></div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;                <span class="comment">//drain::SmartMapTools::setValue(attributes, sstr.str(), entry.second);</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                <a class="code" href="classdrain_1_1SmartMapTools.html#a05cccf8a463da2339d30d472ac21d14f">drain::SmartMapTools::setValue</a>(attributes, sstr.str(), entry.second, !updateOnly);</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                <span class="comment">/*</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="comment">                if (updateOnly){</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="comment">                    //drain::SmartMapTools::setValue&lt;false&gt;(attributes, sstr.str(), entry.second);</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="comment">                    typename M::iterator it = attributes.find(sstr.str());</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="comment">                                        if (it != attributes.end())</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="comment">                                            it-&gt;second = entry.second;</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment">                }</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="comment">                else {</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;<span class="comment">                    // drain::SmartMapTools::setValue&lt;true&gt;(attributes, sstr.str(), entry.second);</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;<span class="comment">                    attributes[sstr.str()] = entry.second; // value</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;<span class="comment">                }</span></div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">                */</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            }</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        }</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="comment">// ++pit;</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        <span class="comment">//  if (pit == p.end())</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="comment">// return;</span></div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;        <span class="comment">//   path &lt;&lt; *pit;</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; </div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    }</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160; </div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;}</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; </div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;<span class="comment">template &lt;class M&gt;</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment">void DataTools::getAttributesOLD(const Hi5Tree &amp;src, const std::string &amp; path, M &amp; attributes, bool updateOnly){</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">    drain::Logger mout(&quot;DataTools&quot;, __FUNCTION__);</span></div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">    //drain::VariableMap::const_iterator it;</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="comment">    int iStart = 0;</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment">    if (!path.empty())</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment">        if (path[0] == &#39;/&#39;)</span></div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="comment">            iStart = 1;</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="comment">    mout.debug(5) &lt;&lt; &quot;&#39;&quot; &lt;&lt; path &lt;&lt; &quot;&#39;&quot; &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="comment">    std::stringstream sstr; // for speed</span></div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="comment">    std::string s;</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="comment">    size_t i = 0;</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment">    while(true){</span></div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;<span class="comment">        const std::string subpath = path.substr(iStart, i);  // with i=npos</span></div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment">        mout.debug(5) &lt;&lt; &quot;&#39;&quot; &lt;&lt; subpath &lt;&lt; &quot;&#39;\t&quot; &lt;&lt; i &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;<span class="comment">        //attributes[std::string(&quot;@&quot;)+subpath] = 0;</span></div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="comment">        i = path.find(&#39;/&#39;, i+1);</span></div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="comment">    //while (i &lt; path.size()); //(i != std::string::npos);</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="comment">}</span></div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;} <span class="comment">// rack::</span></div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DATASELECTOR_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160; </div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="comment">// Rack</span></div>
-<div class="ttc" id="aclassdrain_1_1FlexVariableMap_html"><div class="ttname"><a href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a></div><div class="ttdoc">A map of FlexVariable:s.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:115</div></div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="comment">        const Hi5Tree &amp; s = src(subpath);</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="comment">        for (std::set&lt;ODIMPathElem&gt;::const_iterator git = EncodingODIM::attributeGroups.begin(); git != EncodingODIM::attributeGroups.end(); ++git){</span></div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="comment">            const hi5::NodeHi5 &amp; group = s[*git].data;</span></div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="comment">            for(drain::VariableMap::const_iterator ait = group.attributes.begin(); ait != group.attributes.end(); ait++){</span></div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="comment">                sstr.str(&quot;&quot;);</span></div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="comment">                sstr &lt;&lt; *git &lt;&lt; &#39;:&#39; &lt;&lt; ait-&gt;first;</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="comment">                //mout.debug(8) &lt;&lt; &quot;getAttributes: &quot; &lt;&lt; sstr.toStr() &lt;&lt; &#39;=&#39; &lt;&lt; it-&gt;second &lt;&lt; mout.endl;</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="comment">                if (!updateOnly)</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="comment">                    attributes[sstr.str()] = ait-&gt;second;</span></div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="comment">                else {</span></div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="comment">                    typename M::iterator it = attributes.find(sstr.str());</span></div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="comment">                    if (it != attributes.end())</span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="comment">                        it-&gt;second = ait-&gt;second;</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="comment">                }</span></div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="comment">            }</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="comment">        if (i == std::string::npos){</span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="comment">            //if (drain::Debug &gt; 4){ std::cerr &lt;&lt; &quot;attributes &quot; &lt;&lt; attributes &lt;&lt; &#39;\n&#39;;  }</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="comment">            return;</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="comment">        i = path.find(&#39;/&#39;, i+1);</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="comment">    //while (i &lt; path.size()); //(i != std::string::npos);</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160; </div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160; </div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;} <span class="comment">// rack::</span></div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160; </div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DATASELECTOR_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160; </div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="comment">// Rack</span></div>
+<div class="ttc" id="aclassdrain_1_1FlexVariableMap_html"><div class="ttname"><a href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a></div><div class="ttdoc">A map of FlexVariable:s.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:117</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:307</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Public, yet typically used &quot;internally&quot;, when TIMING=true.</div><div class="ttdef"><b>Definition:</b> Log.h:664</div></div>
+<div class="ttc" id="aclassdrain_1_1SmartMapTools_html_a05cccf8a463da2339d30d472ac21d14f"><div class="ttname"><a href="classdrain_1_1SmartMapTools.html#a05cccf8a463da2339d30d472ac21d14f">drain::SmartMapTools::setValue</a></div><div class="ttdeci">static void setValue(M &amp;dst, const std::string &amp;key, const V &amp;value)</div><div class="ttdoc">Utility for &quot;guessing&quot; key order. Derived classes will redefine this e.g. for ordered maps.</div><div class="ttdef"><b>Definition:</b> SmartMapTools.h:132</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableMap_html"><div class="ttname"><a href="classdrain_1_1VariableMap.html">drain::VariableMap</a></div><div class="ttdoc">A map of Variables.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:56</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1CoordinatePolicy_html"><div class="ttname"><a href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a></div><div class="ttdoc">Policies for coordinate underflows and overflows.</div><div class="ttdef"><b>Definition:</b> CoordinatePolicy.h:88</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1CoordinatePolicy_html"><div class="ttname"><a href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a></div><div class="ttdoc">Policies for coordinate underflows and overflows.</div><div class="ttdef"><b>Definition:</b> CoordinatePolicy.h:107</div></div>
 <div class="ttc" id="aclassrack_1_1DataTools_html"><div class="ttname"><a href="classrack_1_1DataTools.html">rack::DataTools</a></div><div class="ttdoc">Tool for selecting datasets based on paths, quantities and min/max elevations.</div><div class="ttdef"><b>Definition:</b> DataTools.h:60</div></div>
 <div class="ttc" id="aclassrack_1_1DataTools_html_a4a0d153bc5453397aad85c17b6bcefd9"><div class="ttname"><a href="classrack_1_1DataTools.html#a4a0d153bc5453397aad85c17b6bcefd9">rack::DataTools::removeIfExcluded</a></div><div class="ttdeci">static bool removeIfExcluded(const Hi5Tree &amp;src)</div><div class="ttdoc">Removes the children of the tree if Node::exclude is set.</div><div class="ttdef"><b>Definition:</b> DataTools.h:191</div></div>
 <div class="ttc" id="aclassrack_1_1DataTools_html_a6666e15abaf94a574aff3eb63bdddc33"><div class="ttname"><a href="classrack_1_1DataTools.html#a6666e15abaf94a574aff3eb63bdddc33">rack::DataTools::updateInternalAttributes</a></div><div class="ttdeci">static void updateInternalAttributes(const Hi5Tree &amp;src)</div><div class="ttdoc">This const version does nothing, but is needed for Data:: #supdateTree3()</div><div class="ttdef"><b>Definition:</b> DataTools.h:117</div></div>
-<div class="ttc" id="aclassrack_1_1DataTools_html_a6a23160d481d0055582b04d0125bd2a5"><div class="ttname"><a href="classrack_1_1DataTools.html#a6a23160d481d0055582b04d0125bd2a5">rack::DataTools::markExcluded</a></div><div class="ttdeci">static void markExcluded(Hi5Tree &amp;src, bool exclude=true)</div><div class="ttdoc">Mark/unmark whole tree to be deleted with #Hi5Base::deleteExcluded()</div><div class="ttdef"><b>Definition:</b> DataTools.cpp:296</div></div>
-<div class="ttc" id="aclassrack_1_1DataTools_html_aa2b878497682897ce3d31f72d5bee6c5"><div class="ttname"><a href="classrack_1_1DataTools.html#aa2b878497682897ce3d31f72d5bee6c5">rack::DataTools::getAttributeStyles</a></div><div class="ttdeci">static drain::VariableMap &amp; getAttributeStyles()</div><div class="ttdoc">List of most important ODIM attributes (with style suggestion).</div><div class="ttdef"><b>Definition:</b> DataTools.cpp:70</div></div>
-<div class="ttc" id="aclassrack_1_1DataTools_html_acc81335deb05d10009ebbb4fced6a63d"><div class="ttname"><a href="classrack_1_1DataTools.html#acc81335deb05d10009ebbb4fced6a63d">rack::DataTools::updateInternalAttributes</a></div><div class="ttdeci">static void updateInternalAttributes(Hi5Tree &amp;src)</div><div class="ttdoc">Copies values of what , where and how attributes to internal attributes down to data[n] groups.</div><div class="ttdef"><b>Definition:</b> DataTools.cpp:162</div></div>
-<div class="ttc" id="aclassrack_1_1DataTools_html_ad7fcd0bdf230be48f91d6d6d9db5b9de"><div class="ttname"><a href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">rack::DataTools::treeToStream</a></div><div class="ttdeci">static bool treeToStream(const Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</div><div class="ttdoc">Tree attribute formatter.</div><div class="ttdef"><b>Definition:</b> DataTools.cpp:104</div></div>
+<div class="ttc" id="aclassrack_1_1DataTools_html_a6a23160d481d0055582b04d0125bd2a5"><div class="ttname"><a href="classrack_1_1DataTools.html#a6a23160d481d0055582b04d0125bd2a5">rack::DataTools::markExcluded</a></div><div class="ttdeci">static void markExcluded(Hi5Tree &amp;src, bool exclude=true)</div><div class="ttdoc">Mark/unmark whole tree to be deleted with #Hi5Base::deleteExcluded()</div><div class="ttdef"><b>Definition:</b> DataTools.cpp:307</div></div>
+<div class="ttc" id="aclassrack_1_1DataTools_html_aa2b878497682897ce3d31f72d5bee6c5"><div class="ttname"><a href="classrack_1_1DataTools.html#aa2b878497682897ce3d31f72d5bee6c5">rack::DataTools::getAttributeStyles</a></div><div class="ttdeci">static drain::VariableMap &amp; getAttributeStyles()</div><div class="ttdoc">List of most important ODIM attributes (with style suggestion).</div><div class="ttdef"><b>Definition:</b> DataTools.cpp:73</div></div>
+<div class="ttc" id="aclassrack_1_1DataTools_html_acc81335deb05d10009ebbb4fced6a63d"><div class="ttname"><a href="classrack_1_1DataTools.html#acc81335deb05d10009ebbb4fced6a63d">rack::DataTools::updateInternalAttributes</a></div><div class="ttdeci">static void updateInternalAttributes(Hi5Tree &amp;src)</div><div class="ttdoc">Copies values of what , where and how attributes to internal attributes down to data[n] groups.</div><div class="ttdef"><b>Definition:</b> DataTools.cpp:166</div></div>
+<div class="ttc" id="aclassrack_1_1DataTools_html_ad7fcd0bdf230be48f91d6d6d9db5b9de"><div class="ttname"><a href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">rack::DataTools::treeToStream</a></div><div class="ttdeci">static bool treeToStream(const Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</div><div class="ttdoc">Tree attribute formatter.</div><div class="ttdef"><b>Definition:</b> DataTools.cpp:108</div></div>
 <div class="ttc" id="aclassrack_1_1DataTools_html_adc1f4a069d8e97375ee297daf00120c4"><div class="ttname"><a href="classrack_1_1DataTools.html#adc1f4a069d8e97375ee297daf00120c4">rack::DataTools::getAttributes</a></div><div class="ttdeci">static void getAttributes(const Hi5Tree &amp;src, const Hi5Tree::path_t &amp;path, M &amp;attributes, bool updateOnly=false)</div><div class="ttdoc">Traverses upward in hierachy to find the value of the given PolarODIM where, what,...</div><div class="ttdef"><b>Definition:</b> DataTools.h:219</div></div>
 <div class="ttc" id="aclassrack_1_1EncodingODIM_html_a6ffa197e53e449b00a626f72e7522661"><div class="ttname"><a href="classrack_1_1EncodingODIM.html#a6ffa197e53e449b00a626f72e7522661">rack::EncodingODIM::attributeGroups</a></div><div class="ttdeci">static const ODIMPathElemSeq &amp; attributeGroups</div><div class="ttdoc">Copies contents of this to a h5 group.</div><div class="ttdef"><b>Definition:</b> EncodingODIM.h:321</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html">rack::ODIMPathElem</a></div><div class="ttdef"><b>Definition:</b> ODIMPath.h:83</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 <div class="ttc" id="astructhi5_1_1NodeHi5_html"><div class="ttname"><a href="structhi5_1_1NodeHi5.html">hi5::NodeHi5</a></div><div class="ttdoc">Rack's hi5 structure that uses Rack classes (Tree, Data, Image).</div><div class="ttdef"><b>Definition:</b> Hi5.h:74</div></div>
 </div><!-- fragment --></div><!-- contents -->

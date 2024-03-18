@@ -1,10 +1,10 @@
 <map id="HydroClassBasedOp" name="HydroClassBasedOp">
-<area shape="rect" id="node1" title="Sets probabilities of non&#45;meteorological echoes based on precomputed hydrometeor classification." alt="" coords="151,1139,306,1165"/>
-<area shape="rect" id="node2" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors." alt="" coords="181,1063,277,1089"/>
-<area shape="rect" id="node3" href="$classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="189,987,268,1013"/>
-<area shape="rect" id="node4" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="155,911,303,937"/>
-<area shape="rect" id="node5" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="167,835,290,861"/>
-<area shape="rect" id="node6" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="44,745,232,772"/>
+<area shape="rect" id="node1" title="Sets probabilities of non&#45;meteorological echoes based on precomputed hydrometeor classification." alt="" coords="150,1125,305,1152"/>
+<area shape="rect" id="node2" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors." alt="" coords="179,1049,275,1076"/>
+<area shape="rect" id="node3" href="$classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="188,973,267,1000"/>
+<area shape="rect" id="node4" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="153,897,301,924"/>
+<area shape="rect" id="node5" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="166,821,289,848"/>
+<area shape="rect" id="node6" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="43,732,231,759"/>
 <area shape="rect" id="node7" href="$classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images." alt="" coords="10,641,226,683"/>
 <area shape="rect" id="node8" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="23,551,213,592"/>
 <area shape="rect" id="node9" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="62,475,174,501"/>
@@ -14,8 +14,6 @@
 <area shape="rect" id="node13" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="60,157,176,184"/>
 <area shape="rect" id="node14" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
 <area shape="rect" id="node15" title=" " alt="" coords="5,5,231,32"/>
-<area shape="rect" id="node16" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="263,745,395,772"/>
-<area shape="rect" id="node17" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="251,641,407,683"/>
-<area shape="rect" id="node18" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="431,649,576,675"/>
-<area shape="rect" id="node19" title=" " alt="" coords="434,551,573,592"/>
+<area shape="rect" id="node16" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="263,732,395,759"/>
+<area shape="rect" id="node17" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="251,641,415,683"/>
 </map>

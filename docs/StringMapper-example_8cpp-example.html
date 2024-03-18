@@ -92,10 +92,11 @@ $(function() {
 <div class="line"><span class="comment"> */</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">/*</span></div>
-<div class="line"><span class="comment">REQUIRE: drain/util/{Caster,Castable,FileInfo,JSON,RegExp,Sprinter,String,StringMapper,TextReader,TextStyle,Type,Variable,Log}.cpp</span></div>
+<div class="line"><span class="comment">REQUIRE: drain/util/{Caster,Castable,FileInfo,JSON,Referencer,RegExp,Sprinter,String,StringMapper,TextReader,TextStyle,Type,Variable,Log}.cpp</span></div>
 <div class="line"><span class="comment"></span> </div>
 <div class="line"><span class="comment">g+s+ -I. drain/examples/StringMapper-example.cpp drain/util/{Caster,Castable,JSONwriter,RegExp,String,StringMapper,Type,Variable,Log}.cpp -o StringMapper-example</span></div>
 <div class="line"><span class="comment"> */</span></div>
+<div class="line"><span class="preprocessor">#include &lt;cmath&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;drain/util/StringMapper.h&quot;</span></div>
 <div class="line"> </div>
@@ -104,17 +105,20 @@ $(function() {
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv){</div>
 <div class="line"> </div>
+<div class="line">    StringMapper mapper; <span class="comment">//(argv[1]);</span></div>
+<div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (argc &lt; 4){</div>
 <div class="line">        std::cerr &lt;&lt; <span class="stringliteral">&quot;Usage:\n  &quot;</span> &lt;&lt; argv[0] &lt;&lt; <span class="stringliteral">&quot; &lt;keychars&gt; &lt;sample-string&gt;  &lt;key&gt;=&lt;value&gt; &lt;key2&gt;=&lt;value2&gt; ...\n&quot;</span>;</div>
 <div class="line">        std::cerr &lt;&lt; <span class="stringliteral">&quot;Example:\n  &quot;</span> &lt;&lt; argv[0] &lt;&lt; <span class="stringliteral">&quot; &#39;[a-zA-Z0-9]+&#39;  &#39;Hello, ${e} and ${pi}! My name is ${x}.&#39;  e=world  x=test\n&quot;</span>;</div>
 <div class="line">        std::cerr &lt;&lt; <span class="stringliteral">&quot;Example:\n  &quot;</span> &lt;&lt; argv[0] &lt;&lt; <span class="stringliteral">&quot; &#39;\\w+&#39; &#39;Hello, ${e} and ${pi}! My name is ${x}.&#39;  e=world  x=test\n&quot;</span>;</div>
+<div class="line">        std::cerr &lt;&lt; <span class="stringliteral">&quot;Example:\n  &quot;</span> &lt;&lt; argv[0] &lt;&lt; <span class="stringliteral">&quot; &#39;[a-zA-Z0-9][a-zA-Z0-9_:]*&#39; &#39;Hello Neper, ${e} ${e|%4.2f} ${e|%06.2f} ${e|:6:2}..&#39;  x=test\n&quot;</span>;</div>
+<div class="line">        mapper.setValidChars(<span class="stringliteral">&quot;[a-zA-Z0-9][a-zA-Z0-9_:]*&quot;</span>);</div>
+<div class="line"> </div>
 <div class="line">        <span class="keywordflow">return</span> 1;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    Logger mout(__FILE__, __FUNCTION__);</div>
 <div class="line"> </div>
-<div class="line">    <span class="comment">// TODO: handle regexp exception.</span></div>
-<div class="line">    StringMapper mapper; <span class="comment">//(argv[1]);</span></div>
 <div class="line"> </div>
 <div class="line">    mapper.setValidChars(argv[1]);</div>
 <div class="line"> </div>
@@ -125,10 +129,19 @@ $(function() {
 <div class="line">    mout.warn(mapper);</div>
 <div class="line"> </div>
 <div class="line">    std::map&lt;std::string,std::string&gt; m;</div>
+<div class="line">    m[<span class="stringliteral">&quot;sqrt2&quot;</span>]  = <span class="stringliteral">&quot;1.41421356237309504880&quot;</span>;</div>
+<div class="line">    m[<span class="stringliteral">&quot;e&quot;</span>]  = <span class="stringliteral">&quot;2.7182818284590452354&quot;</span>;</div>
+<div class="line"> </div>
 <div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 3; i &lt; argc; ++i) {</div>
 <div class="line">        <span class="keyword">const</span> std::string a = argv[i];</div>
 <div class="line">        std::size_t j = a.find(<span class="charliteral">&#39;=&#39;</span>);</div>
-<div class="line">        m[a.substr(0,j)] = a.substr(j+1);</div>
+<div class="line">        <span class="keywordflow">if</span> (j != std::string::npos){</div>
+<div class="line">            m[a.substr(0,j)] = a.substr(j+1);</div>
+<div class="line">        }</div>
+<div class="line">        <span class="keywordflow">else</span> {</div>
+<div class="line">            std::cerr &lt;&lt; <span class="stringliteral">&quot;arg[&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;]=&quot;</span> &lt;&lt; a &lt;&lt;<span class="stringliteral">&quot; not an assignment: &lt;key&gt;=&lt;value&gt;\n&quot;</span>;</div>
+<div class="line">        }</div>
+<div class="line"> </div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Debugging:\n&quot;</span>;</div>
@@ -159,14 +172,14 @@ $(function() {
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;After further expansion by another map (pi=3.14, e=2.73):\n  &quot;</span>;</div>
 <div class="line">    std::map&lt;std::string,float&gt; m2;</div>
-<div class="line">    m2[<span class="stringliteral">&quot;pi&quot;</span>] = 3.14;</div>
-<div class="line">    m2[<span class="stringliteral">&quot;e&quot;</span>] = 2.73;</div>
+<div class="line">    m2[<span class="stringliteral">&quot;pi&quot;</span>] = M_PI;</div>
+<div class="line">    m2[<span class="stringliteral">&quot;e&quot;</span>]  = M_E;</div>
 <div class="line">    mapper.expand(m2);</div>
 <div class="line">    std::cout &lt;&lt; mapper &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Dictionary-example.cpp:66</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
 </div><!-- fragment --> </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

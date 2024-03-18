@@ -107,12 +107,12 @@ Collaboration diagram for StringMapper:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0bde5ca54ca0c3d981b150a00c7bf14c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a0bde5ca54ca0c3d981b150a00c7bf14c">StringMapper</a> (const std::string &amp;format=&quot;&quot;, const std::string &amp;validChars=&quot;[a-zA-Z0-9_]+&quot;)</td></tr>
-<tr class="separator:a0bde5ca54ca0c3d981b150a00c7bf14c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d898414e8987bd90866c77146bf4940"><td class="memItemLeft" align="right" valign="top"><a id="a8d898414e8987bd90866c77146bf4940"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a8d898414e8987bd90866c77146bf4940">StringMapper</a> (const <a class="el" href="classdrain_1_1RegExp.html">RegExp</a> &amp;regexp)</td></tr>
-<tr class="memdesc:a8d898414e8987bd90866c77146bf4940"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize with the given <a class="el" href="classdrain_1_1RegExp.html">RegExp</a>. <br /></td></tr>
-<tr class="separator:a8d898414e8987bd90866c77146bf4940"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38a2a77d0974bc15a7e349679c9a38c1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a38a2a77d0974bc15a7e349679c9a38c1">StringMapper</a> (const std::string &amp;format=&quot;&quot;, const std::string &amp;validChars=&quot;[a-zA-Z0-9_]+&quot;, bool formatting=true)</td></tr>
+<tr class="separator:a38a2a77d0974bc15a7e349679c9a38c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa648ebfd6af64e0435257ac7d8061153"><td class="memItemLeft" align="right" valign="top"><a id="aa648ebfd6af64e0435257ac7d8061153"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#aa648ebfd6af64e0435257ac7d8061153">StringMapper</a> (const <a class="el" href="classdrain_1_1RegExp.html">RegExp</a> &amp;regexp, bool formatting=true)</td></tr>
+<tr class="memdesc:aa648ebfd6af64e0435257ac7d8061153"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize with the given <a class="el" href="classdrain_1_1RegExp.html">RegExp</a> // REMOVE! <br /></td></tr>
+<tr class="separator:aa648ebfd6af64e0435257ac7d8061153"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fa7cb7a2693d4dac029ffa9b0ce601b"><td class="memItemLeft" align="right" valign="top"><a id="a1fa7cb7a2693d4dac029ffa9b0ce601b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a1fa7cb7a2693d4dac029ffa9b0ce601b">StringMapper</a> (const <a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a> &amp;mapper)</td></tr>
 <tr class="memdesc:a1fa7cb7a2693d4dac029ffa9b0ce601b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor copies the parsed string and the regExp. <br /></td></tr>
@@ -120,7 +120,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a38d749ac5c29bde29815bf12baac6efc"><td class="memItemLeft" align="right" valign="top"><a id="a38d749ac5c29bde29815bf12baac6efc"></a>
 <a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setValidChars</b> (const std::string &amp;chars)</td></tr>
 <tr class="separator:a38d749ac5c29bde29815bf12baac6efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69f517d97293b70a2d996d084a5d55e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a69f517d97293b70a2d996d084a5d55e3">parse</a> (const std::string &amp;s, bool <a class="el" href="classdrain_1_1StringMapper.html#aedc9d627d4048e048d20084ec43ae5ff">convertEscaped</a>=false)</td></tr>
+<tr class="memitem:a81336954663c0930092b4b47f8b8348c"><td class="memItemLeft" align="right" valign="top"><a id="a81336954663c0930092b4b47f8b8348c"></a>
+<a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>enableFormatting</b> (bool formatting)</td></tr>
+<tr class="separator:a81336954663c0930092b4b47f8b8348c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a674dec4336e88133ac6d0da5bfcb3e05"><td class="memItemLeft" align="right" valign="top"><a id="a674dec4336e88133ac6d0da5bfcb3e05"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateRegExp</b> ()</td></tr>
+<tr class="separator:a674dec4336e88133ac6d0da5bfcb3e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69f517d97293b70a2d996d084a5d55e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a69f517d97293b70a2d996d084a5d55e3">parse</a> (const std::string &amp;s, bool <a class="el" href="classdrain_1_1StringMapper.html#a4b443726ce74bfd5356a403ef80e87c9">convertEscaped</a>=false)</td></tr>
 <tr class="memdesc:a69f517d97293b70a2d996d084a5d55e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a std::string containing variables like in "Hello, ${NAME}!" to a list of StringLet's.  <a href="classdrain_1_1StringMapper.html#a69f517d97293b70a2d996d084a5d55e3">More...</a><br /></td></tr>
 <tr class="separator:a69f517d97293b70a2d996d084a5d55e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a023f1517a499509055441ff871d563df"><td class="memItemLeft" align="right" valign="top"><a id="a023f1517a499509055441ff871d563df"></a>
@@ -130,14 +136,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:af332cacd232281cb44d7a1bb83782e2d"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#af332cacd232281cb44d7a1bb83782e2d">toStream</a> (std::ostream &amp;ostr) const</td></tr>
 <tr class="memdesc:af332cacd232281cb44d7a1bb83782e2d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Output.html" title="Output utility. Opens stdout with &quot;-&quot;. Closes upon destruction.">Output</a> a concatenated chain of stringlets: literals as such and variables surrounded with "${" and "}".  <a href="classdrain_1_1StringMapper.html#af332cacd232281cb44d7a1bb83782e2d">More...</a><br /></td></tr>
 <tr class="separator:af332cacd232281cb44d7a1bb83782e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae79d6a55b15ba804ba917c2565e7d572"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:ae79d6a55b15ba804ba917c2565e7d572"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#ae79d6a55b15ba804ba917c2565e7d572">toStream</a> (std::ostream &amp;ostr, const std::map&lt; std::string, T &gt; &amp;variables, int replace=0) const</td></tr>
-<tr class="memdesc:ae79d6a55b15ba804ba917c2565e7d572"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables in the last.  <a href="classdrain_1_1StringMapper.html#ae79d6a55b15ba804ba917c2565e7d572">More...</a><br /></td></tr>
-<tr class="separator:ae79d6a55b15ba804ba917c2565e7d572"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac379eeb7ccd32cc30e4a0c227dacafec"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:ac379eeb7ccd32cc30e4a0c227dacafec"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#ac379eeb7ccd32cc30e4a0c227dacafec">toStr</a> (const std::map&lt; std::string, T &gt; &amp;m, int replaceChar=-1) const</td></tr>
-<tr class="memdesc:ac379eeb7ccd32cc30e4a0c227dacafec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables in the last parsed std::string to a std::string.  <a href="classdrain_1_1StringMapper.html#ac379eeb7ccd32cc30e4a0c227dacafec">More...</a><br /></td></tr>
-<tr class="separator:ac379eeb7ccd32cc30e4a0c227dacafec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7963d857289d815f0d8faccd21858ee9"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a7963d857289d815f0d8faccd21858ee9"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a7963d857289d815f0d8faccd21858ee9">toStream</a> (std::ostream &amp;ostr, const std::map&lt; std::string, T &gt; &amp;variables, int replace=0, const <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt; &amp;handler=<a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt;()) const</td></tr>
+<tr class="memdesc:a7963d857289d815f0d8faccd21858ee9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables in the last.  <a href="classdrain_1_1StringMapper.html#a7963d857289d815f0d8faccd21858ee9">More...</a><br /></td></tr>
+<tr class="separator:a7963d857289d815f0d8faccd21858ee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0a3324409d405177019c60c26c5933a"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ae0a3324409d405177019c60c26c5933a"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#ae0a3324409d405177019c60c26c5933a">toStr</a> (const std::map&lt; std::string, T &gt; &amp;m, int replaceChar=-1, const <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt; &amp;formatter=<a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt;()) const</td></tr>
+<tr class="memdesc:ae0a3324409d405177019c60c26c5933a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables in the last parsed std::string to a std::string.  <a href="classdrain_1_1StringMapper.html#ae0a3324409d405177019c60c26c5933a">More...</a><br /></td></tr>
+<tr class="separator:ae0a3324409d405177019c60c26c5933a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e0962219865d494884bed208c5fdb65"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a6e0962219865d494884bed208c5fdb65"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a6e0962219865d494884bed208c5fdb65">expand</a> (const std::map&lt; std::string, T &gt; &amp;m, bool clear=false)</td></tr>
 <tr class="memdesc:a6e0962219865d494884bed208c5fdb65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables <em>in</em> <a class="el" href="classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals.">StringMapper</a>, turning expanded variables to constants.  <a href="classdrain_1_1StringMapper.html#a6e0962219865d494884bed208c5fdb65">More...</a><br /></td></tr>
@@ -150,11 +156,11 @@ template&lt;class T &gt; </td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aedc9d627d4048e048d20084ec43ae5ff"><td class="memItemLeft" align="right" valign="top"><a id="aedc9d627d4048e048d20084ec43ae5ff"></a>
-static std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#aedc9d627d4048e048d20084ec43ae5ff">convertEscaped</a> (std::string &amp;s)</td></tr>
-<tr class="memdesc:aedc9d627d4048e048d20084ec43ae5ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interpret commond special chars tab '\t' and newline '<br  />
+<tr class="memitem:a4b443726ce74bfd5356a403ef80e87c9"><td class="memItemLeft" align="right" valign="top"><a id="a4b443726ce74bfd5356a403ef80e87c9"></a>
+static std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a4b443726ce74bfd5356a403ef80e87c9">convertEscaped</a> (std::string &amp;s)</td></tr>
+<tr class="memdesc:a4b443726ce74bfd5356a403ef80e87c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interpret commond special chars tab '\t' and newline '<br  />
 '. <br /></td></tr>
-<tr class="separator:aedc9d627d4048e048d20084ec43ae5ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a4b443726ce74bfd5356a403ef80e87c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -170,6 +176,12 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:ac17cc6cb0a9e96166f6543c3ef0a291a"><td class="memItemLeft" align="right" valign="top"><a id="ac17cc6cb0a9e96166f6543c3ef0a291a"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>validChars</b></td></tr>
+<tr class="separator:ac17cc6cb0a9e96166f6543c3ef0a291a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a505c1d17eb98e60f427ead937692e29d"><td class="memItemLeft" align="right" valign="top"><a id="a505c1d17eb98e60f427ead937692e29d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>formatting</b></td></tr>
+<tr class="separator:a505c1d17eb98e60f427ead937692e29d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc182dc9c0aed07a380c8c1f44ef0757"><td class="memItemLeft" align="right" valign="top"><a id="acc182dc9c0aed07a380c8c1f44ef0757"></a>
 <a class="el" href="classdrain_1_1RegExp.html">RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><b>regExp</b></td></tr>
 <tr class="separator:acc182dc9c0aed07a380c8c1f44ef0757"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,8 +190,8 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><p>A tool for expanding variables embedded in a std::string to literals. </p>
 <p>The input variables are provided as a map, which is allowed to change dynamically. The input std::string, issued with <a class="el" href="classdrain_1_1StringMapper.html#a69f517d97293b70a2d996d084a5d55e3" title="Converts a std::string containing variables like in &quot;Hello, ${NAME}!&quot; to a list of StringLet&#39;s.">parse()</a>, contains the variables as "$key" or "${key}", a format familiar in Unix shell. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0bde5ca54ca0c3d981b150a00c7bf14c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0bde5ca54ca0c3d981b150a00c7bf14c">&#9670;&nbsp;</a></span>StringMapper()</h2>
+<a id="a38a2a77d0974bc15a7e349679c9a38c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38a2a77d0974bc15a7e349679c9a38c1">&#9670;&nbsp;</a></span>StringMapper()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -197,7 +209,13 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>validChars</em> = <code>&quot;[a-zA-Z0-9_]+&quot;</code>&#160;</td>
+          <td class="paramname"><em>validChars</em> = <code>&quot;[a-zA-Z0-9_]+&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>formatting</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -294,8 +312,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac379eeb7ccd32cc30e4a0c227dacafec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac379eeb7ccd32cc30e4a0c227dacafec">&#9670;&nbsp;</a></span>toStr()</h2>
+<a id="ae0a3324409d405177019c60c26c5933a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0a3324409d405177019c60c26c5933a">&#9670;&nbsp;</a></span>toStr()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -313,7 +331,13 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>replaceChar</em> = <code>-1</code>&#160;</td>
+          <td class="paramname"><em>replaceChar</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>formatter</em> = <code><a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt;T&gt;()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -369,8 +393,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae79d6a55b15ba804ba917c2565e7d572"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae79d6a55b15ba804ba917c2565e7d572">&#9670;&nbsp;</a></span>toStream() <span class="overload">[2/2]</span></h2>
+<a id="a7963d857289d815f0d8faccd21858ee9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7963d857289d815f0d8faccd21858ee9">&#9670;&nbsp;</a></span>toStream() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -394,7 +418,13 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>replace</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>replace</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>handler</em> = <code><a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt;T&gt;()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
