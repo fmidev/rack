@@ -127,8 +127,9 @@ public:
 		gtiffConf.link("tile", FileTIFF::defaultTile.tuple(), "<width>[:<height>]");
 		gtiffConf.link("compression", FileTIFF::defaultCompression, drain::sprinter(FileTIFF::getCompressionDict(), "|", "<>").str());
 		// gtiffConf.link("level", FileTIFF::defaultCompressionLevel, "1..10");
-		gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.str(), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str()); // drain::sprinter(FileGeoTIFF::flagger.getDict(), "|", "<>").str());
-
+		//gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.str(), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str()); // drain::sprinter(FileGeoTIFF::flagger.getDict(), "|", "<>").str());
+		//gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.getKeysNEW2(FileGeoTIFF::EPSG|FileGeoTIFF::STRICT, ':'), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str());
+		gtiffConf.link("compliancy", FileGeoTIFF::compliancy = "EPSG:STRICT", drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str());
 #endif
 
 	};
@@ -194,8 +195,9 @@ public:
 #ifndef USE_GEOTIFF_NO
 		else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
 			handleParams(gtiffConf, params);
-			drain::StringTools::replace(FileGeoTIFF::compliancy, ":", ",", FileGeoTIFF::compliancy);
-			FileGeoTIFF::compliancyFlagger.assign(FileGeoTIFF::compliancy);
+			std::string s; // commas for Flagger
+			drain::StringTools::replace(FileGeoTIFF::compliancy, ":", ",", s); //FileGeoTIFF::compliancy);
+			FileGeoTIFF::compliancyFlagger.assign(s);
 		}
 #endif
 		else if ((format == "tre")||(format == "dot")){
