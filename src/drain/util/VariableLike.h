@@ -588,6 +588,19 @@ template <>
 void FlexibleVariable::info(std::ostream & ostr) const;
 
 
+template <>
+const std::string TypeName<Variable>::name;
+
+template <>
+const std::string TypeName<Reference>::name;
+
+template <>
+const std::string TypeName<FlexibleVariable>::name;
+
+
+
+
+
 
 }
 

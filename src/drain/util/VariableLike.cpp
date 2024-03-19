@@ -199,6 +199,16 @@ void FlexibleVariable::info(std::ostream & ostr) const {
 
 
 
+template <>
+const std::string TypeName<Variable>::name("Variable");
+
+template <>
+const std::string TypeName<Reference>::name("Reference");
+
+template <>
+const std::string TypeName<FlexibleVariable>::name("FlexibleVariable");
+
+
 
 
 } // drain::
