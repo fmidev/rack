@@ -206,6 +206,8 @@ public:
 	 *  \param t - new type
 	 *  \return - always true
 	 *
+	 *  Applied in file reads, after some type info has been interpreted.
+	 *
 	 *  \see suggestType()
 	 *  \see setType()
 	 */
@@ -214,6 +216,7 @@ public:
 		Variable::setType(t);
 		return true;
 	}
+
 
 
 #define SmartVariable Variable

@@ -96,6 +96,7 @@ void JSON::readValue(std::istream & istr, Variable & v, bool keepType){
 		if (!(keepType && v.typeIsSet())){
 			const std::type_info & type = Type::guessType(value);
 			v.requestType(type);
+
 		}
 		v = value;
 		/*

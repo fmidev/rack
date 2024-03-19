@@ -118,15 +118,24 @@ public:
 	~Castable(){};
 
 	// Variable will hide std::string type.
+
+	/// Return the storage type (base type) of the referenced variable.
 	virtual inline
 	const std::type_info & getType() const {
 		return caster.getType();
 	};
 
+	/// Return true, if the referenced variable is external. Inherited classes - like Variable - may have internal data arrays.
+	virtual inline
+	bool isReference() const {
+		return true;
+	}
+
+
 	/// Returns true, if type is C char array and outputSepator is the null char.
 	inline
 	bool isCharArrayString() const {
-		return ((caster.getType() == typeid(char)) && (outputSeparator=='\0'));  // "close enough" guess
+		return ((caster.getType() == typeid(char)) && (outputSeparator=='\0'));  // "close enough" guess, or  a definition?
 	};
 
 	/// Returns true, if type is std::string .
@@ -209,6 +218,7 @@ public:
 
 	template <class T>
 	Castable &operator=(const T &x){
+		//std::cout << "op= " << x << " -> " << Type::getTypeChar(getType()) << ',' << getElementCount() << std::endl;
 		assign(x);
 		return *this;
 	}
@@ -278,10 +288,7 @@ public:
 	 */
 	template <class T>
 	void assign(const T &x){
-
-
-
-		// std::cout << "assign " << x << " -> " << Type::getTypeChar(getType()) << ',' << getElementCount() << '\n';
+		// std::cout << "assign " << x << " -> " << Type::getTypeChar(getType()) << ',' << getElementCount() << std::endl;
 		suggestType(typeid(T));
 		if (isString()){
 			//std::cout << __FUNCTION__ << ':' << x << " -> " << Type::getTypeChar(getType()) << ',' << getElementCount() << '\n';
@@ -303,7 +310,6 @@ public:
 			throw std::runtime_error(std::string(__FUNCTION__) + ": type is unset");
 		}
 
-		// return *this;
 
 	}
 
