@@ -34,10 +34,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Variable.h"
 #include "Referencer.h"
 
-
+/*
 #define SmartVariable FlexibleVariable
 #include "SmartVariable.ipp"
 #undef  SmartVariable
-
+*/
 
 

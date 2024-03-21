@@ -20,7 +20,7 @@
 
  */
 /*
-  REQUIRE: drain/util/{Caster,Castable,Log,Sprinter,String,RegExp,TextStyle,Time,Type,VariableLike}.cpp
+  REQUIRE: drain/util/{Caster,Castable,Log,Sprinter,String,RegExp,TextStyle,Time,Type,VariableBase,VariableLike}.cpp
   g+ + -I. drain/examples/Time-example.cpp drain/util/Time.cpp -o Time-example
  */
 
@@ -32,17 +32,8 @@
 
 
 
-namespace drain {
-
-
-// typedef VariableT<VariableBase<ReferenceBase<> > > FlexVar2;
-
-
-
-
-}
-
 // \tparam T - Reference, Variable, FlexibleVariable
+/*
 template <class T>
 void testCastable(const char *arg, T & object){
 
@@ -66,6 +57,240 @@ void testCastable(const char *arg, T & object){
 
 	std::cerr << "\n";
 }
+*/
+
+/// Checks if the value assigned to a drain::Castable stays same when reassigned.
+/**
+ *  \tparam T - base type
+ *  \param  t - destination Type object
+ */
+template <class C = drain::Castable>
+struct CastableTester {
+
+	/**
+	 *  \tparam T - base type
+	 *  \param  t - destination Type object
+	 */
+	template <class T>
+	static inline
+	void callback(C & c){
+
+		drain::Logger mout(__FILE__, __FUNCTION__);
+
+		// Well, potentially becomes/arrives restricted already here...
+		mout.note() << drain::TypeName<C>::get() << " <- " << drain::TypeName<T>::get();
+
+
+		if ((c.isCharArrayString() && (c.getElementCount()<=1))  && (typeid(T)==typeid(char)) ){
+			mout << "storage type char, empty(ish) variable object, skipping test (uninitialized local char)" << mout.endl;
+			return;
+		}
+
+
+		const T x = c;
+		mout << '(' << x << ')';
+		c = x;
+
+		// mout.note() << drain::TypeName<T>::get()
+		// mout << '(' << x << ')' << " -> " << drain::TypeName<C>::get() << '=';
+		mout << " => '" << c << "' : ";
+		c.info(mout);
+		mout << mout.endl;
+
+		// TEST 1: Re-assign: back to basetype
+		const T y = c;
+		if (x != y){
+			// drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.warn("Re-assign test failed: '", x, "' != '", y, "'");
+		}
+		//assert(("Re-assign test failed", x == y));
+		// std::cerr << '\n';
+
+	}
+
+};
+
+
+template <>
+template <>
+void CastableTester<drain::Castable>::callback<void>(drain::Castable & x){
+}
+
+
+template <>
+template <>
+void CastableTester<drain::Variable>::callback<void>(drain::Variable & x){
+}
+
+template <>
+template <>
+void CastableTester<drain::Reference>::callback<void>(drain::Reference & x){
+}
+
+template <>
+template <>
+void CastableTester<drain::FlexibleVariable>::callback<void>(drain::FlexibleVariable & x){
+}
+
+
+template <class C>
+void testAssignment(C & c){
+	std::cerr << __FILE__ << ':' << __FUNCTION__ << '\n';
+	drain::Type::call<CastableTester<C> >(c, c.getType());
+}
+
+/*
+template <class T, class C>
+void testResetedAssignment(C & c){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	const T x = c;
+
+	c.reset();
+	c = x;
+
+	if (c.getType() != typeid(T)){
+		mout.reject() << "type not adapted:" <<  x <<  " -> " <<  c;
+		c.info(std::cerr);
+		mout << mout.endl;
+	}
+
+
+}
+*/
+
+
+template <class C, class T>
+void testAssignmentToReseted(C & c, const T & x, bool expectError = true){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	c.reset();
+	mout.note(drain::TypeName<T>::get(), '(', x, ')', " -> ", drain::TypeName<C>::get());
+
+	try {
+		c = x;
+
+		if (expectError){
+			mout.error("no exception thrown: ");
+			return;
+		}
+
+		if (c.getType() != typeid(T)){
+			mout.reject() << "type not adapted:" <<  x <<  " -> " <<  c;
+			c.info(std::cerr);
+			mout << mout.endl;
+		}
+
+		if (c != x){
+			mout.reject() << "value changed:" <<  x <<  " != " <<  c;
+			c.info(std::cerr);
+			mout << mout.endl;
+		}
+
+	}
+	catch (const std::exception & e) {
+		if (expectError){
+			mout.accept<LOG_INFO>("exception thrown: ", e.what());
+		}
+		else {
+			mout.reject("exception thrown: ", e.what());
+		}
+	}
+
+
+}
+
+template <class C, class T>
+void testAssignmentRelinked(C & c, const T & x){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	T y;
+	c.link(y);
+
+	mout.note(drain::TypeName<T>::get(), '(', x, ')', " -> ", drain::TypeName<C>::get());
+
+	try {
+		c = x;
+		//mout.fail("no exception thrown: ");
+	}
+	catch (const std::exception & e) {
+		mout.fail("exception thrown: ", e.what());
+	}
+
+	if (y != x){
+		mout.warn("value changed: ", x, " -> ", y);
+	}
+
+
+}
+
+
+template <class S, class T>
+void demo(const T & value, char outputSeparator = ','){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	mout.special("Input type: ", drain::TypeName<T>::get(), ", local storage type: ", drain::TypeName<S>::get() );
+
+	S data;
+
+	if ((typeid(S)==typeid(char)) && (outputSeparator == 0)){
+		mout.attention("Storage type is a single char, following errors for are expected for Castable, Reference and linked FlexibleVariable.");
+	}
+
+	std::cout << "Castable: \n";
+	drain::Castable c(data);
+	c.setSeparator(outputSeparator);
+	std::cout << "Castable: c = value \n";
+	c = value;
+	std::cout << "Castable: \n";
+	testAssignment(c);
+	//testAssignment(c = value);
+	testAssignmentToReseted(c, value, true);
+
+	std::cout << "Reference: \n";
+	drain::Reference r(data);
+	r.setSeparator(outputSeparator);
+	//r.link(data);
+	testAssignment(r = value);
+	testAssignmentToReseted(r, value, true);
+	// testAssignmentRelinked(r, value);
+
+	std::cout << "Variable: \n";
+	drain::Variable v;
+	v.setSeparator(outputSeparator);
+	testAssignment(v = value);
+	testAssignmentToReseted(v, value, false);
+
+	/*  should test all these: undef, initialized, assigned, initialized-type, set-type
+	drain::Variable v(data);
+	v.setSeparator(outputSeparator);
+	v.setType(typeid(S));
+	testAssignment(v = value);
+	*/
+
+	std::cout << "FlexibleVariable: \n";
+	drain::FlexibleVariable fv;
+	fv.setSeparator(outputSeparator);
+	// std::cout << "FlexVar, copied:   ";
+	testAssignment(fv = data);
+	testAssignmentToReseted(fv, value, false);
+	// testAssignmentRelinked(fv, value);
+
+	//std::cout << "FlexVar, linked:   ";
+	//fv.link(data);
+	//testAssignment(fv);
+
+	// std::cout << "Var=Cas:   ";
+	v.reset();
+	testAssignment(v = c);
+
+	std::cerr << '\n';
+
+}
 
 /// Demonstrates usage of drain::Time class.
 /**
@@ -81,7 +306,7 @@ void testCastable(const char *arg, T & object){
 */
 int main(int argc, char **argv){
 
-	drain::getLog().setVerbosity(6);
+	drain::getLog().setVerbosity(5);
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	drain::Variable var;
@@ -89,6 +314,62 @@ int main(int argc, char **argv){
 	drain::FlexibleVariable flex;
 
 
+	if (argc <= 1){
+		std::cout << "Demonstration of assigning values to and from Castables, Variables and Referencers.\n";
+		std::cout << "Usage:\n   " << argv[0] << " <input1> <input2> ... ]\n";
+		std::cout << "Example:\n " << argv[0] << " 123.45  456.789E+6 Åland ... ]\n\n";
+		return 1;
+	}
+
+
+	for (int i=1; i<argc; ++i){
+
+			const char *s = argv[i];
+			std::cerr << "Arg " << i << ":\t" << s << '\n';
+
+			std::string str = s;
+			int k = atoi(s);
+			double d = atof(s);
+
+			if (d != 0){
+
+				if (::rint(d) == k){
+					std::cerr << "---INT---\n";
+					demo<int>(str);
+					demo<int>(k);
+					demo<int>(d);
+				}
+				else {
+					std::cerr << "---DBL---\n";
+					demo<double>(str);
+					demo<double>(k);
+					demo<double>(d);
+				}
+
+			}
+
+			// else {
+
+				//std::cout << "Storage type: string\n";
+				std::cout << "---STR---\n";
+				demo<std::string>(str);
+				demo<std::string>(k);
+				demo<std::string>(d);
+
+				// test len==1 ?
+				std::cout << "---CHR---\n";
+				demo<char>(str,0);
+				demo<char>(k,0);
+				demo<char>(d,0);
+
+			//}
+
+
+
+
+		}
+
+	/*
 	for (int a = 1; a < argc; ++a) {
 
 		const char *arg = argv[a];
@@ -162,6 +443,7 @@ int main(int argc, char **argv){
 
 
 	}
+	*/
 
 	/*
 	int i = 123;

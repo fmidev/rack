@@ -233,17 +233,57 @@ Castable & Castable::assignCastable(const Castable &c){
 }
 
 void Castable::assignToCharArray(const std::string & s){
+
+	/*
 	requestSize(s.size() + 1);
+
 	if (empty())
 		throw std::runtime_error(std::string(__FUNCTION__) + ": array resize failed for: " + s);
+
 	const size_t n = std::min(s.size(), getElementCount()-1);
+
 	if (n < s.size()){
 		std::cerr << __FUNCTION__ << ": truncating '" << s << "' to '" << s.substr(0, n) << "'\n";
 	}
+
 	for (size_t i=0; i < n; ++i){
 		caster.put(getPtr(i), s[i]);
 	}
+
+	caster.put(getPtr(getElementCount()-1), '\0'); // WRONG, if empty?
+	*/
+
+
+	requestSize(s.size() + 1);
+
+	//if (empty()){ // <- char array[1] with '\0'
+	if (getElementCount() == 0){
+		throw std::runtime_error(std::string(__FUNCTION__) + ": array resize failed for: " + s);
+	}
+
+	if (s.empty()){
+		caster.put(getPtr(), '\0');
+		return;
+	}
+
+	if (getElementCount()==1){
+		std::cerr << __FUNCTION__ << ": single-char array containing terminal char '\\0' only, no space for assigning value '" << s << "'\n";
+		caster.put(getPtr(), '\0');
+		return;
+	}
+
+	const size_t n = std::min(s.size(), getElementCount()-1);
+
+	if (n < s.size()){
+		std::cerr << __FUNCTION__ << ": truncating '" << s << "' to '" << s.substr(0, n) << "'\n";
+	}
+
+	for (size_t i=0; i < n; ++i){
+		caster.put(getPtr(i), s[i]);
+	}
+
 	caster.put(getPtr(getElementCount()-1), '\0');
+
 }
 
 

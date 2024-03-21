@@ -30,9 +30,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
+/*
+ *
+
 #include "FlexibleVariable.h"
 #include "Variable.h"
 #include "Referencer.h"
+
 
 namespace drain {
 template <>
@@ -52,5 +56,5 @@ const char* drain::TypeName<drain::ReferenceBase<drain::Variable> >::get(){
 #include "SmartVariable.ipp"
 #undef  SmartVariable
 
-
+*/
 

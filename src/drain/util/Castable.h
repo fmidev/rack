@@ -189,9 +189,19 @@ public:
 			// Use native std::string::empty()
 			return ((const std::string *)caster.ptr)->empty();
 		}
+		else if (getElementCount() == 0){
+			return true;
+		}
+		else if (isCharArrayString() && (getElementCount() == 1)){
+			if (*(char *)caster.ptr != '\0'){
+				std::cerr << __FILE__ << ':' << __FUNCTION__ << " single-char array not ending with null char '\\0' : '" << *(char *)caster.ptr << "'";
+			}
+			return true;
+		}
 		else {
+			return false;
 			// consider assert type == void ?
-			return (getElementCount() == 0);
+			// return (getElementCount() == 0);
 		}
 	}
 
