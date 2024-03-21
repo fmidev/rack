@@ -937,7 +937,10 @@ protected:
 	}
 	*/
 
+	/// Picks message label from a dictionary.
+	Logger & initMessage(level_t level);
 
+	/*
 	inline
 	Logger & initMessage(level_t level){
 		static const Notification notif(__FUNCTION__); // TextStyle::DIM, TextStyle::ITALIC);
@@ -946,7 +949,7 @@ protected:
 		this->message.str("");
 		return *this;
 	}
-
+	*/
 
 	template<typename T, typename ... TT>
 	inline

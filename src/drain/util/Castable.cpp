@@ -185,7 +185,7 @@ void Castable::info(std::ostream & ostr) const {
 			ostr << '[' << getElementCount() << ']';
 	}
 	ostr << ")";
-
+	//ostr << TypeName<Reference>::name;
 }
 
 
@@ -312,18 +312,9 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Castable & v
 
 }
 
-/*
-template <>
-std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Variable & v, const SprinterLayout & layout) {
 
-	if ((v.getElementCount() > 1) && !v.isString()){
-		return Sprinter::sequenceToStream(ostr, v, layout);
-	}
-	else {
-		return Sprinter::toStream(ostr, (const Castable &)v, layout); //
-	}
-	return ostr;
-}
-*/
+template <>
+const std::string TypeName<Castable>::name("Castable");
+
 
 }  // drain

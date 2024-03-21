@@ -65,13 +65,13 @@ public:
 	 */
 	template <class M>
 	static
-	const typename M::mapped_t & get(const M & m, const typename M::key_t & key){
+	const typename M::mapped_type & get(const M & m, const typename M::key_type & key){
 		typename M::const_iterator it = m.find(key);
 		if (it != m.end()){
 			return it->second;
 		}
 		else {
-			static const typename M::mapped_t empty;
+			static const typename M::mapped_type empty;
 			return empty;
 		}
 	}

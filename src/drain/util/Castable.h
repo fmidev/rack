@@ -1159,6 +1159,12 @@ T & operator/=(T & x, const Castable &c){
 }
 
 
+
+template <>
+const std::string TypeName<Castable>::name;
+
+
+
 }  // namespace drain
 
 

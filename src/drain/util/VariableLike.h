@@ -190,13 +190,7 @@ public:
 	 *  \see suggestType()
 	 *  \see setType()
 	 */
-	/*
-	virtual inline
-	bool requestType(const std::type_info & t){
-		VariableBase::setType(t);
-		return true;
-	}
-	*/
+
 
 	/// Sets type, if unset.
 	/**
@@ -220,18 +214,7 @@ public:
 	 *   Could be protected, but requestType() will not be.
 	 *   Does not apply to std::string;
 	 *
-	virtual inline
-	bool requestSize(size_t elementCount){
-		if (isReference()){
-			return Castable::requestSize(elementCount);
-			//return (getElementCount() == elementCount);
-		}
-		else {
-		updateSize(elementCount);
-		return true;
-		}
-	}
-	*/
+		*/
 
 
 
@@ -420,6 +403,7 @@ class VariableT : public T {
 
 public:
 
+	typedef T varbase_t;
 
 	/// Single constructor template, forwarded to init(args...) defined in base classes.
 	/**

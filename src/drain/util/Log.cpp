@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 
 #include "Log.h"
+#include "SmartMapTools.h"
 
 namespace drain {
 
@@ -331,6 +332,40 @@ void Logger::initMessage(level_t level, const Notification & notif){
 	message.str("");
 }
 */
+Notification & getNotif(Logger::level_t level){
+
+
+
+
+	typedef std::map<int,Notification> notif_dict_t;
+	static notif_dict_t notifDict;
+
+	notif_dict_t::iterator it = notifDict.find(level);
+	if (it != notifDict.end()){
+		return it->second;
+	}
+	else {
+		const std::string key =  MapTools::get(Log::statusDict, level);
+		it = notifDict.insert(notifDict.begin(), notif_dict_t::value_type(level, Notification(key)));
+		//Notification & notif = notifDict[level];
+		//notif.key = MapTools::get(Log::statusDict, level, "Msg");
+		//MapTools::get(Log::statusDict, level, notif.key);
+		// notif.vt100color =
+		return it->second;
+	}
+
+}
+
+Logger & Logger::initMessage(level_t level){
+	// static const Notification notif(__FUNCTION__); // TextStyle::DIM, TextStyle::ITALIC);
+	//this->notif_ptr = & notif; // Log::getDict()[level];
+	static std::map<int,Notification> notifDict;
+
+	this->notif_ptr = & getNotif(level);
+	this->level = level;
+	this->message.str("");
+	return *this;
+}
 
 
 
