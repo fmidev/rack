@@ -51,7 +51,7 @@ OBJS=()
 # fi
 
 
-for SRC in {andre,data,drain/{image,imageops,util,prog},hi5,main,product,radar}/*.cpp ; do
+for SRC in {andre,data,drain,drain/{image,imageops,util,prog},hi5,main,product,radar}/*.cpp ; do
 
     SRC_FILE=${SRC##*/}
     SRC_DIR=${SRC%/*}
