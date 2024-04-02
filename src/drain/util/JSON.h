@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 #include <drain/Sprinter.h>
-#include <drain/VariableLike.h>
+#include <drain/VariableAssign.h>
 
 #include "FileInfo.h"
 #include "TextReader.h"

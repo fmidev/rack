@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_DrawingOP
 #define RACK_DrawingOP
 
-#include <drain/VariableLike.h>
+#include <drain/VariableAssign.h>
 
 #include "PolarProductOp.h"
 #include "radar/PolarWindow.h"

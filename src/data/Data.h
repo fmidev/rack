@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 
 #include <drain/RegExp.h>
-#include <drain/VariableLike.h>
+#include <drain/VariableAssign.h>
 
 #include "drain/util/ReferenceMap.h"
 // #include "drain/util/Variable.h"

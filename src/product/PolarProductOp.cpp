@@ -30,7 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include <stdexcept>
 
-//#include <drain/VariableLike.h>
+//#include <drain/VariableAssign.h>
 //#include "drain/util/Fuzzy.h"
 //#include "drain/image/AccumulationMethods.h"
 //#include "RackOp.h"

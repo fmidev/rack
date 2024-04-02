@@ -44,7 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 #include <drain/Log.h>
-#include <drain/VariableLike.h>
+#include <drain/VariableAssign.h>
 
 #include "drain/image/Image.h"
 #include "drain/util/FileInfo.h"
