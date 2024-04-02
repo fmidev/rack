@@ -40,14 +40,48 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-/// "Final" class, to be applied through typedefs
+/// VariableT is a final class applied through typedefs Variable, Reference and FlexibleVariable.
 /**
- *  \tparam T - VariableBase, ReferenceT<Castable> ReferenceT<Variable>
- *
- *  \see VariableBase
- *  \see ReferenceT
- *  \see VariableLike - implements the final classes.
- *
+  \tparam T - VariableBase, ReferenceT<Castable> ReferenceT<Variable>
+
+\code
+int i;
+double d;
+char c;
+char *s = "test";
+std::string str = "123.456abc";
+\endcode
+
+   <TABLE>
+   <TR><TD></TD><TH>Reference</TH><TH>Variable</TH><TH>FlexibleVariable</TH></TR>
+   <TR><TD>Definition</TD><TD>VariableT<ReferenceT<Castable> ></TD><TD>VariableT<VariableBase></TD><TD>VariableT<VariableBase></TD></TR>
+   <TR><TD>Default constructor</TD><TD><tt>V v; // compiler error</tt></TD><TD><tt>V v; // ok, type undefined</tt></TD><TD><tt>V v; // ok, type undefined</tt></TD></TR>
+   <TR>
+   	<TD>Constructor with type</TD>
+   	<TD><tt>V v(typeid(double));</tt></TD>
+   	<TD>Compiler error</TD>
+   	<TD>Ok, sets type to \c double</TD>
+   	<TD>Ok, sets type to \c double</TD>
+   </TR>
+   <TR>
+   	<TD>Constructor with init.</TD>
+   	<TD><tt>V v(d);</tt></TD>
+   	<TD><links</TD>
+   	<TD>assigns</TD>
+   	<TD>assigns</TD>
+   </TR>
+   <TR>
+   	<TD>Constructor with assignment</TD>
+   	<TD><tt>V v(d) = 7.0; // links and assigns</tt></TD>
+   	<TD><tt>V v = 7.0; // assigns</tt></TD>
+   	<TD><tt>V v = 7.0; // assigns</tt></TD>
+   </TR>
+   </TABLE>
+
+   \see Reference
+   \see Variable
+   \see FlexibleVariable
+
  */
 template <class T>
 class VariableT : public T {

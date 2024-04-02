@@ -35,20 +35,37 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Castable.h"
 #include "Convert.h"
-//#include "Variable.h"
 #include "Sprinter.h"
 
-//#include "VariableLike.h"
 #include "VariableT.h"
 #include "ReferenceT.h"
 
 #ifndef DRAIN_REFERENCE__NEW
 #define DRAIN_REFERENCE__NEW
 
-// // using namespace std;
 
 namespace drain {
 
+/// Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-element arrays through drain::UniTuple<>
+/**
+ *   drain::Reference does not have memory of its own. The type of reference cannot be changed – it is that of the referenced variable.
+ *
+ *   The only character string type supported is \c std::string .
+ *
+ *   Currently, the only multi-element structure supported is drain::UniTuple<>, which has a fixed start address for its elements.
+ *   In future, STL Sequences like std::vectors may be supported.
+ *
+ *   Reference does not support STL containers.
+ *
+ *   This class is best illustrated together with its counterparts supporting own memory, Variable and FlexibleVariable
+ *
+ *   \copydoc drain::VariableT
+ *
+ *   \see Reference
+ *   \see Variable
+ *   \see FlexibleVariable
+ *   \see UniTuple
+ */
 typedef VariableT<ReferenceT<Castable> >  Reference;
 
 }  // namespace drain

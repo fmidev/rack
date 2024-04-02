@@ -52,6 +52,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+/// Value container supporting dynamic type.
+/**
+ *   drain::Variable has memory of its own, and cannot be linked to external variables.
+ *
+ *   This class is best illustrated together with its counterparts supporting linking: Reference and FlexibleVariable
+ *   \copydoc drain::VariableT
+ *
+ *   \see Reference
+ *   \see FlexibleVariable
+ */
 typedef VariableT<VariableBase>  Variable;
 
 

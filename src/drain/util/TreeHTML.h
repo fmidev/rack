@@ -114,10 +114,11 @@ public:
 };
 
 
-/// "Publish" the
+/// The  HTML data structure.
+/**
+ *
+ */
 typedef NodeHTML::xml_tree_t TreeHTML;
-// typedef drain::UnorderedMultiTree<NodeHTML,false, NodeHTML::path_t> TreeHTML;
-
 
 
 

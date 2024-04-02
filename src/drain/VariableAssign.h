@@ -43,7 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-
+/*
 template <>
 template <>
 inline
@@ -94,7 +94,7 @@ FlexibleVariable & FlexibleVariable::operator=(const Reference &x){
 	this->assignCastable(x);
 	return *this;
 }
-
+*/
 }
 
 #endif
