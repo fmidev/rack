@@ -53,9 +53,19 @@ std::string str = "123.456abc";
 \endcode
 
    <TABLE>
-   <TR><TD></TD><TH>Reference</TH><TH>Variable</TH><TH>FlexibleVariable</TH></TR>
-   <TR><TD>Definition</TD><TD>VariableT<ReferenceT<Castable> ></TD><TD>VariableT<VariableBase></TD><TD>VariableT<VariableBase></TD></TR>
-   <TR><TD>Default constructor</TD><TD><tt>V v; // compiler error</tt></TD><TD><tt>V v; // ok, type undefined</tt></TD><TD><tt>V v; // ok, type undefined</tt></TD></TR>
+   <TR><TD></TD><TD></TD><TH>Reference</TH><TH>Variable</TH><TH>FlexibleVariable</TH></TR>
+   <TR>
+   	   <TD>Definition</TD><TD></TD>
+   	   <TD>VariableT<ReferenceT<Castable> ></TD>
+   	   <TD>VariableT<VariableBase></TD>
+   	   <TD>VariableT<VariableBase></TD>
+   </TR>
+   <TR>
+   	   <TD>Default constructor</TD>
+   	   <TD><tt>V v;</TD>
+   	   <TD>Compiler error</TD>
+   	   <TD>Ok (type undefined)</TD>
+   	   <TD>Ok (type undefined)</TD></TR>
    <TR>
    	<TD>Constructor with type</TD>
    	<TD><tt>V v(typeid(double));</tt></TD>
