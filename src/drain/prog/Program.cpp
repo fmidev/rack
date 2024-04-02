@@ -31,8 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  
 // New design (2020)
 
-#include "drain/util/Log.h"
-
+#include <drain/Log.h>
 #include "Program.h"
 
 namespace drain {

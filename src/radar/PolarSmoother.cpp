@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "Coordinates.h"
 
-#include "drain/util/Log.h"
+#include <drain/Log.h>
 #include "drain/util/FunctorPack.h"
 #include "drain/imageops/FunctorOp.h"
 

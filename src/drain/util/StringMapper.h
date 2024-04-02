@@ -32,19 +32,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef STRINGMAPPER_H_
 #define STRINGMAPPER_H_
 
+#include <drain/Log.h>
 #include <map>
 #include <list>
 #include <iterator>
 #include <sstream>
 
+#include <drain/RegExp.h>
+#include <drain/Sprinter.h>
+#include <drain/String.h>
+#include <drain/VariableLike.h>
+
 #include "IosFormat.h"
-#include "Log.h"
-//#include "SmartMapTools.h"
-#include "RegExp.h"
-#include "Sprinter.h"
-#include "String.h"
 #include "Time.h"
-#include "Variable.h"
 #include "VariableFormatter.h"
 
 namespace drain {

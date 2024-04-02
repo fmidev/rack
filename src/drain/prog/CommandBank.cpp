@@ -30,10 +30,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
  
 
+#include <drain/Log.h>
 #include <iostream>
 #include <sstream>
 
-#include "drain/util/Log.h"
 #include "drain/util/Input.h"
 #include "drain/util/JSON.h"
 #include "drain/util/Output.h"
@@ -743,7 +743,7 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 				return;
 			}
 
-			mout.error() << "not found: " << key << mout.endl;
+			mout.error("Not found: ", key);
 		}
 
 
@@ -866,6 +866,7 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 	ostr << ' ' << ' ';
 	char separator = 0;
 	//for (std::list<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
+
 	for (const std::string & key: keys){
 
 		if (separator)
@@ -876,7 +877,7 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 		if (key.empty()){
 			ostr << '<' << params.getKeys() << '>';
 			if (params.size() != 1){
-				mout.warn() << "the first key empty, but not unique" << mout.endl;
+				mout.warn("the first key empty, but not unique");
 				//mout.warn() << "the first key empty, but not unique" << mout.endl;
 			}
 		}
@@ -896,9 +897,11 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 	/// Iterate variable keys
 	if (detailed){
 
-		//for (std::list<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
-		//const std::string & key = *kit;
 		for (const std::string & key: keys){
+
+			if ((key.at(0) == '_') && !mout.isDebug()){
+				continue;
+			}
 
 			// special:
 			if (keys.size()==1){

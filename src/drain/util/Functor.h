@@ -36,10 +36,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include <vector>
 //#include <iostream>
+#include <drain/Log.h>
 #include <stdexcept>
 //#include <map>
 
-#include "Log.h"
 #include "BeanLike.h"
 
 namespace drain

@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <andre/BirdOp.h>
+#include <drain/Log.h>
 #include "data/DataSelector.h"
 #include "data/DataTools.h"
 #include "data/PolarODIM.h"
@@ -44,8 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "radar/Doppler.h"
 #include "drain/util/FunctorPack.h"
 #include "drain/util/Fuzzy.h"
-#include "drain/util/Log.h"
-#include "drain/util/RegExp.h"
+//#include "drain/util/RegExp.h"
 
 
 using namespace drain;

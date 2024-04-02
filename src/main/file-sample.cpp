@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 //#include <exception>
+#include <drain/Log.h>
 #include <fstream>
 #include <iostream>
 
@@ -63,7 +64,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 
-#include "drain/util/Log.h"
 #include "drain/util/Output.h"
 #include "drain/image/Sampler.h"
 
@@ -115,9 +115,6 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 
 	mout.info("Sample file (.dat)" );
 
-
-	drain::Output ofstr(filename);
-
 	DataSelector selector;
 	selector.setPathMatcher(ODIMPathElem::DATASET);
 	selector.setParameters(ctx.select);
@@ -127,47 +124,57 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 	mout.special("selector: " , selector );
 
 	ODIMPath path;
-	selector.getPath(src, path);
 
-	mout.info("Sampling path: " , path );
+	if (selector.getPath(src, path)){
 
-	const Hi5Tree & srcDataSet = src(path);
+		drain::Output ofstr(filename);
 
-	/// Sampling parameters have been set by --sample (CmdSample)
-	const Sampler & sampler = ctx.imageSampler.getSampler();
+		mout.info("Sampling path: " , path );
 
-	std::ostream & ostr = ofstr;
-	//ostr.width(20);
-	//ostr.fill('x');
-	ostr.precision(20);
-
-	if (ctx.currentHi5 == ctx.currentPolarHi5){
-
-		mout.debug("sampling polar data" );
-		//const DataSet<PolarSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
-		const DataSet<PolarSrc> dataset(srcDataSet, selector.getQuantitySelector());
-		mout.info("data: " , dataset );
-
-		sampleData<PolarDataPicker>(dataset, sampler, ctx.formatStr, ofstr);
-
-	}
-	else {
-
-		mout.debug("sampling Cartesian data: " );
-		//const DataSet<CartesianSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
-		const DataSet<CartesianSrc> dataset(srcDataSet, selector.getQuantitySelector());
-		mout.info("data: " , dataset );
 		/*
+		double d = NAN;
+		double f = NAN;
+		std::cerr << "NONNI " << NAN << ',' << d << ',' << f <<  std::endl;
+		*/
+		//std::cerr << "NONNI " << NAN <<  std::endl;
+
+		const Hi5Tree & srcDataSet = src(path);
+
+		/// Sampling parameters have been set by --sample (CmdSample)
+		const Sampler & sampler = ctx.imageSampler.getSampler();
+
+		std::ostream & ostr = ofstr;
+		//ostr.width(20);
+		//ostr.fill('x');
+		ostr.precision(20);
+
+		if (ctx.currentHi5 == ctx.currentPolarHi5){
+
+			mout.debug("sampling polar data" );
+			//const DataSet<PolarSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
+			const DataSet<PolarSrc> dataset(srcDataSet, selector.getQuantitySelector());
+			mout.info("data: " , dataset );
+
+			sampleData<PolarDataPicker>(dataset, sampler, ctx.formatStr, ofstr);
+
+		}
+		else {
+
+			mout.debug("sampling Cartesian data: " );
+			//const DataSet<CartesianSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
+			const DataSet<CartesianSrc> dataset(srcDataSet, selector.getQuantitySelector());
+			mout.info("data: " , dataset );
+			/*
 			for (DataSet<CartesianSrc>::const_iterator it = dataset.begin(); it != dataset.end(); ++it){
 				mout.warn("data:" , it->first );
 			}
-		 */
+			 */
 
-		sampleData<CartesianDataPicker>(dataset, sampler, ctx.formatStr, ofstr);
+			sampleData<CartesianDataPicker>(dataset, sampler, ctx.formatStr, ofstr);
+
+		}
 
 	}
-
-	//ofstr.close();
 
 
 }

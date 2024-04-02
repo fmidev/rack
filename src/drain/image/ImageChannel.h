@@ -31,11 +31,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef IMAGE_CHANNEL_H_
 #define IMAGE_CHANNEL_H_ "ImageFrame 0.9,  2011.09.25 Markus.Peura@fmi.fi"
 
+#include <drain/TypeUtils.h>
 #include <stddef.h>  // size_t
 
-#include "drain/util/CastableIterator.h"
+
+#include <drain/CastableIterator.h>
+
 #include "drain/util/VariableMap.h"
-#include "drain/util/TypeUtils.h"
 #include "ImageFrame.h"
 
 

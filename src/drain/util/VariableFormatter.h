@@ -32,21 +32,24 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef VARIABLE_FORMATTER_H_
 #define VARIABLE_FORMATTER_H_
 
+#include <drain/Log.h>
 #include <map>
 #include <list>
 #include <iterator>
 #include <sstream>
 
-#include "Convert.h"
+#include <drain/Convert.h>
+#include <drain/RegExp.h>
+#include <drain/String.h>
+#include <drain/VariableLike.h>
+#include <drain/SmartMapTools.h>
+//#include "Variable.h"
+
 #include "IosFormat.h"
-#include "Log.h"
-#include "SmartMapTools.h"
 //#include "MapTools.h"
-#include "RegExp.h"
+
 //#include "Sprinter.h"
-#include "String.h"
 #include "Time.h"
-#include "Variable.h"
 
 namespace drain {
 

@@ -29,6 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <drain/Log.h>
 #include <main/palette-manager.h>
 #include <map>
 #include <set>
@@ -36,13 +37,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 #include <utility>
 
+
+#include <drain/Sprinter.h>
+#include <drain/VariableLike.h>
+
 #include "drain/image/Image.h"
 #include "drain/image/ImageFrame.h"
-#include "drain/util/Log.h"
 #include "drain/util/SmartMap.h"
-#include "drain/util/Sprinter.h"
 #include "drain/util/TreeOrdered.h"
-#include "drain/util/Variable.h"
+//#include "drain/util/Variable.h"
 
 #include "data/Data.h"
 #include "data/PolarODIM.h"

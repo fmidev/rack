@@ -33,8 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include <drain/image/ImageFile.h>
+#include <drain/TypeUtils.h>
 #include "drain/util/Functor.h"
-#include "drain/util/TypeUtils.h"
 #include "ImageOp.h"
 
 namespace drain

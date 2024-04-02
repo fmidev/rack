@@ -30,10 +30,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 
+#include <drain/TypeUtils.h>
 #include <fstream>
 
 #include "drain/util/Dictionary.h"
-#include "drain/util/TypeUtils.h"
 #include "drain/util/JSON.h"
 
 #include "Hi5.h"

@@ -30,7 +30,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include <stdexcept>
 
-#include "drain/util/Variable.h"
+#include <drain/Variable.h>
+
 // #include "drain/util/Fuzzy.h"
 #include "drain/image/FilePng.h"
 #include "drain/image/AccumulationMethods.h"
@@ -90,6 +91,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	accumulator.checkCompositingMethod(dstData.odim);
 	accumulator.accArray.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
 	accumulator.odim.rscale = dstData.odim.rscale;
+	// TODO: accumulator.setGeometry(dstData.odim);
 
 	mout.debug((const Accumulator &) accumulator );
 

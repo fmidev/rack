@@ -41,8 +41,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define TREE_XML
 
 #include <ostream>
+
+#include <drain/Sprinter.h>
+#include <drain/FlexibleVariable.h>
+
 #include "ReferenceMap.h"
-#include "Sprinter.h"
 #include "TreeUnordered.h"
 
 namespace drain {

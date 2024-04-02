@@ -32,13 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RADAR_DATA_PICKER_H
 
 
+#include <drain/TypeUtils.h>
 #include <sstream>
 
 
 #include "drain/image/Sampler.h"
-#include "drain/util/Proj6.h"
 #include "drain/image/AccumulatorGeo.h"
-#include "data/ODIM.h"
 #include "data/Data.h"
 
 // ##include "Geometry.h"
@@ -104,7 +103,9 @@ public:
 
 	/// Prints images geometry, buffer size and type information.
 	void toOStr(std::ostream &ostr = std::cout) const {
-		ostr << "RadarDataPicker " << this->width << "x" << this->height << "; " << this->ref << "; " <<  odim << '\n';
+		// "RadarDataPicker "
+		ostr << drain::TypeName<rack::RadarDataPicker<OD> >::name;
+		ostr << this->width << "x" << this->height << "; " << this->ref << "; " <<  odim << '\n';
 	}
 
 
@@ -125,7 +126,6 @@ protected:
 	const OD & odim;
 
 
-
 };
 
 template <class OD>
@@ -135,67 +135,42 @@ std::ostream & operator<<(std::ostream &ostr, const RadarDataPicker<OD> & p){
 	return ostr;
 }
 
+}
+
+namespace drain {
+
+//template <class OD>
+//const std::string TypeName<rack::RadarDataPicker<OD> >::name("RadarDataPicker");
+
+}
+
+namespace rack {
+
 class PolarDataPicker : public RadarDataPicker<PolarODIM> {
 
 
 public:
 
 	/// Reads a value, and scales it unless \c nodata or \c undetect.
-	inline
-	PolarDataPicker(drain::ReferenceMap2<> & variableMap, const PolarODIM & odim) :
-		RadarDataPicker<PolarODIM>(variableMap, odim), J2AZMDEG(360.0/static_cast<double>(odim.area.height)),
-		current_sin(0), current_cos(0), current_azm(0), current_range(0)
-		{
 
-		// drain::Logger mout(__FUNCTION__, __FUNCTION__);
-
-		proj.setSiteLocationDeg(odim.lon, odim.lat);
-		//proj.setProjectionDst("+proj=latlong +ellps=WGS84 +datum=WGS84"); // +type=crs ?
-		proj.setProjectionDst("EPSG:4326");
-
-		variableMap.link("RANGE", current_range = 0.0);
-		variableMap.link("AZM", current_azm = 0.0);
-
-		setSize(odim.area.width, odim.area.height);
-
-		infoMap["lon"] = odim.lon;
-		infoMap["lat"] = odim.lat;
-		drain::Rectangle<double> bbox;
-		// std::vector<double> bbox(4);
-		//this->getProjection().getBoundingBoxD(odim.getMaxRange(), bbox[0], bbox[1], bbox[2], bbox[3]);
-		this->getProjection().getBoundingBoxD(odim.getMaxRange(), bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);
-		infoMap["bbox"] = bbox.toVector();
-
-	}
-
+	PolarDataPicker(drain::ReferenceMap2<> & variableMap, const PolarODIM & odim);
 
 	/// Sets image position and calculates corresponding geographical coordinates.
-	virtual inline
-	void setPosition(int i, int j) const {
-
-		this->current_i = i;
-		this->current_j = j;
-		current_range = odim.getBinDistance(i);
-		current_azm   = static_cast<double>(j) * J2AZMDEG;  // odim.getAzm
-
-		current_sin   = sin(current_azm * drain::DEG2RAD);
-		current_cos   = cos(current_azm * drain::DEG2RAD);
-
-		x = current_range*current_sin;
-		y = current_range*current_cos;
-		proj.projectFwd(current_range*current_sin, current_range*current_cos, lon, lat);
-		lon *= drain::RAD2DEG;
-		lat *= drain::RAD2DEG;
-
-	}
+	virtual
+	void setPosition(int i, int j) const;
 
 	inline
-	const RadarProj & getProjection() const { return proj; };
+	const RadarProj & getProjection() const {
+		return proj;
+	};
 
 	/*
 	virtual inline
 	void writeHeader(char commentPrefix, std::ostream & ostr) const {	};
 	*/
+
+	/// If true, i is looped as a ground coordinate.
+	bool groundCoord = false;
 
  protected:
 
@@ -206,17 +181,21 @@ public:
 	/// Conversion from
 	const double J2AZMDEG;
 
+	// Elevation angle in radians
+	const double eta;
+
 	/// Utility
 	mutable double current_sin;
 	/// Utility
 	mutable double current_cos;
 	/// Utility
 	mutable double current_azm;
-	/// Utility
+
+	/// Distance from the radar
 	mutable double current_range;
 
-
-
+	/// Altitude from the mean sea level
+	mutable double current_height;
 
 };
 
@@ -226,77 +205,10 @@ class CartesianDataPicker : public RadarDataPicker<CartesianODIM> {
 public:
 
 	/// Default constructor
-	inline
-	CartesianDataPicker(drain::ReferenceMap2<> & variableMap, const CartesianODIM & odim) : RadarDataPicker<CartesianODIM>(variableMap,odim) {
-
-		drain::Logger mout(__FUNCTION__, __FUNCTION__);
-
-
-		setSize(odim.area.width, odim.area.height);
-		frame.setGeometry(odim.area.width, odim.area.height);
-		if (!frame.geometryIsSet()){
-			mout.warn("Array geometry undefined?" );
-		}
-
-		//frame.setBoundingBoxD(odim.LL_lon, odim.LL_lat, odim.UR_lon, odim.UR_lat);
-		frame.setBoundingBoxD(odim.bboxD);
-		if (!frame.bboxIsSet()){
-			mout.warn("Bounding box undefined?" );
-		}
-
-		/* TODO: if (odim.epsg)
-			frame.setProjection(odim.epsg)
-		else
-		*/
-		frame.setProjection(odim.projdef);
-		if (!frame.projectionIsSet()){
-			mout.warn("Projection undefined?");
-		}
-		/* keep for a while
-		if (!odim.projdef.empty()){
-			frame.setProjection(odim.projdef);
-		}
-		else {
-			mout.note(odim );
-			mout.warn("no projdef in metadata, cannot derive geographical coords (LON,LAT)" );
-		}
-		*/
-
-		if (!frame.isDefined()){
-			//mout.warn("Geo frame properties undefined, incomplete metadata?" );
-			mout.note(odim);
-			mout.note(frame);
-			mout.note(frame.getBoundingBoxR());
-			mout.warn("frame could not be defined, incomplete metadata? (above)");
-		}
-
-		variableMap.link("j2", this->current_j2 = 0);
-
-		variableMap.separator = ','; // bug? Was not initialized
-		mout.debug("variableMap: ", variableMap);
-		mout.debug("frame: ", frame);
-
-		infoMap["bbox"] = frame.getBoundingBoxD().toVector();
-		infoMap["proj"] = frame.getProjection();
-		infoMap["epsg"] = frame.projGeo2Native.getDst().getEPSG(); // NOTE probably unset...
-
-	}
-
+	CartesianDataPicker(drain::ReferenceMap2<> & variableMap, const CartesianODIM & odim);
 
 	/// Sets image position (in 2D Cartesian space) and calculates corresponding geographical coordinates.
-	inline
-	void setPosition(int i, int j) const {
-
-		this->current_i  = i;
-		this->current_j  = j;
-		this->current_j2 = this->height-1 - j;
-
-		//if (!frame.projGeo2Native.isSet()){ // odim.projdef.empty()
-		if (frame.projGeo2Native.isSet()){ // odim.projdef.empty()
-			frame.pix2m(i,j, x,y);
-			frame.pix2deg(i, j, lon, lat);
-		}
-	}
+	void setPosition(int i, int j) const;
 
 	/// Frame for converting coordinates.
 	GeoFrame frame;
@@ -305,6 +217,25 @@ public:
 
 
 }  // rack::
+
+namespace drain {
+
+
+template <>
+const std::string TypeName<rack::RadarDataPicker<rack::PolarODIM> >:: name;
+
+template <>
+const std::string TypeName<rack::RadarDataPicker<rack::CartesianODIM> >:: name;
+
+/*
+template <>
+const std::string TypeName<rack::PolarDataPicker>:: name;
+
+template <>
+const std::string TypeName<rack::CartesianDataPicker>:: name;
+*/
+
+}
 
 
 #endif /* RADAR_DATA_PICKER_H */

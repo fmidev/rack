@@ -29,11 +29,11 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
+#include <drain/Type.h>
 #include <algorithm>
 #include <syslog.h>  // levels: LOG_ERROR etc.
 
-#include "drain/util/Type.h"
-#include "drain/util/RegExp.h"
+#include <drain/RegExp.h>
 
 #include "hi5/Hi5.h"
 #include "DataSelector.h"

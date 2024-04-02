@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_PALETTE_ENTRY
 #define DRAIN_PALETTE_ENTRY
 
+#include <drain/UniTuple.h>
 #include <iomanip>
 
 #include "ImageFile.h"
@@ -40,8 +41,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/BeanLike.h"
 #include "drain/util/Dictionary.h" // temporary ?
 #include "drain/util/JSON.h"
-#include "drain/util/UniTuple.h"
-
 #include "Legend.h"
 
 

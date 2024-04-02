@@ -35,41 +35,55 @@ namespace drain {
 
 namespace image {
 
-Sampler::Sampler() : BeanLike(__FUNCTION__, "Extract samples from image"),
-		iStep(10),
+Sampler::Sampler() : BeanLike(__FUNCTION__, "Extract samples from image") /*,
+		iStep(10),l
 		jStep(0),
 		iRange(-1,-1),
 		jRange(-1,-1),
 		commentPrefix("#"),
-		skipVoid(false),
-		voidMarker("void data") {
+		handleNoData("NaN"),
+		//skipVoid(false),
+		voidMarker("void") */{
 	parameters.link("iStep",  iStep, "horz coord step");
 	parameters.link("jStep",  jStep, "vert coord step");
 	parameters.link("i", iRange.tuple(), "horz index or range").fillArray = true;
 	parameters.link("j", jRange.tuple(), "vert index or range").fillArray = true;
 	parameters.link("commentChar",   commentPrefix,  "comment prefix (char or bytevalue)");
 	parameters.link("skipVoid", skipVoid,  "skip lines with invalid/missing values");
+	parameters.link("handleVoid", handleVoid,  "skip or mark invalid values [skip|null|<number>]");
 	//parameters.link("iStart", iRange.vect[0], "first horz index or range").fillArray = true;
 	//parameters.link("jStart", jRange.vect[0], "second vert index or range").fillArray = true;
 };
 
 char Sampler::getCommentChar() const {
+
 	if (commentPrefix.empty()){
-		return  0;
+		return 0;
 	}
 	else {
+
+		char c = commentPrefix[0];
+
 		if (commentPrefix.size() == 1){ // ASCII chars #0...#9  not accecpted
-			return commentPrefix[0];
+			if ((c == '0') && (c == '\0')){
+				return 0;
+			}
 		}
-		else {
+
+		int i;
+		drain::StringTools::convert(commentPrefix, i);
+		if (i==0){
+			// some char, not a digit
+			return c;
+		}
+		else if ((i < 32) || (i > 128)){
 			drain::Logger mout(__FUNCTION__, getName());
-			int i = 0;
-			drain::StringTools::convert(commentPrefix, i);
-			if ((i < 32) || (i > 128))
-				mout.warn("commentChar bytevalue: " , i , " > commentChar=" , (char)i );
-			return i;
+			mout.suspicious("commentChar='", (char)i ,"' bytevalue=" , i);
 		}
+
+		return i;
 	}
+
 }
 
 
@@ -114,6 +128,3 @@ std::string Sampler::getFormat(const std::string & formatStr) const {
 }  // namespace image
 
 }  // namespace drain
-
-
-// Rack

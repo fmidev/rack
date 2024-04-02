@@ -30,18 +30,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 //#include <exception>
+#include <drain/Log.h>
 #include <fstream>
 #include <iostream>
 #include <sys/stat.h>
 
-#include "drain/util/Log.h"
+
+
+#include <drain/VariableLike.h>
+
 #include "drain/util/FilePath.h"
 #include "drain/util/Frame.h"
 #include "drain/util/Output.h"
 #include "drain/util/StringMapper.h"
 #include "drain/util/TreeOrdered.h"
 #include "drain/util/TextDecorator.h"
-#include "drain/util/Variable.h"
+
 #include "drain/util/TreeHTML.h"
 //#include <drain/image/ImageFile.h>
 #include "drain/image/FilePng.h"
@@ -396,7 +400,19 @@ void CmdOutputFile::exec() const {
 			mout.discouraged("No file extension! Assuming HDF5...");
 		}
 		mout.info("File format: HDF5");
-		src.data.attributes["Conventions"] = "ODIM_H5/V2_2"; // CHECK
+
+		//src.data.attributes["Conventions"] = "ODIM_H5/V2_2"; // CHECK
+		drain::Variable & conventions = src.data.attributes["Conventions"];
+		std::string version;
+		drain::StringTools::replace(ODIM::versionFlagger, ".", "_", version);
+		//conventions.setInputSeparator('/');
+		conventions = std::string("ODIM_H5/") + version;
+		// conventions.setInputSeparator('#');
+		// conventions.setOutputSeparator('%');
+		// conventions << "ODIM_H5" << version; // CHECK
+		// conventions.setType(typeid(std::string));
+		// conventions.set("ODIM_H5/V", ODIM::versionFlagger);
+
 		hi5::Writer::writeFile(filepath, src); //*ctx.currentHi5);
 		/*
 		drain::image::TreeSVG & h5 = baseGroup["h5"](svg::TEXT);

@@ -32,9 +32,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_IOS_FORMAT_H_
 #define DRAIN_IOS_FORMAT_H_
 
+#include <drain/Log.h>
 #include <ios>
 
-#include "Log.h"
 
 namespace drain {
 

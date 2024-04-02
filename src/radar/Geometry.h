@@ -45,52 +45,6 @@ namespace rack
 
 // See also RadarProj @ Coordinates?
 
-class RadarProj4 : public drain::Proj6 {
-
-public:
-
-	/// Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.
-	/*
-	 *  \param lon - longitude of the location, in degrees
-	 *  \param lat - longitude of the location, in degrees
-	 */
-	RadarProj4(double lon=0.0, double lat=0.0){
-		setLocation(lon, lat);
-	}
-
-	/// Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.
-	/*
-	 *  \param lon - longitude of the location, in degrees
-	 *  \param lat - longitude of the location, in degrees
-	 */
-	inline
-	void setLocation(double lon, double lat){
-		std::stringstream sstr;
-		sstr << "+proj=aeqd" << " +lon_0=" << lon << " +lat_0=" << lat << " +ellps=WGS84 +type=crs";
-		setProjectionSrc(sstr.str());
-	};
-
-	/// Bounding box in radians
-	inline
-	void getBoundingBox(double range, double & lonLL, double & latLL, double & lonUR, double & latUR) const {
-		projectFwd(5.0/4.0*M_PI, ::sqrt(2.0)*range, lonLL, latLL);
-		projectFwd(1.0/4.0*M_PI, ::sqrt(2.0)*range, lonUR, latUR);
-	}
-
-	/// Bounding box in degrees
-	inline
-	void getBoundingBoxD(double range, double & lonLL, double & latLL, double & lonUR, double & latUR) const {
-		getBoundingBox(range, lonLL, latLL, lonUR, latUR);
-		lonLL *= drain::RAD2DEG;
-		latLL *= drain::RAD2DEG;
-		lonUR *= drain::RAD2DEG;
-		latUR *= drain::RAD2DEG;
-	}
-
-
-
-};
-
 	
     /*! 
      *

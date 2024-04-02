@@ -30,9 +30,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
+#include <drain/Log.h>
 #include <ostream>
 #include <fstream>
-#include "drain/util/Log.h"
 #include "drain/image/Sampler.h"
 #include "ImageMod.h"
 

@@ -29,8 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include "drain/util/Log.h"
-
+#include <drain/Log.h>
 #include "EncodingODIM.h"
 
 namespace rack {
@@ -238,6 +237,11 @@ void EncodingODIM::grantShortKeys(drain::ReferenceMap & ref) {
 	for (const std::string & key: getKeyList()){
 		const size_t i = key.find(':');  // type?
 		if (i != std::string::npos){
+			// assert
+			if (key.substr(i+1).empty()){
+				drain::Logger mout(__FILE__, __FUNCTION__);
+				mout.error("substr after ':' empty:", key);
+			}
 			ref.link(key.substr(i+1), operator[](key));
 		}
 	}
@@ -328,7 +332,7 @@ void EncodingODIM::setRange(double min, double max) {
 void EncodingODIM::checkType(Hi5Tree & dst, EncodingODIM & odim){
 
 
-	for (std::map<std::string,drain::Referencer>::iterator it = odim.begin(); it != odim.end(); ++it){
+	for (std::map<std::string,drain::Reference>::iterator it = odim.begin(); it != odim.end(); ++it){
 
 		const std::string & key = it->first;
 		const size_t i  = key.find(':');

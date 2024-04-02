@@ -35,6 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
+#include <drain/RegExp.h>
+
+#include <drain/Log.h>
 #include "data/QuantityMap.h"
 #include "drain/image/Geometry.h"
 #include "drain/image/ImageT.h"
@@ -42,8 +45,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/VerticalProfileOp.h"
 #include "radar/Constants.h"
 #include "radar/Geometry.h"
-#include "drain/util/Log.h"
-#include "drain/util/RegExp.h"
 #include <map>
 #include <set>
 #include <utility>

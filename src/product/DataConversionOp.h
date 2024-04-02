@@ -32,6 +32,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DATACONVERSIONOP2_H_
 #define DATACONVERSIONOP2_H_
 
+#include <drain/RegExp.h>
+
+#include <drain/Log.h>
+#include <drain/Type.h>
+#include <drain/TypeUtils.h>
 #include "data/Data.h"
 #include "data/ODIM.h"
 #include "data/ODIMPath.h"
@@ -45,12 +50,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ProductOp.h"
 //#include "drain/util/LinearScaling.h"
 #include "drain/util/ValueScaling.h"
-#include "drain/util/Log.h"
-#include "drain/util/RegExp.h"
+
 #include "drain/util/SmartMap.h"
 #include "drain/util/TreeOrdered.h"
-#include "drain/util/Type.h"
-#include "drain/util/TypeUtils.h"
 #include "drain/util/VariableMap.h"
 //#include "VolumeTraversalOp.h"
 #include <list>

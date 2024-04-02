@@ -32,16 +32,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef COORD_POLICY_H_
 #define COORD_POLICY_H_
 
+#include <drain/Log.h>
+#include <drain/UniTuple.h>
 #include <ostream>
 #include <stdexcept>
 
-#include "drain/util/Log.h"
 #include "drain/util/Frame.h"
 #include "drain/util/Point.h"
 #include "drain/util/Range.h"
 #include "drain/util/StatusFlags.h"
-#include "drain/util/UniTuple.h"
-
 #include "Geometry.h"
 
 namespace drain {

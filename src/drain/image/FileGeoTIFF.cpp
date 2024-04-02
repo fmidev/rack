@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef USE_GEOTIFF_NO
 
 
-#include "drain/util/StringBuilder.h"
+#include <drain/StringBuilder.h>
 #include "drain/image/AccumulatorGeo.h"
 
 //int rack::FileGeoTIFF::compression(1); // = NONE, but see below

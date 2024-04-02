@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/BeamAltitudeOp.h"
 #include "product/CappiOp.h"
 #include "product/EchoTopOp.h"
+#include "product/EchoTop2Op.h"
 #include "product/MaxEchoOp.h"
 
 #include "product/PolarSlidingWindowOp.h"
@@ -342,6 +343,8 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 	// Polar coord met.product based on dBZ
 	install<CappiOp>(); //    cappi;
 	install<EchoTopOp>(); //  echoTop;
+	install<EchoTop2Op>(); //  echoTop;
+
 	install<MaxEchoOp>(); //  maxEcho;
 
 	//install<PolarSlidingWindowOp<RadarWindowAvg> > test;

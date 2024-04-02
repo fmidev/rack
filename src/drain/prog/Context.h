@@ -33,16 +33,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_CONTEXT_H_
 
 
+#include <drain/Log.h>
 #include <unistd.h>  // process id, PID
 
 //#include <map>
 #include <set>
 #include <fstream>
 //#include "drain/util/Debug.h"
-//#include "drain/util/ReferenceMap.h"
-
-#include "drain/util/Log.h"
-//#include "drain/util/BeanLike.h"
 //#include "drain/util/ReferenceMap.h"
 
 #include "drain/util/Cloner.h"

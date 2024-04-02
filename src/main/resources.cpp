@@ -260,7 +260,9 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 
 		if (!img.isEmpty()){
 			// WHY TWICE?
+			mout.ok("TEST-start");
 			DataTools::getAttributes(src, path, img.properties); // for image processing ops?
+			mout.ok("TEST-end");
 			const std::type_info & t = img.getType();
 			if (!(img.getScaling().isPhysical() || drain::Type::call<drain::typeIsSmallInt>(t))){ // CHECK LOGIC!
 				if (targetEncoding.empty()){

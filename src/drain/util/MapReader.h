@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <map>
 
-#include "RegExp.h"
+#include <drain/RegExp.h>
 
 // using namespace std;
 

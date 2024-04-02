@@ -80,13 +80,27 @@ class ODIM : public EncodingODIM { //, public  {
 
 public:
 
+	//static const int KILOMETRES = 16;
+
+	typedef enum {
+		KILOMETRES = 1,
+		ODIM_2_2 = 16 | KILOMETRES,
+		ODIM_2_3 = 32 | KILOMETRES,
+		ODIM_2_4 = 64
+	} Version;
+
+	//typedef drain::EnumFlagger<drain::SingleFlagger<Version> > VersionFlagger;
+	typedef drain::EnumFlagger<drain::MultiFlagger<Version> > VersionFlagger;
+
+	static VersionFlagger versionFlagger;
+
 	inline
 	ODIM(group_t initialize = ODIMPathElem::ALL_LEVELS) : EncodingODIM(initialize){
 		init(initialize);
 	};
 
 	inline
-	ODIM(const ODIM & odim){
+	ODIM(const ODIM & odim) : NI(odim.NI){
 		initFromMap(odim);
 	};
 
@@ -165,7 +179,7 @@ public:
 
 
 	// Number of images used in precipitation accumulation (lenient, not linked)
-	long ACCnum;
+	long ACCnum = 0;
 
 	/// Sets number of columns (nbins) and number of rows (nrays). Does not change resolution.
 	virtual inline
@@ -329,7 +343,7 @@ private:
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const ODIM & odim){
-	odim.drain::SmartMap<drain::Referencer>::toStream(ostr);
+	odim.drain::SmartMap<drain::Reference>::toStream(ostr);
 	return ostr;
 }
 

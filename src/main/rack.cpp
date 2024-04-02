@@ -29,13 +29,13 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <math.h>
+#include <drain/Log.h>
+#include <cassert>
 
+#include <math.h>
 #include <iostream>
 
-
-#include "drain/util/Log.h"
-#include "drain/prog/CommandBankUtils.h"
+#include <drain/prog/CommandBankUtils.h>
 #include <drain/prog/CommandInstaller.h>
 
 #include "hi5/Hi5.h"
@@ -64,7 +64,6 @@ namespace rack {
 
 
 int process(int argc, const char **argv) {
-
 
 	if (argc == 1) {
 		// This could be from cmdBank ?

@@ -38,12 +38,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <ostream>
 #include <sstream>
 
-//#include "drain/util/Proj6.h"
+// #include "drain/util/Proj6.h"
+// See also RadarProj4 @ Geometry?
 #include "drain/util/Rectangle.h"
 #include "Constants.h"
-//#include "radar.h"
 
-// See also RadarProj4 @ Geometry?
 
 namespace rack {
 

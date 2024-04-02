@@ -28,15 +28,16 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
-#ifndef DRAIN_IMAGE_FILEINFO_H_
-#define DRAIN_IMAGE_FILEINFO_H_
+#ifndef DRAIN_IMAGE_FILEINFO
+#define DRAIN_IMAGE_FILEINFO
 
 
 //
+#include <drain/RegExp.h>
+
 #include "BeanLike.h"
 #include "FilePath.h"
 #include "Registry.h"
-#include "RegExp.h"
 
 
 namespace drain

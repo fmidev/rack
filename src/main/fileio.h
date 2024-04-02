@@ -34,7 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
-#include "drain/util/RegExp.h"
+#include <drain/RegExp.h>
+
 #include "drain/prog/CommandBank.h"
 #include "drain/prog/CommandInstaller.h"
 

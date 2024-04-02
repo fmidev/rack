@@ -29,6 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <drain/Log.h>
 #include "data/Quantity.h"
 #include "data/QuantityMap.h"
 //#include "drain/util/Log.h"
@@ -37,7 +38,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/ProductOp.h"
 #include "product/PseudoRhiOp.h"
 #include "radar/Geometry.h"
-#include "drain/util/Log.h"
 #include <algorithm>
 #include <cmath>
 #include <map>

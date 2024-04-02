@@ -31,9 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TIFF_H_EXPERIMENTAL
 #define DRAIN_TIFF_H_EXPERIMENTAL
 
+#include <drain/Log.h>
 #include "drain/util/FileInfo.h"
 #include "drain/util/Dictionary.h"
-#include "drain/util/Log.h"
 #include "drain/util/Time.h"
 #include "GeoFrame.h"
 #include "Image.h"

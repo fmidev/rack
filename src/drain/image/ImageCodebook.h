@@ -32,11 +32,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_CODEBOOK
 
 
+#include <drain/Log.h>
 #include <ostream>
 #include <vector>
 #include <map>
 
-#include "drain/util/Log.h"
 #include "drain/util/ValueScaling.h"
 #include "drain/util/LookUp.h"
 

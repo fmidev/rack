@@ -43,7 +43,7 @@ namespace drain
 			ostr << '\n';
 			ostr << '\t' << parameters << '\n';
 			for (const std::string & key: getParameters().getKeyList()){
-				const Referencer & param = parameters.at(key);
+				const Reference & param = parameters.at(key);
 				std::cout << '\t' << key << ':' << param << '\n';
 			}
 			/*

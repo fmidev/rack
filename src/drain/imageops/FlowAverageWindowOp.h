@@ -31,12 +31,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef FLOW_AVG_W_H_
 #define FLOW_AVG_W_H_
 
+#include <drain/TypeUtils.h>
 #include <algorithm>
 
 // #include "CopyOp.h"
 // #include "Window.h"
 //
-#include "drain/util/TypeUtils.h"
 #include "SlidingWindowOp.h"
 
 namespace drain

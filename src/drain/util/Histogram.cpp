@@ -29,8 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 //#include "Type.h"
-#include "TypeUtils.h"
-
+#include <drain/TypeUtils.h>
 #include "Histogram.h"
 
 

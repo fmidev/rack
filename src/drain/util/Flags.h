@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_FLAGS_H_
 #define DRAIN_FLAGS_H_
 
+#include <drain/Log.h>
 #include <stdexcept>
 #include <iostream>
 #include <list>
@@ -42,9 +43,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <typeinfo>
 
-#include "Log.h"
+
+#include <drain/String.h>
+
 #include "Dictionary.h"
-#include "String.h"
 
 namespace drain {
 

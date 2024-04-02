@@ -30,9 +30,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <drain/image/ImageFile.h>
+#include <drain/Log.h>
 #include "drain/util/Fuzzy.h"
-#include "drain/util/Log.h"
-
 #include "DistanceTransformOp.h"
 #include "drain/util/FunctorPack.h"
 #include "FunctorOp.h"

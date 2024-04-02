@@ -36,8 +36,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 #include <string>
 
+#include <drain/TextStyle.h>
+
 #include "Flags.h"
-#include "TextStyle.h"
 
 namespace drain
 {

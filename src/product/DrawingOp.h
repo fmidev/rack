@@ -29,10 +29,10 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef Drawing_OP_H_
-#define Drawing_OP_H_
+#ifndef RACK_DrawingOP
+#define RACK_DrawingOP
 
-#include "drain/util/Variable.h"
+#include <drain/VariableLike.h>
 
 #include "PolarProductOp.h"
 #include "radar/PolarWindow.h"

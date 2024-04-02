@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "drain/util/Debug.h"
 //#include "drain/util/ReferenceMap.h"
 
-#include "drain/util/Log.h"
+#include <drain/Log.h>
 #include "drain/util/BeanLike.h"
 #include "drain/util/ReferenceMap.h"
 #include "drain/util/VariableMap.h"

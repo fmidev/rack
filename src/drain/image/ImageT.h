@@ -34,15 +34,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // TODO: rename to WritableImage ?
 
+#include <drain/Log.h>
 #include <stdlib.h>  // for exit(-1) TODO: obsolete, use std::exceptions.
 #include <stdexcept>
 #include <vector>
 #include <ostream>
 
-#include "drain/util/Log.h"
-//#include "drain/util/Options.h"
-
-//#include "Geometry.h"
 #include "Image.h"
 #include "Intensity.h"
 #include "../util/Point.h"

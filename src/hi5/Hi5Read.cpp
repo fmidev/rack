@@ -28,14 +28,16 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-
-#include "data/ODIMPath.h"
-//#include "drain/util/Log.h"
-#include "Hi5Read.h"
-#include "drain/util/Log.h"
-#include "drain/util/Variable.h"
 #include <map>
 #include <utility>
+
+#include <drain/Log.h>
+#include <drain/VariableLike.h>
+
+//#include "data/ODIMPath.h"
+
+#include "Hi5Read.h"
+
 // using namespace std;
 
 

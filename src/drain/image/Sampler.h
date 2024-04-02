@@ -37,10 +37,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <string>
 
+#include <drain/FlexibleVariable.h>
 
 
 #include "drain/util/BeanLike.h"
-#include "drain/util/FlexibleVariable.h"
 #include "drain/util/IosFormat.h"
 #include "drain/util/Range.h"
 #include "drain/util/ReferenceMap.h"
@@ -96,16 +96,16 @@ struct SamplePicker {
 
 
 	/// Horizontal coordinate.
-	mutable int current_i;
+	mutable int current_i = 0;
 
 	/// Vertical coordinate.
-	mutable int current_j;
+	mutable int current_j = 0;
 
 	/// Vertical inversed coordinate.
-	mutable int current_j2;
+	mutable int current_j2 = 0;
 
-	int width;
-	int height;
+	int width = 0;
+	int height = 0;
 
 	/// Information to be should in output file header.
 	FlexVariableMap infoMap;
@@ -163,18 +163,25 @@ public:
 	// Named conf, to separate ImageMod::parameters (BeanLike)
 	//ReferenceMap conf;
 
-	int iStep;
-	int jStep;
+	int iStep = 10;
+	int jStep = 0;
 
-	drain::Range<int> iRange;
-	drain::Range<int> jRange;
+	drain::Range<int> iRange = {-1,1};
+	drain::Range<int> jRange = {-1,1};
 
 	/// Escape std::string for prefixing text no to be handled as data values.
-	std::string commentPrefix;
+	std::string commentPrefix = "#";
 
+
+	// was already DEPRECATING...
 	/// Skip lines, if contain missing values.
-	bool skipVoid;
-	std::string voidMarker;
+	bool skipVoid = false ;
+	//std::string skipVoid = "false";
+	std::string voidComment = "void";
+
+	// NEW
+	std::string handleVoid = "null"; // "false","skip"
+
 
 	/// Interface that links coordinates and image data.
 	mutable
@@ -207,6 +214,15 @@ public:
 		if (images.empty()){
 			mout.error("no image data (channels) provided: " );
 			return;
+		}
+
+		const bool SKIP_VOID = (handleVoid == "skip") || (skipVoid == true);
+
+		const bool MARK_VOID = (handleVoid != "skip");
+
+		double voidMarker = NAN;
+		if (handleVoid != "null"){
+			StringTools::convert(handleVoid, voidMarker);
 		}
 
 		// Save initial formatting data
@@ -317,17 +333,22 @@ public:
 					const D & data = it->second;
 					if (!picker.getValue(data, x)){
 						dataOk = false;
+						if (MARK_VOID){
+							x = voidMarker;
+						}
 					}
 					//else if (x != 0) std::cerr << x << '\t';
+
 					values[quantity] = x;
 					values[minusStr+quantity] = -x;
 				}
 
-				if (dataOk || (skipVoid==0)){
+				if (dataOk || !SKIP_VOID){
+				//if (dataOk || (skipVoid==0)){
 					//formatter.toStream(ostr, variableMap, true);
 					formatter.toStream(ostr, variableMap, -1); // leaves ${variable} ?
 					if  ((!dataOk) && (commentChar))
-						ostr << ' ' << commentChar <<  voidMarker;
+						ostr << ' ' << commentChar <<  voidComment;
 					ostr << '\n';
 				}
 			}

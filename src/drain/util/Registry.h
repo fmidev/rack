@@ -31,10 +31,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_REGISTRY_H_
 #define DRAIN_REGISTRY_H_
 
+#include <drain/Log.h>
 #include <map>
 #include <set>
 
-#include "Log.h"
 #include "Dictionary.h"
 #include "ReferenceMap.h"
 #include "VariableMap.h"

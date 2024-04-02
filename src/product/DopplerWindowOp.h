@@ -35,6 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "PolarSlidingWindowOp.h"
 
+#include <drain/Log.h>
+#include <drain/Type.h>
+#include <drain/TypeUtils.h>
 #include "data/Data.h"
 #include "data/DataSelector.h"
 #include "data/PolarODIM.h"
@@ -51,10 +54,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/ProductOp.h"
 #include "radar/Doppler.h"
 #include "drain/util/Fuzzy.h"
-#include "drain/util/Log.h"
 #include "drain/util/SmartMap.h"
-#include "drain/util/Type.h"
-#include "drain/util/TypeUtils.h"
 #include "DopplerOp.h"
 //#include <cmath>
 #include <string>

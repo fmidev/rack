@@ -29,6 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <drain/Log.h>
 #include "data/Data.h"
 #include "data/PolarODIM.h"
 #include "data/QuantityMap.h"
@@ -37,7 +38,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/RainRateOp.h"
 #include "radar/Geometry.h"
 #include "drain/util/Fuzzy.h"
-#include "drain/util/Log.h"
 #include <cmath>
 #include <string>
 

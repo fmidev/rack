@@ -31,11 +31,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "Path.h"
 
 
+#include <drain/Log.h>
 #include <iostream>
 #include <stdexcept>
 #include <sys/stat.h>
-
-#include "Log.h"
 
 #include "FilePath.h"
 

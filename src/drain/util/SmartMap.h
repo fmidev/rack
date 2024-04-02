@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef SMARTMAP_H
 #define SMARTMAP_H
 
+#include <drain/Log.h>
 #include <iostream>
 #include <string>
 #include <set>
@@ -40,12 +41,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sys/syslog.h>
 #include <syslog.h>
 
-#include "Log.h"
-#include "Castable.h"
-#include "Sprinter.h"
-#include "String.h"
-
-#include "SmartMapTools.h"
+#include <drain/Castable.h>
+#include <drain/SmartMapTools.h>
+#include <drain/Sprinter.h>
+#include <drain/String.h>
 
 
 

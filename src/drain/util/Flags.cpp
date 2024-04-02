@@ -33,9 +33,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <stdexcept>
 #include <iostream>
+
+#include <drain/Log.h>
+#include <drain/String.h>
+
 #include "Flags.h"
-#include "String.h"
-#include "Log.h"
 
 namespace drain {
 

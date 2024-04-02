@@ -28,11 +28,11 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+#include <drain/Log.h>
 #include <map>
 #include <utility>
 
 #include "drain/util/Cloner.h"
-#include "drain/util/Log.h"
 #include "drain/util/Range.h"
 #include "drain/util/Registry.h"
 #include "drain/util/SmartMap.h"

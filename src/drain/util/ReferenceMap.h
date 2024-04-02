@@ -29,6 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 //#include <typeinfo>
+#include <drain/Log.h>
 #include <stdexcept>
 //#include <iostream>
 //#include <vector>
@@ -37,12 +38,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <list>
 
-#include "Log.h"
+
+#include <drain/Reference.h>
+#include <drain/String.h>
+
 #include "Range.h"
-#include "Referencer.h"
-#include "FlexibleVariable.h"
+// #include "FlexibleVariable.h"
 //#include "ReferenceVariable.h"
-#include "String.h"
+
 #include "SmartMap.h"
 
 
@@ -60,7 +63,7 @@ namespace drain {
  *
  *
  */
-template <class T=Referencer>
+template <class T=Reference>
 class ReferenceMap2 : public SmartMap<T> {
 
 public:
@@ -111,7 +114,7 @@ public:
 		if (this->find(key) == this->end()) // not  already referenced
 			this->keyList.push_back(key);
 
-		Referencer & r = map_t::operator[](key);
+		Reference & r = map_t::operator[](key);
 		r.setSeparator(this->arraySeparator); // applicable, if array type element
 		r.link(ptr, type, count);
 		// unitMap[key] = unit;
@@ -162,7 +165,7 @@ public:
 			addr_t srcVarAddr = (addr_t)srcRef.getPtr();
 			addr_diff_t relativeAddr = srcVarAddr - srcAddr;
 			if ((relativeAddr >= 0) && (relativeAddr < s)){ // INTERNAL
-				//Referencer & dstMemberRef = (*this)[key];
+				//Reference & dstMemberRef = (*this)[key];
 				ref_t & dstMemberRef = link(key, (void *)(dstAddr + relativeAddr), srcRef.getType(), srcRef.getElementCount());
 				//mout.warn("local: " , key , ':' , srcRef.getElementCount() );
 				dstMemberRef.copyFormat(srcRef);
@@ -201,7 +204,7 @@ public:
  *  \example ReferenceMap-example.cpp
  */
 // TODO: consider clear() (shallow op)
-class ReferenceMap : public SmartMap<Referencer> {//public std::map<std::string,Referencer> {
+class ReferenceMap : public SmartMap<Reference> {//public std::map<std::string,Reference> {
 
 public:
 
@@ -209,12 +212,12 @@ public:
 	/**
 	 *  \strictness - if true, allow attempts of assigning to non-existing entries; otherways throw exception on attempt.
 	 */
-	// ReferenceMap(bool ordered, char separator) : SmartMap<Referencer>(ordered, separator){}; //, STRICTLY_CLOSED, keys(orderedKeyList), units(unitMap)
-	ReferenceMap(char separator=',') : SmartMap<Referencer>(separator){}; //, STRICTLY_CLOSED, keys(orderedKeyList), units(unitMap)
+	// ReferenceMap(bool ordered, char separator) : SmartMap<Reference>(ordered, separator){}; //, STRICTLY_CLOSED, keys(orderedKeyList), units(unitMap)
+	ReferenceMap(char separator=',') : SmartMap<Reference>(separator){}; //, STRICTLY_CLOSED, keys(orderedKeyList), units(unitMap)
 
 	/// Copy constructor copies only the separators; does not copy the items. \see copy()
 	inline
-	ReferenceMap(const ReferenceMap & rmap): SmartMap<Referencer>(rmap.separator, rmap.arraySeparator){
+	ReferenceMap(const ReferenceMap & rmap): SmartMap<Reference>(rmap.separator, rmap.arraySeparator){
 	};
 
 	inline virtual
@@ -222,7 +225,7 @@ public:
 
 	// Temporary catch for Range
 	template <class F>
-	Referencer & link(const std::string & key, Range<F> &x, const std::string & unit = std::string()){
+	Reference & link(const std::string & key, Range<F> &x, const std::string & unit = std::string()){
 		Logger mout(__FILE__, __FUNCTION__);
 		mout.deprecating(" type drain::Range<>  use .tuple() instead: ", key, '[', unit, ']');
 		return link(key, &x, typeid(F), 2, unit);
@@ -234,13 +237,29 @@ public:
 	 *  \param x   - target variable to be linked
 	 */
 	template <class F>
-	Referencer & link(const std::string & key, F &x, const std::string & unit = std::string()){
+	Reference & link(const std::string & key, F &x, const std::string & unit = std::string()){
 
-		if (find(key) == end()) // not  already referenced
+		if (find(key) == end()){ // not  already referenced
+
+			if (keyList.empty()){
+				if (key.empty()){
+					std::cerr << "empty key referencing to " << x << " unit=" << unit << std::endl;
+				}
+				else if (key.at(0) == '_'){
+					throw std::runtime_error(key + ": hidden parameters can be added only after visible");
+				}
+			}
+			else if ((keyList.back().at(0) == '_') && (key.at(0) != '_')){
+				throw std::runtime_error(key + ": cannot add visible parameters after hidden");
+			}
+
+
 			keyList.push_back(key);
 
+		}
+
 		// Create
-		Referencer & r = std::map<std::string,Referencer>::operator[](key);
+		Reference & r = std::map<std::string,Reference>::operator[](key);
 		r.setSeparator(arraySeparator); // applicable, if array type element
 		// Link
 		r.link(x);
@@ -249,19 +268,19 @@ public:
 	}
 
 	inline
-	Referencer & link(const std::string & key, Referencer &x, const std::string & unit = std::string()){
+	Reference & link(const std::string & key, Reference &x, const std::string & unit = std::string()){
 		return link(key, x.getPtr(), x.getType(), x.getElementCount(), unit); //.fillArray = item.fillArray;
 	}
 
 
 	/// For arrays.
 	inline
-	Referencer & link(const std::string & key, void *ptr, const std::type_info &type, size_t count, const std::string & unit = std::string()){
+	Reference & link(const std::string & key, void *ptr, const std::type_info &type, size_t count, const std::string & unit = std::string()){
 
 		if (find(key) == end()) // not  already referenced
 			keyList.push_back(key);
 
-		Referencer & r = std::map<std::string,Referencer>::operator[](key);
+		Reference & r = std::map<std::string,Reference>::operator[](key);
 		r.setSeparator(arraySeparator); // applicable, if array type element
 		r.link(ptr, type, count);
 		unitMap[key] = unit;
@@ -271,7 +290,7 @@ public:
 
 	/// Convenience: create a reference to a scalar. For arrays, use the
 	inline
-	Referencer & link(const std::string & key, void *ptr, const std::type_info &type, const std::string & unit = std::string()){
+	Reference & link(const std::string & key, void *ptr, const std::type_info &type, const std::string & unit = std::string()){
 		return link(key, ptr, type, 1, unit);
 	}
 
@@ -281,13 +300,13 @@ public:
 	 *  \param x   - target variable to be linked
 	 */
 	template <class F>
-	Referencer & referenceTop(const std::string & key, F &x, const std::string & unit = std::string()){
+	Reference & referenceTop(const std::string & key, F &x, const std::string & unit = std::string()){
 
 		if (find(key) != end()) // already referenced
 			keyList.push_front(key);
 
-		//Referencer & r = std::map<std::string,Referencer>::operator[](key).link(x);
-		Referencer & r = std::map<std::string,Referencer>::operator[](key);
+		//Reference & r = std::map<std::string,Reference>::operator[](key).link(x);
+		Reference & r = std::map<std::string,Reference>::operator[](key);
 		r.setSeparator(arraySeparator); // applicable, if array type element
 		// Link
 		r.link(x);
@@ -305,10 +324,10 @@ public:
 		for (const std::string & key: keys){
 			//std::cerr << " -> " << *it <<  std::endl;
 			if (replace || !hasKey(key)){
-				Referencer & srcItem = rMap[key];
-				Referencer & item = link(key, srcItem, rMap.unitMap[key]); //.fillArray = item.fillArray;
-				// Referencer & item = link(key, (const Castable &)srcItem, rMap.unitMap[key]); //.fillArray = item.fillArray;
-				// Referencer & item = link(key, srcItem.getPtr(), srcItem.getType(), srcItem.getElementCount(), rMap.unitMap[key]); //.fillArray = item.fillArray;
+				Reference & srcItem = rMap[key];
+				Reference & item = link(key, srcItem, rMap.unitMap[key]); //.fillArray = item.fillArray;
+				// Reference & item = link(key, (const Castable &)srcItem, rMap.unitMap[key]); //.fillArray = item.fillArray;
+				// Reference & item = link(key, srcItem.getPtr(), srcItem.getType(), srcItem.getElementCount(), rMap.unitMap[key]); //.fillArray = item.fillArray;
 				item.setFill(srcItem.fillArray);
 				item.setInputSeparator(srcItem.getInputSeparator());
 				item.setOutputSeparator(srcItem.getOutputSeparator());
@@ -321,7 +340,7 @@ public:
 	/// Removes an entry from the map.
 	inline
 	void delink(const std::string & key){
-		std::map<std::string,Referencer>::erase(key);
+		std::map<std::string,Reference>::erase(key);
 		for (std::list<std::string>::iterator it = keyList.begin(); it != keyList.end(); ++it)
 			if (*it == key){
 				keyList.erase(it);
@@ -341,8 +360,8 @@ public:
 			keyList.push_back(key);
 
 		// Create
-		// Referencer & r =
-		std::map<std::string,Referencer>::operator[](key);
+		// Reference & r =
+		std::map<std::string,Reference>::operator[](key);
 		// Now r type is unset. (ptr undefined)
 
 	}
@@ -353,7 +372,7 @@ public:
 	 */
 	virtual inline
 	void clear(){
-		SmartMap<Referencer>::clear();
+		SmartMap<Reference>::clear();
 		keyList.clear();
 		unitMap.clear();
 	}
@@ -396,11 +415,11 @@ public:
 		//for (std::list<std::string>::const_iterator it = m.getKeyList().begin(); it != m.getKeyList().end(); ++it){
 		for (const std::string & key: m.getKeyList()){
 			// const std::string & key = *it;
-			const Referencer & srcRef = m[key];
+			const Reference & srcRef = m[key];
 			addr_t srcVarAddr = (addr_t)srcRef.getPtr();
 			addr_diff_t relativeAddr = srcVarAddr - srcAddr;
 			if ((relativeAddr >= 0) && (relativeAddr < s)){ // INTERNAL
-				Referencer & dstMemberRef = link(key, (void *)(dstAddr + relativeAddr), srcRef.getType(), srcRef.getElementCount());
+				Reference & dstMemberRef = link(key, (void *)(dstAddr + relativeAddr), srcRef.getType(), srcRef.getElementCount());
 				//mout.warn("local: " , key , ':' , srcRef.getElementCount() );
 				dstMemberRef.copyFormat(srcRef);
 				dstMemberRef = srcRef; // value

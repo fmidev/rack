@@ -30,11 +30,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 
+#include <drain/Log.h>
 #include <set>
 #include <ostream>
 
-#include "drain/util/Log.h"
-#include "drain/util/RegExp.h"
+#include <drain/RegExp.h>
+
 #include "drain/util/Input.h"
 #include "drain/image/FilePng.h"
 #include "drain/image/FilePnm.h"

@@ -30,7 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include <stdexcept>
 
-#include "drain/util/Variable.h"
+//#include <drain/VariableLike.h>
 //#include "drain/util/Fuzzy.h"
 //#include "drain/image/AccumulationMethods.h"
 //#include "RackOp.h"
@@ -88,50 +88,55 @@ PolarProductOp::PolarProductOp(const PolarProductOp & op) : VolumeOp<PolarODIM>(
 }
 
 
-
-void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, PolarODIM & dstOdim) const {
+///  This method searches a geometry that "maximizes" resolution and range with respect to input data.
+/**
+ *  In other words, it searches for
+ *  - largest beam count ( \c nrays ), unless set
+ *  - smallest beam directional resolution (\c rscale ), unless set
+ *  - largest range \c rscale × \c nbins , unless set
+ *
+ *
+ */
+void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, PolarODIM & dstOdim, bool MINIMISE_RSCALE) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__); //REPL name+"(CumulativeProductOp)", __FUNCTION__);
 
-	const bool MAXIMIZE_AZM_RESOLUTION = (dstOdim.area.height == 0);
 	const bool DERIVE_NBINS  = (dstOdim.area.width == 0); // ||(dstOdim.rscale == 0.0);
+	const bool DERIVE_NRAYS  = (dstOdim.area.height == 0);
 	const bool DERIVE_RSCALE = (dstOdim.rscale == 0.0); // (dstOdim.geometry.width == 0); //
+	//const bool MAXIMIZE_AZM_RESOLUTION = (dstOdim.area.height == 0); //
+	const bool MAXIMIZE_AZM_RESOLUTION = DERIVE_NRAYS; // currently simply bound
+	const bool MAXIMIZE_RANGE = (DERIVE_NBINS && DERIVE_RSCALE); // Use those producing maximal scale
 
-	const bool AUTOSCALE_RANGE = (DERIVE_NBINS && DERIVE_RSCALE);
-
+	double range;
 	double rangeMax = 0;
 	size_t nbinsMax = 0;
 	double rscaleMin = 2000;
 
-	mout.debug2((dstOdim) );
+	mout.debug2(dstOdim);
 
-	if (MAXIMIZE_AZM_RESOLUTION || DERIVE_NBINS || DERIVE_RSCALE){
+	//if (MAXIMIZE_AZM_RESOLUTION || DERIVE_NBINS || DERIVE_RSCALE){
+	if (DERIVE_NBINS || DERIVE_NRAYS || DERIVE_RSCALE || MINIMISE_RSCALE){
 
 		dstOdim.angles.clear();
 		//dstOdim.angles.resize(0); // DO NOT USE clear(), it changes address of 1st elem
 		//dstOdim.angles.resize(srcSweeps.size()); // DO NOT USE clear(), it changes address of 1st elem
-		double range;
-		//size_t i = 0;
 
-		//for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
 		for (const auto & entry: srcSweeps){
 
-			// dstOdim.angles.push_back(it->first);
-
 			const DataSet<PolarSrc> & srcDataSet = entry.second;
-			const Data<PolarSrc>       & srcData    = srcDataSet.getFirstData();
-			const PolarODIM            & srcOdim    = srcData.odim;
-
+			const Data<PolarSrc>       & srcData = srcDataSet.getFirstData();
+			const PolarODIM            & srcOdim = srcData.odim;
 
 			if (srcData.data.isEmpty()){
-				mout.warn("srcData empty" );
+				mout.warn("srcData empty");
 				continue; // warning issued later, in the main loop.
 				//mout.warn("selected quantity=" , quantity , " not present in elangle=" , it->first );
 			}
 
 			dstOdim.angles.push_back(srcOdim.elangle);
 
-			mout.debug2("testing: " , srcOdim );
+			mout.debug2("testing: " , srcOdim);
 
 			if (MAXIMIZE_AZM_RESOLUTION){
 				if (srcOdim.area.height > dstOdim.area.height){
@@ -139,13 +144,19 @@ void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, P
 					mout.info("Updating dst nrays to: " , dstOdim.area.height );
 				}
 			}
+			/*
+			else if (dstOdim.area.height == 0){
+				mout.info("Adapting 1st array height: ", srcOdim.area.height );
+				dstOdim.area.height = srcOdim.area.height;
+			}
+			*/
 
 			nbinsMax  = std::max(nbinsMax,  srcOdim.area.width);
 			rscaleMin = std::min(rscaleMin, srcOdim.rscale);
 			range = static_cast<double>(srcOdim.area.width) * srcOdim.rscale;
 			if (range > rangeMax){
 				rangeMax = range;
-				if (AUTOSCALE_RANGE){
+				if (MAXIMIZE_RANGE){
 					dstOdim.area.width  = srcOdim.area.width;
 					dstOdim.rscale = srcOdim.rscale;
 				}
@@ -153,19 +164,19 @@ void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, P
 
 		}
 
-		if (AUTOSCALE_RANGE){
-			mout.debug("Applied input geometry with maximum range" );
+		if (MAXIMIZE_RANGE){
+			mout.special<LOG_NOTICE>("Applied input geometry with maximum range" );
 		}
 		else if (dstOdim.area.width ==0){
 			dstOdim.area.width = rangeMax/static_cast<int>(dstOdim.rscale);
-			mout.debug("Derived nbins=" , dstOdim.area.width );
+			mout.special<LOG_NOTICE>("Derived nbins=" , dstOdim.area.width );
 		}
 		else if (dstOdim.rscale ==0){
 			dstOdim.rscale = rangeMax/static_cast<double>(dstOdim.area.width);
-			mout.debug("Derived rscale=" , dstOdim.rscale );
+			mout.special<LOG_NOTICE>("Derived rscale=" , dstOdim.rscale );
 		}
 		else {
-			mout.debug("Adapting user-defined nbins and rscale" );
+			// mout.debug("Adapting user-defined nbins and rscale" );
 		}
 
 		mout.info("Setting dst geometry:" , dstOdim.area.width , "bin x " , dstOdim.rscale , "m/bin (" , (dstOdim.getMaxRange()/1000.0) , "km) " );
@@ -175,8 +186,25 @@ void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, P
 		//mout.warn("output prop" , dstOdim );
 		mout.info("output properties: " , EncodingODIM(dstOdim) );
 	}
+
+	if (MINIMISE_RSCALE){
+		range = dstOdim.getMaxRange();
+		dstOdim.rscale = rscaleMin;
+		dstOdim.area.width = ::lround(range/dstOdim.rscale);
+	}
+
 }
 
+void PolarProductOp::determineMetadata(const DataSetMap<PolarSrc> & srcSweeps, PolarODIM & dstOdim) const {
+
+	for (const auto & entry: srcSweeps){
+		const DataSet<PolarSrc> & srcDataSet = entry.second;
+		//const Data<PolarSrc>       & srcData = srcDataSet.getFirstData();
+		// const PolarODIM            & srcOdim = srcData.odim;
+		dstOdim.updateLenient(srcDataSet.getFirstData().odim);
+	}
+
+}
 
 
 

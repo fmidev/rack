@@ -32,6 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define HISTOGRAM_H_
 
 //
+#include <drain/Log.h>
+#include <drain/TypeUtils.h>
 #include <typeinfo>
 #include <cmath>
 
@@ -40,9 +42,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include <map>
 
-#include "Log.h"
-
-#include "TypeUtils.h"
 #include "ValueScaling.h"
 
 

@@ -39,17 +39,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RACK_PRODUCT_OP "ProductOP"
 
 //#include <exception>
+#include <drain/Log.h>
 #include <iostream>
 #include <list>
 #include <map>
 #include <set>
 #include <string>
 
-#include "drain/util/Log.h"
-#include "drain/util/RegExp.h"
+#include <drain/RegExp.h>
+#include <drain/VariableLike.h>
+
 #include "drain/util/SmartMap.h"
 #include "drain/util/TreeOrdered.h"
-#include "drain/util/Variable.h"
+//#include "drain/util/Variable.h"
 
 #include "data/Data.h"
 #include "data/DataSelector.h"

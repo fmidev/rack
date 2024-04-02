@@ -32,9 +32,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <algorithm>
 //#include <syslog.h>  // levels: LOG_ERROR etc.
 
-#include "drain/util/RegExp.h"
-#include "drain/util/Sprinter.h"
-#include "drain/util/Type.h"
+#include <drain/RegExp.h>
+#include <drain/Sprinter.h>
+#include <drain/Type.h>
 
 #include "hi5/Hi5.h"
 #include "DataSelector.h"

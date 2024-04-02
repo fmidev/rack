@@ -41,8 +41,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "CastableIterator.h"
 //#include "String.h"
 
+/*
 #include "Variable.h" // <- FlexVariable
 #include "FlexibleVariable.h"
+*/
+
+#include <drain/Variable.h> // <- FlexVariable
+#include <drain/FlexibleVariable.h>
 
 #include "SmartMap.h"
 

@@ -29,6 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
+#include <cassert>
+
 #include <set>
 #include <map>
 #include <ostream>
@@ -38,13 +40,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <geotiff.h>
 #endif
 
-#include "drain/util/Log.h"
+#include <drain/Log.h>
+#include <drain/RegExp.h>
+#include <drain/Sprinter.h>
+
+
 #include "drain/util/JSON.h"
 #include "drain/util/Input.h"
 #include "drain/util/Output.h"
 #include "drain/util/Proj6.h"
-#include "drain/util/RegExp.h"
-#include "drain/util/Sprinter.h"
 #include "drain/util/TreeUtils.h"
 
 #include "drain/image/Image.h"
@@ -1227,6 +1231,26 @@ public:
 };
 
 
+class CmdODIM : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdODIM() : drain::SimpleCommand<std::string>(__FUNCTION__, "Set ODIM version (experimental)",
+			"version", "2.4", drain::sprinter(ODIM::versionFlagger.getDict().getKeys()).str()) {
+	};
+
+	void exec() const {
+		/*
+		std::string value_underscored;
+		drain::StringTools::replace(value, ".", "_", value_underscored);
+		ODIM::versionFlagger.set(value_underscored);
+		*/
+		// ... keep dictionary neat
+		ODIM::versionFlagger.set(value);
+	}
+
+};
+
 
 
 /// Modifies metadata (data attributes).
@@ -1246,7 +1270,7 @@ Examples:
 \include example-assign.inc
 
  */
-class CmdSetODIM : public drain::SimpleCommand<std::string> {
+class CmdSetODIM : public drain::SimpleCommand<std::string> {  // consider rename to distingish from set ODIM version
 
 public:
 
@@ -1689,8 +1713,9 @@ public:
 	inline
 	CmdEncoding() : drain::SimpleCommand<>(__FUNCTION__, // {  //drain::BasicCommand(__FUNCTION__,
 			"Sets encodings parameters for polar and Cartesian products, including composites.",
-			"", "", EncodingBag().getKeys() // NOTE: latent-multiple-key case
+			"encoding", "", EncodingBag().getKeys() // NOTE: latent-multiple-key case
 	) {
+		//assert( 1 ==0 );
 		parameters.separator = 0;
 	};
 
@@ -2049,7 +2074,11 @@ public:
 	void exec() const {
 
 		std::cout << __RACK_VERSION__ << '\n';
-		std::cout << __RACK__ << ' ' << __RACK_VERSION__ << ' ' << __DATE__ << '\n';
+		std::cout << __RACK__ << ' ' << __RACK_VERSION__;
+#ifndef NDEBUG
+		std::cout << "(debug)";
+#endif
+		std::cout << ' ' << __DATE__ << '\n';
 
 		//std::cout << DRAIN_IMAGE << '\n';
 		std::cout << "Proj " << drain::Proj6::getProjVersion() << '\n';
@@ -2059,12 +2088,13 @@ public:
 		H5get_libversion(&majnum, &minnum, &relnum);  // error messages
 		std::cout << "HDF5 " << majnum << '.' << minnum << '.' << relnum << '\n';
 
-		std::cout << "GeoTIFF support: ";
+		//std::cout << "GeoTIFF support: ";
 #ifndef  USE_GEOTIFF_NO
-		std::cout << "version " << LIBGEOTIFF_VERSION <<  '\n';
+		std::cout << "GeoTIFF " << LIBGEOTIFF_VERSION <<  '\n';
 #else
-		std::cout << "no"<< '\n';
+		std::cout << "GeoTIFF not supported" << '\n';
 #endif
+		std::cout << "experimental ODIM default: " << rack::ODIM::versionFlagger << '\n';
 		std::cout << '\n';
 
 
@@ -2470,6 +2500,7 @@ MainModule::MainModule(){ //
 	install<CmdJSON>();
 	install<CmdKeep>();
 
+	install<CmdODIM>("odim");
 	install<CmdSetODIM>();
 	install<CmdCompleteODIM>();
 	install<CmdVersion>();

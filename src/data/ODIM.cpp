@@ -29,9 +29,18 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include "drain/util/Log.h"
+#include <drain/Log.h>
+#include "drain/util/Flags.h"
 
 #include "ODIM.h"
+
+template <>
+const drain::FlaggerDict drain::EnumDict<rack::ODIM::Version>::dict = {
+		{"2.2", rack::ODIM::ODIM_2_2 },
+		{"2.3", rack::ODIM::ODIM_2_3 },
+		{"2.4", rack::ODIM::ODIM_2_4 },
+};
+
 
 namespace rack {
 
@@ -39,6 +48,7 @@ namespace rack {
 const std::string ODIM::dateformat("%Y%m%d");
 const std::string ODIM::timeformat("%H%M%S");
 
+ODIM::VersionFlagger ODIM::versionFlagger(rack::ODIM::ODIM_2_3);
 
 
 void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
@@ -286,8 +296,8 @@ void ODIM::updateLenient(const ODIM & odim){
 
 	// NEW 2017/03
 	if (product.empty()){
-		product  = odim.product;
-		prodpar  = odim.prodpar;
+		product = odim.product;
+		prodpar = odim.prodpar;
 	}
 
 	//if (date.empty() || time.empty()){

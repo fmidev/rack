@@ -50,7 +50,7 @@ size_t Castable::empty() const {
 			}
 			else {
 				//std::cerr << __FILE__ << ':' << __FUNCTION__ << " strlen" <<
-				std::cerr << __FILE__ << ':' << __FUNCTION__ << ": single-char array without terminal char '\\0': '" << debug << "' (" << ::strlen(debug) << ") chars\n";
+				// FIX TODO std::cerr << __FILE__ << ':' << __FUNCTION__ << ": single-char array without terminal char '\\0': '" << debug << "' (" << ::strlen(debug) << ") chars\n";
 				//this->info(std::cerr);
 				//std::cerr << std::endl;
 				*debug = '\0';

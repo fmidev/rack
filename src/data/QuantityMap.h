@@ -31,6 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ODIM_QUANTITY_MAP
 #define ODIM_QUANTITY_MAP
 
+#include <drain/Log.h>
+#include <drain/Type.h>
 #include <ostream>
 //#include <set>
 
@@ -38,9 +40,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/ReferenceMap.h"
 
-#include "drain/util/Log.h"
-#include "drain/util/Type.h"
-//#include "ODIM.h"
 #include "Data.h"
 #include "Quantity.h"
 

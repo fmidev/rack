@@ -35,17 +35,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#include <drain/util/Referencer.h>
+#include <drain/VariableLike.h>
+//#include <drain/Castable.h>
+#include <drain/String.h>
+#include <drain/Type.h>
+#include <drain/TypeUtils.h>
+
+
 #include "data/QuantityMap.h"
 //#include "drain/image/File.h"
 //#include "drain/util/Log.h"
 //#include "drain/util/Variable.h"
 
-#include "drain/util/Castable.h"
-#include "drain/util/String.h"
-#include "drain/util/Type.h"
-#include "drain/util/TypeUtils.h"
-//#include "data/Quantity.h"
 #include <limits>
 //#include <stdexcept>
 #include <utility>
@@ -73,7 +74,7 @@ void ProductBase::help(std::ostream &ostr, bool showDescription) const {
 	ostr << "# Parameters:\n";
 	//char separator = '\0';
 	for (const std::string & key: keys){
-		std::map<std::string, drain::Referencer>::const_iterator pit = parameters.find(key);
+		std::map<std::string, drain::Reference>::const_iterator pit = parameters.find(key);
 		if (pit != parameters.end()){
 			//ostr << separator << ' ' << *it;
 			ostr << "#   " << key << ' ';

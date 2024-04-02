@@ -29,10 +29,11 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include "Log.h"
+#include <drain/Log.h>
+#include <drain/String.h>
+
 #include "MapReader.h"
 #include "Proj6.h"
-#include "String.h"
 
 namespace drain
 {

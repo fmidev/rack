@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 //
+#include <drain/Log.h>
 #include <cmath>
 
 #include <vector>
@@ -37,7 +38,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include <map>
 
-#include "Log.h"
 #include "FunctorBank.h"
 
 #include "Fuzzy.h"

@@ -37,9 +37,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 #include <map>
 
+#include <drain/RegExp.h>
+#include <drain/VariableLike.h>
+
 #include "drain/util/ReferenceMap.h"
-#include "drain/util/RegExp.h"
-#include "drain/util/Variable.h"
+// #include "drain/util/Variable.h"
 
 //#include "drain/image/Legend.h"
 
@@ -389,13 +391,28 @@ public:
 	/**
 	 *   Although templated, makes sense only across the Src and Dst types of same ODIM class.
 	 */
+	inline
+	void setGeometry(const odim_t & odim){
+		this->odim.setGeometry(odim.area);
+		data.setGeometry(odim.area);
+		// Note:
+		this->odim.resolution = odim.resolution;
+	}
+
+	/// Copy dimensions of data array and resolution (rscale or xscale,yscale)
+	/**
+	 *   Although templated, makes sense only across the Src and Dst types of same ODIM class.
+	 */
 	template <class DT2>
 	inline
 	void copyGeometry(const PlainData<DT2> & srcData){
+		setGeometry(srcData.odim);
+		/*
 		this->odim.setGeometry(srcData.odim.area);
 		data.setGeometry(srcData.odim.area);
 		// Note:
 		this->odim.resolution = srcData.odim.resolution;
+		*/
 	}
 
 	/// Calls setEncoding() and setGeometry().
@@ -561,18 +578,19 @@ public:
 	void setGeometry(const drain::image::AreaGeometry & geometry){
 		baseODIM.setGeometry(geometry);
 	}
-	//typename DT::odim_t odim;// 2023/01 experimental
 	*/
+	//typename DT::odim_t odim;// 2023/01 experimental
+
 
 	/// Given a \c dataset subtree, like tree["dataset3"], constructs a data map of desired quantities.
 
 	// DataGroup(typename DT::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
+	// TreeWrapper<typename DT::datatype_t>(tree), odim(tree.data.image) {
 	DataGroup(typename DT::tree_t & tree, const QuantitySelector & slct = QuantitySelector()) :
-		// TreeWrapper<typename DT::datatype_t>(tree), odim(tree.data.image) {
-		TreeWrapper<typename DT::datatype_t>(tree) {
-		//init(tree, *this, quantityRegExp);
+		TreeWrapper<typename DT::datatype_t>(tree) { //, baseODIM(ODIMPathElem::DATASET) {
 		init(tree, *this, slct);
 	}
+	//init(tree, *this, quantityRegExp);
 
 	/*
 	DataGroup(typename DT::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
@@ -581,9 +599,10 @@ public:
 	}
 	*/
 
+	// TreeWrapper<typename DT::datatype_t>(src.tree), odim(src.tree.data.image) {
+
 	DataGroup(const datagroup_t & src) :
-		// TreeWrapper<typename DT::datatype_t>(src.tree), odim(src.tree.data.image) {
-		TreeWrapper<typename DT::datatype_t>(src.tree){
+		TreeWrapper<typename DT::datatype_t>(src.tree) { // , baseODIM(ODIMPathElem::DATASET){
 		adapt(src, *this);  // ALERT: includes all the quantities, even thoug src contained only some of them
 	}
 
@@ -1201,7 +1220,21 @@ public:
 			// no break;
 		case 1:
 			mout.debug("updating from 1st data: " , this->begin()->first );
-			updateTree3(this->getFirstData().odim); // tree
+
+
+			const typename DT::odim_t & odim = this->getFirstData().odim;
+
+			/*
+			 // DEBUGGING 2024
+			for (const auto & entry: this->baseODIM){
+				if (odim[entry.first] == entry.second){
+					mout.reject("BaseODIM differs: ", entry.first, ": ", entry.second, " vs ", odim[entry.first]);
+				}
+			}
+			*/
+
+			//updateTree3(this->getFirstData().odim);
+			updateTree3(odim);
 		}
 
 	}
@@ -1227,8 +1260,6 @@ public:
 
 	inline
 	void updateTree3(const typename DT::odim_t & odim){  //
-		//odim.copyToDataSet(this->tree);
-		//if (!DataTools::removeIfExcluded(this->tree))
 		ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(odim, this->tree);
 		DataTools::updateInternalAttributes(this->tree); // TEST2019/09 // images, including DataSet.data, TODO: skip children
 		//DataTools::updateInternalAttributes(this->tree, drain::FlexVariableMap()); // TEST2019/09 // images, including DataSet.data, TODO: skip children

@@ -31,13 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "drain/image/File.h"  // debugging
 
-#include "drain/util/Log.h"
-
-//#include "drain/util/DataScaling.h"
-#include "drain/util/Type.h"
-
-// #include "File.h"  // debugging
-
+#include <drain/Log.h>
+#include <drain/Type.h>
 #include "Accumulator.h"
 
 

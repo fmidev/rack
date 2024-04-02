@@ -31,9 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_ANALYSIS_DOPPLER_H
 #define RACK_ANALYSIS_DOPPLER_H
 
+#include <drain/Log.h>
 #include <math.h>
 
-#include "drain/util/Log.h"
 #include "drain/util/Fuzzy.h"
 
 //#include "drain/image/FuzzyOp.h"

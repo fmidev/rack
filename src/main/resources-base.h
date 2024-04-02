@@ -30,16 +30,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 // # pragma once
-#ifndef RACK_RESOURCES_BASE_H_
-#define RACK_RESOURCES_BASE_H_
+
+#ifndef RACK_RESOURCES_BASE
+#define RACK_RESOURCES_BASE
 
 #include <string>
+
+#include <drain/VariableLike.h>
 
 #include "drain/image/Image.h"
 #include "drain/image/TreeUtilsSVG.h"
 #include "drain/imageops/PaletteOp.h"
 
-#include "drain/util/Variable.h"
 #include "drain/util/Static.h"
 
 #include "data/DataSelector.h"

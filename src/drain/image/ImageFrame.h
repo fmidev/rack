@@ -31,16 +31,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef IMAGE_FRAME_H_
 #define IMAGE_FRAME_H_ "ImageFrame 0.9,  2011.09.25 Markus.Peura@fmi.fi"
 
-#include <drain/image/CoordinatePolicy.h>
 #include <stddef.h>  // size_t
 
-#include "drain/util/CastableIterator.h"
-#include "drain/util/Sprinter.h"
-#include "drain/util/TypeUtils.h"
-#include "drain/util/VariableMap.h"
+//#include <drain/util/CastableIterator.h>
+#include <drain/TypeUtils.h>
+#include <drain/Sprinter.h>
 //#include "drain/util/FlexibleVariable.h"
+#include <drain/image/CoordinatePolicy.h>
 
 #include "drain/util/ValueScaling.h"
+#include "drain/util/VariableMap.h"
 
 #include "Geometry.h"
 #include "ImageLike.h"

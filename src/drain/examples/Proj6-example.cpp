@@ -21,8 +21,11 @@
  */
 
 /*
- REQUIRE: drain/util/{Log,Proj6,Sprinter,String,TextStyle}.cpp
+
+ REQUIRE: drain/util/{Log,Sprinter,String,TextStyle}.cpp
+ REQUIRE: drain/util/Proj6.cpp
  LIBS: -lproj
+
  */
 #include <cmath>
 #include <iostream>
@@ -30,7 +33,7 @@
 //#include <proj_api.h>
 #include <proj.h>
 
-#include "drain/util/Log.h"
+#include "drain/Log.h"
 #include "drain/util/Point.h"
 #include "drain/util/Proj6.h"
 //#include "drain/util/Sprinter.h"

@@ -33,11 +33,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
+#include <drain/Sprinter.h>
+#include <drain/VariableLike.h>
+
 #include "FileInfo.h"
-#include "Sprinter.h"
 #include "TextReader.h"
 #include "TreeUnordered.h"
-#include "Variable.h"
+
 // #include "TreeOrdered.h" // consider?
 
 namespace drain

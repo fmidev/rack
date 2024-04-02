@@ -32,14 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define ODIM_PATH
 
 
+#include <drain/Log.h>
 #include <ostream>
 //#include <cmath>
 #include <string>
 #include <string.h>
 #include <map>
 //#include <algorithm>
-
-#include "drain/util/Log.h"
 
 #include "drain/util/Path.h"
 #include "drain/util/FlagsOld.h"

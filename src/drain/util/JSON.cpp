@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
+#include <drain/TypeUtils.h>
 #include "JSON.h"
 
 namespace drain
@@ -94,7 +95,7 @@ void JSON::readValue(std::istream & istr, Variable & v, bool keepType){
 		//value = TextReader::scanSegment(istr, "}, \t\n\r"); // 2023/01 re-added ','
 		//value = TextReader::scanSegment(istr, "} \t\n\r"); // 2023/01 dropped ','
 		if (!(keepType && v.typeIsSet())){
-			const std::type_info & type = Type::guessType(value);
+			const std::type_info & type = TypeUtils::guessType(value);
 			v.requestType(type);
 
 		}
@@ -120,7 +121,7 @@ void JSON::readArray(const std::string & s, Variable & v){
 	drain::StringTools::split(s, values, ',', " '\t\n\r");
 
 	// TODO: recurse values twice such that they become converted trough friendly types (esp. true => 1)
-	const std::type_info & atype = Type::guessArrayType(values);
+	const std::type_info & atype = TypeUtils::guessArrayType(values);
 	// Likewise, Type::getCompatibleType(typeid(bool), typeid(float));
 	v.requestType(atype);
 	v = values;

@@ -29,8 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-#include "drain/util/Log.h"
-
+#include <drain/Log.h>
 #include "PolarODIM.h"
 
 namespace rack {
@@ -134,7 +133,7 @@ double PolarODIM::getMaxRange(bool warn) const {
 
 double PolarODIM::getNyquist(int errorThreshold) const {
 
-	drain::Logger mout("PolarODIM", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (quantity.substr(0,4) != "VRAD"){
 		mout.log(errorThreshold + 4) << "quantity not VRAD but " << quantity << mout.endl;

@@ -34,8 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/CoordinatePolicy.h>
 #include <stddef.h>  // size_t
 
-#include "../util/Caster.h"
-#include "../util/ValueScaling.h"
+#include <drain/Caster.h>
+#include "drain/util/ValueScaling.h"
 
 #include "Geometry.h"
 

@@ -31,9 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef FUZZY_H_
 #define FUZZY_H_
 
+#include <drain/Log.h>
 #include <cmath>
 
-#include "Log.h"
 #include "Functor.h"
 #include "Range.h"
 

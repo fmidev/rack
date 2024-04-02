@@ -29,12 +29,12 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include <drain/image/CoordinatePolicy.h>
+#include <drain/Log.h>
 #include <math.h>
 #include <limits>
 
 
 
-#include "drain/util/Log.h"
 #include "Geometry.h"
 #include "Coordinates.h"
 

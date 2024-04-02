@@ -36,11 +36,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "TreeSVG.h"
 
 //#include "drain/util/JSONtree.h"
+#include <drain/Log.h>
 #include <ostream>
 #include <vector>
 #include <map>
 
-#include "drain/util/Log.h"
 #include "ImageCodebook.h"
 
 namespace drain

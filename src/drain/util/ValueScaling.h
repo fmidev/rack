@@ -31,11 +31,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef IMAGE_SCALING2_H_
 #define IMAGE_SCALING2_H_ "ImageScaling 0.1,  2017/09 Markus.Peura@fmi.fi"
 
+#include <drain/Type.h>
+#include <drain/TypeUtils.h>
+#include <drain/UniTuple.h>
 #include <stddef.h>  // size_t
 
-#include "TypeUtils.h"
-
-#include "UniTuple.h"
 #include "Range.h"
 
 //#include "Geometry.h"

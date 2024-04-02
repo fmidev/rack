@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_PATH_H_
 #define DRAIN_PATH_H_
 
+#include <drain/UniTuple.h>
 #include <stdexcept>
 #include <iostream>
 #include <string>
@@ -45,9 +46,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iterator>
 
 
-#include "String.h" // ?
-#include "UniTuple.h"
-#include "Sprinter.h"
+#include <drain/String.h> // ?
+#include <drain/Sprinter.h>
 
 
 

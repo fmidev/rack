@@ -29,12 +29,9 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-// TODO: check
 #ifndef DRAIN_TREE_NAME
-//#define DRAIN_TREE "2.0"
 #warning "Use TreeOrdered.h or TreeUnordered.h to include this file."
 #endif
-
 
 
 #include <iterator>
@@ -42,10 +39,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 
 
-#include "Log.h"
+#include <drain/Log.h>
+#include <drain/Type.h>
+#include <drain/TypeUtils.h>
+
 #include "Path.h"
-#include "Type.h"
-#include "TypeUtils.h"
 
 #include "TreeUtils.h"
 

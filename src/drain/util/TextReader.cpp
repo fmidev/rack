@@ -30,10 +30,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 //#include <sstream>
+#include <drain/Log.h>
 #include <ostream>
 #include <stdexcept>
-
-#include "Log.h"
 
 #include "TextReader.h"
 

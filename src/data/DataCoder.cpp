@@ -29,9 +29,9 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <drain/Log.h>
 #include "data/DataCoder.h"
 #include "data/Quantity.h"
-#include "drain/util/Log.h"
 #include "drain/util/SmartMap.h"
 #include <limits>
 #include <string>

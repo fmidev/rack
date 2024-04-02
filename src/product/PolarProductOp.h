@@ -96,18 +96,30 @@ protected:
 		copyPolarGeometry(srcODIM, dstData);
 	}
 
-    /// Derive appropriate output ODIM from input sweeps, user-requested ODIM and (possibly) meteorological input parameters.
-    /**
-     *  Also creates \c elangles array using srcSweeps provided.
+	///  Based on input data, find geometry that maximises range and ray count.
+	/**
+	 *  This method searches for
+	 *  - largest beam count ( \c nrays ), if not set
+	 *  - smallest beam directional resolution (\c rscale ), if not set
+	 *  - \c rscale and \c nbins producing the largest range, if both not set
+	 *
+     *  Also creates \c elangles array.
      *
      *  \param srcSweeps - input data
      *  \param dstOdim - metadata for/of output data
      *
      */
-    //
 	virtual
-	void deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, PolarODIM & dstOdim) const;
+	void deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, PolarODIM & dstOdim, bool MINIMISE_RSCALE=false) const;
 
+	/// Update timestamps etc
+	/**
+    *  \param srcSweeps - input data
+    *  \param dstOdim - metadata for/of output data
+    *
+    */
+	virtual
+	void determineMetadata(const DataSetMap<PolarSrc> & srcSweeps, PolarODIM & dstOdim) const;
 
 
 };

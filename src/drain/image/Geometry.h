@@ -31,10 +31,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef GEOMETRY_H_
 #define GEOMETRY_H_
 
+#include <drain/UniTuple.h>
 #include <iostream>
 #include <vector>
 
-#include "drain/util/UniTuple.h"
 #include "drain/util/Frame.h"
 
 namespace drain

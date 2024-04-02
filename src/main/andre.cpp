@@ -29,11 +29,11 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <drain/Log.h>
 #include <drain/prog/CommandInstaller.h>
 #include <set>
 #include <ostream>
 
-#include "drain/util/Log.h"
 #include "drain/prog/Command.h"
 #include "data/ODIM.h"
 #include "andre/AndreOp.h"

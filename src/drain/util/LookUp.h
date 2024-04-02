@@ -38,12 +38,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef LOOKUP_H_
 #define LOOKUP_H_
 
+#include <drain/Type.h>
+#include <drain/TypeUtils.h>
 #include <cmath>
 #include <vector>
 #include <exception>
 
-#include "drain/util/Type.h"
-#include "drain/util/TypeUtils.h"
 
 // // using namespace std;
 

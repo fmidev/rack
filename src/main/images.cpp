@@ -30,7 +30,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 //#include <stddef.h>
 
+#include <drain/Log.h>
 #include <drain/prog/CommandInstaller.h>
+#include <drain/Type.h>
 #include <main/palette-manager.h>
 #include <fstream>
 #include <list>
@@ -38,14 +40,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 #include <string>
 
-#include "drain/util/Log.h"
+#include <drain/RegExp.h>
+#include <drain/VariableLike.h>
+
 #include "drain/util/FilePath.h"
 #include "drain/util/Output.h"
-#include "drain/util/RegExp.h"
 #include "drain/util/SmartMap.h"
 #include "drain/util/TreeOrdered.h"
-#include "drain/util/Type.h"
-#include "drain/util/Variable.h"
+
 #include "drain/util/VariableMap.h"
 #include "drain/image/Image.h"
 #include "drain/image/ImageChannel.h"
@@ -355,7 +357,7 @@ public:
 			drain::Range<double> range;
 			//drain::Referencer r(range.tuple());
 			//r.setSeparator(':').setFill() = ftor;
-			drain::Referencer(range.tuple()).setSeparator(':').setFill().assignString(ftor);
+			drain::Reference(range.tuple()).setSeparator(':').setFill().assignString(ftor);
 
 			mout.special("range: " , range );
 

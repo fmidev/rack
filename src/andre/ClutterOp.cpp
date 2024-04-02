@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <andre/ClutterOp.h>
+#include <drain/Log.h>
 #include "data/Data.h"
 #include "data/DataTools.h"
 #include "data/PolarODIM.h"
@@ -39,7 +40,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/image/Image.h"
 #include "radar/Geometry.h"
 //#include <stddef.h>
-#include "drain/util/Log.h"
 #include "drain/util/StringMapper.h"
 #include "drain/util/TreeOrdered.h"
 #include <cmath>

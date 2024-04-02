@@ -31,17 +31,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_ANALYSIS_H
 #define RACK_ANALYSIS_H
 
+#include <drain/Log.h>
+#include <drain/TypeUtils.h>
 #include <math.h>
 
-#include "drain/util/Log.h"
 #include "drain/util/Fuzzy.h"
 
 //#include "drain/image/FuzzyOp.h"
 
 #include "drain/util/Functor.h"
 #include "drain/util/FunctorBank.h"
-#include "drain/util/TypeUtils.h"
-
 #include "drain/image/Window.h"
 #include "drain/image/SegmentProber.h"
 #include "drain/image/SlidingWindow.h"

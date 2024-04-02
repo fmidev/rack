@@ -42,7 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sys/stat.h>
 
 
-#include "RegExp.h"
+#include <drain/RegExp.h>
 #include "Path.h"
 
 

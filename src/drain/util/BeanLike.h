@@ -39,9 +39,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include <map>
 
-#include "Log.h"
+
+#include <drain/Log.h>
+#include <drain/VariableLike.h>
+
 #include "ReferenceMap.h"
-#include "Variable.h"
+//#include "Variable.h"
 
 namespace drain
 {
@@ -49,7 +52,10 @@ namespace drain
 
 /// Something which has a name, a description and possibly some parameters of varying type.
 /**
-     In \b rack program, VolumeBaseOp is derived from BeanLike.
+ *  The parameters are local variables (properties) linked by a ReferenceMap .
+ *
+ *  drain::Command's and drain::image::ImageOp's are typical BeanLikes.
+ *
  */
 class BeanLike {
 
@@ -143,6 +149,7 @@ public:
 		updateBean();
 	}
 
+	/// TODO: consider VariableLike
 	/// Sets a single parameter
 	inline
 	void setParameter(const std::string &p, const Variable & value){
@@ -152,7 +159,7 @@ public:
 
 	/// Sets a single parameter
 	inline
-	void setParameter(const std::string &p, const Referencer & value){
+	void setParameter(const std::string &p, const Reference & value){
 		parameters[p].assignCastable(value);
 		updateBean();
 	}

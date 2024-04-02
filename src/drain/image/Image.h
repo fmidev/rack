@@ -28,6 +28,9 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+#include <drain/Log.h>
+#include <drain/Type.h>
+#include <drain/TypeUtils.h>
 #include <typeinfo>
 #include <stdexcept>
 #include <sstream>
@@ -36,11 +39,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 
-#include "drain/util/Log.h"
-#include "drain/util/Type.h"
-#include "drain/util/TypeUtils.h"
-#include "drain/util/Castable.h"
-#include "drain/util/CastableIterator.h"
+#include <drain/Castable.h>
+#include <drain/CastableIterator.h>
+
 #include "drain/util/Point.h"
 #include "drain/util/VariableMap.h"
 

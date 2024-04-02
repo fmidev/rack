@@ -34,9 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //
 //#include "drain/util/Rectangle.h"
+#include <drain/Type.h>
 #include "drain/image/AccumulationConverter.h"
-#include "drain/util/Type.h"
-
 #include "hi5/Hi5.h"
 #include "data/ODIM.h"
 #include "Data.h"

@@ -32,14 +32,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_BANK_H_
 
 //
+#include <drain/Log.h>
 #include <iostream>
 #include <map>
 
-#include "Log.h"
+#include <drain/Sprinter.h>
+
 #include "Registry.h"
 #include "Cloner.h"
 #include "FlagsOld.h"
-#include "Sprinter.h"
 #include "Static.h"
 
 namespace drain

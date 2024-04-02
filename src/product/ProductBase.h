@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_BASE
 #define RACK_BASE "ProductBase"
 
+#include <drain/Log.h>
 #include <stdexcept>
 #include <iostream>
 #include <list>
@@ -45,11 +46,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 #include <string>
 
-#include "drain/util/Log.h"
-#include "drain/util/RegExp.h"
+#include <drain/RegExp.h>
+#include <drain/VariableLike.h>
+
+
 #include "drain/util/SmartMap.h"
 #include "drain/util/TreeOrdered.h"
-#include "drain/util/Variable.h"
 
 #include "hi5/Hi5.h"
 #include "data/Data.h"
