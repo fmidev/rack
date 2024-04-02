@@ -37,18 +37,21 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Castable.h"
 #include "CastableIterator.h"
 
-//#include "Sprinter.h"
-//#include "String.h"
-//#include "UniTuple.h" // "Friend class"
-//#include "Type.h"
 
 
 namespace drain {
 
 
-
-
-
+///  Base class for variables: Variable, Reference and FlexibleVariable.
+/**
+ *   - Variable
+ *   - Reference
+ *   - FlexibleVariable
+ *
+ *   \see Variable
+ *   \see Reference
+ *   \see FlexibleVariable
+ */
 class VariableBase : public Castable {
 
 public:
