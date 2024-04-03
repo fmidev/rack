@@ -1,0 +1,23 @@
+<map id="CmdODIM" name="CmdODIM">
+<area shape="rect" id="node1" title=" " alt="" coords="263,1087,351,1113"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="223,996,392,1037"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="245,920,369,947"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="200,831,289,857"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="170,755,263,781"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Context.html" title=" " alt="" coords="176,665,249,692"/>
+<area shape="rect" id="node7" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,576,160,603"/>
+<area shape="rect" id="node8" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,493,195,519"/>
+<area shape="rect" id="node9" title=" " alt="" coords="5,409,212,436"/>
+<area shape="rect" id="node10" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="190,576,235,603"/>
+<area shape="rect" id="node11" href="$classdrain_1_1StatusFlags.html" title=" " alt="" coords="259,576,358,603"/>
+<area shape="rect" id="node12" href="$classdrain_1_1GlobalFlags.html" title=" " alt="" coords="231,485,386,527"/>
+<area shape="rect" id="node13" href="$classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="273,409,344,436"/>
+<area shape="rect" id="node14" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="210,320,317,347"/>
+<area shape="rect" id="node15" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="341,320,458,347"/>
+<area shape="rect" id="node16" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="351,157,447,184"/>
+<area shape="rect" id="node17" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="335,81,463,108"/>
+<area shape="rect" id="node18" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="323,5,475,32"/>
+<area shape="rect" id="node19" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="319,831,435,857"/>
+<area shape="rect" id="node20" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="289,755,475,781"/>
+<area shape="rect" id="node21" title=" " alt="" coords="273,665,493,692"/>
+</map>

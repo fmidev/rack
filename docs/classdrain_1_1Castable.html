@@ -83,15 +83,10 @@ Inheritance diagram for Castable:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Castable__inherit__graph.png" border="0" usemap="#aCastable_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCastable_inherit__map" id="aCastable_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,107,84,133"/>
-<area shape="rect" href="classdrain_1_1ReferenceBase.html" title=" " alt="" coords="132,5,339,32"/>
-<area shape="rect" href="classdrain_1_1CastableIterator.html" title=" " alt="" coords="172,56,299,83"/>
-<area shape="rect" href="classdrain_1_1ReferenceBase.html" title="Intermediate class supporting link() in various forms." alt="" coords="156,107,315,133"/>
-<area shape="rect" href="classdrain_1_1Variable.html" title=" " alt="" coords="198,157,273,184"/>
-<area shape="rect" href="classdrain_1_1VariableBase.html" title=" " alt="" coords="163,208,308,235"/>
-<area shape="rect" href="classdrain_1_1Referencer.html" title=" " alt="" coords="441,5,535,32"/>
-<area shape="rect" href="classdrain_1_1ReferenceBase.html" title=" " alt="" coords="387,157,589,184"/>
-<area shape="rect" href="classdrain_1_1FlexibleVariable.html" title=" " alt="" coords="637,157,764,184"/>
+<area shape="rect" title=" " alt="" coords="100,5,179,32"/>
+<area shape="rect" href="classdrain_1_1CastableIterator.html" title=" " alt="" coords="5,80,132,107"/>
+<area shape="rect" href="classdrain_1_1VariableBase.html" title="Base class for variables: Variable, Reference and FlexibleVariable." alt="" coords="157,80,263,107"/>
+<area shape="rect" href="classdrain_1_1VariableT.html" title=" " alt="" coords="111,155,309,181"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -120,8 +115,13 @@ template&lt;class F &gt; </td></tr>
 <tr class="memdesc:adc3aad5fcd44076857432cbc7f4dd2da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for an object pointing to a variable. <br /></td></tr>
 <tr class="separator:adc3aad5fcd44076857432cbc7f4dd2da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a9288d3f22ea9bd5938c2da11c80724"><td class="memItemLeft" align="right" valign="top"><a id="a1a9288d3f22ea9bd5938c2da11c80724"></a>
-virtual const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getType</b> () const</td></tr>
+virtual const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a1a9288d3f22ea9bd5938c2da11c80724">getType</a> () const</td></tr>
+<tr class="memdesc:a1a9288d3f22ea9bd5938c2da11c80724"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the storage type (base type) of the referenced variable. <br /></td></tr>
 <tr class="separator:a1a9288d3f22ea9bd5938c2da11c80724"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dd828533f7989848278126b6e56a22a"><td class="memItemLeft" align="right" valign="top"><a id="a2dd828533f7989848278126b6e56a22a"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a2dd828533f7989848278126b6e56a22a">isReference</a> () const</td></tr>
+<tr class="memdesc:a2dd828533f7989848278126b6e56a22a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true, if the referenced variable is external. Inherited classes - like Variable - may have internal data arrays. <br /></td></tr>
+<tr class="separator:a2dd828533f7989848278126b6e56a22a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10ee578fbc7b8ef6b720cee9b5e20130"><td class="memItemLeft" align="right" valign="top"><a id="a10ee578fbc7b8ef6b720cee9b5e20130"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a10ee578fbc7b8ef6b720cee9b5e20130">isCharArrayString</a> () const</td></tr>
 <tr class="memdesc:a10ee578fbc7b8ef6b720cee9b5e20130"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if type is C char array and outputSepator is the null char. <br /></td></tr>
@@ -304,6 +304,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a4dc0a867da76f35132364cf5ad2abd55">info</a> (std::ostream &amp;ostr=std::cout) const</td></tr>
 <tr class="memdesc:a4dc0a867da76f35132364cf5ad2abd55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print value, type and element count. <br /></td></tr>
 <tr class="separator:a4dc0a867da76f35132364cf5ad2abd55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8f7adb49b91d04a161dd7f9671a4e08"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ac8f7adb49b91d04a161dd7f9671a4e08">isContainer</a> () const</td></tr>
+<tr class="memdesc:ac8f7adb49b91d04a161dd7f9671a4e08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if the class contains an own data array.  <a href="classdrain_1_1Castable.html#ac8f7adb49b91d04a161dd7f9671a4e08">More...</a><br /></td></tr>
+<tr class="separator:ac8f7adb49b91d04a161dd7f9671a4e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab25247e405d9bd5c7e8cffd0ddf5fc8a"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:ab25247e405d9bd5c7e8cffd0ddf5fc8a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ab25247e405d9bd5c7e8cffd0ddf5fc8a">toSequence</a> (T &amp;container, char separator=0) const</td></tr>
 <tr class="memdesc:ab25247e405d9bd5c7e8cffd0ddf5fc8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts data to a STL Sequence, for example std::set, std::list or std::vector .  <a href="classdrain_1_1Castable.html#ab25247e405d9bd5c7e8cffd0ddf5fc8a">More...</a><br /></td></tr>
@@ -352,6 +355,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a8239f5ccd2eb7cf43fe0e729685717e4"><td class="memItemLeft" align="right" valign="top"><a id="a8239f5ccd2eb7cf43fe0e729685717e4"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>updateSize</b> (size_t elems)</td></tr>
+<tr class="separator:a8239f5ccd2eb7cf43fe0e729685717e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5082bad072d8c8b1671077cb66fdf63b"><td class="memItemLeft" align="right" valign="top"><a id="a5082bad072d8c8b1671077cb66fdf63b"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a5082bad072d8c8b1671077cb66fdf63b">suggestType</a> (const std::type_info &amp;t)</td></tr>
 <tr class="memdesc:a5082bad072d8c8b1671077cb66fdf63b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request to change in type. For <a class="el" href="classdrain_1_1Castable.html">Castable</a>, simply returns true if the current type was requested. <br /></td></tr>
@@ -383,7 +389,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a08e5e4db33e0a592860eaeb9f41f1f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0764f01d3c4187c4835cd971a163f282"><td class="memTemplParams" colspan="2">template&lt;class F , size_t N&gt; </td></tr>
 <tr class="memitem:a0764f01d3c4187c4835cd971a163f282"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a0764f01d3c4187c4835cd971a163f282">setPtr</a> (<a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; F, N &gt; &amp;tuple)</td></tr>
-<tr class="memdesc:a0764f01d3c4187c4835cd971a163f282"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the pointer, storage type F, and size (element count) on the vector.  <a href="classdrain_1_1Castable.html#a0764f01d3c4187c4835cd971a163f282">More...</a><br /></td></tr>
+<tr class="memdesc:a0764f01d3c4187c4835cd971a163f282"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores the pair as an array of two elements.  <a href="classdrain_1_1Castable.html#a0764f01d3c4187c4835cd971a163f282">More...</a><br /></td></tr>
 <tr class="separator:a0764f01d3c4187c4835cd971a163f282"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad21db5fe069b6d946c01f00ddcd64591"><td class="memItemLeft" align="right" valign="top"><a id="ad21db5fe069b6d946c01f00ddcd64591"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ad21db5fe069b6d946c01f00ddcd64591">relink</a> (<a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
@@ -437,7 +443,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:aba0425ba66b2a61324b9d55db65c76fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Castable-example_8cpp-example.html#_a1">Castable-example.cpp</a>, and <a class="el" href="Variable-example_8cpp-example.html#_a14">Variable-example.cpp</a>.</dd>
+<div class="textblock"><dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Castable-example_8cpp-example.html#_a1">Castable-example.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2030ee89b3fb9e57aa9fa767c7bcd68d"></a>
@@ -561,9 +567,6 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">size_t empty </td>
@@ -572,11 +575,6 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Returns true, if no elements have been allocated. Does not check type. (NOTE: may change: 0 for scalars) </p>
@@ -718,6 +716,36 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="ac8f7adb49b91d04a161dd7f9671a4e08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8f7adb49b91d04a161dd7f9671a4e08">&#9670;&nbsp;</a></span>isContainer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool isContainer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true, if the class contains an own data array. </p>
+<p>In a <a class="el" href="namespacedrain.html#a467fb6f17416e6b9ac0fd7796ec103ef" title="Value container supporting dynamic type.">drain::Variable</a>, <code>ptr</code> always points to data array, or to null, if the array is empty. In a <a class="el" href="namespacedrain.html#a6e1fa0b6fd9d7f5e426b34319cfada17" title="Value container supporting dynamic type with own memory and optional linking (referencing) of externa...">drain::FlexibleVariable</a>, <code>ptr</code> can point to owned data array or to an external (base type) variable. </p>
+
+<p>Reimplemented in <a class="el" href="classdrain_1_1VariableBase.html#ac8f7adb49b91d04a161dd7f9671a4e08">VariableBase</a>.</p>
+
+</div>
+</div>
 <a id="a3888dcd59dd5acd1ca5b9bee4c2e252a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3888dcd59dd5acd1ca5b9bee4c2e252a">&#9670;&nbsp;</a></span>operator std::string()</h2>
 
@@ -768,10 +796,11 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Conversion from the internal type. Conversion operator. Works well with basic types. Due to g++ error/feature (?), does not work implicitly for std::string. Due to c++ compiler error/feature, does not work implicitly for std::string. For example: </p><div class="fragment"><div class="line">Variable vField;</div>
+<p>Conversion from the internal type. Conversion operator. Works well with basic types. Due to g++ error/feature (?), does not work implicitly for std::string. Due to c++ compiler error/feature, does not work implicitly for std::string. For example: </p><div class="fragment"><div class="line"><a class="code" href="namespacedrain.html#a467fb6f17416e6b9ac0fd7796ec103ef">Variable</a> vField;</div>
 <div class="line">vField = 1.23;</div>
 <div class="line">std::string s = vField;  <span class="comment">// OK</span></div>
 <div class="line">s = vField;         <span class="comment">// FAILS, for unknown reason</span></div>
+<div class="ttc" id="anamespacedrain_html_a467fb6f17416e6b9ac0fd7796ec103ef"><div class="ttname"><a href="namespacedrain.html#a467fb6f17416e6b9ac0fd7796ec103ef">drain::Variable</a></div><div class="ttdeci">VariableT&lt; VariableBase &gt; Variable</div><div class="ttdoc">Value container supporting dynamic type.</div><div class="ttdef"><b>Definition:</b> Variable.h:65</div></div>
 </div><!-- fragment --><p> See <a href="http://stackoverflow.com/questions/7741531/conversion-operator-template-specialization">http://stackoverflow.com/questions/7741531/conversion-operator-template-specialization</a> . The conversion works only if a conversion operator is defined only for std::string (operator std::string()). Adding any str conversions (int, double, ...) causes the compiler to fail. </p>
 
 </div>
@@ -859,7 +888,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Request to change the array size. For <a class="el" href="classdrain_1_1Castable.html">Castable</a> (and Reference) does nothing and returns false. </p>
 <p>Does not apply to std::string; </p>
 
-<p>Reimplemented in <a class="el" href="classdrain_1_1Variable.html#af61912602179e9425271926135614061">Variable</a>, and <a class="el" href="classdrain_1_1FlexibleVariable.html#af61912602179e9425271926135614061">FlexibleVariable</a>.</p>
+<p>Reimplemented in <a class="el" href="classdrain_1_1VariableT.html#a70de7aafc473df80eb416804a9bfa4e3">VariableT&lt; VariableBase &gt;</a>.</p>
 
 </div>
 </div>
@@ -886,6 +915,8 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 <p>Unset the type (set it to <code>void</code> ) and clear @elementCount . </p>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Castable-example_8cpp-example.html#a10">Castable-example.cpp</a>.</dd>
+</dl>
 
 </div>
 </div>
@@ -913,8 +944,6 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 <p>May append elements dynamically, there should be a marker for separating elements is a string. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Variable-example_8cpp-example.html#a12">Variable-example.cpp</a>.</dd>
-</dl>
 
 </div>
 </div>
@@ -969,8 +998,8 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 
-<p>Stores the pointer, storage type F, and size (element count) on the vector. </p>
-<p>The pointer is set to the first element of the vector's array segment. Stores the pair as an array of two elements. The pointer is set to the first. Stores the elements as an array. The pointer is set to the first. </p>
+<p>Stores the pair as an array of two elements. </p>
+<p>The pointer is set to the first. Stores the elements as an array. The pointer is set to the first. </p>
 
 </div>
 </div>
@@ -1000,7 +1029,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>The character used between array elements in output stream. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1Castable.html#a10ee578fbc7b8ef6b720cee9b5e20130" title="Returns true, if type is C char array and outputSepator is the null char.">isCharArrayString</a> </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Castable-example_8cpp-example.html#a7">Castable-example.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Castable-example_8cpp-example.html#a8">Castable-example.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -1029,7 +1058,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Sets the storage type. If a target value is available, use link() directly. </p>
-<p>Keep this redirect, because <a class="el" href="classdrain_1_1Variable.html">Variable</a> may need virtual <a class="el" href="classdrain_1_1Castable.html#acce02d783950fc3429ac52ca1bc74e02" title="Sets the storage type. If a target value is available, use link() directly.">setType()</a></p>
+<p>Keep this redirect, because Variable may need virtual <a class="el" href="classdrain_1_1Castable.html#acce02d783950fc3429ac52ca1bc74e02" title="Sets the storage type. If a target value is available, use link() directly.">setType()</a></p>
 
 </div>
 </div>
@@ -1081,6 +1110,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
+<p>The most general container insert method</p>
 
 </div>
 </div>
@@ -1111,8 +1141,8 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/drain/util/<a class="el" href="Castable_8h_source.html">Castable.h</a></li>
-<li>src/drain/util/Castable.cpp</li>
+<li>src/drain/<a class="el" href="Castable_8h_source.html">Castable.h</a></li>
+<li>src/drain/Castable.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

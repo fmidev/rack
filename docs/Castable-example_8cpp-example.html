@@ -99,22 +99,23 @@ Variable</dd></dl>
 <div class="line"> </div>
 <div class="line"><span class="comment">/*</span></div>
 <div class="line"><span class="comment"></span> </div>
-<div class="line"><span class="comment"> REQUIRE: drain/util/{Caster,Castable,Log,RegExp,Sprinter,String,TextStyle,Type,Variable}.cpp</span></div>
+<div class="line"><span class="comment"> REQUIRE: drain/{Caster,Castable,FlexibleVariable,Log,Reference,RegExp,Sprinter,String,TextStyle,Type,TypeUtils,Variable,VariableBase}.cpp</span></div>
 <div class="line"><span class="comment"></span> </div>
 <div class="line"><span class="comment"> */</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#include &quot;drain/util/Log.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;drain/util/Range.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;drain/util/Type.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;drain/util/UniTuple.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;drain/Log.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;drain/Type.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;drain/UniTuple.h&quot;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor">#include &quot;drain/util/Castable.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;drain/util/Referencer.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;drain/util/Variable.h&quot;</span></div>
-<div class="line"><span class="preprocessor">#include &quot;drain/util/FlexibleVariable.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;drain/Castable.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;drain/Reference.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;drain/Variable.h&quot;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;drain/FlexibleVariable.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &quot;drain/util/Range.h&quot;</span></div>
 <div class="line"> </div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">using namespace </span><a class="code" href="namespacedrain.html">drain</a>;</div>
@@ -152,17 +153,13 @@ Variable</dd></dl>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> testCastable(<a class="code" href="classdrain_1_1Castable.html">drain::Castable</a> &amp; c){</div>
-<div class="line">    drain::Type::call&lt;CastableTester&gt;(c, c.<a name="a5"></a>getType());</div>
+<div class="line">    drain::Type::call&lt;CastableTester&gt;(c, c.<a name="a5"></a><a class="code" href="classdrain_1_1Castable.html#a1a9288d3f22ea9bd5938c2da11c80724">getType</a>());</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> S, <span class="keyword">class</span> T&gt;</div>
 <div class="line"><span class="keywordtype">void</span> demo(<span class="keyword">const</span> T &amp; value, <span class="keywordtype">char</span> outputSeparator = <span class="charliteral">&#39;,&#39;</span>){</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Convert: &quot;</span> &lt;&lt; TypeName&lt;T&gt;::get() &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; TypeName&lt;S&gt;::get() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line">    <span class="comment">//std::cout &lt;&lt; &quot;Convert: &quot; &lt;&lt; drain::Type::getTypeChar(typeid(T)) &lt;&lt; &#39;&gt;&#39; &lt;&lt; drain::Type::getTypeChar(typeid(S)) &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line">    <span class="comment">//std::cout &lt;&lt; &quot;Input type: &quot; &lt;&lt; drain::Type::getTypeChar(typeid(T)) &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line">    <span class="comment">//std::cout &lt;&lt; &quot;Input:   &quot; &lt;&lt; TypeName&lt;T&gt;::get() &lt;&lt; &#39;\n&#39;; // typeid(T).name()</span></div>
-<div class="line">    <span class="comment">//std::cout &lt;&lt; &quot;Storage: &quot; &lt;&lt; TypeName&lt;S&gt;::get() &lt;&lt; &#39;\n&#39;; // typeid(S).name()</span></div>
 <div class="line"> </div>
 <div class="line">    S data;</div>
 <div class="line">    <a class="code" href="classdrain_1_1Castable.html">drain::Castable</a> c(data);</div>
@@ -170,28 +167,28 @@ Variable</dd></dl>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Castable:   &quot;</span>;</div>
 <div class="line">    testCastable(c = value);</div>
 <div class="line"> </div>
-<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Referencer: &quot;</span>;</div>
-<div class="line">    <a name="_a6"></a><a class="code" href="classdrain_1_1Referencer.html">drain::Referencer</a> r;</div>
-<div class="line">    r.<a name="a7"></a><a class="code" href="classdrain_1_1Castable.html#a0d40b96ccd0e546f29e9509e50fd9840">setSeparator</a>(outputSeparator);</div>
-<div class="line">    r.<a name="a8"></a><a class="code" href="classdrain_1_1ReferenceBase.html#ad638bf120151f29e2df26c897be217a7">link</a>(data);</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Reference: &quot;</span>;</div>
+<div class="line">    <a name="_a6"></a><a class="code" href="classdrain_1_1VariableT.html">drain::Reference</a> r;</div>
+<div class="line">    r.setSeparator(outputSeparator);</div>
+<div class="line">    r.link(data);</div>
 <div class="line">    testCastable(r = value);</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Variable:   &quot;</span>;</div>
-<div class="line">    <a name="_a9"></a><a class="code" href="classdrain_1_1Variable.html">drain::Variable</a> v;</div>
-<div class="line">    v.<a class="code" href="classdrain_1_1Castable.html#a0d40b96ccd0e546f29e9509e50fd9840">setSeparator</a>(outputSeparator);</div>
-<div class="line">    v.<a name="a10"></a><a class="code" href="classdrain_1_1Variable.html#aa5d02202c1f07e573b97647425fde328">setType</a>(<span class="keyword">typeid</span>(S));</div>
+<div class="line">    <a name="_a7"></a><a class="code" href="classdrain_1_1VariableT.html">drain::Variable</a> v;</div>
+<div class="line">    v.<a name="a8"></a><a class="code" href="classdrain_1_1Castable.html#a0d40b96ccd0e546f29e9509e50fd9840">setSeparator</a>(outputSeparator);</div>
+<div class="line">    v.<a name="a9"></a><a class="code" href="classdrain_1_1VariableBase.html#aa5d02202c1f07e573b97647425fde328">setType</a>(<span class="keyword">typeid</span>(S));</div>
 <div class="line">    testCastable(v = value);</div>
 <div class="line"> </div>
-<div class="line">    <a name="_a11"></a><a class="code" href="classdrain_1_1FlexibleVariable.html">drain::FlexibleVariable</a> fv;</div>
+<div class="line">    <a class="code" href="classdrain_1_1VariableT.html">drain::FlexibleVariable</a> fv;</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;FlexVar, copied:   &quot;</span>;</div>
 <div class="line">    testCastable(fv = data);</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;FlexVar, linked:   &quot;</span>;</div>
-<div class="line">    fv.<a name="a12"></a><a class="code" href="classdrain_1_1ReferenceBase.html#ad638bf120151f29e2df26c897be217a7">link</a>(data);</div>
+<div class="line">    fv.link(data);</div>
 <div class="line">    testCastable(fv);</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Var=Cas:   &quot;</span>;</div>
-<div class="line">    v.<a name="a13"></a><a class="code" href="classdrain_1_1Variable.html#ad20897c5c8bd47f5d4005989bead0e55">reset</a>();</div>
+<div class="line">    v.<a name="a10"></a><a class="code" href="classdrain_1_1Castable.html#ad20897c5c8bd47f5d4005989bead0e55">reset</a>();</div>
 <div class="line">    testCastable(v = c);</div>
 <div class="line"> </div>
 <div class="line"> </div>
@@ -281,18 +278,16 @@ Variable</dd></dl>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
 <div class="ttc" id="aclassdrain_1_1Castable_html"><div class="ttname"><a href="classdrain_1_1Castable.html">drain::Castable</a></div><div class="ttdef"><b>Definition:</b> Castable.h:78</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_a0d40b96ccd0e546f29e9509e50fd9840"><div class="ttname"><a href="classdrain_1_1Castable.html#a0d40b96ccd0e546f29e9509e50fd9840">drain::Castable::setSeparator</a></div><div class="ttdeci">Castable &amp; setSeparator(char c=',')</div><div class="ttdoc">The character used between array elements in output stream.</div><div class="ttdef"><b>Definition:</b> Castable.h:526</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_a4dc0a867da76f35132364cf5ad2abd55"><div class="ttname"><a href="classdrain_1_1Castable.html#a4dc0a867da76f35132364cf5ad2abd55">drain::Castable::info</a></div><div class="ttdeci">virtual void info(std::ostream &amp;ostr=std::cout) const</div><div class="ttdoc">Print value, type and element count.</div><div class="ttdef"><b>Definition:</b> Castable.cpp:172</div></div>
-<div class="ttc" id="aclassdrain_1_1FlexibleVariable_html"><div class="ttname"><a href="classdrain_1_1FlexibleVariable.html">drain::FlexibleVariable</a></div><div class="ttdef"><b>Definition:</b> FlexibleVariable.h:56</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:307</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:422</div></div>
-<div class="ttc" id="aclassdrain_1_1ReferenceBase_html_ad638bf120151f29e2df26c897be217a7"><div class="ttname"><a href="classdrain_1_1ReferenceBase.html#ad638bf120151f29e2df26c897be217a7">drain::ReferenceBase::link</a></div><div class="ttdeci">ReferenceBase &amp; link(F &amp;p)</div><div class="ttdoc">Set pointer to &amp;p.</div><div class="ttdef"><b>Definition:</b> Var-example.cpp:52</div></div>
-<div class="ttc" id="aclassdrain_1_1Referencer_html"><div class="ttname"><a href="classdrain_1_1Referencer.html">drain::Referencer</a></div><div class="ttdef"><b>Definition:</b> Referencer.h:204</div></div>
-<div class="ttc" id="aclassdrain_1_1Variable_html"><div class="ttname"><a href="classdrain_1_1Variable.html">drain::Variable</a></div><div class="ttdef"><b>Definition:</b> Variable.h:107</div></div>
-<div class="ttc" id="aclassdrain_1_1Variable_html_aa5d02202c1f07e573b97647425fde328"><div class="ttname"><a href="classdrain_1_1Variable.html#aa5d02202c1f07e573b97647425fde328">drain::Variable::setType</a></div><div class="ttdeci">virtual void setType(const std::type_info &amp;t)</div><div class="ttdoc">Sets basic type or void.</div><div class="ttdef"><b>Definition:</b> Variable.cpp:80</div></div>
-<div class="ttc" id="aclassdrain_1_1Variable_html_ad20897c5c8bd47f5d4005989bead0e55"><div class="ttname"><a href="classdrain_1_1Variable.html#ad20897c5c8bd47f5d4005989bead0e55">drain::Variable::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdoc">Does not change separator chars.</div><div class="ttdef"><b>Definition:</b> Variable.h:189</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
-<div class="ttc" id="astructCastableTester_html"><div class="ttname"><a href="structCastableTester.html">CastableTester</a></div><div class="ttdoc">Checks if the value assigned to a drain::Castable stays same when reassigned.</div><div class="ttdef"><b>Definition:</b> Castable-example.cpp:47</div></div>
+<div class="ttc" id="aclassdrain_1_1Castable_html_a0d40b96ccd0e546f29e9509e50fd9840"><div class="ttname"><a href="classdrain_1_1Castable.html#a0d40b96ccd0e546f29e9509e50fd9840">drain::Castable::setSeparator</a></div><div class="ttdeci">Castable &amp; setSeparator(char c=',')</div><div class="ttdoc">The character used between array elements in output stream.</div><div class="ttdef"><b>Definition:</b> Castable.h:534</div></div>
+<div class="ttc" id="aclassdrain_1_1Castable_html_a1a9288d3f22ea9bd5938c2da11c80724"><div class="ttname"><a href="classdrain_1_1Castable.html#a1a9288d3f22ea9bd5938c2da11c80724">drain::Castable::getType</a></div><div class="ttdeci">virtual const std::type_info &amp; getType() const</div><div class="ttdoc">Return the storage type (base type) of the referenced variable.</div><div class="ttdef"><b>Definition:</b> Castable.h:124</div></div>
+<div class="ttc" id="aclassdrain_1_1Castable_html_a4dc0a867da76f35132364cf5ad2abd55"><div class="ttname"><a href="classdrain_1_1Castable.html#a4dc0a867da76f35132364cf5ad2abd55">drain::Castable::info</a></div><div class="ttdeci">virtual void info(std::ostream &amp;ostr=std::cout) const</div><div class="ttdoc">Print value, type and element count.</div><div class="ttdef"><b>Definition:</b> Castable.cpp:207</div></div>
+<div class="ttc" id="aclassdrain_1_1Castable_html_ad20897c5c8bd47f5d4005989bead0e55"><div class="ttname"><a href="classdrain_1_1Castable.html#ad20897c5c8bd47f5d4005989bead0e55">drain::Castable::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdef"><b>Definition:</b> Castable.h:204</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:305</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:420</div></div>
+<div class="ttc" id="aclassdrain_1_1VariableBase_html_aa5d02202c1f07e573b97647425fde328"><div class="ttname"><a href="classdrain_1_1VariableBase.html#aa5d02202c1f07e573b97647425fde328">drain::VariableBase::setType</a></div><div class="ttdeci">virtual void setType(const std::type_info &amp;t)</div><div class="ttdoc">Does not change separator chars.</div><div class="ttdef"><b>Definition:</b> VariableBase.cpp:39</div></div>
+<div class="ttc" id="aclassdrain_1_1VariableT_html"><div class="ttname"><a href="classdrain_1_1VariableT.html">drain::VariableT</a></div><div class="ttdoc">VariableT is a final class applied through typedefs Variable, Reference and FlexibleVariable.</div><div class="ttdef"><b>Definition:</b> VariableT.h:98</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
+<div class="ttc" id="astructCastableTester_html"><div class="ttname"><a href="structCastableTester.html">CastableTester</a></div><div class="ttdoc">Checks if the value assigned to a drain::Castable stays same when reassigned.</div><div class="ttdef"><b>Definition:</b> Castable-example.cpp:48</div></div>
 </div><!-- fragment --> </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

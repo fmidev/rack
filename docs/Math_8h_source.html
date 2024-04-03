@@ -498,7 +498,7 @@ $(function() {
 <div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160; </div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160; </div>
 <div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">operator&lt;&lt;</a>(std::ostream &amp;ostr, <span class="keyword">const</span> Matrix&lt;T&gt; &amp; m){</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> Matrix&lt;T&gt; &amp; m){</div>
 <div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;    ostr &lt;&lt; <span class="charliteral">&#39;[&#39;</span>;</div>
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; m.getRows(); ++i) {</div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> j = 0; j &lt; m.getColumns(); ++j) {</div>
@@ -522,9 +522,8 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Matrix_html_a96d4e4b398b6f618b09e39b75603c13b"><div class="ttname"><a href="classdrain_1_1Matrix.html#a96d4e4b398b6f618b09e39b75603c13b">drain::Matrix::fill</a></div><div class="ttdeci">void fill(const T &amp;x)</div><div class="ttdoc">Resets the values, leaving geomatry.</div><div class="ttdef"><b>Definition:</b> Math.h:110</div></div>
 <div class="ttc" id="aclassdrain_1_1Matrix_html_aca5f0396621e1a43404ddfb60de9136a"><div class="ttname"><a href="classdrain_1_1Matrix.html#aca5f0396621e1a43404ddfb60de9136a">drain::Matrix::inverse3</a></div><div class="ttdeci">void inverse3(Matrix&lt; T2 &gt; &amp;dst)</div><div class="ttdoc">Computes the inverse of a 3-by-3 matrix.</div><div class="ttdef"><b>Definition:</b> Math.h:247</div></div>
 <div class="ttc" id="aclassdrain_1_1Vector_html"><div class="ttname"><a href="classdrain_1_1Vector.html">drain::Vector</a></div><div class="ttdef"><b>Definition:</b> Math.h:314</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
 <div class="ttc" id="anamespacedrain_html_a4611618ff515b85cdf2a50f2268ed4a1"><div class="ttname"><a href="namespacedrain.html#a4611618ff515b85cdf2a50f2268ed4a1">drain::polynomialFit2nd</a></div><div class="ttdeci">void polynomialFit2nd(const T &amp;src, const T &amp;weight, std::vector&lt; double &gt; &amp;coeff)</div><div class="ttdoc">Fits a 2nd order polynomial to a curve.</div><div class="ttdef"><b>Definition:</b> Math.h:374</div></div>
-<div class="ttc" id="anamespacedrain_html_a56b7ff5a86b5866a869819c6ef314fa9"><div class="ttname"><a href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">drain::operator&lt;&lt;</a></div><div class="ttdeci">ostream &amp; operator&lt;&lt;(ostream &amp;ostr, const vector&lt; T &gt; &amp;n)</div><div class="ttdoc">Risk of conflicts?</div><div class="ttdef"><b>Definition:</b> EM-example.cpp:47</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

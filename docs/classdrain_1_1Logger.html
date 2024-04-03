@@ -276,6 +276,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>endTiming</b> ()</td>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a971812497dc6ea12f3c45a34965711e3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (const T &amp;x)</td></tr>
 <tr class="separator:a971812497dc6ea12f3c45a34965711e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf81d3fdaf258088d7692fa70cece087"><td class="memItemLeft" align="right" valign="top"><a id="aaf81d3fdaf258088d7692fa70cece087"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> ()</td></tr>
+<tr class="separator:aaf81d3fdaf258088d7692fa70cece087"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a8823a7603efb892836d81a6353874a"><td class="memItemLeft" align="right" valign="top"><a id="a7a8823a7603efb892836d81a6353874a"></a>
 <a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#a7a8823a7603efb892836d81a6353874a">operator&lt;&lt;</a> (oper op)</td></tr>
 <tr class="memdesc:a7a8823a7603efb892836d81a6353874a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handling flush operator. <br /></td></tr>
@@ -338,9 +341,10 @@ template&lt;typename T , typename ... TT&gt; </td></tr>
 template&lt;level_t L&gt; </td></tr>
 <tr class="memitem:a5dcd205916e42b1e48a119ad5bc1c3cd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>initMessage</b> (const <a class="el" href="structdrain_1_1Notification.html">Notification</a> &amp;notif)</td></tr>
 <tr class="separator:a5dcd205916e42b1e48a119ad5bc1c3cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a906b3bbe08c38505b5bf6ce47bde0740"><td class="memItemLeft" align="right" valign="top"><a id="a906b3bbe08c38505b5bf6ce47bde0740"></a>
-<a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>initMessage</b> (level_t level)</td></tr>
-<tr class="separator:a906b3bbe08c38505b5bf6ce47bde0740"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfd5efd454bcfbe38b885ad82fca83b1"><td class="memItemLeft" align="right" valign="top"><a id="adfd5efd454bcfbe38b885ad82fca83b1"></a>
+<a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#adfd5efd454bcfbe38b885ad82fca83b1">initMessage</a> (level_t level)</td></tr>
+<tr class="memdesc:adfd5efd454bcfbe38b885ad82fca83b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Picks message label from a dictionary. <br /></td></tr>
+<tr class="separator:adfd5efd454bcfbe38b885ad82fca83b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a502436964c7e6786c055e81e12d6736d"><td class="memTemplParams" colspan="2"><a id="a502436964c7e6786c055e81e12d6736d"></a>
 template&lt;typename T , typename ... TT&gt; </td></tr>
 <tr class="memitem:a502436964c7e6786c055e81e12d6736d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>flush</b> (const T &amp;arg, const TT &amp;... rest)</td></tr>
@@ -373,7 +377,7 @@ const <a class="el" href="structdrain_1_1Notification.html">Notification</a> *&#
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LogSourc e is the means for a function or any program segment to "connect" to a <a class="el" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger.">Log</a>. </p>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Castable-example_8cpp-example.html#_a3">Castable-example.cpp</a>, and <a class="el" href="ReferenceMap-example_8cpp-example.html#_a12">ReferenceMap-example.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="Castable-example_8cpp-example.html#_a3">Castable-example.cpp</a>, and <a class="el" href="ReferenceMap-example_8cpp-example.html#_a10">ReferenceMap-example.cpp</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aac91702c151675d192b6f9e33a2f98d9"></a>
@@ -493,7 +497,7 @@ const <a class="el" href="structdrain_1_1Notification.html">Notification</a> *&#
 </ul>
 </li>
 </ul>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ReferenceMap-example_8cpp-example.html#a17">ReferenceMap-example.cpp</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="ReferenceMap-example_8cpp-example.html#a15">ReferenceMap-example.cpp</a>.</dd>
 </dl>
 
 </div>
@@ -846,8 +850,8 @@ const <a class="el" href="structdrain_1_1Notification.html">Notification</a> *&#
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/drain/util/<a class="el" href="Log_8h_source.html">Log.h</a></li>
-<li>src/drain/util/Log.cpp</li>
+<li>src/drain/<a class="el" href="Log_8h_source.html">Log.h</a></li>
+<li>src/drain/Log.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

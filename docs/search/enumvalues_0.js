@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['datasets_4137',['DATASETS',['../classhi5_1_1Reader.html#a46c8a310cf4c094f8c80e1cb8dc1f911a819692478a5ee5404708d38bdaef1f97',1,'hi5::Reader']]]
+  ['clear_4162',['CLEAR',['../classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa1e1a4aba20a5a009e616cbc8fad33ac7',1,'rack::EchoTop2Op']]]
 ];

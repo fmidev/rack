@@ -110,11 +110,11 @@ $(function() {
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//#include &quot;TreeSVG.h&quot;</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//#include &quot;drain/util/JSONtree.h&quot;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;ostream&gt;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &quot;drain/util/Log.h&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;drain/Log.h&gt;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;ostream&gt;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &quot;ImageCodebook.h&quot;</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a></div>
@@ -135,7 +135,7 @@ $(function() {
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">operator&lt;&lt;</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1LegendEntry.html">LegendEntry</a> &amp; entry, std::ostream &amp;ostr){</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;std::ostream &amp; operator&lt;&lt;(<span class="keyword">const</span> <a class="code" href="classdrain_1_1LegendEntry.html">LegendEntry</a> &amp; entry, std::ostream &amp;ostr){</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">//return ostr &lt;&lt; (const std::string &amp;)entry;</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">return</span> ostr &lt;&lt; entry.label;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
@@ -175,8 +175,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1ImageCodeMap_html"><div class="ttname"><a href="classdrain_1_1ImageCodeMap.html">drain::ImageCodeMap</a></div><div class="ttdef"><b>Definition:</b> ImageCodebook.h:52</div></div>
 <div class="ttc" id="aclassdrain_1_1LegendEntry_html"><div class="ttname"><a href="classdrain_1_1LegendEntry.html">drain::LegendEntry</a></div><div class="ttdef"><b>Definition:</b> Legend.h:53</div></div>
 <div class="ttc" id="aclassdrain_1_1Legend_html"><div class="ttname"><a href="classdrain_1_1Legend.html">drain::Legend</a></div><div class="ttdef"><b>Definition:</b> Legend.h:70</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
-<div class="ttc" id="anamespacedrain_html_a56b7ff5a86b5866a869819c6ef314fa9"><div class="ttname"><a href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">drain::operator&lt;&lt;</a></div><div class="ttdeci">ostream &amp; operator&lt;&lt;(ostream &amp;ostr, const vector&lt; T &gt; &amp;n)</div><div class="ttdoc">Risk of conflicts?</div><div class="ttdef"><b>Definition:</b> EM-example.cpp:47</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

@@ -1,24 +1,34 @@
 /*
 
-    Copyright 2001 - 2017  Markus Peura, Finnish Meteorological Institute (First.Last@fmi.fi)
+MIT License
 
+Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
 
-    This file is part of Rack for C++.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-    Rack is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    any later version.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-    Rack is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser Public License for more details.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-    You should have received a copy of the GNU General Public License
-    along with Rack.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/*
+Part of Rack development has been done in the BALTRAD projects part-financed
+by the European Union (European Regional Development Fund and European
+Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
+*/
 
- */
 /*  // ,VariableLike
   REQUIRE: drain/{Caster,Castable,FlexibleVariable,Log,Reference,Sprinter,String,RegExp,TextStyle,Type,TypeUtils,Variable,VariableBase}.cpp
   REQUIRE: drain/util/Time.cpp
@@ -27,6 +37,7 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include <cassert>
 
 #include "drain/Log.h"
 //#include "drain/VariableAssign.h"
@@ -201,27 +212,83 @@ void testAssignment(C & c, const T & x){
 
 }
 
-
 /*
 template <class T, class C>
-void testResetedAssignment(C & c){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	const T x = c;
-
-	c.reset();
-	c = x;
-
-	if (c.getType() != typeid(T)){
-		mout.reject() << "type not adapted:" <<  x <<  " -> " <<  c;
-		c.info(std::cerr);
-		mout << mout.endl;
-	}
-
+void checkType(const C & c){
 
 }
 */
+
+template <class T, class C>
+void checkType(drain::Logger & mout, const C & c){
+
+	static const std::type_info & t = typeid(T);
+	static const std::string & tName = drain::Type::call<drain::simpleName>(t);
+
+	const std::type_info & ct = c.getType();
+	const std::string & ctName = drain::Type::call<drain::simpleName>(ct);
+
+	if (ct == t){
+		mout.accept(tName, " => ", ctName);
+	}
+	else if (c.isString()){
+		mout.pending(tName, " => ", ctName);
+	}
+	else {
+		mout.reject(tName, " => ", ctName);
+	}
+	/*
+	if (t == typeid(std::string)){
+		return c.isString();
+	}
+	*/
+
+
+}
+
+#define mika(expr) ( { printf(#expr); printf(#expr) } )
+
+template <class T, class C>
+void testVariableConstructors(C & c, const T & value = T()){
+
+	drain::Logger mout(__FUNCTION__, drain::TypeName<T>::str());
+
+	mout.note(drain::TypeName<C>::str(), " <= ", value, " [",  drain::TypeName<T>::str(), "]");
+
+	try {
+		mout.attention("C c1");
+		mika( C c1 );
+
+		C c1;
+		// assert(!c1.typeIsSet());
+		checkType<void>(mout, c1);
+
+		mout.attention("C c2(typeid(", drain::TypeName<T>::str(),")");
+		C c2(typeid(T));
+		checkType<T>(mout, c2);
+		// mout.note(drain::Type::call<drain::simpleName>(c2.getType()), " [",  drain::TypeName<T>::str(), "]");
+		// assert(c2.getType() == typeid(T));
+
+		mout.attention("Constructor with initialisation");
+		C c4(value);
+		checkType<T>(mout, c4);
+
+		mout.attention("Constructor with assignment");
+		C c3 = value;
+		// mout.note(drain::Type::call<drain::simpleName>(c3.getType()), " [",  drain::TypeName<T>::str(), "]");
+		// assert(c3.getType() == typeid(T));
+		checkType<T>(mout, c3);
+
+		// assert(c4.getType() == typeid(T));
+	}
+	catch (const std::exception & e) {
+		mout.note(e.what());
+		mout.error("quitting");
+
+	}
+
+}
+
 
 
 template <class C, class T>
@@ -315,32 +382,21 @@ void demo(const T & value, char outputSeparator = ','){
 	mout.note("Castable:");
 	drain::Castable c(data);
 	c.setSeparator(outputSeparator);
-	// std::cout << "Castable: c = value \n";
-	// c = value;
-	// std::cout << "Castable: \n";
 	testAssignment(c, value);
-	//testAssignment(c);
-	//testAssignment(c = value);
 	testAssignmentToReseted(c, value, true);
 	std::cerr << '\n';
 
-	//std::cout << "Reference: \n";
 	mout.note("Reference");
 	drain::Reference r(data);
 	r.setSeparator(outputSeparator);
-	//r.link(data);
-	// testAssignment(r = value);
 	testAssignment(r, value);
 	testAssignmentToReseted(r, value, true);
 	std::cerr << '\n';
-	// testAssignmentRelinked(r, value);
 
-	//std::cout << "Variable: \n";
-	mout.note("Variable");
+	mout.note(drain::TypeName<drain::Variable>::str());
 	drain::Variable v;
-	//v.getType();
 	v.setSeparator(outputSeparator);
-	//testAssignment(v = value);
+	testVariableConstructors(v, value);
 	testAssignment(v, value);
 	testAssignmentToReseted(v, value, false);
 	std::cerr << '\n';
@@ -352,9 +408,10 @@ void demo(const T & value, char outputSeparator = ','){
 	testAssignment(v = value);
 	*/
 
-	mout.note("FlexibleVariable:");
+	mout.note(drain::TypeName<drain::FlexibleVariable>::str());
 	drain::FlexibleVariable fv;
 	fv.setSeparator(outputSeparator);
+	testVariableConstructors(fv, value);
 	testAssignment(fv, value);
 	testAssignmentToReseted(fv, value, false);
 	// testAssignmentRelinked(fv, value);
@@ -467,16 +524,42 @@ bool CastableComparer::compareUsingType<char>(){
    ./Time-example '2018/11/16 22:58 0' '%Y/%m/%d %H:%M %s' '%d.%m.%Y %H:%M,%S %Z'
    \endcode
 */
+
+//#define mika(expr) (static_cast<bool>(expr) ? void(0) : printf(#expr) )
+
 int main(int argc, char **argv){
 
-	drain::getLog().setVerbosity(6);
+	drain::getLog().setVerbosity(5);
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	drain::Variable var;
-	drain::Reference ref;
-	drain::FlexibleVariable flex;
+
 	std::string empty;
 
+	/// Fundamental tests - on which other tests rely as well.
+	drain::Variable var;
+	assert( var.isVariable());
+	assert(!var.isLinkable());
+	assert(!var.isReference());
+
+
+	drain::Reference ref;
+	assert(!ref.isVariable());
+	assert( ref.isLinkable());
+	assert( ref.isReference());
+	// var.isAssignable(); // True for
+	//ref.link(empty);
+	//assert( ref.isReference());
+
+	drain::FlexibleVariable flex;
+	assert( flex.isVariable());
+	assert( flex.isLinkable());
+	assert(!flex.isReference());
+	flex.link(empty);
+	assert( flex.isReference());
+	flex.setType(typeid(float));
+
+	var.reset();
+	ref.reset();
 
 	// Type::call<drain::typesetter>(*this, t);
 

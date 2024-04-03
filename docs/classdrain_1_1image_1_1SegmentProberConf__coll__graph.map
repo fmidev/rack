@@ -1,8 +1,8 @@
 <map id="SegmentProberConf&lt; S, D &gt;" name="SegmentProberConf&lt; S, D &gt;">
-<area shape="rect" id="node1" title="Container for parameters of SegmentProber." alt="" coords="135,247,298,288"/>
-<area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="93,157,209,184"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,5,231,32"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Range.html" title=" " alt="" coords="247,157,349,184"/>
-<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="237,81,372,108"/>
+<area shape="rect" id="node1" title="Container for parameters of SegmentProber." alt="" coords="131,247,294,288"/>
+<area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="89,157,205,184"/>
+<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,208,108"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,5,225,32"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Range.html" title=" " alt="" coords="242,157,343,184"/>
+<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="232,81,367,108"/>
 </map>

@@ -116,7 +116,7 @@ $(function() {
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;sys/stat.h&gt;</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &quot;RegExp.h&quot;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &lt;drain/RegExp.h&gt;</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &quot;Path.h&quot;</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
@@ -253,7 +253,7 @@ $(function() {
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;};</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> FilePath &amp; p) {</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;std::ostream &amp; <a class="code" href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> FilePath &amp; p) {</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keywordflow">return</span> p.toStream(ostr);</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;}</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
@@ -267,8 +267,8 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1FilePath_html_a8bb090c75a9925da82ffce320f591925"><div class="ttname"><a href="classdrain_1_1FilePath.html#a8bb090c75a9925da82ffce320f591925">drain::FilePath::toStream</a></div><div class="ttdeci">virtual std::ostream &amp; toStream(std::ostream &amp;ostr) const</div><div class="ttdoc">Directory path separator.</div><div class="ttdef"><b>Definition:</b> FilePath.h:146</div></div>
 <div class="ttc" id="aclassdrain_1_1Path_html"><div class="ttname"><a href="classdrain_1_1Path.html">drain::Path</a></div><div class="ttdef"><b>Definition:</b> Path.h:112</div></div>
 <div class="ttc" id="aclassdrain_1_1Path_html_aa6eeb6f7ac9d5e04e8797984ab1ec40c"><div class="ttname"><a href="classdrain_1_1Path.html#aa6eeb6f7ac9d5e04e8797984ab1ec40c">drain::Path::append</a></div><div class="ttdeci">void append(const T2 &amp;arg, const TT &amp;... args)</div><div class="ttdoc">Append path with element(s), path(s) or string(s).</div><div class="ttdef"><b>Definition:</b> Path.h:196</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
-<div class="ttc" id="anamespacedrain_html_a56b7ff5a86b5866a869819c6ef314fa9"><div class="ttname"><a href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">drain::operator&lt;&lt;</a></div><div class="ttdeci">ostream &amp; operator&lt;&lt;(ostream &amp;ostr, const vector&lt; T &gt; &amp;n)</div><div class="ttdoc">Risk of conflicts?</div><div class="ttdef"><b>Definition:</b> EM-example.cpp:47</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
+<div class="ttc" id="anamespacerack_html_a9da7fe6d7ac333840a874ef95845f1e2"><div class="ttname"><a href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition:</b> Data.h:536</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

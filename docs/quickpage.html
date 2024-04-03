@@ -87,13 +87,247 @@ Introduction</h1>
 General commands</h2>
 <div class="fragment"></div><!-- fragment --><h2><a class="anchor" id="commands_andre"></a>
 Anomaly detection and removal</h2>
-<div class="fragment"></div><!-- fragment --><h2><a class="anchor" id="commands_product"></a>
+<div class="fragment"><div class="line">Rack - a radar data processing program</div>
+<div class="line"> </div>
+<div class="line">Section: andre</div>
+<div class="line"> </div>
+<div class="line">--aAttenuation  &lt;reflHalfWidth&gt;,&lt;c&gt;,&lt;p&gt;,&lt;c2&gt;,&lt;p2&gt;</div>
+<div class="line">  Computes attenuation and converts it to probability</div>
+<div class="line">--aBiomet  &lt;reflMax&gt;,&lt;maxAltitude&gt;,&lt;reflDev&gt;,&lt;devAltitude&gt;</div>
+<div class="line">  Detects birds and insects.</div>
+<div class="line">--aBird  &lt;dbzPeak&gt;,&lt;vradDevMin&gt;,&lt;rhoHVmax&gt;,&lt;zdrAbsMin&gt;,&lt;windowWidth&gt;,&lt;windowHeight&gt;</div>
+<div class="line">  Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.</div>
+<div class="line">--aCCor  &lt;threshold&gt;,&lt;mask&gt;</div>
+<div class="line">  Detects clutter. Based on difference of DBZH and TH. At halfwidth PROB=0.5. Universal.</div>
+<div class="line">--aClutter  &lt;decay&gt;,&lt;gamma&gt;,&lt;quantity&gt;,&lt;file&gt;</div>
+<div class="line">  Reads a ground clutter map and scales it to sweeps.</div>
+<div class="line">--aDamper  &lt;threshold&gt;,&lt;undetectThreshold&gt;,&lt;minValue&gt;</div>
+<div class="line">  Removes anomalies with fuzzy deletion operator.</div>
+<div class="line">--aDefault  &lt;probability&gt;</div>
+<div class="line">  Marks the data values as unclassified, with high probability</div>
+<div class="line">--aDefaultQuality  &lt;threshold&gt;</div>
+<div class="line">  Quality index value below which also CLASS information will be updated.</div>
+<div class="line">--aDopplerNoise  &lt;speedDevThreshold&gt;,&lt;windowWidth&gt;,&lt;windowHeight&gt;</div>
+<div class="line">  Detects suspicious variance in Doppler speed (VRAD).</div>
+<div class="line">--aEmitter  &lt;lengthMin&gt;,&lt;thicknessMax&gt;,&lt;sensitivity&gt;</div>
+<div class="line">  Detects electromagnetic interference segments by means of window medians.</div>
+<div class="line">--aGapFill  &lt;width&gt;,&lt;height&gt;,&lt;qualityThreshold&gt;</div>
+<div class="line">  Removes low-quality data with gap fill based on distance transformation.</div>
+<div class="line">--aGapFillRec  &lt;width&gt;,&lt;height&gt;,&lt;loops&gt;</div>
+<div class="line">  Recursive, &#39;splinic&#39; gap filler.</div>
+<div class="line">--aHydroClassBased  &lt;nonMet&gt;,&lt;NOMET&gt;</div>
+<div class="line">  Sets probabilities of non-meteorological echoes based on precomputed hydrometeor CLASS.</div>
+<div class="line">--aInsect  &lt;dbzPeak&gt;,&lt;vradDevMax&gt;,&lt;rhoHVmax&gt;,&lt;zdrAbsMin&gt;,&lt;windowWidth&gt;,&lt;windowHeight&gt;</div>
+<div class="line">  Estimates probability from DBZH, VRAD, RhoHV and ZDR.</div>
+<div class="line">--aJamming  &lt;smoothnessThreshold&gt;,&lt;distanceMin&gt;,&lt;refit&gt;</div>
+<div class="line">  Detects broad lines caused by electromagnetic interference. Intensities should be smooth, increasing by distance.</div>
+<div class="line">--aNonMet  &lt;threshold&gt;,&lt;windowWidth&gt;,&lt;windowHeight&gt;,&lt;medianPos&gt;</div>
+<div class="line">  Detects clutter. Based on dual-pol parameter RhoHV . Optional postprocessing: morphological closing. Universal.</div>
+<div class="line">--aPrecip  &lt;probMax&gt;,&lt;dbz&gt;,&lt;dbzSpan&gt;</div>
+<div class="line">  Detects precipitation...</div>
+<div class="line">--aQualityCombiner  </div>
+<div class="line">  Combines detection probabilities to overall quality field QIND (and CLASS).</div>
+<div class="line">--aRemover  &lt;threshold&gt;,&lt;replace&gt;,&lt;clearQuality&gt;</div>
+<div class="line">  Simple anomaly removal operator.</div>
+<div class="line">--aShip  &lt;reflMin&gt;,&lt;reflDev&gt;,&lt;windowWidth&gt;,&lt;windowHeight&gt;</div>
+<div class="line">  Detects ships based on their high absolute reflectivity and local reflectivity difference.</div>
+<div class="line">--aSpeckle  &lt;threshold&gt;,&lt;area&gt;,&lt;invertPolar&gt;</div>
+<div class="line">  Detects speckle noise. Universal: uses DBZ data as input, applies to all data in a sweep group.</div>
+<div class="line">--aSun  &lt;beamWidth&gt;,&lt;sensitivity&gt;</div>
+<div class="line">  Draw the sun beam</div>
+<div class="line">--aTest  &lt;value&gt;,&lt;prob&gt;,&lt;i&gt;,&lt;j&gt;</div>
+<div class="line">  Create rectangular fake anomaly (value) and &#39;detect&#39; it with desired probability (prob).</div>
+<div class="line">--aTime  &lt;time&gt;,&lt;decayPast&gt;,&lt;decayFuture&gt;</div>
+<div class="line">  Created quality field based on measurement time for each beam.</div>
+<div class="line">--aUniversal  &lt;unversal&gt;</div>
+<div class="line">  Toggle the support for universal ie. Dataset-wide quality indices.</div>
+<div class="line"> </div>
+<div class="line">For help on a commands, type:</div>
+<div class="line">  --help &lt;command&gt;</div>
+<div class="line"> </div>
+<div class="line">For help on command sections, type:</div>
+<div class="line">  --help [general|trigger|images|andre|science|products|accumulation|cart|imageOps|all]</div>
+</div><!-- fragment --><h2><a class="anchor" id="commands_product"></a>
 Meteorological products</h2>
-<div class="fragment"></div><!-- fragment --><h2><a class="anchor" id="commands_cart"></a>
+<div class="fragment"><div class="line">Rack - a radar data processing program</div>
+<div class="line"> </div>
+<div class="line">Section: products</div>
+<div class="line"> </div>
+<div class="line">--pBeamAltitude  &lt;aboveSeaLevel&gt;</div>
+<div class="line">  Computes the altitude at each bin</div>
+<div class="line">--pBiomet  &lt;reflMax&gt;,&lt;maxAltitude&gt;,&lt;reflDev&gt;,&lt;devAltitude&gt;</div>
+<div class="line">  Detects birds and insects.</div>
+<div class="line">--pBird  &lt;dbzPeak&gt;,&lt;vradDevMin&gt;,&lt;rhoHVmax&gt;,&lt;zdrAbsMin&gt;,&lt;windowWidth&gt;,&lt;windowHeight&gt;</div>
+<div class="line">  Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.</div>
+<div class="line">--pCappi  &lt;altitude&gt;,&lt;aboveSeaLevel&gt;,&lt;beamWidth&gt;,&lt;weightMin&gt;,&lt;accumulationMethod&gt;</div>
+<div class="line">  Constant-altitude planar position indicator</div>
+<div class="line">--pClutter  &lt;decay&gt;,&lt;gamma&gt;,&lt;quantity&gt;,&lt;file&gt;</div>
+<div class="line">  Reads a ground clutter map and scales it to sweeps.</div>
+<div class="line">--pConv  &lt;maxEchoThreshold&gt;,&lt;cellDiameter&gt;,&lt;echoTopThreshold&gt;,&lt;echoTopDBZ&gt;,&lt;smoothAzm&gt;,&lt;smoothRad&gt;</div>
+<div class="line">  Computes the probability of convection based on fuzzy cell intensity, area and height.</div>
+<div class="line">--pDopplerAvg  &lt;width&gt;,&lt;height&gt;,&lt;threshold&gt;,&lt;compensate&gt;,&lt;relativeScale&gt;</div>
+<div class="line">  Smoothens Doppler field, providing quality</div>
+<div class="line">--pDopplerAvgExp  &lt;decay&gt;,&lt;horzExtension&gt;,&lt;vertExtension&gt;</div>
+<div class="line">  Doppler field smoother with exponential decay weighting</div>
+<div class="line">--pDopplerCrawler  &lt;nyquist&gt;,&lt;threshold&gt;</div>
+<div class="line">  Creates virtual </div>
+<div class="line">--pDopplerDev  &lt;width&gt;,&lt;height&gt;,&lt;threshold&gt;,&lt;compensate&gt;,&lt;relativeScale&gt;</div>
+<div class="line">  Computes std.dev.[m/s] of Doppler field</div>
+<div class="line">--pDopplerDiff  &lt;dMax&gt;</div>
+<div class="line">  Azimuthal difference of VRAD</div>
+<div class="line">--pDopplerDiffPlotter  &lt;azm&gt;,&lt;range&gt;,&lt;ray&gt;,&lt;bin&gt;</div>
+<div class="line">  Plots differences in VRAD data as fucntion of azimuth</div>
+<div class="line">--pDopplerEccentricity  &lt;width&gt;,&lt;height&gt;,&lt;threshold&gt;,&lt;compensate&gt;</div>
+<div class="line">  Magnitude of mean unit circle mapped Doppler speeds</div>
+<div class="line">--pDopplerInversion  &lt;width&gt;,&lt;height&gt;,&lt;altitudeWeight&gt;</div>
+<div class="line">  Derives 2D wind (u,v) from aliased Doppler data.</div>
+<div class="line">--pDopplerReproject  &lt;nyquist&gt;,&lt;match&gt;,&lt;quantity&gt;</div>
+<div class="line">  Creates virtual </div>
+<div class="line">--pDopplerSampler  &lt;azm&gt;,&lt;range&gt;,&lt;ray&gt;,&lt;bin&gt;</div>
+<div class="line">  Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)</div>
+<div class="line">--pDrawing  &lt;shape&gt;,&lt;p1&gt;,&lt;p2&gt;,&lt;p3&gt;,&lt;p4&gt;,&lt;marker&gt;</div>
+<div class="line">  Visualise a direction[azm,r,r2], range[r,r2], sector[azm,azm2,r,r2] or arc[azm,azm2,r].</div>
+<div class="line">--pEchoTop  &lt;minDBZ&gt;,&lt;dbzReference&gt;,&lt;altitudeReference&gt;,&lt;aboveSeaLevel&gt;</div>
+<div class="line">  Computes maximum (or minimum) altitude of echo.</div>
+<div class="line">--pEchoTop2  &lt;threshold&gt;,&lt;reference&gt;,&lt;dryTop&gt;,&lt;_EXTENDED&gt;</div>
+<div class="line">  Estimates maximum altitude of given reflectivity</div>
+<div class="line">--pFunctor  &lt;ftor&gt;</div>
+<div class="line">  Maps values using a function</div>
+<div class="line">--pMaxEcho  &lt;altitude&gt;,&lt;accumulationMethod&gt;</div>
+<div class="line">  Computes maximum dBZ inside altitude range</div>
+<div class="line">--pOutputQuantity  &lt;productCmd&gt;</div>
+<div class="line">  Return default outout quantity</div>
+<div class="line">--pPolarSlidingAvg  &lt;width&gt;,&lt;height&gt;,&lt;threshold&gt;,&lt;invertPolar&gt;</div>
+<div class="line">  Smoothen polar data</div>
+<div class="line">--pPseudoRhi  &lt;az_angle&gt;,&lt;xsize&gt;,&lt;ysize&gt;,&lt;range&gt;,&lt;height&gt;,&lt;beamWidth&gt;,&lt;beamPowerThreshold&gt;</div>
+<div class="line">  Computes vertical intersection in a volume in the beam direction.</div>
+<div class="line">--pRainRate  </div>
+<div class="line">  Estimates precipitation rate [mm/h] from reflectance [dBZ].</div>
+<div class="line">--pRainRateDP  &lt;rhohv&gt;,&lt;dbz&gt;,&lt;kdp&gt;,&lt;zdr&gt;</div>
+<div class="line">  Precip. rate [mm/h] from dual-pol using fuzzy thresholds. Alg. by Brandon Hickman</div>
+<div class="line">--pSunShine  &lt;timestamp&gt;,&lt;quantity&gt;</div>
+<div class="line">  Computes the sun position</div>
+<div class="line">--pSweep  &lt;quantity&gt;,&lt;index&gt;</div>
+<div class="line">  Return a single sweep</div>
+<div class="line">--pVerticalProfile  &lt;range&gt;,&lt;height&gt;,&lt;levels&gt;,&lt;azm&gt;,&lt;azSlots&gt;</div>
+<div class="line">  Computes vertical dBZ distribution in within range [minRange,maxRange] km.</div>
+<div class="line"> </div>
+<div class="line">For help on a commands, type:</div>
+<div class="line">  --help &lt;command&gt;</div>
+<div class="line"> </div>
+<div class="line">For help on command sections, type:</div>
+<div class="line">  --help [general|trigger|images|andre|science|products|accumulation|cart|imageOps|all]</div>
+</div><!-- fragment --><h2><a class="anchor" id="commands_cart"></a>
 Compositing and Cartesian products</h2>
-<div class="fragment"></div><!-- fragment --><h2><a class="anchor" id="commands_images"></a>
+<div class="fragment"><div class="line">Rack - a radar data processing program</div>
+<div class="line"> </div>
+<div class="line">Section: cart</div>
+<div class="line"> </div>
+<div class="line">--cAdd  </div>
+<div class="line">  Adds the current product to the composite.</div>
+<div class="line">--cAddWeighted  &lt;weight&gt;</div>
+<div class="line">  Adds the current product to the composite applying weight.</div>
+<div class="line">--cBBox  &lt;llLon&gt;,&lt;llLat&gt;,&lt;urLon&gt;,&lt;urLat&gt;</div>
+<div class="line">  Bounding box of the Cartesian product.</div>
+<div class="line">--cBBoxReset  </div>
+<div class="line">  Resets the bounding box (to be set again according to the next radar data).</div>
+<div class="line">--cBBoxTest  &lt;mode&gt;</div>
+<div class="line">  Tests whether the radar range is inside the composite.</div>
+<div class="line">--cBBoxTile  &lt;llLon&gt;,&lt;llLat&gt;,&lt;urLon&gt;,&lt;urLat&gt;</div>
+<div class="line">  Redefines bbox and compositing array size for several radars, applying original projection and resolution. See --cSize, --cBBox, --cProj.</div>
+<div class="line">--cCreate, -c  </div>
+<div class="line">  Maps the current polar product to a Cartesian product.</div>
+<div class="line">--cCreateLookup  </div>
+<div class="line">  Creates lookup objects</div>
+<div class="line">--cCreateSun  &lt;timestamp&gt;</div>
+<div class="line">  Cartesian sun shine field.</div>
+<div class="line">--cCreateTile  </div>
+<div class="line">  Maps the current polar product to a tile to be used in compositing.</div>
+<div class="line">--cDecayTime  &lt;time&gt;</div>
+<div class="line">  Delay half-time in minutes. 0=no decay</div>
+<div class="line">--cDefaultQuality  &lt;weight&gt;</div>
+<div class="line">  Set default quality (for data without quality field)</div>
+<div class="line">--cExtract  &lt;channels&gt;,&lt;bbox&gt;</div>
+<div class="line">  Extract data that has been composited on the accumulation array</div>
+<div class="line">--cGrid  &lt;lonSpacing&gt;,&lt;latSpacing&gt;,&lt;width&gt;,&lt;intensity&gt;</div>
+<div class="line">  Draw lat-lon grid onto a Cartesian product.</div>
+<div class="line">--cInit  </div>
+<div class="line">  Allocate memory to --cSize, applying --target and --select, if set.</div>
+<div class="line">--cMethod  &lt;method&gt;</div>
+<div class="line">  Method to be used in accumulating the (weighted) values.</div>
+<div class="line">--cOpticalFlow  &lt;width&gt;,&lt;resize&gt;,&lt;threshold&gt;,&lt;spread&gt;,&lt;smooth&gt;</div>
+<div class="line">  Optical flow computed based on differential accumulation layers.</div>
+<div class="line">--cPlot  &lt;lon&gt;,&lt;lat&gt;,&lt;x&gt;,&lt;w&gt;</div>
+<div class="line">  Add a single data point.</div>
+<div class="line">--cPlotFile  &lt;file&gt;</div>
+<div class="line">  Plot file containing rows &#39;&lt;lat&gt; &lt;lon&gt; &lt;value&gt; [weight] (skipped...)&#39;.</div>
+<div class="line">--cProj  &lt;projstr&gt;</div>
+<div class="line">  Set projection</div>
+<div class="line">--cRange  &lt;range&gt;</div>
+<div class="line">  Force a range for single-radar cartesian products (0=use-metadata).</div>
+<div class="line">--cReset  </div>
+<div class="line">  Clears the current Cartesian product.</div>
+<div class="line">--cSize  &lt;width&gt;,&lt;height&gt;</div>
+<div class="line">  Set size of the compositing array. Does not allocate memory.</div>
+<div class="line">--cSpread  &lt;horz&gt;,&lt;vert&gt;,&lt;loops&gt;</div>
+<div class="line">  Set Spread of the compositing array. OBSOLETE. Use --iDistanceTransformFill(Exp) instead</div>
+<div class="line">--cTime  &lt;time&gt;</div>
+<div class="line">  Modify the time of the current composite. See --cTimeDecay </div>
+<div class="line">--cTimeDecay  &lt;weight&gt;</div>
+<div class="line">  Weight (0.9...1.0) of delay, per minute. 1.0=no decay. See --cTime and --cDecayTime</div>
+<div class="line"> </div>
+<div class="line">For help on a commands, type:</div>
+<div class="line">  --help &lt;command&gt;</div>
+<div class="line"> </div>
+<div class="line">For help on command sections, type:</div>
+<div class="line">  --help [general|trigger|images|andre|science|products|accumulation|cart|imageOps|all]</div>
+</div><!-- fragment --><h2><a class="anchor" id="commands_images"></a>
 Basic image commands</h2>
-<div class="fragment"></div><!-- fragment --><h2><a class="anchor" id="commands_imageOps"></a>
+<div class="fragment"><div class="line">Rack - a radar data processing program</div>
+<div class="line"> </div>
+<div class="line">Section: images</div>
+<div class="line"> </div>
+<div class="line">--geoTiff  &lt;tile&gt;,&lt;compression&gt;</div>
+<div class="line">  GeoTIFF tile size. Deprecating?, use --outputConf tif:tile=&lt;width&gt;:&lt;height&gt;,compression=LZW</div>
+<div class="line">--iPhysical  &lt;physical&gt;</div>
+<div class="line">  Flag. Handle intensities as physical quantities instead of storage typed values.</div>
+<div class="line">--image  </div>
+<div class="line">  Copies data to a separate image object. Encoding can be changed with --target .</div>
+<div class="line">--imageAlpha  </div>
+<div class="line">  Adds a transparency channel. Implies additional image, creates one if needed. See --encoding</div>
+<div class="line">--imageBox  &lt;i&gt;,&lt;j&gt;,&lt;value&gt;</div>
+<div class="line">  Set intensity at (i:i2,j:j2) to (f1,f2,f3,...).</div>
+<div class="line">--imageFlatten  &lt;bgcolor&gt;</div>
+<div class="line">  Removes a alpha (transparency) channel. Adds a new background of given color.</div>
+<div class="line">--imagePhysical  &lt;physical&gt;</div>
+<div class="line">  Flag. Handle intensities as physical quantities instead of storage typed values.</div>
+<div class="line">--imageQuality  &lt;groups&gt;</div>
+<div class="line">  Applied parent groups for quality: dataset:data</div>
+<div class="line">--imageTransp  &lt;ftor&gt;,&lt;undetect&gt;,&lt;nodata&gt;</div>
+<div class="line">  Adds a transparency channel. Uses copied image, creating one if needed.</div>
+<div class="line">--legendOut  &lt;filename&gt;</div>
+<div class="line">  Save palette as TXT, JSON or SVG.</div>
+<div class="line">--outputRawImages, -O  &lt;filename&gt;</div>
+<div class="line">  Output datasets to png files named filename[NN].ext.</div>
+<div class="line">--palette  &lt;filename&gt;</div>
+<div class="line">  Load and apply palette.</div>
+<div class="line">--paletteConf  &lt;key&gt;,&lt;code&gt;,&lt;lenient&gt;</div>
+<div class="line">  Check status of palette(s).</div>
+<div class="line">--paletteIn  &lt;filename&gt;</div>
+<div class="line">  Load palette.</div>
+<div class="line">--paletteOut  &lt;filename&gt;</div>
+<div class="line">  Save palette as TXT, JSON or SVG.</div>
+<div class="line">--paletteRefine  &lt;count&gt;</div>
+<div class="line">  Refine colors</div>
+<div class="line">--plot  &lt;i,j,...&gt;</div>
+<div class="line">  Plot</div>
+<div class="line"> </div>
+<div class="line">For help on a commands, type:</div>
+<div class="line">  --help &lt;command&gt;</div>
+<div class="line"> </div>
+<div class="line">For help on command sections, type:</div>
+<div class="line">  --help [general|trigger|images|andre|science|products|accumulation|cart|imageOps|all]</div>
+</div><!-- fragment --><h2><a class="anchor" id="commands_imageOps"></a>
 Image operators</h2>
 <div class="fragment"><div class="line">Rack - a radar data processing program</div>
 <div class="line"> </div>

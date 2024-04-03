@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rack: src/drain/util/Caster.h Source File</title>
+<title>rack: src/drain/Caster.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4b6777edce7656f28010aab0b9aeb502.html">drain</a></li><li class="navelem"><a class="el" href="dir_fcd8a2cb972a4a0ab2125ef14e9c5575.html">util</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4b6777edce7656f28010aab0b9aeb502.html">drain</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -106,16 +106,16 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define DRAIN_CASTER</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">//#include &lt;typeinfo&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//#include &lt;iomanip&gt;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span>  <span class="comment">// for NaN</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;drain/Type.h&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;drain/TypeUtils.h&gt;</span> <span class="comment">// for typesetter</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//#include &lt;iomanip&gt;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span>  <span class="comment">// for NaN</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &quot;Type.h&quot;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &quot;TypeUtils.h&quot;</span> <span class="comment">// for typesetter</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
@@ -774,7 +774,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Caster_html_a63295ced1a748e507dc6f6089bb0c426"><div class="ttname"><a href="classdrain_1_1Caster.html#a63295ced1a748e507dc6f6089bb0c426">drain::Caster::toOStreamT</a></div><div class="ttdeci">static std::ostream &amp; toOStreamT(std::ostream &amp;ostr, const void *p)</div><div class="ttdoc">New.</div><div class="ttdef"><b>Definition:</b> Caster.h:403</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_a6c49124d2bd3982b2b137fefbba426e4"><div class="ttname"><a href="classdrain_1_1Caster.html#a6c49124d2bd3982b2b137fefbba426e4">drain::Caster::getT</a></div><div class="ttdeci">static T getT(const void *p)</div><div class="ttdoc">The main handler converting input to output.</div><div class="ttdef"><b>Definition:</b> Caster.h:341</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_a782412feaaee472a9271e3af5d1c7692"><div class="ttname"><a href="classdrain_1_1Caster.html#a782412feaaee472a9271e3af5d1c7692">drain::Caster::get</a></div><div class="ttdeci">T get(const void *p) const</div><div class="ttdoc">Default implementation throws an error. See specialized implementation below.</div><div class="ttdef"><b>Definition:</b> Caster.h:195</div></div>
-<div class="ttc" id="aclassdrain_1_1Caster_html_a81413776ee82c3cd6b5410c1f20bd98d"><div class="ttname"><a href="classdrain_1_1Caster.html#a81413776ee82c3cd6b5410c1f20bd98d">drain::Caster::unsetType</a></div><div class="ttdeci">void unsetType()</div><div class="ttdoc">calls void setType&lt;void&gt;().</div><div class="ttdef"><b>Definition:</b> Caster.cpp:130</div></div>
+<div class="ttc" id="aclassdrain_1_1Caster_html_a81413776ee82c3cd6b5410c1f20bd98d"><div class="ttname"><a href="classdrain_1_1Caster.html#a81413776ee82c3cd6b5410c1f20bd98d">drain::Caster::unsetType</a></div><div class="ttdeci">void unsetType()</div><div class="ttdoc">calls void setType&lt;void&gt;().</div><div class="ttdef"><b>Definition:</b> Caster.cpp:131</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_a8462117297feb3579bb0f4730e5b4295"><div class="ttname"><a href="classdrain_1_1Caster.html#a8462117297feb3579bb0f4730e5b4295">drain::Caster::toOStreamPtr</a></div><div class="ttdeci">std::ostream &amp;(* toOStreamPtr)(std::ostream &amp;ostr, const void *p)</div><div class="ttdoc">Write to stream.</div><div class="ttdef"><b>Definition:</b> Caster.h:284</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_a8e615977348f5fcd1fd2aa42af4d577d"><div class="ttname"><a href="classdrain_1_1Caster.html#a8e615977348f5fcd1fd2aa42af4d577d">drain::Caster::putToVoidT</a></div><div class="ttdeci">static void putToVoidT(void *p, const T &amp;x)</div><div class="ttdoc">Void - does nothing, regardless of input type.</div><div class="ttdef"><b>Definition:</b> Caster.h:302</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_a91f17c5f4d0fecfc5d714d80dbbb7d09"><div class="ttname"><a href="classdrain_1_1Caster.html#a91f17c5f4d0fecfc5d714d80dbbb7d09">drain::Caster::getElementSize</a></div><div class="ttdeci">size_t getElementSize() const</div><div class="ttdoc">Returns the size of the base type (size of an element, not of element array).</div><div class="ttdef"><b>Definition:</b> Caster.h:152</div></div>
@@ -795,7 +795,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Caster_html_af04c271cfc8b6e9fbe16ab5b70915a45"><div class="ttname"><a href="classdrain_1_1Caster.html#af04c271cfc8b6e9fbe16ab5b70915a45">drain::Caster::Caster</a></div><div class="ttdeci">Caster(const Caster &amp;c)</div><div class="ttdoc">Copy constructor. Copies the type.</div><div class="ttdef"><b>Definition:</b> Caster.h:87</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_af7b6c9530837aa43d46837c113754431"><div class="ttname"><a href="classdrain_1_1Caster.html#af7b6c9530837aa43d46837c113754431">drain::Caster::translateT</a></div><div class="ttdeci">static void translateT(const Caster &amp;c, const void *ptrC, void *ptr)</div><div class="ttdoc">Casts from ptrC to ptr.</div><div class="ttdef"><b>Definition:</b> Caster.h:395</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_afc4edb90dcfc034ccb1ddb398c08e048"><div class="ttname"><a href="classdrain_1_1Caster.html#afc4edb90dcfc034ccb1ddb398c08e048">drain::Caster::putT</a></div><div class="ttdeci">static void putT(void *p, const T &amp;x)</div><div class="ttdoc">Convert input of base type to internally applied base type.</div><div class="ttdef"><b>Definition:</b> Caster.h:294</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

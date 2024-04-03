@@ -1,8 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="5,71,112,98"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="160,71,231,98"/>
-<area shape="rect" id="node3" href="$classdrain_1_1GlobalFlags.html" title=" " alt="" coords="279,5,433,47"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Flags.html" title="Self&#45;contained Flagger – with an own dictionary and value." alt="" coords="327,71,385,98"/>
-<area shape="rect" id="node6" href="$classdrain_1_1GlobalFlags.html" title="Flags using a global dictionary." alt="" coords="287,122,425,149"/>
-<area shape="rect" id="node4" href="$classdrain_1_1StatusFlags.html" title=" " alt="" coords="481,13,580,39"/>
+<area shape="rect" id="node1" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,5,176,32"/>
 </map>

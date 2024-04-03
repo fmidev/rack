@@ -121,110 +121,157 @@ $(function() {
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html">   50</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1RadarProj.html">RadarProj</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1Proj6.html">drain::Proj6</a> {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">     *  \param lon - longitude of the location, in degrees</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">     *  \param lat - longitude of the location, in degrees</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html#a1149f940aa09da7a0752623a8d4d32f9">   59</a></span>&#160;    <a class="code" href="classrack_1_1RadarProj.html#a1149f940aa09da7a0752623a8d4d32f9">RadarProj</a>(<span class="keywordtype">double</span> lonDeg=0.0, <span class="keywordtype">double</span> latDeg=0.0){</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="classrack_1_1RadarProj.html#ad141b71f9a798933a0b94e1c76ecaf5d">setSiteLocationDeg</a>(lonDeg, latDeg);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">     *  \param lon - longitude of the location, in degrees</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">     *  \param lat - longitude of the location, in degrees</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">    inline</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">    void setLocation(double lon, double lat){</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">        std::stringstream sstr;</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">        sstr &lt;&lt; &quot;+proj=aeqd&quot; &lt;&lt; &quot; +lon_0=&quot; &lt;&lt; lon &lt;&lt; &quot; +lat_0=&quot; &lt;&lt; lat &lt;&lt; &quot; +ellps=WGS84 +type=crs&quot;; //</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">        setProjectionSrc(sstr.str());</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">    };</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">     *  \param lon - longitude of the location, in degrees</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">     *  \param lat - longitude of the location, in degrees</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html#ad141b71f9a798933a0b94e1c76ecaf5d">   81</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj.html#ad141b71f9a798933a0b94e1c76ecaf5d">setSiteLocationDeg</a>(<span class="keywordtype">double</span> lon, <span class="keywordtype">double</span> lat){</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        std::stringstream s;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        s &lt;&lt; <span class="stringliteral">&quot;+proj=aeqd&quot;</span> &lt;&lt; <span class="stringliteral">&quot; +lon_0=&quot;</span> &lt;&lt; lon &lt;&lt; <span class="stringliteral">&quot; +lat_0=&quot;</span> &lt;&lt; lat &lt;&lt; <span class="stringliteral">&quot; +ellps=WGS84 +type=crs&quot;</span>; <span class="comment">//  +type=crs</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <a class="code" href="classdrain_1_1Proj6.html#a1b6ed6f041f3f5ae79ff4c947bbc223e">setProjectionSrc</a>(s.str());</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">     *  \param lon - longitude of the location in radians</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">     *  \param lat - longitude of the location in degrees</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html#ad6518e337354839612d0d7019f2b823b">   93</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj.html#ad6518e337354839612d0d7019f2b823b">setSiteLocationRad</a>(<span class="keywordtype">double</span> lon, <span class="keywordtype">double</span> lat){</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <a class="code" href="classrack_1_1RadarProj.html#ad141b71f9a798933a0b94e1c76ecaf5d">setSiteLocationDeg</a>(lon*drain::RAD2DEG, lat*drain::RAD2DEG);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj4.html">   53</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1RadarProj4.html">RadarProj4</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1Proj6.html">drain::Proj6</a> {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">     *  \param lon - longitude of the location, in degrees</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">     *  \param lat - longitude of the location, in degrees</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj4.html#aeecac857ee8be7473bd06c6758540260">   62</a></span>&#160;    <a class="code" href="classrack_1_1RadarProj4.html#aeecac857ee8be7473bd06c6758540260">RadarProj4</a>(<span class="keywordtype">double</span> lon=0.0, <span class="keywordtype">double</span> lat=0.0){</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="classrack_1_1RadarProj4.html#a4484d1aa2e0a8682f6c584a12be80b5d">setLocation</a>(lon, lat);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">     *  \param lon - longitude of the location, in degrees</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">     *  \param lat - longitude of the location, in degrees</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj4.html#a4484d1aa2e0a8682f6c584a12be80b5d">   72</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj4.html#a4484d1aa2e0a8682f6c584a12be80b5d">setLocation</a>(<span class="keywordtype">double</span> lon, <span class="keywordtype">double</span> lat){</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        std::stringstream sstr;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        sstr &lt;&lt; <span class="stringliteral">&quot;+proj=aeqd&quot;</span> &lt;&lt; <span class="stringliteral">&quot; +lon_0=&quot;</span> &lt;&lt; lon &lt;&lt; <span class="stringliteral">&quot; +lat_0=&quot;</span> &lt;&lt; lat &lt;&lt; <span class="stringliteral">&quot; +ellps=WGS84 +type=crs&quot;</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="classdrain_1_1Proj6.html#a1b6ed6f041f3f5ae79ff4c947bbc223e">setProjectionSrc</a>(sstr.str());</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    };</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj4.html#aec7a0e30d2b640a044b434b742018fa5">   80</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj4.html#aec7a0e30d2b640a044b434b742018fa5">getBoundingBox</a>(<span class="keywordtype">double</span> range, <span class="keywordtype">double</span> &amp; lonLL, <span class="keywordtype">double</span> &amp; latLL, <span class="keywordtype">double</span> &amp; lonUR, <span class="keywordtype">double</span> &amp; latUR)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="classdrain_1_1Proj6.html#ad2581449ce148c4aaaf0965254daf77a">projectFwd</a>(5.0/4.0*M_PI, ::sqrt(2.0)*range, lonLL, latLL);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <a class="code" href="classdrain_1_1Proj6.html#ad2581449ce148c4aaaf0965254daf77a">projectFwd</a>(1.0/4.0*M_PI, ::sqrt(2.0)*range, lonUR, latUR);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj4.html#a8c128c78a5a6d77be7ddadd5c8d46c3a">   87</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj4.html#a8c128c78a5a6d77be7ddadd5c8d46c3a">getBoundingBoxD</a>(<span class="keywordtype">double</span> range, <span class="keywordtype">double</span> &amp; lonLL, <span class="keywordtype">double</span> &amp; latLL, <span class="keywordtype">double</span> &amp; lonUR, <span class="keywordtype">double</span> &amp; latUR)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <a class="code" href="classrack_1_1RadarProj4.html#aec7a0e30d2b640a044b434b742018fa5">getBoundingBox</a>(range, lonLL, latLL, lonUR, latUR);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        lonLL *= drain::RAD2DEG;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        latLL *= drain::RAD2DEG;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        lonUR *= drain::RAD2DEG;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        latUR *= drain::RAD2DEG;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html#aec7a0e30d2b640a044b434b742018fa5">   99</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj.html#aec7a0e30d2b640a044b434b742018fa5">getBoundingBox</a>(<span class="keywordtype">double</span> range, <span class="keywordtype">double</span> &amp; lonLL, <span class="keywordtype">double</span> &amp; latLL, <span class="keywordtype">double</span> &amp; lonUR, <span class="keywordtype">double</span> &amp; latUR)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <a class="code" href="classdrain_1_1Proj6.html#ad2581449ce148c4aaaf0965254daf77a">projectFwd</a>(5.0/4.0*M_PI, ::sqrt(2.0)*range, lonLL, latLL);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <a class="code" href="classdrain_1_1Proj6.html#ad2581449ce148c4aaaf0965254daf77a">projectFwd</a>(1.0/4.0*M_PI, ::sqrt(2.0)*range, lonUR, latUR);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html#a8c128c78a5a6d77be7ddadd5c8d46c3a">  106</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj.html#a8c128c78a5a6d77be7ddadd5c8d46c3a">getBoundingBoxD</a>(<span class="keywordtype">double</span> range, <span class="keywordtype">double</span> &amp; lonLL, <span class="keywordtype">double</span> &amp; latLL, <span class="keywordtype">double</span> &amp; lonUR, <span class="keywordtype">double</span> &amp; latUR)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <a class="code" href="classrack_1_1RadarProj.html#aec7a0e30d2b640a044b434b742018fa5">getBoundingBox</a>(range, lonLL, latLL, lonUR, latUR);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        lonLL *= drain::RAD2DEG;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        latLL *= drain::RAD2DEG;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        lonUR *= drain::RAD2DEG;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        latUR *= drain::RAD2DEG;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    }</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordtype">void</span> setLatLonProjection(){</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <a class="code" href="classdrain_1_1Proj6.html#a17626e81c120aafb8edce4831c666328">setProjectionDst</a>(<span class="stringliteral">&quot;+proj=latlong +ellps=WGS84 +datum=WGS84 +no_defs&quot;</span>);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    }</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj.html#ae8c39feb5f5332190a3e8ba6d544a213">determineBoundingBoxM</a>(<span class="keywordtype">double</span> range, <span class="keywordtype">double</span> &amp; xLL, <span class="keywordtype">double</span> &amp; yLL, <span class="keywordtype">double</span> &amp; xUR, <span class="keywordtype">double</span> &amp; yUR) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html#a909c6d641d6edc85cfc6fd727d942934">  125</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj.html#a909c6d641d6edc85cfc6fd727d942934">determineBoundingBoxM</a>(<span class="keywordtype">double</span> range, <a class="code" href="structdrain_1_1Rectangle.html">drain::Rectangle&lt;double&gt;</a> &amp; bbox)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <a class="code" href="classrack_1_1RadarProj.html#ae8c39feb5f5332190a3e8ba6d544a213">determineBoundingBoxM</a>(range, bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="comment">//void determineBoundingBoxD(double range, double &amp; xLL, double &amp; yLL, double &amp; xUR, double &amp; yUR) const;</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">    inline</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">    void determineBoundingBoxD(double range, drain::Rectangle&lt;double&gt; &amp; bbox) const {</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">        determineBoundingBoxD(range, bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;};</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">//  DEPRECATED</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment"></span>} <span class="comment">// ::rack</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">// Rack</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html">   99</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1RadarProj.html">RadarProj</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1Proj6.html">drain::Proj6</a> {</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">     *  \param lon - longitude of the location, in degrees</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">     *  \param lat - longitude of the location, in degrees</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html#a1149f940aa09da7a0752623a8d4d32f9">  108</a></span>&#160;    <a class="code" href="classrack_1_1RadarProj.html#a1149f940aa09da7a0752623a8d4d32f9">RadarProj</a>(<span class="keywordtype">double</span> lonDeg=0.0, <span class="keywordtype">double</span> latDeg=0.0){</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <a class="code" href="classrack_1_1RadarProj.html#ad141b71f9a798933a0b94e1c76ecaf5d">setSiteLocationDeg</a>(lonDeg, latDeg);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">     *  \param lon - longitude of the location, in degrees</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">     *  \param lat - longitude of the location, in degrees</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment">    void setLocation(double lon, double lat){</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">        std::stringstream sstr;</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">        sstr &lt;&lt; &quot;+proj=aeqd&quot; &lt;&lt; &quot; +lon_0=&quot; &lt;&lt; lon &lt;&lt; &quot; +lat_0=&quot; &lt;&lt; lat &lt;&lt; &quot; +ellps=WGS84 +type=crs&quot;; //</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">        setProjectionSrc(sstr.str());</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">    };</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">     *  \param lon - longitude of the location, in degrees</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">     *  \param lat - longitude of the location, in degrees</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html#ad141b71f9a798933a0b94e1c76ecaf5d">  130</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj.html#ad141b71f9a798933a0b94e1c76ecaf5d">setSiteLocationDeg</a>(<span class="keywordtype">double</span> lon, <span class="keywordtype">double</span> lat){</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        std::stringstream s;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        s &lt;&lt; <span class="stringliteral">&quot;+proj=aeqd&quot;</span> &lt;&lt; <span class="stringliteral">&quot; +lon_0=&quot;</span> &lt;&lt; lon &lt;&lt; <span class="stringliteral">&quot; +lat_0=&quot;</span> &lt;&lt; lat &lt;&lt; <span class="stringliteral">&quot; +ellps=WGS84 +type=crs&quot;</span>; <span class="comment">//  +type=crs</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <a class="code" href="classdrain_1_1Proj6.html#a1b6ed6f041f3f5ae79ff4c947bbc223e">setProjectionSrc</a>(s.str());</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    }</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">     *  \param lon - longitude of the location in radians</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">     *  \param lat - longitude of the location in degrees</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html#ad6518e337354839612d0d7019f2b823b">  142</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj.html#ad6518e337354839612d0d7019f2b823b">setSiteLocationRad</a>(<span class="keywordtype">double</span> lon, <span class="keywordtype">double</span> lat){</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <a class="code" href="classrack_1_1RadarProj.html#ad141b71f9a798933a0b94e1c76ecaf5d">setSiteLocationDeg</a>(lon*drain::RAD2DEG, lat*drain::RAD2DEG);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html#aec7a0e30d2b640a044b434b742018fa5">  148</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj.html#aec7a0e30d2b640a044b434b742018fa5">getBoundingBox</a>(<span class="keywordtype">double</span> range, <span class="keywordtype">double</span> &amp; lonLL, <span class="keywordtype">double</span> &amp; latLL, <span class="keywordtype">double</span> &amp; lonUR, <span class="keywordtype">double</span> &amp; latUR)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <a class="code" href="classdrain_1_1Proj6.html#ad2581449ce148c4aaaf0965254daf77a">projectFwd</a>(5.0/4.0*M_PI, ::sqrt(2.0)*range, lonLL, latLL);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <a class="code" href="classdrain_1_1Proj6.html#ad2581449ce148c4aaaf0965254daf77a">projectFwd</a>(1.0/4.0*M_PI, ::sqrt(2.0)*range, lonUR, latUR);</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    }</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html#a8c128c78a5a6d77be7ddadd5c8d46c3a">  155</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj.html#a8c128c78a5a6d77be7ddadd5c8d46c3a">getBoundingBoxD</a>(<span class="keywordtype">double</span> range, <span class="keywordtype">double</span> &amp; lonLL, <span class="keywordtype">double</span> &amp; latLL, <span class="keywordtype">double</span> &amp; lonUR, <span class="keywordtype">double</span> &amp; latUR)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <a class="code" href="classrack_1_1RadarProj.html#aec7a0e30d2b640a044b434b742018fa5">getBoundingBox</a>(range, lonLL, latLL, lonUR, latUR);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        lonLL *= drain::RAD2DEG;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        latLL *= drain::RAD2DEG;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        lonUR *= drain::RAD2DEG;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        latUR *= drain::RAD2DEG;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordtype">void</span> setLatLonProjection(){</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <a class="code" href="classdrain_1_1Proj6.html#a17626e81c120aafb8edce4831c666328">setProjectionDst</a>(<span class="stringliteral">&quot;+proj=latlong +ellps=WGS84 +datum=WGS84 +no_defs&quot;</span>);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    }</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj.html#ae8c39feb5f5332190a3e8ba6d544a213">determineBoundingBoxM</a>(<span class="keywordtype">double</span> range, <span class="keywordtype">double</span> &amp; xLL, <span class="keywordtype">double</span> &amp; yLL, <span class="keywordtype">double</span> &amp; xUR, <span class="keywordtype">double</span> &amp; yUR) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno"><a class="line" href="classrack_1_1RadarProj.html#a909c6d641d6edc85cfc6fd727d942934">  174</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1RadarProj.html#a909c6d641d6edc85cfc6fd727d942934">determineBoundingBoxM</a>(<span class="keywordtype">double</span> range, <a class="code" href="structdrain_1_1Rectangle.html">drain::Rectangle&lt;double&gt;</a> &amp; bbox)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        <a class="code" href="classrack_1_1RadarProj.html#ae8c39feb5f5332190a3e8ba6d544a213">determineBoundingBoxM</a>(range, bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    }</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="comment">//void determineBoundingBoxD(double range, double &amp; xLL, double &amp; yLL, double &amp; xUR, double &amp; yUR) const;</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="comment">    void determineBoundingBoxD(double range, drain::Rectangle&lt;double&gt; &amp; bbox) const {</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">        determineBoundingBoxD(range, bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;};</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">//  DEPRECATED</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment"></span>} <span class="comment">// ::rack</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="comment">// Rack</span></div>
 <div class="ttc" id="aConstants_8h_html"><div class="ttname"><a href="Constants_8h.html">Constants.h</a></div></div>
 <div class="ttc" id="aclassdrain_1_1Proj6_html"><div class="ttname"><a href="classdrain_1_1Proj6.html">drain::Proj6</a></div><div class="ttdef"><b>Definition:</b> Proj6.h:254</div></div>
 <div class="ttc" id="aclassdrain_1_1Proj6_html_a17626e81c120aafb8edce4831c666328"><div class="ttname"><a href="classdrain_1_1Proj6.html#a17626e81c120aafb8edce4831c666328">drain::Proj6::setProjectionDst</a></div><div class="ttdeci">void setProjectionDst(const std::string &amp;projDef, Projector::CRS_mode crs=Projector::FORCE_CRS)</div><div class="ttdoc">Sets destination projection.</div><div class="ttdef"><b>Definition:</b> Proj6.h:286</div></div>
 <div class="ttc" id="aclassdrain_1_1Proj6_html_a1b6ed6f041f3f5ae79ff4c947bbc223e"><div class="ttname"><a href="classdrain_1_1Proj6.html#a1b6ed6f041f3f5ae79ff4c947bbc223e">drain::Proj6::setProjectionSrc</a></div><div class="ttdeci">void setProjectionSrc(const std::string &amp;projDef, Projector::CRS_mode crs=Projector::FORCE_CRS)</div><div class="ttdoc">Sets source projection.</div><div class="ttdef"><b>Definition:</b> Proj6.h:279</div></div>
 <div class="ttc" id="aclassdrain_1_1Proj6_html_ad2581449ce148c4aaaf0965254daf77a"><div class="ttname"><a href="classdrain_1_1Proj6.html#ad2581449ce148c4aaaf0965254daf77a">drain::Proj6::projectFwd</a></div><div class="ttdeci">void projectFwd(double &amp;x, double &amp;y) const</div><div class="ttdoc">Forward projection (in-place)</div><div class="ttdef"><b>Definition:</b> Proj6.h:356</div></div>
-<div class="ttc" id="aclassrack_1_1RadarProj_html"><div class="ttname"><a href="classrack_1_1RadarProj.html">rack::RadarProj</a></div><div class="ttdef"><b>Definition:</b> RadarProj.h:50</div></div>
-<div class="ttc" id="aclassrack_1_1RadarProj_html_a1149f940aa09da7a0752623a8d4d32f9"><div class="ttname"><a href="classrack_1_1RadarProj.html#a1149f940aa09da7a0752623a8d4d32f9">rack::RadarProj::RadarProj</a></div><div class="ttdeci">RadarProj(double lonDeg=0.0, double latDeg=0.0)</div><div class="ttdoc">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:59</div></div>
-<div class="ttc" id="aclassrack_1_1RadarProj_html_a8c128c78a5a6d77be7ddadd5c8d46c3a"><div class="ttname"><a href="classrack_1_1RadarProj.html#a8c128c78a5a6d77be7ddadd5c8d46c3a">rack::RadarProj::getBoundingBoxD</a></div><div class="ttdeci">void getBoundingBoxD(double range, double &amp;lonLL, double &amp;latLL, double &amp;lonUR, double &amp;latUR) const</div><div class="ttdoc">Bounding box in degrees.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:106</div></div>
-<div class="ttc" id="aclassrack_1_1RadarProj_html_a909c6d641d6edc85cfc6fd727d942934"><div class="ttname"><a href="classrack_1_1RadarProj.html#a909c6d641d6edc85cfc6fd727d942934">rack::RadarProj::determineBoundingBoxM</a></div><div class="ttdeci">void determineBoundingBoxM(double range, drain::Rectangle&lt; double &gt; &amp;bbox) const</div><div class="ttdoc">Given radar's range, returns the metric bounding box using the current projection.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:125</div></div>
-<div class="ttc" id="aclassrack_1_1RadarProj_html_ad141b71f9a798933a0b94e1c76ecaf5d"><div class="ttname"><a href="classrack_1_1RadarProj.html#ad141b71f9a798933a0b94e1c76ecaf5d">rack::RadarProj::setSiteLocationDeg</a></div><div class="ttdeci">void setSiteLocationDeg(double lon, double lat)</div><div class="ttdoc">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:81</div></div>
-<div class="ttc" id="aclassrack_1_1RadarProj_html_ad6518e337354839612d0d7019f2b823b"><div class="ttname"><a href="classrack_1_1RadarProj.html#ad6518e337354839612d0d7019f2b823b">rack::RadarProj::setSiteLocationRad</a></div><div class="ttdeci">void setSiteLocationRad(double lon, double lat)</div><div class="ttdoc">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:93</div></div>
+<div class="ttc" id="aclassrack_1_1RadarProj4_html"><div class="ttname"><a href="classrack_1_1RadarProj4.html">rack::RadarProj4</a></div><div class="ttdef"><b>Definition:</b> RadarProj.h:53</div></div>
+<div class="ttc" id="aclassrack_1_1RadarProj4_html_a4484d1aa2e0a8682f6c584a12be80b5d"><div class="ttname"><a href="classrack_1_1RadarProj4.html#a4484d1aa2e0a8682f6c584a12be80b5d">rack::RadarProj4::setLocation</a></div><div class="ttdeci">void setLocation(double lon, double lat)</div><div class="ttdoc">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:72</div></div>
+<div class="ttc" id="aclassrack_1_1RadarProj4_html_a8c128c78a5a6d77be7ddadd5c8d46c3a"><div class="ttname"><a href="classrack_1_1RadarProj4.html#a8c128c78a5a6d77be7ddadd5c8d46c3a">rack::RadarProj4::getBoundingBoxD</a></div><div class="ttdeci">void getBoundingBoxD(double range, double &amp;lonLL, double &amp;latLL, double &amp;lonUR, double &amp;latUR) const</div><div class="ttdoc">Bounding box in degrees.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:87</div></div>
+<div class="ttc" id="aclassrack_1_1RadarProj4_html_aec7a0e30d2b640a044b434b742018fa5"><div class="ttname"><a href="classrack_1_1RadarProj4.html#aec7a0e30d2b640a044b434b742018fa5">rack::RadarProj4::getBoundingBox</a></div><div class="ttdeci">void getBoundingBox(double range, double &amp;lonLL, double &amp;latLL, double &amp;lonUR, double &amp;latUR) const</div><div class="ttdoc">Bounding box in radians.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:80</div></div>
+<div class="ttc" id="aclassrack_1_1RadarProj4_html_aeecac857ee8be7473bd06c6758540260"><div class="ttname"><a href="classrack_1_1RadarProj4.html#aeecac857ee8be7473bd06c6758540260">rack::RadarProj4::RadarProj4</a></div><div class="ttdeci">RadarProj4(double lon=0.0, double lat=0.0)</div><div class="ttdoc">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:62</div></div>
+<div class="ttc" id="aclassrack_1_1RadarProj_html"><div class="ttname"><a href="classrack_1_1RadarProj.html">rack::RadarProj</a></div><div class="ttdef"><b>Definition:</b> RadarProj.h:99</div></div>
+<div class="ttc" id="aclassrack_1_1RadarProj_html_a1149f940aa09da7a0752623a8d4d32f9"><div class="ttname"><a href="classrack_1_1RadarProj.html#a1149f940aa09da7a0752623a8d4d32f9">rack::RadarProj::RadarProj</a></div><div class="ttdeci">RadarProj(double lonDeg=0.0, double latDeg=0.0)</div><div class="ttdoc">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:108</div></div>
+<div class="ttc" id="aclassrack_1_1RadarProj_html_a8c128c78a5a6d77be7ddadd5c8d46c3a"><div class="ttname"><a href="classrack_1_1RadarProj.html#a8c128c78a5a6d77be7ddadd5c8d46c3a">rack::RadarProj::getBoundingBoxD</a></div><div class="ttdeci">void getBoundingBoxD(double range, double &amp;lonLL, double &amp;latLL, double &amp;lonUR, double &amp;latUR) const</div><div class="ttdoc">Bounding box in degrees.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:155</div></div>
+<div class="ttc" id="aclassrack_1_1RadarProj_html_a909c6d641d6edc85cfc6fd727d942934"><div class="ttname"><a href="classrack_1_1RadarProj.html#a909c6d641d6edc85cfc6fd727d942934">rack::RadarProj::determineBoundingBoxM</a></div><div class="ttdeci">void determineBoundingBoxM(double range, drain::Rectangle&lt; double &gt; &amp;bbox) const</div><div class="ttdoc">Given radar's range, returns the metric bounding box using the current projection.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:174</div></div>
+<div class="ttc" id="aclassrack_1_1RadarProj_html_ad141b71f9a798933a0b94e1c76ecaf5d"><div class="ttname"><a href="classrack_1_1RadarProj.html#ad141b71f9a798933a0b94e1c76ecaf5d">rack::RadarProj::setSiteLocationDeg</a></div><div class="ttdeci">void setSiteLocationDeg(double lon, double lat)</div><div class="ttdoc">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:130</div></div>
+<div class="ttc" id="aclassrack_1_1RadarProj_html_ad6518e337354839612d0d7019f2b823b"><div class="ttname"><a href="classrack_1_1RadarProj.html#ad6518e337354839612d0d7019f2b823b">rack::RadarProj::setSiteLocationRad</a></div><div class="ttdeci">void setSiteLocationRad(double lon, double lat)</div><div class="ttdoc">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:142</div></div>
 <div class="ttc" id="aclassrack_1_1RadarProj_html_ae8c39feb5f5332190a3e8ba6d544a213"><div class="ttname"><a href="classrack_1_1RadarProj.html#ae8c39feb5f5332190a3e8ba6d544a213">rack::RadarProj::determineBoundingBoxM</a></div><div class="ttdeci">void determineBoundingBoxM(double range, double &amp;xLL, double &amp;yLL, double &amp;xUR, double &amp;yUR) const</div><div class="ttdoc">Given radar's range, returns the metric bounding box using the current projection.</div><div class="ttdef"><b>Definition:</b> RadarProj.cpp:41</div></div>
-<div class="ttc" id="aclassrack_1_1RadarProj_html_aec7a0e30d2b640a044b434b742018fa5"><div class="ttname"><a href="classrack_1_1RadarProj.html#aec7a0e30d2b640a044b434b742018fa5">rack::RadarProj::getBoundingBox</a></div><div class="ttdeci">void getBoundingBox(double range, double &amp;lonLL, double &amp;latLL, double &amp;lonUR, double &amp;latUR) const</div><div class="ttdoc">Bounding box in radians.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:99</div></div>
+<div class="ttc" id="aclassrack_1_1RadarProj_html_aec7a0e30d2b640a044b434b742018fa5"><div class="ttname"><a href="classrack_1_1RadarProj.html#aec7a0e30d2b640a044b434b742018fa5">rack::RadarProj::getBoundingBox</a></div><div class="ttdeci">void getBoundingBox(double range, double &amp;lonLL, double &amp;latLL, double &amp;lonUR, double &amp;latUR) const</div><div class="ttdoc">Bounding box in radians.</div><div class="ttdef"><b>Definition:</b> RadarProj.h:148</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 <div class="ttc" id="astructdrain_1_1Rectangle_html"><div class="ttname"><a href="structdrain_1_1Rectangle.html">drain::Rectangle&lt; double &gt;</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

@@ -1,8 +1,8 @@
 <map id="CmdScript" name="CmdScript">
-<area shape="rect" id="node1" title="Load script file and executes the commands immediately." alt="" coords="449,1128,539,1155"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="325,1024,495,1065"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="323,935,447,961"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="203,845,292,872"/>
+<area shape="rect" id="node1" title="Load script file and executes the commands immediately." alt="" coords="445,1128,535,1155"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="321,1024,491,1065"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="320,935,444,961"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="201,845,291,872"/>
 <area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="170,762,263,789"/>
 <area shape="rect" id="node6" href="$classdrain_1_1Context.html" title=" " alt="" coords="176,665,249,692"/>
 <area shape="rect" id="node7" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,576,160,603"/>
@@ -17,15 +17,15 @@
 <area shape="rect" id="node16" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="351,157,447,184"/>
 <area shape="rect" id="node17" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="335,81,463,108"/>
 <area shape="rect" id="node18" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="323,5,475,32"/>
-<area shape="rect" id="node19" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="327,845,443,872"/>
-<area shape="rect" id="node20" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="289,762,480,789"/>
-<area shape="rect" id="node21" title=" " alt="" coords="273,665,499,692"/>
-<area shape="rect" id="node22" href="$classdrain_1_1CommandBank.html" title="Container and execution tools for commands derived from Command." alt="" coords="529,1031,651,1058"/>
-<area shape="rect" id="node23" href="$classdrain_1_1BankSuper.html" title=" " alt="" coords="495,935,685,961"/>
-<area shape="rect" id="node24" href="$classdrain_1_1Bank.html" title=" " alt="" coords="535,845,645,872"/>
-<area shape="rect" id="node25" title=" " alt="" coords="505,755,686,796"/>
-<area shape="rect" id="node26" href="$classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="759,935,869,961"/>
-<area shape="rect" id="node27" title=" " alt="" coords="669,845,796,872"/>
-<area shape="rect" id="node28" href="$classdrain_1_1IosFormat.html" title="Stores precision, fillChar and fieldWidth applied by STD streams." alt="" coords="820,845,907,872"/>
-<area shape="rect" id="node29" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="931,845,1001,872"/>
+<area shape="rect" id="node19" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="324,845,440,872"/>
+<area shape="rect" id="node20" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="289,762,475,789"/>
+<area shape="rect" id="node21" title=" " alt="" coords="273,665,493,692"/>
+<area shape="rect" id="node22" href="$classdrain_1_1CommandBank.html" title="Container and execution tools for commands derived from Command." alt="" coords="525,1031,647,1058"/>
+<area shape="rect" id="node23" href="$classdrain_1_1BankSuper.html" title=" " alt="" coords="491,935,681,961"/>
+<area shape="rect" id="node24" href="$classdrain_1_1Bank.html" title=" " alt="" coords="531,845,641,872"/>
+<area shape="rect" id="node25" title=" " alt="" coords="499,755,681,796"/>
+<area shape="rect" id="node26" href="$classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="755,935,865,961"/>
+<area shape="rect" id="node27" title=" " alt="" coords="665,845,792,872"/>
+<area shape="rect" id="node28" href="$classdrain_1_1IosFormat.html" title="Stores precision, fillChar and fieldWidth applied by STD streams." alt="" coords="816,845,903,872"/>
+<area shape="rect" id="node29" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="927,845,997,872"/>
 </map>

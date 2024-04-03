@@ -317,15 +317,18 @@ public:
 	 *  \param funcName - name of the finction, often assigned as standard C macro __FUNCTION__ .
 	 *  \param name - specifier of the source, file name for example (to be basenamed).
 	 */
-	Logger(const char *filename, const std::string & name = "");
-	//Logger(const char *funcName, const char * name);
+	template <typename ... TT>
+	Logger(const char *filename, const TT & ...args);
+	//Logger(const char *filename, const std::string & name = "");
 
 	/// Start logging,
 	/**
 	 *  \param funcName - name of the finction, often assigned as standard C macro __FUNCTION__ .
 	 *  \param name - specifier of the source, file name for example (to be basenamed).
 	 */
-	Logger(Log &log, const char *filename, const std::string & name = ""); //const char *className = NULL);
+	template <typename ... TT>
+	Logger(Log &log, const char *filename, const TT & ...args); //const char *className = NULL);
+	//Logger(Log &log, const char *filename, const std::string & name = ""); //const char *className = NULL);
 
 	~Logger();
 
@@ -868,7 +871,8 @@ protected:
 	 */
 	template<typename ... TT>
 	inline
-	void setPrefix(const char * filename, const char * func_name, const TT &... args){
+	//void setPrefix(const char * filename, const char * func_name, const TT &... args){
+	void setPrefix(const char * filename, const TT &... args){
 
 		std::stringstream sstr;
 
@@ -891,14 +895,16 @@ protected:
 					//prefix.assign(s2, s3-s2);
 					sstr.write(s2, size_t(s3-s2));
 				// prefix.append(":");
-				sstr << ':';
+				// sstr << ':';
 			}
 		}
-		sstr << func_name << ": ";
+		// NEW  sstr << func_name << ": ";
+		//appendPrefix(sstr, func_name, args...);
 		appendPrefix(sstr, args...);
 		prefix = sstr.str();
 	}
 
+	/*
 	template<typename T, typename ... TT>
 	inline
 	void setPrefix(const TT &... args){
@@ -906,6 +912,7 @@ protected:
 		appendPrefix(sstr, args...);
 		prefix = sstr.str();
 	}
+	*/
 
 
 	inline
@@ -914,7 +921,7 @@ protected:
 
 	template<typename T, typename ... TT>
 	void appendPrefix(std::stringstream & sstr, const T & arg, const TT &... args){
-		sstr << arg;
+		sstr << ":" << arg;
 		appendPrefix(sstr, args...);
 	}
 
@@ -988,6 +995,27 @@ protected:
 
 };
 
+template <typename ... TT>
+Logger::Logger(const char *filename, const TT & ...args):
+				message(*this),
+				timing(false),
+				monitor(getLog()),
+				level(LOG_NOTICE),
+				time(getLog().getMilliseconds()),
+				notif_ptr(NULL){
+	setPrefix(filename, args...);
+}
+
+template <typename ... TT>
+Logger::Logger(Log &log, const char *filename, const TT & ...args):
+				message(*this),
+				timing(false),
+				monitor(log),
+				level(LOG_NOTICE),
+				time(log.getMilliseconds()),
+				notif_ptr(NULL){
+	setPrefix(filename, args...);
+}
 //std::ostream &operator<<(std::ostream &ostr, const Log &error);
 
 

@@ -105,11 +105,11 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifndef IMAGE_SCALING2_H_</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define IMAGE_SCALING2_H_ &quot;ImageScaling 0.1,  2017/09 Markus.Peura@fmi.fi&quot;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span>  <span class="comment">// size_t</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;TypeUtils.h&quot;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;UniTuple.h&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;drain/Type.h&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;drain/TypeUtils.h&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;drain/UniTuple.h&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span>  <span class="comment">// size_t</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;Range.h&quot;</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//#include &quot;Geometry.h&quot;</span></div>
@@ -351,7 +351,7 @@ $(function() {
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;};</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; </div>
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">operator&lt;&lt;</a>(std::ostream &amp;ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1ValueScaling.html">drain::ValueScaling</a> &amp; s){</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;std::ostream &amp; <a class="code" href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">operator&lt;&lt;</a>(std::ostream &amp;ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1ValueScaling.html">drain::ValueScaling</a> &amp; s){</div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    s.toStream(ostr);</div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;}</div>
@@ -392,8 +392,8 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1ValueScaling_html_ae69701b11ce9e876fd546ecbadc38549"><div class="ttname"><a href="classdrain_1_1ValueScaling.html#ae69701b11ce9e876fd546ecbadc38549">drain::ValueScaling::setOptimalScale</a></div><div class="ttdeci">void setOptimalScale(const std::type_info &amp;t)</div><div class="ttdoc">If storage type is integer, adjust scale such that resolution is maximized.</div><div class="ttdef"><b>Definition:</b> ValueScaling.cpp:36</div></div>
 <div class="ttc" id="aclassdrain_1_1ValueScaling_html_ae7a7a9dfaf1f801c343627b56944a8d6"><div class="ttname"><a href="classdrain_1_1ValueScaling.html#ae7a7a9dfaf1f801c343627b56944a8d6">drain::ValueScaling::setPhysicalScale</a></div><div class="ttdeci">void setPhysicalScale(const std::type_info &amp;t, double min, double max)</div><div class="ttdoc">Sets physical range (min, max) and scales storage type accordingly.</div><div class="ttdef"><b>Definition:</b> ValueScaling.h:204</div></div>
 <div class="ttc" id="aclassdrain_1_1ValueScaling_html_af4e1f409380ce63dde2dd32036571a54"><div class="ttname"><a href="classdrain_1_1ValueScaling.html#af4e1f409380ce63dde2dd32036571a54">drain::ValueScaling::getScale</a></div><div class="ttdeci">double getScale() const</div><div class="ttdoc">Returns the intensity scaling factor. See set setScale()</div><div class="ttdef"><b>Definition:</b> ValueScaling.h:252</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
-<div class="ttc" id="anamespacedrain_html_a56b7ff5a86b5866a869819c6ef314fa9"><div class="ttname"><a href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">drain::operator&lt;&lt;</a></div><div class="ttdeci">ostream &amp; operator&lt;&lt;(ostream &amp;ostr, const vector&lt; T &gt; &amp;n)</div><div class="ttdoc">Risk of conflicts?</div><div class="ttdef"><b>Definition:</b> EM-example.cpp:47</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
+<div class="ttc" id="anamespacerack_html_a9da7fe6d7ac333840a874ef95845f1e2"><div class="ttname"><a href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition:</b> Data.h:536</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

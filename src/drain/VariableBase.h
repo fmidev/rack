@@ -74,10 +74,41 @@ public:
 	virtual inline
 	~VariableBase(){};
 
+	/// Tells if the pointer points to an external variable.
+	/**
+	 *
+	 */
 	virtual inline // true also if ptr == null
 	bool isReference() const {
 		return (caster.ptr != (void *) &data[0]);
 	}
+
+	/// Tells if the internal pointer can point to an external variable.
+	/**
+	 *
+	 */
+	/// Returns always true.
+	/**
+	 *   In a drain::Variable,  \c ptr always points to data array, or to null, if the array is empty.
+	 *   In a drain::FlexibleVariable, \c ptr can point to owned data array or to an external (base type) variable.
+	 *
+	 *   \return - \c true for drain::Variable and drain::FlexibleVariable, and \c false for drain::Reference.
+	 */
+	virtual inline
+	bool isVariable() const {
+		return true;
+	}
+
+
+	/// Tells if the internal pointer can point to an external variable.
+	/**
+	 *  \return - \c true for Reference and Flexible, and \c false for Variable.
+	 */
+	virtual inline
+	bool isLinkable() const {
+		return false;
+	}
+
 
 
 protected:
@@ -172,6 +203,7 @@ public:
 	}
 
 	/// Does not change separator chars.
+	/*
 	inline
 	void reset(){
 		caster.unsetType();
@@ -180,6 +212,7 @@ public:
 		setSeparator(',');
 		//this->separator = ','; // semantics ?
 	}
+	*/
 
 	/// Sets basic type or void.
 	/**
@@ -276,11 +309,16 @@ public:
 	virtual inline
 	bool setSize(size_t elementCount){
 		// TODO: if is reference?
-		return updateSize(elementCount); // fix/check: always returns true?
+		//return updateSize(elementCount); // fix/check: always returns true?
+		updateSize(elementCount);
+		return true;
 	}
 
 protected:
 
+	virtual
+	// bool
+	void updateSize(size_t elementCount);
 
 private:
 
@@ -292,7 +330,7 @@ private:
 
 private:
 
-	bool updateSize(size_t elementCount);
+
 
 	void updateIterators();
 

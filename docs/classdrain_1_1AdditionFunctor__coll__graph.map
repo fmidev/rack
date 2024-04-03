@@ -1,9 +1,9 @@
 <map id="AdditionFunctor" name="AdditionFunctor">
-<area shape="rect" id="node1" title="Adds a intensity values ." alt="" coords="56,475,180,501"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BinaryFunctor.html" title=" " alt="" coords="62,399,174,425"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="83,323,153,349"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="77,247,159,273"/>
-<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="60,157,176,184"/>
-<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
-<area shape="rect" id="node7" title=" " alt="" coords="5,5,231,32"/>
+<area shape="rect" id="node1" title="Adds a intensity values ." alt="" coords="53,475,177,501"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BinaryFunctor.html" title=" " alt="" coords="59,399,171,425"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="80,323,151,349"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,247,156,273"/>
+<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,157,173,184"/>
+<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,208,108"/>
+<area shape="rect" id="node7" title=" " alt="" coords="5,5,225,32"/>
 </map>

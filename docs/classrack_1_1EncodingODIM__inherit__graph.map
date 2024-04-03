@@ -2,8 +2,8 @@
 <area shape="rect" id="node1" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="136,229,253,256"/>
 <area shape="rect" id="node5" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)" alt="" coords="165,304,224,331"/>
 <area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="137,155,253,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="99,80,290,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="82,5,307,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="102,80,287,107"/>
+<area shape="rect" id="node4" title=" " alt="" coords="85,5,305,32"/>
 <area shape="rect" id="node6" href="$classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites)." alt="" coords="5,379,125,405"/>
 <area shape="rect" id="node7" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products)." alt="" coords="149,379,240,405"/>
 <area shape="rect" id="node10" href="$classrack_1_1VerticalCrossSectionODIM.html" title=" " alt="" coords="265,379,455,405"/>

@@ -1,11 +1,11 @@
 <map id="PolarSector" name="PolarSector">
-<area shape="rect" id="node1" title=" " alt="" coords="219,351,315,377"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="100,247,181,273"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="60,157,176,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,5,231,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title=" " alt="" coords="212,247,323,273"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="200,157,335,184"/>
-<area shape="rect" id="node8" href="$classdrain_1_1Range.html" title=" " alt="" coords="361,247,499,273"/>
-<area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="359,157,527,184"/>
+<area shape="rect" id="node1" title=" " alt="" coords="217,351,313,377"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="97,247,179,273"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,157,173,184"/>
+<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,208,108"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,5,225,32"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title=" " alt="" coords="209,247,320,273"/>
+<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="197,157,332,184"/>
+<area shape="rect" id="node8" href="$classdrain_1_1Range.html" title=" " alt="" coords="359,247,496,273"/>
+<area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="357,157,525,184"/>
 </map>

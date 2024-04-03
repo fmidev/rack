@@ -58,33 +58,34 @@ std::string str = "123.456abc";
    	   <TD>Definition</TD><TD></TD>
    	   <TD>VariableT<ReferenceT<Castable> ></TD>
    	   <TD>VariableT<VariableBase></TD>
-   	   <TD>VariableT<VariableBase></TD>
+   	   <TD>VariableT<ReferenceT<Variable> ></TD>
    </TR>
    <TR>
    	   <TD>Default constructor</TD>
-   	   <TD><tt>V v;</TD>
+   	   <TD><tt>V v;</tt></TD>
    	   <TD>Compiler error</TD>
    	   <TD>Ok (type undefined)</TD>
    	   <TD>Ok (type undefined)</TD></TR>
    <TR>
    	<TD>Constructor with type</TD>
-   	<TD><tt>V v(typeid(double));</tt></TD>
+   	<TD><tt>V v(typeid(double));<br/>V v(typeid(int));<br/>V v(typeid(std::string));</tt></TD>
    	<TD>Compiler error</TD>
-   	<TD>Ok, sets type to \c double</TD>
-   	<TD>Ok, sets type to \c double</TD>
+   	<TD>Ok, sets type</TD>
+   	<TD>Ok, sets type</TD>
    </TR>
    <TR>
-   	<TD>Constructor with init.</TD>
-   	<TD><tt>V v(d);</tt></TD>
-   	<TD><links</TD>
+   	<TD>Constructor with initialisation</TD>
+   	<TD><tt>V v(x);</tt></TD>
+   	<TD>links</TD>
    	<TD>assigns</TD>
    	<TD>assigns</TD>
    </TR>
    <TR>
    	<TD>Constructor with assignment</TD>
-   	<TD><tt>V v(d) = 7.0; // links and assigns</tt></TD>
-   	<TD><tt>V v = 7.0; // assigns</tt></TD>
-   	<TD><tt>V v = 7.0; // assigns</tt></TD>
+   	<TD><tt>V v(x) = 7.0;</tt></TD>
+   	<TD>links and assigns</TD>
+   	<TD>ok, yet odd (initialises and reassigns)</TD>
+   	<TD>ok, yet odd (initialises and reassigns)</TD>
    </TR>
    </TABLE>
 

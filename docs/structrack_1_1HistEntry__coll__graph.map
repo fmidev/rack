@@ -1,9 +1,9 @@
 <map id="HistEntry" name="HistEntry">
-<area shape="rect" id="node1" title=" " alt="" coords="163,336,246,363"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="99,247,180,273"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="60,157,176,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,5,231,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title=" " alt="" coords="212,247,349,273"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="201,157,369,184"/>
+<area shape="rect" id="node1" title=" " alt="" coords="161,336,243,363"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="96,247,177,273"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,157,173,184"/>
+<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,208,108"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,5,225,32"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title=" " alt="" coords="209,247,347,273"/>
+<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="198,157,366,184"/>
 </map>

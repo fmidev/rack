@@ -34,6 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_REFERENCE_T
 #define DRAIN_REFERENCE_T
 
+#include "Log.h"
 #include "VariableBase.h"
 // #include "Castable.h" // not really needed
 
@@ -93,8 +94,10 @@ public:
 			this->setPtr(p);
 		}
 		catch (const std::exception & e){
-			std::cerr << __FILE__ << ':' << __FUNCTION__ << ": unsupported type: " << typeid(F).name() << std::endl;
-			throw std::runtime_error("unsupported type");
+			//Logger(__FILE__, __LINE__, __FUNCTION__).error("unsupported type: ", drain::TypeName<F>::str()); // , " msg:", e.what()
+			Logger(__FILE__, __LINE__, __FUNCTION__).error("unsupported type: ", typeid(F).name(), " msg:", e.what());
+			// std::cerr << __FILE__ << ':' << __FUNCTION__ << ": unsupported type: " << typeid(F).name() << std::endl;
+			// throw std::runtime_error("unsupported type");
 		}
 		return *this;
 	}
@@ -124,20 +127,28 @@ public:
 		return *this;
 	}
 
-	template <class F>
+	//template <class F>
 	inline
 	ReferenceT & link(Castable &x){
 		this->relink(x);
 		return *this;
 	}
 
-	template <class F>
+	template <class T2>
 	inline
-	ReferenceT & link(ReferenceT &x){
+	ReferenceT & link(ReferenceT<T2> &x){
 		this->relink(x);
 		return *this;
 	}
 
+	/// Tells if the internal pointer can point to an external variable.
+	/**
+	 *  \return - \c true for Reference and Flexible, and \c false for Variable.
+	 */
+	virtual inline
+	bool isLinkable() const {
+		return true;
+	}
 
 
 };

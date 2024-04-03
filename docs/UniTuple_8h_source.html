@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rack: src/drain/util/UniTuple.h Source File</title>
+<title>rack: src/drain/UniTuple.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4b6777edce7656f28010aab0b9aeb502.html">drain</a></li><li class="navelem"><a class="el" href="dir_fcd8a2cb972a4a0ab2125ef14e9c5575.html">util</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4b6777edce7656f28010aab0b9aeb502.html">drain</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -107,16 +107,16 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifndef DRAIN_UNITUPLE</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define DRAIN_UNITUPLE</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;typeinfo&gt;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//#include &lt;set&gt;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">// #include &quot;Sprinter.h&quot;: cannot use Sprinter, as long as SprinterLayouit uses UniTuple...</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &quot;StringBuilder.h&quot;</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &quot;TypeUtils.h&quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;drain/StringBuilder.h&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;drain/TypeUtils.h&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;typeinfo&gt;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">//#include &lt;set&gt;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// #include &quot;Sprinter.h&quot;: cannot use Sprinter, as long as SprinterLayouit uses UniTuple...</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a> {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
@@ -436,36 +436,54 @@ $(function() {
 <div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;};</div>
 <div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160; </div>
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160; </div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keywordtype">size_t</span> N&gt;</div>
-<div class="line"><a name="l00395"></a><span class="lineno"><a class="line" href="structdrain_1_1TypeName_3_01UniTuple_3_01T_00_01N_01_4_01_4.html">  395</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structdrain_1_1TypeName.html">TypeName</a>&lt;<a class="code" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt;T,N&gt; &gt; {</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <span class="comment">// static const std::string name = (const std::string &amp;)drain::StringBuilder(&quot;UniTuple&lt;&quot;, drain::TypeName&lt;T&gt;::get(), &#39;,&#39;, N, &quot;&gt;&quot;);</span></div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    <span class="comment">// static const char* get(){ return &quot;UniTuple&lt;&gt;&quot;; }</span></div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* get(){</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        <span class="keyword">static</span> std::string name;</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;        <span class="keywordflow">if</span> (name.empty())</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;            name = <a class="code" href="classdrain_1_1StringBuilder.html">drain::StringBuilder&lt;&gt;</a>(<span class="stringliteral">&quot;UniTuple&lt;&quot;</span>, <a class="code" href="structdrain_1_1TypeName.html">drain::TypeName&lt;T&gt;::get</a>(), <span class="charliteral">&#39;,&#39;</span>, N, <span class="stringliteral">&quot;&gt;&quot;</span>);</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        <span class="keywordflow">return</span> name.c_str();</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    }</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;};</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160; </div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keywordtype">size_t</span> N&gt;</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1UniTuple.html">UniTuple&lt;T,N&gt;</a> &amp; tuple){</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    <span class="keywordflow">return</span> tuple.<a class="code" href="classdrain_1_1UniTuple.html#a21607a8c302f69443d0a41fab168470f">toStream</a>(ostr);</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;}</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;<span class="comment">template &lt;class T, size_t N&gt;</span></div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;<span class="comment">struct TypeName&lt;UniTuple&lt;T,N&gt; &gt; {</span></div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="comment">    // static const std::string name = (const std::string &amp;)drain::StringBuilder(&quot;UniTuple&lt;&quot;, drain::TypeName&lt;T&gt;::get(), &#39;,&#39;, N, &quot;&gt;&quot;);</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="comment">    // static const char* get(){ return &quot;UniTuple&lt;&gt;&quot;; }</span></div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;<span class="comment">    static const char* get(){</span></div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="comment">        static std::string name;</span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="comment">        if (name.empty())</span></div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="comment">            name = drain::StringBuilder&lt;&gt;(&quot;UniTuple&lt;&quot;, drain::TypeName&lt;T&gt;::get(), &#39;,&#39;, N, &quot;&gt;&quot;);</span></div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="comment">        return name.c_str();</span></div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="comment">};</span></div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160; </div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keywordtype">size_t</span> N&gt;</div>
+<div class="line"><a name="l00409"></a><span class="lineno"><a class="line" href="structdrain_1_1TypeName_3_01UniTuple_3_01T_00_01N_01_4_01_4.html">  409</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structdrain_1_1TypeName.html">TypeName</a>&lt;<a class="code" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt;T,N&gt; &gt; {</div>
 <div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160; </div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;<span class="comment"> // NOTE: cannot use Sprinter, as long as SprinterLayout uses UniTuple...</span></div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;<span class="comment">template &lt;class T, size_t N&gt;</span></div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;<span class="comment">std::ostream &amp; Sprinter::toStream(std::ostream &amp; ostr, const  UniTuple&lt;T,N&gt; &amp; tuple, const SprinterLayout &amp; layout) {</span></div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;<span class="comment">    return Sprinter::sequenceToStream(ostr, tuple, layout);</span></div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;<span class="comment">}</span></div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160; </div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;}  <span class="comment">// drain</span></div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> std::string &amp; str(){</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        <span class="keyword">static</span> std::string name = <a class="code" href="classdrain_1_1StringBuilder.html">drain::StringBuilder&lt;&gt;</a>(<span class="stringliteral">&quot;UniTuple&lt;&quot;</span>, <a class="code" href="structdrain_1_1TypeName.html">drain::TypeName&lt;T&gt;::get</a>(), <span class="charliteral">&#39;,&#39;</span>, N, <span class="stringliteral">&quot;&gt;&quot;</span>);</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        <span class="keywordflow">return</span> name;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    }</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160; </div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* get(){</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        <span class="keywordflow">return</span> str().c_str();</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    }</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160; </div>
 <div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160; </div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160; </div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassdrain_1_1StringBuilder_html"><div class="ttname"><a href="classdrain_1_1StringBuilder.html">drain::StringBuilder</a></div><div class="ttdef"><b>Definition:</b> StringBuilder.h:91</div></div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;};</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160; </div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160; </div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keywordtype">size_t</span> N&gt;</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1UniTuple.html">UniTuple&lt;T,N&gt;</a> &amp; tuple){</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    <span class="keywordflow">return</span> tuple.<a class="code" href="classdrain_1_1UniTuple.html#a21607a8c302f69443d0a41fab168470f">toStream</a>(ostr);</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;}</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160; </div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="comment"> // NOTE: cannot use Sprinter, as long as SprinterLayout uses UniTuple...</span></div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;<span class="comment">template &lt;class T, size_t N&gt;</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="comment">std::ostream &amp; Sprinter::toStream(std::ostream &amp; ostr, const  UniTuple&lt;T,N&gt; &amp; tuple, const SprinterLayout &amp; layout) {</span></div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;<span class="comment">    return Sprinter::sequenceToStream(ostr, tuple, layout);</span></div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160; </div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;}  <span class="comment">// drain</span></div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160; </div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160; </div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassdrain_1_1StringBuilder_html"><div class="ttname"><a href="classdrain_1_1StringBuilder.html">drain::StringBuilder</a></div><div class="ttdef"><b>Definition:</b> StringBuilder.h:92</div></div>
 <div class="ttc" id="aclassdrain_1_1UniTuple_html"><div class="ttname"><a href="classdrain_1_1UniTuple.html">drain::UniTuple</a></div><div class="ttdoc">Tuple of N elements of type T.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:56</div></div>
 <div class="ttc" id="aclassdrain_1_1UniTuple_html_a0a22581a091167da9d9db49104dbf751"><div class="ttname"><a href="classdrain_1_1UniTuple.html#a0a22581a091167da9d9db49104dbf751">drain::UniTuple::size</a></div><div class="ttdeci">static size_t size()</div><div class="ttdoc">Return the number of elements.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:128</div></div>
 <div class="ttc" id="aclassdrain_1_1UniTuple_html_a108fdc7453a22ae2ce3e6fa1a72bddea"><div class="ttname"><a href="classdrain_1_1UniTuple.html#a108fdc7453a22ae2ce3e6fa1a72bddea">drain::UniTuple::assignSequence</a></div><div class="ttdeci">UniTuple&lt; T, N &gt; &amp; assignSequence(S &amp;sequence)</div><div class="ttdoc">Copy elements from a Sequence, like stl::list, stl::set or stl::vector.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:252</div></div>
@@ -480,9 +498,8 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1UniTuple_html_ab05795512c2f99f7747c09ac204c54db"><div class="ttname"><a href="classdrain_1_1UniTuple.html#ab05795512c2f99f7747c09ac204c54db">drain::UniTuple::toSequence</a></div><div class="ttdeci">S &amp; toSequence(S &amp;sequence) const</div><div class="ttdoc">Copy elements to a Sequence, like stl::list, stl::set or stl::vector.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:242</div></div>
 <div class="ttc" id="aclassdrain_1_1UniTuple_html_aebbcab193b4b8e5b4279c4227a5dd843"><div class="ttname"><a href="classdrain_1_1UniTuple.html#aebbcab193b4b8e5b4279c4227a5dd843">drain::UniTuple::set</a></div><div class="ttdeci">void set(T arg, const TT &amp;... rest)</div><div class="ttdoc">Set element(s).</div><div class="ttdef"><b>Definition:</b> UniTuple.h:145</div></div>
 <div class="ttc" id="aclassdrain_1_1UniTuple_html_af5b287980b4cdc0590c319739cfb844c"><div class="ttname"><a href="classdrain_1_1UniTuple.html#af5b287980b4cdc0590c319739cfb844c">drain::UniTuple::at</a></div><div class="ttdeci">T &amp; at(size_t i)</div><div class="ttdoc">Return reference to element i.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:207</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
-<div class="ttc" id="anamespacedrain_html_a56b7ff5a86b5866a869819c6ef314fa9"><div class="ttname"><a href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">drain::operator&lt;&lt;</a></div><div class="ttdeci">ostream &amp; operator&lt;&lt;(ostream &amp;ostr, const vector&lt; T &gt; &amp;n)</div><div class="ttdoc">Risk of conflicts?</div><div class="ttdef"><b>Definition:</b> EM-example.cpp:47</div></div>
-<div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdef"><b>Definition:</b> TypeUtils.h:106</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
+<div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdef"><b>Definition:</b> TypeUtils.h:176</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

@@ -203,8 +203,19 @@ public:
 	inline
 	void reset(){
 		caster.unsetType();
-		elementCount = 0;
+		//elementCount = 0;
+		updateSize(0);
+		setSeparator(',');
 	}
+
+protected:
+
+	virtual
+	void updateSize(size_t elems){
+		elementCount = elems;
+	}
+
+public:
 
 
 	template <class T>
@@ -585,6 +596,17 @@ public:
 	void info(std::ostream & ostr = std::cout) const;
 
 	// void debug(std::ostream & ostr = std::cout) const;
+
+	/// Returns true, if the class contains an own data array.
+	/**
+	 *   In a drain::Variable,  \c ptr always points to data array, or to null, if the array is empty.
+	 *   In a drain::FlexibleVariable, \c ptr can point to owned data array or to an external (base type) variable.
+	 *
+	 */
+	virtual inline
+	bool isVariable() const {
+		return false;
+	}
 
 
 	/// Converts data to a STL Sequence, for example std::set, std::list or std::vector .

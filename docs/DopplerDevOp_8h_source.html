@@ -119,61 +119,56 @@ $(function() {
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">#include &quot;drain/imageops/SlidingWindowOp.h&quot;</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">#include &quot;product/ProductOp.h&quot;</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#include &quot;radar/Doppler.h&quot;</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &quot;drain/util/Fuzzy.h&quot;</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#include &quot;drain/util/Log.h&quot;</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">#include &quot;drain/util/SmartMap.h&quot;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">#include &quot;drain/util/Type.h&quot;</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">#include &quot;drain/util/TypeUtils.h&quot;</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#include &quot;DopplerWindowOp.h&quot;</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">//#include &lt;cmath&gt;</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classrack_1_1DopplerDevOp.html">   64</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1DopplerDevOp.html">DopplerDevOp</a> : <span class="keyword">public</span> <a class="code" href="classrack_1_1DopplerWindowOp.html">DopplerWindowOp</a>&lt;DopplerDevWindow&gt; {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classrack_1_1DopplerDevOp.html#a55ecc51d13a57e2206545cb02ae98198">   71</a></span>&#160;    <a class="code" href="classrack_1_1DopplerDevOp.html#a55ecc51d13a57e2206545cb02ae98198">DopplerDevOp</a>(<span class="keywordtype">int</span> widthM = 1500, <span class="keywordtype">double</span> heightD = 3.0) :</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <a class="code" href="classrack_1_1DopplerWindowOp.html">DopplerWindowOp</a>&lt;<a class="code" href="classrack_1_1DopplerDevWindow.html">DopplerDevWindow</a>&gt;(__FUNCTION__, <span class="stringliteral">&quot;Computes std.dev.[m/s] of Doppler field&quot;</span>, widthM, heightD) {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        parameters.link(<span class="stringliteral">&quot;relativeScale&quot;</span>, this-&gt;conf.relativeScale = <span class="keyword">true</span>, <span class="stringliteral">&quot;true|false&quot;</span>);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="comment">//this-&gt;conf.relativeScale = true;</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        odim.quantity = <span class="stringliteral">&quot;VRAD_DEV&quot;</span>; <span class="comment">// VRAD_C ?</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        odim.scaling.offset = 0.0;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        odim.scaling.scale   = 0.0;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        odim.type = <span class="stringliteral">&quot;C&quot;</span>;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        odim.nodata = 255; <span class="comment">// TODO</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    };</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classrack_1_1DopplerDevOp.html">DopplerDevOp</a>(){};</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#include &lt;drain/Log.h&gt;</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &quot;radar/Doppler.h&quot;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#include &quot;drain/util/Fuzzy.h&quot;</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#include &quot;DopplerWindowOp.h&quot;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">//#include &lt;cmath&gt;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classrack_1_1DopplerDevOp.html">   59</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1DopplerDevOp.html">DopplerDevOp</a> : <span class="keyword">public</span> <a class="code" href="classrack_1_1DopplerWindowOp.html">DopplerWindowOp</a>&lt;DopplerDevWindow&gt; {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classrack_1_1DopplerDevOp.html#a55ecc51d13a57e2206545cb02ae98198">   66</a></span>&#160;    <a class="code" href="classrack_1_1DopplerDevOp.html#a55ecc51d13a57e2206545cb02ae98198">DopplerDevOp</a>(<span class="keywordtype">int</span> widthM = 1500, <span class="keywordtype">double</span> heightD = 3.0) :</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <a class="code" href="classrack_1_1DopplerWindowOp.html">DopplerWindowOp</a>&lt;<a class="code" href="classrack_1_1DopplerDevWindow.html">DopplerDevWindow</a>&gt;(__FUNCTION__, <span class="stringliteral">&quot;Computes std.dev.[m/s] of Doppler field&quot;</span>, widthM, heightD) {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        parameters.link(<span class="stringliteral">&quot;relativeScale&quot;</span>, this-&gt;conf.relativeScale = <span class="keyword">true</span>, <span class="stringliteral">&quot;true|false&quot;</span>);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="comment">//this-&gt;conf.relativeScale = true;</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        odim.quantity = <span class="stringliteral">&quot;VRAD_DEV&quot;</span>; <span class="comment">// VRAD_C ?</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        odim.scaling.offset = 0.0;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        odim.scaling.scale   = 0.0;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        odim.type = <span class="stringliteral">&quot;C&quot;</span>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        odim.nodata = 255; <span class="comment">// TODO</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    };</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classrack_1_1DopplerDevOp.html">DopplerDevOp</a>(){};</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">double</span> getTypicalMin(<span class="keyword">const</span> PolarODIM &amp; srcODIM)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">return</span> 0.0;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">double</span> getTypicalMin(<span class="keyword">const</span> PolarODIM &amp; srcODIM)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">return</span> 0.0;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">double</span> getTypicalMax(<span class="keyword">const</span> PolarODIM &amp; srcODIM)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">return</span> (this-&gt;conf.relativeScale) ? +1.0 : +srcODIM.getNyquist();</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">double</span> getTypicalMax(<span class="keyword">const</span> PolarODIM &amp; srcODIM)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">return</span> (this-&gt;conf.relativeScale) ? +1.0 : +srcODIM.getNyquist();</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;};</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;};</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DOPPLERDevOP_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aclassrack_1_1DopplerDevOp_html"><div class="ttname"><a href="classrack_1_1DopplerDevOp.html">rack::DopplerDevOp</a></div><div class="ttdef"><b>Definition:</b> DopplerDevOp.h:64</div></div>
-<div class="ttc" id="aclassrack_1_1DopplerDevOp_html_a55ecc51d13a57e2206545cb02ae98198"><div class="ttname"><a href="classrack_1_1DopplerDevOp.html#a55ecc51d13a57e2206545cb02ae98198">rack::DopplerDevOp::DopplerDevOp</a></div><div class="ttdeci">DopplerDevOp(int widthM=1500, double heightD=3.0)</div><div class="ttdef"><b>Definition:</b> DopplerDevOp.h:71</div></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DOPPLERDevOP_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aclassrack_1_1DopplerDevOp_html"><div class="ttname"><a href="classrack_1_1DopplerDevOp.html">rack::DopplerDevOp</a></div><div class="ttdef"><b>Definition:</b> DopplerDevOp.h:59</div></div>
+<div class="ttc" id="aclassrack_1_1DopplerDevOp_html_a55ecc51d13a57e2206545cb02ae98198"><div class="ttname"><a href="classrack_1_1DopplerDevOp.html#a55ecc51d13a57e2206545cb02ae98198">rack::DopplerDevOp::DopplerDevOp</a></div><div class="ttdeci">DopplerDevOp(int widthM=1500, double heightD=3.0)</div><div class="ttdef"><b>Definition:</b> DopplerDevOp.h:66</div></div>
 <div class="ttc" id="aclassrack_1_1DopplerDevWindow_html"><div class="ttname"><a href="classrack_1_1DopplerDevWindow.html">rack::DopplerDevWindow</a></div><div class="ttdef"><b>Definition:</b> Doppler.h:278</div></div>
 <div class="ttc" id="aclassrack_1_1DopplerWindowOp_html"><div class="ttname"><a href="classrack_1_1DopplerWindowOp.html">rack::DopplerWindowOp</a></div><div class="ttdoc">Base class for Doppler average and variance.</div><div class="ttdef"><b>Definition:</b> DopplerWindowOp.h:72</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>

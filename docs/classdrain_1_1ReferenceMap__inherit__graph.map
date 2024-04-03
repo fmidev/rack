@@ -3,8 +3,8 @@
 <area shape="rect" id="node4" href="$classdrain_1_1image_1_1SegmentProberConf.html" title=" " alt="" coords="5,229,168,271"/>
 <area shape="rect" id="node5" href="$classdrain_1_1image_1_1SegmentProberConf.html" title="Container for parameters of SegmentProber." alt="" coords="192,229,355,271"/>
 <area shape="rect" id="node6" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="379,237,496,263"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="178,80,369,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="161,5,386,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="181,80,366,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="163,5,383,32"/>
 <area shape="rect" id="node7" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)" alt="" coords="408,319,467,345"/>
 <area shape="rect" id="node8" href="$classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single&#45;radar or composites)." alt="" coords="248,393,368,420"/>
 <area shape="rect" id="node9" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products)." alt="" coords="392,393,483,420"/>

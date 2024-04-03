@@ -157,6 +157,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PlainData.html#ace3c8381d3bc7c223bd9f2234c270fae">setGeometry</a> (const <a class="el" href="classdrain_1_1Frame2D.html">drain::image::AreaGeometry</a> &amp;geometry)</td></tr>
 <tr class="memdesc:ace3c8381d3bc7c223bd9f2234c270fae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets dimensions of data array and metadata. <br /></td></tr>
 <tr class="separator:ace3c8381d3bc7c223bd9f2234c270fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a007653ad1ab8b2a7e29a77c7d7dcf863"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PlainData.html#a007653ad1ab8b2a7e29a77c7d7dcf863">setGeometry</a> (const odim_t &amp;odim)</td></tr>
+<tr class="memdesc:a007653ad1ab8b2a7e29a77c7d7dcf863"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy dimensions of data array and resolution (rscale or xscale,yscale)  <a href="classrack_1_1PlainData.html#a007653ad1ab8b2a7e29a77c7d7dcf863">More...</a><br /></td></tr>
+<tr class="separator:a007653ad1ab8b2a7e29a77c7d7dcf863"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1adb869466707ecd6ae65f62d4491547"><td class="memTemplParams" colspan="2">template&lt;class DT2 &gt; </td></tr>
 <tr class="memitem:a1adb869466707ecd6ae65f62d4491547"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1PlainData.html#a1adb869466707ecd6ae65f62d4491547">copyGeometry</a> (const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; DT2 &gt; &amp;srcData)</td></tr>
 <tr class="memdesc:a1adb869466707ecd6ae65f62d4491547"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy dimensions of data array and resolution (rscale or xscale,yscale)  <a href="classrack_1_1PlainData.html#a1adb869466707ecd6ae65f62d4491547">More...</a><br /></td></tr>
@@ -362,6 +365,35 @@ class rack::PlainData&lt; DT &gt;</h3>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a007653ad1ab8b2a7e29a77c7d7dcf863"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a007653ad1ab8b2a7e29a77c7d7dcf863">&#9670;&nbsp;</a></span>setGeometry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setGeometry </td>
+          <td>(</td>
+          <td class="paramtype">const odim_t &amp;&#160;</td>
+          <td class="paramname"><em>odim</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy dimensions of data array and resolution (rscale or xscale,yscale) </p>
+<p>Although templated, makes sense only across the Src and Dst types of same <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> class. </p>
 
 </div>
 </div>

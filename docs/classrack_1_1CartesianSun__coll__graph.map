@@ -1,8 +1,8 @@
 <map id="CartesianSun" name="CartesianSun">
-<area shape="rect" id="node1" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="255,1087,363,1113"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="224,996,393,1037"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="247,920,371,947"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="201,831,291,857"/>
+<area shape="rect" id="node1" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="253,1087,361,1113"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="223,996,392,1037"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="245,920,369,947"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="200,831,289,857"/>
 <area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="170,755,263,781"/>
 <area shape="rect" id="node6" href="$classdrain_1_1Context.html" title=" " alt="" coords="176,665,249,692"/>
 <area shape="rect" id="node7" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,576,160,603"/>
@@ -17,7 +17,7 @@
 <area shape="rect" id="node16" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="351,157,447,184"/>
 <area shape="rect" id="node17" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="335,81,463,108"/>
 <area shape="rect" id="node18" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="323,5,475,32"/>
-<area shape="rect" id="node19" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="320,831,436,857"/>
-<area shape="rect" id="node20" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="289,755,480,781"/>
-<area shape="rect" id="node21" title=" " alt="" coords="273,665,499,692"/>
+<area shape="rect" id="node19" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="319,831,435,857"/>
+<area shape="rect" id="node20" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="289,755,475,781"/>
+<area shape="rect" id="node21" title=" " alt="" coords="273,665,493,692"/>
 </map>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rack: src/drain/util/Sprinter.h Source File</title>
+<title>rack: src/drain/Sprinter.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4b6777edce7656f28010aab0b9aeb502.html">drain</a></li><li class="navelem"><a class="el" href="dir_fcd8a2cb972a4a0ab2125ef14e9c5575.html">util</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4b6777edce7656f28010aab0b9aeb502.html">drain</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -105,18 +105,18 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifndef Drain_Sprinter_H_</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define Drain_Sprinter_H_</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span> <span class="comment">// strlen?</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span> <span class="comment">// pair</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;set&gt;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;list&gt;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &quot;UniTuple.h&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;drain/UniTuple.h&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span> <span class="comment">// strlen?</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span> <span class="comment">// pair</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;set&gt;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;list&gt;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
@@ -279,7 +279,7 @@ $(function() {
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="comment">// Mainly for debugging</span></div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; layout){</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; layout){</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    ostr &lt;&lt; <span class="stringliteral">&quot;arrayChars:   &quot;</span> &lt;&lt; layout.arrayChars &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    ostr &lt;&lt; <span class="stringliteral">&quot;mapChars:     &quot;</span> &lt;&lt; layout.mapChars &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    ostr &lt;&lt; <span class="stringliteral">&quot;pairChars:    &quot;</span> &lt;&lt; layout.pairChars &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
@@ -655,7 +655,7 @@ $(function() {
 <div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160; </div>
 <div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> L&gt;</div>
 <div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1Sprintlet.html">Sprintlet&lt;T,L&gt;</a> &amp; sp){</div>
+<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1Sprintlet.html">Sprintlet&lt;T,L&gt;</a> &amp; sp){</div>
 <div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;    <span class="keywordflow">return</span> sp.toStream(ostr);</div>
 <div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;}</div>
 <div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160; </div>
@@ -708,8 +708,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1TypeLayoutBase_html"><div class="ttname"><a href="classdrain_1_1TypeLayoutBase.html">drain::TypeLayoutBase</a></div><div class="ttdoc">Small container for printing style for putting of structured objects (array, maps,...</div><div class="ttdef"><b>Definition:</b> Sprinter.h:95</div></div>
 <div class="ttc" id="aclassdrain_1_1UniTuple_html"><div class="ttname"><a href="classdrain_1_1UniTuple.html">drain::UniTuple</a></div><div class="ttdoc">Tuple of N elements of type T.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:56</div></div>
 <div class="ttc" id="aclassdrain_1_1UniTuple_html_a817e1a7a49b95e67ff966ac8dc5ceb48"><div class="ttname"><a href="classdrain_1_1UniTuple.html#a817e1a7a49b95e67ff966ac8dc5ceb48">drain::UniTuple&lt; char, 3 &gt;::assign</a></div><div class="ttdeci">tuple_t &amp; assign(const tuple_t &amp;t)</div><div class="ttdoc">Proposed for tuples only; derived classes should not shadow this.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:90</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
-<div class="ttc" id="anamespacedrain_html_a56b7ff5a86b5866a869819c6ef314fa9"><div class="ttname"><a href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">drain::operator&lt;&lt;</a></div><div class="ttdeci">ostream &amp; operator&lt;&lt;(ostream &amp;ostr, const vector&lt; T &gt; &amp;n)</div><div class="ttdoc">Risk of conflicts?</div><div class="ttdef"><b>Definition:</b> EM-example.cpp:47</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
 <div class="ttc" id="astructdrain_1_1SprinterLayout_html"><div class="ttname"><a href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a></div><div class="ttdef"><b>Definition:</b> Sprinter.h:189</div></div>
 <div class="ttc" id="astructdrain_1_1TypeLayout_html"><div class="ttname"><a href="structdrain_1_1TypeLayout.html">drain::TypeLayout</a></div><div class="ttdef"><b>Definition:</b> Sprinter.h:133</div></div>
 <div class="ttc" id="astructdrain_1_1TypeLayout_html_a3f9ff895908c4f2f5de2155c6d08c5db"><div class="ttname"><a href="structdrain_1_1TypeLayout.html#a3f9ff895908c4f2f5de2155c6d08c5db">drain::TypeLayout::TypeLayout</a></div><div class="ttdeci">TypeLayout(const char layout[4])</div><div class="ttdoc">Constructor accepting three-letter chars: {prefix,separator,suffix}.</div><div class="ttdef"><b>Definition:</b> Sprinter.h:155</div></div>

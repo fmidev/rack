@@ -244,6 +244,7 @@ char Logger::MARKER = '@'; // for filtering output
 
 Logger::oper Logger::endl;
 
+/*
 Logger::Logger(const char *filename, const std::string & className):
 				message(*this),
 				timing(false),
@@ -263,6 +264,7 @@ Logger::Logger(Log &log, const char *filename, const std::string & className):
 				notif_ptr(NULL){
 	setPrefix(filename, className.c_str());
 }
+*/
 
 /*
 Logger & Logger::timestamp(const std::string & label){

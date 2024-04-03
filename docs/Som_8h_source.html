@@ -407,7 +407,7 @@ $(function() {
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160; </div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="comment">//std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, const NeuralVector&lt;T&gt; &amp; n){</span></div>
-<div class="line"><a name="l00380"></a><span class="lineno"><a class="line" href="namespacedrain.html#a92b7fd43cb2bef38c0d615ac54e8156f">  380</a></span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> std::vector&lt;T&gt; &amp; n){</div>
+<div class="line"><a name="l00380"></a><span class="lineno"><a class="line" href="namespacedrain.html#a92b7fd43cb2bef38c0d615ac54e8156f">  380</a></span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> std::vector&lt;T&gt; &amp; n){</div>
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160; </div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">typename</span> std::vector&lt;T&gt;::const_iterator it = n.begin(); it !=</div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;            n.end(); ++it)</div>
@@ -418,7 +418,7 @@ $(function() {
 <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
 <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;<span class="comment">//std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, const NeuralVector&lt;T&gt; &amp; n){</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> Som&lt;T&gt; &amp; som){</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> Som&lt;T&gt; &amp; som){</div>
 <div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    som.toStream(ostr);</div>
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;};</div>
@@ -447,9 +447,8 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Som_html_ac94898005583f71a703b3fd2fe7f620b"><div class="ttname"><a href="classdrain_1_1Som.html#ac94898005583f71a703b3fd2fe7f620b">drain::Som::findBestMatchingUnit</a></div><div class="ttdeci">void findBestMatchingUnit(const T &amp;sample, int &amp;iBest, int &amp;jBest)</div><div class="ttdoc">Finds the unit with state closesest to that of sample.</div><div class="ttdef"><b>Definition:</b> Som.h:160</div></div>
 <div class="ttc" id="aclassdrain_1_1Som_html_adad9e3b752c9e35344e15c94626ded69"><div class="ttname"><a href="classdrain_1_1Som.html#adad9e3b752c9e35344e15c94626ded69">drain::Som::initialise</a></div><div class="ttdeci">void initialise(void(*init)(T &amp;x))</div><div class="ttdoc">Initialise the map with a user-defined function.</div><div class="ttdef"><b>Definition:</b> Som.h:111</div></div>
 <div class="ttc" id="aclassdrain_1_1Som_html_adf4256ef8fa281d98229e52f3f07b5cb"><div class="ttname"><a href="classdrain_1_1Som.html#adf4256ef8fa281d98229e52f3f07b5cb">drain::Som::getWidth</a></div><div class="ttdeci">int getWidth() const</div><div class="ttdoc">The number of columns in the map.</div><div class="ttdef"><b>Definition:</b> Som.h:150</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
 <div class="ttc" id="anamespacedrain_html_a3e835c46180e59f370dcbc90ccbe062f"><div class="ttname"><a href="namespacedrain.html#a3e835c46180e59f370dcbc90ccbe062f">drain::uniformRandomVector256</a></div><div class="ttdeci">void uniformRandomVector256(std::vector&lt; T &gt; &amp;x)</div><div class="ttdoc">For initialising vector Soms.</div><div class="ttdef"><b>Definition:</b> Som.h:318</div></div>
-<div class="ttc" id="anamespacedrain_html_a56b7ff5a86b5866a869819c6ef314fa9"><div class="ttname"><a href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">drain::operator&lt;&lt;</a></div><div class="ttdeci">ostream &amp; operator&lt;&lt;(ostream &amp;ostr, const vector&lt; T &gt; &amp;n)</div><div class="ttdoc">Risk of conflicts?</div><div class="ttdef"><b>Definition:</b> EM-example.cpp:47</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

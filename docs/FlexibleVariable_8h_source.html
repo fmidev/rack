@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rack: src/drain/util/FlexibleVariable.h Source File</title>
+<title>rack: src/drain/FlexibleVariable.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4b6777edce7656f28010aab0b9aeb502.html">drain</a></li><li class="navelem"><a class="el" href="dir_fcd8a2cb972a4a0ab2125ef14e9c5575.html">util</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4b6777edce7656f28010aab0b9aeb502.html">drain</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -102,225 +102,49 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">by the European Union (European Regional Development Fund and European</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;typeinfo&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;Convert.h&quot;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;Referencer.h&quot;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;SmartMap.h&quot;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;Sprinter.h&quot;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#ifndef DRAIN_FLEXIBLE_VARIABLE</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#define DRAIN_FLEXIBLE_VARIABLE</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">#include &lt;typeinfo&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">#include &quot;Convert.h&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">#include &quot;Referencer.h&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">#include &quot;SmartMap.h&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">#include &quot;Sprinter.h&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">#include &quot;VariableLike.h&quot;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a> {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#ifndef DRAIN_FLEXIBLE_VARIABLE</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#define DRAIN_FLEXIBLE_VARIABLE</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classdrain_1_1FlexibleVariable.html">   56</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1FlexibleVariable.html">FlexibleVariable</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1ReferenceBase.html">ReferenceBase</a>&lt;Variable&gt; {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="classdrain_1_1FlexibleVariable.html">FlexibleVariable</a>(){</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="classdrain_1_1FlexibleVariable.html">FlexibleVariable</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1FlexibleVariable.html">FlexibleVariable</a> &amp; v){</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="classdrain_1_1Castable.html#a8f6ede51c5a5ffd7db7278f4e625f64a">assignCastable</a>(v);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#include &quot;ReferenceT.h&quot;</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#include &quot;VariableT.h&quot;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#include &quot;Variable.h&quot;</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a> {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="namespacedrain.html#a6e1fa0b6fd9d7f5e426b34319cfada17">   67</a></span>&#160;<span class="keyword">typedef</span> <a class="code" href="classdrain_1_1VariableT.html">VariableT&lt;ReferenceT&lt;Variable&gt;</a> &gt;  <a class="code" href="namespacedrain.html#a6e1fa0b6fd9d7f5e426b34319cfada17">FlexibleVariable</a>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <a class="code" href="classdrain_1_1FlexibleVariable.html">FlexibleVariable</a>(<span class="keyword">const</span> T &amp; x){</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        assign(x);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">// Override for &quot;ambivalent&quot; FlexibleVariable</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keywordtype">void</span> FlexibleVariable::info(std::ostream &amp; ostr) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}  <span class="comment">// namespace drain</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classdrain_1_1FlexibleVariable.html#a80a2b005d6ca8e19581d1a57ec7f436a">   80</a></span>&#160;    <a class="code" href="classdrain_1_1FlexibleVariable.html#a80a2b005d6ca8e19581d1a57ec7f436a">FlexibleVariable</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *x){</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        assign(x);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="classdrain_1_1FlexibleVariable.html">FlexibleVariable</a>(T *p){</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        this-&gt;<a class="code" href="classdrain_1_1Castable.html#abd78ab96c7b16d1bcd56a6109069668b">setPtr</a>(p);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    FlexibleVariable(std::initializer_list&lt;T&gt; l, <span class="keyword">const</span> std::type_info &amp;t = <span class="keyword">typeid</span>(<span class="keywordtype">void</span>)){</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="comment">//std::cerr &lt;&lt; __FILE__ &lt;&lt; &quot;: Check &quot; &lt;&lt; __FUNCTION__ &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="comment">//reset();</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <a class="code" href="classdrain_1_1Castable.html#acce02d783950fc3429ac52ca1bc74e02">setType</a>(t);</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <a class="code" href="classdrain_1_1Castable.html#a821dd5d996f20fa95d327b5bfeffe403">assignContainer</a>(l, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    };</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keywordtype">size_t</span> N&gt;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    FlexibleVariable(<span class="keyword">const</span> UniTuple&lt;T,N&gt; &amp; unituple){</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <a class="code" href="classdrain_1_1Castable.html#a821dd5d996f20fa95d327b5bfeffe403">assignContainer</a>(unituple);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    }</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    ~FlexibleVariable(){</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">    #define SmartVariable FlexibleVariable</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">    #include &quot;SmartVariable.inc&quot;</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">    #undef  SmartVariable</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="classdrain_1_1FlexibleVariable.html#ac19459e30a595c3fbb607c6bd7173311">  125</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1FlexibleVariable.html#ac19459e30a595c3fbb607c6bd7173311">setType</a>(<span class="keyword">const</span> std::type_info &amp; t){</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classdrain_1_1FlexibleVariable.html#ab2f61610341264302dd61ea0de15f0f7">requestType</a>(t)){</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keywordflow">throw</span> std::runtime_error(std::string(<span class="stringliteral">&quot;FlexibleVariable::&quot;</span>) + __FUNCTION__ + <span class="stringliteral">&quot;: illegal for referenced variable&quot;</span>);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        }</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    }</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="classdrain_1_1FlexibleVariable.html#ab2f61610341264302dd61ea0de15f0f7">  140</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1FlexibleVariable.html#ab2f61610341264302dd61ea0de15f0f7">requestType</a>(<span class="keyword">const</span> std::type_info &amp; t){</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classdrain_1_1FlexibleVariable.html#a558706ef95f65fdca18e76256cb6aab0">isReference</a>()){ <span class="comment">// is in Variable mode</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            <a class="code" href="classdrain_1_1Castable.html#acce02d783950fc3429ac52ca1bc74e02">Variable::setType</a>(t);</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        }</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keywordflow">else</span> { <span class="comment">// is in Referencer mode (points to external array)</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            <span class="keywordflow">return</span> (getType() == t);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        }</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    }</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="classdrain_1_1FlexibleVariable.html#a601ac14cff7cf0d700b22cb1257105f2">  153</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1FlexibleVariable.html#a601ac14cff7cf0d700b22cb1257105f2">setSize</a>(<span class="keywordtype">size_t</span> <a class="code" href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">elementCount</a>){</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="classdrain_1_1FlexibleVariable.html#a558706ef95f65fdca18e76256cb6aab0">isReference</a>()){ <span class="comment">// is in Variable mode</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            updateSize(<a class="code" href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">elementCount</a>);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        }</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            <span class="keywordflow">if</span> (getType() == <span class="keyword">typeid</span>(<a class="code" href="classdrain_1_1Variable.html">drain::Variable</a>)){ <span class="comment">// defunct/deprecated?</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                std::cerr &lt;&lt; <span class="stringliteral">&quot;FlexibleVariable::&quot;</span> &lt;&lt; __FUNCTION__ &lt;&lt; <span class="stringliteral">&quot; warning: resize for linked Variable not yet implemented &quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            }</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">elementCount</a> != <a class="code" href="classdrain_1_1Castable.html#a4c361aadeeb55b3e6607b4468bfc6d96">getElementCount</a>()){</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                <span class="keywordflow">throw</span> std::runtime_error(std::string(<span class="stringliteral">&quot;FlexibleVariable::&quot;</span>) + __FUNCTION__ + <span class="stringliteral">&quot;: illegal for referenced variable&quot;</span>);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            }</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        }</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    }</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno"><a class="line" href="classdrain_1_1FlexibleVariable.html#a45863efb0d8218f26866bfe117086518">  170</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1FlexibleVariable.html#a45863efb0d8218f26866bfe117086518">info</a>(std::ostream &amp; ostr = std::cout)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <a class="code" href="classdrain_1_1Castable.html#a4dc0a867da76f35132364cf5ad2abd55">Castable::info</a>(ostr);</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classdrain_1_1FlexibleVariable.html#a558706ef95f65fdca18e76256cb6aab0">isReference</a>())</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            ostr &lt;&lt; <span class="stringliteral">&quot; &lt;reference&gt;&quot;</span>;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            ostr &lt;&lt; <span class="stringliteral">&quot; &lt;own&gt;&quot;</span>;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    }</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keyword">inline</span>  <span class="comment">// consider virtual: isReference() == true for Reference</span></div>
-<div class="line"><a name="l00187"></a><span class="lineno"><a class="line" href="classdrain_1_1FlexibleVariable.html#a558706ef95f65fdca18e76256cb6aab0">  187</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1FlexibleVariable.html#a558706ef95f65fdca18e76256cb6aab0">isReference</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <span class="keywordflow">return</span> (caster.<a class="code" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a> != (<span class="keywordtype">void</span> *) &amp;data[0]);</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    }</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno"><a class="line" href="classdrain_1_1FlexibleVariable.html#af61912602179e9425271926135614061">  199</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classdrain_1_1FlexibleVariable.html#af61912602179e9425271926135614061">requestSize</a>(<span class="keywordtype">size_t</span> <a class="code" href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">elementCount</a>){</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classdrain_1_1FlexibleVariable.html#a558706ef95f65fdca18e76256cb6aab0">isReference</a>()){</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1Castable.html#af61912602179e9425271926135614061">Castable::requestSize</a>(<a class="code" href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">elementCount</a>); <span class="comment">//  &quot;Referencer::requestSize()&quot;</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        }</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1Variable.html#af61912602179e9425271926135614061">Variable::requestSize</a>(<a class="code" href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">elementCount</a>);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        }</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    }</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;};</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00212"></a><span class="lineno"><a class="line" href="structdrain_1_1TypeName_3_01FlexibleVariable_01_4.html">  212</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structdrain_1_1TypeName.html">TypeName</a>&lt;<a class="code" href="classdrain_1_1FlexibleVariable.html">FlexibleVariable</a>&gt; {</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* get(){ <span class="keywordflow">return</span> <span class="stringliteral">&quot;FlexibleVariable&quot;</span>; }</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;};</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;std::ostream &amp; <a class="code" href="classdrain_1_1Sprinter.html#abe1e6bf8d8874a9263882f4e7c203d6d">Sprinter::toStream</a>(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1FlexibleVariable.html">drain::FlexibleVariable</a> &amp; v, <span class="keyword">const</span> <a class="code" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; layout){</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1Sprinter.html#abe1e6bf8d8874a9263882f4e7c203d6d">Sprinter::toStream</a>(ostr, (<span class="keyword">const</span> <a class="code" href="classdrain_1_1Castable.html">drain::Castable</a> &amp;) v, layout);</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;};</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160; </div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> D&gt;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classdrain_1_1Convert2.html#a83dfab6cd228017012669684fdcc3c2e">Convert2&lt;FlexibleVariable&gt;::convert</a>(<span class="keyword">const</span> FlexibleVariable &amp;src, D &amp; dst){</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    dst = (<span class="keyword">const</span> D &amp;)src;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;CONV:&quot;</span> &lt;&lt; __FILE__ &lt;&lt; src &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; dst &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;}</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classdrain_1_1Convert2.html#a83dfab6cd228017012669684fdcc3c2e">Convert2&lt;FlexibleVariable&gt;::convert</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *src, FlexibleVariable &amp; dst){</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    dst = src;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;CONV:&quot;</span> &lt;&lt; __FILE__ &lt;&lt; src &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; dst &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;}</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> S&gt;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classdrain_1_1Convert2.html#a83dfab6cd228017012669684fdcc3c2e">Convert2&lt;FlexibleVariable&gt;::convert</a>(<span class="keyword">const</span> S &amp;src, FlexibleVariable &amp; dst){</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    dst = src;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;CONV:&quot;</span> &lt;&lt; __FILE__ &lt;&lt; src &lt;&lt; <span class="stringliteral">&quot; -&gt; &quot;</span> &lt;&lt; dst &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;}</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;}  <span class="comment">// namespace drain</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">// Drain</span></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html"><div class="ttname"><a href="classdrain_1_1Castable.html">drain::Castable</a></div><div class="ttdef"><b>Definition:</b> Castable.h:78</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_a4c361aadeeb55b3e6607b4468bfc6d96"><div class="ttname"><a href="classdrain_1_1Castable.html#a4c361aadeeb55b3e6607b4468bfc6d96">drain::Castable::getElementCount</a></div><div class="ttdeci">virtual size_t getElementCount() const</div><div class="ttdoc">Returns the length of the array, the number of elements in this entry.</div><div class="ttdef"><b>Definition:</b> Castable.h:161</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_a4dc0a867da76f35132364cf5ad2abd55"><div class="ttname"><a href="classdrain_1_1Castable.html#a4dc0a867da76f35132364cf5ad2abd55">drain::Castable::info</a></div><div class="ttdeci">virtual void info(std::ostream &amp;ostr=std::cout) const</div><div class="ttdoc">Print value, type and element count.</div><div class="ttdef"><b>Definition:</b> Castable.cpp:172</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_a71c45090ec0db23502b8e5acb00f4ce5"><div class="ttname"><a href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">drain::Castable::elementCount</a></div><div class="ttdeci">size_t elementCount</div><div class="ttdoc">Pointer to the data variable.</div><div class="ttdef"><b>Definition:</b> Castable.h:1071</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_a821dd5d996f20fa95d327b5bfeffe403"><div class="ttname"><a href="classdrain_1_1Castable.html#a821dd5d996f20fa95d327b5bfeffe403">drain::Castable::assignContainer</a></div><div class="ttdeci">void assignContainer(const T &amp;v, bool append=false)</div><div class="ttdoc">Assigns a STL Sequence, element by element.</div><div class="ttdef"><b>Definition:</b> Castable.h:971</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_a8f6ede51c5a5ffd7db7278f4e625f64a"><div class="ttname"><a href="classdrain_1_1Castable.html#a8f6ede51c5a5ffd7db7278f4e625f64a">drain::Castable::assignCastable</a></div><div class="ttdeci">Castable &amp; assignCastable(const Castable &amp;c)</div><div class="ttdoc">Copy data from str Castable. Perhaps copy size and type, too.</div><div class="ttdef"><b>Definition:</b> Castable.cpp:193</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_abd78ab96c7b16d1bcd56a6109069668b"><div class="ttname"><a href="classdrain_1_1Castable.html#abd78ab96c7b16d1bcd56a6109069668b">drain::Castable::setPtr</a></div><div class="ttdeci">void setPtr(void *p)</div><div class="ttdoc">Stores the pointer and its storage type F. Assumes elementCount=1.</div><div class="ttdef"><b>Definition:</b> Castable.h:733</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_acce02d783950fc3429ac52ca1bc74e02"><div class="ttname"><a href="classdrain_1_1Castable.html#acce02d783950fc3429ac52ca1bc74e02">drain::Castable::setType</a></div><div class="ttdeci">void setType()</div><div class="ttdoc">Sets the storage type. If a target value is available, use link() directly.</div><div class="ttdef"><b>Definition:</b> Castable.h:715</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_af61912602179e9425271926135614061"><div class="ttname"><a href="classdrain_1_1Castable.html#af61912602179e9425271926135614061">drain::Castable::requestSize</a></div><div class="ttdeci">virtual bool requestSize(size_t elementCount)</div><div class="ttdoc">Request to change the array size. For Castable (and Reference) does nothing and returns false.</div><div class="ttdef"><b>Definition:</b> Castable.h:707</div></div>
-<div class="ttc" id="aclassdrain_1_1Caster_html_add9af9569af79ec26dd741fb226b38ba"><div class="ttname"><a href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">drain::Caster::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">Future member: enables setting Caster type.</div><div class="ttdef"><b>Definition:</b> Caster.h:238</div></div>
-<div class="ttc" id="aclassdrain_1_1Convert2_html_a83dfab6cd228017012669684fdcc3c2e"><div class="ttname"><a href="classdrain_1_1Convert2.html#a83dfab6cd228017012669684fdcc3c2e">drain::Convert2::convert</a></div><div class="ttdeci">static void convert(const T &amp;src, T &amp;dst)</div><div class="ttdoc">Trivial case: source and destination are of same class.</div><div class="ttdef"><b>Definition:</b> Convert.h:94</div></div>
-<div class="ttc" id="aclassdrain_1_1FlexibleVariable_html"><div class="ttname"><a href="classdrain_1_1FlexibleVariable.html">drain::FlexibleVariable</a></div><div class="ttdef"><b>Definition:</b> FlexibleVariable.h:56</div></div>
-<div class="ttc" id="aclassdrain_1_1FlexibleVariable_html_a45863efb0d8218f26866bfe117086518"><div class="ttname"><a href="classdrain_1_1FlexibleVariable.html#a45863efb0d8218f26866bfe117086518">drain::FlexibleVariable::info</a></div><div class="ttdeci">virtual void info(std::ostream &amp;ostr=std::cout) const</div><div class="ttdoc">Print value, type and element count.</div><div class="ttdef"><b>Definition:</b> FlexibleVariable.h:170</div></div>
-<div class="ttc" id="aclassdrain_1_1FlexibleVariable_html_a558706ef95f65fdca18e76256cb6aab0"><div class="ttname"><a href="classdrain_1_1FlexibleVariable.html#a558706ef95f65fdca18e76256cb6aab0">drain::FlexibleVariable::isReference</a></div><div class="ttdeci">bool isReference() const</div><div class="ttdoc">Returns true, if the internal pointer directs to external data object, ie. internal data vector is no...</div><div class="ttdef"><b>Definition:</b> FlexibleVariable.h:187</div></div>
-<div class="ttc" id="aclassdrain_1_1FlexibleVariable_html_a601ac14cff7cf0d700b22cb1257105f2"><div class="ttname"><a href="classdrain_1_1FlexibleVariable.html#a601ac14cff7cf0d700b22cb1257105f2">drain::FlexibleVariable::setSize</a></div><div class="ttdeci">virtual bool setSize(size_t elementCount)</div><div class="ttdoc">Extends the vector to include n elements of the current type.</div><div class="ttdef"><b>Definition:</b> FlexibleVariable.h:153</div></div>
-<div class="ttc" id="aclassdrain_1_1FlexibleVariable_html_a80a2b005d6ca8e19581d1a57ec7f436a"><div class="ttname"><a href="classdrain_1_1FlexibleVariable.html#a80a2b005d6ca8e19581d1a57ec7f436a">drain::FlexibleVariable::FlexibleVariable</a></div><div class="ttdeci">FlexibleVariable(const char *x)</div><div class="ttdoc">Assignment of C strings. [Obligatory].</div><div class="ttdef"><b>Definition:</b> FlexibleVariable.h:80</div></div>
-<div class="ttc" id="aclassdrain_1_1FlexibleVariable_html_ab2f61610341264302dd61ea0de15f0f7"><div class="ttname"><a href="classdrain_1_1FlexibleVariable.html#ab2f61610341264302dd61ea0de15f0f7">drain::FlexibleVariable::requestType</a></div><div class="ttdeci">virtual bool requestType(const std::type_info &amp;t)</div><div class="ttdoc">Changes type, if possible. See also suggestType()</div><div class="ttdef"><b>Definition:</b> FlexibleVariable.h:140</div></div>
-<div class="ttc" id="aclassdrain_1_1FlexibleVariable_html_ac19459e30a595c3fbb607c6bd7173311"><div class="ttname"><a href="classdrain_1_1FlexibleVariable.html#ac19459e30a595c3fbb607c6bd7173311">drain::FlexibleVariable::setType</a></div><div class="ttdeci">virtual void setType(const std::type_info &amp;t)</div><div class="ttdoc">Tries to change type with requestType. Throws exception if not possible.</div><div class="ttdef"><b>Definition:</b> FlexibleVariable.h:125</div></div>
-<div class="ttc" id="aclassdrain_1_1FlexibleVariable_html_af61912602179e9425271926135614061"><div class="ttname"><a href="classdrain_1_1FlexibleVariable.html#af61912602179e9425271926135614061">drain::FlexibleVariable::requestSize</a></div><div class="ttdeci">virtual bool requestSize(size_t elementCount)</div><div class="ttdoc">Request to change the array size. For Castable (and Reference) does nothing and returns false.</div><div class="ttdef"><b>Definition:</b> FlexibleVariable.h:199</div></div>
-<div class="ttc" id="aclassdrain_1_1ReferenceBase_html"><div class="ttname"><a href="classdrain_1_1ReferenceBase.html">drain::ReferenceBase</a></div><div class="ttdoc">Intermediate class supporting link() in various forms.</div><div class="ttdef"><b>Definition:</b> Var-example.cpp:42</div></div>
-<div class="ttc" id="aclassdrain_1_1Sprinter_html_abe1e6bf8d8874a9263882f4e7c203d6d"><div class="ttname"><a href="classdrain_1_1Sprinter.html#abe1e6bf8d8874a9263882f4e7c203d6d">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const std::initializer_list&lt; T &gt; &amp;x, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">New (experimental)</div><div class="ttdef"><b>Definition:</b> Sprinter.h:467</div></div>
-<div class="ttc" id="aclassdrain_1_1Variable_html"><div class="ttname"><a href="classdrain_1_1Variable.html">drain::Variable</a></div><div class="ttdef"><b>Definition:</b> Variable.h:107</div></div>
-<div class="ttc" id="aclassdrain_1_1Variable_html_af61912602179e9425271926135614061"><div class="ttname"><a href="classdrain_1_1Variable.html#af61912602179e9425271926135614061">drain::Variable::requestSize</a></div><div class="ttdeci">virtual bool requestSize(size_t elementCount)</div><div class="ttdoc">Request to change the array size. For Castable (and Reference) does nothing and returns false.</div><div class="ttdef"><b>Definition:</b> Variable.h:305</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
-<div class="ttc" id="astructdrain_1_1SprinterLayout_html"><div class="ttname"><a href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a></div><div class="ttdef"><b>Definition:</b> Sprinter.h:189</div></div>
-<div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdef"><b>Definition:</b> TypeUtils.h:106</div></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#define   VariableLike FlexibleVariable</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#include &quot;VariableLike.inc&quot;</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#undef    VariableLike</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">// Drain</span></div>
+<div class="ttc" id="aclassdrain_1_1VariableT_html"><div class="ttname"><a href="classdrain_1_1VariableT.html">drain::VariableT</a></div><div class="ttdoc">VariableT is a final class applied through typedefs Variable, Reference and FlexibleVariable.</div><div class="ttdef"><b>Definition:</b> VariableT.h:98</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
+<div class="ttc" id="anamespacedrain_html_a6e1fa0b6fd9d7f5e426b34319cfada17"><div class="ttname"><a href="namespacedrain.html#a6e1fa0b6fd9d7f5e426b34319cfada17">drain::FlexibleVariable</a></div><div class="ttdeci">VariableT&lt; ReferenceT&lt; Variable &gt; &gt; FlexibleVariable</div><div class="ttdoc">Value container supporting dynamic type with own memory and optional linking (referencing) of externa...</div><div class="ttdef"><b>Definition:</b> FlexibleVariable.h:67</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

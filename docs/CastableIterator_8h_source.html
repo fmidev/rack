@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rack: src/drain/util/CastableIterator.h Source File</title>
+<title>rack: src/drain/CastableIterator.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,7 +64,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4b6777edce7656f28010aab0b9aeb502.html">drain</a></li><li class="navelem"><a class="el" href="dir_fcd8a2cb972a4a0ab2125ef14e9c5575.html">util</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_4b6777edce7656f28010aab0b9aeb502.html">drain</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -132,7 +132,7 @@ $(function() {
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="classdrain_1_1CastableIterator.html">CastableIterator</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1CastableIterator.html">CastableIterator</a> &amp;it){</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="classdrain_1_1Castable.html#abd78ab96c7b16d1bcd56a6109069668b">setPtr</a>(it.caster.<a class="code" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>, it.getType());</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="classdrain_1_1Castable.html#abd78ab96c7b16d1bcd56a6109069668b">setPtr</a>(it.caster.<a class="code" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>, it.<a class="code" href="classdrain_1_1CastableIterator.html#a5493c0ca86af1b174833c0fbdd126baf">getType</a>());</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="classdrain_1_1CastableIterator.html">CastableIterator</a>(<span class="keywordtype">void</span> *p, <span class="keyword">const</span> std::type_info &amp; t){</div>
@@ -164,7 +164,7 @@ $(function() {
 <div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="classdrain_1_1CastableIterator.html#a5903454bcab43a759c4fc24dab2bcf0f">   96</a></span>&#160;    <a class="code" href="classdrain_1_1CastableIterator.html">CastableIterator</a> &amp; <a class="code" href="classdrain_1_1CastableIterator.html#a5903454bcab43a759c4fc24dab2bcf0f">operator=</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1CastableIterator.html">CastableIterator</a> &amp;it){</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">if</span> (&amp;it != <span class="keyword">this</span>){</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="comment">// std::cerr &lt;&lt; &quot;CastableIterator operator=(const &amp; CastableIterator) \n&quot;;</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <a class="code" href="classdrain_1_1Castable.html#abd78ab96c7b16d1bcd56a6109069668b">setPtr</a>(it.caster.<a class="code" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>, it.getType());</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <a class="code" href="classdrain_1_1Castable.html#abd78ab96c7b16d1bcd56a6109069668b">setPtr</a>(it.caster.<a class="code" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>, it.<a class="code" href="classdrain_1_1CastableIterator.html#a5493c0ca86af1b174833c0fbdd126baf">getType</a>());</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
@@ -182,7 +182,7 @@ $(function() {
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <a class="code" href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">elementCount</a> = 1;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        }</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <span class="keywordflow">if</span> (typeIsSet() &amp;&amp; (getType() != <span class="keyword">typeid</span>(T))){</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            <span class="keywordflow">if</span> (typeIsSet() &amp;&amp; (<a class="code" href="classdrain_1_1CastableIterator.html#a5493c0ca86af1b174833c0fbdd126baf">getType</a>() != <span class="keyword">typeid</span>(T))){</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                <span class="comment">// Type info provided, set also type.</span></div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                <a class="code" href="classdrain_1_1Castable.html#abd78ab96c7b16d1bcd56a6109069668b">setPtr</a>(p, <span class="keyword">typeid</span>(T));</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                <span class="comment">//std::cerr &lt;&lt; &quot;Warning&quot;</span></div>
@@ -212,14 +212,14 @@ $(function() {
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    };</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keyword">const</span> std::type_info &amp; getType()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="classdrain_1_1CastableIterator.html#a5493c0ca86af1b174833c0fbdd126baf">  149</a></span>&#160;    <span class="keyword">const</span> std::type_info &amp; <a class="code" href="classdrain_1_1CastableIterator.html#a5493c0ca86af1b174833c0fbdd126baf">getType</a>()<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="keywordflow">return</span> caster.<a class="code" href="classdrain_1_1Caster.html#a5493c0ca86af1b174833c0fbdd126baf">getType</a>();</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    };</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> CastableIterator &amp;it)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <span class="keywordflow">return</span> (caster.<a class="code" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a> == it.caster.ptr);</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code" href="classdrain_1_1CastableIterator.html">CastableIterator</a> &amp;it)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <span class="keywordflow">return</span> (caster.<a class="code" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a> == it.caster.<a class="code" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>);</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    };</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keyword">inline</span></div>
@@ -302,7 +302,7 @@ $(function() {
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;};</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;std::ostream &amp; <a class="code" href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> CastableIterator &amp; it){</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> CastableIterator &amp; it){</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    ostr &lt;&lt; (long)it;</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;}</div>
@@ -347,19 +347,19 @@ $(function() {
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="comment">// Drain</span></div>
 <div class="ttc" id="aclassdrain_1_1CastableIterator_html"><div class="ttname"><a href="classdrain_1_1CastableIterator.html">drain::CastableIterator</a></div><div class="ttdef"><b>Definition:</b> CastableIterator.h:57</div></div>
 <div class="ttc" id="aclassdrain_1_1CastableIterator_html_a03439f1cbeeee2d876816c717124d450"><div class="ttname"><a href="classdrain_1_1CastableIterator.html#a03439f1cbeeee2d876816c717124d450">drain::CastableIterator::operator--</a></div><div class="ttdeci">CastableIterator operator--(int)</div><div class="ttdoc">Not recommended, use prefix operator--() instead.</div><div class="ttdef"><b>Definition:</b> CastableIterator.h:199</div></div>
+<div class="ttc" id="aclassdrain_1_1CastableIterator_html_a5493c0ca86af1b174833c0fbdd126baf"><div class="ttname"><a href="classdrain_1_1CastableIterator.html#a5493c0ca86af1b174833c0fbdd126baf">drain::CastableIterator::getType</a></div><div class="ttdeci">const std::type_info &amp; getType() const</div><div class="ttdoc">Return the storage type (base type) of the referenced variable.</div><div class="ttdef"><b>Definition:</b> CastableIterator.h:149</div></div>
 <div class="ttc" id="aclassdrain_1_1CastableIterator_html_a5903454bcab43a759c4fc24dab2bcf0f"><div class="ttname"><a href="classdrain_1_1CastableIterator.html#a5903454bcab43a759c4fc24dab2bcf0f">drain::CastableIterator::operator=</a></div><div class="ttdeci">CastableIterator &amp; operator=(const CastableIterator &amp;it)</div><div class="ttdoc">Moves iterator to address pointed by &amp;it. Changes the internal type accordingly.</div><div class="ttdef"><b>Definition:</b> CastableIterator.h:96</div></div>
 <div class="ttc" id="aclassdrain_1_1CastableIterator_html_a644b9de0105a3fa4dcf1a997ff1be70a"><div class="ttname"><a href="classdrain_1_1CastableIterator.html#a644b9de0105a3fa4dcf1a997ff1be70a">drain::CastableIterator::setType</a></div><div class="ttdeci">void setType(const std::type_info &amp;type)</div><div class="ttdoc">Moves iterator to address *p.</div><div class="ttdef"><b>Definition:</b> CastableIterator.h:144</div></div>
 <div class="ttc" id="aclassdrain_1_1CastableIterator_html_a69fe9fc16c36611edea06d5a00e8aff6"><div class="ttname"><a href="classdrain_1_1CastableIterator.html#a69fe9fc16c36611edea06d5a00e8aff6">drain::CastableIterator::operator++</a></div><div class="ttdeci">CastableIterator operator++(int)</div><div class="ttdoc">Not recommended, use prefix operator++() instead.</div><div class="ttdef"><b>Definition:</b> CastableIterator.h:183</div></div>
 <div class="ttc" id="aclassdrain_1_1CastableIterator_html_aff272427cc3b9a2f0f5d8c07f5851145"><div class="ttname"><a href="classdrain_1_1CastableIterator.html#aff272427cc3b9a2f0f5d8c07f5851145">drain::CastableIterator::operator=</a></div><div class="ttdeci">CastableIterator &amp; operator=(T *p)</div><div class="ttdoc">Moves iterator to address *p.</div><div class="ttdef"><b>Definition:</b> CastableIterator.h:109</div></div>
 <div class="ttc" id="aclassdrain_1_1Castable_html"><div class="ttname"><a href="classdrain_1_1Castable.html">drain::Castable</a></div><div class="ttdef"><b>Definition:</b> Castable.h:78</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_a71c45090ec0db23502b8e5acb00f4ce5"><div class="ttname"><a href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">drain::Castable::elementCount</a></div><div class="ttdeci">size_t elementCount</div><div class="ttdoc">Pointer to the data variable.</div><div class="ttdef"><b>Definition:</b> Castable.h:1071</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_abd78ab96c7b16d1bcd56a6109069668b"><div class="ttname"><a href="classdrain_1_1Castable.html#abd78ab96c7b16d1bcd56a6109069668b">drain::Castable::setPtr</a></div><div class="ttdeci">void setPtr(void *p)</div><div class="ttdoc">Stores the pointer and its storage type F. Assumes elementCount=1.</div><div class="ttdef"><b>Definition:</b> Castable.h:733</div></div>
+<div class="ttc" id="aclassdrain_1_1Castable_html_a71c45090ec0db23502b8e5acb00f4ce5"><div class="ttname"><a href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">drain::Castable::elementCount</a></div><div class="ttdeci">size_t elementCount</div><div class="ttdoc">Pointer to the data variable.</div><div class="ttdef"><b>Definition:</b> Castable.h:1077</div></div>
+<div class="ttc" id="aclassdrain_1_1Castable_html_abd78ab96c7b16d1bcd56a6109069668b"><div class="ttname"><a href="classdrain_1_1Castable.html#abd78ab96c7b16d1bcd56a6109069668b">drain::Castable::setPtr</a></div><div class="ttdeci">void setPtr(void *p)</div><div class="ttdoc">Stores the pointer and its storage type F. Assumes elementCount=1.</div><div class="ttdef"><b>Definition:</b> Castable.h:752</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_a5493c0ca86af1b174833c0fbdd126baf"><div class="ttname"><a href="classdrain_1_1Caster.html#a5493c0ca86af1b174833c0fbdd126baf">drain::Caster::getType</a></div><div class="ttdeci">const std::type_info &amp; getType() const</div><div class="ttdoc">Returns type_info of the current type.</div><div class="ttdef"><b>Definition:</b> Caster.h:145</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_a91f17c5f4d0fecfc5d714d80dbbb7d09"><div class="ttname"><a href="classdrain_1_1Caster.html#a91f17c5f4d0fecfc5d714d80dbbb7d09">drain::Caster::getElementSize</a></div><div class="ttdeci">size_t getElementSize() const</div><div class="ttdoc">Returns the size of the base type (size of an element, not of element array).</div><div class="ttdef"><b>Definition:</b> Caster.h:152</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_aa5d02202c1f07e573b97647425fde328"><div class="ttname"><a href="classdrain_1_1Caster.html#aa5d02202c1f07e573b97647425fde328">drain::Caster::setType</a></div><div class="ttdeci">void setType(const std::type_info &amp;t)</div><div class="ttdoc">Calls setType&lt;T&gt;() for which typeid(T) = t.</div><div class="ttdef"><b>Definition:</b> Caster.h:120</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_add9af9569af79ec26dd741fb226b38ba"><div class="ttname"><a href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">drain::Caster::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">Future member: enables setting Caster type.</div><div class="ttdef"><b>Definition:</b> Caster.h:238</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
-<div class="ttc" id="anamespacedrain_html_a56b7ff5a86b5866a869819c6ef314fa9"><div class="ttname"><a href="namespacedrain.html#a56b7ff5a86b5866a869819c6ef314fa9">drain::operator&lt;&lt;</a></div><div class="ttdeci">ostream &amp; operator&lt;&lt;(ostream &amp;ostr, const vector&lt; T &gt; &amp;n)</div><div class="ttdoc">Risk of conflicts?</div><div class="ttdef"><b>Definition:</b> EM-example.cpp:47</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

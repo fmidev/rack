@@ -105,16 +105,16 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifndef IMAGE_FRAME_H_</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define IMAGE_FRAME_H_ &quot;ImageFrame 0.9,  2011.09.25 Markus.Peura@fmi.fi&quot;</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;drain/image/CoordinatePolicy.h&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span>  <span class="comment">// size_t</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;drain/util/CastableIterator.h&quot;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;drain/util/Sprinter.h&quot;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;drain/util/TypeUtils.h&quot;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;drain/util/VariableMap.h&quot;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//#include &quot;drain/util/FlexibleVariable.h&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &quot;drain/util/ValueScaling.h&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;stddef.h&gt;</span>  <span class="comment">// size_t</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//#include &lt;drain/util/CastableIterator.h&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;drain/TypeUtils.h&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;drain/Sprinter.h&gt;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//#include &quot;drain/util/FlexibleVariable.h&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;drain/image/CoordinatePolicy.h&gt;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &quot;drain/util/ValueScaling.h&quot;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &quot;drain/util/VariableMap.h&quot;</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#include &quot;Geometry.h&quot;</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &quot;ImageLike.h&quot;</span></div>
@@ -511,7 +511,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1CastableIterator_html"><div class="ttname"><a href="classdrain_1_1CastableIterator.html">drain::CastableIterator</a></div><div class="ttdef"><b>Definition:</b> CastableIterator.h:57</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_a782412feaaee472a9271e3af5d1c7692"><div class="ttname"><a href="classdrain_1_1Caster.html#a782412feaaee472a9271e3af5d1c7692">drain::Caster::get</a></div><div class="ttdeci">T get(const void *p) const</div><div class="ttdoc">Default implementation throws an error. See specialized implementation below.</div><div class="ttdef"><b>Definition:</b> Caster.h:195</div></div>
 <div class="ttc" id="aclassdrain_1_1Caster_html_ae4c740bf5762b729c440cbe83414db8b"><div class="ttname"><a href="classdrain_1_1Caster.html#ae4c740bf5762b729c440cbe83414db8b">drain::Caster::put</a></div><div class="ttdeci">void put(void *p, const T &amp;x) const</div><div class="ttdoc">Default conversion (for unconventional types). Uses std::stringstream for conversion.</div><div class="ttdef"><b>Definition:</b> Caster.h:158</div></div>
-<div class="ttc" id="aclassdrain_1_1FlexVariableMap_html"><div class="ttname"><a href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a></div><div class="ttdoc">A map of FlexVariable:s.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:117</div></div>
+<div class="ttc" id="aclassdrain_1_1FlexVariableMap_html"><div class="ttname"><a href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a></div><div class="ttdoc">A map of FlexVariable:s.</div><div class="ttdef"><b>Definition:</b> VariableMap.h:122</div></div>
 <div class="ttc" id="aclassdrain_1_1Range_html"><div class="ttname"><a href="classdrain_1_1Range.html">drain::Range&lt; double &gt;</a></div></div>
 <div class="ttc" id="aclassdrain_1_1ValueScaling_html_a5bfe44fc6cbce1a274c55a213f6afb6c"><div class="ttname"><a href="classdrain_1_1ValueScaling.html#a5bfe44fc6cbce1a274c55a213f6afb6c">drain::ValueScaling::fwd</a></div><div class="ttdeci">double fwd(double x) const</div><div class="ttdoc">Forward scaling: given encoded value x, returns corresponding value (possibly physically meaningful).</div><div class="ttdef"><b>Definition:</b> ValueScaling.h:295</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Encoding_html_a5493c0ca86af1b174833c0fbdd126baf"><div class="ttname"><a href="classdrain_1_1image_1_1Encoding.html#a5493c0ca86af1b174833c0fbdd126baf">drain::image::Encoding::getType</a></div><div class="ttdeci">const std::type_info &amp; getType() const</div><div class="ttdoc">Linear scaling.</div><div class="ttdef"><b>Definition:</b> ImageConf.h:110</div></div>
@@ -556,8 +556,8 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html_af5573d9c687fc62b5d60d35f61821c14"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html#af5573d9c687fc62b5d60d35f61821c14">drain::image::ImageFrame::updateChannelVector</a></div><div class="ttdeci">virtual void updateChannelVector() const</div><div class="ttdoc">Updates channel vector. Copies scaling of the host image.</div><div class="ttdef"><b>Definition:</b> ImageFrame.h:487</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html_afeae1fafaffc4d995a349a87116b28b1"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html#afeae1fafaffc4d995a349a87116b28b1">drain::image::ImageFrame::initialize</a></div><div class="ttdeci">virtual void initialize(const std::type_info &amp;t, const Geometry &amp;geometry)</div><div class="ttdoc">Returns numeric channel index from &quot;r&quot;, &quot;g&quot;, &quot;b&quot;, or &quot;a&quot; or a non-negative number in string format.</div><div class="ttdef"><b>Definition:</b> ImageFrame.h:415</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageLike_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageLike.html">drain::image::ImageLike</a></div><div class="ttdoc">A base class for images.</div><div class="ttdef"><b>Definition:</b> ImageLike.h:61</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Convert-example.cpp:35</div></div>
-<div class="ttc" id="anamespacerack_html_a9da7fe6d7ac333840a874ef95845f1e2"><div class="ttname"><a href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition:</b> Data.h:519</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
+<div class="ttc" id="anamespacerack_html_a9da7fe6d7ac333840a874ef95845f1e2"><div class="ttname"><a href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition:</b> Data.h:536</div></div>
 <div class="ttc" id="astructdrain_1_1Point2D_html"><div class="ttname"><a href="structdrain_1_1Point2D.html">drain::Point2D</a></div><div class="ttdef"><b>Definition:</b> Point.h:47</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

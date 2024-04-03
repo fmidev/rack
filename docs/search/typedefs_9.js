@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['map_5ft_4117',['map_t',['../classdrain_1_1Bank.html#a083b3118c64246c86cdf47a290bc1eae',1,'drain::Bank::map_t()'],['../classrack_1_1RadarDataPicker.html#ab89674900a5be75e3fb828e826bb9daf',1,'rack::RadarDataPicker::map_t()']]]
+  ['level_5ft_4138',['level_t',['../classdrain_1_1Log.html#a034d684c2bb4195c725dae147ac44a4f',1,'drain::Log']]],
+  ['lookup_5ft_4139',['lookup_t',['../classdrain_1_1ImageCodeMap.html#a9147d125ba3ffe998696681793388396',1,'drain::ImageCodeMap']]]
 ];

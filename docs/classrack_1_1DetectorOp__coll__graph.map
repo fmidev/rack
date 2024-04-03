@@ -1,18 +1,18 @@
 <map id="DetectorOp" name="DetectorOp">
-<area shape="rect" id="node1" title="Base class for anomaly detectors." alt="" coords="179,1049,275,1076"/>
-<area shape="rect" id="node2" href="$classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="188,973,267,1000"/>
-<area shape="rect" id="node3" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="153,897,301,924"/>
-<area shape="rect" id="node4" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="166,821,289,848"/>
-<area shape="rect" id="node5" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="43,732,231,759"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images." alt="" coords="10,641,226,683"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="23,551,213,592"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="62,475,174,501"/>
-<area shape="rect" id="node9" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="77,399,159,425"/>
-<area shape="rect" id="node10" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="73,323,163,349"/>
-<area shape="rect" id="node11" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="77,247,159,273"/>
-<area shape="rect" id="node12" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="60,157,176,184"/>
-<area shape="rect" id="node13" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,213,108"/>
-<area shape="rect" id="node14" title=" " alt="" coords="5,5,231,32"/>
-<area shape="rect" id="node15" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="263,732,395,759"/>
-<area shape="rect" id="node16" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="251,641,415,683"/>
+<area shape="rect" id="node1" title="Base class for anomaly detectors." alt="" coords="177,1049,273,1076"/>
+<area shape="rect" id="node2" href="$classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="185,973,264,1000"/>
+<area shape="rect" id="node3" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="151,897,299,924"/>
+<area shape="rect" id="node4" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="163,821,286,848"/>
+<area shape="rect" id="node5" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="40,732,228,759"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images." alt="" coords="7,641,223,683"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="21,551,210,592"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="59,475,171,501"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="75,399,156,425"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="70,323,161,349"/>
+<area shape="rect" id="node11" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,247,156,273"/>
+<area shape="rect" id="node12" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,157,173,184"/>
+<area shape="rect" id="node13" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,208,108"/>
+<area shape="rect" id="node14" title=" " alt="" coords="5,5,225,32"/>
+<area shape="rect" id="node15" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="260,732,392,759"/>
+<area shape="rect" id="node16" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="248,641,412,683"/>
 </map>

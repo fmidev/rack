@@ -1,11 +1,11 @@
 <map id="EncodingODIM" name="EncodingODIM">
-<area shape="rect" id="node1" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="873,56,991,83"/>
-<area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="611,8,727,35"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="280,5,471,32"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,5,231,32"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="596,63,741,89"/>
-<area shape="rect" id="node6" title=" " alt="" coords="306,57,445,98"/>
-<area shape="rect" id="node7" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="616,131,721,157"/>
-<area shape="rect" id="node8" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="34,143,202,169"/>
-<area shape="rect" id="node9" href="$classdrain_1_1Range.html" title=" " alt="" coords="307,173,444,200"/>
+<area shape="rect" id="node1" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="863,56,980,83"/>
+<area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="600,8,716,35"/>
+<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="275,5,460,32"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,5,225,32"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="585,63,731,89"/>
+<area shape="rect" id="node6" title=" " alt="" coords="298,57,437,98"/>
+<area shape="rect" id="node7" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="605,131,711,157"/>
+<area shape="rect" id="node8" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="31,143,199,169"/>
+<area shape="rect" id="node9" href="$classdrain_1_1Range.html" title=" " alt="" coords="299,173,436,200"/>
 </map>
