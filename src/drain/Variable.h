@@ -62,7 +62,8 @@ namespace drain {
  *   \see Reference
  *   \see FlexibleVariable
  */
-typedef VariableT<VariableBase>  Variable;
+//typedef VariableT<VariableBase>  Variable;
+typedef VariableT<VariableInitializer<VariableBase> >  Variable;
 
 
 

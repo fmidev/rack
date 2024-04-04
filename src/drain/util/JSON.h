@@ -84,7 +84,8 @@ public:
 
 	/// Read a value (JSON syntax). Read stream until a value has been extracted, with type recognition
 	static
-	void readValue(std::istream & istr, Variable & v, bool keepType = false);
+	void readValue(std::istream & istr, Castable & v, bool keepType = false);
+	//void readValue(std::istream & istr, Variable & v, bool keepType = false);
 
 	/// Read value (JSON syntax). Read stream until a value has been extracted, with type recognition
 	/**
@@ -94,11 +95,13 @@ public:
 	 *   - array:  [<value>,<value>,<value>,<...>]
 	 */
 	static
-	void readValue(const std::string & s, Variable & v, bool keepType = false);
+	void readValue(const std::string & s, Castable & v, bool keepType = false);
+	//void readValue(const std::string & s, Variable & v, bool keepType = false);
 
 	/// Given comma-separated string of values, assign them to variable of minimum compatible type
 	static
-	void readArray(const std::string & s, Variable & v);
+	void readArray(const std::string & s, Castable & v);
+	//void readArray(const std::string & s, Variable & v);
 
 protected:
 

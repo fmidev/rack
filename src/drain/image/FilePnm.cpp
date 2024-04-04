@@ -135,6 +135,11 @@ FilePnm::FileType FilePnm::readHeader(drain::image::ImageConf & conf, drain::Fle
 			mout.debug2("Comment: " , key , ": " ,  sstr.str() );
 			//ValueReader::scanValue(sstr.str(), properties[key]);
 			JSON::readValue(sstr.str(), properties[key]);
+			/*
+			Variable v;
+			JSON::readValue(sstr.str(), v); // TODO Castable ?
+			properties[key].assignCastable(v);
+			*/
 		}
 		else {
 			mout.note("Comment:" ,  sstr.str() );

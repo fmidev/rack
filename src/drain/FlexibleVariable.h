@@ -64,13 +64,23 @@ namespace drain {
  *   \see FlexibleVariable
  */
 
-typedef VariableT<ReferenceT<Variable> >  FlexibleVariable;
+//typedef VariableT<ReferenceT<Variable> >  FlexibleVariable;
+typedef VariableT<VariableInitializer<ReferenceT<VariableBase> > >  FlexibleVariable;
 
 // Override for "ambivalent" FlexibleVariable
 template <>
 void FlexibleVariable::info(std::ostream & ostr) const;
 
+/*
+template <>
+FlexibleVariable::FlexibleVariable(const char *s){
+};
+*/
+
+
 }  // namespace drain
+
+
 
 #define   VariableLike FlexibleVariable
 #include "VariableLike.inc"

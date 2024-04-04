@@ -44,12 +44,12 @@ FileInfo JSON::fileInfo("json");
 template <>
 const drain::JSONtree2 drain::JSONtree2::emptyNode;
 
-void JSON::readValue(const std::string & s, Variable & v, bool keepType){
+void JSON::readValue(const std::string & s, Castable & v, bool keepType){
 	std::istringstream istr(s);
 	readValue(istr, v, keepType);
 };
 
-void JSON::readValue(std::istream & istr, Variable & v, bool keepType){
+void JSON::readValue(std::istream & istr, Castable & v, bool keepType){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -113,7 +113,7 @@ void JSON::readValue(std::istream & istr, Variable & v, bool keepType){
 }
 
 
-void JSON::readArray(const std::string & s, Variable & v){
+void JSON::readArray(const std::string & s, Castable & v){
 
 	v.clear();
 

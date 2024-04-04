@@ -62,14 +62,6 @@ public:
 
 	//typedef std::pair<const char *,const drain::VariableBase> init_pair_t;
 
-	/***
-	 *   This is the basic design pattern for all the VariableLikes
-	 */
-	template <class ...TT>
-	inline
-	VariableBase(const TT & ...args) {
-		init(args...); //
-	}
 
 	virtual inline
 	~VariableBase(){};
@@ -113,6 +105,15 @@ public:
 
 protected:
 
+	/***
+	 *   This is the basic design pattern for all the VariableLikes
+	template <class ...TT>
+	inline
+	VariableBase(const TT & ...args) {
+		init(args...); //
+	}
+	 */
+
 	/*
 	template <class D>
 	void init(const D & dst){
@@ -120,9 +121,10 @@ protected:
 		assign(dst);
 	}
 	*/
+
 	/// Default constructor generates an empty array.
 	inline
-	void init(const std::type_info &t = typeid(void)) {
+	void initOLD(const std::type_info &t = typeid(void)) {
 		reset();
 		setType(t);
 	};
@@ -130,7 +132,7 @@ protected:
 	// Initialisation, using type of argument or explicit type argument.
 	// Copies type, data and separator char. Fails with Reference?
 	template <class T>
-	void init(const T & value, const std::type_info &t = typeid(void)) {
+	void initOLD(const T & value, const std::type_info &t = typeid(void)) {
 		// std::cerr << __FILE__ << ':' << __LINE__ << " VariableBase::" << __FUNCTION__ << " " << value << std::endl;
 		reset();
 		setType(t);
@@ -141,7 +143,7 @@ protected:
 
 	/// Copies type, data and separator char.
 	inline
-	void init(const VariableBase & v) {
+	void initOLD(const VariableBase & v) {
 		reset();
 		this->outputSeparator = v.outputSeparator;
 		this->inputSeparator = v.inputSeparator;
@@ -150,7 +152,7 @@ protected:
 
 	/// Copies type, data and separator char.
 	inline
-	void init(const Castable & c) {
+	void initOLD(const Castable & c) {
 		reset();
 		//this->outputSeparator = c.outputSeparator;
 		//this->inputSeparator  = c.inputSeparator;
@@ -159,7 +161,7 @@ protected:
 
 	/// Copies type, data and separator char.
 	inline
-	void init(const char * s) {
+	void initOLD(const char * s) {
 		reset();
 		assignString(s);
 	};
@@ -167,14 +169,14 @@ protected:
 	/// Initialisation with type of the first element or explicit type argument.
 	template<typename T>
 	inline
-	void init(std::initializer_list<T> l, const std::type_info &t = typeid(void)) {
+	void initOLD(std::initializer_list<T> l, const std::type_info &t = typeid(void)) {
 		reset();
 		setType(t);
 		assignContainer(l, true);
 	};
 
 	template <class ...TT>
-	void init(const TT& ...args){
+	void initOLD(const TT& ...args){
 		reset();
 		append(args...);
 	}
@@ -221,53 +223,7 @@ public:
 	virtual
 	void setType(const std::type_info & t);
 
-	/// Stronger than suggestType, which only sets type if unset.
-	/**
-	 * Changes type by calling setType() directly. Always supported for VariableBase.
-	 *
-	 *  \param t - new type
-	 *  \return - always true
-	 *
-	 *  \see suggestType()
-	 *  \see setType()
-	 */
 
-
-	/// Sets type, if unset.
-	/**
-	 *   Could be protected, but requestType() will not be.
-
-	virtual inline
-	bool suggestType(const std::type_info & t){
-		 if (isReference()){
-			return Castable::suggestType(t);
-		}
-		else
-
-		if (!typeIsSet())
-			setType(t);
-		return true;
-	}
-	*/
-
-	/// Request to change the array size. For Castable (and Reference) does nothing and returns false.
-	/**
-	 *   Could be protected, but requestType() will not be.
-	 *   Does not apply to std::string;
-	 *
-		*/
-
-
-
-	/// Extends the array by one element.
-	/*
-	inline
-	Variable &operator<<(const char *s){
-		// Castable::operator<<(s);
-		append(s);
-		return *this;
-	}
-	*/
 
 	/// Extends the array by one element.
 	/*
@@ -336,6 +292,80 @@ private:
 
 };
 
+/**
+ *  \tparam T - VariableBase for Variable
+ */
+template <class V>
+class VariableInitializer : public V {
+protected:
+
+	/*
+	template <class D>
+	void init(const D & dst){
+		reset();
+		assign(dst);
+	}
+	*/
+	/// Default constructor generates an empty array.
+	inline
+	void init(const std::type_info &t = typeid(void)) {
+		this->reset();
+		this->setType(t);
+	};
+
+	// Initialisation, using type of argument or explicit type argument.
+	// Copies type, data and separator char. Fails with Reference?
+	template <class T>
+	void init(const T & value, const std::type_info &t = typeid(void)) {
+		// std::cerr << __FILE__ << ':' << __LINE__ << " VariableBase::" << __FUNCTION__ << " " << value << std::endl;
+		this->reset();
+		this->setType(t);
+		this->assign(value); // Critical, direct assignment *this = value fails
+		// ;
+	}
+
+
+	/// Copies type, data and separator char.
+	inline
+	void init(const VariableBase & v) {
+		this->reset();
+		this->outputSeparator = v.outputSeparator;
+		this->inputSeparator = v.inputSeparator;
+		this->assignCastable(v);
+	};
+
+	/// Copies type, data and separator char.
+	inline
+	void init(const Castable & c) {
+		this->reset();
+		//this->outputSeparator = c.outputSeparator;
+		//this->inputSeparator  = c.inputSeparator;
+		this->assignCastable(c);
+	};
+
+	/// Copies type, data and separator char.
+	inline
+	void init(const char * s) {
+		this->reset();
+		this->assignString(s);
+	};
+
+	/// Initialisation with type of the first element or explicit type argument.
+	template<typename T>
+	inline
+	void init(std::initializer_list<T> l, const std::type_info &t = typeid(void)) {
+		this->reset();
+		this->setType(t);
+		this->assignContainer(l, true);
+	};
+
+	template <class ...TT>
+	void init(const TT& ...args){
+		this->reset();
+		this->append(args...);
+	}
+
+};
 
 }
 

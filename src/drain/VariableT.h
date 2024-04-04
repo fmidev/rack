@@ -124,6 +124,7 @@ public:
 	}
 
 
+
 	/// Sets or changes the type if possible - that is, object is not a Reference.
 	/**
 	 */

@@ -704,10 +704,10 @@ public:
 	/// Copy data from str Castable. Perhaps copy size and type, too.
 	Castable & assignCastable(const Castable &c);
 
-
-protected:
-
-	Caster caster;
+	virtual inline
+	bool requestType(const std::type_info & t){
+		return (getType() == t);
+	}
 
 	/// Request to change in type. For Castable, simply returns true if the current type was requested.
 	/**
@@ -718,14 +718,10 @@ protected:
 		return (getType() == t);
 	}
 
-	/// Request to change the array size. For Castable (and Reference) does nothing and returns false.
-	/**
-	 *   Does not apply to std::string;
-	 */
-	virtual inline
-	bool requestSize(size_t elementCount){
-		return (getElementCount() == elementCount);
-	}
+protected:
+
+	Caster caster;
+
 
 
 	/// Sets the storage type. If a target value is available, use link() directly.
@@ -736,13 +732,21 @@ protected:
 		setType(typeid(F));
 	}
 
-
 	/// Sets the storage type. If a target value is available, use link() directly.
 	virtual inline // virtual?  Variable may need
 	void setType(const std::type_info &t){
 		setSeparator(','); // ?
 		caster.setType(t);
 		//elementCount = 1;
+	}
+
+	/// Request to change the array size. For Castable (and Reference) does nothing and returns false.
+	/**
+	 *   Does not apply to std::string;
+	 */
+	virtual inline
+	bool requestSize(size_t elementCount){
+		return (getElementCount() == elementCount);
 	}
 
 

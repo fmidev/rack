@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.4.1"
+#define __RACK_VERSION__ "8.5"
 
 /**
+ *   Version 8.5
+ *   - Redesigned (separated) VariableBase and VariableInitialiser
+ *
  *   Version 8.4.1
  *   - Drain core classes directly at /drain
  *   - Refactored Variable, Reference and FlexibleVariable

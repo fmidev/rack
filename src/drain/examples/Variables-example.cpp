@@ -22,16 +22,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 
 /*  // ,VariableLike
+
   REQUIRE: drain/{Caster,Castable,FlexibleVariable,Log,Reference,Sprinter,String,RegExp,TextStyle,Type,TypeUtils,Variable,VariableBase}.cpp
-  REQUIRE: drain/util/Time.cpp
+  REQUIRE: drain/util/{FileInfo,Output,Time,TreeXML,TreeHTML}.cpp
+
   g+ + -I. drain/examples/Time-example.cpp drain/util/Time.cpp -o Time-example
  */
 
@@ -40,184 +42,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <cassert>
 
 #include "drain/Log.h"
-//#include "drain/VariableAssign.h"
 #include "drain/Reference.h"
 #include "drain/Variable.h"
 #include "drain/FlexibleVariable.h"
 #include "drain/VariableAssign.h"
 
-// \tparam T - Reference, Variable, FlexibleVariable
-/*
-template <class T>
-void testCastable(const char *arg, T & object){
+#include "drain/util/TreeHTML.h"
+#include "drain/util/Output.h"
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	int i = 0;
-
-	//drain::Castable & castable = object;
-
-	mout.note(drain::TypeName<T>::str());
-
-	mout.info();
-	object.info(mout);
-	mout << mout.endl;
-
-	object = arg;
-	//object.assign(arg);
-	mout.info();
-	object.info(mout);
-	mout << mout.endl;
-
-	std::cerr << "\n";
-}
-*/
-
-/// Checks if the value assigned to a drain::Castable stays same when reassigned.
-/**
- *  \tparam T - base type
- *  \param  t - destination Type object
- */
-template <class C = drain::Castable>
-struct CastableTester {
-
-	/**
-	 *  \tparam T - base type
-	 *  \param  t - destination Type object
-	 */
-	template <class T>
-	static inline
-	void callback(C & c){
-
-		drain::Logger mout(__FILE__, __FUNCTION__);
-
-		// Well, potentially becomes/arrives restricted already here...
-		mout.note() << drain::TypeName<C>::get() << " <- " << drain::TypeName<T>::get();
-
-
-		if ((c.isCharArrayString() && (c.getElementCount()<=1))  && (typeid(T)==typeid(char)) ){
-			mout << "storage type char, empty(ish) variable object, skipping test (uninitialized local char)" << mout.endl;
-			return;
-		}
-
-
-		const T x = c;
-		mout << '(' << x << ')';
-		c = x;
-
-		// mout.note() << drain::TypeName<T>::get()
-		// mout << '(' << x << ')' << " -> " << drain::TypeName<C>::get() << '=';
-		mout << " => '" << c << "' : ";
-		c.info(mout);
-		mout << mout.endl;
-
-		// TEST 1: Re-assign: back to basetype
-		const T y = c;
-		if (x != y){
-			// drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.warn("Re-assign test failed: '", x, "' != '", y, "'");
-		}
-		//assert(("Re-assign test failed", x == y));
-		// std::cerr << '\n';
-
-	}
-
-};
-
-
-template <>
-template <>
-void CastableTester<drain::Castable>::callback<void>(drain::Castable & x){
-}
-
-
-template <>
-template <>
-void CastableTester<drain::Variable>::callback<void>(drain::Variable & x){
-}
-
-template <>
-template <>
-void CastableTester<drain::Reference>::callback<void>(drain::Reference & x){
-}
-
-template <>
-template <>
-void CastableTester<drain::FlexibleVariable>::callback<void>(drain::FlexibleVariable & x){
-}
-
-
-// Own type (Variable::getType means a problem...)
-template <class C>
-void testAssignment(C & c){
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	//std::cerr << __FILE__ << ':' << __FUNCTION__ << '\n';
-	mout.warn(__FUNCTION__);
-	drain::Type::call<CastableTester<C> >(c, c.getType());
-}
-
-
-template <class T, class C>
-void compareValues(drain::Logger & mout, const C & c, const T & x){
-
-	if (c.getType() != typeid(T)){
-		if (!(c.isString() && (typeid(T)==typeid(std::string)))){
-			mout.reject() << "type not adapted [" << drain::TypeName<T>::get() << "] -> ";
-			c.info(mout);
-			mout.end();
-		}
-		else {
-			mout.ok();
-			c.info(mout);
-			mout.end();
-		}
-	}
-
-}
-
-
-template <class T, class C>
-void testAssignment(C & c, const T & x){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	mout.warn(__FUNCTION__, ':', x, " [", drain::TypeName<T>::get(), "]");
-
-	c = x;
-
-	compareValues(mout, c, x);
-
-	const T y = c;
-
-	compareValues(mout, c, y);
-
-	/*
-	if (y != x){
-		mout.reject() << "value [" << drain::TypeName<T>::get() << "] changed:" <<  x <<  " != " <<  y << " passed through ";
-		c.info(mout);
-		mout << mout.endl;
-	}
-	*/
-
-	/*
-	try {
-			if (expectError){
-				mout.error("no exception thrown: ");
-				return;
-			}
-		}
-		catch (const std::exception & e) {
-		}
-	*/
-
-}
-
-/*
-template <class T, class C>
-void checkType(const C & c){
-
-}
-*/
 
 template <class T, class C>
 void checkType(drain::Logger & mout, const C & c){
@@ -237,295 +69,143 @@ void checkType(drain::Logger & mout, const C & c){
 	else {
 		mout.reject(tName, " => ", ctName);
 	}
-	/*
-	if (t == typeid(std::string)){
-		return c.isString();
-	}
-	*/
-
-
-}
-
-#define mika(expr) ( { printf(#expr); printf(#expr) } )
-
-template <class T, class C>
-void testVariableConstructors(C & c, const T & value = T()){
-
-	drain::Logger mout(__FUNCTION__, drain::TypeName<T>::str());
-
-	mout.note(drain::TypeName<C>::str(), " <= ", value, " [",  drain::TypeName<T>::str(), "]");
-
-	try {
-		mout.attention("C c1");
-		mika( C c1 );
-
-		C c1;
-		// assert(!c1.typeIsSet());
-		checkType<void>(mout, c1);
-
-		mout.attention("C c2(typeid(", drain::TypeName<T>::str(),")");
-		C c2(typeid(T));
-		checkType<T>(mout, c2);
-		// mout.note(drain::Type::call<drain::simpleName>(c2.getType()), " [",  drain::TypeName<T>::str(), "]");
-		// assert(c2.getType() == typeid(T));
-
-		mout.attention("Constructor with initialisation");
-		C c4(value);
-		checkType<T>(mout, c4);
-
-		mout.attention("Constructor with assignment");
-		C c3 = value;
-		// mout.note(drain::Type::call<drain::simpleName>(c3.getType()), " [",  drain::TypeName<T>::str(), "]");
-		// assert(c3.getType() == typeid(T));
-		checkType<T>(mout, c3);
-
-		// assert(c4.getType() == typeid(T));
-	}
-	catch (const std::exception & e) {
-		mout.note(e.what());
-		mout.error("quitting");
-
-	}
 
 }
 
 
 
-template <class C, class T>
-void testAssignmentToReseted(C & c, const T & x, bool expectError = true){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	mout.warn("...");
-
-	c.reset();
-
-	if (c.typeIsSet()){
-		mout.warn();
-		c.info(mout);
-		mout.error("type still set after reset");
-	}
-
-	if (!c.empty()){
-		mout.warn();
-		c.info(mout);
-		mout.error("non-empty after reset");
-	}
-
-	//mout.note(drain::TypeName<T>::get(), '(', x, ')', " -> ", drain::TypeName<C>::get());
-	mout.note() << drain::TypeName<T>::get() <<  '(' <<  x <<  ')' << " -> ";//, drain::TypeName<C>::get());
-	c.info(mout);
-	mout.end();
-
-	try {
-		c = x;
-
-		if (expectError){
-			mout.error("no exception thrown: ");
-			return;
-		}
-
-		compareValues(mout, c, x);
-
-	}
-	catch (const std::exception & e) {
-		if (expectError){
-			mout.accept("exception thrown: ", e.what());
-		}
-		else {
-			mout.reject("exception thrown: ", e.what());
-		}
-	}
-
-	std::cerr << '\n';
-}
-
-template <class C, class T>
-void testAssignmentRelinked(C & c, const T & x){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	T y;
-	c.link(y);
-
-	mout.note(drain::TypeName<T>::get(), '(', x, ')', " -> ", drain::TypeName<C>::get());
-
-	try {
-		c = x;
-		//mout.fail("no exception thrown: ");
-	}
-	catch (const std::exception & e) {
-		mout.fail("exception thrown: ", e.what());
-	}
-
-	if (y != x){
-		mout.warn("value changed: ", x, " -> ", y);
-	}
-
-
-}
-
-
-template <class S, class T>
-void demo(const T & value, char outputSeparator = ','){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	mout.special("Input type: ", drain::TypeName<T>::get(), ", local storage type: ", drain::TypeName<S>::get() );
-
-	S data;
-
-	if ((typeid(S)==typeid(char)) && (outputSeparator == 0)){
-		mout.attention("Storage type is a single char, following errors for are expected for Castable, Reference and linked FlexibleVariable.");
-	}
-
-	mout.note("Castable:");
-	drain::Castable c(data);
-	c.setSeparator(outputSeparator);
-	testAssignment(c, value);
-	testAssignmentToReseted(c, value, true);
-	std::cerr << '\n';
-
-	mout.note("Reference");
-	drain::Reference r(data);
-	r.setSeparator(outputSeparator);
-	testAssignment(r, value);
-	testAssignmentToReseted(r, value, true);
-	std::cerr << '\n';
-
-	mout.note(drain::TypeName<drain::Variable>::str());
-	drain::Variable v;
-	v.setSeparator(outputSeparator);
-	testVariableConstructors(v, value);
-	testAssignment(v, value);
-	testAssignmentToReseted(v, value, false);
-	std::cerr << '\n';
-
-	/*  should test all these: undef, initialized, assigned, initialized-type, set-type
-	drain::Variable v(data);
-	v.setSeparator(outputSeparator);
-	v.setType(typeid(S));
-	testAssignment(v = value);
-	*/
-
-	mout.note(drain::TypeName<drain::FlexibleVariable>::str());
-	drain::FlexibleVariable fv;
-	fv.setSeparator(outputSeparator);
-	testVariableConstructors(fv, value);
-	testAssignment(fv, value);
-	testAssignmentToReseted(fv, value, false);
-	// testAssignmentRelinked(fv, value);
-	std::cerr << '\n';
-
-	//std::cout << "FlexVar, linked:   ";
-	//fv.link(data);
-	//testAssignment(fv);
-
-	// std::cout << "Var=Cas:   ";
-	mout.note("Variable -> FlexibleVariable");
-	// testAssignment(fv, v);
-	testAssignmentToReseted(fv, v, false);
-	std::cerr << '\n';
-
-	mout.note("FlexibleVariable -> Reference");
-	r.link(data);
-	//testAssignment(r, fv);
-
-	/*
-	v = r;
-	v = fv;
-	r = v;
-	r = fv;
-	fv = r;
-	fv = v;
-	*/
-	std::cerr << '\n';
-
-
-	std::cerr << '\n';
-
-}
-
-
-///
+/// Demonstrates usage of drain::.
 /**
- *  Usage:
-    \code
-    CastableComparer cc(var, flex);
-	drain::Type::call<CastableComparer>(cc, typeid(double));
-   \endcode
- */
-class CastableComparer {
-public:
-
-	CastableComparer(const drain::Castable & castable1, const  drain::Castable & castable2) : c1(castable1), c2(castable2) {
-
-	}
-
-	// param S - target type
-	// param T - type to be analyzed
-	template <class S, class C>
-	static
-	void callback(C & target){
-		target.result = target.template compareUsingType<S>();
-	}
-
-	template <class S>
-	bool compareUsingType(){
-		return (const S &)c1 == (const S &)c2;
-	}
-
-	bool compare(){
-		drain::Type::call<CastableComparer>(*this, c1.getType());
-		return result;
-	}
-
-
-	bool result = false;
-
-	const drain::Castable & c1;
-	const drain::Castable & c2;
-
-
-};
-
-template <>
-bool CastableComparer::compareUsingType<void>(){
-	if (c1.typeIsSet() || c2.typeIsSet())
-		return false; // or equal, or raise error?
-	else {
-		// Both are void
-		return true; // c1.getType() == c2.getType();
-	}
-}
-
-template <>
-bool CastableComparer::compareUsingType<char>(){
-	//const char * s1 = nullptr;
-	//const char * s2 = nullptr;
-	if (c1.isCharArrayString() && c2.isCharArrayString()){
-		return strcmp(c1.getCharArray(), c2.getCharArray()) == 0;
-	}
-	else {
-		return c1.toStr() == c2.toStr();
-	}
-}
-
-
-/// Demonstrates usage of drain::Time class.
-/**
-
- Oddities with time zone. Looks like it is GMT initially, but changes to local(e) (e.g. EET)
- if unix seconds are given (%s):
 
  \code
-   ./Time-example '0 2018/11/16 22:58' '%s %Y/%m/%d %H:%M' '%d.%m.%Y %H:%M,%S %Z'
-   ./Time-example '2018/11/16 22:58'   '%Y/%m/%d %H:%M'    '%d.%m.%Y %H:%M,%S %Z'
-   ./Time-example '2018/11/16 22:58 0' '%Y/%m/%d %H:%M %s' '%d.%m.%Y %H:%M,%S %Z'
-   \endcode
+ \endcode
+
 */
 
-//#define mika(expr) (static_cast<bool>(expr) ? void(0) : printf(#expr) )
+
+inline
+drain::TreeHTML & addChild(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType){
+	std::stringstream sstr("elem");
+	sstr.width(3);
+	sstr.fill('0');
+	sstr << elem.getChildren().size(); // todo width
+	return elem[sstr.str()](tagType);
+
+}
+
+template <class T>
+inline
+drain::TreeHTML & appendHTML(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const T & arg){
+	drain::TreeHTML & child = addChild(elem,tagType);
+	child = arg;
+	return child;
+};
+
+
+
+// TODO: redesign logic, perhaps addChild();
+inline
+drain::TreeHTML & appendHTML(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType){
+	if (elem.hasChildren()){
+		return elem.getChildren().rbegin()->second; // last
+	}
+	else {
+		return elem;
+	}
+}
+
+// Consider to utils
+template <class T, class ...TT>
+inline
+drain::TreeHTML & appendHTML(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const T & arg, const TT & ...args) {
+	appendHTML(elem, tagType, arg);
+	return appendHTML(elem, tagType, args...);
+}
+
+std::string getValue(drain::Castable &c){
+	if (c.isCharArrayString()){
+		return drain::StringBuilder<>("'", c, "'");
+	}
+	else if (c.isString()){
+		return drain::StringBuilder<>('"', c, '"');
+	}
+	else
+		return c;
+}
+
+
+#define DEMO_C1(init, expr, html) do { init; expr; appendHTML(html, drain::NodeHTML::TD, #init, #expr, getValue(variable), (variable.isReference()?"reference":"") ); } while (0)
+
+
+
+template <class V>
+void demoVariableConstructors(drain::TreeHTML & body){
+
+	const std::string & clsName = drain::TypeName<V>::str();
+
+	drain::TreeHTML & header = body[clsName+"-var-ctr"](drain::NodeHTML::H2);
+
+	header = clsName+" – basic constructors";
+
+	drain::TreeHTML & table = body[clsName+"-var-ctr-table"](drain::NodeHTML::TABLE);
+	drain::TreeHTML & tr    = table["data"](drain::NodeHTML::TR);
+
+	appendHTML(tr, drain::NodeHTML::TH, "Context", "Constructor", "Final value");
+
+	DEMO_C1( , V variable;,                 addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable(typeid(bool));,   addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable(typeid(char));,   addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable(typeid(int));,    addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable(typeid(double));, addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable('X');,            addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable(false);,          addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable(12345);,          addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable(56.789);,         addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable("Hello!");,       addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable(std::string("Test"));,      addChild(table, drain::NodeHTML::TR));
+	DEMO_C1(bool b=true;, V variable(b);,   addChild(table, drain::NodeHTML::TR));
+	DEMO_C1(char c='Y';,  V variable(c);,   addChild(table, drain::NodeHTML::TR));
+	DEMO_C1(int i=123;,   V variable(i);,   addChild(table, drain::NodeHTML::TR));
+	DEMO_C1(double d=45.678;, V variable(d);,           addChild(table, drain::NodeHTML::TR));
+	DEMO_C1(const char *s="123abc";, V variable(s);,    addChild(table, drain::NodeHTML::TR));
+	DEMO_C1(std::string str("Test");, V variable(str);, addChild(table, drain::NodeHTML::TR));
+
+	DEMO_C1( , V variable = true;,                 addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable = 'Z';,                  addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable = 1234;,                 addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable = 345.67;,               addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable; variable = "12.34567";, addChild(table, drain::NodeHTML::TR));
+
+
+}
+
+template <class V>
+void demoReferenceConstructors(drain::TreeHTML & body){
+
+	const std::string & clsName = drain::TypeName<V>::str();
+
+	drain::TreeHTML & header = body[clsName+"-ref-ctr"](drain::NodeHTML::H2);
+
+	header = clsName+" – basic constructors";
+
+	drain::TreeHTML & table = body[clsName+"-ref-ctr-table"](drain::NodeHTML::TABLE);
+	drain::TreeHTML & tr    = table["data"](drain::NodeHTML::TR);
+
+	appendHTML(tr, drain::NodeHTML::TH, "Context", "Constructor", "Final value");
+
+	DEMO_C1( , V variable;,                 addChild(table, drain::NodeHTML::TR));
+	DEMO_C1(bool b=true;, V variable(b);,   addChild(table, drain::NodeHTML::TR));
+	DEMO_C1(char c='Y';,  V variable(c);,   addChild(table, drain::NodeHTML::TR));
+	DEMO_C1(int i=123;,   V variable(i);,   addChild(table, drain::NodeHTML::TR));
+	DEMO_C1(double d=45.678;, V variable(d);,           addChild(table, drain::NodeHTML::TR));
+	// DEMO_C1(const char *s="123abc";, V variable(s);,    addChild(table, drain::NodeHTML::TR));
+	DEMO_C1(std::string str("Test");, V variable(str);, addChild(table, drain::NodeHTML::TR));
+
+	//DEMO_C1(V v(typeid(int)), td1, td2);
+
+}
+
+
 
 int main(int argc, char **argv){
 
@@ -579,23 +259,6 @@ int main(int argc, char **argv){
 	// flex = "";
 
 
-	CastableComparer cc(var, flex);
-	// drain::Type::call<CastableComparer>(cc, typeid(double));
-	cc.compare();
-	std::cerr << "result=" << cc.result << '\n';
-	var = "7";
-	//drain::Type::call<CastableComparer>(cc, typeid(double));
-	cc.compare();
-	std::cerr << "result=" << cc.result << '\n';
-
-
-	var = "ABCDE";
-	var = flex;
-	std::cerr << "ptr:" << var.getPtr() << std::endl; // <-- BUG FOUND! Prints "ABCDE"
-	std::cerr << "ptr:"<< var.getCharArray() << std::endl;
-	var.info(std::cerr);
-	std::cerr << '#' << var.getElementCount() << std::endl;
-
 
 	if (argc <= 1){
 		std::cout << "Demonstration of assigning values to and from Castables, Variables and Referencers.\n";
@@ -604,55 +267,81 @@ int main(int argc, char **argv){
 		return 1;
 	}
 
+	drain::TreeHTML html;
+	html(drain::NodeHTML::HTML);
+
+	html["head"](drain::NodeHTML::HEAD);
+	drain::TreeHTML & style = html["header"]["style"](drain::BaseHTML::STYLE);
+	style->set("table, th, td", "color: blue; border: 1px solid;");
+	style->set("table", "border-collapse: collapse;");
+	style->set("td", "font-family: monospace;");
+
+	//style->setStyle("table", "block-size:1; entry-pentry:rgb(0,1,1)");
+	//style->setStyle("div",  "color: blue; line-width: 20pix");
+
+	drain::TreeHTML & body = html["body"](drain::NodeHTML::BODY);
+
+	drain::TreeHTML & h1 = body["main-header"](drain::NodeHTML::H1);
+	h1 = "Variable Demo";
+
+	demoVariableConstructors<drain::Variable>(body);
+	demoVariableConstructors<drain::FlexibleVariable>(body);
+
+	demoReferenceConstructors<drain::Reference>(body);
+	demoReferenceConstructors<drain::FlexibleVariable>(body);
+
 
 	for (int i=1; i<argc; ++i){
 
-			const char *s = argv[i];
-			std::cerr << "Arg " << i << ":\t" << s << '\n';
+		const char *s = argv[i];
+		std::cerr << "Arg " << i << ":\t" << s << '\n';
 
-			std::string str = s;
-			int k = atoi(s);
-			double d = atof(s);
+		std::string str = s;
+		int k = atoi(s);
+		double d = atof(s);
 
-			if (d != 0){
+		/*
+		if (d != 0){
 
-				if (::rint(d) == k){
-					std::cerr << "---INT---\n";
-					demo<int>(str);
-					demo<int>(k);
-					demo<int>(d);
-				}
-				else {
-					std::cerr << "---DBL---\n";
-					demo<double>(str);
-					demo<double>(k);
-					demo<double>(d);
-				}
-
+			if (::rint(d) == k){
+				std::cerr << "---INT---\n";
+				demo<int>(str);
+				demo<int>(k);
+				demo<int>(d);
 			}
-
-			// else {
-
-			//std::cout << "Storage type: string\n";
-			std::cout << "---STR---\n";
-			demo<std::string>(str);
-
-			//demo<std::string>(k);
-			//demo<std::string>(d);
-
-			if (false){
-				// test len==1 ?
-				std::cout << "---CHR---\n";
-				demo<char>(str,0);
-				demo<char>(k,0);
-				demo<char>(d,0);
-
+			else {
+				std::cerr << "---DBL---\n";
+				demo<double>(str);
+				demo<double>(k);
+				demo<double>(d);
 			}
-
-
-
 
 		}
+
+		// else {
+
+		//std::cout << "Storage type: string\n";
+		std::cout << "---STR---\n";
+		demo<std::string>(str);
+
+
+		//demo<std::string>(k);
+		//demo<std::string>(d);
+
+		if (false){
+			// test len==1 ?
+			std::cout << "---CHR---\n";
+			demo<char>(str,0);
+			demo<char>(k,0);
+			demo<char>(d,0);
+
+		}
+		*/
+	}
+
+	drain::Output outfile("variables.html");
+
+	drain::NodeHTML::toStream(outfile, html);
 
 	/*
 	for (int a = 1; a < argc; ++a) {
@@ -728,7 +417,7 @@ int main(int argc, char **argv){
 
 
 	}
-	*/
+	 */
 
 	/*
 	int i = 123;
@@ -756,7 +445,7 @@ int main(int argc, char **argv){
 	flex.info(std::cerr);
 	triple.at(1) = 3.12314;
 	flex.info(std::cerr);
-	*/
+	 */
 
 
 	/*
@@ -774,7 +463,7 @@ int main(int argc, char **argv){
 		std::cerr << "Usage:\n  "   << argv[0] << " <time-string> [<format-in>]  [<format-out>]\n";
 		std::cerr << "Example:\n  " << argv[0] << " '" << time.str(formatIn) << "' '" << formatIn << "' '" << formatOut << "'" << std::endl;
 	}
-	*/
+	 */
 
 	// std::cerr << time.getTime() << std::endl;
 	//  time.str() valid as well.

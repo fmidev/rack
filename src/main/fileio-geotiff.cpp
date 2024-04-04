@@ -167,7 +167,7 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 				mout << frame.getBoundingBoxM() << mout;
 				*/
 
-				const drain::Variable & p = src.properties["where:BBOX_native"];
+				const drain::FlexibleVariable & p = src.properties["where:BBOX_native"];
 				std::vector<double> v;
 				p.toSequence(v);
 				if (v.size() == 4){
