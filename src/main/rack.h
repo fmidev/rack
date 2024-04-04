@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 /**
  *   Version 8.5
  *   - Redesigned (separated) VariableBase and VariableInitialiser
+ *   - Logger ctr with variadic parameters
  *
  *   Version 8.4.1
  *   - Drain core classes directly at /drain

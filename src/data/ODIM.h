@@ -80,17 +80,16 @@ class ODIM : public EncodingODIM { //, public  {
 
 public:
 
-	//static const int KILOMETRES = 16;
-
 	typedef enum {
 		KILOMETRES = 1,
-		ODIM_2_2 = 16 | KILOMETRES,
-		ODIM_2_3 = 32 | KILOMETRES,
-		ODIM_2_4 = 64
+		ODIM_2_2 = 16 | KILOMETRES, /** ODIM v2.2 **/
+		ODIM_2_3 = 32 | KILOMETRES, /** ODIM v2.3 **/
+		// ODIM_2_3_6 = 64
+		ODIM_2_4 = 64    /** ODIM v2.4 **/
 	} Version;
 
 	//typedef drain::EnumFlagger<drain::SingleFlagger<Version> > VersionFlagger;
-	typedef drain::EnumFlagger<drain::MultiFlagger<Version> > VersionFlagger;
+	typedef drain::EnumFlagger<drain::MultiFlagger<Version> > VersionFlagger; // Multi, for KM's
 
 	static VersionFlagger versionFlagger;
 

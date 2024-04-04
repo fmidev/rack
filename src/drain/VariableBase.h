@@ -103,87 +103,7 @@ public:
 
 
 
-protected:
 
-	/***
-	 *   This is the basic design pattern for all the VariableLikes
-	template <class ...TT>
-	inline
-	VariableBase(const TT & ...args) {
-		init(args...); //
-	}
-	 */
-
-	/*
-	template <class D>
-	void init(const D & dst){
-		reset();
-		assign(dst);
-	}
-	*/
-
-	/// Default constructor generates an empty array.
-	inline
-	void initOLD(const std::type_info &t = typeid(void)) {
-		reset();
-		setType(t);
-	};
-
-	// Initialisation, using type of argument or explicit type argument.
-	// Copies type, data and separator char. Fails with Reference?
-	template <class T>
-	void initOLD(const T & value, const std::type_info &t = typeid(void)) {
-		// std::cerr << __FILE__ << ':' << __LINE__ << " VariableBase::" << __FUNCTION__ << " " << value << std::endl;
-		reset();
-		setType(t);
-		this->assign(value); // Critical, direct assignment *this = value fails
-		// ;
-	}
-
-
-	/// Copies type, data and separator char.
-	inline
-	void initOLD(const VariableBase & v) {
-		reset();
-		this->outputSeparator = v.outputSeparator;
-		this->inputSeparator = v.inputSeparator;
-		assignCastable(v);
-	};
-
-	/// Copies type, data and separator char.
-	inline
-	void initOLD(const Castable & c) {
-		reset();
-		//this->outputSeparator = c.outputSeparator;
-		//this->inputSeparator  = c.inputSeparator;
-		assignCastable(c);
-	};
-
-	/// Copies type, data and separator char.
-	inline
-	void initOLD(const char * s) {
-		reset();
-		assignString(s);
-	};
-
-	/// Initialisation with type of the first element or explicit type argument.
-	template<typename T>
-	inline
-	void initOLD(std::initializer_list<T> l, const std::type_info &t = typeid(void)) {
-		reset();
-		setType(t);
-		assignContainer(l, true);
-	};
-
-	template <class ...TT>
-	void initOLD(const TT& ...args){
-		reset();
-		append(args...);
-	}
-
-
-
-public:
 
 	//template <class T>
 	VariableBase & append(){
@@ -271,6 +191,16 @@ public:
 	}
 
 protected:
+
+
+	/***
+	 *   This is the basic design pattern for all the VariableLikes
+	template <class ...TT>
+	inline
+	VariableBase(const TT & ...args) {
+		init(args...); //
+	}
+	 */
 
 	virtual
 	// bool

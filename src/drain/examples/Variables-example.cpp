@@ -174,7 +174,7 @@ void demoVariableConstructors(drain::TreeHTML & body){
 	DEMO_C1( , V variable = 'Z';,                  addChild(table, drain::NodeHTML::TR));
 	DEMO_C1( , V variable = 1234;,                 addChild(table, drain::NodeHTML::TR));
 	DEMO_C1( , V variable = 345.67;,               addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable; variable = "12.34567";, addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable = "12.34567";,   addChild(table, drain::NodeHTML::TR));
 
 
 }
@@ -198,7 +198,6 @@ void demoReferenceConstructors(drain::TreeHTML & body){
 	DEMO_C1(char c='Y';,  V variable(c);,   addChild(table, drain::NodeHTML::TR));
 	DEMO_C1(int i=123;,   V variable(i);,   addChild(table, drain::NodeHTML::TR));
 	DEMO_C1(double d=45.678;, V variable(d);,           addChild(table, drain::NodeHTML::TR));
-	// DEMO_C1(const char *s="123abc";, V variable(s);,    addChild(table, drain::NodeHTML::TR));
 	DEMO_C1(std::string str("Test");, V variable(str);, addChild(table, drain::NodeHTML::TR));
 
 	//DEMO_C1(V v(typeid(int)), td1, td2);

@@ -126,16 +126,17 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	getQuantityMap().setQuantityDefaults(dstClass, "CLASS", "C");
 	dstClass.setGeometry(area);
 
-	PlainData<dst_t> & dstSlope = dstProduct.getData("DBZH_SLOPE");
-	// Z(dB) decay per metre (kilometre ODIM 2.2)
+	PlainData<dst_t> & dstSlope = dstProduct.getData("DBZ_SLOPE");
+	// Z(dB) decay per metre (or kilometre until ODIM 2.3?)
 	dstSlope.setEncoding(typeid(unsigned short));
-	dstSlope.setPhysicalRange(-500, +500); // m/dBZ
+	dstSlope.setPhysicalRange(-0.01, +0.01); // m/dBZ
 	Limiter::value_t limitSlope = drain::Type::call<Limiter>(dstSlope.data.getType());
 
 	if (EXTENDED){
 		dstClass.setGeometry(area);
 		dstSlope.setGeometry(area);
-		dstSlope.getHow()["unit"] = "m/dBZ";
+		dstSlope.getHow()["unit"] = "dBZ/m";
+		//dstSlope.getHow()["unit"] = "m/dBZ";
 	}
 	else {
 		dstClass.setExcluded();
@@ -300,7 +301,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 #ifndef NDEBUG
 							if (EXTENDED){
 								dstClass.data.put<int>(address, INTERPOLATION);
-								dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(slope)));
+								dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1.0/ slope))); // ALERT div by 0 RISK
 							}
 #endif
 
@@ -356,7 +357,8 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 #ifndef NDEBUG
 					if (EXTENDED){
 						dstClass.data.put<int>(address, CLEAR);
-						dstSlope.data.put(address, limitSlope(dstSlope.odim.undetect));
+						//dstSlope.data.put(address, limitSlope(dstSlope.odim.undetect));
+						dstSlope.data.put(address, dstSlope.odim.undetect);
 					}
 #endif
 				}
@@ -369,7 +371,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 #ifndef NDEBUG
 					if (EXTENDED){
 						dstClass.data.put<int>(address, UNDERSHOOTING);
-						dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(slope)));
+						dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1.0 / slope))); // ALERT div by 0 RISK
 					}
 #endif
 				}
