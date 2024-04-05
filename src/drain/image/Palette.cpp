@@ -108,7 +108,7 @@ void Palette::addEntry(double min, double red, double green, double blue, const 
 
 }
 
-Palette::value_type & Palette::getEntryByCode(const std::string & code, bool lenient){
+const Palette::value_type & Palette::getEntryByCode(const std::string & code, bool lenient) const {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 

@@ -88,12 +88,13 @@ public:
 	 * \param code
 	 * \param lenient - if false, only exact string match tested, else substring match accepted
 	 */
-	value_type & getEntryByCode(const std::string & code, bool lenient=true);
+
+	const value_type & getEntryByCode(const std::string & code, bool lenient=true) const;
 
 	/// Shorthand invoking fgetEntryByCode for retrieving the code
 	inline
-	key_type getValueByCode(const std::string & code, bool lenient=true){
-		value_type & entry = getEntryByCode(code, lenient);
+	const key_type getValueByCode(const std::string & code, bool lenient=true) const {
+		const value_type & entry = getEntryByCode(code, lenient);
 		return entry.first;
 	}
 

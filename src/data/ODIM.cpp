@@ -48,7 +48,7 @@ namespace rack {
 const std::string ODIM::dateformat("%Y%m%d");
 const std::string ODIM::timeformat("%H%M%S");
 
-ODIM::VersionFlagger ODIM::versionFlagger(rack::ODIM::ODIM_2_3);
+ODIM::VersionFlagger ODIM::versionFlagger(rack::ODIM::ODIM_2_4);
 
 
 void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
@@ -286,10 +286,16 @@ void ODIM::updateLenient(const ODIM & odim){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	EncodingODIM::updateLenient(odim);
 
 	if (object.empty())
 		object = odim.object;
+
+	if (quantity == odim.quantity){
+		EncodingODIM::updateLenient(odim);
+	}
+	else {
+		mout.warn("revised code: different quantity, scaling not copied");
+	}
 
 	if (quantity.empty())
 		quantity = odim.quantity;

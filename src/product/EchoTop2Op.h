@@ -52,25 +52,38 @@ struct ReferencePoint : public drain::UniTuple<double,2> {
 	};
 };
 
-/*
-struct BeamWeights : public drain::UniTuple<double,5> {
+/**
+ *  \tparam T - double for interface (0.0..1.0), unsigned-char for internal encoding.
+ */
+template <class T>
+struct MethodWeights : public drain::UniTuple<T,5> {
 
-	double & interpolation;
-	double & overShooting; // beam over Z < Zt
-	double & underShooting; // highest beam Zt
-	double & weak;
-	double & clear;
+	/// Highest priority
+	T & interpolation;
+	T & overShooting; // beam over Z < Zt
+	T & underShooting; // highest beam Z > Zt
+	T & weak;
+	T & clear;
 
-	BeamWeights(double reflectivity=0.0, double height=0.0) : reflectivity(this->next()), height(this->next()){
-		this->set(reflectivity, height);
+	MethodWeights() : interpolation(this->next()), overShooting(this->next()), underShooting(this->next()), weak(this->next()), clear(this->next()){
 	};
 
-	BeamWeights(const BeamWeights & p): reflectivity(this->next()), height(this->next()){
-		this->set(p);
+	template<typename ... TT>
+	MethodWeights(const TT &... args) : interpolation(this->next()), overShooting(this->next()), underShooting(this->next()), weak(this->next()), clear(this->next()){
+		this->set(args...);
 	};
 
-}
-*/
+	MethodWeights(const MethodWeights & p): drain::UniTuple<double,5>(p),
+			interpolation(this->next()), overShooting(this->next()), underShooting(this->next()), weak(this->next()), clear(this->next()) {
+	};
+
+	inline
+	bool useInterpolation(){
+		return (interpolation > overShooting);
+	}
+
+};
+
 
 
 ///
@@ -93,8 +106,7 @@ public:
 		UNDERSHOOTING=96,
 		/** The bin exceeding the Z threshold has an \c undetect ("dry") bin above -> replace \c undetect with low Z (dB) */
 		OVERSHOOTING=128,
-		/** Echoes only below threshold detected */
-		WEAK=192,
+		WEAK=192, /// Echoes only below threshold detected
 		/** The threshold value was passed between adjacent beams, hence can be interpolated */
 		INTERPOLATION=250
 	} Reliability;
@@ -111,6 +123,8 @@ public:
 
 
 	double threshold = 0.0;
+
+	MethodWeights<double> weights;
 
 	ReferencePoint reference = {-50.0, 15000.0};
 	double dryTopDBZ = NAN;

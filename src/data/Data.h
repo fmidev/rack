@@ -191,6 +191,11 @@ public:
 		this->tree.data.exclude = exclude;
 	};
 
+	// Mark this data temporary so that it will not be save by Hi5::write().
+	inline
+	bool isExcluded() const {
+		return this->tree.data.exclude;
+	};
 
 	//typename DT::odim_t odim;
 
@@ -730,6 +735,17 @@ public:
 
 	data_t & getFirstData() {
 
+		for (auto & entry: *this){
+			if (!entry.second.isExcluded()){
+				return entry.second;
+			}
+		}
+
+		drain::Logger(__FILE__, __LINE__, "DataGroup{" + ODIMPathElem::getKey(G)+"}:", __FUNCTION__).error("no data");
+		//mout.error("no data" );
+		return this->getData(""); // empty?
+
+		/*
 		const typename datagroup_t::iterator it = this->begin();
 
 		if (it == this->end()){
@@ -741,12 +757,23 @@ public:
 		}
 		else
 			return it->second;
-
+		*/
 	}
 
 	const data_t & getFirstData() const {
 
+		for (const auto & entry: *this){
+			if (!entry.second.isExcluded()){
+				return entry.second;
+			}
+		}
+
+		drain::Logger(__FILE__, __LINE__, "DataGroup{" + ODIMPathElem::getKey(G)+"}:", __FUNCTION__).error("no data");
+		return this->getData(""); // empty?
+
+
 		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G) + " {const}", __FUNCTION__);
+		/*
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
 		//mout.warn("const" );
@@ -761,7 +788,7 @@ public:
 			mout.note("not found, returning empty"  );
 			return getEmpty();
 		}
-
+		*/
 
 	}
 

@@ -96,6 +96,14 @@
 # Attenuated
 192.0	208.0	208.0	255.0
 
+# distortion.undershooting
+# Beam undershooting
+196.0	208.0	224.0	224.0
+
+# distortion.overshooting
+# Beam overshooting
+200.0	208.0	224.0	255.0
+
 # distortion.second_trip
 # Second trip
 216.0	224.0	255.0	240.0
@@ -132,4 +140,8 @@
 # tech.time
 # Time offset
 252.0	224.0	254.0	255.0
+
+# tech.error
+# Error
+254.0	254.0	248.0	248.0
 

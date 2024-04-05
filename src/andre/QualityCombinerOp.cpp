@@ -377,8 +377,9 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 		// Add (combine) new classes
 		std::set<std::string> classCodesNew;
 		srcClass.getWhat()["legend"].toSequence(classCodesNew, ',');
-		for (std::set<std::string>::const_iterator it = classCodesNew.begin(); it != classCodesNew.end(); ++it){
-			classCodes.insert(*it);
+		//for (std::set<std::string>::const_iterator it = classCodesNew.begin(); it != classCodesNew.end(); ++it){
+		for (const std::string & code: classCodesNew){
+			classCodes.insert(code);
 		}
 
 		mout.debug(" Updating CLASS, old: ", classLegend);
@@ -446,7 +447,7 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 			//double marker = drain::image::PaletteOp::ge
 			try {
 				drain::image::Palette & palette = PaletteManager::getPalette("CLASS");
-				drain::image::Palette::value_type & legendEntry = palette.getEntryByCode(entry.first, true);
+				const drain::image::Palette::value_type & legendEntry = palette.getEntryByCode(entry.first, true);
 				// double marker = palette.getValueByCode(entry.first, true);
 				mout.attention("found palette entry: ", sprinter(legendEntry.second, drain::Sprinter::jsonLayout));
 				//updateOverallDetection(entry.second.data, dstQIND, dstCLASS, entry.first, (short unsigned int)123);

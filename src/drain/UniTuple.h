@@ -65,10 +65,27 @@ public:
 	typedef T* iterator;
 	typedef const T* const_iterator;
 
+
 	inline
 	UniTuple() : start(this->arr), init(nullptr){
 		fill(0);
 	};
+
+
+	template<typename ... TT>
+	inline
+	UniTuple(const TT &... args) : start(this->arr), init(nullptr){
+		fill(0);
+		set(args...);
+	}
+
+
+	/// Copy constructor
+	inline
+	UniTuple(const UniTuple<T,N> & t) : start(this->arr), init(nullptr){
+		set(t);
+	};
+
 
 
 	template<typename S>
@@ -78,10 +95,6 @@ public:
 	};
 
 
-	inline
-	UniTuple(const UniTuple<T,N> & t) : start(this->arr), init(nullptr){
-		set(t);
-	};
 
 	virtual inline
 	~UniTuple(){};

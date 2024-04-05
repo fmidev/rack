@@ -31,6 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "EchoTop2Op.h"
 #include "PolarSlidingWindowOp.h"
 
+#include "main/palette-manager.h"
+
 #include "radar/Geometry.h"
 
 //using namespace drain::image;
@@ -45,14 +47,15 @@ const drain::FlaggerDict drain::EnumDict<rack::EchoTop2Op::Reliability>::dict = 
 namespace rack
 {
 
-EchoTop2Op::EchoTop2Op(double threshold) : PolarProductOp(__FUNCTION__,"Estimates maximum altitude of given reflectivity"), threshold(threshold)
+EchoTop2Op::EchoTop2Op(double threshold) : PolarProductOp(__FUNCTION__,"Estimates maximum altitude of given reflectivity"), threshold(threshold), weights(1.0, 0.75, 0.5, 0.33, 0.25)
 	{
 
 	parameters.link("threshold", this->threshold, "reflectivity limit (dB)");
+	parameters.link("weights", this->weights.tuple(), "weights for INTERPOLATION, OVERSHOOTING, UNDERSHOOTING, WEAK, NOECHO");
 	parameters.link("reference", this->reference.tuple(), "'dry point' of low reflectivity and high altitude [dBZ:m]");
 	parameters.link("dryTop",    this->dryTopDBZ, "reflectivity replacing 'undetect' [dBZ]"); // if set, reference will be applied also here
 #ifndef NDEBUG
-	parameters.link("_EXTENDED", this->EXTENDED, "append classified data");
+	parameters.link("EXTENDED", this->EXTENDED, "append classified data");
 	// parameters.link("_EXTENDED", this->EXTENDED, "append classified data");
 #endif
 
@@ -61,7 +64,7 @@ EchoTop2Op::EchoTop2Op(double threshold) : PolarProductOp(__FUNCTION__,"Estimate
 	odim.product = "ETOP";
 	odim.quantity = "HGHT";
 	odim.type = "S";
-
+	odim.scaling.scale = 0.0;
 };
 
 
@@ -72,10 +75,8 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.warn("Starting...");
+	mout.special<LOG_NOTICE>(*this);
 
-	/// ODIM uses kilometres...s
-
-	//static const double M2KM = 0.001;
 	const bool USE_KILOMETRES = ODIM::versionFlagger.isSet(ODIM::KILOMETRES);
 
 	if (USE_KILOMETRES){
@@ -98,10 +99,25 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	deriveDstGeometry(srcSweeps, dstEchoTop.odim);
 	determineMetadata(srcSweeps, dstEchoTop.odim);
 
+	mout.attention("ODIM scaling: ", dstEchoTop.odim.scaling);
+
+
+	// applyODIM(dstEchoTop.odim, odim);
 	dstEchoTop.setEncoding(odim.type, targetEncoding);
+
+	if ((dstEchoTop.odim.scaling.scale == 0) || (dstEchoTop.odim.scaling.scale == 1.0)){ // ~ unset
+		//odim.scaling.setPhysicalRange(0.0, 25.6);
+		dstEchoTop.odim.setRange(0.0, 20000.0 * odimVersionMetricCoeff);
+		// dstEchoTop.odim.scaling.scale *= odimVersionMetricCoeff;
+		mout.attention("ODIM scaling: ", dstEchoTop.odim.scaling);
+	}
+
+
 	dstEchoTop.setGeometry(dstEchoTop.odim);
 
-	mout.attention(dstEchoTop.odim);
+	mout.attention("ODIM scaling: ", dstEchoTop.odim.scaling);
+
+	mout.special(dstEchoTop.odim);
 
 	// clumsy
 	const drain::image::AreaGeometry & area = dstEchoTop.odim.getGeometry();
@@ -118,13 +134,28 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	PlainData<dst_t> & dstQuality = dstProduct.getQualityData(); // dstEchoTop.getQualityData();
 	getQuantityMap().setQuantityDefaults(dstQuality, "QIND", "C");
 	dstQuality.setGeometry(area);
-	// setGeometry(dstOdim, dstEchoTop);
+	MethodWeights<short int> WEIGHTS; // "assumes"
+	WEIGHTS.interpolation = dstQuality.odim.scaleInverse(weights.interpolation);
+	WEIGHTS.overShooting  = dstQuality.odim.scaleInverse(weights.overShooting);
+	WEIGHTS.underShooting = dstQuality.odim.scaleInverse(weights.underShooting);
+	WEIGHTS.weak          = dstQuality.odim.scaleInverse(weights.weak);
+	WEIGHTS.clear         = dstQuality.odim.scaleInverse(weights.clear);
+
+
+	mout.attention("WEIGHTS: ", WEIGHTS);
+
+	MethodWeights<unsigned char> CLASS;
+	//const drain::image::Palette & cp = PaletteManager::getPalette("CLASS");
+	CLASS.interpolation = 250; //cp.getEntryByCode("precip").first;
+	CLASS.overShooting  = 192; // cp.getEntryByCode("overshooting").first;
+	CLASS.underShooting = 170; // cp.getEntryByCode("undershooting").first;
+	CLASS.weak  = 128;
+	CLASS.clear = 64;
 
 #ifndef NDEBUG
 
 	PlainData<dst_t> & dstClass = dstEchoTop.getQualityData("CLASS");
 	getQuantityMap().setQuantityDefaults(dstClass, "CLASS", "C");
-	dstClass.setGeometry(area);
 
 	PlainData<dst_t> & dstSlope = dstProduct.getData("DBZ_SLOPE");
 	// Z(dB) decay per metre (or kilometre until ODIM 2.3?)
@@ -133,9 +164,10 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	Limiter::value_t limitSlope = drain::Type::call<Limiter>(dstSlope.data.getType());
 
 	if (EXTENDED){
-		dstClass.setGeometry(area);
-		dstSlope.setGeometry(area);
-		dstSlope.getHow()["unit"] = "dBZ/m";
+		//dstEchoTop.setGeometry(dstEchoTop.odim);
+		dstClass.setGeometry(dstEchoTop.odim);
+		dstSlope.setGeometry(dstEchoTop.odim);
+		dstSlope.getHow()["unit"] = "m/dBZ";
 		//dstSlope.getHow()["unit"] = "m/dBZ";
 	}
 	else {
@@ -280,7 +312,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 			} // End column loop
 
 
-			/// Finally, compute the echo top altitude.
+			/// Main: compute the echo top altitude.
 
 			address = dstEchoTop.data.address(i, j);
 
@@ -296,11 +328,11 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 							height = innerInfo->altitude + slope*(threshold - innerInfo->dBZ);
 							// height = dstEchoTop.odim.scaleInverse(height);
 							// dstEchoTop.data.put(address, limit(height));
-							dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(height)));
-							dstQuality.data.put<int>(address, INTERPOLATION); // TODO: quality index
+							dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
+							dstQuality.data.put<int>(address, WEIGHTS.interpolation); // TODO: quality index
 #ifndef NDEBUG
 							if (EXTENDED){
-								dstClass.data.put<int>(address, INTERPOLATION);
+								dstClass.data.put<int>(address, CLASS.interpolation);
 								dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1.0/ slope))); // ALERT div by 0 RISK
 							}
 #endif
@@ -309,37 +341,37 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 						else {
 							// the highest bin has higher Z than the lower bin? This should not happen.
 							dstEchoTop.data.put(address, dstEchoTop.odim.nodata);
-							dstQuality.data.put<int>(address, ERROR);
+							dstQuality.data.put<int>(address, 0);
 #ifndef NDEBUG
 							if (EXTENDED){
-								dstClass.data.put<int>(address, ERROR);
+								dstClass.data.put<int>(address, 0); // CLASS.error
 							}
 #endif
 						}
 					}
 					else {
 						dstEchoTop.data.put(address, dstEchoTop.odim.nodata);
-						dstQuality.data.put(address,(int)OVERSHOOTING);
+						dstQuality.data.put(address, WEIGHTS.overShooting);
 #ifndef NDEBUG
 						if (EXTENDED){
-							dstClass.data.put<int>(address, OVERSHOOTING);
+							dstClass.data.put<int>(address, CLASS.overShooting);
 						}
 #endif
 					}
 				}
 				else if (dbzOdim.isValue(outerInfo->dBZ)){
 					// Dry top
-					dstEchoTop.data.put(address, 0);
-					dstQuality.data.put(address, (int)WEAK);
+					dstEchoTop.data.put(address, 2.0*odimVersionMetricCoeff);
+					dstQuality.data.put(address, WEIGHTS.weak);
 #ifndef NDEBUG
 					if (EXTENDED){
-						dstClass.data.put<int>(address, WEAK);
+						dstClass.data.put<int>(address, WEAK); //192
 					}
 #endif
 				}
 				else {
 					dstEchoTop.data.put(address, dstEchoTop.odim.undetect);
-					dstQuality.data.put(address, (int)CLEAR); // CONFIRMED CLEAR?
+					dstQuality.data.put(address, WEIGHTS.clear); // CONFIRMED CLEAR?
 #ifndef NDEBUG
 					if (EXTENDED){
 						dstClass.data.put<int>(address, CLEAR);
@@ -353,7 +385,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 				if (innerInfo == nullptr){
 					// No echo at all was found in this column above ground bin (i,j).
 					dstEchoTop.data.put(address, dstEchoTop.odim.undetect);
-					dstQuality.data.put(address, (int)CLEAR);
+					dstQuality.data.put(address, WEIGHTS.clear);
 #ifndef NDEBUG
 					if (EXTENDED){
 						dstClass.data.put<int>(address, CLEAR);
@@ -367,7 +399,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 					slope  = (reference.height - innerInfo->altitude)/(reference.reflectivity - innerInfo->dBZ);
 					height = reference.height  + (threshold - innerInfo->dBZ) * slope;
 					dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height))); // strong
-					dstQuality.data.put(address, (int)UNDERSHOOTING);
+					dstQuality.data.put(address, WEIGHTS.underShooting);
 #ifndef NDEBUG
 					if (EXTENDED){
 						dstClass.data.put<int>(address, UNDERSHOOTING);
@@ -410,14 +442,14 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	}
 	*/
 
-	mout.accept<LOG_NOTICE>(*this, " threshold=", threshold);
+	mout.accept<LOG_NOTICE>(" threshold=", threshold);
 
 	dstProduct.getWhere()["rscale"] = dstEchoTop.odim.rscale;
 	dstProduct.getWhere()["rscale2"] = dstEchoTop.odim.rscale+10;
 	dstProduct.getWhat()["comment"] = "EchoTop2-test";
 	//dstProduct.updateTree3(dstEchoTop.odim);
 
-	mout.special<LOG_NOTICE>(*this, "First Data: ", 	dstProduct.getFirstData());
+	mout.special<LOG_NOTICE>("First Data: ", dstProduct.getFirstData());
 
 
 }
