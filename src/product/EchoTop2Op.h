@@ -63,7 +63,8 @@ struct MethodWeights : public drain::UniTuple<T,5> {
 	T & overShooting; // beam over Z < Zt
 	T & underShooting; // highest beam Z > Zt
 	T & weak;
-	T & clear;
+	T & clear;   // same as undetect, but needs a quality index value
+	T error = 0; // needs a quality index value (0)
 
 	MethodWeights() : interpolation(this->next()), overShooting(this->next()), underShooting(this->next()), weak(this->next()), clear(this->next()){
 	};
@@ -77,10 +78,13 @@ struct MethodWeights : public drain::UniTuple<T,5> {
 			interpolation(this->next()), overShooting(this->next()), underShooting(this->next()), weak(this->next()), clear(this->next()) {
 	};
 
+	/*
 	inline
-	bool useInterpolation(){
+	bool useInterpolation() const {
 		return (interpolation > overShooting);
 	}
+	*/
+
 
 };
 
@@ -121,13 +125,23 @@ public:
 	// TEST
 	void computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSet<dst_t> & dstProduct) const;
 
+	static inline
+	double getSlope(double heightUpper, double heightLower, double dBZupper, double dBZlower){
+		return (heightUpper - heightLower) / (dBZupper - dBZlower);
+	}
+
+
+protected:
 
 	double threshold = 0.0;
 
 	MethodWeights<double> weights;
 
 	ReferencePoint reference = {-50.0, 15000.0};
+
 	double dryTopDBZ = NAN;
+
+protected:
 
 	bool EXTENDED = false;
 

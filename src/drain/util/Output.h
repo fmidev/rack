@@ -86,6 +86,11 @@ public:
 		return static_cast<bool>(ofstr);
 	};
 
+	inline
+	std::ofstream & getStream(){
+		return ofstr;
+	}
+
 
 protected:
 

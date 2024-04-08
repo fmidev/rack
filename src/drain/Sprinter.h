@@ -376,14 +376,13 @@ public:
 
 		prefixToStream(ostr, myChars);
 
-		//for (typename T::const_iterator it=x.begin(); it != x.end(); ++it){
-		bool addSeparator = false;
+		bool first = true;
 		for (const auto & elem: x){
 
-			if (addSeparator)
-				separatorToStream(ostr, myChars);
+			if (first)
+				first = false;
 			else
-				addSeparator = true;
+				separatorToStream(ostr, myChars);
 
 			toStream(ostr, elem, layout);
 		}

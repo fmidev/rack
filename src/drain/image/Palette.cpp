@@ -678,7 +678,16 @@ void Palette::write(const std::string & filename) const {
 		// exportCPP(ofstr, true);
 		mout.info("Writing in 'flat' C++ format: list of values.");
 		mout.debug("This format is compatible with PaletteEntry constructors.");
-		//static const SprinterLayout Palette::cppLayout2("{,}", "{,}", "{,}", "\"\"", "");
+		/* DEBUG
+		std::cout << "PREC" << std::cout.precision() << '\n';
+		for (const entry_t & entry: *this){
+			std::cout << std::setprecision(8);
+			std::cout << entry.first << ": " << entry.second << '\n';
+		}
+		std::cout << "PREC" << std::cout.precision() << '\n';
+		*/
+		//ofstr.precision(8);
+		ofstr.getStream() << std::setprecision(8);
 		Sprinter::toStream(ofstr, *this, Palette::cppLayout2);
 	}
 	else if (filepath.extension == "ipp"){

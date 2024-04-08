@@ -61,6 +61,10 @@ namespace rack {
 			#include "palette/palette-CLASS.inc"
 			;
 
+			m["CLASS-ETOP"] =
+			#include "palette/palette-CLASS-ETOP.inc"
+			;
+
 			m["COUNT"] =
 			#include "palette/palette-COUNT.inc"
 			;
@@ -77,6 +81,10 @@ namespace rack {
 			m.addAlias("DBZ", "TH");
 			m.addAlias("DBZ", "TV");
 			m.addAlias("DBZ", "T"); // ?
+
+			m["DBZ-SLOPE"] =
+			#include "palette/palette-DBZ-SLOPE.inc"
+			;
 
 			m["FLASH"] =
 			#include "palette/palette-FLASH.inc"

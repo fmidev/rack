@@ -189,7 +189,8 @@ std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image
 	const bool ALPHA  = (entry.alpha != 255.0);
 	const bool HIDDEN = (entry.hidden);
 
-	ostr << std::fixed << std::setprecision(1);
+
+	//ostr << std::fixed << std::setprecision(1);  // SPOILED m/dBZ scale
 
 
 	if (KEYS){
