@@ -54,12 +54,12 @@ EchoTop2Op::EchoTop2Op(double threshold) :
 	parameters.link("threshold", this->threshold, "reflectivity limit (dB)");
 	parameters.link("reference", this->reference.tuple(), "'dry point' of low reflectivity and high altitude [dBZ:m]");
 	parameters.link("dryTop",    this->dryTopDBZ, "reflectivity replacing 'undetect' [dBZ]"); // if set, reference will be applied also here
-//#ifndef NDEBUG
+#ifndef NDEBUG
 	parameters.link("weights", this->weights.tuple(), "weights for INTERPOLATION, OVERSHOOTING, UNDERSHOOTING, WEAK, NOECHO");
 	parameters.link("EXTENDED", this->EXTENDED, "append classified data");
 
 	// parameters.link("_EXTENDED", this->EXTENDED, "append classified data");
-//#endif
+#endif
 
 	dataSelector.setQuantities("^DBZH$");
 
@@ -427,7 +427,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 					// UNDERSHOOTING = the highest bin has Z exceeding the threshold
 					slope  = getSlope(reference.height, innerInfo->height, reference.reflectivity, innerInfo->dBZ);
 					// slope  = (reference.height - innerInfo->altitude)/(reference.reflectivity - innerInfo->dBZ);
-					height = reference.height  + (threshold - innerInfo->dBZ) * slope;
+					height = innerInfo->height + slope*(threshold - innerInfo->dBZ);
 					dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height))); // strong
 					dstQuality.data.put(address, WEIGHTS.underShooting);
 #ifndef NDEBUG
