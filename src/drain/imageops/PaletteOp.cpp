@@ -119,8 +119,7 @@ Palette & PaletteOp::loadPalette(const std::string & key){
 
 Palette & PaletteOp::getPalette(const std::string & key) {
 
-	Logger mout(__FILE__, __FUNCTION__);
-	// Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+	Logger mout(__FILE__, __LINE__, __FUNCTION__);
 
 	//Palette & palette = getPaletteMap()[key];
 	Palette & palette = getPaletteMap().get(key);
@@ -129,6 +128,15 @@ Palette & PaletteOp::getPalette(const std::string & key) {
 		mout.experimental("Returning generic palette (empty quantity: [])");
 	}
 	else if (palette.empty()){
+
+		const std::size_t i = key.find('/');
+		if (i != std::string::npos){
+			mout.unimplemented("black and white");
+			Palette & paletteOrig = getPaletteMap().get(key.substr(0, i));
+			mout.error("unimplemented");
+		}
+
+
 		palette.load(key, true);
 		if (palette.empty()){
 			mout.warn("Empty palette [", key, "] // ", palette.comment);

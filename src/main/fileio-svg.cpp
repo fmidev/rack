@@ -493,7 +493,7 @@ drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what 
 }
 
 
-void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
+drain::image::TreeSVG & CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
 
 	// For each image an own group is created (for clarity, to contain also title TEXT's etc)
 	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
@@ -558,23 +558,40 @@ void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, co
 	description->getAttributes().importCastableMap(metadata->getAttributes());
 	// todo: description  : prevCmdKey "what:product", "what:prodpar", "how:angles"
 
+	return image;
+
 }
 
 
-void CmdBaseSVG::addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath){ // what about prefix?
+drain::image::TreeSVG & CmdBaseSVG::addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath){ // what about prefix?
 
 	drain::image::TreeSVG & group = getCurrentGroup(ctx); //[filepath.basename+"_Group"](NodeSVG::GROUP);
 
 	//drain::image::TreeSVG & imageGroup = group[filepath.basename](NodeSVG::GROUP);
 
 	drain::image::TreeSVG & image = group[filepath.basename](NodeSVG::IMAGE); // +EXT!
-	image->addClass("float", "legend");
+	//image->addClass("float", "legend");
+	//image->addClass("MARGINAL", "legend"); MOVED TO: images.cpp
 	image->set("width", svg->get("width", 0));
 	image->set("height", svg->get("height", 0));
 	image->set("xlink:href", filepath);
 	image["basename"](drain::image::svg::TITLE) = filepath.basename;
-
+	return image;
 }
+
+drain::image::TreeSVG & CmdBaseSVG::addImage(RackContext & ctx, const drain::FilePath & filepath, const drain::Frame2D<double> & frame){ // what about prefix?
+
+	drain::image::TreeSVG & group = getCurrentGroup(ctx); //[filepath.basename+"_Group"](NodeSVG::GROUP);
+
+	drain::image::TreeSVG & image = group[filepath.basename](NodeSVG::IMAGE); // +EXT!
+
+	image->set("width", frame.width);
+	image->set("height", frame.height);
+	image->set("xlink:href", filepath);
+	image["basename"](drain::image::svg::TITLE) = filepath.basename;
+	return image;
+}
+
 
 // Re-align elements etc
 void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
@@ -616,6 +633,14 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 
 		mout.attention("aligning sequence: start:",  start.tuple(), ", frame: ", frame.tuple());
 		drain::image::TreeUtilsSVG::alignSequence(group, frame, start, ctx.svgPanelConf.orientation, ctx.svgPanelConf.direction);
+
+		// Recompute (detect marginal objs)
+		//TreeUtilsSVG::getBoundingFrame(group, frame, ctx.svgPanelConf.orientation);
+		/*
+		drain::Box<double> rect;
+		TreeUtilsSVG::getRect(group, rect);
+		mout.attention("rect: ", rect, " for group: ", group.data);
+		*/
 
 		if (ctx.svgPanelConf.orientation == drain::image::PanelConfSVG::HORZ){
 			// Jump to the next "row"
@@ -698,10 +723,10 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 			TreeSVG & headerText = headerGroup["headerText"](svg::TEXT);
 			headerText->addClass("FLOAT", "CENTER", "MIDDLE");
 			headerText->set("ref", headerRect->getId());
-			headerText->set("x", 50);
-			headerText->set("y", 60);
+			headerText->set("x", 51); // will be realigned
+			headerText->set("y", 61); // will be realigned
 			headerText->setStyle({
-				{"font-size", "3.5em"},
+				{"font-size", "2.5em"},
 				{"stroke", "none"},
 				{"fill", "darkblue"}
 			});
@@ -726,7 +751,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 
 			// TODO: develop
 			if (! headerText->ctext.empty() ){
-				mainFrame.height +=  titleCollector.mainHeaderHeight;
+				mainFrame.height +=  titleCollector.mainHeaderHeight; // why +=
 				start.y           = -titleCollector.mainHeaderHeight;
 			}
 

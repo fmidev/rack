@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.5"
+#define __RACK_VERSION__ "8.6"
 
 /**
+ *   Version 8.6
+ *   - pEchoTop2
+ *
  *   Version 8.5
  *   - Redesigned (separated) VariableBase and VariableInitialiser
  *   - Logger ctr with variadic parameters

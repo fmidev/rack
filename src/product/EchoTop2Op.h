@@ -143,7 +143,8 @@ protected:
 
 protected:
 
-	bool EXTENDED = false;
+	//bool EXTENDED = false;
+	bool EXTENDED = true;
 
 
 };

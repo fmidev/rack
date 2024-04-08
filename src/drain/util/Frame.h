@@ -149,6 +149,13 @@ public:
 };
 
 
+template <class T>
+std::ostream &operator<<(std::ostream &ostr,const drain::Box<T> &box)
+{
+	ostr << (const drain::Point2D<T> &)box  << ' ' <<  (const drain::Frame2D<T> &)box; // [' << p.x << ',' << p.y << ',' << p.z << ']';
+    return ostr;
+}
+
 } // drain
 
 #endif

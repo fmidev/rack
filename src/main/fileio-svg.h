@@ -132,12 +132,15 @@ public:
 
 
 	static
-	void addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath);
+	drain::image::TreeSVG & addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath);
 
 	/// Currently, uses file link (does not embed)
 	static
-	void addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath);
-	// const drain::image::ImageConf & imageConf
+	drain::image::TreeSVG & addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath);
+
+	/// Add external image from a file path.
+	static
+	drain::image::TreeSVG & addImage(RackContext & ctx, const drain::FilePath & filepath, const drain::Frame2D<double> & frame = {640,400});
 
 
 	/// Traverse groups, collecting info, recognizing common (shared) variables and pruning them recursively.

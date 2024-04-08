@@ -173,6 +173,7 @@ void TreeUtilsSVG::alignSequence(TreeSVG & group, const drain::Frame2D<int> & fr
 	}
 
 	// Loop: stack horizontally or vertically.
+	// Position of the current object
 	Point2D<int> pos(0,0);
 
 	if (direction==PanelConfSVG::DECR){
@@ -191,19 +192,17 @@ void TreeUtilsSVG::alignSequence(TreeSVG & group, const drain::Frame2D<int> & fr
 	pos.x += start.x;
 	pos.y += start.y;
 
+	// Position of the current object
 	Point2D<int> offset;
 
 	NodeSVG::path_list_t paths;
 
 	NodeSVG::findByTags(group, {svg::IMAGE,svg::RECT,svg::TEXT}, paths);
-	//NodeSVG::findByTag(group, svg::RECT,  paths);
-	//NodeSVG::findByTag(group, svg::TEXT,  paths);
 
+	bool first=true;
 	for (const NodeSVG::path_t  & p: paths){
 
 		TreeSVG & elem = group(p);
-	// for (auto & entry : group.getChildren()){ //
-		// TreeSVG & elem = entry.second;
 
 		NodeSVG::elem_t t = elem->getType();
 
@@ -222,6 +221,31 @@ void TreeUtilsSVG::alignSequence(TreeSVG & group, const drain::Frame2D<int> & fr
 				elem->set("width",  frame.width);
 			}
 			*/
+
+			if (first && elem->hasClass("EXPERIMENTAL-MARGINAL")){
+
+				// TODO: see above; for clarity all pos.itions could be inited here
+				if (direction==PanelConfSVG::INCR){
+					if (orientation==PanelConfSVG::HORZ){
+						pos.x -= elem->get("width", 0);
+					}
+					else if (orientation==PanelConfSVG::VERT){
+						pos.y -= elem->get("height", 0);
+					}
+				}
+				/*
+				if (direction==PanelConfSVG::DECR){
+					if (orientation==PanelConfSVG::HORZ){
+						pos.x = frame.width;
+					}
+					else if (orientation==PanelConfSVG::VERT){
+						pos.y = frame.height;
+					}
+				}
+				*/
+				first = false;
+			}
+
 
 			if (!elem->hasClass("FLOAT")){
 
@@ -256,7 +280,6 @@ void TreeUtilsSVG::alignSequence(TreeSVG & group, const drain::Frame2D<int> & fr
 			}
 
 		}
-
 
 	}
 
@@ -333,7 +356,7 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 					const int fontSize = elem->style.get("font-size", 30); // what about "30em" ?
 
 					if (elem->hasClass("MIDDLE")){
-						elem->set("y", box.y + 0.5*box.height + textOffset.y + fontSize*index); // FIX: should be SUM of invidual row widths
+						elem->set("y", box.y + 0.75*box.height + textOffset.y + fontSize*index); // FIX: should be SUM of invidual row widths
 					}
 					else if (elem->hasClass("BOTTOM")){
 						elem->set("y", box.y + box.height - textOffset.y - fontSize*index); // FIX: should be SUM of invidual row widths

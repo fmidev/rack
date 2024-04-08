@@ -49,16 +49,17 @@ namespace rack
 
 EchoTop2Op::EchoTop2Op(double threshold) :
 		PolarProductOp(__FUNCTION__,"Estimates maximum altitude of given reflectivity"),
-		threshold(threshold), weights(1.0, 0.75, 0.5, 0.33, 0.25) {
+		threshold(threshold), weights(1.0, 0.8, 0.6, 0.4, 0.2) {
 
 	parameters.link("threshold", this->threshold, "reflectivity limit (dB)");
-	parameters.link("weights", this->weights.tuple(), "weights for INTERPOLATION, OVERSHOOTING, UNDERSHOOTING, WEAK, NOECHO");
 	parameters.link("reference", this->reference.tuple(), "'dry point' of low reflectivity and high altitude [dBZ:m]");
 	parameters.link("dryTop",    this->dryTopDBZ, "reflectivity replacing 'undetect' [dBZ]"); // if set, reference will be applied also here
-#ifndef NDEBUG
+//#ifndef NDEBUG
+	parameters.link("weights", this->weights.tuple(), "weights for INTERPOLATION, OVERSHOOTING, UNDERSHOOTING, WEAK, NOECHO");
 	parameters.link("EXTENDED", this->EXTENDED, "append classified data");
+
 	// parameters.link("_EXTENDED", this->EXTENDED, "append classified data");
-#endif
+//#endif
 
 	dataSelector.setQuantities("^DBZH$");
 
@@ -67,6 +68,8 @@ EchoTop2Op::EchoTop2Op(double threshold) :
 	odim.type = "S";
 	odim.scaling.scale = 0.0;
 
+	/*
+	 The original idea was to "encode" weights to class indices 0...255. But that affects their order in legends.
 	const EncodingODIM & odimQ = getQuantityMap().get("QIND")['C'];
 	const drain::image::Palette & cp = PaletteManager::getPalette("CLASS-ETOP");
 	weights.interpolation = odimQ.scaleForward(cp.getEntryByCode("interpolated").first);
@@ -74,8 +77,10 @@ EchoTop2Op::EchoTop2Op(double threshold) :
 	weights.underShooting = odimQ.scaleForward(cp.getEntryByCode("extrapolated.dry").first);
 	weights.weak          = odimQ.scaleForward(cp.getEntryByCode("weak").first);
 	weights.clear         = weights.overShooting; // slightly lower than weights.interpolation
+	*/
 
-	drain::Logger(__FILE__, __LINE__, __FUNCTION__).attention("weights: ", weights);
+	//drain::Logger(__FILE__, __LINE__, __FUNCTION__).attention("weights: ", weights);
+	// drain::Logger(__FILE__, __LINE__, __FUNCTION__).attention("this: ", this);
 
 };
 
@@ -166,7 +171,8 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	PlainData<dst_t> & dstSlope = dstProduct.getData("DBZ-SLOPE");
 	// Z(dB) decay per metre (or kilometre until ODIM 2.3?)
 	dstSlope.setEncoding(typeid(unsigned short));
-	dstSlope.setPhysicalRange(-0.01, +0.01); // m/dBZ
+	//dstSlope.setPhysicalRange(-0.01, +0.01); // m/dBZ
+	dstSlope.setPhysicalRange(-10, +10); // dBZ/km
 	Limiter::value_t limitSlope = drain::Type::call<Limiter>(dstSlope.data.getType());
 
 	if (EXTENDED){
@@ -358,7 +364,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 #ifndef NDEBUG
 							if (EXTENDED){
 								dstClass.data.put<int>(address, CLASS.interpolation);
-								dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1.0/ slope))); // ALERT div by 0 RISK
+								dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/ slope))); // ALERT div by 0 RISK
 							}
 #endif
 
@@ -388,7 +394,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 						dstQuality.data.put(address, WEIGHTS.overShooting);
 #ifndef NDEBUG
 						if (EXTENDED){
-							dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1.0/ slope))); // ALERT div by 0 RISK
+							dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/ slope))); // dBZ/km ALERT div by 0 RISK
 							dstClass.data.put<int>(address, CLASS.overShooting);
 						}
 #endif
@@ -427,7 +433,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 #ifndef NDEBUG
 					if (EXTENDED){
 						dstClass.data.put<int>(address, CLASS.underShooting);
-						dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1.0 / slope))); // ALERT div by 0 RISK
+						dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0 / slope))); // ALERT div by 0 RISK
 					}
 #endif
 				}

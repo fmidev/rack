@@ -28,8 +28,8 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef PALETTEOP_H_
-#define PALETTEOP_H_
+#ifndef DRAIN_PALETTEOP_H
+#define DRAIN_PALETTEOP_H
 
 #include <map>
 #include "drain/util/Bank.h"
@@ -113,13 +113,17 @@ public:
 	static
 	Palette & loadPalette(const std::string & key);
 
+	/// Uses the original coloured palette to create a gray-level palette.
+	// static
+	// Palette & getGrayPalette(const std::string & key);
+
 	// TODO: Refinement. Or better in actual op exec, with lookup? Or: retrieve a lookup...
 	// const Palette & getPalette(const std::string & key) const;
 
 
 	/// Creates a gray palette ie. "identity mapping" from gray (x) to rgb (x,x,x).
 	// TODO T 256, T2 32768
-	void setGrayPalette(unsigned int iChannels=3, unsigned int aChannels=0, float brightness=0.0,float contrast=1.0) const;
+	// void setGrayPalette(unsigned int iChannels=3, unsigned int aChannels=0, float brightness=0.0,float contrast=1.0) const;
 
 
 	/// Prescale intensities with scale*i + offset.
