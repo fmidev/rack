@@ -13,7 +13,7 @@ help:
 	@ X="`cat Makefile Makefile-doxygen | grep '^[a-z.-]\+:' | cut -d':' -f1 | tr ':' '|' `" && echo make \[ $$X \]
 
 # New
-all: 
+build: 
 	USE_GEOTIFF=${USE_GEOTIFF} ./build.sh
 
 # Old, eclipse-imitating scheme
