@@ -129,12 +129,14 @@ Palette & PaletteOp::getPalette(const std::string & key) {
 	}
 	else if (palette.empty()){
 
+		/*
 		const std::size_t i = key.find('/');
 		if (i != std::string::npos){
 			mout.unimplemented("black and white");
 			Palette & paletteOrig = getPaletteMap().get(key.substr(0, i));
 			mout.error("unimplemented");
 		}
+		*/
 
 
 		palette.load(key, true);
