@@ -250,6 +250,8 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 	const bool REPLACE_UNDETECT = !::isnan(dryTopDBZ);
 
+	mout.attention("Replace undetect:", REPLACE_UNDETECT, " dryTop value=", dryTopDBZ);
+
 	// Direct array index of a pixel (i,j)
 	size_t address;
 
@@ -381,7 +383,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 						}
 					}
 					else {
-						// DRY TOP - interpolate between strong and "dry" point.
+						// OVERSHOOTING = "DRY TOP" - interpolate between strong and "dry" point.
 						if (REPLACE_UNDETECT){
 							slope  = getSlope(outerInfo->height, innerInfo->height, dryTopDBZ, innerInfo->dBZ);
 						}
