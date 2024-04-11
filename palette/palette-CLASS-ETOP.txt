@@ -25,7 +25,8 @@
 # Dry top, interpolated
 200.0	240.0	180.0	0.0
 
-# extrapolated.dry
+# Consider also: strong-at-its-altitude
+# strong.extrapolated
 # Strong top, extrapolated
 240.0	255.0	64.0	0.0
 

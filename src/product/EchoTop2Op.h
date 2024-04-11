@@ -126,8 +126,8 @@ public:
 	void computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSet<dst_t> & dstProduct) const;
 
 	static inline
-	double getSlope(double heightUpper, double heightLower, double dBZupper, double dBZlower){
-		return (heightUpper - heightLower) / (dBZupper - dBZlower);
+	double getSlope(double heightStronger, double heightWeaker, double reflectivityStronger, double reflectivityWeaker){
+		return (heightStronger - heightWeaker) / (reflectivityStronger - reflectivityWeaker);
 	}
 
 
@@ -139,7 +139,8 @@ protected:
 
 	ReferencePoint reference = {-50.0, 15000.0};
 
-	double dryTopDBZ = NAN;
+	/// Unless NaN, use the value like a measured dBZ
+	double undetectReflectivity = NAN;
 
 protected:
 

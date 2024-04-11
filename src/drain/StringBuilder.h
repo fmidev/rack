@@ -35,8 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#ifndef DRAIN_STRING_BUILDER_H_
-#define DRAIN_STRING_BUILDER_H_
+#ifndef DRAIN_STRING_BUILDER
+#define DRAIN_STRING_BUILDER
 
 /*
 #include <limits>

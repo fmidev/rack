@@ -717,35 +717,92 @@ public:
 	void exec() const {
 
 		RackContext & ctx = getContext<RackContext>();
-		//Hi5Tree & dst = *getResources().currentHi5;
-		//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
-		drain::Logger mout(ctx.log, getName().c_str(), __FILE__); // = resources.mout;
+
+		drain::Logger mout(ctx.log, __FILE__, __LINE__, getName());
+
+		// Hi5Tree & dst = *ctx.currentHi5; // well, consider
+		Hi5Tree & dst =  ctx.getHi5(RackContext::CURRENT, RackContext::PRIVATE);
+
+		if (value == "empty"){
+			handleEmptyGroups(ctx, dst, true); // true=delete
+			return;
+		}
 
 		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);
 		selector.setParameters(value);
-		//selector.pathMatcher.setElems(ODIMPathElem::DATASET, ODIMPathElem::DATA);
 
 		mout.info("selector: ", selector );
-		//mout.debug("group mask: " , groupFilter , ", selector: " , selector );
 
-		Hi5Tree & dst = *ctx.currentHi5;
 
 		// Step 0
-		mout.info("delete existing no-save structures ");
+		mout.debug("delete pre-existing no-save structures ");
 		hi5::Hi5Base::deleteExcluded(dst);
 
-		mout.debug("selector: ", selector, ", matcher=", selector.getPathMatcher());
-
+		// Selecting paths
 		ODIMPathList paths;
 		selector.getPaths(dst, paths);
-		mout.info("deleting ", paths.size(), " substructures");
+
+		mout.info("Deleting ", paths.size(), " substructures");
 		for (const ODIMPath & path: paths){
 			mout.debug("deleting: ", path);
 			dst.erase(path);
 		}
+
+		handleEmptyGroups(ctx, dst);
+
 	};
 
+protected:
 
+	///
+	static
+	int handleEmptyGroups(RackContext & ctx, Hi5Tree & dst, bool remove=false, const ODIMPath & path = ODIMPath()){
+
+		drain::Logger mout(ctx.log, __FILE__, __LINE__, __FUNCTION__);
+
+		// mout.special("considering ", path);
+
+		ODIMPathList paths;
+
+		int count = 0;
+
+		for (auto & entry: dst(path).getChildren()){
+			if (entry.first.belongsTo(ODIMPathElem::DATA_GROUPS)){
+				++count;
+				const ODIMPath p(path, entry.first);
+				int c = handleEmptyGroups(ctx, dst, remove, p);
+				if (c==0){
+					paths.push_back(p);
+				}
+			}
+			else if (entry.first.is(ODIMPathElem::ARRAY)){
+				if (entry.second.data.empty()){
+					++count;
+				}
+			}
+		}
+
+		if (count == 0){
+			if (!remove){
+				mout.info("Empty groups remaining at ", path);
+				mout.hint<LOG_INFO>("Add path argument or remove empty groups with additional '--delete empty'");
+			}
+		}
+
+		if (remove){
+
+			// Note: dst(path).clearChildren() could corrupt iteration at upper stack level.
+
+			for (const ODIMPath & p: paths){
+				mout.debug("Removing empty group: ", p);
+				dst.erase(p);
+				// mout.attention("Removing empty group: DONE");
+			}
+		}
+
+		return count;
+
+	}
 
 };
 

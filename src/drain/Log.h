@@ -32,7 +32,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_LOG_H_
 #define DRAIN_LOG_H_
 
-#include <drain/StringBuilder.h>
 #include <stdlib.h>
 #include <sstream>
 #include <string>
@@ -47,6 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <syslog.h>
 #include <map>
 
+#include "StringBuilder.h"
 #include "TextStyle.h"
 
 /*
@@ -302,7 +302,7 @@ public:
 /**
  *
  */
-class Logger : public std::stringstream { //: public LogBase {
+class Logger : public std::stringstream {
 
 	std::stringstream & message;
 
@@ -965,7 +965,8 @@ protected:
 	template<typename T, typename ... TT>
 	inline
 	Logger & flush(const T & arg, const TT &... rest){
-		*this << arg;
+		//*this << arg;
+		append(arg);
 		flush(rest...);
 		return *this;
 	};
@@ -973,16 +974,22 @@ protected:
 	template<typename T>
 	inline
 	Logger & flush(const T & arg){
-		*this << arg;
+		// *this << arg;
+		append(arg);
 		monitor.flush(level, *notif_ptr, prefix, message);
 		return *this;
 	};
 
 	inline
 	Logger & flush(){
-		//monitor.flush(level, *notif_ptr, prefix, message);
 		return *this;
 	};
+
+	template<typename T>
+	inline
+	void append(const T & arg){
+		*this << arg;
+	}
 
 	/*
 	inline
@@ -994,6 +1001,14 @@ protected:
 
 
 };
+
+
+template <>
+inline
+void Logger::append(const TextStyle::Colour & colour){
+	*this << "<color>";
+}
+
 
 template <typename ... TT>
 Logger::Logger(const char *filename, const TT & ...args):

@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.6"
+#define __RACK_VERSION__ "8.6.1"
 
 /**
+ *   Version 8.6.1
+ *   - Added special arg \c 'empty' for \c --delete , as other \c --delete commands may leave empty data groups
+ *
  *   Version 8.6
  *   - pEchoTop2
  *

@@ -32,6 +32,21 @@ pikamake.sh drain/examples/TextDecorator-example.cpp
 
 #include "drain/util/TextDecorator.h"
 
+template <typename T>
+void appendArg(std::stringstream & sstr, const T & arg){
+
+}
+
+void addText(std::stringstream & sstr){
+}
+
+template <typename T, typename ... TT>
+void addText(std::stringstream & sstr, const T & arg, const TT &... args){
+	appendArg(sstr, arg);
+	addText(args...);
+}
+
+
 
 
 int main(int argc, char **argv){

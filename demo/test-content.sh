@@ -180,6 +180,16 @@ REQUIRE dataset.*/data.*/
 REQUIRE dataset1/data3 
 EXCLUDE dataset3/data3  # VRAD in data3 in volume.h5
 
+TITLE "Delete dual-PRF measurement data - leaving dataset groups"
+TEST    --delete prf=DOUBLE
+REQUIRE dataset7
+EXCLUDE dataset7/data.*  # 
+
+TITLE "Delete dual-PRF measurement data - also dataset groups"
+TEST    --delete dataset:,prf=DOUBLE
+REQUIRE dataset1
+EXCLUDE dataset7
+
 
 TITLE "Delete actual data arrays"
 TEST    --delete data
@@ -275,3 +285,7 @@ TITLE "Move and rename attribute"
 TEST --move dataset1/where:nrays,dataset1/how:imageheight
 REQUIRE dataset1/how:imageheight
 EXCLUDE dataset1/where:nrays
+
+
+echo 
+echo "All the tests successfully completed."
