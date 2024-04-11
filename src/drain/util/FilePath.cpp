@@ -72,6 +72,13 @@ FilePath::FilePath(const FilePath & p) : dir(p.dir), basename(p.basename), exten
 
 
 
+void FilePath::append(const FilePath & path){
+	this->dir.append(path.dir);
+	this->basename  = path.basename;
+	this->extension = path.extension;
+}
+
+
 //void FilePath::set(const std::string & s){
 void FilePath::append(const std::string & s){
 

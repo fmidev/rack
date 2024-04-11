@@ -530,15 +530,16 @@ void CmdOutputFile::exec() const {
 
 
 		H5HTMLextractor extractor;
+		//extractor.setBaseDir(drain::FilePath::path_t(path.dir, path.basename));
+		extractor.setBaseDir(path.dir);
 		drain::TreeHTML & html = extractor.getHtml();
 		html["head"]["title"](drain::BaseHTML::TITLE) = path.basename;
 		html["body"]["header"](drain::BaseHTML::H1) = path.basename;
-		html->set("id", path.basename);
-
+		html->setId(path.basename); // currently more like comment.
 
 		drain::TreeUtils::traverse(extractor, src);
 
-		if (mout.isDebug()){
+		if (mout.isDebug(2)){
 			mout.attention("Selected HTML data:");
 			mout.warn(html.data);
 			drain::TreeUtils::dump(html);

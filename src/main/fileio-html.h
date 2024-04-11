@@ -53,6 +53,12 @@ class H5HTMLextractor {
 
 public:
 
+	void setBaseDir(const drain::FilePath::path_t & dir){
+		basedir = dir;
+	};
+
+	drain::FilePath::path_t basedir;
+
 	// Returns the root of the HTML document, that is the <HTML> element. Prepares style etc. if not set already
 	drain::TreeHTML & getHtml();
 

@@ -99,11 +99,15 @@ public:
 		//set(elem);
 	}
 
+	/// Appends directory and sets filename (basename and extension).
+	void append(const FilePath & path);
+
 	/// Extracts at least filename. If the string contains leading dir elements, \i append them to \c this->dir .
 	/**
 	 *
 	 */
 	void append(const std::string & s);
+
 
 	inline
 	void append(){};

@@ -196,32 +196,37 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 				item->setType(drain::BaseHTML::LI);
 				// item->set("name", estr);
 				if (e.is(ODIMPathElem::ARRAY)){
-					item->addClass("array");
-					drain::TreeHTML & img = item["img"](drain::NodeHTML::IMG);
-					const drain::image::Image & image = t.data.image;
-					drain::StringBuilder<> builder(odimPath.str(),'-',image.properties.get("what:quantity","unknown"),".png");
-					const std::string & filename = builder; // odimPath.str() + ' ' + image.properties.get("what:quantity","unknown") + ".png";
-					img->set("src", "radar.png");
-					//img->set("alt", filename);
-					//img->set("title", filename);
 
-					drain::FilePath filepath(html->get("id","unnamed"), filename);
-					img->set("title", filepath.str());
+					item->addClass("array");
+
+					drain::TreeHTML & img = item["img"](drain::NodeHTML::IMG);
+					img->set("title", odimPath.str());
+
+					const drain::image::Image & image = t.data.image;
+
+					drain::StringBuilder<> builder(odimPath.str(),'-',image.properties.get("what:quantity","unknown"),".png");
+					const std::string & filename = builder;
+					// img->set("alt", filename);
+
+					drain::FilePath relativePath(html->getId(), filename);
+					submout.debug("relative path:", relativePath);
+					img->set("src", relativePath.str());
+
+					drain::FilePath fullPath(basedir, relativePath);
+					submout.debug("full path:", fullPath);
 
 					try {
-						if (!filepath.dir.empty()){
-							submout.debug("ensuring dir: ", filepath.dir);
-							drain::FilePath::mkdir(filepath.dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+						if (!fullPath.dir.empty()){
+							submout.debug("ensuring dir: ", fullPath.dir);
+							drain::FilePath::mkdir(fullPath.dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 						}
-						drain::image::FilePng::write(image, filepath.str());
-						img->set("src", filepath.str());
+						drain::image::FilePng::write(image, fullPath.str());
 					}
 					catch (const std::exception & e) {
 						submout.warn("error(s): ", e.what());
-						submout.warn("could not write file: ", filepath);
+						submout.warn("could not write file: ", fullPath);
 					}
 
-					// drain::TreeHTML & img = item["img"](drain::NodeHTML::IMG);
 				}
 				else {
 					drain::TreeHTML & span = body(htmlPath)[elemName+"-span"]; // (drain::BaseHTML::SPAN);

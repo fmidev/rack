@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 /**
  *   Version 8.6.1
  *   - Added special arg \c 'empty' for \c --delete , as other \c --delete commands may leave empty data groups
+ *   - Fixed basedir creation of html output
  *
  *   Version 8.6
  *   - pEchoTop2
