@@ -97,33 +97,12 @@ const Log::status_dict_t Log::statusDict = {
 		{LOG_INFO,    "INFO"},
 		{LOG_DEBUG,   "DEBUG"}
 };
-/*
-const Log::notif_dict_t & Log::getDict(){
-	static Log::notif_dict_t dict;
-	if (dict.empty()){
-		//dict.resize(64);
-		dict.resize(16);
-		dict[LOG_EMERG].set("EMERG", 101);
-		dict[LOG_ALERT].set("ALERT", 91);
-		dict[LOG_CRIT].set("CRIT", 41);
-		dict[LOG_ERR].set("ERROR", 31); // note ERR -> ERROR
-		dict[LOG_WARNING].set("WARNING", 33);
-		dict[LOG_NOTICE].set("NOTICE", 29);
-		dict[LOG_INFO].set("INFO", 0);
-		dict[LOG_DEBUG].set("DEBUG", 35);
-		dict[LOG_DEBUG+1].set("DEBUG2", 34);
-		dict[LOG_DEBUG+2].set("DEBUG3", 90);
-	}
-	return dict;
-}
-*/
 
-/*
-void Notification::set(const std::string & key, const std::string & vt100color){
-	this->key = key;
-	this->vt100color = vt100color;
-}
-*/
+#ifdef VT100
+bool Log::USE_VT100(true);
+#else
+bool Log::USE_VT100(false);
+#endif
 
 void Log::setVerbosity(const std::string & level){
 
@@ -200,7 +179,7 @@ void Log::flush(level_t level, const Notification & notif, const std::string & p
 
 	std::ostream & ostr = *ostrPtr; // std::cerr;
 
-	if (VT100)
+	if (USE_VT100)
 		ostr << notif.vt100color;
 
 	ostr << '['; ;
@@ -221,7 +200,7 @@ void Log::flush(level_t level, const Notification & notif, const std::string & p
 		ostr << buf;
 	//ostr << sstr.str();
 
-	if (VT100)
+	if (USE_VT100)
 		ostr << "\033[0m"; // END
 	ostr << '\n';
 

@@ -164,14 +164,14 @@ public:
 	 *   \par level - verbosity
 	 */
 	inline
-	Log(std::ostream & ostr=std::cerr, int verbosityLevel=LOG_WARNING) : VT100(true), ostrPtr(&ostr), verbosityLevel(verbosityLevel)
+	Log(std::ostream & ostr=std::cerr, int verbosityLevel=LOG_WARNING) : ostrPtr(&ostr), verbosityLevel(verbosityLevel) // VT100(true),
 	{
 		resetTime();
 		//std::cerr << "start monitor, level=" << verbosityLevel << std::endl;
 	};
 
 	inline
-	Log(const Log &m) : VT100(m.VT100), ostrPtr(m.ostrPtr), verbosityLevel(m.verbosityLevel) {
+	Log(const Log &m) : ostrPtr(m.ostrPtr), verbosityLevel(m.verbosityLevel) { // VT100(m.VT100),
 		resetTime();
 	};
 
@@ -253,7 +253,8 @@ public:
 		millisecondsStart = getMilliseconds();
 	};
 
-	bool VT100;
+	static
+	bool USE_VT100; // = true;
 
 	// static
 	// const notif_dict_t & getDict();

@@ -41,6 +41,7 @@ CmdLog::CmdLog(CommandBank & cmdBank) : BasicCommand(__FUNCTION__, "Redirect log
 	parameters.link("file", filename);
 	parameters.link("level", level);
 	parameters.link("timing", timing=false); // could be static, directly. (See copyStruct FLAGS?)
+	parameters.link("vt100", Log::USE_VT100); // Note: -DVT100
 };
 
 CmdLog::CmdLog(const CmdLog & cmd) : BasicCommand(cmd), bank(cmd.bank), timing(false) {

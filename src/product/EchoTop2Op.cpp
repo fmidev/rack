@@ -144,9 +144,20 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	// setEncoding(dstOdim, dstEchoTop);
 	// dstEchoTop.setGeometry(area);
 
+	const std::type_info & type = dstEchoTop.data.getType();
 	typedef drain::typeLimiter<double> Limiter;
-	Limiter::value_t limit = drain::Type::call<Limiter>(dstEchoTop.data.getType());
+	Limiter::value_t limit = drain::Type::call<Limiter>(type);
+	//dstEchoTop.data.getScaling().g
+	double d1 = drain::Type::call<drain::typeMin, double>(type);
+	double d2 = drain::Type::call<drain::typeMax, double>(type);
+
+	for (int i = 0; i < 100; ++i) {
+		double d = i * (d2-d1)/100.0 + d1;
+		double m = dstEchoTop.odim.scaleForward(d);
+		mout.note("limiter:", i, '\t', d, '\t', m, '\t', dstEchoTop.odim.scaleInverse(m), '\t', limit(dstEchoTop.odim.scaleInverse(m)));
+	}
 	mout.attention("limiter:", limit);
+
 
 	PlainData<dst_t> & dstQuality = dstProduct.getQualityData(); // dstEchoTop.getQualityData();
 	getQuantityMap().setQuantityDefaults(dstQuality, "QIND", "C");
@@ -368,7 +379,6 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 						// INTERPOLATE, as both values are available
 						if (weakMeasurement->reflectivity < strongMeasurement->reflectivity){
 							slope  = getSlope(weakMeasurement->height, strongMeasurement->height, weakMeasurement->reflectivity, strongMeasurement->reflectivity);
-							//slope  = (outerInfo->altitude - innerInfo->altitude) / (outerInfo->dBZ - innerInfo->dBZ);
 							height = strongMeasurement->height + slope*(threshold - strongMeasurement->reflectivity);
 
 							dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
@@ -439,8 +449,18 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 				if (strongMeasurement != nullptr){
 					// UNDERSHOOTING = the highest bin has Z exceeding the threshold
+
 					slope  = getSlope(reference.height, strongMeasurement->height, reference.reflectivity, strongMeasurement->reflectivity);
 					height = strongMeasurement->height + slope*(threshold - strongMeasurement->reflectivity);
+
+					height = 2.0 * strongMeasurement->height;
+					//slope  = getSlope(weakMeasurement->height, strongMeasurement->height, weakMeasurement->reflectivity, strongMeasurement->reflectivity);
+					//height = strongMeasurement->height + slope*(threshold - strongMeasurement->reflectivity);
+
+					if (j == 90){
+						mout.note(i,',', j, '\t', height, '\t', dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height), '\t', limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
+					}
+
 					dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height))); // strong
 					dstQuality.data.put(address, WEIGHTS.underShooting);
 #ifndef NDEBUG
@@ -500,7 +520,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	mout.accept<LOG_NOTICE>(" threshold=", threshold);
 
 	dstProduct.getWhere()["rscale"] = dstEchoTop.odim.rscale;
-	dstProduct.getWhere()["rscale2"] = dstEchoTop.odim.rscale+10;
+	dstProduct.getWhere()["rscale10"] = dstEchoTop.odim.rscale+10;
 	dstProduct.getWhat()["comment"] = "EchoTop2-test";
 	//dstProduct.updateTree3(dstEchoTop.odim);
 
