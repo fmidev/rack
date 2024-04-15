@@ -48,56 +48,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 //#include "RegExp.h"
-#include <iostream>
-#include <string>
-#include <sstream>
+
+#include "StreamBuilder.h"
 
 namespace drain {
-
-// TODO:
-template <char SEP=0>
-class StreamBuilder : public std::stringstream {
-
-public:
-
-	template<typename ... TT>
-	StreamBuilder(const TT &... args){
-		create(args...);
-	}
-
-	inline
-	StreamBuilder & add(){
-		 return *this;
-	};
-
-	template<class T, typename ... TT>
-	StreamBuilder & add(const T & arg, const TT &... args) {
-		*this << arg;
-		if (SEP)
-			*this << (SEP);
-		return add(args...);
-	}
-
-	template<typename ... TT>
-	StreamBuilder & create(const TT &... args) {
-		std::stringstream::str("");
-		return add(args...);
-	}
-
-
-};
 
 
 template <char SEP=0>
 class StringBuilder : public std::string {
 
 public:
-
-	/*
-	StringBuilder(){
-		std::cout << "empty" << std::endl;
-	}
-	*/
 
 	template<typename ... TT>
 	StringBuilder(const TT &... args){

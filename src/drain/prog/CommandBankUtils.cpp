@@ -45,7 +45,7 @@ CmdLog::CmdLog(CommandBank & cmdBank) : BasicCommand(__FUNCTION__, "Redirect log
 };
 
 CmdLog::CmdLog(const CmdLog & cmd) : BasicCommand(cmd), bank(cmd.bank), timing(false) {
-	parameters.copyStruct(cmd.parameters, cmd, *this);
+	parameters.copyStruct(cmd.parameters, cmd, *this, drain::ReferenceMap::LINK); //
 }
 
 

@@ -303,7 +303,8 @@ public:
 /**
  *
  */
-class Logger : public std::stringstream {
+//class Logger : public std::stringstream {
+class Logger : public StreamBuilder<0> {
 
 	std::stringstream & message;
 
