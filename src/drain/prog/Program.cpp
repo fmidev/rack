@@ -70,13 +70,13 @@ void Program::run() const {
 		Command & cmd = *entry.second;
 
 		if (entry.first == "script"){
-			mout.warn() << "skipping script " << '(' << cmd.getParameters() << ')' << mout.endl;
+			mout.warn("skipping script " , '(' , cmd.getParameters() , ')' );
 			continue;
 		}
 
 		//Command & cmd = *(*it);
 		mout.warn("  executing ", entry.first, "-> ",  cmd.getName(), '(', cmd.getParameters(), ')');
-		//mout.note() << "  context: "  << cmd.getContext<>().getId() << mout.endl;
+		//mout.note("  context: "  , cmd.getContext<>().getId() );
 		cmd.exec();
 	}
 

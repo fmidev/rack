@@ -127,7 +127,7 @@ public:
 		Logger mout("Command", __FUNCTION__);
 
 		const ReferenceMap & params = this->getParameters();
-		//mout.warn() << params << mout.endl;
+		//mout.warn(params );
 
 		const ReferenceMap::const_iterator it = params.begin();
 		if (it == params.end()) // empty
@@ -349,7 +349,7 @@ public:
 	void exec() const {
 		Context & ctx = getContext<Context>();
 		drain::Logger mout(ctx.log,__FILE__, __FUNCTION__);
-		mout.note() << "I am " << getName() << ", invoked as " << key << mout.endl;
+		mout.note("I am " , getName() , ", invoked as " , key );
 	}
 
 	virtual
@@ -527,7 +527,7 @@ public:
 		//this->parameters.append(cmd.getParameters());
 		//this->parameters.append(bean.getParameters());
 		Logger mout(__FILE__, __FUNCTION__);
-		mout.error() << "unimplemented" << mout.endl;
+		mout.error("unimplemented" );
 	}
 
 	BeanAdapterCommand(B & bean) : BasicCommand(bean.getName(), bean.getDescription()) { //

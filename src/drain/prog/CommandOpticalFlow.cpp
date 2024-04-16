@@ -110,23 +110,23 @@ void CmdOpticalFlowBase::exec() const {
 	const size_t h = src.getGeometry().getHeight();
 	// int debugI=180, debugJ=100;
 	// for debugChannels()
-	mout.debug() << "src0 " << src.get(0) << mout.endl;
-	mout.debug() << "src1 " << src.get(1) << mout.endl;
+	mout.debug("src0 " , src.get(0) );
+	mout.debug("src1 " , src.get(1) );
 	// debugChannels(src, debugI, debugJ);
 
-	mout.info() << "Computing differentials (to be used as input for the actual algorithm)" << mout.endl;
+	mout.info("Computing differentials (to be used as input for the actual algorithm)" );
 	/// Differences (output from x, input for the actual algorithm)
 	ImageTray<Channel> diff;
 	const double max = src.get().getConf().requestPhysicalMax(100.0);
-	mout.note() << "guessing physical max: " << max << mout.endl;
+	mout.note("guessing physical max: " , max );
 	//ImageScaling diffScaling;
 	getDiff(w, h, max*max, diff); // oflow2 = pow2 :-D
-	mout.debug() << "diff images: \n" << diff << mout.endl;
+	mout.debug("diff images: \n" , diff );
 
 	// bean.computeDifferentials(src.get(0), src.get(1), diff); // notice: src = latest loaded image
 	bean.computeDifferentials(src, diff); // notice: src = latest loaded image
 
-	mout.debug2() << "computed diff\n" << diff << mout.endl;
+	mout.debug2("computed diff\n" , diff );
 	//debugChannels(diff, debugI, debugJ);
 	//drain::image::File::write(src.get(0), "oflow-src0.png");
 	//drain::image::File::write(diff.get(0), "diff-dx.png");
@@ -140,18 +140,18 @@ void CmdOpticalFlowBase::exec() const {
 	}
 	*/
 
-	mout.info() << "Deriving motion field" << mout.endl;
+	mout.info("Deriving motion field" );
 
 	/// Main output (uField,vField, q)
 	ImageTray<Channel> motion;
 
 	const AreaGeometry & origArea = getGeometry();
 	getMotion(origArea.getWidth(), origArea.getHeight(), motion);
-	mout.debug() << "Allocated motion arrays\n" << motion << mout.endl;
+	mout.debug("Allocated motion arrays\n" , motion );
 
-	mout.debug() << "MAIN LOOP" << mout.endl;
+	mout.debug("MAIN LOOP" );
 	if (bean.optResize()){
-		mout.debug2() << "motion fields to be resized, using tmp" << mout.endl;
+		mout.debug2("motion fields to be resized, using tmp" );
 		// imitate actual data, motion
 		Image tmp(typeid(double), w, h, motion.getGeometry().channels.getImageChannelCount(),  motion.getGeometry().channels.getAlphaChannelCount());
 		ImageTray<Channel> motionDst;
@@ -161,7 +161,7 @@ void CmdOpticalFlowBase::exec() const {
 
 		// ImageTray<const Channel> motionSrc;
 		// motionSrc.setChannels(tmp);
-		mout.info() << "converting motion fields back to original size: " << origArea << mout.endl;
+		mout.info("converting motion fields back to original size: " , origArea );
 		drain::image::ResizeOp op;
 		op.setGeometry(origArea);
 
@@ -177,7 +177,7 @@ void CmdOpticalFlowBase::exec() const {
 		// drain::image::ResizeOp(origArea.getWidth(), origArea.getHeight()).traverseChannels(motionSrc, motion);
 	}
 	else {
-		mout.debug2() << "direct computation to motion data" << mout.endl;
+		mout.debug2("direct computation to motion data" );
 		bean.traverseChannels(diff, motion); // Src
 	}
 
@@ -192,7 +192,7 @@ void CmdOpticalFlowBase::exec() const {
 		drain::image::ImageFile::write(motion.getAlpha(), "oflow-motion-weight.png");
 	}
 
-	mout.info() << "Completed" << mout.endl;
+	mout.info("Completed" );
 }
 
 

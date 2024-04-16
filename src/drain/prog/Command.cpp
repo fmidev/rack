@@ -42,23 +42,23 @@ void BasicCommand::setParameters(const std::string & args){ //, char assignmentS
 	if (args.empty() && !parameters.empty()){
 		Logger mout(__FUNCTION__, getName());
 
-		//mout.info() << " empty argument" << mout.endl;
+		//mout.info(" empty argument" );
 		ReferenceMap::iterator it = parameters.begin();
 
 		if (parameters.size() > 1){
-			mout.info() << "resetting 1st parameter (only): " << it->second << mout.endl;
-			//mout.note() <<  "parameters: " << parameters << mout.endl;
+			mout.info("resetting 1st parameter (only): " , it->second );
+			//mout.note("parameters: " , parameters );
 		}
 
 		if (it->second.isString()){
 			it->second.clear();
 		}
 		else if (it->second.getType() == typeid(bool)){
-			mout.note() << it->first << ": empty assignment, interpreting as 'false'" << mout.endl;
+			mout.note(it->first , ": empty assignment, interpreting as 'false'" );
 			it->second = false;
 		}
 		else{
-			mout.warn() << it->first << ": empty assignment of non-string" << mout.endl;
+			mout.warn(it->first , ": empty assignment of non-string" );
 			//throw std::runtime_error(getName()+":"+it->first + ": empty assigment '' for non-string");
 		}
 	}
@@ -67,9 +67,9 @@ void BasicCommand::setParameters(const std::string & args){ //, char assignmentS
 	}
 	else {
 		//Logger mout(__FILE__, __FUNCTION__);
-		//mout.warn() << "Trying to set values for " << getName() << " params:" << parameters << mout.endl;
+		//mout.warn("Trying to set values for " , getName() , " params:" , parameters );
 		parameters.setValues(args, assignmentSymbol);
-		//mout.warn() << "Done (" << args <<  ')' <<  mout.endl;
+		//mout.warn("Done (" , args ,  ')' );
 	}
 
 	this->update();
@@ -81,7 +81,7 @@ BasicCommand::BasicCommand(const std::string & name, const std::string & descrip
 
 	if (name.find(' ') != std::string::npos){
 		Logger mout(__FILE__, __FUNCTION__);
-		mout.error() << "BasicCommand(): name contains space(s): " << name << " descr=" << description << mout.endl;
+		mout.error("BasicCommand(): name contains space(s): " , name , " descr=" , description );
 		// std::cerr << "BasicCommand(): name contains space(s): " << name << " descr=" << description << std::endl;
 		// exit(1);
 	}

@@ -182,7 +182,7 @@ void CommandBank::scriptify(int argc, const char **argv, Script & script) const 
 		const std::string arg(argv[i]);
 
 		if (arg.empty()){
-			mout.warn() << "empty arg" <<  mout.endl;
+			mout.warn("empty arg" );
 			continue;
 		}
 
@@ -195,7 +195,7 @@ void CommandBank::scriptify(int argc, const char **argv, Script & script) const 
 			++i;
 			if (i == argc){
 				// Some commands like --help are fine with and without arg (when ending line).
-				//mout.warn() << arg << ": argument missing (premature end of command line), i=" << i <<  mout.endl;
+				//mout.warn(arg , ": argument missing (premature end of command line), i=" , i );
 				return;
 			}
 		}
@@ -227,7 +227,7 @@ void CommandBank::scriptify(const std::string & line, Script & script) const{
 		}
 		else {
 			if (scriptify(arg, "", script))
-				mout.warn() << arg << ": argument missing (premature end of command line), i=" <<  mout.endl;
+				mout.warn(arg , ": argument missing (premature end of command line), i=" );
 		}
 	}
 }
@@ -237,7 +237,7 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 	Logger mout(__FILE__, __FUNCTION__); // warning, not initialized
 
 	if (arg.empty()){
-		mout.debug() << "empty arg" <<  mout.endl;
+		mout.debug("empty arg" );
 		return false;
 	}
 
@@ -270,7 +270,7 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 					script.add(notFoundHandlerCmdKey, arg.substr(i));
 				}
 				else {
-					mout.warn() << "plain dash(es): " << arg <<  mout.endl;
+					mout.warn("plain dash(es): " , arg );
 				}
 			}
 			else {
@@ -278,7 +278,7 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 			}
 		}
 		else {
-			mout.warn() << "undefined command: " << arg << " (and no 'notFoundHandlerCmd' set in main program)" <<  mout.endl;
+			mout.warn("undefined command: " , arg , " (and no 'notFoundHandlerCmd' set in main program)" );
 			throw std::runtime_error(arg + ": command not found");
 		}
 
@@ -297,7 +297,7 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 		script.add(defaultCmdKey, arg);
 	}
 	else {
-		mout.error() << "defaultCmd undefined for plain argument (" << arg << ")" << mout.endl;
+		mout.error("defaultCmd undefined for plain argument (" , arg , ")" );
 	}
 	return false;
 }
@@ -369,7 +369,7 @@ void CommandBank::readFileTXT(const std::string & filename, Script & script) con
 
 	mout.note("opening command list: ", filename);
 
-	// mout.note() << "open list: " << filename << mout.endl;
+	// mout.note("open list: " , filename );
 	if (drain::JSON::fileInfo.checkPath(filename)){
 		mout.error("Reading: ", filename, ": JSON not supported for ", __FUNCTION__, ",use readFile()");
 	}
@@ -378,7 +378,7 @@ void CommandBank::readFileTXT(const std::string & filename, Script & script) con
 		std::string line;
 		while ( std::getline((std::ifstream &)input, line) ){
 			if (!line.empty()){
-				mout.debug2() << line << mout.endl;
+				mout.debug2(line );
 				if (line.at(0) != '#')
 					scriptify(line, script);
 			}
@@ -412,7 +412,7 @@ void CommandBank::run(const std::string & cmdKey, const std::string & params, Co
 	//cmd.setKey(cmdKey);
 
 	if (cmd.contextIsSet())
-		mout.note() << "replacing original context " << mout.endl;
+		mout.note("replacing original context " );
 
 	cmd.setExternalContext(ctx);
 	cmd.run(params);
@@ -472,15 +472,15 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		mout.debug('"', key, '"', " ctx=", ctx.getName(), " cmd.section=", cmd.section, '/', this->scriptTriggerFlag);
 
 		if (TRIGGER_CMD)
-			mout << " TRIGGER_CMD,";
+			mout.debug("TRIGGER_CMD,");
 		if (PARALLEL_ENABLED)
-			mout << " THREADS_ENABLED,";
+			mout.debug("THREADS_ENABLED");
 		if (INLINE_SCRIPT)
-			mout << " INLINE_SCRIPT";
-		mout << mout.endl;
+			mout.debug("INLINE_SCRIPT");
+		// mout << mout.endl;
 
 		if (cmd.getName().empty()){
-			mout.warn() << "Command name empty for key='" << key << "', " << cmd << mout.endl;
+			mout.warn("Command name empty for key='" , key , "', " , cmd );
 		}
 		else if (cmd.getName() == scriptCmd){ // "--script" by default
 			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
@@ -497,7 +497,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		/*
 		else if (cmd.getName() == execScriptCmd){
 			// Explicit launch
-			mout.experimental() << "executing script" << mout;
+			mout.experimental("executing script" );
 			Program progSub;
 			append(prog.routine, cmd.getContext<Context>(), progSub); // append() has access to command registry (Prog does not)
 			run(progSub, contextCloner);
@@ -513,11 +513,11 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			/*
 			Script script;
 			readFile(pit->second, script);
-			mout.debug() << script << mout.endl;
+			mout.debug(script );
 			Program::iterator itNext = it;
 			++itNext;
 			for (Script::value_type & subCmd: script){
-				mout.debug() << sprinter(subCmd) << mout.endl;
+				mout.debug(sprinter(subCmd) );
 				command_t & cmd = clone(subCmd.first);
 				cmd.setExternalContext(ctx);
 				cmd.setParameters(subCmd.second);
@@ -527,7 +527,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			}
 			*/
 			// Debug: print resulting program that contains embedded commands
-			// mout.warn() << sprinter(prog) << mout;
+			// mout.warn(sprinter(prog) );
 		}
 		else if (key == "["){
 
@@ -685,8 +685,8 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			/*
 				}
 				catch (const std::exception & e){
-					mout.fail() << e.what() << mout.endl;
-					mout.warn() << "stopping" << mout.endl;
+					mout.fail(e.what() );
+					mout.warn("stopping" );
 					return;
 				}
 			 */
@@ -723,7 +723,7 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 		const std::string & fullKey = resolveFull(key);
 
 		if (!fullKey.empty()){
-			//mout.warn() << "fullKey: " << key << " -> " << fullKey << mout.endl;
+			//mout.warn("fullKey: " , key , " -> " , fullKey );
 			try {
 				info(fullKey, get(fullKey), ostr, true);
 			}
@@ -737,7 +737,7 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 			// Or is it a section, or several?
 			Flagger::value_t filter = FlagResolver::getValue(sections, key); // Accepts also numeric strings.
 
-			//mout.deprecating() << "Flagger: " << sections << " -> " << filter << mout.endl;
+			//mout.deprecating("Flagger: " , sections , " -> " , filter );
 			if (filter > 0){
 				help(filter, ostr);
 				return;
@@ -878,7 +878,7 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 			ostr << '<' << params.getKeys() << '>';
 			if (params.size() != 1){
 				mout.warn("the first key empty, but not unique");
-				//mout.warn() << "the first key empty, but not unique" << mout.endl;
+				//mout.warn("the first key empty, but not unique" );
 			}
 		}
 		else {
@@ -953,19 +953,19 @@ const std::string & CommandBank::resolveFull(const key_t & key) const {
 	std::string cmd(key, hyphens);
 
 	if (hyphens>2)
-		mout.warn() << "more than 2 leading hyphens: " <<  key << mout.endl;
+		mout.warn("more than 2 leading hyphens: " ,  key );
 	else if (hyphens > 0){
 		if ((hyphens==2) != (cmd.length()>1))
-			mout.warn() << "mixed type argument (--x or -xx): " <<  key << mout.endl;
+			mout.warn("mixed type argument (--x or -xx): " ,  key );
 	}
 
-	//mout.warn() << "searching for " << cmd << mout.endl;
+	//mout.warn("searching for " , cmd );
 
 	const std::string & cmdFinal = resolve(cmd);
 
 	const_iterator it = this->find(cmdFinal);
 	if (it != this->end()){
-		//mout.warn() << "found " << it->first << mout.endl;
+		//mout.warn("found " , it->first );
 		return it->first;
 	}
 	else {
