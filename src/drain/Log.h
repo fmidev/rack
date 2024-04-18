@@ -624,10 +624,9 @@ public:
 
 
 	/// Like advice, but weaker.
-	template<int L=LOG_NOTICE,typename ... TT>
+	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & hint(const TT &... args){
-		// static const Notification notif(__FUNCTION__, 40);
 		static const Notification notif(__FUNCTION__, TextStyle::CYAN, TextStyle::DIM, TextStyle::UNDERLINE);
 		initMessage<L>(notif);
 		flush(args...);
@@ -635,7 +634,16 @@ public:
 	};
 
 
-		/// Public, yet typically used "internally", when TIMING=true.
+	template<int L=LOG_INFO,typename ... TT>
+	inline
+	Logger & revised(const TT &... args){
+		static const Notification notif(__FUNCTION__, TextStyle::YELLOW, TextStyle::DIM);
+		initMessage<L>(notif);
+		flush(args...);
+		return *this;
+	};
+
+	/// Public, yet typically used "internally", when TIMING=true.
 	/*
 	template<typename ... TT>
 	inline

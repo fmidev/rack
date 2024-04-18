@@ -290,15 +290,17 @@ void ODIM::updateLenient(const ODIM & odim){
 	if (object.empty())
 		object = odim.object;
 
+	if (quantity.empty())
+		quantity = odim.quantity;
+
+
 	if (quantity == odim.quantity){
 		EncodingODIM::updateLenient(odim);
 	}
 	else {
-		mout.warn("revised code: different quantity, scaling not copied");
+		mout.revised("different quantity, scaling not copied");
 	}
 
-	if (quantity.empty())
-		quantity = odim.quantity;
 
 	// NEW 2017/03
 	if (product.empty()){

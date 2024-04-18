@@ -45,13 +45,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //
 #include <stdlib.h>
 //#include <cmath>
-#include "../util/Variable.h"
 
-#include "../image/Image.h"
+#include "drain/Variable.h"
+#include "drain/image/Image.h"
 
-
-// // using namespace std;
-//using namespace drain;
 
 namespace drain {
 

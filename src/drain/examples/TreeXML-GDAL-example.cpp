@@ -21,13 +21,14 @@
  */
 /*
 // ,TreeUtils
- REQUIRE: drain/util/{Log,Caster,Castable,FileInfo,RegExp,Sprinter,String,TextStyle,TreeXML,Type,Variable}.cpp
+ REQUIRE: drain/{Caster,Castable,Log,FlexibleVariable,RegExp,Sprinter,String,TextStyle,Type,TypeUtils,Variable,VariableBase}.cpp
+ REQUIRE: drain/util/{FileInfo,TreeXML}.cpp
  REQUIRE: drain/image/TreeXML-GDAL.cpp
 
  g+ + -I. drain/examples/TreeHTML-example.cpp drain/util/{Log,Caster,Castable,JSONwriter,String,TreeXML,Type,RegExp}.cpp    -o TreeHTML-example
  */
 #include <iostream>
-#include "drain/util/Log.h"
+#include "drain/Log.h"
 #include "drain/util/TreeUtils.h"
 #include "drain/image/TreeXML-GDAL.h"
 

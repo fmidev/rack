@@ -322,11 +322,17 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 				const std::string & encoding = composite.getTargetEncoding();
 				if (encoding.empty()){
+					mout.hint("use --encoding if specific data type and scaling needed");
 					// This is somewhat disturbing but perhaps worth it.
-					if (projectAEQD)
-						mout.debug("adapting encoding of input: " , EncodingODIM(composite.odim) );
-					else
+					if (projectAEQD){
+						mout.note("adapting encoding of input: " , EncodingODIM(composite.odim) );
+					}
+					else {
 						mout.note("adapting encoding of first input: " , EncodingODIM(composite.odim) );
+					}
+				}
+				else {
+					mout.note("predefined encoding '", encoding, "' (str)");
 				}
 				mout.debug("storing metadata: " , composite.odim );
 				ProductBase::completeEncoding(composite.odim, encoding); // note, needed even if encoding==""

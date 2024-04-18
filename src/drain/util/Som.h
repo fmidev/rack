@@ -43,17 +43,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <limits>
 #include <sstream>
 
-//
 #include <stdlib.h>
-//#include <cmath>
-#include "../util/Variable.h"
 
-//#include "../image/Image.h"
-//#include "../image/File.h"
+#include "drain/Variable.h"
 
 
-// // // using namespace std;
-//using namespace drain;
 
 namespace drain {
 
