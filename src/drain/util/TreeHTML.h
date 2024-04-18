@@ -166,6 +166,61 @@ TreeHTML & TreeHTML::operator()(const BaseHTML::tag_t & type){
 	return *this;
 }
 
+
+
+// UTILS... consider to XML ?
+
+class TreeUtilsHTML {
+
+public:
+
+	static inline
+	drain::TreeHTML & addChild(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const std::string & key){
+		return elem[key](tagType);
+	}
+
+	static inline
+	drain::TreeHTML & addChild(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType){
+		std::stringstream key("elem");
+		key.width(3);
+		key.fill('0');
+		key << elem.getChildren().size();
+		return addChild(elem, tagType, key.str());
+	}
+
+	template <class T>
+	static inline
+	drain::TreeHTML & appendElem(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const T & arg){
+		drain::TreeHTML & child = addChild(elem,tagType);
+		child = arg;
+		return child;
+	};
+
+
+	template <class T, class ...TT>
+	static inline
+	drain::TreeHTML & appendElem(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const T & arg, const TT & ...args) {
+		appendElem(elem, tagType, arg);
+		return appendElem(elem, tagType, args...);
+	}
+
+protected:
+
+	// Dummy end... TODO: redesign logic, perhaps addChild();
+	template <class TR>
+	static inline
+	drain::TreeHTML & appendElem(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType){
+		if (elem.hasChildren()){
+			return elem.getChildren().rbegin()->second; // last
+		}
+		else {
+			//
+			return elem;
+		}
+	}
+
+};
+
 /*
 template <>
 template <>

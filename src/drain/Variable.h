@@ -32,21 +32,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef VARIABLE_H_
 #define VARIABLE_H_
 
-/*
-#include <drain/UniTuple.h> // "Friend class"
-#include <string.h>
-#include <string>
-#include <vector>
-#include <map>
-
-#include "Castable.h"
-#include "CastableIterator.h"
-#include "Convert.h"
-
-//#include "Referencer.h"
-#include "Sprinter.h"
-#include "String.h"
-*/
 #include "drain/VariableBase.h"
 #include "drain/VariableT.h"
 

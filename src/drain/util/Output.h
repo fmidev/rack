@@ -39,10 +39,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 #include <fstream>
 
-#ifndef DRAIN_OUTPUT_H_
-#define DRAIN_OUTPUT_H_
+#ifndef DRAIN_OUTPUT
+#define DRAIN_OUTPUT
 
 #include <drain/Log.h>
+#include <drain/util/FilePath.h>
 
 namespace drain {
 
@@ -56,22 +57,30 @@ class Output {
 
 public:
 
-	// Opens with std::open. Can be overridden with open(<filename>);
 	inline
 	Output(){};
 
 	inline
-	Output(const Output & output){};
+	Output(const Output & output){}; // Should this copy something?
 
-	/// Opens stdout with "-".
-	Output(const std::string & filename);
+	/// Constructor that directly opens a file, or stdout with "-".
+	inline
+	Output(const std::string & filename){
+		open(filename);
+	};
 
+	/// Constructor that directly opens a file.
+	inline
+	Output(const drain::FilePath & filePath){
+		open(filePath.str());
+	};
 
 	// Output(std::ostream & ostr);
 
 	/// Closes upon destruction.
 	~Output();
 
+	// Opens with std::open. Can be overridden with open(<filename>);
 	void open(const std::string & filename);
 
 	operator std::ostream & ();

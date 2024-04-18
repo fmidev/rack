@@ -82,7 +82,7 @@ void checkType(drain::Logger & mout, const C & c){
 
 */
 
-
+/*
 inline
 drain::TreeHTML & addChild(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType){
 	std::stringstream sstr("elem");
@@ -121,6 +121,7 @@ drain::TreeHTML & appendHTML(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagT
 	appendHTML(elem, tagType, arg);
 	return appendHTML(elem, tagType, args...);
 }
+*/
 
 std::string getValue(drain::Castable &c){
 	if (c.isCharArrayString()){
@@ -134,13 +135,32 @@ std::string getValue(drain::Castable &c){
 }
 
 
-#define DEMO_C1(init, expr, html) do { init; expr; appendHTML(html, drain::NodeHTML::TD, #init, #expr, getValue(variable), (variable.isReference()?"reference":"") ); } while (0)
+//#define DEMO_C1(init, expr, html) do { init; expr; appendHTML(html, drain::NodeHTML::TD, #init, #expr, getValue(variable), (variable.isReference()?"reference":"") ); } while (0)
+
+#define DEMO_C1(init, expr, html) do { init; expr; drain::TreeUtilsHTML::appendElem(drain::TreeUtilsHTML::addChild(html,drain::NodeHTML::TR), drain::NodeHTML::TD, #init, #expr, getValue(variable), (variable.isReference()?"reference":"") ); } while (0)
+
+template <class V>
+drain::TreeHTML & createHtmlTable(drain::TreeHTML & body, const std::string & label){ // "var", "ref", no whitespace.
+
+	const std::string & clsName = drain::TypeName<V>::str();
+
+	drain::TreeHTML & header = body[clsName+"-"+label+"-ctor"](drain::NodeHTML::H2);
+	header = clsName+" constructors";
+
+	drain::TreeHTML & table = body[clsName+"-"+label+"-table"](drain::NodeHTML::TABLE);
+
+	drain::TreeHTML & tr    = table["data"](drain::NodeHTML::TR);
+	drain::TreeUtilsHTML::appendElem(tr, drain::NodeHTML::TH, "Context", "Constructor", "Final value");
+
+	return table;
+}
 
 
 
 template <class V>
-void demoVariableConstructors(drain::TreeHTML & body){
+void demoVariableConstructors(drain::TreeHTML & table){
 
+	/*
 	const std::string & clsName = drain::TypeName<V>::str();
 
 	drain::TreeHTML & header = body[clsName+"-var-ctr"](drain::NodeHTML::H2);
@@ -151,30 +171,33 @@ void demoVariableConstructors(drain::TreeHTML & body){
 	drain::TreeHTML & tr    = table["data"](drain::NodeHTML::TR);
 
 	appendHTML(tr, drain::NodeHTML::TH, "Context", "Constructor", "Final value");
+	*/
 
-	DEMO_C1( , V variable;,                 addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable(typeid(bool));,   addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable(typeid(char));,   addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable(typeid(int));,    addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable(typeid(double));, addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable('X');,            addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable(false);,          addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable(12345);,          addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable(56.789);,         addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable("Hello!");,       addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable(std::string("Test"));,      addChild(table, drain::NodeHTML::TR));
-	DEMO_C1(bool b=true;, V variable(b);,   addChild(table, drain::NodeHTML::TR));
-	DEMO_C1(char c='Y';,  V variable(c);,   addChild(table, drain::NodeHTML::TR));
-	DEMO_C1(int i=123;,   V variable(i);,   addChild(table, drain::NodeHTML::TR));
-	DEMO_C1(double d=45.678;, V variable(d);,           addChild(table, drain::NodeHTML::TR));
-	DEMO_C1(const char *s="123abc";, V variable(s);,    addChild(table, drain::NodeHTML::TR));
-	DEMO_C1(std::string str("Test");, V variable(str);, addChild(table, drain::NodeHTML::TR));
+	// drain::TreeHTML & table = createHtmlTable<V>(body, "var");
+	// addChild(table, drain::NodeHTML::TR) <= table
+	DEMO_C1( , V variable;,                 table);
+	DEMO_C1( , V variable(typeid(bool));,   table);
+	DEMO_C1( , V variable(typeid(char));,   table);
+	DEMO_C1( , V variable(typeid(int));,    table);
+	DEMO_C1( , V variable(typeid(double));, table);
+	DEMO_C1( , V variable('X');,            table);
+	DEMO_C1( , V variable(false);,          table);
+	DEMO_C1( , V variable(12345);,          table);
+	DEMO_C1( , V variable(56.789);,         table);
+	DEMO_C1( , V variable("Hello!");,       table);
+	DEMO_C1( , V variable(std::string("Test"));,      table);
+	DEMO_C1(bool b=true;, V variable(b);,   table);
+	DEMO_C1(char c='Y';,  V variable(c);,   table);
+	DEMO_C1(int i=123;,   V variable(i);,   table);
+	DEMO_C1(double d=45.678;, V variable(d);,           table);
+	DEMO_C1(const char *s="123abc";, V variable(s);,    table);
+	DEMO_C1(std::string str("Test");, V variable(str);, table);
 
-	DEMO_C1( , V variable = true;,                 addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable = 'Z';,                  addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable = 1234;,                 addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable = 345.67;,               addChild(table, drain::NodeHTML::TR));
-	DEMO_C1( , V variable = "12.34567";,   addChild(table, drain::NodeHTML::TR));
+	DEMO_C1( , V variable = true;,         table);
+	DEMO_C1( , V variable = 'Z';,          table);
+	DEMO_C1( , V variable = 1234;,         table);
+	DEMO_C1( , V variable = 345.67;,       table);
+	DEMO_C1( , V variable = "12.34567";,   table);
 
 
 }
@@ -182,6 +205,7 @@ void demoVariableConstructors(drain::TreeHTML & body){
 template <class V>
 void demoReferenceConstructors(drain::TreeHTML & body){
 
+	/*
 	const std::string & clsName = drain::TypeName<V>::str();
 
 	drain::TreeHTML & header = body[clsName+"-ref-ctr"](drain::NodeHTML::H2);
@@ -192,13 +216,17 @@ void demoReferenceConstructors(drain::TreeHTML & body){
 	drain::TreeHTML & tr    = table["data"](drain::NodeHTML::TR);
 
 	appendHTML(tr, drain::NodeHTML::TH, "Context", "Constructor", "Final value");
+	*/
 
-	DEMO_C1( , V variable;,                 addChild(table, drain::NodeHTML::TR));
-	DEMO_C1(bool b=true;, V variable(b);,   addChild(table, drain::NodeHTML::TR));
-	DEMO_C1(char c='Y';,  V variable(c);,   addChild(table, drain::NodeHTML::TR));
-	DEMO_C1(int i=123;,   V variable(i);,   addChild(table, drain::NodeHTML::TR));
-	DEMO_C1(double d=45.678;, V variable(d);,           addChild(table, drain::NodeHTML::TR));
-	DEMO_C1(std::string str("Test");, V variable(str);, addChild(table, drain::NodeHTML::TR));
+	drain::TreeHTML & table = createHtmlTable<V>(body, "ref");
+
+
+	DEMO_C1( , V variable;,                 table);
+	DEMO_C1(bool b=true;, V variable(b);,   table);
+	DEMO_C1(char c='Y';,  V variable(c);,   table);
+	DEMO_C1(int i=123;,   V variable(i);,   table);
+	DEMO_C1(double d=45.678;, V variable(d);,           table);
+	DEMO_C1(std::string str("Test");, V variable(str);, table);
 
 	//DEMO_C1(V v(typeid(int)), td1, td2);
 
@@ -281,10 +309,17 @@ int main(int argc, char **argv){
 	drain::TreeHTML & body = html["body"](drain::NodeHTML::BODY);
 
 	drain::TreeHTML & h1 = body["main-header"](drain::NodeHTML::H1);
-	h1 = "Variable Demo";
+	h1 = "Variables: Reference, Variable and FlexibleVariable";
 
-	demoVariableConstructors<drain::Variable>(body);
-	demoVariableConstructors<drain::FlexibleVariable>(body);
+	{
+		drain::TreeHTML & table = createHtmlTable<drain::Variable>(body, "var");
+		demoVariableConstructors<drain::Variable>(table);
+	}
+
+	{
+		drain::TreeHTML & table = createHtmlTable<drain::FlexibleVariable>(body, "flex");
+		demoVariableConstructors<drain::FlexibleVariable>(table);
+	}
 
 	demoReferenceConstructors<drain::Reference>(body);
 	demoReferenceConstructors<drain::FlexibleVariable>(body);
@@ -338,113 +373,11 @@ int main(int argc, char **argv){
 		*/
 	}
 
-	drain::Output outfile("variables.html");
+	//drain::FilePath outPath();
+	// outPath.extension = "html";
+	drain::Output outfile(std::string(argv[0]) + ".html");
 
 	drain::NodeHTML::toStream(outfile, html);
-
-	/*
-	for (int a = 1; a < argc; ++a) {
-
-		const char *arg = argv[a];
-
-		int i = 0;
-		double d = 0.0;
-		std::string s;
-		bool b = true;
-		drain::UniTuple<double,3> triple = {1.1, 2.2, 3.3};
-
-
-		mout.special("Variable");
-
-		drain::Variable vi(typeid(int));
-		testCastable(arg, vi);
-		drain::Variable vi2(1.23456);
-
-
-		drain::Variable vd(typeid(double));
-		testCastable(arg, vd);
-
-		drain::Variable vs(typeid(std::string));
-		testCastable(arg, vs);
-
-
-		mout.special("Referencer");
-
-		drain::Reference ri(i); //(i);
-		// ri.link(i);
-		testCastable(arg, ri);
-
-		drain::Reference rd(d); //(d);
-		// rd.link(d);
-		testCastable(arg, rd);
-
-		drain::Reference rs(s);
-		// rs.link(s);
-		testCastable(arg, rs);
-
-		drain::Reference rU3(triple); // (triple)
-		// rU3.link(triple);
-		testCastable(arg, rU3);
-
-		ri.reset();
-
-
-		mout.special("FlexibleVariable");
-
-		drain::FlexibleVariable fi(123);
-		testCastable(arg, fi);
-
-		drain::FlexibleVariable fd(d); // (d) (45.678);
-		testCastable(arg, fd);
-
-		drain::FlexibleVariable fs; // ("Hello!");
-		testCastable(arg, fs);
-
-
-		mout.special("FlexibleVariable, linked");
-
-		fi.link(i=0);
-		// fi.assign(1234);
-		testCastable(arg, fi);
-
-		fd.link(d=0.0);
-		// fd = 12345;
-		testCastable(arg, fd);
-
-		fs.link(s = "");
-		testCastable(arg, fs);
-
-
-	}
-	 */
-
-	/*
-	int i = 123;
-	ref.link(i);
-	ref = 345.56;
-	std::cerr << ref << ' ' << i << '\n';
-	ref.info(std::cerr);
-	std::cerr << '\n';
-
-	std::cerr << var << '\n';
-	var = 12.56;
-	std::cerr << var << '\n';
-	var.info(std::cerr);
-	std::cerr << '\n';
-	var = {1, 3, 4};
-	var.info(std::cerr);
-	std::cerr << '\n';
-
-	drain::UniTuple<double,3> triple = {1.1, 2.2, 3.3};
-	flex = triple;
-	flex.info(std::cerr);
-	std::cerr << '\n';
-	flex = i;
-	flex.link(triple);
-	flex.info(std::cerr);
-	triple.at(1) = 3.12314;
-	flex.info(std::cerr);
-	 */
 
 
 	/*
@@ -464,8 +397,6 @@ int main(int argc, char **argv){
 	}
 	 */
 
-	// std::cerr << time.getTime() << std::endl;
-	//  time.str() valid as well.
 
 	return 0;
 }

@@ -31,8 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-#ifndef DRAIN_VARIABLE_T
-#define DRAIN_VARIABLE_T
+#ifndef DRAIN_VARIABLE
+#define DRAIN_VARIABLE
 
 #include <drain/Castable.h>
 #include <drain/UniTuple.h> // "Friend class"
@@ -42,15 +42,17 @@ namespace drain {
 
 /// VariableT is a final class applied through typedefs Variable, Reference and FlexibleVariable.
 /**
-  \tparam T - VariableBase, ReferenceT<Castable> ReferenceT<Variable>
+  \tparam T - see typedefs: drain::Reference, drain::Variable, and drain::FlexibleVariable
 
-\code
-int i;
-double d;
-char c;
-char *s = "test";
-std::string str = "123.456abc";
-\endcode
+
+\htmlinclude Variables-example.html
+
+\see Reference
+\see Variable
+\see FlexibleVariable
+
+
+\~remark
 
    <TABLE>
    <TR><TD></TD><TD></TD><TH>Reference</TH><TH>Variable</TH><TH>FlexibleVariable</TH></TR>
@@ -89,9 +91,7 @@ std::string str = "123.456abc";
    </TR>
    </TABLE>
 
-   \see Reference
-   \see Variable
-   \see FlexibleVariable
+\~
 
  */
 template <class T>

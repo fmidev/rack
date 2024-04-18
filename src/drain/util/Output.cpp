@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+/*
 Output::Output(const std::string & filename){ // : filename(filename){
 
 	//drain::Logger mout(__FILE__, __FUNCTION__);
@@ -56,6 +57,7 @@ Output::Output(const std::string & filename){ // : filename(filename){
 		}
 	}
 }
+*/
 
 Output::~Output(){
 	// drain::Logger mout(__FILE__, __FUNCTION__);
