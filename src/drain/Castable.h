@@ -533,11 +533,42 @@ public:
 	}
 	*/
 
+	/*
 	inline
-	bool operator==(const Castable &x) const{
-		std::cerr << __FILE__ << __LINE__ << __FUNCTION__ << std::endl;
-		throw std::runtime_error("Castable: operator== not implemented.");
-		return false;
+	bool compare(const void *ptr, const Caster &c, const void *cPtr) const {
+		return (caster.comparePtr)(ptr, c, cPtr);
+	}
+	*/
+
+	inline
+	bool operator==(const Castable &c) const{
+		// std::cerr << __FILE__ << __LINE__ << __FUNCTION__ << std::endl;
+		//throw std::runtime_error("Castable: operator== not implemented.");
+
+		if (!this->typeIsSet()){
+			return !c.typeIsSet(); // is "same"... (?)
+		}
+
+		if (!c.typeIsSet()){
+			return false; // could return false for both?
+		}
+
+		if (this->isString() || c.isString()){ // NOTE: precision loss in rounding numbers
+			return (this->toStr() == c.toStr());
+		}
+
+		if (this->getElementCount() != c.getElementCount()){
+			return false;
+		}
+
+
+		for (size_t i = 0; i<this->getElementCount(); ++i){
+			if (! caster.compare(getPtr(i), c.caster, c.getPtr(i))){
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/// Compare as a character string

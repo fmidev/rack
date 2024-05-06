@@ -121,8 +121,11 @@ void Caster::updateType<void>(){
 	getFloat  = & Caster::getFromVoidT<float>;
 	getDouble = & Caster::getFromVoidT<double>;
 
+	// FIX
+	// ! fromStreamPtr = ...
+	comparePtr   = & Caster::compareT<void>;
 	toOStreamPtr = & Caster::toOStreamT<void>;
-	translatePtr      = & Caster::translateT<void>;
+	translatePtr = & Caster::translateT<void>;
 
 	return;
 
@@ -167,6 +170,8 @@ void Caster::updateType<std::string>(){
 	getULong  = & Caster::getFromStringT<unsigned long>;
 	getFloat  = & Caster::getFromStringT<float>;
 	getDouble = & Caster::getFromStringT<double>;
+
+	comparePtr   = nullptr; //& Caster::compareT<std::string>;
 
 	toOStreamPtr = & Caster::toOStreamT<std::string>;
 	translatePtr = & Caster::translateT<std::string>;

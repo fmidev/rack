@@ -42,9 +42,9 @@ namespace drain {
 
 /// Value container supporting dynamic type.
 /**
- *   drain::Variable has memory of its own, and cannot be linked to external variables like drain::Reference and drain::FlexibleVariable .
- *
- *
+
+drain::Variable has memory of its own, and cannot be linked to external variables like drain::Reference and drain::FlexibleVariable .
+
 \section ctors-var Variable constructors
 
 \htmlinclude  VariableT-ctors-Variable.html
@@ -52,14 +52,15 @@ namespace drain {
 \section assignments-var Variable assignments
 
 \htmlinclude  VariableT-assign-Variable.html
- *
- *   See the documentation of drain::VariableT template specialized by drain::Variable, drain::Reference and drain::FlexibleVariable .
- *
- *   \see VariableT
- *   \see Reference
- *   \see FlexibleVariable
- */
-typedef VariableT<VariableInitializer<VariableBase> >  Variable;
+
+See the documentation of drain::VariableT template specialized by drain::Variable, drain::Reference and drain::FlexibleVariable .
+
+\see VariableT
+\see Reference
+\see FlexibleVariable
+
+*/
+typedef DRAIN_VARIABLE  Variable;
 
 DRAIN_TYPENAME(Variable);
 

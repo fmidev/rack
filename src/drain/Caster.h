@@ -219,6 +219,13 @@ public:
 		(*translatePtr)(c, c.ptr, this->ptr);
 	};
 
+
+	// New 2024/05
+	inline
+	bool compare(const void *ptr, const Caster &c, const void *cPtr) const {
+		return (*comparePtr)(ptr, c, cPtr);
+	}
+
 	// New 2024/05
 	inline
 	std::istream & fromStream(std::istream & istr, const void *p) const{
@@ -281,6 +288,10 @@ protected:
 	/// Convert from str pointer and Caster.
 	//void (Caster::* translatePtr)(const Caster &c, const void *ptrC, void *ptr) const;
 	void (* translatePtr)(const Caster &c, const void *ptrC, void *ptr);
+
+	// New
+	//bool (Caster::* comparePtr)(const Caster &c, size_t i) const = nullptr;
+	bool (* comparePtr)(const void *, const Caster &c, const void *) = nullptr;
 
 	/// Write to stream.
 	// std::ostream & (Caster::* toOStreamPtr)(std::ostream &ostr, const void *p) const;
@@ -392,12 +403,30 @@ protected:
 	/**
 	 *   Given data of type c.getType() behind pointer ptrC, cast it to type F and store it behind ptr.
 	 */
-	template <class F> // STATIC!
-	//inline
+	template <class F>
 	static
 	void translateT(const Caster &c, const void *ptrC, void *ptr) { // const {
 		//std::cerr << "Caster::" << __FUNCTION__ << ": " << c.getType().name() << std::endl;
 		*(F *)ptr = c.get<F>(ptrC);
+	}
+
+	/// Checks equality through base type casting
+	/**
+	 *   Given data of type c.getType() behind pointer ptrC, cast it to type F and store it behind ptr.
+	 */
+	template <class F>
+	static
+	bool compareT(const void *ptr, const Caster &c, const void *cPtr){ //  const
+
+		if (ptr == nullptr)
+			return false;
+
+		if (cPtr == nullptr)
+			return false;
+
+		return (*(F *)ptr == c.get<F>(cPtr));
+		// return false;
+		// return this->get<F>(i) == c.get<F>(i);
 	}
 
 	/// Output
@@ -518,9 +547,11 @@ void Caster::updateType(){
 	getFloat  = & Caster::getT<float,F>;
 	getDouble = & Caster::getT<double,F>;
 
+	translatePtr  = & Caster::translateT<F>;
+	comparePtr    = & Caster::compareT<F>;
+
 	toOStreamPtr  = & Caster::toOStreamT<F>;
 	fromStreamPtr = & Caster::fromStreamT<F>;
-	translatePtr  = & Caster::translateT<F>;
 }
 
 
@@ -717,6 +748,16 @@ template <>
 inline
 float Caster::getFromVoidT<float>(const void *p){
 	return NAN;
+}
+
+/// Semantics: no data, hence no bytes to be compared.
+/**
+ *   \return  always \c false .
+ */
+template <>
+inline
+bool Caster::compareT<void>(const void *ptr, const Caster &c, const void *cPtr){ // const {
+	return false;
 }
 
 

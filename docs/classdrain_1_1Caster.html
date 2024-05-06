@@ -161,6 +161,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#ab70a522d108ed12a2ee71c3a775c5dc6">translate</a> (const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c) const</td></tr>
 <tr class="memdesc:ab70a522d108ed12a2ee71c3a775c5dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="Utility class with static conversions.">Convert</a> from str <a class="el" href="classdrain_1_1Caster.html">Caster</a>. <br /></td></tr>
 <tr class="separator:ab70a522d108ed12a2ee71c3a775c5dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae102da352cc41c14fd21ad0a5c41cff9"><td class="memItemLeft" align="right" valign="top"><a id="ae102da352cc41c14fd21ad0a5c41cff9"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>compare</b> (const void *<a class="el" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>, const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, const void *cPtr) const</td></tr>
+<tr class="separator:ae102da352cc41c14fd21ad0a5c41cff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56fa6bb9ac61a998478a42375fc35552"><td class="memItemLeft" align="right" valign="top"><a id="a56fa6bb9ac61a998478a42375fc35552"></a>
 std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>fromStream</b> (std::istream &amp;istr, const void *p) const</td></tr>
 <tr class="separator:a56fa6bb9ac61a998478a42375fc35552"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -326,6 +329,10 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:af7b6c9530837aa43d46837c113754431"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#af7b6c9530837aa43d46837c113754431">translateT</a> (const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, const void *ptrC, void *<a class="el" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>)</td></tr>
 <tr class="memdesc:af7b6c9530837aa43d46837c113754431"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts from ptrC to ptr.  <a href="classdrain_1_1Caster.html#af7b6c9530837aa43d46837c113754431">More...</a><br /></td></tr>
 <tr class="separator:af7b6c9530837aa43d46837c113754431"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b8a3274780b72992426635a523ef7b7"><td class="memTemplParams" colspan="2">template&lt;class F &gt; </td></tr>
+<tr class="memitem:a8b8a3274780b72992426635a523ef7b7"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#a8b8a3274780b72992426635a523ef7b7">compareT</a> (const void *<a class="el" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>, const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, const void *cPtr)</td></tr>
+<tr class="memdesc:a8b8a3274780b72992426635a523ef7b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks equality through base type casting.  <a href="classdrain_1_1Caster.html#a8b8a3274780b72992426635a523ef7b7">More...</a><br /></td></tr>
+<tr class="separator:a8b8a3274780b72992426635a523ef7b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63295ced1a748e507dc6f6089bb0c426"><td class="memTemplParams" colspan="2"><a id="a63295ced1a748e507dc6f6089bb0c426"></a>
 template&lt;class F &gt; </td></tr>
 <tr class="memitem:a63295ced1a748e507dc6f6089bb0c426"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#a63295ced1a748e507dc6f6089bb0c426">toOStreamT</a> (std::ostream &amp;ostr, const void *p)</td></tr>
@@ -357,6 +364,10 @@ template&lt;&gt; </td></tr>
 template&lt;&gt; </td></tr>
 <tr class="memitem:ae3d3dd85ee9d1a27037c950f2b85b509"><td class="memTemplItemLeft" align="right" valign="top">float&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getFromVoidT</b> (const void *p)</td></tr>
 <tr class="separator:ae3d3dd85ee9d1a27037c950f2b85b509"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b9f3cc50ce1a43b0c93d7257a0747cd"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a2b9f3cc50ce1a43b0c93d7257a0747cd"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#a2b9f3cc50ce1a43b0c93d7257a0747cd">compareT</a> (const void *<a class="el" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>, const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, const void *cPtr)</td></tr>
+<tr class="memdesc:a2b9f3cc50ce1a43b0c93d7257a0747cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semantics: no data, hence no bytes to be compared.  <a href="classdrain_1_1Caster.html#a2b9f3cc50ce1a43b0c93d7257a0747cd">More...</a><br /></td></tr>
+<tr class="separator:a2b9f3cc50ce1a43b0c93d7257a0747cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad50a3bbd5fba4730bc2466262621c4e9"><td class="memItemLeft" align="right" valign="top"><a id="ad50a3bbd5fba4730bc2466262621c4e9"></a>
 template&lt;&gt; </td></tr>
 <tr class="memitem:ad50a3bbd5fba4730bc2466262621c4e9"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#ad50a3bbd5fba4730bc2466262621c4e9">toOStreamT</a> (std::ostream &amp;ostr, const void *p)</td></tr>
@@ -453,6 +464,9 @@ bool(*&#160;</td><td class="memItemRight" valign="bottom"><b>getBool</b> )(const
 void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#ac462e0d66c557adc63479f0c67960041">translatePtr</a> )(const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, const void *ptrC, void *<a class="el" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>)</td></tr>
 <tr class="memdesc:ac462e0d66c557adc63479f0c67960041"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="Utility class with static conversions.">Convert</a> from str pointer and <a class="el" href="classdrain_1_1Caster.html">Caster</a>. <br /></td></tr>
 <tr class="separator:ac462e0d66c557adc63479f0c67960041"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b8f4d03b61bb73d217eb95de9f5e8b1"><td class="memItemLeft" align="right" valign="top"><a id="a9b8f4d03b61bb73d217eb95de9f5e8b1"></a>
+bool(*&#160;</td><td class="memItemRight" valign="bottom"><b>comparePtr</b> )(const void *, const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, const void *) = nullptr</td></tr>
+<tr class="separator:a9b8f4d03b61bb73d217eb95de9f5e8b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8462117297feb3579bb0f4730e5b4295"><td class="memItemLeft" align="right" valign="top"><a id="a8462117297feb3579bb0f4730e5b4295"></a>
 std::ostream &amp;(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#a8462117297feb3579bb0f4730e5b4295">toOStreamPtr</a> )(std::ostream &amp;ostr, const void *p)</td></tr>
 <tr class="memdesc:a8462117297feb3579bb0f4730e5b4295"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write to stream. <br /></td></tr>
@@ -502,6 +516,96 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8b8a3274780b72992426635a523ef7b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b8a3274780b72992426635a523ef7b7">&#9670;&nbsp;</a></span>compareT() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool compareT </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>cPtr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks equality through base type casting. </p>
+<p>Given data of type c.getType() behind pointer ptrC, cast it to type F and store it behind ptr. </p>
+
+</div>
+</div>
+<a id="a2b9f3cc50ce1a43b0c93d7257a0747cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b9f3cc50ce1a43b0c93d7257a0747cd">&#9670;&nbsp;</a></span>compareT() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool compareT </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>cPtr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Semantics: no data, hence no bytes to be compared. </p>
+<dl class="section return"><dt>Returns</dt><dd>always <code>false</code> . </dd></dl>
+
+</div>
+</div>
 <a id="a6c49124d2bd3982b2b137fefbba426e4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6c49124d2bd3982b2b137fefbba426e4">&#9670;&nbsp;</a></span>getT()</h2>
 

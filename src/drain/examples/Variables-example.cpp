@@ -74,6 +74,20 @@ drain::TreeHTML & initHtml(drain::TreeHTML & html, const std::string & header = 
 	return body;
 }
 
+const std::string & stripParentheses(const std::string & src, std::string & dst){
+
+	const size_t n = src.length();
+
+	if (n > 0){
+		if ((src.at(0)=='(') && (src.at(n-1)==')')){
+			dst.assign(src,1,n-2); // 2nd arg: number of
+			return dst;
+		}
+	}
+
+	return src;
+}
+
 /// Creates a string, showing string type with double quotes ("), and also char strings with copy sign and references with reg sign.
 std::string getValue(drain::Castable &c){
 
@@ -196,19 +210,7 @@ void demoCopyConstructors(drain::TreeHTML & table){
 	DEMO_CTOR(table, clsName, UniTuple3d uni3d(INIT_3d); FlexibleVariable var(uni3d);, V variable(var););
 	DEMO_CTOR(table, clsName, UniTuple3d uni3d(INIT_3d); FlexibleVariable var; var.link(uni3d);, V variable(var););
 	DEMO_CTOR(table, clsName, UniTuple3d uni3d(INIT_3d); Reference var(uni3d);, V variable(var););
-	/*
-	DEMO_COPY_CTOR(table, clsName, int i=123;, drain::Variable, var(i);, V variable(var););
-	DEMO_COPY_CTOR(table, clsName, int i=123;, drain::FlexibleVariable, var(i);, V variable(var););
-	DEMO_COPY_CTOR(table, clsName, int i=123;, drain::Reference, var(i);, V variable(var););
 
-	DEMO_COPY_CTOR(table, clsName, std::string str("Test");, drain::Variable, var(str);, V variable(var););
-	DEMO_COPY_CTOR(table, clsName, std::string str("Test");, drain::FlexibleVariable, var(str);, V variable(var););
-	DEMO_COPY_CTOR(table, clsName, std::string str("Test");, drain::Reference, var(str);, V variable(var););
-	*/
-    /*
-	  DEMO_CTOR(table, clsName, double d=45.678; V1 variable(d);, V variable2(variable););
-	  DEMO_CTOR(table, clsName, std::string str("Test"); V1 variable(str);, V variable2(variable););
-	*/
 }
 
 
@@ -236,8 +238,7 @@ void demoBasicConstructors(drain::TreeHTML & table){
 
 	demoCopyConstructors<V>(table);
 
-	addConstructorRow(table, "Constructor with non-const variable arg");
-	// DEMO_CTOR(table, clsName, nullptr_t n=nullptr;, V variable(n););
+	addConstructorRow(table, "Non-const variable arg");
 	DEMO_CTOR(table, clsName, bool b=true;, V variable(b););
 	DEMO_CTOR(table, clsName, char c='Y';,  V variable(c););
 	DEMO_CTOR(table, clsName, int i=123;,   V variable(i););
@@ -255,7 +256,7 @@ void demoConstructors(drain::TreeHTML & table){
 
 	demoBasicConstructors<V>(table);
 
-	addConstructorRow(table, "Constructor with type initialisation");
+	addConstructorRow(table, "Type initialisation");
 
 	DEMO_CTOR(table, clsName, , V variable(typeid(bool)););
 	DEMO_CTOR(table, clsName, , V variable(typeid(char)););
@@ -263,7 +264,7 @@ void demoConstructors(drain::TreeHTML & table){
 	DEMO_CTOR(table, clsName, , V variable(typeid(double)););
 
 	// addConstructorRow(table, "?", "value init");
-	addConstructorRow(table, "Constructor with initial value");
+	addConstructorRow(table, "Initial value");
 
 	DEMO_CTOR(table, clsName, , V variable(false););
 	DEMO_CTOR(table, clsName, , V variable('X'););
@@ -273,10 +274,10 @@ void demoConstructors(drain::TreeHTML & table){
 	DEMO_CTOR(table, clsName, , V variable(std::string("Test")););
 	DEMO_CTOR(table, clsName, , V variable(UniTuple2i(INIT_2i)););
 	DEMO_CTOR(table, clsName, , V variable(UniTuple3d(INIT_3d)););
-	//UniTuple2i uni2i(INIT_2i)
+
 
 	// addConstructorRow(table, "const var", "value init");
-	addConstructorRow(table, "Constructor with const variable arg");
+	addConstructorRow(table, "Const variable");
 
 	DEMO_CTOR(table, clsName, const bool b=true;, V variable(b););
 	DEMO_CTOR(table, clsName, const char c='Y';,  V variable(c););
@@ -286,6 +287,7 @@ void demoConstructors(drain::TreeHTML & table){
 	DEMO_CTOR(table, clsName, const char *s="123abc";, V variable(s););
 	DEMO_CTOR(table, clsName, UniTuple2i ut(INIT_2i);, V variable(ut););
 	DEMO_CTOR(table, clsName, UniTuple3d ut(INIT_3d);, V variable(ut););
+
 
 	addConstructorRow(table, "Constructor with assignment");
 
@@ -308,7 +310,7 @@ void demoConstructors<drain::Reference>(drain::TreeHTML & table){
 	demoBasicConstructors<drain::Reference>(table);
 }
 
-// Utility to supply template parameters as an argument: <Variable,Reference,...>
+/// Utility to supply/substitute template parameters as an argument: <Variable,Reference,...>
 template<typename...>
 struct typelist{};
 
@@ -460,8 +462,11 @@ void createAssignmentRow(drain::TreeHTML & table, const std::string &t, const st
 	tr->addClass("code");
 
 	// Start the row with variable declaration, like \c int and \c 123.
-	tr["type"](drain::BaseHTML::TD)   = t;
-	tr["value"](drain::BaseHTML::TD)  = v;
+	std::string tmp;
+	tr["type"](drain::BaseHTML::TD)  = stripParentheses(t, tmp); // t;
+
+	//tr["value"](drain::BaseHTML::TD)  = v;
+	tr["value"](drain::BaseHTML::TD) = stripParentheses(v, tmp);
 
 	// Fill the test with assigments to Variable initialized to different types.
 
@@ -521,10 +526,11 @@ void testAssignments(const std::string & pathPrefix = ""){
 
 	drain::TreeHTML html;
 
-	drain::TreeHTML & body = initHtml(html, clsName + " - assignments");
+	drain::TreeHTML & body = initHtml(html);
+	html["head"](drain::BaseHTML::HEAD)["title"](drain::BaseHTML::TITLE) = clsName + " - assignments";
+	// drain::TreeHTML & body = initHtml(html, clsName + " - assignments");
+	// body["title"](drain::BaseHTML::H3);
 
-
-	body["title"](drain::BaseHTML::H3);
 
 	drain::TreeHTML & table = body["table"](drain::NodeHTML::TABLE);
 

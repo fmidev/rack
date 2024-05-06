@@ -92,7 +92,7 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 			continue;
 		}
 
-		mout.ok("considering ", path);
+		mout.debug("considering ", path);
 
 		//ODIMPath::const_iterator pit = it->begin();
 		// User may have modified dataselector so that odd paths appear

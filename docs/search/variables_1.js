@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['basename_3896',['basename',['../classdrain_1_1Context.html#afe66fb158f3ea421a5f22c6cae04cf04',1,'drain::Context']]],
-  ['bboxd_3897',['bBoxD',['../classdrain_1_1image_1_1GeoFrame.html#afbf79128d0f97b2d530714df2f82f447',1,'drain::image::GeoFrame']]],
-  ['bboxnative_3898',['bBoxNative',['../classdrain_1_1image_1_1GeoFrame.html#a979211712222e22e65e73751c6bb0e63',1,'drain::image::GeoFrame']]],
-  ['bboxr_3899',['bBoxR',['../classdrain_1_1image_1_1GeoFrame.html#a0366897b4dbb683e331d7567f0b409f1',1,'drain::image::GeoFrame']]],
-  ['bias_3900',['bias',['../classdrain_1_1Functor.html#aa6231a5027112a1cf56c610e6d7d91c5',1,'drain::Functor']]],
-  ['biasfinal_3901',['biasFinal',['../classdrain_1_1Functor.html#af215d623f4a0eca36eaf54b8aab370f5',1,'drain::Functor']]],
-  ['binrange_3902',['binRange',['../classrack_1_1PolarSector.html#a7d431afd24771c47cad0175a29e2b8d5',1,'rack::PolarSector']]],
-  ['bytesize_3903',['byteSize',['../classdrain_1_1Caster.html#ab3671481708018bfed6e89b9cd54affe',1,'drain::Caster']]]
+  ['basename_3900',['basename',['../classdrain_1_1Context.html#afe66fb158f3ea421a5f22c6cae04cf04',1,'drain::Context']]],
+  ['bboxd_3901',['bBoxD',['../classdrain_1_1image_1_1GeoFrame.html#afbf79128d0f97b2d530714df2f82f447',1,'drain::image::GeoFrame']]],
+  ['bboxnative_3902',['bBoxNative',['../classdrain_1_1image_1_1GeoFrame.html#a979211712222e22e65e73751c6bb0e63',1,'drain::image::GeoFrame']]],
+  ['bboxr_3903',['bBoxR',['../classdrain_1_1image_1_1GeoFrame.html#a0366897b4dbb683e331d7567f0b409f1',1,'drain::image::GeoFrame']]],
+  ['bias_3904',['bias',['../classdrain_1_1Functor.html#aa6231a5027112a1cf56c610e6d7d91c5',1,'drain::Functor']]],
+  ['biasfinal_3905',['biasFinal',['../classdrain_1_1Functor.html#af215d623f4a0eca36eaf54b8aab370f5',1,'drain::Functor']]],
+  ['binrange_3906',['binRange',['../classrack_1_1PolarSector.html#a7d431afd24771c47cad0175a29e2b8d5',1,'rack::PolarSector']]],
+  ['bytesize_3907',['byteSize',['../classdrain_1_1Caster.html#ab3671481708018bfed6e89b9cd54affe',1,'drain::Caster']]]
 ];

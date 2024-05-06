@@ -241,35 +241,11 @@ public:
 	}
 	*/
 
-	// Consider VariableT<T2>
-	/*
-	inline
-	bool operator==(const VariableT &x) const {
-		throw std::runtime_error("Castable: operator== not implemented.");
-		return false;
-	}
-
-	// Consider VariableT<T2>
-	inline
-	bool operator!=(const VariableT &x) const {
-		return !operator==(x);
-	}
-	*/
 
 	template <class T2>
 	inline
 	bool operator==(const VariableT<T2> & v){
-
-		if (this->isString() || v.isString()){
-			return (this->toStr() == v.toStr());
-		}
-
-		if (this->getType() == v.getType()){
-			// typename const_iterator it;
-
-		}
-		std::cerr << __FILE__ << ':' << __FUNCTION__ << " unimplemented... " << std::endl;
-		return false;
+		return Castable::operator==((const Castable &) v);
 	}
 
 	template <class T2>
@@ -284,65 +260,33 @@ public:
 		Castable::info(ostr);
 	}
 
+protected:
+
+	/*
+	static inline
+	bool compareByteByByte(const Castable & c1, const Castable & c2){
+
+		if (c1.getType() != c2.getType())
+			return false;
+
+		if (c1.getElementSize() != c2.getElementSize())
+			return false;
+
+		if (c1.getElementCount() != c2.getElementCount())
+			return false;
+
+		//const char *c1 = c1.getPtr();
+		for (size_t i = 0; i<c1.getElementCount(); ++i){
+			if (*c1.getPtr(i) != *c2.getPtr(i))
+				return false;
+		}
+
+		return true;
+	}
+	*/
+
 };
 
-/*
-template <>
-template <class T>
-std::string & std::string::operator=(const VariableT<T> &t){
-	this->assign(t.str());
-	return *this;
-}
-
-
-template <class T>
-inline
-std::ostream & Sprinter::toStream(std::ostream & ostr, const VariableT<T> & v, const SprinterLayout & layout){
-	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
-};
-
-\~remark
-
-   <TABLE>
-   <TR><TD></TD><TD></TD><TH>Reference</TH><TH>Variable</TH><TH>FlexibleVariable</TH></TR>
-   <TR>
-   	   <TD>Definition</TD><TD></TD>
-   	   <TD>VariableT<ReferenceT<Castable> ></TD>
-   	   <TD>VariableT<VariableBase></TD>
-   	   <TD>VariableT<ReferenceT<Variable> ></TD>
-   </TR>
-   <TR>
-   	   <TD>Default constructor</TD>
-   	   <TD><tt>V v;</tt></TD>
-   	   <TD>Compiler error</TD>
-   	   <TD>Ok (type undefined)</TD>
-   	   <TD>Ok (type undefined)</TD></TR>
-   <TR>
-   	<TD>Constructor with type</TD>
-   	<TD><tt>V v(typeid(double));<br/>V v(typeid(int));<br/>V v(typeid(std::string));</tt></TD>
-   	<TD>Compiler error</TD>
-   	<TD>Ok, sets type</TD>
-   	<TD>Ok, sets type</TD>
-   </TR>
-   <TR>
-   	<TD>Constructor with initialisation</TD>
-   	<TD><tt>V v(x);</tt></TD>
-   	<TD>links</TD>
-   	<TD>assigns</TD>
-   	<TD>assigns</TD>
-   </TR>
-   <TR>
-   	<TD>Constructor with assignment</TD>
-   	<TD><tt>V v(x) = 7.0;</tt></TD>
-   	<TD>links and assigns</TD>
-   	<TD>ok, yet odd (initialises and reassigns)</TD>
-   	<TD>ok, yet odd (initialises and reassigns)</TD>
-   </TR>
-   </TABLE>
-
-\~
-
-*/
 
 
 } // drain

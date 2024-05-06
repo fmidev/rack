@@ -263,9 +263,9 @@ template&lt;class T &gt; </td></tr>
 template&lt;class T , size_t N&gt; </td></tr>
 <tr class="memitem:a8814313879f986ad77ecff71ec89ca36"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator UniTuple&lt; T, N &gt;</b> () const</td></tr>
 <tr class="separator:a8814313879f986ad77ecff71ec89ca36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa06707df0e2baa6f8ad94231b944e6e9"><td class="memItemLeft" align="right" valign="top"><a id="aa06707df0e2baa6f8ad94231b944e6e9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;x) const</td></tr>
-<tr class="separator:aa06707df0e2baa6f8ad94231b944e6e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a33ff5cbba17b6a80a49cc8992f3195"><td class="memItemLeft" align="right" valign="top"><a id="a7a33ff5cbba17b6a80a49cc8992f3195"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c) const</td></tr>
+<tr class="separator:a7a33ff5cbba17b6a80a49cc8992f3195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a980d3634731950256ff4fcf1c905adfd"><td class="memItemLeft" align="right" valign="top"><a id="a980d3634731950256ff4fcf1c905adfd"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a980d3634731950256ff4fcf1c905adfd">operator==</a> (const char *s) const</td></tr>
 <tr class="memdesc:a980d3634731950256ff4fcf1c905adfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compare as a character string. <br /></td></tr>
@@ -859,7 +859,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Returns true, if the class contains an own data array. </p>
-<p>In a <a class="el" href="namespacedrain.html#a772ac030345c7f9ab62caf5152ca65eb" title="Value container supporting dynamic type.">drain::Variable</a>, <code>ptr</code> always points to data array, or to null, if the array is empty. In a <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27" title="Value container supporting dynamic type with own memory and optional linking (referencing) of externa...">drain::FlexibleVariable</a>, <code>ptr</code> can point to owned data array or to an external (base type) variable. </p>
+<p>In a <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420" title="Value container supporting dynamic type.">drain::Variable</a>, <code>ptr</code> always points to data array, or to null, if the array is empty. In a <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27" title="Value container supporting dynamic type with own memory and optional linking (referencing) of externa...">drain::FlexibleVariable</a>, <code>ptr</code> can point to owned data array or to an external (base type) variable. </p>
 
 <p>Reimplemented in <a class="el" href="classdrain_1_1VariableBase.html#a6f6f0815e91462bfafa94057cd788725">VariableBase</a>.</p>
 
@@ -915,11 +915,11 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Conversion from the internal type. Conversion operator. Works well with basic types. Due to g++ error/feature (?), does not work implicitly for std::string. Due to c++ compiler error/feature, does not work implicitly for std::string. For example: </p><div class="fragment"><div class="line"><a class="code" href="namespacedrain.html#a772ac030345c7f9ab62caf5152ca65eb">Variable</a> vField;</div>
+<p>Conversion from the internal type. Conversion operator. Works well with basic types. Due to g++ error/feature (?), does not work implicitly for std::string. Due to c++ compiler error/feature, does not work implicitly for std::string. For example: </p><div class="fragment"><div class="line"><a class="code" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> vField;</div>
 <div class="line">vField = 1.23;</div>
 <div class="line">std::string s = vField;  <span class="comment">// OK</span></div>
 <div class="line">s = vField;         <span class="comment">// FAILS, for unknown reason</span></div>
-<div class="ttc" id="anamespacedrain_html_a772ac030345c7f9ab62caf5152ca65eb"><div class="ttname"><a href="namespacedrain.html#a772ac030345c7f9ab62caf5152ca65eb">drain::Variable</a></div><div class="ttdeci">VariableT&lt; VariableInitializer&lt; VariableBase &gt; &gt; Variable</div><div class="ttdoc">Value container supporting dynamic type.</div><div class="ttdef"><b>Definition:</b> Variable.h:62</div></div>
+<div class="ttc" id="anamespacedrain_html_ab7d12e28978bddd9b2fda7142a1c0420"><div class="ttname"><a href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">drain::Variable</a></div><div class="ttdeci">DRAIN_VARIABLE Variable</div><div class="ttdoc">Value container supporting dynamic type.</div><div class="ttdef"><b>Definition:</b> Variable.h:63</div></div>
 </div><!-- fragment --><p> See <a href="http://stackoverflow.com/questions/7741531/conversion-operator-template-specialization">http://stackoverflow.com/questions/7741531/conversion-operator-template-specialization</a> . The conversion works only if a conversion operator is defined only for std::string (operator std::string()). Adding any str conversions (int, double, ...) causes the compiler to fail. </p>
 
 </div>

@@ -183,12 +183,12 @@ class drain::VariableT&lt; T &gt;</h3>
 <p><a class="el" href="classdrain_1_1VariableT.html" title="VariableT is a final class applied through typedefs Variable, Reference and FlexibleVariable.">VariableT</a> is a final class applied through typedefs Variable, Reference and FlexibleVariable. </p>
 <h1><a class="anchor" id="VariableT_typedefs"></a>
 Type definitions</h1>
-<div class="fragment"><div class="line"><span class="keyword">typedef</span> VariableT&lt;VariableInitializer&lt;VariableBase&gt; &gt;                       <a class="code" href="namespacedrain.html#a772ac030345c7f9ab62caf5152ca65eb">Variable</a>;</div>
+<div class="fragment"><div class="line"><span class="keyword">typedef</span> VariableT&lt;VariableInitializer&lt;VariableBase&gt; &gt;                       <a class="code" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a>;</div>
 <div class="line"><span class="keyword">typedef</span> VariableT&lt;VariableInitializer&lt;ReferenceT&lt;VariableBase&gt; &gt; &gt;  <a class="code" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">FlexibleVariable</a>;</div>
 <div class="line"><span class="keyword">typedef</span> VariableT&lt;ReferenceT&lt;Castable&gt; &gt;                                   <a class="code" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203">Reference</a>;</div>
 <div class="ttc" id="anamespacedrain_html_a10699beaebe2225eeefb946abb711d27"><div class="ttname"><a href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">drain::FlexibleVariable</a></div><div class="ttdeci">VariableT&lt; VariableInitializer&lt; ReferenceT&lt; VariableBase &gt; &gt; &gt; FlexibleVariable</div><div class="ttdoc">Value container supporting dynamic type with own memory and optional linking (referencing) of externa...</div><div class="ttdef"><b>Definition:</b> FlexibleVariable.h:67</div></div>
-<div class="ttc" id="anamespacedrain_html_a4a95f6e30962f62bc7c61c06baa3b203"><div class="ttname"><a href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203">drain::Reference</a></div><div class="ttdeci">VariableT&lt; ReferenceT&lt; Castable &gt; &gt; Reference</div><div class="ttdoc">Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-elemen...</div><div class="ttdef"><b>Definition:</b> Reference.h:76</div></div>
-<div class="ttc" id="anamespacedrain_html_a772ac030345c7f9ab62caf5152ca65eb"><div class="ttname"><a href="namespacedrain.html#a772ac030345c7f9ab62caf5152ca65eb">drain::Variable</a></div><div class="ttdeci">VariableT&lt; VariableInitializer&lt; VariableBase &gt; &gt; Variable</div><div class="ttdoc">Value container supporting dynamic type.</div><div class="ttdef"><b>Definition:</b> Variable.h:62</div></div>
+<div class="ttc" id="anamespacedrain_html_a4a95f6e30962f62bc7c61c06baa3b203"><div class="ttname"><a href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203">drain::Reference</a></div><div class="ttdeci">VariableT&lt; ReferenceT&lt; Castable &gt; &gt; Reference</div><div class="ttdoc">Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-elemen...</div><div class="ttdef"><b>Definition:</b> Reference.h:78</div></div>
+<div class="ttc" id="anamespacedrain_html_ab7d12e28978bddd9b2fda7142a1c0420"><div class="ttname"><a href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">drain::Variable</a></div><div class="ttdeci">DRAIN_VARIABLE Variable</div><div class="ttdoc">Value container supporting dynamic type.</div><div class="ttdef"><b>Definition:</b> Variable.h:63</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="ctors-all"></a>
 Constructors Variable,FlexibleVariable,Reference</h1>
 <!DOCTYPE html>
@@ -373,7 +373,7 @@ Constructors Variable,FlexibleVariable,Reference</h1>
         <td>5.6,7.8,9 ®</td>
       </tr>
       <tr>
-        <th class="right" colspan="2">Constructor with non-const variable arg</th>
+        <th class="right" colspan="2">Non-const variable arg</th>
       </tr>
       <tr class="code">
         <td>bool b=true;</td>
@@ -425,7 +425,7 @@ Constructors Variable,FlexibleVariable,Reference</h1>
         <td>5.6,7.8,9 ®</td>
       </tr>
       <tr>
-        <th class="right" colspan="2">Constructor with type initialisation</th>
+        <th class="right" colspan="2">Type initialisation</th>
       </tr>
       <tr class="code">
         <td>
@@ -460,7 +460,7 @@ Constructors Variable,FlexibleVariable,Reference</h1>
         <td>×</td>
       </tr>
       <tr>
-        <th class="right" colspan="2">Constructor with initial value</th>
+        <th class="right" colspan="2">Initial value</th>
       </tr>
       <tr class="code">
         <td>
@@ -527,7 +527,7 @@ Constructors Variable,FlexibleVariable,Reference</h1>
         <td>×</td>
       </tr>
       <tr>
-        <th class="right" colspan="2">Constructor with const variable arg</th>
+        <th class="right" colspan="2">Const variable</th>
       </tr>
       <tr class="code">
         <td>const bool b=true;</td>
@@ -672,7 +672,6 @@ Variable</h2>
     <title>Variable - assignments</title>
   </head>
   <body>
-    <h3>Variable - assignments</h3>
     <table>
       <tr>
         <th colspan="2">input</th>
@@ -682,7 +681,7 @@ Variable</h2>
         <th>type</th>
         <th>value</th>
         <th class="code">bool</th>
-        <th class="code">unsigned-char</th>
+        <th class="code">unsigned char</th>
         <th class="code">char</th>
         <th class="code">short</th>
         <th class="code">int</th>
@@ -695,7 +694,7 @@ Variable</h2>
         <td>bool</td>
         <td>false</td>
         <td type="bool">false</td>
-        <td type="unsigned-char"> </td>
+        <td type="unsigned char"> </td>
         <td type="char"> </td>
         <td type="short">0</td>
         <td type="int">0</td>
@@ -708,7 +707,7 @@ Variable</h2>
         <td>bool</td>
         <td>true</td>
         <td type="bool">true</td>
-        <td type="unsigned-char"></td>
+        <td type="unsigned char"></td>
         <td type="char"></td>
         <td type="short">1</td>
         <td type="int">1</td>
@@ -723,7 +722,7 @@ Variable</h2>
         <td type="bool">
           <span class="warn">true</span>
         </td>
-        <td type="unsigned-char">{</td>
+        <td type="unsigned char">{</td>
         <td type="char">{</td>
         <td type="short">123</td>
         <td type="int">123</td>
@@ -738,7 +737,7 @@ Variable</h2>
         <td type="bool">
           <span class="warn">true</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"></span>
         </td>
         <td type="char">
@@ -763,7 +762,7 @@ Variable</h2>
         <td type="bool">
           <span class="warn">true</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"></span>
         </td>
         <td type="char">
@@ -792,7 +791,7 @@ Variable</h2>
         <td type="bool">
           <span class="warn">true</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"></span>
         </td>
         <td type="char">
@@ -821,7 +820,7 @@ Variable</h2>
         <td type="bool">
           <span class="warn">false</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -848,7 +847,7 @@ Variable</h2>
         <td>std::string</td>
         <td>"true"</td>
         <td type="bool">true</td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -875,7 +874,7 @@ Variable</h2>
         <td>std::string</td>
         <td>"false"</td>
         <td type="bool">false</td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -904,7 +903,7 @@ Variable</h2>
         <td type="bool">
           <span class="warn">true</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">�</span>
         </td>
         <td type="char">
@@ -933,7 +932,7 @@ Variable</h2>
         <td type="bool">
           <span class="warn">false</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -960,7 +959,7 @@ Variable</h2>
         <td>const char *</td>
         <td>"true"</td>
         <td type="bool">true</td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -987,7 +986,7 @@ Variable</h2>
         <td>const char *</td>
         <td>"false"</td>
         <td type="bool">false</td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1011,12 +1010,12 @@ Variable</h2>
         <td type="char-array">"false" ©</td>
       </tr>
       <tr class="code">
-        <td>(UniTuple<2,int>)</td>
+        <td>UniTuple<2,int></td>
         <td>uni2i</td>
         <td type="bool">
           <span class="warn">true,true</span>
         </td>
-        <td type="unsigned-char">,"</td>
+        <td type="unsigned char">,"</td>
         <td type="char">,"</td>
         <td type="short">12,34</td>
         <td type="int">12,34</td>
@@ -1026,12 +1025,12 @@ Variable</h2>
         <td type="char-array">"12,34" ©</td>
       </tr>
       <tr class="code">
-        <td>(UniTuple<3,double>)</td>
+        <td>UniTuple<3,double></td>
         <td>uni3d</td>
         <td type="bool">
           <span class="warn">true,true,true</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">,,	</span>
         </td>
         <td type="char">
@@ -1058,7 +1057,7 @@ Variable</h2>
         <td type="bool">
           <span class="warn">false</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1089,88 +1088,40 @@ Variable</h2>
       <tr class="code">
         <td>int i=123</td>
         <td>Variable(i)</td>
-        <td type="bool">
-          <span class="warn">true</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">{</span>
-        </td>
-        <td type="char">
-          <span class="warn">{</span>
-        </td>
-        <td type="short">
-          <span class="warn">123</span>
-        </td>
-        <td type="int">
-          <span class="warn">123</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">123</span>
-        </td>
-        <td type="float">
-          <span class="warn">123</span>
-        </td>
-        <td type="double">
-          <span class="warn">123</span>
-        </td>
+        <td type="bool">true</td>
+        <td type="unsigned char">{</td>
+        <td type="char">{</td>
+        <td type="short">123</td>
+        <td type="int">123</td>
+        <td type="unsigned-long">123</td>
+        <td type="float">123</td>
+        <td type="double">123</td>
         <td type="char-array">"123" ©</td>
       </tr>
       <tr class="code">
         <td>int i=123</td>
         <td>FlexibleVariable(i)</td>
-        <td type="bool">
-          <span class="warn">true</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">{</span>
-        </td>
-        <td type="char">
-          <span class="warn">{</span>
-        </td>
-        <td type="short">
-          <span class="warn">123</span>
-        </td>
-        <td type="int">
-          <span class="warn">123</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">123</span>
-        </td>
-        <td type="float">
-          <span class="warn">123</span>
-        </td>
-        <td type="double">
-          <span class="warn">123</span>
-        </td>
+        <td type="bool">true</td>
+        <td type="unsigned char">{</td>
+        <td type="char">{</td>
+        <td type="short">123</td>
+        <td type="int">123</td>
+        <td type="unsigned-long">123</td>
+        <td type="float">123</td>
+        <td type="double">123</td>
         <td type="char-array">"123" ©</td>
       </tr>
       <tr class="code">
         <td>int i=123</td>
         <td>Reference(i)</td>
-        <td type="bool">
-          <span class="warn">true</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">{</span>
-        </td>
-        <td type="char">
-          <span class="warn">{</span>
-        </td>
-        <td type="short">
-          <span class="warn">123</span>
-        </td>
-        <td type="int">
-          <span class="warn">123</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">123</span>
-        </td>
-        <td type="float">
-          <span class="warn">123</span>
-        </td>
-        <td type="double">
-          <span class="warn">123</span>
-        </td>
+        <td type="bool">true</td>
+        <td type="unsigned char">{</td>
+        <td type="char">{</td>
+        <td type="short">123</td>
+        <td type="int">123</td>
+        <td type="unsigned-long">123</td>
+        <td type="float">123</td>
+        <td type="double">123</td>
         <td type="char-array">"123" ©</td>
       </tr>
       <tr class="code">
@@ -1179,7 +1130,7 @@ Variable</h2>
         <td type="bool">
           <span class="warn">false</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1208,7 +1159,7 @@ Variable</h2>
         <td type="bool">
           <span class="warn">false</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1237,7 +1188,7 @@ Variable</h2>
         <td type="bool">
           <span class="warn">false</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1263,88 +1214,40 @@ Variable</h2>
       <tr class="code">
         <td>UniTuple</td>
         <td>Variable(uni3d)</td>
-        <td type="bool">
-          <span class="warn">true,true,true</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">,,	</span>
-        </td>
-        <td type="char">
-          <span class="warn">,,	</span>
-        </td>
-        <td type="short">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="int">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="float">
-          <span class="warn">5.6,7.8,9</span>
-        </td>
-        <td type="double">
-          <span class="warn">5.6,7.8,9</span>
-        </td>
+        <td type="bool">true,true,true</td>
+        <td type="unsigned char">,,	</td>
+        <td type="char">,,	</td>
+        <td type="short">5,7,9</td>
+        <td type="int">5,7,9</td>
+        <td type="unsigned-long">5,7,9</td>
+        <td type="float">5.6,7.8,9</td>
+        <td type="double">5.6,7.8,9</td>
         <td type="char-array">"5.6,7.8,9" ©</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
         <td>FlexibleVariable(uni3d)</td>
-        <td type="bool">
-          <span class="warn">true,true,true</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">,,	</span>
-        </td>
-        <td type="char">
-          <span class="warn">,,	</span>
-        </td>
-        <td type="short">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="int">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="float">
-          <span class="warn">5.6,7.8,9</span>
-        </td>
-        <td type="double">
-          <span class="warn">5.6,7.8,9</span>
-        </td>
+        <td type="bool">true,true,true</td>
+        <td type="unsigned char">,,	</td>
+        <td type="char">,,	</td>
+        <td type="short">5,7,9</td>
+        <td type="int">5,7,9</td>
+        <td type="unsigned-long">5,7,9</td>
+        <td type="float">5.6,7.8,9</td>
+        <td type="double">5.6,7.8,9</td>
         <td type="char-array">"5.6,7.8,9" ©</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
         <td>Reference(uni3d)</td>
-        <td type="bool">
-          <span class="warn">true,true,true</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">,,	</span>
-        </td>
-        <td type="char">
-          <span class="warn">,,	</span>
-        </td>
-        <td type="short">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="int">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="float">
-          <span class="warn">5.6,7.8,9</span>
-        </td>
-        <td type="double">
-          <span class="warn">5.6,7.8,9</span>
-        </td>
+        <td type="bool">true,true,true</td>
+        <td type="unsigned char">,,	</td>
+        <td type="char">,,	</td>
+        <td type="short">5,7,9</td>
+        <td type="int">5,7,9</td>
+        <td type="unsigned-long">5,7,9</td>
+        <td type="float">5.6,7.8,9</td>
+        <td type="double">5.6,7.8,9</td>
         <td type="char-array">"5.6,7.8,9" ©</td>
       </tr>
     </table>
@@ -1373,7 +1276,6 @@ FlexibleVariable</h2>
     <title>FlexibleVariable - assignments</title>
   </head>
   <body>
-    <h3>FlexibleVariable - assignments</h3>
     <table>
       <tr>
         <th colspan="2">input</th>
@@ -1383,7 +1285,7 @@ FlexibleVariable</h2>
         <th>type</th>
         <th>value</th>
         <th class="code">bool</th>
-        <th class="code">unsigned-char</th>
+        <th class="code">unsigned char</th>
         <th class="code">char</th>
         <th class="code">short</th>
         <th class="code">int</th>
@@ -1396,7 +1298,7 @@ FlexibleVariable</h2>
         <td>bool</td>
         <td>false</td>
         <td type="bool">false</td>
-        <td type="unsigned-char"> </td>
+        <td type="unsigned char"> </td>
         <td type="char"> </td>
         <td type="short">0</td>
         <td type="int">0</td>
@@ -1409,7 +1311,7 @@ FlexibleVariable</h2>
         <td>bool</td>
         <td>true</td>
         <td type="bool">true</td>
-        <td type="unsigned-char"></td>
+        <td type="unsigned char"></td>
         <td type="char"></td>
         <td type="short">1</td>
         <td type="int">1</td>
@@ -1424,7 +1326,7 @@ FlexibleVariable</h2>
         <td type="bool">
           <span class="warn">true</span>
         </td>
-        <td type="unsigned-char">{</td>
+        <td type="unsigned char">{</td>
         <td type="char">{</td>
         <td type="short">123</td>
         <td type="int">123</td>
@@ -1439,7 +1341,7 @@ FlexibleVariable</h2>
         <td type="bool">
           <span class="warn">true</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"></span>
         </td>
         <td type="char">
@@ -1464,7 +1366,7 @@ FlexibleVariable</h2>
         <td type="bool">
           <span class="warn">true</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"></span>
         </td>
         <td type="char">
@@ -1493,7 +1395,7 @@ FlexibleVariable</h2>
         <td type="bool">
           <span class="warn">true</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"></span>
         </td>
         <td type="char">
@@ -1522,7 +1424,7 @@ FlexibleVariable</h2>
         <td type="bool">
           <span class="warn">false</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1549,7 +1451,7 @@ FlexibleVariable</h2>
         <td>std::string</td>
         <td>"true"</td>
         <td type="bool">true</td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1576,7 +1478,7 @@ FlexibleVariable</h2>
         <td>std::string</td>
         <td>"false"</td>
         <td type="bool">false</td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1605,7 +1507,7 @@ FlexibleVariable</h2>
         <td type="bool">
           <span class="warn">true</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">�</span>
         </td>
         <td type="char">
@@ -1634,7 +1536,7 @@ FlexibleVariable</h2>
         <td type="bool">
           <span class="warn">false</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1661,7 +1563,7 @@ FlexibleVariable</h2>
         <td>const char *</td>
         <td>"true"</td>
         <td type="bool">true</td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1688,7 +1590,7 @@ FlexibleVariable</h2>
         <td>const char *</td>
         <td>"false"</td>
         <td type="bool">false</td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1712,12 +1614,12 @@ FlexibleVariable</h2>
         <td type="char-array">"false" ©</td>
       </tr>
       <tr class="code">
-        <td>(UniTuple<2,int>)</td>
+        <td>UniTuple<2,int></td>
         <td>uni2i</td>
         <td type="bool">
           <span class="warn">true,true</span>
         </td>
-        <td type="unsigned-char">,"</td>
+        <td type="unsigned char">,"</td>
         <td type="char">,"</td>
         <td type="short">12,34</td>
         <td type="int">12,34</td>
@@ -1727,12 +1629,12 @@ FlexibleVariable</h2>
         <td type="char-array">"12,34" ©</td>
       </tr>
       <tr class="code">
-        <td>(UniTuple<3,double>)</td>
+        <td>UniTuple<3,double></td>
         <td>uni3d</td>
         <td type="bool">
           <span class="warn">true,true,true</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">,,	</span>
         </td>
         <td type="char">
@@ -1759,7 +1661,7 @@ FlexibleVariable</h2>
         <td type="bool">
           <span class="warn">false</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1790,88 +1692,40 @@ FlexibleVariable</h2>
       <tr class="code">
         <td>int i=123</td>
         <td>Variable(i)</td>
-        <td type="bool">
-          <span class="warn">true</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">{</span>
-        </td>
-        <td type="char">
-          <span class="warn">{</span>
-        </td>
-        <td type="short">
-          <span class="warn">123</span>
-        </td>
-        <td type="int">
-          <span class="warn">123</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">123</span>
-        </td>
-        <td type="float">
-          <span class="warn">123</span>
-        </td>
-        <td type="double">
-          <span class="warn">123</span>
-        </td>
+        <td type="bool">true</td>
+        <td type="unsigned char">{</td>
+        <td type="char">{</td>
+        <td type="short">123</td>
+        <td type="int">123</td>
+        <td type="unsigned-long">123</td>
+        <td type="float">123</td>
+        <td type="double">123</td>
         <td type="char-array">"123" ©</td>
       </tr>
       <tr class="code">
         <td>int i=123</td>
         <td>FlexibleVariable(i)</td>
-        <td type="bool">
-          <span class="warn">true</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">{</span>
-        </td>
-        <td type="char">
-          <span class="warn">{</span>
-        </td>
-        <td type="short">
-          <span class="warn">123</span>
-        </td>
-        <td type="int">
-          <span class="warn">123</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">123</span>
-        </td>
-        <td type="float">
-          <span class="warn">123</span>
-        </td>
-        <td type="double">
-          <span class="warn">123</span>
-        </td>
+        <td type="bool">true</td>
+        <td type="unsigned char">{</td>
+        <td type="char">{</td>
+        <td type="short">123</td>
+        <td type="int">123</td>
+        <td type="unsigned-long">123</td>
+        <td type="float">123</td>
+        <td type="double">123</td>
         <td type="char-array">"123" ©</td>
       </tr>
       <tr class="code">
         <td>int i=123</td>
         <td>Reference(i)</td>
-        <td type="bool">
-          <span class="warn">true</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">{</span>
-        </td>
-        <td type="char">
-          <span class="warn">{</span>
-        </td>
-        <td type="short">
-          <span class="warn">123</span>
-        </td>
-        <td type="int">
-          <span class="warn">123</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">123</span>
-        </td>
-        <td type="float">
-          <span class="warn">123</span>
-        </td>
-        <td type="double">
-          <span class="warn">123</span>
-        </td>
+        <td type="bool">true</td>
+        <td type="unsigned char">{</td>
+        <td type="char">{</td>
+        <td type="short">123</td>
+        <td type="int">123</td>
+        <td type="unsigned-long">123</td>
+        <td type="float">123</td>
+        <td type="double">123</td>
         <td type="char-array">"123" ©</td>
       </tr>
       <tr class="code">
@@ -1880,7 +1734,7 @@ FlexibleVariable</h2>
         <td type="bool">
           <span class="warn">false</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1909,7 +1763,7 @@ FlexibleVariable</h2>
         <td type="bool">
           <span class="warn">false</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1938,7 +1792,7 @@ FlexibleVariable</h2>
         <td type="bool">
           <span class="warn">false</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> </span>
         </td>
         <td type="char">
@@ -1964,88 +1818,40 @@ FlexibleVariable</h2>
       <tr class="code">
         <td>UniTuple</td>
         <td>Variable(uni3d)</td>
-        <td type="bool">
-          <span class="warn">true,true,true</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">,,	</span>
-        </td>
-        <td type="char">
-          <span class="warn">,,	</span>
-        </td>
-        <td type="short">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="int">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="float">
-          <span class="warn">5.6,7.8,9</span>
-        </td>
-        <td type="double">
-          <span class="warn">5.6,7.8,9</span>
-        </td>
+        <td type="bool">true,true,true</td>
+        <td type="unsigned char">,,	</td>
+        <td type="char">,,	</td>
+        <td type="short">5,7,9</td>
+        <td type="int">5,7,9</td>
+        <td type="unsigned-long">5,7,9</td>
+        <td type="float">5.6,7.8,9</td>
+        <td type="double">5.6,7.8,9</td>
         <td type="char-array">"5.6,7.8,9" ©</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
         <td>FlexibleVariable(uni3d)</td>
-        <td type="bool">
-          <span class="warn">true,true,true</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">,,	</span>
-        </td>
-        <td type="char">
-          <span class="warn">,,	</span>
-        </td>
-        <td type="short">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="int">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="float">
-          <span class="warn">5.6,7.8,9</span>
-        </td>
-        <td type="double">
-          <span class="warn">5.6,7.8,9</span>
-        </td>
+        <td type="bool">true,true,true</td>
+        <td type="unsigned char">,,	</td>
+        <td type="char">,,	</td>
+        <td type="short">5,7,9</td>
+        <td type="int">5,7,9</td>
+        <td type="unsigned-long">5,7,9</td>
+        <td type="float">5.6,7.8,9</td>
+        <td type="double">5.6,7.8,9</td>
         <td type="char-array">"5.6,7.8,9" ©</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
         <td>Reference(uni3d)</td>
-        <td type="bool">
-          <span class="warn">true,true,true</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">,,	</span>
-        </td>
-        <td type="char">
-          <span class="warn">,,	</span>
-        </td>
-        <td type="short">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="int">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">5,7,9</span>
-        </td>
-        <td type="float">
-          <span class="warn">5.6,7.8,9</span>
-        </td>
-        <td type="double">
-          <span class="warn">5.6,7.8,9</span>
-        </td>
+        <td type="bool">true,true,true</td>
+        <td type="unsigned char">,,	</td>
+        <td type="char">,,	</td>
+        <td type="short">5,7,9</td>
+        <td type="int">5,7,9</td>
+        <td type="unsigned-long">5,7,9</td>
+        <td type="float">5.6,7.8,9</td>
+        <td type="double">5.6,7.8,9</td>
         <td type="char-array">"5.6,7.8,9" ©</td>
       </tr>
     </table>
@@ -2074,7 +1880,6 @@ Reference</h2>
     <title>Reference - assignments</title>
   </head>
   <body>
-    <h3>Reference - assignments</h3>
     <table>
       <tr>
         <th colspan="2">input</th>
@@ -2084,7 +1889,7 @@ Reference</h2>
         <th>type</th>
         <th>value</th>
         <th class="code">bool</th>
-        <th class="code">unsigned-char</th>
+        <th class="code">unsigned char</th>
         <th class="code">char</th>
         <th class="code">short</th>
         <th class="code">int</th>
@@ -2097,7 +1902,7 @@ Reference</h2>
         <td>bool</td>
         <td>false</td>
         <td type="bool">false ®</td>
-        <td type="unsigned-char">  ®</td>
+        <td type="unsigned char">  ®</td>
         <td type="char">  ®</td>
         <td type="short">0 ®</td>
         <td type="int">0 ®</td>
@@ -2110,7 +1915,7 @@ Reference</h2>
         <td>bool</td>
         <td>true</td>
         <td type="bool">true ®</td>
-        <td type="unsigned-char"> ®</td>
+        <td type="unsigned char"> ®</td>
         <td type="char"> ®</td>
         <td type="short">1 ®</td>
         <td type="int">1 ®</td>
@@ -2125,7 +1930,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
-        <td type="unsigned-char">{ ®</td>
+        <td type="unsigned char">{ ®</td>
         <td type="char">{ ®</td>
         <td type="short">123 ®</td>
         <td type="int">123 ®</td>
@@ -2140,7 +1945,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> ®</span>
         </td>
         <td type="char">
@@ -2165,7 +1970,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> ®</span>
         </td>
         <td type="char">
@@ -2194,7 +1999,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> ®</span>
         </td>
         <td type="char">
@@ -2223,7 +2028,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">false ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">  ®</span>
         </td>
         <td type="char">
@@ -2250,7 +2055,7 @@ Reference</h2>
         <td>std::string</td>
         <td>"true"</td>
         <td type="bool">true ®</td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">  ®</span>
         </td>
         <td type="char">
@@ -2277,7 +2082,7 @@ Reference</h2>
         <td>std::string</td>
         <td>"false"</td>
         <td type="bool">false ®</td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">  ®</span>
         </td>
         <td type="char">
@@ -2306,7 +2111,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">� ®</span>
         </td>
         <td type="char">
@@ -2335,7 +2140,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">false ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">  ®</span>
         </td>
         <td type="char">
@@ -2362,7 +2167,7 @@ Reference</h2>
         <td>const char *</td>
         <td>"true"</td>
         <td type="bool">true ®</td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">  ®</span>
         </td>
         <td type="char">
@@ -2389,7 +2194,7 @@ Reference</h2>
         <td>const char *</td>
         <td>"false"</td>
         <td type="bool">false ®</td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">  ®</span>
         </td>
         <td type="char">
@@ -2413,12 +2218,12 @@ Reference</h2>
         <td type="string">"false" ®</td>
       </tr>
       <tr class="code">
-        <td>(UniTuple<2,int>)</td>
+        <td>UniTuple<2,int></td>
         <td>uni2i</td>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> ®</span>
         </td>
         <td type="char">
@@ -2442,12 +2247,12 @@ Reference</h2>
         <td type="string">"12,34" ®</td>
       </tr>
       <tr class="code">
-        <td>(UniTuple<3,double>)</td>
+        <td>UniTuple<3,double></td>
         <td>uni3d</td>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> ®</span>
         </td>
         <td type="char">
@@ -2476,7 +2281,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">false ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">  ®</span>
         </td>
         <td type="char">
@@ -2507,88 +2312,40 @@ Reference</h2>
       <tr class="code">
         <td>int i=123</td>
         <td>Variable(i)</td>
-        <td type="bool">
-          <span class="warn">true ®</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">{ ®</span>
-        </td>
-        <td type="char">
-          <span class="warn">{ ®</span>
-        </td>
-        <td type="short">
-          <span class="warn">123 ®</span>
-        </td>
-        <td type="int">
-          <span class="warn">123 ®</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">123 ®</span>
-        </td>
-        <td type="float">
-          <span class="warn">123 ®</span>
-        </td>
-        <td type="double">
-          <span class="warn">123 ®</span>
-        </td>
+        <td type="bool">true ®</td>
+        <td type="unsigned char">{ ®</td>
+        <td type="char">{ ®</td>
+        <td type="short">123 ®</td>
+        <td type="int">123 ®</td>
+        <td type="unsigned-long">123 ®</td>
+        <td type="float">123 ®</td>
+        <td type="double">123 ®</td>
         <td type="string">"123" ®</td>
       </tr>
       <tr class="code">
         <td>int i=123</td>
         <td>FlexibleVariable(i)</td>
-        <td type="bool">
-          <span class="warn">true ®</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">{ ®</span>
-        </td>
-        <td type="char">
-          <span class="warn">{ ®</span>
-        </td>
-        <td type="short">
-          <span class="warn">123 ®</span>
-        </td>
-        <td type="int">
-          <span class="warn">123 ®</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">123 ®</span>
-        </td>
-        <td type="float">
-          <span class="warn">123 ®</span>
-        </td>
-        <td type="double">
-          <span class="warn">123 ®</span>
-        </td>
+        <td type="bool">true ®</td>
+        <td type="unsigned char">{ ®</td>
+        <td type="char">{ ®</td>
+        <td type="short">123 ®</td>
+        <td type="int">123 ®</td>
+        <td type="unsigned-long">123 ®</td>
+        <td type="float">123 ®</td>
+        <td type="double">123 ®</td>
         <td type="string">"123" ®</td>
       </tr>
       <tr class="code">
         <td>int i=123</td>
         <td>Reference(i)</td>
-        <td type="bool">
-          <span class="warn">true ®</span>
-        </td>
-        <td type="unsigned-char">
-          <span class="warn">{ ®</span>
-        </td>
-        <td type="char">
-          <span class="warn">{ ®</span>
-        </td>
-        <td type="short">
-          <span class="warn">123 ®</span>
-        </td>
-        <td type="int">
-          <span class="warn">123 ®</span>
-        </td>
-        <td type="unsigned-long">
-          <span class="warn">123 ®</span>
-        </td>
-        <td type="float">
-          <span class="warn">123 ®</span>
-        </td>
-        <td type="double">
-          <span class="warn">123 ®</span>
-        </td>
+        <td type="bool">true ®</td>
+        <td type="unsigned char">{ ®</td>
+        <td type="char">{ ®</td>
+        <td type="short">123 ®</td>
+        <td type="int">123 ®</td>
+        <td type="unsigned-long">123 ®</td>
+        <td type="float">123 ®</td>
+        <td type="double">123 ®</td>
         <td type="string">"123" ®</td>
       </tr>
       <tr class="code">
@@ -2597,7 +2354,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">false ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">  ®</span>
         </td>
         <td type="char">
@@ -2626,7 +2383,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">false ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">  ®</span>
         </td>
         <td type="char">
@@ -2655,7 +2412,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">false ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn">  ®</span>
         </td>
         <td type="char">
@@ -2684,7 +2441,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> ®</span>
         </td>
         <td type="char">
@@ -2713,7 +2470,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> ®</span>
         </td>
         <td type="char">
@@ -2742,7 +2499,7 @@ Reference</h2>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
-        <td type="unsigned-char">
+        <td type="unsigned char">
           <span class="warn"> ®</span>
         </td>
         <td type="char">
@@ -2770,12 +2527,12 @@ Reference</h2>
 </html>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203" title="Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-elemen...">Reference</a> </dd>
 <dd>
-<a class="el" href="namespacedrain.html#a772ac030345c7f9ab62caf5152ca65eb" title="Value container supporting dynamic type.">Variable</a> </dd>
+<a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420" title="Value container supporting dynamic type.">Variable</a> </dd>
 <dd>
 <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27" title="Value container supporting dynamic type with own memory and optional linking (referencing) of externa...">FlexibleVariable</a></dd></dl>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>- see typedefs: <a class="el" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203" title="Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-elemen...">drain::Reference</a>, <a class="el" href="namespacedrain.html#a772ac030345c7f9ab62caf5152ca65eb" title="Value container supporting dynamic type.">drain::Variable</a>, and <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27" title="Value container supporting dynamic type with own memory and optional linking (referencing) of externa...">drain::FlexibleVariable</a> </td></tr>
+    <tr><td class="paramname">T</td><td>- see typedefs: <a class="el" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203" title="Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-elemen...">drain::Reference</a>, <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420" title="Value container supporting dynamic type.">drain::Variable</a>, and <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27" title="Value container supporting dynamic type with own memory and optional linking (referencing) of externa...">drain::FlexibleVariable</a> </td></tr>
   </table>
   </dd>
 </dl>

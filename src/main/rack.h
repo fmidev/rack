@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.7"
+#define __RACK_VERSION__ "8.7.1"
 
 /**
+ *   Version 8.7.1
+ *   - Variable comparisons
+ *
  *   Version 8.7
  *   - Extensive documentation for drain::VariableT - drain::Variable, drain::FlexibleVariable and drain::Reference .
  *   - Fixed (Flexible)Variable assignment bug

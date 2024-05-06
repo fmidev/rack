@@ -48,16 +48,17 @@ namespace drain {
 
 /// Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-element arrays through drain::UniTuple
 /**
- *   drain::Reference does not have memory of its own. The type of reference cannot be changed – it is that of the referenced variable.
- *
- *   The only character string type supported is \c std::string .
- *
- *   Currently, the only multi-element structure supported is drain::UniTuple<>, which has a fixed start address for its elements.
- *   In future, STL Sequences like std::vectors may be supported.
- *
- *   Reference does not support STL containers.
- *
- *   This class is best illustrated together with its counterparts supporting own memory, Variable and FlexibleVariable
+
+drain::Reference does not have memory of its own. The type of reference cannot be changed – it is that of the referenced variable.
+
+The only character string type supported is \c std::string .
+
+Currently, the only multi-element structure supported is drain::UniTuple<>, which has a fixed start address for its elements.
+In future, STL Sequences like std::vectors may be supported.
+
+Reference does not support STL containers.
+
+This class is best illustrated together with its counterparts supporting own memory, Variable and FlexibleVariable
 
 \section ctors-var Reference constructors
 
@@ -69,10 +70,11 @@ namespace drain {
 
 See the documentation of drain::VariableT template specialized by drain::Variable, drain::Reference and drain::FlexibleVariable .
 
- *   \see VariableT
- *   \see Variable
- *   \see FlexibleVariable
- */
+\see VariableT
+\see Variable
+\see FlexibleVariable
+
+*/
 typedef VariableT<ReferenceT<Castable> >  Reference;
 
 

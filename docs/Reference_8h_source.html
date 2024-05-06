@@ -121,55 +121,55 @@ $(function() {
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a> {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203">   76</a></span>&#160;<span class="keyword">typedef</span> <a class="code" href="classdrain_1_1VariableT.html">VariableT&lt;ReferenceT&lt;Castable&gt;</a> &gt;  <a class="code" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203">Reference</a>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">//VariableT&lt;R&gt;</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">template &lt;&gt;</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">template &lt;&gt;</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">void ReferenceT&lt;Castable&gt;::init(const VariableT&lt;ReferenceT&lt;Castable&gt; &gt; &amp; src){</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">    std::cerr &lt;&lt; __FILE__ &lt;&lt; &#39; &#39; &lt;&lt; __LINE__ &lt;&lt; &#39;:&#39; &lt;&lt; __FUNCTION__ &lt;&lt; &quot; &quot; &lt;&lt; src &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">}</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">template &lt;&gt;</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">template &lt;&gt;</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">void ReferenceT&lt;Castable&gt;::init(const ReferenceT&lt;Castable&gt; &amp; src){</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">    std::cerr &lt;&lt; __FILE__ &lt;&lt; &#39; &#39; &lt;&lt; __LINE__ &lt;&lt; &#39;:&#39; &lt;&lt; __FUNCTION__ &lt;&lt; &quot; &quot; &lt;&lt; src &lt;&lt; std::endl;</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">}</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="keyword">const</span> std::string <a class="code" href="structdrain_1_1TypeName.html">TypeName&lt;Reference&gt;::name</a>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;std::ostream &amp; <a class="code" href="classdrain_1_1Sprinter.html#abe1e6bf8d8874a9263882f4e7c203d6d">Sprinter::toStream</a>(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1VariableT.html">Reference</a> &amp; v, <span class="keyword">const</span> <a class="code" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; layout){</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1Sprinter.html#abe1e6bf8d8874a9263882f4e7c203d6d">Sprinter::toStream</a>(ostr, (<span class="keyword">const</span> <a class="code" href="classdrain_1_1Castable.html">drain::Castable</a> &amp;) v, layout);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">template &lt;class T, size_t N=2&gt;</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">template &lt;&gt;</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">UniTuple&lt;T,N&gt; &amp; UniTuple&lt;T,N&gt;::set(const Reference &amp; t){</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">    // assignSequence(t, true); // by default LENIENT, or how should it be?</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">    return *this;</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">}</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}  <span class="comment">// namespace drain</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203">   78</a></span>&#160;<span class="keyword">typedef</span> <a class="code" href="classdrain_1_1VariableT.html">VariableT&lt;ReferenceT&lt;Castable&gt;</a> &gt;  <a class="code" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203">Reference</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">//VariableT&lt;R&gt;</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">void ReferenceT&lt;Castable&gt;::init(const VariableT&lt;ReferenceT&lt;Castable&gt; &gt; &amp; src){</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">    std::cerr &lt;&lt; __FILE__ &lt;&lt; &#39; &#39; &lt;&lt; __LINE__ &lt;&lt; &#39;:&#39; &lt;&lt; __FUNCTION__ &lt;&lt; &quot; &quot; &lt;&lt; src &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">void ReferenceT&lt;Castable&gt;::init(const ReferenceT&lt;Castable&gt; &amp; src){</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">    std::cerr &lt;&lt; __FILE__ &lt;&lt; &#39; &#39; &lt;&lt; __LINE__ &lt;&lt; &#39;:&#39; &lt;&lt; __FUNCTION__ &lt;&lt; &quot; &quot; &lt;&lt; src &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keyword">const</span> std::string <a class="code" href="structdrain_1_1TypeName.html">TypeName&lt;Reference&gt;::name</a>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;std::ostream &amp; <a class="code" href="classdrain_1_1Sprinter.html#abe1e6bf8d8874a9263882f4e7c203d6d">Sprinter::toStream</a>(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classdrain_1_1VariableT.html">Reference</a> &amp; v, <span class="keyword">const</span> <a class="code" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; layout){</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1Sprinter.html#abe1e6bf8d8874a9263882f4e7c203d6d">Sprinter::toStream</a>(ostr, (<span class="keyword">const</span> <a class="code" href="classdrain_1_1Castable.html">drain::Castable</a> &amp;) v, layout);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;};</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">template &lt;class T, size_t N=2&gt;</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">UniTuple&lt;T,N&gt; &amp; UniTuple&lt;T,N&gt;::set(const Reference &amp; t){</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">    // assignSequence(t, true); // by default LENIENT, or how should it be?</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">    return *this;</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#define   VariableLike Reference</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#include &quot;VariableLike.inc&quot;</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#undef    VariableLike</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}  <span class="comment">// namespace drain</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#define   VariableLike Reference</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#include &quot;VariableLike.inc&quot;</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="preprocessor">#undef    VariableLike</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdrain_1_1Castable_html"><div class="ttname"><a href="classdrain_1_1Castable.html">drain::Castable</a></div><div class="ttdef"><b>Definition:</b> Castable.h:76</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_abe1e6bf8d8874a9263882f4e7c203d6d"><div class="ttname"><a href="classdrain_1_1Sprinter.html#abe1e6bf8d8874a9263882f4e7c203d6d">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const std::initializer_list&lt; T &gt; &amp;x, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">New (experimental)</div><div class="ttdef"><b>Definition:</b> Sprinter.h:466</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableT_html"><div class="ttname"><a href="classdrain_1_1VariableT.html">drain::VariableT</a></div><div class="ttdoc">VariableT is a final class applied through typedefs Variable, Reference and FlexibleVariable.</div><div class="ttdef"><b>Definition:</b> VariableT.h:88</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
-<div class="ttc" id="anamespacedrain_html_a4a95f6e30962f62bc7c61c06baa3b203"><div class="ttname"><a href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203">drain::Reference</a></div><div class="ttdeci">VariableT&lt; ReferenceT&lt; Castable &gt; &gt; Reference</div><div class="ttdoc">Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-elemen...</div><div class="ttdef"><b>Definition:</b> Reference.h:76</div></div>
+<div class="ttc" id="anamespacedrain_html_a4a95f6e30962f62bc7c61c06baa3b203"><div class="ttname"><a href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203">drain::Reference</a></div><div class="ttdeci">VariableT&lt; ReferenceT&lt; Castable &gt; &gt; Reference</div><div class="ttdoc">Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-elemen...</div><div class="ttdef"><b>Definition:</b> Reference.h:78</div></div>
 <div class="ttc" id="astructdrain_1_1SprinterLayout_html"><div class="ttname"><a href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a></div><div class="ttdef"><b>Definition:</b> Sprinter.h:189</div></div>
 <div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdef"><b>Definition:</b> TypeUtils.h:179</div></div>
 </div><!-- fragment --></div><!-- contents -->

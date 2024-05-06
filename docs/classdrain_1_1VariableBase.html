@@ -309,9 +309,9 @@ template&lt;class T &gt; </td></tr>
 template&lt;class T , size_t N&gt; </td></tr>
 <tr class="memitem:a8814313879f986ad77ecff71ec89ca36 inherit pub_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator UniTuple&lt; T, N &gt;</b> () const</td></tr>
 <tr class="separator:a8814313879f986ad77ecff71ec89ca36 inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa06707df0e2baa6f8ad94231b944e6e9 inherit pub_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="aa06707df0e2baa6f8ad94231b944e6e9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;x) const</td></tr>
-<tr class="separator:aa06707df0e2baa6f8ad94231b944e6e9 inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a33ff5cbba17b6a80a49cc8992f3195 inherit pub_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a7a33ff5cbba17b6a80a49cc8992f3195"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c) const</td></tr>
+<tr class="separator:a7a33ff5cbba17b6a80a49cc8992f3195 inherit pub_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a980d3634731950256ff4fcf1c905adfd inherit pub_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a980d3634731950256ff4fcf1c905adfd"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a980d3634731950256ff4fcf1c905adfd">operator==</a> (const char *s) const</td></tr>
 <tr class="memdesc:a980d3634731950256ff4fcf1c905adfd inherit pub_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compare as a character string. <br /></td></tr>
@@ -518,7 +518,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <li>Reference</li>
 <li>FlexibleVariable</li>
 </ul>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacedrain.html#a772ac030345c7f9ab62caf5152ca65eb" title="Value container supporting dynamic type.">Variable</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420" title="Value container supporting dynamic type.">Variable</a> </dd>
 <dd>
 <a class="el" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203" title="Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-elemen...">Reference</a> </dd>
 <dd>
@@ -604,8 +604,8 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Tells if internal memory exists. </p>
-<p>Note. In a <a class="el" href="namespacedrain.html#a772ac030345c7f9ab62caf5152ca65eb" title="Value container supporting dynamic type.">drain::Variable</a>, <code>ptr</code> always points to data array, or to null, if the array is empty. In a <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27" title="Value container supporting dynamic type with own memory and optional linking (referencing) of externa...">drain::FlexibleVariable</a>, <code>ptr</code> can point to owned data array or to an external (base type) variable.</p>
-<dl class="section return"><dt>Returns</dt><dd>- <code>true</code> for <a class="el" href="namespacedrain.html#a772ac030345c7f9ab62caf5152ca65eb" title="Value container supporting dynamic type.">drain::Variable</a> and <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27" title="Value container supporting dynamic type with own memory and optional linking (referencing) of externa...">drain::FlexibleVariable</a>, and <code>false</code> for <a class="el" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203" title="Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-elemen...">drain::Reference</a>. </dd></dl>
+<p>Note. In a <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420" title="Value container supporting dynamic type.">drain::Variable</a>, <code>ptr</code> always points to data array, or to null, if the array is empty. In a <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27" title="Value container supporting dynamic type with own memory and optional linking (referencing) of externa...">drain::FlexibleVariable</a>, <code>ptr</code> can point to owned data array or to an external (base type) variable.</p>
+<dl class="section return"><dt>Returns</dt><dd>- <code>true</code> for <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420" title="Value container supporting dynamic type.">drain::Variable</a> and <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27" title="Value container supporting dynamic type with own memory and optional linking (referencing) of externa...">drain::FlexibleVariable</a>, and <code>false</code> for <a class="el" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203" title="Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-elemen...">drain::Reference</a>. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classdrain_1_1Castable.html#a6f6f0815e91462bfafa94057cd788725">Castable</a>.</p>
 
