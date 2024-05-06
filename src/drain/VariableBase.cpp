@@ -69,7 +69,7 @@ void VariableBase::setType(const std::type_info & t){ //, size_t n = 0
 }
 
 
-//bool
+
 void VariableBase::updateSize(size_t elementCount){
 
 	this->elementCount = elementCount;
@@ -88,7 +88,6 @@ void VariableBase::updateSize(size_t elementCount){
 
 	updateIterators();
 
-	//return true;
 }
 
 

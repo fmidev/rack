@@ -46,7 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-/// Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-element arrays through drain::UniTuple<>
+/// Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-element arrays through drain::UniTuple
 /**
  *   drain::Reference does not have memory of its own. The type of reference cannot be changed – it is that of the referenced variable.
  *
@@ -58,15 +58,56 @@ namespace drain {
  *   Reference does not support STL containers.
  *
  *   This class is best illustrated together with its counterparts supporting own memory, Variable and FlexibleVariable
- *
- *   \copydoc drain::VariableT
- *
- *   \see Reference
+
+\section ctors-var Reference constructors
+
+\htmlinclude  VariableT-ctors-Reference.html
+
+\section assignments-var Reference assignments
+
+\htmlinclude  VariableT-assign-Reference.html
+
+See the documentation of drain::VariableT template specialized by drain::Variable, drain::Reference and drain::FlexibleVariable .
+
+ *   \see VariableT
  *   \see Variable
  *   \see FlexibleVariable
- *   \see UniTuple
  */
 typedef VariableT<ReferenceT<Castable> >  Reference;
+
+
+//VariableT<R>
+/*
+template <>
+template <>
+void ReferenceT<Castable>::init(const VariableT<ReferenceT<Castable> > & src){
+	std::cerr << __FILE__ << ' ' << __LINE__ << ':' << __FUNCTION__ << " " << src << std::endl;
+}
+
+template <>
+template <>
+void ReferenceT<Castable>::init(const ReferenceT<Castable> & src){
+	std::cerr << __FILE__ << ' ' << __LINE__ << ':' << __FUNCTION__ << " " << src << std::endl;
+}
+*/
+
+template <>
+const std::string TypeName<Reference>::name;
+
+template <>
+inline
+std::ostream & Sprinter::toStream(std::ostream & ostr, const Reference & v, const SprinterLayout & layout){
+	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
+};
+
+/*
+template <class T, size_t N=2>
+template <>
+UniTuple<T,N> & UniTuple<T,N>::set(const Reference & t){
+	// assignSequence(t, true); // by default LENIENT, or how should it be?
+	return *this;
+}
+*/
 
 }  // namespace drain
 

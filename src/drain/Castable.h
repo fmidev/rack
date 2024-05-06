@@ -45,9 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Caster.h"
 #include "String.h"
 
-//#include "JSONwriter.h"
-#include "Sprinter.h" // partially overlapping with JSONwriter?
-
+#include "Sprinter.h"
 
 
 namespace drain {
@@ -78,7 +76,6 @@ namespace drain {
 class Castable  {
 
 // Optionally, constructors of this base class could be protected.
-// protected:
 public:
 
 	inline
@@ -90,8 +87,15 @@ public:
 	/// Copy constructor: copies the layout and the pointer to the target.
 	inline
 	Castable(const Castable &c) : fillArray(false), elementCount(0) {
-		copyFormat(c);
-		setPtr(c.caster.ptr, c.caster.getType());
+		copyFormat(c); // modifies elementCount = misleading; rename?
+		setPtr(c.caster.ptr, c.caster.getType(), c.elementCount);
+	}
+
+	/// Constructor for an object pointing to a variable.
+	template <class F>
+	Castable(F &p) : fillArray(false), elementCount(0) {
+		setSeparator();
+		setPtr(p);
 	}
 
 	// Obsolete?
@@ -105,19 +109,26 @@ public:
 		// std::cerr << "Castable(F *p) type=" << typeid(F).name() << " value=" << *p << " (" << (double)*p << ")" << std::endl;
 	}
 
-	/// Constructor for an object pointing to a variable.
-	template <class F>
-	Castable(F &p) : fillArray(false), elementCount(0) {
-		setSeparator();
-		setPtr(p);
-	}
-
-public:
 
 	inline virtual
 	~Castable(){};
 
-	// Variable will hide std::string type.
+
+	virtual inline
+	bool typeIsSet() const {
+		return caster.typeIsSet();
+	};
+
+	/// Returns true, if string is empty or array size is zero.  (In future, semantics may change: 0 for scalars?)
+	/**
+	 *
+	 *
+	 *
+	 *   \see getSize()
+	 *   \see getElementCount()
+	 *   \see getElementSize()
+	 */
+	bool empty() const;
 
 	/// Return the storage type (base type) of the referenced variable.
 	virtual inline
@@ -125,17 +136,35 @@ public:
 		return caster.getType();
 	};
 
+	/// Return true, if the pointer is set.
+	inline
+	bool isValid() const {
+		return (caster.typeIsSet()) && (caster.ptr != nullptr);
+	};
+
+
 	/// Return true, if the referenced variable is external. Inherited classes - like Variable - may have internal data arrays.
 	virtual inline
-	bool isReference() const {
-		return true;
+	bool isLinking() const { // rename: external?
+		return isValid(); // return false, if nullptr
+		// return true;
 	}
 
+	/// Returns true, if the class contains an own data array.
+	/**
+	 *   In a drain::Variable,  \c ptr always points to data array, or to null, if the array is empty.
+	 *   In a drain::FlexibleVariable, \c ptr can point to owned data array or to an external (base type) variable.
+	 *
+	 */
+	virtual inline
+	bool isVariable() const { // needed?
+		return false;
+	}
 
 	/// Returns true, if type is C char array and outputSepator is the null char.
 	inline
 	bool isCharArrayString() const {
-		return ((caster.getType() == typeid(char)) && (outputSeparator=='\0'));  // "close enough" guess, or  a definition?
+		return ((caster.getType() == typeid(char)) && (outputSeparator=='\0'));  // "close enough" guess, or a definition?
 	};
 
 	/// Returns true, if type is std::string .
@@ -150,41 +179,40 @@ public:
 		return (isCharArrayString() || isStlString());
 	};
 
-	virtual inline
-	bool typeIsSet() const {
-		return caster.typeIsSet();
-	};
-
-	inline
-	size_t getElementSize() const {
-		return caster.getElementSize();
-	};
 
 	/// Returns the length of the array, the number of elements in this entry.
 	/**
 	 *
-	 *
-	 *   \see Castable::getElementSize().
+	 *   \see getElementSize()
+	 *   \see getSize()
 	 */
 	virtual inline
 	size_t getElementCount() const {
 		return elementCount;
 	}
 
+	/// Return the size of the current storage type, in bytes.
+	/**
+	 *
+	 *   \see getElementCount().
+	 *   \see getSize().
+	 */
+	inline
+	size_t getElementSize() const {
+		return caster.getElementSize();
+	};
+
 	/// Returns the size in bytes of the target: (elementCount * elementSize)
+	/**
+	 *   \see getElementCount().
+	 *   \see getElementSize().
+	 */
 	virtual inline
 	size_t getSize() const {
 		return elementCount * caster.getElementSize();
 	}
 
 
-	/// Returns true, if no elements have been allocated. Does not check type. (NOTE: may change: 0 for scalars)
-	/**
-	 *   \see getElementSize()
-	 *   \see getElementCount()
-	 */
-	//inline
-	size_t empty() const;
 
 	/// Set or unset filling (padding) an array if input set is smaller
 	inline
@@ -203,17 +231,24 @@ public:
 	inline
 	void reset(){
 		caster.unsetType();
-		//elementCount = 0;
 		updateSize(0);
 		setSeparator(',');
 	}
 
-protected:
-
-	virtual
-	void updateSize(size_t elems){
-		elementCount = elems;
+	/// Returns the name of the current storage type.
+	/**
+	 *   This distinguishes between char array and string.
+	 */
+	std::string getTypeName() const { // todo: support const string &  in Type::call
+		if (isCharArrayString()){
+			static const std::string s("char-array");
+			return s;
+		}
+		else {
+			return Type::call<drain::simpleName>(getType());
+		}
 	}
+
 
 public:
 
@@ -284,6 +319,15 @@ public:
 		assignCastable(c);
 	}
 
+	template <class T>
+	inline
+	void assign(const T *p){
+		if (p == nullptr)
+			reset();
+		else
+			throw std::runtime_error("Castable & assign(const T *p): unsupported");
+	}
+
 	/// Copies an arbitrary base type or std::string value.
 	/**
 	 *
@@ -352,6 +396,8 @@ public:
 	}
 
 
+	/// Copy data from Castable. Perhaps copy size and type, too.
+	Castable & assignCastable(const Castable &c);
 
 
 
@@ -460,6 +506,24 @@ public:
 			return caster.get<T>(); //caster.get<T>(ptr);
 	}
 
+	template <class T, size_t N>
+	operator UniTuple<T,N>() const {
+		UniTuple<T,N> result;
+		result.assignSequence(*this, true);
+		//toSequence(result); // LENI
+		/*
+		if (isCharArrayString()){
+			T x;
+			std::stringstream sstr;
+			sstr << getCharArray();
+			sstr >> x;
+			return x;
+		}
+		else
+			return caster.get<T>(); //caster.get<T>(ptr);
+			*/
+	}
+
 	// TODO: consider: operator bool() const
 
 	// TODO: PAIR
@@ -476,19 +540,71 @@ public:
 		return false;
 	}
 
+	/// Compare as a character string
 	inline
 	bool operator==(const char * s) const {
 		if (isCharArrayString()) // 2021
 			return (strcmp(getCharArray(), s) == 0);
-		else
-			return (caster.get<std::string>() == s);
+		else {
+			// Note: caster.get<std::string>() returns only the first element!
+			// std::cerr << __FILE__ << __LINE__ << __FUNCTION__ << toStr() << " vs " << caster.get<std::string>() << std::endl;
+			return (toStr() == s);
+		}
+			//return (caster.get<std::string>() == s);
 	}
+
+	/// Experimental. Notice that if type is set, false is returned also for an empty array.
+	/**
+	 *   Semantics..
+	 *   caster.ptr = nullptr : ?
+	 *   elementCount = 0 : ?
+	 */
+	inline
+	bool operator==(const nullptr_t ptr) const {
+		return getType() == typeid(void);
+	}
+
+	/*
+	inline  // 2024
+	bool operator==(const std::string & s) const {
+		return (caster.get<std::string>() == s);
+	}
+	*/
 
 	/// Compares a value to internal data.
 	template <class T>
-	bool operator==(const T &x) const{
-		return (caster.get<T>() == x);  //(caster.get<T>(ptr) == x);
+	bool operator==(const T &x) const {
+		if (isCharArrayString()){ // 2024/04
+			std::stringstream sstr(getCharArray());
+			T c;
+			sstr >> c;
+			return (c == x);
+		}
+		else {
+			return (caster.get<T>() == x);
+		}
 	}
+
+	template <class T, size_t N>
+	bool operator==(const UniTuple<T,N> & x) const {
+		if (isString()){ // 2024/04
+			// std::cerr << __FILE__ << ':' << __FUNCTION__ << " '" << this->toStr() << "' == '" << x.toStr(',') << "'" << std::endl;
+			return (this->toStr() == x.toStr(',')); // consider separator, but this->outputSeparator is null for char array str...
+		}
+		else if (elementCount == N){
+			for (size_t i=0; i<N; ++i){
+				if (x[i] != this->get<T>(i)){
+					return false;
+				}
+			}
+			return true;
+		}
+		else {
+			return false;
+		}
+
+	}
+
 
 
 	/// Compares a value to inner data.
@@ -497,7 +613,7 @@ public:
 	 */
 	template <class T>
 	bool operator!=(const T &x) const {
-		return (caster.get<T>() != x);
+		return ! this->operator==(x);
 	}
 
 	/// Compares a value to inner data.
@@ -580,10 +696,8 @@ public:
 
 	std::ostream & toStream(std::ostream & ostr = std::cout, char separator='\0') const;
 
-	/*
-	void toJSONold(std::ostream & ostr = std::cout, char fill = ' ', int verbosity = 0) const;
-	std::ostream & valueToJSONold(std::ostream & ostr = std::cout) const;
-	*/
+	std::istream & fromStream(std::istream & istr);
+
 
 	std::string toStr() const;
 
@@ -597,16 +711,6 @@ public:
 
 	// void debug(std::ostream & ostr = std::cout) const;
 
-	/// Returns true, if the class contains an own data array.
-	/**
-	 *   In a drain::Variable,  \c ptr always points to data array, or to null, if the array is empty.
-	 *   In a drain::FlexibleVariable, \c ptr can point to owned data array or to an external (base type) variable.
-	 *
-	 */
-	virtual inline
-	bool isVariable() const {
-		return false;
-	}
 
 
 	/// Converts data to a STL Sequence, for example std::set, std::list or std::vector .
@@ -690,8 +794,6 @@ public:
 		return &((const char *)caster.ptr)[i*caster.getElementSize()];
 	}
 
-	/// If array, assigning a scalar will fill up the current array.
-	bool fillArray;
 
 	/// Copies array layout and formatting: separators, element count, fillArray flag.
 	void copyFormat(const Castable & c){
@@ -701,8 +803,6 @@ public:
 		this->fillArray       = c.fillArray;
 	}
 
-	/// Copy data from str Castable. Perhaps copy size and type, too.
-	Castable & assignCastable(const Castable &c);
 
 	virtual inline
 	bool requestType(const std::type_info & t){
@@ -718,13 +818,23 @@ public:
 		return (getType() == t);
 	}
 
+	/// If array, assigning a scalar will fill up the current array.
+	bool fillArray = false;
+
+protected:
+
+	virtual
+	void updateSize(size_t elems){
+		elementCount = elems;
+	}
+
 protected:
 
 	Caster caster;
 
 
 
-	/// Sets the storage type. If a target value is available, use link() directly.
+	/// Sets the storage type. If a target value is available, use setPtr() directly.
 	template <class F>
 	inline // FINAL
 	void setType(){
@@ -732,12 +842,12 @@ protected:
 		setType(typeid(F));
 	}
 
-	/// Sets the storage type. If a target value is available, use link() directly.
+	/// Sets the storage type. If a target value is available, use setPtr() directly.
 	virtual inline // virtual?  Variable may need
 	void setType(const std::type_info &t){
 		setSeparator(','); // ?
 		caster.setType(t);
-		//elementCount = 1;
+		//elementCount = 1; ?
 	}
 
 	/// Request to change the array size. For Castable (and Reference) does nothing and returns false.
@@ -802,7 +912,7 @@ protected:
 	template <class F, size_t N>
 	void setPtr(UniTuple<F,N> & tuple){
 		setPtr(tuple.begin(), typeid(F), N);
-		fillArray = true; // (?)  if a scalar is assigned, assign to both elements
+		fillArray = true; // (?)  if a scalar is assigned, assign to all elements
 	}
 
 
@@ -885,6 +995,15 @@ protected:
 
 	template <class T>
 	void assignToString(const T & x){
+
+		/*
+		if (x == nullptr){
+			//suggestType(typeid(void));
+			suggestType(typeid(void));
+			//experimental
+			return;
+		}
+		*/
 
 		suggestType(typeid(std::string));
 
@@ -972,7 +1091,7 @@ public:
 	// NEW 2024
 	template <class T, size_t N>
 	inline
-	void assign(UniTuple<T,N> & tuple){
+	void assign(const UniTuple<T,N> & tuple){
 		assignContainer(tuple);
 	}
 
@@ -1089,34 +1208,6 @@ protected:
 
 };
 
-/*
-template <>
-void Castable::setPtr(Castable &c);
-*/
-/*
-template <class T>
-T & Castable::valueToJSON(T & ostr) const {
-
-	if ((getType() == typeid(char)) || isStlString()){
-		ostr << '"';
-		toStream(ostr, ','); // use JSONtree separator
-		ostr << '"';
-	}
-	else {
-		if (getElementCount() != 1){
-			ostr << '[';
-			toStream(ostr); // why comma not explicit? ...
-			ostr << ']';
-		}
-		else
-			toStream(ostr, ',');  // ... but here
-	}
-	return ostr;
-}
-*/
-
-//template <>
-//std::ostream & JSONwriter::toStream(const drain::Castable & v, std::ostream & ostr, unsigned short);
 
 
 /// "Friend class" template implementation
@@ -1124,11 +1215,19 @@ template <>
 std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Castable & x, const SprinterLayout & layout);
 
 
+
 inline
 std::ostream & operator<<(std::ostream &ostr, const Castable &c){
 	return c.toStream(ostr);
 	//return Sprinter::toStream(ostr, c, Sprinter::plainLayout);
 }
+
+/*  UNDER CONSTR..
+inline
+std::istream & operator>>(std::istream & istr, Castable &c){
+	return c.fromStream(istr);
+}
+*/
 
 /// Arithmetics: addition
 template <class T>
@@ -1167,6 +1266,14 @@ T & operator/=(T & x, const Castable &c){
 template <>
 const std::string TypeName<Castable>::name;
 
+/*
+template <class T, size_t N=2>
+template <class T2>
+UniTuple<T,N> & UniTuple<T,N>::set(const Castable & t){
+	// assignSequence(t, true); // by default LENIENT, or how should it be?
+	return *this;
+}
+*/
 
 
 }  // namespace drain

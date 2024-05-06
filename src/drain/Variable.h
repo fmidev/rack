@@ -29,30 +29,54 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef VARIABLE_H_
-#define VARIABLE_H_
+#ifndef DRAIN_VARIABLE
+#define DRAIN_VARIABLE VariableT<VariableInitializer<VariableBase> >
 
+#include <drain/Sprinter.h>
 #include "drain/VariableBase.h"
 #include "drain/VariableT.h"
 
+
 namespace drain {
+
 
 /// Value container supporting dynamic type.
 /**
- *   drain::Variable has memory of its own, and cannot be linked to external variables.
+ *   drain::Variable has memory of its own, and cannot be linked to external variables like drain::Reference and drain::FlexibleVariable .
  *
- *   This class is best illustrated together with its counterparts supporting linking: Reference and FlexibleVariable
- *   \copydoc drain::VariableT
  *
+\section ctors-var Variable constructors
+
+\htmlinclude  VariableT-ctors-Variable.html
+
+\section assignments-var Variable assignments
+
+\htmlinclude  VariableT-assign-Variable.html
+ *
+ *   See the documentation of drain::VariableT template specialized by drain::Variable, drain::Reference and drain::FlexibleVariable .
+ *
+ *   \see VariableT
  *   \see Reference
  *   \see FlexibleVariable
  */
-//typedef VariableT<VariableBase>  Variable;
 typedef VariableT<VariableInitializer<VariableBase> >  Variable;
 
+DRAIN_TYPENAME(Variable);
+
+/*
+template <>
+const std::string TypeName<Variable>::name;
+*/
+
+template <>
+inline
+std::ostream & Sprinter::toStream(std::ostream & ostr, const Variable & v, const SprinterLayout & layout){
+	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
+};
 
 
 }
+
 
 #define   VariableLike Variable
 #include "VariableLike.inc"

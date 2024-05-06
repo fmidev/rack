@@ -33,8 +33,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_UNITUPLE
 #define DRAIN_UNITUPLE
 
-#include <drain/StringBuilder.h>
-#include <drain/TypeUtils.h>
 #include <iostream>
 #include <sstream>
 #include <typeinfo>
@@ -42,9 +40,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 //#include <set>
 
-// #include "Sprinter.h": cannot use Sprinter, as long as SprinterLayouit uses UniTuple...
+#include <drain/StringBuilder.h>
+#include <drain/TypeUtils.h>
+// #include <drain/Sprinter.h>  lower ==  cannot use Sprinter, as long as SprinterLayouit uses UniTuple...
+// #include <drain/VariableT.h> lower
 
 namespace drain {
+
+
+
+//class VariableT<VariableInitializer<VariableBase> >;
+//class VariableT<VariableInitializer<ReferenceT<VariableBase> > >;
+//class VariableT<ReferenceT<Castable> >;
 
 
 /// Tuple of N elements of type T
@@ -150,13 +157,41 @@ public:
 		return *this;
 	}
 
+	/// Assign tuple of different type and/or size.
+	template <class T2, size_t N2=2>
+	tuple_t & set(const UniTuple<T2,N2> & t){
+		assignSequence(t, true); // by default LENIENT, or how should it be?
+		return *this;
+	}
+
+	/*
+	template <class T2>
+	tuple_t & set(const VariableT<T> & t){
+		// assignSequence(t, true); // by default LENIENT, or how should it be?
+		return *this;
+	}
+	*/
+
+	/*
+	tuple_t & set(const Variable & x);
+
+	tuple_t & set(const FlexibleVariable & x);
+
+	tuple_t & set(const Reference & x);
+	*/
+
+	inline
+	void set(const T & arg) {
+		setIndexed(0, arg);
+		updateTuple();
+	}
+
 	/// Set element(s).
 	// Variadic-argument member set function.
 	// https://en.cppreference.com/w/cpp/language/parameter_pack
 	template<typename ... TT>
 	inline
-	void set(T arg, const TT &... rest) {
-		// initTuple()
+	void set(const T & arg, const TT &... rest) {
 		setIndexed(0, arg, rest...);
 		updateTuple();
 	}
@@ -170,13 +205,11 @@ public:
 	inline
 	const_iterator begin() const {
 		return start;
-		//return (const_iterator)this;
 	}
 
 	inline
 	const_iterator end() const {
-		return start+N;
-		//return (const_iterator)this + N;
+		return start + N;
 	}
 
 	inline
@@ -261,15 +294,23 @@ public:
 	}
 
 	/// Copy elements from a Sequence, like stl::list, stl::set or stl::vector.
+	/**
+	 *  If lenient, accepts sequences of different lengths, stopping at the shorter.
+	 */
 	template <class S>
-	UniTuple<T,N> & assignSequence(S & sequence){
+	UniTuple<T,N> & assignSequence(S & sequence, bool LENIENT = false){
 		typename S::const_iterator cit = sequence.begin();
 		iterator it = begin();
 		while (cit != sequence.end()){
 			if (it == end()){
-				std::stringstream sstr;
-				sstr << __FILE__ << ':' << __FUNCTION__ << ": run out of indices in assigning: " << *cit;
-				throw std::runtime_error(sstr.str());
+				if (LENIENT){
+					return *this;
+				}
+				else {
+					std::stringstream sstr;
+					sstr << __FILE__ << ':' << __FUNCTION__ << ": run out of indices in assigning: " << *cit;
+					throw std::runtime_error(sstr.str());
+				}
 				break;
 			}
 			//	break;

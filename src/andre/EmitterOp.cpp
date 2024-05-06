@@ -186,6 +186,7 @@ void EmitterOp::runDetector(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	*/
 
 	mout.special("MultiplicationFunctor op2:" );
+	mout.attention("towards END");
 	BinaryFunctorOp<MultiplicationFunctor> mop;
 	mop.functor.setScale(2.0 * sensitivity);
 	rleVert.getChannel(0).setPhysicalRange(0,1, true);
@@ -195,7 +196,7 @@ void EmitterOp::runDetector(const PlainData<PolarSrc> & src, PlainData<PolarDst>
 	//mop.traverseChannel(dst.data, marginAvg, dst.data); // 4.0 * sensitivity*
 	storeDebugData(2, dst.data, "FINAL-MARGIN-WEIGHTED");
 	//_mout.writeImage(10, dst.data, "dst.data"); // ? final
-
+	mout.attention("END");
 
 }
 

@@ -76,13 +76,40 @@ NodeXML<int>::xmldoc_attrib_map_t NodeXML<int>::xmldoc_attribs = {
 		{"data-remark", "xml"}
 };
 
+
 // Experimental
 template <>
 TreeXML & TreeXML::addChild(const TreeXML::key_t & key){
+
+	if (key.empty()){
+		std::stringstream k("elem");
+		k.width(3);
+		k.fill('0');
+		k << getChildren().size();
+		return (*this)[k.str()];
+	}
+	else {
+		return (*this)[key];
+	}
+}
+/*
 	drain::Logger mout(__FILE__,__FUNCTION__);
 	mout.unimplemented("replace TreeXML::addChild");
 	return *this;
+ */
+
+
+/*
+template <>
+TreeHTML & TreeHTML::addChild(const TreeHTML::key_t & key){
+	std::stringstream k("elem");
+	k.width(3);
+	k.fill('0');
+	k << getChildren().size();
+	return (*this)[k.str()];
 }
+*/
+
 
 //int NodeXML::nextID = 0;
 

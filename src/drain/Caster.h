@@ -219,23 +219,26 @@ public:
 		(*translatePtr)(c, c.ptr, this->ptr);
 	};
 
+	// New 2024/05
+	inline
+	std::istream & fromStream(std::istream & istr, const void *p) const{
+		return (*fromStreamPtr)(istr, p);
+	}
 
 	/// Write data to output stream
 	inline
 	std::ostream & toOStream(std::ostream &ostr, const void *p) const {
-		//return (this->*toOStreamPtr)(ostr,p);
 		return (*toOStreamPtr)(ostr,p);
 	}
 
 	/// Write data to output stream
 	inline
 	std::ostream & toOStream(std::ostream &ostr) const  {  // NEW
-		//return (this->*toOStreamPtr)(ostr, this->ptr);
 		return (*toOStreamPtr)(ostr, this->ptr);
 	}
 
 	/// Future member: enables setting Caster type.
-	void *ptr; // NEW, visible for CastableIterator
+	void *ptr = nullptr; // NEW, visible for CastableIterator
 
 protected:
 
@@ -282,7 +285,7 @@ protected:
 	/// Write to stream.
 	// std::ostream & (Caster::* toOStreamPtr)(std::ostream &ostr, const void *p) const;
 	std::ostream & (* toOStreamPtr)(std::ostream &ostr, const void *p);
-
+	std::istream & (* fromStreamPtr)(std::istream &istr, const void *p) = nullptr;
 
 	/// Convert input of base type to internally applied base type
 	/*
@@ -397,11 +400,11 @@ protected:
 		*(F *)ptr = c.get<F>(ptrC);
 	}
 
-	/// New
+	/// Output
 	template <class F>
 	static
 	std::ostream & toOStreamT(std::ostream & ostr, const void *p) { //const {
-		if (p != NULL)
+		if (p != nullptr)
 			ostr << *(F*)p;
 		return ostr;
 	}
@@ -439,6 +442,16 @@ protected:
 
 		return ostr;
 
+	}
+
+	/// Output
+	template <class F>
+	static
+	std::istream & fromStreamT(std::istream & istr, const void *p) { //const {
+		if (p != nullptr){
+			istr >> *(F*)p;
+		}
+		return istr;
 	}
 
 
@@ -505,10 +518,9 @@ void Caster::updateType(){
 	getFloat  = & Caster::getT<float,F>;
 	getDouble = & Caster::getT<double,F>;
 
-
-
-	toOStreamPtr = & Caster::toOStreamT<F>;
-	translatePtr = & Caster::translateT<F>;
+	toOStreamPtr  = & Caster::toOStreamT<F>;
+	fromStreamPtr = & Caster::fromStreamT<F>;
+	translatePtr  = & Caster::translateT<F>;
 }
 
 
@@ -573,7 +585,7 @@ void Caster::put<std::string>(void *p, const std::string & x) const {
 	else if (getType() == typeid(char)){
 		// std::cout << "note: experimental str to char\n";
 		if (x.empty())
-			p = NULL; //'\0'; // NULL, 0 ?
+			p = nullptr; //'\0'; // NULL, 0 ?
 		else {
 			if (x.size() > 1)
 				std::cerr << "Caster::put<std::string>() warning: single-char dst, assigned 1st of multi-char '"<< x << "'\n";
@@ -594,7 +606,6 @@ void Caster::toOStr(std::ostream & ostr, void *p) const {
 
 template <> inline
 bool Caster::get<bool>(const void *p) const {
-	//return (this->*getBool)(p);
 	return (this->getBool)(p);
 }
 
@@ -621,7 +632,6 @@ unsigned short Caster::get<unsigned short>(const void *p) const {
 
 template <> inline
 int Caster::get<int>(const void *p) const {
-	//return (this->*getInt)(p);
 	return (this->getInt)(p);
 }
 

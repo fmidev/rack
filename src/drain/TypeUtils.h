@@ -171,6 +171,9 @@ size_t sizeGetter::getSize<void>(){
 
 
 // default implementation
+/*
+
+*/
 template <typename T>
 struct TypeName
 {
@@ -203,10 +206,17 @@ protected:
 template <typename T>
 const std::string TypeName<T>::name(typeid(T).name());
 
+#define DRAIN_TYPENAME(tname) template <>  const std::string TypeName<tname>::name
+#define DRAIN_TYPENAME_DEF(tname) template <>  const std::string TypeName<tname>::name(#tname)
+
 /// Add a specialization for each type of those you want to support.
 //  (Unless the string returned by typeid is sufficient.)
 
+DRAIN_TYPENAME(bool);
+DRAIN_TYPENAME(char);
+DRAIN_TYPENAME(unsigned char);
 
+/*
 template <>
 const std::string TypeName<bool>::name;
 
@@ -215,6 +225,7 @@ const std::string TypeName<char>::name;
 
 template <>
 const std::string TypeName<unsigned char>::name;
+*/
 
 template <>
 const std::string TypeName<short>::name;
@@ -402,6 +413,7 @@ class simpleName {
 public:
 
 	typedef std::string value_t;
+	// typedef const std::string & value_t;
 
 	/**
 	 *  \tparam S - type to be analyzed (argument)

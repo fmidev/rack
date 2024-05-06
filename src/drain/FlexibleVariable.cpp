@@ -46,7 +46,7 @@ namespace drain {
 
 template <>
 bool FlexibleVariable::requestType(const std::type_info & t){
-	if (isReference()){
+	if (isLinking()){
 		return caster.requestType(t);
 	}
 	else {
@@ -58,7 +58,7 @@ bool FlexibleVariable::requestType(const std::type_info & t){
 
 template <>
 bool FlexibleVariable::suggestType(const std::type_info & t){
-	if (isReference()){
+	if (isLinking()){
 		return Castable::suggestType(t);
 	}
 	else if (!typeIsSet())
@@ -68,10 +68,20 @@ bool FlexibleVariable::suggestType(const std::type_info & t){
 
 template <>
 bool FlexibleVariable::requestSize(size_t elementCount){
-	if (isReference()){
+	if (isLinking()){
+		Logger mout(__FILE__, __FUNCTION__);
+		if (this->elementCount != elementCount){
+			mout.warn() << "requesting resize (" <<  elementCount << ") for linked flexVar: ";
+			this->info(mout);
+			// mout << " - requesting: " ;
+			mout.end();
+		}
+		// mout.special("LINKING, current size: ", this->elementCount, ", requested:  ", elementCount);
+		// mout.special("LINKING, current value: ", *this);
 		return Castable::requestSize(elementCount);
 	}
 	else {
+		// mout.special("LOCAL VAR, setting size:", elementCount);
 		return setSize(elementCount);
 	}
 }
@@ -86,15 +96,18 @@ template <>
 void FlexibleVariable::info(std::ostream & ostr) const {
 	//void VariableT<ReferenceBase<VariableT<VariableBase> > >::info(std::ostream & ostr) const {
 	Castable::info(ostr);
-	if (this->isReference())
+	if (this->isLinking())
 		ostr << " <reference>";
 	else
 		ostr << " <own>";
 }
 
+//#define DRAIN_TYPENAME(tname) template <>  const std::string TypeName<tname>::name(#tname)
 
-template <>
-const std::string TypeName<FlexibleVariable>::name("FlexibleVariable");
+DRAIN_TYPENAME_DEF(FlexibleVariable);
+
+// template <>
+// const std::string TypeName<FlexibleVariable>::name("FlexibleVariable");
 
 
 }

@@ -830,24 +830,6 @@ public:
 	}
 
 
-	// TODO: consider this to destructor!
-	/*
-	inline
-	void updateTree3(const typename datatype_t::odim_t & odim){  //
-		//odim.copyToDataSet(this->tree);
-		//if (!DataTools::removeIfExcluded(this->tree))
-		ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(odim, this->tree);
-		DataTools::updateInternalAttributes(this->tree); // images, including DataSet.data, TODO: skip children
-	}
-
-	// TODO: consider this to destructor!
-	inline
-	void updateTree3(const typename datatype_t::odim_t & odim) const {  //
-		std::cout << "updateTree3 const \n";
-		//ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(odim, tree);
-	}
-	*/
-
 protected:
 
 	static
@@ -1260,8 +1242,10 @@ public:
 			}
 			*/
 
-			//updateTree3(this->getFirstData().odim);
+			// updateTree3(this->getFirstData().odim);
+			// mout.attention("start updateTree3");
 			updateTree3(odim);
+			// mout.attention("end updateTree3");
 		}
 
 	}

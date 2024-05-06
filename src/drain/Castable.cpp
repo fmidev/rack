@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-size_t Castable::empty() const {
+bool Castable::empty() const {
 
 	if (isStlString()){
 		// Use native std::string::empty()
@@ -56,9 +56,6 @@ size_t Castable::empty() const {
 				*debug = '\0';
 				return true;//return false;
 			}
-		}
-		else {
-
 		}
 		return false;
 	}
@@ -104,10 +101,22 @@ const char * Castable::getCharArray() const {
 		}
 
 		if (*getPtr(getElementCount()-1) != '\0'){
-			std::cerr << getElementCount() << std::endl;
-			std::cerr << "first char: " << *getPtr(0) << std::endl;
+			std::cerr << "elementCount: "  << getElementCount() << std::endl;
+			for (size_t i = 0; i < getElementCount(); ++i) {
+				std::cerr << "char #" << i << ' ' << *getPtr(i) << '=' << ((int)*getPtr(i)) << std::endl;
+			}
+			//std::cerr << "first char: " << *getPtr(0) << std::endl;
+			/*
+			std::cerr << "char A (int): " << ((int)'A') << std::endl;
+			std::cerr << "char 1 (int): " << ((int)'1') << std::endl;
+			const char *s = getPtr(getElementCount()-1);
+			std::cerr << "ending char (int): " << ((int)*s) << std::endl;
+			std::cerr << "ending char: " << *s << std::endl;
+			*/
 			//std::cerr << getElementCount() << std::endl;
-			throw std::runtime_error("getCharArray: no terminating null char..");
+			//throw std::runtime_error("getCharArray: no terminating null char..");
+			std::cerr << __FUNCTION__ <<  ": no terminating null char, trying to print:" << std::endl;
+			std::cerr << (const char *)caster.ptr << std::endl;
 		}
 
 		return (const char *)caster.ptr;
@@ -121,6 +130,23 @@ const char * Castable::getCharArray() const {
 		return NULL;
 	}
 }
+
+std::istream & Castable::fromStream(std::istream & istr){
+
+	// const std::type_info & t = caster.getType();
+
+	if (!isString()){
+		// TODO: loop?
+		std::cerr << __FILE__ << ':' << __FUNCTION__ << ": warn - unimplemented code" << std::endl;
+		//caster.fromStream(istr, caster.ptr); // getPtr(0)
+	}
+	else {
+		std::cerr << __FUNCTION__ << ": warn - unimplemented code" << std::endl;
+	}
+
+	return istr;
+}
+
 
 // Deprecating. Use Sprinter only
 std::ostream & Castable::toStream(std::ostream & ostr, char separator) const {
@@ -238,7 +264,19 @@ Castable & Castable::assignCastable(const Castable &c){
 	if (c.getType() == typeid(void)){
 		// std::cerr << __FUNCTION__ << ": NEW: assign 'unset'\n";
 		// CHECK: this may be wrong for ReferenceVar:
-		reset();
+		// REVISED 2024/05
+		if (isLinking()){
+			clear();
+		}
+		else {
+			if (isVariable()){
+				reset();
+			}
+			else {
+				// TODO: error state?
+			}
+
+		}
 	}
 	else if (isString()){
 		// Should call resize()?

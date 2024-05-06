@@ -40,11 +40,24 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-
+//class Variable;
 
 /// Intermediate class supporting link() in various forms.
 /**
- *  \tparam T - Castable or VariableBase
+
+See also comparison of all the three variable classes:
+\see drain::VariableT
+
+\section Constructors
+
+\htmlinclude  VariableT-ctors-Reference.html
+
+\subsection Assignment
+
+\htmlinclude  VariableT-assign-Reference.html
+
+
+ \tparam T - Castable or VariableBase
  */
 template <class T> // =Castable
 class ReferenceT : public T {
@@ -53,34 +66,60 @@ public:
 
 	typedef std::pair<const char *,const drain::ReferenceT<T> > init_pair_t;
 
-
-	template <class D>
-	void init(D & dst){
-		this->link(dst);
-	}
-
-	template <class S>
-	void init(const S & src){
-		// std::cerr << __FILE__ << ' ' << __LINE__ << ':' << "ReferenceBase::" << __FUNCTION__ << " " << src << std::endl;
-		T::init(src); // Undefined for Castable -> compile time error.
+	/// Tells if the internal pointer can point to an external variable.
+	/**
+	 *  \return - \c true for Reference and Flexible, and \c false for Variable.
+	 */
+	virtual inline
+	bool isLinkable() const {
+		return true;
 	}
 
 
-
-	template <class D>
-	void init(D *dst){
-		this->link(dst);
-	}
-
+	template <class T2>
 	inline
-	void init(void *p, const std::type_info &t, size_t count=1){
-		this->link(p, t, count);
+	ReferenceT & link(ReferenceT<T2> &x){
+		this->relink(x);
+		return *this;
 	}
 
-	// Terminal
+	// "Originals"
+	// ReferenceT & link(VariableT<T2> &x){
+	//template <class T2>
+	// VariableT<VariableInitializer<ReferenceT<VariableBase> > >
+
+	/// Linkage for Reference, above all for copy constructor.
 	inline
-	void init(){
+	ReferenceT & link(VariableT<ReferenceT<Castable> >  &x){
+		this->relink(x);
+		return *this;
 	}
+
+	/// Linkage for a FlexibleVariable
+	inline
+	ReferenceT & link(VariableT<VariableInitializer<ReferenceT<VariableBase> > > &x){
+		if (x.isLinking()){
+			//  Valid for 1) FlexibleVariable that is 2) linking external variable.
+			// drain::Logger(__FILE__, __LINE__, __FUNCTION__).success<LOG_WARNING>("accessing external data (", x, ") of ", drain::TypeName< VariableT<VariableInitializer<ReferenceT<VariableBase> > > >::str());
+			this->relink(x);
+		}
+		else {
+			//drain::Logger(__FILE__, __LINE__, __FUNCTION__).fail(drain::TypeName< VariableT<T2> >::str(), ' ', x, ": linking internal data forbidden");
+			drain::Logger(__FILE__, __LINE__, __FUNCTION__).fail("accessing internal data (", x, ") of ", drain::TypeName< VariableT<VariableInitializer<ReferenceT<VariableBase> > > >::str(), " forbidden");
+			this->reset();
+		}
+		return *this;
+	}
+
+	/// Linkage for a Variable - produces a warning, because internal variable has dynamic type.
+	inline
+	ReferenceT & link(VariableT<VariableInitializer<VariableBase> > &x){
+		// drain::TypeName<VariableT<ReferenceT > >::str(),
+		drain::Logger(__FILE__, __LINE__, __FUNCTION__).fail(drain::TypeName< VariableT<VariableInitializer<VariableBase> > >::str(), ' ', x, ": linking internal data forbidden");
+		this->reset();
+		return *this;
+	}
+
 
 
 	/// Set pointer to &p.
@@ -118,12 +157,14 @@ public:
 	ReferenceT & link(void *p, const std::type_info &t, size_t count=1){
 		this->setPtr(p, t);
 		this->elementCount = count;
+		// Why not this->setPtr(p, t, count); ?
 		return *this;
 	}
 
+	// What about link(void *p){
 	inline
 	ReferenceT & link(void *p){
-		throw std::runtime_error(std::string("ReferenceBase::") + __FUNCTION__ + ": void type unsupported");
+		throw std::runtime_error(std::string(__FILE__) + __FUNCTION__ + ": void type unsupported");
 		return *this;
 	}
 
@@ -134,22 +175,59 @@ public:
 		return *this;
 	}
 
-	template <class T2>
+
+protected:
+
+	/// Copy constructor handler - important.
+	//template <class T2>
+	/*
+	void init(const ReferenceT<T> & ref) {
+		// std::cerr << __FILE__ << ':' << __LINE__ << ':' << __FUNCTION__ << " " << ref << '[' << typeid(T).name() << ']'<< std::endl;
+		std::cerr << __FILE__ << ':' << __LINE__ << ':' << __FUNCTION__ << " " << ref << '[' << TypeName< ReferenceT<T> >::str() << ']' <<  '[' << TypeName<T>::str() << ']'<< std::endl;
+		this->reset(); // needed?
+		//this->link(ref.getPtr(), ref.getType(), ref.getSize());
+		this->relink(ref);
+
+		//this->assignCastable(value);
+	}
+	*/
+
+
+	template <class D>
+	void init(D & dst){
+		this->link(dst);
+	}
+
+
+
+	template <class S>
+	void init(const S & src){
+		std::cerr << __FILE__ << ' ' << __LINE__ << ':' << __FUNCTION__ << " " << src << std::endl;
+
+		T::init(src); // Undefined for Castable -> compile time error.
+	}
+
+
+
+	template <class D>
+	void init(D *dst){
+		this->link(dst);
+	}
+
 	inline
-	ReferenceT & link(ReferenceT<T2> &x){
-		this->relink(x);
-		return *this;
+	void init(void *p, const std::type_info &t, size_t count=1){
+		this->link(p, t, count);
 	}
 
-	/// Tells if the internal pointer can point to an external variable.
-	/**
-	 *  \return - \c true for Reference and Flexible, and \c false for Variable.
-	 */
-	virtual inline
-	bool isLinkable() const {
-		return true;
-	}
 
+public:
+
+protected:
+
+	// Terminal
+	inline
+	void init(){
+	}
 
 };
 

@@ -33,8 +33,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Variable.h"
 
+//
+
 
 namespace drain {
+
+//#define DRAIN_V VariableT<VariableInitializer<VariableBase> >
+
+//DRAIN_V::DRAIN_V(const DRAIN_V & v);
+
+//template <>
 
 
 template <>
@@ -60,10 +68,12 @@ bool Variable::requestSize(size_t elementCount){
 	// return true;
 }
 
+DRAIN_TYPENAME_DEF(Variable);
 
+/*
 template <>
 const std::string TypeName<Variable>::name("Variable");
-
+*/
 
 
 

@@ -35,12 +35,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 SourceODIM::SourceODIM(const std::string & source) : source(source) {
-	init();
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	init();
 	// mout.experimental("initialized: ", *this);
 
-	importEntries(source, ':', ','); //, LOG_NOTICE);
+	// importEntries(source, ':', ','); //, LOG_NOTICE);
+	NOD="abcdf";
 	// mout.experimental("imported: '", source, "' => ", *this);
 
 	setNOD();
@@ -51,7 +53,10 @@ SourceODIM::SourceODIM(const SourceODIM & s){
 
 	init();
 	// importCastableMap(s);
+
 	updateFromMap(s);
+	//NOD="abcdf";
+
 	//updateFromCastableMap(s);
 	setNOD();
 };
@@ -71,6 +76,8 @@ void SourceODIM::init(){
 
 const std::string & SourceODIM::getSourceCode() const {
 
+	return getPreferredSourceCode(NOD, RAD, WMO, WIGOS, ORG, CTY, PLC);
+
 	/*
 	for (const std::string & key : getKeyList()){
 		const drain::Variable & value = (*this)[key];
@@ -79,7 +86,7 @@ const std::string & SourceODIM::getSourceCode() const {
 		}
 	}
 	*/
-
+	/*
 	#define TRY_RETURN(s) if (!s.empty()) return s
 	TRY_RETURN(NOD); // TODO: add options for desired order
 	TRY_RETURN(RAD);
@@ -88,12 +95,12 @@ const std::string & SourceODIM::getSourceCode() const {
 	TRY_RETURN(ORG);
 	TRY_RETURN(CTY);
 	TRY_RETURN(PLC);
-	/*
-	for (const_iterator it = this->begin(); it != this->end(); ++it) {
-		if (it->second.getElementCount() > 0)
-			return it->second.toStrRef(); // cast (const std::string &)
-	}
+	const static std::string empty;
+	return empty;
 	*/
+}
+
+const std::string & SourceODIM::getPreferredSourceCode() const {
 	const static std::string empty;
 	return empty;
 }
@@ -105,24 +112,26 @@ const std::string & SourceODIM::getSourceCode() const {
  */
 void SourceODIM::setNOD(){
 
-	// drain::Logger mout("SourceODIM", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
 	if (NOD.empty()){
 		switch (get("WMO", 0)){
 		case 26422:
 			NOD = "lvrix";
 			break;
 		default:
-			static drain::RegExp nodRegExp("^[a-z]{5}$");
+			static const drain::RegExp nodRegExp("^[a-z]{5}$");
 			if (nodRegExp.test(CMT)){
 				NOD = CMT;
 			}
 			else {
-				drain::Logger mout(__FILE__, __FUNCTION__);
 				//NOD = getSourceCode();
 				//mout.toOStr() << "Site code 'NOD' not found, substituting with '" << NOD << "'" << mout.endl;
 				const std::string & code = getSourceCode();
+				//std::string  code = getSourceCode();
 				if (!code.empty()){
 					mout.info("Site code 'NOD' not found, using '" , code , "' as node indicator " );
+					mout.special(*this);
 				}
 				else {
 					mout.info(*this);
@@ -130,6 +139,9 @@ void SourceODIM::setNOD(){
 				}
 			}
 		}
+	}
+	else {
+		mout.debug("NOD value '", NOD,"' existed already");
 	}
 
 }

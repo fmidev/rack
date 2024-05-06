@@ -61,10 +61,12 @@ struct BaseHTML {
 		CTEXT=NodeXML<>::CTEXT,
 		STYLE=NodeXML<>::STYLE,
 		SCRIPT=NodeXML<>::SCRIPT,
-		HTML, HEAD, BODY, A, BASE, DIV, H1, H2, H3, IMG, LI, LINK, OL, P, SPAN, TABLE, TITLE, TR, TH, TD, UL}; // check CTEXT, maybe implement in XML
+		HTML,
+		HEAD, BASE, LINK, META, TITLE,
+		BODY, A, BR, CAPTION, DIV, H1, H2, H3, HR, IMG, LI, OL, P, SPAN, TABLE, TR, TH, TD, UL};
 
+	// check CTEXT, maybe implement in XML
 	// typedef NodeHTML xml_node_t;
-
 	// typedef TreeHTML tree_t;
 
 };
@@ -108,6 +110,19 @@ public:
 	}
 
 
+	/*
+	virtual
+	bool isSelfClosing() const;
+	*/
+
+	static inline
+	std::ostream & docToStream(std::ostream &ostr, const xml_tree_t &  tree){
+		ostr << "<!DOCTYPE html>\n";
+		toStream(ostr, tree);
+		return ostr;
+	}
+
+
 	static
 	const FileInfo fileInfo;
 
@@ -128,13 +143,18 @@ std::ostream & operator<<(std::ostream &ostr, const NodeHTML & node){
 }
 
 
+
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
-	ostr << "<!DOCTYPE html>\n";
+	//ostr << "<!DOCTYPE html>\n";
 	//return drain::NodeXML<>::docToStream(ostr, tree);
 	drain::NodeHTML::toStream(ostr, tree);
 	return ostr;
 }
+
+
+template <>
+bool NodeXML<BaseHTML::tag_t>::isSelfClosing() const;
 
 
 template <>
@@ -152,9 +172,9 @@ const char* TypeName<BaseHTML::tag_t>::get(){
 
 
 /** Example/ experimental template specif
+*/
 template <>
 TreeHTML & TreeHTML::addChild(const TreeHTML::key_t & key);
-*/
 
 
 
@@ -174,24 +194,36 @@ class TreeUtilsHTML {
 
 public:
 
-	static inline
-	drain::TreeHTML & addChild(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const std::string & key){
-		return elem[key](tagType);
-	}
+	/// Initialize a HTML object with "head" (including "title", "style") and "body" elements.
+	/**
+	 *  If a title is given, it will be also assigned as H1 element.
+	 */
+	static
+	drain::TreeHTML & initHtml(drain::TreeHTML & html, const std::string & key = "");
+
+
 
 	static inline
-	drain::TreeHTML & addChild(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType){
-		std::stringstream key("elem");
-		key.width(3);
-		key.fill('0');
-		key << elem.getChildren().size();
-		return addChild(elem, tagType, key.str());
+	drain::TreeHTML & getFirstElem(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType){
+		if (elem.hasChildren()){
+			return elem.getChildren().begin()->second; // last
+		}
+		else {
+			//
+			return elem.addChild()(tagType); // addChild(elem, tagType);
+		}
 	}
+
+
+
+	/// Add element of given type. The path key is generated automatically, unless given.
+	static
+	drain::TreeHTML & addChild(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const std::string & key);
 
 	template <class T>
 	static inline
 	drain::TreeHTML & appendElem(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const T & arg){
-		drain::TreeHTML & child = addChild(elem,tagType);
+		drain::TreeHTML & child = elem.addChild()(tagType); //  addChild(elem,tagType);
 		child = arg;
 		return child;
 	};
@@ -204,10 +236,56 @@ public:
 		return appendElem(elem, tagType, args...);
 	}
 
+	static inline
+	drain::TreeHTML & createTable(drain::TreeHTML & body, const std::list<std::string> & columnTitles){ // "var", "ref", no whitespace.
+
+		drain::TreeHTML & table =  body.addChild()(drain::NodeHTML::TABLE);   //       drain::TreeUtilsHTML::addChild(body, drain::NodeHTML::TABLE);
+
+		drain::TreeHTML & tr    = table["header"](drain::NodeHTML::TR);
+
+		for (const auto & title: columnTitles){
+			drain::TreeHTML & th = tr[title](drain::NodeHTML::TH);
+			th = title;
+		}
+
+		return table;
+	}
+
+	/// Creates a new table row (TD) using first row as a template.
+	/**
+	 *   \param T - HTML object, string or TAG type.
+	 */
+	template <class T>
+	static
+	// drain::TreeHTML & fillTableRow(drain::TreeHTML & table, drain::TreeHTML & tr, const std::string value = "");
+	drain::TreeHTML & fillTableRow(drain::TreeHTML & table, drain::TreeHTML & tr, const T & value){
+
+		for (const auto & entry: table.getChildren()){
+			// Using keys of the first row, create a new row. Often, it is the title row (TH elements).
+			for (const auto & e: entry.second.getChildren()){
+				tr[e.first]->setType(drain::NodeHTML::TD);
+				tr[e.first] = value;
+			}
+			// Return after investigating the first row:
+			return tr;
+		}
+
+		// If table is empty, also tr is.
+		return tr;
+
+	}
+
+	static
+	drain::TreeHTML & addTableRow(drain::TreeHTML & table, const std::string value = ""){
+		drain::TreeHTML & tr = table.addChild()(BaseHTML::TR); // addChild(table, BaseHTML::TR);
+		return fillTableRow(table, tr, value);
+	}
+
+
 protected:
 
 	// Dummy end... TODO: redesign logic, perhaps addChild();
-	template <class TR>
+	template <class T>
 	static inline
 	drain::TreeHTML & appendElem(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType){
 		if (elem.hasChildren()){

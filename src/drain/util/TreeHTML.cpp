@@ -48,7 +48,8 @@ NodeHTML::xmldoc_attrib_map_t NodeHTML::xml_node_t::xmldoc_attribs = {
 		{"data-remark", "html"}
 };
 
-
+// TODO: macro with lowerCaser
+// TODO: mark some non-self-closing like <script/>
 template <>
 std::map<NodeHTML::tag_t,std::string> NodeHTML::xml_node_t::tags = {
 	{drain::BaseHTML::UNDEFINED,	"undefined"},
@@ -61,13 +62,17 @@ std::map<NodeHTML::tag_t,std::string> NodeHTML::xml_node_t::tags = {
 	{drain::BaseHTML::BODY,	    "body"},
 	{drain::BaseHTML::A,	    "a"},
 	{drain::BaseHTML::BASE,	    "base"},
+	{drain::BaseHTML::BR,	    "br"},
+	{drain::BaseHTML::CAPTION,	"caption"},
 	{drain::BaseHTML::DIV,	    "div"},
 	{drain::BaseHTML::H1,	    "h1"},
 	{drain::BaseHTML::H2,	    "h2"},
 	{drain::BaseHTML::H3,	    "h3"},
+	{drain::BaseHTML::HR,	    "hr"},
 	{drain::BaseHTML::IMG,	    "img"},
 	{drain::BaseHTML::LI,  		"li"},
-	{drain::BaseHTML::LINK,  		"link"},
+	{drain::BaseHTML::LINK,  	"link"},
+	{drain::BaseHTML::META,  	"meta"},
 	{drain::BaseHTML::OL,  		"ol"},
 	{drain::BaseHTML::P,	    "p"},
 	{drain::BaseHTML::SPAN,	    "span"},
@@ -133,17 +138,103 @@ void NodeHTML::setType(const elem_t &t){
 	// link("style", style = "");
 }
 
+template <>
+bool NodeXML<BaseHTML::tag_t>::isSelfClosing() const {	/// Set of NOT self.closing tags.
+
+	/// Inclusive solution...
+	static
+	const std::set<BaseHTML::tag_t> l = {BaseHTML::BR, BaseHTML::HR};
+	return (l.find(this->getType()) != l.end()); // = found in the set
+
+	/*
+	static
+	const std::set<BaseHTML::tag_t> l = {BaseHTML::SCRIPT, BaseHTML::TITLE};
+	return (l.find(this->getType()) == l.end()); // not in the set
+	*/
+}
+
 
 const FileInfo NodeHTML::fileInfo("html");
 
 // Experimental
+
 template <>
 TreeHTML & TreeHTML::addChild(const TreeHTML::key_t & key){
+	if (key.empty()){
+		std::stringstream k("elem");
+		k.width(3);
+		k.fill('0');
+		k << getChildren().size();
+		return (*this)[k.str()];
+	}
+	else {
+		return (*this)[key];
+	}
+}
+
+/*
 	drain::Logger mout(__FILE__,__FUNCTION__);
 	mout.unimplemented("replace TreeHTML::addChild");
 	return *this;
+ */
+
+TreeHTML & TreeUtilsHTML::initHtml(drain::TreeHTML & html, const std::string & heading){
+
+	html(drain::NodeHTML::HTML);
+
+	drain::TreeHTML & head  = html["head"](drain::NodeHTML::HEAD);
+
+	drain::TreeHTML & encoding = head["encoding"](drain::BaseHTML::META);
+	encoding->set("charset", "utf-8");
+
+	// drain::TreeHTML & style =
+	head["style"](drain::BaseHTML::STYLE);
+
+	drain::TreeHTML & title = head["title"](drain::BaseHTML::TITLE);
+	title = heading;
+
+	drain::TreeHTML & body = html["body"](drain::BaseHTML::BODY);
+
+	if (!heading.empty()){
+		drain::TreeHTML & h1 = body["title"](drain::BaseHTML::H1);
+		h1 = heading;
+	}
+
+	return body;
 }
 
+drain::TreeHTML & TreeUtilsHTML::addChild(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const std::string & key){
+	if (!key.empty()){
+		return elem[key](tagType);
+	}
+	else {
+		std::stringstream k("elem");
+		k.width(3);
+		k.fill('0');
+		k << elem.getChildren().size();
+		return elem[k.str()](tagType);
+	}
+}
+
+
+/*
+drain::TreeHTML & TreeUtilsHTML::fillTableRow(drain::TreeHTML & table, drain::TreeHTML & tr, const std::string value){
+
+	for (const auto & entry: table.getChildren()){
+		// Using keys of the first row, create a new row. Often, it is the title row (TH elements).
+		for (const auto & e: entry.second.getChildren()){
+			tr[e.first]->setType(drain::NodeHTML::TD);
+			tr[e.first] = value;
+		}
+		// Return after investigating the first row:
+		return tr;
+	}
+
+	// If table is empty, also tr is.
+	return tr;
+
+}
+*/
 //int NodeXML::nextID = 0;
 
 

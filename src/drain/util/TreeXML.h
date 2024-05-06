@@ -250,6 +250,18 @@ public:
 		//return ((int)getType() == UNDEFINED);
 	}
 
+// protected:
+
+	// virtual
+	bool isSelfClosing() const {
+
+		static
+		const std::set<elem_t> l = {(elem_t)SCRIPT};
+		return (l.find(this->getType()) == l.end()); // not in the set
+
+		//return false;
+	}
+
 	// template <int N>
 	static inline
 	const std::string & getTag(unsigned int index){
@@ -390,6 +402,12 @@ public:
 	const drain::FlexibleVariable & get(const std::string & key) const {
 		return (*this)[key];
 	}
+
+	inline
+	drain::FlexibleVariable & get(const std::string & key){
+		return (*this)[key];
+	}
+
 
 	template <class V>
 	inline
@@ -948,6 +966,7 @@ template <class N>
 template <class T>
 std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const std::string & defaultTag, int indent){
 
+
 	const typename T::container_t & children = tree.getChildren();
 
 	// Indent
@@ -1022,7 +1041,8 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 	else if (tree->isCText()){
 		ostr << '\n';
 	}
-	else if ((!tree->typeIs((elem_t)STYLE)) && (!tree->typeIs((elem_t)SCRIPT)) &&
+	else if (tree.data.isSelfClosing() &&
+			(!tree->typeIs((elem_t)STYLE)) && (!tree->typeIs((elem_t)SCRIPT)) &&
 			(children.empty()) && tree->ctext.empty() ){ // OR no ctext!
 		// close TAG
 		ostr << "/>\n";

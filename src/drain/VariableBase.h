@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Castable.h"
 #include "CastableIterator.h"
 
+#include "VariableT.h"
 
 
 namespace drain {
@@ -71,16 +72,30 @@ public:
 	 *
 	 */
 	virtual inline // true also if ptr == null
-	bool isReference() const {
-		return (caster.ptr != (void *) &data[0]);
+	bool isLinking() const {
+		if (caster.ptr == nullptr){
+			return false;
+		}
+		else if (data.empty()){ // this is never true
+			return true;
+		}
+		else {
+			return (caster.ptr != (void *) &data[0]);
+			/*
+			if (caster.ptr != (void *) &data[0]){ // Debugging
+				std::cerr << __FILE__ << ':' << __LINE__ << ':' << __FUNCTION__ << " non-empty data [" << getTypeName() << "], but pointer discarding it " << std::endl;
+				std::cerr << __FILE__ << ':' << __LINE__ << ':' << __FUNCTION__ << " value: '" << *this << "'" << std::endl;
+				//info(std::cerr);
+			}
+			return false;
+			*/
+		}
+
 	}
 
-	/// Tells if the internal pointer can point to an external variable.
+	/// Tells if internal memory exists.
 	/**
-	 *
-	 */
-	/// Returns always true.
-	/**
+	 *   Note.
 	 *   In a drain::Variable,  \c ptr always points to data array, or to null, if the array is empty.
 	 *   In a drain::FlexibleVariable, \c ptr can point to owned data array or to an external (base type) variable.
 	 *
@@ -94,7 +109,7 @@ public:
 
 	/// Tells if the internal pointer can point to an external variable.
 	/**
-	 *  \return - \c true for Reference and Flexible, and \c false for Variable.
+	 *  \return - \c true for Reference and FlexibleVariable, and \c false for Variable.
 	 */
 	virtual inline
 	bool isLinkable() const {
@@ -203,7 +218,6 @@ protected:
 	 */
 
 	virtual
-	// bool
 	void updateSize(size_t elementCount);
 
 private:
@@ -216,18 +230,61 @@ private:
 
 private:
 
-
-
 	void updateIterators();
 
 };
+
+/*
+template <class T>
+class VariableT<T>;
+*/
 
 /**
  *  \tparam T - VariableBase for Variable
  */
 template <class V>
 class VariableInitializer : public V {
+
 protected:
+
+	/// Copy constructor handler
+	/*
+	template <class T>
+	void init(const VariableInitializer<V> & value) {
+		std::cerr << __FILE__ << ':' << __LINE__ << ':' << __FUNCTION__ << " " << value << '[' << typeid(T).name() << ']'<< std::endl;
+		this->reset();
+		this->assignCastable(value);
+	}
+	*/
+
+
+	/// Copy constructor handler
+	/**
+	 *     | V | F | R |
+	 *   V | % | % | % |
+	 *   F | V | F | R |
+	 *   R | V | F | R |
+	 */
+	template <class T>
+	void init(const VariableT<T> & value) {
+		// drain::Logger(__FILE__, __LINE__, __FUNCTION__).warn(drain::TypeName<VariableT<VariableInitializer<V> > >::str(),
+		// 		'(', drain::TypeName<VariableT<T> >::str(), ' ', value, ')');
+		this->reset();
+		this->assignCastable(value);
+	}
+
+	template <class T>
+	void init(VariableT<T> & value) {
+		// drain::Logger(__FILE__, __LINE__, __FUNCTION__).warn(drain::TypeName<VariableT<VariableInitializer<V> > >::str(),
+		// 		'(', drain::TypeName<VariableT<T> >::str(), ' ', value, ')');
+		this->reset();
+		if (value.isLinking() && this->isLinkable()){
+			this->relink(value);
+			// this->setPtr(value.getPtr(), value.getType(), value.getElementCount());
+		}
+		this->assignCastable(value);
+	}
+
 
 	/*
 	template <class D>
@@ -246,11 +303,27 @@ protected:
 	// Initialisation, using type of argument or explicit type argument.
 	// Copies type, data and separator char. Fails with Reference?
 	template <class T>
-	void init(const T & value, const std::type_info &t = typeid(void)) {
-		// std::cerr << __FILE__ << ':' << __LINE__ << " VariableBase::" << __FUNCTION__ << " " << value << std::endl;
+	void init(const T & value) {
+		// std::cerr << __FILE__ << ':' << __LINE__ << ':' << __FUNCTION__ << " " << value << '[' << typeid(T).name() << ']'<< std::endl;
+		// std::cerr << __LINE__ << " reset: " << std::endl;
 		this->reset();
-		this->setType(t);
+		// std::cerr << __LINE__ << " assign: " << std::endl;
 		this->assign(value); // Critical, direct assignment *this = value fails
+		// std::cerr << __LINE__ << " ...done " << std::endl;
+	}
+
+
+	template <class T>
+	void init(const T & value, const std::type_info &t) { //  = typeid(void)
+		std::cerr << __FILE__ << ':' << __LINE__ << ':' << __FUNCTION__ << " " << value << '[' << t.name() << ']' << std::endl;
+
+		std::cerr << __LINE__ << " reset: " << std::endl;
+		this->reset();
+		std::cerr << __LINE__ << " setType: " << std::endl;
+		this->setType(t);
+		std::cerr << __LINE__ << " assign: " << std::endl;
+		this->assign(value); // Critical, direct assignment *this = value fails
+		std::cerr << __LINE__ << " ...done " << std::endl;
 		// ;
 	}
 
@@ -258,6 +331,7 @@ protected:
 	/// Copies type, data and separator char.
 	inline
 	void init(const VariableBase & v) {
+		std::cerr << __FILE__ << ':' << __LINE__ << __FUNCTION__ << " " << v << std::endl;
 		this->reset();
 		this->outputSeparator = v.outputSeparator;
 		this->inputSeparator = v.inputSeparator;
@@ -267,6 +341,7 @@ protected:
 	/// Copies type, data and separator char.
 	inline
 	void init(const Castable & c) {
+		std::cerr << __FILE__ << ':' << __LINE__ << __FUNCTION__ << " " << c << std::endl;
 		this->reset();
 		//this->outputSeparator = c.outputSeparator;
 		//this->inputSeparator  = c.inputSeparator;
@@ -276,6 +351,7 @@ protected:
 	/// Copies type, data and separator char.
 	inline
 	void init(const char * s) {
+		// std::cerr << __FILE__ << ':' << __LINE__ << __FUNCTION__ << " " << s << std::endl;
 		this->reset();
 		this->assignString(s);
 	};
@@ -284,6 +360,7 @@ protected:
 	template<typename T>
 	inline
 	void init(std::initializer_list<T> l, const std::type_info &t = typeid(void)) {
+		// std::cerr << __FILE__ << ':' << __LINE__ << __FUNCTION__ << " " << std::endl;
 		this->reset();
 		this->setType(t);
 		this->assignContainer(l, true);
@@ -291,6 +368,7 @@ protected:
 
 	template <class ...TT>
 	void init(const TT& ...args){
+		std::cerr << __FILE__ << ':' << __LINE__ << __FUNCTION__ << " (variadic args)" << std::endl;
 		this->reset();
 		this->append(args...);
 	}

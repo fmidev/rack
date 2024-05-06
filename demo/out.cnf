@@ -1,9 +1,9 @@
-# Metadata for radar 'fiuta'
+# Metadata for radar 'abcdf'
 
 SOURCE="WMO:02870,RAD:FI47,PLC:Utajärvi,NOD:fiuta"
-NOD="fiuta"
-WMO="02870"
-PLC="Utajärvi"
+NOD="abcdf"
+WMO=""
+PLC=""
 LAT="64.7749"
 LON="26.3189"
 HEIGHT="118"

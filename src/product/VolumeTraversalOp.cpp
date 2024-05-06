@@ -112,32 +112,18 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 			mout.warn("path does not start with /dataset.. :", path, ", with selector: ", this->dataSelector);
 			continue;
 		}
-		/*
-		if (!pit->is(ODIMPathElem::DATASET)){
-			++pit;
-			if (pit == it->end()){
-				mout.warn("odd 2nd path elem (", *pit , "), with selector: " ,  this->dataSelector );
-			}
-		}
 
-		if (!pit->is(ODIMPathElem::DATASET)){
-			mout.warn("path does not start with /dataset.. :" , *it  , ", with selector: ",  this->dataSelector );
-		}
-		*/
-
-		//const ODIMPath & parent = *it;
-
-
-
-		mout.debug3("parent: " , parent );
+		mout.debug("parent: ", parent);
 
 		const drain::VariableMap & what = src[parent][ODIMPathElem::WHAT].data.attributes;
 		std::string datetime = what["startdate"].toStr() + "_" + what["starttime"].toStr();
 
 
 		const drain::VariableMap & where = src[parent][ODIMPathElem::WHERE].data.attributes;
-		mout.debug3("attribs " , where );
-		const double elangle = where["elangle"];
+		mout.debug("attribs ", where);
+
+		//const
+		double elangle = where["elangle"];
 
 		//if (srcDataSets.find(elangle) == srcDataSets.end()){
 		if (srcDataSets.find(datetime) == srcDataSets.end()){

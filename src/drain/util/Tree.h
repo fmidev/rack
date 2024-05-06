@@ -494,6 +494,12 @@ x	 *  \see clearData()
 		children.clear();
 	};
 
+	/*
+	void eraseChild(const key_t & key){
+		children.erase(key);
+	}
+	*/
+
 	/// Deletes a descendant node and hence its subtrees.
 	/**
 	 *  As opposite of clear() which focuses on a (current) node, this function refers to a descendant.
@@ -510,24 +516,26 @@ x	 *  \see clearData()
 		if (it == path.begin())
 			return;
 		else {
+			// Move 'it' back one step, to point to the leaf (the last element in chain).
 			--it;
-			// Now 'it' points to the leaf.
 
 			// Safe (identity) if it == path.begin():
 			tree_t & parent = this->get(path.begin(), it);
+
+			#ifdef DRAIN_TREE_ORDERED  // map
+
+			// TODO: generalize "find" for find first, etc
 			parent.children.erase(*it);
 
-			/*
-			if (it == path.begin()){ // path size = 1 (direct child path)
-				children.erase(*it); // native STL container method
-			}
-			else { // path size > 1
-				mout.deprecating("consider: tree(", path, ").clear()");
-				//mout.error("use: tree(", path, ").clear()");
-				tree_t & parent = this->get(path.begin(), it);
-				parent.children.erase(*it); // native STL container method
-			}
-			*/
+			#else
+
+			drain::Logger(__FILE__, __LINE__, __FUNCTION__).error("unimplemented code");
+
+
+			#endif
+
+			//parent.eraseChild(*it);
+
 		}
 
 	}
@@ -630,6 +638,13 @@ x	 *  \see clearData()
 		return hasPath(path.begin(), path.end());
 	}
 
+	// protect:
+	/*
+	key_t getNewChildKey() const {
+		// Consider error (unimplemented)
+		return key_t();
+	}
+	*/
 
 	/// Add a child node. If unordered and UNIQUE, reuse existing nodes.
 	/**
@@ -642,7 +657,7 @@ x	 *  \see clearData()
 	 *
 	 */
 	virtual
-	tree_t & addChild(const key_t & key){
+	tree_t & addChild(const key_t & key = key_t()){ // Added default empty 2024/04
 
 		if (key.empty()) // Should be exceptional... Warning?
 			return *this;

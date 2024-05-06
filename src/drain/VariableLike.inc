@@ -39,8 +39,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
+/*
 template <>
 bool VariableLike::requestType(const std::type_info & t);
+
 
 template <>
 bool VariableLike::suggestType(const std::type_info & t);
@@ -48,17 +50,21 @@ bool VariableLike::suggestType(const std::type_info & t);
 template <>
 bool VariableLike::requestSize(size_t elementCount);
 
-
 template <>
 const std::string TypeName<VariableLike>::name;
 
+*/
+
+
 
 /// drain:: default implementation for output formatting
+/*
 template <>
 inline
 std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::VariableLike & v, const SprinterLayout & layout){
 	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
 };
+*/
 
 template <>
 template <class D>

@@ -82,8 +82,11 @@ const std::type_info & TypeUtils::guessType(const std::string & value){
 }
 
 
+DRAIN_TYPENAME_DEF(bool);
+DRAIN_TYPENAME_DEF(char);
+DRAIN_TYPENAME_DEF(unsigned char);
 
-
+/*
 template <>
 const std::string TypeName<bool>::name("bool");
 
@@ -92,6 +95,7 @@ const std::string TypeName<char>::name("char");
 
 template <>
 const std::string TypeName<unsigned char>::name("unsigned-char");
+*/
 
 template <>
 const std::string TypeName<short>::name("short");

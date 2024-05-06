@@ -152,7 +152,7 @@ public:
 	void clearVariables(){
 		iterator it = this->begin();
 		while (true){
-			if (!it->second.isReference()){
+			if (!it->second.isLinking()){
 				iterator dit = it;
 				++it;
 				this->erase(dit);

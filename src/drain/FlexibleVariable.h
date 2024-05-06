@@ -29,18 +29,6 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-/*
-#include <typeinfo>
-#include <stdexcept>
-#include <iostream>
-
-#include "Convert.h"
-#include "Referencer.h"
-#include "SmartMap.h"
-#include "Sprinter.h"
-
-#include "VariableLike.h"
-*/
 
 #ifndef DRAIN_FLEXIBLE_VARIABLE
 #define DRAIN_FLEXIBLE_VARIABLE
@@ -53,23 +41,51 @@ namespace drain {
 
 /// Value container supporting dynamic type with own memory and optional linking (referencing) of external variables.
 /**
- *   drain::Variable has memory of its own, and cannot be linked to external variables.
+ *   drain::FlexibleVariable combines properties of drain::Variable and drain::Reference : it has memory of its own but
+ *   can also be linked to external variables.
  *
- *   This class combines Reference and Variable, illustrated below
  *
- *   \copydoc drain::VariableT
+\section ctors-flexvar FlexibleVariable constructors
+
+\htmlinclude  VariableT-ctors-FlexibleVariable.html
+
+\section assignments-flexvar FlexibleVariable assignments
+
+\htmlinclude  VariableT-assign-FlexibleVariable.html
+
+
+\subsection Variable Variable
  *
+ *
+ *   See the combined review of drain::Variable, drain::Reference and drain::FlexibleVariable in the documentation of template drain::VariableT .
+ *
+ *   \see VariableT
  *   \see Reference
  *   \see Variable
- *   \see FlexibleVariable
  */
 
-//typedef VariableT<ReferenceT<Variable> >  FlexibleVariable;
 typedef VariableT<VariableInitializer<ReferenceT<VariableBase> > >  FlexibleVariable;
 
-// Override for "ambivalent" FlexibleVariable
+
+
+/// Redefine for "ambivalent" FlexibleVariable: indicate if local or ref
 template <>
 void FlexibleVariable::info(std::ostream & ostr) const;
+
+template <>
+inline
+std::ostream & Sprinter::toStream(std::ostream & ostr, const FlexibleVariable & v, const SprinterLayout & layout){
+	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
+};
+
+
+DRAIN_TYPENAME(FlexibleVariable);
+
+/*
+template <>
+const std::string TypeName<FlexibleVariable>::name;
+*/
+
 
 /*
 template <>
