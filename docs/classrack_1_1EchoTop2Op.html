@@ -71,7 +71,8 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classrack_1_1EchoTop2Op-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">EchoTop2Op Class Reference</div>  </div>
@@ -98,7 +99,7 @@ Collaboration diagram for EchoTop2Op:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1EchoTop2Op__coll__graph.png" border="0" usemap="#aEchoTop2Op_coll__map" alt="Collaboration graph"/></div>
 <map name="aEchoTop2Op_coll__map" id="aEchoTop2Op_coll__map">
-<area shape="rect" title=" " alt="" coords="347,911,449,937"/>
+<area shape="rect" title=" " alt="" coords="446,911,547,937"/>
 <area shape="rect" href="classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="265,821,387,848"/>
 <area shape="rect" href="classrack_1_1VolumeOp.html" title=" " alt="" coords="40,732,228,759"/>
 <area shape="rect" href="classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images." alt="" coords="7,641,223,683"/>
@@ -112,8 +113,10 @@ Collaboration diagram for EchoTop2Op:</div>
 <area shape="rect" title=" " alt="" coords="5,5,225,32"/>
 <area shape="rect" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="260,732,392,759"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="248,641,412,683"/>
-<area shape="rect" href="structrack_1_1ReferencePoint.html" title=" " alt="" coords="425,821,547,848"/>
+<area shape="rect" href="structrack_1_1ReferencePoint.html" title=" " alt="" coords="436,821,557,848"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="417,732,585,759"/>
+<area shape="rect" href="structrack_1_1MethodWeights.html" title=" " alt="" coords="582,821,779,848"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="613,732,748,759"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -126,7 +129,7 @@ Public Types</h2></td></tr>
 , <a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa7909534122db3c774f3da834e175cabb">UNDERSHOOTING</a> =96
 , <br />
 &#160;&#160;<a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9faa9b02b1c7a2490d51bf8a4cfd08052e9">OVERSHOOTING</a> =128
-, <a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fafe4722ca9de2cfd88591a69de2430c0a">WEAK</a> =192
+, <b>WEAK</b> =192
 , <a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa4ce80ac0810d07d2c84186397ef9eadc">INTERPOLATION</a> =250
 <br />
  }</td></tr>
@@ -270,7 +273,7 @@ template&lt;class T &gt; </td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#ac6547b34b73e2b3cf791d3a32f60fd8b">setParameter</a> (const std::string &amp;p, const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;value)</td></tr>
 <tr class="memdesc:ac6547b34b73e2b3cf791d3a32f60fd8b inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a single parameter. <br /></td></tr>
 <tr class="separator:ac6547b34b73e2b3cf791d3a32f60fd8b inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a895a0c650be2b56c7ff1066870aeaab5 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a895a0c650be2b56c7ff1066870aeaab5">setParameter</a> (const std::string &amp;p, const <a class="el" href="namespacedrain.html#a467fb6f17416e6b9ac0fd7796ec103ef">Variable</a> &amp;value)</td></tr>
+<tr class="memitem:a895a0c650be2b56c7ff1066870aeaab5 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a895a0c650be2b56c7ff1066870aeaab5">setParameter</a> (const std::string &amp;p, const <a class="el" href="namespacedrain.html#a772ac030345c7f9ab62caf5152ca65eb">Variable</a> &amp;value)</td></tr>
 <tr class="separator:a895a0c650be2b56c7ff1066870aeaab5 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49b6bf1926e4232c62a5ed9532a347cd inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="a49b6bf1926e4232c62a5ed9532a347cd"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a49b6bf1926e4232c62a5ed9532a347cd">setParameter</a> (const std::string &amp;p, const <a class="el" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203">Reference</a> &amp;value)</td></tr>
@@ -293,20 +296,61 @@ template&lt;class F &gt; </td></tr>
 virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, bool compact=true) const</td></tr>
 <tr class="separator:a6c0f6b9b2afe4d8944e3dbd23533dbda inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a07535052efcff644818464b8932196a2"><td class="memItemLeft" align="right" valign="top"><a id="a07535052efcff644818464b8932196a2"></a>
+static double&#160;</td><td class="memItemRight" valign="bottom"><b>getSlope</b> (double heightStronger, double heightWeaker, double reflectivityStronger, double reflectivityWeaker)</td></tr>
+<tr class="separator:a07535052efcff644818464b8932196a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
 <tr class="memitem:afcfbedec6ebde62c6a091ce335836ef1"><td class="memItemLeft" align="right" valign="top"><a id="afcfbedec6ebde62c6a091ce335836ef1"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>threshold</b> = 0.0</td></tr>
 <tr class="separator:afcfbedec6ebde62c6a091ce335836ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc3d736181269d8b861d6ac4d031ca30"><td class="memItemLeft" align="right" valign="top"><a id="acc3d736181269d8b861d6ac4d031ca30"></a>
+<a class="el" href="structrack_1_1MethodWeights.html">MethodWeights</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>weights</b></td></tr>
+<tr class="separator:acc3d736181269d8b861d6ac4d031ca30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14d24f30d061b7de8221d63145916be7"><td class="memItemLeft" align="right" valign="top"><a id="a14d24f30d061b7de8221d63145916be7"></a>
 <a class="el" href="structrack_1_1ReferencePoint.html">ReferencePoint</a>&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = {-50.0, 15000.0}</td></tr>
 <tr class="separator:a14d24f30d061b7de8221d63145916be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48c241ef72ee674569d5b46c7343813b"><td class="memItemLeft" align="right" valign="top"><a id="a48c241ef72ee674569d5b46c7343813b"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>dryTopDBZ</b> = NAN</td></tr>
-<tr class="separator:a48c241ef72ee674569d5b46c7343813b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0517a940bc2614a3ff11fb5ed30dd1e9"><td class="memItemLeft" align="right" valign="top"><a id="a0517a940bc2614a3ff11fb5ed30dd1e9"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EchoTop2Op.html#a0517a940bc2614a3ff11fb5ed30dd1e9">undetectReflectivity</a> = NAN</td></tr>
+<tr class="memdesc:a0517a940bc2614a3ff11fb5ed30dd1e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unless NaN, use the value like a measured dBZ. <br /></td></tr>
+<tr class="separator:a0517a940bc2614a3ff11fb5ed30dd1e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84c21d35902f36fde4db49c6db2bee7e"><td class="memItemLeft" align="right" valign="top"><a id="a84c21d35902f36fde4db49c6db2bee7e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>EXTENDED</b> = false</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>EXTENDED</b> = true</td></tr>
 <tr class="separator:a84c21d35902f36fde4db49c6db2bee7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
+<tr class="memitem:a92bac8f6fc745bee78b290dcc8de8392 inherit pro_attribs_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="a92bac8f6fc745bee78b290dcc8de8392"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td></tr>
+<tr class="separator:a92bac8f6fc745bee78b290dcc8de8392 inherit pro_attribs_classrack_1_1PolarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classdrain_1_1image_1_1BinaryPixelVectorOp"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1image_1_1BinaryPixelVectorOp')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1image_1_1BinaryPixelVectorOp.html">BinaryPixelVectorOp&lt; MultiplicationFunctor &gt;</a></td></tr>
+<tr class="memitem:a4941d3ddd04ddf1daf73d9ddeb657550 inherit pro_attribs_classdrain_1_1image_1_1BinaryPixelVectorOp"><td class="memItemLeft" align="right" valign="top"><a id="a4941d3ddd04ddf1daf73d9ddeb657550"></a>
+<a class="el" href="classdrain_1_1MultiplicationFunctor.html">MultiplicationFunctor</a>&#160;</td><td class="memItemRight" valign="bottom"><b>binaryFunctor</b></td></tr>
+<tr class="separator:a4941d3ddd04ddf1daf73d9ddeb657550 inherit pro_attribs_classdrain_1_1image_1_1BinaryPixelVectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1image_1_1PixelVectorOp')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1image_1_1PixelVectorOp.html">PixelVectorOp</a></td></tr>
+<tr class="memitem:acb6ff9778030a1b56e1836590849537e inherit pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memItemLeft" align="right" valign="top"><a id="acb6ff9778030a1b56e1836590849537e"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>rescale</b></td></tr>
+<tr class="separator:acb6ff9778030a1b56e1836590849537e inherit pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0ea985a11b829fd21d81adcda0d0930 inherit pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memItemLeft" align="right" valign="top"><a id="ae0ea985a11b829fd21d81adcda0d0930"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>POW</b></td></tr>
+<tr class="separator:ae0ea985a11b829fd21d81adcda0d0930 inherit pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d7fc23b240ece340f8175805fac8a6f inherit pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memItemLeft" align="right" valign="top"><a id="a8d7fc23b240ece340f8175805fac8a6f"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>INVPOW</b></td></tr>
+<tr class="separator:a8d7fc23b240ece340f8175805fac8a6f inherit pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
+<tr class="memitem:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="ac673bc430bdc3fdaa09f7becf98ef267"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
+<tr class="separator:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f6aed3e388afb968642d5e6199f767f inherit pro_attribs_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="a0f6aed3e388afb968642d5e6199f767f"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>description</b></td></tr>
+<tr class="separator:a0f6aed3e388afb968642d5e6199f767f inherit pro_attribs_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="ac7902d0c7488500c9f16503fd3889604"></a>
+<a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a>&#160;</td><td class="memItemRight" valign="bottom"><b>parameters</b></td></tr>
+<tr class="separator:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1image_1_1PixelVectorOp"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1image_1_1PixelVectorOp')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1image_1_1PixelVectorOp.html">PixelVectorOp</a></td></tr>
 <tr class="memitem:aa33a23e4346bc2e4430f9bd993303f82 inherit pub_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memItemLeft" align="right" valign="top"><a id="aa33a23e4346bc2e4430f9bd993303f82"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>functorDef</b></td></tr>
@@ -315,9 +359,6 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>functorDef</b>
 <tr class="memitem:af94a57331d631c8c8f4193150787ef65 inherit pub_attribs_classdrain_1_1image_1_1ImageMod"><td class="memItemLeft" align="right" valign="top"><a id="af94a57331d631c8c8f4193150787ef65"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>physicalScale</b></td></tr>
 <tr class="separator:af94a57331d631c8c8f4193150787ef65 inherit pub_attribs_classdrain_1_1image_1_1ImageMod"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_attribs_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
 <tr class="memitem:ae31e7761befc43085af74869862df2db inherit pub_static_attribs_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="ae31e7761befc43085af74869862df2db"></a>
 static const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">CoordinatePolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>polarCoordPolicy</b></td></tr>
@@ -415,34 +456,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a66fe29f91162e731193e78ce1aad2781 inherit pro_static_methods_classdrain_1_1image_1_1ImageOp"><td class="memItemLeft" align="right" valign="top"><a id="a66fe29f91162e731193e78ce1aad2781"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>adaptCoordinateHandler</b> (const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;src, <a class="el" href="classdrain_1_1image_1_1CoordinateHandler2D.html">CoordinateHandler2D</a> &amp;handler)</td></tr>
 <tr class="separator:a66fe29f91162e731193e78ce1aad2781 inherit pro_static_methods_classdrain_1_1image_1_1ImageOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
-<tr class="memitem:a92bac8f6fc745bee78b290dcc8de8392 inherit pro_attribs_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="a92bac8f6fc745bee78b290dcc8de8392"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td></tr>
-<tr class="separator:a92bac8f6fc745bee78b290dcc8de8392 inherit pro_attribs_classrack_1_1PolarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classdrain_1_1image_1_1BinaryPixelVectorOp"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1image_1_1BinaryPixelVectorOp')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1image_1_1BinaryPixelVectorOp.html">BinaryPixelVectorOp&lt; MultiplicationFunctor &gt;</a></td></tr>
-<tr class="memitem:a4941d3ddd04ddf1daf73d9ddeb657550 inherit pro_attribs_classdrain_1_1image_1_1BinaryPixelVectorOp"><td class="memItemLeft" align="right" valign="top"><a id="a4941d3ddd04ddf1daf73d9ddeb657550"></a>
-<a class="el" href="classdrain_1_1MultiplicationFunctor.html">MultiplicationFunctor</a>&#160;</td><td class="memItemRight" valign="bottom"><b>binaryFunctor</b></td></tr>
-<tr class="separator:a4941d3ddd04ddf1daf73d9ddeb657550 inherit pro_attribs_classdrain_1_1image_1_1BinaryPixelVectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1image_1_1PixelVectorOp')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1image_1_1PixelVectorOp.html">PixelVectorOp</a></td></tr>
-<tr class="memitem:acb6ff9778030a1b56e1836590849537e inherit pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memItemLeft" align="right" valign="top"><a id="acb6ff9778030a1b56e1836590849537e"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>rescale</b></td></tr>
-<tr class="separator:acb6ff9778030a1b56e1836590849537e inherit pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0ea985a11b829fd21d81adcda0d0930 inherit pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memItemLeft" align="right" valign="top"><a id="ae0ea985a11b829fd21d81adcda0d0930"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>POW</b></td></tr>
-<tr class="separator:ae0ea985a11b829fd21d81adcda0d0930 inherit pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d7fc23b240ece340f8175805fac8a6f inherit pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memItemLeft" align="right" valign="top"><a id="a8d7fc23b240ece340f8175805fac8a6f"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>INVPOW</b></td></tr>
-<tr class="separator:a8d7fc23b240ece340f8175805fac8a6f inherit pro_attribs_classdrain_1_1image_1_1PixelVectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
-<tr class="memitem:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="ac673bc430bdc3fdaa09f7becf98ef267"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
-<tr class="separator:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f6aed3e388afb968642d5e6199f767f inherit pro_attribs_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="a0f6aed3e388afb968642d5e6199f767f"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>description</b></td></tr>
-<tr class="separator:a0f6aed3e388afb968642d5e6199f767f inherit pro_attribs_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="ac7902d0c7488500c9f16503fd3889604"></a>
-<a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a>&#160;</td><td class="memItemRight" valign="bottom"><b>parameters</b></td></tr>
-<tr class="separator:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="afcfbf201e8c1d42a402458d9257acb9f"></a>
@@ -469,9 +482,8 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 </td></tr>
 <tr><td class="fieldname"><a id="afcfbf201e8c1d42a402458d9257acb9faa9b02b1c7a2490d51bf8a4cfd08052e9"></a>OVERSHOOTING&#160;</td><td class="fielddoc"><p>The bin exceeding the Z threshold has an <code>undetect</code> ("dry") bin above -&gt; replace <code>undetect</code> with low Z (dB) </p>
 </td></tr>
-<tr><td class="fieldname"><a id="afcfbf201e8c1d42a402458d9257acb9fafe4722ca9de2cfd88591a69de2430c0a"></a>WEAK&#160;</td><td class="fielddoc"><p>Echoes only below threshold detected </p>
-</td></tr>
-<tr><td class="fieldname"><a id="afcfbf201e8c1d42a402458d9257acb9fa4ce80ac0810d07d2c84186397ef9eadc"></a>INTERPOLATION&#160;</td><td class="fielddoc"><p>The threshold value was passed between adjacent beams, hence can be interpolated </p>
+<tr><td class="fieldname"><a id="afcfbf201e8c1d42a402458d9257acb9fa4ce80ac0810d07d2c84186397ef9eadc"></a>INTERPOLATION&#160;</td><td class="fielddoc"><p>Echoes only below threshold detected. </p>
+<p>The threshold value was passed between adjacent beams, hence can be interpolated </p>
 </td></tr>
 </table>
 
@@ -503,8 +515,11 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> uses kilometres...s</p>
 <p>Shared, because input data MAY contain different encoding(s)</p>
+<p>Pointer to data array (DBZH)</p>
+<p>Index of the bin at the ground distance D of all the elevation beams considered</p>
+<p>Height from the ground surface (from radar site, ASL)</p>
+<p>Reflectivity observed at the current bin. (Needed?)</p>
 <p>Pointer to the measurement</p>
 <ul>
 <li>lower than the given threshold...</li>
@@ -519,8 +534,8 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <li>below the last measurement reaching the threshold</li>
 <li>the highest possible</li>
 </ul>
-<p>Actual azimuthal loop: [0,360[ degrees</p>
-<p>Finally, compute the echo top altitude.</p>
+<p>Azimuthal loop: [0,360[ degrees</p>
+<p>Main: compute the echo top altitude.</p>
 
 </div>
 </div>

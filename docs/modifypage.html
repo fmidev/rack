@@ -149,6 +149,12 @@ Deleting data</h2>
 <div class="line"><span class="preprocessor"># Delete data[i] groups containing VRAD in 1.0 degree sweeps and above</span></div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --<span class="keyword">delete</span> elangle=1.0:90,quantity=VRAD -o volume-modified.h5</div>
 <div class="line"> </div>
+<div class="line"><span class="preprocessor"># Delete dual-PRF measurement data - leaving dataset groups</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --<span class="keyword">delete</span> prf=DOUBLE -o volume-modified.h5</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># Delete dual-PRF measurement data - also dataset groups</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --<span class="keyword">delete</span> dataset:,prf=DOUBLE -o volume-modified.h5</div>
+<div class="line"> </div>
 <div class="line"><span class="preprocessor"># Delete actual data arrays</span></div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --<span class="keyword">delete</span> data -o volume-modified.h5</div>
 <div class="line"> </div>

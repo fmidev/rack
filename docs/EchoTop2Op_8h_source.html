@@ -126,73 +126,102 @@ $(function() {
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    };</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">struct BeamWeights : public drain::UniTuple&lt;double,5&gt; {</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">    double &amp; interpolation;</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">    double &amp; overShooting; // beam over Z &lt; Zt</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">    double &amp; underShooting; // highest beam Zt</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">    double &amp; weak;</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">    double &amp; clear;</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">    BeamWeights(double reflectivity=0.0, double height=0.0) : reflectivity(this-&gt;next()), height(this-&gt;next()){</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">        this-&gt;set(reflectivity, height);</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">    };</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">    BeamWeights(const BeamWeights &amp; p): reflectivity(this-&gt;next()), height(this-&gt;next()){</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">        this-&gt;set(p);</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">    };</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">}</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html">   80</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1EchoTop2Op.html">EchoTop2Op</a>: <span class="keyword">public</span> <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a> {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9f">   85</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa605159e8a4c32319fd69b5d151369d93">   87</a></span>&#160;        UNDEFINED=0,</div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa2fd6f336d08340583bd620a7f5694c90">   89</a></span>&#160;        ERROR=16,</div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa1e1a4aba20a5a009e616cbc8fad33ac7">   91</a></span>&#160;        CLEAR=64,</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa7909534122db3c774f3da834e175cabb">   93</a></span>&#160;        UNDERSHOOTING=96,</div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9faa9b02b1c7a2490d51bf8a4cfd08052e9">   95</a></span>&#160;        OVERSHOOTING=128,</div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fafe4722ca9de2cfd88591a69de2430c0a">   97</a></span>&#160;        WEAK=192,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        INTERPOLATION=250</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa4ce80ac0810d07d2c84186397ef9eadc">  100</a></span>&#160;    } Reliability;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger&lt;drain::SingleFlagger&lt;Reliability&gt;</a> &gt; reliabilityFlagger;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <a class="code" href="classrack_1_1EchoTop2Op.html">EchoTop2Op</a>(<span class="keywordtype">double</span> threshold = 20.0);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    ~<a class="code" href="classrack_1_1EchoTop2Op.html">EchoTop2Op</a>(){};</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="comment">// TEST</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordtype">void</span> computeSingleProduct(<span class="keyword">const</span> DataSetMap&lt;src_t&gt; &amp; srcSweeps, DataSet&lt;dst_t&gt; &amp; dstProduct) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordtype">double</span> threshold = 0.0;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    ReferencePoint reference = {-50.0, 15000.0};</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordtype">double</span> dryTopDBZ = NAN;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="structrack_1_1MethodWeights.html">   59</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structrack_1_1MethodWeights.html">MethodWeights</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1UniTuple.html">drain::UniTuple</a>&lt;T,5&gt; {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="structrack_1_1MethodWeights.html#ae19762ba2ddb687c0cb880809b6293f0">   62</a></span>&#160;    T &amp; <a class="code" href="structrack_1_1MethodWeights.html#ae19762ba2ddb687c0cb880809b6293f0">interpolation</a>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    T &amp; overShooting; <span class="comment">// beam over Z &lt; Zt</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    T &amp; underShooting; <span class="comment">// highest beam Z &gt; Zt</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    T &amp; weak;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    T &amp; clear;   <span class="comment">// same as undetect, but needs a quality index value</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    T error = 0; <span class="comment">// needs a quality index value (0)</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="structrack_1_1MethodWeights.html">MethodWeights</a>() : interpolation(this-&gt;next()), overShooting(this-&gt;next()), underShooting(this-&gt;next()), weak(this-&gt;next()), clear(this-&gt;next()){</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    };</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... TT&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="structrack_1_1MethodWeights.html">MethodWeights</a>(<span class="keyword">const</span> TT &amp;... args) : interpolation(this-&gt;next()), overShooting(this-&gt;next()), underShooting(this-&gt;next()), weak(this-&gt;next()), clear(this-&gt;next()){</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        this-&gt;set(args...);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    };</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    MethodWeights(<span class="keyword">const</span> MethodWeights &amp; p): <a class="code" href="namespacedrain.html">drain</a>::UniTuple&lt;double,5&gt;(p),</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            interpolation(this-&gt;next()), overShooting(this-&gt;next()), underShooting(this-&gt;next()), weak(this-&gt;next()), clear(this-&gt;next()) {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    };</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">    bool useInterpolation() const {</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">        return (interpolation &gt; overShooting);</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;};</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html">   97</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1EchoTop2Op.html">EchoTop2Op</a>: <span class="keyword">public</span> <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a> {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9f">  102</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa605159e8a4c32319fd69b5d151369d93">  104</a></span>&#160;        UNDEFINED=0,</div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa2fd6f336d08340583bd620a7f5694c90">  106</a></span>&#160;        ERROR=16,</div>
+<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa1e1a4aba20a5a009e616cbc8fad33ac7">  108</a></span>&#160;        CLEAR=64,</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa7909534122db3c774f3da834e175cabb">  110</a></span>&#160;        UNDERSHOOTING=96,</div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9faa9b02b1c7a2490d51bf8a4cfd08052e9">  112</a></span>&#160;        OVERSHOOTING=128,</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        WEAK=192, </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        INTERPOLATION=250</div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa4ce80ac0810d07d2c84186397ef9eadc">  116</a></span>&#160;    } Reliability;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordtype">bool</span> EXTENDED = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger&lt;drain::SingleFlagger&lt;Reliability&gt;</a> &gt; reliabilityFlagger;</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;};</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;} <span class="comment">// rack::</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <a class="code" href="classrack_1_1EchoTop2Op.html">EchoTop2Op</a>(<span class="keywordtype">double</span> threshold = 20.0);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    ~<a class="code" href="classrack_1_1EchoTop2Op.html">EchoTop2Op</a>(){};</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="comment">// TEST</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordtype">void</span> computeSingleProduct(<span class="keyword">const</span> DataSetMap&lt;src_t&gt; &amp; srcSweeps, DataSet&lt;dst_t&gt; &amp; dstProduct) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">double</span> getSlope(<span class="keywordtype">double</span> heightStronger, <span class="keywordtype">double</span> heightWeaker, <span class="keywordtype">double</span> reflectivityStronger, <span class="keywordtype">double</span> reflectivityWeaker){</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <span class="keywordflow">return</span> (heightStronger - heightWeaker) / (reflectivityStronger - reflectivityWeaker);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    }</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordtype">double</span> threshold = 0.0;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    MethodWeights&lt;double&gt; weights;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    ReferencePoint reference = {-50.0, 15000.0};</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
+<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="classrack_1_1EchoTop2Op.html#a0517a940bc2614a3ff11fb5ed30dd1e9">  143</a></span>&#160;    <span class="keywordtype">double</span> undetectReflectivity = NAN;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="comment">//bool EXTENDED = false;</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordtype">bool</span> EXTENDED = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;};</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;} <span class="comment">// rack::</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdrain_1_1EnumFlagger_html"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a></div><div class="ttdoc">Flagger accepting values of enum type E.</div><div class="ttdef"><b>Definition:</b> Flags.h:712</div></div>
-<div class="ttc" id="aclassdrain_1_1UniTuple_html"><div class="ttname"><a href="classdrain_1_1UniTuple.html">drain::UniTuple</a></div><div class="ttdoc">Tuple of N elements of type T.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:56</div></div>
-<div class="ttc" id="aclassrack_1_1EchoTop2Op_html"><div class="ttname"><a href="classrack_1_1EchoTop2Op.html">rack::EchoTop2Op</a></div><div class="ttdef"><b>Definition:</b> EchoTop2Op.h:80</div></div>
+<div class="ttc" id="aclassdrain_1_1UniTuple_html"><div class="ttname"><a href="classdrain_1_1UniTuple.html">drain::UniTuple</a></div><div class="ttdoc">Tuple of N elements of type T.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:63</div></div>
+<div class="ttc" id="aclassrack_1_1EchoTop2Op_html"><div class="ttname"><a href="classrack_1_1EchoTop2Op.html">rack::EchoTop2Op</a></div><div class="ttdef"><b>Definition:</b> EchoTop2Op.h:97</div></div>
 <div class="ttc" id="aclassrack_1_1PolarProductOp_html"><div class="ttname"><a href="classrack_1_1PolarProductOp.html">rack::PolarProductOp</a></div><div class="ttdoc">Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input.</div><div class="ttdef"><b>Definition:</b> PolarProductOp.h:61</div></div>
 <div class="ttc" id="anamespacedrain_1_1image_html"><div class="ttname"><a href="namespacedrain_1_1image.html">drain::image</a></div><div class="ttdoc">Namespace for images and image processing tools.</div><div class="ttdef"><b>Definition:</b> AccumulationArray.cpp:45</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
+<div class="ttc" id="astructrack_1_1MethodWeights_html"><div class="ttname"><a href="structrack_1_1MethodWeights.html">rack::MethodWeights</a></div><div class="ttdef"><b>Definition:</b> EchoTop2Op.h:59</div></div>
+<div class="ttc" id="astructrack_1_1MethodWeights_html_ae19762ba2ddb687c0cb880809b6293f0"><div class="ttname"><a href="structrack_1_1MethodWeights.html#ae19762ba2ddb687c0cb880809b6293f0">rack::MethodWeights::interpolation</a></div><div class="ttdeci">T &amp; interpolation</div><div class="ttdoc">Highest priority.</div><div class="ttdef"><b>Definition:</b> EchoTop2Op.h:62</div></div>
 <div class="ttc" id="astructrack_1_1ReferencePoint_html"><div class="ttname"><a href="structrack_1_1ReferencePoint.html">rack::ReferencePoint</a></div><div class="ttdef"><b>Definition:</b> EchoTop2Op.h:41</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

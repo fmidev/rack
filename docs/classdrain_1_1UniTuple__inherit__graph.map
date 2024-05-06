@@ -1,14 +1,15 @@
 <map id="UniTuple&lt; T, N &gt;" name="UniTuple&lt; T, N &gt;">
-<area shape="rect" id="node1" title="Tuple of N elements of type T." alt="" coords="5,233,140,260"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Bidirectional.html" title=" " alt="" coords="188,5,351,32"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="205,56,333,83"/>
-<area shape="rect" id="node4" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="209,107,329,133"/>
-<area shape="rect" id="node5" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="191,157,348,184"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title=" " alt="" coords="208,208,331,235"/>
-<area shape="rect" id="node7" href="$classdrain_1_1Range.html" title=" " alt="" coords="219,259,320,285"/>
-<area shape="rect" id="node8" href="$classdrain_1_1Range.html" title=" " alt="" coords="214,309,325,336"/>
-<area shape="rect" id="node9" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="189,360,350,387"/>
-<area shape="rect" id="node11" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="196,411,343,437"/>
-<area shape="rect" id="node12" href="$structdrain_1_1image_1_1Decay4.html" title=" " alt="" coords="197,461,342,488"/>
-<area shape="rect" id="node10" href="$classdrain_1_1BBox.html" title="Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ..." alt="" coords="399,360,455,387"/>
+<area shape="rect" id="node1" title="Tuple of N elements of type T." alt="" coords="5,259,140,285"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Bidirectional.html" title=" " alt="" coords="205,5,368,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="223,56,351,83"/>
+<area shape="rect" id="node4" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="227,107,347,133"/>
+<area shape="rect" id="node5" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="208,157,365,184"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title=" " alt="" coords="225,208,348,235"/>
+<area shape="rect" id="node7" href="$classdrain_1_1Range.html" title=" " alt="" coords="236,259,337,285"/>
+<area shape="rect" id="node8" href="$classdrain_1_1Range.html" title=" " alt="" coords="231,309,342,336"/>
+<area shape="rect" id="node9" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="206,360,367,387"/>
+<area shape="rect" id="node11" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="213,411,360,437"/>
+<area shape="rect" id="node12" href="$structdrain_1_1image_1_1Decay4.html" title=" " alt="" coords="214,461,359,488"/>
+<area shape="rect" id="node13" href="$structrack_1_1MethodWeights.html" title=" " alt="" coords="188,512,385,539"/>
+<area shape="rect" id="node10" href="$classdrain_1_1BBox.html" title="Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ..." alt="" coords="433,360,489,387"/>
 </map>

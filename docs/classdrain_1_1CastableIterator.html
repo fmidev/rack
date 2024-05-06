@@ -176,17 +176,13 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a8239f5ccd2eb7cf43fe0e729685717e4 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a8239f5ccd2eb7cf43fe0e729685717e4"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>updateSize</b> (size_t elems)</td></tr>
 <tr class="separator:a8239f5ccd2eb7cf43fe0e729685717e4 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5082bad072d8c8b1671077cb66fdf63b inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a5082bad072d8c8b1671077cb66fdf63b"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a5082bad072d8c8b1671077cb66fdf63b">suggestType</a> (const std::type_info &amp;t)</td></tr>
-<tr class="memdesc:a5082bad072d8c8b1671077cb66fdf63b inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request to change in type. For <a class="el" href="classdrain_1_1Castable.html">Castable</a>, simply returns true if the current type was requested. <br /></td></tr>
-<tr class="separator:a5082bad072d8c8b1671077cb66fdf63b inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acce02d783950fc3429ac52ca1bc74e02 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2">template&lt;class F &gt; </td></tr>
+<tr class="memitem:acce02d783950fc3429ac52ca1bc74e02 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#acce02d783950fc3429ac52ca1bc74e02">setType</a> ()</td></tr>
+<tr class="memdesc:acce02d783950fc3429ac52ca1bc74e02 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the storage type. If a target value is available, use <a class="el" href="classdrain_1_1Castable.html#abd78ab96c7b16d1bcd56a6109069668b" title="Stores the pointer and its storage type F. Assumes elementCount=1.">setPtr()</a> directly.  <a href="classdrain_1_1Castable.html#acce02d783950fc3429ac52ca1bc74e02">More...</a><br /></td></tr>
+<tr class="separator:acce02d783950fc3429ac52ca1bc74e02 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af61912602179e9425271926135614061 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#af61912602179e9425271926135614061">requestSize</a> (size_t <a class="el" href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">elementCount</a>)</td></tr>
 <tr class="memdesc:af61912602179e9425271926135614061 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request to change the array size. For <a class="el" href="classdrain_1_1Castable.html">Castable</a> (and Reference) does nothing and returns false.  <a href="classdrain_1_1Castable.html#af61912602179e9425271926135614061">More...</a><br /></td></tr>
 <tr class="separator:af61912602179e9425271926135614061 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acce02d783950fc3429ac52ca1bc74e02 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2">template&lt;class F &gt; </td></tr>
-<tr class="memitem:acce02d783950fc3429ac52ca1bc74e02 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#acce02d783950fc3429ac52ca1bc74e02">setType</a> ()</td></tr>
-<tr class="memdesc:acce02d783950fc3429ac52ca1bc74e02 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the storage type. If a target value is available, use link() directly.  <a href="classdrain_1_1Castable.html#acce02d783950fc3429ac52ca1bc74e02">More...</a><br /></td></tr>
-<tr class="separator:acce02d783950fc3429ac52ca1bc74e02 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd78ab96c7b16d1bcd56a6109069668b inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="abd78ab96c7b16d1bcd56a6109069668b"></a>
 template&lt;class F &gt; </td></tr>
 <tr class="memitem:abd78ab96c7b16d1bcd56a6109069668b inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#abd78ab96c7b16d1bcd56a6109069668b">setPtr</a> (void *p)</td></tr>
@@ -242,19 +238,32 @@ template&lt;class T &gt; </td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a483ba604aa35a8c0e9370bc84b26b062">Castable</a> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
 <tr class="memdesc:a483ba604aa35a8c0e9370bc84b26b062 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor: copies the layout and the pointer to the target. <br /></td></tr>
 <tr class="separator:a483ba604aa35a8c0e9370bc84b26b062 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61a2aa1f681fa3625a7bdcf60cc3e2ac inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="a61a2aa1f681fa3625a7bdcf60cc3e2ac"></a>
-template&lt;class F &gt; </td></tr>
-<tr class="memitem:a61a2aa1f681fa3625a7bdcf60cc3e2ac inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Castable</b> (F *p)</td></tr>
-<tr class="separator:a61a2aa1f681fa3625a7bdcf60cc3e2ac inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc3aad5fcd44076857432cbc7f4dd2da inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="adc3aad5fcd44076857432cbc7f4dd2da"></a>
 template&lt;class F &gt; </td></tr>
 <tr class="memitem:adc3aad5fcd44076857432cbc7f4dd2da inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#adc3aad5fcd44076857432cbc7f4dd2da">Castable</a> (F &amp;p)</td></tr>
 <tr class="memdesc:adc3aad5fcd44076857432cbc7f4dd2da inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for an object pointing to a variable. <br /></td></tr>
 <tr class="separator:adc3aad5fcd44076857432cbc7f4dd2da inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dd828533f7989848278126b6e56a22a inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a2dd828533f7989848278126b6e56a22a"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a2dd828533f7989848278126b6e56a22a">isReference</a> () const</td></tr>
-<tr class="memdesc:a2dd828533f7989848278126b6e56a22a inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true, if the referenced variable is external. Inherited classes - like Variable - may have internal data arrays. <br /></td></tr>
-<tr class="separator:a2dd828533f7989848278126b6e56a22a inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61a2aa1f681fa3625a7bdcf60cc3e2ac inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="a61a2aa1f681fa3625a7bdcf60cc3e2ac"></a>
+template&lt;class F &gt; </td></tr>
+<tr class="memitem:a61a2aa1f681fa3625a7bdcf60cc3e2ac inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Castable</b> (F *p)</td></tr>
+<tr class="separator:a61a2aa1f681fa3625a7bdcf60cc3e2ac inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79aaa1332860500a5c0a948e25ad7a86 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a79aaa1332860500a5c0a948e25ad7a86"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>typeIsSet</b> () const</td></tr>
+<tr class="separator:a79aaa1332860500a5c0a948e25ad7a86 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a644718bb2fb240de962dc3c9a1fdf0dc">empty</a> () const</td></tr>
+<tr class="memdesc:a644718bb2fb240de962dc3c9a1fdf0dc inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if string is empty or array size is zero. (In future, semantics may change: 0 for scalars?)  <a href="classdrain_1_1Castable.html#a644718bb2fb240de962dc3c9a1fdf0dc">More...</a><br /></td></tr>
+<tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bc2a781be2586924afce4e4a4ea6697 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a5bc2a781be2586924afce4e4a4ea6697"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a5bc2a781be2586924afce4e4a4ea6697">isValid</a> () const</td></tr>
+<tr class="memdesc:a5bc2a781be2586924afce4e4a4ea6697 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true, if the pointer is set. <br /></td></tr>
+<tr class="separator:a5bc2a781be2586924afce4e4a4ea6697 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a0494203e0414c3133ee043429ecd14 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a1a0494203e0414c3133ee043429ecd14"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a1a0494203e0414c3133ee043429ecd14">isLinking</a> () const</td></tr>
+<tr class="memdesc:a1a0494203e0414c3133ee043429ecd14 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true, if the referenced variable is external. Inherited classes - like Variable - may have internal data arrays. <br /></td></tr>
+<tr class="separator:a1a0494203e0414c3133ee043429ecd14 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f6f0815e91462bfafa94057cd788725 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a6f6f0815e91462bfafa94057cd788725">isVariable</a> () const</td></tr>
+<tr class="memdesc:a6f6f0815e91462bfafa94057cd788725 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if the class contains an own data array.  <a href="classdrain_1_1Castable.html#a6f6f0815e91462bfafa94057cd788725">More...</a><br /></td></tr>
+<tr class="separator:a6f6f0815e91462bfafa94057cd788725 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10ee578fbc7b8ef6b720cee9b5e20130 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a10ee578fbc7b8ef6b720cee9b5e20130"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a10ee578fbc7b8ef6b720cee9b5e20130">isCharArrayString</a> () const</td></tr>
 <tr class="memdesc:a10ee578fbc7b8ef6b720cee9b5e20130 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if type is C char array and outputSepator is the null char. <br /></td></tr>
@@ -267,22 +276,15 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#abc9dc0708ec1aae2309621664fa8e5a4">isString</a> () const</td></tr>
 <tr class="memdesc:abc9dc0708ec1aae2309621664fa8e5a4 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if type is C char array or std::string . <br /></td></tr>
 <tr class="separator:abc9dc0708ec1aae2309621664fa8e5a4 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79aaa1332860500a5c0a948e25ad7a86 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a79aaa1332860500a5c0a948e25ad7a86"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>typeIsSet</b> () const</td></tr>
-<tr class="separator:a79aaa1332860500a5c0a948e25ad7a86 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91f17c5f4d0fecfc5d714d80dbbb7d09 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a91f17c5f4d0fecfc5d714d80dbbb7d09"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getElementSize</b> () const</td></tr>
-<tr class="separator:a91f17c5f4d0fecfc5d714d80dbbb7d09 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c361aadeeb55b3e6607b4468bfc6d96 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a4c361aadeeb55b3e6607b4468bfc6d96">getElementCount</a> () const</td></tr>
 <tr class="memdesc:a4c361aadeeb55b3e6607b4468bfc6d96 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the length of the array, the number of elements in this entry.  <a href="classdrain_1_1Castable.html#a4c361aadeeb55b3e6607b4468bfc6d96">More...</a><br /></td></tr>
 <tr class="separator:a4c361aadeeb55b3e6607b4468bfc6d96 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6e0e2b4a5f6eb8b06414a6c841853e9 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="ae6e0e2b4a5f6eb8b06414a6c841853e9"></a>
-virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ae6e0e2b4a5f6eb8b06414a6c841853e9">getSize</a> () const</td></tr>
-<tr class="memdesc:ae6e0e2b4a5f6eb8b06414a6c841853e9 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the size in bytes of the target: (elementCount * elementSize) <br /></td></tr>
+<tr class="memitem:a91f17c5f4d0fecfc5d714d80dbbb7d09 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a91f17c5f4d0fecfc5d714d80dbbb7d09">getElementSize</a> () const</td></tr>
+<tr class="memdesc:a91f17c5f4d0fecfc5d714d80dbbb7d09 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the size of the current storage type, in bytes.  <a href="classdrain_1_1Castable.html#a91f17c5f4d0fecfc5d714d80dbbb7d09">More...</a><br /></td></tr>
+<tr class="separator:a91f17c5f4d0fecfc5d714d80dbbb7d09 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6e0e2b4a5f6eb8b06414a6c841853e9 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ae6e0e2b4a5f6eb8b06414a6c841853e9">getSize</a> () const</td></tr>
+<tr class="memdesc:ae6e0e2b4a5f6eb8b06414a6c841853e9 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the size in bytes of the target: (elementCount * elementSize)  <a href="classdrain_1_1Castable.html#ae6e0e2b4a5f6eb8b06414a6c841853e9">More...</a><br /></td></tr>
 <tr class="separator:ae6e0e2b4a5f6eb8b06414a6c841853e9 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08c69a2f4d41d0ee918b0c8232e09111 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a08c69a2f4d41d0ee918b0c8232e09111">empty</a> () const</td></tr>
-<tr class="memdesc:a08c69a2f4d41d0ee918b0c8232e09111 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if no elements have been allocated. Does not check type. (NOTE: may change: 0 for scalars)  <a href="classdrain_1_1Castable.html#a08c69a2f4d41d0ee918b0c8232e09111">More...</a><br /></td></tr>
-<tr class="separator:a08c69a2f4d41d0ee918b0c8232e09111 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4905a2d747d3be5c10d443ee87632e9a inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a4905a2d747d3be5c10d443ee87632e9a"></a>
 <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a4905a2d747d3be5c10d443ee87632e9a">setFill</a> (bool fill=true)</td></tr>
 <tr class="memdesc:a4905a2d747d3be5c10d443ee87632e9a inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set or unset filling (padding) an array if input set is smaller. <br /></td></tr>
@@ -293,6 +295,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:ac8bb3912a3ce86b15842e79d0b421204 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad20897c5c8bd47f5d4005989bead0e55 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ad20897c5c8bd47f5d4005989bead0e55">reset</a> ()</td></tr>
 <tr class="separator:ad20897c5c8bd47f5d4005989bead0e55 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8149d7c1b1ca3b69c739f9b1ea2b4f7e inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a8149d7c1b1ca3b69c739f9b1ea2b4f7e">getTypeName</a> () const</td></tr>
+<tr class="memdesc:a8149d7c1b1ca3b69c739f9b1ea2b4f7e inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name of the current storage type.  <a href="classdrain_1_1Castable.html#a8149d7c1b1ca3b69c739f9b1ea2b4f7e">More...</a><br /></td></tr>
+<tr class="separator:a8149d7c1b1ca3b69c739f9b1ea2b4f7e inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10471266cd0b232c5ccdfb6e4eebff28 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="a10471266cd0b232c5ccdfb6e4eebff28"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a10471266cd0b232c5ccdfb6e4eebff28 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator=</b> (const T &amp;x)</td></tr>
@@ -315,6 +320,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>assign</b> (const cha
 <tr class="memitem:a8e232593d4dafbcede0049ba3407170d inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a8e232593d4dafbcede0049ba3407170d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>assign</b> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
 <tr class="separator:a8e232593d4dafbcede0049ba3407170d inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57bb79f369e377b5c69ff269fd048373 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="a57bb79f369e377b5c69ff269fd048373"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a57bb79f369e377b5c69ff269fd048373 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>assign</b> (const T *p)</td></tr>
+<tr class="separator:a57bb79f369e377b5c69ff269fd048373 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e715cfd9a651965241f5f2af7e76527 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="a8e715cfd9a651965241f5f2af7e76527"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a8e715cfd9a651965241f5f2af7e76527 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a8e715cfd9a651965241f5f2af7e76527">assign</a> (const T &amp;x)</td></tr>
@@ -340,6 +349,10 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:a920fbd71cee61f21fd35f8f5877dd535 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a920fbd71cee61f21fd35f8f5877dd535">assign</a> (const std::set&lt; T &gt; &amp;s)</td></tr>
 <tr class="memdesc:a920fbd71cee61f21fd35f8f5877dd535 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies elements of a set. <br /></td></tr>
 <tr class="separator:a920fbd71cee61f21fd35f8f5877dd535 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f6ede51c5a5ffd7db7278f4e625f64a inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a8f6ede51c5a5ffd7db7278f4e625f64a"></a>
+<a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a8f6ede51c5a5ffd7db7278f4e625f64a">assignCastable</a> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
+<tr class="memdesc:a8f6ede51c5a5ffd7db7278f4e625f64a inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy data from <a class="el" href="classdrain_1_1Castable.html">Castable</a>. Perhaps copy size and type, too. <br /></td></tr>
+<tr class="separator:a8f6ede51c5a5ffd7db7278f4e625f64a inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee228058e219a51b9dac4886284f9861 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="aee228058e219a51b9dac4886284f9861"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:aee228058e219a51b9dac4886284f9861 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (const T &amp;x)</td></tr>
@@ -376,17 +389,29 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:a214a427464fbc0943086b3dc63a6162a inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a214a427464fbc0943086b3dc63a6162a inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a214a427464fbc0943086b3dc63a6162a">operator T</a> () const</td></tr>
 <tr class="separator:a214a427464fbc0943086b3dc63a6162a inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8814313879f986ad77ecff71ec89ca36 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="a8814313879f986ad77ecff71ec89ca36"></a>
+template&lt;class T , size_t N&gt; </td></tr>
+<tr class="memitem:a8814313879f986ad77ecff71ec89ca36 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator UniTuple&lt; T, N &gt;</b> () const</td></tr>
+<tr class="separator:a8814313879f986ad77ecff71ec89ca36 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa06707df0e2baa6f8ad94231b944e6e9 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="aa06707df0e2baa6f8ad94231b944e6e9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;x) const</td></tr>
 <tr class="separator:aa06707df0e2baa6f8ad94231b944e6e9 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a980d3634731950256ff4fcf1c905adfd inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a980d3634731950256ff4fcf1c905adfd"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const char *s) const</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a980d3634731950256ff4fcf1c905adfd">operator==</a> (const char *s) const</td></tr>
+<tr class="memdesc:a980d3634731950256ff4fcf1c905adfd inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compare as a character string. <br /></td></tr>
 <tr class="separator:a980d3634731950256ff4fcf1c905adfd inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c8b0ad1df154c263823d2b81f62c2a6 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a2c8b0ad1df154c263823d2b81f62c2a6">operator==</a> (const nullptr_t ptr) const</td></tr>
+<tr class="memdesc:a2c8b0ad1df154c263823d2b81f62c2a6 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Experimental. Notice that if type is set, false is returned also for an empty array.  <a href="classdrain_1_1Castable.html#a2c8b0ad1df154c263823d2b81f62c2a6">More...</a><br /></td></tr>
+<tr class="separator:a2c8b0ad1df154c263823d2b81f62c2a6 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc31bb81f10c0f6fcd4f936b2bb36fc5 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="acc31bb81f10c0f6fcd4f936b2bb36fc5"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:acc31bb81f10c0f6fcd4f936b2bb36fc5 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#acc31bb81f10c0f6fcd4f936b2bb36fc5">operator==</a> (const T &amp;x) const</td></tr>
 <tr class="memdesc:acc31bb81f10c0f6fcd4f936b2bb36fc5 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares a value to internal data. <br /></td></tr>
 <tr class="separator:acc31bb81f10c0f6fcd4f936b2bb36fc5 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71f9cf921d7aedbe8413879aad1e4726 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="a71f9cf921d7aedbe8413879aad1e4726"></a>
+template&lt;class T , size_t N&gt; </td></tr>
+<tr class="memitem:a71f9cf921d7aedbe8413879aad1e4726 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; T, N &gt; &amp;x) const</td></tr>
+<tr class="separator:a71f9cf921d7aedbe8413879aad1e4726 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef933c7ad3f6a5f0520f7e82e93e5171 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="aef933c7ad3f6a5f0520f7e82e93e5171"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:aef933c7ad3f6a5f0520f7e82e93e5171 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#aef933c7ad3f6a5f0520f7e82e93e5171">operator!=</a> (const T &amp;x) const</td></tr>
@@ -426,6 +451,9 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:a552b4eba985768ce0d98b255ed6c337e inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a552b4eba985768ce0d98b255ed6c337e"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr=std::cout, char separator='\0') const</td></tr>
 <tr class="separator:a552b4eba985768ce0d98b255ed6c337e inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8167d847c8a60c54bbbca1074c06ec3 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="ac8167d847c8a60c54bbbca1074c06ec3"></a>
+std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>fromStream</b> (std::istream &amp;istr)</td></tr>
+<tr class="separator:ac8167d847c8a60c54bbbca1074c06ec3 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a5964dde793aea304c1bfa6daaf5e4b inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a6a5964dde793aea304c1bfa6daaf5e4b"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> () const</td></tr>
 <tr class="separator:a6a5964dde793aea304c1bfa6daaf5e4b inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -437,9 +465,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a4dc0a867da76f35132364cf5ad2abd55">info</a> (std::ostream &amp;ostr=std::cout) const</td></tr>
 <tr class="memdesc:a4dc0a867da76f35132364cf5ad2abd55 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print value, type and element count. <br /></td></tr>
 <tr class="separator:a4dc0a867da76f35132364cf5ad2abd55 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8f7adb49b91d04a161dd7f9671a4e08 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ac8f7adb49b91d04a161dd7f9671a4e08">isContainer</a> () const</td></tr>
-<tr class="memdesc:ac8f7adb49b91d04a161dd7f9671a4e08 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if the class contains an own data array.  <a href="classdrain_1_1Castable.html#ac8f7adb49b91d04a161dd7f9671a4e08">More...</a><br /></td></tr>
-<tr class="separator:ac8f7adb49b91d04a161dd7f9671a4e08 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab25247e405d9bd5c7e8cffd0ddf5fc8a inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:ab25247e405d9bd5c7e8cffd0ddf5fc8a inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#ab25247e405d9bd5c7e8cffd0ddf5fc8a">toSequence</a> (T &amp;container, char separator=0) const</td></tr>
 <tr class="memdesc:ab25247e405d9bd5c7e8cffd0ddf5fc8a inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts data to a STL Sequence, for example std::set, std::list or std::vector .  <a href="classdrain_1_1Castable.html#ab25247e405d9bd5c7e8cffd0ddf5fc8a">More...</a><br /></td></tr>
@@ -458,18 +483,21 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>getPtr</b> (s
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a35d54eaa537c1bfca96c8c8df92c9d72">copyFormat</a> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
 <tr class="memdesc:a35d54eaa537c1bfca96c8c8df92c9d72 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies array layout and formatting: separators, element count, fillArray flag. <br /></td></tr>
 <tr class="separator:a35d54eaa537c1bfca96c8c8df92c9d72 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f6ede51c5a5ffd7db7278f4e625f64a inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a8f6ede51c5a5ffd7db7278f4e625f64a"></a>
-<a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a8f6ede51c5a5ffd7db7278f4e625f64a">assignCastable</a> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
-<tr class="memdesc:a8f6ede51c5a5ffd7db7278f4e625f64a inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy data from str <a class="el" href="classdrain_1_1Castable.html">Castable</a>. Perhaps copy size and type, too. <br /></td></tr>
-<tr class="separator:a8f6ede51c5a5ffd7db7278f4e625f64a inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2f61610341264302dd61ea0de15f0f7 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="ab2f61610341264302dd61ea0de15f0f7"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>requestType</b> (const std::type_info &amp;t)</td></tr>
+<tr class="separator:ab2f61610341264302dd61ea0de15f0f7 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5082bad072d8c8b1671077cb66fdf63b inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a5082bad072d8c8b1671077cb66fdf63b"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a5082bad072d8c8b1671077cb66fdf63b">suggestType</a> (const std::type_info &amp;t)</td></tr>
+<tr class="memdesc:a5082bad072d8c8b1671077cb66fdf63b inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request to change in type. For <a class="el" href="classdrain_1_1Castable.html">Castable</a>, simply returns true if the current type was requested. <br /></td></tr>
+<tr class="separator:a5082bad072d8c8b1671077cb66fdf63b inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d5e45a4e83aef3e608808366d54fe04 inherit pro_methods_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="a3d5e45a4e83aef3e608808366d54fe04"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a3d5e45a4e83aef3e608808366d54fe04">assignString</a> (const std::string &amp;s)</td></tr>
 <tr class="memdesc:a3d5e45a4e83aef3e608808366d54fe04 inherit pro_methods_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Input.html" title="Input utility. Opens stdIn with &quot;-&quot;. Closes upon destruction.">Input</a> type specific assign operations. <br /></td></tr>
 <tr class="separator:a3d5e45a4e83aef3e608808366d54fe04 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7cb3935bd37c0dbe1f2f2226b7f761a inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="ad7cb3935bd37c0dbe1f2f2226b7f761a"></a>
+<tr class="memitem:a5de29a2bfaa35a5aa62da8d6cb11a8e7 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="a5de29a2bfaa35a5aa62da8d6cb11a8e7"></a>
 template&lt;class T , size_t N&gt; </td></tr>
-<tr class="memitem:ad7cb3935bd37c0dbe1f2f2226b7f761a inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>assign</b> (<a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; T, N &gt; &amp;tuple)</td></tr>
-<tr class="separator:ad7cb3935bd37c0dbe1f2f2226b7f761a inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5de29a2bfaa35a5aa62da8d6cb11a8e7 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>assign</b> (const <a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; T, N &gt; &amp;tuple)</td></tr>
+<tr class="separator:a5de29a2bfaa35a5aa62da8d6cb11a8e7 inherit pro_methods_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a821dd5d996f20fa95d327b5bfeffe403 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplParams" colspan="2"><a id="a821dd5d996f20fa95d327b5bfeffe403"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a821dd5d996f20fa95d327b5bfeffe403 inherit pro_methods_classdrain_1_1Castable"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a821dd5d996f20fa95d327b5bfeffe403">assignContainer</a> (const T &amp;v, bool <a class="el" href="classdrain_1_1Castable.html#acd653528ade0d1b7011feccbf61f89e5">append</a>=false)</td></tr>
@@ -494,7 +522,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:aba0425ba66b2a61324b9d55db65c76fb inherit pro_attribs_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element separator usein in writing and reading character strings (streams). <br /></td></tr>
 <tr class="separator:aba0425ba66b2a61324b9d55db65c76fb inherit pro_attribs_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5891ba7dc473f6bb0ae6682e15cde69 inherit pro_attribs_classdrain_1_1Castable"><td class="memItemLeft" align="right" valign="top"><a id="aa5891ba7dc473f6bb0ae6682e15cde69"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#aa5891ba7dc473f6bb0ae6682e15cde69">fillArray</a></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#aa5891ba7dc473f6bb0ae6682e15cde69">fillArray</a> = false</td></tr>
 <tr class="memdesc:aa5891ba7dc473f6bb0ae6682e15cde69 inherit pro_attribs_classdrain_1_1Castable"><td class="mdescLeft">&#160;</td><td class="mdescRight">If array, assigning a scalar will fill up the current array. <br /></td></tr>
 <tr class="separator:aa5891ba7dc473f6bb0ae6682e15cde69 inherit pro_attribs_classdrain_1_1Castable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

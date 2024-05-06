@@ -70,6 +70,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="classrack_1_1CmdDelete-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">CmdDelete Class Reference</div>  </div>
@@ -243,6 +244,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:aad9d40ff731f18d8a1899d52a1fc1cb5 inherit pub_methods_classdrain_1_1Contextual"><td class="mdescLeft">&#160;</td><td class="mdescRight">If context has been set, returns it through a cast to base class <a class="el" href="classdrain_1_1Context.html">Context</a>.  <a href="classdrain_1_1Contextual.html#aad9d40ff731f18d8a1899d52a1fc1cb5">More...</a><br /></td></tr>
 <tr class="separator:aad9d40ff731f18d8a1899d52a1fc1cb5 inherit pub_methods_classdrain_1_1Contextual"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a97b38e459110511340e4ba6fc3f2f260"><td class="memItemLeft" align="right" valign="top"><a id="a97b38e459110511340e4ba6fc3f2f260"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>handleEmptyGroups</b> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx, Hi5Tree &amp;dst, bool remove=false, const <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path=<a class="el" href="classdrain_1_1Path.html">ODIMPath</a>())</td></tr>
+<tr class="separator:a97b38e459110511340e4ba6fc3f2f260"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_methods_classdrain_1_1Contextual"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classdrain_1_1Contextual')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td></tr>
@@ -313,6 +320,12 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># Delete data[i] groups containing VRAD in 1.0 degree sweeps and above</span></div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --<span class="keyword">delete</span> elangle=1.0:90,quantity=VRAD -o volume-modified.h5</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># Delete dual-PRF measurement data - leaving dataset groups</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --<span class="keyword">delete</span> prf=DOUBLE -o volume-modified.h5</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># Delete dual-PRF measurement data - also dataset groups</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --<span class="keyword">delete</span> dataset:,prf=DOUBLE -o volume-modified.h5</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># Delete actual data arrays</span></div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --<span class="keyword">delete</span> data -o volume-modified.h5</div>

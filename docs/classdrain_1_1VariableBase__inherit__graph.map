@@ -1,5 +1,4 @@
 <map id="VariableBase" name="VariableBase">
-<area shape="rect" id="node1" title="Base class for variables: Variable, Reference and FlexibleVariable." alt="" coords="51,80,158,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1VariableT.html" title=" " alt="" coords="5,155,204,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Castable.html" title=" " alt="" coords="65,5,144,32"/>
+<area shape="rect" id="node1" title="Base class for variables: Variable, Reference and FlexibleVariable." alt="" coords="5,80,112,107"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Castable.html" title=" " alt="" coords="19,5,98,32"/>
 </map>

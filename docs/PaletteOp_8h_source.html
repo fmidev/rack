@@ -102,8 +102,8 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">by the European Union (European Regional Development Fund and European</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifndef PALETTEOP_H_</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define PALETTEOP_H_</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifndef DRAIN_PALETTEOP_H</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define DRAIN_PALETTEOP_H</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;drain/util/Bank.h&quot;</span></div>
@@ -172,77 +172,79 @@ $(function() {
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">static</span></div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    Palette &amp; <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#aac8af38875098e4a28b7f86c87a58f47">loadPalette</a>(<span class="keyword">const</span> std::string &amp; key);</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="comment">// TODO: Refinement. Or better in actual op exec, with lookup? Or: retrieve a lookup...</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="comment">// const Palette &amp; getPalette(const std::string &amp; key) const;</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="comment">// static</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">// Palette &amp; getGrayPalette(const std::string &amp; key);</span></div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="comment">// TODO T 256, T2 32768</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1PaletteOp.html#ab2881bb711892271cd8b78fb08657014">  122</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#ab2881bb711892271cd8b78fb08657014">setGrayPalette</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> iChannels=3, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> aChannels=0, <span class="keywordtype">float</span> brightness=0.0,<span class="keywordtype">float</span> contrast=1.0) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="comment">// TODO: Refinement. Or better in actual op exec, with lookup? Or: retrieve a lookup...</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="comment">// const Palette &amp; getPalette(const std::string &amp; key) const;</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab">  126</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab">scale</a>;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="comment">// TODO T 256, T2 32768</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="comment">// void setGrayPalette(unsigned int iChannels=3, unsigned int aChannels=0, float brightness=0.0,float contrast=1.0) const;</span></div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1PaletteOp.html#a129303e4bd38a8cdba722b6238ed56e9">  129</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#a129303e4bd38a8cdba722b6238ed56e9">offset</a>;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#afd911c804cbe2faf2d224d93a49a0a31">registerSpecialCode</a>(<span class="keyword">const</span> std::string &amp; code, <span class="keywordtype">double</span> d);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="comment">// protect:</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1PaletteOp.html#a0102c83e0498bc6433fce95715bdaa48">  142</a></span>&#160;<span class="comment"></span>    Palette <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#a0102c83e0498bc6433fce95715bdaa48">specialCodes</a>;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab">  130</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab">scale</a>;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1PaletteOp.html#a129303e4bd38a8cdba722b6238ed56e9">  133</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#a129303e4bd38a8cdba722b6238ed56e9">offset</a>;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#afd911c804cbe2faf2d224d93a49a0a31">registerSpecialCode</a>(<span class="keyword">const</span> std::string &amp; code, <span class="keywordtype">double</span> d);</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">    static inline</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">    std::map&lt;std::string,drain::image::Palette&gt; &amp; getPaletteMap(){</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">        return paletteMap;</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">    };</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="comment">//typedef   std::map&lt;std::string,drain::image::Palette&gt; palette_map_t;</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keyword">typedef</span> PaletteMap palette_map_t;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    palette_map_t &amp; <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#a1b10a07bfb97fa4fa6f13043906a9d1b">getPaletteMap</a>();</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">    static</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">    std::map&lt;std::string,drain::image::Palette&gt; paletteMap;</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="comment">//void initialize() const {Image &amp; dst};</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#af8cd0e155e06c085b1967b2608f85cbb">getDstConf</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1ImageConf.html">ImageConf</a> &amp;src, <a class="code" href="classdrain_1_1image_1_1ImageConf.html">ImageConf</a> &amp;dst) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="comment">//void makeCompatible(const ImageFrame &amp;src, Image &amp;dst) const;</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="comment">//mutable Image paletteImage;</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    Palette myPalette;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keyword">const</span> Palette *palettePtr;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="comment">// protect:</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1PaletteOp.html#a0102c83e0498bc6433fce95715bdaa48">  146</a></span>&#160;<span class="comment"></span>    Palette <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#a0102c83e0498bc6433fce95715bdaa48">specialCodes</a>;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">    static inline</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">    std::map&lt;std::string,drain::image::Palette&gt; &amp; getPaletteMap(){</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">        return paletteMap;</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">    };</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="comment">//typedef   std::map&lt;std::string,drain::image::Palette&gt; palette_map_t;</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keyword">typedef</span> PaletteMap palette_map_t;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    palette_map_t &amp; <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#a1b10a07bfb97fa4fa6f13043906a9d1b">getPaletteMap</a>();</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">    static</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">    std::map&lt;std::string,drain::image::Palette&gt; paletteMap;</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="comment">//void initialize() const {Image &amp; dst};</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1PaletteOp.html#af8cd0e155e06c085b1967b2608f85cbb">getDstConf</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1ImageConf.html">ImageConf</a> &amp;src, <a class="code" href="classdrain_1_1image_1_1ImageConf.html">ImageConf</a> &amp;dst) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="comment">//void makeCompatible(const ImageFrame &amp;src, Image &amp;dst) const;</span></div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;};</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="comment">//mutable Image paletteImage;</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    Palette myPalette;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keyword">const</span> Palette *palettePtr;</div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;}</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;};</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;}</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/*PALETTEOP_H_*/</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;}</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment">// Drain</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;}</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/*PALETTEOP_H_*/</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="comment">// Drain</span></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageConf_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageConf.html">drain::image::ImageConf</a></div><div class="ttdoc">Struct for image (excluding data)</div><div class="ttdef"><b>Definition:</b> ImageConf.h:333</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageOp_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageOp.html">drain::image::ImageOp</a></div><div class="ttdoc">Base class for image processing functions.</div><div class="ttdef"><b>Definition:</b> ImageOp.h:49</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageOp_html_aa1bb9c642aa97d7603683926a47955ad"><div class="ttname"><a href="classdrain_1_1image_1_1ImageOp.html#aa1bb9c642aa97d7603683926a47955ad">drain::image::ImageOp::ImageOp</a></div><div class="ttdeci">ImageOp(const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> ImageOp.h:156</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageTray_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageTray.html">drain::image::ImageTray</a></div><div class="ttdoc">Container applicable for Channels and Images, with alpha support.</div><div class="ttdef"><b>Definition:</b> ImageTray.h:267</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html">drain::image::PaletteOp</a></div><div class="ttdoc">Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table.</div><div class="ttdef"><b>Definition:</b> PaletteOp.h:55</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_a0102c83e0498bc6433fce95715bdaa48"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#a0102c83e0498bc6433fce95715bdaa48">drain::image::PaletteOp::specialCodes</a></div><div class="ttdeci">Palette specialCodes</div><div class="ttdoc">Intensity mappings set by user, originally with std::string keys in Palette.</div><div class="ttdef"><b>Definition:</b> PaletteOp.h:142</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_a129303e4bd38a8cdba722b6238ed56e9"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#a129303e4bd38a8cdba722b6238ed56e9">drain::image::PaletteOp::offset</a></div><div class="ttdeci">double offset</div><div class="ttdoc">Prescale intensities with scale*i + offset.</div><div class="ttdef"><b>Definition:</b> PaletteOp.h:129</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_a0102c83e0498bc6433fce95715bdaa48"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#a0102c83e0498bc6433fce95715bdaa48">drain::image::PaletteOp::specialCodes</a></div><div class="ttdeci">Palette specialCodes</div><div class="ttdoc">Intensity mappings set by user, originally with std::string keys in Palette.</div><div class="ttdef"><b>Definition:</b> PaletteOp.h:146</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_a129303e4bd38a8cdba722b6238ed56e9"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#a129303e4bd38a8cdba722b6238ed56e9">drain::image::PaletteOp::offset</a></div><div class="ttdeci">double offset</div><div class="ttdoc">Prescale intensities with scale*i + offset.</div><div class="ttdef"><b>Definition:</b> PaletteOp.h:133</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_a176916b9a3e6f4945675ba03ee808d0a"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#a176916b9a3e6f4945675ba03ee808d0a">drain::image::PaletteOp::setPalette</a></div><div class="ttdeci">void setPalette(const Palette &amp;palette)</div><div class="ttdoc">Creates an internal palette by taking the colors on the diagonal from lower left to upper right corne...</div><div class="ttdef"><b>Definition:</b> PaletteOp.cpp:78</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_a1b10a07bfb97fa4fa6f13043906a9d1b"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#a1b10a07bfb97fa4fa6f13043906a9d1b">drain::image::PaletteOp::getPaletteMap</a></div><div class="ttdeci">static palette_map_t &amp; getPaletteMap()</div><div class="ttdoc">Returns a static palette map which is initially empty.</div><div class="ttdef"><b>Definition:</b> PaletteOp.cpp:155</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_a80d402d10e8341004c0caf10133b80ab"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab">drain::image::PaletteOp::scale</a></div><div class="ttdeci">double scale</div><div class="ttdoc">Prescale intensities with scale*i + offset.</div><div class="ttdef"><b>Definition:</b> PaletteOp.h:126</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_aa47c21cb15fd2991ce1c8f3774d1ad9d"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#aa47c21cb15fd2991ce1c8f3774d1ad9d">drain::image::PaletteOp::help</a></div><div class="ttdeci">virtual void help(std::ostream &amp;ostr=std::cout) const</div><div class="ttdoc">Prints name, description and parameters using BeanLike::toOStr(). Virtual, so derived classes may ext...</div><div class="ttdef"><b>Definition:</b> PaletteOp.cpp:242</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_a1b10a07bfb97fa4fa6f13043906a9d1b"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#a1b10a07bfb97fa4fa6f13043906a9d1b">drain::image::PaletteOp::getPaletteMap</a></div><div class="ttdeci">static palette_map_t &amp; getPaletteMap()</div><div class="ttdoc">Returns a static palette map which is initially empty.</div><div class="ttdef"><b>Definition:</b> PaletteOp.cpp:165</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_a80d402d10e8341004c0caf10133b80ab"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab">drain::image::PaletteOp::scale</a></div><div class="ttdeci">double scale</div><div class="ttdoc">Uses the original coloured palette to create a gray-level palette.</div><div class="ttdef"><b>Definition:</b> PaletteOp.h:130</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_aa47c21cb15fd2991ce1c8f3774d1ad9d"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#aa47c21cb15fd2991ce1c8f3774d1ad9d">drain::image::PaletteOp::help</a></div><div class="ttdeci">virtual void help(std::ostream &amp;ostr=std::cout) const</div><div class="ttdoc">Prints name, description and parameters using BeanLike::toOStr(). Virtual, so derived classes may ext...</div><div class="ttdef"><b>Definition:</b> PaletteOp.cpp:252</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_aac8af38875098e4a28b7f86c87a58f47"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#aac8af38875098e4a28b7f86c87a58f47">drain::image::PaletteOp::loadPalette</a></div><div class="ttdeci">static Palette &amp; loadPalette(const std::string &amp;key)</div><div class="ttdoc">NEW Load palette to Palette::paletteBank by key (like &quot;DBZH&quot;) from TXT or JSON file.</div><div class="ttdef"><b>Definition:</b> PaletteOp.cpp:100</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_ab2881bb711892271cd8b78fb08657014"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#ab2881bb711892271cd8b78fb08657014">drain::image::PaletteOp::setGrayPalette</a></div><div class="ttdeci">void setGrayPalette(unsigned int iChannels=3, unsigned int aChannels=0, float brightness=0.0, float contrast=1.0) const</div><div class="ttdoc">Creates a gray palette ie. &quot;identity mapping&quot; from gray (x) to rgb (x,x,x).</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_af8cd0e155e06c085b1967b2608f85cbb"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#af8cd0e155e06c085b1967b2608f85cbb">drain::image::PaletteOp::getDstConf</a></div><div class="ttdeci">void getDstConf(const ImageConf &amp;src, ImageConf &amp;dst) const</div><div class="ttdoc">Given source image, determine respective dest image configuration.</div><div class="ttdef"><b>Definition:</b> PaletteOp.cpp:207</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_afd911c804cbe2faf2d224d93a49a0a31"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#afd911c804cbe2faf2d224d93a49a0a31">drain::image::PaletteOp::registerSpecialCode</a></div><div class="ttdeci">void registerSpecialCode(const std::string &amp;code, double d)</div><div class="ttdoc">Connect special code (label) to intensity.</div><div class="ttdef"><b>Definition:</b> PaletteOp.cpp:164</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_af8cd0e155e06c085b1967b2608f85cbb"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#af8cd0e155e06c085b1967b2608f85cbb">drain::image::PaletteOp::getDstConf</a></div><div class="ttdeci">void getDstConf(const ImageConf &amp;src, ImageConf &amp;dst) const</div><div class="ttdoc">Given source image, determine respective dest image configuration.</div><div class="ttdef"><b>Definition:</b> PaletteOp.cpp:217</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1PaletteOp_html_afd911c804cbe2faf2d224d93a49a0a31"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteOp.html#afd911c804cbe2faf2d224d93a49a0a31">drain::image::PaletteOp::registerSpecialCode</a></div><div class="ttdeci">void registerSpecialCode(const std::string &amp;code, double d)</div><div class="ttdoc">Connect special code (label) to intensity.</div><div class="ttdef"><b>Definition:</b> PaletteOp.cpp:174</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

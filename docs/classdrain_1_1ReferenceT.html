@@ -71,13 +71,14 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classdrain_1_1ReferenceT-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ReferenceT&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Intermediate class supporting <a class="el" href="classdrain_1_1ReferenceT.html#a638a76d4e0a606330d781bff1bb1c3c2" title="Set pointer to &amp;p.">link()</a> in various forms.  
+<p>Intermediate class supporting link() in various forms.  
  <a href="classdrain_1_1ReferenceT.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ReferenceT_8h_source.html">ReferenceT.h</a>&gt;</code></p>
@@ -108,24 +109,25 @@ typedef std::pair&lt; const char *, const <a class="el" href="classdrain_1_1Refe
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aab538b0ccd632f04921be0081f3a60d5"><td class="memTemplParams" colspan="2"><a id="aab538b0ccd632f04921be0081f3a60d5"></a>
-template&lt;class D &gt; </td></tr>
-<tr class="memitem:aab538b0ccd632f04921be0081f3a60d5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>init</b> (D &amp;dst)</td></tr>
-<tr class="separator:aab538b0ccd632f04921be0081f3a60d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabc3e96808923c1ac02a858b0406b03a"><td class="memTemplParams" colspan="2"><a id="aabc3e96808923c1ac02a858b0406b03a"></a>
-template&lt;class S &gt; </td></tr>
-<tr class="memitem:aabc3e96808923c1ac02a858b0406b03a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>init</b> (const S &amp;src)</td></tr>
-<tr class="separator:aabc3e96808923c1ac02a858b0406b03a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a772dfc6d332c3a2ef5c326db9fdd6ee6"><td class="memTemplParams" colspan="2"><a id="a772dfc6d332c3a2ef5c326db9fdd6ee6"></a>
-template&lt;class D &gt; </td></tr>
-<tr class="memitem:a772dfc6d332c3a2ef5c326db9fdd6ee6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>init</b> (D *dst)</td></tr>
-<tr class="separator:a772dfc6d332c3a2ef5c326db9fdd6ee6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea456b10e0a0e8664a1b9fce516e4281"><td class="memItemLeft" align="right" valign="top"><a id="aea456b10e0a0e8664a1b9fce516e4281"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (void *p, const std::type_info &amp;t, size_t count=1)</td></tr>
-<tr class="separator:aea456b10e0a0e8664a1b9fce516e4281"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02fd73d861ef2e4aabb38c0c9ff82947"><td class="memItemLeft" align="right" valign="top"><a id="a02fd73d861ef2e4aabb38c0c9ff82947"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
-<tr class="separator:a02fd73d861ef2e4aabb38c0c9ff82947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bc93755d8d4bd917dd446b3b62c03b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceT.html#a8bc93755d8d4bd917dd446b3b62c03b6">isLinkable</a> () const</td></tr>
+<tr class="memdesc:a8bc93755d8d4bd917dd446b3b62c03b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells if the internal pointer can point to an external variable.  <a href="classdrain_1_1ReferenceT.html#a8bc93755d8d4bd917dd446b3b62c03b6">More...</a><br /></td></tr>
+<tr class="separator:a8bc93755d8d4bd917dd446b3b62c03b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a940f514f129ffd9fc0394861cc06faa2"><td class="memTemplParams" colspan="2"><a id="a940f514f129ffd9fc0394861cc06faa2"></a>
+template&lt;class T2 &gt; </td></tr>
+<tr class="memitem:a940f514f129ffd9fc0394861cc06faa2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>link</b> (<a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a>&lt; T2 &gt; &amp;x)</td></tr>
+<tr class="separator:a940f514f129ffd9fc0394861cc06faa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac95c9e224196e2eff570207a84b4308a"><td class="memItemLeft" align="right" valign="top"><a id="ac95c9e224196e2eff570207a84b4308a"></a>
+<a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceT.html#ac95c9e224196e2eff570207a84b4308a">link</a> (<a class="el" href="classdrain_1_1VariableT.html">VariableT</a>&lt; <a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a>&lt; <a class="el" href="classdrain_1_1Castable.html">Castable</a> &gt; &gt; &amp;x)</td></tr>
+<tr class="memdesc:ac95c9e224196e2eff570207a84b4308a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linkage for Reference, above all for copy constructor. <br /></td></tr>
+<tr class="separator:ac95c9e224196e2eff570207a84b4308a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa10199030b3a73511a432a796f16f95d"><td class="memItemLeft" align="right" valign="top"><a id="aa10199030b3a73511a432a796f16f95d"></a>
+<a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceT.html#aa10199030b3a73511a432a796f16f95d">link</a> (<a class="el" href="classdrain_1_1VariableT.html">VariableT</a>&lt; <a class="el" href="classdrain_1_1VariableInitializer.html">VariableInitializer</a>&lt; <a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a>&lt; <a class="el" href="classdrain_1_1VariableBase.html">VariableBase</a> &gt; &gt; &gt; &amp;x)</td></tr>
+<tr class="memdesc:aa10199030b3a73511a432a796f16f95d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linkage for a FlexibleVariable. <br /></td></tr>
+<tr class="separator:aa10199030b3a73511a432a796f16f95d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e87e2bb93f1a637af89e959a4a07832"><td class="memItemLeft" align="right" valign="top"><a id="a2e87e2bb93f1a637af89e959a4a07832"></a>
+<a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceT.html#a2e87e2bb93f1a637af89e959a4a07832">link</a> (<a class="el" href="classdrain_1_1VariableT.html">VariableT</a>&lt; <a class="el" href="classdrain_1_1VariableInitializer.html">VariableInitializer</a>&lt; <a class="el" href="classdrain_1_1VariableBase.html">VariableBase</a> &gt; &gt; &amp;x)</td></tr>
+<tr class="memdesc:a2e87e2bb93f1a637af89e959a4a07832"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linkage for a Variable - produces a warning, because internal variable has dynamic type. <br /></td></tr>
+<tr class="separator:a2e87e2bb93f1a637af89e959a4a07832"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a638a76d4e0a606330d781bff1bb1c3c2"><td class="memTemplParams" colspan="2">template&lt;class F &gt; </td></tr>
 <tr class="memitem:a638a76d4e0a606330d781bff1bb1c3c2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceT.html#a638a76d4e0a606330d781bff1bb1c3c2">link</a> (F &amp;p)</td></tr>
 <tr class="memdesc:a638a76d4e0a606330d781bff1bb1c3c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set pointer to &amp;p.  <a href="classdrain_1_1ReferenceT.html#a638a76d4e0a606330d781bff1bb1c3c2">More...</a><br /></td></tr>
@@ -141,17 +143,31 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
 <tr class="memitem:a2080de21c2d229d8b9608fef3cd22127"><td class="memItemLeft" align="right" valign="top"><a id="a2080de21c2d229d8b9608fef3cd22127"></a>
 <a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>link</b> (void *p)</td></tr>
 <tr class="separator:a2080de21c2d229d8b9608fef3cd22127"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf3c2ec546524ed028b90acf8f12d32d"><td class="memTemplParams" colspan="2"><a id="aaf3c2ec546524ed028b90acf8f12d32d"></a>
-template&lt;class F &gt; </td></tr>
-<tr class="memitem:aaf3c2ec546524ed028b90acf8f12d32d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>link</b> (<a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;x)</td></tr>
-<tr class="separator:aaf3c2ec546524ed028b90acf8f12d32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01a70409d94efaa716131c5445ccee65"><td class="memTemplParams" colspan="2"><a id="a01a70409d94efaa716131c5445ccee65"></a>
-template&lt;class F &gt; </td></tr>
-<tr class="memitem:a01a70409d94efaa716131c5445ccee65"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>link</b> (<a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a> &amp;x)</td></tr>
-<tr class="separator:a01a70409d94efaa716131c5445ccee65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bc93755d8d4bd917dd446b3b62c03b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceT.html#a8bc93755d8d4bd917dd446b3b62c03b6">isLinkable</a> () const</td></tr>
-<tr class="memdesc:a8bc93755d8d4bd917dd446b3b62c03b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells if the internal pointer can point to an external variable.  <a href="classdrain_1_1ReferenceT.html#a8bc93755d8d4bd917dd446b3b62c03b6">More...</a><br /></td></tr>
-<tr class="separator:a8bc93755d8d4bd917dd446b3b62c03b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36dd5fe4c9ec9795c446adf41358c883"><td class="memItemLeft" align="right" valign="top"><a id="a36dd5fe4c9ec9795c446adf41358c883"></a>
+<a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>link</b> (<a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;x)</td></tr>
+<tr class="separator:a36dd5fe4c9ec9795c446adf41358c883"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:aab538b0ccd632f04921be0081f3a60d5"><td class="memTemplParams" colspan="2"><a id="aab538b0ccd632f04921be0081f3a60d5"></a>
+template&lt;class D &gt; </td></tr>
+<tr class="memitem:aab538b0ccd632f04921be0081f3a60d5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceT.html#aab538b0ccd632f04921be0081f3a60d5">init</a> (D &amp;dst)</td></tr>
+<tr class="memdesc:aab538b0ccd632f04921be0081f3a60d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor handler - important. <br /></td></tr>
+<tr class="separator:aab538b0ccd632f04921be0081f3a60d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabc3e96808923c1ac02a858b0406b03a"><td class="memTemplParams" colspan="2"><a id="aabc3e96808923c1ac02a858b0406b03a"></a>
+template&lt;class S &gt; </td></tr>
+<tr class="memitem:aabc3e96808923c1ac02a858b0406b03a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>init</b> (const S &amp;src)</td></tr>
+<tr class="separator:aabc3e96808923c1ac02a858b0406b03a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a772dfc6d332c3a2ef5c326db9fdd6ee6"><td class="memTemplParams" colspan="2"><a id="a772dfc6d332c3a2ef5c326db9fdd6ee6"></a>
+template&lt;class D &gt; </td></tr>
+<tr class="memitem:a772dfc6d332c3a2ef5c326db9fdd6ee6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>init</b> (D *dst)</td></tr>
+<tr class="separator:a772dfc6d332c3a2ef5c326db9fdd6ee6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea456b10e0a0e8664a1b9fce516e4281"><td class="memItemLeft" align="right" valign="top"><a id="aea456b10e0a0e8664a1b9fce516e4281"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (void *p, const std::type_info &amp;t, size_t count=1)</td></tr>
+<tr class="separator:aea456b10e0a0e8664a1b9fce516e4281"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02fd73d861ef2e4aabb38c0c9ff82947"><td class="memItemLeft" align="right" valign="top"><a id="a02fd73d861ef2e4aabb38c0c9ff82947"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
+<tr class="separator:a02fd73d861ef2e4aabb38c0c9ff82947"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45d2fcc8c2b43b44d4c8e6319f4cdabc"><td class="memItemLeft" align="right" valign="top"><a id="a45d2fcc8c2b43b44d4c8e6319f4cdabc"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (const S &amp;src)</td></tr>
 <tr class="separator:a45d2fcc8c2b43b44d4c8e6319f4cdabc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,7 +176,907 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (const S &am
 <div class="textblock"><h3>template&lt;class T&gt;<br />
 class drain::ReferenceT&lt; T &gt;</h3>
 
-<p>Intermediate class supporting <a class="el" href="classdrain_1_1ReferenceT.html#a638a76d4e0a606330d781bff1bb1c3c2" title="Set pointer to &amp;p.">link()</a> in various forms. </p>
+<p>Intermediate class supporting link() in various forms. </p>
+<p>See also comparison of all the three variable classes: </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1VariableT.html" title="VariableT is a final class applied through typedefs Variable, Reference and FlexibleVariable.">drain::VariableT</a></dd></dl>
+<h1><a class="anchor" id="Constructors"></a>
+Constructors</h1>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+</meta>
+    <style data-mode="experimental">    /** style obj **/
+      	.center {text-align: center;}
+      	.code {font-family:monospace}
+      	.right {text-align: right;}
+      	.warn {color: brown;}
+      	table {border-collapse: collapse;}
+      	table, th, td {color: blue; border: 1px solid;}
+      	td {padding:3px;}
+      	th {border: 2px solid; padding:5px}
+
+    /* elems */
+
+    </style>
+    <title>Reference</title>
+  </head>
+  <body>
+    <table name="Reference">
+      <tr>
+        <td>
+</td>
+        <td>
+</td>
+        <th class="code">Reference</th>
+      </tr>
+      <tr>
+        <th class="right" colspan="2">Default constructor</th>
+      </tr>
+      <tr class="code">
+        <td>
+</td>
+        <td>V variable;</td>
+        <td>null</td>
+      </tr>
+      <tr>
+        <th class="right" colspan="2">Copy constructor</th>
+      </tr>
+      <tr class="code">
+        <td>bool b=true; V var(b);</td>
+        <td>V variable(var);</td>
+        <td>true ®</td>
+      </tr>
+      <tr class="code">
+        <td>char c='Y'; V var(c);</td>
+        <td>V variable(var);</td>
+        <td>Y ®</td>
+      </tr>
+      <tr class="code">
+        <td>int i=123; V var(i);</td>
+        <td>V variable(var);</td>
+        <td>123 ®</td>
+      </tr>
+      <tr class="code">
+        <td>double d=45.678; V var(d);</td>
+        <td>V variable(var);</td>
+        <td>45.678 ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string str("Test"); V var(str);</td>
+        <td>V variable(var);</td>
+        <td>"Test" ®</td>
+      </tr>
+      <tr class="code">
+        <td>UniTuple2i uni2i(INIT_2i); V var(uni2i);</td>
+        <td>V variable(var);</td>
+        <td>12,34 ®</td>
+      </tr>
+      <tr class="code">
+        <td>UniTuple3d uni3d(INIT_3d); V var(uni3d);</td>
+        <td>V variable(var);</td>
+        <td>5.6,7.8,9 ®</td>
+      </tr>
+      <tr>
+        <th class="right" colspan="2">Copy constructor variants</th>
+      </tr>
+      <tr class="code">
+        <td>int i=123; Variable var(i);</td>
+        <td>V variable(var);</td>
+        <td>null</td>
+      </tr>
+      <tr class="code">
+        <td>int i=123; FlexibleVariable var(i);</td>
+        <td>V variable(var);</td>
+        <td>null</td>
+      </tr>
+      <tr class="code">
+        <td>int i=123; FlexibleVariable var; var.link(i);</td>
+        <td>V variable(var);</td>
+        <td>123 ®</td>
+      </tr>
+      <tr class="code">
+        <td>int i=123; Reference var(i);</td>
+        <td>V variable(var);</td>
+        <td>123 ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string str("Test"); Variable var(str);</td>
+        <td>V variable(var);</td>
+        <td>null</td>
+      </tr>
+      <tr class="code">
+        <td>std::string str("Test"); FlexibleVariable var(str);</td>
+        <td>V variable(var);</td>
+        <td>null</td>
+      </tr>
+      <tr class="code">
+        <td>std::string str("Test"); FlexibleVariable var; var.link(str);</td>
+        <td>V variable(var);</td>
+        <td>"Test" ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string str("Test"); Reference var(str);</td>
+        <td>V variable(var);</td>
+        <td>"Test" ®</td>
+      </tr>
+      <tr class="code">
+        <td>UniTuple3d uni3d(INIT_3d); Variable var(uni3d);</td>
+        <td>V variable(var);</td>
+        <td>null</td>
+      </tr>
+      <tr class="code">
+        <td>UniTuple3d uni3d(INIT_3d); FlexibleVariable var(uni3d);</td>
+        <td>V variable(var);</td>
+        <td>null</td>
+      </tr>
+      <tr class="code">
+        <td>UniTuple3d uni3d(INIT_3d); FlexibleVariable var; var.link(uni3d);</td>
+        <td>V variable(var);</td>
+        <td>5.6,7.8,9 ®</td>
+      </tr>
+      <tr class="code">
+        <td>UniTuple3d uni3d(INIT_3d); Reference var(uni3d);</td>
+        <td>V variable(var);</td>
+        <td>5.6,7.8,9 ®</td>
+      </tr>
+      <tr>
+        <th class="right" colspan="2">Constructor with non-const variable arg</th>
+      </tr>
+      <tr class="code">
+        <td>bool b=true;</td>
+        <td>V variable(b);</td>
+        <td>true ®</td>
+      </tr>
+      <tr class="code">
+        <td>char c='Y';</td>
+        <td>V variable(c);</td>
+        <td>Y ®</td>
+      </tr>
+      <tr class="code">
+        <td>int i=123;</td>
+        <td>V variable(i);</td>
+        <td>123 ®</td>
+      </tr>
+      <tr class="code">
+        <td>double d=45.678;</td>
+        <td>V variable(d);</td>
+        <td>45.678 ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string str("Test");</td>
+        <td>V variable(str);</td>
+        <td>"Test" ®</td>
+      </tr>
+      <tr class="code">
+        <td>UniTuple2i uni2i(INIT_2i)</td>
+        <td>V variable(uni2i);</td>
+        <td>12,34 ®</td>
+      </tr>
+      <tr class="code">
+        <td>UniTuple3d uni3d(INIT_3d)</td>
+        <td>V variable(uni3d);</td>
+        <td>5.6,7.8,9 ®</td>
+      </tr>
+    </table>
+  </body>
+</html>
+<h2><a class="anchor" id="Assignment"></a>
+Assignment</h2>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+</meta>
+    <style data-mode="experimental">    /** style obj **/
+      	.center {text-align: center;}
+      	.code {font-family:monospace}
+      	.right {text-align: right;}
+      	.warn {color: brown;}
+      	table {border-collapse: collapse;}
+      	table, th, td {color: blue; border: 1px solid;}
+      	td {padding:3px;}
+      	th {border: 2px solid; padding:5px}
+
+    /* elems */
+
+    </style>
+    <title>Reference - assignments</title>
+  </head>
+  <body>
+    <h3>Reference - assignments</h3>
+    <table>
+      <tr>
+        <th colspan="2">input</th>
+        <th class="code" colspan="9">Reference</th>
+      </tr>
+      <tr>
+        <th>type</th>
+        <th>value</th>
+        <th class="code">bool</th>
+        <th class="code">unsigned-char</th>
+        <th class="code">char</th>
+        <th class="code">short</th>
+        <th class="code">int</th>
+        <th class="code">unsigned-long</th>
+        <th class="code">float</th>
+        <th class="code">double</th>
+        <th class="code">string</th>
+      </tr>
+      <tr class="code">
+        <td>bool</td>
+        <td>false</td>
+        <td type="bool">false ®</td>
+        <td type="unsigned-char">  ®</td>
+        <td type="char">  ®</td>
+        <td type="short">0 ®</td>
+        <td type="int">0 ®</td>
+        <td type="unsigned-long">0 ®</td>
+        <td type="float">0 ®</td>
+        <td type="double">0 ®</td>
+        <td type="string">"0" ®</td>
+      </tr>
+      <tr class="code">
+        <td>bool</td>
+        <td>true</td>
+        <td type="bool">true ®</td>
+        <td type="unsigned-char"> ®</td>
+        <td type="char"> ®</td>
+        <td type="short">1 ®</td>
+        <td type="int">1 ®</td>
+        <td type="unsigned-long">1 ®</td>
+        <td type="float">1 ®</td>
+        <td type="double">1 ®</td>
+        <td type="string">"1" ®</td>
+      </tr>
+      <tr class="code">
+        <td>int</td>
+        <td>123</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">{ ®</td>
+        <td type="char">{ ®</td>
+        <td type="short">123 ®</td>
+        <td type="int">123 ®</td>
+        <td type="unsigned-long">123 ®</td>
+        <td type="float">123 ®</td>
+        <td type="double">123 ®</td>
+        <td type="string">"123" ®</td>
+      </tr>
+      <tr class="code">
+        <td>float</td>
+        <td>12.345f</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">12 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">12 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">12 ®</span>
+        </td>
+        <td type="float">12.345 ®</td>
+        <td type="double">12.345 ®</td>
+        <td type="string">"12.345" ®</td>
+      </tr>
+      <tr class="code">
+        <td>double</td>
+        <td>3.14159265358979323846</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">3 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">3 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">3 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">3.14159 ®</span>
+        </td>
+        <td type="double">3.14159 ®</td>
+        <td type="string">
+          <span class="warn">"3.14159" ®</span>
+        </td>
+      </tr>
+      <tr class="code">
+        <td>double</td>
+        <td>314.15926E-02</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">3 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">3 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">3 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">3.14159 ®</span>
+        </td>
+        <td type="double">3.14159 ®</td>
+        <td type="string">
+          <span class="warn">"3.14159" ®</span>
+        </td>
+      </tr>
+      <tr class="code">
+        <td>std::string</td>
+        <td>"Hello!"</td>
+        <td type="bool">
+          <span class="warn">false ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">H ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="string">"Hello!" ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string</td>
+        <td>"true"</td>
+        <td type="bool">true ®</td>
+        <td type="unsigned-char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">t ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="string">"true" ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string</td>
+        <td>"false"</td>
+        <td type="bool">false ®</td>
+        <td type="unsigned-char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">f ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="string">"false" ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string</td>
+        <td>"3141592E-6"</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn">� ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">3 ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">-4136 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">3141592 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">3141592 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">3.14159 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">3.14159 ®</span>
+        </td>
+        <td type="string">"3141592E-6" ®</td>
+      </tr>
+      <tr class="code">
+        <td>const char *</td>
+        <td>"Test"</td>
+        <td type="bool">
+          <span class="warn">false ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">T ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="string">"Test" ®</td>
+      </tr>
+      <tr class="code">
+        <td>const char *</td>
+        <td>"true"</td>
+        <td type="bool">true ®</td>
+        <td type="unsigned-char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">t ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="string">"true" ®</td>
+      </tr>
+      <tr class="code">
+        <td>const char *</td>
+        <td>"false"</td>
+        <td type="bool">false ®</td>
+        <td type="unsigned-char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">f ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="string">"false" ®</td>
+      </tr>
+      <tr class="code">
+        <td>(UniTuple<2,int>)</td>
+        <td>uni2i</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">12 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">12 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">12 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">12 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">12 ®</span>
+        </td>
+        <td type="string">"12,34" ®</td>
+      </tr>
+      <tr class="code">
+        <td>(UniTuple<3,double>)</td>
+        <td>uni3d</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">5 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">5 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">5 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">5.6 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">5.6 ®</span>
+        </td>
+        <td type="string">"5.6,7.8,9" ®</td>
+      </tr>
+      <tr class="code">
+        <td>void *</td>
+        <td>nullptr</td>
+        <td type="bool">
+          <span class="warn">false ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">n ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="string">
+          <span class="warn">"nullptr" ®</span>
+        </td>
+      </tr>
+      <tr>
+        <th class="right" colspan="2">Variables...</th>
+      </tr>
+      <tr class="code">
+        <td>int i=123</td>
+        <td>Variable(i)</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn">{ ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">{ ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="string">"123" ®</td>
+      </tr>
+      <tr class="code">
+        <td>int i=123</td>
+        <td>FlexibleVariable(i)</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn">{ ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">{ ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="string">"123" ®</td>
+      </tr>
+      <tr class="code">
+        <td>int i=123</td>
+        <td>Reference(i)</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn">{ ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">{ ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">123 ®</span>
+        </td>
+        <td type="string">"123" ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string s("test")</td>
+        <td>Variable(s)</td>
+        <td type="bool">
+          <span class="warn">false ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">t ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="string">"test" ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string s("test")</td>
+        <td>FlexibleVariable(s)</td>
+        <td type="bool">
+          <span class="warn">false ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">t ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="string">"test" ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string s("test")</td>
+        <td>Reference(s)</td>
+        <td type="bool">
+          <span class="warn">false ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">t ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="string">"test" ®</td>
+      </tr>
+      <tr class="code">
+        <td>UniTuple</td>
+        <td>Variable(uni3d)</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">5 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">5 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">5 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">5.6 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">5.6 ®</span>
+        </td>
+        <td type="string">"5.6,7.8,9" ®</td>
+      </tr>
+      <tr class="code">
+        <td>UniTuple</td>
+        <td>FlexibleVariable(uni3d)</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">5 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">5 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">5 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">5.6 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">5.6 ®</span>
+        </td>
+        <td type="string">"5.6,7.8,9" ®</td>
+      </tr>
+      <tr class="code">
+        <td>UniTuple</td>
+        <td>Reference(uni3d)</td>
+        <td type="bool">
+          <span class="warn">true ®</span>
+        </td>
+        <td type="unsigned-char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="char">
+          <span class="warn"> ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">5 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">5 ®</span>
+        </td>
+        <td type="unsigned-long">
+          <span class="warn">5 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">5.6 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">5.6 ®</span>
+        </td>
+        <td type="string">"5.6,7.8,9" ®</td>
+      </tr>
+    </table>
+  </body>
+</html>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>- <a class="el" href="classdrain_1_1Castable.html">Castable</a> or <a class="el" href="classdrain_1_1VariableBase.html" title="Base class for variables: Variable, Reference and FlexibleVariable.">VariableBase</a> </td></tr>

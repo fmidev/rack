@@ -161,6 +161,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#ab70a522d108ed12a2ee71c3a775c5dc6">translate</a> (const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c) const</td></tr>
 <tr class="memdesc:ab70a522d108ed12a2ee71c3a775c5dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="Utility class with static conversions.">Convert</a> from str <a class="el" href="classdrain_1_1Caster.html">Caster</a>. <br /></td></tr>
 <tr class="separator:ab70a522d108ed12a2ee71c3a775c5dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56fa6bb9ac61a998478a42375fc35552"><td class="memItemLeft" align="right" valign="top"><a id="a56fa6bb9ac61a998478a42375fc35552"></a>
+std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>fromStream</b> (std::istream &amp;istr, const void *p) const</td></tr>
+<tr class="separator:a56fa6bb9ac61a998478a42375fc35552"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab24025800444e854a3c5f2296b90f7e7"><td class="memItemLeft" align="right" valign="top"><a id="ab24025800444e854a3c5f2296b90f7e7"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#ab24025800444e854a3c5f2296b90f7e7">toOStream</a> (std::ostream &amp;ostr, const void *p) const</td></tr>
 <tr class="memdesc:ab24025800444e854a3c5f2296b90f7e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data to output stream. <br /></td></tr>
@@ -257,7 +260,7 @@ template&lt;&gt; </td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:add9af9569af79ec26dd741fb226b38ba"><td class="memItemLeft" align="right" valign="top"><a id="add9af9569af79ec26dd741fb226b38ba"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a></td></tr>
+void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a> = nullptr</td></tr>
 <tr class="memdesc:add9af9569af79ec26dd741fb226b38ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Future member: enables setting <a class="el" href="classdrain_1_1Caster.html">Caster</a> type. <br /></td></tr>
 <tr class="separator:add9af9569af79ec26dd741fb226b38ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -326,12 +329,17 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:a63295ced1a748e507dc6f6089bb0c426"><td class="memTemplParams" colspan="2"><a id="a63295ced1a748e507dc6f6089bb0c426"></a>
 template&lt;class F &gt; </td></tr>
 <tr class="memitem:a63295ced1a748e507dc6f6089bb0c426"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#a63295ced1a748e507dc6f6089bb0c426">toOStreamT</a> (std::ostream &amp;ostr, const void *p)</td></tr>
-<tr class="memdesc:a63295ced1a748e507dc6f6089bb0c426"><td class="mdescLeft">&#160;</td><td class="mdescRight">New. <br /></td></tr>
+<tr class="memdesc:a63295ced1a748e507dc6f6089bb0c426"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Output.html" title="Output utility. Opens stdout with &quot;-&quot;. Closes upon destruction.">Output</a>. <br /></td></tr>
 <tr class="separator:a63295ced1a748e507dc6f6089bb0c426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1d29ccd727175dba10620edae995187"><td class="memTemplParams" colspan="2"><a id="af1d29ccd727175dba10620edae995187"></a>
 template&lt;class F &gt; </td></tr>
 <tr class="memitem:af1d29ccd727175dba10620edae995187"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toOStreamFloats</b> (std::ostream &amp;ostr, const void *p)</td></tr>
 <tr class="separator:af1d29ccd727175dba10620edae995187"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65d55444aaa3d7b92491077f28851b19"><td class="memTemplParams" colspan="2"><a id="a65d55444aaa3d7b92491077f28851b19"></a>
+template&lt;class F &gt; </td></tr>
+<tr class="memitem:a65d55444aaa3d7b92491077f28851b19"><td class="memTemplItemLeft" align="right" valign="top">static std::istream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#a65d55444aaa3d7b92491077f28851b19">fromStreamT</a> (std::istream &amp;istr, const void *p)</td></tr>
+<tr class="memdesc:a65d55444aaa3d7b92491077f28851b19"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Output.html" title="Output utility. Opens stdout with &quot;-&quot;. Closes upon destruction.">Output</a>. <br /></td></tr>
+<tr class="separator:a65d55444aaa3d7b92491077f28851b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a640b5d1059c22cedc1d1fc52de6ee759"><td class="memItemLeft" align="right" valign="top"><a id="a640b5d1059c22cedc1d1fc52de6ee759"></a>
 template&lt;&gt; </td></tr>
 <tr class="memitem:a640b5d1059c22cedc1d1fc52de6ee759"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>translateT</b> (const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, const void *ptrC, void *<a class="el" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>)</td></tr>
@@ -449,6 +457,9 @@ void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 std::ostream &amp;(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#a8462117297feb3579bb0f4730e5b4295">toOStreamPtr</a> )(std::ostream &amp;ostr, const void *p)</td></tr>
 <tr class="memdesc:a8462117297feb3579bb0f4730e5b4295"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write to stream. <br /></td></tr>
 <tr class="separator:a8462117297feb3579bb0f4730e5b4295"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b8eec357f07a6e512a5a3f3ecabd678"><td class="memItemLeft" align="right" valign="top"><a id="a7b8eec357f07a6e512a5a3f3ecabd678"></a>
+std::istream &amp;(*&#160;</td><td class="memItemRight" valign="bottom"><b>fromStreamPtr</b> )(std::istream &amp;istr, const void *p) = nullptr</td></tr>
+<tr class="separator:a7b8eec357f07a6e512a5a3f3ecabd678"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fc25035b26722ecf2c7eabed06e44a8"><td class="memItemLeft" align="right" valign="top"><a id="a4fc25035b26722ecf2c7eabed06e44a8"></a>
 const std::type_info *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#a4fc25035b26722ecf2c7eabed06e44a8">type</a></td></tr>
 <tr class="memdesc:a4fc25035b26722ecf2c7eabed06e44a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current type. <br /></td></tr>

@@ -159,9 +159,12 @@ void Coordinates::setProjection(const std::string &s){
 }
 */
 
-/*! \par theta latitude in radians, \par phi longitude in radians
-    To speed up the computation of bin locations, some internal variables are
-    set at this stage.
+/// Set origin in radians
+/**
+ *  To speed up the computation of bin locations, some internal variables are set at this stage.
+ *
+ *   \param theta latitude in radians
+ *   \param phi longitude in radians
  */
 void Coordinates::setOrigin(const double &theta,const double &phi){
 	/*
