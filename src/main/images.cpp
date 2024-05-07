@@ -823,6 +823,7 @@ public:
 
 			// NEW 2024/03
 			DataTools::updateInternalAttributes(dst);
+			dstProduct.updateTree3(data.odim); // EXPERIMENTAL
 
 			size_t channels = data.data.getChannelCount();
 			if (channels == 0){

@@ -41,8 +41,8 @@ SourceODIM::SourceODIM(const std::string & source) : source(source) {
 	init();
 	// mout.experimental("initialized: ", *this);
 
-	// importEntries(source, ':', ','); //, LOG_NOTICE);
-	NOD="abcdf";
+	importEntries(source, ':', ','); //, LOG_NOTICE);
+	// NOD="abcdf";
 	// mout.experimental("imported: '", source, "' => ", *this);
 
 	setNOD();

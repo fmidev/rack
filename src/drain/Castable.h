@@ -510,35 +510,8 @@ public:
 	operator UniTuple<T,N>() const {
 		UniTuple<T,N> result;
 		result.assignSequence(*this, true);
-		//toSequence(result); // LENI
-		/*
-		if (isCharArrayString()){
-			T x;
-			std::stringstream sstr;
-			sstr << getCharArray();
-			sstr >> x;
-			return x;
-		}
-		else
-			return caster.get<T>(); //caster.get<T>(ptr);
-			*/
 	}
 
-	// TODO: consider: operator bool() const
-
-	// TODO: PAIR
-	/*
-	template <class T>
-	// operator std::pair<T,T>() const {
-	}
-	*/
-
-	/*
-	inline
-	bool compare(const void *ptr, const Caster &c, const void *cPtr) const {
-		return (caster.comparePtr)(ptr, c, cPtr);
-	}
-	*/
 
 	inline
 	bool operator==(const Castable &c) const{
