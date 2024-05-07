@@ -17,14 +17,14 @@ build:
 	USE_GEOTIFF=${USE_GEOTIFF} ./build.sh
 
 # Old, eclipse-imitating scheme
-release: make.tgz
-	@ echo "Using GeoTIFF: ${USE_GEOTIFF}"
-	tar xzf make.tgz 
-	cd Release; make CCFLAGS="${CCFLAGS}" LDFLAGS="${LDFLAGS}" USE_GEOTIFF="${USE_GEOTIFF}" -k all
+#release: make.tgz
+#	@ echo "Using GeoTIFF: ${USE_GEOTIFF}"
+#	tar xzf make.tgz 
+#	cd Release; make CCFLAGS="${CCFLAGS}" LDFLAGS="${LDFLAGS}" USE_GEOTIFF="${USE_GEOTIFF}" -k all
 
 # For eclipse based 
-make.tgz: Release/
-	tar czf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
+# make.tgz: Release/
+#	tar czf $@ `find Release/ -name makefile -or -name '*.d' -or -name '*.mk' `
 
 cppcheck:
 	cppcheck --language=c++ --error-exitcode=1 --quiet */*.{h,cpp} drain/*/*.{h,cpp} 

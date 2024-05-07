@@ -11,6 +11,7 @@ TARGET=${TARGET:-'./rack'}
 
 if [ "$1" == 'clean' ]; then
     CLEAN=YES
+    echo "# Clean build (rebuild all)"
     shift
 fi
 
