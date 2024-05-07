@@ -35,7 +35,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_VARIABLE_T
 
 #include <drain/Castable.h>
-//#include <drain/Sprinter.h>
 #include <drain/UniTuple.h> // "Friend class"
 
 namespace drain {
@@ -244,15 +243,39 @@ public:
 
 	template <class T2>
 	inline
-	bool operator==(const VariableT<T2> & v){
+	bool operator==(const VariableT<T2> & v) const {
 		return Castable::operator==((const Castable &) v);
 	}
 
 	template <class T2>
 	inline
-	bool operator==(const T2 &x){
+	bool operator==(const T2 &x) const {
 		return Castable::operator==(x);
 	}
+
+	inline
+	bool operator==(const char *s) const {
+		return Castable::operator==(s);
+	}
+
+	template <class T2>
+	inline
+	bool operator!=(const VariableT<T2> & v) const{
+		return ! Castable::operator==((const Castable &) v);
+	}
+
+	template <class T2>
+	inline
+	bool operator!=(const T2 &x) const {
+		return ! Castable::operator==(x);
+	}
+
+	inline
+	bool operator!=(const char *x) const {
+		// std::cerr << __FILE__ << ':' << __LINE__ << ':' << __FUNCTION__ << " type: " << typeid(x).name() << std::endl;
+		return ! Castable::operator==(x);
+	}
+
 
 	// Default
 	inline

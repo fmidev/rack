@@ -514,7 +514,7 @@ public:
 
 
 	inline
-	bool operator==(const Castable &c) const{
+	bool operator==(const Castable &c) const {
 		// std::cerr << __FILE__ << __LINE__ << __FUNCTION__ << std::endl;
 		//throw std::runtime_error("Castable: operator== not implemented.");
 
@@ -619,6 +619,11 @@ public:
 	bool operator!=(const T &x) const {
 		return ! this->operator==(x);
 	}
+
+	bool operator!=(const char *x) const {
+		return ! this->operator==(x);
+	}
+
 
 	/// Compares a value to inner data.
 	// strings?

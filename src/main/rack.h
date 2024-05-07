@@ -36,7 +36,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 /**
  *   Version 8.7.2
- *   - Bug fix: SourceODIM
+ *   - Fix: SourceODIM
+ *   - Fix: VariableT<>::operator==(const char *s)
  *
  *   Version 8.7.1
  *   - Variable comparisons

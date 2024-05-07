@@ -186,17 +186,27 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 	const RootData<SrcType<ODIM> > root(src);
 	mout.debug("Src root /what: " , root.getWhat() );
 
+	mout.attention("PATH COMPONENT 1");
 	// mout.info("now: vmap" );
 	// already in Composite mout.debug("Using composite selector: " , composite.dataSelector ); // consider: if composite.dataSelector...?
 
 	/// Main
 	const drain::Variable & object = root.getWhat()["object"];
+	mout.attention("PATH COMPONENT 1b");
+
+	auto a = "koe";
+	std::cerr << __FILE__ << ':' << __LINE__ << ':' << __FUNCTION__ << " type: " << typeid(a).name() << std::endl;
+	object == "EKA";
+	object.operator==("TOKA");
+
 	if ((object == "COMP") || (object == "IMAGE")){
+		mout.attention("PATH COMPONENT 2a");
 		//if ((object == "SCAN") || (object == "PVOL")){
 		mout.info("Cartesian input data, ok" );
 		addCartesian(composite, src);
 	}
 	else {
+		mout.attention("PATH COMPONENT 2b");
 		//else if (ctx.currentHi5 == & ctx.cartesianHi5){
 		if ((object == "SCAN") || (object == "PVOL"))
 			mout.info("polar input data, ok");
@@ -210,6 +220,7 @@ void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, b
 	else {
 		mout.error("current H5 data inapplicable for compositing" );
 	}
+
 	*/
 
 	//ctx.log.setOstr(logOrig);
