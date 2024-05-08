@@ -54,9 +54,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-
-
-template <class T>
+/// Formats variables to output stream
+/**
+ *  This base class supports following formatting:
+ *
+ *  # printf() style formatting, like "%08.2d"
+ *  # bash substring style formatting, like ":2:3" (take 3 letters, starting from position 2)
+ *
+ *  \tparam T - type of the variables.
+ *
+ *  \see StringLet
+ *  \see StringMapper
+ *
+ */
+template <class T=std::string>
 class VariableFormatter {
 
 public:
@@ -66,24 +77,7 @@ public:
 
 	IosFormat iosFormat;
 
-	/// Default
-	/**
-	 *  \return true if handles.
-	 */
-	/*
-		typename std::map<std::string,T>::const_iterator it = variables.find(key);
-		if (it != variables.end()){
-			iosFormat.copyTo(ostr);
-			//ostr.width(width);
-			//std::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
-			//std::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
-			ostr <<  it->second;
-			return true;
-		}
-		else {
-			return false;
-		}
-	 */
+	typedef std::map<std::string,T> map_t;
 
 	/// Searches given key in a map, and if found, processes (formats) the value to ostream.  Return false, if variable not found.
 	/**
@@ -91,7 +85,7 @@ public:
 	 *   Then, further processors may handle the variable tag (remove, change, leave it).
 	 */
 	virtual
-	bool handle(const std::string & key, const std::map<std::string,T> & variables, std::ostream & ostr) const {
+	bool handle(const std::string & key, const map_t & variables, std::ostream & ostr) const {
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -116,13 +110,45 @@ public:
 		}
 		else {
     		// mout.attention("delegating '", k, "' to formatVariable: ", format);
-			return formatVariable(k, variables, format, ostr);
+			//return formatVariable(k, variables, format, ostr);
+			return formatVariable(k, it->second, format, ostr);
 		}
 
 	}
 
 
-	// template <class V>
+	/// Given a key, retrieve an associated value from the map and print the value formatted into a stream.
+	/**
+	 *  Default implementation discards \c key.
+	 *
+	 *  \return false if value not found in the map, else print it formatted in a stream.
+	 */
+	// NOTE: must return false, if not found. Then, further processors may handle the variable tag (remove, change, leave it).
+	virtual
+	bool formatVariable(const std::string & key, const T & value, const std::string & format, std::ostream & ostr) const {
+
+		drain::Logger mout(__FILE__, __FUNCTION__);
+
+		// Default implementation discards \c key.
+		return formatValue(value, format, ostr);
+
+		/*
+		typename std::map<std::string,T>::const_iterator it = variables.find(key);
+
+		if (it != variables.end()){
+			return formatValue(it->second, format, ostr);
+		}
+		else {
+			return false;
+		}
+		*/
+
+	}
+
+	/// Given a value, print it formatted to stream.
+	/**
+	 *
+	 */
 	static
 	bool formatValue(const T & value, const std::string & format, std::ostream & ostr) {
 
@@ -132,7 +158,8 @@ public:
 		const char lastChar = format.at(format.size()-1);
 
 		if (firstChar == ':'){
-			// mout.attention("substring extraction:", format);
+
+			mout.attention<LOG_DEBUG>("substring extraction: ", format);
 
 			std::string s;
 			drain::Convert2<T>::convert(value, s);
@@ -165,7 +192,7 @@ public:
 		}
 		else if (firstChar == '%'){
 
-			// mout.attention("string formatting: ", format);
+			mout.attention<LOG_DEBUG>("string formatting: ", format);
 
 			//else if (format.find('%') != std::string::npos){
 			//drain::MapTools::get(variables, key, s);
@@ -208,7 +235,7 @@ public:
 				drain::Convert2<T>::convert(value, d);
 				// drain::StringTools::import(variable, d);
 				//drain::MapTools::get(variables, key, d);
-				// ostr << d << '=';
+				// ostr << d << "=>"; // debugging
 				n = std::sprintf(buffer, format.c_str(), d);
 			}
 			break;
@@ -224,12 +251,12 @@ public:
 				// drain::convertAny(variable, i);
 				// drain::StringTools::import(variable, i);
 				// drain::MapTools::get(variables, key, i);
-				ostr << i << '=';
+				// ostr << i << "=>"; // debugging
 				n = std::sprintf(buffer, format.c_str(), i);
 			}
 			break;
 			default:
-				mout.warn("formatting '", format, "' requested for '", value, "' : unsupported type key: ", lastChar);
+				mout.warn("formatting '", format, "' requested for '", value, "' : unsupported type key: '", lastChar, "'");
 				return false; // could be also true, if seen as handled this way?
 			}
 
@@ -244,127 +271,6 @@ public:
 		return true;
 	}
 
-
-	// NOTE: must return false, if not found. Then, further processors may handle the variable tag (remove, change, leave it).
-	virtual
-	bool formatVariable(const std::string & key, const std::map<std::string,T> & variables, const std::string & format, std::ostream & ostr) const {
-
-		drain::Logger mout(__FILE__, __FUNCTION__);
-
-		typename std::map<std::string,T>::const_iterator it = variables.find(key);
-		//auto it = variables.find();
-
-		if (it != variables.end()){
-			return formatValue(it->second, format, ostr);
-		}
-		else {
-			return false;
-		}
-
-		/*
-		const char firstChar = format.at(0);
-		const char lastChar = format.at(format.size()-1);
-
-    	if (firstChar == ':'){
-
-    		// mout.attention("substring extraction:", format);
-
-    		std::string s;
-    		drain::MapTools::get(variables, key, s);
-
-    		std::vector<size_t> v;
-    		drain::StringTools::split(format, v, ':');
-    		size_t pos   = 0;
-    		size_t count = s.size();
-
-    		switch (v.size()) {
-				case 3:
-					count = v[2];
-					// no break
-				case 2:
-					pos = v[1];
-					if (pos >= s.size()){
-						mout.warn("index ", pos, " greater than size (", s.size(), ") of string value '", s, "' of '", key, "'");
-						return true;
-					}
-					count = std::min(count, s.size()-pos);
-					ostr << s.substr(v[1], count);
-					break;
-				default:
-					mout.warn("unsupported formatting '", format, "' for variable '", key, "'");
-					mout.advice("use :startpos or :startpos:count for substring extraction");
-			}
-    		return true;
-
-    	}
-    	else if (firstChar == '%'){
-
-    		// mout.attention("string formatting: ", format);
-
-        	//else if (format.find('%') != std::string::npos){
-    		std::string s;
-    		drain::MapTools::get(variables, key, s);
-
-    		const size_t BUFFER_SIZE = 256;
-    		char buffer[BUFFER_SIZE];
-    		buffer[0] = '\0';
-    		size_t n = 0;
-
-    		switch (lastChar){
-    		case 's':
-    			n = std::sprintf(buffer, format.c_str(), s.c_str());
-    			break;
-    		case 'c':
-    			n = std::sprintf(buffer, format.c_str(), s.at(0)); // ?
-    			break;
-    		case 'p':
-    			mout.unimplemented("pointer type: ", format);
-    			break;
-    		case 'f':
-    		case 'F':
-    		case 'e':
-    		case 'E':
-    		case 'a':
-    		case 'A':
-    		case 'g':
-    		case 'G':
-    		{
-    			double d = NAN; //nand();
-    			drain::MapTools::get(variables, key, d);
-    			// ostr << d << '=';
-    			n = std::sprintf(buffer, format.c_str(), d);
-    		}
-    		break;
-    		case 'd':
-    		case 'i':
-    		case 'o':
-    		case 'u':
-    		case 'x':
-    		case 'X':
-    		{
-    			int i = 0;
-    			drain::MapTools::get(variables, key, i);
-    			ostr << i << '=';
-    			n = std::sprintf(buffer, format.c_str(), i);
-    		}
-    		break;
-    		default:
-    			mout.warn("formatting '", format, "' requested for '", key, "' : unsupported type key: ", lastChar);
-    			return false; // could be also true, if seen as handled this way?
-    		}
-
-    		ostr << buffer;
-    		if (n > BUFFER_SIZE){
-    			mout.fail("formatting with '", format, "' exceeded buffer size (", BUFFER_SIZE, ')');
-    		}
-
-    		// mout.warn("time formatting '", format, "' requested for '", k, "' not ending with 'time' or 'date'!");
-    	}
-
-    	return true;
-
-    	*/
-	}
 
 
 };

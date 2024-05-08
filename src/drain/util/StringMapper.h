@@ -380,13 +380,13 @@ public:
 	 *  \par clear - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
 	 */
 	template <class T>
-	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = 0, const VariableFormatter<T> &handler = VariableFormatter<T>()) const {
+	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = 0, const VariableFormatter<T> &formatter = VariableFormatter<T>()) const {
 
 		for (const Stringlet & stringlet: *this){
 
 			if (stringlet.isVariable()){
 
-				if (handler.handle(stringlet, variables, ostr)){
+				if (formatter.handle(stringlet, variables, ostr)){
 					// std::cerr << __FILE__ << " ok stringlet variable: " << stringlet << std::endl;
 					// ok, accepted and handled!
 				}

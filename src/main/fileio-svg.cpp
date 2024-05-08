@@ -342,6 +342,11 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		text->addClass("FLOAT BOTTOM imageTitle debug");
 		text->setText(metadata->getAttributes());
 		*/
+		VariableFormatterODIM<std::string> formatter; // (No instance properties used, but inheritance/overriding)
+
+		mout.attention("handle: ", current.data);
+
+		// Note: these are "subtitles", not the main title
 
 		for (const auto & attr: metadata->getAttributes()){
 			// consider str replace
@@ -382,12 +387,18 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 			//std::string value = attr.second;
 			std::string v, format;
 			drain::StringTools::split2(attr.second.toStr(), v, format, '|');
+
+			mout.attention("handle: ", attr.first, " ", v, " + ", format);
+
 			if (format.empty()){
 				tspan->ctext = v;
 			}
 			else {
+				//mout.attention("handle: ", attr.first, " ", v, " + ", format);
 				std::stringstream sstr;
-				drain::VariableFormatter<NodeSVG::map_t::value_t>::formatValue(v, format, sstr);
+				//VariableFormatterODIM<NodeSVG::map_t::value_t>::formatVariable(attr.first, v, format, sstr);
+				formatter.formatVariable(attr.first, v, format, sstr);
+				// drain::VariableFormatter<NodeSVG::map_t::value_t>::formatValue(v, format, sstr);
 				tspan->ctext = sstr.str();
 				tspan->ctext += "?";
 			}
@@ -749,10 +760,12 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 
 			}
 			else if (ctx.svgPanelConf.title != "false"){
-				drain::StringMapper titleMapper(RackContext::variableMapper);
+				VariableFormatterODIM<drain::Variable> formatter; // (No instance properties used, but inheritance/overriding)
+				drain::StringMapper titleMapper(RackContext::variableMapper); // XXX
 				titleMapper.parse(ctx.svgPanelConf.title);
 				const drain::VariableMap & v = ctx.getStatusMap();
-				headerText->ctext += titleMapper.toStr(v);
+				//headerText->ctext += titleMapper.toStr(v);
+				headerText->ctext += titleMapper.toStr(v, -1, formatter);
 				headerText->ctext += ' ';
 			}
 			// else title == "false"

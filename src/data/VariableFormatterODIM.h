@@ -50,15 +50,46 @@ class VariableFormatterODIM : public drain::VariableFormatter<T>{
 
 public:
 
+	typedef typename drain::VariableFormatter<T>::map_t map_t;
+
 	virtual inline
 	~VariableFormatterODIM(){};
 
 	/// Checks if variables have ODIM names (keys), and apply special formatting (currently with time stamps)
 	virtual
-	bool formatVariable(const std::string & key, const std::map<std::string,T> & variables, const std::string & format, std::ostream & ostr) const {
+	bool formatVariable(const std::string & key, const T & value, const std::string & format, std::ostream & ostr) const override {
 
-		// drain::Logger mout(__FILE__, __FUNCTION__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		// mout.warn("trying time format: ", key, " + ", format);
+
+		if (format.find('%') != std::string::npos){
+			// Time formatting (instead of C-stype printf formatting)
+			if (drain::StringTools::endsWith(key, "date")){
+				// std::string s;
+				// drain::MapTools::get(variables, key, s);
+				// mout.warn("time format: ", key, " -> ", s, '+', format); //  " -> ", t.str(), " => ", t.str(key));
+				ostr << drain::Time(value, "%Y%m%d").str(format);
+				return true;
+			}
+			else if (drain::StringTools::endsWith(key, "time")){
+				// std::string s;
+				// drain::MapTools::get(variables, key, s);
+				// mout.warn("time format: ", key, " -> ", s, '+', format); // , " -> ", t.str(), " => ", t.str(key));
+				ostr << drain::Time(value, "%H%M%S").str(format);
+				return true;
+			}
+		}
+
+		return drain::VariableFormatter<T>::formatVariable(key, value, format, ostr); // basic/trad.
+	}
+
+	/*
+	static
+	bool formatValue(const T & value, const std::string & format, std::ostream & ostr) override {
+		d
+		rain::Logger mout(__FILE__, __FUNCTION__);
+		mout.warn("trying time format: ", key, " + ", format);
+
 		if (format.find('%') != std::string::npos){
 			// Time formatting (instead of C-stype printf formatting)
 			if (drain::StringTools::endsWith(key, "date")){
@@ -77,9 +108,10 @@ public:
 			}
 		}
 
-		return drain::VariableFormatter<T>::formatVariable(key, variables, format, ostr); // basic/trad.
+		return drain::VariableFormatter<T>::formatValue(value, format, ostr); // basic/trad.
+		//return false;
 	}
-
+	*/
 
 };
 
@@ -88,6 +120,3 @@ public:
 
 
 #endif
-
-// Rack
- // REP // REP // REP
