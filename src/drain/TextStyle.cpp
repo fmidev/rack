@@ -100,6 +100,13 @@ const std::map<TextStyle::Line,int> & TextStyleVT100::getCodeMap(){
 	return map;
 }
 
+
+
+DRAIN_TYPENAME_DEF(TextStyle::Colour);
+DRAIN_TYPENAME_DEF(TextStyle::Line);
+DRAIN_TYPENAME_DEF(TextStyle::Style);
+
+
 /*
 template <>
 struct TypeName<TextStyle::Style> {

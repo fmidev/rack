@@ -117,6 +117,22 @@ public:
 
 };
 
+
+template <>
+inline
+std::ostream & Sprinter::toStream(std::ostream & ostr, const VariableMap & vmap, const SprinterLayout & layout){
+
+	if (&layout == &UNSET_LAYOUT){
+		return Sprinter::sequenceToStream(ostr, vmap, Sprinter::jsonLayout.mapChars, jsonLayout);
+	}
+	else {
+		return Sprinter::sequenceToStream(ostr, vmap.getMap(), layout.mapChars, layout);
+	}
+
+	// return Sprinter::sequenceToStream(ostr, vmap.getMap(), layout.mapChars, layout);
+	// return Sprinter::mapToStream(ostr, vmap.getMap(), layout, vmap.getKeys());
+}
+
 /// A map of FlexVariable:s.
 
 class FlexVariableMap : public SmartMap<FlexibleVariable> {
@@ -173,9 +189,17 @@ public:
 
 template <>
 inline
-std::ostream & Sprinter::toStream(std::ostream & ostr, const VariableMap & vmap, const SprinterLayout & layout){
-	return Sprinter::sequenceToStream(ostr, vmap.getMap(), layout.mapChars, layout);
-	//return Sprinter::mapToStream(ostr, vmap.getMap(), layout, vmap.getKeys());
+std::ostream & Sprinter::toStream(std::ostream & ostr, const FlexVariableMap & vmap, const SprinterLayout & layout){
+
+	if (&layout == &UNSET_LAYOUT){
+		return Sprinter::sequenceToStream(ostr, vmap, Sprinter::jsonLayout.mapChars, jsonLayout);
+	}
+	else {
+		return Sprinter::sequenceToStream(ostr, vmap.getMap(), layout.mapChars, layout);
+	}
+
+	// return Sprinter::sequenceToStream(ostr, vmap.getMap(), layout.mapChars, layout);
+	// return Sprinter::mapToStream(ostr, vmap.getMap(), layout, vmap.getKeys());
 }
 
 

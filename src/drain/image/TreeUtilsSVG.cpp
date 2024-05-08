@@ -28,13 +28,7 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
- 
-/*
- * TreeSVG.cpp
- *
- *  Created on: Jun 24, 2012
- *      Author: mpeura
- */
+
 
 #include <drain/util/Point.h>
 #include "TreeUtilsSVG.h"
@@ -66,12 +60,6 @@ const drain::EnumDict<PanelConfSVG::Legend>::dict_t  drain::EnumDict<PanelConfSV
 };
 
 
-//PanelConfSVG::LegendFlagger PanelConfSVG::legend(drain::image::PanelConfSVG::RIGHT); // (PanelConfSVG::Legend::LEFT, PanelConfSVG::Legend::EMBED);
-
-/*
-PanelConfSVG::PanelConfSVG() : legend(drain::image::PanelConfSVG::RIGHT){
-};
-*/
 
 
 PanelConfSVG TreeUtilsSVG::defaultConf;
@@ -327,29 +315,29 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 					std::string locationLabel = "titles";
 
 					if (elem->hasClass("MIDDLE")){
-						locationLabel += "-M";
+						locationLabel += "_M";
 					}
 					else if (elem->hasClass("BOTTOM")){
-						locationLabel += "-B";
+						locationLabel += "_B";
 					}
 					else { // Default: elem->hasClass("TOP")
-						locationLabel += "-T";
+						locationLabel += "_T";
 					}
 
 					if (elem->hasClass("CENTER")){
 						elem->set("x", box.x + 0.5*box.width);
 						elem->setStyle("text-anchor", "middle");
-						locationLabel += "-C";
+						locationLabel += "_C";
 					}
 					else if (elem->hasClass("RIGHT")){
 						elem->set("x",  box.x + box.width - textOffset.x);
 						elem->setStyle("text-anchor", "end");
-						locationLabel += "-R";
+						locationLabel += "_R";
 					}
 					else { // Default: elem->hasClass("LEFT")
 						elem->set("x", box.x + textOffset.x);
 						elem->setStyle("text-anchor", "start");
-						locationLabel += "-L";
+						locationLabel += "_L";
 					}
 
 					const int index = frame->get(locationLabel, 0);

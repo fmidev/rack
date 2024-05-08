@@ -545,8 +545,8 @@ public:
 
 				// NEW 2023/05/10 : consider DBZH:RESIZE
 				std::string processing;
-				drain::StringTools::split2(quantity, quantity, processing, "|:>");
-				// if ..
+				// IMPORTANT: splitting must be compatible with: ImageContext::outputQuantitySyntax
+				drain::StringTools::split2(quantity, quantity, processing, "|/:>");
 				mout.special("src [", quantity, "] : processing(", processing, ")");
 
 				if (!quantity.empty()){
@@ -727,12 +727,13 @@ public:
 			quantitySyntaxMapper.parse(encoding.quantity); // Can be literal ("DBZH") or variable ("{what:quantity}_NEW")
 		}
 		else {
-			quantitySyntaxMapper.parse(ImageContext::outputQuantitySyntax);
+			quantitySyntaxMapper.parse(ImageContext::outputQuantitySyntax); // DBZH/palette() <- "${what:quantity}/${cmdKey}(${cmdArgs})"
 		}
 		statusMap["what:quantity"] = srcQuantity; // override...
 		dstQuantity = quantitySyntaxMapper.toStr(statusMap);
-		if (srcQuantity != dstQuantity)
+		if (srcQuantity != dstQuantity){
 			mout.special("src[", srcQuantity, "] -> dst[", dstQuantity, "]");
+		}
 
 		/*
 		if (encoding.quantity.empty()){

@@ -44,6 +44,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+
+/*
+DRAIN_TYPENAME(TextStyle::Colour);
+DRAIN_TYPENAME(TextStyle::Line);
+DRAIN_TYPENAME(TextStyle::Style);
+
 template <>
 struct TypeName<TextStyle::Colour> {
     static const char* get(){ return "TextStyle::Colour"; }
@@ -58,6 +64,7 @@ template <>
 struct TypeName<TextStyle::Style> {
     static const char* get(){ return "TextStyle::Style"; }
 };
+*/
 
 
 template <>

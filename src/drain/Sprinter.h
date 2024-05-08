@@ -248,6 +248,9 @@ class Sprinter {
 
 public:
 
+	/// Marker for unset layout
+	static const SprinterLayout UNSET_LAYOUT;
+
 	/// Displays objects with {...}, arrays with [...], pairs with (,) and strings without hyphens.
 	static const SprinterLayout defaultLayout;
 
@@ -494,9 +497,15 @@ public:
 
 	template <class K, class V>
 	static
-	std::ostream & toStream(std::ostream & ostr, const std::map<K,V> & x, const SprinterLayout & layout = defaultLayout){
+	std::ostream & toStream(std::ostream & ostr, const std::map<K,V> & x, const SprinterLayout & layout = UNSET_LAYOUT){
+
+		if (&layout == &UNSET_LAYOUT){
+			return sequenceToStream(ostr, x, jsonLayout.mapChars, jsonLayout);
+		}
+		else {
+			return sequenceToStream(ostr, x, layout.mapChars, layout);
+		}
 		//return mapToStream(ostr, x);
-		return sequenceToStream(ostr, x, layout.mapChars, layout);
 	}
 
 	/// Conventional type: std::string. Notice prefix revealed.

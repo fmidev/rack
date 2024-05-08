@@ -37,13 +37,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 #include <drain/TextStyle.h>
+#include <drain/TypeUtils.h>
 
 #include "Flags.h"
 
 namespace drain
 {
 
+
 // For some odd reason this cannot be in TextStyle (see .debug() )
+/*
 template <>
 struct TypeName<TextStyle::Colour>;
 
@@ -52,7 +55,7 @@ struct TypeName<TextStyle::Line>;
 
 template <>
 struct TypeName<TextStyle::Style>;
-
+*/
 
 /// Utility for scanning text segments
 /**

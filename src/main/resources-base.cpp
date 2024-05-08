@@ -65,7 +65,9 @@ ImageContext::ImageContext(const ImageContext & ctx):
  *  Note: for example Palette uses this to extract actual quantity
  *
  */
-std::string ImageContext::outputQuantitySyntax("${what:quantity}|${cmdKey}(${cmdArgs})");
+// std::string ImageContext::outputQuantitySyntax("${what:quantity}|${cmdKey}(${cmdArgs})");
+std::string ImageContext::outputQuantitySyntax("${what:quantity}/${cmdKey}(${cmdArgs})");
+
 
 
 void ImageContext::getImageInfo(const drain::image::Image *ptr, Variable & entry) {

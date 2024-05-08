@@ -28,16 +28,14 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef TEXT_STYLE_H_
-#define TEXT_STYLE_H_
+#ifndef DRAIN_TEXT_STYLE
+#define DRAIN_TEXT_STYLE
 
-#include <drain/TypeUtils.h>
 #include <iostream>
-// #include <sstream>
-//#include <string>
 #include <map>
 #include <set>
 
+#include <drain/TypeUtils.h>
 
 namespace drain
 {
@@ -111,6 +109,9 @@ protected:
 
 };
 
+DRAIN_TYPENAME(TextStyle::Colour);
+DRAIN_TYPENAME(TextStyle::Line);
+DRAIN_TYPENAME(TextStyle::Style);
 
 
 

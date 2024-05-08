@@ -130,13 +130,13 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 		return 0;
 	}
 
-	/// Statistics: count of each "<key>=<value>" entry.
+	/// Statistics: computer count for each (key,value> pair.
 	typedef std::map<std::string, unsigned short> variableStat_t;
 	variableStat_t stat;
 	/// Number of children having (any) metadata.
 	int count = 0;
 
-	/// Check which attr(key,value) is shared by all the children.
+	/// Iterate children and their attributes: check which attributes (key and value) are shared by all the children.
 	for (auto & entry: current.getChildren()){
 		TreeSVG & child = entry.second;
 		if (child.hasChild("metadata") && !child->hasClass("legend")){ // or has "data"?
@@ -154,15 +154,17 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 	if (count > 0){
 
 		TreeSVG & metadata = current["metadata"](svg::METADATA);
+		metadata->addClass("md_shared");
 
-		TreeSVG & debugShared = current["shared"](svg::DESC);
-		debugShared->ctext = "SHARED";
+		TreeSVG & debugSharedBase = current["shared"](svg::DESC);
+		debugSharedBase->set("type", "SHARED");
+		// TreeSVG & debugShared = debugSharedBase["cmt"](svg::COMMENT);
+		// debugShared->ctext = "SHARED: ";
 
 		if (mout.isLevel(LOG_DEBUG)){
 			TreeSVG & debugAll = current["description"](svg::DESC);
 			debugAll->set("COUNT", count);
 			debugAll->ctext = "All";
-
 		}
 
 		/*
@@ -185,7 +187,10 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 
 				mout.accept<LOG_DEBUG>('\t', e.first, ' ', path.str());
 
-				debugShared->set(key, value);
+				debugSharedBase->ctext += ' ';
+				debugSharedBase->ctext += e.first;
+				// debugShared->set(key, value);
+
 				metadata->set(key, value); // NOTE: becoming strings (consider type dict?)
 
 				for (auto & entry: current.getChildren()){
@@ -193,6 +198,7 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 					if (child.hasChild("metadata")){
 						TreeSVG & childMetadata = entry.second["metadata"](svg::METADATA);
 						childMetadata -> remove(key);
+						childMetadata -> addClass("md_pruned");
 					}
 				}
 
@@ -325,7 +331,8 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 		if (!current->classList.has("imageFrame")){
 			TreeSVG & desc = current["debug"](svg::DESC);
-			desc->ctext = drain::sprinter(metadata->getAttributes()).str();
+			desc->ctext = drain::sprinter(metadata->getAttributes(), drain::Sprinter::plainLayout).str();
+			desc->addClass("md_debug_noimg");
 			return 0;
 		}
 
@@ -382,6 +389,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 				std::stringstream sstr;
 				drain::VariableFormatter<NodeSVG::map_t::value_t>::formatValue(v, format, sstr);
 				tspan->ctext = sstr.str();
+				tspan->ctext += "?";
 			}
 			//tspan->ctext = attr.second.toStr();
 			tspan->ctext += "&#160;"; //'_';
