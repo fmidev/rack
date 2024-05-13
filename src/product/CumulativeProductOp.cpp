@@ -32,15 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Variable.h>
 
-// #include "drain/util/Fuzzy.h"
 #include "drain/image/FilePng.h"
 #include "drain/image/AccumulationMethods.h"
-// #include "RackOp.h"
-// #include "radar/Extractor.h"
 
-#include "CumulativeProductOp.h"
 #include "data/DataCoder.h"
 
+#include "CumulativeProductOp.h"
 
 
 namespace rack {

@@ -49,7 +49,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/RegExp.h>
 #include <drain/VariableAssign.h>
 
-
 #include "drain/util/SmartMap.h"
 #include "drain/util/TreeOrdered.h"
 
@@ -59,12 +58,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/ODIM.h"
 #include "data/ODIMPath.h"
 #include "data/ProductConf.h"
-//#include "main/rack.h"
 
 namespace rack {
 
 using namespace drain::image;
-
 
 
 /// Base class for radar data processors. Input can be in polar or Cartesian coordinates.
@@ -122,8 +119,6 @@ public:
 	void help(std::ostream &ostr = std::cout, bool showDescription = true) const;
 
 
-
-
 	/// Returns a map of encoding parameters that can be changed by the user.
 	inline
 	const drain::ReferenceMap & getAllowedEncoding() const { return allowedEncoding; };
@@ -177,22 +172,6 @@ public:
 	void applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool applyDefaults = false);
 
 
-	/// Sets target encoding. Strict - sets all the supplied parameters, overriding existing values,
-	/**
-	 *
-	 *  \todo: renew allowedEncoding
-	 */
-	//static 	void applyUserEncoding(ODIM & productODIM, const std::string & encoding = "");
-
-
-	/// Returns the primary output quantity (ODIM \c what:quantity , like DBZH)
-	/*
-	inline
-	const std::string & getOutputQuantity() const {
-		return odim.quantity; //outputQuantity;
-	}
-	*/
-
 	static
 	void setODIMsoftwareVersion(drain::VariableMap & metadata);
 
@@ -201,11 +180,6 @@ protected:
 	/// Sets target encoding.
 	static
 	void setODIMspecials(ODIM & productODIM);
-
-
-protected:
-
-	//std::string outputQuantity;
 
 	/// Defines which encoding parameters can be changed by the user from command line.
 	/**
@@ -220,12 +194,10 @@ protected:
 	drain::ReferenceMap allowedEncoding;
 
 
-
 };
 
 
 
-//template <class TS, class TD>
 inline
 std::ostream & operator<<(std::ostream & ostr, const rack::ProductBase &op){
 	op.help(ostr); // todo: name & params only
@@ -238,4 +210,4 @@ std::ostream & operator<<(std::ostream & ostr, const rack::ProductBase &op){
 }  // namespace rack
 
 
-#endif /* RACKOP_H_ */
+#endif // RACK_PRODUCT_O

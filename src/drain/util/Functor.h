@@ -62,7 +62,7 @@ public:
 	}
 
 	virtual inline
-	void updateBean() const {
+	void updateBean() const override {
 		updateScale();
 		//drain::Logger mout(__FILE__, __FUNCTION__);
 		//mout.debug2("final scale,bias: " , this->scaleFinal , ',' , this->biasFinal );

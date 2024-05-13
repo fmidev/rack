@@ -158,7 +158,7 @@ public:
 
 	virtual
 	inline
-	void updateBean() const {
+	void updateBean() const override {
 		aInv = 1.0/a;
 		bInv = 1.0/b;
 		//drain::Logger mout(__FILE__, __FUNCTION__);

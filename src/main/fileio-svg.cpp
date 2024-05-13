@@ -76,44 +76,9 @@ void Convert2<FlexibleVariable>::convert(const S &src, FlexibleVariable & dst){
 
 namespace rack {
 
-/*
-int MetaDataCollectorSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
-	return 0;
-}
-
-
-int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
-
-	// std::cerr << __FUNCTION__ << ':' << path << std::endl;
-
-	TreeSVG & current = tree(path);
-
-	if (current->getType()==svg::METADATA){
-		return 0;
-	}
-
-	// Experimental
-	for (auto & entry: current.getChildren()){
-		TreeSVG & child = entry.second;
-		if (child.hasChild("metadata")){
-			TreeSVG & metadata = current["metadata"](svg::METADATA);
-			metadata->getAttributes().importCastableMap(entry.second["metadata"]->getAttributes());
-			for (const auto & attr: entry.second["metadata"]->getAttributes()){
-				//metadata->set(attr.first, attr.second);
-			}
-		}
-	}
-
-	return 0;
-
-}
-*/
-
 
 int MetaDataPrunerSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
-
 	// std::cerr << __FUNCTION__ << ':' << path << std::endl;
-
 	return 0;
 }
 
@@ -560,7 +525,7 @@ drain::image::TreeSVG & CmdBaseSVG::addImage(RackContext & ctx, const drain::ima
 	}
 
 	// TODO: 1) time formatting 2) priority (startdate, starttime)
-	for (const std::string key: {"what:date", "what:time", "what:quantity", "where:elangle", "prevCmdKey"}){
+	for (const std::string key: {"what:date", "what:time", "what:product", "what:prodpar", "what:quantity", "where:elangle", "prevCmdKey"}){
 		if (src.properties.hasKey(key)){
 			size_t i = key.find(':');
 			if (i == std::string::npos){

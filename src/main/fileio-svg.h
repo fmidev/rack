@@ -144,8 +144,8 @@ public:
 
 
 	/// Traverse groups, collecting info, recognizing common (shared) variables and pruning them recursively.
-	static
-	void generateTitles(RackContext & ctx);
+//	static
+//	void generateTitles(RackContext & ctx);
 
 	// Re-align elements etc
 	static

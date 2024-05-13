@@ -69,7 +69,7 @@ public:
 	/// Updates internal variables. Should be called after modifying public members.
 	/*
 	virtual	inline
-	void updateBean() const {
+	void updateBean() const override {
 		updateScale();
 	}
 	*/
@@ -173,7 +173,7 @@ public:
 
 	virtual
 	inline
-	void updateBean() const {
+	void updateBean() const override {
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -300,7 +300,7 @@ public:
 
 
 	virtual
-	void updateBean() const {
+	void updateBean() const override {
 
 		if (!range.contains(peakPos))
 			peakPos = (range.min + range.max) / 2.0;
@@ -403,7 +403,7 @@ public:
 
 
 	virtual
-	void updateBean() const {
+	void updateBean() const override {
 		this->widthInv = 1.0/width;
 		this->INVERSE = (width<0.0);
 		this->updateScale();
@@ -483,7 +483,7 @@ public:
 
 
 	virtual
-	void updateBean() const {
+	void updateBean() const override {
 		steepness = sqrt(sqrt(2.0)-1.0)/width;
 		this->INVERSE = (width<0.0);
 		this->updateScale();
@@ -615,7 +615,7 @@ public:
 	}
 
 	virtual
-	void updateBean() const {
+	void updateBean() const override {
 		this->INVERSE = (width<0.0);
 		this->updateScale();
 		widthFinal = fabs(width);
@@ -700,7 +700,7 @@ public:
 	}
 
 	virtual
-	void updateBean() const {
+	void updateBean() const override {
 		this->INVERSE = (width<0.0);
 		steepness = 1.0/fabs(width);
 		this->updateScale();
