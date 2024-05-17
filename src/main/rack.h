@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.7.2"
+#define __RACK_VERSION__ "8.7.3"
 
 /**
+ *   Version 8.7.3
+ *   - Fix: Composite extract (internal variables)
+ *
  *   Version 8.7.2
  *   - Fix: SourceODIM
  *   - Fix: VariableT<>::operator==(const char *s)

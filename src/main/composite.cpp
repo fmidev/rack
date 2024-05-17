@@ -615,6 +615,41 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 
 }
 
+void prepareBBox(const Composite & composite, const drain::BBox & cropGeo, drain::Rectangle<int> cropImage){
+
+	//const drain::BBox cropGeo(bboxGeo);
+
+	if (!cropGeo.empty()){
+		// mout.special("Cropping: ", cropGeo, cropGeo.isMetric() ? " [meters]": " [degrees]");
+		if (cropGeo.isMetric()){
+			if (composite.isLongLat()){
+				// mout.error("Cannot crop long-lat composite with a metric bbox (", bbox, ") ");
+				throw std::runtime_error(
+						drain::StringBuilder<>("Cannot crop long-lat composite with a metric bbox (", cropGeo,")"));
+				return;
+			}
+			// NOTE: vert coord swap
+			// composite.m2pix(cropGeo.lowerLeft.x,  cropGeo.lowerLeft.y,   cropImage.lowerLeft.x,  cropImage.upperRight.y);
+			// composite.m2pix(cropGeo.upperRight.x, cropGeo.upperRight.y,  cropImage.upperRight.x, cropImage.lowerLeft.y );
+			composite.m2pix(cropGeo.lowerLeft,  cropImage.lowerLeft);
+			composite.m2pix(cropGeo.upperRight, cropImage.upperRight);
+		}
+		else {
+			// composite.deg2pix(cropGeo.lowerLeft.x,  cropGeo.lowerLeft.y,   cropImage.lowerLeft.x,  cropImage.upperRight.y);
+			// composite.deg2pix(cropGeo.upperRight.x, cropGeo.upperRight.y,  cropImage.upperRight.x, cropImage.lowerLeft.y );
+			composite.deg2pix(cropGeo.lowerLeft,  cropImage.lowerLeft);
+			composite.deg2pix(cropGeo.upperRight, cropImage.upperRight);
+		}
+
+		//++cropImage.upperRight.y;
+		--cropImage.upperRight.x;
+		++cropImage.upperRight.y;
+
+
+	}
+
+}
+
 void Compositor::extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox) const {
 
 
@@ -659,169 +694,192 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	ODIMPath path(parent); // IDX24
 	mout.debug("composite dst path: ", path );
 
-	Hi5Tree & dstGroup = ctx.cartesianHi5(path);
-	DataSet<CartesianDst> dstProduct(dstGroup);
-
-	mout .debug3("update geodata ");
+	mout.debug3("update geodata ");
 	composite.updateGeoData(); // TODO check if --plot cmds don't need
 
-	// NEW 2020/06
-	RootData<CartesianDst> dstRoot(ctx.cartesianHi5);
-	//CartesianODIM rootOdim; // needed? yes, because Extract uses (Accumulator &), not Composite.
-	CartesianODIM & rootOdim = dstRoot.odim; // TEST
-	rootOdim.updateFromMap(composite.odim);
-
-	//mout.warn(composite.odim );
-
-	ProductBase::completeEncoding(rootOdim, composite.getTargetEncoding());
-
-
-	if (!ctx.targetEncoding.empty()){
-		ProductBase::completeEncoding(rootOdim, resources.baseCtx().targetEncoding);
-		// odim.setValues(resources.targetEncoding, '=');
-		ctx.targetEncoding.clear();
-	}
-
-	//mout.warn("composite: " , composite.odim );
-	//mout.warn("composite: " , composite );
-	//mout.note("dst odim: " , odim );
-	mout.debug2("Extracting...");
 
 	drain::BBox cropGeo(bbox);
-
 	drain::Rectangle<int> cropImage;
 	if (!cropGeo.empty()){
 		mout.special("Cropping: ", cropGeo, cropGeo.isMetric() ? " [meters]": " [degrees]");
-		if (cropGeo.isMetric()){
-			if (composite.isLongLat()){
-				mout.error("Cannot crop long-lat composite with a metric bbox (", bbox, ") ");
-				return;
-			}
-			// NOTE: vert coord swap
-			// composite.m2pix(cropGeo.lowerLeft.x,  cropGeo.lowerLeft.y,   cropImage.lowerLeft.x,  cropImage.upperRight.y);
-			// composite.m2pix(cropGeo.upperRight.x, cropGeo.upperRight.y,  cropImage.upperRight.x, cropImage.lowerLeft.y );
-			composite.m2pix(cropGeo.lowerLeft,  cropImage.lowerLeft);
-			composite.m2pix(cropGeo.upperRight, cropImage.upperRight);
-		}
-		else {
-			// composite.deg2pix(cropGeo.lowerLeft.x,  cropGeo.lowerLeft.y,   cropImage.lowerLeft.x,  cropImage.upperRight.y);
-			// composite.deg2pix(cropGeo.upperRight.x, cropGeo.upperRight.y,  cropImage.upperRight.x, cropImage.lowerLeft.y );
-			composite.deg2pix(cropGeo.lowerLeft,  cropImage.lowerLeft);
-			composite.deg2pix(cropGeo.upperRight, cropImage.upperRight);
-		}
-
-		//++cropImage.upperRight.y;
-		--cropImage.upperRight.x;
-		++cropImage.upperRight.y;
-
-
+		prepareBBox(composite, cropGeo, cropImage);
 	}
+
 	mout.debug("Crop image now ", cropImage, " - usually empty?");
 
 
-	// cropArea check implemented in Accumulator
+	Hi5Tree & dstGroup = ctx.cartesianHi5(path);
 
-	composite.extract(rootOdim, dstProduct, channels, cropImage);
-	//mout.warn("extracted data: " , dstProduct ); // .getFirstData().data
+	// Block dstProduct
+	{
 
-	/// Final step: write metadata
+		DataSet<CartesianDst> dstProduct(dstGroup);
 
-	// Note: dstRoot will write most of them upon destruction.
-	// So only "additional data stored here"
+		// NEW 2024/05/17
+		// mout.debug3("update geodata ");
+		// composite.updateGeoData(); // TODO check if --plot cmds don't need
 
-	drain::VariableMap & how = dstRoot.getHow();
-	ProductBase::setODIMsoftwareVersion(how);
-	// Non-standard
-	how["tags"] = composite.nodeMap.toStr(':');
 
-	// Non-standard
-	drain::VariableMap & where = dstRoot.getWhere();
-	where["BBOX"].setType(typeid(double));
-	where["BBOX"] = composite.getBoundingBoxD().toVector();
+		// NEW 2020/06
+		RootData<CartesianDst> dstRoot(ctx.cartesianHi5);
+		//CartesianODIM rootOdim; // needed? yes, because Extract uses (Accumulator &), not Composite.
+		CartesianODIM & rootOdim = dstRoot.odim; // TEST
+		rootOdim.updateFromMap(composite.odim);
 
-	if (composite.isLongLat())
-		where["BBOX_native"].setType(typeid(double));
-	else
-		where["BBOX_native"].setType(typeid(long int));
-	where["BBOX_native"] = composite.getBoundingBoxM().toVector();
+		//mout.warn(composite.odim );
 
-	where["BBOX_data"].setType(typeid(double));
-	const drain::Rectangle<double> & bboxDataD = composite.getDataBBoxD();
-	where["BBOX_data"] = bboxDataD.toVector();
+		ProductBase::completeEncoding(rootOdim, composite.getTargetEncoding());
 
-	drain::Rectangle<int> bboxDataPix;
-	composite.deg2pix(bboxDataD.lowerLeft, bboxDataPix.lowerLeft);
-	composite.deg2pix(bboxDataD.upperRight, bboxDataPix.upperRight);
-	where["BBOX_data_pix"].setType(typeid(short int));
-	where["BBOX_data_pix"] = bboxDataPix.toVector();
+		if (!ctx.targetEncoding.empty()){ // why different, local vs base?
+			ProductBase::completeEncoding(rootOdim, resources.baseCtx().targetEncoding);
+			// odim.setValues(resources.targetEncoding, '=');
+			ctx.targetEncoding.clear();
+		}
 
-	where["BBOX_overlap"].setType(typeid(double));
-	where["BBOX_overlap"] = composite.getDataOverlapD().toStr();
+		//mout.warn("composite: " , composite.odim );
+		//mout.warn("composite: " , composite );
+		//mout.note("dst odim: " , odim );
+		mout.debug2("Extracting...");
 
-	// std::list<std::string> projArgs;
-	// short epsg = drain::Proj4::pickEpsgCode(composite.getProjection(), projArgs);
-	// short epsg = drain::Proj6::pickEpsgCode(composite.getProjection());
-	short epsg = composite.projGeo2Native.getDst().getEPSG();
-	if (epsg > 0){
-		mout.deprecating<LOG_DEBUG>("/how:EPSG migrated to where:EPSG");
-		// where["EPSG"] = epsg;
+		// BBOX
+		// MOVED to separate function
 		/*
+		if (!cropGeo.empty()){
+			mout.special("Cropping: ", cropGeo, cropGeo.isMetric() ? " [meters]": " [degrees]");
+			if (cropGeo.isMetric()){
+				if (composite.isLongLat()){
+					mout.error("Cannot crop long-lat composite with a metric bbox (", bbox, ") ");
+					return;
+				}
+				// NOTE: vert coord swap
+				// composite.m2pix(cropGeo.lowerLeft.x,  cropGeo.lowerLeft.y,   cropImage.lowerLeft.x,  cropImage.upperRight.y);
+				// composite.m2pix(cropGeo.upperRight.x, cropGeo.upperRight.y,  cropImage.upperRight.x, cropImage.lowerLeft.y );
+				composite.m2pix(cropGeo.lowerLeft,  cropImage.lowerLeft);
+				composite.m2pix(cropGeo.upperRight, cropImage.upperRight);
+			}
+			else {
+				// composite.deg2pix(cropGeo.lowerLeft.x,  cropGeo.lowerLeft.y,   cropImage.lowerLeft.x,  cropImage.upperRight.y);
+				// composite.deg2pix(cropGeo.upperRight.x, cropGeo.upperRight.y,  cropImage.upperRight.x, cropImage.lowerLeft.y );
+				composite.deg2pix(cropGeo.lowerLeft,  cropImage.lowerLeft);
+				composite.deg2pix(cropGeo.upperRight, cropImage.upperRight);
+			}
+
+			//++cropImage.upperRight.y;
+			--cropImage.upperRight.x;
+			++cropImage.upperRight.y;
+
+
+		}
+		*/
+
+		// cropArea check implemented in Accumulator
+
+		composite.extract(rootOdim, dstProduct, channels, cropImage);
+		//mout.warn("extracted data: " , dstProduct ); // .getFirstData().data
+
+		/// Final step: write metadata
+
+		// Note: dstRoot will write most of them upon destruction.
+		// So only "additional data stored here"
+
+		drain::VariableMap & how = dstRoot.getHow();
+		ProductBase::setODIMsoftwareVersion(how);
+		// Non-standard
+		how["tags"] = composite.nodeMap.toStr(':');
+
+		// Non-standard
+		drain::VariableMap & where = dstRoot.getWhere();
+		where["BBOX"].setType(typeid(double));
+		where["BBOX"] = composite.getBoundingBoxD().toVector();
+
+		if (composite.isLongLat())
+			where["BBOX_native"].setType(typeid(double));
+		else
+			where["BBOX_native"].setType(typeid(long int));
+		where["BBOX_native"] = composite.getBoundingBoxM().toVector();
+
+		where["BBOX_data"].setType(typeid(double));
+		const drain::Rectangle<double> & bboxDataD = composite.getDataBBoxD();
+		where["BBOX_data"] = bboxDataD.toVector();
+
+		drain::Rectangle<int> bboxDataPix;
+		composite.deg2pix(bboxDataD.lowerLeft, bboxDataPix.lowerLeft);
+		composite.deg2pix(bboxDataD.upperRight, bboxDataPix.upperRight);
+		where["BBOX_data_pix"].setType(typeid(short int));
+		where["BBOX_data_pix"] = bboxDataPix.toVector();
+
+		where["BBOX_overlap"].setType(typeid(double));
+		where["BBOX_overlap"] = composite.getDataOverlapD().toStr();
+
+		// std::list<std::string> projArgs;
+		// short epsg = drain::Proj4::pickEpsgCode(composite.getProjection(), projArgs);
+		// short epsg = drain::Proj6::pickEpsgCode(composite.getProjection());
+		const short epsg = composite.projGeo2Native.getDst().getEPSG();
+		if (epsg > 0){
+			mout.deprecating<LOG_DEBUG>("/how:EPSG migrated to where:EPSG");
+			// where["EPSG"] = epsg;
+			/*
 		where["projdef2"] = " ";
 		where["projdef2"].setInputSeparator(' ');
 		where["projdef2"] << projArgs;
-		*/
-	}
+			 */
+		}
 
 
-	///// DataTools::updateCoordinatePolicy(ctx.cartesianHi5, RackResources::limit);
-	DataTools::updateInternalAttributes(ctx.cartesianHi5);
+		// DataTools::updateInternalAttributes(ctx.cartesianHi5);
 
-	ctx.currentHi5 = & ctx.cartesianHi5;
+		//mout.warn("updateInternalAttributes 1:",  ctx.cartesianHi5.data.attributes);
 
-	/// For successfull file io:
-	ctx.statusFlags.unset(drain::StatusFlags::INPUT_ERROR); // resources.inputOk = false;
+		ctx.currentHi5 = & ctx.cartesianHi5;
 
-	if (dstProduct.has(composite.odim.quantity)){
+		/// For successfull file io:
+		ctx.statusFlags.unset(drain::StatusFlags::INPUT_ERROR); // resources.inputOk = false;
 
-		Data<CartesianDst> & dstData = dstProduct.getData(composite.odim.quantity); // OR: by odim.quantity
-		if (dstData.data.isEmpty()){
-			mout.warn("empty product data: " , dstData );
+		if (dstProduct.has(composite.odim.quantity)){
+
+			Data<CartesianDst> & dstData = dstProduct.getData(composite.odim.quantity); // OR: by odim.quantity
+			if (dstData.data.isEmpty()){
+				mout.warn("empty product data: " , dstData );
+				ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+				ctx.unsetCurrentImages();
+			}
+			else {
+				mout.debug("extracted quantity: " , dstProduct ); // .getFirstData().data
+				// NEW
+				drain::VariableMap & prodHow = dstProduct.getHow();
+				//how["elangles"] = composite.metadataMap.get("how:elangles", {0,1,2});
+				//if (composite.metadataMap.hasKey("how:angles"))
+				prodHow["angles"].setType(typeid(double));
+				prodHow["angles"] = composite.odim.angles; //composite.metadataMap["how:angles"];
+				ctx.setCurrentImages(dstData.data);
+				ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR);
+			}
+		}
+		else {
+			mout.experimental(dstProduct );
+			mout.warn("dstProduct does not have claimed quantity: " , composite.odim.quantity ); // .getFirstData().data
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
 			ctx.unsetCurrentImages();
 		}
-		else {
-			mout.debug("extracted quantity: " , dstProduct ); // .getFirstData().data
-			// NEW
-			drain::VariableMap & prodHow = dstProduct.getHow();
-			//how["elangles"] = composite.metadataMap.get("how:elangles", {0,1,2});
-			//if (composite.metadataMap.hasKey("how:angles"))
-			prodHow["angles"].setType(typeid(double));
-			prodHow["angles"] = composite.odim.angles; //composite.metadataMap["how:angles"];
-			ctx.setCurrentImages(dstData.data);
-			ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR);
-		}
-	}
-	else {
-		mout.experimental(dstProduct );
-		mout.warn("dstProduct does not have claimed quantity: " , composite.odim.quantity ); // .getFirstData().data
-		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
-		ctx.unsetCurrentImages();
-	}
 
+	} // end dstProduct block
 
 	//mout.warn("created" );
+
+	DataTools::updateInternalAttributes(ctx.cartesianHi5);
 
 	// NEW 2020/07
 	ctx.select.clear();
 
 	drain::VariableMap & statusMap = ctx.getStatusMap();
-	statusMap.updateFromMap(rootOdim);
+	//	statusMap.updateFromMap(rootOdim);
 
 	statusMap.updateFromMap(composite.nodeMap);
 	//statusMap.updateFromMap(composite.metadataMap);
 	statusMap.updateFromMap(composite.odim);
 	// Spoils input.sh...
-	//std::cout << ctx.svg << '\n';
+	// std::cout << ctx.svg << '\n';
+	// mout.warn("updateInternalAttributes 2:",  ctx.cartesianHi5.data.attributes);
 
 }
 

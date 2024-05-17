@@ -39,12 +39,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include <map>
 
-
 #include <drain/Log.h>
+#include <drain/StringBuilder.h>
 #include <drain/VariableAssign.h>
-
+// #include "Variable.h"
 #include "ReferenceMap.h"
-//#include "Variable.h"
+
 
 namespace drain
 {
@@ -120,6 +120,7 @@ public:
 	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
 		parameters.setValues(p, assignmentSymbol, separatorSymbol);
 		updateBean();
+		storeLastParameters(p); // experimental
 	};
 
 	/// Set parameters
@@ -147,22 +148,27 @@ public:
 	void setParameter(const std::string &p, const Castable & value){
 		parameters[p].assignCastable(value);
 		updateBean();
+		storeLastParameters(StringBuilder<'='>(p, value)); // experimental
 	}
 
 	/// TODO: consider VariableLike
 	/// Sets a single parameter
+	template <class T>
 	inline
-	void setParameter(const std::string &p, const Variable & value){
+	void setParameter(const std::string &p, const VariableT<T> & value){
 		parameters[p].assignCastable(value);
 		updateBean();
+		storeLastParameters(StringBuilder<'='>(p, value)); // experimental
 	}
 
 	/// Sets a single parameter
+	/*
 	inline
 	void setParameter(const std::string &p, const Reference & value){
 		parameters[p].assignCastable(value);
 		updateBean();
 	}
+	*/
 
 	/// Sets a single parameter
 	template <class F>
@@ -170,6 +176,7 @@ public:
 	void setParameter(const std::string &p, const F &value){
 		parameters[p] = value;
 		updateBean();
+		storeLastParameters(p); // experimental
 	}
 
 	/// Sets a single parameter
@@ -178,11 +185,13 @@ public:
 	void setParameter(const std::string &p, std::initializer_list<F> value){
 		parameters[p] = value;
 		updateBean();
+		// develop storeLastParameters(StringBuilder<'='>(p, value)); // experimental
 	}
+
+
 
 	inline
 	BeanLike & operator=(const BeanLike & b){ //
-		//copy(b);
 		parameters.importMap(b.getParameters()); // 2021
 		updateBean(); // ADDED 2021/10
 		return *this;
@@ -223,14 +232,12 @@ protected:
 
 	/// Called after setParameters()
 	virtual inline
+	void storeLastParameters(const std::string & p) const {};
+
+	/// Called after setParameters()
+	virtual inline
 	void updateBean() const {};
 
-	// Copy variables
-	/*
-	void copy(const BeanLike & b){
-		parameters.importMap(b.getParameters());
-	}
-	*/
 
 
 };

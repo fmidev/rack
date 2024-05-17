@@ -220,18 +220,18 @@ $(function() {
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <a class="code" href="classrack_1_1SingleParamPrecip.html">SingleParamPrecip</a>(name, <span class="stringliteral">&quot;Precipitation rate from Z (reflectivity)&quot;</span>), a(a), b(b){</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        parameters.link(<span class="stringliteral">&quot;a&quot;</span>, this-&gt;a = a);</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        parameters.link(<span class="stringliteral">&quot;b&quot;</span>, this-&gt;b = b);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <a class="code" href="classrack_1_1PrecipZ.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <a class="code" href="classrack_1_1PrecipZ.html#aa896ef0d942fc3236d34466fb54c8402">updateBean</a>();</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    };</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keyword">inline</span></div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="classrack_1_1PrecipZ.html">PrecipZ</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1PrecipZ.html">PrecipZ</a> &amp; p) : <a class="code" href="classrack_1_1SingleParamPrecip.html">SingleParamPrecip</a>(p) {</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        parameters.<a class="code" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(p.getParameters(), p, *<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <a class="code" href="classrack_1_1PrecipZ.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <a class="code" href="classrack_1_1PrecipZ.html#aa896ef0d942fc3236d34466fb54c8402">updateBean</a>();</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    }</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keyword">virtual</span></div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="classrack_1_1PrecipZ.html#ad3d20dd7e09a23bd60ca27e78227e245">  161</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1PrecipZ.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00161"></a><span class="lineno"><a class="line" href="classrack_1_1PrecipZ.html#aa896ef0d942fc3236d34466fb54c8402">  161</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1PrecipZ.html#aa896ef0d942fc3236d34466fb54c8402">updateBean</a>()<span class="keyword"> const override </span>{</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        aInv = 1.0/a;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        bInv = 1.0/b;</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="comment">//drain::Logger mout(__FILE__, __FUNCTION__);</span></div>
@@ -389,7 +389,7 @@ $(function() {
 <div class="ttc" id="aclassrack_1_1PrecipKDP_html"><div class="ttname"><a href="classrack_1_1PrecipKDP.html">rack::PrecipKDP</a></div><div class="ttdef"><b>Definition:</b> Precipitation.h:207</div></div>
 <div class="ttc" id="aclassrack_1_1PrecipZZDR_html"><div class="ttname"><a href="classrack_1_1PrecipZZDR.html">rack::PrecipZZDR</a></div><div class="ttdef"><b>Definition:</b> Precipitation.h:239</div></div>
 <div class="ttc" id="aclassrack_1_1PrecipZ_html"><div class="ttname"><a href="classrack_1_1PrecipZ.html">rack::PrecipZ</a></div><div class="ttdef"><b>Definition:</b> Precipitation.h:141</div></div>
-<div class="ttc" id="aclassrack_1_1PrecipZ_html_ad3d20dd7e09a23bd60ca27e78227e245"><div class="ttname"><a href="classrack_1_1PrecipZ.html#ad3d20dd7e09a23bd60ca27e78227e245">rack::PrecipZ::updateBean</a></div><div class="ttdeci">virtual void updateBean() const</div><div class="ttdoc">Called after setParameters()</div><div class="ttdef"><b>Definition:</b> Precipitation.h:161</div></div>
+<div class="ttc" id="aclassrack_1_1PrecipZ_html_aa896ef0d942fc3236d34466fb54c8402"><div class="ttname"><a href="classrack_1_1PrecipZ.html#aa896ef0d942fc3236d34466fb54c8402">rack::PrecipZ::updateBean</a></div><div class="ttdeci">virtual void updateBean() const override</div><div class="ttdoc">Called after setParameters()</div><div class="ttdef"><b>Definition:</b> Precipitation.h:161</div></div>
 <div class="ttc" id="aclassrack_1_1PrecipZrain_html"><div class="ttname"><a href="classrack_1_1PrecipZrain.html">rack::PrecipZrain</a></div><div class="ttdef"><b>Definition:</b> Precipitation.h:187</div></div>
 <div class="ttc" id="aclassrack_1_1PrecipZsnow_html"><div class="ttname"><a href="classrack_1_1PrecipZsnow.html">rack::PrecipZsnow</a></div><div class="ttdef"><b>Definition:</b> Precipitation.h:196</div></div>
 <div class="ttc" id="aclassrack_1_1Precip_html"><div class="ttname"><a href="classrack_1_1Precip.html">rack::Precip</a></div><div class="ttdef"><b>Definition:</b> Precipitation.h:41</div></div>

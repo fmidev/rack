@@ -652,9 +652,10 @@ void CmdOutputFile::exec() const {
 			// VariableFormatterODIM<drain::FlexibleVariable> odimHandler;
 
 			for (const ODIMPath & path: paths){
-				mout.special<LOG_DEBUG+1>('\t', path);
+				// mout.special<LOG_DEBUG+1>('\t', path);
+				// mout.special('\t', path);
 				// output << path << ':' << src(path).data.attributes << '\n';
-				drain::FlexVariableMap & vmap = src(path).data.image.properties;
+				const drain::FlexVariableMap & vmap = src(path).data.image.properties;
 				/*
 				if (vmap.hasKey("what:source")){ // moved to DataTools::updateVariables()
 					SourceODIM odim(vmap.get("what:source", ""));
@@ -663,6 +664,7 @@ void CmdOutputFile::exec() const {
 					// mout.warn(vmap);
 				}
 				*/
+				mout.special<LOG_DEBUG+1>('\t', path, ": attr: ", vmap);
 				//statusFormatter.toStream(output, src(path).data.image.properties);
 				statusFormatter.toStream(output, vmap, 0, RackContext::flexVariableFormatter); // odimHandler);
 			}

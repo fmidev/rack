@@ -1,6 +1,5 @@
 <map id="VariableFormatter&lt; T &gt;" name="VariableFormatter&lt; T &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,78,183,105"/>
-<area shape="rect" id="node2" href="$classrack_1_1VariableFormatterODIM.html" title=" " alt="" coords="250,5,425,47"/>
-<area shape="rect" id="node3" href="$classrack_1_1VariableFormatterODIM.html" title=" " alt="" coords="250,71,425,112"/>
-<area shape="rect" id="node4" href="$classrack_1_1VariableFormatterODIM.html" title=" " alt="" coords="231,137,444,163"/>
+<area shape="rect" id="node1" title="Formats variables to output stream." alt="" coords="5,46,183,73"/>
+<area shape="rect" id="node2" href="$classrack_1_1VariableFormatterODIM.html" title=" " alt="" coords="231,5,405,47"/>
+<area shape="rect" id="node3" href="$classrack_1_1VariableFormatterODIM.html" title=" " alt="" coords="231,71,405,112"/>
 </map>
