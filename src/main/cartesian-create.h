@@ -68,7 +68,7 @@ public:
 
 		Composite & composite = ctx.getComposite(RackContext::PRIVATE);
 
-		mout.attention("composite*: ", &composite, " accArray: ", composite.accArray);
+		mout.attention<LOG_DEBUG>("composite*: ", &composite, " accArray: ", composite.accArray);
 
 		//composite.reset();
 		composite.accArray.reset(); // Not frame, otherwise --cSize spoiled
