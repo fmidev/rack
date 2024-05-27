@@ -628,9 +628,9 @@ void CmdOutputFile::exec() const {
 			drain::StringMapper statusFormatter(RackContext::variableMapper);
 			statusFormatter.parse(ctx.formatStr, true);
 
-			mout.attention("Debugging FALSE: ");
-			//statusFormatter.parse(ctx.formatStr, false);
-			statusFormatter.toStream(std::cerr);
+			// mout.attention("Debugging FALSE: ");
+			// statusFormatter.parse(ctx.formatStr, false);
+			// statusFormatter.toStream(std::cerr);
 
 			// OLD statusFormatter.toStream(output, ctx.getStatusMap());
 
