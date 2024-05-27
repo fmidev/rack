@@ -317,6 +317,11 @@ public:
 		return *this;
 	}
 
+	/// Enable variable formatting, followed by pipe '|'.
+	/**
+	 *  The formatting depends on the implementation. In this base class, VariableFormatter<T> is applied.
+	 *
+	 */
 	inline
 	StringMapper & enableFormatting(bool formatting){
 		if (this->formatting != formatting){
@@ -330,17 +335,6 @@ public:
 	}
 
 
-	inline
-	void updateRegExp(){
-		std::stringstream sstr;
-		sstr << "^(.*)\\$\\{(" << validChars; //  << ")\\}(.*)$";
-		if (formatting){
-			 sstr << "(\\|[^}]*)?";
-		}
-		sstr << ")\\}(.*)$";
-		// std::cout << sstr.str() << '\n';
-		regExp.setExpression(sstr.str());
-	}
 
 	/// Converts a std::string containing variables like in "Hello, ${NAME}!" to a list of StringLet's.
 	/**
@@ -479,6 +473,17 @@ public:
 
 protected:
 
+	inline
+	void updateRegExp(){
+		std::stringstream sstr;
+		sstr << "^(.*)\\$\\{(" << validChars; //  << ")\\}(.*)$";
+		if (formatting){
+			 sstr << "(\\|[^}]*)?";
+		}
+		sstr << ")\\}(.*)$";
+		// std::cout << sstr.str() << '\n';
+		regExp.setExpression(sstr.str());
+	}
 
 	StringMapper & parse(const std::string &s, RegExp &r);
 

@@ -147,6 +147,32 @@ std::string StringTools::trim(const std::string &s, const std::string & trimChar
 
 }
 
+/// Coupled trimming: remove a single leading and trailing char, if both found.
+std::string StringTools::trimSymmetric(const std::string &s, const std::string &leading, const std::string & trailing){
+
+	const std::string::size_type length = s.length();
+
+	if (length < 2){
+		return s;
+	}
+
+	const std::string & lead  = leading;
+	const std::string & trail = trailing.empty() ? leading : trailing;
+
+	// Check if a leading special character is found, at all
+	std::size_t i = lead.find(s.at(0));
+	if (i != std::string::npos){
+		// Ok, check if a matching ending character is found (ie. ending char at the same position).
+		if (trail.find(s.at(length - 1)) == i){
+			return s.substr(1, length-2);
+		}
+	}
+
+	return s;
+
+}
+
+
 // https://stackoverflow.com/questions/236129/how-do-i-iterate-over-the-words-of-a-string/237280#237280
 // CONSIDER:  istringstream iss(s); while (iss) { string subs; iss >> subs; cout << "Substring: " << sub << endl; }
 

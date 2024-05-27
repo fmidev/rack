@@ -624,9 +624,13 @@ void CmdOutputFile::exec() const {
 			hi5::Hi5Base::writeText(src, paths, output);
 		}
 		else {
-			mout.debug("formatting text output" );
+			mout.debug("formatting text output: >", ctx.formatStr, '<');
 			drain::StringMapper statusFormatter(RackContext::variableMapper);
 			statusFormatter.parse(ctx.formatStr, true);
+
+			mout.attention("Debugging FALSE: ");
+			//statusFormatter.parse(ctx.formatStr, false);
+			statusFormatter.toStream(std::cerr);
 
 			// OLD statusFormatter.toStream(output, ctx.getStatusMap());
 
@@ -656,6 +660,10 @@ void CmdOutputFile::exec() const {
 				// mout.special('\t', path);
 				// output << path << ':' << src(path).data.attributes << '\n';
 				const drain::FlexVariableMap & vmap = src(path).data.image.properties;
+
+				// mout.attention("Debugging: ");
+				// statusFormatter.debug(std::cerr, vmap);
+
 				/*
 				if (vmap.hasKey("what:source")){ // moved to DataTools::updateVariables()
 					SourceODIM odim(vmap.get("what:source", ""));

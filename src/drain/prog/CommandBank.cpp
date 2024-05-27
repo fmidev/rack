@@ -203,31 +203,102 @@ void CommandBank::scriptify(int argc, const char **argv, Script & script) const 
 	}
 }
 
+void CommandBank::tokenize(const std::string & line, std::list<std::string> & args) const{
+
+	Logger mout(__FILE__, __FUNCTION__); //
+
+	std::stringstream sstr(line);
+
+	TextReader::skipWhiteSpace(sstr);
+	if (sstr.eof()){
+		mout.warn("empty cmd line");
+		return;
+	}
+
+	char c;
+	while (true){
+		c = sstr.peek();
+		if (sstr.eof())
+			return;
+
+		mout.attention("peek: ", c, "=", (int)c);
+		if (c == '"'){ // First version... (later a set of chars, like in trimSymmetric)
+			sstr.get(); // swallow start char
+			args.push_back(TextReader::scanSegment(sstr, "\"")); // NOTE: TextReader handles \" but not \' ???
+			// mout.special("added:", args.back());
+			// c =
+			sstr.get(); // swallow end char
+			/*
+			if (c != '"'){ // THIS c CHECK CAN BE REMOVED LATER
+				mout.critical("Programming error, no matching trailing hyphen, line=", line);
+			}
+			else {
+				mout.attention("swallow: ", c, "=", (int)c);
+			}
+			*/
+		}
+		else {
+			args.push_back(TextReader::scanSegment(sstr, " \t\n"));
+		}
+		TextReader::skipWhiteSpace(sstr);
+	}
+
+
+	//drain::StringTools::trimScan(str, posLeft, posRight, trimChars);
+
+}
+
+
 void CommandBank::scriptify(const std::string & line, Script & script) const{
 
 	Logger mout(__FILE__, __FUNCTION__); //
 
 	typedef std::list<std::string> list_t;
-	list_t l;
+	list_t args;
 
+	// Tokenize
+	/*
 	std::stringstream sstr(line);
 	while (sstr) {
 		l.push_back("");
 		sstr >> l.back();
 	}
+	*/
+	tokenize(line, args);
 
-	list_t::const_iterator it = l.begin();
-	while (it != l.end()) {
+	// DEBUGGING, CAN BE REMOVED
+	/*
+	{
+		std::list<std::string> args2;
+		std::stringstream sstr2(line);
+		while (sstr2) {
+			args2.push_back("");
+			sstr2 >> args2.back();
+		}
+		if (args != args2){
+			mout.special(drain::sprinter(args));
+			mout.special(drain::sprinter(args2));
+			mout.error("Programming error? Script parsing deviated: ", line);
+
+		}
+	}
+	mout.error("finito");
+	*/
+
+
+	list_t::const_iterator it = args.begin();
+	while (it != args.end()) {
 		const std::string & arg = *it;
 		++it;
-		if (it != l.end()){
+		if (it != args.end()){
 			const std::string & argNext = *it;
 			if (scriptify(arg, argNext, script))
 				++it;
 		}
 		else {
-			if (scriptify(arg, "", script))
+			if (scriptify(arg, "", script)){
 				mout.warn(arg , ": argument missing (premature end of command line), i=" );
+			}
 		}
 	}
 }
@@ -256,9 +327,10 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 				return false;
 			}
 			else {
-				drain::StringTools::trim(argNext, "'\"");
-				//script.add(key, argNext);
-				script.add(key, drain::StringTools::trim(argNext, "'\""));
+				// 2024/05/27  drain::StringTools::trim(argNext, "'\"");
+				script.add(key, argNext);
+				// 2024/05/27 This is problematic, since for example --format may intentionally contain quotes.
+				// script.add(key, drain::StringTools::trim(argNext, "'\""));
 				return true;
 			}
 		}

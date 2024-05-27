@@ -64,7 +64,7 @@ char TextReader::skipChars(std::istream & istr, const std::string chars){
 }
 
 
-
+// Consider as argument: skipEscapedChars = "\"\\";
 char TextReader::scanSegment(std::istream & istr, const std::string & endChars, std::ostream & ostr){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -74,8 +74,7 @@ char TextReader::scanSegment(std::istream & istr, const std::string & endChars, 
 	// NOTE: in case of istringstream, while(!istr.eof()) or while(istr) do not work
 	while (true){
 
-		//c0 = istr.get(); //istr.peek(); // no eof triggered until this
-		c = istr.peek(); //istr.peek(); // no eof triggered until this
+		c = istr.peek(); // No EOF triggered until this!
 		if (istr.eof())
 			return cPrev; // previous
 
@@ -84,7 +83,7 @@ char TextReader::scanSegment(std::istream & istr, const std::string & endChars, 
 		if (c == '\\'){
 			istr.get(); // Swallow escape char.
 			//mout.warn("escape char (", c, ")"); // todo: interpret \t, \n ?
-			if (!istr){
+			if (!istr){ // or eof?
 				//mout.warn("str=" , ostr.str() );
 				mout.warn("premature end-of-file after escape char '\\' (", c, ")"); // , str=" << ostr.str()
 				return cPrev;
@@ -92,32 +91,42 @@ char TextReader::scanSegment(std::istream & istr, const std::string & endChars, 
 
 			c = istr.get();
 
-			switch (c){
-			// Accept silently
-			case '\\':
-			case '"':
-				break;
-			// Accept standard special chars
-			case 'n':
-				c='\n';
-				break;
-			case 't':
-				c='\t';
-				break;
-			case 'r':
-				c='\r';
-				break;
-			case 'b': // bell
-				c='\b';
-				break;
-			// Conformality to JSON not implemented. https://www.crockford.com/mckeeman.html
-			case 'u':
-				// mout.unimplemented();
-				mout.unimplemented("unsupported escape, unicode '\\u", (char)c, "...'");
-				break;
-			default:
-				mout.unimplemented("unsupported escape char: '\\", (char)c, "' (",(int)c,")");
+			static std::string skipEscapedChars = "\"\\"; // consider single hyphen: "'"
+			if (skipEscapedChars.find(c) != std::string::npos){
+				// Accept silently: "
 			}
+			else {
+				switch (c){
+				/*
+				// Accept silently
+				case '\\':
+				case '"':
+					break;
+				*/
+				// Accept standard special chars
+				case 'n':
+					c = '\n';
+					break;
+				case 't':
+					c = '\t';
+					break;
+				case 'r':
+					c = '\r';
+					break;
+				case 'b': // bell
+					c = '\b';
+					break;
+				// Full conformality to JSON not implemented! https://www.crockford.com/mckeeman.html
+				case 'u':
+					// mout.unimplemented();
+					mout.unimplemented("unsupported escape, unicode '\\u", (char)c, "...'");
+					break;
+				default:
+					mout.unimplemented("unsupported escape char: '\\", (char)c, "' (",(int)c,")");
+				}
+
+			}
+
 			ostr.put(c);
 			/*
 			if (!istr){
@@ -140,7 +149,7 @@ char TextReader::scanSegment(std::istream & istr, const std::string & endChars, 
 	}
 
 	// Unreachable code...
-	mout.warn("premature end of file, last char=", c);
+	mout.warn("premature end of input, last char='", c, "'");
 	return 0;
 }
 

@@ -119,6 +119,18 @@ public:
 	static
 	std::string trim(const std::string &s, const std::string &trimChars=" \t\n\r");
 
+	/// Coupled trimming: remove a single leading and trailing char, if both found.
+	/**
+	 *   \code
+	 *   s = trim("\"test\"");
+	 *   s = trim("{test}", "{", "}");
+	 *   \endcode
+	 *
+	 */
+	static
+	std::string trimSymmetric(const std::string &s, const std::string &leading= "'\"", const std::string & trailing="");
+
+
 	/// Returns indices to trimmed segment of s such that it can be extracted as s.substr(pos1, pos2-pos1).
 	/**
 	 *  Starting from pos1, searches for the first segment not containing trimChars.

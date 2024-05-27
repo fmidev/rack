@@ -229,6 +229,7 @@ while (( $line <= iEnd )); do
 
     echo "Ext: '$extension' $output"
     
+    
     # SVG validation and conversion. 
     if [ $extension == 'svg' ]; then
 
@@ -256,6 +257,16 @@ while (( $line <= iEnd )); do
 	    echo -e "$VT100_RED XML validation failed for $output  $VT100_END"
 	    echo $0 $line '# <- restart with this'
 	    exit 3
+	fi
+    fi
+
+    # General text validation
+    if [ -f valid/${output} ] ; then
+	diff valid/${output} ${output} 
+	if [ $? != 0 ]; then
+	    echo -e "$VT100_RED Text file validation failed for $output  $VT100_END"
+	    echo $0 $line '# <- restart with this'
+	    exit 4
 	fi
     fi
     

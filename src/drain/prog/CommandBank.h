@@ -146,8 +146,11 @@ public:
 	void append(const Script & script, Program & prog) const ;
 
 protected:
+
 	void append(const Script & script, Context & ctx, Program & prog) const ;
 
+
+	void tokenize(const std::string & cmdLine, std::list<std::string> & args) const;
 
 public:
 
