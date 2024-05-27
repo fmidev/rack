@@ -631,7 +631,6 @@ void CmdOutputFile::exec() const {
 			// mout.attention("Debugging FALSE: ");
 			// statusFormatter.parse(ctx.formatStr, false);
 			// statusFormatter.toStream(std::cerr);
-
 			// OLD statusFormatter.toStream(output, ctx.getStatusMap());
 
 			// NEW
