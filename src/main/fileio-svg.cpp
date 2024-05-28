@@ -309,7 +309,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		*/
 		VariableFormatterODIM<std::string> formatter; // (No instance properties used, but inheritance/overriding)
 
-		mout.attention("handle: ", current.data);
+		// mout.attention("handle: ", current.data);
 
 		// Note: these are "subtitles", not the main title
 
@@ -353,7 +353,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 			std::string v, format;
 			drain::StringTools::split2(attr.second.toStr(), v, format, '|');
 
-			mout.attention("handle: ", attr.first, " ", v, " + ", format);
+			// mout.attention("handle: ", attr.first, " ", v, " + ", format);
 
 			if (format.empty()){
 				tspan->ctext = v;

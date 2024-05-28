@@ -1378,7 +1378,7 @@ public:
 		mout.debug("try to track if argument is a path, an attribute, or a combination of both" );
 
 		static
-		const drain::RegExp re("^(.*(data|what|where|how)):([a-zA-Z0-9_]+(=.*)?)$");
+		const drain::RegExp re("^(.*(data|what|where|how)):([[:alpha:]][a-zA-Z0-9_:]*(=.*)?)$");
 
 		std::string assignment;
 		DataSelector selector; //(resources.select);

@@ -206,6 +206,19 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 		file.setGdal("UNITS", odim.quantity);
 		// file.gdalInfo["UNITS"] = odim.quantity; // .data.setText( );
 		// file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
+
+		for (const auto & entry: src.properties){// See also: fileio.cpp: dst.properties[""]
+			std::vector<std::string> keys;
+			drain::StringTools::split(entry.first, keys, ':');
+			if (keys.size() >= 3){
+				//mout.special<LOG_NOTICE>("Testing attribute key: ", drain::sprinter(keys));
+				if (keys[1] == "GDAL"){
+					mout.special<LOG_NOTICE>("Adding GDAL attribute: ", keys[2], '=', entry.second);
+					file.setGdal(keys[2], entry.second);
+				}
+			}
+		}
+
 		file.writeMetadata(); // Metadata first, for cloud optimized GeoTIFF, COG.
 	}
 

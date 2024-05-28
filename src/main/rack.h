@@ -32,11 +32,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.7.4"
+#define __RACK_VERSION__ "8.7.5"
 
 /**
+ *   Version 8.7.5
+ *   - Added support for GDAL variables, issued like --/what:GDAL:<key>=<value>
+ *
  *   Version 8.7.4
- *   - Fix: Added support of (double) hyphen matching.
+ *   - Fix: Added support of (double) hyphen matching in scripts (--palette "" and --format "\"something\"")
  *
  *   Version 8.7.3
  *   - Fix: Composite extract (internal variables)
