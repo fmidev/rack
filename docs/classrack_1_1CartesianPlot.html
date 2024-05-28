@@ -137,9 +137,9 @@ virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="botto
 <tr class="memitem:a500f7406417d4aff16485aed261c2447 inherit pub_methods_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a id="a500f7406417d4aff16485aed261c2447"></a>
 virtual const <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getParameters</b> () const</td></tr>
 <tr class="separator:a500f7406417d4aff16485aed261c2447 inherit pub_methods_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64367bf8389d6e87456b1a1529db8555 inherit pub_methods_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a id="a64367bf8389d6e87456b1a1529db8555"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setParameters</b> (const std::string &amp;args)</td></tr>
-<tr class="separator:a64367bf8389d6e87456b1a1529db8555 inherit pub_methods_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a414ad775772801a21d17a8365960d8e8 inherit pub_methods_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a id="a414ad775772801a21d17a8365960d8e8"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setAllParameters</b> (const std::string &amp;args) override</td></tr>
+<tr class="separator:a414ad775772801a21d17a8365960d8e8 inherit pub_methods_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d502eade778007fdf4d102898655436 inherit pub_methods_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a id="a7d502eade778007fdf4d102898655436"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setParameters</b> (const <a class="el" href="classdrain_1_1VariableMap.html">VariableMap</a> &amp;params)</td></tr>
 <tr class="separator:a7d502eade778007fdf4d102898655436 inherit pub_methods_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,6 +154,12 @@ virtual <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> &a
 <tr class="memitem:ad28e0ea1b2f21af735f423e1df4c511a inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a id="ad28e0ea1b2f21af735f423e1df4c511a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Command</b> (const <a class="el" href="classdrain_1_1Command.html">Command</a> &amp;cmd)</td></tr>
 <tr class="separator:ad28e0ea1b2f21af735f423e1df4c511a inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2170fe7678dc56d71719a2d867ee8f6 inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a id="ad2170fe7678dc56d71719a2d867ee8f6"></a>
+const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getLastParameters</b> () const</td></tr>
+<tr class="separator:ad2170fe7678dc56d71719a2d867ee8f6 inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64367bf8389d6e87456b1a1529db8555 inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a id="a64367bf8389d6e87456b1a1529db8555"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setParameters</b> (const std::string &amp;args)</td></tr>
+<tr class="separator:a64367bf8389d6e87456b1a1529db8555 inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93c7107b9d7d3ffad4ca61f79c2d176b inherit pub_methods_classdrain_1_1Command"><td class="memTemplParams" colspan="2"><a id="a93c7107b9d7d3ffad4ca61f79c2d176b"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a93c7107b9d7d3ffad4ca61f79c2d176b inherit pub_methods_classdrain_1_1Command"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setParameters</b> (const <a class="el" href="classdrain_1_1SmartMap.html">SmartMap</a>&lt; T &gt; &amp;args)</td></tr>
@@ -249,6 +255,10 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <tr class="memitem:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memItemLeft" align="right" valign="top"><a id="ac7902d0c7488500c9f16503fd3889604"></a>
 <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a>&#160;</td><td class="memItemRight" valign="bottom"><b>parameters</b></td></tr>
 <tr class="separator:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BasicCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classdrain_1_1Command"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1Command')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1Command.html">Command</a></td></tr>
+<tr class="memitem:a395030bfc55059cd3f0f37fa96e8f5bd inherit pro_attribs_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a id="a395030bfc55059cd3f0f37fa96e8f5bd"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>lastParameters</b></td></tr>
+<tr class="separator:a395030bfc55059cd3f0f37fa96e8f5bd inherit pro_attribs_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1Contextual"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1Contextual')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td></tr>
 <tr class="memitem:aa93503d4d64d09604ec306f58e6f03b5 inherit pro_attribs_classdrain_1_1Contextual"><td class="memItemLeft" align="right" valign="top"><a id="aa93503d4d64d09604ec306f58e6f03b5"></a>
 <a class="el" href="classdrain_1_1Context.html">Context</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>contextPtr</b></td></tr>

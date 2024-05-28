@@ -89,7 +89,7 @@ public:
 
 	/*
 	virtual inline
-	void setParameters(const std::string & params, char assignmentSymbol='=', char separatorSymbol=0){
+	void set Parameters(const std::string & params, char assignmentSymbol='=', char separatorSymbol=0){
 
 		if (params == "rain"){
 			c = 1.12E-7;

@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-void BasicCommand::setParameters(const std::string & args){ //, char assignmentSymbol) {
+void BasicCommand::setAllParameters(const std::string & args){ //, char assignmentSymbol) {
 
 	const char assignmentSymbol = '=';
 

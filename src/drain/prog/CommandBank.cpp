@@ -532,11 +532,12 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		}
 
 		const key_t & key =  it->first;
-		value_t & cmd     = *it->second;
+		Command & cmd     = *it->second;
+		//value_t & cmd     = *it->second;
 
 		// Context & ctx = cmd.getContext<>(); //.log;
-		//Log & log = ctx.log;
-		//log.setVerbosity(baseLog.getVerbosity());
+		// Log & log = ctx.log;
+		// log.setVerbosity(baseLog.getVerbosity());
 
 		const bool TRIGGER_CMD = (cmd.section & this->scriptTriggerFlag);
 		// ctx.setStatus("script", !routine.empty());

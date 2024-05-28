@@ -167,7 +167,14 @@ A PNG image generated with <code>-o</code> .</div></div>
 <div class="line"><span class="preprocessor"># where:towerheight=33</span></div>
 <div class="line">500 360</div>
 <div class="line">255</div>
-</div><!-- fragment --><p><b>Rack</b> can also save all the data sets in separate files with a single command, producing <code>sweep000.png</code> , <code>sweep001.png</code> and so on. This is achieved with <code>&ndash;outputRawImages</code> , abbreviated -O . The command stores the image data directly, without rescaling pixel values.</p>
+</div><!-- fragment --><p>The comments can be overriden with <code>&ndash;format</code> command. This experimental feature covers currently:</p>
+<ul>
+<li>PGM/PPM files: all the comments are replaced by that string.</li>
+<li>GeoTIFF files: if the argument starts with a curly brace <code>'{'</code> , it is read in as JSON , and (first-level) key-value pairs are stored as GDAL attributes.</li>
+</ul>
+<p>In addition, for GeoTIFF files, attributes set with <code>&ndash;/how</code>:GDAL:&lt;key&gt;=</p>
+<p>will be also added as GDAL variables.</p>
+<p><b>Rack</b> can also save all the data sets in separate files with a single command, producing <code>sweep000.png</code> , <code>sweep001.png</code> and so on. This is achieved with <code>&ndash;outputRawImages</code> , abbreviated -O . The command stores the image data directly, without rescaling pixel values.</p>
 <p><b>Reading</b> image files creates and updates internal HDF5 structure, adding grid data:</p><ol type="1">
 <li>in the first encountered <code>/data&lt;i&gt;</code> or <code>/quality&lt;i&gt;</code> group containing an empty <code>/data</code> (ie. uninitialized image), or if not found:</li>
 <li>in a new <code>/data&lt;i&gt;/data</code> of the existing <code>/dataset&lt;j&gt;</code> with the highest index <code>j</code> </li>
@@ -202,8 +209,8 @@ Correctly (8-bit) and incorrectly (16-bit) rendered images.</div></div>
 <div class="line">    compression= [{{&quot;NONE&quot;,1},{&quot;LZW&quot;,5},{&quot;DEFLATE&quot;,32946},{&quot;PACKBITS&quot;,32773}}]</div>
 </div><!-- fragment --><h1><a class="anchor" id="fileio_svg"></a>
 Writing SVG files</h1>
-<p><b>Experimental</b>. Latest versions of <b>Rack</b> support presenting generated PNG images collectively by means of Scalable Vector Graphics (SVG). Alignment of the elements is done horizontally or vertically. All the PNG images that have been written with <code>-o</code> / <code>&ndash;outputImage</code> are included automatically in the SVG file. Example:</p>
-<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5  --pCappi 500  -c -o $PWD/cappi-gray.png --palette <span class="stringliteral">&#39;&#39;</span> -o $PWD/cappi-rgb.png --outputConf relativePaths=<span class="keyword">false</span> -o display-cappi.svg</div>
+<p><b>Experimental</b>. <b>Rack</b> supports presenting generated PNG images collectively by means of Scalable Vector Graphics (SVG). Alignment of the elements is done horizontally or vertically. All the PNG images that have been written with <code>-o</code> / <code>&ndash;outputImage</code> are included automatically in the SVG file. Example:</p>
+<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5  --pCappi 500  -c -o $PWD/cappi-gray.png --palette <span class="stringliteral">&#39;&#39;</span> -o $PWD/cappi-rgb.png --outputConf svg:absolutePaths=<span class="keyword">true</span> -o display-cappi.svg</div>
 </div><!-- fragment --><div class="image">
 <img src="display-cappi.svg.png" alt=""/>
 <div class="caption">

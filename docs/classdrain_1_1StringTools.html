@@ -134,6 +134,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">trim</a> (const std::string &amp;s, const std::string &amp;trimChars=&quot; \t\n\r&quot;)</td></tr>
 <tr class="memdesc:a55aa8698f514bcac221b0fa4c9fb1f2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string without leading and trailing whitespace (or str undesired chars). <br /></td></tr>
 <tr class="separator:a55aa8698f514bcac221b0fa4c9fb1f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb61794727d3578be74a55c2daa637a5"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#acb61794727d3578be74a55c2daa637a5">trimSymmetric</a> (const std::string &amp;s, const std::string &amp;leading=&quot;'\&quot;&quot;, const std::string &amp;trailing=&quot;&quot;)</td></tr>
+<tr class="memdesc:acb61794727d3578be74a55c2daa637a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coupled trimming: remove a single leading and trailing char, if both found.  <a href="classdrain_1_1StringTools.html#acb61794727d3578be74a55c2daa637a5">More...</a><br /></td></tr>
+<tr class="separator:acb61794727d3578be74a55c2daa637a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98f3cde2adcacaf13731dc116bcec0da"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a98f3cde2adcacaf13731dc116bcec0da">trimScan</a> (const std::string &amp;s, size_t &amp;pos1, size_t &amp;pos2, const std::string &amp;trimChars=&quot; \t\n&quot;)</td></tr>
 <tr class="memdesc:a98f3cde2adcacaf13731dc116bcec0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns indices to trimmed segment of s such that it can be extracted as s.substr(pos1, pos2-pos1).  <a href="classdrain_1_1StringTools.html#a98f3cde2adcacaf13731dc116bcec0da">More...</a><br /></td></tr>
 <tr class="separator:a98f3cde2adcacaf13731dc116bcec0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -718,6 +721,53 @@ template&lt;class T &gt; </td></tr>
 <dl class="section return"><dt>Returns</dt><dd>- true if a non-empty segment found.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e" title="Returns a string without leading and trailing whitespace (or str undesired chars).">trim(const std::string &amp;, const std::string &amp;)</a> </dd></dl>
 
+</div>
+</div>
+<a id="acb61794727d3578be74a55c2daa637a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb61794727d3578be74a55c2daa637a5">&#9670;&nbsp;</a></span>trimSymmetric()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string trimSymmetric </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>leading</em> = <code>&quot;'\&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>trailing</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Coupled trimming: remove a single leading and trailing char, if both found. </p>
+<div class="fragment"><div class="line">s = <a class="code" href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">trim</a>(<span class="stringliteral">&quot;\&quot;test\&quot;&quot;</span>);</div>
+<div class="line">s = <a class="code" href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">trim</a>(<span class="stringliteral">&quot;{test}&quot;</span>, <span class="stringliteral">&quot;{&quot;</span>, <span class="stringliteral">&quot;}&quot;</span>);</div>
+<div class="ttc" id="aclassdrain_1_1StringTools_html_a55aa8698f514bcac221b0fa4c9fb1f2e"><div class="ttname"><a href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">drain::StringTools::trim</a></div><div class="ttdeci">static std::string trim(const std::string &amp;s, const std::string &amp;trimChars=&quot; \t\n\r&quot;)</div><div class="ttdoc">Returns a string without leading and trailing whitespace (or str undesired chars).</div><div class="ttdef"><b>Definition:</b> String.cpp:137</div></div>
+</div><!-- fragment --> 
 </div>
 </div>
 <a id="a7189823e2a2ac9c38249aadabb4412b1"></a>

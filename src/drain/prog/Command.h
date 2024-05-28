@@ -75,11 +75,30 @@ public:
 	virtual
 	const std::string & getDescription() const = 0;
 
+protected:
+
 	virtual
-	void setParameters(const std::string & args) = 0;
+	void setAllParameters(const std::string & args) = 0;
+
+	std::string lastParameters;
+
+public:
+
+	inline
+	const std::string & getLastParameters() const {
+		return lastParameters;
+	};
+
+
+	void setParameters(const std::string & args){
+		lastParameters = args;
+		setAllParameters(args);
+	};
+
 
 	virtual
 	void setParameters(const VariableMap & args) = 0; // REDESIGN?
+
 
 	template <class T>
 	void setParameters(const SmartMap<T> & args){
@@ -88,6 +107,7 @@ public:
 		vargs.importCastableMap(args);
 		setParameters(vargs);
 	}
+
 
 	template <class T>
 	void setParameter(const std::string & key, const T & value){
@@ -221,7 +241,7 @@ public:
 
 
 	virtual
-	void setParameters(const std::string & args); //, char assignmentSymbol='=');
+	void setAllParameters(const std::string & args) override; //, char assignmentSymbol='=');
 
 	inline
 	void setParameters(const VariableMap & params){
@@ -409,7 +429,7 @@ public:
 
 
 	virtual
-	void setParameters(const std::string & parameters){
+	void setAllParameters(const std::string & parameters) override {
 		getBean().setParameters(parameters, '=');
 		//this->update();
 	}
@@ -467,7 +487,7 @@ public:
 	};  // or getParameters
 
 	virtual
-	void setParameters(const std::string & args){
+	void setAllParameters(const std::string & args) override {
 
 		Context & ctx = this->template getContext<>();
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );

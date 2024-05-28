@@ -56,7 +56,7 @@ public:
 	/*
 	virtual
 	inline
-	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
+	void set Parameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
 

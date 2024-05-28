@@ -127,9 +127,9 @@ $(function() {
 <div class="line"> </div>
 <div class="line">    mout.special(mapper);</div>
 <div class="line"> </div>
-<div class="line">    mapper.parse(argv[2]);</div>
+<div class="line">    mapper.parse(argv[2], <span class="keyword">true</span>);</div>
 <div class="line"> </div>
-<div class="line">    mout.warn(mapper);</div>
+<div class="line">    mout.warn(<span class="stringliteral">&quot;Initial parsed state: &quot;</span>, mapper);</div>
 <div class="line"> </div>
 <div class="line">    std::map&lt;std::string,std::string&gt; m;</div>
 <div class="line">    m[<span class="stringliteral">&quot;sqrt2&quot;</span>]  = <span class="stringliteral">&quot;1.41421356237309504880&quot;</span>;</div>
@@ -147,7 +147,7 @@ $(function() {
 <div class="line"> </div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Debugging:\n&quot;</span>;</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Debugging after assignments:\n&quot;</span>;</div>
 <div class="line">    mapper.debug(std::cerr, m);</div>
 <div class="line">    std::cout &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"> </div>

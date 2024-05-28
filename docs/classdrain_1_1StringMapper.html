@@ -120,12 +120,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a38d749ac5c29bde29815bf12baac6efc"><td class="memItemLeft" align="right" valign="top"><a id="a38d749ac5c29bde29815bf12baac6efc"></a>
 <a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setValidChars</b> (const std::string &amp;chars)</td></tr>
 <tr class="separator:a38d749ac5c29bde29815bf12baac6efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81336954663c0930092b4b47f8b8348c"><td class="memItemLeft" align="right" valign="top"><a id="a81336954663c0930092b4b47f8b8348c"></a>
-<a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>enableFormatting</b> (bool formatting)</td></tr>
+<tr class="memitem:a81336954663c0930092b4b47f8b8348c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a81336954663c0930092b4b47f8b8348c">enableFormatting</a> (bool formatting)</td></tr>
+<tr class="memdesc:a81336954663c0930092b4b47f8b8348c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable variable formatting, followed by pipe '|'.  <a href="classdrain_1_1StringMapper.html#a81336954663c0930092b4b47f8b8348c">More...</a><br /></td></tr>
 <tr class="separator:a81336954663c0930092b4b47f8b8348c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a674dec4336e88133ac6d0da5bfcb3e05"><td class="memItemLeft" align="right" valign="top"><a id="a674dec4336e88133ac6d0da5bfcb3e05"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>updateRegExp</b> ()</td></tr>
-<tr class="separator:a674dec4336e88133ac6d0da5bfcb3e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69f517d97293b70a2d996d084a5d55e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a69f517d97293b70a2d996d084a5d55e3">parse</a> (const std::string &amp;s, bool <a class="el" href="classdrain_1_1StringMapper.html#a4b443726ce74bfd5356a403ef80e87c9">convertEscaped</a>=false)</td></tr>
 <tr class="memdesc:a69f517d97293b70a2d996d084a5d55e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a std::string containing variables like in "Hello, ${NAME}!" to a list of StringLet's.  <a href="classdrain_1_1StringMapper.html#a69f517d97293b70a2d996d084a5d55e3">More...</a><br /></td></tr>
 <tr class="separator:a69f517d97293b70a2d996d084a5d55e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,6 +167,9 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a674dec4336e88133ac6d0da5bfcb3e05"><td class="memItemLeft" align="right" valign="top"><a id="a674dec4336e88133ac6d0da5bfcb3e05"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateRegExp</b> ()</td></tr>
+<tr class="separator:a674dec4336e88133ac6d0da5bfcb3e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3a690d88eb5740d2780eeab7901d02c"><td class="memItemLeft" align="right" valign="top"><a id="aa3a690d88eb5740d2780eeab7901d02c"></a>
 <a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>parse</b> (const std::string &amp;s, <a class="el" href="classdrain_1_1RegExp.html">RegExp</a> &amp;r)</td></tr>
 <tr class="separator:aa3a690d88eb5740d2780eeab7901d02c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -234,6 +234,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>formatting</b></td></
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a81336954663c0930092b4b47f8b8348c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81336954663c0930092b4b47f8b8348c">&#9670;&nbsp;</a></span>enableFormatting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a>&amp; enableFormatting </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>formatting</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enable variable formatting, followed by pipe '|'. </p>
+<p>The formatting depends on the implementation. In this base class, <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter&lt;T&gt;</a> is applied. </p>
+
+</div>
+</div>
 <a id="a6e0962219865d494884bed208c5fdb65"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6e0962219865d494884bed208c5fdb65">&#9670;&nbsp;</a></span>expand()</h2>
 

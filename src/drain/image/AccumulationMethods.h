@@ -31,17 +31,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ACCUMULATION_H_
 #define ACCUMULATION_H_
 
-#include <drain/image/CoordinatePolicy.h>
 #include <limits>
 #include <math.h>
 
 #include <stdexcept>
 
-#include "drain/util/Bank.h"
-#include "drain/util/BeanLike.h"
-#include "drain/util/Point.h"
-#include "drain/util/Rectangle.h"
+#include <drain/util/Bank.h>
+#include <drain/util/BeanLike.h>
+#include <drain/util/Point.h>
+#include <drain/util/Rectangle.h>
 #include "ImageT.h"
+#include "CoordinatePolicy.h"
 #include "AccumulationArray.h"
 
 /** See also radar::Compositor
@@ -285,7 +285,6 @@ public:
 
 	virtual
 	void updateBean() const;
-	//void setParameters(const std::string & parameters);
 
 	virtual
 	void add(AccumulationArray & accArray,  const size_t i, double value, double weight) const;
@@ -313,17 +312,17 @@ public:
 
 protected:
 
-	double bias;
+	double bias = 0.0;
 
 	/// Power for data values
-	double p;
-	mutable	double pInv;
-	mutable bool USE_P;
+	double p = 1.0;
+	mutable	double pInv = 1.0;
+	mutable bool USE_P = false;
 
 	/// Power for weights
-	double r;
-	mutable	double rInv;
-	mutable bool USE_R;
+	double r = 1.0;
+	mutable	double rInv = 1.0;
+	mutable bool USE_R = false;
 
 };
 

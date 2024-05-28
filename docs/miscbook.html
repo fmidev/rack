@@ -173,29 +173,30 @@ Metadata output using text templates</h1>
 </ul>
 <p>One can easily export metadata of current HDF5 structure (latest volume read or product generated). The output is a text file in which variables <code>${variable}</code> have been expanded to their current values.</p>
 <p>The text template can be defined briefly on command line by <code>&ndash;format</code> or by reading a file with <code>&ndash;formatFile</code> .</p>
-<p>For example, from a Cartesian product one may extract the projection and a bounding box with the following command: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 -c  --format <span class="stringliteral">&#39;BBOX=${where:LL_lon},${where:LL_lat},${where:UR_lon},${where:UR_lat}\n&#39;</span> --formatOut formatOut.txt </div>
+<p>For example, from a Cartesian product one may extract the projection and a bounding box with the following command: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 -c  --format <span class="stringliteral">&#39;BBOX=${where:LL_lon},${where:LL_lat},${where:UR_lon},${where:UR_lat}\n&#39;</span> -o formatOut.txt </div>
 </div><!-- fragment --><p>The result: </p><div class="fragment"><div class="line">BBOX=21.4734,62.4469,32.0369,66.9151</div>
 </div><!-- fragment --><p>The applicable variables are those the ODIM variables (what:product, where:lat, ...). In addition, <code>what:source</code> fields (<code>NOD</code>, <code>WMO</code> , <code>RAD</code> , <code>PLC</code> , <code>CMT</code> ) are searched for and expanded to convenience variables (<code>${NOD}</code>, etc...). The list of current variables can be examined with <code>&ndash;status</code> command.</p>
 <p><b>New</b>. Latest versions of <b>Rack</b> support variable formatting with following options</p>
 <ol type="1">
 <li><code>bash</code> style substring extraction: <code></code>:startpos or <code></code>:startpos:length (as with <code>bash</code> shell variables)</li>
-<li>C <code>printf()</code> styled value formatting: <code>%4.2f</code> or <code>%8d</code> </li>
+<li>C <code>printf()</code> styled value formatting, like <code>%4.2f</code> or <code>%8d</code> (see <a href="https://cplusplus.com/reference/cstdio/printf/">https://cplusplus.com/reference/cstdio/printf/</a> )</li>
 <li><code>date</code> style date and time formatting, like <code>Y/m/d</code> or <code>H</code>:M – for variables with names ending with "date" or "time".</li>
 </ol>
-<p>This options are illustrated with examples: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5  --format <span class="stringliteral">&#39;time: ${what:startdate|%Y-%m-%d} ${what:starttime|%H:%M} elangle: ${where:elangle|%04.1} \n&#39;</span>  --select dataset:/ -o elangles.out</div>
-</div><!-- fragment --> <div class="fragment"><div class="line">time: 2014-08-27 09:00 elangle:  </div>
-<div class="line">time: 2014-08-27 09:00 elangle:  </div>
-<div class="line">time: 2014-08-27 09:00 elangle:  </div>
-<div class="line">time: 2014-08-27 09:01 elangle:  </div>
-<div class="line">time: 2014-08-27 09:01 elangle:  </div>
-<div class="line">time: 2014-08-27 09:01 elangle:  </div>
-<div class="line">time: 2014-08-27 09:02 elangle:  </div>
-<div class="line">time: 2014-08-27 09:02 elangle:  </div>
-<div class="line">time: 2014-08-27 09:02 elangle:  </div>
-<div class="line">time: 2014-08-27 09:03 elangle:  </div>
-<div class="line">time: 2014-08-27 09:03 elangle:  </div>
-<div class="line">time: 2014-08-27 09:03 elangle:  </div>
-<div class="line">time: 2014-08-27 09:04 elangle:  </div>
+<p>This options are illustrated with examples: </p><div class="fragment"><div class="line"><span class="preprocessor"># </span></div>
+<div class="line"><span class="preprocessor">rack volume.h5  --format &#39;time: ${what:startdate|%Y-%m-%d} ${what:starttime|%H:%M} elangle: ${where:elangle|%04.1f} \n&#39;  --select dataset:/ -o elangles.out</span></div>
+</div><!-- fragment --> <div class="fragment"><div class="line">time: 2014-08-27 09:00 elangle: 00.3 </div>
+<div class="line">time: 2014-08-27 09:00 elangle: 00.7 </div>
+<div class="line">time: 2014-08-27 09:00 elangle: 01.5 </div>
+<div class="line">time: 2014-08-27 09:01 elangle: 03.0 </div>
+<div class="line">time: 2014-08-27 09:01 elangle: 05.0 </div>
+<div class="line">time: 2014-08-27 09:01 elangle: 09.0 </div>
+<div class="line">time: 2014-08-27 09:02 elangle: 02.0 </div>
+<div class="line">time: 2014-08-27 09:02 elangle: 07.0 </div>
+<div class="line">time: 2014-08-27 09:02 elangle: 11.0 </div>
+<div class="line">time: 2014-08-27 09:03 elangle: 15.0 </div>
+<div class="line">time: 2014-08-27 09:03 elangle: 25.0 </div>
+<div class="line">time: 2014-08-27 09:03 elangle: 45.0 </div>
+<div class="line">time: 2014-08-27 09:04 elangle: 00.4 </div>
 </div><!-- fragment --><p>For example, assume template file <code>radar-conf.tpl</code> with the following contents:</p>
 <div class="fragment"><div class="line"># Metadata for radar &#39;${NOD}&#39;</div>
 <div class="line"> </div>
