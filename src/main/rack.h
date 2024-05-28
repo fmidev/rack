@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 /**
  *   Version 8.7.5
- *   - Added support for GDAL variables, issued like --/what:GDAL:<key>=<value>
+ *   - Added support for GDAL variables, issued like --/what:GDAL:<key>=<value> or --format '{"key", 12.345,"key2", "value"}'
  *
  *   Version 8.7.4
  *   - Fix: Added support of (double) hyphen matching in scripts (--palette "" and --format "\"something\"")
