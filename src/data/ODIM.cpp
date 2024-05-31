@@ -44,11 +44,15 @@ const drain::FlaggerDict drain::EnumDict<rack::ODIM::Version>::dict = {
 
 namespace rack {
 
+ODIM::VersionFlagger ODIM::versionFlagger(rack::ODIM::ODIM_2_4);
+
 
 const std::string ODIM::dateformat("%Y%m%d");
 const std::string ODIM::timeformat("%H%M%S");
 
-ODIM::VersionFlagger ODIM::versionFlagger(rack::ODIM::ODIM_2_4);
+const ODIM::nameSet ODIM::timeKeys = {"what:time", "what:starttime", "what:endtime"}; // , "time", "starttime", "endtime"
+const ODIM::nameSet ODIM::dateKeys = {"what:date", "what:startdate", "what:enddate"};
+const ODIM::nameSet ODIM::locationKeys = {"where:site", "where:src", "where:lat", "where:lon", "PLC", "NOD", "WMO"}; // , "site", "src", "lat", "lon"
 
 
 void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){

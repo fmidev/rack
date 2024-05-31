@@ -116,7 +116,7 @@ public:
 
 	CmdImagePhysical() :  drain::SimpleCommand<bool>(__FUNCTION__,
 			"Flag. Handle intensities as physical quantities instead of storage typed values.", "physical", false){
-			//parameters.link("value", ImageOpExec::physical);
+			//getParameters().link("value", ImageOpExec::physical);
 	};
 
 	virtual

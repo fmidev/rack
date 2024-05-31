@@ -190,12 +190,12 @@ public:
 
 	inline
 	CartesianRange() : drain::BasicCommand(__FUNCTION__, "Force a range for single-radar cartesian products (0=use-metadata)."){
-		parameters.link("range", PolarODIM::defaultRange, "km");
+		getParameters().link("range", PolarODIM::defaultRange, "km");
 	};
 
 	inline
 	CartesianRange(const CartesianRange & cmd) : drain::BasicCommand(__FUNCTION__, cmd.getDescription()) {
-		parameters.link("range", PolarODIM::defaultRange, "km");
+		getParameters().link("range", PolarODIM::defaultRange, "km");
 	};
 
 };

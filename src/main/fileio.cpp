@@ -125,6 +125,7 @@ public:
 		svgConf.link("legend", svgConfLegend, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Legend>::dict.getKeys()).str());
 		svgConf.link("title", ctx.svgPanelConf.title); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 		svgConf.link("absolutePaths", ctx.svgPanelConf.absolutePaths);
+		svgConf.link("fontSize", ctx.svgPanelConf.fontSize.tuple());
 
 #ifndef USE_GEOTIFF_NO
 
@@ -139,7 +140,7 @@ public:
 	};
 
 	CmdOutputConf(const CmdOutputConf & cmd) : drain::SimpleCommand<std::string>(cmd) { // drain::BasicCommand(cmd) {
-		//parameters.copyStruct(cmd.getParameters(), cmd, *this);
+		//getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 		hdf5Conf.copyStruct(cmd.hdf5Conf,   cmd, *this, drain::ReferenceMap::LINK);
 		pngConf.copyStruct(cmd.pngConf,     cmd, *this, drain::ReferenceMap::LINK);
 		gtiffConf.copyStruct(cmd.gtiffConf, cmd, *this, drain::ReferenceMap::LINK);
@@ -273,9 +274,9 @@ class CmdOutputTiffConf : public drain::BasicCommand {
 public:
 
 	CmdOutputTiffConf() : drain::BasicCommand(__FUNCTION__, "GeoTIFF configuration") {
-		parameters.link("tilewidth", FileGeoTIFF::tileWidth=256);
-		parameters.link("tileheight", FileGeoTIFF::tileHeight=0);
-		parameters.link("compression", FileGeoTIFF::compression, FileGeoTIFF::getCompressionDict().toStr('|'));
+		getParameters().link("tilewidth", FileGeoTIFF::tileWidth=256);
+		getParameters().link("tileheight", FileGeoTIFF::tileHeight=0);
+		getParameters().link("compression", FileGeoTIFF::compression, FileGeoTIFF::getCompressionDict().toStr('|'));
 	};
 
 
@@ -361,10 +362,10 @@ void CmdOutputFile::exec() const {
 
 	if (!STD_OUTPUT){
 		const drain::VariableMap & statusMap = ctx.getStatusMap();
-		drain::StringMapper filenameMapper(RackContext::variableMapper);
-		filenameMapper.parse(ctx.outputPrefix + value);
+		drain::StringMapper mapper(RackContext::variableMapper);
+		mapper.parse(ctx.outputPrefix + value);
 		// VariableFormatterODIM<drain::Variable> odimHandler;
-		filepath = filenameMapper.toStr(statusMap, -1, RackContext::variableFormatter); // odimHandler);
+		filepath = mapper.toStr(statusMap, -1, RackContext::variableFormatter); // odimHandler);
 		/*
 		if (!ctx.outputPrefix.empty()){
 			mapper.parse(ctx.outputPrefix);
@@ -384,6 +385,8 @@ void CmdOutputFile::exec() const {
 	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(path);
 	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(path);
 	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(path);
+	const bool IMAGE_SVG = drain::image::NodeSVG::fileInfo.checkPath(path);
+
 	const bool NO_EXTENSION = path.extension.empty() && !STD_OUTPUT;
 
 
@@ -444,9 +447,10 @@ void CmdOutputFile::exec() const {
 		if (!ctx.formatStr.empty()){
 			mout.special("formatting comments");
 			drain::StringMapper statusFormatter(RackContext::variableMapper);
+
 			statusFormatter.parse(ctx.formatStr, true);
 			drain::image::Image &dst = (drain::image::Image &)srcImage; // violence...
-			dst.properties[""] = statusFormatter.toStr(ctx.getStatusMap(), 0);
+			dst.properties[""] = statusFormatter.toStr(ctx.getStatusMap(), 0, RackContext::variableFormatter); // XXX
 			ctx.formatStr.clear(); // OK?
 		}
 
@@ -458,7 +462,7 @@ void CmdOutputFile::exec() const {
 #ifndef USE_GEOTIFF_NO
 			// see FileGeoTiff::tileWidth
 			//imageGroup->comment();
-			CmdGeoTiff::write(srcImage, filepath);
+			CmdGeoTiff::write(ctx, srcImage, filepath);
 			//FileGeoTIFF::write(filename, src); //, geoTIFF.width, geoTIFF.height);
 			//
 #else
@@ -473,7 +477,7 @@ void CmdOutputFile::exec() const {
 		}
 
 	}
-	else if (drain::image::NodeSVG::fileInfo.checkPath(path)) {
+	else if (IMAGE_SVG){ // drain::image::NodeSVG::fileInfo.checkPath(path)) {
 
 		// ctx.get
 		track->set("id", path.basename);
@@ -625,8 +629,8 @@ void CmdOutputFile::exec() const {
 		}
 		else {
 			mout.debug("formatting text output: >", ctx.formatStr, '<');
-			drain::StringMapper statusFormatter(RackContext::variableMapper);
-			statusFormatter.parse(ctx.formatStr, true);
+			drain::StringMapper statusMapper(RackContext::variableMapper);
+			statusMapper.parse(ctx.formatStr, true);
 
 			// mout.attention("Debugging FALSE: ");
 			// statusFormatter.parse(ctx.formatStr, false);
@@ -671,9 +675,10 @@ void CmdOutputFile::exec() const {
 					// mout.warn(vmap);
 				}
 				*/
-				mout.special<LOG_DEBUG+1>('\t', path, ": attr: ", vmap);
+				//mout.special<LOG_DEBUG+1>('\t', path, ": attr: ", vmap);
+				mout.special<LOG_WARNING>('\t', path, ": attr: ", vmap);
 				//statusFormatter.toStream(output, src(path).data.image.properties);
-				statusFormatter.toStream(output, vmap, 0, RackContext::flexVariableFormatter); // odimHandler);
+				statusMapper.toStream(output, vmap, 0, RackContext::flexVariableFormatter); // odimHandler);
 			}
 		}
 
@@ -844,7 +849,7 @@ void CmdOutputTree::exec() const {
 	else {
 		drain::StringMapper mapper(RackContext::variableMapper);
 		mapper.parse(ctx.outputPrefix + value);
-		filename = mapper.toStr(ctx.getStatusMap());
+		filename = mapper.toStr(ctx.getStatusMap(), 0, RackContext::variableFormatter);
 		mout.note("writing tree: '", filename, "'");
 	}
 
@@ -957,7 +962,8 @@ public:
 // BeanerCommand<drain::image::ImageSampler>
 //class CmdSample : public drain::SimpleCommand<> {
 //class CmdImageSampler : public drain::BeanCommand<drain::image::ImageSampler> {
-class CmdImageSampler : public drain::BeanerCommand<drain::image::ImageSampler> {
+//class CmdImageSampler : public drain::BeanerCommand<drain::image::ImageSampler> {
+class CmdImageSampler : public drain::BeanCommand<drain::image::ImageSampler> {
 
 public:
 

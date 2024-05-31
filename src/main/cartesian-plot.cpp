@@ -146,7 +146,7 @@ void CartesianSpread::exec() const {  // TODO iDistanceFill
 	dist.setRadius(h, v);
 	*/
 
-	mout.debug3(name , ": pixel resolution: " , dst.odim.xscale , ',' , dst.odim.yscale );
+	mout.debug3(getName() , ": pixel resolution: " , dst.odim.xscale , ',' , dst.odim.yscale );
 	//mout.debug3(dist );
 
 

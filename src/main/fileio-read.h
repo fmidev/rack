@@ -51,7 +51,7 @@ public:
 
 	CmdInputSelect() : drain::BasicCommand(__FUNCTION__, "Read ATTRIBUTES (1), DATA(2) or both (3)."){
 		//, "value", hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS, "flag"){};
-		parameters.link("value", getResources().inputSelect = hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS, "flag");
+		getParameters().link("value", getResources().inputSelect = hi5::Reader::ATTRIBUTES|hi5::Reader::DATASETS, "flag");
 	}
 
 };
@@ -69,7 +69,7 @@ public:
 	inline
 	CmdInputPrefix() : drain::SimpleCommand<std::string>(__FUNCTION__, "Path prefix for input files."){
 		//RackContext & ctx = getContext<RackContext>(); // DO NOT LINK, dynamic context!
-		//parameters.link("path", getResources().inputPrefix = "");
+		//getParameters().link("path", getResources().inputPrefix = "");
 	};
 
 	inline

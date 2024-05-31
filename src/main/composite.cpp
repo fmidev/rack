@@ -900,7 +900,7 @@ public:
 
 	//	CompositeTimeDecay() : drain::BasicCommand(__FUNCTION__, "Delay weight (0.9...1.0) per minute. 1=no decay. See --cTime"){
 	CompositeTimeDecay() : drain::SimpleCommand<double>(__FUNCTION__, "Delay weight (0.9...1.0) per minute. 1=no decay. See --cTime", "decay", 1.0){
-		//parameters.link("decay", getResources().composite.decay = 1.0, "coeff");
+		//getParameters().link("decay", getResources().composite.decay = 1.0, "coeff");
 	};
 
 	inline
@@ -922,7 +922,7 @@ public:
 
 	public:
 	CompositeDecayTime() : drain::SimpleCommand<int>(__FUNCTION__, "Delay half-time in minutes. 0=no decay", "time", 0, "minutes"){
-		//parameters.link("halftime", getResources().composite.decay = 1.0, "coeff");
+		//getParameters().link("halftime", getResources().composite.decay = 1.0, "coeff");
 	};
 
 	inline

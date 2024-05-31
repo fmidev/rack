@@ -44,12 +44,12 @@ class CartesianExtract : public Compositor {
 public:
 
 	CartesianExtract() : Compositor(__FUNCTION__,"Extract data that has been composited on the accumulation array"){
-		parameters.link("channels", channels="dw", "Layers: data,count,weight,std.deviation"); // Accumulation layers to be extracted
-		parameters.link("bbox", bbox.tuple(), "Optional cropping"); // Accumulation layers to be extracted
+		getParameters().link("channels", channels="dw", "Layers: data,count,weight,std.deviation"); // Accumulation layers to be extracted
+		getParameters().link("bbox", bbox.tuple(), "Optional cropping"); // Accumulation layers to be extracted
 	};
 
 	CartesianExtract(const CartesianExtract & cmd) : Compositor(__FUNCTION__, cmd.getDescription()){
-		parameters.copyStruct(cmd.parameters, cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 	virtual
@@ -77,16 +77,16 @@ public:
 
 	CartesianSun() : drain::SimpleCommand<std::string>(__FUNCTION__, "Cartesian sun shine field.", "timestamp", "200507271845")
 	{
-		//parameters.link("timestamp", timestamp="200527071845");
-		//parameters.link("quantity", odim.quantity="SUNSHINE");
+		//getParameters().link("timestamp", timestamp="200527071845");
+		//getParameters().link("quantity", odim.quantity="SUNSHINE");
 	}
 
 	/*
 	CartesianSun() :  drain::BasicCommand(__FUNCTION__,
 			"Sunshine to a Cartesian product.") //, extractCmd(extractCmd)
 	{
-		parameters.link("timestamp", timestamp="200527071845");
-		//parameters.link("quantity", odim.quantity="SUNSHINE");
+		getParameters().link("timestamp", timestamp="200527071845");
+		//getParameters().link("quantity", odim.quantity="SUNSHINE");
 	}
 	*/
 

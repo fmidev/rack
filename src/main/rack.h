@@ -32,9 +32,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.7.5"
+#define __RACK_VERSION__ "8.8"
 
 /**
+ *   Version 8.8
+ *   - Revised, simplified Command class hierarchy.
+ *
+ *   Version 8.7.6
+ *   - Fixed date & time formatting for GDAL variables, eg.  --format '{"nominal-time", "${what:date|%Y/%m/%d} ${what:time|%H:%M} UTC"}'
+ *
  *   Version 8.7.5
  *   - Added support for GDAL variables, issued like --/what:GDAL:<key>=<value> or --format '{"key", 12.345,"key2", "value"}'
  *

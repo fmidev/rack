@@ -123,12 +123,12 @@ public:
 
 	inline
 	CmdOutputPanel() : drain::BasicCommand(__FUNCTION__, "Save SVG panel of latest images. See also: --image, --outputRawImages.") {
-		parameters.link("filename", filename="");
-		parameters.link("layout", layout, "basic");
+		getParameters().link("filename", filename="");
+		getParameters().link("layout", layout, "basic");
 	};
 
 	CmdOutputPanel(const CmdOutputPanel & cmd) : drain::BasicCommand(cmd) {
-		parameters.copyStruct(cmd.parameters, cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 

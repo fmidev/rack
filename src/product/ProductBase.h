@@ -96,7 +96,20 @@ protected:
 	ProductBase(const ProductBase & product) : ProductConf(product), drain::BeanLike(product){
 	}
 
+	inline
+	void storeLastArguments(const std::string & p) override {
+		lastArguments = p;
+	};
+
+	std::string lastArguments;
+
 public:
+
+	inline
+	const std::string & getLastArguments() const{
+		return lastArguments;
+	};
+
 
 	/// Destructor
 	virtual

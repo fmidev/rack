@@ -114,7 +114,7 @@ public:
 	AnDReDefaultQuality() : drain::SimpleCommand<float>(__FUNCTION__,
 			"Quality index value below which also CLASS information will be updated.", "threshold", // 0.90
 			0.8, "0...1") { // getContext<RackContext>().defaultQuality
-		//parameters.link("threshold", QualityCombinerOp::DEFAULT_QUALITY = 0.90, "0...1");
+		//getParameters().link("threshold", QualityCombinerOp::DEFAULT_QUALITY = 0.90, "0...1");
 	};
 
 	void exec() const {
@@ -274,8 +274,8 @@ class AnDReStoreCombined : public drain::SimpleCommand<std::string> {
 
 	AnDReStoreCombined() : drain::SimpleCommand<std::string>(__FUNCTION__, "Store combined detection results in .../quality1/<path> : 'data' for overwriting, 'data~' for tmp (unsaved).",
 			"path", "data~", "std::string"){
-		//parameters.separators.clear();
-		//parameters.link("path", path, "data~", "std::string");
+		//getParameters().separators.clear();
+		//getParameters().link("path", path, "data~", "std::string");
 	};
 
 	void exec() const {

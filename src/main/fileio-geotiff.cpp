@@ -70,11 +70,13 @@ void CmdGeoTiff::exec() const {
 }
 
 
-void CmdGeoTiff::write(const drain::image::Image & src, const std::string & filename) {
+void CmdGeoTiff::write(RackContext & ctx, const drain::image::Image & src, const std::string & filename){
 
 	//void FileGeoTIFF::adjustGeoFrame_rack(const drain::image::Image & src, drain::image::GeoFrame & frame){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	//RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	#ifdef USE_GEOTIFF_NO
 	mout.attention("No GeoTIFF support in this build");
@@ -207,10 +209,20 @@ void CmdGeoTiff::write(const drain::image::Image & src, const std::string & file
 		// file.gdalInfo["UNITS"] = odim.quantity; // .data.setText( );
 		// file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
 
-		if (src.properties.hasKey("")){
+		const std::string comments = src.properties.get("", "");
+		if (!comments.empty()){
+			/*
+			const drain::VariableMap & statusMap = ctx.getStatusMap();
+			drain::StringMapper mapper(RackContext::variableMapper);
+			mapper.parse(src.properties.get("", ""));
+			*/
+			mout.experimental<LOG_NOTICE>("Handling comments: ", comments);
+
 			drain::JSONtree2 tree;
-			std::stringstream sstr(src.properties.get("", ""));
+			std::stringstream sstr(comments);  // OLD ok, variables already expanded
+			// std::stringstream sstr(mapper.toStr(statusMap, -1, RackContext::variableFormatter)); // NEW
 			if (sstr){
+				// mout.experimental<LOG_NOTICE>("Handling comments: mapper: ", mapper);
 				if (sstr.peek() == '{'){
 					mout.experimental<LOG_NOTICE>("Handling comments as JSON data");
 					drain::JSON::readTree(tree, sstr);

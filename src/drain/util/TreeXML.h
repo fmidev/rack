@@ -71,7 +71,10 @@ std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
 	return ostr;
 }
 
-
+/// Container for style classes. Essentially a set of strings, with space-separated output support.
+/**
+ *
+ */
 class ClassListXML : public std::set<std::string> {
 
 public:
@@ -85,7 +88,9 @@ public:
 	template <typename ... TT>
 	inline
 	void add(const std::string & clsName, const TT &... args) {
-		insert(clsName);
+		if (!clsName.empty()){
+			insert(clsName);
+		}
 		add(args...);
 	};
 

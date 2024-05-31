@@ -261,7 +261,7 @@ while (( $line <= iEnd )); do
     fi
 
     # General text validation
-    if [ -f valid/${output} ] ; then
+    if [ -f "valid/${output}" ] ; then
 	diff valid/${output} ${output} 
 	if [ $? != 0 ]; then
 	    echo -e "$VT100_RED Text file validation failed for $output  $VT100_END"

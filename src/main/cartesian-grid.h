@@ -55,14 +55,14 @@ public:
 	double intensity;
 
 	CartesianGrid() : drain::BasicCommand("CartesianGrid","Draw lat-lon grid onto a Cartesian product.") {
-		parameters.link("lonSpacing", lonSpacing = 1, "deg");
-		parameters.link("latSpacing", latSpacing = 1, "deg");
-		parameters.link("width", width = 1.0, "pix");
-		parameters.link("intensity", intensity = 0.5, "");
+		getParameters().link("lonSpacing", lonSpacing = 1, "deg");
+		getParameters().link("latSpacing", latSpacing = 1, "deg");
+		getParameters().link("width", width = 1.0, "pix");
+		getParameters().link("intensity", intensity = 0.5, "");
 	};
 
 	CartesianGrid(const CartesianGrid &cmd) : drain::BasicCommand(cmd) {
-		parameters.copyStruct(cmd.parameters, cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 	void exec() const;

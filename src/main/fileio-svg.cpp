@@ -180,7 +180,8 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 
 }
 
-const std::string  & getTextClass(const std::string key){
+/*
+const std::string  & CmdBaseSVG::getTextClass(const std::string & key, const std::string & defaultClass){
 
 	static
 	const drain::ClassListXML timeClass = {"time", "date", "starttime"};
@@ -197,18 +198,21 @@ const std::string  & getTextClass(const std::string key){
 		return s;
 	}
 	else {
-		static const std::string empty;
-		return empty;
+		// static const std::string empty;
+		// return empty;
+		return defaultClass;
 	}
 
-
 }
+*/
 
+/*
 static
 const drain::ClassListXML timeClass = {"time", "date"};
 
 static
 const drain::ClassListXML locationClass = {"site", "src", "lat", "lon", "PLC", "NOD", "WMO"};
+*/
 
 
 /**
@@ -316,12 +320,15 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		for (const auto & attr: metadata->getAttributes()){
 			// consider str replace
 
+			const bool TIME     = (ODIM::timeKeys.count(attr.first)>0) || (ODIM::dateKeys.count(attr.first)>0);
+			const bool LOCATION =  ODIM::locationKeys.count(attr.first)>0;
+
 			std::string key("title");
-			if (timeClass.has(attr.first)){
+			if (TIME){
 				key += "-time";
 			}
 
-			if (locationClass.has(attr.first)){
+			if (LOCATION){
 				key += "-location";
 			}
 
@@ -329,7 +336,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 			TreeSVG & text = getTextElem(current["image"], current, key);
 			text->addClass("imageTitle");
 
-			if (timeClass.has(attr.first)){
+			if (TIME){
 				text->addClass("TIME",  "BOTTOM", "LEFT"); // "FLOAT",
 				// text->set("y", y + 40); // temporary
 				/* TODO:
@@ -339,7 +346,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 				*/
 			}
 
-			if (locationClass.has(attr.first)){
+			if (LOCATION){
 				text->addClass("LOCATION", "TOP", "RIGHT"); // "FLOAT",
 				// text->set("y", y + 60); // temporary
 			}
@@ -394,11 +401,11 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
  *
  */
 
+/*
 void CmdBaseSVG::createTitleBox(TreeSVG & tree){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	/*
 	// const std::string TITLE_BOX;
 	if (tree.hasChild("titlebox")){
 		return; //  tree;
@@ -413,8 +420,9 @@ void CmdBaseSVG::createTitleBox(TreeSVG & tree){
 	titleBox->addClass("imageSetTitle", "header");
 	titleBox->setStyle("fill:darkblue; opacity:0.5;");
 	titleBox->setText(tree->get("name", ""));
-	*/
 }
+	*/
+
 
 drain::image::TreeSVG & CmdBaseSVG::getMain(RackContext & ctx){
 
@@ -479,6 +487,8 @@ drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what 
 
 drain::image::TreeSVG & CmdBaseSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
 
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
 	// For each image an own group is created (for clarity, to contain also title TEXT's etc)
 	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
 
@@ -537,6 +547,22 @@ drain::image::TreeSVG & CmdBaseSVG::addImage(RackContext & ctx, const drain::ima
 
 		}
 	}
+
+	// SOLVED, by storeLastArguments()  ...
+	// if (src.properties.hasKey("what:product")){
+	/*
+	drain::VariableMap & statusMap = ctx.getStatusMap();
+	std::string cmdKey = statusMap.get("prevCmdKey", "");
+	mout.warn("prevCmdKey: ",  cmdKey);
+	mout.warn("prevCmdArgs: ", statusMap.get("prevCmdArgs", ""));
+
+	if (cmdKey.size() >= 2){ // actually larger...
+		// metadata->set("cmdArgs", statusMap.get("cmdArgs", ""));
+	}
+	*/
+	// std::string cmd = statusMap.get("cmd", "");
+	// if (cmd.size() >= 2){prevCmdKey
+	// metadata->set("cmd", statusMap.get("cmd", ""));
 
 	drain::image::TreeSVG & description = group["description"](svg::DESC);
 	description->getAttributes().importCastableMap(metadata->getAttributes());
@@ -671,7 +697,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 	// REUSE:
 	start = {0,0};
 
-	if (ctx.svgPanelConf.title != "none"){
+	if (ctx.svgPanelConf.title != "none"){ // also "false" !?
 
 		TitleCreatorSVG titleCollector;
 		drain::TreeUtils::traverse(titleCollector, ctx.svgTrack); // or mainTrack enough?
@@ -704,23 +730,79 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 			headerRight->setText("right");
 			*/
 
-			TreeSVG & headerText = headerGroup["headerText"](svg::TEXT);
-			headerText->addClass("FLOAT", "CENTER", "MIDDLE");
-			headerText->set("ref", headerRect->getId());
-			headerText->set("x", 51); // will be realigned
-			headerText->set("y", 61); // will be realigned
-			headerText->setStyle({
+			//TreeSVG & mainHeader = headerGroupsubHeadert"](svg::TEXT);
+			TreeSVG & mainHeader = headerGroup["GENERAL"](svg::TEXT);
+			mainHeader->addClass("FLOAT", "CENTER", "MIDDLE");
+			mainHeader->set("ref", headerRect->getId());
+			mainHeader->set("x", 51); // will be realigned
+			mainHeader->set("y", 61); // will be realigned
+			mainHeader->setStyle({
 				{"font-size", "2.5em"},
 				{"stroke", "none"},
 				{"fill", "darkblue"}
 			});
+			// Ensure order
+			mainHeader["product"](svg::TSPAN);
+			mainHeader["prodpar"](svg::TSPAN);
+
+
+			TreeSVG & timeHeader = headerGroup["TIME"](svg::TEXT);
+			timeHeader->addClass("TIME");
+			timeHeader->addClass("FLOAT", "RIGHT", "MIDDLE");
+			timeHeader->set("ref", headerRect->getId());
+			// Ensure order
+			timeHeader["date"](svg::TSPAN);
+			timeHeader["time"](svg::TSPAN);
+
+
+			TreeSVG & locationHeader = headerGroup["LOCATION"](svg::TEXT);
+			locationHeader->addClass("LOCATION");
+			locationHeader->addClass("FLOAT", "LEFT", "MIDDLE");
+			locationHeader->set("ref", headerRect->getId());
+
+
 
 			// Automatic
-			if (ctx.svgPanelConf.title.empty()){
+			if ((ctx.svgPanelConf.title == "auto") || ctx.svgPanelConf.title.empty()){
 				// TODO: vars aligned by class (time, etc)
+				VariableFormatterODIM<drain::FlexibleVariable> formatter; // (No instance properties used, but inheritance/overriding)
 				for (const auto & entry: mainGroup["metadata"]->getAttributes()){
-					headerText->ctext += entry.second.toStr();
-					headerText->ctext += ' ';
+					// Here, class is also the element key:
+					// Consider separate function, recognizing date/time, and formatting?
+
+					std::string key;
+					std::stringstream sstr;
+					/*
+					const std::string & key = getTextClass(entry.first, "GENERAL");
+					TreeSVG & subHeader = headerGroup[key](svg::TEXT);
+					TreeSVG & sh = subHeader.hasChild(entry.first) ? subHeader[entry.first] : subHeader;
+					std::stringstream sstr(sh->ctext);
+					*/
+
+					if (formatter.formatDate(sstr, entry.first, entry.second, "%Y/%m/%d")){
+						mout.special("Recognized  DATE: ", entry.first, '=', entry.second);
+						key = "TIME";
+					}
+					else if (formatter.formatTime(sstr, entry.first, entry.second, "%H:%M UTC")){
+						mout.special("Recognized  TIME: ", entry.first, '=', entry.second);
+						key = "TIME";
+					}
+					else if (formatter.formatPlace(sstr, entry.first, entry.second)){
+						mout.special("Recognized PLACE: ", entry.first, '=', entry.second);
+						key = "LOCATION";
+					}
+					else {
+						sstr << entry.second.toStr();
+						key = "GENERAL";
+					}
+					sstr << "&#160;";
+
+					TreeSVG & subHeader = headerGroup[key](svg::TEXT);
+					TreeSVG & sh = subHeader.hasChild(entry.first) ? subHeader[entry.first] : subHeader;
+					sh->ctext = sstr.str();
+					// sh->ctext += entry.second.toStr();
+					// sh->ctext += "&#160;"; // ' ';
+
 				}
 
 			}
@@ -729,14 +811,14 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 				drain::StringMapper titleMapper(RackContext::variableMapper); // XXX
 				titleMapper.parse(ctx.svgPanelConf.title);
 				const drain::VariableMap & v = ctx.getStatusMap();
-				//headerText->ctext += titleMapper.toStr(v);
-				headerText->ctext += titleMapper.toStr(v, -1, formatter);
-				headerText->ctext += ' ';
+				//mainHeader->ctext += titleMapper.toStr(v);
+				mainHeader->ctext += titleMapper.toStr(v, -1, formatter);
+				mainHeader->ctext += ' ';
 			}
 			// else title == "false"
 
 			// TODO: develop
-			if (! headerText->ctext.empty() ){
+			if (mainHeader.hasChildren() || !mainHeader->ctext.empty()){
 				mainFrame.height +=  titleCollector.mainHeaderHeight; // why +=
 				start.y           = -titleCollector.mainHeaderHeight;
 			}

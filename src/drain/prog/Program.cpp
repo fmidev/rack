@@ -67,7 +67,7 @@ void Program::run() const {
 		// String...
 		//const typename list_t::value_type::first_type & key = it->first;
 		//Command & cmd = *it->second;
-		Command & cmd = *entry.second;
+		const Command & cmd = *entry.second;
 
 		if (entry.first == "script"){
 			mout.warn("skipping script " , '(' , cmd.getParameters() , ')' );

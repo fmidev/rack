@@ -34,7 +34,53 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+//void Command::setAllParameters(const std::string & args){ //, char assignmentSymbol) {
+void Command::setParameters(const std::string & args){ //, char assignmentSymbol) {
 
+	lastParameters = args;
+
+	ReferenceMap & parameters = getParameters();
+
+	const char assignmentSymbol = '=';
+
+	if (args.empty() && !parameters.empty()){
+		Logger mout(__FUNCTION__, getName());
+
+		//mout.info(" empty argument" );
+		ReferenceMap::iterator it = parameters.begin();
+
+		if (parameters.size() > 1){
+			mout.info("resetting 1st parameter (only): " , it->second );
+			//mout.note("parameters: " , parameters );
+		}
+
+		if (it->second.isString()){
+			it->second.clear();
+		}
+		else if (it->second.getType() == typeid(bool)){
+			mout.note(it->first , ": empty assignment, interpreting as 'false'" );
+			it->second = false;
+		}
+		else{
+			mout.warn(it->first , ": empty assignment of non-string" );
+			//throw std::runtime_error(getName()+":"+it->first + ": empty assigment '' for non-string");
+		}
+	}
+	else if (parameters.separator){
+		parameters.setValues(args, assignmentSymbol); //
+	}
+	else {
+		//Logger mout(__FILE__, __FUNCTION__);
+		//mout.warn("Trying to set values for " , getName() , " params:" , parameters );
+		parameters.setValues(args, assignmentSymbol);
+		//mout.warn("Done (" , args ,  ')' );
+	}
+
+	this->update();
+
+}
+
+/*
 void BasicCommand::setAllParameters(const std::string & args){ //, char assignmentSymbol) {
 
 	const char assignmentSymbol = '=';
@@ -74,10 +120,12 @@ void BasicCommand::setAllParameters(const std::string & args){ //, char assignme
 
 	this->update();
 }
+*/
 
 //BasicCommand::BasicCommand(const std::string & name, const std::string & description) : Command(), section(1), name(name), description(description) {
 
-BasicCommand::BasicCommand(const std::string & name, const std::string & description) : Command(), name(name), description(description) {
+BasicCommand::BasicCommand(const std::string & name, const std::string & description) : BeanCommand<BeanLike>(name, description){
+		// Command(), name(name), description(description) {
 
 	if (name.find(' ') != std::string::npos){
 		Logger mout(__FILE__, __FUNCTION__);

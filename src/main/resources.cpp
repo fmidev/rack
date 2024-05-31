@@ -60,6 +60,9 @@ RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), Ima
 	outputPrefix = ctx.outputPrefix;
 }
 
+
+// const std::string RackContext::validVariableChars("[a-zA-Z0-9][a-zA-Z0-9_:]*");
+
 /**
  *
  *   Special chars accepted:

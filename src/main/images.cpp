@@ -192,7 +192,7 @@ public:
 	};
 
 	CmdImageAlpha(const CmdImageAlpha & cmd) : CmdImageAlphaBase(cmd) {
-		//parameters.copyStruct(cmd.parameters, cmd, *this);
+		//getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	};
 
 	void exec() const {
@@ -255,17 +255,17 @@ public:
 	// std::vector<double> kokkeilu;
 
 	CmdImageTransp() : CmdImageAlphaBase(__FUNCTION__, "Adds a transparency channel. Uses copied image, creating one if needed.") {
-		//parameters.link("range", range.tuple(), "min:max").fillArray = true;
-		parameters.link("ftor", ftor, "min:max or Functor_p1_p2_p3_...");
-		parameters.link("undetect", undetect=0, "opacity of 'undetect' pixels");
-		parameters.link("nodata",   nodata=1, "opacity of 'nodata' pixels"); // std::numeric_limits<double>::max()
+		//getParameters().link("range", range.tuple(), "min:max").fillArray = true;
+		getParameters().link("ftor", ftor, "min:max or Functor_p1_p2_p3_...");
+		getParameters().link("undetect", undetect=0, "opacity of 'undetect' pixels");
+		getParameters().link("nodata",   nodata=1, "opacity of 'nodata' pixels"); // std::numeric_limits<double>::max()
 		// range.min =  -std::numeric_limits<double>::max();
 		// range.max =  +std::numeric_limits<double>::max();
 		// std::cerr << __FUNCTION__ << ' '; parameters.dump(std::cerr);
 	};
 
 	CmdImageTransp(const CmdImageTransp & cmd) : CmdImageAlphaBase(cmd), undetect(0.0), nodata(1.0) {
-		parameters.copyStruct(cmd.parameters, cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 		//std::cerr << __FUNCTION__ << " (copy)"; parameters.dump(std::cerr);
 	};
 
@@ -278,7 +278,7 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout; = resources.mout;
 
-		mout.warn(getName() );
+		// mout.warn(getName() );
 
 		//const PlainData<PolarSrc> src(getAlphaSrc(ctx));
 		// TODO: const Data<PolarSrc>, mixing data with quality
@@ -425,10 +425,12 @@ public:
 
 	void exec() const {
 
-		drain::Logger mout(__FILE__, __FUNCTION__); // = resources.mout;
 
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
+
 
 		drain::image::Image & img = ctx.getModifiableImage(); //ImageKit::getModifiableImage(ctx);
 		if (img.isEmpty()){
@@ -439,7 +441,7 @@ public:
 
 
 		if (img.getAlphaChannelCount() == 0) {
-			mout.warn(name , ": no alpha channel" );
+			mout.warn(getName() , ": no alpha channel" );
 			return;
 		}
 
@@ -447,7 +449,7 @@ public:
 
 		const double alphaMax = imgAlpha.getConf().getTypeMax<double>();
 		if (alphaMax == 0) {
-			mout.warn(name , ": zero alphaMax" );
+			mout.warn(getName() , ": zero alphaMax" );
 			return;
 		}
 
@@ -862,14 +864,14 @@ class CmdPaletteConf : public drain::BasicCommand  {
 public:
 
 	CmdPaletteConf() : drain::BasicCommand(__FUNCTION__, "Check status of palette(s)."), lenient(true) {
-		parameters.link("key", key="list");
-		parameters.link("code", code);
-		parameters.link("lenient", lenient);
-		// parameters.link("quantity", quantity = "");
+		getParameters().link("key", key="list");
+		getParameters().link("code", code);
+		getParameters().link("lenient", lenient);
+		// getParameters().link("quantity", quantity = "");
 	};
 
 	CmdPaletteConf(const CmdPaletteConf & cmd) : drain::BasicCommand(cmd), lenient(true){
-		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	};
 
 	void reset(){
@@ -1076,12 +1078,12 @@ public:
 	//  drain::SimpleCommand<std::string>
 	CmdImageQuality() :  drain::BasicCommand(__FUNCTION__, "Applied parent groups for quality: dataset:data"){
 		// , "groups", "None"
-		parameters.link("groups", groups = "dataset:data");
-		// parameters.link("quantity", quantity = "");
+		getParameters().link("groups", groups = "dataset:data");
+		// getParameters().link("quantity", quantity = "");
 	};
 
 	CmdImageQuality(const CmdImageQuality & cmd) : drain::BasicCommand(cmd){
-		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 	std::string groups;

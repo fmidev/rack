@@ -147,7 +147,7 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 	Logger mout(__FILE__, __FUNCTION__);
 
 	for (const auto & entry: script) {
-		if (entry.first.size()==1){
+		if (entry.first.size()==1){ // single-char
 			// Non-prefixed single-char commands have a special, dedicated handling.
 			static BasicCommand dummy("Marker", "[marker]");
 			prog.add(entry.first, dummy);
@@ -161,7 +161,10 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 			command_t & cmd = clone(entry.first);
 			cmd.setExternalContext(ctx);
 			cmd.setParameters(entry.second);
+			// mout.attention("adding a cloned cmd ", entry.first, ", params: ", entry.second);
 			prog.add(entry.first, cmd);
+			//mout.attention("adding a cloned cmd, check params: ", cmd.getLastParameters());
+
 		}
 	}
 
@@ -336,7 +339,7 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 		}
 		else if (!notFoundHandlerCmdKey.empty()){
 			const Command & cmd = get(notFoundHandlerCmdKey);
-			if (cmd.hasArguments()){
+			if (cmd.hasParameters()){
 				size_t i = arg.find_first_not_of('-');
 				if (i != std::string::npos){
 					script.add(notFoundHandlerCmdKey, arg.substr(i));
@@ -402,7 +405,7 @@ void CommandBank::readFile(const std::string & filename, Program & prog) const {
 			mout.debug("inserting: ", node.first); //, node.second.data);
 			command_t & cmd = clone(node.first);
 			cmd.setExternalContext(ctx);
-			if (cmd.hasArguments()){
+			if (cmd.hasParameters()){
 				if (node.second.hasChildren()){
 					for (const auto & subNode: node.second){
 						cmd.setParameter(subNode.first, subNode.second.data);
@@ -533,36 +536,46 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
 		const key_t & key =  it->first;
 		Command & cmd     = *it->second;
+		const ReferenceMap & constParams = ((const Command &)cmd).getParameters();
+
 		//value_t & cmd     = *it->second;
 
 		// Context & ctx = cmd.getContext<>(); //.log;
 		// Log & log = ctx.log;
 		// log.setVerbosity(baseLog.getVerbosity());
 
-		const bool TRIGGER_CMD = (cmd.section & this->scriptTriggerFlag);
+		const bool TRIGGER_CMD = ((cmd.section & this->scriptTriggerFlag)>0);
 		// ctx.setStatus("script", !routine.empty());
 
-		mout.debug('"', key, '"', " ctx=", ctx.getName(), " cmd.section=", cmd.section, '/', this->scriptTriggerFlag);
+		mout.debug('"', key, '"', "->", ctx.getName(), "\t context=", ctx.getName(), " TRIGGER_CMD=", TRIGGER_CMD, ", PARALLEL_ENABLED=", PARALLEL_ENABLED, ", INLINE_SCRIPT=", INLINE_SCRIPT);
+
+		/*
+		mout.warn('"', key, '"', " ctx=", ctx.getName(), " cmd.section=", cmd.section, '/', this->scriptTriggerFlag);
 
 		if (TRIGGER_CMD)
 			mout.debug("TRIGGER_CMD,");
 		if (PARALLEL_ENABLED)
-			mout.debug("THREADS_ENABLED");
+			mout.debug("PARALLEL_ENABLED");
 		if (INLINE_SCRIPT)
 			mout.debug("INLINE_SCRIPT");
+		*/
 		// mout << mout.endl;
+
 
 		if (cmd.getName().empty()){
 			mout.warn("Command name empty for key='" , key , "', " , cmd );
 		}
 		else if (cmd.getName() == scriptCmd){ // "--script" by default
-			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
+			ReferenceMap::const_iterator pit = constParams.begin();
 			mout.debug("'", scriptCmd, "' -> storing routine: '", pit->second, "'");
 			if (INLINE_SCRIPT){
 				mout.warn("Script should be added prior to enabling parallel (thread triggering) mode. Problems ahead...");
 			}
 			scriptify(pit->second.toStr(), routine);
-			ctx.SCRIPT_DEFINED = true; // For polar read! (To avoid appending sweeps)
+			ctx.SCRIPT_DEFINED = true; // For polar volume input read, to avoid appending sweeps.
+
+			// mout.attention("Added script.. ", cmd.getName(), " script=", pit->second.toStr());
+			// mout.attention("Added script.. ", cmd.getName(), " script=", routine);
 			// ctx.setStatus("script", true);
 			//ctx.statusFlags.set(SCRIPT_DEFINED);
 		}
@@ -579,7 +592,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		else if (cmd.getName() == execFileCmd){ // "execFile"
 
 			// TODO: redesign to resemble --script <cmd...>
-			ReferenceMap::const_iterator pit = cmd.getParameters().begin();
+			ReferenceMap::const_iterator pit = constParams.begin();
 			// TODO catch
 			mout.attention("embedding (inserting commands on-the-fly) from '", pit->second, "' (should have been preprocessed?)");
 			mout.error("mislocated: inserting commands on-the-fly, ", pit->second);
@@ -620,7 +633,9 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			//ctx.setStatus("script", true); // IMPORTANT. To prevent appending sequental input sweeps
 		}
 		else if (TRIGGER_CMD && (!routine.empty()) && !PARALLEL_ENABLED){ // Here, actually !THREADS_ENABLED implies -> TRIGGER_SCRIPT_NOW
-			mout.debug("Running SCRIPT in main thread: ", ctx.getName());
+
+			mout.special<LOG_DEBUG>("Running SCRIPT in main thread: ", ctx.getName());
+
 			Program prog(cmd.getContext<Context>());
 			//Program prog;
 			prog.add(key, cmd).section = 0; // To not re-trigger?
@@ -650,7 +665,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 				// Include (prepend) the triggering command (typically --inputFile (implicit) )
 				value_t & cmdCloned = clone(key);
 				cmdCloned.section = 0; // Avoid re-triggering...
-				cmdCloned.setParameters(cmd.getParameters());
+				cmdCloned.setParameters(constParams);
 				thread.add(key, cmdCloned); // XXX
 			}
 
@@ -719,7 +734,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		}
 		else if (INLINE_SCRIPT){ // In this mode, catch all the commands to current routine.
 			mout.debug("Adding: ", key, " = ", cmd, " ");
-			routine.add(key, cmd.getParameters().getValues()); // kludge... converting ReferenceMap back to string...
+			routine.add(key, constParams.getValues()); // kludge... converting ReferenceMap back to string...
 		}
 		else if (key.size() == 1){
 			mout.warn("Use these characters for parallel computing: [ / ]");
@@ -728,32 +743,35 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		else { // Run a "normal" command...  This is the default action.
 
 			Logger mout2(ctx.log, __FILE__, __FUNCTION__);
-			mout2.startTiming(cmd.getName(), " <tt>", cmd.getParameters().getValues(), "</tt>");
+			mout2.startTiming(cmd.getName(), " <tt>", constParams.getValues(), "</tt>");
 
 			mout.debug("Executing: ", key, " = ", cmd, ' ');
 
 			// NEW 2023/05/10
 			ctx.setStatus("cmd", cmd.getName()); //
 			ctx.setStatus("cmdKey", key); // not getName()
-			ctx.setStatus("cmdArgs", cmd.getParameters().getValues());
+			// ctx.setStatus("cmdArgs", cmd.getParameters().getValues());
+			ctx.setStatus("cmdArgs", cmd.getLastParameters());
 
 			/// MAIN
 			cmd.update(); //  --select etc
 			cmd.exec();
 
-			ctx.setStatus(key, cmd.getParameters().getValues()); // make earlier?
+			//const ReferenceMap & params = ((const Command &)cmd).getParameters();
+			ctx.setStatus(key, constParams.getValues()); // make earlier?
 			/*
 			ctx.setStatus("cmd", cmd.getName()); //
 			ctx.setStatus("cmdKey", key); // not getName()
 			*/
 
 			// Obsolete:
-			ctx.setStatus("cmdParams", cmd.getParameters().getValues());
+			ctx.setStatus("cmdParams", constParams.getValues());
 
 			// NEW
 			ctx.setStatus("prevCmd", cmd.getName()); //
 			ctx.setStatus("prevCmdKey", key); // not getName()
-			ctx.setStatus("prevCmdArgs", cmd.getParameters().getValues());
+			//ctx.setStatus("prevCmdArgs", cmd.getParameters().getValues());
+			ctx.setStatus("prevCmdArgs", cmd.getLastParameters());
 
 			/*
 				}
@@ -877,8 +895,8 @@ void CommandBank::help(Flagger::value_t sectionFilter, std::ostream & ostr){
 					}
 					sstr.str("  ");
 					sstr2.str("  ");
-					sstr <<  cmdOrig.getParameters();
-					sstr2 << cmdCopy.getParameters();
+					sstr  << ((const Command &)cmdOrig).getParameters();
+					sstr2 << ((const Command &)cmdCopy).getParameters();
 					if (sstr.str() != sstr2.str()){
 						ostr << sstr.str()  << '\n';
 						ostr << sstr2.str() << '\n';

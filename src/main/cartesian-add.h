@@ -96,12 +96,12 @@ class CompositeAddWeighted : public Compositor {
 public:
 
 	CompositeAddWeighted() : Compositor(__FUNCTION__, "Adds the current product to the composite applying weight.") {
-		parameters.link("weight", this->weight = weight, "0...1");
+		getParameters().link("weight", this->weight = weight, "0...1");
 	};
 
 	CompositeAddWeighted(const CompositeAddWeighted & cmd) : Compositor(cmd){
-		//parameters.link("weight", this->weight = weight, "0...1");
-		parameters.copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+		//getParameters().link("weight", this->weight = weight, "0...1");
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
 	}
 
 	virtual inline

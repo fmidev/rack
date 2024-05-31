@@ -54,23 +54,26 @@ public:
 
 	inline
 	CmdGeoTiff() : drain::BasicCommand(__FUNCTION__, "GeoTIFF tile size. Deprecating?, use --outputConf tif:tile=<width>:<height>,compression=LZW") {
-		parameters.link("tile", drain::image::FileTIFF::defaultTile.tuple());
-		parameters.link("compression", compression="", drain::sprinter(compressionDict, "|").str());
-		// parameters.link("tilewidth",  drain::image::FileTIFF::defaultTile.width=256);
+		getParameters().link("tile", drain::image::FileTIFF::defaultTile.tuple());
+		getParameters().link("compression", compression="", drain::sprinter(compressionDict, "|").str());
+		// getParameters().link("tilewidth",  drain::image::FileTIFF::defaultTile.width=256);
 
-		//parameters.link("tileheight", drain::image::FileTIFF::defaultTile.height=0);
+		//getParameters().link("tileheight", drain::image::FileTIFF::defaultTile.height=0);
 	};
 
 	inline
 	CmdGeoTiff(const CmdGeoTiff & cmd) : drain::BasicCommand(cmd) {
-		parameters.copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK); // static targets
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK); // static targets
 	}
 
 	/// Checks arguments (currently compression only)
 	void exec() const;
 
 	static
-	void write(const drain::image::Image & src, const std::string & filename);
+	void write(RackContext & ctx, const drain::image::Image & src, const std::string & filename);
+
+	// RackContext & ctx = getContext<RackContext>();
+	// void write(const drain::image::Image & src, const std::string & filename) const;
 
 
 protected:

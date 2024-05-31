@@ -87,12 +87,12 @@ class CmdSweep : public drain::BasicCommand {
 public:
 
 	CmdSweep() : drain::BasicCommand(__FUNCTION__, "Return a single sweep") {
-		parameters.link("quantity", quantity = "DBZH");
-		parameters.link("index", elevIndex = 0);
+		getParameters().link("quantity", quantity = "DBZH");
+		getParameters().link("index", elevIndex = 0);
 	};
 
 	CmdSweep(const CmdSweep &cmd) : drain::BasicCommand(cmd){
-		parameters.copyStruct(cmd.parameters, cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 
@@ -198,7 +198,7 @@ public:
 
 
 	virtual
-	void update() {
+	void update() override {
 
 		///this->bean.setParameters(params);
 		RackContext & ctx  = this->template getContext<RackContext>(); // OMP
@@ -223,6 +223,9 @@ public:
 		this->bean.outputDataVerbosity = ctx.outputDataVerbosity;
 		/// Determines if also intermediate results (1) are saved. See --aStore
 
+		mout.special("Updating  ", this->bean.getDataSelector() );
+
+		mout.attention(this->getName(), " last pars: ", this->getLastParameters());
 
 	}
 
@@ -271,7 +274,13 @@ public:
 		this->bean.processVolume(src, dst);
 		// hi5::Writer::writeFile("test1.h5", dst);
 
-		///// DataTools::updateCoordinatePolicy(dst, RackResources::polarLeft);
+		// this->getLastParameters();
+		/*
+		const drain::VariableMap & statusMap = ctx.getStatusMap();
+		dst.data.image.properties["what:prodkey"] = statusMap.get("cmdKey", "");
+		dst.data.image.properties["what:prodargs"] = statusMap.get("cmdArgs", "");
+		*/
+
 		DataTools::updateInternalAttributes(dst);
 		ctx.currentPolarHi5 = & dst; // if cartesian, be careful with this...
 		ctx.currentHi5      = & dst;

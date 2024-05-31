@@ -87,7 +87,10 @@ public:
 		return drain::SuperContextual<RackContext>::baseCtx();
 	}
 
+	// static
+	// const std::string validVariableChars;
 
+	// Consider validVariableRE as general init parameter?
 	static
 	const drain::StringMapper variableMapper;
 

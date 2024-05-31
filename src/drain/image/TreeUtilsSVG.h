@@ -49,6 +49,28 @@ namespace drain {
 
 namespace image {
 
+class FontSizes : public drain::UniTuple<double,4> {
+
+
+public:
+
+	typedef drain::UniTuple<double,4> base_t;
+
+	double & titles;
+	double & header;
+	double & leftHeader;
+	double & rightHeader;
+
+	inline
+	FontSizes() : base_t(12,10,8,6), titles(next()), header(next()), leftHeader(next()), rightHeader(next()) {
+	}
+
+	inline
+	FontSizes(const FontSizes & fs) : base_t(fs), titles(next()), header(next()), leftHeader(next()), rightHeader(next()) {
+	}
+
+};
+
 struct PanelConfSVG {
 
 	enum Orientation {UNDEFINED_ORIENTATION=0, HORZ, VERT};
@@ -67,14 +89,20 @@ struct PanelConfSVG {
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
 	// Current
 	std::string groupName;
-	int maxPerGroup;
-	bool absolutePaths;
-
+	int maxPerGroup = 10;
+	bool absolutePaths = false;
 	std::string title;
+	FontSizes fontSize;
 
 	inline
 	PanelConfSVG() : orientation(HORZ), direction(INCR), legend(LEFT, EMBED), maxPerGroup(10), absolutePaths(false){
 	}
+
+	/*
+	inline
+	PanelConfSVG(const PanelConfSVG & c) : orientation(c.orientation), direction(c.direction), legend(LEFT, EMBED), maxPerGroup(10), absolutePaths(false){
+	}
+	*/
 
 
 };

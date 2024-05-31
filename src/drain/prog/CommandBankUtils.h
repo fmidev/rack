@@ -387,7 +387,7 @@ void CmdFormatFile<C>::exec() const {
 
 	}
 	else
-		mout.error(name , ": opening file '" , value , "' failed." );
+		mout.error(getName() , ": opening file '" , value , "' failed." );
 
 };
 

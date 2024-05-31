@@ -64,7 +64,7 @@ class CartesianProj : public drain::SimpleCommand<>{ // public drain::BasicComma
 public:
 
 	CartesianProj() : drain::SimpleCommand<>(__FUNCTION__, "Set projection", "projstr", "", "Proj.4 syntax"){
-		parameters.separator = 0;
+		getParameters().separator = 0;
 	};
 
 
@@ -93,12 +93,12 @@ public:
 
 	inline
 	CartesianSize() : drain::BasicCommand(__FUNCTION__, "Set size of the compositing array. Does not allocate memory."){
-		parameters.link("width",  width = 400, "pixels");
-		parameters.link("height", height = 0, "pixels");
+		getParameters().link("width",  width = 400, "pixels");
+		getParameters().link("height", height = 0, "pixels");
 	};
 
 	CartesianSize(const CartesianSize & cmd) : drain::BasicCommand(cmd) {
-		parameters.copyStruct(cmd.parameters, cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 	inline
@@ -136,8 +136,8 @@ public:
 	inline
 	CartesianTime() : drain::SimpleCommand<>(__FUNCTION__, "Modify the time of the current composite. See --cTimeDecay ",
 			"time", "201412091845", "YYYYmmddHHMMSS"){
-		//parameters.separators.clear();
-		//parameters.link("time",  time,  "201412091845", "YYYYmmddHHMMSS");
+		//getParameters().separators.clear();
+		//getParameters().link("time",  time,  "201412091845", "YYYYmmddHHMMSS");
 	};
 
 	inline
@@ -225,7 +225,7 @@ class CompositeTimeDecay : public drain::SimpleCommand<double> {  //public drain
 	public:
 	CompositeTimeDecay() : drain::SimpleCommand<double>(__FUNCTION__,
 			"Weight (0.9...1.0) of delay, per minute. 1.0=no decay. See --cTime and --cDecayTime", "weight", 1.0){
-		//parameters.link("decay", getResources().composite.decay = 1.0, "coeff");
+		//getParameters().link("decay", getResources().composite.decay = 1.0, "coeff");
 	};
 
 	inline
@@ -248,7 +248,7 @@ class CompositeDecayTime : public drain::SimpleCommand<int> {
 
 	public:
 	CompositeDecayTime() : drain::SimpleCommand<int>(__FUNCTION__, "Delay half-time in minutes. 0=no decay", "time", 0, "minutes"){
-		//parameters.link("halftime", getResources().composite.decay = 1.0, "coeff");
+		//getParameters().link("halftime", getResources().composite.decay = 1.0, "coeff");
 	};
 
 	inline

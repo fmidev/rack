@@ -49,11 +49,11 @@ struct HistEntry : drain::BeanLike {
 
 	inline
 	HistEntry() : drain::BeanLike(__FUNCTION__), index(0), count(0){
-		parameters.link("index", index);
-		parameters.link("range", binRange.tuple());
-		//parameters.link("max", binRange.max);
-		parameters.link("count", count);
-		parameters.link("label", label);
+		getParameters().link("index", index);
+		getParameters().link("range", binRange.tuple());
+		//getParameters().link("max", binRange.max);
+		getParameters().link("count", count);
+		getParameters().link("label", label);
 	};
 
 	drain::Histogram::vect_t::size_type index;
@@ -78,15 +78,15 @@ public:
 
 	//	CmdHistogram() : drain::SimpleCommand<int>(__FUNCTION__, "Histogram","slots", 256, "") {
 	CmdHistogram() : drain::BasicCommand(__FUNCTION__, std::string("Histogram. Optionally --format using keys ") + histEntryHelper.getParameters().getKeys()) {
-		parameters.link("count", count = 0);  // = 256
-		parameters.link("range", range.tuple());
-		//parameters.link("max", maxValue = +std::numeric_limits<double>::max());
-		parameters.link("filename", filename="", "<filename>.txt|-");
-		parameters.link("attribute", attribute="histogram", "<attribute_key>");
+		getParameters().link("count", count = 0);  // = 256
+		getParameters().link("range", range.tuple());
+		//getParameters().link("max", maxValue = +std::numeric_limits<double>::max());
+		getParameters().link("filename", filename="", "<filename>.txt|-");
+		getParameters().link("attribute", attribute="histogram", "<attribute_key>");
 	};
 
 	CmdHistogram(const CmdHistogram & cmd): drain::BasicCommand(cmd), count(0) {
-		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	};
 	// virtual	inline const std::string & getDescription() const { return description; };
 

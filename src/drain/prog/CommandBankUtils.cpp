@@ -38,14 +38,14 @@ namespace drain {
 CmdLog::CmdLog(CommandBank & cmdBank) : BasicCommand(__FUNCTION__, "Redirect log to file. Status variables like ${ID}, ${PID} and ${CTX} supported."), bank(cmdBank){
 	//, "filename", "/tmp/thread-${ID}.log"), bank(cmdBank) {
 	// TODO: change order of params!
-	parameters.link("file", filename);
-	parameters.link("level", level);
-	parameters.link("timing", timing=false); // could be static, directly. (See copyStruct FLAGS?)
-	parameters.link("vt100", Log::USE_VT100); // Note: -DVT100
+	getParameters().link("file", filename);
+	getParameters().link("level", level);
+	getParameters().link("timing", timing=false); // could be static, directly. (See copyStruct FLAGS?)
+	getParameters().link("vt100", Log::USE_VT100); // Note: -DVT100
 };
 
 CmdLog::CmdLog(const CmdLog & cmd) : BasicCommand(cmd), bank(cmd.bank), timing(false) {
-	parameters.copyStruct(cmd.parameters, cmd, *this, drain::ReferenceMap::LINK); //
+	getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK); //
 }
 
 

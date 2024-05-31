@@ -96,9 +96,9 @@ class CmdMotionFill : public drain::BasicCommand {
 public:
 
 	CmdMotionFill() : drain::BasicCommand(__FUNCTION__, "Fills vectors to open areas."){
-		this->parameters.link("width",  this->conf.width  = 5, "pixels");
-		this->parameters.link("height", this->conf.height = 5, "pixels");
-		this->parameters.link("qualitySensitive", this->qualitySensitive = true, "0,1");
+		this->getParameters().link("width",  this->conf.width  = 5, "pixels");
+		this->getParameters().link("height", this->conf.height = 5, "pixels");
+		this->getParameters().link("qualitySensitive", this->qualitySensitive = true, "0,1");
 	};
 
 

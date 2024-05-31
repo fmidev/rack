@@ -183,8 +183,8 @@ public:
 	};
 
 	CmdSelect(const CmdSelect & cmd) : CmdBaseSelective(cmd) {
-		//parameters.append(testSelector.getParameters());
-		parameters.updateFromMap(cmd.getParameters());
+		// parameters.updateFromMap(cmd.getParameters());
+		setParameters(cmd.getParameters());
 	};
 
 
@@ -541,11 +541,11 @@ public:
 	// drain::SimpleCommand<bool>
 	CmdCreateDefaultQuality() :  drain::BasicCommand(__FUNCTION__,
 			"Creates default quality field. See --undetectWeight and --aDefault"){ //, "quantitySpecific", false){
-		//parameters.link("quantitySpecific", quantitySpecific=false, "[0|1]");
-		parameters.link("data",     dataQuality=std::numeric_limits<double>::quiet_NaN(), "0..1");
-		parameters.link("undetect", undetectQuality=std::numeric_limits<double>::quiet_NaN(), "0..1");
-		parameters.link("nodata",   nodataQuality=std::numeric_limits<double>::quiet_NaN(), "0..1");
-		//parameters.link("quantity", quantity="", "ODIM code");
+		//getParameters().link("quantitySpecific", quantitySpecific=false, "[0|1]");
+		getParameters().link("data",     dataQuality=std::numeric_limits<double>::quiet_NaN(), "0..1");
+		getParameters().link("undetect", undetectQuality=std::numeric_limits<double>::quiet_NaN(), "0..1");
+		getParameters().link("nodata",   nodataQuality=std::numeric_limits<double>::quiet_NaN(), "0..1");
+		//getParameters().link("quantity", quantity="", "ODIM code");
 	};
 
 	CmdCreateDefaultQuality(const CmdCreateDefaultQuality & cmd) : drain::BasicCommand(cmd),
@@ -553,7 +553,7 @@ public:
 			undetectQuality(std::numeric_limits<double>::quiet_NaN()),
 			nodataQuality(std::numeric_limits<double>::quiet_NaN())
 			{
-		parameters.copyStruct(cmd.parameters, cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 
@@ -923,12 +923,12 @@ public:
 
 	/// Default constructor
 	CmdMove() :  drain::BasicCommand(__FUNCTION__, "Rename or move data groups and attributes."){
-		parameters.link("src", pathSrc = "", "/group/group2[:attr]");
-		parameters.link("dst", pathDst = "", "/group/group2[:attr]");
+		getParameters().link("src", pathSrc = "", "/group/group2[:attr]");
+		getParameters().link("dst", pathDst = "", "/group/group2[:attr]");
 	};
 
 	CmdMove(const CmdMove & cmd) :  drain::BasicCommand(cmd){
-		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	};
 
 	// TODO: recognize attr,attr vs path,path
@@ -1463,9 +1463,9 @@ public:
 
 	//options["dumpMap"].syntax = "<regexp>[:<file>]"
 	CmdDumpMap() : drain::BasicCommand(__FUNCTION__, "Dump variable map, filtered by keys, to std or file.") {
-		parameters.separator = ':'; //s = ":";
-		parameters.link("filter", filter = "", "regexp");
-		parameters.link("filename", filename = "", "std::string");
+		getParameters().separator = ':'; //s = ":";
+		getParameters().link("filter", filter = "", "regexp");
+		getParameters().link("filename", filename = "", "std::string");
 	};
 
 	void exec() const {
@@ -1482,7 +1482,7 @@ public:
 			ofstr.open(filename.c_str(),std::ios::out);
 			// ostr = & ofstr;
 		}
-		throw std::runtime_error(name + ": unimplemented drain::SingleParamCommand");
+		throw std::runtime_error(getName() + ": unimplemented drain::SingleParamCommand");
 		ofstr.close();
 
 	};
@@ -1697,8 +1697,8 @@ class CmdFormatOut : public drain::SimpleCommand<std::string> {
 public:
 
 	CmdFormatOut() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dumps the formatted std::string to a file or stdout.", "filename","","std::string") {
-		//parameters.separators.clear();
-		//parameters.link("filename", filename, "");
+		//getParameters().separators.clear();
+		//getParameters().link("filename", filename, "");
 	};
 
 	void exec() const {
@@ -1773,7 +1773,7 @@ public:
 			"encoding", "", EncodingBag().getKeys() // NOTE: latent-multiple-key case
 	) {
 		//assert( 1 ==0 );
-		parameters.separator = 0;
+		getParameters().separator = 0;
 	};
 
 
@@ -1819,7 +1819,7 @@ public:
 		catch (const std::runtime_error & e) {
 
 			mout.warn("Could not set odim" );
-			mout.note("pars: " , parameters );
+			mout.note("pars: " , getParameters() );
 			//mout.warn("odim: " , enc );
 			mout.error(e.what() );
 
@@ -1844,7 +1844,7 @@ class CmdAutoExec : public drain::BasicCommand {
 public:
 
 	CmdAutoExec() : drain::BasicCommand(__FUNCTION__, "Execute script automatically after each input. See --script") {
-		parameters.link("exec", getResources().scriptParser.autoExec = -1, "0=false, 1=true, -1=set to true by --script");
+		getParameters().link("exec", getResources().scriptParser.autoExec = -1, "0=false, 1=true, -1=set to true by --script");
 	}
 
 };
@@ -1857,7 +1857,7 @@ class CmdDataOk : public drain::BasicCommand {
 public:
 
 	CmdDataOk() : drain::BasicCommand(__FUNCTION__, "Status of last select."){
-		parameters.link("flag", getResources().dataOk = true);
+		getParameters().link("flag", getResources().dataOk = true);
 	};
 };
 */
@@ -1867,7 +1867,7 @@ class CmdErrorFlags : public drain::SimpleCommand<std::string> {
 public:
 
 	CmdErrorFlags() : drain::SimpleCommand<std::string>(__FUNCTION__, "Status of last select.", "flags"){
-		//parameters.link("flags", value);
+		//getParameters().link("flags", value);
 	};
 
 
@@ -1895,11 +1895,11 @@ class UndetectWeight : public drain::BasicCommand {  // TODO: move to general co
 public:
 
 	UndetectWeight() : drain::BasicCommand(__FUNCTION__, "Set the relative weight of data values assigned 'undetect'."){
-		parameters.link("weight", DataCoder::undetectQualityCoeff, "0...1");
+		getParameters().link("weight", DataCoder::undetectQualityCoeff, "0...1");
 	};
 
 	UndetectWeight(const UndetectWeight & cmd) : BasicCommand(cmd){
-		parameters.copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK );
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK );
 	}
 };
 
@@ -2183,7 +2183,7 @@ class OutputDataVerbosity : public drain::BasicCommand {
 public:
 
 	OutputDataVerbosity() : drain::BasicCommand(__FUNCTION__, "Determines if also intermediate results (1) are saved. Replacing --aStore ?") {
-		parameters.link("level", ProductBase::outputDataVerbosity = 0, "0=default,1=intermediate results|2=extra debug results");
+		getParameters().link("level", ProductBase::outputDataVerbosity = 0, "0=default,1=intermediate results|2=extra debug results");
 	};
 
 	void exec() const {
@@ -2245,14 +2245,14 @@ public:
 			0, "0=default,1=intermediate results|2=extra debug results"){
 			//"Set how intermediate and final outputs are stored. See --append"){
 
-		//parameters.link("intermediate", ProductBase::outputDataVerbosity = 0, "store intermediate images");
-		//parameters.link("append",  ctx.appendResults = "", "|data|dataset");
-		//parameters.link("append",  append, "|data|dataset (deprecated)");
+		//getParameters().link("intermediate", ProductBase::outputDataVerbosity = 0, "store intermediate images");
+		//getParameters().link("append",  ctx.appendResults = "", "|data|dataset");
+		//getParameters().link("append",  append, "|data|dataset (deprecated)");
 	};
 
 	/*
 	CmdStore(const CmdStore & cmd) : drain::BasicCommand(cmd) {
-		parameters.copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
 	};
 	*/
 
@@ -2290,22 +2290,22 @@ public:
 	// Odim used for interface only. Zero used internally.
 
 	CmdQuantityConf(): drain::BasicCommand(__FUNCTION__, "1) list quantities, 2) set default type for a quantity, 3) set default scaling for (quantity,type) pair") {
-		parameters.separator = ':';
-		parameters.link("quantity", quantity = "", "quantity (DBZH,VRAD,...)"); // and storage type (C,S,d,f,...)");
-		parameters.link("encoding", encoding = "", EncodingODIM().getValues());
+		getParameters().separator = ':';
+		getParameters().link("quantity", quantity = "", "quantity (DBZH,VRAD,...)"); // and storage type (C,S,d,f,...)");
+		getParameters().link("encoding", encoding = "", EncodingODIM().getValues());
 		/*
-		//parameters.link("type", odim.type, "C", "storage type (C,S,d,f,...)");
-		parameters.link("gain", odim.scaling.scale = 0.0, "scaling coefficient");
-		parameters.link("offset", odim.scaling.offset = 0.0, "bias");
-		parameters.link("undetect", odim.undetect = 0.0, "marker");
-		parameters.link("nodata", odim.nodata = 0.0, "marker");
+		//getParameters().link("type", odim.type, "C", "storage type (C,S,d,f,...)");
+		getParameters().link("gain", odim.scaling.scale = 0.0, "scaling coefficient");
+		getParameters().link("offset", odim.scaling.offset = 0.0, "bias");
+		getParameters().link("undetect", odim.undetect = 0.0, "marker");
+		getParameters().link("nodata", odim.nodata = 0.0, "marker");
 		*/
-		parameters.link("zero", zero = std::numeric_limits<double>::max(), "value");// what about max?
+		getParameters().link("zero", zero = std::numeric_limits<double>::max(), "value");// what about max?
 
 	}
 
 	CmdQuantityConf(const CmdQuantityConf & cmd) : drain::BasicCommand(cmd), zero(cmd.zero) {
-		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	};
 
 	/*
@@ -2443,12 +2443,12 @@ protected:
 struct VerboseCmd : public drain::BasicCommand {
 
 	VerboseCmd() : drain::BasicCommand(__FUNCTION__, "Set verbosity level") {
-		parameters.link("level", level = "NOTE");
-		parameters.link("imageLevel", imageLevel = "WARNING");
+		getParameters().link("level", level = "NOTE");
+		getParameters().link("imageLevel", imageLevel = "WARNING");
 	};
 
 	VerboseCmd(const VerboseCmd & cmd) : drain::BasicCommand(cmd) {
-		parameters.copyStruct(cmd.getParameters(), cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	};
 
 	inline
@@ -2695,7 +2695,7 @@ class CmdHdf5Test : public drain::SimpleCommand<std::string> {
 public:
 
 	CmdHdf5Test() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dump H5 sources") {
-		//parameters.link("level", level = 5);
+		//getParameters().link("level", level = 5);
 	}
 
 
@@ -2753,7 +2753,7 @@ class CmdDumpXML : public drain::SimpleCommand<std::string> {
 public:
 
 	CmdDumpXML() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dump XML track") {
-		//parameters.link("level", level = 5);
+		//getParameters().link("level", level = 5);
 	}
 
 

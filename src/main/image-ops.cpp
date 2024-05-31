@@ -764,8 +764,8 @@ class MultiThresholdOp : public drain::image::ImageOp {
 public:
 
 	MultiThresholdOp() : drain::image::ImageOp(__FUNCTION__) {
-		parameters.link("range",  range.tuple(),  "accepted range [min:max]");
-		parameters.link("target", target.tuple(), "result values for rejected values [low:high]");
+		getParameters().link("range",  range.tuple(),  "accepted range [min:max]");
+		getParameters().link("target", target.tuple(), "result values for rejected values [low:high]");
 		parameters["range"].fillArray = true;
 		parameters["target"].fillArray = true;
 

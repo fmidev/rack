@@ -97,6 +97,29 @@ public:
 	inline
 	ReferenceMap & getParameters() { return parameters; };
 
+
+	template <class F>
+	inline
+	void setParametersFromEntries(const F & args){
+
+		ReferenceMap & parameters = getParameters();
+		std::stringstream sstr;
+		char separator = 0;
+		for (const auto & entry: args){
+			parameters[entry.first] = entry.second;
+			// setParameter(entry.first, entry.second);
+			if (separator)
+				sstr << separator;
+			else
+				separator = ',';
+			sstr << entry.first << '=' << entry.second;
+		}
+		storeLastArguments(sstr.str());
+
+		updateBean();
+
+	}
+
 	/// Grants access to (if above hidden)
 	/*
 	inline
@@ -105,11 +128,32 @@ public:
 	};
 	*/
 	inline
-	void setParameters(std::initializer_list<Variable::init_pair_t > l){
-		for (const auto & entry: l){
+	void setParameters(std::initializer_list<Variable::init_pair_t > args){
+
+		setParametersFromEntries(args);
+
+		/*
+		ReferenceMap & parameters = getParameters();
+		std::stringstream sstr;
+		char separator = 0;
+		for (const auto & entry: args){
+			parameters[entry.first] = entry.second;
+			// setParameter(entry.first, entry.second);
+			if (separator)
+				sstr << separator;
+			else
+				separator = ',';
+			sstr << entry.first << '=' << entry.second;
+		}
+		storeLastArguments(sstr.str());
+		*/
+
+		/*
+		for (const auto & entry: args){
 			setParameter(entry.first, entry.second);
 			//parameters[entry.first] = entry.second;
 		}
+		*/
 	}
 
 	/// Sets comma-separated parameters in a predetermined order "a,b,c" or by specifing them "b=2".
@@ -120,7 +164,7 @@ public:
 	void setParameters(const std::string &p, char assignmentSymbol='=', char separatorSymbol=0){
 		parameters.setValues(p, assignmentSymbol, separatorSymbol);
 		updateBean();
-		storeLastParameters(p); // experimental
+		storeLastArguments(p); // experimental
 	};
 
 	/// Set parameters
@@ -128,9 +172,12 @@ public:
 	 */
 	template <class T>
 	inline
-	void setParameters(const std::map<std::string,T> & p){
+	void setParameters(const std::map<std::string,T> & args){
+		setParametersFromEntries(args);
+		/*
 		parameters.importMap(p);
 		updateBean();
+		*/
 	}
 
 	/// Set parameters
@@ -138,9 +185,12 @@ public:
 	 */
 	template <class T>
 	inline
-	void setParameters(const SmartMap<T> & p){
+	void setParameters(const SmartMap<T> & args){  // NEEDED?
+		setParametersFromEntries(args);
+		/*
 		parameters.importCastableMap(p);
 		updateBean();
+		*/
 	}
 
 	/// Sets a single parameter
@@ -148,7 +198,7 @@ public:
 	void setParameter(const std::string &p, const Castable & value){
 		parameters[p].assignCastable(value);
 		updateBean();
-		storeLastParameters(StringBuilder<'='>(p, value)); // experimental
+		storeLastArguments(StringBuilder<'='>(p, value)); // experimental
 	}
 
 	/// TODO: consider VariableLike
@@ -158,7 +208,7 @@ public:
 	void setParameter(const std::string &p, const VariableT<T> & value){
 		parameters[p].assignCastable(value);
 		updateBean();
-		storeLastParameters(StringBuilder<'='>(p, value)); // experimental
+		storeLastArguments(StringBuilder<'='>(p, value)); // experimental
 	}
 
 	/// Sets a single parameter
@@ -176,7 +226,8 @@ public:
 	void setParameter(const std::string &p, const F &value){
 		parameters[p] = value;
 		updateBean();
-		storeLastParameters(p); // experimental
+		// storeLastArguments(p); // experimental
+		storeLastArguments(StringBuilder<'='>(p, value));
 	}
 
 	/// Sets a single parameter
@@ -211,17 +262,18 @@ public:
 	}
 	*/
 
-
-protected:
+// 2024 public:
+	BeanLike(const BeanLike & b) : name(b.name), description(b.description){
+		// copy(b);
+		parameters.copyStruct(b.getParameters(), b, *this, ReferenceMap::RESERVE);
+	}
 
 
 	BeanLike(const std::string & name, const std::string & description="") : name(name), description(description) {
 	}
 
-	BeanLike(const BeanLike & b) : name(b.name), description(b.description){
-		// copy(b);
-		parameters.copyStruct(b.getParameters(), b, *this, ReferenceMap::RESERVE);
-	}
+protected:
+
 
 
 	const std::string name;  // todo separate (Beanlet)
@@ -232,7 +284,7 @@ protected:
 
 	/// Called after setParameters()
 	virtual inline
-	void storeLastParameters(const std::string & p) const {};
+	void storeLastArguments(const std::string & p){};
 
 	/// Called after setParameters()
 	virtual inline

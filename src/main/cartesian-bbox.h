@@ -53,19 +53,19 @@ public:
 	CartesianBBox() : drain::BasicCommand(__FUNCTION__, "Bounding box of the Cartesian product.") {
 		/*
 		RackResources & resources = getResources();
-		parameters.link("llLon", resources.bbox.lowerLeft.x = 0.0, "deg");
-		parameters.link("llLat", resources.bbox.lowerLeft.y = 0.0, "deg");
-		parameters.link("urLon", resources.bbox.upperRight.x = 0.0, "deg");
-		parameters.link("urLat", resources.bbox.upperRight.y = 0.0, "deg");
+		getParameters().link("llLon", resources.bbox.lowerLeft.x = 0.0, "deg");
+		getParameters().link("llLat", resources.bbox.lowerLeft.y = 0.0, "deg");
+		getParameters().link("urLon", resources.bbox.upperRight.x = 0.0, "deg");
+		getParameters().link("urLat", resources.bbox.upperRight.y = 0.0, "deg");
 		*/
-		parameters.link("llLon", bbox.lowerLeft.x  = 0.0, "deg|m");
-		parameters.link("llLat", bbox.lowerLeft.y  = 0.0, "deg|m");
-		parameters.link("urLon", bbox.upperRight.x = 0.0, "deg|m");
-		parameters.link("urLat", bbox.upperRight.y = 0.0, "deg|m");
+		getParameters().link("llLon", bbox.lowerLeft.x  = 0.0, "deg|m");
+		getParameters().link("llLat", bbox.lowerLeft.y  = 0.0, "deg|m");
+		getParameters().link("urLon", bbox.upperRight.x = 0.0, "deg|m");
+		getParameters().link("urLat", bbox.upperRight.y = 0.0, "deg|m");
 	};
 
 	CartesianBBox(const CartesianBBox & cmd) : drain::BasicCommand(cmd) {
-		parameters.copyStruct(cmd.parameters, cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 	inline
@@ -120,10 +120,10 @@ public:
 	};*/
 
 	CartesianBBoxTest() : drain::BasicCommand(__FUNCTION__, "Tests whether the radar range is inside the composite."){
-		parameters.link("mode", mode);
+		getParameters().link("mode", mode);
 	}
 	CartesianBBoxTest(const CartesianBBoxTest &cmd) :  drain::BasicCommand(cmd) {
-		parameters.copyStruct(cmd.parameters, cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 	/*
@@ -149,14 +149,14 @@ public:
 	drain::Rectangle<double> bbox;
 
 	CartesianBBoxTile() : drain::BasicCommand(__FUNCTION__, "Redefines bbox and compositing array size for several radars, applying original projection and resolution. See --cSize, --cBBox, --cProj.") {
-		parameters.link("llLon", bbox.lowerLeft.x = 0.0, "deg");
-		parameters.link("llLat", bbox.lowerLeft.y = 0.0, "deg");
-		parameters.link("urLon", bbox.upperRight.x = 0.0, "deg");
-		parameters.link("urLat", bbox.upperRight.y = 0.0, "deg");
+		getParameters().link("llLon", bbox.lowerLeft.x = 0.0, "deg");
+		getParameters().link("llLat", bbox.lowerLeft.y = 0.0, "deg");
+		getParameters().link("urLon", bbox.upperRight.x = 0.0, "deg");
+		getParameters().link("urLat", bbox.upperRight.y = 0.0, "deg");
 	}
 
 	CartesianBBoxTile(const CartesianBBoxTile & cmd) : drain::BasicCommand(cmd) {
-		parameters.copyStruct(cmd.parameters, cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 	void exec() const;

@@ -151,11 +151,15 @@ public:
 	static
 	void completeSVG(RackContext & ctx, const drain::FilePath & filepath);
 
+	/// Given variable name, like "time" or "enddate", returns "TIME", and so on.
+	// static
+	// const std::string  & getTextClass(const std::string & key, const std::string & defaultClass = "");
+
 protected:
 
 	// Under construction...
-	static
-	void createTitleBox(TreeSVG & tree);
+	// static
+	// void createTitleBox(TreeSVG & tree);
 
 };
 
@@ -167,12 +171,12 @@ public:
 
 	inline
 	CmdOutputPanel() : drain::BasicCommand(__FUNCTION__, "Save SVG panel of latest images. See also: --image, --outputRawImages.") {
-		parameters.link("filename", filename="");
-		parameters.link("layout", layout, "basic");
+		getParameters().link("filename", filename="");
+		getParameters().link("layout", layout, "basic");
 	};
 
 	CmdOutputPanel(const CmdOutputPanel & cmd) : drain::BasicCommand(cmd) {
-		parameters.copyStruct(cmd.parameters, cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 

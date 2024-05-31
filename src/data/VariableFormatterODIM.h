@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //
 #include "drain/util/VariableFormatter.h"  // for VariableHandler
 #include "drain/util/Time.h"
+#include "ODIM.h"
 
 //#include "EncodingODIM.h"
 
@@ -52,8 +53,77 @@ public:
 
 	typedef typename drain::VariableFormatter<T>::map_t map_t;
 
+	/*
+	typedef std::set<std::string> nameSet;
+
+	static
+	const nameSet timeKeys; // = {"time", "starttime", "endtime"};
+
+	static
+	const nameSet dateKeys; // = {"date", "startdate", "enddate"};
+
+	static
+	const nameSet locationKeys; // = {"site", "src", "lat", "lon", "PLC", "NOD", "WMO"};
+	*/
+
 	virtual inline
 	~VariableFormatterODIM(){};
+
+	/// Recognizes and format a date. Assumes that the variable name (\c key ) ends with "date".
+	static
+	bool formatDate(std::ostream & ostr, const std::string & key, const T & value, const std::string & format = "%Y/%m/%d"){
+
+		/*
+		const size_t i = key.find(':');
+		if (i != std::string::npos){
+			return formatDate(ostr, key.substr(i+1), value, format);
+		}
+		*/
+
+		if (ODIM::dateKeys.count(key) > 0){
+			// if (drain::StringTools::endsWith(key, "date")){
+			ostr << drain::Time(value, "%Y%m%d").str(format);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	/// Reformat a time. Assumes that the variable name (\c key ) ends with "time".
+	static
+	bool formatTime(std::ostream & ostr, const std::string & key, const T & value, const std::string & format = "%H:%M"){// add UTC
+
+		/*
+		const size_t i = key.find(':');
+		if (i != std::string::npos){
+			return formatTime(ostr, key.substr(i+1), value, format);
+		}
+		*/
+
+		if (ODIM::timeKeys.count(key) > 0){
+			// if (drain::StringTools::endsWith(key, "time")){
+			ostr << drain::Time(value, "%H%M%S").str(format);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	/// Currently, only recognizes a place, and writes it directly in stream.
+	static
+	bool formatPlace(std::ostream & ostr, const std::string & key, const T & value, const std::string & format = ""){
+
+		if (ODIM::locationKeys.count(key) > 0){
+			// ostr << drain::Time(value, "%Y%m%d").str(format);
+			ostr << value;
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	/// Checks if variables have ODIM names (keys), and apply special formatting (currently with time stamps)
 	virtual
@@ -63,23 +133,22 @@ public:
 		// mout.warn("trying time format: ", key, " + ", format);
 
 		if (format.find('%') != std::string::npos){
-			// Time formatting (instead of C-stype printf formatting)
-			if (drain::StringTools::endsWith(key, "date")){
-				// std::string s;
-				// drain::MapTools::get(variables, key, s);
-				// mout.warn("time format: ", key, " -> ", s, '+', format); //  " -> ", t.str(), " => ", t.str(key));
-				ostr << drain::Time(value, "%Y%m%d").str(format);
+			// Time formatting (instead of C-stype printf formatting)td::ostream & ostr
+			if (formatDate(ostr, key, value, format)){
+				// mout.attention("formatting DATE");
 				return true;
 			}
-			else if (drain::StringTools::endsWith(key, "time")){
-				// std::string s;
-				// drain::MapTools::get(variables, key, s);
-				// mout.warn("time format: ", key, " -> ", s, '+', format); // , " -> ", t.str(), " => ", t.str(key));
-				ostr << drain::Time(value, "%H%M%S").str(format);
+			else if (formatTime(ostr, key, value, format)){
+				// mout.attention("formatting TIME");
+				return true;
+			}
+			if (formatPlace(ostr, key, value, format)){
+				// mout.attention("formatting PLACE");
 				return true;
 			}
 		}
 
+		// Else, use default formatting:
 		return drain::VariableFormatter<T>::formatVariable(key, value, format, ostr); // basic/trad.
 	}
 
@@ -115,6 +184,16 @@ public:
 
 };
 
+/*
+template <class T>
+const typename VariableFormatterODIM<T>::nameSet VariableFormatterODIM<T>::timeKeys = {"time", "starttime", "endtime"};
+
+template <class T>
+const typename VariableFormatterODIM<T>::nameSet VariableFormatterODIM<T>::dateKeys = {"date", "startdate", "enddate"};
+
+template <class T>
+const typename VariableFormatterODIM<T>::nameSet VariableFormatterODIM<T>::locationKeys = {"site", "src", "lat", "lon", "PLC", "NOD", "WMO"};
+*/
 
 }  // namespace rack
 

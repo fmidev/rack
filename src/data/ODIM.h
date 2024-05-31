@@ -93,6 +93,19 @@ public:
 
 	static VersionFlagger versionFlagger;
 
+	typedef std::set<std::string> nameSet;
+
+	static
+	const nameSet timeKeys; // = {"time", "starttime", "endtime"};
+
+	static
+	const nameSet dateKeys; // = {"date", "startdate", "enddate"};
+
+	static
+	const nameSet locationKeys; // = {"site", "src", "lat", "lon", "PLC", "NOD", "WMO"};
+
+
+
 	inline
 	ODIM(group_t initialize = ODIMPathElem::ALL_LEVELS) : EncodingODIM(initialize){
 		init(initialize);
