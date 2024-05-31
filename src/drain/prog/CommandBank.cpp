@@ -224,7 +224,7 @@ void CommandBank::tokenize(const std::string & line, std::list<std::string> & ar
 		if (sstr.eof())
 			return;
 
-		mout.attention("peek: ", c, "=", (int)c);
+		// mout.attention("peek: ", c, "=", (int)c);
 		if (c == '"'){ // First version... (later a set of chars, like in trimSymmetric)
 			sstr.get(); // swallow start char
 			args.push_back(TextReader::scanSegment(sstr, "\"")); // NOTE: TextReader handles \" but not \' ???
