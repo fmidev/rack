@@ -105,11 +105,36 @@ class Composite : public RadarAccumulator<drain::image::AccumulatorGeo,Cartesian
 {
 public:
 
+	typedef enum {
+		DATA_SPECIFIC = 32,       /** Ascii bit for lower-case chars, see below */
+		QUALITY = 256,			  /** Marker for non-data */
+		DATA   = 'd',             /** Main data, of named quantity */
+		WEIGHT = 'w'|QUALITY,     /** Separation */
+		COUNT  = 'c'|QUALITY,     /** Number of samples */
+		DEVIATION = 's'|QUALITY, /** Separation: std.dev or difference */
+		WEIGHT_DS = 'W'|QUALITY,     /** Separation */
+		COUNT_DS  = 'C'|QUALITY,     /** Number of samples */
+		DEVIATION_DS = 'S'|QUALITY  /** Separation */
+	} FieldType;
+
+	typedef drain::Dictionary<std::string,unsigned long> FieldDict;
+	static FieldDict dict;
+
+	// Possible future extension.
+	// Must choose between char-based or bit flagging (d,w,c,s will overlap).
+	// typedef drain::EnumFlagger<drain::MultiFlagger<FieldType> > FieldFlagger;
+
 
 	Composite();
 
 	virtual ~Composite(){};
 
+	// To allow consecutive --cExtract calls (for --encoding )
+	bool extracting = false;
+
+	void extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields="d", const drain::Rectangle<int> & crop={0,0}, const std::string & encoding="C");
+
+	void extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field = DATA, const drain::Rectangle<int> & cropImage={0,0}, const std::string & encoding="C");
 
 	/// If cropping is set, calling addPolar() also crops the bounding box to intersection of radar area and original area.
 	/**

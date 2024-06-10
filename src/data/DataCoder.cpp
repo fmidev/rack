@@ -147,7 +147,10 @@ void DataCoder::encodeWeight(double & weight) const {
 	weight = qualityODIM.scaleInverse(weight);
 }
 
-
+// Note: same as with weight
+void DataCoder::encodeDiff(double & diff) const {
+	diff = qualityODIM.scaleInverse(diff);
+};
 
 
 

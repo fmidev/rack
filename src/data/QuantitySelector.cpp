@@ -132,6 +132,15 @@ void QuantitySelector::adaptQuantity(const std::string & s){
 		return;
 	}
 	else {
+
+		QuantityMatcher matcher(s);
+		for (const QuantityMatcher & m: *this){
+			if (m.value == matcher.value){
+				// exists already, dont append...
+				return;
+			}
+		}
+
 		// quantities.
 		push_back(QuantityMatcher());
 		// quantities.

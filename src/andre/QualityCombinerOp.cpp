@@ -162,7 +162,7 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 	//qindHow["task"] = std::string("fi.fmi.")+__RACK__+".AnDRe.Detector.OverallQuality";
 	qindHow["task"] = "fi.fmi.rack.AnDRe.Detector.OverallQuality";
 	qindHow["task_args"] << label; // like SHIPOP
-	ProductBase::setODIMsoftwareVersion(qindHow);
+	ProductBase::setRackVersion(qindHow);
 
 
 	if (dstClass.data.isEmpty()){

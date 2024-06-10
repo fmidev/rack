@@ -93,10 +93,10 @@ public:
 
 	/**
 	 *  \param odimOut - metadata container (PolarODIM or CartesianODIM)
-	 *  \param quantities - layers (d=data, w=weight, ...)
+	 *  \param fields - layers (d=data, w=weight, C=count, ...)
 	 */
 	void extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,
-			const std::string & quantities, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
+			const std::string & fields, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 	/// Input data selector.
 	DataSelector dataSelector;
@@ -261,7 +261,7 @@ bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) cons
 
 template  <class AC, class OD>
 void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,
-		const std::string & quantities, const drain::Rectangle<int> & crop) const {
+		const std::string & fields, const drain::Rectangle<int> & crop) const {
 	// , const drain::Rectangle<double> & bbox) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -269,31 +269,30 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 	const std::type_info & t = drain::Type::getTypeInfo(odimOut.type);
 
 	typedef enum {DATA,QUALITY} datatype;
-	int dCounter=0;
-	int qCounter=0;
 
-	OD odimFinal;
-	odimFinal = odimOut;
-	odimFinal.scaling.scale = 0.0; // ?
+	OD odimData;
+	odimData = odimOut;
+	odimData.scaling.scale = 0.0; // ?
 
 	const QuantityMap & qm = getQuantityMap();
 
 	/** Determines if quality is stored in
 	 *  /dataset1/quality1/
+	 *  or
 	 *  /dataset1/data1/quality1/
 	 */
 	bool DATA_SPECIFIC_QUALITY = false;
 
 	// Consider redesign, with a map of objects {quantity, type,}
-	for (size_t i = 0; i < quantities.length(); ++i) {
+	for (size_t i = 0; i < fields.length(); ++i) {
 
 		ODIM odimQuality;
 		odimQuality.quantity = "QIND";
 
-		std::stringstream dataPath;
+		// std::stringstream dataPath;
 
 		datatype type = DATA;
-		char field = quantities.at(i);
+		char field = fields.at(i);
 		switch (field) {
 			case '/':
 				DATA_SPECIFIC_QUALITY = true;
@@ -306,7 +305,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 				// no break
 			case 'd':
 				type = DATA;
-				odimFinal = odimOut; // consider update
+				odimData = odimOut; // consider update
 				qm.setQuantityDefaults(odimQuality, "QIND"); // ?
 				odimQuality.quantity = "QIND";
 				break;
@@ -320,10 +319,11 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 				qm.setQuantityDefaults(odimQuality, "COUNT", "d");
 				odimQuality.quantity = "COUNT";
 				break;
+			// case 'q': // consider
 			case 'w':
 				// no break
 				type = QUALITY;
-				odimFinal = odimOut; // (Because converted needs both data and weight to encode weight?)
+				odimData = odimOut; // (Because converter needs both data and weight to encode weight?)
 				qm.setQuantityDefaults(odimQuality, "QIND", "C");
 				odimQuality.quantity = "QIND";
 				//odimQuality.undetect = 256;
@@ -333,7 +333,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 				mout.warn("experimental: quality [QIND] type copied from data [" , odimOut.quantity , ']' );
 				// no break
 				type = QUALITY;
-				odimFinal = odimOut; // (Because converted needs both data and weight to encode weight?)
+				odimData = odimOut; // (Because converted needs both data and weight to encode weight?)
 				qm.setQuantityDefaults(odimQuality, "QIND", odimOut.type);
 				odimQuality.quantity = "QIND";
 				//odimQuality.undetect = 256;
@@ -343,11 +343,12 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 				type = QUALITY;
 				odimQuality = odimOut;
 				odimQuality.quantity += "DEV";
-				//const QuantityMap & qm = getQuantityMap();
 				if (qm.hasQuantity(odimQuality.quantity)){
 					qm.setQuantityDefaults(odimQuality, odimQuality.quantity, odimQuality.type);
-					mout.note("found quantyConf[", odimQuality.quantity, "], OK");
+					mout.accept<LOG_NOTICE>("found quantyConf[", odimQuality.quantity, "], type=", odimQuality.type);
+					//mout.special("Quality: ", EncodingODIM(odimQuality));
 					mout.special("Quality: ", EncodingODIM(odimQuality));
+					mout.special("Quality: ", odimQuality);
 				}
 				else {
 					odimQuality.scaling.scale *= 20.0;  // ?
@@ -370,18 +371,15 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 		}
 
 		if (type == DATA){
-			dataPath << "data" << ++dCounter;
-			mout.debug("target: " , EncodingODIM(odimFinal) );
+			mout.debug("target: " , EncodingODIM(odimData) );
 		}
 		else if (type == QUALITY){
-			dataPath << "quality" << ++qCounter;
 			mout.debug("target: " , EncodingODIM(odimQuality) );
 		}
 
-
-		if (odimFinal.quantity.empty()){
-			odimFinal.quantity = "UNKNOWN"; // for example --cPlotFile carries no information on quantity
-			mout.note("quantity=", odimFinal.quantity);
+		if (odimData.quantity.empty()){
+			odimData.quantity = "UNKNOWN"; // ok; for example --cPlotFile carries no information on quantity
+			mout.note("quantity=", odimData.quantity);
 		}
 
 		//PlainData<DstType<OD> >
@@ -391,23 +389,21 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 
 		//DataDst dstData(dataGroup); // FIXME "qualityN" instead of dataN creates: /dataset1/qualityN/quality1/data
 		//mout.warn("odimFinal: " , odimFinal );
-		DataCoder dataCoder(odimFinal, odimQuality); // (will use only either odim!)
+		DataCoder dataCoder(odimData, odimQuality); // (will use only either odim!)
 		mout.debug("dataCoder: ", dataCoder);
 		mout.debug2("dataCoder: data: ", dataCoder.dataODIM);
 		mout.debug2("dataCoder: qind: ", dataCoder.qualityODIM);
 
 		if (!crop.empty()){
-			mout.unimplemented("dstData.data resize + Accumulator::extractField");
+			mout.unimplemented("crop ",  crop, ", dstData.data resize + Accumulator::extractField ");
 		}
-		//dstData.data
 
 		if (type == DATA){
-
-			mout.debug("DATA/" , field, " [", odimFinal.quantity, ']');
+			mout.debug("DATA/" , field, " [", odimData.quantity, ']');
 			//mout.warn(dstData.odim );
-			pdata_dst_t & dstData = dstProduct.getData(odimFinal.quantity);
-			dstData.odim.importMap(odimFinal);
-			dstData.data.setType(odimFinal.type);
+			pdata_dst_t & dstData = dstProduct.getData(odimData.quantity);
+			dstData.odim.importMap(odimData);
+			dstData.data.setType(odimData.type);
 			mout.debug3("dstData: " , dstData );
 			//mout.debug("quantity=" , dstData.odim.quantity );
 			this->Accumulator::extractField(field, dataCoder, dstData.data, crop);
@@ -416,7 +412,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 			mout.debug("QUALITY/" , field , " [", odimQuality.quantity, ']');
 			//pdata_dst_t & dstData = dstProduct.getData(odimFinal.quantity);
 			typedef QualityDataSupport<DstType<OD> > q_data_t;
-			q_data_t & qualityOwner = (DATA_SPECIFIC_QUALITY) ? (q_data_t &) dstProduct.getData(odimFinal.quantity) : (q_data_t &) dstProduct;
+			q_data_t & qualityOwner = (DATA_SPECIFIC_QUALITY) ? (q_data_t &) dstProduct.getData(odimData.quantity) : (q_data_t &) dstProduct;
 			pdata_dst_t & dstData = qualityOwner.getQualityData(odimQuality.quantity);
 			dstData.odim.updateFromMap(odimQuality);
 			mout.debug3("dstData: " , dstData );
@@ -429,7 +425,7 @@ void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > 
 	}
 
 
-	//mout.debug("updating local tree attributes" );
+	// mout.debug("updating local tree attributes" );
 	// mout.debug("finished" );
 
 }

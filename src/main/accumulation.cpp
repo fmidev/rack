@@ -497,7 +497,7 @@ public:
 		//mout.warn("ODIM lat" ,  acc.odim );
 		ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT>(acc.odim, dst);
 
-		ProductBase::setODIMsoftwareVersion(dst[ODIMPathElem::HOW].data.attributes);
+		ProductBase::setRackVersion(dst[ODIMPathElem::HOW].data.attributes);
 		//dst[ODIMPathElem::HOW].data.attributes["software"]   = __RACK__;
 		//dst[ODIMPathElem::HOW].data.attributes["sw_version"] = __RACK_VERSION__;
 

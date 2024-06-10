@@ -165,7 +165,7 @@ void PolarProductOp::deriveDstGeometry(const DataSetMap<PolarSrc> & srcSweeps, P
 		}
 
 		if (MAXIMIZE_RANGE){
-			mout.special<LOG_NOTICE>("Applied input geometry with maximum range" );
+			mout.info("Applied input geometry with maximum range" ); // special<LOG_NOTICE>
 		}
 		else if (dstOdim.area.width ==0){
 			dstOdim.area.width = rangeMax/static_cast<int>(dstOdim.rscale);

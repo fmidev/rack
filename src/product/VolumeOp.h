@@ -264,7 +264,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 	drain::VariableMap & how = dstProductDataset.getHow(); //dstProduct["how"].data.attributes;
 	how = src[ODIMPathElem::HOW].data.attributes;
-	ProductBase::setODIMsoftwareVersion(how);
+	ProductBase::setRackVersion(how);
 
 	// how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
 	// how["anglesV"]   = elangles;  // NEW 2021

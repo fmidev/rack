@@ -82,6 +82,7 @@ public:
 
 	typedef enum {
 		KILOMETRES = 1,
+		RACK_EXTENSIONS = 8, // like where:BBOX
 		ODIM_2_2 = 16 | KILOMETRES, /** ODIM v2.2 **/
 		ODIM_2_3 = 32 | KILOMETRES, /** ODIM v2.3 **/
 		// ODIM_2_3_6 = 64

@@ -91,32 +91,35 @@ public:
 	~DataCoder(){};
 
 	virtual
-	double getNoReadingMarker() const {
+	double getNoReadingMarker() const override {
 		return dataODIM.undetect;
 	}
 
 	virtual
-	bool decode(double & value) const;
+	bool decode(double & value) const override;
 
 	/// Converts storage data containing marker codes etc to natural scale.
 	virtual
-	bool decode(double & value, double & weight) const;
+	bool decode(double & value, double & weight) const override;
 
 	/// Converts natural-scale data to storage data containing marker codes etc.
 	/**
 	 *   Does not use weight...
 	 */
 	virtual
-	//void encode(double & value, double & weight) const;
-	void encode(double & value, double & weight) const;
+	void encode(double & value, double & weight) const override;
 
 	virtual
-	void encodeWeight(double & weight) const;
+	void encodeWeight(double & weight) const override;
 
+	virtual
+	void encodeDiff(double & diff) const override;
+	/*
 	virtual inline
 	void encodeDiff(double & diff) const {
 		diff = qualityODIM.scaleInverse(diff);
 	};
+	*/
 
 	/// Creates a naive quality field: data=1.0, undetect/nodata=0.0
 	/**

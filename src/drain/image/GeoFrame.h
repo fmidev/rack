@@ -243,13 +243,27 @@ public:
 	void deg2pix(double lon, double lat, int & i, int & j) const {
 		projGeo2Native.projectFwd(lon, lat, lon, lat); // PROJ6-CRS uses degrees
 		// ...Now (lon,lat) are metric
-		//projGeo2Native.projectFwd(lon*DEG2RAD, lat*DEG2RAD, lon, lat); // PROJ6-CRS uses degrees
+		// projGeo2Native.projectFwd(lon*DEG2RAD, lat*DEG2RAD, lon, lat); // PROJ6-CRS uses degrees
 		m2pix(lon, lat, i,j);
 	}
 
+	/// Project geographic coordinates to image coordinates.
 	inline
 	void deg2pix(const drain::Point2D<double> & loc, drain::Point2D<int> & pix) const {
 		deg2pix(loc.x, loc.y, pix.x, pix.y);
+	}
+
+	/// Convert metric coordinates to degrees
+	/**
+	 */
+	virtual inline
+	void deg2m(double lon, double lat, double &x, double &y) const {
+		projGeo2Native.projectFwd(lon, lat, x, y); // PROJ6-CRS uses degrees
+	}
+
+	inline
+	void deg2m(const drain::Point2D<double> & pDeg, drain::Point2D<double> & pMet) const {
+		deg2m(pDeg.x, pDeg.y, pMet.x, pMet.y);
 	}
 
 	/// Calculates the geographic coordinates of the center of a pixel at (i,j).
@@ -289,7 +303,9 @@ public:
 		// lat *= RAD2DEG; // PROJ6-CRS uses degrees
 	}
 
-
+	/// Convert metric coordinates to degrees
+	/**
+	 */
 	virtual inline
 	void m2deg(double x, double y, double & lon, double & lat) const {
 		projGeo2Native.projectInv(x,y, lon,lat);
@@ -297,6 +313,9 @@ public:
 		// lat *= RAD2DEG; // PROJ6-CRS uses degrees
 	}
 
+	/// Convert metric coordinates to degrees
+	/**
+	 */
 	virtual inline
 	void m2deg(const drain::Point2D<double> & pMetric, drain::Point2D<double> & pDeg) const {
 		projGeo2Native.projectInv(pMetric.x, pMetric.y, pDeg.x, pDeg.y); // lon, lat);

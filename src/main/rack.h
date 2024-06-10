@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.8"
+#define __RACK_VERSION__ "8.9"
 
 /**
+ *   Version 8.9
+ *   - Revised --cExtract syntax: 'dwcs' syntax completed with alternative 'DATA:WEIGHT:COUNT:DEVIATION' syntax, also sequential --encoding supported
+ *
  *   Version 8.8
  *   - Revised, simplified Command class hierarchy.
  *

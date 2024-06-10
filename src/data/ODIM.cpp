@@ -44,7 +44,7 @@ const drain::FlaggerDict drain::EnumDict<rack::ODIM::Version>::dict = {
 
 namespace rack {
 
-ODIM::VersionFlagger ODIM::versionFlagger(rack::ODIM::ODIM_2_4);
+ODIM::VersionFlagger ODIM::versionFlagger(rack::ODIM::ODIM_2_4, rack::ODIM::RACK_EXTENSIONS);
 
 
 const std::string ODIM::dateformat("%Y%m%d");

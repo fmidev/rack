@@ -121,8 +121,8 @@ public:
 
 protected:
 
-	int width;
-	int height;
+	int width = 400;
+	int height = 0;
 
 
 };
@@ -159,8 +159,7 @@ public:
 
 	inline
 	void exec() const {
-		RackContext & ctx = getContext<RackContext>(); // %%
-		//Composite & composite = getComposite();
+		RackContext & ctx = getContext<RackContext>();
 		ctx.composite.dataSelector.consumeParameters(ctx.select);
 		ctx.composite.allocate();
 		ctx.composite.consumeTargetEncoding(ctx.targetEncoding);

@@ -59,6 +59,7 @@ class QuantityMatcher : protected drain::RegExp {
 
 public:
 
+	/// Visible reference to the RegExp.
 	const std::string & value;
 
 	inline
@@ -82,6 +83,8 @@ public:
 	bool operator==(const char *s) const {
 		return test(s);
 	}
+
+	// consider operator==(QuantityMatcher) using .value
 
 	bool test(const std::string & s) const;
 
@@ -159,15 +162,18 @@ public:
 
 	/// Define a syntax for quantity key. Will be checked if listed quantity keys do not match.
 	/**
-	 *  \param r - regular expression, like "^DBZ[HV]?C?$
+	 *  \param arg  - regular expression, like "^DBZ[HV]?C?$
+	 *  \param args - regular expressions of further quantities
 	 */
-	// void setQuantityRegExp(const std::string & r);
-	template <typename T, typename ...TT>
-	void addQuantity(const T & arg, const TT & ... args){
+
+	//template <typename T, typename ...TT>
+	template <typename ...TT>
+	void addQuantity(const std::string & arg, const TT & ... args){
 		adaptQuantity(arg);
 		addQuantity(args...);
 	}
 
+	//void ensureQuantity(const std::string & arg);
 
 	bool testQuantity(const std::string & s) const;
 

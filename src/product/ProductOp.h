@@ -407,7 +407,7 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	/// Main operation
 	this->computeSingleProduct(sweeps, dstProductDataset);
 
-	ProductBase::setODIMsoftwareVersion(dstProduct["how"].data.attributes);
+	ProductBase::setRackVersion(dstProduct["how"].data.attributes);
 	//drain::VariableMap & how = dstProduct["how"].data.attributes;
 	//how["software"] = __RACK__;
 	//how["sw_version"] = __RACK_VERSION__;

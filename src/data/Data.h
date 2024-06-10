@@ -257,9 +257,9 @@ class RootData : public TreeWrapper<DT> {
 
 public:
 
-	RootData(typename DT::tree_t & tree) : TreeWrapper<DT>(tree) {
+	RootData(typename DT::tree_t & tree) : TreeWrapper<DT>(tree) { // This could be good: odim(ODIMPathElem::ROOT) ... but failed with current design
 		// experimental
-		this->odim.copyFrom(tree.data.image);
+		this->odim.copyFrom(tree.data.image); // <- works (only) if updateInternalAttributes() has been called?
 	};
 
 	virtual inline

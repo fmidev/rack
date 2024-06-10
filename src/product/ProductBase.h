@@ -186,7 +186,7 @@ public:
 
 
 	static
-	void setODIMsoftwareVersion(drain::VariableMap & metadata);
+	void setRackVersion(drain::VariableMap & metadata);
 
 protected:
 

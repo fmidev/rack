@@ -286,7 +286,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		ODIMPath dataPath;
 		composite.dataSelector.getPath(src, dataPath);
 		if (dataPath.empty()){
-			mout.warn("create composite: no group found with selector:", composite.dataSelector);
+			mout.warn("Create composite: no group found with selector:", composite.dataSelector);
 			//resources.inputOk = false; // REMOVE?
 			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // ctx.statusFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false;
 			return;
@@ -326,24 +326,25 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 				const std::string & encoding = composite.getTargetEncoding();
 				if (encoding.empty()){
-					mout.hint("use --encoding if specific data type and scaling needed");
+					mout.hint("Use --encoding if specific data type and scaling needed");
 					// This is somewhat disturbing but perhaps worth it.
 					if (projectAEQD){
-						mout.note("adapting encoding of input: " , EncodingODIM(composite.odim) );
+						mout.note("Adapting encoding of input: " , EncodingODIM(composite.odim) );
 					}
 					else {
-						mout.note("adapting encoding of first input: " , EncodingODIM(composite.odim) );
+						mout.note("Storing encoding of first input: " , EncodingODIM(composite.odim) );
 					}
 				}
 				else {
-					mout.note("predefined encoding '", encoding, "' (str)");
+					mout.debug("Predefined encoding '", encoding, "' (str)");
 				}
-				mout.debug("storing metadata: " , composite.odim );
-				ProductBase::completeEncoding(composite.odim, encoding); // note, needed even if encoding==""
+				mout.debug("Storing metadata: " , composite.odim );
+				ProductBase::completeEncoding(composite.odim, encoding); // NEW: unneeded? WAS: note, needed even if encoding==""
 			}
 			else {
+
 				if (!resources.baseCtx().targetEncoding.empty()){
-					mout.warn("target encoding request (", resources.baseCtx().targetEncoding , ") bypassed, keeping original " , EncodingODIM(composite.odim) );
+					mout.reject<LOG_WARNING>("Target encoding request (", resources.baseCtx().targetEncoding , ") skipped, keeping original " , EncodingODIM(composite.odim) );
 				}
 
 				// Compare timestamps
@@ -356,10 +357,10 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 				if (mins > 5){ // TODO tunable threshold + varying levels of warnings
 
 					if (mins > 1440){ // TODO tunable threshold + varying levels of warnings
-						mout.warn("time difference over ", (mins/1440), " DAYS");
+						mout.warn("Time difference over ", (mins/1440), " DAYS");
 					}
 					else if (mins > 60){ // TODO tunable threshold + varying levels of warnings
-						mout.warn("time difference over ", (mins/60), " HOURS");
+						mout.warn("Time difference over ", (mins/60), " HOURS");
 					}
 					else if (mins > 15){
 						mout.warn("time difference over ", mins, " minutes");
@@ -650,6 +651,17 @@ void prepareBBox(const Composite & composite, const drain::BBox & cropGeo, drain
 
 }
 
+
+/** NOTES
+ *
+ *  Composite metadata
+ *
+ *  From input:
+ *  - definite: source info
+ *  - conditional (if unset): encoding
+ *
+ */
+
 void Compositor::extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox) const {
 
 
@@ -660,35 +672,36 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	RackResources & resources = getResources();
 
 	if (!composite.isDefined()){
-		mout.hint("consider --cInit");
+		mout.hint("consider --cInit if an empty data array is desired");
 		mout.fail("empty composite, skipping extraction");
 		return;
 	}
 
-	// Composite & composite = getComposite();
-	// Append results - why not, but Cartesian was typically used for subcompositing
-	// ctx.cartesianHi5.clear();
 	// resources.setSource(ctx.cartesianHi5, *this);
 
-	// ODIMPath path("dataset1");
-	// ODIMPath path;
-
-	ODIMPathElem parent(ODIMPathElem::DATASET); // IDX24 , 1);
+	ODIMPathElem parent(ODIMPathElem::DATASET);
 	if (ctx.appendResults.is(ODIMPathElem::DATASET)){
 		ODIMPathTools::getNextChild(ctx.cartesianHi5, parent);
-		//path << parent;
 	}
 	else if (ctx.appendResults.is(ODIMPathElem::DATA)){
 		ODIMPathTools::getLastChild(ctx.cartesianHi5, parent, true);  // <- CREATE
-
+	}
+	else {
 		/*
-		if (parent.index == 0){
-			parent.index = 1;
+		if (composite.dataSelector.getQualitySelector().isSet()){
+
 		}
 		*/
+		if (!composite.extracting){
+			ctx.cartesianHi5.clear(); // don't append, overwrite...
+		}
+		else {
+			mout.attention("extracting more...");
+		}
+		//composite.reset();
 	}
-	else
-		ctx.cartesianHi5.clear(); // don't append, overwrite...
+
+	composite.extracting = true;
 
 	// path << parent; // ?
 	ODIMPath path(parent); // IDX24
@@ -696,7 +709,6 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 	mout.debug3("update geodata ");
 	composite.updateGeoData(); // TODO check if --plot cmds don't need
-
 
 	drain::BBox cropGeo(bbox);
 	drain::Rectangle<int> cropImage;
@@ -707,10 +719,9 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 	mout.debug("Crop image now ", cropImage, " - usually empty?");
 
-
 	Hi5Tree & dstGroup = ctx.cartesianHi5(path);
 
-	// Block dstProduct
+	// Block dstProduct - essential for updateTree etc?
 	{
 
 		DataSet<CartesianDst> dstProduct(dstGroup);
@@ -719,97 +730,104 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		// mout.debug3("update geodata ");
 		// composite.updateGeoData(); // TODO check if --plot cmds don't need
 
-
 		// NEW 2020/06
 		RootData<CartesianDst> dstRoot(ctx.cartesianHi5);
-		//CartesianODIM rootOdim; // needed? yes, because Extract uses (Accumulator &), not Composite.
-		CartesianODIM & rootOdim = dstRoot.odim; // TEST
-		rootOdim.updateFromMap(composite.odim);
 
-		//mout.warn(composite.odim );
+		// ODIM test(ODIMPathElem::ROOT);
+		// mout.special("dstRoot.odim: ", dstRoot.odim);
 
-		ProductBase::completeEncoding(rootOdim, composite.getTargetEncoding());
+		// CartesianODIM rootOdim; // needed? yes, because Extract uses (Accumulator &), not Composite.
+		// CartesianODIM & rootOdim = dstRoot.odim; // TEST
+		// dstRoot.odim.updateFromMap(composite.odim);
+		// mout.attention("Upd...");
+		drain::SmartMapTools::updateValues(dstRoot.odim, composite.odim);
 
-		if (!ctx.targetEncoding.empty()){ // why different, local vs base?
-			ProductBase::completeEncoding(rootOdim, resources.baseCtx().targetEncoding);
-			// odim.setValues(resources.targetEncoding, '=');
-			ctx.targetEncoding.clear();
-		}
+		// mout.special("dstRoot.odim: ", dstRoot.odim);
+		// mout.warn(composite.odim );
 
-		//mout.warn("composite: " , composite.odim );
-		//mout.warn("composite: " , composite );
-		//mout.note("dst odim: " , odim );
-		mout.debug2("Extracting...");
+		/**
+		 *  composite.odim stores properties of (first) input data
+		 *
+		 *  composite.getTargetEncoding() stores desired encoding
+		 *
+			mout.special("targetEncoding: ", composite.getTargetEncoding());
+		 */
 
-		// BBOX
-		// MOVED to separate function
+		// Problem: this is data-quantity dominated (like DBZH, while searching for s=std.dev)
+		// ProductBase::completeEncoding(dstRoot.odim, composite.getTargetEncoding());
+		// const bool SPECIAL_ENCODING = ! resources.baseCtx().targetEncoding.empty();
+		// const std::string & encoding = SPECIAL_ENCODING ? resources.baseCtx().targetEncoding : composite.getTargetEncoding();
+
+		std::string & encoding = resources.baseCtx().targetEncoding;
+
 		/*
-		if (!cropGeo.empty()){
-			mout.special("Cropping: ", cropGeo, cropGeo.isMetric() ? " [meters]": " [degrees]");
-			if (cropGeo.isMetric()){
-				if (composite.isLongLat()){
-					mout.error("Cannot crop long-lat composite with a metric bbox (", bbox, ") ");
-					return;
-				}
-				// NOTE: vert coord swap
-				// composite.m2pix(cropGeo.lowerLeft.x,  cropGeo.lowerLeft.y,   cropImage.lowerLeft.x,  cropImage.upperRight.y);
-				// composite.m2pix(cropGeo.upperRight.x, cropGeo.upperRight.y,  cropImage.upperRight.x, cropImage.lowerLeft.y );
-				composite.m2pix(cropGeo.lowerLeft,  cropImage.lowerLeft);
-				composite.m2pix(cropGeo.upperRight, cropImage.upperRight);
-			}
-			else {
-				// composite.deg2pix(cropGeo.lowerLeft.x,  cropGeo.lowerLeft.y,   cropImage.lowerLeft.x,  cropImage.upperRight.y);
-				// composite.deg2pix(cropGeo.upperRight.x, cropGeo.upperRight.y,  cropImage.upperRight.x, cropImage.lowerLeft.y );
-				composite.deg2pix(cropGeo.lowerLeft,  cropImage.lowerLeft);
-				composite.deg2pix(cropGeo.upperRight, cropImage.upperRight);
-			}
-
-			//++cropImage.upperRight.y;
-			--cropImage.upperRight.x;
-			++cropImage.upperRight.y;
-
-
+		mout.attention("Extracting...");
+		if (encoding.empty()){
+			mout.special("using specified encoding: ", encoding);
 		}
 		*/
 
-		// cropArea check implemented in Accumulator
+		composite.extractNEW2(dstProduct, channels, cropImage, encoding);
 
-		composite.extract(rootOdim, dstProduct, channels, cropImage);
-		//mout.warn("extracted data: " , dstProduct ); // .getFirstData().data
+		encoding.clear();
+		// resources.baseCtx().targetEncoding.clear();
+
+		// mout.warn("extracted data: " , dstProduct ); // .getFirstData().data
 
 		/// Final step: write metadata
-
-		// Note: dstRoot will write most of them upon destruction.
-		// So only "additional data stored here"
-
+		//  Note: dstRoot will write most of them upon destruction.
+		//  So only "additional" data stored here
 		drain::VariableMap & how = dstRoot.getHow();
-		ProductBase::setODIMsoftwareVersion(how);
-		// Non-standard
-		how["tags"] = composite.nodeMap.toStr(':');
+		ProductBase::setRackVersion(how);
 
-		// Non-standard
-		drain::VariableMap & where = dstRoot.getWhere();
-		where["BBOX"].setType(typeid(double));
-		where["BBOX"] = composite.getBoundingBoxD().toVector();
+		composite.odim.version = ODIM::versionFlagger.str();
+		// drain::StringTools::replace(ODIM::versionFlagger, ".", "_", composite.odim.version);
 
-		if (composite.isLongLat())
-			where["BBOX_native"].setType(typeid(double));
-		else
-			where["BBOX_native"].setType(typeid(long int));
-		where["BBOX_native"] = composite.getBoundingBoxM().toVector();
+		// Non-standard extensions
+		if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS)){
 
-		where["BBOX_data"].setType(typeid(double));
-		const drain::Rectangle<double> & bboxDataD = composite.getDataBBoxD();
-		where["BBOX_data"] = bboxDataD.toVector();
+			how["tags"] = composite.nodeMap.toStr(':');
 
-		drain::Rectangle<int> bboxDataPix;
-		composite.deg2pix(bboxDataD.lowerLeft, bboxDataPix.lowerLeft);
-		composite.deg2pix(bboxDataD.upperRight, bboxDataPix.upperRight);
-		where["BBOX_data_pix"].setType(typeid(short int));
-		where["BBOX_data_pix"] = bboxDataPix.toVector();
+			// Non-standard
+			drain::VariableMap & where = dstRoot.getWhere();
+			where["BBOX"].setType(typeid(double));
+			where["BBOX"] = composite.getBoundingBoxD().toVector();
 
-		where["BBOX_overlap"].setType(typeid(double));
-		where["BBOX_overlap"] = composite.getDataOverlapD().toStr();
+			if (composite.isLongLat())
+				where["BBOX_native"].setType(typeid(double));
+			else
+				where["BBOX_native"].setType(typeid(long int));
+			where["BBOX_native"] = composite.getBoundingBoxM().toVector();
+
+			where["BBOX_data"].setType(typeid(double));
+			// where["BBOX_data"] = composite.getDataBBoxD().toVector();
+			const drain::Rectangle<double> & bboxDataD = composite.getDataBBoxD();
+			// where["BBOX_data"] = bboxDataD.toVector();
+			where["BBOX_data"] = bboxDataD.tuple(); // in-place
+
+			drain::Rectangle<double> bboxDataNat;
+			if (!composite.isLongLat()){
+				composite.deg2m(bboxDataD.lowerLeft, bboxDataNat.lowerLeft);
+				composite.deg2m(bboxDataD.upperRight, bboxDataNat.upperRight);
+				where["BBOX_data_native"].setType(typeid(int));
+				where["BBOX_data_native"] = bboxDataNat.tuple(); // toVector();
+			}
+
+			drain::Rectangle<int> bboxDataPix;
+			composite.deg2pix(bboxDataD.lowerLeft, bboxDataPix.lowerLeft);
+			composite.deg2pix(bboxDataD.upperRight, bboxDataPix.upperRight);
+			where["BBOX_data_pix"].setType(typeid(short int));
+			where["BBOX_data_pix"] = bboxDataPix.tuple(); // toVector();
+
+			where["BBOX_overlap"].setType(typeid(double));
+			where["BBOX_overlap"] = composite.getDataOverlapD().toStr();
+
+			// where["SIZE_data"].setType(typeid(short int));
+			// where["SIZE_data"] << (bboxDataPix.upperRight.x - bboxDataPix.lowerLeft.x) << (bboxDataPix.lowerLeft.y - bboxDataPix.upperRight.y );
+			where["SIZE_data"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
+
+		}
+
 
 		// std::list<std::string> projArgs;
 		// short epsg = drain::Proj4::pickEpsgCode(composite.getProjection(), projArgs);
@@ -819,9 +837,9 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 			mout.deprecating<LOG_DEBUG>("/how:EPSG migrated to where:EPSG");
 			// where["EPSG"] = epsg;
 			/*
-		where["projdef2"] = " ";
-		where["projdef2"].setInputSeparator(' ');
-		where["projdef2"] << projArgs;
+			where["projdef2"] = " ";
+			where["projdef2"].setInputSeparator(' ');
+			where["projdef2"] << projArgs;
 			 */
 		}
 
@@ -835,6 +853,7 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		/// For successfull file io:
 		ctx.statusFlags.unset(drain::StatusFlags::INPUT_ERROR); // resources.inputOk = false;
 
+		// TODO: replace this with checking n = extractNEW(...)
 		if (dstProduct.has(composite.odim.quantity)){
 
 			Data<CartesianDst> & dstData = dstProduct.getData(composite.odim.quantity); // OR: by odim.quantity
@@ -858,8 +877,8 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		else {
 			mout.experimental(dstProduct );
 			mout.warn("dstProduct does not have claimed quantity: " , composite.odim.quantity ); // .getFirstData().data
-			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
-			ctx.unsetCurrentImages();
+			// ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+			// ctx.unsetCurrentImages();
 		}
 
 	} // end dstProduct block
@@ -869,14 +888,13 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	DataTools::updateInternalAttributes(ctx.cartesianHi5);
 
 	// NEW 2020/07
-	ctx.select.clear();
+	ctx.select.clear(); // CONSIDER STORING SELECT composites own selector?
 
 	drain::VariableMap & statusMap = ctx.getStatusMap();
-	//	statusMap.updateFromMap(rootOdim);
-
+	//statusMap.updateFromMap(dstRoot.odim);
 	statusMap.updateFromMap(composite.nodeMap);
-	//statusMap.updateFromMap(composite.metadataMap);
 	statusMap.updateFromMap(composite.odim);
+	// statusMap.updateFromMap(composite.metadataMap);
 	// Spoils input.sh...
 	// std::cout << ctx.svg << '\n';
 	// mout.warn("updateInternalAttributes 2:",  ctx.cartesianHi5.data.attributes);
