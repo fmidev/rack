@@ -35,6 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_VERSION__ "8.9"
 
 /**
+ *   Version 8.9.1
+ *   -- Fixed --cExtract crop=bbox parameter, also added cropping options DATA and OVERLAP
+ *
  *   Version 8.9
  *   - Revised --cExtract syntax: 'dwcs' syntax completed with alternative 'DATA:WEIGHT:COUNT:DEVIATION' syntax, also sequential --encoding supported
  *

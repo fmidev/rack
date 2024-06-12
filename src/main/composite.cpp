@@ -616,7 +616,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 
 }
 
-void prepareBBox(const Composite & composite, const drain::BBox & cropGeo, drain::Rectangle<int> cropImage){
+void Compositor::prepareBBox(const Composite & composite, const drain::BBox & cropGeo, drain::Rectangle<int> & cropImage){
 
 	//const drain::BBox cropGeo(bboxGeo);
 
@@ -662,7 +662,8 @@ void prepareBBox(const Composite & composite, const drain::BBox & cropGeo, drain
  *
  */
 
-void Compositor::extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox) const {
+//void Compositor::extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox) const {
+void Compositor::extract(Composite & composite, const std::string & channels, const std::string & crop) const {
 
 
 	RackContext & ctx = getContext<RackContext>();
@@ -707,17 +708,39 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	ODIMPath path(parent); // IDX24
 	mout.debug("composite dst path: ", path );
 
+
 	mout.debug3("update geodata ");
+
+	const drain::Rectangle<double> & bboxDataD = composite.getDataBBoxD();
+	const drain::Rectangle<double> & bboxDataOverlapD = composite.getDataOverlapD();
+
+	mout.debug("Data BBOX minimal (union): ", bboxDataD);
+	mout.debug("Data BBOX overlap (intersection): ", bboxDataOverlapD);
+
 	composite.updateGeoData(); // TODO check if --plot cmds don't need
 
-	drain::BBox cropGeo(bbox);
-	drain::Rectangle<int> cropImage;
-	if (!cropGeo.empty()){
-		mout.special("Cropping: ", cropGeo, cropGeo.isMetric() ? " [meters]": " [degrees]");
-		prepareBBox(composite, cropGeo, cropImage);
+	drain::Rectangle<int> cropImage; // Default: empty ()
+	if (!crop.empty()){
+
+		if (crop == "DATA"){
+			prepareBBox(composite, bboxDataD, cropImage);
+		}
+		else if (crop == "OVERLAP"){
+			prepareBBox(composite, bboxDataOverlapD, cropImage);
+		}
+		else {
+			std::vector<double> v;
+			drain::StringTools::split(crop, v, ':');
+
+			drain::BBox cropBBox;
+			cropBBox.assignSequence(v, false);
+			mout.special("Cropping: ", cropBBox, cropBBox.isMetric() ? " [meters]": " [degrees]");
+			prepareBBox(composite, cropBBox, cropImage);
+		}
+		mout.info("crop: ", cropImage, " (image coords)");
+
 	}
 
-	mout.debug("Crop image now ", cropImage, " - usually empty?");
 
 	Hi5Tree & dstGroup = ctx.cartesianHi5(path);
 
@@ -801,16 +824,16 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 			where["BBOX_data"].setType(typeid(double));
 			// where["BBOX_data"] = composite.getDataBBoxD().toVector();
-			const drain::Rectangle<double> & bboxDataD = composite.getDataBBoxD();
+			//const drain::Rectangle<double> & bboxDataD = composite.getDataBBoxD();
 			// where["BBOX_data"] = bboxDataD.toVector();
 			where["BBOX_data"] = bboxDataD.tuple(); // in-place
 
-			drain::Rectangle<double> bboxDataNat;
 			if (!composite.isLongLat()){
-				composite.deg2m(bboxDataD.lowerLeft, bboxDataNat.lowerLeft);
-				composite.deg2m(bboxDataD.upperRight, bboxDataNat.upperRight);
+				drain::Rectangle<double> bn;
+				composite.deg2m(bboxDataD.lowerLeft,  bn.lowerLeft);
+				composite.deg2m(bboxDataD.upperRight, bn.upperRight);
 				where["BBOX_data_native"].setType(typeid(int));
-				where["BBOX_data_native"] = bboxDataNat.tuple(); // toVector();
+				where["BBOX_data_native"] = bn.tuple(); // toVector();
 			}
 
 			drain::Rectangle<int> bboxDataPix;
@@ -819,8 +842,15 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 			where["BBOX_data_pix"].setType(typeid(short int));
 			where["BBOX_data_pix"] = bboxDataPix.tuple(); // toVector();
 
-			where["BBOX_overlap"].setType(typeid(double));
-			where["BBOX_overlap"] = composite.getDataOverlapD().toStr();
+			//const drain::Rectangle<double> & bboxOverlap = composite.getDataOverlapD();
+			where["BBOX_overlap"] = bboxDataOverlapD.tuple();
+			if (!composite.isLongLat()){
+				drain::Rectangle<double> bn;
+				composite.deg2m(bboxDataOverlapD.lowerLeft,  bn.lowerLeft);
+				composite.deg2m(bboxDataOverlapD.upperRight, bn.upperRight);
+				where["BBOX_overlap_native"].setType(typeid(int));
+				where["BBOX_overlap_native"] = bn.tuple();
+			}
 
 			// where["SIZE_data"].setType(typeid(short int));
 			// where["SIZE_data"] << (bboxDataPix.upperRight.x - bboxDataPix.lowerLeft.x) << (bboxDataPix.lowerLeft.y - bboxDataPix.upperRight.y );

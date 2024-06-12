@@ -49,7 +49,9 @@ void CartesianExtract::exec() const {
 	drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
 	Composite & composite = ctx.getComposite(RackContext::PRIVATE); // check thread safety
-	extract(composite, channels, bbox);
+
+	//prepareBBox(composite, cropGeo, cropImage);
+	extract(composite, channels, crop);
 
 }
 

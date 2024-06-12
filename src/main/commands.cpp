@@ -1304,6 +1304,7 @@ public:
 		*/
 		// ... keep dictionary neat
 		ODIM::versionFlagger.set(value);
+		getQuantityMap().initialize();
 	}
 
 };

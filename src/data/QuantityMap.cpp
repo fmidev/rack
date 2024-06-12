@@ -83,8 +83,25 @@ void QuantityMap::initialize(){
 	set("RATE", 'C').setScaling( 0.05); // nodata = 0?
 	set("RATE", 'S').setScaling( 0.0005); // nodata = 0?
 
-	set("HGHT", 'C').setScaling( 0.05);   //   255 => 12.5km
-	set("HGHT", 'S').setScaling( 0.0002); // 65535 => 13.x km
+	//DBZHDEV.set('S').setRange(-100.0, +100.0);
+	const bool FIRST_INIT = !hasQuantity("HGHT");
+
+	if (ODIM::versionFlagger.isSet(ODIM::KILOMETRES)){
+		if (!FIRST_INIT)
+			mout.note("Using kilometres for HGHT and HGHTDEV (ODIM version: ", ODIM::versionFlagger, ")");
+		set("HGHT", 'C').setScaling( 0.1);   //   255 => 25,5km
+		set("HGHT", 'S').setScaling( 0.0004); // 65535 => 26.2 km
+		set("HGHTDEV", 'C').setRange( -10.0, +10.0);   //   255 => 12.5km
+		set("HGHTDEV", 'S').setRange( -20.0, +20.0); // 65535 => 13.x km
+	}
+	else {
+		if (!FIRST_INIT)
+			mout.note("Using metres for HGHT and HGHTDEV (ODIM version: ", ODIM::versionFlagger, ")");
+		set("HGHT", 'C').setScaling( 100.0);  //   250 => 25500m
+		set("HGHT", 'S').setScaling( 0.4);    // 65535 => 26.2 km
+		set("HGHTDEV", 'C').setRange( -10000.0, +10000.0);   //   255 => 12.5km
+		set("HGHTDEV", 'S').setRange( -20000.0, +20000.0); // 65535 => 13.x km
+	}
 
 	Quantity & QIND = add("QIND");
 	QIND.set('C').setScaling( 1.0/250.0);   //

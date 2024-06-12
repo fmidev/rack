@@ -71,6 +71,9 @@ protected:
 
 protected:
 
+	static
+	void prepareBBox(const Composite & composite, const drain::BBox & cropGeo, drain::Rectangle<int> & cropImage);
+
 	double applyTimeDecay(Composite & composite,double w, const ODIM & odim) const;
 
 	// Filter is applied by getH5(), so OR function of: RackContext::CARTESIAN, RackContext::POLAR, RackContext::LATEST
@@ -80,7 +83,8 @@ protected:
 
 	void addPolar(Composite & composite, const Hi5Tree & src) const;
 	void addCartesian(Composite & composite, const Hi5Tree & src) const;
-	void extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox = {0,0,0,0}) const;
+	//void extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox = {0,0,0,0}) const;
+	void extract(Composite & composite, const std::string & channels, const std::string & crop = "") const;
 
 	double weight;
 
