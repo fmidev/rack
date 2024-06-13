@@ -724,9 +724,11 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 		if (crop == "DATA"){
 			prepareBBox(composite, bboxDataD, cropImage);
+			mout.advice<LOG_NOTICE>("Could use command: --cExtract ", channels, ',', bboxDataD);
 		}
 		else if (crop == "OVERLAP"){
 			prepareBBox(composite, bboxDataOverlapD, cropImage);
+			mout.advice<LOG_NOTICE>("Could use command: --cExtract ", channels, ',', bboxDataOverlapD);
 		}
 		else {
 			std::vector<double> v;
