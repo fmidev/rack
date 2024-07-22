@@ -109,7 +109,7 @@ double Compositor::applyTimeDecay(Composite & composite, double w, const ODIM & 
 
 
 
-void Compositor::add(Composite & composite, drain::Flags::value_t inputFilter, bool updateSelector) const {
+void Compositor::add(Composite & composite, drain::Flags::ivalue_t inputFilter, bool updateSelector) const {
 
 	RackContext & ctx = getContext<RackContext>();
 

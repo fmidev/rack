@@ -29,6 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
+#include <drain/TypeUtils.h>
 #include "RadarDataPicker.h"
 #include "Geometry.h"
 
@@ -168,11 +169,16 @@ namespace drain {
  *
  */
 
+DRAIN_TYPENAME_DEF(rack::RadarDataPicker<rack::PolarODIM>);
+DRAIN_TYPENAME_DEF(rack::RadarDataPicker<rack::CartesianODIM>);
+
+/*
 template <>
 const std::string TypeName<rack::RadarDataPicker<rack::PolarODIM> >:: name("PolarDataPicker");
 
 template <>
 const std::string TypeName<rack::RadarDataPicker<rack::CartesianODIM> >:: name("CartesianDataPicker");
+*/
 
 /*
 template <>

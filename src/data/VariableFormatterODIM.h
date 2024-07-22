@@ -45,7 +45,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-
+/// Formats variables to output stream
+/**
+ *  This class inherits the following formatting options from the base class:
+ *
+ *  # printf() style formatting, like "%08.2d"
+ *  # bash substring style formatting, like ":2:3" (take 3 letters, starting from position 2)
+ *
+ *  In addition, this class formats ODIM time stamps (what:time, what:startdate, ...)
+ *  # Time formatting, like the date command
+ *
+ *  \tparam T - type of the variables.
+ *
+ *  \see StringLet
+ *  \see StringMapper
+ *
+ */
 template <class T>
 class VariableFormatterODIM : public drain::VariableFormatter<T>{
 

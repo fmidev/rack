@@ -94,7 +94,8 @@ while [ ${#*} != 0 ]; do
 	echo "# Longer test" # -o $VOLUME_IMG
 	select="-Q '.*${QUANTITY}.*'" # +"OP"
 	#cmd="rack $VOLUME   --store intermediate=1 --$aDETECTOR $VALUES $select -o $ANOM_IMG $select --cSize 500 --encoding C,0.004,-0.004,0,16  -c -o $ANOM_IMG_CART"
-	cmd="rack $VOLUME   --store intermediate=1 --$aDETECTOR '$VALUES' $select -o $ANOM_IMG $select --cSize 500   -c -o $ANOM_IMG_CART"
+	# intermediate=1
+	cmd="rack $VOLUME   --store INTERMEDIATE --$aDETECTOR '$VALUES' $select -o $ANOM_IMG $select --cSize 500   -c -o $ANOM_IMG_CART"
 
 	echo "$cmd"
 	eval "$cmd"
@@ -159,7 +160,7 @@ exit
 
 
 cmd="rack $VOLUME \
- --store intermediate=1 \
+ --store INTERMEDIATE \
  --aBiomet 0dBZ,1000m,5dBZ,500m \
  --aEmitter 5000m,3.0deg,0.6 \
  --aEmitter 20000m,5.0deg,0.6 \

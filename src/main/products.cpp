@@ -401,7 +401,7 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 	install<SunShineOp>(); //  sun;
 
 
-	const drain::Flagger::value_t SECTION = getSection().index;
+	const drain::Flagger::ivalue_t SECTION = getSection().index;
 	const char PREFIX = getPrefix();
 	// std::cerr << __FUNCTION__ << SECTION << ':' << PREFIX << std::endl;
 

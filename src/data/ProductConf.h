@@ -55,6 +55,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+
 /// Shared properties for meteorological products and Cartesian products (composites and single-radar images)
 /**
  *   TODO: separate member object
@@ -62,6 +63,11 @@ namespace rack {
 class ProductConf {
 
 public:
+
+	enum OutputDataVerbosity {DEFAULT=0, INTERMEDIATE=1, DEBUG=2, QUALITY=4};
+	typedef drain::EnumFlagger<drain::MultiFlagger<OutputDataVerbosity> > OutputFlagger;
+	//LegendFlagger legend = LEFT | EMBED;
+	OutputFlagger outputDataVerbosityNEW = DEFAULT;
 
 	/// Default constructor.
 	inline
@@ -94,8 +100,7 @@ public:
 	/**
 	 *
 	 */
-	int outputDataVerbosity;
-
+	int outputDataVerbosity = 0;
 
 
 

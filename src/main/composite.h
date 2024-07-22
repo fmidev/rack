@@ -78,7 +78,7 @@ protected:
 
 	// Filter is applied by getH5(), so OR function of: RackContext::CARTESIAN, RackContext::POLAR, RackContext::LATEST
 
-	void add(Composite & composite, drain::Flags::value_t inputFilter, bool updateSelector = true) const;
+	void add(Composite & composite, drain::Flags::ivalue_t inputFilter, bool updateSelector = true) const;
 	//void add(drain::Flags::value_t inputFilter, bool updateSelector = true) const;
 
 	void addPolar(Composite & composite, const Hi5Tree & src) const;

@@ -116,7 +116,7 @@ int process(int argc, const char **argv) {
 	cmdBank.setNotFoundHandlerCmdKey("setODIM");
 
 	// Also, mark the commands that trigger a script (if defined).
-	const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
+	const drain::Flagger::ivalue_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
 	cmdBank.setScriptTriggerFlag(TRIGGER);
 	cmdBank.get("inputFile").section |= TRIGGER;
 

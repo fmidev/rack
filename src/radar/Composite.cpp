@@ -54,7 +54,7 @@ using namespace drain::image;
 
 /*
 template <>
-const drain::FlaggerDict drain::EnumDict<rack::Composite::FieldType>::dict = {
+const drain::FlagResolver::dict_t drain::EnumDict<rack::Composite::FieldType>::dict = {
 		{"DATA", rack::Composite::FieldType::DATA},
 		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
 		{"COUNT", rack::Composite::FieldType::COUNT},

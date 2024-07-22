@@ -100,7 +100,7 @@ Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
 }
 */
 
-Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
+Hi5Tree & RackContext::getHi5Full(h5_role::ivalue_t & filter) {
 //Hi5Tree & RackContext::getHi5(h5_role::value_t filter) {
 
 	drain::Logger mout( __FILE__, __FUNCTION__);
@@ -136,7 +136,7 @@ Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
 }
 
 
-Composite & RackContext::getComposite(h5_role::value_t filter){
+Composite & RackContext::getComposite(h5_role::ivalue_t filter){
 
 	//RackContext & ctx  = this->template getContext<RackContext>();
 	RackContext & baseCtx = getResources().baseCtx();

@@ -461,15 +461,15 @@ public:
 	*/
 
 	static inline
-	std::ostream & toOStr(std::ostream & ostr, const Type &t){
+	std::ostream & toStream(std::ostream & ostr, const Type &t){
 		const std::type_info & type = t.getType();
 		ostr << Type::getTypeChar(type) << '@'; // << Type::call<drain::sizeGetter>(type);
 		return ostr;
 	}
 
 	static inline
-	std::ostream & toOStrFull(std::ostream & ostr, const Type &t){
-		toOStr(ostr, t);
+	std::ostream & toStreamFull(std::ostream & ostr, const Type &t){
+		toStream(ostr, t);
 		//const std::type_info & type = t.getType();
 		// ostr << ' '<< '(' << Type::getMin<double>(type) << ',' << Type::call<drain::typeMax,double>(type) << ')';
 		/*
@@ -573,7 +573,7 @@ void Type::setType<void>(){
 /// Dumps a node.
 inline
 std::ostream & operator<<(std::ostream & ostr, const Type &t){
-	Type::toOStr(ostr, t);
+	Type::toStream(ostr, t);
 	return ostr;
 }
 

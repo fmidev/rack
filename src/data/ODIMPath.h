@@ -88,7 +88,7 @@ public:
 
 	/// In H5, "groups" correspond to "directories" or "folders" in Unix and Windows.
 
-	typedef drain::Flagger::value_t group_t;
+	typedef drain::Flagger::ivalue_t group_t;
 	//typedef odim_flags::value_t group_t;
 
 	/// None (undefined)

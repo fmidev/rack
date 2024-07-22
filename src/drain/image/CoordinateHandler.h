@@ -52,7 +52,7 @@ namespace image {
 
 
 typedef drain::GlobalFlags<CoordinatePolicy> coord_overflow_flagger_t;
-typedef drain::Flags::value_t coord_overflow_t;
+typedef drain::Flags::ivalue_t coord_overflow_t;
 //enum coord_overflow_t {UNCHANGED=0, X_OVERFLOW=1, X_UNDERFLOW=2, Y_OVERFLOW=4, Y_UNDERFLOW=8, IRREVERSIBLE=128};
 
 //template <>

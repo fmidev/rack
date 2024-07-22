@@ -215,6 +215,17 @@ const std::string TypeName<T>::name(typeid(T).name());
 DRAIN_TYPENAME(bool);
 DRAIN_TYPENAME(char);
 DRAIN_TYPENAME(unsigned char);
+DRAIN_TYPENAME(short);
+DRAIN_TYPENAME(unsigned short);
+DRAIN_TYPENAME(int);
+DRAIN_TYPENAME(unsigned int);
+DRAIN_TYPENAME(long);
+DRAIN_TYPENAME(unsigned long);
+DRAIN_TYPENAME(float);
+DRAIN_TYPENAME(double);
+DRAIN_TYPENAME(char *);
+DRAIN_TYPENAME(const char *);  // why const separately...?
+DRAIN_TYPENAME(std::string);
 
 /*
 template <>
@@ -225,7 +236,6 @@ const std::string TypeName<char>::name;
 
 template <>
 const std::string TypeName<unsigned char>::name;
-*/
 
 template <>
 const std::string TypeName<short>::name;
@@ -259,6 +269,7 @@ const std::string TypeName<const char *>::name;
 
 template <>
 const std::string TypeName<std::string>::name;
+*/
 
 
 template <>

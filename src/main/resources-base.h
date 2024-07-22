@@ -207,14 +207,14 @@ public:
 
 	typedef drain::GlobalFlags<Hi5Tree> h5_role;
 
-	static const h5_role::value_t CURRENT; //,    **< Link also external targets *
-	static const h5_role::value_t INPUT; // ,      **< No not link, but add entry (void) *
+	static const h5_role::ivalue_t CURRENT; //,    **< Link also external targets *
+	static const h5_role::ivalue_t INPUT; // ,      **< No not link, but add entry (void) *
 	// static const h5_role::value_t PRODUCT;
-	static const h5_role::value_t POLAR; // =4,      **< No action *
-	static const h5_role::value_t CARTESIAN; // =8,  **< Throw exception *
-	static const h5_role::value_t EMPTY; // =16,     **< Also accept empty  *
-	static const h5_role::value_t PRIVATE; // =32,
-	static const h5_role::value_t SHARED; // =64     **< Try shared first  *
+	static const h5_role::ivalue_t POLAR; // =4,      **< No action *
+	static const h5_role::ivalue_t CARTESIAN; // =8,  **< Throw exception *
+	static const h5_role::ivalue_t EMPTY; // =16,     **< Also accept empty  *
+	static const h5_role::ivalue_t PRIVATE; // =32,
+	static const h5_role::ivalue_t SHARED; // =64     **< Try shared first  *
 
 
 	/// Pointer to the last HDF5 structure in Cartesian coordinates: input or Cartesian product.
@@ -222,7 +222,7 @@ public:
 	 *  - if CARTESIAN and POLAR are both set, either
 	 *  - if neither CARTESIAN nor POLAR is set,
 	 */
-	Hi5Tree & getMyHi5(h5_role::value_t filter=(CARTESIAN|POLAR|INPUT|CURRENT));
+	Hi5Tree & getMyHi5(h5_role::ivalue_t filter=(CARTESIAN|POLAR|INPUT|CURRENT));
 
 	/// Derives the most relevant polar data (input or product) and returns it.
 	/**
@@ -231,7 +231,7 @@ public:
 	 *  # shared, if non-empty
 	 *  # local (empty)
 	 */
-	Hi5Tree & getHi5Defunct(h5_role::value_t filter);
+	Hi5Tree & getHi5Defunct(h5_role::ivalue_t filter);
 
 	/// Derives the most relevant polar input data and returns it.
 	/**

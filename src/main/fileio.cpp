@@ -990,8 +990,8 @@ public:
 
 FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // : drain::CommandSection("general") {
 
-	const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
-	const drain::Flagger::value_t IMAGES  = drain::Static::get<ImageSection>().index;
+	const drain::Flagger::ivalue_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
+	const drain::Flagger::ivalue_t IMAGES  = drain::Static::get<ImageSection>().index;
 
 	install<CmdInputFile>('i').addSection(TRIGGER);
 	install<CmdOutputFile>('o');

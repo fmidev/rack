@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //using namespace drain::image;
 template <>
-const drain::FlaggerDict drain::EnumDict<rack::EchoTop2Op::Reliability>::dict = {
+const drain::FlagResolver::dict_t drain::EnumDict<rack::EchoTop2Op::Reliability>::dict = {
 		{"UNDEFINED",     rack::EchoTop2Op::Reliability::UNDEFINED},
 		{"UNDERSHOOTING", rack::EchoTop2Op::Reliability::UNDERSHOOTING},
 		{"OVERSHOOTING",  rack::EchoTop2Op::Reliability::OVERSHOOTING},

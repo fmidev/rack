@@ -39,7 +39,7 @@ namespace image {
 
 
 //template <>
-const drain::FlaggerDict CoordinateHandler2D::dict = {
+const drain::FlagResolver::dict_t CoordinateHandler2D::dict = {
 		{"X_OVERFLOW",  X_OVERFLOW},
 		{"X_UNDERFLOW", X_UNDERFLOW},
 		{"Y_OVERFLOW",  Y_OVERFLOW},

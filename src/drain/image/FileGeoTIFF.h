@@ -255,7 +255,7 @@ void FileGeoTIFF::setGeoTiffField(geokey_t tag, const std::string & value){
 } // image::
 
 template <>
-const drain::FlaggerDict drain::EnumDict<image::FileGeoTIFF::TiffCompliance>::dict;
+const drain::FlagResolver::dict_t drain::EnumDict<image::FileGeoTIFF::TiffCompliance>::dict;
 
 /*
 template <>

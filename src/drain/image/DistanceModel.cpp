@@ -41,7 +41,7 @@ const float DistanceModel::nan_f = std::numeric_limits<float>::quiet_NaN();
 // PixelAdjacencyFlagger pixelAdjacency;
 
 template <>
-const FlaggerDict EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict = {
+const FlagResolver::dict_t EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict = {
 	{"4-CONNECTED",   drain::image::DistanceModel::CONN4},
 	{"8-CONNECTED",   drain::image::DistanceModel::CONN8},
 	{"16-CONNECTED",  drain::image::DistanceModel::KNIGHT}

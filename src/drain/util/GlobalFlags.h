@@ -115,7 +115,7 @@ public:
 	// Consider adding a warning if value reserved
 	// Consider adding a notif   if key already defined
 	static inline
-	Flagger::value_t addEntry(const Flagger::dict_t::key_t & key, value_t i=0){
+	Flagger::ivalue_t addEntry(const Flagger::dict_t::key_t & key, ivalue_t i=0){
 		return Flagger::addEntry(GlobalFlags<T>::getSharedDict(), key, i);
 	}
 

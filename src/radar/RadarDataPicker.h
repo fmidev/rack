@@ -220,14 +220,17 @@ public:
 
 namespace drain {
 
+DRAIN_TYPENAME(rack::RadarDataPicker<rack::PolarODIM>);
+DRAIN_TYPENAME(rack::RadarDataPicker<rack::CartesianODIM>);
 
+
+/*
 template <>
 const std::string TypeName<rack::RadarDataPicker<rack::PolarODIM> >:: name;
 
 template <>
 const std::string TypeName<rack::RadarDataPicker<rack::CartesianODIM> >:: name;
 
-/*
 template <>
 const std::string TypeName<rack::PolarDataPicker>:: name;
 

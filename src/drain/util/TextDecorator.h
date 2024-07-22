@@ -227,6 +227,7 @@ protected:
 		return ostr;
 	}
 
+
 	inline
 	void set(){}; // could be reset? No! This is the last one called..
 
@@ -258,11 +259,19 @@ class TextDecoratorVt100 : public drain::TextDecorator {
 
 public:
 
-
-
 	virtual inline
 	~TextDecoratorVt100(){
 	}
+
+	/// Internal utility: convert given abstract style to numeric VT100 codes.
+	/**
+	 *  \tparam - ColourFlag, StyleFlags, or LineFlag
+	 *  \param  - styleFlags,
+	 *  \param  - codes
+	 */
+	template <typename F>
+	static
+	void appendCodes(const EnumFlagger<F> & styleFlags, std::list<int> & codes);
 
 
 protected:
@@ -275,6 +284,23 @@ protected:
 
 
 };
+
+template <typename F>
+void TextDecoratorVt100::appendCodes(const EnumFlagger<F> & styleFlags, std::list<int> & codes){
+
+	if (styleFlags){ // is non-zero
+
+		std::list<typename EnumFlagger<F>::value_t> l;
+
+		FlagResolver::valuesToList(styleFlags.value, styleFlags.getDict(), l);
+
+		for (typename EnumFlagger<F>::value_t v: l){
+			codes.push_back(TextStyleVT100::getIntCode(v));
+		}
+
+	}
+
+}
 
 
 } // ::drain

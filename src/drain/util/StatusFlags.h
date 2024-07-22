@@ -47,22 +47,22 @@ class StatusFlags : public GlobalFlags<status_flag_id> {
 public:
 
 	static
-	const drain::Flagger::value_t INPUT_ERROR; //     = 1;
+	const drain::Flagger::ivalue_t INPUT_ERROR; //     = 1;
 
 	static
-	const value_t DATA_ERROR; //      = 2;
+	const ivalue_t DATA_ERROR; //      = 2;
 
 	static
-	const drain::Flagger::value_t METADATA_ERROR; //  = 4;
+	const drain::Flagger::ivalue_t METADATA_ERROR; //  = 4;
 
 	static
-	const drain::Flagger::value_t OUTPUT_ERROR; //    = 8;
+	const drain::Flagger::ivalue_t OUTPUT_ERROR; //    = 8;
 
 	static
-	const drain::Flagger::value_t COMMAND_ERROR;// = 16;
+	const drain::Flagger::ivalue_t COMMAND_ERROR;// = 16;
 
 	static
-	const drain::Flagger::value_t PARAMETER_ERROR;// = 16;
+	const drain::Flagger::ivalue_t PARAMETER_ERROR;// = 16;
 };
 
 } // ::drain

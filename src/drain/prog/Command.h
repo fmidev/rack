@@ -78,6 +78,9 @@ public:
 	virtual
 	const ReferenceMap & getParameters() const = 0;
 
+	static
+	const SprinterLayout cmdArgLayout; // = {",", "?", "=", ""};
+
 protected:
 
 	virtual
@@ -143,7 +146,7 @@ public:
 
 
 	inline
-	Command & addSection(drain::Flagger::value_t i){
+	Command & addSection(drain::Flagger::ivalue_t i){
 		section |= i;
 		return *this;
 	}

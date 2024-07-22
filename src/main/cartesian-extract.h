@@ -44,8 +44,8 @@ class CartesianExtract : public Compositor {
 public:
 
 	CartesianExtract() : Compositor(__FUNCTION__,"Extract data that has been composited on the accumulation array"){
-		getParameters().link("channels", channels="dw", "Layers: data,count,weight,std.deviation"); // Accumulation layers to be extracted
-		// getParameters().link("bbox", bbox.tuple(), "Optional cropping");
+		//getParameters().link("channels", channels="dw", drain::sprinter(Composite::dict.getContainer(), drain::Command::cmdArgLayout).str() + "Layers: data,count,weight,std.deviation"); // Accumulation layers to be extracted
+		getParameters().link("channels", channels="DATA,WEIGHT", drain::sprinter(Composite::dict.getKeys(), drain::Command::cmdArgLayout).str()); // Accumulation layers to be extracted
 		getParameters().link("bbox", crop, "Optional cropping: <LLx>:<LLy>:<URx>:<URy> or DATA or OVERLAP");
 	};
 

@@ -445,7 +445,7 @@ public:
 	};
 
 
-	Flagger::value_t addSection(const FlagResolver::dict_t::key_t & title, const FlagResolver::dict_t::value_t index=0){
+	Flagger::ivalue_t addSection(const FlagResolver::dict_t::key_t & title, const FlagResolver::dict_t::value_t index=0){
 	// Flagger2<int>::value_t addSection(const FlagResolver::dict_t::key_t & title, const FlagResolver::dict_t::value_t index=0){
 		return FlagResolver::addEntry(sections, title, index);
 	}

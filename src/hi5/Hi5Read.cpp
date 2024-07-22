@@ -45,7 +45,7 @@ namespace hi5 {
 
 
 template <>
-const drain::FlaggerDict drain::EnumDict<Reader::Mode>::dict = {
+const drain::FlagResolver::dict_t drain::EnumDict<Reader::Mode>::dict = {
 		{"ATTRIBUTES", hi5::Reader::ATTRIBUTES},
 		{"DATASETS", hi5::Reader::DATASETS},
 		{"MARKED", hi5::Reader::EXCLUSIVE}

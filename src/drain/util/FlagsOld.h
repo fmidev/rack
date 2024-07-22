@@ -46,8 +46,8 @@ class Flagger :public FlagResolver { // for typedefs
 
 public:
 
-	value_t ownValue;
-	value_t & value;
+	ivalue_t ownValue;
+	ivalue_t & value;
 
 	const dict_t & dictionary; // todo open (keep own secret, later)
 
@@ -69,7 +69,7 @@ public:
 	};
 
 	inline
-	Flagger(value_t & value, const dict_t & dict, char separator = 0) :
+	Flagger(ivalue_t & value, const dict_t & dict, char separator = 0) :
 		ownValue(0),
 		value(value),
 		dictionary(dict),
@@ -114,7 +114,7 @@ protected:
 
 	// TODO: should explicit zero reset the value?
 	inline
-	Flagger & deepSet(value_t x){
+	Flagger & deepSet(ivalue_t x){
 		this->value = (this->value | x);
 		return *this;
 	}
@@ -137,7 +137,7 @@ public:
 
 	/// Unset desired flags. Does not set any flag.
 	inline
-	Flagger & unset(value_t x){
+	Flagger & unset(ivalue_t x){
 		value = (value & ~x);
 		return *this;
 	};
@@ -160,7 +160,7 @@ public:
 
 	/// Checks if a given bit, or any of given bits, is set.
 	inline
-	bool isSet(value_t x) const {
+	bool isSet(ivalue_t x) const {
 		return (value & x) != 0;
 	};
 
@@ -193,7 +193,7 @@ public:
 	 *   \param x - bit values 1, 2, 4, 8 ... etc combined with \c OR function.
 	 */
 	inline
-    void assign(value_t x){
+    void assign(ivalue_t x){
 		value = x;
 	}
 
@@ -214,7 +214,7 @@ public:
 
 
 	inline
-	operator value_t() const {
+	operator ivalue_t() const {
 		return value;
 	}
 
@@ -239,7 +239,7 @@ public:
 	 *   \param lenient - If true, bypassed unknown keys silently, otherwise throws exception
 	 */
 	inline
-	value_t getValue(const std::string & key, char separator=0) const {
+	ivalue_t getValue(const std::string & key, char separator=0) const {
 		// important: if sep undefined, use Flags.sep.
 		// Or/consider Flag dict sep => '|'
 		return FlagResolver::getValue(dictionary, key, separator ? separator : this->separator);
@@ -247,7 +247,7 @@ public:
 
 	/// Given an integer, retrieves dictionary keys corresponding to each index of set bits.
 	inline
-	std::string getKeys(value_t value, char separator=0) const {
+	std::string getKeys(ivalue_t value, char separator=0) const {
 		return FlagResolver::getKeys(dictionary, value, separator ? separator : this->separator);
 	}
 
@@ -274,7 +274,7 @@ public:
 	 *   \param ostr
 	 *   \param separator - character appended between keys, if not own separator
 	 */
-	///  risky: value_t ~char !
+	///  risky: ivalue_t ~char !
 	inline
 	std::ostream & keysToStream(std::ostream & ostr=std::cout, char separator=0) const {
 		return FlagResolver::keysToStream(dictionary, value, ostr, separator ? separator : this->separator);
@@ -365,13 +365,13 @@ public:
 	 *  \param i - if zero, call getFreeBit() to reserve a new, unused bit.
 	 */
 	inline
-	value_t addEntry(const dict_t::key_t & key, value_t i=0){
+	ivalue_t addEntry(const dict_t::key_t & key, ivalue_t i=0){
 		return Flagger::addEntry(ownDictionary, key, i);
 	}
 
 	/*
 	inline
-	value_t add(const dict_t::entry_t & entry){
+	ivalue_t add(const dict_t::entry_t & entry){
 		return Flagger::add(ownDictionary, entry.first,  entry.second);
 	}
 	*/

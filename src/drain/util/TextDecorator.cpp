@@ -68,7 +68,7 @@ struct TypeName<TextStyle::Style> {
 
 
 template <>
-const drain::FlaggerDict drain::EnumDict<TextStyle::Style>::dict = {
+const drain::FlagResolver::dict_t drain::EnumDict<TextStyle::Style>::dict = {
 		{"ITALIC", TextStyle::ITALIC},
 		{"BOLD", TextStyle::BOLD},
 		{"DIM", TextStyle::DIM},
@@ -77,7 +77,7 @@ const drain::FlaggerDict drain::EnumDict<TextStyle::Style>::dict = {
 };
 
 template <>
-const drain::FlaggerDict drain::EnumDict<TextStyle::Colour>::dict = {
+const drain::FlagResolver::dict_t drain::EnumDict<TextStyle::Colour>::dict = {
 		{"BLACK", TextStyle::BLACK},
 		{"GRAY", TextStyle::GRAY},
 		{"WHITE", TextStyle::WHITE},
@@ -91,7 +91,7 @@ const drain::FlaggerDict drain::EnumDict<TextStyle::Colour>::dict = {
 };
 
 template <>
-const drain::FlaggerDict drain::EnumDict<TextStyle::Line>::dict = {
+const drain::FlagResolver::dict_t drain::EnumDict<TextStyle::Line>::dict = {
 		{"NO_LINE", TextStyle::NO_LINE}, // deprecating
 		{"UNDERLINE", TextStyle::UNDERLINE},
 		{"DOUBLE_UNDERLINE", TextStyle::DOUBLE_UNDERLINE},
@@ -156,28 +156,43 @@ void TextDecorator::debug(std::ostream & ostr) const {
 	ostr << '\n';
 }
 
+/// Export style to VT100 numeric codes
+/**
+ *   First, extract style enums from the current flags (integer).
+ *
+ *   \tparam TS -
+ *
+ *   Not: TextStyle::Style, TextStyle::Line
+ *
+ */  //
+/*
+template <typename TS>
+void appendCodes(const TS & styleFlags, std::list<int> & codes){
 
+	if (styleFlags){ // is non-zero
+		std::list<typename TS::value_t> l;
+		FlagResolver::valuesToList(styleFlags.getDict(), styleFlags.value, l);
+		for (typename TS::value_t v: l){
+			codes.push_back(TextStyleVT100::getIntCode(v));
+		}
+	}
 
-
+}
+*/
 
 
 std::ostream & TextDecoratorVt100::_begin(std::ostream & ostr) const {
 
 	std::list<int> codes;
 
-	if (style)
-		codes.push_back(TextStyleVT100::getIntCode<TextStyle::Style>(style.value));
-
-	if (color)
-		codes.push_back(TextStyleVT100::getIntCode<TextStyle::Colour>(color.value));
-
-	if (line)
-		codes.push_back(TextStyleVT100::getIntCode<TextStyle::Line>(line.value));
+	appendCodes(style, codes);
+	appendCodes(color, codes);
+	appendCodes(line,  codes);
 
 	if (!codes.empty()){
-		ostr << "\033[";
+		ostr << "\033["; // VT100 decl start code
 		ostr << drain::StringTools::join(codes,';'); // consider SprinterLayout(";");
-		ostr << 'm'; //  << "\]";
+		ostr << 'm'; // VT100 decl end code //  << "\]";
 	}
 
 	return ostr;

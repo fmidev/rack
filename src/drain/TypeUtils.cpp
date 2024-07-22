@@ -97,38 +97,50 @@ template <>
 const std::string TypeName<unsigned char>::name("unsigned-char");
 */
 
-template <>
-const std::string TypeName<short>::name("short");
+  
+//template <>
+//const std::string TypeName<short>::name("short");
+DRAIN_TYPENAME_DEF(short);
 
-template <>
-const std::string TypeName<unsigned short>::name("unsigned-short");
+//template <>
+//const std::string TypeName<unsigned short>::name("unsigned-short");
+DRAIN_TYPENAME_DEF(unsigned short);
 
-template <>
-const std::string TypeName<int>::name("int");
+//template <>
+//const std::string TypeName<int>::name("int");
+DRAIN_TYPENAME_DEF(int);
 
-template <>
-const std::string TypeName<unsigned int>::name("unsigned-int");
+//template <>
+//const std::string TypeName<unsigned int>::name("unsigned-int");
+DRAIN_TYPENAME_DEF(unsigned int);
 
-template <>
-const std::string TypeName<long>::name("long");
+//  //  //template <>
+//  //  //const std::string TypeName<long>::name("long");
+DRAIN_TYPENAME_DEF(long);
 
-template <>
-const std::string TypeName<unsigned long>:: name("unsigned-long");
+//  //template <>
+//  //const std::string TypeName<unsigned long>:: name("unsigned-long");
+DRAIN_TYPENAME_DEF(unsigned long);
 
-template <>
-const std::string TypeName<float>:: name("float");
+//template <>
+//const std::string TypeName<float>:: name("float");
+DRAIN_TYPENAME_DEF(float);
 
-template <>
-const std::string TypeName<double>:: name("double");
+//template <>
+//const std::string TypeName<double>:: name("double");
+DRAIN_TYPENAME_DEF(double);
+  
+//template <>
+//const std::string TypeName<char *>:: name("char *");
+DRAIN_TYPENAME_DEF(char *);
 
-template <>
-const std::string TypeName<char *>:: name("char *");
+// template <>
+// const std::string TypeName<const char *>:: name("const char *");
+DRAIN_TYPENAME_DEF(const char *);
 
-template <>
-const std::string TypeName<const char *>:: name("const char *");
-
-template <>
-const std::string TypeName<std::string>:: name("string");
+// template <>
+// const std::string TypeName<std::string>:: name("string");
+DRAIN_TYPENAME_DEF(std::string);
 
 
 }

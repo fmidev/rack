@@ -66,13 +66,13 @@ public:
 
 	const std::string title;
 
-	const drain::Flagger::value_t index;
+	const drain::Flagger::ivalue_t index;
 
 	operator const std::string & () const {
 		return title;
 	}
 
-	operator drain::Flagger::value_t () const {
+	operator drain::Flagger::ivalue_t () const {
 		return index;
 	}
 
@@ -90,7 +90,7 @@ protected:
 	 *   This can be used for hidden Sections containing commands for debugging etc.
 	 *
 	 */
-	CommandSection(const std::string & title, drain::Flagger::value_t index) : title(title), index(index){
+	CommandSection(const std::string & title, drain::Flagger::ivalue_t index) : title(title), index(index){
 		if (index > 0)
 			drain::getCommandBank().sections.add(title, index);
 	}

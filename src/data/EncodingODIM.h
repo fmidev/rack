@@ -87,7 +87,7 @@ public:
 	typedef enum {NONE=0, SCALING=1, RANGE=2} ExplicitSetting;
 
 	static
-	const drain::FlaggerDict settingDict;
+	const drain::FlagResolver::dict_t settingDict;
 
 	//typedef drain::EnumFlagger<drain::SingleFlagger<TiffCompliance> > tiffComplianceFlagger;
 	//typedef drain::EnumFlagger<drain::MultiFlagger<Adaption> > AdaptionFlagger;

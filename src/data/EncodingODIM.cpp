@@ -44,7 +44,7 @@ const ODIMPathElemSeq & EncodingODIM::getAttributeGroups(){
 	return s;
 }
 
-const drain::FlaggerDict EncodingODIM::settingDict = {
+const drain::FlagResolver::dict_t EncodingODIM::settingDict = {
 		{"NONE", NONE},
 		{"SCALING", SCALING},
 		{"RANGE", RANGE}

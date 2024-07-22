@@ -138,7 +138,7 @@ protected:
 
 //const drain::SingleFlagger<Reader::Mode>::dict_t Reader::dict = {{"ATTRIBUTES", ATTRIBUTES}, {"DATASETS", DATASETS}};
 template <>
-const drain::FlaggerDict drain::EnumDict<hi5::Reader::Mode>::dict;
+const drain::FlagResolver::dict_t drain::EnumDict<hi5::Reader::Mode>::dict;
 
 
 #endif /* ImageH5_H_ */

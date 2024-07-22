@@ -47,20 +47,20 @@ namespace rack {
 ///const drain::FlaggerBase<Crit>::dict_t CritFlagger::dict = {{"DATA", DATA}, {"ELANGLE", ELANGLE}, {"TIME", TIME}};
 
 template <>
-const drain::FlaggerDict drain::EnumDict<DataOrder::Crit>::dict = {
+const drain::FlagResolver::dict_t drain::EnumDict<DataOrder::Crit>::dict = {
 		{"DATA",    rack::DataOrder::DATA},
 		{"ELANGLE", rack::DataOrder::ELANGLE},
 		{"TIME",    rack::DataOrder::TIME}
 };
 
 template <>
-const drain::FlaggerDict drain::EnumDict<DataOrder::Oper>::dict =  {
+const drain::FlagResolver::dict_t drain::EnumDict<DataOrder::Oper>::dict =  {
 		{"MIN", rack::DataOrder::MIN},
 		{"MAX", rack::DataOrder::MAX}
 };
 
 template <>
-const drain::FlaggerDict drain::EnumDict<DataSelector::Prf>::dict =  {
+const drain::FlagResolver::dict_t drain::EnumDict<DataSelector::Prf>::dict =  {
 		{"ANY", rack::DatasetSelector::ANY},
 		{"SINGLE", rack::DataSelector::SINGLE},
 		{"DOUBLE", rack::DataSelector::DOUBLE}

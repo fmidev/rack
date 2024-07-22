@@ -55,10 +55,14 @@ public:
 
 	enum Line {NO_LINE=0, UNDERLINE=1, DOUBLE_UNDERLINE=2, OVERLINE=4};
 
+
+	// Could be: EnumFlagger<SingleFlagger> ? -> see TextDecorator
 	Colour colour;
 
+	// Could be: EnumFlagger<MultiFlagger>  -> see TextDecorator
 	std::set<Style> style;
 
+	// Could be: EnumFlagger<SingleFlagger> ? -> see TextDecorator
 	Line line;
 
 	template <typename ... T>
@@ -118,6 +122,9 @@ DRAIN_TYPENAME(TextStyle::Style);
 class TextStyleVT100 : public TextStyle {
 
 public:
+
+	inline
+	~TextStyleVT100(){};
 
 	template <typename ... TT>
 	void write(std::ostream & ostr, const TT &... args) const{

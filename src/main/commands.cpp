@@ -2238,17 +2238,21 @@ public:
 
 
 // NOTE: order changed
-class CmdStore : public drain::SimpleCommand<int> {
+class CmdStore : public drain::SimpleCommand<std::string> { //
+
+	mutable
+	ProductConf::OutputFlagger outputFlagger;
 
 public:
 
-	CmdStore() : drain::SimpleCommand<int>(__FUNCTION__, "Request additional (debugging) outputs", "level",
-			0, "0=default,1=intermediate results|2=extra debug results"){
-			//"Set how intermediate and final outputs are stored. See --append"){
+	CmdStore() : drain::SimpleCommand<std::string>(__FUNCTION__, "Request additional (debugging) outputs",
+			"level", "0", drain::sprinter(outputFlagger.getDict().getContainer(), drain::Command::cmdArgLayout).str()){
+		//"Set how intermediate and final outputs are stored. See --append"){
+		// getParameters().link("intermediate", ProductBase::outputDataVerbosity = 0, "store intermediate images");
+		// getParameters().link("append",  ctx.appendResults = "", "|data|dataset");
+		// getParameters().link("append",  append, "|data|dataset (deprecated)");  // Keys()
+		// getParameters().link("test", value, drain::sprinter(outputFlagger.getDict().getContainer()).str());
 
-		//getParameters().link("intermediate", ProductBase::outputDataVerbosity = 0, "store intermediate images");
-		//getParameters().link("append",  ctx.appendResults = "", "|data|dataset");
-		//getParameters().link("append",  append, "|data|dataset (deprecated)");
 	};
 
 	/*
@@ -2256,6 +2260,7 @@ public:
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
 	};
 	*/
+
 
 	//int outputDataVerbosity;
 	//std::string append;
@@ -2265,7 +2270,18 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		ctx.outputDataVerbosity = value;
+
+		// NEW
+		mout.attention("current:  ", ctx.outputDataVerbosityNEW);
+		mout.attention("setting:  ", value);
+		ctx.outputDataVerbosityNEW.set(value);
+		mout.attention("received: ", ctx.outputDataVerbosityNEW);
+		ctx.outputDataVerbosity = ctx.outputDataVerbosityNEW;
+
+		// OLD
+		// ctx.outputDataVerbosity = value;
+
+
 		// DetectorOp::STORE = (ProductBase::outputDataVerbosity>0);
 		//DetectorOp::STORE = ctx.outputDataVerbosity;
 		/*

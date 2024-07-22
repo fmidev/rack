@@ -42,7 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-const typename FlagResolver::value_t FlagResolver::ALL = ~FlagResolver::value_t(0);
+const typename FlagResolver::ivalue_t FlagResolver::ALL = ~FlagResolver::ivalue_t(0);
 
 
 

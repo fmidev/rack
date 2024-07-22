@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ODIM.h"
 
 template <>
-const drain::FlaggerDict drain::EnumDict<rack::ODIM::Version>::dict = {
+const drain::FlagResolver::dict_t drain::EnumDict<rack::ODIM::Version>::dict = {
 		{"2.2", rack::ODIM::ODIM_2_2 },
 		{"2.3", rack::ODIM::ODIM_2_3 },
 		{"2.4", rack::ODIM::ODIM_2_4 },

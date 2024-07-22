@@ -39,6 +39,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+template <>
+const drain::EnumDict<ProductConf::OutputDataVerbosity>::dict_t  drain::EnumDict<ProductConf::OutputDataVerbosity>::dict = {
+		{"DEFAULT", rack::ProductConf::DEFAULT},
+		{"INTERMEDIATE", rack::ProductConf::INTERMEDIATE},
+		{"QUALITY", rack::ProductConf::QUALITY},
+		{"DEBUG", rack::ProductConf::DEBUG},
+};
+
+
 /// Copy constructor.
 ProductConf::ProductConf(const ProductConf & conf) :
 		dataSelector(conf.dataSelector),

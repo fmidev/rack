@@ -34,6 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+const SprinterLayout Command::cmdArgLayout = {",", "?", "=", ""};
+
 //void Command::setAllParameters(const std::string & args){ //, char assignmentSymbol) {
 void Command::setParameters(const std::string & args){ //, char assignmentSymbol) {
 

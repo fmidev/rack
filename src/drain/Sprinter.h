@@ -296,8 +296,11 @@ public:
 	 */
 	static const SprinterLayout pythonLayout;
 
-
+	/// Simulates how arguments are given to command line options.
 	static const SprinterLayout cmdLineLayout; // = {":", ",", "=", ""};
+
+	/// Output Dictionary, which is a list
+	// static const SprinterLayout dictLayout; // = {",", "?", "=", ""};
 
 	static inline
 	void prefixToStream(std::ostream & ostr, const TypeLayout & layout){
