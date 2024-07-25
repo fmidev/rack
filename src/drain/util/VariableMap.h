@@ -192,7 +192,8 @@ inline
 std::ostream & Sprinter::toStream(std::ostream & ostr, const FlexVariableMap & vmap, const SprinterLayout & layout){
 
 	if (&layout == &UNSET_LAYOUT){
-		return Sprinter::sequenceToStream(ostr, vmap, Sprinter::jsonLayout.mapChars, jsonLayout);
+		ostr << "UNSET_LAYOUT:";
+		return Sprinter::sequenceToStream(ostr, vmap, Sprinter::jsonLayout.mapChars, Sprinter::jsonLayout);
 	}
 	else {
 		return Sprinter::sequenceToStream(ostr, vmap.getMap(), layout.mapChars, layout);

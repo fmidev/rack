@@ -97,6 +97,7 @@ public:
 
 		if (ODIM::dateKeys.count(key) > 0){
 			// if (drain::StringTools::endsWith(key, "date")){
+			// ostr << "DATE:" << key << "=" << value << " {" << format << "} -> ";
 			ostr << drain::Time(value, "%Y%m%d").str(format);
 			return true;
 		}
@@ -118,6 +119,7 @@ public:
 
 		if (ODIM::timeKeys.count(key) > 0){
 			// if (drain::StringTools::endsWith(key, "time")){
+			// ostr << "TIME:" << key << "=" << value << " {" << format << "} -> ";
 			ostr << drain::Time(value, "%H%M%S").str(format);
 			return true;
 		}

@@ -85,21 +85,21 @@ struct MethodWeights : public drain::UniTuple<T,5> {
 	/// Highest to lowest certainty
 	T & interpolation;
 	T & interpolation_dry;  // beam over Z < Z_thr
-	T & truncated; // truncated strong echo underShooting highest beam Z > Z_thr
-	T & weak;
+	T & extrapolation_up; // truncated strong echo underShooting highest beam Z > Z_thr
+	T & extrapolation_down;
 	T & clear;   // same as undetect, but needs a quality index value
 	T error = 0; // needs a quality index value (0)
 
-	MethodWeights() : interpolation(this->next()), interpolation_dry(this->next()), truncated(this->next()), weak(this->next()), clear(this->next()){
+	MethodWeights() : interpolation(this->next()), interpolation_dry(this->next()), extrapolation_up(this->next()), extrapolation_down(this->next()), clear(this->next()){
 	};
 
 	template<typename ... TT>
-	MethodWeights(const TT &... args) : interpolation(this->next()), interpolation_dry(this->next()), truncated(this->next()), weak(this->next()), clear(this->next()){
+	MethodWeights(const TT &... args) : interpolation(this->next()), interpolation_dry(this->next()), extrapolation_up(this->next()), extrapolation_down(this->next()), clear(this->next()){
 		this->set(args...);
 	};
 
 	MethodWeights(const MethodWeights & p): drain::UniTuple<double,5>(p),
-			interpolation(this->next()), interpolation_dry(this->next()), truncated(this->next()), weak(this->next()), clear(this->next()) {
+			interpolation(this->next()), interpolation_dry(this->next()), extrapolation_up(this->next()), extrapolation_down(this->next()), clear(this->next()) {
 	};
 
 	/*

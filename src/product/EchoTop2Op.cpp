@@ -56,7 +56,7 @@ EchoTop2Op::EchoTop2Op(double threshold) :
 	parameters.link("reference", this->reference.tuple(), "'dry point' of low reflectivity and high altitude [dBZ:m]");
 	parameters.link("undetectValue",    this->undetectReflectivity, "reflectivity replacing 'undetect' [dBZ]"); // if set, reference will be applied also here
 #ifndef NDEBUG
-	parameters.link("weights", this->weights.tuple(), "weights for INTERPOLATION, OVERSHOOTING, UNDERSHOOTING, WEAK, CLEAR");
+	parameters.link("weights", this->weights.tuple(), "weights for INTERPOLATION, INTERP_UNDET, EXTRAP_UP, EXTRAP_DOWN, CLEAR");
 	parameters.link("EXTENDED", this->EXTENDED_OUTPUT, "store also DBZ_SLOPE and CLASS");
 	// parameters.link("_EXTENDED", this->EXTENDED, "append classified data");
 #endif
@@ -169,8 +169,8 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	MethodWeights<short int> WEIGHTS; // "assumes"
 	WEIGHTS.interpolation = dstQuality.odim.scaleInverse(weights.interpolation);
 	WEIGHTS.interpolation_dry  = dstQuality.odim.scaleInverse(weights.interpolation_dry);
-	WEIGHTS.truncated = dstQuality.odim.scaleInverse(weights.truncated);
-	WEIGHTS.weak          = dstQuality.odim.scaleInverse(weights.weak);
+	WEIGHTS.extrapolation_up   = dstQuality.odim.scaleInverse(weights.extrapolation_up);
+	WEIGHTS.extrapolation_down = dstQuality.odim.scaleInverse(weights.extrapolation_down);
 	WEIGHTS.clear         = dstQuality.odim.scaleInverse(weights.clear);
 
 
@@ -200,8 +200,8 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 		CLASS.clear = dstClass.odim.undetect;
 		CLASS.interpolation = cp.getEntryByCode("interpolated").first;
 		CLASS.interpolation_dry  = cp.getEntryByCode("interpolated.undetect").first; //  cp.getEntryByCode("overshooting").first;
-		CLASS.truncated = cp.getEntryByCode("strong.extrapolated").first; // cp.getEntryByCode("undershooting").first;
-		CLASS.weak  = cp.getEntryByCode("weak").first;
+		CLASS.extrapolation_up = cp.getEntryByCode("strong.extrapolated").first; // cp.getEntryByCode("undershooting").first;
+		CLASS.extrapolation_down  = cp.getEntryByCode("weak").first;
 		CLASS.error = cp.getEntryByCode("error").first; // could be nodata as well
 
 
@@ -374,10 +374,12 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 				}
 				else {
 
+					/*
 					if ((!USE_INTERPOLATION) && (strongMsrm!=nullptr)){
 						// KEEP strong, it is prioritized
 					}
-					else {
+					*/
+					if (true) { //
 						// Ensure start of a (new) precipitation column
 						if (weakMsrm == nullptr){
 							weakMsrm = & msr;
@@ -408,14 +410,19 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 						// INTERPOLATION, as both values are available
 						if (weakMsrm->reflectivity < strongMsrm->reflectivity){
 
-							slope  = getSlope(*weakMsrm, *strongMsrm);
+							if (USE_INTERPOLATION){
+								slope  = getSlope(*weakMsrm, *strongMsrm);
+							}
+							else {
+								slope = getSlope(reference, *strongMsrm);
+							}
 							height = strongMsrm->height + slope*(threshold - strongMsrm->reflectivity);
 
 							dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
-							dstQuality.data.put<int>(address, WEIGHTS.interpolation); // TODO: quality index
+							dstQuality.data.put<int>(address, USE_INTERPOLATION ? WEIGHTS.interpolation : WEIGHTS.extrapolation_up);
 //#ifndef NDEBUG
 							if (EXTENDED_OUTPUT){
-								dstClass.data.put<int>(address, CLASS.interpolation);
+								dstClass.data.put<int>(address, USE_INTERPOLATION ? CLASS.interpolation : CLASS.extrapolation_up);
 								dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/ slope))); // ALERT div by 0 RISK
 							}
 // #endif
@@ -451,11 +458,11 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 						}
 						height = strongMsrm->height + slope*(threshold - strongMsrm->reflectivity);
 						dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
-						dstQuality.data.put(address, WEIGHTS.interpolation_dry);
+						dstQuality.data.put(address, USE_INTERPOLATION_DRY ? WEIGHTS.interpolation_dry : WEIGHTS.extrapolation_up);
 // #ifndef NDEBUG
 						if (EXTENDED_OUTPUT){
 							dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/ slope))); // dBZ/km ALERT div by 0 RISK
-							dstClass.data.put<int>(address, CLASS.interpolation_dry);
+							dstClass.data.put<int>(address, USE_INTERPOLATION_DRY ? CLASS.interpolation_dry : CLASS.extrapolation_up);
 						}
 // #endif
 					}
@@ -466,11 +473,11 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 					slope  = getSlope(reference, *weakMsrm);
 					height = weakMsrm->height + slope*(threshold - weakMsrm->reflectivity);
 					dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height))); // ::rand()
-					dstQuality.data.put(address, WEIGHTS.weak);
+					dstQuality.data.put(address, WEIGHTS.extrapolation_down);
 // #ifndef NDEBUG
 					if (EXTENDED_OUTPUT){
 						dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/ slope)));
-						dstClass.data.put<int>(address, CLASS.weak); //192
+						dstClass.data.put<int>(address, CLASS.extrapolation_down); //192
 					}
 // #endif
 				}
@@ -498,10 +505,10 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 					}
 					// dstEchoTop.data.put(address, ::rand());
 					dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height))); // strong
-					dstQuality.data.put(address, WEIGHTS.truncated);
+					dstQuality.data.put(address, WEIGHTS.extrapolation_up);
 // #ifndef NDEBUG
 					if (EXTENDED_OUTPUT){
-						dstClass.data.put<int>(address, CLASS.truncated);
+						dstClass.data.put<int>(address, CLASS.extrapolation_up);
 						dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0 / slope))); // ALERT div by 0 RISK
 					}
 // #endif

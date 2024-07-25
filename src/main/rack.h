@@ -32,14 +32,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.9.2"
+#define __RACK_VERSION__ "8.9.3"
 
 /**
+ *   Version 8.9.3
+ *   - pEchoTop2: zero weights switch interpolation to extrapolation
+ *
  *   Version 8.9.2
- *   -- Changed syntax: --store intermediate=...  to --store INTERMEDIATE etc.
+ *   - Changed syntax: --store intermediate=...  to --store INTERMEDIATE etc.
  *
  *   Version 8.9.1
- *   -- Fixed --cExtract crop=bbox parameter, also added cropping options DATA and OVERLAP
+ *   - Fixed --cExtract crop=bbox parameter, also added cropping options DATA and OVERLAP
  *
  *   Version 8.9
  *   - Revised --cExtract syntax: 'dwcs' syntax completed with alternative 'DATA:WEIGHT:COUNT:DEVIATION' syntax, also sequential --encoding supported
