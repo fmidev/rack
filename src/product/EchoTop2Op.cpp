@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "radar/Geometry.h"
 
-//using namespace drain::image;
+/* OLD STYLE: CLASS / 255.0 = QIND
 template <>
 const drain::FlagResolver::dict_t drain::EnumDict<rack::EchoTop2Op::Reliability>::dict = {
 		{"UNDEFINED",     rack::EchoTop2Op::Reliability::UNDEFINED},
@@ -43,6 +43,7 @@ const drain::FlagResolver::dict_t drain::EnumDict<rack::EchoTop2Op::Reliability>
 		{"OVERSHOOTING",  rack::EchoTop2Op::Reliability::OVERSHOOTING},
 		{"INTERPOLATION", rack::EchoTop2Op::Reliability::INTERPOLATION},
 };
+*/
 
 namespace rack
 {
@@ -53,15 +54,16 @@ EchoTop2Op::EchoTop2Op(double threshold) :
 
 	parameters.link("threshold", this->threshold, "reflectivity limit (dB)");
 	parameters.link("reference", this->reference.tuple(), "'dry point' of low reflectivity and high altitude [dBZ:m]");
-	parameters.link("dryTop",    this->undetectReflectivity, "reflectivity replacing 'undetect' [dBZ]"); // if set, reference will be applied also here
+	parameters.link("undetectValue",    this->undetectReflectivity, "reflectivity replacing 'undetect' [dBZ]"); // if set, reference will be applied also here
 #ifndef NDEBUG
-	parameters.link("weights", this->weights.tuple(), "weights for INTERPOLATION, OVERSHOOTING, UNDERSHOOTING, WEAK, NOECHO");
-	parameters.link("EXTENDED", this->EXTENDED, "append classified data");
-
+	parameters.link("weights", this->weights.tuple(), "weights for INTERPOLATION, OVERSHOOTING, UNDERSHOOTING, WEAK, CLEAR");
+	parameters.link("EXTENDED", this->EXTENDED_OUTPUT, "store also DBZ_SLOPE and CLASS");
 	// parameters.link("_EXTENDED", this->EXTENDED, "append classified data");
 #endif
 
 	dataSelector.setQuantities("^DBZH$");
+
+	this->undetectReflectivity = getQuantityMap().get("DBZH").undetectValue;
 
 	odim.product = "ETOP";
 	odim.quantity = "HGHT";
@@ -73,13 +75,13 @@ EchoTop2Op::EchoTop2Op(double threshold) :
 	const EncodingODIM & odimQ = getQuantityMap().get("QIND")['C'];
 	const drain::image::Palette & cp = PaletteManager::getPalette("CLASS-ETOP");
 	weights.interpolation = odimQ.scaleForward(cp.getEntryByCode("interpolated").first);
-	weights.overShooting  = odimQ.scaleForward(cp.getEntryByCode("interpolated.undetect").first);
-	weights.underShooting = odimQ.scaleForward(cp.getEntryByCode("extrapolated.dry").first);
+	weights.interpolation_dry  = odimQ.scaleForward(cp.getEntryByCode("interpolated.undetect").first);
+	weights.truncated = odimQ.scaleForward(cp.getEntryByCode("extrapolated.dry").first);
 	weights.weak          = odimQ.scaleForward(cp.getEntryByCode("weak").first);
-	weights.clear         = weights.overShooting; // slightly lower than weights.interpolation
+	weights.clear         = weights.interpolation_dry; // slightly lower than weights.interpolation
 	*/
 
-	//drain::Logger(__FILE__, __LINE__, __FUNCTION__).attention("weights: ", weights);
+	// drain::Logger(__FILE__, __LINE__, __FUNCTION__).attention("weights: ", weights);
 	// drain::Logger(__FILE__, __LINE__, __FUNCTION__).attention("this: ", this);
 
 };
@@ -159,19 +161,22 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	mout.attention("limiter:", limit);
 
 
-	PlainData<dst_t> & dstQuality = dstProduct.getQualityData(); // dstEchoTop.getQualityData();
+	PlainData<dst_t> & dstQuality = dstProduct.getQualityData();
 	getQuantityMap().setQuantityDefaults(dstQuality, "QIND", "C");
 	dstQuality.setGeometry(area);
+
+	/// Quality (confidence) (using storage type encoding)
 	MethodWeights<short int> WEIGHTS; // "assumes"
 	WEIGHTS.interpolation = dstQuality.odim.scaleInverse(weights.interpolation);
-	WEIGHTS.overShooting  = dstQuality.odim.scaleInverse(weights.overShooting);
-	WEIGHTS.underShooting = dstQuality.odim.scaleInverse(weights.underShooting);
+	WEIGHTS.interpolation_dry  = dstQuality.odim.scaleInverse(weights.interpolation_dry);
+	WEIGHTS.truncated = dstQuality.odim.scaleInverse(weights.truncated);
 	WEIGHTS.weak          = dstQuality.odim.scaleInverse(weights.weak);
 	WEIGHTS.clear         = dstQuality.odim.scaleInverse(weights.clear);
 
 
 	mout.attention("WEIGHTS: ", WEIGHTS);
 
+	/// Class codes (using storage type encoding)
 	MethodWeights<unsigned char> CLASS;
 
 #ifndef NDEBUG
@@ -186,7 +191,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	dstSlope.setPhysicalRange(-10, +10); // dBZ/km
 	Limiter::value_t limitSlope = drain::Type::call<Limiter>(dstSlope.data.getType());
 
-	if (EXTENDED){
+	if (EXTENDED_OUTPUT){
 		//dstEchoTop.setGeometry(dstEchoTop.odim);
 		dstClass.setGeometry(dstEchoTop.odim);
 		//drain::Variable & classLegend = dstClass.getWhat()["legendTEST"];
@@ -194,8 +199,8 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 		const drain::image::Palette & cp = PaletteManager::getPalette("CLASS-ETOP");
 		CLASS.clear = dstClass.odim.undetect;
 		CLASS.interpolation = cp.getEntryByCode("interpolated").first;
-		CLASS.overShooting  = cp.getEntryByCode("interpolated.undetect").first; //  cp.getEntryByCode("overshooting").first;
-		CLASS.underShooting = cp.getEntryByCode("strong.extrapolated").first; // cp.getEntryByCode("undershooting").first;
+		CLASS.interpolation_dry  = cp.getEntryByCode("interpolated.undetect").first; //  cp.getEntryByCode("overshooting").first;
+		CLASS.truncated = cp.getEntryByCode("strong.extrapolated").first; // cp.getEntryByCode("undershooting").first;
 		CLASS.weak  = cp.getEntryByCode("weak").first;
 		CLASS.error = cp.getEntryByCode("error").first; // could be nodata as well
 
@@ -211,11 +216,12 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 #endif
 
-
+	// MAIN -----------------------------------------------------------------
 
 	double groundDistance;
 
-	struct Measurement {
+
+	struct MeasurementHolder : public Measurement {
 
 		/// Pointer to data array (DBZH)
 		const Data<src_t> * dataPtr = nullptr;
@@ -223,16 +229,21 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 		/// Index of the bin at the ground distance D of all the elevation beams considered
 		size_t binIndex = 0;
 
+		/*
 		/// Height from the ground surface (from radar site, ASL)
 		double height = 0;
 
-		/// Reflectivity observed at the current bin. (Needed?)
+		/// Reflectivity observed at the current bin.
 		double reflectivity = NAN;
+		*/
+
+		/// Reliability/confidence of the measurement value, maximal (1.0) when reflectivity is the threshold value.
+		// double quality = 0.0;
 	};
 
-	// TODO: test overlapping (repeated) elagles, warn and suggest selector (PRF for example)
 
-	std::map<double,Measurement> dbzData; // D bit slow, but for now
+	// TODO: test overlapping (repeated) elangles, warn and suggest selector (PRF for example)
+
 
 	/// Pointer to the measurement
 	/**
@@ -241,7 +252,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	 *  - above a measurement reaching the threshold
 	 *  - the highest possible
 	 */
-	Measurement *weakMeasurement;
+	MeasurementHolder *weakMsrm;
 
 	/// Pointer to the measurement
 	/**
@@ -250,7 +261,9 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	 *  - below the last measurement reaching the threshold
 	 *  - the highest possible
 	 */
-	Measurement *strongMeasurement;
+	MeasurementHolder *strongMsrm;
+
+	std::map<double,MeasurementHolder> dbzData; // D bit slow, but for now
 
 	double azm;
 	double height;
@@ -259,9 +272,12 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 	size_t i2;
 
-	const bool REPLACE_UNDETECT = !::isnan(undetectReflectivity);
+	// const bool REPLACE_UNDETECT = !::isnan(undetectReflectivity);
+	// mout.attention("Replace undetect:", REPLACE_UNDETECT, " dryTop value=", undetectReflectivity, drain::TextStyle::Colour::GREEN, "test", drain::TextStyle::Colour::NO_COLOR);
 
-	mout.attention("Replace undetect:", REPLACE_UNDETECT, " dryTop value=", undetectReflectivity, drain::TextStyle::Colour::GREEN, "test", drain::TextStyle::Colour::NO_COLOR);
+	const bool USE_INTERPOLATION     = (weights.interpolation     > 0.0);
+	const bool USE_INTERPOLATION_DRY = (weights.interpolation_dry > 0.0) && !::isnan(undetectReflectivity);
+
 
 	// Direct array index of a pixel (i,j)
 	size_t address;
@@ -274,14 +290,14 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 		// Initialize: collect sweeps which are inside range.
 		dbzData.clear();
-		for (const auto & entry: srcSweeps){
-			const Data<src_t> & src =  entry.second.getData("DBZH");
+		for (const auto & sweep: srcSweeps){
+			const Data<src_t> & src =  sweep.second.getData("DBZH");
 			int index = src.odim.getBinIndex(groundDistance);
 			if (index >= 0){
 				i2 = index;
 				//if ((i & 15) == 0){
 				if (i2 < src.odim.area.width){
-					Measurement & info = dbzData[src.odim.elangle];
+					MeasurementHolder & info = dbzData[src.odim.elangle];
 					info.dataPtr  = &src;
 					info.binIndex = index;
 					info.height = Geometry::heightFromEtaGround(src.odim.getElangleR(), groundDistance);
@@ -302,14 +318,14 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 			azm = dstEchoTop.odim.getAzimuth(j);
 
-			strongMeasurement = nullptr;
-			weakMeasurement = nullptr;
+			strongMsrm = nullptr;
+			weakMsrm = nullptr;
 
 			// Column loop:
 			for (auto & entry: dbzData){
 
-				Measurement & measurement = entry.second;
-				const Data<src_t> & srcData = *measurement.dataPtr;
+				MeasurementHolder & msr = entry.second;
+				const Data<src_t> & srcData = *msr.dataPtr;
 
 				j2 = srcData.odim.getRayIndex(azm);
 
@@ -320,23 +336,25 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 				*/
 
 				// Raw byte value
-				measurement.reflectivity = srcData.data.get<double>(measurement.binIndex, j2);
+				msr.reflectivity = srcData.data.get<double>(msr.binIndex, j2);
 
-				if (measurement.reflectivity == srcData.odim.nodata){
+				if (msr.reflectivity == srcData.odim.nodata){
 					// Treat as missing data indeed (like missing whole beam) - skip it
 					// (This state is possible, if data has been quality controlled or radar range is smaller than image width, and image margin is filled nodata values.)
 					continue;
 				}
 
-				if (measurement.reflectivity == srcData.odim.undetect){
+				if (msr.reflectivity == srcData.odim.undetect){ // Measured, but no echo. Treat as dry air.
 
-					// No echo. Treat as dry air.
-
-					if ((strongMeasurement != nullptr) && (weakMeasurement == nullptr)){
-						// Strong echo has been detected below.
-						// Store this measurement, mark it dry.
-						weakMeasurement = &measurement;
-						weakMeasurement->reflectivity = dbzOdim.undetect;
+					if ((strongMsrm != nullptr) && (weakMsrm == nullptr)){
+						// Strong echo has been detected below, so store this measurement.
+						weakMsrm = &msr;
+						/* If applied, this drops "dry-top" class
+						if (REPLACE_UNDETECT){
+							weakMsrm->reflectivity = undetectReflectivity;
+						}
+						*/
+						// weakMsrm->reflectivity = dbzOdim.undetect; // No effect
 					}
 
 					// dstEchoTop.data.put(i,j, ::rand() & 0xffff); // DEBUG
@@ -344,23 +362,34 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 				}
 
 				// Ok, info.dBZ is a valid echo (usually precip).
-				// Scale to physical-scale Z
-				measurement.reflectivity = srcData.odim.scaleForward(measurement.reflectivity);
+				// Convert it from storage-type scaling to physical value.
+				msr.reflectivity = srcData.odim.scaleForward(msr.reflectivity);
 
-				if (measurement.reflectivity < threshold) {
-					// Ensure start of a (new) precipitation column
-					if (weakMeasurement == nullptr){
-						weakMeasurement = & measurement;
-					}
-					else if (measurement.reflectivity > weakMeasurement->reflectivity) {
-						// Adjust, if a measurement even closer to threshold was found
-						weakMeasurement = & measurement;
-					}
-				}
-				else { // info.dBZ >= threshold
+				if (msr.reflectivity >= threshold) {
+
 					// A higher sample exceeding the threshold was found. = The highest this far.
-					strongMeasurement = & measurement;
-					weakMeasurement = nullptr; // reset, "drop"
+					strongMsrm = & msr;
+					weakMsrm = nullptr; // reset, "drop" the weaker (and look for a new one, from above bins).
+
+				}
+				else {
+
+					if ((!USE_INTERPOLATION) && (strongMsrm!=nullptr)){
+						// KEEP strong, it is prioritized
+					}
+					else {
+						// Ensure start of a (new) precipitation column
+						if (weakMsrm == nullptr){
+							weakMsrm = & msr;
+						}
+						else if (msr.reflectivity > weakMsrm->reflectivity) {
+							// The new measurement is closer to threshold than the current weak one.
+							// -> Update.
+							// Consider: is this needed? lower measurement was anyway CLOSER (in height).
+							weakMsrm = & msr;
+						}
+					}
+
 				}
 
 			} // End column loop
@@ -370,143 +399,139 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 			address = dstEchoTop.data.address(i, j);
 
-			if (weakMeasurement != nullptr){
+			if (weakMsrm != nullptr){
 
-				if (strongMeasurement != nullptr){
+				if (strongMsrm != nullptr){
 
-					if (dbzOdim.isValue(weakMeasurement->reflectivity)){
+					if (dbzOdim.isValue(weakMsrm->reflectivity)){
 
-						// INTERPOLATE, as both values are available
-						if (weakMeasurement->reflectivity < strongMeasurement->reflectivity){
-							slope  = getSlope(weakMeasurement->height, strongMeasurement->height, weakMeasurement->reflectivity, strongMeasurement->reflectivity);
-							height = strongMeasurement->height + slope*(threshold - strongMeasurement->reflectivity);
+						// INTERPOLATION, as both values are available
+						if (weakMsrm->reflectivity < strongMsrm->reflectivity){
+
+							slope  = getSlope(*weakMsrm, *strongMsrm);
+							height = strongMsrm->height + slope*(threshold - strongMsrm->reflectivity);
 
 							dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
 							dstQuality.data.put<int>(address, WEIGHTS.interpolation); // TODO: quality index
-#ifndef NDEBUG
-							if (EXTENDED){
+//#ifndef NDEBUG
+							if (EXTENDED_OUTPUT){
 								dstClass.data.put<int>(address, CLASS.interpolation);
 								dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/ slope))); // ALERT div by 0 RISK
 							}
-#endif
+// #endif
 
 						}
 						else {
-							// the highest bin has higher Z than the lower bin? This should not happen.
+							// This should not happen!
+							// Ie. the highest bin has higher Z than the lower bin?
+							// But the lower bin should has been reseted.
+							mout.error("Illegal state in measurement conf: Z+ > Z-  for h+ > h-");
+							/*
 							dstEchoTop.data.put(address, dstEchoTop.odim.nodata);
 							dstQuality.data.put<int>(address, WEIGHTS.error);
-#ifndef NDEBUG
-							if (EXTENDED){
+// #ifndef NDEBUG
+							if (EXTENDED_OUTPUT){
 								dstClass.data.put<int>(address, CLASS.error); //
 							}
-#endif
+// #endif
+							*/
 						}
 					}
 					else {
-						// OVERSHOOTING = "DRY TOP" - interpolate between strong and "dry" point.
-						if (REPLACE_UNDETECT){
-							slope  = getSlope(weakMeasurement->height, strongMeasurement->height, undetectReflectivity, strongMeasurement->reflectivity);
+						// INTERPOLATION_DRY - interpolate between strong and "dry" point.
+						// overshooting, "DRY TOP"
+						if (USE_INTERPOLATION_DRY){ // && !REFERENCE_ONLY
+							weakMsrm->reflectivity = undetectReflectivity;
+							slope = getSlope(*weakMsrm, *strongMsrm);
+							// slope = getSlope(weakMsrm->height, strongMsrm->height, undetectReflectivity, strongMsrm->reflectivity);
 						}
 						else {
-							slope  = getSlope(reference.height, strongMeasurement->height, reference.reflectivity, strongMeasurement->reflectivity);
+							slope = getSlope(reference, *strongMsrm);
+							// slope = getSlope(reference.height, strongMsrm->height, reference.reflectivity, strongMsrm->reflectivity);
 						}
-						height = strongMeasurement->height + slope*(threshold - strongMeasurement->reflectivity);
+						height = strongMsrm->height + slope*(threshold - strongMsrm->reflectivity);
 						dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
-						// dstEchoTop.data.put(address, dstEchoTop.odim.nodata);
-						dstQuality.data.put(address, WEIGHTS.overShooting);
-#ifndef NDEBUG
-						if (EXTENDED){
+						dstQuality.data.put(address, WEIGHTS.interpolation_dry);
+// #ifndef NDEBUG
+						if (EXTENDED_OUTPUT){
 							dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/ slope))); // dBZ/km ALERT div by 0 RISK
-							dstClass.data.put<int>(address, CLASS.overShooting);
+							dstClass.data.put<int>(address, CLASS.interpolation_dry);
 						}
-#endif
+// #endif
 					}
 				}
 				// No strong measurement.
-				else if (dbzOdim.isValue(weakMeasurement->reflectivity)){
-					// Weak
-					dstEchoTop.data.put(address, 2.0*odimVersionMetricCoeff);
+				else if (dbzOdim.isValue(weakMsrm->reflectivity)){
+					// Weak measurement only.
+					slope  = getSlope(reference, *weakMsrm);
+					height = weakMsrm->height + slope*(threshold - weakMsrm->reflectivity);
+					dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height))); // ::rand()
 					dstQuality.data.put(address, WEIGHTS.weak);
-#ifndef NDEBUG
-					if (EXTENDED){
+// #ifndef NDEBUG
+					if (EXTENDED_OUTPUT){
+						dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/ slope)));
 						dstClass.data.put<int>(address, CLASS.weak); //192
 					}
-#endif
+// #endif
 				}
-				else {
+				else { // No strong or weak measurement
 					dstEchoTop.data.put(address, dstEchoTop.odim.undetect);
 					dstQuality.data.put(address, WEIGHTS.clear); // CONFIRMED CLEAR?
-#ifndef NDEBUG
-					if (EXTENDED){
+// #ifndef NDEBUG
+					if (EXTENDED_OUTPUT){
 						dstClass.data.put<int>(address, CLASS.clear);
 					}
-#endif
+// #endif
 				}
 
 			}
 			// no weakMeasurement found
 			else {
 
-				if (strongMeasurement != nullptr){
-					// UNDERSHOOTING = the highest bin has Z exceeding the threshold
-
-					slope  = getSlope(reference.height, strongMeasurement->height, reference.reflectivity, strongMeasurement->reflectivity);
-					height = strongMeasurement->height + slope*(threshold - strongMeasurement->reflectivity);
-
-					height = 2.0 * strongMeasurement->height;
-					//slope  = getSlope(weakMeasurement->height, strongMeasurement->height, weakMeasurement->reflectivity, strongMeasurement->reflectivity);
-					//height = strongMeasurement->height + slope*(threshold - strongMeasurement->reflectivity);
+				if (strongMsrm != nullptr){
+					// TRUNCATED / UNDERSHOOTING = the highest bin has Z exceeding the threshold
+					slope  = getSlope(reference, *strongMsrm);
+					height = strongMsrm->height + slope*(threshold - strongMsrm->reflectivity);
 
 					if (j == 90){
 						mout.note(i,',', j, '\t', height, '\t', dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height), '\t', limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
 					}
-
+					// dstEchoTop.data.put(address, ::rand());
 					dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height))); // strong
-					dstQuality.data.put(address, WEIGHTS.underShooting);
-#ifndef NDEBUG
-					if (EXTENDED){
-						dstClass.data.put<int>(address, CLASS.underShooting);
+					dstQuality.data.put(address, WEIGHTS.truncated);
+// #ifndef NDEBUG
+					if (EXTENDED_OUTPUT){
+						dstClass.data.put<int>(address, CLASS.truncated);
 						dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0 / slope))); // ALERT div by 0 RISK
 					}
-#endif
+// #endif
 				}
 				else {
 					// No echo at all was found in this column above ground bin (i,j).
 					dstEchoTop.data.put(address, dstEchoTop.odim.undetect);
 					dstQuality.data.put(address, WEIGHTS.clear);
-#ifndef NDEBUG
-					if (EXTENDED){
+// #ifndef NDEBUG
+					if (EXTENDED_OUTPUT){
 						dstClass.data.put<int>(address, CLASS.clear);
 						//dstSlope.data.put(address, limitSlope(dstSlope.odim.undetect));
 						dstSlope.data.put(address, dstSlope.odim.undetect);
 					}
-#endif
+// #endif
 				}
 
 
-				// Todo: use far point
-				// dstEchoTop.data.put(address, dstEchoTop.odim.scaleInverse(upperInfo->altitude) ); // weak
 			}
 
-
-			//dbz = dstEchoTop.data.get<double>(i,j);
-			/*
-			for (const auto & entry: srcSweeps){
-				dst = std::max(dbz, entry.second.getData("DBZH").data.get<double>(i,j));
-			}
-			*/
 		}
 
 	}
 
-#ifndef NDEBUG
+// #ifndef NDEBUG
 	{
 		PolarSlidingAvgOp smoother;
 
 	}
-
-
-#endif
+// #endif
 
 	PolarSlidingAvgOp smoother;
 	/*

@@ -2272,10 +2272,10 @@ public:
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		// NEW
-		mout.attention("current:  ", ctx.outputDataVerbosityNEW);
-		mout.attention("setting:  ", value);
+		// mout.attention("current:  ", ctx.outputDataVerbosityNEW);
+		// mout.attention("setting:  ", value);
 		ctx.outputDataVerbosityNEW.set(value);
-		mout.attention("received: ", ctx.outputDataVerbosityNEW);
+		// mout.attention("received: ", ctx.outputDataVerbosityNEW);
 		ctx.outputDataVerbosity = ctx.outputDataVerbosityNEW;
 
 		// OLD

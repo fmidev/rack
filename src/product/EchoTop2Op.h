@@ -38,19 +38,43 @@ using namespace drain::image;
 
 namespace rack {
 
-struct ReferencePoint : public drain::UniTuple<double,2> {
+/// A single measurement (bin), with height coordinate and measurement value (reflectivity).
+/**
+ *
+ */
+struct Measurement : public drain::UniTuple<double,2> {
 
 	double & reflectivity;
 	double & height;
 
-	ReferencePoint(double reflectivity=0.0, double height=0.0) : reflectivity(this->next()), height(this->next()){
+	Measurement(double reflectivity=NAN, double height=0.0) : reflectivity(this->next()), height(this->next()){
 		this->set(reflectivity, height);
 	};
 
-	ReferencePoint(const ReferencePoint & p): reflectivity(this->next()), height(this->next()){
+	Measurement(const Measurement & p): reflectivity(this->next()), height(this->next()){
 		this->set(p);
 	};
 };
+
+/*
+struct Measurement {
+
+	/// Pointer to data array (DBZH)
+	const Data<src_t> * dataPtr = nullptr;
+
+	/// Index of the bin at the ground distance D of all the elevation beams considered
+	size_t binIndex = 0;
+
+	/// Height from the ground surface (from radar site, ASL)
+	double height = 0;
+
+	/// Reflectivity observed at the current bin.
+	double reflectivity = NAN;
+
+	/// Reliability/confidence of the measurement value, maximal (1.0) when reflectivity is the threshold value.
+	// double quality = 0.0;
+};
+*/
 
 /**
  *  \tparam T - double for interface (0.0..1.0), unsigned-char for internal encoding.
@@ -58,24 +82,24 @@ struct ReferencePoint : public drain::UniTuple<double,2> {
 template <class T>
 struct MethodWeights : public drain::UniTuple<T,5> {
 
-	/// Highest priority
+	/// Highest to lowest certainty
 	T & interpolation;
-	T & overShooting; // beam over Z < Zt
-	T & underShooting; // highest beam Z > Zt
+	T & interpolation_dry;  // beam over Z < Z_thr
+	T & truncated; // truncated strong echo underShooting highest beam Z > Z_thr
 	T & weak;
 	T & clear;   // same as undetect, but needs a quality index value
 	T error = 0; // needs a quality index value (0)
 
-	MethodWeights() : interpolation(this->next()), overShooting(this->next()), underShooting(this->next()), weak(this->next()), clear(this->next()){
+	MethodWeights() : interpolation(this->next()), interpolation_dry(this->next()), truncated(this->next()), weak(this->next()), clear(this->next()){
 	};
 
 	template<typename ... TT>
-	MethodWeights(const TT &... args) : interpolation(this->next()), overShooting(this->next()), underShooting(this->next()), weak(this->next()), clear(this->next()){
+	MethodWeights(const TT &... args) : interpolation(this->next()), interpolation_dry(this->next()), truncated(this->next()), weak(this->next()), clear(this->next()){
 		this->set(args...);
 	};
 
 	MethodWeights(const MethodWeights & p): drain::UniTuple<double,5>(p),
-			interpolation(this->next()), overShooting(this->next()), underShooting(this->next()), weak(this->next()), clear(this->next()) {
+			interpolation(this->next()), interpolation_dry(this->next()), truncated(this->next()), weak(this->next()), clear(this->next()) {
 	};
 
 	/*
@@ -99,23 +123,25 @@ class EchoTop2Op: public PolarProductOp {
 public:
 
 	/// Numeric alues can be applied as quality index (with gain=0.004)
+	/*
 	typedef enum {
-		/** Unset (not processsed) */
+		/ ** Unset (not processsed) * /
 		UNDEFINED=0,
-		/** Internal error in the computation */
+		/ ** Internal error in the computation * /
 		ERROR=16,
-		/** No echo found */
+		/ ** No echo found * /
 		CLEAR=64,
-		/** The highest bin exceeds the threshold -> use reference point */
+		/ ** The highest bin exceeds the threshold -> use reference point * /
 		UNDERSHOOTING=96,
-		/** The bin exceeding the Z threshold has an \c undetect ("dry") bin above -> replace \c undetect with low Z (dB) */
+		/ ** The bin exceeding the Z threshold has an \c undetect ("dry") bin above -> replace \c undetect with low Z (dB) * /
 		OVERSHOOTING=128,
 		WEAK=192, /// Echoes only below threshold detected
-		/** The threshold value was passed between adjacent beams, hence can be interpolated */
+		/ ** The threshold value was passed between adjacent beams, hence can be interpolated * /
 		INTERPOLATION=250
 	} Reliability;
 
 	typedef drain::EnumFlagger<drain::SingleFlagger<Reliability> > reliabilityFlagger;
+	*/
 
 	EchoTop2Op(double threshold = 20.0);
 
@@ -125,9 +151,22 @@ public:
 	// TEST
 	void computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSet<dst_t> & dstProduct) const;
 
+	/*
 	static inline
 	double getSlope(double heightStronger, double heightWeaker, double reflectivityStronger, double reflectivityWeaker){
 		return (heightStronger - heightWeaker) / (reflectivityStronger - reflectivityWeaker);
+	}
+	*/
+
+
+	///
+	/**
+	 *   Division by zero should not occur, as arguments m1 and m2 are distinguished by reflectivity less/greater than threshold.
+	 *   Also, reference point higher than -32 dBZ will be warned.
+	 */
+	static inline
+	double getSlope(const Measurement & m1, const Measurement & m2){
+		return (m1.height - m2.height) / (m1.reflectivity - m2.reflectivity);
 	}
 
 
@@ -137,7 +176,8 @@ protected:
 
 	MethodWeights<double> weights;
 
-	ReferencePoint reference = {-50.0, 15000.0};
+	/// Virtual measurement high aloft, towards which reflectivity is expected to decrease.
+	Measurement reference = {-50.0, 15000.0};
 
 	/// Unless NaN, use the value like a measured dBZ
 	double undetectReflectivity = NAN;
@@ -145,7 +185,7 @@ protected:
 protected:
 
 	//bool EXTENDED = false;
-	bool EXTENDED = true;
+	bool EXTENDED_OUTPUT = true;
 
 
 };

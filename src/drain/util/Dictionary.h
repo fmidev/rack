@@ -225,8 +225,10 @@ inline
 std::ostream & operator<<(std::ostream & ostr, const Dictionary<K,V> & dict) {
 	// SprinterLayout(const char *arrayChars="[,]", const char *mapChars="{,}", const char *pairChars="(,)", const char *stringChars=nullptr)
 	// static drain::SprinterLayout dict_layout("{,}", "{,}", "{,}", "{,}");
+	static const SprinterLayout cmdArgLayout = {",", "?", "=", ""};
 	// Note: the following cast is (also) the only way to apply layout on a Dictionary
-	ostr << drain::sprinter(dict.getContainer(), Sprinter::cppLayout);
+	//ostr << drain::sprinter(dict.getContainer(), Sprinter::cppLayout);
+	ostr << drain::sprinter(dict.getContainer(), cmdArgLayout);
 	//ostr << drain::sprinter((const typename Dictionary<K,V>::container_t &)dict, Sprinter::cppLayout);
 	return ostr;
 }

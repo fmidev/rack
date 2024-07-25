@@ -234,7 +234,12 @@ typename FlagResolver::ivalue_t FlagResolver::getValue(const drain::Dictionary<k
 			sstr >> x; // FIX if empty
 			if (x == 0){
 				// String "0" handled already above
-				mout.error("key '", key, "' not found in Flags, dict: ", dict);
+				// Consider: could advice keys only: sprinter(dict.getKeys()
+				// Or key-value pairs: sprinter(dict)
+				static const SprinterLayout cmdArgLayout = {",", "?", "=", ""};
+				// mout.error("key '", key, "' not found in: ", sprinter(dict, Sprinter::cmdLineLayout));
+				// mout.error("key '", key, "' not föund in: ", sprinter(dict.getContainer(), cmdArgLayout) );
+				mout.error("key '", key, "' not found in: ", dict);
 				//throw std::runtime_error(key, ": key not found in Flags, dict: ", dict);
 			}
 			v = v | x;
