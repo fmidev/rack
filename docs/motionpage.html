@@ -91,7 +91,7 @@ Motion</h1>
 <p>In radar meteorologically, motion can be divided to two phenomenon: atmospheric motion, which is motion of air and falling hydrometeors, and motion of precipitation area, which can be further divided into motion of convective and stratiform areas, for example. <b>Rack</b> is capable of detecting both of them.</p>
 <h2><a class="anchor" id="doppler"></a>
 Basic Doppler products</h2>
-<p>Weather radars capable of measuring Doppler speed produce hydrometeor velocities projected on the beam &ndash; hence one-dimensional. The obtained speeds are further aliased by the maximum unambiguous velocity, <img class="formulaInl" alt="$ V_{Nyq} $" src="form_54.png"/>. In the following, two derived products by are presented. <br  />
+<p>Weather radars capable of measuring Doppler speed produce hydrometeor velocities projected on the beam &ndash; hence one-dimensional. The obtained speeds are further aliased by the maximum unambiguous velocity, <img class="formulaInl" alt="$ V_{Nyq} $" src="form_54.png" width="26" height="14"/>. In the following, two derived products by are presented. <br  />
 </p>
 <h2><a class="anchor" id="dopplerAvg"></a>
 Doppler wind smoothing</h2>
@@ -103,7 +103,7 @@ Doppler wind smoothing</h2>
 <div class="line">  % threshold=0.5 [percentage]</div>
 <div class="line">  % compensate=false [cart/polar[0|1]]</div>
 <div class="line">  % relativeScale=false [false|true]</div>
-</div><!-- fragment --><p> There are several parameters, determining the window width and height, minimum percentage for the samples in the window, switch for compensating the beam broadening, as well as switch for scaling the result with maximum unambiguous speed <img class="formulaInl" alt="$V_{Nyq}$" src="form_55.png"/> (stored as <code>how:NI</code> in ODIM metadata).</p>
+</div><!-- fragment --><p> There are several parameters, determining the window width and height, minimum percentage for the samples in the window, switch for compensating the beam broadening, as well as switch for scaling the result with maximum unambiguous speed <img class="formulaInl" alt="$V_{Nyq}$" src="form_55.png" width="26" height="14"/> (stored as <code>how:NI</code> in ODIM metadata).</p>
 <div class="image">
 <img src="pDopplerAvg-VRAD-panel.png" alt=""/>
 <div class="caption">
@@ -186,7 +186,7 @@ Motion field apparent in subsequent images</h3>
 </p>
 <p>The input should contain two Cartesian datasets, for example composites. An optimal time difference between the files is typically 15 or 30 minutes. Such file can be generated for example with </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --append dataset composite-1130.h5 composite-1200.h5 -o composite-pair.h5</div>
 </div><!-- fragment --><p>The actual processing is done as follows: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> composite-pair.h5 --cOpticalFlow 25,25,resize=250,threshold=0,smooth=1 -o motion.h5</div>
-</div><!-- fragment --><p>The resulting file contains horizontal motion vector (<em>u</em>, <em>v</em>) stored in quantities <code>AMVU</code> and <code>AMVV</code> . In addition, a quality field (with <code>QIND</code> ) is provided. In addition, if <code>&ndash;store</code> intermediate=1 is set, then the following fields are stored:</p><ol type="1">
+</div><!-- fragment --><p>The resulting file contains horizontal motion vector (<em>u</em>, <em>v</em>) stored in quantities <code>AMVU</code> and <code>AMVV</code> . In addition, a quality field (with <code>QIND</code> ) is provided. In addition, if <code>&ndash;store</code> INTERMEDIATE is set, then the following fields are stored:</p><ol type="1">
 <li>Original two intensity fields (typically DBZH or RATE)</li>
 <li>Smoothed fields (for example DBZH_smooth)</li>
 <li>Derivatives - horz and vertical gradients, and time differential (for example DBZH_x, DBZH_y, DBZH_t)</li>
@@ -214,8 +214,8 @@ Smoothing operators</h3>
 <img src="spread-Average-panel.png" alt=""/>
 <div class="caption">
 Vector field spread with <code>--iAverage</code>, window size 200 x 200.</div></div>
- <p>As a computational speed-up, the rectangular averaging window of size <img class="formulaInl" alt="$ W\times H $" src="form_56.png"/> is internally performed by <img class="formulaInl" alt="$ W\times 1 $" src="form_57.png"/> followed by <img class="formulaInl" alt="$ 1\times H $" src="form_58.png"/> window averaging; the narrow windows themselves are updated (accumulated) continuously, as a "pipeline", resulting in a very fast operation. As a disadvantage, rectangular patterns may also appear in the resulting images.</p>
-<p>Two-dimensional Gaussian bell function produces smooth fields. Also that operator can be a separated to two consecutive one-dimensional run of <img class="formulaInl" alt="$ W\times 1 $" src="form_57.png"/> and <img class="formulaInl" alt="$ 1\times H $" src="form_58.png"/> windows, yet without pipelining. The bell curve is principally continuous and infinite, but practically truncated to size slightly larger than those of respective rectangular averaging windows.</p>
+ <p>As a computational speed-up, the rectangular averaging window of size <img class="formulaInl" alt="$ W\times H $" src="form_56.png" width="40" height="10"/> is internally performed by <img class="formulaInl" alt="$ W\times 1 $" src="form_57.png" width="34" height="10"/> followed by <img class="formulaInl" alt="$ 1\times H $" src="form_58.png" width="33" height="10"/> window averaging; the narrow windows themselves are updated (accumulated) continuously, as a "pipeline", resulting in a very fast operation. As a disadvantage, rectangular patterns may also appear in the resulting images.</p>
+<p>Two-dimensional Gaussian bell function produces smooth fields. Also that operator can be a separated to two consecutive one-dimensional run of <img class="formulaInl" alt="$ W\times 1 $" src="form_57.png" width="34" height="10"/> and <img class="formulaInl" alt="$ 1\times H $" src="form_58.png" width="33" height="10"/> windows, yet without pipelining. The bell curve is principally continuous and infinite, but practically truncated to size slightly larger than those of respective rectangular averaging windows.</p>
 <div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> motion.h5 --iGaussianAverage 200:200  -o motion-GaussianAverage.h5</div>
 </div><!-- fragment --> <div class="image">
 <img src="spread-GaussianAverage-panel.png" alt=""/>

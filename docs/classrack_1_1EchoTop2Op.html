@@ -69,7 +69,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
@@ -99,8 +98,8 @@ Collaboration diagram for EchoTop2Op:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1EchoTop2Op__coll__graph.png" border="0" usemap="#aEchoTop2Op_coll__map" alt="Collaboration graph"/></div>
 <map name="aEchoTop2Op_coll__map" id="aEchoTop2Op_coll__map">
-<area shape="rect" title=" " alt="" coords="446,911,547,937"/>
-<area shape="rect" href="classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="265,821,387,848"/>
+<area shape="rect" title=" " alt="" coords="439,911,541,937"/>
+<area shape="rect" href="classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="245,821,367,848"/>
 <area shape="rect" href="classrack_1_1VolumeOp.html" title=" " alt="" coords="40,732,228,759"/>
 <area shape="rect" href="classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images." alt="" coords="7,641,223,683"/>
 <area shape="rect" href="classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="21,551,210,592"/>
@@ -113,36 +112,18 @@ Collaboration diagram for EchoTop2Op:</div>
 <area shape="rect" title=" " alt="" coords="5,5,225,32"/>
 <area shape="rect" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="260,732,392,759"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="248,641,412,683"/>
-<area shape="rect" href="structrack_1_1ReferencePoint.html" title=" " alt="" coords="436,821,557,848"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="417,732,585,759"/>
-<area shape="rect" href="structrack_1_1MethodWeights.html" title=" " alt="" coords="582,821,779,848"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="613,732,748,759"/>
+<area shape="rect" href="structrack_1_1MethodWeights.html" title=" " alt="" coords="391,821,589,848"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="423,732,557,759"/>
+<area shape="rect" href="structrack_1_1Measurement.html" title="A single measurement (bin), with height coordinate and measurement value (reflectivity)." alt="" coords="613,821,725,848"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="585,732,753,759"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:afcfbf201e8c1d42a402458d9257acb9f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9f">Reliability</a> { <br />
-&#160;&#160;<a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa605159e8a4c32319fd69b5d151369d93">UNDEFINED</a> =0
-, <a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa2fd6f336d08340583bd620a7f5694c90">ERROR</a> =16
-, <a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa1e1a4aba20a5a009e616cbc8fad33ac7">CLEAR</a> =64
-, <a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa7909534122db3c774f3da834e175cabb">UNDERSHOOTING</a> =96
-, <br />
-&#160;&#160;<a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9faa9b02b1c7a2490d51bf8a4cfd08052e9">OVERSHOOTING</a> =128
-, <b>WEAK</b> =192
-, <a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa4ce80ac0810d07d2c84186397ef9eadc">INTERPOLATION</a> =250
-<br />
- }</td></tr>
-<tr class="memdesc:afcfbf201e8c1d42a402458d9257acb9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Numeric alues can be applied as quality index (with gain=0.004)  <a href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9f">More...</a><br /></td></tr>
-<tr class="separator:afcfbf201e8c1d42a402458d9257acb9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fbdbdbabd4176df48be369c4df4eea2"><td class="memItemLeft" align="right" valign="top"><a id="a2fbdbdbabd4176df48be369c4df4eea2"></a>
-typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a>&lt; <a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9f">Reliability</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>reliabilityFlagger</b></td></tr>
-<tr class="separator:a2fbdbdbabd4176df48be369c4df4eea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0aefa3d8b893f8c9e0bcbb4847f98586"><td class="memItemLeft" align="right" valign="top"><a id="a0aefa3d8b893f8c9e0bcbb4847f98586"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>EchoTop2Op</b> (double threshold=20.0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EchoTop2Op.html#a0aefa3d8b893f8c9e0bcbb4847f98586">EchoTop2Op</a> (double threshold=20.0)</td></tr>
+<tr class="memdesc:a0aefa3d8b893f8c9e0bcbb4847f98586"><td class="mdescLeft">&#160;</td><td class="mdescRight">Numeric alues can be applied as quality index (with gain=0.004) <br /></td></tr>
 <tr class="separator:a0aefa3d8b893f8c9e0bcbb4847f98586"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35a1faad2362a8cad87abc43671d0be5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EchoTop2Op.html#a35a1faad2362a8cad87abc43671d0be5">computeSingleProduct</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; src_t &gt; &amp;srcSweeps, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; dst_t &gt; &amp;dstProduct) const</td></tr>
 <tr class="separator:a35a1faad2362a8cad87abc43671d0be5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -252,23 +233,27 @@ const <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> &amp
 <tr class="memitem:a327e225f96077b19a7c8564b422240bf inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="a327e225f96077b19a7c8564b422240bf"></a>
 <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getParameters</b> ()</td></tr>
 <tr class="separator:a327e225f96077b19a7c8564b422240bf inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeda575377087de49dbd0780c5b8f4479 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="aeda575377087de49dbd0780c5b8f4479"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#aeda575377087de49dbd0780c5b8f4479">setParameters</a> (std::initializer_list&lt; Variable::init_pair_t &gt; l)</td></tr>
-<tr class="memdesc:aeda575377087de49dbd0780c5b8f4479 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grants access to (if above hidden) <br /></td></tr>
-<tr class="separator:aeda575377087de49dbd0780c5b8f4479 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa88e5c9e613dfe8d6abe61269fc44f21 inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplParams" colspan="2"><a id="aa88e5c9e613dfe8d6abe61269fc44f21"></a>
+template&lt;class F &gt; </td></tr>
+<tr class="memitem:aa88e5c9e613dfe8d6abe61269fc44f21 inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setParametersFromEntries</b> (const F &amp;args)</td></tr>
+<tr class="separator:aa88e5c9e613dfe8d6abe61269fc44f21 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cb20fed3030548a4ed68c3a44fcc630 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="a7cb20fed3030548a4ed68c3a44fcc630"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a7cb20fed3030548a4ed68c3a44fcc630">setParameters</a> (std::initializer_list&lt; Variable::init_pair_t &gt; args)</td></tr>
+<tr class="memdesc:a7cb20fed3030548a4ed68c3a44fcc630 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grants access to (if above hidden) <br /></td></tr>
+<tr class="separator:a7cb20fed3030548a4ed68c3a44fcc630 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d97e90626d88eae8214d1b78337b679 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a6d97e90626d88eae8214d1b78337b679">setParameters</a> (const std::string &amp;p, char assignmentSymbol='=', char separatorSymbol=0)</td></tr>
 <tr class="memdesc:a6d97e90626d88eae8214d1b78337b679 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets comma-separated parameters in a predetermined order "a,b,c" or by specifing them "b=2".  <a href="classdrain_1_1BeanLike.html#a6d97e90626d88eae8214d1b78337b679">More...</a><br /></td></tr>
 <tr class="separator:a6d97e90626d88eae8214d1b78337b679 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a253447aed8899cff60530856f0d03560 inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplParams" colspan="2"><a id="a253447aed8899cff60530856f0d03560"></a>
+<tr class="memitem:a63b72504ee06c8a2c4311ac5793cca70 inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplParams" colspan="2"><a id="a63b72504ee06c8a2c4311ac5793cca70"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:a253447aed8899cff60530856f0d03560 inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a253447aed8899cff60530856f0d03560">setParameters</a> (const std::map&lt; std::string, T &gt; &amp;p)</td></tr>
-<tr class="memdesc:a253447aed8899cff60530856f0d03560 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters. <br /></td></tr>
-<tr class="separator:a253447aed8899cff60530856f0d03560 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5ff01b97a51547cd80716d0b00142b8 inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplParams" colspan="2"><a id="ab5ff01b97a51547cd80716d0b00142b8"></a>
+<tr class="memitem:a63b72504ee06c8a2c4311ac5793cca70 inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a63b72504ee06c8a2c4311ac5793cca70">setParameters</a> (const std::map&lt; std::string, T &gt; &amp;args)</td></tr>
+<tr class="memdesc:a63b72504ee06c8a2c4311ac5793cca70 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters. <br /></td></tr>
+<tr class="separator:a63b72504ee06c8a2c4311ac5793cca70 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93c7107b9d7d3ffad4ca61f79c2d176b inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplParams" colspan="2"><a id="a93c7107b9d7d3ffad4ca61f79c2d176b"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:ab5ff01b97a51547cd80716d0b00142b8 inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#ab5ff01b97a51547cd80716d0b00142b8">setParameters</a> (const <a class="el" href="classdrain_1_1SmartMap.html">SmartMap</a>&lt; T &gt; &amp;p)</td></tr>
-<tr class="memdesc:ab5ff01b97a51547cd80716d0b00142b8 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters. <br /></td></tr>
-<tr class="separator:ab5ff01b97a51547cd80716d0b00142b8 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93c7107b9d7d3ffad4ca61f79c2d176b inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a93c7107b9d7d3ffad4ca61f79c2d176b">setParameters</a> (const <a class="el" href="classdrain_1_1SmartMap.html">SmartMap</a>&lt; T &gt; &amp;args)</td></tr>
+<tr class="memdesc:a93c7107b9d7d3ffad4ca61f79c2d176b inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters. <br /></td></tr>
+<tr class="separator:a93c7107b9d7d3ffad4ca61f79c2d176b inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6547b34b73e2b3cf791d3a32f60fd8b inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="ac6547b34b73e2b3cf791d3a32f60fd8b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#ac6547b34b73e2b3cf791d3a32f60fd8b">setParameter</a> (const std::string &amp;p, const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;value)</td></tr>
 <tr class="memdesc:ac6547b34b73e2b3cf791d3a32f60fd8b inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a single parameter. <br /></td></tr>
@@ -291,12 +276,17 @@ template&lt;class F &gt; </td></tr>
 <tr class="memitem:a6c0f6b9b2afe4d8944e3dbd23533dbda inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="a6c0f6b9b2afe4d8944e3dbd23533dbda"></a>
 virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, bool compact=true) const</td></tr>
 <tr class="separator:a6c0f6b9b2afe4d8944e3dbd23533dbda inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55071108918aaae58d9cc5a68b414db2 inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="a55071108918aaae58d9cc5a68b414db2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BeanLike</b> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
+<tr class="separator:a55071108918aaae58d9cc5a68b414db2 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f334f14441ffc0392abd27fd2f809cb inherit pub_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="a2f334f14441ffc0392abd27fd2f809cb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BeanLike</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
+<tr class="separator:a2f334f14441ffc0392abd27fd2f809cb inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a07535052efcff644818464b8932196a2"><td class="memItemLeft" align="right" valign="top"><a id="a07535052efcff644818464b8932196a2"></a>
-static double&#160;</td><td class="memItemRight" valign="bottom"><b>getSlope</b> (double heightStronger, double heightWeaker, double reflectivityStronger, double reflectivityWeaker)</td></tr>
-<tr class="separator:a07535052efcff644818464b8932196a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81c882872c26f3691f1658a669fc2e48"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EchoTop2Op.html#a81c882872c26f3691f1658a669fc2e48">getSlope</a> (const <a class="el" href="structrack_1_1Measurement.html">Measurement</a> &amp;m1, const <a class="el" href="structrack_1_1Measurement.html">Measurement</a> &amp;m2)</td></tr>
+<tr class="separator:a81c882872c26f3691f1658a669fc2e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -306,16 +296,17 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>threshold</b> = 0.0
 <tr class="memitem:acc3d736181269d8b861d6ac4d031ca30"><td class="memItemLeft" align="right" valign="top"><a id="acc3d736181269d8b861d6ac4d031ca30"></a>
 <a class="el" href="structrack_1_1MethodWeights.html">MethodWeights</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>weights</b></td></tr>
 <tr class="separator:acc3d736181269d8b861d6ac4d031ca30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14d24f30d061b7de8221d63145916be7"><td class="memItemLeft" align="right" valign="top"><a id="a14d24f30d061b7de8221d63145916be7"></a>
-<a class="el" href="structrack_1_1ReferencePoint.html">ReferencePoint</a>&#160;</td><td class="memItemRight" valign="bottom"><b>reference</b> = {-50.0, 15000.0}</td></tr>
-<tr class="separator:a14d24f30d061b7de8221d63145916be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac18a489c3528535770705f4f7d200b2f"><td class="memItemLeft" align="right" valign="top"><a id="ac18a489c3528535770705f4f7d200b2f"></a>
+<a class="el" href="structrack_1_1Measurement.html">Measurement</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EchoTop2Op.html#ac18a489c3528535770705f4f7d200b2f">reference</a> = {-50.0, 15000.0}</td></tr>
+<tr class="memdesc:ac18a489c3528535770705f4f7d200b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual measurement high aloft, towards which reflectivity is expected to decrease. <br /></td></tr>
+<tr class="separator:ac18a489c3528535770705f4f7d200b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0517a940bc2614a3ff11fb5ed30dd1e9"><td class="memItemLeft" align="right" valign="top"><a id="a0517a940bc2614a3ff11fb5ed30dd1e9"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EchoTop2Op.html#a0517a940bc2614a3ff11fb5ed30dd1e9">undetectReflectivity</a> = NAN</td></tr>
 <tr class="memdesc:a0517a940bc2614a3ff11fb5ed30dd1e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unless NaN, use the value like a measured dBZ. <br /></td></tr>
 <tr class="separator:a0517a940bc2614a3ff11fb5ed30dd1e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84c21d35902f36fde4db49c6db2bee7e"><td class="memItemLeft" align="right" valign="top"><a id="a84c21d35902f36fde4db49c6db2bee7e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>EXTENDED</b> = true</td></tr>
-<tr class="separator:a84c21d35902f36fde4db49c6db2bee7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7092adb40453102a7bc2be3af9c0e83"><td class="memItemLeft" align="right" valign="top"><a id="ae7092adb40453102a7bc2be3af9c0e83"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>EXTENDED_OUTPUT</b> = true</td></tr>
+<tr class="separator:ae7092adb40453102a7bc2be3af9c0e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classrack_1_1PolarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1PolarProductOp')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a></td></tr>
 <tr class="memitem:a92bac8f6fc745bee78b290dcc8de8392 inherit pro_attribs_classrack_1_1PolarProductOp"><td class="memItemLeft" align="right" valign="top"><a id="a92bac8f6fc745bee78b290dcc8de8392"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td></tr>
@@ -438,57 +429,19 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memdesc:af3e9956399e0915adc0fec81010164e8 inherit pro_methods_classdrain_1_1image_1_1ImageMod"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modifies the geometry and the type of dst such that traverseChannel(Channel &amp;) can be called. <br /></td></tr>
 <tr class="separator:af3e9956399e0915adc0fec81010164e8 inherit pro_methods_classdrain_1_1image_1_1ImageMod"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
-<tr class="memitem:a2f334f14441ffc0392abd27fd2f809cb inherit pro_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="a2f334f14441ffc0392abd27fd2f809cb"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BeanLike</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
-<tr class="separator:a2f334f14441ffc0392abd27fd2f809cb inherit pro_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55071108918aaae58d9cc5a68b414db2 inherit pro_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="a55071108918aaae58d9cc5a68b414db2"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BeanLike</b> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
-<tr class="separator:a55071108918aaae58d9cc5a68b414db2 inherit pro_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef2b98dc4c462a60395746cb89b189fc inherit pro_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="aef2b98dc4c462a60395746cb89b189fc"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#aef2b98dc4c462a60395746cb89b189fc">storeLastParameters</a> (const std::string &amp;p) const</td></tr>
-<tr class="memdesc:aef2b98dc4c462a60395746cb89b189fc inherit pro_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after <a class="el" href="classdrain_1_1BeanLike.html#aeda575377087de49dbd0780c5b8f4479" title="Grants access to (if above hidden)">setParameters()</a> <br /></td></tr>
-<tr class="separator:aef2b98dc4c462a60395746cb89b189fc inherit pro_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9bce3600c5cff0b14aad4e8c9f240a0 inherit pro_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="ac9bce3600c5cff0b14aad4e8c9f240a0"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#ac9bce3600c5cff0b14aad4e8c9f240a0">storeLastArguments</a> (const std::string &amp;p)</td></tr>
+<tr class="memdesc:ac9bce3600c5cff0b14aad4e8c9f240a0 inherit pro_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after <a class="el" href="classdrain_1_1BeanLike.html#a7cb20fed3030548a4ed68c3a44fcc630" title="Grants access to (if above hidden)">setParameters()</a> <br /></td></tr>
+<tr class="separator:ac9bce3600c5cff0b14aad4e8c9f240a0 inherit pro_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3d20dd7e09a23bd60ca27e78227e245 inherit pro_methods_classdrain_1_1BeanLike"><td class="memItemLeft" align="right" valign="top"><a id="ad3d20dd7e09a23bd60ca27e78227e245"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a> () const</td></tr>
-<tr class="memdesc:ad3d20dd7e09a23bd60ca27e78227e245 inherit pro_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after <a class="el" href="classdrain_1_1BeanLike.html#aeda575377087de49dbd0780c5b8f4479" title="Grants access to (if above hidden)">setParameters()</a> <br /></td></tr>
+<tr class="memdesc:ad3d20dd7e09a23bd60ca27e78227e245 inherit pro_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after <a class="el" href="classdrain_1_1BeanLike.html#a7cb20fed3030548a4ed68c3a44fcc630" title="Grants access to (if above hidden)">setParameters()</a> <br /></td></tr>
 <tr class="separator:ad3d20dd7e09a23bd60ca27e78227e245 inherit pro_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_methods_classdrain_1_1image_1_1ImageOp"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classdrain_1_1image_1_1ImageOp')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1ImageOp.html">ImageOp</a></td></tr>
 <tr class="memitem:a66fe29f91162e731193e78ce1aad2781 inherit pro_static_methods_classdrain_1_1image_1_1ImageOp"><td class="memItemLeft" align="right" valign="top"><a id="a66fe29f91162e731193e78ce1aad2781"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>adaptCoordinateHandler</b> (const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;src, <a class="el" href="classdrain_1_1image_1_1CoordinateHandler2D.html">CoordinateHandler2D</a> &amp;handler)</td></tr>
 <tr class="separator:a66fe29f91162e731193e78ce1aad2781 inherit pro_static_methods_classdrain_1_1image_1_1ImageOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="afcfbf201e8c1d42a402458d9257acb9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcfbf201e8c1d42a402458d9257acb9f">&#9670;&nbsp;</a></span>Reliability</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9f">Reliability</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Numeric alues can be applied as quality index (with gain=0.004) </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afcfbf201e8c1d42a402458d9257acb9fa605159e8a4c32319fd69b5d151369d93"></a>UNDEFINED&#160;</td><td class="fielddoc"><p>Unset (not processsed) </p>
-</td></tr>
-<tr><td class="fieldname"><a id="afcfbf201e8c1d42a402458d9257acb9fa2fd6f336d08340583bd620a7f5694c90"></a>ERROR&#160;</td><td class="fielddoc"><p>Internal error in the computation </p>
-</td></tr>
-<tr><td class="fieldname"><a id="afcfbf201e8c1d42a402458d9257acb9fa1e1a4aba20a5a009e616cbc8fad33ac7"></a>CLEAR&#160;</td><td class="fielddoc"><p>No echo found </p>
-</td></tr>
-<tr><td class="fieldname"><a id="afcfbf201e8c1d42a402458d9257acb9fa7909534122db3c774f3da834e175cabb"></a>UNDERSHOOTING&#160;</td><td class="fielddoc"><p>The highest bin exceeds the threshold -&gt; use reference point </p>
-</td></tr>
-<tr><td class="fieldname"><a id="afcfbf201e8c1d42a402458d9257acb9faa9b02b1c7a2490d51bf8a4cfd08052e9"></a>OVERSHOOTING&#160;</td><td class="fielddoc"><p>The bin exceeding the Z threshold has an <code>undetect</code> ("dry") bin above -&gt; replace <code>undetect</code> with low Z (dB) </p>
-</td></tr>
-<tr><td class="fieldname"><a id="afcfbf201e8c1d42a402458d9257acb9fa4ce80ac0810d07d2c84186397ef9eadc"></a>INTERPOLATION&#160;</td><td class="fielddoc"><p>Echoes only below threshold detected. </p>
-<p>The threshold value was passed between adjacent beams, hence can be interpolated </p>
-</td></tr>
-</table>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a35a1faad2362a8cad87abc43671d0be5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a35a1faad2362a8cad87abc43671d0be5">&#9670;&nbsp;</a></span>computeSingleProduct()</h2>
@@ -516,10 +469,11 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>adaptCoordinat
       </table>
 </div><div class="memdoc">
 <p>Shared, because input data MAY contain different encoding(s)</p>
+<p>Quality (confidence) (using storage type encoding)</p>
+<p>Class codes (using storage type encoding)</p>
 <p>Pointer to data array (DBZH)</p>
 <p>Index of the bin at the ground distance D of all the elevation beams considered</p>
-<p>Height from the ground surface (from radar site, ASL)</p>
-<p>Reflectivity observed at the current bin. (Needed?)</p>
+<p>Reliability/confidence of the measurement value, maximal (1.0) when reflectivity is the threshold value.</p>
 <p>Pointer to the measurement</p>
 <ul>
 <li>lower than the given threshold...</li>
@@ -536,6 +490,43 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>adaptCoordinat
 </ul>
 <p>Azimuthal loop: [0,360[ degrees</p>
 <p>Main: compute the echo top altitude.</p>
+
+</div>
+</div>
+<a id="a81c882872c26f3691f1658a669fc2e48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81c882872c26f3691f1658a669fc2e48">&#9670;&nbsp;</a></span>getSlope()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static double getSlope </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrack_1_1Measurement.html">Measurement</a> &amp;&#160;</td>
+          <td class="paramname"><em>m1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structrack_1_1Measurement.html">Measurement</a> &amp;&#160;</td>
+          <td class="paramname"><em>m2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Division by zero should not occur, as arguments m1 and m2 are distinguished by reflectivity less/greater than threshold. Also, reference point higher than -32 dBZ will be warned. </p>
 
 </div>
 </div>

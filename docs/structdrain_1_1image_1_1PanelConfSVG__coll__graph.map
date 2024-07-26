@@ -1,9 +1,11 @@
 <map id="PanelConfSVG" name="PanelConfSVG">
-<area shape="rect" id="node1" title=" " alt="" coords="756,78,871,105"/>
-<area shape="rect" id="node2" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="395,5,632,47"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="196,78,345,105"/>
-<area shape="rect" id="node7" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="402,71,625,112"/>
-<area shape="rect" id="node4" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,109,147,135"/>
-<area shape="rect" id="node6" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="199,133,342,159"/>
-<area shape="rect" id="node5" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="411,136,615,177"/>
+<area shape="rect" id="node1" title=" " alt="" coords="775,97,889,124"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1FontSizes.html" title=" " alt="" coords="490,5,574,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="196,5,364,32"/>
+<area shape="rect" id="node4" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="413,57,651,98"/>
+<area shape="rect" id="node5" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="205,129,355,156"/>
+<area shape="rect" id="node9" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="421,122,643,163"/>
+<area shape="rect" id="node6" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,160,147,187"/>
+<area shape="rect" id="node8" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="209,184,351,211"/>
+<area shape="rect" id="node7" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="430,187,634,229"/>
 </map>

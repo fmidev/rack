@@ -71,17 +71,23 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classrack_1_1VariableFormatterODIM-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">VariableFormatterODIM&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Formats variables to output stream.  
+ <a href="classrack_1_1VariableFormatterODIM.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="VariableFormatterODIM_8h_source.html">VariableFormatterODIM.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for VariableFormatterODIM&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1VariableFormatterODIM__inherit__graph.png" border="0" usemap="#aVariableFormatterODIM_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="aVariableFormatterODIM_3_01T_01_4_inherit__map" id="aVariableFormatterODIM_3_01T_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,80,219,107"/>
+<area shape="rect" title="Formats variables to output stream." alt="" coords="5,80,219,107"/>
 <area shape="rect" href="classdrain_1_1VariableFormatter.html" title=" " alt="" coords="23,5,201,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -90,7 +96,7 @@ Collaboration diagram for VariableFormatterODIM&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1VariableFormatterODIM__coll__graph.png" border="0" usemap="#aVariableFormatterODIM_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="aVariableFormatterODIM_3_01T_01_4_coll__map" id="aVariableFormatterODIM_3_01T_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="5,80,219,107"/>
+<area shape="rect" title="Formats variables to output stream." alt="" coords="5,80,219,107"/>
 <area shape="rect" href="classdrain_1_1VariableFormatter.html" title=" " alt="" coords="23,5,201,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -116,19 +122,56 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memdesc:a4ac1755f50aa4edc7b9bd8d0a5739b22 inherit pub_methods_classdrain_1_1VariableFormatter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches given key in a map, and if found, processes (formats) the value to ostream. Return false, if variable not found.  <a href="classdrain_1_1VariableFormatter.html#a4ac1755f50aa4edc7b9bd8d0a5739b22">More...</a><br /></td></tr>
 <tr class="separator:a4ac1755f50aa4edc7b9bd8d0a5739b22 inherit pub_methods_classdrain_1_1VariableFormatter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a49be86851dc3bfbe93b9b640fd05ca00"><td class="memItemLeft" align="right" valign="top"><a id="a49be86851dc3bfbe93b9b640fd05ca00"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VariableFormatterODIM.html#a49be86851dc3bfbe93b9b640fd05ca00">formatDate</a> (std::ostream &amp;ostr, const std::string &amp;key, const T &amp;value, const std::string &amp;format=&quot;%Y/%m/%d&quot;)</td></tr>
+<tr class="memdesc:a49be86851dc3bfbe93b9b640fd05ca00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recognizes and format a date. Assumes that the variable name (<code>key</code> ) ends with "date". <br /></td></tr>
+<tr class="separator:a49be86851dc3bfbe93b9b640fd05ca00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4de3ea3aef4dc62480c3270e5105074"><td class="memItemLeft" align="right" valign="top"><a id="ad4de3ea3aef4dc62480c3270e5105074"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VariableFormatterODIM.html#ad4de3ea3aef4dc62480c3270e5105074">formatTime</a> (std::ostream &amp;ostr, const std::string &amp;key, const T &amp;value, const std::string &amp;format=&quot;%H:%M&quot;)</td></tr>
+<tr class="memdesc:ad4de3ea3aef4dc62480c3270e5105074"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reformat a time. Assumes that the variable name (<code>key</code> ) ends with "time". <br /></td></tr>
+<tr class="separator:ad4de3ea3aef4dc62480c3270e5105074"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cfdcffac6d12c077472aecfc28f05f0"><td class="memItemLeft" align="right" valign="top"><a id="a9cfdcffac6d12c077472aecfc28f05f0"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VariableFormatterODIM.html#a9cfdcffac6d12c077472aecfc28f05f0">formatPlace</a> (std::ostream &amp;ostr, const std::string &amp;key, const T &amp;value, const std::string &amp;format=&quot;&quot;)</td></tr>
+<tr class="memdesc:a9cfdcffac6d12c077472aecfc28f05f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Currently, only recognizes a place, and writes it directly in stream. <br /></td></tr>
+<tr class="separator:a9cfdcffac6d12c077472aecfc28f05f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classdrain_1_1VariableFormatter"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classdrain_1_1VariableFormatter')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter&lt; T &gt;</a></td></tr>
 <tr class="memitem:a03b15b6726031ae8edaf079cef4a2850 inherit pub_static_methods_classdrain_1_1VariableFormatter"><td class="memItemLeft" align="right" valign="top"><a id="a03b15b6726031ae8edaf079cef4a2850"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1VariableFormatter.html#a03b15b6726031ae8edaf079cef4a2850">formatValue</a> (const T &amp;value, const std::string &amp;format, std::ostream &amp;ostr)</td></tr>
 <tr class="memdesc:a03b15b6726031ae8edaf079cef4a2850 inherit pub_static_methods_classdrain_1_1VariableFormatter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a value, print it formatted to stream. <br /></td></tr>
 <tr class="separator:a03b15b6726031ae8edaf079cef4a2850 inherit pub_static_methods_classdrain_1_1VariableFormatter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1VariableFormatter"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1VariableFormatter')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter&lt; T &gt;</a></td></tr>
 <tr class="memitem:a3c2d20cce644d8cd3754f78c935b6959 inherit pub_attribs_classdrain_1_1VariableFormatter"><td class="memItemLeft" align="right" valign="top"><a id="a3c2d20cce644d8cd3754f78c935b6959"></a>
 <a class="el" href="classdrain_1_1IosFormat.html">IosFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>iosFormat</b></td></tr>
 <tr class="separator:a3c2d20cce644d8cd3754f78c935b6959 inherit pub_attribs_classdrain_1_1VariableFormatter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br />
+class rack::VariableFormatterODIM&lt; T &gt;</h3>
+
+<p>Formats variables to output stream. </p>
+<p>This class inherits the following formatting options from the base class:</p>
+<h1><a class="anchor" id="autotoc_md0"></a>
+printf() style formatting, like "%08.2d"</h1>
+<h1><a class="anchor" id="autotoc_md1"></a>
+bash substring style formatting, like ":2:3" (take 3 letters, starting from position 2)</h1>
+<p>In addition, this class formats <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> time stamps (what:time, what:startdate, ...) </p>
+<h1><a class="anchor" id="autotoc_md2"></a>
+Time formatting, like the date command</h1>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>- type of the variables.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd>StringLet </dd>
+<dd>
+StringMapper </dd></dl>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/data/<a class="el" href="VariableFormatterODIM_8h_source.html">VariableFormatterODIM.h</a></li>
 </ul>
 </div><!-- contents -->

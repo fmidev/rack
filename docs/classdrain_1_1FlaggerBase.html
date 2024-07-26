@@ -85,21 +85,21 @@ Public Types</h2></td></tr>
 <tr class="memitem:ac7c2f5cbcced44be0831db0496cc0ce3"><td class="memItemLeft" align="right" valign="top"><a id="ac7c2f5cbcced44be0831db0496cc0ce3"></a>
 typedef E&#160;</td><td class="memItemRight" valign="bottom"><b>value_t</b></td></tr>
 <tr class="separator:ac7c2f5cbcced44be0831db0496cc0ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b5b3bebabd89c46736e7a953bea10ab"><td class="memItemLeft" align="right" valign="top"><a id="a1b5b3bebabd89c46736e7a953bea10ab"></a>
-typedef <a class="el" href="classdrain_1_1Dictionary.html">FlaggerDict</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
-<tr class="separator:a1b5b3bebabd89c46736e7a953bea10ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25ff0cd524f056795dd05e1f7b702f4f"><td class="memItemLeft" align="right" valign="top"><a id="a25ff0cd524f056795dd05e1f7b702f4f"></a>
+typedef <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
+<tr class="separator:a25ff0cd524f056795dd05e1f7b702f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac94432274d27846064e98aaec0219f68"><td class="memItemLeft" align="right" valign="top"><a id="ac94432274d27846064e98aaec0219f68"></a>
 typedef dict_t::key_t&#160;</td><td class="memItemRight" valign="bottom"><b>key_t</b></td></tr>
 <tr class="separator:ac94432274d27846064e98aaec0219f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb00d730e5930b1abfd138542d1f361e"><td class="memItemLeft" align="right" valign="top"><a id="afb00d730e5930b1abfd138542d1f361e"></a>
-typedef dict_t::value_t&#160;</td><td class="memItemRight" valign="bottom"><b>dvalue_t</b></td></tr>
-<tr class="separator:afb00d730e5930b1abfd138542d1f361e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a8c687bdf96db37f722cca6bab7841a"><td class="memItemLeft" align="right" valign="top"><a id="a8a8c687bdf96db37f722cca6bab7841a"></a>
+typedef dict_t::value_t&#160;</td><td class="memItemRight" valign="bottom"><b>ivalue_t</b></td></tr>
+<tr class="separator:a8a8c687bdf96db37f722cca6bab7841a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0a974a41dd6521ba050b14abc0e11b58"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a0a974a41dd6521ba050b14abc0e11b58">FlaggerBase</a> (value_t &amp;v)</td></tr>
-<tr class="memdesc:a0a974a41dd6521ba050b14abc0e11b58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Own value will be unused (and invisible).  <a href="classdrain_1_1FlaggerBase.html#a0a974a41dd6521ba050b14abc0e11b58">More...</a><br /></td></tr>
-<tr class="separator:a0a974a41dd6521ba050b14abc0e11b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad33be13c439f6a36e950df376dfb6f34"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#ad33be13c439f6a36e950df376dfb6f34">FlaggerBase</a> (ivalue_t &amp;v)</td></tr>
+<tr class="memdesc:ad33be13c439f6a36e950df376dfb6f34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Own value will be unused (and invisible).  <a href="classdrain_1_1FlaggerBase.html#ad33be13c439f6a36e950df376dfb6f34">More...</a><br /></td></tr>
+<tr class="separator:ad33be13c439f6a36e950df376dfb6f34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8ebaaa50d3e659bb659b99902bf748c"><td class="memItemLeft" align="right" valign="top"><a id="ad8ebaaa50d3e659bb659b99902bf748c"></a>
 virtual const <a class="el" href="classdrain_1_1Dictionary.html">dict_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDict</b> () const =0</td></tr>
 <tr class="separator:ad8ebaaa50d3e659bb659b99902bf748c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -109,32 +109,32 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr
 <tr class="memitem:a952252bd26bf32d6a2d3b7024d858683"><td class="memItemLeft" align="right" valign="top"><a id="a952252bd26bf32d6a2d3b7024d858683"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const key_t &amp;key)</td></tr>
 <tr class="separator:a952252bd26bf32d6a2d3b7024d858683"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04d82bcd21c4ab1d0268b19b77678a07"><td class="memItemLeft" align="right" valign="top"><a id="a04d82bcd21c4ab1d0268b19b77678a07"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const value_t &amp;value)</td></tr>
-<tr class="separator:a04d82bcd21c4ab1d0268b19b77678a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4dfc9827d92e1969cfbfb3906d310e4"><td class="memItemLeft" align="right" valign="top"><a id="ab4dfc9827d92e1969cfbfb3906d310e4"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const ivalue_t &amp;value)</td></tr>
+<tr class="separator:ab4dfc9827d92e1969cfbfb3906d310e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af45bb4a06541e3d90caa8d3487263aaa"><td class="memItemLeft" align="right" valign="top"><a id="af45bb4a06541e3d90caa8d3487263aaa"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const <a class="el" href="classdrain_1_1FlaggerBase.html">FlaggerBase</a>&lt; E &gt; &amp;flagger)</td></tr>
 <tr class="separator:af45bb4a06541e3d90caa8d3487263aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5e462cec54cc65427563e897f7260df"><td class="memItemLeft" align="right" valign="top"><a id="aa5e462cec54cc65427563e897f7260df"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>assign</b> (const std::string &amp;s)=0</td></tr>
 <tr class="separator:aa5e462cec54cc65427563e897f7260df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4a7195256a6cc29e07eebac975206ec"><td class="memItemLeft" align="right" valign="top"><a id="ab4a7195256a6cc29e07eebac975206ec"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#ab4a7195256a6cc29e07eebac975206ec">isSet</a> (value_t x) const</td></tr>
-<tr class="memdesc:ab4a7195256a6cc29e07eebac975206ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a given bit, or any of given bits, is set. <br /></td></tr>
-<tr class="separator:ab4a7195256a6cc29e07eebac975206ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6288477227e5b9a796e374a91fc5aa07"><td class="memItemLeft" align="right" valign="top"><a id="a6288477227e5b9a796e374a91fc5aa07"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a6288477227e5b9a796e374a91fc5aa07">isSet</a> (ivalue_t x) const</td></tr>
+<tr class="memdesc:a6288477227e5b9a796e374a91fc5aa07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a given bit, or any of given bits, is set. <br /></td></tr>
+<tr class="separator:a6288477227e5b9a796e374a91fc5aa07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3c7d0c2d658d33aec97f085608021c7"><td class="memItemLeft" align="right" valign="top"><a id="ae3c7d0c2d658d33aec97f085608021c7"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isSet</b> (const key_t &amp;key) const</td></tr>
 <tr class="separator:ae3c7d0c2d658d33aec97f085608021c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16179b9437a4d1b4f460ee6b3556a43f"><td class="memItemLeft" align="right" valign="top"><a id="a16179b9437a4d1b4f460ee6b3556a43f"></a>
-const value_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> () const</td></tr>
-<tr class="separator:a16179b9437a4d1b4f460ee6b3556a43f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d64418ccf3736f52ac76d206fd26a7c"><td class="memItemLeft" align="right" valign="top"><a id="a4d64418ccf3736f52ac76d206fd26a7c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a4d64418ccf3736f52ac76d206fd26a7c">operator const value_t &amp;</a> () const</td></tr>
-<tr class="memdesc:a4d64418ccf3736f52ac76d206fd26a7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given an integer, retrieves dictionary keys corresponding to each index of set bits. <br /></td></tr>
-<tr class="separator:a4d64418ccf3736f52ac76d206fd26a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06f2a5dc0ab5f04ea72f2a96da439d1e"><td class="memItemLeft" align="right" valign="top"><a id="a06f2a5dc0ab5f04ea72f2a96da439d1e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>operator value_t &amp;</b> ()</td></tr>
-<tr class="separator:a06f2a5dc0ab5f04ea72f2a96da439d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbd7cf91dd3f783983d85d23bcb12656"><td class="memItemLeft" align="right" valign="top"><a id="adbd7cf91dd3f783983d85d23bcb12656"></a>
+const ivalue_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> () const</td></tr>
+<tr class="separator:adbd7cf91dd3f783983d85d23bcb12656"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3430b3626aef75bc6345dc9edc9dd5e3"><td class="memItemLeft" align="right" valign="top"><a id="a3430b3626aef75bc6345dc9edc9dd5e3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a3430b3626aef75bc6345dc9edc9dd5e3">operator const ivalue_t &amp;</a> () const</td></tr>
+<tr class="memdesc:a3430b3626aef75bc6345dc9edc9dd5e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given an integer, retrieves dictionary keys corresponding to each index of set bits. <br /></td></tr>
+<tr class="separator:a3430b3626aef75bc6345dc9edc9dd5e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac75ae56a5620fa2b5f83544c756f19aa"><td class="memItemLeft" align="right" valign="top"><a id="ac75ae56a5620fa2b5f83544c756f19aa"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator ivalue_t &amp;</b> ()</td></tr>
+<tr class="separator:ac75ae56a5620fa2b5f83544c756f19aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2464e898adb1b0151f22935dfedde020"><td class="memItemLeft" align="right" valign="top"><a id="a2464e898adb1b0151f22935dfedde020"></a>
 virtual const key_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a2464e898adb1b0151f22935dfedde020">str</a> () const =0</td></tr>
 <tr class="memdesc:a2464e898adb1b0151f22935dfedde020"><td class="mdescLeft">&#160;</td><td class="mdescRight">String corresponding the current value. Returns empty, if not found. <br /></td></tr>
@@ -148,9 +148,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> (std::ostre
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a6fd9004a5f5ac5493e147e4525f936e4"><td class="memItemLeft" align="right" valign="top"><a id="a6fd9004a5f5ac5493e147e4525f936e4"></a>
-value_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
-<tr class="separator:a6fd9004a5f5ac5493e147e4525f936e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee7342b621445c9626ae92a54d070c4c"><td class="memItemLeft" align="right" valign="top"><a id="aee7342b621445c9626ae92a54d070c4c"></a>
+ivalue_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
+<tr class="separator:aee7342b621445c9626ae92a54d070c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6989953791434c8ea982054551c9e154"><td class="memItemLeft" align="right" valign="top"><a id="a6989953791434c8ea982054551c9e154"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></tr>
 <tr class="separator:a6989953791434c8ea982054551c9e154"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,8 +174,8 @@ class drain::FlaggerBase&lt; E &gt;</h3>
 <div class="line"><span class="keyword">template</span> &lt;&gt;</div>
 <div class="line"><span class="keyword">const</span> <a class="code" href="classdrain_1_1Dictionary.html">drain::SingleFlagger&lt;Reader::Mode&gt;::dict_t</a> <a class="code" href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger&lt;Reader::Mode&gt;::dict</a> =</div>
 <div class="line">      {{<span class="stringliteral">&quot;ATTRIBUTES&quot;</span>, Reader::ATTRIBUTES}, {<span class="stringliteral">&quot;DATASETS&quot;</span>, Reader::DATASETS}};</div>
-<div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary</a></div><div class="ttdoc">Two-way mapping between strings and objects of template class T.</div><div class="ttdef"><b>Definition:</b> Dictionary.h:63</div></div>
-<div class="ttc" id="aclassdrain_1_1SingleFlagger_html"><div class="ttname"><a href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a></div><div class="ttdef"><b>Definition:</b> Flags.h:480</div></div>
+<div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary&lt; key_t, ivalue_t &gt;</a></div></div>
+<div class="ttc" id="aclassdrain_1_1SingleFlagger_html"><div class="ttname"><a href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a></div><div class="ttdef"><b>Definition:</b> Flags.h:517</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">E</td><td>- enum or integer </td></tr>
@@ -184,8 +184,8 @@ class drain::FlaggerBase&lt; E &gt;</h3>
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0a974a41dd6521ba050b14abc0e11b58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a974a41dd6521ba050b14abc0e11b58">&#9670;&nbsp;</a></span>FlaggerBase()</h2>
+<a id="ad33be13c439f6a36e950df376dfb6f34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad33be13c439f6a36e950df376dfb6f34">&#9670;&nbsp;</a></span>FlaggerBase()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,7 +196,7 @@ class drain::FlaggerBase&lt; E &gt;</h3>
         <tr>
           <td class="memname"><a class="el" href="classdrain_1_1FlaggerBase.html">FlaggerBase</a> </td>
           <td>(</td>
-          <td class="paramtype">value_t &amp;&#160;</td>
+          <td class="paramtype">ivalue_t &amp;&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
           <td></td>
         </tr>

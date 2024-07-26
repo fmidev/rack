@@ -99,8 +99,8 @@ Collaboration diagram for GeoFrame:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1GeoFrame__coll__graph.png" border="0" usemap="#aGeoFrame_coll__map" alt="Collaboration graph"/></div>
 <map name="aGeoFrame_coll__map" id="aGeoFrame_coll__map">
-<area shape="rect" title="Array with georeferencing support." alt="" coords="199,691,289,717"/>
-<area shape="rect" href="classdrain_1_1Proj6.html" title=" " alt="" coords="149,543,203,569"/>
+<area shape="rect" title="Array with georeferencing support." alt="" coords="206,691,295,717"/>
+<area shape="rect" href="classdrain_1_1Proj6.html" title=" " alt="" coords="150,543,205,569"/>
 <area shape="rect" href="classdrain_1_1Projector.html" title=" " alt="" coords="136,439,216,465"/>
 <area shape="rect" href="classdrain_1_1Dictionary.html" title=" " alt="" coords="5,335,179,376"/>
 <area shape="rect" title=" " alt="" coords="7,157,177,199"/>
@@ -108,8 +108,8 @@ Collaboration diagram for GeoFrame:</div>
 <area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="213,165,309,191"/>
 <area shape="rect" href="classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="197,81,325,108"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="185,5,337,32"/>
-<area shape="rect" href="structdrain_1_1Rectangle.html" title=" " alt="" coords="233,543,394,569"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="246,439,381,465"/>
+<area shape="rect" href="structdrain_1_1Rectangle.html" title=" " alt="" coords="243,543,405,569"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="240,439,408,465"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -212,8 +212,16 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memdesc:ab4ec7a7eb599dc4d19a50b061b3670ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Projects geographic coordinates to image coordinates. <br /></td></tr>
 <tr class="separator:ab4ec7a7eb599dc4d19a50b061b3670ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7d18b235d73680349ba9237c1092cf0"><td class="memItemLeft" align="right" valign="top"><a id="ad7d18b235d73680349ba9237c1092cf0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>deg2pix</b> (const <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;loc, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;pix) const</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#ad7d18b235d73680349ba9237c1092cf0">deg2pix</a> (const <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;loc, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;pix) const</td></tr>
+<tr class="memdesc:ad7d18b235d73680349ba9237c1092cf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Project geographic coordinates to image coordinates. <br /></td></tr>
 <tr class="separator:ad7d18b235d73680349ba9237c1092cf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d26ec0ad9d527b27f05909cac2784fa"><td class="memItemLeft" align="right" valign="top"><a id="a9d26ec0ad9d527b27f05909cac2784fa"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a9d26ec0ad9d527b27f05909cac2784fa">deg2m</a> (double lon, double lat, double &amp;x, double &amp;y) const</td></tr>
+<tr class="memdesc:a9d26ec0ad9d527b27f05909cac2784fa"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="Utility class with static conversions.">Convert</a> metric coordinates to degrees. <br /></td></tr>
+<tr class="separator:a9d26ec0ad9d527b27f05909cac2784fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af39bf98ac600fdc3c6368f26272a9239"><td class="memItemLeft" align="right" valign="top"><a id="af39bf98ac600fdc3c6368f26272a9239"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>deg2m</b> (const <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;pDeg, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;pMet) const</td></tr>
+<tr class="separator:af39bf98ac600fdc3c6368f26272a9239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac588eb200b84b65f81e69a87bb554f05"><td class="memItemLeft" align="right" valign="top"><a id="ac588eb200b84b65f81e69a87bb554f05"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#ac588eb200b84b65f81e69a87bb554f05">pix2deg</a> (int i, int j, double &amp;lon, double &amp;lat) const</td></tr>
 <tr class="memdesc:ac588eb200b84b65f81e69a87bb554f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the geographic coordinates of the center of a pixel at (i,j). <br /></td></tr>
@@ -231,10 +239,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memdesc:a70b2bd36af37d48796603a3fb4752a42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the geographic coordinates of the lower left corner of a pixel at (i,j). <br /></td></tr>
 <tr class="separator:a70b2bd36af37d48796603a3fb4752a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2a1285bd09db916d7eff8b32c128b69"><td class="memItemLeft" align="right" valign="top"><a id="aa2a1285bd09db916d7eff8b32c128b69"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>m2deg</b> (double x, double y, double &amp;lon, double &amp;lat) const</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#aa2a1285bd09db916d7eff8b32c128b69">m2deg</a> (double x, double y, double &amp;lon, double &amp;lat) const</td></tr>
+<tr class="memdesc:aa2a1285bd09db916d7eff8b32c128b69"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="Utility class with static conversions.">Convert</a> metric coordinates to degrees. <br /></td></tr>
 <tr class="separator:aa2a1285bd09db916d7eff8b32c128b69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d2e68dbe94d1410722d362ea7c03473"><td class="memItemLeft" align="right" valign="top"><a id="a2d2e68dbe94d1410722d362ea7c03473"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>m2deg</b> (const <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;pMetric, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;pDeg) const</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a2d2e68dbe94d1410722d362ea7c03473">m2deg</a> (const <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;pMetric, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;pDeg) const</td></tr>
+<tr class="memdesc:a2d2e68dbe94d1410722d362ea7c03473"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="Utility class with static conversions.">Convert</a> metric coordinates to degrees. <br /></td></tr>
 <tr class="separator:a2d2e68dbe94d1410722d362ea7c03473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ffeb836c83c2e4683dcaf2795beaca8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a0ffeb836c83c2e4683dcaf2795beaca8">m2pix</a> (double x, double y, int &amp;i, int &amp;j) const</td></tr>
 <tr class="memdesc:a0ffeb836c83c2e4683dcaf2795beaca8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales geographic map coordinates to image coordinates.  <a href="classdrain_1_1image_1_1GeoFrame.html#a0ffeb836c83c2e4683dcaf2795beaca8">More...</a><br /></td></tr>

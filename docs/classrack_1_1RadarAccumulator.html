@@ -146,8 +146,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarAccumulator.html#a6a46b79d5735b99d85d3c920de5039de">addData</a> (const <a class="el" href="classrack_1_1RadarAccumulator.html#a77109e5753bd242b9e9c986df74405db">pdata_src_t</a> &amp;srcData, const <a class="el" href="classrack_1_1RadarAccumulator.html#a77109e5753bd242b9e9c986df74405db">pdata_src_t</a> &amp;srcQuality, const <a class="el" href="classrack_1_1RadarAccumulator.html#a77109e5753bd242b9e9c986df74405db">pdata_src_t</a> &amp;srcCount)</td></tr>
 <tr class="memdesc:a6a46b79d5735b99d85d3c920de5039de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds data that is in the same coordinate system as the accumulator. <br /></td></tr>
 <tr class="separator:a6a46b79d5735b99d85d3c920de5039de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55219c6270c18415a064988a333ab5fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarAccumulator.html#a55219c6270c18415a064988a333ab5fd">extract</a> (const OD &amp;odimOut, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; OD &gt; &gt; &amp;dstProduct, const std::string &amp;quantities, const <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; int &gt; &amp;crop={0, 0, 0, 0}) const</td></tr>
-<tr class="separator:a55219c6270c18415a064988a333ab5fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dd46643b1394cc066f92fb871313210"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarAccumulator.html#a5dd46643b1394cc066f92fb871313210">extract</a> (const OD &amp;odimOut, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; OD &gt; &gt; &amp;dstProduct, const std::string &amp;fields, const <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; int &gt; &amp;crop={0, 0, 0, 0}) const</td></tr>
+<tr class="separator:a5dd46643b1394cc066f92fb871313210"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb2e3c45f653676c4b191187c9e3a577"><td class="memItemLeft" align="right" valign="top"><a id="aeb2e3c45f653676c4b191187c9e3a577"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarAccumulator.html#aeb2e3c45f653676c4b191187c9e3a577">setTargetEncoding</a> (const std::string &amp;encoding)</td></tr>
 <tr class="memdesc:aeb2e3c45f653676c4b191187c9e3a577"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not critical. If set, needed to warn if input data does not match the expected / potential targetEncoding. <br /></td></tr>
@@ -203,8 +203,8 @@ class rack::RadarAccumulator&lt; AC, OD &gt;</h3>
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a55219c6270c18415a064988a333ab5fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55219c6270c18415a064988a333ab5fd">&#9670;&nbsp;</a></span>extract()</h2>
+<a id="a5dd46643b1394cc066f92fb871313210"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dd46643b1394cc066f92fb871313210">&#9670;&nbsp;</a></span>extract()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -225,7 +225,7 @@ class rack::RadarAccumulator&lt; AC, OD &gt;</h3>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>quantities</em>, </td>
+          <td class="paramname"><em>fields</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -243,11 +243,11 @@ class rack::RadarAccumulator&lt; AC, OD &gt;</h3>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">odimOut</td><td>- metadata container (<a class="el" href="classrack_1_1PolarODIM.html" title="Metadata structure for single-radar data (polar scans, volumes and products).">PolarODIM</a> or <a class="el" href="classrack_1_1CartesianODIM.html" title="Metadata structure for Cartesian radar data products (single-radar or composites).">CartesianODIM</a>) </td></tr>
-    <tr><td class="paramname">quantities</td><td>- layers (d=data, w=weight, ...) </td></tr>
+    <tr><td class="paramname">fields</td><td>- layers (d=data, w=weight, C=count, ...) </td></tr>
   </table>
   </dd>
 </dl>
-<p>Determines if quality is stored in /dataset1/quality1/ /dataset1/data1/quality1/</p>
+<p>Determines if quality is stored in /dataset1/quality1/ or /dataset1/data1/quality1/</p>
 
 </div>
 </div>

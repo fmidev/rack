@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['prf_4187',['Prf',['../classrack_1_1DataSelector.html#a0aae288aae6ee801cf92cd15f6d57df5',1,'rack::DataSelector']]],
-  ['projdef_5fvariant_4188',['PROJDEF_variant',['../classdrain_1_1Projector.html#a711a592c3ebc676eafa0d18216a646ec',1,'drain::Projector']]]
+  ['mode_4230',['Mode',['../classhi5_1_1Reader.html#a46c8a310cf4c094f8c80e1cb8dc1f911',1,'hi5::Reader']]]
 ];

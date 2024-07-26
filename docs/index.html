@@ -76,12 +76,10 @@ $(function() {
 <li class="level2"><a href="#selecting">Selecting data</a><ul><li class="level3"><a href="#selectquantity">Selecting by quantity only</a></li>
 </ul>
 </li>
+<li class="level2"><a href="#target">Defining target data properties</a></li>
+<li class="level2"><a href="#quantityConf">Default encoding of quantities</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#modifying">Modifying data</a><ul><li class="level2"><a href="#target">Defining target data properties</a></li>
-</ul>
-</li>
-<li class="level1"><a href="#quantityConf">Default encoding of quantities</a></li>
 </ul>
 </div>
 <div class="textblock"><p><em> </em> <em> </em></p>
@@ -296,10 +294,7 @@ Selecting by quantity only</h3>
 <img src="ppi-RHOHV-panel.png" alt=""/>
 <div class="caption">
 Data selected with -Q RHOHV and coloured with <code>--palette</code>.</div></div>
- <h1><a class="anchor" id="modifying"></a>
-Modifying data</h1>
-<p>See <a class="el" href="modifypage.html">Modifying data</a></p>
-<h2><a class="anchor" id="target"></a>
+ <h2><a class="anchor" id="target"></a>
 Defining target data properties</h2>
 <p>The desired output storage type, scaling, and encoding can be set with <code>&ndash;encoding</code> command. Depending on the following command, a varying set of properties will be supported. The general form of <code>&ndash;encoding</code> command is </p><div class="fragment"><div class="line">rack &lt;input&gt;  --encoding &lt;type&gt;,&lt;gain&gt;,&lt;offset&gt;,&lt;undetect&gt;,&lt;nodata&gt;  &lt;commands&gt;</div>
 </div><!-- fragment --><p> and for polar products and conversions, the extended form is: </p><div class="fragment"><div class="line">rack &lt;input&gt;  --encoding &lt;type&gt;,&lt;gain&gt;,&lt;offset&gt;,&lt;undetect&gt;,&lt;nodata&gt;,&lt;rscale&gt;,&lt;nrays&gt;,&lt;nbins&gt;  &lt;commands&gt;</div>
@@ -308,8 +303,9 @@ Defining target data properties</h2>
  In ODIM standard, <code>undetect</code> marks the data where a measurement value falls under a sensitivity limit and <code>nodata</code> marks areas where no measurement at all is available. Also grid geometry (<code>nbins</code> , <code>nrays</code> and <code>rscale</code> ) can be set when applicable. For example, producing a polar product (here 500m CAPPI, see <a class="el" href="productspage.html">Meteorological products</a>) with some desired properties is given by: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --encoding C,0.4,-20,rscale=1000,nbins=250  --pCappi 500 -o cappi-500.h5</div>
 </div><!-- fragment --><p> <b>Rack</b> provides default encodings for some quantities. The configuration can be listed and changed with <code>&ndash;quantityConf</code> command.</p>
 <p>As to hierarchical structure of resulting products, the default location of computed meteorological products and Composites is <code>/dataset1/data1</code> . Any previous results are overwritten. This can be changed by means of <code>&ndash;append</code> command: one can combine several products in same <code>dataset</code> group, adding a new <code>data</code> group, or append a new <code>dataset</code> group.</p>
-<h1><a class="anchor" id="quantityConf"></a>
-Default encoding of quantities</h1>
+<p>For modifying existing data, see <a class="el" href="modifypage.html">Modifying data</a> .</p>
+<h2><a class="anchor" id="quantityConf"></a>
+Default encoding of quantities</h2>
 <p>Measurement parameters in radar have a varying scale. For example, DBZH is typically between -32dBZ and 50dBZ whereas RHOHV ranges between 0.0 and 1.0. Further, different storage types can be used, and the resulting value range should be compatible with the encoding. In some cases, like in creating radar image composites, <b>Rack</b> can use predefined storage types and encoding. The following examples illustrate the usage</p>
 <div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --quantityConf DBZH:S          # <span class="keywordflow">for</span> encoding dBZ, use <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> int, with <span class="keywordflow">default</span> scaling</div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> --quantityConf DBZH:C,0.6,-30  # <span class="keywordflow">for</span> encoding dBZ, use <span class="keywordtype">unsigned</span> char, with gain=0.5 and offset=-32</div>

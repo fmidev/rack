@@ -130,10 +130,10 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:a8d8ceb9de062d1060450fe1a6e855d22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantitySelector.html#a8d8ceb9de062d1060450fe1a6e855d22">setQuantities</a> (const std::string &amp;args)</td></tr>
 <tr class="memdesc:a8d8ceb9de062d1060450fe1a6e855d22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the list of accepted quantities as a string.  <a href="classrack_1_1QuantitySelector.html#a8d8ceb9de062d1060450fe1a6e855d22">More...</a><br /></td></tr>
 <tr class="separator:a8d8ceb9de062d1060450fe1a6e855d22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a512e85812ab86fdf976a91138feeb3ae"><td class="memTemplParams" colspan="2">template&lt;typename T , typename ... TT&gt; </td></tr>
-<tr class="memitem:a512e85812ab86fdf976a91138feeb3ae"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantitySelector.html#a512e85812ab86fdf976a91138feeb3ae">addQuantity</a> (const T &amp;arg, const TT &amp;... args)</td></tr>
-<tr class="memdesc:a512e85812ab86fdf976a91138feeb3ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define a syntax for quantity key. Will be checked if listed quantity keys do not match.  <a href="classrack_1_1QuantitySelector.html#a512e85812ab86fdf976a91138feeb3ae">More...</a><br /></td></tr>
-<tr class="separator:a512e85812ab86fdf976a91138feeb3ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06934e1e0822a36a68b5347689824c18"><td class="memTemplParams" colspan="2">template&lt;typename ... TT&gt; </td></tr>
+<tr class="memitem:a06934e1e0822a36a68b5347689824c18"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantitySelector.html#a06934e1e0822a36a68b5347689824c18">addQuantity</a> (const std::string &amp;arg, const TT &amp;... args)</td></tr>
+<tr class="memdesc:a06934e1e0822a36a68b5347689824c18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define a syntax for quantity key. Will be checked if listed quantity keys do not match.  <a href="classrack_1_1QuantitySelector.html#a06934e1e0822a36a68b5347689824c18">More...</a><br /></td></tr>
+<tr class="separator:a06934e1e0822a36a68b5347689824c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb51b3dac2e0be02619be6a5347f6c86"><td class="memItemLeft" align="right" valign="top"><a id="abb51b3dac2e0be02619be6a5347f6c86"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>testQuantity</b> (const std::string &amp;s) const</td></tr>
 <tr class="separator:abb51b3dac2e0be02619be6a5347f6c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,8 +195,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addQuantity</b> ()</t
 
 </div>
 </div>
-<a id="a512e85812ab86fdf976a91138feeb3ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a512e85812ab86fdf976a91138feeb3ae">&#9670;&nbsp;</a></span>addQuantity()</h2>
+<a id="a06934e1e0822a36a68b5347689824c18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06934e1e0822a36a68b5347689824c18">&#9670;&nbsp;</a></span>addQuantity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -207,7 +207,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addQuantity</b> ()</t
         <tr>
           <td class="memname">void addQuantity </td>
           <td>(</td>
-          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>arg</em>, </td>
         </tr>
         <tr>
@@ -232,7 +232,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addQuantity</b> ()</t
 <p>Define a syntax for quantity key. Will be checked if listed quantity keys do not match. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">r</td><td>- regular expression, like "^DBZ[HV]?C?$ </td></tr>
+    <tr><td class="paramname">arg</td><td>- regular expression, like "^DBZ[HV]?C?$ </td></tr>
+    <tr><td class="paramname">args</td><td>- regular expressions of further quantities </td></tr>
   </table>
   </dd>
 </dl>

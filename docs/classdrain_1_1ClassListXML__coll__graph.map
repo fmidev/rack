@@ -1,5 +1,5 @@
 <map id="ClassListXML" name="ClassListXML">
-<area shape="rect" id="node1" title=" " alt="" coords="41,409,149,436"/>
+<area shape="rect" id="node1" title="Container for style classes. Essentially a set of strings, with space&#45;separated output support." alt="" coords="41,409,149,436"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,320,143,347"/>
 <area shape="rect" id="node3" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="167,320,285,347"/>
 <area shape="rect" id="node4" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="178,157,274,184"/>

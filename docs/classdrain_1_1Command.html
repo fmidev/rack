@@ -71,6 +71,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1Command-members.html">List of all members</a>  </div>
@@ -88,55 +89,55 @@ Inheritance diagram for Command:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Command__inherit__graph.png" border="0" usemap="#aCommand_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCommand_inherit__map" id="aCommand_inherit__map">
-<area shape="rect" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="147,313,236,340"/>
-<area shape="rect" href="classdrain_1_1BeanCommand.html" title=" " alt="" coords="303,81,474,108"/>
-<area shape="rect" href="classdrain_1_1BeanCommand.html" title=" " alt="" coords="293,156,485,183"/>
-<area shape="rect" href="classdrain_1_1BeanCommand.html" title=" " alt="" coords="303,207,474,249"/>
-<area shape="rect" href="classdrain_1_1BeanCommand.html" title=" " alt="" coords="284,273,493,314"/>
-<area shape="rect" href="classdrain_1_1BeanerCommand.html" title=" " alt="" coords="294,338,483,379"/>
-<area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="327,1119,451,1145"/>
-<area shape="rect" href="classdrain_1_1BeanCommand.html" title="Base for derived classes using member BeanLike or referenced BeanLikes." alt="" coords="295,1169,482,1196"/>
-<area shape="rect" href="classdrain_1_1BeanerCommand.html" title="Command stored as a single entry in CommandBank and becomes &quot;renamed&quot; upon setKey() prior to executio..." alt="" coords="301,1220,476,1247"/>
-<area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="5,313,99,340"/>
-<area shape="rect" href="classrack_1_1AnDReCommand.html" title=" " alt="" coords="555,5,736,32"/>
-<area shape="rect" href="classrack_1_1ProductCommand.html" title="Wrapper for meteorological products derived from VolumeOp." alt="" coords="552,56,739,83"/>
-<area shape="rect" href="classrack_1_1RackImageOpCmd.html" title="Designed for Rack." alt="" coords="550,107,741,133"/>
-<area shape="rect" href="classdrain_1_1BeanRefCommand.html" title=" " alt="" coords="554,157,737,184"/>
-<area shape="rect" href="classrack_1_1CmdImageBox.html" title=" " alt="" coords="586,212,705,239"/>
-<area shape="rect" href="classdrain_1_1CmdOpticalFlowBase.html" title="Utility for creating a Command that runs FastOpticalFlowOp operator." alt="" coords="565,263,726,289"/>
-<area shape="rect" href="classrack_1_1CmdImageSampler.html" title=" " alt="" coords="572,313,719,340"/>
-<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="541,364,749,391"/>
-<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="561,415,730,457"/>
-<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="549,481,742,508"/>
-<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="555,532,736,559"/>
-<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="545,583,746,609"/>
-<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="554,633,737,689"/>
-<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="549,713,741,740"/>
-<area shape="rect" href="structCmdExampleCompute.html" title=" " alt="" coords="561,764,729,791"/>
-<area shape="rect" href="structComputeCmd.html" title=" " alt="" coords="590,815,701,841"/>
-<area shape="rect" href="classdrain_1_1CmdDebug.html" title=" " alt="" coords="598,865,693,892"/>
-<area shape="rect" href="classdrain_1_1CmdExecScript.html" title="Executes the defined script." alt="" coords="586,916,705,943"/>
-<area shape="rect" href="classdrain_1_1CmdExpandVariables.html" title=" " alt="" coords="565,967,725,993"/>
-<area shape="rect" href="classdrain_1_1CmdLog.html" title=" " alt="" coords="608,1017,683,1044"/>
-<area shape="rect" href="classdrain_1_1CmdStatus.html" title=" " alt="" coords="599,1068,692,1095"/>
-<area shape="rect" href="classdrain_1_1SimpleCommand.html" title="A single&#45;parameter command." alt="" coords="559,1119,731,1145"/>
-<area shape="rect" href="classrack_1_1CartesianBBox.html" title=" " alt="" coords="586,1169,705,1196"/>
-<area shape="rect" href="classrack_1_1CartesianBBoxReset.html" title=" " alt="" coords="568,1220,723,1247"/>
-<area shape="rect" href="classrack_1_1CartesianBBoxTest.html" title=" " alt="" coords="573,1271,717,1297"/>
-<area shape="rect" href="classrack_1_1CartesianBBoxTile.html" title=" " alt="" coords="574,1321,717,1348"/>
-<area shape="rect" href="classrack_1_1CartesianCreateLookup.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="559,1372,732,1399"/>
-<area shape="rect" href="classrack_1_1CartesianGrid.html" title=" " alt="" coords="590,1423,701,1449"/>
-<area shape="rect" href="classrack_1_1CartesianInit.html" title=" " alt="" coords="593,1473,698,1500"/>
-<area shape="rect" href="classrack_1_1CartesianPlot.html" title=" " alt="" coords="591,1524,700,1551"/>
-<area shape="rect" href="classrack_1_1CartesianRange.html" title=" " alt="" coords="583,1575,708,1601"/>
-<area shape="rect" href="classrack_1_1CartesianReset.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="585,1625,706,1652"/>
-<area shape="rect" href="classrack_1_1CartesianSize.html" title=" " alt="" coords="590,1676,701,1703"/>
-<area shape="rect" href="classrack_1_1CartesianSpread.html" title=" " alt="" coords="581,1727,710,1753"/>
-<area shape="rect" href="classrack_1_1CmdBaseSVG.html" title="SVG panel utils." alt="" coords="590,1777,701,1804"/>
-<area shape="rect" href="classrack_1_1CmdCheckType.html" title="Default handler for requests without own handler. Handles options that are recognized as 1) files to ..." alt="" coords="584,1828,707,1855"/>
-<area shape="rect" href="classrack_1_1CmdCompleteODIM.html" title="Ensure correct ODIM types after setting attributes." alt="" coords="570,1879,721,1905"/>
-<area shape="rect" href="classrack_1_1CmdConvert.html" title="Convert data with desired encoding." alt="" coords="594,1929,697,1956"/>
-<area shape="rect" href="classrack_1_1CmdCreateDefaultQuality.html" title=" " alt="" coords="550,1980,741,2007"/>
+<area shape="rect" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="147,891,236,917"/>
+<area shape="rect" href="classdrain_1_1BeanCommand.html" title=" " alt="" coords="304,381,475,408"/>
+<area shape="rect" href="classdrain_1_1BeanCommand.html" title=" " alt="" coords="293,781,485,808"/>
+<area shape="rect" href="classdrain_1_1BeanCommand.html" title=" " alt="" coords="284,832,495,859"/>
+<area shape="rect" href="classdrain_1_1BeanCommand.html" title=" " alt="" coords="304,883,475,925"/>
+<area shape="rect" href="classdrain_1_1BeanCommand.html" title=" " alt="" coords="295,949,484,990"/>
+<area shape="rect" href="classdrain_1_1BeanCommand.html" title=" " alt="" coords="285,1014,494,1055"/>
+<area shape="rect" href="classdrain_1_1BeanCommand.html" title="Retrieves bean dynamically for each call." alt="" coords="296,1080,483,1107"/>
+<area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="5,891,99,917"/>
+<area shape="rect" href="classrack_1_1AnDReCommand.html" title=" " alt="" coords="547,143,729,169"/>
+<area shape="rect" href="classrack_1_1ProductCommand.html" title="Wrapper for meteorological products derived from VolumeOp." alt="" coords="545,356,731,383"/>
+<area shape="rect" href="classrack_1_1RackImageOpCmd.html" title="Designed for Rack." alt="" coords="543,407,733,433"/>
+<area shape="rect" href="classrack_1_1DetectorCommand.html" title=" " alt="" coords="789,5,982,32"/>
+<area shape="rect" href="classdrain_1_1BeanRefCommand.html" title=" " alt="" coords="547,781,729,808"/>
+<area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="576,836,700,863"/>
+<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="781,56,989,83"/>
+<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="801,107,970,149"/>
+<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="789,173,982,200"/>
+<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="795,224,976,251"/>
+<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="785,275,986,301"/>
+<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="794,325,977,381"/>
+<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="789,405,981,432"/>
+<area shape="rect" href="structCmdExampleCompute.html" title=" " alt="" coords="801,456,969,483"/>
+<area shape="rect" href="structComputeCmd.html" title=" " alt="" coords="830,507,941,533"/>
+<area shape="rect" href="classdrain_1_1CmdDebug.html" title=" " alt="" coords="838,557,933,584"/>
+<area shape="rect" href="classdrain_1_1CmdExecScript.html" title="Executes the defined script." alt="" coords="826,608,945,635"/>
+<area shape="rect" href="classdrain_1_1CmdExpandVariables.html" title=" " alt="" coords="805,659,965,685"/>
+<area shape="rect" href="classdrain_1_1CmdLog.html" title=" " alt="" coords="848,709,923,736"/>
+<area shape="rect" href="classdrain_1_1CmdStatus.html" title=" " alt="" coords="839,760,932,787"/>
+<area shape="rect" href="classdrain_1_1SimpleCommand.html" title="A single&#45;parameter command." alt="" coords="799,811,971,837"/>
+<area shape="rect" href="classrack_1_1CartesianBBox.html" title=" " alt="" coords="826,861,945,888"/>
+<area shape="rect" href="classrack_1_1CartesianBBoxReset.html" title=" " alt="" coords="808,912,963,939"/>
+<area shape="rect" href="classrack_1_1CartesianBBoxTest.html" title=" " alt="" coords="813,963,957,989"/>
+<area shape="rect" href="classrack_1_1CartesianBBoxTile.html" title=" " alt="" coords="814,1013,957,1040"/>
+<area shape="rect" href="classrack_1_1CartesianCreateLookup.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="799,1064,972,1091"/>
+<area shape="rect" href="classrack_1_1CartesianGrid.html" title=" " alt="" coords="830,1115,941,1141"/>
+<area shape="rect" href="classrack_1_1CartesianInit.html" title=" " alt="" coords="833,1165,938,1192"/>
+<area shape="rect" href="classrack_1_1CartesianPlot.html" title=" " alt="" coords="831,1216,940,1243"/>
+<area shape="rect" href="classrack_1_1CartesianRange.html" title=" " alt="" coords="823,1267,948,1293"/>
+<area shape="rect" href="classrack_1_1CartesianReset.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="825,1317,946,1344"/>
+<area shape="rect" href="classrack_1_1CartesianSize.html" title=" " alt="" coords="830,1368,941,1395"/>
+<area shape="rect" href="classrack_1_1CartesianSpread.html" title=" " alt="" coords="821,1419,950,1445"/>
+<area shape="rect" href="classrack_1_1CmdBaseSVG.html" title="SVG panel utils." alt="" coords="830,1469,941,1496"/>
+<area shape="rect" href="classrack_1_1CmdCheckType.html" title="Default handler for requests without own handler. Handles options that are recognized as 1) files to ..." alt="" coords="824,1520,947,1547"/>
+<area shape="rect" href="classrack_1_1CmdCompleteODIM.html" title="Ensure correct ODIM types after setting attributes." alt="" coords="810,1571,961,1597"/>
+<area shape="rect" href="classrack_1_1CmdConvert.html" title="Convert data with desired encoding." alt="" coords="834,1621,937,1648"/>
+<area shape="rect" href="classrack_1_1CmdImageBox.html" title=" " alt="" coords="579,891,697,917"/>
+<area shape="rect" href="classrack_1_1CmdImageSampler.html" title=" " alt="" coords="565,956,711,983"/>
+<area shape="rect" href="classdrain_1_1CmdOpticalFlowBase.html" title="Utility for creating a Command that runs FastOpticalFlowOp operator." alt="" coords="557,1021,719,1048"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -144,21 +145,21 @@ Collaboration diagram for Command:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Command__coll__graph.png" border="0" usemap="#aCommand_coll__map" alt="Collaboration graph"/></div>
 <map name="aCommand_coll__map" id="aCommand_coll__map">
-<area shape="rect" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="168,831,257,857"/>
-<area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="166,755,259,781"/>
-<area shape="rect" href="classdrain_1_1Context.html" title=" " alt="" coords="176,665,249,692"/>
+<area shape="rect" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="320,831,409,857"/>
+<area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="265,755,358,781"/>
+<area shape="rect" href="classdrain_1_1Context.html" title=" " alt="" coords="213,665,287,692"/>
 <area shape="rect" href="classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,576,160,603"/>
 <area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="23,493,195,519"/>
 <area shape="rect" title=" " alt="" coords="5,409,212,436"/>
-<area shape="rect" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="190,576,235,603"/>
-<area shape="rect" href="classdrain_1_1StatusFlags.html" title=" " alt="" coords="259,576,358,603"/>
-<area shape="rect" href="classdrain_1_1GlobalFlags.html" title=" " alt="" coords="231,485,386,527"/>
-<area shape="rect" href="classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="273,409,344,436"/>
-<area shape="rect" href="classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="211,320,318,347"/>
-<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="342,320,459,347"/>
-<area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="353,157,449,184"/>
-<area shape="rect" href="classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="337,81,465,108"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="325,5,477,32"/>
+<area shape="rect" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="187,576,233,603"/>
+<area shape="rect" href="classdrain_1_1StatusFlags.html" title=" " alt="" coords="257,576,355,603"/>
+<area shape="rect" href="classdrain_1_1GlobalFlags.html" title=" " alt="" coords="225,485,379,527"/>
+<area shape="rect" href="classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="264,409,335,436"/>
+<area shape="rect" href="classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="202,320,309,347"/>
+<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="346,320,463,347"/>
+<area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="357,157,453,184"/>
+<area shape="rect" href="classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="341,81,469,108"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="329,5,481,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -173,38 +174,29 @@ virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="botto
 <tr class="memitem:a23f107254fbec5d697b8ad294765b5c2"><td class="memItemLeft" align="right" valign="top"><a id="a23f107254fbec5d697b8ad294765b5c2"></a>
 virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDescription</b> () const =0</td></tr>
 <tr class="separator:a23f107254fbec5d697b8ad294765b5c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2170fe7678dc56d71719a2d867ee8f6"><td class="memItemLeft" align="right" valign="top"><a id="ad2170fe7678dc56d71719a2d867ee8f6"></a>
-const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getLastParameters</b> () const</td></tr>
-<tr class="separator:ad2170fe7678dc56d71719a2d867ee8f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64367bf8389d6e87456b1a1529db8555"><td class="memItemLeft" align="right" valign="top"><a id="a64367bf8389d6e87456b1a1529db8555"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setParameters</b> (const std::string &amp;args)</td></tr>
-<tr class="separator:a64367bf8389d6e87456b1a1529db8555"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa16c09258b270f4232e000e412d728c4"><td class="memItemLeft" align="right" valign="top"><a id="aa16c09258b270f4232e000e412d728c4"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setParameters</b> (const <a class="el" href="classdrain_1_1VariableMap.html">VariableMap</a> &amp;args)=0</td></tr>
-<tr class="separator:aa16c09258b270f4232e000e412d728c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a384c40ecdef3ccc3e6d3001d684d6fd7"><td class="memItemLeft" align="right" valign="top"><a id="a384c40ecdef3ccc3e6d3001d684d6fd7"></a>
+virtual const <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getParameters</b> () const =0</td></tr>
+<tr class="separator:a384c40ecdef3ccc3e6d3001d684d6fd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac56cf959dc4beffb72efe7f3bd2a41f7"><td class="memItemLeft" align="right" valign="top"><a id="ac56cf959dc4beffb72efe7f3bd2a41f7"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setParameters</b> (const std::string &amp;args) final</td></tr>
+<tr class="separator:ac56cf959dc4beffb72efe7f3bd2a41f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93c7107b9d7d3ffad4ca61f79c2d176b"><td class="memTemplParams" colspan="2"><a id="a93c7107b9d7d3ffad4ca61f79c2d176b"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a93c7107b9d7d3ffad4ca61f79c2d176b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setParameters</b> (const <a class="el" href="classdrain_1_1SmartMap.html">SmartMap</a>&lt; T &gt; &amp;args)</td></tr>
 <tr class="separator:a93c7107b9d7d3ffad4ca61f79c2d176b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1621524b0f90a54e424d786e3ae3475"><td class="memTemplParams" colspan="2"><a id="aa1621524b0f90a54e424d786e3ae3475"></a>
-template&lt;class T &gt; </td></tr>
-<tr class="memitem:aa1621524b0f90a54e424d786e3ae3475"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setParameter</b> (const std::string &amp;key, const T &amp;value)</td></tr>
+<tr class="memitem:aa1621524b0f90a54e424d786e3ae3475"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:aa1621524b0f90a54e424d786e3ae3475"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#aa1621524b0f90a54e424d786e3ae3475">setParameter</a> (const std::string &amp;key, const T &amp;value)</td></tr>
+<tr class="memdesc:aa1621524b0f90a54e424d786e3ae3475"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a value to a single parameter.  <a href="classdrain_1_1Command.html#aa1621524b0f90a54e424d786e3ae3475">More...</a><br /></td></tr>
 <tr class="separator:aa1621524b0f90a54e424d786e3ae3475"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3c9ddf78ba3cd12f2ae2da8d488b122"><td class="memItemLeft" align="right" valign="top"><a id="ad3c9ddf78ba3cd12f2ae2da8d488b122"></a>
-<a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>addSection</b> (drain::Flagger::value_t i)</td></tr>
-<tr class="separator:ad3c9ddf78ba3cd12f2ae2da8d488b122"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af74da00fbd45d379f46413367ed61039"><td class="memItemLeft" align="right" valign="top"><a id="af74da00fbd45d379f46413367ed61039"></a>
+<a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>addSection</b> (drain::Flagger::ivalue_t i)</td></tr>
+<tr class="separator:af74da00fbd45d379f46413367ed61039"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd36d7881ea8503d5c5824e7a5ad6c7e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#acd36d7881ea8503d5c5824e7a5ad6c7e">update</a> ()</td></tr>
 <tr class="memdesc:acd36d7881ea8503d5c5824e7a5ad6c7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional method for preparing command to execution.  <a href="classdrain_1_1Command.html#acd36d7881ea8503d5c5824e7a5ad6c7e">More...</a><br /></td></tr>
 <tr class="separator:acd36d7881ea8503d5c5824e7a5ad6c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a384c40ecdef3ccc3e6d3001d684d6fd7"><td class="memItemLeft" align="right" valign="top"><a id="a384c40ecdef3ccc3e6d3001d684d6fd7"></a>
-virtual const <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getParameters</b> () const =0</td></tr>
-<tr class="separator:a384c40ecdef3ccc3e6d3001d684d6fd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26641ed174620b9a2ad11a77f06adace"><td class="memItemLeft" align="right" valign="top"><a id="a26641ed174620b9a2ad11a77f06adace"></a>
-virtual <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getParameters</b> ()=0</td></tr>
-<tr class="separator:a26641ed174620b9a2ad11a77f06adace"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57eedac50ebabfb3f178ae9183a9776f"><td class="memItemLeft" align="right" valign="top"><a id="a57eedac50ebabfb3f178ae9183a9776f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasArguments</b> () const</td></tr>
-<tr class="separator:a57eedac50ebabfb3f178ae9183a9776f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f6485c2075b4c36114fd725551336df"><td class="memItemLeft" align="right" valign="top"><a id="a4f6485c2075b4c36114fd725551336df"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasParameters</b> () const</td></tr>
+<tr class="separator:a4f6485c2075b4c36114fd725551336df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf014e954d8d42d51152cc4b34de5f76"><td class="memItemLeft" align="right" valign="top"><a id="abf014e954d8d42d51152cc4b34de5f76"></a>
 virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#abf014e954d8d42d51152cc4b34de5f76">getType</a> () const</td></tr>
 <tr class="memdesc:abf014e954d8d42d51152cc4b34de5f76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of result, comparable to a return type of a function. ? <br /></td></tr>
@@ -216,6 +208,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:ad6ff66747141f8cf6f4e2ef9e5c58729"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#ad6ff66747141f8cf6f4e2ef9e5c58729">run</a> (const std::string &amp;params=&quot;&quot;)</td></tr>
 <tr class="memdesc:ad6ff66747141f8cf6f4e2ef9e5c58729"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience. Sets parameters and executes the command.  <a href="classdrain_1_1Command.html#ad6ff66747141f8cf6f4e2ef9e5c58729">More...</a><br /></td></tr>
 <tr class="separator:ad6ff66747141f8cf6f4e2ef9e5c58729"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2170fe7678dc56d71719a2d867ee8f6"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#ad2170fe7678dc56d71719a2d867ee8f6">getLastParameters</a> () const</td></tr>
+<tr class="memdesc:ad2170fe7678dc56d71719a2d867ee8f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">After executing this command run a routine, if defined.  <a href="classdrain_1_1Command.html#ad2170fe7678dc56d71719a2d867ee8f6">More...</a><br /></td></tr>
+<tr class="separator:ad2170fe7678dc56d71719a2d867ee8f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1Contextual"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1Contextual')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td></tr>
 <tr class="memitem:af0652177ffe41db9b359137133b8f83a inherit pub_methods_classdrain_1_1Contextual"><td class="memItemLeft" align="right" valign="top"><a id="af0652177ffe41db9b359137133b8f83a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Contextual.html#af0652177ffe41db9b359137133b8f83a">Contextual</a> ()</td></tr>
@@ -249,14 +244,20 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ab217561ce555727ff977aa053656a686"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#ab217561ce555727ff977aa053656a686">section</a></td></tr>
+<tr class="memitem:ab217561ce555727ff977aa053656a686"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#ab217561ce555727ff977aa053656a686">section</a> = 1</td></tr>
 <tr class="separator:ab217561ce555727ff977aa053656a686"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a7c1cd222b69ef093f0506cf5046350b6"><td class="memItemLeft" align="right" valign="top"><a id="a7c1cd222b69ef093f0506cf5046350b6"></a>
+static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><b>cmdArgLayout</b> = {&quot;,&quot;, &quot;?&quot;, &quot;=&quot;, &quot;&quot;}</td></tr>
+<tr class="separator:a7c1cd222b69ef093f0506cf5046350b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a71ce0e1e8d2571210f9de0b0b5ecd079"><td class="memItemLeft" align="right" valign="top"><a id="a71ce0e1e8d2571210f9de0b0b5ecd079"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setAllParameters</b> (const std::string &amp;args)=0</td></tr>
-<tr class="separator:a71ce0e1e8d2571210f9de0b0b5ecd079"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26641ed174620b9a2ad11a77f06adace"><td class="memItemLeft" align="right" valign="top"><a id="a26641ed174620b9a2ad11a77f06adace"></a>
+virtual <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getParameters</b> ()=0</td></tr>
+<tr class="separator:a26641ed174620b9a2ad11a77f06adace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -279,6 +280,34 @@ template&lt;class T &gt; </td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classBase.html">Base</a> class for commands: typically actions taking parameters but also plain variable assignments and parameterless actions. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad2170fe7678dc56d71719a2d867ee8f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2170fe7678dc56d71719a2d867ee8f6">&#9670;&nbsp;</a></span>getLastParameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string&amp; getLastParameters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>After executing this command run a routine, if defined. </p>
+<p>Future option: single-code Dynamic functions: handle the command string </p>
+
+</div>
+</div>
 <a id="ad6ff66747141f8cf6f4e2ef9e5c58729"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad6ff66747141f8cf6f4e2ef9e5c58729">&#9670;&nbsp;</a></span>run()</h2>
 
@@ -308,6 +337,45 @@ template&lt;class T &gt; </td></tr>
 
 </div>
 </div>
+<a id="aa1621524b0f90a54e424d786e3ae3475"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1621524b0f90a54e424d786e3ae3475">&#9670;&nbsp;</a></span>setParameter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setParameter </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set a value to a single parameter. </p>
+<p>This method also assigns "&lt;key&gt;=&lt;value&gt;" to lastParameters </p>
+
+</div>
+</div>
 <a id="acd36d7881ea8503d5c5824e7a5ad6c7e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd36d7881ea8503d5c5824e7a5ad6c7e">&#9670;&nbsp;</a></span>update()</h2>
 
@@ -334,7 +402,7 @@ template&lt;class T &gt; </td></tr>
 <p>Optional method for preparing command to execution. </p>
 <p>This function will be called prior to running <a class="el" href="classdrain_1_1Command.html#a951c3a8da6ec531137592b969a542cbb" title="Run the command with current parameter values.">exec()</a> </p>
 
-<p>Reimplemented in <a class="el" href="classrack_1_1ProductCommand.html#acd36d7881ea8503d5c5824e7a5ad6c7e">ProductCommand&lt; OP &gt;</a>, <a class="el" href="classrack_1_1DetectorCommand.html#acd36d7881ea8503d5c5824e7a5ad6c7e">DetectorCommand&lt; OP &gt;</a>, and <a class="el" href="classrack_1_1AnDReCommand.html#acd36d7881ea8503d5c5824e7a5ad6c7e">AnDReCommand&lt; OP &gt;</a>.</p>
+<p>Reimplemented in <a class="el" href="classrack_1_1ProductCommand.html#af9f317a6530155acd7adfb119bed731c">ProductCommand&lt; OP &gt;</a>, <a class="el" href="classrack_1_1DetectorCommand.html#acd36d7881ea8503d5c5824e7a5ad6c7e">DetectorCommand&lt; OP &gt;</a>, and <a class="el" href="classrack_1_1AnDReCommand.html#acd36d7881ea8503d5c5824e7a5ad6c7e">AnDReCommand&lt; OP &gt;</a>.</p>
 
 </div>
 </div>
@@ -346,7 +414,7 @@ template&lt;class T &gt; </td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int section</td>
+          <td class="memname">int section = 1</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -354,8 +422,9 @@ template&lt;class T &gt; </td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/drain/prog/<a class="el" href="Command_8h_source.html">Command.h</a></li>
+<li>src/drain/prog/Command.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

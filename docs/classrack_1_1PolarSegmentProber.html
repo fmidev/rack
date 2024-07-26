@@ -202,18 +202,18 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Computes in polar coordinates. </p>
 <p>The area of a sector of a circle is </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ A_s = \frac{1}{2}ra = \frac{1}{2}\alpha r^2 \]" src="form_84.png"/>
+<img class="formulaDsp" alt="\[ A_s = \frac{1}{2}ra = \frac{1}{2}\alpha r^2 \]" src="form_84.png" width="98" height="26"/>
 </p>
-<p> where <img class="formulaInl" alt="$r$" src="form_27.png"/> is radius and <img class="formulaInl" alt="$p = \alpha r$" src="form_85.png"/> arc of the sector.</p>
-<p>Consider a radar sweep and a bin <img class="formulaInl" alt="$b(i,j)$" src="form_86.png"/> where <img class="formulaInl" alt="$i$" src="form_87.png"/> is the range index and <img class="formulaInl" alt="$j$" src="form_88.png"/> is the azimuthal index. The corresponding physical area is </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ A_b(i,j) = \frac{1}{2}(r_2-r_1)a = \frac{1}{2}\mathrm{rscale}\cdot \frac{2\pi}{\mathrm{nrays}}(i\cdot \mathrm{rscale}) = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} i \]" src="form_89.png"/>
+<p> where <img class="formulaInl" alt="$r$" src="form_27.png" width="8" height="6"/> is radius and <img class="formulaInl" alt="$p = \alpha r$" src="form_85.png" width="38" height="9"/> arc of the sector.</p>
+<p>Consider a radar sweep and a bin <img class="formulaInl" alt="$b(i,j)$" src="form_86.png" width="30" height="14"/> where <img class="formulaInl" alt="$i$" src="form_87.png" width="5" height="9"/> is the range index and <img class="formulaInl" alt="$j$" src="form_88.png" width="6" height="11"/> is the azimuthal index. The corresponding physical area is </p><p class="formulaDsp">
+<img class="formulaDsp" alt="\[ A_b(i,j) = \frac{1}{2}(r_2-r_1)a = \frac{1}{2}\mathrm{rscale}\cdot \frac{2\pi}{\mathrm{nrays}}(i\cdot \mathrm{rscale}) = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} i \]" src="form_89.png" width="349" height="31"/>
 </p>
-<p> where <img class="formulaInl" alt="$\mathrm{rscale}$" src="form_90.png"/> is the phycal bin length and <img class="formulaInl" alt="$\mathrm{nrays}$" src="form_91.png"/> the number of beams in the sweep. Notice that the area is a function of <img class="formulaInl" alt="$i$" src="form_87.png"/> only, but we write both indices <img class="formulaInl" alt="$(i,j)$" src="form_92.png"/> for clarity.</p>
-<p>Consider a segment <img class="formulaInl" alt="$\Phi$" src="form_93.png"/> in a radar sweep. The segment can be identified with the set of coordinate of the involved bins: <img class="formulaInl" alt="$\Phi = \{(i,j)\}$" src="form_94.png"/> In computing the area of segment <img class="formulaInl" alt="$ \Phi $" src="form_95.png"/> , <a class="el" href="classrack_1_1PolarSegmentProber.html" title="Computes in polar coordinates.">PolarSegmentProber</a> primarily computes a simple integer quantity </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ D_\Phi = \sum_\Phi i \]" src="form_96.png"/>
+<p> where <img class="formulaInl" alt="$\mathrm{rscale}$" src="form_90.png" width="31" height="10"/> is the phycal bin length and <img class="formulaInl" alt="$\mathrm{nrays}$" src="form_91.png" width="30" height="9"/> the number of beams in the sweep. Notice that the area is a function of <img class="formulaInl" alt="$i$" src="form_87.png" width="5" height="9"/> only, but we write both indices <img class="formulaInl" alt="$(i,j)$" src="form_92.png" width="24" height="14"/> for clarity.</p>
+<p>Consider a segment <img class="formulaInl" alt="$\Phi$" src="form_93.png" width="9" height="10"/> in a radar sweep. The segment can be identified with the set of coordinate of the involved bins: <img class="formulaInl" alt="$\Phi = \{(i,j)\}$" src="form_94.png" width="63" height="14"/> In computing the area of segment <img class="formulaInl" alt="$ \Phi $" src="form_95.png" width="9" height="10"/> , <a class="el" href="classrack_1_1PolarSegmentProber.html" title="Computes in polar coordinates.">PolarSegmentProber</a> primarily computes a simple integer quantity </p><p class="formulaDsp">
+<img class="formulaDsp" alt="\[ D_\Phi = \sum_\Phi i \]" src="form_96.png" width="59" height="28"/>
 </p>
 <p> The physical area is hence </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ A_\Phi = \sum_\Phi A_b(i,j) = \sum_\Phi \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} i = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} \sum_\Phi i = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} D_\Phi \]" src="form_97.png"/>
+<img class="formulaDsp" alt="\[ A_\Phi = \sum_\Phi A_b(i,j) = \sum_\Phi \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} i = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} \sum_\Phi i = \frac{\pi(\mathrm{rscale})^2}{\mathrm{nrays}} D_\Phi \]" src="form_97.png" width="381" height="35"/>
 </p>
  </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/radar/<a class="el" href="Analysis_8h_source.html">Analysis.h</a></li>

@@ -1,7 +1,8 @@
 <map id="CmdProcessFile" name="CmdProcessFile">
-<area shape="rect" id="node1" title=" " alt="" coords="47,304,172,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="5,229,213,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="47,155,171,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="65,80,154,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="63,5,156,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="48,379,173,405"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="7,304,215,331"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="49,229,173,256"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="5,155,216,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="66,80,155,107"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="64,5,157,32"/>
 </map>

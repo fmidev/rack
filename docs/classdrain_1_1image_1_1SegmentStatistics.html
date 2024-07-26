@@ -380,22 +380,22 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>elongation</b></td>
 
 <p>Returns the proportion in which the variance equals the variance of an annulus. </p>
 <p>The variance returned by <a class="el" href="classdrain_1_1image_1_1SegmentStatistics.html#ac4800634a026b8fccca3a7f0aca82d9a" title="Returns the total variance of the pixel coordinates.">getVariance()</a> is defined as </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ E\left[ (x-x_m)^2 + (y-y_m)^2 \right] = E\left[ r^2 \right] \]" src="form_26.png"/>
+<img class="formulaDsp" alt="\[ E\left[ (x-x_m)^2 + (y-y_m)^2 \right] = E\left[ r^2 \right] \]" src="form_26.png" width="193" height="18"/>
 </p>
-<p> where <img class="formulaInl" alt="$r$" src="form_27.png"/> is the distance from centroid <img class="formulaInl" alt="$(x_m,y_m)$" src="form_28.png"/>.</p>
-<p>For an annulus, with inner radius <img class="formulaInl" alt="$R_1$" src="form_29.png"/> and outer radius <img class="formulaInl" alt="$R_2$" src="form_30.png"/>, the area is </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ A = \int_{R_1}^{R_2} \int_{0}^{2\pi} r d\alpha\! dr = \pi (R_2^2 - R_1^2) \]" src="form_31.png"/>
+<p> where <img class="formulaInl" alt="$r$" src="form_27.png" width="8" height="6"/> is the distance from centroid <img class="formulaInl" alt="$(x_m,y_m)$" src="form_28.png" width="46" height="14"/>.</p>
+<p>For an annulus, with inner radius <img class="formulaInl" alt="$R_1$" src="form_29.png" width="14" height="13"/> and outer radius <img class="formulaInl" alt="$R_2$" src="form_30.png" width="14" height="13"/>, the area is </p><p class="formulaDsp">
+<img class="formulaDsp" alt="\[ A = \int_{R_1}^{R_2} \int_{0}^{2\pi} r d\alpha\! dr = \pi (R_2^2 - R_1^2) \]" src="form_31.png" width="190" height="34"/>
 </p>
 <p> and the variance </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ E\left[ r^2 \right] = \frac{1}{A} \int_{R_1}^{R_2} \int_{0}^{2\pi} r^2 r d\alpha\! dr = \frac{2\pi}{A}\int_{R_1}^{R_2} r^3 dr = \frac{2\pi}{4\pi (R_2^2 - R_1^2)} (R_2^4 - R_1^4) = \frac{R_2^2 + R_1^2}{2} \]" src="form_32.png"/>
+<img class="formulaDsp" alt="\[ E\left[ r^2 \right] = \frac{1}{A} \int_{R_1}^{R_2} \int_{0}^{2\pi} r^2 r d\alpha\! dr = \frac{2\pi}{A}\int_{R_1}^{R_2} r^3 dr = \frac{2\pi}{4\pi (R_2^2 - R_1^2)} (R_2^4 - R_1^4) = \frac{R_2^2 + R_1^2}{2} \]" src="form_32.png" width="450" height="34"/>
 </p>
-<p> Hence, for circular areas the variance varies between <img class="formulaInl" alt="$R^2/2$" src="form_33.png"/> (for circle) and <img class="formulaInl" alt="$R^2$" src="form_34.png"/> (for infinitesimally thin annulus). Obviously, these are the lower and upper limits of variance also for segments of any shape (consider a set of points, starting from two).</p>
-<p>However, thin line segments achieve values close to those of annula. Consider a thing rectangle of "radius" <img class="formulaInl" alt="$R$" src="form_35.png"/>, ie height <img class="formulaInl" alt="$2R$" src="form_36.png"/>: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ E\left[ (x-x_m)^2 + (y-y_m)^2 \right] \approx E\left[ (y-y_m)^2 \right] = \int_{-R}^{R}y^2dy/\int_{-R}^{R} dy = \frac{1}{3}\frac{R^2+R^2}{R+R} = \frac{1}{3}R^2 \]" src="form_37.png"/>
+<p> Hence, for circular areas the variance varies between <img class="formulaInl" alt="$R^2/2$" src="form_33.png" width="28" height="15"/> (for circle) and <img class="formulaInl" alt="$R^2$" src="form_34.png" width="14" height="11"/> (for infinitesimally thin annulus). Obviously, these are the lower and upper limits of variance also for segments of any shape (consider a set of points, starting from two).</p>
+<p>However, thin line segments achieve values close to those of annula. Consider a thing rectangle of "radius" <img class="formulaInl" alt="$R$" src="form_35.png" width="10" height="10"/>, ie height <img class="formulaInl" alt="$2R$" src="form_36.png" width="16" height="10"/>: </p><p class="formulaDsp">
+<img class="formulaDsp" alt="\[ E\left[ (x-x_m)^2 + (y-y_m)^2 \right] \approx E\left[ (y-y_m)^2 \right] = \int_{-R}^{R}y^2dy/\int_{-R}^{R} dy = \frac{1}{3}\frac{R^2+R^2}{R+R} = \frac{1}{3}R^2 \]" src="form_37.png" width="464" height="33"/>
 </p>
 <p> (Under construction.)</p>
-<p>If a segment is circular, its radius squared is <img class="formulaInl" alt="$r^2=A/\pi$" src="form_38.png"/>, where <img class="formulaInl" alt="$A$" src="form_39.png"/> is the area returned by <a class="el" href="classdrain_1_1image_1_1SegmentStatistics.html#aa1ac9c32264352fb8edfec027984648f" title="Returns the size of the segment.">getSize()</a>. Hence, given a segment of size <img class="formulaInl" alt="$A$" src="form_39.png"/> the variance lies between <img class="formulaInl" alt="$A/2\pi$" src="form_40.png"/> and <img class="formulaInl" alt="$A/\pi$" src="form_41.png"/>. The annularity is the variance normalized to these limits: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ \mathrm{annularity} = \frac{\sigma^2-A/2\pi}{A/\pi-A/2\pi} = 2\pi\sigma^2/A - 1. \]" src="form_42.png"/>
+<p>If a segment is circular, its radius squared is <img class="formulaInl" alt="$r^2=A/\pi$" src="form_38.png" width="53" height="15"/>, where <img class="formulaInl" alt="$A$" src="form_39.png" width="10" height="10"/> is the area returned by <a class="el" href="classdrain_1_1image_1_1SegmentStatistics.html#aa1ac9c32264352fb8edfec027984648f" title="Returns the size of the segment.">getSize()</a>. Hence, given a segment of size <img class="formulaInl" alt="$A$" src="form_39.png" width="10" height="10"/> the variance lies between <img class="formulaInl" alt="$A/2\pi$" src="form_40.png" width="30" height="14"/> and <img class="formulaInl" alt="$A/\pi$" src="form_41.png" width="24" height="14"/>. The annularity is the variance normalized to these limits: </p><p class="formulaDsp">
+<img class="formulaDsp" alt="\[ \mathrm{annularity} = \frac{\sigma^2-A/2\pi}{A/\pi-A/2\pi} = 2\pi\sigma^2/A - 1. \]" src="form_42.png" width="226" height="31"/>
 </p>
  
 </div>

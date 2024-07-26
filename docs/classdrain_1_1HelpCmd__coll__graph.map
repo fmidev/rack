@@ -1,31 +1,29 @@
 <map id="HelpCmd" name="HelpCmd">
-<area shape="rect" id="node1" title="CommandBank&#45;dependent." alt="" coords="449,1128,531,1155"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="321,1024,491,1065"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="320,935,444,961"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="201,845,291,872"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="170,762,263,789"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Context.html" title=" " alt="" coords="176,665,249,692"/>
-<area shape="rect" id="node7" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,576,160,603"/>
-<area shape="rect" id="node8" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,493,195,519"/>
-<area shape="rect" id="node9" title=" " alt="" coords="5,409,212,436"/>
-<area shape="rect" id="node10" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="190,576,235,603"/>
-<area shape="rect" id="node11" href="$classdrain_1_1StatusFlags.html" title=" " alt="" coords="259,576,358,603"/>
-<area shape="rect" id="node12" href="$classdrain_1_1GlobalFlags.html" title=" " alt="" coords="231,485,386,527"/>
-<area shape="rect" id="node13" href="$classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="273,409,344,436"/>
-<area shape="rect" id="node14" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="210,320,317,347"/>
-<area shape="rect" id="node15" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="341,320,458,347"/>
-<area shape="rect" id="node16" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="351,157,447,184"/>
-<area shape="rect" id="node17" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="335,81,463,108"/>
-<area shape="rect" id="node18" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="323,5,475,32"/>
-<area shape="rect" id="node19" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="324,845,440,872"/>
-<area shape="rect" id="node20" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="289,762,475,789"/>
-<area shape="rect" id="node21" title=" " alt="" coords="273,665,493,692"/>
-<area shape="rect" id="node22" href="$classdrain_1_1CommandBank.html" title="Container and execution tools for commands derived from Command." alt="" coords="525,1031,647,1058"/>
-<area shape="rect" id="node23" href="$classdrain_1_1BankSuper.html" title=" " alt="" coords="491,935,681,961"/>
-<area shape="rect" id="node24" href="$classdrain_1_1Bank.html" title=" " alt="" coords="531,845,641,872"/>
-<area shape="rect" id="node25" title=" " alt="" coords="499,755,681,796"/>
-<area shape="rect" id="node26" href="$classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="755,935,865,961"/>
-<area shape="rect" id="node27" title=" " alt="" coords="665,845,792,872"/>
-<area shape="rect" id="node28" href="$classdrain_1_1IosFormat.html" title="Stores precision, fillChar and fieldWidth applied by STD streams." alt="" coords="816,845,903,872"/>
-<area shape="rect" id="node29" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="927,845,997,872"/>
+<area shape="rect" id="node1" title="CommandBank&#45;dependent." alt="" coords="419,1204,502,1231"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="292,1100,461,1141"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="305,1011,429,1037"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="259,921,470,948"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="320,838,409,865"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="265,755,358,781"/>
+<area shape="rect" id="node7" href="$classdrain_1_1Context.html" title=" " alt="" coords="213,665,287,692"/>
+<area shape="rect" id="node8" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,576,160,603"/>
+<area shape="rect" id="node9" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,493,195,519"/>
+<area shape="rect" id="node10" title=" " alt="" coords="5,409,212,436"/>
+<area shape="rect" id="node11" href="$classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="187,576,233,603"/>
+<area shape="rect" id="node12" href="$classdrain_1_1StatusFlags.html" title=" " alt="" coords="257,576,355,603"/>
+<area shape="rect" id="node13" href="$classdrain_1_1GlobalFlags.html" title=" " alt="" coords="225,485,379,527"/>
+<area shape="rect" id="node14" href="$classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="264,409,335,436"/>
+<area shape="rect" id="node15" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="202,320,309,347"/>
+<area shape="rect" id="node16" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="346,320,463,347"/>
+<area shape="rect" id="node17" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="357,157,453,184"/>
+<area shape="rect" id="node18" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="341,81,469,108"/>
+<area shape="rect" id="node19" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="329,5,481,32"/>
+<area shape="rect" id="node20" href="$classdrain_1_1CommandBank.html" title="Container and execution tools for commands derived from Command." alt="" coords="489,1107,611,1134"/>
+<area shape="rect" id="node21" href="$classdrain_1_1BankSuper.html" title=" " alt="" coords="455,1011,645,1037"/>
+<area shape="rect" id="node22" href="$classdrain_1_1Bank.html" title=" " alt="" coords="495,921,605,948"/>
+<area shape="rect" id="node23" title=" " alt="" coords="459,831,641,872"/>
+<area shape="rect" id="node24" href="$classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="719,1011,829,1037"/>
+<area shape="rect" id="node25" title=" " alt="" coords="629,921,756,948"/>
+<area shape="rect" id="node26" href="$classdrain_1_1IosFormat.html" title="Stores precision, fillChar and fieldWidth applied by STD streams." alt="" coords="780,921,867,948"/>
+<area shape="rect" id="node27" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="891,921,961,948"/>
 </map>

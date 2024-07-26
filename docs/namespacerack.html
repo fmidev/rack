@@ -256,6 +256,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SourceODIM.html">SourceODIM</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VariableFormatterODIM.html">VariableFormatterODIM</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Formats variables to output stream.  <a href="classrack_1_1VariableFormatterODIM.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VerticalCrossSectionODIM.html">VerticalCrossSectionODIM</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -643,7 +644,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DrawingOp.html">DrawingOp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select and visualise a direction, range, sector or arc.  <a href="classrack_1_1DrawingOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1ReferencePoint.html">ReferencePoint</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1Measurement.html">Measurement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single measurement (bin), with height coordinate and measurement value (reflectivity).  <a href="structrack_1_1Measurement.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1MethodWeights.html">MethodWeights</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -923,21 +925,15 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 <tr class="memitem:a3e55e4f9f9e74777b098f05e32c16e81"><td class="memItemLeft" align="right" valign="top"><a id="a3e55e4f9f9e74777b098f05e32c16e81"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1QuantitySelector.html">QuantitySelector</a> &amp;selector)</td></tr>
 <tr class="separator:a3e55e4f9f9e74777b098f05e32c16e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4fc0582781dc9edfbf91f5dc84741be"><td class="memItemLeft" align="right" valign="top"><a id="ac4fc0582781dc9edfbf91f5dc84741be"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>prepareBBox</b> (const <a class="el" href="classrack_1_1Composite.html">Composite</a> &amp;composite, const <a class="el" href="classdrain_1_1BBox.html">drain::BBox</a> &amp;cropGeo, <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; int &gt; cropImage)</td></tr>
-<tr class="separator:ac4fc0582781dc9edfbf91f5dc84741be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a728404ae9be158f1e5f4fe1d799838b7"><td class="memItemLeft" align="right" valign="top"><a id="a728404ae9be158f1e5f4fe1d799838b7"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>quoted</b> (const <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path)</td></tr>
 <tr class="separator:a728404ae9be158f1e5f4fe1d799838b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff6733f2a0316813fd6e527bfa7a8508"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#aff6733f2a0316813fd6e527bfa7a8508">writeGroupToDot</a> (std::ostream &amp;ostr, const Hi5Tree &amp;group, int &amp;index, <a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">ODIMPathElem::group_t</a> selector, const <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path=<a class="el" href="classdrain_1_1Path.html">ODIMPath</a>())</td></tr>
+<tr class="memitem:aff6733f2a0316813fd6e527bfa7a8508"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#aff6733f2a0316813fd6e527bfa7a8508">writeGroupToDot</a> (std::ostream &amp;ostr, const Hi5Tree &amp;group, int &amp;index, <a class="el" href="classrack_1_1ODIMPathElem.html#ad5b7349ff82e987d22d87b3acf2c00bc">ODIMPathElem::group_t</a> selector, const <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path=<a class="el" href="classdrain_1_1Path.html">ODIMPath</a>())</td></tr>
 <tr class="separator:aff6733f2a0316813fd6e527bfa7a8508"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4b00476bf7c07f76cf2acf0e6de9398"><td class="memTemplParams" colspan="2"><a id="ac4b00476bf7c07f76cf2acf0e6de9398"></a>
 template&lt;class P &gt; </td></tr>
 <tr class="memitem:ac4b00476bf7c07f76cf2acf0e6de9398"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>sampleData</b> (const typename P::dataset_t &amp;dataset, const <a class="el" href="classdrain_1_1image_1_1Sampler.html">Sampler</a> &amp;sampler, const std::string &amp;format, std::ostream &amp;ostr)</td></tr>
 <tr class="separator:ac4b00476bf7c07f76cf2acf0e6de9398"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80a6f1171f5fee8b0ffe87d9a8246ea3"><td class="memItemLeft" align="right" valign="top"><a id="a80a6f1171f5fee8b0ffe87d9a8246ea3"></a>
-const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTextClass</b> (const std::string key)</td></tr>
-<tr class="separator:a80a6f1171f5fee8b0ffe87d9a8246ea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9041b16971005e50d041f359d432f44e"><td class="memItemLeft" align="right" valign="top">TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a9041b16971005e50d041f359d432f44e">getTextElem</a> (const TreeSVG &amp;frame, TreeSVG &amp;current, const std::string key)</td></tr>
 <tr class="separator:a9041b16971005e50d041f359d432f44e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11b6f031ad0ea0856803ce1677e42c80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a11b6f031ad0ea0856803ce1677e42c80">process</a> (int argc, const char **argv)</td></tr>
@@ -1032,6 +1028,24 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <p>Rack is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.</p>
 <p>Rack is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Rack. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+<p>Version 8.9.3</p><ul>
+<li>pEchoTop2: zero weights switch interpolation to extrapolation</li>
+</ul>
+<p>Version 8.9.2</p><ul>
+<li>Changed syntax: &ndash;store intermediate=... to &ndash;store INTERMEDIATE etc.</li>
+</ul>
+<p>Version 8.9.1</p><ul>
+<li>Fixed &ndash;cExtract crop=bbox parameter, also added cropping options DATA and OVERLAP</li>
+</ul>
+<p>Version 8.9</p><ul>
+<li>Revised &ndash;cExtract syntax: 'dwcs' syntax completed with alternative 'DATA:WEIGHT:COUNT:DEVIATION' syntax, also sequential &ndash;encoding supported</li>
+</ul>
+<p>Version 8.8</p><ul>
+<li>Revised, simplified Command class hierarchy.</li>
+</ul>
+<p>Version 8.7.6</p><ul>
+<li>Fixed date &amp; time formatting for GDAL variables, eg. &ndash;format '{"nominal-time", "${what:date|%Y/%m/%d} ${what:time|%H:%M} UTC"}'</li>
+</ul>
 <p>Version 8.7.5</p><ul>
 <li>Added support for GDAL variables, issued like &ndash;/what:GDAL:&lt;key&gt;=</li>
 </ul>
@@ -1264,7 +1278,7 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 </table>
 </div><div class="memdoc">
 <p>Converts Z from logarithmic to linear scale. </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ Z = 10^{dBZ/10} \]" src="form_110.png"/>
+<img class="formulaDsp" alt="\[ Z = 10^{dBZ/10} \]" src="form_110.png" width="74" height="13"/>
 </p>
  
 </div>
@@ -1409,7 +1423,7 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classrack_1_1ODIMPathElem.html#a6c2f7fb3caa4f55a775b942ca5c0946c">ODIMPathElem::group_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1ODIMPathElem.html#ad5b7349ff82e987d22d87b3acf2c00bc">ODIMPathElem::group_t</a>&#160;</td>
           <td class="paramname"><em>selector</em>, </td>
         </tr>
         <tr>
@@ -1456,7 +1470,7 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 </table>
 </div><div class="memdoc">
 <p>Converts Z from logarithmic to linear scale. </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ dBZ = 10\log_{10}Z = 10 \ln Z / \ln 10 \]" src="form_111.png"/>
+<img class="formulaDsp" alt="\[ dBZ = 10\log_{10}Z = 10 \ln Z / \ln 10 \]" src="form_111.png" width="181" height="14"/>
 </p>
  
 </div>

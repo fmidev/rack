@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['undefined_4204',['UNDEFINED',['../classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa605159e8a4c32319fd69b5d151369d93',1,'rack::EchoTop2Op']]],
-  ['undershooting_4205',['UNDERSHOOTING',['../classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa7909534122db3c774f3da834e175cabb',1,'rack::EchoTop2Op']]]
+  ['weight_4250',['WEIGHT',['../classrack_1_1Composite.html#aa01498a3ceb2fa74dc9536c16caef1daa9747ee647b4e8f6329a394f45e4e92aa',1,'rack::Composite']]],
+  ['weight_5fds_4251',['WEIGHT_DS',['../classrack_1_1Composite.html#aa01498a3ceb2fa74dc9536c16caef1daa2a64636f5bafc09a2d627f4987880a93',1,'rack::Composite']]]
 ];

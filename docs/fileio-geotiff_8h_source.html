@@ -128,47 +128,51 @@ $(function() {
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">inline</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="classrack_1_1CmdGeoTiff.html">CmdGeoTiff</a>() : <a class="code" href="classdrain_1_1BasicCommand.html">drain::BasicCommand</a>(__FUNCTION__, <span class="stringliteral">&quot;GeoTIFF tile size. Deprecating?, use --outputConf tif:tile=&lt;width&gt;:&lt;height&gt;,compression=LZW&quot;</span>) {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        parameters.link(<span class="stringliteral">&quot;tile&quot;</span>, drain::image::FileTIFF::defaultTile.tuple());</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        parameters.link(<span class="stringliteral">&quot;compression&quot;</span>, compression=<span class="stringliteral">&quot;&quot;</span>, drain::sprinter(compressionDict, <span class="stringliteral">&quot;|&quot;</span>).str());</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="comment">// parameters.link(&quot;tilewidth&quot;,  drain::image::FileTIFF::defaultTile.width=256);</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        getParameters().link(<span class="stringliteral">&quot;tile&quot;</span>, drain::image::FileTIFF::defaultTile.tuple());</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        getParameters().link(<span class="stringliteral">&quot;compression&quot;</span>, compression=<span class="stringliteral">&quot;&quot;</span>, drain::sprinter(compressionDict, <span class="stringliteral">&quot;|&quot;</span>).str());</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="comment">// getParameters().link(&quot;tilewidth&quot;,  drain::image::FileTIFF::defaultTile.width=256);</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="comment">//parameters.link(&quot;tileheight&quot;, drain::image::FileTIFF::defaultTile.height=0);</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="comment">//getParameters().link(&quot;tileheight&quot;, drain::image::FileTIFF::defaultTile.height=0);</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    };</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">inline</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="classrack_1_1CmdGeoTiff.html">CmdGeoTiff</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1CmdGeoTiff.html">CmdGeoTiff</a> &amp; cmd) : <a class="code" href="classdrain_1_1BasicCommand.html">drain::BasicCommand</a>(cmd) {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        parameters.<a class="code" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(cmd.getParameters(), cmd, *<span class="keyword">this</span>, <a class="code" href="classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3">drain::ReferenceMap::LINK</a>); <span class="comment">// static targets</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        getParameters().<a class="code" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(cmd.getParameters(), cmd, *<span class="keyword">this</span>, <a class="code" href="classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3">drain::ReferenceMap::LINK</a>); <span class="comment">// static targets</span></div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1CmdGeoTiff.html#a777533ac38260c4f3ff96e64c87256c8">exec</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span> write(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp; src, <span class="keyword">const</span> std::string &amp; filename);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span> write(<a class="code" href="classrack_1_1RackContext.html">RackContext</a> &amp; ctx, <span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp; src, <span class="keyword">const</span> std::string &amp; filename);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">//drain::Frame2D&lt;int&gt; tile;</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// RackContext &amp; ctx = getContext&lt;RackContext&gt;();</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// void write(const drain::image::Image &amp; src, const std::string &amp; filename) const;</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    std::string compression;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1Dictionary.html">drain::image::FileTIFF::dict_t</a> &amp; compressionDict;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">//drain::Frame2D&lt;int&gt; tile;</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    std::string compression;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;};</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1Dictionary.html">drain::image::FileTIFF::dict_t</a> &amp; compressionDict;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;}</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">// Rack</span></div>
-<div class="ttc" id="aclassdrain_1_1BasicCommand_html"><div class="ttname"><a href="classdrain_1_1BasicCommand.html">drain::BasicCommand</a></div><div class="ttdoc">Simple implementation of Command: adds name , description and parameters .</div><div class="ttdef"><b>Definition:</b> Command.h:221</div></div>
-<div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary</a></div><div class="ttdoc">Two-way mapping between strings and objects of template class T.</div><div class="ttdef"><b>Definition:</b> Dictionary.h:63</div></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">// Rack</span></div>
+<div class="ttc" id="aclassdrain_1_1BasicCommand_html"><div class="ttname"><a href="classdrain_1_1BasicCommand.html">drain::BasicCommand</a></div><div class="ttdoc">Simple implementation of Command: adds name , description and parameters .</div><div class="ttdef"><b>Definition:</b> Command.h:417</div></div>
+<div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary&lt; key_t, ivalue_t &gt;</a></div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap_html_a6b6d151e75be1f5e0a44740ac0995e21"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">drain::ReferenceMap::copyStruct</a></div><div class="ttdeci">void copyStruct(const ReferenceMap &amp;m, const T &amp;src, T &amp;dst, extLinkPolicy policy=RESERVE)</div><div class="ttdoc">Experimental. Copies references and values of a structure to another.</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:399</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap_html_ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3">drain::ReferenceMap::LINK</a></div><div class="ttdeci">@ LINK</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:384</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Image_html"><div class="ttname"><a href="classdrain_1_1image_1_1Image.html">drain::image::Image</a></div><div class="ttdoc">Class for multi-channel digital images. Supports dynamic typing with base types (char,...</div><div class="ttdef"><b>Definition:</b> Image.h:184</div></div>
 <div class="ttc" id="aclassrack_1_1CmdGeoTiff_html"><div class="ttname"><a href="classrack_1_1CmdGeoTiff.html">rack::CmdGeoTiff</a></div><div class="ttdef"><b>Definition:</b> fileio-geotiff.h:51</div></div>
 <div class="ttc" id="aclassrack_1_1CmdGeoTiff_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classrack_1_1CmdGeoTiff.html#a777533ac38260c4f3ff96e64c87256c8">rack::CmdGeoTiff::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Checks arguments (currently compression only)</div><div class="ttdef"><b>Definition:</b> fileio-geotiff.cpp:48</div></div>
+<div class="ttc" id="aclassrack_1_1RackContext_html"><div class="ttname"><a href="classrack_1_1RackContext.html">rack::RackContext</a></div><div class="ttdoc">Resources provided separately for each thread.</div><div class="ttdef"><b>Definition:</b> resources.h:69</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

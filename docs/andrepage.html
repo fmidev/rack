@@ -120,7 +120,7 @@ AnDRe commands</h2>
 <div class="line">  --aShip    &#39;25,15,1500,3&#39; \</div>
 <div class="line">  --aSpeckle &#39;-20,16,false&#39; \</div>
 <div class="line">  --aGapFill &#39;1500,5,0.1&#39; \</div>
-<div class="line">  --aRemover &#39;0.5,nodata,true&#39; \</div>
+<div class="line">  --aRemover &#39;0.5,nodata,false&#39; \</div>
 <div class="line">-o volume-corrected.h5    </div>
 </div><!-- fragment --><p>By default, AnDRe commands apply to the full volume input. Each operator will look for quantities (typically DBZH) it needs as input. To decrease computation time, the processing can be limited using <code>&ndash;select</code> command, for example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume-anomalous.h5 --select <span class="stringliteral">&#39;dataset1:5/data1:3&#39;</span> &lt;andre-cmds&gt; ...</div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
@@ -180,7 +180,7 @@ Detection results of <code>--aInsect</code> .</div></div>
 Detecting ground clutter</h2>
 <p>Based on pre-computed clutter map, scales the clutter probability for desired sweeps. The scaling is a heuristic. The loaded map should contain quantity <code>CLUTTER</code> which in each bin represents the probability of contamination. Notice that the quantity does not describe the intensity of contamination, yet might be computed from accumulated dBZ values as described in cluttermaps .</p>
 <ul>
-<li>alpha <img class="formulaInl" alt="$ \alpha = \angle(b,c)$" src="form_3.png"/> : "sky angle",</li>
+<li>alpha <img class="formulaInl" alt="$ \alpha = \angle(b,c)$" src="form_3.png" width="58" height="14"/> : "sky angle",</li>
 </ul>
 <div class="fragment"><div class="line">rack volume.h5 --aClutter &#39;0.5,1,CLUTTER,cluttermaps/cluttermap-${NOD}-${quantity}.h5&#39; -o aClutter.h5</div>
 <div class="line">  % decay=0.5 [per 1000m]</div>
@@ -284,7 +284,7 @@ Detection results of <code>--aSun</code> .</div></div>
 Cumulating quality fields</h1>
 <p>Typically, user wants to detect several different types of anomalies. In the ODIM structure, <b>Rack</b> creates new data arrays for storing detection results:</p><ol type="1">
 <li>An overall result (maximum) of all the detection operators executed, stored in <code>/dataset</code>??/data??/quality1, with <code>what:quantity=QIND</code> </li>
-<li>If <code>&ndash;store</code> intermediate=1 has been called, all the intermediate detection results <br  />
+<li>If <code>&ndash;store</code> INTERMEDIATE has been called, all the intermediate detection results <br  />
  in <code>/dataset</code>??/data??/quality{N} where <code>{N}</code> is an index starting from 2, with <code>what:quantity=PROB-xxx</code> (non-standard)</li>
 </ol>
 <p><b>Universality</b>. Some detectors like <code>&ndash;aSpeckle</code> are <em>universal</em> , they apply not only for the quantity they have been computed on (like <code>DBZH</code>) but also other quantities (like <code>VRAD</code>). The resulting quality information is stored respectively to dataset level or data level. This policy can be toggled with <code>&ndash;aUniversal</code> .</p>
@@ -330,7 +330,7 @@ Other quality fields</h1>
 <h2><a class="anchor" id="aAttenuation"></a>
 Attenuation in rain</h2>
 <p>Radar signal attenuates in heavy rain. The amount of attenuation in liquid rain can be approximated from dBZ data using formula proposed by Ulrich Blahak: </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ k(Z) = 1.12\cdot10^{-4} Z_e^{0.62} \]" src="form_0.png"/>
+<img class="formulaDsp" alt="\[ k(Z) = 1.12\cdot10^{-4} Z_e^{0.62} \]" src="form_0.png" width="126" height="16"/>
 </p>
 <div class="fragment"><div class="line">rack volume.h5 --aAttenuation &#39;3,1.12e-07,0.62,0,0&#39; -o aAttenuation.h5</div>
 <div class="line">  % reflHalfWidth=3 [dBZ limit of 50% quality]</div>

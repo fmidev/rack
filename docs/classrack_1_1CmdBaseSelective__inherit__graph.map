@@ -1,10 +1,11 @@
 <map id="CmdBaseSelective" name="CmdBaseSelective">
-<area shape="rect" id="node1" title=" " alt="" coords="94,319,238,345"/>
-<area shape="rect" id="node6" href="$classrack_1_1CmdDelete.html" title="Remove parts of a hierarchical data structure." alt="" coords="5,393,100,420"/>
-<area shape="rect" id="node7" href="$classrack_1_1CmdKeep.html" title="Remove parts of a hierarchical data structure." alt="" coords="124,393,208,420"/>
-<area shape="rect" id="node8" href="$classrack_1_1CmdSelect.html" title="Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection cri..." alt="" coords="232,393,324,420"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="81,229,251,271"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="104,155,228,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="121,80,211,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="119,5,213,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="94,393,238,420"/>
+<area shape="rect" id="node7" href="$classrack_1_1CmdDelete.html" title="Remove parts of a hierarchical data structure." alt="" coords="5,468,100,495"/>
+<area shape="rect" id="node8" href="$classrack_1_1CmdKeep.html" title="Remove parts of a hierarchical data structure." alt="" coords="124,468,208,495"/>
+<area shape="rect" id="node9" href="$classrack_1_1CmdSelect.html" title="Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection cri..." alt="" coords="232,468,324,495"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="81,304,251,345"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="104,229,228,256"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="61,155,271,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="121,80,211,107"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="119,5,213,32"/>
 </map>

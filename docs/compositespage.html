@@ -198,11 +198,18 @@ Direct compositing</h3>
 <div class="line"> --cExtract dwsc \</div>
 <div class="line"> -o composite-fi-cappi.h5 </div>
 </div><!-- fragment --><p><b>Rack</b> installation package contains a utility script <code>make-composite.sh</code> which compiles a command line string - like the one above - and executes it. For example: </p><div class="fragment"><div class="line">PRODUCT=pCappi,1000 METHOD=WAVG,2,2,-32 SIZE=500,750 BBOX=17,57.7,33,69.5  ./make-composite.sh data/pvol_fi*.h5</div>
-</div><!-- fragment --><p>The extraction command <code>&ndash;cExtract</code> extracts one or more data layers out of the compositing (accumulation array): actual composited data ( <code>d</code> ), quality field (weight, <code>w</code> ), discrepancy (std.dev., <code>d</code> ) and count of radars (<code>c</code> ).</p>
+</div><!-- fragment --><p>The extraction command <code>&ndash;cExtract</code> extracts one or more data layers out of the compositing (accumulation array):</p><ul>
+<li><code>DATA</code> - the actual composited data, like reflectivity (<code>DBZH</code> )</li>
+<li><code>WEIGHT</code> - quality (confidence) of the data value</li>
+<li><code>COUNT</code> - number of radars contributed</li>
+<li><code>DEVIATION</code> - difference or discrepancy of data (if more than one radar contributed)</li>
+</ul>
+<p>The desired combination is given as a column (<code></code>: ) separated list of above keywords. Note that for now, also the older syntax is supported: a string composed of single letters ( <code>d</code> ), weight, (<code>w</code> ), deviation (std.dev., <code>s</code> ) and count of radars (<code>c</code> ).</p>
+<p>The new, second parameter is optional cropping: the desired bounding box <code></code> &lt;LLx&gt;:&lt;LLy&gt;:&lt;URx&gt;:&lt;URy&gt; or <code>DATA</code> (automatic bounding box) or <code>OVERLAP</code> (overlapping area).</p>
 <div class="image">
 <img src="composite-layers.png" alt=""/>
 <div class="caption">
-Layers extracted from the accumulation array: the composite, quality field, discrepancy and count of radars.</div></div>
+Layers extracted from the accumulation array: the composite, quality field, deviation and count of radars.</div></div>
  <p><b>Rack</b> makes composites of any selected quantity or polar product. Examples are shown in the image below.</p>
 <div class="image">
 <img src="composite-fi-all.png" alt=""/>

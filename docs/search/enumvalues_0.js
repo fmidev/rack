@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['clear_4193',['CLEAR',['../classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fa1e1a4aba20a5a009e616cbc8fad33ac7',1,'rack::EchoTop2Op']]]
+  ['count_4236',['COUNT',['../classrack_1_1Composite.html#aa01498a3ceb2fa74dc9536c16caef1daa2addb49878f50c95dc669e5fdbd130a2',1,'rack::Composite']]],
+  ['count_5fds_4237',['COUNT_DS',['../classrack_1_1Composite.html#aa01498a3ceb2fa74dc9536c16caef1daa8ccf89c64772e52b65c40ccdc64b44bc',1,'rack::Composite']]]
 ];

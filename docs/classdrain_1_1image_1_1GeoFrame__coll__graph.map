@@ -1,6 +1,6 @@
 <map id="GeoFrame" name="GeoFrame">
-<area shape="rect" id="node1" title="Array with georeferencing support." alt="" coords="199,691,289,717"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Proj6.html" title=" " alt="" coords="149,543,203,569"/>
+<area shape="rect" id="node1" title="Array with georeferencing support." alt="" coords="206,691,295,717"/>
+<area shape="rect" id="node2" href="$classdrain_1_1Proj6.html" title=" " alt="" coords="150,543,205,569"/>
 <area shape="rect" id="node3" href="$classdrain_1_1Projector.html" title=" " alt="" coords="136,439,216,465"/>
 <area shape="rect" id="node4" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="5,335,179,376"/>
 <area shape="rect" id="node5" title=" " alt="" coords="7,157,177,199"/>
@@ -8,6 +8,6 @@
 <area shape="rect" id="node7" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="213,165,309,191"/>
 <area shape="rect" id="node8" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="197,81,325,108"/>
 <area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="185,5,337,32"/>
-<area shape="rect" id="node10" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="233,543,394,569"/>
-<area shape="rect" id="node11" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="246,439,381,465"/>
+<area shape="rect" id="node10" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="243,543,405,569"/>
+<area shape="rect" id="node11" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="240,439,408,465"/>
 </map>

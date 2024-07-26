@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="229,5,376,32"/>
 <area shape="rect" id="node3" href="$classdrain_1_1Range.html" title=" " alt="" coords="234,56,371,83"/>
 <area shape="rect" id="node4" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="250,107,355,133"/>
-<area shape="rect" id="node7" href="$structrack_1_1ReferencePoint.html" title=" " alt="" coords="242,157,363,184"/>
+<area shape="rect" id="node7" href="$structrack_1_1Measurement.html" title="A single measurement (bin), with height coordinate and measurement value (reflectivity)." alt="" coords="247,157,359,184"/>
 <area shape="rect" id="node5" href="$classdrain_1_1image_1_1Encoding.html" title=" " alt="" coords="435,120,516,147"/>
 <area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data)" alt="" coords="567,157,660,184"/>
 <area shape="rect" id="node8" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="221,208,384,235"/>

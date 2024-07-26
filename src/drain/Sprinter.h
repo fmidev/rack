@@ -28,11 +28,10 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef Drain_Sprinter_H_
-#define Drain_Sprinter_H_
+#ifndef DRAIN_SPRINTER
+#define DRAIN_SPRINTER
 
-#include <drain/UniTuple.h>
-#include <string.h> // strlen?
+#include <string.h> // strlen
 #include <iostream>
 #include <stdexcept>
 
@@ -43,48 +42,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 #include <map>
 
+#include <drain/UniTuple.h>
 
 
 
 namespace drain {
 
-/*
-struct SimpleLayout : public UniTuple<char,2>{
-
-	typedef char cstr_t;
-	cstr_t & prefix;
-	cstr_t & suffix;
-
-	inline
-	SimpleLayout():
-		prefix(this->next()), suffix(this->next()){
-	}
-
-	SimpleLayout(cstr_t fix):
-		prefix(this->next()), suffix(this->next()){
-		set(fix, fix);
-	}
-
-	SimpleLayout(cstr_t prefix, cstr_t suffix):
-		prefix(this->next()), suffix(this->next()){
-		set(prefix, suffix);
-	}
-
-	/// Constructor accepting TWO-letter chars: {prefix,suffix}
-	SimpleLayout(const char layout[3]):
-		prefix(this->next()), suffix(this->next()) { //  = "{,}"
-		setLayout(layout);
-	}
-
-	SimpleLayout(const SimpleLayout & layout):
-		prefix(this->next()), suffix(this->next()){
-		this->assign(layout); // NOTE: copying element by element, not involving strings possibly containing null char (premature end-or-read).
-	}
-
-	SimpleLayout & setLayout(const char *layout);
-
-};
-*/
 
 /// Small container for printing style for putting of structured objects (array, maps, pairs).
 /**
@@ -93,22 +56,6 @@ struct SimpleLayout : public UniTuple<char,2>{
  *  Notice that set() derived from UniTuple<char,3> has argument order: prefix, separator, suffix
  */
 class TypeLayoutBase : public UniTuple<char,3>{
-
-	/*
-   protected:
-	std::vector<char> chars;
-
-	inline
-	void set(char prefix, char separator,  char suffix){
-		this->prefix    = prefix;
-		this->separator = separator;
-		this->suffix    = suffix;
-	}
-
-	void assign(const TypeLayoutBase & layout){
-		set(layout.prefix, layout.separator, layout.suffix);
-	}
-	*/
 
 public:
 
@@ -509,6 +456,12 @@ public:
 			return sequenceToStream(ostr, x, layout.mapChars, layout);
 		}
 		//return mapToStream(ostr, x);
+	}
+
+	template <class D, size_t N>
+	static inline
+	std::ostream & toStream(std::ostream & ostr, const drain::UniTuple<D,N> & x, const SprinterLayout & layout = defaultLayout){
+		return sequenceToStream(ostr, x, layout.arrayChars, layout);
 	}
 
 	/// Conventional type: std::string. Notice prefix revealed.

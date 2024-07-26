@@ -161,170 +161,218 @@ $(function() {
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keyword">inline</span></div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    ReferenceMap &amp; getParameters() { <span class="keywordflow">return</span> parameters; };</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">    inline</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">    void shareParameters(ReferenceMap &amp; rmap) {</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">        return rmap.append(parameters);</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">    };</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#aeda575377087de49dbd0780c5b8f4479">  108</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#aeda575377087de49dbd0780c5b8f4479">setParameters</a>(std::initializer_list&lt;Variable::init_pair_t &gt; l){</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: l){</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <a class="code" href="classdrain_1_1BeanLike.html#ac6547b34b73e2b3cf791d3a32f60fd8b">setParameter</a>(entry.first, entry.second);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="comment">//parameters[entry.first] = entry.second;</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#a6d97e90626d88eae8214d1b78337b679">  120</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#a6d97e90626d88eae8214d1b78337b679">setParameters</a>(<span class="keyword">const</span> std::string &amp;p, <span class="keywordtype">char</span> assignmentSymbol=<span class="charliteral">&#39;=&#39;</span>, <span class="keywordtype">char</span> separatorSymbol=0){</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        parameters.<a class="code" href="classdrain_1_1SmartMap.html#a73dcba50de9c1b71d3daf5d10dbd30de">setValues</a>(p, assignmentSymbol, separatorSymbol);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#aef2b98dc4c462a60395746cb89b189fc">storeLastParameters</a>(p); <span class="comment">// experimental</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    };</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> F&gt;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordtype">void</span> setParametersFromEntries(<span class="keyword">const</span> F &amp; args){</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        ReferenceMap &amp; parameters = getParameters();</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        std::stringstream sstr;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordtype">char</span> separator = 0;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: args){</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            parameters[entry.first] = entry.second;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="comment">// setParameter(entry.first, entry.second);</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">if</span> (separator)</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                sstr &lt;&lt; separator;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                separator = <span class="charliteral">&#39;,&#39;</span>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            sstr &lt;&lt; entry.first &lt;&lt; <span class="charliteral">&#39;=&#39;</span> &lt;&lt; entry.second;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        }</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ac9bce3600c5cff0b14aad4e8c9f240a0">storeLastArguments</a>(sstr.str());</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    }</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">    void shareParameters(ReferenceMap &amp; rmap) {</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">        return rmap.append(parameters);</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">    };</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">    */</span></div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#a253447aed8899cff60530856f0d03560">  131</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#a253447aed8899cff60530856f0d03560">setParameters</a>(<span class="keyword">const</span> std::map&lt;std::string,T&gt; &amp; p){</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        parameters.<a class="code" href="classdrain_1_1SmartMap.html#af96c05d0eecedaf1550432f0b74eb304">importMap</a>(p);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    }</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#ab5ff01b97a51547cd80716d0b00142b8">  141</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#ab5ff01b97a51547cd80716d0b00142b8">setParameters</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1SmartMap.html">SmartMap&lt;T&gt;</a> &amp; p){</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        parameters.<a class="code" href="classdrain_1_1SmartMap.html#a8dfbff0fda4c400c3edcd0ae920f573d">importCastableMap</a>(p);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    }</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#ac6547b34b73e2b3cf791d3a32f60fd8b">  148</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#ac6547b34b73e2b3cf791d3a32f60fd8b">setParameter</a>(<span class="keyword">const</span> std::string &amp;p, <span class="keyword">const</span> <a class="code" href="classdrain_1_1Castable.html">Castable</a> &amp; value){</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        parameters[p].assignCastable(value);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#aef2b98dc4c462a60395746cb89b189fc">storeLastParameters</a>(<a class="code" href="classdrain_1_1StringBuilder.html">StringBuilder&lt;'='&gt;</a>(p, value)); <span class="comment">// experimental</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    }</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#a5f547fc64cf4d7c0b22d6b6cd54b4bc6">  158</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#a5f547fc64cf4d7c0b22d6b6cd54b4bc6">setParameter</a>(<span class="keyword">const</span> std::string &amp;p, <span class="keyword">const</span> <a class="code" href="classdrain_1_1VariableT.html">VariableT&lt;T&gt;</a> &amp; value){</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        parameters[p].assignCastable(value);</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#aef2b98dc4c462a60395746cb89b189fc">storeLastParameters</a>(<a class="code" href="classdrain_1_1StringBuilder.html">StringBuilder&lt;'='&gt;</a>(p, value)); <span class="comment">// experimental</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    }</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">    inline</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">    void setParameter(const std::string &amp;p, const Reference &amp; value){</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">        parameters[p].assignCastable(value);</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">        updateBean();</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> F&gt;</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#a95f668499b5571f031576abd68c7ccfa">  176</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#a95f668499b5571f031576abd68c7ccfa">setParameter</a>(<span class="keyword">const</span> std::string &amp;p, <span class="keyword">const</span> F &amp;value){</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        parameters[p] = value;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#aef2b98dc4c462a60395746cb89b189fc">storeLastParameters</a>(p); <span class="comment">// experimental</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    }</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> F&gt;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#a6d029c2a833353e5cc648be7a80dfca8">  185</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#a6d029c2a833353e5cc648be7a80dfca8">setParameter</a>(<span class="keyword">const</span> std::string &amp;p, std::initializer_list&lt;F&gt; value){</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        parameters[p] = value;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <span class="comment">// develop storeLastParameters(StringBuilder&lt;&#39;=&#39;&gt;(p, value)); // experimental</span></div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    }</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <a class="code" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp; operator=(<span class="keyword">const</span> <a class="code" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp; b){ <span class="comment">//</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        parameters.<a class="code" href="classdrain_1_1SmartMap.html#af96c05d0eecedaf1550432f0b74eb304">importMap</a>(b.getParameters()); <span class="comment">// 2021</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>(); <span class="comment">// ADDED 2021/10</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    }</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    std::ostream &amp; toStream(std::ostream &amp; ostr, <span class="keywordtype">bool</span> compact = <span class="keyword">true</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#a7cb20fed3030548a4ed68c3a44fcc630">  131</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#a7cb20fed3030548a4ed68c3a44fcc630">setParameters</a>(std::initializer_list&lt;Variable::init_pair_t &gt; args){</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        setParametersFromEntries(args);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">        ReferenceMap &amp; parameters = getParameters();</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">        std::stringstream sstr;</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">        char separator = 0;</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">        for (const auto &amp; entry: args){</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">            parameters[entry.first] = entry.second;</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment">            // setParameter(entry.first, entry.second);</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">            if (separator)</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">                sstr &lt;&lt; separator;</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">            else</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">                separator = &#39;,&#39;;</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">            sstr &lt;&lt; entry.first &lt;&lt; &#39;=&#39; &lt;&lt; entry.second;</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">        storeLastArguments(sstr.str());</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">        for (const auto &amp; entry: args){</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">            setParameter(entry.first, entry.second);</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">            //parameters[entry.first] = entry.second;</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    }</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#a6d97e90626d88eae8214d1b78337b679">  164</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#a6d97e90626d88eae8214d1b78337b679">setParameters</a>(<span class="keyword">const</span> std::string &amp;p, <span class="keywordtype">char</span> assignmentSymbol=<span class="charliteral">&#39;=&#39;</span>, <span class="keywordtype">char</span> separatorSymbol=0){</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        parameters.setValues(p, assignmentSymbol, separatorSymbol);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ac9bce3600c5cff0b14aad4e8c9f240a0">storeLastArguments</a>(p); <span class="comment">// experimental</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    };</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#a63b72504ee06c8a2c4311ac5793cca70">  175</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#a63b72504ee06c8a2c4311ac5793cca70">setParameters</a>(<span class="keyword">const</span> std::map&lt;std::string,T&gt; &amp; args){</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        setParametersFromEntries(args);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment">        parameters.importMap(p);</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="comment">        updateBean();</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    }</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#a93c7107b9d7d3ffad4ca61f79c2d176b">  188</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#a93c7107b9d7d3ffad4ca61f79c2d176b">setParameters</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1SmartMap.html">SmartMap&lt;T&gt;</a> &amp; args){  <span class="comment">// NEEDED?</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        setParametersFromEntries(args);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment">        parameters.importCastableMap(p);</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">        updateBean();</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    }</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#ac6547b34b73e2b3cf791d3a32f60fd8b">  198</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#ac6547b34b73e2b3cf791d3a32f60fd8b">setParameter</a>(<span class="keyword">const</span> std::string &amp;p, <span class="keyword">const</span> <a class="code" href="classdrain_1_1Castable.html">Castable</a> &amp; value){</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        parameters[p].assignCastable(value);</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ac9bce3600c5cff0b14aad4e8c9f240a0">storeLastArguments</a>(<a class="code" href="classdrain_1_1StringBuilder.html">StringBuilder&lt;'='&gt;</a>(p, value)); <span class="comment">// experimental</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    }</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;<span class="comment">    virtual inline</span></div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;<span class="comment">    std::ostream &amp; toStream(std::ostream &amp; ostr) const {</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="comment">        //ostr &lt;&lt; name &lt;&lt; &#39;:&#39; &lt;&lt; parameters;</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;<span class="comment">        ostr &lt;&lt; name &lt;&lt; &quot;: &quot; &lt;&lt; description &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="comment">        ostr &lt;&lt; &#39;\t&#39; &lt;&lt; parameters &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="comment">        return ostr;</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#a5f547fc64cf4d7c0b22d6b6cd54b4bc6">  208</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#a5f547fc64cf4d7c0b22d6b6cd54b4bc6">setParameter</a>(<span class="keyword">const</span> std::string &amp;p, <span class="keyword">const</span> <a class="code" href="classdrain_1_1VariableT.html">VariableT&lt;T&gt;</a> &amp; value){</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        parameters[p].assignCastable(value);</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ac9bce3600c5cff0b14aad4e8c9f240a0">storeLastArguments</a>(<a class="code" href="classdrain_1_1StringBuilder.html">StringBuilder&lt;'='&gt;</a>(p, value)); <span class="comment">// experimental</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    }</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    BeanLike(<span class="keyword">const</span> std::string &amp; name, <span class="keyword">const</span> std::string &amp; description=<span class="stringliteral">&quot;&quot;</span>) : name(name), description(description) {</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    }</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    BeanLike(<span class="keyword">const</span> BeanLike &amp; b) : name(b.name), description(b.description){</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="comment">// copy(b);</span></div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        parameters.<a class="code" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(b.getParameters(), b, *<span class="keyword">this</span>, <a class="code" href="classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1af8ede8b906acf8b2b5e13127a2a17032">ReferenceMap::RESERVE</a>);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    }</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keyword">const</span> std::string name;  <span class="comment">// todo separate (Beanlet)</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; </div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keyword">const</span> std::string description; <span class="comment">// todo separate (Beanlet)</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    ReferenceMap parameters;  <span class="comment">// todo separate (Beanlet)</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="comment">    void setParameter(const std::string &amp;p, const Reference &amp; value){</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="comment">        parameters[p].assignCastable(value);</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="comment">        updateBean();</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> F&gt;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#a95f668499b5571f031576abd68c7ccfa">  226</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#a95f668499b5571f031576abd68c7ccfa">setParameter</a>(<span class="keyword">const</span> std::string &amp;p, <span class="keyword">const</span> F &amp;value){</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        parameters[p] = value;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="comment">// storeLastArguments(p); // experimental</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ac9bce3600c5cff0b14aad4e8c9f240a0">storeLastArguments</a>(<a class="code" href="classdrain_1_1StringBuilder.html">StringBuilder&lt;'='&gt;</a>(p, value));</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    }</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#aef2b98dc4c462a60395746cb89b189fc">  235</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#aef2b98dc4c462a60395746cb89b189fc">storeLastParameters</a>(<span class="keyword">const</span> std::string &amp; p)<span class="keyword"> const </span>{};</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">  239</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>()<span class="keyword"> const </span>{};</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> F&gt;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#a6d029c2a833353e5cc648be7a80dfca8">  236</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#a6d029c2a833353e5cc648be7a80dfca8">setParameter</a>(<span class="keyword">const</span> std::string &amp;p, std::initializer_list&lt;F&gt; value){</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        parameters[p] = value;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>();</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="comment">// develop storeLastParameters(StringBuilder&lt;&#39;=&#39;&gt;(p, value)); // experimental</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    }</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;};</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> BeanLike &amp; bean){</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    bean.toStream(ostr);</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;}</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <a class="code" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp; operator=(<span class="keyword">const</span> <a class="code" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp; b){ <span class="comment">//</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        parameters.importMap(b.getParameters()); <span class="comment">// 2021</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>(); <span class="comment">// ADDED 2021/10</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    }</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;}</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    std::ostream &amp; toStream(std::ostream &amp; ostr, <span class="keywordtype">bool</span> compact = <span class="keyword">true</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">// Drain</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;<span class="comment">    virtual inline</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;<span class="comment">    std::ostream &amp; toStream(std::ostream &amp; ostr) const {</span></div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;<span class="comment">        //ostr &lt;&lt; name &lt;&lt; &#39;:&#39; &lt;&lt; parameters;</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="comment">        ostr &lt;&lt; name &lt;&lt; &quot;: &quot; &lt;&lt; description &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="comment">        ostr &lt;&lt; &#39;\t&#39; &lt;&lt; parameters &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;<span class="comment">        return ostr;</span></div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">// 2024 public:</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    BeanLike(<span class="keyword">const</span> BeanLike &amp; b) : name(b.name), description(b.description){</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="comment">// copy(b);</span></div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        parameters.copyStruct(b.getParameters(), b, *<span class="keyword">this</span>, <a class="code" href="classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1af8ede8b906acf8b2b5e13127a2a17032">ReferenceMap::RESERVE</a>);</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    }</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    BeanLike(<span class="keyword">const</span> std::string &amp; name, <span class="keyword">const</span> std::string &amp; description=<span class="stringliteral">&quot;&quot;</span>) : name(name), description(description) {</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    }</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="keyword">const</span> std::string name;  <span class="comment">// todo separate (Beanlet)</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keyword">const</span> std::string description; <span class="comment">// todo separate (Beanlet)</span></div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    ReferenceMap parameters;  <span class="comment">// todo separate (Beanlet)</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00287"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#ac9bce3600c5cff0b14aad4e8c9f240a0">  287</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#ac9bce3600c5cff0b14aad4e8c9f240a0">storeLastArguments</a>(<span class="keyword">const</span> std::string &amp; p){};</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno"><a class="line" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">  291</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>()<span class="keyword"> const </span>{};</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; </div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160; </div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;};</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; </div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> BeanLike &amp; bean){</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    bean.toStream(ostr);</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;}</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160; </div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;}</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160; </div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160; </div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment">// Drain</span></div>
 <div class="ttc" id="aclassdrain_1_1BeanLike_html"><div class="ttname"><a href="classdrain_1_1BeanLike.html">drain::BeanLike</a></div><div class="ttdoc">Something which has a name, a description and possibly some parameters of varying type.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:60</div></div>
-<div class="ttc" id="aclassdrain_1_1BeanLike_html_a253447aed8899cff60530856f0d03560"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a253447aed8899cff60530856f0d03560">drain::BeanLike::setParameters</a></div><div class="ttdeci">void setParameters(const std::map&lt; std::string, T &gt; &amp;p)</div><div class="ttdoc">Set parameters.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:131</div></div>
 <div class="ttc" id="aclassdrain_1_1BeanLike_html_a423e8ba3122be02faded1df37a6e9ab2"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a423e8ba3122be02faded1df37a6e9ab2">drain::BeanLike::getParameter</a></div><div class="ttdeci">F getParameter(const std::string &amp;p) const</div><div class="ttdoc">Gets a single parameter.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:86</div></div>
-<div class="ttc" id="aclassdrain_1_1BeanLike_html_a5f547fc64cf4d7c0b22d6b6cd54b4bc6"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a5f547fc64cf4d7c0b22d6b6cd54b4bc6">drain::BeanLike::setParameter</a></div><div class="ttdeci">void setParameter(const std::string &amp;p, const VariableT&lt; T &gt; &amp;value)</div><div class="ttdef"><b>Definition:</b> BeanLike.h:158</div></div>
-<div class="ttc" id="aclassdrain_1_1BeanLike_html_a6d029c2a833353e5cc648be7a80dfca8"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a6d029c2a833353e5cc648be7a80dfca8">drain::BeanLike::setParameter</a></div><div class="ttdeci">void setParameter(const std::string &amp;p, std::initializer_list&lt; F &gt; value)</div><div class="ttdoc">Sets a single parameter.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:185</div></div>
-<div class="ttc" id="aclassdrain_1_1BeanLike_html_a6d97e90626d88eae8214d1b78337b679"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a6d97e90626d88eae8214d1b78337b679">drain::BeanLike::setParameters</a></div><div class="ttdeci">virtual void setParameters(const std::string &amp;p, char assignmentSymbol='=', char separatorSymbol=0)</div><div class="ttdoc">Sets comma-separated parameters in a predetermined order &quot;a,b,c&quot; or by specifing them &quot;b=2&quot;.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:120</div></div>
-<div class="ttc" id="aclassdrain_1_1BeanLike_html_a95f668499b5571f031576abd68c7ccfa"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a95f668499b5571f031576abd68c7ccfa">drain::BeanLike::setParameter</a></div><div class="ttdeci">void setParameter(const std::string &amp;p, const F &amp;value)</div><div class="ttdoc">Sets a single parameter.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:176</div></div>
-<div class="ttc" id="aclassdrain_1_1BeanLike_html_ab5ff01b97a51547cd80716d0b00142b8"><div class="ttname"><a href="classdrain_1_1BeanLike.html#ab5ff01b97a51547cd80716d0b00142b8">drain::BeanLike::setParameters</a></div><div class="ttdeci">void setParameters(const SmartMap&lt; T &gt; &amp;p)</div><div class="ttdoc">Set parameters.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:141</div></div>
-<div class="ttc" id="aclassdrain_1_1BeanLike_html_ac6547b34b73e2b3cf791d3a32f60fd8b"><div class="ttname"><a href="classdrain_1_1BeanLike.html#ac6547b34b73e2b3cf791d3a32f60fd8b">drain::BeanLike::setParameter</a></div><div class="ttdeci">void setParameter(const std::string &amp;p, const Castable &amp;value)</div><div class="ttdoc">Sets a single parameter.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:148</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_a5f547fc64cf4d7c0b22d6b6cd54b4bc6"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a5f547fc64cf4d7c0b22d6b6cd54b4bc6">drain::BeanLike::setParameter</a></div><div class="ttdeci">void setParameter(const std::string &amp;p, const VariableT&lt; T &gt; &amp;value)</div><div class="ttdef"><b>Definition:</b> BeanLike.h:208</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_a63b72504ee06c8a2c4311ac5793cca70"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a63b72504ee06c8a2c4311ac5793cca70">drain::BeanLike::setParameters</a></div><div class="ttdeci">void setParameters(const std::map&lt; std::string, T &gt; &amp;args)</div><div class="ttdoc">Set parameters.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:175</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_a6d029c2a833353e5cc648be7a80dfca8"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a6d029c2a833353e5cc648be7a80dfca8">drain::BeanLike::setParameter</a></div><div class="ttdeci">void setParameter(const std::string &amp;p, std::initializer_list&lt; F &gt; value)</div><div class="ttdoc">Sets a single parameter.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:236</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_a6d97e90626d88eae8214d1b78337b679"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a6d97e90626d88eae8214d1b78337b679">drain::BeanLike::setParameters</a></div><div class="ttdeci">virtual void setParameters(const std::string &amp;p, char assignmentSymbol='=', char separatorSymbol=0)</div><div class="ttdoc">Sets comma-separated parameters in a predetermined order &quot;a,b,c&quot; or by specifing them &quot;b=2&quot;.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:164</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_a7cb20fed3030548a4ed68c3a44fcc630"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a7cb20fed3030548a4ed68c3a44fcc630">drain::BeanLike::setParameters</a></div><div class="ttdeci">void setParameters(std::initializer_list&lt; Variable::init_pair_t &gt; args)</div><div class="ttdoc">Grants access to (if above hidden)</div><div class="ttdef"><b>Definition:</b> BeanLike.h:131</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_a93c7107b9d7d3ffad4ca61f79c2d176b"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a93c7107b9d7d3ffad4ca61f79c2d176b">drain::BeanLike::setParameters</a></div><div class="ttdeci">void setParameters(const SmartMap&lt; T &gt; &amp;args)</div><div class="ttdoc">Set parameters.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:188</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_a95f668499b5571f031576abd68c7ccfa"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a95f668499b5571f031576abd68c7ccfa">drain::BeanLike::setParameter</a></div><div class="ttdeci">void setParameter(const std::string &amp;p, const F &amp;value)</div><div class="ttdoc">Sets a single parameter.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:226</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_ac6547b34b73e2b3cf791d3a32f60fd8b"><div class="ttname"><a href="classdrain_1_1BeanLike.html#ac6547b34b73e2b3cf791d3a32f60fd8b">drain::BeanLike::setParameter</a></div><div class="ttdeci">void setParameter(const std::string &amp;p, const Castable &amp;value)</div><div class="ttdoc">Sets a single parameter.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:198</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_ac9bce3600c5cff0b14aad4e8c9f240a0"><div class="ttname"><a href="classdrain_1_1BeanLike.html#ac9bce3600c5cff0b14aad4e8c9f240a0">drain::BeanLike::storeLastArguments</a></div><div class="ttdeci">virtual void storeLastArguments(const std::string &amp;p)</div><div class="ttdoc">Called after setParameters()</div><div class="ttdef"><b>Definition:</b> BeanLike.h:287</div></div>
 <div class="ttc" id="aclassdrain_1_1BeanLike_html_acdcfed065f00c724f18ee8fde76d0a52"><div class="ttname"><a href="classdrain_1_1BeanLike.html#acdcfed065f00c724f18ee8fde76d0a52">drain::BeanLike::getName</a></div><div class="ttdeci">virtual const std::string &amp; getName() const</div><div class="ttdoc">Return the name of an instance.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:69</div></div>
 <div class="ttc" id="aclassdrain_1_1BeanLike_html_acfb8e54236db4bcceaa5060a56d276e7"><div class="ttname"><a href="classdrain_1_1BeanLike.html#acfb8e54236db4bcceaa5060a56d276e7">drain::BeanLike::getDescription</a></div><div class="ttdeci">virtual const std::string &amp; getDescription() const</div><div class="ttdoc">Return a brief description.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:74</div></div>
-<div class="ttc" id="aclassdrain_1_1BeanLike_html_ad3d20dd7e09a23bd60ca27e78227e245"><div class="ttname"><a href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">drain::BeanLike::updateBean</a></div><div class="ttdeci">virtual void updateBean() const</div><div class="ttdoc">Called after setParameters()</div><div class="ttdef"><b>Definition:</b> BeanLike.h:239</div></div>
-<div class="ttc" id="aclassdrain_1_1BeanLike_html_aeda575377087de49dbd0780c5b8f4479"><div class="ttname"><a href="classdrain_1_1BeanLike.html#aeda575377087de49dbd0780c5b8f4479">drain::BeanLike::setParameters</a></div><div class="ttdeci">void setParameters(std::initializer_list&lt; Variable::init_pair_t &gt; l)</div><div class="ttdoc">Grants access to (if above hidden)</div><div class="ttdef"><b>Definition:</b> BeanLike.h:108</div></div>
-<div class="ttc" id="aclassdrain_1_1BeanLike_html_aef2b98dc4c462a60395746cb89b189fc"><div class="ttname"><a href="classdrain_1_1BeanLike.html#aef2b98dc4c462a60395746cb89b189fc">drain::BeanLike::storeLastParameters</a></div><div class="ttdeci">virtual void storeLastParameters(const std::string &amp;p) const</div><div class="ttdoc">Called after setParameters()</div><div class="ttdef"><b>Definition:</b> BeanLike.h:235</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_ad3d20dd7e09a23bd60ca27e78227e245"><div class="ttname"><a href="classdrain_1_1BeanLike.html#ad3d20dd7e09a23bd60ca27e78227e245">drain::BeanLike::updateBean</a></div><div class="ttdeci">virtual void updateBean() const</div><div class="ttdoc">Called after setParameters()</div><div class="ttdef"><b>Definition:</b> BeanLike.h:291</div></div>
 <div class="ttc" id="aclassdrain_1_1Castable_html"><div class="ttname"><a href="classdrain_1_1Castable.html">drain::Castable</a></div><div class="ttdef"><b>Definition:</b> Castable.h:76</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap_html"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html">drain::ReferenceMap</a></div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:207</div></div>
-<div class="ttc" id="aclassdrain_1_1ReferenceMap_html_a6b6d151e75be1f5e0a44740ac0995e21"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">drain::ReferenceMap::copyStruct</a></div><div class="ttdeci">void copyStruct(const ReferenceMap &amp;m, const T &amp;src, T &amp;dst, extLinkPolicy policy=RESERVE)</div><div class="ttdoc">Experimental. Copies references and values of a structure to another.</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:399</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap_html_ad13ba38bb41ac1206987e9c82d85b6d1af8ede8b906acf8b2b5e13127a2a17032"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1af8ede8b906acf8b2b5e13127a2a17032">drain::ReferenceMap::RESERVE</a></div><div class="ttdeci">@ RESERVE</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:385</div></div>
 <div class="ttc" id="aclassdrain_1_1SmartMap_html"><div class="ttname"><a href="classdrain_1_1SmartMap.html">drain::SmartMap</a></div><div class="ttdoc">A base class for smart maps providing methods for importing and exporting values, among others.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:66</div></div>
-<div class="ttc" id="aclassdrain_1_1SmartMap_html_a73dcba50de9c1b71d3daf5d10dbd30de"><div class="ttname"><a href="classdrain_1_1SmartMap.html#a73dcba50de9c1b71d3daf5d10dbd30de">drain::SmartMap::setValues</a></div><div class="ttdeci">void setValues(const std::string &amp;entries, char assignmentSymbol='=', char separatorSymbol=0)</div><div class="ttdoc">Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry...</div><div class="ttdef"><b>Definition:</b> SmartMap.h:311</div></div>
-<div class="ttc" id="aclassdrain_1_1SmartMap_html_a8dfbff0fda4c400c3edcd0ae920f573d"><div class="ttname"><a href="classdrain_1_1SmartMap.html#a8dfbff0fda4c400c3edcd0ae920f573d">drain::SmartMap::importCastableMap</a></div><div class="ttdeci">void importCastableMap(const drain::SmartMap&lt; T2 &gt; &amp;m)</div><div class="ttdoc">Assign values from a map, possibly extending the map.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:271</div></div>
-<div class="ttc" id="aclassdrain_1_1SmartMap_html_af96c05d0eecedaf1550432f0b74eb304"><div class="ttname"><a href="classdrain_1_1SmartMap.html#af96c05d0eecedaf1550432f0b74eb304">drain::SmartMap::importMap</a></div><div class="ttdeci">void importMap(const std::map&lt; std::string, S &gt; &amp;m)</div><div class="ttdoc">Assign values from a map, overriding existing entries.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:252</div></div>
 <div class="ttc" id="aclassdrain_1_1StringBuilder_html"><div class="ttname"><a href="classdrain_1_1StringBuilder.html">drain::StringBuilder</a></div><div class="ttdef"><b>Definition:</b> StringBuilder.h:58</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableT_html"><div class="ttname"><a href="classdrain_1_1VariableT.html">drain::VariableT</a></div><div class="ttdoc">VariableT is a final class applied through typedefs Variable, Reference and FlexibleVariable.</div><div class="ttdef"><b>Definition:</b> VariableT.h:87</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>

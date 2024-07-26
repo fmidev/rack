@@ -1,7 +1,8 @@
 <map id="CompositeCreateTile" name="CompositeCreateTile">
-<area shape="rect" id="node1" title=" " alt="" coords="5,304,164,331"/>
-<area shape="rect" id="node2" href="$classrack_1_1Compositor.html" title=" " alt="" coords="36,229,133,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="23,155,147,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="40,80,129,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="38,5,131,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="31,379,190,405"/>
+<area shape="rect" id="node2" href="$classrack_1_1Compositor.html" title=" " alt="" coords="62,304,159,331"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="49,229,173,256"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="5,155,216,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="66,80,155,107"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="64,5,157,32"/>
 </map>

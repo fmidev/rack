@@ -69,6 +69,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classdrain_1_1TextDecoratorVt100-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -100,10 +101,17 @@ Collaboration diagram for TextDecoratorVt100:</div>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a518b8a66e5cfe510355da74b095f405a"><td class="memTemplParams" colspan="2">template&lt;typename F &gt; </td></tr>
+<tr class="memitem:a518b8a66e5cfe510355da74b095f405a"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1TextDecoratorVt100.html#a518b8a66e5cfe510355da74b095f405a">appendCodes</a> (const <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt; F &gt; &amp;styleFlags, std::list&lt; int &gt; &amp;codes)</td></tr>
+<tr class="memdesc:a518b8a66e5cfe510355da74b095f405a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal utility: convert given abstract style to numeric VT100 codes.  <a href="classdrain_1_1TextDecoratorVt100.html#a518b8a66e5cfe510355da74b095f405a">More...</a><br /></td></tr>
+<tr class="separator:a518b8a66e5cfe510355da74b095f405a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a28ef12a0f3c626c89734065a87c21840"><td class="memItemLeft" align="right" valign="top"><a id="a28ef12a0f3c626c89734065a87c21840"></a>
-virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>_begin</b> (std::ostream &amp;ostr) const</td></tr>
+<tr class="memitem:a28ef12a0f3c626c89734065a87c21840"><td class="memItemLeft" align="right" valign="top">virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1TextDecoratorVt100.html#a28ef12a0f3c626c89734065a87c21840">_begin</a> (std::ostream &amp;ostr) const</td></tr>
+<tr class="memdesc:a28ef12a0f3c626c89734065a87c21840"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export style to VT100 numeric codes.  <a href="classdrain_1_1TextDecoratorVt100.html#a28ef12a0f3c626c89734065a87c21840">More...</a><br /></td></tr>
 <tr class="separator:a28ef12a0f3c626c89734065a87c21840"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a602efd5d8ca230aa8dc568c107cde407"><td class="memItemLeft" align="right" valign="top"><a id="a602efd5d8ca230aa8dc568c107cde407"></a>
 virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>_end</b> (std::ostream &amp;ostr) const</td></tr>
@@ -206,6 +214,96 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> (std::ostre
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></tr>
 <tr class="separator:a1039177320d28dc0db3f455c87c47072 inherit pro_attribs_classdrain_1_1TextDecorator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a28ef12a0f3c626c89734065a87c21840"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28ef12a0f3c626c89734065a87c21840">&#9670;&nbsp;</a></span>_begin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; _begin </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostr</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Export style to VT100 numeric codes. </p>
+<p>First, extract style enums from the current flags (integer).</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TS</td><td>-</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Not: TextStyle::Style, TextStyle::Line </p>
+
+<p>Reimplemented from <a class="el" href="classdrain_1_1TextDecorator.html">TextDecorator</a>.</p>
+
+</div>
+</div>
+<a id="a518b8a66e5cfe510355da74b095f405a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a518b8a66e5cfe510355da74b095f405a">&#9670;&nbsp;</a></span>appendCodes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void appendCodes </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt; F &gt; &amp;&#160;</td>
+          <td class="paramname"><em>styleFlags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::list&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>codes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Internal utility: convert given abstract style to numeric VT100 codes. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">-</td><td>ColourFlag, StyleFlags, or LineFlag </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">-</td><td>styleFlags, </td></tr>
+    <tr><td class="paramname">-</td><td>codes </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/drain/util/<a class="el" href="TextDecorator_8h_source.html">TextDecorator.h</a></li>
 <li>src/drain/util/TextDecorator.cpp</li>

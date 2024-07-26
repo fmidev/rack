@@ -90,12 +90,12 @@ Processing two-dimensional data</h1>
 Fuzzy functions</h1>
 <p>Instead of strict thresholding, the detectors apply frequently fuzzy functions ie. functions that map quantity ranges to continuous truth values between 0.0 (no) and 1.0 (yes). Then, conditions like "the dBZ is over 20" and "width of the speck is about 1500m" can be combined by multiplying associated fuzzy functions; the result is a combined truth value. <br  />
  The typical fuzzy functions applied in <b>AnDRe</b> are fuzzy peak (drain::FuzzyPeak) </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ f_{\mathrm{p}}(x) = \frac{a^2}{a^2 + x^2} \]" src="form_51.png"/>
+<img class="formulaDsp" alt="\[ f_{\mathrm{p}}(x) = \frac{a^2}{a^2 + x^2} \]" src="form_51.png" width="88" height="30"/>
 </p>
-<p> where <img class="formulaInl" alt="$a$" src="form_52.png"/> is the width, and fuzzy threshold (<a class="el" href="classdrain_1_1FuzzyStep.html" title="A basic, linear transition from 0 to scale between (start) and (end) .">drain::FuzzyStep</a>) </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ f_{\mathrm{th}}(x) = \frac{1}{2} + \frac{x}{2(a + |x|)}. \]" src="form_53.png"/>
+<p> where <img class="formulaInl" alt="$a$" src="form_52.png" width="6" height="6"/> is the width, and fuzzy threshold (<a class="el" href="classdrain_1_1FuzzyStep.html" title="A basic, linear transition from 0 to scale between (start) and (end) .">drain::FuzzyStep</a>) </p><p class="formulaDsp">
+<img class="formulaDsp" alt="\[ f_{\mathrm{th}}(x) = \frac{1}{2} + \frac{x}{2(a + |x|)}. \]" src="form_53.png" width="131" height="30"/>
 </p>
-<p> where <img class="formulaInl" alt="$a$" src="form_52.png"/> is the steepness.</p>
+<p> where <img class="formulaInl" alt="$a$" src="form_52.png" width="6" height="6"/> is the steepness.</p>
 <div class="image">
 <img src="fuzzies.png" alt=""/>
 <div class="caption">
