@@ -40,6 +40,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+DRAIN_TYPENAME_DEF(NodeHTML);
+DRAIN_TYPENAME_DEF(BaseHTML::tag_t);
+
+
 template <>
 NodeHTML::xmldoc_attrib_map_t NodeHTML::xml_node_t::xmldoc_attribs = {
 		{"version",  "1.0"},

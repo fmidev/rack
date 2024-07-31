@@ -157,18 +157,8 @@ template <>
 bool NodeXML<BaseHTML::tag_t>::isSelfClosing() const;
 
 
-template <>
-inline
-const char* TypeName<NodeHTML>::get(){
-	return "HTML";
-}
-
-template <>
-inline
-const char* TypeName<BaseHTML::tag_t>::get(){
-	return "HTML";
-}
-
+DRAIN_TYPENAME(NodeHTML);
+DRAIN_TYPENAME(BaseHTML::tag_t);
 
 
 /** Example/ experimental template specif

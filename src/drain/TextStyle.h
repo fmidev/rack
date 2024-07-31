@@ -35,7 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <set>
 
-#include <drain/TypeUtils.h>
+#include "Type.h"
+//#include "Sprinter.h"
+#include "StringBuilder.h"
 
 namespace drain
 {
@@ -49,7 +51,7 @@ class TextStyle {
 
 public:
 
-	enum Colour {NO_COLOR=0, BLACK, GRAY, RED, GREEN, YELLOW, BLUE, PURPLE, CYAN, WHITE};
+	enum Colour {DEFAULT_COLOR=0, BLACK, GRAY, RED, GREEN, YELLOW, BLUE, PURPLE, CYAN, WHITE};
 
 	enum Style {NO_STYLE=0, ITALIC=1, BOLD=2, DIM=4, REVERSE=8}; // NO_STYLE not needed?
 
@@ -84,7 +86,7 @@ protected:
 
 	inline
 	void reset(){
-		colour = Colour::NO_COLOR;
+		colour = Colour::DEFAULT_COLOR;
 		line  = Line::NO_LINE;
 		style.clear();
 	};
@@ -113,6 +115,8 @@ protected:
 
 };
 
+DRAIN_TYPENAME(TextStyle);
+
 DRAIN_TYPENAME(TextStyle::Colour);
 DRAIN_TYPENAME(TextStyle::Line);
 DRAIN_TYPENAME(TextStyle::Style);
@@ -123,7 +127,7 @@ class TextStyleVT100 : public TextStyle {
 
 public:
 
-	inline
+	inline virtual
 	~TextStyleVT100(){};
 
 	template <typename ... TT>
@@ -166,19 +170,29 @@ public:
 	static
 	const std::map<T,int> & getCodeMap();
 
-	template <class T>
+
+	/// Given an enum value, returns the corresponding numeric VT100 code.
+	template <class E>
 	static
-	int getIntCode(const T & enumCode){
+	int getIntCode(const E & enumCode){
 
-		typedef std::map<T,int> codemap_t;
+		typedef std::map<E,int> codemap_t;
 
-		const codemap_t & map = getCodeMap<T>();
+		const codemap_t & map = getCodeMap<E>();
 
 		typename codemap_t::const_iterator it = map.find(enumCode);
 		if (it != map.end()){
 			return it->second;
 		}
 		else {
+
+			for (const auto & entry: map){
+				std::cerr << entry.first << '=' << (int)entry.first << " VT100=" << entry.second << std::endl;
+			}
+
+
+			std::cerr << StringBuilder<>(TypeName<E>::str(), ": no such enumCode: ", enumCode) << std::endl;
+
 			std::cerr << __FILE__ << '/' << __FUNCTION__ << ": no such enumCode: " << enumCode << std::endl;
 			throw std::runtime_error("No such enumCode: "); // TYPE!
 			return 0; // drain::TextDecorator::Colour::NO_COLOR;
@@ -261,6 +275,9 @@ const std::map<TextStyle::Line,int> & TextStyleVT100::getCodeMap();
 
 template <>
 const std::map<TextStyle::Style,int> & TextStyleVT100::getCodeMap();
+
+DRAIN_TYPENAME(TextStyleVT100);
+
 
 } // ::drain
 

@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include <drain/Log.h>
+#include <drain/Type.h>
 #include "PolarODIM.h"
 
 namespace rack {
@@ -229,6 +230,7 @@ signed char PolarODIM::checkAliasing(double v1, double v2, double NI_threshold) 
 
 }  // namespace rack
 
+namespace drain {
+	DRAIN_TYPENAME_DEF(rack::PolarODIM);
+}
 
-
-// Rack

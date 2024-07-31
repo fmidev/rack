@@ -29,15 +29,31 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-#include <drain/Type.h>
 #include <sstream>
 #include <stdexcept>
 #include <set>
 
 
+#include "Type.h"
 
 namespace drain
 {
+
+DRAIN_TYPENAME_DEF(void);
+DRAIN_TYPENAME_DEF(bool);
+DRAIN_TYPENAME_DEF(char);
+DRAIN_TYPENAME_DEF(unsigned char);
+DRAIN_TYPENAME_DEF(short);
+DRAIN_TYPENAME_DEF(unsigned short);
+DRAIN_TYPENAME_DEF(int);
+DRAIN_TYPENAME_DEF(unsigned int);
+DRAIN_TYPENAME_DEF(long);
+DRAIN_TYPENAME_DEF(unsigned long);
+DRAIN_TYPENAME_DEF(float);
+DRAIN_TYPENAME_DEF(double);
+DRAIN_TYPENAME_DEF(char *);
+DRAIN_TYPENAME_DEF(const char *);
+DRAIN_TYPENAME_DEF(std::string);
 
 /*
 const drain::RegExp Type::trueRegExp("^[ ]*true[ ]*$", REG_EXTENDED | REG_ICASE ); // ignore case

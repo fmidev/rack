@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define POLAR_ODIM_STRUCT
 
 #include "drain/util/Geo.h"
+#include "drain/Type.h"
 
 #include "ODIM.h"
 
@@ -76,30 +77,30 @@ public:
 	double  & rscale;
 
 	/// Longitude position of the radar antenna (degrees), normalized to the WGS-84 reference ellipsoid and datum. Fractions of a degree are given in decimal notation.
-	double lon;
+	double lon = 0.0;
 	/// Latitude position of the radar antenna (degrees), normalized to the WGS-84 reference ellipsoid and datum. Fractions of a degree are given in decimal notation.
-	double lat;
+	double lat = 0.0;
 	/// Height of the centre of the antenna in meters above sea level.
-	double height;
+	double height = 0.0;
 
 	/// Antenna elevation angle (degrees) above the horizon.
-	double elangle;
+	double elangle = 0.0;
 	/// The range (km) of the start of the first range bin.
-	double rstart;
+	double rstart = 0.0;
 	/// Index of the first azimuth gate radiated in the scan.
-	long   a1gate;
+	long   a1gate = 0.0;
 
 
-	double startaz;
-	double stopaz;
+	double startaz = 0.0;
+	double stopaz = 0.0;
 
 	//double NI; // Maximum Nyquist
-	double highprf; //
-	double lowprf;  //
-	double wavelength;
+	double highprf = 0.0; //
+	double lowprf = 0.0;  //
+	double wavelength = 0.0;
 
 	/// Freezing level
-	double freeze;
+	double freeze = 0.0;
 
 
 	/// Returns recommended coordinate policy (Polar coords, origin at left)
@@ -264,6 +265,10 @@ private:
 
 
 }  // namespace rack
+
+namespace drain {
+	DRAIN_TYPENAME(rack::PolarODIM);
+}
 
 
 #endif

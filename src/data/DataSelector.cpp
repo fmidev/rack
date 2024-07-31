@@ -423,12 +423,12 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 			// PRF criterion applies?
 			if (prfSelector != ANY){
 				double lowPRF   = props.get("how:lowprf",  0.0);
-				double hightPRF = props.get("how:highprf", lowPRF);
-				if ((lowPRF == hightPRF) == (prfSelector == Prf::SINGLE)){
-					mout.accept<LOG_DEBUG>("PRF=", lowPRF, '/', hightPRF, ", required ", prfSelector, ": including " , path);
+				double highPRF = props.get("how:highprf", lowPRF);
+				if (((lowPRF == highPRF) && (highPRF == 0)) == (prfSelector == Prf::SINGLE)){
+					mout.accept<LOG_DEBUG>("PRF=", lowPRF, '/', highPRF, ", required ", prfSelector, ": including " , path);
 				}
 				else {
-					mout.reject<LOG_DEBUG>("PRF=", lowPRF, '/', hightPRF, ", required ", prfSelector, ": excluding " , path);
+					mout.reject<LOG_DEBUG>("PRF=", lowPRF, '/', highPRF, ", required ", prfSelector, ": excluding " , path);
 					continue; // yes, subtrees skipped ok
 				}
 			}
@@ -981,3 +981,7 @@ void DataSelector::swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::gro
 
 
 }  // rack::
+
+namespace drain {
+	DRAIN_TYPENAME_DEF(rack::DataSelector);
+}

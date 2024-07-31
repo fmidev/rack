@@ -542,7 +542,7 @@ public:
 	inline
 	void setStyle(const S &value){
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.error("unsupported type ", drain::TypeName<S>::get(), " for value: ", value);
+		mout.error("unsupported type ", drain::TypeName<S>::str(), " for value: ", value);
 	}
 
 	void setStyle(const std::string & value){

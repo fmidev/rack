@@ -91,7 +91,7 @@ public:
 	//std::map<std::type_info,size_t> state;
 
 	inline
-	TextDecorator() : separator(","), color(TextStyle::NO_COLOR){
+	TextDecorator() : separator(","), color(TextStyle::DEFAULT_COLOR){
 		reset(); // ??
 	}
 

@@ -108,6 +108,13 @@ std::ostream & operator<<(std::ostream & ostr, const image::TreeGDAL & tree){
 	return image::TreeGDAL::node_data_t::toStream(ostr, tree);
 }
 
+
+
+DRAIN_TYPENAME(image::NodeGDAL);
+
+DRAIN_TYPENAME(image::NodeGDAL::tag_t);
+
+/*
 template <>
 inline
 const char* TypeName<image::NodeGDAL>::get(){
@@ -119,6 +126,7 @@ inline
 const char* TypeName<image::GDAL::tag_t>::get(){
 	return "XML-GDAL2";
 }
+*/
 
 /// Note: this overrides path based addressing of descendants
 template <>

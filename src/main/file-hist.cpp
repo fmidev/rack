@@ -80,6 +80,9 @@ void CmdHistogram::exec() const {
 	const std::type_info & type = dstData.data.getType();
 
 	const drain::ValueScaling & scaling = dstData.data.getScaling();
+	if (scaling.isPhysical()){
+		mout.note("Image: physical range: ", scaling.getPhysicalRange());
+	}
 	/*
 	unsigned short bitCount = 8 * drain::Type::call<drain::sizeGetter>(type);
 	mout.warn("bitCount: " , bitCount);
@@ -98,9 +101,6 @@ void CmdHistogram::exec() const {
 	}
 	else {
 
-		if (scaling.isPhysical()){
-			mout.note("Image: physical range: ", scaling.getPhysicalRange());
-		}
 		mout.note("No range given, using scaling of data: ", scaling);
 		histogram.deriveScaling(scaling, type);
 		//histogram.setScale(s);
@@ -150,6 +150,7 @@ void CmdHistogram::writeHistogram(const drain::Histogram & histogram, const std:
 	mout.note("Scaling: ", histogram.scaling);
 
 	drain::Output out((filename == "-") ? filename : ctx.outputPrefix + filename);
+	// out.open(filename);
 
 	std::ostream & ostr = out;
 
@@ -164,17 +165,18 @@ void CmdHistogram::writeHistogram(const drain::Histogram & histogram, const std:
 	}
 
 	// TODO: check tests
-	// NEW
-	ostr << "# " << mapper << '\n'; // TODO: pick plain keys
+	if (!commentChar.empty()){
+		// NEW
+		ostr << commentChar << ' ' << mapper << '\n'; // TODO: pick plain keys
+		// OLD
+		// Header
+		ostr << commentChar << ' ' << "[0," << histogram.getSize() << "] ";
+		if (histogram.scaling.isPhysical())
+			ostr << '[' << histogram.scaling.physRange << ']';
+		ostr << '\n';
+	}
+
 	mout.note("Legend: " , drain::sprinter(leg) );
-
-
-	// OLD
-	// Header
-	ostr << "# [0," << histogram.getSize() << "] ";
-	if (histogram.scaling.isPhysical())
-		ostr << '[' << histogram.scaling.physRange << ']';
-	ostr << '\n';
 
 	HistEntry entry;
 	const drain::Histogram::vect_t & v = histogram.getVector();
@@ -182,7 +184,7 @@ void CmdHistogram::writeHistogram(const drain::Histogram & histogram, const std:
 	//if (!leg.empty()){
 	if (leg.size() >= 3){ // KLUDGE
 		for (legend::const_iterator it=leg.begin(); it!=leg.end(); ++it){
-			ostr << "# " << it->first << '=' << it->second << '\n';
+			ostr << commentChar << ' ' << it->first << '=' << it->second << '\n';
 		}
 		for (legend::const_iterator it=leg.begin(); it!=leg.end(); ++it){
 			entry.index = it->first;

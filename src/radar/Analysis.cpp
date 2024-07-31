@@ -52,12 +52,17 @@ void RadarWindowConfig::setPixelConf(RadarWindowConfig & conf, const PolarODIM &
 
 void RadarWindowConfig::updatePixelSize(const PolarODIM & inputODIM){ // DopplerWindOp wants public
 
-	drain::Logger mout(__FUNCTION__, "RadarWindowConfig");
+	drain::Logger mout("RadarWindowConfig", __FUNCTION__);
 
 	//mout.note(odimSrc );
 	this->frame.width  = inputODIM.getBeamBins(this->widthM);
 	this->frame.height = inputODIM.getAzimuthalBins(this->heightD);
 	//mout.note(this->width , '<' , this->widthM );
+
+	if (inputODIM.area.empty()){
+		mout.fail(inputODIM);
+		mout.fail("inputODIM area unset");
+	}
 
 	if (this->frame.width <= 0){
 		// mout.note(this->frame.width  , "pix ~ " , this->widthM , "m " );
@@ -70,6 +75,8 @@ void RadarWindowConfig::updatePixelSize(const PolarODIM & inputODIM){ // Doppler
 		mout.warn("Requested height (" , this->heightD ,  " degrees) smaller than 360/nrays (", (360.0/inputODIM.area.height) ,"), setting window height=1 " );
 		this->frame.height = 1;
 	}
+
+
 
 	//mout.note(this->height , '<' , this->heightD );
 

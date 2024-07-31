@@ -205,12 +205,15 @@ struct drain::TypeName<drain::image::TreeSVG> {
 
 namespace drain {
 
+/*
 template <>
 inline
 const char* TypeName<image::NodeSVG>::get(){
 	return "SVG";
 }
+*/
 
+DRAIN_TYPENAME(image::NodeSVG);
 
 //template <>
 //struct drain::TypeName<image::NodeSVG>;

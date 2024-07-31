@@ -34,6 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "main/palette-manager.h"
 
 #include "radar/Geometry.h"
+#include "radar/PolarSmoother.h"
 
 /* OLD STYLE: CLASS / 255.0 = QIND
 template <>
@@ -179,7 +180,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	/// Class codes (using storage type encoding)
 	MethodWeights<unsigned char> CLASS;
 
-#ifndef NDEBUG
+// #ifndef NDEBUG
 
 	PlainData<dst_t> & dstClass = dstEchoTop.getQualityData("CLASS-ETOP");
 	getQuantityMap().setQuantityDefaults(dstClass, "CLASS", "C");
@@ -214,7 +215,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 		dstSlope.setExcluded();
 	}
 
-#endif
+// #endif
 
 	// MAIN -----------------------------------------------------------------
 
@@ -534,13 +535,53 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	}
 
 // #ifndef NDEBUG
-	{
-		PolarSlidingAvgOp smoother;
+	////{
+		Data<dst_t> & dstEchoTopSmooth = dstProduct.getData(odim.quantity+"_SMOOTH");
+		// qm.setQuantityDefaults(fuzzyCell2, "PROB");
 
-	}
+		dstEchoTopSmooth.odim.importCastableMap(dstEchoTop.odim);
+		// mout.special(dstEchoTopSmooth);
+		dstEchoTopSmooth.copyEncoding(dstEchoTop);
+		dstEchoTopSmooth.copyGeometry(dstEchoTop);
+
+		mout.attention(dstEchoTopSmooth);
+
+		PolarSlidingAvgOp smoother;
+		/*
+		smoother.conf.widthM  = 5*1000.0; // smoothAzm;
+		smoother.conf.heightD = 100.0; // smoothRad;
+		*/
+		/*
+		RadarWindowConfig test;
+		smoother.conf.setPixelConf(test, dstEchoTop.odim);
+		mout.warn("smoother.conf" , smoother.conf);
+		mout.warn("    test conf" ,          test);
+		*/
+
+		//avgOp.setPixelConf()
+		smoother.odim.importCastableMap(dstEchoTop.odim);
+		smoother.odim.area.set(dstEchoTop.data.getGeometry());
+		smoother.conf.updatePixelSize(dstEchoTop.odim);
+
+		const PlainData<src_t> & pd = dstEchoTop;
+
+		mout.attention("Next: processPlainData");
+		mout.attention(pd);
+		mout.attention(pd.odim);
+		mout.attention(pd.odim.getGeometry());
+		//mout.attention(dstEchoTop.odim.getGeometry());
+		//mout.attention(dstEchoTop.odim);
+
+		mout.attention(drain::TypeName<PlainData<dst_t> >::str());
+
+		//smoother.processPlainData(dstEchoTop, dstEchoTopSmooth);
+		smoother.processPlainData(pd, dstEchoTopSmooth);
+
+		// Data<dst_t> & dstEchoTopSmooth = dstProduct.getData(odim.quantity+"_SMOOTH");
+		// PolarSmoother::filter(dstEchoTop.odim, dstEchoTop.data, dstEchoTopSmooth.data, 100.0);
+	//// }
 // #endif
 
-	PolarSlidingAvgOp smoother;
 	/*
 	for (const auto & entry: srcSweeps){
 		const Data<src_t> & srcData = entry.second.getData("DBZH");

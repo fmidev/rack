@@ -29,17 +29,20 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef POLAR_SLIDINGWINDOWOP_H_
-#define POLAR_SLIDINGWINDOWOP_H_
+#ifndef RACK_POLAR_SLIDING_WINDOW_OP
+#define RACK_POLAR_SLIDING_WINDOW_OP
 
 #include "drain/imageops/SlidingWindowOp.h"
 
-#include "../radar/Analysis.h" // temp
+#include "radar/Analysis.h" // temp
 #include "PolarProductOp.h"
 
 namespace rack {
 
-
+/// Window operator with support
+/**
+ *
+ */
 template <class W>
 class PolarSlidingWindowOp : public PolarProductOp {
 
@@ -76,17 +79,24 @@ public:
 	};
 
 	virtual
-	void processPlainData(const PlainData<src_t > & srcData, PlainData<dst_t > & dstData) const {
+	void processPlainData(const PlainData<src_t> & srcData, PlainData<dst_t > & dstData) const {
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		//mout.warn("not implemented" );
+
+		if (srcData.odim.getGeometry().empty()){
+			mout.warn("srcData.odim: empty geometry");
+			mout.warn(drain::TypeName<PlainData<src_t> >::str());
+		}
+
+		mout.special("srcData.odim: " , srcData.odim );
+		mout.warn(drain::TypeName<SlidingWindowOp<W> >::str());
+
 		typename W::conf_t pixelConf;
-		//this->setPixelConf(srcData.odim, pixelConf); // what about other parameters?
+
 		this->conf.setPixelConf(pixelConf, srcData.odim);
 
-		mout.warn("srcData.odim: " , srcData.odim );
-
 		SlidingWindowOp<W> op(pixelConf);
+
 		mout.warn(op );
 		mout.special("provided functor: " ,  op.conf.getFunctorName() , '|' , op.conf.functorParameters );
 		//mout.debug("provided functor: " , op.conf.ftor );

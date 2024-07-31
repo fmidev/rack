@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <set>
 
 #include <drain/StringBuilder.h>
-#include <drain/TypeUtils.h>
+#include <drain/Type.h>  // Utils
 // #include <drain/Sprinter.h>  lower ==  cannot use Sprinter, as long as SprinterLayouit uses UniTuple...
 // #include <drain/VariableT.h> lower
 
@@ -463,13 +463,15 @@ template <class T, size_t N>
 struct TypeName<UniTuple<T,N> > {
 
     static const std::string & str(){
-		static std::string name = drain::StringBuilder<>("UniTuple<", drain::TypeName<T>::get(), ',', N, ">");
+		static std::string name = drain::StringBuilder<>("UniTuple<", drain::TypeName<T>::str(), ',', N, ">");
         return name;
     }
 
+    /*
     static const char* get(){
     	return str().c_str();
     }
+    */
 
 
 };

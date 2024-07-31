@@ -37,15 +37,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include <drain/StringBuilder.h>
+// #include <AccumulatorGeo.h>
+
 #include "TreeXML-GDAL.h"
-
-
-//#include "drain/util/Log.h"
-#include "drain/image/AccumulatorGeo.h"
 
 
 namespace drain
 {
+
+
+DRAIN_TYPENAME_DEF(image::NodeGDAL);
+
+DRAIN_TYPENAME_DEF(image::NodeGDAL::tag_t);
 
 namespace image
 {
@@ -99,51 +102,7 @@ void NodeGDAL::setType(const tag_t & t){
 
 }
 
-/*
-void NodeGDAL::setGDAL(const std::string & name, const drain::Variable & ctext, int sample, const std::string & role){
-
-	setType(ITEM);
-
-	this->name   = name;
-	this->ctext  = ctext.toStr();
-	this->sample = sample;
-
-	if (role.empty()){
-		this->role   = name;
-		drain::StringTools::lowerCase(this->role);
-	}
-	else
-		this->role   = role;
-
-
-}
-*/
-
-/*
-for (drain::ReferenceMap::const_iterator it = this->begin(); it != this->end(); it++){
-	std::cerr << tag << '=' << it->first << ':' << it->second << '\n';
-};
-*/
-
-/*
-void NodeGDAL::setGDAL(const std::string & name, const drain::Variable & ctext){
-	setType(ITEM);
-	this->name   = name;
-	this->ctext  = ctext.toStr();
-//this->sample = sample;
-//this->role   = role;
-
-}
-*/
-
-
-
-
 
 } // image::
-
-
-
-
 
 } // drain::

@@ -94,6 +94,18 @@ struct DataType {
 };
 
 
+/*
+template <class T, size_t N>
+struct TypeName<UniTuple<T,N> > {
+
+    static const std::string & str(){
+		static std::string name = drain::StringBuilder<>("UniTuple<", drain::TypeName<T>::str(), ',', N, ">");
+        return name;
+    }
+
+};
+*/
+
 /// Read-only data type
 /**
  *  \tparam M - meta data using OPERA data information model (ODIM)
@@ -1363,6 +1375,21 @@ class DataSetList : public std::list<DataSet<DT> > {
 
 
 } // rack::
+
+namespace drain {
+
+template <class T, typename TI, typename D>
+struct TypeName<rack::DataType<T,TI,D> > {
+
+	static const std::string & str(){
+		static std::string name = drain::StringBuilder<>("DataType<", drain::TypeName<T>::str(), ',', drain::TypeName<TI>::str(), ',', drain::TypeName<D>::str(), ">");
+		return name;
+	}
+
+};
+
+}
+
 
 #endif /* DATA_H_ */
 

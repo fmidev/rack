@@ -184,7 +184,7 @@ void Writer::vectorToH5Compound(const std::vector<std::pair<K,V> > & v, hid_t fi
 	typedef typename vect_t::value_type pair_t;
 	typedef typename pair_t::first_type   first_type;
 	typedef typename pair_t::second_type second_type;
-	mout.debug("datatypes: ", drain::TypeName<first_type>::get(), ", ", drain::TypeName<second_type>::get());
+	mout.debug("datatypes: ", drain::TypeName<first_type>::str(), ", ", drain::TypeName<second_type>::str());
 			// drain::Type::call<drain::simpleName>(second_type));
 
 

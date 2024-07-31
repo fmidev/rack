@@ -29,8 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-#ifndef DATASELECTOR_H_
-#define DATASELECTOR_H_
+#ifndef RACK_DATASELECTOR
+#define RACK_DATASELECTOR
 
 #include <set>
 #include <list>
@@ -39,11 +39,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/RegExp.h>
 #include <drain/Sprinter.h>
-#include <drain/VariableAssign.h>
-
-#include "drain/util/BeanLike.h"
-#include "drain/util/Range.h"
-#include "drain/util/ReferenceMap.h"
+#include <drain/Type.h>
+#include <drain/util/BeanLike.h>
+#include <drain/util/Range.h>
+#include <drain/util/ReferenceMap.h>
 //#include "drain/util/Variable.h"
 
 #include "ODIM.h"
@@ -486,5 +485,9 @@ private:
 */
 
 } // rack::
+
+namespace drain {
+	DRAIN_TYPENAME(rack::DataSelector);
+}
 
 #endif /* DATASELECTOR_H_ */

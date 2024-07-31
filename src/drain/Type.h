@@ -44,7 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-/// Utilities related to stl::type_info.
+/// Utilities related to std::type_info.
 /**
  *
  */
@@ -523,60 +523,159 @@ protected:
 
 };
 
-/**
- *   \tparam C - contrainer, esp. std::list or std::vector
- */
-/*
-template <class C>
-const std::type_info & Type::guessArrayType(const C & l){
 
-
-	typedef std::set<const std::type_info *> typeset;
-
-	typeset s;
-	for (typename C::const_iterator it = l.begin(); it != l.end(); ++it) {
-		s.insert(& guessType(*it));
-	}
-
-	/// Contains at least one string
-	if (s.find(& typeid(std::string)) != s.end())
-		return typeid(std::string);
-
-	/// Contains at least one decimal value
-	if (s.find(& typeid(double)) != s.end())
-		return typeid(double);
-
-	if (s.find(& typeid(int)) != s.end())
-		return typeid(int);
-
-	/// Contains only \c true and \false values
-	if (s.find(& typeid(bool)) != s.end())
-		return typeid(bool);
-
-	// General fallback solution
-	return typeid(std::string);
-
-}
-*/
-
-/*
-template <>
-inline
-void Type::setType<void>(){
-	currentType = & typeid(void);
-	// typeMax = 0.0;
-	// typeMin = 0.0;
-}
-*/
-
-
-/// Dumps a node.
+/// Dumps information.
 inline
 std::ostream & operator<<(std::ostream & ostr, const Type &t){
 	Type::toStream(ostr, t);
 	return ostr;
 }
 
-}
 
-#endif /* Type2_H_ */
+
+// default implementation
+/*
+
+*/
+template <typename T>
+struct TypeName
+{
+
+    // Recommended... See also: TreeXML
+    static const std::string & str(){
+        return name;
+    }
+
+    /*
+    static const char* get(){
+    	return name.c_str();
+    }
+	*/
+
+
+protected:
+
+    static const std::string name;
+
+};
+
+/// Default implementation: name returned by std::type_info::name()
+template <typename T>
+const std::string TypeName<T>::name(typeid(T).name());
+
+/// Name declaration, for header files.
+#define DRAIN_TYPENAME(tname) template <>      const std::string TypeName<tname>::name
+/// Name definition, for object files.
+#define DRAIN_TYPENAME_DEF(tname) template <>  const std::string TypeName<tname>::name(#tname)
+
+
+/// Add a specialization for each type of those you want to support.
+//  (Unless the string returned by typeid is sufficient.)
+
+
+DRAIN_TYPENAME(void);
+DRAIN_TYPENAME(bool);
+DRAIN_TYPENAME(char);
+DRAIN_TYPENAME(unsigned char);
+DRAIN_TYPENAME(short);
+DRAIN_TYPENAME(unsigned short);
+DRAIN_TYPENAME(int);
+DRAIN_TYPENAME(unsigned int);
+DRAIN_TYPENAME(long);
+DRAIN_TYPENAME(unsigned long);
+DRAIN_TYPENAME(float);
+DRAIN_TYPENAME(double);
+DRAIN_TYPENAME(char *);
+DRAIN_TYPENAME(const char *);  // why const separately...?
+DRAIN_TYPENAME(std::string);
+
+template <typename T>
+struct TypeName<std::initializer_list<T> > {
+
+	static const std::string & str(){
+		static std::string name;
+		if (name.empty()){
+			name = "std::initializer_list<";
+			name += drain::TypeName<T>::get();
+			name += ">";
+			//name = drain::StringBuilder("std::initializer_list<", drain::TypeName<T>::get(), ">");
+		}
+		return name;
+	}
+
+	/*
+	static const char* get(){
+		static std::string name;
+		if (name.empty()){
+			name = "std::initializer_list<";
+			name += drain::TypeName<T>::get();
+			name += ">";
+			//name = drain::StringBuilder("std::initializer_list<", drain::TypeName<T>::get(), ">");
+		}
+		return name.c_str();
+	}
+	*/
+
+};
+
+
+template <typename T>
+struct TypeName<std::vector<T> > {
+
+	static const std::string & str(){
+		static std::string name;
+		if (name.empty()){
+			name = "std::vector<"; // + drain::TypeName<T>::get() + ">";
+			name += drain::TypeName<T>::get();
+			name += ">";
+			//name = drain::StringBuilder("std::initializer_list<", drain::TypeName<T>::get(), ">");
+		}
+		return name;
+	}
+
+	/*
+	static const char* get(){
+		static std::string name;
+		if (name.empty()){
+			//name = drain::StringBuilder("std::vector<", drain::TypeName<T>::get(), ">");
+			name = "std::vector<"; // + drain::TypeName<T>::get() + ">";
+			name += drain::TypeName<T>::get();
+			name += ">";
+		}
+		return name.c_str();
+	}
+	*/
+};
+
+
+/// Returns the basic type (integer, float, bool, string, void) as a string.
+/**
+ *  Usage:
+ *  Type::call<drain::simpleName>(t)
+ */
+class simpleName {
+
+public:
+
+	typedef std::string value_t;
+	// typedef const std::string & value_t;
+
+	/**
+	 *  \tparam S - type to be analyzed (argument)
+	 *  \tparam T - return type  (practically value_t)
+	 */
+	template <class S, class T>
+	static
+	T callback(){
+		//return TypeName<S>::get();
+		return TypeName<S>::str();
+	}
+
+
+};
+
+
+
+} // drain::
+
+#endif

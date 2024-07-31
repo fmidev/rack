@@ -51,6 +51,8 @@ struct HistEntry : drain::BeanLike {
 	HistEntry() : drain::BeanLike(__FUNCTION__), index(0), count(0){
 		getParameters().link("index", index);
 		getParameters().link("range", binRange.tuple());
+		getParameters().link("rangemin", binRange.min);
+		getParameters().link("rangemax", binRange.min);
 		//getParameters().link("max", binRange.max);
 		getParameters().link("count", count);
 		getParameters().link("label", label);
@@ -69,7 +71,7 @@ class CmdHistogram : public drain::BasicCommand {
 
 public:
 
-	int count;
+	int count = 0;
 
 	drain::Range<double> range;
 
@@ -83,6 +85,7 @@ public:
 		//getParameters().link("max", maxValue = +std::numeric_limits<double>::max());
 		getParameters().link("filename", filename="", "<filename>.txt|-");
 		getParameters().link("attribute", attribute="histogram", "<attribute_key>");
+		getParameters().link("commentChar", commentChar, "Prefix for header and postfix for labels");
 	};
 
 	CmdHistogram(const CmdHistogram & cmd): drain::BasicCommand(cmd), count(0) {
@@ -99,6 +102,7 @@ public:
 	// Consider static, called by CmdOutputFile with default hist params?
 	void writeHistogram(const drain::Histogram & histogram, const std::string & filename, const legend &leg = legend()) const;
 
+	std::string commentChar = "#";
 
 private:
 

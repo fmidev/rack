@@ -414,7 +414,7 @@ public:
 		}
 		else {
 			Logger mout(__FILE__, __FUNCTION__);
-			mout.error(TypeName<E>::get(), ": no such key: '"+ key, "', keys=", sprinter(this->getDict().getKeys()));
+			mout.error(TypeName<E>::str(), ": no such key: '"+ key, "', keys=", sprinter(this->getDict().getKeys()));
 			// throw std::runtime_error(std::string("Dictionary[") + typeid(ivalue_t).name()+ "]: no such key: "+ key);
 		}
 	}
@@ -496,7 +496,7 @@ private:
 template <typename E>
 void drain::FlaggerBase<E>::debug(std::ostream & ostr) const {
 	//ostr << typeid(drain::FlaggerBase<E>).name() << ": value=" << getValue() << ", ";
-	ostr << drain::TypeName<E>::get() << ": value=" << getValue() << ", ";
+	ostr << drain::TypeName<E>::str() << ": value=" << getValue() << ", ";
 	FlagResolver::keysToStream(getDict(), getValue(), ostr) << ", ";
 	ostr <<  " dict: " << getDict();
 }

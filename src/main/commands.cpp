@@ -156,8 +156,6 @@ protected:
 	- saving images (PNG, GeoTIFF, PPM; see \ref imagespage ).
 	- other data dumps, useful in debugging, for example
 
-	\subsubsection CmdSelect_exm Examples
-
 	The following command lines illustrate usage of \c --select in product generation and image output.
 
 	\include example-select.inc

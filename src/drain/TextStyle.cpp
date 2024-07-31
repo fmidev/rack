@@ -38,6 +38,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+DRAIN_TYPENAME_DEF(TextStyle);
+DRAIN_TYPENAME_DEF(TextStyle::Colour);
+DRAIN_TYPENAME_DEF(TextStyle::Line);
+DRAIN_TYPENAME_DEF(TextStyle::Style);
+
+
+
 template <>
 const std::map<TextStyle::Colour,int> & TextStyleVT100::getCodeMap(){
 
@@ -50,8 +57,10 @@ const std::map<TextStyle::Colour,int> & TextStyleVT100::getCodeMap(){
 			{BLUE, 34},
 			{PURPLE, 35},
 			{CYAN, 36},
-			{WHITE, 37},
-			{NO_COLOR, 39}
+			{GRAY, 37},
+			/*{NO_COLOR, 39}, */
+			{WHITE, 97},
+			{DEFAULT_COLOR, 39}
 			/*
 			{BLACK_BG, 40},
 			{RED_BG, 41},
@@ -102,9 +111,7 @@ const std::map<TextStyle::Line,int> & TextStyleVT100::getCodeMap(){
 
 
 
-DRAIN_TYPENAME_DEF(TextStyle::Colour);
-DRAIN_TYPENAME_DEF(TextStyle::Line);
-DRAIN_TYPENAME_DEF(TextStyle::Style);
+DRAIN_TYPENAME_DEF(TextStyleVT100);
 
 
 /*

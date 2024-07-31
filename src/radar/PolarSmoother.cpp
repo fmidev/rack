@@ -49,7 +49,7 @@ namespace rack
 //void polarGaussian(const PlainData<PolarSrc> & src, Image & dst, int radius){
 void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image & src, drain::image::Image & dst, double radiusMetres){
 
-	drain::Logger mout("PolarSmoother", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	CoordinatePolicy polar(EdgePolicy::POLAR, EdgePolicy::WRAP, EdgePolicy::LIMIT,EdgePolicy::WRAP);
 
 	Image srcWeighted;
@@ -70,7 +70,7 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	weightMakerOp.odimSrc = odimSrc;
 	weightMakerOp.nodataValue   = 0.0;
 	weightMakerOp.undetectValue = 1.0;
-	weightMakerOp.functor.threshold  = -10.0;
+	weightMakerOp.functor.threshold  = -10.0; // OOPS this is relates to DBZ, not general!
 	weightMakerOp.functor.replace = 0;
 	weightMakerOp.functor.replaceHigh = 255;
 	weightMakerOp.process(src, srcWeighted);
@@ -80,6 +80,7 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 
 	dst.setGeometry(src.getGeometry());
 	dst.setCoordinatePolicy(polar);
+	dst.setScaling(src.getScaling()); // NEW 2024/07/29
 	//mout.warn(srcWeighted );
 
 	if (radiusMetres <=  odimSrc.rscale){
