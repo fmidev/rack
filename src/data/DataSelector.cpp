@@ -424,7 +424,8 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 			if (prfSelector != ANY){
 				double lowPRF   = props.get("how:lowprf",  0.0);
 				double highPRF = props.get("how:highprf", lowPRF);
-				if (((lowPRF == highPRF) && (highPRF == 0)) == (prfSelector == Prf::SINGLE)){
+				//if (((lowPRF == highPRF) && (highPRF == 0)) == (prfSelector == Prf::SINGLE)){
+				if (((lowPRF == highPRF)) == (prfSelector == Prf::SINGLE)){
 					mout.accept<LOG_DEBUG>("PRF=", lowPRF, '/', highPRF, ", required ", prfSelector, ": including " , path);
 				}
 				else {

@@ -535,7 +535,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	}
 
 // #ifndef NDEBUG
-	////{
+	if (false){
 		Data<dst_t> & dstEchoTopSmooth = dstProduct.getData(odim.quantity+"_SMOOTH");
 		// qm.setQuantityDefaults(fuzzyCell2, "PROB");
 
@@ -579,7 +579,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 		// Data<dst_t> & dstEchoTopSmooth = dstProduct.getData(odim.quantity+"_SMOOTH");
 		// PolarSmoother::filter(dstEchoTop.odim, dstEchoTop.data, dstEchoTopSmooth.data, 100.0);
-	//// }
+	}
 // #endif
 
 	/*
