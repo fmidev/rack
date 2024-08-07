@@ -84,10 +84,13 @@ void QuantityMap::initialize(){
 	set("RATE", 'S').setScaling( 0.0005); // nodata = 0?
 
 	Quantity & KDP = add("KDP");
+	KDP.set('C').setRange(-120.0, +120.0);
 	KDP.set('S').setScaling(0.01, -327.68);
 
 	Quantity & PHIDP = add("PHIDP");
-	PHIDP.set('S').setScaling(0.00549333, -0.00549333);
+	PHIDP.set('C').setRange(-180.0, +180.0);
+	PHIDP.set('S').setRange(-180.0, +180.0);
+	// PHIDP.set('S').setScaling(0.00549333, -0.00549333);
 
 	Quantity & HCLASS = add("HCLASS");
 	HCLASS.set('C').setScaling(1, 0);
