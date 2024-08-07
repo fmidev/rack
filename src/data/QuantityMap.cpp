@@ -83,6 +83,17 @@ void QuantityMap::initialize(){
 	set("RATE", 'C').setScaling( 0.05); // nodata = 0?
 	set("RATE", 'S').setScaling( 0.0005); // nodata = 0?
 
+	Quantity & KDP = add("KDP");
+	KDP.set('S').setScaling(0.01, -327.68);
+
+	Quantity & PHIDP = add("PHIDP");
+	PHIDP.set('S').setScaling(0.00549333, -0.00549333);
+
+	Quantity & HCLASS = add("HCLASS");
+	HCLASS.set('C').setScaling(1, 0);
+	HCLASS.set('S').setScaling(1, 0);
+
+
 	//DBZHDEV.set('S').setRange(-100.0, +100.0);
 	const bool FIRST_INIT = !hasQuantity("HGHT");
 

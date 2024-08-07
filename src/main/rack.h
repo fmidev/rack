@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.9.4"
+#define __RACK_VERSION__ "8.9.5"
 
 /**
+ *   Version 8.9.5
+ *   - Added KDP, PHIDP and HCLASS to QuantityMap (--quantityConf)
+ *
  *   Version 8.9.4
  *   - select: added (highPRF == 0) for prf==SINGLE testing
  *
