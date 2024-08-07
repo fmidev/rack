@@ -57,8 +57,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "rack.h"
 
 
-#include "drain/imageops/FastOpticalFlowOp2.h"
-#include "drain/imageops/FloodFillOp.h"
+#include <drain/imageops/FastOpticalFlowOp2.h>
+#include <drain/imageops/FloodFillOp.h>
 
 namespace rack {
 

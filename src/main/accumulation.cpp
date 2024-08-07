@@ -30,11 +30,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <drain/Log.h>
-#include "drain/util/Input.h"
-#include "drain/util/Point.h"
-#include "drain/prog/CommandBankUtils.h"
-#include "drain/prog/CommandSections.h"
-#include "drain/prog/CommandInstaller.h"
+#include <drain/util/Input.h>
+#include <drain/util/Point.h>
+#include <drain/prog/CommandBankUtils.h>
+#include <drain/prog/CommandSections.h>
+#include <drain/prog/CommandInstaller.h>
 
 
 #include "product/ProductOp.h"

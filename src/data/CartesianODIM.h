@@ -31,8 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_CART_ODIM_H
 #define RACK_CART_ODIM_H
 
-#include "drain/util/BoundingBox.h"
-#include "drain/image/GeoFrame.h"
+#include <drain/util/BoundingBox.h>
+#include <drain/image/GeoFrame.h>
 
 #include "ODIM.h"
 

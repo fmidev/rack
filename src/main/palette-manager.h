@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_PALETTE_MANAGER
 #define RACK_PALETTE_MANAGER
 
-#include "drain/imageops/PaletteOp.h"
+#include <drain/imageops/PaletteOp.h>
 
 
 namespace rack {

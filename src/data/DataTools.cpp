@@ -31,8 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Type.h>
 #include <set>
-#include "drain/util/TextDecorator.h"
-#include "drain/util/TreeUtils.h"
+#include <drain/util/TextDecorator.h>
+#include <drain/util/TreeUtils.h>
 #include "hi5/Hi5.h"
 #include "radar/Coordinates.h"
 

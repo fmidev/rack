@@ -28,13 +28,13 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef DRAIN_JSON_H_
-#define DRAIN_JSON_H_
+#ifndef DRAIN_JSON
+#define DRAIN_JSON
 
 #include <string>
 
 #include <drain/Sprinter.h>
-#include <drain/VariableAssign.h>
+//#include <drain/VariableAssign.h>
 
 #include "FileInfo.h"
 #include "TextReader.h"

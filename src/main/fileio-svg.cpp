@@ -29,14 +29,14 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-//#include "drain/util/Convert.h"
-#include "drain/util/Output.h"
-#include "drain/util/StringMapper.h"
-#include "drain/util/TreeXML.h"
-#include "drain/util/TreeHTML.h"
+//#include <drain/util/Convert.h>
+#include <drain/util/Output.h>
+#include <drain/util/StringMapper.h>
+#include <drain/util/TreeXML.h>
+#include <drain/util/TreeHTML.h>
 
-#include "drain/image/FilePng.h"
-#include "drain/image/TreeUtilsSVG.h"
+#include <drain/image/FilePng.h>
+#include <drain/image/TreeUtilsSVG.h>
 
 #include "data/SourceODIM.h" // for NOD
 
@@ -471,16 +471,23 @@ drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what 
 
 	drain::image::TreeSVG & track = getMain(ctx);
 
-	if (!track.hasChild(ctx.svgPanelConf.groupName)){
-		drain::image::TreeSVG & group = track[ctx.svgPanelConf.groupName](NodeSVG::GROUP);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	VariableFormatterODIM<drain::Variable> formatter;
+	drain::StringMapper groupMapper(RackContext::variableMapper); // XXX
+	groupMapper.parse(ctx.svgPanelConf.groupName);
+	const std::string groupName = groupMapper.toStr(ctx.getStatusMap()); // No formatting supported here (not needed - this is identifying, not style)
+
+	//mout.accept<LOG_WARNING>("podgrupnik ", groupName);  // ctx.svgPanelConf.
+
+	if (!track.hasChild(groupName)){  // ctx.svgPanelConf.
+		drain::image::TreeSVG & group = track[groupName](NodeSVG::GROUP);  // ctx.svgPanelConf.
 		// Ensure (repeatedly)
 		group->addClass("imageSet");
-		group->setId(ctx.svgPanelConf.groupName);
-		// group->set("id", ctx.svgPanelConf.groupName);
-		// group->set("name", ctx.svgPanelConf.groupName);
+		group->setId(groupName);  // ctx.svgPanelConf.
 	}
 
-	return track[ctx.svgPanelConf.groupName](NodeSVG::GROUP);
+	return track[groupName](NodeSVG::GROUP); // ctx.svgPanelConf.
 
 }
 

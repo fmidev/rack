@@ -32,10 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include <drain/image/ImageFile.h>
-#include "drain/util/Fuzzy.h"
-#include "drain/util/StatusFlags.h"
-#include "drain/imageops/DistanceTransformFillOp.h"
-//#include "drain/imageops/RecursiveRepairerOp.h"
+#include <drain/util/Fuzzy.h>
+#include <drain/util/StatusFlags.h>
+#include <drain/imageops/DistanceTransformFillOp.h>
+//#include <drain/imageops/RecursiveRepairerOp.h>
 
 
 #include "data/DataCoder.h"

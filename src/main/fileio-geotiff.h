@@ -34,12 +34,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //nclude <string>
 
-//nclude "drain/util/RegExp.h"
-//nclude "drain/prog/CommandBank.h"
-//nclude "drain/prog/CommandInstaller.h"
+//nclude <drain/util/RegExp.h>
+//nclude <drain/prog/CommandBank.h>
+//nclude <drain/prog/CommandInstaller.h>
 
-// #include "drain/util/FileInfo.h"
-#include "drain/image/FileGeoTIFF.h"
+// #include <drain/util/FileInfo.h>
+#include <drain/image/FileGeoTIFF.h>
 
 //nclude "hi5/Hi5.h"
 

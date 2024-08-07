@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/prog/CommandInstaller.h>
 #include <string>
 
-#include "drain/prog/CommandBank.h"
+#include <drain/prog/CommandBank.h>
 #include "radar/Precipitation.h"
 #include "product/RainRateOp.h"
 

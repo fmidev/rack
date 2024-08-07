@@ -36,11 +36,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/RegExp.h>
 
-#include "drain/util/Input.h"
-#include "drain/image/FilePng.h"
-#include "drain/image/FilePnm.h"
-#include "drain/image/FileTIFF.h"
-#include "drain/prog/Command.h"
+#include <drain/util/Input.h>
+#include <drain/image/FilePng.h>
+#include <drain/image/FilePnm.h>
+#include <drain/image/FileTIFF.h>
+#include <drain/prog/Command.h>
 
 #include "andre/QualityCombinerOp.h"
 #include "hi5/Hi5.h"

@@ -43,14 +43,15 @@ class CartesianExtract : public Compositor {
 
 public:
 
-	CartesianExtract() : Compositor(__FUNCTION__,"Extract data that has been composited on the accumulation array"){
-		//getParameters().link("channels", channels="dw", drain::sprinter(Composite::dict.getContainer(), drain::Command::cmdArgLayout).str() + "Layers: data,count,weight,std.deviation"); // Accumulation layers to be extracted
+	CartesianExtract() : Compositor(__FUNCTION__, "Extract (export) data from the internal accumulation array"){
+		getParameters().separator = ':'; // Consider Command help notif, if not comma (,) .
 		getParameters().link("channels", channels="DATA,WEIGHT", drain::sprinter(Composite::dict.getKeys(), drain::Command::cmdArgLayout).str()); // Accumulation layers to be extracted
-		getParameters().link("bbox", crop, "Optional cropping: <LLx>:<LLy>:<URx>:<URy> or DATA or OVERLAP");
+		getParameters().link("bbox", crop, "Optional cropping: ...:<LLx>,<LLy>,<URx>,<URy> or DATA or OVERLAP");
 	};
 
 	CartesianExtract(const CartesianExtract & cmd) : Compositor(__FUNCTION__, cmd.getDescription()){
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+		// getParameters().separator = cmd.getParameters().separator;
 	}
 
 	virtual
@@ -58,22 +59,8 @@ public:
 
 protected:
 
-	// TODO: replace with MultiFlagEnum etc. D=DATA
 	std::string channels;
 	std::string crop;
-
-	//mutable
-	//drain::Rectangle<double> bbox;
-
-	/*
-	virtual
-	void update() override {
-		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, getName());
-		drain::StringTools::split(crop, bbox.tuple(), ':');
-		mout.attention("crop: ");
-	}
-	*/
 
 };
 

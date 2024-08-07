@@ -36,13 +36,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
-#include <drain/VariableAssign.h>
-
-#include "drain/image/Image.h"
-#include "drain/image/TreeUtilsSVG.h"
-#include "drain/imageops/PaletteOp.h"
-
-#include "drain/util/Static.h"
+#include <drain/image/Image.h>
+#include <drain/image/TreeUtilsSVG.h>
+#include <drain/imageops/PaletteOp.h>
+#include <drain/util/Static.h>
 
 #include "data/DataSelector.h"
 #include "data/PolarODIM.h"

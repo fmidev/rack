@@ -15,7 +15,7 @@
 
 # Weak top
 # weak
-# Constrained maxH
+# Max height limited
 128.0	0.0	128.0	224.0
 
 # interpolated
@@ -23,12 +23,12 @@
 170.0	64.0	192.0	64.0
 
 # interpolated.undetect
-# Constrained span
+# Span limited
 200.0	240.0	180.0	0.0
 
 # Consider also: strong-at-its-altitude
 # strong.extrapolated
-# Constrained minH
+# Min height limited
 240.0	255.0	64.0	0.0
 
 

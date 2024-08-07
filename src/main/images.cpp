@@ -41,24 +41,21 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 #include <drain/RegExp.h>
-#include <drain/VariableAssign.h>
+#include <drain/util/FilePath.h>
+#include <drain/util/Output.h>
+#include <drain/util/SmartMap.h>
+#include <drain/util/TreeOrdered.h>
+#include <drain/util/VariableMap.h>
+#include <drain/image/Image.h>
+#include <drain/image/ImageChannel.h>
+#include <drain/image/ImageLike.h>
+#include <drain/image/ImageTray.h>
+#include <drain/image/TreeSVG.h>
+#include <drain/imageops/ImageModifierPack.h>
+#include <drain/imageops/PaletteOp.h>
+#include <drain/imageops/FunctorOp.h>
+#include <drain/prog/Command.h>
 
-#include "drain/util/FilePath.h"
-#include "drain/util/Output.h"
-#include "drain/util/SmartMap.h"
-#include "drain/util/TreeOrdered.h"
-
-#include "drain/util/VariableMap.h"
-#include "drain/image/Image.h"
-#include "drain/image/ImageChannel.h"
-#include "drain/image/ImageLike.h"
-#include "drain/image/ImageTray.h"
-#include "drain/image/TreeSVG.h"
-#include "drain/imageops/ImageModifierPack.h"
-#include "drain/imageops/PaletteOp.h"
-#include "drain/imageops/FunctorOp.h"
-
-#include "drain/prog/Command.h"
 #include "hi5/Hi5.h"
 #include "data/Data.h"
 #include "data/DataSelector.h"

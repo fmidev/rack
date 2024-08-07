@@ -35,8 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-#include "drain/util/Histogram.h"
-#include "drain/prog/Command.h"
+#include <drain/util/Histogram.h>
+#include <drain/prog/Command.h>
 
 
 //#include "fileio.h"
@@ -51,8 +51,8 @@ struct HistEntry : drain::BeanLike {
 	HistEntry() : drain::BeanLike(__FUNCTION__), index(0), count(0){
 		getParameters().link("index", index);
 		getParameters().link("range", binRange.tuple());
-		getParameters().link("rangemin", binRange.min);
-		getParameters().link("rangemax", binRange.min);
+		getParameters().link("range.min", binRange.min);
+		getParameters().link("range.max", binRange.min);
 		//getParameters().link("max", binRange.max);
 		getParameters().link("count", count);
 		getParameters().link("label", label);

@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Log.h>
 #include <string>
 
-#include "drain/prog/CommandInstaller.h"
+#include <drain/prog/CommandInstaller.h>
 
 
 #include "resources.h"  // for RackContext?

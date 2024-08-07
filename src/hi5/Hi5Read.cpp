@@ -28,21 +28,16 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+
 #include <map>
 #include <utility>
 
 #include <drain/Log.h>
-#include <drain/VariableAssign.h>
-
-//#include "data/ODIMPath.h"
 
 #include "Hi5Read.h"
 
-// using namespace std;
-
 
 namespace hi5 {
-
 
 template <>
 const drain::FlagResolver::dict_t drain::EnumDict<Reader::Mode>::dict = {
@@ -236,16 +231,13 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 	hsize_t elements = 1;
 	if (rank > 0) {
 		if (rank > 1) {
-			mout.warn() << "arrays of rank > 1 are unsupported; ";
-			mout << " attribute=" << attr_name << " , rank=" << rank << mout.endl;
+			mout.warn("arrays of rank > 1 are unsupported; attribute=", attr_name, " , rank=", rank);
 			return -1;
 		}
 		else {
 			//hsize_t dims = new hsize_t[2];
 			H5Sget_simple_extent_dims(aspace, &elements, NULL);
-			mout.debug2() << " Reading attribute: " << attr_name;
-			mout << "  rank: " << rank;
-			mout << "  elements: " << elements << mout.endl;
+			mout.debug2(" Reading attribute:'", attr_name, "', rank:", rank, ", elements:", elements);
 		}
 	}
 

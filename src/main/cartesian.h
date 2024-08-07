@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RACK_CARTESIAN
 
 
-#include "drain/prog/CommandInstaller.h"
+#include <drain/prog/CommandInstaller.h>
 
 #include "resources.h"
 // #include "cartesian.h"

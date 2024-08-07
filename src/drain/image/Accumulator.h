@@ -37,11 +37,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <stdexcept>
 
-#include <drain/VariableAssign.h>
-
 #include "drain/util/Point.h"
 #include "drain/util/Rectangle.h"
-
 
 #include "ImageT.h"
 #include "AccumulationArray.h"

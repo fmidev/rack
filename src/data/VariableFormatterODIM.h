@@ -37,8 +37,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 #include <algorithm>
 //
-#include "drain/util/VariableFormatter.h"  // for VariableHandler
-#include "drain/util/Time.h"
+#include <drain/util/VariableFormatter.h>  // for VariableHandler
+#include <drain/util/Time.h>
 #include "ODIM.h"
 
 //#include "EncodingODIM.h"

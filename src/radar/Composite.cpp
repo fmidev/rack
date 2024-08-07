@@ -29,13 +29,12 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include <drain/Log.h>
-#include <drain/VariableAssign.h>  // decayTime
 #include "drain/util/Time.h"  // decayTime
+// #include <drain/VariableAssign.h>  // decayTime
 //#include "drain/util/Variable.h"
-
-#include "drain/image/ImageFile.h"
-#include "drain/image/AccumulationMethods.h"
-#include "drain/imageops/DistanceTransformFillOp.h"
+#include <drain/image/ImageFile.h>
+#include <drain/image/AccumulationMethods.h>
+#include <drain/imageops/DistanceTransformFillOp.h>
 
 #include "main/rack.h"  // for version toOStr
 
@@ -123,7 +122,8 @@ void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const
 	bool OLD_SYNTAX = false;
 
 	std::list<std::string> keys;
-	drain::StringTools::split(fields, keys, ':');
+	//drain::StringTools::split(fields, keys, ':');
+	drain::StringTools::split(fields, keys, ',');
 	for (const std::string & key: keys){
 		// int value = EnumDict<FieldType>::dict.getValue(key);
 		int value = Composite::dict.getValue(key);
@@ -134,7 +134,7 @@ void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const
 		else {
 			OLD_SYNTAX = true;
 			if (!fieldList.empty()){
-				mout.advice("Use either 'DATA:WEIGHT:...' or 'dw...'");
+				mout.advice("Use either 'DATA,WEIGHT,...' or 'dw...'");
 				mout.error("Mixed-type field list ", fields);
 			}
 		}

@@ -236,7 +236,9 @@ public:
 			return *(begin() + i);
 		else {
 			std::stringstream sstr;
-			sstr << "UniTuple<," << N << ">:" << __FUNCTION__ << " index overflow:" << i;
+			sstr << TypeName<tuple_t>::str() << ':' << __FUNCTION__ << " index overflow:" << i;
+			// sstr << TypeName<UniTuple<T,N> >::str() << ':' << __FUNCTION__ << " index overflow:" << i;
+			// sstr << "UniTuple<," << N << ">:" << __FUNCTION__ << " index overflow:" << i;
 			throw std::runtime_error(sstr.str());
 		}
 	}
@@ -255,7 +257,8 @@ public:
 			return *(begin() + i);
 		else{
 			std::stringstream sstr;
-			sstr << "UniTuple<," << N << ">:" << __FUNCTION__ << " index overflow:" << i;
+			sstr << TypeName<tuple_t>::str() << ':' << __FUNCTION__ << " index overflow:" << i;
+			// sstr << "UniTuple<," << N << ">:" << __FUNCTION__ << " index overflow:" << i;
 			throw std::runtime_error(sstr.str());
 		}
 	}
@@ -445,42 +448,22 @@ private:
 };
 
 
-/*
 template <class T, size_t N>
-struct TypeName<UniTuple<T,N> > {
-	// static const std::string name = (const std::string &)drain::StringBuilder("UniTuple<", drain::TypeName<T>::get(), ',', N, ">");
-    // static const char* get(){ return "UniTuple<>"; }
-	static const char* get(){
-		static std::string name;
-		if (name.empty())
-			name = drain::StringBuilder<>("UniTuple<", drain::TypeName<T>::get(), ',', N, ">");
-		return name.c_str();
-	}
-};
-*/
+std::ostream & operator<<(std::ostream & ostr, const UniTuple<T,N> & tuple){
+	return tuple.toStream(ostr);
+}
+
 
 template <class T, size_t N>
 struct TypeName<UniTuple<T,N> > {
 
     static const std::string & str(){
-		static std::string name = drain::StringBuilder<>("UniTuple<", drain::TypeName<T>::str(), ',', N, ">");
+		static const std::string name = drain::StringBuilder<>("UniTuple<", drain::TypeName<T>::str(), ',', N, ">");
         return name;
     }
 
-    /*
-    static const char* get(){
-    	return str().c_str();
-    }
-    */
-
-
 };
 
-
-template <class T, size_t N>
-std::ostream & operator<<(std::ostream & ostr, const UniTuple<T,N> & tuple){
-	return tuple.toStream(ostr);
-}
 
 /*
  // NOTE: cannot use Sprinter, as long as SprinterLayout uses UniTuple...

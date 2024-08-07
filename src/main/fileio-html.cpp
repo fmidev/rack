@@ -29,13 +29,13 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-#include "drain/util/Output.h"
-#include "drain/util/StringMapper.h"
-#include "drain/util/TreeXML.h"
-#include "drain/util/TreeHTML.h"
+#include <drain/util/Output.h>
+#include <drain/util/StringMapper.h>
+#include <drain/util/TreeXML.h>
+#include <drain/util/TreeHTML.h>
 
-#include "drain/image/FilePng.h"
-#include "drain/image/TreeUtilsSVG.h"
+#include <drain/image/FilePng.h>
+#include <drain/image/TreeUtilsSVG.h>
 
 #include "data/SourceODIM.h" // for NOD
 #include "fileio-html.h"  // ImageSection

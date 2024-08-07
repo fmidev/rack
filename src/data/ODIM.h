@@ -37,11 +37,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 #include <algorithm>
 //
-#include "drain/util/VariableFormatter.h"  // for VariableHandler
-#include "drain/util/ReferenceMap.h"
-#include "drain/util/Rectangle.h"
-#include "drain/util/Time.h"
-#include "drain/image/Geometry.h"
+#include <drain/util/VariableFormatter.h>  // for VariableHandler
+#include <drain/util/ReferenceMap.h>
+#include <drain/util/Rectangle.h>
+#include <drain/util/Time.h>
+#include <drain/image/Geometry.h>
 
 #include "hi5/Hi5.h"
 #include "radar/Constants.h"

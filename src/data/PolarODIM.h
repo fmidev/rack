@@ -31,8 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef POLAR_ODIM_STRUCT
 #define POLAR_ODIM_STRUCT
 
-#include "drain/util/Geo.h"
-#include "drain/Type.h"
+#include <drain/util/Geo.h>
+#include <drain/Type.h>
 
 #include "ODIM.h"
 

@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_FILE_IO_READ
 #define RACK_FILE_IO_READ
 
-//#include "drain/prog/CommandRegistry.h"
+//#include <drain/prog/CommandRegistry.h>
 #include <drain/prog/CommandInstaller.h>
 #include <hi5/Hi5Read.h>
 

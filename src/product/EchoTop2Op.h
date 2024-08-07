@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
+Copyright (c) 2024 FMI Open Development / Markus Peura, first.last@fmi.fi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef RAINRATE_ECHO_TOP2_OP
-#define RAINRATE_ECHO_TOP2_OP
+#ifndef ECHO_TOP2_OP
+#define ECHO_TOP2_OP
 
 #include "PolarProductOp.h"
 
@@ -122,27 +122,6 @@ class EchoTop2Op: public PolarProductOp {
 
 public:
 
-	/// Numeric alues can be applied as quality index (with gain=0.004)
-	/*
-	typedef enum {
-		/ ** Unset (not processsed) * /
-		UNDEFINED=0,
-		/ ** Internal error in the computation * /
-		ERROR=16,
-		/ ** No echo found * /
-		CLEAR=64,
-		/ ** The highest bin exceeds the threshold -> use reference point * /
-		UNDERSHOOTING=96,
-		/ ** The bin exceeding the Z threshold has an \c undetect ("dry") bin above -> replace \c undetect with low Z (dB) * /
-		OVERSHOOTING=128,
-		WEAK=192, /// Echoes only below threshold detected
-		/ ** The threshold value was passed between adjacent beams, hence can be interpolated * /
-		INTERPOLATION=250
-	} Reliability;
-
-	typedef drain::EnumFlagger<drain::SingleFlagger<Reliability> > reliabilityFlagger;
-	*/
-
 	EchoTop2Op(double threshold = 20.0);
 
 	virtual inline
@@ -150,14 +129,6 @@ public:
 
 	// TEST
 	void computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSet<dst_t> & dstProduct) const;
-
-	/*
-	static inline
-	double getSlope(double heightStronger, double heightWeaker, double reflectivityStronger, double reflectivityWeaker){
-		return (heightStronger - heightWeaker) / (reflectivityStronger - reflectivityWeaker);
-	}
-	*/
-
 
 	///
 	/**
@@ -168,6 +139,13 @@ public:
 	double getSlope(const Measurement & m1, const Measurement & m2){
 		return (m1.height - m2.height) / (m1.reflectivity - m2.reflectivity);
 	}
+
+	/*
+	static inline
+	double getSlope(double heightStronger, double heightWeaker, double reflectivityStronger, double reflectivityWeaker){
+		return (heightStronger - heightWeaker) / (reflectivityStronger - reflectivityWeaker);
+	}
+	*/
 
 
 protected:
@@ -190,7 +168,28 @@ protected:
 
 };
 
-
 } // rack::
+
+/// Numeric alues can be applied as quality index (with gain=0.004)
+/*
+typedef enum {
+	/ ** Unset (not processsed) * /
+	UNDEFINED=0,
+	/ ** Internal error in the computation * /
+	ERROR=16,
+	/ ** No echo found * /
+	CLEAR=64,
+	/ ** The highest bin exceeds the threshold -> use reference point * /
+	UNDERSHOOTING=96,
+	/ ** The bin exceeding the Z threshold has an \c undetect ("dry") bin above -> replace \c undetect with low Z (dB) * /
+	OVERSHOOTING=128,
+	WEAK=192, /// Echoes only below threshold detected
+	/ ** The threshold value was passed between adjacent beams, hence can be interpolated * /
+	INTERPOLATION=250
+} Reliability;
+
+typedef drain::EnumFlagger<drain::SingleFlagger<Reliability> > reliabilityFlagger;
+*/
+
 
 #endif

@@ -36,9 +36,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 #include <string>
 
-#include "drain/imageops/ImageOp.h"
+#include <drain/imageops/ImageOp.h>
 #include <drain/prog/CommandInstaller.h>
-//#include "drain/util/ReferenceMap.h"
+//#include <drain/util/ReferenceMap.h>
 
 
 #include "resources.h"

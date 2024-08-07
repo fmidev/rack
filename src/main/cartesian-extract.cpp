@@ -45,12 +45,10 @@ namespace rack {
 void CartesianExtract::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
-	//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 	drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
 	Composite & composite = ctx.getComposite(RackContext::PRIVATE); // check thread safety
 
-	//prepareBBox(composite, cropGeo, cropImage);
 	extract(composite, channels, crop);
 
 }
@@ -60,7 +58,6 @@ void CartesianExtract::exec() const {
 void CartesianSun::exec() const {
 
 
-	//RackResources & resources = getResources();
 	RackContext & ctx = getContext<RackContext>();
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
@@ -94,7 +91,7 @@ void CartesianSun::exec() const {
 			ctx.composite.pix2rad(i,j, lon,lat);
 			sun.setLocation(lon, lat);
 			if (sun.elev > 0.0)
-				dstData.data.put(i, j, dstData.odim.scaleInverse(sin(sun.elev)));
+				dstData.data.put(i, j, dstData.odim.scaleInverse(::sin(sun.elev)));
 			else
 				dstData.data.put(i, j, dstData.odim.undetect); // This could be conditional
 		}
@@ -113,5 +110,5 @@ void CartesianSun::exec() const {
 }
 
 
-}  // namespace rack::
+}  // rack::
 

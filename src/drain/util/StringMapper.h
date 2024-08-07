@@ -41,7 +41,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/RegExp.h>
 #include <drain/Sprinter.h>
 #include <drain/String.h>
-#include <drain/VariableAssign.h>
 
 #include "IosFormat.h"
 #include "Time.h"
@@ -277,10 +276,13 @@ class StringMapper : public std::list<Stringlet> {
 
 public:
 
-	/** Constructor.
+	/// Default constructor.
+	/**
+	 * \param format - string containing variables like \c ${name}
+	 * \param validChars - allowed characters in variable names, ie inside braces.
+	 * \param formatting - support postprocessing of variable value (number rounding, string operations)
 	 *
 	 */
-	// TODO validKeys?
 	StringMapper(
 			const std::string & format = "",
 			const std::string & validChars = "[a-zA-Z0-9_]+",
@@ -296,8 +298,8 @@ public:
 
 	/// Initialize with the given RegExp // REMOVE!
 	StringMapper(const RegExp & regexp, bool formatting=true) : formatting(formatting), regExp(regexp)  { // fieldWidth(0),
-			//fillChar('0'),
-		//((std::list<Stringlet> &)*this) = mapper;
+		// fillChar('0'),
+		// ((std::list<Stringlet> &)*this) = mapper;
 	}
 
 	/// Copy constructor copies the parsed string and the regExp

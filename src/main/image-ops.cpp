@@ -32,19 +32,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <utility>
 
-#include "drain/util/Cloner.h"
-#include "drain/util/Range.h"
-#include "drain/util/Registry.h"
-#include "drain/util/SmartMap.h"
-#include "drain/util/TreeOrdered.h"
-#include "drain/util/ValueScaling.h"
-#include "drain/image/Image.h"
-#include "drain/image/ImageChannel.h"
-#include "drain/image/ImageFrame.h"
-#include "drain/image/ImageTray.h"
-#include "drain/imageops/ImageOpBank.h"
-#include "drain/imageops/CropOp.h"
-#include "drain/prog/CommandBankUtils.h"
+#include <drain/util/Cloner.h>
+#include <drain/util/Range.h>
+#include <drain/util/Registry.h>
+#include <drain/util/SmartMap.h>
+#include <drain/util/TreeOrdered.h>
+#include <drain/util/ValueScaling.h>
+#include <drain/image/Image.h>
+#include <drain/image/ImageChannel.h>
+#include <drain/image/ImageFrame.h>
+#include <drain/image/ImageTray.h>
+#include <drain/imageops/ImageOpBank.h>
+#include <drain/imageops/CropOp.h>
+#include <drain/prog/CommandBankUtils.h>
 
 #include "data/Data.h"
 #include "data/DataSelector.h"

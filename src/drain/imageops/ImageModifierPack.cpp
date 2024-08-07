@@ -34,6 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Log.h>
 #include <ostream>
 #include <fstream>
+
+#include "drain/util/Output.h"
 #include "drain/image/CoordinateHandler.h"
 #include "drain/image/Sampler.h"
 //#include "ImageMod.h"
@@ -130,22 +132,30 @@ void ImageHistogram::traverseChannel(Channel & dst) const {
 
 	if (!filename.empty()){
 		mout.warn("storing in file " , filename );
-		dst.properties[store] = histogram.getVector();
+		dst.properties[store] = v; // histogram.getVector();
 
+		drain::Output output(filename);
+		std::ostream & ostr = output;
+		// std::ostream *ofstreamPtr = &output;
+		/*
 		std::ostream *ofstreamPtr = & std::cout;
 		std::ofstream ofstream;
 		if (filename != "-"){
 			ofstream.open(filename.c_str(), std::ios::out);
 			ofstreamPtr = & ofstream;
 		}
-		*ofstreamPtr << '#' << "dst.getEncoding()" << '\n';
+		*/
+		// *ofstreamPtr
+		ostr << '#' << "dst.getEncoding()" << '\n';
 
 		for (std::vector<drain::Histogram::count_t>::const_iterator it = v.begin(); it != v.end(); ++it){
-			*ofstreamPtr << *it << ' ';
+			// *ofstreamPtr
+			ostr << *it << ' ';
 			++it;
 		}
-		*ofstreamPtr << '\n';
-		ofstream.close();
+		//*ofstreamPtr << '\n';
+		ostr << '\n';
+		// ofstream.close();
 	}
 
 

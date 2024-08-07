@@ -81,13 +81,6 @@ protected:
 class ImageCoordPolicy : public ImageMod {
 
 public:
-	/*
-	const int EdgePolicy::UNDEFINED(0);
-	const int EdgePolicy::LIMIT(1);
-	const int EdgePolicy::WRAP(2);
-	const int EdgePolicy::MIRROR(3);
-	const int EdgePolicy::POLAR(4);
-	*/
 
 	ImageCoordPolicy() : ImageMod(__FUNCTION__, "Coordinate under/overflow policy: 0=UNDEFINED, 1=LIMIT, 2=WRAP, 3=MIRROR, 4=POLAR"){
 		parameters.link("policy", value, "<xUF>[,<yUF>[,<xOF>,<yOF>]]");
@@ -111,6 +104,7 @@ protected:
 	mutable CoordinatePolicy policy;
 
 };
+
 
 
 /// Changes the type of a target image

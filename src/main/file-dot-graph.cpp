@@ -34,9 +34,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <fstream>
 #include <iostream>
 
-#include "drain/util/DotGraph.h"
-#include "drain/util/Output.h"
-#include "drain/image/Sampler.h"
+#include <drain/util/DotGraph.h>
+#include <drain/util/Output.h>
+#include <drain/image/Sampler.h>
 
 #include "radar/RadarDataPicker.h"
 

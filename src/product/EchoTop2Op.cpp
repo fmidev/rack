@@ -67,7 +67,7 @@ EchoTop2Op::EchoTop2Op(double threshold) :
 	this->undetectReflectivity = getQuantityMap().get("DBZH").undetectValue;
 
 	odim.product = "ETOP";
-	odim.quantity = "HGHT";
+	odim.quantity = "HGHT"; // METRES
 	odim.type = "S";
 	odim.scaling.scale = 0.0;
 
@@ -100,8 +100,8 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	const bool USE_KILOMETRES = ODIM::versionFlagger.isSet(ODIM::KILOMETRES);
 
 	if (USE_KILOMETRES){
-		mout.advice("Use --odim <version> to change. See --help odim");
 		mout.attention("ODIM version ", ODIM::versionFlagger, ", using kilometres (not metres).");
+		mout.advice("Use --odim <version> to change. See --help odim");
 	}
 	else {
 		mout.info("ODIM version ", ODIM::versionFlagger, ", using metres (not kilometres).");
@@ -119,7 +119,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	deriveDstGeometry(srcSweeps, dstEchoTop.odim);
 	determineMetadata(srcSweeps, dstEchoTop.odim);
 
-	mout.attention("ODIM scaling: ", dstEchoTop.odim.scaling);
+	mout.debug("ODIM scaling 1: ", dstEchoTop.odim.scaling);
 
 
 	// applyODIM(dstEchoTop.odim, odim);
@@ -129,13 +129,12 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 		//odim.scaling.setPhysicalRange(0.0, 25.6);
 		dstEchoTop.odim.setRange(0.0, 20000.0 * odimVersionMetricCoeff);
 		// dstEchoTop.odim.scaling.scale *= odimVersionMetricCoeff;
-		mout.attention("ODIM scaling: ", dstEchoTop.odim.scaling);
+		mout.attention("ODIM scaling 2: ", dstEchoTop.odim.scaling);
 	}
-
 
 	dstEchoTop.setGeometry(dstEchoTop.odim);
 
-	mout.attention("ODIM scaling: ", dstEchoTop.odim.scaling);
+	mout.attention("ODIM scaling 3: ", dstEchoTop.odim.scaling);
 
 	mout.special(dstEchoTop.odim);
 
@@ -151,15 +150,17 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	typedef drain::typeLimiter<double> Limiter;
 	Limiter::value_t limit = drain::Type::call<Limiter>(type);
 	//dstEchoTop.data.getScaling().g
+
+	/*
 	double d1 = drain::Type::call<drain::typeMin, double>(type);
 	double d2 = drain::Type::call<drain::typeMax, double>(type);
-
 	for (int i = 0; i < 100; ++i) {
 		double d = i * (d2-d1)/100.0 + d1;
 		double m = dstEchoTop.odim.scaleForward(d);
 		mout.note("limiter:", i, '\t', d, '\t', m, '\t', dstEchoTop.odim.scaleInverse(m), '\t', limit(dstEchoTop.odim.scaleInverse(m)));
 	}
-	mout.attention("limiter:", limit);
+	mout.special("limiter:", limit);
+	*/
 
 
 	PlainData<dst_t> & dstQuality = dstProduct.getQualityData();
@@ -175,7 +176,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	WEIGHTS.clear         = dstQuality.odim.scaleInverse(weights.clear);
 
 
-	mout.attention("WEIGHTS: ", WEIGHTS);
+	mout.debug("WEIGHTS: ", WEIGHTS);
 
 	/// Class codes (using storage type encoding)
 	MethodWeights<unsigned char> CLASS;
@@ -502,7 +503,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 					height = strongMsrm->height + slope*(threshold - strongMsrm->reflectivity);
 
 					if (j == 90){
-						mout.note(i,',', j, '\t', height, '\t', dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height), '\t', limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
+						// mout.note(i,',', j, '\t', height, '\t', dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height), '\t', limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
 					}
 					// dstEchoTop.data.put(address, ::rand());
 					dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height))); // strong

@@ -36,30 +36,23 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sys/stat.h>
 
 
-
-#include <drain/VariableAssign.h>
-
-#include "drain/util/FilePath.h"
-#include "drain/util/Frame.h"
-#include "drain/util/Output.h"
-#include "drain/util/StringMapper.h"
-#include "drain/util/TreeOrdered.h"
-#include "drain/util/TextDecorator.h"
-
-#include "drain/util/TreeHTML.h"
-//#include <drain/image/ImageFile.h>
-#include "drain/image/FilePng.h"
-#include "drain/image/FilePnm.h"
-#include "drain/image/FileGeoTIFF.h"
-#include "drain/image/TreeSVG.h"
-#include "drain/image/TreeUtilsSVG.h"
-
-#include "drain/image/Image.h"
-#include "drain/imageops/ImageModifierPack.h"
-
-#include "drain/prog/Command.h"
-#include "drain/prog/CommandBankUtils.h"
-#include "drain/prog/CommandInstaller.h"
+#include <drain/util/FilePath.h>
+#include <drain/util/Frame.h>
+#include <drain/util/Output.h>
+#include <drain/util/StringMapper.h>
+#include <drain/util/TreeOrdered.h>
+#include <drain/util/TextDecorator.h>
+#include <drain/util/TreeHTML.h>
+#include <drain/image/FilePng.h>
+#include <drain/image/FilePnm.h>
+#include <drain/image/FileGeoTIFF.h>
+#include <drain/image/TreeSVG.h>
+#include <drain/image/TreeUtilsSVG.h>
+#include <drain/image/Image.h>
+#include <drain/imageops/ImageModifierPack.h>
+#include <drain/prog/Command.h>
+#include <drain/prog/CommandBankUtils.h>
+#include <drain/prog/CommandInstaller.h>
 
 #include "data/Data.h"
 //#include "data/DataOutput.h"

@@ -33,8 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Log.h>
 #include <string>
 
-#include "drain/util/Output.h" // debugging threads
-#include "drain/prog/CommandInstaller.h"
+#include <drain/util/Output.h> // debugging threads
+#include <drain/prog/CommandInstaller.h>
 
 #include "data/SourceODIM.h"
 #include "data/ODIMPathTools.h"
@@ -724,17 +724,18 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 		if (crop == "DATA"){
 			prepareBBox(composite, bboxDataD, cropImage);
-			mout.advice<LOG_NOTICE>("Equivalent command: --cExtract ", channels, ',',
-					drain::sprinter(bboxDataD.tuple(), ":"));
+			mout.advice<LOG_NOTICE>("Equivalent command: --cExtract ", channels, ':',
+					drain::sprinter(bboxDataD.tuple(), ","));
 		}
 		else if (crop == "OVERLAP"){
 			prepareBBox(composite, bboxDataOverlapD, cropImage);
-			mout.advice<LOG_NOTICE>("Equivalent arguments: --cExtract ", channels, ',',
-					drain::sprinter(bboxDataOverlapD.tuple(), drain::Sprinter::cppLayout) );
+			mout.advice<LOG_NOTICE>("Equivalent arguments: --cExtract ", channels, ':',
+					drain::sprinter(bboxDataOverlapD.tuple(), drain::Sprinter::plainLayout) );
 		}
 		else {
 			std::vector<double> v;
-			drain::StringTools::split(crop, v, ':');
+			//drain::StringTools::split(crop, v, ':');
+			drain::StringTools::split(crop, v, ',');
 
 			drain::BBox cropBBox;
 			cropBBox.assignSequence(v, false);
@@ -742,6 +743,7 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 			prepareBBox(composite, cropBBox, cropImage);
 		}
 		mout.info("crop: ", cropImage, " (image coords)");
+		mout.advice<LOG_NOTICE>("Matching size: --cSize ", cropImage.getWidth(), ',', cropImage.getHeight());
 
 	}
 
@@ -827,9 +829,6 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 			where["BBOX_native"] = composite.getBoundingBoxM().toVector();
 
 			where["BBOX_data"].setType(typeid(double));
-			// where["BBOX_data"] = composite.getDataBBoxD().toVector();
-			//const drain::Rectangle<double> & bboxDataD = composite.getDataBBoxD();
-			// where["BBOX_data"] = bboxDataD.toVector();
 			where["BBOX_data"] = bboxDataD.tuple(); // in-place
 
 			if (!composite.isLongLat()){
@@ -856,31 +855,19 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 				where["BBOX_overlap_native"] = bn.tuple();
 			}
 
-			// where["SIZE_data"].setType(typeid(short int));
-			// where["SIZE_data"] << (bboxDataPix.upperRight.x - bboxDataPix.lowerLeft.x) << (bboxDataPix.lowerLeft.y - bboxDataPix.upperRight.y );
 			where["SIZE_data"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
 
 		}
 
 
-		// std::list<std::string> projArgs;
-		// short epsg = drain::Proj4::pickEpsgCode(composite.getProjection(), projArgs);
-		// short epsg = drain::Proj6::pickEpsgCode(composite.getProjection());
-		const short epsg = composite.projGeo2Native.getDst().getEPSG();
-		if (epsg > 0){
+		//const short epsg = composite.projGeo2Native.getDst().getEPSG();
+		//if (epsg > 0){
+		if (composite.projGeo2Native.getDst().getEPSG() > 0){
 			mout.deprecating<LOG_DEBUG>("/how:EPSG migrated to where:EPSG");
-			// where["EPSG"] = epsg;
-			/*
-			where["projdef2"] = " ";
-			where["projdef2"].setInputSeparator(' ');
-			where["projdef2"] << projArgs;
-			 */
 		}
 
-
 		// DataTools::updateInternalAttributes(ctx.cartesianHi5);
-
-		//mout.warn("updateInternalAttributes 1:",  ctx.cartesianHi5.data.attributes);
+		// mout.warn("updateInternalAttributes 1:",  ctx.cartesianHi5.data.attributes);
 
 		ctx.currentHi5 = & ctx.cartesianHi5;
 

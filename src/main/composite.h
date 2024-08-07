@@ -43,8 +43,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "data/Quantity.h"
 #include "data/ODIM.h"
 
-//#include "drain/prog/Command.h"
-#include "drain/prog/CommandInstaller.h"
+//#include <drain/prog/Command.h>
+#include <drain/prog/CommandInstaller.h>
 
 
 #include "resources.h"

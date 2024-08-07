@@ -36,20 +36,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 /*
-#include "drain/util/Log.h"
-#include "drain/util/FilePath.h"
-#include "drain/util/Output.h"
-#include "drain/util/StringMapper.h"
-#include "drain/util/TreeOrdered.h"
-#include "drain/util/Variable.h"
-#include "drain/image/File.h"
-#include "drain/image/Image.h"
-#include "drain/image/Sampler.h"
-#include "drain/imageops/ImageModifierPack.h"
+#include <drain/util/Log.h>
+#include <drain/util/FilePath.h>
+#include <drain/util/Output.h>
+#include <drain/util/StringMapper.h>
+#include <drain/util/TreeOrdered.h>
+#include <drain/util/Variable.h>
+#include <drain/image/File.h>
+#include <drain/image/Image.h>
+#include <drain/image/Sampler.h>
+#include <drain/imageops/ImageModifierPack.h>
 
-#include "drain/prog/Command.h"
-#include "drain/prog/CommandBankUtils.h"
-#include "drain/prog/CommandInstaller.h"
+#include <drain/prog/Command.h>
+#include <drain/prog/CommandBankUtils.h>
+#include <drain/prog/CommandInstaller.h>
 
 #include "data/Data.h"
 #include "data/DataSelector.h"
@@ -64,7 +64,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 
-#include "drain/util/Output.h"
+#include <drain/util/Output.h>
 
 
 #include "resources.h"

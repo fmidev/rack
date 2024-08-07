@@ -36,16 +36,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 
 #include <drain/RegExp.h>
-#include <drain/VariableAssign.h>
-
-#include "drain/image/Image.h"
-#include "drain/imageops/ImageModifierPack.h"
-#include "drain/imageops/PaletteOp.h"
-#include "drain/prog/CommandBankUtils.h"
-#include "drain/util/Rectangle.h"
-#include "drain/util/StatusFlags.h"
-#include "drain/util/TreeOrdered.h"
-//#include "drain/util/Variable.h"
+#include <drain/image/Image.h>
+#include <drain/imageops/ImageModifierPack.h>
+#include <drain/imageops/PaletteOp.h>
+#include <drain/prog/CommandBankUtils.h>
+#include <drain/util/Rectangle.h>
+#include <drain/util/StatusFlags.h>
+#include <drain/util/TreeOrdered.h>
+//#include <drain/util/Variable.h>
 
 #include "hi5/Hi5.h"
 #include "hi5/Hi5Read.h"

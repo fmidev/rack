@@ -46,11 +46,6 @@ std::string & StringMapper::convertEscaped(std::string &s){
 			{"\\n", "\n"},
 	};
 	drain::StringTools::replace(conversions, s);
-	/*
-	std::string s2;
-	drain::StringTools::replace(s,  "\\t", "\t", s2);
-	drain::StringTools::replace(s2, "\\n", "\n",  s);
-	*/
 	return s;
 }
 

@@ -70,30 +70,34 @@ struct Rectangle : public drain::UniTuple<T,4> {
 	Point2D<T> upperRight;
 	// consider Range<T> x, Range<T> y,
 
+	/// Basic constructor
 	Rectangle(T x=0, T y=0, T x2=0, T y2=0) : lowerLeft(this->tuple(), 0), upperRight(this->tuple(), 2) {
 		this->set(x, y, x2, y2);
 	}
 
+	/// Copy constructor
+	Rectangle(const Rectangle & r) : lowerLeft(this->tuple(), 0), upperRight(this->tuple(), 2){
+		this->assign(r);
+	};
+
+	/// Constructor with corner points
 	Rectangle(const Point2D<T> & ll, const Point2D<T> & ur) : lowerLeft(this->tuple(), 0), upperRight(this->tuple(), 2){
 		lowerLeft.setLocation(ll);
 		upperRight.setLocation(ur);
 	};
 
-	Rectangle(const Rectangle & r) : lowerLeft(this->tuple(), 0), upperRight(this->tuple(), 2){
-		this->assign(r);
-	};
 
-
-
+	/// Assign rectangle of the same type
 	Rectangle<T> & operator=(const Rectangle<T> & rect){
 		this->set(rect.tuple());
 		return *this;
 	}
 
-
+	/// Return the difference of X coordinates.
 	inline
 	T getWidth() const { return (this->upperRight.x - this->lowerLeft.x); };
 
+	/// Return the difference of Y coordinates.
 	inline
 	T getHeight() const {
 		return (this->upperRight.y - this->lowerLeft.y);
@@ -104,16 +108,21 @@ struct Rectangle : public drain::UniTuple<T,4> {
 		return std::abs(getWidth()*getHeight());
 	};
 
+	/// Return true if the area is zero.
 	inline
 	bool empty() const {
 		return (getWidth()==0) || (getHeight()==0);
 	};
 
 
+	/// Return the center point.
 	inline
 	void getCenter(drain::Point2D<T> &p) const {
-		p.x = static_cast<T>((lowerLeft.x + upperRight.x)/2.0);
-		p.y = static_cast<T>((lowerLeft.y + upperRight.y)/2.0);
+		const T divider = 2;
+		p.x = (lowerLeft.x + upperRight.x)/divider;
+		p.y = (lowerLeft.y + upperRight.y)/divider;
+		// p.x = static_cast<T>((lowerLeft.x + upperRight.x)/2.0);
+		// p.y = static_cast<T>((lowerLeft.y + upperRight.y)/2.0);
 	};
 
 
@@ -122,16 +131,6 @@ struct Rectangle : public drain::UniTuple<T,4> {
 	 *   Two way bounds are needed, because cropping max can be lower than this min.
 	 */
 	void crop(const Rectangle<T> & r);
-	/*
-	{
-		const Rectangle<T> bounds(*this);
-		*this = r;
-		limit(bounds.lowerLeft.x, bounds.upperRight.x, this->lowerLeft.x);
-		limit(bounds.lowerLeft.x, bounds.upperRight.x, this->upperRight.x);
-		limit(bounds.lowerLeft.y, bounds.upperRight.y, this->lowerLeft.y);
-		limit(bounds.lowerLeft.y, bounds.upperRight.y, this->upperRight.y);
-	}
-	*/
 
 	/// The instance extends to its union with r.
 	void extend(const Rectangle & r);

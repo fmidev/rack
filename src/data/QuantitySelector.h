@@ -37,15 +37,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <stdexcept>
 
-
 #include <drain/RegExp.h>
 #include <drain/Sprinter.h>
-#include <drain/VariableAssign.h>
-
-#include "drain/util/BeanLike.h"
-#include "drain/util/Range.h"
-#include "drain/util/ReferenceMap.h"
-//#include "drain/util/Variable.h"
+#include <drain/util/BeanLike.h>
+#include <drain/util/Range.h>
+#include <drain/util/ReferenceMap.h>
+//#include <drain/util/Variable.h>
 
 #include "ODIM.h"
 #include "ODIMPathTools.h"
