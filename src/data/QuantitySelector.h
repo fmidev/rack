@@ -49,65 +49,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ODIMPathMatcher.h"
 #include "PolarODIM.h" // elangle
 
+#include "QuantityMatcher.h"
+
 
 namespace rack {
 
-class QuantityMatcher : protected drain::RegExp {
-
-public:
-
-	/// Visible reference to the RegExp.
-	const std::string & value;
-
-	inline
-	QuantityMatcher(const std::string & s = "") : value(regExpString), isRegExp(false){
-		set(s);
-	}
-
-	inline
-	QuantityMatcher(const QuantityMatcher & matcher) : value(regExpString), isRegExp(false){
-		set(matcher.value);
-	}
-
-	void set(const std::string & s);
-
-	inline
-	bool operator==(const std::string &s) const {
-		return test(s);
-	}
-
-	inline
-	bool operator==(const char *s) const {
-		return test(s);
-	}
-
-	// consider operator==(QuantityMatcher) using .value
-
-	bool test(const std::string & s) const;
-
-	const std::string & getType() const;
-
-	/// Checks if the key conforms to ODIM convention: DBZH, VRAD, etc. (capital letters, underscores)
-	/**
-	 *  This is used for example by PaletteOp
-	 *
-	 *	static bool validateKey(const std::string & key);
-	 *
-	 */
-
-protected:
-
-	bool isRegExp;
-
-
-};
-
-
-inline
-std::ostream & operator<<(std::ostream & ostr, const QuantityMatcher & m){
-	ostr << m.value;
-	return ostr;
-}
 
 
 /// Utility for selecting a quantity label    Base class for DataSelector.
@@ -115,7 +61,6 @@ class QuantitySelector : public std::list<QuantityMatcher> { // string temporary
 
 public:
 
-	//typedef std::list<std::string> quantity_list;
 	typedef std::list<QuantityMatcher> quantity_list;
 
 	/// Basic constructor
@@ -234,10 +179,10 @@ protected:
 	void adaptQuantity(const std::string & s);
 
 	/// Data quantity (excluding quality data, like QIND or CLASS)
-	//mutable // called by updateBean()?
-	//drain::RegExp regExp;
+	// mutable // called by updateBean()?
+	// drain::RegExp regExp;
 
-	//mutable
+	// mutable
 	// quantity_list quantities;
 
 
@@ -246,12 +191,10 @@ protected:
 
 inline
 std::ostream & operator<<(std::ostream & ostr, const QuantitySelector & selector){
-	//drain::Sprinter::toStream(ostr, selector.quantities, drain::Sprinter::cmdLineLayout);
-	// ostr << ", order=" << selector.order.str;
 	selector.toStream(ostr);
 	return ostr;
 }
 
 } // rack::
 
-#endif /* DATASELECTOR_H_ */
+#endif // QUANTITY_MATCHER

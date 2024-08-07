@@ -46,48 +46,6 @@ namespace rack {
 
 // Consider more general key matcher?
 
-void QuantityMatcher::set(const std::string & s){
-	reset();
-	isRegExp = false;
-	if (s.empty()){
-		return;
-	}
-	else if (s.find_first_of("^.?*[]()$") != std::string::npos){
-		isRegExp = true;
-		setExpression(s);
-	}
-	else {
-		isRegExp = false;
-		regExpString = s;
-	}
-}
-
-const std::string & QuantityMatcher::getType() const {
-	//const std::string re("regExp");
-	//const std::ring str("string");
-	if (isRegExp)
-		return drain::TypeName<drain::RegExp>::str();
-	else
-		return drain::TypeName<std::string>::str();
-}
-
-
-bool QuantityMatcher::test(const std::string & s) const {
-	if (isRegExp){
-		return RegExp::test(s);
-	}
-	else {
-		return value == s; // string comparison
-	}
-}
-
-/*
-bool QuantityMatcher::validateKey(const std::string & key){
-	static const drain::RegExp re("^[A-Z]+[A-Z0-9_\\-]*$");
-	return re.test(key);
-}
-*/
-
 
 void QuantitySelector::setQuantities(const std::string & args){ //, const std::string & separators){
 	drain::Logger mout(__FILE__, __FUNCTION__);
