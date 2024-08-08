@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 
 #include <drain/RegExp.h>
+/*
 #include <drain/Sprinter.h>
 #include <drain/util/BeanLike.h>
 #include <drain/util/Range.h>
@@ -48,13 +49,26 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ODIMPathTools.h"
 #include "ODIMPathMatcher.h"
 #include "PolarODIM.h" // elangle
-
+*/
 
 namespace rack {
 
+
+/// General-purpose key matcher.
+/**
+ *  The internal value can be a literal string or a regular expression.
+ *
+ *  When setting the value, it is recognized as a literal if it contains no special characters
+ *
+ *   against which equality of an input string is tested.
+ *
+ */
 class QuantityMatcher : protected drain::RegExp {
 
 public:
+
+	static
+	const std::string regExpSpecialChars;
 
 	/// Visible reference to the RegExp.
 	const std::string & value;
@@ -69,6 +83,10 @@ public:
 		set(matcher.value);
 	}
 
+	/// Assign string which may be literal or a regular expression.
+	/**
+	 *
+	 */
 	void set(const std::string & s);
 
 	inline
@@ -81,8 +99,10 @@ public:
 		return test(s);
 	}
 
-	// consider operator==(QuantityMatcher) using .value
-
+	/// Test with direct string matching or regExp, if defined.
+	/**
+	 *
+	 */
 	bool test(const std::string & s) const;
 
 	const std::string & getType() const;

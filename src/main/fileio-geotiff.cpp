@@ -135,7 +135,7 @@ void CmdGeoTiff::write(RackContext & ctx, const drain::image::Image & src, const
 		std::string nodata;
 		drain::StringTools::import(odim.nodata, nodata);
 
-		mout.attention(odim.type, ": ", odim.scaling);
+		// mout.attention(odim.type, ": ", odim.scaling);
 		file.setGdalScale(odim.scaling.scale, odim.scaling.offset);
 		file.setGdalNoData(nodata);
 
