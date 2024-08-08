@@ -46,7 +46,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "drain/image/SequentialImageOp.h"
 
 
-#include "Analysis.h"
+#include "RadarWindows.h"
+
+//#include "Analysis.h"
 
 
 

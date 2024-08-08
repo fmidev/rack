@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <cmath>
 
+#include "RadarWindows.h"
 
 namespace rack {
 
@@ -168,8 +169,8 @@ protected:
 
 private:
 
-	double u;
-	double v;
+	double u = 0.0;
+	double v = 0.0;
 
 	mutable double vMax;
 

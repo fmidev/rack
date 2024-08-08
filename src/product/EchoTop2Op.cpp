@@ -87,12 +87,30 @@ EchoTop2Op::EchoTop2Op(double threshold) :
 
 };
 
+class Etop2Window : public SlidingRadarWindow<RadarWindowConfig> {
 
+
+public:
+
+	Etop2Window(const RadarWindowConfig & conf) : // , const PolarODIM & odimOut
+		SlidingRadarWindow<RadarWindowConfig>(conf){};
+
+	virtual
+	void write() final {};
+
+	virtual
+	void addLeadingValue(double x) final {};
+
+	virtual
+	void removeTrailingValue(double x) final {};
+
+};
 
 //void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
 void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSet<dst_t> & dstProduct) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
+
 
 	mout.warn("Starting...");
 	mout.special<LOG_NOTICE>(*this);
@@ -140,6 +158,15 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 	// clumsy
 	const drain::image::AreaGeometry & area = dstEchoTop.odim.getGeometry();
+
+	// SPESSU TEST
+	{
+		// 11×500m × 11⁰
+		RadarWindowConfig windowConf(5500,11.0);
+		windowConf.updatePixelSize(dstEchoTop.odim);
+
+		Etop2Window window(windowConf);
+	}
 
 
 	// setGeometry(dstOdim, dstEchoTop);

@@ -32,9 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_POLAR_SLIDING_WINDOW_OP
 #define RACK_POLAR_SLIDING_WINDOW_OP
 
-#include "drain/imageops/SlidingWindowOp.h"
+#include <drain/imageops/SlidingWindowOp.h>
 
-#include "radar/Analysis.h" // temp
+//#include "radar/Analysis.h" // temp
+#include "radar/RadarWindows.h" // temp
 #include "PolarProductOp.h"
 
 namespace rack {
