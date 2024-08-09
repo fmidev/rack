@@ -35,6 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_VERSION__ "8.9.5"
 
 /**
+ *   Version 8.9.6
+ *   - EchoTop2 sliding window
+ *
  *   Version 8.9.5
  *   - Added KDP, PHIDP and HCLASS to QuantityMap (--quantityConf)
  *

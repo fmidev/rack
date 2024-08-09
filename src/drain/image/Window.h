@@ -335,7 +335,7 @@ public:
 	}
 
 	virtual inline
-	void setDstFrame(Channel & dstChannel){
+	void setDstFrame(Channel & dstChannel){  // ALERT! Unintentional Shadow (arg: ImageFrame -> Channel)
 		ImageTray<Channel> dstChannels;
 		dstChannels.set(dstChannel);
 		setDstFrames(dstChannels);
@@ -521,10 +521,10 @@ public:
 protected:
 
 	/// To avoid accumulated numerical errors esp. with floats, reset the statistics at row/cols ends. See reset() .
-	bool resetAtEdges;
+	bool resetAtEdges = false;  // NEW
 
 	/// If set, scaling is applied, potentially slowering the computation.
-    bool SCALE;
+    bool SCALE = true; // NEW
 
     /// In current location, this is called to calculate and store something in members.
     virtual
@@ -538,7 +538,7 @@ protected:
 	Point2D<int> location;
 
 	/// Number of pixels in the window (frame width*height?).
-	int samplingArea;
+	int samplingArea = 0;
 
 	/// Tells if the window should be moved (traversed of slided) row-by-row (horizontally) or column-by-column (vertically).
 	/**
@@ -688,6 +688,15 @@ std::ostream & operator<<(std::ostream &ostr, const drain::image::Window<P,R> &w
 
 } // image
 
+template <class P, class R>
+struct TypeName<image::Window<P,R> > {
+
+    static const std::string & str(){
+		static const std::string name = std::string("Window<>"); // todo: develop
+        return name;
+    }
+
+};
 
 } // drain
 

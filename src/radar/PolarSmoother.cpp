@@ -50,12 +50,13 @@ namespace rack
 void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image & src, drain::image::Image & dst, double radiusMetres){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	CoordinatePolicy polar(EdgePolicy::POLAR, EdgePolicy::WRAP, EdgePolicy::LIMIT,EdgePolicy::WRAP);
+	drain::image::CoordinatePolicy polar(drain::image::EdgePolicy::POLAR, drain::image::EdgePolicy::WRAP,
+			drain::image::EdgePolicy::LIMIT, drain::image::EdgePolicy::WRAP);
 
-	Image srcWeighted;
-	Image tmp;
-	Image tmpWeighted;
-	Image dstWeighted;
+	drain::image::Image srcWeighted;
+	drain::image::Image tmp;
+	drain::image::Image tmpWeighted;
+	drain::image::Image dstWeighted;
 	srcWeighted.setGeometry(src.getGeometry());
 	tmp.setCoordinatePolicy(polar);
 	tmp.setGeometry(src.getGeometry());
@@ -93,7 +94,7 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 
 	//double radius = static_cast<double>(radiusBins);
 	//GaussianStripeHorzWeighted window1(static_cast<double>(radiusBins), radiusBins*2);
-	GaussianStripeWeighted<true> window1(radiusBins*2, static_cast<double>(radiusBins));
+	drain::image::GaussianStripeWeighted<true> window1(radiusBins*2, static_cast<double>(radiusBins));
 	mout.debug("src scale:" , src.getChannel(0).getScaling() );
 	window1.setSrcFrame(src);
 	window1.setSrcFrameWeight(srcWeighted);
@@ -106,6 +107,7 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	//mout.warn(tmp , '\n' , tmpWeighted );
 	//File::write(tmp, "PolarSmoother2.png");
 
+	// rack:: !
 	GaussianStripeVertPolarWeighted window2(static_cast<double>(radiusBins), radiusBins*2);
 	//GaussianStripeWeighted<false> window2(radiusBins*2, static_cast<double>(radiusBins));
 	//window2.setRangeNorm(static_cast<double>(odimSrc.rscale* odimSrc.geometry.height) / (2.0*M_PI));

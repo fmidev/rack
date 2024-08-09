@@ -162,6 +162,7 @@ public:
 };
 
 
+
 /// A two-dimensional image processing window that handles the special ODIM codes and scales the result. Template parameter for drain::SlidingWindowOpT
 /**
  *  \tparam C - configuration structure
@@ -170,20 +171,20 @@ public:
  *  drain::image::WindowCore supports single-src, single-dst (with respective weights).
  */
 template <class C, class R=RadarWindowCore>
-class SlidingRadarWindow : public SlidingWindow<C, R> { // drain::image::WeightedWindowCore
+class SlidingRadarWindowBase : public drain::image::SlidingWindow<C, R> { // drain::image::WeightedWindowCore
 public:
 
-	SlidingRadarWindow(int width=0, int height=0) : SlidingWindow<C,R>(width,height), rangeNorm(1), rangeNormEnd(2), countMin(0) {
+	SlidingRadarWindowBase(int width=0, int height=0) : drain::image::SlidingWindow<C,R>(width,height), rangeNorm(1), rangeNormEnd(2), countMin(0) {
 		this->resetAtEdges = true;
 	};
 
-	SlidingRadarWindow(const C & conf) : SlidingWindow<C,R>(conf), rangeNorm(1), rangeNormEnd(2), countMin(0) {
+	SlidingRadarWindowBase(const C & conf) : drain::image::SlidingWindow<C,R>(conf), rangeNorm(1), rangeNormEnd(2), countMin(0) {
 		this->resetAtEdges = conf.invertPolar;
 		//this->resetAtEdges = true; //conf.invertPolar;
 	};
 
 	virtual
-	~SlidingRadarWindow(){};
+	~SlidingRadarWindowBase(){};
 
 	/// Sets input image and retrieves ODIM metadata from image Properties.
 	//  Redefines Window<C,R>::setSrcFrame(ImageFrame)
@@ -200,7 +201,9 @@ public:
 		mout.info("NI=" , this->odimSrc.getNyquist(LOG_WARNING) );
 		mout.info("copied odim: " , EncodingODIM(this->odimSrc) );
 
-		SlidingWindow<C, R>::setSrcFrame(src);
+		drain::image::SlidingWindow<C,R>::setSrcFrame(src);
+		// direct should be:
+		// R::setSrcFrame(src);
 		mout.debug2("src Scaling: " , src.getScaling() );
 	}
 
@@ -283,6 +286,21 @@ protected:
 		countMin = this->conf.contributionThreshold * this->getSamplingArea();
 
 		return SlidingWindow<C,R>::reset();
+	};
+
+};
+
+
+template <class C, class R=RadarWindowCore>
+class SlidingRadarWindow : public SlidingRadarWindowBase<C,R> { // drain::image::WeightedWindowCore
+public:
+
+	inline
+	SlidingRadarWindow(int width=0, int height=0) : SlidingRadarWindowBase<C,R>(width, height) {
+	};
+
+	inline
+	SlidingRadarWindow(const C & conf) : SlidingRadarWindowBase<C,R>(conf) {
 	};
 
 

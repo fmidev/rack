@@ -363,6 +363,13 @@ public:
 		// TODO: data.setScaling(odim.scaling); ??
 	}
 
+	/// New, experimental.
+	inline
+	void copyEncoding(const EncodingODIM & odim){
+		this->odim.importMap(odim);
+		data.setType(this->odim.type);
+		data.setScaling(this->odim.scaling); // needed?
+	}
 
 
 	template <class DT2>
@@ -370,9 +377,7 @@ public:
 	void copyEncoding(const PlainData<DT2> & srcData){
 		this->odim.importMap(srcData.odim);
 		data.setType(this->odim.type);
-		//data.setScaling(odim.scaling.scale, odim.scaling.offset); // needed?
 		data.setScaling(this->odim.scaling); // needed?
-		//data.setGeometry(data.);
 	}
 
 	inline

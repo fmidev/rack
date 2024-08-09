@@ -34,56 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-void RadWinConfig::setPixelConf(RadWinConfig & conf, const PolarODIM & inputODIM) const {
 
-	drain::Logger mout(__FUNCTION__, "RadWinConfig");
-
-	// pixelConf = this->conf;  PROBLEM: ftor prevents op=
-	conf.widthM  = this->widthM;
-	conf.heightD = this->heightD;
-	conf.invertPolar   = this->invertPolar;
-	conf.contributionThreshold  = this->contributionThreshold;
-	conf.relativeScale = this->relativeScale;
-
-	conf.updatePixelSize(inputODIM);
-
-
-}
-
-void RadWinConfig::updatePixelSize(const PolarODIM & inputODIM){ // DopplerWindOp wants public
-
-	drain::Logger mout("RadWinConfig", __FUNCTION__);
-
-	//mout.note(odimSrc );
-	this->frame.width  = inputODIM.getBeamBins(this->widthM);
-	this->frame.height = inputODIM.getAzimuthalBins(this->heightD);
-	//mout.note(this->width , '<' , this->widthM );
-
-	if (inputODIM.area.empty()){
-		mout.fail(inputODIM);
-		mout.fail("inputODIM area unset");
-	}
-
-	if (this->frame.width <= 0){
-		// mout.note(this->frame.width  , "pix ~ " , this->widthM , "m " );
-		//mout.note(*this );
-		mout.warn("Requested width (" , this->widthM ,  " meters) smaller than rscale (", inputODIM.rscale ,"), setting window width=1 " );
-		this->frame.width = 1;
-	}
-
-	if (this->frame.height == 0){
-		mout.warn("Requested height (" , this->heightD ,  " degrees) smaller than 360/nrays (", (360.0/inputODIM.area.height) ,"), setting window height=1 " );
-		this->frame.height = 1;
-	}
-
-
-
-	//mout.note(this->height , '<' , this->heightD );
-
-}
-
-
-void rack::RadarFunctorBase::apply(const Channel &src, Channel &dst, const drain::UnaryFunctor & ftor, bool LIMIT) const {
+void rack::RadarFunctorBase::apply(const drain::image::Channel &src, drain::image::Channel &dst, const drain::UnaryFunctor & ftor, bool LIMIT) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(RadarFunctorOp)", __FUNCTION__);
 	mout.debug("start" );
@@ -96,8 +48,8 @@ void rack::RadarFunctorBase::apply(const Channel &src, Channel &dst, const drain
 	typedef drain::typeLimiter<double> Limiter;
 	Limiter::value_t limit = drain::Type::call<Limiter>(dst.getType());
 
-	Image::const_iterator s  = src.begin();
-	Image::iterator d = dst.begin();
+	drain::image::Image::const_iterator s  = src.begin();
+	drain::image::Image::iterator d = dst.begin();
 	double s2;
 	if (LIMIT){
 		while (d != dst.end()){
