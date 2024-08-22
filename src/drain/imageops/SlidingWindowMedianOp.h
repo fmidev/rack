@@ -46,27 +46,20 @@ namespace image
 	\code
 	# Basic example: 5x5 window
 	drainage image-gray.png --iMedian 5 -o median.png
-	\endcode
 
-	\code
 	# Vertical 3×7 window
 	drainage image-gray.png --iMedian 3:7 -o medianVert.png
-	\endcode
 
-	\code
 	# Weighted median – lower end (darkening)
 	drainage image-gray.png --iMedian 5:5,0.1 -o median010.png
-	\endcode
 
-	\code
 	# Weighted median – upper end (brightening)
 	drainage image-gray.png --iMedian 5:5,0.9 -o median090.png
-	\endcode
 
-	\code
 	# Coloured image: each channel processed separately
 	drainage image.png --iMedian 5 -o median-color.png
 	\endcode
+
  */
 
 //template <class R = WindowCore>

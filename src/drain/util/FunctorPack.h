@@ -47,7 +47,7 @@ namespace drain
     Scale determines the contrast, offset determines the brightness of the resulting image.
 	\code
 	drainage image-gray.png  --iRescale 0.5              -o scale-dark.png
-	drainage image-gray.png  --target S --iRescale 0.5   -o scale-dark16.png
+	drainage image-gray.png  --target S --iRescale 128   -o scale-dark16.png
 	drainage image-gray.png  --iRescale 0.5,128          -o scale-dim.png
 	drainage image.png --iRescale 0.5,128          -o scale-dim-image.png
 	drainage image-gray.png  --iRescale 2.0,-128,LIMIT=1 -o scale-contrast.png

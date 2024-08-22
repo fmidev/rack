@@ -21,7 +21,7 @@
  */
  
 /*
-REQUIRE:    drain/util/{Log,Flags,Sprinter,String,TextDecorator,TextStyle}.cpp
+REQUIRE:    drain/util/{Log,Flags,Sprinter,String,TextDecorator,TextStyle,Type}.cpp
 pikamake.sh drain/examples/TextDecorator-example.cpp
 
  */

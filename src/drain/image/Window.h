@@ -57,24 +57,9 @@ class WindowConfig { //: public BeanLike { // {  // TODO:
 
 public:
 
-	//IdentityFunctor f;
-
-	/*
-	inline
-	WindowConfig(int width=1, int height=0) : frame(width, height ? height : width){
-		ftorMapEntry = getFunctorBank().get<IdentityFunctor>(); //  getMap().begin();
-		//ftor(idFtor) {
-		// parameters.link("width", frame.width, "pix");
-		// parameters.link("height", frame.height, "pix");
-	};
-	*/
-
 	template <class FT=IdentityFunctor>
 	inline
 	WindowConfig(int width=1, int height=0, const FT & functor = FT()) : frame(width,height ? height : width){
-		// Cloner<UnaryFunctor,FT> & cloner = Static::get<Cloner<UnaryFunctor,FT>,FunctorBank::bank_id>();
-		// ftorMapEntry.first = functor.getName(); // cloner.getSource().getName();  // === functor.getName();
-		//clonerBase = & Static::get<Cloner<UnaryFunctor,FT>,FunctorBank::bank_id>();
 		key = functor.getName();
 		functorParameters.importCastableMap(functor.getParameters());
 	};
@@ -274,13 +259,6 @@ public:
 		mout.warn("Not implemented" );
 	};
 
-	/*
-	virtual
-	void adjustCoordHandler(CoordinateHandler2D & handler) const {
-		handler.setPolicy(this->src.getCoordinatePolicy());
-		handler.setLimits(this->src.getWidth(), this->src.getHeight());
-	}
-	*/
 };
 
 class WeightedWindowCore : public WindowCore {
@@ -513,6 +491,10 @@ public:
 	void toStream(std::ostream & ostr) const;
 
     /// Main loop: traverses the source image and writes result to dst image.
+	/**
+	 *   The basic implementation is a two-level loop (for j, for i ...).
+	 *
+	 */
     virtual
     void run();
 
@@ -526,7 +508,7 @@ protected:
 	/// If set, scaling is applied, potentially slowering the computation.
     bool SCALE = true; // NEW
 
-    /// In current location, this is called to calculate and store something in members.
+    /// At each location, this is called to calculate and store something in members.
     virtual
     void update(){};
 
@@ -548,7 +530,7 @@ protected:
 	bool isHorizontal() const { return (this->conf.frame.width > this->conf.frame.height); };
 
 
-	/// Function determing whether array should be cleared at the edge(s). Needed for 1) cleaning numerical residues and 2) updating window parameters
+	/// Function determining whether array should be cleared at the edge(s). Needed for 1) cleaning numerical residues and 2) updating window parameters
 	/**
 	 *  \return - true if scanning should be ended (if window dimensions have been changed?)
 	 */

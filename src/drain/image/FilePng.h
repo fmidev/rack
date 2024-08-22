@@ -80,7 +80,10 @@ public:
 	 */
 	template <class T>
 	static
-	void read(T & image, const std::string &path, int png_transforms = 0);  //(PNG_TRANSFORM_PACKING || PNG_TRANSFORM_EXPAND));  16 >> 8?
+	void readOld(T & image, const std::string &path, int png_transforms = 0);  //(PNG_TRANSFORM_PACKING || PNG_TRANSFORM_EXPAND));  16 >> 8?
+
+	static
+	void read(ImageFrame & image, const std::string &path, int png_transforms = 0);  //(PNG_TRANSFORM_PACKING || PNG_TRANSFORM_EXPAND));  16 >> 8?
 
 	// consider readFrame() like with PNM
 
@@ -108,7 +111,7 @@ protected:
 
 
 template <class T> // , const CommentReader & commentReader = CommentReader()
-void FilePng::read(T & image, const std::string & path, int png_transforms ) {
+void FilePng::readOld(T & image, const std::string & path, int png_transforms ) {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 

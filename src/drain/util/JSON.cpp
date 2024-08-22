@@ -97,9 +97,9 @@ void JSON::readValue(std::istream & istr, Castable & v, bool keepType){
 		if (!(keepType && v.typeIsSet())){
 			const std::type_info & type = TypeUtils::guessType(value);
 			v.requestType(type);
-
 		}
 		v = value;
+		// mout.warn("Converted to numeric: str '", value, "' => ", v);
 		/*
 		mout.warn() << "Numeric: str '" << value <<"' => ";
 		v.debug(mout);

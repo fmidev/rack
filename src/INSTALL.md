@@ -117,10 +117,11 @@ ${workspace_loc:drain/Debug}
 
 ### "Release" configuration:
 
-C++ build, environment (variables)
+C++ build, environment (variables) or C++ preprocessor:
 ```
 Defined symbols (-D) :
 USE_GEOTIFF_${USE_GEOTIFF}
+VT100
 ```
 
 

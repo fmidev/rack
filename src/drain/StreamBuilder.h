@@ -65,25 +65,46 @@ public:
 		create(args...);
 	}
 
-	inline
-	StreamBuilder & add(){
-		 return *this;
-	};
-
-	template<class T, typename ... TT>
-	StreamBuilder & add(const T & arg, const TT &... args) {
-		*this << arg;
-		if (SEP)
-			*this << (SEP);
-		return add(args...);
-	}
-
 	template<typename ... TT>
 	StreamBuilder & create(const TT &... args) {
 		std::stringstream::str("");
 		return add(args...);
 	}
 
+	template<class T, typename ... TT>
+	StreamBuilder & add(const T & arg, const TT &... args) {
+		if (SEP && (tellp() > 0)){
+			*this << (SEP);
+		}
+		*this << arg;
+		return add(args...);
+	}
+
+
+protected:
+
+	/*
+	template<class T, typename ... TT>
+	StreamBuilder & addSeparated(const T & arg, const TT &... args) {
+		if (SEP){
+			*this << (SEP);
+		}
+		*this << arg;
+		return addSeparated(args...);
+	}
+
+	// Terminal
+	inline
+	StreamBuilder & addSeparated(){
+		 return *this;
+	};
+	*/
+
+	// Terminal
+	inline
+	StreamBuilder & add(){
+		 return *this;
+	};
 
 };
 

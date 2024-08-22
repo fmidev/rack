@@ -844,18 +844,23 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 			composite.deg2pix(bboxDataD.upperRight, bboxDataPix.upperRight);
 			where["BBOX_data_pix"].setType(typeid(short int));
 			where["BBOX_data_pix"] = bboxDataPix.tuple(); // toVector();
+			where["SIZE_data"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
 
-			//const drain::Rectangle<double> & bboxOverlap = composite.getDataOverlapD();
 			where["BBOX_overlap"] = bboxDataOverlapD.tuple();
+			composite.deg2pix(bboxDataOverlapD.lowerLeft,  bboxDataPix.lowerLeft);
+			composite.deg2pix(bboxDataOverlapD.upperRight, bboxDataPix.upperRight);
+			//where["SIZE_overlap"].setType(typeid(short int));
+			where["SIZE_overlap"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
+
 			if (!composite.isLongLat()){
 				drain::Rectangle<double> bn;
 				composite.deg2m(bboxDataOverlapD.lowerLeft,  bn.lowerLeft);
 				composite.deg2m(bboxDataOverlapD.upperRight, bn.upperRight);
 				where["BBOX_overlap_native"].setType(typeid(int));
 				where["BBOX_overlap_native"] = bn.tuple();
+
 			}
 
-			where["SIZE_data"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
 
 		}
 

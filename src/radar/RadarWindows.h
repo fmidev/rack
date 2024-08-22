@@ -95,26 +95,45 @@ public:
 
 
 
-
-
-class RadarWindowConfig : public drain::image::WindowConfig {
+class RadarWindowGeom : public drain::UniTuple<double,2> {
 
 public:
 
+	RadarWindowGeom() : widthM(this->next()), heightD(this->next()) {
+	}
+
+	RadarWindowGeom(const RadarWindowGeom & geom) : widthM(next()), heightD(next()) {
+		assign(geom.tuple());
+	}
+
 	// Beam-directional window width in metres
-	int widthM;
+	double & widthM; // = 1500.0;
 
 	// Azimuthal window height in degrees
-	double heightD;
+	double & heightD; // = 3.0;
+
+};
+
+class RadarWindowConfig : public RadarWindowGeom, public drain::image::WindowConfig {
+
+public:
+
+	/*
+	// Beam-directional window width in metres
+	int widthM = 1500;
+
+	// Azimuthal window height in degrees
+	double heightD = 3.0;
+	*/
 
 	/// Minimum percentage of detected values in a window (not undetect and nodata)
-	double contributionThreshold;  //
+	double contributionThreshold = 0.5;  //
 
 	/// Compensate the polar coordinate system to correspond the Cartesian one in computations
-	bool invertPolar;
+	bool invertPolar = false;
 
 	/// If true, use speed up to -1.0...+1.0 instead of -Vnyq...+Vnyq.
-	bool relativeScale;  //
+	bool relativeScale = false;  //
 
 	/**
 	 *  \param odimSrc - metadata of the source data
@@ -123,13 +142,17 @@ public:
 	 */
 	RadarWindowConfig(int widthM=1500, double heightD=3.0, double contributionThreshold = 0.5, bool invertPolar=false, bool relativeScale=false) :
 		drain::image::WindowConfig(1, 1), // drain::image::WindowConfig(width, height),
-		widthM(widthM), heightD(heightD), contributionThreshold(contributionThreshold), invertPolar(invertPolar), relativeScale(relativeScale) {
+		// widthM(widthM), heightD(heightD),
+		contributionThreshold(contributionThreshold), invertPolar(invertPolar), relativeScale(relativeScale) {
+		this->widthM = widthM;
+		this->heightD = heightD;
 	}
 
 	RadarWindowConfig(const RadarWindowConfig & conf) :
+		RadarWindowGeom(conf),
 		drain::image::WindowConfig(conf),
-		widthM(conf.widthM),
-		heightD(conf.heightD),
+		//widthM(conf.widthM),
+		//heightD(conf.heightD),
 		contributionThreshold(conf.contributionThreshold),
 		invertPolar(conf.invertPolar),
 		relativeScale(conf.relativeScale){
@@ -149,10 +172,12 @@ public:
 	RadarWindowConfig(const FT & ftor, int widthM=1500, double heightD=3.0,
 			double contributionThreshold = 0.5, bool invertPolar=false, bool relativeScale=false) :
 		drain::image::WindowConfig(0, 0, ftor), 		//drain::image::WindowConfig(ftor, width, height),
-		widthM(widthM), heightD(heightD), contributionThreshold(contributionThreshold), invertPolar(invertPolar), relativeScale(relativeScale) {
+		//widthM(widthM), heightD(heightD),
+		contributionThreshold(contributionThreshold), invertPolar(invertPolar), relativeScale(relativeScale) {
 		// invertPolar(false), contributionThreshold(contributionThreshold) {
+		this->widthM = widthM;
+		this->heightD = heightD;
 	}
-
 
 
 	void setPixelConf(RadarWindowConfig & conf, const PolarODIM & inputODIM) const ;
@@ -219,7 +244,7 @@ public:
 protected:
 
 	virtual
-	void initialize(){
+	void initialize() override {
 		setImageLimits();
 		setRangeNorm(); // interplay setLoopLimits(), with reset() and
 		//if (drain::Type::call<drain::typeIsSmallInt>(this->src.getType()) && drain::Type::call<drain::drain::typeIsSmallInt>(this->dst.getType())){

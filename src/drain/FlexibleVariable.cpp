@@ -71,10 +71,13 @@ bool FlexibleVariable::requestSize(size_t elementCount){
 	if (isLinking()){
 		Logger mout(__FILE__, __FUNCTION__);
 		if (this->elementCount != elementCount){
-			mout.warn() << "requesting resize (" <<  elementCount << ") for linked flexVar: ";
+			/*  DEBUGGING... (This IS ok, it is only a request...)
+			mout.warn("requesting resize (", this->elementCount, " -> ", elementCount, ") for linked flexVar");
+			mout.warn();
 			this->info(mout);
 			// mout << " - requesting: " ;
 			mout.end();
+			*/
 		}
 		// mout.special("LINKING, current size: ", this->elementCount, ", requested:  ", elementCount);
 		// mout.special("LINKING, current value: ", *this);

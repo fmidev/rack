@@ -80,7 +80,6 @@ void DistanceModelLinear::setRadius(float horz, float vert, float horzLeft, floa
 	float vDown  = radius2Dec(vert,     hRight);
 	float vUp    = radius2Dec(vertUp,   vDown);
 
-
 	setDecrement(hRight, vDown, hLeft, vUp);  // handles diag and knight
 
 	mout.debug("Decs: " , this->horzDec , ", " , this->vertDec );

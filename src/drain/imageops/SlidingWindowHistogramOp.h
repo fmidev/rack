@@ -90,7 +90,7 @@ public:
 	virtual inline
 	void initialize(){
 
-		drain::Logger mout(getImgLog(), "SlidingWindowHistogram", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 		this->setImageLimits();
 		this->setLoopLimits();
@@ -105,9 +105,9 @@ public:
 			histogram.setValueFunc(this->conf.valueFunc.at(0));
 		histogram.setMedianPosition(this->conf.percentage);
 
-		mout .debug3() << "a=" << this->getArea() << " " << mout.endl;
-		mout .debug3() << "histogram=" << histogram << " " << mout.endl;
-		mout .debug3() << this->coordinateHandler << mout.endl;
+		mout.warn("a=", this->getArea()); // , " sampleCountMedian=", histogram.sampleCountMedian);
+		mout.warn("histogram=", histogram, " ");
+		mout.debug3(this->coordinateHandler);
 
 	}
 
@@ -214,8 +214,9 @@ protected:
 /**
 
 \code
+  # Average in 5x5 window
   drainage image-gray.png --iWindowHistogram 5:5,a -o hist-avg.png
-  # 16-bit result image
+  # Sum in 15x15 window, 16-bit result image
   drainage image-gray.png -T S --iWindowHistogram 15:15,s -o hist-sum.png
   # Median
   drainage image-gray.png --iWindowHistogram 5:5,m -o hist-med.png
@@ -237,8 +238,6 @@ public:
 	SlidingWindowHistogramOp(int width=1, int height=1, std::string valueFunc="a", double percentage=0.5, int bins=256)
 : SlidingWindowOp<SlidingWindowHistogramWeighted>("SlidingWindowHistogram",
 		"A pipeline implementation of window histogram; valueFunc=[asmdvNX] (avg,sum,median,stddev,variance,miN,maX)"){
-		//this->conf.width = width;
-		//this->conf.height = height;
 		parameters.link("valueFunc", this->conf.valueFunc = valueFunc, "asmdvXN");
 		parameters.link("percentage", this->conf.percentage = percentage);
 		parameters.link("bins", this->conf.bins = bins);

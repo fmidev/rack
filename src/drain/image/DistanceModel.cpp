@@ -44,17 +44,15 @@ template <>
 const FlagResolver::dict_t EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict = {
 	{"4-CONNECTED",   drain::image::DistanceModel::CONN4},
 	{"8-CONNECTED",   drain::image::DistanceModel::CONN8},
-	{"16-CONNECTED",  drain::image::DistanceModel::KNIGHT}
+	{"16-CONNECTED",  drain::image::DistanceModel::KNIGHT}  // consider true names... "KNIGHT?"
 };
 
 void DistanceModel::update(){
 
-	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
+	// drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	pixelAdjacency.set(pixelAdjacencyStr);
-
 	setRadius(horzRadius.forward, vertRadius.forward, horzRadius.backward, vertRadius.backward);
-
 	updateBean();
 
 }
@@ -87,11 +85,9 @@ void DistanceModel::createChain(DistanceNeighbourhood & chain, PIXEL_ADJACENCY t
 
 	chain.clear();
 
-	// pixelAdjacency.set(2);
-	// pixelAdjacency.set
+	// Element creation dynamically depends on the model (radius), hence initializer list not applicable
 
 	switch (topology) {
-	// element creation is dynamically by the model, hence initializer list not applicable
 	case KNIGHT:
 		chain.push_back(getElement(-1, -2, forward));
 		chain.push_back(getElement(+1, -2, forward));
@@ -114,36 +110,6 @@ void DistanceModel::createChain(DistanceNeighbourhood & chain, PIXEL_ADJACENCY t
 
 }
 
-/*
-void DistanceModel::createChainOLD(DistanceNeighbourhood & chain, topol_t topology, bool forward) const {
-
-	chain.clear();
-
-	// pixelAdjacency.set(2);
-	//pixelAdjacency.set
-
-	switch (topology) {
-	// element creation is dynamically by the model, hence initializer list not applicable
-	case PIX_ADJACENCY_KNIGHT:
-		chain.push_back(getElement(-1, -2, forward));
-		chain.push_back(getElement(+1, -2, forward));
-		chain.push_back(getElement(-2, -1, forward));
-		chain.push_back(getElement(+2, -1, forward));
-		// no break
-	case PIX_ADJACENCY_8:
-		chain.push_back(getElement(-1, -1, forward));
-		chain.push_back(getElement(+1, -1, forward));
-		// no break
-	case PIX_ADJACENCY_4:
-		chain.push_back(getElement(-1,  0, forward));
-		chain.push_back(getElement( 0, -1, forward));
-		break;
-	default:
-		break;
-	}
-
-}
-*/
 
 
 }

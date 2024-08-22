@@ -79,9 +79,7 @@ public:
 		//std::cerr << "Test " << streamBuilder.str() << '\n';
 		std::stringbuf *buf = streamBuilder.rdbuf();
 		if (buf->in_avail() > 0){ // IMPORTANT! Otherwise corrupts (swallows) output stream
-			//ostr << buf;
 			int c;
-			//int i=0;
 			while ((c = buf->sbumpc()) != EOF){ //  != EOF
 				// std::cerr << *this << ",\t size:" << this->capacity() << '\n';
 				this->push_back(static_cast<char>(c));

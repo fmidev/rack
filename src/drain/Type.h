@@ -596,7 +596,7 @@ struct TypeName<std::initializer_list<T> > {
 		static std::string name;
 		if (name.empty()){
 			name = "std::initializer_list<";
-			name += drain::TypeName<T>::get();
+			name += drain::TypeName<T>::str();
 			name += ">";
 			//name = drain::StringBuilder("std::initializer_list<", drain::TypeName<T>::get(), ">");
 		}
@@ -626,7 +626,7 @@ struct TypeName<std::vector<T> > {
 		static std::string name;
 		if (name.empty()){
 			name = "std::vector<"; // + drain::TypeName<T>::get() + ">";
-			name += drain::TypeName<T>::get();
+			name += drain::TypeName<T>::str();
 			name += ">";
 			//name = drain::StringBuilder("std::initializer_list<", drain::TypeName<T>::get(), ">");
 		}

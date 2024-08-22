@@ -28,13 +28,18 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include "EchoTop2Op.h"
-#include "PolarSlidingWindowOp.h"
 
+#include "drain/util/Output.h" // DEBUGGING
+
+#include "data/SourceODIM.h"
 #include "main/palette-manager.h"
 
+#include "radar/Coordinates.h"
 #include "radar/Geometry.h"
 #include "radar/PolarSmoother.h"
+
+#include "EchoTop2Op.h"
+#include "PolarSlidingWindowOp.h"
 
 /* OLD STYLE: CLASS / 255.0 = QIND
 template <>
@@ -58,7 +63,9 @@ EchoTop2Op::EchoTop2Op(double threshold) :
 	parameters.link("undetectValue",    this->undetectReflectivity, "reflectivity replacing 'undetect' [dBZ]"); // if set, reference will be applied also here
 #ifndef NDEBUG
 	parameters.link("weights", this->weights.tuple(), "weights for INTERPOLATION, INTERP_UNDET, EXTRAP_UP, EXTRAP_DOWN, CLEAR");
+	parameters.link("referenceWindow", refWindow.tuple() = {0.0,0.0}, "optional reference window [metres,degrees]");
 	parameters.link("EXTENDED", this->EXTENDED_OUTPUT, "store also DBZ_SLOPE and CLASS");
+
 	// parameters.link("_EXTENDED", this->EXTENDED, "append classified data");
 #endif
 
@@ -87,60 +94,160 @@ EchoTop2Op::EchoTop2Op(double threshold) :
 
 };
 
-
+/*
 class Etop2WindowCore : public drain::image::WindowCoreBase {
 
 public:
 	PolarODIM odimSrc;
 };
+*/
 
-//class Etop2Window : public SlidingRadarWindowBase<RadarWindowConfig,Etop2WindowCore> {
-class Etop2Window : public SlidingRadarWindowBase<RadarWindowConfig> {
+/*
+class Etop2WindowConfig : public RadarWindowConfig {
+public:
+};
+*/
+
+class EtopWindowCore : public drain::image::WeightedWindowCore {
+
 
 public:
 
-	double N = 0;
+
+	/**
+	 *  \param odimSrc - metadata of the source data
+	 */
+	//RadarWindowCore(const PolarODIM & odimSrc) : odimSrc(odimSrc) {
+	//}
+
+	/// Will act as base class: Window<RadarWindowCore> : public RadarWindowCore {...}, init currently not supported.
+	/**
+	 *
+	 */
+	inline
+	EtopWindowCore(){
+	}
+
+public:
+
+	int N = 0;
+	/*
 	double sumHd  = 0.0;
 	double sumHd2 = 0.0;
 	double sumK   = 0.0;
 	double sumHdK = 0.0;
+	*/
+	double sumZd  = 0.0;
+	double sumZd2 = 0.0;
+	double sumV   = 0.0;
+	double sumZdV = 0.0;
+
+};
+
+
+//class Etop2Window : public SlidingRadarWindowBase<RadarWindowConfig,Etop2WindowCore> {
+//class Etop2Window : public SlidingRadarWindowBase<RadarWindowConfig, EtopWindowCore> {
+class Etop2Window : public SlidingWindow<RadarWindowConfig, EtopWindowCore> {
+
 
 public:
 
+	static
+	const EncodingODIM sharedODIM;  // float (double)
+
+
 	Etop2Window(const RadarWindowConfig & conf) : // , const PolarODIM & odimOut
 		// SlidingRadarWindowBase<RadarWindowConfig,Etop2WindowCore>(conf){};
-		SlidingRadarWindowBase<RadarWindowConfig>(conf){};
-
-	/*
-	virtual inline
-	void setSrcFrames(const ImageTray<const Channel> & srcTray) final {
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.unimplemented<LOG_WARNING>(__LINE__);
+		// SlidingRadarWindowBase<RadarWindowConfig, EtopWindowCore>(conf){
+		SlidingWindow<RadarWindowConfig, EtopWindowCore>(conf){
+		this->resetAtEdges = false;
 	};
 
-	virtual inline
-	void setDstFrames(ImageTray<Channel> & dstTray) final {
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.unimplemented<LOG_WARNING>(__LINE__);
-	};
-	*/
+	// DOES NOT WORK  PolarSrc vs PolarDST!
+	// void setSrc(const PlainData<PolarSrc> & srcGradient, const PlainData<PolarSrc> & srcCoeff){
 
+
+	inline
+	void setSrc(const drain::image::Image & srcGradient, const drain::image::Image & srcCoeff){
+		srcGradientView.setView(srcGradient);
+		srcGradientView.setCoordinatePolicy(polarLeftCoords);
+		// odimGradient.updateFromCastableMap(srcGradient.odim); // unused (yet)
+		srcCoeffView.setView(srcCoeff);
+		srcCoeffView.setCoordinatePolicy(polarLeftCoords);
+		// odimCoeff.updateFromCastableMap(srcCoeff.odim);// unused (yet)
+	}
+
+	inline
+	void setDst(PlainData<PolarDst> & dstHeight, PlainData<PolarDst> & dstReflectivity){
+		// dstHeight.data.setCoordinatePolicy(polarLeftCoords); // not needed
+		// dstHeight.setGeometry(srcGradientView.getGeometry());
+		dstHeightView.setView(dstHeight.data);
+		dstHeight.copyEncoding(sharedODIM_HGHT);
+
+		// dstReflectivity.data.setCoordinatePolicy(polarLeftCoords); // not needed
+		// dstReflectivity.setGeometry(srcGradientView.getGeometry());
+		dstReflectivityView.setView(dstReflectivity.data);
+		dstHeight.copyEncoding(sharedODIM_DBZH);
+	}
+
+	 void initialize() final {
+		 drain::Logger mout(__FILE__, __FUNCTION__);
+
+		 setImageLimits();
+		 setLoopLimits();
+		 this->location.setLocation(0,0);
+		 this->coordinateHandler.setPolicy(polarLeftCoords);
+
+
+		 //void updatePixelSize(const PolarODIM & inputODIM);
+		 // TÄHÄN updatePixelSize();
+		 this->setSize(5,5);
+
+		 mout.special(*this);
+		 mout.special(this->coordinateHandler);
+		 mout.special("srcGrad: ", srcGradientView);
+		 mout.special("srcCoeff: ", srcCoeffView);
+		 mout.special("dstHeight: ", dstHeightView);
+		 mout.special("dstReflectivity: ", dstReflectivityView);
+
+	 };
+
+	 void setImageLimits() const final{
+		 //this->coordinateHandler.setPolicy(polarLeftCoords);
+
+		 this->coordinateHandler.set(srcGradientView.getGeometry());
+	 }
+
+protected:
 	// Echo top gradient matrix, second term.
-	drain::image::ImageView src2;
+	drain::image::ImageView srcGradientView;
+	EncodingODIM odimGradient;
+	drain::image::ImageView srcCoeffView;
+	EncodingODIM odimCoeff;
+	// drain::image::ImageView src2;
+
+public:
 
 	// Echo top Reference: height
-	drain::image::ImageView dst2;
+	// drain::image::ImageView dst2;
+	static
+	const EncodingODIM sharedODIM_HGHT;
+	drain::image::ImageView dstHeightView;
 
 	static
-	const EncodingODIM sharedODIM;
+	const EncodingODIM sharedODIM_DBZH;
+	drain::image::ImageView dstReflectivityView;
 
+
+
+/*
 	inline
 	void setSrcFrame2(const drain::image::ImageFrame & srcFrame){
 		//drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 		// mout.debug2("src props for odim: " , src.getProperties() );
 		// drain::image::SlidingWindow<C, R>::setSrcFrame(src);
 		// mout.debug("src Scaling: " , srcFrame.getScaling() );
-		setSrcFrame(srcFrame);
+		//setSrcFrame(srcFrame);
 		src2.setView(srcFrame);
 	}
 
@@ -152,6 +259,9 @@ public:
 		// mout.debug("src Scaling: " , srcFrame.getScaling() );
 		dst2.setView(dstFrame);
 	}
+*/
+
+public:
 
 	/** konsider
 	inline virtual
@@ -161,69 +271,111 @@ public:
 
 	// int sumX = 0;
 	// int sumY = 0;
+	virtual inline
+	void addPixel(drain::Point2D<int> & p) override {
+		if (this->coordinateHandler.validate(p)){
+			double Zd = srcGradientView.get<double>(p); // this->location
+			double V  = srcCoeffView.get<double>(p);
+			if (sharedODIM.isValue(Zd)){
+				sumZd2 += Zd*Zd;
+				sumZd  += Zd;  // NOTE minus
+				N++; //      += 1.0;
+				sumZdV += Zd*V; // NOTE minus
+				sumV   += V;
+				/*
+				N      += 1.0;
+				sumHd  += Hd;  // NOTE minus
+				sumHd2 += Hd*Hd;
+				sumK   += k;
+				sumHdK += Hd*k; // NOTE minus
+				*/
+			}
+		}
+	};
 
 	virtual inline
-	void addPixel(drain::Point2D<int> &p){
-		double Hd = src.get<double>(this->location);
-		double k  = src2.get<double>(this->location);
-		if (sharedODIM.isValue(Hd)){
-			N      += 1.0;
-			sumHd  -= Hd;  // NOTE minus
-			sumHd2 += Hd*Hd;
-			sumK   += k;
-			sumHdK -= Hd*k; // NOTE minus
-		}
-		// sumX += (this->locationLead.x & 255);
-		// sumY += (p.y & 255);
-		// dst.put(p, 0.12345f);
-	};
-
-	virtual
-	void removePixel(drain::Point2D<int> &p){
-		double Hd = src.get<double>(this->location);
-		double k  = src2.get<double>(this->location);
-		if (sharedODIM.isValue(Hd)){
-			N      -= 1.0;
-			sumHd  += Hd; // NOTE plus
-			sumHd2 -= Hd*Hd;
-			sumK   -= k;  // NOTE plus
-			sumHdK += Hd*k;
+	void removePixel(drain::Point2D<int> & p) override {
+		if (this->coordinateHandler.validate(p)){
+			double Zd = srcGradientView.get<double>(p); // this->location
+			double V  = srcCoeffView.get<double>(p);
+			if (sharedODIM.isValue(Zd)){
+				sumZd2 -= Zd*Zd;
+				sumZd  -= Zd;  // NOTE minus
+				N--; //      += 1.0;
+				sumZdV -= Zd*V; // NOTE minus
+				sumV   -= V;
+				/*
+				N      -= 1.0;
+				sumHd  -= Hd;  // NOTE minus
+				sumHd2 -= Hd*Hd;
+				sumK   -= k;
+				sumHdK -= Hd*k; // NOTE minus
+				*/
+			}
 		}
 	};
 
-	/*
-	virtual
-	void addLeadingValue(double x) final {
-		sumX += (this->locationLead.x & 255);
-		sumY += (this->locationLead.y & 255);
-	};
-
-	virtual
-	void removeTrailingValue(double x) final {
-		sumX -= (this->locationTrail.x & 255);
-		sumY -= (this->locationTrail.y & 255);
-	};
-	*/
 
 	virtual inline
 	void write() final {
-		const double & a = N;
-		const double & b = sumHd;
-		const double & c = sumHd;
-		const double & d = sumHd2;
-		double div = 1.0 / (a*d  - b*c); // N*sumHd - sumHd*sumHd);
 
-		const double & e = sumK;
-		const double & f = sumHdK;
+		/**
+		 *    |a  bc| = |N       -sumHd |
+		 *    |bc  d|   |-sumHd   sumHd2|
+		 */
 
-		//dst.put(this->location, N*sumHdK + sumHd*);
-		dst2.put(this->location, sumY & 65535);
+		//const double & a = N;
+		double a  = sumZd2;
+		double bc = -sumZd;
+		double d  = static_cast<double>(N);
+		//const double div = 1.0 / (a*d  - bc*bc); // N*sumHd - sumHd*sumHd);
+		double div = (a*d  - bc*bc); // N*sumHd - sumHd*sumHd);
+
+		if (::abs(div) < 0.0001){
+			// if (::isnan(div)){
+			return;
+		}
+
+		div = 1.0/div;
+
+		// TODO: quality from div
+		/**
+		 *    |A  BC| = div * | d  -bc|
+		 *    |BC  D|         |-bc   a|
+		 */
+		double A  =  div*d;
+		double BC =  div*(-bc);
+		double D  =  div*a;
+
+
+		// dstHeightView.put(this->location, 12000 + this->location.x*10);
+		// dstReflectivityView.put(this->location, 32768 + (this->location.y-180)*100);
+
+		// NOTE: sumV "requires" minus sign
+		if (this->location.x == this->location.y){
+			// std::cout << "sumZd=" << sumZd << "\t sumZd2=" << sumZd2 << "\t sumZdV=" << sumZdV  << "\t N=" << N << "\t div=" << div << '\n';
+			// std::cout << "  -> dBZ=" << (BC*sumZdV -  D*sumV) << " H=" << (A*sumZdV - BC*sumV) << " = " << (A*sumZdV) << " - " << (BC*sumV)<< '\n';
+			std::cout << "  dBZ=" << (BC*sumZdV -  D*sumV) << " H=" << (A*sumZdV - BC*sumV) << "\t N=" << N << "\t div=" << div << '\n';
+		}
+
+		dstHeightView.put(this->location,       Etop2Window::sharedODIM_HGHT.scaleInverse(A*sumZdV  - BC*sumV) );
+		dstReflectivityView.put(this->location, Etop2Window::sharedODIM_DBZH.scaleInverse(BC*sumZdV -  D*sumV) );
+		// dst.put(this->location,  Etop2Window::sharedODIM_HGHT.scaleInverse(A*sumZdV + BC*sumV)  );
+		// dst2.put(this->location, Etop2Window::sharedODIM_DBZH.scaleInverse(BC*sumZdV +  D*sumV) );
+
 	}
 
 };
 
-const EncodingODIM Etop2Window::sharedODIM('d'); // consider float
+// const EncodingODIM Etop2Window::sharedODIM('d'); // consider float
+const EncodingODIM Etop2Window::sharedODIM('f'); // consider float
 
+
+//const EncodingODIM Etop2Window::sharedODIM_DBZH('S', 1.0, 0, 0xfffe, 0xffff); // 65535
+// const EncodingODIM Etop2Window::sharedODIM_HGHT('S', 0.1, -1, 0xfffe, 0xffff); // max: 65533 metres
+const EncodingODIM Etop2Window::sharedODIM_HGHT('S', 0.9, -32768, 0xfffe, 0xffff); // max: 65533 metres
+const EncodingODIM Etop2Window::sharedODIM_DBZH('S', 0.01, -327.68); // 65535
+// const EncodingODIM Etop2Window::sharedODIM_DBZH(getQuantityMap().get("DBZH").get('S')); // 65535
 
 //void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
 void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSet<dst_t> & dstProduct) const {
@@ -271,30 +423,28 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	}
 
 	dstEchoTop.setGeometry(dstEchoTop.odim);
-
 	// mout.attention("ODIM scaling 3: ", dstEchoTop.odim.scaling);
-
-	//mout.special(dstEchoTop.odim);
+	// mout.special(dstEchoTop.odim);
 
 	// clumsy
 	const drain::image::AreaGeometry & area = dstEchoTop.odim.getGeometry();
 
 	bool COMPUTE_REFERENCE = true;
 
-	PlainData<dst_t> & dstETOP_k  = dstProduct.getData("ETOP_k");
-	dstETOP_k.copyEncoding(Etop2Window::sharedODIM);
-	//dstETOP_k.setEncoding(typeid(float));
-	dstETOP_k.setExcluded(!COMPUTE_REFERENCE);
+	PlainData<dst_t> & dstETOP_Zd = dstProduct.getData("ETOP_AUX_GRAD");
+	dstETOP_Zd.copyEncoding(Etop2Window::sharedODIM);
+	dstETOP_Zd.setExcluded(!COMPUTE_REFERENCE);
 
-	PlainData<dst_t> & dstETOP_hd = dstProduct.getData("ETOP_hd");
-	dstETOP_hd.copyEncoding(Etop2Window::sharedODIM);
-	//dstETOP_hd.setEncoding(typeid(float));
-	dstETOP_hd.setExcluded(!COMPUTE_REFERENCE);
-	//dstETOP_hd.setEncoding(typeid(float));
+	PlainData<dst_t> & dstETOP_V  = dstProduct.getData("ETOP_AUX_COEFF");
+	dstETOP_V.copyEncoding(Etop2Window::sharedODIM);
+	dstETOP_V.setExcluded(!COMPUTE_REFERENCE);
+	// dstETOP_hd.setEncoding(typeid(float));
 
 	if (COMPUTE_REFERENCE){
-		dstETOP_k.setGeometry(area);
-		dstETOP_hd.setGeometry(area);
+		dstETOP_Zd.setGeometry(area);
+		dstETOP_Zd.data.fill(Etop2Window::sharedODIM.nodata);
+		dstETOP_V.setGeometry(area);
+		dstETOP_V.data.fill(Etop2Window::sharedODIM.nodata);
 	}
 
 
@@ -331,12 +481,15 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	WEIGHTS.extrapolation_up   = dstQuality.odim.scaleInverse(weights.extrapolation_up);
 	WEIGHTS.extrapolation_down = dstQuality.odim.scaleInverse(weights.extrapolation_down);
 	WEIGHTS.clear         = dstQuality.odim.scaleInverse(weights.clear);
-
+	// WEIGHTS::value_t
+	short int WEIGHT = 0;
 
 	mout.debug("WEIGHTS: ", WEIGHTS);
 
 	/// Class codes (using storage type encoding)
-	MethodWeights<unsigned char> CLASS;
+	MethodWeights<unsigned char> CLASSES;
+	// CLASSES::value_t
+	unsigned char CLASS = 0;
 
 // #ifndef NDEBUG
 
@@ -356,12 +509,12 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 		//drain::Variable & classLegend = dstClass.getWhat()["legendTEST"];
 		//classLegend = "0:Clear,128:OverShooting"; // (TODO: redesign "direct" legend struct, as properties?)
 		const drain::image::Palette & cp = PaletteManager::getPalette("CLASS-ETOP");
-		CLASS.clear = dstClass.odim.undetect;
-		CLASS.interpolation = cp.getEntryByCode("interpolated").first;
-		CLASS.interpolation_dry  = cp.getEntryByCode("interpolated.undetect").first; //  cp.getEntryByCode("overshooting").first;
-		CLASS.extrapolation_up = cp.getEntryByCode("strong.extrapolated").first; // cp.getEntryByCode("undershooting").first;
-		CLASS.extrapolation_down  = cp.getEntryByCode("weak").first;
-		CLASS.error = cp.getEntryByCode("error").first; // could be nodata as well
+		CLASSES.clear = dstClass.odim.undetect;
+		CLASSES.interpolation = cp.getEntryByCode("interpolated").first;
+		CLASSES.interpolation_dry  = cp.getEntryByCode("interpolated.undetect").first; //  cp.getEntryByCode("overshooting").first;
+		CLASSES.extrapolation_up = cp.getEntryByCode("strong.extrapolated").first; // cp.getEntryByCode("undershooting").first;
+		CLASSES.extrapolation_down  = cp.getEntryByCode("weak").first;
+		CLASSES.error = cp.getEntryByCode("error").first; // could be nodata as well
 
 
 		dstSlope.setGeometry(dstEchoTop.odim);
@@ -423,7 +576,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	std::map<double,MeasurementHolder> dbzData; // D bit slow, but for now
 
 	double azm;
-	double height;
+	double height; // always metres
 	double slope; // EXTENDED
 	int j2;
 
@@ -439,6 +592,18 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	// Direct array index of a pixel (i,j)
 	size_t address;
 
+	// DEBUG
+	std::string outputFilename;
+
+	for (const auto & sweep: srcSweeps){
+		const Data<src_t> & src =  sweep.second.getFirstData();
+		SourceODIM srcOdim(src.odim.source);
+		outputFilename = drain::StringBuilder<'-'>(src.odim.date, src.odim.time, srcOdim.NOD, "vect.dat");
+		break;
+	}
+	drain::Output output(outputFilename);
+
+
 	// MAIN
 	for (size_t i = 0; i < area.width; ++i){
 
@@ -449,6 +614,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 		dbzData.clear();
 		for (const auto & sweep: srcSweeps){
 			const Data<src_t> & src =  sweep.second.getData("DBZH");
+
 			int index = src.odim.getBinIndex(groundDistance);
 			if (index >= 0){
 				i2 = index;
@@ -572,25 +738,38 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 							if (USE_INTERPOLATION){
 								// EtopWin: store SLOPE_HGHT: weakMsrm->height
 								slope  = getSlope(*weakMsrm, *strongMsrm);  // UNIT: m/dBZ
-								if (COMPUTE_REFERENCE){
-									dstETOP_hd.data.put(address, slope);
-									// dstETOP_hd.data.put(address, ::rand());
-									dstETOP_k.data.put(address, strongMsrm->reflectivity*slope - strongMsrm->height);
+								WEIGHT = WEIGHTS.interpolation;
+								CLASS  = CLASSES.interpolation;
+								if (((i & 15) == 0) && ((j & 15) == 0)){
+									//output << weakMsrm->height << ' ' << weakMsrm->reflectivity << '\t' << strongMsrm->height << ' ' << strongMsrm->reflectivity << '\n';
+									output << weakMsrm->reflectivity << '\t' << weakMsrm->height << '\t' << strongMsrm->reflectivity << '\t'  << strongMsrm->height << '\n';
 								}
 							}
 							else {
 								slope = getSlope(reference, *strongMsrm);
+								WEIGHT = WEIGHTS.extrapolation_up;
+								CLASS  = CLASSES.extrapolation_up;
 							}
-							height = strongMsrm->height + slope*(threshold - strongMsrm->reflectivity);
+
+							height = strongMsrm->height + slope*(threshold - strongMsrm->reflectivity); // metres
 
 							dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
-							dstQuality.data.put<int>(address, USE_INTERPOLATION ? WEIGHTS.interpolation : WEIGHTS.extrapolation_up);
+							//dstQuality.data.put<int>(address, USE_INTERPOLATION ? WEIGHTS.interpolation : WEIGHTS.extrapolation_up);
+							dstQuality.data.put<int>(address, WEIGHT);
 //#ifndef NDEBUG
 							if (EXTENDED_OUTPUT){
-								dstClass.data.put<int>(address, USE_INTERPOLATION ? CLASS.interpolation : CLASS.extrapolation_up);
-								dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/ slope))); // dBZ/km  //  ALERT div by 0 RISK
+								// dstClass.data.put<int>(address, USE_INTERPOLATION ? CLASSES.interpolation : CLASSES.extrapolation_up);
+								dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/slope))); // dBZ/km
+								dstClass.data.put<int>(address, CLASS);
 							}
 // #endif
+							if (COMPUTE_REFERENCE){
+								dstETOP_Zd.data.put(address, 1.0/slope);
+								dstETOP_V.data.put(address, strongMsrm->reflectivity - strongMsrm->height/slope);
+								// dstETOP_hd.data.put(address, ::rand());
+								// dstETOP_V.data.put(address, strongMsrm->reflectivity*slope - strongMsrm->height);
+
+							}
 
 						}
 						else {
@@ -616,20 +795,34 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 							weakMsrm->reflectivity = undetectReflectivity;
 							slope = getSlope(*weakMsrm, *strongMsrm);
 							// slope = getSlope(weakMsrm->height, strongMsrm->height, undetectReflectivity, strongMsrm->reflectivity);
+							WEIGHT = WEIGHTS.interpolation_dry;
+							CLASS  = CLASSES.interpolation_dry;
 						}
 						else {
 							slope = getSlope(reference, *strongMsrm);
+							WEIGHT = WEIGHTS.extrapolation_up;
+							CLASS  = CLASSES.extrapolation_up;
 							// slope = getSlope(reference.height, strongMsrm->height, reference.reflectivity, strongMsrm->reflectivity);
 						}
-						height = strongMsrm->height + slope*(threshold - strongMsrm->reflectivity);
+
+						height = strongMsrm->height + slope*(threshold - strongMsrm->reflectivity); // metres
+
 						dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
-						dstQuality.data.put(address, USE_INTERPOLATION_DRY ? WEIGHTS.interpolation_dry : WEIGHTS.extrapolation_up);
+						dstQuality.data.put(address, WEIGHT);
+						// dstQuality.data.put(address, USE_INTERPOLATION_DRY ? WEIGHTS.interpolation_dry : WEIGHTS.extrapolation_up);
 // #ifndef NDEBUG
 						if (EXTENDED_OUTPUT){
 							dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/ slope))); // dBZ/km ALERT div by 0 RISK
-							dstClass.data.put<int>(address, USE_INTERPOLATION_DRY ? CLASS.interpolation_dry : CLASS.extrapolation_up);
+							dstClass.data.put<int>(address, CLASS);
+							// dstClass.data.put<int>(address, USE_INTERPOLATION_DRY ? CLASSES.interpolation_dry : CLASSES.extrapolation_up);
 						}
 // #endif
+						if (COMPUTE_REFERENCE){
+							dstETOP_Zd.data.put(address, 1.0/slope);
+							dstETOP_V.data.put(address, strongMsrm->reflectivity - strongMsrm->height/slope);
+							// dstETOP_Zd.data.put(address, slope);
+							// dstETOP_V.data.put(address, strongMsrm->reflectivity*slope - strongMsrm->height);
+						}
 					}
 				}
 				// No strong measurement.
@@ -642,7 +835,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 // #ifndef NDEBUG
 					if (EXTENDED_OUTPUT){
 						dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/ slope)));
-						dstClass.data.put<int>(address, CLASS.extrapolation_down); //192
+						dstClass.data.put<int>(address, CLASSES.extrapolation_down);
 					}
 // #endif
 				}
@@ -651,7 +844,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 					dstQuality.data.put(address, WEIGHTS.clear); // CONFIRMED CLEAR?
 // #ifndef NDEBUG
 					if (EXTENDED_OUTPUT){
-						dstClass.data.put<int>(address, CLASS.clear);
+						dstClass.data.put<int>(address, CLASSES.clear);
 					}
 // #endif
 				}
@@ -673,7 +866,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 					dstQuality.data.put(address, WEIGHTS.extrapolation_up);
 // #ifndef NDEBUG
 					if (EXTENDED_OUTPUT){
-						dstClass.data.put<int>(address, CLASS.extrapolation_up);
+						dstClass.data.put<int>(address, CLASSES.extrapolation_up);
 						dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0 / slope))); // ALERT div by 0 RISK
 					}
 // #endif
@@ -684,7 +877,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 					dstQuality.data.put(address, WEIGHTS.clear);
 // #ifndef NDEBUG
 					if (EXTENDED_OUTPUT){
-						dstClass.data.put<int>(address, CLASS.clear);
+						dstClass.data.put<int>(address, CLASSES.clear);
 						//dstSlope.data.put(address, limitSlope(dstSlope.odim.undetect));
 						dstSlope.data.put(address, dstSlope.odim.undetect);
 					}
@@ -704,37 +897,53 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 		mout.attention("Entering test");
 		// 11×500m × 11⁰
 		RadarWindowConfig windowConf(5500,11.0);
+
+		if ((refWindow.widthM != 0.0) && (refWindow.heightD != 0.0)){
+			windowConf.set(refWindow);
+		}
+
+
 		windowConf.updatePixelSize(dstEchoTop.odim);
+
 
 		Etop2Window window(windowConf);
 
+		mout.special("Window: ", window);
+
 		// Input
-		window.setSrcFrame(dstETOP_k.data);
-		//window.odimSrc.updateFromCastableMap(dstETOP_k.odim); // MUST! Clumsy, but dstETOP_k has not (yet) the odim's...
-		window.odimSrc.updateFromCastableMap(Etop2Window::sharedODIM); // MUST! Clumsy, but dstETOP_k has not (yet) the odim's...
-		window.odimSrc.setGeometry(area); // MUST!
-		window.setSrcFrame2(dstETOP_hd.data);
+		window.setSrc(dstETOP_Zd.data, dstETOP_V.data);
+		// window.setSrcFrame(dstETOP_Zd.data);
+		// window.odimSrc.updateFromCastableMap(dstETOP_k.odim); // MUST! Clumsy, but dstETOP_k has not (yet) the odim's...
+		// window.odimSrc.updateFromCastableMap(Etop2Window::sharedODIM); // MUST! Clumsy, but dstETOP_k has not (yet) the odim's...
+		// window.odimSrc.setGeometry(area); // MUST!
+		// window.setSrcFrame2(dstETOP_V.data);
 
 		// Output
 		PlainData<dst_t> & dstEchoTopReferenceHeight = dstProduct.getData("ETOP_REF_HGHT");
-		dstEchoTopReferenceHeight.copyEncoding(Etop2Window::sharedODIM);
-		//dstEchoTopReferenceHeight.setEncoding(typeid(unsigned short));
-		//quantityMap.setQuantityDefaults(dstEchoTopReferenceHeight, "HGHT");
+		dstEchoTopReferenceHeight.copyEncoding(Etop2Window::sharedODIM_HGHT);
+		// dstEchoTopReferenceHeight.setEncoding(typeid(unsigned short));
+		// quantityMap.setQuantityDefaults(dstEchoTopReferenceHeight, "HGHT");
 		dstEchoTopReferenceHeight.setGeometry(area);
 		dstEchoTopReferenceHeight.setExcluded(false); // check later
 
 		PlainData<dst_t> & dstEchoTopReferenceDbz    = dstProduct.getData("ETOP_REF_DBZH");
-		dstEchoTopReferenceDbz.copyEncoding(Etop2Window::sharedODIM);
-		// dstEchoTopReferenceDbz.setEncoding(typeid(unsigned short)); // float?
-		// quantityMap.setQuantityDefaults(dstEchoTopReferenceDbz, "DBZH");
+		dstEchoTopReferenceDbz.copyEncoding(Etop2Window::sharedODIM_DBZH);
+		//dstEchoTopReferenceDbz.setEncoding(typeid(unsigned short)); // float?
+		//quantityMap.setQuantityDefaults(dstEchoTopReferenceDbz, "DBZH");
 		dstEchoTopReferenceDbz.setGeometry(area);
 		dstEchoTopReferenceDbz.setExcluded(false); // check later
 
-		window.setDstFrame(dstEchoTopReferenceHeight.data);
-		window.setDstFrame2(dstEchoTopReferenceDbz.data);
+		window.setDst(dstEchoTopReferenceHeight, dstEchoTopReferenceDbz);
+		//window.setDstFrame(dstEchoTopReferenceHeight.data);
+		//window.setDstFrame2(dstEchoTopReferenceDbz.data);
+		// dstEchoTopReferenceDbz.data.fill(32767);
+		// drain::image::FilePng::write(dstEchoTopReferenceDbz.data, "out.png");
 
 		mout.attention("Entering test / run");
 		window.run();
+		// drain::image::FilePng::write(dstEchoTopReferenceHeight.data, "out2.png");
+		// drain::image::FilePng::write(dstEchoTopReferenceDbz.data, "out3.png");
+		mout.attention("Ended test");
 
 	}
 

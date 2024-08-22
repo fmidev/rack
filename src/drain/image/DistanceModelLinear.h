@@ -71,7 +71,7 @@ public:
 	
 protected:
 
-	float radius2Dec(float r, float rDefault = -1.0) const;
+	float radius2Dec(float r, float rDefault) const; //  = -1.0
 
 	float checkDec(float d, float dDefault = 1.0) const;
 

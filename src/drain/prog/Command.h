@@ -507,10 +507,16 @@ public:
 	SimpleCommand(const std::string & name, const std::string & description,
 			const std::string & key="value", const T & initValue = T(), const std::string & unit = "") : BasicCommand(name, description) {
 
-		///// parameters.separator = '\0';
-		/// 2024
 		getParameters().separator = '\0';
 		getParameters().link(key, value = initValue, unit);
+
+		if (key.empty()){
+			Context & ctx = getContext<Context>();
+			drain::Logger mout(ctx.log,__FILE__, __FUNCTION__);
+			mout.warn("Empty value key in command ", name, " (", description, ")");
+		}
+
+
 	};
 
 	/// Constuctor designer for SimpleCommand<Unituple<> > .
@@ -520,7 +526,12 @@ public:
 		// parameters.separator = '\0';
 		value = l;
 		getParameters().link(key, value);
-		// parameters.link(key, value);
+
+		if (key.empty()){
+			Context & ctx = getContext<Context>();
+			drain::Logger mout(ctx.log,__FILE__, __FUNCTION__);
+			mout.warn("Empty value key in command ", name, " (", description, ")");
+		}
 	};
 
 

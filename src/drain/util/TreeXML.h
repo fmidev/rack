@@ -773,7 +773,7 @@ template <class E, bool EX, class P>
 struct TypeName< drain::UnorderedMultiTree<NodeXML<E>,EX,P> > {
 
     static const std::string & str(){
-    	static const std::string name = drain::StringBuilder<>("TreeXML<", TypeName<E>::get(), ">");
+    	static const std::string name = drain::StringBuilder<>("TreeXML<", TypeName<E>::str(), ">");
     	return name;
     }
 

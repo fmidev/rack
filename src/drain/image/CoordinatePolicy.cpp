@@ -54,6 +54,16 @@ const EdgePolicy::dict_t EdgePolicy::dict =  {  //drain::Static::get<coord_polic
 };
 
 std::ostream & operator<<(std::ostream & ostr, const CoordinatePolicy & policy){
+
+	if (
+			(policy.xOverFlowPolicy == policy.xUnderFlowPolicy) &&
+			(policy.xOverFlowPolicy == policy.yUnderFlowPolicy) &&
+			(policy.xOverFlowPolicy == policy.yOverFlowPolicy)){
+		ostr << EdgePolicy::dict.getKey(policy.xOverFlowPolicy);
+		return ostr;
+	}
+
+
 	char sep = 0;
 	for (EdgePolicy::index_t p: policy.tuple()){
 		if (sep)

@@ -176,7 +176,7 @@ public:
 	inline
 	void setMedianPosition(double pos){
 		weight = pos;
-		sampleCountMedian = static_cast<size_t>(weight * sampleCount);
+		sampleCountMedian = static_cast<size_t>(weight * static_cast<double>(sampleCount));
 	};
 
 	/*
@@ -314,16 +314,20 @@ public:
 	template <class T>
 	inline
 	T getMedian() const {
-		size_type sum;
-		const size_type limit = static_cast<size_t>(weight*sampleCount);
+		size_type sum = 0;
+		//const
+		//size_type limit = static_cast<size_t>(weight*sampleCount);
 
-		sum = 0;
 		for (size_type i = 0; i < size(); ++i){
 			sum += (*this)[i];
-			if (sum >= limit){
+			if (sum >= sampleCountMedian){ // limit){
+				//if (sum >= limit){
 				return scaleOut<T>(i);
 			}
 		}
+		//return (245*sum)/sampleCount;
+
+		//return ::rand(); //static_cast<T>(outMax);
 		return getUpperBoundOut(); //static_cast<T>(outMax);
 	}
 
@@ -387,6 +391,8 @@ public:
 		return *this;
 	};
 
+	std::ostream & toStream(std::ostream & ostr) const;
+
 	void dump(std::ostream & ostr = std::cout);
 
 	std::string delimiter;
@@ -434,13 +440,13 @@ private:
 	//size_type sampleCount;
 
 	/// The actual sample count in the histogram. FOR WEIGHTED
-	size_type sampleCount;
+	size_type sampleCount = 0;
 
 	// Half of sampleCount.
-	size_type sampleCountMedian;
+	size_type sampleCountMedian = 0;
 
 	// weight for weighted median;
-	float weight;
+	float weight = 0.5;
 
 	/// Check is type is unsigned char (8bit) or unsigned short (16bit).
 	static inline
@@ -461,14 +467,6 @@ private:
 		return i;
 	}
 
-	/*
-	int inMax;
-	int inMin;
-	int inSpan;
-	int outMin;
-	int outMax;
-	int outSpan;
-	*/
 
 };
 
@@ -530,8 +528,10 @@ void Histogram::compute(const T & dst, const std::type_info & type, const UniTup
 
 }
 
-
-std::ostream & operator<<(std::ostream &ostr,const Histogram &h);
+inline
+std::ostream & operator<<(std::ostream &ostr,const Histogram &h){
+	return h.toStream(ostr);
+}
 
 }
 

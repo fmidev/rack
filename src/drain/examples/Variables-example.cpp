@@ -29,13 +29,11 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-/*  // ,VariableLike
+/*
 
   REQUIRE: drain/{Caster,Castable,FlexibleVariable,Log,Reference,Sprinter,String,RegExp,TextStyle,Type,TypeUtils,Variable,VariableBase}.cpp
   REQUIRE: drain/util/{FileInfo,Output,TreeXML,TreeHTML}.cpp
-  //Time,
 
-  g+ + -I. drain/examples/Time-example.cpp drain/util/Time.cpp -o Time-example
  */
 
 #include <stdlib.h>
@@ -47,7 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/UniTuple.h"
 #include "drain/Variable.h"
 #include "drain/FlexibleVariable.h"
-#include "drain/VariableAssign.h"
+// #include "drain/VariableAssign.h"
 
 #include "drain/util/TreeHTML.h"
 #include "drain/util/Output.h"
@@ -679,8 +677,15 @@ int main(int argc, char **argv){
 	assert(flex == "1.1,2.2");
 
 	flex.link(uni2d);
+	// std::cerr << "Nowx: '" << flex.toStr() << "' == '..." << "'" << std::endl;
+	flex = 3.30;
+	// std::cerr << "Now0: '" << flex.toStr() << "' == '..." << "'" << std::endl;
+	flex = {3.30,4.400};
+	// std::cerr << "Now1: '" << flex.toStr() << "' == '..." << "'" << std::endl;
 	flex = "3.30,4.400";
+	// std::cerr << "Now2: '" << flex.toStr() << "' == '..." << "'" << std::endl;
 	assert(flex == "3.3,4.4");
+	// std::cerr << "Now3: '" << flex.toStr() << "' == '..." << "'" << std::endl;
 
 	flex.setFill(false);
 	flex = 5;

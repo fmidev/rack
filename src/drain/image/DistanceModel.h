@@ -31,14 +31,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DISTANCEMODEL_H_
 #define DISTANCEMODEL_H_
 
-
-
-#include <drain/UniTuple.h>
 #include <math.h>
 
 #include "drain/util/BeanLike.h"
 #include "drain/imageops/ImageOp.h"
 
+#include "drain/UniTuple.h"
 
 
 namespace drain
@@ -123,37 +121,34 @@ std::ostream & operator<<(std::ostream &ostr, const DistanceNeighbourhood & chai
 
 /// Base class for linear and exponential distances in rectangular pixel images.
 class DistanceModel : public BeanLike {
-	
+
+
 public:
 
-	// OLD typedef unsigned short topol_t;
-	// NEW
 	enum PIXEL_ADJACENCY {CONN4=4, CONN8=8, KNIGHT=16};
-	typedef PIXEL_ADJACENCY topol_t;
+
+	typedef PIXEL_ADJACENCY topol_t; // Needed? Consider topol_enum_t
 
 
 	typedef drain::EnumFlagger<drain::SingleFlagger<PIXEL_ADJACENCY> > PixelAdjacencyFlagger;
 	PixelAdjacencyFlagger pixelAdjacency;
 
-	mutable
-	std::string pixelAdjacencyStr;  // number to string
-
 	static
 	const float nan_f; // = std::numeric_limits<float>::quiet_NaN();
-	//typedef float float;
 
 	virtual ~DistanceModel(){};
 
 	/// Set maximum (expected) code value. Radii, if given, will set pixel-to-pixel decrements scaled to this value.
 	inline
-	void setMax(float maxCodeValue){ this->maxCodeValue = maxCodeValue; };
+	void setMax(float maxCodeValue){
+		this->maxCodeValue = maxCodeValue;
+	};
 
 	/// Returns the maximum (expected) code value.
 	inline
-	float getMax() const { return maxCodeValue; };
-
-	// virtual
-	//void getRadius(float & horz, float & vert) const = 0;
+	float getMax() const {
+		return maxCodeValue;
+	};
 
 	/// Sets the geometry of the distance model.
 	/**
@@ -168,8 +163,15 @@ public:
 	 *
 	 */
 	virtual 
-	void setRadius(float horz, float vert=nan_f, float horzLeft=nan_f, float vertUp=nan_f) = 0; //, bool diag=true, bool knight=true) = 0;
-	
+	void setRadius(float horz, float vert=nan_f, float horzLeft=nan_f, float vertUp=nan_f) = 0;
+
+	/// Simply copies values, does not try to set defaults.
+	inline
+	void setRadiusVerbatim(float horz, float vert=nan_f, float horzLeft=nan_f, float vertUp=nan_f){
+		horzRadius.set(horz, horzLeft);
+		vertRadius.set(vert, vertUp);
+	};
+
 	inline
 	const Bidirectional<float> & getRadiusHorz() const {
 		return horzRadius;
@@ -207,7 +209,7 @@ public:
 	void update();
 
 	virtual
-	void updateBean() const;
+	void updateBean() const override;
 
 	/// Sets the topology of the computation grid: 0=diamond, 1=diagonal, 2=extended (chess knight steps)
 	inline
@@ -245,12 +247,10 @@ protected:
 	 *
 	 *  By default, the geometry is octagonal, applying 8-distance.
 	*/
-	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), horzRadius(11.0, 12.0), vertRadius(-1.0, -1.0) {
-		parameters.link("width",  horzRadius.tuple(), "pix").fillArray = true;
+	DistanceModel(const std::string & name, const std::string & description = "") : BeanLike(name, description), horzRadius(11.0, nan_f), vertRadius(nan_f, nan_f) {
+	// horzRadius(11.0, 12.0), vertRadius(-1.0, -1.0) {
+	parameters.link("width",  horzRadius.tuple(), "pix").fillArray = true;
 		parameters.link("height", vertRadius.tuple(), "pix").fillArray = true;
-		//parameters.link("topology", topology=PIX_ADJACENCY_KNIGHT, "0|1|2");
-
-		//parameters.link("topology", pixelAdjacencyStr = "KNIGHT", "0|1|2");
 		parameters.link("topology", pixelAdjacencyStr = "16-CONNECTED", sprinter(EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict.getKeys()).str());
 		//drain::sprinter(drain::EnumDict<DataOrder::Oper>::dict.getKeys()).str()
 		// ? update();
@@ -264,6 +264,9 @@ protected:
 		// setTopology(dm.topology);
 		setMax(dm.getMax()); // warning
 	}
+
+	mutable
+	std::string pixelAdjacencyStr;  // number to string
 
 
 	//  Horizontal distance(s); right and left steepness radii. Internal parameter applied upon initParams?

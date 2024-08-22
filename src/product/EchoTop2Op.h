@@ -32,6 +32,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ECHO_TOP2_OP
 #define ECHO_TOP2_OP
 
+
+#include "radar/RadarWindows.h"
+
 #include "PolarProductOp.h"
 
 using namespace drain::image;
@@ -81,6 +84,8 @@ struct Measurement {
  */
 template <class T>
 struct MethodWeights : public drain::UniTuple<T,5> {
+
+	typedef T value_t;
 
 	/// Highest to lowest certainty
 	T & interpolation;
@@ -159,6 +164,10 @@ protected:
 
 	/// Unless NaN, use the value like a measured dBZ
 	double undetectReflectivity = NAN;
+
+	/// Optional reference smoothin window. Width (metres) and height (degrees)
+	//drain::UniTuple<double,2> refWindow = {0.0,0.0};
+	RadarWindowGeom refWindow; // = {0.0,0.0};
 
 protected:
 

@@ -903,15 +903,17 @@ struct TypeName<DRAIN_TREE_NAME<T,EXCLUSIVE, P> > {
     			tree_t::isOrdered()?"Ordered":"Unordered",
     					tree_t::isMulti()?"Multi":"","Tree",
     							tree_t::isExclusive()?"(Exclusive)":"",
-    									'<', TypeName<typename tree_t::node_data_t>::get(), '>'); // recursion...
+    									'<', TypeName<typename tree_t::node_data_t>::str(), '>'); // recursion...
     											//'<', drain::Type::call<drain::simpleName>(typeid(typename tree_t::node_data_t)), '>');
     	return name;
     }
 
+    /*
     static
 	const char* get(){
     	return str().c_str();
     };
+    */
 
 };
 

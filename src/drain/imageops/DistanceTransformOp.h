@@ -65,7 +65,7 @@ public:
     virtual ~DistanceTransformOp(){};
 
     inline
-    void setRadius(dist_t width, dist_t height=NAN, dist_t width2=NAN, dist_t height2=NAN){
+    void setRadius(dist_t width, dist_t height=DistanceModel::nan_f, dist_t width2=DistanceModel::nan_f, dist_t height2=DistanceModel::nan_f){
     	distanceModel.setRadius(width, height, width2, height2);
     };
 
@@ -161,16 +161,21 @@ protected:
 	//DistanceTransformOp(const std::string &name, float width, float height,
 			DistanceModel::topol_t topology=DistanceModel::KNIGHT) : // PIX_ADJACENCY_
 		ImageOp(name, description) { // TODO: from model
+		// drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+		// mout.attention("model:", distanceModel);
 		parameters.append(distanceModel.getParameters());
 		distanceModel.setTopology(topology);
-		distanceModel.setRadius(width, height, width, height);
+		// mout.attention("width:", width, ", height:", height);
+		//distanceModel.setRadius(width, height, width, height);
+		distanceModel.setRadiusVerbatim(width, height, width, height); // NEW 2024: does not "expand" defaults.
+		// mout.attention("model:", distanceModel);
 	};
 
 	DistanceTransformOp(const DistanceTransformOp & op) : ImageOp(op) {
 		parameters.append(this->distanceModel.getParameters());
 		//setParameters(op.getParameters());
 		this->distanceModel.setParameters(op.distanceModel.getParameters());
-		this->distanceModel.update(); // Important: handles NAN's
+		this->distanceModel.update(); // Important: handles nan_f's. Is it desired?
 	};
 
 	// Extend default range (of src) when coord policy is WRAP
@@ -476,7 +481,7 @@ class DistanceTransformLinearOp : public DistanceTransformOp<DistanceModelLinear
 public:
 
 	inline
-	DistanceTransformLinearOp(float horz = 10.0, float vert = NAN, DistanceModel::topol_t topology = DistanceModel::KNIGHT): // PIX_ADJACENCY_
+	DistanceTransformLinearOp(float horz = 10.0, float vert = DistanceModel::nan_f, DistanceModel::topol_t topology = DistanceModel::KNIGHT): // PIX_ADJACENCY_
 	DistanceTransformOp<DistanceModelLinear>(__FUNCTION__, "Linearly decreasing intensities - applies decrements.", horz, vert, topology) {
 	};
 
@@ -511,7 +516,7 @@ public:
 	 *
 	 */
 	inline
-	DistanceTransformExponentialOp(dist_t horz = 10.0, dist_t vert = NAN, DistanceModel::topol_t topology = DistanceModel::KNIGHT): // PIX_ADJACENCY_
+	DistanceTransformExponentialOp(dist_t horz = 10.0, dist_t vert = DistanceModel::nan_f, DistanceModel::topol_t topology = DistanceModel::KNIGHT): // PIX_ADJACENCY_
 		DistanceTransformOp<DistanceModelExponential>(__FUNCTION__, "Exponentially decreasing intensities. Set half-decay radii.",	horz, vert, topology) {
 	};
 

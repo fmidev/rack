@@ -28,7 +28,9 @@
  g+ + -I. drain/examples/TreeHTML-example.cpp drain/util/{Log,Caster,Castable,JSONwriter,String,TreeXML,Type,RegExp}.cpp    -o TreeHTML-example
  */
 #include <iostream>
+
 #include "drain/Log.h"
+#include "drain/Type.h"
 #include "drain/util/TreeUtils.h"
 #include "drain/image/TreeXML-GDAL.h"
 
@@ -46,9 +48,9 @@
 
 int main(int argc, char **argv){
 
-	// std::cout << drain::TypeName<Tree>::get() << '/' << drain::TypeName<NodeHTML>::get() << " demo \n";
-	std::cout << drain::TypeName<drain::image::TreeGDAL>::get() << " demo \n";
-	std::cout << "Tag enum type: " << drain::TypeName<drain::image::GDAL>::get() << '\n';
+	// std::cout << drain::TypeName<T>::str() << '/' << drain::TypeName<T>::str() << " demo \n";
+	std::cout << drain::TypeName<drain::image::TreeGDAL>::str() << " demo \n";
+	std::cout << "Tag enum type: " << drain::TypeName<drain::image::NodeGDAL>::str() << '\n';
 
 
 	/*

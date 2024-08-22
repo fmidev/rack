@@ -69,6 +69,12 @@ public:
 		open(filename);
 	};
 
+	/// Constructor that directly opens a file, or stdout with "-".
+	inline
+	Output(const char *filename){
+		open(filename);
+	};
+
 	/// Constructor that directly opens a file.
 	inline
 	Output(const drain::FilePath & filePath){
@@ -95,9 +101,15 @@ public:
 		return static_cast<bool>(ofstr);
 	};
 
-	inline
-	std::ofstream & getStream(){
-		return ofstr;
+	inline // std::ofstream &
+	std::ostream & getStream(){
+		if (ofstr.is_open()){
+			return ofstr;
+		}
+		else {
+			return std::cout;
+		}
+		// return ofstr;
 	}
 
 
@@ -107,6 +119,13 @@ protected:
 	std::ofstream ofstr;
 
 };
+
+template <class T>
+inline
+Output & operator<<(Output & output, const T& value){
+	output.getStream() << value;
+	return output;
+}
 
 } // drain::
 

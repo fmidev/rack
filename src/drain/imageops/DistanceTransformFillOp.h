@@ -122,7 +122,7 @@ public:
 
 protected:
 
-	DistanceTransformFillOp(const std::string &name, const std::string &description, dist_t horz = 10.0, dist_t vert = NAN,
+	DistanceTransformFillOp(const std::string &name, const std::string &description, dist_t horz = 14.0, dist_t vert = DistanceModel::nan_f,
 			DistanceModel::topol_t topology=DistanceModel::KNIGHT) : // PIX_ADJACENCY_
 		DistanceTransformOp<T>(name, description, horz, vert, topology), alphaThreshold(0.0, 0.0) {
 		this->parameters.link("alphaThreshold", alphaThreshold.tuple(), "0..1").fillArray = true;
@@ -151,23 +151,23 @@ void DistanceTransformFillOp<T>::traverseChannels(const ImageTray<const Channel>
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.debug("start: " , *this );
+	mout.debug("start: ", *this );
 
 	if (!src.hasAlpha()){
-		mout.warn("src: " , src );
+		mout.warn("src: ", src );
 		mout.error("required alpha channel missing in src" );
 		return;
 	}
 	else
-		mout.debug2("src: " , src );
+		mout.debug2("src: ", src );
 
 	if (!dst.hasAlpha()){
-		mout.warn("dst: " , dst );
+		mout.warn("dst: ", dst );
 		mout.error("required alpha channel missing in dst" );
 		return;
 	}
 	else
-		mout.debug2("dst: " , dst );
+		mout.debug2("dst: ", dst );
 
 
 	// mout.debug3("init params: " );
@@ -224,21 +224,21 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.debug("distModel: " , this->distanceModel );
+	mout.debug("distModel: ", this->distanceModel );
 
 	DistanceNeighbourhood chain;
 	this->distanceModel.createChain(chain, true);
 
-	mout.debug2("neighbourHood " , drain::sprinter(chain) );
+	mout.debug2("neighbourHood ", drain::sprinter(chain) );
 
 	const Channel & srcAlpha = srcTray.getAlpha();
 	Channel & dstAlpha = dstTray.getAlpha();
 
 	CoordinateHandler2D coordinateHandler(srcTray.get(0));
-	mout.debug("coordHandler " , coordinateHandler );
+	mout.debug("coordHandler ", coordinateHandler );
 
-	mout.debug3("src alpha:" , srcAlpha );
-	mout.debug3("dst alpha:" , dstAlpha );
+	mout.debug3("src alpha:", srcAlpha );
+	mout.debug3("dst alpha:", dstAlpha );
 
 	/// Current cursor location
 	Point2D<int> p;
@@ -258,7 +258,7 @@ void DistanceTransformFillOp<T>::traverseDownRight(const ImageTray<const Channel
 	size_t address = 0;
 	size_t addressWin = 0;
 
-	mout.debug("main loop, K=" , K );
+	mout.debug("main loop, K=", K );
 	for (p.y=0; p.y<=yRange.max; ++p.y){
 		for (p.x=0; p.x<=xRange.max; ++p.x){
 
@@ -323,7 +323,7 @@ void DistanceTransformFillOp<T>::traverseUpLeft(ImageTray<Channel> & srcTray, Im
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	mout.debug("start" );
 
-	mout.debug2("this->distanceModel" , this->distanceModel );
+	mout.debug2("this->distanceModel", this->distanceModel );
 
 	DistanceNeighbourhood chain;
 	this->distanceModel.createChain(chain, false);
@@ -412,8 +412,8 @@ make spots-rgba.png spots-rgba-16b.png
 
 Examples on three distinct pixels (red, green, and blue):
 \code
-  drainage spots-rgba.png     --iDistanceTransformFill 50 -o distFill-color.png
-  drainage spots-rgba-16b.png --iDistanceTransformFill 50 -o distFill-16b-color.png
+  drainage spots-rgba.png     --iDistanceTransformFill 50 -o distFill-rgba.png
+  drainage spots-rgba-16b.png --iDistanceTransformFill 50 -o distFill-16b-rgba.png
 \endcode
 
 
@@ -421,7 +421,7 @@ Examples on three distinct pixels (red, green, and blue):
 The radii do not have to be symmetric:
 \code
   # Asymmetric radii:
-  drainage spots-rgba.png     --iDistanceTransformFill 20:40,30:50 -o distFillAsym-color.png
+  drainage spots-rgba.png     --iDistanceTransformFill 20:40,30:50 -o distFillAsym-rgba.png
 \endcode
 
 
@@ -432,17 +432,12 @@ drainage graphic.png -a graphic-mask.png -o graphic-rgba.png
 make graphic-rgba-16b.png
 \~
 \code
-  drainage graphic-rgba.png          --iDistanceTransformFill 20 -o distFill2.png
+  drainage graphic-rgba.png          --iDistanceTransformFill 20 -o distFill2-rgba.png
   # 16-bit image to 8-bit output
-  drainage graphic-rgba-16b.png -T C --iDistanceTransformFill 20 -o distFill2-8b.png
-  drainage graphic-rgba-16b.png -T S --iDistanceTransformFill 20 -o distFill2-16b.png
+  drainage graphic-rgba-16b.png -T C --iDistanceTransformFill 20 -o distFill2-8b-rgba.png
+  drainage graphic-rgba-16b.png -T S --iDistanceTransformFill 20 -o distFill2-16b-rgba.png
 \endcode
 
-\~exec
-# ma ke graphic-tr-ia.png distFill2-ia.png distFill2-8b-ia.png distFill2-16b-ia.png
-# con vert +append graphic-tr-ia.png distFill2-ia.png distFill-compare.png
-#
-\~
 
 \see DistanceTransformFillExponentialOp
 \see BlenderOp
@@ -455,11 +450,9 @@ class DistanceTransformFillLinearOp : public DistanceTransformFillOp<DistanceMod
 public:
 
 	inline
-	DistanceTransformFillLinearOp(dist_t horz = 10.0, dist_t vert = NAN,
+	DistanceTransformFillLinearOp(dist_t horz = 12.3, dist_t vert = DistanceModel::nan_f,
 			DistanceModel::topol_t topology=DistanceModel::KNIGHT) :
-			//DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
-
-			DistanceTransformFillOp<DistanceModelLinear> (__FUNCTION__, "Spreads intensities linearly up to distance defined by alpha intensities.",
+			DistanceTransformFillOp<DistanceModelLinear> (__FUNCTION__, "Spreads intensities linearly up to distance defined by alpha channel.",
 			horz, vert, topology) {
 	};
 
@@ -478,7 +471,7 @@ Examples:
 \code
   # Basic example
   drainage spots-rgba.png          --iDistanceTransformFillExp 50 -o distFill-exp-rgba.png
-  drainage spots-rgba-16b.png -T S --iDistanceTransformFillExp 50 -o distFill-exp-rgba-16b.png
+  drainage spots-rgba-16b.png -T S --iDistanceTransformFillExp 50 -o distFill-exp-16b-rgba.png
 \endcode
 
 Examples on a graphical image:
@@ -487,11 +480,11 @@ drainage graphic.png -V 0 --iNegate -o graphic-mask.png
 drainage graphic.png -a graphic-mask.png -o graphic-tr.png -T S --iCopy f -o graphic-tr-16b.png
 \~
 \code
-  drainage graphic-tr.png          --iDistanceTransformFillExp 20 -o distFill2Exp.png
+  drainage graphic-tr.png          --iDistanceTransformFillExp 20 -o distFill2Exp-rgba.png
   # 16-bit image
-  drainage graphic-tr-16b.png -T C --iDistanceTransformFillExp 20 -o distFill2Exp-8b.png
+  drainage graphic-tr-16b.png -T C --iDistanceTransformFillExp 20 -o distFill2Exp-8b-rgba.png
   # 16-bit image
-  drainage graphic-tr-16b.png -T S --iDistanceTransformFillExp 20 -o distFill2Exp-16b.png
+  drainage graphic-tr-16b.png -T S --iDistanceTransformFillExp 20 -o distFill2Exp-16b-rgba.png
 \endcode
 
 \~exec
@@ -511,7 +504,7 @@ class DistanceTransformFillExponentialOp : public DistanceTransformFillOp<Distan
 public:
 
 	inline
-	DistanceTransformFillExponentialOp(dist_t horz = 10.0, dist_t vert = NAN,
+	DistanceTransformFillExponentialOp(dist_t horz = 12.0, dist_t vert = DistanceModel::nan_f,
 			//DistanceModel::topol_t topology=DistanceModel::PIX_ADJACENCY_KNIGHT) :
 			DistanceModel::topol_t topology=DistanceModel::KNIGHT) :
 			DistanceTransformFillOp<DistanceModelExponential> (__FUNCTION__, "Spreads intensities exponentially up to distance defined by alpha intensities.",

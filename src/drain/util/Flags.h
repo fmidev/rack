@@ -225,7 +225,7 @@ typename FlagResolver::ivalue_t FlagResolver::getValue(const drain::Dictionary<k
 
 		if (dit != dict.end()){ // String key match,
 			// Numeric value for an alphabetic key was found
-			v = (v | dit->second);
+			v = (v | static_cast<FlagResolver::ivalue_t>(dit->second) );
 		}
 		else {
 			// Numeric value
@@ -236,7 +236,7 @@ typename FlagResolver::ivalue_t FlagResolver::getValue(const drain::Dictionary<k
 				// String "0" handled already above
 				// Consider: could advice keys only: sprinter(dict.getKeys()
 				// Or key-value pairs: sprinter(dict)
-				static const SprinterLayout cmdArgLayout = {",", "?", "=", ""};
+				// static const SprinterLayout cmdArgLayout = {",", "?", "=", ""};
 				// mout.error("key '", key, "' not found in: ", sprinter(dict, Sprinter::cmdLineLayout));
 				// mout.error("key '", key, "' not föund in: ", sprinter(dict.getContainer(), cmdArgLayout) );
 				mout.error("key '", key, "' not found in: ", dict);
@@ -365,7 +365,7 @@ public:
 	typedef typename dict_t::key_t key_t; // ~string
 
 	// Practical "storage" value
-	typedef typename dict_t::value_t ivalue_t;
+	typedef typename dict_t::value_t dict_value_t;
 
 	// Rember to add an initialized unit: template<> SingleFlagger<...>::dict = {{...,...}, ...}
 	// static const dict_t dict;
@@ -374,7 +374,7 @@ public:
 	 *
 	 */
 	inline
-	FlaggerBase(): value(ownValue), separator(','), ownValue((ivalue_t)0){
+	FlaggerBase(): value(ownValue), separator(','), ownValue((dict_value_t)0){
 	}
 
 	/// Own value will be unused (and invisible).
@@ -382,12 +382,12 @@ public:
 	 *   Reconsider design. Should the value ever be referenced?
 	 */
 	inline
-	FlaggerBase(ivalue_t & v): value(v), separator(','){
+	FlaggerBase(dict_value_t & v): value(v), separator(','){
 	}
 
 	/*  Risky? (Ambiguous)
 	inline
-	FlaggerBase(const ivalue_t & v): value(ownValue), ownValue(v) {
+	FlaggerBase(const dict_value_t & v): value(ownValue), ownValue(v) {
 	}
 	*/
 
@@ -399,7 +399,7 @@ public:
 	const dict_t & getDict() const = 0;
 
 	void reset(){
-		this->value = ivalue_t(0);
+		this->value = dict_value_t(0);
 	};
 
 	virtual
@@ -410,17 +410,18 @@ public:
 			return;
 
 		if (this->getDict().hasKey(key)){
-			this->value = (ivalue_t)this->getDict().getValue(key); // why cast? dvalue_t -> ivalue_t
+			this->value = (dict_value_t)this->getDict().getValue(key); // why cast? dvalue_t -> dict_value_t
 		}
 		else {
-			Logger mout(__FILE__, __FUNCTION__);
-			mout.error(TypeName<E>::str(), ": no such key: '"+ key, "', keys=", sprinter(this->getDict().getKeys()));
-			// throw std::runtime_error(std::string("Dictionary[") + typeid(ivalue_t).name()+ "]: no such key: "+ key);
+			this->value = FlagResolver::getValue(this->getDict(), key);
+			//Logger mout(__FILE__, __FUNCTION__);
+			// mout.error(TypeName<E>::str(), ": no such key: '"+ key, "', keys=", sprinter(this->getDict().getKeys()));
+			// throw std::runtime_error(std::string("Dictionary[") + typeid(dict_value_t).name()+ "]: no such key: "+ key);
 		}
 	}
 
 	virtual inline
-	void set(const ivalue_t & value){
+	void set(const dict_value_t & value){
 		this->value = value;
 	};
 
@@ -435,7 +436,7 @@ public:
 
 	/// Checks if a given bit, or any of given bits, is set.
 	inline
-	bool isSet(ivalue_t x) const {
+	bool isSet(dict_value_t x) const {
 		return (value & x) != 0;
 	};
 
@@ -445,7 +446,7 @@ public:
 	};
 
 	inline
-	const ivalue_t & getValue() const {
+	const dict_value_t & getValue() const {
 		return value;
 	}
 
@@ -460,12 +461,12 @@ public:
 
 	///
 	inline
-	operator const ivalue_t & () const {
+	operator const dict_value_t & () const {
 		return value;
 	}
 
 	inline
-	operator ivalue_t & () {
+	operator dict_value_t & () {
 		return value;
 	}
 
@@ -479,7 +480,7 @@ public:
 	}
 
 	// Own or external value.
-	ivalue_t & value;
+	dict_value_t & value;
 
 	char separator;
 
@@ -488,7 +489,7 @@ public:
 private:
 
 	// Own value, discarded if external value referenced.
-	ivalue_t ownValue = 0;
+	dict_value_t ownValue = 0;
 
 
 };
@@ -518,7 +519,8 @@ class SingleFlagger : public FlaggerBase<E> {
 
 public:
 
-	typedef typename FlaggerBase<E>::ivalue_t ivalue_t;
+	//typedef typename FlaggerBase<E>::dict_value_t dict_value_t;
+	typedef E ivalue_t;
 
 	typedef FlagResolver::dict_t dict_t;
 	typedef typename dict_t::key_t key_t; // ~string
@@ -574,7 +576,7 @@ class MultiFlagger : public FlaggerBase<E> {
 public:
 
 	/// Fundamental type – in this case an enum.
-	typedef typename FlaggerBase<E>::ivalue_t ivalue_t;
+	typedef typename FlaggerBase<E>::dict_value_t dict_value_t;
 
 	typedef FlagResolver::dict_t dict_t;
 	/// Fundamental type of the bitvector - an integral type.
@@ -635,7 +637,7 @@ public:
 	virtual
 	void assign(const std::string & s) {
 		const dict_t & dict = this->getDict();
-		this->value = (ivalue_t)FlagResolver::getValue(dict, s, this->separator); // uses dict.separator if needed
+		this->value = (dict_value_t)FlagResolver::getValue(dict, s, this->separator); // uses dict.separator if needed
 	}
 
 
@@ -661,7 +663,7 @@ public:
 	/// Given only a numeric/enum value,
 	/*
 	virtual
-	std::string str(const ivalue_t & value){
+	std::string str(const dict_value_t & value){
 		return FlagResolver::getKeys(this->getDict(), value, this->separator);
 	}
 	*/
@@ -688,10 +690,10 @@ protected:
 	void add(){};
 
 	virtual inline
-	void addOne(const ivalue_t & value){
+	void addOne(const dict_value_t & value){
 		// why OR op in dvalue
-		// this->value = static_cast<ivalue_t>((dvalue_t)this->value | (dvalue_t)value);
-		this->value |= static_cast<ivalue_t>(value);
+		// this->value = static_cast<dict_value_t>((dvalue_t)this->value | (dvalue_t)value);
+		this->value |= static_cast<dict_value_t>(value);
 	}
 
 	inline
@@ -704,18 +706,18 @@ protected:
 		if (key.empty())
 			return;
 
-		//ivalue_t v = ::atoi(key);
+		//dict_value_t v = ::atoi(key);
 
 		const dict_t & dict = this->getDict();
 		if (dict.hasKey(key)){
-			//this->value |= (ivalue_t)dict.getValue(key); // why cast? dvalue_t -> value_t
-			addOne((ivalue_t)dict.getValue(key));
+			//this->value |= (dict_value_t)dict.getValue(key); // why cast? dvalue_t -> value_t
+			addOne((dict_value_t)dict.getValue(key));
 		}
 		else {
 			/// XXX
 			Logger mout(__FILE__, __FUNCTION__);
 			mout.error(TypeName<E>::get(), ": no such key: '"+ key, "', keys=", sprinter(this->getDict().getKeys()));
-			// throw std::runtime_error(std::string("Dictionary/") + typeid(ivalue_t).name()+ ": no such key: "+ key);
+			// throw std::runtime_error(std::string("Dictionary/") + typeid(dict_value_t).name()+ ": no such key: "+ key);
 		}
 		*/
 	}

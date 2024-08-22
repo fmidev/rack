@@ -162,13 +162,18 @@ void Histogram::dump(std::ostream & ostr){
 }
 
 
-std::ostream & operator<<(std::ostream & ostr, const Histogram &h){
+//std::ostream & operator<<(std::ostream & ostr, const Histogram &h){
+std::ostream & Histogram::toStream(std::ostream & ostr) const {
+	const Histogram &h = *this;
 	ostr << "histogram(" << h.getSize() << ") ";
 	ostr << "scaling: " << h.scaling << "\t";
 	ostr << '[' << h.getInMin() << ','  << h.getUpperBoundIn() << '[';
 	ostr << " => ";
 	ostr << '[' << h.getOutMin() << ','  << h.getUpperBoundOut() << '[' << '\n';
 	ostr << " sum=" << h.getSum<double>() << ',';
+	ostr << " weight=" << h.weight << ',';
+	ostr << " sampleCount=" << h.sampleCount << ',';
+	ostr << " sampleCountMedian=" << h.sampleCountMedian << ',';
 	if (h.getSum<double>()>0){
 		ostr << " n=" << h.getSampleCount() << ',';
 		ostr << " mean=" << h.getMean<double>() << ',';
