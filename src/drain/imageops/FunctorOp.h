@@ -169,8 +169,26 @@ protected:
 
 	void getDstConf(const ImageConf & src, ImageConf & dst) const {
 
+		// OLD
+		/*
 		if ((dst.getScale()==0.0) || !dst.typeIsSet())
+				dst.setEncoding(src.getEncoding());
+		*/
+
+		// New 2024, after bugs with:--physicalRange 0:1 for --iSegmentArea --iRemap --iThreshold
+		if (!dst.typeIsSet()){
 			dst.setEncoding(src.getEncoding());
+		}
+		else if (src.isScaled() && !dst.isScaled()){
+			//dst.setEncoding(src.getEncoding());
+			if (dst.getType() == src.getType()){
+				dst.setScaling(src.getScaling());
+			}
+			else {
+				dst.setPhysicalRange(src.getPhysicalRange());
+			}
+		}
+
 
 		// TODO: check if int, and unsigned, and minValue
 		if (SIGN && (dst.getMinPhys()>=0.0)){ // bug? why not leq

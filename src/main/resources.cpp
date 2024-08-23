@@ -479,7 +479,9 @@ bool RackContext::guessDatasetGroup(const Hi5Tree & src, ODIMPathElem & pathElem
 }
 
 
-void RackContext::updateStatus(){
+void RackContext::updateStatus() const {
+
+	Context::updateStatus(); // option: add true <- kludge
 
 	updateImageStatus(statusMap);
 	updateHdf5Status(statusMap);

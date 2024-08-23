@@ -46,6 +46,22 @@ namespace drain
 namespace image
 {
 
+/*
+ *  Problem: --iSegmentArea 64:255,FuzzyStep:100:1
+ *  actually is SegmentArea(64:255,FuzzyStep(100:100,1))
+ *
+ *  Consider:  FuzzyStep/100:100/1
+ *
+ *  Or prefix cmd:
+ *  --functor FuzzyStep,100:100,1
+ *  --functor FuzzyStep|100:100,1
+ *  --functor FuzzyStep[100:100,1]
+ *
+ *  or last-arg-comma-support?
+ *  a,b,1,2,3
+ *  A=a,B=c,C=C,D,E
+ */
+
 
 /// Computes sizes of connected pixel areas.
 /**

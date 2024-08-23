@@ -110,20 +110,8 @@ public:
 
 class EtopWindowCore : public drain::image::WeightedWindowCore {
 
-
 public:
 
-
-	/**
-	 *  \param odimSrc - metadata of the source data
-	 */
-	//RadarWindowCore(const PolarODIM & odimSrc) : odimSrc(odimSrc) {
-	//}
-
-	/// Will act as base class: Window<RadarWindowCore> : public RadarWindowCore {...}, init currently not supported.
-	/**
-	 *
-	 */
 	inline
 	EtopWindowCore(){
 	}
@@ -131,12 +119,6 @@ public:
 public:
 
 	int N = 0;
-	/*
-	double sumHd  = 0.0;
-	double sumHd2 = 0.0;
-	double sumK   = 0.0;
-	double sumHdK = 0.0;
-	*/
 	double sumZd  = 0.0;
 	double sumZd2 = 0.0;
 	double sumV   = 0.0;
@@ -946,6 +928,22 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 		mout.attention("Ended test");
 
 	}
+
+	// Spessu test 2
+	{
+		Data<dst_t> & dstSlopeSmooth = dstProduct.getData("SLOPE_SMOOTH");
+
+		RadarWindowAvg<RadarWindowConfig> window;
+
+		RadarWindowConfig conf2(3000, 5.0);
+
+		conf2.setPixelConf(window.conf, dstSlope.odim);
+		window.setSrcFrame(dstSlope.data);
+		window.setDstFrame(dstSlopeSmooth.data);
+		mout.attention(window);
+		window.run();
+	}
+
 
 // #ifndef NDEBUG
 	if (false){

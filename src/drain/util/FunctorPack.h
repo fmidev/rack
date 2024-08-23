@@ -110,8 +110,8 @@ public:
 /**
 	\code
 	drainage image-gray.png  --iRemap 255,32       -o remap-abs.png
-	drainage image-gray.png  --physicalRange 0:1 --iRemap 1,0.125  -o remap.png
-	drainage image.png --physicalRange 0:1 --iRemap 1,0.25  -o remap-image.png
+	drainage image-gray.png  --physicalRange 0:1 --iRemap 1,0.5  -o remap.png
+	drainage image.png --physicalRange 0:1 --iRemap 1,0.5  -o remap-image.png
 	\endcode
  */
 class RemappingFunctor : public UnaryFunctor {
@@ -128,7 +128,6 @@ public:
 	}
 
 
-	//virtual
 	inline
 	double operator()(double s) const {
 		// this->scale*s + this->bias;
@@ -140,11 +139,6 @@ public:
 
 	double fromValue;
 	double toValue;
-	//mutable int fromValueI;
-	//mutable int toValueI;
-
-
-
 
 };
 

@@ -221,6 +221,7 @@ public:
 	 */
 	Hi5Tree & getMyHi5(h5_role::ivalue_t filter=(CARTESIAN|POLAR|INPUT|CURRENT));
 
+
 	/// Derives the most relevant polar data (input or product) and returns it.
 	/**
 	 *  Returns in order of priority:
@@ -256,7 +257,7 @@ public:
 
 protected:
 
-	void updateHdf5Status(drain::VariableMap & statusMap); // Not static, because checks
+	void updateHdf5Status(drain::VariableMap & statusMap) const; // Not static, because checks
 
 	static Hi5Tree empty;
 

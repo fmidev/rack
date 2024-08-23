@@ -73,7 +73,7 @@ std::string ImageContext::outputQuantitySyntax("${what:quantity}/${cmdKey}(${cmd
 void ImageContext::getImageInfo(const drain::image::Image *ptr, Variable & entry) {
 	std::stringstream sstr;
 	if (ptr != nullptr){
-		ptr->toOStr(sstr);
+		ptr->toStream(sstr);
 	}
 	else {
 		sstr << "NULL";
@@ -121,7 +121,7 @@ const Hdf5Context::h5_role::ivalue_t Hdf5Context::SHARED  = h5_role::addEntry("S
 /* This is basically good (by design), but _used_ wrong... So often flags not used, esp. PRIVATE, SHARED, EMPTY.
  *
  */
-Hi5Tree & Hdf5Context::getMyHi5(h5_role::ivalue_t filter) {
+Hi5Tree & Hdf5Context::getMyHi5(h5_role::ivalue_t filter){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -133,12 +133,13 @@ Hi5Tree & Hdf5Context::getMyHi5(h5_role::ivalue_t filter) {
 		mout.debug("POLAR|CARTESIAN unset, accepting both",);
 	}
 	*/
-
+	//const Hi5Tree & cart = cartesianHi5;
 
 	// Return Cartesian product if it is non empty, or empty Cartesian is accepted.
 	if (filter & CARTESIAN){
 		if ((filter & EMPTY) || !cartesianHi5.empty()){
-			//mout.special("KARTTUNEN");
+			// mout.special("KARTTUNEN");
+			// Hi5Tree *ptr = & (const Hi5Tree &)cartesianHi5;
 			return cartesianHi5;
 		}
 		//what about currentHi5 -> input? (if Cart) Was it converted (swapped)...
@@ -232,11 +233,15 @@ Hi5Tree & Hdf5Context::getHi5Defunct(h5_role::ivalue_t filter) {
 
 }
 
-void Hdf5Context::updateHdf5Status(VariableMap & statusMap) {
+void Hdf5Context::updateHdf5Status(VariableMap & statusMap) const {
 
 	drain::Logger mout( __FILE__, __FUNCTION__);
 
-	const Hi5Tree & src = getMyHi5(CURRENT);
+	if (!currentHi5)
+		return;
+
+	// const Hi5Tree & src = getMyHi5(CURRENT);
+	const Hi5Tree & src = *this->currentHi5;
 
 	if (src.empty()){
 		mout.debug("My CURRENT h5 empty, skipping status update...");

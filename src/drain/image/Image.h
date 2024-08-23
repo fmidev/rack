@@ -336,7 +336,7 @@ public:
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const Image &image){
-	image.toOStr(ostr);
+	image.toStream(ostr);
 	//ostr << image.getWidth() << 'X' << image.getHeight() << '\n';
 	return ostr;
 }

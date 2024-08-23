@@ -28,19 +28,16 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef RADAR_POLAR_WINDOW_H
-#define RADAR_POLAR_WINDOW_H
+#ifndef RACK_POLAR_WINDOW
+#define RACK_POLAR_WINDOW
 
 
 #include <sstream>
 
-//#include "drain/util/BeanLike.h"
-#include "drain/image/GaussianWindow.h"
-
+#include <drain/image/GaussianWindow.h>
 
 #include "data/PolarODIM.h"
 
-// // using namespace std;
 
 namespace rack {
 
@@ -51,14 +48,6 @@ public:
 	GaussianStripeVertPolarWeighted(double radius=1.0, int height = 0) : drain::image::GaussianStripeWeighted<false>(height, radius), normRange(10,0) {
 		this->resetAtEdges = true;
 	};
-
-	/*
-	GaussianStripeVertPolarWeighted(double radius=1.0, int height = 0) : drain::image::GaussianStripeWeighted<false>(height, radius), normRange.min(10), rangeNormEnd(0) { // RANGE(0),
-		this->resetAtEdges = true;
-	};
-	*/
-
-	//mutable	int RANGE;
 
 
 	/*
@@ -86,24 +75,15 @@ public:
 
 	void update();
 
-	/// Range index, at which aspect ratio of along-beam and cross-beam distances is unity
-	/*
-	inline
-	void setRangeNorm(int i){
-		normRange.min = i;
-	}
-	*/
-
+	/// Set range (bin) index, at which aspect ratio of along-beam and cross-beam distances is unity
 	inline
 	void setRangeNorm(const PolarODIM & odim){
-		//normRange.min = i;
 		drain::Logger mout("SlidingRadarWindow", __FUNCTION__);
 		normRange.min = static_cast<double>(odim.area.height) / (2.0*M_PI);
 		//normRange.min = static_cast<double>(this->conf.odimSrc.rscale * this->conf.odimSrc.geometry.height) / (2.0*M_PI);
 		normRange.max = (normRange.min * this->conf.frame.height);
 		//mout.warn(rangeNorm , '-' , rangeNormEnd );
 	}
-
 
 
 	/// Range index, at which aspect ratio of along-beam and cross-beam distances is unity
@@ -114,17 +94,14 @@ public:
 
 protected:
 
+	/// Range of bin indices: min: aspect ratio of along-beam and cross-beam distances is unity
 	drain::Range<int> normRange;
-	/// Range index, at which aspect ratio of along-beam and cross-beam distances is unity
-	//int rangeNorm;
-	//int rangeNorm;
-	//int rangeNormEnd;
+
 };
 
 
 }  // rack::
 
 
-#endif /* RADAR_POLAR_WINDOW */
+#endif /* RACK_POLAR_WINDOW */
 
-// Rack

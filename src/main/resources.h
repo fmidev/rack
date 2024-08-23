@@ -200,15 +200,16 @@ public:
 
 	void convertGrayImage(const drain::image::Image & srcImage); // RackContext & ctx,
 
+	/*
 	virtual inline
 	drain::VariableMap & getStatusMap(bool update=true){
 		if (update){
-			Context::updateStatus();
+			Context::updateStatus(); // check if this should be moved under this->updateStatus() ? So this function could be removed.
 			updateStatus();
 		}
 		return statusMap;
 	};
-
+	*/
 
 	static
 	const VariableFormatterODIM<drain::Variable> variableFormatter;
@@ -219,8 +220,10 @@ public:
 //private:
 protected:
 
+	virtual
+	void updateStatus() const final;
 	// Keep this class-specific.
-	void updateStatus();
+	//void updateStatus();
 
 	// typedef drain::Cloner<Context,RackContext> ctx_cloner_t;
 

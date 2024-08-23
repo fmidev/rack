@@ -388,7 +388,7 @@ public:
 	const std::string & getName() const { return name; };
 
 	/// Prints images geometry, buffer size and type information.
-	void toOStr(std::ostream &ostr = std::cout) const;
+	void toStream(std::ostream &ostr = std::cout) const;
 
 	virtual
 	Channel & getChannel(size_t i) = 0;
@@ -513,7 +513,7 @@ private:
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const ImageFrame & src){
-	src.toOStr(ostr);
+	src.toStream(ostr);
 	return ostr;
 }
 
@@ -523,6 +523,8 @@ std::ostream & operator<<(std::ostream &ostr, const ImageFrame & src){
 
 template <>
 std::ostream & drain::Sprinter::toStream<drain::image::ImageFrame>(std::ostream & ostr, const drain::image::ImageFrame & src, const SprinterLayout & layout);
+
+DRAIN_TYPENAME(drain::image::ImageFrame);
 
 } // drain::
 

@@ -74,22 +74,24 @@ void CmdStatus::exec() const {
 
 	Context & ctx = getContext<Context>();
 
-	std::ostream & ostr = std::cout; // for now...
+	// std::ostream & ostr = std::cout; // for now...
 
 	const drain::VariableMap & statusMap = ctx.getStatusMap();
 
-	SprinterLayout layout;
+	static
+	const SprinterLayout layout(",", "\n", "{:}", "");
 
+	/*
+	layout.arrayChars.separator = ',';
 	layout.mapChars.separator = '\n';
 	layout.pairChars.setLayout("{:}");
 	//layout.arrayChars.separator = '\n';
-	layout.arrayChars.separator = ',';
 	layout.stringChars.separator = '\0';
 	//layout.stringChars.prefix = '"';
 	//layout.stringChars.suffix = '"';
-	Sprinter::mapToStream(ostr, statusMap, layout, statusMap.getKeyList());
-	// Sprinter::sequenceToStream(ostr, statusMap, layout);
-	ostr << '\n';
+	 */
+	Sprinter::mapToStream(std::cout, statusMap, layout, statusMap.getKeyList());
+	std::cout << '\n';
 	//ostr << drain::sprinter(statusMap, layout) << '\n';
 
 	/*

@@ -298,7 +298,7 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	DistanceNeighbourhood chain;
 	this->distanceModel.createChain(chain, true);
 
-	mout.warn("coordPolicy: ", src.getCoordinatePolicy());
+	mout.debug2("coordPolicy: ", src.getCoordinatePolicy());
 
 	CoordinateHandler2D coordinateHandler(src); // TODO: change param to ImageConf
 	mout.debug2("coordHandler:", coordinateHandler);
@@ -307,9 +307,11 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 	const ValueScaling src2dst(dst.getConf().getTypeMax<double>()/src.getConf().getTypeMax<double>(), 0);
 	//const ValueScaling src2dst(src.getScaling(), dst.getScaling());
 
+	/*
 	for (double d: {0.0, 0.5, 1.0, 255.0, 65535.0}){
 		mout.special(d, " =>\t", src2dst.fwd(d), " inv:", src2dst.inv(d));
 	}
+	*/
 
 	// proximity (inverted distance)
 	dist_t d;
@@ -324,7 +326,7 @@ void DistanceTransformOp<T>::traverseDownRight(const Channel &src, Channel &dst)
 
 	Range<int> xRange = getHorzRange(coordinateHandler);
 	Range<int> yRange = getVertRange(coordinateHandler);
-	mout.special(xRange, " - ", yRange);
+	mout.debug2(xRange, " - ", yRange);
 
 	// Experimental (element horz/vert topology not yet implemented)
 	// Possibly wrong...  not interchangible due to to scanning element geometry?

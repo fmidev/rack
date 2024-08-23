@@ -80,11 +80,13 @@ public:
 	// Width and height of the window, in pixels.
 	Frame2D<int> frame;
 
+	// Return width of the window, in pixels.
     inline
     int getWidth() const {
     	return frame.width;
     };
 
+	// Return height of the window, in pixels.
     inline
     int getHeight() const {
     	return frame.height;
@@ -144,10 +146,10 @@ protected:
 std::ostream & operator<<(std::ostream & ostr, const WindowConfig & conf);
 
 
+DRAIN_TYPENAME(WindowConfig);
 
 
-
-/// Provides splitting frames
+/// Container for source and target images, and their setters.
 /**
  *
  */
@@ -184,8 +186,9 @@ public:
 };
 
 
-/// Container for source data (input) and destination data (output). May also contain metadata of them.
+/// Container for source and target images, and their setters.
 /**
+ *   Contains source data (input) and destination data (output). May also contain meta data of them.
  *
  */
 class WindowCore : public WindowCoreBase { // rename BasicWindow
@@ -194,7 +197,6 @@ public:
 
 	ImageView src;
 	ImageView dst;
-
 
 	///
 	virtual inline
@@ -227,7 +229,7 @@ public:
 	virtual inline
 	void setDstFrames(ImageTray<Channel> & dstTray){
 
-		Logger mout(getImgLog(), "GaussianStripe", __FUNCTION__);
+		Logger mout(getImgLog(), "WindowCore", __FUNCTION__);
 
 		if (dstTray.empty()){
 			mout.error("dst: no channels" );
@@ -261,6 +263,8 @@ public:
 
 };
 
+DRAIN_TYPENAME(WindowCore);
+
 class WeightedWindowCore : public WindowCore {
 
 public:
@@ -292,6 +296,8 @@ public:
 
 };
 
+DRAIN_TYPENAME(WeightedWindowCore);
+
 
 class MultiChannelWindowCore : public drain::image::WeightedWindowCore {
 
@@ -306,7 +312,7 @@ public:
 	ImageTray<Channel> dstTray;
 
 	virtual inline
-	void setSrcFrame(const Channel & srcChannel){
+	void setSrcFrame(const Channel & srcChannel){// ALERT! Unintentional Shadow (arg: ImageFrame -> Channel)
 		ImageTray<const Channel> srcChannels;
 		srcChannels.set(srcChannel);
 		setSrcFrames(srcChannels);
@@ -389,7 +395,7 @@ public:
 
 
 
-/// Base class for windows applied by WIndowOp's
+/// Base class for windows applied by WindowOp's
 /**
  *  \tparam C - configuration (width, height and str metadata)
  *  \tparam R - source and target images, and their setters.
@@ -487,40 +493,24 @@ public:
 
 
 
-	virtual
-	void toStream(std::ostream & ostr) const;
-
     /// Main loop: traverses the source image and writes result to dst image.
 	/**
 	 *   The basic implementation is a two-level loop (for j, for i ...).
+	 *
+	 *   Contract: any implementation should call initialize().
 	 *
 	 */
     virtual
     void run();
 
+    /** Write debugging info to stream
+     *
+     */
+	virtual
+	void toStream(std::ostream & ostr) const;
 
 
 protected:
-
-	/// To avoid accumulated numerical errors esp. with floats, reset the statistics at row/cols ends. See reset() .
-	bool resetAtEdges = false;  // NEW
-
-	/// If set, scaling is applied, potentially slowering the computation.
-    bool SCALE = true; // NEW
-
-    /// At each location, this is called to calculate and store something in members.
-    virtual
-    void update(){};
-
-    /// Write the results of update() to dstImage(s).
-    virtual
-    void write() = 0; // {};
-
-    /// Current location of this window.
-	Point2D<int> location;
-
-	/// Number of pixels in the window (frame width*height?).
-	int samplingArea = 0;
 
 	/// Tells if the window should be moved (traversed of slided) row-by-row (horizontally) or column-by-column (vertically).
 	/**
@@ -529,15 +519,17 @@ protected:
 	virtual inline
 	bool isHorizontal() const { return (this->conf.frame.width > this->conf.frame.height); };
 
+    /// Current location of this window.
+	Point2D<int> location;
 
-	/// Function determining whether array should be cleared at the edge(s). Needed for 1) cleaning numerical residues and 2) updating window parameters
-	/**
-	 *  \return - true if scanning should be ended (if window dimensions have been changed?)
-	 */
-	virtual inline
-	bool reset(){
-		return true;
-	};
+	/// Number of pixels in the window (frame width*height?).
+	int samplingArea = 0;
+
+	/// To avoid accumulated numerical errors esp. with floats, reset the statistics at row/cols ends. See reset() .
+	bool resetAtEdges = false;  // NEW
+
+	/// If set, scaling is applied, potentially slowering the computation.
+    bool SCALE = true; // NEW
 
 	/**
 	 * This function \i must
@@ -554,6 +546,32 @@ protected:
     	this->location.setLocation(0,0);
     };
 
+    /// At each location, this is called to calculate and store something in members.
+    virtual
+    void update(){};
+
+    /// At each location, the result of computation to dst image(s).
+    /**
+     *   Contract: this function is called after update().
+     *
+     */
+    virtual
+    void write() = 0; // {};
+
+
+
+	/// Function determining whether array should be cleared at the edge(s). Needed for 1) cleaning numerical residues and 2) updating window parameters
+	/**
+	 *  Consider: rename to edgeCheck ?
+	 *
+	 *  \return - false, if scanning should be ended (if window dimensions have been changed?)
+	 */
+	virtual inline
+	bool reset(){
+		return true;
+	};
+
+
     /// Studies source and destination images and decides whether scaling (SCALE=true) should be set
     /*
     virtual
@@ -562,6 +580,10 @@ protected:
     };
     */
 
+    // Window limits, not image limits
+    mutable Range<int> iRange;
+    mutable Range<int> jRange;
+
     /// Sets internal limits corresponding to image geometries. Typically using coordHandler.
     /**
      *   Studies source image(s) and sets srcWidth, srcHeight and coordHandler.
@@ -569,10 +591,6 @@ protected:
      */
     virtual
     void setImageLimits() const = 0;
-
-    // Window limits, not image limits
-    mutable Range<int> iRange;
-    mutable Range<int> jRange;
 
 
     /// Sets the actual traversal range inside the window. Sometimes applied dynamically by reset().
@@ -674,7 +692,7 @@ template <class P, class R>
 struct TypeName<image::Window<P,R> > {
 
     static const std::string & str(){
-		static const std::string name = std::string("Window<>"); // todo: develop
+		static const std::string name = std::string("Window<") + drain::TypeName<P>::str() + ',' + drain::TypeName<R>::str() + '>'; // todo: develop
         return name;
     }
 

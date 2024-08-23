@@ -103,6 +103,8 @@ public:
 	 */
 	virtual inline
 	drain::VariableMap & getStatusMap(bool update=true){
+		//Logger mout(this->log, __FILE__, __FUNCTION__);
+		//mout.attention("Base class getStatusMap");
 		if (update){
 			updateStatus();
 		}
@@ -112,7 +114,8 @@ public:
 
 	inline
 	const Variable & getStatus(const std::string & key, bool update) const {
-		updateStatus(update);
+		//updateStatus(update);
+		updateStatus();
 		return statusMap[key];
 		//return static_cast<T>(statusMap[key]);
 	};
@@ -152,11 +155,13 @@ protected:
 	mutable
 	drain::VariableMap statusMap;
 
-	void updateStatus(bool update=true) const {
-		if (update){
-			statusMap["statusFlags"] = statusFlags.value;
-			statusMap["statusKeys"] = statusFlags.getKeys();
-		}
+	virtual
+	void updateStatus() const {
+		//void updateStatus(bool update=true) const {
+		// if (update){
+		statusMap["statusFlags"] = statusFlags.value;
+		statusMap["statusKeys"] = statusFlags.getKeys();
+		//}
 	};
 
 private:

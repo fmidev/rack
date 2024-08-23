@@ -94,6 +94,8 @@ protected:
 	inline
 	const UnaryFunctor & getFunctor(double scale = 0.0, double bias = 0.0) const {
 
+		// Consider: this could be generalized? Or unicloner needs scope?
+
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 		if (functorStr.empty()){
@@ -107,9 +109,10 @@ protected:
 			drain::StringTools::split2(this->functorStr, functorName, functorParams, ":");
 			if (unicloner.bank.has(functorName)){
 				UnaryFunctor & f =  unicloner.getCloned(functorName); // drain::getFunctor(functorStr, ':');
-				if (scale > 0.0)
+				if (scale > 0.0){
 					f.setScale(scale, bias);
-				f.setParameters(functorParams);
+				}
+				f.setParameters(functorParams,'=',':');
 				mout.debug3(" ftor: " , f );
 				// mout.warn("cftor: " , (const UnaryFunctor &)f );
 				return f;

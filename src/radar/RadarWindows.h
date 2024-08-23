@@ -69,6 +69,11 @@ class RadarWindowCore : public drain::image::WeightedWindowCore {
 
 public:
 
+	/// Will act as base class: Window<RadarWindowCore> : public RadarWindowCore {...}, init currently not supported.
+	/**
+	 */
+	RadarWindowCore() : NI(0.0) {
+	}
 
 	/**
 	 *  \param odimSrc - metadata of the source data
@@ -76,12 +81,6 @@ public:
 	//RadarWindowCore(const PolarODIM & odimSrc) : odimSrc(odimSrc) {
 	//}
 
-	/// Will act as base class: Window<RadarWindowCore> : public RadarWindowCore {...}, init currently not supported.
-	/**
-	 *
-	 */
-	RadarWindowCore() : NI(0.0) {
-	}
 
 	//const PolarODIM & odimSrc;
 	PolarODIM odimSrc;
@@ -117,14 +116,6 @@ public:
 class RadarWindowConfig : public RadarWindowGeom, public drain::image::WindowConfig {
 
 public:
-
-	/*
-	// Beam-directional window width in metres
-	int widthM = 1500;
-
-	// Azimuthal window height in degrees
-	double heightD = 3.0;
-	*/
 
 	/// Minimum percentage of detected values in a window (not undetect and nodata)
 	double contributionThreshold = 0.5;  //
@@ -179,11 +170,11 @@ public:
 		this->heightD = heightD;
 	}
 
-
+	///
 	void setPixelConf(RadarWindowConfig & conf, const PolarODIM & inputODIM) const ;
 
-
 	void updatePixelSize(const PolarODIM & inputODIM);
+
 };
 
 
@@ -280,7 +271,6 @@ protected:
 		/// Distance [bins] at which a single azimuthal step is equal to conf.frame.height steps at rangeNorm.
 		rangeNormEnd = static_cast<int>(r * static_cast<double>(this->conf.frame.height));
 		if ((rangeNorm <= 0) || (rangeNormEnd >= max)){
-
 			mout.note(rangeNorm , '-' , rangeNormEnd );
 		}
 		//
@@ -292,8 +282,7 @@ protected:
 
 
 	///  Returns false, if traversal should be ended.
-	virtual
-	inline
+	virtual inline
 	bool reset(){
 
 		if (this->location.x <= rangeNorm){
@@ -447,8 +436,7 @@ public:
 	RadarWindowSoftMax(int width=0, int height=0, double coeff=1.0) : SlidingRadarWindow<C>(width,height), coeff(1.0), coeffInv(1.0/coeff), sum(0.0), count(0) {};
 
 
-	virtual
-	inline
+	virtual inline
 	~RadarWindowSoftMax(){};
 
 	void setCoeff(double c){
@@ -466,22 +454,19 @@ protected:
 	double sum;
 	int count;
 
-	virtual
-	inline
+	virtual inline
 	void clear(){
 		sum = 0.0;
 		count = 0;
 	};
 
-	virtual
-	inline
+	virtual	inline
 	void removeTrailingValue(double x){
 		sum -= ::exp(coeff * x);
 		--count;
 	};
 
-	virtual
-	inline
+	virtual inline
 	void addLeadingValue(double x){
 		sum += ::exp(coeff * x);
 		++count;
@@ -489,8 +474,7 @@ protected:
 		//	std::cerr << "handleLeadingPixel" << p << ':' << x << '\t' << count << ':' << sum << std::endl;
 	};
 
-	virtual
-	inline
+	virtual inline
 	void write(){
 		if (count > 0)
 			this->dst.put(this->location, this->fuzzifier(coeffInv*::log(sum/static_cast<double>(count))));
@@ -506,15 +490,14 @@ protected:
  *
  *  \see DopplerDevWindow for respective operator for Doppler data [VRAD].
  */
-template <class C>
-class RadarWindowStdDev : public SlidingRadarWindow<C> {
+template <class F>
+class RadarWindowStdDev : public SlidingRadarWindow<F> {
 public:
 
-	RadarWindowStdDev(int width=0, int height=0) : SlidingRadarWindow<C>(width,height), sum(0.0), sum2(0.0), count(0) {};
+	RadarWindowStdDev(int width=0, int height=0) : SlidingRadarWindow<F>(width,height), sum(0.0), sum2(0.0), count(0) {};
 
 
-	virtual
-	inline
+	virtual	inline
 	~RadarWindowStdDev(){};
 
 protected:
@@ -523,8 +506,7 @@ protected:
 	double sum2;
 	int count;
 
-	virtual
-	inline
+	virtual	inline
 	void clear(){
 		sum  = 0.0;
 		sum2 = 0.0;

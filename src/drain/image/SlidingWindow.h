@@ -28,12 +28,10 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef SLIDING_W_H_
-#define SLIDING_W_H_
+#ifndef DRAIN_SLIDING_WINDOW
+#define DRAIN_SLIDING_WINDOW
 
-//#include "CopyOp.h"
 #include "Window.h"
-//#include "SlidingWindowOp.h"
 
 namespace drain
 {
@@ -41,21 +39,29 @@ namespace drain
 namespace image
 {
 
+/// Window implementation that uses incremental update of state.
+/**
+ *  \tparam WindowConfig
+ *  \tparam WindowConfig
+ *
+ */
 template <class C = WindowConfig, class R = WindowCore>
 class SlidingWindow : public Window<C,R>
 {
+
 public:
 
-	SlidingWindow(const C & conf, bool horzMultiple=true, bool vertMultiple=true) : Window<C,R>(conf){
-		setSlidingMode(horzMultiple, vertMultiple);
-	}; // , resetAtEdges(false)
-
-
+	/**
+	 *  \param
+	 *
+	 */
 	SlidingWindow(int width=0, int height=0, bool horzMultiple=true, bool vertMultiple=true) : Window<C,R>(width,height){
 		setSlidingMode(horzMultiple, vertMultiple);
 	};
 
-public:
+	SlidingWindow(const C & conf, bool horzMultiple=true, bool vertMultiple=true) : Window<C,R>(conf){
+		setSlidingMode(horzMultiple, vertMultiple);
+	};
 
 	virtual ~SlidingWindow(){};
 
@@ -75,7 +81,7 @@ public:
 		else if (vertMultiple)
 			fill = & SlidingWindow<C,R>::fillHorz; // Vert;
 		else {
-			drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
+			drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 			mout << "illegal sliding mode single-horz, single-vert" << mout.endl;
 			fill = & SlidingWindow<C,R>::fillBoth;
 		}
@@ -88,8 +94,19 @@ public:
 	 */
 	void run(){
 
-		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
+		drain::Logger mout(getImgLog(),  __FILE__, __FUNCTION__);
 
+		// CONSIDER: why runHorz and runVert, separately? If must be, this function could go:
+		/**
+		if (this->isHorizontal()){
+			runHorz();
+		}
+		else {
+			runVert();
+		}
+		*/
+
+		mout.debug3("SCALE=" , (int)this->SCALE );
 		mout.debug3("calling initialize" );
 		initialize();
 
@@ -103,7 +120,6 @@ public:
 		*/
 
 		(this->*fill)();
-		mout.debug3("SCALE=" , (int)this->SCALE );
 		write();
 
 		if (this->isHorizontal()){
@@ -112,7 +128,7 @@ public:
 			mout.debug2("end slideHorz" );
 		}
 		else {
-			mout.debug2("slideVert" );
+			mout.debug2("start slideVert" );
 			slideVert();
 		}
 	}
@@ -123,19 +139,18 @@ public:
 	 */
 	void runHorz(){
 
-		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.debug3("start" );
-
+		mout.debug3("SCALE=" , (int)this->SCALE );
 		mout.debug3("initialize" );
 		initialize();
 
 		mout.debug3((*this) );
 
 		fill();
-		mout.debug3("SCALE=" , (int)this->SCALE );
 		write();
 
-		mout .debug3() << "slideHorz" << mout.endl;
+		mout.debug3("slideHorz");
 		slideHorz();
 	}
 
@@ -145,19 +160,18 @@ public:
 	 */
 	void runVert(){
 
-		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.debug3("start" );
-
+		mout.debug3("SCALE=" , (int)this->SCALE );
 		mout.debug3("initialize" );
 		initialize();
 
 		mout.debug3((*this) );
 
 		fill();
-		mout.debug3("SCALE=" , (int)this->SCALE );
 		write();
 
-		mout .debug3() << "slideVert" << mout.endl;
+		mout.debug3("slideVert");
 		slideVert();
 	}
 
@@ -165,7 +179,7 @@ public:
 
 	virtual
 	void debug(){
-		drain::Logger mout(getImgLog(), "SlidingWindow", __FUNCTION__);
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 		mout.warn("Using apply() recommended for debugging only." );
 		Window<C,R>::run();
 	}
@@ -194,8 +208,7 @@ protected:
 	void initialize() = 0;
 
 	///  Returns false, if traversal should be ended.
-	virtual
-	inline
+	virtual inline
 	bool reset(){
 		(this->*fill)();
 		return true;
@@ -266,12 +279,6 @@ protected:
 
 	}
 
-
-private:
-
-	std::string modeStr;
-	//bool horzMultiple;
-	//bool vertMultiple;
 
 
 protected:
@@ -530,10 +537,15 @@ protected:
 	void removePixel(Point2D<int> &p) = 0; // consider addPixel(Point2D<int> &p, int index/double weight)
 
 
-	//private:
-protected:
+	// private:
+	// protected:
 
 	mutable Point2D<int> locationTmp;
+
+private:
+
+	std::string modeStr;
+
 
 };
 

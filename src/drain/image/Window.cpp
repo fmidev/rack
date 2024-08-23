@@ -34,15 +34,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+
 namespace image
 {
 
+DRAIN_TYPENAME_DEF(WindowConfig);
+DRAIN_TYPENAME_DEF(WindowCoreBase);
+DRAIN_TYPENAME_DEF(WindowCore);
+DRAIN_TYPENAME_DEF(WeightedWindowCore);
+
 std::ostream & operator<<(std::ostream & ostr, const WindowConfig & conf){
-	ostr << "WindowConfig:: " << conf.frame << ',' << conf.getFunctorName() << ':' << conf.getFunctorParams();
+	ostr << drain::TypeName<WindowConfig>::str() << ":: " << conf.frame << ',' << conf.getFunctorName() << ':' << conf.getFunctorParams();
 	//ostr << "WindowConfig: " << conf.getFunctorName() << ':' << conf.getFunctorParams();
 	//ostr << "WindowConfig: " << "conf.getFunctorName()";
 	return ostr;
 }
+
 
 /*
 std::ostream & operator<<(std::ostream & ostr, const WindowConfig & conf){

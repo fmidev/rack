@@ -53,7 +53,7 @@ namespace image
   To expand an image using nearest-pixel interpolation:
   \code
     drainage image.png --iResize 1000,800    -o resizeExpand.png
-    drainage image.png --iResize 1000,800,n  -o resizeExpand.png
+    drainage image.png --iResize 1000,800,n  -o resizeExpandNearest.png
   \endcode
 
   To expand an image using bilinear interpolation:

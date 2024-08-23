@@ -226,7 +226,7 @@ void ImageFrame::copyData(const ImageFrame & src){
 
 
 /// Prints images geometry, buffer size and type information.
-void ImageFrame::toOStr(std::ostream & ostr) const {
+void ImageFrame::toStream(std::ostream & ostr) const {
 
 	if (isView())
 		ostr << "View ";
@@ -237,36 +237,7 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 
 	ostr << getConf();
 
-	/*
-	// Scaling is worth displaying only if it "exists" ...
-	//const drain::ValueScaling & s = getScaling();
-	const Encoding & s = getConf();
-	//if (s.isScaled() || s.isPhysical()){
-		ostr << "*(" << s << ")";
-		// ostr << "*(" << s << ")";
-	//}
-	ostr << (s.hasOwnScaling() ? '!' : '&') << "\t";
-	*/
-
-
-	/*
-	ostr << ' ' << getgeometry << ' ' << Type::getTypeChar(getType()) << '@' << (getEncoding().getElementSize()*8) << 'b';
-	//if (typeIsIntegerType() || (scaling.isScaled()))
-	const drain::ValueScaling & s = getScaling();
-	if (s.isScaled() || s.isPhysical()){
-		ostr << "*(";
-		getScaling().toStream(ostr);
-		ostr << ")";
-	}
-
-	//if (scaling.isPhysical())
-	//	ostr  << '[' << scaling.getMinPhys() << ',' << scaling.getMaxPhys() << ']';
-	//ostr << ' ' << '[' << scaling.getMin<double>() <<  ',' << scaling.getMax<double>() << ']' << ' ' << scaling.getScale() << ' ';
-	ostr << ' ' << 'c' << getCoordinatePolicy();
-	*/
-
-	ostr << ' ' << (size_t) segmentBegin << ' ' << (size_t) segmentEnd << ' ';
-
+	ostr << ' ' << std::hex << (size_t) segmentBegin << ' ' << std::hex << (size_t) segmentEnd << ' ';
 
 }
 
@@ -276,9 +247,11 @@ void ImageFrame::toOStr(std::ostream & ostr) const {
 
 template <>
 std::ostream & drain::Sprinter::toStream<drain::image::ImageFrame>(std::ostream & ostr, const drain::image::ImageFrame & src, const SprinterLayout & layout) {
-	src.toOStr(ostr); // consider using something from the layout
+	src.toStream(ostr); // consider using something from the layout
 	return ostr;
 }
+
+DRAIN_TYPENAME_DEF(drain::image::ImageFrame);
 
 
 }  // drain::

@@ -41,7 +41,8 @@ namespace drain
 		}
 		else {
 			ostr << '\n';
-			ostr << '\t' << parameters << '\n';
+			//ostr << '\t' << parameters << '\n';
+			// Was that ^ supposed to be: ostr << "\t parameters\n";
 			for (const std::string & key: getParameters().getKeyList()){
 				const Reference & param = parameters.at(key);
 				std::cout << '\t' << key << ':' << param << '\n';
