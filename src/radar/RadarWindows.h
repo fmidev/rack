@@ -31,31 +31,24 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_RADAR_WINDOWS_H
 #define RACK_RADAR_WINDOWS_H
 
-#include <drain/Log.h>
-#include <drain/TypeUtils.h>
 #include <math.h>
 
-#include "drain/util/Fuzzy.h"
-
-//#include "drain/image/FuzzyOp.h"
-
-#include "drain/util/Functor.h"
-#include "drain/util/FunctorBank.h"
-#include "drain/image/Window.h"
-#include "drain/image/SegmentProber.h"
-#include "drain/image/SlidingWindow.h"
-#include "drain/image/GaussianWindow.h"
-#include "drain/imageops/FunctorOp.h"
-#include "drain/imageops/GaussianAverageOp.h"
-
+#include <drain/Log.h>
+#include <drain/TypeUtils.h>
+#include <drain/util/Fuzzy.h>
+#include <drain/util/Functor.h>
+#include <drain/util/FunctorBank.h>
+#include <drain/image/Window.h>
+#include <drain/image/SegmentProber.h>
+#include <drain/image/SlidingWindow.h>
+#include <drain/image/GaussianWindow.h>
+#include <drain/imageops/FunctorOp.h>
+#include <drain/imageops/GaussianAverageOp.h>
 //#include "drain/image/SequentialImageOp.h"
 
 #include "data/ODIM.h"
 #include "data/PolarODIM.h"
 #include "data/Quantity.h"
-// #include "VolumeOp.h"
-
-
 
 using namespace drain::image;
 
@@ -170,8 +163,14 @@ public:
 		this->heightD = heightD;
 	}
 
-	///
-	void setPixelConf(RadarWindowConfig & conf, const PolarODIM & inputODIM) const ;
+	// Perhaphs deprecating.
+	/// Copies configuration to \c conf and update its pixel frame (width x height).
+	void setPixelConf(RadarWindowConfig & conf, const PolarODIM & inputODIM) const;
+
+	// NEW, "Inverted" setPixelConf
+	/// Copies configuration from \c conf and update pixel frame (width x height).
+	void adjustMyConf(const RadarWindowConfig & conf, const PolarODIM & inputODIM);
+
 
 	void updatePixelSize(const PolarODIM & inputODIM);
 
@@ -187,7 +186,7 @@ public:
  *  drain::image::WindowCore supports single-src, single-dst (with respective weights).
  */
 template <class C, class R=RadarWindowCore>
-class SlidingRadarWindowBase : public drain::image::SlidingWindow<C, R> { // drain::image::WeightedWindowCore
+class SlidingRadarWindowBase : public drain::image::SlidingWindow<C, R> {
 public:
 
 	SlidingRadarWindowBase(int width=0, int height=0) : drain::image::SlidingWindow<C,R>(width,height), rangeNorm(1), rangeNormEnd(2), countMin(0) {
@@ -337,12 +336,12 @@ public:
 	};
 
 	/// Handles the converted (natural-scaled) value.
-	virtual
-	void removeTrailingValue(double x) = 0;
+	virtual inline
+	void removeTrailingValue(double x){}; // = 0;
 
 	/// Handles the converted (natural-scaled) value.
-	virtual
-	void addLeadingValue(double x) = 0;
+	virtual inline
+	void addLeadingValue(double x){}; // = 0;
 
 
 
@@ -425,6 +424,115 @@ protected:
 
 
 };
+
+/**
+ *  \tparam C - RadarWindowConfig (contains also weight support)
+ *
+ */
+template <class C>
+class RadarWindowWeightedAvg : public SlidingRadarWindow<C> {
+public:
+
+
+	// Consider metres & degrees?
+	RadarWindowWeightedAvg(int width=0, int height=0) : SlidingRadarWindow<C>(width,height) {
+	};
+
+	RadarWindowWeightedAvg(const RadarWindowWeightedAvg<C> & window) : SlidingRadarWindow<C>(window) {
+	};
+
+	RadarWindowWeightedAvg(const C & conf) : SlidingRadarWindow<C>(conf) {
+	};
+
+	virtual inline
+	~RadarWindowWeightedAvg(){};
+
+protected:
+
+	int count = 0;
+
+	// Copied from SlidingStripeAverage
+	typedef float sum_t;
+	sum_t w = 0.0;
+	sum_t sum = 0.0;
+	sum_t sumW = 0.0;
+
+	virtual	inline
+	void clear() final {
+		this->sum   = 0.0;
+		this->sumW  = 0.0;
+		this->count = 0;
+	};
+
+
+	virtual	inline
+	void addPixel(drain::Point2D<int> & p) final {
+		if (this->coordinateHandler.validate(p)){
+			double x = this->src.template get<double>(p);
+			if (this->odimSrc.isValue(x)){
+				this->w     = this->srcWeight.template get<sum_t>(p);
+				this->sum  += w*this->odimSrc.scaling.fwd(x);
+				this->sumW += w;
+				++this->count;
+			}
+		}
+	};
+
+	virtual inline
+	void removePixel(drain::Point2D<int> & p) final {
+		if (this->coordinateHandler.validate(p)){
+			double x = this->src.template get<double>(p);
+			if (this->odimSrc.isValue(x)){
+				this->w     = this->srcWeight.template get<sum_t>(p);
+				this->sum  -= w*this->odimSrc.scaling.fwd(x);
+				this->sumW -= w;
+				--this->count;
+			}
+		}
+	};
+
+	virtual inline
+	void write() final {
+		if (sumW > 0.0){ // then also count>0
+			this->dst.put(this->location, this->odimSrc.scaling.inv(this->sum/sumW));
+			//this->dstWeight.put(this->location, this->scalingW.inv(sumW/static_cast<sum_t>(this->count)));
+			this->dstWeight.put(this->location, sumW/static_cast<sum_t>(this->count)); // "uses" original scaling
+		}
+		else {
+			this->dst.put(this->location, this->odimSrc.undetect); // change
+			this->dstWeight.put(this->location, 0);
+		}
+
+	}
+
+	/*
+	virtual	inline
+	void removeTrailingValue(double x) final {
+		sum -= x;
+		--count;
+	};
+
+	virtual	inline
+	void addLeadingValue(double x) final {
+		sum += x;
+		++count;
+	};
+
+	virtual	inline
+	void write(){
+		if (count > 0){
+			//if (this->location.x == this->location.y)
+			//	std::cerr << sum << '\t' << count << '\n';
+			this->dst.putScaled(this->location.x, this->location.y, this->myFunctor(sum/static_cast<double>(count)));
+		}
+		else
+			this->dst.put(this->location, this->odimSrc.undetect); // ?
+	};
+	*/
+
+
+};
+
 
 /**
  *  \tparam F - functor, e.g. drain::Fuzzifier used for scaling the result

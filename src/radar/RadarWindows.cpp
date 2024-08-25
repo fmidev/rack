@@ -50,9 +50,26 @@ void RadarWindowConfig::setPixelConf(RadarWindowConfig & conf, const PolarODIM &
 
 }
 
+// NEW, "Inverted" setPixelConf
+void RadarWindowConfig::adjustMyConf(const RadarWindowConfig & conf, const PolarODIM & inputODIM) {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	// pixelConf = this->conf;  PROBLEM: ftor prevents op=
+	this->widthM  = conf.widthM;
+	this->heightD = conf.heightD;
+	this->invertPolar = conf.invertPolar;
+	this->contributionThreshold = conf.contributionThreshold;
+	this->relativeScale = conf.relativeScale;
+
+	updatePixelSize(inputODIM);
+
+
+}
+
 void RadarWindowConfig::updatePixelSize(const PolarODIM & inputODIM){ // DopplerWindOp wants public
 
-	drain::Logger mout("RadarWindowConfig", __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	//mout.note(odimSrc );
 	this->frame.width  = inputODIM.getBeamBins(this->widthM);
@@ -76,6 +93,7 @@ void RadarWindowConfig::updatePixelSize(const PolarODIM & inputODIM){ // Doppler
 		this->frame.height = 1;
 	}
 
+	mout.attention("updatePixelSize finally: ", this->frame);
 
 
 	//mout.note(this->height , '<' , this->heightD );

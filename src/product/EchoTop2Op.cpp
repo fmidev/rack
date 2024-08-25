@@ -931,16 +931,42 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 	// Spessu test 2
 	{
-		Data<dst_t> & dstSlopeSmooth = dstProduct.getData("SLOPE_SMOOTH");
 
-		RadarWindowAvg<RadarWindowConfig> window;
+		// RadarWindowAvg<RadarWindowConfig> window;
+		RadarWindowWeightedAvg<RadarWindowConfig> window;
 
-		RadarWindowConfig conf2(3000, 5.0);
+		//RadarWindowConfig conf2(3000, 5.0);
+		RadarWindowConfig conf2(9000, 15.0);
 
-		conf2.setPixelConf(window.conf, dstSlope.odim);
+		// mout.attention("src odim: ", dstSlope.odim);
+		mout.attention("src odim.area: ", area);
+
+		//conf2.setPixelConf(window.conf, dstSlope.odim);
 		window.setSrcFrame(dstSlope.data);
+		window.setSrcFrameWeight(dstQuality.data); // also supported by basic (unweighted) Average
+		window.conf.adjustMyConf(conf2, dstSlope.odim);
+		window.odimSrc.updateFromCastableMap(dstSlope.odim);
+		mout.attention("window.conf.frame: ", window.conf.frame);
+
+		Data<dst_t> & dstSlopeSmooth = dstProduct.getData("DBZ-SLOPE-SMOOTH");
+		dstSlopeSmooth.copyEncoding(dstSlope);
+		dstSlopeSmooth.odim.quantity = "DBZ-SLOPE-SMOOTH";
+		// dstSlopeSmooth.setEncoding(typeid(float));
+		// dstSlopeSmooth.setEncoding(typeid(unsigned short));
+		// dstSlope.setPhysicalRange(-0.01, +0.01); // m/dBZ
+		// dstSlopeSmooth.setPhysicalRange(-10, +10); // dBZ/km
+		dstSlopeSmooth.setGeometry(area);
 		window.setDstFrame(dstSlopeSmooth.data);
-		mout.attention(window);
+
+
+		PlainData<dst_t> & dstSlopeQuality = dstSlopeSmooth.getQualityData("QIND");
+		quantityMap.setQuantityDefaults(dstSlopeQuality, "QIND", "C");
+		dstSlopeQuality.setGeometry(area);
+		window.setDstFrameWeight(dstSlopeQuality.data); // also supported by basic (unweighted) Average
+
+
+		//mout.attention("window.conf: ", window.conf);
+		mout.attention("window: ", window);
 		window.run();
 	}
 
