@@ -155,8 +155,10 @@ public:
 
 protected:
 
+	// Main parameter: dBZ threshold.
 	double threshold = 0.0;
 
+	// Weights for interpolative, dry-interpolative, max-limited, min-limited
 	MethodWeights<double> weights;
 
 	/// Virtual measurement high aloft, towards which reflectivity is expected to decrease.
@@ -165,9 +167,8 @@ protected:
 	/// Unless NaN, use the value like a measured dBZ
 	double undetectReflectivity = NAN;
 
-	/// Optional reference smoothin window. Width (metres) and height (degrees)
-	//drain::UniTuple<double,2> refWindow = {0.0,0.0};
-	RadarWindowGeom refWindow; // = {0.0,0.0};
+	/// Optional smoothin window. Width (metres) and height (degrees) (also used for reference)
+	RadarWindowGeom avgWindow; // = {0.0,0.0};
 
 protected:
 

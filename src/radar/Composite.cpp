@@ -113,7 +113,7 @@ Composite::Composite() :  decay(1.0), cropping(false)
 
 
 // Composite::
-void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields,  const drain::Rectangle<int> & crop, const std::string & encoding){
+void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields,  const drain::Rectangle<int> & cropArea, const std::string & encoding){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -174,6 +174,9 @@ void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const
 				mout.error("Unsupported field marker: char '", c, '"');
 				// mout.error("Unsupported field marker: ", FieldFlagger::getKeysNEW2(field));
 			}
+
+			mout.attention("Converted field code: ", c, " => ", Composite::dict.getKey(fieldList.back()));
+
 		}
 
 	}
@@ -181,7 +184,7 @@ void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const
 
 	for (FieldType field: fieldList) {
 		// mout.attention("FIELD: ", (char)(((int)field)&127), '=', FieldFlagger::getKeysNEW2(field));
-		extractNEW(dstProduct, field, crop, encoding);
+		extractNEW(dstProduct, field, cropArea, encoding);
 	}
 
 
@@ -276,19 +279,20 @@ void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const
 }
 
 
-void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field, const drain::Rectangle<int> & crop, const std::string & encoding){
+void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field, const drain::Rectangle<int> & cropArea, const std::string & encoding){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	//mout.attention("extracting FIELD: ", field, '=', (char)field, '=', (char)(((int)field)&127), '=', FieldFlagger::getKeysNEW2(field));
+	// Accumulator::extractField still uses char
 
+	// Old-fashioned char, to be changed later.
 	char fieldChar = (char)(((int)field)&127);
 	mout.attention("extracting FIELD: ", field, '=', fieldChar);
 
 
 	//const std::type_info & t = drain::Type::getTypeInfo('C'); // drain::Type::getTypeInfo(odimOut.type);
-	if (!crop.empty()){
-		mout.experimental("Applying cropping: bbox=", crop, " [pix]");
+	if (!cropArea.empty()){
+		mout.note("Applying cropping: bbox=", cropArea, " [pix] from ", accArray.getGeometry()); // this->getFrameWidth(), 'x', this->getFrameHeight());
 	}
 
 	const QuantityMap & qm = getQuantityMap();
@@ -362,10 +366,9 @@ void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldT
 			dstData.data.setType(odimData.type);
 			mout.debug3("dstData: " , dstData );
 			//mout.debug("quantfieldquantity );
-			this->Accumulator::extractField(fieldChar, dataCoder, dstData.data, crop);
+			this->Accumulator::extractField(fieldChar, dataCoder, dstData.data, cropArea);
 		}
 		else {
-
 
 			switch (field){
 			case WEIGHT:
@@ -418,7 +421,7 @@ void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldT
 
 			dstQuality.data.setType(odimQuality.type);
 			mout.debug3("dstData: " , dstQuality );
-			this->Accumulator::extractField(fieldChar, dataCoder, dstQuality.data, crop);
+			this->Accumulator::extractField(fieldChar, dataCoder, dstQuality.data, cropArea);
 		}
 
 

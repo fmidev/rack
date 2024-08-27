@@ -103,7 +103,7 @@ void AccumulationMethod::initDstOLD(const AccumulationArray & accArray, const Ac
 
 }
 
-void AccumulationMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
+void AccumulationMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & cropArea) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
@@ -124,7 +124,7 @@ void AccumulationMethod::extractValue(const AccumulationArray & accArray, const 
 
 
 
-	if (crop.empty()){
+	if (cropArea.empty()){
 		mout.debug("No cropping, computing in direct mode (quick)");
 		const size_t s = dst.getVolume();
 		for (size_t addr = 0; addr < s; ++addr) {
@@ -144,11 +144,19 @@ void AccumulationMethod::extractValue(const AccumulationArray & accArray, const 
 		}
 	}
 	else {
-		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+		mout.attention("Applying crop area: ", cropArea, " dst: ", dst.getGeometry());
 		size_t addr;
+		const size_t addrMax = accArray.getGeometry().getArea();
 		for (unsigned int j=0; j<dst.getHeight(); ++j) {
 			for (unsigned int i=0; i<dst.getWidth(); ++i) {
-				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+				addr = accArray.address(cropArea.lowerLeft.x+i, cropArea.upperRight.y+j);
+				// DEBUG
+				/*
+				if (addr >= addrMax){
+					mout.error("Geometry address error: ", addr, " = (", i, ',', j, ") >= ", addrMax);
+				}
+				*/
+
 				if (accArray.count.at(addr) > 0){
 					weight = accArray.weight.at(addr);
 					if (weight > 0.0){
@@ -444,7 +452,7 @@ void AverageMethod::extractValue(const AccumulationArray & accArray, const Accum
 						// value = accArray.data.at(i) / static_cast<double>(count);
 						weight = 1.0;
 						coder.encode(value, weight);  // WEIGHT unused
-						dst.put(addr, value );
+						dst.put(i, j, value );
 					}
 					else {
 						dst.put(i, j, noReadingMarker); //minValue);
@@ -701,7 +709,7 @@ void WeightedAverageMethod::extractValue(const AccumulationArray & accArray, con
 					}
 				}
 				else {
-					dst.put(addr, noDataCode);
+					dst.put(i, j, noDataCode);
 				}
 
 			}

@@ -132,9 +132,9 @@ public:
 	// To allow consecutive --cExtract calls (for --encoding )
 	bool extracting = false;
 
-	void extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields="d", const drain::Rectangle<int> & crop={0,0}, const std::string & encoding="C");
+	void extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields="d", const drain::Rectangle<int> & cropArea={0,0}, const std::string & encoding="C");
 
-	void extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field = DATA, const drain::Rectangle<int> & cropImage={0,0}, const std::string & encoding="C");
+	void extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field = DATA, const drain::Rectangle<int> & cropArea={0,0}, const std::string & encoding="C");
 
 	/// If cropping is set, calling addPolar() also crops the bounding box to intersection of radar area and original area.
 	/**

@@ -206,17 +206,17 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Ima
 }
 
 
-void Accumulator::extractField(char field, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
+void Accumulator::extractField(char field, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & cropArea) const {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 
 	// mout.attention("Crop: ", crop);
-	drain::Rectangle<int> finalCrop(crop);
-	initDst(coder, dst, finalCrop);
+	drain::Rectangle<int> finalCropArea(cropArea);
+	initDst(coder, dst, finalCropArea);
 
-	if (crop != finalCrop){
-		mout.note("final crop [LL UR]: ", finalCrop, ", dst geom:", dst.getGeometry());
+	if (cropArea != finalCropArea){
+		mout.note("final crop [LL UR]: ", finalCropArea, ", dst geom:", dst.getGeometry());
 	}
 
 
@@ -246,20 +246,20 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 	switch (field){
 		case 'd':
 		case 'D':
-			methodPtr->extractValue(accArray, coder, dst, finalCrop);
+			methodPtr->extractValue(accArray, coder, dst, finalCropArea);
 			break;
 		case 'w':
 		case 'W':
-			methodPtr->extractWeight(accArray, coder, dst, finalCrop);
+			methodPtr->extractWeight(accArray, coder, dst, finalCropArea);
 			break;
 		case 'c':
 		case 'C':
-			methodPtr->extractCount(accArray, coder, dst, finalCrop);
+			methodPtr->extractCount(accArray, coder, dst, finalCropArea);
 			break;
 		case 's':
 		case 'S':
 			//mout.warn(coder );
-			methodPtr->extractDev(accArray, coder, dst, finalCrop);
+			methodPtr->extractDev(accArray, coder, dst, finalCropArea);
 			//methodPtr->extractDev(dst, params.scale, params.bias, params.NODATA);
 			break;
 		default:
@@ -269,18 +269,19 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 
 }
 
-void Accumulator::initDst(const AccumulationConverter & coder, Image & dst, drain::Rectangle<int> & crop) const {
+void Accumulator::initDst(const AccumulationConverter & coder, Image & dst, drain::Rectangle<int> & cropArea) const {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	if (crop.upperRight.x < crop.lowerLeft.x){
-		mout.error("Negative direction in vertical crop coordinate (lowerLeft upperRight): ", crop);
+	if (cropArea.upperRight.x < cropArea.lowerLeft.x){
+		mout.error("Negative direction in vertical crop coordinate (lowerLeft upperRight): ", cropArea);
 	}
 
-	if (crop.upperRight.y > crop.lowerLeft.y){
-		mout.error("Positive direction in vertical crop coordinate (lowerLeft upperRight): ", crop);
+	if (cropArea.upperRight.y > cropArea.lowerLeft.y){
+		mout.error("Positive direction in vertical crop coordinate (lowerLeft upperRight): ", cropArea);
 	}
 
+	mout.attention("Crop image coords: ", cropArea);
 	/*
 	//mout.attention("Crop image coords: ", cropImage);
 	if (cropImage.isInside(-1, 0) || cropImage.isInside(0, -1)){
@@ -301,31 +302,34 @@ void Accumulator::initDst(const AccumulationConverter & coder, Image & dst, drai
 	}
 
 
-	if (crop.empty()){
+	if (cropArea.empty()){
 		mout.debug("Empty crop request - using whole array");
 		dst.setGeometry(accArray.getWidth(), accArray.getHeight());
 		// return false
 	}
 	else {
-		Rectangle<int> finalCrop(0, accArray.getHeight()-1, accArray.getWidth()-1, 0);
+		Rectangle<int> finalCropArea(0, accArray.getHeight()-1, accArray.getWidth()-1, 0);
 
-		if (crop == finalCrop){
-			mout.warn("Crop area equals array scope (", finalCrop, "), discarding it.");
-			crop.clear();
+		if (cropArea == finalCropArea){
+			mout.warn("Crop area equals array scope (", finalCropArea, "), discarding it.");
+			cropArea.clear();
 			dst.setGeometry(accArray.getWidth(), accArray.getHeight());
 			return;
 		}
 
-		finalCrop.crop(crop);
+		finalCropArea.crop(cropArea);
 
-		if (finalCrop != crop){
-			mout.warn("Adjusted crop area: ", crop, " -> ", finalCrop);
+		if (finalCropArea != cropArea){
+			mout.warn("Adjusted crop area: ", cropArea, " -> ", finalCropArea);
 		}
-		crop.set(finalCrop);
-		mout.experimental("applying cropped (", crop ,") view of ", accArray.getGeometry());
-		const int w = ::abs(crop.getWidth());
-		const int h = ::abs(crop.getHeight());
+
+		cropArea.set(finalCropArea);
+		mout.attention("Crop 3: ");
+		mout.special("Applying cropped (", cropArea ,") view of ", accArray.getGeometry());
+		const int w = ::abs(cropArea.getWidth());
+		const int h = ::abs(cropArea.getHeight());
 		dst.setGeometry(w+1, h+1);
+		mout.attention("Crop final geom: ", dst.getGeometry());
 		// return true
 	}
 

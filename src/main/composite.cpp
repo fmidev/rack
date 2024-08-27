@@ -722,7 +722,7 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	drain::Rectangle<int> cropImage; // Default: empty ()
 	if (!crop.empty()){
 
-		if (crop == "DATA"){
+		if (crop == "INPUT"){
 			prepareBBox(composite, bboxDataD, cropImage);
 			mout.advice<LOG_NOTICE>("Equivalent command: --cExtract ", channels, ':',
 					drain::sprinter(bboxDataD.tuple(), ","));
@@ -739,9 +739,16 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 			drain::BBox cropBBox;
 			cropBBox.assignSequence(v, false);
+
 			mout.special("Cropping: ", cropBBox, cropBBox.isMetric() ? " [meters]": " [degrees]");
 			prepareBBox(composite, cropBBox, cropImage);
+
+			if (cropImage.empty()){
+				mout.advice("crop argument should be INPUT, OVERLAP or a bounding box");
+				mout.error("crop area empty, check argument: '", crop, "' ");
+			}
 		}
+
 		mout.info("crop: ", cropImage, " (image coords)");
 		mout.advice<LOG_NOTICE>("Matching size: --cSize ", cropImage.getWidth(), ',', cropImage.getHeight());
 

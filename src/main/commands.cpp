@@ -355,7 +355,7 @@ class CmdSelectQuantity : public  drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdSelectQuantity() : drain::SimpleCommand<std::string>(__FUNCTION__, "Like --select quantity=... with patterns (not regexps)", "quantities","","quantity[,quantity2,...]"){
+	CmdSelectQuantity() : drain::SimpleCommand<std::string>(__FUNCTION__, "Like --select quantity=... ", "quantities","","quantity[,quantity2,...]"){
 
 	};
 
