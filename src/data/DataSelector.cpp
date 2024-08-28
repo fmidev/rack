@@ -857,12 +857,12 @@ bool DataSelector::getPath(const Hi5Tree & src, ODIMPath & path) const {
 		// TODO! if several quantities,  traverse list of quantities, give the first match
 		drain::Logger mout(__FILE__, __FUNCTION__);
 
-		const QuantitySelector::quantity_list & l = quantitySelector.getList();
+		const KeySelector::quantity_list & l = quantitySelector.getList();
 
 		if (!(path.back().is(ODIMPathElem::DATASET) || l.empty())){
 			// mout.experimental("could use quantity order here: ", path, " qty:", l.front().value);
 			mout.debug("checking quantity once more...");
-			for (const QuantityMatcher & m: l){
+			for (const drain::KeyMatcher & m: l){
 				for (ODIMPath & p: paths){
 					std::string q = src(p).data.image.properties.get("what:quantity", "");
 					if (m == q){

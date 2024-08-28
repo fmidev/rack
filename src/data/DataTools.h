@@ -88,6 +88,8 @@ public:
 	static
 	void getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & path, M & attributes, bool updateOnly = false);
 
+	static
+	void getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m);
 
 	/// Copies values of \c what , \c where and \c how attributes to internal attributes down to \c data[n] groups.
 	/**

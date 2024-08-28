@@ -65,6 +65,18 @@ std::list<std::string> & DataTools::getMainAttributes(){
 	return mainAttributes;
 }
 
+
+void DataTools::getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m){
+
+	for (const auto & entry: srcDataset) {
+		if (entry.first.is(ODIMPathElem::DATA)){
+			const drain::VariableMap & attr = entry.second[ODIMPathElem::WHAT].data.attributes;
+			m[attr.get("quantity","")] = entry.first;
+		}
+	}
+
+};
+
 /// List of most important ODIM attributes (with style suggestion).
 /**
  *

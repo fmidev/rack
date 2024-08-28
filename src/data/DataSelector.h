@@ -41,6 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Sprinter.h>
 #include <drain/Type.h>
 #include <drain/util/BeanLike.h>
+#include <drain/util/KeySelector.h>
 #include <drain/util/Range.h>
 #include <drain/util/ReferenceMap.h>
 //#include <drain/util/Variable.h>
@@ -49,7 +50,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ODIMPathTools.h"
 #include "ODIMPathMatcher.h"
 #include "PolarODIM.h" // elangle
-#include "QuantitySelector.h"
 
 
 namespace rack {
@@ -219,12 +219,12 @@ public:
 	}
 
 	inline
-	const QuantitySelector & getQuantitySelector() const {
+	const drain::KeySelector & getQuantitySelector() const {
 		return quantitySelector;
 	}
 
 	inline
-	const QuantitySelector & getQualitySelector() const {
+	const drain::KeySelector & getQualitySelector() const {
 		return qualitySelector;
 	}
 
@@ -387,10 +387,10 @@ protected:
 	std::string quantities;
 
 	mutable
-	QuantitySelector quantitySelector;
+	drain::KeySelector quantitySelector;
 
 	mutable
-	QuantitySelector qualitySelector;
+	drain::KeySelector qualitySelector;
 
 
 	/// The maximum length of the list of matching keys.

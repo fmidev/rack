@@ -114,7 +114,8 @@ class CmdBaseSelective : public drain::SimpleCommand<std::string> {
 protected:
 
 	CmdBaseSelective(const std::string & name, const std::string & description) :
-		drain::SimpleCommand<>(name, description, "selector", drain::sprinter(DataSelector().getParameters()).str()){
+	//	drain::SimpleCommand<>(name, description, "selector", drain::sprinter(DataSelector().getParameters()).str()){
+		drain::SimpleCommand<>(name, description, "selector", DataSelector().getParameters().getKeys()){
 		// TODO: "list out" the sub-parameter help. See --help select
 	};
 
@@ -571,7 +572,7 @@ public:
 		}
 
 		//const drain::RegExp quantityRegExp(selector.getQuantity());
-		const QuantitySelector & slct = selector.getQuantitySelector();
+		const drain::KeySelector & slct = selector.getQuantitySelector();
 
 		Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT);
 
@@ -600,7 +601,7 @@ public:
 
 	template <class OD>
 	//void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const drain::RegExp & slct) const {
-	void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const QuantitySelector & slct) const {
+	void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const drain::KeySelector & slct) const {
 
 		RackContext & ctx = getContext<RackContext>();
 

@@ -36,18 +36,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Sprinter.h>
 #include <drain/Type.h>
 
-#include "hi5/Hi5.h"
-#include "DataSelector.h"
+//#include "hi5/Hi5.h"
+#include "KeyMatcher.h"
+#include "KeySelector.h"
 
-#include "ODIMPathTools.h"
+//#include "ODIMPathTools.h"
 
 
-namespace rack {
+namespace drain {
 
 // Consider more general key matcher?
 
 
-void QuantitySelector::setQuantities(const std::string & args){ //, const std::string & separators){
+void KeySelector::setQuantities(const std::string & args){ //, const std::string & separators){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	clear();
 	std::vector<std::string> argv;
@@ -83,7 +84,7 @@ void QuantitySelector::setQuantityRegExp(const std::string & r){
 /** In future, the recommended way to define desired/accepted quanties is a comma-separated list of keys.
  *
  */
-void QuantitySelector::adaptQuantity(const std::string & s){
+void KeySelector::adaptQuantity(const std::string & s){
 
 
 	if (s.empty()){
@@ -91,8 +92,8 @@ void QuantitySelector::adaptQuantity(const std::string & s){
 	}
 	else {
 
-		QuantityMatcher matcher(s);
-		for (const QuantityMatcher & m: *this){
+		KeyMatcher matcher(s);
+		for (const KeyMatcher & m: *this){
 			if (m.value == matcher.value){
 				// exists already, dont append...
 				return;
@@ -100,7 +101,7 @@ void QuantitySelector::adaptQuantity(const std::string & s){
 		}
 
 		// quantities.
-		push_back(QuantityMatcher());
+		push_back(KeyMatcher());
 		// quantities.
 		back().set(s);
 	}
@@ -118,7 +119,7 @@ void QuantitySelector::adaptQuantity(const std::string & s){
 
 
 
-bool QuantitySelector::testQuantity(const std::string & s) const {
+bool KeySelector::testQuantity(const std::string & s) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -157,7 +158,8 @@ bool QuantitySelector::testQuantity(const std::string & s) const {
 
 }
 
-void QuantitySelector::getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m){
+/*
+void KeySelector::getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m){
 
 	for (const auto & entry: srcDataset) {
 		if (entry.first.is(ODIMPathElem::DATA)){
@@ -167,17 +169,20 @@ void QuantitySelector::getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMa
 	}
 
 };
+*/
 
 /*
 void QuantitySelector::addQuantity(){
 }
 */
 
-void QuantitySelector::toStream(std::ostream & ostr) const {
+void KeySelector::toStream(std::ostream & ostr) const {
 	drain::Sprinter::sequenceToStream(ostr, *this, drain::Sprinter::cmdLineLayout);
 	//if (regExp.isSet() && !empty())
 	//	ostr << drain::Sprinter::cmdLineLayout.arrayChars.separator;
 	// ostr << regExp.toStr();
 }
 
-}  // rack::
+DRAIN_TYPENAME_DEF(KeySelector);
+
+}  // drain::

@@ -32,11 +32,27 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DATACONVERSIONOP2_H_
 #define DATACONVERSIONOP2_H_
 
-#include <drain/RegExp.h>
+#include <list>
+#include <map>
+#include <set>
+#include <string>
+#include <typeinfo>
 
 #include <drain/Log.h>
+#include <drain/RegExp.h>
 #include <drain/Type.h>
 #include <drain/TypeUtils.h>
+//#include "drain/util/LinearScaling.h"
+#include "drain/util/KeySelector.h"
+#include "drain/util/SmartMap.h"
+#include "drain/util/TreeOrdered.h"
+#include "drain/util/ValueScaling.h"
+#include "drain/util/VariableMap.h"
+
+#include "drain/image/Geometry.h"
+#include "drain/image/Image.h"
+#include "drain/image/ImageFrame.h"
+
 #include "data/Data.h"
 #include "data/ODIM.h"
 #include "data/ODIMPath.h"
@@ -44,22 +60,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/QuantityMap.h"
 //#include "drain/util/LinearScaling.h"
 #include <hi5/Hi5.h>
-#include "drain/image/Geometry.h"
-#include "drain/image/Image.h"
-#include "drain/image/ImageFrame.h"
 #include "ProductOp.h"
-//#include "drain/util/LinearScaling.h"
-#include "drain/util/ValueScaling.h"
 
-#include "drain/util/SmartMap.h"
-#include "drain/util/TreeOrdered.h"
-#include "drain/util/VariableMap.h"
 //#include "VolumeTraversalOp.h"
-#include <list>
-#include <map>
-#include <set>
-#include <string>
-#include <typeinfo>
 //#include "drain/utility>
 
 //#include "VolumeOpNew.h"
@@ -208,7 +211,7 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	std::set<ODIMPathElem> parents;
 
 	//const drain::RegExp quantityRegExp(this->dataSelector.getQuantity());
-	const QuantitySelector & slct = this->dataSelector.getQuantitySelector();
+	const drain::KeySelector & slct = this->dataSelector.getQuantitySelector();
 
 	mout.special("slct: ", slct);
 

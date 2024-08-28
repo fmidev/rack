@@ -37,49 +37,38 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <stdexcept>
 
-#include <drain/RegExp.h>
-#include <drain/Sprinter.h>
-#include <drain/util/BeanLike.h>
-#include <drain/util/Range.h>
-#include <drain/util/ReferenceMap.h>
-//#include <drain/util/Variable.h>
 
-#include "ODIM.h"
-#include "ODIMPathTools.h"
-#include "ODIMPathMatcher.h"
-#include "PolarODIM.h" // elangle
-
-#include "QuantityMatcher.h"
+#include <drain/util/KeyMatcher.h>
 
 
-namespace rack {
+namespace drain {
 
 
 
-/// Utility for selecting a quantity label    Base class for DataSelector.
-class QuantitySelector : public std::list<QuantityMatcher> { // string temporary ?
+/// Utility for selecting a quantity label    Applied by DataSelector.
+class KeySelector : public std::list<KeyMatcher> { // string temporary ?
 
 public:
 
-	typedef std::list<QuantityMatcher> quantity_list;
+	typedef std::list<drain::KeyMatcher> quantity_list;
 
 	/// Basic constructor
 	template<typename ... TT>
 	inline
-	QuantitySelector(const TT &... args){
+	KeySelector(const TT &... args){
 		// reset not needed
 		addQuantity(args...);
 	};
 
 	/// Copy constructor. Copies the list of quantities.
 	inline
-	QuantitySelector(const QuantitySelector &slct) : std::list<QuantityMatcher>(slct) {
+	KeySelector(const KeySelector &slct) : std::list<KeyMatcher>(slct) {
 	};
 
 
 	/// Destructor
 	virtual inline
-	~QuantitySelector(){};
+	~KeySelector(){};
 
 
 	/// Define the list of accepted quantities.
@@ -162,8 +151,10 @@ public:
 	*/
 
 	// TODO add filter, allowing ODIMPathElem::group_t == QUALITY
+	/*
 	static
 	void getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m);
+	*/
 
 	void toStream(std::ostream & ostr) const ;
 
@@ -190,11 +181,13 @@ protected:
 
 
 inline
-std::ostream & operator<<(std::ostream & ostr, const QuantitySelector & selector){
+std::ostream & operator<<(std::ostream & ostr, const KeySelector & selector){
 	selector.toStream(ostr);
 	return ostr;
 }
 
-} // rack::
+DRAIN_TYPENAME(KeySelector);
+
+} // drain::
 
 #endif // QUANTITY_MATCHER

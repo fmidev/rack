@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/RegExp.h>
 // #include <drain/VariableAssign.h>
+#include <drain/util/KeySelector.h>
 #include <drain/util/ReferenceMap.h>
 // #include <drain/util/Variable.h>
 // #include <drain/image/Legend.h>
@@ -605,7 +606,7 @@ public:
 
 	// DataGroup(typename DT::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
 	// TreeWrapper<typename DT::datatype_t>(tree), odim(tree.data.image) {
-	DataGroup(typename DT::tree_t & tree, const QuantitySelector & slct = QuantitySelector()) :
+	DataGroup(typename DT::tree_t & tree, const drain::KeySelector & slct = drain::KeySelector()) :
 		TreeWrapper<typename DT::datatype_t>(tree) { //, baseODIM(ODIMPathElem::DATASET) {
 		init(tree, *this, slct);
 	}
@@ -703,13 +704,13 @@ public:
 	}
 
 	//const data_t& getData(const drain::RegExp & regExp) const {
-	const data_t& getData(const QuantitySelector & slct) const {
+	const data_t& getData(const drain::KeySelector & slct) const {
 
 		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G)+"(RegExp) {const}", __FUNCTION__);
-		drain::Logger mout("getData(QuantitySelector)", "DataGroup{" + ODIMPathElem::getKey(G)+"}");
+		drain::Logger mout(__FUNCTION__, "(KeySelector): ", "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
 		// NEW
-		for (const QuantityMatcher & m: slct.getList()){
+		for (const drain::KeyMatcher & m: slct.getList()){
 			for (const auto & entry: *this){
 				if (m.test(entry.first)){
 					mout.debug("quantity " , entry.first , " matches " , slct);
@@ -860,7 +861,7 @@ protected:
 	 * 	\param quantityRegExp - optional quantity filter, if only a subset is desired.
 	 */
 	static
-	typename DT::tree_t & init(typename DT::tree_t & t, datagroup_t & dst, const QuantitySelector & slct = QuantitySelector()){
+	typename DT::tree_t & init(typename DT::tree_t & t, datagroup_t & dst, const drain::KeySelector & slct =drain::KeySelector()){
 	// typename DT::tree_t & init(typename DT::tree_t & t, datagroup_t & dst, const drain::RegExp & quantityRegExp = drain::RegExp()){
 
 		//drain::Logger mout("DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
@@ -1221,7 +1222,7 @@ public:
 	inline
 	/// Given a \c dataset subtree, like tree["dataset3"], constructs a data map of desired quantities.
 	//DataSet(typename data_t::tree_t & tree, const drain::RegExp & quantityRegExp = drain::RegExp()) :
-	DataSet(typename data_t::tree_t & tree, const QuantitySelector & slct = QuantitySelector()) :
+	DataSet(typename data_t::tree_t & tree, const drain::KeySelector & slct =drain::KeySelector()) :
 		//datagroup_t(tree, quantityRegExp), QualityDataSupport<DT>(tree)
 		datagroup_t(tree, slct), QualityDataSupport<DT>(tree)
 		{

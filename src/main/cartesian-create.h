@@ -97,7 +97,7 @@ public:
 			return;
 		}
 
-		const QuantityMatcher qualityMatcher("QIND"); // coming op: other
+		const drain::KeyMatcher qualityMatcher("QIND"); // coming op: other
 
 		if (qualityMatcher.test(composite.odim.quantity)){
 			mout.note("Quality [", composite.odim.quantity, "] as input: extracting data only");

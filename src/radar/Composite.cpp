@@ -501,7 +501,7 @@ void Composite::checkQuantity(const std::string & quantity){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	const QuantitySelector & qs = dataSelector.getQuantitySelector();
+	const KeySelector & qs = dataSelector.getQuantitySelector();
 	if (qs.testQuantity(quantity)){
 		mout.accept<LOG_INFO>("quantity [", quantity, "] ~ ", qs);
 	}

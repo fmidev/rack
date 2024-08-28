@@ -29,14 +29,15 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-#ifndef QUANTITY_MATCHER_H_
-#define QUANTITY_MATCHER_H_
+#ifndef DRAIN_KEY_MATCHER
+#define DRAIN_KEY_MATCHER
 
 #include <set>
 #include <list>
 #include <map>
 #include <stdexcept>
 
+#include <drain/Type.h>
 #include <drain/RegExp.h>
 /*
 #include <drain/Sprinter.h>
@@ -51,7 +52,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "PolarODIM.h" // elangle
 */
 
-namespace rack {
+namespace drain {
 
 
 /// General-purpose key matcher.
@@ -63,7 +64,7 @@ namespace rack {
  *   against which equality of an input string is tested.
  *
  */
-class QuantityMatcher : protected drain::RegExp {
+class KeyMatcher : protected drain::RegExp {
 
 public:
 
@@ -74,12 +75,12 @@ public:
 	const std::string & value;
 
 	inline
-	QuantityMatcher(const std::string & s = "") : value(regExpString), isRegExp(false){
+	KeyMatcher(const std::string & s = "") : value(regExpString), isRegExp(false){
 		set(s);
 	}
 
 	inline
-	QuantityMatcher(const QuantityMatcher & matcher) : value(regExpString), isRegExp(false){
+	KeyMatcher(const KeyMatcher & matcher) : value(regExpString), isRegExp(false){
 		set(matcher.value);
 	}
 
@@ -124,11 +125,12 @@ protected:
 
 
 inline
-std::ostream & operator<<(std::ostream & ostr, const QuantityMatcher & m){
+std::ostream & operator<<(std::ostream & ostr, const KeyMatcher & m){
 	ostr << m.value;
 	return ostr;
 }
 
+DRAIN_TYPENAME(KeyMatcher);
 
 } // rack::
 

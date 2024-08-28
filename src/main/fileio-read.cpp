@@ -489,8 +489,8 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 			Hi5Tree & dstDataSet = dstRoot[tit->second];
 
 			ODIMPathElemMap srcQuantityGroups, dstQuantityGroups;
-			QuantitySelector::getQuantityMap(srcDataSet, srcQuantityGroups);
-			QuantitySelector::getQuantityMap(dstDataSet, dstQuantityGroups);
+			DataTools::getQuantityMap(srcDataSet, srcQuantityGroups);
+			DataTools::getQuantityMap(dstDataSet, dstQuantityGroups);
 
 			for (const auto & quantityGroup: srcQuantityGroups){
 				// Hi5Tree & srcData = srcDataSet[quantityGroup.second];

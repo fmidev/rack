@@ -36,18 +36,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Sprinter.h>
 #include <drain/Type.h>
 
-#include "hi5/Hi5.h"
-#include "DataSelector.h"
+#include "KeyMatcher.h"
 
-#include "ODIMPathTools.h"
+namespace drain {
 
-
-namespace rack {
-
-const std::string QuantityMatcher::regExpSpecialChars = "^.?*[]()$";
+const std::string KeyMatcher::regExpSpecialChars = "^.?*[]()$";
 
 
-void QuantityMatcher::set(const std::string & s){
+void KeyMatcher::set(const std::string & s){
 	reset();
 	isRegExp = false;
 	if (s.empty()){
@@ -63,7 +59,7 @@ void QuantityMatcher::set(const std::string & s){
 	}
 }
 
-const std::string & QuantityMatcher::getType() const {
+const std::string & KeyMatcher::getType() const {
 	//const std::string re("regExp");
 	//const std::ring str("string");
 	if (isRegExp)
@@ -73,7 +69,7 @@ const std::string & QuantityMatcher::getType() const {
 }
 
 
-bool QuantityMatcher::test(const std::string & s) const {
+bool KeyMatcher::test(const std::string & s) const {
 	if (isRegExp){
 		return RegExp::test(s);
 	}
@@ -88,5 +84,6 @@ bool QuantityMatcher::validateKey(const std::string & key){
 	return re.test(key);
 }
 */
+DRAIN_TYPENAME_DEF(KeyMatcher);
 
 }  // rack::

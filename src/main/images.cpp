@@ -631,7 +631,7 @@ public:
 		const PolarODIM imgOdim(graySrc); // Uses Castable, so type-consistent
 		mout.info("input encoding: ", EncodingODIM(imgOdim));
 
-		static const QuantitySelector vradTest("VRAD", "VRADH", "VRADV"); // , "^VRAD.*");
+		static const KeySelector vradTest("VRAD", "VRADH", "VRADV"); // , "^VRAD.*");
 
 		mout.special<LOG_DEBUG>("vradTest: ", vradTest, " vs ", imgOdim.quantity);
 
