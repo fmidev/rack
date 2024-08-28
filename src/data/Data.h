@@ -901,7 +901,7 @@ protected:
 
 				if (USE_SELECTOR){
 					++counter; // candidate count
-					if (!slct.testQuantity(quantity)){
+					if (!slct.testKey(quantity)){
 					//if (!quantityRegExp.test(quantity)){
 						//if (it->second.hasChild("quality1"))
 						//	mout.warn(it->first , "...rejecting, but has quality?" );

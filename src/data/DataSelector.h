@@ -267,7 +267,6 @@ public:
 	/// Collect paths with all the criteria: path, elevation(range), PRF, quantity...
 	/**
 	 *
-	 *
 	 */
 	void selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const;
 

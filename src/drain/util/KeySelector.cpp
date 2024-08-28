@@ -38,19 +38,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/String.h>
 #include <drain/Type.h>
 
-//#include "hi5/Hi5.h"
-#include "KeyMatcher.h"
+//#include "KeyMatcher.h"
 #include "KeySelector.h"
-
-//#include "ODIMPathTools.h"
-
 
 namespace drain {
 
-// Consider more general key matcher?
-
-
-void KeySelector::setQuantities(const std::string & args){ //, const std::string & separators){
+void KeySelector::setKeys(const std::string & args){ //, const std::string & separators){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	clear();
 	std::vector<std::string> argv;
@@ -58,7 +51,7 @@ void KeySelector::setQuantities(const std::string & args){ //, const std::string
 	drain::StringTools::split(args, argv, ",:"); //separators);
 	for (const std::string & arg: argv){
 		// mout.attention("adapting: ", arg, " split by '", separators, "'");
-		adaptQuantity(arg);
+		adaptKey(arg);
 	}
 
 	/* problematic. Keep for a while
@@ -83,11 +76,10 @@ void QuantitySelector::setQuantityRegExp(const std::string & r){
 */
 
 
-/** In future, the recommended way to define desired/accepted quanties is a comma-separated list of keys.
+/** In future, the recommended way to define desired/accepted quantities is a comma-separated list of keys.
  *
  */
-void KeySelector::adaptQuantity(const std::string & s){
-
+void KeySelector::adaptKey(const std::string & s){
 
 	if (s.empty()){
 		return;
@@ -121,67 +113,31 @@ void KeySelector::adaptQuantity(const std::string & s){
 
 
 
-bool KeySelector::testQuantity(const std::string & s) const {
+bool KeySelector::testKey(const std::string & key, bool defaultResult) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (empty()){
-		return true; // or defaultValue? TODO
+		return defaultResult;
 	}
 	else {
-		for (const auto & q: *this){
+		for (const auto & k: *this){
 			// mout.experimental("testing [", s, "] vs [", q, "]");
-			if (q == s){
+			if (k.test(key)){
 				return true;
 			}
 		}
 	}
 
 	return false;
-	/*
-	for (const std::string & q: quantities){
-		// mout.experimental("testing [", s, "] vs [", q, "]");
-		if (s == q){
-			return true;
-		}
-	}
-
-	if (regExp.empty()){
-		// Important here: if quantities listed, but none matched, return false.
-		// Hence: return true only if both tests are empty.
-		return quantities.empty();
-	}
-	else {
-		//drain::Logger mout(__FILE__, __FUNCTION__);
-		//mout.attention<LOG_NOTICE>("unmatched quantities, testing ", s ," regExp: ", regExp);
-		return regExp.test(s);
-	}
-	*/
 
 }
 
-/*
-void KeySelector::getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m){
-
-	for (const auto & entry: srcDataset) {
-		if (entry.first.is(ODIMPathElem::DATA)){
-			const drain::VariableMap & attr = entry.second[ODIMPathElem::WHAT].data.attributes;
-			m[attr.get("quantity","")] = entry.first;
-		}
-	}
-
-};
-*/
-
-/*
-void QuantitySelector::addQuantity(){
-}
-*/
 
 void KeySelector::toStream(std::ostream & ostr) const {
 	drain::Sprinter::sequenceToStream(ostr, *this, drain::Sprinter::cmdLineLayout);
-	//if (regExp.isSet() && !empty())
-	//	ostr << drain::Sprinter::cmdLineLayout.arrayChars.separator;
+	// if (regExp.isSet() && !empty())
+	// ostr << drain::Sprinter::cmdLineLayout.arrayChars.separator;
 	// ostr << regExp.toStr();
 }
 

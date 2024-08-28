@@ -636,11 +636,12 @@ public:
 		mout.special<LOG_DEBUG>("vradTest: ", vradTest, " vs ", imgOdim.quantity);
 
 
-		if (vradTest.testQuantity(imgOdim.quantity)){
+		if (vradTest.testKey(imgOdim.quantity)){
 			//if (imgOdim.quantity.substr(0,4) == "VRAD"){
 			// rescale relative to NI (percentage -100% ... +100%)
 			const double NI = imgOdim.getNyquist(); //props["how:NI"];
 			if (NI != 0.0){
+
 				mout.special("Doppler speed (VRAD), using relative scale, NI=" , NI , " orig NI=" , props["how:NI"] );
 				/*
 					f(data_min) = scale*data_min + offset == -1.0
@@ -652,10 +653,11 @@ public:
 				const double data_max = imgOdim.scaleInverse(+NI);
 				op.scale  =   2.0/(data_max-data_min);
 				op.offset = - op.scale*(data_max+data_min)/2.0;
-				mout.debug("expected storage value range: " , data_min , '-' , data_max );
+				mout.debug("expected storage value range: ", data_min, '-', data_max );
+
 			}
 			else {
-				mout.fail("No Nyquist velocity (NI) found in metadata." );
+				mout.fail("No Nyquist velocity (NI) found in metadata.");
 			}
 		}
 		else {

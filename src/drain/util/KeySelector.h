@@ -57,7 +57,7 @@ public:
 	inline
 	KeySelector(const TT &... args){
 		// reset not needed
-		addQuantity(args...);
+		addKey(args...);
 	};
 
 	/// Copy constructor. Copies the list of quantities.
@@ -78,10 +78,10 @@ public:
 	 *  \param args - separate list of quantities - literals or regExps.
 	 */
 	template <typename ...TT>
-	void setQuantity(const std::string & arg, const TT & ... args){
+	void setKey(const std::string & arg, const TT & ... args){
 		//clear();
-		setQuantities(arg); // split and adapt
-		addQuantity(args...);
+		setKeys(arg); // split and adapt
+		addKey(args...);
 	}
 
 	/// Define the list of accepted quantities as a string.
@@ -89,7 +89,7 @@ public:
 	 *  \param args - comma-separated list of quantities: literals or regexps.
 	 *  \param separators - can be also ",:" and contain ':' if that is not used in the regexps.
 	 */
-	void setQuantities(const std::string & args); // , const std::string & separators = ","
+	void setKeys(const std::string & args); // , const std::string & separators = ","
 
 	/// Define a syntax for quantity key. Will be checked if listed quantity keys do not match.
 	/**
@@ -99,14 +99,18 @@ public:
 
 	//template <typename T, typename ...TT>
 	template <typename ...TT>
-	void addQuantity(const std::string & arg, const TT & ... args){
-		adaptQuantity(arg);
-		addQuantity(args...);
+	void addKey(const std::string & arg, const TT & ... args){
+		adaptKey(arg);
+		addKey(args...);
 	}
 
-	//void ensureQuantity(const std::string & arg);
 
-	bool testQuantity(const std::string & s) const;
+	/// Check if \c key is accepted
+	/**
+	 *  \param key - string to be checker.
+	 *  \param defaultResult - if selector (list) is empty, return this value.
+	 */
+	bool testKey(const std::string & key, bool defaultResult = true) const;
 
 	inline
 	bool isSet() const {
@@ -117,7 +121,8 @@ public:
 	/// Returns the fistt (the primary) quantity.
 	//Deprecating? Consider quantityMatcher
 	inline
-	const std::string & getQuantity() const { // rename getQuantities
+	const std::string & getKey() const {
+
 		static const std::string dummy;
 
 		if (empty()){
@@ -165,9 +170,9 @@ protected:
 	// void setQuantity(){};
 
 	inline
-	void addQuantity(){};
+	void addKey(){};
 
-	void adaptQuantity(const std::string & s);
+	void adaptKey(const std::string & s);
 
 	/// Data quantity (excluding quality data, like QIND or CLASS)
 	// mutable // called by updateBean()?

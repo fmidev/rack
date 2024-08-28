@@ -39,21 +39,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Type.h>
 #include <drain/RegExp.h>
-/*
-#include <drain/Sprinter.h>
-#include <drain/util/BeanLike.h>
-#include <drain/util/Range.h>
-#include <drain/util/ReferenceMap.h>
-//#include <drain/util/Variable.h>
 
-#include "ODIM.h"
-#include "ODIMPathTools.h"
-#include "ODIMPathMatcher.h"
-#include "PolarODIM.h" // elangle
-*/
 
 namespace drain {
-
 
 /// General-purpose key matcher.
 /**
@@ -132,6 +120,6 @@ std::ostream & operator<<(std::ostream & ostr, const KeyMatcher & m){
 
 DRAIN_TYPENAME(KeyMatcher);
 
-} // rack::
+} // drain::
 
-#endif /* DATASELECTOR_H_ */
+#endif
