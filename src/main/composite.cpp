@@ -421,8 +421,8 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			w = applyTimeDecay(composite, w, polarSrc.odim);
 			mout.info("final quality weight=", w);
 
-			if (polarSrc.hasQuality()){
-				mout.info("using local qualitydata");
+			if (polarSrc.hasQuality("QIND")){
+				mout.info("Using local qualitydata");
 				composite.addPolar(polarSrc, polarSrc.getQualityData("QIND"), w, projectAEQD); // Subcomposite: always 1.0.
 			}
 			else {
@@ -430,7 +430,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 				//dataSetSrc.getQualityData2()
 				const PlainData<PolarSrc> & srcDataSetQuality = dataSetSrc.getQualityData("QIND");
 				if (!srcDataSetQuality.data.isEmpty()){
-					mout.info("using shared (dataset-level) quality data, path=" , parent );
+					mout.info("Using shared (dataset-level) quality data, path=" , parent );
 				}
 				else {
 					mout.info("no quality data (QIND) found under path=" , parent );

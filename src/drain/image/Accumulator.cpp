@@ -281,7 +281,6 @@ void Accumulator::initDst(const AccumulationConverter & coder, Image & dst, drai
 		mout.error("Positive direction in vertical crop coordinate (lowerLeft upperRight): ", cropArea);
 	}
 
-	mout.attention("Crop image coords: ", cropArea);
 	/*
 	//mout.attention("Crop image coords: ", cropImage);
 	if (cropImage.isInside(-1, 0) || cropImage.isInside(0, -1)){
@@ -324,13 +323,13 @@ void Accumulator::initDst(const AccumulationConverter & coder, Image & dst, drai
 		}
 
 		cropArea.set(finalCropArea);
-		mout.attention("Crop 3: ");
+		// mout.attention("Crop 3: ");
 		mout.special("Applying cropped (", cropArea ,") view of ", accArray.getGeometry());
 		const int w = ::abs(cropArea.getWidth());
 		const int h = ::abs(cropArea.getHeight());
 		dst.setGeometry(w+1, h+1);
-		mout.attention("Crop final geom: ", dst.getGeometry());
-		// return true
+		// mout.attention("Crop final geom: ", dst.getGeometry());
+
 	}
 
 }

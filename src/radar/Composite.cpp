@@ -175,7 +175,7 @@ void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const
 				// mout.error("Unsupported field marker: ", FieldFlagger::getKeysNEW2(field));
 			}
 
-			mout.attention("Converted field code: ", c, " => ", Composite::dict.getKey(fieldList.back()));
+			mout.info("Converted field code: ", c, " => ", Composite::dict.getKey(fieldList.back()));
 
 		}
 
@@ -287,7 +287,7 @@ void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldT
 
 	// Old-fashioned char, to be changed later.
 	char fieldChar = (char)(((int)field)&127);
-	mout.attention("extracting FIELD: ", field, '=', fieldChar);
+	mout.attention<LOG_DEBUG>("extracting FIELD: ", field, '=', fieldChar);
 
 
 	//const std::type_info & t = drain::Type::getTypeInfo('C'); // drain::Type::getTypeInfo(odimOut.type);

@@ -360,8 +360,8 @@ void DataSelector::selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathCo
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.attention("Quant:", quantitySelector, " size:", quantitySelector.size());
-	mout.attention("Qual: ", qualitySelector, " size:", qualitySelector.size());
+	mout.attention<LOG_DEBUG>("Quant:", quantitySelector, " size:", quantitySelector.size());
+	mout.attention<LOG_DEBUG>("Qual: ", qualitySelector, " size:", qualitySelector.size());
 
 	collectPaths(src, pathContainer, ODIMPath());
 
@@ -379,7 +379,8 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 		// parentElem = basepath.back();
 	}
 	else {
-		mout.attention<LOG_DEBUG>("collectPaths quantities: '", getQuantity(), "'");
+		//mout.attention<LOG_DEBUG>("collectPaths quantities: '", getQuantity(), "'");
+		mout.attention<LOG_DEBUG>(__FUNCTION__, "() quantities: '", quantitySelector, "'");
 		// mout.attention<LOG_DEBUG>("start: quantity:   ", quantitySelector);
 		// mout.attention<LOG_DEBUG>("start: quality:    ", qualitySelector);
 		if (quantitySelector.isSet()){
