@@ -857,7 +857,7 @@ bool DataSelector::getPath(const Hi5Tree & src, ODIMPath & path) const {
 		// TODO! if several quantities,  traverse list of quantities, give the first match
 		drain::Logger mout(__FILE__, __FUNCTION__);
 
-		const KeySelector::quantity_list & l = quantitySelector.getList();
+		const drain::KeySelector::quantity_list & l = quantitySelector.getList();
 
 		if (!(path.back().is(ODIMPathElem::DATASET) || l.empty())){
 			// mout.experimental("could use quantity order here: ", path, " qty:", l.front().value);

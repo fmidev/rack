@@ -55,8 +55,8 @@ void CCorOp::runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & d
 	//mout.debug(parameters );
 
 	// NEW: In priority order
-	KeySelector TOTAL("TH","TV","T");
-	KeySelector DBZ("DBZH","DBZV","DBZ");
+	drain::KeySelector TOTAL("TH","TV","T");
+	drain::KeySelector DBZ("DBZH","DBZV","DBZ");
 
 	const Data<PolarSrc> & srcTH   = src.getData(TOTAL); // ("TH");
 	const Data<PolarSrc> & srcDBZH = src.getData(DBZ); // ("DBZH");
