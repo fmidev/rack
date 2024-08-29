@@ -85,8 +85,11 @@ public:
 
 };
 
-
-
+/// Like pixel window, but width is metres and height is degrees.
+/**
+ *
+ *  Small problem: for assignment or x, UniTuple calls fill(x) ...
+ */
 class RadarWindowGeom : public drain::UniTuple<double,2> {
 
 public:

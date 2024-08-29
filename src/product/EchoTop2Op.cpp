@@ -30,6 +30,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include "drain/util/Output.h" // DEBUGGING
+#include "drain/util/Fuzzy.h" // FuzzyTriangle
 
 #include "data/SourceODIM.h"
 #include "main/palette-manager.h"
@@ -56,13 +57,14 @@ namespace rack
 
 EchoTop2Op::EchoTop2Op(double threshold) :
 		PolarProductOp(__FUNCTION__,"Estimates maximum altitude of given reflectivity"),
-		threshold(threshold), weights(1.0, 0.8, 0.6, 0.4, 0.2) {
+		threshold(threshold) { // , weights(1.0, 0.8, 0.6, 0.4, 0.2) {
 
 	parameters.link("threshold", this->threshold, "reflectivity limit (dB)");
 	parameters.link("reference", this->reference.tuple(), "'dry point' of low reflectivity and high altitude [dBZ:m]");
 	parameters.link("undetectValue",    this->undetectReflectivity, "reflectivity replacing 'undetect' [dBZ]"); // if set, reference will be applied also here
 #ifndef NDEBUG
 	parameters.link("weights", this->weights.tuple(), "weights for INTERPOLATION, INTERP_UNDET, EXTRAP_UP, EXTRAP_DOWN, CLEAR");
+	parameters.link("weightDecay", this->weightDecay, "radius from threshold in decreasing weight [dBZ]");
 	parameters.link("avgWindow", avgWindow.tuple() = {0.0,0.0}, "optional reference window [metres,degrees]"); // also used for reference calculation
 	parameters.link("EXTENDED", this->EXTENDED_OUTPUT, "store also DBZ_SLOPE and CLASS");
 
@@ -408,28 +410,27 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	// mout.attention("ODIM scaling 3: ", dstEchoTop.odim.scaling);
 	// mout.special(dstEchoTop.odim);
 
-	// clumsy
+
 	const drain::image::AreaGeometry & area = dstEchoTop.odim.getGeometry();
 
-	bool COMPUTE_REFERENCE = false; // true;
+
+	// Future option: solving reference point
+	const bool SOLVE_REF_POINT = false; // true;
 
 	PlainData<dst_t> & dstETOP_Zd = dstProduct.getData("ETOP_AUX_GRAD");
-	dstETOP_Zd.copyEncoding(Etop2Window::sharedODIM);
-	dstETOP_Zd.setExcluded(!COMPUTE_REFERENCE);
+	dstETOP_Zd.setExcluded(!SOLVE_REF_POINT);
 
 	PlainData<dst_t> & dstETOP_V  = dstProduct.getData("ETOP_AUX_COEFF");
-	dstETOP_V.copyEncoding(Etop2Window::sharedODIM);
-	dstETOP_V.setExcluded(!COMPUTE_REFERENCE);
-	// dstETOP_hd.setEncoding(typeid(float));
+	dstETOP_V.setExcluded(!SOLVE_REF_POINT);
 
-	if (COMPUTE_REFERENCE){
+	if (SOLVE_REF_POINT){
+		dstETOP_Zd.copyEncoding(Etop2Window::sharedODIM);
 		dstETOP_Zd.setGeometry(area);
 		dstETOP_Zd.data.fill(Etop2Window::sharedODIM.nodata);
+		dstETOP_V.copyEncoding(Etop2Window::sharedODIM);
 		dstETOP_V.setGeometry(area);
 		dstETOP_V.data.fill(Etop2Window::sharedODIM.nodata);
 	}
-
-
 
 	// setGeometry(dstOdim, dstEchoTop);
 	// setEncoding(dstOdim, dstEchoTop);
@@ -438,7 +439,6 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	const std::type_info & type = dstEchoTop.data.getType();
 	typedef drain::typeLimiter<double> Limiter;
 	Limiter::value_t limit = drain::Type::call<Limiter>(type);
-	//dstEchoTop.data.getScaling().g
 
 	/*
 	double d1 = drain::Type::call<drain::typeMin, double>(type);
@@ -451,22 +451,24 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	mout.special("limiter:", limit);
 	*/
 
-
 	PlainData<dst_t> & dstQuality = dstProduct.getQualityData();
 	quantityMap.setQuantityDefaults(dstQuality, "QIND", "C");
 	dstQuality.setGeometry(area);
 
 	/// Quality (confidence) (using storage type encoding)
 	MethodWeights<short int> WEIGHTS; // "assumes"
-	WEIGHTS.interpolation = dstQuality.odim.scaleInverse(weights.interpolation);
+	WEIGHTS.interpolation      = dstQuality.odim.scaleInverse(weights.interpolation);
 	WEIGHTS.interpolation_dry  = dstQuality.odim.scaleInverse(weights.interpolation_dry);
 	WEIGHTS.extrapolation_up   = dstQuality.odim.scaleInverse(weights.extrapolation_up);
 	WEIGHTS.extrapolation_down = dstQuality.odim.scaleInverse(weights.extrapolation_down);
-	WEIGHTS.clear         = dstQuality.odim.scaleInverse(weights.clear);
-	// WEIGHTS::value_t
+	WEIGHTS.clear              = dstQuality.odim.scaleInverse(weights.clear);
+	mout.debug("WEIGHTS: ", WEIGHTS);
+	// MethodWeights<short int>::value_t
 	short int WEIGHT = 0;
 
-	mout.debug("WEIGHTS: ", WEIGHTS);
+	const bool USE_INTERPOLATION     = (weights.interpolation     > 0.0);
+	const bool USE_INTERPOLATION_DRY = (weights.interpolation_dry > 0.0) && !::isnan(undetectReflectivity);
+
 
 	/// Class codes (using storage type encoding)
 	MethodWeights<unsigned char> CLASSES;
@@ -486,52 +488,49 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	 */
 	PlainData<dst_t> & dstSlope = dstProduct.getData("DBZ-SLOPE");
 	dstSlope.setEncoding(typeid(unsigned short));
-	//dstSlope.setPhysicalRange(-0.01, +0.01); // m/dBZ
 	dstSlope.setPhysicalRange(-10, +10); // dBZ/km
+	dstSlope.getHow()["unit"] = "m/dBZ";
 	Limiter::value_t limitSlope = drain::Type::call<Limiter>(dstSlope.data.getType());
 
 
 	/// AVERAGING (optional)
 	const bool USE_AVERAGING = ((avgWindow.widthM > 0.0) && (avgWindow.heightD > 0.0));
-	mout.accept<LOG_WARNING>("Using averaging: ", USE_AVERAGING, " window=", avgWindow);
 
 	// The altitude, where the highest accepted reflectivity (dBZ) was observed
 	PlainData<dst_t> & dstEchoTopObsHeight = dstProduct.getData("ETOP_OBS_HGHT");
-	if (USE_AVERAGING){
-		dstEchoTopObsHeight.copyEncoding(Etop2Window::sharedODIM_HGHT);
-		dstEchoTopObsHeight.setGeometry(area);
-	}
-	dstEchoTopObsHeight.setExcluded();
 
 	// The reflectivity (dBZ), which was observed and accepted at the highest altitude
 	PlainData<dst_t> & dstEchoTopObsDbz    = dstProduct.getData("ETOP_OBS_DBZH");
+
 	if (USE_AVERAGING){
+		mout.info("Using averaging: ", USE_AVERAGING, " window=", avgWindow);
+		dstEchoTopObsHeight.copyEncoding(Etop2Window::sharedODIM_HGHT);
+		dstEchoTopObsHeight.setGeometry(area);
 		dstEchoTopObsDbz.copyEncoding(Etop2Window::sharedODIM_DBZH);
 		dstEchoTopObsDbz.setGeometry(area);
 	}
 	else {
+		dstEchoTopObsHeight.setExcluded();
 		dstEchoTopObsDbz.setExcluded();
 	}
 
 
-
 	if (EXTENDED_OUTPUT){
-		//dstEchoTop.setGeometry(dstEchoTop.odim);
-		dstClass.setGeometry(dstEchoTop.odim);
-		//drain::Variable & classLegend = dstClass.getWhat()["legendTEST"];
-		//classLegend = "0:Clear,128:OverShooting"; // (TODO: redesign "direct" legend struct, as properties?)
+		// dstEchoTop.setGeometry(dstEchoTop.odim);
+		// drain::Variable & classLegend = dstClass.getWhat()["legendTEST"];
+		// classLegend = "0:Clear,128:OverShooting"; // (TODO: redesign "direct" legend struct, as properties?)
 		const drain::image::Palette & cp = PaletteManager::getPalette("CLASS-ETOP");
 		CLASSES.clear = dstClass.odim.undetect;
-		CLASSES.interpolation = cp.getEntryByCode("interpolated").first;
+		CLASSES.interpolation      = cp.getEntryByCode("interpolated").first;
 		CLASSES.interpolation_dry  = cp.getEntryByCode("interpolated.undetect").first; //  cp.getEntryByCode("overshooting").first;
-		CLASSES.extrapolation_up = cp.getEntryByCode("strong.extrapolated").first; // cp.getEntryByCode("undershooting").first;
-		CLASSES.extrapolation_down  = cp.getEntryByCode("weak").first;
-		CLASSES.error = cp.getEntryByCode("error").first; // could be nodata as well
+		CLASSES.extrapolation_up   = cp.getEntryByCode("strong.extrapolated").first; // cp.getEntryByCode("undershooting").first;
+		CLASSES.extrapolation_down = cp.getEntryByCode("weak").first;
+		CLASSES.error              = cp.getEntryByCode("error").first; // could be nodata as well
 
-
+		dstClass.setGeometry(dstEchoTop.odim);
 		dstSlope.setGeometry(dstEchoTop.odim);
 		dstSlope.getHow()["unit"] = "m/dBZ";
-		//dstSlope.getHow()["unit"] = "m/dBZ";
+
 	}
 	else {
 		dstClass.setExcluded();
@@ -544,6 +543,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 	double groundDistance;
 
+	drain::FuzzyTriangle<double> fuzzyTriangle(threshold-weightDecay, threshold+weightDecay, threshold);
 
 	struct MeasurementHolder : public Measurement {
 
@@ -552,14 +552,6 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 		/// Index of the bin at the ground distance D of all the elevation beams considered
 		size_t binIndex = 0;
-
-		/*
-		/// Height from the ground surface (from radar site, ASL)
-		double height = 0;
-
-		/// Reflectivity observed at the current bin.
-		double reflectivity = NAN;
-		*/
 
 		/// Reliability/confidence of the measurement value, maximal (1.0) when reflectivity is the threshold value.
 		// double quality = 0.0;
@@ -594,19 +586,13 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 
 	size_t i2;
 
-	// const bool REPLACE_UNDETECT = !::isnan(undetectReflectivity);
-	// mout.attention("Replace undetect:", REPLACE_UNDETECT, " dryTop value=", undetectReflectivity, drain::TextStyle::Colour::GREEN, "test", drain::TextStyle::Colour::NO_COLOR);
-
-	const bool USE_INTERPOLATION     = (weights.interpolation     > 0.0);
-	const bool USE_INTERPOLATION_DRY = (weights.interpolation_dry > 0.0) && !::isnan(undetectReflectivity);
-
 
 	// Direct array index of a pixel (i,j)
 	size_t address;
 
 	// DEBUG
 	drain::Output output; //(outputFilename);
-	if (COMPUTE_REFERENCE){
+	if (SOLVE_REF_POINT){
 		std::string outputFilename;
 		for (const auto & sweep: srcSweeps){
 			const Data<src_t> & src =  sweep.second.getFirstData();
@@ -734,7 +720,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 			} // End column loop
 
 
-			/// Main: compute the echo top altitude. ----------------------------------------------------------------
+			/// Main: compute / approximate the echo top altitude. ----------------------------------------------------------------
 
 			address = dstEchoTop.data.address(i, j);
 
@@ -747,14 +733,14 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 					if (dbzOdim.isValue(weakMsrm->reflectivity)){
 
 						// INTERPOLATION, as both values are available
-						if (weakMsrm->reflectivity < strongMsrm->reflectivity){
+						if (weakMsrm->reflectivity < strongMsrm->reflectivity){ // this should be correct
 
 							if (USE_INTERPOLATION){ // Should be also used! Just for debugging, if not.
 								// EtopWin: store SLOPE_HGHT: weakMsrm->height
 								slope  = getSlope(*weakMsrm, *strongMsrm);  // UNIT: m/dBZ
 								WEIGHT = WEIGHTS.interpolation;
 								CLASS  = CLASSES.interpolation;
-								if (COMPUTE_REFERENCE){
+								if (SOLVE_REF_POINT){
 									if (((i & 15) == 0) && ((j & 15) == 0)){
 										//output << weakMsrm->height << ' ' << weakMsrm->reflectivity << '\t' << strongMsrm->height << ' ' << strongMsrm->reflectivity << '\n';
 										output << weakMsrm->reflectivity << '\t' << weakMsrm->height << '\t' << strongMsrm->reflectivity << '\t'  << strongMsrm->height << '\n';
@@ -763,7 +749,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 							}
 							else {
 								slope = getSlope(reference, *strongMsrm);
-								WEIGHT = WEIGHTS.extrapolation_up;
+								WEIGHT = WEIGHTS.extrapolation_up * std::max(weights.extrapolation_down, fuzzyTriangle(strongMsrm->reflectivity));
 								CLASS  = CLASSES.extrapolation_up;
 							}
 
@@ -788,7 +774,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 							}
 
 // #endif
-							if (COMPUTE_REFERENCE){
+							if (SOLVE_REF_POINT){
 								dstETOP_Zd.data.put(address, 1.0/slope);
 								dstETOP_V.data.put(address, strongMsrm->reflectivity - strongMsrm->height/slope);
 								// dstETOP_hd.data.put(address, ::rand());
@@ -822,12 +808,12 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 							weakMsrm->reflectivity = undetectReflectivity;
 							slope = getSlope(*weakMsrm, *strongMsrm);
 							// slope = getSlope(weakMsrm->height, strongMsrm->height, undetectReflectivity, strongMsrm->reflectivity);
-							WEIGHT = WEIGHTS.interpolation_dry;
+							WEIGHT = WEIGHTS.interpolation_dry * std::max(weights.extrapolation_up, fuzzyTriangle(strongMsrm->reflectivity));
 							CLASS  = CLASSES.interpolation_dry;
 						}
 						else {
 							slope = getSlope(reference, *strongMsrm);
-							WEIGHT = WEIGHTS.extrapolation_up;
+							WEIGHT = WEIGHTS.extrapolation_up * std::max(weights.extrapolation_down, fuzzyTriangle(strongMsrm->reflectivity));
 							CLASS  = CLASSES.extrapolation_up;
 							// slope = getSlope(reference.height, strongMsrm->height, reference.reflectivity, strongMsrm->reflectivity);
 						}
@@ -851,7 +837,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 							// dstClass.data.put<int>(address, USE_INTERPOLATION_DRY ? CLASSES.interpolation_dry : CLASSES.extrapolation_up);
 						}
 // #endif
-						if (COMPUTE_REFERENCE){
+						if (SOLVE_REF_POINT){
 							dstETOP_Zd.data.put(address, 1.0/slope);
 							dstETOP_V.data.put(address, strongMsrm->reflectivity - strongMsrm->height/slope);
 							// dstETOP_Zd.data.put(address, slope);
@@ -867,7 +853,7 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 					slope  = getSlope(reference, *weakMsrm); // m/dBZ
 					height = weakMsrm->height + slope*(threshold - weakMsrm->reflectivity);
 					dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height))); // ::rand()
-					dstQuality.data.put(address, WEIGHTS.extrapolation_down);
+					dstQuality.data.put(address, WEIGHTS.extrapolation_down * std::max(weights.extrapolation_down, fuzzyTriangle(weakMsrm->reflectivity)) );
 
 					if (USE_AVERAGING){
 						// No limiter needed.
@@ -945,8 +931,8 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 	}
 
 
-	// SPESSU TEST
-	if (COMPUTE_REFERENCE){
+	// Future option
+	if (SOLVE_REF_POINT){
 		mout.attention("Entering test");
 		// 11×500m × 11⁰
 		RadarWindowConfig windowConf(5500,11.0);
@@ -1055,9 +1041,9 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 					height = dstEchoTopObsHeight.odim.scaling.fwd(dstEchoTopObsHeight.data.get<double>(address)); // always metres
 					slope = 0.001 * dstSlopeSmooth.odim.scaling.fwd(dstSlopeSmooth.data.get<double>(address)); // dBZ/km -> dBZ/m
 					/*
-					if (((i&15) == 0) && ((j&15) == 0)){
-						std::cout << " thr:" << threshold << " slope:" << slope << " z=" << z << " height=" << height << " -> " << (height + (threshold-z)/slope) << '\n';
-					}
+						if (((i&15) == 0) && ((j&15) == 0)){
+							std::cout << " thr:" << threshold << " slope:" << slope << " z=" << z << " height=" << height << " -> " << (height + (threshold-z)/slope) << '\n';
+						}
 					*/
 					height = height + (threshold - z)/slope;
 					// Adjust!

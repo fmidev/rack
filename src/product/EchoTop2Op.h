@@ -158,23 +158,25 @@ protected:
 	// Main parameter: dBZ threshold.
 	double threshold = 0.0;
 
-	// Weights for interpolative, dry-interpolative, max-limited, min-limited
-	MethodWeights<double> weights;
+	/// Unless NaN, use the value like a measured dBZ
+	double undetectReflectivity = NAN;
 
 	/// Virtual measurement high aloft, towards which reflectivity is expected to decrease.
 	Measurement reference = {-50.0, 15000.0};
 
-	/// Unless NaN, use the value like a measured dBZ
-	double undetectReflectivity = NAN;
+	/// Quality weights for interpolative, dry-interpolative, max-limited, min-limited
+	MethodWeights<double> weights = {1.0, 0.8, 0.6, 0.4, 0.2};
+
+	/// Span for linear decay of weights towards zero
+	double weightDecay = 20.0;
 
 	/// Optional smoothin window. Width (metres) and height (degrees) (also used for reference)
-	RadarWindowGeom avgWindow; // = {0.0,0.0};
+	RadarWindowGeom avgWindow; // = {0.0,0.0}; // check tuple init, + assignment
 
-protected:
-
-	//bool EXTENDED = false;
+	///
 	bool EXTENDED_OUTPUT = true;
 
+	/// Reference point solving by matrix inversion, and debugging
 
 };
 

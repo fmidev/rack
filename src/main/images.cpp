@@ -980,26 +980,33 @@ public:
 
 };
 
-class CmdPaletteOutput : public drain::SimpleCommand<> {
+class CmdPaletteOutput : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdPaletteOutput() : drain::SimpleCommand<>(__FUNCTION__, "Save palette as TXT, JSON or SVG.", "filename", "") {
+	CmdPaletteOutput() : drain::SimpleCommand<std::string>(__FUNCTION__, "Save palette as TXT, JSON or SVG.", "filename", "") {
 	};
 
 	void exec() const {
 
-		drain::Logger mout(__FILE__, __FUNCTION__); // = resources.mout;
-
 		RackContext & ctx = getContext<RackContext>();
 
-		mout.attention("Palette key: ", ctx.paletteKey);
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		mout.info("Palette key: ", ctx.paletteKey);
 
 		const drain::image::Palette & palette = ctx.getPalette();
 
+		// const drain::VariableMap & statusMap = ctx.getStatusMap();
+		drain::StringMapper mapper(RackContext::variableMapper);
+		mapper.parse(ctx.outputPrefix + value);
+		// VariableFormatterODIM<drain::Variable> odimHandler;
+		// std::string filepath
+		drain::FilePath filepath = mapper.toStr(ctx.getStatusMap(), -1, RackContext::variableFormatter);
+
 		if (ctx.formatStr.empty()){
 
-			drain::FilePath filepath(ctx.outputPrefix + value);
+			// drain::FilePath filepath(ctx.outputPrefix + value);
 			if (NodeSVG::fileInfo.checkExtension(filepath.extension)){ // .svg
 				mout.special("writing SVG legend");
 				TreeSVG svg;
@@ -1015,7 +1022,8 @@ public:
 		}
 		else {
 			mout.warn("user defined format, extension not checked: ", ctx.formatStr);
-			drain::Output output(ctx.outputPrefix + value);
+			//drain::Output output(ctx.outputPrefix + value);
+			drain::Output output(filepath);
 			palette.exportFMT(output, ctx.formatStr);
 		}
 

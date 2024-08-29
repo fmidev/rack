@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *   Version 8.9.6
  *   - EchoTop2 sliding window
  *   - Fixed bugs in --cExtract crop parameter, and changed DATA to INPUT (OVERLAP prevailing)
+ *   - Revised --select quantity=... quality handling (QIND for dataset, and /QIND for quantity-specific)
  *
  *   Version 8.9.5
  *   - Added KDP, PHIDP and HCLASS to QuantityMap (--quantityConf)

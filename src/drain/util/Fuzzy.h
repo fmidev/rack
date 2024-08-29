@@ -241,36 +241,25 @@ class FuzzyTriangle : public Fuzzifier<T> {
 
 public:
 
-	/*
-	FuzzyTriangle() : Fuzzifier<T>(__FUNCTION__, "Fuzzy triangle function."){ // : start(start), peak(peak), end(end), scale(scale), _spanLow(start-peak), _spanHigh(end-peak)
-		this->parameters.link("position", this->range.tuple());
-		this->parameters.link("peakPos", this->peakPos);
-		this->parameters.link("scale", this->scale);
-		this->parameters.link("bias", this->bias);
-
-		this->range.set(-1.0, +1.0);
-		this->peakPos = std::numeric_limits<double>::signaling_NaN();
-		// this->setScale(1.0, 0);
-
-		// NOTE: Signaling NAN should throw exeption if peakPos still undefined upon functor calls.
-
-		// set(startPos, endPos, peakPos, scale, bias);
-		// updateBean();
-	};
-	*/
-
-	// std::numeric_limits<double>::signaling_NaN()
 	FuzzyTriangle(double startPos=-1.0, double endPos=+1.0, double peakPos=0.0, double scale = 1.0, T bias = 0) : Fuzzifier<T>(__FUNCTION__, "Fuzzy triangle function.", scale, bias){ // : start(start), peak(peak), end(end), scale(scale), _spanLow(start-peak), _spanHigh(end-peak)
 		this->parameters.link("position", this->range.tuple());
 		this->parameters.link("peakPos", this->peakPos);
 		this->parameters.link("scale", this->scale);
 		this->parameters.link("bias", this->bias);
 
-		//this->range.set(startPos, endPos);
-		//this->setScale(scale, bias);
 		set(startPos, endPos, peakPos, scale, bias);
-		//updateBean();
+
 	};
+
+	FuzzyTriangle(drain::Range<double> range, double scale = 1.0, T bias = 0) : Fuzzifier<T>(__FUNCTION__, "Fuzzy triangle function.", scale, bias){ // : start(start), peak(peak), end(end), scale(scale), _spanLow(start-peak), _spanHigh(end-peak)
+		this->parameters.link("position", this->range.tuple());
+		this->parameters.link("peakPos", this->peakPos);
+		this->parameters.link("scale", this->scale);
+		this->parameters.link("bias", this->bias);
+
+		set(range.min, range.max, (range.min+range.max)/2, scale, bias);
+
+	}
 
 	FuzzyTriangle(const FuzzyTriangle & f): Fuzzifier<T>(f){
 		this->parameters.copyStruct(f.getParameters(), f, *this);
@@ -334,19 +323,18 @@ public:
 
 	};
 
-	/// Starting position
-	/// End position
+	/// Start and end position
 	drain::Range<double> range;
 
 	/// Peak position
 	mutable // adjusted if outside range
-	double peakPos;
+	double peakPos = 0.0;
 
 
 protected:
 
 	mutable
-	drain::Range<double> span;
+	drain::Range<double> span = {-1.0, +1.0};
 
 
 };
