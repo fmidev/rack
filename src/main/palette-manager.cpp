@@ -106,6 +106,11 @@ namespace rack {
 			#include "palette/palette-QIND.inc"
 			;
 
+			// Black and white
+			m["QIND-BW"] =
+			#include "palette/palette-QIND-BW.inc"
+			;
+
 			m["RATE"] =
 			#include "palette/palette-RATE.inc"
 			;

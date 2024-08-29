@@ -800,10 +800,9 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 						}
 					}
 					else {
+
 						// INTERPOLATION_DRY - interpolate between strong and "dry" point.
 						// overshooting, "DRY TOP"
-
-
 						if (USE_INTERPOLATION_DRY){ // && !REFERENCE_ONLY
 							weakMsrm->reflectivity = undetectReflectivity;
 							slope = getSlope(*weakMsrm, *strongMsrm);
