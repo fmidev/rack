@@ -511,6 +511,12 @@ void Palette::loadTXT(std::istream & ifstr){
 			}
 			++cit;
 		}
+
+		// FILL remaining (esp. gray)
+		while (cit != entry.color.end()){
+			*cit = d;
+			++cit;
+		}
 		//colours.toSequence(entry.color);
 
 
