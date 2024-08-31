@@ -91,6 +91,8 @@ struct PanelConfSVG {
 	std::string groupName;
 	int maxPerGroup = 10;
 	bool absolutePaths = false;
+
+	// Currently, applications are recommended to handle "false" and "none". Or "auto"?
 	std::string title;
 	FontSizes fontSize;
 

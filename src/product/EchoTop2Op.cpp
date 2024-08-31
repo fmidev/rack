@@ -756,11 +756,9 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 							height = strongMsrm->height + slope*(threshold - strongMsrm->reflectivity); // metres
 
 							dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
-							//dstQuality.data.put<int>(address, USE_INTERPOLATION ? WEIGHTS.interpolation : WEIGHTS.extrapolation_up);
 							dstQuality.data.put<int>(address, WEIGHT);
 //#ifndef NDEBUG
 							if (EXTENDED_OUTPUT){
-								// dstClass.data.put<int>(address, USE_INTERPOLATION ? CLASSES.interpolation : CLASSES.extrapolation_up);
 								dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/slope))); // dBZ/km
 								dstClass.data.put<int>(address, CLASS);
 							}
@@ -806,7 +804,6 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 						if (USE_INTERPOLATION_DRY){ // && !REFERENCE_ONLY
 							weakMsrm->reflectivity = undetectReflectivity;
 							slope = getSlope(*weakMsrm, *strongMsrm);
-							// slope = getSlope(weakMsrm->height, strongMsrm->height, undetectReflectivity, strongMsrm->reflectivity);
 							WEIGHT = WEIGHTS.interpolation_dry * std::max(weights.extrapolation_up, fuzzyTriangle(strongMsrm->reflectivity));
 							CLASS  = CLASSES.interpolation_dry;
 						}
@@ -814,14 +811,12 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 							slope = getSlope(reference, *strongMsrm);
 							WEIGHT = WEIGHTS.extrapolation_up * std::max(weights.extrapolation_down, fuzzyTriangle(strongMsrm->reflectivity));
 							CLASS  = CLASSES.extrapolation_up;
-							// slope = getSlope(reference.height, strongMsrm->height, reference.reflectivity, strongMsrm->reflectivity);
 						}
 
 						height = strongMsrm->height + slope*(threshold - strongMsrm->reflectivity); // metres
 
 						dstEchoTop.data.put(address, limit(dstEchoTop.odim.scaleInverse(odimVersionMetricCoeff * height)));
 						dstQuality.data.put(address, WEIGHT);
-						// dstQuality.data.put(address, USE_INTERPOLATION_DRY ? WEIGHTS.interpolation_dry : WEIGHTS.extrapolation_up);
 
 						if (USE_AVERAGING){
 							// No limiter needed
@@ -833,7 +828,6 @@ void EchoTop2Op::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataS
 						if (EXTENDED_OUTPUT){
 							dstSlope.data.put(address, limitSlope(dstSlope.odim.scaleInverse(1000.0/ slope))); // dBZ/km ALERT div by 0 RISK
 							dstClass.data.put<int>(address, CLASS);
-							// dstClass.data.put<int>(address, USE_INTERPOLATION_DRY ? CLASSES.interpolation_dry : CLASSES.extrapolation_up);
 						}
 // #endif
 						if (SOLVE_REF_POINT){
