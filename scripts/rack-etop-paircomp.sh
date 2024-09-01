@@ -79,8 +79,8 @@ geoconf="--execFile conf/${BBOX_CONF}-DATA.json"
 
 
 
-etop="--pEchoTop2 ${ETOP},reference=${Z}:${H}${weights}${avgWindow}"
-etop_basic="--pEchoTop2 ${ETOP}"
+etop="--pEchoTop ${ETOP},reference=${Z}:${H}${weights}${avgWindow}"
+etop_basic="--pEchoTop ${ETOP}"
 
 # Create class images (dependent on ETOP_THR and WEIGHTS, not on referemce(Z,H)
 for INFILE in $*; do

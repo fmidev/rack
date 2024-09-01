@@ -28,6 +28,8 @@ case $LEGEND in
     right)
 	legendRight='--legendOut .svg'
 	;;
+    ''|none)
+	;;
     *)
 	echo "Unknown legend: $LEGEND"
 	exit 1
@@ -36,7 +38,7 @@ esac
 
 echo "$LEGEND  $legendLeft $legendRight "
 
-script="";
+script="--pEchoTop $ETOP,avgWindow=${AVG_WINDOW}";
 
 QUANTITIES=${QUANTITIES:-'HGHT,/CLASS-ETOP,QIND'}
 
@@ -76,7 +78,7 @@ fi
 
 #orient=${ORIENT:+",orientation=$ORIENT"}
 
-cmd="rack --odim 2.2 --outputPrefix '$PWD/${PREFIX:+$PREFIX-}\${NOD}-\${what:quantity}' --outputConf svg:group='${GROUP},absolutePaths=true,orientation=$ORIENT,title=$TITLE' --script '--pEchoTop 20,avgWindow=${AVG_WINDOW} $script --cReset' $* --outputPrefix '' -o ${OUTFILE_BASE}.svg"
+cmd="rack --odim 2.2 --outputPrefix '$PWD/${PREFIX:+$PREFIX-}\${NOD}-\${what:quantity}' --outputConf svg:group='${GROUP},absolutePaths=true,orientation=$ORIENT,title=$TITLE' --script ' $script --cReset' $* --outputPrefix '' -o ${OUTFILE_BASE}.svg"
 echo $cmd
 eval $cmd &> cmd.log
 
