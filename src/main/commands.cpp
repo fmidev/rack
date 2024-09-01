@@ -2301,7 +2301,9 @@ public:
 
 	std::string quantity;
 	std::string encoding;
-	mutable double zero;
+
+	// mutable double zero;
+	mutable std::string zero;
 
 	// Odim used for interface only. Zero used internally.
 
@@ -2309,6 +2311,7 @@ public:
 		getParameters().separator = ':';
 		getParameters().link("quantity", quantity = "", "quantity (DBZH,VRAD,...)"); // and storage type (C,S,d,f,...)");
 		getParameters().link("encoding", encoding = "", EncodingODIM().getValues());
+		getParameters().link("zero", zero = "", "number or NaN");// what about max? std::numeric_limits<double>::max()
 		/*
 		//getParameters().link("type", odim.type, "C", "storage type (C,S,d,f,...)");
 		getParameters().link("gain", odim.scaling.scale = 0.0, "scaling coefficient");
@@ -2316,7 +2319,6 @@ public:
 		getParameters().link("undetect", odim.undetect = 0.0, "marker");
 		getParameters().link("nodata", odim.nodata = 0.0, "marker");
 		*/
-		getParameters().link("zero", zero = std::numeric_limits<double>::max(), "value");// what about max?
 
 	}
 
@@ -2376,8 +2378,8 @@ public:
 			}
 		}
 
-		//quantityType.clear();
-		//double zero = std::numeric_limits<double>::min();  // what about max?
+		// quantityType.clear();
+		// double zero = std::numeric_limits<double>::min();  // what about max?
 
 	}
 
@@ -2388,7 +2390,6 @@ protected:
 	EncodingODIM odim;
 
 	//double zero;
-
 
 	void editQuantityConf(const std::string & quantity) const { //, const std::string & type, const std::string & args) const {
 
@@ -2405,8 +2406,11 @@ protected:
 		QuantityMap & m = getQuantityMap();
 		Quantity & q = m[quantity];
 
-		//mout.warn("base: " , q );
-
+		// mout.warn("base: " , q );
+		// double z = atoi(zero.c_str());
+		// mout.error("Zero:", z);
+		q.setZero(zero);
+		/*
 		if (zero != std::numeric_limits<double>::max()){
 			mout.warn("setting zero " , zero );
 			if (std::isnan(zero)) // DOES NOT WORK.. convert toStr to double NaN
@@ -2415,9 +2419,10 @@ protected:
 				q.setZero(zero);
 			zero = std::numeric_limits<double>::max();
 		}
+		*/
 
 
-		if (!encoding.empty()){
+		if (!encoding.empty()){ // MOVE to quantity?
 			if (!q.defaultType)
 				q.defaultType = 'C';
 			// Note: resets scaling; expect it to be reset here

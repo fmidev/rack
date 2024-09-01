@@ -977,8 +977,14 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 		}
 	}
 
-	if (detailed)
-		ostr << "  (Section: " << FlagResolver::getKeys(sections,cmd.section, ',') << ')';
+	if (detailed){
+		ostr << "  (";
+		ostr << "section: " << FlagResolver::getKeys(sections,cmd.section, ',');
+		if ((separator) && (separator!=',')){
+			ostr << ", separator: '" << separator << "'";
+		}
+		ostr << ')';
+	}
 
 	ostr << '\n';
 

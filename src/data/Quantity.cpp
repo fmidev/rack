@@ -70,6 +70,15 @@ Quantity::Quantity(const std::string & name,
 
 }
 
+void Quantity::setZero(const std::string & value){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	std::stringstream sstr(value);
+	sstr >> undetectValue;
+	// undetectValue = value;
+}
+
 
 EncodingODIM & Quantity::set(char typecode) {
 

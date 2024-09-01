@@ -60,7 +60,7 @@ public:
 	std::string name;
 
 	/// Default storage type
-	char defaultType;
+	char defaultType = '\0';
 
 	drain::Range<double> physicalRange;
 
@@ -93,14 +93,6 @@ public:
 			char defaultType='\0',
 			const list_t & l = {},
 			double undetectValue = std::numeric_limits<double>::signaling_NaN());
-	/*
-				//map_t(m),
-				name(name),
-				defaultRange(range),
-				defaultType(defaultType),
-				undetectValue(undetectValue) {
-	}
-	*/
 
 
 	/// Declare encoding (a storage type and scaling) for this quantity.
@@ -149,19 +141,27 @@ public:
 		return !std::isnan(undetectValue);
 	}
 
-	/// Sets neutral value for purposes of interpolation.
+	/// Set a value to be used like a real measurement, for example in interpolation.
+	/**
+	 *
+	 *
+	 *   \param value - substitute for \c undetect marker value, or signaling_NaN
+	 */
 	inline
 	void setZero(double value){
-		//hasUndetectValue = true;
 		undetectValue = value;
 	}
 
-	/// Sets neutral value for purposes of interpolation.
+	/// Set a value to be used like a real measurement, for example in interpolation.
+	/**
+	 *   \param value - substitute for \c undetect marker value.
+	 */
+	void setZero(const std::string & value);
+
+	/// Confirm that no value should be used as a substitute of undetected value.
 	inline
 	void unsetZero(){
 		undetectValue = std::numeric_limits<double>::signaling_NaN();
-		// hasUndetectValue = false;
-		//undetectValue = std::numeric_limits<double>::min();
 	}
 
 	/// Sets absolute or typical range of this quantity.
