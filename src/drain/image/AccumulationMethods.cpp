@@ -144,9 +144,9 @@ void AccumulationMethod::extractValue(const AccumulationArray & accArray, const 
 		}
 	}
 	else {
-		mout.attention("Applying crop area: ", cropArea, " dst: ", dst.getGeometry());
+		mout.info("Applying crop area: ", cropArea, " dst: ", dst.getGeometry());
 		size_t addr;
-		const size_t addrMax = accArray.getGeometry().getArea();
+		// const size_t addrMax = accArray.getGeometry().getArea();
 		for (unsigned int j=0; j<dst.getHeight(); ++j) {
 			for (unsigned int i=0; i<dst.getWidth(); ++i) {
 				addr = accArray.address(cropArea.lowerLeft.x+i, cropArea.upperRight.y+j);
@@ -379,7 +379,7 @@ void AverageMethod::add(AccumulationArray & accArray, const size_t i, double val
 	accArray.count.at(i)  += 1;
 	if (weight > 0.0){
 		accArray.data.at(i)   += value;
-		accArray.weight.at(i) += 1.0; //weight;
+		accArray.weight.at(i) += 1.0; // override weight;
 		accArray.data2.at(i)  += value*value;
 	}
 
@@ -391,7 +391,7 @@ void AverageMethod::add(AccumulationArray & accArray, const size_t i, double val
 	if (weight > 0.0){
 		double c = static_cast<double>(count);
 		accArray.data.at(i)   += c*value;
-		accArray.weight.at(i) += c;
+		accArray.weight.at(i) += c;// override *weight;
 		accArray.data2.at(i)  += c*value*value;
 	}
 
@@ -451,8 +451,8 @@ void AverageMethod::extractValue(const AccumulationArray & accArray, const Accum
 						value = accArray.data.at(addr) / weight;  // because count is incremented also at undetectValue weight
 						// if (accArray.weight.at(i) > 0.0){
 						// value = accArray.data.at(i) / static_cast<double>(count);
-						weight = 1.0;
-						coder.encode(value, weight);  // WEIGHT unused
+						weight = 1.0; // UNNEEDED, unused below (by any coder, including DataCoder )
+						coder.encode(value, weight);  // WEIGHT unused below.
 						dst.put(i, j, value );
 					}
 					else {
@@ -473,7 +473,8 @@ void AverageMethod::extractWeight(const AccumulationArray & accArray, const Accu
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	double count;
+	//double count;
+	unsigned int count;
 	double weight = 0.0;
 	coder.encodeWeight(weight);
 	const double weight0 = weight;
@@ -483,9 +484,9 @@ void AverageMethod::extractWeight(const AccumulationArray & accArray, const Accu
 		const size_t s = dst.getVolume();
 		for (size_t addr = 0; addr < s; ++addr) {
 			count = accArray.count.at(addr);
-			if (count > 0.0){
+			if (count > 0){
 				/// Problem: with undetectValue weight, only counter has been incremented
-				weight = accArray.weight.at(addr)/count;
+				weight = accArray.weight.at(addr)/static_cast<double>(count);
 				coder.encodeWeight(weight);
 				dst.put(addr, weight );
 			}
@@ -502,9 +503,9 @@ void AverageMethod::extractWeight(const AccumulationArray & accArray, const Accu
 			for (unsigned int i=0; i<dst.getWidth(); ++i) {
 				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
 				count = accArray.count.at(addr);
-				if (count > 0.0){
+				if (count > 0){
 					/// Problem: with undetectValue weight, only counter has been incremented
-					weight = accArray.weight.at(addr)/count;
+					weight = accArray.weight.at(addr)/static_cast<double>(count); // count;
 					coder.encodeWeight(weight);
 					dst.put(i, j, weight );
 				}
@@ -605,8 +606,16 @@ void WeightedAverageMethod::add(AccumulationArray & accArray, const size_t i, do
 		//weight = 1.0;
 		accArray.weight.at(i) += weight; // mean weight will reflect input weights
 		// Now, virtually weight=1.0; // = weight^0
-		accArray.data.at(i)  += weight*value;
-		accArray.data2.at(i) += weight*value*value;
+
+		/* if (r == 0.0){ // weight still stored above, for avg of weight
+			accArray.data.at(i)  += value;
+			accArray.data2.at(i) += value*value;
+		}
+		else */
+		{
+			accArray.data.at(i)  += weight*value;
+			accArray.data2.at(i) += weight*value*value;
+		}
 	}
 	/// else (r==0, weight==0) just ++count, see above.
 
@@ -629,8 +638,16 @@ void WeightedAverageMethod::add(AccumulationArray & accArray, const size_t i, do
 			weight = pow(weight, r);
 
 		accArray.weight.at(i) += c*weight; // mean weight will reflect input weights
-		accArray.data.at(i)   += c*weight*value;
-		accArray.data2.at(i)  += c*weight*value*value;
+
+		/* if (r == 0.0){ // weight still stored above, for avg of weight
+			accArray.data.at(i)   += c*value;
+			accArray.data2.at(i)  += c*value*value;
+		}
+		else */
+		{
+			accArray.data.at(i)   += c*weight*value;
+			accArray.data2.at(i)  += c*weight*value*value;
+		}
 	}
 	/// else (r==0, weight==0), and just ++count, see above.
 
@@ -661,7 +678,16 @@ void WeightedAverageMethod::extractValue(const AccumulationArray & accArray, con
 				if (weight > minWeight){
 
 					// New scheme:
-					value = accArray.data.at(addr) / weight;
+					/*
+					if (r == 0.0){
+						value = accArray.data.at(addr) / accArray.count.get<double>(addr); // distorts?
+					}
+					else
+					*/
+					{
+						value = accArray.data.at(addr) / weight;
+					}
+
 
 					// NEW 2017: if p==1, allow negative values (and exponent r in weight)
 					if (USE_P){
@@ -695,7 +721,13 @@ void WeightedAverageMethod::extractValue(const AccumulationArray & accArray, con
 					if (weight > minWeight){
 
 						// New scheme:
-						value = accArray.data.at(addr) / weight;
+						/* if (r == 0.0){ // pow(0)
+							value = accArray.data.at(addr) / accArray.count.get<double>(addr); // distorts?
+						}
+						else */
+						{
+							value = accArray.data.at(addr) / weight;
+						}
 
 						// NEW 2017: if p==1, allow negative values (and exponent r in weight)
 						if (USE_P){

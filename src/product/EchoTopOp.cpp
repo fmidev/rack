@@ -525,7 +525,7 @@ void EchoTopOp::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSe
 		CLASSES.interpolation_dry  = cp.getEntryByCode("interpolated.undetect").first; //  cp.getEntryByCode("overshooting").first;
 		CLASSES.extrapolation_up   = cp.getEntryByCode("strong.extrapolated").first; // cp.getEntryByCode("undershooting").first;
 		CLASSES.extrapolation_down = cp.getEntryByCode("weak").first;
-		CLASSES.error              = cp.getEntryByCode("error").first; // could be nodata as well
+		//CLASSES.error              = cp.getEntryByCode("error").first; // could be nodata as well
 
 		dstClass.setGeometry(dstEchoTop.odim);
 		dstSlope.setGeometry(dstEchoTop.odim);

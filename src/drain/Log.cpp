@@ -223,100 +223,14 @@ char Logger::MARKER = '@'; // for filtering output
 
 Logger::oper Logger::endl;
 
-/*
-Logger::Logger(const char *filename, const std::string & className):
-				message(*this),
-				timing(false),
-				monitor(getLog()),
-				level(LOG_NOTICE),
-				time(getLog().getMilliseconds()),
-				notif_ptr(NULL){
-	setPrefix(filename, className.c_str());
-}
-
-Logger::Logger(Log &log, const char *filename, const std::string & className):
-				message(*this),
-				timing(false),
-				monitor(log),
-				level(LOG_NOTICE),
-				time(log.getMilliseconds()),
-				notif_ptr(NULL){
-	setPrefix(filename, className.c_str());
-}
-*/
-
-/*
-Logger & Logger::timestamp(const std::string & label){
-	//initMessage(LOG_DEBUG);
-	// *(this) << "TIME#" << label << Logger::endl;
-	timing = TIMING;
-	std::cerr << "TIMING:" << MARKER << "<li>" << label << "...<ol>" << '\n';
-	//std::cerr << << label;
-	return *this;
-}
-
-Logger & Logger::timestamp(){
-	return timestamp(this->prefix);
-	//initMessage(LOG_DEBUG);
-	//  *(this) << "TIME# " << time;
-	// return *this;
-}
-*/
-
 Logger::~Logger(){
 	// Change absolute start time to elapsed time.
 	//timestamp(); // ?
 	endTiming();
 }
 
-/*
-void Logger::setPrefixOLD(const char *functionName, const char *name){
 
-	if (name){
-
-		if (*name == '\0')
-			return;
-
-		const char * s2 = strrchr(name, '/');
-		if (s2 == nullptr)
-			s2 = name;
-		else
-			++s2;
-
-		/// Start from s2, because dir may contain '.'
-		const char * s3 = strrchr(s2, '.');
-		if (s3 == nullptr)
-			//sstr << s2;
-			prefix.assign(s2);
-		else
-			prefix.assign(s2, s3-s2);
-			//sstr.put("s2", size_t(s3-s2));
-
-		prefix.append(":");
-		//sstr << ':';
-	}
-	//sstr << ;
-	prefix.append(functionName);
-}
-*/
-
-/*
-void Logger::initMessage(level_t level){
-	notif_ptr = NULL;
-	this->level = level;
-	message.str("");
-}
-
-void Logger::initMessage(level_t level, const Notification & notif){
-	notif_ptr = &notif;
-	this->level = level;
-	message.str("");
-}
-*/
 Notification & getNotif(Logger::level_t level){
-
-
-
 
 	typedef std::map<int,Notification> notif_dict_t;
 	static notif_dict_t notifDict;
@@ -345,6 +259,7 @@ Logger & Logger::initMessage(level_t level){
 	this->notif_ptr = & getNotif(level);
 	this->level = level;
 	this->message.str("");
+	this->message << std::boolalpha;
 	return *this;
 }
 

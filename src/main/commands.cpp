@@ -2303,7 +2303,7 @@ public:
 	std::string encoding;
 
 	// mutable double zero;
-	mutable std::string zero;
+	mutable std::string zero;//  = "*";
 
 	// Odim used for interface only. Zero used internally.
 
@@ -2311,7 +2311,7 @@ public:
 		getParameters().separator = ':';
 		getParameters().link("quantity", quantity = "", "quantity (DBZH,VRAD,...)"); // and storage type (C,S,d,f,...)");
 		getParameters().link("encoding", encoding = "", EncodingODIM().getValues());
-		getParameters().link("zero", zero = "", "number or NaN");// what about max? std::numeric_limits<double>::max()
+		getParameters().link("zero", zero, "number or NaN");// what about max? std::numeric_limits<double>::max()
 		/*
 		//getParameters().link("type", odim.type, "C", "storage type (C,S,d,f,...)");
 		getParameters().link("gain", odim.scaling.scale = 0.0, "scaling coefficient");
@@ -2409,7 +2409,9 @@ protected:
 		// mout.warn("base: " , q );
 		// double z = atoi(zero.c_str());
 		// mout.error("Zero:", z);
-		q.setZero(zero);
+		if (!zero.empty()){
+			q.setZero(zero);
+		}
 		/*
 		if (zero != std::numeric_limits<double>::max()){
 			mout.warn("setting zero " , zero );
@@ -2447,7 +2449,7 @@ protected:
 
 			mout.note("set default type for :" , quantity , '\n' , q );
 		}
-		else {  // No type given, dump quantity conf
+		else if (zero.empty()){  // No type or zero given, dump quantity conf
 			std::cout << quantity << '\n';
 			// if (params != quantity)
 			//	std::cout << " *\t" << q.get(q.defaultType) << '\n';
@@ -2455,6 +2457,8 @@ protected:
 			// drain::Sprinter::toStream(std::cout, q, drain::Sprinter::cmdLineLayout);
 			std::cout << q;
 		}
+
+		zero = "";
 
 	}
 

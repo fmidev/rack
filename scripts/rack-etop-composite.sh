@@ -48,7 +48,7 @@ crop=${CROP:+":bbox=$CROP"}
 
 #TITLE='\${what:date|%Y-%m-%d}T\${what:time|%H:%M}Z  – $CMETHOD – \${how:nodes}'
 TITLE=none
-conf="--odim 2.2 --outputConf svg:absolutePaths=true,title='$TITLE' --outputPrefix '$PWD/'" # \${NOD}-\${what:quantity}-
+conf="--odim 2.2 --quantityConf HGHT:zero=MIKA --undetectWeight 0.1 --outputConf svg:absolutePaths=true,title='$TITLE' --outputPrefix '$PWD/'" # \${NOD}-\${what:quantity}-
 
 #for cmethod in ${CMETHOD//:/ }; do
 

@@ -1,12 +1,6 @@
 #!/bin/bash
 
 
-dbzh=${CLASS:+"-Q DBZH -c --palette 'DBZH' -o -z.png"}
-hght=" -Q HGHT -c --palette 'HGHT' -o png  --legendOut -h.svg "
-#class=${CLASS:+"-Q /CLASS-ETOP -c --palette 'CLASS-ETOP' -o png"}
-class="-Q /CLASS-ETOP -c --palette 'CLASS-ETOP' -o png --legendOut -c.svg"
-qind="-Q QIND -c -o -q.png --paletteIn QIND-BW --legendOut -q.svg"
-
 # interpolation;
 # interpolation_dry;  
 # extrapolation_up; 
@@ -14,6 +8,58 @@ qind="-Q QIND -c -o -q.png --paletteIn QIND-BW --legendOut -q.svg"
 # clear;
 	
 WEIGHTS=${WEIGHTS:-'1:.8:.6:.4:.2'}
+
+avgWindow=${AVG_WINDOW:+",avgWindow=$AVG_WINDOW"}
+avgLabel=${AVG_WINDOW:+"-avg${AVG_WINDOW/:/x}"}
+
+# For SVG images
+PREFIX=${PREFIX:-'svg'}
+
+GROUP=${GROUP:-'${NOD}'}
+ORIENT=${ORIENT:-'HORZ'}
+TITLE=${TITLE:-'none'}
+
+#legend=${LEGEND:+'--legendOut .svg'}
+
+case $LEGEND in
+    left)
+	legendLeft='--legendOut .svg'
+	;;
+    right)
+	legendRight='--legendOut .svg'
+	;;
+    *)
+	echo "Unknown legend: $LEGEND"
+	exit 1
+	;;
+esac
+
+echo "$LEGEND  $legendLeft $legendRight "
+
+script="";
+
+QUANTITIES=${QUANTITIES:-'HGHT,/CLASS-ETOP,QIND'}
+
+for i in ${QUANTITIES//,/ }; do
+    q=${i//\//}
+    case $i in
+	QIND)
+	    script="$script --paletteIn QIND-BW -Q QIND $legendLeft -Q QIND -c -o .png --paletteIn QIND-BW $legendRight"
+	;;
+	*)
+	    script="$script -Q $i -c --palette $q $legendLeft -o .png  $legendRight"
+	;;
+    esac
+done
+
+
+
+#dbzh=${CLASS:+"-Q DBZH -c --palette 'DBZH' -o -z.png"}
+hght=" -Q HGHT -c --palette 'HGHT' -o .png  --legendOut .svg "
+#class=${CLASS:+"-Q /CLASS-ETOP -c --palette 'CLASS-ETOP' -o png"}
+class="-Q /CLASS-ETOP -c --palette 'CLASS-ETOP' -o .png --legendOut .svg"
+qind="-Q QIND -c -o .png --paletteIn QIND-BW --legendOut .svg"
+#script="$hght $class $qind"
 
 INPUTS=( $* )
 
@@ -28,11 +74,16 @@ if [ ${#INPUTS} == 0 ]; then
     exit 1
 fi
 
+#orient=${ORIENT:+",orientation=$ORIENT"}
 
-cmd="rack --odim 2.2 --outputPrefix '$PWD/\${NOD}-\${what:quantity}.' --outputConf svg:group='\${NOD},absolutePaths=true' --script '--pEchoTop 20,avgWindow=15000:7 $hght $class $qind ' $* --outputPrefix '' -o ${OUTFILE_BASE}.svg"
+cmd="rack --odim 2.2 --outputPrefix '$PWD/${PREFIX:+$PREFIX-}\${NOD}-\${what:quantity}' --outputConf svg:group='${GROUP},absolutePaths=true,orientation=$ORIENT,title=$TITLE' --script '--pEchoTop 20,avgWindow=${AVG_WINDOW} $script --cReset' $* --outputPrefix '' -o ${OUTFILE_BASE}.svg"
 echo $cmd
 eval $cmd &> cmd.log
 
+if [ $? != 0 ]; then
+   cat cmd.log
+   exit 1
+fi
 
 case $OUTFILE_EXT in
     svg)

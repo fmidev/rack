@@ -1,6 +1,7 @@
 # CLASS
+# Interpolation
 
-# Class indices (~thresholds) are also quality index values 0...255.
+# Class indices (~thresholds) are also quality index values?
 
 #nodata
 @ 255.0	255.0	255.0
@@ -9,9 +10,6 @@
 @ 0.0	0.0	0.0
 
 
-# error
-# Error
-5.0	192.0	192.0	192.0
 
 # Weak top
 # weak
@@ -32,4 +30,7 @@
 240.0	255.0	64.0	0.0
 
 
+# error
+# Error
+# 5.0	192.0	192.0	192.0
 

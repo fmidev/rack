@@ -72,11 +72,15 @@ Quantity::Quantity(const std::string & name,
 
 void Quantity::setZero(const std::string & value){
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	// drain::Logger mout(__FILE__, __FUNCTION__);
 
 	std::stringstream sstr(value);
 	sstr >> undetectValue;
-	// undetectValue = value;
+	if (sstr.fail()){
+		undetectValue = std::numeric_limits<double>::signaling_NaN();
+	}
+	// mout.error(undetectValue, " good:", sstr.good(), ", bad:", sstr.bad(), " fail:", sstr.fail());
+
 }
 
 
