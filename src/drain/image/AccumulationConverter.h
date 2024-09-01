@@ -54,38 +54,40 @@ public:
 	virtual
 	~AccumulationConverter(){};
 
-	/// Converts storage data containing marker codes etc to natural scale. Returns true if data is valid for use, otherwise false.
-	inline
-	virtual
+	/// Converts storage data to natural scale.
+	/**
+	 *   \param value - storage data, possibly containing marker codes
+	 *   \return - true if data is valid for use, otherwise false.
+	 */
+	virtual inline
 	bool decode(double & value) const { return true; };
 
-	/// Converts storage data containing marker codes etc to natural scale. Returns true if data is valid for use, otherwise false.
-	inline
-	virtual
+	/// Converts storage data, possibly containing marker codes, to natural scale. Returns true if data is valid for use, otherwise false.
+	/// Converts storage data to natural scale.
+	/**
+	 *   \param value - storage data, possibly containing marker codes
+	 *   \return - true if data is valid for use, otherwise false.
+	 */
+	virtual inline
 	bool decode(double & value, double & weight) const { return true; };
 
-	/// Converts natural-scale data to storage data containing marker codes etc.
-	inline
-	virtual
+	/// Converts natural-scale data to storage data, applying marker codes if needed.
+	virtual	inline
 	void encode(double & value, double & weight) const {};
 
-	/// Converts natural-scale data to storage data containing marker codes etc.
-	inline
-	virtual
+	/// Converts natural-scale data to storage data, applying marker codes if needed.
+	virtual	inline
 	void encodeWeight(double & weight) const {};
 
-	/// Converts natural-scale data to storage data containing marker codes etc.
-	inline
-	virtual
+	/// Converts natural-scale data to storage data, applying marker codes if needed.
+	virtual	inline
 	void encodeCount(double & weight) const {};
 
-	inline
-	virtual
+	virtual	inline
 	void encodeStdDev(double & stdDev) const {};
 
 	/// When using unsigned types, encoding typically requires adding a positive bias and scaling the data.
-	inline
-	virtual
+	virtual	inline
 	void encodeDiff(double & diff) const {};
 
 	/// Returns the value when weight==0.0. Physically, this relates to results obtained under measurement accuracy.

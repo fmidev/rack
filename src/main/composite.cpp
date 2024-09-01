@@ -750,7 +750,7 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		}
 
 		mout.info("crop: ", cropImage, " (image coords)");
-		mout.advice<LOG_NOTICE>("Matching size: --cSize ", cropImage.getWidth(), ',', cropImage.getHeight());
+		mout.advice<LOG_NOTICE>("Matching size: --cSize ", cropImage.getWidth(), ',', -cropImage.getHeight());
 
 	}
 
@@ -835,23 +835,23 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 				where["BBOX_native"].setType(typeid(long int));
 			where["BBOX_native"] = composite.getBoundingBoxM().toVector();
 
-			where["BBOX_data"].setType(typeid(double));
-			where["BBOX_data"] = bboxDataD.tuple(); // in-place
+			where["BBOX_input"].setType(typeid(double));
+			where["BBOX_input"] = bboxDataD.tuple(); // in-place
 
 			if (!composite.isLongLat()){
 				drain::Rectangle<double> bn;
 				composite.deg2m(bboxDataD.lowerLeft,  bn.lowerLeft);
 				composite.deg2m(bboxDataD.upperRight, bn.upperRight);
-				where["BBOX_data_native"].setType(typeid(int));
-				where["BBOX_data_native"] = bn.tuple(); // toVector();
+				where["BBOX_input_native"].setType(typeid(int));
+				where["BBOX_input_native"] = bn.tuple(); // toVector();
 			}
 
 			drain::Rectangle<int> bboxDataPix;
 			composite.deg2pix(bboxDataD.lowerLeft, bboxDataPix.lowerLeft);
 			composite.deg2pix(bboxDataD.upperRight, bboxDataPix.upperRight);
-			where["BBOX_data_pix"].setType(typeid(short int));
-			where["BBOX_data_pix"] = bboxDataPix.tuple(); // toVector();
-			where["SIZE_data"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
+			where["BBOX_input_pix"].setType(typeid(short int));
+			where["BBOX_input_pix"] = bboxDataPix.tuple(); // toVector();
+			where["SIZE_input"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
 
 			where["BBOX_overlap"] = bboxDataOverlapD.tuple();
 			composite.deg2pix(bboxDataOverlapD.lowerLeft,  bboxDataPix.lowerLeft);

@@ -2,7 +2,7 @@
 
 MIT License
 
-Copyright (c) 2017 FMI Open Development / Markus Peura, first.last@fmi.fi
+Copyright (c) 2024 FMI Open Development / Markus Peura, first.last@fmi.fi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,74 +28,180 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef ECHOTOP2_OP_H_
-#define ECHOTOP2_OP_H_
 
-//#include <algorithm>
-//#include "RackOp.h"
-#include "CumulativeProductOp.h"
+#ifndef ECHO_TOP2_OP
+#define ECHO_TOP2_OP
 
-namespace rack
-{
+
+#include "radar/RadarWindows.h"
+
+#include "PolarProductOp.h"
 
 using namespace drain::image;
 
+namespace rack {
 
-/// Height of echo exceeding a reflectivity threshold.
-class EchoTopOp : public CumulativeProductOp {
+/// A single measurement (bin), with height coordinate and measurement value (reflectivity).
+/**
+ *
+ */
+struct Measurement : public drain::UniTuple<double,2> {
 
-public:
+	double & reflectivity;
+	double & height;
 
-	EchoTopOp(bool top = true, double minDBZ = 20.0, double dbzRef = -50.0, double hRef = 15000.0, bool aboveSeaLevel=true) : //, const std::string & type="C", double gain=0.01, long int nbins=0, double rscale=0) :
-		CumulativeProductOp(__FUNCTION__, "Computes maximum (or minimum) altitude of echo.", "WAVG,8,1"), top(top) {
-
-		parameters.link("minDBZ", this->minDBZ = minDBZ, "dBZ");
-		parameters.link("dbzReference", this->dbzRef = dbzRef, "dBZ");
-		parameters.link("altitudeReference", this->hRef = hRef, "metres");
-		parameters.link("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel, "false=radar site|true=sea level");
-
-		odim.product = "ETOP";
-		odim.quantity = "HGHT";
-		odim.type = "C";
-
-		dataSelector.setQuantities("^DBZH$");
-
+	Measurement(double reflectivity=NAN, double height=0.0) : reflectivity(this->next()), height(this->next()){
+		this->set(reflectivity, height);
 	};
 
-	virtual inline
-	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const {
-		return odim.quantity;
+	Measurement(const Measurement & p): reflectivity(this->next()), height(this->next()){
+		this->set(p);
+	};
+};
+
+/*
+struct Measurement {
+
+	/// Pointer to data array (DBZH)
+	const Data<src_t> * dataPtr = nullptr;
+
+	/// Index of the bin at the ground distance D of all the elevation beams considered
+	size_t binIndex = 0;
+
+	/// Height from the ground surface (from radar site, ASL)
+	double height = 0;
+
+	/// Reflectivity observed at the current bin.
+	double reflectivity = NAN;
+
+	/// Reliability/confidence of the measurement value, maximal (1.0) when reflectivity is the threshold value.
+	// double quality = 0.0;
+};
+*/
+
+/**
+ *  \tparam T - double for interface (0.0..1.0), unsigned-char for internal encoding.
+ */
+template <class T>
+struct MethodWeights : public drain::UniTuple<T,5> {
+
+	typedef T value_t;
+
+	/// Highest to lowest certainty
+	T & interpolation;
+	T & interpolation_dry;  // beam over Z < Z_thr
+	T & extrapolation_up; // truncated strong echo underShooting highest beam Z > Z_thr
+	T & extrapolation_down;
+	T & clear;   // same as undetect, but needs a quality index value
+	T error = 0; // needs a quality index value (0)
+
+	MethodWeights() : interpolation(this->next()), interpolation_dry(this->next()), extrapolation_up(this->next()), extrapolation_down(this->next()), clear(this->next()){
+	};
+
+	template<typename ... TT>
+	MethodWeights(const TT &... args) : interpolation(this->next()), interpolation_dry(this->next()), extrapolation_up(this->next()), extrapolation_down(this->next()), clear(this->next()){
+		this->set(args...);
+	};
+
+	MethodWeights(const MethodWeights & p): drain::UniTuple<double,5>(p),
+			interpolation(this->next()), interpolation_dry(this->next()), extrapolation_up(this->next()), extrapolation_down(this->next()), clear(this->next()) {
+	};
+
+	/*
+	inline
+	bool useInterpolation() const {
+		return (interpolation > overShooting);
 	}
+	*/
 
-	double minDBZ;
-	double dbzRef; // = -50.0;
-	double hRef; // = 15000.0;
-
-	//bool aboveSeaLevel;
-
-	const bool top;
-
-
-
-protected:
-
-	virtual
-	void updateODIM(PolarODIM & odim) const {
-		// odim.prodpar = altitude // FAILS because prodpar is an std::string.
-		odim["what:prodpar"] = minDBZ;
-	};
-
-	//void processData(const Data<PolarSrc> & data, PolarAccumulator & accumulator) const;
-	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const;
 
 };
 
 
 
+///
+/**
+ *
+ */
+class EchoTopOp: public PolarProductOp {
+
+public:
+
+	EchoTopOp(double threshold = 20.0);
+
+	virtual inline
+	~EchoTopOp(){};
+
+	// TEST
+	void computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSet<dst_t> & dstProduct) const;
+
+	///
+	/**
+	 *   Division by zero should not occur, as arguments m1 and m2 are distinguished by reflectivity less/greater than threshold.
+	 *   Also, reference point higher than -32 dBZ will be warned.
+	 */
+	static inline
+	double getSlope(const Measurement & m1, const Measurement & m2){
+		return (m1.height - m2.height) / (m1.reflectivity - m2.reflectivity);
+	}
+
+	/*
+	static inline
+	double getSlope(double heightStronger, double heightWeaker, double reflectivityStronger, double reflectivityWeaker){
+		return (heightStronger - heightWeaker) / (reflectivityStronger - reflectivityWeaker);
+	}
+	*/
 
 
-}  // ::rack
+protected:
 
-#endif /*POLARMax_H_*/
+	// Main parameter: dBZ threshold.
+	double threshold = 0.0;
 
-// Rack
+	/// Unless NaN, use the value like a measured dBZ
+	double undetectReflectivity = NAN;
+
+	/// Virtual measurement high aloft, towards which reflectivity is expected to decrease.
+	Measurement reference = {-50.0, 15000.0};
+
+	/// Quality weights for interpolative, dry-interpolative, max-limited, min-limited
+	MethodWeights<double> weights = {1.0, 0.8, 0.6, 0.4, 0.2};
+
+	/// Span for linear decay of weights towards zero
+	double weightDecay = 20.0;
+
+	/// Optional smoothin window. Width (metres) and height (degrees) (also used for reference)
+	RadarWindowGeom avgWindow; // = {0.0,0.0}; // check tuple init, + assignment
+
+	///
+	bool EXTENDED_OUTPUT = true;
+
+	/// Reference point solving by matrix inversion, and debugging
+
+};
+
+} // rack::
+
+/// Numeric alues can be applied as quality index (with gain=0.004)
+/*
+typedef enum {
+	/ ** Unset (not processsed) * /
+	UNDEFINED=0,
+	/ ** Internal error in the computation * /
+	ERROR=16,
+	/ ** No echo found * /
+	CLEAR=64,
+	/ ** The highest bin exceeds the threshold -> use reference point * /
+	UNDERSHOOTING=96,
+	/ ** The bin exceeding the Z threshold has an \c undetect ("dry") bin above -> replace \c undetect with low Z (dB) * /
+	OVERSHOOTING=128,
+	WEAK=192, /// Echoes only below threshold detected
+	/ ** The threshold value was passed between adjacent beams, hence can be interpolated * /
+	INTERPOLATION=250
+} Reliability;
+
+typedef drain::EnumFlagger<drain::SingleFlagger<Reliability> > reliabilityFlagger;
+*/
+
+
+#endif

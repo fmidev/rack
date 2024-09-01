@@ -30,7 +30,7 @@ CMETHOD=${CMETHOD:-'MAXW'}
 INPUTS=( $* )
 
 if [ ${#INPUTS} == 0 ]; then
-    echo "Generate composites using EchoTop2 "
+    echo "Generate composites using EchoTop (2) "
     echo "# Markus.Peura@fmi.fi"
     echo "$0 <volumes>.h5"
     echo "Example: CMETHOD=$CMETHOD WEIGHTS=$WEIGHTS  $0 201708121600_radar.polar.fi{kor,ika,van}.h5"
@@ -52,7 +52,7 @@ conf="--odim 2.2 --outputConf svg:absolutePaths=true,title='$TITLE' --outputPref
 
 #for cmethod in ${CMETHOD//:/ }; do
 
-cmd="rack $conf --cMethod '$CMETHOD' --cSize '$SIZE' --cProj '$PROJ' --cBBox '$BBOX' --cInit --script '--pEchoTop2 '$ETOP,weights=$WEIGHTS' --cAdd' ${INPUTS[*]} --cExtract dw$crop  -Q HGHT --palette '' -o HGHT.png -Q QIND -o QIND.png --outputPrefix '' -o $OUTFILE_BASE.svg"
+cmd="rack $conf --cMethod '$CMETHOD' --cSize '$SIZE' --cProj '$PROJ' --cBBox '$BBOX' --cInit --script '--pEchoTop '$ETOP,weights=$WEIGHTS' --cAdd' ${INPUTS[*]} --cExtract dw$crop  -Q HGHT --palette '' -o HGHT.png -Q QIND -o QIND.png --outputPrefix '' -o $OUTFILE_BASE.svg"
 echo $cmd
 eval $cmd &> cmd.log
 

@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "8.9.6"
+#define __RACK_VERSION__ "9.0"
 
 /**
+ *   Version 9.0
+ *   - Metadata: BBOX_data and SIZE_data changed to BBOX_input and SIZE_input
+ *   - EchoTop: new version, renamed EchoTopOld -> EchoTopOld
+ *
  *   Version 8.9.6
  *   - EchoTop2 sliding window
  *   - Fixed bugs in --cExtract crop parameter, and changed DATA to INPUT (OVERLAP prevailing)

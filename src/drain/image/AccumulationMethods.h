@@ -242,7 +242,7 @@ public:
 	virtual
 	void add(AccumulationArray & accArray,  const size_t i, double value, double weight) const;
 
-	virtual inline
+	virtual // inline
 	void add(AccumulationArray & accArray,  const size_t i, double value, double weight, unsigned int count) const;
 
 	virtual

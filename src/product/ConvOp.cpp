@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <math.h>
 
 #include <drain/image/ImageFile.h> // debugging
+#include <product/EchoTopOpOld.h>
 #include "drain/util/Fuzzy.h"
 #include "drain/util/FunctorBank.h"
 
@@ -47,7 +48,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include "CappiOp.h"
-#include "EchoTopOp.h"
 #include "MaxEchoOp.h"
 
 #include "PolarSlidingWindowOp.h"
@@ -105,7 +105,7 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 	//cappi.updateTree2();
 	mout.warn("cappi " , cappi );
 
-	EchoTopOp echoTopOp;
+	EchoTopOpOld echoTopOp;
 	if (USE_FETOP){
 		echoTopOp.odim.updateFromMap(qm.get("HGHT").get('C'));
 		//echoTopOp.setEncodingRequest(quantityMap.get("HGHT").get('C').getValues());

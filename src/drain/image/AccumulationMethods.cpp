@@ -375,6 +375,7 @@ void MinimumMethod::add(AccumulationArray & accArray, const size_t i, double val
 
 void AverageMethod::add(AccumulationArray & accArray, const size_t i, double value, double weight) const {
 
+	// Note: weight is added for
 	accArray.count.at(i)  += 1;
 	if (weight > 0.0){
 		accArray.data.at(i)   += value;
