@@ -31,16 +31,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_CASTER
 #define DRAIN_CASTER
 
-//#include <typeinfo>
-#include <drain/Type.h>
-#include <drain/TypeUtils.h> // for typesetter
+
+#include <cstddef> // nullptr
 #include <stdexcept>
 #include <iostream>
-//#include <iomanip>
 #include <cmath>  // for NaN
-//#include <vector>
 
 
+#include "Type.h"
+#include "TypeUtils.h" // for typesetter
 
 
 

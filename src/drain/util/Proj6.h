@@ -31,16 +31,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_PROJ6_H_
 #define DRAIN_PROJ6_H_
 
-
+#include <cstddef>
 #include <iostream>
-//#include <list>
 #include <set>
 #include <stdexcept>
 #include <string>
 
 #include <proj.h>
 
-#include "drain/util/Dictionary.h"
+#include "Dictionary.h"
 #include "Point.h"
 // #include "TreeUnordered.h"
 

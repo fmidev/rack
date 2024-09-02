@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_UNITUPLE
 #define DRAIN_UNITUPLE
 
+#include <cstddef>
 #include <iostream>
 #include <sstream>
 #include <typeinfo>
