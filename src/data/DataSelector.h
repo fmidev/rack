@@ -205,7 +205,7 @@ public:
 
 	inline
 	bool quantityIsSet() const {
-		return quantitySelector.isSet() || qualitySelector.isSet();
+		return quantitySelector.isSet(); // || qualitySelector.isSet();
 	}
 
 	/// Retrieve quantity list and regular expression, if defined.
@@ -223,10 +223,12 @@ public:
 		return quantitySelector;
 	}
 
+	/*
 	inline
 	const drain::KeySelector & getQualitySelector() const {
 		return qualitySelector;
 	}
+	*/
 
 	inline
 	void setMaxCount(unsigned int i){
@@ -388,8 +390,8 @@ protected:
 	mutable
 	drain::KeySelector quantitySelector;
 
-	mutable
-	drain::KeySelector qualitySelector;
+	//mutable
+	//drain::KeySelector qualitySelector;
 
 
 	/// The maximum length of the list of matching keys.
@@ -432,7 +434,10 @@ protected:
 	 *
 	 *  \return true, if contained something accepted by tests
 	 */
-	bool collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & basepath = ODIMPath()) const;
+	bool collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & basepath = ODIMPath(), const std::string & parentQuantity="") const;
+
+	bool collectPathsOLD(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & basepath = ODIMPath()) const;
+
 
 	/// Use #DataOrder::criterion \c DATA , \c TIME or \c ELANGLE and #DataOrder::order \c MIN or MAX to sort paths.
 	void prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const;
@@ -453,7 +458,7 @@ public:
 	DatasetSelector() : DataSelector(ODIMPathElem::DATASET){
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		parameters.delink("path");
-		mout.info("experimental: not re-setting DATASET" );
+		mout.experimental<LOG_NOTICE>("not resetting DATASET" );
 		//pathMatcher.setElems(ODIMPathElem::DATASET);
 	}
 

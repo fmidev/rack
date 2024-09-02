@@ -160,7 +160,7 @@ void DataSelector::reset() {
 
 	quantities = "";
 	quantitySelector.clear();
-	qualitySelector.clear();
+	// qualitySelector.clear();
 
 	//index = 0;
 	//count = 1000;
@@ -231,16 +231,19 @@ void DataSelector::ensureDataGroup(){
 
 	drain::Logger mout(__FUNCTION__, getName());
 
-	const bool QUANTITY_QUALITY = getQuantitySelector().isSet() && getQualitySelector().isSet();
+	const bool QUANTITY_QUALITY = getQuantitySelector().isSet() && false; //  && getQualitySelector().isSet();
 
 	if (pathMatcher.empty()){
+		pathMatcher.set(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
+		mout.revised("Check... Completed pathMatcher: " , pathMatcher );
+		/*
 		if (QUANTITY_QUALITY){
 			pathMatcher.set(ODIMPathElem::DATA, ODIMPathElem::QUALITY);
 		}
 		else {
 			pathMatcher.set(ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 		}
-		mout.debug("Completed pathMatcher: " , pathMatcher );
+		*/
 	}
 	else {
 		pathMatcher.trimTail();
@@ -292,43 +295,18 @@ void DataSelector::updateQuantities() const { // const std::string & separators
 	drain::Logger mout(__FILE__,__FUNCTION__);
 	// Don't call updateBean(), it calls this...
 
-	// Check if contains separator ':' and regexp(s):
+	// NEW
+	quantitySelector.setKeys(quantities); //, separators);
+
+	// OLD
 	/*
-	size_t pos = quantities.find(':');
-	if (pos != std::string::npos){
-
-		if (separators.find(':') != std::string::npos){
-			if (quantities.find_first_of("^?*[]()$") != std::string::npos){ //
-				mout.warn("RegExp (", quantities.substr(pos, pos+5), "...) a string to be split by separators '", separators, "'");
-				mout.advice<LOG_WARNING>("consider --select ... without quantities followed by --selectQuantity q1,q2,q3,...");
-				mout.hint<LOG_WARNING>("use ':' to separate quantities and '/' to prefix QUALITY quantities");
-				// mout.error("unsupported or ambiguous quality selection: ", quantities);
-			}
-		}
-
-		if (quantities.substr(pos) == ":QIND"){
-			mout.attention<LOG_WARNING>("selection syntax has changed");
-			mout.advice<LOG_WARNING>("use ':' to separate quantities and '/' to prefix QUALITY quantities");
-			std::string s(quantities);
-			s.at(pos) = '/';
-			mout.advice<LOG_WARNING>("use ", s, " instead of ", quantities);
-		}
-
-	}
-	*/
-
-
 	// Phase 1: split qty vs QUALITY
-	//std::vector<std::string> args;
 	std::string args, qargs;
 	drain::StringTools::split2(quantities, args, qargs, '/'); // ':' general separator; ',' only through --setQuantity because --select uses ',' as separator.
 	quantitySelector.setKeys(args); //, separators);
-	//mout.special<LOG_WARNING>("quantities", args, " -> ", quantitySelector);
-	qualitySelector.setKeys(qargs); //, separators);
-	// 	mout.special<LOG_WARNING>("qualities ", qargs, " -> ", qualitySelector);
 
-	//this->quantities = quantities;
-	//updateQuantities();
+
+	qualitySelector.setKeys(qargs); //, separators);
 
 
 	std::stringstream sstr;
@@ -337,7 +315,7 @@ void DataSelector::updateQuantities() const { // const std::string & separators
 		sstr << '/' << qualitySelector;
 	}
 	quantities = sstr.str();
-
+	*/
 }
 
 
@@ -361,7 +339,7 @@ void DataSelector::selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathCo
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.attention<LOG_DEBUG>("Quant:", quantitySelector, " size:", quantitySelector.size());
-	mout.attention<LOG_DEBUG>("Qual: ", qualitySelector, " size:", qualitySelector.size());
+	// mout.attention<LOG_DEBUG>("Qual: ", qualitySelector, " size:", qualitySelector.size());
 
 	collectPaths(src, pathContainer, ODIMPath());
 
@@ -369,7 +347,10 @@ void DataSelector::selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathCo
 
 }
 
-bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & basepath) const {
+// TODO: write new collectPaths() with parentQuantity="" , "DBZH" -> "DBZH/QIND" to be matched with ".*/QIND"
+
+/// ALERT! NEW; EXPERIMENTAL! Does not use separate qualitySelector object but single, with DBHZ|QIND style.
+bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & basepath, const std::string & parentQuantity) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -385,9 +366,6 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 		// mout.attention<LOG_DEBUG>("start: quality:    ", qualitySelector);
 		if (quantitySelector.isSet()){
 			// mout.attention<LOG_DEBUG>("start: quantity: ", quantitySelector);
-		}
-		if (qualitySelector.isSet()){
-			// mout.attention<LOG_DEBUG>("start: quality: ", qualitySelector);
 		}
 		mout.debug("starting with: ", quantitySelector); //, " re=", quantitySelector.getRegExp());
 
@@ -447,14 +425,6 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 			else {
 				mout.pending<LOG_DEBUG>("No PRF constrain (prf=", prfSelector, ")");
 			}
-
-			/*
-			if (!pathMatcher.matchElem(currentElem, true)){
-				// pathMatcher does not accept this dataset<N> at all
-				mout.reject(currentElem);
-				continue;
-			}
-			*/
 
 			if (props.hasKey("where:elangle")){
 				double e = props["where:elangle"];
@@ -524,107 +494,24 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 
 			const std::string retrievedQuantity = props["what:quantity"].toStr(); // note: creates entry?
+
 			bool quantityOK = false;
-			bool checkSubGroup = false; // Accept subtree traversal
 
-			mout.special<LOG_DEBUG+1>("checking: DATA/QUANTITY [", retrievedQuantity, "] <- ", path);
+			mout.special<LOG_DEBUG+1>("  DATA/QUANTITY checking: [", retrievedQuantity, "] <- ", path);
 
-			if (currentElem.is(ODIMPathElem::DATA)){ // 2021/04
-				if (quantitySelector.isSet()){ // 2021/04
-					if (quantitySelector.testKey(retrievedQuantity)){
-						quantityOK = !qualitySelector.isSet();  // think of DBZH/QIND -> plain DBZH should not be accepted
-						checkSubGroup   = true;
-						mout.attention<LOG_DEBUG>("checked: DATA[", retrievedQuantity, "] at ", path, " quantity=", quantityOK, ", checkSubGroup!");
-					}
-					else {
-						checkSubGroup = !qualitySelector.isSet(); // consider -Q QIND or --select quality=QIND
-						mout.special<LOG_DEBUG+1>("DATA: unmatching quantity [", retrievedQuantity, "] at ", path, ", checkSubGroup='", checkSubGroup, "'");
-						// mout.reject<LOG_NOTICE>("<",quantitySelector, ">");
-						// mout.reject<LOG_NOTICE>("DATA [", retrievedQuantity, "] at ", path);
-					}
-				}
-				else { // problem: -Q QIND -> QIND "is" quantity
-					checkSubGroup   = true;  // implies accepting sub-qualities (consider: don't accept quality, unless explicity requested)
-					if (qualitySelector.isSet()){ // any quantity goes
-						mout.special<LOG_DEBUG>("DATA:  [", retrievedQuantity, "] but Q selector ", qualitySelector);
-					}
-					else {
-						mout.accept<LOG_DEBUG>("unconstrained DATA[", retrievedQuantity, "] at ", path);
-						quantityOK = true;
-					}
-				}
-				//mout.attention<LOG_NOTICE>("DATA :  [", retrievedQuantity, "] at ", path);
-			}
-			else if (currentElem.is(ODIMPathElem::QUALITY)){ // 2021/04
-
-				if (parentElem.is(ODIMPathElem::DATASET)){
-
-					if (quantitySelector.isSet()){
-						if (quantitySelector.testKey(retrievedQuantity)){
-							quantityOK = true;
-							checkSubGroup   = true;
-							mout.accept<LOG_DEBUG>("matching quantity  [",  retrievedQuantity, "]" );
-						}
-						// Notice ELSE: no go for this: datasetN/qualityN
-					}
-					else if (qualitySelector.testKey(retrievedQuantity, false)){
-						// Yes - check this only if quantity not required
-						quantityOK = true;
-						checkSubGroup   = true;
-						mout.accept<LOG_DEBUG>("matching QUALITY quantity  [",  retrievedQuantity, "]" );
-					}
-
-				}
-				else {
-					//  Parent elem DATA, so quantity has been "used", so only quality is checked here.
-
-					if (!parentElem.is(ODIMPathElem::DATA)){
-						mout.suspicious("odd path: ", path);
-					}
-
-					if (qualitySelector.testKey(retrievedQuantity, false)){
-						quantityOK = true;
-						checkSubGroup   = true;
-						mout.accept<LOG_DEBUG>("matching QUALITY quantity  [",  retrievedQuantity, "]" );
-					}
-
-				}
-
-				/*
-				if (qualitySelector.isSet() && (quantitySelector.isSet() == parentElem.is(ODIMPathElem::DATA))){ // 1==1 or 0==0 <- no Qnty & DATASET
-					// (parentElem.is(ODIMPathElem::DATASET))
-					if (qualitySelector.testKey(retrievedQuantity)){
-						quantityOK = true;
-						checkSubGroup   = true; //needed?
-						mout.accept<LOG_DEBUG>("matching QUALITY quantity  [",  retrievedQuantity, "]" );
-					}
-					else {
-						mout.reject<LOG_DEBUG>("unmatching QUALITY quantity  [",  retrievedQuantity, "], skipping" );
-					}
-				}
-				else if (quantitySelector.isSet() && (!parentElem.is(ODIMPathElem::DATA))){ // yes, defined as "plain" quality, QIND (not DBZH/QIND)
-					if (quantitySelector.testKey(retrievedQuantity)){
-						quantityOK = true;
-						checkSubGroup    = true; //needed?
-						mout.accept<LOG_DEBUG>("matching quantity [",  retrievedQuantity, "] as QUALITY quantity" );
-					}
-					else {
-						mout.reject<LOG_DEBUG>("unmatching QUALITY quantity  [",  retrievedQuantity, "], skipping" );
-					}
-				}
-				else {
-					quantityOK = true;
-					checkSubGroup    = true; //needed?
-					mout.pending<LOG_DEBUG>("No QUANTITY or QUALITY constraint, accepting [",  retrievedQuantity, "] ", basepath, "//", currentElem);
-					//mout.reject<LOG_DEBUG>("explicit QUALITY quantity undefined, skipping", basepath, "//", currentElem);
-				}
-				*/
+			if (!quantitySelector.isSet()){
+				quantityOK = true;
 			}
 			else {
-				mout.reject<LOG_WARNING>("something went wrong, unexpected group: ", basepath, "//", currentElem, " [", retrievedQuantity, "]");
+				if (quantitySelector.test(retrievedQuantity)){
+					quantityOK = true;
+					mout.accept<LOG_DEBUG+1>("  [", retrievedQuantity, "] at ", path, " quantity=", quantityOK);
+				}
+				else if (quantitySelector.test(parentQuantity + '/' + retrievedQuantity)){
+					quantityOK = true;
+					mout.accept<LOG_DEBUG+1>("  [", retrievedQuantity, '/', retrievedQuantity, "] at ", path, " quantity=", quantityOK);
+				}
 			}
-
-			result |= quantityOK; // = at least one found
 
 			if (quantityOK){
 				//mout.accept<LOG_INFO>("quantity[", retrievedQuantity, "] at ", basepath, "//", currentElem);
@@ -638,15 +525,9 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 				}
 			}
 
-			if (checkSubGroup){
-				if (currentElem.belongsTo(ODIMPathElem::DATA|ODIMPathElem::QUALITY)){
-					mout.pending<LOG_DEBUG+1>("DATA/QUALITY group ", path, " -> continuing to subgroups");
-				}
-				else {
-					mout.pending<LOG_DEBUG+1>("continuing to subgroup:" ,  path);
-				}
-				result |= collectPaths(src, pathContainer, path);
-			}
+			result |= quantityOK; // = at least one found
+
+			result |= collectPaths(src, pathContainer, path, retrievedQuantity);
 
 		}
 		else if (currentElem.is(ODIMPathElem::ARRAY) || currentElem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
@@ -669,6 +550,279 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 	return result;
 }
 
+ bool DataSelector::collectPathsOLD(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & basepath) const {
+
+ 	drain::Logger mout(__FILE__, __FUNCTION__);
+
+ 	const ODIMPathElem & parentElem = basepath.empty() ? ODIMPathElem::NONE : basepath.back(); 	// ALERT - BUG: reference to temporary?
+
+ 	// FAKE (because member dropped)
+ 	const drain::KeySelector qualitySelector;
+
+ 	if (!basepath.empty()){
+ 		// parentElem = basepath.back();
+ 	}
+ 	else {
+ 		//mout.attention<LOG_DEBUG>("collectPaths quantities: '", getQuantity(), "'");
+ 		mout.attention<LOG_DEBUG>(__FUNCTION__, "() quantities: '", quantitySelector, "'");
+ 		// mout.attention<LOG_DEBUG>("start: quantity:   ", quantitySelector);
+ 		// mout.attention<LOG_DEBUG>("start: quality:    ", qualitySelector);
+ 		if (quantitySelector.isSet()){
+ 			// mout.attention<LOG_DEBUG>("start: quantity: ", quantitySelector);
+ 		}
+ 		if (qualitySelector.isSet()){
+ 			mout.attention("start: quality: ", qualitySelector);
+ 		}
+ 		mout.debug("starting with: ", quantitySelector); //, " re=", quantitySelector.getRegExp());
+
+ 	}
+
+ 	// mout.attention<LOG_INFO>("quantityRegExp: ", quantityRegExp,  ", qualityRegExp: ", qualityRegExp);
+
+ 	bool result = false;
+
+ 	/*  OLD g++ compiler problem: src(basepath)
+ 	if (!basepath.empty()){
+ 		mout.attention<LOG_INFO>("starting: ", basepath);
+ 		mout.attention<LOG_INFO>("    tree: ", src(basepath));
+ 		drain::TreeUtils::dump(src(basepath));
+ 	}
+ 	*/
+
+
+
+ 	for (const auto & entry: src(basepath)) {
+
+ 		const ODIMPathElem & currentElem = entry.first;
+
+ 		//ODIMPath path(basepath, currentElem);
+ 		ODIMPath path(basepath); //, currentElem);
+ 		path.appendElem(currentElem);
+ 		//mout.debug3("currentElem='" , currentElem , "'" );
+
+ 		mout.pending<LOG_DEBUG+1>("Considering: ", basepath, "//", currentElem);
+
+ 		const drain::image::Image & data    = entry.second.data.image; // for ODIM
+ 		const drain::FlexVariableMap & props = data.getProperties();
+
+ 		if (props.empty()){
+ 			mout.attention("props empty at ", basepath, " -> /",  entry.first);
+ 		}
+
+ 		// Check ELANGLE (in datasets) or quantity (in data/quality)
+ 		if (currentElem.is(ODIMPathElem::DATASET)){
+
+ 			mout.debug2("DATASET = '" ,path , "'" );
+ 			//mout.debug2("DATASET = '" , props);
+
+ 			// PRF criterion applies?
+ 			if (prfSelector != ANY){
+ 				double lowPRF   = props.get("how:lowprf",  0.0);
+ 				double highPRF = props.get("how:highprf", lowPRF);
+ 				//if (((lowPRF == highPRF) && (highPRF == 0)) == (prfSelector == Prf::SINGLE)){
+ 				if (((lowPRF == highPRF) || (highPRF == 0)) == (prfSelector == Prf::SINGLE)){
+ 					mout.accept<LOG_DEBUG>("PRF=", lowPRF, '/', highPRF, ", required ", prfSelector, ": including " , path);
+ 				}
+ 				else {
+ 					mout.reject<LOG_DEBUG>("PRF=", lowPRF, '/', highPRF, ", required ", prfSelector, ": excluding " , path);
+ 					continue; // yes, subtrees skipped ok
+ 				}
+ 			}
+ 			else {
+ 				mout.pending<LOG_DEBUG>("No PRF constrain (prf=", prfSelector, ")");
+ 			}
+
+ 			/*
+ 			if (!pathMatcher.matchElem(currentElem, true)){
+ 				// pathMatcher does not accept this dataset<N> at all
+ 				mout.reject(currentElem);
+ 				continue;
+ 			}
+ 			*/
+
+ 			if (props.hasKey("where:elangle")){
+ 				double e = props["where:elangle"];
+ 				if (!elangle.contains(e)){
+ 					mout.reject<LOG_DEBUG>("elangle ",e," outside range ",elangle);
+ 					continue;
+ 				}
+ 			}
+ 			else {
+ 				// mout.suspicious<LOG_DEBUG+1>(props);
+ 				mout.fail<LOG_DEBUG>("props contain no where:elangle");
+ 			}
+
+ 			if (timespan.max > 0){
+ 				if (props.hasKey("what:starttime")){
+ 					drain::Time nominal;
+ 					ODIM::getTime(nominal, props["what:date"], props["what:time"]);
+
+ 					drain::Time measured;
+ 					ODIM::getTime(measured, props["what:startdate"], props["what:starttime"]);
+
+ 					int delaySeconds = measured.getTime() - nominal.getTime();
+
+ 					if (timespan.span() > 0){ // from -300...300 for example
+ 						if (!timespan.contains(delaySeconds)){
+ 							mout.reject<LOG_NOTICE>("delay (", delaySeconds,") too outside timespan ", timespan);
+ 							continue;
+ 						}
+ 					}
+ 					else {
+ 						if (delaySeconds > timespan.max){
+ 							mout.reject<LOG_NOTICE>("delay (", delaySeconds,") larger than timespan.max=", timespan.max, " seconds");
+ 							continue;
+ 						}
+ 					}
+
+ 				}
+ 				else {
+ 					// DATASET has no time
+ 				}
+ 			}
+
+
+ 			//bool checkQualityGroup = !quantitySelector.isSet();
+ 			// mout.pending<LOG_DEBUG>("continuing down from '", basepath, "' + '/", currentElem, "' = '",  path, "'...");
+
+ 			if (collectPaths(src, pathContainer, path)){
+
+ 				result = true;
+
+ 				if (pathMatcher.match(path)){
+ 					mout.accept<LOG_DEBUG>("DATASET path ", path, " matches (and subtree OK)");
+ 					pathContainer.push_back(path);
+ 					// addPath(pathContainer, props, path);
+ 				}
+ 				else {
+ 					mout.reject<LOG_DEBUG+1>("DATASET path '", path, "' does not match '", pathMatcher, "' (but subtree OK)");
+ 				}
+ 			}
+ 			else {
+ 				mout.reject<LOG_DEBUG>("DATASET contained no matching groups: ", path );
+ 			}
+
+ 			// What about matching this?
+
+ 		}
+ 		else if (currentElem.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+
+ 			const std::string retrievedQuantity = props["what:quantity"].toStr(); // note: creates entry?
+ 			bool quantityOK = false;
+ 			bool checkSubGroup = false; // Accept subtree traversal
+
+ 			mout.special<LOG_DEBUG+1>("  DATA/QUANTITY checking: [", retrievedQuantity, "] <- ", path);
+
+ 			if (currentElem.is(ODIMPathElem::DATA)){ // 2021/04
+ 				if (quantitySelector.isSet()){ // 2021/04
+ 					if (quantitySelector.test(retrievedQuantity)){
+ 						quantityOK = !qualitySelector.isSet();  // think of DBZH/QIND -> plain DBZH should not be accepted
+ 						checkSubGroup   = true;
+ 						mout.attention<LOG_DEBUG>("  DATA[", retrievedQuantity, "] checked at ", path, " quantity=", quantityOK, ", checkSubGroup!");
+ 					}
+ 					else {
+ 						checkSubGroup = !qualitySelector.isSet(); // consider -Q QIND or --select quality=QIND
+ 						mout.special<LOG_DEBUG+1>("  DATA: unmatching quantity [", retrievedQuantity, "] at ", path, ", checkSubGroup='", checkSubGroup, "'");
+ 						// mout.reject<LOG_NOTICE>("<",quantitySelector, ">");
+ 						// mout.reject<LOG_NOTICE>("DATA [", retrievedQuantity, "] at ", path);
+ 					}
+ 				}
+ 				else { // problem: -Q QIND -> QIND "is" quantity
+ 					checkSubGroup   = true;  // implies accepting sub-qualities (consider: don't accept quality, unless explicity requested)
+ 					if (qualitySelector.isSet()){ // any quantity goes
+ 						mout.special<LOG_DEBUG>("DATA:  [", retrievedQuantity, "] but Q selector ", qualitySelector);
+ 					}
+ 					else {
+ 						mout.accept<LOG_DEBUG>("unconstrained DATA[", retrievedQuantity, "] at ", path);
+ 						quantityOK = true;
+ 					}
+ 				}
+ 				//mout.attention<LOG_NOTICE>("DATA :  [", retrievedQuantity, "] at ", path);
+ 			}
+ 			else if (currentElem.is(ODIMPathElem::QUALITY)){ // 2021/04
+
+ 				if (parentElem.is(ODIMPathElem::DATASET)){
+
+ 					if (quantitySelector.isSet()){
+ 						if (quantitySelector.test(retrievedQuantity)){
+ 							quantityOK = true;
+ 							checkSubGroup   = true;
+ 							mout.accept<LOG_DEBUG>("matching quantity  [",  retrievedQuantity, "]" );
+ 						}
+ 						// Notice ELSE: no go for this: datasetN/qualityN
+ 					}
+ 					else if (qualitySelector.test(retrievedQuantity, false)){
+ 						// Yes - check this only if quantity not required
+ 						quantityOK = true;
+ 						checkSubGroup   = true;
+ 						mout.accept<LOG_DEBUG>("matching QUALITY quantity  [",  retrievedQuantity, "]" );
+ 					}
+
+ 				}
+ 				else {
+ 					//  Parent elem DATA, so quantity has been "used", so only quality is checked here.
+
+ 					if (!parentElem.is(ODIMPathElem::DATA)){
+ 						mout.suspicious("odd path: ", path);
+ 					}
+
+ 					if (qualitySelector.test(retrievedQuantity, false)){
+ 						quantityOK = true;
+ 						checkSubGroup   = true;
+ 						mout.accept<LOG_DEBUG>("matching QUALITY quantity  [",  retrievedQuantity, "]" );
+ 					}
+
+ 				}
+
+ 			}
+ 			else {
+ 				mout.reject<LOG_WARNING>("something went wrong, unexpected group: ", basepath, "//", currentElem, " [", retrievedQuantity, "]");
+ 			}
+
+ 			result |= quantityOK; // = at least one found
+
+ 			if (quantityOK){
+ 				//mout.accept<LOG_INFO>("quantity[", retrievedQuantity, "] at ", basepath, "//", currentElem);
+ 				if (pathMatcher.match(path)){
+ 					mout.accept<LOG_DEBUG>("DATA/QUALITY path matches: ", path,  " [", retrievedQuantity, "]");
+ 					pathContainer.push_back(path);
+ 				}
+ 				else {
+ 					mout.reject<LOG_DEBUG+1>("DATA path '", path, "' does not match '", pathMatcher, "' (but quantity check OK)");
+ 					//mout.attention("pathMatcher empty=", pathMatcher.empty());
+ 				}
+ 			}
+
+ 			if (checkSubGroup){
+ 				if (currentElem.belongsTo(ODIMPathElem::DATA|ODIMPathElem::QUALITY)){
+ 					mout.pending<LOG_DEBUG+1>("DATA/QUALITY group ", path, " -> continuing to subgroups");
+ 				}
+ 				else {
+ 					mout.pending<LOG_DEBUG+1>("continuing to subgroup:" ,  path);
+ 				}
+ 				result |= collectPaths(src, pathContainer, path);
+ 			}
+
+ 		}
+ 		else if (currentElem.is(ODIMPathElem::ARRAY) || currentElem.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+
+ 			// Does not affect result.
+ 			if (pathMatcher.match(path)){
+ 				mout.accept<LOG_DEBUG>("adding ARRAY / ATTRIBUTE group at: ", path);
+ 				pathContainer.push_back(path);
+ 			}
+ 		}
+ 		else if (currentElem.is(ODIMPathElem::LEGEND)){
+ 			mout.debug("skipping LEGEND: /" , currentElem );
+ 		}
+ 		else {
+ 			mout.warn("skipping odd group: /" , currentElem );
+ 		}
+
+ 	}
+
+ 	return result;
+ }
 
 
 
@@ -904,7 +1058,7 @@ bool DataSelector::getPath(const Hi5Tree & src, ODIMPath & path) const {
 		// TODO! if several quantities,  traverse list of quantities, give the first match
 		drain::Logger mout(__FILE__, __FUNCTION__);
 
-		const drain::KeySelector::quantity_list & l = quantitySelector.getList();
+		const drain::KeySelector::list_t & l = quantitySelector.getList();
 
 		if (!(path.back().is(ODIMPathElem::DATASET) || l.empty())){
 			// mout.experimental("could use quantity order here: ", path, " qty:", l.front().value);

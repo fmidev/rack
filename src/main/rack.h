@@ -36,8 +36,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 /**
  *   Version 9.0
- *   - Metadata: BBOX_data and SIZE_data changed to BBOX_input and SIZE_input
+ *   - DataSelector: quantity selection streamlined DBZH/QIND, /QIND
  *   - EchoTop: new version, renamed EchoTopOld -> EchoTopOld
+ *   - Metadata: BBOX_data and SIZE_data changed to BBOX_input and SIZE_input
  *
  *   Version 8.9.6
  *   - EchoTop2 sliding window

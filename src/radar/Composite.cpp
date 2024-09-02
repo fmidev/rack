@@ -502,7 +502,7 @@ void Composite::checkQuantity(const std::string & quantity){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const KeySelector & qs = dataSelector.getQuantitySelector();
-	if (qs.testKey(quantity)){
+	if (qs.test(quantity)){
 		mout.accept<LOG_INFO>("quantity [", quantity, "] ~ ", qs);
 	}
 	else {
@@ -988,7 +988,7 @@ void Composite::updateInputSelector(const std::string & select){
 		// TODO: selecor.quantity is allowed to be regExp?
 		// TODO: what if one wants to add TH or DBZHC in a DBZH composite?
 		//if (!quantityOrig.empty() && (quantityOrig != dataSelector.quantity)){
-		if (!quantityOrig.empty() && !dataSelector.getQuantitySelector().testKey(quantityOrig)){
+		if (!quantityOrig.empty() && !dataSelector.getQuantitySelector().test(quantityOrig)){
 			mout.warn("quantityOrig=", quantityOrig, " !~ ", dataSelector.getQuantity());
 			mout.warn("quantity selector changed, resetting accumulation array" );
 			accArray.clear();

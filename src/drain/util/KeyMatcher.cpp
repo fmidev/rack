@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-const std::string KeyMatcher::regExpSpecialChars = "^.?*[]()$";
+const std::string KeyMatcher::regExpSpecialChars = "^.?*[]()$"; // Notice: still missing: {:,|} (reserved for pipeline ops?)
 
 
 void KeyMatcher::set(const std::string & s){
@@ -60,8 +60,6 @@ void KeyMatcher::set(const std::string & s){
 }
 
 const std::string & KeyMatcher::getType() const {
-	//const std::string re("regExp");
-	//const std::ring str("string");
 	if (isRegExp)
 		return drain::TypeName<drain::RegExp>::str();
 	else
@@ -78,12 +76,6 @@ bool KeyMatcher::test(const std::string & s) const {
 	}
 }
 
-/*
-bool QuantityMatcher::validateKey(const std::string & key){
-	static const drain::RegExp re("^[A-Z]+[A-Z0-9_\\-]*$");
-	return re.test(key);
-}
-*/
 DRAIN_TYPENAME_DEF(KeyMatcher);
 
 }  // rack::

@@ -98,6 +98,8 @@ drain::VariableMap & DataTools::getAttributeStyles(){
 		{"source", "YELLOW:DIM"},
 		{"lon", "YELLOW:DIM"},
 		{"lat", "YELLOW:DIM"},
+		{"nodes", "YELLOW:DIM"},
+		{"BBOX", "YELLOW:DIM"},
 		{"xsize", "YELLOW:DIM"},
 		{"ysize", "YELLOW:DIM"},
 		{"rscale", "YELLOW:DIM"},

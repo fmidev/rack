@@ -50,7 +50,7 @@ class KeySelector : public std::list<KeyMatcher> { // string temporary ?
 
 public:
 
-	typedef std::list<drain::KeyMatcher> quantity_list;
+	typedef std::list<drain::KeyMatcher> list_t;
 
 	/// Basic constructor
 	template<typename ... TT>
@@ -107,10 +107,11 @@ public:
 
 	/// Check if \c key is accepted
 	/**
-	 *  \param key - string to be checker.
+	 *
+	 *  \param key - string to be checked.
 	 *  \param defaultResult - if selector (list) is empty, return this value.
 	 */
-	bool testKey(const std::string & key, bool defaultResult = true) const;
+	bool test(const std::string & key, bool defaultResult = true) const;
 
 	inline
 	bool isSet() const {
@@ -118,48 +119,10 @@ public:
 		//return (regExp.isSet() || !quantities.empty()) ;
 	}
 
-	/// Returns the fistt (the primary) quantity.
-	//Deprecating? Consider quantityMatcher
 	inline
-	const std::string & getKey() const {
-
-		static const std::string dummy;
-
-		if (empty()){
-			return dummy;
-			//return regExp.toStr();
-		}
-		else {
-			//return quantities.front().value;
-			return front().value;
-		}
-	}
-
-	/*
-	inline
-	const QuantitySelector & getQuantitySelector() const {
+	const list_t & getList() const {
 		return *this;
 	}
-	*/
-
-	inline
-	const quantity_list & getList() const {
-		return *this;
-		//return quantities;
-	}
-
-	/*
-	inline
-	const drain::RegExp & getRegExp() const {
-		return regExp;
-	}
-	*/
-
-	// TODO add filter, allowing ODIMPathElem::group_t == QUALITY
-	/*
-	static
-	void getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m);
-	*/
 
 	void toStream(std::ostream & ostr) const ;
 
@@ -179,7 +142,7 @@ protected:
 	// drain::RegExp regExp;
 
 	// mutable
-	// quantity_list quantities;
+	// list_t quantities;
 
 
 };

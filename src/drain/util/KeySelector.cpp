@@ -62,19 +62,6 @@ void KeySelector::setKeys(const std::string & args){ //, const std::string & sep
 }
 
 
-/*
-void QuantitySelector::setQuantityRegExp(const std::string & r){
-
-	if (!empty()){ // quantities.
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.note("Adding regExp=", r, ", also listed quantities exist: "); // , quantities
-	}
-
-	// this->regExp.setExpression(r);
-	adaptQuantity(r);
-}
-*/
-
 
 /** In future, the recommended way to define desired/accepted quantities is a comma-separated list of keys.
  *
@@ -113,17 +100,17 @@ void KeySelector::adaptKey(const std::string & s){
 
 
 
-bool KeySelector::testKey(const std::string & key, bool defaultResult) const {
+bool KeySelector::test(const std::string & key, bool defaultResult) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (empty()){
-		return defaultResult;
+		return defaultResult; // Alternative: could need empty k - but on the other hand, why add it in a list, as it accepts anything.
 	}
 	else {
 		for (const auto & k: *this){
 			// mout.experimental("testing [", s, "] vs [", q, "]");
-			if (k.test(key)){
+			if (k.test(key)){  //
 				return true;
 			}
 		}

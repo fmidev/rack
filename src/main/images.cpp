@@ -636,7 +636,7 @@ public:
 		mout.special<LOG_DEBUG>("vradTest: ", vradTest, " vs ", imgOdim.quantity);
 
 
-		if (vradTest.testKey(imgOdim.quantity)){
+		if (vradTest.test(imgOdim.quantity)){
 			//if (imgOdim.quantity.substr(0,4) == "VRAD"){
 			// rescale relative to NI (percentage -100% ... +100%)
 			const double NI = imgOdim.getNyquist(); //props["how:NI"];

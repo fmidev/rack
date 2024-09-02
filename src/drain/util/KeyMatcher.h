@@ -43,13 +43,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-/// General-purpose key matcher.
+/// General-purpose key matcher: tests string equality, or regExp, if defined as such.
 /**
  *  The internal value can be a literal string or a regular expression.
  *
- *  When setting the value, it is recognized as a literal if it contains no special characters
+ *  Empty string is a valid key - it accepts only an empty string.
+ *  If you want to accept any string, use set(".*").
  *
- *   against which equality of an input string is tested.
+ *  When setting the value, it is recognized as a literal if it contains no special characters.
+ *
+ *
  *
  */
 class KeyMatcher : protected drain::RegExp {
@@ -114,7 +117,7 @@ protected:
 
 inline
 std::ostream & operator<<(std::ostream & ostr, const KeyMatcher & m){
-	ostr << m.value;
+	ostr << m.value; // string or regExp string.
 	return ostr;
 }
 

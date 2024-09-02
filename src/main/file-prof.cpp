@@ -94,7 +94,7 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 	mout.debug2(selector );
 	const drain::KeySelector & slct = selector.getQuantitySelector();
 	// const drain::RegExp quantityRegExp(selector.getQuantity());
-	const bool USE_COUNT = slct.testKey("COUNT");
+	const bool USE_COUNT = slct.test("COUNT");
 	// mout.debug3("use count" , static_cast<int>(USE_COUNT) );
 
 	const DataSet<PolarSrc> product(src["dataset1"], slct); // drain::RegExp(selector.getQuantity()));
@@ -114,7 +114,7 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 		if (mainQuantity.empty()){
 			mainQuantity = entry.first;
 		}
-		else if (mainQuantitySlct.testKey(entry.first)){
+		else if (mainQuantitySlct.test(entry.first)){
 			mainQuantity = entry.first;
 			mout.debug3("picked main quantity: " , mainQuantity );
 			break;

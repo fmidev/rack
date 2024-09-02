@@ -78,3 +78,11 @@ if [ "$OUTFILE_EXT" != 'svg' ]; then
     eval $cmd2 &>> cmd.log
 fi
 echo "LAYOUT=$LAYOUT"
+
+
+
+# Pohdintoja
+
+# DBZH/QIND -> selkeä
+# QIND -> päätason QIND
+# /QIND -> alatason QIND?
