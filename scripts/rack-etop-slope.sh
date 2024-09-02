@@ -64,7 +64,8 @@ case $LAYOUT in
 	SLOPE=${AVG_WINDOW:+'DBZ-SLOPE-SMOOTH'}
 	SLOPE=${SLOPE:-'DBZ-SLOPE'}
 	#cart='-c'
-	cmd="rack $conf $1 --pEchoTop $ETOP,weights=$WEIGHTS,avgWindow=$AVG_WINDOW -Q /CLASS-ETOP $cart --palette 'CLASS-ETOP' -o clsetop.png --legendOut clsetop.svg -Q '$SLOPE' $cart --palette 'DBZ-SLOPE' -o smooth.png --legendOut slope.svg -Q '$QIND' -o qind${avg_label:+-$avg_label}.png  --paletteIn QIND-BW --legendOut qind.svg -Q HGHT $cart --palette 'HGHT' -o .png --legendOut hght.svg --outputPrefix '' -o $OUTFILE_BASE.svg"
+	# Ylim. cart ennen Q-out
+	cmd="rack $conf $1 --pEchoTop $ETOP,weights=$WEIGHTS,avgWindow=$AVG_WINDOW -Q /CLASS-ETOP $cart --palette 'CLASS-ETOP' -o clsetop.png --legendOut clsetop.svg -Q '$SLOPE' $cart --palette 'DBZ-SLOPE' -o smooth.png --legendOut slope.svg -Q '$QIND' $cart -o qind${avg_label:+-$avg_label}.png  --paletteIn QIND-BW --legendOut qind.svg -Q HGHT $cart --palette 'HGHT' -o .png --legendOut hght.svg --outputPrefix '' -o $OUTFILE_BASE.svg"
 	;;
 esac
 
@@ -76,3 +77,4 @@ if [ "$OUTFILE_EXT" != 'svg' ]; then
     echo $cmd2
     eval $cmd2 &>> cmd.log
 fi
+echo "LAYOUT=$LAYOUT"
