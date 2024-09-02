@@ -51,6 +51,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "products.h"
 #include "cartesian.h"
 #include "science.h"
+#include "test.h"
 #include "images.h"
 #include "image-ops.h"
 
@@ -81,42 +82,6 @@ int process(int argc, const char **argv) {
 
 	drain::Logger mout(ctx.log, "rack");
 
-#ifdef RACK_DEBUG
-	Hi5Tree test;
-	test["what"].data.attributes["object"] = "PVOL";
-	test["what"].data.attributes["source"] = "FMI";
-	test["how"].data.attributes["point"] = {25.0, 60.0};
-	Hi5Tree & t = test["dataset1"]["data2"];
-	t["data"].data.image.initialize(typeid(short), {500,360});
-	t["what"].data.attributes["quantity"] = "DBZH";
-	t["what"].data.attributes["gain"]     =  0.5;
-	t["what"].data.attributes["offset"]   = -32.0;
-	mout.experimental("Testing...");
-	drain::TreeUtils::dataDumper(test, std::cout);
-	drain::TreeUtils::dump(test, std::cout,  DataTools::treeToStream);
-
-	mout.experimental("The following outputs should be equivalent");
-
-	mout.note("[str][str]");
-	drain::TreeUtils::dump(test["dataset1"]["data2"], std::cout,  DataTools::treeToStream);
-	mout.note("[elem][elem])");
-	drain::TreeUtils::dump(test[ODIMPathElem(ODIMPathElem::DATASET,1)][ODIMPathElem(ODIMPathElem::DATA,2)], std::cout,  DataTools::treeToStream);
-	mout.note("[elem(str)][elem(str)])");
-	drain::TreeUtils::dump(test[ODIMPathElem("dataset1")][ODIMPathElem("data2")], std::cout,  DataTools::treeToStream);
-
-	mout.note("(str/str)");
-	drain::TreeUtils::dump(test("dataset1/data2"), std::cout,  DataTools::treeToStream);
-	mout.note("(path(str/str))");
-	drain::TreeUtils::dump(test(ODIMPath("dataset1/data2")), std::cout,  DataTools::treeToStream);
-	mout.note("(path(elem, elem))");
-	drain::TreeUtils::dump(test(ODIMPath(ODIMPathElem(ODIMPathElem::DATASET,1), ODIMPathElem(ODIMPathElem::DATA,2))), std::cout,  DataTools::treeToStream);
-	mout.note("(path(elem(str), elem(str)))");
-	drain::TreeUtils::dump(test(ODIMPath(ODIMPathElem("dataset1"),ODIMPathElem("data2"))), std::cout,  DataTools::treeToStream);
-
-	// drain::TreeUtils::dumpContents(test);
-	exit(0);
-#endif
-
 
 
 
@@ -134,6 +99,10 @@ int process(int argc, const char **argv) {
 	ImageOpModule imageOpMod;
 
 	HiddenModule   hiddenMod;
+#ifndef RACK_DEBUG
+	TestModule testMod;
+	// exit(0);
+#endif
 
 
 	mout.debug("Add Rack-specific commands");
