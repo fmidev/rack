@@ -41,9 +41,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Sprinter.h>
 #include <drain/Type.h>
 #include <drain/util/BeanLike.h>
-#include <drain/util/KeySelector.h>
 #include <drain/util/Range.h>
 #include <drain/util/ReferenceMap.h>
+#include <drain/util/StringMatcherList.h>
 //#include <drain/util/Variable.h>
 
 #include "ODIM.h"
@@ -434,15 +434,11 @@ protected:
 	 *
 	 *  \return true, if contained something accepted by tests
 	 */
-	bool collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & basepath = ODIMPath(), const std::string & parentQuantity="") const;
-
-	bool collectPathsOLD(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & basepath = ODIMPath()) const;
+	bool collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & basepath = ODIMPath(), const std::string & parentQuantity="", ODIMPathElem::group_t filter = ODIMPathElem::ALL_GROUPS) const;
 
 
 	/// Use #DataOrder::criterion \c DATA , \c TIME or \c ELANGLE and #DataOrder::order \c MIN or MAX to sort paths.
 	void prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const;
-
-
 
 };
 

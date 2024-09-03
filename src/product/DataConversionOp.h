@@ -42,8 +42,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/RegExp.h>
 #include <drain/Type.h>
 #include <drain/TypeUtils.h>
+#include <drain/util/StringMatcherList.h>
 //#include "drain/util/LinearScaling.h"
-#include "drain/util/KeySelector.h"
 #include "drain/util/SmartMap.h"
 #include "drain/util/TreeOrdered.h"
 #include "drain/util/ValueScaling.h"

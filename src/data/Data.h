@@ -39,8 +39,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/RegExp.h>
 // #include <drain/VariableAssign.h>
-#include <drain/util/KeySelector.h>
 #include <drain/util/ReferenceMap.h>
+#include <drain/util/StringMatcherList.h>
 // #include <drain/util/Variable.h>
 // #include <drain/image/Legend.h>
 
@@ -710,7 +710,7 @@ public:
 		drain::Logger mout(__FUNCTION__, "(KeySelector): ", "DataGroup{" + ODIMPathElem::getKey(G)+"}");
 
 		// NEW
-		for (const drain::KeyMatcher & m: slct.getList()){
+		for (const drain::StringMatcher & m: slct.getList()){
 			for (const auto & entry: *this){
 				if (m.test(entry.first)){
 					mout.debug("quantity " , entry.first , " matches " , slct);

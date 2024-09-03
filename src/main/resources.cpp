@@ -291,7 +291,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 		path.clear();
 		// if (path.empty()){
 		mout.warn("no paths found with ", imageSelector, " (skipping?)");
-		for (const drain::KeyMatcher & matcher: imageSelector.getQuantitySelector()){
+		for (const drain::StringMatcher & matcher: imageSelector.getQuantitySelector()){
 			mout.warn("\t quantity matcher: ", matcher.value, " [", matcher.getType(), ']');
 		}
 

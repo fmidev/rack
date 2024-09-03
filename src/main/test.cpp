@@ -66,6 +66,38 @@ struct TestSection : public drain::CommandSection {
 };
 
 
+class CmdTestSelect : public drain::BasicCommand {
+
+public:
+
+	inline
+	CmdTestSelect() : drain::BasicCommand(__FUNCTION__, "Test..."){};
+
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		Hi5Tree & src = ctx.getHi5(Hdf5Context::CURRENT);
+
+		DataSelector selector(ctx.select);
+
+		ODIMPathList paths;
+		selector.selectPaths(src, paths);
+
+		for (const ODIMPath & path: paths){
+			std::cout << path << '\n';
+		}
+
+		exit(0);
+
+
+	}
+
+
+
+};
+
+
 class CmdTestTree : public drain::SimpleCommand<std::string> {
 
 public:
@@ -121,7 +153,8 @@ TestModule::TestModule(){ // : CommandSection("science"){
 	// drain::Flagger::ivalue_t section = drain::Static::get<TestSection>().index;
 	// drain::CommandBank & cmdBank = drain::getCommandBank();
 
-	install<CmdTestTree>().section; //  = section;
+	install<CmdTestTree>(); // .section = section;
+	install<CmdTestSelect>(); // .section = section;
 
 	//drain::BeanRefCommand<FreezingLevel> freezingLevel(RainRateOp::freezingLevel);
 	// cmdBank.addExternal(freezingLevel).section = section;
