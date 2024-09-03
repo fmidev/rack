@@ -350,6 +350,17 @@ void DataSelector::selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathCo
 // TODO: write new collectPaths() with parentQuantity="" , "DBZH" -> "DBZH/QIND" to be matched with ".*/QIND"
 
 /// ALERT! NEW; EXPERIMENTAL! Does not use separate qualitySelector object but single, with DBHZ|QIND style.
+/**
+ *
+ *  Examples:
+ *  # DBZH/QIND - accept QIND which is under DBHZ
+ *  # QIND - accept whichever QINDs, in the order of appearance
+ *  # /QIND - accept top-level QIND only
+ *  #
+ *  #
+ *
+ *
+ */
 bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer, const ODIMPath & basepath, const std::string & parentQuantity) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);

@@ -80,9 +80,3 @@ fi
 echo "LAYOUT=$LAYOUT"
 
 
-
-# Pohdintoja
-
-# DBZH/QIND -> selkeä
-# QIND -> päätason QIND
-# /QIND -> alatason QIND?
