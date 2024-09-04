@@ -65,7 +65,7 @@ case $LAYOUT in
 	SLOPE=${SLOPE:-'DBZ-SLOPE'}
 	#cart='-c'
 	# Ylim. cart ennen Q-out
-	cmd="rack $conf $1 --pEchoTop $ETOP,weights=$WEIGHTS,avgWindow=$AVG_WINDOW -Q /CLASS-ETOP $cart --palette 'CLASS-ETOP' -o clsetop.png --legendOut clsetop.svg -Q '$SLOPE' $cart --palette 'DBZ-SLOPE' -o smooth.png --legendOut slope.svg -Q '$QIND' $cart -o qind${avg_label:+-$avg_label}.png  --paletteIn QIND-BW --legendOut qind.svg -Q HGHT $cart --palette 'HGHT' -o .png --legendOut hght.svg --outputPrefix '' -o $OUTFILE_BASE.svg"
+	cmd="rack $conf $1 --pEchoTop $ETOP,weights=$WEIGHTS,avgWindow=$AVG_WINDOW -Q CLASS-ETOP $cart --palette 'CLASS-ETOP' -o clsetop.png --legendOut clsetop.svg -Q '$SLOPE' $cart --palette 'DBZ-SLOPE' -o smooth.png --legendOut slope.svg -Q '$QIND' $cart -o qind${avg_label:+-$avg_label}.png  --paletteIn QIND-BW --legendOut qind.svg -Q HGHT $cart --palette 'HGHT' -o .png --legendOut hght.svg --outputPrefix '' -o $OUTFILE_BASE.svg"
 	;;
 esac
 
