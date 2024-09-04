@@ -45,7 +45,66 @@ if [ ${#INPUTS[*]} != 1 ]; then
 fi
 
 # conf="--odim 2.2 --outputConf svg:absolutePaths=true,title='$TITLE' --outputPrefix '$PWD/\${NOD}-\${what:quantity}-'"
-conf="--odim 2.2 --outputConf svg:absolutePaths=true,title=none --outputPrefix '$PWD/\${NOD}-\${what:quantity}-'"
+conf="--odim 2.2 --outputConf svg:absolutePaths=true,title=none --outputPrefix '$PWD/\${NOD}-\${what:quantity}'"
+
+
+case $LEGEND in
+    left)
+	legendLeft='--legendOut .svg'
+	;;
+    right)
+	legendRight='--legendOut .svg'
+	;;
+    ''|none)
+	;;
+    *)
+	echo "Unknown legend: $LEGEND"
+	exit 1
+	;;
+esac
+
+
+QIND=${AVG_WINDOW:+'/QIND'}
+QIND=${QIND:-'QIND'}
+SLOPE=${AVG_WINDOW:+'DBZ-SLOPE-SMOOTH'}
+SLOPE=${SLOPE:-'DBZ-SLOPE'}
+
+script_basic=""
+script=""
+#script="-Q CLASS-ETOP $cart --palette 'CLASS-ETOP' -o clsetop.png --legendOut clsetop.svg -Q '$SLOPE' $cart --palette 'DBZ-SLOPE' -o smooth.png --legendOut slope.svg -Q '$QIND' $cart -o qind${avg_label:+-$avg_label}.png  --paletteIn QIND-BW --legendOut qind.svg -Q HGHT $cart --palette 'HGHT' -o .png --legendOut hght.svg "
+
+#script="--pEchoTop $ETOP,avgWindow=${AVG_WINDOW}";
+script="--pEchoTop $ETOP,weights=$WEIGHTS,avgWindow=$AVG_WINDOW"
+
+QUANTITIES=${QUANTITIES:-'CLASS-ETOP,DBZ-SLOPE,QIND,HGHT'}
+
+for i in ${QUANTITIES//,/ }; do
+    q=${i//\//}
+    case $i in
+	QIND)
+	    script="$script -Q $i $cart --paletteIn QIND-BW  $legendLeft -o .png  $legendRight"
+	    # script="$script --paletteIn QIND-BW -Q QIND $legendLeft -Q QIND -c -o .png --paletteIn QIND-BW $legendRight"
+	    # -Q '$QIND'    $cart -o qind${avg_label:+-$avg_label}.png  --paletteIn QIND-BW --legendOut .svg
+	    ;;
+	DBZ-SLOPE)
+	    script="$script -Q $SLOPE $cart --palette DBZ-SLOPE $legendLeft -o .png  $legendRight"
+	    # 	    -Q '$SLOPE'   $cart --palette 'DBZ-SLOPE'  -o .png --legendOut .svg
+	    #script="$script --paletteIn DBZ-SLOPE -Q $SLOPE $legendLeft -Q DBZ-SLOPE -c -o .png --paletteIn QIND-BW $legendRight"
+	    ;;
+	DBZH|VRAD)
+	    script_basic="-Q $i $cart --palette $q $legendLeft -o .png  $legendRight"
+	    ;;
+	*)
+	    script="$script -Q $i $cart --palette $q $legendLeft -o .png  $legendRight"
+	    #-Q CLASS-ETOP $cart --palette 'CLASS-ETOP' -o .png --legendOut .svg
+	    #-Q HGHT       $cart --palette 'HGHT'       -o .png --legendOut .svg 
+	    ;;
+    esac
+done
+
+#script="-Q CLASS-ETOP $cart --palette 'CLASS-ETOP' -o .png --legendOut .svg -Q '$SLOPE' $cart --palette 'DBZ-SLOPE' -o .png --legendOut .svg -Q '$QIND' $cart -o qind${avg_label:+-$avg_label}.png  --paletteIn QIND-BW --legendOut .svg -Q HGHT $cart --palette 'HGHT' -o .png --legendOut .svg "
+
+
 
 case $LAYOUT in
     basic)
@@ -59,13 +118,11 @@ case $LAYOUT in
 	cmd="rack $conf $1 --pEchoTop $ETOP,weights=$WEIGHTS,avgWindow=$AVG_WINDOW  -Q DBZ-SLOPE-SMOOTH -c --palette 'DBZ-SLOPE' -o smooth.png --legendOut slope.svg -Q /QIND -o smooth-q.png  --paletteIn QIND-BW --legendOut qind.svg -Q HGHT -c --palette 'HGHT' -o .png --legendOut hght.svg --outputPrefix '' -o $OUTFILE_BASE.svg"
 	;;
     four|*)
-	QIND=${AVG_WINDOW:+'/QIND'}
-	QIND=${QIND:-'QIND'}
-	SLOPE=${AVG_WINDOW:+'DBZ-SLOPE-SMOOTH'}
-	SLOPE=${SLOPE:-'DBZ-SLOPE'}
 	#cart='-c'
 	# Ylim. cart ennen Q-out
-	cmd="rack $conf $1 --pEchoTop $ETOP,weights=$WEIGHTS,avgWindow=$AVG_WINDOW -Q CLASS-ETOP $cart --palette 'CLASS-ETOP' -o clsetop.png --legendOut clsetop.svg -Q '$SLOPE' $cart --palette 'DBZ-SLOPE' -o smooth.png --legendOut slope.svg -Q '$QIND' $cart -o qind${avg_label:+-$avg_label}.png  --paletteIn QIND-BW --legendOut qind.svg -Q HGHT $cart --palette 'HGHT' -o .png --legendOut hght.svg --outputPrefix '' -o $OUTFILE_BASE.svg"
+	#cmd="rack $conf $1 --pEchoTop $ETOP,weights=$WEIGHTS,avgWindow=$AVG_WINDOW -Q CLASS-ETOP $cart --palette 'CLASS-ETOP' -o clsetop.png --legendOut clsetop.svg -Q '$SLOPE' $cart --palette 'DBZ-SLOPE' -o smooth.png --legendOut slope.svg -Q '$QIND' $cart -o qind${avg_label:+-$avg_label}.png  --paletteIn QIND-BW --legendOut qind.svg -Q HGHT $cart --palette 'HGHT' -o .png --legendOut hght.svg --outputPrefix '' -o $OUTFILE_BASE.svg"
+	#cmd="rack $conf $1 --pEchoTop $ETOP,weights=$WEIGHTS,avgWindow=$AVG_WINDOW $script --outputPrefix '' -o $OUTFILE_BASE.svg"
+	cmd="rack $conf $1 $script_basic $script --outputPrefix '' -o $OUTFILE_BASE.svg"
 	;;
 esac
 
