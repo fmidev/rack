@@ -95,7 +95,7 @@ public:
 	 *  \param odimOut - metadata container (PolarODIM or CartesianODIM)
 	 *  \param fields - layers (d=data, w=weight, C=count, ...)
 	 */
-	void extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,
+	void extractOLD(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,
 			const std::string & fields, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 	/// Input data selector.
@@ -260,7 +260,7 @@ bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) cons
 
 
 template  <class AC, class OD>
-void RadarAccumulator<AC,OD>::extract(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,
+void RadarAccumulator<AC,OD>::extractOLD(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,
 		const std::string & fields, const drain::Rectangle<int> & crop) const {
 	// , const drain::Rectangle<double> & bbox) const {
 

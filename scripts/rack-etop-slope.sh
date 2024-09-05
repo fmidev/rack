@@ -129,11 +129,32 @@ esac
 echo $cmd
 eval $cmd &> cmd.log
 
-if [ "$OUTFILE_EXT" != 'svg' ]; then 
-    cmd2="convert $OUTFILE_BASE.{svg,$OUTFILE_EXT}"
-    echo $cmd2
-    eval $cmd2 &>> cmd.log
+
+
+if [ $? != 0 ]; then
+   cat cmd.log
+   exit 1
 fi
+
+
+case $OUTFILE_EXT in
+    svg)
+	exit $?
+	;;
+    xxpng)
+	cmd2="inkscape $OUTFILE_BASE.svg -o $OUTFILE"
+	;;
+    pdf)
+	cmd2="inkscape $OUTFILE_BASE.svg -o $OUTFILE"
+	;;
+    *)
+	cmd2="convert $OUTFILE_BASE.svg $OUTFILE"
+	;;
+esac
+
+echo $cmd2
+eval $cmd2 &>> cmd.log
+
 echo "LAYOUT=$LAYOUT"
 
 

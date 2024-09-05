@@ -535,7 +535,7 @@ public:
 	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & experimental(const TT &... args){
-		static const Notification notif(__FUNCTION__, TextStyle::BLUE, TextStyle::BOLD); // 94);
+		static const Notification notif(__FUNCTION__, TextStyle::CYAN, TextStyle::REVERSE); // 94);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;

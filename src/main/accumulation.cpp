@@ -486,7 +486,7 @@ public:
 
 		//acc.odim.ACCnum += acc.count;
 		//acc.count = 0; // NOTE CHECK - if data re-added?
-		acc.extract(acc.odim, dstProduct, value);
+		acc.extractOLD(acc.odim, dstProduct, value);
 		acc.odim.ACCnum = acc.counter;
 
 		ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(acc.odim, dstDataSetGroup); //@dstProduct odim.copyToDataSet(dstDataSetGroup);

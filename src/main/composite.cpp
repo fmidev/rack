@@ -670,6 +670,8 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
+	//mout.attention("Calling: composite.extractNEW2 ", channels, " enc:", encoding);
+
 	RackResources & resources = getResources();
 
 	if (!composite.isDefined()){
@@ -802,6 +804,8 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 			mout.special("using specified encoding: ", encoding);
 		}
 		*/
+
+		mout.attention("Calling: composite.extractNEW2 ", channels, " enc:", encoding);
 
 		composite.extractNEW2(dstProduct, channels, cropImage, encoding);
 

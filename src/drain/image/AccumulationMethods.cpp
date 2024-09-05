@@ -187,15 +187,21 @@ void AccumulationMethod::extractWeight(const AccumulationArray & accArray, const
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	//double value = 0.0;
+	const double nodata = coder.getNoDataMarker();
 	double weight;
 
 	if (crop.empty()){
 		const size_t s = dst.getVolume();
-		for (size_t i = 0; i < s; ++i) {
-			weight = accArray.weight.at(i);
-			coder.encodeWeight(weight);
-			dst.put(i, weight);
+		for (size_t addr = 0; addr < s; ++addr) {
+			if (accArray.count.at(addr) > 0){
+			//if (true){
+				weight = accArray.weight.at(addr);
+				coder.encodeWeight(weight);
+				dst.put(addr, weight);
+			}
+			else {
+				dst.put(addr, nodata);  // NEW 2024/09/05
+			}
 		}
 	}
 	else {
@@ -203,10 +209,16 @@ void AccumulationMethod::extractWeight(const AccumulationArray & accArray, const
 		size_t addr;
 		for (unsigned int j=0; j<dst.getHeight(); ++j) {
 			for (unsigned int i=0; i<dst.getWidth(); ++i) {
+				//if (true){ //
 				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
-				weight = accArray.weight.at(addr);
-				coder.encodeWeight(weight);
-				dst.put(i, j, weight);
+				if (accArray.count.at(addr) > 0){  //
+					weight = accArray.weight.at(addr);
+					coder.encodeWeight(weight);
+					dst.put(i, j, weight);
+				}
+				else {
+					dst.put(i, j, nodata/2); // NEW 2024/09/05
+				}
 			}
 		}
 	}
@@ -355,8 +367,8 @@ void MaximumMethod::add(AccumulationArray & accArray, const size_t i, double val
 			accArray.weight.at(i) = weight;
 		}
 	}
-
-	++accArray.count.at(i); //  = 1;
+	accArray.count.at(i) = 1;
+	//++accArray.count.at(i); //  = 1;
 }
 
 void MinimumMethod::add(AccumulationArray & accArray, const size_t i, double value, double weight) const{
@@ -477,7 +489,8 @@ void AverageMethod::extractWeight(const AccumulationArray & accArray, const Accu
 	unsigned int count;
 	double weight = 0.0;
 	coder.encodeWeight(weight);
-	const double weight0 = weight;
+	//const double weightCode0 = weight;
+	const double nodata = coder.getNoDataMarker();
 
 
 	if (crop.empty()){
@@ -491,7 +504,7 @@ void AverageMethod::extractWeight(const AccumulationArray & accArray, const Accu
 				dst.put(addr, weight );
 			}
 			else {
-				dst.put(addr, weight0);
+				dst.put(addr, nodata);
 			}
 		}
 
@@ -510,7 +523,7 @@ void AverageMethod::extractWeight(const AccumulationArray & accArray, const Accu
 					dst.put(i, j, weight );
 				}
 				else {
-					dst.put(i, j, weight0);
+					dst.put(i, j, nodata);
 				}
 			}
 		}
@@ -759,21 +772,29 @@ void WeightedAverageMethod::extractWeight(const AccumulationArray & accArray, co
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
+	const double nodata = coder.getNoDataMarker();
 	double weight;
-	//const double rInv = (USE_R) ? 1.0/r : 1.0;  // div by undetectValue on some compilers?
+	unsigned int count;
 
 	if (crop.empty()){
 		const size_t s = dst.getVolume();
 		for (size_t addr = 0; addr < s; ++addr) {
 			weight = accArray.weight.at(addr);
 			// if ((i%1026)==0) std::cerr << "weight: " << weight << '\t';
-			if (weight > 0.0){ //
-				weight = weight / static_cast<double>(accArray.count.at(addr)); // scale TODO: FIX!
-				if (USE_R)
+			count = accArray.count.at(addr);
+			//if (weight > 0.0){ //
+			if (count > 0){ //
+				//weight = weight / static_cast<double>(accArray.count.at(addr)); // scale TODO: FIX!
+				weight = weight / static_cast<double>(count);
+				if (USE_R){
 					weight = pow(weight, rInv);
+				}
+				coder.encodeWeight(weight);
+				dst.put(addr, weight);
 			}
-			coder.encodeWeight(weight);
-			dst.put(addr, weight);
+			else {
+				dst.put(addr, nodata);
+			}
 		}
 	}
 	else {
@@ -783,13 +804,20 @@ void WeightedAverageMethod::extractWeight(const AccumulationArray & accArray, co
 			for (unsigned int i=0; i<dst.getWidth(); ++i) {
 				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
 				weight = accArray.weight.at(addr);
-				if (weight > 0.0){ //
-					weight = weight / static_cast<double>(accArray.count.at(addr)); // scale TODO: FIX!
-					if (USE_R)
+				count = accArray.count.at(addr);
+				// if (weight > 0.0){ //
+				if (count > 0){ //
+					weight = weight / static_cast<double>(count);
+					//weight = weight / static_cast<double>(accArray.count.at(addr)); // scale TODO: FIX!
+					if (USE_R){
 						weight = pow(weight, rInv);
+					}
+					coder.encodeWeight(weight);
+					dst.put(i, j, weight);
 				}
-				coder.encodeWeight(weight);
-				dst.put(i, j, weight);
+				else {
+					dst.put(i, j, nodata);
+				}
 			}
 		}
 	}

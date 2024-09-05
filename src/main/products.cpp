@@ -223,9 +223,9 @@ public:
 		this->bean.outputDataVerbosity = ctx.outputDataVerbosity;
 		/// Determines if also intermediate results (1) are saved. See --aStore
 
-		mout.special("Updating  ", this->bean.getDataSelector() );
+		mout.special<LOG_DEBUG>("My data selector: ", this->bean.getDataSelector() );
 
-		mout.attention(this->getName(), " last pars: ", this->getLastParameters());
+		mout.attention<LOG_DEBUG>(this->getName(), " last pars: ", this->getLastParameters());
 
 	}
 

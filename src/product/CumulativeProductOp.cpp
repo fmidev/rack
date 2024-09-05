@@ -131,7 +131,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	// mout.warn("eka: " , drain::sprinter(dstData.odim.angles) );
 
 	//if (mout.isDebug(LOG_DEBUG))
-	accumulator.extract(dstData.odim, dstProduct, "dwC");
+	accumulator.extractOLD(dstData.odim, dstProduct, "dwC");
 	//else
 	// OK mout.warn("eka: " , drain::sprinter(dstData.odim.angles) );
 		//accumulator.extract(dstData.odim, dstProduct, "dw");

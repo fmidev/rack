@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "9.0"
+#define __RACK_VERSION__ "9.1"
 
 /**
+ *   Version 9.1
+ *   - Compositing: revised count handling for QIND
+ *
  *   Version 9.0
  *   - DataSelector: quantity selection streamlined DBZH/QIND, /QIND
  *   - EchoTop: new version, renamed EchoTopOld -> EchoTopOld
