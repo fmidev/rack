@@ -476,8 +476,13 @@ drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what 
 	VariableFormatterODIM<drain::Variable> formatter;
 	drain::StringMapper groupMapper(RackContext::variableMapper); // XXX
 	groupMapper.parse(ctx.svgPanelConf.groupName);
-	const std::string groupName = groupMapper.toStr(ctx.getStatusMap()); // No formatting supported here (not needed - this is identifying, not style)
+	const drain::VariableMap & vmap = ctx.getStatusMap();
+	const std::string groupName = groupMapper.toStr(vmap); // No ${variable|format} supported here (not needed - this is identifying, not style)
 
+	//mout.pending<LOG_WARNING>("considering group: '", groupName, "' <= ", groupMapper, vmap.get("what:quantity","??"));
+	mout.pending<LOG_WARNING>(__FUNCTION__, " quantity:", vmap.get("what:quantity","??"));
+
+	// mout.warn();
 	//mout.accept<LOG_WARNING>("podgrupnik ", groupName);  // ctx.svgPanelConf.
 
 	if (!track.hasChild(groupName)){  // ctx.svgPanelConf.
@@ -688,7 +693,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 	drain::TreeUtils::traverse(metadataCollector, ctx.svgTrack);
 	drain::TreeUtils::dump(ctx.svgTrack);
 	*/
-	if (mout.isLevel(LOG_INFO)){
+	if (mout.isLevel(LOG_DEBUG)){
 		mout.special("dumping SVG tree");
 		drain::TreeUtils::dump(ctx.svgTrack);
 	}
@@ -699,7 +704,7 @@ void CmdBaseSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath
 	MetaDataPrunerSVG metadataPruner;
 	drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
 
-	if (mout.isLevel(LOG_INFO)){
+	if (mout.isLevel(LOG_DEBUG)){
 		mout.special("dumping SVG tree");
 		drain::TreeUtils::dump(ctx.svgTrack);
 	}

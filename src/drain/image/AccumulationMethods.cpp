@@ -789,6 +789,7 @@ void WeightedAverageMethod::extractWeight(const AccumulationArray & accArray, co
 				if (USE_R){
 					weight = pow(weight, rInv);
 				}
+				// ?weight = weight / static_cast<double>(count);
 				coder.encodeWeight(weight);
 				dst.put(addr, weight);
 			}

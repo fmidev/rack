@@ -37,6 +37,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 /**
  *   Version 9.1
  *   - Compositing: revised count handling for QIND
+ *   - RackContext::findImage(): keep ctx.selector intact
+ *
  *
  *   Version 9.0
  *   - DataSelector: quantity selection streamlined DBZH/QIND, /QIND

@@ -215,15 +215,21 @@ ODIMPath RackContext::findImage(){ //RackContext & ctx){
 
 	//DataSelector imageSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY); // TODO: modify PathMatcher output to "data|quality" instead of "other".
 	DataSelector imageSelector;
-	mout.accept("Image selector1: ", imageSelector);
 	// mout.accept("Image selector", imageSelector);
+	// mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", this->getStatusMap().get("what:quantity","??"));
 
-	imageSelector.consumeParameters(this->select);
+	mout.revised("keeping, not clearing selector: ", this->select);
+	// imageSelector.consumeParameters(this->select);
+	imageSelector.setParameters(this->select);
 	if (imageSelector.getMaxCount() > 1){
 		mout.debug("Adjusting image selector.count=", imageSelector.getMaxCount(), " to 1");
 		imageSelector.setMaxCount(1);
 	}
+
+	// mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", this->getStatusMap().get("what:quantity","??"));
+
 	// mout.special("Image selector", imageSelector);
+	mout.accept("Image selector1: ", imageSelector);
 
 	imageSelector.ensureDataGroup();
 	mout.accept("Image selector2: ", imageSelector);
@@ -257,9 +263,9 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 		mout.ok("using path: '" , path , "'" );
 
 		drain::image::Image & img = src(path)[ODIMPathElem::ARRAY].data.image;
-		mout.info(img.getProperties().get("what:quantity", "?") , ", scaling: " , img.getScaling() , "  " , img );
+		mout.info("quantity [", img.getProperties().get("what:quantity", "?") , "], scaling: " , img.getScaling() , "  " , img );
 		// mout.attention("coordPolicy: " , img.getCoordinatePolicy());
-
+		// mout.attention("quantity [", img.getProperties().get("what:quantity", "?") , "], scaling: " , img.getScaling() , "  " , img );
 
 		if (!img.isEmpty()){
 			// WHY TWICE?
@@ -273,6 +279,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 				}
 			}
 			img.properties["path"] = drain::sprinter(path,"/").str();
+			// mout.attention("quantity [", img.getProperties().get("what:quantity", "?") , "], scaling: " , img.getScaling() , "  " , img );
 		}
 		else {
 			mout.warn("data not found or empty data with selector: " , imageSelector );
@@ -311,6 +318,8 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 
 	ODIMPath path;
 
+	mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", ctx.getStatusMap().get("what:quantity","??"));
+
 	// if ctx.select ..
 	if (!ctx.select.empty()){
 		mout.info("selector: ", ctx.select);
@@ -318,11 +327,7 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 		mout.info("selected image at: ", path);
 	}
 
-	/*
-	if (ctx.superSelector){
-
-	}
-	*/
+	mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", ctx.getStatusMap().get("what:quantity","??"));
 
 	if (!ctx.targetEncoding.empty()){
 		if (ctx.currentImage != NULL){
@@ -338,11 +343,15 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 		}
 	}
 
+
 	if (ctx.currentImage == NULL){
+		mout.attention("Still: ctx.currentImage == NULL");
 		path = findImage();
 		if (!path.empty())
 			mout.info("found image at: ", path);
 	}
+
+	// mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", ctx.getStatusMap().get("what:quantity","??"));
 
 	if (ctx.currentImage == NULL){
 		mout.warn("image data not found");
@@ -355,6 +364,7 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 		//ctx.currentImage->properties["path"] = path;
 		return *ctx.currentImage;
 	}
+
 
 }
 

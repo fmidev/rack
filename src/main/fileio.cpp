@@ -422,8 +422,14 @@ void CmdOutputFile::exec() const {
 
 		mout.info("File format: image");
 
+		//const drain::VariableMap & vmap = ctx.getStatusMap();
+		mout.pending<LOG_WARNING>(__FUNCTION__, " quantity : ", ctx.getStatusMap().get("what:quantity","??"));
+		mout.pending<LOG_WARNING>(__FUNCTION__, " quantity1: ", ctx.getStatusMap().get("what:quantity","??"));
+
 		// Optional on-the-fly conversions: handle ctx.select and ctx.targetEncoding, if defined.
 		const drain::image::Image & srcImage = ctx.updateCurrentImage();
+
+		mout.pending<LOG_WARNING>(__FUNCTION__, " quantity2: ", ctx.getStatusMap().get("what:quantity","??"));
 
 		if (IMAGE_PNG){
 			CmdBaseSVG::addImage(ctx, srcImage, filepath); // path.str()
