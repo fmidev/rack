@@ -482,9 +482,12 @@ drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what 
 
 	if (!track.hasChild(groupName)){  // ctx.svgPanelConf.
 		drain::image::TreeSVG & group = track[groupName](NodeSVG::GROUP);  // ctx.svgPanelConf.
+		// ctx.svgPanelConf.
 		// Ensure (repeatedly)
 		group->addClass("imageSet");
-		group->setId(groupName);  // ctx.svgPanelConf.
+		group->setId(groupName);
+		group->set("debug", groupName); // debug
+		mout.accept<LOG_WARNING>("added group: '", groupName, "' <= ", groupMapper);
 	}
 
 	return track[groupName](NodeSVG::GROUP); // ctx.svgPanelConf.

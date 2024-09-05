@@ -48,11 +48,31 @@ crop=${CROP:+":bbox=$CROP"}
 
 #TITLE='\${what:date|%Y-%m-%d}T\${what:time|%H:%M}Z  – $CMETHOD – \${how:nodes}'
 TITLE=none
-conf="--odim 2.2 --quantityConf HGHT:zero=MIKA --undetectWeight 0.1 --outputConf svg:absolutePaths=true,title='$TITLE' --outputPrefix '$PWD/'" # \${NOD}-\${what:quantity}-
+
+
+case $LEGEND in
+    left)
+	legendLeft="--legendOut 'legend-\${what:quantity}.svg'"
+	;;
+    right)
+	legendRight="--legendOut 'legend-\${what:quantity}.svg'"
+	;;
+    ''|none)
+	;;
+    *)
+	echo "Unknown legend: $LEGEND"
+	exit 1
+	;;
+esac
+
+
+# --quantityConf HGHT:zero=MIKA --undetectWeight 0.1
+# orientation=VERT
+conf="--odim 2.2 --outputConf svg:absolutePaths=true,title='$TITLE'${SVGCONF:+,$SVGCONF} --outputPrefix '$PWD/'" # \${NOD}-\${what:quantity}-
 
 #for cmethod in ${CMETHOD//:/ }; do
 
-cmd="rack $conf --cMethod '$CMETHOD' --cSize '$SIZE' --cProj '$PROJ' --cBBox '$BBOX' --cInit --script '--pEchoTop '$ETOP,weights=$WEIGHTS' --cAdd' ${INPUTS[*]} --cExtract dw$crop  -Q HGHT --palette '' -o HGHT.png -Q QIND -o QIND.png --outputPrefix '' -o $OUTFILE_BASE.svg"
+cmd="rack $conf --cMethod '$CMETHOD' --cSize '$SIZE' --cProj '$PROJ' --cBBox '$BBOX' --cInit --script '--pEchoTop '$ETOP,weights=$WEIGHTS' --cAdd' ${INPUTS[*]} --cExtract dw$crop  -Q HGHT --palette '' $legendLeft -o HGHT.png $legendRight  --paletteIn QIND-BW $legendLeft -Q QIND -o QIND.png  --paletteIn QIND-BW $legendRight --outputPrefix '' -o $OUTFILE_BASE.svg"
 echo $cmd
 eval $cmd &> cmd.log
 
