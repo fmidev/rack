@@ -112,7 +112,7 @@ void CartesianGrid::exec() const {
 
 	ImageFrame & alpha = ALPHA ? img.getAlphaChannel() : img.getChannel(0); // Latter dummy
 
-	//const drain::Rectangle<double> & bboxD = geoFrame.getBoundingBoxD();
+	//const drain::Rectangle<double> & bboxD = geoFrame.getBoundingBoxDeg();
 	// const double lonResolution = static_cast<double>(img.getWidth())  / (bboxD.upperRight.x - bboxD.lowerLeft.x) / width ;
 	// const double latResolution = static_cast<double>(img.getHeight()) / (bboxD.upperRight.y - bboxD.lowerLeft.y) / width ;
 

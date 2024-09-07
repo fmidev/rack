@@ -159,16 +159,16 @@ void CmdGeoTiff::write(RackContext & ctx, const drain::image::Image & src, const
 			//drain::Rectangle<double> bboxD(prop["where:LL_lon"], prop["where:LL_lat"], prop["where:UR_lon"], prop["where:UR_lat"] );
 			if (frame.isLongLat()){
 				//frame.setBoundingBoxD(bboxD);
-				frame.setBoundingBoxD(odim.getBoundingBoxD());
+				frame.setBoundingBoxD(odim.getBoundingBoxDeg());
 			}
 			else {
 				// Debug
 				/*
 				frame.setBoundingBoxD(bboxD);
-				mout.special("BBOX deg: ", frame.getBoundingBoxD());
+				mout.special("BBOX deg: ", frame.getBoundingBoxDeg());
 				mout.special() << "BBOX m  : ";
 				mout.precision(20);
-				mout << frame.getBoundingBoxM() << mout;
+				mout << frame.getBoundingBoxNat() << mout;
 				*/
 
 				const drain::FlexibleVariable & p = src.properties["where:BBOX_native"];
@@ -181,12 +181,12 @@ void CmdGeoTiff::write(RackContext & ctx, const drain::image::Image & src, const
 					frame.setBoundingBoxM(bboxM);
 					mout.info() << "Setting exact (metric) BBOX=";
 					mout.precision(20);
-					mout << frame.getBoundingBoxM() << mout;
+					mout << frame.getBoundingBoxNat() << mout;
 				}
 				else {
 					mout.info("where:BBOX_native=[", p, "] missing or invalid, using bbox in degrees (approximative)");
 					// frame.setBoundingBoxD(bboxD);
-					frame.setBoundingBoxD(odim.getBoundingBoxD());
+					frame.setBoundingBoxD(odim.getBoundingBoxDeg());
 				}
 			}
 		}

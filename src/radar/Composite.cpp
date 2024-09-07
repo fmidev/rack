@@ -787,7 +787,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		}
 		else {
 			range = srcData.odim.getMaxRange(false);
-			mout.info("Using maximum range: ", range);
+			mout.attention("Using maximum range: ", range);
 			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(true), bboxM);
 		}
 
@@ -810,11 +810,11 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 		if (cropping){
 			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange() , bboxInput); // ALREADY?
-			mout.debug("Orig: ", getBoundingBoxM());
+			mout.debug("Orig: ", getBoundingBoxNat());
 			mout.debug("Cropping with ", srcData.odim.getMaxRange(), " range with bbox=", bboxInput );
 			cropWithM(bboxInput);
-			mout.info("Cropped to: ", getBoundingBoxM());
-			if (getBoundingBoxM().getArea() == 0){
+			mout.info("Cropped to: ", getBoundingBoxNat());
+			if (getBoundingBoxNat().getArea() == 0){
 				mout.info("Cropping returned empty area." );
 				mout.note("Data outside bounding box, returning" );
 				allocate(); // ?
@@ -824,6 +824,8 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		}
 
 	}
+	mout.special<LOG_NOTICE>("Detected 'native' input BBOX: ", bboxInput);
+
 	/// Note: area not yet defined.
 
 	// mout.warn("range: " , (srcData.odim.getMaxRange() / 1000.0) , " km ");
@@ -850,12 +852,15 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		mout.special("Test ", aeqd, " (50 km West) : ", dest);
 	}
 
-	bboxInput.crop(getBoundingBoxM());
+	if (bboxInput.crop(getBoundingBoxNat())){ // bool result incorrect
+		mout.special("Cropped input BBOX: ", bboxInput);
+		// <LOG_NOTICE>
+	}
 
 	drain::Rectangle<int> bboxPix;
 	m2pix(bboxInput.lowerLeft,  bboxPix.lowerLeft);
 	m2pix(bboxInput.upperRight, bboxPix.upperRight);
-	mout.debug("cropped, data:", bboxInput, ", pix area: ", bboxPix);
+	mout.note("cropped, data:", bboxInput.tuple(), ", pix area: ", bboxPix.tuple());
 
 	//mout.warn() << "Should use:" <<  bboxPix << ", in " << getFrameWidth() << 'x' << getFrameHeight() << '\n';
 	mout.debug("Composite (cropped) ", *this, " geom: ", accArray.getGeometry(), "\nProj:\n", pRadarToComposite, "\n Pix area:\n", bboxPix, '\n');
@@ -864,6 +869,8 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	allocate();
 	//mout.debug2("allocated" );
 	//std::cerr << count << std::endl;
+
+	//mout.attention("Image BBOX: ", bboxPix);
 
 	/// -------------------------------------------------------
 	/// DATA PROJECTION (MAIN LOOP)
@@ -875,7 +882,9 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	drain::Rectangle<double> bboxD;
 	m2deg(bboxInput.lowerLeft,  bboxD.lowerLeft);
 	m2deg(bboxInput.upperRight, bboxD.upperRight);
-	updateDataExtent(bboxD);
+	//updateDataExtent(bboxD);
+	updateDataExtentNat(bboxInput);
+
 
 	// Non-standard: add position of radar in image coords
 	drain::Point2D<double> cMetric;
@@ -924,8 +933,9 @@ void Composite::addCartesian(const PlainData<CartesianSrc> & cartSrc, const Plai
 	// Update geographical extent (optional information)
 	// const Rectangle<double> srcExtent(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
 	// updateDataExtent(srcExtent);
-	updateDataExtent(cartSrc.odim.bboxD);
+	//updateDataExtent(cartSrc.odim.bboxD);
 
+	updateDataExtentDeg(cartSrc.odim.bboxD);
 	// odim.update(cartSrc.odim); // moved to add Data
 
 	mout.debug("completed");

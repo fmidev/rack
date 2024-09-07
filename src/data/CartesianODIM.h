@@ -92,8 +92,8 @@ public:
 
 	/// WHERE
 	std::string projdef;
-	double xscale;
-	double yscale;
+	double xscale = 0.0;
+	double yscale = 0.0;
 
 	//drain::Rectangle<double> bboxD ?
 	drain::BBox bboxD;
@@ -101,10 +101,10 @@ public:
 	// double LL_lon;
 	// double UR_lat;
 	// double UR_lon;
-	double UL_lat;
-	double UL_lon;
-	double LR_lat;
-	double LR_lon;
+	double UL_lat = 0.0;  // or silent NaN?
+	double UL_lon = 0.0;
+	double LR_lat = 0.0;
+	double LR_lon = 0.0;
 
 	/// How cartesian data are processed, according to Table 12
 	std::string camethod;
@@ -120,7 +120,7 @@ public:
 
 
 	inline
-	const drain::Rectangle<double> & getBoundingBoxD() const {
+	const drain::Rectangle<double> & getBoundingBoxDeg() const {
 		/*
 		bboxD.lowerLeft.x  = LL_lon;
 		bboxD.lowerLeft.y  = LL_lat;

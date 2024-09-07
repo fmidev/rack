@@ -59,9 +59,9 @@ std::ostream &operator<<(std::ostream &ostr, const drain::image::AccumulatorGeo 
 	ostr << "   coord system: " << acc.getCoordinateSystem() << '\n';
 	ostr << "   proj:  " << acc.getProjection() << '\n';
 
-	ostr << "   scope, metres:  [" << acc.getBoundingBoxM() << "]\n";
-	ostr << "   scope, radians: [" << acc.getBoundingBoxR() << "]\n";
-	ostr << "   scope, degrees: [" << acc.getBoundingBoxD() << "]\n";
+	ostr << "   scope, metres:  [" << acc.getBoundingBoxNat() << "]\n";
+	ostr << "   scope, radians: [" << acc.getBoundingBoxRad() << "]\n";
+	ostr << "   scope, degrees: [" << acc.getBoundingBoxDeg() << "]\n";
 
 	return ostr;
 }

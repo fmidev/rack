@@ -480,7 +480,7 @@ drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what 
 	const std::string groupName = groupMapper.toStr(vmap); // No ${variable|format} supported here (not needed - this is identifying, not style)
 
 	//mout.pending<LOG_WARNING>("considering group: '", groupName, "' <= ", groupMapper, vmap.get("what:quantity","??"));
-	mout.pending<LOG_WARNING>(__FUNCTION__, " quantity:", vmap.get("what:quantity","??"));
+	//mout.pending<LOG_WARNING>(__FUNCTION__, " quantity:", vmap.get("what:quantity","??"));
 
 	// mout.warn();
 	//mout.accept<LOG_WARNING>("podgrupnik ", groupName);  // ctx.svgPanelConf.
@@ -492,7 +492,7 @@ drain::image::TreeSVG & CmdBaseSVG::getCurrentGroup(RackContext & ctx){ // what 
 		group->addClass("imageSet");
 		group->setId(groupName);
 		group->set("debug", groupName); // debug
-		mout.accept<LOG_WARNING>("added group: '", groupName, "' <= ", groupMapper);
+		// mout.accept<LOG_WARNING>("added group: '", groupName, "' <= ", groupMapper);
 	}
 
 	return track[groupName](NodeSVG::GROUP); // ctx.svgPanelConf.

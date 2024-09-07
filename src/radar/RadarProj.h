@@ -84,7 +84,7 @@ public:
 
 	/// Bounding box in degrees
 	inline
-	void getBoundingBoxD(double range, double & lonLL, double & latLL, double & lonUR, double & latUR) const {
+	void getBoundingBoxDeg(double range, double & lonLL, double & latLL, double & lonUR, double & latUR) const {
 		getBoundingBox(range, lonLL, latLL, lonUR, latUR);
 		lonLL *= drain::RAD2DEG;
 		latLL *= drain::RAD2DEG;
@@ -152,7 +152,7 @@ public:
 
 	/// Bounding box in degrees
 	inline
-	void getBoundingBoxD(double range, double & lonLL, double & latLL, double & lonUR, double & latUR) const {
+	void getBoundingBoxDeg(double range, double & lonLL, double & latLL, double & lonUR, double & latUR) const {
 		getBoundingBox(range, lonLL, latLL, lonUR, latUR);
 		lonLL *= drain::RAD2DEG;
 		latLL *= drain::RAD2DEG;

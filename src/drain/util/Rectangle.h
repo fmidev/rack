@@ -129,8 +129,10 @@ struct Rectangle : public drain::UniTuple<T,4> {
 	/// This becomes the intersection of r and this.
 	/**
 	 *   Two way bounds are needed, because cropping max can be lower than this min.
+	 *
+	 *   \return - true if rectangle was modified.
 	 */
-	void crop(const Rectangle<T> & r);
+	bool crop(const Rectangle<T> & r);
 
 	/// The instance extends to its union with r.
 	void extend(const Rectangle & r);
@@ -164,31 +166,38 @@ protected:
 
 	/// Limits x between interval [lowerBound, upperBound]
 	inline
-	void limit(const T & lowerBound, const T & upperBound, T & x){
+	bool limit(const T & lowerBound, const T & upperBound, T & x){
 
 		if (lowerBound > upperBound){
-			limit(upperBound, lowerBound, x);
-			return;
+			return limit(upperBound, lowerBound, x);
+			//return true;
 		}
 
-		if (x < lowerBound)
+		if (x < lowerBound){
 			x = lowerBound;
-		else if (x > upperBound)
+			return true;
+		}
+		else if (x > upperBound){
 			x = upperBound;
+			return true;
+		}
 
+		return false;
 	}
 
 };
 
 
 template <class T>
-void Rectangle<T>::crop(const Rectangle<T> & r){
+bool Rectangle<T>::crop(const Rectangle<T> & r){
 	const Rectangle<T> bounds(*this);
+	bool result = false;
 	*this = r;
-	limit(bounds.lowerLeft.x, bounds.upperRight.x, this->lowerLeft.x);
-	limit(bounds.lowerLeft.x, bounds.upperRight.x, this->upperRight.x);
-	limit(bounds.lowerLeft.y, bounds.upperRight.y, this->lowerLeft.y);
-	limit(bounds.lowerLeft.y, bounds.upperRight.y, this->upperRight.y);
+	result |= limit(bounds.lowerLeft.x, bounds.upperRight.x, this->lowerLeft.x);
+	result |= limit(bounds.lowerLeft.x, bounds.upperRight.x, this->upperRight.x);
+	result |= limit(bounds.lowerLeft.y, bounds.upperRight.y, this->lowerLeft.y);
+	result |= limit(bounds.lowerLeft.y, bounds.upperRight.y, this->upperRight.y);
+	return result;
 }
 
 

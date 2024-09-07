@@ -334,9 +334,9 @@ void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 
 	std::vector<double> pixscale(3);
 
-	const drain::Rectangle<double> & bbox = frame.getBoundingBoxM();
-	//const drain::Rectangle<double> & bbox = frame.isLongLat() ? frame.getBoundingBoxD() : frame.getBoundingBoxM();
-	// mout.attention("Bbox: ", bbox, " Nat:", frame.getBoundingBoxM());
+	const drain::Rectangle<double> & bbox = frame.getBoundingBoxNat();
+	//const drain::Rectangle<double> & bbox = frame.isLongLat() ? frame.getBoundingBoxDeg() : frame.getBoundingBoxNat();
+	// mout.attention("Bbox: ", bbox, " Nat:", frame.getBoundingBoxNat());
 
 	mout.debug("Scale: ", frame.getXScale(), ", ", frame.getYScale());
 

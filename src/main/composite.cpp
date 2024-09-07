@@ -243,7 +243,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 	}
 
 	bool projectAEQD = false;
-	//mout.warn(composite.getBoundingBoxD().getArea() );
+	//mout.warn(composite.getBoundingBoxDeg().getArea() );
 	//composite.toStream(std::cerr);
 	mout.debug(composite);
 	//mout.warn("checkb");
@@ -377,7 +377,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			// composite.checkInputODIM(polarSrc.odim);
 			// Apply user parameters.
 			mout.debug2("accumulating polar data...");
-			mout.debug( "subComposite defined: BBOX=", composite.getBoundingBoxD(), ", quantity: ", composite.odim.quantity, "'");
+			mout.debug( "subComposite defined: BBOX=", composite.getBoundingBoxDeg(), ", quantity: ", composite.odim.quantity, "'");
 			mout.debug2("subComposite: ", composite, '\n', composite.odim);
 
 
@@ -566,15 +566,15 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 			mout.info("\t --cSize '" , composite.getFrameWidth() , 'x' , composite.getFrameHeight() , "'" );
 		}
 
-		composite.setBoundingBoxD(cartSrc.odim.getBoundingBoxD());
+		composite.setBoundingBoxD(cartSrc.odim.getBoundingBoxDeg());
 		//composite.setBoundingBoxD(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
-		mout.info("\t --cBBox '" , composite.getBoundingBoxD() , "' # degrees" );
+		mout.info("\t --cBBox '" , composite.getBoundingBoxDeg() , "' # degrees" );
 		if (!composite.projGeo2Native.isLongLat()){
 			std::streamsize p = mout.precision(20);
-			mout.info("\t --cBBox '" , composite.getBoundingBoxM() , "' # metric" );
+			mout.info("\t --cBBox '" , composite.getBoundingBoxNat() , "' # metric" );
 			mout.precision(p);
 		}
-				//mout.note("Using bounding box of the input: " , composite.getBoundingBoxD() );
+				//mout.note("Using bounding box of the input: " , composite.getBoundingBoxDeg() );
 
 		// mout.warn("Defined composite: " , composite );
 	}
@@ -713,11 +713,11 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 	mout.debug3("update geodata ");
 
-	const drain::Rectangle<double> & bboxDataD = composite.getDataBBoxD();
-	const drain::Rectangle<double> & bboxDataOverlapD = composite.getDataOverlapD();
+	const drain::Rectangle<double> & bboxDataNat = composite.getDataBBoxNat();
+	const drain::Rectangle<double> & bboxDataOverlapNat = composite.getDataOverlapBBoxNat();
 
-	mout.debug("Data BBOX minimal (union): ", bboxDataD);
-	mout.debug("Data BBOX overlap (intersection): ", bboxDataOverlapD);
+	mout.debug("Data BBOX minimal (union): ", bboxDataNat);
+	mout.debug("Data BBOX overlap (intersection): ", bboxDataOverlapNat);
 
 	composite.updateGeoData(); // TODO check if --plot cmds don't need
 
@@ -725,14 +725,14 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	if (!crop.empty()){
 
 		if (crop == "INPUT"){
-			prepareBBox(composite, bboxDataD, cropImage);
+			prepareBBox(composite, bboxDataNat, cropImage);
 			mout.advice<LOG_NOTICE>("Equivalent command: --cExtract ", channels, ':',
-					drain::sprinter(bboxDataD.tuple(), ","));
+					drain::sprinter(bboxDataNat.tuple(), ","));
 		}
 		else if (crop == "OVERLAP"){
-			prepareBBox(composite, bboxDataOverlapD, cropImage);
+			prepareBBox(composite, bboxDataOverlapNat, cropImage);
 			mout.advice<LOG_NOTICE>("Equivalent arguments: --cExtract ", channels, ':',
-					drain::sprinter(bboxDataOverlapD.tuple(), drain::Sprinter::plainLayout) );
+					drain::sprinter(bboxDataOverlapNat.tuple(), drain::Sprinter::plainLayout) );
 		}
 		else {
 			std::vector<double> v;
@@ -831,17 +831,24 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 			// Non-standard
 			drain::VariableMap & where = dstRoot.getWhere();
 			where["BBOX"].setType(typeid(double));
-			where["BBOX"] = composite.getBoundingBoxD().toVector();
+			where["BBOX"] = composite.getBoundingBoxDeg().toVector();
 
-			if (composite.isLongLat())
-				where["BBOX_native"].setType(typeid(double));
-			else
+			if (!composite.isLongLat()){
+				// where["BBOX_native"].setType(typeid(double));
+				// else
 				where["BBOX_native"].setType(typeid(long int));
-			where["BBOX_native"] = composite.getBoundingBoxM().toVector();
+				where["BBOX_input"].setType(typeid(long int));
+				where["BBOX_overlap"].setType(typeid(long int));
+			}
 
-			where["BBOX_input"].setType(typeid(double));
-			where["BBOX_input"] = bboxDataD.tuple(); // in-place
+			where["BBOX_native"] = composite.getBoundingBoxNat().tuple(); //toVector();
+			//where["BBOX_input"].setType(typeid(double));
+			//where["BBOX_input"] = bboxDataNat.tuple(); // in-place
+			where["BBOX_input"]   = bboxDataNat.tuple(); // toVector();
+			where["BBOX_overlap"] = bboxDataOverlapNat.tuple();
 
+			mout.debug("composite INPUT bbox (nat): ", bboxDataNat.tuple());
+			/*
 			if (!composite.isLongLat()){
 				drain::Rectangle<double> bn;
 				composite.deg2m(bboxDataD.lowerLeft,  bn.lowerLeft);
@@ -849,27 +856,39 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 				where["BBOX_input_native"].setType(typeid(int));
 				where["BBOX_input_native"] = bn.tuple(); // toVector();
 			}
+			*/
 
 			drain::Rectangle<int> bboxDataPix;
-			composite.deg2pix(bboxDataD.lowerLeft, bboxDataPix.lowerLeft);
-			composite.deg2pix(bboxDataD.upperRight, bboxDataPix.upperRight);
+			composite.m2pix(bboxDataNat.lowerLeft, bboxDataPix.lowerLeft);
+			composite.m2pix(bboxDataNat.upperRight, bboxDataPix.upperRight);
+			// composite.deg2pix(bboxDataNat.lowerLeft, bboxDataPix.lowerLeft);
+			// composite.deg2pix(bboxDataNat.upperRight, bboxDataPix.upperRight);
 			where["BBOX_input_pix"].setType(typeid(short int));
 			where["BBOX_input_pix"] = bboxDataPix.tuple(); // toVector();
 			where["SIZE_input"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
 
-			where["BBOX_overlap"] = bboxDataOverlapD.tuple();
-			composite.deg2pix(bboxDataOverlapD.lowerLeft,  bboxDataPix.lowerLeft);
-			composite.deg2pix(bboxDataOverlapD.upperRight, bboxDataPix.upperRight);
+			composite.m2pix(bboxDataOverlapNat.lowerLeft,  bboxDataPix.lowerLeft);
+			composite.m2pix(bboxDataOverlapNat.upperRight, bboxDataPix.upperRight);
+			// composite.deg2pix(bboxDataOverlapNat.lowerLeft,  bboxDataPix.lowerLeft);
+			// composite.deg2pix(bboxDataOverlapNat.upperRight, bboxDataPix.upperRight);
 			//where["SIZE_overlap"].setType(typeid(short int));
 			where["SIZE_overlap"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
 
 			if (!composite.isLongLat()){
+				/*
 				drain::Rectangle<double> bn;
-				composite.deg2m(bboxDataOverlapD.lowerLeft,  bn.lowerLeft);
-				composite.deg2m(bboxDataOverlapD.upperRight, bn.upperRight);
+				composite.deg2m(bboxDataOverlapNat.lowerLeft,  bn.lowerLeft);
+				composite.deg2m(bboxDataOverlapNat.upperRight, bn.upperRight);
 				where["BBOX_overlap_native"].setType(typeid(int));
 				where["BBOX_overlap_native"] = bn.tuple();
-
+				*/
+			}
+			else {
+				drain::Rectangle<double> bb;
+				composite.m2deg(bboxDataOverlapNat.lowerLeft,  bb.lowerLeft);
+				composite.m2deg(bboxDataOverlapNat.upperRight, bb.upperRight);
+				//where["BBOX_overlap_deg"].setType(typeid(int));
+				where["BBOX_overlap_deg"] = bb.tuple();
 			}
 
 

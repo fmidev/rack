@@ -227,12 +227,11 @@ ODIMPath RackContext::findImage(){ //RackContext & ctx){
 	}
 
 	// mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", this->getStatusMap().get("what:quantity","??"));
-
-	// mout.special("Image selector", imageSelector);
-	mout.accept("Image selector1: ", imageSelector);
+	// mout.accept("Image selector1: ", imageSelector);
 
 	imageSelector.ensureDataGroup();
-	mout.accept("Image selector2: ", imageSelector);
+	// mout.accept("Image selector2: ", imageSelector);
+
 	return findImage(imageSelector); //ctx,
 }
 
@@ -318,7 +317,7 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 
 	ODIMPath path;
 
-	mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", ctx.getStatusMap().get("what:quantity","??"));
+	// mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", ctx.getStatusMap().get("what:quantity","??"));
 
 	// if ctx.select ..
 	if (!ctx.select.empty()){
@@ -327,7 +326,7 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 		mout.info("selected image at: ", path);
 	}
 
-	mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", ctx.getStatusMap().get("what:quantity","??"));
+	// mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", ctx.getStatusMap().get("what:quantity","??"));
 
 	if (!ctx.targetEncoding.empty()){
 		if (ctx.currentImage != NULL){

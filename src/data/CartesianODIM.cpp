@@ -119,9 +119,9 @@ void CartesianODIM::updateGeoInfo(const drain::image::GeoFrame & geoFrame){
 	projdef = geoFrame.getProjection();
 	epsg = geoFrame.projGeo2Native.getDst().getEPSG();
 
-	bboxD = geoFrame.getBoundingBoxD();
+	bboxD = geoFrame.getBoundingBoxDeg();
 	/*
-	const drain::Rectangle<double> &bboxD = geoFrame.getBoundingBoxD();
+	const drain::Rectangle<double> &bboxD = geoFrame.getBoundingBoxDeg();
 	LL_lon = bboxD.lowerLeft.x;
 	LL_lat = bboxD.lowerLeft.y;
 	UR_lon = bboxD.upperRight.x;

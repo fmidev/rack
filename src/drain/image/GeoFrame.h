@@ -199,15 +199,15 @@ public:
 
 	/// Returns the geographical scope in Degrees.
 	inline
-	const drain::Rectangle<double> & getBoundingBoxD() const { return bBoxD; };
+	const drain::Rectangle<double> & getBoundingBoxDeg() const { return bBoxD; };
 
 	/// Returns the geographical scope in Meters.
 	inline
-	const drain::Rectangle<double> & getBoundingBoxM() const { return bBoxNative; };
+	const drain::Rectangle<double> & getBoundingBoxNat() const { return bBoxNative; };
 
 	/// Returns the geographical scope in Radians.
 	inline
-	const drain::Rectangle<double> & getBoundingBoxR() const { return bBoxR; };
+	const drain::Rectangle<double> & getBoundingBoxRad() const { return bBoxR; };
 
 	void getCenterPixel(drain::Rectangle<double> & pixelD) const;
 
@@ -431,13 +431,25 @@ public:
 
 	/// Return the actual geographical boundingBox suggested by implied by input data.
 	inline
-	const drain::Rectangle<double> & getDataBBoxD() const { return dataBBoxD; };
+	//const drain::Rectangle<double> & getDataBBoxD() const { return dataBBoxD; };
+	const drain::Rectangle<double> & getDataBBoxNat() const { return dataBBoxNat; };
 
 	/// Return the common overlapping geographical area (intersection) implied by input data.
 	inline
-	const drain::Rectangle<double> & getDataOverlapD() const { return dataOverlapD; };
+	//const drain::Rectangle<double> & getDataOverlapD() const { return dataOverlapD; };
+	const drain::Rectangle<double> & getDataOverlapBBoxNat() const { return dataOverlapBBoxNat; };
 
-	void updateDataExtent(const drain::Rectangle<double> &inputExtentD);
+	/// Extend to include this input
+	/**
+	 *  Book keeping of input bbox.
+	 */
+	void updateDataExtentDeg(const drain::Rectangle<double> &inputBBoxDeg);
+
+	/**
+	 *  Native means that rectangular shapes will not be distorted.
+	 */
+	void updateDataExtentNat(const drain::Rectangle<double> &inputBBoxNat);
+
 
 	inline
 	bool isLongLat() const {
@@ -450,6 +462,7 @@ public:
 	//std::ostream & toOStr(std::ostream & ostr) const ;
 	virtual
 	std::ostream & toStream(std::ostream & ostr) const;
+
 
 
 protected:
@@ -468,26 +481,23 @@ protected:
 	drain::Rectangle<double> bBoxNative;
 
 
+	// experimental
+	/// For deriving extent (~union) of input data
+	drain::Rectangle<double> dataBBoxNat;
+
+	// experimental
+	/// For deriving common extent (~intersection) of input data
+	drain::Rectangle<double> dataOverlapBBoxNat;
+
+	/// Utility for deriving extent (degrees) required by input data
+	// drain::Rectangle<double> dataBBoxD;
+
+	/// Utility for deriving extent (degrees) required by input data
+	//drain::Rectangle<double> dataOverlapD;
+
 	// ... needed in mapping...
-	double xScale;
-	double yScale;
-
-
-	/// Utility for deriving extent (degrees) required by input data
-	drain::Rectangle<double> dataBBoxD;
-
-	/// Utility for deriving extent (degrees) required by input data
-	drain::Rectangle<double> dataOverlapD;
-
-
-	/*
-	template <double LIMIT>
-	static inline
-	bool isMetric(double x){
-		return (x < -LIMIT) || (x > LIMIT);
-	}
-	*/
-
+	double xScale = 0.0;
+	double yScale = 0.0;
 
 };
 

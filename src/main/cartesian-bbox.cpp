@@ -150,12 +150,12 @@ void CartesianBBoxTest::exec() const {
 
 	//dataExtentD.extend();
 
-	//mout.warn("comp"  , ctx.composite.getBoundingBoxM() );
+	//mout.warn("comp"  , ctx.composite.getBoundingBoxNat() );
 	//mout.warn("radar" , bboxM );
 
 	//bool
 	// mutable
-	bool overlap = (bboxM.isOverLapping(ctx.composite.getBoundingBoxM()));
+	bool overlap = (bboxM.isOverLapping(ctx.composite.getBoundingBoxNat()));
 
 	mout.debug("overlap:" , static_cast<int>(overlap) , ", bboxD: " , bboxD );
 
@@ -187,7 +187,7 @@ void CartesianBBoxTile::exec() const {
 	Composite & composite = ctx.composite;
 
 	/// Use composite's bbox as a starting point.
-	drain::Rectangle<double> bboxTile = composite.getBoundingBoxD();
+	drain::Rectangle<double> bboxTile = composite.getBoundingBoxDeg();
 
 	/// Crop to desired size. (ie. section of the two bboxes)
 	bboxTile.crop(bbox);

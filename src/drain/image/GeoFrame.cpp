@@ -72,7 +72,7 @@ GeoFrame::GeoFrame(unsigned int frameWidth,unsigned int frameHeight) :
 /*
 GeoFrame::GeoFrame(const GeoFrame & gf) : projR2M(gf.projR2M), xScale(1), yScale(1) {
 	setGeometry(gf.getFrameWidth(), gf.getFrameHeight());
-	setBoundingBoxR(gf.getBoundingBoxR());
+	setBoundingBoxR(gf.getBoundingBoxRad());
 }
 */
 
@@ -111,7 +111,7 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 
 		setBoundingBoxM(lonLL, latLL, lonUR, latUR); // essentially modifies BoxR and BoxD
 
-		mout.special("setting metric bbox: " , getBoundingBoxM() ); // << resources.bbox
+		mout.special("setting metric bbox: " , getBoundingBoxNat() ); // << resources.bbox
 
 	}
 	else {
@@ -411,19 +411,47 @@ void GeoFrame::cropWithM(double xLL, double yLL, double xUR, double yUR) {
 
 
 
-void GeoFrame::updateDataExtent(const drain::Rectangle<double> & inputExtentD)
-{
+void GeoFrame::updateDataExtentDeg(const drain::Rectangle<double> & inputExtentD){
 
-	if (dataBBoxD.getArea() == 0){
-		dataBBoxD  = inputExtentD;
-		dataOverlapD = inputExtentD;
+	Logger mout(__FILE__, __FUNCTION__);
+
+	drain::Rectangle<double> bboxNat;
+	deg2m(inputExtentD.lowerLeft,  bboxNat.lowerLeft);
+	deg2m(inputExtentD.upperRight, bboxNat.upperRight);
+
+	mout.attention("converted Degrees->Nat: (", inputExtentD, ") -> [", bboxNat, "]");
+
+	updateDataExtentNat(bboxNat);
+
+}
+
+void GeoFrame::updateDataExtentNat(const drain::Rectangle<double> & inputExtentNat)
+{
+	// updateDataExtent(inputExtentNat);
+
+	if (dataBBoxNat.getArea() == 0){
+		dataBBoxNat        = inputExtentNat;
+		dataOverlapBBoxNat = inputExtentNat;
 	}
 	else {
 		// std::cerr << "Extending:" << dataExtentD << std::endl;
-		dataBBoxD.extend(inputExtentD);
-		dataOverlapD.contract(inputExtentD);
+		dataBBoxNat.extend(inputExtentNat);
+		dataOverlapBBoxNat.contract(inputExtentNat);
 		// std::cerr << "    =>    " << dataExtentD << std::endl;
 	}
+
+	/*
+	if (dataBBoxNat.getArea() == 0){
+		dataBBoxNat = inputExtentNat;
+		//dataOverlapD = inputExtentD;
+	}
+	else {
+		// std::cerr << "Extending:" << dataExtentD << std::endl;
+		dataBBoxNat.extend(inputExtentNat);
+		// dataOverlapD.contract(inputExtentD);
+		// std::cerr << "    =>    " << dataExtentD << std::endl;
+	}
+	*/
 }
 
 std::ostream & GeoFrame::toStream(std::ostream & ostr) const {
@@ -437,9 +465,9 @@ std::ostream & GeoFrame::toStream(std::ostream & ostr) const {
 	else
 		ostr << "   projection:" << getProjection() << '\n';
 
-	ostr << "   bbox[nat]:   [" << getBoundingBoxM() << "]\n";
-	ostr << "   bbox[rad]:   [" << getBoundingBoxR() << "]\n";
-	ostr << "   bbox[deg]:   [" << getBoundingBoxD() << "]\n";
+	ostr << "   bbox[nat]:   [" << getBoundingBoxNat() << "]\n";
+	ostr << "   bbox[rad]:   [" << getBoundingBoxRad() << "]\n";
+	ostr << "   bbox[deg]:   [" << getBoundingBoxDeg() << "]\n";
 	ostr << "   resolution[m/pix]: (" << xScale << ',' << yScale << ")\n";
 
 	return ostr;

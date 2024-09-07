@@ -74,7 +74,7 @@ script=""
 #script="-Q CLASS-ETOP $cart --palette 'CLASS-ETOP' -o clsetop.png --legendOut clsetop.svg -Q '$SLOPE' $cart --palette 'DBZ-SLOPE' -o smooth.png --legendOut slope.svg -Q '$QIND' $cart -o qind${avg_label:+-$avg_label}.png  --paletteIn QIND-BW --legendOut qind.svg -Q HGHT $cart --palette 'HGHT' -o .png --legendOut hght.svg "
 
 #script="--pEchoTop $ETOP,avgWindow=${AVG_WINDOW}";
-script="--pEchoTop $ETOP,weights=$WEIGHTS,avgWindow=$AVG_WINDOW"
+script="--pEchoTop $ETOP,weights=$WEIGHTS,weightDecay=40,avgWindow=$AVG_WINDOW"
 
 QUANTITIES=${QUANTITIES:-'CLASS-ETOP,DBZ-SLOPE,QIND,HGHT'}
 

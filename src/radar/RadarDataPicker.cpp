@@ -61,7 +61,7 @@ PolarDataPicker::PolarDataPicker(drain::ReferenceMap2<> & variableMap, const Pol
 	// if needed: infoMap["elangle"] = odim.elangle;
 	drain::Rectangle<double> bbox;
 
-	this->getProjection().getBoundingBoxD(odim.getMaxRange(), bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);
+	this->getProjection().getBoundingBoxDeg(odim.getMaxRange(), bbox.lowerLeft.x, bbox.lowerLeft.y, bbox.upperRight.x, bbox.upperRight.y);
 
 	infoMap["bbox"] = bbox.toVector();
 }
@@ -129,7 +129,7 @@ CartesianDataPicker::CartesianDataPicker(drain::ReferenceMap2<> & variableMap, c
 		//mout.warn("Geo frame properties undefined, incomplete metadata?" );
 		mout.note(odim);
 		mout.note(frame);
-		mout.note(frame.getBoundingBoxR());
+		mout.note(frame.getBoundingBoxRad());
 		mout.warn("frame could not be defined, incomplete metadata? (above)");
 	}
 
@@ -139,7 +139,7 @@ CartesianDataPicker::CartesianDataPicker(drain::ReferenceMap2<> & variableMap, c
 	mout.debug("variableMap: ", variableMap);
 	mout.debug("frame: ", frame);
 
-	infoMap["bbox"] = frame.getBoundingBoxD().toVector();
+	infoMap["bbox"] = frame.getBoundingBoxDeg().toVector();
 	infoMap["proj"] = frame.getProjection();
 	infoMap["epsg"] = frame.projGeo2Native.getDst().getEPSG(); // NOTE probably unset...
 
