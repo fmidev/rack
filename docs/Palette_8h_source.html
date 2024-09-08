@@ -215,7 +215,7 @@ $(function() {
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;std::ostream &amp; <a class="code" href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">operator&lt;&lt;</a>(std::ostream &amp;ostr, <span class="keyword">const</span> Palette &amp; p){</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> Palette &amp; p){</div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    p.exportTXT(ostr);</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;}</div>
@@ -260,8 +260,7 @@ $(function() {
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary&lt; std::string, std::string &gt;</a></div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_abe1e6bf8d8874a9263882f4e7c203d6d"><div class="ttname"><a href="classdrain_1_1Sprinter.html#abe1e6bf8d8874a9263882f4e7c203d6d">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const std::initializer_list&lt; T &gt; &amp;x, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">New (experimental)</div><div class="ttdef"><b>Definition:</b> Sprinter.h:419</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
-<div class="ttc" id="anamespacerack_html_a9da7fe6d7ac333840a874ef95845f1e2"><div class="ttname"><a href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition:</b> Data.h:541</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:1277</div></div>
 <div class="ttc" id="astructdrain_1_1SprinterLayout_html"><div class="ttname"><a href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a></div><div class="ttdef"><b>Definition:</b> Sprinter.h:136</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

@@ -1,7 +1,7 @@
 <map id="SlidingOpticalFlow&lt; R &gt;" name="SlidingOpticalFlow&lt; R &gt;">
 <area shape="rect" id="node1" title=" " alt="" coords="19,319,202,345"/>
 <area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="5,229,216,271"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WIndowOp&#39;s." alt="" coords="45,155,176,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="59,80,163,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="43,5,179,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="45,155,176,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="59,80,163,107"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="43,5,179,32"/>
 </map>

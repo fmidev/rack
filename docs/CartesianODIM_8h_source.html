@@ -105,8 +105,8 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifndef RACK_CART_ODIM_H</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define RACK_CART_ODIM_H</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;drain/util/BoundingBox.h&quot;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;drain/image/GeoFrame.h&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;drain/util/BoundingBox.h&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;drain/image/GeoFrame.h&gt;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;ODIM.h&quot;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
@@ -157,8 +157,8 @@ $(function() {
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1CartesianODIM.html#a0a6ec7dad127e13e4b075d97155a6f77">updateGeoInfo</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1GeoFrame.html">drain::image::GeoFrame</a> &amp; geoFrame);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classrack_1_1CartesianODIM.html#a92e33e03368428fc3c42a5b21e56f439">   94</a></span>&#160;    std::string <a class="code" href="classrack_1_1CartesianODIM.html#a92e33e03368428fc3c42a5b21e56f439">projdef</a>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">double</span> xscale;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">double</span> yscale;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">double</span> xscale = 0.0;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">double</span> yscale = 0.0;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="comment">//drain::Rectangle&lt;double&gt; bboxD ?</span></div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="classdrain_1_1BBox.html">drain::BBox</a> bboxD;</div>
@@ -166,10 +166,10 @@ $(function() {
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="comment">// double LL_lon;</span></div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="comment">// double UR_lat;</span></div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="comment">// double UR_lon;</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordtype">double</span> UL_lat;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordtype">double</span> UL_lon;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordtype">double</span> LR_lat;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordtype">double</span> LR_lon;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordtype">double</span> UL_lat = 0.0;  <span class="comment">// or silent NaN?</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordtype">double</span> UL_lon = 0.0;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordtype">double</span> LR_lat = 0.0;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordtype">double</span> LR_lon = 0.0;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
 <div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="classrack_1_1CartesianODIM.html#ad6eec931d11e5b195a681a2e8b269367">  110</a></span>&#160;    std::string <a class="code" href="classrack_1_1CartesianODIM.html#ad6eec931d11e5b195a681a2e8b269367">camethod</a>;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
@@ -181,7 +181,7 @@ $(function() {
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keyword">const</span> <a class="code" href="structdrain_1_1Rectangle.html">drain::Rectangle&lt;double&gt;</a> &amp; getBoundingBoxD()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keyword">const</span> <a class="code" href="structdrain_1_1Rectangle.html">drain::Rectangle&lt;double&gt;</a> &amp; getBoundingBoxDeg()<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="comment">/*</span></div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">        bboxD.lowerLeft.x  = LL_lon;</span></div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">        bboxD.lowerLeft.y  = LL_lat;</span></div>
@@ -223,7 +223,7 @@ $(function() {
 <div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a386b484a2237afe3a4733cd71b588097"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a386b484a2237afe3a4733cd71b588097">rack::ODIMPathElem::ALL_LEVELS</a></div><div class="ttdeci">static const group_t ALL_LEVELS</div><div class="ttdoc">Abbreviation for linking (referencing) attributes at different levels (tree depths).</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:118</div></div>
 <div class="ttc" id="aclassrack_1_1ODIM_html"><div class="ttname"><a href="classrack_1_1ODIM.html">rack::ODIM</a></div><div class="ttdoc">ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)</div><div class="ttdef"><b>Definition:</b> ODIM.h:79</div></div>
 <div class="ttc" id="aclassrack_1_1ODIM_html_ae2b0decb04be26b617d1c24f0deffd4f"><div class="ttname"><a href="classrack_1_1ODIM.html#ae2b0decb04be26b617d1c24f0deffd4f">rack::ODIM::quantity</a></div><div class="ttdeci">std::string quantity</div><div class="ttdoc">dataX/what (obligatory)</div><div class="ttdef"><b>Definition:</b> ODIM.h:181</div></div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:44</div></div>
 <div class="ttc" id="astructdrain_1_1Rectangle_html"><div class="ttname"><a href="structdrain_1_1Rectangle.html">drain::Rectangle&lt; double &gt;</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

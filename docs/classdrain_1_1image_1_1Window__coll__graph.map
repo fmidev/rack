@@ -1,7 +1,7 @@
 <map id="Window&lt; C, R &gt;" name="Window&lt; C, R &gt;">
-<area shape="rect" id="node1" title="Base class for windows applied by WIndowOp&#39;s." alt="" coords="3172,229,3303,256"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="2825,49,2929,76"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="2428,9,2564,36"/>
+<area shape="rect" id="node1" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="3172,229,3303,256"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="2825,49,2929,76"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="2428,9,2564,36"/>
 <area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels." alt="" coords="2449,73,2543,100"/>
 <area shape="rect" id="node5" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="2221,83,2329,109"/>
 <area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="1906,84,2010,111"/>

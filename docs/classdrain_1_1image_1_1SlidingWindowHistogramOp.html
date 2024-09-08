@@ -76,7 +76,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WIndowOp&#39;s.">Window</a> histogram for computing [asmdvNX] = iAverage, sum, median, stddev, variance, miN, maX.  
+<p><a class="el" href="classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s.">Window</a> histogram for computing [asmdvNX] = iAverage, sum, median, stddev, variance, miN, maX.  
  <a href="classdrain_1_1image_1_1SlidingWindowHistogramOp.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="SlidingWindowHistogramOp_8h_source.html">SlidingWindowHistogramOp.h</a>&gt;</code></p>
@@ -376,9 +376,10 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <tr class="separator:ac7902d0c7488500c9f16503fd3889604 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WIndowOp&#39;s.">Window</a> histogram for computing [asmdvNX] = iAverage, sum, median, stddev, variance, miN, maX. </p>
-<div class="fragment"><div class="line">drainage image-gray.png --iWindowHistogram 5:5,a -o hist-avg.png</div>
-<div class="line"><span class="preprocessor"># 16-bit result image</span></div>
+<div class="textblock"><p><a class="el" href="classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s.">Window</a> histogram for computing [asmdvNX] = iAverage, sum, median, stddev, variance, miN, maX. </p>
+<div class="fragment"><div class="line"><span class="preprocessor"># Average in 5x5 window</span></div>
+<div class="line">drainage image-gray.png --iWindowHistogram 5:5,a -o hist-avg.png</div>
+<div class="line"><span class="preprocessor"># Sum in 15x15 window, 16-bit result image</span></div>
 <div class="line">drainage image-gray.png -T S --iWindowHistogram 15:15,s -o hist-sum.png</div>
 <div class="line"><span class="preprocessor"># Median</span></div>
 <div class="line">drainage image-gray.png --iWindowHistogram 5:5,m -o hist-med.png</div>

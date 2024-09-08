@@ -86,7 +86,7 @@ Basic image operations</h1>
 <h2><a class="anchor" id="rescale"></a>
 Extracting images from data</h2>
 <p>As mentioned in <a class="el" href="fileiopage.html#fileio_img">Reading and writing image files</a>, data can be extracted and stored as image files simply by selecting data and issuing <code>&ndash;outputFile</code> ( <code>-o</code> ) command: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH  -o sweep.png</div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:44</div></div>
 </div><!-- fragment --><p>If a user wishes to rescale intensities, The scaling and special codes are defined with <code>&ndash;encoding</code> .</p>
 <div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH --encoding C,0.25,-32.0 --image -o sweep-rescaled.png</div>
 </div><!-- fragment --><p>Notice that this command will not affect the actual radar data (HDF5 structure) in memory. (The one <code>&ndash;image</code> command required in earlier versions of rack is called implicitly.) For converting the actual data, use <code>&ndash;convert</code> as explained in <a class="el" href="modifypage.html#conversions">Data conversions</a> .</p>
@@ -201,7 +201,7 @@ A sweep coloured with <code>--palette</code> command.</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="transparency"></a>
 Adding transparency</h1>
 <p>Adding transparency to radar images is useful in applications involving layered data viewing. Transparency can be added to gray or colour images with <code>&ndash;imageTransp</code> .</p>
-<div class="fragment"><div class="line">--imageTransp  &lt;ftor&gt;,&lt;undetect&gt;,&lt;nodata&gt;  (Section: images)</div>
+<div class="fragment"><div class="line">--imageTransp  &lt;ftor&gt;,&lt;undetect&gt;,&lt;nodata&gt;  (section: images)</div>
 <div class="line">  Adds a transparency channel. Uses copied image, creating one if needed.</div>
 <div class="line">    ftor= [min:max or Functor_p1_p2_p3_...]</div>
 <div class="line">    undetect=0 [opacity of &#39;undetect&#39; pixels]</div>
@@ -285,7 +285,7 @@ List of image operators</h2>
 <div class="line">--iDistanceTransformExp  &lt;width&gt;,&lt;height&gt;,&lt;topology&gt;</div>
 <div class="line">  Exponentially decreasing intensities. Set half-decay radii.</div>
 <div class="line">--iDistanceTransformFill  &lt;width&gt;,&lt;height&gt;,&lt;topology&gt;,&lt;alphaThreshold&gt;</div>
-<div class="line">  Spreads intensities linearly up to distance defined by alpha intensities.</div>
+<div class="line">  Spreads intensities linearly up to distance defined by alpha channel.</div>
 <div class="line">--iDistanceTransformFillExp  &lt;width&gt;,&lt;height&gt;,&lt;topology&gt;,&lt;alphaThreshold&gt;</div>
 <div class="line">  Spreads intensities exponentially up to distance defined by alpha intensities.</div>
 <div class="line">--iDiv  &lt;scale&gt;,&lt;bias&gt;,&lt;LIMIT&gt;</div>

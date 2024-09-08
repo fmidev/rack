@@ -1,11 +1,11 @@
 <map id="SlidingWindowHistogramWeighted" name="SlidingWindowHistogramWeighted">
 <area shape="rect" id="node1" title=" " alt="" coords="715,1309,961,1336"/>
 <area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="741,1219,935,1260"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="751,1143,925,1169"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title="Window implementation that uses incremental update of state." alt="" coords="751,1143,925,1169"/>
 <area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="638,919,825,960"/>
 <area shape="rect" id="node29" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="723,1009,953,1051"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="679,843,783,869"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="642,739,778,765"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="679,843,783,869"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="642,739,778,765"/>
 <area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels." alt="" coords="803,739,897,765"/>
 <area shape="rect" id="node8" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="796,663,904,689"/>
 <area shape="rect" id="node9" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="798,587,902,613"/>

@@ -74,7 +74,7 @@ Introduction</h1>
 <h1><a class="anchor" id="sampling"></a>
 Sampling grid data</h1>
 <p>The input volume as well as the generated polar or Cartesian products can be sampled, producing a text file. The sampling is performed automatically if output file has the extension '.dat'. For example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 -o samples.dat</div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:44</div></div>
 </div><!-- fragment --><p>The result: </p><div class="fragment"><div class="line">## input properties </div>
 <div class="line"># bbox=[1507.9672560563260504,3892.9862409188299353,1507.9629643527550797,3892.9862409202742128]</div>
 <div class="line"># height=360</div>
@@ -118,7 +118,7 @@ Sampling grid data</h1>
 </li>
 </ul>
 <p>Sampling steps, start, and end can be changed with <code>&ndash;sample</code> command. One may also skip lines containing <code>undetect</code> or <code>nodata</code> samples. If a comment char is defined some metadata, including applied format, appears as comments in the start of the output.</p>
-<div class="fragment"><div class="line">--sample  &lt;iStep&gt;,&lt;jStep&gt;,&lt;i&gt;,&lt;j&gt;,&lt;commentChar&gt;,&lt;skipVoid&gt;,&lt;handleVoid&gt;  (Section: general)</div>
+<div class="fragment"><div class="line">--sample  &lt;iStep&gt;,&lt;jStep&gt;,&lt;i&gt;,&lt;j&gt;,&lt;commentChar&gt;,&lt;skipVoid&gt;,&lt;handleVoid&gt;  (section: general)</div>
 <div class="line">  Extract samples. See --format.</div>
 <div class="line">    iStep=10 [horz coord step]</div>
 <div class="line">    jStep=0 [vert coord step]</div>

@@ -111,11 +111,11 @@ $(function() {
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;set&gt;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;algorithm&gt;</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;drain/util/VariableFormatter.h&quot;</span>  <span class="comment">// for VariableHandler</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &quot;drain/util/ReferenceMap.h&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &quot;drain/util/Rectangle.h&quot;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &quot;drain/util/Time.h&quot;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &quot;drain/image/Geometry.h&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;drain/util/VariableFormatter.h&gt;</span>  <span class="comment">// for VariableHandler</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;drain/util/ReferenceMap.h&gt;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &lt;drain/util/Rectangle.h&gt;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &lt;drain/util/Time.h&gt;</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#include &lt;drain/image/Geometry.h&gt;</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#include &quot;hi5/Hi5.h&quot;</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Constants_8h.html">radar/Constants.h</a>&quot;</span></div>
@@ -362,7 +362,7 @@ $(function() {
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160; </div>
 <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160; </div>
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;std::ostream &amp; <a class="code" href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">operator&lt;&lt;</a>(std::ostream &amp;ostr, <span class="keyword">const</span> ODIM &amp; odim){</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> ODIM &amp; odim){</div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    odim.drain::SmartMap&lt;drain::Reference&gt;::toStream(ostr);</div>
 <div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;}</div>
@@ -375,9 +375,9 @@ $(function() {
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160; </div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aConstants_8h_html"><div class="ttname"><a href="Constants_8h.html">Constants.h</a></div></div>
-<div class="ttc" id="aclassdrain_1_1EnumFlagger_html"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a></div><div class="ttdoc">Flagger accepting values of enum type E.</div><div class="ttdef"><b>Definition:</b> Flags.h:761</div></div>
+<div class="ttc" id="aclassdrain_1_1EnumFlagger_html"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a></div><div class="ttdoc">Flagger accepting values of enum type E.</div><div class="ttdef"><b>Definition:</b> Flags.h:763</div></div>
 <div class="ttc" id="aclassdrain_1_1Frame2D_html"><div class="ttname"><a href="classdrain_1_1Frame2D.html">drain::Frame2D&lt; size_t &gt;</a></div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:307</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:308</div></div>
 <div class="ttc" id="aclassdrain_1_1SmartMap_html_ab3c45b7f1a61f1fbdc052cb4c6fb0c6d"><div class="ttname"><a href="classdrain_1_1SmartMap.html#ab3c45b7f1a61f1fbdc052cb4c6fb0c6d">drain::SmartMap&lt; Reference &gt;::updateFromMap</a></div><div class="ttdeci">void updateFromMap(const std::map&lt; std::string, T2 &gt; &amp;m)</div><div class="ttdoc">Assign values from a map. Updates existing entries only.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:294</div></div>
 <div class="ttc" id="aclassdrain_1_1SmartMap_html_abe464e25c8f6b69f9fc017b58427fc87"><div class="ttname"><a href="classdrain_1_1SmartMap.html#abe464e25c8f6b69f9fc017b58427fc87">drain::SmartMap::get</a></div><div class="ttdeci">std::string get(const std::string &amp;key, const std::string &amp;defaultValue) const</div><div class="ttdoc">Retrieves a value, or default value if value is unset.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:127</div></div>
 <div class="ttc" id="aclassdrain_1_1Time_html"><div class="ttname"><a href="classdrain_1_1Time.html">drain::Time</a></div><div class="ttdoc">Utility for handling time. Internally, uses tm (C time structure).</div><div class="ttdef"><b>Definition:</b> Time.h:54</div></div>
@@ -408,8 +408,7 @@ $(function() {
 <div class="ttc" id="aclassrack_1_1ODIM_html_add88edc41a2353841321922f77426595"><div class="ttname"><a href="classrack_1_1ODIM.html#add88edc41a2353841321922f77426595">rack::ODIM::timeformat</a></div><div class="ttdeci">static const std::string timeformat</div><div class="ttdoc">Applied 6-digit date format, &quot;%H%M%S&quot;.</div><div class="ttdef"><b>Definition:</b> ODIM.h:166</div></div>
 <div class="ttc" id="aclassrack_1_1ODIM_html_ae105f3711b65955c2a307a1a2f9eaa81"><div class="ttname"><a href="classrack_1_1ODIM.html#ae105f3711b65955c2a307a1a2f9eaa81">rack::ODIM::setTime</a></div><div class="ttdeci">bool setTime(const drain::Time &amp;t)</div><div class="ttdoc">Sets date and time . Returns true if successful, throws error if fail.</div><div class="ttdef"><b>Definition:</b> ODIM.cpp:231</div></div>
 <div class="ttc" id="aclassrack_1_1ODIM_html_ae2b0decb04be26b617d1c24f0deffd4f"><div class="ttname"><a href="classrack_1_1ODIM.html#ae2b0decb04be26b617d1c24f0deffd4f">rack::ODIM::quantity</a></div><div class="ttdeci">std::string quantity</div><div class="ttdoc">dataX/what (obligatory)</div><div class="ttdef"><b>Definition:</b> ODIM.h:181</div></div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
-<div class="ttc" id="anamespacerack_html_a9da7fe6d7ac333840a874ef95845f1e2"><div class="ttname"><a href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition:</b> Data.h:541</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:44</div></div>
 <div class="ttc" id="astructdrain_1_1Point2D_html"><div class="ttname"><a href="structdrain_1_1Point2D.html">drain::Point2D&lt; double &gt;</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

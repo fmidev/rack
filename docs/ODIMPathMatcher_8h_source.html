@@ -106,9 +106,9 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define ODIM_PATH_MATCHER</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//#include &quot;drain/util/Dictionary.h&quot;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//#include &lt;drain/util/Dictionary.h&gt;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;drain/util/Range.h&quot;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;drain/util/Range.h&gt;</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;ODIMPath.h&quot;</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
@@ -234,7 +234,7 @@ $(function() {
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="keywordtype">void</span> <a class="code" href="classrack_1_1ODIMPathElem.html#ae8fdc4f52a127ef297a7965f42d2a5cf">ODIMPathElem::extractIndex</a>(<span class="keyword">const</span> std::string &amp;s, <a class="code" href="classdrain_1_1Range.html">ODIMPathElemMatcher::idx_range_t</a> &amp; idx);</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;std::ostream &amp; <a class="code" href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a> &amp; p) {</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a> &amp; p) {</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    p.<a class="code" href="classrack_1_1ODIMPathElemMatcher.html#a6a6da9a816777c12f788994d17d5a2fc">toStream</a>(ostr);</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordflow">return</span> ostr;</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;}</div>
@@ -327,9 +327,8 @@ $(function() {
 <div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a9e6aad70e974852e27c666f0ca8132cd"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a9e6aad70e974852e27c666f0ca8132cd">rack::ODIMPathMatcher::ODIMPathMatcher</a></div><div class="ttdeci">ODIMPathMatcher(const ODIMPathMatcher &amp;matcher)</div><div class="ttdoc">Copy constructor.</div><div class="ttdef"><b>Definition:</b> ODIMPathMatcher.h:192</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_aa015c6cbbebb3ce748e43d001ef5fdb6"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#aa015c6cbbebb3ce748e43d001ef5fdb6">rack::ODIMPathMatcher::extractPath</a></div><div class="ttdeci">void extractPath(ODIMPath &amp;path) const</div><div class="ttdoc">Convert to a single path, assuming uniqueness. Future option: extract all the enumerated paths.</div><div class="ttdef"><b>Definition:</b> ODIMPathMatcher.cpp:241</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_af401e10cb74c00e9b29975682c36e630"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#af401e10cb74c00e9b29975682c36e630">rack::ODIMPathMatcher::match</a></div><div class="ttdeci">bool match(const rack::ODIMPath &amp;path) const</div><div class="ttdoc">Match the leading part of path , if matcher starts with root. Else, match the trailing part.</div><div class="ttdef"><b>Definition:</b> ODIMPathMatcher.cpp:254</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
-<div class="ttc" id="anamespacerack_html_a9da7fe6d7ac333840a874ef95845f1e2"><div class="ttname"><a href="namespacerack.html#a9da7fe6d7ac333840a874ef95845f1e2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition:</b> Data.h:541</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:44</div></div>
 <div class="ttc" id="astructdrain_1_1PathSeparatorPolicy_html_a4fcdbf6521cca7572527797e2450b87d"><div class="ttname"><a href="structdrain_1_1PathSeparatorPolicy.html#a4fcdbf6521cca7572527797e2450b87d">drain::PathSeparatorPolicy::acceptTrailing</a></div><div class="ttdeci">bool &amp; acceptTrailing</div><div class="ttdoc">If true, allow trailing empty elements (appearing as repeated separators)</div><div class="ttdef"><b>Definition:</b> Path.h:79</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

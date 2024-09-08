@@ -92,12 +92,37 @@ Collaboration diagram for DataOrder:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:acb02796abb9c7e4670bc7d311e031c6d"><td class="memItemLeft" align="right" valign="top"><a id="acb02796abb9c7e4670bc7d311e031c6d"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Crit</b> { <b>DATA</b>
+<tr class="memitem:acb02796abb9c7e4670bc7d311e031c6d"><td class="memItemLeft" align="right" valign="top"><a id="acb02796abb9c7e4670bc7d311e031c6d"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Crit</b> { <br />
+&#160;&#160;<b>DATA</b>
 , <b>ELANGLE</b>
 , <b>TIME</b>
+, <b>DATA</b>
+, <br />
+&#160;&#160;<b>ELANGLE</b>
+, <b>TIME</b>
+<br />
  }</td></tr>
 <tr class="separator:acb02796abb9c7e4670bc7d311e031c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ac4348b7dd46236700db59232988ce4"><td class="memItemLeft" align="right" valign="top"><a id="a3ac4348b7dd46236700db59232988ce4"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Oper</b> { <b>MIN</b>
+, <b>MAX</b>
+, <b>MIN</b>
+, <b>MAX</b>
+ }</td></tr>
+<tr class="separator:a3ac4348b7dd46236700db59232988ce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb02796abb9c7e4670bc7d311e031c6d"><td class="memItemLeft" align="right" valign="top"><a id="acb02796abb9c7e4670bc7d311e031c6d"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Crit</b> { <br />
+&#160;&#160;<b>DATA</b>
+, <b>ELANGLE</b>
+, <b>TIME</b>
+, <b>DATA</b>
+, <br />
+&#160;&#160;<b>ELANGLE</b>
+, <b>TIME</b>
+<br />
+ }</td></tr>
+<tr class="separator:acb02796abb9c7e4670bc7d311e031c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ac4348b7dd46236700db59232988ce4"><td class="memItemLeft" align="right" valign="top"><a id="a3ac4348b7dd46236700db59232988ce4"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Oper</b> { <b>MIN</b>
+, <b>MAX</b>
+, <b>MIN</b>
 , <b>MAX</b>
  }</td></tr>
 <tr class="separator:a3ac4348b7dd46236700db59232988ce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -107,9 +132,30 @@ typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</
 <tr class="memitem:a3257a49d9dfd6a906c929ca60c0b5ec5"><td class="memItemLeft" align="right" valign="top"><a id="a3257a49d9dfd6a906c929ca60c0b5ec5"></a>
 typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a>&lt; Oper &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>OperFlagger</b></td></tr>
 <tr class="separator:a3257a49d9dfd6a906c929ca60c0b5ec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4bf268dd94c0b4b4e66913bc2238225"><td class="memItemLeft" align="right" valign="top"><a id="aa4bf268dd94c0b4b4e66913bc2238225"></a>
+typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a>&lt; Crit &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CritFlagger</b></td></tr>
+<tr class="separator:aa4bf268dd94c0b4b4e66913bc2238225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3257a49d9dfd6a906c929ca60c0b5ec5"><td class="memItemLeft" align="right" valign="top"><a id="a3257a49d9dfd6a906c929ca60c0b5ec5"></a>
+typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a>&lt; Oper &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>OperFlagger</b></td></tr>
+<tr class="separator:a3257a49d9dfd6a906c929ca60c0b5ec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:ab44e9eec2c537b7eb54fdf51d419846a"><td class="memTemplParams" colspan="2"><a id="ab44e9eec2c537b7eb54fdf51d419846a"></a>
+template&lt;typename ... TT&gt; </td></tr>
+<tr class="memitem:ab44e9eec2c537b7eb54fdf51d419846a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (Crit crit, const TT &amp;... args)</td></tr>
+<tr class="separator:ab44e9eec2c537b7eb54fdf51d419846a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcefd5b98ad7e2abb6bcb72ff013aefc"><td class="memTemplParams" colspan="2"><a id="abcefd5b98ad7e2abb6bcb72ff013aefc"></a>
+template&lt;typename ... TT&gt; </td></tr>
+<tr class="memitem:abcefd5b98ad7e2abb6bcb72ff013aefc"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (Oper oper, const TT &amp;... args)</td></tr>
+<tr class="separator:abcefd5b98ad7e2abb6bcb72ff013aefc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a564afd6dbaa0af202719f354411812d1"><td class="memItemLeft" align="right" valign="top"><a id="a564afd6dbaa0af202719f354411812d1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1DataOrder.html#a564afd6dbaa0af202719f354411812d1">set</a> (const std::string s)</td></tr>
+<tr class="memdesc:a564afd6dbaa0af202719f354411812d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expects &lt;crit&gt;[:&lt;oper&gt;]. <br /></td></tr>
+<tr class="separator:a564afd6dbaa0af202719f354411812d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62bbebcdc34a8056c32d0b1a26026717"><td class="memItemLeft" align="right" valign="top"><a id="a62bbebcdc34a8056c32d0b1a26026717"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> ()</td></tr>
+<tr class="separator:a62bbebcdc34a8056c32d0b1a26026717"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab44e9eec2c537b7eb54fdf51d419846a"><td class="memTemplParams" colspan="2"><a id="ab44e9eec2c537b7eb54fdf51d419846a"></a>
 template&lt;typename ... TT&gt; </td></tr>
 <tr class="memitem:ab44e9eec2c537b7eb54fdf51d419846a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (Crit crit, const TT &amp;... args)</td></tr>
@@ -142,7 +188,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>str</b></td></
 <tr class="separator:a5d55e2558544e2ad2ea0b54f8e3d41fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/data/<a class="el" href="DataSelector_8h_source.html">DataSelector.h</a></li>
+<li>bak/<a class="el" href="bak_2DataSelector_8h_source.html">DataSelector.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

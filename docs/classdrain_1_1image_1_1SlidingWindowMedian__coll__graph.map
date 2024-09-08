@@ -2,9 +2,9 @@
 <area shape="rect" id="node1" title=" " alt="" coords="665,1205,832,1232"/>
 <area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="655,1115,842,1156"/>
 <area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="639,1024,859,1065"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WIndowOp&#39;s." alt="" coords="683,948,814,975"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="242,857,346,884"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="226,752,362,779"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="683,948,814,975"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="242,857,346,884"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="226,752,362,779"/>
 <area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels." alt="" coords="107,752,201,779"/>
 <area shape="rect" id="node8" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="159,676,267,703"/>
 <area shape="rect" id="node9" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="199,587,303,613"/>

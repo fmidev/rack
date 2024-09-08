@@ -1,8 +1,8 @@
 <map id="GaussianStripe&lt; DIR, R &gt;" name="GaussianStripe&lt; DIR, R &gt;">
 <area shape="rect" id="node1" title=" " alt="" coords="2872,156,3063,183"/>
 <area shape="rect" id="node2" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="2504,119,2739,161"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="2335,127,2439,153"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="2111,101,2247,128"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="2335,127,2439,153"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="2111,101,2247,128"/>
 <area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels." alt="" coords="2131,152,2226,179"/>
 <area shape="rect" id="node6" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="1953,152,2061,179"/>
 <area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="1800,152,1904,179"/>

@@ -106,80 +106,78 @@ $(function() {
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#ifndef RACK_DrawingOP</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#define RACK_DrawingOP</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;drain/VariableAssign.h&gt;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;PolarProductOp.h&quot;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;radar/PolarWindow.h&quot;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;PolarProductOp.h&quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;radar/PolarWindow.h&quot;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classrack_1_1DrawingOp.html">   51</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1DrawingOp.html">DrawingOp</a> : <span class="keyword">public</span> <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a> {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="classrack_1_1DrawingOp.html">DrawingOp</a>(<span class="keyword">const</span> std::string &amp; name, <span class="keyword">const</span> std::string &amp;description) : <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(name, description){</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="classrack_1_1DrawingOp.html">DrawingOp</a>() : <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(<span class="stringliteral">&quot;DrawingOp&quot;</span>, <span class="stringliteral">&quot;Visualise a direction[azm,r,r2], range[r,r2], sector[azm,azm2,r,r2] or arc[azm,azm2,r].&quot;</span>) {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        parameters.link(<span class="stringliteral">&quot;shape&quot;</span>, shape = <span class="stringliteral">&quot;direction&quot;</span>, <span class="stringliteral">&quot;[direction|range|sector|arc]&quot;</span>);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        parameters.link(<span class="stringliteral">&quot;p1&quot;</span>, p1 = 0.0);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        parameters.link(<span class="stringliteral">&quot;p2&quot;</span>, p2 = 0.0);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        parameters.link(<span class="stringliteral">&quot;p3&quot;</span>, p3 = 0.0);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        parameters.link(<span class="stringliteral">&quot;p4&quot;</span>, p4 = 0.0);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">        link(&quot;azm1&quot;, w.azm1, 0.0, &quot;deg&quot;);</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">        link(&quot;range1&quot;, w.range1, 0, &quot;km&quot;);</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">        link(&quot;azm2&quot;, w.azm2, 0.0, &quot;deg&quot;);</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">        link(&quot;range2&quot;, w.range2, 0, &quot;km&quot;);</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">        link(&quot;ray1&quot;, w.ray1, 0, &quot;index&quot;);</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">        link(&quot;bin1&quot;, w.bin1, 0, &quot;index&quot;);</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">        link(&quot;ray2&quot;, w.ray2, 0, &quot;index&quot;);</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">        link(&quot;bin2&quot;, w.bin2, 0, &quot;index&quot;);</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">        */</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        parameters.link(<span class="stringliteral">&quot;marker&quot;</span>, this-&gt;marker = 255, <span class="stringliteral">&quot;intensity&quot;</span>);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        dataSelector.setMaxCount(1);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    };</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classrack_1_1DrawingOp.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1DrawingOp.html">DrawingOp</a> : <span class="keyword">public</span> <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a> {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="classrack_1_1DrawingOp.html">DrawingOp</a>(<span class="keyword">const</span> std::string &amp; name, <span class="keyword">const</span> std::string &amp;description) : <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(name, description){</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="classrack_1_1DrawingOp.html">DrawingOp</a>() : <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(<span class="stringliteral">&quot;DrawingOp&quot;</span>, <span class="stringliteral">&quot;Visualise a direction[azm,r,r2], range[r,r2], sector[azm,azm2,r,r2] or arc[azm,azm2,r].&quot;</span>) {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        parameters.link(<span class="stringliteral">&quot;shape&quot;</span>, shape = <span class="stringliteral">&quot;direction&quot;</span>, <span class="stringliteral">&quot;[direction|range|sector|arc]&quot;</span>);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        parameters.link(<span class="stringliteral">&quot;p1&quot;</span>, p1 = 0.0);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        parameters.link(<span class="stringliteral">&quot;p2&quot;</span>, p2 = 0.0);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        parameters.link(<span class="stringliteral">&quot;p3&quot;</span>, p3 = 0.0);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        parameters.link(<span class="stringliteral">&quot;p4&quot;</span>, p4 = 0.0);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">        link(&quot;azm1&quot;, w.azm1, 0.0, &quot;deg&quot;);</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">        link(&quot;range1&quot;, w.range1, 0, &quot;km&quot;);</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">        link(&quot;azm2&quot;, w.azm2, 0.0, &quot;deg&quot;);</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">        link(&quot;range2&quot;, w.range2, 0, &quot;km&quot;);</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">        link(&quot;ray1&quot;, w.ray1, 0, &quot;index&quot;);</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">        link(&quot;bin1&quot;, w.bin1, 0, &quot;index&quot;);</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">        link(&quot;ray2&quot;, w.ray2, 0, &quot;index&quot;);</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">        link(&quot;bin2&quot;, w.bin2, 0, &quot;index&quot;);</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        parameters.link(<span class="stringliteral">&quot;marker&quot;</span>, this-&gt;marker = 255, <span class="stringliteral">&quot;intensity&quot;</span>);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        dataSelector.setMaxCount(1);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    };</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classrack_1_1DrawingOp.html">DrawingOp</a>();</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classrack_1_1DrawingOp.html">DrawingOp</a>();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    std::string shape;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">double</span> p1,p2,p3,p4;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    std::string shape;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">double</span> p1,p2,p3,p4;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">int</span> marker;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">int</span> marker;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="comment">// Potentially a general utility. rack::Geometry / ODIM?</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">//void deriveWindow(const PolarODIM srcOdim, int &amp; ray1, int &amp; ray2, int &amp; bin1, int &amp; bin2) const ;</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">// Potentially a general utility. rack::Geometry / ODIM?</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="comment">//void deriveWindow(const PolarODIM srcOdim, int &amp; ray1, int &amp; ray2, int &amp; bin1, int &amp; bin2) const ;</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">// void drawWindow(int ray1, int ray2, int bin1, int bin2, int marker, PlainData&lt;PolarDst&gt; &amp; dstData) const;</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">// void drawWindow(int ray1, int ray2, int bin1, int bin2, int marker, PlainData&lt;PolarDst&gt; &amp; dstData) const;</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">void</span> processDataSet(<span class="keyword">const</span> <a class="code" href="classrack_1_1DataSet.html">DataSet&lt;PolarSrc&gt;</a> &amp; srcSweep, <a class="code" href="classrack_1_1DataSet.html">DataSet&lt;PolarDst&gt;</a> &amp; dstProduct) <span class="keyword">const</span> ;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">void</span> processDataSet(<span class="keyword">const</span> <a class="code" href="classrack_1_1DataSet.html">DataSet&lt;PolarSrc&gt;</a> &amp; srcSweep, <a class="code" href="classrack_1_1DataSet.html">DataSet&lt;PolarDst&gt;</a> &amp; dstProduct) <span class="keyword">const</span> ;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="comment">// virtual void processData(const Data&lt;PolarSrc&gt; &amp; srcData, Data&lt;PolarDst&gt; &amp; dstData) const ;</span></div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="comment">// virtual void processData(const Data&lt;PolarSrc&gt; &amp; srcData, Data&lt;PolarDst&gt; &amp; dstData) const ;</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;};</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}  <span class="comment">// namespace rack</span></div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}  <span class="comment">// namespace rack</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RACKOP_H_ */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RACKOP_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">// Rack</span></div>
-<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1198</div></div>
-<div class="ttc" id="aclassrack_1_1DrawingOp_html"><div class="ttname"><a href="classrack_1_1DrawingOp.html">rack::DrawingOp</a></div><div class="ttdoc">Select and visualise a direction, range, sector or arc.</div><div class="ttdef"><b>Definition:</b> DrawingOp.h:51</div></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">// Rack</span></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1213</div></div>
+<div class="ttc" id="aclassrack_1_1DrawingOp_html"><div class="ttname"><a href="classrack_1_1DrawingOp.html">rack::DrawingOp</a></div><div class="ttdoc">Select and visualise a direction, range, sector or arc.</div><div class="ttdef"><b>Definition:</b> DrawingOp.h:49</div></div>
 <div class="ttc" id="aclassrack_1_1PolarProductOp_html"><div class="ttname"><a href="classrack_1_1PolarProductOp.html">rack::PolarProductOp</a></div><div class="ttdoc">Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input.</div><div class="ttdef"><b>Definition:</b> PolarProductOp.h:61</div></div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:44</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

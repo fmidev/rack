@@ -83,8 +83,8 @@ Inheritance diagram for RadarWindowCore:</div>
 <map name="aRadarWindowCore_inherit__map" id="aRadarWindowCore_inherit__map">
 <area shape="rect" title=" " alt="" coords="17,229,159,256"/>
 <area shape="rect" href="classdrain_1_1image_1_1WeightedWindowCore.html" title=" " alt="" coords="5,155,171,181"/>
-<area shape="rect" href="classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="36,80,140,107"/>
-<area shape="rect" href="classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="20,5,156,32"/>
+<area shape="rect" href="classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="36,80,140,107"/>
+<area shape="rect" href="classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="20,5,156,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -94,8 +94,8 @@ Collaboration diagram for RadarWindowCore:</div>
 <map name="aRadarWindowCore_coll__map" id="aRadarWindowCore_coll__map">
 <area shape="rect" title=" " alt="" coords="828,1053,971,1080"/>
 <area shape="rect" href="classdrain_1_1image_1_1WeightedWindowCore.html" title=" " alt="" coords="755,977,921,1004"/>
-<area shape="rect" href="classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="786,900,890,927"/>
-<area shape="rect" href="classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="770,795,906,821"/>
+<area shape="rect" href="classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="786,900,890,927"/>
+<area shape="rect" href="classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="770,795,906,821"/>
 <area shape="rect" href="classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels." alt="" coords="645,795,740,821"/>
 <area shape="rect" href="classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="635,719,743,745"/>
 <area shape="rect" href="classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="618,643,722,669"/>
@@ -134,8 +134,9 @@ Collaboration diagram for RadarWindowCore:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa6c3f8e51d6d755120de2d0af9625f5b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowCore.html#aa6c3f8e51d6d755120de2d0af9625f5b">RadarWindowCore</a> ()</td></tr>
-<tr class="memdesc:aa6c3f8e51d6d755120de2d0af9625f5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will act as base class: Window&lt;RadarWindowCore&gt; : public <a class="el" href="classrack_1_1RadarWindowCore.html">RadarWindowCore</a> {...}, init currently not supported.  <a href="classrack_1_1RadarWindowCore.html#aa6c3f8e51d6d755120de2d0af9625f5b">More...</a><br /></td></tr>
+<tr class="memitem:aa6c3f8e51d6d755120de2d0af9625f5b"><td class="memItemLeft" align="right" valign="top"><a id="aa6c3f8e51d6d755120de2d0af9625f5b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowCore.html#aa6c3f8e51d6d755120de2d0af9625f5b">RadarWindowCore</a> ()</td></tr>
+<tr class="memdesc:aa6c3f8e51d6d755120de2d0af9625f5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will act as base class: Window&lt;RadarWindowCore&gt; : public <a class="el" href="classrack_1_1RadarWindowCore.html">RadarWindowCore</a> {...}, init currently not supported. <br /></td></tr>
 <tr class="separator:aa6c3f8e51d6d755120de2d0af9625f5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1WeightedWindowCore"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1WeightedWindowCore')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1WeightedWindowCore.html">WeightedWindowCore</a></td></tr>
 <tr class="memitem:a73d2da3be4e6f372c2afde6216b88e17 inherit pub_methods_classdrain_1_1image_1_1WeightedWindowCore"><td class="memItemLeft" align="right" valign="top"><a id="a73d2da3be4e6f372c2afde6216b88e17"></a>
@@ -161,8 +162,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setDstFrame</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a27112a579c7a7abbd5fcc1d963228717"><td class="memItemLeft" align="right" valign="top"><a id="a27112a579c7a7abbd5fcc1d963228717"></a>
-<a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odimSrc</b></td></tr>
+<tr class="memitem:a27112a579c7a7abbd5fcc1d963228717"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowCore.html#a27112a579c7a7abbd5fcc1d963228717">odimSrc</a></td></tr>
 <tr class="separator:a27112a579c7a7abbd5fcc1d963228717"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a578c066f13c864bc5516da6e0b68e542"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowCore.html#a578c066f13c864bc5516da6e0b68e542">NI</a></td></tr>
 <tr class="separator:a578c066f13c864bc5516da6e0b68e542"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,40 +181,6 @@ Public Attributes</h2></td></tr>
 <a class="el" href="classdrain_1_1image_1_1ImageView.html">ImageView</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dst</b></td></tr>
 <tr class="separator:accd66f42de6d0772f61265114752c959 inherit pub_attribs_classdrain_1_1image_1_1WindowCore"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa6c3f8e51d6d755120de2d0af9625f5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6c3f8e51d6d755120de2d0af9625f5b">&#9670;&nbsp;</a></span>RadarWindowCore()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classrack_1_1RadarWindowCore.html">RadarWindowCore</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Will act as base class: Window&lt;RadarWindowCore&gt; : public <a class="el" href="classrack_1_1RadarWindowCore.html">RadarWindowCore</a> {...}, init currently not supported. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">odimSrc</td><td>- metadata of the source data </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a578c066f13c864bc5516da6e0b68e542"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a578c066f13c864bc5516da6e0b68e542">&#9670;&nbsp;</a></span>NI</h2>
@@ -239,8 +205,28 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a27112a579c7a7abbd5fcc1d963228717"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27112a579c7a7abbd5fcc1d963228717">&#9670;&nbsp;</a></span>odimSrc</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> odimSrc</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">odimSrc</td><td>- metadata of the source data </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/radar/<a class="el" href="Analysis_8h_source.html">Analysis.h</a></li>
+<li>src/radar/<a class="el" href="RadarWindows_8h_source.html">RadarWindows.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

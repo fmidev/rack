@@ -1,6 +1,6 @@
 <map id="RadarWindowCore" name="RadarWindowCore">
 <area shape="rect" id="node1" title=" " alt="" coords="17,229,159,256"/>
 <area shape="rect" id="node2" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title=" " alt="" coords="5,155,171,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="36,80,140,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="20,5,156,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="36,80,140,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="20,5,156,32"/>
 </map>

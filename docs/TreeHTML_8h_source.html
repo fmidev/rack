@@ -223,168 +223,158 @@ $(function() {
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="keywordtype">bool</span> NodeXML&lt;BaseHTML::tag_t&gt;::isSelfClosing() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span>* TypeName&lt;NodeHTML&gt;::get(){</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordflow">return</span> <span class="stringliteral">&quot;HTML&quot;</span>;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;}</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;DRAIN_TYPENAME(NodeHTML);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;DRAIN_TYPENAME(BaseHTML::tag_t);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span>* TypeName&lt;BaseHTML::tag_t&gt;::get(){</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordflow">return</span> <span class="stringliteral">&quot;HTML&quot;</span>;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;}</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">TreeHTML</a> &amp; TreeHTML::addChild(<span class="keyword">const</span> TreeHTML::key_t &amp; key);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">TreeHTML</a> &amp; TreeHTML::addChild(<span class="keyword">const</span> TreeHTML::key_t &amp; key);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">TreeHTML</a> &amp; TreeHTML::operator()(<span class="keyword">const</span> BaseHTML::tag_t &amp; type){</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    this-&gt;data.setType(type);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;}</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
 <div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">TreeHTML</a> &amp; TreeHTML::operator()(<span class="keyword">const</span> BaseHTML::tag_t &amp; type){</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    this-&gt;data.setType(type);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;}</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">// UTILS... consider to XML ?</span></div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="classdrain_1_1TreeUtilsHTML.html">  183</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1TreeUtilsHTML.html">TreeUtilsHTML</a> {</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment">// UTILS... consider to XML ?</span></div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
-<div class="line"><a name="l00193"></a><span class="lineno"><a class="line" href="classdrain_1_1TreeUtilsHTML.html">  193</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1TreeUtilsHTML.html">TreeUtilsHTML</a> {</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; <a class="code" href="classdrain_1_1TreeUtilsHTML.html#a7b4d6f9915c4cb19313c13e050b9697a">initHtml</a>(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; html, <span class="keyword">const</span> std::string &amp; key = <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
 <div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; <a class="code" href="classdrain_1_1TreeUtilsHTML.html#a7b4d6f9915c4cb19313c13e050b9697a">initHtml</a>(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; html, <span class="keyword">const</span> std::string &amp; key = <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; getFirstElem(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; elem, drain::BaseHTML::tag_t tagType){</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keywordflow">if</span> (elem.hasChildren()){</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            <span class="keywordflow">return</span> elem.getChildren().begin()-&gt;second; <span class="comment">// last</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        }</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            <span class="comment">//</span></div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            <span class="keywordflow">return</span> elem.addChild()(tagType); <span class="comment">// addChild(elem, tagType);</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        }</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    }</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; <a class="code" href="classdrain_1_1TreeUtilsHTML.html#a2af6c1236ab052561328c316493cf609">addChild</a>(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; elem, drain::BaseHTML::tag_t tagType, <span class="keyword">const</span> std::string &amp; key);</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; appendElem(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; elem, drain::BaseHTML::tag_t tagType, <span class="keyword">const</span> T &amp; arg){</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; child = elem.addChild()(tagType); <span class="comment">//  addChild(elem,tagType);</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        child = arg;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <span class="keywordflow">return</span> child;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    };</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; getFirstElem(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; elem, drain::BaseHTML::tag_t tagType){</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="keywordflow">if</span> (elem.hasChildren()){</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            <span class="keywordflow">return</span> elem.getChildren().begin()-&gt;second; <span class="comment">// last</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;            <span class="comment">//</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            <span class="keywordflow">return</span> elem.addChild()(tagType); <span class="comment">// addChild(elem, tagType);</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        }</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    }</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; <a class="code" href="classdrain_1_1TreeUtilsHTML.html#a2af6c1236ab052561328c316493cf609">addChild</a>(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; elem, drain::BaseHTML::tag_t tagType, <span class="keyword">const</span> std::string &amp; key);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; appendElem(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; elem, drain::BaseHTML::tag_t tagType, <span class="keyword">const</span> T &amp; arg){</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; child = elem.addChild()(tagType); <span class="comment">//  addChild(elem,tagType);</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        child = arg;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordflow">return</span> child;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    };</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; </div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class </span>T, <span class="keyword">class </span>...TT&gt;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; appendElem(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; elem, drain::BaseHTML::tag_t tagType, <span class="keyword">const</span> T &amp; arg, <span class="keyword">const</span> TT &amp; ...args) {</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        appendElem(elem, tagType, arg);</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <span class="keywordflow">return</span> appendElem(elem, tagType, args...);</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    }</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; </div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; createTable(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; body, <span class="keyword">const</span> std::list&lt;std::string&gt; &amp; columnTitles){ <span class="comment">// &quot;var&quot;, &quot;ref&quot;, no whitespace.</span></div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class </span>T, <span class="keyword">class </span>...TT&gt;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; appendElem(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; elem, drain::BaseHTML::tag_t tagType, <span class="keyword">const</span> T &amp; arg, <span class="keyword">const</span> TT &amp; ...args) {</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        appendElem(elem, tagType, arg);</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="keywordflow">return</span> appendElem(elem, tagType, args...);</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    }</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; createTable(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; body, <span class="keyword">const</span> std::list&lt;std::string&gt; &amp; columnTitles){ <span class="comment">// &quot;var&quot;, &quot;ref&quot;, no whitespace.</span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; table =  body.addChild()(drain::NodeHTML::TABLE);   <span class="comment">//       drain::TreeUtilsHTML::addChild(body, drain::NodeHTML::TABLE);</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; table =  body.addChild()(drain::NodeHTML::TABLE);   <span class="comment">//       drain::TreeUtilsHTML::addChild(body, drain::NodeHTML::TABLE);</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; tr    = table[<span class="stringliteral">&quot;header&quot;</span>](drain::NodeHTML::TR);</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; title: columnTitles){</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;            <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; th = tr[title](drain::NodeHTML::TH);</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;            th = title;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        }</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        <span class="keywordflow">return</span> table;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    }</div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; tr    = table[<span class="stringliteral">&quot;header&quot;</span>](drain::NodeHTML::TR);</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; title: columnTitles){</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;            <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; th = tr[title](drain::NodeHTML::TH);</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;            th = title;</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        }</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="keywordflow">return</span> table;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    }</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <span class="comment">// drain::TreeHTML &amp; fillTableRow(drain::TreeHTML &amp; table, drain::TreeHTML &amp; tr, const std::string value = &quot;&quot;);</span></div>
-<div class="line"><a name="l00261"></a><span class="lineno"><a class="line" href="classdrain_1_1TreeUtilsHTML.html#ae810557680e6a8e8e457cb3296885cae">  261</a></span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; <a class="code" href="classdrain_1_1TreeUtilsHTML.html#ae810557680e6a8e8e457cb3296885cae">fillTableRow</a>(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; table, <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; tr, <span class="keyword">const</span> T &amp; value){</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="comment">// drain::TreeHTML &amp; fillTableRow(drain::TreeHTML &amp; table, drain::TreeHTML &amp; tr, const std::string value = &quot;&quot;);</span></div>
+<div class="line"><a name="l00251"></a><span class="lineno"><a class="line" href="classdrain_1_1TreeUtilsHTML.html#ae810557680e6a8e8e457cb3296885cae">  251</a></span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; <a class="code" href="classdrain_1_1TreeUtilsHTML.html#ae810557680e6a8e8e457cb3296885cae">fillTableRow</a>(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; table, <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; tr, <span class="keyword">const</span> T &amp; value){</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: table.getChildren()){</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;            <span class="comment">// Using keys of the first row, create a new row. Often, it is the title row (TH elements).</span></div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; e: entry.second.getChildren()){</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                tr[e.first]-&gt;setType(drain::NodeHTML::TD);</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                tr[e.first] = value;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;            }</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            <span class="comment">// Return after investigating the first row:</span></div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            <span class="keywordflow">return</span> tr;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        }</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; </div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: table.getChildren()){</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            <span class="comment">// Using keys of the first row, create a new row. Often, it is the title row (TH elements).</span></div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; e: entry.second.getChildren()){</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;                tr[e.first]-&gt;setType(drain::NodeHTML::TD);</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                tr[e.first] = value;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;            }</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;            <span class="comment">// Return after investigating the first row:</span></div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;            <span class="keywordflow">return</span> tr;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        }</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        <span class="comment">// If table is empty, also tr is.</span></div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        <span class="keywordflow">return</span> tr;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    }</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; addTableRow(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; table, <span class="keyword">const</span> std::string value = <span class="stringliteral">&quot;&quot;</span>){</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; tr = table.addChild()(BaseHTML::TR); <span class="comment">// addChild(table, BaseHTML::TR);</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1TreeUtilsHTML.html#ae810557680e6a8e8e457cb3296885cae">fillTableRow</a>(table, tr, value);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    }</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; </div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="comment">// Dummy end... TODO: redesign logic, perhaps addChild();</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; appendElem(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; elem, drain::BaseHTML::tag_t tagType){</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="keywordflow">if</span> (elem.hasChildren()){</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;            <span class="keywordflow">return</span> elem.getChildren().rbegin()-&gt;second; <span class="comment">// last</span></div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        }</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;            <span class="comment">//</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            <span class="keywordflow">return</span> elem;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        }</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    }</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; </div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;};</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <span class="comment">// If table is empty, also tr is.</span></div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="keywordflow">return</span> tr;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    }</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; addTableRow(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; table, <span class="keyword">const</span> std::string value = <span class="stringliteral">&quot;&quot;</span>){</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; tr = table.addChild()(BaseHTML::TR); <span class="comment">// addChild(table, BaseHTML::TR);</span></div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1TreeUtilsHTML.html#ae810557680e6a8e8e457cb3296885cae">fillTableRow</a>(table, tr, value);</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    }</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="comment">// Dummy end... TODO: redesign logic, perhaps addChild();</span></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; appendElem(<a class="code" href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a> &amp; elem, drain::BaseHTML::tag_t tagType){</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordflow">if</span> (elem.hasChildren()){</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            <span class="keywordflow">return</span> elem.getChildren().rbegin()-&gt;second; <span class="comment">// last</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        }</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            <span class="comment">//</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            <span class="keywordflow">return</span> elem;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        }</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    }</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;};</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; </div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="comment">inline</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="comment">TreeHTML &amp; TreeHTML::operator()(const std::string &amp; text){</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;<span class="comment">    this-&gt;data.ctext = text;</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">    return *this;</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;<span class="comment">template &lt;&gt;</span></div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;<span class="comment">template &lt;&gt;</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="comment">inline</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">TreeHTML &amp; TreeHTML::operator()(const std::string &amp; text){</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="comment">    this-&gt;data.ctext = text;</span></div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="comment">    return *this;</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;<span class="comment">}</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; </div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;}  <span class="comment">// drain::</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TREEXML_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160; </div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160; </div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;}  <span class="comment">// drain::</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* TREEXML_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160; </div>
 <div class="ttc" id="aclassdrain_1_1FileInfo_html"><div class="ttname"><a href="classdrain_1_1FileInfo.html">drain::FileInfo</a></div><div class="ttdef"><b>Definition:</b> FileInfo.h:48</div></div>
 <div class="ttc" id="aclassdrain_1_1NodeHTML_html"><div class="ttname"><a href="classdrain_1_1NodeHTML.html">drain::NodeHTML</a></div><div class="ttdef"><b>Definition:</b> TreeHTML.h:78</div></div>
-<div class="ttc" id="aclassdrain_1_1NodeHTML_html_afbdde54030fb8d56b5bf7609b88405e0"><div class="ttname"><a href="classdrain_1_1NodeHTML.html#afbdde54030fb8d56b5bf7609b88405e0">drain::NodeHTML::NodeHTML</a></div><div class="ttdeci">NodeHTML(const elem_t &amp;t=elem_t(0))</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> TreeHTML.cpp:88</div></div>
+<div class="ttc" id="aclassdrain_1_1NodeHTML_html_afbdde54030fb8d56b5bf7609b88405e0"><div class="ttname"><a href="classdrain_1_1NodeHTML.html#afbdde54030fb8d56b5bf7609b88405e0">drain::NodeHTML::NodeHTML</a></div><div class="ttdeci">NodeHTML(const elem_t &amp;t=elem_t(0))</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> TreeHTML.cpp:92</div></div>
 <div class="ttc" id="aclassdrain_1_1NodeXML_html"><div class="ttname"><a href="classdrain_1_1NodeXML.html">drain::NodeXML</a></div><div class="ttdef"><b>Definition:</b> TreeXML.h:135</div></div>
 <div class="ttc" id="aclassdrain_1_1NodeXML_html_a3fa2115cdbb245c2f609f654a9888f14"><div class="ttname"><a href="classdrain_1_1NodeXML.html#a3fa2115cdbb245c2f609f654a9888f14">drain::NodeXML&lt; BaseHTML::tag_t &gt;::elem_t</a></div><div class="ttdeci">BaseHTML::tag_t elem_t</div><div class="ttdoc">Tag type, CTEXT or COMMENT.</div><div class="ttdef"><b>Definition:</b> TreeXML.h:147</div></div>
 <div class="ttc" id="aclassdrain_1_1NodeXML_html_a48eefbedbf1065f78ff2f0c09c793a33"><div class="ttname"><a href="classdrain_1_1NodeXML.html#a48eefbedbf1065f78ff2f0c09c793a33">drain::NodeXML&lt; BaseHTML::tag_t &gt;::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const V &amp;t, const std::string &amp;defaultTag=&quot;&quot;, int indent=0)</div><div class="ttdoc">&quot;Forward definition&quot; of Tree::toOstream</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_abe1e6bf8d8874a9263882f4e7c203d6d"><div class="ttname"><a href="classdrain_1_1Sprinter.html#abe1e6bf8d8874a9263882f4e7c203d6d">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const std::initializer_list&lt; T &gt; &amp;x, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">New (experimental)</div><div class="ttdef"><b>Definition:</b> Sprinter.h:419</div></div>
-<div class="ttc" id="aclassdrain_1_1TreeUtilsHTML_html"><div class="ttname"><a href="classdrain_1_1TreeUtilsHTML.html">drain::TreeUtilsHTML</a></div><div class="ttdef"><b>Definition:</b> TreeHTML.h:193</div></div>
-<div class="ttc" id="aclassdrain_1_1TreeUtilsHTML_html_a2af6c1236ab052561328c316493cf609"><div class="ttname"><a href="classdrain_1_1TreeUtilsHTML.html#a2af6c1236ab052561328c316493cf609">drain::TreeUtilsHTML::addChild</a></div><div class="ttdeci">static drain::TreeHTML &amp; addChild(drain::TreeHTML &amp;elem, drain::BaseHTML::tag_t tagType, const std::string &amp;key)</div><div class="ttdoc">Add element of given type. The path key is generated automatically, unless given.</div><div class="ttdef"><b>Definition:</b> TreeHTML.cpp:206</div></div>
-<div class="ttc" id="aclassdrain_1_1TreeUtilsHTML_html_a7b4d6f9915c4cb19313c13e050b9697a"><div class="ttname"><a href="classdrain_1_1TreeUtilsHTML.html#a7b4d6f9915c4cb19313c13e050b9697a">drain::TreeUtilsHTML::initHtml</a></div><div class="ttdeci">static drain::TreeHTML &amp; initHtml(drain::TreeHTML &amp;html, const std::string &amp;key=&quot;&quot;)</div><div class="ttdoc">Initialize a HTML object with &quot;head&quot; (including &quot;title&quot;, &quot;style&quot;) and &quot;body&quot; elements.</div><div class="ttdef"><b>Definition:</b> TreeHTML.cpp:181</div></div>
-<div class="ttc" id="aclassdrain_1_1TreeUtilsHTML_html_ae810557680e6a8e8e457cb3296885cae"><div class="ttname"><a href="classdrain_1_1TreeUtilsHTML.html#ae810557680e6a8e8e457cb3296885cae">drain::TreeUtilsHTML::fillTableRow</a></div><div class="ttdeci">static drain::TreeHTML &amp; fillTableRow(drain::TreeHTML &amp;table, drain::TreeHTML &amp;tr, const T &amp;value)</div><div class="ttdoc">Creates a new table row (TD) using first row as a template.</div><div class="ttdef"><b>Definition:</b> TreeHTML.h:261</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
+<div class="ttc" id="aclassdrain_1_1TreeUtilsHTML_html"><div class="ttname"><a href="classdrain_1_1TreeUtilsHTML.html">drain::TreeUtilsHTML</a></div><div class="ttdef"><b>Definition:</b> TreeHTML.h:183</div></div>
+<div class="ttc" id="aclassdrain_1_1TreeUtilsHTML_html_a2af6c1236ab052561328c316493cf609"><div class="ttname"><a href="classdrain_1_1TreeUtilsHTML.html#a2af6c1236ab052561328c316493cf609">drain::TreeUtilsHTML::addChild</a></div><div class="ttdeci">static drain::TreeHTML &amp; addChild(drain::TreeHTML &amp;elem, drain::BaseHTML::tag_t tagType, const std::string &amp;key)</div><div class="ttdoc">Add element of given type. The path key is generated automatically, unless given.</div><div class="ttdef"><b>Definition:</b> TreeHTML.cpp:210</div></div>
+<div class="ttc" id="aclassdrain_1_1TreeUtilsHTML_html_a7b4d6f9915c4cb19313c13e050b9697a"><div class="ttname"><a href="classdrain_1_1TreeUtilsHTML.html#a7b4d6f9915c4cb19313c13e050b9697a">drain::TreeUtilsHTML::initHtml</a></div><div class="ttdeci">static drain::TreeHTML &amp; initHtml(drain::TreeHTML &amp;html, const std::string &amp;key=&quot;&quot;)</div><div class="ttdoc">Initialize a HTML object with &quot;head&quot; (including &quot;title&quot;, &quot;style&quot;) and &quot;body&quot; elements.</div><div class="ttdef"><b>Definition:</b> TreeHTML.cpp:185</div></div>
+<div class="ttc" id="aclassdrain_1_1TreeUtilsHTML_html_ae810557680e6a8e8e457cb3296885cae"><div class="ttname"><a href="classdrain_1_1TreeUtilsHTML.html#ae810557680e6a8e8e457cb3296885cae">drain::TreeUtilsHTML::fillTableRow</a></div><div class="ttdeci">static drain::TreeHTML &amp; fillTableRow(drain::TreeHTML &amp;table, drain::TreeHTML &amp;tr, const T &amp;value)</div><div class="ttdoc">Creates a new table row (TD) using first row as a template.</div><div class="ttdef"><b>Definition:</b> TreeHTML.h:251</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:1277</div></div>
 <div class="ttc" id="anamespacedrain_html_a9caf24276e785b9aa955e5e66e50f146"><div class="ttname"><a href="namespacedrain.html#a9caf24276e785b9aa955e5e66e50f146">drain::TreeHTML</a></div><div class="ttdeci">NodeHTML::xml_tree_t TreeHTML</div><div class="ttdoc">The HTML data structure.</div><div class="ttdef"><b>Definition:</b> TreeHTML.h:136</div></div>
 <div class="ttc" id="astructdrain_1_1BaseHTML_html"><div class="ttname"><a href="structdrain_1_1BaseHTML.html">drain::BaseHTML</a></div><div class="ttdef"><b>Definition:</b> TreeHTML.h:56</div></div>
 </div><!-- fragment --></div><!-- contents -->

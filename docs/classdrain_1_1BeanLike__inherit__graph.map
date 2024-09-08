@@ -1,19 +1,19 @@
 <map id="BeanLike" name="BeanLike">
-<area shape="rect" id="node1" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="5,1196,87,1223"/>
+<area shape="rect" id="node1" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="5,1231,87,1257"/>
 <area shape="rect" id="node2" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="179,309,250,336"/>
 <area shape="rect" id="node13" href="$classdrain_1_1image_1_1AccumulationMethod.html" title="Function for accumulating data: maximum, average, weighted average etc." alt="" coords="135,512,295,539"/>
 <area shape="rect" id="node20" href="$classdrain_1_1image_1_1DistanceModel.html" title="Base class for linear and exponential distances in rectangular pixel images." alt="" coords="155,715,274,741"/>
-<area shape="rect" id="node23" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="169,1019,260,1045"/>
-<area shape="rect" id="node35" href="$structdrain_1_1image_1_1ImpulseAvgConf.html" title=" " alt="" coords="151,1069,279,1096"/>
-<area shape="rect" id="node37" href="$classdrain_1_1image_1_1PaletteEntry.html" title="Container for color, transparency (alpha) and textual id and description. Does not contain intensity ..." alt="" coords="164,1120,265,1147"/>
-<area shape="rect" id="node38" href="$classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data." alt="" coords="177,1171,253,1197"/>
-<area shape="rect" id="node39" href="$classrack_1_1DataCoder.html" title="Converts ODIM encoded data (with markers) to natural values and backwards." alt="" coords="169,1221,260,1248"/>
-<area shape="rect" id="node40" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations." alt="" coords="161,1272,268,1299"/>
-<area shape="rect" id="node42" href="$classrack_1_1FreezingLevel.html" title=" " alt="" coords="159,1323,271,1349"/>
-<area shape="rect" id="node43" href="$structrack_1_1HistEntry.html" title=" " alt="" coords="173,1373,256,1400"/>
-<area shape="rect" id="node44" href="$classrack_1_1PolarSector.html" title=" " alt="" coords="167,1424,263,1451"/>
-<area shape="rect" id="node45" href="$classrack_1_1Precip.html" title=" " alt="" coords="183,1475,246,1501"/>
-<area shape="rect" id="node48" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="163,1533,266,1560"/>
+<area shape="rect" id="node23" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="169,1027,260,1053"/>
+<area shape="rect" id="node35" href="$structdrain_1_1image_1_1ImpulseAvgConf.html" title=" " alt="" coords="151,1079,279,1105"/>
+<area shape="rect" id="node37" href="$classdrain_1_1image_1_1PaletteEntry.html" title="Container for color, transparency (alpha) and textual id and description. Does not contain intensity ..." alt="" coords="164,1129,265,1156"/>
+<area shape="rect" id="node38" href="$classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data." alt="" coords="177,1180,253,1207"/>
+<area shape="rect" id="node39" href="$classrack_1_1DataCoder.html" title="Converts ODIM encoded data (with markers) to natural values and backwards." alt="" coords="169,1231,260,1257"/>
+<area shape="rect" id="node40" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations." alt="" coords="161,1281,268,1308"/>
+<area shape="rect" id="node42" href="$classrack_1_1FreezingLevel.html" title=" " alt="" coords="159,1332,271,1359"/>
+<area shape="rect" id="node43" href="$structrack_1_1HistEntry.html" title=" " alt="" coords="173,1383,256,1409"/>
+<area shape="rect" id="node44" href="$classrack_1_1PolarSector.html" title=" " alt="" coords="167,1433,263,1460"/>
+<area shape="rect" id="node45" href="$classrack_1_1Precip.html" title=" " alt="" coords="183,1484,246,1511"/>
+<area shape="rect" id="node48" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="163,1539,266,1565"/>
 <area shape="rect" id="node3" href="$classdrain_1_1BinaryFunctor.html" title=" " alt="" coords="391,183,503,209"/>
 <area shape="rect" id="node11" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="393,309,502,336"/>
 <area shape="rect" id="node4" href="$classdrain_1_1AdditionFunctor.html" title="Adds a intensity values ." alt="" coords="626,5,750,32"/>

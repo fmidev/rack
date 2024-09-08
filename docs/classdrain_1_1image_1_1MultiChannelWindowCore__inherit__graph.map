@@ -1,6 +1,6 @@
 <map id="MultiChannelWindowCore" name="MultiChannelWindowCore">
 <area shape="rect" id="node1" title=" " alt="" coords="5,229,196,256"/>
 <area shape="rect" id="node2" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title=" " alt="" coords="18,155,183,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="49,80,153,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="33,5,169,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="49,80,153,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="33,5,169,32"/>
 </map>

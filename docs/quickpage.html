@@ -187,10 +187,10 @@ Meteorological products</h2>
 <div class="line">  Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)</div>
 <div class="line">--pDrawing  &lt;shape&gt;,&lt;p1&gt;,&lt;p2&gt;,&lt;p3&gt;,&lt;p4&gt;,&lt;marker&gt;</div>
 <div class="line">  Visualise a direction[azm,r,r2], range[r,r2], sector[azm,azm2,r,r2] or arc[azm,azm2,r].</div>
-<div class="line">--pEchoTop  &lt;minDBZ&gt;,&lt;dbzReference&gt;,&lt;altitudeReference&gt;,&lt;aboveSeaLevel&gt;</div>
-<div class="line">  Computes maximum (or minimum) altitude of echo.</div>
-<div class="line">--pEchoTop2  &lt;threshold&gt;,&lt;reference&gt;,&lt;dryTop&gt;,&lt;weights&gt;,&lt;EXTENDED&gt;</div>
+<div class="line">--pEchoTop  &lt;threshold&gt;,&lt;reference&gt;,&lt;undetectValue&gt;,&lt;weights&gt;,&lt;weightDecay&gt;,&lt;avgWindow&gt;,&lt;EXTENDED&gt;</div>
 <div class="line">  Estimates maximum altitude of given reflectivity</div>
+<div class="line">--pEchoTopOpOld  &lt;minDBZ&gt;,&lt;dbzReference&gt;,&lt;altitudeReference&gt;,&lt;aboveSeaLevel&gt;</div>
+<div class="line">  Computes maximum (or minimum) altitude of echo.</div>
 <div class="line">--pFunctor  &lt;ftor&gt;</div>
 <div class="line">  Maps values using a function</div>
 <div class="line">--pMaxEcho  &lt;altitude&gt;,&lt;accumulationMethod&gt;</div>
@@ -247,8 +247,8 @@ Compositing and Cartesian products</h2>
 <div class="line">  Delay half-time in minutes. 0=no decay</div>
 <div class="line">--cDefaultQuality  &lt;weight&gt;</div>
 <div class="line">  Set default quality (for data without quality field)</div>
-<div class="line">--cExtract  &lt;channels&gt;,&lt;bbox&gt;</div>
-<div class="line">  Extract data that has been composited on the accumulation array</div>
+<div class="line">--cExtract  &lt;channels&gt;:&lt;bbox&gt;</div>
+<div class="line">  Extract (export) data from the internal accumulation array</div>
 <div class="line">--cGrid  &lt;lonSpacing&gt;,&lt;latSpacing&gt;,&lt;width&gt;,&lt;intensity&gt;</div>
 <div class="line">  Draw lat-lon grid onto a Cartesian product.</div>
 <div class="line">--cInit  </div>
@@ -352,7 +352,7 @@ Image operators</h2>
 <div class="line">--iDistanceTransformExp  &lt;width&gt;,&lt;height&gt;,&lt;topology&gt;</div>
 <div class="line">  Exponentially decreasing intensities. Set half-decay radii.</div>
 <div class="line">--iDistanceTransformFill  &lt;width&gt;,&lt;height&gt;,&lt;topology&gt;,&lt;alphaThreshold&gt;</div>
-<div class="line">  Spreads intensities linearly up to distance defined by alpha intensities.</div>
+<div class="line">  Spreads intensities linearly up to distance defined by alpha channel.</div>
 <div class="line">--iDistanceTransformFillExp  &lt;width&gt;,&lt;height&gt;,&lt;topology&gt;,&lt;alphaThreshold&gt;</div>
 <div class="line">  Spreads intensities exponentially up to distance defined by alpha intensities.</div>
 <div class="line">--iDiv  &lt;scale&gt;,&lt;bias&gt;,&lt;LIMIT&gt;</div>

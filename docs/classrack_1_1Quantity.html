@@ -142,13 +142,15 @@ const <a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#ad157d2f8bcdea2dd26496ca54283bd57">hasUndetectValue</a> () const</td></tr>
 <tr class="memdesc:ad157d2f8bcdea2dd26496ca54283bd57"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if a value corresponding a very small (unmeasurable) value has been defined. <br /></td></tr>
 <tr class="separator:ad157d2f8bcdea2dd26496ca54283bd57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e570151ef01e52d6e343a86cc60b803"><td class="memItemLeft" align="right" valign="top"><a id="a4e570151ef01e52d6e343a86cc60b803"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a4e570151ef01e52d6e343a86cc60b803">setZero</a> (double value)</td></tr>
-<tr class="memdesc:a4e570151ef01e52d6e343a86cc60b803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets neutral value for purposes of interpolation. <br /></td></tr>
+<tr class="memitem:a4e570151ef01e52d6e343a86cc60b803"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a4e570151ef01e52d6e343a86cc60b803">setZero</a> (double value)</td></tr>
+<tr class="memdesc:a4e570151ef01e52d6e343a86cc60b803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a value to be used like a real measurement, for example in interpolation.  <a href="classrack_1_1Quantity.html#a4e570151ef01e52d6e343a86cc60b803">More...</a><br /></td></tr>
 <tr class="separator:a4e570151ef01e52d6e343a86cc60b803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7123e9f59cf23c5987010a25447413d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#aa7123e9f59cf23c5987010a25447413d">setZero</a> (const std::string &amp;value)</td></tr>
+<tr class="memdesc:aa7123e9f59cf23c5987010a25447413d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a value to be used like a real measurement, for example in interpolation.  <a href="classrack_1_1Quantity.html#aa7123e9f59cf23c5987010a25447413d">More...</a><br /></td></tr>
+<tr class="separator:aa7123e9f59cf23c5987010a25447413d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4cb8c7df1caf878655e71883684bbc2"><td class="memItemLeft" align="right" valign="top"><a id="af4cb8c7df1caf878655e71883684bbc2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#af4cb8c7df1caf878655e71883684bbc2">unsetZero</a> ()</td></tr>
-<tr class="memdesc:af4cb8c7df1caf878655e71883684bbc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets neutral value for purposes of interpolation. <br /></td></tr>
+<tr class="memdesc:af4cb8c7df1caf878655e71883684bbc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Confirm that no value should be used as a substitute of undetected value. <br /></td></tr>
 <tr class="separator:af4cb8c7df1caf878655e71883684bbc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70357e54d1a712249bf49f57818ec764"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#a70357e54d1a712249bf49f57818ec764">setPhysicalRange</a> (double min, double max=std::numeric_limits&lt; double &gt;::max())</td></tr>
 <tr class="memdesc:a70357e54d1a712249bf49f57818ec764"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets absolute or typical range of this quantity.  <a href="classrack_1_1Quantity.html#a70357e54d1a712249bf49f57818ec764">More...</a><br /></td></tr>
@@ -164,7 +166,7 @@ Public Attributes</h2></td></tr>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
 <tr class="separator:a9b45b3e13bd9167aab02e17e08916231"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5140d15bd9d808ec01bb06f3ae465e2"><td class="memItemLeft" align="right" valign="top"><a id="af5140d15bd9d808ec01bb06f3ae465e2"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#af5140d15bd9d808ec01bb06f3ae465e2">defaultType</a></td></tr>
+char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Quantity.html#af5140d15bd9d808ec01bb06f3ae465e2">defaultType</a> = '\0'</td></tr>
 <tr class="memdesc:af5140d15bd9d808ec01bb06f3ae465e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default storage type. <br /></td></tr>
 <tr class="separator:af5140d15bd9d808ec01bb06f3ae465e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab63e28a281b3682795950a2433129122"><td class="memItemLeft" align="right" valign="top"><a id="ab63e28a281b3682795950a2433129122"></a>
@@ -214,6 +216,66 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 
 <p>Sets absolute or typical range of this quantity. </p>
 <p>For example, for probability the range would be [0.0, 1.0]. Setting range is useful when data are converted from some storage type to another </p>
+
+</div>
+</div>
+<a id="aa7123e9f59cf23c5987010a25447413d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7123e9f59cf23c5987010a25447413d">&#9670;&nbsp;</a></span>setZero() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setZero </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set a value to be used like a real measurement, for example in interpolation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>- substitute for <code>undetect</code> marker value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4e570151ef01e52d6e343a86cc60b803"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e570151ef01e52d6e343a86cc60b803">&#9670;&nbsp;</a></span>setZero() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setZero </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set a value to be used like a real measurement, for example in interpolation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>- substitute for <code>undetect</code> marker value, or signaling_NaN </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

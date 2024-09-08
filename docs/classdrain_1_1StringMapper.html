@@ -108,6 +108,7 @@ Collaboration diagram for StringMapper:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a38a2a77d0974bc15a7e349679c9a38c1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a38a2a77d0974bc15a7e349679c9a38c1">StringMapper</a> (const std::string &amp;format=&quot;&quot;, const std::string &amp;validChars=&quot;[a-zA-Z0-9_]+&quot;, bool formatting=true)</td></tr>
+<tr class="memdesc:a38a2a77d0974bc15a7e349679c9a38c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classdrain_1_1StringMapper.html#a38a2a77d0974bc15a7e349679c9a38c1">More...</a><br /></td></tr>
 <tr class="separator:a38a2a77d0974bc15a7e349679c9a38c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa648ebfd6af64e0435257ac7d8061153"><td class="memItemLeft" align="right" valign="top"><a id="aa648ebfd6af64e0435257ac7d8061153"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#aa648ebfd6af64e0435257ac7d8061153">StringMapper</a> (const <a class="el" href="classdrain_1_1RegExp.html">RegExp</a> &amp;regexp, bool formatting=true)</td></tr>
@@ -229,7 +230,16 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>formatting</b></td></
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Constructor. </p>
+
+<p>Default constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">format</td><td>- string containing variables like <code>${name}</code> </td></tr>
+    <tr><td class="paramname">validChars</td><td>- allowed characters in variable names, ie inside braces. </td></tr>
+    <tr><td class="paramname">formatting</td><td>- support postprocessing of variable value (number rounding, string operations) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

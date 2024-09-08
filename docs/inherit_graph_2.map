@@ -145,18 +145,18 @@
 <area shape="rect" id="node125" href="$classrack_1_1DopplerAvgExpOp.html" title=" " alt="" coords="2224,1413,2363,1440"/>
 <area shape="rect" id="node126" href="$classrack_1_1DopplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data." alt="" coords="2248,1464,2339,1491"/>
 <area shape="rect" id="node142" href="$classrack_1_1DrawingOp.html" title="Select and visualise a direction, range, sector or arc." alt="" coords="2246,1515,2341,1541"/>
-<area shape="rect" id="node143" href="$classrack_1_1EchoTop2Op.html" title=" " alt="" coords="2243,1565,2344,1592"/>
+<area shape="rect" id="node143" href="$classrack_1_1EchoTopOp.html" title=" " alt="" coords="2247,1565,2340,1592"/>
 <area shape="rect" id="node144" href="$classrack_1_1ExtRackOp.html" title="Base class for radar data processors." alt="" coords="2247,1616,2340,1643"/>
 <area shape="rect" id="node145" href="$classrack_1_1FunctorOp.html" title="A single&#45;ray &quot;product&quot; storing the altitude at each bin." alt="" coords="2249,1667,2337,1693"/>
 <area shape="rect" id="node146" href="$classrack_1_1PolarNeuralVPROp.html" title="The VPRimum dBZ value in each a vertical column." alt="" coords="2222,1717,2365,1744"/>
-<area shape="rect" id="node147" href="$classrack_1_1PolarSlidingWindowOp.html" title=" " alt="" coords="2187,1768,2399,1795"/>
+<area shape="rect" id="node147" href="$classrack_1_1PolarSlidingWindowOp.html" title="Window operator with support." alt="" coords="2187,1768,2399,1795"/>
 <area shape="rect" id="node148" href="$classrack_1_1RainRateDPOp.html" title="Uses DBZ, ZDR and KDP to derive rain rate. Under construction." alt="" coords="2235,1819,2352,1845"/>
 <area shape="rect" id="node149" href="$classrack_1_1RainRateOp.html" title="Computes rain rate from dBZ." alt="" coords="2244,1869,2343,1896"/>
 <area shape="rect" id="node150" href="$classrack_1_1SunShineOp.html" title="A single&#45;ray &quot;product&quot; storing the altitude at each bin." alt="" coords="2243,1920,2343,1947"/>
 <area shape="rect" id="node151" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="2219,1971,2367,1997"/>
 <area shape="rect" id="node118" href="$classrack_1_1PolarSlidingAvgOp.html" title=" " alt="" coords="2503,1135,2645,1161"/>
 <area shape="rect" id="node122" href="$classrack_1_1CappiOp.html" title="Pseudo&#45;CAPPI: the constant altitude planar position indicator product." alt="" coords="2535,1185,2613,1212"/>
-<area shape="rect" id="node123" href="$classrack_1_1EchoTopOp.html" title="Height of echo exceeding a reflectivity threshold." alt="" coords="2527,1236,2621,1263"/>
+<area shape="rect" id="node123" href="$classrack_1_1EchoTopOpOld.html" title="Height of echo exceeding a reflectivity threshold." alt="" coords="2517,1236,2631,1263"/>
 <area shape="rect" id="node124" href="$classrack_1_1MaxEchoOp.html" title="The maximum dBZ value in each a vertical column." alt="" coords="2525,1287,2623,1313"/>
 <area shape="rect" id="node127" href="$classrack_1_1DopplerWindowOp.html" title=" " alt="" coords="2469,1591,2679,1633"/>
 <area shape="rect" id="node129" href="$classrack_1_1DopplerWindowOp.html" title=" " alt="" coords="2469,1657,2679,1698"/>

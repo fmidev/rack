@@ -2,5 +2,5 @@
 <area shape="rect" id="node1" title=" " alt="" coords="89,80,219,107"/>
 <area shape="rect" id="node3" href="$classdrain_1_1image_1_1OpticalFlowCore1.html" title=" " alt="" coords="5,155,143,181"/>
 <area shape="rect" id="node4" href="$classdrain_1_1image_1_1OpticalFlowCore2.html" title=" " alt="" coords="167,155,304,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="86,5,222,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="86,5,222,32"/>
 </map>

@@ -80,9 +80,11 @@ Inheritance diagram for DopplerInversionConfig:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1DopplerInversionConfig__inherit__graph.png" border="0" usemap="#aDopplerInversionConfig_inherit__map" alt="Inheritance graph"/></div>
 <map name="aDopplerInversionConfig_inherit__map" id="aDopplerInversionConfig_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,155,180,181"/>
-<area shape="rect" href="classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="16,80,169,107"/>
-<area shape="rect" href="classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="35,5,150,32"/>
+<area shape="rect" title=" " alt="" coords="81,229,255,256"/>
+<area shape="rect" href="classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="91,155,245,181"/>
+<area shape="rect" href="classrack_1_1RadarWindowGeom.html" title="Like pixel window, but width is metres and height is degrees." alt="" coords="14,80,165,107"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="5,5,173,32"/>
+<area shape="rect" href="classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="189,80,304,107"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -90,14 +92,16 @@ Collaboration diagram for DopplerInversionConfig:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1DopplerInversionConfig__coll__graph.png" border="0" usemap="#aDopplerInversionConfig_coll__map" alt="Collaboration graph"/></div>
 <map name="aDopplerInversionConfig_coll__map" id="aDopplerInversionConfig_coll__map">
-<area shape="rect" title=" " alt="" coords="116,399,291,425"/>
-<area shape="rect" href="classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="127,323,280,349"/>
-<area shape="rect" href="classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="146,247,261,273"/>
-<area shape="rect" href="classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="73,157,176,184"/>
-<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,195,108"/>
-<area shape="rect" title=" " alt="" coords="5,5,212,32"/>
-<area shape="rect" href="classdrain_1_1Frame2D.html" title=" " alt="" coords="221,157,349,184"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="219,81,353,108"/>
+<area shape="rect" title=" " alt="" coords="81,399,255,425"/>
+<area shape="rect" href="classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="91,323,245,349"/>
+<area shape="rect" href="classrack_1_1RadarWindowGeom.html" title="Like pixel window, but width is metres and height is degrees." alt="" coords="15,247,166,273"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="5,157,173,184"/>
+<area shape="rect" href="classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="192,247,307,273"/>
+<area shape="rect" href="classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="198,157,301,184"/>
+<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="159,81,331,108"/>
+<area shape="rect" title=" " alt="" coords="142,5,349,32"/>
+<area shape="rect" href="classdrain_1_1Frame2D.html" title=" " alt="" coords="357,157,485,184"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="355,81,490,108"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -116,11 +120,127 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6eca00d53669aa9238b4bca82d2a8571 inherit pub_methods_classrack_1_1RadarWindowConfig"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowConfig.html#a6eca00d53669aa9238b4bca82d2a8571">RadarWindowConfig</a> (const FT &amp;ftor, int widthM=1500, double heightD=3.0, double <a class="el" href="classrack_1_1RadarWindowConfig.html#ad628690d04de57617a34af4a10939914">contributionThreshold</a>=0.5, bool <a class="el" href="classrack_1_1RadarWindowConfig.html#ab3dc9db69672b51cab5cf074631cd434">invertPolar</a>=false, bool <a class="el" href="classrack_1_1RadarWindowConfig.html#acb6f121b04ea853b6166c2aecf14e143">relativeScale</a>=false)</td></tr>
 <tr class="separator:a6eca00d53669aa9238b4bca82d2a8571 inherit pub_methods_classrack_1_1RadarWindowConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0135009be89cbfa1cb077f3dd0ed458 inherit pub_methods_classrack_1_1RadarWindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="ab0135009be89cbfa1cb077f3dd0ed458"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setPixelConf</b> (<a class="el" href="classrack_1_1RadarWindowConfig.html">RadarWindowConfig</a> &amp;conf, const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;inputODIM) const</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowConfig.html#ab0135009be89cbfa1cb077f3dd0ed458">setPixelConf</a> (<a class="el" href="classrack_1_1RadarWindowConfig.html">RadarWindowConfig</a> &amp;conf, const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;inputODIM) const</td></tr>
+<tr class="memdesc:ab0135009be89cbfa1cb077f3dd0ed458 inherit pub_methods_classrack_1_1RadarWindowConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies configuration to <code>conf</code> and update its pixel frame (width x height). <br /></td></tr>
 <tr class="separator:ab0135009be89cbfa1cb077f3dd0ed458 inherit pub_methods_classrack_1_1RadarWindowConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83224c0a48596908fb96750197a6bb91 inherit pub_methods_classrack_1_1RadarWindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="a83224c0a48596908fb96750197a6bb91"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowConfig.html#a83224c0a48596908fb96750197a6bb91">adjustMyConf</a> (const <a class="el" href="classrack_1_1RadarWindowConfig.html">RadarWindowConfig</a> &amp;conf, const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;inputODIM)</td></tr>
+<tr class="memdesc:a83224c0a48596908fb96750197a6bb91 inherit pub_methods_classrack_1_1RadarWindowConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies configuration from <code>conf</code> and update pixel frame (width x height). <br /></td></tr>
+<tr class="separator:a83224c0a48596908fb96750197a6bb91 inherit pub_methods_classrack_1_1RadarWindowConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6acf2348f8f2e4100531510e44e6898b inherit pub_methods_classrack_1_1RadarWindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="a6acf2348f8f2e4100531510e44e6898b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>updatePixelSize</b> (const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;inputODIM)</td></tr>
 <tr class="separator:a6acf2348f8f2e4100531510e44e6898b inherit pub_methods_classrack_1_1RadarWindowConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classrack_1_1RadarWindowGeom"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1RadarWindowGeom')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1RadarWindowGeom.html">RadarWindowGeom</a></td></tr>
+<tr class="memitem:a5b9a25e283eeace21f37a8745b03bf4b inherit pub_methods_classrack_1_1RadarWindowGeom"><td class="memItemLeft" align="right" valign="top"><a id="a5b9a25e283eeace21f37a8745b03bf4b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RadarWindowGeom</b> (const <a class="el" href="classrack_1_1RadarWindowGeom.html">RadarWindowGeom</a> &amp;geom)</td></tr>
+<tr class="separator:a5b9a25e283eeace21f37a8745b03bf4b inherit pub_methods_classrack_1_1RadarWindowGeom"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classdrain_1_1UniTuple"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1UniTuple')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1UniTuple.html">UniTuple&lt; double, 2 &gt;</a></td></tr>
+<tr class="memitem:aa2610ac91edd38e997748aa698a44016 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="aa2610ac91edd38e997748aa698a44016"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>UniTuple</b> (const TT &amp;... args)</td></tr>
+<tr class="separator:aa2610ac91edd38e997748aa698a44016 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38e52c5f41cd11d4cb5ebfca3353f59b inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a38e52c5f41cd11d4cb5ebfca3353f59b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a38e52c5f41cd11d4cb5ebfca3353f59b">UniTuple</a> (const <a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; double, N &gt; &amp;t)</td></tr>
+<tr class="memdesc:a38e52c5f41cd11d4cb5ebfca3353f59b inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
+<tr class="separator:a38e52c5f41cd11d4cb5ebfca3353f59b inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3f7fdd1222ce1acadb27d4185b43608 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="ae3f7fdd1222ce1acadb27d4185b43608"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>UniTuple</b> (std::initializer_list&lt; S &gt; l)</td></tr>
+<tr class="separator:ae3f7fdd1222ce1acadb27d4185b43608 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a817e1a7a49b95e67ff966ac8dc5ceb48 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a817e1a7a49b95e67ff966ac8dc5ceb48"></a>
+<a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a817e1a7a49b95e67ff966ac8dc5ceb48">assign</a> (const <a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;t)</td></tr>
+<tr class="memdesc:a817e1a7a49b95e67ff966ac8dc5ceb48 inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Proposed for tuples only; derived classes should not shadow this. <br /></td></tr>
+<tr class="separator:a817e1a7a49b95e67ff966ac8dc5ceb48 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb844b8654ffa9f0c04b3c7a5d184914 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="adb844b8654ffa9f0c04b3c7a5d184914"></a>
+<a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>assign</b> (const value_type &amp;value)</td></tr>
+<tr class="separator:adb844b8654ffa9f0c04b3c7a5d184914 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3aa5813ab7d97d151494dde596b9079 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="ab3aa5813ab7d97d151494dde596b9079"></a>
+<a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;t)</td></tr>
+<tr class="separator:ab3aa5813ab7d97d151494dde596b9079 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada5f447c3245700432ffca300b936fa0 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="ada5f447c3245700432ffca300b936fa0"></a>
+<a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const value_type &amp;value)</td></tr>
+<tr class="separator:ada5f447c3245700432ffca300b936fa0 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5314bdc62c7726c9eed0dee5a925983e inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a5314bdc62c7726c9eed0dee5a925983e"></a>
+<a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (std::initializer_list&lt; S &gt; l)</td></tr>
+<tr class="separator:a5314bdc62c7726c9eed0dee5a925983e inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09482dae9093afecf251b23ad2b0cc16 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a09482dae9093afecf251b23ad2b0cc16"></a>
+<a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const <a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;t)</td></tr>
+<tr class="separator:a09482dae9093afecf251b23ad2b0cc16 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f1f648e549583eac9e27b3b64f61f90 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a1f1f648e549583eac9e27b3b64f61f90"></a>
+<a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a1f1f648e549583eac9e27b3b64f61f90">set</a> (const <a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; T2, N2 &gt; &amp;t)</td></tr>
+<tr class="memdesc:a1f1f648e549583eac9e27b3b64f61f90 inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign tuple of different type and/or size. <br /></td></tr>
+<tr class="separator:a1f1f648e549583eac9e27b3b64f61f90 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73edafb408a1aaacfa28837e474f02f3 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a73edafb408a1aaacfa28837e474f02f3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const double &amp;arg)</td></tr>
+<tr class="separator:a73edafb408a1aaacfa28837e474f02f3 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fd8f5f7f3c3551cab5532b3c1864daf inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a8fd8f5f7f3c3551cab5532b3c1864daf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a8fd8f5f7f3c3551cab5532b3c1864daf">set</a> (const double &amp;arg, const TT &amp;... rest)</td></tr>
+<tr class="memdesc:a8fd8f5f7f3c3551cab5532b3c1864daf inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set element(s). <br /></td></tr>
+<tr class="separator:a8fd8f5f7f3c3551cab5532b3c1864daf inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfdea329f2cda816f3858a8c9d4286a7 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="acfdea329f2cda816f3858a8c9d4286a7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (std::initializer_list&lt; S &gt; l)</td></tr>
+<tr class="separator:acfdea329f2cda816f3858a8c9d4286a7 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29305669b60ca1680752e2fc3592ba99 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a29305669b60ca1680752e2fc3592ba99"></a>
+const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () const</td></tr>
+<tr class="separator:a29305669b60ca1680752e2fc3592ba99 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad69bd11391be1a1dba5c8202259664f8 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="ad69bd11391be1a1dba5c8202259664f8"></a>
+iterator&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> ()</td></tr>
+<tr class="separator:ad69bd11391be1a1dba5c8202259664f8 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accf9a4bd0c34d4a5f6a7dab66ea10cdc inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="accf9a4bd0c34d4a5f6a7dab66ea10cdc"></a>
+const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const</td></tr>
+<tr class="separator:accf9a4bd0c34d4a5f6a7dab66ea10cdc inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acad38d52497a975bfb6f2f6acd76631f inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="acad38d52497a975bfb6f2f6acd76631f"></a>
+iterator&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> ()</td></tr>
+<tr class="separator:acad38d52497a975bfb6f2f6acd76631f inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a322e591a7c4e1da90e33a34b9393f7dd inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top">const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a322e591a7c4e1da90e33a34b9393f7dd">at</a> (size_t i) const</td></tr>
+<tr class="memdesc:a322e591a7c4e1da90e33a34b9393f7dd inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return const reference to element i.  <a href="classdrain_1_1UniTuple.html#a322e591a7c4e1da90e33a34b9393f7dd">More...</a><br /></td></tr>
+<tr class="separator:a322e591a7c4e1da90e33a34b9393f7dd inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5b287980b4cdc0590c319739cfb844c inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#af5b287980b4cdc0590c319739cfb844c">at</a> (size_t i)</td></tr>
+<tr class="memdesc:af5b287980b4cdc0590c319739cfb844c inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return reference to element i.  <a href="classdrain_1_1UniTuple.html#af5b287980b4cdc0590c319739cfb844c">More...</a><br /></td></tr>
+<tr class="separator:af5b287980b4cdc0590c319739cfb844c inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae03baa93cd9fff74fc1469ed1977a705 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="ae03baa93cd9fff74fc1469ed1977a705"></a>
+const double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (size_t i) const</td></tr>
+<tr class="separator:ae03baa93cd9fff74fc1469ed1977a705 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d56cb4cffc7089978d354304eb5a7a6 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a5d56cb4cffc7089978d354304eb5a7a6"></a>
+double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (size_t i)</td></tr>
+<tr class="separator:a5d56cb4cffc7089978d354304eb5a7a6 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5905ce8a8186d6817497149e6bb42da5 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a5905ce8a8186d6817497149e6bb42da5"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a5905ce8a8186d6817497149e6bb42da5">operator==</a> (const <a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;t) const</td></tr>
+<tr class="memdesc:a5905ce8a8186d6817497149e6bb42da5 inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equality operator. <br /></td></tr>
+<tr class="separator:a5905ce8a8186d6817497149e6bb42da5 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aca11ed7e1348733045272dc8a6c8aa inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a8aca11ed7e1348733045272dc8a6c8aa"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a8aca11ed7e1348733045272dc8a6c8aa">operator!=</a> (const <a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;t) const</td></tr>
+<tr class="memdesc:a8aca11ed7e1348733045272dc8a6c8aa inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inequality operator. <br /></td></tr>
+<tr class="separator:a8aca11ed7e1348733045272dc8a6c8aa inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab05795512c2f99f7747c09ac204c54db inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="ab05795512c2f99f7747c09ac204c54db"></a>
+S &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#ab05795512c2f99f7747c09ac204c54db">toSequence</a> (S &amp;sequence) const</td></tr>
+<tr class="memdesc:ab05795512c2f99f7747c09ac204c54db inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy elements to a Sequence, like stl::list, stl::set or stl::vector. <br /></td></tr>
+<tr class="separator:ab05795512c2f99f7747c09ac204c54db inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2ac65ad1b243312310ccac28fbe13b0 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; double, N &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#ad2ac65ad1b243312310ccac28fbe13b0">assignSequence</a> (S &amp;sequence, bool LENIENT=false)</td></tr>
+<tr class="memdesc:ad2ac65ad1b243312310ccac28fbe13b0 inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy elements from a Sequence, like stl::list, stl::set or stl::vector.  <a href="classdrain_1_1UniTuple.html#ad2ac65ad1b243312310ccac28fbe13b0">More...</a><br /></td></tr>
+<tr class="separator:ad2ac65ad1b243312310ccac28fbe13b0 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a95feb0b5d9933a5d3cbf1ca34317a4 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a3a95feb0b5d9933a5d3cbf1ca34317a4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a3a95feb0b5d9933a5d3cbf1ca34317a4">fill</a> (double i)</td></tr>
+<tr class="memdesc:a3a95feb0b5d9933a5d3cbf1ca34317a4 inherit pub_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set all the elements to i. <br /></td></tr>
+<tr class="separator:a3a95feb0b5d9933a5d3cbf1ca34317a4 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8bb3912a3ce86b15842e79d0b421204 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="ac8bb3912a3ce86b15842e79d0b421204"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
+<tr class="separator:ac8bb3912a3ce86b15842e79d0b421204 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a609c89705a5ee653cf03ba7511200cd8 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a609c89705a5ee653cf03ba7511200cd8"></a>
+<a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>tuple</b> ()</td></tr>
+<tr class="separator:a609c89705a5ee653cf03ba7511200cd8 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac836fbeb73d1928450623ed9d07fdec5 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="ac836fbeb73d1928450623ed9d07fdec5"></a>
+const <a class="el" href="classdrain_1_1UniTuple.html">tuple_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>tuple</b> () const</td></tr>
+<tr class="separator:ac836fbeb73d1928450623ed9d07fdec5 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21607a8c302f69443d0a41fab168470f inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top">virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a21607a8c302f69443d0a41fab168470f">toStream</a> (std::ostream &amp;ostr, char separator=',') const</td></tr>
+<tr class="separator:a21607a8c302f69443d0a41fab168470f inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc2ab298d116d998178d14049a60a676 inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="abc2ab298d116d998178d14049a60a676"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> (char separator=',') const</td></tr>
+<tr class="separator:abc2ab298d116d998178d14049a60a676 inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1da6cd5ee62581309e686e72f542021d inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a1da6cd5ee62581309e686e72f542021d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> (std::ostream &amp;ostr) const</td></tr>
+<tr class="separator:a1da6cd5ee62581309e686e72f542021d inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0289a82520e0a2e75753ca22eedb0ddb inherit pub_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a0289a82520e0a2e75753ca22eedb0ddb"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>updateTuple</b> ()</td></tr>
+<tr class="separator:a0289a82520e0a2e75753ca22eedb0ddb inherit pub_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1WindowConfig"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1WindowConfig')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1WindowConfig.html">WindowConfig</a></td></tr>
 <tr class="memitem:a5abea2a3f2d672ae33c2f149a0ed571b inherit pub_methods_classdrain_1_1image_1_1WindowConfig"><td class="memTemplParams" colspan="2"><a id="a5abea2a3f2d672ae33c2f149a0ed571b"></a>
 template&lt;class FT  = IdentityFunctor&gt; </td></tr>
@@ -148,6 +268,19 @@ const <a class="el" href="classdrain_1_1VariableMap.html">VariableMap</a> &amp;&
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classdrain_1_1UniTuple"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1UniTuple')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1UniTuple.html">UniTuple&lt; double, 2 &gt;</a></td></tr>
+<tr class="memitem:a265a253612b46abed17c61b0a5e5ce30 inherit pub_types_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a265a253612b46abed17c61b0a5e5ce30"></a>
+typedef double&#160;</td><td class="memItemRight" valign="bottom"><b>value_type</b></td></tr>
+<tr class="separator:a265a253612b46abed17c61b0a5e5ce30 inherit pub_types_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae730799b21e82fd7a3046962ad1dda2a inherit pub_types_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="ae730799b21e82fd7a3046962ad1dda2a"></a>
+typedef <a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; double, N &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>tuple_t</b></td></tr>
+<tr class="separator:ae730799b21e82fd7a3046962ad1dda2a inherit pub_types_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35c955cacac6aacaa1e82874b1628865 inherit pub_types_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a35c955cacac6aacaa1e82874b1628865"></a>
+typedef double *&#160;</td><td class="memItemRight" valign="bottom"><b>iterator</b></td></tr>
+<tr class="separator:a35c955cacac6aacaa1e82874b1628865 inherit pub_types_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fc97dce62b7053449cc868607540dba inherit pub_types_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a2fc97dce62b7053449cc868607540dba"></a>
+typedef const double *&#160;</td><td class="memItemRight" valign="bottom"><b>const_iterator</b></td></tr>
+<tr class="separator:a2fc97dce62b7053449cc868607540dba inherit pub_types_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classdrain_1_1image_1_1WindowConfig"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1image_1_1WindowConfig')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1image_1_1WindowConfig.html">WindowConfig</a></td></tr>
 <tr class="memitem:ad89d393c59845f4164a6537ecb83296e inherit pub_types_classdrain_1_1image_1_1WindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="ad89d393c59845f4164a6537ecb83296e"></a>
 typedef <a class="el" href="classdrain_1_1Bank.html#a083b3118c64246c86cdf47a290bc1eae">FunctorBank::map_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fmap_t</b></td></tr>
@@ -155,25 +288,30 @@ typedef <a class="el" href="classdrain_1_1Bank.html#a083b3118c64246c86cdf47a290b
 <tr class="memitem:a1005748314c112179727c3e16f788831 inherit pub_types_classdrain_1_1image_1_1WindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="a1005748314c112179727c3e16f788831"></a>
 typedef fmap_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>ftor_entry_t</b></td></tr>
 <tr class="separator:a1005748314c112179727c3e16f788831 inherit pub_types_classdrain_1_1image_1_1WindowConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classdrain_1_1UniTuple"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classdrain_1_1UniTuple')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classdrain_1_1UniTuple.html">UniTuple&lt; double, 2 &gt;</a></td></tr>
+<tr class="memitem:a0a22581a091167da9d9db49104dbf751 inherit pub_static_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top">static size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a0a22581a091167da9d9db49104dbf751">size</a> ()</td></tr>
+<tr class="memdesc:a0a22581a091167da9d9db49104dbf751 inherit pub_static_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the number of elements.  <a href="classdrain_1_1UniTuple.html#a0a22581a091167da9d9db49104dbf751">More...</a><br /></td></tr>
+<tr class="separator:a0a22581a091167da9d9db49104dbf751 inherit pub_static_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classrack_1_1RadarWindowConfig"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classrack_1_1RadarWindowConfig')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classrack_1_1RadarWindowConfig.html">RadarWindowConfig</a></td></tr>
-<tr class="memitem:a9fcb9a29c2cb279480bcbadf8f038468 inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="a9fcb9a29c2cb279480bcbadf8f038468"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>widthM</b></td></tr>
-<tr class="separator:a9fcb9a29c2cb279480bcbadf8f038468 inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace3cd80d9ecc3d74aa2b67fdc84bb40d inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="ace3cd80d9ecc3d74aa2b67fdc84bb40d"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>heightD</b></td></tr>
-<tr class="separator:ace3cd80d9ecc3d74aa2b67fdc84bb40d inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad628690d04de57617a34af4a10939914 inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="ad628690d04de57617a34af4a10939914"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowConfig.html#ad628690d04de57617a34af4a10939914">contributionThreshold</a></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowConfig.html#ad628690d04de57617a34af4a10939914">contributionThreshold</a> = 0.5</td></tr>
 <tr class="memdesc:ad628690d04de57617a34af4a10939914 inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum percentage of detected values in a window (not undetect and nodata) <br /></td></tr>
 <tr class="separator:ad628690d04de57617a34af4a10939914 inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3dc9db69672b51cab5cf074631cd434 inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="ab3dc9db69672b51cab5cf074631cd434"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowConfig.html#ab3dc9db69672b51cab5cf074631cd434">invertPolar</a></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowConfig.html#ab3dc9db69672b51cab5cf074631cd434">invertPolar</a> = false</td></tr>
 <tr class="memdesc:ab3dc9db69672b51cab5cf074631cd434 inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compensate the polar coordinate system to correspond the Cartesian one in computations. <br /></td></tr>
 <tr class="separator:ab3dc9db69672b51cab5cf074631cd434 inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb6f121b04ea853b6166c2aecf14e143 inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="acb6f121b04ea853b6166c2aecf14e143"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowConfig.html#acb6f121b04ea853b6166c2aecf14e143">relativeScale</a></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowConfig.html#acb6f121b04ea853b6166c2aecf14e143">relativeScale</a> = false</td></tr>
 <tr class="memdesc:acb6f121b04ea853b6166c2aecf14e143 inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, use speed up to -1.0...+1.0 instead of -Vnyq...+Vnyq. <br /></td></tr>
 <tr class="separator:acb6f121b04ea853b6166c2aecf14e143 inherit pub_attribs_classrack_1_1RadarWindowConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_classrack_1_1RadarWindowGeom"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classrack_1_1RadarWindowGeom')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classrack_1_1RadarWindowGeom.html">RadarWindowGeom</a></td></tr>
+<tr class="memitem:a2288dadd146ac706e8b51d9a290893ba inherit pub_attribs_classrack_1_1RadarWindowGeom"><td class="memItemLeft" align="right" valign="top"><a id="a2288dadd146ac706e8b51d9a290893ba"></a>
+double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>widthM</b></td></tr>
+<tr class="separator:a2288dadd146ac706e8b51d9a290893ba inherit pub_attribs_classrack_1_1RadarWindowGeom"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0c1f39466bdfe0cac5a5197c760c69f inherit pub_attribs_classrack_1_1RadarWindowGeom"><td class="memItemLeft" align="right" valign="top"><a id="ae0c1f39466bdfe0cac5a5197c760c69f"></a>
+double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>heightD</b></td></tr>
+<tr class="separator:ae0c1f39466bdfe0cac5a5197c760c69f inherit pub_attribs_classrack_1_1RadarWindowGeom"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1image_1_1WindowConfig"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1image_1_1WindowConfig')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1image_1_1WindowConfig.html">WindowConfig</a></td></tr>
 <tr class="memitem:aa5e595900ee5d5086c21dc8442a6366b inherit pub_attribs_classdrain_1_1image_1_1WindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="aa5e595900ee5d5086c21dc8442a6366b"></a>
 <a class="el" href="classdrain_1_1Frame2D.html">Frame2D</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>frame</b></td></tr>
@@ -181,6 +319,29 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ac729dbead8d05e4e9fe33918a8ccfc96 inherit pub_attribs_classdrain_1_1image_1_1WindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="ac729dbead8d05e4e9fe33918a8ccfc96"></a>
 <a class="el" href="classdrain_1_1VariableMap.html">VariableMap</a>&#160;</td><td class="memItemRight" valign="bottom"><b>functorParameters</b></td></tr>
 <tr class="separator:ac729dbead8d05e4e9fe33918a8ccfc96 inherit pub_attribs_classdrain_1_1image_1_1WindowConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_attribs_classdrain_1_1UniTuple"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classdrain_1_1UniTuple')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classdrain_1_1UniTuple.html">UniTuple&lt; double, 2 &gt;</a></td></tr>
+<tr class="memitem:a94defb6a003f3ca2d793b7d068cb2bf3 inherit pub_static_attribs_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a94defb6a003f3ca2d793b7d068cb2bf3"></a>
+static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>tuple_size</b></td></tr>
+<tr class="separator:a94defb6a003f3ca2d793b7d068cb2bf3 inherit pub_static_attribs_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classdrain_1_1UniTuple"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1UniTuple')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1UniTuple.html">UniTuple&lt; double, 2 &gt;</a></td></tr>
+<tr class="memitem:aa52c5502060d941ee81d6fe1362cf040 inherit pro_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="aa52c5502060d941ee81d6fe1362cf040"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>UniTuple</b> (<a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; double, N2 &gt; &amp;tuple, size_t i)</td></tr>
+<tr class="separator:aa52c5502060d941ee81d6fe1362cf040 inherit pro_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed4b0785119f5679931a43ac06582e21 inherit pro_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="aed4b0785119f5679931a43ac06582e21"></a>
+double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>next</b> ()</td></tr>
+<tr class="separator:aed4b0785119f5679931a43ac06582e21 inherit pro_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38fbd2b937dbb0b01ac0855fc0c9108f inherit pro_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a38fbd2b937dbb0b01ac0855fc0c9108f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#a38fbd2b937dbb0b01ac0855fc0c9108f">setIndexed</a> (size_t i)</td></tr>
+<tr class="memdesc:a38fbd2b937dbb0b01ac0855fc0c9108f inherit pro_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Argument stack endpoint function; final step of variadic argument set(arg, ...) . <br /></td></tr>
+<tr class="separator:a38fbd2b937dbb0b01ac0855fc0c9108f inherit pro_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa35cb0c639dd402144074fc9c454584 inherit pro_methods_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="aaa35cb0c639dd402144074fc9c454584"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1UniTuple.html#aaa35cb0c639dd402144074fc9c454584">setIndexed</a> (size_t i, T2 arg, const TT &amp;... rest)</td></tr>
+<tr class="memdesc:aaa35cb0c639dd402144074fc9c454584 inherit pro_methods_classdrain_1_1UniTuple"><td class="mdescLeft">&#160;</td><td class="mdescRight">Worker called by set(T2 arg, T2 arg2, ...) <br /></td></tr>
+<tr class="separator:aaa35cb0c639dd402144074fc9c454584 inherit pro_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classdrain_1_1UniTuple"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1UniTuple')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1UniTuple.html">UniTuple&lt; double, 2 &gt;</a></td></tr>
+<tr class="memitem:a2eee0593c26a8d23ddd338bf861cd4dc inherit pro_attribs_classdrain_1_1UniTuple"><td class="memItemLeft" align="right" valign="top"><a id="a2eee0593c26a8d23ddd338bf861cd4dc"></a>
+const iterator&#160;</td><td class="memItemRight" valign="bottom"><b>start</b></td></tr>
+<tr class="separator:a2eee0593c26a8d23ddd338bf861cd4dc inherit pro_attribs_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1image_1_1WindowConfig"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1image_1_1WindowConfig')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1image_1_1WindowConfig.html">WindowConfig</a></td></tr>
 <tr class="memitem:aa4cdb693ee7f3d1d131bb328468184b7 inherit pro_attribs_classdrain_1_1image_1_1WindowConfig"><td class="memItemLeft" align="right" valign="top"><a id="aa4cdb693ee7f3d1d131bb328468184b7"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>key</b></td></tr>

@@ -1,12 +1,11 @@
 <map id="SimpleCommand&lt; T &gt;" name="SimpleCommand&lt; T &gt;">
-<area shape="rect" id="node1" title="A single&#45;parameter command." alt="" coords="301,304,473,331"/>
+<area shape="rect" id="node1" title="A single&#45;parameter command." alt="" coords="222,304,394,331"/>
 <area shape="rect" id="node6" href="$classdrain_1_1CmdNotFound.html" title="Special command for handling undefined commands." alt="" coords="5,379,141,405"/>
 <area shape="rect" id="node7" href="$classrack_1_1CartesianProj.html" title="First, commands applicable in any Cartesian product generation, not only radar compositeing." alt="" coords="165,379,296,405"/>
 <area shape="rect" id="node8" href="$classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="320,379,453,405"/>
 <area shape="rect" id="node9" href="$classrack_1_1CmdOutputQuantity.html" title=" " alt="" coords="478,379,653,405"/>
-<area shape="rect" id="node10" href="$classrack_1_1CmdPaletteOutput.html" title=" " alt="" coords="677,379,840,405"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="325,229,449,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="281,155,492,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="342,80,431,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="340,5,433,32"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="246,229,370,256"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="203,155,413,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="263,80,353,107"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="261,5,355,32"/>
 </map>

@@ -98,6 +98,9 @@ $(function() {
 <div class="line"><span class="comment">g ++ -I. drain/examples/TreeSVG-example.cpp drain/util/{Log,Caster,Castable,JSONwriter,RegExp,String,TreeXML,Type}.cpp   drain/image/TreeSVG.cpp  -o TreeSVG-example</span></div>
 <div class="line"><span class="comment"> */</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &quot;drain/Type.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;drain/util/TreeXML.h&quot;</span></div>
 <div class="line"><span class="preprocessor">#include &quot;drain/image/TreeSVG.h&quot;</span></div>
 <div class="line"> </div>
@@ -157,7 +160,7 @@ $(function() {
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv){</div>
 <div class="line"> </div>
-<div class="line">    std::cout &lt;&lt; drain::TypeName&lt;TreeSVG&gt;::get() &lt;&lt; <span class="charliteral">&#39;/&#39;</span> &lt;&lt; <a name="_a1"></a><a class="code" href="structdrain_1_1TypeName.html">drain::TypeName&lt;NodeSVG&gt;::get</a>() &lt;&lt; <span class="stringliteral">&quot; demo \n&quot;</span>;</div>
+<div class="line">    std::cout &lt;&lt; drain::TypeName&lt;NodeSVG&gt;::str() &lt;&lt; <span class="charliteral">&#39;/&#39;</span> &lt;&lt; <a name="_a1"></a><a class="code" href="structdrain_1_1TypeName.html">drain::TypeName&lt;NodeSVG&gt;::str</a>() &lt;&lt; <span class="stringliteral">&quot; demo \n&quot;</span>;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">/*</span></div>
 <div class="line"><span class="comment">    if (argc==1){</span></div>
@@ -238,11 +241,11 @@ $(function() {
 <div class="line"><span class="comment">    */</span></div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassParameter_html"><div class="ttname"><a href="classParameter.html">Parameter</a></div><div class="ttdef"><b>Definition:</b> TreeSVG-example.cpp:43</div></div>
-<div class="ttc" id="aclassdrain_1_1TreeUtils_html_a589a266c64101a3a0441be1cad6ee102"><div class="ttname"><a href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">drain::TreeUtils::dump</a></div><div class="ttdeci">static bool dump(const TR &amp;tree, std::ostream &amp;ostr=std::cout, bool(*callBack)(const typename TR::node_data_t &amp;, std::ostream &amp;)=TreeUtils::dataDumper, const std::string &amp;indent=&quot;&quot;)</div><div class="ttdoc">Render a tree using character graphics.</div><div class="ttdef"><b>Definition:</b> TreeUtils.h:194</div></div>
+<div class="ttc" id="aclassParameter_html"><div class="ttname"><a href="classParameter.html">Parameter</a></div><div class="ttdef"><b>Definition:</b> TreeSVG-example.cpp:46</div></div>
+<div class="ttc" id="aclassdrain_1_1TreeUtils_html_a589a266c64101a3a0441be1cad6ee102"><div class="ttname"><a href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">drain::TreeUtils::dump</a></div><div class="ttdeci">static bool dump(const TR &amp;tree, std::ostream &amp;ostr=std::cout, bool(*callBack)(const typename TR::node_data_t &amp;, std::ostream &amp;)=TreeUtils::dataDumper, const std::string &amp;indent=&quot;&quot;)</div><div class="ttdoc">Render a tree using character graphics.</div><div class="ttdef"><b>Definition:</b> TreeUtils.h:192</div></div>
 <div class="ttc" id="anamespacedrain_1_1image_html"><div class="ttname"><a href="namespacedrain_1_1image.html">drain::image</a></div><div class="ttdoc">Namespace for images and image processing tools.</div><div class="ttdef"><b>Definition:</b> AccumulationArray.cpp:45</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
-<div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdef"><b>Definition:</b> TypeUtils.h:179</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdef"><b>Definition:</b> Type.h:542</div></div>
 </div><!-- fragment --> </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

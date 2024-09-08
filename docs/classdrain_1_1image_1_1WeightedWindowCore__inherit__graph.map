@@ -1,7 +1,8 @@
 <map id="WeightedWindowCore" name="WeightedWindowCore">
-<area shape="rect" id="node1" title=" " alt="" coords="113,155,278,181"/>
+<area shape="rect" id="node1" title=" " alt="" coords="205,155,370,181"/>
 <area shape="rect" id="node4" href="$classdrain_1_1image_1_1MultiChannelWindowCore.html" title=" " alt="" coords="5,229,196,256"/>
-<area shape="rect" id="node5" href="$classrack_1_1RadarWindowCore.html" title=" " alt="" coords="220,229,363,256"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="143,80,247,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="127,5,263,32"/>
+<area shape="rect" id="node5" href="$classrack_1_1EtopWindowCore.html" title=" " alt="" coords="221,229,354,256"/>
+<area shape="rect" id="node6" href="$classrack_1_1RadarWindowCore.html" title=" " alt="" coords="379,229,521,256"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="235,80,339,107"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="219,5,355,32"/>
 </map>

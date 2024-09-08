@@ -1,10 +1,11 @@
 <map id="SlidingRadarWindow&lt; C, R &gt;" name="SlidingRadarWindow&lt; C, R &gt;">
-<area shape="rect" id="node1" title="A two&#45;dimensional image processing window that handles the special ODIM codes and scales the result...." alt="" coords="228,319,384,360"/>
-<area shape="rect" id="node6" href="$classrack_1_1RadarWindowAvg.html" title=" " alt="" coords="5,408,180,435"/>
-<area shape="rect" id="node7" href="$classrack_1_1RadarWindowSoftMax.html" title=" " alt="" coords="204,408,408,435"/>
-<area shape="rect" id="node8" href="$classrack_1_1RadarWindowStdDev.html" title="Sliding window for computing standard deviation of scalar quantities." alt="" coords="432,408,631,435"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="186,229,426,271"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WIndowOp&#39;s." alt="" coords="241,155,371,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="254,80,358,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="238,5,374,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="228,408,384,449"/>
+<area shape="rect" id="node7" href="$classrack_1_1RadarWindowAvg.html" title=" " alt="" coords="5,497,180,524"/>
+<area shape="rect" id="node8" href="$classrack_1_1RadarWindowSoftMax.html" title=" " alt="" coords="204,497,408,524"/>
+<area shape="rect" id="node9" href="$classrack_1_1RadarWindowWeightedAvg.html" title=" " alt="" coords="432,497,668,524"/>
+<area shape="rect" id="node2" href="$classrack_1_1SlidingRadarWindowBase.html" title=" " alt="" coords="211,319,401,360"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="186,229,426,271"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="241,155,371,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="254,80,358,107"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="238,5,374,32"/>
 </map>

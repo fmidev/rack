@@ -1,8 +1,8 @@
 <map id="Composite" name="Composite">
-<area shape="rect" id="node1" title="Cartesian composite (mosaic) of data from several radars." alt="" coords="1155,1436,1247,1463"/>
-<area shape="rect" id="node2" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="934,1303,1125,1359"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title=" " alt="" coords="960,1219,1091,1246"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Accumulator.html" title=" " alt="" coords="809,1136,913,1163"/>
+<area shape="rect" id="node1" title="Cartesian composite (mosaic) of data from several radars." alt="" coords="1155,1451,1247,1477"/>
+<area shape="rect" id="node2" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="934,1317,1125,1373"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title=" " alt="" coords="960,1234,1091,1261"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Accumulator.html" title=" " alt="" coords="809,1151,913,1177"/>
 <area shape="rect" id="node5" href="$classdrain_1_1image_1_1AccumulationArray.html" title="General&#45;purpose image compositing." alt="" coords="435,988,581,1015"/>
 <area shape="rect" id="node6" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="16,89,165,115"/>
 <area shape="rect" id="node16" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="258,193,345,219"/>
@@ -33,7 +33,7 @@
 <area shape="rect" id="node32" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="803,773,919,799"/>
 <area shape="rect" id="node33" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="769,595,954,622"/>
 <area shape="rect" id="node34" title=" " alt="" coords="746,512,966,539"/>
-<area shape="rect" id="node35" href="$classdrain_1_1image_1_1GeoFrame.html" title="Array with georeferencing support." alt="" coords="983,1136,1073,1163"/>
+<area shape="rect" id="node35" href="$classdrain_1_1image_1_1GeoFrame.html" title="Array with georeferencing support." alt="" coords="983,1151,1073,1177"/>
 <area shape="rect" id="node36" href="$classdrain_1_1Proj6.html" title=" " alt="" coords="1001,988,1055,1015"/>
 <area shape="rect" id="node37" href="$classdrain_1_1Projector.html" title=" " alt="" coords="988,869,1068,896"/>
 <area shape="rect" id="node38" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="1111,765,1284,807"/>
@@ -44,9 +44,9 @@
 <area shape="rect" id="node43" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="979,407,1131,433"/>
 <area shape="rect" id="node44" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="1093,988,1254,1015"/>
 <area shape="rect" id="node45" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="1092,869,1260,896"/>
-<area shape="rect" id="node46" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="1150,1317,1253,1344"/>
-<area shape="rect" id="node47" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="1115,1219,1287,1246"/>
-<area shape="rect" id="node48" title=" " alt="" coords="1098,1136,1305,1163"/>
-<area shape="rect" id="node49" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="1295,1317,1441,1344"/>
-<area shape="rect" id="node50" title=" " alt="" coords="1312,1212,1451,1253"/>
+<area shape="rect" id="node46" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="1150,1332,1253,1359"/>
+<area shape="rect" id="node47" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="1115,1234,1287,1261"/>
+<area shape="rect" id="node48" title=" " alt="" coords="1098,1151,1305,1177"/>
+<area shape="rect" id="node49" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="1295,1332,1441,1359"/>
+<area shape="rect" id="node50" title=" " alt="" coords="1312,1227,1451,1268"/>
 </map>

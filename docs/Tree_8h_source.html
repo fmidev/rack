@@ -736,26 +736,28 @@ $(function() {
 <div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;    <span class="keyword">static</span></div>
 <div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;    <span class="keyword">const</span> std::string &amp; str(){</div>
 <div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160; </div>
-<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> std::string name = <a class="code" href="classdrain_1_1StringBuilder.html">drain::StringBuilder&lt;&gt;</a>(</div>
+<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> std::string <a class="code" href="structdrain_1_1TypeName.html#ac673bc430bdc3fdaa09f7becf98ef267">name</a> = <a class="code" href="classdrain_1_1StringBuilder.html">drain::StringBuilder&lt;&gt;</a>(</div>
 <div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;                tree_t::isOrdered()?<span class="stringliteral">&quot;Ordered&quot;</span>:<span class="stringliteral">&quot;Unordered&quot;</span>,</div>
 <div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;                        tree_t::isMulti()?<span class="stringliteral">&quot;Multi&quot;</span>:<span class="stringliteral">&quot;&quot;</span>,<span class="stringliteral">&quot;Tree&quot;</span>,</div>
 <div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;                                tree_t::isExclusive()?<span class="stringliteral">&quot;(Exclusive)&quot;</span>:<span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;                                        <span class="charliteral">&#39;&lt;&#39;</span>, <a class="code" href="structdrain_1_1TypeName.html">TypeName&lt;typename tree_t::node_data_t&gt;::get</a>(), <span class="charliteral">&#39;&gt;&#39;</span>); <span class="comment">// recursion...</span></div>
+<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;                                        <span class="charliteral">&#39;&lt;&#39;</span>, <a class="code" href="structdrain_1_1TypeName.html">TypeName&lt;typename tree_t::node_data_t&gt;::str</a>(), <span class="charliteral">&#39;&gt;&#39;</span>); <span class="comment">// recursion...</span></div>
 <div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;                                                <span class="comment">//&#39;&lt;&#39;, drain::Type::call&lt;drain::simpleName&gt;(typeid(typename tree_t::node_data_t)), &#39;&gt;&#39;);</span></div>
-<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;        <span class="keywordflow">return</span> name;</div>
+<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="structdrain_1_1TypeName.html#ac673bc430bdc3fdaa09f7becf98ef267">name</a>;</div>
 <div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;    }</div>
 <div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160; </div>
-<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* get(){</div>
-<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;        <span class="keywordflow">return</span> str().c_str();</div>
-<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;    };</div>
-<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160; </div>
-<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;};</div>
+<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;<span class="comment">    static</span></div>
+<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;<span class="comment">    const char* get(){</span></div>
+<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;<span class="comment">        return str().c_str();</span></div>
+<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;<span class="comment">    };</span></div>
+<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;<span class="comment">    */</span></div>
 <div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160; </div>
-<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160; </div>
-<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;} <span class="comment">// drain::</span></div>
+<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;};</div>
+<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160; </div>
 <div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160; </div>
-<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160; </div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;} <span class="comment">// drain::</span></div>
+<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160; </div>
+<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160; </div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html">drain::DRAIN_TREE_NAME</a></div><div class="ttdoc">A templated class for directed rooted trees.</div><div class="ttdef"><b>Definition:</b> Tree.h:183</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a005a8565608b53d552ed49c05a9e3361"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a005a8565608b53d552ed49c05a9e3361">drain::DRAIN_TREE_NAME::hasChildren</a></div><div class="ttdeci">virtual int hasChildren(const key_t &amp;key) const</div><div class="ttdoc">The number of children with name key.</div><div class="ttdef"><b>Definition:</b> Tree.h:583</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_a091c6265950643e307d70411dab30bc7"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7">drain::DRAIN_TREE_NAME::clearChildren</a></div><div class="ttdeci">void clearChildren()</div><div class="ttdoc">Clears the children of this node. Does not clear data.</div><div class="ttdef"><b>Definition:</b> Tree.h:493</div></div>
@@ -794,12 +796,13 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_ae23d30ba55599544b7b9e28b5286e7a0"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#ae23d30ba55599544b7b9e28b5286e7a0">drain::DRAIN_TREE_NAME::operator=</a></div><div class="ttdeci">tree_t &amp; operator=(const std::initializer_list&lt; S &gt; &amp;l)</div><div class="ttdoc">Assigns value to contents.</div><div class="ttdef"><b>Definition:</b> Tree.h:329</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_ae34bb7b9e07c96bc288d1e2bf684fbf6"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#ae34bb7b9e07c96bc288d1e2bf684fbf6">drain::DRAIN_TREE_NAME::operator()</a></div><div class="ttdeci">tree_t &amp; operator()(const char *arg)</div><div class="ttdoc">Redirects the call to operator()(const std::string &amp; arg) .</div><div class="ttdef"><b>Definition:</b> Tree.h:432</div></div>
 <div class="ttc" id="aclassdrain_1_1DRAIN__TREE__NAME_html_afbd15ea05f30119d6a670151ed7c6870"><div class="ttname"><a href="classdrain_1_1DRAIN__TREE__NAME.html#afbd15ea05f30119d6a670151ed7c6870">drain::DRAIN_TREE_NAME::get</a></div><div class="ttdeci">const tree_t &amp; get(typename path_t::const_iterator it, typename path_t::const_iterator eit) const</div><div class="ttdoc">Given the descendant pointed to by a given path segment.</div><div class="ttdef"><b>Definition:</b> Tree.h:845</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:307</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:411</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:308</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:412</div></div>
 <div class="ttc" id="aclassdrain_1_1Path_html"><div class="ttname"><a href="classdrain_1_1Path.html">drain::Path</a></div><div class="ttdef"><b>Definition:</b> Path.h:112</div></div>
 <div class="ttc" id="aclassdrain_1_1StringBuilder_html"><div class="ttname"><a href="classdrain_1_1StringBuilder.html">drain::StringBuilder</a></div><div class="ttdef"><b>Definition:</b> StringBuilder.h:58</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
-<div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdef"><b>Definition:</b> TypeUtils.h:179</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdef"><b>Definition:</b> Type.h:542</div></div>
+<div class="ttc" id="astructdrain_1_1TypeName_html_ac673bc430bdc3fdaa09f7becf98ef267"><div class="ttname"><a href="structdrain_1_1TypeName.html#ac673bc430bdc3fdaa09f7becf98ef267">drain::TypeName::name</a></div><div class="ttdeci">static const std::string name</div><div class="ttdoc">Default implementation: name returned by std::type_info::name()</div><div class="ttdef"><b>Definition:</b> Type.h:558</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

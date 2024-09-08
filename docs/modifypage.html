@@ -86,7 +86,7 @@ Modifying data arrays and metadata</h1>
 Adding and changing ODIM metadata</h2>
 <p>Metadata attributes in an HDF5 structure can be changed with <code>&ndash;setODIM</code> command.</p>
 <p>For convenience, this special command has also a shorthand – a direct assignment appended to <code>&ndash;</code> , for example <code>/dataset1/where</code>:rscale=500 .</p>
-<div class="fragment"><div class="line">--setODIM  &lt;assignment&gt;  (Section: general)</div>
+<div class="fragment"><div class="line">--setODIM  &lt;assignment&gt;  (section: general)</div>
 <div class="line">  Set data properties (ODIM). Works also directly: --/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]. See --completeODIM</div>
 <div class="line">    assignment= [/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]]</div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
@@ -108,7 +108,7 @@ Adding and changing ODIM metadata</h2>
 <div class="line"><span class="preprocessor"># Set radar location</span></div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --/where:lat=64.7749 --/where:lon=26.3189 -o volume-modified.h5</div>
 <div class="line"> </div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:44</div></div>
 </div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1CmdSetODIM.html" title="Modifies metadata (data attributes).">rack::CmdSetODIM</a> (code) </dd>
 <dd>
 CompleteODIM</dd></dl>

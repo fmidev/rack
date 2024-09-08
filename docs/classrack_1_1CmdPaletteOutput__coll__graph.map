@@ -1,6 +1,6 @@
 <map id="CmdPaletteOutput" name="CmdPaletteOutput">
-<area shape="rect" id="node1" title=" " alt="" coords="294,1135,435,1161"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title="A single&#45;parameter command." alt="" coords="279,1059,451,1085"/>
+<area shape="rect" id="node1" title=" " alt="" coords="294,1149,435,1176"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="280,1059,449,1100"/>
 <area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="303,983,427,1009"/>
 <area shape="rect" id="node4" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="259,907,470,933"/>
 <area shape="rect" id="node5" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="320,831,409,857"/>

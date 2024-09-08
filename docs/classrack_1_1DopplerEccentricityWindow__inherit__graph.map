@@ -1,9 +1,10 @@
 <map id="DopplerEccentricityWindow" name="DopplerEccentricityWindow">
-<area shape="rect" id="node1" title="Computes eccentrity of Doppler speeds mapped on a Nyquist&#45;normalized unit window." alt="" coords="5,483,207,509"/>
-<area shape="rect" id="node2" href="$classrack_1_1DopplerWindow.html" title=" " alt="" coords="43,408,169,435"/>
-<area shape="rect" id="node3" href="$classrack_1_1SlidingRadarWindow.html" title=" " alt="" coords="15,319,197,360"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="19,244,193,271"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="13,155,199,196"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source data (input) and destination data (output). May also contain metadata of them." alt="" coords="54,80,158,107"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Provides splitting frames." alt="" coords="38,5,174,32"/>
+<area shape="rect" id="node1" title="Computes eccentrity of Doppler speeds mapped on a Nyquist&#45;normalized unit window." alt="" coords="25,572,226,599"/>
+<area shape="rect" id="node2" href="$classrack_1_1DopplerWindow.html" title=" " alt="" coords="63,497,188,524"/>
+<area shape="rect" id="node3" href="$classrack_1_1SlidingRadarWindow.html" title=" " alt="" coords="34,408,217,449"/>
+<area shape="rect" id="node4" href="$classrack_1_1SlidingRadarWindowBase.html" title="A two&#45;dimensional image processing window that handles the special ODIM codes and scales the result...." alt="" coords="31,319,219,360"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="5,229,245,271"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="60,155,191,181"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="73,80,177,107"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="57,5,193,32"/>
 </map>

@@ -117,84 +117,72 @@ $(function() {
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="classrack_1_1CartesianExtract.html">CartesianExtract</a>() : <a class="code" href="classrack_1_1Compositor.html">Compositor</a>(__FUNCTION__,<span class="stringliteral">&quot;Extract data that has been composited on the accumulation array&quot;</span>){</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="comment">//getParameters().link(&quot;channels&quot;, channels=&quot;dw&quot;, drain::sprinter(Composite::dict.getContainer(), drain::Command::cmdArgLayout).str() + &quot;Layers: data,count,weight,std.deviation&quot;); // Accumulation layers to be extracted</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="classrack_1_1CartesianExtract.html">CartesianExtract</a>() : <a class="code" href="classrack_1_1Compositor.html">Compositor</a>(__FUNCTION__, <span class="stringliteral">&quot;Extract (export) data from the internal accumulation array&quot;</span>){</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        getParameters().<a class="code" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a> = <span class="charliteral">&#39;:&#39;</span>; <span class="comment">// Consider Command help notif, if not comma (,) .</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        getParameters().link(<span class="stringliteral">&quot;channels&quot;</span>, channels=<span class="stringliteral">&quot;DATA,WEIGHT&quot;</span>, drain::sprinter(Composite::dict.getKeys(), drain::Command::cmdArgLayout).str()); <span class="comment">// Accumulation layers to be extracted</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        getParameters().link(<span class="stringliteral">&quot;bbox&quot;</span>, crop, <span class="stringliteral">&quot;Optional cropping: &lt;LLx&gt;:&lt;LLy&gt;:&lt;URx&gt;:&lt;URy&gt; or DATA or OVERLAP&quot;</span>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        getParameters().link(<span class="stringliteral">&quot;bbox&quot;</span>, crop, <span class="stringliteral">&quot;Optional cropping: ...:&lt;LLx&gt;,&lt;LLy&gt;,&lt;URx&gt;,&lt;URy&gt; or INPUT or OVERLAP&quot;</span>);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    };</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="classrack_1_1CartesianExtract.html">CartesianExtract</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1CartesianExtract.html">CartesianExtract</a> &amp; cmd) : <a class="code" href="classrack_1_1Compositor.html">Compositor</a>(__FUNCTION__, cmd.getDescription()){</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        getParameters().<a class="code" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(cmd.getParameters(), cmd, *<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1CartesianExtract.html#a777533ac38260c4f3ff96e64c87256c8">exec</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// TODO: replace with MultiFlagEnum etc. D=DATA</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="comment">// getParameters().separator = cmd.getParameters().separator;</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1CartesianExtract.html#a777533ac38260c4f3ff96e64c87256c8">exec</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    std::string channels;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    std::string crop;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">//mutable</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="comment">//drain::Rectangle&lt;double&gt; bbox;</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;};</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">    virtual</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">    void update() override {</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">        RackContext &amp; ctx = getContext&lt;RackContext&gt;();</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">        drain::Logger mout(ctx.log, __FUNCTION__, getName());</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">        drain::StringTools::split(crop, bbox.tuple(), &#39;:&#39;);</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">        mout.attention(&quot;crop: &quot;);</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;};</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="classrack_1_1CartesianSun.html">   88</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1CartesianSun.html">CartesianSun</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1SimpleCommand.html">drain::SimpleCommand</a>&lt;std::string&gt; { <span class="comment">//drain::BasicCommand {</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <a class="code" href="classrack_1_1CartesianSun.html">CartesianSun</a>() : <a class="code" href="classdrain_1_1SimpleCommand.html">drain::SimpleCommand&lt;std::string&gt;</a>(__FUNCTION__, <span class="stringliteral">&quot;Cartesian sun shine field.&quot;</span>, <span class="stringliteral">&quot;timestamp&quot;</span>, <span class="stringliteral">&quot;200507271845&quot;</span>)</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    {</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="comment">//getParameters().link(&quot;timestamp&quot;, timestamp=&quot;200527071845&quot;);</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="comment">//getParameters().link(&quot;quantity&quot;, odim.quantity=&quot;SUNSHINE&quot;);</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="classrack_1_1CartesianSun.html">   75</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1CartesianSun.html">CartesianSun</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1SimpleCommand.html">drain::SimpleCommand</a>&lt;std::string&gt; { <span class="comment">//drain::BasicCommand {</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <a class="code" href="classrack_1_1CartesianSun.html">CartesianSun</a>() : <a class="code" href="classdrain_1_1SimpleCommand.html">drain::SimpleCommand&lt;std::string&gt;</a>(__FUNCTION__, <span class="stringliteral">&quot;Cartesian sun shine field.&quot;</span>, <span class="stringliteral">&quot;timestamp&quot;</span>, <span class="stringliteral">&quot;200507271845&quot;</span>)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="comment">//getParameters().link(&quot;timestamp&quot;, timestamp=&quot;200527071845&quot;);</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment">//getParameters().link(&quot;quantity&quot;, odim.quantity=&quot;SUNSHINE&quot;);</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">    CartesianSun() :  drain::BasicCommand(__FUNCTION__,</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">            &quot;Sunshine to a Cartesian product.&quot;) //, extractCmd(extractCmd)</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">    {</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">        getParameters().link(&quot;timestamp&quot;, timestamp=&quot;200527071845&quot;);</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">        //getParameters().link(&quot;quantity&quot;, odim.quantity=&quot;SUNSHINE&quot;);</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1CartesianSun.html#a777533ac38260c4f3ff96e64c87256c8">exec</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    std::string timestamp;</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">    CartesianSun() :  drain::BasicCommand(__FUNCTION__,</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">            &quot;Sunshine to a Cartesian product.&quot;) //, extractCmd(extractCmd)</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">    {</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">        getParameters().link(&quot;timestamp&quot;, timestamp=&quot;200527071845&quot;);</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">        //getParameters().link(&quot;quantity&quot;, odim.quantity=&quot;SUNSHINE&quot;);</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1CartesianSun.html#a777533ac38260c4f3ff96e64c87256c8">exec</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    std::string timestamp;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;};</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;} <span class="comment">// rack::</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">// Rack</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;};</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;} <span class="comment">// rack::</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">// Rack</span></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap_html_a6b6d151e75be1f5e0a44740ac0995e21"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">drain::ReferenceMap::copyStruct</a></div><div class="ttdeci">void copyStruct(const ReferenceMap &amp;m, const T &amp;src, T &amp;dst, extLinkPolicy policy=RESERVE)</div><div class="ttdoc">Experimental. Copies references and values of a structure to another.</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:399</div></div>
 <div class="ttc" id="aclassdrain_1_1SimpleCommand_html"><div class="ttname"><a href="classdrain_1_1SimpleCommand.html">drain::SimpleCommand</a></div><div class="ttdoc">A single-parameter command.</div><div class="ttdef"><b>Definition:</b> Command.h:501</div></div>
+<div class="ttc" id="aclassdrain_1_1SmartMap_html_a6989953791434c8ea982054551c9e154"><div class="ttname"><a href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">drain::SmartMap::separator</a></div><div class="ttdeci">char separator</div><div class="ttdoc">Default character used for splitting input and output. See setValues.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:85</div></div>
 <div class="ttc" id="aclassrack_1_1CartesianExtract_html"><div class="ttname"><a href="classrack_1_1CartesianExtract.html">rack::CartesianExtract</a></div><div class="ttdef"><b>Definition:</b> cartesian-extract.h:42</div></div>
 <div class="ttc" id="aclassrack_1_1CartesianExtract_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classrack_1_1CartesianExtract.html#a777533ac38260c4f3ff96e64c87256c8">rack::CartesianExtract::exec</a></div><div class="ttdeci">virtual void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> cartesian-extract.cpp:45</div></div>
-<div class="ttc" id="aclassrack_1_1CartesianSun_html"><div class="ttname"><a href="classrack_1_1CartesianSun.html">rack::CartesianSun</a></div><div class="ttdoc">Creates a single-radar Cartesian data set (2D data of both quantity and quality).</div><div class="ttdef"><b>Definition:</b> cartesian-extract.h:88</div></div>
-<div class="ttc" id="aclassrack_1_1CartesianSun_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classrack_1_1CartesianSun.html#a777533ac38260c4f3ff96e64c87256c8">rack::CartesianSun::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> cartesian-extract.cpp:60</div></div>
+<div class="ttc" id="aclassrack_1_1CartesianSun_html"><div class="ttname"><a href="classrack_1_1CartesianSun.html">rack::CartesianSun</a></div><div class="ttdoc">Creates a single-radar Cartesian data set (2D data of both quantity and quality).</div><div class="ttdef"><b>Definition:</b> cartesian-extract.h:75</div></div>
+<div class="ttc" id="aclassrack_1_1CartesianSun_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classrack_1_1CartesianSun.html#a777533ac38260c4f3ff96e64c87256c8">rack::CartesianSun::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> cartesian-extract.cpp:58</div></div>
 <div class="ttc" id="aclassrack_1_1Compositor_html"><div class="ttname"><a href="classrack_1_1Compositor.html">rack::Compositor</a></div><div class="ttdef"><b>Definition:</b> composite.h:58</div></div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:44</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

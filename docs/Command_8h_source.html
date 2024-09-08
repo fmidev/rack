@@ -542,88 +542,101 @@ $(function() {
 <div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160; </div>
 <div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;    T value;</div>
 <div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160; </div>
-<div class="line"><a name="l00507"></a><span class="lineno"><a class="line" href="classdrain_1_1SimpleCommand.html#a766da9508fc662ac0d06bc400007a8f9">  507</a></span>&#160;    <a class="code" href="classdrain_1_1SimpleCommand.html#a766da9508fc662ac0d06bc400007a8f9">SimpleCommand</a>(<span class="keyword">const</span> std::string &amp; name, <span class="keyword">const</span> std::string &amp; description,</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;    <a class="code" href="classdrain_1_1SimpleCommand.html">SimpleCommand</a>(<span class="keyword">const</span> std::string &amp; name, <span class="keyword">const</span> std::string &amp; description,</div>
 <div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;            <span class="keyword">const</span> std::string &amp; key=<span class="stringliteral">&quot;value&quot;</span>, <span class="keyword">const</span> T &amp; initValue = T(), <span class="keyword">const</span> std::string &amp; unit = <span class="stringliteral">&quot;&quot;</span>) : <a class="code" href="classdrain_1_1BasicCommand.html">BasicCommand</a>(name, description) {</div>
 <div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160; </div>
-<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;        getParameters().<a class="code" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a> = <span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        getParameters().link(key, value = initValue, unit);</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;    };</div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160; </div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> S&gt;</div>
-<div class="line"><a name="l00518"></a><span class="lineno"><a class="line" href="classdrain_1_1SimpleCommand.html#afdaac8ad7c1665bc06222ddf394c64f2">  518</a></span>&#160;    <a class="code" href="classdrain_1_1SimpleCommand.html#afdaac8ad7c1665bc06222ddf394c64f2">SimpleCommand</a>(<span class="keyword">const</span> std::string &amp; name, <span class="keyword">const</span> std::string &amp; description,</div>
-<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;            <span class="keyword">const</span> std::string &amp; key, std::initializer_list&lt;S&gt; l , <span class="keyword">const</span> std::string &amp; unit = <span class="stringliteral">&quot;&quot;</span>) : <a class="code" href="classdrain_1_1BasicCommand.html">BasicCommand</a>(name, description) {</div>
-<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;        <span class="comment">// parameters.separator = &#39;\0&#39;;</span></div>
-<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;        value = l;</div>
-<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        getParameters().link(key, value);</div>
-<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;        <span class="comment">// parameters.link(key, value);</span></div>
-<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;    };</div>
-<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160; </div>
-<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160; </div>
-<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;    <a class="code" href="classdrain_1_1SimpleCommand.html#a766da9508fc662ac0d06bc400007a8f9">SimpleCommand</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1SimpleCommand.html">SimpleCommand</a> &amp; cmd):  <a class="code" href="classdrain_1_1BasicCommand.html">BasicCommand</a>(cmd) {</div>
-<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;        getParameters().<a class="code" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a> = <span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;        getParameters().<a class="code" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(cmd.getParameters(), cmd, *<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;<span class="comment">        parameters.separator = &#39;\0&#39;;</span></div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;<span class="comment">        parameters.copyStruct(cmd.getParameters(), cmd, *this);</span></div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;<span class="comment">        */</span></div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;    };</div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160; </div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;<span class="comment">    void setParameters(const std::string &amp; args){</span></div>
-<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;<span class="comment">        const std::string &amp; key = parameters.begin()-&gt;first;</span></div>
-<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;<span class="comment">        Variable v(typeid(T));</span></div>
-<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;<span class="comment">        if (key.empty()){</span></div>
-<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;<span class="comment">            v = args;</span></div>
-<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;<span class="comment">        else {</span></div>
-<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;<span class="comment">            const std::string assignment = key+&quot;=&quot;;</span></div>
-<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;<span class="comment">            const size_t n = assignment.length();</span></div>
-<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;<span class="comment">            if (args.compare(0,n,key)==0){</span></div>
-<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;<span class="comment">                v = args.substr(n);</span></div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;<span class="comment">            }</span></div>
-<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;<span class="comment">            else</span></div>
-<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;<span class="comment">                v = args;</span></div>
-<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;<span class="comment">        value = v;</span></div>
-<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160; </div>
-<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160; </div>
-<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160; </div>
-<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;};</div>
-<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160; </div>
-<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160; </div>
-<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;<span class="comment">class DynamicCommand : public drain::Command {</span></div>
-<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;<span class="comment">public:</span></div>
-<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;<span class="comment">    virtual</span></div>
-<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;<span class="comment">    void exec() const {</span></div>
-<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;<span class="comment">        Context &amp; ctx = getContext&lt;Context&gt;();</span></div>
-<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;<span class="comment">        drain::Logger mout(ctx.log,__FILE__, __FUNCTION__);</span></div>
-<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;<span class="comment">        mout.note(&quot;I am &quot; , getName() , &quot;, invoked as &quot; , key );</span></div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;<span class="comment">    virtual</span></div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;<span class="comment">    void setKey(const std::string &amp; cmdKey) const {</span></div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;<span class="comment">        key = cmdKey;</span></div>
-<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;<span class="comment">protected:</span></div>
-<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;<span class="comment">    mutable</span></div>
-<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;<span class="comment">    std::string key;</span></div>
-<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;<span class="comment">};</span></div>
-<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160; </div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160; </div>
-<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160; </div>
-<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160; </div>
-<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;} <span class="comment">// drain::</span></div>
-<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160; </div>
-<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DRAINLET_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;        getParameters().<a class="code" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a> = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;        getParameters().link(key, value = initValue, unit);</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160; </div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        <span class="keywordflow">if</span> (key.empty()){</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;            <a class="code" href="classdrain_1_1Context.html">Context</a> &amp; ctx = getContext&lt;Context&gt;();</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;            <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(ctx.log,__FILE__, __FUNCTION__);</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;Empty value key in command &quot;</span>, name, <span class="stringliteral">&quot; (&quot;</span>, description, <span class="stringliteral">&quot;)&quot;</span>);</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;        }</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160; </div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160; </div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;    };</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160; </div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> S&gt;</div>
+<div class="line"><a name="l00524"></a><span class="lineno"><a class="line" href="classdrain_1_1SimpleCommand.html#afdaac8ad7c1665bc06222ddf394c64f2">  524</a></span>&#160;    <a class="code" href="classdrain_1_1SimpleCommand.html#afdaac8ad7c1665bc06222ddf394c64f2">SimpleCommand</a>(<span class="keyword">const</span> std::string &amp; name, <span class="keyword">const</span> std::string &amp; description,</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;            <span class="keyword">const</span> std::string &amp; key, std::initializer_list&lt;S&gt; l , <span class="keyword">const</span> std::string &amp; unit = <span class="stringliteral">&quot;&quot;</span>) : <a class="code" href="classdrain_1_1BasicCommand.html">BasicCommand</a>(name, description) {</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;        <span class="comment">// parameters.separator = &#39;\0&#39;;</span></div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;        value = l;</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;        getParameters().link(key, value);</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160; </div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;        <span class="keywordflow">if</span> (key.empty()){</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;            <a class="code" href="classdrain_1_1Context.html">Context</a> &amp; ctx = getContext&lt;Context&gt;();</div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;            <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(ctx.log,__FILE__, __FUNCTION__);</div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;Empty value key in command &quot;</span>, name, <span class="stringliteral">&quot; (&quot;</span>, description, <span class="stringliteral">&quot;)&quot;</span>);</div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;        }</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    };</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160; </div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160; </div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;    <a class="code" href="classdrain_1_1SimpleCommand.html">SimpleCommand</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1SimpleCommand.html">SimpleCommand</a> &amp; cmd):  <a class="code" href="classdrain_1_1BasicCommand.html">BasicCommand</a>(cmd) {</div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;        getParameters().<a class="code" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a> = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;        getParameters().<a class="code" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(cmd.getParameters(), cmd, *<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;<span class="comment">        parameters.separator = &#39;\0&#39;;</span></div>
+<div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;<span class="comment">        parameters.copyStruct(cmd.getParameters(), cmd, *this);</span></div>
+<div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00545"></a><span class="lineno">  545</span>&#160;    };</div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160; </div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;<span class="comment">    void setParameters(const std::string &amp; args){</span></div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;<span class="comment">        const std::string &amp; key = parameters.begin()-&gt;first;</span></div>
+<div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;<span class="comment">        Variable v(typeid(T));</span></div>
+<div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160;<span class="comment">        if (key.empty()){</span></div>
+<div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;<span class="comment">            v = args;</span></div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;<span class="comment">        else {</span></div>
+<div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;<span class="comment">            const std::string assignment = key+&quot;=&quot;;</span></div>
+<div class="line"><a name="l00556"></a><span class="lineno">  556</span>&#160;<span class="comment">            const size_t n = assignment.length();</span></div>
+<div class="line"><a name="l00557"></a><span class="lineno">  557</span>&#160;<span class="comment">            if (args.compare(0,n,key)==0){</span></div>
+<div class="line"><a name="l00558"></a><span class="lineno">  558</span>&#160;<span class="comment">                v = args.substr(n);</span></div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;<span class="comment">            }</span></div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;<span class="comment">            else</span></div>
+<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160;<span class="comment">                v = args;</span></div>
+<div class="line"><a name="l00562"></a><span class="lineno">  562</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00563"></a><span class="lineno">  563</span>&#160;<span class="comment">        value = v;</span></div>
+<div class="line"><a name="l00564"></a><span class="lineno">  564</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160; </div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160; </div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160; </div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;};</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160; </div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160; </div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;<span class="comment">class DynamicCommand : public drain::Command {</span></div>
+<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;<span class="comment">public:</span></div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00580"></a><span class="lineno">  580</span>&#160;<span class="comment">    virtual</span></div>
+<div class="line"><a name="l00581"></a><span class="lineno">  581</span>&#160;<span class="comment">    void exec() const {</span></div>
+<div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;<span class="comment">        Context &amp; ctx = getContext&lt;Context&gt;();</span></div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;<span class="comment">        drain::Logger mout(ctx.log,__FILE__, __FUNCTION__);</span></div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;<span class="comment">        mout.note(&quot;I am &quot; , getName() , &quot;, invoked as &quot; , key );</span></div>
+<div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;<span class="comment">    virtual</span></div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;<span class="comment">    void setKey(const std::string &amp; cmdKey) const {</span></div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;<span class="comment">        key = cmdKey;</span></div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;<span class="comment">protected:</span></div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;<span class="comment">    mutable</span></div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;<span class="comment">    std::string key;</span></div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;<span class="comment">};</span></div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160; </div>
+<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160; </div>
+<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160; </div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160; </div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;} <span class="comment">// drain::</span></div>
+<div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160; </div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DRAINLET_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassdrain_1_1BasicCommand_html"><div class="ttname"><a href="classdrain_1_1BasicCommand.html">drain::BasicCommand</a></div><div class="ttdoc">Simple implementation of Command: adds name , description and parameters .</div><div class="ttdef"><b>Definition:</b> Command.h:417</div></div>
 <div class="ttc" id="aclassdrain_1_1BeanCommand_html"><div class="ttname"><a href="classdrain_1_1BeanCommand.html">drain::BeanCommand</a></div><div class="ttdoc">Retrieves bean dynamically for each call.</div><div class="ttdef"><b>Definition:</b> Command.h:302</div></div>
 <div class="ttc" id="aclassdrain_1_1BeanRefCommand_html"><div class="ttname"><a href="classdrain_1_1BeanRefCommand.html">drain::BeanRefCommand</a></div><div class="ttdef"><b>Definition:</b> Command.h:391</div></div>
@@ -635,16 +648,17 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Command_html_acd36d7881ea8503d5c5824e7a5ad6c7e"><div class="ttname"><a href="classdrain_1_1Command.html#acd36d7881ea8503d5c5824e7a5ad6c7e">drain::Command::update</a></div><div class="ttdeci">virtual void update()</div><div class="ttdoc">Optional method for preparing command to execution.</div><div class="ttdef"><b>Definition:</b> Command.h:159</div></div>
 <div class="ttc" id="aclassdrain_1_1Command_html_ad2170fe7678dc56d71719a2d867ee8f6"><div class="ttname"><a href="classdrain_1_1Command.html#ad2170fe7678dc56d71719a2d867ee8f6">drain::Command::getLastParameters</a></div><div class="ttdeci">const std::string &amp; getLastParameters() const</div><div class="ttdoc">After executing this command run a routine, if defined.</div><div class="ttdef"><b>Definition:</b> Command.h:222</div></div>
 <div class="ttc" id="aclassdrain_1_1Command_html_ad6ff66747141f8cf6f4e2ef9e5c58729"><div class="ttname"><a href="classdrain_1_1Command.html#ad6ff66747141f8cf6f4e2ef9e5c58729">drain::Command::run</a></div><div class="ttdeci">virtual void run(const std::string &amp;params=&quot;&quot;)</div><div class="ttdoc">Convenience. Sets parameters and executes the command.</div><div class="ttdef"><b>Definition:</b> Command.h:202</div></div>
-<div class="ttc" id="aclassdrain_1_1Contextual_html"><div class="ttname"><a href="classdrain_1_1Contextual.html">drain::Contextual</a></div><div class="ttdef"><b>Definition:</b> Context.h:240</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:307</div></div>
+<div class="ttc" id="aclassdrain_1_1Context_html"><div class="ttname"><a href="classdrain_1_1Context.html">drain::Context</a></div><div class="ttdef"><b>Definition:</b> Context.h:57</div></div>
+<div class="ttc" id="aclassdrain_1_1Contextual_html"><div class="ttname"><a href="classdrain_1_1Contextual.html">drain::Contextual</a></div><div class="ttdef"><b>Definition:</b> Context.h:245</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:308</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:426</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap_html"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html">drain::ReferenceMap</a></div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:207</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap_html_a6b6d151e75be1f5e0a44740ac0995e21"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">drain::ReferenceMap::copyStruct</a></div><div class="ttdeci">void copyStruct(const ReferenceMap &amp;m, const T &amp;src, T &amp;dst, extLinkPolicy policy=RESERVE)</div><div class="ttdoc">Experimental. Copies references and values of a structure to another.</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:399</div></div>
 <div class="ttc" id="aclassdrain_1_1SimpleCommand_html"><div class="ttname"><a href="classdrain_1_1SimpleCommand.html">drain::SimpleCommand</a></div><div class="ttdoc">A single-parameter command.</div><div class="ttdef"><b>Definition:</b> Command.h:501</div></div>
-<div class="ttc" id="aclassdrain_1_1SimpleCommand_html_a766da9508fc662ac0d06bc400007a8f9"><div class="ttname"><a href="classdrain_1_1SimpleCommand.html#a766da9508fc662ac0d06bc400007a8f9">drain::SimpleCommand::SimpleCommand</a></div><div class="ttdeci">SimpleCommand(const std::string &amp;name, const std::string &amp;description, const std::string &amp;key=&quot;value&quot;, const T &amp;initValue=T(), const std::string &amp;unit=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> Command.h:507</div></div>
-<div class="ttc" id="aclassdrain_1_1SimpleCommand_html_afdaac8ad7c1665bc06222ddf394c64f2"><div class="ttname"><a href="classdrain_1_1SimpleCommand.html#afdaac8ad7c1665bc06222ddf394c64f2">drain::SimpleCommand::SimpleCommand</a></div><div class="ttdeci">SimpleCommand(const std::string &amp;name, const std::string &amp;description, const std::string &amp;key, std::initializer_list&lt; S &gt; l, const std::string &amp;unit=&quot;&quot;)</div><div class="ttdoc">Constuctor designer for SimpleCommand&lt;Unituple&lt;&gt; &gt; .</div><div class="ttdef"><b>Definition:</b> Command.h:518</div></div>
+<div class="ttc" id="aclassdrain_1_1SimpleCommand_html_afdaac8ad7c1665bc06222ddf394c64f2"><div class="ttname"><a href="classdrain_1_1SimpleCommand.html#afdaac8ad7c1665bc06222ddf394c64f2">drain::SimpleCommand::SimpleCommand</a></div><div class="ttdeci">SimpleCommand(const std::string &amp;name, const std::string &amp;description, const std::string &amp;key, std::initializer_list&lt; S &gt; l, const std::string &amp;unit=&quot;&quot;)</div><div class="ttdoc">Constuctor designer for SimpleCommand&lt;Unituple&lt;&gt; &gt; .</div><div class="ttdef"><b>Definition:</b> Command.h:524</div></div>
 <div class="ttc" id="aclassdrain_1_1SmartMap_html"><div class="ttname"><a href="classdrain_1_1SmartMap.html">drain::SmartMap</a></div><div class="ttdoc">A base class for smart maps providing methods for importing and exporting values, among others.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:66</div></div>
 <div class="ttc" id="aclassdrain_1_1SmartMap_html_a6989953791434c8ea982054551c9e154"><div class="ttname"><a href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">drain::SmartMap::separator</a></div><div class="ttdeci">char separator</div><div class="ttdoc">Default character used for splitting input and output. See setValues.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:85</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> Castable.cpp:34</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:1277</div></div>
 <div class="ttc" id="astructdrain_1_1SprinterLayout_html"><div class="ttname"><a href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a></div><div class="ttdef"><b>Definition:</b> Sprinter.h:136</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

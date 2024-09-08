@@ -103,163 +103,172 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#ifndef POLAR_SLIDINGWINDOWOP_H_</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#define POLAR_SLIDINGWINDOWOP_H_</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#ifndef RACK_POLAR_SLIDING_WINDOW_OP</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#define RACK_POLAR_SLIDING_WINDOW_OP</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;drain/imageops/SlidingWindowOp.h&quot;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;drain/imageops/SlidingWindowOp.h&gt;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;../radar/Analysis.h&quot;</span> <span class="comment">// temp</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;PolarProductOp.h&quot;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//#include &quot;radar/Analysis.h&quot; // temp</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;radar/RadarWindows.h&quot;</span> <span class="comment">// temp</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;PolarProductOp.h&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> W&gt;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="classrack_1_1PolarSlidingWindowOp.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1PolarSlidingWindowOp.html">PolarSlidingWindowOp</a> : <span class="keyword">public</span> <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a> {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">typename</span> W::conf_t conf;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="classrack_1_1PolarSlidingWindowOp.html">PolarSlidingWindowOp</a>(<span class="keyword">const</span> std::string &amp; name = __FUNCTION__, <span class="keyword">const</span> std::string &amp;description = <span class="stringliteral">&quot;&quot;</span>) : <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(name,description) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> W&gt;</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classrack_1_1PolarSlidingWindowOp.html">   48</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1PolarSlidingWindowOp.html">PolarSlidingWindowOp</a> : <span class="keyword">public</span> <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a> {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        parameters.link(<span class="stringliteral">&quot;width&quot;</span>, this-&gt;conf.widthM = 1500, <span class="stringliteral">&quot;metres&quot;</span>);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        parameters.link(<span class="stringliteral">&quot;height&quot;</span>, this-&gt;conf.heightD = 3.0, <span class="stringliteral">&quot;deg&quot;</span>);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        parameters.link(<span class="stringliteral">&quot;threshold&quot;</span>, this-&gt;conf.contributionThreshold = 0.5, <span class="stringliteral">&quot;percentage&quot;</span>);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        parameters.link(<span class="stringliteral">&quot;invertPolar&quot;</span>, this-&gt;conf.invertPolar = <span class="keyword">false</span>, <span class="stringliteral">&quot;cart/polar&quot;</span>);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;^DBZH$&quot;</span>);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        dataSelector.setMaxCount(1);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    };</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">void</span> processData(<span class="keyword">const</span> <a class="code" href="classrack_1_1Data.html">Data&lt;src_t &gt;</a> &amp; srcData, <a class="code" href="classrack_1_1Data.html">Data&lt;dst_t &gt;</a> &amp; dstData)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">if</span> (srcData.hasQuality()){</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;quality found, weighted operation&quot;</span> );</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <a class="code" href="classrack_1_1PolarSlidingWindowOp.html#a0f9780542388033cc67acd7bb5c42851">processDataWeighted</a>(srcData, dstData);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;no quality, unweighted operation&quot;</span> );</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(dstData.data.getScaling() );</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            processPlainData(srcData, dstData);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    };</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> processPlainData(<span class="keyword">const</span> <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;src_t &gt;</a> &amp; srcData, <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;dst_t &gt;</a> &amp; dstData)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment">//mout.warn(&quot;not implemented&quot; );</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keyword">typename</span> W::conf_t pixelConf;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="comment">//this-&gt;setPixelConf(srcData.odim, pixelConf); // what about other parameters?</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        this-&gt;conf.setPixelConf(pixelConf, srcData.odim);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">typename</span> W::conf_t conf;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="classrack_1_1PolarSlidingWindowOp.html">PolarSlidingWindowOp</a>(<span class="keyword">const</span> std::string &amp; name = __FUNCTION__, <span class="keyword">const</span> std::string &amp;description = <span class="stringliteral">&quot;&quot;</span>) : <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(name,description) {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        parameters.link(<span class="stringliteral">&quot;width&quot;</span>, this-&gt;conf.widthM = 1500, <span class="stringliteral">&quot;metres&quot;</span>);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        parameters.link(<span class="stringliteral">&quot;height&quot;</span>, this-&gt;conf.heightD = 3.0, <span class="stringliteral">&quot;deg&quot;</span>);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        parameters.link(<span class="stringliteral">&quot;threshold&quot;</span>, this-&gt;conf.contributionThreshold = 0.5, <span class="stringliteral">&quot;percentage&quot;</span>);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        parameters.link(<span class="stringliteral">&quot;invertPolar&quot;</span>, this-&gt;conf.invertPolar = <span class="keyword">false</span>, <span class="stringliteral">&quot;cart/polar&quot;</span>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        dataSelector.setQuantities(<span class="stringliteral">&quot;^DBZH$&quot;</span>);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        dataSelector.setMaxCount(1);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    };</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span> processData(<span class="keyword">const</span> <a class="code" href="classrack_1_1Data.html">Data&lt;src_t &gt;</a> &amp; srcData, <a class="code" href="classrack_1_1Data.html">Data&lt;dst_t &gt;</a> &amp; dstData)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">if</span> (srcData.hasQuality()){</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;quality found, weighted operation&quot;</span> );</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <a class="code" href="classrack_1_1PolarSlidingWindowOp.html#a0f9780542388033cc67acd7bb5c42851">processDataWeighted</a>(srcData, dstData);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;no quality, unweighted operation&quot;</span> );</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(dstData.data.getScaling() );</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            processPlainData(srcData, dstData);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    };</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span> processPlainData(<span class="keyword">const</span> <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;src_t&gt;</a> &amp; srcData, <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;dst_t &gt;</a> &amp; dstData)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;srcData.odim: &quot;</span> , srcData.odim );</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <a class="code" href="classdrain_1_1image_1_1SlidingWindowOp.html">SlidingWindowOp&lt;W&gt;</a> op(pixelConf);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(op );</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#a42ef3a51d6272a80acd0ebe26085b7cd">special</a>(<span class="stringliteral">&quot;provided functor: &quot;</span> ,  op.conf.getFunctorName() , <span class="charliteral">&#39;|&#39;</span> , op.conf.functorParameters );</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="comment">//mout.debug(&quot;provided functor: &quot; , op.conf.ftor );</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;pixelConf.contributionThreshold &quot;</span> , pixelConf.contributionThreshold );</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;op.conf.contributionThreshold &quot;</span> , op.conf.contributionThreshold );</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="comment">//dstData.data.setGeometry(vradSrc.data.getGeometry()); // setDst() handles</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="comment">//op.process(vradSrc.data, dstData.data);</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="comment">//op.traverseChannel(vradSrc.data.getChannel(0), dstData.data.getChannel(0));</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="comment">//srcData.data.properties.updateFromMap(srcData.odim);</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        op.<a class="code" href="classdrain_1_1image_1_1ImageOp.html#a569b2d092cc236988b21f6a9cc4a9b92">process</a>(srcData.data, dstData.data);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="comment">// op.traverseChannel(srcData.data, dstData.data);</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        dstData.odim.prodpar = this-&gt;parameters.<a class="code" href="classdrain_1_1SmartMap.html#aac46d54856697c46a1e49e6567004fc0">getValues</a>();</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    };</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="classrack_1_1PolarSlidingWindowOp.html#a0f9780542388033cc67acd7bb5c42851">  108</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1PolarSlidingWindowOp.html#a0f9780542388033cc67acd7bb5c42851">processDataWeighted</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1Data.html">Data&lt;src_t &gt;</a> &amp; srcData, <a class="code" href="classrack_1_1Data.html">Data&lt;dst_t &gt;</a> &amp; dstData)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;not implemented, calling for plain data&quot;</span> );</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        processPlainData(srcData, dstData);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    };</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keywordflow">if</span> (srcData.odim.getGeometry().empty()){</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;srcData.odim: empty geometry&quot;</span>);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<a class="code" href="structdrain_1_1TypeName.html">drain::TypeName</a>&lt;<a class="code" href="classrack_1_1PlainData.html">PlainData&lt;src_t&gt;</a> &gt;::str());</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#a42ef3a51d6272a80acd0ebe26085b7cd">special</a>(<span class="stringliteral">&quot;srcData.odim: &quot;</span> , srcData.odim );</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<a class="code" href="structdrain_1_1TypeName.html">drain::TypeName</a>&lt;<a class="code" href="classdrain_1_1image_1_1SlidingWindowOp.html">SlidingWindowOp&lt;W&gt;</a> &gt;::str());</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keyword">typename</span> W::conf_t pixelConf;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        this-&gt;conf.setPixelConf(pixelConf, srcData.odim);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <a class="code" href="classdrain_1_1image_1_1SlidingWindowOp.html">SlidingWindowOp&lt;W&gt;</a> op(pixelConf);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(op );</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#a42ef3a51d6272a80acd0ebe26085b7cd">special</a>(<span class="stringliteral">&quot;provided functor: &quot;</span> ,  op.conf.getFunctorName() , <span class="charliteral">&#39;|&#39;</span> , op.conf.functorParameters );</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="comment">//mout.debug(&quot;provided functor: &quot; , op.conf.ftor );</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;pixelConf.contributionThreshold &quot;</span> , pixelConf.contributionThreshold );</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;op.conf.contributionThreshold &quot;</span> , op.conf.contributionThreshold );</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="comment">//dstData.data.setGeometry(vradSrc.data.getGeometry()); // setDst() handles</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="comment">//op.process(vradSrc.data, dstData.data);</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="comment">//op.traverseChannel(vradSrc.data.getChannel(0), dstData.data.getChannel(0));</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="comment">//srcData.data.properties.updateFromMap(srcData.odim);</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        op.<a class="code" href="classdrain_1_1image_1_1ImageOp.html#a569b2d092cc236988b21f6a9cc4a9b92">process</a>(srcData.data, dstData.data);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="comment">// op.traverseChannel(srcData.data, dstData.data);</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        dstData.odim.prodpar = this-&gt;parameters.<a class="code" href="classdrain_1_1SmartMap.html#aac46d54856697c46a1e49e6567004fc0">getValues</a>();</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    };</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">    void setPixelConf(const PolarODIM &amp; odim, typename W::conf_t &amp; pixelConf) const {</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">        conf.setPixelConf(pixelConf, odim);</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="classrack_1_1PolarSlidingWindowOp.html#a0f9780542388033cc67acd7bb5c42851">  119</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1PolarSlidingWindowOp.html#a0f9780542388033cc67acd7bb5c42851">processDataWeighted</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1Data.html">Data&lt;src_t &gt;</a> &amp; srcData, <a class="code" href="classrack_1_1Data.html">Data&lt;dst_t &gt;</a> &amp; dstData)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;not implemented, calling for plain data&quot;</span> );</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        processPlainData(srcData, dstData);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    };</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;};</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">template &lt;class W&gt;</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">void PolarSlidingWindowOp&lt;W&gt;::setPixelConf(const PolarODIM &amp; odim, typename W::conf_t &amp; pixelConf) const {</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">    drain::Logger mout(__FILE__, __FUNCTION__);</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">    // pixelConf = this-&gt;conf;  PROBLEM: ftor prevents op=</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">    pixelConf.widthM  = this-&gt;conf.widthM;</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">    pixelConf.heightD = this-&gt;conf.heightD;</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">    pixelConf.invertPolar   = this-&gt;conf.invertPolar;</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment">    pixelConf.contributionThreshold  = this-&gt;conf.contributionThreshold;</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">    pixelConf.relativeScale = this-&gt;conf.relativeScale;</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">    pixelConf.updatePixelSize(odim);</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">    if (pixelConf.frame.width == 0){</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">        mout.note(this-&gt;conf.frame.width  );</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">        mout.note(this-&gt;conf.widthM );</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">        mout.note(*this );</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">        mout.warn(&quot;Requested width (&quot; , pixelConf.widthM ,  &quot; meters), smaller than rscale (&quot;, odim.rscale ,&quot;), setting window width=1 &quot; );</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">        pixelConf.frame.width = 1;</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">    void setPixelConf(const PolarODIM &amp; odim, typename W::conf_t &amp; pixelConf) const {</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">        conf.setPixelConf(pixelConf, odim);</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;};</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">template &lt;class W&gt;</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">void PolarSlidingWindowOp&lt;W&gt;::setPixelConf(const PolarODIM &amp; odim, typename W::conf_t &amp; pixelConf) const {</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">    drain::Logger mout(__FILE__, __FUNCTION__);</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">    // pixelConf = this-&gt;conf;  PROBLEM: ftor prevents op=</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">    pixelConf.widthM  = this-&gt;conf.widthM;</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">    pixelConf.heightD = this-&gt;conf.heightD;</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">    pixelConf.invertPolar   = this-&gt;conf.invertPolar;</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">    pixelConf.contributionThreshold  = this-&gt;conf.contributionThreshold;</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">    pixelConf.relativeScale = this-&gt;conf.relativeScale;</span></div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">    if (pixelConf.frame.height == 0){</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">        mout.warn(&quot;Requested height (&quot; , pixelConf.heightD ,  &quot; degrees), smaller than 360/nrays (&quot;, (360.0/odim.geometry.height) ,&quot;), setting window height=1 &quot; );</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">        pixelConf.frame.height = 1;</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">}</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00164"></a><span class="lineno"><a class="line" href="classrack_1_1PolarSlidingAvgOp.html">  164</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1PolarSlidingAvgOp.html">PolarSlidingAvgOp</a> : <span class="keyword">public</span> <a class="code" href="classrack_1_1PolarSlidingWindowOp.html">PolarSlidingWindowOp</a>&lt;RadarWindowAvg&lt;RadarWindowConfig&gt; &gt; {</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <a class="code" href="classrack_1_1PolarSlidingAvgOp.html">PolarSlidingAvgOp</a>() : <a class="code" href="classrack_1_1PolarSlidingWindowOp.html">PolarSlidingWindowOp&lt; RadarWindowAvg&lt;RadarWindowConfig&gt;</a> &gt;(__FUNCTION__, <span class="stringliteral">&quot;Smoothen polar data&quot;</span>){</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    };</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;};</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;}</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* POLARSLIDINGDOPPLERWINDOW_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:307</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a42ef3a51d6272a80acd0ebe26085b7cd"><div class="ttname"><a href="classdrain_1_1Logger.html#a42ef3a51d6272a80acd0ebe26085b7cd">drain::Logger::special</a></div><div class="ttdeci">Logger &amp; special(const TT &amp;... args)</div><div class="ttdoc">Other useful information.</div><div class="ttdef"><b>Definition:</b> Log.h:526</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:425</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Public, yet typically used &quot;internally&quot;, when TIMING=true.</div><div class="ttdef"><b>Definition:</b> Log.h:675</div></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">    pixelConf.updatePixelSize(odim);</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">    if (pixelConf.frame.width == 0){</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">        mout.note(this-&gt;conf.frame.width  );</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">        mout.note(this-&gt;conf.widthM );</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">        mout.note(*this );</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">        mout.warn(&quot;Requested width (&quot; , pixelConf.widthM ,  &quot; meters), smaller than rscale (&quot;, odim.rscale ,&quot;), setting window width=1 &quot; );</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">        pixelConf.frame.width = 1;</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">    if (pixelConf.frame.height == 0){</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">        mout.warn(&quot;Requested height (&quot; , pixelConf.heightD ,  &quot; degrees), smaller than 360/nrays (&quot;, (360.0/odim.geometry.height) ,&quot;), setting window height=1 &quot; );</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">        pixelConf.frame.height = 1;</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="classrack_1_1PolarSlidingAvgOp.html">  175</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1PolarSlidingAvgOp.html">PolarSlidingAvgOp</a> : <span class="keyword">public</span> <a class="code" href="classrack_1_1PolarSlidingWindowOp.html">PolarSlidingWindowOp</a>&lt;RadarWindowAvg&lt;RadarWindowConfig&gt; &gt; {</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <a class="code" href="classrack_1_1PolarSlidingAvgOp.html">PolarSlidingAvgOp</a>() : <a class="code" href="classrack_1_1PolarSlidingWindowOp.html">PolarSlidingWindowOp&lt; RadarWindowAvg&lt;RadarWindowConfig&gt;</a> &gt;(__FUNCTION__, <span class="stringliteral">&quot;Smoothen polar data&quot;</span>){</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    };</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;};</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;}</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* POLARSLIDINGDOPPLERWINDOW_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:308</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a42ef3a51d6272a80acd0ebe26085b7cd"><div class="ttname"><a href="classdrain_1_1Logger.html#a42ef3a51d6272a80acd0ebe26085b7cd">drain::Logger::special</a></div><div class="ttdeci">Logger &amp; special(const TT &amp;... args)</div><div class="ttdoc">Other useful information.</div><div class="ttdef"><b>Definition:</b> Log.h:527</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:426</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Public, yet typically used &quot;internally&quot;, when TIMING=true.</div><div class="ttdef"><b>Definition:</b> Log.h:676</div></div>
 <div class="ttc" id="aclassdrain_1_1SmartMap_html_aac46d54856697c46a1e49e6567004fc0"><div class="ttname"><a href="classdrain_1_1SmartMap.html#aac46d54856697c46a1e49e6567004fc0">drain::SmartMap::getValues</a></div><div class="ttdeci">void getValues(std::ostream &amp;ostr) const</div><div class="ttdoc">Dumps the values.</div><div class="ttdef"><b>Definition:</b> SmartMap.h:353</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageOp_html_a569b2d092cc236988b21f6a9cc4a9b92"><div class="ttname"><a href="classdrain_1_1image_1_1ImageOp.html#a569b2d092cc236988b21f6a9cc4a9b92">drain::image::ImageOp::process</a></div><div class="ttdeci">virtual void process(const ImageFrame &amp;src, Image &amp;dst) const</div><div class="ttdoc">Main interface. Typically splits processing to each channel.</div><div class="ttdef"><b>Definition:</b> ImageOp.cpp:126</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1SlidingWindowOp_html"><div class="ttname"><a href="classdrain_1_1image_1_1SlidingWindowOp.html">drain::image::SlidingWindowOp</a></div><div class="ttdoc">Template for operators applying pipeline-like sliding window.</div><div class="ttdef"><b>Definition:</b> SlidingWindowOp.h:59</div></div>
-<div class="ttc" id="aclassrack_1_1Data_html"><div class="ttname"><a href="classrack_1_1Data.html">rack::Data</a></div><div class="ttdoc">Data structure consisting of plain data and an optional quality data.</div><div class="ttdef"><b>Definition:</b> Data.h:1129</div></div>
-<div class="ttc" id="aclassrack_1_1PlainData_html"><div class="ttname"><a href="classrack_1_1PlainData.html">rack::PlainData</a></div><div class="ttdoc">Essential class for storing radar data.</div><div class="ttdef"><b>Definition:</b> Data.h:292</div></div>
+<div class="ttc" id="aclassrack_1_1Data_html"><div class="ttname"><a href="classrack_1_1Data.html">rack::Data</a></div><div class="ttdoc">Data structure consisting of plain data and an optional quality data.</div><div class="ttdef"><b>Definition:</b> Data.h:1144</div></div>
+<div class="ttc" id="aclassrack_1_1PlainData_html"><div class="ttname"><a href="classrack_1_1PlainData.html">rack::PlainData</a></div><div class="ttdoc">Essential class for storing radar data.</div><div class="ttdef"><b>Definition:</b> Data.h:302</div></div>
 <div class="ttc" id="aclassrack_1_1PolarProductOp_html"><div class="ttname"><a href="classrack_1_1PolarProductOp.html">rack::PolarProductOp</a></div><div class="ttdoc">Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input.</div><div class="ttdef"><b>Definition:</b> PolarProductOp.h:61</div></div>
-<div class="ttc" id="aclassrack_1_1PolarSlidingAvgOp_html"><div class="ttname"><a href="classrack_1_1PolarSlidingAvgOp.html">rack::PolarSlidingAvgOp</a></div><div class="ttdef"><b>Definition:</b> PolarSlidingWindowOp.h:164</div></div>
-<div class="ttc" id="aclassrack_1_1PolarSlidingWindowOp_html"><div class="ttname"><a href="classrack_1_1PolarSlidingWindowOp.html">rack::PolarSlidingWindowOp</a></div><div class="ttdef"><b>Definition:</b> PolarSlidingWindowOp.h:44</div></div>
-<div class="ttc" id="aclassrack_1_1PolarSlidingWindowOp_html_a0f9780542388033cc67acd7bb5c42851"><div class="ttname"><a href="classrack_1_1PolarSlidingWindowOp.html#a0f9780542388033cc67acd7bb5c42851">rack::PolarSlidingWindowOp::processDataWeighted</a></div><div class="ttdeci">virtual void processDataWeighted(const Data&lt; src_t &gt; &amp;srcData, Data&lt; dst_t &gt; &amp;dstData) const</div><div class="ttdoc">Quality-weighted prosessing of data.</div><div class="ttdef"><b>Definition:</b> PolarSlidingWindowOp.h:108</div></div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> AndreOp.h:45</div></div>
+<div class="ttc" id="aclassrack_1_1PolarSlidingAvgOp_html"><div class="ttname"><a href="classrack_1_1PolarSlidingAvgOp.html">rack::PolarSlidingAvgOp</a></div><div class="ttdef"><b>Definition:</b> PolarSlidingWindowOp.h:175</div></div>
+<div class="ttc" id="aclassrack_1_1PolarSlidingWindowOp_html"><div class="ttname"><a href="classrack_1_1PolarSlidingWindowOp.html">rack::PolarSlidingWindowOp</a></div><div class="ttdoc">Window operator with support.</div><div class="ttdef"><b>Definition:</b> PolarSlidingWindowOp.h:48</div></div>
+<div class="ttc" id="aclassrack_1_1PolarSlidingWindowOp_html_a0f9780542388033cc67acd7bb5c42851"><div class="ttname"><a href="classrack_1_1PolarSlidingWindowOp.html#a0f9780542388033cc67acd7bb5c42851">rack::PolarSlidingWindowOp::processDataWeighted</a></div><div class="ttdeci">virtual void processDataWeighted(const Data&lt; src_t &gt; &amp;srcData, Data&lt; dst_t &gt; &amp;dstData) const</div><div class="ttdoc">Quality-weighted prosessing of data.</div><div class="ttdef"><b>Definition:</b> PolarSlidingWindowOp.h:119</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdef"><b>Definition:</b> Type.h:542</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->
