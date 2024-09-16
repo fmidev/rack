@@ -31,12 +31,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef EDGE_TRACKER_H
 #define EDGE_TRACKER_H
 
+#include <drain/image/ProbingControl.h>
 #include <list>
 
 #include "CoordinateHandler.h"
 #include "Direction.h"
 #include "ImageChannel.h"
-#include "ProbingCriteria.h"
 // #include "FilePng.h"
 
 namespace drain

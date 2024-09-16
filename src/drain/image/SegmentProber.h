@@ -31,13 +31,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef SEGMENT_PROBER_H
 #define SEGMENT_PROBER_H
 
+#include <drain/image/ProbingControl.h>  // Control
 #include <sstream>
 #include <ostream>
 
 #include "drain/util/ReferenceMap.h"
 #include "CoordinateHandler.h"
 #include "FilePng.h"
-#include "ProbingCriteria.h"  // Control
 
 
 namespace drain
