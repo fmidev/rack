@@ -46,7 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/imageops/CropOp.h>
 #include <drain/prog/CommandBankUtils.h>
 
-#include <drain/image/EdgeProber.h>
+#include <drain/image/EdgeTracker.h>
 
 
 #include "data/Data.h"

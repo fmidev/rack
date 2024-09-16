@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define SUPER_PROBER_H
 
 
+#include <drain/image/EdgeTracker.h>
 #include <drain/PseudoTuple.h>
 
 #include "Direction.h"
@@ -135,7 +136,7 @@ public:
 	/// Application dependent. Assumes checked coordinates.
 	/**
 	 *	\param pos - new position (validated coordinates)
-	 *  \param dir - direction of intrusion
+	 *  \param dir - direction of entry (from outside to inside [potential new segment])
 	 *
 	 *  \return - true, if this pixel belongs to a new segment, and false if probing can continue
 	 */
@@ -145,7 +146,7 @@ public:
 		//return (dst->get<dst_t>(pos.i, pos.j) == conf.visitedMarker);
 	}
 
-	//template <Direction::dir DIR>
+
 	bool checkNext(Position & pos, Direction::value_t DIR, TreeSVG & tree){
 
 		const Position & offset = Direction::offset.find(DIR)->second;
@@ -153,7 +154,7 @@ public:
 		pos.i += offset.i;
 		pos.j += offset.j;
 
-		if (!handler.handle(pos.i, pos.j)){
+		if (!proberControl.handler.handle(pos.i, pos.j)){
 			if (!isVisited(pos)){
 				if (!checkNewSegment(pos,DIR)){ // <-- note: this may start new segment !
 					visit(pos);
@@ -166,10 +167,6 @@ public:
 					segment->set("cx", pos.i);
 					segment->set("cy", pos.j);
 					segment->set("r", 5);
-					//segment->set("fill", "red");
-
-					// segment->set("dy", 10);
-					// segment->set("points", "");
 					//<polygon points="100,10 150,190 50,190" style="fill:lime;stroke:purple;stroke-width:3" />
 				}
 			}
@@ -188,15 +185,16 @@ public:
 		while (checkNext(pos2, DIR, tree)){
 
 			posSide = pos2;
-			if (checkNext(posSide, Direction::turn90(DIR), tree)){ /// TODO: Macro turn -> test -> complete with template
+			// if (checkNext(posSide, Direction::turn90(DIR), tree)){ /// TODO: Macro turn -> test -> complete with template
+			if (checkNext(posSide, DIR_TURN_090(DIR), tree)){ /// TODO: Macro turn -> test -> complete with template
 				probe2(posSide, DIR, tree); // recursion
-				probe2(posSide, Direction::turn180(DIR), tree);
+				probe2(posSide, DIR_TURN_180(DIR), tree);
 			}
 
 			posSide = pos2;
-			if (checkNext(posSide, Direction::turn270(DIR), tree)){
+			if (checkNext(posSide, DIR_TURN_270(DIR), tree)){
 				probe2(posSide, DIR, tree); // recursion
-				probe2(posSide, Direction::turn180(DIR), tree);
+				probe2(posSide, DIR_TURN_180(DIR), tree);
 			}
 
 		}

@@ -42,6 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Geometry.h"
 
 #include "ImageFrame.h"
+#include "Direction.h" //~ "Position.h", experimental
 
 namespace drain {
 
@@ -210,6 +211,11 @@ public:
 	inline
 	coord_overflow_t handle(Point2D<int> &p) const {
 		return handle(p.x, p.y);
+	}
+
+	inline // NEW
+	coord_overflow_t handle(Position &p) const {
+		return handle(p.i, p.j);
 	}
 
 	/// Handles the coordinate, returning \c true if the position is reversible.

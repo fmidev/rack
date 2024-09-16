@@ -67,6 +67,8 @@ class ImageT : public ModifiableImage
 {
 public:
 
+	typedef T data_t;
+
 
 	ImageT(){
 		initialize(typeid(T), 0, 0, 0, 0);
@@ -110,27 +112,6 @@ public:
 		return *(T *) & buffer[ address(i,j) * conf.byteSize ];
 	};
 
-	/*
-	inline
-	const T & at(size_t i, size_t j, size_t k) const {
-		return *(const T *)&buffer[ address(i,j,k)*encoding.byteSize ];
-	};
-
-	inline
-	T & at(const size_t i, const size_t j, const size_t &) {
-		return *(T *)&buffer[ address(i,j,k)*encoding.byteSize ];
-	};
-
-	inline
-	const T & at(const Point2D<int> &p) const {
-		return (const T *)&buffer[ address(p.x,p.y) ];
-	};
-
-	inline
-	T & at(const Point2D<int> &p) {
-		return (T *) & buffer[ address(p.x,p.y) ];
-	};
-	*/
 
 
 };

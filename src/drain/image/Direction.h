@@ -67,6 +67,13 @@ struct Position {
 
 typedef PseudoTuple<Position> PositionTuple;
 
+// Keep for future templated methods.
+#define DIR_TURN_090(dir) (((dir << 2) & 0xff) | (dir >> 6))
+#define DIR_TURN_180(dir) (((dir << 4) & 0xff) | (dir >> 4))
+#define DIR_TURN_270(dir) (((dir << 6) & 0xff) | (dir >> 2))
+
+#define DIR_TURN_DEG(dir, deg) (((dir << (deg/45)) & 0xff) | (dir >> (8 - deg/45)))
+
 
 struct Direction {
 
@@ -88,24 +95,12 @@ struct Direction {
 	/**
 	 *
 	 */
-	/*
-	template <dir DIR>
-	static inline
-	dir value_t180(){
-		return ((DIR << 4) & 0xff) & (DIR >> 4);
-	}
-
-	template <dir DIR>
-	static inline
-	dir dir90plus(){
-		return (DIR << 2) & (DIR >> 6);
-	}
-	*/
 
 	/// Turn 90 degrees left
 	/**
 	 *
 	 */
+	/*
 	static inline
 	value_t turn90(value_t d){
 		return ((d << 2)&0xff) | (d >> 6);
@@ -120,6 +115,7 @@ struct Direction {
 	value_t turn270(value_t d){
 		return ((d << 6)&0xff) | (d >> 2);
 	}
+	*/
 
 	/*
 	template <dir DIR>

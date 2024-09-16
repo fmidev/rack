@@ -97,7 +97,7 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 	const size_t height = src.getHeight();
 
 	mout.attention("limiter=", limit);
-	mout.attention("handler=", sizeProber.handler);
+	mout.attention("handler=", sizeProber.proberControl.handler);
 
 	TreeSVG svg(NodeSVG::SVG);
 	TreeSVG & group = svg["segments"](NodeSVG::GROUP);

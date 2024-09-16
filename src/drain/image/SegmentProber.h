@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/ReferenceMap.h"
 #include "CoordinateHandler.h"
 #include "FilePng.h"
+#include "ProbingCriteria.h"  // Control
 
 
 namespace drain
@@ -98,18 +99,25 @@ public:
 template <class S, class D, class C>
 class SegmentProber {
 
+protected:
+
+	SimpleProrolberControl basicControl;
+
 public:
+
+	ProberControl & proberControl;
 
 	typedef S src_t;
 	typedef D dst_t;
 	typedef C conf_t;
 
+	conf_t conf;
 
-	SegmentProber(const Channel &s) : src(s), dst(NULL){
+	SegmentProber(const Channel &s) : proberControl(basicControl), src(s), dst(NULL){
 		init();
 	};
 
-	SegmentProber(const Channel &s, Channel &d) : src(s), dst(&d) {
+	SegmentProber(const Channel &s, Channel &d) : proberControl(basicControl), src(s), dst(&d) {
 		init();
 	};
 
@@ -121,10 +129,12 @@ public:
 		dst = &d;
 	}
 
+	/*
 	void setParams(const C & conf){
 		this->conf = conf;
 		// init()
 	}
+	*/
 
 	/// Fills the segment having intensity between min and max.
 	/*
@@ -140,11 +150,13 @@ public:
 	void init(){
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		handler.set(src.getGeometry(), src.getCoordinatePolicy());
+		proberControl.handler.set(src.getGeometry(), src.getCoordinatePolicy());
 		// src.adjustCoordinateHandler(handler);
-		mout.debug(handler );
+		mout.debug(proberControl.handler );
 		mout.debug2(src );
-		mout.debug2(*dst );
+		if (dst){
+			mout.debug2(*dst );
+		}
 
 	}
 
@@ -158,7 +170,7 @@ public:
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-		const CoordinatePolicy & cp = handler.getPolicy();
+		const CoordinatePolicy & cp = proberControl.handler.getPolicy();
 		bool HORZ_MODE = ((cp.xUnderFlowPolicy != EdgePolicy::POLAR) && (cp.xOverFlowPolicy != EdgePolicy::POLAR));
 
 		if (HORZ_MODE){
@@ -196,7 +208,7 @@ public:
 
 
 		clear();
-		if (handler.validate(i, j)){
+		if (proberControl.handler.validate(i, j)){
 			/*
 			if (isValidPixel(i,j)){
 				Logger mout(getImgLog(), "SegmentProber", __FUNCTION__);
@@ -211,14 +223,15 @@ public:
 
 	};
 
-	conf_t conf;
 
 // consider protected:
 
 	const Channel & src;
 	Channel *dst;
 
-	CoordinateHandler2D handler;
+	// CoordinateHandler2D handler;
+
+
 
 	/// Returns isValidSegment(i,j) and !isVisited(i,j).
 	inline
@@ -315,7 +328,7 @@ protected:
 		j += DJ;
 
 		// Drop isValidSegment
-		if (handler.validate(i,j)){ // must be first, changes coords
+		if (proberControl.handler.validate(i,j)){ // must be first, changes coords
 			if (isValidPixel(i,j))
 				if (isValidMove(i0,j0, i,j))
 					return true;
@@ -376,20 +389,20 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 
 			i2 = i;
 			j2 = j-1;
-			if (handler.validate(i2, j2)){
+			if (proberControl.handler.validate(i2, j2)){
 				if (isValidMove(i,j, i2,j2))
 					scanHorzProbeVert(i2,j2);
 			}
 
 			i2 = i;
 			j2 = j+1;
-			if (handler.validate(i2, j2)){
+			if (proberControl.handler.validate(i2, j2)){
 				if (isValidMove(i,j, i2,j2))
 					scanHorzProbeVert(i2,j2);
 			}
 
 			++i;
-			handler.validate(i, j); // check?
+			proberControl.handler.validate(i, j); // check?
 
 		}; // while (i != iEnd);
 
@@ -433,19 +446,19 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 			j2 = j;
 			// Test left side
 			i2 = i-1;
-			if (handler.validate(i2, j2)){
+			if (proberControl.handler.validate(i2, j2)){
 				if (isValidMove(i,j, i2,j2))
 					scanVertProbeHorz(i2,j2);
 			}
 			j2 = j;
 			// Test right side
 			i2 = i+1;
-			if (handler.validate(i2, j2)){
+			if (proberControl.handler.validate(i2, j2)){
 				if (isValidMove(i,j, i2,j2))
 					scanVertProbeHorz(i2,j2);
 			}
 			++j;
-			handler.validate(i, j); // check?
+			proberControl.handler.validate(i, j); // check?
 		};
 
 	}
@@ -465,7 +478,7 @@ std::ostream & operator<<(std::ostream & ostr, const SegmentProber<S,D,C> & prob
 	ostr << "conf: " << prober.conf << ", ";
 	//ostr << "width="     << (float)prober.width << ',';
 	//ostr << "height="    << (float)prober.height << ',';
-	ostr << "handler: "   << prober.handler << ',';
+	ostr << "handler: "   << prober.proberControl.handler << ',';
 	//ostr << "p="         << prober.p;
 	return ostr;
 }
