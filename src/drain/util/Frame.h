@@ -32,12 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_FRAME_H_
 #define DRAIN_FRAME_H_
 
-#include <drain/Log.h>
-#include <drain/UniTuple.h>
 #include <ostream>
 #include <stdexcept>
 
-#include "drain/util/Point.h" // for Box
+#include <drain/Log.h>
+#include <drain/UniTuple.h>
+#include <drain/Type.h>
+#include <drain/util/Point.h> // for Box
 //#include "drain/util/Range.h"
 
 
@@ -128,6 +129,8 @@ public:
 
 };
 
+DRAIN_TYPENAME_T(Frame2D, T);
+
 /// Something that has coordinates (x,y) and dimensions (width, height).
 /**
  *
@@ -145,8 +148,9 @@ public:
 	Box(const Box & box) : drain::Point2D<T>(box), drain::Frame2D<T>(box)  {
 	}
 
-
 };
+
+DRAIN_TYPENAME_T(Box, T);
 
 
 template <class T>

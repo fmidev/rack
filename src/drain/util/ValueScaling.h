@@ -96,7 +96,7 @@ public:
 	ValueScaling(const drain::ValueScaling & scaling) :
 		scale(this->next()), offset(this->next()) //, physRange(this->tuple(), 2)
 	{
-		this->assign(scaling);
+		this->assignSequence(scaling);
 		physRange.set(scaling.physRange);
 	};
 
@@ -125,7 +125,7 @@ public:
 	inline
 	ValueScaling & operator=(const drain::ValueScaling & scaling){
 		if (&scaling != this){
-			this->assign(scaling);
+			this->assignSequence(scaling);
 			physRange.set(scaling.physRange);
 		}
 		return *this;
@@ -139,7 +139,7 @@ public:
 
 	virtual
 	void setScaling(const ValueScaling & scaling){
-		this->assign(scaling);
+		this->assignSequence(scaling);
 	}
 
 	/// Get linear scaling
@@ -238,7 +238,7 @@ public:
 	template <class T>
 	inline
 	void setPhysicalRange(const Range<T> &range){ // , const std::string &unit ?
-		physRange.assign(range);
+		physRange.assignSequence(range);
 	}
 
 	/// Sets the supported range for physical values. Does not change scaling or type.

@@ -568,6 +568,9 @@ const std::string TypeName<T>::name(typeid(T).name());
 /// Name definition, for object files.
 #define DRAIN_TYPENAME_DEF(tname) template <>  const std::string TypeName<tname>::name(#tname)
 
+//#define DRAIN_TYPENAME_T(cname,T) template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=drain::StringBuilder<>(#cname, '<', drain::TypeName<T>::str(),'>'); return name;}
+#define DRAIN_TYPENAME_T(cname,T) template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=drain::StringBuilder<>(#cname, '<', drain::TypeName<T>::str(),'>'); return n;}}
+
 
 /// Add a specialization for each type of those you want to support.
 //  (Unless the string returned by typeid is sufficient.)

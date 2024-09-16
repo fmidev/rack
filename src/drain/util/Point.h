@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <string>
 
 #include <drain/UniTuple.h>
+#include <drain/Type.h>
 
 namespace drain
 {
@@ -128,7 +129,11 @@ struct Point3D : public drain::UniTuple<T,3> {
 
 };
 
+//template <class T>
+DRAIN_TYPENAME_T(Point2D, T);
 
+//template <class T>
+DRAIN_TYPENAME_T(Point3D, T);
 
 
 /*

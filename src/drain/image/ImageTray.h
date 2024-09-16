@@ -81,7 +81,7 @@ public:
 	const image_t & get(size_t i = 0) const {
 		typename map_t::const_iterator it = this->find(i);
 		if (it == this->end()){
-			std::runtime_error("Tray::get(i): find failed");
+			throw std::runtime_error("Tray::get(i): find failed");
 		}
 		return it->second;
 	}
@@ -91,7 +91,7 @@ public:
 	image_t & get(size_t i = 0){
 		typename map_t::iterator it = this->find(i);
 		if (it == this->end()){
-			std::runtime_error("Tray::get(i): find failed");
+			throw std::runtime_error("Tray::get(i): find failed");
 		}
 		return it->second;
 	}
@@ -329,7 +329,7 @@ public:
 	const image_t & getAlpha(size_t i = 0) const {
 		typename map_t::const_iterator it = alpha.find(i);
 		if (it == alpha.end()){
-			std::runtime_error("ChannelTray::getAlpha(i): find failed");
+			throw std::runtime_error("ChannelTray::getAlpha(i): find failed");
 		}
 		return it->second;
 	}
@@ -380,7 +380,7 @@ public:
 	image_t & getAlpha(size_t i = 0){
 		typename map_t::iterator it = alpha.find(i);
 		if (it == alpha.end()){
-			std::runtime_error("ChannelTray::getAlpha(i): find failed");
+			throw std::runtime_error("ChannelTray::getAlpha(i): find failed");
 		}
 		return it->second;
 	}

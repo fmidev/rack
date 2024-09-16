@@ -66,12 +66,13 @@ std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
 	{drain::image::svg::COMMENT, "#"},
 	{drain::image::svg::CTEXT, ""},
 	{drain::image::svg::SVG,   "svg"},
-	{drain::image::svg::CIRC,  "circ"},
+	{drain::image::svg::CIRCLE,  "circle"},
 	{drain::image::svg::DESC,  "desc"},
 	{drain::image::svg::GROUP, "g"},
 	{drain::image::svg::IMAGE, "image"},
 	{drain::image::svg::LINE,  "line"},
 	{drain::image::svg::METADATA,  "metadata"},
+	{drain::image::svg::POLYGON,  "polygon"},
 	{drain::image::svg::RECT,  "rect"},
 	{drain::image::svg::STYLE, "style"}, // raise?
 	{drain::image::svg::TEXT,  "text"},
@@ -137,11 +138,11 @@ void NodeSVG::setType(const tag_t & t) {
 		// link("width", width = "0");
 		// link("height", height = "0");
 		break;
-	case CIRC:
+	case CIRCLE:
 		// tag = "circ";
-		link("x", x = 0);
-		link("y", y = 0);
-		link("radius", radius = 0);
+		link("cx", x = 0);
+		link("cy", y = 0);
+		link("r", radius = 0);
 		break;
 	case IMAGE:
 		// tag = "image";

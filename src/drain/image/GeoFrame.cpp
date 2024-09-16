@@ -261,7 +261,7 @@ void GeoFrame::updateBoundingBoxM(){
 		// warn?
 		if (isLongLat()){ // ie. native coords went radial above
 			//mout.warn("LAN-LON.. could set R native bbox" );
-			bBoxNative.assign(bBoxD);
+			bBoxNative.assignSequence(bBoxD);
 		}
 	}
 

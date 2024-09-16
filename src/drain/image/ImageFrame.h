@@ -413,13 +413,11 @@ public:
 	//  Experimental for ImageFrame
 	virtual inline
 	void initialize(const std::type_info &t, const Geometry & geometry){
-
 		if ((conf.getType() == t) && (conf.getGeometry() == geometry))
 			return;
-		else
-			std::runtime_error(std::string("ImageFrame::")+__FUNCTION__+": tried to change ImageFrame geometry");
-
-		// initialize(t, geometry.getWidth(), geometry.getHeight(), geometry.getImageChannelCount(), geometry.getAlphaChannelCount());
+		else {
+			throw std::runtime_error(std::string("ImageFrame::")+__FUNCTION__+": tried to change ImageFrame geometry");
+		}
 	}
 
 	/// Sets the type and allocates a data buffer.

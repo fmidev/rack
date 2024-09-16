@@ -64,6 +64,8 @@ class ReferenceT : public T {
 
 public:
 
+	typedef const drain::ReferenceT<T> reference_t;
+
 	typedef std::pair<const char *,const drain::ReferenceT<T> > init_pair_t;
 
 	/// Tells if the internal pointer can point to an external variable.

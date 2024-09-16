@@ -386,7 +386,7 @@ public:
 		//data.setPhysicalScale(min, max);
 		data.setPhysicalRange(min, max, true);
 		// data.setOptimalScale();
-		this->odim.scaling.assign(data.getScaling());
+		this->odim.scaling.assignSequence(data.getScaling());
 		// odim.scaling.scale   = data.getScaling().scale; // needed?
 		// odim.scaling.offset = data.getScaling().offset; // needed?
 	}

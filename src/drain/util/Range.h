@@ -76,14 +76,14 @@ public:
 	/// Default assignment operator
 
 	Range & operator=(const Range<T> & range){
-		this->assign(range);
+		this->set(range);  // 2024/09/!!
 		return *this;
 	};
 
 
 
 	Range & operator=(const UniTuple<T,2> & range){
-		this->assign(range);
+		this->set(range); // 2024/09/!!
 		//this->set(range);
 		return *this;
 	};
@@ -140,7 +140,7 @@ std::ostream & operator<<(std::ostream & ostr, const Range<T> & r){
 }
 */
 
-
+DRAIN_TYPENAME_T(Range,T);
 
 } // namespace drain
 

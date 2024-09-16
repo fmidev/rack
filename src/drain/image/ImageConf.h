@@ -351,7 +351,7 @@ public:
 	inline
 	void setConf(const ImageConf & conf){
 		setEncoding(conf);
-		setGeometry(conf);
+		setGeometry(conf.getGeometry());
 		setCoordinatePolicy(conf.getCoordinatePolicy());
 	}
 

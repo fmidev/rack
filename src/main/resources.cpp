@@ -218,8 +218,9 @@ ODIMPath RackContext::findImage(){ //RackContext & ctx){
 	// mout.accept("Image selector", imageSelector);
 	// mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", this->getStatusMap().get("what:quantity","??"));
 
-	mout.revised("keeping, not clearing selector: ", this->select);
+	mout.revised<LOG_NOTICE>("keeping, not clearing selector: ", this->select);
 	// imageSelector.consumeParameters(this->select);
+
 	imageSelector.setParameters(this->select);
 	if (imageSelector.getMaxCount() > 1){
 		mout.debug("Adjusting image selector.count=", imageSelector.getMaxCount(), " to 1");

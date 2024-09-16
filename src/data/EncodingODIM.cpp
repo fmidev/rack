@@ -220,7 +220,7 @@ void EncodingODIM::updateLenient(const EncodingODIM & odim){
 		type = odim.type;
 
 	if ((this->scaling.scale == 0.0) && (type == odim.type)){
-		this->scaling.assign(odim.scaling);
+		this->scaling.assignSequence(odim.scaling);
 		//scale   = odim.scale;
 		//offset = odim.offset;
 		nodata = odim.nodata;

@@ -116,7 +116,7 @@ public:
 	/// Resizes the image, keeps the current type. \see initialize().
 	inline
 	void setGeometry(const Geometry &g){
-		conf.getGeometry().assign(g);
+		conf.getGeometry().assignSequence(g);
 		update();
 	};
 

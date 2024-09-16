@@ -59,7 +59,7 @@ void SegmentStatisticsOp::getDstConf(const ImageConf & src, ImageConf & dst) con
 	}
 
 	/// Todo: check view-images?
-	dst.setArea(src);
+	dst.setArea(src.getGeometry());
 	dst.setChannelCount(statistics.size(), dst.getAlphaChannelCount());
 	//dst.setGeometry(src.getWidth(), src.getHeight(), statistics.size(), dst.getAlphaChannelCount());
 

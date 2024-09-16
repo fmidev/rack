@@ -33,14 +33,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
+//#include <drain/Reference.h> // experimental link tree.member ?
 #include <drain/Sprinter.h>
-//#include <drain/VariableAssign.h>
 
 #include "FileInfo.h"
 #include "TextReader.h"
 #include "TreeUnordered.h"
 
-// #include "TreeOrdered.h" // consider?
 
 namespace drain
 {
@@ -132,7 +131,6 @@ std::ostream & JSON::treeToStream(std::ostream & ostr, const T & tree, const dra
 	}
 
 	const std::string pad(2*indent, ' ');
-
 
 	if (DATA){
 		drain::Sprinter::toStream(ostr, tree.data, layout);
@@ -256,8 +254,6 @@ void JSON::readTree(T & tree, std::istream & istr){
 // New 2023 "implementation"
 typedef drain::UnorderedMultiTree<drain::Variable,true> JSONtree2;
 
-//template <>
-//const JSONtree2 JSONtree2::dummy;
 
 template <>
 inline
@@ -275,12 +271,10 @@ void drain::JSON::handleValue(std::istream & istr, JSONtree2 & dst, const std::s
 
 	if (c == '{'){
 		// log.warn("Reading object '", key, "'");
-		//JSON::readTree(dst[key], istr); /// RECURSION
 		JSON::readTree(child, istr); /// RECURSION
 	}
 	else {
 		// log.warn("Reading value '", key, "'");
-		//JSON::readValue(istr, dst[key].data);
 		JSON::readValue(istr, child.data);
 	}
 
@@ -297,6 +291,24 @@ std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const JSONtree2 & 
 }
 
 
+/* WRONG WRONG... better for VariableMap
+template <>
+template <>
+inline
+ReferenceT<JSONtree2> & ReferenceT<JSONtree2>::link(JSONtree2 &tree){
+	try {
+		//this->setPtr(p);
+	}
+	catch (const std::exception & e){
+		// Logger(__FILE__, __LINE__, __FUNCTION__).error("unsupported type: ", drain::TypeName<F>::str()); // , " msg:", e.what()
+		// Logger(__FILE__, __LINE__, __FUNCTION__).error("unsupported type: ", typeid(F).name(), " msg:", e.what());
+		// std::cerr << __FILE__ << ':' << __FUNCTION__ << ": unsupported type: " << typeid(F).name() << std::endl;
+		// throw std::runtime_error("unsupported type");
+	}
+	return *this;
+}
+*/
+
 }  // drain
 
-#endif /* META_DATA_H_*/
+#endif // DRAIN_JSON

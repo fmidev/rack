@@ -98,7 +98,7 @@ public:
 	}
 
 	RadarWindowGeom(const RadarWindowGeom & geom) : widthM(next()), heightD(next()) {
-		assign(geom.tuple());
+		assignSequence(geom.tuple());
 	}
 
 	// Beam-directional window width in metres

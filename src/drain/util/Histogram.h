@@ -140,7 +140,7 @@ public:
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.discouraged("use setRange instead (scaling=", scaling, ")");
 		mout.advice("range perhaps: [", this->scaling.getPhysicalRange());
-		this->scaling.assign(scaling);
+		this->scaling.assignSequence(scaling);
 		//int s = 1 << (8*drain::Type::call<drain::sizeGetter>(type));
 	}
 

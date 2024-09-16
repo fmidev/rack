@@ -917,6 +917,23 @@ struct TypeName<DRAIN_TREE_NAME<T,EXCLUSIVE, P> > {
 
 };
 
+//template <class F>
+/*  -> JSON?
+template <class T, bool EXCLUSIVE, class P>
+inline
+ReferenceT & link(DRAIN_TREE_NAME<T,EXCLUSIVE, P> &p){
+	try {
+		//this->setPtr(p);
+	}
+	catch (const std::exception & e){
+		// Logger(__FILE__, __LINE__, __FUNCTION__).error("unsupported type: ", drain::TypeName<F>::str()); // , " msg:", e.what()
+		// Logger(__FILE__, __LINE__, __FUNCTION__).error("unsupported type: ", typeid(F).name(), " msg:", e.what());
+		// std::cerr << __FILE__ << ':' << __FUNCTION__ << ": unsupported type: " << typeid(F).name() << std::endl;
+		// throw std::runtime_error("unsupported type");
+	}
+	return *this;
+}
+*/
 
 } // drain::
 

@@ -231,7 +231,7 @@ void PaletteOp::getDstConf(const ImageConf &src, ImageConf &dst) const {
 	// TODO: what if src image has alpha channel?
 	const size_t alphaChannelCount = dst.getAlphaChannelCount();
 
-	dst.setArea(src);
+	dst.setArea(src.getGeometry());
 	dst.setChannelCount(palettePtr->getChannels());
 
 	if (dst.getAlphaChannelCount() != alphaChannelCount){

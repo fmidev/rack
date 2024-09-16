@@ -198,7 +198,7 @@ public:
 		clear();
 		if (handler.validate(i, j)){
 			/*
-			if (isValidPos(i,j)){
+			if (isValidPixel(i,j)){
 				Logger mout(getImgLog(), "SegmentProber", __FUNCTION__);
 				mout.warn("accept: " , i , ',' , j , "\t=" , src.get<double>(i,j) , '\t' , dst->get<double>(i,j) );
 			}
@@ -222,7 +222,7 @@ public:
 
 	/// Returns isValidSegment(i,j) and !isVisited(i,j).
 	inline
-	bool isValidPos(int i, int j) const {
+	bool isValidPixel(int i, int j) const {
 		return (isValidSegment(i,j) && !isVisited(i,j));
 	}
 
@@ -315,10 +315,11 @@ protected:
 		j += DJ;
 
 		// Drop isValidSegment
-		if (handler.validate(i,j)) // must be first, changes coords
-			if (isValidPos(i,j))
+		if (handler.validate(i,j)){ // must be first, changes coords
+			if (isValidPixel(i,j))
 				if (isValidMove(i0,j0, i,j))
 					return true;
+		}
 
 		// restore orig
 		i = i0;
@@ -338,7 +339,7 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 	 */
 	void scanHorzProbeVert(int i, int j) {
 
-		if (!isValidPos(i,j))
+		if (!isValidPixel(i,j))
 			return;
 
 		visit(i,j); // mark & update
@@ -348,7 +349,7 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 
 		/// Scan right. Note than i may wrap beyond image width.
 		int iEnd;
-		while (move<1,0>(i,j)){ //(move(i,j, 1,0)){
+		while (move<1,0>(i,j)){
 			visit(i,j);
 		}
 		iEnd = i;
@@ -359,7 +360,7 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 		/// Scan left
 		i=i0;
 		j=j0;
-		while (move<-1,0>(i,j)){ //(move(i,j, -1,0)){
+		while (move<-1,0>(i,j)){
 			visit(i, j);
 		}
 		// Now i is the minimum valid i coordinate.
@@ -370,19 +371,26 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 		bool done = false;
 		//while (i != iEnd){
 		while (!done){
+
 			done = (i == iEnd);
+
 			i2 = i;
 			j2 = j-1;
-			if (handler.validate(i2, j2))
+			if (handler.validate(i2, j2)){
 				if (isValidMove(i,j, i2,j2))
 					scanHorzProbeVert(i2,j2);
+			}
+
 			i2 = i;
 			j2 = j+1;
-			if (handler.validate(i2, j2))
+			if (handler.validate(i2, j2)){
 				if (isValidMove(i,j, i2,j2))
 					scanHorzProbeVert(i2,j2);
+			}
+
 			++i;
 			handler.validate(i, j); // check?
+
 		}; // while (i != iEnd);
 
 	}
@@ -390,7 +398,7 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 
 	void scanVertProbeHorz(int i, int j) {
 
-		if (!isValidPos(i,j))
+		if (!isValidPixel(i,j))
 			return;
 
 		visit(i,j); // mark & update
@@ -400,7 +408,7 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 
 		/// Scan DOWN. Note than j may wrap beyond image height.
 		int jEnd;
-		while (move<0,1>(i,j)){ //(move(i,j, 1,0)){
+		while (move<0,1>(i,j)){
 			visit(i,j);
 		}
 		jEnd = j;
@@ -411,7 +419,7 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 		/// Scan UP
 		i=i0;
 		j=j0;
-		while (move<0,-1>(i,j)){ //(move(i,j, -1,0)){
+		while (move<0,-1>(i,j)){
 			visit(i, j);
 		}
 		// Now j is the first (~minimum) valid j coordinate.
@@ -425,15 +433,17 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 			j2 = j;
 			// Test left side
 			i2 = i-1;
-			if (handler.validate(i2, j2))
+			if (handler.validate(i2, j2)){
 				if (isValidMove(i,j, i2,j2))
 					scanVertProbeHorz(i2,j2);
+			}
 			j2 = j;
 			// Test right side
 			i2 = i+1;
-			if (handler.validate(i2, j2))
+			if (handler.validate(i2, j2)){
 				if (isValidMove(i,j, i2,j2))
 					scanVertProbeHorz(i2,j2);
+			}
 			++j;
 			handler.validate(i, j); // check?
 		};

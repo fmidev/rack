@@ -104,7 +104,8 @@ struct TypeLayout : public TypeLayoutBase{
 	}
 
 	TypeLayout(const TypeLayout & layout){
-		this->assign(layout); // NOTE: copying element by element, not involving strings possibly containing null char (premature end-or-read).
+		this->assignSequence(layout);
+		//this->assign(layout); // NOTE: copying element by element, not involving strings possibly containing null char (premature end-or-read).
 	}
 
 	/// Set layout with a single string, for example: "{,}" .

@@ -57,7 +57,7 @@ struct svg {
 		CTEXT=NodeXML<>::CTEXT,
 		STYLE=NodeXML<>::STYLE,
 		SCRIPT=NodeXML<>::SCRIPT,
-		SVG, CIRC, DESC, GROUP, LINE, IMAGE, METADATA, RECT, TEXT, TITLE, TSPAN };
+		SVG, CIRCLE, DESC, GROUP, LINE, IMAGE, METADATA, POLYGON, RECT, TEXT, TITLE, TSPAN };
 	// check CTEXT, maybe implement in XML
 
 
@@ -168,16 +168,6 @@ protected:
 }  // drain::
 
 
-//static
-//NodeXML<SVG::tag_t>::tags;
-/*
-template <>
-TreeSVG & TreeSVG::operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > & l){
-	// data.set(l);
-	return *this;
-}
-*/
-
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const drain::image::TreeSVG & tree){
@@ -186,56 +176,18 @@ std::ostream & operator<<(std::ostream &ostr, const drain::image::TreeSVG & tree
 }
 
 
-/**
- *
- *  Depending on C++ compiler, this operator cannot be defined inside drain::image scope.
-inline
-std::ostream & operator<<(std::ostream &ostr, const drain::image::TreeSVG & tree){
-	return drain::NodeXML<>::docToStream(ostr, tree);
-}
- */
-
-
-/*
-template <>
-struct drain::TypeName<drain::image::TreeSVG> {
-    static const char* get(){ return "TreeSVG"; }
-};
-*/
-
 namespace drain {
-
-/*
-template <>
-inline
-const char* TypeName<image::NodeSVG>::get(){
-	return "SVG";
-}
-*/
 
 DRAIN_TYPENAME(image::NodeSVG);
 
-//template <>
-//struct drain::TypeName<image::NodeSVG>;
-/* {
-    static const char* get(){ return "SVG"; }
-};
-*/
-
 template <>
 template <>
-// inline
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
 /*{
 	this->data.setType(type);
 	return *this;
 }*/
 
-/*
-template <>
-template <>
-image::TreeSVG & image::TreeSVG::operator()(const std::string & text);
-*/
 
 }
 

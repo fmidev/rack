@@ -41,13 +41,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <ostream>
 #include <drain/UniTuple.h>
 #include <cmath>
-// #include <string>
-// #include <sstream>
 #include <vector>
 
-#include "Point.h"
-
-// // using namespace std;
+#include <drain/util/Point.h>
+#include <drain/Type.h>
+// using namespace std;
 
 
 namespace drain {
@@ -77,7 +75,7 @@ struct Rectangle : public drain::UniTuple<T,4> {
 
 	/// Copy constructor
 	Rectangle(const Rectangle & r) : lowerLeft(this->tuple(), 0), upperRight(this->tuple(), 2){
-		this->assign(r);
+		this->assignSequence(r);
 	};
 
 	/// Constructor with corner points
@@ -227,6 +225,22 @@ std::ostream & operator<<(std::ostream &ostr,const drain::Rectangle<T> &r){
 	return ostr;
 }
 
+// template <class T>
+// DRAIN_TYPENAME_DEF(Rectangle<T>, T);
+
+DRAIN_TYPENAME_T(Rectangle,T);
+
+/*
+template <class T>
+struct TypeName<Rectangle<T> > {
+	static const std::string & str(){
+		static const std::string name = drain::StringBuilder<>("Rectangle<", drain::TypeName<T>::str(), ">");
+		return name;
+    }
+};
+*/
+
+//const std::string TypeName<tname>::name(#
 
 } // namespace drain
 

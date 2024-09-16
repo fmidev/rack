@@ -83,17 +83,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "QualityMixerOp.h"
 #include "QualityOverrideOp.h"
 #include "QuantizatorOp.h"
-//#include "RecursiveRepairerOp.h"
 #include "ResizeOp.h"
 #include "RunLengthOp.h"
-//#include "drain/image/SegmentProber.h"
 #include "SegmentAreaOp.h"
 #include "SegmentStatisticsOp.h"
 #include "SlidingWindowHistogramOp.h"
 #include "SlidingWindowMedianOp.h"
 #include "SlidingWindowOp.h"
 #include "TransposeOp.h"
-// using namespace std;
+
+//#include "drain/image/SegmentProber.h"
+#include "SuperProberOp.h"
+
 
 namespace drain
 {
@@ -324,6 +325,9 @@ void installImageOps(T & installer) {
 
 		installer.template install<SegmentAreaOp<float,unsigned short> >();
 		installer.template install<SegmentStatisticsOp>("segmentStats");
+
+		// Experimental
+		installer.template install<SuperProberOp>();
 
 
 		installer.template install<SlidingWindowHistogramOp>("windowHistogram");

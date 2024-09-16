@@ -528,6 +528,10 @@ public:
 		const bool DEFAULT_PALETTE = (value.empty() || (value == "default"));
 
 		if (DEFAULT_PALETTE && !ctx.paletteKey.empty()){
+			mout.revised("NOT: Using current palette: ", ctx.paletteKey);
+		}
+		//if (DEFAULT_PALETTE && !ctx.paletteKey.empty()){
+		if (false){
 			mout.info("Using current palette: ", ctx.paletteKey);
 		}
 		else {

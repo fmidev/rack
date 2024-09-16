@@ -83,7 +83,7 @@ void ValueScaling::adoptScaling(const ValueScaling & srcScaling, const std::type
 		mout.debug2("Ok, copying physical scaling of src" );
 		//setPhysicalRange(srcScaling.getMinPhys(), srcScaling.getMaxPhys());
 		if (srcType == dstType){
-			assign(srcScaling);
+			assignSequence(srcScaling);
 		}
 		else {
 			setPhysicalScale(dstType, srcScaling.getMinPhys(), srcScaling.getMaxPhys());
@@ -94,9 +94,8 @@ void ValueScaling::adoptScaling(const ValueScaling & srcScaling, const std::type
 		mout.debug2("Src has no physical scaling, trying to guess..." );
 		if (Type::call<drain::typeIsSmallInt>(srcType) && Type::call<drain::typeIsSmallInt>(dstType)){
 			if (srcType == dstType){
-				mout.debug2() << "Src[" << Type::getTypeChar(srcType) << "], ";
-				mout << " Dst[" << Type::getTypeChar(dstType) << "] " << mout.endl;
-				assign(srcScaling);
+				mout.debug2("Src[", Type::getTypeChar(srcType), "], Dst[", Type::getTypeChar(dstType), "] ");
+				assignSequence(srcScaling);
 				mout.debug(*this );
 			}
 			else {
@@ -116,11 +115,11 @@ void ValueScaling::adoptScaling(const ValueScaling & srcScaling, const std::type
 		else if (Type::call<drain::typeIsInteger>(srcType) && Type::call<drain::typeIsInteger>(dstType)) {
 			mout.note() << "Int-to-int (either large)";
 			mout        << "Src[" << Type::getTypeChar(srcType) << "], Dst[" << Type::getTypeChar(dstType) << "] " << mout.endl;
-			assign(srcScaling);
+			assignSequence(srcScaling);
 		}
 		else if (Type::call<drain::typeIsInteger>(dstType)) { // src float
 			mout.warn("Src[" , Type::getTypeChar(srcType) , "], float data without physical scaling, dst[" , Type::getTypeChar(dstType) , "] problems ahead" );
-			assign(srcScaling);
+			assignSequence(srcScaling);
 		}
 		else if (Type::call<drain::typeIsInteger>(srcType)) { // src float
 			mout.note() << "No physical range set for adopting ";
@@ -138,7 +137,7 @@ void ValueScaling::adoptScaling(const ValueScaling & srcScaling, const std::type
 		else {
 			mout.debug("Float types: src[" , Type::getTypeChar(srcType) , "], dst[" , Type::getTypeChar(dstType) , "]" );
 			// TODO: assume
-			assign(srcScaling);
+			assignSequence(srcScaling);
 		}
 	}
 

@@ -77,22 +77,6 @@ See the documentation of drain::VariableT template specialized by drain::Variabl
 */
 typedef VariableT<ReferenceT<Castable> >  Reference;
 
-
-//VariableT<R>
-/*
-template <>
-template <>
-void ReferenceT<Castable>::init(const VariableT<ReferenceT<Castable> > & src){
-	std::cerr << __FILE__ << ' ' << __LINE__ << ':' << __FUNCTION__ << " " << src << std::endl;
-}
-
-template <>
-template <>
-void ReferenceT<Castable>::init(const ReferenceT<Castable> & src){
-	std::cerr << __FILE__ << ' ' << __LINE__ << ':' << __FUNCTION__ << " " << src << std::endl;
-}
-*/
-
 template <>
 const std::string TypeName<Reference>::name;
 
@@ -101,15 +85,6 @@ inline
 std::ostream & Sprinter::toStream(std::ostream & ostr, const Reference & v, const SprinterLayout & layout){
 	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
 };
-
-/*
-template <class T, size_t N=2>
-template <>
-UniTuple<T,N> & UniTuple<T,N>::set(const Reference & t){
-	// assignSequence(t, true); // by default LENIENT, or how should it be?
-	return *this;
-}
-*/
 
 }  // namespace drain
 

@@ -400,7 +400,7 @@ public:
 	void getDstConf(const ImageConf & src, ImageConf & dst) const  {
 		//dst.initialize(typeid(OpticalFlowCore2::data_t), src.getWidth(), src.getHeight(), 2, 1);
 		dst.setType(typeid(OpticalFlowCore2::data_t));
-		dst.setArea(src);
+		dst.setArea(src.getGeometry());
 		dst.setChannelCount(2, 1);
 	};
 

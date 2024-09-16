@@ -73,7 +73,7 @@ public:
 	inline
 	ChannelGeometry & operator=(const ChannelGeometry & g){
 		set(1,0); // could be init!
-		assign(g);
+		assignSequence(g);
 		return *this;
 	}
 
@@ -90,7 +90,7 @@ public:
 
 	inline
     void setChannelCount(const ChannelGeometry & g){
-		assign(g);
+		assignSequence(g);
 	}
 
 	inline
@@ -162,7 +162,7 @@ public:
     }
 	
     Geometry(const Geometry &g) : area(tuple(),0), channels(tuple(),2) {
-    	assign(g.tuple());
+    	assignSequence(g.tuple());
     	//updateTuple();
     }
 
@@ -186,7 +186,7 @@ public:
 	void setGeometry(const T &g){
 		//Geometry & operator=(const T & g){
 		set(0,0,1,0); // could be init!
-		assign(g);
+		assignSequence(g.tuple());
 		//return *this;
 	}
 
@@ -217,11 +217,21 @@ public:
 		return area.getHeight();
 	};
 
+	/*
 	template <class T>
 	inline
 	void setArea(const T & a){
-		area.assign(a);
+		area.set(a.tuple()); // 2024/09/??
 	};
+	*/
+	// template <typename S, size_t N> TupleBase
+	template <typename S, size_t N>
+	inline
+	void setArea(const TupleBase<S,N> & a){
+	//void setArea(const AreaGeometry & a){
+		area.set(a); // 2024/09/??
+	};
+
 
 	inline
 	void setArea(size_t width, size_t height){

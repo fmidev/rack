@@ -127,7 +127,7 @@ public:
 	inline
 	CoordinatePolicy(const CoordinatePolicy & policy) : //v(4, LIMIT), xUnderFlowPolicy(v[0]), yUnderFlowPolicy(v[1]), xOverFlowPolicy(v[2]), yOverFlowPolicy(v[3]) {
 		xUnderFlowPolicy(next()), yUnderFlowPolicy(next()), xOverFlowPolicy(next()), yOverFlowPolicy(next()) {
-		assign(policy);
+		assignSequence(policy);
 	};
 
 	inline
@@ -138,7 +138,7 @@ public:
 
 	inline
 	CoordinatePolicy & operator=(const CoordinatePolicy & policy){
-		assign(policy);
+		assignSequence(policy);
 		return *this;
 	}
 

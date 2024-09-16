@@ -161,7 +161,7 @@ void SegmentAreaOp<S,D,T>::getDstConf(const ImageConf & src, ImageConf & dst) co
 		//throw std::runtime_error("SegmentAreaOp: float valued destination image not supported.");
 	}
 
-	dst.setArea(src);
+	dst.setArea(src.getGeometry());
 	dst.setChannelCount(std::max(src.getImageChannelCount(),dst.getImageChannelCount()), dst.getAlphaChannelCount());
 
 	//if (clearDst)
@@ -233,7 +233,7 @@ void SegmentAreaOp<S,D,T>::traverseChannel(const Channel & src, Channel & dst) c
 		for (size_t j=0; j<height; j++){
 
 			// STAGE 1: detect size.
-			//if (HORZ_MODE)
+			// Note: retries same locations again and again. Could return true in success, i.e. first pixel was univisited and accepted.
 			sizeProber.probe(i,j, HORZ_MODE);
 
 			if (sizeProber.size > 0){
