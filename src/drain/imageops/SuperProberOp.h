@@ -52,13 +52,17 @@ class SuperProberOp: public ImageOp {
 public:
 
 	int threshold = 128;
+	std::string filename;
+
+	/**
+	 */
+	int debug = 0;
 
 	inline
-	SuperProberOp() :
-		ImageOp(__FUNCTION__, "Hierarchical segment prober")
-	{
+	SuperProberOp() : ImageOp(__FUNCTION__, "Hierarchical segment prober"){
 		parameters.link("threshold", threshold, "min intensity");
-
+		parameters.link("filename",  filename);
+		parameters.link("debug", debug, "Dump intermediate control images etc");
 	}
 
 	void traverseChannel(const Channel & src, Channel & dst) const;

@@ -486,18 +486,35 @@ protected:
 
 	std::string name;
 
+	// Return pointer to pixel
 	template <class T>
 	inline
 	T * retrieve(size_t a){
 		return (T*) & buffer[ a*conf.byteSize ];
 	}
 
+	// Return pointer to pixel
 	template <class T>
 	inline
 	const T * retrieve(size_t a) const {
 		return (const T*) & buffer[ a*conf.byteSize ];
 	}
 
+
+	// Return pointer to pixel
+	/*
+	template <class T>
+	inline
+	T * retrieve(size_t i, size_t j){
+		return (T*) & buffer[ a*conf.byteSize ];
+	}
+
+	template <class T>
+	inline
+	const T * retrieve(size_t i, size_t j) const {
+		return (const T*) & buffer[ a*conf.byteSize ];
+	}
+	*/
 
 	std::vector<unsigned char> buffer; // non-private, for Image::swap().
 

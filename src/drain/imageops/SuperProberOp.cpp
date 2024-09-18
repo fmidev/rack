@@ -69,6 +69,16 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 	SuperProber sizeProber(src, dst);
 	sizeProber.conf.anchor.set(threshold, 0xffff);
 
+	mout.attention( sizeProber.conf.anchor);
+	mout.attention( sizeProber.src);
+	mout.attention(*sizeProber.dst);
+	mout.attention( sizeProber.control.markerImage);
+	mout.attention( sizeProber.control.handler);
+	mout.attention( sizeProber.control.visitedMarker);
+
+	sizeProber.control.markerImage.fill(0);
+
+
 	FillProber floodFill(src, dst);
 	floodFill.conf.anchor.set(threshold, 0xffff); // Min = raw.min;
 	mout.special("Floodfill: " , floodFill );
@@ -97,25 +107,72 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 	const size_t height = src.getHeight();
 
 	mout.attention("limiter=", limit);
-	mout.attention("handler=", sizeProber.proberControl.handler);
+	mout.attention("handler=", sizeProber.control.handler);
 
 	TreeSVG svg(NodeSVG::SVG);
-	TreeSVG & group = svg["segments"](NodeSVG::GROUP);
-	TreeSVG & img = group["img"](NodeSVG::IMAGE);
+	TreeSVG & root = svg["segments"](NodeSVG::GROUP);
+	TreeSVG & img = root["img"](NodeSVG::IMAGE);
+
+	for (const auto & entry: Direction::offset){
+
+		std::cout << entry.first << ": " << entry.second << '\n';
+		for (int i=0; i<8; ++i){
+			int deg = 45*i;
+			std::cout << '\t' << DIR_TURN_DEG(entry.first, deg);
+		}
+		std::cout << '\n';
+
+	}
+
+	/*
+	for (size_t j=0; j<height; j+=16){
+		for (size_t i=0; i<width; i+=16){
+			if (sizeProber.control.markerImage.get<int>(i,j) != sizeProber.control.markerImage.at(i,j)){
+				mout.error(sizeProber.control.markerImage.get<int>(i,j), "!=", sizeProber.control.markerImage.at(i,j));
+			}
+		}
+	}
+	*/
+
+
+	std::stringstream debugLabel;
+	int debugIndex = 0;
 
 	size_t sizeMapped;
-	for (size_t i=0; i<width; i++){
-		for (size_t j=0; j<height; j++){
+	for (size_t j=0; j<height; j++){
+		for (size_t i=0; i<width; i++){
+
+			Position pos(i,j);
+
+			/*
+			if (sizeProber.control.isVisited(pos)){
+				continue;
+			}
+			*/
 
 			if (i==j){
-				//mout.warn("start: ",  i, ',', j);
+				mout.warn("start: ",  i, ',', j);
+			}
+
+			if (debug > 0){
+				debugLabel.str("");
+				debugLabel << "debug-";
+				debugLabel.width(3);
+				debugLabel.fill('0');
+				debugLabel << ++debugIndex;
 			}
 
 			// STAGE 1: detect size.
 			// Note: retries same locations again and again. Could return true in success, i.e. first pixel was univisited and accepted.
 			//sizeProber.probe(i,j, HORZ_MODE);
 			sizeProber.clear();
-			sizeProber.probe2(Position(i,j), Direction::LEFT, group);
+
+			if (debug > 1){
+				sizeProber.probe2(pos, Direction::RIGHT, root[debugLabel.str()](NodeSVG::POLYGON));
+			}
+			else {
+				sizeProber.probe2(pos, Direction::RIGHT, root);
+			}
 
 			if (sizeProber.size > 0){
 
@@ -126,40 +183,60 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 				mout.warn("found segment at ", i, ',', j, " f=", src.get<float>(i,j), " size=", sizeProber.size, " => ", sizeMapped);
 
+				if (debug > 0){
+					mout.accept<LOG_WARNING>("Storing ", debugLabel.str());
+					ImageFile::write(sizeProber.control.markerImage, debugLabel.str()+".png");
+				}
+				/*
 				floodFill.conf.markerValue = sizeMapped;
 				floodFill.probe(i,j, HORZ_MODE);
-
+					*/
+			}
+			else {
+				root.erase(debugLabel.str());
 			}
 		}
 	}
 
-	std::string imgPath = "/tmp/foo.svg";
-	FilePath filePath(imgPath);
+	if (!filename.empty()){
 
-	if (NodeSVG::fileInfo.checkExtension(filePath.extension)){
+		FilePath filePath(filename);
 
-		drain::Output output(filePath);
+		// TODO:ctx could have svg, also for drainage ?
 
-		svg->set("width",  src.getWidth());
-		svg->set("height", src.getHeight());
+		if (NodeSVG::fileInfo.checkExtension(filePath.extension)){
 
-		group->setStyle("fill", "yellow");
-		group->setStyle("stroke", "red");
-		group->setStyle("stroke-width", "0.5px");
+			mout.note("Writing: ", filePath);
+			drain::Output output(filePath);
 
-		filePath.extension = "png";
-		ImageFile::write(src, filePath.str());
-		img->set("xlink:href", filePath);
-		img->set("width",  src.getWidth());
-		img->set("height", src.getHeight());
+			svg->set("width",  dst.getWidth());
+			svg->set("height", dst.getHeight());
 
-		NodeSVG::toStream(output, svg);
-		drain::TreeUtils::dump(svg, std::cout);
+			root->setStyle("fill", "yellow");
+			root->setStyle("stroke", "red");
+			root->setStyle("stroke-width", "0.5px");
+
+			filePath.extension = "png";
+			mout.note("Writing: ", filePath);
+			ImageFile::write(dst, filePath.str());
+			img->set("xlink:href", filePath);
+			img->set("width",  dst.getWidth());
+			img->set("height", dst.getHeight());
+
+			NodeSVG::toStream(output, svg);
+			drain::TreeUtils::dump(svg, std::cout);
+
+			filePath.basename = "dst";
+			mout.note("Writing: ", filePath);
+			ImageFile::write(sizeProber.control.markerImage, filePath.str());
+
+		}
+		else {
+			mout.error("Extension '", filePath.extension ,"' not accepted for SVG, path=", filePath);
+		}
 
 	}
-	else {
-		mout.error("Extension '", filePath.extension ,"' not accepted for SVG, path=", filePath);
-	}
+
 
 
 }

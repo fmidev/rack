@@ -48,8 +48,12 @@ void Image::dump(std::ostream & ostr) const {
 		//getChannel(i).toOStr(ostr);
 		ostr << '\n';
 	}
+	//std::ios state(nullptr);
+	//state.copyfmt(ostr);
 	ostr << "begin: " << std::hex << (long)begin() << '\n';
 	ostr << "  end: " << std::hex << (long)end() << '\n';
+	// ostr.copyfmt(state);
+	ostr << std::dec;
 	properties.toStream(ostr);
 	ostr << '\n';
 }

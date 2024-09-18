@@ -63,21 +63,31 @@ struct Position {
 		j = pos.j;
 		return *this;
 	}
+
+	inline
+	Position & add(const Position & offset){
+		i += offset.i;
+		j += offset.j;
+		return *this;
+	}
+
 };
 
 typedef PseudoTuple<Position> PositionTuple;
 
 // Keep for future templated methods.
+/*
 #define DIR_TURN_090(dir) (((dir << 2) & 0xff) | (dir >> 6))
 #define DIR_TURN_180(dir) (((dir << 4) & 0xff) | (dir >> 4))
 #define DIR_TURN_270(dir) (((dir << 6) & 0xff) | (dir >> 2))
-
+*/
 #define DIR_TURN_DEG(dir, deg) (((dir << (deg/45)) & 0xff) | (dir >> (8 - deg/45)))
 
 
 struct Direction {
 
-	typedef unsigned char value_t;
+	//typedef unsigned char value_t;
+	typedef short int value_t;
 
 	static const value_t NONE = 0;
 	static const value_t UP=1;
@@ -140,7 +150,11 @@ struct Direction {
 
 };
 
-
+inline
+std::ostream &operator<<(std::ostream &ostr, const Position & p){
+	ostr << '[' << p.i << ',' << p.j << ']';
+    return ostr;
+}
 
 } // image::
 

@@ -62,7 +62,7 @@ struct SuperProberConf {
 
 	Range<int> anchor;
 
-	int visitedMarker = 255;
+	//int visitedMarker = 255;
 
 };
 
@@ -89,7 +89,9 @@ public:
 	//CoordinateHandler2D handler;
 
 	// SuperProber(const Channel &s, Channel &d) : SegmentProber<int,int,SegmentProberConf<int, int> >(s, d), size(0) {};
-	SuperProber(const Channel &s, Channel &d) : SegmentProber<int,int,SuperProberConf>(s, d), size(0) {};
+	SuperProber(const Channel &s, Channel &d) : SegmentProber<int,int,SuperProberConf>(s, d), size(0) {
+		//control.markerImage.set
+	};
 
 
 	// Document the base?
@@ -105,19 +107,9 @@ public:
 	}
 
 	virtual inline
-	void visit(const Position & pos) {
+	void visit2(const Position & pos) {
 		update(pos);
-		dst->put(pos.i, pos.j, conf.visitedMarker);
-	}
-
-
-	/// Experimental
-	/**
-	 */
-	virtual inline
-	bool isVisited(const Position & pos) const {
-		return (dst->get<dst_t>(pos.i, pos.j) > 0);
-		//return (dst->get<dst_t>(pos.i, pos.j) == conf.visitedMarker);
+		control.markVisited(pos);
 	}
 
 	/*
@@ -127,7 +119,7 @@ public:
 	}
 	*/
 
-
+	// DEPRECATING
 	virtual // place holder
 	bool isValidSegment(int i, int j) const {
 		return true;
@@ -141,7 +133,7 @@ public:
 	 *  \return - true, if this pixel belongs to a new segment, and false if probing can continue
 	 */
 	virtual inline
-	bool checkNewSegment(const Position & pos, Direction::value_t dir) const {
+	bool isNewSegment(const Position & pos, Direction::value_t dir) const {
 		return this->conf.anchor.contains(src.get<src_t>(pos.i, pos.j));
 		//return (dst->get<dst_t>(pos.i, pos.j) == conf.visitedMarker);
 	}
@@ -149,28 +141,61 @@ public:
 
 	bool checkNext(Position & pos, Direction::value_t DIR, TreeSVG & tree){
 
+		drain::Logger mout(__FILE__, __FUNCTION__, __LINE__);
+
+		/* No use, offset + handler is not much more expensive
+		if (DIR == Direction::NONE){
+
+		}
+		*/
+
 		const Position & offset = Direction::offset.find(DIR)->second;
 
 		pos.i += offset.i;
 		pos.j += offset.j;
 
-		if (!proberControl.handler.handle(pos.i, pos.j)){
-			if (!isVisited(pos)){
-				if (!checkNewSegment(pos,DIR)){ // <-- note: this may start new segment !
-					visit(pos);
+		mout.debug() << "checkNext: " << pos.i << ',' << pos.j;
+
+
+		if (!control.handler.handle(pos.i, pos.j)){
+			mout << " (OK)";
+			if (!control.isVisited(pos)){
+				if (!isNewSegment(pos,DIR)){
+					// Default = continue probing...
+					mout << " mark:" << pos.i << ',' << pos.j;
+					visit2(pos);
+					dst->put(pos.i, pos.j, DIR);
 					// update(pos);
+					mout << mout.endl;
 					return true;
 				}
 				else {
-					TreeSVG & segment = tree[drain::StringBuilder<'-'>("seg",pos.i,pos.j)](NodeSVG::CIRCLE); // (NodeSVG::POLYGON);
+					// New segment!
 					// TreeSVG & segment = tree["seg"](NodeSVG::CIRC); // (NodeSVG::POLYGON);
-					segment->set("cx", pos.i);
-					segment->set("cy", pos.j);
-					segment->set("r", 5);
-					//<polygon points="100,10 150,190 50,190" style="fill:lime;stroke:purple;stroke-width:3" />
+					if (DIR != Direction::NONE){
+						TreeSVG & segment = tree[drain::StringBuilder<'-'>("seg",pos.i,pos.j)](NodeSVG::CIRCLE); // (NodeSVG::POLYGON);
+						segment->set("cx", pos.i);
+						segment->set("cy", pos.j);
+						segment->set("r", 5);
+						// <polygon points="100,10 150,190 50,190" style="fill:lime;stroke:purple;stroke-width:3" />
+						mout << " NEW SEG! ";
+						control.markerImage.put(pos.i, pos.j, 192);
+					}
+					else {
+						control.markerImage.put(pos.i, pos.j, 85);
+					}
+				    // Scan EDGE!
+
 				}
 			}
+			else {
+				mout << " (already visited)"  << pos.i << ',' << pos.j;
+			}
 		}
+		else {
+			mout << " (OUT)";
+		}
+		mout << mout.endl;
 
 		return false;
 	}
@@ -180,21 +205,36 @@ public:
 
 		Position pos2(pos);
 
-		Position posSide;
+		Position p;
+
+		//tree->get("points").setType(typeid(std::string));
+		//tree->get("points").setSeparator(0);
 
 		while (checkNext(pos2, DIR, tree)){
 
-			posSide = pos2;
-			// if (checkNext(posSide, Direction::turn90(DIR), tree)){ /// TODO: Macro turn -> test -> complete with template
-			if (checkNext(posSide, DIR_TURN_090(DIR), tree)){ /// TODO: Macro turn -> test -> complete with template
-				probe2(posSide, DIR, tree); // recursion
-				probe2(posSide, DIR_TURN_180(DIR), tree);
+			// tree->get("points") << " " << pos2.i << ','  << pos2.j;
+			if (DIR == Direction::NONE){
+				DIR = Direction::RIGHT; // TODO: use "rotational", old idea
 			}
 
-			posSide = pos2;
-			if (checkNext(posSide, DIR_TURN_270(DIR), tree)){
-				probe2(posSide, DIR, tree); // recursion
-				probe2(posSide, DIR_TURN_180(DIR), tree);
+			//Position
+			p = pos2;
+			//dst->put(posSide.i, posSide.j, DIR);
+
+			// if (checkNext(posSide, Direction::turn90(DIR), tree)){ /// TODO: Macro turn -> test -> complete with template
+			if (checkNext(p, DIR_TURN_DEG(DIR, 90), tree)){ /// TODO: Macro turn -> test -> complete with template
+				//dst->put(posSide.i, posSide.j, 64);
+				std::cout << "090" << " = " << p.i << ',' << p.j << '\n';
+				probe2(p, DIR, tree); //["+90fwd"](NodeSVG::POLYGON)); // recursion
+				probe2(p, DIR_TURN_DEG(DIR, 180), tree); //["+90inv"](NodeSVG::POLYGON));
+			}
+
+			p = pos2;
+			if (checkNext(p, DIR_TURN_DEG(DIR, 270), tree)){
+				//dst->put(posSide.i, posSide.j, 192);
+				std::cout << "270" << " = " << p.i << ',' << p.j << '\n';
+				probe2(p, DIR, tree); // ["-90pos"](NodeSVG::POLYGON)); // recursion
+				probe2(p, DIR_TURN_DEG(DIR, 180), tree); // ["-90inv"](NodeSVG::POLYGON));
 			}
 
 		}

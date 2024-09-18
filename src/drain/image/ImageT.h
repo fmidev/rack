@@ -103,13 +103,15 @@ public:
 
 	inline
 	const T & at(size_t i, size_t j) const {
-		return *(T *) retrieve<T>(i);
+		return *(const T *) retrieve<T>(address(i,j));
 		//return *(const T *)&buffer[ address(i)*encoding.byteSize ];
 	};
 
 	inline
 	T & at(size_t i, size_t j){
-		return *(T *) & buffer[ address(i,j) * conf.byteSize ];
+		return *(T *) retrieve<T>(address(i,j));
+		//return *(T *) retrieve<T>(i,j);
+		// return *(T *) & buffer[ address(i,j) * conf.byteSize ];
 	};
 
 

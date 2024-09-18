@@ -512,24 +512,31 @@ x	 *  \see clearData()
 		// drain::Logger mout(__FILE__, __FUNCTION__);
 
 		// Idea: first assign the leaf, and step one back.
-		typename path_t::const_iterator it = path.end();
-		if (it == path.begin())
+		typename path_t::const_iterator pit = path.end();
+		if (pit == path.begin())
 			return;
 		else {
 			// Move 'it' back one step, to point to the leaf (the last element in chain).
-			--it;
+			--pit;
 
 			// Safe (identity) if it == path.begin():
-			tree_t & parent = this->get(path.begin(), it);
+			tree_t & parent = this->get(path.begin(), pit);
 
 			#ifdef DRAIN_TREE_ORDERED  // map
 
 			// TODO: generalize "find" for find first, etc
-			parent.children.erase(*it);
+			parent.children.erase(*pit);
 
 			#else
 
-			drain::Logger(__FILE__, __LINE__, __FUNCTION__).error("unimplemented code");
+			//drain::Logger(__FILE__, __LINE__, __FUNCTION__).error("unimplemented code");
+			for (iterator it = children.begin(); it != children.end(); ++it){
+				if (it->first == *pit){
+					drain::Logger(__FILE__, __LINE__, __FUNCTION__).attention("deleting (one) ", *pit);
+					parent.children.erase(it);
+					return;
+				}
+			}
 
 
 			#endif

@@ -237,7 +237,7 @@ void ImageFrame::toStream(std::ostream & ostr) const {
 
 	ostr << getConf();
 
-	ostr << ' ' << std::hex << (size_t) segmentBegin << ' ' << std::hex << (size_t) segmentEnd << ' ';
+	ostr << ' ' << std::hex << (size_t) segmentBegin << ' ' << std::hex << (size_t) segmentEnd << ' ' << std::dec;
 
 }
 

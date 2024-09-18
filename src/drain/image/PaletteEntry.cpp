@@ -128,11 +128,13 @@ void PaletteEntry::checkAlpha(){
 
 void PaletteEntry::getHexColor(std::ostream & ostr) const {
 
+	ostr << std::hex;
 	for (color_t::const_iterator it = color.begin(); it!=color.end(); ++it){
 		ostr.width(2);
 		ostr.fill('0');
 		ostr << std::hex << static_cast<int>(*it);
 	}
+	ostr << std::dec;
 
 }
 

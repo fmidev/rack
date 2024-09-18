@@ -56,8 +56,6 @@ typedef std::list<drain::image::Position> Contour;
  *   \author Markus.Peura@fmi.fi
  */
 
-//typedef std::list<drain::Point2D<int> > Contour;
-
 
 /// A recursive method for visiting pixels of a segment in an image.
 /**
@@ -74,10 +72,13 @@ class EdgeTracker {
 
 public:
 
+	PositionTuple pos;
+	Direction::value_t dir = Direction::NONE;
 
-	EdgeTracker(const Channel & src, ProberControl & cr) : proberCriteria(cr), src(src){
+
+	EdgeTracker(const Channel & src, ProberControl & control) : control(control), src(src){
 		init();
-		proberCriteria.controlImage.setGeometry(src.getGeometry().area);
+		control.markerImage.setGeometry(src.getGeometry().area);
 	}
 
 	virtual
@@ -97,49 +98,44 @@ public:
 		return true;
 	}
 
+	inline
+	void next(){
+
+	}
+
+	Contour contour;
+
 	/**
 	 *  \param
 	 *  \param
-	 *  \param dir - Entry direction (from outside towards inside).
+	 *  \param entryDir - Entry direction (from outside towards inside).
 	 *  \param Contour - resulting edge coordinates
 	 */
-	void track(const Channel & anchor, Channel & mark, const PositionTuple & startPos, Direction::value_t dir, Contour & contour){
-
-		CoordinateHandler2D handler(src.getGeometry(), src.getCoordinatePolicy());
+	void track(const PositionTuple & startPos, Direction::value_t entryDir){
 
 		/*
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		const CoordinatePolicy & cp = handler.getPolicy();
 		*/
-
 		// Turn around (180deg)
-		const Direction::value_t dirOrig = DIR_TURN_DEG(dir, 180);
+		const Direction::value_t startDir = DIR_TURN_DEG(dir, 180);
 
 		// Turn a bit right (45deg)
-		dir = DIR_TURN_DEG(dirOrig, 45);
+		dir = DIR_TURN_DEG(entryDir, 45);
 
-		PositionTuple pos(startPos);
-		contour.push_front(startPos);
-
+		Position posNext;
 
 		// Idea: try to move, and if not possible, turn clockwise.
 		// end when initial pos and dir (about to be) repeated.
-		while ((dir != dirOrig) && (pos != startPos)){
+		while ((dir != startDir) && (pos != startPos)){
 
-			Direction::value_t d = dir;
-
-			const Position & offset = Direction::offset.find(dir)->second;
-
-			Position posNext(pos.i+offset.i, pos.j+offset.j);
-
-			if (handler.handle(posNext)){
+			if (control.move(pos, dir) && control.isValidPixel(src, pos)){
+				contour.push_back(pos);
+			}
+			else {
+				dir = DIR_TURN_DEG(entryDir, 45);
 			}
 
-			dir = DIR_TURN_DEG(d, 45);
-
-
 		}
-
 
 	}
 
@@ -174,9 +170,9 @@ public:
 
 
 	// consider protected:
-	ProberControl & proberCriteria;
+	ProberControl & control;
 
-	// This could be in proberCriteria, but is in (Super)Prober, inherited from SegmentProber
+	// This could be in control, but is in (Super)Prober, inherited from SegmentProber
 	//CoordinateHandler2D handler;
 
 	const Channel & src;

@@ -59,39 +59,114 @@ namespace image
 
 struct ProberControl {
 
-	virtual inline
-	bool isValidPixel(int i) const = 0;
-
-	virtual inline
-	bool isVisited(const Position & pos) const {
-		return controlImage.at(pos.i, pos.j) != visitedMarker;
-	};
+	typedef unsigned char marker_t;
 
 	virtual inline
 	~ProberControl(){};
 
+	/// NEW
+	/**
+	 */
+	virtual inline
+	bool isVisited(const Position & pos) const {
+		//return (markerImage.get<int>(pos.i, pos.j) > 0); //== visitedMarker); // > 0
+		return (markerImage.at(pos.i, pos.j) > 0); //== visitedMarker); // > 0
+	}
+
+	virtual inline
+	void markVisited(const Position & pos){
+		//markerImage.put(pos.i, pos.j, 255);
+		markerImage.at(pos.i, pos.j) = visitedMarker;
+	}
+
+	virtual inline
+	void mark(const Position & pos, marker_t m){
+		markerImage.at(pos.i, pos.j) |= m;
+		//markerImage.put(pos.i, pos.j, markerImage.get<int>(pos.i, pos.j) | m);
+	}
+
+	void blockDir(const Position & pos, Direction::value_t dir){
+
+	}
+
+	virtual inline
+	bool isValidDir(const Position & pos, Direction::value_t dir) const {
+		return (dir | markerImage.at(pos.i, pos.j)) != 0;
+		//return (markerImage.get<int>(pos.i, pos.j) | dir) != 0;
+	}
+
+	virtual
+	bool isValidPixel(const Channel & src, const Position & pos) const = 0;
+
+
+	// enum {OK=0, COORD_ERROR=1, DIR_ERROR=2} move_status;
+
+	virtual inline
+	// move_status
+	bool move(Position & pos, Direction::value_t dir) const {
+
+		Position posNext(pos);
+		posNext.add(Direction::offset.find(dir)->second);
+
+		if (!handler.handle(posNext)){
+			if (isValidDir(posNext, dir)){
+				pos = posNext;
+				return true; //OK;
+			}
+			else {
+				return false; // DIR_ERROR;
+			}
+		}
+		else {
+			return false; // COORD_ERROR;
+		}
+
+	}
+
+
+
 	// This could be in proberCriteria, but is in (Super)Prober, inherited from SegmentProber
 	CoordinateHandler2D handler;
 
-	ImageT<unsigned char> controlImage;
 
-	unsigned char visitedMarker = 0xff;
+	ImageT<marker_t> markerImage;
+	//Image markerImage;
+
+	marker_t visitedMarker = 0xff;
 
 };
 
-struct SimpleProrolberControl : public ProberControl {
+struct SimpleProberControl : public ProberControl {
 
 	int threshold = 128;
 
+	virtual
+	bool isValidPixel(const Channel & src, const Position & pos) const {
+		return src.get<int>(pos.i, pos.j) > threshold;
+	};
+
+	// int threshold = 128;
+
+	/// Old, deprecating
+	/*
 	virtual inline
-	bool isValidPixel(int i) const {
+	bool isValidPixel(int i) const override {
 		return i > threshold;
 	};
 
+	/// Old, deprecating
 	virtual inline
-	bool isVisited(int i) const {
+	bool isVisited(int i) const override {
 		return (i == visitedMarker);
 	};
+	*/
+
+	/*
+	virtual inline
+	bool isVisited(const Position & pos) const {
+		return controlImage.at(pos.i, pos.j) != visitedMarker;
+	};
+	*/
 
 
 };

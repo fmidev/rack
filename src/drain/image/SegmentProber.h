@@ -101,11 +101,11 @@ class SegmentProber {
 
 protected:
 
-	SimpleProrolberControl basicControl;
+	SimpleProberControl basicControl;
 
 public:
 
-	ProberControl & proberControl;
+	ProberControl & control;
 
 	typedef S src_t;
 	typedef D dst_t;
@@ -113,11 +113,12 @@ public:
 
 	conf_t conf;
 
-	SegmentProber(const Channel &s) : proberControl(basicControl), src(s), dst(NULL){
+	SegmentProber(const Channel &s) : control(basicControl), src(s), dst(NULL){
 		init();
 	};
 
-	SegmentProber(const Channel &s, Channel &d) : proberControl(basicControl), src(s), dst(&d) {
+	SegmentProber(const Channel &s, Channel &d) : control(basicControl), src(s), dst(&d) {
+		control.markerImage.setGeometry(s.getGeometry().area);
 		init();
 	};
 
@@ -150,9 +151,9 @@ public:
 	void init(){
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		proberControl.handler.set(src.getGeometry(), src.getCoordinatePolicy());
+		control.handler.set(src.getGeometry(), src.getCoordinatePolicy());
 		// src.adjustCoordinateHandler(handler);
-		mout.debug(proberControl.handler );
+		mout.debug(control.handler );
 		mout.debug2(src );
 		if (dst){
 			mout.debug2(*dst );
@@ -170,7 +171,7 @@ public:
 
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-		const CoordinatePolicy & cp = proberControl.handler.getPolicy();
+		const CoordinatePolicy & cp = control.handler.getPolicy();
 		bool HORZ_MODE = ((cp.xUnderFlowPolicy != EdgePolicy::POLAR) && (cp.xOverFlowPolicy != EdgePolicy::POLAR));
 
 		if (HORZ_MODE){
@@ -208,7 +209,7 @@ public:
 
 
 		clear();
-		if (proberControl.handler.validate(i, j)){
+		if (control.handler.validate(i, j)){
 			/*
 			if (isValidPixel(i,j)){
 				Logger mout(getImgLog(), "SegmentProber", __FUNCTION__);
@@ -328,7 +329,7 @@ protected:
 		j += DJ;
 
 		// Drop isValidSegment
-		if (proberControl.handler.validate(i,j)){ // must be first, changes coords
+		if (control.handler.validate(i,j)){ // must be first, changes coords
 			if (isValidPixel(i,j))
 				if (isValidMove(i0,j0, i,j))
 					return true;
@@ -389,20 +390,20 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 
 			i2 = i;
 			j2 = j-1;
-			if (proberControl.handler.validate(i2, j2)){
+			if (control.handler.validate(i2, j2)){
 				if (isValidMove(i,j, i2,j2))
 					scanHorzProbeVert(i2,j2);
 			}
 
 			i2 = i;
 			j2 = j+1;
-			if (proberControl.handler.validate(i2, j2)){
+			if (control.handler.validate(i2, j2)){
 				if (isValidMove(i,j, i2,j2))
 					scanHorzProbeVert(i2,j2);
 			}
 
 			++i;
-			proberControl.handler.validate(i, j); // check?
+			control.handler.validate(i, j); // check?
 
 		}; // while (i != iEnd);
 
@@ -446,19 +447,19 @@ s	 *   the horizontal direction is handled sequentially whereas the vertical dir
 			j2 = j;
 			// Test left side
 			i2 = i-1;
-			if (proberControl.handler.validate(i2, j2)){
+			if (control.handler.validate(i2, j2)){
 				if (isValidMove(i,j, i2,j2))
 					scanVertProbeHorz(i2,j2);
 			}
 			j2 = j;
 			// Test right side
 			i2 = i+1;
-			if (proberControl.handler.validate(i2, j2)){
+			if (control.handler.validate(i2, j2)){
 				if (isValidMove(i,j, i2,j2))
 					scanVertProbeHorz(i2,j2);
 			}
 			++j;
-			proberControl.handler.validate(i, j); // check?
+			control.handler.validate(i, j); // check?
 		};
 
 	}
@@ -478,7 +479,7 @@ std::ostream & operator<<(std::ostream & ostr, const SegmentProber<S,D,C> & prob
 	ostr << "conf: " << prober.conf << ", ";
 	//ostr << "width="     << (float)prober.width << ',';
 	//ostr << "height="    << (float)prober.height << ',';
-	ostr << "handler: "   << prober.proberControl.handler << ',';
+	ostr << "handler: "   << prober.control.handler << ',';
 	//ostr << "p="         << prober.p;
 	return ostr;
 }
