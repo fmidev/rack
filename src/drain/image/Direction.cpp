@@ -60,6 +60,19 @@ const std::map<Direction::value_t,Position> Direction::offset = {
 		{UP_LEFT,    {-1,-1}}
 };
 
+
+const Direction::dict_t Direction::arrows = {
+		{NONE,       {"←"}},
+		{UP,         {"↑"}},
+		{UP_RIGHT,   {"↗"}},
+		{RIGHT,      {"→"}},
+		{DOWN_RIGHT, {"↘"}},
+		{DOWN,       {"↓"}},
+		{DOWN_LEFT,  {"↓"}},
+		{LEFT,       {"←"}},
+		{UP_LEFT,    {"↖"}}
+};
+
 } // image::
 
 } // drain::

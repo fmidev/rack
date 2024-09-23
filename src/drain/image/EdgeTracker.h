@@ -37,6 +37,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "CoordinateHandler.h"
 #include "Direction.h"
 #include "ImageChannel.h"
+#include "ImageFile.h"
+
 // #include "FilePng.h"
 
 namespace drain
@@ -72,9 +74,14 @@ class EdgeTracker {
 
 public:
 
-	PositionTuple pos;
+	Position pos;
 	Direction::value_t dir = Direction::NONE;
 
+	Position startPos;
+	Direction::value_t startDir = Direction::NONE;
+
+	// PositionTuple pos;
+	// Direction::value_t dir = Direction::NONE;
 
 	EdgeTracker(const Channel & src, ProberControl & control) : control(control), src(src){
 		init();
@@ -84,58 +91,124 @@ public:
 	virtual
 	~EdgeTracker(){};
 
-	typedef std::vector<drain::Point2D<short int> > step_t;
-
-	static
-	const step_t steps;
-
 	typedef S src_t;
 	typedef D dst_t;
 
-
-
-	bool ok(){
-		return true;
-	}
-
-	inline
-	void next(){
-
-	}
+	// typedef std::vector<drain::Point2D<short int> > step_t;
+	// static
+	// const step_t steps;
 
 	Contour contour;
 
-	/**
-	 *  \param
-	 *  \param
-	 *  \param entryDir - Entry direction (from outside towards inside).
-	 *  \param Contour - resulting edge coordinates
-	 */
-	void track(const PositionTuple & startPos, Direction::value_t entryDir){
+	void setStart(const Position & startPos, Direction::value_t startDir){
+		pos = startPos;
+		dir = startDir;
+		this->startPos = startPos;
+		this->startDir = startDir;
+	};
 
-		/*
+	//ProberControl::move_status next(){
+	bool next(){
+
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		*/
-		// Turn around (180deg)
-		const Direction::value_t startDir = DIR_TURN_DEG(dir, 180);
 
-		// Turn a bit right (45deg)
-		dir = DIR_TURN_DEG(entryDir, 45);
+		mout.accept<LOG_WARNING>("From ", pos, " to: ", Direction::arrows[dir], ' ', '<', dir , '>');
 
-		Position posNext;
+		Position p = pos;
 
-		// Idea: try to move, and if not possible, turn clockwise.
-		// end when initial pos and dir (about to be) repeated.
-		while ((dir != startDir) && (pos != startPos)){
-
-			if (control.move(pos, dir) && control.isValidPixel(src, pos)){
+		if (control.move(p, dir) == ProberControl::MOVE_ACCEPTED){ // p changes in this condition
+			if (control.isValidPixel(src, p)){
+				mout.accept<LOG_WARNING>(p);
+				pos = p;
 				contour.push_back(pos);
+				dir = DIR_TURN_DEG(dir, 225);
+				/* if (Direction::isDiagonal(dir)){
+							Position p(startPos.i, pos.j);
+							control.markBlocked(pos, dir+90deg)
+						}
+				 */
+				//control.markBlockedOut(startPos,  DIR_TURN_DEG(dir, -90));
 			}
 			else {
-				dir = DIR_TURN_DEG(entryDir, 45);
+				mout.pending<LOG_WARNING>(p, '>', dir, "->", pos, " outside segment ");
+				// control.markBlockedIn(pos0, dir);
+				dir = DIR_TURN_DEG(dir, 45);
 			}
+		}
+		else {
+			mout.reject<LOG_WARNING>(p, '>', dir, "->", pos, " illegal move ");
+			dir = DIR_TURN_DEG(dir, 45);
+		}
+		// control.markBlocked(pos, dir); // NOT NEEDED...
+
+		return (! (dir == startDir) && (pos == startPos) );
+
+		//while ((dir != startDir) && (pos != startPos));
+
+	}
+
+
+	/**
+	 *  \param
+	 *  \param startPos - starting position (i,j)
+	 *  \param startDir -
+	 *  \param Contour - resulting edge coordinates
+	 *
+	 *  Note: \c dir is NOT Entry direction (from outside towards inside).
+	 */
+	void track(const Position & startPos, Direction::value_t startDir){
+
+		/*
+		*/
+		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+		//const Position startPos(pos);
+		//const Direction::value_t startDir(dir);
+
+		mout.accept<LOG_WARNING>("Start ", pos, ':', Direction::arrows[dir], ' ', '<', dir , '>');
+
+
+		setStart(startPos, startDir);
+
+		while (next()){
+			mout.accept<LOG_WARNING>("New edge pos: ", pos);
+		}
+		/*
+		Position p;
+
+		// Idea: try to move, and if not possible, turn clockwise.
+		do {
+
+			p = pos;
+			if (control.move(p, dir) == ProberControl::MOVE_ACCEPTED){ // Note: pos was changed in this condition
+				if (control.isValidPixel(src, p)){
+					mout.accept<LOG_WARNING>(p);
+					pos = p;
+					contour.push_back(pos);
+					dir = DIR_TURN_DEG(dir, 225);
+					//control.markBlockedOut(startPos,  DIR_TURN_DEG(dir, -90));
+				}
+				else {
+					mout.pending<LOG_WARNING>(p, '>', dir, "->", pos, " outside segment ");
+					// control.markBlockedIn(pos0, dir);
+					dir = DIR_TURN_DEG(dir, 45);
+				}
+			}
+			else {
+				mout.reject<LOG_WARNING>(p, '>', dir, "->", pos, " illegal move ");
+				dir = DIR_TURN_DEG(dir, 45);
+			}
+			// control.markBlocked(pos, dir); // NOT NEEDED...
+
 
 		}
+		while (! (dir == startDir) && (pos == startPos) );
+		*/
+
+		mout.note("Writing debug image");
+
+		ImageFile::write(control.markerImage, "edge.png");
+		exit(0);
 
 	}
 

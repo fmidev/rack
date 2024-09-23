@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <map>
 #include <drain/PseudoTuple.h>
+#include <drain/util/Dictionary.h>
 
 namespace drain
 {
@@ -65,11 +66,22 @@ struct Position {
 	}
 
 	inline
+	bool operator==(const Position & pos) const {
+		return ((i == pos.i) && (j == pos.j));
+	}
+
+	inline
+	bool operator!=(const Position & pos) const {
+		return ((i != pos.i) || (j != pos.j));
+	}
+
+	inline
 	Position & add(const Position & offset){
 		i += offset.i;
 		j += offset.j;
 		return *this;
 	}
+
 
 };
 
@@ -86,7 +98,6 @@ typedef PseudoTuple<Position> PositionTuple;
 
 struct Direction {
 
-	//typedef unsigned char value_t;
 	typedef short int value_t;
 
 	static const value_t NONE = 0;
@@ -99,7 +110,20 @@ struct Direction {
 	static const value_t LEFT=64;
 	static const value_t UP_LEFT=128;
 
+	static const value_t RECTANGULAR = UP | RIGHT | DOWN | LEFT;
+	static const value_t DIAGONAL = UP_RIGHT | DOWN_RIGHT | DOWN_LEFT | UP_LEFT;
 
+	static
+	bool isDiagonal(value_t dir){
+		return (dir & DIAGONAL) > 0;
+	}
+
+
+	// https://www.w3.org/TR/xml-entity-names/025.html
+	// static
+	typedef  Dictionary<value_t, std::string> dict_t;
+
+	static const dict_t arrows;
 
 	/// Opposite direction
 	/**

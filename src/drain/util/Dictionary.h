@@ -107,6 +107,14 @@ public:
 		return this->back();
 	}
 
+	const V & operator[](const K & key) const {
+		return getValue(key);
+	}
+
+	const V & operator()(const V & value) const {
+		return getKey(value);
+	}
+
 
 	typename container_t::const_iterator findByKey(const K & key) const {
 		for (typename container_t::const_iterator it = this->begin(); it != this->end(); ++it){

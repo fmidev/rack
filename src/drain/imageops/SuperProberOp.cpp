@@ -66,17 +66,17 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 	sizeProber.conf.anchor.set(raw.min, raw.max);
 	mout.debug2("areaProber:" , sizeProber );
 	*/
-	SuperProber sizeProber(src, dst);
-	sizeProber.conf.anchor.set(threshold, 0xffff);
+	SuperProber superProber(src, dst);
+	superProber.conf.anchor.set(threshold, 0xffff);
 
-	mout.attention( sizeProber.conf.anchor);
-	mout.attention( sizeProber.src);
-	mout.attention(*sizeProber.dst);
-	mout.attention( sizeProber.control.markerImage);
-	mout.attention( sizeProber.control.handler);
-	mout.attention( sizeProber.control.visitedMarker);
+	mout.attention( superProber.conf.anchor);
+	mout.attention( superProber.src);
+	mout.attention(*superProber.dst);
+	mout.attention( superProber.control.markerImage);
+	mout.attention( superProber.control.handler);
+	mout.attention( superProber.control.visitedMarker);
 
-	sizeProber.control.markerImage.fill(0);
+	superProber.control.markerImage.fill(0);
 
 
 	FillProber floodFill(src, dst);
@@ -103,16 +103,17 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 	typedef drain::typeLimiter<int> Limiter;
 	typename Limiter::value_t limit = dst.getConf().getLimiter<int>();
 
-	const size_t width = src.getWidth();
-	const size_t height = src.getHeight();
+	const int width = src.getWidth();
+	const int height = src.getHeight();
 
 	mout.attention("limiter=", limit);
-	mout.attention("handler=", sizeProber.control.handler);
+	mout.attention("handler=", superProber.control.handler);
 
 	TreeSVG svg(NodeSVG::SVG);
 	TreeSVG & root = svg["segments"](NodeSVG::GROUP);
 	TreeSVG & img = root["img"](NodeSVG::IMAGE);
 
+	/* DEBUG dir-steps
 	for (const auto & entry: Direction::offset){
 
 		std::cout << entry.first << ": " << entry.second << '\n';
@@ -121,8 +122,8 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 			std::cout << '\t' << DIR_TURN_DEG(entry.first, deg);
 		}
 		std::cout << '\n';
-
 	}
+	*/
 
 	/*
 	for (size_t j=0; j<height; j+=16){
@@ -139,10 +140,12 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 	int debugIndex = 0;
 
 	size_t sizeMapped;
-	for (size_t j=0; j<height; j++){
-		for (size_t i=0; i<width; i++){
 
-			Position pos(i,j);
+	Position pos;
+	for (pos.j=0; pos.j<height; pos.j++){
+		for (pos.i=0; pos.i<width; pos.i++){
+
+			//Position pos(i,j);
 
 			/*
 			if (sizeProber.control.isVisited(pos)){
@@ -150,8 +153,8 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 			}
 			*/
 
-			if (i==j){
-				mout.warn("start: ",  i, ',', j);
+			if (pos.i == pos.j){
+				mout.warn("start: ",  pos);
 			}
 
 			if (debug > 0){
@@ -165,27 +168,28 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 			// STAGE 1: detect size.
 			// Note: retries same locations again and again. Could return true in success, i.e. first pixel was univisited and accepted.
 			//sizeProber.probe(i,j, HORZ_MODE);
-			sizeProber.clear();
+			superProber.clear();
 
 			if (debug > 1){
-				sizeProber.probe2(pos, Direction::RIGHT, root[debugLabel.str()](NodeSVG::POLYGON));
+				superProber.probe2(pos, Direction::NONE, root[debugLabel.str()](NodeSVG::POLYGON));
 			}
 			else {
-				sizeProber.probe2(pos, Direction::RIGHT, root);
+				//superProber.probe2(pos, Direction::RIGHT, root);
+				superProber.probe2(pos, Direction::NONE, root);
 			}
 
-			if (sizeProber.size > 0){
+			if (superProber.size > 0){
 
 				// STAGE 2: mark the segment with size
-				sizeMapped = limit(sizeProber.size); //limit(ftor(sizeProber.size));
+				sizeMapped = limit(superProber.size); //limit(ftor(sizeProber.size));
 				if (sizeMapped == 0)
 					sizeMapped = 1;
 
-				mout.warn("found segment at ", i, ',', j, " f=", src.get<float>(i,j), " size=", sizeProber.size, " => ", sizeMapped);
+				mout.warn("found segment at ", pos, " f=", src.get<float>(pos.i, pos.j), " size=", superProber.size, " => ", sizeMapped);
 
 				if (debug > 0){
 					mout.accept<LOG_WARNING>("Storing ", debugLabel.str());
-					ImageFile::write(sizeProber.control.markerImage, debugLabel.str()+".png");
+					ImageFile::write(superProber.control.markerImage, debugLabel.str()+".png");
 				}
 				/*
 				floodFill.conf.markerValue = sizeMapped;
@@ -228,7 +232,7 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 			filePath.basename = "dst";
 			mout.note("Writing: ", filePath);
-			ImageFile::write(sizeProber.control.markerImage, filePath.str());
+			ImageFile::write(superProber.control.markerImage, filePath.str());
 
 		}
 		else {

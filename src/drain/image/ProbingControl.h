@@ -79,19 +79,53 @@ struct ProberControl {
 		markerImage.at(pos.i, pos.j) = visitedMarker;
 	}
 
+	/*
 	virtual inline
 	void mark(const Position & pos, marker_t m){
 		markerImage.at(pos.i, pos.j) |= m;
 		//markerImage.put(pos.i, pos.j, markerImage.get<int>(pos.i, pos.j) | m);
 	}
+	*/
 
-	void blockDir(const Position & pos, Direction::value_t dir){
-
+	/// Disable \b exit \b from position \c pos towards direction \c dir.
+	/**
+	 *  Mark blocking for this position(i,j).
+	 *
+	 *  \param pos - value parameter forwarded to direction dir
+	 *  \param dir - direction to be inverted for marking
+	 *
+	 */
+	void markBlockedIn(const Position & pos, Direction::value_t dir){
+		markerImage.at(pos.i, pos.j) |= dir;
 	}
 
+	/// Disable \b entry \b to position \c pos from direction \c dir \e inverted .
+	/**
+	 *  Mark inverse blocking for \c "pos+dir", with dir inverted 180 degrees.
+	 *
+	 *  \param pos - value parameter forwarded to direction dir
+	 *  \param dir - direction to be inverted for marking
+	 *  \return - \c true in success, \c false upon coordinate overflow
+	 *
+	 */
+	bool markBlockedOut(Position pos, Direction::value_t dir){
+		pos.add(Direction::offset.find(dir)->second);
+		if (handler.handle(pos.i, pos.j)){
+			return false;
+		}
+		else {
+			markerImage.at(pos.i, pos.j) |= DIR_TURN_DEG(dir, 180);
+			return true;
+		}
+	}
+
+	///   Direction NONE is always valid,
+	/**
+	 *
+	 */
 	virtual inline
 	bool isValidDir(const Position & pos, Direction::value_t dir) const {
-		return (dir | markerImage.at(pos.i, pos.j)) != 0;
+		return (dir & markerImage.at(pos.i, pos.j)) == 0;
 		//return (markerImage.get<int>(pos.i, pos.j) | dir) != 0;
 	}
 
@@ -99,10 +133,32 @@ struct ProberControl {
 	bool isValidPixel(const Channel & src, const Position & pos) const = 0;
 
 
-	// enum {OK=0, COORD_ERROR=1, DIR_ERROR=2} move_status;
+	typedef enum {MOVE_ACCEPTED=0, COORD_ERROR=1, DIR_ERROR=2} move_status;
+
 
 	virtual inline
-	// move_status
+	move_status move(Position & pos, Direction::value_t dir) const {
+
+		Position pos2(pos);
+		pos2.add(Direction::offset.find(dir)->second);
+
+		if (!handler.handle(pos2)){ // Warning: in POLAR/WRAP coordinates, also dir should change.
+			if (isValidDir(pos2, dir)){ // includes visited = invalid from all directions
+				pos = pos2;
+				return MOVE_ACCEPTED;
+			}
+			else {
+				return DIR_ERROR;
+			}
+		}
+		else {
+			return COORD_ERROR;
+		}
+
+	}
+
+	/*
+	virtual inline
 	bool move(Position & pos, Direction::value_t dir) const {
 
 		Position posNext(pos);
@@ -122,7 +178,7 @@ struct ProberControl {
 		}
 
 	}
-
+	*/
 
 
 	// This could be in proberCriteria, but is in (Super)Prober, inherited from SegmentProber
