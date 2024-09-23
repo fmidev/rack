@@ -674,7 +674,7 @@ void CmdOutputFile::exec() const {
 					// mout.warn(vmap);
 				}
 				*/
-				mout.special<LOG_DEBUG+1>('\t', path, ": attr: ", vmap);
+				// mout.special<LOG_DEBUG+1>('\t', path, ": attr: ", vmap);
 				//statusFormatter.toStream(output, src(path).data.image.properties);
 				statusMapper.toStream(output, vmap, 0, RackContext::flexVariableFormatter); // odimHandler);
 			}
