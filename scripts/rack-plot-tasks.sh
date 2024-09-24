@@ -36,11 +36,14 @@ done
 
 echo ${GNUPLOT_ARGS[*]}
 
+YRANGE=${YRANGE:-'0:*'}
+
 for i in args-*.gnu; do
     echo "# $i"
     # $COUNTRY
     # TITLE=`${5:2} $DATE $TIME`
     # could use date to format
     TITLE="${i:5:2} $DATE ${TIME:0:4}"
-    YRANGE='0:*' TIMEFMT='%Y%m%d-%H%M%S' STYLE=linespoints  TITLE="$TITLE" XTITLE='time [h:m]'  YTITLE='elevation [d]' OUTFILE=plot-${i%.*}.png  gnuplot-simple2.sh `cat $i`
+    # YRANGE='0:*'
+    YRANGE=$YRANGE TIMEFMT='%Y%m%d-%H%M%S' STYLE=linespoints  TITLE="$TITLE" XTITLE='time [h:m]'  YTITLE='elevation [d]' OUTFILE=plot-${i%.*}.png  gnuplot-simple2.sh `cat $i`
 done
