@@ -56,6 +56,7 @@ else
     exit 2
 fi
 
+cmd_full="conda create -n '$VENV'"
 for i in $*; do
     #echo $i
     # pkg=${i%=*} 
@@ -72,6 +73,7 @@ for i in $*; do
 
     
     cmd="conda install -y $pkg${version:+=$version}"
+    cmd_full="$cmd_full   $pkg${version:+=$version}"
     echo $cmd
 
     if [ $? == 0 ]; then	
@@ -90,6 +92,7 @@ for i in $*; do
     echo 
 done
 
+echo "Alternative single-line cmd: $cmd_full"
 
 echo "Next, continue with: "
 echo "VENV_DIR=$VENV_DIR ./configure.sh"
