@@ -54,7 +54,7 @@ if  [ ! -d $VENV_DIR ]; then
 else
     echo "Directory not found VENV_DIR=$VENV_DIR"
     echo "Consider explicit setting: VENV_DIR=<dir> $0"
-    cmd_full="conda create -n '$VENV'"
+    cmd_full="conda create -n '$VENV' --yes"
     #exit 2
 fi
 
