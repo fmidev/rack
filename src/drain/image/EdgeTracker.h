@@ -130,13 +130,15 @@ public:
 				//control.markBlockedOut(startPos,  DIR_TURN_DEG(dir, -90));
 			}
 			else {
-				mout.pending<LOG_WARNING>(p, '>', dir, "->", pos, " outside segment ");
+				mout.pending<LOG_WARNING>(" outside segment, keeping ", pos);
+				//mout.pending<LOG_WARNING>(pos, ' ', Direction::arrows[dir], " ", p, " outside segment ");
 				// control.markBlockedIn(pos0, dir);
 				dir = DIR_TURN_DEG(dir, 45);
 			}
 		}
 		else {
-			mout.reject<LOG_WARNING>(p, '>', dir, "->", pos, " illegal move ");
+			mout.reject<LOG_WARNING>("illegal move");
+			//mout.reject<LOG_WARNING>(p, '>', dir, "->", pos, " illegal move ");
 			dir = DIR_TURN_DEG(dir, 45);
 		}
 		// control.markBlocked(pos, dir); // NOT NEEDED...
@@ -158,20 +160,15 @@ public:
 	 */
 	void track(const Position & startPos, Direction::value_t startDir){
 
-		/*
-		*/
 		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-
-		//const Position startPos(pos);
-		//const Direction::value_t startDir(dir);
-
-		mout.accept<LOG_WARNING>("Start ", pos, ':', Direction::arrows[dir], ' ', '<', dir , '>');
-
 
 		setStart(startPos, startDir);
 
+		mout.accept<LOG_WARNING>("Start ", pos, ':', Direction::arrows[dir], ' ', '<', dir , '>');
+
 		while (next()){
-			mout.accept<LOG_WARNING>("New edge pos: ", pos);
+			// mout.accept<LOG_WARNING>("New edge pos: ", pos);
+			mout.accept<LOG_WARNING>("Tracking ", pos, ':', Direction::arrows[dir]); // , ' ', '<', dir , '>'
 		}
 		/*
 		Position p;

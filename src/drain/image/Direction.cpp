@@ -62,13 +62,13 @@ const std::map<Direction::value_t,Position> Direction::offset = {
 
 
 const Direction::dict_t Direction::arrows = {
-		{NONE,       {"←"}},
+		{NONE,       {"o"}},
 		{UP,         {"↑"}},
 		{UP_RIGHT,   {"↗"}},
 		{RIGHT,      {"→"}},
 		{DOWN_RIGHT, {"↘"}},
 		{DOWN,       {"↓"}},
-		{DOWN_LEFT,  {"↓"}},
+		{DOWN_LEFT,  {"↙"}},
 		{LEFT,       {"←"}},
 		{UP_LEFT,    {"↖"}}
 };
