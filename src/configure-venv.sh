@@ -19,9 +19,13 @@ echo -n "# Conf by $USER, " > $CONF_FILE
 date >> $CONF_FILE
 echo >> $CONF_FILE
 
+echo "Utility for installing Rack dependencies locally using MiniConda"
+
 if  [ $# == 0 ]; then
-    echo "Example: $0"
-    echo "$0 hdf5 png geotiff proj"
+    echo "Usage: $0 <pkg> <pkg2> <pkg...>"
+    echo "Note: consider installing only missing packages"
+    echo "Example:"
+    echo "$0 tiff geotiff png proj hdf5"
     exit 0;
 fi
 
@@ -60,12 +64,12 @@ for i in $*; do
     echo "# $pkg version: $version"
     DIR_INC=${pkg^^}_INCLUDE
     DIR_LIB=${pkg^^}_LIB
-    if [ $pkg == 'png' ]; then
-	pkg=libpng
+    if [ $pkg == 'png' ] || [ $pkg == 'tiff' ]; then
+	pkg="lib$pkg"
     fi
 
     
-    cmd="conda install $pkg${version:+=$version}"
+    cmd="conda install -y $pkg${version:+=$version}"
     echo $cmd
 
     if [ $? == 0 ]; then	
@@ -73,6 +77,9 @@ for i in $*; do
 	echo "# Automatically added by $0" >> $CONF_FILE
 	echo "${DIR_INC}=$VENV_DIR/include" >> $CONF_FILE
 	echo "${DIR_LIB}=$VENV_DIR/lib"  >> $CONF_FILE
+	if [ $pkg == 'geotiff' ]; then
+	    echo
+	fi
     else
 	echo "install cmd failed: $cmd"
 	exit 0
