@@ -57,7 +57,7 @@ for i in $*; do
     pkg=( ${i/=/ } ) 
     version=${pkg[1]}
 
-    echo "$pkg version: $version"
+    echo "# $pkg version: $version"
     DIR_INC=${pkg^^}_INCLUDE
     DIR_LIB=${pkg^^}_LIB
     if [ $pkg == 'png' ]; then
