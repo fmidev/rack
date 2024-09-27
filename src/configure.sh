@@ -16,25 +16,36 @@ date >> $CONF_FILE
 echo >> $CONF_FILE
 
 
+
+# Todo: add Conda "detection", ie support for finding libs in conda path
+
 # Given a file (like 'geotiff.h'), returns its directory.
 # Among several paths, selects the last one.
 #
 # ARGS: (include|lib)  <variable-name> <file>
+# TYPE: 
 #
 function guess_dir(){
 
     local TYPE=$1  # include or lib
-    local KEY=$2
+    local KEY=$2   # name of the variable
     local FILE=$3
     local P=''
     local i
+
+    #if [ "$VENV_DIR" != '' ]; then
+    #fi
+
     
     # Step 1: try standard
-    for i in /{usr,var}{,/local}/${TYPE}{,64,/${FILE%.*},/lib${FILE%.*},/x86_64-linux-gnu} ; do
-	echo "... $i/$FILE"
+    for i in ${VENV_DIR:+"$VENV_DIR/${TYPE}"} /{usr,var}{,/local}/${TYPE}{,64,/${FILE%.*},/lib${FILE%.*},/x86_64-linux-gnu} ; do
+	echo -n  "  - Checking: $i/$FILE"
 	if [ -f $i/$FILE ]; then
 	    P=$i/$FILE
+	    echo " [OK] "
 	    break
+	else
+	    echo "..."
 	fi
     done
 	     
@@ -92,21 +103,8 @@ function unset_if_unfound(){
 # Todo recode
 echo 'Automagically detecting CCFLAGS and LDFLAGS'
 
-#guess_include_dir  HDF5_INCLUDE  hdf5.h
-#guess_include_dir  HDF5_LIB      libhdf5.a
-#guess_include_dir  PROJ_INCLUDE proj_api.h
-#guess_include_dir  GEOTIFF_INCLUDE  geotiff.h
 prefix=${prefix:-'/var/opt'} # or '.'?
 echo
-
-#echo "Accept or modify the directories detected above:"
-#echo 
-#ask_variable HDF5_INCLUDE  "Hierarchical Data Format (HDF5), include directory"
-#warn_if_unfound $HDFROOT
-#ask_variable PROJ_INCLUDE "PROJ.4 projection library, include directory"
-#warn_if_unfound $PROJ_INCLUDE
-#ask_variable GEOTIFF_INCLUDE  "GeoTIFF include directory (leave empty if GeoTIFF not used)"
-
 
 
 echo "# Checking if 'pkg-config' utility is available"
@@ -120,8 +118,7 @@ fi
 CCFLAGS='-std=gnu++11 -fopenmp' # ${GEOTIFF_INCLUDE:+"-I$GEOTIFF_INCLUDE"}
 LDFLAGS='-std=gnu++11 -fopenmp'
 
-#for i in hdf5 proj png ${GEOTIFF_INCLUDE:+'tiff'} ${GEOTIFF_INCLUDE:+'geotiff'}; do
-#for i in hdf5 proj_api png tiff geotiff; do
+
 for i in hdf5 proj png tiff geotiff; do
 
     if [ "$PKGC" != '' ]; then
@@ -150,7 +147,7 @@ for i in hdf5 proj png tiff geotiff; do
 
     i=${i%_*} # proj_api => proj
     key=${i^^}_LIB
-    guess_dir lib ${key} lib$i.so
+    guess_dir 'lib' ${key} lib$i.so
     ask_variable ${key} "Library dir for $i"
     eval value=\$${key}
     if [ -e "$value" ]; then

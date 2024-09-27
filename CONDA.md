@@ -2,9 +2,9 @@ Installation using Conda (MiniConda)
 ====================================
 
 Sometimes installing dependencies – HDF5, PNG, Proj, GeoTiff, etc. libraries – on system level is not possible or desired.
-Then, one may use virtual environments to install them a local directory owned by the user.
+Then, one may use *virtual environment* created in a directory owned by the user.
 
-The following instructions apply to Conda, but other alternatives should work similarly.
+The following instructions apply to [MiniConda](https://docs.anaconda.com/miniconda/), but other alternatives should work similarly.
 
 
 
