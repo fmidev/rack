@@ -29,7 +29,7 @@ if  [ $# == 0 ]; then
     exit 0;
 fi
 
-#source $(conda info --base)/etc/profile.d/conda.sh
+source $(conda info --base)/etc/profile.d/conda.sh
 conda init bash
 
 # conda activate "$VENV"
