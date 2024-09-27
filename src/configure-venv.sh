@@ -48,15 +48,17 @@ if  [ $? != 0 ]; then
     fi
 fi
 
+cmd_full=''
 if  [ ! -d $VENV_DIR ]; then
     echo "Using VENV_DIR=$VENV_DIR"
 else
     echo "Directory not found VENV_DIR=$VENV_DIR"
     echo "Consider explicit setting: VENV_DIR=<dir> $0"
-    exit 2
+    cmd_full="conda create -n '$VENV'"
+    #exit 2
 fi
 
-cmd_full="conda create -n '$VENV'"
+
 for i in $*; do
     #echo $i
     # pkg=${i%=*} 
@@ -72,9 +74,14 @@ for i in $*; do
     fi
 
     
-    cmd="conda install -y $pkg${version:+=$version}"
-    cmd_full="$cmd_full   $pkg${version:+=$version}"
-    echo $cmd
+
+
+    if [ "$cmd_full" != '' ]; then
+	cmd_full="$cmd_full   $pkg${version:+=$version}"
+    else
+	cmd="conda install -y $pkg${version:+=$version}"
+	echo $cmd
+    fi
 
     if [ $? == 0 ]; then	
 	echo >> $CONF_FILE
