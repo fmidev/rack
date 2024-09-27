@@ -29,8 +29,8 @@ if  [ $# == 0 ]; then
     exit 0;
 fi
 
-source $(conda info --base)/etc/profile.d/conda.sh
-conda init bash
+# source $(conda info --base)/etc/profile.d/conda.sh
+#conda init bash
 
 # conda activate "$VENV"
 conda activate "$VENV"
@@ -40,11 +40,11 @@ if  [ $? != 0 ]; then
     #echo X=$CREATE
     if  [ "$CREATE" == 'yes' ]; then
 	conda create -n "$VENV"
-    fi
-    conda activate "$VENV"
-    if  [ $? != 0 ]; then
-	echo "Failed in activating VENV=$VENV"
-	exit 1
+	conda activate "$VENV"
+	if  [ $? != 0 ]; then
+	    echo "Failed in activating VENV=$VENV"
+	    exit 1
+	fi
     fi
 fi
 
