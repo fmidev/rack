@@ -29,10 +29,11 @@ if  [ $# == 0 ]; then
     exit 0;
 fi
 
-conda init
-#conda activate "$VENV"
+source $(conda info --base)/etc/profile.d/conda.sh
+# conda init
+# conda activate "$VENV"
 conda activate "$VENV"
-if  [ $? == "xx0" ]; then
+if  [ $? != 0 ]; then
     echo "Looks like VENV=$VENV does not exist"
     read -e  -i "yes" -p "  Create one? " CREATE
     #echo X=$CREATE
@@ -87,6 +88,10 @@ for i in $*; do
 	
     echo 
 done
+
+
+echo "Next, continue with: "
+echo "VENV_DIR=$VENV_DIR ./configure.sh"
 
 
 
