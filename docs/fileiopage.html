@@ -110,7 +110,7 @@ Reading and writing text files</h1>
 <div class="line">dataset1/data1/how:LOG=2.5</div>
 </div><!-- fragment --><p>Note that strings are presented in double quotes and arrays as comma-separated values in brackets.</p>
 <p>Based on metadata, it is often handy to automatically compose filenames. This is possible using <code>&ndash;expandVariables</code> as follows. </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --expandVariables -o <span class="stringliteral">&#39;incoming-${NOD}_${what:date}-${what:time}.txt&#39;</span></div>
-</div><!-- fragment --><p> For using format templates and hadling multiple files on a single command line, see <a class="el" href="text-output.html#templates">Metadata output using text templates</a>.</p>
+</div><!-- fragment --><p> For using format templates and hadling multiple files on a single command line, see <a class="el" href="text-output-page.html#templates">Formatting metadata output using templates</a>.</p>
 <p>Volume can be also created using a text file like the one created above, that is, with the desired structure and data types. </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.txt -o volume-<span class="keyword">new</span>.h5</div>
 </div><!-- fragment --><p>One can modify the metadata directly from the command line by means of <code>&ndash;setODIM</code> <code>&lt;path&gt;</code>:&lt;attribute&gt;=&lt;value&gt; command.</p>
 <div class="fragment"><div class="line">--setODIM  &lt;assignment&gt;  (section: general)</div>
@@ -234,7 +234,7 @@ SVG panel</div></div>
 <li>the parameters of <code>&ndash;outputConf</code> <code>svg</code> may change.</li>
 <li>title formatting supported (using -c &ndash;format )</li>
 </ul>
-<p>Note that you can also create SVG files using templates, see <a class="el" href="text-output.html#templates">Metadata output using text templates</a></p>
+<p>Note that you can also create SVG files using templates, see <a class="el" href="text-output-page.html#templates">Formatting metadata output using templates</a></p>
 <h1><a class="anchor" id="fileio_html"></a>
 Writing HTML files</h1>
 <p><b>Experimental</b>. The current data structure can be written to a HTML file which displays the data in a clickable tree. The data arrays are stored in PNG files in sub directory named with the basename of the output file. The structure of the directory repeats the hierarchy of the original HDF5-ODIM data.</p>
