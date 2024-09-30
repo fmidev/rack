@@ -39,46 +39,23 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-/*
-template <>
-bool VariableLike::requestType(const std::type_info & t);
 
 
-template <>
-bool VariableLike::suggestType(const std::type_info & t);
-
-template <>
-bool VariableLike::requestSize(size_t elementCount);
-
-template <>
-const std::string TypeName<VariableLike>::name;
-
-*/
-
-
-
-/// drain:: default implementation for output formatting
-/*
-template <>
-inline
-std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::VariableLike & v, const SprinterLayout & layout){
-	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
-};
-*/
+/// VariableFormatter uses this. Consider stringstream?
 
 template <>
 template <class D>
 inline
 void Convert2<VariableLike>::convert(const VariableLike &src, D & dst){
 	dst = (const D &)src;
-	std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << __LINE__ << ": vlike:" << src << " -> " << dst << ':' << drain::TypeName<D>::str() << '\n';
+	// std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << __LINE__ << ": vlike:" << src << " -> " << dst << ':' << drain::TypeName<D>::str() << '\n';
 }
 
 template <>
 inline
 void Convert2<VariableLike>::convert(const char *src, VariableLike & dst){
 	dst = src;
-	std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << __LINE__ << ": char.array:" << src << " -> vlike:"  << dst << '\n';
+	// std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << __LINE__ << ": char.array:" << src << " -> vlike:"  << dst << '\n';
 }
 
 template <>
@@ -86,7 +63,7 @@ template <class S>
 inline
 void Convert2<VariableLike>::convert(const S &src, VariableLike & dst){
 	dst = src;
-	std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << __LINE__ << ':' << src << ':' << drain::TypeName<S>::str() << " -> vlike:" << dst << '\n';
+	// std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << __LINE__ << ':' << src << ':' << drain::TypeName<S>::str() << " -> vlike:" << dst << '\n';
 }
 
 
