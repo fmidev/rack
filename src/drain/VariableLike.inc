@@ -71,14 +71,14 @@ template <class D>
 inline
 void Convert2<VariableLike>::convert(const VariableLike &src, D & dst){
 	dst = (const D &)src;
-	std::cout << "CONV:" << __FILE__ << src << " -> " << dst << '\n';
+	std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << __LINE__ << ": vlike:" << src << " -> " << dst << ':' << drain::TypeName<D>::str() << '\n';
 }
 
 template <>
 inline
 void Convert2<VariableLike>::convert(const char *src, VariableLike & dst){
 	dst = src;
-	std::cout << "CONV:" << __FILE__ << src << " -> " << dst << '\n';
+	std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << __LINE__ << ": char.array:" << src << " -> vlike:"  << dst << '\n';
 }
 
 template <>
@@ -86,7 +86,7 @@ template <class S>
 inline
 void Convert2<VariableLike>::convert(const S &src, VariableLike & dst){
 	dst = src;
-	std::cout << "CONV:" << __FILE__ << src << " -> " << dst << '\n';
+	std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << __LINE__ << ':' << src << ':' << drain::TypeName<S>::str() << " -> vlike:" << dst << '\n';
 }
 
 
