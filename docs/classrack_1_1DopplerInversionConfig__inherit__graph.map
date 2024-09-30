@@ -1,7 +1,8 @@
 <map id="DopplerInversionConfig" name="DopplerInversionConfig">
-<area shape="rect" id="node1" title=" " alt="" coords="81,229,255,256"/>
-<area shape="rect" id="node2" href="$classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="91,155,245,181"/>
-<area shape="rect" id="node3" href="$classrack_1_1RadarWindowGeom.html" title="Like pixel window, but width is metres and height is degrees." alt="" coords="14,80,165,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,5,173,32"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="189,80,304,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="81,304,255,331"/>
+<area shape="rect" id="node2" href="$classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="91,229,245,256"/>
+<area shape="rect" id="node3" href="$classrack_1_1RadarWindowGeom.html" title="Like pixel window, but width is metres and height is degrees." alt="" coords="14,155,165,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,80,173,107"/>
+<area shape="rect" id="node5" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="17,5,161,32"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="189,155,304,181"/>
 </map>

@@ -1,5 +1,6 @@
 <map id="ValueScaling" name="ValueScaling">
-<area shape="rect" id="node1" title="Linear scaling and physical range for image intensities." alt="" coords="42,171,147,197"/>
-<area shape="rect" id="node2" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,5,173,32"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Range.html" title=" " alt="" coords="111,81,249,108"/>
+<area shape="rect" id="node1" title="Linear scaling and physical range for image intensities." alt="" coords="42,247,147,273"/>
+<area shape="rect" id="node2" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,81,173,108"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Range.html" title=" " alt="" coords="111,157,249,184"/>
+<area shape="rect" id="node3" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="17,5,161,32"/>
 </map>

@@ -1,8 +1,8 @@
 <map id="DopplerCrawlerOp" name="DopplerCrawlerOp">
-<area shape="rect" id="node1" title=" " alt="" coords="214,987,355,1013"/>
-<area shape="rect" id="node2" href="$classrack_1_1DopplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data." alt="" coords="239,911,330,937"/>
-<area shape="rect" id="node3" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="163,821,286,848"/>
-<area shape="rect" id="node4" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="40,732,228,759"/>
+<area shape="rect" id="node1" title=" " alt="" coords="218,987,359,1013"/>
+<area shape="rect" id="node2" href="$classrack_1_1DopplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data." alt="" coords="243,911,334,937"/>
+<area shape="rect" id="node3" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="167,821,290,848"/>
+<area shape="rect" id="node4" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="44,732,232,759"/>
 <area shape="rect" id="node5" href="$classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images." alt="" coords="7,641,223,683"/>
 <area shape="rect" id="node6" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="21,551,210,592"/>
 <area shape="rect" id="node7" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="59,475,171,501"/>
@@ -14,5 +14,6 @@
 <area shape="rect" id="node13" title=" " alt="" coords="5,5,225,32"/>
 <area shape="rect" id="node14" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="260,732,392,759"/>
 <area shape="rect" id="node15" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="248,641,412,683"/>
-<area shape="rect" id="node16" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="311,821,381,848"/>
+<area shape="rect" id="node16" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="258,558,402,585"/>
+<area shape="rect" id="node17" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="315,821,385,848"/>
 </map>

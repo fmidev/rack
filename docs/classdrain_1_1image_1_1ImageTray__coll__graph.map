@@ -1,10 +1,11 @@
 <map id="ImageTray&lt; T &gt;" name="ImageTray&lt; T &gt;">
-<area shape="rect" id="node1" title="Container applicable for Channels and Images, with alpha support." alt="" coords="81,336,209,363"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Tray.html" title="Set of images, usable for general calls of type traverseFrame(src, dst) ." alt="" coords="102,260,189,287"/>
-<area shape="rect" id="node3" title=" " alt="" coords="49,171,199,197"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="223,171,310,197"/>
-<area shape="rect" id="node5" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,81,168,108"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="192,81,341,108"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="269,5,432,32"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ChannelGeometry.html" title=" " alt="" coords="366,81,506,108"/>
+<area shape="rect" id="node1" title="Container applicable for Channels and Images, with alpha support." alt="" coords="37,437,165,464"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Tray.html" title="Set of images, usable for general calls of type traverseFrame(src, dst) ." alt="" coords="58,361,145,388"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,272,155,299"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="179,272,266,299"/>
+<area shape="rect" id="node5" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="29,132,192,159"/>
+<area shape="rect" id="node6" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="55,5,199,32"/>
+<area shape="rect" id="node8" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="148,81,311,108"/>
+<area shape="rect" id="node7" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="148,183,297,209"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1ChannelGeometry.html" title=" " alt="" coords="322,183,462,209"/>
 </map>

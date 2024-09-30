@@ -1,5 +1,6 @@
 <map id="Geometry" name="Geometry">
-<area shape="rect" id="node1" title=" " alt="" coords="43,80,130,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data)" alt="" coords="40,155,133,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,5,168,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="43,155,130,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data)" alt="" coords="40,229,133,256"/>
+<area shape="rect" id="node2" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,80,168,107"/>
+<area shape="rect" id="node3" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="15,5,159,32"/>
 </map>

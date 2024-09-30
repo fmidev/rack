@@ -131,7 +131,7 @@ $(function() {
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">double</span> &amp; backward;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="classdrain_1_1image_1_1Decay2.html">Decay2</a>(<span class="keywordtype">double</span> decay = 1.0) : forward(this-&gt;next()), backward(this-&gt;next()) {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        this-&gt;<a class="code" href="classdrain_1_1UniTuple.html#a3a95feb0b5d9933a5d3cbf1ca34317a4">fill</a>(decay);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        this-&gt;<a class="code" href="classdrain_1_1TupleBase.html#a8a0116d005bf63cc2f909a1665c5c73e">fill</a>(decay);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">// Reference</span></div>
@@ -147,12 +147,12 @@ $(function() {
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="classdrain_1_1image_1_1Decay2.html">Decay2&lt;T&gt;</a> vert;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="structdrain_1_1image_1_1Decay4.html">Decay4</a>(T decay=0.5) : horz(this-&gt;tuple(), 0), vert(this-&gt;tuple(), 2) {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        this-&gt;<a class="code" href="classdrain_1_1UniTuple.html#a3a95feb0b5d9933a5d3cbf1ca34317a4">fill</a>(decay);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        this-&gt;<a class="code" href="classdrain_1_1TupleBase.html#a8a0116d005bf63cc2f909a1665c5c73e">fill</a>(decay);</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <a class="code" href="structdrain_1_1image_1_1Decay4.html">Decay4</a>(<span class="keyword">const</span> <a class="code" href="structdrain_1_1image_1_1Decay4.html">Decay4</a> &amp; r) : horz(this-&gt;tuple(), 0), vert(this-&gt;tuple(), 2){</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        this-&gt;<a class="code" href="classdrain_1_1UniTuple.html#a817e1a7a49b95e67ff966ac8dc5ceb48">assign</a>(r);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        this-&gt;assign(r);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    };</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="structdrain_1_1image_1_1Decay4.html">Decay4</a> &amp; operator=(<span class="keyword">const</span> <a class="code" href="structdrain_1_1image_1_1Decay4.html">Decay4&lt;T&gt;</a> &amp; decay){</div>
@@ -299,9 +299,8 @@ $(function() {
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* ImpulseResponse_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassdrain_1_1BeanLike_html"><div class="ttname"><a href="classdrain_1_1BeanLike.html">drain::BeanLike</a></div><div class="ttdoc">Something which has a name, a description and possibly some parameters of varying type.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:60</div></div>
-<div class="ttc" id="aclassdrain_1_1UniTuple_html"><div class="ttname"><a href="classdrain_1_1UniTuple.html">drain::UniTuple</a></div><div class="ttdoc">Tuple of N elements of type T.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:64</div></div>
-<div class="ttc" id="aclassdrain_1_1UniTuple_html_a3a95feb0b5d9933a5d3cbf1ca34317a4"><div class="ttname"><a href="classdrain_1_1UniTuple.html#a3a95feb0b5d9933a5d3cbf1ca34317a4">drain::UniTuple&lt; T, 2 &gt;::fill</a></div><div class="ttdeci">void fill(T i)</div><div class="ttdoc">Set all the elements to i.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:330</div></div>
-<div class="ttc" id="aclassdrain_1_1UniTuple_html_a817e1a7a49b95e67ff966ac8dc5ceb48"><div class="ttname"><a href="classdrain_1_1UniTuple.html#a817e1a7a49b95e67ff966ac8dc5ceb48">drain::UniTuple&lt; T, 4 &gt;::assign</a></div><div class="ttdeci">tuple_t &amp; assign(const tuple_t &amp;t)</div><div class="ttdoc">Proposed for tuples only; derived classes should not shadow this.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:111</div></div>
+<div class="ttc" id="aclassdrain_1_1TupleBase_html_a8a0116d005bf63cc2f909a1665c5c73e"><div class="ttname"><a href="classdrain_1_1TupleBase.html#a8a0116d005bf63cc2f909a1665c5c73e">drain::TupleBase::fill</a></div><div class="ttdeci">void fill(S i)</div><div class="ttdoc">Set all the elements to i.</div><div class="ttdef"><b>Definition:</b> TupleBase.h:272</div></div>
+<div class="ttc" id="aclassdrain_1_1UniTuple_html"><div class="ttname"><a href="classdrain_1_1UniTuple.html">drain::UniTuple</a></div><div class="ttdoc">Tuple of N elements of type T.</div><div class="ttdef"><b>Definition:</b> UniTuple.h:65</div></div>
 <div class="ttc" id="aclassdrain_1_1ValueScaling_html"><div class="ttname"><a href="classdrain_1_1ValueScaling.html">drain::ValueScaling</a></div><div class="ttdoc">Linear scaling and physical range for image intensities.</div><div class="ttdef"><b>Definition:</b> ValueScaling.h:64</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Channel_html"><div class="ttname"><a href="classdrain_1_1image_1_1Channel.html">drain::image::Channel</a></div><div class="ttdoc">Image with static geometry.</div><div class="ttdef"><b>Definition:</b> ImageChannel.h:60</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Decay2_html"><div class="ttname"><a href="classdrain_1_1image_1_1Decay2.html">drain::image::Decay2</a></div><div class="ttdef"><b>Definition:</b> ImpulseAvgOp.h:52</div></div>

@@ -1,13 +1,14 @@
 <map id="ImageFrame" name="ImageFrame">
-<area shape="rect" id="node1" title="Image with static geometry." alt="" coords="87,80,191,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Channel.html" title="Image with static geometry." alt="" coords="45,155,119,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="148,155,256,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images." alt="" coords="95,5,184,32"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ChannelView.html" title="View to a single channel." alt="" coords="23,229,130,256"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels." alt="" coords="155,229,249,256"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry." alt="" coords="274,229,405,256"/>
+<area shape="rect" id="node1" title="Image with static geometry." alt="" coords="209,80,313,107"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Channel.html" title="Image with static geometry." alt="" coords="166,155,241,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="269,155,377,181"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images." alt="" coords="216,5,305,32"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ChannelView.html" title="View to a single channel." alt="" coords="145,229,251,256"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels." alt="" coords="276,229,371,256"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry." alt="" coords="395,229,526,256"/>
 <area shape="rect" id="node8" href="$classdrain_1_1image_1_1ImageT.html" title=" " alt="" coords="5,304,151,331"/>
 <area shape="rect" id="node9" href="$classdrain_1_1image_1_1ImageT.html" title=" " alt="" coords="175,304,357,331"/>
-<area shape="rect" id="node10" href="$classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char,..." alt="" coords="381,304,444,331"/>
-<area shape="rect" id="node11" href="$classdrain_1_1image_1_1ImageT.html" title="A template class for images with static storage type." alt="" coords="469,304,578,331"/>
+<area shape="rect" id="node10" href="$classdrain_1_1image_1_1ImageT.html" title=" " alt="" coords="381,304,540,331"/>
+<area shape="rect" id="node11" href="$classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char,..." alt="" coords="564,304,627,331"/>
+<area shape="rect" id="node12" href="$classdrain_1_1image_1_1ImageT.html" title="A template class for images with static storage type." alt="" coords="651,304,761,331"/>
 </map>

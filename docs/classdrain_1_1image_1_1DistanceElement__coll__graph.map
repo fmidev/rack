@@ -1,5 +1,6 @@
 <map id="DistanceElement" name="DistanceElement">
-<area shape="rect" id="node1" title=" " alt="" coords="17,171,151,197"/>
-<area shape="rect" id="node2" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="5,81,163,108"/>
-<area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="17,5,151,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="17,247,151,273"/>
+<area shape="rect" id="node2" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="5,157,163,184"/>
+<area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="17,81,151,108"/>
+<area shape="rect" id="node4" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="13,5,155,32"/>
 </map>

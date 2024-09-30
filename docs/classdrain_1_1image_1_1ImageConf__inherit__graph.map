@@ -1,8 +1,9 @@
 <map id="ImageConf" name="ImageConf">
-<area shape="rect" id="node1" title="Struct for image (excluding data)" alt="" coords="121,229,215,256"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Encoding.html" title=" " alt="" coords="74,155,155,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="37,80,142,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,5,173,32"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="191,155,278,181"/>
-<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="167,80,329,107"/>
+<area shape="rect" id="node1" title="Struct for image (excluding data)" alt="" coords="156,304,249,331"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Encoding.html" title=" " alt="" coords="109,229,190,256"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="57,155,162,181"/>
+<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,80,173,107"/>
+<area shape="rect" id="node5" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="112,5,256,32"/>
+<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="197,80,360,107"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="225,229,311,256"/>
 </map>

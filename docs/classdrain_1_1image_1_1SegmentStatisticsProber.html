@@ -141,9 +141,6 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a94ac37dc6e5b31697c83731b6089fb79">setDst</a> (<a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;d)</td></tr>
 <tr class="memdesc:a94ac37dc6e5b31697c83731b6089fb79 inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new target channel. Needed in multichannel operations. <br /></td></tr>
 <tr class="separator:a94ac37dc6e5b31697c83731b6089fb79 inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afebe7c8755c03a36e99e075df7913b2f inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="memItemLeft" align="right" valign="top"><a id="afebe7c8755c03a36e99e075df7913b2f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setParams</b> (const <a class="el" href="classdrain_1_1image_1_1SegmentProberConf.html">SegmentProberConf</a>&lt; T, D &gt; &amp;conf)</td></tr>
-<tr class="separator:afebe7c8755c03a36e99e075df7913b2f inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9339772ec5ac9fa929938109207f2863 inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a9339772ec5ac9fa929938109207f2863">init</a> ()</td></tr>
 <tr class="memdesc:a9339772ec5ac9fa929938109207f2863 inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the segment having intensity between min and max.  <a href="classdrain_1_1image_1_1SegmentProber.html#a9339772ec5ac9fa929938109207f2863">More...</a><br /></td></tr>
 <tr class="separator:a9339772ec5ac9fa929938109207f2863 inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,10 +151,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setParams</b> (const 
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a28c27ffdc77b1f3277926cfb235bf28a">probe</a> (int i, int j, bool HORIZONTAL)</td></tr>
 <tr class="memdesc:a28c27ffdc77b1f3277926cfb235bf28a inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start probings. <br /></td></tr>
 <tr class="separator:a28c27ffdc77b1f3277926cfb235bf28a inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abddb85b28417f3c2573495ebbde8ded4 inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="memItemLeft" align="right" valign="top"><a id="abddb85b28417f3c2573495ebbde8ded4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#abddb85b28417f3c2573495ebbde8ded4">isValidPos</a> (int i, int j) const</td></tr>
-<tr class="memdesc:abddb85b28417f3c2573495ebbde8ded4 inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns isValidSegment(i,j) and !isVisited(i,j). <br /></td></tr>
-<tr class="separator:abddb85b28417f3c2573495ebbde8ded4 inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74c65164c4a9fc7f7d60f01e4bc37624 inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="memItemLeft" align="right" valign="top"><a id="a74c65164c4a9fc7f7d60f01e4bc37624"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a74c65164c4a9fc7f7d60f01e4bc37624">isValidPixel</a> (int i, int j) const</td></tr>
+<tr class="memdesc:a74c65164c4a9fc7f7d60f01e4bc37624 inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns isValidSegment(i,j) and !isVisited(i,j). <br /></td></tr>
+<tr class="separator:a74c65164c4a9fc7f7d60f01e4bc37624 inherit pub_methods_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -168,6 +165,9 @@ const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>st
 <a class="el" href="classdrain_1_1image_1_1SegmentStatistics.html">SegmentStatistics</a>&#160;</td><td class="memItemRight" valign="bottom"><b>statistics</b></td></tr>
 <tr class="separator:ae1f9a3afc2518dcc739427bf2c4b1048"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1image_1_1SegmentProber"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1image_1_1SegmentProber')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1image_1_1SegmentProber.html">SegmentProber&lt; T, D, SegmentProberConf&lt; T, D &gt; &gt;</a></td></tr>
+<tr class="memitem:a2600657027a928aca32e12034dfbf555 inherit pub_attribs_classdrain_1_1image_1_1SegmentProber"><td class="memItemLeft" align="right" valign="top"><a id="a2600657027a928aca32e12034dfbf555"></a>
+<a class="el" href="structdrain_1_1image_1_1ProberControl.html">ProberControl</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>control</b></td></tr>
+<tr class="separator:a2600657027a928aca32e12034dfbf555 inherit pub_attribs_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40e427255962e28d8913a56db7b748b8 inherit pub_attribs_classdrain_1_1image_1_1SegmentProber"><td class="memItemLeft" align="right" valign="top"><a id="a40e427255962e28d8913a56db7b748b8"></a>
 <a class="el" href="classdrain_1_1image_1_1SegmentProberConf.html">conf_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>conf</b></td></tr>
 <tr class="separator:a40e427255962e28d8913a56db7b748b8 inherit pub_attribs_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,9 +177,6 @@ const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;
 <tr class="memitem:aa2008ce18863d608aa9d0a1f18f64dd1 inherit pub_attribs_classdrain_1_1image_1_1SegmentProber"><td class="memItemLeft" align="right" valign="top"><a id="aa2008ce18863d608aa9d0a1f18f64dd1"></a>
 <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>dst</b></td></tr>
 <tr class="separator:aa2008ce18863d608aa9d0a1f18f64dd1 inherit pub_attribs_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a4cb3fe50eaa431367f1cd3eaabd993 inherit pub_attribs_classdrain_1_1image_1_1SegmentProber"><td class="memItemLeft" align="right" valign="top"><a id="a0a4cb3fe50eaa431367f1cd3eaabd993"></a>
-<a class="el" href="classdrain_1_1image_1_1CoordinateHandler2D.html">CoordinateHandler2D</a>&#160;</td><td class="memItemRight" valign="bottom"><b>handler</b></td></tr>
-<tr class="separator:a0a4cb3fe50eaa431367f1cd3eaabd993 inherit pub_attribs_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -210,6 +207,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="separator:a3291727407fd51b3554d9d721493780e inherit pro_methods_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7d812782556555c7422b3b776bd64db inherit pro_methods_classdrain_1_1image_1_1SegmentProber"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ac7d812782556555c7422b3b776bd64db">scanVertProbeHorz</a> (int i, int j)</td></tr>
 <tr class="separator:ac7d812782556555c7422b3b776bd64db inherit pro_methods_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classdrain_1_1image_1_1SegmentProber"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1image_1_1SegmentProber')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1image_1_1SegmentProber.html">SegmentProber&lt; T, D, SegmentProberConf&lt; T, D &gt; &gt;</a></td></tr>
+<tr class="memitem:a7d88609b141d7089515f976478d3bbab inherit pro_attribs_classdrain_1_1image_1_1SegmentProber"><td class="memItemLeft" align="right" valign="top"><a id="a7d88609b141d7089515f976478d3bbab"></a>
+<a class="el" href="structdrain_1_1image_1_1SimpleProberControl.html">SimpleProberControl</a>&#160;</td><td class="memItemRight" valign="bottom"><b>basicControl</b></td></tr>
+<tr class="separator:a7d88609b141d7089515f976478d3bbab inherit pro_attribs_classdrain_1_1image_1_1SegmentProber"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class T, class D&gt;<br />

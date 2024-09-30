@@ -1,7 +1,8 @@
 <map id="SlidingStripeAverage&lt; SW &gt;" name="SlidingStripeAverage&lt; SW &gt;">
-<area shape="rect" id="node1" title="Stripe window for computing averages." alt="" coords="5,260,163,301"/>
-<area shape="rect" id="node2" title=" " alt="" coords="41,171,84,197"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="109,171,214,197"/>
-<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="56,5,224,32"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Range.html" title=" " alt="" coords="162,81,299,108"/>
+<area shape="rect" id="node1" title="Stripe window for computing averages." alt="" coords="5,336,163,377"/>
+<area shape="rect" id="node2" title=" " alt="" coords="41,247,84,273"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="109,247,214,273"/>
+<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="56,81,224,108"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title=" " alt="" coords="162,157,299,184"/>
+<area shape="rect" id="node5" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="68,5,212,32"/>
 </map>

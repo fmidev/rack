@@ -1,9 +1,10 @@
 <map id="OpticalFlowConfig" name="OpticalFlowConfig">
-<area shape="rect" id="node1" title="Consider using SlidingStripeOpticalFlow instead." alt="" coords="133,323,273,349"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="146,247,261,273"/>
-<area shape="rect" id="node3" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="73,157,176,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,195,108"/>
+<area shape="rect" id="node1" title="Consider using SlidingStripeOpticalFlow instead." alt="" coords="140,323,280,349"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="153,247,267,273"/>
+<area shape="rect" id="node3" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="71,157,173,184"/>
+<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="28,81,200,108"/>
 <area shape="rect" id="node5" title=" " alt="" coords="5,5,212,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="221,157,349,184"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="219,81,353,108"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="233,157,361,184"/>
+<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="235,81,369,108"/>
+<area shape="rect" id="node8" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="236,5,379,32"/>
 </map>

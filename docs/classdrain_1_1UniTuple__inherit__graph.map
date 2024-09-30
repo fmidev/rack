@@ -1,12 +1,13 @@
 <map id="UniTuple&lt; T, N &gt;" name="UniTuple&lt; T, N &gt;">
-<area shape="rect" id="node1" title="Tuple of N elements of type T." alt="" coords="5,208,140,235"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Bidirectional.html" title=" " alt="" coords="205,5,368,32"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="223,56,351,83"/>
-<area shape="rect" id="node4" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="227,107,347,133"/>
-<area shape="rect" id="node5" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="208,157,365,184"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title=" " alt="" coords="225,208,348,235"/>
-<area shape="rect" id="node7" href="$classdrain_1_1Range.html" title=" " alt="" coords="236,259,337,285"/>
-<area shape="rect" id="node8" href="$classdrain_1_1Range.html" title=" " alt="" coords="231,309,342,336"/>
-<area shape="rect" id="node9" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="213,360,360,387"/>
-<area shape="rect" id="node10" href="$structrack_1_1MethodWeights.html" title=" " alt="" coords="188,411,385,437"/>
+<area shape="rect" id="node1" title="Tuple of N elements of type T." alt="" coords="196,208,331,235"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Bidirectional.html" title=" " alt="" coords="396,5,559,32"/>
+<area shape="rect" id="node4" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="413,56,541,83"/>
+<area shape="rect" id="node5" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="417,107,537,133"/>
+<area shape="rect" id="node6" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="399,157,556,184"/>
+<area shape="rect" id="node7" href="$classdrain_1_1Range.html" title=" " alt="" coords="416,208,539,235"/>
+<area shape="rect" id="node8" href="$classdrain_1_1Range.html" title=" " alt="" coords="427,259,528,285"/>
+<area shape="rect" id="node9" href="$classdrain_1_1Range.html" title=" " alt="" coords="422,309,533,336"/>
+<area shape="rect" id="node10" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="404,360,551,387"/>
+<area shape="rect" id="node11" href="$structrack_1_1MethodWeights.html" title=" " alt="" coords="379,411,576,437"/>
+<area shape="rect" id="node2" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="5,208,148,235"/>
 </map>

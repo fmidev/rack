@@ -213,6 +213,10 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ProgramVector.html">ProgramVector</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure for implementing threads in parallelized OpenMP <code>for</code> loop.  <a href="classdrain_1_1ProgramVector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1PseudoTuple.html">PseudoTuple</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1TypeName_3_01PseudoTuple_3_01C_00_01T_00_01N_01_4_01_4.html">TypeName&lt; PseudoTuple&lt; C, T, N &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceT.html">ReferenceT</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Intermediate class supporting link() in various forms.  <a href="classdrain_1_1ReferenceT.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -245,6 +249,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility for scanning text segments.  <a href="classdrain_1_1TextStyle.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1TextStyleVT100.html">TextStyleVT100</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1TupleBase.html">TupleBase</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1TypeName_3_01TupleBase_3_01S_00_01N_01_4_01_4.html">TypeName&lt; TupleBase&lt; S, N &gt; &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Type.html">Type</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utilities related to std::type_info.  <a href="classdrain_1_1Type.html#details">More...</a><br /></td></tr>
@@ -837,6 +845,10 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:abf4f001e3bffc7ba8fdadaad4e8cac6f"><td class="memItemLeft" align="right" valign="top"><a id="abf4f001e3bffc7ba8fdadaad4e8cac6f"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME</b> (<a class="el" href="classdrain_1_1TextStyleVT100.html">TextStyleVT100</a>)</td></tr>
 <tr class="separator:abf4f001e3bffc7ba8fdadaad4e8cac6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3f5f13ae2a37eb7caa6f34a1647bf56"><td class="memTemplParams" colspan="2"><a id="ab3f5f13ae2a37eb7caa6f34a1647bf56"></a>
+template&lt;class S , size_t N&gt; </td></tr>
+<tr class="memitem:ab3f5f13ae2a37eb7caa6f34a1647bf56"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1TupleBase.html">TupleBase</a>&lt; S, N &gt; &amp;tuple)</td></tr>
+<tr class="separator:ab3f5f13ae2a37eb7caa6f34a1647bf56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0b52e252cfc32863810a45e2c777c7a"><td class="memItemLeft" align="right" valign="top"><a id="aa0b52e252cfc32863810a45e2c777c7a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_DEF</b> (void)</td></tr>
 <tr class="separator:aa0b52e252cfc32863810a45e2c777c7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -932,10 +944,6 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <tr class="memitem:af4f127bb2611f103084aa212b1b8eeef"><td class="memItemLeft" align="right" valign="top"><a id="af4f127bb2611f103084aa212b1b8eeef"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME</b> (std::string)</td></tr>
 <tr class="separator:af4f127bb2611f103084aa212b1b8eeef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab13ff5424b9db770850ae03393d47181"><td class="memTemplParams" colspan="2"><a id="ab13ff5424b9db770850ae03393d47181"></a>
-template&lt;class T , size_t N&gt; </td></tr>
-<tr class="memitem:ab13ff5424b9db770850ae03393d47181"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; T, N &gt; &amp;tuple)</td></tr>
-<tr class="separator:ab13ff5424b9db770850ae03393d47181"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49dbe97e16bc7af8a1f0a010f8e7bfbe"><td class="memTemplParams" colspan="2"><a id="a49dbe97e16bc7af8a1f0a010f8e7bfbe"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a49dbe97e16bc7af8a1f0a010f8e7bfbe"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1Bank.html">Bank</a>&lt; T &gt; &amp;bank)</td></tr>
@@ -983,6 +991,12 @@ template&lt;typename E &gt; </td></tr>
 <tr class="memitem:aa6be614689adee34367d08c371a01be5"><td class="memItemLeft" align="right" valign="top"><a id="aa6be614689adee34367d08c371a01be5"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1Flagger.html">drain::Flagger</a> &amp;flags)</td></tr>
 <tr class="separator:aa6be614689adee34367d08c371a01be5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c7c9bf8bf5f8ed4031a6e09fd0bac37"><td class="memItemLeft" align="right" valign="top"><a id="a4c7c9bf8bf5f8ed4031a6e09fd0bac37"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_T</b> (<a class="el" href="classdrain_1_1Frame2D.html">Frame2D</a>, T)</td></tr>
+<tr class="separator:a4c7c9bf8bf5f8ed4031a6e09fd0bac37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0db7fbbdddd21c391988fb6ffa62e902"><td class="memItemLeft" align="right" valign="top"><a id="a0db7fbbdddd21c391988fb6ffa62e902"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_T</b> (<a class="el" href="structdrain_1_1Box.html">Box</a>, T)</td></tr>
+<tr class="separator:a0db7fbbdddd21c391988fb6ffa62e902"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9a7925604aa2052a0348ee744c32753"><td class="memTemplParams" colspan="2"><a id="ac9a7925604aa2052a0348ee744c32753"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:ac9a7925604aa2052a0348ee744c32753"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="structdrain_1_1Box.html">drain::Box</a>&lt; T &gt; &amp;box)</td></tr>
@@ -1033,13 +1047,25 @@ template&lt;class T , char SEP = '/', bool ALEAD = true, bool AREPEAT = false, b
 template&lt;class T , char SEP = '/', bool ALEAD = true, bool AREPEAT = false, bool ATRAIL = true&gt; </td></tr>
 <tr class="memitem:a02c8606b68657eb125f6b7e77a0c96d6"><td class="memTemplItemLeft" align="right" valign="top">std::istream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&gt;&gt;</b> (std::istream &amp;istr, <a class="el" href="classdrain_1_1Path.html">Path</a>&lt; T, SEP, ALEAD, AREPEAT, ATRAIL &gt; &amp;p)</td></tr>
 <tr class="separator:a02c8606b68657eb125f6b7e77a0c96d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb0a7cb4ae93a9437c43b7fa9dc80d32"><td class="memItemLeft" align="right" valign="top"><a id="aeb0a7cb4ae93a9437c43b7fa9dc80d32"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_T</b> (<a class="el" href="structdrain_1_1Point2D.html">Point2D</a>, T)</td></tr>
+<tr class="separator:aeb0a7cb4ae93a9437c43b7fa9dc80d32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a776170ebdba1977a0d45ea17a115ff7f"><td class="memItemLeft" align="right" valign="top"><a id="a776170ebdba1977a0d45ea17a115ff7f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_T</b> (<a class="el" href="structdrain_1_1Point3D.html">Point3D</a>, T)</td></tr>
+<tr class="separator:a776170ebdba1977a0d45ea17a115ff7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58bc2d0e49196ccf3dbc5ab8bc7e40b5"><td class="memItemLeft" align="right" valign="top"><a id="a58bc2d0e49196ccf3dbc5ab8bc7e40b5"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1Proj6.html">Proj6</a> &amp;p)</td></tr>
 <tr class="separator:a58bc2d0e49196ccf3dbc5ab8bc7e40b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a960e01f81386afd6beb08e965d972d0d"><td class="memItemLeft" align="right" valign="top"><a id="a960e01f81386afd6beb08e965d972d0d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_T</b> (<a class="el" href="classdrain_1_1Range.html">Range</a>, T)</td></tr>
+<tr class="separator:a960e01f81386afd6beb08e965d972d0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcbc9056d7f74316aebbf298546f82ad"><td class="memTemplParams" colspan="2"><a id="abcbc9056d7f74316aebbf298546f82ad"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:abcbc9056d7f74316aebbf298546f82ad"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; T &gt; &amp;r)</td></tr>
 <tr class="separator:abcbc9056d7f74316aebbf298546f82ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20bffe9c38bce5983e75b397b28473dc"><td class="memItemLeft" align="right" valign="top"><a id="a20bffe9c38bce5983e75b397b28473dc"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_T</b> (<a class="el" href="structdrain_1_1Rectangle.html">Rectangle</a>, T)</td></tr>
+<tr class="separator:a20bffe9c38bce5983e75b397b28473dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee310301149ee1dcb70439c656e4c70a"><td class="memTemplParams" colspan="2"><a id="aee310301149ee1dcb70439c656e4c70a"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:aee310301149ee1dcb70439c656e4c70a"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1SmartMap.html">SmartMap</a>&lt; T &gt; &amp;m)</td></tr>
@@ -1177,7 +1203,6 @@ const double&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS<
 <div class="textblock"><p>See also radar::Compositor</p>
 <p>See also radar::Composite</p>
 <p>Part of Rack development has been done in the BALTRAD projects part-financed by the European Union (European Regional Development Fund and European Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)</p>
-<p>Depending on C++ compiler, this operator cannot be defined inside <a class="el" href="namespacedrain_1_1image.html" title="Namespace for images and image processing tools.">drain::image</a> scope. inline std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const drain::image::TreeSVG &amp; tree){ return drain::NodeXML&lt;&gt;::docToStream(ostr, tree); }</p>
 <p>Copyright 2001 - 2010 Markus Peura, Finnish Meteorological Institute (<a href="#" onclick="location.href='mai'+'lto:'+'Fir'+'st'+'.La'+'st'+'@fm'+'i.'+'fi'; return false;">First<span style="display: none;">.nosp@m.</span>.Las<span style="display: none;">.nosp@m.</span>t@fmi<span style="display: none;">.nosp@m.</span>.fi</a>)</p>
 <p>This file is part of Rack for C++.</p>
 <p>Rack is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.</p>

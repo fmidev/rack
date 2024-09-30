@@ -1,45 +1,47 @@
 <map id="ImageContext" name="ImageContext">
-<area shape="rect" id="node1" title=" " alt="" coords="3117,387,3232,413"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char,..." alt="" coords="2861,316,2923,343"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry." alt="" coords="2525,295,2656,321"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="2237,293,2345,320"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="1873,283,1977,309"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images." alt="" coords="1584,195,1673,221"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data)" alt="" coords="1203,175,1296,201"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1Encoding.html" title=" " alt="" coords="840,216,921,243"/>
-<area shape="rect" id="node9" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="540,224,645,251"/>
-<area shape="rect" id="node10" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,228,173,255"/>
-<area shape="rect" id="node11" href="$classdrain_1_1Range.html" title=" " alt="" coords="235,253,373,280"/>
-<area shape="rect" id="node12" href="$classdrain_1_1Caster.html" title=" " alt="" coords="561,287,625,313"/>
-<area shape="rect" id="node21" href="$classdrain_1_1Castable.html" title=" " alt="" coords="841,333,920,360"/>
-<area shape="rect" id="node13" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="837,75,924,101"/>
-<area shape="rect" id="node14" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="511,56,674,83"/>
-<area shape="rect" id="node15" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="518,107,667,133"/>
-<area shape="rect" id="node16" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="223,73,385,100"/>
-<area shape="rect" id="node17" href="$classdrain_1_1image_1_1ChannelGeometry.html" title=" " alt="" coords="523,5,663,32"/>
-<area shape="rect" id="node18" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="815,165,947,192"/>
-<area shape="rect" id="node19" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="511,158,675,199"/>
-<area shape="rect" id="node20" href="$classdrain_1_1CastableIterator.html" title=" " alt="" coords="1385,333,1512,360"/>
-<area shape="rect" id="node22" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s." alt="" coords="1563,267,1694,293"/>
-<area shape="rect" id="node23" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="1137,272,1361,299"/>
-<area shape="rect" id="node24" title=" " alt="" coords="785,267,976,309"/>
-<area shape="rect" id="node25" href="$classdrain_1_1image_1_1ImageSampler.html" title="Traverses image, returning samples." alt="" coords="2833,387,2951,413"/>
-<area shape="rect" id="node26" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="2545,347,2636,373"/>
-<area shape="rect" id="node27" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="2250,348,2331,375"/>
-<area shape="rect" id="node31" href="$classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data." alt="" coords="2553,400,2629,427"/>
-<area shape="rect" id="node28" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="1867,349,1983,376"/>
-<area shape="rect" id="node29" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="1536,397,1721,424"/>
-<area shape="rect" id="node34" href="$classdrain_1_1ReferenceMap2.html" title="A map of references to base type scalars, arrays or std::string; changing values in either are equiva..." alt="" coords="2020,400,2183,427"/>
-<area shape="rect" id="node30" title=" " alt="" coords="1139,397,1359,424"/>
-<area shape="rect" id="node32" href="$classdrain_1_1Range.html" title=" " alt="" coords="2235,461,2346,488"/>
-<area shape="rect" id="node33" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="1858,461,1993,488"/>
-<area shape="rect" id="node35" href="$structdrain_1_1image_1_1PanelConfSVG.html" title=" " alt="" coords="2835,525,2949,552"/>
-<area shape="rect" id="node36" href="$classdrain_1_1image_1_1FontSizes.html" title=" " alt="" coords="2549,649,2633,676"/>
-<area shape="rect" id="node37" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="2207,649,2375,676"/>
-<area shape="rect" id="node38" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="2472,518,2709,559"/>
-<area shape="rect" id="node39" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="2216,527,2365,553"/>
-<area shape="rect" id="node43" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="2479,453,2702,494"/>
-<area shape="rect" id="node40" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="1855,560,1996,587"/>
-<area shape="rect" id="node42" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="2219,583,2362,609"/>
-<area shape="rect" id="node41" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="2489,583,2693,625"/>
+<area shape="rect" id="node1" title=" " alt="" coords="3301,236,3416,263"/>
+<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char,..." alt="" coords="3045,168,3107,195"/>
+<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry." alt="" coords="2781,139,2912,165"/>
+<area shape="rect" id="node4" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="2575,136,2683,163"/>
+<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="2243,125,2347,152"/>
+<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images." alt="" coords="1957,123,2047,149"/>
+<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data)" alt="" coords="1576,123,1669,149"/>
+<area shape="rect" id="node8" href="$classdrain_1_1image_1_1Encoding.html" title=" " alt="" coords="1325,72,1407,99"/>
+<area shape="rect" id="node9" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="999,65,1105,92"/>
+<area shape="rect" id="node10" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="199,65,367,92"/>
+<area shape="rect" id="node12" href="$classdrain_1_1Range.html" title=" " alt="" coords="627,65,765,92"/>
+<area shape="rect" id="node11" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="5,191,149,217"/>
+<area shape="rect" id="node15" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="391,265,553,292"/>
+<area shape="rect" id="node17" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="201,191,364,217"/>
+<area shape="rect" id="node20" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="201,122,365,163"/>
+<area shape="rect" id="node39" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="199,304,367,331"/>
+<area shape="rect" id="node13" href="$classdrain_1_1Caster.html" title=" " alt="" coords="1020,9,1084,36"/>
+<area shape="rect" id="node22" href="$classdrain_1_1Castable.html" title=" " alt="" coords="1327,5,1405,32"/>
+<area shape="rect" id="node14" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="1009,196,1095,223"/>
+<area shape="rect" id="node16" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="621,217,771,244"/>
+<area shape="rect" id="node18" href="$classdrain_1_1image_1_1ChannelGeometry.html" title=" " alt="" coords="626,167,766,193"/>
+<area shape="rect" id="node19" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="839,121,971,148"/>
+<area shape="rect" id="node21" href="$classdrain_1_1CastableIterator.html" title=" " alt="" coords="1759,31,1885,57"/>
+<area shape="rect" id="node23" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s." alt="" coords="1937,180,2067,207"/>
+<area shape="rect" id="node24" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="1511,193,1735,220"/>
+<area shape="rect" id="node25" title=" " alt="" coords="1271,225,1461,266"/>
+<area shape="rect" id="node26" href="$classdrain_1_1image_1_1ImageSampler.html" title="Traverses image, returning samples." alt="" coords="3017,236,3135,263"/>
+<area shape="rect" id="node27" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="2801,192,2892,219"/>
+<area shape="rect" id="node28" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="2588,199,2669,225"/>
+<area shape="rect" id="node32" href="$classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data." alt="" coords="2809,249,2885,276"/>
+<area shape="rect" id="node29" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="2237,199,2353,225"/>
+<area shape="rect" id="node30" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="1909,247,2095,273"/>
+<area shape="rect" id="node36" href="$classdrain_1_1ReferenceMap2.html" title="A map of references to base type scalars, arrays or std::string; changing values in either are equiva..." alt="" coords="2387,251,2549,277"/>
+<area shape="rect" id="node31" title=" " alt="" coords="1513,247,1733,273"/>
+<area shape="rect" id="node33" href="$classdrain_1_1Range.html" title=" " alt="" coords="2573,312,2684,339"/>
+<area shape="rect" id="node34" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="2228,312,2363,339"/>
+<area shape="rect" id="node35" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="1931,312,2073,339"/>
+<area shape="rect" id="node37" href="$structdrain_1_1image_1_1PanelConfSVG.html" title=" " alt="" coords="995,377,1109,404"/>
+<area shape="rect" id="node38" href="$classdrain_1_1image_1_1FontSizes.html" title=" " alt="" coords="654,319,738,345"/>
+<area shape="rect" id="node40" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="577,435,815,477"/>
+<area shape="rect" id="node41" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="208,443,357,469"/>
+<area shape="rect" id="node45" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="585,370,807,411"/>
+<area shape="rect" id="node42" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="7,469,148,496"/>
+<area shape="rect" id="node44" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="211,500,354,527"/>
+<area shape="rect" id="node43" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="594,501,798,542"/>
 </map>
