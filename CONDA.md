@@ -22,11 +22,11 @@ conda activate rack-install
 conda config --add channels conda-forge
 
 # Main: install the required packages.
-conda install proj
-conda install hdf5
-# conda install libpng=1.6
-conda install libpng
-conda install geotiff
+# conda install --yes libpng=1.6
+conda install --yes proj
+conda install --yes hdf5
+conda install --yes libpng
+conda install --yes geotiff
 
 # Check the installed libraries - including their dependencies. 
 conda list --explicit
@@ -39,6 +39,24 @@ conda deactivate
 ```
 
 Ensure the location of the environment, for example with ``conda info``.
-Typically, the environment is in path ``$USER/.conda/envs/rack-install``
+Typically, the environment is in path ``$USER/.conda/envs/rack-install`` .
 
+Actual configuration is then done with
+```
+VENV_DIR=$USER/.conda/envs/rack-install [./configure.sh](./configure.sh)
+```
+
+After that, essential variables `CCFLAGS` and `LDFLAGS` should contain references to $VENV_DIR.
+It is recommended to contain all the dependencies from the same source (system or Conda environment)
+but mixed configurations may work, and look as follows, for example:
+```
+# Include paths
+CCFLAGS='-std=gnu++11 -fopenmp   -I/usr/include -I/usr/include/libpng16 -I/home/fmi_ode/.conda/envs/rack-install/include'
+
+# Library paths
+LDFLAGS='-std=gnu++11 -fopenmp -L/usr/lib64 -lpng16 -L/home/user/.conda/envs/rack-install/lib -lproj -lhdf5 -lz -ltiff -lgeotiff'
+```
+Then, the build continues as follows, using `build.sh` as explained in [INSTALL.md](./INSTALL.md) .
+
+After successful compilation of Rack, you can remove the virtual environment with ``conda ??? rack install`` 
 
