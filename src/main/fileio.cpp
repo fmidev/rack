@@ -648,17 +648,18 @@ void CmdOutputFile::exec() const {
 			//mout.debug(selector);
 			selector.getPaths(src, paths);
 
-			//class OnDIMVariableHandler
-			// VariableFormatterODIM<drain::FlexibleVariable> odimHandler;
-
 			const drain::VariableMap & vmapShared = ctx.getStatusMap(false);
 
 			for (const ODIMPath & path: paths){
-				// mout.special<LOG_DEBUG+1>('\t', path);
-				// mout.special('\t', path);
+				const drain::image::Image & img = src(path).data.image;
 				drain::FlexVariableMap vmap;
 				vmap.importCastableMap(vmapShared);
-				vmap.importCastableMap(src(path).data.image.properties);
+				vmap.importCastableMap(img.properties);
+				// TODO version flags
+				if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS)){
+					vmap["what:typesize"] = drain::Type::call<drain::sizeGetter>(img.getType());
+					vmap["what:typename"] = drain::Type::call<drain::compactName>(img.getType());
+				}
 				// output << path << ':' << src(path).data.attributes << '\n';
 				// const drain::FlexVariableMap & vmap = src(path).data.image.properties;
 
