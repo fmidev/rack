@@ -67,8 +67,9 @@ void CommandBank::deriveCmdName(std::string & name, char prefix){
 
 	std::stringstream sstr;
 
-	if (prefix)
+	if (prefix){
 		sstr << prefix;
+	}
 
 	// Check initial of the first valid char (after pruning, so possibly i>0)
 	bool checkInitialCase = true;
@@ -155,7 +156,7 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 		else if (get(entry.first).getName() == execFileCmd){
 			mout.special("pre-processing execFileCmd: ", entry.first, '/', get(entry.first).getName());
 			readFile(entry.second, prog);
-			mout.experimental(prog);
+			mout.experimental<LOG_DEBUG>(prog);
 		}
 		else { // default
 			command_t & cmd = clone(entry.first);
@@ -399,7 +400,7 @@ void CommandBank::readFile(const std::string & filename, Program & prog) const {
 		drain::Input input(filename);
 
 		drain::JSON::readTree(cmdTree, input);
-		mout.experimental("parsed JSON structure:\n", drain::sprinter(cmdTree));
+		mout.experimental<LOG_INFO>("parsed JSON structure:\n", drain::sprinter(cmdTree));
 
 		for (const auto & node: cmdTree){
 			mout.debug("inserting: ", node.first); //, node.second.data);
