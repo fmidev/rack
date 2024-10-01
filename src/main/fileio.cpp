@@ -104,14 +104,13 @@ public:
 
 	CmdOutputConf() : drain::SimpleCommand<std::string>(__FUNCTION__, "Format (h5|tif|png|tre|dot) specific configurations", "value", "<format>:<key>=value>,conf...") {
 
-		hdf5Conf.link("compression", hi5::Writer::compressionLevel);
-		pngConf.link("compression", drain::image::FilePng::compressionLevel);
-		// TreeUtilsSVG::defaultOrientation.value
-		// svgConf.link("group",       TreeUtilsSVG::defaultGroupName);
 		RackContext & ctx = getContext<RackContext>();
+
+		hdf5Conf.link("compression", hi5::Writer::compressionLevel, "0...6 recommended in ODIM");
+
+		pngConf.link("compression", drain::image::FilePng::compressionLevel);
+
 		svgConf.link("group", ctx.svgPanelConf.groupName); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
-		// svgConf.link("orientation", svgConfOrientation, drain::sprinter(drain::image::PanelConfSVG::orientation.getDict().getKeys()).str());
-		// svgConf.link("direction",   svgConfDirection,   drain::sprinter(drain::image::PanelConfSVG::direction.getDict().getKeys()).str());
 		svgConf.link("orientation", svgConfOrientation, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Orientation>::dict.getKeys()).str()); // init clash
 		svgConf.link("direction",   svgConfDirection,   drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Direction>::dict.getKeys()).str());   // init clash
 		svgConf.link("max", ctx.svgPanelConf.maxPerGroup, "max per row/column"); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
@@ -124,10 +123,10 @@ public:
 
 		gtiffConf.link("tile", FileTIFF::defaultTile.tuple(), "<width>[:<height>]");
 		gtiffConf.link("compression", FileTIFF::defaultCompression, drain::sprinter(FileTIFF::getCompressionDict(), "|", "<>").str());
-		// gtiffConf.link("level", FileTIFF::defaultCompressionLevel, "1..10");
-		//gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.str(), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str()); // drain::sprinter(FileGeoTIFF::flagger.getDict(), "|", "<>").str());
-		//gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.getKeysNEW2(FileGeoTIFF::EPSG|FileGeoTIFF::STRICT, ':'), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str());
 		gtiffConf.link("compliancy", FileGeoTIFF::compliancy = "EPSG:STRICT", drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str());
+		// gtiffConf.link("level", FileTIFF::defaultCompressionLevel, "1..10");
+		// gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.str(), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str()); // drain::sprinter(FileGeoTIFF::flagger.getDict(), "|", "<>").str());
+		// gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.getKeysNEW2(FileGeoTIFF::EPSG|FileGeoTIFF::STRICT, ':'), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str());
 #endif
 
 	};
@@ -403,11 +402,6 @@ void CmdOutputFile::exec() const {
 		drain::StringTools::replace(ODIM::versionFlagger, ".", "_", version);
 		//conventions.setInputSeparator('/');
 		conventions = std::string("ODIM_H5/") + version;
-		// conventions.setInputSeparator('#');
-		// conventions.setOutputSeparator('%');
-		// conventions << "ODIM_H5" << version; // CHECK
-		// conventions.setType(typeid(std::string));
-		// conventions.set("ODIM_H5/V", ODIM::versionFlagger);
 
 		hi5::Writer::writeFile(filepath, src); //*ctx.currentHi5);
 		/*
@@ -657,25 +651,19 @@ void CmdOutputFile::exec() const {
 			//class OnDIMVariableHandler
 			// VariableFormatterODIM<drain::FlexibleVariable> odimHandler;
 
+			const drain::VariableMap & vmapShared = ctx.getStatusMap(false);
+
 			for (const ODIMPath & path: paths){
 				// mout.special<LOG_DEBUG+1>('\t', path);
 				// mout.special('\t', path);
+				drain::FlexVariableMap vmap;
+				vmap.importCastableMap(vmapShared);
+				vmap.importCastableMap(src(path).data.image.properties);
 				// output << path << ':' << src(path).data.attributes << '\n';
-				const drain::FlexVariableMap & vmap = src(path).data.image.properties;
+				// const drain::FlexVariableMap & vmap = src(path).data.image.properties;
 
-				// mout.attention("Debugging: ");
-				// statusFormatter.debug(std::cerr, vmap);
-
-				/*
-				if (vmap.hasKey("what:source")){ // moved to DataTools::updateVariables()
-					SourceODIM odim(vmap.get("what:source", ""));
-					// mout.warn(odim);
-					vmap.importCastableMap(odim);
-					// mout.warn(vmap);
-				}
-				*/
 				// mout.special<LOG_DEBUG+1>('\t', path, ": attr: ", vmap);
-				//statusFormatter.toStream(output, src(path).data.image.properties);
+				// statusFormatter.toStream(output, src(path).data.image.properties);
 				statusMapper.toStream(output, vmap, 0, RackContext::flexVariableFormatter); // odimHandler);
 			}
 		}

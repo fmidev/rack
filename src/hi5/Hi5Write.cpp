@@ -58,7 +58,7 @@ void Writer::writeFile(const std::string &filename, const Hi5Tree &tree){
 	const hid_t fid = H5Fcreate(filename.c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
 
 	if (fid < 0)
-		mout.error() << ": H55create failed, file=" << filename << mout.endl;
+		mout.error(": H55create failed, file=" , filename );
 
 
 	/*
@@ -101,7 +101,7 @@ void Writer::writeFile(const std::string &filename, const Hi5Tree &tree){
 
 	int status = H5Fclose(fid);
 	if (status < 0)
-		mout.warn() << ": H55close failed, file=" << filename << mout.endl;
+		mout.warn(": H55close failed, file=" , filename );
 
 	//hi5::debug(tree);
 }
@@ -112,14 +112,14 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 	// hi5::hi5monitor,
 	drain::Logger mout("Writer", __FUNCTION__);
 
-	mout.debug2()  << "path=" << path << mout.endl;
+	mout.debug2("path=" , path );
 
 	const hi5::NodeHi5 & node = tree.data;
 	const drain::VariableMap  & attributes = node.attributes;
 	const drain::image::Image & image = node.image;
 
 	if (node.exclude){ // attributes["~tmp~"].getS
-		mout.debug2() << "skipping temporary object " << path << mout.endl;
+		mout.debug2("skipping temporary object " , path );
 		return;
 	}
 
@@ -133,7 +133,7 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 		//drain::Variable d(typeid(std::string));
 		if (attributes["CLASS"].toStr() == "PALETTE"){
 
-			mout.warn() << "unimplemented code (palette creation) " << path << mout.endl;
+			mout.warn("unimplemented code (palette creation) " , path );
 			/*
 			dataToH5Attribute(d="RGB",       fid, path, "PAL_COLORMODEL");
 			dataToH5Attribute(d="STANDARD8", fid, path, "PAL_TYPE");
@@ -155,7 +155,7 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 
 			if (attributes["IMAGE_SUBCLASS"].toStr() == "IMAGE_INDEXED"){
 
-				mout.debug() << "future option: linking palette " << path << mout.endl;
+				mout.debug("future option: linking palette " , path );
 				/*
 				 TODO: add palette path using "quantity"? (Avoid re-creating quantitie?s)
 				// Create (dummy) palette:
@@ -198,18 +198,18 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 			const std::string pathStr(path);
 
 			if (H5Lexists(fid, pathStr.c_str(), H5P_DEFAULT)){
-				mout.warn() << "group exists already, skipping : " << path << mout.endl;
+				mout.warn("group exists already, skipping : " , path );
 				return;
 			}
 
 			int status;
 			const hid_t gid = H5Gcreate2(fid, pathStr.c_str(), H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 			if (gid < 0)
-				mout.warn() << ": H5Gcreate failed, path=" << path << mout.endl;
+				mout.warn(": H5Gcreate failed, path=" , path );
 			// TODO: close() ?
 			status = H5Gclose(gid);
 			if (status < 0)
-				mout.error() << ": H5Gclose failed, path=" << path << mout.endl;
+				mout.error(": H5Gclose failed, path=" , path );
 		}
 
 		//const std::string separator = (path == "/") ? "" : "/";
@@ -277,7 +277,7 @@ hsize_t Writer::deriveDimensions(const drain::image::Geometry & g, std::vector<h
 	hsize_t channels = g.channels.getChannelCount();
 
 	if (g.getArea() == 0){
-		mout.warn() << "empty image, geometry: " << g << mout.endl;
+		mout.warn("empty image, geometry: " , g );
 		return 0;
 	}
 
@@ -288,7 +288,7 @@ hsize_t Writer::deriveDimensions(const drain::image::Geometry & g, std::vector<h
 
 	switch (channels){
 		case 0:
-			mout.warn() << "unsupported image geometry: " << g << mout.endl;
+			mout.warn("unsupported image geometry: " , g );
 			return 0;
 		case 1:
 			dims.resize(2);
@@ -330,8 +330,8 @@ hid_t Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, cons
 	drain::Logger mout(__FILE__, __FUNCTION__ );
 	// mout.startTiming();
 
-	mout.debug3() << ": starting, path=" << path << mout.endl;
-	mout.debug3() << image << mout.endl;
+	mout.debug3(": starting, path=" , path );
+	mout.debug3(image );
 	//std::cerr << ": starting,"<< hi5monitor.getVerbosityLevel() << " path=" << path << '\n';
 
 	std::vector<hsize_t> dims;
@@ -340,7 +340,7 @@ hid_t Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, cons
 	const hsize_t rank = deriveDimensions(image.getGeometry(), dims, chunkDims);
 
 	if (!rank){
-		mout.error() << ": unsupported image data range, path=" << path << mout.endl;
+		mout.error(": unsupported image data range, path=" , path );
 		return 0;
 	}
 
@@ -354,50 +354,64 @@ hid_t Writer::imageToH5DataSet(const drain::image::Image &image, hid_t fid, cons
 
 	const hid_t pid = H5Pcreate(H5P_DATASET_CREATE);
 	if (pid < 0)
-		mout.warn() << ": H5Pcreate failed, path=" << path << mout.endl;
+		mout.warn(": H5Pcreate failed, path=" , path );
 
-	// ZLIB compression
-	// ODIM recommendation: zlib compression level 6
 	status = H5Pset_chunk(pid, rank, &chunkDims[0]);
-	if (status < 0)
-		mout.warn() << ": H5Pset_chunk failed, path=" << path << mout.endl;
+	// TODO: CHANGLE ALL!
+	handleStatus<LOG_WARNING>(mout, status, "H5Pset_chunk failed, path=", path, __LINE__);
+	/*
+	if (status < 0){
+		mout.warn(": H5Pset_chunk failed, path=", path);
+	}
+	*/
 
-	//status = H5Pset_deflate(pid,6);  // ZLib compression level
-	status = H5Pset_deflate(pid, compressionLevel);  // ZLib compression level
-	if (status < 0)
-		mout.warn() << ": H5Pset_deflate failed, path=" << path << mout.endl;
-
+	// https://docs.hdfgroup.org/hdf5/v1_14/group___d_c_p_l.html#gaf1f569bfc54552bdb9317d2b63318a0d
+	status = H5Pset_deflate(pid, compressionLevel);
+	if (status < 0){
+		mout.warn("H5Pset_deflate failed, path=", path);
+	}
 
 	H5Tset_order(tid, H5T_ORDER_LE);
 	//const hid_t did = H5Dcreate(fid, path.c_str(), tid, sid, H5P_DEFAULT);
 	const hid_t did = H5Dcreate2(fid, static_cast<std::string>(path).c_str(), tid, sid, H5P_DEFAULT, pid, H5P_DEFAULT);
-	if (did < 0)
-		mout.warn() << ": H5Dcreate failed, path=" << path << mout.endl;
+	// handleStatus<LOG_WARNING>(mout, did, "H5Dwrite failed, path=", path, __LINE__);
+	if (did < 0){
+		mout.warn("H5Dcreate failed, path=", path);
+	}
 
 	/*
 	 * Write the data to the dataset using default transfer properties.
 	 */
-	H5Dwrite(did, TID, H5S_ALL, H5S_ALL, H5P_DEFAULT, image.getBuffer() );  // only 1st channel segment will be read!
-	if (status < 0)
-		mout.warn() << ": H5Dwrite failed, path=" << path << mout.endl;
+	status = H5Dwrite(did, TID, H5S_ALL, H5S_ALL, H5P_DEFAULT, image.getBuffer() );  // only 1st channel segment will be read!
+	// TODO: CHANGLE ALL!
+	handleStatus<LOG_WARNING>(mout, status, "H5Dwrite failed, path=", path, __LINE__);
+	/*
+	if (status < 0){
+		mout.warn(": H5Dwrite failed, path=", path);
+	}
+	*/
 
 	/*  Close resources
 	 */
 	status = H5Sclose(sid);
-	if (status < 0)
-		mout.warn() << ": H5S close failed." << mout.endl;
+	if (status < 0){
+		mout.warn(": H5S close failed." );
+	}
 
 	status = H5Tclose(tid);
-	if (status < 0)
-		mout.warn() << ": H5T close failed." << mout.endl;
+	if (status < 0){
+		mout.warn(": H5T close failed." );
+	}
 
 	status = H5Dclose(did);
-	if (status < 0)
-		mout.warn() << ": H5D close failed." << mout.endl;
+	if (status < 0){
+		mout.warn(": H5D close failed." );
+	}
 
 	status = H5Pclose(pid);
-	if (status < 0)
-		mout.warn() << ": H5P close failed." << mout.endl;
+	if (status < 0){
+		mout.warn(": H5P close failed." );
+	}
 
 	return did;
 }
@@ -408,7 +422,7 @@ void Writer::dataToH5Attribute(const drain::Variable &d, hid_t fid, const Hi5Tre
 
 	drain::Logger mout("Writer", __FUNCTION__);
 
-	mout.debug2()  << "path=" << path << mout.endl;
+	mout.debug2("path=" , path );
 
 	if (d.isCharArrayString() || (d.getType() == typeid(std::string))){
 		dataToH5AttributeString(d, fid, path, attribute);
@@ -445,20 +459,20 @@ void Writer::dataToH5Attribute(const drain::Variable &d, hid_t fid, const Hi5Tre
 		mout << ", path=" << path << mout.endl;
 		status = H5Sset_extent_simple(sid, 1, &elements, &elements); //NULL);
 		if (status < 0)
-			mout.error()  << ": H5Screate failed for ARRAY, path=" << path << mout.endl;
+			mout.error(": H5Screate failed for ARRAY, path=" , path );
 		return;
 	}
 	*/
 	const hid_t oid = H5Oopen(fid, static_cast<std::string>(path).c_str(), H5P_DEFAULT);
 	if (oid < 0)
-		mout.error()  << "H5Oopen failed, path=" << path << mout.endl;
+		mout.error("H5Oopen failed, path=" , path );
 	//const hid_t gid = H5Gopen2(fid,path.c_str(),H5P_DEFAULT);
 	//if (gid < 0)
-	//	mout.error()  << ": H5Gopen failed, path=" << path << mout.endl;
+	//	mout.error(": H5Gopen failed, path=" , path );
 
 	const hid_t aid = H5Acreate2(oid, attribute.c_str(), tid, sid, H5P_DEFAULT, H5P_DEFAULT);
 	if (aid < 0)
-		mout.error()  << "H5Acreate failed, path=" << path << mout.endl;
+		mout.error("H5Acreate failed, path=" , path );
 
 	// OLD const T x = d;
 	// status = H5Awrite(aid,tid,&x);
@@ -466,24 +480,24 @@ void Writer::dataToH5Attribute(const drain::Variable &d, hid_t fid, const Hi5Tre
 	status = H5Awrite(aid, tid, d.getPtr());
 	handleStatus<LOG_WARNING>(mout, status, "H5Awrite failed", __LINE__);
 	//if (status < 0)
-	//	mout.error()  << "H5Awrite failed, path=" << path << mout.endl;
+	//	mout.error("H5Awrite failed, path=" , path );
 
 
 	status = H5Aclose(aid);
 	handleStatus<LOG_ERR>(mout, status, "H5Aclose failed, path=", path, __LINE__);
 	// if (status < 0)
-	// mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+	// mout.error(": H5 close failed, path=" , path );
 
 	//status = H5Gclose(gid);
 	status = H5Oclose(oid);
 	handleStatus<LOG_ERR>(mout, status, "H5Gclose failed, path=", path, __LINE__);
 	// if (status < 0)
-	// mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+	// mout.error(": H5 close failed, path=" , path );
 
 	status = H5Sclose(sid);
 	handleStatus<LOG_ERR>(mout, status, "H5Sclose failed, path=", path, __LINE__);
 	// if (status < 0)
-	//	mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+	//	mout.error(": H5 close failed, path=" , path );
 
 }
 
@@ -494,11 +508,11 @@ void Writer::dataToH5AttributeString(const drain::Variable & data, hid_t fid, co
 	// hi5::hi5monitor,
 	drain::Logger mout("Writer", __FUNCTION__ );
 
-	mout.debug2()  << "path=" << path << mout.endl;
+	mout.debug2("path=" , path );
 
 	if (!data.isString()){
-		//mout.note() << "converting attribute " << attribute << "='" << data << "'  to string" << mout.endl;
-		mout.error() << "attribute " << attribute << "='" << data << "'  not string" << mout.endl;
+		//mout.note("converting attribute " , attribute , "='" , data , "'  to string" );
+		mout.error("attribute " , attribute , "='" , data , "'  not string" );
 		return;
 	}
 
@@ -575,7 +589,7 @@ size_t createCompound(const drain::VariableMap & m, hid_t obj = 0){
 				status = H5Tset_size(h5type, H5T_VARIABLE);
 				status = H5Tinsert(obj,  key, address, h5type);
 				if (status < 0)
-					mout.warn() << "allocating segment for string '"  << key << "'=" << v << " failed, status=" << status << mout.endl;
+					mout.warn("allocating segment for string '"  , key , "'=" , v , " failed, status=" , status );
 			}
 		}
 		else {
@@ -584,11 +598,11 @@ size_t createCompound(const drain::VariableMap & m, hid_t obj = 0){
 				hid_t h5type = Hi5Base::getH5NativeDataType(v.getType());
 				status = H5Tinsert(obj,  key, address, h5type);
 				if (status < 0)
-					mout.warn() << "allocating segment for '"  << key << "'=" << v << " failed, status=" << status << mout.endl;
+					mout.warn("allocating segment for '"  , key , "'=" , v , " failed, status=" , status );
 			}
 		}
 
-		mout.warn() << address << "\t=> "  << it->first << "': " << s <<  " bytes" << mout.endl;
+		mout.warn(address , "\t=> "  , it->first , "': " , s ,  " bytes" );
 
 		address += s;
 
@@ -626,18 +640,18 @@ void Writer::dataToH5Compound(const drain::VariableMap & m, hid_t fid, const std
     hid_t strtype = H5Tcopy (H5T_C_S1);
     status = H5Tset_size(strtype, H5T_VARIABLE);
     if (status < 0)
-    	mout.error() << "H5Tset_size failed, " << path << mout.endl;
-    //mout.warn() << "allocating segment of '"  << size << " bytes" << mout.endl;
+    	mout.error("H5Tset_size failed, " , path );
+    //mout.warn("allocating segment of '"  , size , " bytes" );
 
 	// Create the compound datatype for memory.
     hid_t memtype = H5Tcreate (H5T_COMPOUND, sizeof(test_struct));
     status = H5Tinsert (memtype, "index", HOFFSET(test_struct, index), H5T_NATIVE_INT); // Hi5Base::getH5NativeDataType(typeid(int));
     if (status < 0)
-    	mout.error() << "H5Tinsert failed" << path << mout.endl;
+    	mout.error("H5Tinsert failed" , path );
 
     status = H5Tinsert (memtype, "label", HOFFSET(test_struct, label), strtype); // Hi5Base::getH5NativeDataType(typeid(int));
     if (status < 0)
-    	mout.error() << "H5Tinsert 2 failed" << mout.endl;
+    	mout.error("H5Tinsert 2 failed" );
 
 
     // H5Tcreate (H5T_COMPOUND, size);
@@ -668,7 +682,7 @@ void Writer::dataToH5Compound(const drain::VariableMap & m, hid_t fid, const std
 
     hid_t space = H5Screate_simple (1, dims, NULL);
 
-    mout.warn() << "creating compound" << mout.endl;
+    mout.warn("creating compound" );
 
     hid_t dset = H5Dcreate (fid, path.c_str(), filetype, space, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
@@ -700,34 +714,34 @@ void linkToH5Attribute(hid_t lid, hid_t fid, const std::string &path, const std:
 
 	const hid_t oid = H5Oopen(fid, path.c_str(), H5P_DEFAULT);
 	if (oid < 0)
-		mout.error() << "H5Oopen failed, path=" << path << mout.endl;
+		mout.error("H5Oopen failed, path=" , path );
 	//const hid_t gid = H5Gopen2(fid,path.c_str(),H5P_DEFAULT);
 	//if (gid < 0)
-	//	mout.error()  << ": H5Gopen failed, path=" << path << mout.endl;
+	//	mout.error(": H5Gopen failed, path=" , path );
 
 	const hid_t aid = H5Acreate2(oid, attribute.c_str(), tid, sid, H5P_DEFAULT, H5P_DEFAULT);
 	if (aid < 0)
-		mout.error() << "H5Acreate failed, path=" << path << mout.endl;
+		mout.error("H5Acreate failed, path=" , path );
 
 	// New
 	// status = H5Awrite(aid, tid, lid);   // FIXME!
 
 	if (status < 0)
-		mout.error() << "H5Awrite failed, path=" << path << mout.endl;
+		mout.error("H5Awrite failed, path=" , path );
 
 
 	status = H5Aclose(aid);
 	if (status < 0)
-		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+		mout.error(": H5 close failed, path=" , path );
 
 	//status = H5Gclose(gid);
 	status = H5Oclose(oid);
 	if (status < 0)
-		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+		mout.error(": H5 close failed, path=" , path );
 
 	status = H5Sclose(sid);
 	if (status < 0)
-		mout.error()  << ": H5 close failed, path=" << path << mout.endl;
+		mout.error(": H5 close failed, path=" , path );
 
 }
 

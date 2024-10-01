@@ -86,7 +86,7 @@ void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const
 		//if (exclude) ostr << '~';
 		ostr << ':';
 		//'\t';
-		//mout.note() << dataSet.getGeometry() << mout.endl;
+		//mout.note(dataSet.getGeometry() );
 		if (image.getGeometry().channels.getChannelCount() <= 1)
 			ostr << "image=[" << image.getWidth() << ',' << image.getHeight() << ']';
 		else
@@ -177,7 +177,7 @@ hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
 	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 
 	if (type == typeid(bool)){  // does not work
-		mout.warn() << __FUNCTION__ << ": boolean type '" << type.name() << "' currently unsupported" << mout.endl;
+		mout.warn(__FUNCTION__ , ": boolean type '" , type.name() , "' currently unsupported" );
 		return H5T_NATIVE_HBOOL; // experimental
 	}
 	else if (type == typeid(char)){
@@ -248,7 +248,7 @@ hid_t Hi5Base::getH5StringVariableLength(){
 
 	//herr_t status =
 	H5Tset_size(strtype, H5T_VARIABLE);
-	//if (status < 0)mout.error() << "H5T_C_S1 => H5Tset_size failed " << mout.endl;
+	//if (status < 0)mout.error("H5T_C_S1 => H5Tset_size failed " );
 	return strtype;
 
 }
@@ -342,7 +342,7 @@ void Hi5Base::readTextLine(Hi5Tree & dst, const std::string & line){
 
 	// NEW
 	std::string assignment;
-	// mout.debug() << line << " => ..." << mout;
+	// mout.debug(line , " => ..." );
 
 	//Hi5Base::parsePath(line, path, assignment);
 	drain::StringTools::split2(line, path, assignment, ":");
@@ -388,10 +388,10 @@ void Hi5Base::assignAttribute(Hi5Tree & dst, const std::string & assignment){
 				break;
 			case 1:
 				n.image.setGeometry(v.get<size_t>(0), v.get<size_t>(0));
-				mout.warn() << "image height not given, assuming height=width=" << v.get<size_t>(0) << mout.endl;
+				mout.warn("image height not given, assuming height=width=" , v.get<size_t>(0) );
 				break;
 			default:
-				mout.warn() << "wrong number of dimensions for image data: " << v << mout.endl;
+				mout.warn("wrong number of dimensions for image data: " , v );
 				break;
 		}
 		//n.image.setGeometry(v.get<size_t>(0), v.get<size_t>(1));
@@ -400,10 +400,10 @@ void Hi5Base::assignAttribute(Hi5Tree & dst, const std::string & assignment){
 	else { // non-image
 
 		drain::Variable & a = n.attributes[attrKey];
-		//mout.warn() << "hey " << drain::Type::call<drain::simpleName>(a.getType()) << mout.endl;
+		//mout.warn("hey " , drain::Type::call<drain::simpleName>(a.getType()) );
 		if (VALUE_GIVEN){
 			drain::JSON::readValue(attrValue, a, true);
-			//mout.note() << "read: " << a << ", type=" << drain::Type::call<drain::simpleName>(a.getType()) << mout.endl;
+			//mout.note("read: " , a , ", type=" , drain::Type::call<drain::simpleName>(a.getType()) );
 			if (attrKey == "quantity"){
 				if (n.attributes.get("gain", 0.0) == 0.0){
 					mout.debug("Consider --completeODIM to proceed");
@@ -420,7 +420,7 @@ void Hi5Base::parsePath(const std::string & line, Hi5Tree::path_t & path, std::s
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug() << "line: " << line << mout.endl;
+	mout.debug("line: " , line );
 
 	drain::StringTools::split2(line, path, assignment, ":");
 

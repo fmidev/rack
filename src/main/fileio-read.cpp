@@ -75,18 +75,13 @@ void CmdInputFile::exec() const {
 
 	//const drain::CommandRegistry & r = drain::getRegistry();
 	//mout.warn("lastCommand: '" , drain::CommandRegistry::index , r.getLastCommand() , "'" );
-
 	// Kludge. Check if last command was str than 1) file read or 2) odim assignment ( --/path:key=value )
 	// inputComplete = (r.getLastCommand() != this->name) && (r.getLastCommand() != "CmdSetODIM");
 	// mout.warn("inputComplete: " , (int)inputComplete );
 	// mout.warn("autoExec:      " , (int)cmdAutoExec.exec );
+
 	drain::FilePath path(value);
 	const bool NO_EXTENSION = path.extension.empty();
-	/*
-	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(path);
-	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(path);
-	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(path);
-	*/
 
 	try {
 
@@ -146,12 +141,6 @@ void CmdInputFile::exec() const {
 	path.basename.clear();
 	vmap["inputDir"] = path.str();
 	//mout.note(path"ctx.getStatusMap() start" );
-
-	// mout.timestamp("END_FILEREAD");
-	//mout.warn("resources.getUpdatedStatusMap()" );
-
-	//mout.special("END READ thread #", ctx.getId());
-
 
 }
 

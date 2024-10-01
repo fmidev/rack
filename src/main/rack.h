@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "9.2"
+#define __RACK_VERSION__ "9.2.1"
 
 /**
+ *   Version 9.2.1
+ *   - CmdOutputFile: revised metadata statusMap: combines global and local
+ *
  *   Version 9.2
  *   - Compositing: exact (native) input BBOX
  *

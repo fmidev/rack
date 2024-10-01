@@ -115,9 +115,7 @@ void ODIMPathElem::add(const std::string &s){
 		++it;
 	}
 
-
 	//mout.attention("setting: ", s, " --> ", std::string(s.begin(), it));
-
 
 	if (extractPrefix(std::string(s.begin(), it), INDEXED))
 		return; // true;
@@ -125,9 +123,8 @@ void ODIMPathElem::add(const std::string &s){
 	this->group = OTHER;  //(INDEXED) ? ODIMPathElem::OTHER_INDEXED :
 	this->currentStr = s;
 
-	mout.note("non-standard path element: " , *this );
-
-	//return false;
+	//mout.note("non-standard path element: " , *this );
+	mout.warn("non-standard path element: " , *this );
 
 }
 

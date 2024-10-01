@@ -42,8 +42,8 @@ namespace hi5 {
 template <>
 const drain::FlagResolver::dict_t drain::EnumDict<Reader::Mode>::dict = {
 		{"ATTRIBUTES", hi5::Reader::ATTRIBUTES},
-		{"DATASETS", hi5::Reader::DATASETS},
-		{"MARKED", hi5::Reader::EXCLUSIVE}
+		{"DATASETS",   hi5::Reader::DATASETS},
+		{"MARKED",     hi5::Reader::EXCLUSIVE}
 };
 
 
@@ -61,9 +61,18 @@ void Reader::readFile(const std::string & filename, Hi5Tree & tree, ModeFlagger:
 	hid_t fid = H5Fopen(filename.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
 	handleStatus<LOG_ERR>(mout, fid, "H5Fopen failed for file=", filename, __LINE__);
 
+	int status;
+	/*
+	size_t addr;
+	size_t size;
+	status = H5Pget_sizes(fid, &addr,&size);
+	handleStatus<LOG_WARNING>(mout, status, "H5Pget_sizes failed for file=", filename, __LINE__);
+	mout.error("size", addr, '-', size , '=', size-addr);
+	*/
+
 	h5FileToTree(fid, tree, mode);
 
-	int status = H5Fclose(fid);
+	status = H5Fclose(fid);
 	handleStatus<LOG_WARNING>(mout, status, "H5Fclose failed for file=", filename, __LINE__);
 
 }
@@ -100,9 +109,9 @@ Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, 
 	}
 	//else
 	/*
-	 mout.warn() << path << mout.endl;
-	 mout.warn() << path.str() << mout.endl;
-	 mout.warn() << path.str().c_str() << mout.endl;
+	 mout.warn(path );
+	 mout.warn(path.str() );
+	 mout.warn(path.str().c_str() );
 	 */
 	/*
 	mout.warn("Selective? : ", path, "/ *... (", tree.getChildren().size(), ") children");
@@ -140,7 +149,7 @@ Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, 
 			}
 		}
 
-		//mout.note() << "traversing: " << p << " mode=" << mode << mout.endl;
+		//mout.note("traversing: " , p , " mode=" , mode );
 		mout.debug3("traversing: ", pStr);
 
 		status = H5Gget_objinfo(file_id, pStr.c_str(), false, &info);
@@ -151,7 +160,7 @@ Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, 
 		case H5G_GROUP:
 			g = H5Gopen2(file_id, pStr.c_str(), H5P_DEFAULT);
 			handleStatus<LOG_WARNING>(mout, g, "H5Gopen2 failed, path=", p, __LINE__);
-			// if (g < 0) mout.warn() << ": H5Gopen failed, path=" << p << mout.endl;
+			// if (g < 0) mout.warn(": H5Gopen failed, path=" , p );
 
 			if (mode & ATTRIBUTES){
 				status = H5Aiterate2(g, H5_INDEX_NAME, H5_ITER_NATIVE, NULL,
@@ -174,9 +183,8 @@ Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, 
 		case H5G_DATASET:
 			if (mode & DATASETS) {
 				if ( elem.is(rack::ODIMPathElem::LEGEND)) {
-					mout.unimplemented()
-									<< "skipping legend (group) in path=" << p
-									<< mout.endl;
+					mout.unimplemented("skipping legend (group) in path=" , p
+									);
 				} else {
 					//mout.startTiming("h5DatasetToImage");
 					h5DatasetToImage(file_id, p,
@@ -218,7 +226,7 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 
 	const hid_t a = H5Aopen_name(id, attr_name);
 	// if (a < 0)
-	//	mout.error() << ": H5Aopen_name failed: " << attr_name  << mout.endl;
+	//	mout.error(": H5Aopen_name failed: " , attr_name  );
 	handleStatus<LOG_ERR>(mout, a, "H5Aopen_name, name=", attr_name, __LINE__);
 
 	/// Get the native data type. (The conversion will not store the original data type.)
@@ -290,7 +298,7 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 			H5Aread(a, datatype, str);
 			attribute = (const char *)str;
 			if (H5Tis_variable_str(datatype)){
-				mout.warn() << " string variable not H5T_VARIABLE, '" << str << "'" << mout.endl;
+				mout.warn(" string variable not H5T_VARIABLE, '" , str , "'" );
 			}
 			delete str;
 			*/
@@ -349,7 +357,7 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 			/*
 			H5A_info_t info;
 			H5Aget_info(a, &info);
-			mout.warn() << " '" << attribute << "'" <<"\t [" << info.data_size << "] variable-length=" << (int)H5Tis_variable_str(datatype) << mout.endl;
+			mout.warn(" '" , attribute , "'" ,"\t [" , info.data_size , "] variable-length=" , (int)H5Tis_variable_str(datatype) );
 			*/
 		}
 		else {
@@ -361,7 +369,7 @@ herr_t Reader::iterate_attribute(hid_t id, const char * attr_name, const H5A_inf
 	int status = H5Aclose(a);
 	handleStatus<LOG_ERR>(mout, status, "H5Aclose failed, attribute=", attr_name, __LINE__);
 	// if (status < 0)
-	//	mout.warn() << "H5Aclose failed for attribute=" << attr_name << mout.endl;
+	//	mout.warn("H5Aclose failed for attribute=" , attr_name );
 
 	return status;
 }
@@ -381,7 +389,7 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 
 	const hid_t dataset = H5Dopen2(id, pathStr.c_str(), H5P_DEFAULT); // H5P_DATASET_ACCESS????
 	if (dataset < 0){
-		mout.error() << "opening failed for dataset=" << path << mout.endl;
+		mout.error("opening failed for dataset=" , path );
 		return;
 	}
 
@@ -409,11 +417,11 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 
 
 	hsize_t rank = H5Sget_simple_extent_ndims(filespace);
-	mout.debug2() << "rank=" << rank << mout.endl;
+	mout.debug2("rank=" , rank );
 	if (rank < 2)
-		mout.warn() << "H5Sget_simple_extent_dims, problems expected with rank=" << rank << mout.endl;
+		mout.warn("H5Sget_simple_extent_dims, problems expected with rank=" , rank );
 	if (rank > 3){
-		mout.error() << "H5Sget_simple_extent_dims, rank over 3 unsupported, rank=" << rank << mout.endl;
+		mout.error("H5Sget_simple_extent_dims, rank over 3 unsupported, rank=" , rank );
 	}
 	hsize_t dims[3];
 	dims[0] = 0;
@@ -423,13 +431,13 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 
 	status = H5Sget_simple_extent_dims(filespace, dims, NULL);
 	if (status < 0)
-		mout.error() << "H5Sget_simple_extent_dims failed at: " << path << mout.endl;
+		mout.error("H5Sget_simple_extent_dims failed at: " , path );
 		//throw std::runtime_error(_func + " error with simple extent dims at " + path);
 
     // Define the memory space to read dataset.
 	const hid_t memspace = H5Screate_simple(rank,dims,NULL);
 	if (memspace < 0)
-		mout.error() << "opening memspace failed at: " << path << mout.endl;
+		mout.error("opening memspace failed at: " , path );
 		//throw std::runtime_error(_func + " opening memspace failed at " + path);
 
 
@@ -440,7 +448,7 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 	 */
 	const bool MULTICHANNEL = (dims[2] > 0);
 	if (MULTICHANNEL){
-		mout.special() << "experimental: support for multidimensional data, path=" << path << mout.endl;
+		mout.special("experimental: support for multidimensional data, path=" , path );
 	}
 
 	const hsize_t channels = MULTICHANNEL ? dims[0] : 1;        // NEW
@@ -492,16 +500,16 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 
 		//image.initialize(typeid(char>(width,height);
 		typeOk = false;
-		mout.warn() << "image type (" << datatype << ") not implemented, path=" << path << mout.endl;
+		mout.warn("image type (" , datatype , ") not implemented, path=" , path );
 		//std::cerr << "Warning: not implemented " << height << '\n';
 	}
 
 	//image.initialize(typeid(char>(1,1); // FOR valgrind
-	mout.debug2() << "allocated image: " << image << mout.endl;
+	mout.debug2("allocated image: " , image );
 
     // koe kooe
 	if ((image.getGeometry().getVolume() > 0) && typeOk){
-		mout.debug3() << "calling H5Dread" << mout.endl;
+		mout.debug3("calling H5Dread" );
 		H5O_info_t info;
 		H5Oget_info(dataset, &info);
 		//H5O_info2_t info;
@@ -510,10 +518,10 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 
 		status = H5Dread(dataset, datatype, memspace, filespace, H5P_DEFAULT, (void *)image.getBuffer()); // valgrind?
 		if (status < 0)
-			mout.warn() << "H5Dread() failed " << mout.endl;
+			mout.warn("H5Dread() failed " );
 
 		image.setName(path);
-		mout.debug3() << "IMAGE: " << image << mout.endl;
+		mout.debug3("IMAGE: " , image );
 		//mout.debug3() << "IMAGE: " << image.getWidth() << '*' << image.getHeight();
 		mout << '*' << image.getChannelCount() << '=' << image.getGeometry().getVolume() << '\n';
 		mout << '*' << image.getGeometry() << '\n';
@@ -521,7 +529,7 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 		//image.toOStr(std::cout);
 	}
 	else if (typeOk) {
-		mout.warn() << " trying to read empty image " << image.getGeometry() << mout.endl;
+		mout.warn(" trying to read empty image " , image.getGeometry() );
 	}
 
 	//if (drain::Debug > 2)
@@ -529,19 +537,19 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 	/// Todo: status check
 	status = H5Dclose(dataset);
 	if (status < 0)
-		mout.warn() << "H5Dclose() failed " << mout.endl;
+		mout.warn("H5Dclose() failed " );
 
 	status = H5Tclose(datatype);
 	if (status < 0)
-			mout.warn() << "H5Tclose() failed " << mout.endl;
+			mout.warn("H5Tclose() failed " );
 
 	H5Sclose(memspace);
 	if (status < 0)
-				mout.warn() << "H5Sclose(memspace) failed " << mout.endl;
+				mout.warn("H5Sclose(memspace) failed " );
 
 	H5Sclose(filespace);
 	if (status < 0)
-		mout.warn() << "H5Sclose(filespace) failed " << mout.endl;
+		mout.warn("H5Sclose(filespace) failed " );
 
 }
 
