@@ -51,6 +51,8 @@ void Reader::readFile(const std::string & filename, Hi5Tree & tree, ModeFlagger:
 
 	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 
+	// Consider something like ModeFlagger::isSet(mode, EXCLUSIVE) ?
+
 	if ((mode & EXCLUSIVE) > 0){
 		mout.experimental("Selective read: mode: ", mode);
 	}

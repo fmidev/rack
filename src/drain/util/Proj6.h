@@ -262,6 +262,7 @@ public:
 
 	static
 	const std::string & getProjVersion(){
+		// const PJ_INFO & pj_info = proj_info();
 		const static std::string version(proj_info().version);
 		return version;
 	}

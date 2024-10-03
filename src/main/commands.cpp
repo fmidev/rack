@@ -2138,12 +2138,13 @@ public:
 		std::cout << ' ' << __DATE__ << '\n';
 
 		//std::cout << DRAIN_IMAGE << '\n';
-		std::cout << "Proj " << drain::Proj6::getProjVersion() << '\n';
+		//std::cout << "Proj " << drain::Proj6::getProjVersion() << '\n';
 
-
+		/*
 		unsigned int majnum=0, minnum=0, relnum=0;
 		H5get_libversion(&majnum, &minnum, &relnum);  // error messages
 		std::cout << "HDF5 " << majnum << '.' << minnum << '.' << relnum << '\n';
+		*/
 
 		//std::cout << "GeoTIFF support: ";
 #ifndef  USE_GEOTIFF_NO

@@ -155,6 +155,7 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 		}
 		else if (get(entry.first).getName() == execFileCmd){
 			mout.special("pre-processing execFileCmd: ", entry.first, '/', get(entry.first).getName());
+			//ctx.getStatusMap(false);
 			readFile(entry.second, prog);
 			mout.experimental<LOG_DEBUG>(prog);
 		}
@@ -575,6 +576,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			scriptify(pit->second.toStr(), routine);
 			ctx.SCRIPT_DEFINED = true; // For polar volume input read, to avoid appending sweeps.
 
+			mout.debug("routine:\n", routine);
 			// mout.attention("Added script.. ", cmd.getName(), " script=", pit->second.toStr());
 			// mout.attention("Added script.. ", cmd.getName(), " script=", routine);
 			// ctx.setStatus("script", true);
