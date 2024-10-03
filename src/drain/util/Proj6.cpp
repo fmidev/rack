@@ -489,29 +489,12 @@ Proj6::~Proj6(){
 	//proj_destroy(pjContext);
 }
 
-
-
-/*
-int Proj6::getProjStrCRS(const std::string & projDef, std::string & projDefNew){
-	std::stringstream sstr;
-	int epsg = handleProjStr(projDef, sstr);
-	sstr << " +type=crs";
-	return epsg;
+const std::string & Proj6::getProjVersion(){
+	const static PJ_INFO & pj_info = proj_info();// valgrind error
+	const static std::string version(pj_info.version);
+	//const static std::string version(proj_info().version);
+	return version;
 }
-*/
-
-
-/*
-void Proj6::setProjectionSrc(const std::string & projDef, CRS_mode crs){
-	projSrc = getProjection(projDef, crs);
-	setMapping(true);
-};
-
-void Proj6::setProjectionDst(const std::string & projDef, CRS_mode crs){
-	projDst = getProjection(projDef, crs);
-	setMapping(true);
-};
-*/
 
 
 void Proj6::setMapping(bool lenient){
@@ -527,10 +510,13 @@ void Proj6::setMapping(bool lenient){
 }
 
 
+std::ostream & operator<<(std::ostream & ostr, const Proj6 &p){
+	ostr << "Proj src: " << p.getProjectionSrc() << '\n';
+	ostr << "Proj dst: " << p.getProjectionDst() << '\n';
+	return ostr;
+}
 
-
-
-
+/*
 short int Proj6::pickEpsgCodeOLD(const std::string & projDef, std::list<std::string> & projArgs){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -574,13 +560,8 @@ short int Proj6::pickEpsgCodeOLD(const std::string & projDef, std::list<std::str
 	return epsg;
 
 }
-
-std::ostream & operator<<(std::ostream & ostr, const Proj6 &p){
-	ostr << "Proj src: " << p.getProjectionSrc() << '\n';
-	ostr << "Proj dst: " << p.getProjectionDst() << '\n';
-	return ostr;
-}
-
+*/
+DRAIN_TYPENAME_DEF(Proj6);
 
 }
 

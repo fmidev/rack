@@ -62,10 +62,13 @@ $$projroot/include
 
 C/C++ Build, Environment:
 
+
 Create variables:
 |CCFLAGS|-std=gnu++11 -fopenmp -I/usr/include/geotiff -I/usr/include/hdf5/serial   -I/usr/include/libpng12   -I/usr/include/x86_64-linux-gnu  -I/usr/include/geotiff|
 |LDFLAGS|-std=gnu++11 -fopenmp -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 -lproj -lpng12 -L/usr/lib/x86_64-linux-gnu -ltiff  -lgeotiff|
 |USE_GEOTIFF|YES| 
+
+Optional for both: `-fopenmp` . If excluded, consider `-Wunknown-pragmas`
 
 C++ compiler, misc options:
 ```

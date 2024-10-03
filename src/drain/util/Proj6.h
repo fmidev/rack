@@ -261,11 +261,7 @@ public:
 
 
 	static
-	const std::string & getProjVersion(){
-		// const PJ_INFO & pj_info = proj_info();
-		const static std::string version(proj_info().version);
-		return version;
-	}
+	const std::string & getProjVersion();
 
 	Projector src;
 	Projector dst;
@@ -574,15 +570,14 @@ public:
      *  \return – EPSG code, if found, else 0.
      *
      *  \see getEpsgDict()
-     */
     static inline
 	short int pickEpsgCodeOLD(const std::string & projDef){
     	std::list<std::string> projArgs;
     	return pickEpsgCodeOLD(projDef, projArgs);
     }
+ */
 
-    static
-	short int pickEpsgCodeOLD(const std::string & projDef, std::list<std::string> & projArgs);
+   // static short int pickEpsgCodeOLD(const std::string & projDef, std::list<std::string> & projArgs);
 
 protected:
 
@@ -597,6 +592,8 @@ protected:
 
 	
 };
+
+DRAIN_TYPENAME(Proj6);
 
 std::ostream & operator<<(std::ostream & ostr, const Proj6 &p);
 

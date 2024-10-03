@@ -2138,11 +2138,13 @@ public:
 		std::cout << ' ' << __DATE__ << '\n';
 
 		//std::cout << DRAIN_IMAGE << '\n';
-		//std::cout << "Proj " << drain::Proj6::getProjVersion() << '\n';
+		std::cout << "Proj " << drain::Proj6::getProjVersion() << '\n'; // valgrind error
+
+		// drain::Proj6 p6test;
 
 		/*
 		unsigned int majnum=0, minnum=0, relnum=0;
-		H5get_libversion(&majnum, &minnum, &relnum);  // error messages
+		H5get_libversion(&majnum, &minnum, &relnum);  // valgrind error
 		std::cout << "HDF5 " << majnum << '.' << minnum << '.' << relnum << '\n';
 		*/
 

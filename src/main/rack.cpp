@@ -65,6 +65,9 @@ namespace rack {
 
 int process(int argc, const char **argv) {
 
+	//const static PJ_INFO & pj_info =
+	// proj_info();
+
 	if (argc == 1) {
 		// This could be from cmdBank ?
 		std::cerr << "Usage: rack <input> [commands...] -o <outputFile>\nHelp:  rack -h\n" ;

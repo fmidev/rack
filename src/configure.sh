@@ -35,6 +35,7 @@ function guess_dir(){
 
     #if [ "$VENV_DIR" != '' ]; then
     #fi
+    echo "Determining '$TYPE' dir for '$KEY', FILE=$FILE
 
     
     # Step 1: try standard
