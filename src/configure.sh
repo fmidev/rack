@@ -122,6 +122,8 @@ LDFLAGS='-std=gnu++11 -fopenmp'
 
 for i in hdf5 proj png tiff geotiff; do
 
+    echo "Checking: $i"
+    
     if [ "$PKGC" != '' ]; then
 
 	# Attempt #1 ...
