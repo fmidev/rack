@@ -5,7 +5,7 @@
 
 FROM ubuntu:20.04 AS builder
 
-#ARG CONF_DIR=.
+# ARG CONF_DIR=.
 
 # Set proxy and test it
 #COPY $CONF_DIR/apt-proxy.conf /etc/apt/apt.conf.d/proxy.conf
