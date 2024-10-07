@@ -19,7 +19,6 @@ build:
 cppcheck:
 	cppcheck --language=c++ --error-exitcode=1 --quiet */*.{h,cpp} drain/*/*.{h,cpp} 
 
-
 install:
 	./install.sh
 
@@ -51,9 +50,10 @@ docker-image: Dockerfile.${BASE_IMAGE} ${DOCKER_CONF_DIR}/config.json  ${DOCKER_
 # Note: config precedes 'build' cmd
 	@ echo "Cleaning local ./Build"
 	ls -d Build/ && rm -rf ./Build/*
-	@ echo "Note: Docker conf files:"
-	@ file ${DOCKER_CONF_DIR}/apt-proxy.conf
+	@ echo "Docker main configuration file (read through --config ARG)"
 	@ file ${DOCKER_CONF_DIR}/config.json
+	@ echo "Proxy configuration applied by Dockerfile (read through --build-arg CONF_DIR=...)"
+	@ file ${DOCKER_CONF_DIR}/apt-proxy.conf
 	@ echo
 	docker --config ${DOCKER_CONF_DIR}  build . --build-arg CONF_DIR=${DOCKER_CONF_DIR} --file $<  --tag rack_${BASE_IMAGE}:${VERSION}
 
@@ -74,7 +74,7 @@ docker-clean:
 clean:
 	rm -fv Release/rack Release/*/*.o Release/drain/*/*.o 
 	ls -d Build/ && rm -fv Build/*
-#include Makefile-doxygen
+
 
 
 
