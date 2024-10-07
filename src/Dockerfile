@@ -48,6 +48,7 @@ RUN apt update && \
 
 COPY --from=builder /usr/local/bin /usr/local/bin
 
+
 RUN ls /usr/local/bin/rack*
 
 CMD ["rack","--version"]
