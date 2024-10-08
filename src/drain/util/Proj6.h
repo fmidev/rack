@@ -55,10 +55,11 @@ class Projector {
 
 	friend class Proj6;
 
+	static const SprinterLayout projDefLayout; // space-separated, =, no hypens  (" ","","=", "","");
+
 public:
 
 	typedef drain::Dictionary<std::string,std::string> ProjDef;
-	static const SprinterLayout projDefLayout; // space-separated, =, no hypens  (" ","","=", "","");
 
 	//typedef enum {PROJ4, PROJ6, CRS} version;
 	typedef enum {
@@ -79,8 +80,9 @@ public:
 	} PROJDEF_variant;
 
 
-	inline
-	Projector(const std::string & projDef = "", CRS_mode crs=ACCEPT_CRS) : pjContext(nullptr), pj(nullptr), epsg(0){
+	inline  // NEW 2024: proj_context_create()
+	Projector(const std::string & projDef = "", CRS_mode crs=ACCEPT_CRS) : pjContext(proj_context_create()), pj(nullptr), epsg(0){
+	//Projector(const std::string & projDef = "", CRS_mode crs=ACCEPT_CRS) : pjContext(nullptr), pj(nullptr), epsg(0){
 		if (projDef.empty()){
 			projDefs = {{ORIG,""}, {MODIFIED,""}, {PROJ4,""}, {PROJ5,""}, {SIMPLE,""}};
 		}
@@ -101,7 +103,8 @@ public:
 
 	inline
 	Projector(const Projector & pr) :
-		pjContext(nullptr), // for safety
+		pjContext(proj_context_clone(pr.pjContext)), // NEW 2024
+		// pjContext(nullptr), // for safety
 		// TODO: CLONE, in version 7.2.
 		// pjContext(proj_context_clone(pr.pjContext)), // TODO: flag for own CTX => destroy at end
 		pj(proj_clone(pjContext, pr.pj)),
@@ -113,9 +116,10 @@ public:
 		setProjection(pr.getProjDef(ORIG)); // imitate ?
 	}
 
-	inline
+	virtual inline
 	~Projector(){
 		proj_destroy(pj);
+		proj_context_destroy(pjContext); // NEW 2024
 	}
 
     static
@@ -325,6 +329,7 @@ public:
     };
 
 
+protected:
 
 	/** \tparam POINT_XY – anything with members double x and double y
 	 *  \tparam D - PJ_DIRECTION enum value (libproj)
@@ -346,6 +351,8 @@ public:
 		proj_trans_generic(proj, D, &x, sizeof(double), 1, &y, sizeof(double), 1, 0, 0, 0, 0, 0, 0);
 	}
 
+
+public:
 
 	/// Forward projection (in-place)
 	inline
@@ -389,26 +396,20 @@ public:
 
 
 	/// Forward projection.
+	/*
 	inline
 	void projectFwdOLD(double & x, double & y) const {
 		PJ_COORD coord;
 		coord.lp.lam = x;
 		coord.lp.phi = y;
-
-		/*
-		PJ_COORD coord2 = proj_trans(proj, PJ_DIRECTION::PJ_FWD, coord);
-		x = coord2.xy.x;
-		y = coord2.xy.y;
-		*/
-
 		proj_trans_array(proj, PJ_DIRECTION::PJ_FWD, 1, &coord);
 		x = coord.xy.x;
 		y = coord.xy.y;
-
-
 	};
+	*/
 
 	/// Forward projection.
+	/*
 	inline
 	void projectFwdOLD(const double & x, const double & y,double & x2, double & y2) const {
 
@@ -416,54 +417,20 @@ public:
 		coord.lp.lam = x;
 		coord.lp.phi = y;
 
-		/*
-		PJ_COORD coord2 = proj_trans(proj, PJ_DIRECTION::PJ_FWD, coord);
-		x2 = coord2.xy.x;
-		y2 = coord2.xy.y;
-		*/
-
 		proj_trans_array(proj, PJ_DIRECTION::PJ_FWD, 1, &coord);
 		x2 = coord.xy.x;
 		y2 = coord.xy.y;
 
-		/*
-		/// TODO: is this needed?
-		if (projSrc == NULL)
-			throw std::runtime_error("Proj6::project(): projSrc NULL");
-
-		if (projDst == NULL)
-			throw std::runtime_error("Proj6::project(): projDst NULL");
-
-		x2 = x;
-		y2 = y;
-		pj_transform(projSrc, projDst, 1, 1, &x2, &y2, NULL);
-		*/
 	}
-
-    /// Forward projection.
-	/*
-    inline
-    void projectFwd(double & x, double & y, double & z) const
-    {
-    	/// TODO: is this needed?
-    	if (projSrc == NULL)
-    		throw std::runtime_error("Proj6::project(): projSrc NULL");
-
-    	if (projDst == NULL)
-    		throw std::runtime_error("Proj6::project(): projDst NULL");
-
-    	//double z = 0.0;
-    	pj_transform(projSrc, projDst, 1, 1, &x, &y, &z);
-
-    };
-    */
+	*/
 
     /// Todo: projections for vectors
     ///inline
 
 
     /// Inverse projection.
-    inline
+    /*
+	inline
     void projectInvOLD(double & x, double & y) const
     {
 
@@ -474,19 +441,12 @@ public:
     	proj_trans_array(proj, PJ_DIRECTION::PJ_INV, 1, &coord);
     	x = coord.lp.lam;
     	y = coord.lp.phi;
-    	/*
-    	if (projSrc == NULL)
-    		throw std::runtime_error("Proj6::project(): projSrc NULL");
 
-    	if (projDst == NULL)
-    		throw std::runtime_error("Proj6::project(): projDst NULL");
-
-    	pj_transform(projDst,projSrc, 1, 1, &x, &y, NULL);
-    	*/
     };
-
+    */
 
     /// Inverse projection from (x2,y2) to (x,y).
+    /*
     inline
     void projectInvOLD(const double & x2, const double & y2, double & x, double & y) const
     {
@@ -499,35 +459,8 @@ public:
     	x = coord.lp.lam;
     	y = coord.lp.phi;
 
-    	/*
-    	if (projSrc == NULL)
-    		throw std::runtime_error("Proj6::project(): projSrc NULL");
-
-    	if (projDst == NULL)
-    		throw std::runtime_error("Proj6::project(): projDst NULL");
-
-    	x = x2;
-    	y = y2;
-    	pj_transform(projDst,projSrc, 1, 1, &x, &y, NULL);
-		*/
     };
-
-    /// Inverse projection.
-    /*
-    inline
-    void projectInv(double & x, double & y, double & z) const
-    {
-    	if (projSrc == NULL)
-    		throw std::runtime_error("Proj6::project(): projSrc NULL");
-
-    	if (projDst == NULL)
-    		throw std::runtime_error("Proj6::project(): projDst NULL");
-
-    	//double z = 0.0;
-    	pj_transform(projDst,projSrc, 1, 0, &x, &y, &z);
-
-    };
-	*/
+    */
 
 
     inline
@@ -581,8 +514,8 @@ public:
 
 protected:
 
-	PJ_CONTEXT *pjContext; // = proj_context_create();
-	PJ *proj;            // two-way
+	PJ_CONTEXT *pjContext = nullptr; // = proj_context_create();
+	PJ *proj = nullptr;            // two-way
 
     // typedef drain::Dictionary<int, std::string> epsg_dict_t;
 	void setMapping(bool lenient);

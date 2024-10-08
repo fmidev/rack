@@ -211,7 +211,7 @@ void Log::flush(level_t level, const Notification & notif, const std::string & p
 	else if ((level <= LOG_ERR) && (level < (verbosityLevel))){
 		std::stringstream sstr2;
 		//sstr2 << sstr.rdbuf();
-		sstr2 << prefix << ':' << ' ' << sstr.str();
+		sstr2 << prefix << ':' << ' ' << sstr.str() << "\033[0m";
 		throw std::runtime_error(sstr2.str());
 	}
 

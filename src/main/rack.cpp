@@ -57,20 +57,27 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "rack.h"
 
-// #include <drain/imageops/FastOpticalFlowOp2.h>
-// #include <drain/imageops/FloodFillOp.h>
 
 namespace rack {
 
 
 int process(int argc, const char **argv) {
 
-	//const static PJ_INFO & pj_info =
-	// proj_info();
+	/*
+	 * memory test:
+	const static  PJ_INFO & pj_info = proj_info();
+	{
+		drain::Proj6 proj;
+		proj.setProjectionSrc("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +type=crs");
+		//proj.setProjectionDst("EPSG:3067");
+		proj.setProjectionDst("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +type=crs");
+	}
+	*/
 
 	if (argc == 1) {
 		// This could be from cmdBank ?
-		std::cerr << "Usage: rack <input> [commands...] -o <outputFile>\nHelp:  rack -h\n" ;
+		std::cerr << "Usage: rack <input> [commands...] -o <outputFile>\n" ;
+		std::cerr << "Help:  rack -h\n" ;
 		return 1;
 	}
 

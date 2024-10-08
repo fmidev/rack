@@ -478,15 +478,15 @@ Proj6::Proj6() : pjContext(proj_context_create()), proj(NULL) {
 
 }
 
-Proj6::Proj6(const Proj6 &p) : pjContext(proj_context_create()), proj(NULL) {
+Proj6::Proj6(const Proj6 &p) : pjContext(proj_context_clone(p.pjContext)), proj(NULL) {
 	//cerr << "Proj4(const Proj4 &p) - someone needs me" << endl;
 	setProjectionSrc(p.getProjectionSrc());
 	setProjectionDst(p.getProjectionDst());
 }
 
 Proj6::~Proj6(){
+	proj_destroy(proj);
 	proj_context_destroy(pjContext);
-	//proj_destroy(pjContext);
 }
 
 const std::string & Proj6::getProjVersion(){
