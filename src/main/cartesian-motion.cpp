@@ -179,7 +179,7 @@ void CartesianOpticalFlow::getSrcData(ImageTray<const Channel> & srcTray) const 
 				Data<CartesianDst> & srcDataMod = dstDataSet.getData(quantityMod);
 				mout.experimental("exclude selector modified/supressed");
 				// srcDataMod.setExcluded(ProductBase::outputDataVerbosity==0);
-				srcDataMod.setExcluded(ctx.outputDataVerbosity==0);
+				srcDataMod.setExcluded(!ctx.outputDataVerbosity); // NEW
 
 				// mout.note("srcQuality scalingC: " , srcQuality.data.getScaling() );
 

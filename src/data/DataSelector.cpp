@@ -72,8 +72,9 @@ DataSelector::DataSelector(
 		const std::string & quantities,
 		unsigned int count,
 		drain::Range<double> elangle,
-		int dualPRF,
-		drain::Range<int> timespan
+		DataSelector::Prf prf
+		// int dualPRF,
+		// drain::Range<int> timespan
 		) : BeanLike(__FUNCTION__) { //, orderFlags(orderDict) {
 
 	//std::cerr << "DataSelector: " << quantity << " => " << this->quantity << std::endl;
@@ -87,7 +88,8 @@ DataSelector::DataSelector(
 	//this->order.str = "";
 	this->order.set(DataOrder::DATA, DataOrder::MIN);
 	//this->dualPRF = dualPRF;
-	this->prfSelector.set(Prf::ANY);
+	// this->prfSelector.set(Prf::ANY);
+	this->prfSelector.set(prf);
 
 
 	updateBean();
@@ -180,7 +182,7 @@ void DataSelector::reset() {
 }
 
 
-/// Updates member objects with their corresponding variable values .
+/// Traverses (public) parameters and updates the corresponding member objects
 void DataSelector::updateBean() const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -260,7 +262,6 @@ void DataSelector::ensureDataGroup(){
 				pathMatcher.clear();
 			}
 			if (QUANTITY_QUALITY){
-				//pathMatcher.set(ODIMPathElem::DATA, ODIMPathElem::QUALITY);
 				pathMatcher.push_back(ODIMPathElem::DATA);
 				pathMatcher.push_back(ODIMPathElem::QUALITY);
 			}
@@ -329,23 +330,6 @@ void DataSelector::setQuantityRegExp(const std::string & quantities){
 }
 
 
-/// PRESELECT
-/*
- *  Consider replacing props with direct group attribs, like [WHERE].attr["elangle"] and  [WHAT].attr["time"]
- *
- */
-void DataSelector::selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const {
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	mout.attention<LOG_DEBUG>("quantitySelector:", quantitySelector, " (", quantitySelector.size(), " keys)");
-	// mout.attention<LOG_DEBUG>("Qual: ", qualitySelector, " size:", qualitySelector.size());
-
-	collectPaths(src, pathContainer, ODIMPath());
-
-	prunePaths(src, pathContainer);
-
-}
 
 // TODO: write new collectPaths() with parentQuantity="" , "DBZH" -> "DBZH/QIND" to be matched with ".*/QIND"
 
@@ -743,53 +727,25 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 }
 
 
-void DataSelector::getTimeMap(const Hi5Tree & srcRoot, ODIMPathElemMap & m){
-
-	for (const auto & entry: srcRoot) {
-		if (entry.first.is(ODIMPathElem::DATASET)){
-			const drain::VariableMap & attr = entry.second[ODIMPathElem::WHAT].data.attributes;
-			m[attr.get("startdate","") + attr.get("starttime","")] = entry.first;
-		}
-	}
-
-};
-
-
-
-
-// Resets, set given parameters and derives missing parameters.
-/*
-void DataSelector::deriveParameters(const std::string & parameters, bool clear){ //, ODIMPathElem::group_t defaultGroups){
-
-	// drain::Logger mout(__FILE__, __FUNCTION__);
-
-	// Consider:
-	if (clear){
-		reset();
-		// groups.value = 0;
-		// data = 0; // = 0:0 ~ delete none, unless set below
-	}
-
-	BeanLike::setParameters(parameters);
-
-	return; // groups.value;
-}
-*/
-
 
 void DataSelector::getPaths(const Hi5Tree & src, std::list<ODIMPath> & pathList) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.experimental<LOG_DEBUG>("revised code: getPaths->selectPaths(): ", __FILE__, ':', __LINE__);
-	selectPaths(src, pathList);
+	mout.revised<LOG_DEBUG>("getPaths (dropped selectPaths()) ", __FILE__, ':', __LINE__);
+	collectPaths(src, pathList, ODIMPath());
+	prunePaths(src, pathList);
+
+	// mout.experimental<LOG_DEBUG>("revised code: getPaths->selectPaths(): ", __FILE__, ':', __LINE__);
+	// selectPaths(src, pathList);
 }
 
 
 bool DataSelector::getPath(const Hi5Tree & src, ODIMPath & path) const {
 
 	std::list<ODIMPath> paths;
-	selectPaths(src, paths);
+	//selectPaths(src, paths);
+	getPaths(src, paths);
 	if (paths.empty()){
 		return false;
 	}
@@ -913,6 +869,7 @@ void DataSelector::swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree &
 	*/
 }
 
+// TODO: Datatools?
 void DataSelector::swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::group_t groupType){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -925,6 +882,57 @@ void DataSelector::swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::gro
 	dst[dstElem].swap(srcGroup);
 	//DataTools::updateInternalAttributes(ctx.polarInputHi5);
 }
+
+
+void DataSelector::getTimeMap(const Hi5Tree & srcRoot, ODIMPathElemMap & m){
+
+	for (const auto & entry: srcRoot) {
+		if (entry.first.is(ODIMPathElem::DATASET)){
+			const drain::VariableMap & attr = entry.second[ODIMPathElem::WHAT].data.attributes;
+			m[attr.get("startdate","") + attr.get("starttime","")] = entry.first;
+		}
+	}
+
+};
+
+
+
+
+// Resets, set given parameters and derives missing parameters.
+/*
+void DataSelector::deriveParameters(const std::string & parameters, bool clear){ //, ODIMPathElem::group_t defaultGroups){
+
+	// drain::Logger mout(__FILE__, __FUNCTION__);
+
+	// Consider:
+	if (clear){
+		reset();
+		// groups.value = 0;
+		// data = 0; // = 0:0 ~ delete none, unless set below
+	}
+
+	BeanLike::setParameters(parameters);
+
+	return; // groups.value;
+}
+*/
+
+/// PRESELECT
+/*
+ *  Consider replacing props with direct group attribs, like [WHERE].attr["elangle"] and  [WHAT].attr["time"]
+ *
+ */
+/*
+void DataSelector::selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.attention<LOG_DEBUG>("quantitySelector:", quantitySelector, " (", quantitySelector.size(), " keys)");
+	// mout.attention<LOG_DEBUG>("Qual: ", qualitySelector, " size:", qualitySelector.size());
+	collectPaths(src, pathContainer, ODIMPath());
+	prunePaths(src, pathContainer);
+
+}
+*/
 
 
 

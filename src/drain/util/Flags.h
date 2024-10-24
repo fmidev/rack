@@ -821,6 +821,14 @@ public:
 	};
     */
 
+	/**
+	 *  Consider handler through this->set(Flagger) ? Needs protected/private _set() (or assign()).
+	 */
+	inline
+	EnumFlagger<F> & operator=(const EnumFlagger<F> & flagger){
+		this->set(flagger.value);
+		return *this;
+	}
 
 	template <class T>
 	inline

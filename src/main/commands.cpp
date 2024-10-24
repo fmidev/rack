@@ -2174,8 +2174,9 @@ public:
 	void exec() const {
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		mout.deprecating() << "use '--store " << value << "' instead";
-		ctx.outputDataVerbosity = value;
+		mout.deprecating("Use '--store ", value, "' instead");
+		//ctx.outputDataVerbosity = value;
+		ctx.outputDataVerbosity.set(value);
 	};
 
 };
@@ -2276,10 +2277,10 @@ public:
 		// NEW
 		// mout.attention("current:  ", ctx.outputDataVerbosityNEW);
 		// mout.attention("setting:  ", value);
-		ctx.outputDataVerbosityNEW.set(value);
-		// mout.attention("received: ", ctx.outputDataVerbosityNEW);
-		ctx.outputDataVerbosity = ctx.outputDataVerbosityNEW;
+		ctx.outputDataVerbosity.set(value);
+		// ctx.outputDataVerbosity = ctx.outputDataVerbosityNEW; // deprecated
 
+		// mout.attention("new value: ", value, " -> ", ctx.outputDataVerbosityNEW);
 		// OLD
 		// ctx.outputDataVerbosity = value;
 

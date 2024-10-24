@@ -54,7 +54,7 @@ ProductConf::ProductConf(const ProductConf & conf) :
 		targetEncoding(conf.targetEncoding),
 		appendResults(conf.appendResults),
 		outputDataVerbosity(conf.outputDataVerbosity){
-	dataSelector.updateBean();
+	// dataSelector.updateBean();  ctr calls updateBean()!
 }
 
 

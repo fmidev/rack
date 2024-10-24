@@ -1045,9 +1045,6 @@ void CmdOutputPanel::exec() const {
 
 }
 
-// std::list<std::string> CmdOutputTreeConf::attributeList = {"quantity", "date", "time", "src", "elangle", "task_args", "legend"};
-// See drain::TextDecorator::VT100
-// std::map<std::string,std::string>
 
 
 } // namespace rack

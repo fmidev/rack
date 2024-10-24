@@ -45,28 +45,6 @@ namespace drain
 {
 
 
-/*
-DRAIN_TYPENAME(TextStyle::Colour);
-DRAIN_TYPENAME(TextStyle::Line);
-DRAIN_TYPENAME(TextStyle::Style);
-
-template <>
-struct TypeName<TextStyle::Colour> {
-    static const char* get(){ return "TextStyle::Colour"; }
-};
-
-template <>
-struct TypeName<TextStyle::Line> {
-    static const char* get(){ return "TextStyle::Line"; }
-};
-
-template <>
-struct TypeName<TextStyle::Style> {
-    static const char* get(){ return "TextStyle::Style"; }
-};
-*/
-
-
 template <>
 const drain::FlagResolver::dict_t drain::EnumDict<TextStyle::Style>::dict = {
 		{"ITALIC", TextStyle::ITALIC},

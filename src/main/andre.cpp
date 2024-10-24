@@ -193,6 +193,7 @@ public:
 		}
 
 		// NEW (Bug fix) 2022/07/10
+		//this->bean.outputDataVerbosity = ctx.outputDataVerbosity;
 		this->bean.outputDataVerbosity = ctx.outputDataVerbosity;
 
 		//this->bean.UNIVERSAL = ctx.statusFlags.getValue(AnDReUniversal::ANDRE_UNIVERSAL);

@@ -45,19 +45,9 @@ namespace drain
 {
 
 
-// For some odd reason this cannot be in TextStyle (see .debug() )
-/*
-template <>
-struct TypeName<TextStyle::Colour>;
+// Compare this with TextStyle. Join or separate?
 
-template <>
-struct TypeName<TextStyle::Line>;
-
-template <>
-struct TypeName<TextStyle::Style>;
-*/
-
-/// Utility for scanning text segments
+/// Utility for ...
 /**
  *
  *

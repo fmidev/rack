@@ -49,7 +49,6 @@ const FlagResolver::dict_t EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict = {
 
 void DistanceModel::update(){
 
-
 	// drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	pixelAdjacency.set(pixelAdjacencyStr);
 	setRadius(horzRadius.forward, vertRadius.forward, horzRadius.backward, vertRadius.backward);

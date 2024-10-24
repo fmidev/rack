@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['prf_4347',['Prf',['../classrack_1_1DataSelector.html#a0aae288aae6ee801cf92cd15f6d57df5',1,'rack::DataSelector::Prf()'],['../classrack_1_1DataSelector.html#a0aae288aae6ee801cf92cd15f6d57df5',1,'rack::DataSelector::Prf()']]],
-  ['projdef_5fvariant_4348',['PROJDEF_variant',['../classdrain_1_1Projector.html#a711a592c3ebc676eafa0d18216a646ec',1,'drain::Projector']]]
+  ['outputdataverbosity_4344',['OutputDataVerbosity',['../classrack_1_1ProductConf.html#a7b203200a73c5a95dc5f6da7adfc2220',1,'rack::ProductConf']]]
 ];

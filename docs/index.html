@@ -212,6 +212,24 @@ Selecting data</h2>
 <div class="line"><span class="preprocessor"># For text output, select &#39;what&#39; and &#39;where&#39; groups of elevations from 0.5 to 6.0 degrees</span></div>
 <div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;what|where,elangle=0.5:6&#39;</span> -o volume-select.txt</div>
 <div class="line"> </div>
+<div class="line"><span class="preprocessor"># Select a unique quality field</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=CLASS-ETOP -o volume-select.txt</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># Select all QIND fields</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=QIND -o volume-select.txt</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># Select global (dataset-level) QIND fields</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=/QIND -o volume-select.txt</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># Select quantity-specific (data-level) QIND fields</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=.+/QIND -o volume-select.txt</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># Select quantity-specific (data-level) QIND field</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZ-SLOPE-SMOOTH/QIND -o volume-select.txt</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor"># Select non-existing quantity-specific QIND field</span></div>
+<div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --select quantity=HGHT/QIND -o volume-select.txt</div>
+<div class="line"> </div>
 </div><!-- fragment --><dl class="section see"><dt>See also</dt><dd>CmdDelete </dd>
 <dd>
 CmdKeep </dd>

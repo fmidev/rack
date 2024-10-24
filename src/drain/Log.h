@@ -48,8 +48,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 
 #include "StringBuilder.h"
-#include "TextStyle.h"
-
+// #include "TextStyle.h"
+#include "TextStyleVT100.h"
 /*
 #define	LOG_EMERG	0	// system is unusable //
 #define	LOG_ALERT	1	// action must be taken immediately //  RACK examples

@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Output.h>
 #include <drain/util/StringMapper.h>
 #include <drain/util/TreeOrdered.h>
-#include <drain/util/TextDecorator.h>
+// #include <drain/util/TextDecorator.h>
 #include <drain/util/TreeHTML.h>
 #include <drain/image/FilePng.h>
 #include <drain/image/FilePnm.h>
@@ -609,7 +609,7 @@ void CmdOutputFile::exec() const {
 			if (!ctx.select.empty()){
 				DataSelector selector;
 				selector.consumeParameters(ctx.select); // special<LOG_DEBUG>
-				mout.warn("Revised code: always using selector in --format'ted output, current selector=", selector);
+				mout.revised("always using selector in --format'ted output, current selector=", selector);
 				// mout.debug(selector);
 				selector.getPaths(src, paths);
 			}
@@ -844,10 +844,6 @@ void CmdOutputTree::exec() const {
 	drain::TreeUtils::dump(ctx.getHi5(RackContext::CURRENT), output, DataTools::treeToStream);
 
 }
-
-//std::list<std::string> CmdOutputTreeConf::attributeList = {"quantity", "date", "time", "src", "elangle", "task_args", "legend"};
-// See drain::TextDecorator::VT100
-// std::map<std::string,std::string>
 
 
 

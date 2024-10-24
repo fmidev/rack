@@ -188,274 +188,276 @@ $(function() {
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="comment">// TODO: string =&gt; ODIMPath</span></div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <a class="code" href="classrack_1_1DataSelector.html">DataSelector</a>(<span class="keyword">const</span> std::string &amp; <a class="code" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, <span class="keyword">const</span> std::string &amp; quantity,</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8">count</a> = 1000, <a class="code" href="classdrain_1_1Range.html">drain::Range&lt;double&gt;</a> <a class="code" href="classrack_1_1DataSelector.html#ae93b013a8575ae9e35e2808c6801be0c">elangle</a> = {-90.0, 90.0}, <span class="keywordtype">int</span> dualPRF = 0,</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <a class="code" href="classdrain_1_1Range.html">drain::Range&lt;int&gt;</a> <a class="code" href="classrack_1_1DataSelector.html#aad3279fcd7fa4af5d82ca213d782e69f">timespan</a>={0,0});</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            <span class="comment">// double elangleMin = -90.0, double elangleMax = 90.0);</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    DataSelector(<span class="keyword">const</span> std::string &amp; parameters = <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8">count</a> = 1000, <a class="code" href="classdrain_1_1Range.html">drain::Range&lt;double&gt;</a> <a class="code" href="classrack_1_1DataSelector.html#ae93b013a8575ae9e35e2808c6801be0c">elangle</a> = {-90.0, 90.0},</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <a class="code" href="classrack_1_1DataSelector.html#a0aae288aae6ee801cf92cd15f6d57df5">DataSelector::Prf</a> <a class="code" href="classrack_1_1DataSelector.html#a47f73c46409f54c7479a8a1f8e15594f">prf</a>=Prf::ANY <span class="comment">//int dualPRF = 0,</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            <span class="comment">//drain::Range&lt;int&gt; timespan={0,0}</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    );</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="comment">// double elangleMin = -90.0, double elangleMax = 90.0);</span></div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="comment">// DataSelector(ODIMPathElem::group_t e, ODIMPathElem::group_t e2=ODIMPathElem::ROOT, ODIMPathElem::group_t e3=ODIMPathElem::ROOT);</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... T&gt;</div>
-<div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a243a73ad4b7de64f107ab07d7a96654f">  132</a></span>&#160;    <a class="code" href="classrack_1_1DataSelector.html#a243a73ad4b7de64f107ab07d7a96654f">DataSelector</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp; elem, <span class="keyword">const</span> T &amp;... args): <a class="code" href="classdrain_1_1BeanLike.html">BeanLike</a>(__FUNCTION__){ <span class="comment">//, orderFlags(orderDict,&#39;:&#39;) {</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <a class="code" href="classrack_1_1DataSelector.html#a02fd73d861ef2e4aabb38c0c9ff82947">init</a>();</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <span class="comment">//pathMatcher.setElems(elem, rest...);</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        pathMatcher.set(elem, args...);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <a class="code" href="classrack_1_1DataSelector.html#a17ef1f4d6f9b665a3a69ad7fea930f29">updateBean</a>();</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    }</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="comment">// Either this or previous is unneeded?</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... T&gt;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <a class="code" href="classrack_1_1DataSelector.html">DataSelector</a>(<a class="code" href="classrack_1_1ODIMPathElem.html#ad5b7349ff82e987d22d87b3acf2c00bc">ODIMPathElem::group_t</a> e, <span class="keyword">const</span> T &amp;... args): <a class="code" href="classdrain_1_1BeanLike.html">BeanLike</a>(__FUNCTION__){ <span class="comment">// , orderFlags(orderDict,&#39;:&#39;) {</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <a class="code" href="classrack_1_1DataSelector.html#a02fd73d861ef2e4aabb38c0c9ff82947">init</a>();</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="comment">//pathMatcher.setElems(e, rest...);</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        pathMatcher.set(e, args...);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <a class="code" href="classrack_1_1DataSelector.html#a17ef1f4d6f9b665a3a69ad7fea930f29">updateBean</a>();</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    }</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    DataSelector(<span class="keyword">const</span> DataSelector &amp; selector);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    DataSelector(<span class="keyword">const</span> std::string &amp; parameters = <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="comment">// DataSelector(ODIMPathElem::group_t e, ODIMPathElem::group_t e2=ODIMPathElem::ROOT, ODIMPathElem::group_t e3=ODIMPathElem::ROOT);</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... T&gt;</div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a243a73ad4b7de64f107ab07d7a96654f">  134</a></span>&#160;    <a class="code" href="classrack_1_1DataSelector.html#a243a73ad4b7de64f107ab07d7a96654f">DataSelector</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp; elem, <span class="keyword">const</span> T &amp;... args): <a class="code" href="classdrain_1_1BeanLike.html">BeanLike</a>(__FUNCTION__){ <span class="comment">//, orderFlags(orderDict,&#39;:&#39;) {</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        <a class="code" href="classrack_1_1DataSelector.html#a02fd73d861ef2e4aabb38c0c9ff82947">init</a>();</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="comment">//pathMatcher.setElems(elem, rest...);</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        pathMatcher.set(elem, args...);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <a class="code" href="classrack_1_1DataSelector.html#a17ef1f4d6f9b665a3a69ad7fea930f29">updateBean</a>();</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    }</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="comment">// Either this or previous is unneeded?</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... T&gt;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <a class="code" href="classrack_1_1DataSelector.html">DataSelector</a>(<a class="code" href="classrack_1_1ODIMPathElem.html#ad5b7349ff82e987d22d87b3acf2c00bc">ODIMPathElem::group_t</a> e, <span class="keyword">const</span> T &amp;... args): <a class="code" href="classdrain_1_1BeanLike.html">BeanLike</a>(__FUNCTION__){ <span class="comment">// , orderFlags(orderDict,&#39;:&#39;) {</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <a class="code" href="classrack_1_1DataSelector.html#a02fd73d861ef2e4aabb38c0c9ff82947">init</a>();</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="comment">//pathMatcher.setElems(e, rest...);</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        pathMatcher.set(e, args...);</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <a class="code" href="classrack_1_1DataSelector.html#a17ef1f4d6f9b665a3a69ad7fea930f29">updateBean</a>();</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    }</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keyword">virtual</span> ~DataSelector();</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    DataSelector(<span class="keyword">const</span> DataSelector &amp; selector);</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="comment">//  *   - \c index - integer value, only changing the \c index member. ???</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment"></span>    <span class="comment">// Experimental. Raise to beanlike?</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a90d055ece641ecb6586b7097f7c8aa9f">  173</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classrack_1_1DataSelector.html#a90d055ece641ecb6586b7097f7c8aa9f">consumeParameters</a>(std::string &amp; args){</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordflow">if</span> (args.empty()){</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        }</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            <a class="code" href="classdrain_1_1BeanLike.html#a7cb20fed3030548a4ed68c3a44fcc630">setParameters</a>(args);</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            args.clear();</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        }</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    }</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... TT&gt;</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordtype">void</span> setPathMatcher(TT... args){</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        pathMatcher.set(args...);</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    }</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keyword">const</span> ODIMPathMatcher &amp; getPathMatcher()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="keywordflow">return</span> pathMatcher;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    }</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#aa648b72fc9830c47bae0d23449e83187">  197</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#aa648b72fc9830c47bae0d23449e83187">trimPathMatcher</a>(){</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="keywordflow">return</span> pathMatcher.<a class="code" href="classdrain_1_1Path.html#ada8b6fb3840daf16e30b9459877f5aad">trimHead</a>(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    }</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
-<div class="line"><a name="l00202"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a30eccaa8ad96962759b84db2e7a623bf">  202</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a30eccaa8ad96962759b84db2e7a623bf">setQuantities</a>(<span class="keyword">const</span> std::string &amp; s); <span class="comment">// , const std::string &amp; separators = &quot;,&quot;); // todo: rename (here only) quantities?</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="keywordtype">void</span> setQuantityRegExp(<span class="keyword">const</span> std::string &amp; s); <span class="comment">// todo: rename (here only) quantities?</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keyword">virtual</span> ~DataSelector();</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="comment">//  *   - \c index - integer value, only changing the \c index member. ???</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment"></span>    <span class="comment">// Experimental. Raise to beanlike?</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a90d055ece641ecb6586b7097f7c8aa9f">  175</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classrack_1_1DataSelector.html#a90d055ece641ecb6586b7097f7c8aa9f">consumeParameters</a>(std::string &amp; args){</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keywordflow">if</span> (args.empty()){</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        }</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            <a class="code" href="classdrain_1_1BeanLike.html#a7cb20fed3030548a4ed68c3a44fcc630">setParameters</a>(args);</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            args.clear();</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        }</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    }</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... TT&gt;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordtype">void</span> setPathMatcher(TT... args){</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        pathMatcher.set(args...);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    }</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keyword">const</span> ODIMPathMatcher &amp; getPathMatcher()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <span class="keywordflow">return</span> pathMatcher;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    }</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#aa648b72fc9830c47bae0d23449e83187">  199</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#aa648b72fc9830c47bae0d23449e83187">trimPathMatcher</a>(){</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordflow">return</span> pathMatcher.<a class="code" href="classdrain_1_1Path.html#ada8b6fb3840daf16e30b9459877f5aad">trimHead</a>(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    }</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
+<div class="line"><a name="l00204"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a30eccaa8ad96962759b84db2e7a623bf">  204</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a30eccaa8ad96962759b84db2e7a623bf">setQuantities</a>(<span class="keyword">const</span> std::string &amp; s); <span class="comment">// , const std::string &amp; separators = &quot;,&quot;); // todo: rename (here only) quantities?</span></div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordtype">bool</span> quantityIsSet()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keywordflow">return</span> quantitySelector.isSet(); <span class="comment">// || qualitySelector.isSet();</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    }</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keywordtype">void</span> setQuantityRegExp(<span class="keyword">const</span> std::string &amp; s); <span class="comment">// todo: rename (here only) quantities?</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keywordtype">bool</span> quantityIsSet()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        <span class="keywordflow">return</span> quantitySelector.isSet(); <span class="comment">// || qualitySelector.isSet();</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    }</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00217"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a492861a0e6c9a4d28f161c813ce9e427">  217</a></span>&#160;    <span class="keyword">const</span> std::string &amp; <a class="code" href="classrack_1_1DataSelector.html#a492861a0e6c9a4d28f161c813ce9e427">getQuantity</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classrack_1_1DataSelector.html#afc880a0277dfe3fc633c3e9c272da5ea">quantities</a>;</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    }</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1StringMatcherList.html">drain::KeySelector</a> &amp; getQuantitySelector()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="keywordflow">return</span> quantitySelector;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    }</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment">    inline</span></div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="comment">    const drain::KeySelector &amp; getQualitySelector() const {</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="comment">        return qualitySelector;</span></div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keywordtype">void</span> setMaxCount(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i){</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        <a class="code" href="classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8">count</a> = i;</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    }</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> getMaxCount()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8">count</a>;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    }</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keywordtype">void</span> setPrf(<span class="keyword">const</span> std::string &amp; s){</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;        this-&gt;<a class="code" href="classrack_1_1DataSelector.html#a47f73c46409f54c7479a8a1f8e15594f">prf</a> = s;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        this-&gt;prfSelector.set(s);</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    }</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keywordtype">void</span> setPrf(<a class="code" href="classrack_1_1DataSelector.html#a0aae288aae6ee801cf92cd15f6d57df5">Prf</a> <a class="code" href="classrack_1_1DataSelector.html#a47f73c46409f54c7479a8a1f8e15594f">prf</a>){</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        this-&gt;prfSelector.set(<a class="code" href="classrack_1_1DataSelector.html#a47f73c46409f54c7479a8a1f8e15594f">prf</a>);</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        this-&gt;prf = this-&gt;prfSelector.<a class="code" href="classdrain_1_1SingleFlagger.html#a4f1053d6f7fa0ebc029e218fc4e0be86">str</a>();</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="comment">//this-&gt;updateBean();</span></div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    }</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... TT&gt;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keywordtype">void</span> setOrder(<span class="keyword">const</span> TT &amp;... args) {</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        this-&gt;order.set(args...);</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    }</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; </div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="keyword">const</span> DataOrder &amp; getOrder()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keywordflow">return</span> order;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    }</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a492861a0e6c9a4d28f161c813ce9e427">  219</a></span>&#160;    <span class="keyword">const</span> std::string &amp; <a class="code" href="classrack_1_1DataSelector.html#a492861a0e6c9a4d28f161c813ce9e427">getQuantity</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classrack_1_1DataSelector.html#afc880a0277dfe3fc633c3e9c272da5ea">quantities</a>;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    }</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1StringMatcherList.html">drain::KeySelector</a> &amp; getQuantitySelector()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="keywordflow">return</span> quantitySelector;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    }</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="comment">    inline</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;<span class="comment">    const drain::KeySelector &amp; getQualitySelector() const {</span></div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;<span class="comment">        return qualitySelector;</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160; </div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordtype">void</span> setMaxCount(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i){</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <a class="code" href="classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8">count</a> = i;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    }</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> getMaxCount()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8">count</a>;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    }</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keywordtype">void</span> setPrf(<span class="keyword">const</span> std::string &amp; s){</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        this-&gt;prf = s;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        this-&gt;prfSelector.set(s);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    }</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="keywordtype">void</span> setPrf(<a class="code" href="classrack_1_1DataSelector.html#a0aae288aae6ee801cf92cd15f6d57df5">Prf</a> <a class="code" href="classrack_1_1DataSelector.html#a47f73c46409f54c7479a8a1f8e15594f">prf</a>){</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        this-&gt;prfSelector.set(<a class="code" href="classrack_1_1DataSelector.html#a47f73c46409f54c7479a8a1f8e15594f">prf</a>);</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        this-&gt;prf = this-&gt;prfSelector.<a class="code" href="classdrain_1_1SingleFlagger.html#a4f1053d6f7fa0ebc029e218fc4e0be86">str</a>();</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        <span class="comment">//this-&gt;updateBean();</span></div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    }</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... TT&gt;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <span class="keywordtype">void</span> setOrder(<span class="keyword">const</span> TT &amp;... args) {</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        this-&gt;order.set(args...);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    }</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keyword">const</span> DataOrder &amp; getOrder()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keywordflow">return</span> order;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    }</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a9decb4e5bf0e1fb03718bcabf71a5dba">  273</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a9decb4e5bf0e1fb03718bcabf71a5dba">selectPaths</a>(<span class="keyword">const</span> Hi5Tree &amp; src, std::list&lt;ODIMPath&gt; &amp; pathContainer) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160; </div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="comment">// TODO add filter, allowing ODIMPathElem::group_t == QUALITY</span></div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keywordtype">void</span> getTimeMap(<span class="keyword">const</span> Hi5Tree &amp; srcRoot, <a class="code" href="namespacerack.html#a341f7354d658d71d6c2bf12547f17b3f">ODIMPathElemMap</a> &amp; m);</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="comment">// void selectPaths(const Hi5Tree &amp; src, std::list&lt;ODIMPath&gt; &amp; pathContainer) const;</span></div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
 <div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00287"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#ad3d20dd7e09a23bd60ca27e78227e245">  287</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#ad3d20dd7e09a23bd60ca27e78227e245">updateBean</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
-<div class="line"><a name="l00290"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#aac8813e2aece356ba02750f2aced9f41">  290</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#aac8813e2aece356ba02750f2aced9f41">ensureDataGroup</a>();</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; </div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; </div>
-<div class="line"><a name="l00296"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#ad20897c5c8bd47f5d4005989bead0e55">  296</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#ad20897c5c8bd47f5d4005989bead0e55">reset</a>(); <span class="comment">// bool flexible = true &quot;inclusive&quot;</span></div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="comment">//  TODO: perhaps semantics unclear. Consider separating to updateParameters/ deriveImplicitParameters etc.</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a6cbae503821901abb208a31e8966b880">  331</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a6cbae503821901abb208a31e8966b880">getPaths</a>(<span class="keyword">const</span> Hi5Tree &amp; src, std::list&lt;ODIMPath&gt; &amp; pathContainer) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
+<div class="line"><a name="l00283"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#ad20897c5c8bd47f5d4005989bead0e55">  283</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#ad20897c5c8bd47f5d4005989bead0e55">reset</a>(); <span class="comment">// bool flexible = true &quot;inclusive&quot;</span></div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160; </div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="comment">//  TODO: perhaps semantics unclear. Consider separating to updateParameters/ deriveImplicitParameters etc.</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00318"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a6cbae503821901abb208a31e8966b880">  318</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a6cbae503821901abb208a31e8966b880">getPaths</a>(<span class="keyword">const</span> Hi5Tree &amp; src, std::list&lt;ODIMPath&gt; &amp; pathContainer) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; </div>
+<div class="line"><a name="l00327"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#ac7e9abfd7fd39ccd7eb866ce728ee944">  327</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classrack_1_1DataSelector.html#ac7e9abfd7fd39ccd7eb866ce728ee944">getPath</a>(<span class="keyword">const</span> Hi5Tree &amp; src, <a class="code" href="classdrain_1_1Path.html">ODIMPath</a> &amp; <a class="code" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160; </div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
-<div class="line"><a name="l00340"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#ac7e9abfd7fd39ccd7eb866ce728ee944">  340</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classrack_1_1DataSelector.html#ac7e9abfd7fd39ccd7eb866ce728ee944">getPath</a>(<span class="keyword">const</span> Hi5Tree &amp; src, <a class="code" href="classdrain_1_1Path.html">ODIMPath</a> &amp; <a class="code" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00335"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#acb424d6c56818364507061c08b08a5bc">  335</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classrack_1_1DataSelector.html#acb424d6c56818364507061c08b08a5bc">getLastPath</a>(<span class="keyword">const</span> Hi5Tree &amp; src, <a class="code" href="classdrain_1_1Path.html">ODIMPath</a> &amp; <a class="code" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, <a class="code" href="classrack_1_1ODIMPathElem.html#ad5b7349ff82e987d22d87b3acf2c00bc">ODIMPathElem::group_t</a> group = <a class="code" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a> ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; </div>
+<div class="line"><a name="l00338"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a790f3285b8587a3e64965a2e0b8f644a">  338</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classrack_1_1DataSelector.html#a790f3285b8587a3e64965a2e0b8f644a">getNextPath</a>(<span class="keyword">const</span> Hi5Tree &amp; src, <a class="code" href="classdrain_1_1Path.html">ODIMPath</a> &amp; <a class="code" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, <a class="code" href="classrack_1_1ODIMPathElem.html#ad5b7349ff82e987d22d87b3acf2c00bc">ODIMPathElem::group_t</a> group = <a class="code" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a> ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160; </div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; </div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160; </div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
-<div class="line"><a name="l00348"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#acb424d6c56818364507061c08b08a5bc">  348</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classrack_1_1DataSelector.html#acb424d6c56818364507061c08b08a5bc">getLastPath</a>(<span class="keyword">const</span> Hi5Tree &amp; src, <a class="code" href="classdrain_1_1Path.html">ODIMPath</a> &amp; <a class="code" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, <a class="code" href="classrack_1_1ODIMPathElem.html#ad5b7349ff82e987d22d87b3acf2c00bc">ODIMPathElem::group_t</a> group = <a class="code" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a> ) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; </div>
-<div class="line"><a name="l00351"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a790f3285b8587a3e64965a2e0b8f644a">  351</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classrack_1_1DataSelector.html#a790f3285b8587a3e64965a2e0b8f644a">getNextPath</a>(<span class="keyword">const</span> Hi5Tree &amp; src, <a class="code" href="classdrain_1_1Path.html">ODIMPath</a> &amp; <a class="code" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>, <a class="code" href="classrack_1_1ODIMPathElem.html#ad5b7349ff82e987d22d87b3acf2c00bc">ODIMPathElem::group_t</a> group = <a class="code" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a> ) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160; </div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00353"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a299efa0b6519347b88e31a47e49460b6">  353</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a299efa0b6519347b88e31a47e49460b6">swapData</a>(Hi5Tree &amp; src,<span class="keyword">const</span> <a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;srcElem, Hi5Tree &amp; dst);</div>
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160; </div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160; </div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160; </div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00366"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a299efa0b6519347b88e31a47e49460b6">  366</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a299efa0b6519347b88e31a47e49460b6">swapData</a>(Hi5Tree &amp; src,<span class="keyword">const</span> <a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;srcElem, Hi5Tree &amp; dst);</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160; </div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00370"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a5fe2c378e70e8a9f72a80cc18016fe3d">  370</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a5fe2c378e70e8a9f72a80cc18016fe3d">swapData</a>(Hi5Tree &amp; srcGroup, Hi5Tree &amp; dst, <a class="code" href="classrack_1_1ODIMPathElem.html#ad5b7349ff82e987d22d87b3acf2c00bc">ODIMPathElem::group_t</a> groupType);</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00357"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a5fe2c378e70e8a9f72a80cc18016fe3d">  357</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a5fe2c378e70e8a9f72a80cc18016fe3d">swapData</a>(Hi5Tree &amp; srcGroup, Hi5Tree &amp; dst, <a class="code" href="classrack_1_1ODIMPathElem.html#ad5b7349ff82e987d22d87b3acf2c00bc">ODIMPathElem::group_t</a> groupType);</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160; </div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <span class="comment">// TODO add filter, allowing ODIMPathElem::group_t == QUALITY</span></div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <span class="keywordtype">void</span> getTimeMap(<span class="keyword">const</span> Hi5Tree &amp; srcRoot, <a class="code" href="namespacerack.html#a341f7354d658d71d6c2bf12547f17b3f">ODIMPathElemMap</a> &amp; m);</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160; </div>
+<div class="line"><a name="l00368"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#aac8813e2aece356ba02750f2aced9f41">  368</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#aac8813e2aece356ba02750f2aced9f41">ensureDataGroup</a>();</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160; </div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160; </div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160; </div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <span class="comment">//mutable</span></div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    std::string <a class="code" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>; <span class="comment">// temporary!</span></div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160; </div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00378"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#aa896ef0d942fc3236d34466fb54c8402">  378</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#aa896ef0d942fc3236d34466fb54c8402">updateBean</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160; </div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <span class="keyword">mutable</span></div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    <a class="code" href="classrack_1_1ODIMPathMatcher.html">ODIMPathMatcher</a> pathMatcher;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160; </div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <span class="keyword">mutable</span></div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    std::string <a class="code" href="classrack_1_1DataSelector.html#afc880a0277dfe3fc633c3e9c272da5ea">quantities</a>;</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160; </div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="keyword">mutable</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    <a class="code" href="classdrain_1_1StringMatcherList.html">drain::KeySelector</a> quantitySelector;</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160; </div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <span class="comment">//mutable</span></div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    <span class="comment">//drain::KeySelector qualitySelector;</span></div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160; </div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160; </div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8">count</a>;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160; </div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    <span class="comment">//mutable</span></div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    std::string <a class="code" href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">path</a>; <span class="comment">// temporary!</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; </div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    <span class="keyword">mutable</span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <a class="code" href="classrack_1_1ODIMPathMatcher.html">ODIMPathMatcher</a> pathMatcher;</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160; </div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="keyword">mutable</span></div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    std::string <a class="code" href="classrack_1_1DataSelector.html#afc880a0277dfe3fc633c3e9c272da5ea">quantities</a>;</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160; </div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    <span class="keyword">mutable</span></div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <a class="code" href="classdrain_1_1StringMatcherList.html">drain::KeySelector</a> quantitySelector;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160; </div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="comment">//mutable</span></div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <span class="comment">//drain::KeySelector qualitySelector;</span></div>
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160; </div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    <a class="code" href="classdrain_1_1Range.html">drain::Range&lt;double&gt;</a> <a class="code" href="classrack_1_1DataSelector.html#ae93b013a8575ae9e35e2808c6801be0c">elangle</a>;</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160; </div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    <span class="keyword">mutable</span> <a class="code" href="structrack_1_1DataOrder.html">DataOrder</a> order;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160; </div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8">count</a>;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160; </div>
 <div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160; </div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    std::string <a class="code" href="classrack_1_1DataSelector.html#a47f73c46409f54c7479a8a1f8e15594f">prf</a>;</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <a class="code" href="classdrain_1_1Range.html">drain::Range&lt;double&gt;</a> <a class="code" href="classrack_1_1DataSelector.html#ae93b013a8575ae9e35e2808c6801be0c">elangle</a>;</div>
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160; </div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <span class="keyword">mutable</span></div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <a class="code" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger&lt;drain::SingleFlagger&lt;Prf&gt;</a> &gt; prfSelector;</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160; </div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    <a class="code" href="classdrain_1_1Range.html">drain::Range&lt;int&gt;</a> <a class="code" href="classrack_1_1DataSelector.html#aad3279fcd7fa4af5d82ca213d782e69f">timespan</a>;</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160; </div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <span class="keyword">mutable</span> <a class="code" href="structrack_1_1DataOrder.html">DataOrder</a> order;</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160; </div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    std::string <a class="code" href="classrack_1_1DataSelector.html#a47f73c46409f54c7479a8a1f8e15594f">prf</a>;</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160; </div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <span class="keyword">mutable</span></div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <a class="code" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger&lt;drain::SingleFlagger&lt;Prf&gt;</a> &gt; prfSelector;</div>
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160; </div>
-<div class="line"><a name="l00425"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a66e01371119c25e27564d58267dac2eb">  425</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a66e01371119c25e27564d58267dac2eb">updateQuantities</a>() <span class="keyword">const</span>; <span class="comment">// todo: rename (here only) quantities?</span></div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    <span class="comment">// void updateQuantities(const std::string &amp; separators = &quot;,&quot;) const ;</span></div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160; </div>
-<div class="line"><a name="l00429"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a02fd73d861ef2e4aabb38c0c9ff82947">  429</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a02fd73d861ef2e4aabb38c0c9ff82947">init</a>();</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160; </div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160; </div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160; </div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classrack_1_1DataSelector.html#aed08d641ce5d8464b6b367d9a6e6990c">collectPaths</a>(<span class="keyword">const</span> Hi5Tree &amp; src, std::list&lt;ODIMPath&gt; &amp; pathContainer, <span class="keyword">const</span> <a class="code" href="classdrain_1_1Path.html">ODIMPath</a> &amp; basepath = <a class="code" href="classdrain_1_1Path.html">ODIMPath</a>(), <span class="keyword">const</span> std::string &amp; parentQuantity=<span class="stringliteral">&quot;&quot;</span>, <a class="code" href="classrack_1_1ODIMPathElem.html#ad5b7349ff82e987d22d87b3acf2c00bc">ODIMPathElem::group_t</a> filter = <a class="code" href="classrack_1_1ODIMPathElem.html#ae103b4c762513c7657dbed8f23b445be">ODIMPathElem::ALL_GROUPS</a>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    <a class="code" href="classdrain_1_1Range.html">drain::Range&lt;int&gt;</a> <a class="code" href="classrack_1_1DataSelector.html#aad3279fcd7fa4af5d82ca213d782e69f">timespan</a>;</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160; </div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160; </div>
+<div class="line"><a name="l00430"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a66e01371119c25e27564d58267dac2eb">  430</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a66e01371119c25e27564d58267dac2eb">updateQuantities</a>() <span class="keyword">const</span>; <span class="comment">// todo: rename (here only) quantities?</span></div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    <span class="comment">// void updateQuantities(const std::string &amp; separators = &quot;,&quot;) const ;</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160; </div>
+<div class="line"><a name="l00434"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#a02fd73d861ef2e4aabb38c0c9ff82947">  434</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#a02fd73d861ef2e4aabb38c0c9ff82947">init</a>();</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160; </div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160; </div>
 <div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160; </div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160; </div>
-<div class="line"><a name="l00441"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#adefa45f856abaf5d722b64aef42a3eeb">  441</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#adefa45f856abaf5d722b64aef42a3eeb">prunePaths</a>(<span class="keyword">const</span> Hi5Tree &amp; src, std::list&lt;ODIMPath&gt; &amp; pathContainer) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160; </div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;};</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classrack_1_1DataSelector.html#aed08d641ce5d8464b6b367d9a6e6990c">collectPaths</a>(<span class="keyword">const</span> Hi5Tree &amp; src, std::list&lt;ODIMPath&gt; &amp; pathContainer, <span class="keyword">const</span> <a class="code" href="classdrain_1_1Path.html">ODIMPath</a> &amp; basepath = <a class="code" href="classdrain_1_1Path.html">ODIMPath</a>(), <span class="keyword">const</span> std::string &amp; parentQuantity=<span class="stringliteral">&quot;&quot;</span>, <a class="code" href="classrack_1_1ODIMPathElem.html#ad5b7349ff82e987d22d87b3acf2c00bc">ODIMPathElem::group_t</a> filter = <a class="code" href="classrack_1_1ODIMPathElem.html#ae103b4c762513c7657dbed8f23b445be">ODIMPathElem::ALL_GROUPS</a>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160; </div>
 <div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160; </div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector);</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160; </div>
+<div class="line"><a name="l00446"></a><span class="lineno"><a class="line" href="classrack_1_1DataSelector.html#adefa45f856abaf5d722b64aef42a3eeb">  446</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1DataSelector.html#adefa45f856abaf5d722b64aef42a3eeb">prunePaths</a>(<span class="keyword">const</span> Hi5Tree &amp; src, std::list&lt;ODIMPath&gt; &amp; pathContainer) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160; </div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160; </div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;<span class="comment">// Experimental</span></div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1DatasetSelector.html">DatasetSelector</a> : <span class="keyword">public</span> <a class="code" href="classrack_1_1DataSelector.html">DataSelector</a> {</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;};</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160; </div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector);</div>
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160; </div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160; </div>
 <div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160; </div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;    <a class="code" href="classrack_1_1DatasetSelector.html">DatasetSelector</a>() : <a class="code" href="classrack_1_1DataSelector.html">DataSelector</a>(<a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>::DATASET){</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;        parameters.<a class="code" href="classdrain_1_1ReferenceMap.html#ab887035f69b8c9d392d3c2a5de894d55">delink</a>(<span class="stringliteral">&quot;path&quot;</span>);</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;        mout.experimental&lt;LOG_NOTICE&gt;(<span class="stringliteral">&quot;not resetting DATASET&quot;</span> );</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;        <span class="comment">//pathMatcher.setElems(ODIMPathElem::DATASET);</span></div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;    }</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160; </div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;};</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160; </div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;<span class="comment">// Experimental</span></div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;<span class="comment">class ImageSelector : public DataSelector {</span></div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;<span class="comment">public:</span></div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;<span class="comment">    ImageSelector() : DataSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY) {</span></div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="comment">        parameters.link(&quot;path&quot;, dummy);</span></div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="comment">        //parameters.delink(&quot;path&quot;);</span></div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="comment">        // pathMatcher.setElems(ODIMPathElem::DATASET);</span></div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="comment">    // Convert path and quantity strings to pathMatcher and quantity regexps, respectively.</span></div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;<span class="comment">    virtual</span></div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;<span class="comment">    void updateBean();</span></div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;<span class="comment">// Experimental</span></div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1DatasetSelector.html">DatasetSelector</a> : <span class="keyword">public</span> <a class="code" href="classrack_1_1DataSelector.html">DataSelector</a> {</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160; </div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160; </div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;    <a class="code" href="classrack_1_1DatasetSelector.html">DatasetSelector</a>() : <a class="code" href="classrack_1_1DataSelector.html">DataSelector</a>(<a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>::DATASET){</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;        parameters.<a class="code" href="classdrain_1_1ReferenceMap.html#ab887035f69b8c9d392d3c2a5de894d55">delink</a>(<span class="stringliteral">&quot;path&quot;</span>);</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;        mout.experimental&lt;LOG_NOTICE&gt;(<span class="stringliteral">&quot;not resetting DATASET&quot;</span> );</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;        <span class="comment">//pathMatcher.setElems(ODIMPathElem::DATASET);</span></div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    }</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160; </div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;};</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160; </div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;<span class="comment">// Experimental</span></div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="comment">class ImageSelector : public DataSelector {</span></div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="comment">public:</span></div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="comment">    ImageSelector() : DataSelector(ODIMPathElem::DATA | ODIMPathElem::QUALITY) {</span></div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;<span class="comment">        parameters.link(&quot;path&quot;, dummy);</span></div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="comment">        //parameters.delink(&quot;path&quot;);</span></div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;<span class="comment">        // pathMatcher.setElems(ODIMPathElem::DATASET);</span></div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;<span class="comment">    }</span></div>
 <div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;<span class="comment">private:</span></div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;<span class="comment">    std::string dummy;</span></div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<span class="comment">};</span></div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160; </div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;} <span class="comment">// rack::</span></div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160; </div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a> {</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;    DRAIN_TYPENAME(<a class="code" href="classrack_1_1DataSelector.html">rack::DataSelector</a>);</div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;}</div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160; </div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DATASELECTOR_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="comment">    // Convert path and quantity strings to pathMatcher and quantity regexps, respectively.</span></div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;<span class="comment">    virtual</span></div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;<span class="comment">    void updateBean();</span></div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;<span class="comment">private:</span></div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;<span class="comment">    std::string dummy;</span></div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;<span class="comment">};</span></div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160; </div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;} <span class="comment">// rack::</span></div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160; </div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a> {</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    DRAIN_TYPENAME(<a class="code" href="classrack_1_1DataSelector.html">rack::DataSelector</a>);</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;}</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160; </div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DATASELECTOR_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassdrain_1_1BeanLike_html"><div class="ttname"><a href="classdrain_1_1BeanLike.html">drain::BeanLike</a></div><div class="ttdoc">Something which has a name, a description and possibly some parameters of varying type.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:60</div></div>
 <div class="ttc" id="aclassdrain_1_1BeanLike_html_a7cb20fed3030548a4ed68c3a44fcc630"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a7cb20fed3030548a4ed68c3a44fcc630">drain::BeanLike::setParameters</a></div><div class="ttdeci">void setParameters(std::initializer_list&lt; Variable::init_pair_t &gt; args)</div><div class="ttdoc">Grants access to (if above hidden)</div><div class="ttdef"><b>Definition:</b> BeanLike.h:131</div></div>
 <div class="ttc" id="aclassdrain_1_1EnumFlagger_html"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a></div><div class="ttdoc">Flagger accepting values of enum type E.</div><div class="ttdef"><b>Definition:</b> Flags.h:763</div></div>
@@ -473,25 +475,24 @@ $(function() {
 <div class="ttc" id="aclassrack_1_1DataSelector_html_a0aae288aae6ee801cf92cd15f6d57df5"><div class="ttname"><a href="classrack_1_1DataSelector.html#a0aae288aae6ee801cf92cd15f6d57df5">rack::DataSelector::Prf</a></div><div class="ttdeci">Prf</div><div class="ttdoc">Pulse repetition frequency mode.</div><div class="ttdef"><b>Definition:</b> DataSelector.h:118</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_a16ff2d8e15ade4948398b0aeb80124a8"><div class="ttname"><a href="classrack_1_1DataSelector.html#a16ff2d8e15ade4948398b0aeb80124a8">rack::DataSelector::count</a></div><div class="ttdeci">unsigned int count</div><div class="ttdoc">The maximum length of the list of matching keys.</div><div class="ttdef"><b>Definition:</b> DataSelector.h:396</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_a17ef1f4d6f9b665a3a69ad7fea930f29"><div class="ttname"><a href="classrack_1_1DataSelector.html#a17ef1f4d6f9b665a3a69ad7fea930f29">rack::DataSelector::updateBean</a></div><div class="ttdeci">virtual void updateBean() const</div><div class="ttdoc">Updates member objects with their corresponding variable values .</div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:184</div></div>
-<div class="ttc" id="aclassrack_1_1DataSelector_html_a243a73ad4b7de64f107ab07d7a96654f"><div class="ttname"><a href="classrack_1_1DataSelector.html#a243a73ad4b7de64f107ab07d7a96654f">rack::DataSelector::DataSelector</a></div><div class="ttdeci">DataSelector(const ODIMPathElem &amp;elem, const T &amp;... args)</div><div class="ttdoc">Inits pathmatcher.</div><div class="ttdef"><b>Definition:</b> DataSelector.h:132</div></div>
+<div class="ttc" id="aclassrack_1_1DataSelector_html_a243a73ad4b7de64f107ab07d7a96654f"><div class="ttname"><a href="classrack_1_1DataSelector.html#a243a73ad4b7de64f107ab07d7a96654f">rack::DataSelector::DataSelector</a></div><div class="ttdeci">DataSelector(const ODIMPathElem &amp;elem, const T &amp;... args)</div><div class="ttdoc">Inits pathmatcher.</div><div class="ttdef"><b>Definition:</b> DataSelector.h:134</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_a299efa0b6519347b88e31a47e49460b6"><div class="ttname"><a href="classrack_1_1DataSelector.html#a299efa0b6519347b88e31a47e49460b6">rack::DataSelector::swapData</a></div><div class="ttdeci">static void swapData(Hi5Tree &amp;src, const ODIMPathElem &amp;srcElem, Hi5Tree &amp;dst)</div><div class="ttdoc">Swap branches such that dst gets a /dataset or /data with a new index.</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_a30eccaa8ad96962759b84db2e7a623bf"><div class="ttname"><a href="classrack_1_1DataSelector.html#a30eccaa8ad96962759b84db2e7a623bf">rack::DataSelector::setQuantities</a></div><div class="ttdeci">void setQuantities(const std::string &amp;s)</div><div class="ttdoc">Sets basic quantities and quality quantities. These sets are separated by '/'.</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_a47f73c46409f54c7479a8a1f8e15594f"><div class="ttname"><a href="classrack_1_1DataSelector.html#a47f73c46409f54c7479a8a1f8e15594f">rack::DataSelector::prf</a></div><div class="ttdeci">std::string prf</div><div class="ttdoc">Reject or accept VRAD(VH)</div><div class="ttdef"><b>Definition:</b> DataSelector.h:405</div></div>
-<div class="ttc" id="aclassrack_1_1DataSelector_html_a492861a0e6c9a4d28f161c813ce9e427"><div class="ttname"><a href="classrack_1_1DataSelector.html#a492861a0e6c9a4d28f161c813ce9e427">rack::DataSelector::getQuantity</a></div><div class="ttdeci">const std::string &amp; getQuantity() const</div><div class="ttdoc">Retrieve quantity list and regular expression, if defined.</div><div class="ttdef"><b>Definition:</b> DataSelector.h:217</div></div>
+<div class="ttc" id="aclassrack_1_1DataSelector_html_a492861a0e6c9a4d28f161c813ce9e427"><div class="ttname"><a href="classrack_1_1DataSelector.html#a492861a0e6c9a4d28f161c813ce9e427">rack::DataSelector::getQuantity</a></div><div class="ttdeci">const std::string &amp; getQuantity() const</div><div class="ttdoc">Retrieve quantity list and regular expression, if defined.</div><div class="ttdef"><b>Definition:</b> DataSelector.h:219</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_a4d455efceee21e97d8e21ee40e9b4a20"><div class="ttname"><a href="classrack_1_1DataSelector.html#a4d455efceee21e97d8e21ee40e9b4a20">rack::DataSelector::path</a></div><div class="ttdeci">std::string path</div><div class="ttdoc">Regular expression of accepted paths, for example &quot;.*‍/data$&quot;. Deprecated.</div><div class="ttdef"><b>Definition:</b> DataSelector.h:379</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_a5fe2c378e70e8a9f72a80cc18016fe3d"><div class="ttname"><a href="classrack_1_1DataSelector.html#a5fe2c378e70e8a9f72a80cc18016fe3d">rack::DataSelector::swapData</a></div><div class="ttdeci">static void swapData(Hi5Tree &amp;srcGroup, Hi5Tree &amp;dst, ODIMPathElem::group_t groupType)</div><div class="ttdoc">Like swapData(Hi5Tree &amp; src,const ODIMPathElem &amp;srcElem, Hi5Tree &amp; dst), but src already at the level...</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_a66e01371119c25e27564d58267dac2eb"><div class="ttname"><a href="classrack_1_1DataSelector.html#a66e01371119c25e27564d58267dac2eb">rack::DataSelector::updateQuantities</a></div><div class="ttdeci">void updateQuantities() const</div><div class="ttdoc">Continue path matching started with getMainPaths()</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_a6cbae503821901abb208a31e8966b880"><div class="ttname"><a href="classrack_1_1DataSelector.html#a6cbae503821901abb208a31e8966b880">rack::DataSelector::getPaths</a></div><div class="ttdeci">void getPaths(const Hi5Tree &amp;src, std::list&lt; ODIMPath &gt; &amp;pathContainer) const</div><div class="ttdoc">Sets given parameters and implicitly determines missing parameters.</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_a790f3285b8587a3e64965a2e0b8f644a"><div class="ttname"><a href="classrack_1_1DataSelector.html#a790f3285b8587a3e64965a2e0b8f644a">rack::DataSelector::getNextPath</a></div><div class="ttdeci">bool getNextPath(const Hi5Tree &amp;src, ODIMPath &amp;path, ODIMPathElem::group_t group=ODIMPathElem::DATA) const</div><div class="ttdoc">Returns the a path with index one greater than the retrieved last path.</div></div>
-<div class="ttc" id="aclassrack_1_1DataSelector_html_a90d055ece641ecb6586b7097f7c8aa9f"><div class="ttname"><a href="classrack_1_1DataSelector.html#a90d055ece641ecb6586b7097f7c8aa9f">rack::DataSelector::consumeParameters</a></div><div class="ttdeci">bool consumeParameters(std::string &amp;args)</div><div class="ttdoc">Sets parameters in predefined order or sets specified parameters. (Python style calling alternatives....</div><div class="ttdef"><b>Definition:</b> DataSelector.h:173</div></div>
-<div class="ttc" id="aclassrack_1_1DataSelector_html_a9decb4e5bf0e1fb03718bcabf71a5dba"><div class="ttname"><a href="classrack_1_1DataSelector.html#a9decb4e5bf0e1fb03718bcabf71a5dba">rack::DataSelector::selectPaths</a></div><div class="ttdeci">void selectPaths(const Hi5Tree &amp;src, std::list&lt; ODIMPath &gt; &amp;pathContainer) const</div><div class="ttdoc">Collect paths with all the criteria: path, elevation(range), PRF, quantity...</div></div>
-<div class="ttc" id="aclassrack_1_1DataSelector_html_aa648b72fc9830c47bae0d23449e83187"><div class="ttname"><a href="classrack_1_1DataSelector.html#aa648b72fc9830c47bae0d23449e83187">rack::DataSelector::trimPathMatcher</a></div><div class="ttdeci">void trimPathMatcher()</div><div class="ttdoc">&quot;Drop leading slashes&quot;, ie. remove leading empty elements.</div><div class="ttdef"><b>Definition:</b> DataSelector.h:197</div></div>
+<div class="ttc" id="aclassrack_1_1DataSelector_html_a90d055ece641ecb6586b7097f7c8aa9f"><div class="ttname"><a href="classrack_1_1DataSelector.html#a90d055ece641ecb6586b7097f7c8aa9f">rack::DataSelector::consumeParameters</a></div><div class="ttdeci">bool consumeParameters(std::string &amp;args)</div><div class="ttdoc">Sets parameters in predefined order or sets specified parameters. (Python style calling alternatives....</div><div class="ttdef"><b>Definition:</b> DataSelector.h:175</div></div>
+<div class="ttc" id="aclassrack_1_1DataSelector_html_aa648b72fc9830c47bae0d23449e83187"><div class="ttname"><a href="classrack_1_1DataSelector.html#aa648b72fc9830c47bae0d23449e83187">rack::DataSelector::trimPathMatcher</a></div><div class="ttdeci">void trimPathMatcher()</div><div class="ttdoc">&quot;Drop leading slashes&quot;, ie. remove leading empty elements.</div><div class="ttdef"><b>Definition:</b> DataSelector.h:199</div></div>
+<div class="ttc" id="aclassrack_1_1DataSelector_html_aa896ef0d942fc3236d34466fb54c8402"><div class="ttname"><a href="classrack_1_1DataSelector.html#aa896ef0d942fc3236d34466fb54c8402">rack::DataSelector::updateBean</a></div><div class="ttdeci">virtual void updateBean() const override</div><div class="ttdoc">Traverses the parameters and updates the corresponding member objects.</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_aac8813e2aece356ba02750f2aced9f41"><div class="ttname"><a href="classrack_1_1DataSelector.html#aac8813e2aece356ba02750f2aced9f41">rack::DataSelector::ensureDataGroup</a></div><div class="ttdeci">void ensureDataGroup()</div><div class="ttdoc">In path, ensure trailing DATA or QUANTITY element.</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_aad3279fcd7fa4af5d82ca213d782e69f"><div class="ttname"><a href="classrack_1_1DataSelector.html#aad3279fcd7fa4af5d82ca213d782e69f">rack::DataSelector::timespan</a></div><div class="ttdeci">drain::Range&lt; int &gt; timespan</div><div class="ttdoc">Time in seconds, compared to nominal time.</div><div class="ttdef"><b>Definition:</b> DataSelector.h:411</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_ac7e9abfd7fd39ccd7eb866ce728ee944"><div class="ttname"><a href="classrack_1_1DataSelector.html#ac7e9abfd7fd39ccd7eb866ce728ee944">rack::DataSelector::getPath</a></div><div class="ttdeci">bool getPath(const Hi5Tree &amp;src, ODIMPath &amp;path) const</div><div class="ttdoc">Returns the first path encountered with selector attributes and given groupFilter .</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_acb424d6c56818364507061c08b08a5bc"><div class="ttname"><a href="classrack_1_1DataSelector.html#acb424d6c56818364507061c08b08a5bc">rack::DataSelector::getLastPath</a></div><div class="ttdeci">bool getLastPath(const Hi5Tree &amp;src, ODIMPath &amp;path, ODIMPathElem::group_t group=ODIMPathElem::DATA) const</div><div class="ttdoc">Returns the last path encountered with selector attributes and given groupFilter .</div></div>
-<div class="ttc" id="aclassrack_1_1DataSelector_html_ad20897c5c8bd47f5d4005989bead0e55"><div class="ttname"><a href="classrack_1_1DataSelector.html#ad20897c5c8bd47f5d4005989bead0e55">rack::DataSelector::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdoc">Restore default values.</div></div>
-<div class="ttc" id="aclassrack_1_1DataSelector_html_ad3d20dd7e09a23bd60ca27e78227e245"><div class="ttname"><a href="classrack_1_1DataSelector.html#ad3d20dd7e09a23bd60ca27e78227e245">rack::DataSelector::updateBean</a></div><div class="ttdeci">virtual void updateBean() const</div><div class="ttdoc">Updates member objects with their corresponding variable values .</div></div>
+<div class="ttc" id="aclassrack_1_1DataSelector_html_ad20897c5c8bd47f5d4005989bead0e55"><div class="ttname"><a href="classrack_1_1DataSelector.html#ad20897c5c8bd47f5d4005989bead0e55">rack::DataSelector::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdoc">Collect paths with all the criteria: path, elevation(range), PRF, quantity...</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_adefa45f856abaf5d722b64aef42a3eeb"><div class="ttname"><a href="classrack_1_1DataSelector.html#adefa45f856abaf5d722b64aef42a3eeb">rack::DataSelector::prunePaths</a></div><div class="ttdeci">void prunePaths(const Hi5Tree &amp;src, std::list&lt; ODIMPath &gt; &amp;pathContainer) const</div><div class="ttdoc">Use #DataOrder::criterion DATA , TIME or ELANGLE and #DataOrder::order MIN or MAX to sort paths.</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_ae93b013a8575ae9e35e2808c6801be0c"><div class="ttname"><a href="classrack_1_1DataSelector.html#ae93b013a8575ae9e35e2808c6801be0c">rack::DataSelector::elangle</a></div><div class="ttdeci">drain::Range&lt; double &gt; elangle</div><div class="ttdoc">The minimum and maximum elevation angle (applicable with volume scan data only).</div><div class="ttdef"><b>Definition:</b> DataSelector.h:400</div></div>
 <div class="ttc" id="aclassrack_1_1DataSelector_html_aed08d641ce5d8464b6b367d9a6e6990c"><div class="ttname"><a href="classrack_1_1DataSelector.html#aed08d641ce5d8464b6b367d9a6e6990c">rack::DataSelector::collectPaths</a></div><div class="ttdeci">bool collectPaths(const Hi5Tree &amp;src, std::list&lt; ODIMPath &gt; &amp;pathContainer, const ODIMPath &amp;basepath=ODIMPath(), const std::string &amp;parentQuantity=&quot;&quot;) const</div><div class="ttdoc">Collect paths (only) with criteria: path, elevation(range), PRF, quantity.</div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:375</div></div>

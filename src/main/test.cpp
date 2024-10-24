@@ -82,7 +82,7 @@ public:
 		DataSelector selector(ctx.select);
 
 		ODIMPathList paths;
-		selector.selectPaths(src, paths);
+		selector.getPaths(src, paths);
 
 		for (const ODIMPath & path: paths){
 			std::cout << path << '\n';

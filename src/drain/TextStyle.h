@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Type.h"
 //#include "Sprinter.h"
-#include "StringBuilder.h"
+//#include "StringBuilder.h"
 
 namespace drain
 {
@@ -121,162 +121,11 @@ DRAIN_TYPENAME(TextStyle::Colour);
 DRAIN_TYPENAME(TextStyle::Line);
 DRAIN_TYPENAME(TextStyle::Style);
 
-
-
-class TextStyleVT100 : public TextStyle {
-
-public:
-
-	inline virtual
-	~TextStyleVT100(){};
-
-	template <typename ... TT>
-	void write(std::ostream & ostr, const TT &... args) const{
-		startWrite(ostr);
-		append(ostr, args...);
-		endWrite(ostr);
-	};
-
-
-	virtual
-	void startWrite(std::ostream & ostr) const {
-	}
-
-	virtual
-	void endWrite(std::ostream & ostr) const {
-		ostr << "\033[0m"; // VT100 end marker
-	}
-
-	template <typename ... TT>
-	void append(std::ostream & ostr, const TT &... args) const{
-		_append(ostr, false, args...);
-	};
-
-
-	typedef std::map<drain::TextStyle::Colour,int> color_codemap_t;
-	typedef std::map<drain::TextStyle::Style,int>  style_codemap_t;
-	typedef std::map<drain::TextStyle::Line,int>   line_codemap_t;
-
-	static
-	const color_codemap_t color_codemap;
-
-	static
-	const style_codemap_t style_codemap;
-
-	static
-	const line_codemap_t line_codemap;
-
-	template <class T>
-	static
-	const std::map<T,int> & getCodeMap();
-
-
-	/// Given an enum value, returns the corresponding numeric VT100 code.
-	template <class E>
-	static
-	int getIntCode(const E & enumCode){
-
-		typedef std::map<E,int> codemap_t;
-
-		const codemap_t & map = getCodeMap<E>();
-
-		typename codemap_t::const_iterator it = map.find(enumCode);
-		if (it != map.end()){
-			return it->second;
-		}
-		else {
-
-			for (const auto & entry: map){
-				std::cerr << entry.first << '=' << (int)entry.first << " VT100=" << entry.second << std::endl;
-			}
-
-
-			std::cerr << StringBuilder<>(TypeName<E>::str(), ": no such enumCode: ", enumCode) << std::endl;
-
-			std::cerr << __FILE__ << '/' << __FUNCTION__ << ": no such enumCode: " << enumCode << std::endl;
-			throw std::runtime_error("No such enumCode: "); // TYPE!
-			return 0; // drain::TextDecorator::Colour::NO_COLOR;
-		}
-	}
-
-protected:
-
-	/**
-	 *  Default implemenation for normal input elements.
-	 *  For control elements, see following specializations.
-	 */
-	template <typename T, typename ... TT>
-	// static
-	void _append(std::ostream & ostr, bool init, const T & arg, const TT &... args) const{
-		if (init){
-			_appendControlSuffix(ostr);
-		}
-		ostr << arg;
-		_append(ostr, false, args...);
-	};
-
-	template <typename ... TT>
-	// static
-	void _append(std::ostream & ostr, bool start, const Colour & colour, const TT &... args) const{
-		_appendControlPrefix(ostr, start);
-		ostr << getIntCode(colour);
-		_append(ostr, true, args...);
-	};
-
-	template <typename ... TT>
-	// static
-	void _append(std::ostream & ostr, bool start, const Line & line, const TT &... args) const{
-		_appendControlPrefix(ostr, start);
-		ostr << getIntCode(line);
-		_append(ostr, true, args...);
-	};
-
-	template <typename ... TT>
-	// static
-	void _append(std::ostream & ostr, bool start, const Style & style, const TT &... args) const{
-		_appendControlPrefix(ostr, start);
-		ostr << getIntCode(style);
-		_append(ostr, true, args...);
-	};
-
-	inline
-	void _append(std::ostream & ostr, bool init) const{
-		if (init){
-			_appendControlSuffix(ostr);
-		}
-	};
-
-	virtual
-	void _appendControlPrefix(std::ostream & ostr, bool start) const {
-		if (!start){
-			ostr << "\033["; // start VT100 def
-		}
-		else {
-			ostr << ';'; // separator; continuing VT100 defs
-		}
-	}
-
-	virtual
-	void _appendControlSuffix(std::ostream & ostr) const {
-		ostr << 'm'; // VT100 end marker
-	}
-
-
-
-};
-
-
-
-template <>
-const std::map<TextStyle::Colour,int> & TextStyleVT100::getCodeMap();
-
-template <>
-const std::map<TextStyle::Line,int> & TextStyleVT100::getCodeMap();
-
-template <>
-const std::map<TextStyle::Style,int> & TextStyleVT100::getCodeMap();
-
-DRAIN_TYPENAME(TextStyleVT100);
+inline
+std::ostream & operator<<(std::ostream & ostr, const TextStyle &t){
+	ostr << __FILE__ << ':' << __LINE__ << '?';
+	return ostr;
+}
 
 
 } // ::drain

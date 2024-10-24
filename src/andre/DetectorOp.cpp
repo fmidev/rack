@@ -157,7 +157,8 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 			//dstProb.tree.data.exclude = !DetectorOp::STORE;
 			initDataDst(srcData, dstProb);
 			mout.debug("outputDataVerbosity ", outputDataVerbosity);
-			dstProb.setExcluded(outputDataVerbosity==0);
+			//dstProb.setExcluded(outputDataVerbosity==0);
+			dstProb.setExcluded(!outputDataVerbosity);
 			// mout.debug2("dstProb: ", dstProb);
 
 			/// MAIN COMMAND

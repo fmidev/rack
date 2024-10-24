@@ -196,7 +196,8 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		}
 
 		ODIMPathList paths;
-		selector.selectPaths(srcTmp, paths);
+		//selector.selectPaths(srcTmp, paths);
+		selector.getPaths(srcTmp, paths);
 
 		for (const ODIMPath & path: paths){
 			if (srcTmp.hasPath(path)){ // otherwise path query would create one...

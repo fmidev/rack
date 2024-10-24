@@ -109,6 +109,51 @@ EXCLUDE dataset1
 
 
 
+INFILE='etop.h5'
+
+TITLE "Select a unique quality field"
+TEST  --select quantity=CLASS-ETOP
+REQUIRE dataset1/data1/quality1
+EXCLUDE dataset2
+EXCLUDE dataset1/data[2-9]
+EXCLUDE dataset1/quality
+
+TITLE "Select all QIND fields"
+TEST  --select quantity=QIND
+REQUIRE dataset1/quality1
+REQUIRE dataset1/data7/quality1
+EXCLUDE dataset1/data1/quality1
+EXCLUDE data[1-9]$
+
+
+TITLE "Select global (dataset-level) QIND fields"
+TEST  --select quantity=/QIND
+REQUIRE dataset1/quality1
+EXCLUDE data[1-9]$
+# EXCLUDE dataset2
+
+
+TITLE "Select quantity-specific (data-level) QIND fields"
+TEST  --select quantity=.+/QIND
+REQUIRE dataset1/data7/quality1
+EXCLUDE dataset1/quality
+EXCLUDE data[1-9]$
+#EXCLUDE dataset2
+
+TITLE "Select quantity-specific (data-level) QIND field"
+TEST  --select quantity=DBZ-SLOPE-SMOOTH/QIND
+REQUIRE dataset1/data7/quality1
+EXCLUDE dataset1/quality
+EXCLUDE data[1-9]$
+#EXCLUDE dataset1/data[1-6] 
+
+
+TITLE "Select non-existing quantity-specific QIND field"
+TEST  --select quantity=HGHT/QIND
+EXCLUDE dataset
+EXCLUDE quality
+EXCLUDE data[1-9]$
+
 
 # rack volume.h5 --select 'dataset=2:5,quantity=DBZH'    
 # rack volume.h5 --select 'quantity=DBZH,elangle=0.5:4.0'   <commands>

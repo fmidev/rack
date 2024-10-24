@@ -46,7 +46,8 @@ void Command::setParameters(const std::string & args){ //, char assignmentSymbol
 	const char assignmentSymbol = '=';
 
 	if (args.empty() && !parameters.empty()){
-		Logger mout(__FUNCTION__, getName());
+
+		Logger mout(getName().c_str(), __FUNCTION__);
 
 		//mout.info(" empty argument" );
 		ReferenceMap::iterator it = parameters.begin();
@@ -64,7 +65,7 @@ void Command::setParameters(const std::string & args){ //, char assignmentSymbol
 			it->second = false;
 		}
 		else{
-			mout.warn(it->first , ": empty assignment of non-string" );
+			mout.warn("skipping empty argument for '",  it->first, "' [", it->second.getTypeName(), ']');
 			//throw std::runtime_error(getName()+":"+it->first + ": empty assigment '' for non-string");
 		}
 	}
@@ -72,10 +73,9 @@ void Command::setParameters(const std::string & args){ //, char assignmentSymbol
 		parameters.setValues(args, assignmentSymbol); //
 	}
 	else {
-		//Logger mout(__FILE__, __FUNCTION__);
-		//mout.warn("Trying to set values for " , getName() , " params:" , parameters );
+		// Probably a string, to be processed by the command later.
+		// TODO: warn if not string?
 		parameters.setValues(args, assignmentSymbol);
-		//mout.warn("Done (" , args ,  ')' );
 	}
 
 	this->update();

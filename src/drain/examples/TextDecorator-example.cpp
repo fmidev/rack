@@ -21,7 +21,9 @@
  */
  
 /*
-REQUIRE:    drain/util/{Log,Flags,Sprinter,String,TextDecorator,TextStyle,Type}.cpp
+REQUIRE:    drain/{Log,Sprinter,String,TextStyle,Type}.cpp
+REQUIRE:    drain/util/{Flags,TextDecorator}.cpp
+
 pikamake.sh drain/examples/TextDecorator-example.cpp
 
  */
@@ -51,9 +53,16 @@ void addText(std::stringstream & sstr, const T & arg, const TT &... args){
 
 int main(int argc, char **argv){
 
-	drain::TextStyleVT100 vt100;
+	drain::TextStyleVT100 vt100; //(drain::TextStyle::BLUE, drain::TextStyle::UNDERLINE);
+
+	//drain::TextStyleVT100();
+	std::cout << vt100 << " kokkeilu "; // << drain::TextStyleVT100();  // drain::TextStyle::RESET
+	//operator<<(std::cout, vt100); // BUG! Solves to operator<<(std::cout, Type!);
 
 	vt100.set(drain::TextStyle::BLUE, drain::TextStyle::UNDERLINE);
+
+
+	//exit(0);
 
 	std::stringstream sstr;
 	vt100.write(sstr, drain::TextStyle::BLUE, "Kokeilu", " jatkuu..", drain::TextStyle::RED, "...valkoisena",
@@ -63,19 +72,21 @@ int main(int argc, char **argv){
 
 	std::cout << sstr.str() << std::endl;
 
-	drain::TextDecorator mika;
-	mika.debug(std::cout);
 
 
 
-	if (argc < 0){
+
+
+	if (argc == 1){
 		std::cerr << "Assign variables and literals quickly to a string(stream) \n";
-		std::cerr << "Usage:\n\t" << argv[0] << " arg [ args...] <x>,<x2>,...\n";
-		std::cerr << "Example:\n\t " << argv[0] << " world and the rest of the world\n";
+		drain::TextDecoratorVt100().debug(std::cerr);
+
+		std::cerr << "Usage:\n\t"    << argv[0] << " <arg> [<args...>]\n";
+		std::cerr << "Example:\n\t " << argv[0] << " GRAY  UNDERLINE,RED  BOLD,CYAN\n";
 		return 1;
 	}
 
-
+	drain::TextDecoratorVt100 mika;
 	mika.set(drain::TextStyle::UNDERLINE, drain::TextStyle::RED, drain::TextStyle::GREEN, drain::TextStyle::ITALIC);
 	//std::cout << "Moi" << '\n';
 
@@ -85,6 +96,10 @@ int main(int argc, char **argv){
 		mika.reset();
 		mika.set(argv[i]);
 		std::cout << "now " << mika << '\n';
+		mika.begin(std::cout, argv[i]);
+		std::cout << " Example text ";
+		mika.end(std::cout);
+		std::cout << '\n';
 	}
 	//std::cerr << drain::StringBuilder("Hello '", argv[1], "', and the rest ", argc-2 , " arguments...")       << std::endl;
 

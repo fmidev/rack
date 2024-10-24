@@ -50,6 +50,8 @@ const CoordinatePolicy PolarProductOp::polarCoordPolicy(EdgePolicy::POLAR, EdgeP
 
 PolarProductOp::PolarProductOp(const std::string & name, const std::string & description) : VolumeOp<PolarODIM>(name, description) {
 
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
 	allowedEncoding.link("type", odim.type = "C");
 	allowedEncoding.link("gain", odim.scaling.scale);
 	allowedEncoding.link("offset", odim.scaling.offset);
@@ -64,15 +66,13 @@ PolarProductOp::PolarProductOp(const std::string & name, const std::string & des
 	aboveSeaLevel = true;
 	this->odim.product = "PPROD"; // NEW
 	//this->odim.object  = "PVOL"; // consider!
-	//dataSelector.orderFlags.set(DataSelector::ELANGLE, DataSelector::MIN);
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	//mout.debug(dataSelector);
-	//dataSelector.order.set(DataOrder::DATA, DataOrder::MIN);
+	//dataSelector.orderFlags.set(DataSelector::ELANGLE, DataSelector::MIN);
 	dataSelector.setOrder(DataOrder::DATA, DataOrder::MIN);
 	dataSelector.setPrf(DataSelector::Prf::SINGLE);
-	//dataSelector.prfSelector.set(DataSelector::Prf::SINGLE);
-	dataSelector.updateBean();
+
+	//dataSelector.updateBean(); // NOT NEEDED, when objects updated directly
+
 	mout.debug2(dataSelector);
 
 };

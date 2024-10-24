@@ -273,7 +273,8 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			// mout.debug("composite.dataSelector.pathMatcher: " , composite.dataSelector.pathMatcher );
 			// mout.special("composite.dataSelector.pathMatcher.front: " , composite.dataSelector.pathMatcher.front().flags.keysToStr );
 
-			composite.dataSelector.updateBean(); // quantity
+			mout.revised("Removed composite.dataSelector.updateBean()");
+			// composite.dataSelector.updateBean(); // quantity   // 2024/10
 
 			if (composite.dataSelector.getMaxCount() != 1){
 				mout.debug("composite.dataSelector.count ", composite.dataSelector.getMaxCount(), " > 1"); // , setting to 1.");

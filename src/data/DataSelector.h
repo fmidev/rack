@@ -119,9 +119,11 @@ public:
 
 	// TODO: string => ODIMPath
 	DataSelector(const std::string & path, const std::string & quantity,
-			unsigned int count = 1000, drain::Range<double> elangle = {-90.0, 90.0}, int dualPRF = 0,
-			drain::Range<int> timespan={0,0});
-			// double elangleMin = -90.0, double elangleMax = 90.0);
+			unsigned int count = 1000, drain::Range<double> elangle = {-90.0, 90.0},
+			DataSelector::Prf prf=Prf::ANY //int dualPRF = 0,
+			//drain::Range<int> timespan={0,0}
+	);
+	// double elangleMin = -90.0, double elangleMax = 90.0);
 
 	DataSelector(const std::string & parameters = "");
 
@@ -270,24 +272,9 @@ public:
 	/**
 	 *
 	 */
-	void selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const;
+	// void selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathContainer) const;
 
 
-	// TODO add filter, allowing ODIMPathElem::group_t == QUALITY
-	static
-	void getTimeMap(const Hi5Tree & srcRoot, ODIMPathElemMap & m);
-
-
-	/// Updates member objects with their corresponding variable values .
-	/**
-	 *   Converts path and quantity strings to pathMatcher and quantity regexps, respectively.
-	 *
-	 */
-	virtual
-	void updateBean() const;
-
-	/// In path, ensure trailing DATA or QUANTITY element.
-	void ensureDataGroup();
 
 	/// Restore default values.
 	/**
@@ -369,8 +356,26 @@ public:
 	static
 	void swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::group_t groupType);
 
+	// TODO add filter, allowing ODIMPathElem::group_t == QUALITY
+	static
+	void getTimeMap(const Hi5Tree & srcRoot, ODIMPathElemMap & m);
+
+	/// In path, ensure trailing DATA or QUANTITY element.
+	/**
+	 *  Typically used by image selectors
+	 *
+	 */
+	void ensureDataGroup();
 
 protected:
+
+	/// Traverses the parameters and updates the corresponding member objects
+	/**
+	 *   Converts path and quantity strings to pathMatcher and quantity RegExps, respectively.
+	 *
+	 */
+	virtual
+	void updateBean() const override;
 
 
 	/// Regular expression of accepted paths, for example ".*/data$". Deprecated

@@ -779,126 +779,132 @@ $(function() {
 <div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1FlagResolver.html#ac4d4c65c850179349aa03cb4d0e319fc">FlagResolver::getKeys</a>(<a class="code" href="structdrain_1_1EnumDict.html">EnumDict&lt;value_t&gt;::dict</a>, value, separator);</div>
 <div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;    }</div>
 <div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160; </div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00827"></a><span class="lineno"><a class="line" href="classdrain_1_1EnumFlagger.html#a8760b97e03579776f26dbd920937bf3c">  827</a></span>&#160;    <a class="code" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt;F&gt;</a> &amp; <a class="code" href="classdrain_1_1EnumFlagger.html#a8760b97e03579776f26dbd920937bf3c">operator=</a>(<span class="keyword">const</span> T &amp; v){</div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;        this-&gt;set(v);</div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;    }</div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160; </div>
-<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    <span class="keyword">operator</span> value_t()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>value_t<span class="keyword">&gt;</span>(this-&gt;value);</div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;    }</div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160; </div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    <span class="keyword">operator</span> bool()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>ivalue_t<span class="keyword">&gt;</span>(this-&gt;value) != 0;</div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    }</div>
-<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160; </div>
-<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;};</div>
-<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160; </div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00828"></a><span class="lineno"><a class="line" href="classdrain_1_1EnumFlagger.html#a62b73eb4f51e58559181bd8d715682fe">  828</a></span>&#160;    <a class="code" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt;F&gt;</a> &amp; <a class="code" href="classdrain_1_1EnumFlagger.html#a62b73eb4f51e58559181bd8d715682fe">operator=</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt;F&gt;</a> &amp; flagger){</div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;        this-&gt;set(flagger.value);</div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    }</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160; </div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;    <a class="code" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt;F&gt;</a> &amp; <a class="code" href="classdrain_1_1EnumFlagger.html#a62b73eb4f51e58559181bd8d715682fe">operator=</a>(<span class="keyword">const</span> T &amp; v){</div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;        this-&gt;set(v);</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    }</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160; </div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;    <span class="keyword">operator</span> value_t()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>value_t<span class="keyword">&gt;</span>(this-&gt;value);</div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;    }</div>
 <div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160; </div>
-<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160; </div>
-<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160; </div>
-<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> F&gt;</div>
-<div class="line"><a name="l00855"></a><span class="lineno"><a class="line" href="classdrain_1_1Flagger2.html">  855</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1Flagger2.html">Flagger2</a> : <span class="keyword">public</span> F {  <span class="comment">// Consider renaming to IntFlagger !</span></div>
-<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160; </div>
-<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160; </div>
-<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;    <span class="keyword">typedef</span> F fbase_t;</div>
-<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> fbase_t::value_t value_t;</div>
-<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> fbase_t::dict_t   dict_t;</div>
-<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160; </div>
-<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    <span class="keyword">const</span> dict_t &amp; getDict()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;        <span class="keywordflow">return</span> dict;</div>
-<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;    };</div>
-<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160; </div>
-<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;    <a class="code" href="classdrain_1_1Flagger2.html">Flagger2</a>(<span class="keyword">const</span> dict_t &amp; dict) : dict(dict){</div>
-<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;    }</div>
-<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160; </div>
-<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;    <a class="code" href="classdrain_1_1Flagger2.html">Flagger2</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1Flagger2.html">Flagger2&lt;F&gt;</a> &amp; flagger) : dict(flagger.dict){</div>
-<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;    }</div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;    <span class="keyword">operator</span> bool()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>ivalue_t<span class="keyword">&gt;</span>(this-&gt;value) != 0;</div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;    }</div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160; </div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;};</div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160; </div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160; </div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160; </div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160; </div>
+<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> F&gt;</div>
+<div class="line"><a name="l00863"></a><span class="lineno"><a class="line" href="classdrain_1_1Flagger2.html">  863</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1Flagger2.html">Flagger2</a> : <span class="keyword">public</span> F {  <span class="comment">// Consider renaming to IntFlagger !</span></div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160; </div>
+<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160; </div>
+<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    <span class="keyword">typedef</span> F fbase_t;</div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> fbase_t::value_t value_t;</div>
+<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> fbase_t::dict_t   dict_t;</div>
+<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160; </div>
+<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;    <span class="keyword">const</span> dict_t &amp; getDict()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;        <span class="keywordflow">return</span> dict;</div>
+<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;    };</div>
 <div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160; </div>
-<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;    <a class="code" href="classdrain_1_1Flagger2.html">Flagger2&lt;F&gt;</a> &amp; operator=(<span class="keyword">const</span> T &amp; v){</div>
-<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;        this-&gt;set(v);</div>
-<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;    }</div>
-<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160; </div>
-<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160; </div>
-<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;    <span class="keyword">const</span> dict_t &amp; dict;</div>
-<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160; </div>
-<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160; </div>
-<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;};</div>
-<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160; </div>
-<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160; </div>
-<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> F&gt;</div>
-<div class="line"><a name="l00899"></a><span class="lineno"><a class="line" href="classdrain_1_1Flags2.html">  899</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1Flags2.html">Flags2</a> : <span class="keyword">public</span> F {</div>
-<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160; </div>
-<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160; </div>
-<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;    <span class="keyword">typedef</span> F fbase_t;</div>
-<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> fbase_t::value_t value_t;</div>
-<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> fbase_t::dict_t   dict_t;</div>
-<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160; </div>
-<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160; </div>
-<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;    <span class="keyword">const</span> dict_t &amp; getDict()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;        <span class="keywordflow">return</span> dict;</div>
-<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    };</div>
-<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160; </div>
-<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;    dict_t &amp; getDict(){</div>
-<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;        <span class="keywordflow">return</span> dict;</div>
-<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;    };</div>
-<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160; </div>
-<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160; </div>
+<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;    <a class="code" href="classdrain_1_1Flagger2.html">Flagger2</a>(<span class="keyword">const</span> dict_t &amp; dict) : dict(dict){</div>
+<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;    }</div>
+<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160; </div>
+<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;    <a class="code" href="classdrain_1_1Flagger2.html">Flagger2</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1Flagger2.html">Flagger2&lt;F&gt;</a> &amp; flagger) : dict(flagger.dict){</div>
+<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;    }</div>
+<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160; </div>
+<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;    <a class="code" href="classdrain_1_1Flagger2.html">Flagger2&lt;F&gt;</a> &amp; operator=(<span class="keyword">const</span> T &amp; v){</div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;        this-&gt;set(v);</div>
+<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;    }</div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160; </div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160; </div>
+<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;    <span class="keyword">const</span> dict_t &amp; dict;</div>
+<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160; </div>
+<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160; </div>
+<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;};</div>
+<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160; </div>
+<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160; </div>
+<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> F&gt;</div>
+<div class="line"><a name="l00907"></a><span class="lineno"><a class="line" href="classdrain_1_1Flags2.html">  907</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1Flags2.html">Flags2</a> : <span class="keyword">public</span> F {</div>
+<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160; </div>
+<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160; </div>
+<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    <span class="keyword">typedef</span> F fbase_t;</div>
+<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> fbase_t::value_t value_t;</div>
+<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;    <span class="keyword">typedef</span> <span class="keyword">typename</span> fbase_t::dict_t   dict_t;</div>
+<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160; </div>
+<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160; </div>
+<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;    <span class="keyword">const</span> dict_t &amp; getDict()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;        <span class="keywordflow">return</span> dict;</div>
+<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;    };</div>
 <div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160; </div>
-<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00925"></a><span class="lineno"><a class="line" href="classdrain_1_1Flags2.html#a778a76a521ee2bf3f7fadca1f5feeadc">  925</a></span>&#160;    <a class="code" href="classdrain_1_1Flags2.html#a778a76a521ee2bf3f7fadca1f5feeadc">Flags2</a>(){</div>
-<div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160;    };</div>
-<div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160; </div>
-<div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160; </div>
-<div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00935"></a><span class="lineno"><a class="line" href="classdrain_1_1Flags2.html#a570c063747ceda6dc6248ce2c9a3f675">  935</a></span>&#160;    <a class="code" href="classdrain_1_1Flags2.html#a570c063747ceda6dc6248ce2c9a3f675">Flags2</a>(std::initializer_list&lt;typename dict_t::entry_t&gt; list) : dict(list){</div>
-<div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;    };</div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;    dict_t &amp; getDict(){</div>
+<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;        <span class="keywordflow">return</span> dict;</div>
+<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;    };</div>
+<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160; </div>
+<div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160; </div>
+<div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160; </div>
+<div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00933"></a><span class="lineno"><a class="line" href="classdrain_1_1Flags2.html#a778a76a521ee2bf3f7fadca1f5feeadc">  933</a></span>&#160;    <a class="code" href="classdrain_1_1Flags2.html#a778a76a521ee2bf3f7fadca1f5feeadc">Flags2</a>(){</div>
+<div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;    };</div>
+<div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160; </div>
 <div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160; </div>
-<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;    <a class="code" href="classdrain_1_1Flags2.html#a778a76a521ee2bf3f7fadca1f5feeadc">Flags2</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1Flags2.html">Flags2&lt;F&gt;</a> &amp; flags) : dict(flags.dict){</div>
-<div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;    }</div>
-<div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160; </div>
-<div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160;    Flags2&lt;F&gt; &amp; operator=(<span class="keyword">const</span> T &amp; v){</div>
-<div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160;        this-&gt;set(v);</div>
-<div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;    }</div>
-<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160; </div>
-<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160; </div>
-<div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;    dict_t dict;</div>
-<div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160; </div>
-<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160; </div>
-<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;};</div>
-<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160; </div>
+<div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00943"></a><span class="lineno"><a class="line" href="classdrain_1_1Flags2.html#a570c063747ceda6dc6248ce2c9a3f675">  943</a></span>&#160;    <a class="code" href="classdrain_1_1Flags2.html#a570c063747ceda6dc6248ce2c9a3f675">Flags2</a>(std::initializer_list&lt;typename dict_t::entry_t&gt; list) : dict(list){</div>
+<div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160;    };</div>
+<div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160; </div>
+<div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;    <a class="code" href="classdrain_1_1Flags2.html#a778a76a521ee2bf3f7fadca1f5feeadc">Flags2</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1Flags2.html">Flags2&lt;F&gt;</a> &amp; flags) : dict(flags.dict){</div>
+<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;    }</div>
+<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160; </div>
+<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;    Flags2&lt;F&gt; &amp; operator=(<span class="keyword">const</span> T &amp; v){</div>
+<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160;        this-&gt;set(v);</div>
+<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;    }</div>
 <div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160; </div>
-<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160; </div>
-<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;} <span class="comment">// drain::</span></div>
-<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160; </div>
+<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160; </div>
+<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;    dict_t dict;</div>
 <div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160; </div>
-<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160; </div>
+<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;};</div>
+<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160; </div>
+<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160; </div>
+<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160; </div>
+<div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;} <span class="comment">// drain::</span></div>
+<div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160; </div>
+<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160; </div>
+<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary&lt; key_t, ivalue_t &gt;</a></div></div>
 <div class="ttc" id="aclassdrain_1_1Dictionary_html_a78bdbe5403c7a9be36c922b6041cb954"><div class="ttname"><a href="classdrain_1_1Dictionary.html#a78bdbe5403c7a9be36c922b6041cb954">drain::Dictionary::getValue</a></div><div class="ttdeci">const V &amp; getValue(const K &amp;key) const</div><div class="ttdoc">Given a key, return the first value associated with it.</div><div class="ttdef"><b>Definition:</b> Dictionary.h:149</div></div>
 <div class="ttc" id="aclassdrain_1_1Dictionary_html_aae23ad73d13c217eda74c7e6c01c934c"><div class="ttname"><a href="classdrain_1_1Dictionary.html#aae23ad73d13c217eda74c7e6c01c934c">drain::Dictionary::getKey</a></div><div class="ttdeci">const K &amp; getKey(const V &amp;value) const</div><div class="ttdoc">Given a value, return the first key associated with it.</div><div class="ttdef"><b>Definition:</b> Dictionary.h:161</div></div>
 <div class="ttc" id="aclassdrain_1_1EnumFlagger_html"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a></div><div class="ttdoc">Flagger accepting values of enum type E.</div><div class="ttdef"><b>Definition:</b> Flags.h:763</div></div>
 <div class="ttc" id="aclassdrain_1_1EnumFlagger_html_a611e24d7f1766cfa1a8f5a652a9b494c"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html#a611e24d7f1766cfa1a8f5a652a9b494c">drain::EnumFlagger::getDict</a></div><div class="ttdeci">virtual const FlaggerBase&lt; value_t &gt;::dict_t &amp; getDict() const</div><div class="ttdoc">Returns the static dictionary created for this value_t .</div><div class="ttdef"><b>Definition:</b> Flags.h:794</div></div>
-<div class="ttc" id="aclassdrain_1_1EnumFlagger_html_a8760b97e03579776f26dbd920937bf3c"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html#a8760b97e03579776f26dbd920937bf3c">drain::EnumFlagger::operator=</a></div><div class="ttdeci">EnumFlagger&lt; F &gt; &amp; operator=(const T &amp;v)</div><div class="ttdef"><b>Definition:</b> Flags.h:827</div></div>
+<div class="ttc" id="aclassdrain_1_1EnumFlagger_html_a62b73eb4f51e58559181bd8d715682fe"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html#a62b73eb4f51e58559181bd8d715682fe">drain::EnumFlagger::operator=</a></div><div class="ttdeci">EnumFlagger&lt; F &gt; &amp; operator=(const EnumFlagger&lt; F &gt; &amp;flagger)</div><div class="ttdef"><b>Definition:</b> Flags.h:828</div></div>
 <div class="ttc" id="aclassdrain_1_1EnumFlagger_html_af9e814eec199193985df42fa55416257"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html#af9e814eec199193985df42fa55416257">drain::EnumFlagger::getValueNEW</a></div><div class="ttdeci">static ivalue_t getValueNEW(const std::string &amp;key)</div><div class="ttdoc">Return the integer value corresponding to a key.</div><div class="ttdef"><b>Definition:</b> Flags.h:807</div></div>
 <div class="ttc" id="aclassdrain_1_1FlagResolver_html"><div class="ttname"><a href="classdrain_1_1FlagResolver.html">drain::FlagResolver</a></div><div class="ttdoc">Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two-way mappi...</div><div class="ttdef"><b>Definition:</b> Flags.h:56</div></div>
 <div class="ttc" id="aclassdrain_1_1FlagResolver_html_a200a448afe485eb1ca3273066361b302"><div class="ttname"><a href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a></div><div class="ttdeci">drain::Dictionary&lt; key_t, ivalue_t &gt; dict_t</div><div class="ttdoc">&quot;Recommended&quot; dictionary type. All the methods are templates, however.</div><div class="ttdef"><b>Definition:</b> Flags.h:67</div></div>
@@ -908,14 +914,14 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1FlagResolver_html_ab183329c42ba3c3176c65a3f19adf665"><div class="ttname"><a href="classdrain_1_1FlagResolver.html#ab183329c42ba3c3176c65a3f19adf665">drain::FlagResolver::addEntry</a></div><div class="ttdeci">static ivalue_t addEntry(drain::Dictionary&lt; key_t, T &gt; &amp;dict, const key_t &amp;key, ivalue_t i=0)</div><div class="ttdoc">Add a new entry in the dictionary.</div></div>
 <div class="ttc" id="aclassdrain_1_1FlagResolver_html_ab3f37d95a57938eb88925991f08f6295"><div class="ttname"><a href="classdrain_1_1FlagResolver.html#ab3f37d95a57938eb88925991f08f6295">drain::FlagResolver::getFreeBit</a></div><div class="ttdeci">static ivalue_t getFreeBit(const drain::Dictionary&lt; key_t, T &gt; &amp;dict)</div><div class="ttdoc">Return an interger (bit vector) with a new, previously unused value.</div><div class="ttdef"><b>Definition:</b> Flags.h:127</div></div>
 <div class="ttc" id="aclassdrain_1_1FlagResolver_html_ac4d4c65c850179349aa03cb4d0e319fc"><div class="ttname"><a href="classdrain_1_1FlagResolver.html#ac4d4c65c850179349aa03cb4d0e319fc">drain::FlagResolver::getKeys</a></div><div class="ttdeci">static std::string getKeys(const drain::Dictionary&lt; key_t, T &gt; &amp;dict, ivalue_t, char separator=',')</div><div class="ttdoc">Given an integer, retrieves dictionary keys corresponding to each index of set bits.</div><div class="ttdef"><b>Definition:</b> Flags.h:262</div></div>
-<div class="ttc" id="aclassdrain_1_1Flagger2_html"><div class="ttname"><a href="classdrain_1_1Flagger2.html">drain::Flagger2</a></div><div class="ttdoc">Flagger with referenced/external dictionary accepting values of (integer) type T.</div><div class="ttdef"><b>Definition:</b> Flags.h:855</div></div>
+<div class="ttc" id="aclassdrain_1_1Flagger2_html"><div class="ttname"><a href="classdrain_1_1Flagger2.html">drain::Flagger2</a></div><div class="ttdoc">Flagger with referenced/external dictionary accepting values of (integer) type T.</div><div class="ttdef"><b>Definition:</b> Flags.h:863</div></div>
 <div class="ttc" id="aclassdrain_1_1FlaggerBase_html"><div class="ttname"><a href="classdrain_1_1FlaggerBase.html">drain::FlaggerBase</a></div><div class="ttdef"><b>Definition:</b> Flags.h:354</div></div>
 <div class="ttc" id="aclassdrain_1_1FlaggerBase_html_a1f17bc6fb1aef8b6ba2792d04ea7b147"><div class="ttname"><a href="classdrain_1_1FlaggerBase.html#a1f17bc6fb1aef8b6ba2792d04ea7b147">drain::FlaggerBase::FlaggerBase</a></div><div class="ttdeci">FlaggerBase(dict_value_t &amp;v)</div><div class="ttdoc">Own value will be unused (and invisible).</div><div class="ttdef"><b>Definition:</b> Flags.h:385</div></div>
 <div class="ttc" id="aclassdrain_1_1FlaggerBase_html_a2464e898adb1b0151f22935dfedde020"><div class="ttname"><a href="classdrain_1_1FlaggerBase.html#a2464e898adb1b0151f22935dfedde020">drain::FlaggerBase::str</a></div><div class="ttdeci">virtual const key_t &amp; str() const =0</div><div class="ttdoc">String corresponding the current value. Returns empty, if not found.</div></div>
 <div class="ttc" id="aclassdrain_1_1FlaggerBase_html_a8567861d32115f178b4df8737df0003d"><div class="ttname"><a href="classdrain_1_1FlaggerBase.html#a8567861d32115f178b4df8737df0003d">drain::FlaggerBase::isSet</a></div><div class="ttdeci">bool isSet(dict_value_t x) const</div><div class="ttdoc">Checks if a given bit, or any of given bits, is set.</div><div class="ttdef"><b>Definition:</b> Flags.h:439</div></div>
-<div class="ttc" id="aclassdrain_1_1Flags2_html"><div class="ttname"><a href="classdrain_1_1Flags2.html">drain::Flags2</a></div><div class="ttdoc">Flagger with own dictionary, and accepting values of (integer) type T.</div><div class="ttdef"><b>Definition:</b> Flags.h:899</div></div>
-<div class="ttc" id="aclassdrain_1_1Flags2_html_a570c063747ceda6dc6248ce2c9a3f675"><div class="ttname"><a href="classdrain_1_1Flags2.html#a570c063747ceda6dc6248ce2c9a3f675">drain::Flags2::Flags2</a></div><div class="ttdeci">Flags2(std::initializer_list&lt; typename dict_t::entry_t &gt; list)</div><div class="ttdoc">Constructor for relatively short dictionaries.</div><div class="ttdef"><b>Definition:</b> Flags.h:935</div></div>
-<div class="ttc" id="aclassdrain_1_1Flags2_html_a778a76a521ee2bf3f7fadca1f5feeadc"><div class="ttname"><a href="classdrain_1_1Flags2.html#a778a76a521ee2bf3f7fadca1f5feeadc">drain::Flags2::Flags2</a></div><div class="ttdeci">Flags2()</div><div class="ttdef"><b>Definition:</b> Flags.h:925</div></div>
+<div class="ttc" id="aclassdrain_1_1Flags2_html"><div class="ttname"><a href="classdrain_1_1Flags2.html">drain::Flags2</a></div><div class="ttdoc">Flagger with own dictionary, and accepting values of (integer) type T.</div><div class="ttdef"><b>Definition:</b> Flags.h:907</div></div>
+<div class="ttc" id="aclassdrain_1_1Flags2_html_a570c063747ceda6dc6248ce2c9a3f675"><div class="ttname"><a href="classdrain_1_1Flags2.html#a570c063747ceda6dc6248ce2c9a3f675">drain::Flags2::Flags2</a></div><div class="ttdeci">Flags2(std::initializer_list&lt; typename dict_t::entry_t &gt; list)</div><div class="ttdoc">Constructor for relatively short dictionaries.</div><div class="ttdef"><b>Definition:</b> Flags.h:943</div></div>
+<div class="ttc" id="aclassdrain_1_1Flags2_html_a778a76a521ee2bf3f7fadca1f5feeadc"><div class="ttname"><a href="classdrain_1_1Flags2.html#a778a76a521ee2bf3f7fadca1f5feeadc">drain::Flags2::Flags2</a></div><div class="ttdeci">Flags2()</div><div class="ttdef"><b>Definition:</b> Flags.h:933</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:308</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:412</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Public, yet typically used &quot;internally&quot;, when TIMING=true.</div><div class="ttdef"><b>Definition:</b> Log.h:676</div></div>

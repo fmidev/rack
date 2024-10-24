@@ -82,6 +82,7 @@ protected:
 
 };
 
+DRAIN_TYPENAME(DistanceModelExponential);
 
 
 }

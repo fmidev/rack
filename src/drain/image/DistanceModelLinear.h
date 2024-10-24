@@ -35,6 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <math.h>
 
+#include <drain/Type.h>
+
 #include "DistanceModel.h"
 
 
@@ -78,11 +80,13 @@ protected:
 
 };
 
+DRAIN_TYPENAME(DistanceModelLinear);
 
+} // image::
 
+//DRAIN_TYPENAME(image::DistanceModelLinear);
 
-}
-}
+} // drain::
 	
 #endif /*DISTANCETRANSFORMOP_H_*/
 

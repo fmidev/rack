@@ -133,6 +133,8 @@ DistanceElement DistanceModelLinear::getElement(short dx, short dy, bool forward
 
 }
 
+DRAIN_TYPENAME_DEF(DistanceModelLinear);
 
 } // image::
+
 } // drain::

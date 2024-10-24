@@ -122,8 +122,11 @@ template&lt;typename ... T&gt; </td></tr>
 <tr class="memitem:a611e24d7f1766cfa1a8f5a652a9b494c"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classdrain_1_1FlaggerBase.html">FlaggerBase</a>&lt; value_t &gt;::dict_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1EnumFlagger.html#a611e24d7f1766cfa1a8f5a652a9b494c">getDict</a> () const</td></tr>
 <tr class="memdesc:a611e24d7f1766cfa1a8f5a652a9b494c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the static dictionary created for this <code>value_t</code> .  <a href="classdrain_1_1EnumFlagger.html#a611e24d7f1766cfa1a8f5a652a9b494c">More...</a><br /></td></tr>
 <tr class="separator:a611e24d7f1766cfa1a8f5a652a9b494c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8760b97e03579776f26dbd920937bf3c"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a8760b97e03579776f26dbd920937bf3c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt; F &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1EnumFlagger.html#a8760b97e03579776f26dbd920937bf3c">operator=</a> (const T &amp;v)</td></tr>
+<tr class="memitem:a62b73eb4f51e58559181bd8d715682fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt; F &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1EnumFlagger.html#a62b73eb4f51e58559181bd8d715682fe">operator=</a> (const <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt; F &gt; &amp;flagger)</td></tr>
+<tr class="separator:a62b73eb4f51e58559181bd8d715682fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8760b97e03579776f26dbd920937bf3c"><td class="memTemplParams" colspan="2"><a id="a8760b97e03579776f26dbd920937bf3c"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a8760b97e03579776f26dbd920937bf3c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt; F &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator=</b> (const T &amp;v)</td></tr>
 <tr class="separator:a8760b97e03579776f26dbd920937bf3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40e93938c89b3d3ec28eebcc7314a54a"><td class="memItemLeft" align="right" valign="top"><a id="a40e93938c89b3d3ec28eebcc7314a54a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator value_t</b> () const</td></tr>
@@ -212,8 +215,8 @@ class drain::EnumFlagger&lt; F &gt;</h3>
 
 </div>
 </div>
-<a id="a8760b97e03579776f26dbd920937bf3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8760b97e03579776f26dbd920937bf3c">&#9670;&nbsp;</a></span>operator=()</h2>
+<a id="a62b73eb4f51e58559181bd8d715682fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62b73eb4f51e58559181bd8d715682fe">&#9670;&nbsp;</a></span>operator=()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -224,8 +227,8 @@ class drain::EnumFlagger&lt; F &gt;</h3>
         <tr>
           <td class="memname"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt;F&gt;&amp; operator= </td>
           <td>(</td>
-          <td class="paramtype">const T &amp;&#160;</td>
-          <td class="paramname"><em>v</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt; F &gt; &amp;&#160;</td>
+          <td class="paramname"><em>flagger</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -236,7 +239,7 @@ class drain::EnumFlagger&lt; F &gt;</h3>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Dictionary throws except if key now found.
-</pre><p> static value_t getKeys(const value_t &amp; value){ return (value_t)EnumDict&lt;value_t&gt;::dict.getValue(key); }; </p>
+</pre><p> static value_t getKeys(const value_t &amp; value){ return (value_t)EnumDict&lt;value_t&gt;::dict.getValue(key); }; Consider handler through this-&gt;set(Flagger) ? Needs protected/private _set() (or assign()). </p>
 
 </div>
 </div>

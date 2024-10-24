@@ -64,11 +64,6 @@ class ProductConf {
 
 public:
 
-	enum OutputDataVerbosity {DEFAULT=0, INTERMEDIATE=1, DEBUG=2, QUALITY=4};
-	typedef drain::EnumFlagger<drain::MultiFlagger<OutputDataVerbosity> > OutputFlagger;
-	//LegendFlagger legend = LEFT | EMBED;
-	OutputFlagger outputDataVerbosityNEW = DEFAULT;
-
 	/// Default constructor.
 	inline
 	ProductConf(){};
@@ -96,12 +91,17 @@ public:
 	 */
 	ODIMPathElem appendResults;
 
-	/// Determines if also intermediate results (1) are saved. See --aStore
+	/// Determines if also intermediate results (1) are saved. See --store
+	enum OutputDataVerbosity {DEFAULT=0, INTERMEDIATE=1, DEBUG=2, QUALITY=4};
+	typedef drain::EnumFlagger<drain::MultiFlagger<OutputDataVerbosity> > OutputFlagger;
+	OutputFlagger outputDataVerbosity = DEFAULT;
+	//  int outputDataVerbosity = 0; // OLD
+	/// Determines if also intermediate results (1) are saved. See --store
 	/**
 	 *
 	 */
-	int outputDataVerbosity = 0;
 
+	// LegendFlagger legend = LEFT|RIGHT;
 
 
 };

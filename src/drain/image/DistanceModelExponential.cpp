@@ -130,9 +130,11 @@ DistanceElement DistanceModelExponential::getElement(short dx, short dy, bool fo
 
 }
 
+DRAIN_TYPENAME_DEF(DistanceModelExponential);
 
-}
-}
+} // image::
+
+} // drain::
 
 
 // Drain

@@ -216,7 +216,12 @@ public:
 	void setTopology(PIXEL_ADJACENCY topology){
 		pixelAdjacency.set(topology);
 		updateBean();
-		//pixelAdjacencyStr = pixelAdjacency.getDict().getKey(topology);
+	};
+
+	inline
+	void setTopology(const std::string & topology){
+		pixelAdjacency.set(topology);
+		updateBean();
 	};
 
 
@@ -225,8 +230,7 @@ public:
 	 *   Diagonal (dx+dy) and "chess knight" (2dx+dy or dx+2dy) values will be adjusted as well.
 	 *
 	 */
-	//virtual
-	//void createChain(DistanceNeighbourhood & chain, topol_t topology, bool forward=true) const;
+	// static
 	void createChain(DistanceNeighbourhood & chain, PIXEL_ADJACENCY topology = PIXEL_ADJACENCY::KNIGHT, bool forward=true) const;
 
 	inline

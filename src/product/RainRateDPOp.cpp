@@ -31,13 +31,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // Algorithm is based on the study made by Brandon Hickman from The University Of Helsinki
 
 
+#include "drain/TypeUtils.h"
 #include "drain/image/ImageFile.h"
 #include "drain/util/Fuzzy.h"
 #include "drain/util/FunctorPack.h"
+
 #include "data/ODIM.h"
 #include "data/Data.h"
 #include "data/QuantityMap.h"
-
 #include "radar/Geometry.h"
 #include "radar/Analysis.h"
 #include "radar/Precipitation.h"
@@ -56,7 +57,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-void RainRateDPOp::addDebugFuzzy(const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,
+void RainRateDPOp::computeFuzzyMembership(const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,
 		Data<PolarDst> & dstData) const {
 
 	getQuantityMap().setQuantityDefaults(dstData, "QIND", "C");
@@ -77,7 +78,7 @@ void RainRateDPOp::addDebugFuzzy(const PlainData<PolarSrc> & srcData, const drai
 
 }
 
-void RainRateDPOp::addDebugProduct(const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFtor,
+void RainRateDPOp::computeProduct(const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFtor,
 		 const SingleParamPrecip & rateFnc, DataSet<PolarDst> & dstProduct) const {
 
 	// const drain::Fuzzifier<double> & fuzzyFtor = fuzzyDBZheavy;
@@ -89,7 +90,7 @@ void RainRateDPOp::addDebugProduct(const PlainData<PolarSrc> & srcData, const dr
 	Data<PolarDst> & dstData = dstProduct.getData(debugQuantity);
 	// getQuantityMap().setQuantityDefaults(dstData, "RATE", "C");
 	// dstData.odim.quantity = "RATE";
-	setEncodingNEW(dstData, "RATE");
+	setEncodingNEW(dstData, "RATE", "S");
 	dstData.odim.quantity = debugQuantity;
 	dstData.copyGeometry(srcData);
 
@@ -99,6 +100,9 @@ void RainRateDPOp::addDebugProduct(const PlainData<PolarSrc> & srcData, const dr
 
 	double x;
 
+	typedef drain::typeLimiter<double> Limiter;
+	Limiter::value_t limit = drain::Type::call<Limiter>(dstData.data.getType());
+
 	drain::image::Image::const_iterator sit = srcData.data.begin();
 	drain::image::Image::iterator dit = dstData.data.begin();
 	drain::image::Image::iterator qit = dstQuality.data.begin();
@@ -107,7 +111,7 @@ void RainRateDPOp::addDebugProduct(const PlainData<PolarSrc> & srcData, const dr
 
 		if (srcData.odim.isValue(*sit)){
 			x = srcData.odim.scaleForward(*sit);
-			*dit = dstData.odim.scaleInverse(rateFnc.rainRate(x));
+			*dit = limit(dstData.odim.scaleInverse(rateFnc.rainRate(x)));
 			*qit = dstQuality.odim.scaleInverse(fuzzyFtor(x));
 		}
 		++sit;
@@ -118,14 +122,14 @@ void RainRateDPOp::addDebugProduct(const PlainData<PolarSrc> & srcData, const dr
 
 }
 
-void RainRateDPOp::addDebugProduct2(
+void RainRateDPOp::computeProduct2(
 		const PlainData<PolarSrc> & srcData1, const drain::Fuzzifier<double> & fuzzyFctor1,
 		const PlainData<PolarSrc> & srcData2, const drain::Fuzzifier<double> & fuzzyFctor2,
 		const DoubleParamPrecip & rateFnc, DataSet<PolarDst> & dstProduct) const {
 
 	const std::string debugQuantity = "RATE_" + srcData1.odim.quantity + "x" + srcData2.odim.quantity;
 	Data<PolarDst> & dstData = dstProduct.getData(debugQuantity);
-	setEncodingNEW(dstData, "RATE");
+	setEncodingNEW(dstData, "RATE", "S");
 	dstData.odim.quantity = debugQuantity;
 	dstData.copyGeometry(srcData1);
 
@@ -134,6 +138,8 @@ void RainRateDPOp::addDebugProduct2(
 	dstQuality.copyGeometry(srcData1);
 
 	double x1, x2;
+	typedef drain::typeLimiter<double> Limiter;
+	Limiter::value_t limit = drain::Type::call<Limiter>(dstData.data.getType());
 
 	drain::image::Image::const_iterator sit1 = srcData1.data.begin();
 	drain::image::Image::const_iterator sit2 = srcData2.data.begin();
@@ -145,7 +151,7 @@ void RainRateDPOp::addDebugProduct2(
 		if (srcData1.odim.isValue(*sit1) && srcData2.odim.isValue(*sit2)){
 			x1 = srcData1.odim.scaleForward(*sit1);
 			x2 = srcData2.odim.scaleForward(*sit2);
-			*dit = dstData.odim.scaleInverse(rateFnc.rainRate(x1, x2));
+			*dit = limit(dstData.odim.scaleInverse(rateFnc.rainRate(x1, x2)));
 			*qit = dstQuality.odim.scaleInverse(fuzzyFctor1(x1) * fuzzyFctor2(x2));
 		}
 		++sit1;
@@ -295,37 +301,39 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 
 	}
 
-
+	mout.attention("outputDataVerb: ", outputDataVerbosity); // , " ~ ", outputDataVerbosity);
 	// debugging
-	if (outputDataVerbosity > 0){
+	//if (outputDataVerbosity > 0){
+	if (outputDataVerbosity.isSet(OutputDataVerbosity::INTERMEDIATE) || outputDataVerbosity.isSet(OutputDataVerbosity::DEBUG)){
 
 		mout.warn("Writing debug data");
 
-		addDebugFuzzy(srcDBZH, thresholdDBZheavy, dstProduct.getData("fuzzy_dbz_heavy"));
-		addDebugFuzzy(srcDBZH, thresholdDBZhail,  dstProduct.getData("fuzzy_dbz_hail"));
-		addDebugFuzzy(srcZDR, thresholdZDR,      dstProduct.getData("fuzzy_zdr"));
-		addDebugFuzzy(srcKDP, thresholdKDP,      dstProduct.getData("fuzzy_kdp"));
-
-
-
 		if (useDBZH){
 			mout.special(RainRateOp::precipZrain);
-			addDebugProduct(srcDBZH, thresholdDBZheavyINV, RainRateOp::precipZrain, dstProduct);
+			computeFuzzyMembership(srcDBZH, thresholdDBZheavy, dstProduct.getData("fuzzy_dbz_heavy"));
+			computeFuzzyMembership(srcDBZH, thresholdDBZhail,  dstProduct.getData("fuzzy_dbz_hail"));
+			computeProduct(srcDBZH, thresholdDBZheavyINV, RainRateOp::precipZrain, dstProduct);
 		}
+
+		if (useDBZH && useZDR){
+			computeFuzzyMembership(srcZDR, thresholdZDR,      dstProduct.getData("fuzzy_zdr"));
+		}
+
 
 		if (useKDP){
 			mout.special(RainRateOp::precipKDP);
-			addDebugProduct(srcKDP, thresholdDBZhail, RainRateOp::precipKDP, dstProduct);
+			computeFuzzyMembership(srcKDP, thresholdKDP,      dstProduct.getData("fuzzy_kdp"));
+			computeProduct(srcKDP, thresholdKDP, RainRateOp::precipKDP, dstProduct);
 		}
 
 		if (useDBZH && useZDR){
 			mout.special(RainRateOp::precipZZDR);
-			addDebugProduct2(srcDBZH, thresholdDBZheavyINV, srcZDR, thresholdZDR, RainRateOp::precipZZDR, dstProduct);
+			computeProduct2(srcDBZH, thresholdDBZheavyINV, srcZDR, thresholdZDR, RainRateOp::precipZZDR, dstProduct);
 		}
 
 		if (useKDP && useZDR){
 			mout.special(RainRateOp::precipKDPZDR);
-			addDebugProduct2(srcKDP, thresholdKDP, srcZDR, thresholdZDR, RainRateOp::precipKDPZDR, dstProduct);
+			computeProduct2(srcKDP, thresholdKDP, srcZDR, thresholdZDR, RainRateOp::precipKDPZDR, dstProduct);
 		}
 
 

@@ -105,7 +105,8 @@ void GliderOp::applyOperator(const ImageOp & op, Image & tmp, const std::string 
 
 
 	/// Debugging: save intermediate images.
-	if (outputDataVerbosity >= 1){
+	//if (outputDataVerbosity >= 1){
+	if (outputDataVerbosity){ // bool (isSet())
 		PlainData<PolarDst> & dstFeature = dstProductAux.getQualityData(feature);  // consider direct instead of copy?
 		const QuantityMap & qm = getQuantityMap();
 		//dstFeature.odim.setQuantityDefaults("PROB");

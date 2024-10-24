@@ -70,10 +70,10 @@ public:
 		odim.quantity = "RATE";
 		odim.type = "S";
 
-		parameters.link("rhohv", rhohv = 0.85, "met");
 		parameters.link("dbz", dbzRange.tuple(), "heavy:hail").fillArray = true;
-		parameters.link("kdp", kdpRange.tuple(), "heavy").fillArray = true;
 		parameters.link("zdr", zdrRange.tuple(), "heavy").fillArray = true;
+		parameters.link("rhohv", rhohv = 0.85, "met");
+		parameters.link("kdp", kdpRange.tuple(), "heavy").fillArray = true;
 
 		// quantityMap.setQuantityDefaults(odim, "RATE", "S");
 		/*
@@ -122,15 +122,15 @@ public:
 
 protected:
 
-	void addDebugFuzzy(
+	void computeFuzzyMembership(
 			const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,
 			Data<PolarDst> & dstData) const;
 
-	void addDebugProduct(
+	void computeProduct(
 			const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,
 			const SingleParamPrecip & rateFnc, DataSet<PolarDst> & dstProduct) const;
 
-	void addDebugProduct2(
+	void computeProduct2(
 			const PlainData<PolarSrc> & srcData,  const drain::Fuzzifier<double> & fuzzyFctor,
 			const PlainData<PolarSrc> & srcData2, const drain::Fuzzifier<double> & fuzzyFctor2,
 			const DoubleParamPrecip & rateFnc, DataSet<PolarDst> & dstProduct) const;

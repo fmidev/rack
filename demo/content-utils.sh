@@ -73,11 +73,15 @@ function TEST(){
     
     # Save also txt file, pruning nosave-marked '~' objects. Note: source string causes binary mode?
     eval "$cmd -o -" > $TXTFILE.raw
-    fgrep '~' -v $TXTFILE.raw > $TXTFILE
-    #eval "$cmd -o - " | fgrep -v '~' > $TXTFILE
-    if [ $? != 0 ]; then
-	echo "Command failed..."
-	exit  1
+    if [ -s $TXTFILE.raw ]; then
+	fgrep '~' -v $TXTFILE.raw > $TXTFILE
+	if [ $? != 0 ]; then
+	    echo "Command failed..."
+	    exit  1
+	fi
+    else
+	# Move empty file...
+	mv $TXTFILE.raw $TXTFILE
     fi
     
 }
