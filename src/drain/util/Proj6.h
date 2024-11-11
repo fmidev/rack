@@ -57,7 +57,10 @@ class Projector {
 
 	static const SprinterLayout projDefLayout; // space-separated, =, no hypens  (" ","","=", "","");
 
+
 public:
+
+	static const std::string proj4version;
 
 	typedef drain::Dictionary<std::string,std::string> ProjDef;
 
@@ -93,20 +96,27 @@ public:
 
 	inline
 	Projector(PJ_CONTEXT *pjContext, const std::string & projDef = "", CRS_mode crs=ACCEPT_CRS) : pjContext(pjContext), pj(nullptr), epsg(0){
+
 		if (projDef.empty()){
+			// CONSIDER projeDef.empty() check in setProjection(projDef, crs); ?
 			projDefs = {{ORIG,""}, {MODIFIED,""}, {PROJ4,""}, {PROJ5,""}, {SIMPLE,""}};
 		}
 		else {
 			setProjection(projDef, crs);
 		}
+
 	}
 
+	// 	Moved to .cpp for version 6/7/8 problems (context_clone)
+	Projector(const Projector & pr);
+
+	/*
 	inline
 	Projector(const Projector & pr) :
 		pjContext(proj_context_clone(pr.pjContext)), // NEW 2024
 		// pjContext(nullptr), // for safety
 		// TODO: CLONE, in version 7.2.
-		// pjContext(proj_context_clone(pr.pjContext)), // TODO: flag for own CTX => destroy at end
+		 // TODO: flag for own CTX => destroy at end
 		pj(proj_clone(pjContext, pr.pj)),
 		// projDefDict(pr.projDefDict),
 		epsg(pr.epsg)
@@ -115,6 +125,7 @@ public:
 		//projDefs = {{ORIG,"*"}, {CHECKED,"**"}, {FINAL,"***"}, {INTERNAL,"****"}};
 		setProjection(pr.getProjDef(ORIG)); // imitate ?
 	}
+		*/
 
 	virtual inline
 	~Projector(){

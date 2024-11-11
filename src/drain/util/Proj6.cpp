@@ -40,12 +40,40 @@ namespace drain
 
 const SprinterLayout Projector::projDefLayout(" ","","=", "",""); // space-separated, =, no hypens
 
+const std::string Projector::proj4version = drain::StringBuilder<'.'>(PROJ_VERSION_NUMBER, PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH)
+
+
+Projector::Projector(const Projector & pr) :
+#if PROJ_VERSION_MAJOR == 6
+		pjContext(nullptr),
+		#else
+		pjContext(proj_context_clone(pr.pjContext)), // NEW 2024
+#endif
+
+	// pjContext(nullptr), // for safety
+	// TODO: CLONE, in version 7.2.
+	// TODO: flag for own CTX => destroy at end
+	/*
+	if (PROJ_AT_LEAST_VERSION(7,2,0)){
+	}
+	*/
+	// if (PROJ_AT_LEAST_VERSION(7,2,0)){} // ETC
+	pj(proj_clone(pjContext, pr.pj)),
+	// projDefDict(pr.projDefDict),
+	epsg(pr.epsg)
+{
+	// TODO
+	//projDefs = {{ORIG,"*"}, {CHECKED,"**"}, {FINAL,"***"}, {INTERNAL,"****"}};
+	setProjection(pr.getProjDef(ORIG)); // imitate ?
+}
+
 
 void Projector::setProjection(int epsg, CRS_mode crs){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.info("Setting epsg: ", epsg, ", expanding projDef");
+
 
 
 	std::stringstream sstr;
