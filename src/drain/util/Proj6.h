@@ -275,8 +275,10 @@ public:
 	virtual ~Proj6();
 
 
-	static
-	const std::string & getProjVersion();
+	static inline
+	const std::string & getProjVersion(){
+		return Projector::proj4version;
+	}
 
 	Projector src;
 	Projector dst;

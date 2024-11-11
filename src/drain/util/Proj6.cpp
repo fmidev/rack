@@ -40,7 +40,7 @@ namespace drain
 
 const SprinterLayout Projector::projDefLayout(" ","","=", "",""); // space-separated, =, no hypens
 
-const std::string Projector::proj4version = drain::StringBuilder<'.'>(PROJ_VERSION_NUMBER, PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
+const std::string Projector::proj4version = drain::StringBuilder<'.'>(PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
 
 
 
@@ -507,12 +507,14 @@ Proj6::~Proj6(){
 	proj_context_destroy(pjContext);
 }
 
+/*
 const std::string & Proj6::getProjVersion(){
 	const static PJ_INFO & pj_info = proj_info();// valgrind error
 	const static std::string version(pj_info.version);
 	//const static std::string version(proj_info().version);
 	return version;
 }
+*/
 
 
 void Proj6::setMapping(bool lenient){
