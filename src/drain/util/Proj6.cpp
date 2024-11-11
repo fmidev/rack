@@ -490,17 +490,32 @@ int Projector::extractEPSG(const ProjDef & dict){
 
 
 
+#if PROJ_VERSION_MAJOR == 6
 
 
-Proj6::Proj6() : pjContext(proj_context_create()), proj(NULL) {
+Proj6::Proj6() : pjContext(nullptr), proj(nullptr) {
 
 }
 
-Proj6::Proj6(const Proj6 &p) : pjContext(proj_context_clone(p.pjContext)), proj(NULL) {
+Proj6::Proj6(const Proj6 &p) : pjContext(nullptr), proj(nullptr) {
 	//cerr << "Proj4(const Proj4 &p) - someone needs me" << endl;
 	setProjectionSrc(p.getProjectionSrc());
 	setProjectionDst(p.getProjectionDst());
 }
+
+#else
+
+Proj6::Proj6() : pjContext(proj_context_create()), proj(nullptr) {
+
+}
+
+Proj6::Proj6(const Proj6 &p) : pjContext(proj_context_clone(p.pjContext)), proj(nullptr) {
+	//cerr << "Proj4(const Proj4 &p) - someone needs me" << endl;
+	setProjectionSrc(p.getProjectionSrc());
+	setProjectionDst(p.getProjectionDst());
+}
+
+#endif
 
 Proj6::~Proj6(){
 	proj_destroy(proj);
