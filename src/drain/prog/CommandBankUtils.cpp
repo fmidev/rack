@@ -78,29 +78,30 @@ void CmdStatus::exec() const {
 
 	const drain::VariableMap & statusMap = ctx.getStatusMap();
 
+	/*
 	static
 	const SprinterLayout layout(",", "\n", "{:}", "");
-
-	/*
-	layout.arrayChars.separator = ',';
-	layout.mapChars.separator = '\n';
-	layout.pairChars.setLayout("{:}");
-	//layout.arrayChars.separator = '\n';
-	layout.stringChars.separator = '\0';
-	//layout.stringChars.prefix = '"';
-	//layout.stringChars.suffix = '"';
-	 */
 	Sprinter::mapToStream(std::cout, statusMap, layout, statusMap.getKeyList());
 	std::cout << '\n';
+	*/
 	//ostr << drain::sprinter(statusMap, layout) << '\n';
 
-	/*
-	for (drain::FlexVariableMap::const_iterator it = statusMap.begin(); it != statusMap.end(); ++it){
-		ostr << it->first << '=' << it->second << ' ';
-		it->second.typeInfo(ostr);
-		ostr << '\n';
+
+	for (const auto & entry: statusMap){
+		//ostr << it->first << '=' << it->second << ' ';
+		std::cout << entry.first << '=' << entry.second << ' ';
+		entry.second.typeInfo(std::cout);
+		std::cout << '[';
+			if (entry.second.isString())
+				std::cout << "string";
+			else
+				std::cout << drain::Type::call<drain::compactName>(entry.second.getType());
+				//std::cout << drain::Type::getTypeChar(entry.second.getType());
+			//if (size_t n = getElementCount() != 1)
+			std::cout << entry.second.getElementCount();
+			std::cout << '@' << entry.second.getElementSize() << ']';
+		std::cout << '\n';
 	}
-	*/
 
 	//ostr << "errorFlags: " << ctx.statusFlags << std::endl;
 

@@ -22,64 +22,92 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
-#ifndef CAPPI2_OP_H_
-#define CAPPI2_OP_H_
+ */
 
-//#include <algorithm>
+//#include <sstream>
+#include <ostream>
+#include <stdexcept>
 
+#include "TextStyleVT100.h"
 
-
-//#include "RackOp.h"
-#include "CumulativeProductOp.h"
-
-#include "radar/Beam.h"
-
-namespace rack
+namespace drain
 {
 
-using namespace drain::image;
 
+template <>
+const std::map<TextStyle::Colour,int> & TextStyleVT100::getCodeMap(){
 
-/// CAPPI and Pseudo-CAPPI: the constant altitude planar position indicator product
-/**
- *
- *
- */
-class CappiOp : public CumulativeProductOp {
-
-public:
-
-	/// Nominal height of horizontal intersection.
-	double altitude;
-
-	//
-	Beam beam;
-	double weightMin;
-
-	/// Pseudo-CAPPI: the constant altitude planar position indicator.
-	/**
-	 *  \param altitude - altitude of the horizontal intersection
-	 *  \param aboveSeaLevel - measure altitude from sea level (true) or radar site altitude (false)
-	 *  \param beamWidth - half-power width of Gaussian beam model
-	 *  \param weightMin - threshold [0...1] for normalized beam power interpreted as weight; set -1 to include "pseudo" areas
-	 *  \param accumulationMethod - define how dBZ and weight of each bin contributes to the product
-	 */
-	CappiOp(double altitude=1000.0, bool aboveSeaLevel=true, double beamWidth=1.0, double weightMin=-1.0, std::string accumulationMethod="WAVG:1:8:-40");
-
-	inline
-	CappiOp(const CappiOp &op) : CumulativeProductOp(op), altitude(1000.0), weightMin(-1.0) {
+	static
+	const std::map<TextStyle::Colour,int> map = {
+			{BLACK, 30},
+			{RED, 31},
+			{GREEN, 32},
+			{YELLOW, 33},
+			{BLUE, 34},
+			{PURPLE, 35},
+			{CYAN, 36},
+			{GRAY, 37},
+			/*{NO_COLOR, 39}, */
+			{WHITE, 97},
+			{DEFAULT_COLOR, 39}
+			/*
+			{BLACK_BG, 40},
+			{RED_BG, 41},
+			{GREEN_BG, 42},
+			{YELLOW_BG, 43},
+			{BLUE_BG, 44},
+			{MAGENTA_BG, 45},
+			{CYAN_BG, 46},
+			{WHITE_BG, 47},
+			{DEFAULT_BG, 49}
+			*/
 	};
 
-	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const;
+	return map;
+}
 
-};
+template <>
+const std::map<TextStyle::Style,int> & TextStyleVT100::getCodeMap(){
 
-}  // ::rack
+	static
+	const std::map<TextStyle::Style,int> map = {
+			{NO_STYLE, 0},
+			{ITALIC, 3},
+			{BOLD, 1},
+			{DIM, 2},
+			{REVERSE, 7}
+	};
 
-#endif
+	return map;
+}
+
+// enum Style {NO_STYLE=0, ITALIC=1, BOLD=2, DIM=4, REVERSE=8}; // DEFAULT,
+// enum Line {NO_LINE=0, UNDERLINE=1, DOUBLE_UNDERLINE=2, OVERLINE=4};
+
+template <>
+const std::map<TextStyle::Line,int> & TextStyleVT100::getCodeMap(){
+
+	static
+	const std::map<TextStyle::Line,int> map = {
+			{NO_LINE, 0},
+			{UNDERLINE, 4},
+			{DOUBLE_UNDERLINE, 21}, // Double underline
+			{OVERLINE, 9}
+	};
+
+	return map;
+}
+
+
+
+DRAIN_TYPENAME_DEF(TextStyleVT100);
+
+
+
+
+} // drain::

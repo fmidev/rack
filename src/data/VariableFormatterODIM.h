@@ -133,7 +133,8 @@ public:
 	bool formatPlace(std::ostream & ostr, const std::string & key, const T & value, const std::string & format = ""){
 
 		if (ODIM::locationKeys.count(key) > 0){
-			// ostr << drain::Time(value, "%Y%m%d").str(format);
+			// Recognize location/place, but still apply default formatter, to support numeric formatting like ${where:lon|%04.3f}
+			// drain::VariableFormatter<T>::formatVariable(key, value, format, ostr);
 			ostr << value;
 			return true;
 		}
@@ -159,7 +160,10 @@ public:
 				// mout.attention("formatting TIME");
 				return true;
 			}
-			if (formatPlace(ostr, key, value, format)){
+			else if (ODIM::locationKeys.count(key) > 0){  // skip formatPlace
+				// if (formatPlace(ostr, key, value, format)){
+				// Recognize location/place, but still apply default formatter, to support numeric formatting like ${where:lon|%04.3f}
+				drain::VariableFormatter<T>::formatVariable(key, value, format, ostr);
 				// mout.attention("formatting PLACE");
 				return true;
 			}
@@ -169,48 +173,9 @@ public:
 		return drain::VariableFormatter<T>::formatVariable(key, value, format, ostr); // basic/trad.
 	}
 
-	/*
-	static
-	bool formatValue(const T & value, const std::string & format, std::ostream & ostr) override {
-		d
-		rain::Logger mout(__FILE__, __FUNCTION__);
-		mout.warn("trying time format: ", key, " + ", format);
-
-		if (format.find('%') != std::string::npos){
-			// Time formatting (instead of C-stype printf formatting)
-			if (drain::StringTools::endsWith(key, "date")){
-				std::string s;
-				drain::MapTools::get(variables, key, s);
-				// mout.warn("time format: ", key, " -> ", s, '+', format); //  " -> ", t.str(), " => ", t.str(key));
-				ostr << drain::Time(s, "%Y%m%d").str(format);
-				return true;
-			}
-			else if (drain::StringTools::endsWith(key, "time")){
-				std::string s;
-				drain::MapTools::get(variables, key, s);
-				// mout.warn("time format: ", key, " -> ", s, '+', format); // , " -> ", t.str(), " => ", t.str(key));
-				ostr << drain::Time(s, "%H%M%S").str(format);
-				return true;
-			}
-		}
-
-		return drain::VariableFormatter<T>::formatValue(value, format, ostr); // basic/trad.
-		//return false;
-	}
-	*/
 
 };
 
-/*
-template <class T>
-const typename VariableFormatterODIM<T>::nameSet VariableFormatterODIM<T>::timeKeys = {"time", "starttime", "endtime"};
-
-template <class T>
-const typename VariableFormatterODIM<T>::nameSet VariableFormatterODIM<T>::dateKeys = {"date", "startdate", "enddate"};
-
-template <class T>
-const typename VariableFormatterODIM<T>::nameSet VariableFormatterODIM<T>::locationKeys = {"site", "src", "lat", "lon", "PLC", "NOD", "WMO"};
-*/
 
 }  // namespace rack
 

@@ -32,9 +32,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "9.2.2"
+#define __RACK_VERSION__ "9.3"
 
 /**
+ *   Version 9.3
+ *   - pCappi: Pseudo CAPPI as default (weightMin==-1 < 0 )
+ *
+ *   Version 9.2.3
+ *   - VariableFormatterODIM: bypassed formatPlace() to support numeric formatting like "%04.1f"
+ *
  *   Version 9.2.2
  *   - TextStyle: VT100 separately
  *

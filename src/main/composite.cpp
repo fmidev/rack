@@ -806,7 +806,9 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		}
 		*/
 
-		mout.attention("Calling: composite.extractNEW2 ", channels, " enc:", encoding);
+		//if (!encoding.empty()){
+		mout.attention("Calling: composite.extractNEW2() channels=", channels, " encoding:", encoding);
+		//}
 
 		composite.extractNEW2(dstProduct, channels, cropImage, encoding);
 
