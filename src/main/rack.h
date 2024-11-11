@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "9.3"
+#define __RACK_VERSION__ "9.3.1"
 
 /**
+ *   Version 9.3.1
+ *   - odim (version command): added "KILOMETERS"
+ *   - added Proj4 version check with #if for proj_context_clone()
+ *
  *   Version 9.3
  *   - pCappi: Pseudo CAPPI as default (weightMin==-1 < 0 )
  *

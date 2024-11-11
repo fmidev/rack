@@ -492,7 +492,6 @@ int Projector::extractEPSG(const ProjDef & dict){
 
 #if PROJ_VERSION_MAJOR == 6
 
-
 Proj6::Proj6() : pjContext(nullptr), proj(nullptr) {
 
 }
@@ -516,6 +515,7 @@ Proj6::Proj6(const Proj6 &p) : pjContext(proj_context_clone(p.pjContext)), proj(
 }
 
 #endif
+
 
 Proj6::~Proj6(){
 	proj_destroy(proj);

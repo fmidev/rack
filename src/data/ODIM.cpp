@@ -39,6 +39,7 @@ const drain::FlagResolver::dict_t drain::EnumDict<rack::ODIM::Version>::dict = {
 		{"2.2", rack::ODIM::ODIM_2_2 },
 		{"2.3", rack::ODIM::ODIM_2_3 },
 		{"2.4", rack::ODIM::ODIM_2_4 },
+		{"KILOMETRES", rack::ODIM::KILOMETRES },
 };
 
 
