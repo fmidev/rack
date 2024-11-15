@@ -526,7 +526,6 @@ Proj6::~Proj6(){
 const std::string & Proj6::getProjVersion(){
 	const static PJ_INFO & pj_info = proj_info();// valgrind error
 	const static std::string version(pj_info.version);
-	//const static std::string version(proj_info().version);
 	return version;
 }
 */
@@ -551,51 +550,6 @@ std::ostream & operator<<(std::ostream & ostr, const Proj6 &p){
 	return ostr;
 }
 
-/*
-short int Proj6::pickEpsgCodeOLD(const std::string & projDef, std::list<std::string> & projArgs){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	//std::list<std::string> projArgs;
-	drain::StringTools::split(projDef, projArgs, ' ');
-
-	typedef std::list<std::string>::iterator iter_t;
-
-	iter_t init = projArgs.end();
-
-	short epsg = 0;
-	// for (const std::string & arg: projArgs){
-	for (iter_t it=projArgs.begin(); it!=projArgs.end(); ++it){
-		std::string key;
-		std::string value;
-		StringTools::split2(*it, key, value, '=');
-		if (key == "+init"){
-			mout.debug("+init detected");
-
-			std::string k;
-			//short epsg;
-			StringTools::split2(value, k, epsg, ':');
-			if (k == "epsg"){
-				mout.debug("detected EPSG: ", epsg);
-				//break;
-				//return epsg;
-				init = it;
-			}
-			else {
-				mout.warn("+init detected,  but without EPSG setting, arg=", *it);
-			}
-
-		}
-	}
-
-	if (epsg > 0){
-		projArgs.erase(init);
-	}
-
-	return epsg;
-
-}
-*/
 DRAIN_TYPENAME_DEF(Proj6);
 
 }

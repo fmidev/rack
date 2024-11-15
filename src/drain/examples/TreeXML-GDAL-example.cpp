@@ -21,7 +21,7 @@
  */
 /*
 // ,TreeUtils
- REQUIRE: drain/{Caster,Castable,Log,FlexibleVariable,RegExp,Sprinter,String,TextStyle,Type,TypeUtils,Variable,VariableBase}.cpp
+ REQUIRE: drain/{Caster,Castable,Log,FlexibleVariable,RegExp,Sprinter,String,TextStyle,TextStyleVT100,Type,TypeUtils,Variable,VariableBase}.cpp
  REQUIRE: drain/util/{FileInfo,TreeXML}.cpp
  REQUIRE: drain/image/TreeXML-GDAL.cpp
 
@@ -45,6 +45,47 @@
 </GDALMetadata>
  */
 
+#include "drain/util/Flags.h"
+
+template <>
+const drain::EnumDict<drain::image::GDAL::tag_t>::dict_t drain::EnumDict<drain::image::GDAL::tag_t>::dict = {
+		{"ROOT", drain::image::GDAL::ROOT},
+		{"USER", drain::image::GDAL::USER}
+};
+
+class MyClassList : public drain::ClassListXML {
+
+public:
+
+	template <typename E>
+	inline  // drain::EnumFlagger<
+	void add2(const E & arg) {
+		insert(drain::EnumDict<E>::dict.getKey(arg));
+	};
+
+};
+
+
+enum Luokko {EKA=1, TOKA=2};
+
+template <>
+const drain::EnumDict<Luokko>::dict_t  drain::EnumDict<Luokko>::dict = {
+		{"EKA",  Luokko::EKA},
+		{"TOKA", Luokko::TOKA}
+};
+
+template <typename E>
+struct EnumWraponen  {
+
+	EnumWraponen(const E & value)  : value(value){};
+
+	const E value;
+
+	const std::string & str() const {
+		return drain::EnumDict<E>::dict.getKey(value);
+	}
+};
+
 
 int main(int argc, char **argv){
 
@@ -60,6 +101,16 @@ int main(int argc, char **argv){
 		return 1;
 	}
 	*/
+
+	//drain::TreeXML xml;
+	MyClassList list;
+	list.add("A", "B", "C");
+	list.add("Mika");
+	list.add2(drain::image::GDAL::ROOT);
+	list.add2(drain::image::GDAL::USER);
+
+	std::cerr << list << '\n';
+
 
 	drain::image::TreeGDAL gdal(drain::image::GDAL::ROOT);
 	gdal["first"](drain::image::GDAL::ITEM) = "setting";

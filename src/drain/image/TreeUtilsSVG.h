@@ -83,8 +83,7 @@ struct PanelConfSVG {
 
 	enum Legend {NO_LEGEND=0, LEFT=1, RIGHT=2, EMBED=4};
 	typedef drain::EnumFlagger<drain::MultiFlagger<Legend> > LegendFlagger;
-	//LegendFlagger legend = LEFT | EMBED;
-	LegendFlagger legend; // (PanelConfSVG::Legend::LEFT, PanelConfSVG::Legend::EMBED);
+	LegendFlagger legend;
 
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
 	// Current
@@ -109,11 +108,38 @@ struct PanelConfSVG {
 
 };
 
+enum AlignSVG {
+		// Horizontal
+		LEFT   = 0b00001,
+		RIGHT  = 0b00010,  // Originally for swapping  LEFT <-> RIGHT
+		CENTER = 0b00011,
+		HORZ   = 0b00011, // yes, same
+		// Vertical
+		TOP    = 0b00100,
+		BOTTOM = 0b01000,  // Originally for swapping
+		MIDDLE = 0b01100,
+		VERT   = 0b01100, // yes, same
+
+		REF    = 0b10000,
+		REF_LEFT   = (REF |   LEFT),
+		REF_CENTER = (REF | CENTER),
+		REF_RIGHT  = (REF |  RIGHT),
+		REF_TOP    = (REF |    TOP),
+		REF_MIDDLE = (REF | MIDDLE),
+		REF_BOTTOM = (REF | BOTTOM),
+
+		FLOAT = (HORZ|VERT) /** Replace with ALIGN **/
+
+};
+
+template <>
+const drain::EnumDict<AlignSVG>::dict_t  drain::EnumDict<AlignSVG>::dict;
 
 struct TreeUtilsSVG {
 
 
 	static PanelConfSVG defaultConf;
+
 
 	/*
 	enum Orientation {UNDEFINED_ORIENTATION=0, HORZ, VERT};
@@ -142,15 +168,66 @@ struct TreeUtilsSVG {
 	static
 	void getBoundingFrame(TreeSVG & group, drain::Frame2D<int> & frame, PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION);
 
+
 	/// Stack IMAGE and RECT elements within a frame (width x height) to a row or column
 	static
 	void alignSequence(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start={0,0},
 			PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION, PanelConfSVG::Direction direction=PanelConfSVG::UNDEFINED_DIRECTION);
 
+	static
+	void markTextAligned(const TreeSVG & parentGroup, TreeSVG & alignedGroup); // TODO: frame={0,0} for margins/offsets etc from border?
+
+	template <class ...TT>
+	static inline
+	void markTextAligned(const TreeSVG & parentGroup, TreeSVG & alignedGroup, const TT & ...args){
+		markTextAligned(parentGroup, alignedGroup);
+		alignedGroup->addClass(args...);
+	};
+	// TODO: frame={0,0} for margins/offsets etc from border?
+
+
 	/// Moves TEXT elems to desired positions, esp corners (LEFT|RIGHT), (TOP|BOTTOM)
 	static
 	void alignText(TreeSVG & group);
 
+
+	/*
+	/// Marker class for horizontally centered text alignment.
+	static
+	const std::string cls_CENTER;
+
+	/// Marker class for left-aligned text.
+	static
+	const std::string cls_LEFT;
+
+	/// Marker class for right-aligned text.
+	static
+	const std::string cls_RIGHT;
+
+	/// Marker class for vertical text alignment.
+	static
+	const std::string cls_TOP;
+
+	/// Marker class for vertically centered text alignment.
+	static
+	const std::string cls_MIDDLE;
+
+	/// Marker class for vertical text alignment.
+	static
+	const std::string cls_BOTTOM;
+	*/
+
+protected:
+
+	/*
+	/// Marker class for elements which be automatically aligned (stacked horizontally or vertically)
+	static
+	const std::string cls_FLOAT;
+	*/
+
+	/// Marker for...
+	static
+	const std::string attr_FRAME_REFERENCE;
 
 };
 

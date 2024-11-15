@@ -849,7 +849,7 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 
 void CommandBank::help(std::ostream & ostr){
 
-	ostr << "For help on a commands, type:\n";
+	ostr << "For help on commands, type:\n";
 	ostr << "  --help <command>\n";
 	ostr << '\n';
 

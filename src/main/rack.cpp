@@ -29,21 +29,20 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/Log.h>
 #include <cassert>
 
 #include <math.h>
 #include <iostream>
 
+#include <drain/Log.h>
 #include <drain/prog/CommandBankUtils.h>
 #include <drain/prog/CommandInstaller.h>
+
 
 #include "hi5/Hi5.h"
 #include "hi5/Hi5Read.h"
 #include "hi5/Hi5Write.h"
 
-//#include "commands.h"
-//#include "accumulation.h"
 #include "commands.h"
 #include "fileio.h"
 #include "andre.h"
@@ -54,6 +53,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "test.h"
 #include "images.h"
 #include "image-ops.h"
+#include "graphics.h"
 
 #include "rack.h"
 
@@ -107,6 +107,7 @@ int process(int argc, const char **argv) {
 
 	ImageModule   imageMod;
 	ImageOpModule imageOpMod;
+	GraphicsModule graphicsMod;
 
 	HiddenModule   hiddenMod;
 #ifndef RACK_DEBUG

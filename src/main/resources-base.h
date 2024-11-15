@@ -68,8 +68,6 @@ public:
 	 *   - path: dataset, data or both
 	 *   - quantity: (typically QIND), future option
 	 */
-	//DataSelector qualitySelector;
-	//ODIMPathElemMatcher qualityGroups;
 	ODIMPathElem::group_t qualityGroups;
 
 	// Accessed by CmdSampler

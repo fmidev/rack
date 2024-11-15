@@ -552,7 +552,7 @@ public:
 
 	/// String corresponding the current value. Returns empty, if not found.
 	virtual inline
-	const key_t & str() const {
+	const key_t & str() const  override {
 		//static const key_t SINGLE="SINGLE";
 		//return SINGLE;
 		return this->getDict().getKey(this->value);
@@ -654,7 +654,7 @@ public:
 
 	/// For exporting values.
 	virtual
-	const key_t & str() const {
+	const key_t & str() const  override  {
 		const dict_t & dict = this->getDict();
 		currentStr = FlagResolver::getKeys(dict, this->value, this->separator);
 		return currentStr;
@@ -740,6 +740,9 @@ std::ostream & operator<<(std::ostream & ostr, const drain::MultiFlagger<E> & fl
 
 
 
+/**
+ *  Template is needed to create a unique, shared (static) dict object for each template.
+ */
 template <class E>
 struct EnumDict {
 
@@ -747,7 +750,52 @@ struct EnumDict {
 
 	static
 	const dict_t dict;
+
+	/// Convenience
+	static inline
+	const std::string & str(const E & value){
+		return dict.getKey(value);
+	}
+	//return this->getDict().getKey(this->value);
+
 };
+
+
+#undef  DRAIN_ENUM_NAMESPACE
+#define DRAIN_ENUM_ENTRY(key) {#key, DRAIN_ENUM_NAMESPACE::key}
+#define DRAIN_ENUM_ENTRY2(key, nspace) {#key, nspace::key}
+
+/* EXAMPLE:
+template <>
+const drain::EnumDict<Alignment>::dict_t  drain::EnumDict<Alignment>::dict = {
+		DRAIN_ENUM_ENTRY(LEFT,       drain::image::Alignment),
+		DRAIN_ENUM_ENTRY(CENTER,     drain::image::Alignment),
+		DRAIN_ENUM_ENTRY(RIGHT,      drain::image::Alignment),
+};
+*/
+
+
+/* Perhaps useful!
+template <class E>
+class EnumKey {
+
+public:
+
+	inline
+	EnumKey(const E & value) : key(EnumDict<E>::dict.getKey(value)){
+	};
+
+	inline
+	operator const std::string & () const {
+		return key;
+	}
+
+protected:
+
+	const std::string & key;
+};
+*/
+
 
 /// Flagger accepting values of enum type E.
 /**
@@ -791,7 +839,7 @@ public:
 	 *  This is nevertheless handy in templated design, for example.
 	 */
 	virtual
-	const typename FlaggerBase<value_t>::dict_t & getDict() const {
+	const typename FlaggerBase<value_t>::dict_t & getDict() const override {
 		return EnumDict<value_t>::dict;
 	};
 
@@ -869,7 +917,7 @@ public:
 	typedef typename fbase_t::dict_t   dict_t;
 
 	virtual
-	const dict_t & getDict() const {
+	const dict_t & getDict() const override {
 		return dict;
 	};
 

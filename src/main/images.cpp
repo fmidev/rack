@@ -1015,7 +1015,7 @@ public:
 				mout.special("writing SVG legend");
 				TreeSVG svg;
 				palette.exportSVGLegend(svg, true);
-				TreeSVG & imageSvg = CmdBaseSVG::addImage(ctx, svg, filepath);
+				TreeSVG & imageSvg = RackSVG::addImage(ctx, svg, filepath);
 				imageSvg -> addClass("legend", "MARGINAL");
 				drain::Output ofstr(filepath.str());
 				NodeSVG::toStream(ofstr, svg);

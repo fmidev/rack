@@ -45,6 +45,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Sprinter.h>
 #include <drain/FlexibleVariable.h>
 
+#include "ClassXML.h"
+#include "Flags.h"
 #include "ReferenceMap.h"
 #include "TreeUnordered.h"
 
@@ -71,60 +73,6 @@ std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
 	return ostr;
 }
 
-/// Container for style classes. Essentially a set of strings, with space-separated output support.
-/**
- *
- */
-class ClassListXML : public std::set<std::string> {
-
-public:
-
-	template <typename ... TT>
-	inline
-	ClassListXML(const TT &... args){
-		add(args...);
-	};
-
-	template <typename ... TT>
-	inline
-	void add(const std::string & clsName, const TT &... args) {
-		if (!clsName.empty()){
-			insert(clsName);
-		}
-		add(args...);
-	};
-
-	inline
-	bool has(const std::string & clsName) const {
-		return (find(clsName) != end());
-	};
-
-	inline
-	void remove(const std::string & clsName) {
-		iterator it = find(clsName);
-		if (it != end()){
-			erase(it);
-		}
-	};
-
-	/// Uses spaces as separators.
-	static
-	const SprinterLayout layout; //  = {" "}; // , "\n", "=", ""};
-
-protected:
-
-	inline
-	void add(){};
-
-};
-
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const ClassListXML & cls){
-	// static const SprinterLayout layout = {" "}; // , "\n", "=", ""};
-	Sprinter::sequenceToStream(ostr, (const std::set<std::string> &)cls, ClassListXML::layout);
-	return ostr;
-}
 
 
 
@@ -443,8 +391,12 @@ public:
 	}
 	*/
 
+	/**
+	 *  \tparam V – string or enum type
+	 */
+	template <class V>
 	inline
-	bool hasClass(const std::string & cls) const {
+	bool hasClass(const V & cls) const {
 		return classList.has(cls);
 	}
 
@@ -648,15 +600,48 @@ public:
 
 	/// "Forward definition"
 	//   This could also be in TreeXMLutilities
+	/**
+	 *   \tparam V - XML tree
+	 *
+	 */
 	template <class V>
 	static
 	bool findByTags(const V & tree, const std::set<T> & tags, path_list_t & result, const path_t & path = path_t());
 
-	/// "Forward definition"
-	//   This could also be in TreeXMLutilities
+	/// Finds elements in an XML structure by class name.
+	/**
+	 *   \tparam V - XML tree
+	 *
+	 *	In a way, this is a forward definition – this could also be in TreeXMLutilities.
+	 *
+	 */
 	template <class V>
 	static
-	bool findByClass(const V & t, const std::string & tag, path_list_t & result, const path_t & path = path_t());
+	bool findByClass(const V & t, const std::string & cls, path_list_t & result, const path_t & path = path_t());
+
+	/// Finds elements in an XML structure by class name. Redirects to findByClass(t, std::string(cls),
+	/**
+	 *   \tparam V - XML tree
+	 *
+	 */
+	template <class V>
+	static inline
+	bool findByClass(const V & t, const char *cls, path_list_t & result, const path_t & path = path_t()){
+		return findByClass(t, std::string(cls), result, path);
+	}
+
+	/// Finds elements in an XML structure by class name supplied as an enumeration type.
+	/**
+	 *   \tparam V - XML tree
+	 *   \tparam C - enum type, for which a unique (static) EnumDict has been detected.
+	 *
+	 */
+	template <class V, class E>
+	static inline
+	bool findByClass(const V & t, const E & cls, path_list_t & result, const path_t & path = path_t()){
+		return findByClass(t, drain::EnumDict<E>::dict.getKey(cls), result, path);
+	}
+
 
 
 	template <class V>
@@ -905,11 +890,6 @@ bool NodeXML<N>::findByClass(const T & t, const std::string & cls, NodeXML<>::pa
 	if (t->classList.has(cls)){
 		result.push_back(path);
 	}
-	/*
-	else {
-		mout.warn("excluding: ", path, ", has no class=", cls, ", yet has: ", t->classList);
-	}
-	*/
 
 	for (const auto & entry: t){
 		// mout.warn(t->get("name", "<name>"), "... continuing to: ", path_t(path, entry.first));

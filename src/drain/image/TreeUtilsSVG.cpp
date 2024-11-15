@@ -96,7 +96,7 @@ void TreeUtilsSVG::getBoundingFrame(TreeSVG & group, Frame2D<int> & frame, Panel
 
 		const TreeSVG & elem = group(p);
 
-		if (!elem->hasClass("FLOAT")){
+		if (!elem->hasClass(AlignSVG::FLOAT)){
 			if (orientation == PanelConfSVG::HORZ){
 				frame.width  += elem->get("width");
 				frame.height  = std::max(frame.height, elem->get("height", 0));
@@ -114,7 +114,7 @@ void TreeUtilsSVG::getBoundingFrame(TreeSVG & group, Frame2D<int> & frame, Panel
 	for (const auto & entry : group.getChildren()){ //
 		const drain::image::TreeSVG & elem = entry.second;
 		if ((elem->getType() == svg::IMAGE) || (elem->getType() == svg::RECT)){
-			if (!elem->hasClass("FLOAT")){
+			if (!elem->hasClass(cls_FLOAT)){
 				if (orientation == PanelConfSVG::HORZ){
 					frame.width  += elem->get("width");
 					frame.height  = std::max(frame.height, elem->get("height", 0));
@@ -194,7 +194,7 @@ void TreeUtilsSVG::alignSequence(TreeSVG & group, const drain::Frame2D<int> & fr
 
 		NodeSVG::elem_t t = elem->getType();
 
-		if (elem->hasClass("FIXED"))
+		if (elem->hasClass("FIXED")) // currently not used...
 			continue;
 
 		// elem->addClass(FlagResolver::getKeys(drain::EnumDict<PanelConfSVG::Orientation>::dict, orientation, ' '));
@@ -235,7 +235,7 @@ void TreeUtilsSVG::alignSequence(TreeSVG & group, const drain::Frame2D<int> & fr
 			}
 
 
-			if (!elem->hasClass("FLOAT")){
+			if (!elem->hasClass(AlignSVG::FLOAT)){
 
 				if (direction==PanelConfSVG::INCR){
 					if (orientation==PanelConfSVG::HORZ)
@@ -274,6 +274,54 @@ void TreeUtilsSVG::alignSequence(TreeSVG & group, const drain::Frame2D<int> & fr
 
 }
 
+
+/// Marker for...
+const std::string TreeUtilsSVG::attr_FRAME_REFERENCE("frameref");
+
+/// Marker for...
+/*
+const std::string TreeUtilsSVG::cls_FLOAT("FLOAT");
+const std::string TreeUtilsSVG::cls_LEFT("LEFT");
+const std::string TreeUtilsSVG::cls_CENTER("CENTER");
+const std::string TreeUtilsSVG::cls_RIGHT("RIGHT");
+
+const std::string TreeUtilsSVG::cls_TOP("TOP");
+const std::string TreeUtilsSVG::cls_MIDDLE("MIDDLE");
+const std::string TreeUtilsSVG::cls_BOTTOM("BOTTOM");
+*/
+
+
+#define  DRAIN_ENUM_NAMESPACE drain::image::AlignSVG
+template <>
+const drain::EnumDict<AlignSVG>::dict_t  drain::EnumDict<AlignSVG>::dict = {
+		DRAIN_ENUM_ENTRY(LEFT),
+		DRAIN_ENUM_ENTRY(RIGHT),
+		DRAIN_ENUM_ENTRY(CENTER),
+		DRAIN_ENUM_ENTRY(TOP),
+		DRAIN_ENUM_ENTRY(BOTTOM),
+		DRAIN_ENUM_ENTRY(MIDDLE),
+		DRAIN_ENUM_ENTRY(REF_LEFT),
+		DRAIN_ENUM_ENTRY(REF_RIGHT),
+		DRAIN_ENUM_ENTRY(REF_CENTER),
+		DRAIN_ENUM_ENTRY(REF_TOP),
+		DRAIN_ENUM_ENTRY(REF_BOTTOM),
+		DRAIN_ENUM_ENTRY(REF_MIDDLE),
+		DRAIN_ENUM_ENTRY(FLOAT),
+};
+#undef  DRAIN_ENUM_NAMESPACE
+
+
+// Todo: add align classes
+// Todo: this is general, not only for text?
+void TreeUtilsSVG::markTextAligned(const TreeSVG & parentGroup, TreeSVG & alignedGroup){
+	alignedGroup->addClass(AlignSVG::FLOAT);
+	alignedGroup->set(attr_FRAME_REFERENCE, parentGroup->getId());
+
+	// alignedGroup->addClass(PanelConfSVG::INCR); // Just a test! Makes no sense here.
+	// alignedGroup->addClass(Align::REF_UP, Align::REF_MIDDLE);
+}
+
+
 void TreeUtilsSVG::alignText(TreeSVG & group){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -282,18 +330,25 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 
 	//mout.note("koe: ", group->getTag(), " name: ", group->get("name", "?"));
 
-	drain::image::NodeSVG::findByClass(group, "FLOAT", pathList);
+	// drain::image::NodeSVG::findByClass(group, cls_FLOAT, pathList);
+
+	drain::image::NodeSVG::findByClass(group, AlignSVG::FLOAT, pathList);
+
+	// mout.accept<LOG_WARNING>("yes accept: ", drain::EnumDict<AlignSVG>::dict.getKey(FLOAT));
 
 	const drain::Point2D<double> textOffset(5.0, 5.0);
 
 	for (const drain::image::NodeSVG::path_t & path: pathList){
+
+		// mout.reject<LOG_WARNING>("yes accept: ", path);
+
 
 		TreeSVG & elem =  group(path);
 		if (elem -> typeIs(NodeSVG::TEXT)){
 
 			// mout.note("realign: ", path);
 
-			const std::string ref = elem->get("ref", "");
+			const std::string ref = elem->get(attr_FRAME_REFERENCE, "");
 			if (ref.empty()){
 				mout.warn("'ref' attribute missing for TEXT.FLOAT elem ", elem->get("name",""), " at ", path);
 			}
@@ -314,22 +369,22 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 					// Book keeping by parent element for rows.
 					std::string locationLabel = "titles";
 
-					if (elem->hasClass("MIDDLE")){
+					if (elem->hasClass(AlignSVG::MIDDLE)){
 						locationLabel += "_M";
 					}
-					else if (elem->hasClass("BOTTOM")){
+					else if (elem->hasClass(AlignSVG::BOTTOM)){
 						locationLabel += "_B";
 					}
 					else { // Default: elem->hasClass("TOP")
 						locationLabel += "_T";
 					}
 
-					if (elem->hasClass("CENTER")){
+					if (elem->hasClass(AlignSVG::CENTER)){
 						elem->set("x", box.x + 0.5*box.width);
 						elem->setStyle("text-anchor", "middle");
 						locationLabel += "_C";
 					}
-					else if (elem->hasClass("RIGHT")){
+					else if (elem->hasClass(AlignSVG::RIGHT)){
 						elem->set("x",  box.x + box.width - textOffset.x);
 						elem->setStyle("text-anchor", "end");
 						locationLabel += "_R";
@@ -343,10 +398,10 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 					const int index = frame->get(locationLabel, 0);
 					const int fontSize = elem->style.get("font-size", 30); // what about "30em" ?
 
-					if (elem->hasClass("MIDDLE")){
+					if (elem->hasClass(AlignSVG::MIDDLE)){
 						elem->set("y", box.y + 0.75*box.height + textOffset.y + fontSize*index); // FIX: should be SUM of invidual row widths
 					}
-					else if (elem->hasClass("BOTTOM")){
+					else if (elem->hasClass(AlignSVG::BOTTOM)){
 						elem->set("y", box.y + box.height - textOffset.y - fontSize*index); // FIX: should be SUM of invidual row widths
 					}
 					else { // Default: elem->hasClass("TOP")

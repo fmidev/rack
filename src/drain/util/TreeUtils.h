@@ -55,39 +55,23 @@ namespace drain {
  *
  */
 class TreeUtils {
+
 public:
-
-
-
-
-
 
 	/// Deletes a node (leaf) and its subtrees.
 	/** If an ending slash is included, then groups but no datasets will be erased. (?)
 	 *
 	 */
+	/*
+	 * REPLACED by: void Tree<T>::erase(const path_t & path)
 	template <class TR>
 	static
 	void erase(TR & tree, const typename TR::path_t & path){ // RAISE/virtualize
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.unimplemented("consider: tree(", path, ").clear()");
-		/*
-		typename path_t::const_iterator it = path.end();
-		if (it == path.begin())
-			return;
-		else {
-			--it;
-			// Now 'it' points to the leaf
-			if (it == path.begin()) // path size = 1 (direct child path)
-				children.erase(*it);
-			else { // path size > 1
-				tree_t & parent = this->get(path.begin(), it);
-				parent.children.erase(*it);
-			}
-		}
-		*/
 	}
+	*/
 
 	/// Returns a list of the node names matching a pattern. The trailing '/' is NOT appended ie. should not be tested by RegExp.
 	/**
@@ -133,6 +117,7 @@ public:
 			dstTree.data = srcTree.data;
 
 	}
+
 
 
 	/// Traverse tree, visiting each node as a prefix operation.
@@ -288,6 +273,37 @@ public:
 
 };
 
+
+/// Default implementation of a tree visitor (concept) compatible TreeUtils::traverser()
+/**
+ *
+ *   Notice that the first argument (visitor) of TreeUtils::traverser() is templated,
+ *   hence does not have to be derived from this class.
+ *
+ */
+template <class T>
+class TreeVisitor {
+
+public:
+
+	inline
+	TreeVisitor(){};
+
+	virtual inline
+	~TreeVisitor(){};
+
+
+	virtual inline
+	int visitPrefix(T & tree, const typename T::path_t & path){
+		return 0;
+	}
+
+	virtual inline
+	int visitPostfix(T & tree, const typename T::path_t & path){
+		return 0;
+	}
+
+};
 
 
 /// Write a Windows INI file

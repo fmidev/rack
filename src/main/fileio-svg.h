@@ -52,47 +52,45 @@ namespace rack {
 /**
  *
  */
-class MetaDataCollectorSVG {
+class MetaDataCollectorSVG : public drain::TreeVisitor<TreeSVG> {
 
 public:
 
-	inline
-	MetaDataCollectorSVG() {
-	};
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path)  override;
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path)  override;
+
+protected:
 
 	typedef std::map<std::string, unsigned short> variableStat_t;
-
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path);
-
-	inline
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path);
 
 };
 
 /**
  *
  */
-class MetaDataPrunerSVG {
+class MetaDataPrunerSVG : public drain::TreeVisitor<TreeSVG> {
 
 public:
 
-	inline
-	MetaDataPrunerSVG() {
-	};
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+protected:
 
 	typedef std::map<std::string, unsigned short> variableStat_t;
 
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path);
-
-	inline
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path);
-
 };
 
+
+/// "Collects" titles from metadata. Invoked by drain::TreeUtils::traverse()
 /**
+ *   In tree traversal, maintains information on metadata.
  *
+ *   Invoked by, hence compatible with drain::TreeUtils::traverse()
  */
-class TitleCreatorSVG {
+class TitleCreatorSVG : public drain::TreeVisitor<TreeSVG> {
 
 public:
 
@@ -102,26 +100,40 @@ public:
 	TitleCreatorSVG() : mainHeaderHeight(50) {
 	};
 
-
-	inline
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & odimPath){
-		return 0;
-	}
-
-	inline
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & odimPath);
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & odimPath) override;
 
 };
 
 
 
+
 /// SVG panel utils
-class CmdBaseSVG : public drain::BasicCommand {
+class RackSVG { // : public drain::BasicCommand {
 
 
 public:
 
-	// void exec() const;
+	/// Group identifiers for IMAGE and RECT elements inside which TEXT elements will be aligned
+
+	/// Standard group name for images to be aligned
+	static
+	const std::string IMAGE_FRAME; //	"imageFrame"
+
+
+	// Semantics
+
+	/// Marker class for titles of default type.
+	static
+	const std::string GENERAL;
+
+	/// Marker class for vertical text alignment.
+	static
+	const std::string TIME;
+
+	/// Marker class for vertical text alignment.
+	static
+	const std::string LOCATION;
+
 
 	static
 	drain::image::TreeSVG & getMain(RackContext & ctx);
@@ -141,6 +153,10 @@ public:
 	/// Add external image from a file path.
 	static
 	drain::image::TreeSVG & addImage(RackContext & ctx, const drain::FilePath & filepath, const drain::Frame2D<double> & frame = {640,400});
+
+	/// Add rectangle
+	static
+	drain::image::TreeSVG & addRectangle(RackContext & ctx, const drain::Frame2D<double> & frame = {200,200});
 
 
 	/// Traverse groups, collecting info, recognizing common (shared) variables and pruning them recursively.

@@ -384,7 +384,7 @@ void CmdOutputFile::exec() const {
 
 	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT); // mostly shared (unneeded in image output, but fast anyway)
 
-	drain::image::TreeSVG & track = CmdBaseSVG::getMain(ctx);
+	drain::image::TreeSVG & track = RackSVG::getMain(ctx);
 
 	//track.data.set("id", STD_OUTPUT ? "stdout" : path.basename);
 	std::list<std::string> keys = {"what:lon", "here"};
@@ -426,7 +426,7 @@ void CmdOutputFile::exec() const {
 		//mout.pending<LOG_WARNING>(__FUNCTION__, " quantity2: ", ctx.getStatusMap().get("what:quantity","??"));
 
 		if (IMAGE_PNG){
-			CmdBaseSVG::addImage(ctx, srcImage, filepath); // path.str()
+			RackSVG::addImage(ctx, srcImage, filepath); // path.str()
 		}
 
 		mout.info("Retrieved image: ", srcImage, " [", srcImage.properties.get("what:quantity", ""), "]");
@@ -481,7 +481,9 @@ void CmdOutputFile::exec() const {
 		// track.data.set("prefix", path.basename);
 
 		mout.experimental("writing SVG file: ", path);
-		CmdBaseSVG::completeSVG(ctx, path.dir);
+		RackSVG::addRectangle(ctx, {120,500});
+
+		RackSVG::completeSVG(ctx, path.dir);
 
 		drain::Output ofstr(filepath);
 
@@ -673,151 +675,6 @@ void CmdOutputFile::exec() const {
 
 };
 
-
-/**
- *
- */
-/*
-void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, drain::VariableMap & variables,
-		const drain::Point2D<double> & upperLeft, const drain::image::Image & image, drain::BBox & bbox) const {
-
-	static const drain::StringMapper basename("${outputPrefix}${PREFIX}-${NOD}-${what:product}-${what:quantity}-${LABEL}", "[a-zA-Z0-9:_]+");
-
-	variables["LABEL"] = label;
-	std::string fn = basename.toStr(variables,'X') + ".png";
-
-	basename.toStream(std::cout, variables, 0); std::cout << '\n';
-	basename.toStream(std::cout, variables, 'X'); std::cout << '\n';
-	basename.toStream(std::cout, variables, -1); std::cout << '\n';
-
-
-	//drain::Point2D<double> upperRight(upperLeft.x + image.getWidth(), upperLeft.y + image.getWidth(), );
-	double w = image.getWidth();
-	double h = image.getHeight();
-
-	bbox.lowerLeft.x = std::min(bbox.lowerLeft.x,   upperLeft.x);
-	bbox.lowerLeft.y = std::max(bbox.lowerLeft.y,   upperLeft.y + h);
-
-	bbox.upperRight.x = std::max(bbox.upperRight.x, upperLeft.x + w);
-	bbox.upperRight.y = std::min(bbox.upperRight.y, upperLeft.y);
-
-
-
-	drain::image::TreeSVG & imageElem = group[label];
-	imageElem->setType(svg::IMAGE);
-	imageElem->set("x", upperLeft.x);
-	imageElem->set("y", upperLeft.y);
-	imageElem->set("width",  w);
-	imageElem->set("height", h);
-	//imageElem->set("xlink:href", fn);
-	imageElem->set("href", fn);
-	drain::image::FilePng::write(image, fn);
-
-	drain::image::TreeSVG & title = imageElem["title"];
-	title->setType(svg::TITLE);
-	title->ctext = label + " (experimental) ";
-
-	//title->setType(NodeSVG:);
-	drain::image::TreeSVG & comment = imageElem["comment"];
-	comment->setComment("label:" + label);
-
-	// comment->setType(NodeXML::COMM)
-
-}
-*/
-
-/**
- *
- *   \see Palette::exportSVGLegend()
-void CmdOutputPanel::exec() const {
-
-	RackContext & ctx = getContext<RackContext>();
-
-	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-	// mout.attention(ctx.getName());
-	// mout.warn("ctx.select=", ctx.select);
-
-
-	if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR)){
-		mout.warn("input failed, skipping");
-		return;
-	}
-
-	if (ctx.statusFlags.isSet(drain::StatusFlags::DATA_ERROR)){
-		mout.warn("data error, skipping");
-		return;
-	}
-
-	//TreeSVG &  // = svg["bg"];
-	TreeSVG svg(svg::SVG);
-	// TreeSVG svg; // (svg::SVG); REDO this, check copy constr!
-	svg->setType(svg::SVG);
-
-	TreeSVG & main = svg["main"];
-	main->setType(svg::GROUP);
-	// main->set("style", "fill:green");
-	// main->set("jimbo", 126);
-	// main->set("jimboz", true);
-
-	drain::VariableMap & variables = ctx.getStatusMap();
-	variables["PREFIX"] = "PANEL";
-
-
-	// drain::StringMapper basename("${PREFIX}-${NOD}-${what:product}-${what:quantity}");
-	// drain::BBox bboxAll;
-	drain::BBox bbox;
-	drain::Point2D<double> upperLeft(0,0);
-
-	//ctx.updateCurrentImage();
-	const drain::image::Image & src = ctx.getCurrentImage();
-	appendImage(main, "color", variables, upperLeft, src, bbox);
-	mout.attention("prev. BBOX: ", bbox);
-	// bboxAll.extend(bbox);
-
-	// variables["what:product"] = "prod";
-
-	const drain::image::Image & src2 = ctx.getCurrentGrayImage();
-	upperLeft.set(bbox.upperRight.x, 0);
-	appendImage(main, "gray", variables, upperLeft, src2, bbox);
-	// bboxAll.extend(bbox);
-	mout.attention("prev. BBOX: ", bbox);
-
-	// mout.attention("final BBOX: ", bboxAll);
-
-	svg->set("viewboxFOO", bbox.tuple());
-	svg->set("width",  +bbox.getWidth());
-	svg->set("height", -bbox.getHeight());
-
-	// svg->set("width",  src.getWidth());
-	// svg->set("height", src.getHeight());
-	ctx.getCurrentGrayImage();
-
-
-
-	if (layout.empty() || layout == "basic"){
-		//TreeSVG & radar = image["radar"];
-		//radar->set("foo", 123);
-	}
-	else {
-		mout.error("Unknown layout '", layout, "'");
-	}
-
-	const std::string s = filename.empty() ? layout+".svg" : filename;
-
-	if (!NodeSVG::fileInfo.checkPath(s)){ // .svg
-		mout.fail("suspicious extension for SVG file: ", s);
-		mout.advice("extensionRegexp: ", NodeSVG::fileInfo.extensionRegexp);
-	}
-
-	drain::Output ofstr(s);
-	mout.note("writing SVG file: '", s, "");
-	// ofstr << svg;
-	NodeSVG::toStream(ofstr, svg);
-
-
-}
-*/
 
 void CmdOutputTree::exec() const {
 

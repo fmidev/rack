@@ -67,6 +67,12 @@ FileInfo FilePng::fileInfo("png");
 FileInfo & FilePng::initFileInfo(FilePng::fileInfo); // ???
 
 
+/// TODO: allow plain header read?
+void readHeader(png_struct & png, png_info & info, ImageConf & conf){
+
+}
+
+
 void FilePng::read(ImageFrame & image, const std::string & path, int png_transforms ) {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
@@ -81,14 +87,13 @@ void FilePng::read(ImageFrame & image, const std::string & path, int png_transfo
 	}
 
 	// For checking magic code (signature)
-	//const unsigned int PNG_BYTES_TO_CHECK=4;
 	const size_t PNG_BYTES_TO_CHECK=4;
 	png_byte buf[PNG_BYTES_TO_CHECK];
 
 	/* Read in some of the signature bytes */
 	if (fread((void *)buf, size_t(1), PNG_BYTES_TO_CHECK, fp) != PNG_BYTES_TO_CHECK){
 		fclose(fp);
-		throw std::runtime_error(std::string("FilePng: suspicious size of file: ") + path);
+		throw std::runtime_error(std::string("FilePng: premature end, suspicious size of file: ") + path);
 	}
 
 	/* Compare the first PNG_BYTES_TO_CHECK bytes of the signature.
@@ -111,14 +116,6 @@ void FilePng::read(ImageFrame & image, const std::string & path, int png_transfo
 	    png_destroy_read_struct(&png_ptr,(png_infopp)NULL, (png_infopp)NULL);
 		throw std::runtime_error(std::string("FilePng: problem in allocating info memory for: ")+path);
 	}
-
-	/*
-	png_infop end_info = png_create_info_struct(png_ptr);
-	if (!end_info){
-	    png_destroy_read_struct(&png_ptr, &info_ptr,(png_infopp)NULL);
-	    throw std::runtime_error(std::string("FilePng: problem in allocating end_info memory for: ")+path);
-	}
-	*/
 
 	// This may be unstable. According to the documentation, if one uses the high-level interface png_read_png()
 	// one can only configure it with png_transforms flags (PNG_TRANSFORM_*)
