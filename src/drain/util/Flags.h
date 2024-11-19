@@ -762,8 +762,9 @@ struct EnumDict {
 
 
 #undef  DRAIN_ENUM_NAMESPACE
-#define DRAIN_ENUM_ENTRY(key) {#key, DRAIN_ENUM_NAMESPACE::key}
-#define DRAIN_ENUM_ENTRY2(key, nspace) {#key, nspace::key}
+#define DRAIN_ENUM_ENTRY_PRE(key) {#key, DRAIN_ENUM_NAMESPACE::key}
+#define DRAIN_ENUM_ENTRY(nspace, key) {#key, nspace::key}
+//#define DRAIN_ENUM_ENTRY2(key, nspace) {#key, nspace::key}
 
 /* EXAMPLE:
 template <>

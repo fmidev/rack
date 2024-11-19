@@ -38,74 +38,27 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/prog/CommandInstaller.h>
 
 #include <drain/util/FileInfo.h>
-//#include <drain/util/RegExp.h>
-// #include <drain/util/TreeHTML.h>
-
-
 #include "hi5/Hi5.h"
-
 #include "resources.h"
+
+// Notice: role of graphics.cpp and fileio-svg.cpp is currently equivalent
 
 namespace rack {
 
 
-/**
- *
+
+
+/*
+namespace rack {
+
+
+struct DataOrder { //: public drain::BeanLike {
+
+	enum Crit {DATA, ELANGLE, TIME}; // ALTITUDE
+	enum Oper {MIN, MAX};
+
+
  */
-class MetaDataCollectorSVG : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path)  override;
-
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path)  override;
-
-protected:
-
-	typedef std::map<std::string, unsigned short> variableStat_t;
-
-};
-
-/**
- *
- */
-class MetaDataPrunerSVG : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-
-protected:
-
-	typedef std::map<std::string, unsigned short> variableStat_t;
-
-};
-
-
-/// "Collects" titles from metadata. Invoked by drain::TreeUtils::traverse()
-/**
- *   In tree traversal, maintains information on metadata.
- *
- *   Invoked by, hence compatible with drain::TreeUtils::traverse()
- */
-class TitleCreatorSVG : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	int mainHeaderHeight;
-
-	inline
-	TitleCreatorSVG() : mainHeaderHeight(50) {
-	};
-
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & odimPath) override;
-
-};
-
-
-
 
 /// SVG panel utils
 class RackSVG { // : public drain::BasicCommand {
@@ -113,26 +66,17 @@ class RackSVG { // : public drain::BasicCommand {
 
 public:
 
-	/// Group identifiers for IMAGE and RECT elements inside which TEXT elements will be aligned
+	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
+	enum TitleClass {
+		GENERAL,   /** Default type */
+		TIME,      /** Date and time attributes */
+		LOCATION,  /** Place (coordinates, municipality) */
+		IMAGE_SET  /** "Hidden" marker for image groups */
+	};
 
 	/// Standard group name for images to be aligned
 	static
-	const std::string IMAGE_FRAME; //	"imageFrame"
-
-
-	// Semantics
-
-	/// Marker class for titles of default type.
-	static
-	const std::string GENERAL;
-
-	/// Marker class for vertical text alignment.
-	static
-	const std::string TIME;
-
-	/// Marker class for vertical text alignment.
-	static
-	const std::string LOCATION;
+	const std::string IMAGE_FRAME; // "imageFrame"
 
 
 	static
@@ -160,8 +104,8 @@ public:
 
 
 	/// Traverse groups, collecting info, recognizing common (shared) variables and pruning them recursively.
-//	static
-//	void generateTitles(RackContext & ctx);
+	//	static
+	//	void generateTitles(RackContext & ctx);
 
 	// Re-align elements etc
 	static
@@ -178,6 +122,9 @@ protected:
 	// void createTitleBox(TreeSVG & tree);
 
 };
+
+//template <>
+//const drain::EnumDict<RackSVG::TitleClass>::dict_t  drain::EnumDict<RackSVG::TitleClass>::dict;
 
 
 /// SVG panel

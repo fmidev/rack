@@ -34,10 +34,68 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_GRAPHICS
 #define RACK_GRAPHICS
 
-
 #include <drain/prog/CommandInstaller.h>
 
+// Notice: role of graphics.cpp and fileio-svg.cpp is currently equivalent
+
 namespace rack {
+
+
+/**
+ *
+ */
+class MetaDataCollectorSVG : public drain::TreeVisitor<TreeSVG> {
+
+public:
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path)  override;
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path)  override;
+
+protected:
+
+	typedef std::map<std::string, unsigned short> variableStat_t;
+
+};
+
+/**
+ *
+ */
+class MetaDataPrunerSVG : public drain::TreeVisitor<TreeSVG> {
+
+public:
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+protected:
+
+	typedef std::map<std::string, unsigned short> variableStat_t;
+
+};
+
+
+/// "Collects" titles from metadata. Invoked by drain::TreeUtils::traverse()
+/**
+ *   In tree traversal, maintains information on metadata.
+ *
+ *   Invoked by, hence compatible with drain::TreeUtils::traverse()
+ */
+class TitleCreatorSVG : public drain::TreeVisitor<TreeSVG> {
+
+public:
+
+	int mainHeaderHeight;
+
+	inline
+	TitleCreatorSVG() : mainHeaderHeight(50) {
+	};
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & odimPath) override;
+
+};
+
 
 struct GraphicsSection;
 

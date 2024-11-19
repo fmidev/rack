@@ -481,7 +481,8 @@ void CmdOutputFile::exec() const {
 		// track.data.set("prefix", path.basename);
 
 		mout.experimental("writing SVG file: ", path);
-		RackSVG::addRectangle(ctx, {120,500});
+
+		//RackSVG::addRectangle(ctx, {120,500});
 
 		RackSVG::completeSVG(ctx, path.dir);
 

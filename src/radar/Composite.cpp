@@ -67,7 +67,7 @@ namespace rack
 {
 
 
-using namespace drain;
+//using namespace drain;
 
 Composite::FieldDict Composite::dict =  {
 		{"DATA", rack::Composite::FieldType::DATA},
@@ -501,7 +501,7 @@ void Composite::checkQuantity(const std::string & quantity){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	const KeySelector & qs = dataSelector.getQuantitySelector();
+	const drain::KeySelector & qs = dataSelector.getQuantitySelector();
 	if (qs.test(quantity)){
 		mout.accept<LOG_INFO>("quantity [", quantity, "] ~ ", qs);
 	}

@@ -81,8 +81,9 @@ struct PanelConfSVG {
 	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
 	DirectionFlagger direction = INCR;
 
-	enum Legend {NO_LEGEND=0, LEFT=1, RIGHT=2, EMBED=4};
+	enum Legend {NO_LEGEND=0, LEFT=1, RIGHT=2, DUPLEX=LEFT|RIGHT, EMBED=4};
 	typedef drain::EnumFlagger<drain::MultiFlagger<Legend> > LegendFlagger;
+	//typedef drain::EnumFlagger<drain::SingleFlagger<Legend> > LegendFlagger;
 	LegendFlagger legend;
 
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
@@ -128,8 +129,8 @@ enum AlignSVG {
 		REF_MIDDLE = (REF | MIDDLE),
 		REF_BOTTOM = (REF | BOTTOM),
 
-		FLOAT = (HORZ|VERT) /** Replace with ALIGN **/
-
+		FLOAT = (HORZ|VERT), /** Replace with ALIGN **/
+		ALIGN = 0b11111
 };
 
 template <>
@@ -158,15 +159,16 @@ struct TreeUtilsSVG {
 
 	/// Returns the bounding box defined here as (x,y,width,height) of a single element.
 	static
-	bool getRect(TreeSVG & group, drain::Box<double> & rect);
+	bool getRect(const TreeSVG & group, drain::Box<double> & rect);
 
 	/// Computes the width and height for a bounding box  IMAGE and RECT elements.
 	/**
 	 *  The result is the minimal bounding box that covers the IMAGE and RECT elements aligned non-overlapping in a row (orientation \c HORZ ) or a column (orientation \c VERT ).
 	 *
+	 *  Future versions may also handle CIRCLE and TEXT (location)
 	 */
 	static
-	void getBoundingFrame(TreeSVG & group, drain::Frame2D<int> & frame, PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION);
+	void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION);
 
 
 	/// Stack IMAGE and RECT elements within a frame (width x height) to a row or column
@@ -175,12 +177,12 @@ struct TreeUtilsSVG {
 			PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION, PanelConfSVG::Direction direction=PanelConfSVG::UNDEFINED_DIRECTION);
 
 	static
-	void markTextAligned(const TreeSVG & parentGroup, TreeSVG & alignedGroup); // TODO: frame={0,0} for margins/offsets etc from border?
+	void markAligned(const TreeSVG & parentGroup, TreeSVG & alignedGroup); // TODO: frame={0,0} for margins/offsets etc from border?
 
 	template <class ...TT>
 	static inline
-	void markTextAligned(const TreeSVG & parentGroup, TreeSVG & alignedGroup, const TT & ...args){
-		markTextAligned(parentGroup, alignedGroup);
+	void markAligned(const TreeSVG & parentGroup, TreeSVG & alignedGroup, const TT & ...args){
+		markAligned(parentGroup, alignedGroup);
 		alignedGroup->addClass(args...);
 	};
 	// TODO: frame={0,0} for margins/offsets etc from border?
@@ -190,31 +192,18 @@ struct TreeUtilsSVG {
 	static
 	void alignText(TreeSVG & group);
 
+	static
+	void alignNEW(TreeSVG & group);
+
+
 
 	/*
 	/// Marker class for horizontally centered text alignment.
-	static
-	const std::string cls_CENTER;
-
 	/// Marker class for left-aligned text.
-	static
-	const std::string cls_LEFT;
-
 	/// Marker class for right-aligned text.
-	static
-	const std::string cls_RIGHT;
-
 	/// Marker class for vertical text alignment.
-	static
-	const std::string cls_TOP;
-
 	/// Marker class for vertically centered text alignment.
-	static
-	const std::string cls_MIDDLE;
-
 	/// Marker class for vertical text alignment.
-	static
-	const std::string cls_BOTTOM;
 	*/
 
 protected:
