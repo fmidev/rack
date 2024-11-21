@@ -299,6 +299,8 @@ public:
 
 };
 
+/// To be used like mout.warn(DRAIN_LOG_VAR(name))
+#define DRAIN_LOG_VAR(name) '#', #name, '=', name
 
 /// LogSourc e is the means for a function or any program segment to "connect" to a Log.
 /**

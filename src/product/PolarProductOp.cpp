@@ -83,7 +83,8 @@ PolarProductOp::PolarProductOp(const PolarProductOp & op) : VolumeOp<PolarODIM>(
 	//odim.importMap(op.odim);
 	//odim.copyStruct(op.odim, op, odim); // // may contain more /less links?
 	aboveSeaLevel = op.aboveSeaLevel;
-	dataSelector.setParameters(op.getParameters()); // should not be needed
+	//dataSelector.setParameters(op.getParameters()); // should not be needed
+	dataSelector.setParameters(op.dataSelector.getParameters()); // should not be needed
 	allowedEncoding.copyStruct(op.allowedEncoding, op.odim, odim);
 }
 

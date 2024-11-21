@@ -29,7 +29,6 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <product/EchoTopOp.h>
 #include "drain/util/Output.h" // DEBUGGING
 #include "drain/util/Fuzzy.h" // FuzzyTriangle
 
@@ -41,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "radar/PolarSmoother.h"
 
 #include "PolarSlidingWindowOp.h"
+#include "EchoTopOp.h"
 
 /* OLD STYLE: CLASS / 255.0 = QIND
 template <>
@@ -96,6 +96,9 @@ EchoTopOp::EchoTopOp(double threshold) :
 
 };
 
+EchoTopOp::EchoTopOp(const EchoTopOp & op) : PolarProductOp(op), threshold(op.threshold){
+	odim.product = "ETOP";
+}
 /*
 class Etop2WindowCore : public drain::image::WindowCoreBase {
 
@@ -540,6 +543,7 @@ void EchoTopOp::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSe
 // #endif
 
 	// MAIN -----------------------------------------------------------------
+	dstEchoTop.odim.product = "EchoTOP";
 
 	double groundDistance;
 
@@ -1106,11 +1110,16 @@ void EchoTopOp::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSe
 	}
 	*/
 
-	mout.accept<LOG_NOTICE>(" threshold=", threshold);
+	mout.accept<LOG_NOTICE>(DRAIN_LOG_VAR(threshold));
+
+	dstEchoTop.odim.product = "ETOP";
+	dstProduct.getWhat()["comment"] = "EchoTop2-test";
+	dstProduct.getWhat()["product"] = "ETOP"; // FIX
+	dstProduct.getWhat()["prodpar"] = this->threshold; // FIX
 
 	dstProduct.getWhere()["rscale"] = dstEchoTop.odim.rscale;
 	dstProduct.getWhere()["rscale10"] = dstEchoTop.odim.rscale+10;
-	dstProduct.getWhat()["comment"] = "EchoTop2-test";
+
 	//dstProduct.updateTree3(dstEchoTop.odim);
 
 	mout.special<LOG_NOTICE>("First Data: ", dstProduct.getFirstData());

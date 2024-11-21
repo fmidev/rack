@@ -45,6 +45,25 @@ namespace rack {
 using namespace drain::image;
 
 
+CumulativeProductOp::CumulativeProductOp(const std::string & name, const std::string &description, const std::string & accumulationMethod) :
+	PolarProductOp(name, description), accumulationMethod(accumulationMethod){
+	// , undetectValue(-40), relativeUndetectWeight(0.95) {  // , method(method), p(p), q(q)
+	// dataSelector.path = "^.*/data[0-9]+$";
+
+	// Empty values imply automagic
+	odim.type = "";
+	odim.scaling.scale = 0.0;
+	odim.area.height  = 0;
+	odim.area.width  = 0;
+	odim.rscale = 0.0;
+
+	// std::cerr << "# " << getName() << " CTR: accumulationMethod:" << accumulationMethod << '\n';
+};
+
+CumulativeProductOp::CumulativeProductOp(const CumulativeProductOp & op) : PolarProductOp(op), accumulationMethod(op.accumulationMethod){
+	// std::cerr << "# " << getName() << " COPY CTR: accumulationMethod:" << accumulationMethod << '\n';
+};
+
 
 void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSet<PolarDst> & dstProduct) const {
 
@@ -84,11 +103,16 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	RadarAccumulator<Accumulator,PolarODIM> accumulator;
 
 	/// Some product generators may have user defined accumulation methods.
+	mout.attention("accumulationMethod: ", accumulationMethod);
+	mout.warn(DRAIN_LOG_VAR(accumulationMethod));
+
 	accumulator.setMethod(drain::StringTools::replace(accumulationMethod, ":", ","));
 	accumulator.checkCompositingMethod(dstData.odim);
 	accumulator.accArray.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
 	accumulator.odim.rscale = dstData.odim.rscale;
 	// TODO: accumulator.setGeometry(dstData.odim);
+
+	mout.attention("accumulator got: ", accumulator.getMethod());
 
 	mout.debug((const Accumulator &) accumulator );
 

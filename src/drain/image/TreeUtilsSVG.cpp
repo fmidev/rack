@@ -88,6 +88,9 @@ bool TreeUtilsSVG::getRect(const TreeSVG & group, Box<double> & rect){
 
 }
 
+/** Stacks all the non-FLOAT elements horizontally or vertically, computing their collective width or height.
+ *
+ */
 void TreeUtilsSVG::getBoundingFrame(const TreeSVG & group, Frame2D<int> & frame, PanelConfSVG::Orientation orientation){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -100,7 +103,7 @@ void TreeUtilsSVG::getBoundingFrame(const TreeSVG & group, Frame2D<int> & frame,
 	}
 
 	NodeSVG::path_list_t paths;
-	// TODO / FIX: set of allowed tags, to get them in order of appearance.
+	// TODO / DONE(?): set of allowed tags, to get them in order of appearance.
 	NodeSVG::findByTags(group, {svg::IMAGE,svg::RECT} , paths);
 	// Consider also svg::SVG ? (eg. legends)
 	// Consider also svg::TXT (for x, y)
@@ -125,10 +128,8 @@ void TreeUtilsSVG::getBoundingFrame(const TreeSVG & group, Frame2D<int> & frame,
 		}
 	}
 
-	// group->set("data-frame", frame.tuple());
-
 	// if (mout.isDebug()){}
-
+	// group->set("data-frame", frame.tuple());
 	// bbox.set(0, 0, width, height);
 }
 
@@ -185,41 +186,20 @@ void TreeUtilsSVG::alignSequence(TreeSVG & group, const drain::Frame2D<int> & fr
 		if (elem->hasClass("FIXED")) // currently not used...
 			continue;
 
-		if (elem->hasClass("SPESSU")) // currently not used...
+		if (elem->hasClass(ALIGN)){ // currently not used...
+			drain::FlexibleVariable & host = elem->get(attr_FRAME_REFERENCE);
+			if (host.empty()){
+				elem->set("host", group->getId()); // rAise
+			}
 			continue;
+		}
 
-		// elem->addClass(FlagResolver::getKeys(drain::EnumDict<PanelConfSVG::Orientation>::dict, orientation, ' '));
-		// elem->addClass(PanelConfSVG::OrientationFlagger::getKeysNEW2(orientation, ' '));
 		// elem->addClass(orientation);
 
-
 		if ((t == svg::IMAGE) || (t == svg::RECT) || (t == svg::TEXT)){
-			// mout.attention("  elem ", elem->get("name", "?"), ": init pos", pos);
-
-			/*
-			if (elem->hasClass("header")){ // or "maxWidth"   or rect?
-				elem->set("width",  frame.width);
-			}
-			*/
-
-			/*
-			if (first && elem->hasClass("EXPERIMENTAL-MARGINAL")){
-
-				// TODO: see above; for clarity all pos.itions could be inited here
-				if (direction==PanelConfSVG::INCR){
-					if (orientation==PanelConfSVG::HORZ){
-						pos.x -= elem->get("width", 0);
-					}
-					else if (orientation==PanelConfSVG::VERT){
-						pos.y -= elem->get("height", 0);
-					}
-				}
-				first = false;
-			}
-			*/
 
 
-			if (!elem->hasClass(AlignSVG::FLOAT)){
+			if (!elem->hasClass(AlignSVG::FLOAT)){ // FLOAT = on top
 
 				if (direction==PanelConfSVG::INCR){
 					if (orientation==PanelConfSVG::HORZ)
@@ -241,7 +221,7 @@ void TreeUtilsSVG::alignSequence(TreeSVG & group, const drain::Frame2D<int> & fr
 
 			if (t == svg::TEXT){
 				elem->set("x", pos.x);
-				elem->set("y", pos.y + 20); // fonts
+				elem->set("y", pos.y + 20); // TODO fonts
 			}
 			else {
 				elem->set("x", pos.x);
@@ -263,10 +243,22 @@ void TreeUtilsSVG::alignSequence(TreeSVG & group, const drain::Frame2D<int> & fr
 const std::string TreeUtilsSVG::attr_FRAME_REFERENCE("data-frame-ref");
 
 
+#define ENUM_ENTRY(NSPACE, ARG1, ...) {#ARG1, NSPACE::ARG1}
+//, ENUM_ENTRY(NSPACE, __VA_ARGS__)
+#define _ARG2(_0, _1, _2, ...) _2
+#define NARG2(...) _ARG2(__VA_ARGS__, 2, 1, 0)
+
+//#define MAP_ENTRY(NSPACE, ARG1, ...) ({#ARG1, NSPACE::ARG1}, ENUM_ENTRY(NSPACE, ...) )
+
+std::map<std::string,int> m = {
+		{"mika", 1}
+};
 
 // #define  DRAIN_ENUM_NAMESPACE drain::image::AlignSVG
 template <>
 const drain::EnumDict<AlignSVG>::dict_t  drain::EnumDict<AlignSVG>::dict = {
+		//ENUM_ENTRY(drain::image::AlignSVG, PANEL),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, ALIGN_GROUP),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
@@ -279,20 +271,18 @@ const drain::EnumDict<AlignSVG>::dict_t  drain::EnumDict<AlignSVG>::dict = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, REF_TOP),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, REF_BOTTOM),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, REF_MIDDLE),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, FLOAT),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, ALIGN),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, FLOAT), // (probably deprecating)
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, ALIGN), // (probably deprecating)
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, ANCHOR), // (probably deprecating)
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RELATIVE), // (probably deprecating)
 };
 // #undef  DRAIN_ENUM_NAMESPACE
 
 
-// Todo: add align classes
-// Todo: this is general, not only for text?
-void TreeUtilsSVG::markAligned(const TreeSVG & parentGroup, TreeSVG & alignedGroup){
-	alignedGroup->addClass(AlignSVG::FLOAT);
-	alignedGroup->set(attr_FRAME_REFERENCE, parentGroup->getId());
-
-	// alignedGroup->addClass(PanelConfSVG::INCR); // Just a test! Makes no sense here.
-	// alignedGroup->addClass(Align::REF_UP, Align::REF_MIDDLE);
+void TreeUtilsSVG::markAligned(const TreeSVG & elem, TreeSVG & alignedElem){
+	alignedElem->addClass(AlignSVG::FLOAT);
+	alignedElem->addClass(AlignSVG::ALIGN);
+	alignedElem->set(attr_FRAME_REFERENCE, elem->getId());
 }
 
 
@@ -403,13 +393,15 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 }
 
 
+//
+/**  Retrieves all the elements of ALIGN class and (re)set their positions.
+ *
+ */
 void TreeUtilsSVG::alignNEW(TreeSVG & group){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	drain::image::NodeSVG::path_list_t pathList;
-
-	//drain::image::NodeSVG::findByClass(group, AlignSVG::FLOAT, pathList);
 	drain::image::NodeSVG::findByClass(group, ALIGN, pathList);
 
 	// mout.accept<LOG_WARNING>("yes accept: ", drain::EnumDict<AlignSVG>::dict.getKey(FLOAT));
@@ -447,7 +439,7 @@ void TreeUtilsSVG::alignNEW(TreeSVG & group){
 
 		drain::image::NodeSVG::path_t p;
 
-		if (NodeSVG::findById(group, refID, p)){
+		if (NodeSVG::findById(group, refID, p)){ // maybe slow
 
 			TreeSVG & frame = group(p);
 			Box<double> frameBox;
@@ -526,8 +518,150 @@ void TreeUtilsSVG::alignNEW(TreeSVG & group){
 
 				elem->set("x", pos.x);
 				elem->set("y", pos.y);
-				elem->clearClasses();
-				elem->addClass("SPESSU");
+				// if (elem->hasClass(ALIGN))...
+				// elem->clearClasses();
+				elem->addClass(ALIGN);
+			}
+			else {
+				mout.reject("Could compute frame dimensions of <", frame->getTag(), ".. > id='", refID, "'");
+			}
+		}
+		else {
+			mout.reject("Could not find reference (frame) element with id='", refID, "' for <", elem->getTag(), ".. > named ", elem->get("name",""), " at ", path);
+		}
+
+	}
+
+}
+
+//
+/**  Retrieves all the elements of ALIGN class and (re)set their positions.
+ *
+ */
+void alignFOO_NEW(TreeSVG & group){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	drain::image::NodeSVG::path_list_t pathList;
+	drain::image::NodeSVG::findByClass(group, ALIGN, pathList);
+
+	// mout.accept<LOG_WARNING>("yes accept: ", drain::EnumDict<AlignSVG>::dict.getKey(FLOAT));
+
+	// const drain::Point2D<double> textOffset(5.0, 5.0);
+
+	for (const drain::image::NodeSVG::path_t & path: pathList){
+
+		mout.attention("Would like to align: ", path);
+
+		TreeSVG & elem =  group(path);
+
+		const std::string refID = elem->get(TreeUtilsSVG::attr_FRAME_REFERENCE, "");
+
+		if (refID.empty()){
+			mout.warn("Reference attribute '", TreeUtilsSVG::attr_FRAME_REFERENCE, "' missing for <", elem->getTag(), ".. > named ", elem->get("name",""), " at ", path);
+			continue;
+		}
+
+		const bool TEXT = elem->typeIs(NodeSVG::TEXT);
+
+		Box<double> box;
+		if ((!TEXT) && TreeUtilsSVG::getRect(elem, box)){
+			mout.attention("Computed box '", ((const drain::Point2D<double> &)box).tuple(), ' ', ((const drain::Frame2D<double> &)box).tuple(), "' of <", elem->getTag(), ".. > named ", elem->get("name",""), " at ", path);
+		}
+		else {
+			// mout.warn("Faild in computing box of <", elem->getTag(), ".. > named ", elem->get("name",""), " at ", path);
+			box.x = elem->get("x", 0.0);
+			box.y = elem->get("y", 0.0);
+			box.width  = 250;
+			box.height = 100;
+			mout.pending<LOG_WARNING>("Using box ", box, "for <", elem->getTag(), ".. > named ", elem->get("name",""), " at ", path);
+		}
+
+
+		drain::image::NodeSVG::path_t p;
+
+		if (NodeSVG::findById(group, refID, p)){ // maybe slow
+
+			TreeSVG & frame = group(p);
+			Box<double> frameBox;
+
+			if (TreeUtilsSVG::getRect(frame, frameBox)){
+				mout.accept<LOG_WARNING>("Frame <", frame->getTag(), ".. > id='", refID, "' for <", elem->getTag(), ".. > named ", elem->get("name",""), " at ", path);
+
+				Point2D<double> pos;
+
+				// "Main"
+
+				for (const auto & alignCls: {
+						REF_LEFT, REF_CENTER, REF_RIGHT, REF_TOP, REF_MIDDLE, REF_BOTTOM,
+						LEFT, CENTER, RIGHT, TOP, MIDDLE, BOTTOM
+				}){
+
+					const std::string & clsLabel = drain::EnumDict<AlignSVG>::dict.getKey(alignCls);
+
+					if (elem->hasClass(clsLabel)){
+
+						switch(alignCls){
+						case REF_LEFT:
+							pos.x = frameBox.x;
+							// if (DEBUG) draw marker
+							break;
+						case REF_CENTER:
+							pos.x = frameBox.x + frameBox.width/2;
+							break;
+						case REF_RIGHT:
+							pos.x = frameBox.x + frameBox.width;
+							break;
+						case REF_TOP:
+							pos.y = frameBox.y;
+							break;
+						case REF_MIDDLE:
+							pos.y = frameBox.y + frameBox.height/2;
+							break;
+						case REF_BOTTOM:
+							pos.y = frameBox.y + frameBox.height;
+							break;
+							// ------------------------------------------------
+						case LEFT:
+							//pos.x = box.x;
+							if (TEXT){
+
+							}
+							break;
+						case CENTER:
+							pos.x -= box.width/2;
+							if (TEXT){
+							}
+							break;
+						case RIGHT:
+							pos.x -= box.width;
+							if (TEXT){
+							}
+							break;
+						case TOP:
+							//pos.y += 0;
+							break;
+						case MIDDLE:
+							pos.y -= box.height/2;
+							break;
+						case BOTTOM:
+							pos.y -= box.height;
+							break;
+						default:
+							mout.error("Something went wrong, unknown class '", clsLabel, "'", (int) alignCls);
+						}
+
+
+					}
+
+
+				}
+
+				elem->set("x", pos.x);
+				elem->set("y", pos.y);
+				// if (elem->hasClass(ALIGN))...
+				// elem->clearClasses();
+				elem->addClass(ALIGN);
 			}
 			else {
 				mout.reject("Could compute frame dimensions of <", frame->getTag(), ".. > id='", refID, "'");

@@ -109,28 +109,36 @@ struct PanelConfSVG {
 
 };
 
+/// SVG classes marking requests of relative horizontal and vertical alignment.
+/**
+ *
+ */
 enum AlignSVG {
-		// Horizontal
-		LEFT   = 0b00001,
-		RIGHT  = 0b00010,  // Originally for swapping  LEFT <-> RIGHT
-		CENTER = 0b00011,
-		HORZ   = 0b00011, // yes, same
-		// Vertical
-		TOP    = 0b00100,
-		BOTTOM = 0b01000,  // Originally for swapping
-		MIDDLE = 0b01100,
-		VERT   = 0b01100, // yes, same
+	ALIGN_GROUP  = 0b00000, /** Container (group) inside which elements will be aligned */
+	// Horizontal
+	LEFT   = 0b00001,
+	RIGHT  = 0b00010,  // Originally for swapping  LEFT <-> RIGHT
+	CENTER = 0b00011,
+	HORZ   = 0b00011, // yes, same
+	// Vertical
+	TOP    = 0b00100,
+	BOTTOM = 0b01000,  // Originally for swapping
+	MIDDLE = 0b01100,
+	VERT   = 0b01100, // yes, same
 
-		REF    = 0b10000,
-		REF_LEFT   = (REF |   LEFT),
-		REF_CENTER = (REF | CENTER),
-		REF_RIGHT  = (REF |  RIGHT),
-		REF_TOP    = (REF |    TOP),
-		REF_MIDDLE = (REF | MIDDLE),
-		REF_BOTTOM = (REF | BOTTOM),
+	REF    = 0b10000,
+	REF_LEFT   = (REF |   LEFT),
+	REF_CENTER = (REF | CENTER),
+	REF_RIGHT  = (REF |  RIGHT),
+	REF_TOP    = (REF |    TOP),
+	REF_MIDDLE = (REF | MIDDLE),
+	REF_BOTTOM = (REF | BOTTOM),
 
-		FLOAT = (HORZ|VERT), /** Replace with ALIGN **/
-		ALIGN = 0b11111
+	FLOAT = (HORZ|VERT), /** On-top. To be replaced **/
+	ALIGN    = 0b11111,
+	ANCHOR   = 0b100000,
+    RELATIVE = 0b100001,
+	PANEL    = 0b100010,
 };
 
 template <>
@@ -206,13 +214,7 @@ struct TreeUtilsSVG {
 	/// Marker class for vertical text alignment.
 	*/
 
-protected:
-
-	/*
-	/// Marker class for elements which be automatically aligned (stacked horizontally or vertically)
-	static
-	const std::string cls_FLOAT;
-	*/
+// protected:
 
 	/// Marker for...
 	static

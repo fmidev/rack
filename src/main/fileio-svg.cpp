@@ -90,7 +90,7 @@ const drain::EnumDict<RackSVG::TitleClass>::dict_t  drain::EnumDict<RackSVG::Tit
 		DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, GENERAL),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, LOCATION),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, TIME),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
+		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
 };
 
 /// Group identifiers for elements which be automatically aligned (stacked horizontally or vertically)
@@ -228,7 +228,7 @@ drain::image::TreeSVG & RackSVG::getCurrentGroup(RackContext & ctx){ // what abo
 
 	if (!track.hasChild(groupName)){  // ctx.svgPanelConf.
 		drain::image::TreeSVG & group = track[groupName](NodeSVG::GROUP);  // ctx.svgPanelConf.
-		group->addClass(IMAGE_SET);
+		group->addClass(drain::image::AlignSVG::ALIGN_GROUP);
 		group->setId(groupName);
 		group->set("debug", groupName); // debug
 		// mout.accept<LOG_WARNING>("added group: '", groupName, "' <= ", groupMapper);
@@ -238,36 +238,86 @@ drain::image::TreeSVG & RackSVG::getCurrentGroup(RackContext & ctx){ // what abo
 
 }
 
+drain::image::TreeSVG & RackSVG::getPanel(RackContext & ctx, const drain::FilePath & filepath){
+
+	// For each image an own group is created (for clarity, to contain also title TEXT's etc)
+	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
+	drain::image::TreeSVG & group = getCurrentGroup(ctx)[name]; // (NodeSVG::GROUP);
+
+	if (group->isUndefined()){
+		group->setType(NodeSVG::GROUP);
+		group->addClass(drain::image::AlignSVG::PANEL);
+		group->addClass(IMAGE_FRAME); // ? deprecating, above ANCHOR replaces
+
+		/*
+		drain::image::TreeSVG & rect = group["rect"](NodeSVG::RECT);
+		rect->addClass(RackSVG::IMAGE_FRAME); // perhaps deprecating, above ANCHOR replaces
+		rect->addClass(drain::image::AlignSVG::RELATIVE); // FLOAT
+		rect->set("width",  160); // debug
+		rect->set("height", 100); // debug
+		rect->set("fill", "none"); // just to make sure...
+		rect->set("border-style", "dotted");
+		// drain::image::TreeUtilsSVG::markAligned(image, rect); // perhaps deprecating, above ANCHOR replaces
+		*/
+	}
+
+	return group;
+
+}
 
 drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	// For each image an own group is created (for clarity, to contain also title TEXT's etc)
+	/*
 	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
 	drain::image::TreeSVG & group = getCurrentGroup(ctx)[name](NodeSVG::GROUP);
 	group->addClass(IMAGE_FRAME);
+	*/
+	mout.attention("filepath:", filepath);
 
-	drain::image::TreeSVG & image = group["image"](NodeSVG::IMAGE); // +EXT!
+	drain::image::TreeSVG & panelGroup = getPanel(ctx, filepath);
+
+	drain::image::TreeSVG & image = panelGroup["image"](NodeSVG::IMAGE); // +EXT!
 	image->setId(); // autom.
-	image->set("name", name);
+	image->addClass(drain::image::AlignSVG::ANCHOR);
+	image->set("name", filepath.basename); // Note: without extension
 	image->set("width", src.getWidth());
 	image->set("height", src.getHeight());
 	image->set("xlink:href", filepath);
-	mout.attention("filepath:", filepath);
-	drain::image::NodeSVG::toStream(std::cout, image);
-
 	image["title"](drain::image::svg::TITLE) = filepath.basename;
-	// image["description"](drain::image::svg::TITLE) = src.getProperties();
 
+	// DEBUG: (may be fatal for input.sh etc.)
+	// drain::image::NodeSVG::toStream(std::cout, image);
+
+	/*
 	drain::image::TreeSVG & rect = group["rect"](NodeSVG::RECT);
-	tsvg::markAligned(image, rect);
-	rect->addClass(IMAGE_FRAME);
+	rect->addClass(RackSVG::IMAGE_FRAME); // perhaps deprecating, above ANCHOR replaces
 	rect->set("width", src.getWidth());
 	rect->set("height", src.getHeight());
 	rect->set("fill", "none"); // just to make sure...
+
+	drain::image::TreeUtilsSVG::markAligned(image, rect); // perhaps deprecating, above ANCHOR replaces
+	*/
+
+
+	// image["description"](drain::image::svg::TITLE) = src.getProperties();
+
+
+
 	// rect->set("stroke", "black");
 	// rect->set("opacity", 0.25);
+
+	/*
+	static const std::string attr_ALIGN_ANCHOR("alignAnchor");
+	drain::FlexibleVariable & leader = group->get(attr_ALIGN_ANCHOR);
+	if (leader.empty()){
+		rect->setId();
+		leader = rect->getId();
+		get(drain::image::TreeUtilsSVG::attr_FRAME_REFERENCE);
+	}
+	*/
 
 
 	/*
@@ -278,7 +328,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	*/
 
 	// Metadata:
-	drain::image::TreeSVG & metadata = group["metadata"](svg::METADATA);
+	drain::image::TreeSVG & metadata = panelGroup["metadata"](svg::METADATA);
 
 	// Note assign: char * -> string  , "where:lat", "where:lon"
 	if (src.properties.hasKey("what:source")){
@@ -317,7 +367,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	// if (cmd.size() >= 2){prevCmdKey
 	// metadata->set("cmd", statusMap.get("cmd", ""));
 
-	drain::image::TreeSVG & description = group["description"](svg::DESC);
+	drain::image::TreeSVG & description = panelGroup["description"](svg::DESC);
 	description->getAttributes().importCastableMap(metadata->getAttributes());
 	// todo: description  : prevCmdKey "what:product", "what:prodpar", "how:angles"
 
@@ -412,8 +462,9 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 		}
 	}
 
+	/// Search for PANEL's: all the containers insider which elements will be aligned.
 	drain::image::NodeSVG::path_list_t pathList;
-	drain::image::NodeSVG::findByClass(mainGroup, IMAGE_SET, pathList);
+	drain::image::NodeSVG::findByClass(mainGroup, drain::image::AlignSVG::ALIGN_GROUP, pathList);
 
 	drain::Frame2D<int> mainFrame;
 	drain::Point2D<int> start(0,0);
@@ -624,7 +675,7 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 	}
 	*/
-	tsvg::alignNEW(mainGroup);
+	drain::image::TreeUtilsSVG::alignNEW(mainGroup);
 
 
 	ctx.svgTrack->set("width",  mainFrame.width);
@@ -727,11 +778,11 @@ void CmdOutputPanel::exec() const {
 	}
 
 	//TreeSVG &  // = svg["bg"];
-	TreeSVG svg(svg::SVG);
+	drain::image::TreeSVG svg(svg::SVG);
 	// TreeSVG svg; // (svg::SVG); REDO this, check copy constr!
 	svg->setType(svg::SVG);
 
-	TreeSVG & main = svg["main"];
+	drain::image::TreeSVG & main = svg["main"];
 	main->setType(svg::GROUP);
 	// main->set("style", "fill:green");
 	// main->set("jimbo", 126);

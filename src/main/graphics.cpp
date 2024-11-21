@@ -377,6 +377,7 @@ public:
 		rect->set("width", frame.width);
 		rect->set("height", frame.height);
 		rect->setStyle("fill", "red");
+		rect->setId();
 		// rect->addClass("SPESSU");
 		// rect["basename"](drain::image::svg::TITLE) = "test";
 
@@ -391,6 +392,7 @@ public:
 				const std::string label = drain::StringBuilder<'-'>(clsRH, clsV);
 
 				drain::image::TreeSVG & text = rectGroup[label](NodeSVG::TEXT);
+				// rect->setId();
 				drain::image::TreeUtilsSVG::markAligned(rect, text, AlignSVG::ALIGN, clsRH, clsV);  // Future ext AlignSVG::ALIGN
 				text->removeClass("FLOAT"); // yes... experimental
 

@@ -59,18 +59,22 @@ public:
 	/// Todo: rscale*,nbins*,nrays*,beamwidth*
 	//MaxEchoOp(double altitude=1000.0, double devAltitude=500.0, const std::string & accumulationMethod = "MAXIMUM"): //"WAVG,8,1,-32") :
 	MaxEchoOp(const drain::Range<double> & altitude = {1000.0,9000.0}, const std::string & accumulationMethod = "MAXIMUM"): //"WAVG,8,1,-32") :
-		CumulativeProductOp("MaxEcho","Computes maximum dBZ inside altitude range", accumulationMethod) //"WAVG,2,2,-32") "MAXW") //
+		CumulativeProductOp(__FUNCTION__, "Computes maximum dBZ inside altitude range", accumulationMethod) //"WAVG,2,2,-32") "MAXW") //
 		{
 
 		parameters.link("altitude", this->altitude.tuple() = altitude, "metres").fillArray = true;
-		// parameters.link("altitude", this->altitude = altitude, "metres");
-		// parameters.link("devAltitude", this->devAltitude = devAltitude, "metres");
 		parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "MAXIMUM|AVERAGE|WAVG:2:2|MAXW");
 
 		dataSelector.setQuantities("DBZH:DBZ:DBZV"); // ("^DBZH$");
 		odim.product = "MAX";
 		// odim.quantity = "DBZH";
 
+	};
+
+	inline
+	MaxEchoOp(const MaxEchoOp &op) : CumulativeProductOp(op), altitude(op.altitude) {
+		dataSelector.setQuantities("DBZH:DBZ:DBZV"); // ("^DBZH$");
+		odim.product = "MAX";
 	};
 
 	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const;

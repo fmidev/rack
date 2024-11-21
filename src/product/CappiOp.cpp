@@ -82,6 +82,11 @@ CappiOp::CappiOp(double altitude, bool aboveSeaLevel, double beamWidth, double w
 
 };
 
+CappiOp::CappiOp(const CappiOp &op) : CumulativeProductOp(op), altitude(op.altitude), beam(op.beam), weightMin(op.weightMin) {
+	// parameters.copyStruct(op.getParameters(), op, *this);
+};
+
+
 void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);

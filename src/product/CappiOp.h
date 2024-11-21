@@ -70,13 +70,13 @@ public:
 	 *  \param weightMin - threshold [0...1] for normalized beam power interpreted as weight; set -1 to include "pseudo" areas
 	 *  \param accumulationMethod - define how dBZ and weight of each bin contributes to the product
 	 */
-	CappiOp(double altitude=1000.0, bool aboveSeaLevel=true, double beamWidth=1.0, double weightMin=-1.0, std::string accumulationMethod="WAVG:1:8:-40");
+	CappiOp(double altitude=1000.0, bool aboveSeaLevel=true, double beamWidth=1.0, double weightMin=-0.1, std::string accumulationMethod="WAVG:1:8:-40");
 
-	inline
-	CappiOp(const CappiOp &op) : CumulativeProductOp(op), altitude(1000.0), weightMin(-1.0) {
-	};
+	/// Copy constructor.
+	CappiOp(const CappiOp &op);
+	//inline CappiOp(const CappiOp &op) : CumulativeProductOp(op), altitude(1000.0), weightMin(-1.0) {};
 
-	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const;
+	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const override;
 
 };
 

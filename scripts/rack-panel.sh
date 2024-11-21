@@ -14,7 +14,7 @@ TITLE=${TITLE:-''}
 
 # ${FILE##*/}
 
-OUTFILE=${OUTFILE:-"$PWD/$LABEL-panel.png"} # .svg"}
+OUTFILE=${OUTFILE:-"$PWD/$LABEL.png"} # .svg"}
 #echo $OUTFILE
 
 OUTDIR=${OUTDIR:-${OUTFILE%/*}}
@@ -98,7 +98,7 @@ while [ $# != 0 ] ; do
 	    ;;
 	--p*)
 	    echo $ARG $1 command
-	    cmd="$cmd '$ARG' $1 $ENDLINE"
+	    cmd="$cmd --odim KILOMETRES '$ARG' $1 $ENDLINE"
 	    shift
 	    continue
 	    ;;

@@ -77,24 +77,12 @@ public:
 
 protected:
 
-	inline
+	/// Default constructor
 	CumulativeProductOp(const std::string & name = __FUNCTION__,
-			const std::string &description = "", const std::string & accumulationMethod = "LATEST") :
-		PolarProductOp(name, description), accumulationMethod(accumulationMethod){
-		// , undetectValue(-40), relativeUndetectWeight(0.95) {  // , method(method), p(p), q(q)
-		// dataSelector.path = "^.*/data[0-9]+$";
+			const std::string &description = "", const std::string & accumulationMethod = "LATEST");
 
-		// Empty values imply automagic
-		odim.type = "";
-		odim.scaling.scale = 0.0;
-		odim.area.height  = 0;
-		odim.area.width  = 0;
-		odim.rscale = 0.0;
-
-	};
-
-	inline
-	CumulativeProductOp(const CumulativeProductOp & op) : PolarProductOp(op){};
+	/// Copy constructor
+	CumulativeProductOp(const CumulativeProductOp & op);
 
 	std::string accumulationMethod;
 

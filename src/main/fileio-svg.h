@@ -71,7 +71,7 @@ public:
 		GENERAL,   /** Default type */
 		TIME,      /** Date and time attributes */
 		LOCATION,  /** Place (coordinates, municipality) */
-		IMAGE_SET  /** "Hidden" marker for image groups */
+		// IMAGE_SET  /** "Hidden" marker for image groups */
 	};
 
 	/// Standard group name for images to be aligned
@@ -85,6 +85,9 @@ public:
 
 	static
 	drain::image::TreeSVG & getCurrentGroup(RackContext & ctx);
+
+	static
+	drain::image::TreeSVG & getPanel(RackContext & ctx, const drain::FilePath & filepath);
 
 
 	static

@@ -129,6 +129,9 @@ public:
 
 	EchoTopOp(double threshold = 20.0);
 
+	EchoTopOp(const EchoTopOp & op);
+
+
 	virtual inline
 	~EchoTopOp(){};
 

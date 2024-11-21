@@ -94,7 +94,7 @@ public:
 
 	inline
 	ProductOp(const ProductOp & product) : ProductBase(product){
-		std::cerr << __FUNCTION__ << " copy ct " << product.getName() << this->dataSelector << '\n';
+		std::cerr << '#' << __FUNCTION__ << " copy ct " << product.getName() << this->dataSelector << '\n';
 	};
 
 	/// The default data parameters for encoding output (the product).
