@@ -113,7 +113,7 @@ struct PanelConfSVG {
 /**
  *
  */
-enum AlignSVG {
+enum AlignSVG { // DEPRECATING? See svgAlign...
 	ALIGN_GROUP  = 0b00000, /** Container (group) inside which elements will be aligned */
 	// Horizontal
 	LEFT   = 0b00001,
@@ -134,11 +134,11 @@ enum AlignSVG {
 	REF_MIDDLE = (REF | MIDDLE),
 	REF_BOTTOM = (REF | BOTTOM),
 
-	FLOAT = (HORZ|VERT), /** On-top. To be replaced **/
+	FLOAT    = (HORZ|VERT), /** On-top. To be replaced **/
 	ALIGN    = 0b11111,
-	ANCHOR   = 0b100000,
-    RELATIVE = 0b100001,
-	PANEL    = 0b100010,
+	PANEL    = 0b100000, /** Group of elements aligned together */
+	ANCHOR   = 0b100001, /** Main element, "anchor" in a PANEL group */
+    RELATIVE = 0b100010, /** Element aligned relative to an ANCHOR in a PANEL group */
 };
 
 template <>
@@ -165,9 +165,27 @@ struct TreeUtilsSVG {
 	static std::string defaultTitle;
 	*/
 
-	/// Returns the bounding box defined here as (x,y,width,height) of a single element.
+	/// Returns the bounding box defined here as (x,y,width,height) of an element.
+	// static
+	// bool getElementBounds(const TreeSVG & group, drain::Box<double> & box);
+
+	/// NEW Returns the bounding box defined here as (x,y,width,height) of a group of elements.
+	/*
+	static inline
+	bool getBoundsFoo(const TreeSVG & group, drain::Box<NodeSVG::coord_t> & box){
+		box.x = std::numeric_limits<svg::coord_t>::max(); // lowest();
+		box.y = std::numeric_limits<svg::coord_t>::max(); // lowest();
+		box.width  = 0;
+		box.height = 0;
+		return false; // getBoundsInner(group, box);
+	}
+	*/
+
+// protected:
 	static
-	bool getRect(const TreeSVG & group, drain::Box<double> & rect);
+	bool computeBoundingBox(const TreeSVG & group, drain::Box<NodeSVG::coord_t> & box);
+
+public:
 
 	/// Computes the width and height for a bounding box  IMAGE and RECT elements.
 	/**
@@ -179,10 +197,13 @@ struct TreeUtilsSVG {
 	void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION);
 
 
+
 	/// Stack IMAGE and RECT elements within a frame (width x height) to a row or column
+	// alignDomain!
 	static
-	void alignSequence(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start={0,0},
+	void alignSequenceOLD(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start={0,0},
 			PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION, PanelConfSVG::Direction direction=PanelConfSVG::UNDEFINED_DIRECTION);
+
 
 	static
 	void markAligned(const TreeSVG & parentGroup, TreeSVG & alignedGroup); // TODO: frame={0,0} for margins/offsets etc from border?
@@ -200,19 +221,32 @@ struct TreeUtilsSVG {
 	static
 	void alignText(TreeSVG & group);
 
+
+	// NEW ---------------------
 	static
-	void alignNEW(TreeSVG & group);
+	void superAlign(TreeSVG & node, const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
 
 
+	/// Align PANEL groups inside an ALIGN_GROUP group
+	static
+	void alignDomains(TreeSVG & group); // replaces alignSequence
 
-	/*
-	/// Marker class for horizontally centered text alignment.
-	/// Marker class for left-aligned text.
-	/// Marker class for right-aligned text.
-	/// Marker class for vertical text alignment.
-	/// Marker class for vertically centered text alignment.
-	/// Marker class for vertical text alignment.
-	*/
+	/// Align PANEL groups inside an ALIGN_DOMAIN group
+	static
+	void alignPanels(TreeSVG & alignGroup, Point2D<double> &startPos);
+
+	// static
+	// void realignElem(TreeSVG & elem, const Box<svg::coord_t> & anchorBox);
+
+	/// Align object respect to an anchor frame.
+	static
+	void realignObject(const Box<svg::coord_t> & anchorBox, TreeSVG & obj);
+
+	/// Recursively move elements with (x, y).
+	static
+	void translateAll(TreeSVG & group, const Point2D<svg::coord_t> &offset);
+
+
 
 // protected:
 

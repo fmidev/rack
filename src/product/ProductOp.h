@@ -324,9 +324,9 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	//drain::Logger mout(__FILE__, __FUNCTION__); //REPL this->name+"(VolumeOp<M>)", __FUNCTION__);
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug("start" );
-	mout.debug3(*this );
-	mout.debug2("DataSelector: "  , this->dataSelector );
+	mout.debug("start");
+	mout.warn(*this);
+	mout.debug2("DataSelector: ", this->dataSelector);
 
 	// Step 1: collect sweeps (/datasetN/)
 	//DataSetMap<src_t> sweeps;
@@ -378,43 +378,39 @@ void ProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
 
 	// Copy metadata from the input volume (note that dst may have been cleared above)
-	dst["what"]  = src["what"];
-	dst["where"] = src["where"];
-	dst["how"]   = src["how"];
-	dst["what"].data.attributes["object"] = this->odim.object;
+	for (const auto key: {ODIMPathElem::WHAT, ODIMPathElem::WHERE, ODIMPathElem::HOW}){
+		// .data.attributes
+		mout.unimplemented("consider and test .data.attributes instead");
+		dst[key] = src[key];
+	}
 	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
 
 	//ODIMPath dataSetPath;
-	ODIMPathElem parent(ODIMPathElem::DATASET, 1); // /dataset1
-	ODIMPathElem child(ODIMPathElem::DATA, 1); // /dataset1
+	ODIMPathElem parent(ODIMPathElem::DATASET); // /dataset1
+	ODIMPathElem child(ODIMPathElem::DATA); // /dataset1
 
-	mout.note("appendResults path: " ,  ProductBase::appendResults );
+	mout.note(DRAIN_LOG_VAR(ProductBase::appendResults));
 	if (ProductBase::appendResults.getType() == ODIMPathElem::DATASET){
 		ODIMPathTools::getNextChild(dst, parent);
 	}
 
 	ODIMPathTools::getNextChild(dst[parent], child);
 
-	mout.note("storing product in path: " ,  parent , '|' , child );
-	//mout.debug3("storing product in path: "  , dataSetPath );
-
+	mout.attention("storing product in path: " ,  parent , '|' , child );
 	Hi5Tree & dstProduct = dst[parent][child]; // (dataSetPath);
-	DataSet<dst_t> dstProductDataset(dstProduct); // PATH
-
 
 	/// Main operation
-	this->computeSingleProduct(sweeps, dstProductDataset);
+	{
+		DataSet<dst_t> dstProductDataset(dstProduct); // PATH
+		this->computeSingleProduct(sweeps, dstProductDataset);
+	}
+
+	dst["what"].data.attributes["object"] = this->odim.object;
+	dstProduct["what"].data.attributes["product"] = odim.product;
+	dstProduct["what"].data.attributes["prodpar"] = odim.prodpar;
 
 	ProductBase::setRackVersion(dstProduct["how"].data.attributes);
-	//drain::VariableMap & how = dstProduct["how"].data.attributes;
-	//how["software"] = __RACK__;
-	//how["sw_version"] = __RACK_VERSION__;
 	// how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
-
-	//DataTools::updateInternalAttributes(dstProduct);
-	//drain::VariableMap & what = dst[dataSetPath]["what"].data.attributes;
-	//what["source"] = src["what"].data.attributes["source"];
-	//what["object"] = odim.object;
 
 }
 

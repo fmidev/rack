@@ -103,7 +103,7 @@ public:
 
 	/// Add rectangle
 	static
-	drain::image::TreeSVG & addRectangle(RackContext & ctx, const drain::Frame2D<double> & frame = {200,200});
+	drain::image::TreeSVG & addRectangleGroup(RackContext & ctx, const drain::Frame2D<double> & frame = {200,200});
 
 
 	/// Traverse groups, collecting info, recognizing common (shared) variables and pruning them recursively.

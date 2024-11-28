@@ -101,9 +101,11 @@ public:
 	 *  This default implementation converts the volume to DataSetMap<PolarSrc>, creates an instance of
 	 *  DataSet<DstType<M> >
 	 *  and calls computeSingleProduct().
+	 *
+	 *  \return /dataset<n> group of the HDF5 tree.
 	 */
 	virtual
-	void processVolume(const Hi5Tree &src, Hi5Tree &dst) const;
+	Hi5Tree & processVolume(const Hi5Tree &src, Hi5Tree &dst) const final;
 
 
 
@@ -115,9 +117,8 @@ protected:
 
 
 
-
 template <class M>
-void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
+Hi5Tree & VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const{
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -126,7 +127,6 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	mout.debug2("DataSelector: "  , this->dataSelector );
 
 	// Step 1: collect sweeps (/datasetN/)
-	//DataSetMap<PolarSrc> sweeps;
 	DataSetMap<PolarSrc> sweeps;
 
 	/// Usually, the operator does not need groups sorted by elevation.
@@ -134,9 +134,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	ODIMPathList dataPaths;  // Down to ../dataN/ level, eg. /dataset5/data4
 	//this->dataSelector.getPaths(src, dataPaths, ODIMPathElem::DATASET); // RE2
 
-
 	this->dataSelector.getPaths(src, dataPaths);
-
 
 	if (dataPaths.empty()){
 		mout.warn("no dataset's selected" );
@@ -144,6 +142,8 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	else {
 		mout.debug3("populate the dataset map, paths=" , dataPaths.size() );
 	}
+
+	ODIM extraInfo;
 
 	for (ODIMPath & path: dataPaths){
 
@@ -168,8 +168,15 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		// const double elangle = srcDataSet[ODIMPathElem::WHERE].data.attributes["elangle"];  // PATH
 		// mout.deprecating("no more testing ", parent, ", elangle=", elangle, ':', srcDataSet.data.dataSet);
 
-		const drain::VariableMap & what = srcDataSet[ODIMPathElem::WHAT].data.attributes;
-		std::string datetime = what["startdate"].toStr() + what["starttime"].toStr();
+
+		ODIM odd(srcDataSet.data.image);
+		// TODO: elangles here!
+		//const drain::VariableMap & what = srcDataSet[ODIMPathElem::WHAT].data.attributes;
+		//std::string datetime = what["startdate"].toStr() + what["starttime"].toStr();
+		std::string datetime = odd.startdate + odd.starttime;
+
+		extraInfo.updateLenient(odd);
+		mout.attention<LOG_DEBUG>(extraInfo.startdate, '+', extraInfo.starttime, " ?== ", datetime, " < ", extraInfo.enddate, '+', extraInfo.endtime);
 
 		if (sweeps.find(datetime) == sweeps.end()){
 			mout.debug2("adding time=", datetime, ':', parent);
@@ -198,7 +205,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	//mout.note("first qty =" , sweeps.begin()->second.begin()->first , " D =" , sweeps.begin()->second.getFirstData() );
 
 
-	ODIMPathElem dataSetPath(ODIMPathElem::DATASET, 1);
+	ODIMPathElem dataSetPath(ODIMPathElem::DATASET); // ,1) //  2024/11
 	//if (!DataTools::getNextDescendant(dst, ProductBase::appendResults.getType(), dataSetPath))
 
 	if (ProductBase::appendResults.is(ODIMPathElem::DATASET)){
@@ -210,7 +217,7 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 		}
 	}
 	else if (ProductBase::appendResults.is(ODIMPathElem::DATA)){
-		//mout.info("appending to next available data group in " , dataSetPath );
+		//mout.info("appending to next available data group in " , dataSetPath );  // ALWAYS dataset1, then ?
 	}
 	else if (ProductBase::appendResults.is(ODIMPathElem::ROOT)){
 		if (!dst.empty() && (&src != &dst)){  // latter is ANDRE test... (kludge)
@@ -230,7 +237,6 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	mout.debug("storing product in path: ", dataSetPath);
 
 	//Hi5Tree & dstProduct = dst[dataSetPath];
-
 	/*   /// WARNING: Root odim has to be modified explicitly, otherwise remains empty.
 	RootData<DstType<M> > root(dst);
 	drain::VariableMap & whatRoot = root.getWhat();
@@ -238,60 +244,74 @@ void VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 	whatRoot["version"] = this->odim.version;
 	 */
 
-	DataSet<DstType<M> > dstProductDataset(dst[dataSetPath]); // PATH
+
+	/// MAIN
+	Hi5Tree & dstDataSet = dst[dataSetPath];
+	{
+		DataSet<DstType<M> > dstProductDataset(dstDataSet); // PATH
+		this->computeSingleProduct(sweeps, dstProductDataset);
+
+		drain::VariableMap & how = dstProductDataset.getHow();
+		ProductBase::setRackVersion(how);
+		if (!dstProductDataset.empty()){
+			/// Todo: how to handle undefined
+			how["angles"] = dstProductDataset.getFirstData().odim.angles; // FIX: this may be some tmp data, not main [odim.quantity]
+		}
+	}
 
 	// Copy metadata from the input volume (note that dst may have been cleared above)
-	//dstProductDataset.getWhat();
-	//RootData<DstType<M> > root(dst);
-	//drain::VariableMap & rootWhat = root.getWhat();
+
+	mout.revised("check DataSet metadata");
+
+	// Root level
+	for (const ODIMPathElem::group_t group: {ODIMPathElem::WHAT, ODIMPathElem::WHERE, ODIMPathElem::HOW}){
+		dst[group].data.attributes = src[group].data.attributes;
+	}
 	drain::VariableMap & rootWhat = dst[ODIMPathElem::WHAT].data.attributes; // dstProduct["what"].data.attributes;
-	rootWhat = src[ODIMPathElem::WHAT].data.attributes;
+	/// rootWhat = src[ODIMPathElem::WHAT].data.attributes;
 	rootWhat["object"]  = this->odim.object; // ?
 	rootWhat["version"] = this->odim.version;
 
-	// drain::VariableMap & where = dstProductDataset.getWhere(); // dstProduct["what"].data.attributes;
-	// drain::VariableMap & rootWhere = dst[ODIMPathElem::WHERE].data.attributes;
+	dstDataSet[ODIMPathElem::WHAT].data.attributes["product"] = this->odim.product;
+	dstDataSet[ODIMPathElem::WHAT].data.attributes["product2"]   = extraInfo.product;
+
+	dstDataSet[ODIMPathElem::WHAT].data.attributes["startdate"] = extraInfo.startdate;
+	dstDataSet[ODIMPathElem::WHAT].data.attributes["starttime"] = extraInfo.starttime;
+	dstDataSet[ODIMPathElem::WHAT].data.attributes["enddate"]   = extraInfo.enddate;
+	dstDataSet[ODIMPathElem::WHAT].data.attributes["endtime"]   = extraInfo.endtime;
+
+	// PRODPAR ... complicated! Fix at Sprinter level, getKeyList()
+	if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS)){
+		// keep scope, even if condition removed
+		std::stringstream sstr;
+		char sep = 0;
+		const drain::ReferenceMap & params = this->getParameters();
+		for (const std::string & key: params.getKeyList()){
+			if (sep){
+				sstr << sep;
+			}
+			else {
+				sep = ',';
+			}
+			sstr << key << '=' << params[key];  // TODO: escape \" ?
+		}
+		dstDataSet[ODIMPathElem::WHAT].data.attributes["rack_prodpar"] = sstr.str();
+		//dstDataSet[ODIMPathElem::WHAT].data.attributes["prodpar"] = drain::sprinter(this->getParameters(), drain::Sprinter::cmdLineLayout);
+	}
+
+	return dstDataSet;
+	/*
 	drain::VariableMap & rootWhere = dst[ODIMPathElem::WHERE].data.attributes; //root.getWhere();
-	//where["init0"] = {0.1, 2.2};
 	rootWhere = src[ODIMPathElem::WHERE].data.attributes;
-	//mout.warn(where );
-	//rootWhere.importCastableMap(src[ODIMPathElem::WHERE].data.attributes);
-	//where.importMap(src[ODIMPathElem::WHERE].data.attributes);
-	//where.importCastableMap(src[ODIMPathElem::WHERE].data.attributes);
-	//where = src[ODIMPathElem::WHERE].data.attributes;
 	mout.debug2("src /where/ : ", src[ODIMPathElem::WHERE].data.attributes);
 	mout.debug2("dst /where/ : ", rootWhere);
-
 	drain::VariableMap & how = dstProductDataset.getHow(); //dstProduct["how"].data.attributes;
 	how = src[ODIMPathElem::HOW].data.attributes;
-	ProductBase::setRackVersion(how);
-
-	// how["elangles"] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)
-	// how["anglesV"]   = elangles;  // NEW 2021
-
-
+	*/
 	// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep 'declare(rootAttribute' odim/*.cpp
-
 	/// MAIN
-	this->computeSingleProduct(sweeps, dstProductDataset);
+	// this->computeSingleProduct(sweeps, dstProductDataset);
 	// this->processSweeps(sweeps, dstProductDataset);
-
-	// mout.warn("MAIN eka: " , drain::sprinter(dstProductDataset.getFirstData().odim) );
-
-	if (!dstProductDataset.empty()){
-		/// Todo: how to handle undefined
-		how["angles"] = dstProductDataset.getFirstData().odim.angles;
-		//how["anglesXX"] = dstProductDataset.getFirstData().odim.angles;
-	}
-	//mout.warn("MAIN toka:" , drain::sprinter(dstProductDataset.getFirstData().odim) );
-	//mout.warn("how how", how);
-	// mout.experimental("dst2", rootWhere);
-	// hi5::Writer::writeFile("test0.h5", dst);
-
-	//}
-
-	//hi5::Writer::writeFile("test0b.h5", dst);
-
 
 }
 

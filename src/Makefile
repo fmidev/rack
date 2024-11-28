@@ -73,7 +73,7 @@ docker-clean:
 
 clean:
 	rm -fv Release/rack Release/*/*.o Release/drain/*/*.o 
-	ls -d Build/ && rm -fv Build/*
+	ls -d Build/ && rm -vrf Build/*
 
 
 

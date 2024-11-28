@@ -29,17 +29,15 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef PolarProduct_OP_H_
-#define PolarProduct_OP_H_
-
-//
-#include "VolumeOp.h"
+#ifndef RACK_PolarProductOP
+#define RACK_PolarProductOP
 
 #include "data/PolarODIM.h"
+#include "VolumeOp.h"
 
 namespace rack {
 
-using namespace drain::image;
+// using namespace drain::image;
 
 ///  Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input.
 /**

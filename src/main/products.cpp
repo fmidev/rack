@@ -230,7 +230,7 @@ public:
 
 	}
 
-	void exec() const {
+	void exec() const override {
 
 		RackContext & ctx  = this->template getContext<RackContext>(); // OMP
 
@@ -265,26 +265,25 @@ public:
 		}
 
 		// if (only if) ctx.append, then ctx? shared?
-		Hi5Tree & dst = ctx.polarProductHi5; //getTarget();  //For AnDRe ops, src serves also as dst.
+		// Hi5Tree & dst = ctx.polarProductHi5; //getTarget();  //For AnDRe ops, src serves also as dst.
 
-		if (&src == &dst){
-			mout.warn("src = dst");
+		if (&src == &ctx.polarProductHi5){
+			mout.warn("src = ctx.polarProductHi5");
 		}
 
-		//mout.warn(dst );
-		this->bean.processVolume(src, dst);
+		Hi5Tree & dst = this->bean.processVolume(src, ctx.polarProductHi5);
+		// mout.warn(dst);
 		// hi5::Writer::writeFile("test1.h5", dst);
 
-		// this->getLastParameters();
-		/*
-		const drain::VariableMap & statusMap = ctx.getStatusMap();
-		dst.data.image.properties["what:prodkey"] = statusMap.get("cmdKey", "");
-		dst.data.image.properties["what:prodargs"] = statusMap.get("cmdArgs", "");
-		*/
+		// More ODIM compliant. Also attributes["prodpars"] written, with full list.
+		dst[ODIMPathElem::WHAT].data.attributes["prodpar"] = this->getLastParameters();
+		if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS)){
+			dst[ODIMPathElem::WHAT].data.attributes["rack_product"] = this->getName();
+		}
 
 		DataTools::updateInternalAttributes(dst);
-		ctx.currentPolarHi5 = & dst; // if cartesian, be careful with this...
-		ctx.currentHi5      = & dst;
+		ctx.currentPolarHi5 = & ctx.polarProductHi5; // if cartesian, be careful with this...
+		ctx.currentHi5      = & ctx.polarProductHi5;
 
 		mout.special("modified code: currentImage");
 		ctx.findImage();
@@ -296,7 +295,7 @@ public:
 
 	virtual
 	inline
-	std::ostream & toOstream(std::ostream & ostr) const {
+	std::ostream & toStream(std::ostream & ostr) const {
 		ostr << "adapterName" << ": " << this->bean;
 		return ostr;
 	}
@@ -338,13 +337,8 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 
 	drain::CommandBank::trimWords().insert("Op");
 
-	//std::cerr << __FUNCTION__ << std::endl;
-	//return;
-
 	//ProductInstaller installer(drain::getCommandBank());
 	//ProductModule & installer = *this;
-
-	// install<PolarProductOp>();
 
 	// Visualization of geometry etc
 	install<BeamAltitudeOp>();
@@ -418,7 +412,6 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 
 	static CmdSweep sweepCmd;
 	cmdBank.addExternal(PREFIX, sweepCmd).section = SECTION;
-
 
 	// Special command
 	static CmdOutputQuantity outputQuantityCmd;

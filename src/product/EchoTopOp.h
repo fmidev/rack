@@ -136,7 +136,7 @@ public:
 	~EchoTopOp(){};
 
 	// TEST
-	void computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSet<dst_t> & dstProduct) const;
+	void computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSet<dst_t> & dstProduct) const override;
 
 	///
 	/**

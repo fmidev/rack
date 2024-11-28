@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 /**
  *   Version 10
  *   - Graphics: --gLinkImage, --gRadarSectors
+ *   - what:prodpar pruned: only explicit argument(s), from cmd line
  *
  *   Version 9.3.1
  *   - odim (version command): added "KILOMETERS"

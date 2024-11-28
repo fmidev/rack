@@ -77,14 +77,14 @@ public:
 
 	inline
 	UniTuple() : start(this->arr), init(nullptr){ // start(this->arr),
-		this->fill(0);
+		this->fill(TupleType<value_type>::neutral_value);
 	};
 
 
 	template<typename ... TT>
 	inline
 	UniTuple(const TT &... args) : start(this->arr), init(nullptr){ //
-		this->fill(0);
+		this->fill(TupleType<value_type>::neutral_value);
 		this->set(args...);
 	}
 

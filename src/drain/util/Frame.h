@@ -104,6 +104,19 @@ public:
 		// updateTuple();
 	}
 
+	inline
+	void setArea(T w, T h){
+		width = w;
+		height = h;
+	}
+
+	void setArea(const drain::UniTuple<T,2> & tuple){
+		width  = tuple[0];
+		height = tuple[1];
+	}
+
+
+
 
     inline
     T getWidth() const {
@@ -147,6 +160,17 @@ public:
 	inline
 	Box(const Box & box) : drain::Point2D<T>(box), drain::Frame2D<T>(box)  {
 	}
+
+	/// Update this box such that it contains the given \c bbox .
+	void expand(const Box & box){
+		const T xMax = std::max(this->x + this->width,  box.x+box.width);
+		const T yMax = std::max(this->y + this->height, box.y+box.height);
+		this->x = std::min(this->x, box.x);
+		this->y = std::min(this->y, box.y);
+		this->width  = xMax - this->x;
+		this->height = yMax - this->y;
+	}
+
 
 };
 

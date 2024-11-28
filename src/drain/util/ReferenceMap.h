@@ -57,7 +57,9 @@ namespace drain {
 
 /// A map of references to base type scalars, arrays or std::string; changing values in either are equivalent operations.
 /**
- *  New, templated implementation.
+ *  New, templated implementation, extending support to FlexVariables, for example.
+ *
+ *  Future extension: units. Should be contained in Variable type, not "externally" in the map.
  *
  *  \tparam T SmartVariable: Reference or FlexibleVariable; in future, also Parameter<Reference> or Parameter<FlexibleVariable>. Must implement link()
  *
@@ -82,22 +84,9 @@ public:
 	ref_t & link(const std::string & key, F &x){
 
 		ref_t & r = (*this)[key];
-
 		r.link(x); // .setSeparator(this->arraySeparator);
-
 		return r;
 
-		/*
-		if (this->find(key) == this->end()) // not  already referenced
-			this->keyList.push_back(key);
-		// Create
-		ref_t & r = map_t::operator[](key);
-		r.setSeparator(this->arraySeparator); // applicable, if array type element
-		// Link
-		r.link(x);
-		// unitMap[key] = unit;
-		return r;
-		*/
 	}
 
 	/// Create a reference to a basic type or std::string. (Also for basetype arrays.)
@@ -105,9 +94,7 @@ public:
 	ref_t  & link(const std::string & key, void *ptr, const std::type_info &type, size_t count=1){
 
 		ref_t & r = (*this)[key];
-
 		r.link(ptr, type, count);
-
 		return r;
 
 		/*
@@ -121,6 +108,21 @@ public:
 		return r;
 		*/
 	}
+
+	inline
+	void unlink(const std::string & key){
+		map_t::erase(key);
+		// std::map<std::string,T>
+		/*
+		for (std::list<std::string>::iterator it = keyList.begin(); it != keyList.end(); ++it)
+			if (*it == key){
+				keyList.erase(it);
+				break;
+			}
+		unitMap.erase(key);
+		*/
+	}
+
 
 	/** Alternatives in handling a link which is outside the source object.
 	 *

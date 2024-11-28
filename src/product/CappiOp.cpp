@@ -199,7 +199,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		//if ((!pseudo) && (beamWeight < weightMin))
 		if (beamWeight < weightMin)
 			continue;
-		beamWeight = std::max(beamWeight, beamWeightMin);
+		beamWeight = std::max(beamWeightMin, beamWeight);
 
 		binDistance = Geometry::beamFromEtaBeta(eta, beta);
 		if (binDistance < sweep.odim.rstart)

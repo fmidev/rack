@@ -73,7 +73,8 @@ NodeXML<int>::xmldoc_attrib_map_t NodeXML<int>::xmldoc_attribs = {
 		{"version",  "1.0"},
 		{"encoding", "UTF-8"},
 		// "standalone", "no");
-		{"data-remark", "xml"}
+		// {"data-remark", "xml"} // non-standard, debugging?
+
 };
 
 

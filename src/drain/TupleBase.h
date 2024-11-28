@@ -46,6 +46,27 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+
+// Consider inheritance TupleType->TupleBase, so all S-typed stuff here?
+template <typename S>
+struct TupleType {
+
+	/// Zero, by default. For enum types, must be explicitly given.
+	/**
+	  \code
+	   template <>
+	    const my_enum TupleType<my_enum>::neutral_value(my_enum::DEFAULT_VALUE);
+	  \endcode
+	 *
+	 */
+	static
+	const S neutral_value;
+};
+
+template <typename S>
+const S TupleType<S>::neutral_value(0);
+
+
 /**
  *  \tparam S - storage class of members (int, double, char)
  *  \tparam N - number of the members included

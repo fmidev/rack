@@ -351,6 +351,23 @@ public:
 
 };
 
+template <typename E>
+class ClassLabelXML : public std::string {
+public:
+
+	ClassLabelXML(const E & e): std::string(drain::EnumDict<E>::dict.getKey(e)) {
+	}
+
+
+	template <typename ...T>
+	ClassLabelXML(const T... args) : std::string(args...){
+	}
+
+
+
+};
+
+
 class CmdSuperPanel : public drain::SimpleCommand<std::string> {
 
 public:
@@ -361,8 +378,64 @@ public:
 
 	void exec() const {
 
+		ClassLabelXML<drain::image::AlignSVG> label1(drain::image::AlignSVG::PANEL);
+		ClassLabelXML<drain::image::AlignSVG> label2("PANEL");
+
+
+
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		drain::Frame2D<double> frame = {200,400};
+
+		drain::image::TreeSVG & rectGroup = RackSVG::getCurrentGroup(ctx)[value](NodeSVG::GROUP);
+		rectGroup->addClass(drain::image::AlignSVG::PANEL);
+
+		drain::image::TreeSVG & rect = rectGroup["rekku"](NodeSVG::RECT); // +EXT!
+		rect->set("width", frame.width);
+		rect->set("height", frame.height);
+		//image->addClass(CmdBaseSVG::FLOAT);
+		rect->setStyle("fill", "red");
+		// rect["basename"](drain::image::svg::TITLE) = "test";
+		rect->addClass(drain::image::AlignSVG::ANCHOR);
+
+		rect->setAlign(AlignSVG2::ORIG, AlignSVG2::HORZ,  AlignSVG2::MID);
+		rect->setAlign(AlignSVG2::REF, AlignSVG2::VERT,  AlignSVG2::MAX);
+		rect->setAlign(AlignSVG2::REF, AlignSVG2::HORZ,  AlignSVG2::MIN);
+
+		typedef drain::image::AlignSVG alSvg;
+
+		for (const auto & rHorz: {alSvg::REF_LEFT, alSvg::REF_CENTER, alSvg::REF_RIGHT}){
+
+			const std::string & clsRH = drain::EnumDict<alSvg>::dict.getKey(rHorz);
+
+			for (const auto & vert: {alSvg::REF_TOP, alSvg::REF_MIDDLE, alSvg::REF_BOTTOM}){
+
+				const std::string & clsV = drain::EnumDict<alSvg>::dict.getKey(vert);
+
+				const std::string label = drain::StringBuilder<'-'>(clsRH, clsV);
+
+				drain::image::TreeSVG & textGroup = rectGroup[label](NodeSVG::GROUP);
+				textGroup->addClass(alSvg::PANEL, alSvg::RELATIVE); // RELATIVE?
+
+				drain::image::TreeSVG & textBox = textGroup["rect"](NodeSVG::RECT);
+				textBox->addClass(alSvg::ANCHOR); // , rHorz, vert); // CONFLICT! SHOULD BE PANEL
+				textBox->getBoundingBox().setArea(240,40);
+				textBox->setStyle("fill", "green");
+				textBox->setStyle("opacity", 0.25);
+
+				drain::image::TreeSVG & text = textGroup["text"](NodeSVG::TEXT);
+				text->addClass(alSvg::RELATIVE, rHorz, vert);
+
+				drain::image::TreeSVG & textSpan = text["tspan"](NodeSVG::TSPAN);
+				textSpan->setText(label);
+
+			}
+
+		}
+
+		/*
+
 
 		drain::image::TreeSVG & group = RackSVG::getCurrentGroup(ctx);
 
@@ -410,7 +483,7 @@ public:
 
 
 		//text.addChild();
-
+		*/
 
 	}
 

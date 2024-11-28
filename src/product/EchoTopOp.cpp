@@ -493,6 +493,7 @@ void EchoTopOp::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSe
 	dstSlope.setEncoding(typeid(unsigned short));
 	dstSlope.setPhysicalRange(-10, +10); // dBZ/km
 	dstSlope.getHow()["unit"] = "m/dBZ";
+	dstSlope.odim.product = "eTOP";
 	Limiter::value_t limitSlope = drain::Type::call<Limiter>(dstSlope.data.getType());
 
 
@@ -1112,10 +1113,10 @@ void EchoTopOp::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSe
 
 	mout.accept<LOG_NOTICE>(DRAIN_LOG_VAR(threshold));
 
-	dstEchoTop.odim.product = "ETOP";
-	dstProduct.getWhat()["comment"] = "EchoTop2-test";
-	dstProduct.getWhat()["product"] = "ETOP"; // FIX
-	dstProduct.getWhat()["prodpar"] = this->threshold; // FIX
+	// dstEchoTop.odim.product = "ETOP";
+	// dstProduct.getWhat()["comment"] = "EchoTop2-test";
+	// dstProduct.getWhat()["product"] = "ETOP"; // FIX
+	// dstProduct.getWhat()["prodpar"] = this->threshold; // FIX
 
 	dstProduct.getWhere()["rscale"] = dstEchoTop.odim.rscale;
 	dstProduct.getWhere()["rscale10"] = dstEchoTop.odim.rscale+10;

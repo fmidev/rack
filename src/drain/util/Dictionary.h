@@ -157,6 +157,14 @@ public:
 
 	}
 
+	/// Identity mapping useful for type deduction of template arguments in functions.
+	/**
+	 *   Consider setProperty(const T & prop) supporting both enum and string argument, for example.
+	const V & getValue(const V & value) const {
+		return value;
+	}
+	 */
+
 	/// Given a value, return the first key associated with it.
 	const K & getKey(const V & value) const {
 		typename container_t::const_iterator it = findByValue(value);

@@ -338,5 +338,60 @@ ODIMPathElem odimARRAY(ODIMPathElem::ARRAY);
 
 }  // namespace rack
 
+/*
+
+/// Like {ODIMPathElem::WHAT, "product"}
+class ODIMvariable : public std::pair<ODIMPathElem::group_t, std::string> {
+public:
+
+	typedef std::pair<ODIMPathElem::group_t, std::string> pair_t;
+
+	// Default constructor
+	inline
+	ODIMvariable(ODIMPathElem::group_t g=ODIMPathElem::NONE, const std::string & s="") : pair_t(g,s){};
+
+	// Nearby default constructor
+	inline
+	ODIMvariable(ODIMPathElem::group_t g, const char *s) : pair_t(g,s){};
+
+
+	// Copy constructor
+	inline
+	ODIMvariable(const ODIMvariable & v) : pair_t(v){};
+
+	// Nearby copy constructor
+	inline
+	ODIMvariable(const pair_t & v) : pair_t(v){};
+
+	inline
+	ODIMvariable & operator=(const pair_t & v) {
+		first = v.first;
+		second = v.second;
+		return *this;
+	};
+
+
+	inline
+	operator std::string() const {
+		return ODIMPathElem::getDictionary().getKey(first)+':'+second;
+	}
+
+};
+
+ODIMvariable ovar = {ODIMPathElem::WHAT, "prodpar"};
+const std::list<ODIMvariable> l = {
+		{ODIMPathElem::WHAT, "product"},
+		{ODIMPathElem::WHAT, "prodpar"}
+		// ODIMvariable({ODIMPathElem::WHAT, "product"}),
+		// ODIMvariable({ODIMPathElem::WHAT, "prodpar"})
+};
+
+for (const ODIMvariable & odimvar: l){
+	if (this->odim.hasKey(odimvar)){
+		const drain::Reference & value = this->odim[odimvar];
+		dst[dataSetPath][odimvar.first].data.attributes[odimvar.second] = value;
+	}
+}
+*/
 
 

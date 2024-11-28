@@ -49,7 +49,7 @@ NodeSVG::xmldoc_attrib_map_t NodeSVG::xml_node_t::xmldoc_attribs = {
 		{"version",  "1.0"},
 		{"encoding", "UTF-8"},
 		{"standalone", "no"},
-		{"data-remark", "svg"}
+		// {"data-remark", "svg"} debugging? inkview claims
 };
 
 const drain::FileInfo NodeSVG::fileInfo("svg");
@@ -81,12 +81,81 @@ std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
 };
 
 
+template<>
+const FlagResolver::dict_t EnumDict<AlignSVG2::axis_t>::dict = {
+	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::axis_t, HORZ),
+	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::axis_t, VERT),
+};
+
+template<>
+const FlagResolver::dict_t EnumDict<AlignSVG2::pos_t>::dict = {
+	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::pos_t, ORIG),
+	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::pos_t, REF),
+};
+
+template<>
+const FlagResolver::dict_t EnumDict<AlignSVG2::value_t>::dict = {
+	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::value_t, UNDEFINED),
+	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::value_t, MAX),
+	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::value_t, MID),
+	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::value_t, MIN),
+	// {drain::image::svg::MAX, "MAX"}
+};
+
+
+// template <>
+// const AlignSVG2::value_t TupleType<AlignSVG2::value_t>::neutral_value(drain::image::AlignSVG2::UNDEFINED);
+
+//std::vector<std::vector<AlignSVG2::value_t> > superAl(2, std::vector<AlignSVG2::value_t>(2, drain::image::AlignSVG2::UNDEFINED));
+
+/*
+void NodeSVG::setAlign(AlignSVG2::pos_t pos, AlignSVG2::axis_t axis,  AlignSVG2::value_t value){
+	//UniTuple<AlignSVG2::value_t,2> superAlign;
+	superAl[pos][axis] = value;
+	for (AlignSVG2::pos_t p: {AlignSVG2::ORIG, AlignSVG2::REF}){
+		for (AlignSVG2::axis_t a: {AlignSVG2::HORZ, AlignSVG2::VERT}){
+			const AlignSVG2::value_t & v = superAl[p][a];
+			if (v != AlignSVG2::UNDEFINED){
+				std::cerr << __FUNCTION__ << ':' << EnumDict<AlignSVG2::pos_t>::dict.getKey(p) << '_' << EnumDict<AlignSVG2::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignSVG2::value_t>::dict.getKey(v) << '_' << (int)v << '\n';
+			}
+		}
+	}
+	//std::cerr << __FUNCTION__ << ':' << superAlign << '\n';
+}
+*/
+
+void NodeSVG::updateAlignStr(){
+	std::stringstream sstr;
+	char sep=0;
+	for (AlignSVG2::pos_t p: {AlignSVG2::ORIG, AlignSVG2::REF}){
+		for (AlignSVG2::axis_t a: {AlignSVG2::HORZ, AlignSVG2::VERT}){
+			const AlignSVG2::value_t & v = getAlign(p, a);
+			if (v != AlignSVG2::UNDEFINED){
+				if (sep)
+					sstr << sep;
+				else
+					sep=' ';
+				sstr << EnumDict<AlignSVG2::pos_t>::dict.getKey(p) << ':' << EnumDict<AlignSVG2::axis_t>::dict.getKey(a) << '-' << EnumDict<AlignSVG2::value_t>::dict.getKey(v);
+				//std::cerr << __FUNCTION__ << ':' << EnumDict<AlignSVG2::pos_t>::dict.getKey(p) << '_' << EnumDict<AlignSVG2::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignSVG2::value_t>::dict.getKey(v) << '_' << (int)v << '\n';
+			}
+		}
+	}
+	alignStr = sstr.str();
+	if (alignStr.empty()){
+		this->unlink("align");
+	}
+	else {
+		this->link("align", alignStr);
+	}
+}
+
 NodeSVG::NodeSVG(tag_t t){
 	type = elem_t::UNDEFINED;
 	setType(t);
 }
 
-NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), x(0), y(0), width(0), height(0), radius(0) {
+//NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), x(0), y(0), width(0), height(0), radius(0) {
+NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), box(0,0,0,0), radius(0) {
 	copyStruct(node, node, *this, LINK); // <-- risky! may link Variable contents?
 	// type = elem_t::UNDEFINED; // = force fresh setType below
 	setType(node.getType());
@@ -113,10 +182,10 @@ void NodeSVG::setType(const tag_t & t) {
 		break;
 	case SVG:
 		//tag = "svg";
-		link("x", x = 0);
-		link("y", y = 0);
-		link("width", width = 0);
-		link("height", height = 0);
+		link("x", box.x = 0);
+		link("y", box.y = 0);
+		link("width", box.width = 0);
+		link("height", box.height = 0);
 		//link("width", width = "0");
 		//link("height", height = "0");
 		link("xmlns", NodeSVG::svg);
@@ -131,25 +200,25 @@ void NodeSVG::setType(const tag_t & t) {
 		break;
 	case RECT:
 		// tag = "rect";
-		link("x", x = 0);
-		link("y", y = 0);
-		link("width", width = 0);
-		link("height", height = 0);
+		link("x", box.x = 0);
+		link("y", box.y = 0);
+		link("width", box.width = 0);
+		link("height", box.height = 0);
 		// link("width", width = "0");
 		// link("height", height = "0");
 		break;
 	case CIRCLE:
 		// tag = "circ";
-		link("cx", x = 0);
-		link("cy", y = 0);
+		link("cx", box.x = 0);
+		link("cy", box.y = 0);
 		link("r", radius = 0);
 		break;
 	case IMAGE:
 		// tag = "image";
-		link("x", x = 0);
-		link("y", y = 0);
-		link("width", width = 0);
-		link("height", height = 0);
+		link("x", box.x = 0);
+		link("y", box.y = 0);
+		link("width", box.width = 0);
+		link("height", box.height = 0);
 		//link("width", width = "0");
 		// link("height", height = "0");
 		// if (version == 1) {
@@ -159,8 +228,8 @@ void NodeSVG::setType(const tag_t & t) {
 		break;
 	case TEXT:
 		// tag = "text";
-		link("x", x = 0);
-		link("y", y = 0);
+		link("x", box.x = 0);
+		link("y", box.y = 0);
 		// link("text-anchor", text_anchor = "");
 		break;
 	case TSPAN:
@@ -173,11 +242,22 @@ void NodeSVG::setType(const tag_t & t) {
 
 	// DEPRECATING: see separate STYLE and CLASS?
 	// link("style", style = "");
-	//link("fill", fill = "");
-	//link("opacity", opacity = ""); // string, so silent if empty
+	// link("fill", fill = "");
+	// link("opacity", opacity = ""); // string, so silent if empty
 
 
 }
+
+/// Needed for handling units in strings, like "50%" or "640px".
+void NodeSVG::setAttribute(const std::string & key, const std::string &value){
+	(*this)[key] = value;
+}
+
+/// Needed for handling units in strings, like "50%" or "640px".
+void NodeSVG::setAttribute(const std::string & key, const char *value){
+	(*this)[key] = value; // -> handleString()
+}
+
 
 /*
 std::ostream & NodeSVG::toStream(std::ostream &ostr, const TreeSVG & tree){
@@ -191,17 +271,10 @@ std::ostream & NodeSVG::toStream(std::ostream &ostr, const TreeSVG & tree){
 
 }  // drain::
 
-/*
-template <>
-struct drain::TypeName<drain::image::NodeSVG> {
-    static const char* get(){ return "SVG"; }
-};
-*/
 
 template <>
 template <>
-// inline
-drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::svg::tag_t & type){
+drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::svg::tag_t & type){ // this fails in older C++ compilers ?
 	this->data.setType(type);
 	return *this;
 }

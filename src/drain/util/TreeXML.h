@@ -99,6 +99,7 @@ public:
 
 	/// Tree path type.
 	typedef drain::Path<std::string,'/'> path_t; // consider xml_path_t
+	typedef path_t::elem_t path_elem_t;
 
 	typedef UnorderedMultiTree<NodeXML<T>,false, path_t> xml_tree_t;
 
@@ -335,10 +336,32 @@ public:
 			addClass(cls);
 		}
 		else {
-			(*this)[key] = value;
+			setAttribute(key, value);
 		}
 
 	}
+
+	/// Default implementation. Needed for handling units in strings, like "50%" or "640px".
+	//   But otherways confusing?
+	virtual inline
+	void setAttribute(const std::string & key, const std::string &value){
+		(*this)[key] = value;
+	}
+
+	/// Default implementation. Needed for handling units in strings, like "50%" or "640px".
+	//   But otherways confusing?
+	virtual inline
+	void setAttribute(const std::string & key, const char *value){
+		(*this)[key] = value; // -> handleString()
+	}
+
+	/// "Final" implementation.
+	template <class V>
+	inline
+	void setAttribute(const std::string & key, const V & value){
+		(*this)[key] = value; // -> handleString()
+	}
+
 
 	inline
 	void remove(const std::string & s){
@@ -561,6 +584,7 @@ public:
 
 	/// Find the first occurrence of given id using recursive breath-first search.
 	/**
+	 *   By definition, id attributes should be unique.
 	 *
 	 *   \param tree - source element,
 	 *   \param id   - id attribute to be searched for
@@ -575,7 +599,7 @@ public:
 	static
 	bool findById(const V & tree, const std::string & tag, typename V::path_t & result, const typename V::path_t & path = path_t());
 
-	/// Find all the occurrence of given ID using recursive breath-first search.
+	/// Find the occurrence(s) of given ID using recursive breath-first search.
 	/**
 	 *   By definition, id attributes should be unique. This function nevertheless returns a list
 	 *   if user wants to handle more than one elements found.
@@ -591,12 +615,11 @@ public:
 	static
 	bool findById(const V & tree, const std::string & tag, path_list_t & result, const path_t & path = path_t());
 
-	/// "Forward definition"
-	//   This could also be in TreeXMLutilities
+	/// Find all the occurrences of given tag type using recursive breath-first search.
+	/// This is a "forward definition" – this could also be in TreeXMLutilities.
 	template <class V>
 	static
 	bool findByTag(const V & tree, const T & tag, path_list_t & result, const path_t & path = path_t());
-
 
 	/// "Forward definition"
 	//   This could also be in TreeXMLutilities
@@ -608,27 +631,16 @@ public:
 	static
 	bool findByTags(const V & tree, const std::set<T> & tags, path_list_t & result, const path_t & path = path_t());
 
-	/// Finds elements in an XML structure by class name.
+	/// Finds child elements in an XML structure by class name.
 	/**
 	 *   \tparam V - XML tree
 	 *
 	 *	In a way, this is a forward definition – this could also be in TreeXMLutilities.
 	 *
 	 */
-	template <class V>
+	template <class T2, class C>
 	static
-	bool findByClass(const V & t, const std::string & cls, path_list_t & result, const path_t & path = path_t());
-
-	/// Finds elements in an XML structure by class name. Redirects to findByClass(t, std::string(cls),
-	/**
-	 *   \tparam V - XML tree
-	 *
-	 */
-	template <class V>
-	static inline
-	bool findByClass(const V & t, const char *cls, path_list_t & result, const path_t & path = path_t()){
-		return findByClass(t, std::string(cls), result, path);
-	}
+	bool findByClass(const T2 & t, const C & cls, std::list<path_elem_t> & result);
 
 	/// Finds elements in an XML structure by class name supplied as an enumeration type.
 	/**
@@ -636,11 +648,40 @@ public:
 	 *   \tparam C - enum type, for which a unique (static) EnumDict has been detected.
 	 *
 	 */
-	template <class V, class E>
+	//template <class V, class E>
+	template <class V, class C>
 	static inline
-	bool findByClass(const V & t, const E & cls, path_list_t & result, const path_t & path = path_t()){
-		return findByClass(t, drain::EnumDict<E>::dict.getKey(cls), result, path);
+	bool findByClass(const V & t, const C & cls, path_list_t & result, const path_t & path = path_t());
+
+
+	/// Finds elements in an XML structure by class name.
+	/**
+	 *   \tparam V - XML tree
+	 *
+	 *	In a way, this is a forward definition – this could also be in TreeXMLutilities.
+	 *
+	template <class V>
+	static
+	bool findByClass(const V & t, const std::string & cls, path_list_t & result, const path_t & path = path_t());
+	 */
+
+
+	/// Finds elements in an XML structure by class name. Redirects to findByClass(t, std::string(cls),
+	/**
+	 *   \tparam V - XML tree
+	 *
+	template <class V>
+	static inline
+	bool findByClass(const V & t, const char *cls, path_list_t & result, const path_t & path = path_t()){
+		return findByClass(t, std::string(cls), result, path);
 	}
+	 */
+
+	/*
+	{
+		return findByClass(t, drain::EnumDict<E>::dict.getKey(cls), result, path); // TODO: this only, with -> hasClass(cls) ?
+	}
+	*/
 
 
 
@@ -796,6 +837,8 @@ bool NodeXML<N>::findById(const T & t, const std::string & id, typename T::path_
 	//return !result.empty();
 }
 
+
+
 /*
 template <class V>
 static
@@ -882,8 +925,11 @@ bool NodeXML<N>::findByTags(const T & t, const std::set<N> & tags, NodeXML<>::pa
 
 
 template <class N>
-template <class T>
-bool NodeXML<N>::findByClass(const T & t, const std::string & cls, NodeXML<>::path_list_t & result, const path_t & path){
+// template <class T>
+//bool NodeXML<N>::findByClass(const T & t, const std::string & cls, NodeXML<>::path_list_t & result, const path_t & path){
+
+template <class T2, class C>
+bool NodeXML<N>::findByClass(const T2 & t, const C & cls, NodeXML<>::path_list_t & result, const path_t & path){
 
 	// drain::Logger mout(__FILE__,__FUNCTION__);
 
@@ -898,6 +944,20 @@ bool NodeXML<N>::findByClass(const T & t, const std::string & cls, NodeXML<>::pa
 
 	return !result.empty();
 }
+
+template <class N>
+template <class T2, class C>
+bool NodeXML<N>::findByClass(const T2 & t, const C & cls, std::list<path_elem_t> & result){
+
+	for (const auto & entry: t){
+		if (entry.second->hasClass(cls)){
+			result.push_back(entry.first);
+		}
+	}
+
+	return !result.empty();
+}
+
 
 
 /// Note: Not designed for XML output, this is more for debugging (in tree dumps),
