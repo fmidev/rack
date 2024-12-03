@@ -69,8 +69,8 @@ void CmdInputFile::exec() const {
 	// TODO: expand?
 	std::string fullFilename = ctx.inputPrefix + value;
 
-	ctx.statusFlags.unset(drain::StatusFlags::INPUT_ERROR);
-	ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR);
+	ctx.statusFlags.unset(drain::Status::INPUT_ERROR);
+	ctx.statusFlags.unset(drain::Status::DATA_ERROR);
 	ctx.unsetCurrentImages();
 
 	//const drain::CommandRegistry & r = drain::getRegistry();
@@ -109,7 +109,7 @@ void CmdInputFile::exec() const {
 	}
 	catch (const std::exception & e) {
 		//resources.inputOk = false;
-		ctx.statusFlags.set(drain::StatusFlags::INPUT_ERROR);
+		ctx.statusFlags.set(drain::Status::INPUT_ERROR);
 		mout.debug(e.what() );
 		/*
 		if (resources.scriptParser.autoExec > 0){  // => go on with str inputs

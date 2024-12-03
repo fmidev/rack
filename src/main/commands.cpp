@@ -388,7 +388,7 @@ public:
 			} catch (const std::exception & e) {
 				mout.warn("msg: ", e.what());
 				mout.error("syntax error in selection string: ", value, " or ", checkedValue);
-				ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR); // resources.dataOk = false;
+				ctx.statusFlags.set(drain::Status::PARAMETER_ERROR); // resources.dataOk = false;
 				return;
 			}
 		}
@@ -401,7 +401,7 @@ public:
 		ctx.select = std::string("quantity=") + checkedValue;
 		mout.special<LOG_DEBUG>("revised ctx.select: ", ctx.select);
 
-		ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR); // resources.dataOk = false;
+		ctx.statusFlags.unset(drain::Status::DATA_ERROR); // resources.dataOk = false;
 
 	}
 
@@ -1343,13 +1343,13 @@ public:
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		if (value.find_first_of("?*()^$") != std::string::npos){
-			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
+			ctx.statusFlags.set(drain::Status::PARAMETER_ERROR);
 			mout.warn("RegExp support suppressed from this version" );
 			return;
 		}
 
 		if (value.empty()){
-			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
+			ctx.statusFlags.set(drain::Status::PARAMETER_ERROR);
 			mout.error("empty command");
 			return;
 		}
@@ -1363,7 +1363,7 @@ public:
 
 
 		if (value.at(0) != '/'){
-			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
+			ctx.statusFlags.set(drain::Status::PARAMETER_ERROR);
 			mout.warn("Could not handle argument '" , value , "': no leading '/' " );
 			mout.error("Dynamic command handler (" , getName() , ") failed " );
 			//throw std::runtime_error();
@@ -2163,11 +2163,11 @@ public:
 };
 
 
-class OutputDataVerbosity : public drain::SimpleCommand<int> {
+class OutputDataVerbosityOLD : public drain::SimpleCommand<int> {
 
 public:
 
-	OutputDataVerbosity() : drain::SimpleCommand<int>(__FUNCTION__, "Request additional (debugging) outputs"){
+	OutputDataVerbosityOLD() : drain::SimpleCommand<int>(__FUNCTION__, "Request additional (debugging) outputs"){
 	};
 
 	virtual
@@ -2249,7 +2249,8 @@ class CmdStore : public drain::SimpleCommand<std::string> { //
 public:
 
 	CmdStore() : drain::SimpleCommand<std::string>(__FUNCTION__, "Request additional (debugging) outputs",
-			"level", "0", drain::sprinter(outputFlagger.getDict().getContainer(), drain::Command::cmdArgLayout).str()){
+			"level", "0", drain::sprinter(drain::EnumDict<ProductConf::OutputDataVerbosity>::dict).str() ){ // drain::sprinter(outputFlagger.getDict().getContainer(), drain::Command::cmdArgLayout).str()
+		// drain::EnumDict<ProductConf::OutputDataVerbosity>::dict
 		//"Set how intermediate and final outputs are stored. See --append"){
 		// getParameters().link("intermediate", ProductBase::outputDataVerbosity = 0, "store intermediate images");
 		// getParameters().link("append",  ctx.appendResults = "", "|data|dataset");
@@ -2747,8 +2748,13 @@ public:
 
 		typedef DstType<ODIM> dst_t;
 
-		const drain::Flags & h5roles = Hdf5Context::h5_role::getShared();
-		const drain::Flags::dict_t & dict = h5roles.getDict();
+		// const drain::Flags & h5roles = Hdf5Context::h5_role::getShared();
+		// drain::StatusFlags & status = getResources().baseCtx().statusFlags;
+
+		// const drain::Flags
+		Hdf5Context::h5_role::dict_t d;
+		const drain::EnumDict<Hdf5Context::Hi5Role>::dict_t & dict = drain::EnumDict<Hdf5Context::Hi5Role>::dict;
+
 		//mout.warn(dict);
 		if (!this->value.empty()){
 			Hi5Tree & dst = ctx.getMyHi5(dict.getValue(this->value));

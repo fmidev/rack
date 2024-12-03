@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/TextStyle.h>
 #include <drain/TypeUtils.h>
 
-#include "Flags.h"
+#include "EnumFlags.h"
 
 namespace drain
 {

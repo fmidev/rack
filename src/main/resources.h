@@ -145,16 +145,20 @@ public:
 	Hi5Tree & getHi5(const T &filter, const TT &... filters){
 
 		T f(filter);
-		Hi5Tree & dst = getHi5Full(f);
-		if (f != 0)
-			return dst;
+		//Hi5Tree & dst = getHi5Full(f);
+		if (f != 0){
+			// return dst;
+			//Hi5Tree & dst = getHi5Full(f);
+			return getHi5Full(f);
+		}
 		else
 			return getHi5(filters...);
 	}
 
 
 
-	Hi5Tree & getHi5Full(h5_role::ivalue_t & filter);
+	//Hi5Tree & getHi5Full(h5_role::ivalue_t & filter);
+	Hi5Tree & getHi5Full(h5_role::ivalue_t filter);
 
 	inline
 	Hi5Tree & getHi5(){

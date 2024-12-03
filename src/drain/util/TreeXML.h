@@ -109,15 +109,17 @@ public:
 	NodeXML(const elem_t & t = elem_t(0)){
 		type = t;
 		drain::StringTools::import(++nextID, id);
-		// link("id", id);
+		id = getTag()+id;
 	};
 
 	// Note: use default constructor in derived classes.
 	inline
 	NodeXML(const NodeXML & node){
-		drain::StringTools::import(++nextID, id);
+		//drain::StringTools::import(++nextID, id);
 		copyStruct(node, node, *this, RESERVE); // This may corrupt (yet unconstructed) object?
 		type = node.getType();
+		drain::StringTools::import(++nextID, id);
+		id = getTag()+id;
 	}
 
 

@@ -133,7 +133,7 @@ int process(int argc, const char **argv) {
 	cmdBank.setNotFoundHandlerCmdKey("setODIM");
 
 	// Also, mark the commands that trigger a script (if defined).
-	const drain::Flagger::ivalue_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
+	const drain::FlagResolver::ivalue_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
 	cmdBank.setScriptTriggerFlag(TRIGGER);
 	cmdBank.get("inputFile").section |= TRIGGER;
 
@@ -165,13 +165,13 @@ int process(int argc, const char **argv) {
 		}
 		else {
 			// std::cerr << ctx.statusFlags.value << ' ' << ctx.statusFlags << " ERROR\n";
-			mout.warn("error flags(", ctx.statusFlags.value , "): " , ctx.statusFlags.getKeys(','));
+			mout.warn("error flags(", ctx.statusFlags.value , "): " , ctx.statusFlags.str());
 		}
 
 	}
 	catch (const std::exception & e) {
 		mout.warn( e.what() );
-		ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
+		ctx.statusFlags.set(drain::Status::PARAMETER_ERROR);
 	}
 	//mout.note("debug-level:" , ctx.log.getVerbosity() );
 

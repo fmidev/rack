@@ -41,8 +41,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //
 
 #include <drain/util/Frame.h>
-#include <drain/util/Flags.h>
+#include <drain/util/EnumFlags.h>
 #include <drain/util/Rectangle.h>
+#include "AlignSVG.h"
 #include "TreeSVG.h"
 
 namespace drain {
@@ -73,6 +74,7 @@ public:
 
 struct PanelConfSVG {
 
+	/*
 	enum Orientation {UNDEFINED_ORIENTATION=0, HORZ, VERT};
 	typedef drain::EnumFlagger<drain::SingleFlagger<Orientation> > OrientationFlagger;
 	OrientationFlagger orientation = HORZ;
@@ -80,6 +82,8 @@ struct PanelConfSVG {
 	enum Direction {UNDEFINED_DIRECTION=0, INCR, DECR};
 	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
 	DirectionFlagger direction = INCR;
+	*/
+	LayoutSVG layout;
 
 	enum Legend {NO_LEGEND=0, LEFT=1, RIGHT=2, DUPLEX=LEFT|RIGHT, EMBED=4};
 	typedef drain::EnumFlagger<drain::MultiFlagger<Legend> > LegendFlagger;
@@ -97,7 +101,7 @@ struct PanelConfSVG {
 	FontSizes fontSize;
 
 	inline
-	PanelConfSVG() : orientation(HORZ), direction(INCR), legend(LEFT, EMBED), maxPerGroup(10), absolutePaths(false){
+	PanelConfSVG() : layout(LayoutSVG::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED), maxPerGroup(10), absolutePaths(false){
 	}
 
 	/*
@@ -194,7 +198,7 @@ public:
 	 *  Future versions may also handle CIRCLE and TEXT (location)
 	 */
 	static
-	void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION);
+	void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, LayoutSVG::Orientation orientation=LayoutSVG::UNDEFINED_ORIENTATION);
 
 
 
@@ -202,7 +206,7 @@ public:
 	// alignDomain!
 	static
 	void alignSequenceOLD(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start={0,0},
-			PanelConfSVG::Orientation orientation=PanelConfSVG::UNDEFINED_ORIENTATION, PanelConfSVG::Direction direction=PanelConfSVG::UNDEFINED_DIRECTION);
+			LayoutSVG::Orientation orientation=LayoutSVG::UNDEFINED_ORIENTATION, LayoutSVG::Direction direction=LayoutSVG::UNDEFINED_DIRECTION);
 
 
 	static
@@ -248,11 +252,17 @@ public:
 
 
 
-// protected:
+//
 
 	/// Marker for...
 	static
 	const std::string attr_FRAME_REFERENCE;
+
+protected:
+
+	/// Align object respect to an anchor frame.
+	static
+	void realignObjectOLD(const Box<svg::coord_t> & anchorBox, TreeSVG & obj);
 
 };
 
@@ -278,11 +288,13 @@ public:
 
 }  // image::
 
+/*
 template <>
-const drain::EnumDict<image::PanelConfSVG::Orientation>::dict_t  drain::EnumDict<image::PanelConfSVG::Orientation>::dict;
+const drain::EnumDict<image::LayoutSVG::Orientation>::dict_t  drain::EnumDict<image::LayoutSVG::Orientation>::dict;
 
 template <>
-const drain::EnumDict<image::PanelConfSVG::Direction>::dict_t  drain::EnumDict<image::PanelConfSVG::Direction>::dict;
+const drain::EnumDict<image::LayoutSVG::Direction>::dict_t  drain::EnumDict<image::LayoutSVG::Direction>::dict;
+*/
 
 }  // drain::
 

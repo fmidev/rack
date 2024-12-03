@@ -52,18 +52,34 @@ namespace image {
 
 
 
-typedef drain::GlobalFlags<CoordinatePolicy> coord_overflow_flagger_t;
-typedef drain::Flags::ivalue_t coord_overflow_t;
+/// typedef drain::GlobalFlags<CoordinatePolicy> coord_overflow_flagger_t;
+//typedef drain::Flags::ivalue_t coord_overflow_t;
 //enum coord_overflow_t {UNCHANGED=0, X_OVERFLOW=1, X_UNDERFLOW=2, Y_OVERFLOW=4, Y_UNDERFLOW=8, IRREVERSIBLE=128};
 
 //template <>
 //const drain::SingleFlagger<coord_overflow_t>::dict_t drain::SingleFlagger<coord_overflow_t>::dict;
 
+/*
+enum coord_overflow_t {
+	UNCHANGED   = 0,
+	X_OVERFLOW  = 1,
+	X_UNDERFLOW = 2,
+	Y_OVERFLOW  = 4,
+	Y_UNDERFLOW = 8,
+	IRREVERSIBLE = 128, /// Equal move in inverse direction would not result original position.
+};
+
+template <>
+const drain::EnumDict<coord_overflow_t>::dict_t drain::EnumDict<coord_overflow_t>::dict;
+*/
+typedef unsigned int coord_overflow_t;
+
 class CoordinateHandler2D { //: protected CoordinatePolicy {
 
 public:
 
-	static const drain::FlaggerBase<size_t>::dict_t dict;
+	static const drain::FlaggerBase<coord_overflow_t>::dict_t dict;
+
 
 	static const coord_overflow_t UNCHANGED   = 0; // = 0;
 	static const coord_overflow_t X_OVERFLOW  = 1; //  = 1;
@@ -72,7 +88,6 @@ public:
 	static const coord_overflow_t Y_UNDERFLOW = 8; //  8;
 	/// Equal move in inverse direction would not result original position.
 	static const coord_overflow_t IRREVERSIBLE = 128; // = 128;
-
 
 
 	CoordinatePolicy policy;
@@ -233,6 +248,7 @@ public:
 private:
 
 	mutable coord_overflow_t result;
+	//mutable int result;
 
 protected:
 

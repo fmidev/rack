@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <algorithm>
 
 #include <drain/util/Path.h>
-#include <drain/util/FlagsOld.h>
+#include <drain/util/Flags.h>
 
 
 namespace rack {
@@ -83,13 +83,16 @@ class ODIMPathElem  {
 
 public:
 
-	typedef drain::Flagger flag_t;
-	typedef drain::Flagger::dict_t dict_t;
 
-	/// In H5, "groups" correspond to "directories" or "folders" in Unix and Windows.
+	// typedef drain::Flagger flag_t;
+	// typedef drain::Flagger::dict_t dict_t;
+	// typedef drain::Flagger::ivalue_t group_t;
 
-	typedef drain::Flagger::ivalue_t group_t;
-	//typedef odim_flags::value_t group_t;
+	/// In H5, "groups" correspond to directories or folders in file system.
+	typedef unsigned int group_t;
+	//typedef drain::Flagger2<drain::SingleFlagger<group_t> > flag_t;
+	typedef drain::SingleFlagger<group_t> flag_t;
+	typedef flag_t::dict_t dict_t;
 
 	/// None (undefined)
 	static const group_t NONE = 0;

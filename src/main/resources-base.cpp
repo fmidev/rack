@@ -110,6 +110,18 @@ Hdf5Context::Hdf5Context(const Hdf5Context &ctx):
 	currentPolarHi5(ctx.currentPolarHi5){
 }
 
+template <>
+const drain::EnumDict<Hdf5Context::Hi5Role>::dict_t drain::EnumDict<Hdf5Context::Hi5Role>::dict = {
+		DRAIN_ENUM_ENTRY(rack::Hdf5Context, CURRENT),
+		DRAIN_ENUM_ENTRY(rack::Hdf5Context, INPUT),
+		DRAIN_ENUM_ENTRY(rack::Hdf5Context, POLAR),
+		DRAIN_ENUM_ENTRY(rack::Hdf5Context, CARTESIAN),
+		DRAIN_ENUM_ENTRY(rack::Hdf5Context, EMPTY),
+		DRAIN_ENUM_ENTRY(rack::Hdf5Context, PRIVATE),
+		DRAIN_ENUM_ENTRY(rack::Hdf5Context, SHARED),
+};
+
+/*
 const Hdf5Context::h5_role::ivalue_t Hdf5Context::CURRENT = h5_role::addEntry("CURRENT"); //,    **< Link also external targets *
 const Hdf5Context::h5_role::ivalue_t Hdf5Context::INPUT   = h5_role::addEntry("INPUT"); // ,      **< No not link, but add entry (void) *
 const Hdf5Context::h5_role::ivalue_t Hdf5Context::POLAR   = h5_role::addEntry("POLAR"); // =4,      **< No action *
@@ -117,6 +129,7 @@ const Hdf5Context::h5_role::ivalue_t Hdf5Context::CARTESIAN=h5_role::addEntry("C
 const Hdf5Context::h5_role::ivalue_t Hdf5Context::EMPTY   = h5_role::addEntry("EMPTY"); // =16,     **< Also accept empty  *
 const Hdf5Context::h5_role::ivalue_t Hdf5Context::PRIVATE = h5_role::addEntry("PRIVATE"); // =32,
 const Hdf5Context::h5_role::ivalue_t Hdf5Context::SHARED  = h5_role::addEntry("SHARED"); // =64     **< Try shared first  *
+*/
 
 /* This is basically good (by design), but _used_ wrong... So often flags not used, esp. PRIVATE, SHARED, EMPTY.
  *
@@ -125,8 +138,9 @@ Hi5Tree & Hdf5Context::getMyHi5(h5_role::ivalue_t filter){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug("filter=", h5_role::getShared().getKeys(filter, '|'), " (", filter, ')');
+	//mout.debug("filter=", h5_role::getShared().getKeys(filter, '|'), " (", filter, ')');
 
+	mout.debug("filter=", FlagResolver::getKeys( drain::EnumDict<Hdf5Context::Hi5Role>::dict, filter, '|')); // h5_role::getShared().getKeys(filter, '|'), " (", filter, ')');
 	/*
 	if (!(filter & (POLAR|CARTESIAN))){
 		// = auto

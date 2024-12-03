@@ -829,7 +829,7 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 		else {
 
 			// Or is it a section, or several?
-			Flagger::ivalue_t filter = FlagResolver::getValue(sections, key); // Accepts also numeric strings.
+			FlagResolver::ivalue_t filter = FlagResolver::getIntValue(sections, key); // Accepts also numeric strings.
 
 			//mout.deprecating("Flagger: " , sections , " -> " , filter );
 			if (filter > 0){
@@ -864,7 +864,7 @@ void CommandBank::help(std::ostream & ostr){
 
 }
 
-void CommandBank::help(Flagger::ivalue_t sectionFilter, std::ostream & ostr){
+void CommandBank::help(FlagResolver::ivalue_t sectionFilter, std::ostream & ostr){
 
 	ostr << title << '\n' << std::endl;
 
@@ -878,7 +878,7 @@ void CommandBank::help(Flagger::ivalue_t sectionFilter, std::ostream & ostr){
 	ostr << "Section: " << FlagResolver::getKeys(sections, sectionFilter) << '\n' << '\n';
 	//for (map_t::const_iterator it = this->begin(); it!=this->end(); ++it){
 	for (const auto & entry: *this){ // map_t::value_t
-		Flagger::ivalue_t sec = entry.second->getSource().section;
+		FlagResolver::ivalue_t sec = entry.second->getSource().section;
 		if ((sec == sectionFilter) || (sec & sectionFilter) > 0){ // 1st test for HIDDEN
 			try {
 				if (!TEST){

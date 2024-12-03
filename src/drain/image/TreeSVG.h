@@ -41,6 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/FileInfo.h"
 #include "drain/util/Frame.h"
 #include "drain/util/TreeXML.h"
+#include "AlignSVG.h"
 
 namespace drain {
 
@@ -65,59 +66,6 @@ struct svg {
 
 };
 
-struct AlignSVG2 {
-
-	enum pos_t {
-		ORIG=0,
-		REF=1,
-	};
-
-	enum axis_t {
-		HORZ=0,
-		VERT=1,
-	};
-
-	enum value_t {
-		UNDEFINED,
-		MIN,
-		MID,
-		MAX,
-		// ABSOLUTE?
-	};
-
-	/*
-	typedef EnumFlagger<SingleFlagger<AlignSVG2::value_t> > Alignment;
-	typedef EnumFlagger<SingleFlagger<AlignSVG2::axis_t> > Axis;
-	typedef EnumFlagger<SingleFlagger<AlignSVG2::pos_t> > Position;
-	*/
-
-	template <typename V>
-	static inline
-	const V & getValue(const std::string &key){
-		return EnumDict<V>::dict.getValue(key);
-	}
-
-	template <typename V>
-	static inline
-	const V & getValue(const char &key){
-		return EnumDict<V>::dict.getValue(key);
-	}
-
-	template <typename V>
-	static inline
-	const V & getValue(const V &value){
-		return value;
-	}
-
-	// typedef UniTuple<value_t,2> align;
-};
-
-//template <typename POS,typename AX>
-//class ASVG : public Align
-
-
-template<>
-const FlagResolver::dict_t EnumDict<AlignSVG2::value_t>::dict;
 
 // Future option
 class BBoxSVG : public drain::Box<svg::coord_t> {
@@ -147,7 +95,7 @@ public:
   \see drain::TreeXML
 
  */
-class NodeSVG: public svg, public NodeXML<svg::tag_t> {
+class NodeSVG: public svg, public NodeXML<svg::tag_t>, public AlignSVG2 {
 public:
 
 	/// In opening SVG tag, referred to by attribute "xmlns:xlink"
@@ -271,30 +219,10 @@ public:
 
 
 
-	//void setAlign(AlignSVG2::pos_t pos, AlignSVG2::axis_t axis,  AlignSVG2::value_t value);
-	template <typename P, typename A,typename V>
-	void setAlign(const P & pos, const A & axis,  const V &value){
-		getAlign(pos, axis) = AlignSVG2::getValue<AlignSVG2::value_t>(value);
-		updateAlignStr();
-	}
-
-	template <typename P, typename A>
-	AlignSVG2::value_t & getAlign(const P & pos, const A & axis);
-
-	template <typename P, typename A>
-	const AlignSVG2::value_t & getAlign(const P & pos, const A & axis) const;
-
-	void clearAlign();
-
-
 protected:
 
-	typedef std::vector<std::vector<AlignSVG2::value_t> > align_t;
-	align_t alignments = align_t(2, std::vector<AlignSVG2::value_t>(2, drain::image::AlignSVG2::UNDEFINED));
-
-	std::string alignStr;
-
-	void updateAlignStr();
+	virtual
+	void updateAlignAttributes();
 
 	//drain::Box<coord_t> box;
 	BBoxSVG box;
@@ -302,36 +230,11 @@ protected:
 	// bool x_PERCENTAGE = false;
 	// bool y_PERCENTAGE = false;
 	// svg:
-	/*
-	int x;
-	int y;
-	int width;
-	int height;
-	*/
-	// std::string width; // can be "240px" or "90%" ?
-	// std::string height;
+
 	int radius;
-	// std::string style;
-	// std::string fill;
-	// std::string opacity; // empty
-	// std::string text_anchor;
 
 };
 
-
-template <typename P, typename A>
-AlignSVG2::value_t & NodeSVG::getAlign(const P & pos, const A & axis){
-	const AlignSVG2::pos_t p   = AlignSVG2::getValue<AlignSVG2::pos_t>(pos);
-	const AlignSVG2::axis_t a  = AlignSVG2::getValue<AlignSVG2::axis_t>(axis);
-	return alignments[p][a];
-}
-
-template <typename P, typename A>
-const AlignSVG2::value_t & NodeSVG::getAlign(const P & pos, const A & axis) const {
-	const AlignSVG2::pos_t p   = AlignSVG2::getValue<AlignSVG2::pos_t>(pos);
-	const AlignSVG2::axis_t a  = AlignSVG2::getValue<AlignSVG2::axis_t>(axis);
-	return alignments[p][a];
-}
 
 /*
 template <typename P, typename A,typename V>

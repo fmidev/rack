@@ -200,8 +200,8 @@ public:
 	 */
 	Hi5Tree *currentPolarHi5; // = &inputHi5;
 
-	typedef drain::GlobalFlags<Hi5Tree> h5_role;
 
+	/*
 	static const h5_role::ivalue_t CURRENT; //,    **< Link also external targets *
 	static const h5_role::ivalue_t INPUT; // ,      **< No not link, but add entry (void) *
 	// static const h5_role::value_t PRODUCT;
@@ -210,6 +210,20 @@ public:
 	static const h5_role::ivalue_t EMPTY; // =16,     **< Also accept empty  *
 	static const h5_role::ivalue_t PRIVATE; // =32,
 	static const h5_role::ivalue_t SHARED; // =64     **< Try shared first  *
+	*/
+
+	enum Hi5Role {
+		CURRENT=1,
+		INPUT=2,
+		POLAR=4,
+		CARTESIAN=8,
+		EMPTY=16,
+		PRIVATE=32,
+		SHARED=64,
+	};
+
+	//typedef drain::GlobalFlags<Hi5Tree> h5_role;
+	typedef drain::EnumFlagger<drain::MultiFlagger<Hi5Role> > h5_role;
 
 
 	/// Pointer to the last HDF5 structure in Cartesian coordinates: input or Cartesian product.
@@ -261,6 +275,8 @@ protected:
 
 };
 
+template <>
+const drain::EnumDict<Hdf5Context::h5_role>::dict_t drain::EnumDict<Hdf5Context::h5_role>::dict;
 
 } /* namespace rack */
 

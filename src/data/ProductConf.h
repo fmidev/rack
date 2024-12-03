@@ -106,6 +106,9 @@ public:
 
 };
 
+template <>
+const drain::EnumDict<ProductConf::OutputDataVerbosity>::dict_t  drain::EnumDict<ProductConf::OutputDataVerbosity>::dict;
+
 
 }  // namespace rack
 

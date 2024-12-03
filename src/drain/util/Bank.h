@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Registry.h"
 #include "Cloner.h"
-#include "FlagsOld.h"
+#include "Flags.h"
 #include "Static.h"
 
 namespace drain
@@ -445,7 +445,7 @@ public:
 	};
 
 
-	Flagger::ivalue_t addSection(const FlagResolver::dict_t::key_t & title, const FlagResolver::dict_t::value_t index=0){
+	FlagResolver::ivalue_t addSection(const FlagResolver::dict_t::key_t & title, const FlagResolver::dict_t::value_t index=0){
 	// Flagger2<int>::value_t addSection(const FlagResolver::dict_t::key_t & title, const FlagResolver::dict_t::value_t index=0){
 		return FlagResolver::addEntry(sections, title, index);
 	}

@@ -81,50 +81,9 @@ std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
 };
 
 
-template<>
-const FlagResolver::dict_t EnumDict<AlignSVG2::axis_t>::dict = {
-	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::axis_t, HORZ),
-	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::axis_t, VERT),
-};
 
-template<>
-const FlagResolver::dict_t EnumDict<AlignSVG2::pos_t>::dict = {
-	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::pos_t, ORIG),
-	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::pos_t, REF),
-};
-
-template<>
-const FlagResolver::dict_t EnumDict<AlignSVG2::value_t>::dict = {
-	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::value_t, UNDEFINED),
-	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::value_t, MAX),
-	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::value_t, MID),
-	DRAIN_ENUM_ENTRY(drain::image::AlignSVG2::value_t, MIN),
-	// {drain::image::svg::MAX, "MAX"}
-};
-
-
-// template <>
-// const AlignSVG2::value_t TupleType<AlignSVG2::value_t>::neutral_value(drain::image::AlignSVG2::UNDEFINED);
-
-//std::vector<std::vector<AlignSVG2::value_t> > superAl(2, std::vector<AlignSVG2::value_t>(2, drain::image::AlignSVG2::UNDEFINED));
-
-/*
-void NodeSVG::setAlign(AlignSVG2::pos_t pos, AlignSVG2::axis_t axis,  AlignSVG2::value_t value){
-	//UniTuple<AlignSVG2::value_t,2> superAlign;
-	superAl[pos][axis] = value;
-	for (AlignSVG2::pos_t p: {AlignSVG2::ORIG, AlignSVG2::REF}){
-		for (AlignSVG2::axis_t a: {AlignSVG2::HORZ, AlignSVG2::VERT}){
-			const AlignSVG2::value_t & v = superAl[p][a];
-			if (v != AlignSVG2::UNDEFINED){
-				std::cerr << __FUNCTION__ << ':' << EnumDict<AlignSVG2::pos_t>::dict.getKey(p) << '_' << EnumDict<AlignSVG2::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignSVG2::value_t>::dict.getKey(v) << '_' << (int)v << '\n';
-			}
-		}
-	}
-	//std::cerr << __FUNCTION__ << ':' << superAlign << '\n';
-}
-*/
-
-void NodeSVG::updateAlignStr(){
+void NodeSVG::updateAlignAttributes(){
+	/*
 	std::stringstream sstr;
 	char sep=0;
 	for (AlignSVG2::pos_t p: {AlignSVG2::ORIG, AlignSVG2::REF}){
@@ -140,13 +99,24 @@ void NodeSVG::updateAlignStr(){
 			}
 		}
 	}
-	alignStr = sstr.str();
-	if (alignStr.empty()){
+	std::string s = sstr.str();
+	*/
+	if (align.empty()){
 		this->unlink("align");
 	}
 	else {
-		this->link("align", alignStr);
+		if (!this->hasKey("align")){
+			this->link("align", align); // (should be safe anyway)
+		}
 	}
+
+	if (anchor.empty()){
+		this->unlink("alignAnchor");
+	}
+	else {
+		this->link("alignAnchor", anchor);
+	}
+
 }
 
 NodeSVG::NodeSVG(tag_t t){

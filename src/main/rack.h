@@ -32,12 +32,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "10.0"
+#define __RACK_VERSION__ "10.0.1"
 
 /**
- *   Version 10
+ *   Version 10.0.1
  *   - Graphics: --gLinkImage, --gRadarSectors
+ *
+ *   Version 10.0
  *   - what:prodpar pruned: only explicit argument(s), from cmd line
+ *   - experimental graphics section: --gLinkImage, --gRadarSectors
  *
  *   Version 9.3.1
  *   - odim (version command): added "KILOMETERS"

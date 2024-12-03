@@ -55,7 +55,7 @@ void Context::init(){
 	statusMap["ID"] = id;        // "constant"
 	statusMap["PID"] = getpid(); // "constant"
 	statusMap["CTX"] = name;     // "constant"
-	statusMap["statusFlags.dictionary"] = drain::sprinter(statusFlags.dictionary, drain::Sprinter::cppLayout).str(); // WHY?
+	statusMap["statusFlags.dictionary"] = drain::sprinter(statusFlags.getDict(), drain::Sprinter::cppLayout).str(); // WHY?
 }
 
 }  // drain::

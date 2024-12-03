@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 //#include <drain/util/Dictionary.h>
-
+#include <drain/util/Flags.h>
 #include <drain/util/Range.h>
 
 #include "ODIMPath.h"
@@ -55,7 +55,7 @@ public:
 		// ODIMPathElem(group, index),
 		// index(index),
 		// indexMax(indexMax),
-		flags(this->group, ODIMPathElem::getDictionary(), '|'){
+		flags(ODIMPathElem::getDictionary(), this->group, '|'){
 		this->group = groups;
 		this->index = index;
 		this->indexMax = indexMax;
@@ -67,7 +67,7 @@ public:
 		// ODIMPathElem(e),
 		// index(e.index),
 		// indexMax(e.indexMax),
-		flags(this->group, ODIMPathElem::getDictionary(), '|') {
+		flags(ODIMPathElem::getDictionary(), this->group, '|') {
 		this->group = e.group; // needed?
 		this->index = e.index;
 		this->indexMax = e.indexMax;
@@ -78,7 +78,7 @@ public:
 		// ODIMPathElem(e),
 		// index(e.index),
 		// indexMax(0xffff),
-		flags(this->group, ODIMPathElem::getDictionary(), '|') {
+		flags(ODIMPathElem::getDictionary(), this->group,  '|') {
 		this->group  = e.group; // needed?
 		this->index = e.index;
 		this->indexMax = INDEX_MAX; // ??
@@ -88,7 +88,8 @@ public:
 	ODIMPathElemMatcher(const std::string &s) :
 		//  index(0),
 		// indexMax(0xffff),
-		flags(this->group, ODIMPathElem::getDictionary(), '|') {
+		flags(ODIMPathElem::getDictionary(), this->group,  '|') {
+
 		// TODO: virtual reset(){}
 		group = 0;
 		index = 0;
@@ -135,7 +136,9 @@ public:
 	// Applied only as a upper limit in path matching.
 	index_t indexMax;
 
-	drain::Flagger flags;
+	//drain::Flagger flags;
+	//drain::Flagger2<drain::MultiFlagger<group_t> > flags;
+	drain::MultiFlagger<group_t, group_t> flags;
 
 	virtual
 	std::ostream & toStream(std::ostream & sstr) const;

@@ -43,18 +43,31 @@ namespace drain {
 
 namespace image {
 
-	const FileInfo FileTIFF::fileInfo("(tif|tiff)");
-	Frame2D<int> FileTIFF::defaultTile(256, 256);
+const FileInfo FileTIFF::fileInfo("(tif|tiff)");
+Frame2D<int> FileTIFF::defaultTile(256, 256);
+
+//drain::EnumFlagger<>
 
 #ifdef USE_GEOTIFF_NO
+static const FileTIFF::dict_t FileTIFF::compressionDict = {};
+/*
 	const FileTIFF::dict_t & FileTIFF::getCompressionDict(){
 		static FileTIFF::dict_t compressionDict;
 		return compressionDict;
 	}
-	FileTIFF::dict_t::value_t FileTIFF::defaultCompression(1); // = NONE, but see below
-
+ */
+FileTIFF::dict_t::value_t FileTIFF::defaultCompression(1); // = NONE, but see below
 #else
 
+//static
+const FileTIFF::dict_t FileTIFF::compressionDict = {
+		{"NONE",     COMPRESSION_NONE},
+		{"LZW",      COMPRESSION_LZW},
+		{"DEFLATE",  COMPRESSION_DEFLATE},
+		{"PACKBITS", COMPRESSION_PACKBITS}
+};
+
+	/*
 	const FileTIFF::dict_t & FileTIFF::getCompressionDict(){
 
 		static FileTIFF::dict_t compressionDict = {
@@ -66,6 +79,7 @@ namespace image {
 
 		return compressionDict;
 	}
+	*/
 
 	FileTIFF::dict_t::value_t FileTIFF::defaultCompression(COMPRESSION_LZW); // = tunable in fileio.cpp
 

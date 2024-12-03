@@ -43,7 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 #include "drain/util/TreeOrdered.h"
-#include "drain/util/Flags.h"
+#include "drain/util/EnumFlags.h"
 #include "drain/image/Image.h"
 
 
@@ -73,7 +73,7 @@ public:
 
 
 	static
-	void readFile(const std::string &filename, Hi5Tree &tree, ModeFlagger::dvalue_t mode=(ATTRIBUTES | DATASETS)); //(ATTRIBUTES|DATASETS));
+	void readFile(const std::string &filename, Hi5Tree &tree, ModeFlagger::ivalue_t mode=(ATTRIBUTES | DATASETS)); //(ATTRIBUTES|DATASETS));
 
 	/// Conversion from native HDF5 structure to Rack's hi5 tree structure.
 	/**
@@ -84,7 +84,7 @@ public:
 	 */
 	/// Recursive  , const std::string &path
 	static void
-	h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree,	ModeFlagger::dvalue_t mode = (ATTRIBUTES | DATASETS));
+	h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree,	ModeFlagger::ivalue_t mode = (ATTRIBUTES | DATASETS));
 
 	/// Conversion from native HDF5 structure to Rack's hi5 tree structure.
 	/**
@@ -93,7 +93,7 @@ public:
 	 *  \param mode - switch for excluding attributes or datasets.
 	 */
 	static inline
-	void h5FileToTree(hid_t fid, Hi5Tree &tree, ModeFlagger::dvalue_t mode=(ATTRIBUTES | DATASETS)){ //(ATTRIBUTES|DATASETS)){
+	void h5FileToTree(hid_t fid, Hi5Tree &tree, ModeFlagger::ivalue_t mode=(ATTRIBUTES | DATASETS)){ //(ATTRIBUTES|DATASETS)){
 		Hi5Tree::path_t path;
 		path.append(Hi5Tree::key_t::ROOT);
 		// path.appendElem(Hi5Tree::key_t::ROOT);
@@ -138,7 +138,7 @@ protected:
 
 //const drain::SingleFlagger<Reader::Mode>::dict_t Reader::dict = {{"ATTRIBUTES", ATTRIBUTES}, {"DATASETS", DATASETS}};
 template <>
-const drain::FlagResolver::dict_t drain::EnumDict<hi5::Reader::Mode>::dict;
+const drain::EnumDict<hi5::Reader::Mode>::dict_t drain::EnumDict<hi5::Reader::Mode>::dict;
 
 
 #endif /* ImageH5_H_ */

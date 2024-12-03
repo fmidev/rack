@@ -40,14 +40,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace hi5 {
 
 template <>
-const drain::FlagResolver::dict_t drain::EnumDict<Reader::Mode>::dict = {
+const drain::EnumDict<Reader::Mode>::dict_t drain::EnumDict<Reader::Mode>::dict = {
 		{"ATTRIBUTES", hi5::Reader::ATTRIBUTES},
 		{"DATASETS",   hi5::Reader::DATASETS},
 		{"MARKED",     hi5::Reader::EXCLUSIVE}
 };
 
 
-void Reader::readFile(const std::string & filename, Hi5Tree & tree, ModeFlagger::dvalue_t mode) {
+void Reader::readFile(const std::string & filename, Hi5Tree & tree, ModeFlagger::ivalue_t mode) {
 
 	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 
@@ -81,7 +81,7 @@ void Reader::readFile(const std::string & filename, Hi5Tree & tree, ModeFlagger:
 
 
 void
-Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, ModeFlagger::dvalue_t mode)  { //  = (ATTRIBUTES | DATASETS)
+Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, ModeFlagger::ivalue_t mode)  { //  = (ATTRIBUTES | DATASETS)
 
 	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 

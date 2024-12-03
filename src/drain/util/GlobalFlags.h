@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef GLOBAL_FLAGS_H_
 #define GLOBAL_FLAGS_H_
 
-#include "FlagsOld.h"
+#include "Flags.h"
 #include "Static.h"
 
 namespace drain
@@ -78,25 +78,27 @@ public:
  */
 //
 template <class T>
-class GlobalFlags : public Flagger {
+class GlobalFlags : public MultiFlagger<int> {
 
 
 public:
 
 
 	static inline
-	Flags & getShared(){
-		return Static::get<Flags,T>();
+	MultiFlagger<int> & getShared(){
+		return Static::get<MultiFlagger<int>,T>();
 	}
 
 	static inline
-	Flagger::dict_t & getSharedDict(){
+	const MultiFlagger<int>::dict_t & getSharedDict(){
 		return getShared().getDict();
 	}
 
 
-	GlobalFlags() : Flagger(ownValue, getSharedDict()){
+	/*
+	GlobalFlags() : MultiFlagger<int>(ownValue, getSharedDict()){
 	};
+	*/
 
 	/// Sets value, ie. set or unsets all the flags.
 	template <class T2>
@@ -114,10 +116,12 @@ public:
 	 */
 	// Consider adding a warning if value reserved
 	// Consider adding a notif   if key already defined
+	/*
 	static inline
-	Flagger::ivalue_t addEntry(const Flagger::dict_t::key_t & key, ivalue_t i=0){
-		return Flagger::addEntry(GlobalFlags<T>::getSharedDict(), key, i);
+	int addEntry(const std::string & key, int i=0){
+		return FlaggerBase<T>::addEntry(GlobalFlags<T>::getSharedDict(), key, i);
 	}
+	*/
 
 	// System error (Network error, , memory error)
 

@@ -62,11 +62,14 @@ public:
 	static
 	const drain::FileInfo fileInfo;
 
-	// Weak
+	// OLD (Weak?)
 	typedef drain::SingleFlagger<unsigned int>::dict_t dict_t;
 
+	static const dict_t compressionDict;
+	/*
 	static
 	const dict_t & getCompressionDict();
+	*/
 
 	// https://www.awaresystems.be/imaging/tiff/tifftags/compression.html
 	// https://gdal.org/drivers/raster/cog.html

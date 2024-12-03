@@ -108,8 +108,8 @@ double Compositor::applyTimeDecay(Composite & composite, double w, const ODIM & 
 }
 
 
-
-void Compositor::add(Composite & composite, drain::Flags::ivalue_t inputFilter, bool updateSelector) const {
+// drain::Flags::ivalue_t // Hdf5Context::h5_role::ivalue_t
+void Compositor::add(Composite & composite, int inputFilter, bool updateSelector) const {
 
 	RackContext & ctx = getContext<RackContext>();
 
@@ -134,14 +134,14 @@ void Compositor::add(Composite & composite, drain::Flags::ivalue_t inputFilter, 
 	RackResources & resources = getResources();
 
 	// Check
-	if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR) ){ // ! resources.inputOk){
+	if (ctx.statusFlags.isSet(drain::Status::INPUT_ERROR) ){ // ! resources.inputOk){
 		mout.note("last INPUT inapplicable, skipping it" );
 		ctx.select.clear(); // ?
 		return;
 	}
 
 	// Check
-	if (ctx.statusFlags.isSet(drain::StatusFlags::DATA_ERROR) ){ // (! resources.dataOk){
+	if (ctx.statusFlags.isSet(drain::Status::DATA_ERROR) ){ // (! resources.dataOk){
 		mout.note("last DATA inapplicable, skipping it" );
 		ctx.select.clear(); // ?
 		return;
@@ -179,7 +179,9 @@ void Compositor::add(Composite & composite, drain::Flags::ivalue_t inputFilter, 
 	const Hi5Tree & src = ctx.getHi5(inputFilter);
 
 	if (src.empty()){
-		mout.warn("thread #", ctx.getName(), ": input data empty? Filter =",  Hdf5Context::h5_role::getShared().getKeys(inputFilter, '|'));
+		mout.warn("thread #", ctx.getName(), ": input data empty? Filter =",
+				drain::FlagResolver::getKeys(drain::EnumDict<Hdf5Context::Hi5Role>::dict, inputFilter, '|')) ;
+				//drain::EnumDict<Hdf5Context::h5_role>::dict.getKey(inputFilter, '|'));
 	}
 
 
@@ -289,7 +291,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		if (dataPath.empty()){
 			mout.warn("Create composite: no group found with selector:", composite.dataSelector);
 			//resources.inputOk = false; // REMOVE?
-			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // ctx.statusFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false;
+			ctx.statusFlags.set(drain::Status::DATA_ERROR); // ctx.statusFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false;
 			return;
 		}
 
@@ -301,7 +303,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		if (polarSrc.data.isEmpty() ){
 			mout.warn(composite.dataSelector);
 			mout.warn("skipping empty input data: quantity=", polarSrc.odim.quantity, ", path:", dataPath, "(/data?)");  // was: dataSetPath
-			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // ctx.statusFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false; // REMOVE?
+			ctx.statusFlags.set(drain::Status::DATA_ERROR); // ctx.statusFlags.set(RackResources::DATA_ERROR); // resources.dataOk = false; // REMOVE?
 			return;
 		}
 
@@ -494,7 +496,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	//composite.dataSelector.getPathNEW((ctx.cartesianHi5), dataPath, ODIMPathElem::DATASET); // NEW 2019/05
 	if (dataPath.empty()){
 		mout.warn("create composite: no group found with selector:" , composite.dataSelector );
-		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);  // resources.dataOk = false;
+		ctx.statusFlags.set(drain::Status::DATA_ERROR);  // resources.dataOk = false;
 		return;
 	}
 
@@ -910,7 +912,7 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		ctx.currentHi5 = & ctx.cartesianHi5;
 
 		/// For successfull file io:
-		ctx.statusFlags.unset(drain::StatusFlags::INPUT_ERROR); // resources.inputOk = false;
+		ctx.statusFlags.unset(drain::Status::INPUT_ERROR); // resources.inputOk = false;
 
 		// TODO: replace this with checking n = extractNEW(...)
 		if (dstProduct.has(composite.odim.quantity)){
@@ -918,7 +920,7 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 			Data<CartesianDst> & dstData = dstProduct.getData(composite.odim.quantity); // OR: by odim.quantity
 			if (dstData.data.isEmpty()){
 				mout.warn("empty product data: " , dstData );
-				ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+				ctx.statusFlags.set(drain::Status::DATA_ERROR);
 				ctx.unsetCurrentImages();
 			}
 			else {
@@ -930,13 +932,13 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 				prodHow["angles"].setType(typeid(double));
 				prodHow["angles"] = composite.odim.angles; //composite.metadataMap["how:angles"];
 				ctx.setCurrentImages(dstData.data);
-				ctx.statusFlags.unset(drain::StatusFlags::DATA_ERROR);
+				ctx.statusFlags.unset(drain::Status::DATA_ERROR);
 			}
 		}
 		else {
 			mout.experimental(dstProduct );
 			mout.warn("dstProduct does not have claimed quantity: " , composite.odim.quantity ); // .getFirstData().data
-			// ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+			// ctx.statusFlags.set(drain::Status::DATA_ERROR);
 			// ctx.unsetCurrentImages();
 		}
 

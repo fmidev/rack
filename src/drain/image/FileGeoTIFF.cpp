@@ -70,7 +70,7 @@ std::string FileGeoTIFF::compliancy; // = FileGeoTIFF::flagger.str()
 // PROFILE=[GDALGeoTIFF/GeoTIFF/BASELINE]: Control what non-baseline tags are emitted by GDAL.
 
 template <>
-const drain::FlagResolver::dict_t drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict = {
+const drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict_t drain::EnumDict<FileGeoTIFF::TiffCompliance>::dict = {
 		{"UNDEFINED",   drain::image::FileGeoTIFF::TiffCompliance::UNDEFINED},
 		{"TIFF",        drain::image::FileGeoTIFF::TiffCompliance::TIFF},
 		{"GEOTIFF",     drain::image::FileGeoTIFF::TiffCompliance::GEOTIFF},  // consider PROJ4 ?

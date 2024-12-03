@@ -160,7 +160,7 @@ protected:
 		//void updateStatus(bool update=true) const {
 		// if (update){
 		statusMap["statusFlags"] = statusFlags.value;
-		statusMap["statusKeys"] = statusFlags.getKeys();
+		statusMap["statusKeys"] = statusFlags.str();  //getKeys()
 		//}
 	};
 

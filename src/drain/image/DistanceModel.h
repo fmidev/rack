@@ -235,7 +235,7 @@ public:
 
 	inline
 	void createChain(DistanceNeighbourhood & chain, bool forward=true) const {
-		createChain(chain, pixelAdjacency, forward);
+		createChain(chain, pixelAdjacency.getValue(), forward);
 	}
 
 	virtual

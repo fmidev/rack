@@ -100,7 +100,8 @@ Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
 }
 */
 
-Hi5Tree & RackContext::getHi5Full(h5_role::ivalue_t & filter) {
+//Hi5Tree & RackContext::getHi5Full(h5_role::ivalue_t & filter) {
+Hi5Tree & RackContext::getHi5Full(h5_role::ivalue_t filter) {
 //Hi5Tree & RackContext::getHi5(h5_role::value_t filter) {
 
 	drain::Logger mout( __FILE__, __FUNCTION__);
@@ -108,14 +109,14 @@ Hi5Tree & RackContext::getHi5Full(h5_role::ivalue_t & filter) {
 	// mout.special("Accept empty:", emptyOk);
 	if ((filter & (PRIVATE|SHARED)) == 0){
 		filter = (filter|PRIVATE|SHARED);
-		mout.debug("Implicit PRIVATE|SHARED, accepting both, filter=", h5_role::getShared().getKeys(filter, '|'));
+		mout.debug("Implicit PRIVATE|SHARED, accepting both, filter=", h5_role::getKeysNEW2(filter, '|'));
 	}
 
 	if (filter & PRIVATE){
 		Hi5Tree & dst = getMyHi5(filter);
 		if ((filter & EMPTY) || !dst.empty()){
 			const drain::VariableMap & attr = dst[ODIMPathElem::WHAT].data.attributes;
-			mout.info("Using PRIVATE (", h5_role::getShared().getKeys(filter, '|'),") object=", attr["object"], ", product=", attr["product"], ']');
+			mout.info("Using PRIVATE (", h5_role::getKeysNEW2(filter, '|'),") object=", attr["object"], ", product=", attr["product"], ']');
 			return dst;
 		}
 	}
@@ -124,13 +125,13 @@ Hi5Tree & RackContext::getHi5Full(h5_role::ivalue_t & filter) {
 		Hi5Tree & dst = getResources().baseCtx().getMyHi5(filter);
 		if ((filter & EMPTY) || !dst.empty()){
 			const drain::VariableMap & attr = dst[ODIMPathElem::WHAT].data.attributes;
-			mout.info("Using SHARED (", h5_role::getShared().getKeys(filter, '|'),") object=", attr["object"], ", product=", attr["product"], ']');
+			mout.info("Using SHARED (", h5_role::getKeysNEW2(filter, '|'),") object=", attr["object"], ", product=", attr["product"], ']');
 			return dst;
 		}
 	}
 
 
-	filter = 0;
+	filter = 0; // currently not referenced
 	return empty;
 
 }
@@ -145,7 +146,7 @@ Composite & RackContext::getComposite(h5_role::ivalue_t filter){
 
 	if ((filter & (PRIVATE|SHARED)) == 0){
 		filter = (filter|PRIVATE|SHARED);
-		mout.warn("Unset PRIVATE|SHARED selection, accepting both, filter=", h5_role::getShared().getKeys(filter, '|'));
+		mout.warn("Unset PRIVATE|SHARED selection, accepting both, filter=", h5_role::getKeysNEW2(filter, '|'));
 	}
 
 	if (filter & SHARED){
@@ -285,7 +286,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 			mout.warn("data not found or empty data with selector: " , imageSelector );
 			mout.debug("empty image: " , img.properties );
 			mout.warn("empty image: ", img);
-			this->statusFlags.set(drain::StatusFlags::DATA_ERROR); // resources.dataOk = false;
+			this->statusFlags.set(drain::Status::DATA_ERROR); // resources.dataOk = false;
 		}
 
 		// mout.attention("found: ", img);
@@ -302,7 +303,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 			mout.warn("\t quantity matcher: ", matcher.value, " [", matcher.getType(), ']');
 		}
 
-		this->statusFlags.set(drain::StatusFlags::DATA_ERROR);
+		this->statusFlags.set(drain::Status::DATA_ERROR);
 		//return false;
 	}
 
@@ -356,7 +357,7 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 	if (ctx.currentImage == NULL){
 		mout.warn("image data not found");
 		//mout.warn("data not found or empty data with selector: " , imageSelector );
-		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // resources.dataOk = false;
+		ctx.statusFlags.set(drain::Status::DATA_ERROR); // resources.dataOk = false;
 		return ctx.grayImage;
 	}
 	else {

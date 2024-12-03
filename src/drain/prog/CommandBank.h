@@ -45,6 +45,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+typedef int bank_section_t;
+
 /// Container and execution tools for commands derived from Command.
 /**
  *   # Storage for commands, providing list, help and cloning facilities
@@ -181,7 +183,7 @@ public:
 	void help(std::ostream & ostr = std::cout);
 
 	/// Basic help dump, displays help commands to proceed.
-	void help(Flagger::ivalue_t sectionFilter, std::ostream & ostr = std::cout);
+	void help(FlagResolver::ivalue_t sectionFilter, std::ostream & ostr = std::cout); // Flagger::ivalue_t sectionFilter
 
 	/// Help on a specific command or section.
 	void help(const std::string & key, std::ostream & ostr = std::cout);
@@ -200,11 +202,12 @@ public:
 
 
 	/// Member and methods for special commands.
-	drain::Flagger::ivalue_t scriptTriggerFlag;
+	// drain::Flagger::ivalue_t
+	bank_section_t scriptTriggerFlag;
 
 
 	inline
-	void setScriptTriggerFlag(drain::Flagger::ivalue_t sectionFlag){
+	void setScriptTriggerFlag(bank_section_t sectionFlag){ // drain::Flagger::ivalue_t
 		scriptTriggerFlag = sectionFlag;
 	};
 

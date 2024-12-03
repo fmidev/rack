@@ -44,7 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/Sprinter.h>
 //#include <drain/FlexibleVariable.h>
 
-#include "Flags.h"
+#include "EnumFlags.h"
 #include "ReferenceMap.h"
 #include "TreeUnordered.h"
 

@@ -157,7 +157,9 @@ bool ODIMPathElemMatcher::extractPrefix(const std::string & prefix, bool indexed
 		//flags = prefix;
 		//flags.set(prefix);
 		//flags.set(flags.getValue(prefix));
-		flags.assign(flags.getValue(prefix));
+		//flags.assign(flags.getValue(prefix));
+		//flags.set(flags.getValue(prefix)); // 2024/12
+		flags.set(prefix); // 2024/12
 		// mout.warn( << " => flags=" << flags << '=' << flags.value );
 		if (indexed){
 			if (flags.isSet(ODIMPathElem::ARRAY)){ //  value & ODIMPathElem::ARRAY){
@@ -182,7 +184,7 @@ bool ODIMPathElemMatcher::extractPrefix(const std::string & prefix, bool indexed
 		mout.note(" -> dict: ", ODIMPathElem::getDictionary());
 		mout.note(" -> flag-sep: ", flags.separator);
 		mout.note(" -> dict-sep: ",  ODIMPathElem::getDictionary().separator);
-		mout.note(" -> value: ",  flags.getValue(prefix, '|'));
+		//mout.note(" -> value: ", drain::FlagResolver::getKeys(flags.getDict(), prefix, '|')); //  flags.get(prefix, '|'));// 2024/12
 	return false;
 	}
 

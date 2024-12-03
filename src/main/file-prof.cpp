@@ -126,7 +126,7 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 
 	const Data<PolarSrc> & srcMainData = product.getData(mainQuantity); // intervals//product.getData("HGHT"); // intervals
 	if (srcMainData.data.isEmpty()){
-		ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+		ctx.statusFlags.set(drain::Status::DATA_ERROR);
 		mout.warn("zero dimension data (for " , mainQuantity , "), giving up." );
 		return;
 	}

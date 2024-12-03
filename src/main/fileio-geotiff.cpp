@@ -42,7 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-const drain::image::FileTIFF::dict_t & CmdGeoTiff::compressionDict(drain::image::FileTIFF::getCompressionDict());
+//const drain::image::FileTIFF::dict_t & CmdGeoTiff::compressionDict(drain::image::FileTIFF::getCompressionDict());
 
 
 void CmdGeoTiff::exec() const {
@@ -54,15 +54,15 @@ void CmdGeoTiff::exec() const {
 
 	/// TODO. develop FileTIFF::dict_t as Single-Flagger etc
 	if (compression.empty()){
-
-		const drain::image::FileTIFF::dict_t::value_t value = drain::FlagResolver::getValue(compressionDict, compression, '\0');
-		mout.special("Resolved: '", compression, "' => ", value, " == ", drain::FlagResolver::getKeys(compressionDict, value));
-		if (compressionDict.hasValue(value)){
+		// drain::SingleFlagger<drain::image::FileTIFF::compressionDict::value_t> flagger;
+		const drain::image::FileTIFF::dict_t::value_t value = drain::FlagResolver::getIntValue(drain::image::FileTIFF::compressionDict, compression, '\0');
+		mout.special("Resolved: '", compression, "' => ", value, " == ", drain::FlagResolver::getKeys(drain::image::FileGeoTIFF::compressionDict, value));
+		if (drain::image::FileGeoTIFF::compressionDict.hasValue(value)){
 			drain::image::FileTIFF::defaultCompression = value;
 		}
 		else {
-			mout.fail("Multiple compression method: ", compression , " == ", value, " not supported, use: ", compressionDict);
-			mout.warn("Keeping:  <= '", compressionDict.getKey(drain::image::FileTIFF::defaultCompression), "' (", drain::image::FileTIFF::defaultCompression, ')');
+			mout.fail("Multiple compression method: ", compression , " == ", value, " not supported, use: ", drain::image::FileGeoTIFF::compressionDict);
+			mout.warn("Keeping:  <= '", drain::image::FileGeoTIFF::compressionDict.getKey(drain::image::FileTIFF::defaultCompression), "' (", drain::image::FileTIFF::defaultCompression, ')');
 		}
 
 	}

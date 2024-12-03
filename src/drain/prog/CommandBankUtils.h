@@ -197,7 +197,8 @@ public:
 	inline
 	CmdExecScript() :
 		BasicCommand(__FUNCTION__, "Execute script.") {
-		const drain::Flagger::ivalue_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
+		// const drain::Flagger::ivalue_t
+		cmd_section_type TRIGGER = drain::Static::get<drain::TriggerSection>().index;
 		this->section |= TRIGGER;
 		/*
 		drain::Logger mout(__FILE__, __FUNCTION__);

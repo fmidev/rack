@@ -37,14 +37,26 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+template <>
+const drain::EnumDict<Status>::dict_t drain::EnumDict<Status>::dict = {
+		DRAIN_ENUM_ENTRY(drain, INPUT_ERROR),
+		DRAIN_ENUM_ENTRY(drain, DATA_ERROR),
+		DRAIN_ENUM_ENTRY(drain, METADATA_ERROR),
+		DRAIN_ENUM_ENTRY(drain, OUTPUT_ERROR),
+		DRAIN_ENUM_ENTRY(drain, COMMAND_ERROR),
+		DRAIN_ENUM_ENTRY(drain, PARAMETER_ERROR),
+};
 
+
+
+/*
 const Flagger::ivalue_t StatusFlags::INPUT_ERROR     =  StatusFlags::addEntry("INPUT");
 const Flagger::ivalue_t StatusFlags::DATA_ERROR      =  StatusFlags::addEntry("DATA");
 const Flagger::ivalue_t StatusFlags::METADATA_ERROR  =  StatusFlags::addEntry("METADATA");
 const Flagger::ivalue_t StatusFlags::OUTPUT_ERROR    =  StatusFlags::addEntry("OUTPUT");
 const Flagger::ivalue_t StatusFlags::COMMAND_ERROR   =  StatusFlags::addEntry("COMMAND");
 const Flagger::ivalue_t StatusFlags::PARAMETER_ERROR =  StatusFlags::addEntry("PARAMETER");
-
+*/
 
 /*
 StatusFlags::StatusFlags(): Flagger(ownValue, getSharedDict(), separator) {

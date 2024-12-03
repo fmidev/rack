@@ -32,11 +32,21 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define STATUS_FLAGS_H_
 
 
-#include "GlobalFlags.h"
+#include "EnumFlags.h"
 
 namespace drain
 {
 
+
+enum Status {UNKNOWN_ERROR=0, INPUT_ERROR=1, DATA_ERROR=2, METADATA_ERROR=4, OUTPUT_ERROR=8, COMMAND_ERROR=16, PARAMETER_ERROR=32 };
+
+template <>
+const drain::EnumDict<Status>::dict_t drain::EnumDict<Status>::dict;
+
+typedef drain::EnumFlagger<drain::MultiFlagger<Status> > StatusFlags;
+
+
+/*
 
 struct status_flag_id {
 	// For now, just an identity (unique placeholder for the global flag dictionary).
@@ -64,6 +74,7 @@ public:
 	static
 	const drain::Flagger::ivalue_t PARAMETER_ERROR;// = 16;
 };
+	*/
 
 } // ::drain
 

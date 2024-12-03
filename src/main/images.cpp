@@ -162,7 +162,7 @@ public:
 
 		if (dstImg.isEmpty()){
 			mout.warn("could not get ModifiableImage" );
-			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+			ctx.statusFlags.set(drain::Status::DATA_ERROR);
 			return dstImg;
 		}
 		/// Add empty alphaSrc channel
@@ -205,7 +205,7 @@ public:
 		drain::image::Image & dstImg = ctx.getModifiableImage();
 		if (dstImg.isEmpty()){
 			mout.warn("could not get ModifiableImage" );
-			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+			ctx.statusFlags.set(drain::Status::DATA_ERROR);
 			return;
 		}
 		/// Add empty alphaSrc channel
@@ -292,7 +292,7 @@ public:
 		drain::image::Image & dstImg = ctx.getModifiableImage(); //ImageKit::getModifiableImage(ctx);
 		if (dstImg.isEmpty()){
 			mout.warn("could not get ModifiableImage" );
-			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+			ctx.statusFlags.set(drain::Status::DATA_ERROR);
 			return;
 		}
 		mout.special("dst image/plain: " , dstImg );
@@ -432,7 +432,7 @@ public:
 		drain::image::Image & img = ctx.getModifiableImage(); //ImageKit::getModifiableImage(ctx);
 		if (img.isEmpty()){
 			mout.warn("could not get ModifiableImage" );
-			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+			ctx.statusFlags.set(drain::Status::DATA_ERROR);
 			return;
 		}
 
@@ -514,12 +514,12 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
 
-		if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR)){
+		if (ctx.statusFlags.isSet(drain::Status::INPUT_ERROR)){
 			mout.warn("input failed, skipping" );
 			return;
 		}
 
-		if (ctx.statusFlags.isSet(drain::StatusFlags::DATA_ERROR)){   // !resources.dataOk){
+		if (ctx.statusFlags.isSet(drain::Status::DATA_ERROR)){   // !resources.dataOk){
 			mout.warn("data error, skipping");
 			return;
 		}
@@ -598,7 +598,7 @@ public:
 		if (graySrc.isEmpty()){
 			if (!ctx.currentHi5->empty()){
 				mout.fail("hdf5 data exists, but selected gray image is empty, skipping.");
-				ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR); // selector failed
+				ctx.statusFlags.set(drain::Status::DATA_ERROR); // selector failed
 			}
 			else {
 				mout.info("hdf5 data empty");
@@ -834,7 +834,7 @@ public:
 			size_t channels = data.data.getChannelCount();
 			if (channels == 0){
 				mout.warn("operation failed, result has 0 channels" );
-				ctx.statusFlags.set(drain::StatusFlags::COMMAND_ERROR);
+				ctx.statusFlags.set(drain::Status::COMMAND_ERROR);
 				ctx.unsetCurrentImages();
 			}
 			else if (channels >= 3){
@@ -1163,7 +1163,7 @@ public:
 		drain::image::Image & dst = ctx.getModifiableImage(); //ImageKit::getModifiableImage(ctx);
 		if (dst.isEmpty()){
 			mout.warn("could not get ModifiableImage" );
-			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+			ctx.statusFlags.set(drain::Status::DATA_ERROR);
 			return;
 		}
 

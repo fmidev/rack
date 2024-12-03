@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Log.h>
 #include "drain/util/BeanLike.h"
+#include "drain/util/Flags.h"
 #include "drain/util/ReferenceMap.h"
 #include "drain/util/VariableMap.h"
 
@@ -54,6 +55,7 @@ namespace drain {
 class Command : public Contextual {
 
 public:
+
 
 	inline
 	Command(): section(0){}; //
@@ -146,7 +148,7 @@ public:
 
 
 	inline
-	Command & addSection(drain::Flagger::ivalue_t i){
+	Command & addSection(int i){ // drain::FlaggerBase<>::ivalue_t
 		section |= i;
 		return *this;
 	}
@@ -210,7 +212,8 @@ public:
 	/**
 	 *  Typically, zero section is for "hidden" commands not appearing in help dumps.
 	 */
-	int section = 1;
+	typedef int cmd_section_type;
+	cmd_section_type section = 1;
 
 	/// After executing this command run a routine, if defined.
 	// bool execRoutine; -> see section flag TriggerSection;

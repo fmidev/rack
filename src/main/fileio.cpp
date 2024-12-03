@@ -111,8 +111,8 @@ public:
 		pngConf.link("compression", drain::image::FilePng::compressionLevel);
 
 		svgConf.link("group", ctx.svgPanelConf.groupName); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
-		svgConf.link("orientation", svgConfOrientation, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Orientation>::dict.getKeys()).str()); // init clash
-		svgConf.link("direction",   svgConfDirection,   drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Direction>::dict.getKeys()).str());   // init clash
+		svgConf.link("orientation", svgConfOrientation, drain::sprinter(drain::EnumDict<drain::image::LayoutSVG::Orientation>::dict.getKeys()).str()); // init clash
+		svgConf.link("direction",   svgConfDirection,   drain::sprinter(drain::EnumDict<drain::image::LayoutSVG::Direction>::dict.getKeys()).str());   // init clash
 		svgConf.link("max", ctx.svgPanelConf.maxPerGroup, "max per row/column"); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 		svgConf.link("legend", svgConfLegend, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Legend>::dict.getKeys()).str());
 		svgConf.link("title", ctx.svgPanelConf.title); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
@@ -122,7 +122,7 @@ public:
 #ifndef USE_GEOTIFF_NO
 
 		gtiffConf.link("tile", FileTIFF::defaultTile.tuple(), "<width>[:<height>]");
-		gtiffConf.link("compression", FileTIFF::defaultCompression, drain::sprinter(FileTIFF::getCompressionDict(), "|", "<>").str());
+		gtiffConf.link("compression", FileTIFF::defaultCompression, drain::sprinter(FileTIFF::compressionDict, "|", "<>").str());
 		gtiffConf.link("compliancy", FileGeoTIFF::compliancy = "EPSG:STRICT", drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str());
 		// gtiffConf.link("level", FileTIFF::defaultCompressionLevel, "1..10");
 		// gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.str(), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str()); // drain::sprinter(FileGeoTIFF::flagger.getDict(), "|", "<>").str());
@@ -186,15 +186,15 @@ public:
 			handleParams(svgConf, params);
 			// write params
 
-			ctx.svgPanelConf.orientation.set(svgConfOrientation);
-			ctx.svgPanelConf.direction.set(svgConfDirection);
+			ctx.svgPanelConf.layout.setOrientation(svgConfOrientation);  //orientation.set(svgConfOrientation);
+			ctx.svgPanelConf.layout.setDirection(svgConfDirection);
 		}
 #ifndef USE_GEOTIFF_NO
 		else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
 			handleParams(gtiffConf, params);
 			std::string s; // commas for Flagger
 			drain::StringTools::replace(FileGeoTIFF::compliancy, ":", ",", s); //FileGeoTIFF::compliancy);
-			FileGeoTIFF::compliancyFlagger.assign(s);
+			FileGeoTIFF::compliancyFlagger.set(s);
 		}
 #endif
 		else if ((format == "tre")||(format == "dot")){
@@ -338,12 +338,12 @@ void CmdOutputFile::exec() const {
 	}
 	*/
 
-	if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR)){
+	if (ctx.statusFlags.isSet(drain::Status::INPUT_ERROR)){
 		mout.warn("input failed, skipping");
 		return;
 	}
 
-	if (ctx.statusFlags.isSet(drain::StatusFlags::DATA_ERROR)){
+	if (ctx.statusFlags.isSet(drain::Status::DATA_ERROR)){
 		mout.warn("data error, skipping");
 		return;
 	}
@@ -432,7 +432,7 @@ void CmdOutputFile::exec() const {
 		mout.info("Retrieved image: ", srcImage, " [", srcImage.properties.get("what:quantity", ""), "]");
 
 		if (srcImage.isEmpty()){
-			ctx.statusFlags.set(drain::StatusFlags::DATA_ERROR);
+			ctx.statusFlags.set(drain::Status::DATA_ERROR);
 			mout.warn("empty data, skipped");
 			return;
 		}
@@ -459,13 +459,13 @@ void CmdOutputFile::exec() const {
 			//FileGeoTIFF::write(filename, src); //, geoTIFF.width, geoTIFF.height);
 			//
 #else
-			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR || drain::StatusFlags::OUTPUT_ERROR);
+			ctx.statusFlags.set(drain::Status::PARAMETER_ERROR, drain::Status::OUTPUT_ERROR);
 			mout.error("No TIFF format support compiled");
 #endif
 		}
 		else {
 			// This should be impossible
-			ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR || drain::StatusFlags::OUTPUT_ERROR);
+			ctx.statusFlags.set(drain::Status::PARAMETER_ERROR, drain::Status::OUTPUT_ERROR);
 			mout.error("unknown file name extension: ", filepath);
 		}
 
@@ -831,8 +831,8 @@ public:
 
 FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // : drain::CommandSection("general") {
 
-	const drain::Flagger::ivalue_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
-	const drain::Flagger::ivalue_t IMAGES  = drain::Static::get<ImageSection>().index;
+	const drain::FlagResolver::ivalue_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
+	const drain::FlagResolver::ivalue_t IMAGES  = drain::Static::get<ImageSection>().index;
 
 	install<CmdInputFile>('i').addSection(TRIGGER);
 	install<CmdOutputFile>('o');

@@ -62,7 +62,7 @@ void CartesianBBoxTest::exec() const {
 
 	if ( ! ctx.composite.bboxIsSet() ){
 		mout.warn("Bounding box undefined, skipping." );
-		ctx.statusFlags.set(drain::StatusFlags::PARAMETER_ERROR);
+		ctx.statusFlags.set(drain::Status::PARAMETER_ERROR);
 		return;
 	}
 
@@ -164,11 +164,11 @@ void CartesianBBoxTest::exec() const {
 
 	if (overlap){
 		// ctx.statusFlags.set(RackContext::BBOX_STATUS);
-		ctx.statusFlags.unset(drain::StatusFlags::INPUT_ERROR);
+		ctx.statusFlags.unset(drain::Status::INPUT_ERROR);
 	}
 	else {
 		// ctx.statusFlags.unset(RackContext::BBOX_STATUS);
-		ctx.statusFlags.set(drain::StatusFlags::INPUT_ERROR);
+		ctx.statusFlags.set(drain::Status::INPUT_ERROR);
 	}
 
 	if (mode > 1){

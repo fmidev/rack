@@ -50,10 +50,10 @@ const drain::EnumDict<ProductConf::OutputDataVerbosity>::dict_t  drain::EnumDict
 
 /// Copy constructor.
 ProductConf::ProductConf(const ProductConf & conf) :
-		dataSelector(conf.dataSelector),
-		targetEncoding(conf.targetEncoding),
-		appendResults(conf.appendResults),
-		outputDataVerbosity(conf.outputDataVerbosity){
+				dataSelector(conf.dataSelector),
+				targetEncoding(conf.targetEncoding),
+				appendResults(conf.appendResults),
+				outputDataVerbosity(conf.outputDataVerbosity){
 	// dataSelector.updateBean();  ctr calls updateBean()!
 }
 

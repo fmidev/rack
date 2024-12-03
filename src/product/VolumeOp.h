@@ -185,7 +185,7 @@ Hi5Tree & VolumeOp<M>::processVolume(const Hi5Tree &src, Hi5Tree &dst) const{
 			sweeps.insert(DataSetMap<PolarSrc>::value_type(datetime, DataSet<PolarSrc>(srcDataSet, this->dataSelector.getQuantitySelector())));
 		}
 		else {
-			mout.warn("datetime =", datetime, " already added?, skipping ",  parent);
+			// mout.warn("datetime =", datetime, " already added?, skipping ",  parent);
 		}
 
 		/*

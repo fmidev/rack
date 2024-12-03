@@ -45,7 +45,7 @@
 </GDALMetadata>
  */
 
-#include "drain/util/Flags.h"
+#include "drain/util/EnumFlags.h"
 
 template <>
 const drain::EnumDict<drain::image::GDAL::tag_t>::dict_t drain::EnumDict<drain::image::GDAL::tag_t>::dict = {
@@ -53,17 +53,16 @@ const drain::EnumDict<drain::image::GDAL::tag_t>::dict_t drain::EnumDict<drain::
 		{"USER", drain::image::GDAL::USER}
 };
 
+/*
 class MyClassList : public drain::ClassListXML {
-
 public:
-
 	template <typename E>
 	inline  // drain::EnumFlagger<
 	void add2(const E & arg) {
 		insert(drain::EnumDict<E>::dict.getKey(arg));
 	};
-
-};
+}
+*/
 
 
 enum Luokko {EKA=1, TOKA=2};
@@ -102,60 +101,31 @@ int main(int argc, char **argv){
 	}
 	*/
 
-	//drain::TreeXML xml;
-	MyClassList list;
+	/*
+	drain::ClassListXML list;
 	list.add("A", "B", "C");
 	list.add("Mika");
-	list.add2(drain::image::GDAL::ROOT);
-	list.add2(drain::image::GDAL::USER);
-
+	list.add(drain::image::GDAL::ROOT);
+	list.add(drain::image::GDAL::USER);
 	std::cerr << list << '\n';
-
+	*/
 
 	drain::image::TreeGDAL gdal(drain::image::GDAL::ROOT);
-	gdal["first"](drain::image::GDAL::ITEM) = "setting";
-	gdal(std::string("second"))(drain::image::GDAL::ITEM) = 12.345;
-
+	gdal["first"] = 12.345;
+	gdal(std::string("second"))(drain::image::GDAL::ITEM) = 34.5;
+	gdal(std::string("3rd"))(drain::image::GDAL::ITEM) = "meters";
+	gdal["3rd"]->set("NAME", "units");
+	/*
 	drain::image::TreeGDAL & sub = gdal["first"];
 	sub("John") = 123.455;
-
 	drain::image::TreeGDAL & sub2 = gdal("second");
 	sub2("Jane") = true;
+	*/
 
 	drain::TreeUtils::dump(gdal);
 
 	std::cout << gdal;
 
-	/*
-	html["header"](NodeHTML::HEAD);
-	TreeHTML & style = html["header"]["style"](BaseHTML::STYLE);
-	style->setStyle("table", "block-size:1; entry-pentry:rgb(0,1,1)");
-	style->setStyle("div",  "color: blue; line-width: 20pix");
-	style->set("span",  "color:  blue; line-width:  20pix");
-
-	html["body"](NodeHTML::BODY);
-	html["body"]->set("name", "document");
-	html["body"]->set("owner", "state");
-	html["body"]->set("style", "fill:red");
-	html["body"]->set("style", "stroke:blue");
-	html["body"]->setStyle("opacity", 0.5);
-	html["body"]->setStyle("transform:mika; keijo:mäki");
-
-	html["body"]["p"](NodeHTML::P) = "Some text.";
-	html["body"]["p"]->set("style", "fill:red");
-
-	html["body"]["logo"](NodeHTML::IMG)->set("src", "image_url");
-
-	html("body/rauno/käki/mäkinen");
-	//html["body"].append("span");
-
-	TreeXMLvisitor handler;
-	TreeUtils::traverse(handler, html);
-	std::cout << html;
-
-	const TreeHTML & htm = html;
-	TreeUtils::traverse(handler, htm);
-	*/
 
 	return 0;
 }

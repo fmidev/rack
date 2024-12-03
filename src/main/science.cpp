@@ -68,7 +68,7 @@ struct ScienceSection : public drain::CommandSection {
 ScienceModule::ScienceModule(){ // : CommandSection("science"){
 
 	//ScienceCmdWrapper<>::setSectionTitle("science");
-	drain::Flagger::ivalue_t section = drain::Static::get<ScienceSection>().index;
+	drain::FlagResolver::ivalue_t section = drain::Static::get<ScienceSection>().index;
 
 	//const ScienceModule & mod = drain::Static::get<ScienceModule>();
 

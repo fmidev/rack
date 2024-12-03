@@ -98,40 +98,6 @@ const std::string RackSVG::IMAGE_FRAME("imageFrame");
 
 
 
-/*
-const std::string  & CmdBaseSVG::getTextClass(const std::string & key, const std::string & defaultClass){
-
-	static
-	const drain::ClassListXML timeClass = {"time", "date", "starttime"};
-
-	static
-	const drain::ClassListXML locationClass = {"site", "src", "lat", "lon", "PLC", "NOD", "WMO"};
-
-	if (timeClass.has(key)){
-		static const std::string s("TIME");
-		return s;
-	}
-	else if (locationClass.has(key)){
-		static const std::string s("LOCATION");
-		return s;
-	}
-	else {
-		// static const std::string empty;
-		// return empty;
-		return defaultClass;
-	}
-
-}
-*/
-
-
-
-
-
-
-
-
-
 //}
 
 
@@ -270,6 +236,8 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 
 	drain::image::TreeSVG & panelGroup = getPanel(ctx, filepath);
 
+	panelGroup->setAlignAnchor("image");
+
 	drain::image::TreeSVG & image = panelGroup["image"](NodeSVG::IMAGE); // +EXT!
 	image->setId(); // autom.
 	image->addClass(drain::image::AlignSVG::ANCHOR);
@@ -283,16 +251,24 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	// DEBUG: (may be fatal for input.sh etc.)
 	// drain::image::NodeSVG::toStream(std::cout, image);
 	drain::image::TreeSVG & rect = panelGroup["rect"](NodeSVG::RECT);
-	// rect->addClass(RackSVG::IMAGE_FRAME); // perhaps deprecating, above ANCHOR replaces
-	rect->addClass(drain::image::AlignSVG::RELATIVE); // FLOAT
-	rect->addClass(drain::image::AlignSVG::REF_LEFT); // FLOAT
-	rect->addClass(drain::image::AlignSVG::CENTER);
 	rect->set("width",  160); // debug
 	rect->set("height", 100); // debug
 	rect->set("fill", "none"); // just to make sure...
-	rect->set("stroke", "black");
-	rect->set("stroke-width", "2px");
-	rect->set("border-style", "dotted");
+	rect->setStyle("stroke", "black");
+	rect->setStyle("stroke-width", "2px");
+	rect->setStyle("border-style", "dotted");
+	rect->setAlignInside(AlignSVG2::HORZ, AlignSVG2::MAX);
+	rect->setAlignInside(AlignSVG2::VERT, AlignSVG2::MID);
+
+	drain::image::TreeSVG & rect2 = panelGroup["rect2"](NodeSVG::RECT);
+	rect2->set("width",  150); // debug
+	rect2->set("height", 120); // debug
+	rect2->set("fill", "none"); // just to make sure...
+	rect2->setStyle("stroke", "green");
+	rect2->setStyle("stroke-width", "2px");
+	rect2->setStyle("border-style", "dashed");
+	rect2->setAlignOutside(AlignSVG2::HORZ, AlignSVG2::MID);
+	rect2->setAlignOutside(AlignSVG2::VERT, AlignSVG2::MAX);
 
 	// drain::image::TreeSVG & rect2 =
 	// addRectangleGroup(ctx, {123,234});
@@ -490,11 +466,15 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 		}
 	}
 
+
+	drain::Point2D<drain::image::svg::coord_t> start(0,0);
+	TreeUtilsSVG::superAlign(mainGroup, start);
+
+	/*
 	/// Search for PANEL's: all the containers insider which elements will be aligned.
 	drain::image::NodeSVG::path_list_t pathList;
 	drain::image::NodeSVG::findByClass(mainGroup, drain::image::AlignSVG::ALIGN_GROUP, pathList);
 
-	drain::Point2D<drain::image::svg::coord_t> start(0,0);
 
 	// NEW
 	for (const drain::image::NodeSVG::path_t & p: pathList){
@@ -503,6 +483,7 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 		drain::image::TreeSVG & group = mainGroup[p](NodeSVG::GROUP);
 		TreeUtilsSVG::superAlign(group, start);
 	}
+	*/
 
 
 	drain::Frame2D<int> mainFrame; // OLD: remove this later
@@ -811,12 +792,12 @@ void CmdOutputPanel::exec() const {
 	}
 	*/
 
-	if (ctx.statusFlags.isSet(drain::StatusFlags::INPUT_ERROR)){
+	if (ctx.statusFlags.isSet(drain::Status::INPUT_ERROR)){
 		mout.warn("input failed, skipping");
 		return;
 	}
 
-	if (ctx.statusFlags.isSet(drain::StatusFlags::DATA_ERROR)){
+	if (ctx.statusFlags.isSet(drain::Status::DATA_ERROR)){
 		mout.warn("data error, skipping");
 		return;
 	}

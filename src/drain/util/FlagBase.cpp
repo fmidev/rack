@@ -31,51 +31,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "Path.h"
 
 
-//#include <stdexcept>
-#include <drain/Log.h>
+#include <stdexcept>
 #include <iostream>
-#include "FlagsOld.h"
-//#include "String.h"
+
+#include <drain/Log.h>
+#include <drain/String.h>
+
+#include "FlagBase.h"
 
 namespace drain {
 
 
-const Flagger::dict_t::keylist_t & Flagger::keys() const {
-
-	#pragma omp critical
-	{
-		keyList.clear();
-		for (const dict_t::entry_t & entry: dictionary){
-			if ((entry.second > 0) && ((entry.second & value) == entry.second)){ // fully covered in value
-				keyList.push_back(entry.first);
-			}
-		}
-	}
-
-	return keyList;
-}
-
-
-/// Set flags
-void Flagger::assign(const key_t & args){
-
-	if (args.empty()){
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		// Should it reset or skip?
-		mout.warn("Skipping empty assignment" );
-		return;
-	}
-
-	if (args == "0"){
-		reset();
-		return;
-	}
-
-	value = getValue(args);
-
-}
-
-const drain::SprinterLayout Flagger::flagDictLayout(",", ";", "=","");
+const typename FlagResolver::ivalue_t FlagResolver::ALL = ~FlagResolver::ivalue_t(0);
 
 
 
