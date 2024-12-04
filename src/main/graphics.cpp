@@ -45,7 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-typedef drain::image::AlignSVG alignSvg;
+//typedef drain::image::AlignSVG alignSvg;
 
 int MetaDataPrunerSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
 	// std::cerr << __FUNCTION__ << ':' << path << std::endl;
@@ -271,7 +271,9 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 			text->addClass("imageTitle");
 
 			if (IS_TIME){
-				text->addClass(RackSVG::TIME,  alignSvg::BOTTOM, alignSvg::LEFT); // CmdBaseSVG::FLOAT,
+				text->addClass(RackSVG::TIME); // ,  alignSvg::BOTTOM, alignSvg::LEFT); // CmdBaseSVG::FLOAT,
+				text->setAlignInside(AlignSVG2::VERT, AlignSVG2::MAX); // = BOTTOM
+				text->setAlignInside(AlignSVG2::HORZ, AlignSVG2::MIN); // = LEFT
 				// text->set("y", y + 40); // temporary
 				/* TODO:
 				std::stringstream sstr;
@@ -281,7 +283,10 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 			}
 
 			if (IS_LOCATION){
-				text->addClass(RackSVG::LOCATION, alignSvg::TOP, alignSvg::RIGHT); // CmdBaseSVG::FLOAT,
+				text->addClass(RackSVG::LOCATION); // , alignSvg::TOP, alignSvg::RIGHT); // CmdBaseSVG::FLOAT,
+				text->setAlignInside(AlignSVG2::VERT, AlignSVG2::MAX); // = BOTTOM
+				text->setAlignInside(AlignSVG2::HORZ, AlignSVG2::MAX); // = RIGHT
+
 				// text->set("y", y + 60); // temporary
 			}
 
@@ -387,7 +392,7 @@ public:
 		drain::Frame2D<double> frame = {200,400};
 
 		drain::image::TreeSVG & rectGroup = RackSVG::getCurrentGroup(ctx)[value](NodeSVG::GROUP);
-		rectGroup->addClass(drain::image::AlignSVG::PANEL); // needed?
+		// rectGroup->addClass(drain::image::AlignSVG::PANEL); // needed?
 		const std::string ANCHOR1("rekku");
 		rectGroup->setAlignAnchor(ANCHOR1);
 
@@ -395,7 +400,7 @@ public:
 		rect->set("width", frame.width);
 		rect->set("height", frame.height);
 		rect->set("label", ANCHOR1);
-		rect->addClass(AlignSVG::ANCHOR); // maybe good olf
+		// rect->addClass(AlignSVG::ANCHOR); // maybe good olf
 		//image->addClass(CmdBaseSVG::FLOAT);
 		rect->setStyle("fill", "red");
 		// rect["basename"](drain::image::svg::TITLE) = "test";
@@ -427,7 +432,7 @@ public:
 
 				drain::image::TreeSVG & textBox = textGroup[ANCHOR](NodeSVG::RECT);
 				// textBox->set("label", ANCHOR);
-				textBox->addClass(AlignSVG::ANCHOR); // maybe good olf
+				// textBox->addClass(AlignSVG::ANCHOR); // maybe good olf
 				textGroup->setAlignAnchor(ANCHOR);
 				textBox->setAlign(AlignPos::OBJ, ax, v);
 				textBox->setAlign(AlignPos::REF,  ax, v);

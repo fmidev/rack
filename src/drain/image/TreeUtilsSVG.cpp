@@ -128,7 +128,9 @@ bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<NodeSVG::coord_t
 void TreeUtilsSVG::getBoundingFrame(const TreeSVG & group, Frame2D<int> & frame, LayoutSVG::Orientation orientation){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.unimplemented(__FUNCTION__);
 
+	/*
 	if (orientation == LayoutSVG::UNDEFINED_ORIENTATION){
 		orientation = defaultConf.layout.orientation;
 		if (orientation == LayoutSVG::UNDEFINED_ORIENTATION){
@@ -161,6 +163,7 @@ void TreeUtilsSVG::getBoundingFrame(const TreeSVG & group, Frame2D<int> & frame,
 			}
 		}
 	}
+	*/
 
 	// if (mout.isDebug()){}
 	// group->set("data-frame", frame.tuple());
@@ -172,7 +175,9 @@ void TreeUtilsSVG::alignSequenceOLD(TreeSVG & group, const drain::Frame2D<int> &
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug("aligning elems of group ", group->get("name", "?"));
+	mout.unimplemented(__FUNCTION__);
 
+		/*
 	if (orientation == LayoutSVG::UNDEFINED_ORIENTATION){
 		orientation = TreeUtilsSVG::defaultConf.layout.orientation;
 		if (orientation == LayoutSVG::UNDEFINED_ORIENTATION){
@@ -269,7 +274,7 @@ void TreeUtilsSVG::alignSequenceOLD(TreeSVG & group, const drain::Frame2D<int> &
 
 	}
 
-
+	*/
 }
 
 
@@ -277,24 +282,16 @@ void TreeUtilsSVG::alignSequenceOLD(TreeSVG & group, const drain::Frame2D<int> &
 const std::string TreeUtilsSVG::attr_FRAME_REFERENCE("data-frame-ref");
 
 
-#define ENUM_ENTRY(NSPACE, ARG1, ...) {#ARG1, NSPACE::ARG1}
-//, ENUM_ENTRY(NSPACE, __VA_ARGS__)
-#define _ARG2(_0, _1, _2, ...) _2
-#define NARG2(...) _ARG2(__VA_ARGS__, 2, 1, 0)
-
-//#define MAP_ENTRY(NSPACE, ARG1, ...) ({#ARG1, NSPACE::ARG1}, ENUM_ENTRY(NSPACE, ...) )
-
-std::map<std::string,int> m = {
-		{"mika", 1}
-};
-
 // #define  DRAIN_ENUM_NAMESPACE drain::image::AlignSVG
+/*
 template <>
-const drain::EnumDict<AlignSVG>::dict_t  drain::EnumDict<AlignSVG>::dict = {
+const drain::EnumDict<AlignSVG_FOO>::dict_t  drain::EnumDict<AlignSVG_FOO>::dict = {
+
 		//ENUM_ENTRY(drain::image::AlignSVG, PANEL),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, ALIGN_GROUP),
+
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG_FOO, ALIGN_GROUP),
 		///
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG_FOO, LEFT),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
@@ -313,20 +310,25 @@ const drain::EnumDict<AlignSVG>::dict_t  drain::EnumDict<AlignSVG>::dict = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, ANCHOR), //
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RELATIVE), //
 };
-// #undef  DRAIN_ENUM_NAMESPACE
+ */
 
 
 void TreeUtilsSVG::markAligned(const TreeSVG & elem, TreeSVG & alignedElem){
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.unimplemented<LOG_ERR>();
+	/*
 	alignedElem->addClass(AlignSVG::FLOAT);
 	alignedElem->addClass(AlignSVG::ALIGN);
 	alignedElem->set(attr_FRAME_REFERENCE, elem->getId());
+	*/
 }
 
 
 void TreeUtilsSVG::alignText(TreeSVG & group){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-
+	mout.unimplemented<LOG_ERR>();
+	/*
 	drain::image::NodeSVG::path_list_t pathList;
 
 	//mout.note("koe: ", group->getTag(), " name: ", group->get("name", "?"));
@@ -426,7 +428,7 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 
 
 	}
-
+	*/
 }
 
 
@@ -439,12 +441,12 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 void TreeUtilsSVG::alignDomains(TreeSVG & group){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.unimplemented<LOG_ERR>();
 
 	drain::image::NodeSVG::path_list_t paths;
+	/*
 	drain::image::NodeSVG::findByClass(group, ALIGN_GROUP, paths);
-
 	// mout.accept<LOG_WARNING>("yes accept: ", drain::EnumDict<AlignSVG>::dict.getKey(FLOAT));
-
 	// const drain::Point2D<double> textOffset(5.0, 5.0);
 
 	Point2D<double> pos = {0.0, 0.0};
@@ -453,6 +455,7 @@ void TreeUtilsSVG::alignDomains(TreeSVG & group){
 		mout.attention("Aligning ALIGN_GROUP at ", path);
 		alignPanels(group(path), pos);
 	}
+	*/
 
 }
 
@@ -679,7 +682,9 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, const Point2D<svg::coord_t> & of
 void TreeUtilsSVG::alignPanels(TreeSVG & alignGroup, Point2D<double> &startPos){ // <- or a Frame?
 
 	Logger mout(__FILE__, __FUNCTION__);
+	mout.unimplemented<LOG_ERR>();
 
+	/*
 	NodeSVG::path_list_t panelPaths;
 	NodeSVG::findByClass(alignGroup, PANEL, panelPaths); // TODO: (non)recursive NodeSVG::findByClass with pathElem ?!
 
@@ -731,7 +736,7 @@ void TreeUtilsSVG::alignPanels(TreeSVG & alignGroup, Point2D<double> &startPos){
 			// pp.str()
 			group.swap(panelGroup);
 			drain::Output output(panelGroup->getId() + ".svg");
-			NodeSVG::docToStream(output, tmp);
+			NodeSVG::docToStream(output.getStream(), tmp);
 			panelGroup.swap(group);
 		}
 
@@ -748,7 +753,7 @@ void TreeUtilsSVG::alignPanels(TreeSVG & alignGroup, Point2D<double> &startPos){
 	// TENTATIVE/ fix using orientation, and translate?
 	startPos.x += 10;
 	startPos.y += (10+maxHeight);
-
+	*/
 }
 
 /**  Retrieves and traverses elements of ALIGN_GROUP, and (re)aligns elements inside them as panels.

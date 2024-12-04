@@ -83,7 +83,7 @@ void Convert2<FlexibleVariable>::convert(const S &src, FlexibleVariable & dst){
 namespace rack {
 
 typedef drain::image::TreeUtilsSVG tsvg;
-typedef drain::image::AlignSVG alignSvg;
+// typedef drain::image::AlignSVG alignSvg;
 
 template <>
 const drain::EnumDict<RackSVG::TitleClass>::dict_t  drain::EnumDict<RackSVG::TitleClass>::dict = {
@@ -194,7 +194,7 @@ drain::image::TreeSVG & RackSVG::getCurrentGroup(RackContext & ctx){ // what abo
 
 	if (!track.hasChild(groupName)){  // ctx.svgPanelConf.
 		drain::image::TreeSVG & group = track[groupName](NodeSVG::GROUP);  // ctx.svgPanelConf.
-		group->addClass(drain::image::AlignSVG::ALIGN_GROUP);
+		// group->addClass(drain::image::AlignSVG::ALIGN_GROUP);
 		group->setId(groupName);
 		group->set("debug", groupName); // debug
 		// mout.accept<LOG_WARNING>("added group: '", groupName, "' <= ", groupMapper);
@@ -212,7 +212,7 @@ drain::image::TreeSVG & RackSVG::getPanel(RackContext & ctx, const drain::FilePa
 
 	if (group->isUndefined()){
 		group->setType(NodeSVG::GROUP);
-		group->addClass(drain::image::AlignSVG::PANEL);
+		//group->addClass(drain::image::AlignSVG::PANEL);
 		// group->addClass(IMAGE_FRAME); // ? deprecating, above ANCHOR replaces
 
 		// drain::image::TreeUtilsSVG::markAligned(image, rect); // perhaps deprecating, above ANCHOR replaces
@@ -240,7 +240,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 
 	drain::image::TreeSVG & image = panelGroup["image"](NodeSVG::IMAGE); // +EXT!
 	image->setId(); // autom.
-	image->addClass(drain::image::AlignSVG::ANCHOR);
+	// image->addClass(drain::image::AlignSVG::ANCHOR); -> setAlignAnchor
 	image->set("name", filepath.basename); // Note: without extension
 	image->set("width", src.getWidth());
 	image->set("height", src.getHeight());
@@ -386,11 +386,18 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::FilePa
 	return image;
 }
 
+
 drain::image::TreeSVG & RackSVG::addRectangleGroup(RackContext & ctx, const drain::Frame2D<double> & frame){
 
+	drain::image::TreeSVG & rectGroup = getCurrentGroup(ctx)["rg"](NodeSVG::GROUP);
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.unimplemented(__FUNCTION__);
+
+	/*
 	// drain::image::TreeSVG & group = getCurrentGroup(ctx); //[filepath.basename+"_Group"](NodeSVG::GROUP);
 
-	drain::image::TreeSVG & rectGroup = getCurrentGroup(ctx)["rg"](NodeSVG::GROUP);
+
 	rectGroup->addClass(drain::image::AlignSVG::PANEL);
 
 	drain::image::TreeSVG & rect = rectGroup["rekku"](NodeSVG::RECT); // +EXT!
@@ -429,13 +436,10 @@ drain::image::TreeSVG & RackSVG::addRectangleGroup(RackContext & ctx, const drai
 		}
 
 	}
+	*/
 
-
-
-
-	return rect;
+	return rectGroup;
 }
-
 
 
 // Re-align elements etc
@@ -583,7 +587,9 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 			//TreeSVG & mainHeader = headerGroupsubHeadert"](svg::TEXT);
 			TreeSVG & mainHeader = headerGroup["GENERAL"](svg::TEXT);
-			tsvg::markAligned(headerRect, mainHeader, alignSvg::CENTER, alignSvg::MIDDLE);
+			mainHeader -> setAlignOutside(AlignSVG2::VERT, AlignSVG2::MAX);
+			mainHeader -> setAlignInside(AlignSVG2::HORZ, AlignSVG2::MID);
+			//tsvg::markAligned(headerRect, mainHeader, alignSvg::CENTER, alignSvg::MIDDLE);
 			// mainHeader->set("x", 51); // will be realigned
 			// mainHeader->set("y", 61); // will be realigned
 			mainHeader->setStyle({
@@ -598,7 +604,9 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 			TreeSVG & timeHeader = headerGroup["TIME"](svg::TEXT);
 			timeHeader->addClass(TIME);
-			tsvg::markAligned(headerRect, timeHeader, alignSvg::RIGHT, alignSvg::MIDDLE);
+			timeHeader -> setAlignOutside(AlignSVG2::VERT, AlignSVG2::MIN);
+			timeHeader -> setAlignInside(AlignSVG2::HORZ, AlignSVG2::MAX);
+			//tsvg::markAligned(headerRect, timeHeader, alignSvg::RIGHT, alignSvg::MIDDLE);
 			// Ensure order
 			timeHeader["date"](svg::TSPAN);
 			timeHeader["time"](svg::TSPAN);
@@ -606,7 +614,8 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 			TreeSVG & locationHeader = headerGroup["LOCATION"](svg::TEXT);
 			locationHeader->addClass(LOCATION);
-			tsvg::markAligned(headerRect, locationHeader, alignSvg::LEFT, alignSvg::MIDDLE);
+			locationHeader -> setAlignInside(AlignSVG2::HORZ, AlignSVG2::MIN);
+			//tsvg::markAligned(headerRect, locationHeader, alignSvg::LEFT, alignSvg::MIDDLE);
 
 
 

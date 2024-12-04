@@ -117,8 +117,9 @@ struct PanelConfSVG {
 /**
  *
  */
-enum AlignSVG { // DEPRECATING? See svgAlign...
-	ALIGN_GROUP  = 0b00000, /** Container (group) inside which elements will be aligned */
+/*
+enum AlignSVG_FOO { // DEPRECATING? See svgAlign...
+	ALIGN_GROUP  = 0b00000, // Container (group) inside which elements will be aligned
 	// Horizontal
 	LEFT   = 0b00001,
 	RIGHT  = 0b00010,  // Originally for swapping  LEFT <-> RIGHT
@@ -138,15 +139,16 @@ enum AlignSVG { // DEPRECATING? See svgAlign...
 	REF_MIDDLE = (REF | MIDDLE),
 	REF_BOTTOM = (REF | BOTTOM),
 
-	FLOAT    = (HORZ|VERT), /** On-top. To be replaced **/
+	FLOAT    = (HORZ|VERT), // On-top. To be replaced
 	ALIGN    = 0b11111,
-	PANEL    = 0b100000, /** Group of elements aligned together */
-	ANCHOR   = 0b100001, /** Main element, "anchor" in a PANEL group */
-    RELATIVE = 0b100010, /** Element aligned relative to an ANCHOR in a PANEL group */
+	PANEL    = 0b100000, // Group of elements aligned together
+	ANCHOR   = 0b100001, // Main element, "anchor" in a PANEL group
+    RELATIVE = 0b100010, // Element aligned relative to an ANCHOR in a PANEL group
 };
+*/
 
-template <>
-const drain::EnumDict<AlignSVG>::dict_t  drain::EnumDict<AlignSVG>::dict;
+//template <>
+// const drain::EnumDict<AlignSVG_FOO>::dict_t  drain::EnumDict<AlignSVG_FOO>::dict;
 
 struct TreeUtilsSVG {
 
