@@ -2752,7 +2752,7 @@ public:
 		// drain::StatusFlags & status = getResources().baseCtx().statusFlags;
 
 		// const drain::Flags
-		Hdf5Context::h5_role::dict_t d;
+		Hdf5Context::Hi5RoleFlagger::dict_t d;
 		const drain::EnumDict<Hdf5Context::Hi5Role>::dict_t & dict = drain::EnumDict<Hdf5Context::Hi5Role>::dict;
 
 		//mout.warn(dict);

@@ -83,10 +83,6 @@ public:
 	static
 	const SprinterLayout cmdArgLayout; // = {",", "?", "=", ""};
 
-protected:
-
-	virtual
-	ReferenceMap & getParameters() = 0;
 
 public:
 
@@ -100,17 +96,12 @@ public:
 	*/
 
 
-	// TODO: remove
-	// virtual
-	// void setParameters(const VariableMap & args) final; // REDESIGN?
-
-	// virtual
-	// void setParameters(const VariableMap & args) = 0; // REDESIGN?
 
 
-	// TODO: make this a loop calling set(key,val)
+	// TODO: make this a loop calling set(key,val) - but then no
 	template <class T>
-	void setParameters(const SmartMap<T> & args){
+	//void setParameters(const SmartMap<T> & args){
+	void setParameters(const T & args){
 		// TODO: set parameter X=Y ?
 		/*
 		VariableMap vargs;
@@ -226,7 +217,11 @@ public:
 		return lastParameters;
 	};
 
+
 protected:
+
+	virtual
+	ReferenceMap & getParameters() = 0;
 
 	// virtual
 	// void setAllParameters(const std::string & args); // = 0;

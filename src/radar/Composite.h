@@ -105,7 +105,7 @@ class Composite : public RadarAccumulator<drain::image::AccumulatorGeo,Cartesian
 {
 public:
 
-	typedef enum {
+	enum FieldType {
 		DATA_SPECIFIC = 32,       /** Ascii bit for lower-case chars, see below */
 		QUALITY = 256,			  /** Marker for non-data */
 		DATA   = 'd',             /** Main data, of named quantity */
@@ -115,10 +115,13 @@ public:
 		WEIGHT_DS = 'W'|QUALITY,     /** Separation */
 		COUNT_DS  = 'C'|QUALITY,     /** Number of samples */
 		DEVIATION_DS = 'S'|QUALITY  /** Separation */
-	} FieldType;
+	};
 
-	typedef drain::Dictionary<std::string,unsigned long> FieldDict;
-	static FieldDict dict;
+	//typedef drain::Dictionary<std::string,unsigned long> FieldDict;
+	//typedef drain::EnumDict<FieldType> FieldDict;
+	typedef drain::EnumDict<FieldType>::dict_t dict_t;
+	static
+	const dict_t dict;
 
 	// Possible future extension.
 	// Must choose between char-based or bit flagging (d,w,c,s will overlap).

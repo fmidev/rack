@@ -179,8 +179,6 @@ public:
 	std::string select;
 	std::string inputSelect;
 
-
-
 	/// The last input file read, typically a volume. May be concatenated ie. read in incrementally.
 	Hi5Tree polarInputHi5;
 
@@ -201,29 +199,17 @@ public:
 	Hi5Tree *currentPolarHi5; // = &inputHi5;
 
 
-	/*
-	static const h5_role::ivalue_t CURRENT; //,    **< Link also external targets *
-	static const h5_role::ivalue_t INPUT; // ,      **< No not link, but add entry (void) *
-	// static const h5_role::value_t PRODUCT;
-	static const h5_role::ivalue_t POLAR; // =4,      **< No action *
-	static const h5_role::ivalue_t CARTESIAN; // =8,  **< Throw exception *
-	static const h5_role::ivalue_t EMPTY; // =16,     **< Also accept empty  *
-	static const h5_role::ivalue_t PRIVATE; // =32,
-	static const h5_role::ivalue_t SHARED; // =64     **< Try shared first  *
-	*/
-
 	enum Hi5Role {
-		CURRENT=1,
-		INPUT=2,
-		POLAR=4,
-		CARTESIAN=8,
-		EMPTY=16,
-		PRIVATE=32,
-		SHARED=64,
+		CURRENT=1,   // Latest HDF5 processed
+		INPUT=2,     // Latest input file
+		POLAR=4,     // Current Polar volume or product
+		CARTESIAN=8, // Accept Cartesian
+		EMPTY=16,    // Also accept empty
+		PRIVATE=32,  // File owned my this thread only
+		SHARED=64,   // File shared by all the threads
 	};
 
-	//typedef drain::GlobalFlags<Hi5Tree> h5_role;
-	typedef drain::EnumFlagger<drain::MultiFlagger<Hi5Role> > h5_role;
+	typedef drain::EnumFlagger<drain::MultiFlagger<Hi5Role> > Hi5RoleFlagger;
 
 
 	/// Pointer to the last HDF5 structure in Cartesian coordinates: input or Cartesian product.
@@ -231,7 +217,7 @@ public:
 	 *  - if CARTESIAN and POLAR are both set, either
 	 *  - if neither CARTESIAN nor POLAR is set,
 	 */
-	Hi5Tree & getMyHi5(h5_role::ivalue_t filter=(CARTESIAN|POLAR|INPUT|CURRENT));
+	Hi5Tree & getMyHi5(Hi5RoleFlagger::ivalue_t filter=(CARTESIAN|POLAR|INPUT|CURRENT));
 
 
 	/// Derives the most relevant polar data (input or product) and returns it.
@@ -241,7 +227,7 @@ public:
 	 *  # shared, if non-empty
 	 *  # local (empty)
 	 */
-	Hi5Tree & getHi5Defunct(h5_role::ivalue_t filter);
+	Hi5Tree & getHi5Defunct(Hi5RoleFlagger::ivalue_t filter);
 
 	/// Derives the most relevant polar input data and returns it.
 	/**
@@ -276,7 +262,7 @@ protected:
 };
 
 template <>
-const drain::EnumDict<Hdf5Context::h5_role>::dict_t drain::EnumDict<Hdf5Context::h5_role>::dict;
+const drain::EnumDict<Hdf5Context::Hi5RoleFlagger>::dict_t drain::EnumDict<Hdf5Context::Hi5RoleFlagger>::dict;
 
 } /* namespace rack */
 

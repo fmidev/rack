@@ -413,6 +413,7 @@ public:
 	virtual
 	const dict_t & getDict() const = 0;
 
+	virtual inline
 	void reset(){
 		this->value = storage_t(0); // ALERT! enums need neutral value.
 	};

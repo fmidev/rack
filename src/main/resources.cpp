@@ -101,22 +101,27 @@ Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
 */
 
 //Hi5Tree & RackContext::getHi5Full(h5_role::ivalue_t & filter) {
-Hi5Tree & RackContext::getHi5Full(h5_role::ivalue_t filter) {
+Hi5Tree & RackContext::getHi5Full(Hi5RoleFlagger::ivalue_t filter) {
 //Hi5Tree & RackContext::getHi5(h5_role::value_t filter) {
 
 	drain::Logger mout( __FILE__, __FUNCTION__);
+
+	const drain::EnumDict<Hdf5Context::Hi5Role>::dict_t & dict = drain::EnumDict<Hdf5Context::Hi5Role>::dict;
+
 	// bool emptyOk = (filter & EMPTY)>0;
 	// mout.special("Accept empty:", emptyOk);
 	if ((filter & (PRIVATE|SHARED)) == 0){
 		filter = (filter|PRIVATE|SHARED);
-		mout.debug("Implicit PRIVATE|SHARED, accepting both, filter=", h5_role::getKeysNEW2(filter, '|'));
+		// FlagResolver::getKeys(dict, this->value, this->separator)
+		// mout.debug("Implicit PRIVATE|SHARED, accepting both, filter=", h5_role::getKeysNEW2(filter, '|'));
+		mout.debug("Implicit PRIVATE|SHARED, accepting both, filter=", drain::FlagResolver::getKeys(dict, filter, '|'));
 	}
 
 	if (filter & PRIVATE){
 		Hi5Tree & dst = getMyHi5(filter);
 		if ((filter & EMPTY) || !dst.empty()){
 			const drain::VariableMap & attr = dst[ODIMPathElem::WHAT].data.attributes;
-			mout.info("Using PRIVATE (", h5_role::getKeysNEW2(filter, '|'),") object=", attr["object"], ", product=", attr["product"], ']');
+			mout.info("Using PRIVATE (", drain::FlagResolver::getKeys(dict, filter, '|') ,") object=", attr["object"], ", product=", attr["product"], ']');
 			return dst;
 		}
 	}
@@ -125,7 +130,7 @@ Hi5Tree & RackContext::getHi5Full(h5_role::ivalue_t filter) {
 		Hi5Tree & dst = getResources().baseCtx().getMyHi5(filter);
 		if ((filter & EMPTY) || !dst.empty()){
 			const drain::VariableMap & attr = dst[ODIMPathElem::WHAT].data.attributes;
-			mout.info("Using SHARED (", h5_role::getKeysNEW2(filter, '|'),") object=", attr["object"], ", product=", attr["product"], ']');
+			mout.info("Using SHARED (", drain::FlagResolver::getKeys(dict, filter, '|'), ") object=", attr["object"], ", product=", attr["product"], ']');
 			return dst;
 		}
 	}
@@ -137,7 +142,7 @@ Hi5Tree & RackContext::getHi5Full(h5_role::ivalue_t filter) {
 }
 
 
-Composite & RackContext::getComposite(h5_role::ivalue_t filter){
+Composite & RackContext::getComposite(Hi5RoleFlagger::ivalue_t filter){
 
 	//RackContext & ctx  = this->template getContext<RackContext>();
 	RackContext & baseCtx = getResources().baseCtx();
@@ -146,7 +151,8 @@ Composite & RackContext::getComposite(h5_role::ivalue_t filter){
 
 	if ((filter & (PRIVATE|SHARED)) == 0){
 		filter = (filter|PRIVATE|SHARED);
-		mout.warn("Unset PRIVATE|SHARED selection, accepting both, filter=", h5_role::getKeysNEW2(filter, '|'));
+		const drain::EnumDict<Hdf5Context::Hi5Role>::dict_t & dict = drain::EnumDict<Hdf5Context::Hi5Role>::dict;
+		mout.warn("Unset PRIVATE|SHARED selection, accepting both, filter=", drain::FlagResolver::getKeys(dict, filter, '|')); // h5_role::getKeysNEW2(filter, '|'));
 	}
 
 	if (filter & SHARED){

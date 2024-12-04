@@ -158,7 +158,7 @@ public:
 
 
 	//Hi5Tree & getHi5Full(h5_role::ivalue_t & filter);
-	Hi5Tree & getHi5Full(h5_role::ivalue_t filter);
+	Hi5Tree & getHi5Full(Hi5RoleFlagger::ivalue_t filter);
 
 	inline
 	Hi5Tree & getHi5(){
@@ -171,7 +171,7 @@ public:
 	 *
 	 *  \return Object containing compositing arrays.
 	 */
-	Composite & getComposite(h5_role::ivalue_t filter);
+	Composite & getComposite(Hi5RoleFlagger::ivalue_t filter);
 
 
 	// Experimental

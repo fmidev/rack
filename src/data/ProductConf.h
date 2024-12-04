@@ -48,6 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 */
 
+#include "drain/util/EnumFlags.h"
 #include "data/DataSelector.h"
 #include "data/ODIMPath.h"
 
@@ -109,6 +110,8 @@ public:
 template <>
 const drain::EnumDict<ProductConf::OutputDataVerbosity>::dict_t  drain::EnumDict<ProductConf::OutputDataVerbosity>::dict;
 
+// template <>
+// const ProductConf::OutputDataVerbosity drain::EnumDict<ProductConf::OutputDataVerbosity>::defaultValue; //= ProductConf::OutputDataVerbosity::DEFAULT;
 
 }  // namespace rack
 

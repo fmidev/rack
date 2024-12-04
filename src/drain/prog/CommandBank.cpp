@@ -388,7 +388,7 @@ void CommandBank::readFile(const std::string & filename, Program & prog) const {
 
 	mout.info("inserting commands from path: ", path);
 
-	drain::Context & ctx = prog.getContext<>();
+	Context & ctx = prog.getContext<>();
 
 	if (path.extension != "json"){
 		Script subScript;
@@ -397,21 +397,27 @@ void CommandBank::readFile(const std::string & filename, Program & prog) const {
 	}
 	else {
 
-		drain::JSONtree2 cmdTree;
-		drain::Input input(filename);
+		JSONtree2 cmdTree;
+		Input input(filename);
+		JSON::readTree(cmdTree, input);
+		mout.experimental<LOG_INFO>("parsed JSON structure:\n", sprinter(cmdTree));
 
-		drain::JSON::readTree(cmdTree, input);
-		mout.experimental<LOG_INFO>("parsed JSON structure:\n", drain::sprinter(cmdTree));
-
-		for (const auto & node: cmdTree){
+		//for (const auto & node: cmdTree){
+		for (const JSONtree2::pair_t & node: cmdTree){
 			mout.debug("inserting: ", node.first); //, node.second.data);
 			command_t & cmd = clone(node.first);
 			cmd.setExternalContext(ctx);
 			if (cmd.hasParameters()){
 				if (node.second.hasChildren()){
-					for (const auto & subNode: node.second){
-						cmd.setParameter(subNode.first, subNode.second.data);
+					/// Copy to list, and assign once to get full \c lastParameters
+					typedef std::pair<const std::string &, const Variable &> pair_t;
+					std::list<pair_t> pars;
+					for (const JSONtree2::pair_t & subNode: node.second){
+						pars.push_back(pair_t(subNode.first, subNode.second.data));
+						// cmd.setParameter(subNode.first, subNode.second.data);
 					}
+					cmd.setParameters(pars);
+					mout.attention("pars: ", pars.back().first, pars.back().second);
 				}
 				else {
 					cmd.setParameters((const std::string &)node.second.data);
@@ -420,7 +426,7 @@ void CommandBank::readFile(const std::string & filename, Program & prog) const {
 			else {
 				if (node.second.hasChildren()){
 					mout.warn("cmd '", node.first, "' takes no args, but was provided named arg(s): ");
-					for (const auto & subNode: node.second){
+					for (const JSONtree2::pair_t & subNode: node.second){
 						mout.warn('\t', subNode.first, '=', subNode.second.data);
 						//cmd.setParameter();
 					}

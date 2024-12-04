@@ -68,9 +68,10 @@ struct EnumDict {
 	//typedef FlagResolver::dict_t dict_t;
 	typedef drain::Dictionary<std::string,E> dict_t;
 
-	// TODO: neutralValue / defaultValue ?
+	/*
 	static
 	const E defaultValue;
+	*/
 
 	static
 	const dict_t dict;
@@ -113,8 +114,8 @@ struct EnumDict {
 };
 
 /// Default default value...
-template <class E>
-const E EnumDict<E>::defaultValue = 0;
+// template <class E>
+// const E EnumDict<E>::defaultValue = 0;
 
 
 /*
@@ -166,13 +167,14 @@ public:
 	typedef typename F::dict_t  dict_t;
 	typedef FlagResolver::ivalue_t ivalue_t;
 
-
+	/// Default constructor
 	inline
 	EnumFlagger(): fbase_t(EnumDict<value_t>::dict){
 	}
 
+	/// Constructor with initial value
 	inline
-	EnumFlagger(const value_t & v): fbase_t(EnumDict<value_t>::dict) {
+	EnumFlagger(const storage_t & v): fbase_t(EnumDict<value_t>::dict) {
 		this->value = v;
 	}
 
@@ -182,11 +184,17 @@ public:
 	}
 	*/
 
+	///
 	template <typename ... T>
 	inline
 	EnumFlagger(const T & ... arg): fbase_t(EnumDict<value_t>::dict, arg...) { // designed for MultiFlagger
 	}
 
+	/*  // keep
+	virtual void reset() override {
+		this->value = EnumDict<value_t>::defaultValue; // ALERT! enums need neutral value.
+	};
+	*/
 
 	/// Returns the static dictionary created for this \c value_t .
 	/**
@@ -210,10 +218,13 @@ public:
 	};
 
 	// Raise?
+	/*
 	static inline
 	std::string getKeysNEW2(const storage_t & value, char separator = ','){
+		// currentStr = FlagResolver::getKeys(dict, this->value, this->separator);
 		return FlagResolver::getKeys(EnumDict<value_t>::dict, value, separator);
 	}
+	*/
 
 	/**
 	 *  Dictionary throws except if key now found.

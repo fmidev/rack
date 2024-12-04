@@ -30,9 +30,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 #include "hi5/Hi5.h"
-
-#include "resources.h"
 #include "data/SourceODIM.h"
+#include "resources.h"
 
 using namespace drain;
 using namespace drain::image;
@@ -134,7 +133,7 @@ const Hdf5Context::h5_role::ivalue_t Hdf5Context::SHARED  = h5_role::addEntry("S
 /* This is basically good (by design), but _used_ wrong... So often flags not used, esp. PRIVATE, SHARED, EMPTY.
  *
  */
-Hi5Tree & Hdf5Context::getMyHi5(h5_role::ivalue_t filter){
+Hi5Tree & Hdf5Context::getMyHi5(Hi5RoleFlagger::ivalue_t filter){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -213,7 +212,7 @@ Hi5Tree & Hdf5Context::getMyHi5(h5_role::ivalue_t filter){
 }
 
 
-Hi5Tree & Hdf5Context::getHi5Defunct(h5_role::ivalue_t filter) {
+Hi5Tree & Hdf5Context::getHi5Defunct(Hi5RoleFlagger::ivalue_t filter) {
 
 	drain::Logger mout( __FILE__, __FUNCTION__);
 

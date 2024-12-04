@@ -69,13 +69,15 @@ namespace rack
 
 //using namespace drain;
 
-Composite::FieldDict Composite::dict =  {
+//Composite::FieldDict
+// template <>
+//const drain::EnumDict<rack::Composite::FieldType>::dict_t drain::EnumDict<rack::Composite::FieldType>::dict =  {
+const Composite::dict_t Composite::dict = {
 		{"DATA", rack::Composite::FieldType::DATA},
 		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
 		{"COUNT", rack::Composite::FieldType::COUNT},
-		{"DEVIATION", rack::Composite::FieldType::DEVIATION}
+		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
 };
-
 //static DataCoder converter;
 
 // Notice: =-32.0 is good only for DBZH

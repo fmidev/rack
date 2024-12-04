@@ -47,6 +47,9 @@ const drain::EnumDict<ProductConf::OutputDataVerbosity>::dict_t  drain::EnumDict
 		{"DEBUG", rack::ProductConf::DEBUG},
 };
 
+//template <>
+//const ProductConf::OutputDataVerbosity drain::EnumDict<ProductConf::OutputDataVerbosity>::defaultValue = ProductConf::OutputDataVerbosity::DEFAULT;
+
 
 /// Copy constructor.
 ProductConf::ProductConf(const ProductConf & conf) :
