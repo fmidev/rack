@@ -180,7 +180,7 @@ TreeSVG & getTextElem(const TreeSVG & frame, TreeSVG & current, const std::strin
 		//text->set("ref", 0);
 		text->set("x", x + 2);
 		text->set("y", y + 20);
-		drain::image::TreeUtilsSVG::markAligned(frame, text);
+		// drain::image::TreeUtilsSVG::markAligned(frame, text);
 		// text->addClass(svgAlign::FLOAT); // "imageTitle" !
 		// text->set("ref", frame->getId());
 	}
@@ -272,8 +272,8 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 			if (IS_TIME){
 				text->addClass(RackSVG::TIME); // ,  alignSvg::BOTTOM, alignSvg::LEFT); // CmdBaseSVG::FLOAT,
-				text->setAlignInside(AlignSVG2::VERT, AlignSVG2::MAX); // = BOTTOM
-				text->setAlignInside(AlignSVG2::HORZ, AlignSVG2::MIN); // = LEFT
+				text->setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::MAX); // = BOTTOM
+				text->setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MIN); // = LEFT
 				// text->set("y", y + 40); // temporary
 				/* TODO:
 				std::stringstream sstr;
@@ -284,8 +284,8 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 			if (IS_LOCATION){
 				text->addClass(RackSVG::LOCATION); // , alignSvg::TOP, alignSvg::RIGHT); // CmdBaseSVG::FLOAT,
-				text->setAlignInside(AlignSVG2::VERT, AlignSVG2::MAX); // = BOTTOM
-				text->setAlignInside(AlignSVG2::HORZ, AlignSVG2::MAX); // = RIGHT
+				text->setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::MAX); // = BOTTOM
+				text->setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MAX); // = RIGHT
 
 				// text->set("y", y + 60); // temporary
 			}
@@ -411,54 +411,65 @@ public:
 		rect->setAlign(AlignSVG2::REF, AlignSVG2::HORZ,  AlignSVG2::MIN);
 		*/
 
+		//drain::image::TreeSVG & textGroup = rect["labelX"](NodeSVG::GROUP);
+		//const std::string ANCHOR = "rect";
 
-		typedef drain::image::AlignSVG2::axis_t  AlignAxis;
-		typedef drain::image::AlignSVG2::pos_t   AlignPos;
-		typedef drain::image::AlignSVG2::value_t Align;
 
-		for (const AlignSVG2::axis_t & ax: {AlignAxis::HORZ, AlignAxis::VERT}){
+		typedef drain::image::LayoutSVG::Axis  AlignAxis;
+		typedef drain::image::AlignSVG::Owner   AlignPos;
+		typedef drain::image::AlignSVG::value_t Align;
+
+		for (const drain::image::LayoutSVG::Axis & ax: {AlignAxis::HORZ, AlignAxis::VERT}){
 
 			const std::string & axStr = drain::EnumDict<AlignAxis>::dict.getKey(ax);
 
-			for (const AlignSVG2::value_t & v: {Align::MAX, Align::MID, Align::MIN}){
+			for (const AlignSVG::value_t & v: {Align::MAX, Align::MID, Align::MIN}){
 
 				const std::string & vStr = drain::EnumDict<Align>::dict.getKey(v);
 
-				const std::string label = drain::StringBuilder<'-'>(axStr, vStr);
+				for (const drain::image::LayoutSVG::Axis & axRef: {AlignAxis::HORZ, AlignAxis::VERT}){
 
-				drain::image::TreeSVG & textGroup = rectGroup[label](NodeSVG::GROUP);
-				const std::string ANCHOR = "rect";
-				// textGroup->addClass(alSvg::PANEL, alSvg::RELATIVE); // RELATIVE?
+					const std::string & axRefStr = drain::EnumDict<AlignAxis>::dict.getKey(axRef);
 
-				drain::image::TreeSVG & textBox = textGroup[ANCHOR](NodeSVG::RECT);
-				// textBox->set("label", ANCHOR);
-				// textBox->addClass(AlignSVG::ANCHOR); // maybe good olf
-				textGroup->setAlignAnchor(ANCHOR);
-				textBox->setAlign(AlignPos::OBJ, ax, v);
-				textBox->setAlign(AlignPos::REF,  ax, v);
+					for (const AlignSVG::value_t & vRef: {Align::MAX, Align::MID, Align::MIN}){
 
-				//textBox->addClass(alSvg::ANCHOR); // , rHorz, vert); // CONFLICT! SHOULD BE PANEL
-				textBox->getBoundingBox().setArea(240,60);
-				textBox->setStyle("fill", "green");
-				textBox->setStyle("opacity", 0.25);
-				textBox->setStyle("stroke", "darkblue");
+						const std::string & vRefStr = drain::EnumDict<Align>::dict.getKey(vRef);
 
 
-				drain::image::TreeSVG & text = textGroup["text"](NodeSVG::TEXT);
-				text->setAlign(AlignPos::OBJ, ax, v);
-				text->setAlign(AlignPos::REF,  ax, v);
-				/*
-				text->setAlign(AlignPos::ORIG, AlignAxis::HORZ, Align::MID);
-				text->setAlign(AlignPos::ORIG, AlignAxis::VERT, Align::MID);
-				text->setAlign(AlignPos::REF,  AlignAxis::HORZ, Align::MID);
-				text->setAlign(AlignPos::REF,  AlignAxis::VERT, Align::MID);
-				*/
-				// text->setAlign(AlignPos::REF,  ax, v);
+						const std::string label = drain::StringBuilder<'-'>(axRefStr, vRefStr, axStr, vStr);
 
-				drain::image::TreeSVG & textSpan = text["tspan"](NodeSVG::TSPAN);
-				textSpan->setText(label);
+						/*
+						drain::image::TreeSVG & textGroup = rectGroup[label](NodeSVG::GROUP);
+						const std::string ANCHOR = "rect";
+						// textGroup->addClass(alSvg::PANEL, alSvg::RELATIVE); // RELATIVE?
+						textGroup->setAlignAnchor(ANCHOR);
+						*/
+
+						drain::image::TreeSVG & textBox = rectGroup[label](NodeSVG::RECT);
+						textBox->setAlign(AlignPos::REF,  axRef, vRef);
+						textBox->setAlign(AlignPos::OBJ, ax, v);
+						textBox->getBoundingBox().setArea(50,150);
+						textBox->setStyle("fill", "green");
+						textBox->setStyle("opacity", 0.25);
+						textBox->setStyle("stroke", "darkblue");
 
 
+						drain::image::TreeSVG & text = rectGroup[label + "text"](NodeSVG::TEXT);
+						text->setAlign(AlignPos::OBJ, ax, v);
+						text->setAlign(AlignPos::REF,  ax, v);
+						/*
+								text->setAlign(AlignPos::ORIG, AlignAxis::HORZ, Align::MID);
+								text->setAlign(AlignPos::ORIG, AlignAxis::VERT, Align::MID);
+								text->setAlign(AlignPos::REF,  AlignAxis::HORZ, Align::MID);
+								text->setAlign(AlignPos::REF,  AlignAxis::VERT, Align::MID);
+						 */
+						// text->setAlign(AlignPos::REF,  ax, v);
+
+						drain::image::TreeSVG & textSpan = text["tspan"](NodeSVG::TSPAN);
+						textSpan->setText(label);
+
+					}
+				}
 			}
 		}
 

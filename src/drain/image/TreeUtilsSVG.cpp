@@ -125,7 +125,7 @@ bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<NodeSVG::coord_t
 /** Stacks all the non-FLOAT elements horizontally or vertically, computing their collective width or height.
  *
  */
-void TreeUtilsSVG::getBoundingFrame(const TreeSVG & group, Frame2D<int> & frame, LayoutSVG::Orientation orientation){
+void TreeUtilsSVG::getBoundingFrame(const TreeSVG & group, Frame2D<int> & frame, LayoutSVG::Axis orientation){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.unimplemented(__FUNCTION__);
@@ -170,7 +170,8 @@ void TreeUtilsSVG::getBoundingFrame(const TreeSVG & group, Frame2D<int> & frame,
 	// bbox.set(0, 0, width, height);
 }
 
-void TreeUtilsSVG::alignSequenceOLD(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start, LayoutSVG::Orientation orientation, LayoutSVG::Direction direction){
+// TreeUtilsSVG::
+void alignSequenceOLD(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start, LayoutSVG::Axis orientation, LayoutSVG::Direction direction){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -312,8 +313,8 @@ const drain::EnumDict<AlignSVG_FOO>::dict_t  drain::EnumDict<AlignSVG_FOO>::dict
 };
  */
 
-
-void TreeUtilsSVG::markAligned(const TreeSVG & elem, TreeSVG & alignedElem){
+// TreeUtilsSVG::
+void markAligned(const TreeSVG & elem, TreeSVG & alignedElem){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.unimplemented<LOG_ERR>();
 	/*
@@ -323,8 +324,8 @@ void TreeUtilsSVG::markAligned(const TreeSVG & elem, TreeSVG & alignedElem){
 	*/
 }
 
-
-void TreeUtilsSVG::alignText(TreeSVG & group){
+// TreeUtilsSVG::
+void alignText(TreeSVG & group){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.unimplemented<LOG_ERR>();
@@ -438,7 +439,8 @@ void TreeUtilsSVG::alignText(TreeSVG & group){
 /**  Retrieves and traverses elements of ALIGN_GROUP, and (re)aligns elements inside them as panels.
  *
  */
-void TreeUtilsSVG::alignDomains(TreeSVG & group){
+// TreeUtilsSVG::
+void alignDomains(TreeSVG & group){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.unimplemented<LOG_ERR>();
@@ -475,79 +477,79 @@ void TreeUtilsSVG::realignObject(const Box<svg::coord_t> & anchorBox, TreeSVG & 
 
 
 	// Initial position is at the anchor (REF) element.
-	switch (object->getAlign(AlignSVG2::pos_t::REF, AlignSVG2::axis_t::HORZ)){
-	case AlignSVG2::value_t::MAX:
+	switch (object->getAlign(AlignSVG::Owner::REF, LayoutSVG::Axis::HORZ)){
+	case AlignSVG::value_t::MAX:
 		location.x = anchorBox.x + anchorBox.width;
 		break;
-	case AlignSVG2::value_t::MID:
+	case AlignSVG::value_t::MID:
 		location.x = anchorBox.x + anchorBox.width/2;
 		break;
-	case AlignSVG2::value_t::MIN:
+	case AlignSVG::value_t::MIN:
 		location.x = anchorBox.x;
 		break;
-	case AlignSVG2::value_t::UNDEFINED:
+	case AlignSVG::value_t::UNDEFINED:
 		break;
 	default:
-		mout.unimplemented<LOG_ERR>("AlignSVG2::value_t");
+		mout.unimplemented<LOG_ERR>("AlignSVG::value_t");
 	}
 
-	switch (object->getAlign(AlignSVG2::pos_t::REF, AlignSVG2::axis_t::VERT)){
-	case AlignSVG2::value_t::MAX:
+	switch (object->getAlign(AlignSVG::Owner::REF, LayoutSVG::Axis::VERT)){
+	case AlignSVG::value_t::MAX:
 		location.y = anchorBox.y + anchorBox.height;
 		break;
-	case AlignSVG2::value_t::MID:
+	case AlignSVG::value_t::MID:
 		location.y = anchorBox.y + anchorBox.height/2;
 		break;
-	case AlignSVG2::value_t::MIN:
+	case AlignSVG::value_t::MIN:
 		location.y = anchorBox.y;
 		break;
-	case AlignSVG2::value_t::UNDEFINED:
+	case AlignSVG::value_t::UNDEFINED:
 		break;
 	default:
-		mout.unimplemented<LOG_ERR>("AlignSVG2::value_t");
+		mout.unimplemented<LOG_ERR>("AlignSVG::value_t");
 	}
 
 
 	mout.special("Initial adjust, location:", location);
 
-	switch (object->getAlign(AlignSVG2::pos_t::OBJ, AlignSVG2::axis_t::HORZ)){
-	case AlignSVG2::value_t::MAX:
+	switch (object->getAlign(AlignSVG::Owner::OBJ, LayoutSVG::Axis::HORZ)){
+	case AlignSVG::value_t::MAX:
 		// location.x += 0;
 		if (TEXT){
 			object->setStyle(TEXT_ANCHOR, "start"); // Default value
 		}
 		break;
-	case AlignSVG2::value_t::MID:
+	case AlignSVG::value_t::MID:
 		location.x -= box.width/2;
 		if (TEXT){
 			object->setStyle(TEXT_ANCHOR, "middle");
 		}
 		break;
-	case AlignSVG2::value_t::MIN:
+	case AlignSVG::value_t::MIN:
 		location.x -= box.width;
 		if (TEXT){
 			object->setStyle(TEXT_ANCHOR, "end");
 		}
 		break;
-	case AlignSVG2::value_t::UNDEFINED: // or absolute
+	case AlignSVG::value_t::UNDEFINED: // or absolute
 		break;
 	default:
-		mout.unimplemented<LOG_ERR>("AlignSVG2::value_t");
+		mout.unimplemented<LOG_ERR>("AlignSVG::value_t");
 	}
 
-	switch (object->getAlign(AlignSVG2::pos_t::OBJ, AlignSVG2::axis_t::VERT)){
-	case AlignSVG2::value_t::MAX:
+	switch (object->getAlign(AlignSVG::Owner::OBJ, LayoutSVG::Axis::VERT)){
+	case AlignSVG::value_t::MAX:
 		break;
-	case AlignSVG2::value_t::MID:
+	case AlignSVG::value_t::MID:
 		location.y -= box.height/2;
 		break;
-	case AlignSVG2::value_t::MIN:
+	case AlignSVG::value_t::MIN:
 		location.y -= box.height;
 		break;
-	case AlignSVG2::value_t::UNDEFINED:
+	case AlignSVG::value_t::UNDEFINED:
 		break;
 	default:
-		mout.unimplemented<LOG_ERR>("AlignSVG2::value_t");
+		mout.unimplemented<LOG_ERR>("AlignSVG::value_t");
 	}
 
 
@@ -599,7 +601,7 @@ const NodeSVG::path_elem_t & getAnchor(const TreeSVG & node){
 }
 */
 
-void TreeUtilsSVG::superAlign(TreeSVG & object, const Point2D<svg::coord_t> & offset){
+void TreeUtilsSVG::superAlign(TreeSVG & object, LayoutSVG::Axis orientation, LayoutSVG::Direction direction, const Point2D<svg::coord_t> & offset){
 
 	Logger mout(__FILE__, __FUNCTION__);
 
@@ -610,7 +612,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, const Point2D<svg::coord_t> & of
 
 	BBoxSVG & bboxHost = object->getBoundingBox();
 
-	// If an ANCHOR elem is found among children, RELATIVE objects are aligned with respect to it.
+	// If an ANCHOR elem is set, RELATIVE objects are aligned with respect to it.
 	const NodeSVG::path_elem_t & anchor = object->getAlignAnchor();
 	if (!anchor.empty()){
 
@@ -625,12 +627,14 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, const Point2D<svg::coord_t> & of
 		for (TreeSVG::pair_t & entry: object){
 
 			if (entry.first != anchor){
-				if (entry.second->isAligned()){
-					TreeUtilsSVG::realignObject(abox, entry.second);
+				if (!entry.second->isAligned()){
+					mout.pending("No alignment for: ", entry.second.data, " using default (...?)");
+					// entry.second->setA
+					// AlignConfSVG alignConf;
+					// LayoutSVG::getAlignmentConf(orientation, direction, alignConf); // TODO: fnct arg
+					entry.second->setMajorAlignment(orientation, direction);
 				}
-				else {
-					mout.pending("No alignment for: ", entry.second.data);
-				}
+				TreeUtilsSVG::realignObject(abox, entry.second);
 			}
 			else {
 				mout.reject<LOG_DEBUG>("Skipping anchor elem [", anchor, "] of ", object->getId());
@@ -645,19 +649,45 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, const Point2D<svg::coord_t> & of
 	}
 	else { // Stack HORZ/VERT + INCR/DECR
 
-		mout.accept<LOG_NOTICE>("Aligning... ID=", object->getId(), " using stacking ");
+		// mout.accept<LOG_NOTICE>("Aligning... ID=", object->getId(), " using stacking ");
+		mout.accept<LOG_NOTICE>("Aligning... ", object.data, " using stacking ");
 
 		BBoxSVG bbox;
 		bbox.setLocation(offset); // ~ essentially a point (width==height==0).
 
 		for (TreeSVG::pair_t & entry: object){
-			TreeUtilsSVG::realignObject(bbox, entry.second);
+
 			//const Frame2D<svg::coord_t> & frame = entry.second->getBoundingBox();
 			// const BBoxSVG & b = entry.second->getBoundingBox();
-			bbox = entry.second->getBoundingBox(); // copy
-			bboxHost.expand(bbox);
+			if (entry.second->hasClass(LayoutSVG::FLOAT)){
+				mout.pending(" ... FLOATing: ", entry.second.data);
+				if (!entry.second->isAligned()){
+					// Default: upper right corner, inside
+					// entry.second->setAlignInside(AlignConfSVG::axis_t::HORZ, AlignConfSVG::value_t::MIN);
+					// entry.second->setAlignInside(AlignConfSVG::axis_t::VERT, AlignConfSVG::value_t::MIN);
+					// Debugging:
+					entry.second->setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::value_t::MID);
+					entry.second->setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::value_t::MID);
+				}
+				TreeUtilsSVG::realignObject(bbox, entry.second);
+			}
+			else {
 
-			mout.accept<LOG_NOTICE>(bbox, " now, after: ", entry.second.data);
+				if (entry.second->hasClass(LayoutSVG::ALIGN_SCOPE)){ // = PANEL, tray
+					entry.second->setMajorAlignment(LayoutSVG::flip(orientation), direction);
+				}
+				else if (!entry.second->isAligned()){ // Apply defaults
+					entry.second->setMajorAlignment(orientation, direction);
+					mout.pending("No alignment for: ", entry.second.data, " using default (...?)");
+				}
+
+				TreeUtilsSVG::realignObject(bbox, entry.second);
+				bbox = entry.second->getBoundingBox(); // copy
+				bboxHost.expand(bbox);
+				mout.accept<LOG_NOTICE>(" ... ", bbox, " now, after: ", entry.second.data);
+			}
+
+
 
 			// NOTE: use align class: (or?)
 			/*
@@ -678,8 +708,8 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, const Point2D<svg::coord_t> & of
 
 }
 
-
-void TreeUtilsSVG::alignPanels(TreeSVG & alignGroup, Point2D<double> &startPos){ // <- or a Frame?
+// TreeUtilsSVG::
+void alignPanels(TreeSVG & alignGroup, Point2D<double> &startPos){ // <- or a Frame?
 
 	Logger mout(__FILE__, __FUNCTION__);
 	mout.unimplemented<LOG_ERR>();
@@ -756,24 +786,15 @@ void TreeUtilsSVG::alignPanels(TreeSVG & alignGroup, Point2D<double> &startPos){
 	*/
 }
 
-/**  Retrieves and traverses elements of ALIGN_GROUP, and (re)aligns elements inside them as panels.
+/**  Iteratively traverses elements of ALIGN_GROUP, and (re)aligns elements inside them as panels.
  *
  */
 void TreeUtilsSVG::translateAll(TreeSVG & elem, const Point2D<svg::coord_t> & offset){
 
-
-	/*
-	NodeSVG::map_t & attr = elem->getAttributes();
-	if (attr.hasKey("x") &&  attr.hasKey("y")){
-		attr["x"] = attr.get("x",0.0) + offset.x;
-		attr["y"] = attr.get("y",0.0) + offset.y;
-	}
-	*/
 	// For many elements (like group, "G"), this property is hidden hence not appearing in attributes.
 	BBoxSVG & bbox = elem->getBoundingBox();
 	bbox.x += offset.x;
 	bbox.y += offset.y;
-
 
 	for (auto & entry: elem){
 		translateAll(entry.second, offset); // recursion

@@ -195,6 +195,7 @@ drain::image::TreeSVG & RackSVG::getCurrentGroup(RackContext & ctx){ // what abo
 	if (!track.hasChild(groupName)){  // ctx.svgPanelConf.
 		drain::image::TreeSVG & group = track[groupName](NodeSVG::GROUP);  // ctx.svgPanelConf.
 		// group->addClass(drain::image::AlignSVG::ALIGN_GROUP);
+		group->addClass(drain::image::LayoutSVG::ALIGN_SCOPE); // rename ALIGN-xx
 		group->setId(groupName);
 		group->set("debug", groupName); // debug
 		// mout.accept<LOG_WARNING>("added group: '", groupName, "' <= ", groupMapper);
@@ -256,9 +257,10 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	rect->set("fill", "none"); // just to make sure...
 	rect->setStyle("stroke", "black");
 	rect->setStyle("stroke-width", "2px");
-	rect->setStyle("border-style", "dotted");
-	rect->setAlignInside(AlignSVG2::HORZ, AlignSVG2::MAX);
-	rect->setAlignInside(AlignSVG2::VERT, AlignSVG2::MID);
+	// rect->setStyle("border-style", "dotted");
+	rect->setStyle("stroke-dasharray", {2,5});
+	rect->setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MAX);
+	rect->setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::MID);
 
 	drain::image::TreeSVG & rect2 = panelGroup["rect2"](NodeSVG::RECT);
 	rect2->set("width",  150); // debug
@@ -266,9 +268,9 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	rect2->set("fill", "none"); // just to make sure...
 	rect2->setStyle("stroke", "green");
 	rect2->setStyle("stroke-width", "2px");
-	rect2->setStyle("border-style", "dashed");
-	rect2->setAlignOutside(AlignSVG2::HORZ, AlignSVG2::MID);
-	rect2->setAlignOutside(AlignSVG2::VERT, AlignSVG2::MAX);
+	rect2->setStyle("stroke-dasharray", {5,2});
+	rect2->setAlignOutside(LayoutSVG::Axis::HORZ, AlignSVG::MID);
+	rect2->setAlignOutside(LayoutSVG::Axis::VERT, AlignSVG::MAX);
 
 	// drain::image::TreeSVG & rect2 =
 	// addRectangleGroup(ctx, {123,234});
@@ -472,7 +474,7 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 
 	drain::Point2D<drain::image::svg::coord_t> start(0,0);
-	TreeUtilsSVG::superAlign(mainGroup, start);
+	TreeUtilsSVG::superAlign(mainGroup, LayoutSVG::HORZ, LayoutSVG::INCR, start);
 
 	/*
 	/// Search for PANEL's: all the containers insider which elements will be aligned.
@@ -587,8 +589,8 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 			//TreeSVG & mainHeader = headerGroupsubHeadert"](svg::TEXT);
 			TreeSVG & mainHeader = headerGroup["GENERAL"](svg::TEXT);
-			mainHeader -> setAlignOutside(AlignSVG2::VERT, AlignSVG2::MAX);
-			mainHeader -> setAlignInside(AlignSVG2::HORZ, AlignSVG2::MID);
+			mainHeader -> setAlignOutside(LayoutSVG::Axis::VERT, AlignSVG::MAX);
+			mainHeader -> setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MID);
 			//tsvg::markAligned(headerRect, mainHeader, alignSvg::CENTER, alignSvg::MIDDLE);
 			// mainHeader->set("x", 51); // will be realigned
 			// mainHeader->set("y", 61); // will be realigned
@@ -604,8 +606,8 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 			TreeSVG & timeHeader = headerGroup["TIME"](svg::TEXT);
 			timeHeader->addClass(TIME);
-			timeHeader -> setAlignOutside(AlignSVG2::VERT, AlignSVG2::MIN);
-			timeHeader -> setAlignInside(AlignSVG2::HORZ, AlignSVG2::MAX);
+			timeHeader -> setAlignOutside(LayoutSVG::Axis::VERT, AlignSVG::MIN);
+			timeHeader -> setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MAX);
 			//tsvg::markAligned(headerRect, timeHeader, alignSvg::RIGHT, alignSvg::MIDDLE);
 			// Ensure order
 			timeHeader["date"](svg::TSPAN);
@@ -614,7 +616,7 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 			TreeSVG & locationHeader = headerGroup["LOCATION"](svg::TEXT);
 			locationHeader->addClass(LOCATION);
-			locationHeader -> setAlignInside(AlignSVG2::HORZ, AlignSVG2::MIN);
+			locationHeader -> setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MIN);
 			//tsvg::markAligned(headerRect, locationHeader, alignSvg::LEFT, alignSvg::MIDDLE);
 
 
@@ -682,13 +684,13 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 				start.y           = -titleCreator.mainHeaderHeight;
 			}
 
-			tsvg::alignText(headerGroup);
+			// tsvg::alignText(headerGroup);
 
 		}
 
 		// IMAGE HEADER and MAIN HEADER positions
 		// mout.attention("aligning texts of: ", group -> getTag());
-		tsvg::alignText(mainGroup);
+		// tsvg::alignText(mainGroup);
 
 	}
 

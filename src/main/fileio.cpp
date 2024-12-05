@@ -111,7 +111,7 @@ public:
 		pngConf.link("compression", drain::image::FilePng::compressionLevel);
 
 		svgConf.link("group", ctx.svgPanelConf.groupName); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
-		svgConf.link("orientation", svgConfOrientation, drain::sprinter(drain::EnumDict<drain::image::LayoutSVG::Orientation>::dict.getKeys()).str()); // init clash
+		svgConf.link("orientation", svgConfOrientation, drain::sprinter(drain::EnumDict<drain::image::LayoutSVG::Axis>::dict.getKeys()).str()); // init clash
 		svgConf.link("direction",   svgConfDirection,   drain::sprinter(drain::EnumDict<drain::image::LayoutSVG::Direction>::dict.getKeys()).str());   // init clash
 		svgConf.link("max", ctx.svgPanelConf.maxPerGroup, "max per row/column"); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 		svgConf.link("legend", svgConfLegend, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Legend>::dict.getKeys()).str());

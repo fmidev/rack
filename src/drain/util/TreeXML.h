@@ -109,7 +109,7 @@ public:
 	NodeXML(const elem_t & t = elem_t(0)){
 		type = t;
 		drain::StringTools::import(++nextID, id);
-		id = getTag()+id;
+		// id = getTag()+id; UNDEF
 	};
 
 	// Note: use default constructor in derived classes.
@@ -119,7 +119,7 @@ public:
 		copyStruct(node, node, *this, RESERVE); // This may corrupt (yet unconstructed) object?
 		type = node.getType();
 		drain::StringTools::import(++nextID, id);
-		id = getTag()+id;
+		// id = getTag()+id; UNDEF
 	}
 
 

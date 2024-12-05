@@ -95,7 +95,7 @@ public:
   \see drain::TreeXML
 
  */
-class NodeSVG: public svg, public NodeXML<svg::tag_t>, public AlignSVG2 {
+class NodeSVG: public svg, public NodeXML<svg::tag_t>, public AlignAdapterSVG {
 public:
 
 	/// In opening SVG tag, referred to by attribute "xmlns:xlink"

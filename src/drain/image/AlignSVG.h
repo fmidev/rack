@@ -48,28 +48,111 @@ namespace drain {
 
 namespace image {
 
-class AlignConfSVG {
+/// Higher level controller for setting alignments.
+/**
+ *  Also applied by PanelSVG
+ */
+class LayoutSVG {
+
+public:
+
+	// Experimental
+	enum GroupType {
+		HEADER,
+		ALIGN_SCOPE,
+		// ALIGNED,     // needed? If anchor set,
+		FLOAT,       // element does not affect alignment of other elems
+	};
+
+	enum Axis {HORZ=0, VERT=1};  // must be indexed! for vect_ UNDEFINED_AXIS=0,
+	typedef drain::EnumFlagger<drain::SingleFlagger<Axis> > AxisFlagger;
+	AxisFlagger orientation = HORZ;
+
+	enum Direction {UNDEFINED_DIRECTION=0, INCR, DECR};
+	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
+	DirectionFlagger direction = INCR;
+
+
+	inline
+	LayoutSVG(Axis v=HORZ, Direction d=INCR) : orientation(v), direction(d) {
+	}
+
+	inline
+	LayoutSVG(const LayoutSVG & layout) : orientation(layout.orientation), direction(layout.direction){
+	}
+
+	template <typename V>
+	inline
+	void setOrientation(const V &v){
+		orientation.set(EnumDict<Axis>::getValue(v));
+	};
+
+	template <typename D>
+	inline
+	void setDirection(const D & d){
+		direction.set(EnumDict<Direction>::getValue(d));
+	};
+
+	/// Set direction and orientation
+	/**
+	 *
+	 */
+	template <typename D, typename V>
+	inline
+	void set(const D & d, const V &v){
+		direction.set(EnumDict<Axis>::getValue(d));
+		orientation.set(EnumDict<Axis>::getValue(v));
+	};
+
+	static inline
+	Axis flip(Axis orientation){
+		return orientation==HORZ ? Axis::VERT : Axis::HORZ;
+	};
+
+	/*
+	static inline
+	Direction flip(Direction ...){
+		return ...
+	};
+	*/
+
+
+
+};
+
+template <>
+const drain::EnumDict<image::LayoutSVG::Axis>::dict_t  drain::EnumDict<image::LayoutSVG::Axis>::dict;
+
+template <>
+const drain::EnumDict<image::LayoutSVG::Direction>::dict_t  drain::EnumDict<image::LayoutSVG::Direction>::dict;
+
+
+
+/// Specific instructions for implementing a layout.
+class AlignSVG {
 
 public:
 
 	inline
-	AlignConfSVG(){};
+	AlignSVG(){};
 
 	inline
-	AlignConfSVG(const AlignConfSVG & conf) : alignments(conf.alignments){};
+	AlignSVG(const AlignSVG & conf) : alignments(conf.alignments){};
 
 	inline virtual
-	~AlignConfSVG(){};
+	~AlignSVG(){};
 
-	enum pos_t {
+	enum Owner {
 		OBJ=0,
 		REF=1,
 	};
 
+	/*
 	enum axis_t {
 		HORZ=0,
 		VERT=1,
 	};
+	*/
 
 	enum value_t {
 		UNDEFINED=0,
@@ -79,7 +162,7 @@ public:
 		// ABSOLUTE?
 	};
 
-	inline
+	static inline
 	value_t flip(value_t v){
 		switch (v){
 		case MAX:
@@ -91,16 +174,30 @@ public:
 		}
 	};
 	/*
-	typedef EnumFlagger<SingleFlagger<AlignSVG2::value_t> > Alignment;
-	typedef EnumFlagger<SingleFlagger<AlignSVG2::axis_t> > Axis;
-	typedef EnumFlagger<SingleFlagger<AlignSVG2::pos_t> > Position;
+	typedef EnumFlagger<SingleFlagger<AlignAdapterSVG::value_t> > Alignment;
+	typedef EnumFlagger<SingleFlagger<AlignAdapterSVG::axis_t> > Axis;
+	typedef EnumFlagger<SingleFlagger<AlignAdapterSVG::Owner> > Position;
 	*/
 
-	template <typename P, typename A,typename V>
+	/// Set a single alignment setting.
+	/**
+	 *  \tparam P - enum type \c Position  or string
+	 *  \tparam A - enum type \c Axis or string
+	 *  \tparam V - enum type \c Alignment or string
+	 *  \param pos   - enum value \c OBJ or \c REF
+	 *  \param axis  - enum value \c HORZ or \c VERT
+	 *  \param value - enum value \c MAX , \c MID , or \c MIN (or string)
+	 */
+	template <typename P, typename A, typename V>
 	void setAlign(const P & pos, const A & axis,  const V &value){
 		getAlign(pos, axis) = EnumDict<value_t>::getValue(value);
 		updateAlign();
 	}
+
+	/// Set all alignment settings.
+	/**
+	 */
+	void setAlign(const AlignSVG & conf);
 
 	/// Align element inside anchor element.
 	/**
@@ -111,8 +208,8 @@ public:
 	template <typename A,typename V>
 	void setAlignInside(const A & axis,  const V &value){
 		const value_t v = EnumDict<value_t>::getValue(value);
-		getAlign(pos_t::REF, axis) = v;
-		getAlign(pos_t::OBJ, axis) = flip(v);
+		getAlign(Owner::REF, axis) = v;
+		getAlign(Owner::OBJ, axis) = flip(v);
 		updateAlign();
 	}
 
@@ -123,14 +220,27 @@ public:
 	template <typename A,typename V>
 	void setAlignOutside(const A & axis,  const V &value){
 		const value_t v = EnumDict<value_t>::getValue(value);
-		getAlign(pos_t::REF, axis) = v;
-		getAlign(pos_t::OBJ, axis) = v;
+		getAlign(Owner::REF, axis) = v;
+		getAlign(Owner::OBJ, axis) = v;
 		updateAlign();
 	}
 
+	inline
+	void setMajorAlignment(LayoutSVG::Axis v, LayoutSVG::Direction d){
+		setAlignOutside(v==LayoutSVG::HORZ ? LayoutSVG::HORZ : LayoutSVG::VERT, d==LayoutSVG::INCR ? AlignSVG::MAX : AlignSVG::MIN);
+	}
+
+	/*
+	static inline
+	void getAlignmentConf(LayoutSVG::Axis v, LayoutSVG::Direction d, AlignSVG & alignConf){
+		alignConf.setAlignOutside(v==LayoutSVG::HORZ ? AlignSVG::HORZ : AlignSVG::VERT, d==LayoutSVG::INCR ? AlignSVG::MAX : AlignSVG::MIN);
+	}
+	*/
+
+
 	/// Return alignment setting of an object along horizontal or vertical axis  .
 	/**
-	 *  \tparam P - enum type pos_t \c REF or \c OBJ , or respective string.
+	 *  \tparam P - enum type Owner \c REF or \c OBJ , or respective string.
 	 *  \tparam A - enum type axis_t \c HORZ or \c VERT , or respective string.
 	 *  \param pos - target object \c OBJ or referred anchor object \c REF
 	 *  \param axis - horizontal \c HORZ or vertical \c AXIS .
@@ -140,7 +250,7 @@ public:
 
 	/// Return alignment setting of an object along horizontal or vertical axis  .
 	/**
-	 *  \tparam P - enum type pos_t \c REF or \c OBJ , or respective string.
+	 *  \tparam P - enum type Owner \c REF or \c OBJ , or respective string.
 	 *  \tparam A - enum type axis_t \c HORZ or \c VERT , or respective string.
 	 *  \param pos - target object \c OBJ or referred anchor object \c REF
 	 *  \param axis - horizontal \c HORZ or vertical \c AXIS .
@@ -153,6 +263,7 @@ public:
 
 	/// Return true, if any of alignment requests has been set.
 	bool isAligned() const;
+
 
 protected:
 
@@ -190,16 +301,16 @@ protected:
 
 
 template <typename P, typename A>
-AlignConfSVG::value_t & AlignConfSVG::getAlign(const P & pos, const A & axis){
-	const pos_t p   = EnumDict<pos_t>::getValue(pos);
-	const axis_t a  = EnumDict<axis_t>::getValue(axis);
+AlignSVG::value_t & AlignSVG::getAlign(const P & pos, const A & axis){
+	const Owner p   = EnumDict<Owner>::getValue(pos);
+	const LayoutSVG::Axis a  = EnumDict<LayoutSVG::Axis>::getValue(axis);
 	return alignments[p][a];
 }
 
 template <typename P, typename A>
-const AlignConfSVG::value_t & AlignConfSVG::getAlign(const P & pos, const A & axis) const {
-	const pos_t p   = EnumDict<pos_t>::getValue(pos);
-	const axis_t a  = EnumDict<axis_t>::getValue(axis);
+const AlignSVG::value_t & AlignSVG::getAlign(const P & pos, const A & axis) const {
+	const Owner p   = EnumDict<Owner>::getValue(pos);
+	const LayoutSVG::Axis a  = EnumDict<LayoutSVG::Axis>::getValue(axis);
 	return alignments[p][a];
 }
 
@@ -208,7 +319,7 @@ const AlignConfSVG::value_t & AlignConfSVG::getAlign(const P & pos, const A & ax
 
 
 /// Adapter designed for NodeSVG
-struct AlignSVG2 : public AlignConfSVG {
+struct AlignAdapterSVG : public AlignSVG {
 
 	/// Mark one of the elements of this object (SVG or G) as a decisive position
 	inline
@@ -225,7 +336,7 @@ struct AlignSVG2 : public AlignConfSVG {
 protected:
 
 	inline virtual
-	~AlignSVG2(){};
+	~AlignAdapterSVG(){};
 
 
 	std::string align;
@@ -236,6 +347,7 @@ protected:
 	void updateAlign(){
 		updateAlignStr();
 	};
+
 
 private:
 
@@ -248,67 +360,8 @@ private:
 
 
 template<>
-const EnumDict<AlignSVG2::value_t>::dict_t EnumDict<AlignSVG2::value_t>::dict;
+const EnumDict<AlignAdapterSVG::value_t>::dict_t EnumDict<AlignAdapterSVG::value_t>::dict;
 
-/// Higher level controller for setting alignments.
-/**
- *  Also applied by PanelSVG
- */
-class LayoutSVG {
-
-public:
-
-	enum Orientation {UNDEFINED_ORIENTATION=0, HORZ, VERT};
-	typedef drain::EnumFlagger<drain::SingleFlagger<Orientation> > OrientationFlagger;
-	OrientationFlagger orientation = HORZ;
-
-	enum Direction {UNDEFINED_DIRECTION=0, INCR, DECR};
-	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
-	DirectionFlagger direction = INCR;
-
-	inline
-	LayoutSVG(Orientation v=HORZ, Direction d=INCR) : orientation(v), direction(d) {
-	}
-
-	inline
-	LayoutSVG(const LayoutSVG & layout) : orientation(layout.orientation), direction(layout.direction){
-	}
-
-	template <typename V>
-	inline
-	void setOrientation(const V &v){
-		orientation.set(EnumDict<Orientation>::getValue(v));
-	};
-
-	template <typename D>
-	inline
-	void setDirection(const D & d){
-		direction.set(EnumDict<Direction>::getValue(d));
-	};
-
-	/// Set direction and orientation
-	/**
-	 *
-	 */
-	template <typename D, typename V>
-	inline
-	void set(const D & d, const V &v){
-		direction.set(EnumDict<Orientation>::getValue(d));
-		orientation.set(EnumDict<Orientation>::getValue(v));
-	};
-
-	static inline
-	void getAlignmentConf(Orientation v, Direction d, AlignConfSVG & alignConf){
-		alignConf.setAlignOutside(v==LayoutSVG::HORZ ? AlignConfSVG::HORZ : AlignConfSVG::VERT, d==LayoutSVG::INCR ? AlignConfSVG::MAX : AlignConfSVG::MIN);
-	}
-
-};
-
-template <>
-const drain::EnumDict<image::LayoutSVG::Orientation>::dict_t  drain::EnumDict<image::LayoutSVG::Orientation>::dict;
-
-template <>
-const drain::EnumDict<image::LayoutSVG::Direction>::dict_t  drain::EnumDict<image::LayoutSVG::Direction>::dict;
 
 }  // image::
 

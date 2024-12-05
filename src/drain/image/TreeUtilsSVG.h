@@ -75,9 +75,9 @@ public:
 struct PanelConfSVG {
 
 	/*
-	enum Orientation {UNDEFINED_ORIENTATION=0, HORZ, VERT};
-	typedef drain::EnumFlagger<drain::SingleFlagger<Orientation> > OrientationFlagger;
-	OrientationFlagger orientation = HORZ;
+	enum Axis {UNDEFINED_ORIENTATION=0, HORZ, VERT};
+	typedef drain::EnumFlagger<drain::SingleFlagger<Axis> > AxisFlagger;
+	AxisFlagger orientation = HORZ;
 
 	enum Direction {UNDEFINED_DIRECTION=0, INCR, DECR};
 	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
@@ -157,9 +157,9 @@ struct TreeUtilsSVG {
 
 
 	/*
-	enum Orientation {UNDEFINED_ORIENTATION=0, HORZ, VERT};
-	typedef drain::EnumFlagger<drain::SingleFlagger<Orientation> > OrientationFlagger;
-	static OrientationFlagger defaultOrientation;
+	enum Axis {UNDEFINED_ORIENTATION=0, HORZ, VERT};
+	typedef drain::EnumFlagger<drain::SingleFlagger<Axis> > AxisFlagger;
+	static AxisFlagger defaultAxis;
 
 	enum Direction {UNDEFINED_DIRECTION=0, INCR, DECR};
 	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
@@ -200,15 +200,16 @@ public:
 	 *  Future versions may also handle CIRCLE and TEXT (location)
 	 */
 	static
-	void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, LayoutSVG::Orientation orientation=LayoutSVG::UNDEFINED_ORIENTATION);
+	void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, LayoutSVG::Axis orientation=LayoutSVG::HORZ); // UNDEFINED_ORIENTATION=2
 
 
 
 	/// Stack IMAGE and RECT elements within a frame (width x height) to a row or column
 	// alignDomain!
+	/*
 	static
 	void alignSequenceOLD(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start={0,0},
-			LayoutSVG::Orientation orientation=LayoutSVG::UNDEFINED_ORIENTATION, LayoutSVG::Direction direction=LayoutSVG::UNDEFINED_DIRECTION);
+			LayoutSVG::Axis orientation=LayoutSVG::HORZ, LayoutSVG::Direction direction=LayoutSVG::Direction::UNDEFINED_DIRECTION); // UNDEFINED_Axis=2
 
 
 	static
@@ -226,13 +227,9 @@ public:
 	/// Moves TEXT elems to desired positions, esp corners (LEFT|RIGHT), (TOP|BOTTOM)
 	static
 	void alignText(TreeSVG & group);
+	*/
 
-
-	// NEW ---------------------
-	static
-	void superAlign(TreeSVG & node, const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
-
-
+	/*
 	/// Align PANEL groups inside an ALIGN_GROUP group
 	static
 	void alignDomains(TreeSVG & group); // replaces alignSequence
@@ -240,6 +237,12 @@ public:
 	/// Align PANEL groups inside an ALIGN_DOMAIN group
 	static
 	void alignPanels(TreeSVG & alignGroup, Point2D<double> &startPos);
+	*/
+
+	// NEW ---------------------
+	static
+	void superAlign(TreeSVG & node, LayoutSVG::Axis orientation = LayoutSVG::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
+
 
 	// static
 	// void realignElem(TreeSVG & elem, const Box<svg::coord_t> & anchorBox);
@@ -292,7 +295,7 @@ public:
 
 /*
 template <>
-const drain::EnumDict<image::LayoutSVG::Orientation>::dict_t  drain::EnumDict<image::LayoutSVG::Orientation>::dict;
+const drain::EnumDict<image::LayoutSVG::Axis>::dict_t  drain::EnumDict<image::LayoutSVG::Axis>::dict;
 
 template <>
 const drain::EnumDict<image::LayoutSVG::Direction>::dict_t  drain::EnumDict<image::LayoutSVG::Direction>::dict;
