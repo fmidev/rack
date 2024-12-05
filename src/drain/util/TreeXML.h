@@ -53,6 +53,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
+/**
+ *   Flexibility is used (at least) in:
+ *   - linking box.height to font-size (in TEXT or TSPAN elems)
+ */
 class StyleXML : public ReferenceMap2<FlexibleVariable> {
 
 public:
@@ -134,13 +138,34 @@ public:
 
 
 	/// Some general-purpose
-
 	// Consider either/or
 	std::string ctext;
 
 	std::string url;
 
-	// drain::Rectangle<double> frame;
+	inline
+	static int getCount(){
+		return nextID;
+	}
+
+	/// Makes ID a visible attribute.
+	inline
+	void setId(){
+		link("id", id);
+	}
+
+	/// Makes ID a visible attribute, with a given value.
+	inline
+	void setId(const std::string & s){
+		link("id", id = s);
+	}
+
+
+	/// Returns ID of this element. Hopefully a unique ID...
+	inline
+	const std::string & getId() const {
+		return id;
+	}
 
 	inline
 	bool empty() const {
@@ -152,19 +177,6 @@ public:
 		type = t;
 		// in derived classes, eg. drain::image::BaseGDAL
 		// warning: case value ‘...’ not in enumerated type
-		/*
-		switch (type){
-		case STYLE:
-			link("href", url);
-			break;
-		case SCRIPT:
-			link("href", url);
-			break;
-		default:
-			// Note: not all values need handling, and others are handled in subclass setType()
-			break;
-		};
-		*/
 	}
 
 	/* Consider this later, for user-defined (not enumerated) tag types.
@@ -468,8 +480,6 @@ public:
 		return *this;
 	}
 
-	StyleXML style;
-
 	/// Make this node a comment. Contained tree will not be delete. In current version, attributes will be rendered.
 	/**
 	 *   \param text - if given, replaces current CTEXT.
@@ -512,8 +522,9 @@ public:
 		return *this;
 	}
 
+	// ------------------ Style ---------------
 
-
+	StyleXML style;
 
 	template <class S>
 	inline
@@ -577,8 +588,8 @@ public:
 	*/
 
 
-	// typedef std::set<std::string> class_list;
-	// class_list classList;
+	// ------------------ Style Class ---------------
+
 
 	ClassListXML classList;
 
@@ -644,11 +655,11 @@ public:
 	static
 	bool findByClass(const T2 & t, const C & cls, std::list<path_elem_t> & result);
 
-	/// Finds elements in an XML structure by class name supplied as an enumeration type.
+	/// Finds elements recursively in an XML structure by class name supplied as an enumeration type.
 	/**
-	 *   \tparam V - XML tree
-	 *   \tparam C - enum type, for which a unique (static) EnumDict has been detected.
-	 *
+	 *  \tparam V - XML tree
+	 *  \tparam C - enum type, for which a unique (static) EnumDict has been detected.
+	 *	\param path - starting point
 	 */
 	//template <class V, class E>
 	template <class V, class C>
@@ -657,33 +668,7 @@ public:
 
 
 	/// Finds elements in an XML structure by class name.
-	/**
-	 *   \tparam V - XML tree
-	 *
-	 *	In a way, this is a forward definition – this could also be in TreeXMLutilities.
-	 *
-	template <class V>
-	static
-	bool findByClass(const V & t, const std::string & cls, path_list_t & result, const path_t & path = path_t());
-	 */
-
-
 	/// Finds elements in an XML structure by class name. Redirects to findByClass(t, std::string(cls),
-	/**
-	 *   \tparam V - XML tree
-	 *
-	template <class V>
-	static inline
-	bool findByClass(const V & t, const char *cls, path_list_t & result, const path_t & path = path_t()){
-		return findByClass(t, std::string(cls), result, path);
-	}
-	 */
-
-	/*
-	{
-		return findByClass(t, drain::EnumDict<E>::dict.getKey(cls), result, path); // TODO: this only, with -> hasClass(cls) ?
-	}
-	*/
 
 
 
@@ -717,8 +702,9 @@ public:
 		return ostr;
 	}
 
-	//drain::NodeHTML::HTML
+	// drain::NodeHTML::HTML
 	// typedef std::pair<key_t,xml_node_t> node_pair_t;
+	// TODO: where is this needed?
 	template <int E>
 	static inline
 	const std::pair<key_t,NodeXML<T> > & entry(){
@@ -727,30 +713,8 @@ public:
 		return nodeEntry;
 	}
 
-	inline
-	static int getCount(){
-		return nextID;
-	}
 
 
-	/// Makes ID a visible attribute.
-	inline
-	void setId(){
-		link("id", id);
-	}
-
-	/// Makes ID a visible attribute, with a given value.
-	inline
-	void setId(const std::string & s){
-		link("id", id = s);
-	}
-
-
-	/// Returns ID of this element. Hopefully a unique ID...
-	inline
-	const std::string & getId() const {
-		return id;
-	}
 
 
 protected:

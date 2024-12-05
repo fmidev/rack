@@ -200,11 +200,11 @@ void NodeSVG::setType(const tag_t & t) {
 		// tag = "text";
 		link("x", box.x = 0);
 		link("y", box.y = 0);
+		// style.link("font-size", this->box.height); // Not good, shows zero size
 		// link("text-anchor", text_anchor = "");
 		break;
 	case TSPAN:
-		// tag = "tspan";
-		//link("text-anchor", text_anchor = "");
+		// style.link("font-size", this->box.height); // Not good, shows zero size
 		break;
 	default:
 		return;

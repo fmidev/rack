@@ -389,7 +389,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		drain::Frame2D<double> frame = {200,400};
+		drain::Frame2D<double> frame = {400,500};
 
 		drain::image::TreeSVG & rectGroup = RackSVG::getCurrentGroup(ctx)[value](NodeSVG::GROUP);
 		// rectGroup->addClass(drain::image::AlignSVG::PANEL); // needed?
@@ -415,28 +415,30 @@ public:
 		//const std::string ANCHOR = "rect";
 
 
-		typedef drain::image::LayoutSVG::Axis  AlignAxis;
+		//typedef drain::image::LayoutSVG::Axis  AlignAxis;
 		typedef drain::image::AlignSVG::Owner   AlignPos;
 		typedef drain::image::AlignSVG::value_t Align;
 
-		for (const drain::image::LayoutSVG::Axis & ax: {AlignAxis::HORZ, AlignAxis::VERT}){
+		// for (const drain::image::LayoutSVG::Axis & ax: {AlignAxis::HORZ, AlignAxis::VERT}){
+		for (const AlignSVG::value_t & posVert: {Align::MAX, Align::MID, Align::MIN}){
 
-			const std::string & axStr = drain::EnumDict<AlignAxis>::dict.getKey(ax);
+			// const std::string & axStr = drain::EnumDict<AlignAxis>::dict.getKey(ax);
+			const std::string & posVertStr = drain::EnumDict<Align>::dict.getKey(posVert);
 
-			for (const AlignSVG::value_t & v: {Align::MAX, Align::MID, Align::MIN}){
+			for (const AlignSVG::value_t & posHorz: {Align::MAX, Align::MID, Align::MIN}){
 
-				const std::string & vStr = drain::EnumDict<Align>::dict.getKey(v);
+				const std::string & posHorzStr = drain::EnumDict<Align>::dict.getKey(posHorz);
 
-				for (const drain::image::LayoutSVG::Axis & axRef: {AlignAxis::HORZ, AlignAxis::VERT}){
+				//for (const drain::image::LayoutSVG::Axis & axRef: {AlignAxis::HORZ, AlignAxis::VERT}){
+				for (const AlignSVG::value_t & posVertRef: {Align::MAX, Align::MID, Align::MIN}){
 
-					const std::string & axRefStr = drain::EnumDict<AlignAxis>::dict.getKey(axRef);
+					const std::string & posVertRefStr = drain::EnumDict<Align>::dict.getKey(posVertRef);
 
-					for (const AlignSVG::value_t & vRef: {Align::MAX, Align::MID, Align::MIN}){
+					for (const AlignSVG::value_t & posHorzRef: {Align::MAX, Align::MID, Align::MIN}){
 
-						const std::string & vRefStr = drain::EnumDict<Align>::dict.getKey(vRef);
+						const std::string & posHorzRefStr = drain::EnumDict<Align>::dict.getKey(posHorzRef);
 
-
-						const std::string label = drain::StringBuilder<'-'>(axRefStr, vRefStr, axStr, vStr);
+						const std::string label = drain::StringBuilder<'-'>(posHorzRefStr, posVertRefStr, posHorzStr, posVertStr);
 
 						/*
 						drain::image::TreeSVG & textGroup = rectGroup[label](NodeSVG::GROUP);
@@ -446,18 +448,25 @@ public:
 						*/
 
 						drain::image::TreeSVG & textBox = rectGroup[label](NodeSVG::RECT);
-						textBox->setAlign(AlignPos::REF,  axRef, vRef);
-						textBox->setAlign(AlignPos::OBJ, ax, v);
-						textBox->getBoundingBox().setArea(50,150);
+						textBox->setAlign(AlignPos::REF, LayoutSVG::HORZ, posHorzRef);
+						textBox->setAlign(AlignPos::REF, LayoutSVG::VERT, posVertRef);
+						textBox->setAlign(AlignPos::OBJ, LayoutSVG::HORZ, posHorz);
+						textBox->setAlign(AlignPos::OBJ, LayoutSVG::VERT, posVert);
+						textBox->getBoundingBox().setArea(50,33);
 						textBox->setStyle("fill", "green");
 						textBox->setStyle("opacity", 0.25);
 						textBox->setStyle("stroke", "darkblue");
 
 
 						drain::image::TreeSVG & text = rectGroup[label + "text"](NodeSVG::TEXT);
-						text->setAlign(AlignPos::OBJ, ax, v);
-						text->setAlign(AlignPos::REF,  ax, v);
+						text->getBoundingBox().setHeight(20);
+						text->setAlign(AlignPos::REF, LayoutSVG::HORZ, posHorzRef);
+						text->setAlign(AlignPos::REF, LayoutSVG::VERT, posVertRef);
+						text->setAlign(AlignPos::OBJ, LayoutSVG::HORZ, posHorz);
+						text->setAlign(AlignPos::OBJ, LayoutSVG::VERT, posVert);
 						/*
+						text->setAlign(AlignPos::OBJ, ax, posHorz);
+						text->setAlign(AlignPos::REF,  ax, posHorz);
 								text->setAlign(AlignPos::ORIG, AlignAxis::HORZ, Align::MID);
 								text->setAlign(AlignPos::ORIG, AlignAxis::VERT, Align::MID);
 								text->setAlign(AlignPos::REF,  AlignAxis::HORZ, Align::MID);

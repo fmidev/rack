@@ -120,6 +120,9 @@ public:
 	~NodeSVG(){};
 
 	///
+	/**
+	 *  Special: for TEXT and SPAN elements, links STYLE[font-size] to bbox.height?
+	 */
 	virtual
 	void setType(const tag_t & type) override final;
 

@@ -542,9 +542,17 @@ void TreeUtilsSVG::realignObject(const Box<svg::coord_t> & anchorBox, TreeSVG & 
 		break;
 	case AlignSVG::value_t::MID:
 		location.y -= box.height/2;
+		if (TEXT && (box.height==0)){
+			location.y -= object->style.get("font-size", 0.0)/2.0;
+			mout.experimental("Vertical adjust by explicit font-size=", object->style["font-size"], " /2.0");
+		}
 		break;
 	case AlignSVG::value_t::MIN:
 		location.y -= box.height;
+		if (TEXT && (box.height==0)){
+			location.y -= object->style.get("font-size", 0.0);
+			mout.experimental("Vertical adjust by explicit font-size=", object->style["font-size"]);
+		}
 		break;
 	case AlignSVG::value_t::UNDEFINED:
 		break;
