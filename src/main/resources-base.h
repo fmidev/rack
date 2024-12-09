@@ -106,9 +106,15 @@ public:
 
 	std::string paletteKey;
 
-	// New: SVG
+	// SVG output configuration (layout)
 	drain::image::TreeSVG svgTrack;
-	drain::image::PanelConfSVG svgPanelConf;
+	drain::image::PanelConfSVG svgPanelConf; // under constr - consider embedding these to PanelConfSVG:
+	drain::image::Align::Axis mainOrientation = drain::image::Align::Axis::HORZ;
+	drain::image::LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
+	// For the NEXT graphic object
+	drain::image::AlignSVG::Topol topol = drain::image::AlignSVG::Topol::OUTSIDE;
+	drain::image::AlignSVG::HorzAlign halign = drain::image::AlignSVG::HorzAlign::RIGHT;
+	drain::image::AlignSVG::VertAlign valign = drain::image::AlignSVG::VertAlign::TOP;
 
 	// New
 	inline

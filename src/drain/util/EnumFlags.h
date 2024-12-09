@@ -82,6 +82,25 @@ struct EnumDict {
 		return dict.getKey(value);
 	}
 
+
+	/// Convenience function for leniently setting string values to separate enum lists.
+	/**
+	 *  String arguments tested against several dictionaries.
+	 *  \tparam E2 - any enum type, for which \c dict has been defined.
+	 */
+	//template <typename E2>
+	static
+	bool setValue(const std::string & key, E & value){  // NOTE:  could be more general, without explicit template
+		if (drain::EnumDict<E>::dict.hasKey(key)){
+			value = drain::EnumDict<E>::dict.getValue(key);
+			return true; // assigned
+		}
+		else {
+			return false; // not found
+		}
+	}
+
+
 	/// Convenience for object.set(...) like commands.
 	/**
 	 *   \return enum value of the key
@@ -123,6 +142,8 @@ struct EnumDict {
 #define DRAIN_ENUM_ENTRY_PRE(key) {#key, DRAIN_ENUM_NAMESPACE::key}
 */
 #define DRAIN_ENUM_ENTRY(nspace, key) {#key, nspace::key}
+
+#define DRAIN_ENUM_OSTREAM(enumtype) inline std::ostream & operator<<(std::ostream &ostr, const enumtype & e){return ostr << drain::EnumDict<enumtype>::dict.getKey(e);}
 
 /* Perhaps useful!
 template <class E>

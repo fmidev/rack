@@ -101,7 +101,7 @@ struct PanelConfSVG {
 	FontSizes fontSize;
 
 	inline
-	PanelConfSVG() : layout(LayoutSVG::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED), maxPerGroup(10), absolutePaths(false){
+	PanelConfSVG() : layout(Align::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED), maxPerGroup(10), absolutePaths(false){
 	}
 
 	/*
@@ -200,48 +200,12 @@ public:
 	 *  Future versions may also handle CIRCLE and TEXT (location)
 	 */
 	static
-	void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, LayoutSVG::Axis orientation=LayoutSVG::HORZ); // UNDEFINED_ORIENTATION=2
+	void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, Align::Axis orientation=Align::Axis::HORZ); // UNDEFINED_ORIENTATION=2
 
-
-
-	/// Stack IMAGE and RECT elements within a frame (width x height) to a row or column
-	// alignDomain!
-	/*
-	static
-	void alignSequenceOLD(TreeSVG & group, const drain::Frame2D<int> & frame, const drain::Point2D<int> & start={0,0},
-			LayoutSVG::Axis orientation=LayoutSVG::HORZ, LayoutSVG::Direction direction=LayoutSVG::Direction::UNDEFINED_DIRECTION); // UNDEFINED_Axis=2
-
-
-	static
-	void markAligned(const TreeSVG & parentGroup, TreeSVG & alignedGroup); // TODO: frame={0,0} for margins/offsets etc from border?
-
-	template <class ...TT>
-	static inline
-	void markAligned(const TreeSVG & parentGroup, TreeSVG & alignedGroup, const TT & ...args){
-		markAligned(parentGroup, alignedGroup);
-		alignedGroup->addClass(args...);
-	};
-	// TODO: frame={0,0} for margins/offsets etc from border?
-
-
-	/// Moves TEXT elems to desired positions, esp corners (LEFT|RIGHT), (TOP|BOTTOM)
-	static
-	void alignText(TreeSVG & group);
-	*/
-
-	/*
-	/// Align PANEL groups inside an ALIGN_GROUP group
-	static
-	void alignDomains(TreeSVG & group); // replaces alignSequence
-
-	/// Align PANEL groups inside an ALIGN_DOMAIN group
-	static
-	void alignPanels(TreeSVG & alignGroup, Point2D<double> &startPos);
-	*/
 
 	// NEW ---------------------
 	static
-	void superAlign(TreeSVG & node, LayoutSVG::Axis orientation = LayoutSVG::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
+	void superAlign(TreeSVG & node, Align::Axis orientation = Align::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
 
 
 	// static
@@ -257,11 +221,9 @@ public:
 
 
 
-//
-
 	/// Marker for...
-	static
-	const std::string attr_FRAME_REFERENCE;
+	//  static
+	//  const std::string attr_FRAME_REFERENCE;
 
 protected:
 

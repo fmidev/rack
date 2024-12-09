@@ -101,12 +101,12 @@ void NodeSVG::updateAlignAttributes(){
 	}
 	std::string s = sstr.str();
 	*/
-	if (align.empty()){
+	if (alignStr.empty()){
 		this->unlink("align");
 	}
 	else {
 		if (!this->hasKey("align")){
-			this->link("align", align); // (should be safe anyway)
+			this->link("align", alignStr); // (should be safe anyway)
 		}
 	}
 

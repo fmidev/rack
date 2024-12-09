@@ -550,20 +550,35 @@ public:
 
 	inline
 	void setStyle(const std::string & key, const std::string & value){
+		// const std::initializer_list<Variable::init_pair_t > &l
+		// drain::Logger mout(__FILE__, __FUNCTION__);
+		// mout.special<LOG_WARNING>("Spezial str");
 		this->style[key] = value;
+	}
+
+	template <class V>
+	inline
+	void setStyle(const std::string & key, const std::initializer_list<V> &l){
+		// const std::initializer_list<Variable::init_pair_t > &l
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.revised<LOG_WARNING>("Check if elem=STYLE , initializer_list<", drain::TypeName<V>::str(), "> = ");
+		this->style[key] = l;
 	}
 
 
 	template <class V>
 	inline
 	void setStyle(const std::string & key, const V & value){
+		// drain::Logger mout(__FILE__, __FUNCTION__);
 		if (type == STYLE){
+			// mout.special<LOG_WARNING>("Spezial STYLE ", drain::TypeName<V>::str());
 			// "reuse" style map as style record map
 			std::stringstream sstr;
 			drain::Sprinter::toStream(sstr, value, StyleXML::styleLineLayout);
 			this->style[key] = value; //sstr.str();
 		}
 		else {
+			// mout.special<LOG_WARNING>("Spezial ", drain::TypeName<V>::str());
 			this->style[key] = value;
 		}
 	}

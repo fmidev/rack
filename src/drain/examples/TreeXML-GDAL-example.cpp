@@ -121,6 +121,9 @@ int main(int argc, char **argv){
 	drain::image::TreeGDAL & sub2 = gdal("second");
 	sub2("Jane") = true;
 	*/
+	//
+	gdal->setStyle("stroke-mikaarray", {65, 78, 0});
+	gdal->style["stroke-dasharray"] = {1234, 4568};
 
 	drain::TreeUtils::dump(gdal);
 

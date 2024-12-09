@@ -80,6 +80,17 @@ public:
 		return add(args...);
 	}
 
+	/*
+	template<Enum E, typename ... TT>
+	StreamBuilder & add(const E & arg, const TT &... args) {
+		if (SEP && (tellp() > 0)){
+			*this << (SEP);
+		}
+		*this << arg;
+		return add(args...);
+	}
+	*/
+
 
 protected:
 
