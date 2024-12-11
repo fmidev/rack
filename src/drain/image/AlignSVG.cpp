@@ -51,6 +51,7 @@ const drain::EnumDict<Align::Position>::dict_t drain::EnumDict<Align::Position>:
 		DRAIN_ENUM_ENTRY(drain::image::Align::Position, MAX),
 		DRAIN_ENUM_ENTRY(drain::image::Align::Position, MID),
 		DRAIN_ENUM_ENTRY(drain::image::Align::Position, MIN),
+		DRAIN_ENUM_ENTRY(drain::image::Align::Position, UNDEFINED_POS),
 };
 
 template <>
@@ -58,6 +59,8 @@ const drain::EnumDict<Align::Axis>::dict_t drain::EnumDict<Align::Axis>::dict = 
 		DRAIN_ENUM_ENTRY(drain::image::Align::Axis, HORZ),
 		DRAIN_ENUM_ENTRY(drain::image::Align::Axis, VERT),
 };
+
+// -----------------------------------------------------------------------------------------------------------
 
 template <>
 const drain::EnumDict<AlignSVG::Owner>::dict_t drain::EnumDict<AlignSVG::Owner>::dict = {
@@ -70,6 +73,7 @@ const drain::EnumDict<AlignSVG::HorzAlign>::dict_t  drain::EnumDict<AlignSVG::Ho
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::HorzAlign, LEFT),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::HorzAlign, CENTER),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::HorzAlign, RIGHT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::HorzAlign, UNDEFINED_HORZ),
 };
 
 template <>
@@ -77,25 +81,20 @@ const drain::EnumDict<AlignSVG::VertAlign>::dict_t  drain::EnumDict<AlignSVG::Ve
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::VertAlign, TOP),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::VertAlign, MIDDLE),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::VertAlign, BOTTOM),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::VertAlign, UNDEFINED_VERT),
 };
 
+
+// -----------------------------------------------------------------------------------------------------------
 
 template<>
 const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dict = {
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN_SCOPE),
-		//DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGNED),
+		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN_FRAME),
+		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGNED),
+		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ABSOLUTE),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, FLOAT),
 };
-
-/*
-template <>
-const drain::EnumDict<LayoutSVG::Axis>::dict_t  drain::EnumDict<LayoutSVG::Axis>::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::Axis, HORZ),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::Axis, VERT),
-};
-*/
-
 
 template <>
 const drain::EnumDict<LayoutSVG::Direction>::dict_t  drain::EnumDict<LayoutSVG::Direction>::dict = {
@@ -109,70 +108,6 @@ const drain::EnumDict<AlignSVG::Topol>::dict_t drain::EnumDict<AlignSVG::Topol>:
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Topol, OUTSIDE),
 };
 
-
-/*
-Align::Position AlignSVG::getAlignPos(Owner owner, Axis axis) const{
-
-	bitvect_t v = combineAlign((int)owner, (int)axis);
-
-	if (isAlignSet(v, Position::MID)){ // both bits: = MIN|MAX
-		return Position::MID;
-	}
-	else if (isAlignSet(v, Position::MIN)){
-		return Position::MIN;
-	}
-	else if (isAlignSet(v, Position::MAX)){
-		return Position::MAX;
-	}
-	else {
-		return Position::UNDEFINED_POS;
-	}
-}
-*/
-
-/*
-static
-void LayoutSVG::getAlignmentConf(LayoutSVG::Direction d, LayoutSVG::Axis v, AlignSVG & alignConf){
-	alignConf.setAlignOutside(d==LayoutSVG::HORZ ? AlignSVG::HORZ : AlignSVG::VERT, v==LayoutSVG::INCR ? AlignSVG::MAX : AlignSVG::MIN);
-}
-*/
-
-
-/*
-template<>
-const EnumDict<AlignAdapterSVG::axis_t>::dict_t EnumDict<AlignAdapterSVG::axis_t>::dict = {
-	DRAIN_ENUM_ENTRY(drain::image::AlignAdapterSVG::axis_t, HORZ),
-	DRAIN_ENUM_ENTRY(drain::image::AlignAdapterSVG::axis_t, VERT),
-};
-*/
-
-/*
-template<>
-const EnumDict<AlignSVG::Owner>::dict_t EnumDict<AlignSVG::Owner>::dict = {
-	DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Owner, OBJECT),
-	DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Owner, ANCHOR),
-};
-
-template<>
-const EnumDict<Align::Position>::dict_t EnumDict<Align::Position>::dict = {
-	DRAIN_ENUM_ENTRY(drain::image::Align::Position, UNDEFINED_POS),
-	DRAIN_ENUM_ENTRY(drain::image::Align::Position, MAX),
-	DRAIN_ENUM_ENTRY(drain::image::Align::Position, MID),
-	DRAIN_ENUM_ENTRY(drain::image::Align::Position, MIN),
-	// {drain::image::svg::MAX, "MAX"}
-};
-*/
-
-
-/*
-void AlignSVG::setAlign(const AlignSVG & conf){
-	for (AlignSVG::Owner p: {AlignSVG::OBJ, AlignSVG::REF}){
-		for (LayoutSVG::Axis a: {LayoutSVG::Axis::HORZ, LayoutSVG::Axis::VERT}){
-			setAlign(p, a, conf.getAlign(p, a));
-		}
-	}
-}
-*/
 
 
 void AlignSVG::resetAlign(){

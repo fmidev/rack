@@ -540,7 +540,7 @@ public:
 
 		drain::image::TreeSVG & rectGroup = RackSVG::getCurrentGroup(ctx)[value](NodeSVG::GROUP);
 		rectGroup->setId(value);
-		rectGroup->addClass(drain::image::LayoutSVG::ALIGN_SCOPE); // current ALIGN_SCOPE
+		rectGroup->addClass(drain::image::LayoutSVG::ALIGNED); // current ALIGNED
 		const std::string ANCHOR_ELEM("anchor-elem");
 		rectGroup->setAlignAnchor(ANCHOR_ELEM);
 		// rectGroup->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);

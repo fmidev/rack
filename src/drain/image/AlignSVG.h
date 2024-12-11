@@ -174,6 +174,11 @@ struct AlignSVG : protected Align {
 	template <Topol T>
 	inline
 	void setAlign(const AlignSVG::HorzAlign & ha){
+		setAlign(T, ha);
+	}
+
+	inline
+	void setAlign(Topol topol, const HorzAlign & ha){
 
 		// const HorzAlign horzAlign = EnumDict<HorzAlign>::getValue(ha);
 		// AlignSVG::Position & horzRef = getAlign(Owner::REF, LayoutSVG::HORZ);
@@ -182,7 +187,7 @@ struct AlignSVG : protected Align {
 		switch (EnumDict<AlignSVG::HorzAlign>::getValue(ha)){
 			case HorzAlign::LEFT:
 				setAlign(ANCHOR, HORZ, MIN);
-				setAlign(OBJECT, HORZ, (T==Topol::INSIDE) ? MIN : MAX); // Inside(Align::HORZ, Align::MIN);
+				setAlign(OBJECT, HORZ, (topol==Topol::INSIDE) ? MIN : MAX); // Inside(Align::HORZ, Align::MIN);
 				break;
 			case HorzAlign::CENTER:
 				setAlign(ANCHOR, HORZ, MID);
@@ -192,7 +197,7 @@ struct AlignSVG : protected Align {
 			case HorzAlign::RIGHT:
 				break;
 				setAlign(ANCHOR, HORZ, MAX);
-				setAlign(OBJECT, HORZ, (T==Topol::INSIDE) ? MAX : MIN); // Inside(Align::HORZ, Align::MIN);
+				setAlign(OBJECT, HORZ, (topol==Topol::INSIDE) ? MAX : MIN); // Inside(Align::HORZ, Align::MIN);
 				// setAlignInside(Align::HORZ, Align::MAX);
 				break;
 			default:
@@ -207,11 +212,17 @@ struct AlignSVG : protected Align {
 	template <Topol T>
 	inline
 	void setAlign(const VertAlign & va){
+		setAlign(T, va);
+	}
+
+	// template <Topol T>
+	inline
+	void setAlign(Topol topol, const VertAlign & va){
 
 		switch (EnumDict<VertAlign>::getValue(va)){
 			case VertAlign::TOP:
 				setAlign(ANCHOR, VERT, MIN);
-				setAlign(OBJECT, VERT, (T==Topol::INSIDE) ? MIN : MAX); // Inside(Align::HORZ, Align::MIN);
+				setAlign(OBJECT, VERT, (topol==Topol::INSIDE) ? MIN : MAX); // Inside(Align::HORZ, Align::MIN);
 				// setAlignInside(Align::VERT, Align::MIN);
 				break;
 			case VertAlign::MIDDLE:
@@ -221,7 +232,7 @@ struct AlignSVG : protected Align {
 				break;
 			case VertAlign::BOTTOM:
 				setAlign(ANCHOR, VERT, MAX);
-				setAlign(OBJECT, VERT, (T==Topol::INSIDE) ? MAX : MIN); // Inside(Align::HORZ, Align::MIN);
+				setAlign(OBJECT, VERT, (topol==Topol::INSIDE) ? MAX : MIN); // Inside(Align::HORZ, Align::MIN);
 				// setAlignInside(Align::VERT, Align::MAX);
 				break;
 			default:
@@ -430,9 +441,10 @@ public:
 	// Experimental
 	enum GroupType {
 		HEADER,
-		ALIGN_SCOPE,
+		ALIGN_FRAME,
+		ALIGNED,  // needed? "anchor" attrib and getAlign() should work
+		ABSOLUTE, // "do not align (me or descendants) (future option)"
 		FLOAT,       // = element does not affect alignment of other elems
-		// ALIGNED,  // needed? If anchor set,
 	};
 
 

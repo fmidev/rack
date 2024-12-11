@@ -195,11 +195,12 @@ drain::image::TreeSVG & RackSVG::getCurrentGroup(RackContext & ctx){ // what abo
 
 	if (group->isUndefined()){
 		group->setType(NodeSVG::GROUP);
+		group->setId(groupName);
+		group->addClass(drain::image::LayoutSVG::ALIGN_FRAME);
+		// group->set("debug", groupName); // debug
 		// if (!track.hasChild(groupName)){  // ctx.svgPanelConf.
 		// drain::image::TreeSVG & group = track[groupName](NodeSVG::GROUP);  // ctx.svgPanelConf.
-		// group->addClass(drain::image::LayoutSVG::ALIGN_SCOPE); // not needed?
-		group->setId(groupName);
-		group->set("debug", groupName); // debug
+		// group->addClass(drain::image::LayoutSVG::ALIGNED); // not needed?
 		// mout.accept<LOG_WARNING>("added group: '", groupName, "' <= ", groupMapper);
 	}
 
@@ -216,7 +217,7 @@ drain::image::TreeSVG & RackSVG::getPanel(RackContext & ctx, const drain::FilePa
 	if (group->isUndefined()){
 		group->setType(NodeSVG::GROUP);
 		group->setId(filepath.basename + 'G');
-		group->addClass(LayoutSVG::ALIGN_SCOPE);  // MUST!
+		group->addClass(LayoutSVG::ALIGNED);  // MUST!
 	}
 
 	return group;
@@ -261,7 +262,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	rect->setStyle("stroke-width", "2px");
 	// rect->setStyle("border-style", "dotted");
 	rect->setStyle("stroke-dasharray", {2,5});
-	rect->setAlign<AlignSVG::INSIDE>(AlignSVG::RIGHT);
+	rect->setAlign<AlignSVG::INSIDE>(AlignSVG::LEFT);
 	rect->setAlign<AlignSVG::INSIDE>(AlignSVG::MIDDLE);
 	// rect->setAlign(AlignSVG::OBJECT, AlignSVG::RIGHT);
 	//rect->setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MAX);
@@ -272,8 +273,8 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	rect2->set("height", 120); // debug
 	rect2->set("fill", "none"); // just to make sure...
 	rect2->setStyle("stroke", "green");
-	rect2->setStyle("stroke-width", "2px");
-	rect2->setStyle("stroke-dasharray", {5,2});
+	rect2->setStyle("stroke-width", "5px");
+	rect2->setStyle("stroke-dasharray", {5,2,3});
 	rect2->setAlign<AlignSVG::OUTSIDE>(AlignSVG::CENTER);
 	rect2->setAlign<AlignSVG::OUTSIDE>(AlignSVG::BOTTOM);
 	//rect2->setAlign(AlignSVG::OBJECT, AlignSVG::CENTER);
@@ -484,7 +485,8 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 
 	drain::Point2D<drain::image::svg::coord_t> start(0,0);
-	//TreeUtilsSVG::superAlign(mainGroup, Align::HORZ, LayoutSVG::INCR, start);
+	//TreeUtilsSVG::superAlign(mainGroup, Align::HORZ, LayoutSVG::INCR, start);superAlign
+	mout.attention("next superAlign ", ctx.mainOrientation, '|', ctx.mainDirection);
 	TreeUtilsSVG::superAlign(mainGroup, ctx.mainOrientation, ctx.mainDirection, start);
 
 	/*
@@ -505,40 +507,7 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 	drain::Frame2D<int> mainFrame; // OLD: remove this later
 
-	// OLD
-	/*
-	drain::Point2D<int> start(0,0);
-	for (const drain::image::NodeSVG::path_t & p: pathList){
 
-		mout.debug("aligning: ", p);
-		drain::image::TreeSVG & group = mainGroup[p](NodeSVG::GROUP);
-		drain::Frame2D<int> frame;
-		TreeUtilsSVG::getBoundingFrame(group, frame, ctx.svgPanelConf.orientation);
-
-		mout.attention("aligning sequence: start:",  start.tuple(), ", frame: ", frame.tuple());
-		tsvg::alignSequenceOLD(group, frame, start, ctx.svgPanelConf.orientation, ctx.svgPanelConf.direction);
-
-
-		if (ctx.svgPanelConf.orientation == drain::image::PanelConfSVG::HORZ){
-			// Jump to the next "row"
-			start.x = 0;
-			start.y += frame.height;
-			mainFrame.width   = std::max(mainFrame.width, frame.width);
-			mainFrame.height += frame.height;
-		}
-		else {
-			// Jump to the next "column"
-			start.x += frame.width;
-			start.y = 0;
-			mainFrame.width  += frame.width;
-			mainFrame.height  = std::max(mainFrame.height, frame.height);
-		}
-		// drain::TreeUtils::dump(group);
-
-
-
-	}
-	*/
 
 	/// Collect
 	/*
@@ -720,10 +689,12 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 		drain::image::BBoxSVG bb;
 		drain::image::TreeUtilsSVG::computeBoundingBox(ctx.svgTrack, bb);
 
-		ctx.svgTrack->set("width",  bb.width);
-		ctx.svgTrack->set("height", bb.height);
+		//ctx.svgTrack->set("width",  bb.width);
+		//ctx.svgTrack->set("height", bb.height);
+		/*
 		const std::string viewBox = drain::StringBuilder<' '>(start.x, start.y, bb.width, bb.height);
 		ctx.svgTrack->set("viewBox", viewBox);
+		*/
 		ctx.svgTrack->setBoundingBox(bb);
 	}
 	/*
