@@ -91,7 +91,7 @@ template<>
 const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dict = {
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN_FRAME),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGNED),
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALI GNED),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ABSOLUTE),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, FLOAT),
 };

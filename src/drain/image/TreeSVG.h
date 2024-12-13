@@ -191,6 +191,15 @@ public:
 		return box;
 	}
 
+	/// Set position (x,y), width and height of an object.
+	template <typename T>
+	inline
+	void setBoundingBox(const drain::Box<T> & b){
+		setLocation(b);
+		setFrame(b);
+		// setAttribute("data:bbox", StringBuilder<' '>(b.x, b.y, b.getWidth(), b.getHeight()));
+	}
+
 	/// Set position (x,y) of an object.
 	template <typename T>
 	inline
@@ -212,20 +221,13 @@ public:
 		box.height = frame.height;
 	}
 
-	/// Set position (x,y), width and height of an object.
-	template <typename T>
-	inline
-	void setBoundingBox(const drain::Box<T> & b){
-		setLocation(b);
-		setFrame(b);
-	}
 
 
 
 protected:
 
 	virtual
-	void updateAlignAttributes();
+	void updateAlign() override;
 
 	//drain::Box<coord_t> box;
 	BBoxSVG box;

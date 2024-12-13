@@ -195,7 +195,6 @@ struct AlignSVG : protected Align {
 				// setAlignInside(Align::HORZ, Align::MID);
 				break;
 			case HorzAlign::RIGHT:
-				break;
 				setAlign(ANCHOR, HORZ, MAX);
 				setAlign(OBJECT, HORZ, (topol==Topol::INSIDE) ? MAX : MIN); // Inside(Align::HORZ, Align::MIN);
 				// setAlignInside(Align::HORZ, Align::MAX);
@@ -203,6 +202,13 @@ struct AlignSVG : protected Align {
 			default:
 				break;
 		}
+	}
+
+	// Used by file-svg.cpp
+	inline
+	void setAlign(Topol topol, const Align::Axis & direction, const Align::Position & position){
+		setAlign(ANCHOR, direction, position);
+		setAlign(OBJECT, direction, (topol==OUTSIDE) ? position : Align::flip(position));
 	}
 
 	/// High-level alignment function.
@@ -442,7 +448,7 @@ public:
 	enum GroupType {
 		HEADER,
 		ALIGN_FRAME,
-		ALIGNED,  // needed? "anchor" attrib and getAlign() should work
+		// ALI GNED,  // needed? "anchor" attrib and getAlign() should work
 		ABSOLUTE, // "do not align (me or descendants) (future option)"
 		FLOAT,       // = element does not affect alignment of other elems
 	};
@@ -749,7 +755,7 @@ protected:
 
 
 
-private:
+// private:
 
 	void updateAlignStr();
 

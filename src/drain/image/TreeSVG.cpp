@@ -82,39 +82,24 @@ std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
 
 
 
-void NodeSVG::updateAlignAttributes(){
-	/*
-	std::stringstream sstr;
-	char sep=0;
-	for (AlignSVG2::pos_t p: {AlignSVG2::ORIG, AlignSVG2::REF}){
-		for (AlignSVG2::axis_t a: {AlignSVG2::HORZ, AlignSVG2::VERT}){
-			const AlignSVG2::value_t & v = getAlign(p, a);
-			if (v != AlignSVG2::UNDEFINED){
-				if (sep)
-					sstr << sep;
-				else
-					sep=' ';
-				sstr << EnumDict<AlignSVG2::pos_t>::dict.getKey(p) << ':' << EnumDict<AlignSVG2::axis_t>::dict.getKey(a) << '-' << EnumDict<AlignSVG2::value_t>::dict.getKey(v);
-				//std::cerr << __FUNCTION__ << ':' << EnumDict<AlignSVG2::pos_t>::dict.getKey(p) << '_' << EnumDict<AlignSVG2::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignSVG2::value_t>::dict.getKey(v) << '_' << (int)v << '\n';
-			}
-		}
-	}
-	std::string s = sstr.str();
-	*/
+void NodeSVG::updateAlign(){
+
+	updateAlignStr();
+
 	if (alignStr.empty()){
-		this->unlink("align");
+		this->unlink("data:align");
 	}
 	else {
-		if (!this->hasKey("align")){
-			this->link("align", alignStr); // (should be safe anyway)
+		if (!this->hasKey("data:align")){
+			this->link("data:align", alignStr); // (should be safe anyway)
 		}
 	}
 
 	if (anchor.empty()){
-		this->unlink("alignAnchor");
+		this->unlink("data:alignAnchor");
 	}
 	else {
-		this->link("alignAnchor", anchor);
+		this->link("data:alignAnchor", anchor);
 	}
 
 }
@@ -210,6 +195,8 @@ void NodeSVG::setType(const tag_t & t) {
 		return;
 	}
 
+	link("pos", box.getLocation().tuple());
+	link("frm", box.getFrame().tuple());
 	// DEPRECATING: see separate STYLE and CLASS?
 	// link("style", style = "");
 	// link("fill", fill = "");

@@ -65,7 +65,6 @@ public:
 
 	// Reference, N>=2
 	template <size_t N>
-	//template <T N>
 	Frame2D(drain::UniTuple<T,N> & tuple, T i) :
 	drain::UniTuple<T,2>(tuple, i),
 	width(this->next()),
@@ -150,8 +149,28 @@ DRAIN_TYPENAME_T(Frame2D, T);
  */
 template <class T>
 struct Box : public drain::Point2D<T>, public drain::Frame2D<T> {
+// struct Box : public drain::UniTuple<T,4> {
 
 public:
+
+	/*
+	typedef drain::UniTuple<T,4> tuple_t;
+	drain::Point2D<T> location;
+	drain::Frame2D<T> frame;
+
+	inline
+	Box(T x=0, T y=0, T width=0, T height=0) : tuple_t(), location((tuple_t &)*this, 0), frame((tuple_t &)*this, 2)  {
+		location.setLocation(x, y);
+		frame.setArea(width, height);
+	}
+
+	inline
+	Box(const Box<T> & box) : tuple_t(), location((tuple_t &)*this, 0), frame((tuple_t &)*this, 2){
+		location.setLocation(box.location);
+		frame.setArea(box.frame);
+	}
+	*/
+
 
 	inline
 	Box(T x=0, T y=0, T width=0, T height=0) : drain::Point2D<T>(x, y), drain::Frame2D<T>(width, height)  {
@@ -160,6 +179,7 @@ public:
 	inline
 	Box(const Box & box) : drain::Point2D<T>(box), drain::Frame2D<T>(box)  {
 	}
+
 
 	/// Update this box such that it contains the given \c bbox .
 	void expand(const Box & box){
@@ -171,6 +191,21 @@ public:
 		this->height = yMax - this->y;
 	}
 
+	drain::Point2D<T> & getLocation(){
+		return *this;
+	};
+
+	const drain::Point2D<T> & getLocation() const {
+		return *this;
+	};
+
+	drain::Frame2D<T> & getFrame(){
+			return *this;
+	};
+
+	const drain::Frame2D<T> & getFrame() const {
+			return *this;
+	};
 
 };
 

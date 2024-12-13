@@ -171,8 +171,15 @@ drain::image::TreeSVG & RackSVG::getMain(RackContext & ctx){
 		// style[".imageTitle2"] = "font-size:1.5em; stroke:white; stroke-opacity:0.5; stroke-width:0.3em; fill:darkslateblue; fill-opacity:1; paint-order:stroke; stroke-linejoin:round";
 		// drain::TreeUtils::dump(ctx.svgTrack);
 	}
+	drain::image::TreeSVG & main = ctx.svgTrack["outputs"];
 
-	return 	ctx.svgTrack["outputs"](NodeSVG::GROUP);
+	if (main -> isUndefined()){
+		main->setType(NodeSVG::GROUP);
+		main->setAlign(drain::image::AlignSVG::OUTSIDE, drain::image::AlignSVG::RIGHT);
+		main->setAlign(drain::image::AlignSVG::INSIDE, drain::image::AlignSVG::TOP);
+	}
+
+	return main;
 
 }
 
@@ -200,7 +207,7 @@ drain::image::TreeSVG & RackSVG::getCurrentGroup(RackContext & ctx){ // what abo
 		// group->set("debug", groupName); // debug
 		// if (!track.hasChild(groupName)){  // ctx.svgPanelConf.
 		// drain::image::TreeSVG & group = track[groupName](NodeSVG::GROUP);  // ctx.svgPanelConf.
-		// group->addClass(drain::image::LayoutSVG::ALIGNED); // not needed?
+		// group->addClass(drain::image::LayoutSVG::ALIG NED); // not needed?
 		// mout.accept<LOG_WARNING>("added group: '", groupName, "' <= ", groupMapper);
 	}
 
@@ -217,7 +224,16 @@ drain::image::TreeSVG & RackSVG::getPanel(RackContext & ctx, const drain::FilePa
 	if (group->isUndefined()){
 		group->setType(NodeSVG::GROUP);
 		group->setId(filepath.basename + 'G');
-		group->addClass(LayoutSVG::ALIGNED);  // MUST!
+
+		if (ctx.mainOrientation == drain::image::Align::Axis::HORZ){
+			group->setAlign(AlignSVG::OUTSIDE, Align::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
+			group->setAlign(AlignSVG::INSIDE,  Align::Axis::VERT, Align::MIN); // drain::image::AlignSVG::VertAlign::TOP);
+		}
+		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::Align::Axis::VERT){
+			group->setAlign(AlignSVG::INSIDE,  Align::Axis::HORZ, Align::MIN); // drain::image::AlignSVG::HorzAlign::LEFT);
+			group->setAlign(AlignSVG::OUTSIDE, Align::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
+		}
+		// group->addClass(LayoutSVG::ALI GNED);  // MUST!
 	}
 
 	return group;
@@ -225,6 +241,8 @@ drain::image::TreeSVG & RackSVG::getPanel(RackContext & ctx, const drain::FilePa
 }
 
 drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
+
+	using namespace drain::image;
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
@@ -238,7 +256,17 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 
 	drain::image::TreeSVG & panelGroup = getPanel(ctx, filepath);
 
-	panelGroup->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
+	/*
+	if (ctx.mainOrientation == drain::image::Align::Axis::HORZ){
+		panelGroup->setAlign(AlignSVG::OUTSIDE, Align::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
+		panelGroup->setAlign(AlignSVG::INSIDE,  Align::Axis::VERT, Align::MIN); // drain::image::AlignSVG::VertAlign::TOP);
+	}
+	else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::Align::Axis::VERT){
+		panelGroup->setAlign(AlignSVG::INSIDE,  Align::Axis::HORZ, Align::MIN); // drain::image::AlignSVG::HorzAlign::LEFT);
+		panelGroup->setAlign(AlignSVG::OUTSIDE, Align::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
+	}
+	*/
+	// panelGroup->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
 
 	panelGroup->setAlignAnchor("image");
 
@@ -262,8 +290,9 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	rect->setStyle("stroke-width", "2px");
 	// rect->setStyle("border-style", "dotted");
 	rect->setStyle("stroke-dasharray", {2,5});
-	rect->setAlign<AlignSVG::INSIDE>(AlignSVG::LEFT);
-	rect->setAlign<AlignSVG::INSIDE>(AlignSVG::MIDDLE);
+	// rect->setAlign<AlignSVG::INSIDE>(AlignSVG::LEFT);
+	rect->setAlign(AlignSVG::INSIDE, AlignSVG::RIGHT);
+	rect->setAlign(AlignSVG::INSIDE, AlignSVG::MIDDLE);
 	// rect->setAlign(AlignSVG::OBJECT, AlignSVG::RIGHT);
 	//rect->setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MAX);
 	//rect->setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::MID);
@@ -280,46 +309,6 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	//rect2->setAlign(AlignSVG::OBJECT, AlignSVG::CENTER);
 	//rect2->setAlign(AlignSVG::ANCHOR, AlignSVG::BOTTOM);
 	//rect2->setAlign(AlignSVG::OBJECT, AlignSVG::BOTTOM);
-	// rect2->setAlignOutside(LayoutSVG::Axis::HORZ, AlignSVG::MID);
-	// rect2->setAlignOutside(LayoutSVG::Axis::VERT, AlignSVG::MAX);
-
-	// drain::image::TreeSVG & rect2 =
-	// addRectangleGroup(ctx, {123,234});
-	/*
-	drain::image::TreeSVG & rect = group["rect"](NodeSVG::RECT);
-	rect->addClass(RackSVG::IMAGE_FRAME); // perhaps deprecating, above ANCHOR replaces
-	rect->set("width", src.getWidth());
-	rect->set("height", src.getHeight());
-	rect->set("fill", "none"); // just to make sure...
-
-	drain::image::TreeUtilsSVG::markAligned(image, rect); // perhaps deprecating, above ANCHOR replaces
-	*/
-
-
-	// image["description"](drain::image::svg::TITLE) = src.getProperties();
-
-
-
-	// rect->set("stroke", "black");
-	// rect->set("opacity", 0.25);
-
-	/*
-	static const std::string attr_ALIGN_ANCHOR("alignAnchor");
-	drain::FlexibleVariable & leader = group->get(attr_ALIGN_ANCHOR);
-	if (leader.empty()){
-		rect->setId();
-		leader = rect->getId();
-		get(drain::image::TreeUtilsSVG::attr_FRAME_REFERENCE);
-	}
-	*/
-
-
-	/*
-	drain::image::TreeSVG & text = group["img-text-ul"](NodeSVG::TEXT);
-	text->addClass("FLOAT test");
-	text->set("ref", image->getId());
-	text->setText(filepath.basename);
-	*/
 
 	// Metadata:
 	drain::image::TreeSVG & metadata = panelGroup["metadata"](svg::METADATA);
@@ -399,60 +388,6 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::FilePa
 	return image;
 }
 
-
-drain::image::TreeSVG & RackSVG::addRectangleGroup(RackContext & ctx, const drain::Frame2D<double> & frame){
-
-	drain::image::TreeSVG & rectGroup = getCurrentGroup(ctx)["rg"](NodeSVG::GROUP);
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.unimplemented(__FUNCTION__);
-
-	/*
-	// drain::image::TreeSVG & group = getCurrentGroup(ctx); //[filepath.basename+"_Group"](NodeSVG::GROUP);
-
-
-	rectGroup->addClass(drain::image::AlignSVG::PANEL);
-
-	drain::image::TreeSVG & rect = rectGroup["rekku"](NodeSVG::RECT); // +EXT!
-	rect->set("width", frame.width);
-	rect->set("height", frame.height);
-	//image->addClass(CmdBaseSVG::FLOAT);
-	rect->setStyle("fill", "red");
-	// rect["basename"](drain::image::svg::TITLE) = "test";
-	rect->addClass(drain::image::AlignSVG::ANCHOR);
-
-
-	typedef drain::image::AlignSVG alSvg;
-
-	for (const auto & rHorz: {alSvg::REF_LEFT, alSvg::REF_CENTER, alSvg::REF_RIGHT}){
-
-		const std::string & clsRH = drain::EnumDict<alSvg>::dict.getKey(rHorz);
-
-		for (const auto & vert: {alSvg::REF_TOP, alSvg::REF_MIDDLE, alSvg::REF_BOTTOM}){
-
-			const std::string & clsV = drain::EnumDict<alSvg>::dict.getKey(vert);
-
-			const std::string label = drain::StringBuilder<'-'>(clsRH, clsV);
-
-			drain::image::TreeSVG & textGroup = rectGroup[label](NodeSVG::GROUP);
-			textGroup->addClass(alSvg::PANEL); // RELATIVE?
-
-			drain::image::TreeSVG & textBox = textGroup["rect"](NodeSVG::RECT);
-			textBox ->addClass(alSvg::RELATIVE, rHorz, vert); // CONFLICT! SHOULD BE PANEL
-
-			drain::image::TreeSVG & text = textGroup["text"](NodeSVG::TEXT);
-			text->addClass(alSvg::RELATIVE, rHorz, vert);
-
-			drain::image::TreeSVG & textSpan = text["tspan"](NodeSVG::TSPAN);
-			textSpan->setText(label);
-
-		}
-
-	}
-	*/
-
-	return rectGroup;
-}
 
 
 // Re-align elements etc

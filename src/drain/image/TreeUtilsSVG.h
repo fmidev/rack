@@ -83,15 +83,10 @@ struct PanelConfSVG {
 	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
 	DirectionFlagger direction = INCR;
 	*/
-	LayoutSVG layout;
-
-	enum Legend {NO_LEGEND=0, LEFT=1, RIGHT=2, DUPLEX=LEFT|RIGHT, EMBED=4};
-	typedef drain::EnumFlagger<drain::MultiFlagger<Legend> > LegendFlagger;
-	//typedef drain::EnumFlagger<drain::SingleFlagger<Legend> > LegendFlagger;
-	LegendFlagger legend;
+	// LayoutSVG layout;
 
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
-	// Current
+	//  Current
 	std::string groupName;
 	int maxPerGroup = 10;
 	bool absolutePaths = false;
@@ -100,8 +95,16 @@ struct PanelConfSVG {
 	std::string title;
 	FontSizes fontSize;
 
-	inline
-	PanelConfSVG() : layout(Align::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED), maxPerGroup(10), absolutePaths(false){
+	/*
+	enum Legend {NO_LEGEND=0, LEFT=1, RIGHT=2, DUPLEX=LEFT|RIGHT, EMBED=4};
+	typedef drain::EnumFlagger<drain::MultiFlagger<Legend> > LegendFlagger;
+	LegendFlagger legend;
+	*/
+	//typedef drain::EnumFlagger<drain::SingleFlagger<Legend> > LegendFlagger;
+
+
+	inline  // layout(Align::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED),
+	PanelConfSVG() :  maxPerGroup(10), absolutePaths(false){
 	}
 
 	/*
@@ -117,35 +120,7 @@ struct PanelConfSVG {
 /**
  *
  */
-/*
-enum AlignSVG_FOO { // DEPRECATING? See svgAlign...
-	ALIGN_GROUP  = 0b00000, // Container (group) inside which elements will be aligned
-	// Horizontal
-	LEFT   = 0b00001,
-	RIGHT  = 0b00010,  // Originally for swapping  LEFT <-> RIGHT
-	CENTER = 0b00011,
-	HORZ   = 0b00011, // yes, same
-	// Vertical
-	TOP    = 0b00100,
-	BOTTOM = 0b01000,  // Originally for swapping
-	MIDDLE = 0b01100,
-	VERT   = 0b01100, // yes, same
 
-	REF    = 0b10000,
-	REF_LEFT   = (REF |   LEFT),
-	REF_CENTER = (REF | CENTER),
-	REF_RIGHT  = (REF |  RIGHT),
-	REF_TOP    = (REF |    TOP),
-	REF_MIDDLE = (REF | MIDDLE),
-	REF_BOTTOM = (REF | BOTTOM),
-
-	FLOAT    = (HORZ|VERT), // On-top. To be replaced
-	ALIGN    = 0b11111,
-	PANEL    = 0b100000, // Group of elements aligned together
-	ANCHOR   = 0b100001, // Main element, "anchor" in a PANEL group
-    RELATIVE = 0b100010, // Element aligned relative to an ANCHOR in a PANEL group
-};
-*/
 
 //template <>
 // const drain::EnumDict<AlignSVG_FOO>::dict_t  drain::EnumDict<AlignSVG_FOO>::dict;
@@ -155,39 +130,6 @@ struct TreeUtilsSVG {
 
 	static PanelConfSVG defaultConf;
 
-
-	/*
-	enum Axis {UNDEFINED_ORIENTATION=0, HORZ, VERT};
-	typedef drain::EnumFlagger<drain::SingleFlagger<Axis> > AxisFlagger;
-	static AxisFlagger defaultAxis;
-
-	enum Direction {UNDEFINED_DIRECTION=0, INCR, DECR};
-	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
-	static DirectionFlagger defaultDirection;
-
-	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
-	static std::string defaultGroupName;
-
-	static std::string defaultTitle;
-	*/
-
-	/// Returns the bounding box defined here as (x,y,width,height) of an element.
-	// static
-	// bool getElementBounds(const TreeSVG & group, drain::Box<double> & box);
-
-	/// NEW Returns the bounding box defined here as (x,y,width,height) of a group of elements.
-	/*
-	static inline
-	bool getBoundsFoo(const TreeSVG & group, drain::Box<NodeSVG::coord_t> & box){
-		box.x = std::numeric_limits<svg::coord_t>::max(); // lowest();
-		box.y = std::numeric_limits<svg::coord_t>::max(); // lowest();
-		box.width  = 0;
-		box.height = 0;
-		return false; // getBoundsInner(group, box);
-	}
-	*/
-
-// protected:
 	static
 	bool computeBoundingBox(const TreeSVG & group, drain::Box<NodeSVG::coord_t> & box);
 

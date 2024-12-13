@@ -111,10 +111,10 @@ public:
 		pngConf.link("compression", drain::image::FilePng::compressionLevel);
 
 		svgConf.link("group", ctx.svgPanelConf.groupName); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
-		svgConf.link("orientation", svgConfOrientation, drain::sprinter(drain::EnumDict<drain::image::Align::Axis>::dict.getKeys()).str()); // init clash
-		svgConf.link("direction",   svgConfDirection,   drain::sprinter(drain::EnumDict<drain::image::LayoutSVG::Direction>::dict.getKeys()).str());   // init clash
+		// svgConf.link("orientation", svgConfOrientation, drain::sprinter(drain::EnumDict<drain::image::Align::Axis>::dict.getKeys()).str()); // init clash
+		// svgConf.link("direction",   svgConfDirection,   drain::sprinter(drain::EnumDict<drain::image::LayoutSVG::Direction>::dict.getKeys()).str());   // init clash
 		svgConf.link("max", ctx.svgPanelConf.maxPerGroup, "max per row/column"); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
-		svgConf.link("legend", svgConfLegend, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Legend>::dict.getKeys()).str());
+		// svgConf.link("legend", svgConfLegend, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Legend>::dict.getKeys()).str());
 		svgConf.link("title", ctx.svgPanelConf.title); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 		svgConf.link("absolutePaths", ctx.svgPanelConf.absolutePaths);
 		svgConf.link("fontSize", ctx.svgPanelConf.fontSize.tuple());
@@ -186,8 +186,8 @@ public:
 			handleParams(svgConf, params);
 			// write params
 
-			ctx.svgPanelConf.layout.setOrientation(svgConfOrientation);  //orientation.set(svgConfOrientation);
-			ctx.svgPanelConf.layout.setDirection(svgConfDirection);
+			// ctx.svgPanelConf.layout.setOrientation(svgConfOrientation);  //orientation.set(svgConfOrientation);
+			// ctx.svgPanelConf.layout.setDirection(svgConfDirection);
 		}
 #ifndef USE_GEOTIFF_NO
 		else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
@@ -223,8 +223,9 @@ public:
 
 
 	void handleParams(drain::ReferenceMap & rmap, const std::string & params) const {
-		if (!params.empty())
+		if (!params.empty()){
 			rmap.setValues(params);
+		}
 		else {
 			const drain::ReferenceMap::unitmap_t & umap = rmap.getUnitMap();
 			// drain::Sprinter::toStream(std::cout, gtiffConf, layout);
@@ -475,7 +476,7 @@ void CmdOutputFile::exec() const {
 		// ctx.get
 		track->set("id", path.basename);
 		if (!ctx.outputPrefix.empty())
-			track->set("outputPrefix", ctx.outputPrefix);
+			track->set("outputPrefix", ctx.outputPrefix); // add "data:..."
 		// TODO: outDir
 		// track.data.set("outputPrefix", ctx.outputPrefix);
 		// track.data.set("prefix", path.basename);

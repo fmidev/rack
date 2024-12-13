@@ -538,14 +538,25 @@ public:
 
 		drain::Frame2D<double> frame = {400,500};
 
-		drain::image::TreeSVG & rectGroup = RackSVG::getCurrentGroup(ctx)[value](NodeSVG::GROUP);
-		rectGroup->setId(value);
-		rectGroup->addClass(drain::image::LayoutSVG::ALIGNED); // current ALIGNED
+		drain::image::TreeSVG & group = RackSVG::getCurrentGroup(ctx)[value](NodeSVG::GROUP);
+		group->setId(value);
+		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
 		const std::string ANCHOR_ELEM("anchor-elem");
-		rectGroup->setAlignAnchor(ANCHOR_ELEM);
+		group->setAlignAnchor(ANCHOR_ELEM);
 		// rectGroup->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
 
-		drain::image::TreeSVG & rect = rectGroup[ANCHOR_ELEM](NodeSVG::RECT); // +EXT!
+		if (ctx.mainOrientation == drain::image::Align::Axis::HORZ){
+			group->setAlign(AlignSVG::OUTSIDE, Align::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
+			group->setAlign(AlignSVG::INSIDE,  Align::Axis::VERT, Align::MIN); // drain::image::AlignSVG::VertAlign::TOP);
+		}
+		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::Align::Axis::VERT){
+			group->setAlign(AlignSVG::INSIDE,  Align::Axis::HORZ, Align::MIN); // drain::image::AlignSVG::HorzAlign::LEFT);
+			group->setAlign(AlignSVG::OUTSIDE, Align::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
+		}
+
+
+
+		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](NodeSVG::RECT); // +EXT!
 		rect->set("width", frame.width);
 		rect->set("height", frame.height);
 		rect->set("label", ANCHOR_ELEM);
@@ -591,7 +602,7 @@ public:
 						//const std::string label = drain::StringBuilder<'-'>(posHorzRef, posVertRef, posHorz, posVert, '-', ph, pv, rh, rv);
 						const std::string label = drain::StringBuilder<'-'>(ph, pv, rh, rv);
 
-						drain::image::TreeSVG & text = rectGroup[label + "text"](NodeSVG::TEXT);
+						drain::image::TreeSVG & text = group[label + "text"](NodeSVG::TEXT);
 						text->setId(label+"_T");
 						text->getBoundingBox().setArea(60,30);
 						text->setAlign(AlignPos::ANCHOR, Align::HORZ, posHorzRef);
@@ -600,7 +611,7 @@ public:
 						text->setAlign(AlignPos::OBJECT, Align::VERT, posVert);
 						text->setText(label);
 
-						drain::image::TreeSVG & textBox = rectGroup[label](NodeSVG::RECT);
+						drain::image::TreeSVG & textBox = group[label](NodeSVG::RECT);
 						textBox->setId(label+"_R");
 						textBox->getBoundingBox().setArea(60,30);
 						//textBox->set("mika", textBox->getAlignStr()); // textBox->set("mika", textBox->getAlignStr());
