@@ -112,9 +112,13 @@ public:
 	drain::image::Align::Axis mainOrientation = drain::image::Align::Axis::HORZ;
 	drain::image::LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
 	// For the NEXT graphic object
+	/*
 	drain::image::AlignSVG::Topol topol = drain::image::AlignSVG::Topol::OUTSIDE;
 	drain::image::AlignSVG::HorzAlign halign = drain::image::AlignSVG::HorzAlign::RIGHT;
 	drain::image::AlignSVG::VertAlign valign = drain::image::AlignSVG::VertAlign::TOP;
+	*/
+	drain::image::Alignment2 alignHorz = {drain::image::AlignSVG::Topol::INSIDE, drain::image::Align::Axis::HORZ};
+	drain::image::Alignment2 alignVert = {drain::image::AlignSVG::Topol::INSIDE, drain::image::Align::Axis::VERT};
 
 	// New
 	inline

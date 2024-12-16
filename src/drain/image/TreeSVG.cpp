@@ -95,11 +95,11 @@ void NodeSVG::updateAlign(){
 		}
 	}
 
-	if (anchor.empty()){
+	if (anchorHorz.empty()){
 		this->unlink("data:alignAnchor");
 	}
 	else {
-		this->link("data:alignAnchor", anchor);
+		this->link("data:alignAnchor", anchorHorz);
 	}
 
 }

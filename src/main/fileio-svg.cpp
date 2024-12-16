@@ -134,9 +134,11 @@ void CmdBaseSVG::createTitleBox(TreeSVG & tree){
 
 drain::image::TreeSVG & RackSVG::getMain(RackContext & ctx){
 
+	using namespace drain::image;
+
 	if (!ctx.svgTrack.hasChild("style")){
 
-		drain::image::TreeSVG & style = ctx.svgTrack["style"](svg::STYLE);
+		TreeSVG & style = ctx.svgTrack["style"](svg::STYLE);
 
 		style["text"] = ("fill:black");
 		//style["text"] = ("stroke:white; stroke-width:0.5em; stroke-opacity:0.25; fill:black; paint-order:stroke; stroke-linejoin:round");
@@ -175,8 +177,8 @@ drain::image::TreeSVG & RackSVG::getMain(RackContext & ctx){
 
 	if (main -> isUndefined()){
 		main->setType(NodeSVG::GROUP);
-		main->setAlign(drain::image::AlignSVG::OUTSIDE, drain::image::AlignSVG::RIGHT);
-		main->setAlign(drain::image::AlignSVG::INSIDE, drain::image::AlignSVG::TOP);
+		main->setAlign(AlignSVG::OUTSIDE, AlignSVG::RIGHT); // AlignSVG::RIGHT);
+		main->setAlign(AlignSVG::INSIDE,  AlignSVG::TOP);   // AlignSVG::TOP);
 	}
 
 	return main;
@@ -204,6 +206,16 @@ drain::image::TreeSVG & RackSVG::getCurrentGroup(RackContext & ctx){ // what abo
 		group->setType(NodeSVG::GROUP);
 		group->setId(groupName);
 		group->addClass(drain::image::LayoutSVG::ALIGN_FRAME);
+		/*
+		if (ctx.mainOrientation == drain::image::Align::Axis::VERT){
+			group->setAlign(AlignSVG::OUTSIDE, Align::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
+			group->setAlign(AlignSVG::INSIDE,  Align::Axis::VERT, Align::MIN); // drain::image::AlignSVG::VertAlign::TOP);
+		}
+		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::Align::Axis::VERT){
+			group->setAlign(AlignSVG::INSIDE,  Align::Axis::HORZ, Align::MIN); // drain::image::AlignSVG::HorzAlign::LEFT);
+			group->setAlign(AlignSVG::OUTSIDE, Align::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
+		}
+		*/
 		// group->set("debug", groupName); // debug
 		// if (!track.hasChild(groupName)){  // ctx.svgPanelConf.
 		// drain::image::TreeSVG & group = track[groupName](NodeSVG::GROUP);  // ctx.svgPanelConf.
@@ -225,13 +237,27 @@ drain::image::TreeSVG & RackSVG::getPanel(RackContext & ctx, const drain::FilePa
 		group->setType(NodeSVG::GROUP);
 		group->setId(filepath.basename + 'G');
 
+		//bool FWD = (ctx.mainDirection==LayoutSVG::Direction::INCR);
+
 		if (ctx.mainOrientation == drain::image::Align::Axis::HORZ){
 			group->setAlign(AlignSVG::OUTSIDE, Align::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
 			group->setAlign(AlignSVG::INSIDE,  Align::Axis::VERT, Align::MIN); // drain::image::AlignSVG::VertAlign::TOP);
+			/*
+			group->setAlign(AlignSVG::ANCHOR,  Align::Axis::HORZ, Align::MAX); // LEFT
+			group->setAlign(AlignSVG::OBJECT,  Align::Axis::HORZ, Align::MIN); // LEFT
+			group->setAlign(AlignSVG::ANCHOR,  Align::Axis::VERT, Align::MIN); // drain::image::AlignSVG::VertAlign::TOP);
+			group->setAlign(AlignSVG::OBJECT,  Align::Axis::VERT, Align::MIN); // TOP
+			*/
 		}
 		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::Align::Axis::VERT){
 			group->setAlign(AlignSVG::INSIDE,  Align::Axis::HORZ, Align::MIN); // drain::image::AlignSVG::HorzAlign::LEFT);
 			group->setAlign(AlignSVG::OUTSIDE, Align::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
+			/*
+			group->setAlign(AlignSVG::ANCHOR,  Align::Axis::VERT, Align::MAX); // LEFT
+			group->setAlign(AlignSVG::OBJECT,  Align::Axis::VERT, Align::MIN); // LEFT
+			group->setAlign(AlignSVG::ANCHOR,  Align::Axis::HORZ, Align::MIN); // drain::image::AlignSVG::VertAlign::TOP);
+			group->setAlign(AlignSVG::OBJECT,  Align::Axis::HORZ, Align::MIN); // TOP
+			*/
 		}
 		// group->addClass(LayoutSVG::ALI GNED);  // MUST!
 	}
@@ -256,18 +282,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 
 	drain::image::TreeSVG & panelGroup = getPanel(ctx, filepath);
 
-	/*
-	if (ctx.mainOrientation == drain::image::Align::Axis::HORZ){
-		panelGroup->setAlign(AlignSVG::OUTSIDE, Align::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
-		panelGroup->setAlign(AlignSVG::INSIDE,  Align::Axis::VERT, Align::MIN); // drain::image::AlignSVG::VertAlign::TOP);
-	}
-	else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::Align::Axis::VERT){
-		panelGroup->setAlign(AlignSVG::INSIDE,  Align::Axis::HORZ, Align::MIN); // drain::image::AlignSVG::HorzAlign::LEFT);
-		panelGroup->setAlign(AlignSVG::OUTSIDE, Align::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
-	}
-	*/
-	// panelGroup->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
-
+	// TEST
 	panelGroup->setAlignAnchor("image");
 
 	drain::image::TreeSVG & image = panelGroup["image"](NodeSVG::IMAGE); // +EXT!
@@ -291,8 +306,8 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	// rect->setStyle("border-style", "dotted");
 	rect->setStyle("stroke-dasharray", {2,5});
 	// rect->setAlign<AlignSVG::INSIDE>(AlignSVG::LEFT);
-	rect->setAlign(AlignSVG::INSIDE, AlignSVG::RIGHT);
-	rect->setAlign(AlignSVG::INSIDE, AlignSVG::MIDDLE);
+	rect->setAlign(AlignSVG::INSIDE, AlignSVG::RIGHT); // AlignSVG::RIGHT);
+	rect->setAlign(AlignSVG::INSIDE, AlignSVG::MIDDLE); // AlignSVG::MIDDLE);
 	// rect->setAlign(AlignSVG::OBJECT, AlignSVG::RIGHT);
 	//rect->setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MAX);
 	//rect->setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::MID);
@@ -304,8 +319,8 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	rect2->setStyle("stroke", "green");
 	rect2->setStyle("stroke-width", "5px");
 	rect2->setStyle("stroke-dasharray", {5,2,3});
-	rect2->setAlign<AlignSVG::OUTSIDE>(AlignSVG::CENTER);
-	rect2->setAlign<AlignSVG::OUTSIDE>(AlignSVG::BOTTOM);
+	rect2->setAlign(AlignSVG::OUTSIDE, AlignSVG::CENTER); // AlignSVG::CENTER);
+	rect2->setAlign(AlignSVG::OUTSIDE, AlignSVG::BOTTOM); //  AlignSVG::BOTTOM);
 	//rect2->setAlign(AlignSVG::OBJECT, AlignSVG::CENTER);
 	//rect2->setAlign(AlignSVG::ANCHOR, AlignSVG::BOTTOM);
 	//rect2->setAlign(AlignSVG::OBJECT, AlignSVG::BOTTOM);
@@ -504,8 +519,8 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 			//TreeSVG & mainHeader = headerGroupsubHeadert"](svg::TEXT);
 			TreeSVG & mainHeader = headerGroup["GENERAL"](svg::TEXT);
-			mainHeader -> setAlign<AlignSVG::OUTSIDE>(AlignSVG::HorzAlign::RIGHT);
-			mainHeader -> setAlign<AlignSVG::INSIDE>(AlignSVG::VertAlign::MIDDLE);
+			mainHeader -> setAlign(AlignSVG::OUTSIDE, AlignSVG::RIGHT); //
+			mainHeader -> setAlign(AlignSVG::INSIDE, AlignSVG::MIDDLE); //AlignSVG::VertAlign::MIDDLE);
 			// mainHeader -> setAlignInside(Align::Axis::HORZ, Align::Position::MID);
 			//tsvg::markAligned(headerRect, mainHeader, alignSvg::CENTER, alignSvg::MIDDLE);
 			// mainHeader->set("x", 51); // will be realigned
@@ -522,8 +537,8 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 			TreeSVG & timeHeader = headerGroup["TIME"](svg::TEXT);
 			timeHeader->addClass(TIME);
-			timeHeader -> setAlign<AlignSVG::OUTSIDE>(AlignSVG::VertAlign::TOP);    // Outside(Align::Axis::VERT, Align::Position::MIN);
-			timeHeader -> setAlign<AlignSVG::OUTSIDE>(AlignSVG::HorzAlign::RIGHT);  // Inside(Align::Axis::HORZ, Align::Position::MAX);
+			timeHeader -> setAlign(AlignSVG::OUTSIDE, AlignSVG::TOP); // AlignSVG::VertAlign::TOP);    // Outside(Align::Axis::VERT, Align::Position::MIN);
+			timeHeader -> setAlign(AlignSVG::OUTSIDE, AlignSVG::RIGHT); // AlignSVG::HorzAlign::RIGHT);  // Inside(Align::Axis::HORZ, Align::Position::MAX);
 			//tsvg::markAligned(headerRect, timeHeader, alignSvg::RIGHT, alignSvg::MIDDLE);
 			// Ensure order
 			timeHeader["date"](svg::TSPAN);
@@ -532,7 +547,7 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 			TreeSVG & locationHeader = headerGroup["LOCATION"](svg::TEXT);
 			locationHeader->addClass(LOCATION);
-			locationHeader -> setAlign<AlignSVG::INSIDE>(AlignSVG::HorzAlign::RIGHT);  // setAlignInside(Align::Axis::HORZ, Align::Position::MIN);
+			locationHeader -> setAlign(AlignSVG::INSIDE, AlignSVG::RIGHT); // AlignSVG::HorzAlign::RIGHT);
 			//tsvg::markAligned(headerRect, locationHeader, alignSvg::LEFT, alignSvg::MIDDLE);
 
 

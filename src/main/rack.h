@@ -32,11 +32,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "10.0.2"
+#define __RACK_VERSION__ "10.1"
 
 /**
+ *   Version 10.1
+ *   - Graphics/SVG-alignment: streamlined fixed/flipping HORZ/VERT anchor
+ *   - Graphics: --gLayout HORZ,INCR , --gPanelTest <TITLE> (hidden)
+ *
  *   Version 10.0.1
- *   - Graphics: --gLinkImage, --gRadarSectors
+ *   - Graphics: --gLinkImage, ( --gRadarSectors )
  *
  *   Version 10.0
  *   - what:prodpar pruned: only explicit argument(s), from cmd line

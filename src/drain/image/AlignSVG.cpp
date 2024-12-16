@@ -47,11 +47,11 @@ namespace image {
 
 
 template <>
-const drain::EnumDict<Align::Position>::dict_t drain::EnumDict<Align::Position>::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::Align::Position, MAX),
-		DRAIN_ENUM_ENTRY(drain::image::Align::Position, MID),
-		DRAIN_ENUM_ENTRY(drain::image::Align::Position, MIN),
-		DRAIN_ENUM_ENTRY(drain::image::Align::Position, UNDEFINED_POS),
+const drain::EnumDict<Align::Coord>::dict_t drain::EnumDict<Align::Coord>::dict = {
+		DRAIN_ENUM_ENTRY(drain::image::Align::Coord, MAX),
+		DRAIN_ENUM_ENTRY(drain::image::Align::Coord, MID),
+		DRAIN_ENUM_ENTRY(drain::image::Align::Coord, MIN),
+		DRAIN_ENUM_ENTRY(drain::image::Align::Coord, UNDEFINED_POS),
 };
 
 template <>
@@ -68,6 +68,7 @@ const drain::EnumDict<AlignSVG::Owner>::dict_t drain::EnumDict<AlignSVG::Owner>:
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Owner, ANCHOR),
 };
 
+/*
 template <>
 const drain::EnumDict<AlignSVG::HorzAlign>::dict_t  drain::EnumDict<AlignSVG::HorzAlign>::dict = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::HorzAlign, LEFT),
@@ -83,6 +84,35 @@ const drain::EnumDict<AlignSVG::VertAlign>::dict_t  drain::EnumDict<AlignSVG::Ve
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::VertAlign, BOTTOM),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::VertAlign, UNDEFINED_VERT),
 };
+*/
+
+const Alignment<Align::Axis::HORZ> AlignSVG::RIGHT(Align::Coord::MAX);
+const Alignment<Align::Axis::HORZ> AlignSVG::CENTER(Align::Coord::MID);
+const Alignment<Align::Axis::HORZ> AlignSVG::LEFT(Align::Coord::MIN);
+const Alignment<Align::Axis::HORZ> AlignSVG::UNDEFINED_HORZ(Align::Coord::UNDEFINED_POS);
+
+template <>
+const drain::EnumDict<Alignment<Align::Axis::HORZ> >::dict_t  drain::EnumDict<Alignment<Align::Axis::HORZ> >::dict = {
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_HORZ),
+};
+
+const Alignment<Align::Axis::VERT> AlignSVG::BOTTOM(Align::Coord::MAX);
+const Alignment<Align::Axis::VERT> AlignSVG::MIDDLE(Align::Coord::MID);
+const Alignment<Align::Axis::VERT> AlignSVG::TOP(Align::Coord::MIN);
+const Alignment<Align::Axis::VERT> AlignSVG::UNDEFINED_VERT(Align::Coord::UNDEFINED_POS);
+
+template <>
+const drain::EnumDict<Alignment<Align::Axis::VERT> >::dict_t  drain::EnumDict<Alignment<Align::Axis::VERT> >::dict = {
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, MIDDLE),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, BOTTOM),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
+};
+
+
 
 
 // -----------------------------------------------------------------------------------------------------------
@@ -112,22 +142,45 @@ const drain::EnumDict<AlignSVG::Topol>::dict_t drain::EnumDict<AlignSVG::Topol>:
 
 void AlignSVG::resetAlign(){
 	for (align_vect_t & a: alignments){
-		for (Position & v: a){
-			v = Position::UNDEFINED_POS;
+		for (Coord & v: a){
+			v = Coord::UNDEFINED_POS;
 		}
 	}
 };
 
 bool AlignSVG::isAligned() const {
 	for (const align_vect_t & a: alignments){
-		for (const Position & v: a){
-			if (v != Position::UNDEFINED_POS){
+		for (const Coord & v: a){
+			if (v != Coord::UNDEFINED_POS){
 				return true;
 			}
 		}
 	}
 	return false;
 };
+
+
+
+/*
+const ConstAlign<Align::Axis::HORZ, Align::Coord::MAX> Alignment2::RIGHT;
+const ConstAlign<Align::Axis::HORZ, Align::Coord::MID> Alignment2::CENTER;
+const ConstAlign<Align::Axis::HORZ, Align::Coord::MIN> Alignment2::LEFT;
+const ConstAlign<Align::Axis::VERT, Align::Coord::MAX> Alignment2::BOTTOM;
+const ConstAlign<Align::Axis::VERT, Align::Coord::MID> Alignment2::MIDDLE;
+const ConstAlign<Align::Axis::VERT, Align::Coord::MIN> Alignment2::TOP;
+*/
+
+/*
+template <>
+const drain::EnumDict<AlignPos>::dict_t drain::EnumDict<AlignPos>::dict = {
+		DRAIN_ENUM_ENTRY(drain::image::Alignment2, LEFT),
+		DRAIN_ENUM_ENTRY(drain::image::Alignment2, CENTER),
+		DRAIN_ENUM_ENTRY(drain::image::Alignment2, RIGHT),
+		DRAIN_ENUM_ENTRY(drain::image::Alignment2, TOP),
+		DRAIN_ENUM_ENTRY(drain::image::Alignment2, MIDDLE),
+		DRAIN_ENUM_ENTRY(drain::image::Alignment2, BOTTOM),
+};
+*/
 
 
 void AlignAdapterSVG::updateAlignStr(){
@@ -145,7 +198,7 @@ void AlignAdapterSVG::updateAlignStr(){
 
 			bitShift += (axis == Axis::HORZ) ? 0 : 2;
 
-			const Align::Position & pos = getAlign(owner, axis);
+			const Align::Coord & pos = getAlign(owner, axis);
 
 			if (pos != Align::UNDEFINED_POS){
 				if (sep)
@@ -153,7 +206,7 @@ void AlignAdapterSVG::updateAlignStr(){
 				else
 					sep=' ';
 				sstr << owner << ':' << axis << '-' << pos;
-				//std::cerr << __FUNCTION__ << ':' << EnumDict<AlignAdapterSVG::Owner>::dict.getKey(p) << '_' << EnumDict<AlignAdapterSVG::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignAdapterSVG::Position>::dict.getKey(v) << '_' << (int)v << '\n';
+				//std::cerr << __FUNCTION__ << ':' << EnumDict<AlignAdapterSVG::Owner>::dict.getKey(p) << '_' << EnumDict<AlignAdapterSVG::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignAdapterSVG::Coord>::dict.getKey(v) << '_' << (int)v << '\n';
 			}
 
 			alignment |= (((bitvect_t)pos)<<bitShift);
@@ -176,14 +229,14 @@ void AlignAdapterSVG::updateAlignStr(){
 	for (AlignSVG::Owner p: {AlignSVG::OBJ, AlignSVG::REF}){
 		for (LayoutSVG::Axis a: {LayoutSVG::Axis::HORZ, LayoutSVG::Axis::VERT}){
 
-			const AlignAdapterSVG::Position & v = getAlign(p, a);
+			const AlignAdapterSVG::Coord & v = getAlign(p, a);
 			if (v != AlignSVG::UNDEFINED){
 				if (sep)
 					sstr << sep;
 				else
 					sep=' ';
-				sstr << EnumDict<AlignSVG::Owner>::dict.getKey(p) << ':' << EnumDict<LayoutSVG::Axis>::dict.getKey(a) << '-' << EnumDict<AlignSVG::Position>::dict.getKey(v);
-				//std::cerr << __FUNCTION__ << ':' << EnumDict<AlignAdapterSVG::Owner>::dict.getKey(p) << '_' << EnumDict<AlignAdapterSVG::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignAdapterSVG::Position>::dict.getKey(v) << '_' << (int)v << '\n';
+				sstr << EnumDict<AlignSVG::Owner>::dict.getKey(p) << ':' << EnumDict<LayoutSVG::Axis>::dict.getKey(a) << '-' << EnumDict<AlignSVG::Coord>::dict.getKey(v);
+				//std::cerr << __FUNCTION__ << ':' << EnumDict<AlignAdapterSVG::Owner>::dict.getKey(p) << '_' << EnumDict<AlignAdapterSVG::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignAdapterSVG::Coord>::dict.getKey(v) << '_' << (int)v << '\n';
 			}
 		}
 	}

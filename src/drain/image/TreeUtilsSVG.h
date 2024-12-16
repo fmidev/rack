@@ -149,6 +149,9 @@ public:
 	static
 	void superAlign(TreeSVG & node, Align::Axis orientation = Align::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
 
+	static
+	void superAlignOLD(TreeSVG & node, Align::Axis orientation = Align::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
+
 
 	// static
 	// void realignElem(TreeSVG & elem, const Box<svg::coord_t> & anchorBox);
@@ -156,6 +159,12 @@ public:
 	/// Align object respect to an anchor frame.
 	static
 	void realignObject(const Box<svg::coord_t> & anchorBox, TreeSVG & obj);
+
+	static
+	void realignObject(const Box<svg::coord_t> & anchorBoxHorz, const Box<svg::coord_t> & anchorBoxVert, TreeSVG & obj);
+
+	static
+	void realignObject(Align::Axis axis, svg::coord_t pos, svg::coord_t width, TreeSVG & obj, svg::coord_t & newPos); // , Point2D<svg::coord_t> & newLocation);
 
 	/// Recursively move elements with (x, y).
 	static
