@@ -113,7 +113,51 @@ const drain::EnumDict<Alignment<Align::Axis::VERT> >::dict_t  drain::EnumDict<Al
 };
 
 
+/// Combines both
+template <>
+const drain::EnumDict<Align>::dict_t  drain::EnumDict<Align>::dict = {
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_HORZ),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, MIDDLE),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, BOTTOM),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
+};
 
+void AlignSVG::confToStream(std::ostream & ostr) const {
+
+	// std::stringstream sstr;
+	char sep=0;
+
+	alignment = 0;
+
+	int bitShift=0;
+	for (AlignSVG::Owner owner: {Owner::OBJECT, Owner::ANCHOR}){
+		bitShift = (owner == Owner::OBJECT) ? 0 : 4;
+
+		for (Align::Axis axis: {Align::Axis::HORZ, Align::Axis::VERT}){
+
+			bitShift += (axis == Axis::HORZ) ? 0 : 2;
+
+			const Align::Coord & pos = getAlign(owner, axis);
+
+			if (pos != Align::UNDEFINED_POS){
+				if (sep)
+					ostr << sep;
+				else
+					sep=' ';
+				ostr << owner << ':' << axis << '-' << pos;
+				//std::cerr << __FUNCTION__ << ':' << EnumDict<AlignAdapterSVG::Owner>::dict.getKey(p) << '_' << EnumDict<AlignAdapterSVG::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignAdapterSVG::Coord>::dict.getKey(v) << '_' << (int)v << '\n';
+			}
+
+			alignment |= (((bitvect_t)pos)<<bitShift);
+		}
+	}
+
+
+}
 
 // -----------------------------------------------------------------------------------------------------------
 
@@ -161,31 +205,15 @@ bool AlignSVG::isAligned() const {
 
 
 
-/*
-const ConstAlign<Align::Axis::HORZ, Align::Coord::MAX> Alignment2::RIGHT;
-const ConstAlign<Align::Axis::HORZ, Align::Coord::MID> Alignment2::CENTER;
-const ConstAlign<Align::Axis::HORZ, Align::Coord::MIN> Alignment2::LEFT;
-const ConstAlign<Align::Axis::VERT, Align::Coord::MAX> Alignment2::BOTTOM;
-const ConstAlign<Align::Axis::VERT, Align::Coord::MID> Alignment2::MIDDLE;
-const ConstAlign<Align::Axis::VERT, Align::Coord::MIN> Alignment2::TOP;
-*/
-
-/*
-template <>
-const drain::EnumDict<AlignPos>::dict_t drain::EnumDict<AlignPos>::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::Alignment2, LEFT),
-		DRAIN_ENUM_ENTRY(drain::image::Alignment2, CENTER),
-		DRAIN_ENUM_ENTRY(drain::image::Alignment2, RIGHT),
-		DRAIN_ENUM_ENTRY(drain::image::Alignment2, TOP),
-		DRAIN_ENUM_ENTRY(drain::image::Alignment2, MIDDLE),
-		DRAIN_ENUM_ENTRY(drain::image::Alignment2, BOTTOM),
-};
-*/
 
 
 void AlignAdapterSVG::updateAlignStr(){
 
 	std::stringstream sstr;
+	confToStream(sstr);
+	alignStr = sstr.str();
+
+	/*
 	char sep=0;
 
 	alignment = 0;
@@ -215,6 +243,8 @@ void AlignAdapterSVG::updateAlignStr(){
 
 	// std::string s = sstr.str();
 	alignStr = sstr.str();
+	 *
+	 */
 
 }
 

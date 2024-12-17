@@ -108,26 +108,28 @@ struct EnumDict {
 	 *   Note: cannot return (const E &) as storage type is (long) int.
 	 */
 	static inline
-	E getValue(const E & value){
+	E getValue(const E & value, bool lenient=true){
 		return value;
 	}
 
 	/// Convenience for object.set(...) like commands.
 	/**
+	 *   \param lenient - when key not found, only return empty, do not throw exception.
 	 *   \return enum value of the key
 	 */
 	static inline
-	E getValue(const std::string &key){
-		return dict.getValue(key);
+	E getValue(const std::string &key, bool lenient=true){
+		return dict.getValue(key, lenient);
 	}
 
 	/// Convenience for object.set(...) like commands.
 	/**
+	 *   \param lenient - when value not found, only return empty, do not throw exception.
 	 *   \return enum value of the key
 	 */
 	static inline
-	E getValue(const char *key){
-		return dict.getValue(key);
+	E getValue(const char *key, bool lenient=true){
+		return dict.getValue(key, lenient);
 	}
 
 };

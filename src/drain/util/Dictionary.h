@@ -146,15 +146,17 @@ public:
 
 
 	/// Given a key, return the first value associated with it.
-	const V & getValue(const K & key) const {
+	const V & getValue(const K & key, bool lenient=true) const {
 		typename container_t::const_iterator it = findByKey(key);
 		if (it != this->end())
 			return it->second;
-		else {
+		else if (lenient){
 			static V empty;
 			return empty;
 		}
-
+		else {
+			throw std::runtime_error(drain::StringBuilder<>("key '", key, "' not found"));
+		}
 	}
 
 	/// Identity mapping useful for type deduction of template arguments in functions.
@@ -166,13 +168,16 @@ public:
 	 */
 
 	/// Given a value, return the first key associated with it.
-	const K & getKey(const V & value) const {
+	const K & getKey(const V & value, bool lenient=true) const {
 		typename container_t::const_iterator it = findByValue(value);
 		if (it != this->end())
 			return it->first;
-		else {
+		else if (lenient){
 			static K empty;
 			return empty;
+		}
+		else {
+			throw std::runtime_error(drain::StringBuilder<>("value '", value, "' not found"));
 		}
 	}
 

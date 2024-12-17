@@ -490,7 +490,7 @@ public:
 
 			Alignment2 align(AlignSVG::Topol::UNDEFINED_TOPOL, Align::Axis::UNDEFINED_AXIS, Align::Coord::UNDEFINED_POS);
 			//AlignSVG::Topol topol = AlignSVG::Topol::INSIDE;
-			// AlignPos alignPos;
+			// Align Align;
 
 			for (const std::string & key: keys){
 
@@ -515,11 +515,12 @@ public:
 
 			switch (align.axis) {
 				case Align::Axis::HORZ:
-					// todo: ctx.alignHorz.set(align.topol, align.pos);
-					ctx.alignHorz.pos = align.pos;
+					ctx.alignHorz.set(align.topol, align.pos);
+					// ctx.alignHorz.set(align);
 					break;
 				case Align::Axis::VERT:
-					ctx.alignVert.pos = align.pos;
+					ctx.alignVert.set(align.topol, align.pos);
+					// ctx.alignVert(align);
 					break;
 				case Align::Axis::UNDEFINED_AXIS:
 				default:
@@ -529,13 +530,13 @@ public:
 					break;
 			}
 
-			//mout.accept<LOG_NOTICE>(align.topol, '/',(AlignPos &)align);
+			//mout.accept<LOG_NOTICE>(align.topol, '/',(Align &)align);
 			// ctx.topol = align.topol;
 
 		}
 
-		mout.accept<LOG_NOTICE>(ctx.alignHorz.topol, '/',(AlignPos &)ctx.alignHorz);
-		mout.accept<LOG_NOTICE>(ctx.alignVert.topol, '/',(AlignPos &)ctx.alignVert);
+		mout.accept<LOG_NOTICE>(ctx.alignHorz.topol, '/',(Align &)ctx.alignHorz);
+		mout.accept<LOG_NOTICE>(ctx.alignVert.topol, '/',(Align &)ctx.alignVert);
 
 	}
 
@@ -547,7 +548,7 @@ protected:
 	typedef drain::EnumDict<Align::Axis>     align_axis;
 	typedef drain::EnumDict<AlignSVG::Topol> align_topol;
 	// typedef drain::EnumDict<Align::Coord>    align_pos;
-	//typedef drain::EnumDict<AlignPos> aling_pos; // LEFT, RIGHT, BOTTOM...
+	//typedef drain::EnumDict<Align> aling_pos; // LEFT, RIGHT, BOTTOM...
 	// typedef drain::EnumDict<valign_enum> valign;
 	typedef drain::EnumDict<Alignment<Align::Axis::HORZ> > align_horz;
 	typedef drain::EnumDict<Alignment<Align::Axis::VERT> > align_vert;
@@ -714,7 +715,8 @@ public:
 
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
 		const std::string MAIN_ELEM("main");
-		group->setAlignAnchorVert(MAIN_ELEM);
+		//group->setAlignAnchorVert(MAIN_ELEM);
+		group->setAlignAnchorHorz(MAIN_ELEM);
 
 
 		// Needed?
@@ -736,27 +738,80 @@ public:
 		rect->set("label", MAIN_ELEM);
 		rect->setStyle("fill", "yellow");
 
+		// rect->setAlign(AlignSVG::INSIDE, AlignSVG::RIGHT);
+		// rect->setAlign(AlignSVG::INSIDE, AlignSVG::TOP);
+		std::list<std::string> args;
+		drain::StringTools::split(value, args, ',');
+		for (const std::string & arg: args){
+			std::vector<std::string> conf;
+			drain::StringTools::split(arg, conf, ':');
+			switch (conf.size()){
+			case 3:
+				rect->setAlign(conf[0], conf[1], conf[2]);
+				break;
+			case 2:
+				rect->setAlign(conf[0], conf[1]);
+				break;
+			default:
+				mout.advice<LOG_NOTICE>("Use 3 args, example: OBJECT:LEFT,ANCHOR:RIGHT");
+				mout.advice<LOG_NOTICE>("use 2 args, example: OBJECT:HORZ:MIN,ANCHOR:VERT:MAX");
+				mout.error("Could not parse: ", arg);
+			}
+			if (conf.size() == 3){
+				rect->setAlign(conf[0], conf[1], conf[2]);
+				mout.accept<LOG_NOTICE>("Example: align now:", rect->getAlignStr());
+			}
+			else {
+				mout.advice<LOG_NOTICE>("Example: OBJECT:HORZ:MIN,ANCHOR:VERT:MAX");
+				mout.error("Could not parse: ", arg);
+			}
+		}
+
 		mout.reject<LOG_NOTICE>("Main align:", ctx.alignHorz, ", ", ctx.alignVert);
 
+		/*
+		std::string arg(value);
+		drain::StringTools::replace({{"\\n", "\n"}}, arg);
+		std::list<std::string> args;
+		drain::StringTools::split(arg, args, '\n');
+		*/
+
 		for (const std::string s: {"Hello,", "world!", "My name is Test."}){
+		//for (const std::string & s: args){
 			drain::image::TreeSVG & text = group[s + "_text"](NodeSVG::TEXT);
 			text->setId(s);
 			text->setText(s);
-			text->getBoundingBox().setArea(60,20); // ctx.topol
+			text->getBoundingBox().setArea(70,15); // ctx.topol
+
+			// Defaults
+
 			if (ctx.alignHorz.topol != AlignSVG::UNDEFINED_TOPOL){
-				text->setAlign(ctx.alignHorz.topol, ctx.alignHorz.axis, ctx.alignHorz.pos); // ctx.topol, ctx.halign);
-				// text->setAlign(ctx.topol, ctx.valign);
-				ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
+				text->setAlign(ctx.alignHorz.topol, Align::HORZ, ctx.alignHorz.pos); // ctx.topol, ctx.halign);
+				mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", text->getAlignStr());
+				//ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
 			}
 			else {
 				text->setAlign(AlignSVG::INSIDE,  AlignSVG::LEFT); // AlignSVG::LEFT);
+			}
+
+			// First only
+			if (ctx.alignVert.topol != AlignSVG::UNDEFINED_TOPOL){
+				text->setAlign(ctx.alignVert.topol, Align::VERT, ctx.alignVert.pos);
+				mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignVert, " -> ", text->getAlignStr());
+				ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
+			}
+			else {
 				text->setAlign(AlignSVG::OUTSIDE, AlignSVG::BOTTOM); // AlignSVG::BOTTOM);
 			}
+
 			mout.accept<LOG_NOTICE>("TEXT ", s, " aligned: ", text->getAlignStr());
 		}
 
 		// mout.reject<LOG_NOTICE>(" ->  align:", ctx.topol, '|', ctx.halign, '/', ctx.valign);
 		mout.reject<LOG_NOTICE>("Main align:", ctx.alignHorz, ", ", ctx.alignVert);
+
+		ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
+		//ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
 
 
 	}
