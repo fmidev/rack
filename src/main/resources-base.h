@@ -49,9 +49,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+using namespace drain::image;
+
 // Consider moving ImageKit here?
 class ImageContext {
 public:
+
 
 	/// Default constr
 	ImageContext();
@@ -71,16 +74,16 @@ public:
 	ODIMPathElem::group_t qualityGroups;
 
 	// Accessed by CmdSampler
-	drain::image::ImageSampler imageSampler;
+	ImageSampler imageSampler;
 
 
 	inline
-	void setCurrentImageColor(const drain::image::Image & src){
+	void setCurrentImageColor(const Image & src){
 		currentImage     = &src;
 	}
 
 	inline
-	void setCurrentImages(const drain::image::Image & src){
+	void setCurrentImages(const Image & src){
 		currentImage     = &src;
 		currentGrayImage = &src;
 	}
@@ -95,42 +98,42 @@ public:
 
 
 	/// Pointer to the last 2D data (image) processed
-	const drain::image::Image *currentImage; // = NULL;
+	const Image *currentImage; // = NULL;
 
 	/// Pointer to the last single-channel 2D data (image) processed
-	const drain::image::Image *currentGrayImage; // = NULL;  // data or grayImage
+	const Image *currentGrayImage; // = NULL;  // data or grayImage
 
 
-	drain::image::Image grayImage;
-	drain::image::Image colorImage;
+	Image grayImage;
+	Image colorImage;
 
 	std::string paletteKey;
 
 	// SVG output configuration (layout)
-	drain::image::TreeSVG svgTrack;
-	drain::image::PanelConfSVG svgPanelConf; // under constr - consider embedding these to PanelConfSVG:
-	drain::image::Align::Axis mainOrientation = drain::image::Align::Axis::HORZ;
-	drain::image::LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
+	TreeSVG svgTrack;
+	PanelConfSVG svgPanelConf; // under constr - consider embedding these to PanelConfSVG:
+	AlignCoord::Axis mainOrientation = AlignCoord::Axis::HORZ;
+	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
 	// For the NEXT graphic object
 	/*
-	drain::image::AlignSVG::Topol topol = drain::image::AlignSVG::Topol::OUTSIDE;
-	drain::image::AlignSVG::HorzAlign halign = drain::image::AlignSVG::HorzAlign::RIGHT;
-	drain::image::AlignSVG::VertAlign valign = drain::image::AlignSVG::VertAlign::TOP;
+	AlignSVG::Topol topol = AlignSVG::Topol::OUTSIDE;
+	AlignSVG::HorzAlign halign = AlignSVG::HorzAlign::RIGHT;
+	AlignSVG::VertAlign valign = AlignSVG::VertAlign::TOP;
 	*/
-	drain::image::Alignment2 alignHorz = {drain::image::AlignSVG::Topol::INSIDE, drain::image::Align::Axis::HORZ};
-	drain::image::Alignment2 alignVert = {drain::image::AlignSVG::Topol::INSIDE, drain::image::Align::Axis::VERT};
+	Alignment2 alignHorz = {AlignSVG::Topol::INSIDE, AlignCoord::Axis::HORZ};
+	Alignment2 alignVert = {AlignSVG::Topol::INSIDE, AlignCoord::Axis::VERT};
 
 	// New
 	inline
-	drain::image::Palette & getPalette(){
-		return drain::image::PaletteOp::getPalette(paletteKey);
+	Palette & getPalette(){
+		return PaletteOp::getPalette(paletteKey);
 	}
 
 	// New
 	inline
-	drain::image::Palette & getPalette(const std::string & key){
+	Palette & getPalette(const std::string & key){
 		paletteKey = key;
-		return drain::image::PaletteOp::getPalette(key);
+		return PaletteOp::getPalette(key);
 	}
 
 	/*
@@ -142,7 +145,7 @@ public:
 
 	/// Given image pointer (null ok), get properties.
 	static
-	void getImageInfo(const drain::image::Image *ptr, drain::Variable & entry);
+	void getImageInfo(const Image *ptr, drain::Variable & entry);
 
 
 

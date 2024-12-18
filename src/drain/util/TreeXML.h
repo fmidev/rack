@@ -149,6 +149,9 @@ public:
 	}
 
 	/// Makes ID a visible attribute.
+	/**
+	 *  Also a terminal function for
+	 */
 	inline
 	void setId(){
 		link("id", id);
@@ -160,6 +163,11 @@ public:
 		link("id", id = s);
 	}
 
+	template <char C='\0', typename ...TT>
+	inline
+	void setId(const TT & ...args) {
+		link("id", id = drain::StringBuilder<C>(args...));
+	}
 
 	/// Returns ID of this element. Hopefully a unique ID...
 	inline
@@ -556,25 +564,43 @@ public:
 		this->style[key] = value;
 	}
 
+
+	/// Set style of an element.
+	/**
+	  \code
+	     rect.setStyle("dash-array",{2,5,3});
+	  \endcode
+	 *
+	 */
 	template <class V>
 	inline
 	void setStyle(const std::string & key, const std::initializer_list<V> &l){
 		// const std::initializer_list<Variable::init_pair_t > &l
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.revised<LOG_WARNING>("Check if elem=STYLE , initializer_list<", drain::TypeName<V>::str(), "> = ");
+		if (type == STYLE){  // typeIs(STYLE) fails
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.warn("Setting style of STYLE?  initializer_list<", drain::TypeName<V>::str(), "> = ", sprinter(l)); // , StyleXML::styleLineLayout ?
+			//mout.revised<LOG_WARNING>("Element is not STYLE but ", getTag(), ", initializer_list<", drain::TypeName<V>::str(), "> = ", sprinter(l)); // , StyleXML::styleLineLayout ?
+		}
 		this->style[key] = l;
 	}
 
 
+	/// For element/class/id, assign ...
+	/**
+	 *
+	 */
 	template <class V>
 	inline
 	void setStyle(const std::string & key, const V & value){
 		// drain::Logger mout(__FILE__, __FUNCTION__);
 		if (type == STYLE){
-			// mout.special<LOG_WARNING>("Spezial STYLE ", drain::TypeName<V>::str());
+			drain::Logger mout(__FILE__, __FUNCTION__);
 			// "reuse" style map as style record map
 			std::stringstream sstr;
 			drain::Sprinter::toStream(sstr, value, StyleXML::styleLineLayout);
+			mout.warn("Setting style of STYLE?, arg type=", drain::TypeName<V>::str());
+			mout.warn("Check results: skipped ", sstr.str());
+			mout.warn("Check results: applied ", value);
 			this->style[key] = value; //sstr.str();
 		}
 		else {

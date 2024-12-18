@@ -239,9 +239,9 @@ drain::image::TreeSVG & RackSVG::getPanel(RackContext & ctx, const drain::FilePa
 
 		//bool FWD = (ctx.mainDirection==LayoutSVG::Direction::INCR);
 
-		if (ctx.mainOrientation == drain::image::Align::Axis::HORZ){
-			group->setAlign(AlignSVG::OUTSIDE, Align::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
-			group->setAlign(AlignSVG::INSIDE,  Align::Axis::VERT, Align::MIN); // drain::image::AlignSVG::VertAlign::TOP);
+		if (ctx.mainOrientation == drain::image::AlignCoord::Axis::HORZ){
+			group->setAlign(AlignSVG::OUTSIDE, AlignCoord::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignCoord::MAX : AlignCoord::MIN);
+			group->setAlign(AlignSVG::INSIDE,  AlignCoord::Axis::VERT, AlignCoord::MIN); // drain::image::AlignSVG::VertAlign::TOP);
 			/*
 			group->setAlign(AlignSVG::ANCHOR,  Align::Axis::HORZ, Align::MAX); // LEFT
 			group->setAlign(AlignSVG::OBJECT,  Align::Axis::HORZ, Align::MIN); // LEFT
@@ -250,8 +250,8 @@ drain::image::TreeSVG & RackSVG::getPanel(RackContext & ctx, const drain::FilePa
 			*/
 		}
 		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::Align::Axis::VERT){
-			group->setAlign(AlignSVG::INSIDE,  Align::Axis::HORZ, Align::MIN); // drain::image::AlignSVG::HorzAlign::LEFT);
-			group->setAlign(AlignSVG::OUTSIDE, Align::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? Align::MAX : Align::MIN);
+			group->setAlign(AlignSVG::INSIDE,  AlignCoord::Axis::HORZ, AlignCoord::MIN); // drain::image::AlignSVG::HorzAlign::LEFT);
+			group->setAlign(AlignSVG::OUTSIDE, AlignCoord::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignCoord::MAX : AlignCoord::MIN);
 			/*
 			group->setAlign(AlignSVG::ANCHOR,  Align::Axis::VERT, Align::MAX); // LEFT
 			group->setAlign(AlignSVG::OBJECT,  Align::Axis::VERT, Align::MIN); // LEFT
