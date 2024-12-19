@@ -142,12 +142,12 @@ public:
 	 *  Future versions may also handle CIRCLE and TEXT (location)
 	 */
 	static
-	void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, AlignCoord::Axis orientation=AlignCoord::Axis::HORZ); // UNDEFINED_ORIENTATION=2
+	void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, AlignBase::Axis orientation=AlignBase::Axis::HORZ); // UNDEFINED_ORIENTATION=2
 
 
 	// NEW ---------------------
 	static
-	void superAlign(TreeSVG & node, AlignCoord::Axis orientation = AlignCoord::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
+	void superAlign(TreeSVG & node, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
 
 
 
@@ -162,7 +162,7 @@ public:
 	void realignObject(const Box<svg::coord_t> & anchorBoxHorz, const Box<svg::coord_t> & anchorBoxVert, TreeSVG & obj);
 
 	static
-	void realignObject(AlignCoord::Axis axis, svg::coord_t pos, svg::coord_t width, TreeSVG & obj, svg::coord_t & newPos); // , Point2D<svg::coord_t> & newLocation);
+	void realignObject(AlignBase::Axis axis, svg::coord_t pos, svg::coord_t width, TreeSVG & obj, svg::coord_t & newPos); // , Point2D<svg::coord_t> & newLocation);
 
 	/// Recursively move elements with (x, y).
 	static

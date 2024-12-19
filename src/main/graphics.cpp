@@ -181,7 +181,7 @@ TreeSVG & getTextElem(const TreeSVG & frame, TreeSVG & current, const std::strin
 		text->set("x", x + 2);
 		text->set("y", y + 20);
 		// drain::image::TreeUtilsSVG::markAligned(frame, text);
-		// text->addClass(svgAlignCoord::FLOAT); // "imageTitle" !
+		// text->addClass(svgAlignBase::FLOAT); // "imageTitle" !
 		// text->set("ref", frame->getId());
 	}
 
@@ -272,8 +272,8 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 			if (IS_TIME){
 				text->addClass(RackSVG::TIME); // ,  alignSvg::BOTTOM, alignSvg::LEFT); // CmdBaseSVG::FLOAT,
-				text->setAlign(AlignSVG::INSIDE, AlignSVG::BOTTOM); // AlignSVG::VertAlignCoord::BOTTOM); // setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MIN); // = LEFT
-				text->setAlign(AlignSVG::INSIDE, AlignSVG::LEFT); // AlignSVG::HorzAlignCoord::LEFT);   // setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::MAX); // = BOTTOM
+				text->setAlign(AlignSVG::INSIDE, AlignSVG::BOTTOM); // AlignSVG::VertAlignBase::BOTTOM); // setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MIN); // = LEFT
+				text->setAlign(AlignSVG::INSIDE, AlignSVG::LEFT); // AlignSVG::HorzAlignBase::LEFT);   // setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::MAX); // = BOTTOM
 				// text->set("y", y + 40); // temporary
 				/* TODO:
 				std::stringstream sstr;
@@ -435,7 +435,7 @@ public:
 
 protected:
 
-	typedef drain::image::AlignCoord::Axis orientation_enum;
+	typedef drain::image::AlignBase::Axis orientation_enum;
 	typedef drain::image::LayoutSVG::Direction direction_enum;
 
 	//volatile
@@ -488,7 +488,7 @@ public:
 			std::list<std::string> keys;
 			drain::StringTools::split(arg, keys, ':');
 
-			Alignment2 align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignCoord::Axis::UNDEFINED_AXIS, AlignCoord::Coord::UNDEFINED_POS);
+			Alignment2 align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Axis::UNDEFINED_AXIS, AlignBase::Pos::UNDEFINED_POS);
 			//AlignSVG::Topol topol = AlignSVG::Topol::INSIDE;
 			// Align Align;
 
@@ -497,12 +497,19 @@ public:
 				if (align_topol::setValue(key, align.topol)){
 					// ok
 				}
-				else if (align_horz::setValue(key, (Alignment<AlignCoord::Axis::HORZ> &)align)){
+				/*
+				else if (align_edict::setValue(key, (Alignment<> &)align)){ // Dangerous
 					// ok
 				}
-				else if (align_vert::setValue(key, (Alignment<AlignCoord::Axis::VERT> &)align)){
+				*/
+				/*
+				else if (align_horz::setValue(key, (HorzAlign &)align)){ // Dangerous
 					// ok
 				}
+				else if (align_vert::setValue(key, (VertAlign &)align)){ // Dangerous
+					// ok
+				}
+				*/
 				/*
 				else if (valign::setValue(key, ctx.valign)){
 					return;
@@ -514,19 +521,19 @@ public:
 			}
 
 			switch (align.axis) {
-				case AlignCoord::Axis::HORZ:
+				case AlignBase::Axis::HORZ:
 					ctx.alignHorz.set(align.topol, align.pos);
 					// ctx.alignHorz.set(align);
 					break;
-				case AlignCoord::Axis::VERT:
+				case AlignBase::Axis::VERT:
 					ctx.alignVert.set(align.topol, align.pos);
 					// ctx.alignVert(align);
 					break;
-				case AlignCoord::Axis::UNDEFINED_AXIS:
+				case AlignBase::Axis::UNDEFINED_AXIS:
 				default:
 					mout.advice("use: ", drain::sprinter(align_horz::dict.getKeys(), {"|"}).str());
 					mout.advice("use: ", drain::sprinter(align_vert::dict.getKeys(), {"|"}).str());
-					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignCoord>::dict.getKeys(), {"|"}).str());
+					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignCoord<> >::dict.getKeys(), {"|"}).str());
 					mout.error("could not determine axis from argument '", arg, "'");
 					break;
 			}
@@ -536,8 +543,10 @@ public:
 
 		}
 
-		mout.accept<LOG_NOTICE>(ctx.alignHorz.topol, '/',(AlignCoord &)ctx.alignHorz);
-		mout.accept<LOG_NOTICE>(ctx.alignVert.topol, '/',(AlignCoord &)ctx.alignVert);
+		// mout.accept<LOG_NOTICE>(ctx.alignHorz.topol, '/',(AlignBase &)ctx.alignHorz);
+		// mout.accept<LOG_NOTICE>(ctx.alignVert.topol, '/',(AlignBase &)ctx.alignVert);
+		mout.accept<LOG_NOTICE>(ctx.alignHorz.topol, '/', ctx.alignHorz);
+		mout.accept<LOG_NOTICE>(ctx.alignVert.topol, '/', ctx.alignVert);
 
 	}
 
@@ -546,13 +555,14 @@ protected:
 	// typedef drain::image::AlignSVG::Topol topol_enum;
 	//typedef drain::image::AlignSVG::HorzAlign halign_enum;
 	//typedef drain::image::AlignSVG::VertAlign valign_enum;
-	typedef drain::EnumDict<AlignCoord::Axis>     align_axis;
+	typedef drain::EnumDict<AlignBase::Axis>     align_axis;
 	typedef drain::EnumDict<AlignSVG::Topol> align_topol;
-	// typedef drain::EnumDict<AlignCoord::Coord>    align_pos;
+	// typedef drain::EnumDict<AlignBase::Coord>    align_pos;
 	//typedef drain::EnumDict<Align> aling_pos; // LEFT, RIGHT, BOTTOM...
 	// typedef drain::EnumDict<valign_enum> valign;
-	typedef drain::EnumDict<Alignment<AlignCoord::Axis::HORZ> > align_horz;
-	typedef drain::EnumDict<Alignment<AlignCoord::Axis::VERT> > align_vert;
+	typedef drain::EnumDict<Alignment<> > align_edict;
+	typedef drain::EnumDict<HorzAlign> align_horz;
+	typedef drain::EnumDict<VertAlign> align_vert;
 
 	/*
 	template <typename E>
@@ -597,13 +607,13 @@ public:
 		group->setAlignAnchor(ANCHOR_ELEM);
 		// rectGroup->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
 
-		if (ctx.mainOrientation == drain::image::AlignCoord::Axis::HORZ){
-			group->setAlign(AlignSVG::OUTSIDE, AlignCoord::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignCoord::MAX : AlignCoord::MIN);
-			group->setAlign(AlignSVG::INSIDE,  AlignCoord::Axis::VERT, AlignCoord::MIN); // drain::image::AlignSVG::VertAlignCoord::TOP);
+		if (ctx.mainOrientation == drain::image::AlignBase::Axis::HORZ){
+			group->setAlign(AlignSVG::OUTSIDE, AlignBase::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN);
+			group->setAlign(AlignSVG::INSIDE,  AlignBase::Axis::VERT, AlignBase::MIN); // drain::image::AlignSVG::VertAlignBase::TOP);
 		}
-		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::AlignCoord::Axis::VERT){
-			group->setAlign(AlignSVG::INSIDE,  AlignCoord::Axis::HORZ, AlignCoord::MIN); // drain::image::AlignSVG::HorzAlignCoord::LEFT);
-			group->setAlign(AlignSVG::OUTSIDE, AlignCoord::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignCoord::MAX : AlignCoord::MIN);
+		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::AlignBase::Axis::VERT){
+			group->setAlign(AlignSVG::INSIDE,  AlignBase::Axis::HORZ, AlignBase::MIN); // drain::image::AlignSVG::HorzAlignBase::LEFT);
+			group->setAlign(AlignSVG::OUTSIDE, AlignBase::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN);
 		}
 
 
@@ -616,8 +626,8 @@ public:
 
 		// rect->addClass(LayoutSVG::FLOAT);
 
-		// rect->setAlign(AlignSVG::OBJECT, AlignCoord::HORZ,  AlignCoord::MAX);
-		// rect->setAlign<AlignSVG::OUTSIDE>(AlignSVG::OBJECT, AlignCoord::HORZ,  AlignCoord::MAX);
+		// rect->setAlign(AlignSVG::OBJECT, AlignBase::HORZ,  AlignBase::MAX);
+		// rect->setAlign<AlignSVG::OUTSIDE>(AlignSVG::OBJECT, AlignBase::HORZ,  AlignBase::MAX);
 		// rect->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
 		// rect["basename"](drain::image::svg::TITLE) = "test";
 		/*
@@ -627,27 +637,27 @@ public:
 		*/
 
 		typedef drain::image::AlignSVG::Owner   AlOwner;
-		typedef drain::image::AlignCoord::Coord   Pos;
+		typedef drain::image::AlignBase::Pos   Pos;
 
 		const drain::EnumDict<Pos>::dict_t & dict = drain::EnumDict<Pos>::dict;
 
 
-		//const std::list<Pos> pos = {AlignCoord::MAX, AlignCoord::MIN, AlignCoord::MID};
+		//const std::list<Pos> pos = {AlignBase::MAX, AlignBase::MIN, AlignBase::MID};
 		// for (const drain::image::LayoutSVG::Axis & ax: {AlignAxis::HORZ, AlignAxis::VERT}){
-		for (const Pos & posVert: {AlignCoord::MIN, AlignCoord::MID, AlignCoord::MAX}){ //pos){ // {AlignCoord::MID} pos
+		for (const Pos & posVert: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ //pos){ // {AlignBase::MID} pos
 
 			char pv = dict.getKey(posVert)[2];
 
-			for (const Pos & posHorz: {AlignCoord::MIN, AlignCoord::MID, AlignCoord::MAX}){ // pos
+			for (const Pos & posHorz: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ // pos
 
 				char ph = dict.getKey(posHorz)[2];
 
-				for (const Pos & posVertRef: {AlignCoord::MIN, AlignCoord::MID, AlignCoord::MAX}){ // {AlignCoord::MID}){
+				for (const Pos & posVertRef: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ // {AlignBase::MID}){
 
 					char rv = dict.getKey(posVertRef)[2];
 
-					for (const Pos & posHorzRef: {AlignCoord::MIN, AlignCoord::MID, AlignCoord::MAX}){ //pos){
-					// const Pos posHorzRef = AlignCoord::MID; {
+					for (const Pos & posHorzRef: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ //pos){
+					// const Pos posHorzRef = AlignBase::MID; {
 
 						char rh = dict.getKey(posHorzRef)[2];
 
@@ -657,10 +667,10 @@ public:
 						drain::image::TreeSVG & text = group[label + "text"](NodeSVG::TEXT);
 						text->setId(label+"_T");
 						text->getBoundingBox().setArea(60,30);
-						text->setAlign(AlOwner::ANCHOR, AlignCoord::HORZ, posHorzRef);
-						text->setAlign(AlOwner::ANCHOR, AlignCoord::VERT, posVertRef);
-						text->setAlign(AlOwner::OBJECT, AlignCoord::HORZ, posHorz);
-						text->setAlign(AlOwner::OBJECT, AlignCoord::VERT, posVert);
+						text->setAlign(AlOwner::ANCHOR, AlignBase::HORZ, posHorzRef);
+						text->setAlign(AlOwner::ANCHOR, AlignBase::VERT, posVertRef);
+						text->setAlign(AlOwner::OBJECT, AlignBase::HORZ, posHorz);
+						text->setAlign(AlOwner::OBJECT, AlignBase::VERT, posVert);
 						text->setText(label);
 
 						drain::image::TreeSVG & textBox = group[label](NodeSVG::RECT);
@@ -671,10 +681,10 @@ public:
 						textBox->setStyle("opacity", 0.15);
 						textBox->setStyle("stroke-width", "2px");
 						textBox->setStyle("stroke", "black");
-						textBox->setAlign(AlOwner::ANCHOR, AlignCoord::HORZ, posHorzRef);
-						textBox->setAlign(AlOwner::ANCHOR, AlignCoord::VERT, posVertRef);
-						textBox->setAlign(AlOwner::OBJECT, AlignCoord::HORZ, posHorz);
-						textBox->setAlign(AlOwner::OBJECT, AlignCoord::VERT, posVert);
+						textBox->setAlign(AlOwner::ANCHOR, AlignBase::HORZ, posHorzRef);
+						textBox->setAlign(AlOwner::ANCHOR, AlignBase::VERT, posVertRef);
+						textBox->setAlign(AlOwner::OBJECT, AlignBase::HORZ, posHorz);
+						textBox->setAlign(AlOwner::OBJECT, AlignBase::VERT, posVert);
 						//textBox->addClass(LayoutSVG::FLOAT);
 
 
@@ -720,15 +730,33 @@ public:
 		group->setAlignAnchorHorz(MAIN_ELEM);
 
 
+		if (ctx.alignHorz.topol != AlignSVG::UNDEFINED_TOPOL){
+			group->setAlign(ctx.alignHorz.topol, AlignBase::HORZ, ctx.alignHorz.pos); // ctx.topol, ctx.halign);
+			mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", group->getAlignStr());
+			//ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
+		}
+		else {
+			group->setAlign(AlignSVG::OUTSIDE,  AlignSVG::RIGHT); // AlignSVG::LEFT);
+		}
+
+		if (ctx.alignVert.topol != AlignSVG::UNDEFINED_TOPOL){
+			group->setAlign(ctx.alignVert.topol, AlignBase::VERT, ctx.alignVert.pos);
+			mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignVert, " -> ", group->getAlignStr());
+			// ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
+		}
+		else {
+			group->setAlign(AlignSVG::INSIDE, AlignSVG::TOP); // AlignSVG::BOTTOM);
+		}
+
 		// Needed?
 		/*
-		if (ctx.mainOrientation == drain::image::AlignCoord::Axis::HORZ){
-			group->setAlign(AlignSVG::OUTSIDE, AlignCoord::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignCoord::MAX : AlignCoord::MIN);
-			group->setAlign(AlignSVG::INSIDE,  AlignCoord::Axis::VERT, AlignCoord::MIN); // drain::image::AlignSVG::VertAlignCoord::TOP);
+		if (ctx.mainOrientation == drain::image::AlignBase::Axis::HORZ){
+			group->setAlign(AlignSVG::OUTSIDE, AlignBase::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN);
+			group->setAlign(AlignSVG::INSIDE,  AlignBase::Axis::VERT, AlignBase::MIN); // drain::image::AlignSVG::VertAlignBase::TOP);
 		}
-		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::AlignCoord::Axis::VERT){
-			group->setAlign(AlignSVG::INSIDE,  AlignCoord::Axis::HORZ, AlignCoord::MIN); // drain::image::AlignSVG::HorzAlignCoord::LEFT);
-			group->setAlign(AlignSVG::OUTSIDE, AlignCoord::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignCoord::MAX : AlignCoord::MIN);
+		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::AlignBase::Axis::VERT){
+			group->setAlign(AlignSVG::INSIDE,  AlignBase::Axis::HORZ, AlignBase::MIN); // drain::image::AlignSVG::HorzAlignBase::LEFT);
+			group->setAlign(AlignSVG::OUTSIDE, AlignBase::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN);
 		}
 		*/
 
@@ -737,44 +765,18 @@ public:
 		rect->set("height", frame.height);
 		rect->set("label", MAIN_ELEM);
 		rect->setStyle("fill", "yellow");
+		rect->setId("textRect");
 
 
-		drain::image::TreeSVG & textGroup = group["text-group"](NodeSVG::RECT); // +EXT!
+		drain::image::TreeSVG & textGroup = group["text-group"](NodeSVG::GROUP);
 		textGroup->set("width", frame.width);
 		textGroup->set("height", frame.height);
 		textGroup->setId("textGroup");
-		//textGroup->setStyle("fill", "yellow");
+		textGroup->setAlign(value);
 
+		drain::image::AlignBase::Pos horzPos = textGroup->getAlign(drain::image::AlignSVG::Owner::ANCHOR, drain::image::AlignBase::Axis::HORZ);
+		// AlignSVG alignSvg;
 
-
-		// rect->setAlign(AlignSVG::INSIDE, AlignSVG::RIGHT);
-		// rect->setAlign(AlignSVG::INSIDE, AlignSVG::TOP);
-		std::list<std::string> args;
-		drain::StringTools::split(value, args, ',');
-		for (const std::string & arg: args){
-			std::vector<std::string> conf;
-			drain::StringTools::split(arg, conf, ':');
-			switch (conf.size()){
-			case 3:
-				textGroup->setAlign(conf[0], conf[1], conf[2]);
-				break;
-			case 2:
-				textGroup->setAlign(conf[0], conf[1]);
-				break;
-			default:
-				mout.advice<LOG_NOTICE>("Use 3 args, example: OBJECT:LEFT,ANCHOR:RIGHT");
-				mout.advice<LOG_NOTICE>("use 2 args, example: OBJECT:HORZ:MIN,ANCHOR:VERT:MAX");
-				mout.error("Could not parse: ", arg);
-			}
-			if (conf.size() == 3){
-				textGroup->setAlign(conf[0], conf[1], conf[2]);
-				mout.accept<LOG_NOTICE>("Example: align now:", textGroup->getAlignStr());
-			}
-			else {
-				mout.advice<LOG_NOTICE>("Example: OBJECT:HORZ:MIN,ANCHOR:VERT:MAX");
-				mout.error("Could not parse: ", arg);
-			}
-		}
 
 		mout.reject<LOG_NOTICE>("Main align:", ctx.alignHorz, ", ", ctx.alignVert);
 
@@ -785,34 +787,49 @@ public:
 		drain::StringTools::split(arg, args, '\n');
 		*/
 
+		bool FIRST = true;
 		int index = 0;
 		for (const std::string s: {"Hello,", "world!", "My name is Test."}){
 		//for (const std::string & s: args){
-			drain::image::TreeSVG & text = group[s + "_text"](NodeSVG::TEXT);
+			drain::image::TreeSVG & text = textGroup[s + "_text"](NodeSVG::TEXT);
 			//text->setId(drain::StringBuilder<'_'>("textline", ++index));
 			text->setId("textline", ++index);
 			text->setText(s);
 			text->getBoundingBox().setArea(70,15); // ctx.topol
 
-			// Defaults
-
+			// Set horz alignment for every element
+			if (horzPos != AlignBase::Pos::UNDEFINED_POS){
+				text->setAlign(AlignSVG::INSIDE, AlignBase::HORZ, horzPos); // ctx.topol, ctx.halign);
+				// mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", text->getAlignStr());
+				//ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
+			}
+			else {
+				text->setAlign(AlignSVG::INSIDE,  AlignSVG::LEFT); // AlignSVG::LEFT);
+			}
+			/*
 			if (ctx.alignHorz.topol != AlignSVG::UNDEFINED_TOPOL){
-				text->setAlign(ctx.alignHorz.topol, AlignCoord::HORZ, ctx.alignHorz.pos); // ctx.topol, ctx.halign);
+				text->setAlign(ctx.alignHorz.topol, AlignBase::HORZ, ctx.alignHorz.pos); // ctx.topol, ctx.halign);
 				mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", text->getAlignStr());
 				//ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
 			}
 			else {
 				text->setAlign(AlignSVG::INSIDE,  AlignSVG::LEFT); // AlignSVG::LEFT);
 			}
+			*/
 
-			// First only
-			if (ctx.alignVert.topol != AlignSVG::UNDEFINED_TOPOL){
-				text->setAlign(ctx.alignVert.topol, AlignCoord::VERT, ctx.alignVert.pos);
-				mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignVert, " -> ", text->getAlignStr());
-				ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
+
+
+			// Set verthorz alignment for every element
+			//if (ctx.alignVert.topol != AlignSVG::UNDEFINED_TOPOL){
+			if (FIRST){
+				// text->setAlign(AlignSVG::INSIDE,  AlignSVG::TOP);
+				// text->setAlign(ctx.alignVert.topol, AlignBase::VERT, ctx.alignVert.pos);
+				// mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignVert, " -> ", text->getAlignStr());
+				// ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
+				FIRST = false;
 			}
 			else {
-				text->setAlign(AlignSVG::OUTSIDE, AlignSVG::BOTTOM); // AlignSVG::BOTTOM);
+				text->setAlign(AlignSVG::OUTSIDE, AlignSVG::BOTTOM);
 			}
 
 			mout.accept<LOG_NOTICE>("TEXT ", s, " aligned: ", text->getAlignStr());
@@ -822,7 +839,7 @@ public:
 		mout.reject<LOG_NOTICE>("Main align:", ctx.alignHorz, ", ", ctx.alignVert);
 
 		ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
-		//ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
+		ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
 
 
 	}

@@ -47,17 +47,18 @@ namespace image {
 
 
 template <>
-const drain::EnumDict<AlignCoord::Coord>::dict_t drain::EnumDict<AlignCoord::Coord>::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignCoord::Coord, MAX),
-		DRAIN_ENUM_ENTRY(drain::image::AlignCoord::Coord, MID),
-		DRAIN_ENUM_ENTRY(drain::image::AlignCoord::Coord, MIN),
-		DRAIN_ENUM_ENTRY(drain::image::AlignCoord::Coord, UNDEFINED_POS),
+const drain::EnumDict<AlignBase::Pos>::dict_t drain::EnumDict<AlignBase::Pos>::dict = {
+		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, UNDEFINED_POS),
+		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, MAX),
+		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, MID),
+		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, MIN),
+		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, FILL),
 };
 
 template <>
-const drain::EnumDict<AlignCoord::Axis>::dict_t drain::EnumDict<AlignCoord::Axis>::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignCoord::Axis, HORZ),
-		DRAIN_ENUM_ENTRY(drain::image::AlignCoord::Axis, VERT),
+const drain::EnumDict<AlignBase::Axis>::dict_t drain::EnumDict<AlignBase::Axis>::dict = {
+		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Axis, HORZ),
+		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Axis, VERT),
 };
 
 // -----------------------------------------------------------------------------------------------------------
@@ -68,63 +69,96 @@ const drain::EnumDict<AlignSVG::Owner>::dict_t drain::EnumDict<AlignSVG::Owner>:
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Owner, ANCHOR),
 };
 
+
+const HorzAlign AlignSVG::RIGHT(AlignBase::Pos::MAX);
+const HorzAlign AlignSVG::CENTER(AlignBase::Pos::MID);
+const HorzAlign AlignSVG::LEFT(AlignBase::Pos::MIN);
+const HorzAlign AlignSVG::UNDEFINED_HORZ(AlignBase::Pos::UNDEFINED_POS);
+
+template <>
+const drain::EnumDict<HorzAlign>::dict_t  drain::EnumDict<HorzAlign>::dict = {
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_HORZ),
+};
+
+const VertAlign AlignSVG::BOTTOM(AlignBase::Pos::MAX);
+const VertAlign AlignSVG::MIDDLE(AlignBase::Pos::MID);
+const VertAlign AlignSVG::TOP(AlignBase::Pos::MIN);
+const VertAlign AlignSVG::UNDEFINED_VERT(AlignBase::Pos::UNDEFINED_POS);
+
+template <>
+const drain::EnumDict<VertAlign>::dict_t  drain::EnumDict<VertAlign>::dict = {
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, MIDDLE),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, BOTTOM),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
+};
+
+
+/// Combines both EnumDict<Alignment<> >:
+
+template <>
+const drain::EnumDict<AlignCoord<> >::dict_t  drain::EnumDict<AlignCoord<> >::dict = {
+		/*
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_HORZ),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, MIDDLE),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, BOTTOM),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
+		*/
+};
+//EnumDict<Alignment<> >
+
+
+AlignCoord<> test(drain::image::AlignSVG::LEFT);
+AlignCoord<> test2 = drain::image::AlignSVG::LEFT;
+
 /*
 template <>
-const drain::EnumDict<AlignSVG::HorzAlign>::dict_t  drain::EnumDict<AlignSVG::HorzAlign>::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::HorzAlign, LEFT),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::HorzAlign, CENTER),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::HorzAlign, RIGHT),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::HorzAlign, UNDEFINED_HORZ),
-};
-
-template <>
-const drain::EnumDict<AlignSVG::VertAlign>::dict_t  drain::EnumDict<AlignSVG::VertAlign>::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::VertAlign, TOP),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::VertAlign, MIDDLE),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::VertAlign, BOTTOM),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::VertAlign, UNDEFINED_VERT),
+const drain::EnumDict<AlignSVG>::dict_t  drain::EnumDict<AlignSVG>::dict = {
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_HORZ),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, MIDDLE),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, BOTTOM),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
 };
 */
+/// Handler for command line or configuration file arguments
+void AlignSVG::setAlign(const std::string & align){
 
-const Alignment<AlignCoord::Axis::HORZ> AlignSVG::RIGHT(AlignCoord::Coord::MAX);
-const Alignment<AlignCoord::Axis::HORZ> AlignSVG::CENTER(AlignCoord::Coord::MID);
-const Alignment<AlignCoord::Axis::HORZ> AlignSVG::LEFT(AlignCoord::Coord::MIN);
-const Alignment<AlignCoord::Axis::HORZ> AlignSVG::UNDEFINED_HORZ(AlignCoord::Coord::UNDEFINED_POS);
+	std::list<std::string> args;
+	drain::StringTools::split(align, args, ','); // todo: separators?
 
-template <>
-const drain::EnumDict<Alignment<AlignCoord::Axis::HORZ> >::dict_t  drain::EnumDict<Alignment<AlignCoord::Axis::HORZ> >::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_HORZ),
-};
+	for (const std::string & arg: args){
 
-const Alignment<AlignCoord::Axis::VERT> AlignSVG::BOTTOM(AlignCoord::Coord::MAX);
-const Alignment<AlignCoord::Axis::VERT> AlignSVG::MIDDLE(AlignCoord::Coord::MID);
-const Alignment<AlignCoord::Axis::VERT> AlignSVG::TOP(AlignCoord::Coord::MIN);
-const Alignment<AlignCoord::Axis::VERT> AlignSVG::UNDEFINED_VERT(AlignCoord::Coord::UNDEFINED_POS);
+		std::vector<std::string> conf;
+		drain::StringTools::split(arg, conf, ':');
 
-template <>
-const drain::EnumDict<Alignment<AlignCoord::Axis::VERT> >::dict_t  drain::EnumDict<Alignment<AlignCoord::Axis::VERT> >::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, MIDDLE),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, BOTTOM),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
-};
+		switch (conf.size()){
+		case 3:
+			setAlign(conf[0], conf[1], conf[2]);
+			break;
+		case 2:
+			setAlign(conf[0], conf[1]);
+			break;
+		default:
+			drain::Logger mout(__FUNCTION__, __FILE__);
+			mout.advice<LOG_NOTICE>("Use 3 args, example: OBJECT:HORZ:MIN,ANCHOR:VERT:MAX");
+			mout.advice<LOG_NOTICE>("use 2 args, example: OUTSIDE:LEFT,INSIDE:TOP");
+			mout.error("Could not parse: ", arg);
+		}
+	}
 
+}
 
-/// Combines both
-template <>
-const drain::EnumDict<AlignCoord>::dict_t  drain::EnumDict<AlignCoord>::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_HORZ),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, MIDDLE),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, BOTTOM),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
-};
 
 void AlignSVG::confToStream(std::ostream & ostr) const {
 
@@ -137,13 +171,13 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 	for (AlignSVG::Owner owner: {Owner::OBJECT, Owner::ANCHOR}){
 		bitShift = (owner == Owner::OBJECT) ? 0 : 4;
 
-		for (AlignCoord::Axis axis: {AlignCoord::Axis::HORZ, AlignCoord::Axis::VERT}){
+		for (AlignBase::Axis axis: {AlignBase::Axis::HORZ, AlignBase::Axis::VERT}){
 
-			bitShift += (axis == AlignCoord::Axis::HORZ) ? 0 : 2;
+			bitShift += (axis == AlignBase::Axis::HORZ) ? 0 : 2;
 
-			const AlignCoord::Coord & pos = getAlign(owner, axis);
+			const AlignBase::Pos & pos = getAlign(owner, axis);
 
-			if (pos != AlignCoord::UNDEFINED_POS){
+			if (pos != AlignBase::UNDEFINED_POS){
 				if (sep)
 					ostr << sep;
 				else
@@ -186,16 +220,16 @@ const drain::EnumDict<AlignSVG::Topol>::dict_t drain::EnumDict<AlignSVG::Topol>:
 
 void AlignSVG::resetAlign(){
 	for (align_vect_t & a: alignments){
-		for (AlignCoord::Coord & v: a){
-			v = AlignCoord::Coord::UNDEFINED_POS;
+		for (AlignBase::Pos & v: a){
+			v = AlignBase::Pos::UNDEFINED_POS;
 		}
 	}
 };
 
 bool AlignSVG::isAligned() const {
 	for (const align_vect_t & a: alignments){
-		for (const AlignCoord::Coord & v: a){
-			if (v != AlignCoord::Coord::UNDEFINED_POS){
+		for (const AlignBase::Pos & v: a){
+			if (v != AlignBase::Pos::UNDEFINED_POS){
 				return true;
 			}
 		}

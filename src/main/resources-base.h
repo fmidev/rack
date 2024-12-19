@@ -112,7 +112,7 @@ public:
 	// SVG output configuration (layout)
 	TreeSVG svgTrack;
 	PanelConfSVG svgPanelConf; // under constr - consider embedding these to PanelConfSVG:
-	AlignCoord::Axis mainOrientation = AlignCoord::Axis::HORZ;
+	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
 	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
 	// For the NEXT graphic object
 	/*
@@ -120,8 +120,8 @@ public:
 	AlignSVG::HorzAlign halign = AlignSVG::HorzAlign::RIGHT;
 	AlignSVG::VertAlign valign = AlignSVG::VertAlign::TOP;
 	*/
-	Alignment2 alignHorz = {AlignSVG::Topol::INSIDE, AlignCoord::Axis::HORZ};
-	Alignment2 alignVert = {AlignSVG::Topol::INSIDE, AlignCoord::Axis::VERT};
+	Alignment2 alignHorz = {AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ};
+	Alignment2 alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Axis::VERT};
 
 	// New
 	inline

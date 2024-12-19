@@ -50,15 +50,17 @@ namespace image {
 
 
 /// Low level alignment instructions
-struct AlignCoord {
+struct AlignBase {
 
 public:
 
-	enum Coord {
+	/// Reference position at Axis (HORZ or VERT)
+	enum Pos {
 		UNDEFINED_POS = 0,
-		MIN = 1, // 0b01010101,
-		MAX = 2, // 0b10101010,
+		MIN = 1, // LEFT  (if HORZ) or TOP    (when VERT) 0b01010101,
+		MAX = 2, // RIGHT (if HORZ) or BOTTOM (when VERT) 0b10101010,
 		MID = 3, // 0b11111111,
+		FILL = 4, /// Maximize, with respect to HORZ or VERT extent. Currently, for OBJECT only.
 		// ABSOLUTE?
 	};
 
@@ -69,35 +71,11 @@ public:
 		UNDEFINED_AXIS = 2,
 	};
 
-	//const
-	//Align::
-	Axis  axis;
-
-	//const
-	// Align::
-	Coord pos;
-
-	inline
-	AlignCoord(Axis axis = UNDEFINED_AXIS, Coord pos = Coord::UNDEFINED_POS) : axis(axis), pos(pos) {
-	}
-
-	inline
-	AlignCoord(const AlignCoord & align) : axis(align.axis), pos(align.pos) {
-	}
-
-	inline
-	bool operator==(const AlignCoord & align) const {
-		return (align.axis == axis) && (align.pos == pos);
-		// return compare(ad) == 0;
-	}
-
-
 	static inline
 	Axis flip(Axis axis){
-		//return (axis == HORZ) ? VERT : HORZ;
 		switch (axis){
 		case HORZ:
-			return VERT;
+			return AlignBase::VERT;
 		case VERT:
 			return HORZ;
 		default:
@@ -108,33 +86,91 @@ public:
 	//typedef drain::EnumDict<Coord>::dict_t pos_dict_t;
 
 	static inline
-	Coord flip(Coord v){
-		switch (v){
+	AlignBase::Pos flip(AlignBase::Pos pos){
+		switch (pos){
 		case MAX:
 			return MIN;
 		case MIN:
 			return MAX;
 		case MID:
-			return MID;
+		case FILL:
+		case UNDEFINED_POS:
 		default:
-			return UNDEFINED_POS;
+			return pos;
 		}
 	};
 
 };
 
 
+template <typename AX = AlignBase::Axis, AlignBase::Axis V = AlignBase::Axis::UNDEFINED_AXIS> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
+struct AlignCoord {
+
+	 /*struct AlignCoord : public AlignBase {
+		Axis  axis;
+		Pos pos;
+		*/
+
+	AX axis = V; // compiler error if different type.
+	AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS;
+
+	inline
+	AlignCoord(AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : pos(pos){
+	}
+
+	inline
+	AlignCoord(AlignBase::Axis axis, AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : pos(pos){ // axis(axis),
+		this->axis = axis;
+	}
+
+	inline
+	AlignCoord(const AlignCoord & ac) : axis(ac.axis), pos(ac.pos){
+	}
+
+	template <typename AX2, AlignBase::Axis A2>
+	inline
+	AlignCoord(const AlignCoord<AX2,A2> & ac) : pos(ac.pos){ // axis(ac.axis),
+		axis = ac.axis; // error if const
+	}
+
+	/*
+	inline
+	AlignCoord(Axis axis = UNDEFINED_AXIS, Pos pos = Pos::UNDEFINED_POS) : axis(axis), pos(pos) {
+	}
+
+	inline
+	AlignCoord(const AlignCoord & align) : axis(align.axis), pos(align.pos) {
+	}
+	*/
+
+	inline
+	bool operator==(const AlignCoord & align) const {
+		return (align.axis == axis) && (align.pos == pos);
+		// return compare(ad) == 0;
+	}
+
+protected:
+
+
+
+
+};
+
+
 
 template <>
-const drain::EnumDict<AlignCoord::Axis>::dict_t drain::EnumDict<AlignCoord::Axis>::dict;
-DRAIN_ENUM_OSTREAM(AlignCoord::Axis);
+const drain::EnumDict<AlignBase::Axis>::dict_t drain::EnumDict<AlignBase::Axis>::dict;
+DRAIN_ENUM_OSTREAM(AlignBase::Axis);
 
 template <>
-const drain::EnumDict<AlignCoord::Coord>::dict_t drain::EnumDict<AlignCoord::Coord>::dict;
-DRAIN_ENUM_OSTREAM(AlignCoord::Coord);
+const drain::EnumDict<AlignBase::Pos>::dict_t drain::EnumDict<AlignBase::Pos>::dict;
+DRAIN_ENUM_OSTREAM(AlignBase::Pos);
 
+
+
+template <typename AX, AlignBase::Axis V>
 inline
-std::ostream & operator<<(std::ostream &ostr, const AlignCoord & align){
+std::ostream & operator<<(std::ostream &ostr, const AlignCoord<AX,V> & align){
 	//return ostr << align.axis << '_' << align.pos; // enums resolved above
 	return ostr << (int)align.axis << '_' << (int)align.pos;  // RESOLVE!
 }
@@ -145,6 +181,25 @@ std::ostream & operator<<(std::ostream &ostr, const AlignCoord & align){
 
 
 
+
+//typedef const Alignment<AlignCoord::Axis::HORZ> HorzAlign; // unused?
+// typedef Alignment<AlignCoord::Axis::HORZ> HorzAlign; // unused?
+typedef AlignCoord<const AlignBase::Axis, AlignBase::Axis::HORZ> HorzAlign;
+DRAIN_TYPENAME(HorzAlign);
+
+// typedef const Alignment<AlignCoord::Axis::VERT> VertAlign; // unused?
+//typedef Alignment<AlignCoord::Axis::VERT> VertAlign; // unused?
+typedef AlignCoord<const AlignBase::Axis, AlignBase::Axis::VERT> VertAlign;
+DRAIN_TYPENAME(VertAlign);
+
+
+template <>
+const drain::EnumDict<HorzAlign>::dict_t  drain::EnumDict<HorzAlign>::dict;
+
+template <>
+const drain::EnumDict<VertAlign>::dict_t  drain::EnumDict<VertAlign>::dict;
+
+
 // NEW
 /**
  *   \tparam AX - axis init value - still non-const value, so allows changing it...
@@ -152,69 +207,80 @@ std::ostream & operator<<(std::ostream &ostr, const AlignCoord & align){
  *   Alignment<Align::Axis::HORZ>
  *   Alignment<Align::Axis::VERT>
  */
-template <AlignCoord::Axis AX> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
-struct Alignment :public AlignCoord {
+template <typename AX = AlignBase::Axis> // instead of const Axis        , Align::Coord POS = Align::Coord::UNDEFINED_POS>
+struct Alignment : public AlignCoord<AX> {
 
 	inline
-	Alignment(AlignCoord::Coord pos = AlignCoord::Coord::UNDEFINED_POS) : AlignCoord(AX, pos){
+	Alignment(AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : AlignCoord<AX>(pos){
 	}
+
+	inline
+	Alignment(const Alignment & align) : AlignCoord<AX>(align.pos){
+	}
+
+protected:
+
+	inline
+	Alignment(AlignBase::Axis axis, AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : AlignCoord<AX>(pos){
+	}
+
 
 };
 
-typedef const Alignment<AlignCoord::Axis::HORZ> HorzAlign; // unused?
-DRAIN_TYPENAME(HorzAlign);
 
-typedef const Alignment<AlignCoord::Axis::VERT> VertAlign; // unused?
-DRAIN_TYPENAME(VertAlign);
-
+// struct AlignSVG;
 
 template <>
-const drain::EnumDict<Alignment<AlignCoord::Axis::HORZ> >::dict_t  drain::EnumDict<Alignment<AlignCoord::Axis::HORZ> >::dict;
+const drain::EnumDict<AlignCoord<> >::dict_t  drain::EnumDict<AlignCoord<> >::dict;
 
-template <>
-const drain::EnumDict<Alignment<AlignCoord::Axis::VERT> >::dict_t  drain::EnumDict<Alignment<AlignCoord::Axis::VERT> >::dict;
 
-template <>
-const drain::EnumDict<AlignCoord>::dict_t  drain::EnumDict<AlignCoord>::dict;
-
+struct Alignment2;
 
 /// User-friendly programming interface for alignment considering two elements.
 /**
+ *   Designed to be contained by SVG elements.
  *   Considers two elements, or more specifically, the bounding boxes of two elements.
+ *
  *
  */
 struct AlignSVG { // : protected Align {
 
-	typedef int bitvect_t;  // or int_t ?
 
 	virtual
 	~AlignSVG(){};
 
+
+	/// Alias for {HORZ:MIN}
 	static
-	const Alignment<AlignCoord::Axis::HORZ> LEFT; // ,Coord::MIN
+	const HorzAlign LEFT; // ,Coord::MIN
+
+	/// Alias for {HORZ:MID}
+	static
+	const HorzAlign CENTER;
+
+	/// Alias for {HORZ:MAX}
+	static
+	const HorzAlign RIGHT;
 
 	static
-	const Alignment<AlignCoord::Axis::HORZ> CENTER;
-
-	static
-	const Alignment<AlignCoord::Axis::HORZ> RIGHT;
-
-	static
-	const Alignment<AlignCoord::Axis::HORZ> UNDEFINED_HORZ;
+	const HorzAlign UNDEFINED_HORZ;
 
 	// ----------------------
 
+	/// Alias for {VERT:MIN}
 	static
-	const Alignment<AlignCoord::Axis::VERT> TOP;
+	const VertAlign TOP;
+
+	/// Alias for {VERT:MID}
+	static
+	const VertAlign MIDDLE;
+
+	/// Alias for {VERT:MAX}
+	static
+	const VertAlign BOTTOM;
 
 	static
-	const Alignment<AlignCoord::Axis::VERT> MIDDLE;
-
-	static
-	const Alignment<AlignCoord::Axis::VERT> BOTTOM;
-
-	static
-	const Alignment<AlignCoord::Axis::VERT> UNDEFINED_VERT;
+	const VertAlign UNDEFINED_VERT;
 
 
 	enum Owner {
@@ -230,51 +296,82 @@ struct AlignSVG { // : protected Align {
 		UNDEFINED_TOPOL = 2,
 	};
 
-	/// Lowish-level, atomic setter of alignment.
-	//  Used by file-svg.cpp
-	inline
-	void setAlign(Topol topol, const AlignCoord::Axis & direction, const AlignCoord::Coord & position){
-		modifyAlign(ANCHOR, direction, position);
-		modifyAlign(OBJECT, direction, (topol==INSIDE) ? position : AlignCoord::flip(position));
-	}
 
-	inline
-	void setAlign(Topol topol, const AlignCoord & pos){
-		setAlign(topol, pos.axis, pos.pos);
-		// setAlign(OBJECT, pos.axis, (topol==INSIDE) ? position : Align::flip(position));
-	}
-
-	/// Set a single alignment setting. High-level.
+	/// Low-level, "atomic" setter of alignment for OBJECT itself or its ANCHOR object.
 	/*
-	 *  \tparam T - enum type \c Topol or string
-	 *  \tparam A - enum type \c Align or string Alignment
-	 *  \param topol   - enum value \c INSIDE or \c OUTSIDE
-	 *  \param align  - enum value \c LEFT|CENTER|RIGHT or \c TOP|MIDDLE|BOTTOM
-	 */
-	template <typename T, typename A>
-	void setAlign(const T & topol, const A & align){
-		const Topol & t = EnumDict<AlignSVG::Topol>::getValue(topol, false);
-		const AlignCoord & a = EnumDict<AlignCoord>::getValue(align, false);
-		setAlign(t, a.axis, a.pos);
-	}
-	// Note: no mixed type, ANCHOR:LEFT
-
-
-	/// Set a single alignment setting. Low-level, ie. axis and value separately.
-	/*
-	 *  \tparam P - enum type \c Coord  or string
+	 *  Notice that for an alignment to be complete, this function should be called twice:
+	 *  setting partial alignment for both owner=OBJECT and owner=ANCHOR .
+	 *
+	 *  \tparam OBJ - enum type \c Owner  or string
 	 *  \tparam A - enum type \c Axis or string
 	 *  \tparam V - enum type \c Alignment or string
 	 *  \param pos   - enum value \c OBJ or \c REF
 	 *  \param axis  - enum value \c HORZ or \c VERT
 	 *  \param value - enum value \c MAX , \c MID , or \c MIN (or string)
 	 */
-	template <typename P, typename A, typename V>
+	template <typename OBJ, typename A, typename V>
 	inline
-	void setAlign(const P & owner, const A & axis,  const V &value){
+	void setAlign(const OBJ & owner, const A & axis,  const V &value){
 		modifyAlign(owner, axis, value);
 		updateAlign();
 	}
+
+	/// High-level, user friendlier interface for setting the alignments for both OBJECT itself and its ANCHOR object.
+	/*
+	 *  \tparam T - enum type \c Topol or string
+	 *  \tparam A - enum type \c AlignCoord or string
+	 *  \param topol  - \c INSIDE or \c OUTSIDE
+	 *  \param align  - \c LEFT|CENTER|RIGHT or \c TOP|MIDDLE|BOTTOM
+	 */
+	template <typename T, typename AX, AlignBase::Axis A>
+	void setAlign(const T & topol, const AlignCoord<AX,A> & align){
+		const Topol & t = EnumDict<AlignSVG::Topol>::getValue(topol, false);
+		// const Alignment<> & a = EnumDict<Alignment<> >::getValue(align, false);
+		setAlign(t, align.axis, align.pos);
+	}
+
+	template <typename T>
+	void setAlign(const T & topol, const std::string & align){
+		const Topol & t = EnumDict<AlignSVG::Topol>::getValue(topol, false);
+		//const Alignment<> & a = EnumDict<Alignment<> >::getValue(align, false);
+		const AlignCoord<> & a = EnumDict<AlignCoord<> >::getValue(align, false);
+		setAlign(t, a.axis, a.pos);
+	}
+
+	/// High-level, user friendly interface for setting the alignments for both OBJECT itself and its ANCHOR object.
+	/*
+	 *  \param pos   - enum value \c OBJ or \c REF
+	 *  \param axis  - enum value \c HORZ or \c VERT
+	inline
+	void setAlign(Topol topol, const AlignCoord & pos){
+		setAlign(topol, pos.axis, pos.pos);
+	}
+	 */
+
+	/// Set a single alignment setting. "Intermediate-level": axis and pos are given separately.
+	/**
+	 *
+	 *  \param topol  - \c INSIDE or \c OUTSIDE
+	 *  \param axis   - \c HORZ or \c VERT
+	 *  \param pos    - \c MIN , \c MID , or \c MAX
+	 *
+	 *  Used by file-svg.cpp
+	 *
+	 */
+	inline
+	void setAlign(Topol topol, const AlignBase::Axis & axis, const AlignBase::Pos & pos){
+		modifyAlign(ANCHOR, axis, pos);
+		modifyAlign(OBJECT, axis, (topol==INSIDE) ? pos : AlignBase::flip(pos));
+		updateAlign();
+	}
+
+	/// Handler for command line or configuration file arguments
+	void setAlign(const std::string & align);
+
+
+	// Note: no mixed type, ANCHOR:LEFT
+
+
 
 
 
@@ -290,7 +387,7 @@ struct AlignSVG { // : protected Align {
 	 *  \param axis - horizontal \c HORZ or vertical \c AXIS .
 	 */
 	template <typename P, typename A>
-	AlignCoord::Coord & getAlign(const P & pos, const A & axis);
+	AlignBase::Pos & getAlign(const P & pos, const A & axis);
 
 
 	/// Return alignment setting of an object along horizontal or vertical axis  .
@@ -302,7 +399,7 @@ struct AlignSVG { // : protected Align {
 	 *
 	 */
 	template <typename P, typename A>
-	const AlignCoord::Coord & getAlign(const P & pos, const A & axis) const;
+	const AlignBase::Pos & getAlign(const P & pos, const A & axis) const;
 
 	/**
 	 *  For some reason, toStream() conflicts with: drain::NodeXML<T>::toStream(std::ostream&, const T&, const string&, int)
@@ -321,23 +418,26 @@ struct AlignSVG { // : protected Align {
 
 protected:
 
-	/// Change alignment configuration without updating the alignStr.
-	template <typename P, typename A, typename V>
-	void modifyAlign(const P & owner, const A & axis,  const V &value){
-		getAlign(owner, axis) = EnumDict<AlignCoord::Coord>::getValue(value, false);
-	}
+	typedef int bitvect_t;  // or int_t ?
 
 	mutable
 	bitvect_t alignment = 0;
 
+
+	/// Change alignment configuration without updating the alignStr.
+	template <typename P, typename A, typename V>
+	void modifyAlign(const P & owner, const A & axis,  const V &value){
+		getAlign(owner, axis) = EnumDict<AlignBase::Pos>::getValue(value, false);
+	}
+
 	virtual inline
 	void updateAlign(){};
 
-	typedef std::vector<AlignCoord::Coord> align_vect_t;
+	typedef std::vector<AlignBase::Pos> align_vect_t;
 	typedef std::vector<align_vect_t > align_conf_t;
 
 	/// alignments[OBJECT][VERT] = alignments[OBJECT|ANCHOR][HORZ|VERT] = [MIN|MID|MAX]
-	align_conf_t alignments = align_conf_t(2, align_vect_t(2, AlignCoord::Coord::UNDEFINED_POS));
+	align_conf_t alignments = align_conf_t(2, align_vect_t(2, AlignBase::Pos::UNDEFINED_POS));
 
 
 };
@@ -359,16 +459,16 @@ std::ostream & operator<<(std::ostream &ostr, const AlignSVG & align){
 
 
 template <typename P, typename A>
-AlignCoord::Coord & AlignSVG::getAlign(const P & owner, const A & axis){
+AlignBase::Pos & AlignSVG::getAlign(const P & owner, const A & axis){
 	const AlignSVG::Owner p = EnumDict<AlignSVG::Owner>::getValue(owner, false); // raise error
-	const AlignCoord::Axis a     = EnumDict<AlignCoord::Axis>::getValue(axis, false); // raise error
+	const AlignBase::Axis a = EnumDict<AlignBase::Axis>::getValue(axis, false); // raise error
 	return alignments[p][a];
 }
 
 template <typename P, typename A>
-const AlignCoord::Coord & AlignSVG::getAlign(const P & owner, const A & axis) const {
+const AlignBase::Pos & AlignSVG::getAlign(const P & owner, const A & axis) const {
 	const AlignSVG::Owner p  = EnumDict<AlignSVG::Owner>::getValue(owner, false); // raise error
-	const AlignCoord::Axis a      = EnumDict<AlignCoord::Axis>::getValue(axis, false); // raise error
+	const AlignBase::Axis a  = EnumDict<AlignBase::Axis>::getValue(axis, false); // raise error
 	return alignments[p][a];
 }
 
@@ -376,14 +476,20 @@ const AlignCoord::Coord & AlignSVG::getAlign(const P & owner, const A & axis) co
 
 
 
-// Rename AlignConf ?
-/// For command line use.
-struct Alignment2 :public AlignCoord {
+
+/// "Alternative" \e partial alignment configuration for single object (OBJECT or its ANCHOR).
+/**
+ *  Essentially, a triplet (topol, axis, coord) .ie of types <Topol,Axis,Coord>
+ *
+ *  Designed for command line use.
+ *
+ */
+struct Alignment2 : public Alignment<> {
 
 	AlignSVG::Topol topol;
 
 	inline
-	Alignment2(AlignSVG::Topol topol=AlignSVG::Topol::INSIDE, AlignCoord::Axis axis=AlignCoord::Axis::HORZ, AlignCoord::Coord pos=AlignCoord::Coord::MIN) : AlignCoord(axis, pos), topol(topol){
+	Alignment2(AlignSVG::Topol topol=AlignSVG::Topol::INSIDE, AlignBase::Axis axis=AlignBase::Axis::HORZ, AlignBase::Pos pos=AlignBase::Pos::MIN) : Alignment<>(axis, pos), topol(topol){
 	}
 
 	// template <class ...TT>
@@ -409,13 +515,13 @@ struct Alignment2 :public AlignCoord {
 	}
 
 	template <class ...TT>
-	void set(AlignCoord::Axis axis, const TT... args){
+	void set(AlignBase::Axis axis, const TT... args){
 		this->axis = axis;
 		set(args...);
 	}
 
 	template <class ...TT>
-	void set(AlignCoord::Coord coord, const TT... args){
+	void set(AlignBase::Pos coord, const TT... args){
 		this->pos = coord;
 		set(args...);
 	}
@@ -425,13 +531,15 @@ struct Alignment2 :public AlignCoord {
 		if (EnumDict<AlignSVG::Topol>::setValue(key, topol)){
 			// ok
 		}
-		else if (EnumDict<AlignCoord>::setValue(key, *this)){
+		/*
+		else if (EnumDict<Alignment<> >::setValue(key, *this)){ // RIGHT or?
 			// ok
 		}
-		else if (EnumDict<AlignCoord::Axis>::setValue(key, axis)){
+		*/
+		else if (EnumDict<AlignBase::Axis>::setValue(key, axis)){
 			// ok
 		}
-		else if (EnumDict<AlignCoord::Coord>::setValue(key, pos)){
+		else if (EnumDict<AlignBase::Pos>::setValue(key, pos)){
 			// ok
 		}
 		else {
@@ -474,8 +582,8 @@ public:
 
 
 	//enum Axis {HORZ=0, VERT=1};  // must be indexed! for vect_ UNDEFINED_AXIS=0,
-	typedef drain::EnumFlagger<drain::SingleFlagger<AlignCoord::Axis> > AxisFlagger;
-	AxisFlagger orientation = AlignCoord::HORZ;
+	typedef drain::EnumFlagger<drain::SingleFlagger<AlignBase::Axis> > AxisFlagger;
+	AxisFlagger orientation = AlignBase::HORZ;
 
 	enum Direction {
 		UNDEFINED_DIRECTION=0,
@@ -496,7 +604,7 @@ public:
 
 
 	inline
-	LayoutSVG(AlignCoord::Axis v=AlignCoord::HORZ, Direction d=INCR) : orientation(v), direction(d) {
+	LayoutSVG(AlignBase::Axis v=AlignBase::HORZ, Direction d=INCR) : orientation(v), direction(d) {
 	}
 
 	inline
@@ -506,7 +614,7 @@ public:
 	template <typename V>
 	inline
 	void setOrientation(const V &v){
-		orientation.set(EnumDict<AlignCoord::Axis>::getValue(v));
+		orientation.set(EnumDict<AlignBase::Axis>::getValue(v));
 	};
 
 	template <typename D>
@@ -523,7 +631,7 @@ public:
 	inline
 	void set(const D & d, const V &v){
 		direction.set(EnumDict<LayoutSVG::Direction>::getValue(d));
-		orientation.set(EnumDict<AlignCoord::Axis>::getValue(v));
+		orientation.set(EnumDict<AlignBase::Axis>::getValue(v));
 	};
 
 
@@ -619,8 +727,8 @@ protected:
 }  // drain::
 
 
-DRAIN_ENUM_OSTREAM(drain::image::AlignCoord::Axis);
-DRAIN_ENUM_OSTREAM(drain::image::AlignCoord::Coord);
+DRAIN_ENUM_OSTREAM(drain::image::AlignBase::Axis);
+DRAIN_ENUM_OSTREAM(drain::image::AlignBase::Pos);
 
 DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::Owner);
 
