@@ -120,8 +120,9 @@ public:
 	AlignSVG::HorzAlign halign = AlignSVG::HorzAlign::RIGHT;
 	AlignSVG::VertAlign valign = AlignSVG::VertAlign::TOP;
 	*/
-	Alignment2 alignHorz = {AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ};
-	Alignment2 alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Axis::VERT};
+	// AlignSVG::HorzAlign
+	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {AlignSVG::Topol::INSIDE}; // (AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ); // = {AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ};
+	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Pos::MIN};
 
 	// New
 	inline

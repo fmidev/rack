@@ -466,10 +466,9 @@ public:
 
 	// drain::StringBuilder<':'>(topol_enum::dict.getKeys())
 	CmdAlign() : drain::SimpleCommand<std::string>(__FUNCTION__, "Alignment of the next element", "topology", "",
-			drain::sprinter(align_topol::dict.getKeys(), {"|"}).str() + ':' +
-			// drain::sprinter(align_pos::dict.getKeys(), {"|"}).str() +
-			// drain::sprinter(valign::dict.getKeys(), {"|"}).str() + "..." +
-			drain::sprinter(align_axis::dict.getKeys(), {"|"}).str()
+			drain::sprinter(drain::EnumDict<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
+			drain::sprinter(drain::EnumDict<AlignBase::Axis>::dict.getKeys(), {"|"}).str() + ':'+
+			drain::sprinter(drain::EnumDict<AlignBase::Pos>::dict.getKeys(), {"|"}).str()
 	){
 		//getParameters().link("", x, drain::StringBuilder<':'>());
 	}
@@ -488,33 +487,22 @@ public:
 			std::list<std::string> keys;
 			drain::StringTools::split(arg, keys, ':');
 
-			Alignment2 align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Axis::UNDEFINED_AXIS, AlignBase::Pos::UNDEFINED_POS);
-			//AlignSVG::Topol topol = AlignSVG::Topol::INSIDE;
-			// Align Align;
+			CompleteAlignment<> align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Pos::UNDEFINED_POS); //(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Axis::UNDEFINED_AXIS, AlignBase::Pos::UNDEFINED_POS);
 
 			for (const std::string & key: keys){
 
-				if (align_topol::setValue(key, align.topol)){
+				if (drain::EnumDict<AlignSVG::Topol>::setValue(key, align.topol)){
 					// ok
 				}
-				/*
-				else if (align_edict::setValue(key, (Alignment<> &)align)){ // Dangerous
+				else if (drain::EnumDict<AlignBase::Axis>::setValue(key, align.axis)){
 					// ok
 				}
-				*/
-				/*
-				else if (align_horz::setValue(key, (HorzAlign &)align)){ // Dangerous
+				else if (drain::EnumDict<AlignBase::Pos>::setValue(key, align.pos)){
 					// ok
 				}
-				else if (align_vert::setValue(key, (VertAlign &)align)){ // Dangerous
+				else if (drain::EnumDict<Alignment<> >::setValue(key, (Alignment<> &)align)){ // Dangerous
 					// ok
 				}
-				*/
-				/*
-				else if (valign::setValue(key, ctx.valign)){
-					return;
-				}
-				*/
 				else {
 					mout.error("Unknown alignment key: '", key, "' (all args: ", value, ")");
 				}
@@ -522,18 +510,22 @@ public:
 
 			switch (align.axis) {
 				case AlignBase::Axis::HORZ:
-					ctx.alignHorz.set(align.topol, align.pos);
+					ctx.alignHorz.set(align.topol, align.pos); // AlignBase::Axis::HORZ,
+					mout.accept<LOG_NOTICE>(align.topol, AlignBase::Axis::HORZ, align.pos, " -> ", ctx.alignHorz.topol, '/', ctx.alignHorz.axis, '/', ctx.alignHorz);
 					// ctx.alignHorz.set(align);
 					break;
 				case AlignBase::Axis::VERT:
-					ctx.alignVert.set(align.topol, align.pos);
+					ctx.alignVert.set(align.topol, align.pos); // AlignBase::Axis::VERT,
+					mout.accept<LOG_NOTICE>(align.topol, AlignBase::Axis::VERT, align.pos, " -> ", ctx.alignVert.topol, '/', ctx.alignVert.axis, '/', ctx.alignVert);
 					// ctx.alignVert(align);
 					break;
 				case AlignBase::Axis::UNDEFINED_AXIS:
 				default:
-					mout.advice("use: ", drain::sprinter(align_horz::dict.getKeys(), {"|"}).str());
-					mout.advice("use: ", drain::sprinter(align_vert::dict.getKeys(), {"|"}).str());
-					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignCoord<> >::dict.getKeys(), {"|"}).str());
+
+					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignBase::Axis>::dict.getKeys(), {"|"}).str());
+					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str());
+					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str());
+					mout.advice("use: ", drain::sprinter(drain::EnumDict<Alignment<> >::dict.getKeys(), {"|"}).str());
 					mout.error("could not determine axis from argument '", arg, "'");
 					break;
 			}
@@ -545,24 +537,24 @@ public:
 
 		// mout.accept<LOG_NOTICE>(ctx.alignHorz.topol, '/',(AlignBase &)ctx.alignHorz);
 		// mout.accept<LOG_NOTICE>(ctx.alignVert.topol, '/',(AlignBase &)ctx.alignVert);
-		mout.accept<LOG_NOTICE>(ctx.alignHorz.topol, '/', ctx.alignHorz);
-		mout.accept<LOG_NOTICE>(ctx.alignVert.topol, '/', ctx.alignVert);
 
 	}
 
 protected:
 
 	// typedef drain::image::AlignSVG::Topol topol_enum;
-	//typedef drain::image::AlignSVG::HorzAlign halign_enum;
-	//typedef drain::image::AlignSVG::VertAlign valign_enum;
-	typedef drain::EnumDict<AlignBase::Axis>     align_axis;
-	typedef drain::EnumDict<AlignSVG::Topol> align_topol;
+	// typedef drain::image::AlignSVG::HorzAlign halign_enum;
+	// typedef drain::image::AlignSVG::VertAlign valign_enum;
+	// typedef drain::EnumDict<AlignBase::Axis>     align_axis;
+	// typedef drain::EnumDict<AlignSVG::Topol> align_topol;
 	// typedef drain::EnumDict<AlignBase::Coord>    align_pos;
-	//typedef drain::EnumDict<Align> aling_pos; // LEFT, RIGHT, BOTTOM...
+	// typedef drain::EnumDict<Align> aling_pos; // LEFT, RIGHT, BOTTOM...
 	// typedef drain::EnumDict<valign_enum> valign;
+	/*
 	typedef drain::EnumDict<Alignment<> > align_edict;
 	typedef drain::EnumDict<HorzAlign> align_horz;
 	typedef drain::EnumDict<VertAlign> align_vert;
+	*/
 
 	/*
 	template <typename E>

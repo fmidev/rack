@@ -103,7 +103,7 @@ struct PanelConfSVG {
 	//typedef drain::EnumFlagger<drain::SingleFlagger<Legend> > LegendFlagger;
 
 
-	inline  // layout(AlignCoord::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED),
+	inline  // layout(Alignment::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED),
 	PanelConfSVG() :  maxPerGroup(10), absolutePaths(false){
 	}
 

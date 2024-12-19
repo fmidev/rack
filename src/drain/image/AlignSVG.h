@@ -103,61 +103,6 @@ public:
 };
 
 
-template <typename AX = AlignBase::Axis, AlignBase::Axis V = AlignBase::Axis::UNDEFINED_AXIS> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
-struct AlignCoord {
-
-	 /*struct AlignCoord : public AlignBase {
-		Axis  axis;
-		Pos pos;
-		*/
-
-	AX axis = V; // compiler error if different type.
-	AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS;
-
-	inline
-	AlignCoord(AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : pos(pos){
-	}
-
-	inline
-	AlignCoord(AlignBase::Axis axis, AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : pos(pos){ // axis(axis),
-		this->axis = axis;
-	}
-
-	inline
-	AlignCoord(const AlignCoord & ac) : axis(ac.axis), pos(ac.pos){
-	}
-
-	template <typename AX2, AlignBase::Axis A2>
-	inline
-	AlignCoord(const AlignCoord<AX2,A2> & ac) : pos(ac.pos){ // axis(ac.axis),
-		axis = ac.axis; // error if const
-	}
-
-	/*
-	inline
-	AlignCoord(Axis axis = UNDEFINED_AXIS, Pos pos = Pos::UNDEFINED_POS) : axis(axis), pos(pos) {
-	}
-
-	inline
-	AlignCoord(const AlignCoord & align) : axis(align.axis), pos(align.pos) {
-	}
-	*/
-
-	inline
-	bool operator==(const AlignCoord & align) const {
-		return (align.axis == axis) && (align.pos == pos);
-		// return compare(ad) == 0;
-	}
-
-protected:
-
-
-
-
-};
-
-
-
 template <>
 const drain::EnumDict<AlignBase::Axis>::dict_t drain::EnumDict<AlignBase::Axis>::dict;
 DRAIN_ENUM_OSTREAM(AlignBase::Axis);
@@ -167,74 +112,69 @@ const drain::EnumDict<AlignBase::Pos>::dict_t drain::EnumDict<AlignBase::Pos>::d
 DRAIN_ENUM_OSTREAM(AlignBase::Pos);
 
 
-
-template <typename AX, AlignBase::Axis V>
-inline
-std::ostream & operator<<(std::ostream &ostr, const AlignCoord<AX,V> & align){
-	//return ostr << align.axis << '_' << align.pos; // enums resolved above
-	return ostr << (int)align.axis << '_' << (int)align.pos;  // RESOLVE!
-}
-
-/// NEW experimental, modular constructive
-
-
-
-
-
-
-//typedef const Alignment<AlignCoord::Axis::HORZ> HorzAlign; // unused?
-// typedef Alignment<AlignCoord::Axis::HORZ> HorzAlign; // unused?
-typedef AlignCoord<const AlignBase::Axis, AlignBase::Axis::HORZ> HorzAlign;
-DRAIN_TYPENAME(HorzAlign);
-
-// typedef const Alignment<AlignCoord::Axis::VERT> VertAlign; // unused?
-//typedef Alignment<AlignCoord::Axis::VERT> VertAlign; // unused?
-typedef AlignCoord<const AlignBase::Axis, AlignBase::Axis::VERT> VertAlign;
-DRAIN_TYPENAME(VertAlign);
-
-
-template <>
-const drain::EnumDict<HorzAlign>::dict_t  drain::EnumDict<HorzAlign>::dict;
-
-template <>
-const drain::EnumDict<VertAlign>::dict_t  drain::EnumDict<VertAlign>::dict;
-
-
-// NEW
+/// Container for Axis and Pos.
 /**
- *   \tparam AX - axis init value - still non-const value, so allows changing it...
+ *   \tparam AX - const or non-const Align::Axis
+ *   \tparam  A - axis init value AlignBase::Axis::HORZ or AlignBase::Axis::VERT
  *
+ *
+ *   For \c const implementations, see AlignSVG
  *   Alignment<Align::Axis::HORZ>
  *   Alignment<Align::Axis::VERT>
  */
-template <typename AX = AlignBase::Axis> // instead of const Axis        , Align::Coord POS = Align::Coord::UNDEFINED_POS>
-struct Alignment : public AlignCoord<AX> {
+template <typename AX = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis::UNDEFINED_AXIS> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
+struct Alignment {
+
+	// Align::Axis
+	AX axis; // = V; // compiler error if different type?
+
+	AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS;
 
 	inline
-	Alignment(AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : AlignCoord<AX>(pos){
+	Alignment(AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : axis(A), pos(pos){
 	}
 
+	/*
 	inline
-	Alignment(const Alignment & align) : AlignCoord<AX>(align.pos){
+	Alignment(AlignBase::Axis axis, AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : axis(axis), pos(pos){ // axis(axis),
+	}
+	*/
+
+	inline
+	Alignment(const Alignment & ac) : axis(ac.axis), pos(ac.pos){
 	}
 
-protected:
-
+	template <typename AX2, AlignBase::Axis A2>
 	inline
-	Alignment(AlignBase::Axis axis, AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : AlignCoord<AX>(pos){
+	Alignment(const Alignment<AX2,A2> & align) : pos(align.pos){ // axis(ac.axis),
+		axis = align.axis; // error if const
+	}
+
+	template <typename AX2, AlignBase::Axis A2>
+	inline
+	bool operator==(const Alignment<AX2,A2> & align) const {
+		return (align.axis == axis) && (align.pos == pos);
+		// return compare(ad) == 0;
 	}
 
 
 };
 
 
-// struct AlignSVG;
-
-template <>
-const drain::EnumDict<AlignCoord<> >::dict_t  drain::EnumDict<AlignCoord<> >::dict;
 
 
-struct Alignment2;
+
+template <typename AX, AlignBase::Axis V>
+inline
+std::ostream & operator<<(std::ostream &ostr, const Alignment<AX,V> & align){
+	//return ostr << align.axis << '_' << align.pos; // enums resolved above
+	return ostr << align.axis << '_' << align.pos;
+}
+
+
+
+
+//struct Alignment2;
 
 /// User-friendly programming interface for alignment considering two elements.
 /**
@@ -249,6 +189,7 @@ struct AlignSVG { // : protected Align {
 	virtual
 	~AlignSVG(){};
 
+	typedef Alignment<const AlignBase::Axis, AlignBase::Axis::HORZ> HorzAlign;
 
 	/// Alias for {HORZ:MIN}
 	static
@@ -266,6 +207,8 @@ struct AlignSVG { // : protected Align {
 	const HorzAlign UNDEFINED_HORZ;
 
 	// ----------------------
+
+	typedef Alignment<const AlignBase::Axis, AlignBase::Axis::VERT> VertAlign;
 
 	/// Alias for {VERT:MIN}
 	static
@@ -287,7 +230,6 @@ struct AlignSVG { // : protected Align {
 		OBJECT = 0, // 0b00001111,
 		ANCHOR = 1, // 0b11110000,
 	};
-	// typedef drain::EnumDict<Owner>::dict_t vert_dict_t;
 
 
 	enum Topol {
@@ -319,12 +261,12 @@ struct AlignSVG { // : protected Align {
 	/// High-level, user friendlier interface for setting the alignments for both OBJECT itself and its ANCHOR object.
 	/*
 	 *  \tparam T - enum type \c Topol or string
-	 *  \tparam A - enum type \c AlignCoord or string
+	 *  \tparam A - enum type \c Alignment or string
 	 *  \param topol  - \c INSIDE or \c OUTSIDE
 	 *  \param align  - \c LEFT|CENTER|RIGHT or \c TOP|MIDDLE|BOTTOM
 	 */
 	template <typename T, typename AX, AlignBase::Axis A>
-	void setAlign(const T & topol, const AlignCoord<AX,A> & align){
+	void setAlign(const T & topol, const Alignment<AX,A> & align){
 		const Topol & t = EnumDict<AlignSVG::Topol>::getValue(topol, false);
 		// const Alignment<> & a = EnumDict<Alignment<> >::getValue(align, false);
 		setAlign(t, align.axis, align.pos);
@@ -334,7 +276,7 @@ struct AlignSVG { // : protected Align {
 	void setAlign(const T & topol, const std::string & align){
 		const Topol & t = EnumDict<AlignSVG::Topol>::getValue(topol, false);
 		//const Alignment<> & a = EnumDict<Alignment<> >::getValue(align, false);
-		const AlignCoord<> & a = EnumDict<AlignCoord<> >::getValue(align, false);
+		const Alignment<> & a = EnumDict<Alignment<> >::getValue(align, false);
 		setAlign(t, a.axis, a.pos);
 	}
 
@@ -343,10 +285,10 @@ struct AlignSVG { // : protected Align {
 	 *  \param pos   - enum value \c OBJ or \c REF
 	 *  \param axis  - enum value \c HORZ or \c VERT
 	inline
-	void setAlign(Topol topol, const AlignCoord & pos){
+	void setAlign(Topol topol, const Alignment & pos){
 		setAlign(topol, pos.axis, pos.pos);
 	}
-	 */
+	*/
 
 	/// Set a single alignment setting. "Intermediate-level": axis and pos are given separately.
 	/**
@@ -367,13 +309,7 @@ struct AlignSVG { // : protected Align {
 
 	/// Handler for command line or configuration file arguments
 	void setAlign(const std::string & align);
-
-
 	// Note: no mixed type, ANCHOR:LEFT
-
-
-
-
 
 	bool isAligned() const;
 
@@ -442,6 +378,15 @@ protected:
 
 };
 
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const AlignSVG & align){
+	//return ostr << align.axis << '_' << align.pos; // enums resolved above
+	align.confToStream(ostr);
+	return ostr; //  << "UNDER CONSTR...";  // RESOLVE!
+}
+
+
 template <>
 const drain::EnumDict<AlignSVG::Owner>::dict_t drain::EnumDict<AlignSVG::Owner>::dict;
 DRAIN_ENUM_OSTREAM(AlignSVG::Owner);
@@ -450,12 +395,27 @@ template <>
 const drain::EnumDict<AlignSVG::Topol>::dict_t drain::EnumDict<AlignSVG::Topol>::dict;
 DRAIN_ENUM_OSTREAM(AlignSVG::Topol);
 
-inline
-std::ostream & operator<<(std::ostream &ostr, const AlignSVG & align){
-	//return ostr << align.axis << '_' << align.pos; // enums resolved above
-	align.confToStream(ostr);
-	return ostr; //  << "UNDER CONSTR...";  // RESOLVE!
-}
+
+DRAIN_TYPENAME(AlignSVG::HorzAlign);
+
+DRAIN_TYPENAME(AlignSVG::VertAlign);
+
+/// Dictionary of horizontal (LEFT,CENTER,RIGHT) flags
+template <>
+const drain::EnumDict<AlignSVG::HorzAlign>::dict_t  drain::EnumDict<AlignSVG::HorzAlign>::dict;
+// DRAIN_ENUM_OSTREAM(AlignSVG::HorzAlign);
+
+/// Dictionary of vertical (TOP,MIDDLE,BOTTOM) flags
+template <>
+const drain::EnumDict<AlignSVG::VertAlign>::dict_t  drain::EnumDict<AlignSVG::VertAlign>::dict;
+// DRAIN_ENUM_OSTREAM(AlignSVG::VertAlign);
+
+
+/// Dictionary combining horizontal (LEFT,CENTER,RIGHT) and vertical (TOP,MIDDLE,BOTTOM) flags
+template <>
+const drain::EnumDict<Alignment<> >::dict_t  drain::EnumDict<Alignment<> >::dict;
+
+
 
 
 template <typename P, typename A>
@@ -484,27 +444,38 @@ const AlignBase::Pos & AlignSVG::getAlign(const P & owner, const A & axis) const
  *  Designed for command line use.
  *
  */
-struct Alignment2 : public Alignment<> {
+template <typename AX = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis::UNDEFINED_AXIS> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
+struct CompleteAlignment : public Alignment<AX,A> {
 
 	AlignSVG::Topol topol;
 
+	/// Constructor not setting Axis.
 	inline
-	Alignment2(AlignSVG::Topol topol=AlignSVG::Topol::INSIDE, AlignBase::Axis axis=AlignBase::Axis::HORZ, AlignBase::Pos pos=AlignBase::Pos::MIN) : Alignment<>(axis, pos), topol(topol){
+	CompleteAlignment(AlignSVG::Topol topol=AlignSVG::Topol::INSIDE, AlignBase::Pos pos=AlignBase::Pos::MIN) : Alignment<AX,A>(pos), topol(topol){
 	}
 
-	// template <class ...TT>
+	/// Constructor supporting setting of Axis.
+	/*
 	inline
-	void set(const Alignment2 & align){ // , const TT... args){
+	CompleteAlignment(AlignSVG::Topol topol, AlignBase::Axis axis, AlignBase::Pos pos=AlignBase::Pos::MIN) : Alignment<AX,A>(axis, pos), topol(topol){
+	}
+	*/
+
+	// template <class ...TT>
+	/*
+	inline
+	void set(const CompleteAlignment & align){ // , const TT... args){
 		this->topol = align.topol;
 		this->axis  = align.axis;
 		this->pos   = align.pos;
 		// Could continue: set(args...);
 	}
+	*/
 
-	template <class ...TT>
-	void set(const AlignCoord & apos, const TT... args){
-		this->axis  = apos.axis;
-		this->pos   = apos.pos;
+	template <typename AX2, AlignBase::Axis A2, class ...TT>
+	void set(const Alignment<AX2,A2> & align, const TT... args){
+		this->axis = align.axis;
+		this->pos  = align.pos;
 		set(args...);
 	}
 
@@ -531,20 +502,18 @@ struct Alignment2 : public Alignment<> {
 		if (EnumDict<AlignSVG::Topol>::setValue(key, topol)){
 			// ok
 		}
-		/*
 		else if (EnumDict<Alignment<> >::setValue(key, *this)){ // RIGHT or?
 			// ok
 		}
-		*/
-		else if (EnumDict<AlignBase::Axis>::setValue(key, axis)){
+		else if (EnumDict<AlignBase::Axis>::setValue(key, this->axis)){
 			// ok
 		}
-		else if (EnumDict<AlignBase::Pos>::setValue(key, pos)){
+		else if (EnumDict<AlignBase::Pos>::setValue(key, this->pos)){
 			// ok
 		}
 		else {
 			// Advice: keys
-			throw std::runtime_error(drain::StringBuilder<>("key '", key, "' not found"));
+			throw std::runtime_error(drain::StringBuilder<>("key '", key, "' not found. Appeared in: ", args...));
 		}
 
 		set(args...);
@@ -565,10 +534,9 @@ protected:
 };
 
 
-inline
-std::ostream & operator<<(std::ostream &ostr, const Alignment2 & ad){
-	return ostr << ad.topol << '_' << ad.axis << ':' << ad.pos;  // RESOLVE!
-	//return ostr << (int)ad.axis << '_' << (int)ad.pos;  // RESOLVE!
+template <typename AX, AlignBase::Axis A>
+std::ostream & operator<<(std::ostream &ostr, const CompleteAlignment<AX,A> & ad){
+	return ostr << ad.topol << '_' << ad.axis << ':' << ad.pos;
 }
 
 
