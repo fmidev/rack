@@ -272,8 +272,8 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 			if (IS_TIME){
 				text->addClass(RackSVG::TIME); // ,  alignSvg::BOTTOM, alignSvg::LEFT); // CmdBaseSVG::FLOAT,
-				text->setAlign(AlignSVG::INSIDE, AlignSVG::BOTTOM); // AlignSVG::VertAlignBase::BOTTOM); // setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MIN); // = LEFT
-				text->setAlign(AlignSVG::INSIDE, AlignSVG::LEFT); // AlignSVG::HorzAlignBase::LEFT);   // setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::MAX); // = BOTTOM
+				text->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE); // AlignSVG::VertAlignBase::BOTTOM); // setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MIN); // = LEFT
+				text->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE); // AlignSVG::HorzAlignBase::LEFT);   // setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::MAX); // = BOTTOM
 				// text->set("y", y + 40); // temporary
 				/* TODO:
 				std::stringstream sstr;
@@ -284,8 +284,8 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 			if (IS_LOCATION){
 				text->addClass(RackSVG::LOCATION); // , alignSvg::TOP, alignSvg::RIGHT); // CmdBaseSVG::FLOAT,
-				text->setAlign(AlignSVG::INSIDE, AlignSVG::BOTTOM); // AlignSVG::VertAlign::BOTTOM); // text->setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::MAX); // = BOTTOM
-				text->setAlign(AlignSVG::INSIDE, AlignSVG::RIGHT); // AlignSVG::HorzAlign::RIGHT);  // text->setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MAX); // = RIGHT
+				text->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE); // AlignSVG::VertAlign::BOTTOM); // text->setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::MAX); // = BOTTOM
+				text->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE); // AlignSVG::HorzAlign::RIGHT);  // text->setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MAX); // = RIGHT
 				// text->set("y", y + 60); // temporary
 			}
 
@@ -600,12 +600,12 @@ public:
 		// rectGroup->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
 
 		if (ctx.mainOrientation == drain::image::AlignBase::Axis::HORZ){
-			group->setAlign(AlignSVG::OUTSIDE, AlignBase::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN);
-			group->setAlign(AlignSVG::INSIDE,  AlignBase::Axis::VERT, AlignBase::MIN); // drain::image::AlignSVG::VertAlignBase::TOP);
+			group->setAlign(AlignBase::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, AlignSVG::OUTSIDE);
+			group->setAlign(AlignBase::Axis::VERT, AlignBase::MIN, AlignSVG::INSIDE); // drain::image::AlignSVG::VertAlignBase::TOP);
 		}
 		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::AlignBase::Axis::VERT){
-			group->setAlign(AlignSVG::INSIDE,  AlignBase::Axis::HORZ, AlignBase::MIN); // drain::image::AlignSVG::HorzAlignBase::LEFT);
-			group->setAlign(AlignSVG::OUTSIDE, AlignBase::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN);
+			group->setAlign(AlignBase::Axis::HORZ, AlignBase::MIN, AlignSVG::INSIDE); // drain::image::AlignSVG::HorzAlignBase::LEFT);
+			group->setAlign(AlignBase::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, AlignSVG::OUTSIDE);
 		}
 
 
@@ -694,6 +694,41 @@ public:
 
 };
 
+class CmdMainTitle : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdMainTitle() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "Set main title") {
+		//getParameters().link("level", level = 5);
+	}
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		drain::image::TreeSVG & mainGroup = RackSVG::getMain(ctx);
+
+		drain::image::TreeSVG & rectTitle = mainGroup["mainTitleRect"](NodeSVG::RECT); // +EXT!
+		// rectTitle->set("width", 50);
+		rectTitle->set("height", 60);
+		rectTitle->setStyle("fill", "gray");
+		rectTitle->setStyle("opacity", 0.5);
+		rectTitle->setId("textRect");
+		//rectTitle->setAlign(AlignSVG::INSIDE, AlignSVG::TOP);
+		rectTitle->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+		rectTitle->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
+
+		drain::image::TreeSVG & mainTitleText = mainGroup["mainTitleText"](NodeSVG::TEXT);
+		mainTitleText->setText(value);
+		mainTitleText->setAlign(AlignSVG::MIDDLE);
+		mainTitleText->setAlign(AlignSVG::CENTER);
+
+
+	}
+};
+
 class CmdPanel : public drain::SimpleCommand<std::string> {
 
 public:
@@ -714,36 +749,37 @@ public:
 
 		drain::image::TreeSVG & group = RackSVG::getCurrentGroup(ctx)[value](NodeSVG::GROUP);
 		group->setId(value);
-
+		group->addClass(LayoutSVG::FLOAT);
 
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
-		const std::string MAIN_ELEM("main");
+		const std::string ANCHOR_ELEM("main");
 		//group->setAlignAnchorVert(MAIN_ELEM);
-		group->setAlignAnchorHorz(MAIN_ELEM);
+		group->setAlignAnchorHorz(ANCHOR_ELEM);
 
 
 		if (ctx.alignHorz.topol != AlignSVG::UNDEFINED_TOPOL){
-			group->setAlign(ctx.alignHorz.topol, AlignBase::HORZ, ctx.alignHorz.pos); // ctx.topol, ctx.halign);
+			group->setAlign(AlignBase::HORZ, ctx.alignHorz.pos, ctx.alignHorz.topol);  // simplify
 			mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", group->getAlignStr());
 			//ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
 		}
 		else {
-			group->setAlign(AlignSVG::OUTSIDE,  AlignSVG::RIGHT); // AlignSVG::LEFT);
+			group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
 		}
 
 		if (ctx.alignVert.topol != AlignSVG::UNDEFINED_TOPOL){
-			group->setAlign(ctx.alignVert.topol, AlignBase::VERT, ctx.alignVert.pos);
+			group->setAlign(AlignBase::VERT, ctx.alignVert.pos, ctx.alignVert.topol); // simplify
 			mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignVert, " -> ", group->getAlignStr());
 			// ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
 		}
 		else {
-			group->setAlign(AlignSVG::INSIDE, AlignSVG::TOP); // AlignSVG::BOTTOM);
+			group->setAlign(AlignSVG::TOP, AlignSVG::INSIDE); // AlignSVG::BOTTOM);
 		}
 
-		drain::image::TreeSVG & rect = group[MAIN_ELEM](NodeSVG::RECT); // +EXT!
+		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](NodeSVG::RECT); // +EXT!
 		rect->set("width", frame.width);
+		//rect->set("width", 10); //margin!
 		rect->set("height", frame.height);
-		rect->set("label", MAIN_ELEM);
+		rect->set("label", ANCHOR_ELEM);
 		rect->setStyle("fill", "yellow");
 		rect->setStyle("opacity", 0.5);
 		rect->setId("textRect");
@@ -754,25 +790,28 @@ public:
 		rectTitle->setStyle("fill", "green");
 		rectTitle->setStyle("opacity", 0.5);
 		rectTitle->setId("textRect");
-		rectTitle->setAlign(AlignSVG::INSIDE, AlignSVG::TOP);
+		rectTitle->setAlign(AlignSVG::TOP, AlignSVG::INSIDE);
 		rectTitle->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
+		//rectTitle->setAlign(AlignSVG::HORZ_FILL);
 
 		drain::image::TreeSVG & rectV = group["title2"](NodeSVG::RECT); // +EXT!
 		rectV->set("width", 25);
 		rectV->setStyle("fill", "red");
 		rectV->setStyle("opacity", 0.5);
 		rectV->setId("textV");
-		rectV->setAlign(AlignSVG::INSIDE, AlignSVG::LEFT);
+		rectV->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
 		rectV->setAlign(AlignSVG::Owner::OBJECT, AlignBase::VERT, AlignBase::Pos::FILL);
 
-
+		/*
 		drain::image::TreeSVG & textGroup = group["text-group"](NodeSVG::GROUP);
 		textGroup->set("width", frame.width);
 		textGroup->set("height", frame.height);
 		textGroup->setId("textGroup");
 		textGroup->setAlign(value);
-
 		drain::image::AlignBase::Pos horzPos = textGroup->getAlign(drain::image::AlignSVG::Owner::ANCHOR, drain::image::AlignBase::Axis::HORZ);
+		*/
+
+		drain::image::AlignBase::Pos horzPos = group->getAlign(drain::image::AlignSVG::Owner::ANCHOR, drain::image::AlignBase::Axis::HORZ);
 		// AlignSVG alignSvg;
 
 
@@ -788,46 +827,34 @@ public:
 		bool FIRST = true;
 		int index = 0;
 		for (const std::string s: {"Hello,", "world!", "My name is Test."}){
-		//for (const std::string & s: args){
-			drain::image::TreeSVG & text = textGroup[s + "_text"](NodeSVG::TEXT);
+			mout.reject<LOG_NOTICE>("NOW YES ", s);
+
+			index += 15;
+			//for (const std::string & s: args){
+			drain::image::TreeSVG & text = group[s + "_text"](NodeSVG::TEXT);
 			//text->setId(drain::StringBuilder<'_'>("textline", ++index));
-			text->setId("textline", ++index);
+			text->setId("textline", index);
 			text->setText(s);
-			text->getBoundingBox().setArea(70,15); // ctx.topol
+			text->getBoundingBox().setArea(10,15); // Margin + row height! TODO / FIX
+
+			rect->getBoundingBox().setHeight(3*index);
 
 			// Set horz alignment for every element
 			if (horzPos != AlignBase::Pos::UNDEFINED_POS){
-				text->setAlign(AlignSVG::INSIDE, AlignBase::HORZ, horzPos); // ctx.topol, ctx.halign);
-				// mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", text->getAlignStr());
-				//ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
+				text->setAlign(ctx.alignHorz, AlignSVG::Topol::INSIDE);
 			}
 			else {
-				text->setAlign(AlignSVG::INSIDE,  AlignSVG::LEFT); // AlignSVG::LEFT);
+				text->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE); // AlignSVG::LEFT);
 			}
-			/*
-			if (ctx.alignHorz.topol != AlignSVG::UNDEFINED_TOPOL){
-				text->setAlign(ctx.alignHorz.topol, AlignBase::HORZ, ctx.alignHorz.pos); // ctx.topol, ctx.halign);
-				mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", text->getAlignStr());
-				//ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
-			}
-			else {
-				text->setAlign(AlignSVG::INSIDE,  AlignSVG::LEFT); // AlignSVG::LEFT);
-			}
-			*/
-
-
 
 			// Set verthorz alignment for every element
 			//if (ctx.alignVert.topol != AlignSVG::UNDEFINED_TOPOL){
 			if (FIRST){
-				// text->setAlign(AlignSVG::INSIDE,  AlignSVG::TOP);
-				// text->setAlign(ctx.alignVert.topol, AlignBase::VERT, ctx.alignVert.pos);
-				// mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignVert, " -> ", text->getAlignStr());
-				// ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
 				FIRST = false;
 			}
 			else {
-				text->setAlign(AlignSVG::OUTSIDE, AlignSVG::BOTTOM);
+				// Row after row
+				text->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
 			}
 
 			mout.accept<LOG_NOTICE>("TEXT ", s, " aligned: ", text->getAlignStr());
@@ -856,11 +883,12 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	// const drain::bank_section_t IMAGES = drain::Static::get<drain::HiddenSection>().index;
 	const drain::bank_section_t HIDDEN = drain::Static::get<drain::HiddenSection>().index;
 
-	install<CmdLinkImage>(); // "cmdname"
-	install<CmdLayout>();
+	install<CmdLinkImage>(); //
+	install<CmdLayout>();  // Could be "CmdMainAlign", but syntax is so different. (HORZ,INCR etc)
 	install<CmdAlign>();
 	install<CmdPanel>(); // .section = HIDDEN; // addSection(i);
 	install<CmdPanelTest>().section = HIDDEN; // addSection(i);
+	install<CmdMainTitle>();
 
 };
 

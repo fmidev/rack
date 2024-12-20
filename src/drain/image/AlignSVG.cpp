@@ -73,6 +73,7 @@ const drain::EnumDict<AlignSVG::Owner>::dict_t drain::EnumDict<AlignSVG::Owner>:
 const AlignSVG::HorzAlign AlignSVG::RIGHT(AlignBase::Pos::MAX);
 const AlignSVG::HorzAlign AlignSVG::CENTER(AlignBase::Pos::MID);
 const AlignSVG::HorzAlign AlignSVG::LEFT(AlignBase::Pos::MIN);
+const AlignSVG::HorzAlign AlignSVG::HORZ_FILL(AlignBase::Pos::FILL);
 const AlignSVG::HorzAlign AlignSVG::UNDEFINED_HORZ(AlignBase::Pos::UNDEFINED_POS);
 
 template <>
@@ -80,12 +81,14 @@ const drain::EnumDict<AlignSVG::HorzAlign>::dict_t  drain::EnumDict<AlignSVG::Ho
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, HORZ_FILL),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_HORZ),
 };
 
 const AlignSVG::VertAlign AlignSVG::BOTTOM(AlignBase::Pos::MAX);
 const AlignSVG::VertAlign AlignSVG::MIDDLE(AlignBase::Pos::MID);
 const AlignSVG::VertAlign AlignSVG::TOP(AlignBase::Pos::MIN);
+const AlignSVG::VertAlign AlignSVG::VERT_FILL(AlignBase::Pos::FILL);
 const AlignSVG::VertAlign AlignSVG::UNDEFINED_VERT(AlignBase::Pos::UNDEFINED_POS);
 
 template <>
@@ -93,6 +96,7 @@ const drain::EnumDict<AlignSVG::VertAlign>::dict_t  drain::EnumDict<AlignSVG::Ve
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, MIDDLE),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, BOTTOM),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, VERT_FILL),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
 };
 
@@ -107,10 +111,12 @@ const drain::EnumDict<Alignment<> >::dict_t  drain::EnumDict<Alignment<> >::dict
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, HORZ_FILL),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_HORZ),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, MIDDLE),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, BOTTOM),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, VERT_FILL),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
 };
 //EnumDict<Alignment<> >
@@ -157,6 +163,11 @@ void AlignSVG::setAlign(const std::string & align){
 			mout.attention("Setting: ", conf[0], conf[1]);
 			setAlign(conf[0], conf[1]);
 			break;
+		// case 1:
+			//mout.attention("Setting: ", conf[0]);
+			//setAlign(EnumDict<Alignment<> >::getValue(conf[0], false).pos);
+			//setAlign(conf[0], conf[1]);
+			//break;
 		default:
 			mout.advice<LOG_NOTICE>("Use 3 args, example: OBJECT:HORZ:MIN,ANCHOR:VERT:MAX");
 			mout.advice<LOG_NOTICE>("use 2 args, example: OUTSIDE:LEFT,INSIDE:TOP");

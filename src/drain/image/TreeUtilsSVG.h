@@ -155,8 +155,8 @@ public:
 	// void realignElem(TreeSVG & elem, const Box<svg::coord_t> & anchorBox);
 
 	/// Align object respect to an anchor frame.
-	static
-	void realignObject(const Box<svg::coord_t> & anchorBox, TreeSVG & obj);
+	// static
+	// void realignObject(const Box<svg::coord_t> & anchorBox, TreeSVG & obj);
 
 	static
 	void realignObject(const Box<svg::coord_t> & anchorBoxHorz, const Box<svg::coord_t> & anchorBoxVert, TreeSVG & obj);

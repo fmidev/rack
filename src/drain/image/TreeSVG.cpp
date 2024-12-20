@@ -87,19 +87,19 @@ void NodeSVG::updateAlign(){
 	updateAlignStr();
 
 	if (alignStr.empty()){
-		this->unlink("data:align");
+		this->unlink("data-align");
 	}
 	else {
-		if (!this->hasKey("data:align")){
-			this->link("data:align", alignStr); // (should be safe anyway)
+		if (!this->hasKey("data-align")){
+			this->link("data-align", alignStr); // (should be safe anyway)
 		}
 	}
 
 	if (anchorHorz.empty()){
-		this->unlink("data:alignAnchor");
+		this->unlink("data-alignAnchor");
 	}
 	else {
-		this->link("data:alignAnchor", anchorHorz);
+		this->link("data-alignAnchor", anchorHorz);
 	}
 
 }
