@@ -252,6 +252,20 @@ void TreeUtilsSVG::realignObject(AlignBase::Axis axis, svg::coord_t anchorPos, s
 			newPos -= objectSpan;
 		}
 		break;
+	case AlignBase::Pos::FILL:
+		mout.experimental<LOG_WARNING>("STRETCHING..." );
+		newPos = anchorPos;
+		if (axis==AlignBase::Axis::HORZ){
+			object->getBoundingBox().setWidth(anchorSpan);
+		}
+		else if (axis==AlignBase::Axis::VERT){
+			object->getBoundingBox().setHeight(anchorSpan);
+		}
+		else {
+			mout.warn("FILL requested, but HORZ/VERT axis unset for element: ", object.data);
+		}
+
+		break;
 	case AlignBase::Pos::UNDEFINED_POS: // or absolute
 		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', AlignBase::Axis::HORZ, pos);
 		break;
@@ -313,16 +327,12 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 
 	BBoxSVG *bboxAnchorHorz = nullptr;
-	//TreeSVG *anchorHorz = nullptr;
 	const NodeSVG::path_elem_t & anchorElemHorz = object->getAlignAnchorHorz(); // FIX for both axes
 	const bool FIXED_ANCHOR_HORZ = !anchorElemHorz.empty();
 
 	BBoxSVG *bboxAnchorVert = nullptr;
-	// TreeSVG *anchorVert = nullptr;
 	const NodeSVG::path_elem_t & anchorElemVert = object->getAlignAnchorVert(); // FIX for both axes
 	const bool FIXED_ANCHOR_VERT = !anchorElemVert.empty();
-
-
 
 	// Explain!
 	BBoxSVG bbox;
@@ -330,6 +340,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 	if (FIXED_ANCHOR_HORZ){
 		bboxAnchorHorz = & object[anchorElemHorz]->getBoundingBox();
+		objectBBox.expand(*bboxAnchorHorz); // Anchor elem typically has spatial extent while parent object is a group.
 	}
 	else {
 		bboxAnchorHorz = & bbox;
@@ -337,6 +348,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 	if (FIXED_ANCHOR_VERT){
 		bboxAnchorVert = & object[anchorElemVert]->getBoundingBox();
+		objectBBox.expand(*bboxAnchorVert); // Anchor elem typically has spatial extent while parent object is a group.
 	}
 	else {
 		bboxAnchorVert = & bbox;

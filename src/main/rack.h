@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "10.1.1"
+#define __RACK_VERSION__ "10.1.2"
 
 /**
+ *   Version 10.1.2
+ *   - Graphics/SVG-alignment: FILL - stretching element.
+ *
  *   Version 10.1.1
  *   - Graphics/SVG-alignment: const axis HorzAlign and VertAlign
  *

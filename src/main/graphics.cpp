@@ -740,24 +740,30 @@ public:
 			group->setAlign(AlignSVG::INSIDE, AlignSVG::TOP); // AlignSVG::BOTTOM);
 		}
 
-		// Needed?
-		/*
-		if (ctx.mainOrientation == drain::image::AlignBase::Axis::HORZ){
-			group->setAlign(AlignSVG::OUTSIDE, AlignBase::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN);
-			group->setAlign(AlignSVG::INSIDE,  AlignBase::Axis::VERT, AlignBase::MIN); // drain::image::AlignSVG::VertAlignBase::TOP);
-		}
-		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::AlignBase::Axis::VERT){
-			group->setAlign(AlignSVG::INSIDE,  AlignBase::Axis::HORZ, AlignBase::MIN); // drain::image::AlignSVG::HorzAlignBase::LEFT);
-			group->setAlign(AlignSVG::OUTSIDE, AlignBase::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN);
-		}
-		*/
-
 		drain::image::TreeSVG & rect = group[MAIN_ELEM](NodeSVG::RECT); // +EXT!
 		rect->set("width", frame.width);
 		rect->set("height", frame.height);
 		rect->set("label", MAIN_ELEM);
 		rect->setStyle("fill", "yellow");
+		rect->setStyle("opacity", 0.5);
 		rect->setId("textRect");
+
+		drain::image::TreeSVG & rectTitle = group["title"](NodeSVG::RECT); // +EXT!
+		// rectTitle->set("width", 50);
+		rectTitle->set("height", 60);
+		rectTitle->setStyle("fill", "green");
+		rectTitle->setStyle("opacity", 0.5);
+		rectTitle->setId("textRect");
+		rectTitle->setAlign(AlignSVG::INSIDE, AlignSVG::TOP);
+		rectTitle->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
+
+		drain::image::TreeSVG & rectV = group["title2"](NodeSVG::RECT); // +EXT!
+		rectV->set("width", 25);
+		rectV->setStyle("fill", "red");
+		rectV->setStyle("opacity", 0.5);
+		rectV->setId("textV");
+		rectV->setAlign(AlignSVG::INSIDE, AlignSVG::LEFT);
+		rectV->setAlign(AlignSVG::Owner::OBJECT, AlignBase::VERT, AlignBase::Pos::FILL);
 
 
 		drain::image::TreeSVG & textGroup = group["text-group"](NodeSVG::GROUP);

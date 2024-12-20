@@ -447,12 +447,15 @@ const AlignBase::Pos & AlignSVG::getAlign(const P & owner, const A & axis) const
 template <typename AX = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis::UNDEFINED_AXIS> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
 struct CompleteAlignment : public Alignment<AX,A> {
 
-	AlignSVG::Topol topol;
+	AlignSVG::Topol topol = AlignSVG::Topol::INSIDE; // or undef?
 
 	/// Constructor not setting Axis.
-	inline
-	CompleteAlignment(AlignSVG::Topol topol=AlignSVG::Topol::INSIDE, AlignBase::Pos pos=AlignBase::Pos::MIN) : Alignment<AX,A>(pos), topol(topol){
+	template <class ...TT>
+	CompleteAlignment(const TT... args) : Alignment<AX,A>() {
+		set(args...);
 	}
+	//CompleteAlignment(AlignSVG::Topol topol=AlignSVG::Topol::INSIDE, AlignBase::Pos pos=AlignBase::Pos::MIN) : Alignment<AX,A>(pos), topol(topol){
+
 
 	/// Constructor supporting setting of Axis.
 	/*
