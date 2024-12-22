@@ -310,7 +310,8 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 		if (FIXED_ANCHOR_HORZ){
 			if (entry.first == anchorElemHorz){ // what if still aligned vertically?
-				mout.reject<LOG_WARNING>("Not aligning HORZ anchor elem /", anchorElemHorz, "/ of ", object->getId());
+				mout.reject<LOG_WARNING>("A bit... aligning HORZ anchor elem /", anchorElemHorz, "/ of ", object->getId());
+				//TreeUtilsSVG::realignObject(*bboxAnchorHorz, *bboxAnchorVert, entry.second);
 				continue;  // OR.. align!?!
 			}
 		}

@@ -708,23 +708,62 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		drain::image::TreeSVG & mainGroup = RackSVG::getMain(ctx);
+		drain::image::TreeSVG & headerGroup = RackSVG::getMain(ctx);
+		// drain::image::TreeSVG & headerGroup = RackSVG::getCurrentGroup(ctx);
 
-		drain::image::TreeSVG & rectTitle = mainGroup["mainTitleRect"](NodeSVG::RECT); // +EXT!
-		// rectTitle->set("width", 50);
+		// TreeSVG & headerGroup = mainGroup["headerGroup"](svg::GROUP);
+		// TreeSVG & headerRect = headerGroup["headerRect"](svg::RECT);
+		//headerGroup->setAlignAnchor("headerRect2");
+
+		TreeSVG & rectTitle = headerGroup["headerRect"](NodeSVG::RECT); // +EXT!
+		rectTitle->set("name","headerRec_2");
 		rectTitle->set("height", 60);
 		rectTitle->setStyle("fill", "gray");
 		rectTitle->setStyle("opacity", 0.5);
-		rectTitle->setId("textRect");
+		rectTitle->setStyle({{"stroke","black"}, {"stroke-dasharray",{2,5}}, {"stroke-width","2px"}});
+		rectTitle->setId("textRect2");
+		//rectTitle->getBoundingBox().setArea(80,40);
 		//rectTitle->setAlign(AlignSVG::INSIDE, AlignSVG::TOP);
 		rectTitle->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
 		rectTitle->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
 
-		drain::image::TreeSVG & mainTitleText = mainGroup["mainTitleText"](NodeSVG::TEXT);
+		drain::image::TreeSVG & mainTitleText = headerGroup["GENERAL"](NodeSVG::TEXT);
 		mainTitleText->setText(value);
 		mainTitleText->setAlign(AlignSVG::MIDDLE);
 		mainTitleText->setAlign(AlignSVG::CENTER);
+		mainTitleText->addClass(LayoutSVG::FLOAT); // could be AlignSVG
+		mainTitleText->getBoundingBox().setHeight(16);
+		mainTitleText->setStyle("font-size", 20);
 
+		//TreeSVG & timeHeader = group["TIME"](svg::TEXT);
+		drain::image::TreeSVG & text1 = headerGroup["TIME"](NodeSVG::TEXT);
+		text1->setText(value);
+		text1->setAlign(AlignSVG::LEFT);
+		text1->setAlign(AlignSVG::BOTTOM);
+		text1->getBoundingBox().setWidth(8);
+		text1->getBoundingBox().setHeight(20);
+		text1->setText(value+"+1");
+		text1->addClass(LayoutSVG::FLOAT);
+
+		drain::image::TreeSVG & text2 = headerGroup["LOCATION"](NodeSVG::TEXT);
+		text2->setText(value);
+		text2->setAlign(AlignSVG::RIGHT);
+		text2->setAlign(AlignSVG::TOP);
+		text2->getBoundingBox().setWidth(8);
+		text2->getBoundingBox().setHeight(20);
+		text2->setText(value+"+2");
+		text2->addClass(LayoutSVG::FLOAT);
+/*
+		TreeSVG & locationHeader = headerGroup["LOCATION"](svg::TEXT);
+		locationHeader->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE);
+		locationHeader->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE);
+		locationHeader->setText("Location");
+
+		TreeSVG & timeHeader = headerGroup["TIME"](svg::TEXT);
+		timeHeader -> setAlign(AlignSVG::TOP, AlignSVG::INSIDE); // AlignSVG::VertAlign::TOP);    // Outside(Align::Axis::VERT, Align::Position::MIN);
+		timeHeader -> setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+		locationHeader->setText("Time");
+		*/
 
 	}
 };

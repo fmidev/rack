@@ -177,8 +177,9 @@ drain::image::TreeSVG & RackSVG::getMain(RackContext & ctx){
 
 	if (main -> isUndefined()){
 		main->setType(NodeSVG::GROUP);
-		main->setAlign(AlignSVG::RIGHT.axis, AlignSVG::RIGHT.pos, AlignSVG::OUTSIDE); // AlignSVG::RIGHT);
-		main->setAlign(AlignSVG::TOP.axis, AlignSVG::TOP.pos,  AlignSVG::INSIDE);   // AlignSVG::TOP);
+		main->setId("outputs");
+		main->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::RIGHT);
+		main->setAlign(AlignSVG::TOP);   // AlignSVG::TOP);
 	}
 
 	return main;
@@ -505,40 +506,27 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 		// MAIN HEADER(s)
 		if (mainGroup.hasChild("metadata") || (ctx.svgPanelConf.title != "false")){ // hmmm
 
-			TreeSVG & headerGroup = ctx.svgTrack["headerGroup"](svg::GROUP);
+			TreeSVG & group = RackSVG::getMain(ctx); // ctx.svgTrack["headerGroup"](svg::GROUP);
 
-			TreeSVG & headerRect = headerGroup["headerRect"](svg::RECT);
+			TreeSVG & headerRect = group["headerRect"](svg::RECT);
 			//headerRect->setStyle("fill:slateblue");
 			headerRect->setId("headerRect");
-			headerRect->setStyle("fill:darkblue");
-			headerRect->setStyle("opacity:0.25");
+			headerRect->setStyle("fill", "blue");
+			headerRect->setStyle("opacity", 0.25);
+
+			/*
 			headerRect->set("x", -20);
 			headerRect->set("y", -titleCreator.mainHeaderHeight);
 			headerRect->set("width",  35 + mainFrame.getWidth());
 			headerRect->set("height", 15 + titleCreator.mainHeaderHeight);
-
-			/*  Future extension
-			TreeSVG & headerLeft = headerGroup["headerLeft"](svg::TEXT);
-			headerLeft->addClass(CmdBaseSVG::FLOAT, CmdBaseSVG::LEFT);
-			headerLeft->set("ref", headerRect->getId());
-			headerLeft->setText("left");
-
-			TreeSVG & headerRight = headerGroup["headerRight"](svg::TEXT);
-			headerRight->addClass(CmdBaseSVG::FLOAT, CmdBaseSVG::RIGHT);
-			headerRight->set("ref", headerRect->getId());
-			headerRight->setText("right");
-			*/
+			 */
 
 			//TreeSVG & mainHeader = headerGroupsubHeadert"](svg::TEXT);
-			TreeSVG & mainHeader = headerGroup["GENERAL"](svg::TEXT);
+			TreeSVG & mainHeader = group["GENERAL"](svg::TEXT);
 			mainHeader -> setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); //
 			mainHeader -> setAlign(AlignSVG::MIDDLE, AlignSVG::INSIDE); //AlignSVG::VertAlign::MIDDLE);
-			// mainHeader -> setAlignInside(Align::Axis::HORZ, Align::Position::MID);
-			//tsvg::markAligned(headerRect, mainHeader, alignSvg::CENTER, alignSvg::MIDDLE);
-			// mainHeader->set("x", 51); // will be realigned
-			// mainHeader->set("y", 61); // will be realigned
 			mainHeader->setStyle({
-				{"font-size", "2.5em"},
+				{"font-size", "20"},
 				{"stroke", "none"},
 				{"fill", "darkblue"}
 			});
@@ -547,17 +535,19 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 			mainHeader["prodpar"](svg::TSPAN);
 
 
-			TreeSVG & timeHeader = headerGroup["TIME"](svg::TEXT);
+			TreeSVG & timeHeader = group["TIME"](svg::TEXT);
 			timeHeader->addClass(TIME);
+			/*
 			timeHeader -> setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE); // AlignSVG::VertAlign::TOP);    // Outside(Align::Axis::VERT, Align::Position::MIN);
 			timeHeader -> setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::HorzAlign::RIGHT);  // Inside(Align::Axis::HORZ, Align::Position::MAX);
+			*/
 			//tsvg::markAligned(headerRect, timeHeader, alignSvg::RIGHT, alignSvg::MIDDLE);
 			// Ensure order
 			timeHeader["date"](svg::TSPAN);
 			timeHeader["time"](svg::TSPAN);
 
 
-			TreeSVG & locationHeader = headerGroup["LOCATION"](svg::TEXT);
+			TreeSVG & locationHeader = group["LOCATION"](svg::TEXT);
 			locationHeader->addClass(LOCATION);
 			locationHeader -> setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE); // AlignSVG::HorzAlign::RIGHT);
 			//tsvg::markAligned(headerRect, locationHeader, alignSvg::LEFT, alignSvg::MIDDLE);
@@ -600,7 +590,7 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 					}
 					sstr << "&#160;";
 
-					TreeSVG & subHeader = headerGroup[key](svg::TEXT);
+					TreeSVG & subHeader = group[key](svg::TEXT);
 					TreeSVG & sh = subHeader.hasChild(entry.first) ? subHeader[entry.first] : subHeader;
 					sh->ctext = sstr.str();
 					sh->set("XXX", key);
@@ -621,11 +611,14 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 			}
 			// else title == "false"
 
+
 			// TODO: develop
+			/*
 			if (mainHeader.hasChildren() || !mainHeader->ctext.empty()){
 				mainFrame.height +=  titleCreator.mainHeaderHeight; // why +=
 				start.y           = -titleCreator.mainHeaderHeight;
 			}
+			*/
 
 			// tsvg::alignText(headerGroup);
 
