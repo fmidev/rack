@@ -127,13 +127,24 @@ struct PanelConfSVG {
 
 struct TreeUtilsSVG {
 
+public:
 
-	static PanelConfSVG defaultConf;
+	static PanelConfSVG defaultConf; // Consider separating Rack-specific properties.
 
+	/// Compute bounding box of the whole structure.
+	/**
+	 *
+	 */
 	static
 	bool computeBoundingBox(const TreeSVG & group, drain::Box<NodeSVG::coord_t> & box);
 
-public:
+	/// Compute bounding box and set the top-level SVG width, height and viewBox properties.
+	/**
+	 *
+	 */
+	static
+	void finalizeBoundingBox(TreeSVG & svg);
+
 
 	/// Computes the width and height for a bounding box  IMAGE and RECT elements.
 	/**
@@ -141,13 +152,17 @@ public:
 	 *
 	 *  Future versions may also handle CIRCLE and TEXT (location)
 	 */
+	// static
+	// void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, AlignBase::Axis orientation=AlignBase::Axis::HORZ);
+
 	static
-	void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, AlignBase::Axis orientation=AlignBase::Axis::HORZ); // UNDEFINED_ORIENTATION=2
+	void setRelativePaths(drain::image::TreeSVG & object, const drain::FilePath & filepath);
 
 
 	// NEW ---------------------
 	static
-	void superAlign(TreeSVG & node, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
+	void superAlign(TreeSVG & node, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR);
+	//const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
 
 
 

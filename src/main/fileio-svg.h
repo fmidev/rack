@@ -106,13 +106,13 @@ public:
 	drain::image::TreeSVG & addRectangleGroup(RackContext & ctx, const drain::Frame2D<double> & frame = {200,200});
 
 
-	/// Traverse groups, collecting info, recognizing common (shared) variables and pruning them recursively.
 	//	static
 	//	void generateTitles(RackContext & ctx);
 
+	/// Traverse groups, collecting info, recognizing common (shared) variables and pruning them recursively.
 	// Re-align elements etc
 	static
-	void completeSVG(RackContext & ctx, const drain::FilePath & filepath);
+	void completeSVG(RackContext & ctx); // , const drain::FilePath & filepath);
 
 	/// Given variable name, like "time" or "enddate", returns "TIME", and so on.
 	// static

@@ -35,6 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_VERSION__ "10.1.2"
 
 /**
+ *  Version 10.2
+ *   - Graphics/SVG-alignment: FILL - stretching element.
+ *
  *   Version 10.1.2
  *   - Graphics/SVG-alignment: FILL - stretching element.
  *

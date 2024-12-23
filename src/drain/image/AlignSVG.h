@@ -151,6 +151,18 @@ struct Alignment {
 		axis = align.axis; // error if const
 	}
 
+	virtual inline
+	bool isSet() const {
+		return (axis != AlignBase::Axis::UNDEFINED_AXIS) && (pos != AlignBase::Pos::UNDEFINED_POS);
+	}
+
+	virtual inline
+	void reset(){
+		axis = AlignBase::Axis::UNDEFINED_AXIS;
+		pos  = AlignBase::Pos::UNDEFINED_POS;
+	}
+
+
 	template <typename AX2, AlignBase::Axis A2>
 	inline
 	bool operator==(const Alignment<AX2,A2> & align) const {
@@ -369,6 +381,7 @@ struct AlignSVG { // : protected Align {
 	void setAlign(const std::string & align);
 	// Note: no mixed type, ANCHOR:LEFT
 
+	/// Returns true, if any setting is set...
 	bool isAligned() const;
 
 	void resetAlign();
@@ -453,6 +466,19 @@ template <>
 const drain::EnumDict<AlignSVG::Topol>::dict_t drain::EnumDict<AlignSVG::Topol>::dict;
 DRAIN_ENUM_OSTREAM(AlignSVG::Topol);
 
+template <>
+inline
+void AlignSVG::HorzAlign::reset(){
+	// axis = AlignBase::Axis::UNDEFINED_AXIS;
+	pos  = AlignBase::Pos::UNDEFINED_POS;
+}
+
+template <>
+inline
+void AlignSVG::VertAlign::reset(){
+	// axis = AlignBase::Axis::UNDEFINED_AXIS;
+	pos  = AlignBase::Pos::UNDEFINED_POS;
+}
 
 DRAIN_TYPENAME(AlignSVG::HorzAlign);
 
@@ -514,7 +540,22 @@ struct CompleteAlignment : public Alignment<AX,A> {
 	}
 	//CompleteAlignment(AlignSVG::Topol topol=AlignSVG::Topol::INSIDE, AlignBase::Pos pos=AlignBase::Pos::MIN) : Alignment<AX,A>(pos), topol(topol){
 
+	virtual inline
+	bool isSet() const {
+		return (this->axis != AlignBase::Axis::UNDEFINED_AXIS) &&
+				(this->pos != AlignBase::Pos::UNDEFINED_POS) &&
+				(topol != AlignSVG::Topol::UNDEFINED_TOPOL);
+		// return Alignment<AX,A>::isSet() && (topol != AlignSVG::Topol::UNDEFINED_TOPOL);
+	}
 
+
+	virtual inline
+	void reset(){
+		//this->axis  = AlignBase::Axis::UNDEFINED_AXIS;
+		Alignment<AX,A>::reset();
+		// this->pos   = AlignBase::Pos::UNDEFINED_POS;
+		topol = AlignSVG::Topol::UNDEFINED_TOPOL;
+	}
 	/// Constructor supporting setting of Axis.
 	/*
 	inline

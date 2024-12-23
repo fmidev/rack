@@ -222,7 +222,27 @@ public:
 	}
 
 
+	template <typename T>
+	inline
+	void setWidth(T w){
+		box.width  = w;
+	}
 
+	inline
+	svg::coord_t getWidth(){
+		return box.width;
+	}
+
+	template <typename T>
+	inline
+	void setHeight(T h){
+		box.height = h;
+	}
+
+	inline
+	svg::coord_t getHeight(){
+		return box.height;
+	}
 
 protected:
 

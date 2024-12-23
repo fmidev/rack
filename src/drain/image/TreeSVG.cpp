@@ -137,8 +137,8 @@ void NodeSVG::setType(const tag_t & t) {
 		break;
 	case SVG:
 		//tag = "svg";
-		link("x", box.x = 0);
-		link("y", box.y = 0);
+		//link("x", box.x = 0);
+		//link("y", box.y = 0);
 		link("width", box.width = 0);
 		link("height", box.height = 0);
 		//link("width", width = "0");
@@ -195,8 +195,8 @@ void NodeSVG::setType(const tag_t & t) {
 		return;
 	}
 
-	link("pos", box.getLocation().tuple());
-	link("frm", box.getFrame().tuple());
+	//link("pos", box.getLocation().tuple());
+	// link("frm", box.getFrame().tuple());
 	// DEPRECATING: see separate STYLE and CLASS?
 	// link("style", style = "");
 	// link("fill", fill = "");

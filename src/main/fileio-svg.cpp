@@ -405,71 +405,27 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::FilePa
 }
 
 
+// Consider changing this to visitor.
 
 // Re-align elements etc
-void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
+void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepath){
+
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	drain::image::TreeSVG & mainGroup = getMain(ctx);
 
 	/*
-	drain::image::TreeSVG & rectTitle = mainGroup["titleNEW"](NodeSVG::RECT); // +EXT!
-	// rectTitle->set("width", 50);
-	rectTitle->set("height", 60);
-	rectTitle->setStyle("fill", "green");
-	rectTitle->setStyle("opacity", 0.5);
-	rectTitle->setId("textRect");
-	//rectTitle->setAlign(AlignSVG::INSIDE, AlignSVG::TOP);
-	rectTitle->setAlign(AlignSVG::OUTSIDE, AlignSVG::BOTTOM);
-	rectTitle->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
+	if (!ctx.svgPanelConf.absolutePaths){
+		TreeUtilsSVG::setRelativePaths(mainGroup, filepath);
+	}
 	*/
 
-	// TODO: add explanation
-	if (!ctx.svgPanelConf.absolutePaths){
-		drain::image::NodeSVG::path_list_t pathList;
-		drain::image::NodeSVG::findByTag(mainGroup, drain::image::svg::IMAGE, pathList);
-		if (!filepath.dir.empty()){
-			const std::string dir = filepath.dir.str()+'/';  // <- consider plain, and remove leading slashes, or add only if non-empty.
-			for (drain::image::NodeSVG::path_t & p: pathList){
-				drain::image::TreeSVG & image = mainGroup(p);
-				//drain::FilePath fp(image->get("xlink:href"));
-				std::string imagePath = image->get("xlink:href");
-				if (drain::StringTools::startsWith(imagePath, dir)){
-					image->set("xlink:href", imagePath.substr(dir.size()));
-				}
-				else {
-					mout.attention("could not set relative path: ", p, " href:", imagePath);
-				}
-				//mout.attention("path: ", p, " href:", image->get("xlink:href"));
-			}
-		}
-	}
 
-
-	drain::Point2D<drain::image::svg::coord_t> start(0,0);
+	// drain::Point2D<drain::image::svg::coord_t> start(0,0);
 	//TreeUtilsSVG::superAlign(mainGroup, Align::HORZ, LayoutSVG::INCR, start);superAlign
 	mout.attention("next superAlign ", ctx.mainOrientation, '|', ctx.mainDirection);
-	TreeUtilsSVG::superAlign(mainGroup, ctx.mainOrientation, ctx.mainDirection, start);
-
-	/*
-	/// Search for PANEL's: all the containers insider which elements will be aligned.
-	drain::image::NodeSVG::path_list_t pathList;
-	drain::image::NodeSVG::findByClass(mainGroup, drain::image::AlignSVG::ALIGN_GROUP, pathList);
-
-
-	// NEW
-	for (const drain::image::NodeSVG::path_t & p: pathList){
-
-		mout.debug("aligning: ", p);
-		drain::image::TreeSVG & group = mainGroup[p](NodeSVG::GROUP);
-		TreeUtilsSVG::superAlign(group, start);
-	}
-	*/
-
-
-	drain::Frame2D<int> mainFrame; // OLD: remove this later
-
+	TreeUtilsSVG::superAlign(mainGroup, ctx.mainOrientation, ctx.mainDirection);
 
 
 	/// Collect
@@ -494,9 +450,6 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 		drain::TreeUtils::dump(ctx.svgTrack);
 	}
 
-	// REUSE:
-	start = {0,0};
-
 	if (ctx.svgPanelConf.title != "none"){ // also "false" !?
 
 		TitleCreatorSVG titleCreator;
@@ -514,21 +467,13 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 			headerRect->setStyle("fill", "blue");
 			headerRect->setStyle("opacity", 0.25);
 
-			/*
-			headerRect->set("x", -20);
-			headerRect->set("y", -titleCreator.mainHeaderHeight);
-			headerRect->set("width",  35 + mainFrame.getWidth());
-			headerRect->set("height", 15 + titleCreator.mainHeaderHeight);
-			 */
-
-			//TreeSVG & mainHeader = headerGroupsubHeadert"](svg::TEXT);
 			TreeSVG & mainHeader = group["GENERAL"](svg::TEXT);
 			mainHeader -> setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); //
 			mainHeader -> setAlign(AlignSVG::MIDDLE, AlignSVG::INSIDE); //AlignSVG::VertAlign::MIDDLE);
 			mainHeader->setStyle({
 				{"font-size", "20"},
 				{"stroke", "none"},
-				{"fill", "darkblue"}
+				{"fill", "darkslateblue"}
 			});
 			// Ensure order
 			mainHeader["product"](svg::TSPAN);
@@ -537,12 +482,6 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 			TreeSVG & timeHeader = group["TIME"](svg::TEXT);
 			timeHeader->addClass(TIME);
-			/*
-			timeHeader -> setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE); // AlignSVG::VertAlign::TOP);    // Outside(Align::Axis::VERT, Align::Position::MIN);
-			timeHeader -> setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::HorzAlign::RIGHT);  // Inside(Align::Axis::HORZ, Align::Position::MAX);
-			*/
-			//tsvg::markAligned(headerRect, timeHeader, alignSvg::RIGHT, alignSvg::MIDDLE);
-			// Ensure order
 			timeHeader["date"](svg::TSPAN);
 			timeHeader["time"](svg::TSPAN);
 
@@ -609,7 +548,6 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 				mainHeader->ctext += titleMapper.toStr(v, -1, formatter);
 				mainHeader->ctext += ' ';
 			}
-			// else title == "false"
 
 
 			// TODO: develop
@@ -630,34 +568,23 @@ void RackSVG::completeSVG(RackContext & ctx, const drain::FilePath & filepath){
 
 	}
 
+	drain::image::TreeUtilsSVG::finalizeBoundingBox(ctx.svgTrack);
+
 	/*
-	for (const drain::image::NodeSVG::path_t & p: pathList){
-
-		mout.attention("Would like to align: ", p);
-		drain::image::TreeSVG & group = mainGroup[p](NodeSVG::GROUP);
-
-	}
-	*/
-	// drain::image::TreeUtilsSVG::alignDomains(mainGroup);
-
 	{
 		drain::image::BBoxSVG bb;
 		drain::image::TreeUtilsSVG::computeBoundingBox(ctx.svgTrack, bb);
 
-		//ctx.svgTrack->set("width",  bb.width);
-		//ctx.svgTrack->set("height", bb.height);
-		/*
-		const std::string viewBox = drain::StringBuilder<' '>(start.x, start.y, bb.width, bb.height);
+		// Finalize top level bounding box
+		ctx.svgTrack->setFrame(bb.getFrame()); // width, height
+		// Finalize view box
+		const std::string viewBox = drain::StringBuilder<' '>(bb.x, bb.y, bb.width, bb.height);
 		ctx.svgTrack->set("viewBox", viewBox);
-		*/
-		ctx.svgTrack->setBoundingBox(bb);
+		// In principle, translate all could be used to translate ?
+
 	}
-	/*
-	ctx.svgTrack->set("width",  mainFrame.width);
-	ctx.svgTrack->set("height", mainFrame.height);
-	const std::string viewBox = drain::StringBuilder<' '>(start.x, start.y, mainFrame.width, mainFrame.height);
-	ctx.svgTrack->set("viewBox", viewBox);
 	*/
+
 }
 
 

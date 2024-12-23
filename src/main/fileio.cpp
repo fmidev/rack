@@ -484,8 +484,10 @@ void CmdOutputFile::exec() const {
 		mout.experimental("writing SVG file: ", path);
 
 		//RackSVG::addRectangle(ctx, {120,500});
-
-		RackSVG::completeSVG(ctx, path.dir);
+		if (!ctx.svgPanelConf.absolutePaths){
+			TreeUtilsSVG::setRelativePaths(RackSVG::getMain(ctx), path.dir);
+		}
+		RackSVG::completeSVG(ctx); //, path.dir);
 
 		drain::Output ofstr(filepath);
 

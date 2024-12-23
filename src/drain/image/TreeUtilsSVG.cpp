@@ -42,12 +42,16 @@ namespace image {
 
 PanelConfSVG TreeUtilsSVG::defaultConf;
 
+// Consider XMl Visitor...
 bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<NodeSVG::coord_t> & box){
 
 	if (elem->typeIs(svg::SVG) || elem->typeIs(svg::GROUP)){
 		for (const TreeSVG::pair_t & entry: elem){
 			computeBoundingBox(entry.second, box); // recursion
 		}
+	}
+	else if (elem->typeIs(svg::TEXT)){
+		// skip, trust others (rect anchor)
 	}
 	else {
 		if (box.empty()){
@@ -64,7 +68,48 @@ bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<NodeSVG::coord_t
 
 }
 
+void TreeUtilsSVG::finalizeBoundingBox(TreeSVG & svg){
 
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	// if (svg.getT)
+
+	drain::image::BBoxSVG bb;
+	computeBoundingBox(svg, bb);
+
+	// Finalize top level bounding box
+	svg->setFrame(bb.getFrame()); // width, height
+	// Finalize view box
+	const std::string viewBox = drain::StringBuilder<' '>(bb.x, bb.y, bb.width, bb.height);
+	svg->set("viewBox", viewBox);
+
+}
+
+// Consider XMl Visitor...
+void TreeUtilsSVG::setRelativePaths(drain::image::TreeSVG & object, const drain::FilePath & filepath){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	// TODO: add explanation
+	drain::image::NodeSVG::path_list_t pathList;
+	drain::image::NodeSVG::findByTag(object, drain::image::svg::IMAGE, pathList);
+
+	if (!filepath.dir.empty()){
+		const std::string dir = filepath.dir.str()+'/';  // <- consider plain, and remove leading slashes, or add only if non-empty.
+		for (drain::image::NodeSVG::path_t & p: pathList){
+			drain::image::TreeSVG & image = object(p);
+			const std::string imagePath = image->get("xlink:href");
+			if (drain::StringTools::startsWith(imagePath, dir)){
+				image->set("xlink:href", imagePath.substr(dir.size())); // TODO: setURL ?
+			}
+			else {
+				mout.attention("could not set relative path: ", p, " href:", imagePath);
+			}
+			//mout.attention("path: ", p, " href:", image->get("xlink:href"));
+		}
+	}
+
+}
 
 
 
@@ -237,7 +282,7 @@ void TreeUtilsSVG::realignObject(AlignBase::Axis axis, svg::coord_t anchorPos, s
  *  \param offset - start?
  *
  */
-void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, LayoutSVG::Direction direction, const Point2D<svg::coord_t> & offset){ // offsetInit
+void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, LayoutSVG::Direction direction){ //, const Point2D<svg::coord_t> & offset){ // offsetInit
 
 	Logger mout(__FILE__, __FUNCTION__);
 
@@ -253,7 +298,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 	// Depth-first
 	for (TreeSVG::pair_t & entry: object){
-		superAlign(entry.second, orientation, direction, offset);
+		superAlign(entry.second, orientation, direction); // , offset);
 	}
 
 
@@ -280,7 +325,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 	const NodeSVG::path_elem_t & anchorElemVert = object->getAlignAnchorVert(); // FIX for both axes
 	const bool FIXED_ANCHOR_VERT = !anchorElemVert.empty();
 
-	// Explain!
+	// Explain! Dynamically growing extent (width/height)
 	BBoxSVG bbox;
 	//bbox.setLocation(offset); // ~ essentially a point (width==height==0).
 
@@ -360,9 +405,11 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 			// TreeUtilsSVG::realignObject(bbox, entry.second);
 			TreeUtilsSVG::realignObject(*bboxAnchorHorz, *bboxAnchorVert, entry.second);
+			//if (!entry.second->typeIs(svg::TEXT)){
 			bbox = entry.second->getBoundingBox(); // Notice: copy
 			objectBBox.expand(bbox);
 			mout.accept<LOG_NOTICE>("  ... ", bbox, " now, after: ", entry.second.data);
+			//}
 
 			if (!FIXED_ANCHOR_HORZ){
 				/// Move anchor to the last element aligned.
