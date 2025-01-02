@@ -28,72 +28,43 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-
-#ifndef RACK_FILE_IO_SVG
-#define RACK_FILE_IO_SVG
-
-#include <string>
-
-#include <drain/prog/CommandBank.h>
-#include <drain/prog/CommandInstaller.h>
-
-#include <drain/util/FileInfo.h>
-#include "hi5/Hi5.h"
-#include "resources.h"
-
-// Notice: role of graphics.cpp and fileio-svg.cpp is currently equivalent
-
-namespace rack {
-
-
-
-
+ 
 /*
-
-Komentoja!
-
+ * TreeXML.cpp
+ *
+ *  Created on: Jun 24, 2012
+ *      Author: mpeura
  */
 
-struct GraphicsSection;
+#include "XML.h"
 
-class GraphicsModule : public drain::CommandModule<'g',GraphicsSection> {
-public:
-	GraphicsModule();
-};
+namespace drain {
 
+// array,map,pair,string,key, mapPair  [+AfillB:ared 2pxb-;+AopacityB:0.33-;+AscaleB:0.5-]
+const SprinterLayout StyleXML::styleLineLayout(";", ";",  ":", "", ""); //, "\"\"", "''", ":");
 
-/// SVG panel
-/*
-class CmdOutputPanel : public drain::BasicCommand {
+// The record starts by \n, separates entries with \n, and finishes with a \n.
+// Every key, like "table" is prefixed woth \t and suffixed with space ' '.
+const SprinterLayout StyleXML::styleRecordLayout("\n\n\n", "", "","{\n}",  "\t ", "{ }"); // , "{>", "  ", ":"// ??? ("[,]", "{,}",  "(,)", "\"\"", "''", ":");
 
-public:
+const SprinterLayout StyleXML::styleRecordLayoutActual("{\n}","(.)", " :;","","\t ");
+// Consider making <STYLE-ITEM> elements, with name (composed of tag(s?) , and attribs like
 
-	inline
-	CmdOutputPanel() : drain::BasicCommand(__FUNCTION__, "Save SVG panel of latest images. See also: --image, --outputRawImages.") {
-		getParameters().link("filename", filename="");
-		getParameters().link("layout", layout, "basic");
-	};
+/// Uses spaces as separators.
+const SprinterLayout ClassListXML::layout = {" ", "", "", ""}; // , "\n", "=", ""};
 
-	inline
-	CmdOutputPanel(const CmdOutputPanel & cmd) : drain::BasicCommand(cmd) {
-		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
-	}
+int XML::nextID = 0;
 
+const int XML::UNDEFINED;
+const int XML::COMMENT;
+const int XML::CTEXT;
+const int XML::STYLE;
+const int XML::SCRIPT;
 
-	void exec() const;
-
-
-	std::string layout;
-	std::string filename;
-
-	void appendImage(TreeSVG & group, const std::string & prefix, drain::VariableMap & vmap,
-			const drain::Point2D<double> & location, const drain::image::Image & image, drain::BBox & bbox) const;
-};
-*/
+//
 
 
-} // rack::
+//int NodeXML::nextID = 0;
 
 
-#endif
-
+}  // drain::

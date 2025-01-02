@@ -715,7 +715,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
 				if (!logFileSyntax.empty()){
 					// mout.attention(cmdCtx.getStatusMap());
-					std::string filename = logFileSyntax.toStr(cmdCtx.getStatusMap());
+					std::string filename = logFileSyntax.toStr(cmdCtx.getUpdatedStatusMap());
 					mout.info("Log file: #", j, filename);
 					cmdCtx.log.setOstr(filename);
 				}

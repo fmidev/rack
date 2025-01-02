@@ -65,7 +65,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/DataConversionOp.h"
 #include "resources.h"
 #include "images.h"
-#include "fileio-svg.h"
+//#include "fileio-svg.h"
+#include "graphics.h"
 
 #include "image-ops.h" // why
 

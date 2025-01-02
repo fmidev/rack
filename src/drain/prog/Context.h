@@ -102,12 +102,20 @@ public:
 	 *   The basic version saves id, status flags and (expanded) logFile name
 	 */
 	virtual inline
-	drain::VariableMap & getStatusMap(bool update=true){
+	const drain::VariableMap & getStatusMap() const {
+		return statusMap;
+	};
+
+	virtual inline
+	drain::VariableMap & getStatusMap(){
+		return statusMap;
+	};
+
+	virtual inline
+	drain::VariableMap & getUpdatedStatusMap(){
 		//Logger mout(this->log, __FILE__, __FUNCTION__);
 		//mout.attention("Base class getStatusMap");
-		if (update){
-			updateStatus();
-		}
+		updateStatus();
 		return statusMap;
 	};
 
@@ -142,7 +150,6 @@ public:
 	}
 
 	bool SCRIPT_DEFINED; // To correctly handle sequential input commands (and other script-triggering commands)
-
 
 protected:
 

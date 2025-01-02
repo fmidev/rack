@@ -78,7 +78,11 @@ const VariableFormatterODIM<drain::Variable> RackContext::variableFormatter;
 
 const VariableFormatterODIM<drain::FlexibleVariable> RackContext::flexVariableFormatter;
 
-
+std::string RackContext::getFormattedStatus(const std::string & format) const {
+	drain::StringMapper smapper(RackContext::variableMapper); // XXX
+	smapper.parse(format);
+	return smapper.toStr(getStatusMap(), '_', RackContext::variableFormatter);
+}
 // sstr << "^(.*)\\$\\{(" << chars << ")\\}(.*)$";
 // const drain::RegExp RackContext::variableMapperSyntax("^(.*)\\$\\{[a-zA-Z0-9:_]+)\\}(.*)$", REG_EXTENDED);
 

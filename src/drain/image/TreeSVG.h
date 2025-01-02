@@ -56,16 +56,18 @@ struct svg {
 	typedef int coord_t;
 
 	enum tag_t {
-		UNDEFINED=NodeXML<>::UNDEFINED,
-		COMMENT=NodeXML<>::COMMENT,
-		CTEXT=NodeXML<>::CTEXT,
-		STYLE=NodeXML<>::STYLE,
-		SCRIPT=NodeXML<>::SCRIPT,
+		UNDEFINED=XML::UNDEFINED,
+		COMMENT=XML::COMMENT,
+		CTEXT=XML::CTEXT,
+		STYLE=XML::STYLE,
+		SCRIPT=XML::SCRIPT,
 		SVG, CIRCLE, DESC, GROUP, LINE, IMAGE, METADATA, POLYGON, RECT, TEXT, TITLE, TSPAN };
 	// check CTEXT, maybe implement in XML
 
 };
 
+template <>
+const drain::EnumDict<svg::tag_t>::dict_t drain::EnumDict<svg::tag_t>::dict;
 
 // Future option
 class BBoxSVG : public drain::Box<svg::coord_t> {
@@ -140,33 +142,54 @@ public:
 		return *this;
 	}
 
+	/// Copy data from a node. (Does not copy subtree.)
+	inline
+	NodeSVG & operator=(const std::initializer_list<Variable::init_pair_t > &l){
+		assign(l);
+		return *this;
+	}
+
+	template <class T>
+	inline
+	NodeSVG & operator=(const T & arg){
+		assign(arg);
+		return *this;
+	}
+
+	inline
+	NodeSVG & assign(const std::string &s){
+		return *this;
+	}
+
+
 	/// Set type.
 	inline
-	NodeSVG & operator=(const tag_t & type){
+	NodeSVG & assign(const tag_t & type){
 		setType(type);
 		return *this;
 	}
 
 	/// Set text (CTEXT).
 	inline
-	NodeSVG & operator=(const char *s){
-		setText(s);
+	NodeSVG & assign(const char *s){
+		if (this->typeIs(svg::STYLE)){
+			setStyle(s);
+		}
+		else {
+			setText(s);
+		}
 		return *this;
 	}
 
-	/// Set text (CTEXT).
-	inline
-	NodeSVG & operator=(const std::string &s){
-		setText(s);
-		return *this;
-	}
 
 	/// Set attributes.
 	inline
-	NodeSVG & operator=(const std::initializer_list<Variable::init_pair_t > &l){
+	NodeSVG & assign(const std::initializer_list<Variable::init_pair_t > &l){
 		set(l);
 		return *this;
 	}
+
+
 
 	/// Set attribute value, handling units in string arguments, like in "50%" or "640px".
 	virtual
@@ -285,17 +308,52 @@ namespace drain {
 
 DRAIN_TYPENAME(image::NodeSVG);
 
+
+
+template <>
+template <typename K, typename V>
+image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<K,V> > args){
+//image::TreeSVG & image::TreeSVG::operator=(const std::initializer_list<T> & args){
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.attention("initlist: ", args);
+	data.assign(args); // what about TreeSVG & arg
+	return *this;
+}
+
+template <> // referring to Tree<NodeSVG>
+image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const char *> > l);
+
+
+template <>
+template <class T>
+image::TreeSVG & image::TreeSVG::operator=(const T & arg){
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.attention("single-arg:", arg);
+	data.assign(arg); // what about TreeSVG & arg
+	return *this;
+}
+
 template <>
 template <>
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
-/*{
-	this->data.setType(type);
+
+
+
+/*
+template <>
+template <>
+image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<const char *> args){
+//image::TreeSVG & image::TreeSVG::operator=(const std::initializer_list<T> & args){
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	//mout.attention("initlist const-char*: ", args);
+	// data.assign(args); // what about TreeSVG & arg
 	return *this;
-}*/
+}
+*/
+
 
 
 }
-
 
 #endif // TREESVG_H_
 

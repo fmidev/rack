@@ -114,6 +114,7 @@ public:
 	PanelConfSVG svgPanelConf; // under constr - consider embedding these to PanelConfSVG:
 	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
 	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
+	int svgDebug = 0;
 	// For the NEXT graphic object
 	/*
 	AlignSVG::Topol topol = AlignSVG::Topol::OUTSIDE;

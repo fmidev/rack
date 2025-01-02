@@ -324,6 +324,7 @@ public:
 	};
 	*/
 
+	/* 2025/01 => non-ref
 	template <class S>
 	inline
 	tree_t & operator=(const std::initializer_list<S> &l){
@@ -333,6 +334,22 @@ public:
 		}
 		return *this;
 	}
+	*/
+
+
+	// 2025/01 non-const
+	/*
+	template <class S>
+	inline
+	tree_t & operator=(std::initializer_list<S> l){
+		data = l;
+		if (EXCLUSIVE){
+			clearChildren();
+		}
+		return *this;
+	}
+	*/
+
 
 	/// Assigns a value to contents.
 	template <class T2>
@@ -345,8 +362,47 @@ public:
 		return *this;
 	}
 
+
+	/// 2025/01 experimental.
+	/**
+	 *   Default implementation: assign new nodes (children).
+	 *
+	 */
+	template <typename K, typename V>
+	inline
+	tree_t & operator=(std::initializer_list<std::pair<K,V> > l){
+		for (const auto & entry: l){
+			*this << entry;
+		}
+		return *this;
+	}
+
+	/// 2025/01 experimental.
+	inline
+	tree_t & operator=(std::initializer_list<std::pair<const char *,const char *> > l){
+		for (const auto & entry: l){
+			*this << entry;
+		}
+		return *this;
+	}
+
 	/// Experimental. Given pair<elem, data> assigns child[elem] = data;
+	// See operator<<() below.
 	typedef std::pair<key_t,node_data_t> node_pair_t;
+
+	// 2025/01 experimental
+	/*
+	inline
+	tree_t & operator=(std::initializer_list<node_pair_t> l){
+		for (const auto & entry: l){
+			*this << entry;
+		}
+		return *this;
+	}
+	*/
+
+	/// Experimental. Given pair<elem, data> assigns child[elem] = data;
+	// typedef std::pair<key_t,node_data_t> node_pair_t;
 	inline
 	tree_t & operator<<(const node_pair_t & entry){
 		if (EXCLUSIVE){

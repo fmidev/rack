@@ -58,29 +58,14 @@ class TreeUtils {
 
 public:
 
-	/// Deletes a node (leaf) and its subtrees.
-	/** If an ending slash is included, then groups but no datasets will be erased. (?)
-	 *
-	 */
-	/*
-	 * REPLACED by: void Tree<T>::erase(const path_t & path)
-	template <class TR>
-	static
-	void erase(TR & tree, const typename TR::path_t & path){ // RAISE/virtualize
-
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.unimplemented("consider: tree(", path, ").clear()");
-	}
-	*/
-
-	/// Returns a list of the node names matching a pattern. The trailing '/' is NOT appended ie. should not be tested by RegExp.
+	/// Retrieve all the paths.
 	/**
-	 *  \param prefix - leading part of
+	 *  \tparam S - container (STL Sequence)
+	 *  \param path - starting point
 	 */
 	template <class TR, class S>
 	static
 	void getPaths(const TR & tree, S & container){
-		//const path_t prefix(separator);
 		for (const auto & entry: tree){
 			typename TR::path_t p;
 			p << entry.first;
@@ -88,14 +73,14 @@ public:
 		};
 	}
 
-	/// Returns a list of the node names matching a pattern. The trailing '/' is NOT appended ie. should not be tested by RegExp.
+	/// Retrieve all the paths.
 	/**
 	 *  \tparam S - container (STL Sequence)
-	 *  \param prefix - leading part of
+	 *  \param path - starting point
 	 */
 	template <class TR, class S>
 	static
-	void getPaths(const TR & tree, S & container, const typename TR::path_t & path){
+	void getPaths(const TR & tree, S & container, const typename TR::path_t & path){ // consider empty() and checking empty
 		container.push_back(path);
 		for (const auto & entry: tree){
 				//for (typename container_t::const_iterator it = begin(); it != end(); ++it){
@@ -124,29 +109,27 @@ public:
 	/**
 	 *  Simple version.
 	 *
-	 *  \tparam H - object with method visit(tree, path).
+	 *  \tparam H - object with method visitPrefix(tree, path) and visitPostfix(tree, path)
 	 *  \tparam T - tree type, can be const
+	 *
+	 *  \see TreeVisitor<>
 	 */
 	template <class T, class H>
-	static void traverse(H & handler, T & tree, const typename T::path_t & path = typename T::path_t()){
+	static void traverse(H & visitor, T & tree, const typename T::path_t & path = typename T::path_t()){
 
 		/// TODO: more codes than non-zero
-		if (handler.visitPrefix(tree, path)){
-			// std::cout << "SKIP: " << path << ':'  << '\n'; // << tree(path).data
+		if (visitor.visitPrefix(tree, path)){
 			return;
 		}
-		// std::cout << "OK:   " << path << ':'  << '\n'; // << tree(path).data
 
 
 		// Recursion
 		for (auto & entry: tree(path).getChildren()){
-			//const typename T::path_t p(path, entry.first);
-			//traverse(handler, entry.second, p);
 			// NOTICE: tree stays intact, path expands...
-			traverse(handler, tree, typename T::path_t(path, entry.first));
+			traverse(visitor, tree, typename T::path_t(path, entry.first));
 		}
 
-		if (handler.visitPostfix(tree, path)){
+		if (visitor.visitPostfix(tree, path)){
 			// What to do? Not much commands below ...
 		}
 
@@ -292,12 +275,13 @@ public:
 	virtual inline
 	~TreeVisitor(){};
 
-
+	/// Tasks to be executed before traversing child nodes.
 	virtual inline
 	int visitPrefix(T & tree, const typename T::path_t & path){
 		return 0;
 	}
 
+	/// Tasks to be executed after traversing child nodes.
 	virtual inline
 	int visitPostfix(T & tree, const typename T::path_t & path){
 		return 0;
@@ -306,37 +290,6 @@ public:
 };
 
 
-/// Write a Windows INI file
-/*
-
-void JSONtree::writeINI(const tree_t & t, std::ostream & ostr, const tree_t::path_t & prefix){
-
-	//for (tree_t::node_t::const_iterator dit = t.data.begin(); dit != t.data.end(); ++dit){
-	for (const auto & entry: t.data){
-		ostr << entry.first << '='; // << dit->second;
-		Sprinter::toStream(ostr, entry.second, Sprinter::jsonLayout);
-		// entry.second.valueToJSON(ostr);
-		ostr << '\n';
-	}
-	ostr << '\n';
-
-
-	// Traverse children (only)
-	for (tree_t::const_iterator it = t.begin(); it != t.end(); ++it){
-
-		tree_t::path_t path(prefix);
-		path << it->first;
-
-		ostr << '[' << path << ']' << '\n';
-
-		writeINI(it->second, ostr, path);
-
-		ostr << '\n';
-
-	}
-
-}
-*/
 
 
 #ifdef DRAIN_TYPE_UTILS

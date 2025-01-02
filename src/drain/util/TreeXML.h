@@ -37,46 +37,21 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-#ifndef TREE_XML
-#define TREE_XML
+#ifndef DRAIN_TREE_XML
+#define DRAIN_TREE_XML
 
 #include <ostream>
 
-#include <drain/Sprinter.h>
-#include <drain/FlexibleVariable.h>
+// #include <drain/Sprinter.h>
+// #include <drain/FlexibleVariable.h>
 
-#include "ClassXML.h"
-#include "Flags.h"
-#include "ReferenceMap.h"
+#include "XML.h"
+//#include "ClassXML.h"
+//#include "Flags.h"
+//#include "ReferenceMap.h"
 #include "TreeUnordered.h"
 
 namespace drain {
-
-
-/**
- *   Flexibility is used (at least) in:
- *   - linking box.height to font-size (in TEXT or TSPAN elems)
- */
-class StyleXML : public ReferenceMap2<FlexibleVariable> {
-
-public:
-
-	inline
-	StyleXML(){};
-
-	static const SprinterLayout styleLineLayout;
-	static const SprinterLayout styleRecordLayout;
-	static const SprinterLayout styleRecordLayoutActual;
-
-};
-
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
-	drain::Sprinter::toStream(ostr, style.getMap(), drain::Sprinter::xmlAttributeLayout);
-	return ostr;
-}
-
 
 
 
@@ -84,16 +59,10 @@ std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
  *  \tparam T - index type; may be enum.
  */
 template <class T=int>
-class NodeXML : protected ReferenceMap2<FlexibleVariable> {
-
+class NodeXML : public XML {
 
 public:
 
-	static const int UNDEFINED;
-	static const int COMMENT;
-	static const int CTEXT;
-	static const int STYLE;
-	static const int SCRIPT;
 
 	/// Tag type, CTEXT or COMMENT.
 	typedef T elem_t;  // consider xml_elem_t
@@ -101,13 +70,9 @@ public:
 
 	typedef NodeXML<T> xml_node_t;
 
-	/// Tree path type.
-	typedef drain::Path<std::string,'/'> path_t; // consider xml_path_t
-	typedef path_t::elem_t path_elem_t;
 
 	typedef UnorderedMultiTree<NodeXML<T>,false, path_t> xml_tree_t;
 
-	typedef ReferenceMap2<FlexibleVariable> map_t;
 
 	inline
 	NodeXML(const elem_t & t = elem_t(0)){
@@ -137,48 +102,7 @@ public:
 	tag_map_t tags;
 
 
-	/// Some general-purpose
-	// Consider either/or
-	std::string ctext;
 
-	std::string url;
-
-	inline
-	static int getCount(){
-		return nextID;
-	}
-
-	/// Makes ID a visible attribute.
-	/**
-	 *  Also a terminal function for
-	 */
-	inline
-	void setId(){
-		link("id", id);
-	}
-
-	/// Makes ID a visible attribute, with a given value.
-	inline
-	void setId(const std::string & s){
-		link("id", id = s);
-	}
-
-	template <char C='\0', typename ...TT>
-	inline
-	void setId(const TT & ...args) {
-		link("id", id = drain::StringBuilder<C>(args...));
-	}
-
-	/// Returns ID of this element. Hopefully a unique ID...
-	inline
-	const std::string & getId() const {
-		return id;
-	}
-
-	inline
-	bool empty() const {
-		return map_t::empty();
-	}
 
 	virtual
 	void setType(const elem_t &t){
@@ -210,6 +134,7 @@ public:
 	};*/
 
 
+	// Consider raising these to XML
 	inline
 	bool isComment() const {
 		return typeIs((elem_t)COMMENT);
@@ -262,19 +187,9 @@ public:
 	};
 
 
-	inline
-	const map_t & getAttributes() const {
-		return *this;
-	};
-
-	// Maybe controversial. Helps importing sets of variables.
-	inline
-	map_t & getAttributes(){
-		return *this;
-	};
-
 
 	// NEW: --------------
+
 	inline
 	void set(const NodeXML & node){
 		if (isUndefined()){
@@ -363,97 +278,6 @@ public:
 
 	}
 
-	/// Default implementation. Needed for handling units in strings, like "50%" or "640px".
-	//   But otherways confusing?
-	virtual inline
-	void setAttribute(const std::string & key, const std::string &value){
-		(*this)[key] = value;
-	}
-
-	/// Default implementation. Needed for handling units in strings, like "50%" or "640px".
-	//   But otherways confusing?
-	virtual inline
-	void setAttribute(const std::string & key, const char *value){
-		(*this)[key] = value; // -> handleString()
-	}
-
-	/// "Final" implementation.
-	template <class V>
-	inline
-	void setAttribute(const std::string & key, const V & value){
-		(*this)[key] = value; // -> handleString()
-	}
-
-
-	inline
-	void remove(const std::string & s){
-		iterator it = this->find(s);
-		if (it != this->end()){
-			this->erase(it);
-		}
-	}
-
-
-
-
-	inline
-	const drain::FlexibleVariable & get(const std::string & key) const {
-		return (*this)[key];
-	}
-
-	inline
-	drain::FlexibleVariable & get(const std::string & key){
-		return (*this)[key];
-	}
-
-
-	template <class V>
-	inline
-	V get(const std::string & key, const V & defaultValue) const {
-		return map_t::get(key, defaultValue);
-	}
-
-	inline
-	std::string get(const std::string & key, const char * defaultValue) const {
-		return map_t::get(key, defaultValue);
-	}
-
-
-	/// Style class
-
-	template <typename ... TT>
-	inline
-	void addClass(const TT &... args) {
-		classList.add(args...);
-	}
-
-	/*
-	template <typename ... TT>
-	inline
-	void addClass(const std::string & s, const TT &... args) {
-		classList.insert(s);
-		addClass(args...);
-	}
-	*/
-
-	/**
-	 *  \tparam V – string or enum type
-	 */
-	template <class V>
-	inline
-	bool hasClass(const V & cls) const {
-		return classList.has(cls);
-	}
-
-	inline
-	void removeClass(const std::string & s) {
-		classList.remove(s);
-	}
-
-	inline
-	void clearClasses(){
-		classList.clear();
-	}
 
 
 	// Check char *
@@ -520,6 +344,11 @@ public:
 				throw std::runtime_error(drain::TypeName<NodeXML<T> >::str() + ": CTEXT not supported");
 			}
 		}
+		else if (typeIs((elem_t)STYLE)){
+			setStyle(value); //
+			// SmartMapTools::updateValues(this->style, value, ';', ':');
+			//
+		}
 		drain::StringTools::import(value, ctext);
 		return *this;
 	}
@@ -532,7 +361,6 @@ public:
 
 	// ------------------ Style ---------------
 
-	StyleXML style;
 
 	template <class S>
 	inline
@@ -609,103 +437,11 @@ public:
 		}
 	}
 
-	/* ?????????
-	inline
-	void setStyle(const std::string & key, const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
-		drain::SmartMapTools::setValues(style, l);
-	}
-	*/
 
 	inline
 	void setStyle(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
 		drain::SmartMapTools::setValues(style, l);
 	}
-
-	/*
-	inline
-	void setStyle(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
-
-	}
-	*/
-
-
-	// ------------------ Style Class ---------------
-
-
-	ClassListXML classList;
-
-	typedef std::list<path_t> path_list_t;
-
-	/// Find the first occurrence of given id using recursive breath-first search.
-	/**
-	 *   By definition, id attributes should be unique.
-	 *
-	 *   \param tree - source element,
-	 *   \param id   - id attribute to be searched for
-	 *   \param result - path of the element with required ID, if found.
-	 *   \param path - start path for the search.
-	 *   \return - \c true, if an element was found.
-	 *
-	 *
-	 */
-	//   This could also be in TreeXMLutilities
-	template <class V>
-	static
-	bool findById(const V & tree, const std::string & tag, typename V::path_t & result, const typename V::path_t & path = path_t());
-
-	/// Find the occurrence(s) of given ID using recursive breath-first search.
-	/**
-	 *   By definition, id attributes should be unique. This function nevertheless returns a list
-	 *   if user wants to handle more than one elements found.
-	 *
-	 *   \param tree - source element,
-	 *   \param id   - id attribute to be searched for
-	 *   \param result - path of pointing to
-	 *   \param path - start path for the search.
-	 *   \return - \c true, if an element was found.
-	 */
-	//   This could also be in TreeXMLutilities
-	template <class V>
-	static
-	bool findById(const V & tree, const std::string & tag, path_list_t & result, const path_t & path = path_t());
-
-	/// Find all the occurrences of given tag type using recursive breath-first search.
-	/// This is a "forward definition" – this could also be in TreeXMLutilities.
-	template <class V>
-	static
-	bool findByTag(const V & tree, const T & tag, path_list_t & result, const path_t & path = path_t());
-
-	/// "Forward definition"
-	//   This could also be in TreeXMLutilities
-	/**
-	 *   \tparam V - XML tree
-	 *
-	 */
-	template <class V>
-	static
-	bool findByTags(const V & tree, const std::set<T> & tags, path_list_t & result, const path_t & path = path_t());
-
-	/// Finds child elements in an XML structure by class name.
-	/**
-	 *   \tparam V - XML tree
-	 *
-	 *	In a way, this is a forward definition – this could also be in TreeXMLutilities.
-	 *
-	 */
-	template <class T2, class C>
-	static
-	bool findByClass(const T2 & t, const C & cls, std::list<path_elem_t> & result);
-
-	/// Finds elements recursively in an XML structure by class name supplied as an enumeration type.
-	/**
-	 *  \tparam V - XML tree
-	 *  \tparam C - enum type, for which a unique (static) EnumDict has been detected.
-	 *	\param path - starting point
-	 */
-	//template <class V, class E>
-	template <class V, class C>
-	static inline
-	bool findByClass(const V & t, const C & cls, path_list_t & result, const path_t & path = path_t());
 
 
 	/// Finds elements in an XML structure by class name.
@@ -766,22 +502,17 @@ protected:
 
 	//inline	void addClass(){}
 
-	template <class V>
-	static inline
-	void attribToStream(std::ostream &ostr, const std::string & key, const V &value){
-		ostr << ' ' << key << '=' << '"' << value << '"'; // << ' ';
-	}
-
-	static int nextID;
-
-	// String, still easily allowing numbers through set("id", ...)
-	std::string id;
 
 	// TODO: consider TAG from dict?
 	// std::string tag;
 
 
 };
+
+/*
+
+template <class N>
+int NodeXML<N>::nextID = 0;
 
 template <class T>
 const int NodeXML<T>::UNDEFINED(0);
@@ -797,7 +528,7 @@ const int NodeXML<T>::STYLE(3);
 
 template <class T>
 const int NodeXML<T>::SCRIPT(4);
-
+*/
 
 typedef drain::UnorderedMultiTree<NodeXML<>,false, NodeXML<>::path_t> TreeXML;
 
@@ -820,150 +551,7 @@ struct TypeName< drain::UnorderedMultiTree<NodeXML<E>,EX,P> > {
 template <>
 TreeXML & TreeXML::addChild(const TreeXML::key_t & key);
 
-template <class N>
-int NodeXML<N>::nextID = 0;
 
-
-template <class N>
-template <class T>
-bool NodeXML<N>::findById(const T & t, const std::string & id, typename T::path_t & result, const typename T::path_t & path){
-
-	if (t->id == id){
-		result = path;
-		return true;
-	}
-
-	// Recursion
-	for (const auto & entry: t){
-		if (findById(entry.second, id, result, path_t(path, entry.first))){
-			return true;
-		}
-	}
-
-	return false;
-	//return !result.empty();
-}
-
-
-
-/*
-template <class V>
-static
-bool typename V::node_t::findById(const V & t, const std::string & tag, typename V::path_t & result, const typename V::path_t & path = typename V::path_t()){
-
-	return false;
-}
-*/
-/*
-template <class T>
-bool typename T::node_t::findById(const typename T & t, const std::string & id, typename T::path_t & result, const typename T::path_t & path){
-
-	if (t->id == id){
-		result = path;
-		return true;
-	}
-
-	for (const auto & entry: t){
-		return findByClass(entry.second, id, result, path_t(path, entry.first));
-	}
-
-	return false;
-	//return !result.empty();
-}
-*/
-
-template <class N>
-template <class T>
-bool NodeXML<N>::findById(const T & t, const std::string & id, NodeXML<>::path_list_t & result, const path_t & path){
-
-	if (t->id == id){
-		result.push_back(path);
-	}
-
-	for (const auto & entry: t){
-		findById(entry.second, id, result, path_t(path, entry.first));
-	}
-
-	return !result.empty();
-}
-
-/**
- *  \tparam Tree
- */
-template <class N>
-template <class T>
-bool NodeXML<N>::findByTag(const T & t, const N & tag, NodeXML<>::path_list_t & result, const path_t & path){
-
-	// const T & t = tree(path);
-
-	if (t->typeIs(tag)){
-		result.push_back(path);
-	}
-
-	for (const auto & entry: t){
-		findByTag(entry.second, tag, result, path_t(path, entry.first));
-	}
-
-	//return result;
-	return !result.empty();
-}
-
-/**
- *  \tparam Tree
- */
-template <class N>
-template <class T>
-bool NodeXML<N>::findByTags(const T & t, const std::set<N> & tags, NodeXML<>::path_list_t & result, const path_t & path){
-
-	// const T & t = tree(path);
-
-	//if (t->typeIs(tag)){
-	if (tags.count(t->getType()) > 0){
-		result.push_back(path);
-	}
-
-	for (const auto & entry: t){
-		findByTags(entry.second, tags, result, path_t(path, entry.first));
-	}
-
-	//return result;
-	return !result.empty();
-}
-
-
-template <class N>
-// template <class T>
-//bool NodeXML<N>::findByClass(const T & t, const std::string & cls, NodeXML<>::path_list_t & result, const path_t & path){
-
-template <class T2, class C>
-bool NodeXML<N>::findByClass(const T2 & t, const C & cls, NodeXML<>::path_list_t & result, const path_t & path){
-
-	// drain::Logger mout(__FILE__,__FUNCTION__);
-
-	if (t->classList.has(cls)){
-		result.push_back(path);
-	}
-
-	for (const auto & entry: t){
-		// mout.warn(t->get("name", "<name>"), "... continuing to: ", path_t(path, entry.first));
-		findByClass(entry.second, cls, result, path_t(path, entry.first));
-	}
-
-	return !result.empty();
-}
-
-template <class N>
-template <class T2, class C>
-bool NodeXML<N>::findByClass(const T2 & t, const C & cls, std::list<path_elem_t> & result){
-
-	for (const auto & entry: t){
-		if (entry.second->hasClass(cls)){
-			result.push_back(entry.first);
-		}
-	}
-
-	return !result.empty();
-}
 
 
 
@@ -1123,7 +711,7 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 			// ostr << "<![CDATA[ \n";
 			if (!tree->ctext.empty()){
 				// TODO: indent
-				ostr << fill << tree->ctext << '\n';
+				ostr << fill << tree->ctext << " /* CTEXT? */" << '\n';
 			}
 			if (!tree->getAttributes().empty()){
 				ostr << "\n\t /* <!-- DISCARDED attribs ";
@@ -1133,11 +721,7 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 				ostr << " /--> */" << '\n';
 			}
 			if (!tree->style.empty()){
-				// ostr << "\n\t<!-- attribs /-->" << '\n';
-				//ostr << fill << "<!-- style obj /-->" << '\n';
 				ostr << fill << "/** style obj **/" << '\n';
-				//ostr << fill;
-				//Sprinter::sequenceToStream(ostr, tree->style, StyleXML::styleRecordLayout);
 				for (const auto & attr: tree->style){
 					ostr << fill << "  ";
 					Sprinter::pairToStream(ostr, attr, StyleXML::styleRecordLayout); // {" :;"}
@@ -1145,13 +729,17 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 					ostr << '\n';
 				}
 				// ostr << fill << "}\n";
-				//Sprinter::sequenceToStream(ostr, entry.second->getAttributes(), StyleXML::styleRecordLayoutActual);
+				// Sprinter::sequenceToStream(ostr, entry.second->getAttributes(), StyleXML::styleRecordLayoutActual);
 				// ostr << '\n';
 			}
 			ostr << '\n';
 			// ostr << fill << "<!-- elems /-->" << '\n';
 			ostr << fill << "/* elems */" << '\n';
 			for (const auto & entry: tree.getChildren()){
+				if (!entry.second->ctext.empty()){
+					//ostr << fill << "<!-- elem("<< entry.first << ") ctext /-->" << '\n';
+					ostr << fill << "  " << entry.first << " {" << entry.second->ctext << "} /* CTEXT */ \n";
+				}
 				if (!entry.second->getAttributes().empty()){
 					//ostr << fill << "<!-- elem("<< entry.first << ") attribs /-->" << '\n';
 					ostr << fill << "  " << entry.first << " {\n";
@@ -1166,10 +754,6 @@ std::ostream & NodeXML<N>::toStream(std::ostream & ostr, const T & tree, const s
 					ostr << fill << "  }\n";
 					//Sprinter::sequenceToStream(ostr, entry.second->getAttributes(), StyleXML::styleRecordLayoutActual);
 					ostr << '\n';
-				}
-				if (!entry.second->ctext.empty()){
-					//ostr << fill << "<!-- elem("<< entry.first << ") ctext /-->" << '\n';
-					ostr << fill << "  " << entry.first << " {" << entry.second->ctext << "}\n";
 				}
 				// Sprinter::sequenceToStream(ostr, entry.second->style, StyleXML::styleRecordLayout);
 			}

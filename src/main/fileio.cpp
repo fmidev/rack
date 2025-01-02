@@ -72,6 +72,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "fileio-read.h"
 #include "fileio-geotiff.h"
 #include "fileio-svg.h"
+#include "graphics.h"
 #include "fileio-html.h"
 #include "file-hist.h"
 #include "images.h"  // ImageSection
@@ -118,6 +119,7 @@ public:
 		svgConf.link("title", ctx.svgPanelConf.title); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 		svgConf.link("absolutePaths", ctx.svgPanelConf.absolutePaths);
 		svgConf.link("fontSize", ctx.svgPanelConf.fontSize.tuple());
+		svgConf.link("debug", ctx.svgDebug); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 
 #ifndef USE_GEOTIFF_NO
 
@@ -354,7 +356,7 @@ void CmdOutputFile::exec() const {
 	const bool STD_OUTPUT = value.empty() || (value == "-");
 
 	if (!STD_OUTPUT){
-		const drain::VariableMap & statusMap = ctx.getStatusMap();
+		const drain::VariableMap & statusMap = ctx.getUpdatedStatusMap();
 		drain::StringMapper mapper(RackContext::variableMapper);
 		mapper.parse(ctx.outputPrefix + value);
 		// VariableFormatterODIM<drain::Variable> odimHandler;
@@ -485,7 +487,10 @@ void CmdOutputFile::exec() const {
 
 		//RackSVG::addRectangle(ctx, {120,500});
 		if (!ctx.svgPanelConf.absolutePaths){
-			TreeUtilsSVG::setRelativePaths(RackSVG::getMain(ctx), path.dir);
+			drain::image::RelativePathSetterSVG psetter(path.dir);
+			drain::TreeUtils::traverse(psetter, RackSVG::getMain(ctx));
+			// RelativePathSetterSVG
+			// TreeUtilsSVG::setRelativePaths(RackSVG::getMain(ctx), path.dir);
 		}
 		RackSVG::completeSVG(ctx); //, path.dir);
 
@@ -654,7 +659,7 @@ void CmdOutputFile::exec() const {
 			//mout.debug(selector);
 			selector.getPaths(src, paths);
 
-			const drain::VariableMap & vmapShared = ctx.getStatusMap(false);
+			const drain::VariableMap & vmapShared = ctx.getStatusMap();
 
 			for (const ODIMPath & path: paths){
 				const drain::image::Image & img = src(path).data.image;
@@ -840,7 +845,7 @@ FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // 
 	install<CmdInputFile>('i').addSection(TRIGGER);
 	install<CmdOutputFile>('o');
 	install<CmdOutputTree>('t');
-	install<CmdOutputPanel>();
+	// install<CmdOutputPanel>();
 
 	install<CmdInputPrefix>();
 	install<CmdInputSelect>();

@@ -76,7 +76,7 @@ void CmdStatus::exec() const {
 
 	// std::ostream & ostr = std::cout; // for now...
 
-	const drain::VariableMap & statusMap = ctx.getStatusMap();
+	const drain::VariableMap & statusMap = ctx.getUpdatedStatusMap();
 
 	/*
 	static

@@ -41,17 +41,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 // array,map,pair,string,key, mapPair  [+AfillB:ared 2pxb-;+AopacityB:0.33-;+AscaleB:0.5-]
-const SprinterLayout StyleXML::styleLineLayout(";", ";",  ":", "", ""); //, "\"\"", "''", ":");
-
-// The record starts by \n, separates entries with \n, and finishes with a \n.
-// Every key, like "table" is prefixed woth \t and suffixed with space ' '.
-const SprinterLayout StyleXML::styleRecordLayout("\n\n\n", "", "","{\n}",  "\t ", "{ }"); // , "{>", "  ", ":"// ??? ("[,]", "{,}",  "(,)", "\"\"", "''", ":");
-
-const SprinterLayout StyleXML::styleRecordLayoutActual("{\n}","(.)", " :;","","\t ");
-// Consider making <STYLE-ITEM> elements, with name (composed of tag(s?) , and attribs like
-
-/// Uses spaces as separators.
-const SprinterLayout ClassListXML::layout = {" ", "", "", ""}; // , "\n", "=", ""};
 
 //
 /*

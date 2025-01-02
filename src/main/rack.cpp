@@ -53,7 +53,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "test.h"
 #include "images.h"
 #include "image-ops.h"
-#include "graphics.h"
+#include "fileio-svg.h"
+//#include "graphics.h"
 
 #include "rack.h"
 

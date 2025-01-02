@@ -131,6 +131,12 @@ public:
 
 	static PanelConfSVG defaultConf; // Consider separating Rack-specific properties.
 
+	static
+	const std::set<svg::tag_t> abstractTags;
+
+	static
+	bool isAbstract(svg::tag_t tag);
+
 	/// Compute bounding box of the whole structure.
 	/**
 	 *
@@ -183,19 +189,54 @@ public:
 	static
 	void translateAll(TreeSVG & group, const Point2D<svg::coord_t> &offset);
 
+};
 
 
-	/// Marker for...
-	//  static
-	//  const std::string attr_FRAME_REFERENCE;
+class TranslatorSVG : public drain::TreeVisitor<TreeSVG> {
 
-protected:
+public:
 
-	/// Align object respect to an anchor frame.
-	static
-	void realignObjectOLD(const Box<svg::coord_t> & anchorBox, TreeSVG & obj);
+	const Point2D<NodeSVG::coord_t> offset;
+
+	template <class T>
+	inline
+	TranslatorSVG(const Point2D<T> & offset) : offset(offset){};
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+	// int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+};
+
+
+class BBoxRetrieverSVG : public drain::TreeVisitor<TreeSVG> {
+
+public:
+
+	BBoxSVG box;
+	// Box<NodeSVG::coord_t> box;
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+};
+
+
+class RelativePathSetterSVG : public drain::TreeVisitor<TreeSVG> {
+
+public:
+
+	const std::string dir;
+
+	inline
+	RelativePathSetterSVG(const drain::FilePath & filepath) :
+		dir(filepath.dir.empty() ? "" : filepath.dir.str()+'/') {
+	}
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
 
 };
+
 
 
 

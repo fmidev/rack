@@ -453,7 +453,7 @@ public:
 		std::string v;
 		drain::StringTools::split2(value, k, v, '=');
 
-		ctx.getStatusMap(false)[k] = v;
+		ctx.getStatusMap()[k] = v;
 
 	};
 
@@ -1687,7 +1687,7 @@ public:
 		statusFormatter.parse(value+'\n', true);
 
 		// VariableFormatterODIM<drain::Variable> odimHandler;
-		statusFormatter.toStream(std::cout, ctx.getStatusMap(), 0, RackContext::variableFormatter);
+		statusFormatter.toStream(std::cout, ctx.getUpdatedStatusMap(), 0, RackContext::variableFormatter);
 
 	}
 };
@@ -1724,7 +1724,7 @@ public:
 		}
 		else {
 			std::string outFileName;
-			drain::VariableMap & statusMap = ctx.getStatusMap();
+			drain::VariableMap & statusMap = ctx.getUpdatedStatusMap();
 			if ((value == "")||(value == "-")){
 				outFileName = "-";
 			}
@@ -2512,7 +2512,7 @@ public:
 	inline
 	void exec() const {
 		RackContext & ctx = getContext<RackContext>();
-		ctx.getStatusMap();
+		ctx.getUpdatedStatusMap();
 		drain::CmdExpandVariables::exec();
 	};
 

@@ -183,12 +183,29 @@ public:
 
 	/// Update this box such that it contains the given \c bbox .
 	void expand(const Box & box){
+		/*
 		const T xMax = std::max(this->x + this->width,  box.x+box.width);
 		const T yMax = std::max(this->y + this->height, box.y+box.height);
 		this->x = std::min(this->x, box.x);
 		this->y = std::min(this->y, box.y);
 		this->width  = xMax - this->x;
 		this->height = yMax - this->y;
+		expand(box.x, box.y);
+		*/
+		expand(box.x + box.width, box.y + box.height);
+	}
+
+	void expand(const T & x, const T & y){
+		// Logic fails if width or height is negative?
+		this->x = std::min(this->x, x);
+		this->y = std::min(this->y, y);
+		this->width  = std::max(this->x + this->width,  x);
+		this->height = std::max(this->y + this->height, y);
+	}
+
+	inline
+	void expand(const drain::Point2D<T> & p){
+		expand(p.x, p.y);
 	}
 
 	drain::Point2D<T> & getLocation(){

@@ -58,4 +58,5 @@ void Context::init(){
 	statusMap["statusFlags.dictionary"] = drain::sprinter(statusFlags.getDict(), drain::Sprinter::cppLayout).str(); // WHY?
 }
 
+
 }  // drain::

@@ -59,7 +59,7 @@ std::string NodeSVG::svg("http://www.w3.org/2000/svg");
 
 // NodeSVG::NodeSVG(){	setType(UNDEFINED);}
 
-
+// OLD
 template <>
 std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
 	{drain::image::svg::UNDEFINED,	"UNDEFINED"},
@@ -80,6 +80,16 @@ std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
 	{drain::image::svg::TSPAN, "tspan"},
 };
 
+// NEW (slower?)
+template <>
+const drain::EnumDict<svg::tag_t>::dict_t drain::EnumDict<svg::tag_t>::dict = {
+		{"UNDEFINED", drain::image::svg::UNDEFINED},
+		{"#", drain::image::svg::COMMENT},
+		{"", drain::image::svg::CTEXT},
+		{"g", drain::image::svg::GROUP},
+		DRAIN_ENUM_ENTRY(drain::image::svg, GROUP),
+		/// TODO: complete
+};
 
 
 void NodeSVG::updateAlign(){
@@ -236,7 +246,16 @@ drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::sv
 	return *this;
 }
 
-
+template <> // referring to Tree<NodeSVG>
+drain::image::TreeSVG & drain::image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.attention("cchar* initlist:", sprinter(l));
+	// data.assign(l); // what about TreeSVG & arg
+	for (const auto & entry: l){
+		data.setAttribute(entry.first, entry.second);
+	}
+	return *this;
+}
 /*
 template <>
 template <>

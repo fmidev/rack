@@ -51,9 +51,9 @@ ODIM::VersionFlagger ODIM::versionFlagger(rack::ODIM::ODIM_2_4, rack::ODIM::RACK
 const std::string ODIM::dateformat("%Y%m%d");
 const std::string ODIM::timeformat("%H%M%S");
 
-const ODIM::nameSet ODIM::timeKeys = {"what:time", "what:starttime", "what:endtime"}; // , "time", "starttime", "endtime"
-const ODIM::nameSet ODIM::dateKeys = {"what:date", "what:startdate", "what:enddate"};
-const ODIM::nameSet ODIM::locationKeys = {"where:site", "where:src", "where:lat", "where:lon", "PLC", "NOD", "WMO"}; // , "site", "src", "lat", "lon"
+const ODIM::nameSet ODIM::timeKeys = {"what:time", "what:starttime", "what:endtime",   "time", "starttime", "endtime"}; // , "time", "starttime", "endtime"
+const ODIM::nameSet ODIM::dateKeys = {"what:date", "what:startdate", "what:enddate",   "date", "startdate", "enddate"};
+const ODIM::nameSet ODIM::locationKeys = {"where:site", "where:src", "where:lat", "where:lon", "PLC", "NOD", "WMO",  "site", "src", "lat", "lon"}; // , "site", "src", "lat", "lon"
 
 
 void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
