@@ -821,7 +821,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 					}
 					text->set("format", format);
 				}
-				mout.accept<LOG_NOTICE>("TIME text format", format);
+				mout.accept<LOG_DEBUG>("TIME text format", format);
 				/* TODO:
 				std::stringstream sstr;
 				formatVariable2(attr.second, ":2:3", sstr);

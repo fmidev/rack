@@ -575,8 +575,9 @@ public:
 		//headerGroup->setAlignAnchor("headerRect2");
 
 		TreeSVG & rectTitle = headerGroup["headerRect"](NodeSVG::RECT); // +EXT!
-		rectTitle->set("name","headerRec_2");
-		rectTitle->set("height", 60);
+		// rectTitle->set("name","headerRec_2");
+		// rectTitle->set("height", 60);
+		rectTitle->setHeight(70);
 		rectTitle->setStyle("fill", "gray");
 		rectTitle->setStyle("opacity", 0.5);
 		rectTitle->setStyle({{"stroke","black"}, {"stroke-dasharray",{2,5}}, {"stroke-width","2px"}});

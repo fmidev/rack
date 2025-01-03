@@ -63,7 +63,7 @@ public:
 	//  typedef T elem_t;  // consider xml_elem_t
 	//typedef int elem_t;  // consider xml_elem_t
 
-	intval_t type = XML::UNDEFINED;
+	// intval_t type = XML::UNDEFINED;
 
 	typedef NodeXML<T> xml_node_t;
 	typedef UnorderedMultiTree<xml_node_t,false, path_t> xml_tree_t;
@@ -704,20 +704,23 @@ std::ostream & NodeXML<T>::toStream(std::ostream & ostr, const TR & tree, const 
 		}
 		*/
 
-		if (tree->typeIs((intval_t)STYLE)){
+		if (tree->isStyle()){
 			// https://www.w3.org/TR/xml/#sec-cdata-sect
 			// ostr << "<![CDATA[ \n";
+
 			if (!tree->ctext.empty()){
 				// TODO: indent
 				ostr << fill << tree->ctext << " /* CTEXT? */" << '\n';
 			}
+
 			if (!tree->getAttributes().empty()){
-				ostr << "\n\t /* <!-- DISCARDED attribs ";
 				drain::Logger mout(__FILE__,__FUNCTION__);
-				mout.warn("STYLE elem contains attributes, probably meant as style: ", tree.data);
+				mout.warn("STYLE elem ", tree->getId()," contains attributes, probably meant as style: ", sprinter(tree->getAttributes()));
+				ostr << "\n\t /* <!-- DISCARDED attribs ";
 				Sprinter::toStream(ostr, tree->getAttributes()); //, StyleXML::styleRecordLayout
 				ostr << " /--> */" << '\n';
 			}
+
 			if (!tree->style.empty()){
 				ostr << fill << "/** style obj **/" << '\n';
 				for (const auto & attr: tree->style){
@@ -730,6 +733,7 @@ std::ostream & NodeXML<T>::toStream(std::ostream & ostr, const TR & tree, const 
 				// Sprinter::sequenceToStream(ostr, entry.second->getAttributes(), StyleXML::styleRecordLayoutActual);
 				// ostr << '\n';
 			}
+
 			ostr << '\n';
 			// ostr << fill << "<!-- elems /-->" << '\n';
 			ostr << fill << "/* elems */" << '\n';

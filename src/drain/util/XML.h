@@ -76,14 +76,102 @@ std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
 	return ostr;
 }
 
-class XML : protected ReferenceMap2<FlexibleVariable> {
+// ------To be separated -------------------
+
+class UtilsXML {
+
+public:
+
+	/// Tree path type. // TODO: extract from template
+	typedef drain::Path<std::string,'/'> path_t; // consider xml_path_t
+	typedef path_t::elem_t path_elem_t;
+
+	typedef std::list<path_t> path_list_t;
+
+	/// Find the first occurrence of given id using recursive breath-first search.
+	/**
+	 *   By definition, id attributes should be unique.
+	 *
+	 *   \param tree - source element,
+	 *   \param id   - id attribute to be searched for
+	 *   \param result - path of the element with required ID, if found.
+	 *   \param path - start path for the search.
+	 *   \return - \c true, if an element was found.
+	 *
+	 *
+	 */
+	//   This could also be in TreeXMLutilities
+	template <class V>
+	static
+	bool findById(const V & tree, const std::string & tag, typename V::path_t & result, const typename V::path_t & path = path_t());
+
+	/// Find the occurrence(s) of given ID using recursive breath-first search.
+	/**
+	 *   By definition, id attributes should be unique. This function nevertheless returns a list
+	 *   if user wants to handle more than one elements found.
+	 *
+	 *   \param tree - source element,
+	 *   \param id   - id attribute to be searched for
+	 *   \param result - path of pointing to
+	 *   \param path - start path for the search.
+	 *   \return - \c true, if an element was found.
+	 */
+	//   This could also be in TreeXMLutilities
+	template <class V>
+	static
+	bool findById(const V & tree, const std::string & tag, path_list_t & result, const path_t & path = path_t());
+
+	/// Find all the occurrences of given tag type using recursive breath-first search.
+	/// This is a "forward definition" – this could also be in TreeXMLutilities.
+	template <class V, class T>
+	static
+	bool findByTag(const V & tree, const T & tag, path_list_t & result, const path_t & path = path_t());
+
+	/// "Forward definition"
+	//   This could also be in TreeXMLutilities
+	/**
+	 *   \tparam V - XML tree
+	 *
+	 */
+	template <class V, class T>
+	static
+	bool findByTags(const V & tree, const std::set<T> & tags, path_list_t & result, const path_t & path = path_t());
+
+	/// Finds child elements in an XML structure by class name.
+	/**
+	 *   \tparam V - XML tree
+	 *
+	 *	In a way, this is a forward definition – this could also be in TreeXMLutilities.
+	 *
+	 */
+	template <class T2, class C>
+	static
+	bool findByClass(const T2 & t, const C & cls, std::list<path_elem_t> & result);
+
+	/// Finds elements recursively in an XML structure by class name supplied as an enumeration type.
+	/**
+	 *  \tparam V - XML tree
+	 *  \tparam C - enum type, for which a unique (static) EnumDict has been detected.
+	 *	\param path - starting point
+	 */
+	//template <class V, class E>
+	template <class V, class C>
+	static inline
+	bool findByClass(const V & t, const C & cls, path_list_t & result, const path_t & path = path_t());
+
+
+
+
+};
+
+// -------------------------
+
+class XML : public UtilsXML, protected ReferenceMap2<FlexibleVariable> {
 public:
 
 	typedef int intval_t;
+	intval_t type = XML::UNDEFINED;
 
-	/// Tree path type.
-	typedef drain::Path<std::string,'/'> path_t; // consider xml_path_t
-	typedef path_t::elem_t path_elem_t;
 
 
 	static const int UNDEFINED = 0;
@@ -260,81 +348,8 @@ public:
 
 	ClassListXML classList;
 
-	typedef std::list<path_t> path_list_t;
 
 	StyleXML style;
-
-	/// Find the first occurrence of given id using recursive breath-first search.
-	/**
-	 *   By definition, id attributes should be unique.
-	 *
-	 *   \param tree - source element,
-	 *   \param id   - id attribute to be searched for
-	 *   \param result - path of the element with required ID, if found.
-	 *   \param path - start path for the search.
-	 *   \return - \c true, if an element was found.
-	 *
-	 *
-	 */
-	//   This could also be in TreeXMLutilities
-	template <class V>
-	static
-	bool findById(const V & tree, const std::string & tag, typename V::path_t & result, const typename V::path_t & path = path_t());
-
-	/// Find the occurrence(s) of given ID using recursive breath-first search.
-	/**
-	 *   By definition, id attributes should be unique. This function nevertheless returns a list
-	 *   if user wants to handle more than one elements found.
-	 *
-	 *   \param tree - source element,
-	 *   \param id   - id attribute to be searched for
-	 *   \param result - path of pointing to
-	 *   \param path - start path for the search.
-	 *   \return - \c true, if an element was found.
-	 */
-	//   This could also be in TreeXMLutilities
-	template <class V>
-	static
-	bool findById(const V & tree, const std::string & tag, path_list_t & result, const path_t & path = path_t());
-
-	/// Find all the occurrences of given tag type using recursive breath-first search.
-	/// This is a "forward definition" – this could also be in TreeXMLutilities.
-	template <class V, class T>
-	static
-	bool findByTag(const V & tree, const T & tag, path_list_t & result, const path_t & path = path_t());
-
-	/// "Forward definition"
-	//   This could also be in TreeXMLutilities
-	/**
-	 *   \tparam V - XML tree
-	 *
-	 */
-	template <class V, class T>
-	static
-	bool findByTags(const V & tree, const std::set<T> & tags, path_list_t & result, const path_t & path = path_t());
-
-	/// Finds child elements in an XML structure by class name.
-	/**
-	 *   \tparam V - XML tree
-	 *
-	 *	In a way, this is a forward definition – this could also be in TreeXMLutilities.
-	 *
-	 */
-	template <class T2, class C>
-	static
-	bool findByClass(const T2 & t, const C & cls, std::list<path_elem_t> & result);
-
-	/// Finds elements recursively in an XML structure by class name supplied as an enumeration type.
-	/**
-	 *  \tparam V - XML tree
-	 *  \tparam C - enum type, for which a unique (static) EnumDict has been detected.
-	 *	\param path - starting point
-	 */
-	//template <class V, class E>
-	template <class V, class C>
-	static inline
-	bool findByClass(const V & t, const C & cls, path_list_t & result, const path_t & path = path_t());
-
 
 
 };
@@ -342,10 +357,8 @@ public:
 
 
 
-//template <class N>
 template <class T>
-//bool NodeXML<N>::findById(const T & t, const std::string & id, typename T::path_t & result, const typename T::path_t & path){
-bool XML::findById(const T & t, const std::string & id, typename T::path_t & result, const typename T::path_t & path){
+bool UtilsXML::findById(const T & t, const std::string & id, typename T::path_t & result, const typename T::path_t & path){
 
 	if (t->id == id){
 		result = path;
@@ -365,9 +378,8 @@ bool XML::findById(const T & t, const std::string & id, typename T::path_t & res
 
 
 
-// template <class N> NodeXML<N>
 template <class T>
-bool XML::findById(const T & t, const std::string & id, XML::path_list_t & result, const path_t & path){
+bool UtilsXML::findById(const T & t, const std::string & id, UtilsXML::path_list_t & result, const path_t & path){
 
 	if (t->id == id){
 		result.push_back(path);
@@ -385,7 +397,7 @@ bool XML::findById(const T & t, const std::string & id, XML::path_list_t & resul
  */
 //template <class N>
 template <class T, class N>
-bool XML::findByTag(const T & t, const N & tag, XML::path_list_t & result, const path_t & path){
+bool UtilsXML::findByTag(const T & t, const N & tag, UtilsXML::path_list_t & result, const path_t & path){
 
 	// const T & t = tree(path);
 
@@ -406,7 +418,7 @@ bool XML::findByTag(const T & t, const N & tag, XML::path_list_t & result, const
  */
 //template <class N>
 template <class T,class N>
-bool XML::findByTags(const T & t, const std::set<N> & tags, XML::path_list_t & result, const path_t & path){
+bool UtilsXML::findByTags(const T & t, const std::set<N> & tags, UtilsXML::path_list_t & result, const UtilsXML::path_t & path){
 
 	// const T & t = tree(path);
 
@@ -430,7 +442,7 @@ bool XML::findByTags(const T & t, const std::set<N> & tags, XML::path_list_t & r
 
 template <class T2, class C> // NodeXML<N>
 //bool XML::findByClass(const T2 & t, const C & cls, NodeXML<>::path_list_t & result, const path_t & path){
-bool XML::findByClass(const T2 & t, const C & cls, XML::path_list_t & result, const path_t & path){
+bool UtilsXML::findByClass(const T2 & t, const C & cls, UtilsXML::path_list_t & result, const UtilsXML::path_t & path){
 
 	// drain::Logger mout(__FILE__,__FUNCTION__);
 
@@ -446,9 +458,9 @@ bool XML::findByClass(const T2 & t, const C & cls, XML::path_list_t & result, co
 	return !result.empty();
 }
 
-// template <class N>
+/// Immediate descendants
 template <class T2, class C> //  NodeXML<N>
-bool XML::findByClass(const T2 & t, const C & cls, std::list<path_elem_t> & result){
+bool UtilsXML::findByClass(const T2 & t, const C & cls, std::list<UtilsXML::path_elem_t> & result){
 
 	for (const auto & entry: t){
 		if (entry.second->hasClass(cls)){
