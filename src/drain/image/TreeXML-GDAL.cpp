@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/StringBuilder.h>
 // #include <AccumulatorGeo.h>
 
+
 #include "TreeXML-GDAL.h"
 
 
@@ -53,7 +54,18 @@ DRAIN_TYPENAME_DEF(image::NodeGDAL::tag_t);
 namespace image
 {
 
+template <>
+const drain::EnumDict<NodeGDAL::tag_t>::dict_t drain::EnumDict<NodeGDAL::tag_t>::dict = {
+		{"UNDEFINED", drain::image::GDAL::UNDEFINED},
+		{"GDALMetadata", drain::image::GDAL::ROOT},
+		{"Item", drain::image::GDAL::ITEM},
+		{"Item", drain::image::GDAL::USER},
+	//	{"Item", drain::image::GDAL::OFFSET},
+	//	{"Item", drain::image::GDAL::SCALE,	    },
+	//	{"Item", drain::image::GDAL::UNITS},
+};
 
+/*
 template <>
 std::map<NodeGDAL::tag_t,std::string> NodeXML<GDAL::tag_t>::tags = {
 	{drain::image::GDAL::UNDEFINED,	"UNDEFINED"},
@@ -64,7 +76,9 @@ std::map<NodeGDAL::tag_t,std::string> NodeXML<GDAL::tag_t>::tags = {
 //	{drain::image::GDAL::SCALE,	    "Item"},
 //	{drain::image::GDAL::UNITS,	    "Item"},
 };
+*/
 
+/*
 NodeGDAL::NodeGDAL(const tag_t & t) : xml_node_t(){ // , sample(-1)
 	setType(t);
 	// name = "test" + getTag();
@@ -76,10 +90,24 @@ NodeGDAL::NodeGDAL(const NodeGDAL & node) : xml_node_t(){ // , sample(-1)
 	setType(node.getType());
 }
 
+*/
 
-void NodeGDAL::setType(const tag_t & t){
+NodeGDAL::NodeGDAL(const tag_t & t){
+	setType(t);
+}
 
-	type = t;
+
+NodeGDAL::NodeGDAL(const NodeGDAL & node){ // , sample(-1)
+	type = GDAL::UNDEFINED;
+	copyStruct(node, node, *this);
+	setType(node.getType());
+}
+
+
+//void NodeGDAL::setType(const tag_t & t){
+void NodeGDAL::handleType(const tag_t & t){
+
+	// type = t;
 
 	link("name", name);
 

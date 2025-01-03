@@ -21,7 +21,7 @@
  */
  
 /*
-REQUIRE:    drain/{Log,Sprinter,String,TextStyle,Type}.cpp
+REQUIRE:    drain/{Log,Sprinter,String,TextStyle,TextStyleVT100,Type}.cpp
 REQUIRE:    drain/util/{Flags,TextDecorator}.cpp
 
 pikamake.sh drain/examples/TextDecorator-example.cpp
@@ -86,19 +86,19 @@ int main(int argc, char **argv){
 		return 1;
 	}
 
-	drain::TextDecoratorVt100 mika;
-	mika.set(drain::TextStyle::UNDERLINE, drain::TextStyle::RED, drain::TextStyle::GREEN, drain::TextStyle::ITALIC);
+	drain::TextDecoratorVt100 test;
+	test.set(drain::TextStyle::UNDERLINE, drain::TextStyle::RED, drain::TextStyle::GREEN, drain::TextStyle::ITALIC);
 	//std::cout << "Moi" << '\n';
 
-	std::cout << mika << '\n';
+	std::cout << test << '\n';
 
 	for (int i=1; i<argc; ++i){
-		mika.reset();
-		mika.set(argv[i]);
-		std::cout << "now " << mika << '\n';
-		mika.begin(std::cout, argv[i]);
+		test.reset();
+		test.set(argv[i]);
+		std::cout << "now " << test << '\n';
+		test.begin(std::cout, argv[i]);
 		std::cout << " Example text ";
-		mika.end(std::cout);
+		test.end(std::cout);
 		std::cout << '\n';
 	}
 	//std::cerr << drain::StringBuilder("Hello '", argv[1], "', and the rest ", argc-2 , " arguments...")       << std::endl;

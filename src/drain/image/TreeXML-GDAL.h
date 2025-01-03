@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/util/Flags.h"
 #include "drain/util/TreeXML.h"
+#include <drain/util/EnumFlags.h>
 
 
 namespace drain
@@ -77,7 +78,7 @@ public:
 	}
 
 	virtual
-	void setType(const tag_t & t);
+	void handleType(const tag_t & t) override final;
 
 
 	// Multi-purpose key
@@ -96,7 +97,6 @@ typedef drain::UnorderedMultiTree<image::NodeGDAL> TreeGDAL;
 
 } // image::
 
-
 /// Write tree using XML notation.
 /**
  *   This function does not write the XML header containing document type info.
@@ -108,7 +108,8 @@ std::ostream & operator<<(std::ostream & ostr, const image::TreeGDAL & tree){
 	return image::TreeGDAL::node_data_t::toStream(ostr, tree);
 }
 
-
+template <>
+const EnumDict<image::NodeGDAL::tag_t>::dict_t EnumDict<image::NodeGDAL::tag_t>::dict;
 
 DRAIN_TYPENAME(image::NodeGDAL);
 

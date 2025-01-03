@@ -42,7 +42,8 @@ namespace image {
 
 PanelConfSVG TreeUtilsSVG::defaultConf;
 
-const std::set<svg::tag_t> TreeUtilsSVG::abstractTags = {
+//const std::set<svg::tag_t> TreeUtilsSVG::abstractTags = {
+const std::set<XML::intval_t> TreeUtilsSVG::abstractTags = {
 		svg::tag_t::STYLE,
 		svg::tag_t::DESC,
 		svg::tag_t::METADATA,
@@ -51,8 +52,9 @@ const std::set<svg::tag_t> TreeUtilsSVG::abstractTags = {
 		svg::tag_t::TSPAN,
 };
 
-bool TreeUtilsSVG::isAbstract(svg::tag_t tag){
-	return (abstractTags.find(tag) != abstractTags.end());
+//bool TreeUtilsSVG::isAbstract(svg::tag_t tag){
+bool TreeUtilsSVG::isAbstract(XML::intval_t tag){
+	return (abstractTags.find((XML::intval_t)tag) != abstractTags.end());
 }
 
 // Consider XMl Visitor...
@@ -298,7 +300,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 	Logger mout(__FILE__, __FUNCTION__);
 
-	if (isAbstract(object->getType())){ // skip TITLE, DESC etc.
+	if (isAbstract((svg::tag_t)object->getType())){ // skip TITLE, DESC etc.
 		return;
 	}
 
@@ -490,7 +492,7 @@ void TreeUtilsSVG::translateAll(TreeSVG & object, const Point2D<svg::coord_t> & 
  */
 int TranslatorSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) {
 	TreeSVG & node = tree(path);
-	if (TreeUtilsSVG::isAbstract(node->getType())){ // skip TITLE, DESC etc.
+	if (TreeUtilsSVG::isAbstract((svg::tag_t)node->getType())){ // skip TITLE, DESC etc.
 		return 1;
 	}
 	else {

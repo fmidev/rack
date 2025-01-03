@@ -22,7 +22,7 @@
 /*
 // ,TreeUtils
  REQUIRE: drain/{Caster,Castable,Log,FlexibleVariable,RegExp,Sprinter,String,TextStyle,TextStyleVT100,Type,TypeUtils,Variable,VariableBase}.cpp
- REQUIRE: drain/util/{FileInfo,TreeXML}.cpp
+ REQUIRE: drain/util/{FileInfo,XML,TreeXML}.cpp
  REQUIRE: drain/image/TreeXML-GDAL.cpp
 
  g+ + -I. drain/examples/TreeHTML-example.cpp drain/util/{Log,Caster,Castable,JSONwriter,String,TreeXML,Type,RegExp}.cpp    -o TreeHTML-example
@@ -47,11 +47,13 @@
 
 #include "drain/util/EnumFlags.h"
 
+/*
 template <>
 const drain::EnumDict<drain::image::GDAL::tag_t>::dict_t drain::EnumDict<drain::image::GDAL::tag_t>::dict = {
 		{"ROOT", drain::image::GDAL::ROOT},
 		{"USER", drain::image::GDAL::USER}
 };
+*/
 
 /*
 class MyClassList : public drain::ClassListXML {
@@ -104,7 +106,7 @@ int main(int argc, char **argv){
 	/*
 	drain::ClassListXML list;
 	list.add("A", "B", "C");
-	list.add("Mika");
+	list.add("Test");
 	list.add(drain::image::GDAL::ROOT);
 	list.add(drain::image::GDAL::USER);
 	std::cerr << list << '\n';
@@ -122,7 +124,7 @@ int main(int argc, char **argv){
 	sub2("Jane") = true;
 	*/
 	//
-	gdal->setStyle("stroke-mikaarray", {65, 78, 0});
+	gdal->setStyle("stroke-testarray", {65, 78, 0});
 	gdal->style["stroke-dasharray"] = {1234, 4568};
 
 	drain::TreeUtils::dump(gdal);

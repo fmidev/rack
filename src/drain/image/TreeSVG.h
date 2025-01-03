@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TREE_SVG
 #define DRAIN_TREE_SVG
 
+#include "drain/util/EnumFlags.h"
 #include "drain/util/FileInfo.h"
 #include "drain/util/Frame.h"
 #include "drain/util/TreeXML.h"
@@ -97,6 +98,7 @@ public:
   \see drain::TreeXML
 
  */
+//class NodeSVG: public svg, public NodeXML<svg::tag_t>, public AlignAdapterSVG {
 class NodeSVG: public svg, public NodeXML<svg::tag_t>, public AlignAdapterSVG {
 public:
 
@@ -121,22 +123,12 @@ public:
 	inline virtual
 	~NodeSVG(){};
 
-	///
-	/**
-	 *  Special: for TEXT and SPAN elements, links STYLE[font-size] to bbox.height?
-	 */
-	virtual
-	void setType(const tag_t & type) override final;
-
-	/* Consider this later, for user-defined (not enumerated) tag types.
-	virtual
-	void setType(const std::string & type);
-	*/
 
 	/// Copy data from a node. (Does not copy subtree.)
 	inline
 	NodeSVG & operator=(const NodeSVG & n){
 		if (&n != this){
+			setType(n.getType()); // 2025
 			drain::SmartMapTools::setValues<map_t>((map_t &)*this, n);
 		}
 		return *this;
@@ -145,47 +137,15 @@ public:
 	/// Copy data from a node. (Does not copy subtree.)
 	inline
 	NodeSVG & operator=(const std::initializer_list<Variable::init_pair_t > &l){
-		assign(l);
+		set(l);
 		return *this;
 	}
 
 	template <class T>
 	inline
 	NodeSVG & operator=(const T & arg){
-		assign(arg);
-		return *this;
-	}
-
-	inline
-	NodeSVG & assign(const std::string &s){
-		return *this;
-	}
-
-
-	/// Set type.
-	inline
-	NodeSVG & assign(const tag_t & type){
-		setType(type);
-		return *this;
-	}
-
-	/// Set text (CTEXT).
-	inline
-	NodeSVG & assign(const char *s){
-		if (this->typeIs(svg::STYLE)){
-			setStyle(s);
-		}
-		else {
-			setText(s);
-		}
-		return *this;
-	}
-
-
-	/// Set attributes.
-	inline
-	NodeSVG & assign(const std::initializer_list<Variable::init_pair_t > &l){
-		set(l);
+		set(arg);
+		//assign(arg);
 		return *this;
 	}
 
@@ -193,11 +153,11 @@ public:
 
 	/// Set attribute value, handling units in string arguments, like in "50%" or "640px".
 	virtual
-	void setAttribute(const std::string & key, const std::string &value);
+	void setAttribute(const std::string & key, const std::string &value) override;
 
 	/// Set attribute value, handling units in string arguments, like in "50%" or "640px".
 	virtual
-	void setAttribute(const std::string & key, const char *value);
+	void setAttribute(const std::string & key, const char *value) override;
 
 
 
@@ -267,7 +227,53 @@ public:
 		return box.height;
 	}
 
+	/*
+	inline
+	NodeSVG & assign(const std::string &s){
+		return *this;
+	}
+
+
+	/// Set type.
+	inline
+	NodeSVG & assign(const tag_t & type){
+		setType(type);
+		return *this;
+	}
+	*/
+
+	/// Set text (CTEXT).
+	/*
+	inline
+	NodeSVG & assign(const char *s){
+		if (this->typeIs(svg::STYLE)){ // wrong:
+			setStyle(s);
+		}
+		else {
+			setText(s);
+		}
+		return *this;
+	}
+	*/
+
+	/// Set attributes.
+	/*
+	inline
+	NodeSVG & assign(const std::initializer_list<Variable::init_pair_t > &l){
+		set(l);
+		return *this;
+	}
+	*/
+
+
 protected:
+
+	///
+	/**
+	 *  Special: for TEXT and SPAN elements, links STYLE[font-size] to bbox.height?
+	 */
+	virtual
+	void handleType(const tag_t & t) override final;
 
 	virtual
 	void updateAlign() override;
@@ -279,10 +285,9 @@ protected:
 	// bool y_PERCENTAGE = false;
 	// svg:
 
-	int radius;
+	int radius = 0;
 
 };
-
 
 /*
 template <typename P, typename A,typename V>
@@ -296,12 +301,13 @@ void NodeSVG::setAlign(const P & pos, const A & axis,  const V &value){
 }  // drain::
 
 
-
 inline
 std::ostream & operator<<(std::ostream &ostr, const drain::image::TreeSVG & tree){
-	return drain::NodeXML<>::docToStream(ostr, tree);
+	//return drain::NodeXML<const drain::image::NodeSVG>::docToStream(ostr, tree);
+	return drain::image::NodeSVG::docToStream(ostr, tree);
 	//return drain::image::TreeSVG::node_data_t::docToStream(ostr, tree);
 }
+
 
 
 namespace drain {
@@ -309,14 +315,12 @@ namespace drain {
 DRAIN_TYPENAME(image::NodeSVG);
 
 
-
 template <>
 template <typename K, typename V>
 image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<K,V> > args){
-//image::TreeSVG & image::TreeSVG::operator=(const std::initializer_list<T> & args){
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.attention("initlist: ", args);
-	data.assign(args); // what about TreeSVG & arg
+	// drain::Logger mout(__FILE__, __FUNCTION__);
+	// mout.attention("initlist pair<K,V>: ", args);
+	data.set(args); // what about TreeSVG & arg
 	return *this;
 }
 
@@ -327,33 +331,23 @@ image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<const
 template <>
 template <class T>
 image::TreeSVG & image::TreeSVG::operator=(const T & arg){
+	/*
 	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.attention("single-arg:", typeid(T).name());
 	mout.attention("single-arg:", arg);
-	data.assign(arg); // what about TreeSVG & arg
+	*/
+	data.set(arg); // what about TreeSVG & arg
 	return *this;
 }
 
+// Important! Useful and widely used – but  fails with older C++ compilers ?
 template <>
 template <>
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
 
 
 
-/*
-template <>
-template <>
-image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<const char *> args){
-//image::TreeSVG & image::TreeSVG::operator=(const std::initializer_list<T> & args){
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	//mout.attention("initlist const-char*: ", args);
-	// data.assign(args); // what about TreeSVG & arg
-	return *this;
-}
-*/
+} // drain::
 
-
-
-}
-
-#endif // TREESVG_H_
+#endif // DRAIN_TREE_SVG
 

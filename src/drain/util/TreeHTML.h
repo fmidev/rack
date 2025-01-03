@@ -75,14 +75,17 @@ struct BaseHTML {
 /**
  *  \tparam T - index type; may be enum.
  */
+//class NodeHTML : public BaseHTML, public NodeXML<BaseHTML::tag_t> {
 class NodeHTML : public BaseHTML, public NodeXML<BaseHTML::tag_t> {
 //class NodeHTML : public NodeXML<BaseHTML::tag_t> {
 
 
 public:
 
+	// typedef int tag_t;
+
 	/// Default constructor
-	NodeHTML(const elem_t & t = elem_t(0));
+	NodeHTML(const tag_t & t = tag_t(0));
 
 	/// Copy constructor
 	NodeHTML(const NodeHTML & node);
@@ -90,8 +93,6 @@ public:
 	inline
 	~NodeHTML(){};
 
-	virtual
-	void setType(const elem_t &t);
 
 
 	/*
@@ -126,6 +127,11 @@ public:
 	static
 	const FileInfo fileInfo;
 
+protected:
+
+	virtual
+	void handleType(const tag_t &t) override;
+
 };
 
 
@@ -143,7 +149,7 @@ std::ostream & operator<<(std::ostream &ostr, const NodeHTML & node){
 }
 
 
-
+/*
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
 	//ostr << "<!DOCTYPE html>\n";
@@ -151,6 +157,8 @@ std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
 	drain::NodeHTML::toStream(ostr, tree);
 	return ostr;
 }
+*/
+
 
 
 template <>

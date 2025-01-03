@@ -59,12 +59,10 @@ const int XML::UNDEFINED;
 const int XML::COMMENT;
 const int XML::CTEXT;
 const int XML::STYLE;
+const int XML::STYLE_SELECT;
 const int XML::SCRIPT;
 
-//
 
-
-//int NodeXML::nextID = 0;
 
 
 }  // drain::

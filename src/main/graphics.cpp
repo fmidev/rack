@@ -294,7 +294,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	image->set("name", filepath.basename); // Note: without extension
 	image->set("width", src.getWidth());
 	image->set("height", src.getHeight());
-	image->set("xlink:href", filepath);
+	image->set("xlink:href", filepath.str()); // 2025 FIX: without .str() error
 	image["title"](drain::image::svg::TITLE) = filepath.basename;
 
 	// DEBUG: (may be fatal for input.sh etc.)
@@ -392,7 +392,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	//image->addClass("MARGINAL", "legend"); MOVED TO: images.cpp
 	image->set("width", svg->get("width", 0));
 	image->set("height", svg->get("height", 0));
-	image->set("xlink:href", filepath);
+	image->set("xlink:href", filepath.str());
 	image["basename"](drain::image::svg::TITLE) = filepath.basename;
 	return image;
 }
@@ -405,7 +405,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::FilePa
 
 	image->set("width", frame.width);
 	image->set("height", frame.height);
-	image->set("xlink:href", filepath);
+	image->set("xlink:href", filepath.str());
 	image["basename"](drain::image::svg::TITLE) = filepath.basename;
 	return image;
 }

@@ -62,7 +62,7 @@ namespace drain {
  *
  *  Template is needed to create a unique, shared (static) dict object for each template.
  */
-template <class E>
+template <class E, class OWNER=E>
 struct EnumDict {
 
 	//typedef FlagResolver::dict_t dict_t;
@@ -75,6 +75,13 @@ struct EnumDict {
 
 	static
 	const dict_t dict;
+
+	static
+	const dict_t & getDict(){
+		return dict;
+	}
+
+
 
 	/// Convenience
 	static inline

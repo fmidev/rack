@@ -21,7 +21,7 @@
  */
  
 /*
-REQUIRE:    drain/util/{Log,TextReader,TextStyle}.cpp
+REQUIRE:    drain/util/{Log,TextReader,TextStyle,TextStyleVT100}.cpp
 pikamake.sh drain/examples/TextReader-example.cpp
 
  */
@@ -82,10 +82,10 @@ void test(const std::string & s){
 
 int main(int argc, char **argv){
 
-	drain::TextReader mika;
-	//mika.debug(std::cout);
+	drain::TextReader test;
+	//test.debug(std::cout);
 
-	test("{koe}\", mika");
+	test("{koe}\", test");
 
 	if (argc < 0){
 		std::cerr << "Assign variables and literals quickly to a string(stream) \n";
@@ -98,12 +98,12 @@ int main(int argc, char **argv){
 
 	//std::cout << "Moi" << '\n';
 
-	// std::cout << mika << '\n';
+	// std::cout << test << '\n';
 
 	for (int i=1; i<argc; ++i){
-		// mika.reset();
-		// mika.set(argv[i]);
-		// std::cout << "now " << mika << '\n';
+		// test.reset();
+		// test.set(argv[i]);
+		// std::cout << "now " << test << '\n';
 	}
 	//std::cerr << drain::StringBuilder("Hello '", argv[1], "', and the rest ", argc-2 , " arguments...")       << std::endl;
 

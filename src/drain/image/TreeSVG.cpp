@@ -60,6 +60,7 @@ std::string NodeSVG::svg("http://www.w3.org/2000/svg");
 // NodeSVG::NodeSVG(){	setType(UNDEFINED);}
 
 // OLD
+/*
 template <>
 std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
 	{drain::image::svg::UNDEFINED,	"UNDEFINED"},
@@ -79,43 +80,40 @@ std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
 	{drain::image::svg::TITLE, "title"},
 	{drain::image::svg::TSPAN, "tspan"},
 };
+*/
 
 // NEW (slower?)
 template <>
 const drain::EnumDict<svg::tag_t>::dict_t drain::EnumDict<svg::tag_t>::dict = {
+		/*
 		{"UNDEFINED", drain::image::svg::UNDEFINED},
 		{"#", drain::image::svg::COMMENT},
 		{"", drain::image::svg::CTEXT},
 		{"g", drain::image::svg::GROUP},
 		DRAIN_ENUM_ENTRY(drain::image::svg, GROUP),
+		*/
 		/// TODO: complete
+		{"UNDEFINED", drain::image::svg::UNDEFINED},
+		{ "#", drain::image::svg::COMMENT},
+		{ "", drain::image::svg::CTEXT},
+		{   "svg", drain::image::svg::SVG},
+		{  "circle", drain::image::svg::CIRCLE},
+		{  "desc", drain::image::svg::DESC},
+		{ "g", drain::image::svg::GROUP},
+		{ "image", drain::image::svg::IMAGE},
+		{  "line", drain::image::svg::LINE},
+		{  "metadata", drain::image::svg::METADATA},
+		{  "polygon", drain::image::svg::POLYGON},
+		{  "rect", drain::image::svg::RECT},
+		{ "style", drain::image::svg::STYLE}, // raise?
+		{  "text", drain::image::svg::TEXT},
+		{ "title", drain::image::svg::TITLE},
+		{ "tspan", drain::image::svg::TSPAN},
 };
 
 
-void NodeSVG::updateAlign(){
-
-	updateAlignStr();
-
-	if (alignStr.empty()){
-		this->unlink("data-align");
-	}
-	else {
-		if (!this->hasKey("data-align")){
-			this->link("data-align", alignStr); // (should be safe anyway)
-		}
-	}
-
-	if (anchorHorz.empty()){
-		this->unlink("data-alignAnchor");
-	}
-	else {
-		this->link("data-alignAnchor", anchorHorz);
-	}
-
-}
-
 NodeSVG::NodeSVG(tag_t t){
-	type = elem_t::UNDEFINED;
+	// type = (intval_t) svg::UNDEFINED;
 	setType(t);
 }
 
@@ -127,21 +125,26 @@ NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), box(0,0,0,0), radius(0) {
 }
 
 
-void NodeSVG::setType(const tag_t & t) {
+void NodeSVG::handleType(const tag_t & t) { // setType(const elem_t & t) {
 
+	// drain::Logger mout(drain::TypeName<NodeSVG>::str().c_str(), __FUNCTION__);
+	// mout.attention(__FUNCTION__, ": current type=", type, " arg=", t);
+	/*
 	if (type == t){
 		return; // lazy
 	}
-
-	type = t;
+	*/
+	// type = t;
 
 	switch (t) {
-	case elem_t::UNDEFINED:
+	case svg::UNDEFINED:
+		// case UNDEFINED:
 		break;
-	case elem_t::COMMENT:
+	case svg::COMMENT:
 		// setComment();
 		break;
-	case elem_t::CTEXT:
+	case svg::CTEXT:
+		//case XML::CTEXT:
 		// setText();
 		// tag = "";
 		break;
@@ -226,6 +229,28 @@ void NodeSVG::setAttribute(const std::string & key, const char *value){
 }
 
 
+void NodeSVG::updateAlign(){
+
+	updateAlignStr();
+
+	if (alignStr.empty()){
+		this->unlink("data-align");
+	}
+	else {
+		if (!this->hasKey("data-align")){
+			this->link("data-align", alignStr); // (should be safe anyway)
+		}
+	}
+
+	if (anchorHorz.empty()){
+		this->unlink("data-alignAnchor");
+	}
+	else {
+		this->link("data-alignAnchor", anchorHorz);
+	}
+
+}
+
 /*
 std::ostream & NodeSVG::toStream(std::ostream &ostr, const TreeSVG & tree){
 	NodeXML::toStream(ostr, tree);
@@ -238,19 +263,18 @@ std::ostream & NodeSVG::toStream(std::ostream &ostr, const TreeSVG & tree){
 
 }  // drain::
 
-
+// Important! Useful and widely used – but  fails with older C++ compilers ?
 template <>
 template <>
-drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::svg::tag_t & type){ // this fails in older C++ compilers ?
+drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::svg::tag_t & type){
 	this->data.setType(type);
 	return *this;
 }
 
 template <> // referring to Tree<NodeSVG>
 drain::image::TreeSVG & drain::image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.attention("cchar* initlist:", sprinter(l));
-	// data.assign(l); // what about TreeSVG & arg
+	// drain::Logger mout(__FILE__, __FUNCTION__);
+	// mout.attention("cchar* initlist:", sprinter(l));
 	for (const auto & entry: l){
 		data.setAttribute(entry.first, entry.second);
 	}

@@ -79,16 +79,26 @@ std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
 class XML : protected ReferenceMap2<FlexibleVariable> {
 public:
 
+	typedef int intval_t;
+
+	/// Tree path type.
+	typedef drain::Path<std::string,'/'> path_t; // consider xml_path_t
+	typedef path_t::elem_t path_elem_t;
+
 
 	static const int UNDEFINED = 0;
 	static const int COMMENT = 1;
 	static const int CTEXT = 2;
 	static const int STYLE = 3;
-	static const int SCRIPT = 4;
+	static const int STYLE_SELECT = 4;
+	static const int SCRIPT = 5;
+
+	// intval_t type = UNDEFINED;
+
 
 	typedef ReferenceMap2<FlexibleVariable> map_t;
 
-	/// Some general-purpose
+	/// Some general-purpose variables
 
 	// String, still easily allowing numbers through set("id", ...)
 	std::string id;
@@ -106,9 +116,6 @@ public:
 
 	static int nextID;
 
-	/// Tree path type.
-	typedef drain::Path<std::string,'/'> path_t; // consider xml_path_t
-	typedef path_t::elem_t path_elem_t;
 
 	inline
 	static int getCount(){
@@ -332,27 +339,6 @@ public:
 
 };
 
-
-/*
-
-template <class N>
-int NodeXML<N>::nextID = 0;
-
-template <class T>
-const int NodeXML<T>::UNDEFINED(0);
-
-template <class T>
-const int NodeXML<T>::COMMENT(1);
-
-template <class T>
-const int NodeXML<T>::CTEXT(2);
-
-template <class T>
-const int NodeXML<T>::STYLE(3);
-
-template <class T>
-const int NodeXML<T>::SCRIPT(4);
-*/
 
 
 

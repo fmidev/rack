@@ -22,7 +22,7 @@
 
 /*
 
- REQUIRE: drain/util/{Log,Sprinter,String,TextStyle,Type}.cpp
+ REQUIRE: drain/util/{Log,Sprinter,String,TextStyle,TextStyleVT100,Type}.cpp
  REQUIRE: drain/util/Proj6.cpp
  LIBS: -lproj
 

@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 /*
 
-  REQUIRE: drain/{Caster,Castable,FlexibleVariable,Log,Reference,Sprinter,String,RegExp,TextStyle,Type,TypeUtils,Variable,VariableBase}.cpp
+  REQUIRE: drain/{Caster,Castable,FlexibleVariable,Log,Reference,Sprinter,String,RegExp,TextStyle,TextStyleVT100,Type,TypeUtils,Variable,VariableBase}.cpp
   REQUIRE: drain/util/{FileInfo,Output,TreeXML,TreeHTML}.cpp
 
  */

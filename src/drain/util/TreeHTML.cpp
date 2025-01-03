@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "TreeHTML.h"
 
+
 namespace drain {
 
 DRAIN_TYPENAME_DEF(NodeHTML);
@@ -52,8 +53,66 @@ NodeHTML::xmldoc_attrib_map_t NodeHTML::xml_node_t::xmldoc_attribs = {
 		{"data-remark", "html"}
 };
 
+#define DRAIN_ENUM_ENTRY2(nspace, key) {std::tolower( ( #key ) ), nspace::key}
+
+
+
+template <>
+const drain::EnumDict<BaseHTML::tag_t>::dict_t & drain::EnumDict<BaseHTML::tag_t>::getDict(){
+
+	/*
+	static drain::EnumDict<BaseHTML::tag_t>::dict_t dict;
+
+	if (dict.empty()){
+
+		dict.add("undefined", drain::BaseHTML::UNDEFINED);
+	}
+	*/
+
+	return dict;
+}
+
+
+template <>
+const drain::EnumDict<BaseHTML::tag_t>::dict_t drain::EnumDict<BaseHTML::tag_t>::dict = { // drain::EnumDict<BaseHTML::tag_t>::getDict(); // maybe dangerous.
+
+		{"undefined", drain::BaseHTML::UNDEFINED},
+		{"#comment", drain::BaseHTML::COMMENT},
+		{"#ctext", drain::BaseHTML::CTEXT},
+		{"style", drain::BaseHTML::STYLE},
+		{"script", drain::BaseHTML::SCRIPT},
+		{"html", drain::BaseHTML::HTML},
+		{"head", drain::BaseHTML::HEAD},
+		{"body", drain::BaseHTML::BODY},
+		{"a", drain::BaseHTML::A},
+		{"base", drain::BaseHTML::BASE},
+		{"br", drain::BaseHTML::BR},
+		{"caption", drain::BaseHTML::CAPTION},
+		{"div", drain::BaseHTML::DIV},
+		{"h1", drain::BaseHTML::H1},
+		{"h2", drain::BaseHTML::H2},
+		{"h3", drain::BaseHTML::H3},
+		{"hr", drain::BaseHTML::HR},
+		{"img", drain::BaseHTML::IMG},
+		{"li", drain::BaseHTML::LI},
+		{"link", drain::BaseHTML::LINK},
+		{"meta", drain::BaseHTML::META},
+		{"ol", drain::BaseHTML::OL},
+		{"p", drain::BaseHTML::P},
+		{"span", drain::BaseHTML::SPAN},
+		{"table", drain::BaseHTML::TABLE},
+		{"title", drain::BaseHTML::TITLE},
+		{"tr", drain::BaseHTML::TR},
+		{"th", drain::BaseHTML::TH},
+		{"td", drain::BaseHTML::TD},
+		{"ul", drain::BaseHTML::UL},
+};
+
+
+
 // TODO: macro with lowerCaser
 // TODO: mark some non-self-closing like <script/>
+/*
 template <>
 std::map<NodeHTML::tag_t,std::string> NodeHTML::xml_node_t::tags = {
 	{drain::BaseHTML::UNDEFINED,	"undefined"},
@@ -88,8 +147,9 @@ std::map<NodeHTML::tag_t,std::string> NodeHTML::xml_node_t::tags = {
 	{drain::BaseHTML::UL,  		"ul"},
 
 };
+*/
 
-NodeHTML::NodeHTML(const elem_t & t) : xml_node_t() {
+NodeHTML::NodeHTML(const tag_t & t) : xml_node_t() {
 	this->type = BaseHTML::UNDEFINED;
 	setType(t);
 };
@@ -100,14 +160,14 @@ NodeHTML::NodeHTML(const NodeHTML & node) : xml_node_t() { // NOTE: super class 
 	setType(node.getType());
 }
 
-void NodeHTML::setType(const elem_t &t){
+void NodeHTML::handleType(const tag_t &t){
 
 	link("id", id);
 
 	//case NodeXML<>::CTEXT:
 	//case NodeXML<>::UNDEFINED:
 	//xml_node_t::setType(t);
-	type = t;
+	// type = t;
 
 	switch (t) {
 
@@ -148,7 +208,7 @@ bool NodeXML<BaseHTML::tag_t>::isSelfClosing() const {	/// Set of NOT self.closi
 	/// Inclusive solution...
 	static
 	const std::set<BaseHTML::tag_t> l = {BaseHTML::BR, BaseHTML::HR};
-	return (l.find(this->getType()) != l.end()); // = found in the set
+	return (l.find((BaseHTML::tag_t)this->getType()) != l.end()); // = found in the set
 
 	/*
 	static

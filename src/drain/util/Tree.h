@@ -722,8 +722,10 @@ x	 *  \see clearData()
 	virtual
 	tree_t & addChild(const key_t & key = key_t()){ // Added default empty 2024/04
 
-		if (key.empty()) // Should be exceptional... Warning?
+		if (key.empty()){ // Should be exceptional... Warning?
+			throw std::runtime_error(drain::StringBuilder<':'>(__FILE__,__FUNCTION__, " empty key (ADD static child counter based naming"));
 			return *this;
+		}
 
 		if (EXCLUSIVE)
 			this->clearData();

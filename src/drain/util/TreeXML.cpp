@@ -47,6 +47,19 @@ namespace drain {
 const SprinterLayout Sprinter::pythonLayout("[,]", "{,}",  "(,)", "\"\"", "''", ":"); // last ':' means plain map entries (not tuples as in C++)
 */
 
+
+template <>
+const drain::EnumDict<int,XML>::dict_t drain::EnumDict<int,XML>::dict = {
+		{"UNDEFINED", XML::UNDEFINED},
+		{"#ctext", XML::CTEXT},   // CTEXT     - the tag should never appear
+		{"#comment", XML::COMMENT},  // COMMMENT  - the tag should never appear
+		{"style", XML::STYLE},  // // Consider making <STYLE-ITEM> elements, with name (composed of tag(s?) , and attribs like
+		{"script", XML::SCRIPT},
+};
+
+
+
+/*
 template <>
 std::map<int,std::string> NodeXML<int>::tags = {
 		{0, "UNDEFINED"},
@@ -56,6 +69,7 @@ std::map<int,std::string> NodeXML<int>::tags = {
 		{4, "record"},  // future extension
 		{5, "script"}  // COMMMENT  - the tag should never appear
 };
+*/
 
 template <>
 NodeXML<int>::xmldoc_attrib_map_t NodeXML<int>::xmldoc_attribs = {
@@ -82,26 +96,8 @@ TreeXML & TreeXML::addChild(const TreeXML::key_t & key){
 		return (*this)[key];
 	}
 }
-/*
-	drain::Logger mout(__FILE__,__FUNCTION__);
-	mout.unimplemented("replace TreeXML::addChild");
-	return *this;
- */
 
 
-/*
-template <>
-TreeHTML & TreeHTML::addChild(const TreeHTML::key_t & key){
-	std::stringstream k("elem");
-	k.width(3);
-	k.fill('0');
-	k << getChildren().size();
-	return (*this)[k.str()];
-}
-*/
-
-
-//int NodeXML::nextID = 0;
 
 
 }  // drain::

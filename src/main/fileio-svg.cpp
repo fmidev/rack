@@ -793,8 +793,22 @@ public:
 		drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
 
 		style["TH"].data = {{"fill", "black"}, {"stroke","TH..."} };
+
+		// Haaste 1:
+		// myRect -> setStyle JOS se on toteutettu myRect.elem["_STYLE"].attributes(...)
+
+		// Haaste 2: (huom. UNDEFINED elem)
+		style["TD"] = {};
 		style["TD"] = {{"fill", "black"}, {"stroke","TD..."} };
+		style["TD"] = "fill:yellow;text-anchor:panchor";
+
+		// FIX: attribuuteista heti seis!
 		style = {{"fill", "black"}, {"stroke","STYLE..."} };
+
+		/**  Haaste:
+		 *
+		 */
+
 
 		std::string cssSelector, cssConf;
 		if (drain::StringTools::split2(value, cssSelector, cssConf, '=')){

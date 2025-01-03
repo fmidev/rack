@@ -131,11 +131,19 @@ public:
 
 	static PanelConfSVG defaultConf; // Consider separating Rack-specific properties.
 
+	/*
 	static
 	const std::set<svg::tag_t> abstractTags;
 
 	static
 	bool isAbstract(svg::tag_t tag);
+	*/
+
+	static
+	const std::set<XML::intval_t> abstractTags;
+
+	static
+	bool isAbstract(XML::intval_t tag);
 
 	/// Compute bounding box of the whole structure.
 	/**
