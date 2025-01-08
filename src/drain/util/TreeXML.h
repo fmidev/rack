@@ -58,35 +58,31 @@ class NodeXML : public XML {
 
 public:
 
-
-	/// Tag type, CTEXT or COMMENT.
-	//  typedef T elem_t;  // consider xml_elem_t
-	//typedef int elem_t;  // consider xml_elem_t
-
-	// intval_t type = XML::UNDEFINED;
-
+	typedef T xml_tag_t;
 	typedef NodeXML<T> xml_node_t;
+	typedef drain::Path<std::string,'/'> path_t;
+	// typedef path_t::elem_t path_elem_t;
 	typedef UnorderedMultiTree<xml_node_t,false, path_t> xml_tree_t;
-
-
+	// typedef UnorderedMultiTree<xml_node_t,false, drain::Path<std::string,'/'> > xml_tree_t;
+	// typedef std::list<path_t> path_list_t; // could be?
 
 	inline
 	NodeXML(const intval_t & t = intval_t(0)){
-		// type = t;
 		setType(t);
-		setId(++nextID);
-		// drain::StringTools::import(++nextID, id);
-		// id = getTag()+id; UNDEF
+		//setId(++nextID);
+		drain::StringTools::import(++nextID, id);
 	};
 
 	// Note: use default constructor in derived classes.
 	inline
 	NodeXML(const NodeXML & node){
 		//drain::StringTools::import(++nextID, id);
-		copyStruct(node, node, *this, map_t::RESERVE); // Needed? setType will handle? And this may corrupt (yet unconstructed) object?
+		// RISKY copyStruct(node, node, *this, map_t::RESERVE); // Needed? setType will handle? And this may corrupt (yet unconstructed) object?
 		// type = node.getType();
-		setType(node.getType());
-		setId(++nextID);
+		XML::xmlAssignNode(*this, node);
+		drain::StringTools::import(++nextID, id);
+		// setType(node.getType());
+		// setId(++nextID);
 		// drain::StringTools::import(++nextID, id);
 	}
 
@@ -97,7 +93,6 @@ public:
 
 	template <class T2> // "final"
 	void setType(const T2 &t){ // DANGER, without cast?
-		//void setType(const T &t){
 		type = static_cast<intval_t>(t); // (elem_t)
 		handleType(static_cast<T>(t));
 		// in derived classes, eg. drain::image::BaseGDAL
@@ -112,6 +107,11 @@ public:
 	inline
 	const intval_t & getType() const {
 		return type;
+	};
+
+	inline
+	T getNativeType() const {
+		return static_cast<T>(type); // may fail! consider two-way conversion assert
 	};
 
 	template <class T2>
@@ -157,48 +157,42 @@ public:
 
 	// virtual
 	// TODO: strictly open/closed/flexible?
-	bool isSelfClosing() const {
+	bool isSelfClosing() const { // rename explicit closing
 
 		static
-		const std::set<intval_t> l = {SCRIPT}; // todo, append, and/or generalize...
+		const std::set<intval_t> l = {SCRIPT, STYLE}; // todo, append, and/or generalize...
 
 		return (l.find(this->getType()) == l.end()); // not in the set
 
 		//return false;
 	}
 
+	/**
+	 *   This function should not be called upon construction.
+	 */
 	virtual
 	const std::string & getTag() const {
-		return drain::EnumDict<T>::dict.getKey((T)type, false);
+		// std::cout << __FILE__ << ':' << __FUNCTION__ << "(const) dict: " << drain::TypeName<T>::str()  << std::endl; // << drain::EnumDict<T>::dict
+		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << sprinter(drain::EnumDict<T>::dict) << std::endl; // <<
+		//return drain::EnumDict<T>::dict.getKey((T)type, false); // throw error
+		return drain::EnumDict<T>::getDict().getKey((T)type, false);
+ 		//static std::string dummyTag = "DUMMY";
+		//return dummyTag;
+
 	}
 
-	static inline
+	/**
+	 *   This function should not be called upon construction. Consider dynamic getDict() to skip
+	 */
+	static inline // needed?
 	const std::string & getTag(const T & type){
-		return drain::EnumDict<T>::dict.getKey(type, false);
+		// std::cout << __FILE__ << ':' << __FUNCTION__ << " non-const dict: "  << drain::TypeName<T>::str() << std::endl; // << drain::EnumDict<T>::dict
+		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' '<< sprinter(drain::EnumDict<T>::dict) << std::endl; // <<
+		// return drain::EnumDict<T>::dict.getKey((T)type, false); // throw error
+		return drain::EnumDict<T>::getDict().getKey((T)type, false);
+		// static std::string dummyTag = "DUMMY";
+		// return dummyTag;
 	}
-
-	/* 2025
-	static inline
-	const std::string & getTag(unsigned int index){
-		typename tag_map_t::const_iterator it = tags.find((elem_t)index);
-		if (it != tags.end()){
-			return it->second;
-		}
-		else {
-			// consider empty
-			static std::string dummy;
-			dummy = drain::StringBuilder<>("UNKNOWN-", index);
-			return dummy;
-			// throw std::runtime_error(drain::StringBuilder<':'>(__FILE__, __FUNCTION__, " tag [", static_cast<int>(index), "] missing from dictionary"));
-		}
-	};
-
-
-	inline
-	const std::string & getTag() const {
-		return getTag(type); // risky? converts enum to int .. and back.
-	};
-	*/
 
 
 
@@ -224,14 +218,7 @@ public:
 
 	inline
 	void set(const std::string & s){
-		if (type == STYLE){
-			// setStyle(s);
-			SmartMapTools::setValues(style, StringTools::trim(s, "; \t\n"), ';', ':');
-			//drain::SmartMapTools::setValues<map_t,true>(getAttributes(), s);
-		}
-		else {
-			setText(s);
-		}
+		setText(s);
 	}
 
 	inline
@@ -252,6 +239,26 @@ public:
 		}
 		else {
 			drain::SmartMapTools::setValues<map_t,true>(getAttributes(), l);       // add new keys
+			// drain::SmartMapTools::setValues<map_t,false>((map_t &)*this, l);   // update only
+		}
+	}
+
+	inline
+	void set(const std::initializer_list<std::pair<const char *,const char *> > &l){
+		// TODO: redirect to set(key,value), for consistency?
+		if (type == STYLE){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.discouraged("Setting attributes/style of a STYLE element.");
+			for (const auto & entry: l){
+				style[entry.first] =  entry.second;
+			}
+			// drain::SmartMapTools::setValues(style, l);
+		}
+		else {
+			for (const auto & entry: l){
+				getAttributes()[entry.first] =  entry.second;
+			}
+			///drain::SmartMapTools::setValues(getAttributes(), l);       // add new keys
 			// drain::SmartMapTools::setValues<map_t,false>((map_t &)*this, l);   // update only
 		}
 	}
@@ -293,12 +300,16 @@ public:
 
 	}
 
-
+	inline
+	NodeXML & operator=(const NodeXML & node){
+		return XML::xmlAssignNode(*this, node);
+	}
 
 	// Check char *
 	inline
-	NodeXML & operator=(const intval_t & x){
-		set(x);
+	NodeXML & operator=(const xml_tag_t & x){ // needed? possibly with tree(int x) ?
+		//set(x);
+		setType(x);
 		return *this;
 	}
 
@@ -327,142 +338,9 @@ public:
 		return *this;
 	}
 
-	/// Make this node a comment. Contained tree will not be delete. In current version, attributes will be rendered.
-	/**
-	 *   \param text - if given, replaces current CTEXT.
-	 *
-	 */
-	inline
-	NodeXML & setComment(const std::string & text = "") {
-
-		setType((intval_t)COMMENT);
-
-		if ((int)getType() != COMMENT){ //cross-check
-			throw std::runtime_error(drain::TypeName<NodeXML<intval_t> >::str() + ": COMMENT not supported");
-		}
-
-		ctext = text;
-		return *this;
-	}
-
-	/// Assign the text content of this node. If the node type is undefined, set it to CTEXT.
-	/**
-	 *   \param text - assigned to text content.
-	 */
-	template <class S>
-	inline
-	// 	NodeXML & setText(const std::string & text = "") {
-	NodeXML & setText(const S & value) {
-		if (isUndefined()){
-			setType(XML::CTEXT);
-			if (!isCText()){ //cross-check
-				throw std::runtime_error(drain::TypeName<NodeXML<intval_t> >::str() + ": CTEXT not supported");
-			}
-		}
-		else if (isStyle()){ // typeIs(STYLE)
-			setStyle(value); //
-			// SmartMapTools::updateValues(this->style, value, ';', ':');
-			//
-		}
-		drain::StringTools::import(value, ctext);
-		return *this;
-	}
-
-	inline
-	NodeXML & setText(const char *value) {
-		setText(std::string(value));
-		return *this;
-	}
-
-	// ------------------ Style ---------------
-
-
-	template <class S>
-	inline
-	void setStyle(const S &value){
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.error("unsupported type ", drain::TypeName<S>::str(), " for value: ", value);
-	}
-
-	void setStyle(const std::string & value){
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		if (isUndefined()){
-			mout.suspicious("setting style for undefined elem: ", *this);
-		}
-		else if (type == STYLE){
-			mout.warn("setting style for STYLE elem: ", *this);
-		}
-		SmartMapTools::setValues(style, StringTools::trim(value, "; \t\n"), ';', ':');
-	}
-
-	void setStyle(const char *value){
-		setStyle(std::string(value));
-	}
-
-	inline
-	void setStyle(const std::string & key, const std::string & value){
-		// const std::initializer_list<Variable::init_pair_t > &l
-		// drain::Logger mout(__FILE__, __FUNCTION__);
-		// mout.special<LOG_WARNING>("Spezial str");
-		this->style[key] = value;
-	}
-
-
-	/// Set style of an element.
-	/**
-	  \code
-	     rect.setStyle("dash-array",{2,5,3});
-	  \endcode
-	 *
-	 */
-	template <class V>
-	inline
-	void setStyle(const std::string & key, const std::initializer_list<V> &l){
-		// const std::initializer_list<Variable::init_pair_t > &l
-		if (type == STYLE){  // typeIs(STYLE) fails
-			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.warn("Setting style of STYLE?  initializer_list<", drain::TypeName<V>::str(), "> = ", sprinter(l)); // , StyleXML::styleLineLayout ?
-			//mout.revised<LOG_WARNING>("Element is not STYLE but ", getTag(), ", initializer_list<", drain::TypeName<V>::str(), "> = ", sprinter(l)); // , StyleXML::styleLineLayout ?
-		}
-		this->style[key] = l;
-	}
-
-
-	/// For element/class/id, assign ...
-	/**
-	 *
-	 */
-	template <class V>
-	inline
-	void setStyle(const std::string & key, const V & value){
-		// drain::Logger mout(__FILE__, __FUNCTION__);
-		if (type == STYLE){
-			drain::Logger mout(__FILE__, __FUNCTION__);
-			// "reuse" style map as style record map
-			std::stringstream sstr;
-			drain::Sprinter::toStream(sstr, value, StyleXML::styleLineLayout);
-			mout.warn("Setting style of STYLE?, arg type=", drain::TypeName<V>::str());
-			mout.warn("Check results: skipped ", sstr.str());
-			mout.warn("Check results: applied ", value);
-			this->style[key] = value; //sstr.str();
-		}
-		else {
-			// mout.special<LOG_WARNING>("Spezial ", drain::TypeName<V>::str());
-			this->style[key] = value;
-		}
-	}
-
-
-	inline
-	void setStyle(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
-		drain::SmartMapTools::setValues(style, l);
-	}
-
 
 	/// Finds elements in an XML structure by class name.
 	/// Finds elements in an XML structure by class name. Redirects to findByClass(t, std::string(cls),
-
-
 
 	template <class V>
 	static inline
@@ -487,7 +365,7 @@ public:
 	std::ostream & docTypeToStream(std::ostream &ostr){
 		ostr << "<?xml ";
 		for (const auto & entry: xmldoc_attribs){
-			attribToStream(ostr, entry.first, entry.second);
+			xmlAttribToStream(ostr, entry.first, entry.second);
 		}
 		ostr << "?>";
 		ostr << '\n';
@@ -507,18 +385,43 @@ public:
 	}
 	*/
 
+	typedef std::map<xml_tag_t,xml_tag_t> xml_default_elem_map_t;
+	static const xml_default_elem_map_t xml_default_elems;
+
 protected:
 
 	/// Internal function called after setType()
-	virtual
-	void handleType(const T & type){ // DANGER, without cast?
+	/**
+	 *
+	 */
+	virtual inline
+	void handleType(const T & type){
+		if ((int)type != 0){
+			drain::Logger(__FILE__, __FUNCTION__).reject("handleType( ",  (int)type, " ) - this is available only as specialized, by inherited classed like SVG, HTML?");
+		}
+		// DANGER, without cast?
+		// std::cerr << __FILE__ << ':' << __FUNCTION__ << " unimplemented? " << type << '=' << std::endl;
+		// std::cerr << __FILE__ << ':' << __FUNCTION__ << " dict: " << drain::sprinter(drain::EnumDict<T>::dict) << std::endl;
 	}
+
 
 	/// NOTE: these could/should be templated, in TreeXML<...> right?
 	typedef std::map<std::string,std::string> xmldoc_attrib_map_t;
 	static xmldoc_attrib_map_t xmldoc_attribs;
 
+
 };
+
+/*
+   Impossible. Cannot construct final object, for example members are not available for #link() .
+template <>
+inline
+void NodeXML<int>::handle Type(const int & type){
+ // DANGER, without cast?
+	std::cerr << __FILE__ << ':' << __FUNCTION__ << " unimplemented? " << type << '=' << std::endl;
+	std::cerr << __FILE__ << ':' << __FUNCTION__ << " dict: " << drain::sprinter(drain::EnumDict<int,XML>::dict) << std::endl;
+}
+*/
 
 template <>
 inline
@@ -526,8 +429,8 @@ const std::string & NodeXML<int>::getTag() const {
 	return drain::EnumDict<int,XML>::dict.getKey(this->type, false);
 }
 
-
-typedef drain::UnorderedMultiTree<NodeXML<>,false, NodeXML<>::path_t> TreeXML;
+typedef NodeXML<>::xml_tree_t TreeXML;
+//typedef drain::UnorderedMultiTree<NodeXML<>,false, NodeXML<>::path_t> TreeXML;
 
 // NOTE: template will not match for subclasses of NodeXML<E> because default template will match any class exactly.
 template <class E, bool EX, class P>
@@ -538,16 +441,23 @@ struct TypeName< drain::UnorderedMultiTree<NodeXML<E>,EX,P> > {
     	return name;
     }
 
-    static const char* get(){
-    	return str().c_str();
-    }
 };
 
+/*  This could be it, unless already defined...
+template <class N, bool EX, class P>
+inline
+drain::UnorderedMultiTree<N,EX,P> & drain::UnorderedMultiTree<N,EX,P>::addChild(const drain::UnorderedMultiTree<N,EX,P>::key_t & key){
+	return XML::xmlAddChild(*this, key);
+}
+*/
 
-// Experimental.
-template <>
-TreeXML & TreeXML::addChild(const TreeXML::key_t & key);
-
+/* doesnt work
+template <class E, bool EX, class P>
+inline
+drain::UnorderedMultiTree<NodeXML<E>,EX,P> & drain::UnorderedMultiTree<NodeXML<E>,EX,P>::addChild(const std::string & key){
+	return XML::xmlAddChild(*this, key);
+}
+*/
 
 
 
@@ -570,16 +480,16 @@ std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
 		drain::Sprinter::toStream(ostr, node.getAttributes().getMap(), drain::Sprinter::xmlAttributeLayout);
 		ostr << ' ';
 	}
-	if (!node.classList.empty()){
+	if (!node.getClasses().empty()){
 		//ostr << '['; // has already braces []
 		//drain::Sprinter::toStream(ostr, node.classList, drain::Sprinter::pythonLayout);
-		drain::Sprinter::toStream(ostr, node.classList, ClassListXML::layout);
+		drain::Sprinter::toStream(ostr, node.getClasses(), ClassListXML::layout);
 		//ostr << ']' << ' ';
 		ostr << ' ';
 	}
-	if (!node.style.empty()){
+	if (!node.getStyle().empty()){
 		ostr << '{';
-		drain::Sprinter::toStream(ostr, node.style);
+		drain::Sprinter::toStream(ostr, node.getStyle());
 		ostr << '}' << ' ';
 	}
 	if (!node.ctext.empty()){
@@ -606,6 +516,7 @@ template <class T>
 template <class TR>
 std::ostream & NodeXML<T>::toStream(std::ostream & ostr, const TR & tree, const std::string & defaultTag, int indent){
 
+	// TODO: delegate to XML node start/end function, maybe xmlNodeToStream ?
 
 	const typename TR::container_t & children = tree.getChildren();
 
@@ -632,7 +543,7 @@ std::ostream & NodeXML<T>::toStream(std::ostream & ostr, const TR & tree, const 
 
 	if (tree->typeIs((intval_t)STYLE)){
 		//ostr << ' ';
-		attribToStream(ostr, "data-mode", "experimental");
+		xmlAttribToStream(ostr, "data-mode", "experimental");
 		// Sprinter::sequenceToStream(ostr, tree->style, StyleXML::styleRecordLayout);
 		// ostr << "\n /-->";
 	}
@@ -653,7 +564,7 @@ std::ostream & NodeXML<T>::toStream(std::ostream & ostr, const TR & tree, const 
 				std::stringstream sstr;
 				sstr << tree.data[key];  // consider checking 0, not only empty string "".
 				if (!sstr.str().empty()){
-					attribToStream(ostr, key, sstr.str());
+					xmlAttribToStream(ostr, key, sstr.str());
 				}
 			}
 			//ostr << ' ';
@@ -804,6 +715,7 @@ std::ostream & operator<<(std::ostream &ostr, const UnorderedMultiTree<NodeXML<E
 	NodeXML<E>::toStream(ostr, tree, "");
 	return ostr;
 }
+
 
 
 /*

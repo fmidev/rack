@@ -134,8 +134,9 @@ template <>
 template <>
 inline
 image::TreeGDAL & image::TreeGDAL::operator()(const image::GDAL::tag_t & type){
-	this->data.setType(type);
-	return *this;
+	return XML::xmlSetType(*this, type);
+	// this->data.setType(type);
+	// return *this;
 }
 
 /*

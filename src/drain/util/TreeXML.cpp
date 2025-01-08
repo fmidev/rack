@@ -80,8 +80,14 @@ NodeXML<int>::xmldoc_attrib_map_t NodeXML<int>::xmldoc_attribs = {
 
 };
 
+template <>
+const NodeXML<int>::xml_default_elem_map_t NodeXML<int>::xml_default_elems = {
+		{XML::STYLE,  XML::CTEXT},
+		{XML::SCRIPT, XML::CTEXT},
+};
 
 // Experimental
+/*
 template <>
 TreeXML & TreeXML::addChild(const TreeXML::key_t & key){
 
@@ -96,6 +102,7 @@ TreeXML & TreeXML::addChild(const TreeXML::key_t & key){
 		return (*this)[key];
 	}
 }
+*/
 
 
 

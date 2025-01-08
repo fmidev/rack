@@ -174,7 +174,7 @@ public:
 					EdgeTracker<int,int> edgeTracker(src, control);
 					edgeTracker.track(pos, dir);
 					if (edgeTracker.contour.size() > 0){
-						TreeSVG & contour = tree[drain::StringBuilder<'-'>("cont", pos.i, pos.j)](NodeSVG::POLYGON);
+						TreeSVG & contour = tree[drain::StringBuilder<'-'>("cont", pos.i, pos.j)](svg::POLYGON);
 						FlexibleVariable & c = contour->get("points");
 						c.setType(typeid(std::string));
 						c.setSeparator(0);

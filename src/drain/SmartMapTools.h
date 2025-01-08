@@ -218,15 +218,22 @@ public:
 
 	/// Assign values from list, accepting strict "<key>=<value>" format, no positional arguments.
 	/**
+	 *  If the list contains a single empty value, the destination is cleared.
+	 *
 	 *  \tparam M - map type
 	 *  \tparam S - source type
 	 *  \tparam T - destination type
 	 */
 	template <class M, bool STRICT=true>
 	static
-	void setValues(M & dst, const std::list<std::string> & values, char equalSign='=') {
+	void setValues(M & dst, const std::list<std::string> & values, char equalSign='=', const std::string & trimChars = "") {
+
+		const bool TRIM = !trimChars.empty();
+
 		for (const std::string & entry: values){
+
 			if (entry.empty()){
+
 				Logger mout(__FILE__, __FUNCTION__);
 				if (values.size()==1){
 					//std::cerr << __FILE__ << ':' << __
@@ -235,17 +242,29 @@ public:
 					return;
 				}
 				else {
-					mout.warn("parameter list contained an empty value");
+					mout.debug("parameter list contained an empty value (ok)");
 					continue;
 				}
+
 			}
+
 			const size_t i = entry.find(equalSign);
 			if (i != std::string::npos){
 				if (i == (entry.length()-1)){
-					setValue<M,std::string,STRICT>(dst, entry, ""); // todo: touch
+					if (TRIM){
+						setValue<M,std::string,STRICT>(dst, StringTools::trim(entry, trimChars), ""); // todo: touch
+					}
+					else {
+						setValue<M,std::string,STRICT>(dst, entry, ""); // todo: touch
+					}
 				}
 				else {
-					setValue<M,std::string,STRICT>(dst, entry.substr(0, i), entry.substr(i+1));
+					if (TRIM){
+						setValue<M,std::string,STRICT>(dst, StringTools::trim(entry.substr(0, i)), StringTools::trim(entry.substr(i+1)));
+					}
+					else {
+						setValue<M,std::string,STRICT>(dst, entry.substr(0, i), entry.substr(i+1));
+					}
 				}
 			}
 			else {
@@ -417,10 +436,10 @@ public:
 	 */
 	template <class M, bool STRICT=true>
 	static
-	void setValues(M & dst, const std::string & values, char split=',', char equals='=') {
+	void setValues(M & dst, const std::string & values, char split=',', char equals='=', const std::string & trimChars = "") {
 		std::list<std::string> l;
 		drain::StringTools::split(values, l, split);
-		setValues(dst, l, equals);
+		setValues(dst, l, equals, trimChars);
 	}
 
 	/**

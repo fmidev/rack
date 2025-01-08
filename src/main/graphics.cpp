@@ -197,7 +197,7 @@ drain::image::TreeSVG & RackSVG::getMain(RackContext & ctx){
 	drain::image::TreeSVG & main = ctx.svgTrack["outputs"];
 
 	if (main -> isUndefined()){
-		main->setType(NodeSVG::GROUP);
+		main->setType(svg::GROUP);
 		main->setId("outputs");
 		main->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::RIGHT);
 		main->setAlign(AlignSVG::TOP);   // AlignSVG::TOP);
@@ -229,7 +229,7 @@ drain::image::TreeSVG & RackSVG::getCurrentGroup(RackContext & ctx){ // what abo
 	drain::image::TreeSVG & group = track[groupName];
 
 	if (group->isUndefined()){
-		group->setType(NodeSVG::GROUP);
+		group->setType(svg::GROUP);
 		group->setId(groupName);
 		group->addClass(drain::image::LayoutSVG::ALIGN_FRAME);
 		/*
@@ -244,12 +244,12 @@ drain::image::TreeSVG & RackSVG::getCurrentGroup(RackContext & ctx){ // what abo
 		*/
 		// group->set("debug", groupName); // debug
 		// if (!track.hasChild(groupName)){  // ctx.svgPanelConf.
-		// drain::image::TreeSVG & group = track[groupName](NodeSVG::GROUP);  // ctx.svgPanelConf.
+		// drain::image::TreeSVG & group = track[groupName](svg::GROUP);  // ctx.svgPanelConf.
 		// group->addClass(drain::image::LayoutSVG::ALIG NED); // not needed?
 		// mout.accept<LOG_WARNING>("added group: '", groupName, "' <= ", groupMapper);
 	}
 
-	return track[groupName](NodeSVG::GROUP); // ctx.svgPanelConf.
+	return track[groupName](svg::GROUP); // ctx.svgPanelConf.
 
 }
 
@@ -260,7 +260,7 @@ drain::image::TreeSVG & RackSVG::getPanel(RackContext & ctx, const drain::FilePa
 	drain::image::TreeSVG & group = getCurrentGroup(ctx)[name];
 
 	if (group->isUndefined()){
-		group->setType(NodeSVG::GROUP);
+		group->setType(svg::GROUP);
 		group->setId(filepath.basename + 'G');
 	}
 
@@ -277,7 +277,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	// For each image an own group is created (for clarity, to contain also title TEXT's etc)
 	/*
 	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
-	drain::image::TreeSVG & group = getCurrentGroup(ctx)[name](NodeSVG::GROUP);
+	drain::image::TreeSVG & group = getCurrentGroup(ctx)[name](svg::GROUP);
 	group->addClass(IMAGE_FRAME);
 	*/
 	mout.attention("filepath:", filepath);
@@ -288,7 +288,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	// TEST
 	panelGroup->setAlignAnchor("image");
 
-	drain::image::TreeSVG & image = panelGroup["image"](NodeSVG::IMAGE); // +EXT!
+	drain::image::TreeSVG & image = panelGroup["image"](svg::IMAGE); // +EXT!
 	image->setId(filepath.basename); // autom.
 	// image->addClass(drain::image::AlignSVG::ANCHOR); -> setAlignAnchor
 	image->set("name", filepath.basename); // Note: without extension
@@ -298,13 +298,13 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	image["title"](drain::image::svg::TITLE) = filepath.basename;
 
 	// DEBUG: (may be fatal for input.sh etc.)
-	// drain::image::NodeSVG::toStream(std::cout, image);
+	// drain::image::svg::toStream(std::cout, image);
 
 
 	if ( ctx.svgDebug > 0){
 		image->set("opacity", 0.5);
 
-		drain::image::TreeSVG & rect = panelGroup["rect"](NodeSVG::RECT);
+		drain::image::TreeSVG & rect = panelGroup["rect"](svg::RECT);
 		rect->set("width",  160); // debug
 		rect->set("height", 100); // debug
 		rect->set("fill", "none"); // just to make sure...
@@ -316,7 +316,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 		rect->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE); // AlignSVG::RIGHT);
 		rect->setAlign(AlignSVG::MIDDLE, AlignSVG::INSIDE); // AlignSVG::MIDDLE);
 
-		drain::image::TreeSVG & rect2 = panelGroup["rect2"](NodeSVG::RECT);
+		drain::image::TreeSVG & rect2 = panelGroup["rect2"](svg::RECT);
 		rect2->set("width",  150); // debug
 		rect2->set("height", 120); // debug
 		rect2->set("fill", "none"); // just to make sure...
@@ -383,11 +383,11 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 
 drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath){ // what about prefix?
 
-	drain::image::TreeSVG & group = getCurrentGroup(ctx); //[filepath.basename+"_Group"](NodeSVG::GROUP);
+	drain::image::TreeSVG & group = getCurrentGroup(ctx); //[filepath.basename+"_Group"](svg::GROUP);
 
-	//drain::image::TreeSVG & imageGroup = group[filepath.basename](NodeSVG::GROUP);
+	//drain::image::TreeSVG & imageGroup = group[filepath.basename](svg::GROUP);
 
-	drain::image::TreeSVG & image = group[filepath.basename](NodeSVG::IMAGE); // +EXT!
+	drain::image::TreeSVG & image = group[filepath.basename](svg::IMAGE); // +EXT!
 	//image->addClass("float", "legend");
 	//image->addClass("MARGINAL", "legend"); MOVED TO: images.cpp
 	image->set("width", svg->get("width", 0));
@@ -399,9 +399,9 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 
 drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::FilePath & filepath, const drain::Frame2D<double> & frame){ // what about prefix?
 
-	drain::image::TreeSVG & group = getCurrentGroup(ctx); //[filepath.basename+"_Group"](NodeSVG::GROUP);
+	drain::image::TreeSVG & group = getCurrentGroup(ctx); //[filepath.basename+"_Group"](svg::GROUP);
 
-	drain::image::TreeSVG & image = group[filepath.basename](NodeSVG::IMAGE); // +EXT!
+	drain::image::TreeSVG & image = group[filepath.basename](svg::IMAGE); // +EXT!
 
 	image->set("width", frame.width);
 	image->set("height", frame.height);
@@ -666,7 +666,7 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 					TreeSVG & child = entry.second;
 					if (child.hasChild("metadata")){
 						TreeSVG & childMetadata = entry.second["metadata"](svg::METADATA);
-						childMetadata -> remove(key);
+						childMetadata -> removeAttribute(key);
 						childMetadata -> addClass("md_pruned");
 					}
 				}

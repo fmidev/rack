@@ -60,15 +60,25 @@ struct svg {
 		UNDEFINED=XML::UNDEFINED,
 		COMMENT=XML::COMMENT,
 		CTEXT=XML::CTEXT,
-		STYLE=XML::STYLE,
 		SCRIPT=XML::SCRIPT,
-		SVG, CIRCLE, DESC, GROUP, LINE, IMAGE, METADATA, POLYGON, RECT, TEXT, TITLE, TSPAN };
+		STYLE=XML::STYLE,
+		STYLE_SELECT=XML::STYLE_SELECT,
+		SVG=10,
+		CIRCLE, DESC, GROUP, LINE, IMAGE, METADATA, POLYGON, RECT, TEXT, TITLE, TSPAN };
 	// check CTEXT, maybe implement in XML
 
 };
 
+} // image::
+
+
+const drain::EnumDict<image::svg::tag_t>::dict_t & getDict();
+
+
 template <>
-const drain::EnumDict<svg::tag_t>::dict_t drain::EnumDict<svg::tag_t>::dict;
+const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict;
+
+namespace image {
 
 // Future option
 class BBoxSVG : public drain::Box<svg::coord_t> {
@@ -98,8 +108,8 @@ public:
   \see drain::TreeXML
 
  */
-//class NodeSVG: public svg, public NodeXML<svg::tag_t>, public AlignAdapterSVG {
-class NodeSVG: public svg, public NodeXML<svg::tag_t>, public AlignAdapterSVG {
+// class NodeSVG: public svg, public NodeXML<svg::tag_t>, public AlignAdapterSVG {
+class NodeSVG: public NodeXML<svg::tag_t>, public AlignAdapterSVG {
 public:
 
 	/// In opening SVG tag, referred to by attribute "xmlns:xlink"
@@ -115,7 +125,7 @@ public:
 
 
 	/// Default constructor. Create a node of given type.
-	NodeSVG(tag_t t = svg::UNDEFINED);
+	NodeSVG(svg::tag_t t = svg::UNDEFINED);
 
 	/// Copy constructor.
 	NodeSVG(const NodeSVG & node);
@@ -126,11 +136,15 @@ public:
 
 	/// Copy data from a node. (Does not copy subtree.)
 	inline
-	NodeSVG & operator=(const NodeSVG & n){
-		if (&n != this){
+	NodeSVG & operator=(const NodeSVG & node){
+		XML::xmlAssignNode(*this, node);
+		/*
+		if (&node != this){
+			XML::xmlAssignNode(*this, node);
 			setType(n.getType()); // 2025
 			drain::SmartMapTools::setValues<map_t>((map_t &)*this, n);
 		}
+		*/
 		return *this;
 	}
 
@@ -191,6 +205,10 @@ public:
 		box.y = point.y;
 	}
 
+	/**
+	 *
+	 *  Future option: std::string args.
+	 */
 	template <typename T>
 	inline
 	void setLocation(const T & x, const T & y){
@@ -204,7 +222,21 @@ public:
 		box.height = frame.height;
 	}
 
+	/**
+	 *
+	 *  Future option: std::string args.
+	 */
+	template <typename T>
+	inline
+	void setFrame(const T & w, const T & h){
+		box.setArea(w, h);
+	}
 
+
+	/**
+	 *
+	 *  Future option: std::string arg, allowing units.
+	 */
 	template <typename T>
 	inline
 	void setWidth(T w){
@@ -216,6 +248,10 @@ public:
 		return box.width;
 	}
 
+	/**
+	 *
+	 *  Future option: std::string arg, allowing units.
+	 */
 	template <typename T>
 	inline
 	void setHeight(T h){
@@ -227,44 +263,6 @@ public:
 		return box.height;
 	}
 
-	/*
-	inline
-	NodeSVG & assign(const std::string &s){
-		return *this;
-	}
-
-
-	/// Set type.
-	inline
-	NodeSVG & assign(const tag_t & type){
-		setType(type);
-		return *this;
-	}
-	*/
-
-	/// Set text (CTEXT).
-	/*
-	inline
-	NodeSVG & assign(const char *s){
-		if (this->typeIs(svg::STYLE)){ // wrong:
-			setStyle(s);
-		}
-		else {
-			setText(s);
-		}
-		return *this;
-	}
-	*/
-
-	/// Set attributes.
-	/*
-	inline
-	NodeSVG & assign(const std::initializer_list<Variable::init_pair_t > &l){
-		set(l);
-		return *this;
-	}
-	*/
-
 
 protected:
 
@@ -273,7 +271,7 @@ protected:
 	 *  Special: for TEXT and SPAN elements, links STYLE[font-size] to bbox.height?
 	 */
 	virtual
-	void handleType(const tag_t & t) override final;
+	void handleType(const svg::tag_t & t) override final;
 
 	virtual
 	void updateAlign() override;
@@ -289,6 +287,7 @@ protected:
 
 };
 
+
 /*
 template <typename P, typename A,typename V>
 void NodeSVG::setAlign(const P & pos, const A & axis,  const V &value){
@@ -297,6 +296,9 @@ void NodeSVG::setAlign(const P & pos, const A & axis,  const V &value){
 */
 
 }  // image::
+
+// template <>
+// void NodeXML<image::svg::tag_t>::handleType(const image::svg::tag_t & type);
 
 }  // drain::
 
@@ -313,37 +315,58 @@ std::ostream & operator<<(std::ostream &ostr, const drain::image::TreeSVG & tree
 namespace drain {
 
 DRAIN_TYPENAME(image::NodeSVG);
+DRAIN_TYPENAME(image::svg::tag_t);
 
 
 template <>
+const NodeXML<image::svg::tag_t>::xml_default_elem_map_t NodeXML<image::svg::tag_t>::xml_default_elems;
+
+/*
+template <>
 template <typename K, typename V>
 image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<K,V> > args){
-	// drain::Logger mout(__FILE__, __FUNCTION__);
-	// mout.attention("initlist pair<K,V>: ", args);
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.attention("initlist pair<K,V>: ", args);
 	data.set(args); // what about TreeSVG & arg
 	return *this;
 }
+*/
 
+/*
 template <> // referring to Tree<NodeSVG>
 image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const char *> > l);
+*/
+
+template <> // referring to Tree<NodeSVG>
+inline
+image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
+	return XML::xmlAssign(*this, l);
+}
 
 
 template <>
 template <class T>
 image::TreeSVG & image::TreeSVG::operator=(const T & arg){
+	return XML::xmlAssign(*this, arg);
 	/*
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.attention("single-arg:", typeid(T).name());
-	mout.attention("single-arg:", arg);
-	*/
 	data.set(arg); // what about TreeSVG & arg
 	return *this;
+	*/
 }
 
 // Important! Useful and widely used – but  fails with older C++ compilers ?
 template <>
 template <>
-image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
+inline
+image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type){
+		return XML::xmlSetType(*this, type);
+}
+
+template <>
+inline
+image::TreeSVG & image::TreeSVG::addChild(const image::TreeSVG::key_t & key){
+	return XML::xmlAddChild(*this, key);
+}
 
 
 

@@ -150,7 +150,7 @@ public:
 	 *
 	 */
 	static
-	bool computeBoundingBox(const TreeSVG & group, drain::Box<NodeSVG::coord_t> & box);
+	bool computeBoundingBox(const TreeSVG & group, drain::Box<svg::coord_t> & box);
 
 	/// Compute bounding box and set the top-level SVG width, height and viewBox properties.
 	/**
@@ -204,7 +204,7 @@ class TranslatorSVG : public drain::TreeVisitor<TreeSVG> {
 
 public:
 
-	const Point2D<NodeSVG::coord_t> offset;
+	const Point2D<svg::coord_t> offset;
 
 	template <class T>
 	inline
@@ -221,7 +221,7 @@ class BBoxRetrieverSVG : public drain::TreeVisitor<TreeSVG> {
 public:
 
 	BBoxSVG box;
-	// Box<NodeSVG::coord_t> box;
+	// Box<svg::coord_t> box;
 
 	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
 

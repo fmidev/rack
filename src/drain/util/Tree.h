@@ -186,7 +186,8 @@ public:
 	typedef drain::DRAIN_TREE_NAME<T,EXCLUSIVE,P> tree_t; //,C
 	typedef T node_data_t;
 	typedef P path_t;
-	typedef typename path_t::elem_t key_t;
+	typedef typename path_t::elem_t key_t; // deprecating?
+	typedef typename path_t::elem_t path_elem_t;
 
 	typedef std::pair<key_t,tree_t> pair_t;
 
@@ -218,7 +219,7 @@ public:
 	// AMBIVALUED
 	virtual inline
 	bool hasMultipleData() const {
-		// Reteurn false, if own, local data
+		// Return false, if own, local data (explain ??)
 		return data.empty();
 	};
 
@@ -282,17 +283,6 @@ public:
 		#endif
 	}
 
-	/*
-	static inline
-	const std::string className(){
-		const std::string s = drain::StringBuilder<>(
-				isOrdered()?"Ordered":"Unordered",
-						isMulti()?"Multi":"","Tree",
-								isExclusive()?"(Exclusive)":"",
-										'<', drain::Type::call<drain::simpleName>(typeid(node_data_t)), '>');
-		return s;
-	}
-	*/
 
 	/// Copies the data of another node. Does not copy the children.
 	/**
@@ -363,13 +353,14 @@ public:
 	}
 
 
-	/// 2025/01 experimental.
+
+	/// Assign tree structure (of depth one).
 	/**
 	 *   Default implementation: assign new nodes (children).
 	 *
 	 */
 	template <typename K, typename V>
-	inline
+	inline  // 2025/01 experimental.
 	tree_t & operator=(std::initializer_list<std::pair<K,V> > l){
 		for (const auto & entry: l){
 			*this << entry;
@@ -377,12 +368,32 @@ public:
 		return *this;
 	}
 
-	/// 2025/01 experimental.
-	inline
+	/// Assign tree structure (of depth one).
+	/**
+	 *   Default implementation: assign new nodes (children).
+	 *
+	 */
+	inline 	// 2025/01 experimental.
 	tree_t & operator=(std::initializer_list<std::pair<const char *,const char *> > l){
 		for (const auto & entry: l){
 			*this << entry;
 		}
+		return *this;
+	}
+
+	/// Assign data.
+	/**
+	 *  If init list elements are not pairs, assign it to node data.
+	 *
+	 *  2025/01 experimental.
+	 */
+	template <typename V>
+	inline
+	tree_t & operator=(const std::initializer_list<V> & l){
+		if (EXCLUSIVE){
+			clearChildren();
+		}
+		this->data = l;
 		return *this;
 	}
 
@@ -401,8 +412,7 @@ public:
 	}
 	*/
 
-	/// Experimental. Given pair<elem, data> assigns child[elem] = data;
-	// typedef std::pair<key_t,node_data_t> node_pair_t;
+	/// Experimental. Given pair(elem, data) assigns child[elem] = data;
 	inline
 	tree_t & operator<<(const node_pair_t & entry){
 		if (EXCLUSIVE){
@@ -413,6 +423,7 @@ public:
 		return child;
 	}
 
+	/*
 	inline
 	tree_t & ensureChild(const node_pair_t & entry){
 		if (hasChild(entry.first)){
@@ -422,6 +433,7 @@ public:
 			return (*this << entry);
 		}
 	}
+	*/
 
 
 	inline

@@ -41,6 +41,79 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 DRAIN_TYPENAME_DEF(image::NodeSVG);
+DRAIN_TYPENAME_DEF(image::svg::tag_t);
+
+/*
+const drain::EnumDict<image::svg::tag_t>::dict_t & getDict(){
+
+	static drain::EnumDict<image::svg::tag_t>::dict_t hidden;
+
+	if (hidden.empty()){
+		hidden =  {
+				{"UNDEFINED", drain::image::svg::UNDEFINED},
+				{"#", drain::image::svg::COMMENT},
+				{"script", drain::image::svg::SCRIPT},
+				{"style", drain::image::svg::STYLE},
+				{"style_select", drain::image::svg::STYLE_SELECT},
+				{"svg", drain::image::svg::SVG},
+				{"circle", drain::image::svg::CIRCLE},
+				{"desc", drain::image::svg::DESC},
+				{"g", drain::image::svg::GROUP},
+				{"image", drain::image::svg::IMAGE},
+				{"line", drain::image::svg::LINE},
+				{"metadata", drain::image::svg::METADATA},
+				{"polygon", drain::image::svg::POLYGON},
+				{"rect", drain::image::svg::RECT},
+				{"style", drain::image::svg::STYLE}, // raise?
+				{"text", drain::image::svg::TEXT},
+				{"title", drain::image::svg::TITLE},
+				{"tspan", drain::image::svg::TSPAN},
+		};
+	}
+
+	return hidden;
+
+}
+*/
+
+/*
+template <>
+const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict = drain::EnumDict<image::svg::tag_t>::getDict();
+*/
+
+// NEW (slower?)
+
+template <>
+const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict = {
+		{"UNDEFINED", drain::image::svg::UNDEFINED},
+		{"#", drain::image::svg::COMMENT},
+		{"script", drain::image::svg::SCRIPT},
+		{"style", drain::image::svg::STYLE},
+		{"style_select", drain::image::svg::STYLE_SELECT},
+		{"svg", drain::image::svg::SVG},
+		{"circle", drain::image::svg::CIRCLE},
+		{"desc", drain::image::svg::DESC},
+		{"g", drain::image::svg::GROUP},
+		{"image", drain::image::svg::IMAGE},
+		{"line", drain::image::svg::LINE},
+		{"metadata", drain::image::svg::METADATA},
+		{"polygon", drain::image::svg::POLYGON},
+		{"rect", drain::image::svg::RECT},
+		{"style", drain::image::svg::STYLE}, // raise?
+		{"text", drain::image::svg::TEXT},
+		{"title", drain::image::svg::TITLE},
+		{"tspan", drain::image::svg::TSPAN},
+};
+
+// Applied by XML::xmlAddChild()
+template <>
+const NodeXML<drain::image::svg::tag_t>::xml_default_elem_map_t NodeXML<drain::image::svg::tag_t>::xml_default_elems = {
+		{drain::image::svg::STYLE,  drain::image::svg::CTEXT},
+		{drain::image::svg::SCRIPT, drain::image::svg::CTEXT},
+		//{drain::image::svg::SVG, drain::image::svg::GROUP},
+		{drain::image::svg::STYLE, drain::image::svg::STYLE_SELECT},
+};
+
 
 namespace image {
 
@@ -82,50 +155,41 @@ std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
 };
 */
 
-// NEW (slower?)
-template <>
-const drain::EnumDict<svg::tag_t>::dict_t drain::EnumDict<svg::tag_t>::dict = {
-		/*
-		{"UNDEFINED", drain::image::svg::UNDEFINED},
-		{"#", drain::image::svg::COMMENT},
-		{"", drain::image::svg::CTEXT},
-		{"g", drain::image::svg::GROUP},
-		DRAIN_ENUM_ENTRY(drain::image::svg, GROUP),
-		*/
-		/// TODO: complete
-		{"UNDEFINED", drain::image::svg::UNDEFINED},
-		{ "#", drain::image::svg::COMMENT},
-		{ "", drain::image::svg::CTEXT},
-		{   "svg", drain::image::svg::SVG},
-		{  "circle", drain::image::svg::CIRCLE},
-		{  "desc", drain::image::svg::DESC},
-		{ "g", drain::image::svg::GROUP},
-		{ "image", drain::image::svg::IMAGE},
-		{  "line", drain::image::svg::LINE},
-		{  "metadata", drain::image::svg::METADATA},
-		{  "polygon", drain::image::svg::POLYGON},
-		{  "rect", drain::image::svg::RECT},
-		{ "style", drain::image::svg::STYLE}, // raise?
-		{  "text", drain::image::svg::TEXT},
-		{ "title", drain::image::svg::TITLE},
-		{ "tspan", drain::image::svg::TSPAN},
-};
 
 
-NodeSVG::NodeSVG(tag_t t){
+NodeSVG::NodeSVG(svg::tag_t t){
 	// type = (intval_t) svg::UNDEFINED;
-	setType(t);
+	if (t != svg::UNDEFINED){
+		Logger mout(__FILE__, __FUNCTION__);
+		mout.attention("starting");
+		//mout.fail("HEY t=", t, " tag:", getTag(t));
+		type = static_cast<intval_t>(t);
+		mout.warn("arg", (int)t, " -> type: ", type);
+		//handleType(t);
+		setType(t);
+		mout.warn("arg", (int)t, " -> type: ", type);
+		// this->toStr('|', start, end, separator)
+		// mout.warn("ENDing: ", *this);
+	}
+	// drain::EnumDict<image::svg::tag_t>::getDict();
+	//mout.warn("ENDing: ", EnumDict<svg::tag_t>::getDict());
+	//setType(t);
+	//mout.warn("ENDing: ", sprinter(drain::EnumDict<svg::tag_t>::dict));
+	//mout.fail("END type=", type, " tag:", getTag());
 }
 
 //NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), x(0), y(0), width(0), height(0), radius(0) {
 NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), box(0,0,0,0), radius(0) {
-	copyStruct(node, node, *this, LINK); // <-- risky! may link Variable contents?
-	// type = elem_t::UNDEFINED; // = force fresh setType below
+	// RISKY references! copyStruct(node, node, *this, ReferenceMap2::extLinkPolicy::LINK); // <-- risky! may link Variable contents?
+	XML::xmlAssignNode(*this, node);
+	Logger mout(__FILE__, __FUNCTION__);
 	setType(node.getType());
+	mout.warn("node type: ", node.getType(), " -> type: ", type);
 }
 
-
-void NodeSVG::handleType(const tag_t & t) { // setType(const elem_t & t) {
+//template <>
+// void NodeXML<image::svg::tag_t>::handleType(const image::svg::tag_t & t){
+void NodeSVG::handleType(const svg::tag_t & t) { // setType(const elem_t & t) {
 
 	// drain::Logger mout(drain::TypeName<NodeSVG>::str().c_str(), __FUNCTION__);
 	// mout.attention(__FUNCTION__, ": current type=", type, " arg=", t);
@@ -137,18 +201,18 @@ void NodeSVG::handleType(const tag_t & t) { // setType(const elem_t & t) {
 	// type = t;
 
 	switch (t) {
-	case svg::UNDEFINED:
+	case image::svg::UNDEFINED:
 		// case UNDEFINED:
 		break;
-	case svg::COMMENT:
+	case image::svg::COMMENT:
 		// setComment();
 		break;
-	case svg::CTEXT:
+	case image::svg::CTEXT:
 		//case XML::CTEXT:
 		// setText();
 		// tag = "";
 		break;
-	case SVG:
+	case image::svg::SVG:
 		//tag = "svg";
 		//link("x", box.x = 0);
 		//link("y", box.y = 0);
@@ -160,13 +224,13 @@ void NodeSVG::handleType(const tag_t & t) { // setType(const elem_t & t) {
 		link("xmlns:svg", NodeSVG::svg);
 		link("xmlns:xlink", NodeSVG::xlink);
 		break;
-	case TITLE:
+	case image::svg::TITLE:
 		//tag = "title";
 		break;
-	case GROUP:
+	case image::svg::GROUP:
 		// tag = "g";
 		break;
-	case RECT:
+	case image::svg::RECT:
 		// tag = "rect";
 		link("x", box.x = 0);
 		link("y", box.y = 0);
@@ -175,13 +239,13 @@ void NodeSVG::handleType(const tag_t & t) { // setType(const elem_t & t) {
 		// link("width", width = "0");
 		// link("height", height = "0");
 		break;
-	case CIRCLE:
+	case image::svg::CIRCLE:
 		// tag = "circ";
 		link("cx", box.x = 0);
 		link("cy", box.y = 0);
 		link("r", radius = 0);
 		break;
-	case IMAGE:
+	case image::svg::IMAGE:
 		// tag = "image";
 		link("x", box.x = 0);
 		link("y", box.y = 0);
@@ -194,21 +258,21 @@ void NodeSVG::handleType(const tag_t & t) { // setType(const elem_t & t) {
 		// if (version > 2.x ?) {
 		//link("href", text_anchor);
 		break;
-	case TEXT:
+	case image::svg::TEXT:
 		// tag = "text";
 		link("x", box.x = 0);
 		link("y", box.y = 0);
 		// style.link("font-size", this->box.height); // Not good, shows zero size
 		// link("text-anchor", text_anchor = "");
 		break;
-	case TSPAN:
+	case image::svg::TSPAN:
 		// style.link("font-size", this->box.height); // Not good, shows zero size
 		break;
 	default:
 		return;
 	}
 
-	//link("pos", box.getLocation().tuple());
+	// link("pos", box.getLocation().tuple());
 	// link("frm", box.getFrame().tuple());
 	// DEPRECATING: see separate STYLE and CLASS?
 	// link("style", style = "");
@@ -251,41 +315,10 @@ void NodeSVG::updateAlign(){
 
 }
 
-/*
-std::ostream & NodeSVG::toStream(std::ostream &ostr, const TreeSVG & tree){
-	NodeXML::toStream(ostr, tree);
-	return ostr;
-}
-*/
 
 
 }  // image::
 
 }  // drain::
 
-// Important! Useful and widely used – but  fails with older C++ compilers ?
-template <>
-template <>
-drain::image::TreeSVG & drain::image::TreeSVG::operator()(const drain::image::svg::tag_t & type){
-	this->data.setType(type);
-	return *this;
-}
-
-template <> // referring to Tree<NodeSVG>
-drain::image::TreeSVG & drain::image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
-	// drain::Logger mout(__FILE__, __FUNCTION__);
-	// mout.attention("cchar* initlist:", sprinter(l));
-	for (const auto & entry: l){
-		data.setAttribute(entry.first, entry.second);
-	}
-	return *this;
-}
-/*
-template <>
-template <>
-drain::image::TreeSVG & drain::image::TreeSVG::operator()(const std::string & text){
-	this->data.ctext = text;
-	return *this;
-}
-*/
 

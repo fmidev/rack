@@ -53,7 +53,19 @@ NodeHTML::xmldoc_attrib_map_t NodeHTML::xml_node_t::xmldoc_attribs = {
 		{"data-remark", "html"}
 };
 
-#define DRAIN_ENUM_ENTRY2(nspace, key) {std::tolower( ( #key ) ), nspace::key}
+// Applied by XML::xmlAddChild()
+template <>
+const NodeXML<BaseHTML::tag_t>::xml_default_elem_map_t NodeXML<BaseHTML::tag_t>::xml_default_elems = {
+		{BaseHTML::STYLE,  BaseHTML::CTEXT},
+		{BaseHTML::SCRIPT, BaseHTML::CTEXT},
+		{BaseHTML::BODY, BaseHTML::P}, // not sure about this
+		{BaseHTML::UL, BaseHTML::LI},
+		{BaseHTML::OL, BaseHTML::LI},
+		{BaseHTML::TABLE, BaseHTML::TR},
+		{BaseHTML::TR, BaseHTML::TD},
+};
+
+// #define DRAIN_ENUM_ENTRY2(nspace, key) {std::tolower( ( #key ) ), nspace::key}
 
 
 
@@ -79,8 +91,9 @@ const drain::EnumDict<BaseHTML::tag_t>::dict_t drain::EnumDict<BaseHTML::tag_t>:
 		{"undefined", drain::BaseHTML::UNDEFINED},
 		{"#comment", drain::BaseHTML::COMMENT},
 		{"#ctext", drain::BaseHTML::CTEXT},
-		{"style", drain::BaseHTML::STYLE},
 		{"script", drain::BaseHTML::SCRIPT},
+		{"style", drain::BaseHTML::STYLE},
+		{"style_select", drain::BaseHTML::STYLE_SELECT},
 		{"html", drain::BaseHTML::HTML},
 		{"head", drain::BaseHTML::HEAD},
 		{"body", drain::BaseHTML::BODY},
@@ -150,19 +163,23 @@ std::map<NodeHTML::tag_t,std::string> NodeHTML::xml_node_t::tags = {
 */
 
 NodeHTML::NodeHTML(const tag_t & t) : xml_node_t() {
-	this->type = BaseHTML::UNDEFINED;
+	// this->type = BaseHTML::UNDEFINED;
 	setType(t);
 };
 
 NodeHTML::NodeHTML(const NodeHTML & node) : xml_node_t() { // NOTE: super class default constr -> does not call copyStruct
+	copyStruct(node, node, *this, ReferenceMap2::extLinkPolicy::LINK);
+	setType(node.getType());
+	/*
 	copyStruct(node, node, *this, xml_node_t::RESERVE); // This may corrupt (yet unconstructed) object?
 	this->type = BaseHTML::UNDEFINED;
 	setType(node.getType());
+	*/
 }
 
 void NodeHTML::handleType(const tag_t &t){
 
-	link("id", id);
+	// link("id", id);
 
 	//case NodeXML<>::CTEXT:
 	//case NodeXML<>::UNDEFINED:
@@ -221,7 +238,7 @@ bool NodeXML<BaseHTML::tag_t>::isSelfClosing() const {	/// Set of NOT self.closi
 const FileInfo NodeHTML::fileInfo("html");
 
 // Experimental
-
+/*
 template <>
 TreeHTML & TreeHTML::addChild(const TreeHTML::key_t & key){
 	if (key.empty()){
@@ -235,7 +252,7 @@ TreeHTML & TreeHTML::addChild(const TreeHTML::key_t & key){
 		return (*this)[key];
 	}
 }
-
+*/
 /*
 	drain::Logger mout(__FILE__,__FUNCTION__);
 	mout.unimplemented("replace TreeHTML::addChild");

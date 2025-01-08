@@ -234,15 +234,15 @@ void CmdOutputPanel::exec() const {
 
 	const std::string s = filename.empty() ? layout+".svg" : filename;
 
-	if (!NodeSVG::fileInfo.checkPath(s)){ // .svg
+	if (!svg::fileInfo.checkPath(s)){ // .svg
 		mout.fail("suspicious extension for SVG file: ", s);
-		mout.advice("extensionRegexp: ", NodeSVG::fileInfo.extensionRegexp);
+		mout.advice("extensionRegexp: ", svg::fileInfo.extensionRegexp);
 	}
 
 	drain::Output ofstr(s);
 	mout.note("writing SVG file: '", s, "");
 	// ofstr << svg;
-	NodeSVG::toStream(ofstr, svg);
+	svg::toStream(ofstr, svg);
 
 
 }
@@ -453,7 +453,7 @@ public:
 
 		drain::Frame2D<double> frame = {400,500};
 
-		drain::image::TreeSVG & group = RackSVG::getCurrentGroup(ctx)[value](NodeSVG::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentGroup(ctx)[value](svg::GROUP);
 		group->setId(value);
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
 		const std::string ANCHOR_ELEM("anchor-elem");
@@ -471,7 +471,7 @@ public:
 
 
 
-		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](NodeSVG::RECT); // +EXT!
+		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
 		rect->set("width", frame.width);
 		rect->set("height", frame.height);
 		rect->set("label", ANCHOR_ELEM);
@@ -516,7 +516,7 @@ public:
 						//const std::string label = drain::StringBuilder<'-'>(posHorzRef, posVertRef, posHorz, posVert, '-', ph, pv, rh, rv);
 						const std::string label = drain::StringBuilder<'-'>(ph, pv, rh, rv);
 
-						drain::image::TreeSVG & text = group[label + "text"](NodeSVG::TEXT);
+						drain::image::TreeSVG & text = group[label + "text"](svg::TEXT);
 						text->setId(label+"_T");
 						text->getBoundingBox().setArea(60,30);
 						text->setAlign(AlOwner::ANCHOR, AlignBase::HORZ, posHorzRef);
@@ -525,7 +525,7 @@ public:
 						text->setAlign(AlOwner::OBJECT, AlignBase::VERT, posVert);
 						text->setText(label);
 
-						drain::image::TreeSVG & textBox = group[label](NodeSVG::RECT);
+						drain::image::TreeSVG & textBox = group[label](svg::RECT);
 						textBox->setId(label+"_R");
 						textBox->getBoundingBox().setArea(60,30);
 						//textBox->set("mika", textBox->getAlignStr()); // textBox->set("mika", textBox->getAlignStr());
@@ -540,7 +540,7 @@ public:
 						//textBox->addClass(LayoutSVG::FLOAT);
 
 						//text->addClass(LayoutSVG::FLOAT);
-						// drain::image::TreeSVG & textSpan = text["tspan"](NodeSVG::TSPAN);
+						// drain::image::TreeSVG & textSpan = text["tspan"](svg::TSPAN);
 						// textSpan->setText(text->getAlignStr());
 
 					}
@@ -574,7 +574,7 @@ public:
 		// TreeSVG & headerRect = headerGroup["headerRect"](svg::RECT);
 		//headerGroup->setAlignAnchor("headerRect2");
 
-		TreeSVG & rectTitle = headerGroup["headerRect"](NodeSVG::RECT); // +EXT!
+		TreeSVG & rectTitle = headerGroup["headerRect"](svg::RECT); // +EXT!
 		// rectTitle->set("name","headerRec_2");
 		// rectTitle->set("height", 60);
 		rectTitle->setHeight(70);
@@ -605,7 +605,7 @@ public:
 		rectTitle->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
 		*/
 
-		drain::image::TreeSVG & mainTitleText = headerGroup["GENERAL"](NodeSVG::TEXT);
+		drain::image::TreeSVG & mainTitleText = headerGroup["GENERAL"](svg::TEXT);
 		mainTitleText->setText(value);
 		mainTitleText->setAlign(AlignSVG::MIDDLE);
 		mainTitleText->setAlign(AlignSVG::CENTER);
@@ -614,7 +614,7 @@ public:
 		mainTitleText->setStyle("font-size", 20);
 
 		//TreeSVG & timeHeader = group["TIME"](svg::TEXT);
-		drain::image::TreeSVG & text1 = headerGroup["TIME"](NodeSVG::TEXT);
+		drain::image::TreeSVG & text1 = headerGroup["TIME"](svg::TEXT);
 		text1->setText(value);
 		// text1->setAlign(AlignSVG::LEFT);
 		text1->setAlign(AlignSVG::BOTTOM);
@@ -624,7 +624,7 @@ public:
 		text1->setText(value+"+1");
 		text1->addClass(LayoutSVG::FLOAT);
 
-		drain::image::TreeSVG & text2 = headerGroup["LOCATION"](NodeSVG::TEXT);
+		drain::image::TreeSVG & text2 = headerGroup["LOCATION"](svg::TEXT);
 		text2->setText(value);
 		text2->setAlign(AlignSVG::RIGHT);
 		text2->setAlign(AlignSVG::TOP);
@@ -654,7 +654,7 @@ public:
 
 		drain::Frame2D<double> frame = {150,480};
 
-		drain::image::TreeSVG & group = RackSVG::getCurrentGroup(ctx)[value](NodeSVG::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentGroup(ctx)[value](svg::GROUP);
 		group->setId(value);
 		group->addClass(LayoutSVG::FLOAT);
 
@@ -682,7 +682,7 @@ public:
 			group->setAlign(AlignSVG::TOP, AlignSVG::INSIDE); // AlignSVG::BOTTOM);
 		}
 
-		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](NodeSVG::RECT); // +EXT!
+		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
 		rect->set("width", frame.width);
 		//rect->set("width", 10); //margin!
 		rect->set("height", frame.height);
@@ -691,7 +691,7 @@ public:
 		rect->setStyle("opacity", 0.5);
 		rect->setId("textRect");
 
-		drain::image::TreeSVG & rectTitle = group["title"](NodeSVG::RECT); // +EXT!
+		drain::image::TreeSVG & rectTitle = group["title"](svg::RECT); // +EXT!
 		// rectTitle->set("width", 50);
 		rectTitle->set("height", 60);
 		rectTitle->setStyle("fill", "green");
@@ -701,7 +701,7 @@ public:
 		rectTitle->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
 		//rectTitle->setAlign(AlignSVG::HORZ_FILL);
 
-		drain::image::TreeSVG & rectV = group["title2"](NodeSVG::RECT); // +EXT!
+		drain::image::TreeSVG & rectV = group["title2"](svg::RECT); // +EXT!
 		rectV->set("width", 25);
 		rectV->setStyle("fill", "red");
 		rectV->setStyle("opacity", 0.5);
@@ -710,7 +710,7 @@ public:
 		rectV->setAlign(AlignSVG::Owner::OBJECT, AlignBase::VERT, AlignBase::Pos::FILL);
 
 		/*
-		drain::image::TreeSVG & textGroup = group["text-group"](NodeSVG::GROUP);
+		drain::image::TreeSVG & textGroup = group["text-group"](svg::GROUP);
 		textGroup->set("width", frame.width);
 		textGroup->set("height", frame.height);
 		textGroup->setId("textGroup");
@@ -738,8 +738,8 @@ public:
 
 			index += 15;
 			// for (const std::string & s: args){
-			// drain::image::TreeSVG & text = group[s + "_text"](NodeSVG::TEXT);
-			drain::image::TreeSVG & text = group.addChild()(NodeSVG::TEXT);
+			// drain::image::TreeSVG & text = group[s + "_text"](svg::TEXT);
+			drain::image::TreeSVG & text = group.addChild()(svg::TEXT);
 			//text->setId(drain::StringBuilder<'_'>("textline", ++index));
 			text->setId("textline", index);
 			text->setText(s);
@@ -800,13 +800,17 @@ public:
 
 		// Haaste 2: (huom. UNDEFINED elem)
 		style["TD"] = {};
-		style["TD"] = {{"fill", "black"}, {"stroke","TD..."} };
+		style["TD"] = {{"fill", "cyan"}, {"stroke","TD..."} };
 		style["TD"] = "fill:yellow;text-anchor:panchor";
 
 		// FIX: attribuuteista heti seis!
-		style = {{"fill", "black"}, {"stroke","STYLE..."} };
+		style = {{"DIV", "fill:blacko"}, {"SPAN","stroke:mäki"} };
 
 		/**  Haaste:
+		 *
+		 *   Ratkaisu
+		 *   operator=(std::string)  = CTEXT
+		 *   operator=(list)  = STYLE_SELECTOR
 		 *
 		 */
 
@@ -816,6 +820,9 @@ public:
 			style->setStyle(cssSelector, cssConf+"; setStyle:1");
 			style->set(cssSelector, cssConf+"; attrib:1");
 			style[cssSelector] = cssConf+"; elemOper:1"; // Assings string to CTEXT !? problem!
+			//std::list<std::string> args;
+			drain::SmartMapTools::setValues(style[cssSelector+"MIKA"]->getAttributes(), cssConf, ';', ':');
+			style[cssSelector+"MIKA2"]->getAttributes().setValues(cssConf, ':', ';');
 			// style[cssSelector].data = {{"koe", "black"}};      // OK but parallel..
 			//drain::TreeUtils::dump(ctx.svgTrack);
 		}

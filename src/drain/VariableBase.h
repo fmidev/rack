@@ -368,7 +368,7 @@ protected:
 
 	template <class ...TT>
 	void init(const TT& ...args){
-		std::cerr << __FILE__ << ':' << __LINE__ << __FUNCTION__ << " (variadic args)" << std::endl;
+		// std::cerr << __FILE__ << ':' << __LINE__ << __FUNCTION__ << " (variadic args)" << std::endl;
 		this->reset();
 		this->append(args...);
 	}

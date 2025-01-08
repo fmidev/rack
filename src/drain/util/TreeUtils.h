@@ -175,7 +175,9 @@ public:
 		//if (nodes){
 		if (callBack != nullptr){ // nodes){
 			// std::stringstream sstr;
-			if (tree.empty() || !tree.isExclusive()){
+			// if ((!tree.hasChildren()) || !tree.isExclusive()){
+			if (! (tree.isExclusive() && tree.hasChildren())){
+			// if (tree.empty()){
 				// if (empty || !tree.isExclusive()){
 				empty = (*callBack)(tree.data, ostr);
 				//if (sstr.LENGTH)

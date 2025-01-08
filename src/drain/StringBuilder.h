@@ -59,6 +59,11 @@ class StringBuilder : public std::string {
 
 public:
 
+	/// Faster short-cut for single-arg initialization.
+	StringBuilder(const std::string & arg="") : std::string(arg){
+	}
+
+
 	template<typename ... TT>
 	StringBuilder(const TT &... args){
 		create(args...);
@@ -89,6 +94,10 @@ public:
 		return *this;
 	}
 
+	/// For explicit string cast, esp. for (skipping) template deduction.
+	const std::string & str() const {
+		return *this;
+	}
 
 protected:
 

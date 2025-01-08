@@ -59,8 +59,9 @@ struct BaseHTML {
 		UNDEFINED=NodeXML<>::UNDEFINED,
 		COMMENT=NodeXML<>::COMMENT,
 		CTEXT=NodeXML<>::CTEXT,
-		STYLE=NodeXML<>::STYLE,
 		SCRIPT=NodeXML<>::SCRIPT,
+		STYLE=NodeXML<>::STYLE,
+		STYLE_SELECT=NodeXML<>::STYLE_SELECT,
 		HTML,
 		HEAD, BASE, LINK, META, TITLE,
 		BODY, A, BR, CAPTION, DIV, H1, H2, H3, HR, IMG, LI, OL, P, SPAN, TABLE, TR, TH, TD, UL};
@@ -102,6 +103,11 @@ public:
 		return *this;
 	}
 	*/
+	inline
+	NodeHTML & operator=(const NodeHTML & node){
+		return XML::xmlAssignNode(*this, node);
+	}
+
 
 	template <class T>
 	inline
@@ -130,7 +136,7 @@ public:
 protected:
 
 	virtual
-	void handleType(const tag_t &t) override;
+	void handleType(const tag_t &t) override final;
 
 };
 
@@ -141,6 +147,18 @@ protected:
  */
 typedef NodeHTML::xml_tree_t TreeHTML;
 
+template <>
+inline
+TreeHTML & TreeHTML::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
+	return XML::xmlAssign(*this, l);
+}
+
+template <>
+template <class T>
+inline
+TreeHTML & TreeHTML::operator=(const T & arg){
+	return XML::xmlAssign(*this, arg);
+}
 
 
 inline
@@ -172,18 +190,23 @@ DRAIN_TYPENAME(BaseHTML::tag_t);
 /** Example/ experimental template specif
 */
 template <>
-TreeHTML & TreeHTML::addChild(const TreeHTML::key_t & key);
+inline
+TreeHTML & TreeHTML::addChild(const TreeHTML::key_t & key){
+	return XML::xmlAddChild(*this, key);
+}
 
+template <>
+const NodeXML<BaseHTML::tag_t>::xml_default_elem_map_t NodeXML<BaseHTML::tag_t>::xml_default_elems;
 
 
 template <>
 template <>
 inline
 TreeHTML & TreeHTML::operator()(const BaseHTML::tag_t & type){
-	this->data.setType(type);
-	return *this;
+	// this->data.setType(type);
+	// return *this;
+	return XML::xmlSetType(*this, type);
 }
-
 
 
 // UTILS... consider to XML ?
@@ -215,7 +238,11 @@ public:
 
 
 	/// Add element of given type. The path key is generated automatically, unless given.
-	static
+	/**
+	 *
+	 *
+	 */
+	static  // compare with TreeHTML::addChild( - is needed?
 	drain::TreeHTML & addChild(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const std::string & key);
 
 	template <class T>

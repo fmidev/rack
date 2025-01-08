@@ -98,17 +98,19 @@ NodeGDAL::NodeGDAL(const tag_t & t){
 
 
 NodeGDAL::NodeGDAL(const NodeGDAL & node){ // , sample(-1)
+	/*
 	type = GDAL::UNDEFINED;
-	copyStruct(node, node, *this);
+	//copyStruct(node, node, *this);
 	setType(node.getType());
+	*/
+	XML::xmlAssignNode(*this, node);
 }
 
 
 //void NodeGDAL::setType(const tag_t & t){
 void NodeGDAL::handleType(const tag_t & t){
 
-	// type = t;
-
+	clear();
 	link("name", name);
 
 	if (t == ROOT){
@@ -119,10 +121,7 @@ void NodeGDAL::handleType(const tag_t & t){
 		link("name",   name); // don't change!  = ""
 	}
 	else { // USER
-		clear(); // clearLinks could be better?
-		//tag = "Item";
-		// link("name", name);
-		// link("role",   role = "");
+		// clear(); // clearLinks could be better?
 	}
 
 	// Logger mout(__FILE__, __FUNCTION__);

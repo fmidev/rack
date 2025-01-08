@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 /*
  * TreeXML.h
  *
@@ -46,6 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/FlexibleVariable.h>
 
 #include "ClassXML.h"
+// #include "UtilsXML.h"
 // #include "Flags.h"
 #include "ReferenceMap.h"
 
@@ -76,113 +77,26 @@ std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
 	return ostr;
 }
 
-// ------To be separated -------------------
+// ------------------------- public UtilsXML,
 
-class UtilsXML {
-
-public:
-
-	/// Tree path type. // TODO: extract from template
-	typedef drain::Path<std::string,'/'> path_t; // consider xml_path_t
-	typedef path_t::elem_t path_elem_t;
-
-	typedef std::list<path_t> path_list_t;
-
-	/// Find the first occurrence of given id using recursive breath-first search.
-	/**
-	 *   By definition, id attributes should be unique.
-	 *
-	 *   \param tree - source element,
-	 *   \param id   - id attribute to be searched for
-	 *   \param result - path of the element with required ID, if found.
-	 *   \param path - start path for the search.
-	 *   \return - \c true, if an element was found.
-	 *
-	 *
-	 */
-	//   This could also be in TreeXMLutilities
-	template <class V>
-	static
-	bool findById(const V & tree, const std::string & tag, typename V::path_t & result, const typename V::path_t & path = path_t());
-
-	/// Find the occurrence(s) of given ID using recursive breath-first search.
-	/**
-	 *   By definition, id attributes should be unique. This function nevertheless returns a list
-	 *   if user wants to handle more than one elements found.
-	 *
-	 *   \param tree - source element,
-	 *   \param id   - id attribute to be searched for
-	 *   \param result - path of pointing to
-	 *   \param path - start path for the search.
-	 *   \return - \c true, if an element was found.
-	 */
-	//   This could also be in TreeXMLutilities
-	template <class V>
-	static
-	bool findById(const V & tree, const std::string & tag, path_list_t & result, const path_t & path = path_t());
-
-	/// Find all the occurrences of given tag type using recursive breath-first search.
-	/// This is a "forward definition" – this could also be in TreeXMLutilities.
-	template <class V, class T>
-	static
-	bool findByTag(const V & tree, const T & tag, path_list_t & result, const path_t & path = path_t());
-
-	/// "Forward definition"
-	//   This could also be in TreeXMLutilities
-	/**
-	 *   \tparam V - XML tree
-	 *
-	 */
-	template <class V, class T>
-	static
-	bool findByTags(const V & tree, const std::set<T> & tags, path_list_t & result, const path_t & path = path_t());
-
-	/// Finds child elements in an XML structure by class name.
-	/**
-	 *   \tparam V - XML tree
-	 *
-	 *	In a way, this is a forward definition – this could also be in TreeXMLutilities.
-	 *
-	 */
-	template <class T2, class C>
-	static
-	bool findByClass(const T2 & t, const C & cls, std::list<path_elem_t> & result);
-
-	/// Finds elements recursively in an XML structure by class name supplied as an enumeration type.
-	/**
-	 *  \tparam V - XML tree
-	 *  \tparam C - enum type, for which a unique (static) EnumDict has been detected.
-	 *	\param path - starting point
-	 */
-	//template <class V, class E>
-	template <class V, class C>
-	static inline
-	bool findByClass(const V & t, const C & cls, path_list_t & result, const path_t & path = path_t());
-
-
-
-
-};
-
-// -------------------------
-
-class XML : public UtilsXML, protected ReferenceMap2<FlexibleVariable> {
+class XML :  protected ReferenceMap2<FlexibleVariable> {
 public:
 
 	typedef int intval_t;
+
+	// TODO:
+	// static const intval_t flag_OPEN = 128;
+	// static const intval_t flag_TEXT = 256;
+
+	static const intval_t UNDEFINED = 0;
+	static const intval_t COMMENT = 1;  // || flag_TEXT
+	static const intval_t CTEXT = 2;  // || flag_TEXT
+	static const intval_t SCRIPT = 3; // || flag_EXPLICIT || flag_TEXT
+	static const intval_t STYLE = 4;  // || flag_EXPLICIT
+	static const intval_t STYLE_SELECT = 5;
+
+
 	intval_t type = XML::UNDEFINED;
-
-
-
-	static const int UNDEFINED = 0;
-	static const int COMMENT = 1;
-	static const int CTEXT = 2;
-	static const int STYLE = 3;
-	static const int STYLE_SELECT = 4;
-	static const int SCRIPT = 5;
-
-	// intval_t type = UNDEFINED;
-
 
 	typedef ReferenceMap2<FlexibleVariable> map_t;
 
@@ -196,18 +110,31 @@ public:
 
 	std::string url;
 
-	template <class V>
-	static inline
-	void attribToStream(std::ostream &ostr, const std::string & key, const V &value){
-		ostr << ' ' << key << '=' << '"' << value << '"'; // << ' ';
-	}
-
+	// Could be templated, behind Static?
 	static int nextID;
-
 
 	inline
 	static int getCount(){
 		return nextID;
+	}
+
+	/// Clear style, class and string data but keep the element type.
+	/**
+	 *  Clears style, classList, cdata.
+	 *
+	 */
+	virtual
+	void clear();
+
+	/// Clear style, class and string data as well as the element type.
+	/**
+	 *  Clears style, classList, cdata.
+	 *
+	 */
+	inline
+	void reset(){
+		clear();
+		type = UNDEFINED;
 	}
 
 	/// Makes ID a visible attribute.
@@ -225,6 +152,7 @@ public:
 		link("id", id = s);
 	}
 
+	/// Concatenates arguments to an id.
 	template <char C='\0', typename ...TT>
 	inline
 	void setId(const TT & ...args) {
@@ -237,7 +165,39 @@ public:
 		return id;
 	}
 
+
+	/// Make this node a comment. Contained tree will not be deleted. In current version, attributes WILL be rendered.
+	/**
+	 *   \param text - if given, replaces current CTEXT.
+	 *
+	 */
+	template <class ...T>
 	inline
+	void setComment(const T & ...args) {
+		this->clear(); // what if also uncommenting needed?
+		// this->clearClasses();
+		type = COMMENT;
+		setText(args...);
+	}
+
+	/// Assign the text content of this node. If the node type is undefined, set it to CTEXT.
+	/**
+	 *   \param text - assigned to text content.
+	 *
+	 *   TODO: strict/exclusive, i.e. non-element behavior
+	 */
+	void setText(const std::string & s);
+
+	template <class ...T>
+	void setText(const T & ...args) {
+		setText(StringBuilder<>(args...).str()); // str() to avoid infinite loop
+	}
+
+
+
+	// ---------------- Attributes ---------------
+
+	virtual inline // shadows - consider virtual
 	bool empty() const {
 		return map_t::empty();
 	}
@@ -253,6 +213,30 @@ public:
 		return *this;
 	};
 
+	// Rename getAttribute?
+	inline
+	const drain::FlexibleVariable & get(const std::string & key) const {
+		return (*this)[key];
+	}
+
+	// Rename getAttribute?
+	inline
+	drain::FlexibleVariable & get(const std::string & key){
+		return (*this)[key];
+	}
+
+
+	// Rename getAttribute?
+	template <class V>
+	inline
+	V get(const std::string & key, const V & defaultValue) const {
+		return map_t::get(key, defaultValue);
+	}
+
+	inline
+	std::string get(const std::string & key, const char * defaultValue) const {
+		return map_t::get(key, defaultValue);
+	}
 
 	/// Default implementation. Needed for handling units in strings, like "50%" or "640px".
 	//   But otherways confusing?
@@ -277,7 +261,7 @@ public:
 
 
 	inline
-	void remove(const std::string & s){
+	void removeAttribute(const std::string & s){
 		iterator it = this->find(s);
 		if (it != this->end()){
 			this->erase(it);
@@ -285,44 +269,116 @@ public:
 	}
 
 
+	// ------------------ Style ---------------
+
+protected:
+
+	StyleXML style;
+
+public:
+
 	inline
-	const drain::FlexibleVariable & get(const std::string & key) const {
-		return (*this)[key];
+	const StyleXML & getStyle() const {
+		return style;
 	}
 
 	inline
-	drain::FlexibleVariable & get(const std::string & key){
-		return (*this)[key];
+	void setStyle(const StyleXML & s){
+		style.clear();
+		SmartMapTools::setValues(style, s);
+	}
+
+	void setStyle(const std::string & value){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		if (type == UNDEFINED){
+			mout.reject<LOG_WARNING>("setting style for UNDEFINED elem: ", value); // *this);
+		}
+		else if (type == STYLE){
+			mout.reject<LOG_WARNING>("setting style for STYLE elem: ", value); // , *this);
+		}
+		else {
+			SmartMapTools::setValues(style, value, ';', ':', "; \t\n");
+			// SmartMapTools::setValues(style, StringTools::trim(value, "; \t\n"), ';', ':');
+		}
+	}
+
+	inline
+	void setStyle(const char *value){
+		setStyle(std::string(value));
+	}
+
+	inline
+	void setStyle(const std::string & key, const std::string & value){
+		this->style[key] = value;
 	}
 
 
+	/// Set style of an element.
+	/**
+	  \code
+	     rect.setStyle("dash-array",{2,5,3});
+	  \endcode
+	 *
+	 */
 	template <class V>
 	inline
-	V get(const std::string & key, const V & defaultValue) const {
-		return map_t::get(key, defaultValue);
+	void setStyle(const std::string & key, const std::initializer_list<V> &l){
+		// const std::initializer_list<Variable::init_pair_t > &l
+		if (type == STYLE){  // typeIs(STYLE) fails
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.warn("Setting style of STYLE?  initializer_list<", drain::TypeName<V>::str(), "> = ", sprinter(l)); // , StyleXML::styleLineLayout ?
+		}
+		this->style[key] = l;
+	}
+
+
+	/// For element/class/id, assign ...
+	/**
+	 *
+	 */
+	template <class V>
+	inline
+	void setStyle(const std::string & key, const V & value){
+
+		if (type == STYLE){
+			drain::Logger(__FILE__, __FUNCTION__).reject<LOG_WARNING>("Setting style of STYLE: ", key, "=", value);
+		}
+		else {
+			this->style[key] = value;
+		}
 	}
 
 	inline
-	std::string get(const std::string & key, const char * defaultValue) const {
-		return map_t::get(key, defaultValue);
+	void setStyle(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
+		drain::SmartMapTools::setValues(style, l);
 	}
 
-	/// Style class
+	template <class S>
+	inline
+	void setStyle(const S &value){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.error("unsupported type ", drain::TypeName<S>::str(), " for value: ", value);
+	}
+
+
+	// ------------------ Style Class ---------------
+
+protected:
+
+	ClassListXML classList;
+
+public:
+
+	const ClassListXML & getClasses() const {
+		return classList;
+	}
+
 
 	template <typename ... TT>
 	inline
 	void addClass(const TT &... args) {
 		classList.add(args...);
 	}
-
-	/*
-	template <typename ... TT>
-	inline
-	void addClass(const std::string & s, const TT &... args) {
-		classList.insert(s);
-		addClass(args...);
-	}
-	*/
 
 	/**
 	 *  \tparam V – string or enum type
@@ -343,133 +399,192 @@ public:
 		classList.clear();
 	}
 
-	// ------------------ Style Class ---------------
+// ----------------- Static utilities for derived classes ----------------------
+
+	template <class V>
+	static inline
+	void xmlAttribToStream(std::ostream &ostr, const std::string & key, const V &value){
+		ostr << ' ' << key << '=' << '"' << value << '"'; // << ' ';
+	}
+
+	/// Assign another tree structure to another
+	/**
+	 *  \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
+	 */
+	template <typename XML>
+	static inline
+	XML & xmlAssign(XML & dst, const XML & src){
+
+		if (&src != &dst){
+			dst.clear();
+			// also dst->clear();
+			dst->setType(src->getType());
+			dst->ctext = src->ctext;
+			dst->getAttributes() = src->getAttributes();
+		}
+
+		return dst;
+	}
+
+	/// Assign another tree structure to another
+	/**
+	 *  \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
+	 */
+	template <typename X>
+	static inline
+	X & xmlAssign(X & dst, const typename X::xml_node_t & src){
+
+		if (&src != &dst.data){
+			dst->clear();
+			dst->getAttributes().importMap(src.getAttributes());
+			dst->setStyle(src.getStyle());
+			dst->setText(src.ctext);
+		}
+
+		return dst;
+	}
+
+	/// Assign another tree structure to another
+	/**
+	 *  \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
+	 *
+	 *  \see clear()
+	 */
+	template <typename X>
+	static inline
+	X & xmlAssignNode(X & dst, const X & src){
+
+		if (&src != &dst){
+			//dst.clear(); // clear attributes,
+			dst.reset(); // clear attributes, style, cstring and type.
+			dst.setType(src.getType()); // important: creates links!
+			dst.getAttributes().importMap(src.getAttributes());
+			dst.setStyle(src.getStyle());
+			dst.ctext = src.ctext;
+		}
+
+		return dst;
+	}
+
+	/// Assign another tree structure to another
+	/**
+	 *  \tparam T - XML tree
+	 */
+	template <typename XML, typename V>
+	static inline
+	XML & xmlAssign(XML & tree, const V & arg){
+		tree->set(arg);
+		return tree;
+	}
+
+	/// Tree
+	/**
+	 *
+	 */
+	template <typename T>
+	static
+	T & xmlAssign(T & tree, std::initializer_list<std::pair<const char *,const char *> > l){
+
+		switch (static_cast<intval_t>(tree->getType())){
+		case STYLE:
+			for (const auto & entry: l){
+				T & elem = tree[entry.first];
+				elem->setType(STYLE_SELECT);
+				drain::SmartMapTools::setValues(elem->getAttributes(), entry.second, ';', ':', std::string(" \t\n"));
+			}
+			break;
+		case UNDEFINED:
+			tree->setType(STYLE_SELECT);
+			// no break
+		case STYLE_SELECT:
+		default:
+			tree->set(l);
+			break;
+		}
+
+		return tree;
+	};
 
 
-	ClassListXML classList;
+	///
+	/**
+	 *   Forward definition – type can be set only upon construction of a complete
+	 *
+	 */
+	template <typename T>
+	static inline
+	T & xmlSetType(T & tree, const typename T::node_data_t::xml_tag_t & type){
+		tree->setType(type);
+		return tree;
+	}
 
 
-	StyleXML style;
+
+	/**
+	 *
+	 *  TODO: add default type based on parent group? defaultChildMap TR->TD
+	 *
+	 */
+	template <typename T>
+	static
+	T & xmlAddChild(T & tree, const std::string & key){
+		typename T::node_data_t::xml_tag_t type = xmlGuessType(tree.data);
+
+		if (!key.empty()){
+			return tree[key](type);
+		}
+		else {
+			std::stringstream k("elem");
+			k.width(3);
+			k.fill('0');
+			k << tree.getChildren().size();
+			return tree[k.str()](type);
+			//return xmlGuessType(tree.data, tree[k.str()]);
+			/*
+			T & child = tree[k.str()];
+			typedef typename T::node_data_t::xml_default_elem_map_t map_t;
+			const typename map_t::const_iterator it = T::node_data_t::xml_default_elems.find(tree->getNativeType());
+			if (it != T::node_data_t::xml_default_elems.end()){
+				child->setType(it->second);
+				drain::Logger(__FILE__, __FUNCTION__).experimental<LOG_WARNING>("Default type set: ", child->getTag());
+			}
+			// NodeXML<drain::image::svg::tag_t>::xml_default_elem_map_t
+			return child;
+			*/
+		}
+	}
+
+	template <typename N>
+	static
+	typename N::xml_tag_t xmlGuessType(const N & parentNode){
+		typedef typename N::xml_default_elem_map_t map_t;
+		const typename map_t::const_iterator it = N::xml_default_elems.find(parentNode.getNativeType());
+		if (it != N::xml_default_elems.end()){
+			return (it->second);
+		}
+		else {
+			return static_cast<typename N::xml_tag_t>(0);
+		}
+	}
+
+	/*
+	template <typename T>
+	static
+	T & xmlGuessType(const typename T::node_data_t & parentNode, T & child){
+		typedef typename T::node_data_t::xml_default_elem_map_t map_t;
+		const typename map_t::const_iterator it = T::node_data_t::xml_default_elems.find(parentNode.getNativeType());
+		if (it != T::node_data_t::xml_default_elems.end()){
+			child->setType(it->second);
+			drain::Logger(__FILE__, __FUNCTION__).experimental<LOG_WARNING>("Default type set: ", child->getTag());
+		}
+		return child;
+	}
+	*/
 
 
 };
 
 
-
-
-template <class T>
-bool UtilsXML::findById(const T & t, const std::string & id, typename T::path_t & result, const typename T::path_t & path){
-
-	if (t->id == id){
-		result = path;
-		return true;
-	}
-
-	// Recursion
-	for (const auto & entry: t){
-		if (findById(entry.second, id, result, path_t(path, entry.first))){
-			return true;
-		}
-	}
-
-	return false;
-	//return !result.empty();
-}
-
-
-
-template <class T>
-bool UtilsXML::findById(const T & t, const std::string & id, UtilsXML::path_list_t & result, const path_t & path){
-
-	if (t->id == id){
-		result.push_back(path);
-	}
-
-	for (const auto & entry: t){
-		findById(entry.second, id, result, path_t(path, entry.first));
-	}
-
-	return !result.empty();
-}
-
-/**
- *  \tparam Tree
- */
-//template <class N>
-template <class T, class N>
-bool UtilsXML::findByTag(const T & t, const N & tag, UtilsXML::path_list_t & result, const path_t & path){
-
-	// const T & t = tree(path);
-
-	if (t->typeIs(tag)){
-		result.push_back(path);
-	}
-
-	for (const auto & entry: t){
-		findByTag(entry.second, tag, result, path_t(path, entry.first));
-	}
-
-	//return result;
-	return !result.empty();
-}
-
-/**
- *  \tparam Tree
- */
-//template <class N>
-template <class T,class N>
-bool UtilsXML::findByTags(const T & t, const std::set<N> & tags, UtilsXML::path_list_t & result, const UtilsXML::path_t & path){
-
-	// const T & t = tree(path);
-
-	//if (t->typeIs(tag)){
-	if (tags.count(t->getType()) > 0){
-		result.push_back(path);
-	}
-
-	for (const auto & entry: t){
-		findByTags(entry.second, tags, result, path_t(path, entry.first));
-	}
-
-	//return result;
-	return !result.empty();
-}
-
-
-//template <class N>
-// template <class T>
-//bool NodeXML<N>::findByClass(const T & t, const std::string & cls, NodeXML<>::path_list_t & result, const path_t & path){
-
-template <class T2, class C> // NodeXML<N>
-//bool XML::findByClass(const T2 & t, const C & cls, NodeXML<>::path_list_t & result, const path_t & path){
-bool UtilsXML::findByClass(const T2 & t, const C & cls, UtilsXML::path_list_t & result, const UtilsXML::path_t & path){
-
-	// drain::Logger mout(__FILE__,__FUNCTION__);
-
-	if (t->classList.has(cls)){
-		result.push_back(path);
-	}
-
-	for (const auto & entry: t){
-		// mout.warn(t->get("name", "<name>"), "... continuing to: ", path_t(path, entry.first));
-		findByClass(entry.second, cls, result, path_t(path, entry.first));
-	}
-
-	return !result.empty();
-}
-
-/// Immediate descendants
-template <class T2, class C> //  NodeXML<N>
-bool UtilsXML::findByClass(const T2 & t, const C & cls, std::list<UtilsXML::path_elem_t> & result){
-
-	for (const auto & entry: t){
-		if (entry.second->hasClass(cls)){
-			result.push_back(entry.first);
-		}
-	}
-
-	return !result.empty();
-}
 
 
 

@@ -62,7 +62,46 @@ const int XML::STYLE;
 const int XML::STYLE_SELECT;
 const int XML::SCRIPT;
 
+// reset() clears also the type
+void XML::clear(){
+	map_t::clear();
+	style.clear();
+	ctext.clear();
+}
 
+void XML::setText(const std::string & s) {
 
+	drain::Logger mout(__FILE__,__FUNCTION__);
+
+	// mout.accept<LOG_WARNING>("setting text for elem type=", type, ", text: ", s); // *
+	// TODO: warn if elem supports no ctext (like svg::CIRCLE or svg::RECT)
+
+	switch (type){
+	case XML::STYLE:
+		mout.reject<LOG_WARNING>("setting style for STYLE elem: ", s); // *this);
+		/*
+		mout.warn("setting text to STYLE group - preferably use element-wise"); // remove later, keeping warning in output (write) phase
+		//drain::StringTools::import(s, ctext);
+		drain::SmartMapTools::setValues(style, s, ';', ':', " \t\n");
+		mout.special(s, " -> ", style);
+		*/
+		break;
+	case XML::STYLE_SELECT:
+		mout.info("parsing text to CSS definition");
+		//setValues(s, ':', ';');
+		drain::SmartMapTools::setValues(getAttributes(), s, ';', ':', " \t\n");
+		mout.special(s, " -> ", getAttributes());
+		break;
+	case XML::UNDEFINED:
+		type = CTEXT;
+		// no break
+	case XML::CTEXT:
+	case XML::COMMENT:
+	default:
+		// TODO: check types, somehow...
+		drain::StringTools::import(s, ctext);
+	}
+
+}
 
 }  // drain::

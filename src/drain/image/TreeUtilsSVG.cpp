@@ -58,7 +58,7 @@ bool TreeUtilsSVG::isAbstract(XML::intval_t tag){
 }
 
 // Consider XMl Visitor...
-bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<NodeSVG::coord_t> & box){
+bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<svg::coord_t> & box){
 
 	if (elem->typeIs(svg::SVG) || elem->typeIs(svg::GROUP)){
 		for (const TreeSVG::pair_t & entry: elem){
@@ -110,13 +110,15 @@ void TreeUtilsSVG::finalizeBoundingBox(TreeSVG & svg){
 }
 
 // Consider XMl Visitor...
+/*
 void TreeUtilsSVG::setRelativePaths(drain::image::TreeSVG & object, const drain::FilePath & filepath){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// TODO: add explanation
-	drain::image::NodeSVG::path_list_t pathList;
-	drain::image::NodeSVG::findByTag(object, drain::image::svg::IMAGE, pathList);
+	// drain::TreeXML::path_list_t;
+	std::list<drain::TreeXML::path_t> pathList;
+	drain::UtilsXML::findByTag(object, drain::image::svg::IMAGE, pathList);
 
 	if (!filepath.dir.empty()){
 		const std::string dir = filepath.dir.str()+'/';  // <- consider plain, and remove leading slashes, or add only if non-empty.
@@ -134,7 +136,7 @@ void TreeUtilsSVG::setRelativePaths(drain::image::TreeSVG & object, const drain:
 	}
 
 }
-
+*/
 
 
 
@@ -178,7 +180,7 @@ void TreeUtilsSVG::realignObject(AlignBase::Axis axis, svg::coord_t anchorPos, s
 	Logger mout(__FILE__, __FUNCTION__);
 
 
-	const bool IS_TEXT = object->typeIs(NodeSVG::TEXT);
+	const bool IS_TEXT = object->typeIs(svg::TEXT);
 
 	if (IS_TEXT && (axis==AlignBase::Axis::HORZ)){
 		mout.debug("TEXT start coord = (", coord, ") ");
@@ -219,8 +221,8 @@ void TreeUtilsSVG::realignObject(AlignBase::Axis axis, svg::coord_t anchorPos, s
 			coord += objectSpan;
 		}
 		else {
-			coord -= object->style.get("font-size", 0.0);
-			mout.experimental("Vertical adjust by explicit font-size=", object->style["font-size"]);
+			coord -= object->getStyle().get("font-size", 0.0);
+			mout.experimental("Vertical adjust by explicit font-size=", object->getStyle()["font-size"]);
 		}
 	}
 
@@ -338,11 +340,11 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 
 	BBoxSVG *bboxAnchorHorz = nullptr;
-	const NodeSVG::path_elem_t & anchorElemHorz = object->getAlignAnchorHorz();
+	const TreeSVG::path_elem_t & anchorElemHorz = object->getAlignAnchorHorz();
 	const bool FIXED_ANCHOR_HORZ = !anchorElemHorz.empty();
 
 	BBoxSVG *bboxAnchorVert = nullptr;
-	const NodeSVG::path_elem_t & anchorElemVert = object->getAlignAnchorVert();
+	const TreeSVG::path_elem_t & anchorElemVert = object->getAlignAnchorVert();
 	const bool FIXED_ANCHOR_VERT = !anchorElemVert.empty();
 
 	// Incrementally growing extent (width/height)
@@ -463,10 +465,10 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 void TreeUtilsSVG::translateAll(TreeSVG & object, const Point2D<svg::coord_t> & offset){
 
 	switch (object->getType()){
-	case NodeXML<NodeSVG::tag_t>::STYLE:
-	case NodeSVG::DESC:
-	case NodeSVG::METADATA:
-	case NodeSVG::TITLE:
+	case NodeXML<svg::tag_t>::STYLE:
+	case svg::DESC:
+	case svg::METADATA:
+	case svg::TITLE:
 		return;
 	default:
 		break;

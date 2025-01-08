@@ -155,6 +155,7 @@ public:
 			return empty;
 		}
 		else {
+			drain::Sprinter::sequenceToStream(std::cerr, getContainer(), Sprinter::lineLayout);
 			throw std::runtime_error(drain::StringBuilder<>("key '", key, "' not found"));
 		}
 	}
@@ -177,6 +178,7 @@ public:
 			return empty;
 		}
 		else {
+			drain::Sprinter::sequenceToStream(std::cerr, getContainer(), Sprinter::lineLayout);
 			throw std::runtime_error(drain::StringBuilder<>("value '", value, "' not found"));
 		}
 	}

@@ -1108,11 +1108,11 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 	const int headerHeight = 30;
 	const int lineheight = 20;
 
-	svg->setType(NodeSVG::SVG);
+	svg->setType(svg::SVG);
 	// svg->set("id", title);
 	// TODO font-size:  font-face:
 
-	TreeSVG & background = svg["bg"](NodeSVG::RECT);
+	TreeSVG & background = svg["bg"](svg::RECT);
 	// background->setType(NodeSVG::RECT);
 	background->set("x", 0);
 	background->set("y", 0);
@@ -1122,7 +1122,7 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 	// width and height are set in the end (element slot reserved here,for rendering order)
 
 
-	TreeSVG & header = svg["title"](NodeSVG::TEXT) = title;
+	TreeSVG & header = svg["title"](svg::TEXT) = title;
 	header->set("x", lineheight/4);
 	header->set("y", (headerHeight * 9) / 10);
 	header->setStyle("font-size", 20);
@@ -1145,7 +1145,9 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 			break;
 		}
 	}
-	svg["comment"]->setComment().set("integer", INTEGER);
+	// svg["comment"]->setComment().set("integer", INTEGER);
+	svg["comment"](svg::COMMENT); //.set("integer", INTEGER);
+	svg["comment"] -> set("integer", INTEGER); // ???
 
 	Palette::const_iterator it = begin();
 	std::map<std::string,PaletteEntry>::const_iterator itSpecial = specialCodes.begin();
@@ -1165,18 +1167,18 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 			name.fill('0');
 			name.width(2);
 			name << index;
-			TreeSVG & child = svg[name.str()](NodeSVG::GROUP);
-			//child->setType(NodeSVG::GROUP);
+			TreeSVG & child = svg[name.str()](svg::GROUP);
+			//child->setType(svg::GROUP);
 
-			TreeSVG & t = child["title"](NodeSVG::TITLE) = name.str();
-			// t->setType(NodeSVG::TITLE);
+			TreeSVG & t = child["title"](svg::TITLE) = name.str();
+			// t->setType(svg::TITLE);
 			// t->ctext = name.str(); // + threshold.str();
 
 			//y = up ? height - (index+1) * lineheight : index * lineheight;
 			y = headerHeight + index*lineheight;
 
-			TreeSVG & rect = child["r"](NodeSVG::RECT);
-			// rect->setType(NodeSVG::RECT);
+			TreeSVG & rect = child["r"](svg::RECT);
+			// rect->setType(svg::RECT);
 			rect->set("x", 0);
 			rect->set("y", y);
 			rect->set("width", lineheight*1.7);
@@ -1210,7 +1212,7 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 				else
 					threshold << std::setprecision(precision) << it->first;
 				t->ctext += threshold.str();
-				TreeSVG & thr = child["th"](NodeSVG::TEXT) = threshold.str();
+				TreeSVG & thr = child["th"](svg::TEXT) = threshold.str();
 				thr->set("text-anchor", "end");
 				thr->set("x", lineheight*1.5);
 				thr->set("y", y + lineheight-1);
@@ -1221,7 +1223,7 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 				t->ctext += ' ';
 				t->ctext += entry.label;
 
-				TreeSVG & text = child["t"](NodeSVG::TEXT) = entry.label;
+				TreeSVG & text = child["t"](svg::TEXT) = entry.label;
 				text->set("x", 2*lineheight);
 				text->set("y", y + lineheight-1);
 			}

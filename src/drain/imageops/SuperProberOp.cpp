@@ -109,9 +109,9 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 	mout.attention("limiter=", limit);
 	mout.attention("handler=", superProber.control.handler);
 
-	TreeSVG svg(NodeSVG::SVG);
-	TreeSVG & root = svg["segments"](NodeSVG::GROUP);
-	TreeSVG & img = root["img"](NodeSVG::IMAGE);
+	TreeSVG svg(svg::SVG);
+	TreeSVG & root = svg["segments"](svg::GROUP);
+	TreeSVG & img = root["img"](svg::IMAGE);
 
 	/* DEBUG dir-steps
 	for (const auto & entry: Direction::offset){
@@ -171,7 +171,7 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 			superProber.clear();
 
 			if (debug > 1){
-				superProber.probe2(pos, Direction::NONE, root[debugLabel.str()](NodeSVG::POLYGON));
+				superProber.probe2(pos, Direction::NONE, root[debugLabel.str()](svg::POLYGON));
 			}
 			else {
 				//superProber.probe2(pos, Direction::RIGHT, root);
