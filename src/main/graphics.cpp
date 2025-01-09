@@ -96,12 +96,22 @@ void CmdBaseSVG::createTitleBox(TreeSVG & tree){
 }
 	*/
 
+
+/*
+ *
+ *  \see drain::XML::setStyle()
+ *  \see drain::XML::xmlAssign()
+ */
 drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
+
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	TreeSVG & style = ctx.svgTrack["style"];
 
 	//if (!ctx.svgTrack.hasChild("style")){
 	if (style->isUndefined()){
+
+		mout.debug("initializing style");
 
 		style->setType(svg::STYLE);
 		//TreeSVG & style = ctx.svgTrack["style"](svg::STYLE);
@@ -130,6 +140,25 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"stroke-linejoin", "round"}
 		};
 
+		// Text
+		style[".TITLE"] = {
+			{"fill", "black"}
+		};
+
+		style["rect.MAINTITLE"] = {
+			{"fill", "darkslateblue"},
+			{"opacity", "0.5"},
+		};
+
+		style["text.MAINTITLE"] = {
+			{"fill", "yellow"},
+		};
+
+		/*
+		rectTitle->setStyle("fill", "gray");
+				rectTitle->setStyle("opacity", 0.5);
+				rectTitle->setStyle({{"stroke","black"}, {"stroke-dasharray",{2,5}}, {"stroke-width","2px"}});
+		*/
 		// Date and time.
 		style[".TIME"].data = {
 				{"fill", "darkred"}
@@ -153,46 +182,6 @@ drain::image::TreeSVG & RackSVG::getMain(RackContext & ctx){
 
 	//TreeSVG & style = ctx.svgTrack["style"](svg::STYLE);
 	RackSVG::getStyle(ctx);
-
-	/*
-	if (!ctx.svgTrack.hasChild("style")){
-
-		TreeSVG & style = ctx.svgTrack["style"](svg::STYLE);
-
-		style["text"] = ("fill:black");
-		//style["text"] = ("stroke:white; stroke-width:0.5em; stroke-opacity:0.25; fill:black; paint-order:stroke; stroke-linejoin:round");
-
-		//style["group.imageFrame > rect"].data = {
-		style["rect.imageFrame"].data = {
-				{"stroke", "black"},
-				{"stroke-opacity", "0.25"},
-				{"stroke-width", "0.3em"}
-		};
-
-		style[".imageTitle"].data = {
-				{"font-size", "1.5em"},
-				{"stroke", "white"},
-				{"stroke-opacity", "0.75"},
-				{"stroke-width", "0.3em"},
-				{"fill", "darkslateblue"},
-				{"fill-opacity", "1"},
-				{"paint-order", "stroke"},
-				{"stroke-linejoin", "round"}
-		};
-
-		// Date and time.
-		style[".TIME"].data = {
-				{"fill", "darkred"}
-		};
-
-		style[".LOCATION"].data = {
-				{"fill", "darkblue"}
-		};
-
-		// style[".imageTitle2"] = "font-size:1.5em; stroke:white; stroke-opacity:0.5; stroke-width:0.3em; fill:darkslateblue; fill-opacity:1; paint-order:stroke; stroke-linejoin:round";
-		// drain::TreeUtils::dump(ctx.svgTrack);
-	}
-	*/
 
 	drain::image::TreeSVG & main = ctx.svgTrack["outputs"];
 
@@ -253,33 +242,34 @@ drain::image::TreeSVG & RackSVG::getCurrentGroup(RackContext & ctx){ // what abo
 
 }
 
+/// For each image an own group is created (for clarity, to contain also title TEXT's etc)
+/**
+ *
+ */
 drain::image::TreeSVG & RackSVG::getPanel(RackContext & ctx, const drain::FilePath & filepath){
 
 	// For each image an own group is created (for clarity, to contain also title TEXT's etc)
 	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
+
 	drain::image::TreeSVG & group = getCurrentGroup(ctx)[name];
 
 	if (group->isUndefined()){
 		group->setType(svg::GROUP);
-		group->setId(filepath.basename + 'G');
+		group->setId(name + 'G');
+		//group->setId(filepath.basename + 'G');
 	}
 
 	return group;
 
 }
 
+/// Add pixel image (PNG)
 drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
 
 	using namespace drain::image;
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	// For each image an own group is created (for clarity, to contain also title TEXT's etc)
-	/*
-	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
-	drain::image::TreeSVG & group = getCurrentGroup(ctx)[name](svg::GROUP);
-	group->addClass(IMAGE_FRAME);
-	*/
 	mout.attention("filepath:", filepath);
 
 	drain::image::TreeSVG & panelGroup = getPanel(ctx, filepath);
@@ -380,16 +370,15 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 
 }
 
-
+/// Add SVG image
+/**
+ *
+ */
 drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath){ // what about prefix?
 
 	drain::image::TreeSVG & group = getCurrentGroup(ctx); //[filepath.basename+"_Group"](svg::GROUP);
 
-	//drain::image::TreeSVG & imageGroup = group[filepath.basename](svg::GROUP);
-
 	drain::image::TreeSVG & image = group[filepath.basename](svg::IMAGE); // +EXT!
-	//image->addClass("float", "legend");
-	//image->addClass("MARGINAL", "legend"); MOVED TO: images.cpp
 	image->set("width", svg->get("width", 0));
 	image->set("height", svg->get("height", 0));
 	image->set("xlink:href", filepath.str());
@@ -397,6 +386,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	return image;
 }
 
+/// Add pixel image (PNG)
 drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::FilePath & filepath, const drain::Frame2D<double> & frame){ // what about prefix?
 
 	drain::image::TreeSVG & group = getCurrentGroup(ctx); //[filepath.basename+"_Group"](svg::GROUP);
@@ -454,6 +444,7 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 
 	if (ctx.svgPanelConf.title != "none"){ // also "false" !?
 
+		// Create titles for each image panel
 		TitleCreatorSVG titleCreator;
 		drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
 
@@ -466,16 +457,18 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 			TreeSVG & headerRect = group["headerRect"](svg::RECT);
 			//headerRect->setStyle("fill:slateblue");
 			headerRect->setId("headerRect");
-			headerRect->setStyle("fill", "blue");
-			headerRect->setStyle("opacity", 0.25);
+			// headerRect->setStyle("fill", "blue");
+			// headerRect->setStyle("opacity", 0.75);
+			//mout.special("FOO2", headerRect->getBoundingBox());
+			//headerRect->set("yes", "no");
 
 			TreeSVG & mainHeader = group["GENERAL"](svg::TEXT);
-			mainHeader -> setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); //
+			mainHeader -> setAlign(AlignSVG::CENTER, AlignSVG::INSIDE); //
 			mainHeader -> setAlign(AlignSVG::MIDDLE, AlignSVG::INSIDE); //AlignSVG::VertAlign::MIDDLE);
 			mainHeader->setStyle({
-				{"font-size", "20"},
+				{"font-size", "30"},
 				{"stroke", "none"},
-				{"fill", "darkslateblue"}
+				{"fill", "green"}
 			});
 			// Ensure order
 			mainHeader["product"](svg::TSPAN);
@@ -799,6 +792,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 			//TreeSVG & text = getTextElem(current["image"], current, key);
 			TreeSVG & text = group[elemKey](svg::TEXT);  // +"_title"
 			text->addClass("imageTitle"); // style class (only)
+			text->addClass("TITLE");
 
 			TreeSVG & tspan = text[attr.first](svg::TSPAN);
 			tspan->addClass(attr.first); // allows user-specified style

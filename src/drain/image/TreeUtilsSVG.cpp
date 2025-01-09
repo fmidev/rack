@@ -150,6 +150,7 @@ void TreeUtilsSVG::realignObject(const Box<svg::coord_t> & anchorBoxHorz, const 
 
 	const Box<svg::coord_t> & box = object->getBoundingBox();
 
+	mout.accept<LOG_WARNING>("REALign ", object->getTag(), " bbox=", box, " elem: ", object.data.getAttributes());
 	// Assume diagonal stack... Consider: accept absolute pos, if UNDEFINED_
 	// Point2D<svg::coord_t> location(anchorBoxHorz.x + anchorBoxHorz.width*3/4, anchorBoxVert.y + anchorBoxVert.height*3/4);
 	// Point2D<svg::coord_t> location(anchorBoxHorz.x + anchorBoxHorz.width, anchorBoxVert.y + anchorBoxVert.height);
@@ -255,12 +256,14 @@ void TreeUtilsSVG::realignObject(AlignBase::Axis axis, svg::coord_t anchorPos, s
 		}
 		break;
 	case AlignBase::Pos::FILL:
-		mout.experimental("STRETCHING..." );
+		//mout.experimental("STRETCHING..." );mout.experimental("STRETCHING..." );
 		coord = anchorPos;
 		if (axis==AlignBase::Axis::HORZ){
+			mout.experimental("FILL:ing horz: ",   object->getBoundingBox(), " width -> ", anchorSpan);
 			object->setWidth(anchorSpan);
 		}
 		else if (axis==AlignBase::Axis::VERT){
+			mout.experimental("FILL:ing vert: ",   object->getBoundingBox(), " height -> ", anchorSpan);
 			object->setHeight(anchorSpan);
 		}
 		else {
@@ -307,6 +310,9 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 	}
 
 	// mout.attention("ACCEPT:", object->getTag());
+	if (object->typeIs(svg::RECT)){ // skip TITLE, DESC etc.
+		mout.attention(" RECT: ", object->getId(), " -> ", object->getBoundingBox());
+	}
 
 	// Depth-first
 	for (TreeSVG::pair_t & entry: object){

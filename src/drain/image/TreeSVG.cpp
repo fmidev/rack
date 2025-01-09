@@ -158,33 +158,26 @@ std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
 
 
 NodeSVG::NodeSVG(svg::tag_t t){
-	// type = (intval_t) svg::UNDEFINED;
 	if (t != svg::UNDEFINED){
+		/*
 		Logger mout(__FILE__, __FUNCTION__);
 		mout.attention("starting");
-		//mout.fail("HEY t=", t, " tag:", getTag(t));
 		type = static_cast<intval_t>(t);
 		mout.warn("arg", (int)t, " -> type: ", type);
-		//handleType(t);
-		setType(t);
-		mout.warn("arg", (int)t, " -> type: ", type);
-		// this->toStr('|', start, end, separator)
-		// mout.warn("ENDing: ", *this);
+		*/
+		// setType(t);
+		//mout.warn("arg", (int)t, " -> type: ", type);
 	}
-	// drain::EnumDict<image::svg::tag_t>::getDict();
-	//mout.warn("ENDing: ", EnumDict<svg::tag_t>::getDict());
-	//setType(t);
-	//mout.warn("ENDing: ", sprinter(drain::EnumDict<svg::tag_t>::dict));
-	//mout.fail("END type=", type, " tag:", getTag());
+	setType(t);
 }
 
 //NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), x(0), y(0), width(0), height(0), radius(0) {
 NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), box(0,0,0,0), radius(0) {
 	// RISKY references! copyStruct(node, node, *this, ReferenceMap2::extLinkPolicy::LINK); // <-- risky! may link Variable contents?
 	XML::xmlAssignNode(*this, node);
-	Logger mout(__FILE__, __FUNCTION__);
-	setType(node.getType());
-	mout.warn("node type: ", node.getType(), " -> type: ", type);
+	// Logger mout(__FILE__, __FUNCTION__);
+	 //setType(node.getType());
+	// mout.warn("node type: ", node.getType(), " -> type: ", type);
 }
 
 //template <>
@@ -194,6 +187,7 @@ void NodeSVG::handleType(const svg::tag_t & t) { // setType(const elem_t & t) {
 	// drain::Logger mout(drain::TypeName<NodeSVG>::str().c_str(), __FUNCTION__);
 	// mout.attention(__FUNCTION__, ": current type=", type, " arg=", t);
 	/*
+	YES: how to handle unchanged type properly? And reset bbox upon type change?
 	if (type == t){
 		return; // lazy
 	}
@@ -216,8 +210,8 @@ void NodeSVG::handleType(const svg::tag_t & t) { // setType(const elem_t & t) {
 		//tag = "svg";
 		//link("x", box.x = 0);
 		//link("y", box.y = 0);
-		link("width", box.width = 0);
-		link("height", box.height = 0);
+		link("width", box.width); // = 0);
+		link("height", box.height); // = 0);
 		//link("width", width = "0");
 		//link("height", height = "0");
 		link("xmlns", NodeSVG::svg);
@@ -234,8 +228,8 @@ void NodeSVG::handleType(const svg::tag_t & t) { // setType(const elem_t & t) {
 		// tag = "rect";
 		link("x", box.x = 0);
 		link("y", box.y = 0);
-		link("width", box.width = 0);
-		link("height", box.height = 0);
+		link("width", box.width); // = 0);
+		link("height", box.height); // = 0);
 		// link("width", width = "0");
 		// link("height", height = "0");
 		break;
@@ -249,8 +243,8 @@ void NodeSVG::handleType(const svg::tag_t & t) { // setType(const elem_t & t) {
 		// tag = "image";
 		link("x", box.x = 0);
 		link("y", box.y = 0);
-		link("width", box.width = 0);
-		link("height", box.height = 0);
+		link("width", box.width); //  = 0);
+		link("height", box.height); //  = 0);
 		//link("width", width = "0");
 		// link("height", height = "0");
 		// if (version == 1) {
@@ -260,8 +254,8 @@ void NodeSVG::handleType(const svg::tag_t & t) { // setType(const elem_t & t) {
 		break;
 	case image::svg::TEXT:
 		// tag = "text";
-		link("x", box.x = 0);
-		link("y", box.y = 0);
+		link("x", box.x); //  = 0);
+		link("y", box.y); //  = 0);
 		// style.link("font-size", this->box.height); // Not good, shows zero size
 		// link("text-anchor", text_anchor = "");
 		break;

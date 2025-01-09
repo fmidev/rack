@@ -575,9 +575,10 @@ public:
 		//headerGroup->setAlignAnchor("headerRect2");
 
 		TreeSVG & rectTitle = headerGroup["headerRect"](svg::RECT); // +EXT!
-		// rectTitle->set("name","headerRec_2");
-		// rectTitle->set("height", 60);
 		rectTitle->setHeight(70);
+		rectTitle->addClass("TITLE", "MAINTITLE");
+		// rectTitle->setFrame(320, 200);
+		// rectTitle->setLocation(123, 234);
 		rectTitle->setStyle("fill", "gray");
 		rectTitle->setStyle("opacity", 0.5);
 		rectTitle->setStyle({{"stroke","black"}, {"stroke-dasharray",{2,5}}, {"stroke-width","2px"}});
@@ -585,9 +586,8 @@ public:
 		//rectTitle->getBoundingBox().setArea(80,40);
 		//rectTitle->setAlign(AlignSVG::INSIDE, AlignSVG::TOP);
 		//rectTitle->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
-
-
 		rectTitle->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
+
 		if (ctx.alignVert.topol == AlignSVG::UNDEFINED_TOPOL){
 			ctx.alignVert.set(AlignSVG::OUTSIDE);
 		}
@@ -606,7 +606,7 @@ public:
 		*/
 
 		drain::image::TreeSVG & mainTitleText = headerGroup["GENERAL"](svg::TEXT);
-		mainTitleText->setText(value);
+		mainTitleText->setText(value+ "MID");
 		mainTitleText->setAlign(AlignSVG::MIDDLE);
 		mainTitleText->setAlign(AlignSVG::CENTER);
 		mainTitleText->addClass(LayoutSVG::FLOAT); // could be AlignSVG
@@ -633,6 +633,7 @@ public:
 		text2->setText(value+"+2");
 		text2->addClass(LayoutSVG::FLOAT);
 
+		// mout.special("FOO", rectTitle->getBoundingBox());
 	}
 };
 

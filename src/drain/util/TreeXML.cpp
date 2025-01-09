@@ -86,23 +86,6 @@ const NodeXML<int>::xml_default_elem_map_t NodeXML<int>::xml_default_elems = {
 		{XML::SCRIPT, XML::CTEXT},
 };
 
-// Experimental
-/*
-template <>
-TreeXML & TreeXML::addChild(const TreeXML::key_t & key){
-
-	if (key.empty()){
-		std::stringstream k("elem");
-		k.width(3);
-		k.fill('0');
-		k << getChildren().size();
-		return (*this)[k.str()];
-	}
-	else {
-		return (*this)[key];
-	}
-}
-*/
 
 
 
