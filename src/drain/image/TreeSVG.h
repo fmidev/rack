@@ -248,6 +248,27 @@ public:
 		return box.width;
 	}
 
+	/// Set margin of a TEXT element (non-standard).
+	/**
+	 *
+	 */
+	template <typename T>
+	inline
+	void setMargin(T w){
+		link("data-margin", box.width);
+		box.width = w;
+	}
+
+	/// Get margin of a TEXT element (non-standard).
+	/**
+	 *
+	 */
+	inline
+	svg::coord_t getMargin(){
+		return box.width;
+	}
+
+
 	/**
 	 *
 	 *  Future option: std::string arg, allowing units.

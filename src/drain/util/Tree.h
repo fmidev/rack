@@ -372,6 +372,10 @@ public:
 	/**
 	 *   Default implementation: assign new nodes (children).
 	 *
+	 *   Examples of overriding:
+	 *   - TreeXML::operator=()
+	 *   - TreeSVG::operator=()
+	 *
 	 */
 	inline 	// 2025/01 experimental.
 	tree_t & operator=(std::initializer_list<std::pair<const char *,const char *> > l){
@@ -457,6 +461,24 @@ public:
 	inline
 	const tree_t & operator[](const key_t & key) const {
 		return retrieveChild(key);
+	}
+
+	/// NEW 2025 Child addressing operator
+	/**
+	 *  Allows using EnumDict enums as keys, for example.
+	 *
+	 */
+	template <class K>
+	inline
+	tree_t & operator[](const K & key){
+		return retrieveChild(static_cast<key_t>(key));
+	}
+
+	/// NEW 2025 Child addressing operator
+	template <class K>
+	inline
+	const tree_t & operator[](const K & key) const {
+		return retrieveChild(static_cast<key_t>(key));
 	}
 
 

@@ -50,9 +50,12 @@ public:
 
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
 	enum TitleClass {
-		GENERAL,   /** Default type */
-		TIME,      /** Date and time attributes */
-		LOCATION,  /** Place (coordinates, municipality) */
+		GENERAL,    /** Default type */
+		TITLE,      /** Default title */
+		MAINTITLE,  /** Main title in SVG image */
+		IMAGETITLE, /** Small title in a corner of radar image (time, location) */
+		TIME,       /** Date and time attributes */
+		LOCATION,   /** Place (coordinates, municipality) */
 		// IMAGE_SET  /** "Hidden" marker for image groups */
 	};
 

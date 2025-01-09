@@ -102,151 +102,6 @@ public:
 
 
 
-/**
- *
-
-void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, drain::VariableMap & variables,
-		const drain::Point2D<double> & upperLeft, const drain::image::Image & image, drain::BBox & bbox) const {
-
-	static const drain::StringMapper basename("${outputPrefix}${PREFIX}-${NOD}-${what:product}-${what:quantity}-${LABEL}", "[a-zA-Z0-9:_]+");
-
-	variables["LABEL"] = label;
-	std::string fn = basename.toStr(variables,'X') + ".png";
-
-	basename.toStream(std::cout, variables, 0); std::cout << '\n';
-	basename.toStream(std::cout, variables, 'X'); std::cout << '\n';
-	basename.toStream(std::cout, variables, -1); std::cout << '\n';
-
-
-	//drain::Point2D<double> upperRight(upperLeft.x + image.getWidth(), upperLeft.y + image.getWidth(), );
-	double w = image.getWidth();
-	double h = image.getHeight();
-
-	bbox.lowerLeft.x = std::min(bbox.lowerLeft.x,   upperLeft.x);
-	bbox.lowerLeft.y = std::max(bbox.lowerLeft.y,   upperLeft.y + h);
-
-	bbox.upperRight.x = std::max(bbox.upperRight.x, upperLeft.x + w);
-	bbox.upperRight.y = std::min(bbox.upperRight.y, upperLeft.y);
-
-
-
-	drain::image::TreeSVG & imageElem = group[label];
-	imageElem->setType(svg::IMAGE);
-	imageElem->set("x", upperLeft.x);
-	imageElem->set("y", upperLeft.y);
-	imageElem->set("width",  w);
-	imageElem->set("height", h);
-	//imageElem->set("xlink:href", fn);
-	imageElem->set("href", fn);
-	drain::image::FilePng::write(image, fn);
-
-	drain::image::TreeSVG & title = imageElem["title"];
-	title->setType(svg::TITLE);
-	title->ctext = label + " (experimental) ";
-
-	//title->setType(NodeSVG:);
-	drain::image::TreeSVG & comment = imageElem["comment"];
-	comment->setComment("label:" + label);
-
-	// comment->setType(NodeXML::COMM)
-
-}
-*/
-
-/**
- *
- *   \see Palette::exportSVGLegend()
- */
-/*
-void CmdOutputPanel::exec() const {
-
-	RackContext & ctx = getContext<RackContext>();
-
-	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-	// mout.attention(ctx.getName());
-	// mout.warn("ctx.select=", ctx.select);
-
-
-	if (ctx.statusFlags.isSet(drain::Status::INPUT_ERROR)){
-		mout.warn("input failed, skipping");
-		return;
-	}
-
-	if (ctx.statusFlags.isSet(drain::Status::DATA_ERROR)){
-		mout.warn("data error, skipping");
-		return;
-	}
-
-	//TreeSVG &  // = svg["bg"];
-	drain::image::TreeSVG svg(svg::SVG);
-	// TreeSVG svg; // (svg::SVG); REDO this, check copy constr!
-	svg->setType(svg::SVG);
-
-	drain::image::TreeSVG & main = svg["main"];
-	main->setType(svg::GROUP);
-	// main->set("style", "fill:green");
-	// main->set("jimbo", 126);
-	// main->set("jimboz", true);
-
-	drain::VariableMap & variables = ctx.getStatusMap();
-	variables["PREFIX"] = "PANEL";
-
-
-	// drain::StringMapper basename("${PREFIX}-${NOD}-${what:product}-${what:quantity}");
-	// drain::BBox bboxAll;
-	drain::BBox bbox;
-	drain::Point2D<double> upperLeft(0,0);
-
-	//ctx.updateCurrentImage();
-	const drain::image::Image & src = ctx.getCurrentImage();
-	appendImage(main, "color", variables, upperLeft, src, bbox);
-	mout.attention("prev. BBOX: ", bbox);
-	// bboxAll.extend(bbox);
-
-	// variables["what:product"] = "prod";
-
-	const drain::image::Image & src2 = ctx.getCurrentGrayImage();
-	upperLeft.set(bbox.upperRight.x, 0);
-	appendImage(main, "gray", variables, upperLeft, src2, bbox);
-	// bboxAll.extend(bbox);
-	mout.attention("prev. BBOX: ", bbox);
-
-	// mout.attention("final BBOX: ", bboxAll);
-
-	svg->set("viewboxFOO", bbox.tuple());
-	svg->set("width",  +bbox.getWidth());
-	svg->set("height", -bbox.getHeight());
-
-	// svg->set("width",  src.getWidth());
-	// svg->set("height", src.getHeight());
-	ctx.getCurrentGrayImage();
-
-
-
-	if (layout.empty() || layout == "basic"){
-		//TreeSVG & radar = image["radar"];
-		//radar->set("foo", 123);
-	}
-	else {
-		mout.error("Unknown layout '", layout, "'");
-	}
-
-	const std::string s = filename.empty() ? layout+".svg" : filename;
-
-	if (!svg::fileInfo.checkPath(s)){ // .svg
-		mout.fail("suspicious extension for SVG file: ", s);
-		mout.advice("extensionRegexp: ", svg::fileInfo.extensionRegexp);
-	}
-
-	drain::Output ofstr(s);
-	mout.note("writing SVG file: '", s, "");
-	// ofstr << svg;
-	svg::toStream(ofstr, svg);
-
-
-}
-*/
 
 struct GraphicsSection : public drain::CommandSection {
 
@@ -435,129 +290,12 @@ protected:
 };
 
 
-class CmdPanelTest : public drain::SimpleCommand<std::string> {
+
+class CmdGroupTitle : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdPanelTest() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "layout") {
-		//getParameters().link("level", level = 5);
-	}
-
-	void exec() const {
-
-		// ClassLabelXML<drain::image::AlignSVG> label1(drain::image::AlignSVG::PANEL);
-		// ClassLabelXML<drain::image::AlignSVG> label2("PANEL");
-
-		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, getName());
-
-		drain::Frame2D<double> frame = {400,500};
-
-		drain::image::TreeSVG & group = RackSVG::getCurrentGroup(ctx)[value](svg::GROUP);
-		group->setId(value);
-		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
-		const std::string ANCHOR_ELEM("anchor-elem");
-		group->setAlignAnchor(ANCHOR_ELEM);
-		// rectGroup->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
-
-		if (ctx.mainOrientation == drain::image::AlignBase::Axis::HORZ){
-			group->setAlign(AlignBase::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, AlignSVG::OUTSIDE);
-			group->setAlign(AlignBase::Axis::VERT, AlignBase::MIN, AlignSVG::INSIDE); // drain::image::AlignSVG::VertAlignBase::TOP);
-		}
-		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::AlignBase::Axis::VERT){
-			group->setAlign(AlignBase::Axis::HORZ, AlignBase::MIN, AlignSVG::INSIDE); // drain::image::AlignSVG::HorzAlignBase::LEFT);
-			group->setAlign(AlignBase::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, AlignSVG::OUTSIDE);
-		}
-
-
-
-		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
-		rect->set("width", frame.width);
-		rect->set("height", frame.height);
-		rect->set("label", ANCHOR_ELEM);
-		rect->setStyle("fill", "red");
-
-		// rect->addClass(LayoutSVG::FLOAT);
-
-		// rect->setAlign(AlignSVG::OBJECT, AlignBase::HORZ,  AlignBase::MAX);
-		// rect->setAlign<AlignSVG::OUTSIDE>(AlignSVG::OBJECT, AlignBase::HORZ,  AlignBase::MAX);
-		// rect->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
-		// rect["basename"](drain::image::svg::TITLE) = "test";
-		/*
-		rect->setAlign(AlignSVG2::ORIG, AlignSVG2::HORZ,  AlignSVG2::MID);
-		rect->setAlign(AlignSVG2::REF, AlignSVG2::VERT,  AlignSVG2::MAX);
-		rect->setAlign(AlignSVG2::REF, AlignSVG2::HORZ,  AlignSVG2::MIN);
-		*/
-
-		typedef drain::image::AlignSVG::Owner   AlOwner;
-		typedef drain::image::AlignBase::Pos   Pos;
-
-		const drain::EnumDict<Pos>::dict_t & dict = drain::EnumDict<Pos>::dict;
-
-
-		//const std::list<Pos> pos = {AlignBase::MAX, AlignBase::MIN, AlignBase::MID};
-		// for (const drain::image::LayoutSVG::Axis & ax: {AlignAxis::HORZ, AlignAxis::VERT}){
-		for (const Pos & posVert: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ //pos){ // {AlignBase::MID} pos
-
-			char pv = dict.getKey(posVert)[2];
-
-			for (const Pos & posHorz: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ // pos
-
-				char ph = dict.getKey(posHorz)[2];
-
-				for (const Pos & posVertRef: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ // {AlignBase::MID}){
-
-					char rv = dict.getKey(posVertRef)[2];
-
-					for (const Pos & posHorzRef: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ //pos){
-
-						char rh = dict.getKey(posHorzRef)[2];
-
-						//const std::string label = drain::StringBuilder<'-'>(posHorzRef, posVertRef, posHorz, posVert, '-', ph, pv, rh, rv);
-						const std::string label = drain::StringBuilder<'-'>(ph, pv, rh, rv);
-
-						drain::image::TreeSVG & text = group[label + "text"](svg::TEXT);
-						text->setId(label+"_T");
-						text->getBoundingBox().setArea(60,30);
-						text->setAlign(AlOwner::ANCHOR, AlignBase::HORZ, posHorzRef);
-						text->setAlign(AlOwner::ANCHOR, AlignBase::VERT, posVertRef);
-						text->setAlign(AlOwner::OBJECT, AlignBase::HORZ, posHorz);
-						text->setAlign(AlOwner::OBJECT, AlignBase::VERT, posVert);
-						text->setText(label);
-
-						drain::image::TreeSVG & textBox = group[label](svg::RECT);
-						textBox->setId(label+"_R");
-						textBox->getBoundingBox().setArea(60,30);
-						//textBox->set("mika", textBox->getAlignStr()); // textBox->set("mika", textBox->getAlignStr());
-						textBox->setStyle("fill", "green");
-						textBox->setStyle("opacity", 0.15);
-						textBox->setStyle("stroke-width", "2px");
-						textBox->setStyle("stroke", "black");
-						textBox->setAlign(AlOwner::ANCHOR, AlignBase::HORZ, posHorzRef);
-						textBox->setAlign(AlOwner::ANCHOR, AlignBase::VERT, posVertRef);
-						textBox->setAlign(AlOwner::OBJECT, AlignBase::HORZ, posHorz);
-						textBox->setAlign(AlOwner::OBJECT, AlignBase::VERT, posVert);
-						//textBox->addClass(LayoutSVG::FLOAT);
-
-						//text->addClass(LayoutSVG::FLOAT);
-						// drain::image::TreeSVG & textSpan = text["tspan"](svg::TSPAN);
-						// textSpan->setText(text->getAlignStr());
-
-					}
-				}
-			}
-		}
-
-
-	}
-
-};
-
-class CmdMainTitle : public drain::SimpleCommand<std::string> {
-
-public:
-
-	CmdMainTitle() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "Set main title") {
+	CmdGroupTitle() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "Set main title") {
 		//getParameters().link("level", level = 5);
 	}
 
@@ -574,67 +312,69 @@ public:
 		// TreeSVG & headerRect = headerGroup["headerRect"](svg::RECT);
 		//headerGroup->setAlignAnchor("headerRect2");
 
-		TreeSVG & rectTitle = headerGroup["headerRect"](svg::RECT); // +EXT!
-		rectTitle->setHeight(70);
-		rectTitle->addClass("TITLE", "MAINTITLE");
-		// rectTitle->setFrame(320, 200);
-		// rectTitle->setLocation(123, 234);
-		rectTitle->setStyle("fill", "gray");
-		rectTitle->setStyle("opacity", 0.5);
-		rectTitle->setStyle({{"stroke","black"}, {"stroke-dasharray",{2,5}}, {"stroke-width","2px"}});
-		rectTitle->setId("textRect2");
-		//rectTitle->getBoundingBox().setArea(80,40);
-		//rectTitle->setAlign(AlignSVG::INSIDE, AlignSVG::TOP);
-		//rectTitle->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
-		rectTitle->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
+		TreeSVG & headerRect = headerGroup["headerRect"](svg::RECT); // +EXT!
+		headerRect->setHeight(70);
+		headerRect->addClass(RackSVG::TITLE, RackSVG::MAINTITLE);
+		headerRect->setId("textRect", RackSVG::MAINTITLE);
+		headerRect->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
 
+		// User-defined
 		if (ctx.alignVert.topol == AlignSVG::UNDEFINED_TOPOL){
 			ctx.alignVert.set(AlignSVG::OUTSIDE);
 		}
 		if (ctx.alignVert.pos == AlignBase::UNDEFINED_POS){
 			ctx.alignVert.set(AlignBase::MAX);
 		}
-		rectTitle->setAlign(ctx.alignVert, ctx.alignVert.topol); //, AlignSVG::OUTSIDE);
+		headerRect->setAlign(ctx.alignVert, ctx.alignVert.topol); //, AlignSVG::OUTSIDE);
 		ctx.alignVert.reset();
-		/*
-		if (ctx.alignVert.isSet()){
-			if (ctx.alignVert.topol){
-				rectTitle->setAlign(ctx.alignVert); //, AlignSVG::OUTSIDE);
-			}
-		}
-		rectTitle->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
-		*/
 
 		drain::image::TreeSVG & mainTitleText = headerGroup["GENERAL"](svg::TEXT);
-		mainTitleText->setText(value+ "MID");
-		mainTitleText->setAlign(AlignSVG::MIDDLE);
-		mainTitleText->setAlign(AlignSVG::CENTER);
 		mainTitleText->addClass(LayoutSVG::FLOAT); // could be AlignSVG
+		mainTitleText->setText(value);
+		mainTitleText->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
+		// mainTitleText->setAlign(AlignSVG::CENTER);
 		mainTitleText->getBoundingBox().setHeight(16);
 		mainTitleText->setStyle("font-size", 20);
 
-		//TreeSVG & timeHeader = group["TIME"](svg::TEXT);
 		drain::image::TreeSVG & text1 = headerGroup["TIME"](svg::TEXT);
-		text1->setText(value);
-		// text1->setAlign(AlignSVG::LEFT);
-		text1->setAlign(AlignSVG::BOTTOM);
-		text1->setAlign(AlignSVG::TOP);
-		text1->setWidth(8);
+		text1->addClass(LayoutSVG::FLOAT, RackSVG::TITLE);
+		text1->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
+		// text1->setAlign(AlignSVG::TOP);
 		text1->setHeight(20);
-		text1->setText(value+"+1");
-		text1->addClass(LayoutSVG::FLOAT);
+		text1->setMargin(3);
+		text1->setText(value, " (time)");
 
 		drain::image::TreeSVG & text2 = headerGroup["LOCATION"](svg::TEXT);
-		text2->setText(value);
+		text2->addClass(LayoutSVG::FLOAT, RackSVG::TITLE);
 		text2->setAlign(AlignSVG::RIGHT);
 		text2->setAlign(AlignSVG::TOP);
-		text2->setWidth(8);
 		text2->setHeight(20);
-		text2->setText(value+"+2");
-		text2->addClass(LayoutSVG::FLOAT);
+		text2->setMargin(3);
+		text2->setText(value, " (loc)");
 
 		// mout.special("FOO", rectTitle->getBoundingBox());
 	}
+};
+
+
+
+class CmdMainTitle : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdMainTitle() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "Set main title") {
+		//getParameters().link("level", level = 5);
+	}
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		drain::image::TreeSVG & headerGroup = RackSVG::getMain(ctx);
+	}
+
 };
 
 class CmdPanel : public drain::SimpleCommand<std::string> {
@@ -836,6 +576,128 @@ public:
 	}
 
 };
+
+
+
+class CmdPanelTest : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdPanelTest() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "layout") {
+		//getParameters().link("level", level = 5);
+	}
+
+	void exec() const {
+
+		// ClassLabelXML<drain::image::AlignSVG> label1(drain::image::AlignSVG::PANEL);
+		// ClassLabelXML<drain::image::AlignSVG> label2("PANEL");
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		drain::Frame2D<double> frame = {400,500};
+
+		drain::image::TreeSVG & group = RackSVG::getCurrentGroup(ctx)[value](svg::GROUP);
+		group->setId(value);
+		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
+		const std::string ANCHOR_ELEM("anchor-elem");
+		group->setAlignAnchor(ANCHOR_ELEM);
+		// rectGroup->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
+
+		if (ctx.mainOrientation == drain::image::AlignBase::Axis::HORZ){
+			group->setAlign(AlignBase::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, AlignSVG::OUTSIDE);
+			group->setAlign(AlignBase::Axis::VERT, AlignBase::MIN, AlignSVG::INSIDE); // drain::image::AlignSVG::VertAlignBase::TOP);
+		}
+		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::AlignBase::Axis::VERT){
+			group->setAlign(AlignBase::Axis::HORZ, AlignBase::MIN, AlignSVG::INSIDE); // drain::image::AlignSVG::HorzAlignBase::LEFT);
+			group->setAlign(AlignBase::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, AlignSVG::OUTSIDE);
+		}
+
+
+
+		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
+		rect->set("width", frame.width);
+		rect->set("height", frame.height);
+		rect->set("label", ANCHOR_ELEM);
+		rect->setStyle("fill", "red");
+
+		// rect->addClass(LayoutSVG::FLOAT);
+
+		// rect->setAlign(AlignSVG::OBJECT, AlignBase::HORZ,  AlignBase::MAX);
+		// rect->setAlign<AlignSVG::OUTSIDE>(AlignSVG::OBJECT, AlignBase::HORZ,  AlignBase::MAX);
+		// rect->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
+		// rect["basename"](drain::image::svg::TITLE) = "test";
+		/*
+		rect->setAlign(AlignSVG2::ORIG, AlignSVG2::HORZ,  AlignSVG2::MID);
+		rect->setAlign(AlignSVG2::REF, AlignSVG2::VERT,  AlignSVG2::MAX);
+		rect->setAlign(AlignSVG2::REF, AlignSVG2::HORZ,  AlignSVG2::MIN);
+		*/
+
+		typedef drain::image::AlignSVG::Owner   AlOwner;
+		typedef drain::image::AlignBase::Pos   Pos;
+
+		const drain::EnumDict<Pos>::dict_t & dict = drain::EnumDict<Pos>::dict;
+
+
+		//const std::list<Pos> pos = {AlignBase::MAX, AlignBase::MIN, AlignBase::MID};
+		// for (const drain::image::LayoutSVG::Axis & ax: {AlignAxis::HORZ, AlignAxis::VERT}){
+		for (const Pos & posVert: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ //pos){ // {AlignBase::MID} pos
+
+			char pv = dict.getKey(posVert)[2];
+
+			for (const Pos & posHorz: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ // pos
+
+				char ph = dict.getKey(posHorz)[2];
+
+				for (const Pos & posVertRef: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ // {AlignBase::MID}){
+
+					char rv = dict.getKey(posVertRef)[2];
+
+					for (const Pos & posHorzRef: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ //pos){
+
+						char rh = dict.getKey(posHorzRef)[2];
+
+						//const std::string label = drain::StringBuilder<'-'>(posHorzRef, posVertRef, posHorz, posVert, '-', ph, pv, rh, rv);
+						const std::string label = drain::StringBuilder<'-'>(ph, pv, rh, rv);
+
+						drain::image::TreeSVG & text = group[label + "text"](svg::TEXT);
+						text->setId(label+"_T");
+						text->getBoundingBox().setArea(60,30);
+						text->setAlign(AlOwner::ANCHOR, AlignBase::HORZ, posHorzRef);
+						text->setAlign(AlOwner::ANCHOR, AlignBase::VERT, posVertRef);
+						text->setAlign(AlOwner::OBJECT, AlignBase::HORZ, posHorz);
+						text->setAlign(AlOwner::OBJECT, AlignBase::VERT, posVert);
+						text->setText(label);
+
+						drain::image::TreeSVG & textBox = group[label](svg::RECT);
+						textBox->setId(label+"_R");
+						textBox->getBoundingBox().setArea(60,30);
+						//textBox->set("mika", textBox->getAlignStr()); // textBox->set("mika", textBox->getAlignStr());
+						textBox->setStyle("fill", "green");
+						textBox->setStyle("opacity", 0.15);
+						textBox->setStyle("stroke-width", "2px");
+						textBox->setStyle("stroke", "black");
+						textBox->setAlign(AlOwner::ANCHOR, AlignBase::HORZ, posHorzRef);
+						textBox->setAlign(AlOwner::ANCHOR, AlignBase::VERT, posVertRef);
+						textBox->setAlign(AlOwner::OBJECT, AlignBase::HORZ, posHorz);
+						textBox->setAlign(AlOwner::OBJECT, AlignBase::VERT, posVert);
+						//textBox->addClass(LayoutSVG::FLOAT);
+
+						//text->addClass(LayoutSVG::FLOAT);
+						// drain::image::TreeSVG & textSpan = text["tspan"](svg::TSPAN);
+						// textSpan->setText(text->getAlignStr());
+
+					}
+				}
+			}
+		}
+
+
+	}
+
+};
+
+
 GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 
 	// const drain::Flagger::ivalue_t section = drain::Static::get<GraphicsSection>().index;
@@ -854,10 +716,160 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdAlign>();
 	install<CmdPanel>(); // .section = HIDDEN; // addSection(i);
 	install<CmdPanelTest>().section = HIDDEN; // addSection(i);
+	// install<CmdImageTitle>(); consider
+	install<CmdGroupTitle>();
 	install<CmdMainTitle>();
 	install<CmdStyle>();
 
 };
+
+
+
+/**
+ *
+ *   \see Palette::exportSVGLegend()
+ */
+/*
+void CmdOutputPanel::exec() const {
+
+	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	// mout.attention(ctx.getName());
+	// mout.warn("ctx.select=", ctx.select);
+
+
+	if (ctx.statusFlags.isSet(drain::Status::INPUT_ERROR)){
+		mout.warn("input failed, skipping");
+		return;
+	}
+
+	if (ctx.statusFlags.isSet(drain::Status::DATA_ERROR)){
+		mout.warn("data error, skipping");
+		return;
+	}
+
+	//TreeSVG &  // = svg["bg"];
+	drain::image::TreeSVG svg(svg::SVG);
+	// TreeSVG svg; // (svg::SVG); REDO this, check copy constr!
+	svg->setType(svg::SVG);
+
+	drain::image::TreeSVG & main = svg["main"];
+	main->setType(svg::GROUP);
+	// main->set("style", "fill:green");
+	// main->set("jimbo", 126);
+	// main->set("jimboz", true);
+
+	drain::VariableMap & variables = ctx.getStatusMap();
+	variables["PREFIX"] = "PANEL";
+
+
+	// drain::StringMapper basename("${PREFIX}-${NOD}-${what:product}-${what:quantity}");
+	// drain::BBox bboxAll;
+	drain::BBox bbox;
+	drain::Point2D<double> upperLeft(0,0);
+
+	//ctx.updateCurrentImage();
+	const drain::image::Image & src = ctx.getCurrentImage();
+	appendImage(main, "color", variables, upperLeft, src, bbox);
+	mout.attention("prev. BBOX: ", bbox);
+	// bboxAll.extend(bbox);
+
+	// variables["what:product"] = "prod";
+
+	const drain::image::Image & src2 = ctx.getCurrentGrayImage();
+	upperLeft.set(bbox.upperRight.x, 0);
+	appendImage(main, "gray", variables, upperLeft, src2, bbox);
+	// bboxAll.extend(bbox);
+	mout.attention("prev. BBOX: ", bbox);
+
+	// mout.attention("final BBOX: ", bboxAll);
+
+	svg->set("viewboxFOO", bbox.tuple());
+	svg->set("width",  +bbox.getWidth());
+	svg->set("height", -bbox.getHeight());
+
+	// svg->set("width",  src.getWidth());
+	// svg->set("height", src.getHeight());
+	ctx.getCurrentGrayImage();
+
+
+
+	if (layout.empty() || layout == "basic"){
+		//TreeSVG & radar = image["radar"];
+		//radar->set("foo", 123);
+	}
+	else {
+		mout.error("Unknown layout '", layout, "'");
+	}
+
+	const std::string s = filename.empty() ? layout+".svg" : filename;
+
+	if (!svg::fileInfo.checkPath(s)){ // .svg
+		mout.fail("suspicious extension for SVG file: ", s);
+		mout.advice("extensionRegexp: ", svg::fileInfo.extensionRegexp);
+	}
+
+	drain::Output ofstr(s);
+	mout.note("writing SVG file: '", s, "");
+	// ofstr << svg;
+	svg::toStream(ofstr, svg);
+
+
+}
+*/
+
+/**
+ *
+
+void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, drain::VariableMap & variables,
+		const drain::Point2D<double> & upperLeft, const drain::image::Image & image, drain::BBox & bbox) const {
+
+	static const drain::StringMapper basename("${outputPrefix}${PREFIX}-${NOD}-${what:product}-${what:quantity}-${LABEL}", "[a-zA-Z0-9:_]+");
+
+	variables["LABEL"] = label;
+	std::string fn = basename.toStr(variables,'X') + ".png";
+
+	basename.toStream(std::cout, variables, 0); std::cout << '\n';
+	basename.toStream(std::cout, variables, 'X'); std::cout << '\n';
+	basename.toStream(std::cout, variables, -1); std::cout << '\n';
+
+
+	//drain::Point2D<double> upperRight(upperLeft.x + image.getWidth(), upperLeft.y + image.getWidth(), );
+	double w = image.getWidth();
+	double h = image.getHeight();
+
+	bbox.lowerLeft.x = std::min(bbox.lowerLeft.x,   upperLeft.x);
+	bbox.lowerLeft.y = std::max(bbox.lowerLeft.y,   upperLeft.y + h);
+
+	bbox.upperRight.x = std::max(bbox.upperRight.x, upperLeft.x + w);
+	bbox.upperRight.y = std::min(bbox.upperRight.y, upperLeft.y);
+
+
+
+	drain::image::TreeSVG & imageElem = group[label];
+	imageElem->setType(svg::IMAGE);
+	imageElem->set("x", upperLeft.x);
+	imageElem->set("y", upperLeft.y);
+	imageElem->set("width",  w);
+	imageElem->set("height", h);
+	//imageElem->set("xlink:href", fn);
+	imageElem->set("href", fn);
+	drain::image::FilePng::write(image, fn);
+
+	drain::image::TreeSVG & title = imageElem["title"];
+	title->setType(svg::TITLE);
+	title->ctext = label + " (experimental) ";
+
+	//title->setType(NodeSVG:);
+	drain::image::TreeSVG & comment = imageElem["comment"];
+	comment->setComment("label:" + label);
+
+	// comment->setType(NodeXML::COMM)
+
+}
+*/
 
 
 

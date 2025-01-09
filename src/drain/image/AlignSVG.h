@@ -332,14 +332,20 @@ struct AlignSVG { // : protected Align {
 	 */
 	template <typename ...T>
 	void setAlign(const HorzAlign & align, const T... args){
-		//const Topol & t = EnumDict<AlignSVG::Topol>::getValue(topol, false);
 		setAlign(align.axis, align.pos, args...);
 	}
 
 	template <typename ...T>
 	void setAlign(const VertAlign & align, const T...  args){
-		// const Topol & t = EnumDict<AlignSVG::Topol>::getValue(topol, false);
 		setAlign(align.axis, align.pos, args...);
+	}
+
+	// Convenience: set both horz and vert alignments (INSIDE)
+	/*
+	 */
+	void setAlign(const VertAlign & valign, const HorzAlign & halign){
+		setAlign(halign.axis, halign.pos, AlignSVG::Topol::INSIDE);
+		setAlign(valign.axis, valign.pos, AlignSVG::Topol::INSIDE);
 	}
 
 

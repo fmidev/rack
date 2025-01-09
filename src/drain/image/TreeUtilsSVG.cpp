@@ -150,7 +150,7 @@ void TreeUtilsSVG::realignObject(const Box<svg::coord_t> & anchorBoxHorz, const 
 
 	const Box<svg::coord_t> & box = object->getBoundingBox();
 
-	mout.accept<LOG_WARNING>("REALign ", object->getTag(), " bbox=", box, " elem: ", object.data.getAttributes());
+	mout.accept<LOG_WARNING>("REALign ", object->getTag(), " bbox=", box, " elem: ", object.data);
 	// Assume diagonal stack... Consider: accept absolute pos, if UNDEFINED_
 	// Point2D<svg::coord_t> location(anchorBoxHorz.x + anchorBoxHorz.width*3/4, anchorBoxVert.y + anchorBoxVert.height*3/4);
 	// Point2D<svg::coord_t> location(anchorBoxHorz.x + anchorBoxHorz.width, anchorBoxVert.y + anchorBoxVert.height);
@@ -229,9 +229,11 @@ void TreeUtilsSVG::realignObject(AlignBase::Axis axis, svg::coord_t anchorPos, s
 
 	switch (alignLoc = object->getAlign(AlignSVG::Owner::OBJECT, axis)){
 	case AlignBase::Pos::MIN:
-		if (IS_TEXT && (axis==AlignBase::Axis::HORZ)){
-			object->setStyle(TEXT_ANCHOR, "start");
-			coord += object->getBoundingBox().getWidth(); // margin!
+		if (IS_TEXT){
+			if (axis==AlignBase::Axis::HORZ){
+				object->setStyle(TEXT_ANCHOR, "start");
+			}
+			coord += object->getMargin(); //
 		}
 		else {
 			// no action
@@ -247,9 +249,15 @@ void TreeUtilsSVG::realignObject(AlignBase::Axis axis, svg::coord_t anchorPos, s
 		}
 		break;
 	case AlignBase::Pos::MAX:
-		if (IS_TEXT && (axis==AlignBase::Axis::HORZ)){
-			object->setStyle(TEXT_ANCHOR, "end"); // Default value
-			coord -= object->getBoundingBox().getWidth(); // margin
+		if (IS_TEXT){
+			//object->setStyle(TEXT_ANCHOR, "end"); // Default value
+			if (axis==AlignBase::Axis::HORZ){
+				object->setStyle(TEXT_ANCHOR, "end");
+			}
+			else  { // VERT, height
+				coord -= objectSpan;
+			}
+			coord -= object->getMargin(); // margin
 		}
 		else {
 			coord -= objectSpan;
