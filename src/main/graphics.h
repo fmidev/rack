@@ -56,12 +56,13 @@ public:
 		IMAGETITLE, /** Small title in a corner of radar image (time, location) */
 		TIME,       /** Date and time attributes */
 		LOCATION,   /** Place (coordinates, municipality) */
+		IMAGE_PANEL,
 		// IMAGE_SET  /** "Hidden" marker for image groups */
 	};
 
 	/// Standard group name for images to be aligned
-	static
-	const std::string IMAGE_PANEL; // "imageFrame"
+	// static
+	// const std::string IMAGE_PANEL; // "imageFrame"
 
 	static
 	drain::image::TreeSVG & getStyle(RackContext & ctx);

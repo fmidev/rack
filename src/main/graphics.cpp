@@ -54,6 +54,7 @@ const drain::EnumDict<RackSVG::TitleClass>::dict_t  drain::EnumDict<RackSVG::Tit
 		DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGETITLE),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, LOCATION),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, TIME),
+		DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_PANEL),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
 };
 
@@ -90,7 +91,7 @@ const image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::TitleClas
 namespace rack {
 
 /// Group identifiers for elements which be automatically aligned (stacked horizontally or vertically)
-const std::string RackSVG::IMAGE_PANEL("imageFrame");
+// const std::string RackSVG::IMAGE_PANEL("imageFrame");
 
 
 
@@ -282,13 +283,31 @@ drain::image::TreeSVG & RackSVG::getCurrentGroup(RackContext & ctx){ // what abo
 
 }
 
+
+//static_cast<key_t>(key)
+
+/**
+ * const E & pathElem selector! like RackSVG::MAINTITLE
+template <typename E>
+const drain::image::TreeSVG & getStyle(const drain::image::TreeSVG & svg, const E & selector){
+	const drain::image::TreeSVG & style = svg[drain::image::svg::STYLE]; // (drain::image::svg::STYLE);
+	return style[selector]; // (drain::image::svg::STYLE_SELECT);
+}
+
+template <typename E, typename T>
+T getStyleValue(const drain::image::TreeSVG & svg, const E & selector, const std::string & property, const T & defaultValue = T()){
+	return getStyle(svg,selector)->get(property, defaultValue);
+}
+ */
+
+
 /// For each image an own group is created (for clarity, to contain also title TEXT's etc)
 /**
  *
  */
 drain::image::TreeSVG & RackSVG::getPanel(RackContext & ctx, const drain::FilePath & filepath){
 
-	// For each image an own group is created (for clarity, to contain also title TEXT's etc)
+	// For each image an own group is created to contain also title TEXT's etc.
 	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
 
 	drain::image::TreeSVG & group = getCurrentGroup(ctx)[name];
@@ -879,7 +898,8 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 			}
 
 			// Explicit (instead of style-derived) font size needed for bounding box (vertical height)
-			double fontSize = root[drain::image::svg::STYLE][RackSVG::MAINTITLE]->get("font-size", 12.5);
+			const double fontSize = // getStyleValue(root, RackSVG::TITLE, "font-size", 12.5);
+					root[drain::image::svg::STYLE][RackSVG::MAINTITLE]->get("font-size", 12.5);
 			text->setStyle("font-size", fontSize); //
 			text->setHeight(fontSize);     // row height
 			text->setMargin(fontSize/5.0); // margin

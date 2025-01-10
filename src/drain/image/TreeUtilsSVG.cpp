@@ -201,6 +201,9 @@ void TreeUtilsSVG::realignObject(AlignBase::Axis axis, svg::coord_t anchorPos, s
 	case AlignBase::Pos::MAX:
 		coord = anchorPos + anchorSpan;
 		break;
+	case AlignBase::Pos::FILL:
+		mout.suspicious<LOG_WARNING>("Alignment:: ANCHOR has fill request: ", axis, '/', alignLoc, '/', anchorSpan);
+		break;
 	case AlignBase::Pos::UNDEFINED_POS:  // -> consider MID or some absolute value, or margin. Or error:
 		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', AlignBase::Axis::HORZ, '=', pos);
 		break;

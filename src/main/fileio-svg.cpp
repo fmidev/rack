@@ -372,7 +372,23 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		drain::image::TreeSVG & headerGroup = RackSVG::getMain(ctx);
+		drain::image::TreeSVG & mainGroup = RackSVG::getMain(ctx);
+
+		//BBoxSVG bbox;
+		// TreeUtilsSVG::computeBoundingBox(mainGroup, bbox);
+
+		drain::image::TreeSVG & backgroundRect = mainGroup["mainRect"](svg::RECT);
+		backgroundRect->setHeight(30);
+		backgroundRect->setAlign(AlignSVG::HORZ_FILL);
+		backgroundRect->setAlign(AlignSVG::TOP);
+		backgroundRect->setStyle("fill", "magenta");
+
+		drain::image::TreeSVG & mainTitle = mainGroup["mainTitle"](svg::TEXT);
+		mainTitle->addClass(RackSVG::MAINTITLE);
+		mainTitle->setText(value);
+		mainTitle->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
+
+
 	}
 
 };

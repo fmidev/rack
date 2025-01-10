@@ -314,56 +314,88 @@ struct AlignSVG { // : protected Align {
 	/*
 	 *  Template supports empty arg list.
 	 *
-	 *  \tparam T - enum type \c Topol or string
-	 *  \tparam A - enum type \c Alignment or string
-	 *  \param topol  - \c INSIDE or \c OUTSIDE
-	 *  \param align  - \c LEFT|CENTER|RIGHT or \c TOP|MIDDLE|BOTTOM
+	 *  \tparam T  - enum type \c Topol or string
+	 *  \tparam AX - axis enum type: Axis or const Axis
+	 *  \tparam A  - axis enum value: HORZ, VERT or UNDEFINED_AXIS
+	 *  \param align  - \c HorzAlign or \c VertAlign
 	 */
 	template <typename ...T, typename AX, AlignBase::Axis A>
 	void setAlign(const Alignment<AX,A> & align, const T...  args){
-		// const Topol & t = EnumDict<AlignSVG::Topol>::getValue(topol, false);
-		// const Alignment<> & a = EnumDict<Alignment<> >::getValue(align, false);
-		setAlign(align.axis, align.pos, args...);
+		if (align.pos == AlignBase::FILL){
+			// Makes sense only for OBJECT, as it will be changed (and ANCHOR is never unchanged).
+			setAlign(AlignSVG::OBJECT, align.axis, align.pos);
+		}
+		else {
+			setAlign(align.axis, align.pos, args...);
+		}
 	}
+
+	// Convenience: set both horz and vert alignments (INSIDE)
+	/*
+	 */
+	template <typename AX1, AlignBase::Axis A1, typename AX2, AlignBase::Axis A2>
+	void setAlign(const Alignment<AX1,A1> & align1, const Alignment<AX2,A2> & align2){
+		setAlign(align1.axis, align1.pos, AlignSVG::Topol::INSIDE);
+		setAlign(align2.axis, align2.pos, AlignSVG::Topol::INSIDE);
+	}
+
+	/// Compiler trap: unimplemented for two of same kind: either \c HorzAlign or \c VertAlign twice.
+	template <typename AX, AlignBase::Axis A>
+	void setAlign(const Alignment<AX,A> & align1, const Alignment<AX,A> & align2);
+
+	// Convenience: set both horz and vert alignments (INSIDE)
+	/*
+	void setAlign(const VertAlign & valign, const HorzAlign & halign){
+		setAlign(halign.axis, halign.pos, AlignSVG::Topol::INSIDE);
+		setAlign(valign.axis, valign.pos, AlignSVG::Topol::INSIDE);
+	}
+	 */
+
+
+	// typedef Alignment<const AlignBase::Axis, AlignBase::Axis::HORZ> HorzAlign;
+	/*
+	template <AlignBase::Axis AX, typename ...T>
+	void setAlign(const Alignment<const AlignBase::Axis, AX> & align, const T... args){
+		if (align.pos == AlignBase::FILL){
+			// Makes sense only for OBJECT, as it changed. ANCHOR is always unchanged.
+			setAlign(AlignSVG::OBJECT, align.axis, align.pos);
+		}
+		else {
+			setAlign(align.axis, align.pos, args...);
+		}
+	}
+	*/
 
 	/*
 	 *  Template supports empty arg list.
 	 *
-	 */
+
 	template <typename ...T>
 	void setAlign(const HorzAlign & align, const T... args){
-		setAlign(align.axis, align.pos, args...);
+		if (align.pos == AlignBase::FILL){
+			// Makes sense only for OBJECT, as it changed. ANCHOR is always unchanged.
+			setAlign(AlignSVG::OBJECT, align.axis, align.pos);
+		}
+		else {
+			setAlign(align.axis, align.pos, args...);
+		}
 	}
 
 	template <typename ...T>
 	void setAlign(const VertAlign & align, const T...  args){
 		setAlign(align.axis, align.pos, args...);
 	}
-
-	// Convenience: set both horz and vert alignments (INSIDE)
-	/*
 	 */
-	void setAlign(const VertAlign & valign, const HorzAlign & halign){
-		setAlign(halign.axis, halign.pos, AlignSVG::Topol::INSIDE);
-		setAlign(valign.axis, valign.pos, AlignSVG::Topol::INSIDE);
-	}
+
 
 
 
 	/// High-level, user friendlier interface for setting the alignments for both OBJECT itself and its ANCHOR object.
 	/*
-	 *  \tparam T - enum type \c Topol or string
-	 *  \tparam A - enum type \c Alignment or string
+	 *  \tparam T - enum type \c Topol or string: \c INSIDE or \c OUTSIDE .
+	 *  \param align  - Horizontal or vertical Alignment: \c LEFT|CENTER|RIGHT or \c TOP|MIDDLE|BOTTOM
 	 *  \param topol  - \c INSIDE or \c OUTSIDE
-	 *  \param align  - \c LEFT|CENTER|RIGHT or \c TOP|MIDDLE|BOTTOM
-	template <typename T, typename AX, AlignBase::Axis A>
-	void setAlign(const Alignment<AX,A> & align, const T & topol){
-		const Topol & t = EnumDict<AlignSVG::Topol>::getValue(topol, false);
-		// const Alignment<> & a = EnumDict<Alignment<> >::getValue(align, false);
-		setAlign(t, align.axis, align.pos);
-	}
 	 */
-
 	template <typename T>
 	void setAlign(const std::string & align, const T & topol){
 		const Alignment<> & a = EnumDict<Alignment<> >::getValue(align, false);
@@ -373,15 +405,6 @@ struct AlignSVG { // : protected Align {
 	}
 
 	/// High-level, user friendly interface for setting the alignments for both OBJECT itself and its ANCHOR object.
-	/*
-	 *  \param pos   - enum value \c OBJ or \c REF
-	 *  \param axis  - enum value \c HORZ or \c VERT
-	inline
-	void setAlign(Topol topol, const Alignment & pos){
-		setAlign(topol, pos.axis, pos.pos);
-	}
-	*/
-
 
 	/// Handler for command line or configuration file arguments
 	void setAlign(const std::string & align);
@@ -431,11 +454,12 @@ struct AlignSVG { // : protected Align {
 
 protected:
 
+	// Future extension
 	typedef int bitvect_t;  // or int_t ?
 
+	// Future extension
 	mutable
 	bitvect_t alignment = 0;
-
 
 	/// Change alignment configuration without updating the alignStr.
 	template <typename P, typename A, typename V>
@@ -446,11 +470,13 @@ protected:
 	virtual inline
 	void updateAlign(){};
 
+
 	typedef std::vector<AlignBase::Pos> align_vect_t;
 	typedef std::vector<align_vect_t > align_conf_t;
 
-	/// alignments[OBJECT][VERT] = alignments[OBJECT|ANCHOR][HORZ|VERT] = [MIN|MID|MAX]
 	align_conf_t alignments = align_conf_t(2, align_vect_t(2, AlignBase::Pos::UNDEFINED_POS));
+
+	/// alignments[OBJECT][VERT] = alignments[OBJECT|ANCHOR][HORZ|VERT] = [MIN|MID|MAX]
 
 
 };
