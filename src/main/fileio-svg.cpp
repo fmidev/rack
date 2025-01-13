@@ -289,6 +289,56 @@ protected:
 
 };
 
+class CmdGroup : public drain::BasicCommand {
+
+public:
+
+	CmdGroup() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
+		RackContext & ctx = getContext<RackContext>();
+		getParameters().link("syntax", ctx.svgTitles, "example: '${what:date|%Y%m} ${NOD}'");
+	}
+
+	CmdGroup(const CmdGroup & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+		//RackContext & ctx = getContext<RackContext>();
+		//getParameters().link("value", ctx.svgTitles);
+	}
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	}
+
+};
+
+
+class CmdTitles : public drain::BasicCommand {
+
+public:
+
+	CmdTitles() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
+		RackContext & ctx = getContext<RackContext>();
+		getParameters().link("value", ctx.svgTitles);
+	}
+
+	CmdTitles(const CmdTitles & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+		//RackContext & ctx = getContext<RackContext>();
+		//getParameters().link("value", ctx.svgTitles);
+	}
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	}
+
+};
 
 
 class CmdGroupTitle : public drain::SimpleCommand<std::string> {
@@ -378,6 +428,8 @@ public:
 		//BBoxSVG bbox;
 		// TreeUtilsSVG::computeBoundingBox(mainGroup, bbox);
 
+		RackSVG::addMainTitles(mainGroup);
+		/*
 		drain::image::TreeSVG & backgroundRect = mainGroup["mainRect"](svg::RECT);
 		backgroundRect->addClass(RackSVG::MAINTITLE);
 		backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
@@ -392,6 +444,8 @@ public:
 		mainTitle->addClass(LayoutSVG::FLOAT);
 		mainTitle->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
 		mainTitle->setMargin(5); // not used (when centering)
+		*/
+		drain::image::TreeSVG & mainTitle = mainGroup["mainTitle"];
 		mainTitle->setText(value);
 		const double fontSize = style[RackSVG::MAINTITLE]->get("font-size", 12.5);
 		mainTitle->setHeight(fontSize);
@@ -714,10 +768,12 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdLinkImage>(); //
 	install<CmdLayout>();  // Could be "CmdMainAlign", but syntax is so different. (HORZ,INCR etc)
 	install<CmdAlign>();
+	install<CmdGroup>();
+	install<CmdGroupTitle>().section = HIDDEN; // under construction
 	install<CmdPanel>(); // .section = HIDDEN; // addSection(i);
-	install<CmdPanelTest>().section = HIDDEN; // addSection(i);
+	install<CmdPanelTest>().section = HIDDEN;  // addSection(i);
 	// install<CmdImageTitle>(); consider
-	install<CmdGroupTitle>();
+	install<CmdTitles>();
 	install<CmdMainTitle>();
 	install<CmdStyle>();
 

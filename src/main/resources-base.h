@@ -115,7 +115,9 @@ public:
 	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
 	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
 	int svgDebug = 0;
-	std::string svgGroup = "RACK_MAIN";
+	std::string svgGroupName = "unnamed_group";
+	std::string svgTitles = "";
+
 	// For the NEXT graphic object
 	// AlignSVG::HorzAlign
 	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {AlignSVG::Topol::INSIDE}; // (AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ); // = {AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ};

@@ -82,7 +82,7 @@ public:
 	//drain::image::TreeSVG & getMainGroup(RackContext & ctx);
 
 	static
-	drain::image::TreeSVG & getMainGroup(RackContext & ctx, const std::string & name = "");
+	drain::image::TreeSVG & getMainGroup(RackContext & ctx); // , const std::string & name = "");
 
 
 	static
@@ -102,6 +102,11 @@ public:
 	/// Add external image from a file path.
 	static
 	drain::image::TreeSVG & addImage(RackContext & ctx, const drain::FilePath & filepath, const drain::Frame2D<double> & frame = {640,400});
+
+
+	/// Add TEXT elements: MAINTITLE, LOCATION, TIME, GENERAL
+	static
+	void addMainTitles(drain::image::TreeSVG & object);
 
 	/// Add rectangle
 	static
@@ -150,7 +155,6 @@ image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass &x);
  */
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
-inline
 image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type);
 
 

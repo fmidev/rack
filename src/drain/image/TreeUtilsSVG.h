@@ -87,13 +87,13 @@ struct PanelConfSVG {
 
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
 	//  Current
-	std::string groupName;
-	int maxPerGroup = 10;
+	// std::string groupName;
+	// int maxPerGroup = 10;
 	bool absolutePaths = false;
 
 	// Currently, applications are recommended to handle "false" and "none". Or "auto"?
-	std::string title;
-	FontSizes fontSize;
+	// std::string title;
+	// FontSizes fontSize;
 
 	/*
 	enum Legend {NO_LEGEND=0, LEFT=1, RIGHT=2, DUPLEX=LEFT|RIGHT, EMBED=4};
@@ -103,8 +103,8 @@ struct PanelConfSVG {
 	//typedef drain::EnumFlagger<drain::SingleFlagger<Legend> > LegendFlagger;
 
 
-	inline  // layout(Alignment::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED),
-	PanelConfSVG() :  maxPerGroup(10), absolutePaths(false){
+	inline  // maxPerGroup(10), layout(Alignment::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED),
+	PanelConfSVG() :   absolutePaths(false){
 	}
 
 	/*
