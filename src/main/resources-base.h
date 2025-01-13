@@ -45,11 +45,61 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/PolarODIM.h"
 #include "hi5/Hi5.h"
 
+// #include "graphics.h" // SVG
 
 namespace rack {
 
 
 using namespace drain::image;
+
+class GraphicsContext { // : public drain::BasicCommand {
+
+
+public:
+
+	/// Default constructor
+	GraphicsContext();
+
+	/// Copy constructor
+	GraphicsContext(const GraphicsContext & ctx);
+
+
+	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
+	enum ElemClass {
+		NONE = 0,
+		MAINTITLE = 1,  /** Main title in SVG image */
+		TIME = 2,       /** Date and time attributes */
+		LOCATION = 4,   /** Place (coordinates, municipality) */
+		GENERAL = 8,    /** Default type */
+		ALL = (1|2|4|8),
+		MAIN,
+		TITLE,      /** Default title */
+		IMAGETITLE, /** Small title in a corner of radar image (time, location) */
+		IMAGE_PANEL,
+		IMAGE_BORDER, /** RECT surrounding the image */
+		// IMAGE_SET  /** "Hidden" marker for image groups */
+	};
+
+ 	// SVG output configuration (layout)
+	TreeSVG svgTrack;
+	PanelConfSVG svgPanelConf; // under constr - consider embedding these to PanelConfSVG:
+	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
+	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
+	int svgDebug = 0;
+	std::string svgGroupName = "unnamed_group";
+
+	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
+	TitleFlagger svgTitles = ElemClass::NONE;
+
+	// std::string svgTitles = "";
+
+	// For the NEXT graphic object
+	// AlignSVG::HorzAlign
+	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {AlignSVG::Topol::INSIDE}; // (AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ); // = {AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ};
+	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Pos::MIN};
+
+};
+
 
 // Consider moving ImageKit here?
 class ImageContext {
@@ -109,19 +159,6 @@ public:
 
 	std::string paletteKey;
 
-	// SVG output configuration (layout)
-	TreeSVG svgTrack;
-	PanelConfSVG svgPanelConf; // under constr - consider embedding these to PanelConfSVG:
-	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
-	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
-	int svgDebug = 0;
-	std::string svgGroupName = "unnamed_group";
-	std::string svgTitles = "";
-
-	// For the NEXT graphic object
-	// AlignSVG::HorzAlign
-	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {AlignSVG::Topol::INSIDE}; // (AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ); // = {AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ};
-	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Pos::MIN};
 
 	// New
 	inline

@@ -46,6 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+/*
 template <>
 const drain::EnumDict<RackSVG::ElemClass>::dict_t  drain::EnumDict<RackSVG::ElemClass>::dict = {
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MAIN),
@@ -59,6 +60,7 @@ const drain::EnumDict<RackSVG::ElemClass>::dict_t  drain::EnumDict<RackSVG::Elem
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, IMAGE_BORDER),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
 };
+*/
 
 }
 
@@ -72,8 +74,8 @@ namespace drain {
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 inline
-image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass &x){
-	return (*this)[std::string(".")+EnumDict<rack::RackSVG::ElemClass>::dict.getKey(x, false)];
+image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass &x){
+	return (*this)[std::string(".")+EnumDict<rack::GraphicsContext::ElemClass>::dict.getKey(x, false)];
 }
 
 /// Automatic conversion of elem classes to strings.
@@ -167,7 +169,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 		};
 
 		// MODE 3: attribs of sub-element
-		style[RackSVG::IMAGE_BORDER] = { // TODO: add leading '.' ?
+		style[GraphicsContext::IMAGE_BORDER] = { // TODO: add leading '.' ?
 				{"fill", "none"},
 				{"stroke", "none"},
 				// {"stroke-opacity", 0.0},
@@ -189,7 +191,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 
 		style["text.IMAGETITLE"] = {
-				{"font-size", "1.5em"},
+				{"font-size", 12},
 				{"stroke", "white"},
 				/* {"fill", "black"}, */
 				{"stroke-opacity", "0.75"},
@@ -200,7 +202,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"stroke-linejoin", "round"}
 		};
 
-		style["MAINTITLE"] = {
+		style[GraphicsContext::MAINTITLE] = {
 				{"font-size", "30"},
 		};
 
@@ -214,11 +216,11 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 		};
 
 		// Date and time.
-		style[".TIME"].data = {
+		style[GraphicsContext::TIME].data = {
 				{"fill", "darkred"}
 		};
 
-		style[".LOCATION"].data = {
+		style[GraphicsContext::LOCATION].data = {
 				{"fill", "darkblue"}
 		};
 
@@ -356,7 +358,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	mout.attention("filepath:", filepath);
 
 	drain::image::TreeSVG & panelGroup = getImagePanelGroup(ctx, filepath);
-	panelGroup->addClass(IMAGE_PANEL); // Add elems ^ here ^ ?
+	panelGroup->addClass(GraphicsContext::IMAGE_PANEL); // Add elems ^ here ^ ?
 
 	// TEST
 	panelGroup->setAlignAnchor("image");
@@ -489,9 +491,9 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::FilePa
 drain::image::TreeSVG & RackSVG::addImageBorder(drain::image::TreeSVG & imagePanelGroup){ //, const drain::Frame2D<double> & frame){
 	// DEBUG: (may be fatal for input.sh etc.)
 	// drain::image::svg::toStream(std::cout, image);
-	drain::image::TreeSVG & imageBorder = imagePanelGroup[RackSVG::IMAGE_BORDER](svg::RECT); // +EXT!
+	drain::image::TreeSVG & imageBorder = imagePanelGroup[GraphicsContext::IMAGE_BORDER](svg::RECT); // +EXT!
 	imageBorder->addClass(drain::image::LayoutSVG::FLOAT);
-	imageBorder->addClass(RackSVG::IMAGE_BORDER); // style
+	imageBorder->addClass(GraphicsContext::IMAGE_BORDER); // style
 	imageBorder->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
 	// image->addClass(drain::image::AlignSVG::ANCHOR); -> setAlignAnchor
 	// imageBorder->setStyle("stroke", "green"); // Note: without extension
@@ -504,21 +506,21 @@ drain::image::TreeSVG & RackSVG::addImageBorder(drain::image::TreeSVG & imagePan
 
 void RackSVG::addMainTitles(drain::image::TreeSVG & object){
 	drain::image::TreeSVG & backgroundRect = object["mainRect"](svg::RECT);
-	backgroundRect->addClass(RackSVG::MAINTITLE);
+	backgroundRect->addClass(GraphicsContext::MAINTITLE);
 	backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
 	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
-	backgroundRect->setHeight(80);
+	backgroundRect->setHeight(40);
 	// backgroundRect->setStyle("fill", "green");
 	// backgroundRect->setStyle("opacity", 0.75);
 
 	drain::image::TreeSVG & mainTitle = object["mainTitle"](svg::TEXT);
 	mainTitle->setAlignAnchor("mainRect"); // Explicit for illustration...
-	mainTitle->addClass(RackSVG::MAINTITLE);
-	mainTitle->addClass(LayoutSVG::FLOAT);
+	mainTitle->addClass(LayoutSVG::FLOAT);  // alignment
+	mainTitle->addClass(GraphicsContext::MAINTITLE); // style
 	mainTitle->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
-	mainTitle->setMargin(5); // not used (when centering)
-	//mainTitle->setText(value);
-	const double fontSize = 30; // style[RackSVG::MAINTITLE]->get("font-size", 12.5);
+	// mainTitle->setMargin(5); // not used (when centering)
+	// mainTitle->setText(value);
+	const double fontSize = 20; // style[RackSVG::MAINTITLE]->get("font-size", 12.5);
 	mainTitle->setHeight(fontSize);
 
 	/*
@@ -533,25 +535,32 @@ void RackSVG::addMainTitles(drain::image::TreeSVG & object){
 	//mout.special("FOO2", headerRect->getBoundingBox());
 	//headerRect->set("yes", "no");
 
-	TreeSVG & mainHeader = object[GENERAL](svg::TEXT); // group[GENERAL](svg::TEXT);
-	mainHeader->setAlign(AlignSVG::CENTER, AlignSVG::INSIDE); //
-	mainHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::INSIDE); //AlignSVG::VertAlign::MIDDLE);
-	mainHeader->addClass(LayoutSVG::FLOAT, MAINTITLE);
+	TreeSVG & mainHeader = object[GraphicsContext::GENERAL](svg::TEXT); // group[GENERAL](svg::TEXT);
+	mainHeader->addClass(LayoutSVG::FLOAT);
+	mainHeader->addClass(GraphicsContext::MAINTITLE); // also GENERAL?
+	mainHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); //AlignSVG::VertAlign::MIDDLE);
+	mainHeader->setHeight(20);
 	// Ensure order
 	mainHeader["product"](svg::TSPAN);
 	mainHeader["prodpar"](svg::TSPAN);
 
 
-	TreeSVG & timeHeader = object[TIME](svg::TEXT);
-	timeHeader->addClass(LayoutSVG::FLOAT, TITLE, TIME);
+	TreeSVG & timeHeader = object[GraphicsContext::TIME](svg::TEXT);
+	timeHeader->addClass(LayoutSVG::FLOAT);
+	timeHeader->addClass(GraphicsContext::TITLE, GraphicsContext::TIME);
+	timeHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT); // , AlignSVG::INSIDE);
+	timeHeader->setHeight(16);
+	timeHeader->setMargin(3);
 	timeHeader["date"](svg::TSPAN);
 	timeHeader["time"](svg::TSPAN);
 
 
-	TreeSVG & locationHeader = object[LOCATION](svg::TEXT);
-	locationHeader->addClass(LayoutSVG::FLOAT, TITLE, LOCATION);
-	locationHeader->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE); // AlignSVG::HorzAlign::RIGHT);
-	//tsvg::markAligned(headerRect, locationHeader, alignSvg::LEFT, alignSvg::MIDDLE);
+	TreeSVG & locationHeader = object[GraphicsContext::LOCATION](svg::TEXT);
+	locationHeader->addClass(LayoutSVG::FLOAT);
+	locationHeader->addClass(GraphicsContext::TITLE, GraphicsContext::LOCATION);
+	locationHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::LEFT); // , AlignSVG::INSIDE); // AlignSVG::HorzAlign::RIGHT);
+	locationHeader->setHeight(16);
+	locationHeader->setMargin(3);
 	locationHeader["NOD"](svg::TSPAN);
 	locationHeader["PLC"](svg::TSPAN);
 
@@ -600,7 +609,7 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 		// drain::TreeUtils::dump(ctx.svgTrack);
 	}
 
-	if (!ctx.svgTitles.empty()){ // also "false" !?
+	if (ctx.svgTitles){ // also "false" !?
 
 		// Create titles for each image panel
 		TitleCreatorSVG titleCreator;
@@ -616,40 +625,6 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 
 			addMainTitles(ctx.svgTrack);
 
-			/*
-			TreeSVG & headerRect = ctx.svgTrack["mainRect"](svg::RECT); //;
-			//headerRect->setStyle("fill:slateblue");
-			headerRect->setId("mainRect");
-			headerRect->setHeight(50);
-			headerRect->setAlign(AlignSVG::HORZ_FILL);
-			// headerRect->setStyle("fill", "blue");
-			// headerRect->setStyle("opacity", 0.75);
-			//mout.special("FOO2", headerRect->getBoundingBox());
-			//headerRect->set("yes", "no");
-
-			TreeSVG & mainHeader = ctx.svgTrack[GENERAL](svg::TEXT); // group[GENERAL](svg::TEXT);
-			mainHeader->setAlign(AlignSVG::CENTER, AlignSVG::INSIDE); //
-			mainHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::INSIDE); //AlignSVG::VertAlign::MIDDLE);
-			mainHeader->addClass(LayoutSVG::FLOAT, MAINTITLE);
-			// Ensure order
-			mainHeader["product"](svg::TSPAN);
-			mainHeader["prodpar"](svg::TSPAN);
-
-
-			TreeSVG & timeHeader = ctx.svgTrack[TIME](svg::TEXT);
-			timeHeader->addClass(LayoutSVG::FLOAT, TITLE, TIME);
-			timeHeader["date"](svg::TSPAN);
-			timeHeader["time"](svg::TSPAN);
-
-
-			TreeSVG & locationHeader = ctx.svgTrack[LOCATION](svg::TEXT);
-			locationHeader->addClass(LayoutSVG::FLOAT, TITLE, LOCATION);
-			locationHeader->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE); // AlignSVG::HorzAlign::RIGHT);
-			//tsvg::markAligned(headerRect, locationHeader, alignSvg::LEFT, alignSvg::MIDDLE);
-			locationHeader["NOD"](svg::TSPAN);
-			locationHeader["PLC"](svg::TSPAN);
-			*/
-
 			// Automatic
 			//if ((ctx.svgPanelConf.title == "auto") || ctx.svgPanelConf.title.empty()){
 			if (true){
@@ -660,7 +635,7 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 					// Consider separate function, recognizing date/time, and formatting?
 
 					// std::string key;
-					RackSVG::ElemClass key;
+					GraphicsContext::ElemClass key;
 					std::stringstream sstr;
 					/*
 					const std::string & key = getTextClass(entry.first, "GENERAL");
@@ -672,19 +647,19 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 					// In these, the selection is based on entry.first (eg. what:endtime)
 					if (formatter.formatDate(sstr, entry.first, entry.second, "%Y/%m/%d")){
 						mout.special("Recognized  DATE: ", entry.first, '=', entry.second);
-						key = TIME; //"TIME"; // str + enum??
+						key = GraphicsContext::TIME; //"TIME"; // str + enum??
 					}
 					else if (formatter.formatTime(sstr, entry.first, entry.second, "%H:%M UTC")){
 						mout.special("Recognized  TIME: ", entry.first, '=', entry.second);
-						key = TIME; //"TIME"; // str + enum??
+						key = GraphicsContext::TIME; //"TIME"; // str + enum??
 					}
 					else if (formatter.formatPlace(sstr, entry.first, entry.second)){
 						mout.special("Recognized PLACE: ", entry.first, '=', entry.second);
-						key = LOCATION; // "LOCATION"; // str + enum??
+						key = GraphicsContext::LOCATION; // "LOCATION"; // str + enum??
 					}
 					else {
 						sstr << entry.second.toStr();
-						key = GENERAL; // "GENERAL";
+						key = GraphicsContext::GENERAL; // "GENERAL";
 					}
 					sstr << "&#160;";
 
@@ -707,8 +682,8 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 				titleMapper.parse(ctx.svgTitles);
 				const drain::VariableMap & v = ctx.getStatusMap();
 				//mainHeader->ctext += titleMapper.toStr(v);
-				ctx.svgTrack[GENERAL]->ctext += titleMapper.toStr(v, -1, formatter);
-				ctx.svgTrack[GENERAL]->ctext += ' ';
+				ctx.svgTrack[GraphicsContext::GENERAL]->ctext += titleMapper.toStr(v, -1, formatter);
+				ctx.svgTrack[GraphicsContext::GENERAL]->ctext += ' ';
 			}
 
 
@@ -910,7 +885,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 		return 0;
 	}
 
-	if (!group->hasClass(RackSVG::IMAGE_PANEL)){
+	if (!group->hasClass(GraphicsContext::IMAGE_PANEL)){
 		return 0;
 	}
 
@@ -953,14 +928,14 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 			//TreeSVG & text = getTextElem(current["image"], current, key);
 			TreeSVG & text = group[elemKey](svg::TEXT);  // +"_title"
 			// text->addClass("imageTitle"); // style class (only)
-			text->addClass(RackSVG::IMAGETITLE);
+			text->addClass(GraphicsContext::IMAGETITLE);
 
 			TreeSVG & tspan = text[attr.first](svg::TSPAN);
 			tspan->addClass(attr.first); // allows user-specified style
 			//drain::StringTools::split2(attr.second.toStr(), v, format, '|');
 
 			if (IS_TIME){
-				text->addClass(RackSVG::TIME); // ,  alignSvg::BOTTOM, alignSvg::LEFT); // CmdBaseSVG::FLOAT,
+				text->addClass(GraphicsContext::TIME); // ,  alignSvg::BOTTOM, alignSvg::LEFT); // CmdBaseSVG::FLOAT,
 				text->setAlign(AlignSVG::TOP, AlignSVG::LEFT); //, AlignSVG::INSIDE);
 				//text->setAlign(AlignSVG::LEFT); //, AlignSVG::INSIDE);
 				if (format.empty()){
@@ -985,7 +960,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 				// text->ctext = " "; // drain::StringBuilder<':'>(attr.first, attr.second);
 			}
 			else if (IS_LOCATION){
-				text->addClass(RackSVG::LOCATION); // , alignSvg::TOP, alignSvg::RIGHT); // CmdBaseSVG::FLOAT,
+				text->addClass(GraphicsContext::LOCATION); // , alignSvg::TOP, alignSvg::RIGHT); // CmdBaseSVG::FLOAT,
 				text->setAlign(AlignSVG::BOTTOM, AlignSVG::RIGHT); //, AlignSVG::INSIDE); // AlignSVG::HorzAlign::RIGHT);  // text->setAlignInside(LayoutSVG::Axis::HORZ, AlignSVG::MAX); // = RIGHT
 				// text->setAlign(AlignSVG::BOTTOM); //, AlignSVG::INSIDE); // AlignSVG::VertAlign::BOTTOM); // text->setAlignInside(LayoutSVG::Axis::VERT, AlignSVG::MAX); // = BOTTOM
 				// text->set("y", y + 60); // temporary
@@ -998,11 +973,17 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 			}
 
 			// Explicit (instead of style-derived) font size needed for bounding box (vertical height)
+			/*
 			const double fontSize = // getStyleValue(root, RackSVG::TITLE, "font-size", 12.5);
-					root[drain::image::svg::STYLE][RackSVG::MAINTITLE]->get("font-size", 12.5);
+					root[drain::image::svg::STYLE][GraphicsContext::MAINTITLE]->get("font-size", 12.5);
+
 			text->setStyle("font-size", fontSize); //
 			text->setHeight(fontSize);     // row height
 			text->setMargin(fontSize/5.0); // margin
+			*/
+			// text->setStyle("font-size", fontSize); //
+			text->setHeight(14);     // row height
+			text->setMargin(4); // margin
 			text->addClass(LayoutSVG::FLOAT); // Anchor defined, but need for proper bbox computation! (Yet text should be discarded)
 
 

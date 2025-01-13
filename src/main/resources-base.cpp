@@ -31,13 +31,43 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "hi5/Hi5.h"
 #include "data/SourceODIM.h"
+
 #include "resources.h"
+
+
+namespace drain {
+
+template <>
+const drain::EnumDict<rack::GraphicsContext::ElemClass>::dict_t  drain::EnumDict<rack::GraphicsContext::ElemClass>::dict = {
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, MAIN),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, GENERAL),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, TITLE),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, MAINTITLE),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, IMAGETITLE),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, LOCATION),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, TIME),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, IMAGE_PANEL),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, IMAGE_BORDER),
+		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
+};
+
+}
 
 using namespace drain;
 using namespace drain::image;
 
 namespace rack {
 
+
+
+
+GraphicsContext::GraphicsContext() {
+}
+
+GraphicsContext::GraphicsContext(const GraphicsContext & ctx) {
+	svgGroupName = ctx.svgGroupName;
+	svgTitles    = ctx.svgTitles;
+}
 
 // const drain::StatusFlags::value_t RackContext::BBOX_STATUS =   StatusFlags::add("BBOX");
 
@@ -57,8 +87,6 @@ ImageContext::ImageContext(const ImageContext & ctx):
 		currentGrayImage(ctx.currentGrayImage){
 		//svgGroup("main") {
 	//svgPanelConf.groupName = ctx.svgPanelConf.groupName;
-	svgGroupName = ctx.svgGroupName;
-	svgTitles    = ctx.svgTitles;
 }
 
 // Note: for example Palette uses this to extract actual quantity

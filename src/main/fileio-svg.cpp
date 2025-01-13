@@ -295,7 +295,7 @@ public:
 
 	CmdGroup() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
 		RackContext & ctx = getContext<RackContext>();
-		getParameters().link("syntax", ctx.svgTitles, "example: '${what:date|%Y%m} ${NOD}'");
+		getParameters().link("syntax", ctx.svgGroupName, "example: '${what:date|%Y%m} ${NOD}'");
 	}
 
 	CmdGroup(const CmdGroup & cmd) : drain::BasicCommand(cmd) {
@@ -307,34 +307,37 @@ public:
 	void exec() const {
 
 		RackContext & ctx = getContext<RackContext>();
-
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+		mout.accept<LOG_WARNING>("new value: ", ctx.svgGroupName);
 
 	}
 
 };
 
 
-class CmdTitles : public drain::BasicCommand {
+//class CmdTitles : public drain::BasicCommand {
 
+class CmdTitles : public drain::SimpleCommand<std::string> {
 public:
 
-	CmdTitles() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
-		RackContext & ctx = getContext<RackContext>();
-		getParameters().link("value", ctx.svgTitles);
+	CmdTitles() : drain::SimpleCommand<std::string>(__FUNCTION__, "Set titles automatically", "[MAINTITLE|TIME|LOCATION|GENERAL]") {
+		// RackContext & ctx = getContext<RackContext>();
+		// getParameters().link("value", ctx.svgTitles);
 	}
 
-	CmdTitles(const CmdTitles & cmd) : drain::BasicCommand(cmd) {
-		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
-		//RackContext & ctx = getContext<RackContext>();
-		//getParameters().link("value", ctx.svgTitles);
+	CmdTitles(const CmdTitles & cmd) : SimpleCommand<std::string>(cmd) {
+		// CmdTitles(const CmdTitles & cmd) : drain::BasicCommand(cmd) {
+		// getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+		// RackContext & ctx = getContext<RackContext>();
+		// getParameters().link("value", ctx.svgTitles);
 	}
 
 	void exec() const {
 
 		RackContext & ctx = getContext<RackContext>();
-
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		ctx.svgTitles.set(value);
 
 	}
 
@@ -364,8 +367,8 @@ public:
 
 		TreeSVG & headerRect = headerGroup["headerRect"](svg::RECT); // +EXT!
 		headerRect->setHeight(70);
-		headerRect->addClass(RackSVG::TITLE, RackSVG::MAINTITLE);
-		headerRect->setId("textRect", RackSVG::MAINTITLE);
+		headerRect->addClass(GraphicsContext::TITLE, GraphicsContext::MAINTITLE);
+		headerRect->setId("textRect", GraphicsContext::MAINTITLE);
 		headerRect->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
 
 		// User-defined
@@ -387,7 +390,7 @@ public:
 		mainTitleText->setStyle("font-size", 20);
 
 		drain::image::TreeSVG & text1 = headerGroup["TIME"](svg::TEXT);
-		text1->addClass(LayoutSVG::FLOAT, RackSVG::TITLE);
+		text1->addClass(LayoutSVG::FLOAT, GraphicsContext::TITLE);
 		text1->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
 		// text1->setAlign(AlignSVG::TOP);
 		text1->setHeight(20);
@@ -395,7 +398,7 @@ public:
 		text1->setText(value, " (time)");
 
 		drain::image::TreeSVG & text2 = headerGroup["LOCATION"](svg::TEXT);
-		text2->addClass(LayoutSVG::FLOAT, RackSVG::TITLE);
+		text2->addClass(LayoutSVG::FLOAT, GraphicsContext::TITLE);
 		text2->setAlign(AlignSVG::RIGHT);
 		text2->setAlign(AlignSVG::TOP);
 		text2->setHeight(20);
@@ -447,7 +450,7 @@ public:
 		*/
 		drain::image::TreeSVG & mainTitle = mainGroup["mainTitle"];
 		mainTitle->setText(value);
-		const double fontSize = style[RackSVG::MAINTITLE]->get("font-size", 12.5);
+		const double fontSize = style[GraphicsContext::MAINTITLE]->get("font-size", 12.5);
 		mainTitle->setHeight(fontSize);
 	}
 

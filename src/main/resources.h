@@ -64,7 +64,7 @@ namespace rack {
 /**
  *
  */
-class RackContext : public ProductConf, public drain::SmartContext, public ImageContext, public AndreContext, public Hdf5Context {
+class RackContext : public ProductConf, public drain::SmartContext, public GraphicsContext, public ImageContext, public AndreContext, public Hdf5Context {
 
 public:
 

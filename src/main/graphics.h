@@ -34,7 +34,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_GRAPHICS
 #define RACK_GRAPHICS
 
-#include <drain/prog/CommandInstaller.h>
+// #include <drain/prog/CommandInstaller.h>
+
+#include "resources.h"
 
 // Notice: role of graphics.cpp and fileio-svg.cpp is currently equivalent
 
@@ -49,18 +51,23 @@ class RackSVG { // : public drain::BasicCommand {
 public:
 
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
-	enum ElemClass {
+	/*
+	enum ElemClassFOO {
+		NONE = 0,
+		MAINTITLE = 1,  // Main title in SVG image
+		TIME = 2,       // Date and time attributes
+		LOCATION = 4,   // Place (coordinates, municipality)
+		GENERAL = 8,    // Default type
+		ALL = (1|2|4|8),
 		MAIN,
-		GENERAL,    /** Default type */
-		TITLE,      /** Default title */
-		MAINTITLE,  /** Main title in SVG image */
-		IMAGETITLE, /** Small title in a corner of radar image (time, location) */
-		TIME,       /** Date and time attributes */
-		LOCATION,   /** Place (coordinates, municipality) */
+		TITLE,      // Default title
+		IMAGETITLE, // Small title in a corner of radar image (time, location)
 		IMAGE_PANEL,
-		IMAGE_BORDER, /** RECT surrounding the image */
-		// IMAGE_SET  /** "Hidden" marker for image groups */
+		IMAGE_BORDER, // RECT surrounding the image
+		// IMAGE_SET  // "Hidden" marker for image groups
 	};
+	*/
+
 
 	/// Standard group name for images to be aligned
 	// static
@@ -147,7 +154,7 @@ namespace drain {
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass &x);
+image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass &x);
 
 /// Automatic conversion of elem classes to strings.
 /**
