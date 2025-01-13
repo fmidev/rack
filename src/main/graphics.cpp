@@ -73,7 +73,6 @@ namespace drain {
  */
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
-inline
 image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass &x){
 	return (*this)[std::string(".")+EnumDict<rack::GraphicsContext::ElemClass>::dict.getKey(x, false)];
 }
@@ -84,7 +83,6 @@ image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemCla
  */
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
-inline
 image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type){
 	return (*this)[EnumDict<image::svg::tag_t>::dict.getKey(type, false)];
 }
