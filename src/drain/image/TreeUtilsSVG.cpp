@@ -57,49 +57,22 @@ bool TreeUtilsSVG::isAbstract(XML::intval_t tag){
 	return (abstractTags.find((XML::intval_t)tag) != abstractTags.end());
 }
 
-// Consider XMl Visitor...
-bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<svg::coord_t> & box){
-
-	if (elem->typeIs(svg::SVG) || elem->typeIs(svg::GROUP)){
-		for (const TreeSVG::pair_t & entry: elem){
-			computeBoundingBox(entry.second, box); // recursion
-		}
-	}
-	else if (elem->typeIs(svg::TEXT)){
-		// skip, trust others (rect anchor)
-	}
-	else {
-		if (box.empty()){
-			box = elem->getBoundingBox();
-		}
-		else {
-			// drain::Logger mout(__FILE__, __FUNCTION__);
-			//mout.pending("Updating bbox ", box, " with ", elem->getBoundingBox());
-			box.expand(elem->getBoundingBox());
-		}
-	}
-
-	return (box.getWidth() != 0.0) && (box.getHeight() != 0.0);
-
-}
-
 
 
 void TreeUtilsSVG::finalizeBoundingBox(TreeSVG & svg){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	// if (svg.getT)
 
-	//drain::image::BBoxSVG bb;
-	//computeBoundingBox(svg, bb);
+	drain::image::BBoxSVG bb;
+	computeBoundingBox(svg, bb);
 
+
+	/*
 	BBoxRetrieverSVG bbr;
 	TreeUtils::traverse(bbr, svg);
-
-
-	// const drain::image::BBoxSVG & bb = bbr.box;
 	const drain::Box<svg::coord_t> & bb = bbr.box;
+	*/
 
 	// Finalize top level bounding box
 	svg->setFrame(bb.getFrame()); // width, height
@@ -330,7 +303,6 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 		superAlign(entry.second, orientation, direction); // , offset);
 	}
 
-
 	if (object->hasClass(LayoutSVG::ALIGN_FRAME)){
 		if (orientation == drain::image::AlignBase::Axis::VERT){
 			object->setAlign((direction==LayoutSVG::Direction::INCR) ? AlignSVG::RIGHT : AlignSVG::LEFT, AlignSVG::OUTSIDE);
@@ -340,21 +312,10 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 			object->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
 			object->setAlign((direction==LayoutSVG::Direction::INCR) ? AlignSVG::BOTTOM : AlignSVG::TOP, AlignSVG::OUTSIDE);
 		}
-		/*
-		if (orientation == drain::image::AlignBase::Axis::VERT){
-			object->setAlign(AlignBase::Axis::HORZ, (direction==LayoutSVG::Direction::INCR) ? AlignBase::Pos::MAX : AlignBase::Pos::MIN, AlignSVG::OUTSIDE);
-			object->setAlign(AlignBase::Axis::VERT, AlignBase::Pos::MIN, AlignSVG::INSIDE); // = AlignSVG::VertAlignment::TOP);
-		}
-		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::AlignBase::Axis::VERT){
-			object->setAlign(AlignBase::Axis::HORZ, AlignBase::Pos::MIN, AlignSVG::INSIDE);
-			object->setAlign(AlignBase::Axis::VERT, (direction==LayoutSVG::Direction::INCR) ? AlignBase::Pos::MAX : AlignBase::Pos::MIN, AlignSVG::OUTSIDE);
-		}
-		*/
 	}
 
 	// Element's bbox, to be updated below
 	BBoxSVG & objectBBox = object->getBoundingBox();
-
 
 	BBoxSVG *bboxAnchorHorz = nullptr;
 	const TreeSVG::path_elem_t & anchorElemHorz = object->getAlignAnchorHorz();
@@ -448,6 +409,9 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 			mout.debug("Align [NEW] ", entry.second -> getId(), ' ', entry.second.data); // object->getTag(), " ", object->getId());
 
+			// entry.second->set("anchor-horz", bboxAnchorHorz->getLocation().tuple());
+			// entry.second->set("anchor-vert", bboxAnchorVert->getLocation().tuple());
+
 			TreeUtilsSVG::realignObject(*bboxAnchorHorz, *bboxAnchorVert, entry.second);
 
 			bbox = entry.second->getBoundingBox(); // Notice: copy
@@ -522,6 +486,34 @@ int TranslatorSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) {
 	}
 }
 
+
+// Consider XMl Visitor...
+bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<svg::coord_t> & box){
+
+	if (elem->typeIs(svg::SVG) || elem->typeIs(svg::GROUP)){
+		for (const TreeSVG::pair_t & entry: elem){
+			computeBoundingBox(entry.second, box); // recursion
+		}
+	}
+	else if (elem->typeIs(svg::TEXT)){
+		// skip, trust others (rect anchor)
+	}
+	else {
+		if (box.empty()){
+			box = elem->getBoundingBox();
+		}
+		else {
+			// drain::Logger mout(__FILE__, __FUNCTION__);
+			//mout.pending("Updating bbox ", box, " with ", elem->getBoundingBox());
+			box.expand(elem->getBoundingBox());
+		}
+	}
+
+	return (box.getWidth() != 0.0) && (box.getHeight() != 0.0);
+
+}
+
+
 int BBoxRetrieverSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) {
 	TreeSVG & node = tree(path);
 	if (node->typeIs(svg::SVG) || node->typeIs(svg::GROUP)){
@@ -533,7 +525,15 @@ int BBoxRetrieverSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) 
 }
 
 int BBoxRetrieverSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) {
+
 	TreeSVG & node = tree(path);
+
+	/*
+	if (node->typeIs(svg::SVG) || node->typeIs(svg::GROUP)){
+		return 0;
+	}
+	else
+	*/
 	if (node->typeIs(svg::TEXT)){
 		// Note: logic fails if given as first input (next call will see still empty bbox)
 		if (box.empty()){

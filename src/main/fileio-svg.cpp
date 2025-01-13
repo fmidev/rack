@@ -305,7 +305,7 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		drain::image::TreeSVG & headerGroup = RackSVG::getMain(ctx);
+		drain::image::TreeSVG & headerGroup = RackSVG::getMainGroup(ctx);
 		// drain::image::TreeSVG & headerGroup = RackSVG::getCurrentGroup(ctx);
 
 		// TreeSVG & headerGroup = mainGroup["headerGroup"](svg::GROUP);
@@ -372,23 +372,29 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		drain::image::TreeSVG & mainGroup = RackSVG::getMain(ctx);
-
+		//drain::image::TreeSVG & mainGroup = RackSVG::getMainGroup(ctx);
+		drain::image::TreeSVG & mainGroup = ctx.svgTrack;
+		drain::image::TreeSVG & style = mainGroup[drain::image::svg::STYLE];
 		//BBoxSVG bbox;
 		// TreeUtilsSVG::computeBoundingBox(mainGroup, bbox);
 
 		drain::image::TreeSVG & backgroundRect = mainGroup["mainRect"](svg::RECT);
-		backgroundRect->setHeight(30);
+		backgroundRect->addClass(RackSVG::MAINTITLE);
+		backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
 		backgroundRect->setAlign(AlignSVG::HORZ_FILL);
-		backgroundRect->setAlign(AlignSVG::TOP);
-		backgroundRect->setStyle("fill", "magenta");
+		backgroundRect->setHeight(80);
+		// backgroundRect->setStyle("fill", "green");
+		// backgroundRect->setStyle("opacity", 0.75);
 
 		drain::image::TreeSVG & mainTitle = mainGroup["mainTitle"](svg::TEXT);
+		mainTitle->setAlignAnchor("mainRect"); // Explicit for illustration...
 		mainTitle->addClass(RackSVG::MAINTITLE);
-		mainTitle->setText(value);
+		mainTitle->addClass(LayoutSVG::FLOAT);
 		mainTitle->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
-
-
+		mainTitle->setMargin(5); // not used (when centering)
+		mainTitle->setText(value);
+		const double fontSize = style[RackSVG::MAINTITLE]->get("font-size", 12.5);
+		mainTitle->setHeight(fontSize);
 	}
 
 };
@@ -411,7 +417,7 @@ public:
 
 		drain::Frame2D<double> frame = {150,480};
 
-		drain::image::TreeSVG & group = RackSVG::getCurrentGroup(ctx)[value](svg::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
 		group->setId(value);
 		group->addClass(LayoutSVG::FLOAT);
 
@@ -550,36 +556,14 @@ public:
 
 		drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
 
-		style["TH"].data = {{"fill", "black"}, {"stroke","TH..."} };
-
-		// Haaste 1:
-		// myRect -> setStyle JOS se on toteutettu myRect.elem["_STYLE"].attributes(...)
-
-		// Haaste 2: (huom. UNDEFINED elem)
-		style["TD"] = {};
-		style["TD"] = {{"fill", "cyan"}, {"stroke","TD..."} };
-		style["TD"] = "fill:yellow;text-anchor:panchor";
-
-		// FIX: attribuuteista heti seis!
-		style = {{"DIV", "fill:blacko"}, {"SPAN","stroke:mäki"} };
-
-		/**  Haaste:
-		 *
-		 *   Ratkaisu
-		 *   operator=(std::string)  = CTEXT
-		 *   operator=(list)  = STYLE_SELECTOR
-		 *
-		 */
-
-
 		std::string cssSelector, cssConf;
 		if (drain::StringTools::split2(value, cssSelector, cssConf, '=')){
-			style->setStyle(cssSelector, cssConf+"; setStyle:1");
-			style->set(cssSelector, cssConf+"; attrib:1");
-			style[cssSelector] = cssConf+"; elemOper:1"; // Assings string to CTEXT !? problem!
-			//std::list<std::string> args;
-			drain::SmartMapTools::setValues(style[cssSelector+"MIKA"]->getAttributes(), cssConf, ';', ':');
-			style[cssSelector+"MIKA2"]->getAttributes().setValues(cssConf, ':', ';');
+			// style->setStyle(cssSelector, cssConf+"; setStyle:1");
+			// style->set(cssSelector, cssConf+"; attrib:1");
+			// Not recommended:
+			// style[cssSelector] = cssConf; // Assings string to CTEXT !? problem!
+			// drain::SmartMapTools::setValues(style[cssSelector+"MIKA"]->getAttributes(), cssConf, ';', ':');
+			style[cssSelector]->getAttributes().setValues(cssConf, ':', ';');
 			// style[cssSelector].data = {{"koe", "black"}};      // OK but parallel..
 			//drain::TreeUtils::dump(ctx.svgTrack);
 		}
@@ -613,7 +597,7 @@ public:
 
 		drain::Frame2D<double> frame = {400,500};
 
-		drain::image::TreeSVG & group = RackSVG::getCurrentGroup(ctx)[value](svg::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
 		group->setId(value);
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
 		const std::string ANCHOR_ELEM("anchor-elem");

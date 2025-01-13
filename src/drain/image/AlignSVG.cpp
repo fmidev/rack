@@ -186,7 +186,7 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 	alignment = 0;
 
 	int bitShift=0;
-	for (AlignSVG::Owner owner: {Owner::OBJECT, Owner::ANCHOR}){
+	for (AlignSVG::Owner owner: {Owner::ANCHOR, Owner::OBJECT}){
 		bitShift = (owner == Owner::OBJECT) ? 0 : 4;
 
 		for (AlignBase::Axis axis: {AlignBase::Axis::HORZ, AlignBase::Axis::VERT}){
@@ -196,11 +196,26 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 			const AlignBase::Pos & pos = getAlign(owner, axis);
 
 			if (pos != AlignBase::UNDEFINED_POS){
-				if (sep)
+
+				if (sep){
 					ostr << sep;
-				else
+				}
+				else {
 					sep=' ';
-				ostr << owner << ':' << axis << '-' << pos;
+				}
+
+				if (owner == Owner::ANCHOR){
+					ostr << owner << ':';
+				}
+
+				const std::string & key = drain::EnumDict<Alignment<> >::dict.getKey(Alignment<>(axis, pos), true);
+				if (!key.empty()){
+					ostr << key;
+				}
+				else {
+					ostr << axis << '-' << pos;
+				}
+
 				//std::cerr << __FUNCTION__ << ':' << EnumDict<AlignAdapterSVG::Owner>::dict.getKey(p) << '_' << EnumDict<AlignAdapterSVG::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignAdapterSVG::Coord>::dict.getKey(v) << '_' << (int)v << '\n';
 			}
 

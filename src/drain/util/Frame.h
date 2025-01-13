@@ -192,15 +192,22 @@ public:
 		this->height = yMax - this->y;
 		expand(box.x, box.y);
 		*/
+		expand(box.x, box.y);
 		expand(box.x + box.width, box.y + box.height);
 	}
 
 	void expand(const T & x, const T & y){
 		// Logic fails if width or height is negative?
+		T m;
+
+		m = std::max(this->x + this->width,  x);
 		this->x = std::min(this->x, x);
+		this->width  = m - this->x;
+
+		m = std::max(this->y + this->height, y);
 		this->y = std::min(this->y, y);
-		this->width  = std::max(this->x + this->width,  x);
-		this->height = std::max(this->y + this->height, y);
+		this->height = m - this->y;
+
 	}
 
 	inline

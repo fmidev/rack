@@ -115,12 +115,8 @@ public:
 	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
 	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
 	int svgDebug = 0;
+	std::string svgGroup = "RACK_MAIN";
 	// For the NEXT graphic object
-	/*
-	AlignSVG::Topol topol = AlignSVG::Topol::OUTSIDE;
-	AlignSVG::HorzAlign halign = AlignSVG::HorzAlign::RIGHT;
-	AlignSVG::VertAlign valign = AlignSVG::VertAlign::TOP;
-	*/
 	// AlignSVG::HorzAlign
 	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {AlignSVG::Topol::INSIDE}; // (AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ); // = {AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ};
 	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Pos::MIN};

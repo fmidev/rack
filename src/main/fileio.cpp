@@ -387,7 +387,8 @@ void CmdOutputFile::exec() const {
 
 	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT); // mostly shared (unneeded in image output, but fast anyway)
 
-	drain::image::TreeSVG & track = RackSVG::getMain(ctx);
+
+	drain::image::TreeSVG & svgGroup = RackSVG::getMainGroup(ctx); // , path.basename  //  Note: repeatedly called for svg and png files?
 
 	//track.data.set("id", STD_OUTPUT ? "stdout" : path.basename);
 	std::list<std::string> keys = {"what:lon", "here"};
@@ -476,9 +477,9 @@ void CmdOutputFile::exec() const {
 	else if (IMAGE_SVG){ // drain::image::NodeSVG::fileInfo.checkPath(path)) {
 
 		// ctx.get
-		track->set("id", path.basename);
+		svgGroup->set("id", path.basename);
 		if (!ctx.outputPrefix.empty())
-			track->set("outputPrefix", ctx.outputPrefix); // add "data:..."
+			svgGroup->set("outputPrefix", ctx.outputPrefix); // add "data:..."
 		// TODO: outDir
 		// track.data.set("outputPrefix", ctx.outputPrefix);
 		// track.data.set("prefix", path.basename);
@@ -488,7 +489,8 @@ void CmdOutputFile::exec() const {
 		//RackSVG::addRectangle(ctx, {120,500});
 		if (!ctx.svgPanelConf.absolutePaths){
 			drain::image::RelativePathSetterSVG psetter(path.dir);
-			drain::TreeUtils::traverse(psetter, RackSVG::getMain(ctx));
+			// drain::TreeUtils::traverse(psetter, RackSVG::getMainGroup(ctx));
+			drain::TreeUtils::traverse(psetter, ctx.svgTrack);
 			// RelativePathSetterSVG
 			// TreeUtilsSVG::setRelativePaths(RackSVG::getMain(ctx), path.dir);
 		}

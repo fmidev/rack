@@ -135,6 +135,10 @@ struct Alignment {
 	Alignment(AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : axis(A), pos(pos){
 	}
 
+	inline
+	Alignment(AlignBase::Axis axis, AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS): axis(axis), pos(pos){
+	}
+
 	/*
 	inline
 	Alignment(AlignBase::Axis axis, AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : axis(axis), pos(pos){ // axis(axis),

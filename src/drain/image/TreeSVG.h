@@ -360,7 +360,8 @@ image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<const
 
 template <> // referring to Tree<NodeSVG>
 inline
-image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
+image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const Variable> > l){
+//image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
 	return XML::xmlAssign(*this, l);
 }
 

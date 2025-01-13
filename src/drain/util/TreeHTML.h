@@ -149,7 +149,8 @@ typedef NodeHTML::xml_tree_t TreeHTML;
 
 template <>
 inline
-TreeHTML & TreeHTML::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
+//TreeHTML & TreeHTML::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
+TreeHTML & TreeHTML::operator=(std::initializer_list<std::pair<const char *,const Variable> > l){
 	return XML::xmlAssign(*this, l);
 }
 

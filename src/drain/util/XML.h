@@ -291,14 +291,14 @@ public:
 	void setStyle(const std::string & value){
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		if (type == UNDEFINED){
-			mout.reject<LOG_WARNING>("setting style for UNDEFINED elem: ", value); // *this);
+			mout.reject<LOG_WARNING>("setting style for UNDEFINED elem: ", value);
+			mout.unimplemented<LOG_WARNING>("future option: set type to STYLE_SELECT");
 		}
 		else if (type == STYLE){
-			mout.reject<LOG_WARNING>("setting style for STYLE elem: ", value); // , *this);
+			mout.reject<LOG_WARNING>("not setting style for STYLE elem: ", value); // , *this);
 		}
 		else {
-			SmartMapTools::setValues(style, value, ';', ':', "; \t\n");
-			// SmartMapTools::setValues(style, StringTools::trim(value, "; \t\n"), ';', ':');
+			SmartMapTools::setValues(style, value, ';', ':', "; \t\n"); // sep, equal, trim (also ';' ?)
 		}
 	}
 
@@ -309,7 +309,17 @@ public:
 
 	inline
 	void setStyle(const std::string & key, const std::string & value){
-		this->style[key] = value;
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		if (type == UNDEFINED){
+			mout.reject<LOG_WARNING>("setting style for UNDEFINED elem: ", key, '=', value);
+			mout.unimplemented<LOG_WARNING>("future option: set type to STYLE_SELECT");
+		}
+		else if (type == STYLE){
+			mout.reject<LOG_WARNING>("not setting style for STYLE elem: ", value); // , *this);
+		}
+		else {
+			this->style[key] = value;
+		}
 	}
 
 
@@ -348,17 +358,34 @@ public:
 		}
 	}
 
+	/*
+	template <typename K, typename V>
 	inline
-	void setStyle(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
-		drain::SmartMapTools::setValues(style, l);
+	void setStyle(const std::initializer_list<std::pair<K,V> > &args){
+		drain::SmartMapTools::setValues(style, args);
+	}
+	*/
+
+	inline
+	void setStyle(const std::initializer_list<std::pair<const char *,const drain::Variable> > &args){
+		drain::SmartMapTools::setValues(style, args);
 	}
 
+	/*
+	inline
+	void setStyle(	const std::initializer_list<std::pair<const char *,const char *> > & args){
+		drain::SmartMapTools::setValues(style, args);
+	}
+	*/
+
+	/*
 	template <class S>
 	inline
 	void setStyle(const S &value){
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.error("unsupported type ", drain::TypeName<S>::str(), " for value: ", value);
+		mout.error("unsupported type ", drain::TypeName<S>::str(), " for value: ", typeid(value));
 	}
+	*/
 
 
 	// ------------------ Style Class ---------------
@@ -483,7 +510,8 @@ public:
 	 */
 	template <typename T>
 	static
-	T & xmlAssign(T & tree, std::initializer_list<std::pair<const char *,const char *> > l){
+	//T & xmlAssign(T & tree, std::initializer_list<std::pair<const char *,const char *> > l){
+	T & xmlAssign(T & tree, std::initializer_list<std::pair<const char *,const Variable> > l){
 
 		switch (static_cast<intval_t>(tree->getType())){
 		case STYLE:

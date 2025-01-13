@@ -42,6 +42,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Log.h>
 #include <drain/Type.h>
 #include <drain/TypeUtils.h>
+#include <drain/Variable.h>  // NEW 2025 to support several types of initializer_list, not only pair<char*,char*>
+
 
 #include "Path.h"
 
@@ -378,12 +380,25 @@ public:
 	 *
 	 */
 	inline 	// 2025/01 experimental.
+	tree_t & operator=(std::initializer_list<std::pair<const char *,const Variable> > l){
+		if (EXCLUSIVE){
+			clearData();
+		}
+		for (const auto & entry: l){
+			this[entry.first] = entry.second;
+		}
+		return *this;
+	}
+
+	/*
+	inline 	// 2025/01 experimental.
 	tree_t & operator=(std::initializer_list<std::pair<const char *,const char *> > l){
 		for (const auto & entry: l){
 			*this << entry;
 		}
 		return *this;
 	}
+	*/
 
 	/// Assign data.
 	/**

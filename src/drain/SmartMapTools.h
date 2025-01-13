@@ -530,6 +530,17 @@ public:
 		}
 	}
 
+	/// NEW 2025
+	// Designed for: const std::initializer_list<std::pair<const char *,const char *> >
+	template <class M, typename K, typename V>
+	static
+	void setValues(M & dst, std::initializer_list<std::pair<K,V> > values) {
+		for (const auto & entry: values){
+			setValue(dst, entry.first, entry.second);
+		}
+	}
+
+
 	/*
 	template <class T, class T2>
 	static inline

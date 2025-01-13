@@ -49,7 +49,8 @@ class RackSVG { // : public drain::BasicCommand {
 public:
 
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
-	enum TitleClass {
+	enum ElemClass {
+		MAIN,
 		GENERAL,    /** Default type */
 		TITLE,      /** Default title */
 		MAINTITLE,  /** Main title in SVG image */
@@ -57,6 +58,7 @@ public:
 		TIME,       /** Date and time attributes */
 		LOCATION,   /** Place (coordinates, municipality) */
 		IMAGE_PANEL,
+		IMAGE_BORDER, /** RECT surrounding the image */
 		// IMAGE_SET  /** "Hidden" marker for image groups */
 	};
 
@@ -67,15 +69,27 @@ public:
 	static
 	drain::image::TreeSVG & getStyle(RackContext & ctx);
 
+
+	// static
+	// drain::image::TreeSVG & getMainTitleGroup(RackContext & ctx);
+
+	/// Top-level GROUP used by Rack. All the graphic elements will be created inside this element.
+	/**
+	 *
+	 *
+	 */
+	// static
+	//drain::image::TreeSVG & getMainGroup(RackContext & ctx);
+
 	static
-	drain::image::TreeSVG & getMain(RackContext & ctx);
+	drain::image::TreeSVG & getMainGroup(RackContext & ctx, const std::string & name = "");
 
 
 	static
-	drain::image::TreeSVG & getCurrentGroup(RackContext & ctx);
+	drain::image::TreeSVG & getCurrentAlignedGroup(RackContext & ctx);
 
 	static
-	drain::image::TreeSVG & getPanel(RackContext & ctx, const drain::FilePath & filepath);
+	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath);
 
 
 	static
@@ -92,6 +106,14 @@ public:
 	/// Add rectangle
 	static
 	drain::image::TreeSVG & addRectangleGroup(RackContext & ctx, const drain::Frame2D<double> & frame = {200,200});
+
+
+	/// Add
+	/**
+	 *  \param imagePanel
+	 */
+	static
+	drain::image::TreeSVG & addImageBorder(drain::image::TreeSVG & imagePanel); // , const drain::Frame2D<double> & frame = {200,200});
 
 
 	//	static
@@ -114,8 +136,39 @@ protected:
 
 };
 
+}
+
+namespace drain {
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass &x);
+
+/// Automatic conversion of elem classes to strings.
+/**
+ *
+ */
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type);
+
+
 //template <>
 //const drain::EnumDict<RackSVG::TitleClass>::dict_t  drain::EnumDict<RackSVG::TitleClass>::dict;
+
+/*
+template <>
+const std::string std::static_cast<std::string>(const RackSVG::ElemClass & e){
+	return drain::EnumDict<RackSVG::ElemClass>::dict.getKey(e);
+}
+*/
+
+}
+
+
+
+namespace rack {
 
 
 /**
@@ -175,5 +228,6 @@ public:
 
 
 } // rack::
+
 
 #endif

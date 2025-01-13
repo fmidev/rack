@@ -223,6 +223,8 @@ void NodeSVG::handleType(const svg::tag_t & t) { // setType(const elem_t & t) {
 		break;
 	case image::svg::GROUP:
 		// tag = "g";
+		link("data-pos", box.getLocation().tuple());
+		link("data-frm", box.getFrame().tuple());
 		break;
 	case image::svg::RECT:
 		// tag = "rect";

@@ -55,12 +55,12 @@ const SprinterLayout ClassListXML::layout = {" ", "", "", ""}; // , "\n", "=", "
 
 int XML::nextID = 0;
 
-const int XML::UNDEFINED;
-const int XML::COMMENT;
-const int XML::CTEXT;
-const int XML::STYLE;
-const int XML::STYLE_SELECT;
-const int XML::SCRIPT;
+const XML::intval_t XML::UNDEFINED;
+const XML::intval_t XML::COMMENT;
+const XML::intval_t XML::CTEXT;
+const XML::intval_t XML::STYLE;
+const XML::intval_t XML::STYLE_SELECT;
+const XML::intval_t XML::SCRIPT;
 
 // reset() clears also the type
 void XML::clear(){
@@ -73,7 +73,7 @@ void XML::setText(const std::string & s) {
 
 	drain::Logger mout(__FILE__,__FUNCTION__);
 
-	// mout.accept<LOG_WARNING>("setting text for elem type=", type, ", text: ", s); // *
+	mout.accept<LOG_WARNING>("setting text for elem type=", type, ", text: ", s); // *
 	// TODO: warn if elem supports no ctext (like svg::CIRCLE or svg::RECT)
 
 	switch (type){

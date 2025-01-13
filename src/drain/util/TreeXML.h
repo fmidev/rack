@@ -231,6 +231,7 @@ public:
 		setText(s);
 	}
 
+	/*
 	inline
 	void set(const std::initializer_list<Variable::init_pair_t > &l){
 		// TODO: redirect to set(key,value), for consistency
@@ -242,20 +243,25 @@ public:
 			// drain::SmartMapTools::setValues<map_t,false>((map_t &)*this, l);   // update only
 		}
 	}
+	*/
 
 	inline
-	void set(const std::initializer_list<std::pair<const char *,const char *> > &l){
+	//void set(const std::initializer_list<std::pair<const char *,const char *> > & args){
+	void set(const std::initializer_list<std::pair<const char *,const Variable> > & args){
 		// TODO: redirect to set(key,value), for consistency?
 		if (type == STYLE){
 			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.discouraged("Setting attributes/style of a STYLE element.");
+			mout.deprecating("Setting attributes/style of a STYLE element.");
+			setStyle(args);
+			/*
 			for (const auto & entry: l){
 				style[entry.first] =  entry.second;
 			}
+			*/
 			// drain::SmartMapTools::setValues(style, l);
 		}
 		else {
-			for (const auto & entry: l){
+			for (const auto & entry: args){
 				getAttributes()[entry.first] =  entry.second;
 			}
 			///drain::SmartMapTools::setValues(getAttributes(), l);       // add new keys
@@ -268,7 +274,15 @@ public:
 	void set(const std::map<std::string, V> & args){
 		// TODO: redirect to set(key,value), for consistency
 		if (type == STYLE){
-			drain::SmartMapTools::setValues(style, args);
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.deprecating("Setting attributes/style of a STYLE element: ", args);
+			//drain::SmartMapTools::setValues(style, args);
+			setStyle(args);
+			/*
+			for (const auto & entry: args){
+				style[entry.first] =  entry.second;
+			}
+			*/
 		}
 		else {
 			drain::SmartMapTools::setValues<map_t,true>(getAttributes(), args);       // add new keys
@@ -282,11 +296,16 @@ public:
 	void set(const std::string & key, const V & value){
 		if (type == STYLE){
 			// Modify collection directly
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.deprecating("Setting style as attributes of a STYLE element: ", key, ':', value);
 			setStyle(key, value);
 		}
 		else if (key == "style"){
 			// Modify collection
-			setStyle(value);
+			// setStyle(value);
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.unimplemented("Setting style as attribute: \"style\"=", value);
+			//setStyle(key, value);
 		}
 		else if (key == "class"){
 			// mout.warn<LOG_DEBUG>("class");
