@@ -99,6 +99,15 @@ public:
 		return dst;
 	}
 
+	static inline
+	void replace(std::string &src, char from, char to){
+		replace(src, from, to, src);
+	}
+
+	static
+	void replace(const std::string &src, char from, char to, std::string &dst);
+
+
 	typedef std::map<std::string,std::string> conv_map_t;
 
 	/// Replaces instances appearing as map keys to map values.

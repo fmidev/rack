@@ -80,6 +80,18 @@ bool StringTools::endsWith(const std::string &s, const std::string & substring){
 // bool handle(const std::string & key, const std::map<std::string,T> & variables, std::ostream & ostr) const {
 
 
+void StringTools::replace(const std::string &src, char from, char to, std::string &dst){
+	if (&dst != &src){
+		dst.assign(src);
+	};
+	for (char & c: dst){
+		if (c==from){
+			c = to;
+		}
+	}
+}
+
+
 void StringTools::replace(const std::string &src, const std::string &search, const std::string &to, std::string & dst){
 
 	if (&dst == &src){

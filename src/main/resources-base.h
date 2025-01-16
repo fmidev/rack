@@ -67,9 +67,9 @@ public:
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
 	enum ElemClass {
 		NONE = 0,
-		MAINTITLE = 1,  /** Main title in SVG image */
-		GROUPTITLE = 2,
-		IMAGETITLE = 4,  /** Small title in a corner of radar image (time, location) */
+		MAIN_TITLE = 1,  /** Main title in SVG image */
+		GROUP_TITLE = 2,
+		IMAGE_TITLE = 4,  /** Small title in a corner of radar image (time, location) */
 		TIME = 8,       /** Date and time attributes */
 		LOCATION = 16,   /** Place (coordinates, municipality) */
 		GENERAL = 32,    /** Default type */

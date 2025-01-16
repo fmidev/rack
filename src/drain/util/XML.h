@@ -68,6 +68,7 @@ public:
 	static const SprinterLayout styleRecordLayout;
 	static const SprinterLayout styleRecordLayoutActual;
 
+
 };
 
 

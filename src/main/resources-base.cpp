@@ -41,9 +41,9 @@ template <>
 const drain::EnumDict<rack::GraphicsContext::ElemClass>::dict_t  drain::EnumDict<rack::GraphicsContext::ElemClass>::dict = {
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, NONE),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, MAIN),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, MAINTITLE),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, GROUPTITLE),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, IMAGETITLE),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, MAIN_TITLE),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, GROUP_TITLE),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, IMAGE_TITLE),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, TITLE),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, LOCATION),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, TIME),

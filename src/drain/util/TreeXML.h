@@ -753,6 +753,32 @@ std::ostream & operator<<(std::ostream &ostr, const UnorderedMultiTree<NodeXML<E
 	return ostr;
 }
 
+template <class X>
+class StyleSelectorXML : public std::string {
+
+public:
+
+	inline
+	StyleSelectorXML(const std::string &s) : std::string(s){
+	}
+
+	StyleSelectorXML(const char *s) : std::string(s){
+	}
+
+	/*
+	StyleSelectorXML(typename X::xml_tag_t type) : std::string(drain::EnumDict<typename X::xml_tag_t,X>::dict.getKey(type, false)){
+	}
+
+	template <class S>
+	StyleSelectorXML(typename X::xml_tag_t type, const S &s) : std::string(StringBuilder<'.'>(EnumDict<typename X::xml_tag_t,X>::dict.getKey(type, false), s)){
+	}
+	*/
+
+	template <class ...T>
+	StyleSelectorXML(T... args) : std::string(StringBuilder<'.'>(args...)){
+	}
+
+};
 
 
 /*

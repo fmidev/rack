@@ -308,6 +308,10 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		drain::StringTools::replace(ctx.svgGroupNameSyntax, '/', '-', ctx.svgGroupNameSyntax);
+
+
 		mout.accept<LOG_WARNING>("new value: ", ctx.svgGroupNameSyntax);
 
 	}
@@ -367,8 +371,8 @@ public:
 
 		TreeSVG & headerRect = headerGroup["headerRect"](svg::RECT); // +EXT!
 		headerRect->setHeight(70);
-		headerRect->addClass(GraphicsContext::TITLE, GraphicsContext::MAINTITLE);
-		headerRect->setId("textRect", GraphicsContext::MAINTITLE);
+		headerRect->addClass(GraphicsContext::TITLE, GraphicsContext::MAIN_TITLE);
+		headerRect->setId("textRect", GraphicsContext::MAIN_TITLE);
 		headerRect->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
 
 		// User-defined
@@ -431,11 +435,11 @@ public:
 		//BBoxSVG bbox;
 		// TreeUtilsSVG::computeBoundingBox(mainGroup, bbox);
 
-		RackSVG::addTitles(mainGroup, GraphicsContext::ElemClass::MAINTITLE);
+		RackSVG::addTitles(mainGroup, GraphicsContext::ElemClass::MAIN_TITLE);
 
-		drain::image::TreeSVG & mainTitle = mainGroup[GraphicsContext::ElemClass::MAINTITLE]; // "mainTitle"
+		drain::image::TreeSVG & mainTitle = mainGroup[GraphicsContext::ElemClass::MAIN_TITLE]; // "mainTitle"
 		mainTitle->setText(value);
-		const double fontSize = style[GraphicsContext::MAINTITLE]->get("font-size", 12.5);
+		const double fontSize = style[GraphicsContext::MAIN_TITLE]->get("font-size", 12.5);
 		mainTitle->setHeight(fontSize);
 	}
 
