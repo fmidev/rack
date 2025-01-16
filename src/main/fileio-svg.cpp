@@ -295,7 +295,7 @@ public:
 
 	CmdGroup() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
 		RackContext & ctx = getContext<RackContext>();
-		getParameters().link("syntax", ctx.svgGroupName, "example: '${what:date|%Y%m} ${NOD}'");
+		getParameters().link("syntax", ctx.svgGroupNameSyntax, "example: '${what:date|%Y%m} ${NOD}'");
 	}
 
 	CmdGroup(const CmdGroup & cmd) : drain::BasicCommand(cmd) {
@@ -308,7 +308,7 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		mout.accept<LOG_WARNING>("new value: ", ctx.svgGroupName);
+		mout.accept<LOG_WARNING>("new value: ", ctx.svgGroupNameSyntax);
 
 	}
 
@@ -431,24 +431,9 @@ public:
 		//BBoxSVG bbox;
 		// TreeUtilsSVG::computeBoundingBox(mainGroup, bbox);
 
-		RackSVG::addMainTitles(mainGroup);
-		/*
-		drain::image::TreeSVG & backgroundRect = mainGroup["mainRect"](svg::RECT);
-		backgroundRect->addClass(RackSVG::MAINTITLE);
-		backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
-		backgroundRect->setAlign(AlignSVG::HORZ_FILL);
-		backgroundRect->setHeight(80);
-		// backgroundRect->setStyle("fill", "green");
-		// backgroundRect->setStyle("opacity", 0.75);
+		RackSVG::addTitles(mainGroup, GraphicsContext::ElemClass::MAINTITLE);
 
-		drain::image::TreeSVG & mainTitle = mainGroup["mainTitle"](svg::TEXT);
-		mainTitle->setAlignAnchor("mainRect"); // Explicit for illustration...
-		mainTitle->addClass(RackSVG::MAINTITLE);
-		mainTitle->addClass(LayoutSVG::FLOAT);
-		mainTitle->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
-		mainTitle->setMargin(5); // not used (when centering)
-		*/
-		drain::image::TreeSVG & mainTitle = mainGroup["mainTitle"];
+		drain::image::TreeSVG & mainTitle = mainGroup[GraphicsContext::ElemClass::MAINTITLE]; // "mainTitle"
 		mainTitle->setText(value);
 		const double fontSize = style[GraphicsContext::MAINTITLE]->get("font-size", 12.5);
 		mainTitle->setHeight(fontSize);

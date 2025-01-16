@@ -133,6 +133,17 @@ public:
 	inline virtual
 	~NodeSVG(){};
 
+	inline
+	bool isAbstract(){
+		return typeIs(
+				svg::tag_t::STYLE,
+				svg::tag_t::DESC,
+				svg::tag_t::METADATA,
+				svg::tag_t::SCRIPT,
+				svg::tag_t::TITLE,
+				svg::tag_t::TSPAN
+		);
+	}
 
 	/// Copy data from a node. (Does not copy subtree.)
 	inline

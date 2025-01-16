@@ -302,11 +302,25 @@ void NodeSVG::updateAlign(){
 		}
 	}
 
-	if (anchorHorz.empty()){
-		this->unlink("data-alignAnchor");
+	this->unlink("data-anchor");
+	this->unlink("data-anchorHorz");
+	this->unlink("data-anchorVert");
+
+	if (anchorHorz.empty() && anchorVert.empty()){
+		return;
 	}
-	else {
-		this->link("data-alignAnchor", anchorHorz);
+
+	if (anchorHorz == anchorVert){
+		this->link("data-anchor", anchorHorz);
+		return;
+	}
+
+	if (!anchorHorz.empty()){
+		this->link("data-anchorHorz", anchorHorz);
+	}
+
+	if (!anchorVert.empty()){
+		this->link("data-anchorVert", anchorVert);
 	}
 
 }

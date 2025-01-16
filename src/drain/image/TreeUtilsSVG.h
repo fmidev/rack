@@ -190,8 +190,21 @@ public:
 	static
 	void realignObject(const Box<svg::coord_t> & anchorBoxHorz, const Box<svg::coord_t> & anchorBoxVert, TreeSVG & obj);
 
+	// static
+	// void realignObject(AlignBase::Axis axis, svg::coord_t pos, svg::coord_t width, TreeSVG & obj, svg::coord_t & newPos); // , Point2D<svg::coord_t> & newLocation);
+
 	static
-	void realignObject(AlignBase::Axis axis, svg::coord_t pos, svg::coord_t width, TreeSVG & obj, svg::coord_t & newPos); // , Point2D<svg::coord_t> & newLocation);
+	void realignObjectHorz(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxHorz, svg::coord_t & coord);
+
+	static
+	void realignObjectHorz(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxHorz);
+
+	static
+	void realignObjectVert(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxVert, svg::coord_t & coord);
+
+	static
+	void realignObjectVert(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxVert);
+
 
 	/// Recursively move elements with (x, y).
 	static
@@ -209,6 +222,10 @@ public:
 	template <class T>
 	inline
 	TranslatorSVG(const Point2D<T> & offset) : offset(offset){};
+
+	template <typename T>
+	inline
+	TranslatorSVG(T dx, T dy) : offset(dx, dy){};
 
 	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
 

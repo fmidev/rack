@@ -39,13 +39,15 @@ namespace drain {
 
 template <>
 const drain::EnumDict<rack::GraphicsContext::ElemClass>::dict_t  drain::EnumDict<rack::GraphicsContext::ElemClass>::dict = {
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, NONE),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, MAIN),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, GENERAL),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, TITLE),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, MAINTITLE),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, GROUPTITLE),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, IMAGETITLE),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, TITLE),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, LOCATION),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, TIME),
+		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, GENERAL),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, IMAGE_PANEL),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, IMAGE_BORDER),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
@@ -65,7 +67,7 @@ GraphicsContext::GraphicsContext() {
 }
 
 GraphicsContext::GraphicsContext(const GraphicsContext & ctx) {
-	svgGroupName = ctx.svgGroupName;
+	svgGroupNameSyntax = ctx.svgGroupNameSyntax;
 	svgTitles    = ctx.svgTitles;
 }
 

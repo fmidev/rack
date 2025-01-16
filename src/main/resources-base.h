@@ -68,13 +68,14 @@ public:
 	enum ElemClass {
 		NONE = 0,
 		MAINTITLE = 1,  /** Main title in SVG image */
-		TIME = 2,       /** Date and time attributes */
-		LOCATION = 4,   /** Place (coordinates, municipality) */
-		GENERAL = 8,    /** Default type */
-		ALL = (1|2|4|8),
+		GROUPTITLE = 2,
+		IMAGETITLE = 4,  /** Small title in a corner of radar image (time, location) */
+		TIME = 8,       /** Date and time attributes */
+		LOCATION = 16,   /** Place (coordinates, municipality) */
+		GENERAL = 32,    /** Default type */
+		ALL = (63),
 		MAIN,
 		TITLE,      /** Default title */
-		IMAGETITLE, /** Small title in a corner of radar image (time, location) */
 		IMAGE_PANEL,
 		IMAGE_BORDER, /** RECT surrounding the image */
 		// IMAGE_SET  /** "Hidden" marker for image groups */
@@ -86,7 +87,8 @@ public:
 	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
 	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
 	int svgDebug = 0;
-	std::string svgGroupName = "unnamed_group";
+	std::string svgGroupNameSyntax = "group";
+	std::string svgGroupNameFormatted;
 
 	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
 	TitleFlagger svgTitles = ElemClass::NONE;

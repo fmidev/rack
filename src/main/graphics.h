@@ -50,44 +50,20 @@ class RackSVG { // : public drain::BasicCommand {
 
 public:
 
+	// Identifier for the anchor background
+	static const std::string BACKGROUND_RECT; //  = "mainRect";
+
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
-	/*
-	enum ElemClassFOO {
-		NONE = 0,
-		MAINTITLE = 1,  // Main title in SVG image
-		TIME = 2,       // Date and time attributes
-		LOCATION = 4,   // Place (coordinates, municipality)
-		GENERAL = 8,    // Default type
-		ALL = (1|2|4|8),
-		MAIN,
-		TITLE,      // Default title
-		IMAGETITLE, // Small title in a corner of radar image (time, location)
-		IMAGE_PANEL,
-		IMAGE_BORDER, // RECT surrounding the image
-		// IMAGE_SET  // "Hidden" marker for image groups
-	};
-	*/
-
-
-	/// Standard group name for images to be aligned
-	// static
-	// const std::string IMAGE_PANEL; // "imageFrame"
 
 	static
 	drain::image::TreeSVG & getStyle(RackContext & ctx);
 
-
-	// static
-	// drain::image::TreeSVG & getMainTitleGroup(RackContext & ctx);
 
 	/// Top-level GROUP used by Rack. All the graphic elements will be created inside this element.
 	/**
 	 *
 	 *
 	 */
-	// static
-	//drain::image::TreeSVG & getMainGroup(RackContext & ctx);
-
 	static
 	drain::image::TreeSVG & getMainGroup(RackContext & ctx); // , const std::string & name = "");
 
@@ -113,7 +89,7 @@ public:
 
 	/// Add TEXT elements: MAINTITLE, LOCATION, TIME, GENERAL
 	static
-	void addMainTitles(drain::image::TreeSVG & object);
+	void addTitles(drain::image::TreeSVG & object, GraphicsContext::ElemClass elemClass);
 
 	/// Add rectangle
 	static
