@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structsuperInfo_1_1numInfo_3_01true_00_01false_00_01S_01_4.html" title=" " alt="" coords="5,5,151,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,81,64,108"/>
+<area shape="rect" id="node2" href="$classdrain_1_1StringBuilder.html" title=" " alt="" coords="119,5,279,32"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Stringlet.html" title="A helper class for StringMapper." alt="" coords="161,56,238,83"/>
+<area shape="rect" id="node4" href="$classdrain_1_1StyleSelectorXML.html" title=" " alt="" coords="112,107,287,133"/>
+<area shape="rect" id="node5" href="$classrack_1_1ClassLabelXML.html" title=" " alt="" coords="120,157,279,184"/>
 </map>

@@ -81,7 +81,7 @@ $(function() {
 <p>Container for style classes. Essentially a set of strings, with space-separated output support.  
  <a href="classdrain_1_1ClassListXML.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="TreeXML_8h_source.html">TreeXML.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="ClassXML_8h_source.html">ClassXML.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for ClassListXML:</div>
 <div class="dyncontent">
@@ -112,16 +112,32 @@ Public Member Functions</h2></td></tr>
 template&lt;typename ... TT&gt; </td></tr>
 <tr class="memitem:aed533e07c6b8c6fa1cf4725b0a4eaf54"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ClassListXML</b> (const TT &amp;... args)</td></tr>
 <tr class="separator:aed533e07c6b8c6fa1cf4725b0a4eaf54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa58be9af82ed7aab4787a936ee3bb909"><td class="memTemplParams" colspan="2"><a id="aa58be9af82ed7aab4787a936ee3bb909"></a>
+<tr class="memitem:a218caba951d7a52e771ad86f040e2e3c"><td class="memTemplParams" colspan="2"><a id="a218caba951d7a52e771ad86f040e2e3c"></a>
 template&lt;typename ... TT&gt; </td></tr>
-<tr class="memitem:aa58be9af82ed7aab4787a936ee3bb909"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>add</b> (const std::string &amp;clsName, const TT &amp;... args)</td></tr>
-<tr class="separator:aa58be9af82ed7aab4787a936ee3bb909"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf8dbacd46574f3c0360605326397755"><td class="memItemLeft" align="right" valign="top"><a id="aaf8dbacd46574f3c0360605326397755"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>has</b> (const std::string &amp;clsName) const</td></tr>
-<tr class="separator:aaf8dbacd46574f3c0360605326397755"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc1f302a813948bc623905633790b7a1"><td class="memItemLeft" align="right" valign="top"><a id="acc1f302a813948bc623905633790b7a1"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>remove</b> (const std::string &amp;clsName)</td></tr>
-<tr class="separator:acc1f302a813948bc623905633790b7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a218caba951d7a52e771ad86f040e2e3c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1ClassListXML.html#a218caba951d7a52e771ad86f040e2e3c">add</a> (const std::string &amp;arg, const TT &amp;... args)</td></tr>
+<tr class="memdesc:a218caba951d7a52e771ad86f040e2e3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add one or several classes. <br /></td></tr>
+<tr class="separator:a218caba951d7a52e771ad86f040e2e3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a282c54fb061dafc32be36347e9ff0af6"><td class="memTemplParams" colspan="2"><a id="a282c54fb061dafc32be36347e9ff0af6"></a>
+template&lt;typename ... TT&gt; </td></tr>
+<tr class="memitem:a282c54fb061dafc32be36347e9ff0af6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>add</b> (const char *arg, const TT &amp;... args)</td></tr>
+<tr class="separator:a282c54fb061dafc32be36347e9ff0af6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bf11057618af5a78e2556a032427b11"><td class="memTemplParams" colspan="2">template&lt;typename E , typename ... TT&gt; </td></tr>
+<tr class="memitem:a5bf11057618af5a78e2556a032427b11"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1ClassListXML.html#a5bf11057618af5a78e2556a032427b11">add</a> (const E &amp;arg, const TT &amp;... args)</td></tr>
+<tr class="memdesc:a5bf11057618af5a78e2556a032427b11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add one or several classes.  <a href="classdrain_1_1ClassListXML.html#a5bf11057618af5a78e2556a032427b11">More...</a><br /></td></tr>
+<tr class="separator:a5bf11057618af5a78e2556a032427b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af47086f96d4be8842166d8d10188b18f"><td class="memItemLeft" align="right" valign="top"><a id="af47086f96d4be8842166d8d10188b18f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>has</b> (const std::string &amp;arg) const</td></tr>
+<tr class="separator:af47086f96d4be8842166d8d10188b18f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa12f34c5ef6c8b7b2a64717757339ac8"><td class="memItemLeft" align="right" valign="top"><a id="aa12f34c5ef6c8b7b2a64717757339ac8"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>has</b> (const char *arg) const</td></tr>
+<tr class="separator:aa12f34c5ef6c8b7b2a64717757339ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d69a97c2efe20d85004c212acb8f278"><td class="memTemplParams" colspan="2"><a id="a8d69a97c2efe20d85004c212acb8f278"></a>
+template&lt;typename E &gt; </td></tr>
+<tr class="memitem:a8d69a97c2efe20d85004c212acb8f278"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>has</b> (const E &amp;arg) const</td></tr>
+<tr class="separator:a8d69a97c2efe20d85004c212acb8f278"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52bd582e2d0ef7aa340a319f4056c7a1"><td class="memItemLeft" align="right" valign="top"><a id="a52bd582e2d0ef7aa340a319f4056c7a1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>remove</b> (const std::string &amp;arg)</td></tr>
+<tr class="separator:a52bd582e2d0ef7aa340a319f4056c7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -138,9 +154,56 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> ()</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Container for style classes. Essentially a set of strings, with space-separated output support. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/drain/util/<a class="el" href="TreeXML_8h_source.html">TreeXML.h</a></li>
-<li>src/drain/util/TreeXML.cpp</li>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5bf11057618af5a78e2556a032427b11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bf11057618af5a78e2556a032427b11">&#9670;&nbsp;</a></span>add()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void add </td>
+          <td>(</td>
+          <td class="paramtype">const E &amp;&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TT &amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add one or several classes. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">E</td><td>- enum type expected (but unchecked)</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Issues compile time error if type not applicable, or dictionary undefined. Enum types should be used, although template allows any types, but strict </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>src/drain/util/<a class="el" href="ClassXML_8h_source.html">ClassXML.h</a></li>
+<li>bak/TreeXML.cpp</li>
+<li>src/drain/util/XML.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

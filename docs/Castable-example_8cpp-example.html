@@ -99,7 +99,7 @@ Variable</dd></dl>
 <div class="line"> </div>
 <div class="line"><span class="comment">/*</span></div>
 <div class="line"><span class="comment"></span> </div>
-<div class="line"><span class="comment"> REQUIRE: drain/{Caster,Castable,FlexibleVariable,Log,Reference,RegExp,Sprinter,String,TextStyle,Type,TypeUtils,Variable,VariableBase}.cpp</span></div>
+<div class="line"><span class="comment"> REQUIRE: drain/{Caster,Castable,FlexibleVariable,Log,Reference,RegExp,Sprinter,String,TextStyle,TextStyleVT100,Type,TypeUtils,Variable,VariableBase}.cpp</span></div>
 <div class="line"><span class="comment"></span> </div>
 <div class="line"><span class="comment"> */</span></div>
 <div class="line"> </div>
@@ -254,7 +254,7 @@ Variable</dd></dl>
 <div class="line"><span class="comment">    r = std::vector&lt;double&gt;(4, 678);</span></div>
 <div class="line"><span class="comment">    r.info(std::cout); //, &#39;\n&#39;);</span></div>
 <div class="line"><span class="comment"></span> </div>
-<div class="line"><span class="comment">    c = &quot;mika,0.2,712.122,192&quot;;</span></div>
+<div class="line"><span class="comment">    c = &quot;test,0.2,712.122,192&quot;;</span></div>
 <div class="line"><span class="comment">    c.info(std::cout); //, &#39;\n&#39;);</span></div>
 <div class="line"><span class="comment"></span> </div>
 <div class="line"><span class="comment">    r.link(c);</span></div>
@@ -280,8 +280,8 @@ Variable</dd></dl>
 <div class="ttc" id="aclassdrain_1_1Castable_html"><div class="ttname"><a href="classdrain_1_1Castable.html">drain::Castable</a></div><div class="ttdef"><b>Definition:</b> Castable.h:76</div></div>
 <div class="ttc" id="aclassdrain_1_1Castable_html_a1a9288d3f22ea9bd5938c2da11c80724"><div class="ttname"><a href="classdrain_1_1Castable.html#a1a9288d3f22ea9bd5938c2da11c80724">drain::Castable::getType</a></div><div class="ttdeci">virtual const std::type_info &amp; getType() const</div><div class="ttdoc">Return the storage type (base type) of the referenced variable.</div><div class="ttdef"><b>Definition:</b> Castable.h:135</div></div>
 <div class="ttc" id="aclassdrain_1_1Castable_html_a4dc0a867da76f35132364cf5ad2abd55"><div class="ttname"><a href="classdrain_1_1Castable.html#a4dc0a867da76f35132364cf5ad2abd55">drain::Castable::info</a></div><div class="ttdeci">virtual void info(std::ostream &amp;ostr=std::cout) const</div><div class="ttdoc">Print value, type and element count.</div><div class="ttdef"><b>Definition:</b> Castable.cpp:233</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:308</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:426</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:310</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:428</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableT_html"><div class="ttname"><a href="classdrain_1_1VariableT.html">drain::VariableT</a></div><div class="ttdoc">VariableT is a final class applied through typedefs Variable, Reference and FlexibleVariable.</div><div class="ttdef"><b>Definition:</b> VariableT.h:87</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:1277</div></div>
 <div class="ttc" id="anamespacedrain_html_ab7d12e28978bddd9b2fda7142a1c0420"><div class="ttname"><a href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">drain::Variable</a></div><div class="ttdeci">DRAIN_VARIABLE Variable</div><div class="ttdoc">Value container supporting dynamic type.</div><div class="ttdef"><b>Definition:</b> Variable.h:63</div></div>

@@ -1,4 +1,6 @@
 <map id="SingleFlagger&lt; E &gt;" name="SingleFlagger&lt; E &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,80,155,107"/>
-<area shape="rect" id="node2" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="9,5,151,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="31,185,180,212"/>
+<area shape="rect" id="node2" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,96,163,123"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="187,96,333,123"/>
+<area shape="rect" id="node4" title=" " alt="" coords="191,5,329,47"/>
 </map>

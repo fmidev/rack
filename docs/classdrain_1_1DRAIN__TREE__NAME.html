@@ -109,6 +109,9 @@ typedef P&#160;</td><td class="memItemRight" valign="bottom"><b>path_t</b></td><
 <tr class="memitem:a18a8eae8c453d6a3460adb188ab5fc8a"><td class="memItemLeft" align="right" valign="top"><a id="a18a8eae8c453d6a3460adb188ab5fc8a"></a>
 typedef path_t::elem_t&#160;</td><td class="memItemRight" valign="bottom"><b>key_t</b></td></tr>
 <tr class="separator:a18a8eae8c453d6a3460adb188ab5fc8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae348d5716574a2c3c623b5ae142872e3"><td class="memItemLeft" align="right" valign="top"><a id="ae348d5716574a2c3c623b5ae142872e3"></a>
+typedef path_t::elem_t&#160;</td><td class="memItemRight" valign="bottom"><b>path_elem_t</b></td></tr>
+<tr class="separator:ae348d5716574a2c3c623b5ae142872e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab87795fccb8fa016d4dd51c91e37aee3"><td class="memItemLeft" align="right" valign="top"><a id="ab87795fccb8fa016d4dd51c91e37aee3"></a>
 typedef std::pair&lt; key_t, <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>pair_t</b></td></tr>
 <tr class="separator:ab87795fccb8fa016d4dd51c91e37aee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,22 +177,25 @@ container_t::iterator&#160;</td><td class="memItemRight" valign="bottom"><a clas
 <tr class="memitem:aa87005d0a649ff994a930ece643bc3f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#aa87005d0a649ff994a930ece643bc3f1">operator=</a> (const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;t)</td></tr>
 <tr class="memdesc:aa87005d0a649ff994a930ece643bc3f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the data of another node. Does not copy the children.  <a href="classdrain_1_1DRAIN__TREE__NAME.html#aa87005d0a649ff994a930ece643bc3f1">More...</a><br /></td></tr>
 <tr class="separator:aa87005d0a649ff994a930ece643bc3f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae23d30ba55599544b7b9e28b5286e7a0"><td class="memTemplParams" colspan="2"><a id="ae23d30ba55599544b7b9e28b5286e7a0"></a>
-template&lt;class S &gt; </td></tr>
-<tr class="memitem:ae23d30ba55599544b7b9e28b5286e7a0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ae23d30ba55599544b7b9e28b5286e7a0">operator=</a> (const std::initializer_list&lt; S &gt; &amp;l)</td></tr>
-<tr class="memdesc:ae23d30ba55599544b7b9e28b5286e7a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns value to contents. <br /></td></tr>
-<tr class="separator:ae23d30ba55599544b7b9e28b5286e7a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca9ab41ff7a5b932760a76fe64f1950e"><td class="memTemplParams" colspan="2"><a id="aca9ab41ff7a5b932760a76fe64f1950e"></a>
-template&lt;class T2 &gt; </td></tr>
+<tr class="memitem:aca9ab41ff7a5b932760a76fe64f1950e"><td class="memTemplParams" colspan="2">template&lt;class T2 &gt; </td></tr>
 <tr class="memitem:aca9ab41ff7a5b932760a76fe64f1950e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#aca9ab41ff7a5b932760a76fe64f1950e">operator=</a> (const T2 &amp;v)</td></tr>
-<tr class="memdesc:aca9ab41ff7a5b932760a76fe64f1950e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns a value to contents. <br /></td></tr>
+<tr class="memdesc:aca9ab41ff7a5b932760a76fe64f1950e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns value to contents.  <a href="classdrain_1_1DRAIN__TREE__NAME.html#aca9ab41ff7a5b932760a76fe64f1950e">More...</a><br /></td></tr>
 <tr class="separator:aca9ab41ff7a5b932760a76fe64f1950e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaec26705c9f4cd5e5f9924ca555c252"><td class="memTemplParams" colspan="2">template&lt;typename K , typename V &gt; </td></tr>
+<tr class="memitem:adaec26705c9f4cd5e5f9924ca555c252"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#adaec26705c9f4cd5e5f9924ca555c252">operator=</a> (std::initializer_list&lt; std::pair&lt; K, V &gt; &gt; l)</td></tr>
+<tr class="memdesc:adaec26705c9f4cd5e5f9924ca555c252"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign tree structure (of depth one).  <a href="classdrain_1_1DRAIN__TREE__NAME.html#adaec26705c9f4cd5e5f9924ca555c252">More...</a><br /></td></tr>
+<tr class="separator:adaec26705c9f4cd5e5f9924ca555c252"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af37fcf5a0ff429c20989255985fd4d2e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#af37fcf5a0ff429c20989255985fd4d2e">operator=</a> (std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt; l)</td></tr>
+<tr class="memdesc:af37fcf5a0ff429c20989255985fd4d2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign tree structure (of depth one).  <a href="classdrain_1_1DRAIN__TREE__NAME.html#af37fcf5a0ff429c20989255985fd4d2e">More...</a><br /></td></tr>
+<tr class="separator:af37fcf5a0ff429c20989255985fd4d2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42ee2325a922c5eb28f9bb460a465a14"><td class="memTemplParams" colspan="2">template&lt;typename V &gt; </td></tr>
+<tr class="memitem:a42ee2325a922c5eb28f9bb460a465a14"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a42ee2325a922c5eb28f9bb460a465a14">operator=</a> (const std::initializer_list&lt; V &gt; &amp;l)</td></tr>
+<tr class="memdesc:a42ee2325a922c5eb28f9bb460a465a14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign data.  <a href="classdrain_1_1DRAIN__TREE__NAME.html#a42ee2325a922c5eb28f9bb460a465a14">More...</a><br /></td></tr>
+<tr class="separator:a42ee2325a922c5eb28f9bb460a465a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae94be2b8cdd22d8b044b82a63a937520"><td class="memItemLeft" align="right" valign="top"><a id="ae94be2b8cdd22d8b044b82a63a937520"></a>
-<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ac952a53f380ebb1671f3421a270e156b">node_pair_t</a> &amp;entry)</td></tr>
+<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ae94be2b8cdd22d8b044b82a63a937520">operator&lt;&lt;</a> (const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ac952a53f380ebb1671f3421a270e156b">node_pair_t</a> &amp;entry)</td></tr>
+<tr class="memdesc:ae94be2b8cdd22d8b044b82a63a937520"><td class="mdescLeft">&#160;</td><td class="mdescRight">Experimental. Given pair(elem, data) assigns child[elem] = data;. <br /></td></tr>
 <tr class="separator:ae94be2b8cdd22d8b044b82a63a937520"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac91ff0a389b3c8be3bb1cfebf710e618"><td class="memItemLeft" align="right" valign="top"><a id="ac91ff0a389b3c8be3bb1cfebf710e618"></a>
-<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>ensureChild</b> (const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ac952a53f380ebb1671f3421a270e156b">node_pair_t</a> &amp;entry)</td></tr>
-<tr class="separator:ac91ff0a389b3c8be3bb1cfebf710e618"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30df81da77e31bc9b1b803ed67481349"><td class="memItemLeft" align="right" valign="top"><a id="a30df81da77e31bc9b1b803ed67481349"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator const node_data_t &amp;</b> () const</td></tr>
 <tr class="separator:a30df81da77e31bc9b1b803ed67481349"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -204,6 +210,15 @@ template&lt;class T2 &gt; </td></tr>
 const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a6ec562e4d0e0bb88b064fdd1e5852b2f">operator[]</a> (const key_t &amp;key) const</td></tr>
 <tr class="memdesc:a6ec562e4d0e0bb88b064fdd1e5852b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Child addressing operator. <br /></td></tr>
 <tr class="separator:a6ec562e4d0e0bb88b064fdd1e5852b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adee7f56847248a4faca427ac2de50a22"><td class="memTemplParams" colspan="2">template&lt;class K &gt; </td></tr>
+<tr class="memitem:adee7f56847248a4faca427ac2de50a22"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#adee7f56847248a4faca427ac2de50a22">operator[]</a> (const K &amp;key)</td></tr>
+<tr class="memdesc:adee7f56847248a4faca427ac2de50a22"><td class="mdescLeft">&#160;</td><td class="mdescRight">NEW 2025 Child addressing operator.  <a href="classdrain_1_1DRAIN__TREE__NAME.html#adee7f56847248a4faca427ac2de50a22">More...</a><br /></td></tr>
+<tr class="separator:adee7f56847248a4faca427ac2de50a22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7483e3f805845a664598f7e246d90b30"><td class="memTemplParams" colspan="2"><a id="a7483e3f805845a664598f7e246d90b30"></a>
+template&lt;class K &gt; </td></tr>
+<tr class="memitem:a7483e3f805845a664598f7e246d90b30"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a7483e3f805845a664598f7e246d90b30">operator[]</a> (const K &amp;key) const</td></tr>
+<tr class="memdesc:a7483e3f805845a664598f7e246d90b30"><td class="mdescLeft">&#160;</td><td class="mdescRight">NEW 2025 Child addressing operator. <br /></td></tr>
+<tr class="separator:a7483e3f805845a664598f7e246d90b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4dae8dd37aee6af0b9391c031cca8232"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">operator()</a> (const path_t &amp;path)</td></tr>
 <tr class="memdesc:a4dae8dd37aee6af0b9391c031cca8232"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a descendant. Creates one if not existing already.  <a href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">More...</a><br /></td></tr>
 <tr class="separator:a4dae8dd37aee6af0b9391c031cca8232"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -354,7 +369,7 @@ class drain::DRAIN_TREE_NAME&lt; T, EXCLUSIVE, P &gt;</h3>
 <li><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ac8bb3912a3ce86b15842e79d0b421204" title="Clear children and node data.">clear()</a> – resetting the data to default initial (empty) value.</li>
 <li><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a" title="Check if the tree structure is empty.">empty()</a> – returning true if the data is empty, or can be identified with empty.</li>
 </ul>
-<p>A tree is EXCLUSIVE, if a node contains either data or children. For example, a <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> tree is EXCLUSIVE and an XML tree is not (a tag can containg attributes (data) and inner tages (children).</p>
+<p>A tree is EXCLUSIVE, if a node contains either data or children. For example, a <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> tree is EXCLUSIVE and an <a class="el" href="classdrain_1_1XML.html">XML</a> tree is not (a tag can containg attributes (data) and inner tages (children).</p>
 <p>Further, each type listed above has two variants:</p><ul>
 <li>inclusive (implicit, default) – each node may contain data and child nodes.</li>
 <li>exclusive – each node may contain data or child nodes, but not both. In the code, both data and children exist as members but in exclusive trees data is automatically cleared if children are added, and inversely, chilren are cleared (removed) if data is assigned.</li>
@@ -904,8 +919,67 @@ UnorderedTree.</dd></dl>
 
 </div>
 </div>
+<a id="a42ee2325a922c5eb28f9bb460a465a14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42ee2325a922c5eb28f9bb460a465a14">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a>&amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">const std::initializer_list&lt; V &gt; &amp;&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign data. </p>
+<p>If init list elements are not pairs, assign it to node data.</p>
+<p>2025/01 experimental. </p>
+
+</div>
+</div>
+<a id="aca9ab41ff7a5b932760a76fe64f1950e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca9ab41ff7a5b932760a76fe64f1950e">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a>&amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">const T2 &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assigns value to contents. </p>
+<p>Assigns a value to contents. </p>
+
+</div>
+</div>
 <a id="aa87005d0a649ff994a930ece643bc3f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa87005d0a649ff994a930ece643bc3f1">&#9670;&nbsp;</a></span>operator=()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa87005d0a649ff994a930ece643bc3f1">&#9670;&nbsp;</a></span>operator=() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -930,6 +1004,97 @@ UnorderedTree.</dd></dl>
 
 <p>Copies the data of another node. Does not copy the children. </p>
 <p>Default use to reset a node (re-initialize its data). </p>
+
+</div>
+</div>
+<a id="af37fcf5a0ff429c20989255985fd4d2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af37fcf5a0ff429c20989255985fd4d2e">&#9670;&nbsp;</a></span>operator=() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a>&amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt;&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign tree structure (of depth one). </p>
+<p>Default implementation: assign new nodes (children).</p>
+<p>Examples of overriding:</p><ul>
+<li>TreeXML::operator=()</li>
+<li>TreeSVG::operator=() </li>
+</ul>
+
+</div>
+</div>
+<a id="adaec26705c9f4cd5e5f9924ca555c252"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaec26705c9f4cd5e5f9924ca555c252">&#9670;&nbsp;</a></span>operator=() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a>&amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">std::initializer_list&lt; std::pair&lt; K, V &gt; &gt;&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assign tree structure (of depth one). </p>
+<p>Default implementation: assign new nodes (children). </p>
+
+</div>
+</div>
+<a id="adee7f56847248a4faca427ac2de50a22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adee7f56847248a4faca427ac2de50a22">&#9670;&nbsp;</a></span>operator[]()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a>&amp; operator[] </td>
+          <td>(</td>
+          <td class="paramtype">const K &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>NEW 2025 Child addressing operator. </p>
+<p>Allows using <a class="el" href="structdrain_1_1EnumDict.html" title="Wrapper for unique (static) dictionary of enum values.">EnumDict</a> enums as keys, for example. </p>
 
 </div>
 </div>

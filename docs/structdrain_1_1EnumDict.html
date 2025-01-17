@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rack: EnumDict&lt; E &gt; Struct Template Reference</title>
+<title>rack: EnumDict&lt; E, OWNER &gt; Struct Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,28 +71,34 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="structdrain_1_1EnumDict-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">EnumDict&lt; E &gt; Struct Template Reference</div>  </div>
+<div class="title">EnumDict&lt; E, OWNER &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Wrapper for unique (static) dictionary of enum values.  
+ <a href="structdrain_1_1EnumDict.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="EnumFlags_8h_source.html">EnumFlags.h</a>&gt;</code></p>
 <div class="dynheader">
-Collaboration diagram for EnumDict&lt; E &gt;:</div>
+Collaboration diagram for EnumDict&lt; E, OWNER &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="structdrain_1_1EnumDict__coll__graph.png" border="0" usemap="#aEnumDict_3_01E_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="aEnumDict_3_01E_01_4_coll__map" id="aEnumDict_3_01E_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="17,185,139,212"/>
-<area shape="rect" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="5,96,151,123"/>
-<area shape="rect" title=" " alt="" coords="9,5,147,47"/>
+<div class="center"><img src="structdrain_1_1EnumDict__coll__graph.png" border="0" usemap="#aEnumDict_3_01E_00_01OWNER_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="aEnumDict_3_01E_00_01OWNER_01_4_coll__map" id="aEnumDict_3_01E_00_01OWNER_01_4_coll__map">
+<area shape="rect" title="Wrapper for unique (static) dictionary of enum values." alt="" coords="5,185,187,212"/>
+<area shape="rect" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="23,96,169,123"/>
+<area shape="rect" title=" " alt="" coords="27,5,165,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a25ff0cd524f056795dd05e1f7b702f4f"><td class="memItemLeft" align="right" valign="top"><a id="a25ff0cd524f056795dd05e1f7b702f4f"></a>
-typedef <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
-<tr class="separator:a25ff0cd524f056795dd05e1f7b702f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86e5b2c60e0de487328cb8e3e515e1ed"><td class="memItemLeft" align="right" valign="top"><a id="a86e5b2c60e0de487328cb8e3e515e1ed"></a>
+typedef <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; std::string, E &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
+<tr class="separator:a86e5b2c60e0de487328cb8e3e515e1ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -106,64 +112,165 @@ const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca327
 <tr class="memitem:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memItemLeft" align="right" valign="top"><a id="a1dd12757cb0a16ba692b49e72ca910eb"></a>
 const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
 <tr class="separator:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memItemLeft" align="right" valign="top"><a id="a1dd12757cb0a16ba692b49e72ca910eb"></a>
-const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1EnumDict.html#a1dd12757cb0a16ba692b49e72ca910eb">dict</a></td></tr>
-<tr class="memdesc:a1dd12757cb0a16ba692b49e72ca910eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">const drain::FlaggerBase&lt;Crit&gt;::dict_t CritFlagger::dict = {{"DATA", DATA}, {"ELANGLE", ELANGLE}, {"TIME", TIME}}; <br /></td></tr>
-<tr class="separator:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memItemLeft" align="right" valign="top"><a id="a1dd12757cb0a16ba692b49e72ca910eb"></a>
-const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memItemLeft" align="right" valign="top"><a id="a1dd12757cb0a16ba692b49e72ca910eb"></a>
-const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memItemLeft" align="right" valign="top"><a id="a1dd12757cb0a16ba692b49e72ca910eb"></a>
-const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a122888719d603e4c392c066c1ba5c045"><td class="memItemLeft" align="right" valign="top"><a id="a122888719d603e4c392c066c1ba5c045"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; DataOrder::Crit &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1EnumDict.html#a122888719d603e4c392c066c1ba5c045">dict</a></td></tr>
+<tr class="memdesc:a122888719d603e4c392c066c1ba5c045"><td class="mdescLeft">&#160;</td><td class="mdescRight">const drain::FlaggerBase&lt;Crit&gt;::dict_t CritFlagger::dict = {{"DATA", DATA}, {"ELANGLE", ELANGLE}, {"TIME", TIME}}; <br /></td></tr>
+<tr class="separator:a122888719d603e4c392c066c1ba5c045"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32fb9683d6018d6de9ccb7968a92989e"><td class="memItemLeft" align="right" valign="top"><a id="a32fb9683d6018d6de9ccb7968a92989e"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; DataOrder::Oper &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a32fb9683d6018d6de9ccb7968a92989e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aad7cdc6d71184989bc0d5f421f51d5"><td class="memItemLeft" align="right" valign="top"><a id="a9aad7cdc6d71184989bc0d5f421f51d5"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; DataSelector::Prf &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a9aad7cdc6d71184989bc0d5f421f51d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77115f29da952f475b47b0254d707503"><td class="memItemLeft" align="right" valign="top"><a id="a77115f29da952f475b47b0254d707503"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; <a class="el" href="classrack_1_1ODIM.html#a2256f5bba1c1c69a92b933aa501df470">rack::ODIM::Version</a> &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a77115f29da952f475b47b0254d707503"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f9575f22ba22a15b85edd89a9c5d427"><td class="memItemLeft" align="right" valign="top"><a id="a4f9575f22ba22a15b85edd89a9c5d427"></a>
 const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; ProductConf::OutputDataVerbosity &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
 <tr class="separator:a4f9575f22ba22a15b85edd89a9c5d427"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a357e0950dcfb85a80013cc16ff4c20e7"><td class="memItemLeft" align="right" valign="top"><a id="a357e0950dcfb85a80013cc16ff4c20e7"></a>
-const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; Crit &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a357e0950dcfb85a80013cc16ff4c20e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7ff781d3968ea9dcbb2a03dbc2b6b81"><td class="memItemLeft" align="right" valign="top"><a id="ab7ff781d3968ea9dcbb2a03dbc2b6b81"></a>
-const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; Oper &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:ab7ff781d3968ea9dcbb2a03dbc2b6b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memItemLeft" align="right" valign="top"><a id="a1dd12757cb0a16ba692b49e72ca910eb"></a>
-const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memItemLeft" align="right" valign="top"><a id="a1dd12757cb0a16ba692b49e72ca910eb"></a>
-const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae02e6df3356745b853b1e90a0482de81"><td class="memItemLeft" align="right" valign="top"><a id="ae02e6df3356745b853b1e90a0482de81"></a>
-const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; PanelConfSVG::Orientation &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:ae02e6df3356745b853b1e90a0482de81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a492b95fd65e974e9bbae67a1058b1d54"><td class="memItemLeft" align="right" valign="top"><a id="a492b95fd65e974e9bbae67a1058b1d54"></a>
-const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; PanelConfSVG::Direction &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a492b95fd65e974e9bbae67a1058b1d54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8093b6ee7c7ca7ce6a048c07613b497a"><td class="memItemLeft" align="right" valign="top"><a id="a8093b6ee7c7ca7ce6a048c07613b497a"></a>
-const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; PanelConfSVG::Legend &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a8093b6ee7c7ca7ce6a048c07613b497a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11102911fc8d0740e5248dc7c9d33949"><td class="memItemLeft" align="right" valign="top"><a id="a11102911fc8d0740e5248dc7c9d33949"></a>
-const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; image::PanelConfSVG::Orientation &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a11102911fc8d0740e5248dc7c9d33949"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace777d9e975fac22107c0247e794f8d5"><td class="memItemLeft" align="right" valign="top"><a id="ace777d9e975fac22107c0247e794f8d5"></a>
-const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; image::PanelConfSVG::Direction &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:ace777d9e975fac22107c0247e794f8d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memItemLeft" align="right" valign="top"><a id="a1dd12757cb0a16ba692b49e72ca910eb"></a>
-const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memItemLeft" align="right" valign="top"><a id="a1dd12757cb0a16ba692b49e72ca910eb"></a>
-const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memItemLeft" align="right" valign="top"><a id="a1dd12757cb0a16ba692b49e72ca910eb"></a>
-const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memItemLeft" align="right" valign="top"><a id="a1dd12757cb0a16ba692b49e72ca910eb"></a>
-const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memItemLeft" align="right" valign="top"><a id="a1dd12757cb0a16ba692b49e72ca910eb"></a>
-const <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
-<tr class="separator:a1dd12757cb0a16ba692b49e72ca910eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f9575f22ba22a15b85edd89a9c5d427"><td class="memItemLeft" align="right" valign="top"><a id="a4f9575f22ba22a15b85edd89a9c5d427"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; ProductConf::OutputDataVerbosity &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a4f9575f22ba22a15b85edd89a9c5d427"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98abcf82806e7443bfcd1898bb9ab7d1"><td class="memItemLeft" align="right" valign="top"><a id="a98abcf82806e7443bfcd1898bb9ab7d1"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; Role &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a98abcf82806e7443bfcd1898bb9ab7d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8b493181f2f2c8c979a4d2f8831ab87"><td class="memItemLeft" align="right" valign="top"><a id="ae8b493181f2f2c8c979a4d2f8831ab87"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; E2 &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:ae8b493181f2f2c8c979a4d2f8831ab87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b1fb034cef71aeb3fb48b46ee039d35"><td class="memItemLeft" align="right" valign="top"><a id="a5b1fb034cef71aeb3fb48b46ee039d35"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; Luokko &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a5b1fb034cef71aeb3fb48b46ee039d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c046259421d6ff0eb39d3531f468926"><td class="memItemLeft" align="right" valign="top"><a id="a4c046259421d6ff0eb39d3531f468926"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; <a class="el" href="structdrain_1_1image_1_1AlignBase.html#a94c3a04b97f81dd5db990b01eb6521a0">AlignBase::Pos</a> &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a4c046259421d6ff0eb39d3531f468926"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95027e2d529890337aee81d4cc6ea251"><td class="memItemLeft" align="right" valign="top"><a id="a95027e2d529890337aee81d4cc6ea251"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; AlignBase::Axis &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a95027e2d529890337aee81d4cc6ea251"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf7e546fb516b86cc753a54d8d6747a0"><td class="memItemLeft" align="right" valign="top"><a id="aaf7e546fb516b86cc753a54d8d6747a0"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; AlignSVG::Owner &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:aaf7e546fb516b86cc753a54d8d6747a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61a1c4f841fbf10cb20e428cb4cb5fdc"><td class="memItemLeft" align="right" valign="top"><a id="a61a1c4f841fbf10cb20e428cb4cb5fdc"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; <a class="el" href="structdrain_1_1image_1_1Alignment.html">AlignSVG::HorzAlign</a> &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a61a1c4f841fbf10cb20e428cb4cb5fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3b12f956832ec8b66d4f4c57d284074"><td class="memItemLeft" align="right" valign="top"><a id="aa3b12f956832ec8b66d4f4c57d284074"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; <a class="el" href="structdrain_1_1image_1_1Alignment.html">AlignSVG::VertAlign</a> &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:aa3b12f956832ec8b66d4f4c57d284074"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bb1f7b10414a01a62dd86a8ad1a1743"><td class="memItemLeft" align="right" valign="top"><a id="a0bb1f7b10414a01a62dd86a8ad1a1743"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a>&lt;&gt; &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1EnumDict.html#a0bb1f7b10414a01a62dd86a8ad1a1743">dict</a></td></tr>
+<tr class="memdesc:a0bb1f7b10414a01a62dd86a8ad1a1743"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines both <a class="el" href="structdrain_1_1EnumDict.html" title="Wrapper for unique (static) dictionary of enum values.">EnumDict</a>&lt;Alignment&lt;&gt; &gt;: <br /></td></tr>
+<tr class="separator:a0bb1f7b10414a01a62dd86a8ad1a1743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f0777c39dbd1a48a6aa4ec3df94975b"><td class="memItemLeft" align="right" valign="top"><a id="a1f0777c39dbd1a48a6aa4ec3df94975b"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; LayoutSVG::Direction &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a1f0777c39dbd1a48a6aa4ec3df94975b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d99f699d5e0e53d1bfe2c922bbc674a"><td class="memItemLeft" align="right" valign="top"><a id="a7d99f699d5e0e53d1bfe2c922bbc674a"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; AlignSVG::Topol &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a7d99f699d5e0e53d1bfe2c922bbc674a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95027e2d529890337aee81d4cc6ea251"><td class="memItemLeft" align="right" valign="top"><a id="a95027e2d529890337aee81d4cc6ea251"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; AlignBase::Axis &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a95027e2d529890337aee81d4cc6ea251"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c046259421d6ff0eb39d3531f468926"><td class="memItemLeft" align="right" valign="top"><a id="a4c046259421d6ff0eb39d3531f468926"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; <a class="el" href="structdrain_1_1image_1_1AlignBase.html#a94c3a04b97f81dd5db990b01eb6521a0">AlignBase::Pos</a> &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a4c046259421d6ff0eb39d3531f468926"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf7e546fb516b86cc753a54d8d6747a0"><td class="memItemLeft" align="right" valign="top"><a id="aaf7e546fb516b86cc753a54d8d6747a0"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; AlignSVG::Owner &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:aaf7e546fb516b86cc753a54d8d6747a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d99f699d5e0e53d1bfe2c922bbc674a"><td class="memItemLeft" align="right" valign="top"><a id="a7d99f699d5e0e53d1bfe2c922bbc674a"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; AlignSVG::Topol &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a7d99f699d5e0e53d1bfe2c922bbc674a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61a1c4f841fbf10cb20e428cb4cb5fdc"><td class="memItemLeft" align="right" valign="top"><a id="a61a1c4f841fbf10cb20e428cb4cb5fdc"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; <a class="el" href="structdrain_1_1image_1_1Alignment.html">AlignSVG::HorzAlign</a> &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1EnumDict.html#a61a1c4f841fbf10cb20e428cb4cb5fdc">dict</a></td></tr>
+<tr class="memdesc:a61a1c4f841fbf10cb20e428cb4cb5fdc"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Dictionary.html" title="Two-way mapping between strings and objects of template class T.">Dictionary</a> of horizontal (LEFT,CENTER,RIGHT) flags. <br /></td></tr>
+<tr class="separator:a61a1c4f841fbf10cb20e428cb4cb5fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3b12f956832ec8b66d4f4c57d284074"><td class="memItemLeft" align="right" valign="top"><a id="aa3b12f956832ec8b66d4f4c57d284074"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; <a class="el" href="structdrain_1_1image_1_1Alignment.html">AlignSVG::VertAlign</a> &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1EnumDict.html#aa3b12f956832ec8b66d4f4c57d284074">dict</a></td></tr>
+<tr class="memdesc:aa3b12f956832ec8b66d4f4c57d284074"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Dictionary.html" title="Two-way mapping between strings and objects of template class T.">Dictionary</a> of vertical (TOP,MIDDLE,BOTTOM) flags. <br /></td></tr>
+<tr class="separator:aa3b12f956832ec8b66d4f4c57d284074"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bb1f7b10414a01a62dd86a8ad1a1743"><td class="memItemLeft" align="right" valign="top"><a id="a0bb1f7b10414a01a62dd86a8ad1a1743"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a>&lt;&gt; &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1EnumDict.html#a0bb1f7b10414a01a62dd86a8ad1a1743">dict</a></td></tr>
+<tr class="memdesc:a0bb1f7b10414a01a62dd86a8ad1a1743"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Dictionary.html" title="Two-way mapping between strings and objects of template class T.">Dictionary</a> combining horizontal (LEFT,CENTER,RIGHT) and vertical (TOP,MIDDLE,BOTTOM) flags. <br /></td></tr>
+<tr class="separator:a0bb1f7b10414a01a62dd86a8ad1a1743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33e976a8f72ac0bd8c99c46bd321fda7"><td class="memItemLeft" align="right" valign="top"><a id="a33e976a8f72ac0bd8c99c46bd321fda7"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">EnumDict</a>&lt; LayoutSVG::Direction &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a33e976a8f72ac0bd8c99c46bd321fda7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c997a5e32886968104a68e717f467c0"><td class="memItemLeft" align="right" valign="top"><a id="a8c997a5e32886968104a68e717f467c0"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; <a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a06e0d560e1db494afd9b331dc70aeae3">FileGeoTIFF::TiffCompliance</a> &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a8c997a5e32886968104a68e717f467c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace96f77ceedf6df51c69bf13c417868a"><td class="memItemLeft" align="right" valign="top"><a id="ace96f77ceedf6df51c69bf13c417868a"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">EnumDict</a>&lt; image::svg::tag_t &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:ace96f77ceedf6df51c69bf13c417868a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace96f77ceedf6df51c69bf13c417868a"><td class="memItemLeft" align="right" valign="top"><a id="ace96f77ceedf6df51c69bf13c417868a"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">EnumDict</a>&lt; image::svg::tag_t &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:ace96f77ceedf6df51c69bf13c417868a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19b4c1ee568cb436a223c7453f0626e0"><td class="memItemLeft" align="right" valign="top"><a id="a19b4c1ee568cb436a223c7453f0626e0"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; NodeGDAL::tag_t &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a19b4c1ee568cb436a223c7453f0626e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad809bd7ee8efe5f7020e4d57d5e69ea9"><td class="memItemLeft" align="right" valign="top"><a id="ad809bd7ee8efe5f7020e4d57d5e69ea9"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">EnumDict</a>&lt; image::NodeGDAL::tag_t &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:ad809bd7ee8efe5f7020e4d57d5e69ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a453c303f1b6f48ff4eb63d1bf85a131a"><td class="memItemLeft" align="right" valign="top"><a id="a453c303f1b6f48ff4eb63d1bf85a131a"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; Status &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a453c303f1b6f48ff4eb63d1bf85a131a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a453c303f1b6f48ff4eb63d1bf85a131a"><td class="memItemLeft" align="right" valign="top"><a id="a453c303f1b6f48ff4eb63d1bf85a131a"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; Status &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a453c303f1b6f48ff4eb63d1bf85a131a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade7b800504e2f7a69297ea73a1f78478"><td class="memItemLeft" align="right" valign="top"><a id="ade7b800504e2f7a69297ea73a1f78478"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; TextStyle::Style &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:ade7b800504e2f7a69297ea73a1f78478"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c628c38bf6476814318a1ecfa9e70df"><td class="memItemLeft" align="right" valign="top"><a id="a1c628c38bf6476814318a1ecfa9e70df"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; TextStyle::Colour &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a1c628c38bf6476814318a1ecfa9e70df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a103bbe387bf3a069d62741aed526814b"><td class="memItemLeft" align="right" valign="top"><a id="a103bbe387bf3a069d62741aed526814b"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; TextStyle::Line &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a103bbe387bf3a069d62741aed526814b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa49e53c94d47ede13d63a0d38241508f"><td class="memItemLeft" align="right" valign="top"><a id="aa49e53c94d47ede13d63a0d38241508f"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; BaseHTML::tag_t &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDict</b> ()</td></tr>
+<tr class="separator:aa49e53c94d47ede13d63a0d38241508f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf1895d72a3f87ae35fefaa89e35e1a1"><td class="memItemLeft" align="right" valign="top"><a id="abf1895d72a3f87ae35fefaa89e35e1a1"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; BaseHTML::tag_t &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:abf1895d72a3f87ae35fefaa89e35e1a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64fd5a8f87def3c52c855d69584adb3a"><td class="memItemLeft" align="right" valign="top"><a id="a64fd5a8f87def3c52c855d69584adb3a"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; int, <a class="el" href="classdrain_1_1XML.html">XML</a> &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a64fd5a8f87def3c52c855d69584adb3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64fd5a8f87def3c52c855d69584adb3a"><td class="memItemLeft" align="right" valign="top"><a id="a64fd5a8f87def3c52c855d69584adb3a"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; int, <a class="el" href="classdrain_1_1XML.html">XML</a> &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a64fd5a8f87def3c52c855d69584adb3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca72410d9bb01aacc455bbaea4fed4fd"><td class="memItemLeft" align="right" valign="top"><a id="aca72410d9bb01aacc455bbaea4fed4fd"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; Reader::Mode &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:aca72410d9bb01aacc455bbaea4fed4fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2a94e5e4cb774f5fcb53e2938487be7"><td class="memItemLeft" align="right" valign="top"><a id="ab2a94e5e4cb774f5fcb53e2938487be7"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; <a class="el" href="classhi5_1_1Reader.html#a46c8a310cf4c094f8c80e1cb8dc1f911">hi5::Reader::Mode</a> &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:ab2a94e5e4cb774f5fcb53e2938487be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef9e77c8d2f1849035993e2645f7d1ed"><td class="memItemLeft" align="right" valign="top"><a id="aef9e77c8d2f1849035993e2645f7d1ed"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; <a class="el" href="classrack_1_1GraphicsContext.html#a064dd6903edf7f9e2f353b8c336db620">rack::GraphicsContext::ElemClass</a> &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:aef9e77c8d2f1849035993e2645f7d1ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad6035fc5479e870d9b09a7ac25f91b8"><td class="memItemLeft" align="right" valign="top"><a id="aad6035fc5479e870d9b09a7ac25f91b8"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; Hdf5Context::Hi5Role &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:aad6035fc5479e870d9b09a7ac25f91b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b90a491113ebd18b04753c7f8032a93"><td class="memItemLeft" align="right" valign="top"><a id="a7b90a491113ebd18b04753c7f8032a93"></a>
+const <a class="el" href="structdrain_1_1EnumDict.html">drain::EnumDict</a>&lt; Hdf5Context::Hi5RoleFlagger &gt;::<a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
+<tr class="separator:a7b90a491113ebd18b04753c7f8032a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a76a7075d1e9d28c09f642b36f9c30fae"><td class="memItemLeft" align="right" valign="top"><a id="a76a7075d1e9d28c09f642b36f9c30fae"></a>
+static const <a class="el" href="classdrain_1_1Dictionary.html">dict_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDict</b> ()</td></tr>
+<tr class="separator:a76a7075d1e9d28c09f642b36f9c30fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88f533264180b23869bf2d3b6cfe2b3b"><td class="memItemLeft" align="right" valign="top"><a id="a88f533264180b23869bf2d3b6cfe2b3b"></a>
+static const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1EnumDict.html#a88f533264180b23869bf2d3b6cfe2b3b">str</a> (const E &amp;value)</td></tr>
+<tr class="memdesc:a88f533264180b23869bf2d3b6cfe2b3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience. <br /></td></tr>
+<tr class="separator:a88f533264180b23869bf2d3b6cfe2b3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8518edeaaef83e40e7a51e77bdeae8fa"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1EnumDict.html#a8518edeaaef83e40e7a51e77bdeae8fa">setValue</a> (const std::string &amp;key, E &amp;value)</td></tr>
+<tr class="memdesc:a8518edeaaef83e40e7a51e77bdeae8fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for leniently setting string values to separate enum lists.  <a href="structdrain_1_1EnumDict.html#a8518edeaaef83e40e7a51e77bdeae8fa">More...</a><br /></td></tr>
+<tr class="separator:a8518edeaaef83e40e7a51e77bdeae8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a849e896fb100c11e4073cb8deed80adb"><td class="memItemLeft" align="right" valign="top">static E&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1EnumDict.html#a849e896fb100c11e4073cb8deed80adb">getValue</a> (const E &amp;value, bool lenient=true)</td></tr>
+<tr class="memdesc:a849e896fb100c11e4073cb8deed80adb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience for object.set(...) like commands.  <a href="structdrain_1_1EnumDict.html#a849e896fb100c11e4073cb8deed80adb">More...</a><br /></td></tr>
+<tr class="separator:a849e896fb100c11e4073cb8deed80adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5a657344f4ffd524a2c4ab09d3f4b48"><td class="memItemLeft" align="right" valign="top">static E&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1EnumDict.html#af5a657344f4ffd524a2c4ab09d3f4b48">getValue</a> (const std::string &amp;key, bool lenient=true)</td></tr>
+<tr class="memdesc:af5a657344f4ffd524a2c4ab09d3f4b48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience for object.set(...) like commands.  <a href="structdrain_1_1EnumDict.html#af5a657344f4ffd524a2c4ab09d3f4b48">More...</a><br /></td></tr>
+<tr class="separator:af5a657344f4ffd524a2c4ab09d3f4b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0210f5aa9ff74a54391d4b5dc9d3c67f"><td class="memItemLeft" align="right" valign="top">static E&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1EnumDict.html#a0210f5aa9ff74a54391d4b5dc9d3c67f">getValue</a> (const char *key, bool lenient=true)</td></tr>
+<tr class="memdesc:a0210f5aa9ff74a54391d4b5dc9d3c67f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience for object.set(...) like commands.  <a href="structdrain_1_1EnumDict.html#a0210f5aa9ff74a54391d4b5dc9d3c67f">More...</a><br /></td></tr>
+<tr class="separator:a0210f5aa9ff74a54391d4b5dc9d3c67f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -171,8 +278,190 @@ Static Public Attributes</h2></td></tr>
 static const <a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
 <tr class="separator:ac117cb9c7ad1ea9077c8f6699ddb9223"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class E, class OWNER = E&gt;<br />
+struct drain::EnumDict&lt; E, OWNER &gt;</h3>
+
+<p>Wrapper for unique (static) dictionary of enum values. </p>
+<p>DrainCore</p>
+<p>Template is needed to create a unique, shared (static) dict object for each template. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0210f5aa9ff74a54391d4b5dc9d3c67f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0210f5aa9ff74a54391d4b5dc9d3c67f">&#9670;&nbsp;</a></span>getValue() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static E getValue </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>lenient</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convenience for object.set(...) like commands. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lenient</td><td>- when value not found, only return empty, do not throw exception. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>enum value of the key </dd></dl>
+
+</div>
+</div>
+<a id="a849e896fb100c11e4073cb8deed80adb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a849e896fb100c11e4073cb8deed80adb">&#9670;&nbsp;</a></span>getValue() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static E getValue </td>
+          <td>(</td>
+          <td class="paramtype">const E &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>lenient</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convenience for object.set(...) like commands. </p>
+<dl class="section return"><dt>Returns</dt><dd>enum value of the key</dd></dl>
+<p>Note: cannot return (const E &amp;) as storage type is (long) int. </p>
+
+</div>
+</div>
+<a id="af5a657344f4ffd524a2c4ab09d3f4b48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5a657344f4ffd524a2c4ab09d3f4b48">&#9670;&nbsp;</a></span>getValue() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static E getValue </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>lenient</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convenience for object.set(...) like commands. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lenient</td><td>- when key not found, only return empty, do not throw exception. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>enum value of the key </dd></dl>
+
+</div>
+</div>
+<a id="a8518edeaaef83e40e7a51e77bdeae8fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8518edeaaef83e40e7a51e77bdeae8fa">&#9670;&nbsp;</a></span>setValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool setValue </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">E &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convenience function for leniently setting string values to separate enum lists. </p>
+<p>String arguments tested against several dictionaries. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">E2</td><td>- any enum type, for which <code>dict</code> has been defined. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/drain/util/<a class="el" href="Flags_8h_source.html">Flags.h</a></li>
+<li>src/drain/util/<a class="el" href="EnumFlags_8h_source.html">EnumFlags.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

@@ -78,7 +78,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa.">Flagger</a> with own dictionary, and accepting values of (integer) type T.  
+<p>Flagger with referenced/external dictionary accepting values of (integer) type T.  
  <a href="classdrain_1_1Flags2.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Flags_8h_source.html">Flags.h</a>&gt;</code></p>
@@ -87,7 +87,7 @@ Inheritance diagram for Flags2&lt; F &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Flags2__inherit__graph.png" border="0" usemap="#aFlags2_3_01F_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="aFlags2_3_01F_01_4_inherit__map" id="aFlags2_3_01F_01_4_inherit__map">
-<area shape="rect" title="Flagger with own dictionary, and accepting values of (integer) type T." alt="" coords="5,80,108,107"/>
+<area shape="rect" title="Flagger with referenced/external dictionary accepting values of (integer) type T." alt="" coords="5,80,108,107"/>
 <area shape="rect" title=" " alt="" coords="37,5,76,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -96,7 +96,7 @@ Collaboration diagram for Flags2&lt; F &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Flags2__coll__graph.png" border="0" usemap="#aFlags2_3_01F_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="aFlags2_3_01F_01_4_coll__map" id="aFlags2_3_01F_01_4_coll__map">
-<area shape="rect" title="Flagger with own dictionary, and accepting values of (integer) type T." alt="" coords="5,80,108,107"/>
+<area shape="rect" title="Flagger with referenced/external dictionary accepting values of (integer) type T." alt="" coords="5,80,108,107"/>
 <area shape="rect" title=" " alt="" coords="37,5,76,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -106,12 +106,12 @@ Public Types</h2></td></tr>
 <tr class="memitem:a281894a89817338853c733e496babcce"><td class="memItemLeft" align="right" valign="top"><a id="a281894a89817338853c733e496babcce"></a>
 typedef F&#160;</td><td class="memItemRight" valign="bottom"><b>fbase_t</b></td></tr>
 <tr class="separator:a281894a89817338853c733e496babcce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab79f92dee865e46dceb914a11901e624"><td class="memItemLeft" align="right" valign="top"><a id="ab79f92dee865e46dceb914a11901e624"></a>
-typedef fbase_t::value_t&#160;</td><td class="memItemRight" valign="bottom"><b>value_t</b></td></tr>
-<tr class="separator:ab79f92dee865e46dceb914a11901e624"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4307775557b4a6ed86e5f3c8dee1149"><td class="memItemLeft" align="right" valign="top"><a id="ab4307775557b4a6ed86e5f3c8dee1149"></a>
-typedef fbase_t::dict_t&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
-<tr class="separator:ab4307775557b4a6ed86e5f3c8dee1149"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad39cb40259c3eef8bb84f3165b2fdbe9"><td class="memItemLeft" align="right" valign="top"><a id="ad39cb40259c3eef8bb84f3165b2fdbe9"></a>
+typedef F::value_t&#160;</td><td class="memItemRight" valign="bottom"><b>value_t</b></td></tr>
+<tr class="separator:ad39cb40259c3eef8bb84f3165b2fdbe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d60332670339d980b3daa2c2e891dd7"><td class="memItemLeft" align="right" valign="top"><a id="a9d60332670339d980b3daa2c2e891dd7"></a>
+typedef F::dict_t&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
+<tr class="separator:a9d60332670339d980b3daa2c2e891dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -123,9 +123,9 @@ virtual dict_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDi
 <tr class="separator:ae4bf50145922ea48c12e14a9e4c4c829"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a778a76a521ee2bf3f7fadca1f5feeadc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags2.html#a778a76a521ee2bf3f7fadca1f5feeadc">Flags2</a> ()</td></tr>
 <tr class="separator:a778a76a521ee2bf3f7fadca1f5feeadc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a570c063747ceda6dc6248ce2c9a3f675"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags2.html#a570c063747ceda6dc6248ce2c9a3f675">Flags2</a> (std::initializer_list&lt; typename dict_t::entry_t &gt; list)</td></tr>
-<tr class="memdesc:a570c063747ceda6dc6248ce2c9a3f675"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for relatively short dictionaries.  <a href="classdrain_1_1Flags2.html#a570c063747ceda6dc6248ce2c9a3f675">More...</a><br /></td></tr>
-<tr class="separator:a570c063747ceda6dc6248ce2c9a3f675"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6255f85299b37279fce92626266af45"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Flags2.html#af6255f85299b37279fce92626266af45">Flags2</a> (const std::initializer_list&lt; typename dict_t::entry_t &gt; &amp;list)</td></tr>
+<tr class="memdesc:af6255f85299b37279fce92626266af45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for relatively short dictionaries.  <a href="classdrain_1_1Flags2.html#af6255f85299b37279fce92626266af45">More...</a><br /></td></tr>
+<tr class="separator:af6255f85299b37279fce92626266af45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20ee03cc800516d0622f459a6c5dbc28"><td class="memItemLeft" align="right" valign="top"><a id="a20ee03cc800516d0622f459a6c5dbc28"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Flags2</b> (const <a class="el" href="classdrain_1_1Flags2.html">Flags2</a>&lt; F &gt; &amp;flags)</td></tr>
 <tr class="separator:a20ee03cc800516d0622f459a6c5dbc28"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,10 +144,11 @@ dict_t&#160;</td><td class="memItemRight" valign="bottom"><b>dict</b></td></tr>
 <div class="textblock"><h3>template&lt;class F&gt;<br />
 class drain::Flags2&lt; F &gt;</h3>
 
-<p><a class="el" href="classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa.">Flagger</a> with own dictionary, and accepting values of (integer) type T. </p>
+<p>Flagger with referenced/external dictionary accepting values of (integer) type T. </p>
 <p>Designed for local, instantaneous use. Should several flaggers use the same dictionary, use Flagger2&lt;F&gt; instead.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
+    <tr><td class="paramname">F</td><td>– SingleFlagger&lt;T&gt; or MultiFlagger&lt;T&gt;, integer type T Flagger with own dictionary, and accepting values of (integer) type T Designed for local, instantaneous use. Should several flaggers use the same dictionary, use Flagger2&lt;F&gt; instead.</td></tr>
     <tr><td class="paramname">F</td><td>– SingleFlagger&lt;T&gt; or MultiFlagger&lt;T&gt; </td></tr>
   </table>
   </dd>
@@ -175,12 +176,12 @@ class drain::Flags2&lt; F &gt;</h3>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>If the dictionary is small, consider short init: <a class="el" href="classdrain_1_1Flags2.html" title="Flagger with own dictionary, and accepting values of (integer) type T.">Flags2</a>({"A",1}, {"B",2}} </p>
+<p>If the dictionary is small, consider short init: <a class="el" href="classdrain_1_1Flags2.html" title="Flagger with referenced/external dictionary accepting values of (integer) type T.">Flags2</a>({"A",1}, {"B",2}} </p>
 
 </div>
 </div>
-<a id="a570c063747ceda6dc6248ce2c9a3f675"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a570c063747ceda6dc6248ce2c9a3f675">&#9670;&nbsp;</a></span>Flags2() <span class="overload">[2/2]</span></h2>
+<a id="af6255f85299b37279fce92626266af45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6255f85299b37279fce92626266af45">&#9670;&nbsp;</a></span>Flags2() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -191,7 +192,7 @@ class drain::Flags2&lt; F &gt;</h3>
         <tr>
           <td class="memname"><a class="el" href="classdrain_1_1Flags2.html">Flags2</a> </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; typename dict_t::entry_t &gt;&#160;</td>
+          <td class="paramtype">const std::initializer_list&lt; typename dict_t::entry_t &gt; &amp;&#160;</td>
           <td class="paramname"><em>list</em></td><td>)</td>
           <td></td>
         </tr>
@@ -205,7 +206,7 @@ class drain::Flags2&lt; F &gt;</h3>
 
 <p>Constructor for relatively short dictionaries. </p>
 <div class="fragment"><div class="line"><a class="code" href="classdrain_1_1Flags2.html#a778a76a521ee2bf3f7fadca1f5feeadc">Flags2</a> flags({<span class="stringliteral">&quot;A&quot;</span>,1}, {<span class="stringliteral">&quot;B&quot;</span>,2}});</div>
-<div class="ttc" id="aclassdrain_1_1Flags2_html_a778a76a521ee2bf3f7fadca1f5feeadc"><div class="ttname"><a href="classdrain_1_1Flags2.html#a778a76a521ee2bf3f7fadca1f5feeadc">drain::Flags2::Flags2</a></div><div class="ttdeci">Flags2()</div><div class="ttdef"><b>Definition:</b> Flags.h:933</div></div>
+<div class="ttc" id="aclassdrain_1_1Flags2_html_a778a76a521ee2bf3f7fadca1f5feeadc"><div class="ttname"><a href="classdrain_1_1Flags2.html#a778a76a521ee2bf3f7fadca1f5feeadc">drain::Flags2::Flags2</a></div><div class="ttdeci">Flags2()</div><div class="ttdef"><b>Definition:</b> Flags.h:478</div></div>
 </div><!-- fragment --> 
 </div>
 </div>

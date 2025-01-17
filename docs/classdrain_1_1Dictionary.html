@@ -160,14 +160,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasKey</b> (const K &
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Dictionary.html#ac5d54be78f001c1a8ae86c10b75d69df">hasValue</a> (const V &amp;value) const</td></tr>
 <tr class="memdesc:ac5d54be78f001c1a8ae86c10b75d69df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a key, return the first value associated with it. <br /></td></tr>
 <tr class="separator:ac5d54be78f001c1a8ae86c10b75d69df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78bdbe5403c7a9be36c922b6041cb954"><td class="memItemLeft" align="right" valign="top"><a id="a78bdbe5403c7a9be36c922b6041cb954"></a>
-const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Dictionary.html#a78bdbe5403c7a9be36c922b6041cb954">getValue</a> (const K &amp;key) const</td></tr>
-<tr class="memdesc:a78bdbe5403c7a9be36c922b6041cb954"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a key, return the first value associated with it. <br /></td></tr>
-<tr class="separator:a78bdbe5403c7a9be36c922b6041cb954"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae23ad73d13c217eda74c7e6c01c934c"><td class="memItemLeft" align="right" valign="top"><a id="aae23ad73d13c217eda74c7e6c01c934c"></a>
-const K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Dictionary.html#aae23ad73d13c217eda74c7e6c01c934c">getKey</a> (const V &amp;value) const</td></tr>
-<tr class="memdesc:aae23ad73d13c217eda74c7e6c01c934c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a value, return the first key associated with it. <br /></td></tr>
-<tr class="separator:aae23ad73d13c217eda74c7e6c01c934c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8057016f5dd6f40c031b189a5d0093a"><td class="memItemLeft" align="right" valign="top"><a id="ad8057016f5dd6f40c031b189a5d0093a"></a>
+const V &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Dictionary.html#ad8057016f5dd6f40c031b189a5d0093a">getValue</a> (const K &amp;key, bool lenient=true) const</td></tr>
+<tr class="memdesc:ad8057016f5dd6f40c031b189a5d0093a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a key, return the first value associated with it. <br /></td></tr>
+<tr class="separator:ad8057016f5dd6f40c031b189a5d0093a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4924896254ae5e5926d8b24e6b60199f"><td class="memItemLeft" align="right" valign="top">const K &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Dictionary.html#a4924896254ae5e5926d8b24e6b60199f">getKey</a> (const V &amp;value, bool lenient=true) const</td></tr>
+<tr class="memdesc:a4924896254ae5e5926d8b24e6b60199f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Identity mapping useful for type deduction of template arguments in functions.  <a href="classdrain_1_1Dictionary.html#a4924896254ae5e5926d8b24e6b60199f">More...</a><br /></td></tr>
+<tr class="separator:a4924896254ae5e5926d8b24e6b60199f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dd824e353b25e080dcc4ca54a74884f"><td class="memItemLeft" align="right" valign="top"><a id="a2dd824e353b25e080dcc4ca54a74884f"></a>
 const keylist_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKeys</b> () const</td></tr>
 <tr class="separator:a2dd824e353b25e080dcc4ca54a74884f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -204,7 +203,48 @@ class drain::Dictionary&lt; K, V &gt;</h3>
 <p>TODO: hide first and second so that an entry cannot be assigned to either of them Simple list based container for small dictionaries. Uses brute-force linear search.</p>
 <p>In a way, works like std::map as each entry is a std::pair. However, no less-than relation is needed as the entries are not in order but appended sequentially.</p>
 <p>For handling input and output, dictionary has a separator char which is a comma ',' by default. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4924896254ae5e5926d8b24e6b60199f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4924896254ae5e5926d8b24e6b60199f">&#9670;&nbsp;</a></span>getKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const K&amp; getKey </td>
+          <td>(</td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>lenient</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Identity mapping useful for type deduction of template arguments in functions. </p>
+<pre class="fragment"> Consider setProperty(const T &amp; prop) supporting both enum and string argument, for example.
+</pre><p> const V &amp; getValue(const V &amp; value) const { return value; } Given a value, return the first key associated with it. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/drain/util/<a class="el" href="Dictionary_8h_source.html">Dictionary.h</a></li>
 </ul>
 </div><!-- contents -->

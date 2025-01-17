@@ -1,8 +1,10 @@
 <map id="NodeSVG" name="NodeSVG">
-<area shape="rect" id="node1" title=" " alt="" coords="55,319,137,345"/>
-<area shape="rect" id="node2" href="$structdrain_1_1image_1_1svg.html" title=" " alt="" coords="5,244,51,271"/>
-<area shape="rect" id="node3" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="75,244,253,271"/>
-<area shape="rect" id="node4" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="35,169,293,196"/>
-<area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="52,95,276,121"/>
-<area shape="rect" id="node6" title=" " alt="" coords="69,5,259,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="183,393,265,420"/>
+<area shape="rect" id="node2" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="45,319,224,345"/>
+<area shape="rect" id="node3" href="$classdrain_1_1XML.html" title=" " alt="" coords="109,244,160,271"/>
+<area shape="rect" id="node4" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,169,264,196"/>
+<area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,95,247,121"/>
+<area shape="rect" id="node6" title=" " alt="" coords="39,5,230,47"/>
+<area shape="rect" id="node7" href="$structdrain_1_1image_1_1AlignAdapterSVG.html" title="Adapter designed for NodeSVG." alt="" coords="248,319,381,345"/>
+<area shape="rect" id="node8" href="$structdrain_1_1image_1_1AlignSVG.html" title="User&#45;friendly programming interface for alignment considering two elements." alt="" coords="273,244,356,271"/>
 </map>

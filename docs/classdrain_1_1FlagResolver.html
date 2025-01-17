@@ -82,20 +82,7 @@ $(function() {
 <p>Referencing a dictionary of binary values: {"A",1: "B":2, "C": 4, "D": 8, ...} resolves two-way mappings "A,C" &lt;=&gt; 5 .  
  <a href="classdrain_1_1FlagResolver.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="Flags_8h_source.html">Flags.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for FlagResolver:</div>
-<div class="dyncontent">
-<div class="center"><img src="classdrain_1_1FlagResolver__inherit__graph.png" border="0" usemap="#aFlagResolver_inherit__map" alt="Inheritance graph"/></div>
-<map name="aFlagResolver_inherit__map" id="aFlagResolver_inherit__map">
-<area shape="rect" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="160,5,267,32"/>
-<area shape="rect" href="classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="178,80,249,107"/>
-<area shape="rect" href="classdrain_1_1GlobalFlags.html" title=" " alt="" coords="5,155,160,196"/>
-<area shape="rect" href="classdrain_1_1Flags.html" title="Self&#45;contained Flagger – with an own dictionary and value." alt="" coords="185,162,242,189"/>
-<area shape="rect" href="classdrain_1_1GlobalFlags.html" title="Flags using a global dictionary." alt="" coords="266,162,403,189"/>
-<area shape="rect" href="classdrain_1_1StatusFlags.html" title=" " alt="" coords="33,244,132,271"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<p><code>#include &lt;<a class="el" href="FlagBase_8h_source.html">FlagBase.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -119,10 +106,10 @@ template&lt;typename T &gt; </td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a54ffae2633e7087de4736380530a532e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a54ffae2633e7087de4736380530a532e"><td class="memTemplItemLeft" align="right" valign="top">static ivalue_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#a54ffae2633e7087de4736380530a532e">getValue</a> (const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;dict, const std::string &amp;key, char separator=',')</td></tr>
-<tr class="memdesc:a54ffae2633e7087de4736380530a532e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string.  <a href="classdrain_1_1FlagResolver.html#a54ffae2633e7087de4736380530a532e">More...</a><br /></td></tr>
-<tr class="separator:a54ffae2633e7087de4736380530a532e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15111a4e5de9456c8d0608c738aee430"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a15111a4e5de9456c8d0608c738aee430"><td class="memTemplItemLeft" align="right" valign="top">static ivalue_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#a15111a4e5de9456c8d0608c738aee430">getIntValue</a> (const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;dict, const std::string &amp;keys, char separator=',')</td></tr>
+<tr class="memdesc:a15111a4e5de9456c8d0608c738aee430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string.  <a href="classdrain_1_1FlagResolver.html#a15111a4e5de9456c8d0608c738aee430">More...</a><br /></td></tr>
+<tr class="separator:a15111a4e5de9456c8d0608c738aee430"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4d4c65c850179349aa03cb4d0e319fc"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ac4d4c65c850179349aa03cb4d0e319fc"><td class="memTemplItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlagResolver.html#ac4d4c65c850179349aa03cb4d0e319fc">getKeys</a> (const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;dict, ivalue_t, char separator=',')</td></tr>
 <tr class="memdesc:ac4d4c65c850179349aa03cb4d0e319fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given an integer, retrieves dictionary keys corresponding to each index of set bits.  <a href="classdrain_1_1FlagResolver.html#ac4d4c65c850179349aa03cb4d0e319fc">More...</a><br /></td></tr>
@@ -152,7 +139,8 @@ static const ivalue_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL<
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Referencing a dictionary of binary values: {"A",1: "B":2, "C": 4, "D": 8, ...} resolves two-way mappings "A,C" &lt;=&gt; 5 . </p>
-<p><a class="el" href="classdrain_1_1Static.html">Static</a> utilities. </p>
+<p><a class="el" href="classdrain_1_1Static.html">Static</a> utilities.</p>
+<p>More for MultiFlaggers? </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab183329c42ba3c3176c65a3f19adf665"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab183329c42ba3c3176c65a3f19adf665">&#9670;&nbsp;</a></span>addEntry()</h2>
@@ -233,6 +221,58 @@ static const ivalue_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL<
 
 </div>
 </div>
+<a id="a15111a4e5de9456c8d0608c738aee430"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15111a4e5de9456c8d0608c738aee430">&#9670;&nbsp;</a></span>getIntValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">FlagResolver::ivalue_t getIntValue </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dict</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>keys</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>separator</em> = <code>','</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>– A string containing keys ("note,error") or values ("4,8,32") or a mixture of them. </td></tr>
+    <tr><td class="paramname">separator</td><td>– if given, splits string to several keys </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>– A numeric value </dd></dl>
+
+</div>
+</div>
 <a id="ac4d4c65c850179349aa03cb4d0e319fc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac4d4c65c850179349aa03cb4d0e319fc">&#9670;&nbsp;</a></span>getKeys()</h2>
 
@@ -275,58 +315,6 @@ static const ivalue_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL<
 
 <p>Given an integer, retrieves dictionary keys corresponding to each index of set bits. </p>
 <p>List keys in their numeric order. </p>
-
-</div>
-</div>
-<a id="a54ffae2633e7087de4736380530a532e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54ffae2633e7087de4736380530a532e">&#9670;&nbsp;</a></span>getValue()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">FlagResolver::ivalue_t getValue </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Dictionary.html">drain::Dictionary</a>&lt; key_t, T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>dict</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char&#160;</td>
-          <td class="paramname"><em>separator</em> = <code>','</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">key</td><td>– A string containing keys ("note,error") or values ("4,8,32") or a mixture of them. </td></tr>
-    <tr><td class="paramname">separator</td><td>– if given, splits string to several keys </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>– A numeric value </dd></dl>
 
 </div>
 </div>
@@ -427,8 +415,8 @@ static const ivalue_t&#160;</td><td class="memItemRight" valign="bottom"><b>ALL<
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/drain/util/<a class="el" href="Flags_8h_source.html">Flags.h</a></li>
-<li>src/drain/util/Flags.cpp</li>
+<li>src/drain/util/<a class="el" href="FlagBase_8h_source.html">FlagBase.h</a></li>
+<li>src/drain/util/FlagBase.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

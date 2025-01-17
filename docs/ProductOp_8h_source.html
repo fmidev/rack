@@ -161,7 +161,7 @@ $(function() {
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keyword">inline</span></div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <a class="code" href="classdrain_1_1image_1_1ProductOp.html">ProductOp</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1ProductOp.html">ProductOp</a> &amp; product) : <a class="code" href="classrack_1_1ProductBase.html">ProductBase</a>(product){</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        std::cerr &lt;&lt; __FUNCTION__ &lt;&lt; <span class="stringliteral">&quot; copy ct &quot;</span> &lt;&lt; product.<a class="code" href="classdrain_1_1BeanLike.html#acdcfed065f00c724f18ee8fde76d0a52">getName</a>() &lt;&lt; this-&gt;dataSelector &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        std::cerr &lt;&lt; <span class="charliteral">&#39;#&#39;</span> &lt;&lt; __FUNCTION__ &lt;&lt; <span class="stringliteral">&quot; copy ct &quot;</span> &lt;&lt; product.<a class="code" href="classdrain_1_1BeanLike.html#acdcfed065f00c724f18ee8fde76d0a52">getName</a>() &lt;&lt; this-&gt;dataSelector &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    };</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
 <div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classrack_1_1ProductOp.html#a582a43111f0014d61e6272cc1ed36d51">  101</a></span>&#160;    MD <a class="code" href="classrack_1_1ProductOp.html#a582a43111f0014d61e6272cc1ed36d51">odim</a>;</div>
@@ -327,9 +327,9 @@ $(function() {
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="comment">//drain::Logger mout(__FILE__, __FUNCTION__); //REPL this-&gt;name+&quot;(VolumeOp&lt;M&gt;)&quot;, __FUNCTION__);</span></div>
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160; </div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;start&quot;</span> );</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    mout.debug3(*<span class="keyword">this</span> );</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">debug2</a>(<span class="stringliteral">&quot;DataSelector: &quot;</span>  , this-&gt;dataSelector );</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;start&quot;</span>);</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(*<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">debug2</a>(<span class="stringliteral">&quot;DataSelector: &quot;</span>, this-&gt;dataSelector);</div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="comment">// Step 1: collect sweeps (/datasetN/)</span></div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="comment">//DataSetMap&lt;src_t&gt; sweeps;</span></div>
@@ -380,138 +380,138 @@ $(function() {
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160; </div>
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <span class="comment">// Copy metadata from the input volume (note that dst may have been cleared above)</span></div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    dst[<span class="stringliteral">&quot;what&quot;</span>]  = src[<span class="stringliteral">&quot;what&quot;</span>];</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    dst[<span class="stringliteral">&quot;where&quot;</span>] = src[<span class="stringliteral">&quot;where&quot;</span>];</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    dst[<span class="stringliteral">&quot;how&quot;</span>]   = src[<span class="stringliteral">&quot;how&quot;</span>];</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    dst[<span class="stringliteral">&quot;what&quot;</span>].data.attributes[<span class="stringliteral">&quot;object&quot;</span>] = this-&gt;odim.object;</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    <span class="comment">// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep &#39;declare(rootAttribute&#39; odim/*.cpp</span></div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160; </div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <span class="comment">//ODIMPath dataSetPath;</span></div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    <a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> parent(<a class="code" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">ODIMPathElem::DATASET</a>, 1); <span class="comment">// /dataset1</span></div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> child(<a class="code" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a>, 1); <span class="comment">// /dataset1</span></div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160; </div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#aeaf1543bb74bd5fff3748ad3e34c12c4">note</a>(<span class="stringliteral">&quot;appendResults path: &quot;</span> ,  <a class="code" href="classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a> );</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>.getType() == <a class="code" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">ODIMPathElem::DATASET</a>){</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        <a class="code" href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">ODIMPathTools::getNextChild</a>(dst, parent);</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    }</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160; </div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <a class="code" href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">ODIMPathTools::getNextChild</a>(dst[parent], child);</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160; </div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#aeaf1543bb74bd5fff3748ad3e34c12c4">note</a>(<span class="stringliteral">&quot;storing product in path: &quot;</span> ,  parent , <span class="charliteral">&#39;|&#39;</span> , child );</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    <span class="comment">//mout.debug3(&quot;storing product in path: &quot;  , dataSetPath );</span></div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160; </div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    Hi5Tree &amp; dstProduct = dst[parent][child]; <span class="comment">// (dataSetPath);</span></div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    <a class="code" href="classrack_1_1DataSet.html">DataSet&lt;dst_t&gt;</a> dstProductDataset(dstProduct); <span class="comment">// PATH</span></div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160; </div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160; </div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    this-&gt;computeSingleProduct(sweeps, dstProductDataset);</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> key: {<a class="code" href="classrack_1_1ODIMPathElem.html#a1884541cc245c9e95976459d1694dd70">ODIMPathElem::WHAT</a>, <a class="code" href="classrack_1_1ODIMPathElem.html#ae645a547d8405a586c62a717666c25b3">ODIMPathElem::WHERE</a>, <a class="code" href="classrack_1_1ODIMPathElem.html#a8fe897a670840520f73adbb3333dde40">ODIMPathElem::HOW</a>}){</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        <span class="comment">// .data.attributes</span></div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#ae09a2b80206be96b4e9389003a7af98f">unimplemented</a>(<span class="stringliteral">&quot;consider and test .data.attributes instead&quot;</span>);</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        dst[key] = src[key];</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    }</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    <span class="comment">// odim.copyToRoot(dst); NO! Mainly overwrites original data. fgrep &#39;declare(rootAttribute&#39; odim/*.cpp</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; </div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    <span class="comment">//ODIMPath dataSetPath;</span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> parent(<a class="code" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">ODIMPathElem::DATASET</a>); <span class="comment">// /dataset1</span></div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <a class="code" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> child(<a class="code" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a>); <span class="comment">// /dataset1</span></div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160; </div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#aeaf1543bb74bd5fff3748ad3e34c12c4">note</a>(DRAIN_LOG_VAR(<a class="code" href="classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>));</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">ProductBase::appendResults</a>.getType() == <a class="code" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">ODIMPathElem::DATASET</a>){</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <a class="code" href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">ODIMPathTools::getNextChild</a>(dst, parent);</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    }</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160; </div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    <a class="code" href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">ODIMPathTools::getNextChild</a>(dst[parent], child);</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#a2f7766c51c7f937d3d1659c73e642d02">attention</a>(<span class="stringliteral">&quot;storing product in path: &quot;</span> ,  parent , <span class="charliteral">&#39;|&#39;</span> , child );</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    Hi5Tree &amp; dstProduct = dst[parent][child]; <span class="comment">// (dataSetPath);</span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160; </div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    {</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;        <a class="code" href="classrack_1_1DataSet.html">DataSet&lt;dst_t&gt;</a> dstProductDataset(dstProduct); <span class="comment">// PATH</span></div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;        this-&gt;computeSingleProduct(sweeps, dstProductDataset);</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    }</div>
 <div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160; </div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    ProductBase::setRackVersion(dstProduct[<span class="stringliteral">&quot;how&quot;</span>].data.attributes);</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    <span class="comment">//drain::VariableMap &amp; how = dstProduct[&quot;how&quot;].data.attributes;</span></div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <span class="comment">//how[&quot;software&quot;] = __RACK__;</span></div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    <span class="comment">//how[&quot;sw_version&quot;] = __RACK_VERSION__;</span></div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    <span class="comment">// how[&quot;elangles&quot;] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)</span></div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160; </div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <span class="comment">//DataTools::updateInternalAttributes(dstProduct);</span></div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    <span class="comment">//drain::VariableMap &amp; what = dst[dataSetPath][&quot;what&quot;].data.attributes;</span></div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    <span class="comment">//what[&quot;source&quot;] = src[&quot;what&quot;].data.attributes[&quot;source&quot;];</span></div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    <span class="comment">//what[&quot;object&quot;] = odim.object;</span></div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160; </div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;}</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160; </div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    dst[<span class="stringliteral">&quot;what&quot;</span>].data.attributes[<span class="stringliteral">&quot;object&quot;</span>] = this-&gt;odim.object;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    dstProduct[<span class="stringliteral">&quot;what&quot;</span>].data.attributes[<span class="stringliteral">&quot;product&quot;</span>] = odim.product;</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    dstProduct[<span class="stringliteral">&quot;what&quot;</span>].data.attributes[<span class="stringliteral">&quot;prodpar&quot;</span>] = odim.prodpar;</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160; </div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    ProductBase::setRackVersion(dstProduct[<span class="stringliteral">&quot;how&quot;</span>].data.attributes);</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    <span class="comment">// how[&quot;elangles&quot;] = elangles;  // This service could be lower in hierarchy (but for PseudoRHI and pCappi ok here)</span></div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160; </div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;}</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160; </div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160; </div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="comment">//template &lt;class M&gt;</span></div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> MS, <span class="keyword">class</span> MD&gt;</div>
+<div class="line"><a name="l00420"></a><span class="lineno"><a class="line" href="classrack_1_1ProductOp.html#a35a1faad2362a8cad87abc43671d0be5">  420</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1ProductOp.html">ProductOp&lt;MS,MD&gt;::computeSingleProduct</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1DataSetMap.html">DataSetMap&lt;src_t &gt;</a> &amp; src, <a class="code" href="classrack_1_1DataSet.html">DataSet</a>&lt;<a class="code" href="structrack_1_1DstType.html">DstType&lt;MD&gt;</a> &gt; &amp; dstProduct)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160; </div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;<span class="comment">//template &lt;class M&gt;</span></div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> MS, <span class="keyword">class</span> MD&gt;</div>
-<div class="line"><a name="l00424"></a><span class="lineno"><a class="line" href="classrack_1_1ProductOp.html#a35a1faad2362a8cad87abc43671d0be5">  424</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1ProductOp.html">ProductOp&lt;MS,MD&gt;::computeSingleProduct</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1DataSetMap.html">DataSetMap&lt;src_t &gt;</a> &amp; src, <a class="code" href="classrack_1_1DataSet.html">DataSet</a>&lt;<a class="code" href="structrack_1_1DstType.html">DstType&lt;MD&gt;</a> &gt; &amp; dstProduct)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160; </div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__); <span class="comment">//REPL this-&gt;name+&quot;(VolumeOp&lt;M&gt;)&quot;, __FUNCTION__);</span></div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    mout.debug3(<span class="stringliteral">&quot;start&quot;</span> );</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160; </div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    <span class="keywordflow">if</span> (src.size() == 0)</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;no data&quot;</span> );</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160; </div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    <span class="comment">//for (typename DataSetMap&lt;src_t &gt;::const_iterator it = src.begin(); it != src.end(); ++it) {</span></div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: src) {</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        mout.debug3(<span class="stringliteral">&quot;calling processDataSet for elev=&quot;</span>, entry.first,  <span class="stringliteral">&quot; #datasets=&quot;</span>, entry.second.size());</div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        processDataSet(entry.second, dstProduct);</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;        <span class="comment">// TODO: detect first init?</span></div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;        <span class="comment">// mout.warn(&quot;OK&quot; );</span></div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;    }</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160; </div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;    <span class="comment">// mout.warn(&quot;getFirst data&quot; );</span></div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    <span class="comment">//@ Data&lt;DstType&lt;MD&gt; &gt; &amp; dstData = dstProduct.getFirstData(); // main data</span></div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;    <span class="comment">//@ dstProduct.updateTree(dstData.odim);</span></div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    <span class="comment">// mout.warn(&quot;end&quot; );</span></div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;}</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160; </div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__); <span class="comment">//REPL this-&gt;name+&quot;(VolumeOp&lt;M&gt;)&quot;, __FUNCTION__);</span></div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    mout.debug3(<span class="stringliteral">&quot;start&quot;</span> );</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160; </div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    <span class="keywordflow">if</span> (src.size() == 0)</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">warn</a>(<span class="stringliteral">&quot;no data&quot;</span> );</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160; </div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    <span class="comment">//for (typename DataSetMap&lt;src_t &gt;::const_iterator it = src.begin(); it != src.end(); ++it) {</span></div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: src) {</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        mout.debug3(<span class="stringliteral">&quot;calling processDataSet for elev=&quot;</span>, entry.first,  <span class="stringliteral">&quot; #datasets=&quot;</span>, entry.second.size());</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        processDataSet(entry.second, dstProduct);</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;        <span class="comment">// TODO: detect first init?</span></div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;        <span class="comment">// mout.warn(&quot;OK&quot; );</span></div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    }</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160; </div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    <span class="comment">// mout.warn(&quot;getFirst data&quot; );</span></div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;    <span class="comment">//@ Data&lt;DstType&lt;MD&gt; &gt; &amp; dstData = dstProduct.getFirstData(); // main data</span></div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;    <span class="comment">//@ dstProduct.updateTree(dstData.odim);</span></div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    <span class="comment">// mout.warn(&quot;end&quot; );</span></div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;}</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160; </div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160; </div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;<span class="comment">//template &lt;class M&gt;</span></div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> MS, <span class="keyword">class</span> MD&gt;</div>
+<div class="line"><a name="l00446"></a><span class="lineno"><a class="line" href="classrack_1_1ProductOp.html#a7bf571b04a86eb0a4e8d706b6cb46afb">  446</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1ProductOp.html">ProductOp&lt;MS,MD&gt;::processDataSet</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1DataSet.html">DataSet&lt;src_t &gt;</a> &amp; srcSweep, <a class="code" href="classrack_1_1DataSet.html">DataSet</a>&lt;<a class="code" href="structrack_1_1DstType.html">DstType&lt;MD&gt;</a> &gt; &amp; dstProduct)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160; </div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;<span class="comment">//template &lt;class M&gt;</span></div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> MS, <span class="keyword">class</span> MD&gt;</div>
-<div class="line"><a name="l00450"></a><span class="lineno"><a class="line" href="classrack_1_1ProductOp.html#a7bf571b04a86eb0a4e8d706b6cb46afb">  450</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1ProductOp.html">ProductOp&lt;MS,MD&gt;::processDataSet</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1DataSet.html">DataSet&lt;src_t &gt;</a> &amp; srcSweep, <a class="code" href="classrack_1_1DataSet.html">DataSet</a>&lt;<a class="code" href="structrack_1_1DstType.html">DstType&lt;MD&gt;</a> &gt; &amp; dstProduct)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160; </div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    <span class="comment">//drain::Logger mout(__FILE__, __FUNCTION__); //REPL this-&gt;name+&quot;(ProductOp&lt;MS,MD&gt;)&quot;, __FUNCTION__);</span></div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    <span class="comment">//drain::Logger mout(__FILE__, __FUNCTION__); //REPL this-&gt;name+&quot;(ProductOp&lt;MS,MD&gt;)&quot;, __FUNCTION__);</span></div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;    <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(__FILE__, __FUNCTION__);</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160; </div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;start&quot;</span> );</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160; </div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <span class="keyword">const</span> <a class="code" href="classrack_1_1Data.html">Data&lt;src_t &gt;</a> &amp; srcData = srcSweep.getFirstData();</div>
 <div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160; </div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;start&quot;</span> );</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;target quantity: &quot;</span> , odim.quantity );</div>
 <div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160; </div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    <span class="keyword">const</span> <a class="code" href="classrack_1_1Data.html">Data&lt;src_t &gt;</a> &amp; srcData = srcSweep.getFirstData();</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160; </div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;    mout.<a class="code" href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">debug</a>(<span class="stringliteral">&quot;target quantity: &quot;</span> , odim.quantity );</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160; </div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;    <span class="comment">// NEW 2020/06</span></div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;    <span class="keyword">const</span> std::string &amp; quantity = !odim.quantity.empty() ? odim.quantity : srcData.odim.quantity;</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    <a class="code" href="classrack_1_1Data.html">Data&lt;DstType&lt;MD&gt;</a> &gt; &amp; dstData =  dstProduct.getData(quantity);</div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    dstData.odim.quantity = quantity;</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160; </div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;    <span class="comment">// OLD</span></div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    <span class="comment">// Data&lt;DstType&lt;MD&gt; &gt; &amp; dstData = !odim.quantity.empty() ? dstProduct.getData(odim.quantity) : dstProduct.getFirstData();</span></div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;    <span class="comment">//if (dstData.odim.quantity.empty())</span></div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;    <span class="comment">//  dstData.odim.quantity = odim.quantity;</span></div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    <span class="comment">// NEW 2020/06</span></div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;    <span class="keyword">const</span> std::string &amp; quantity = !odim.quantity.empty() ? odim.quantity : srcData.odim.quantity;</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;    <a class="code" href="classrack_1_1Data.html">Data&lt;DstType&lt;MD&gt;</a> &gt; &amp; dstData =  dstProduct.getData(quantity);</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;    dstData.odim.quantity = quantity;</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160; </div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;    <span class="comment">// OLD</span></div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    <span class="comment">// Data&lt;DstType&lt;MD&gt; &gt; &amp; dstData = !odim.quantity.empty() ? dstProduct.getData(odim.quantity) : dstProduct.getFirstData();</span></div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    <span class="comment">//if (dstData.odim.quantity.empty())</span></div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;    <span class="comment">//  dstData.odim.quantity = odim.quantity;</span></div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160; </div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;    <span class="comment">//mout.debug(&quot;calling setEncoding&quot; );</span></div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;    <span class="comment">//setEncoding(srcData.odim, dstData.odim);</span></div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;    this-&gt;initDst(srcData.odim, dstData);</div>
 <div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160; </div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;    <span class="comment">//mout.debug(&quot;calling setEncoding&quot; );</span></div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;    <span class="comment">//setEncoding(srcData.odim, dstData.odim);</span></div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;    this-&gt;initDst(srcData.odim, dstData);</div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160; </div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;    <span class="comment">//mout.warn(&quot;calling processData&quot; );</span></div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;    processData(srcData, dstData);</div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;    <span class="comment">//mout.warn(&quot;updateTree&quot; );</span></div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;    <span class="comment">//@ dstData.updateTree();</span></div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;}</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;    <span class="comment">//mout.warn(&quot;calling processData&quot; );</span></div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;    processData(srcData, dstData);</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;    <span class="comment">//mout.warn(&quot;updateTree&quot; );</span></div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;    <span class="comment">//@ dstData.updateTree();</span></div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;}</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160; </div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160; </div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160; </div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160; </div>
 <div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160; </div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160; </div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;}  <span class="comment">// namespace rack</span></div>
 <div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160; </div>
 <div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160; </div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160; </div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;}  <span class="comment">// namespace rack</span></div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160; </div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160; </div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RACKOP_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160; </div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;<span class="comment">// Rack</span></div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160; <span class="comment">// REP</span></div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160; <span class="comment">// REP // REP // REP // REP</span></div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RACKOP_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160; </div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;<span class="comment">// Rack</span></div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160; <span class="comment">// REP</span></div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160; <span class="comment">// REP // REP // REP // REP</span></div>
 <div class="ttc" id="aclassdrain_1_1BeanLike_html_acdcfed065f00c724f18ee8fde76d0a52"><div class="ttname"><a href="classdrain_1_1BeanLike.html#acdcfed065f00c724f18ee8fde76d0a52">drain::BeanLike::getName</a></div><div class="ttdeci">virtual const std::string &amp; getName() const</div><div class="ttdoc">Return the name of an instance.</div><div class="ttdef"><b>Definition:</b> BeanLike.h:69</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:308</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_ae09a2b80206be96b4e9389003a7af98f"><div class="ttname"><a href="classdrain_1_1Logger.html#ae09a2b80206be96b4e9389003a7af98f">drain::Logger::unimplemented</a></div><div class="ttdeci">Logger &amp; unimplemented(const TT &amp;... args)</div><div class="ttdoc">Feature to be done. Special type of Logger::note().</div><div class="ttdef"><b>Definition:</b> Log.h:507</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aeaf1543bb74bd5fff3748ad3e34c12c4"><div class="ttname"><a href="classdrain_1_1Logger.html#aeaf1543bb74bd5fff3748ad3e34c12c4">drain::Logger::note</a></div><div class="ttdeci">Logger &amp; note(const TT &amp;... args)</div><div class="ttdoc">For top-level information.</div><div class="ttdef"><b>Definition:</b> Log.h:485</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:426</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Public, yet typically used &quot;internally&quot;, when TIMING=true.</div><div class="ttdef"><b>Definition:</b> Log.h:676</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_af416e5b9affca110fdf5a3a5dd3ba9bc"><div class="ttname"><a href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">drain::Logger::debug2</a></div><div class="ttdeci">Logger &amp; debug2(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition:</b> Log.h:686</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:310</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a2f7766c51c7f937d3d1659c73e642d02"><div class="ttname"><a href="classdrain_1_1Logger.html#a2f7766c51c7f937d3d1659c73e642d02">drain::Logger::attention</a></div><div class="ttdeci">Logger &amp; attention(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue. Special type of Logger::warn().</div><div class="ttdef"><b>Definition:</b> Log.h:474</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_ae09a2b80206be96b4e9389003a7af98f"><div class="ttname"><a href="classdrain_1_1Logger.html#ae09a2b80206be96b4e9389003a7af98f">drain::Logger::unimplemented</a></div><div class="ttdeci">Logger &amp; unimplemented(const TT &amp;... args)</div><div class="ttdoc">Feature to be done. Special type of Logger::note().</div><div class="ttdef"><b>Definition:</b> Log.h:509</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aeaf1543bb74bd5fff3748ad3e34c12c4"><div class="ttname"><a href="classdrain_1_1Logger.html#aeaf1543bb74bd5fff3748ad3e34c12c4">drain::Logger::note</a></div><div class="ttdeci">Logger &amp; note(const TT &amp;... args)</div><div class="ttdoc">For top-level information.</div><div class="ttdef"><b>Definition:</b> Log.h:487</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:428</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Public, yet typically used &quot;internally&quot;, when TIMING=true.</div><div class="ttdef"><b>Definition:</b> Log.h:678</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_af416e5b9affca110fdf5a3a5dd3ba9bc"><div class="ttname"><a href="classdrain_1_1Logger.html#af416e5b9affca110fdf5a3a5dd3ba9bc">drain::Logger::debug2</a></div><div class="ttdeci">Logger &amp; debug2(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition:</b> Log.h:688</div></div>
 <div class="ttc" id="aclassdrain_1_1Path_html"><div class="ttname"><a href="classdrain_1_1Path.html">drain::Path</a></div><div class="ttdef"><b>Definition:</b> Path.h:112</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ProductOp_html"><div class="ttname"><a href="classdrain_1_1image_1_1ProductOp.html">drain::image::ProductOp</a></div><div class="ttdoc">Computes dot product of intensities of two images.</div><div class="ttdef"><b>Definition:</b> PixelVectorOp.h:364</div></div>
 <div class="ttc" id="aclassrack_1_1DataSetMap_html"><div class="ttname"><a href="classrack_1_1DataSetMap.html">rack::DataSetMap</a></div><div class="ttdef"><b>Definition:</b> Data.h:1368</div></div>
 <div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition:</b> Data.h:1213</div></div>
 <div class="ttc" id="aclassrack_1_1Data_html"><div class="ttname"><a href="classrack_1_1Data.html">rack::Data</a></div><div class="ttdoc">Data structure consisting of plain data and an optional quality data.</div><div class="ttdef"><b>Definition:</b> Data.h:1144</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathElem_html"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html">rack::ODIMPathElem</a></div><div class="ttdef"><b>Definition:</b> ODIMPath.h:82</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a2c2cca41ac00b8a84eadd3e4ab36551c"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">rack::ODIMPathElem::DATASET</a></div><div class="ttdeci">static const group_t DATASET</div><div class="ttdoc">First level group, /dataset + digit .</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:103</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_ae4959f5bf3904a0fa6f56a0c648a776f"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">rack::ODIMPathElem::DATA</a></div><div class="ttdeci">static const group_t DATA</div><div class="ttdoc">Second level group, /data + digit .</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:106</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a1884541cc245c9e95976459d1694dd70"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a1884541cc245c9e95976459d1694dd70">rack::ODIMPathElem::WHAT</a></div><div class="ttdeci">static const group_t WHAT</div><div class="ttdoc">Metadata group /what , at any depth.</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:127</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a2c2cca41ac00b8a84eadd3e4ab36551c"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">rack::ODIMPathElem::DATASET</a></div><div class="ttdeci">static const group_t DATASET</div><div class="ttdoc">First level group, /dataset + digit .</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:106</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a8fe897a670840520f73adbb3333dde40"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a8fe897a670840520f73adbb3333dde40">rack::ODIMPathElem::HOW</a></div><div class="ttdeci">static const group_t HOW</div><div class="ttdoc">Metadata group /how , at any depth.</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:133</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_ae4959f5bf3904a0fa6f56a0c648a776f"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">rack::ODIMPathElem::DATA</a></div><div class="ttdeci">static const group_t DATA</div><div class="ttdoc">Second level group, /data + digit .</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:109</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_ae645a547d8405a586c62a717666c25b3"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#ae645a547d8405a586c62a717666c25b3">rack::ODIMPathElem::WHERE</a></div><div class="ttdeci">static const group_t WHERE</div><div class="ttdoc">Metadata group /where , at any depth.</div><div class="ttdef"><b>Definition:</b> ODIMPath.h:130</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathTools_html_a16b7be5403b4f5de2fd3a53974caf2ff"><div class="ttname"><a href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">rack::ODIMPathTools::getNextChild</a></div><div class="ttdeci">static bool getNextChild(const Hi5Tree &amp;tree, ODIMPathElem &amp;child)</div><div class="ttdoc">Derive a child with index one greater than the largest index encountered.</div><div class="ttdef"><b>Definition:</b> ODIMPathTools.cpp:96</div></div>
 <div class="ttc" id="aclassrack_1_1ODIM_html"><div class="ttname"><a href="classrack_1_1ODIM.html">rack::ODIM</a></div><div class="ttdoc">ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)</div><div class="ttdef"><b>Definition:</b> ODIM.h:79</div></div>
 <div class="ttc" id="aclassrack_1_1PlainData_html"><div class="ttname"><a href="classrack_1_1PlainData.html">rack::PlainData</a></div><div class="ttdoc">Essential class for storing radar data.</div><div class="ttdef"><b>Definition:</b> Data.h:302</div></div>
 <div class="ttc" id="aclassrack_1_1ProductBase_html"><div class="ttname"><a href="classrack_1_1ProductBase.html">rack::ProductBase</a></div><div class="ttdoc">Base class for radar data processors. Input can be in polar or Cartesian coordinates.</div><div class="ttdef"><b>Definition:</b> ProductBase.h:82</div></div>
 <div class="ttc" id="aclassrack_1_1ProductBase_html_a4d69a96f68c7fe813dada3f601b811af"><div class="ttname"><a href="classrack_1_1ProductBase.html#a4d69a96f68c7fe813dada3f601b811af">rack::ProductBase::applyODIM</a></div><div class="ttdeci">static void applyODIM(ODIM &amp;productODIM, const ODIM &amp;srcODIM, bool applyDefaults=false)</div><div class="ttdoc">Sets target quantity and encoding, if unset. If input odim.</div><div class="ttdef"><b>Definition:</b> ProductBase.cpp:117</div></div>
 <div class="ttc" id="aclassrack_1_1ProductBase_html_a738aee34706a5c39f02942909361bdc4"><div class="ttname"><a href="classrack_1_1ProductBase.html#a738aee34706a5c39f02942909361bdc4">rack::ProductBase::completeEncoding</a></div><div class="ttdeci">static void completeEncoding(ODIM &amp;productODIM, const std::string &amp;targetEncoding)</div><div class="ttdoc">Modifies encoding. If type is changed, resets scaling first.</div><div class="ttdef"><b>Definition:</b> ProductBase.cpp:183</div></div>
-<div class="ttc" id="aclassrack_1_1ProductConf_html_a29b7238397966b974ac5f6978867d32a"><div class="ttname"><a href="classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">rack::ProductConf::appendResults</a></div><div class="ttdeci">ODIMPathElem appendResults</div><div class="ttdoc">If set, appends outputs in an hdf5 structure instead of overwriting.</div><div class="ttdef"><b>Definition:</b> ProductConf.h:92</div></div>
+<div class="ttc" id="aclassrack_1_1ProductConf_html_a29b7238397966b974ac5f6978867d32a"><div class="ttname"><a href="classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">rack::ProductConf::appendResults</a></div><div class="ttdeci">ODIMPathElem appendResults</div><div class="ttdoc">If set, appends outputs in an hdf5 structure instead of overwriting.</div><div class="ttdef"><b>Definition:</b> ProductConf.h:93</div></div>
 <div class="ttc" id="aclassrack_1_1ProductOp_html_a0d62aa8228f835d8be4d7e853f93b394"><div class="ttname"><a href="classrack_1_1ProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">rack::ProductOp::dst_t</a></div><div class="ttdeci">DstType&lt; MD &gt; dst_t</div><div class="ttdoc">Type of output, that is, destination.</div><div class="ttdef"><b>Definition:</b> ProductOp.h:86</div></div>
 <div class="ttc" id="aclassrack_1_1ProductOp_html_a2c153ff74de9dbffcfc6254ba8852dfb"><div class="ttname"><a href="classrack_1_1ProductOp.html#a2c153ff74de9dbffcfc6254ba8852dfb">rack::ProductOp::src_t</a></div><div class="ttdeci">SrcType&lt; MS const  &gt; src_t</div><div class="ttdoc">Type of input, that is, source.</div><div class="ttdef"><b>Definition:</b> ProductOp.h:83</div></div>
 <div class="ttc" id="aclassrack_1_1ProductOp_html_a582a43111f0014d61e6272cc1ed36d51"><div class="ttname"><a href="classrack_1_1ProductOp.html#a582a43111f0014d61e6272cc1ed36d51">rack::ProductOp::odim</a></div><div class="ttdeci">MD odim</div><div class="ttdoc">The default data parameters for encoding output (the product).</div><div class="ttdef"><b>Definition:</b> ProductOp.h:98</div></div>

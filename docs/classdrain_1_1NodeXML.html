@@ -76,8 +76,6 @@ $(function() {
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="classdrain_1_1NodeXML-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -85,14 +83,15 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="TreeXML_8h_source.html">TreeXML.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="bak_2TreeXML_8h_source.html">TreeXML.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for NodeXML&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1NodeXML__inherit__graph.png" border="0" usemap="#aNodeXML_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="aNodeXML_3_01T_01_4_inherit__map" id="aNodeXML_3_01T_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="73,244,196,271"/>
-<area shape="rect" href="classdrain_1_1NodeSLD.html" title=" " alt="" coords="83,319,186,345"/>
+<area shape="rect" title=" " alt="" coords="73,319,196,345"/>
+<area shape="rect" href="classdrain_1_1NodeSLD.html" title=" " alt="" coords="83,393,186,420"/>
+<area shape="rect" href="classdrain_1_1XML.html" title=" " alt="" coords="109,244,160,271"/>
 <area shape="rect" href="classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,169,264,196"/>
 <area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="23,95,247,121"/>
 <area shape="rect" title=" " alt="" coords="39,5,230,47"/>
@@ -103,11 +102,12 @@ Collaboration diagram for NodeXML&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1NodeXML__coll__graph.png" border="0" usemap="#aNodeXML_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="aNodeXML_3_01T_01_4_coll__map" id="aNodeXML_3_01T_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="271,619,394,645"/>
-<area shape="rect" href="classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="311,411,570,437"/>
-<area shape="rect" href="classdrain_1_1StyleXML.html" title=" " alt="" coords="291,529,374,556"/>
-<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="329,248,553,275"/>
-<area shape="rect" title=" " alt="" coords="345,157,536,199"/>
+<area shape="rect" title=" " alt="" coords="382,695,505,721"/>
+<area shape="rect" href="classdrain_1_1XML.html" title=" " alt="" coords="418,619,469,645"/>
+<area shape="rect" href="classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="329,411,587,437"/>
+<area shape="rect" href="classdrain_1_1StyleXML.html" title=" " alt="" coords="346,529,429,556"/>
+<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="346,248,570,275"/>
+<area shape="rect" title=" " alt="" coords="363,157,553,199"/>
 <area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="167,411,285,437"/>
 <area shape="rect" href="classdrain_1_1ClassListXML.html" title="Container for style classes. Essentially a set of strings, with space&#45;separated output support." alt="" coords="96,529,204,556"/>
 <area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="178,248,274,275"/>
@@ -127,22 +127,47 @@ typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 <tr class="memitem:a982cbcda50230e11eed98632b751c93f"><td class="memItemLeft" align="right" valign="top"><a id="a982cbcda50230e11eed98632b751c93f"></a>
 typedef <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>xml_node_t</b></td></tr>
 <tr class="separator:a982cbcda50230e11eed98632b751c93f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef500e3141ceb145306424f2567890c0"><td class="memItemLeft" align="right" valign="top"><a id="aef500e3141ceb145306424f2567890c0"></a>
-typedef <a class="el" href="classdrain_1_1Path.html">drain::Path</a>&lt; std::string,'/'&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a></td></tr>
-<tr class="memdesc:aef500e3141ceb145306424f2567890c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tree path type. <br /></td></tr>
-<tr class="separator:aef500e3141ceb145306424f2567890c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c7908c420ca57606a878f4b1a0d6957"><td class="memItemLeft" align="right" valign="top"><a id="a6c7908c420ca57606a878f4b1a0d6957"></a>
-typedef UnorderedMultiTree&lt; <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt; T &gt;, false, <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>xml_tree_t</b></td></tr>
+typedef UnorderedMultiTree&lt; <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt; T &gt;, false, <a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>xml_tree_t</b></td></tr>
 <tr class="separator:a6c7908c420ca57606a878f4b1a0d6957"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade05d41a0c5ba5a039db3bbd7eb77e5c"><td class="memItemLeft" align="right" valign="top"><a id="ade05d41a0c5ba5a039db3bbd7eb77e5c"></a>
-typedef <a class="el" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2</a>&lt; <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">FlexibleVariable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
-<tr class="separator:ade05d41a0c5ba5a039db3bbd7eb77e5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade78db9d3abe0822edd0c2198cbb571b"><td class="memItemLeft" align="right" valign="top"><a id="ade78db9d3abe0822edd0c2198cbb571b"></a>
 typedef std::map&lt; T, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>tag_map_t</b></td></tr>
 <tr class="separator:ade78db9d3abe0822edd0c2198cbb571b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8deb3c97fcc9f3be3eea8494812089c2"><td class="memItemLeft" align="right" valign="top"><a id="a8deb3c97fcc9f3be3eea8494812089c2"></a>
-typedef std::list&lt; <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>path_list_t</b></td></tr>
-<tr class="separator:a8deb3c97fcc9f3be3eea8494812089c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6588ec846f19d272f78725cc1db6d1f5"><td class="memItemLeft" align="right" valign="top"><a id="a6588ec846f19d272f78725cc1db6d1f5"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><b>xml_tag_t</b></td></tr>
+<tr class="separator:a6588ec846f19d272f78725cc1db6d1f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a982cbcda50230e11eed98632b751c93f"><td class="memItemLeft" align="right" valign="top"><a id="a982cbcda50230e11eed98632b751c93f"></a>
+typedef <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>xml_node_t</b></td></tr>
+<tr class="separator:a982cbcda50230e11eed98632b751c93f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef500e3141ceb145306424f2567890c0"><td class="memItemLeft" align="right" valign="top"><a id="aef500e3141ceb145306424f2567890c0"></a>
+typedef <a class="el" href="classdrain_1_1Path.html">drain::Path</a>&lt; std::string,'/'&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>path_t</b></td></tr>
+<tr class="separator:aef500e3141ceb145306424f2567890c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76a9e32eea803f14e2de5e13039ebe18"><td class="memItemLeft" align="right" valign="top"><a id="a76a9e32eea803f14e2de5e13039ebe18"></a>
+typedef UnorderedMultiTree&lt; <a class="el" href="classdrain_1_1NodeXML.html">xml_node_t</a>, false, <a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>xml_tree_t</b></td></tr>
+<tr class="separator:a76a9e32eea803f14e2de5e13039ebe18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7ca03f8f046c3121b0cc8c9790d6874"><td class="memItemLeft" align="right" valign="top"><a id="aa7ca03f8f046c3121b0cc8c9790d6874"></a>
+typedef std::map&lt; xml_tag_t, xml_tag_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>xml_default_elem_map_t</b></td></tr>
+<tr class="separator:aa7ca03f8f046c3121b0cc8c9790d6874"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classdrain_1_1XML"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1XML')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1XML.html">XML</a></td></tr>
+<tr class="memitem:ade05d41a0c5ba5a039db3bbd7eb77e5c inherit pub_types_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="ade05d41a0c5ba5a039db3bbd7eb77e5c"></a>
+typedef <a class="el" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2</a>&lt; <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">FlexibleVariable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
+<tr class="separator:ade05d41a0c5ba5a039db3bbd7eb77e5c inherit pub_types_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef500e3141ceb145306424f2567890c0 inherit pub_types_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="aef500e3141ceb145306424f2567890c0"></a>
+typedef <a class="el" href="classdrain_1_1Path.html">drain::Path</a>&lt; std::string,'/'&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a></td></tr>
+<tr class="memdesc:aef500e3141ceb145306424f2567890c0 inherit pub_types_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tree path type. <br /></td></tr>
+<tr class="separator:aef500e3141ceb145306424f2567890c0 inherit pub_types_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae348d5716574a2c3c623b5ae142872e3 inherit pub_types_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="ae348d5716574a2c3c623b5ae142872e3"></a>
+typedef path_t::elem_t&#160;</td><td class="memItemRight" valign="bottom"><b>path_elem_t</b></td></tr>
+<tr class="separator:ae348d5716574a2c3c623b5ae142872e3 inherit pub_types_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8deb3c97fcc9f3be3eea8494812089c2 inherit pub_types_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a8deb3c97fcc9f3be3eea8494812089c2"></a>
+typedef std::list&lt; <a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>path_list_t</b></td></tr>
+<tr class="separator:a8deb3c97fcc9f3be3eea8494812089c2 inherit pub_types_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a651e3b47f5fb362791cfd62e900c839d inherit pub_types_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a651e3b47f5fb362791cfd62e900c839d"></a>
+typedef int&#160;</td><td class="memItemRight" valign="bottom"><b>intval_t</b></td></tr>
+<tr class="separator:a651e3b47f5fb362791cfd62e900c839d inherit pub_types_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade05d41a0c5ba5a039db3bbd7eb77e5c inherit pub_types_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="ade05d41a0c5ba5a039db3bbd7eb77e5c"></a>
+typedef <a class="el" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2</a>&lt; <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">FlexibleVariable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
+<tr class="separator:ade05d41a0c5ba5a039db3bbd7eb77e5c inherit pub_types_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -152,9 +177,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adbfe1c360837678c4a64b6522ed2aa45"><td class="memItemLeft" align="right" valign="top"><a id="adbfe1c360837678c4a64b6522ed2aa45"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>NodeXML</b> (const <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;node)</td></tr>
 <tr class="separator:adbfe1c360837678c4a64b6522ed2aa45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memItemLeft" align="right" valign="top"><a id="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</td></tr>
-<tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb0a502e48ebd3bff11a9615075d891f"><td class="memItemLeft" align="right" valign="top"><a id="afb0a502e48ebd3bff11a9615075d891f"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setType</b> (const <a class="el" href="classdrain_1_1NodeXML.html#a3fa2115cdbb245c2f609f654a9888f14">elem_t</a> &amp;t)</td></tr>
 <tr class="separator:afb0a502e48ebd3bff11a9615075d891f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,12 +201,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isSelfClosing</b> () 
 <tr class="memitem:a2c828f737d77b497c80f2c64f915fbcf"><td class="memItemLeft" align="right" valign="top"><a id="a2c828f737d77b497c80f2c64f915fbcf"></a>
 const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTag</b> () const</td></tr>
 <tr class="separator:a2c828f737d77b497c80f2c64f915fbcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add5c1594489b9c0678ec2014a5931ef1"><td class="memItemLeft" align="right" valign="top"><a id="add5c1594489b9c0678ec2014a5931ef1"></a>
-const <a class="el" href="classdrain_1_1ReferenceMap2.html">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttributes</b> () const</td></tr>
-<tr class="separator:add5c1594489b9c0678ec2014a5931ef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b663f4256a3676b761caae4f62c4861"><td class="memItemLeft" align="right" valign="top"><a id="a9b663f4256a3676b761caae4f62c4861"></a>
-<a class="el" href="classdrain_1_1ReferenceMap2.html">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttributes</b> ()</td></tr>
-<tr class="separator:a9b663f4256a3676b761caae4f62c4861"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc5dd98e30fa2e8d7bf21f6bb1e5bfb6"><td class="memItemLeft" align="right" valign="top"><a id="abc5dd98e30fa2e8d7bf21f6bb1e5bfb6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;node)</td></tr>
 <tr class="separator:abc5dd98e30fa2e8d7bf21f6bb1e5bfb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -211,36 +227,6 @@ template&lt;class X &gt; </td></tr>
 template&lt;class V &gt; </td></tr>
 <tr class="memitem:ab459afd9579e7eece074cac213e8e5d0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (const std::string &amp;key, const V &amp;value)</td></tr>
 <tr class="separator:ab459afd9579e7eece074cac213e8e5d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dcd2329189699a02690501a8b6cfbdc"><td class="memItemLeft" align="right" valign="top"><a id="a6dcd2329189699a02690501a8b6cfbdc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>remove</b> (const std::string &amp;s)</td></tr>
-<tr class="separator:a6dcd2329189699a02690501a8b6cfbdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ee197d21f53ee70421b5512b9469de8"><td class="memItemLeft" align="right" valign="top"><a id="a4ee197d21f53ee70421b5512b9469de8"></a>
-const <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">drain::FlexibleVariable</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key) const</td></tr>
-<tr class="separator:a4ee197d21f53ee70421b5512b9469de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa78841b5e7df53816db20bbc18034904"><td class="memItemLeft" align="right" valign="top"><a id="aa78841b5e7df53816db20bbc18034904"></a>
-<a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">drain::FlexibleVariable</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key)</td></tr>
-<tr class="separator:aa78841b5e7df53816db20bbc18034904"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a194fee7b1e87f1a688bbf20a6be5473a"><td class="memTemplParams" colspan="2"><a id="a194fee7b1e87f1a688bbf20a6be5473a"></a>
-template&lt;class V &gt; </td></tr>
-<tr class="memitem:a194fee7b1e87f1a688bbf20a6be5473a"><td class="memTemplItemLeft" align="right" valign="top">V&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get</b> (const std::string &amp;key, const V &amp;defaultValue) const</td></tr>
-<tr class="separator:a194fee7b1e87f1a688bbf20a6be5473a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8390a381c0b062fc137f5ff60b107bce"><td class="memItemLeft" align="right" valign="top"><a id="a8390a381c0b062fc137f5ff60b107bce"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key, const char *defaultValue) const</td></tr>
-<tr class="separator:a8390a381c0b062fc137f5ff60b107bce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18880130859d3e9817b3bea7a66098df"><td class="memTemplParams" colspan="2"><a id="a18880130859d3e9817b3bea7a66098df"></a>
-template&lt;typename ... TT&gt; </td></tr>
-<tr class="memitem:a18880130859d3e9817b3bea7a66098df"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a18880130859d3e9817b3bea7a66098df">addClass</a> (const TT &amp;... args)</td></tr>
-<tr class="memdesc:a18880130859d3e9817b3bea7a66098df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Style class. <br /></td></tr>
-<tr class="separator:a18880130859d3e9817b3bea7a66098df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb0e8272a855ee609020f277ddcb775f"><td class="memItemLeft" align="right" valign="top"><a id="aeb0e8272a855ee609020f277ddcb775f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasClass</b> (const std::string &amp;cls) const</td></tr>
-<tr class="separator:aeb0e8272a855ee609020f277ddcb775f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a6c7676d516d6972e1ab831ac2450ef"><td class="memItemLeft" align="right" valign="top"><a id="a3a6c7676d516d6972e1ab831ac2450ef"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>removeClass</b> (const std::string &amp;s)</td></tr>
-<tr class="separator:a3a6c7676d516d6972e1ab831ac2450ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa18ddda045522c7f9c07896fe0f0dce5"><td class="memItemLeft" align="right" valign="top"><a id="aa18ddda045522c7f9c07896fe0f0dce5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>clearClasses</b> ()</td></tr>
-<tr class="separator:aa18ddda045522c7f9c07896fe0f0dce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59a1e1f89a02297bf7d1719b895e90cf"><td class="memItemLeft" align="right" valign="top"><a id="a59a1e1f89a02297bf7d1719b895e90cf"></a>
 <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const T &amp;x)</td></tr>
 <tr class="separator:a59a1e1f89a02297bf7d1719b895e90cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -279,87 +265,344 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setStyle</b> (const c
 <tr class="memitem:aaf8679618901c37de0d495e71034e820"><td class="memItemLeft" align="right" valign="top"><a id="aaf8679618901c37de0d495e71034e820"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setStyle</b> (const std::string &amp;key, const std::string &amp;value)</td></tr>
 <tr class="separator:aaf8679618901c37de0d495e71034e820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e3e66d709d6ef795434d5bf46c35197"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
+<tr class="memitem:a3e3e66d709d6ef795434d5bf46c35197"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a3e3e66d709d6ef795434d5bf46c35197">setStyle</a> (const std::string &amp;key, const std::initializer_list&lt; V &gt; &amp;l)</td></tr>
+<tr class="memdesc:a3e3e66d709d6ef795434d5bf46c35197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set style of an element.  <a href="classdrain_1_1NodeXML.html#a3e3e66d709d6ef795434d5bf46c35197">More...</a><br /></td></tr>
+<tr class="separator:a3e3e66d709d6ef795434d5bf46c35197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5c57b87de30cc7cbfc6d1f03eb96571"><td class="memTemplParams" colspan="2"><a id="ae5c57b87de30cc7cbfc6d1f03eb96571"></a>
 template&lt;class V &gt; </td></tr>
-<tr class="memitem:ae5c57b87de30cc7cbfc6d1f03eb96571"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setStyle</b> (const std::string &amp;key, const V &amp;value)</td></tr>
+<tr class="memitem:ae5c57b87de30cc7cbfc6d1f03eb96571"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#ae5c57b87de30cc7cbfc6d1f03eb96571">setStyle</a> (const std::string &amp;key, const V &amp;value)</td></tr>
+<tr class="memdesc:ae5c57b87de30cc7cbfc6d1f03eb96571"><td class="mdescLeft">&#160;</td><td class="mdescRight">For element/class/id, assign ... <br /></td></tr>
 <tr class="separator:ae5c57b87de30cc7cbfc6d1f03eb96571"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7c78255c0b37d0c883316e8aa80e07a"><td class="memItemLeft" align="right" valign="top"><a id="aa7c78255c0b37d0c883316e8aa80e07a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setStyle</b> (const std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">drain::Variable</a> &gt; &gt; &amp;l)</td></tr>
 <tr class="separator:aa7c78255c0b37d0c883316e8aa80e07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b0ec53e8a038a52d1f8b3c70538542f"><td class="memItemLeft" align="right" valign="top"><a id="a2b0ec53e8a038a52d1f8b3c70538542f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a2b0ec53e8a038a52d1f8b3c70538542f">setId</a> ()</td></tr>
-<tr class="memdesc:a2b0ec53e8a038a52d1f8b3c70538542f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes ID a visible attribute. <br /></td></tr>
-<tr class="separator:a2b0ec53e8a038a52d1f8b3c70538542f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd4777d461756f4fa8133e99014ce602"><td class="memItemLeft" align="right" valign="top"><a id="afd4777d461756f4fa8133e99014ce602"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#afd4777d461756f4fa8133e99014ce602">setId</a> (const std::string &amp;s)</td></tr>
-<tr class="memdesc:afd4777d461756f4fa8133e99014ce602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes ID a visible attribute, with a given value. <br /></td></tr>
-<tr class="separator:afd4777d461756f4fa8133e99014ce602"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa28a6e41d0c530d873dd778c2c7ae079"><td class="memItemLeft" align="right" valign="top"><a id="aa28a6e41d0c530d873dd778c2c7ae079"></a>
-const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#aa28a6e41d0c530d873dd778c2c7ae079">getId</a> () const</td></tr>
-<tr class="memdesc:aa28a6e41d0c530d873dd778c2c7ae079"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns ID of this element. Hopefully a unique ID... <br /></td></tr>
-<tr class="separator:aa28a6e41d0c530d873dd778c2c7ae079"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdb775fdb9561e9b1508573470f58c49"><td class="memItemLeft" align="right" valign="top"><a id="abdb775fdb9561e9b1508573470f58c49"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>NodeXML</b> (const intval_t &amp;t=intval_t(0))</td></tr>
+<tr class="separator:abdb775fdb9561e9b1508573470f58c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbfe1c360837678c4a64b6522ed2aa45"><td class="memItemLeft" align="right" valign="top"><a id="adbfe1c360837678c4a64b6522ed2aa45"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>NodeXML</b> (const <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;node)</td></tr>
+<tr class="separator:adbfe1c360837678c4a64b6522ed2aa45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02ab92a5a25fe0ad4e7414516df41c05"><td class="memTemplParams" colspan="2"><a id="a02ab92a5a25fe0ad4e7414516df41c05"></a>
+template&lt;class T2 &gt; </td></tr>
+<tr class="memitem:a02ab92a5a25fe0ad4e7414516df41c05"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setType</b> (const T2 &amp;t)</td></tr>
+<tr class="separator:a02ab92a5a25fe0ad4e7414516df41c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac95951bff3d9ebad75d94d237757bb66"><td class="memItemLeft" align="right" valign="top"><a id="ac95951bff3d9ebad75d94d237757bb66"></a>
+const intval_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getType</b> () const</td></tr>
+<tr class="separator:ac95951bff3d9ebad75d94d237757bb66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad77658ede5fb247401870a958f644d4"><td class="memItemLeft" align="right" valign="top"><a id="aad77658ede5fb247401870a958f644d4"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>getNativeType</b> () const</td></tr>
+<tr class="separator:aad77658ede5fb247401870a958f644d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a004f99b6a5f82c47cfb895ccf08807d2"><td class="memTemplParams" colspan="2"><a id="a004f99b6a5f82c47cfb895ccf08807d2"></a>
+template&lt;class T2 , class ... T3&gt; </td></tr>
+<tr class="memitem:a004f99b6a5f82c47cfb895ccf08807d2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a004f99b6a5f82c47cfb895ccf08807d2">typeIs</a> (const T2 &amp;arg, const T3... args) const</td></tr>
+<tr class="memdesc:a004f99b6a5f82c47cfb895ccf08807d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true, if type is any of the arguments. <br /></td></tr>
+<tr class="separator:a004f99b6a5f82c47cfb895ccf08807d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc05a6b7f3a5a36bd7e4b294e107525f"><td class="memItemLeft" align="right" valign="top"><a id="abc05a6b7f3a5a36bd7e4b294e107525f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isUndefined</b> () const</td></tr>
+<tr class="separator:abc05a6b7f3a5a36bd7e4b294e107525f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7d6b75f6a402eb68077d5cefcdb06b0"><td class="memItemLeft" align="right" valign="top"><a id="af7d6b75f6a402eb68077d5cefcdb06b0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isComment</b> () const</td></tr>
+<tr class="separator:af7d6b75f6a402eb68077d5cefcdb06b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9afb208231395644e5caef9fb5ae954f"><td class="memItemLeft" align="right" valign="top"><a id="a9afb208231395644e5caef9fb5ae954f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isCText</b> () const</td></tr>
+<tr class="separator:a9afb208231395644e5caef9fb5ae954f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae91971eb8efce20dea24a8e721cdc254"><td class="memItemLeft" align="right" valign="top"><a id="ae91971eb8efce20dea24a8e721cdc254"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isStyle</b> () const</td></tr>
+<tr class="separator:ae91971eb8efce20dea24a8e721cdc254"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a911123c1a2ea66267d37b389cae382"><td class="memItemLeft" align="right" valign="top"><a id="a6a911123c1a2ea66267d37b389cae382"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isSelfClosing</b> () const</td></tr>
+<tr class="separator:a6a911123c1a2ea66267d37b389cae382"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68a13656822bc798305b30dabc97c481"><td class="memItemLeft" align="right" valign="top">virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a68a13656822bc798305b30dabc97c481">getTag</a> () const</td></tr>
+<tr class="separator:a68a13656822bc798305b30dabc97c481"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc5dd98e30fa2e8d7bf21f6bb1e5bfb6"><td class="memItemLeft" align="right" valign="top"><a id="abc5dd98e30fa2e8d7bf21f6bb1e5bfb6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;node)</td></tr>
+<tr class="separator:abc5dd98e30fa2e8d7bf21f6bb1e5bfb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99a14e3513ccd1e91351f57d88c799b1"><td class="memItemLeft" align="right" valign="top"><a id="a99a14e3513ccd1e91351f57d88c799b1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const intval_t &amp;type)</td></tr>
+<tr class="separator:a99a14e3513ccd1e91351f57d88c799b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2924f6cc1546444425b9f08c2ca42327"><td class="memItemLeft" align="right" valign="top"><a id="a2924f6cc1546444425b9f08c2ca42327"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const std::string &amp;s)</td></tr>
+<tr class="separator:a2924f6cc1546444425b9f08c2ca42327"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada2770e0d2de032d593e6d7e750c0f68"><td class="memItemLeft" align="right" valign="top"><a id="ada2770e0d2de032d593e6d7e750c0f68"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const char *s)</td></tr>
+<tr class="separator:ada2770e0d2de032d593e6d7e750c0f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9749fad458e814470d2e9b16353af10a"><td class="memItemLeft" align="right" valign="top"><a id="a9749fad458e814470d2e9b16353af10a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const <a class="el" href="classdrain_1_1Castable.html">drain::Castable</a> &amp;s)</td></tr>
+<tr class="separator:a9749fad458e814470d2e9b16353af10a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1a45aaa82635eb8c7283a0c05bb7e27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#ab1a45aaa82635eb8c7283a0c05bb7e27">set</a> (const std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt; &amp;args)</td></tr>
+<tr class="separator:ab1a45aaa82635eb8c7283a0c05bb7e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1ffc04d46734cf2daffaea553c8cefb"><td class="memTemplParams" colspan="2"><a id="ad1ffc04d46734cf2daffaea553c8cefb"></a>
+template&lt;class V &gt; </td></tr>
+<tr class="memitem:ad1ffc04d46734cf2daffaea553c8cefb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (const std::map&lt; std::string, V &gt; &amp;args)</td></tr>
+<tr class="separator:ad1ffc04d46734cf2daffaea553c8cefb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab459afd9579e7eece074cac213e8e5d0"><td class="memTemplParams" colspan="2"><a id="ab459afd9579e7eece074cac213e8e5d0"></a>
+template&lt;class V &gt; </td></tr>
+<tr class="memitem:ab459afd9579e7eece074cac213e8e5d0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (const std::string &amp;key, const V &amp;value)</td></tr>
+<tr class="separator:ab459afd9579e7eece074cac213e8e5d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad89cc49153da0303cb1d62c74f9bbb4d"><td class="memItemLeft" align="right" valign="top"><a id="ad89cc49153da0303cb1d62c74f9bbb4d"></a>
+<a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;node)</td></tr>
+<tr class="separator:ad89cc49153da0303cb1d62c74f9bbb4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91fe817ac0d96a1f5d2420edc7246c0f"><td class="memItemLeft" align="right" valign="top"><a id="a91fe817ac0d96a1f5d2420edc7246c0f"></a>
+<a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const xml_tag_t &amp;x)</td></tr>
+<tr class="separator:a91fe817ac0d96a1f5d2420edc7246c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a243b60a4bda3dfbe9115b28da44d21fd"><td class="memItemLeft" align="right" valign="top"><a id="a243b60a4bda3dfbe9115b28da44d21fd"></a>
+<a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
+<tr class="separator:a243b60a4bda3dfbe9115b28da44d21fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab79c34509d15cd69e4db4d16a5bda766"><td class="memItemLeft" align="right" valign="top"><a id="ab79c34509d15cd69e4db4d16a5bda766"></a>
+<a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const std::string &amp;s)</td></tr>
+<tr class="separator:ab79c34509d15cd69e4db4d16a5bda766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fba0faa4c1ce4210aa09b5a4d88eb16"><td class="memItemLeft" align="right" valign="top"><a id="a4fba0faa4c1ce4210aa09b5a4d88eb16"></a>
+<a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const char *s)</td></tr>
+<tr class="separator:a4fba0faa4c1ce4210aa09b5a4d88eb16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99ef01904fcf8e364b424efcd3d6a225"><td class="memItemLeft" align="right" valign="top"><a id="a99ef01904fcf8e364b424efcd3d6a225"></a>
+<a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">drain::Variable</a> &gt; &gt; &amp;l)</td></tr>
+<tr class="separator:a99ef01904fcf8e364b424efcd3d6a225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05370daf413734e9bae0c198dcd5cbf8"><td class="memItemLeft" align="right" valign="top"><a id="a05370daf413734e9bae0c198dcd5cbf8"></a>
+std::map&lt; int, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>tags</b></td></tr>
+<tr class="separator:a05370daf413734e9bae0c198dcd5cbf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab56b84e4b188a9654ee2634f5cec26d9"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ab56b84e4b188a9654ee2634f5cec26d9"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#ab56b84e4b188a9654ee2634f5cec26d9">toStream</a> (std::ostream &amp;ostr, const T &amp;tree, const std::string &amp;defaultTag, int indent)</td></tr>
+<tr class="memdesc:ab56b84e4b188a9654ee2634f5cec26d9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1XML.html">XML</a> output function shared for all <a class="el" href="classdrain_1_1XML.html">XML</a> documents, ie versions defined in subclasses.  <a href="classdrain_1_1NodeXML.html#ab56b84e4b188a9654ee2634f5cec26d9">More...</a><br /></td></tr>
+<tr class="separator:ab56b84e4b188a9654ee2634f5cec26d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ed49900b80c5da6bce4f3457423d2ea"><td class="memItemLeft" align="right" valign="top"><a id="a9ed49900b80c5da6bce4f3457423d2ea"></a>
+const <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt; drain::image::svg::tag_t &gt;::xml_default_elem_map_t&#160;</td><td class="memItemRight" valign="bottom"><b>xml_default_elems</b></td></tr>
+<tr class="separator:a9ed49900b80c5da6bce4f3457423d2ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f603015d0cd18ee4dfbcd663a5e50e6"><td class="memItemLeft" align="right" valign="top"><a id="a5f603015d0cd18ee4dfbcd663a5e50e6"></a>
+const <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt; image::svg::tag_t &gt;::xml_default_elem_map_t&#160;</td><td class="memItemRight" valign="bottom"><b>xml_default_elems</b></td></tr>
+<tr class="separator:a5f603015d0cd18ee4dfbcd663a5e50e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a872d389566782ee1cc41339049340890"><td class="memItemLeft" align="right" valign="top"><a id="a872d389566782ee1cc41339049340890"></a>
+const <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt; BaseHTML::tag_t &gt;::xml_default_elem_map_t&#160;</td><td class="memItemRight" valign="bottom"><b>xml_default_elems</b></td></tr>
+<tr class="separator:a872d389566782ee1cc41339049340890"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a911123c1a2ea66267d37b389cae382"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a6a911123c1a2ea66267d37b389cae382">isSelfClosing</a> () const</td></tr>
 <tr class="separator:a6a911123c1a2ea66267d37b389cae382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a911123c1a2ea66267d37b389cae382"><td class="memItemLeft" align="right" valign="top"><a id="a6a911123c1a2ea66267d37b389cae382"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isSelfClosing</b> () const</td></tr>
 <tr class="separator:a6a911123c1a2ea66267d37b389cae382"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05370daf413734e9bae0c198dcd5cbf8"><td class="memItemLeft" align="right" valign="top"><a id="a05370daf413734e9bae0c198dcd5cbf8"></a>
-std::map&lt; int, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>tags</b></td></tr>
-<tr class="separator:a05370daf413734e9bae0c198dcd5cbf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acaf3f781762f05f8e0a0c421609ee0f2"><td class="memTemplParams" colspan="2"><a id="acaf3f781762f05f8e0a0c421609ee0f2"></a>
+<tr class="memitem:a872d389566782ee1cc41339049340890"><td class="memItemLeft" align="right" valign="top"><a id="a872d389566782ee1cc41339049340890"></a>
+const <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt; BaseHTML::tag_t &gt;::xml_default_elem_map_t&#160;</td><td class="memItemRight" valign="bottom"><b>xml_default_elems</b></td></tr>
+<tr class="separator:a872d389566782ee1cc41339049340890"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b8fd4560d70ec160098b909df59ddf6"><td class="memItemLeft" align="right" valign="top"><a id="a2b8fd4560d70ec160098b909df59ddf6"></a>
+const <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt; int &gt;::xml_default_elem_map_t&#160;</td><td class="memItemRight" valign="bottom"><b>xml_default_elems</b></td></tr>
+<tr class="separator:a2b8fd4560d70ec160098b909df59ddf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af83d38d84c66cc8ea7a83659d941a323"><td class="memItemLeft" align="right" valign="top"><a id="af83d38d84c66cc8ea7a83659d941a323"></a>
+const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTag</b> () const</td></tr>
+<tr class="separator:af83d38d84c66cc8ea7a83659d941a323"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60f311aa4c1682df9e618871690f0e6d"><td class="memTemplParams" colspan="2">template&lt;class TR &gt; </td></tr>
+<tr class="memitem:a60f311aa4c1682df9e618871690f0e6d"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a60f311aa4c1682df9e618871690f0e6d">toStream</a> (std::ostream &amp;ostr, const TR &amp;tree, const std::string &amp;defaultTag, int indent)</td></tr>
+<tr class="memdesc:a60f311aa4c1682df9e618871690f0e6d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1XML.html">XML</a> output function shared for all <a class="el" href="classdrain_1_1XML.html">XML</a> documents, ie versions defined in subclasses.  <a href="classdrain_1_1NodeXML.html#a60f311aa4c1682df9e618871690f0e6d">More...</a><br /></td></tr>
+<tr class="separator:a60f311aa4c1682df9e618871690f0e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classdrain_1_1XML"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1XML')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1XML.html">XML</a></td></tr>
+<tr class="memitem:a2b0ec53e8a038a52d1f8b3c70538542f inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a2b0ec53e8a038a52d1f8b3c70538542f">setId</a> ()</td></tr>
+<tr class="memdesc:a2b0ec53e8a038a52d1f8b3c70538542f inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes ID a visible attribute.  <a href="classdrain_1_1XML.html#a2b0ec53e8a038a52d1f8b3c70538542f">More...</a><br /></td></tr>
+<tr class="separator:a2b0ec53e8a038a52d1f8b3c70538542f inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd4777d461756f4fa8133e99014ce602 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="afd4777d461756f4fa8133e99014ce602"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#afd4777d461756f4fa8133e99014ce602">setId</a> (const std::string &amp;s)</td></tr>
+<tr class="memdesc:afd4777d461756f4fa8133e99014ce602 inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes ID a visible attribute, with a given value. <br /></td></tr>
+<tr class="separator:afd4777d461756f4fa8133e99014ce602 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7933e22dbcdcb2361b52f3bf8141b1f0 inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="a7933e22dbcdcb2361b52f3bf8141b1f0"></a>
+template&lt;char C = '\0', typename ... TT&gt; </td></tr>
+<tr class="memitem:a7933e22dbcdcb2361b52f3bf8141b1f0 inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setId</b> (const TT &amp;...args)</td></tr>
+<tr class="separator:a7933e22dbcdcb2361b52f3bf8141b1f0 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa28a6e41d0c530d873dd778c2c7ae079 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="aa28a6e41d0c530d873dd778c2c7ae079"></a>
+const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#aa28a6e41d0c530d873dd778c2c7ae079">getId</a> () const</td></tr>
+<tr class="memdesc:aa28a6e41d0c530d873dd778c2c7ae079 inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns ID of this element. Hopefully a unique ID... <br /></td></tr>
+<tr class="separator:aa28a6e41d0c530d873dd778c2c7ae079 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</td></tr>
+<tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add5c1594489b9c0678ec2014a5931ef1 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="add5c1594489b9c0678ec2014a5931ef1"></a>
+const <a class="el" href="classdrain_1_1ReferenceMap2.html">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttributes</b> () const</td></tr>
+<tr class="separator:add5c1594489b9c0678ec2014a5931ef1 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b663f4256a3676b761caae4f62c4861 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a9b663f4256a3676b761caae4f62c4861"></a>
+<a class="el" href="classdrain_1_1ReferenceMap2.html">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttributes</b> ()</td></tr>
+<tr class="separator:a9b663f4256a3676b761caae4f62c4861 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ad81e5a41f330ce8fe5d50e3e89b713 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a7ad81e5a41f330ce8fe5d50e3e89b713"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a7ad81e5a41f330ce8fe5d50e3e89b713">setAttribute</a> (const std::string &amp;key, const std::string &amp;value)</td></tr>
+<tr class="memdesc:a7ad81e5a41f330ce8fe5d50e3e89b713 inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation. Needed for handling units in strings, like "50%" or "640px". <br /></td></tr>
+<tr class="separator:a7ad81e5a41f330ce8fe5d50e3e89b713 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a423db1bb6caf95a4b54560b5b70dae8e inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a423db1bb6caf95a4b54560b5b70dae8e"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a423db1bb6caf95a4b54560b5b70dae8e">setAttribute</a> (const std::string &amp;key, const char *value)</td></tr>
+<tr class="memdesc:a423db1bb6caf95a4b54560b5b70dae8e inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation. Needed for handling units in strings, like "50%" or "640px". <br /></td></tr>
+<tr class="separator:a423db1bb6caf95a4b54560b5b70dae8e inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2b449b6d04bf949b44d2461e16546ce inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="af2b449b6d04bf949b44d2461e16546ce"></a>
+template&lt;class V &gt; </td></tr>
+<tr class="memitem:af2b449b6d04bf949b44d2461e16546ce inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#af2b449b6d04bf949b44d2461e16546ce">setAttribute</a> (const std::string &amp;key, const V &amp;value)</td></tr>
+<tr class="memdesc:af2b449b6d04bf949b44d2461e16546ce inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Final" implementation. <br /></td></tr>
+<tr class="separator:af2b449b6d04bf949b44d2461e16546ce inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dcd2329189699a02690501a8b6cfbdc inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a6dcd2329189699a02690501a8b6cfbdc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>remove</b> (const std::string &amp;s)</td></tr>
+<tr class="separator:a6dcd2329189699a02690501a8b6cfbdc inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ee197d21f53ee70421b5512b9469de8 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a4ee197d21f53ee70421b5512b9469de8"></a>
+const <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">drain::FlexibleVariable</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key) const</td></tr>
+<tr class="separator:a4ee197d21f53ee70421b5512b9469de8 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa78841b5e7df53816db20bbc18034904 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="aa78841b5e7df53816db20bbc18034904"></a>
+<a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">drain::FlexibleVariable</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key)</td></tr>
+<tr class="separator:aa78841b5e7df53816db20bbc18034904 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a194fee7b1e87f1a688bbf20a6be5473a inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="a194fee7b1e87f1a688bbf20a6be5473a"></a>
+template&lt;class V &gt; </td></tr>
+<tr class="memitem:a194fee7b1e87f1a688bbf20a6be5473a inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">V&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get</b> (const std::string &amp;key, const V &amp;defaultValue) const</td></tr>
+<tr class="separator:a194fee7b1e87f1a688bbf20a6be5473a inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8390a381c0b062fc137f5ff60b107bce inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a8390a381c0b062fc137f5ff60b107bce"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key, const char *defaultValue) const</td></tr>
+<tr class="separator:a8390a381c0b062fc137f5ff60b107bce inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18880130859d3e9817b3bea7a66098df inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="a18880130859d3e9817b3bea7a66098df"></a>
+template&lt;typename ... TT&gt; </td></tr>
+<tr class="memitem:a18880130859d3e9817b3bea7a66098df inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a18880130859d3e9817b3bea7a66098df">addClass</a> (const TT &amp;... args)</td></tr>
+<tr class="memdesc:a18880130859d3e9817b3bea7a66098df inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Style class. <br /></td></tr>
+<tr class="separator:a18880130859d3e9817b3bea7a66098df inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcacfb01fa42b349e6ec9ab8a4714637 inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
+<tr class="memitem:afcacfb01fa42b349e6ec9ab8a4714637 inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#afcacfb01fa42b349e6ec9ab8a4714637">hasClass</a> (const V &amp;cls) const</td></tr>
+<tr class="separator:afcacfb01fa42b349e6ec9ab8a4714637 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a6c7676d516d6972e1ab831ac2450ef inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a3a6c7676d516d6972e1ab831ac2450ef"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>removeClass</b> (const std::string &amp;s)</td></tr>
+<tr class="separator:a3a6c7676d516d6972e1ab831ac2450ef inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa18ddda045522c7f9c07896fe0f0dce5 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="aa18ddda045522c7f9c07896fe0f0dce5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>clearClasses</b> ()</td></tr>
+<tr class="separator:aa18ddda045522c7f9c07896fe0f0dce5 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8bb3912a3ce86b15842e79d0b421204 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#ac8bb3912a3ce86b15842e79d0b421204">clear</a> ()</td></tr>
+<tr class="memdesc:ac8bb3912a3ce86b15842e79d0b421204 inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear style, class and string data but keep the element type.  <a href="classdrain_1_1XML.html#ac8bb3912a3ce86b15842e79d0b421204">More...</a><br /></td></tr>
+<tr class="separator:ac8bb3912a3ce86b15842e79d0b421204 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad20897c5c8bd47f5d4005989bead0e55 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#ad20897c5c8bd47f5d4005989bead0e55">reset</a> ()</td></tr>
+<tr class="memdesc:ad20897c5c8bd47f5d4005989bead0e55 inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear style, class and string data as well as the element type.  <a href="classdrain_1_1XML.html#ad20897c5c8bd47f5d4005989bead0e55">More...</a><br /></td></tr>
+<tr class="separator:ad20897c5c8bd47f5d4005989bead0e55 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b0ec53e8a038a52d1f8b3c70538542f inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a2b0ec53e8a038a52d1f8b3c70538542f">setId</a> ()</td></tr>
+<tr class="memdesc:a2b0ec53e8a038a52d1f8b3c70538542f inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes ID a visible attribute.  <a href="classdrain_1_1XML.html#a2b0ec53e8a038a52d1f8b3c70538542f">More...</a><br /></td></tr>
+<tr class="separator:a2b0ec53e8a038a52d1f8b3c70538542f inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd4777d461756f4fa8133e99014ce602 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="afd4777d461756f4fa8133e99014ce602"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#afd4777d461756f4fa8133e99014ce602">setId</a> (const std::string &amp;s)</td></tr>
+<tr class="memdesc:afd4777d461756f4fa8133e99014ce602 inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes ID a visible attribute, with a given value. <br /></td></tr>
+<tr class="separator:afd4777d461756f4fa8133e99014ce602 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7933e22dbcdcb2361b52f3bf8141b1f0 inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="a7933e22dbcdcb2361b52f3bf8141b1f0"></a>
+template&lt;char C = '\0', typename ... TT&gt; </td></tr>
+<tr class="memitem:a7933e22dbcdcb2361b52f3bf8141b1f0 inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a7933e22dbcdcb2361b52f3bf8141b1f0">setId</a> (const TT &amp;...args)</td></tr>
+<tr class="memdesc:a7933e22dbcdcb2361b52f3bf8141b1f0 inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concatenates arguments to an id. <br /></td></tr>
+<tr class="separator:a7933e22dbcdcb2361b52f3bf8141b1f0 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa28a6e41d0c530d873dd778c2c7ae079 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="aa28a6e41d0c530d873dd778c2c7ae079"></a>
+const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#aa28a6e41d0c530d873dd778c2c7ae079">getId</a> () const</td></tr>
+<tr class="memdesc:aa28a6e41d0c530d873dd778c2c7ae079 inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns ID of this element. Hopefully a unique ID... <br /></td></tr>
+<tr class="separator:aa28a6e41d0c530d873dd778c2c7ae079 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af10dad65e47564ab0fa76141a00066fb inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;class ... T&gt; </td></tr>
+<tr class="memitem:af10dad65e47564ab0fa76141a00066fb inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#af10dad65e47564ab0fa76141a00066fb">setComment</a> (const T &amp;...args)</td></tr>
+<tr class="memdesc:af10dad65e47564ab0fa76141a00066fb inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make this node a comment. Contained tree will not be deleted. In current version, attributes WILL be rendered.  <a href="classdrain_1_1XML.html#af10dad65e47564ab0fa76141a00066fb">More...</a><br /></td></tr>
+<tr class="separator:af10dad65e47564ab0fa76141a00066fb inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebb7cd73b2f1f4075f4a81503bf84728 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#aebb7cd73b2f1f4075f4a81503bf84728">setText</a> (const std::string &amp;s)</td></tr>
+<tr class="memdesc:aebb7cd73b2f1f4075f4a81503bf84728 inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign the text content of this node. If the node type is undefined, set it to CTEXT.  <a href="classdrain_1_1XML.html#aebb7cd73b2f1f4075f4a81503bf84728">More...</a><br /></td></tr>
+<tr class="separator:aebb7cd73b2f1f4075f4a81503bf84728 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ccea4f144970be76e72ab77ed02bf8c inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="a5ccea4f144970be76e72ab77ed02bf8c"></a>
+template&lt;class ... T&gt; </td></tr>
+<tr class="memitem:a5ccea4f144970be76e72ab77ed02bf8c inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setText</b> (const T &amp;...args)</td></tr>
+<tr class="separator:a5ccea4f144970be76e72ab77ed02bf8c inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23928bc72e2f57fa9e6b888d6a776f43 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a23928bc72e2f57fa9e6b888d6a776f43"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setUrl</b> (const std::string &amp;s)</td></tr>
+<tr class="separator:a23928bc72e2f57fa9e6b888d6a776f43 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dc9d7494d137f8725d90c21d037fe4a inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a5dc9d7494d137f8725d90c21d037fe4a"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</td></tr>
+<tr class="separator:a5dc9d7494d137f8725d90c21d037fe4a inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add5c1594489b9c0678ec2014a5931ef1 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="add5c1594489b9c0678ec2014a5931ef1"></a>
+const <a class="el" href="classdrain_1_1ReferenceMap2.html">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttributes</b> () const</td></tr>
+<tr class="separator:add5c1594489b9c0678ec2014a5931ef1 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b663f4256a3676b761caae4f62c4861 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a9b663f4256a3676b761caae4f62c4861"></a>
+<a class="el" href="classdrain_1_1ReferenceMap2.html">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttributes</b> ()</td></tr>
+<tr class="separator:a9b663f4256a3676b761caae4f62c4861 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ee197d21f53ee70421b5512b9469de8 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a4ee197d21f53ee70421b5512b9469de8"></a>
+const <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">drain::FlexibleVariable</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key) const</td></tr>
+<tr class="separator:a4ee197d21f53ee70421b5512b9469de8 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa78841b5e7df53816db20bbc18034904 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="aa78841b5e7df53816db20bbc18034904"></a>
+<a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">drain::FlexibleVariable</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key)</td></tr>
+<tr class="separator:aa78841b5e7df53816db20bbc18034904 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a194fee7b1e87f1a688bbf20a6be5473a inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="a194fee7b1e87f1a688bbf20a6be5473a"></a>
+template&lt;class V &gt; </td></tr>
+<tr class="memitem:a194fee7b1e87f1a688bbf20a6be5473a inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">V&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get</b> (const std::string &amp;key, const V &amp;defaultValue) const</td></tr>
+<tr class="separator:a194fee7b1e87f1a688bbf20a6be5473a inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8390a381c0b062fc137f5ff60b107bce inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a8390a381c0b062fc137f5ff60b107bce"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key, const char *defaultValue) const</td></tr>
+<tr class="separator:a8390a381c0b062fc137f5ff60b107bce inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ad81e5a41f330ce8fe5d50e3e89b713 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a7ad81e5a41f330ce8fe5d50e3e89b713"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a7ad81e5a41f330ce8fe5d50e3e89b713">setAttribute</a> (const std::string &amp;key, const std::string &amp;value)</td></tr>
+<tr class="memdesc:a7ad81e5a41f330ce8fe5d50e3e89b713 inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation. Needed for handling units in strings, like "50%" or "640px". <br /></td></tr>
+<tr class="separator:a7ad81e5a41f330ce8fe5d50e3e89b713 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a423db1bb6caf95a4b54560b5b70dae8e inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a423db1bb6caf95a4b54560b5b70dae8e"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a423db1bb6caf95a4b54560b5b70dae8e">setAttribute</a> (const std::string &amp;key, const char *value)</td></tr>
+<tr class="memdesc:a423db1bb6caf95a4b54560b5b70dae8e inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation. Needed for handling units in strings, like "50%" or "640px". <br /></td></tr>
+<tr class="separator:a423db1bb6caf95a4b54560b5b70dae8e inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2b449b6d04bf949b44d2461e16546ce inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="af2b449b6d04bf949b44d2461e16546ce"></a>
+template&lt;class V &gt; </td></tr>
+<tr class="memitem:af2b449b6d04bf949b44d2461e16546ce inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#af2b449b6d04bf949b44d2461e16546ce">setAttribute</a> (const std::string &amp;key, const V &amp;value)</td></tr>
+<tr class="memdesc:af2b449b6d04bf949b44d2461e16546ce inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Final" implementation. <br /></td></tr>
+<tr class="separator:af2b449b6d04bf949b44d2461e16546ce inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c650b563f5220898541675aa4cec257 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a2c650b563f5220898541675aa4cec257"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>removeAttribute</b> (const std::string &amp;s)</td></tr>
+<tr class="separator:a2c650b563f5220898541675aa4cec257 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f3bc4763d957691df096e3a499e946f inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a3f3bc4763d957691df096e3a499e946f"></a>
+const <a class="el" href="classdrain_1_1StyleXML.html">StyleXML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getStyle</b> () const</td></tr>
+<tr class="separator:a3f3bc4763d957691df096e3a499e946f inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a253589cecfdc3660cc7d804e275bc29f inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a253589cecfdc3660cc7d804e275bc29f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setStyle</b> (const <a class="el" href="classdrain_1_1StyleXML.html">StyleXML</a> &amp;s)</td></tr>
+<tr class="separator:a253589cecfdc3660cc7d804e275bc29f inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada4787392f677f4b30e1a80fa0018d85 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="ada4787392f677f4b30e1a80fa0018d85"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setStyle</b> (const std::string &amp;value)</td></tr>
+<tr class="separator:ada4787392f677f4b30e1a80fa0018d85 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b29ebb6a042cd3fb247e8a33a5c5560 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a5b29ebb6a042cd3fb247e8a33a5c5560"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setStyle</b> (const char *value)</td></tr>
+<tr class="separator:a5b29ebb6a042cd3fb247e8a33a5c5560 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf8679618901c37de0d495e71034e820 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="aaf8679618901c37de0d495e71034e820"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setStyle</b> (const std::string &amp;key, const std::string &amp;value)</td></tr>
+<tr class="separator:aaf8679618901c37de0d495e71034e820 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e3e66d709d6ef795434d5bf46c35197 inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
+<tr class="memitem:a3e3e66d709d6ef795434d5bf46c35197 inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a3e3e66d709d6ef795434d5bf46c35197">setStyle</a> (const std::string &amp;key, const std::initializer_list&lt; V &gt; &amp;l)</td></tr>
+<tr class="memdesc:a3e3e66d709d6ef795434d5bf46c35197 inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set style of an element.  <a href="classdrain_1_1XML.html#a3e3e66d709d6ef795434d5bf46c35197">More...</a><br /></td></tr>
+<tr class="separator:a3e3e66d709d6ef795434d5bf46c35197 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5c57b87de30cc7cbfc6d1f03eb96571 inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="ae5c57b87de30cc7cbfc6d1f03eb96571"></a>
+template&lt;class V &gt; </td></tr>
+<tr class="memitem:ae5c57b87de30cc7cbfc6d1f03eb96571 inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#ae5c57b87de30cc7cbfc6d1f03eb96571">setStyle</a> (const std::string &amp;key, const V &amp;value)</td></tr>
+<tr class="memdesc:ae5c57b87de30cc7cbfc6d1f03eb96571 inherit pub_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">For element/class/id, assign ... <br /></td></tr>
+<tr class="separator:ae5c57b87de30cc7cbfc6d1f03eb96571 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a289d840441ff83bebd5355b5f6d0772e inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a289d840441ff83bebd5355b5f6d0772e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setStyle</b> (const std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">drain::Variable</a> &gt; &gt; &amp;args)</td></tr>
+<tr class="separator:a289d840441ff83bebd5355b5f6d0772e inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37d0975b53691dc4a9b6efe64d3399c4 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a37d0975b53691dc4a9b6efe64d3399c4"></a>
+const <a class="el" href="classdrain_1_1ClassListXML.html">ClassListXML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getClasses</b> () const</td></tr>
+<tr class="separator:a37d0975b53691dc4a9b6efe64d3399c4 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18880130859d3e9817b3bea7a66098df inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="a18880130859d3e9817b3bea7a66098df"></a>
+template&lt;typename ... TT&gt; </td></tr>
+<tr class="memitem:a18880130859d3e9817b3bea7a66098df inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>addClass</b> (const TT &amp;... args)</td></tr>
+<tr class="separator:a18880130859d3e9817b3bea7a66098df inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcacfb01fa42b349e6ec9ab8a4714637 inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
+<tr class="memitem:afcacfb01fa42b349e6ec9ab8a4714637 inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#afcacfb01fa42b349e6ec9ab8a4714637">hasClass</a> (const V &amp;cls) const</td></tr>
+<tr class="separator:afcacfb01fa42b349e6ec9ab8a4714637 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a6c7676d516d6972e1ab831ac2450ef inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a3a6c7676d516d6972e1ab831ac2450ef"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>removeClass</b> (const std::string &amp;s)</td></tr>
+<tr class="separator:a3a6c7676d516d6972e1ab831ac2450ef inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa18ddda045522c7f9c07896fe0f0dce5 inherit pub_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="aa18ddda045522c7f9c07896fe0f0dce5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>clearClasses</b> ()</td></tr>
+<tr class="separator:aa18ddda045522c7f9c07896fe0f0dce5 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaf3f781762f05f8e0a0c421609ee0f2 inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="acaf3f781762f05f8e0a0c421609ee0f2"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:acaf3f781762f05f8e0a0c421609ee0f2"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>findById</b> (const T &amp;t, const std::string &amp;id, typename T::path_t &amp;result, const typename T::path_t &amp;path)</td></tr>
-<tr class="separator:acaf3f781762f05f8e0a0c421609ee0f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87b1579c6777d8b0781aa277226bcf21"><td class="memTemplParams" colspan="2"><a id="a87b1579c6777d8b0781aa277226bcf21"></a>
+<tr class="memitem:acaf3f781762f05f8e0a0c421609ee0f2 inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>findById</b> (const T &amp;t, const std::string &amp;<a class="el" href="classdrain_1_1XML.html#afd0d68c6d31ff249f3ae8662162663c3">id</a>, typename T::path_t &amp;result, const typename T::path_t &amp;path)</td></tr>
+<tr class="separator:acaf3f781762f05f8e0a0c421609ee0f2 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87b1579c6777d8b0781aa277226bcf21 inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="a87b1579c6777d8b0781aa277226bcf21"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:a87b1579c6777d8b0781aa277226bcf21"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>findById</b> (const T &amp;t, const std::string &amp;id, <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt;&gt;::path_list_t &amp;result, const <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path)</td></tr>
-<tr class="separator:a87b1579c6777d8b0781aa277226bcf21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7935ca2efb8ff93f3d81d5749f02799d"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a7935ca2efb8ff93f3d81d5749f02799d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a7935ca2efb8ff93f3d81d5749f02799d">findByTag</a> (const T &amp;t, const N &amp;tag, <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt;&gt;::path_list_t &amp;result, const <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path)</td></tr>
-<tr class="separator:a7935ca2efb8ff93f3d81d5749f02799d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62912a7782909e768fc3560a41d218ad"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a62912a7782909e768fc3560a41d218ad"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a62912a7782909e768fc3560a41d218ad">findByTags</a> (const T &amp;t, const std::set&lt; N &gt; &amp;tags, <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt;&gt;::path_list_t &amp;result, const <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path)</td></tr>
-<tr class="separator:a62912a7782909e768fc3560a41d218ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad595e899c87e4cd085e46129225cb49"><td class="memTemplParams" colspan="2"><a id="aad595e899c87e4cd085e46129225cb49"></a>
-template&lt;class T &gt; </td></tr>
-<tr class="memitem:aad595e899c87e4cd085e46129225cb49"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>findByClass</b> (const T &amp;t, const std::string &amp;cls, <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt;&gt;::path_list_t &amp;result, const <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path)</td></tr>
-<tr class="separator:aad595e899c87e4cd085e46129225cb49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab56b84e4b188a9654ee2634f5cec26d9"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:ab56b84e4b188a9654ee2634f5cec26d9"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#ab56b84e4b188a9654ee2634f5cec26d9">toStream</a> (std::ostream &amp;ostr, const T &amp;tree, const std::string &amp;defaultTag, int indent)</td></tr>
-<tr class="memdesc:ab56b84e4b188a9654ee2634f5cec26d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">XML output function shared for all XML documents, ie versions defined in subclasses.  <a href="classdrain_1_1NodeXML.html#ab56b84e4b188a9654ee2634f5cec26d9">More...</a><br /></td></tr>
-<tr class="separator:ab56b84e4b188a9654ee2634f5cec26d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87b1579c6777d8b0781aa277226bcf21 inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>findById</b> (const T &amp;t, const std::string &amp;<a class="el" href="classdrain_1_1XML.html#afd0d68c6d31ff249f3ae8662162663c3">id</a>, <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt;&gt;::path_list_t &amp;result, const <a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path)</td></tr>
+<tr class="separator:a87b1579c6777d8b0781aa277226bcf21 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad43b9b43eb46e89c87a796ebf06d2ef3 inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;class T , class N &gt; </td></tr>
+<tr class="memitem:ad43b9b43eb46e89c87a796ebf06d2ef3 inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#ad43b9b43eb46e89c87a796ebf06d2ef3">findByTag</a> (const T &amp;t, const N &amp;tag, <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt;&gt;::path_list_t &amp;result, const <a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path)</td></tr>
+<tr class="separator:ad43b9b43eb46e89c87a796ebf06d2ef3 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f0f226cd948a84dc641c28c94546a13 inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;class T , class N &gt; </td></tr>
+<tr class="memitem:a4f0f226cd948a84dc641c28c94546a13 inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a4f0f226cd948a84dc641c28c94546a13">findByTags</a> (const T &amp;t, const std::set&lt; N &gt; &amp;tags, <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt;&gt;::path_list_t &amp;result, const <a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path)</td></tr>
+<tr class="separator:a4f0f226cd948a84dc641c28c94546a13 inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afff237042796068870991876859cd7be inherit pub_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="afff237042796068870991876859cd7be"></a>
+template&lt;class T2 , class C &gt; </td></tr>
+<tr class="memitem:afff237042796068870991876859cd7be inherit pub_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>findByClass</b> (const T2 &amp;t, const C &amp;cls, XML::path_list_t &amp;result, const <a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path)</td></tr>
+<tr class="separator:afff237042796068870991876859cd7be inherit pub_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a6cfbeba142c6ca8d80d967172c93563b"><td class="memItemLeft" align="right" valign="top"><a id="a6cfbeba142c6ca8d80d967172c93563b"></a>
 static const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTag</b> (unsigned int index)</td></tr>
 <tr class="separator:a6cfbeba142c6ca8d80d967172c93563b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebabe364755f9207280af892ccf1138c"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
-<tr class="memitem:aebabe364755f9207280af892ccf1138c"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#aebabe364755f9207280af892ccf1138c">findById</a> (const V &amp;tree, const std::string &amp;tag, typename V::path_t &amp;result, const typename V::path_t &amp;path=<a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a>())</td></tr>
-<tr class="memdesc:aebabe364755f9207280af892ccf1138c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the first occurrence of given id using recursive breath-first search.  <a href="classdrain_1_1NodeXML.html#aebabe364755f9207280af892ccf1138c">More...</a><br /></td></tr>
-<tr class="separator:aebabe364755f9207280af892ccf1138c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3983686bd3e7dabdc97c4be88e99415"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
-<tr class="memitem:ac3983686bd3e7dabdc97c4be88e99415"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#ac3983686bd3e7dabdc97c4be88e99415">findById</a> (const V &amp;tree, const std::string &amp;tag, path_list_t &amp;result, const <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path=<a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a>())</td></tr>
-<tr class="memdesc:ac3983686bd3e7dabdc97c4be88e99415"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find all the occurrence of given ID using recursive breath-first search.  <a href="classdrain_1_1NodeXML.html#ac3983686bd3e7dabdc97c4be88e99415">More...</a><br /></td></tr>
-<tr class="separator:ac3983686bd3e7dabdc97c4be88e99415"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ac01a213b56523b77faf0f67ca218b0"><td class="memTemplParams" colspan="2"><a id="a0ac01a213b56523b77faf0f67ca218b0"></a>
-template&lt;class V &gt; </td></tr>
-<tr class="memitem:a0ac01a213b56523b77faf0f67ca218b0"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a0ac01a213b56523b77faf0f67ca218b0">findByTag</a> (const V &amp;tree, const T &amp;tag, path_list_t &amp;result, const <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path=<a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a>())</td></tr>
-<tr class="memdesc:a0ac01a213b56523b77faf0f67ca218b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Forward definition" <br /></td></tr>
-<tr class="separator:a0ac01a213b56523b77faf0f67ca218b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab03bdc4a0f1bf54fcf46f8851110ea4a"><td class="memTemplParams" colspan="2"><a id="ab03bdc4a0f1bf54fcf46f8851110ea4a"></a>
-template&lt;class V &gt; </td></tr>
-<tr class="memitem:ab03bdc4a0f1bf54fcf46f8851110ea4a"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#ab03bdc4a0f1bf54fcf46f8851110ea4a">findByTags</a> (const V &amp;tree, const std::set&lt; T &gt; &amp;tags, path_list_t &amp;result, const <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path=<a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a>())</td></tr>
-<tr class="memdesc:ab03bdc4a0f1bf54fcf46f8851110ea4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Forward definition" <br /></td></tr>
-<tr class="separator:ab03bdc4a0f1bf54fcf46f8851110ea4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa09eef5ce605661a4bb9427ed358816a"><td class="memTemplParams" colspan="2"><a id="aa09eef5ce605661a4bb9427ed358816a"></a>
-template&lt;class V &gt; </td></tr>
-<tr class="memitem:aa09eef5ce605661a4bb9427ed358816a"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#aa09eef5ce605661a4bb9427ed358816a">findByClass</a> (const V &amp;t, const std::string &amp;tag, path_list_t &amp;result, const <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path=<a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a>())</td></tr>
-<tr class="memdesc:aa09eef5ce605661a4bb9427ed358816a"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Forward definition" <br /></td></tr>
-<tr class="separator:aa09eef5ce605661a4bb9427ed358816a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af134315afd4b41f418e587f985f0ff7b"><td class="memTemplParams" colspan="2"><a id="af134315afd4b41f418e587f985f0ff7b"></a>
-template&lt;class V &gt; </td></tr>
-<tr class="memitem:af134315afd4b41f418e587f985f0ff7b"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>docToStream</b> (std::ostream &amp;ostr, const V &amp;tree)</td></tr>
+<tr class="memitem:af134315afd4b41f418e587f985f0ff7b"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
+<tr class="memitem:af134315afd4b41f418e587f985f0ff7b"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#af134315afd4b41f418e587f985f0ff7b">docToStream</a> (std::ostream &amp;ostr, const V &amp;tree)</td></tr>
 <tr class="separator:af134315afd4b41f418e587f985f0ff7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48eefbedbf1065f78ff2f0c09c793a33"><td class="memTemplParams" colspan="2"><a id="a48eefbedbf1065f78ff2f0c09c793a33"></a>
 template&lt;class V &gt; </td></tr>
@@ -367,60 +610,174 @@ template&lt;class V &gt; </td></tr>
 <tr class="memdesc:a48eefbedbf1065f78ff2f0c09c793a33"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Forward definition" of Tree::toOstream <br /></td></tr>
 <tr class="separator:a48eefbedbf1065f78ff2f0c09c793a33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81f688b371899ed63378ada247d1854"><td class="memItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#ab81f688b371899ed63378ada247d1854">docTypeToStream</a> (std::ostream &amp;ostr)</td></tr>
-<tr class="memdesc:ab81f688b371899ed63378ada247d1854"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the XML definition beginning any XML document.  <a href="classdrain_1_1NodeXML.html#ab81f688b371899ed63378ada247d1854">More...</a><br /></td></tr>
+<tr class="memdesc:ab81f688b371899ed63378ada247d1854"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the <a class="el" href="classdrain_1_1XML.html">XML</a> definition beginning any <a class="el" href="classdrain_1_1XML.html">XML</a> document.  <a href="classdrain_1_1NodeXML.html#ab81f688b371899ed63378ada247d1854">More...</a><br /></td></tr>
 <tr class="separator:ab81f688b371899ed63378ada247d1854"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca48188580dc2530d58e6aa76dc51105"><td class="memTemplParams" colspan="2"><a id="aca48188580dc2530d58e6aa76dc51105"></a>
 template&lt;int E&gt; </td></tr>
 <tr class="memitem:aca48188580dc2530d58e6aa76dc51105"><td class="memTemplItemLeft" align="right" valign="top">static const std::pair&lt; key_t, <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt; T &gt; &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>entry</b> ()</td></tr>
 <tr class="separator:aca48188580dc2530d58e6aa76dc51105"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad792d5a496138177e5d9d923149844d5"><td class="memItemLeft" align="right" valign="top"><a id="ad792d5a496138177e5d9d923149844d5"></a>
+<tr class="memitem:a7808cdc74f65aac10768d6eaa3aa8591"><td class="memItemLeft" align="right" valign="top">static const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a7808cdc74f65aac10768d6eaa3aa8591">getTag</a> (const T &amp;type)</td></tr>
+<tr class="separator:a7808cdc74f65aac10768d6eaa3aa8591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af134315afd4b41f418e587f985f0ff7b"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
+<tr class="memitem:af134315afd4b41f418e587f985f0ff7b"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#af134315afd4b41f418e587f985f0ff7b">docToStream</a> (std::ostream &amp;ostr, const V &amp;tree)</td></tr>
+<tr class="separator:af134315afd4b41f418e587f985f0ff7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48eefbedbf1065f78ff2f0c09c793a33"><td class="memTemplParams" colspan="2"><a id="a48eefbedbf1065f78ff2f0c09c793a33"></a>
+template&lt;class V &gt; </td></tr>
+<tr class="memitem:a48eefbedbf1065f78ff2f0c09c793a33"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a48eefbedbf1065f78ff2f0c09c793a33">toStream</a> (std::ostream &amp;ostr, const V &amp;t, const std::string &amp;defaultTag=&quot;&quot;, int indent=0)</td></tr>
+<tr class="memdesc:a48eefbedbf1065f78ff2f0c09c793a33"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Forward definition" of Tree::toOstream <br /></td></tr>
+<tr class="separator:a48eefbedbf1065f78ff2f0c09c793a33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab81f688b371899ed63378ada247d1854"><td class="memItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#ab81f688b371899ed63378ada247d1854">docTypeToStream</a> (std::ostream &amp;ostr)</td></tr>
+<tr class="memdesc:ab81f688b371899ed63378ada247d1854"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the <a class="el" href="classdrain_1_1XML.html">XML</a> definition beginning any <a class="el" href="classdrain_1_1XML.html">XML</a> document.  <a href="classdrain_1_1NodeXML.html#ab81f688b371899ed63378ada247d1854">More...</a><br /></td></tr>
+<tr class="separator:ab81f688b371899ed63378ada247d1854"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classdrain_1_1XML"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classdrain_1_1XML')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classdrain_1_1XML.html">XML</a></td></tr>
+<tr class="memitem:a5e006c1cc754ff29b3d2b22ae545c531 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="a5e006c1cc754ff29b3d2b22ae545c531"></a>
+template&lt;class V &gt; </td></tr>
+<tr class="memitem:a5e006c1cc754ff29b3d2b22ae545c531 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>attribToStream</b> (std::ostream &amp;ostr, const std::string &amp;key, const V &amp;value)</td></tr>
+<tr class="separator:a5e006c1cc754ff29b3d2b22ae545c531 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad792d5a496138177e5d9d923149844d5 inherit pub_static_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="ad792d5a496138177e5d9d923149844d5"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>getCount</b> ()</td></tr>
-<tr class="separator:ad792d5a496138177e5d9d923149844d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ad792d5a496138177e5d9d923149844d5 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebabe364755f9207280af892ccf1138c inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
+<tr class="memitem:aebabe364755f9207280af892ccf1138c inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#aebabe364755f9207280af892ccf1138c">findById</a> (const V &amp;tree, const std::string &amp;tag, typename V::path_t &amp;result, const typename V::path_t &amp;path=<a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a>())</td></tr>
+<tr class="memdesc:aebabe364755f9207280af892ccf1138c inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the first occurrence of given id using recursive breath-first search.  <a href="classdrain_1_1XML.html#aebabe364755f9207280af892ccf1138c">More...</a><br /></td></tr>
+<tr class="separator:aebabe364755f9207280af892ccf1138c inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3983686bd3e7dabdc97c4be88e99415 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;class V &gt; </td></tr>
+<tr class="memitem:ac3983686bd3e7dabdc97c4be88e99415 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#ac3983686bd3e7dabdc97c4be88e99415">findById</a> (const V &amp;tree, const std::string &amp;tag, path_list_t &amp;result, const <a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path=<a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a>())</td></tr>
+<tr class="memdesc:ac3983686bd3e7dabdc97c4be88e99415 inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find the occurrence(s) of given ID using recursive breath-first search.  <a href="classdrain_1_1XML.html#ac3983686bd3e7dabdc97c4be88e99415">More...</a><br /></td></tr>
+<tr class="separator:ac3983686bd3e7dabdc97c4be88e99415 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac85b4751a5614aa3004926f67480419e inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;class V , class T &gt; </td></tr>
+<tr class="memitem:ac85b4751a5614aa3004926f67480419e inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#ac85b4751a5614aa3004926f67480419e">findByTag</a> (const V &amp;tree, const T &amp;tag, path_list_t &amp;result, const <a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path=<a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a>())</td></tr>
+<tr class="separator:ac85b4751a5614aa3004926f67480419e inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6d88847de74eae81088478ec4ed37e4 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;class V , class T &gt; </td></tr>
+<tr class="memitem:af6d88847de74eae81088478ec4ed37e4 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#af6d88847de74eae81088478ec4ed37e4">findByTags</a> (const V &amp;tree, const std::set&lt; T &gt; &amp;tags, path_list_t &amp;result, const <a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path=<a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a>())</td></tr>
+<tr class="memdesc:af6d88847de74eae81088478ec4ed37e4 inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Forward definition"  <a href="classdrain_1_1XML.html#af6d88847de74eae81088478ec4ed37e4">More...</a><br /></td></tr>
+<tr class="separator:af6d88847de74eae81088478ec4ed37e4 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a007c9bea077bae0ad6fb9adfc8a5038f inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;class T2 , class C &gt; </td></tr>
+<tr class="memitem:a007c9bea077bae0ad6fb9adfc8a5038f inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a007c9bea077bae0ad6fb9adfc8a5038f">findByClass</a> (const T2 &amp;t, const C &amp;cls, std::list&lt; path_elem_t &gt; &amp;result)</td></tr>
+<tr class="memdesc:a007c9bea077bae0ad6fb9adfc8a5038f inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds child elements in an <a class="el" href="classdrain_1_1XML.html">XML</a> structure by class name.  <a href="classdrain_1_1XML.html#a007c9bea077bae0ad6fb9adfc8a5038f">More...</a><br /></td></tr>
+<tr class="separator:a007c9bea077bae0ad6fb9adfc8a5038f inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a608504bd79566f0782c4309b769a2843 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;class V , class C &gt; </td></tr>
+<tr class="memitem:a608504bd79566f0782c4309b769a2843 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a608504bd79566f0782c4309b769a2843">findByClass</a> (const V &amp;t, const C &amp;cls, path_list_t &amp;result, const <a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;path=<a class="el" href="classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0">path_t</a>())</td></tr>
+<tr class="memdesc:a608504bd79566f0782c4309b769a2843 inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds elements recursively in an <a class="el" href="classdrain_1_1XML.html">XML</a> structure by class name supplied as an enumeration type.  <a href="classdrain_1_1XML.html#a608504bd79566f0782c4309b769a2843">More...</a><br /></td></tr>
+<tr class="separator:a608504bd79566f0782c4309b769a2843 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad792d5a496138177e5d9d923149844d5 inherit pub_static_methods_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="ad792d5a496138177e5d9d923149844d5"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>getCount</b> ()</td></tr>
+<tr class="separator:ad792d5a496138177e5d9d923149844d5 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77554e58136bc7389438258fbc3f357d inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="a77554e58136bc7389438258fbc3f357d"></a>
+template&lt;class V &gt; </td></tr>
+<tr class="memitem:a77554e58136bc7389438258fbc3f357d inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>xmlAttribToStream</b> (std::ostream &amp;ostr, const std::string &amp;key, const V &amp;value)</td></tr>
+<tr class="separator:a77554e58136bc7389438258fbc3f357d inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1606a5d9e664d260adcbdf9f43dfa3d inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;typename XML &gt; </td></tr>
+<tr class="memitem:aa1606a5d9e664d260adcbdf9f43dfa3d inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="classdrain_1_1XML.html">XML</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#aa1606a5d9e664d260adcbdf9f43dfa3d">xmlAssign</a> (<a class="el" href="classdrain_1_1XML.html">XML</a> &amp;dst, const <a class="el" href="classdrain_1_1XML.html">XML</a> &amp;src)</td></tr>
+<tr class="memdesc:aa1606a5d9e664d260adcbdf9f43dfa3d inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <a href="classdrain_1_1XML.html#aa1606a5d9e664d260adcbdf9f43dfa3d">More...</a><br /></td></tr>
+<tr class="separator:aa1606a5d9e664d260adcbdf9f43dfa3d inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0d8e643e39df190e10f76970c842944 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;typename X &gt; </td></tr>
+<tr class="memitem:ae0d8e643e39df190e10f76970c842944 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static X &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#ae0d8e643e39df190e10f76970c842944">xmlAssign</a> (X &amp;dst, const typename X::xml_node_t &amp;src)</td></tr>
+<tr class="memdesc:ae0d8e643e39df190e10f76970c842944 inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <a href="classdrain_1_1XML.html#ae0d8e643e39df190e10f76970c842944">More...</a><br /></td></tr>
+<tr class="separator:ae0d8e643e39df190e10f76970c842944 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3162432a20d7413343eac1f286a89e94 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;typename X &gt; </td></tr>
+<tr class="memitem:a3162432a20d7413343eac1f286a89e94 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static X &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a3162432a20d7413343eac1f286a89e94">xmlAssignNode</a> (X &amp;dst, const X &amp;src)</td></tr>
+<tr class="memdesc:a3162432a20d7413343eac1f286a89e94 inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <a href="classdrain_1_1XML.html#a3162432a20d7413343eac1f286a89e94">More...</a><br /></td></tr>
+<tr class="separator:a3162432a20d7413343eac1f286a89e94 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a798aefb6087b72de04f47c26bcce6f25 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;typename XML , typename V &gt; </td></tr>
+<tr class="memitem:a798aefb6087b72de04f47c26bcce6f25 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="classdrain_1_1XML.html">XML</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a798aefb6087b72de04f47c26bcce6f25">xmlAssign</a> (<a class="el" href="classdrain_1_1XML.html">XML</a> &amp;tree, const V &amp;arg)</td></tr>
+<tr class="memdesc:a798aefb6087b72de04f47c26bcce6f25 inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <a href="classdrain_1_1XML.html#a798aefb6087b72de04f47c26bcce6f25">More...</a><br /></td></tr>
+<tr class="separator:a798aefb6087b72de04f47c26bcce6f25 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73c813d72190ab33da73da45e158bc55 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="a73c813d72190ab33da73da45e158bc55"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a73c813d72190ab33da73da45e158bc55 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a73c813d72190ab33da73da45e158bc55">xmlAssign</a> (T &amp;tree, std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt; l)</td></tr>
+<tr class="memdesc:a73c813d72190ab33da73da45e158bc55 inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tree. <br /></td></tr>
+<tr class="separator:a73c813d72190ab33da73da45e158bc55 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeaf835807a8f58bdd750e4a65a9bd899 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aeaf835807a8f58bdd750e4a65a9bd899 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#aeaf835807a8f58bdd750e4a65a9bd899">xmlSetType</a> (T &amp;tree, const typename T::node_data_t::xml_tag_t &amp;type)</td></tr>
+<tr class="separator:aeaf835807a8f58bdd750e4a65a9bd899 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ababf0b844cfc3d02dd9a4cc97eeffe inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3ababf0b844cfc3d02dd9a4cc97eeffe inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a3ababf0b844cfc3d02dd9a4cc97eeffe">xmlAddChild</a> (T &amp;tree, const std::string &amp;key)</td></tr>
+<tr class="separator:a3ababf0b844cfc3d02dd9a4cc97eeffe inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12a0dffa595741f7aa2456fda8f8bae5 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplParams" colspan="2"><a id="a12a0dffa595741f7aa2456fda8f8bae5"></a>
+template&lt;typename N &gt; </td></tr>
+<tr class="memitem:a12a0dffa595741f7aa2456fda8f8bae5 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static N::xml_tag_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>xmlGuessType</b> (const N &amp;parentNode)</td></tr>
+<tr class="separator:a12a0dffa595741f7aa2456fda8f8bae5 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:af8290260e476cbd4d1d87d105852cf48"><td class="memItemLeft" align="right" valign="top"><a id="af8290260e476cbd4d1d87d105852cf48"></a>
 <a class="el" href="classdrain_1_1NodeXML.html#a3fa2115cdbb245c2f609f654a9888f14">elem_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
 <tr class="separator:af8290260e476cbd4d1d87d105852cf48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca7692638c856fa5cc0cf46af70d211a"><td class="memItemLeft" align="right" valign="top"><a id="aca7692638c856fa5cc0cf46af70d211a"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#aca7692638c856fa5cc0cf46af70d211a">ctext</a></td></tr>
-<tr class="memdesc:aca7692638c856fa5cc0cf46af70d211a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some general-purpose. <br /></td></tr>
-<tr class="separator:aca7692638c856fa5cc0cf46af70d211a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae43c7d8d482ec3550b30cbc7dc23b9f0"><td class="memItemLeft" align="right" valign="top"><a id="ae43c7d8d482ec3550b30cbc7dc23b9f0"></a>
+<tr class="inherit_header pub_attribs_classdrain_1_1XML"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1XML')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1XML.html">XML</a></td></tr>
+<tr class="memitem:afd0d68c6d31ff249f3ae8662162663c3 inherit pub_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#afd0d68c6d31ff249f3ae8662162663c3">id</a></td></tr>
+<tr class="memdesc:afd0d68c6d31ff249f3ae8662162663c3 inherit pub_attribs_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some general-purpose.  <a href="classdrain_1_1XML.html#afd0d68c6d31ff249f3ae8662162663c3">More...</a><br /></td></tr>
+<tr class="separator:afd0d68c6d31ff249f3ae8662162663c3 inherit pub_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca7692638c856fa5cc0cf46af70d211a inherit pub_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="aca7692638c856fa5cc0cf46af70d211a"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>ctext</b></td></tr>
+<tr class="separator:aca7692638c856fa5cc0cf46af70d211a inherit pub_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae43c7d8d482ec3550b30cbc7dc23b9f0 inherit pub_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="ae43c7d8d482ec3550b30cbc7dc23b9f0"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>url</b></td></tr>
-<tr class="separator:ae43c7d8d482ec3550b30cbc7dc23b9f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2107dccaea199cd602096a1007557ae"><td class="memItemLeft" align="right" valign="top"><a id="af2107dccaea199cd602096a1007557ae"></a>
-<a class="el" href="classdrain_1_1StyleXML.html">StyleXML</a>&#160;</td><td class="memItemRight" valign="bottom"><b>style</b></td></tr>
-<tr class="separator:af2107dccaea199cd602096a1007557ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6718e917a915542de2e91fcece16e9e4"><td class="memItemLeft" align="right" valign="top"><a id="a6718e917a915542de2e91fcece16e9e4"></a>
+<tr class="separator:ae43c7d8d482ec3550b30cbc7dc23b9f0 inherit pub_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6718e917a915542de2e91fcece16e9e4 inherit pub_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a6718e917a915542de2e91fcece16e9e4"></a>
 <a class="el" href="classdrain_1_1ClassListXML.html">ClassListXML</a>&#160;</td><td class="memItemRight" valign="bottom"><b>classList</b></td></tr>
-<tr class="separator:a6718e917a915542de2e91fcece16e9e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a6718e917a915542de2e91fcece16e9e4 inherit pub_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2107dccaea199cd602096a1007557ae inherit pub_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="af2107dccaea199cd602096a1007557ae"></a>
+<a class="el" href="classdrain_1_1StyleXML.html">StyleXML</a>&#160;</td><td class="memItemRight" valign="bottom"><b>style</b></td></tr>
+<tr class="separator:af2107dccaea199cd602096a1007557ae inherit pub_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24031a8c001f25998d62bf4501587e99 inherit pub_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a24031a8c001f25998d62bf4501587e99"></a>
+intval_t&#160;</td><td class="memItemRight" valign="bottom"><b>type</b> = XML::UNDEFINED</td></tr>
+<tr class="separator:a24031a8c001f25998d62bf4501587e99 inherit pub_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:af1a3d4e039381a1a2d6f1d6632b159b5"><td class="memItemLeft" align="right" valign="top"><a id="af1a3d4e039381a1a2d6f1d6632b159b5"></a>
-static const int&#160;</td><td class="memItemRight" valign="bottom"><b>UNDEFINED</b></td></tr>
-<tr class="separator:af1a3d4e039381a1a2d6f1d6632b159b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7477d03bd76bd537aa28d3341d3be0f4"><td class="memItemLeft" align="right" valign="top"><a id="a7477d03bd76bd537aa28d3341d3be0f4"></a>
-static const int&#160;</td><td class="memItemRight" valign="bottom"><b>COMMENT</b></td></tr>
-<tr class="separator:a7477d03bd76bd537aa28d3341d3be0f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83d8c803d5c648db671664dc2586141a"><td class="memItemLeft" align="right" valign="top"><a id="a83d8c803d5c648db671664dc2586141a"></a>
-static const int&#160;</td><td class="memItemRight" valign="bottom"><b>CTEXT</b></td></tr>
-<tr class="separator:a83d8c803d5c648db671664dc2586141a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95720ca5f6175333167bf3cdc862d078"><td class="memItemLeft" align="right" valign="top"><a id="a95720ca5f6175333167bf3cdc862d078"></a>
-static const int&#160;</td><td class="memItemRight" valign="bottom"><b>STYLE</b></td></tr>
-<tr class="separator:a95720ca5f6175333167bf3cdc862d078"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0292d0fe8ad8d3e8dec8b9a189d08832"><td class="memItemLeft" align="right" valign="top"><a id="a0292d0fe8ad8d3e8dec8b9a189d08832"></a>
-static const int&#160;</td><td class="memItemRight" valign="bottom"><b>SCRIPT</b></td></tr>
-<tr class="separator:a0292d0fe8ad8d3e8dec8b9a189d08832"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43bb819565e27c48b7e75ae93fdf44bd"><td class="memItemLeft" align="right" valign="top"><a id="a43bb819565e27c48b7e75ae93fdf44bd"></a>
 static tag_map_t&#160;</td><td class="memItemRight" valign="bottom"><b>tags</b></td></tr>
 <tr class="separator:a43bb819565e27c48b7e75ae93fdf44bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a318082d4999229dc8bb73c7130cc138e"><td class="memItemLeft" align="right" valign="top"><a id="a318082d4999229dc8bb73c7130cc138e"></a>
+static const xml_default_elem_map_t&#160;</td><td class="memItemRight" valign="bottom"><b>xml_default_elems</b></td></tr>
+<tr class="separator:a318082d4999229dc8bb73c7130cc138e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_attribs_classdrain_1_1XML"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classdrain_1_1XML')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classdrain_1_1XML.html">XML</a></td></tr>
+<tr class="memitem:a389bc1a535520de4958ee1c88a902126 inherit pub_static_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a389bc1a535520de4958ee1c88a902126"></a>
+static const int&#160;</td><td class="memItemRight" valign="bottom"><b>UNDEFINED</b> = 0</td></tr>
+<tr class="separator:a389bc1a535520de4958ee1c88a902126 inherit pub_static_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad06a19a22ea703f0e05009196a123a56 inherit pub_static_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="ad06a19a22ea703f0e05009196a123a56"></a>
+static const int&#160;</td><td class="memItemRight" valign="bottom"><b>COMMENT</b> = 1</td></tr>
+<tr class="separator:ad06a19a22ea703f0e05009196a123a56 inherit pub_static_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af61d23b7f27e6c4dc38819c2ad577a25 inherit pub_static_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="af61d23b7f27e6c4dc38819c2ad577a25"></a>
+static const int&#160;</td><td class="memItemRight" valign="bottom"><b>CTEXT</b> = 2</td></tr>
+<tr class="separator:af61d23b7f27e6c4dc38819c2ad577a25 inherit pub_static_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad222e90eb10e5248c54a391c45acf7bc inherit pub_static_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="ad222e90eb10e5248c54a391c45acf7bc"></a>
+static const int&#160;</td><td class="memItemRight" valign="bottom"><b>STYLE</b> = 3</td></tr>
+<tr class="separator:ad222e90eb10e5248c54a391c45acf7bc inherit pub_static_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae536033cfdaaf0db948dd23c40103040 inherit pub_static_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="ae536033cfdaaf0db948dd23c40103040"></a>
+static const int&#160;</td><td class="memItemRight" valign="bottom"><b>SCRIPT</b> = 4</td></tr>
+<tr class="separator:ae536033cfdaaf0db948dd23c40103040 inherit pub_static_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a188fdbafcf6924b5cef969068a60712a inherit pub_static_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a188fdbafcf6924b5cef969068a60712a"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>nextID</b> = 0</td></tr>
+<tr class="separator:a188fdbafcf6924b5cef969068a60712a inherit pub_static_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4226d9057c7c05a883a01304269c5c2 inherit pub_static_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="aa4226d9057c7c05a883a01304269c5c2"></a>
+static const intval_t&#160;</td><td class="memItemRight" valign="bottom"><b>UNDEFINED</b> = 0</td></tr>
+<tr class="separator:aa4226d9057c7c05a883a01304269c5c2 inherit pub_static_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b9ff93c1ef381c3b5a69ea43faf7f96 inherit pub_static_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a3b9ff93c1ef381c3b5a69ea43faf7f96"></a>
+static const intval_t&#160;</td><td class="memItemRight" valign="bottom"><b>COMMENT</b> = 1</td></tr>
+<tr class="separator:a3b9ff93c1ef381c3b5a69ea43faf7f96 inherit pub_static_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6b94caa32882fafb475131405d437dc inherit pub_static_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="ae6b94caa32882fafb475131405d437dc"></a>
+static const intval_t&#160;</td><td class="memItemRight" valign="bottom"><b>CTEXT</b> = 2</td></tr>
+<tr class="separator:ae6b94caa32882fafb475131405d437dc inherit pub_static_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae73385bde422e42f2646c8bf0d6a53cb inherit pub_static_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="ae73385bde422e42f2646c8bf0d6a53cb"></a>
+static const intval_t&#160;</td><td class="memItemRight" valign="bottom"><b>SCRIPT</b> = 3</td></tr>
+<tr class="separator:ae73385bde422e42f2646c8bf0d6a53cb inherit pub_static_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb5e6e5398b22c3cef0f09de634bb1ef inherit pub_static_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="aeb5e6e5398b22c3cef0f09de634bb1ef"></a>
+static const intval_t&#160;</td><td class="memItemRight" valign="bottom"><b>STYLE</b> = 4</td></tr>
+<tr class="separator:aeb5e6e5398b22c3cef0f09de634bb1ef inherit pub_static_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a777f200b6f1796fcd4b565d6e73c7b0b inherit pub_static_attribs_classdrain_1_1XML"><td class="memItemLeft" align="right" valign="top"><a id="a777f200b6f1796fcd4b565d6e73c7b0b"></a>
+static const intval_t&#160;</td><td class="memItemRight" valign="bottom"><b>STYLE_SELECT</b> = 5</td></tr>
+<tr class="separator:a777f200b6f1796fcd4b565d6e73c7b0b inherit pub_static_attribs_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-types"></a>
 Protected Types</h2></td></tr>
 <tr class="memitem:a6a65be6ce232287d8bf45befb8f6f7f5"><td class="memItemLeft" align="right" valign="top"><a id="a6a65be6ce232287d8bf45befb8f6f7f5"></a>
 typedef std::map&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>xmldoc_attrib_map_t</b></td></tr>
+<tr class="separator:a6a65be6ce232287d8bf45befb8f6f7f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a65be6ce232287d8bf45befb8f6f7f5"><td class="memItemLeft" align="right" valign="top"><a id="a6a65be6ce232287d8bf45befb8f6f7f5"></a>
+typedef std::map&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a6a65be6ce232287d8bf45befb8f6f7f5">xmldoc_attrib_map_t</a></td></tr>
+<tr class="memdesc:a6a65be6ce232287d8bf45befb8f6f7f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">NOTE: these could/should be templated, in TreeXML&lt;...&gt; right? <br /></td></tr>
 <tr class="separator:a6a65be6ce232287d8bf45befb8f6f7f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_types_classdrain_1_1ReferenceMap2"><td colspan="2" onclick="javascript:toggleInherit('pro_types_classdrain_1_1ReferenceMap2')"><img src="closed.png" alt="-"/>&#160;Protected Types inherited from <a class="el" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2&lt; FlexibleVariable &gt;</a></td></tr>
 <tr class="memitem:ad13ba38bb41ac1206987e9c82d85b6d1 inherit pro_types_classdrain_1_1ReferenceMap2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1">extLinkPolicy</a> </td></tr>
@@ -460,6 +817,16 @@ typedef map_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:ace60aa89ee5d0feaf6bd32cea8f0a0ab"><td class="memItemLeft" align="right" valign="top"><a id="ace60aa89ee5d0feaf6bd32cea8f0a0ab"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>typeIs</b> () const</td></tr>
+<tr class="separator:ace60aa89ee5d0feaf6bd32cea8f0a0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58ee13d3d8f319d3e5f86e3d4e374928"><td class="memItemLeft" align="right" valign="top"><a id="a58ee13d3d8f319d3e5f86e3d4e374928"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1NodeXML.html#a58ee13d3d8f319d3e5f86e3d4e374928">handleType</a> (const T &amp;type)</td></tr>
+<tr class="memdesc:a58ee13d3d8f319d3e5f86e3d4e374928"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal function called after setType() <br /></td></tr>
+<tr class="separator:a58ee13d3d8f319d3e5f86e3d4e374928"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20eff8cb639fc3b0e8153b7c72f98978"><td class="memItemLeft" align="right" valign="top"><a id="a20eff8cb639fc3b0e8153b7c72f98978"></a>
+<a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt; int &gt;::xmldoc_attrib_map_t&#160;</td><td class="memItemRight" valign="bottom"><b>xmldoc_attribs</b></td></tr>
+<tr class="separator:a20eff8cb639fc3b0e8153b7c72f98978"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20eff8cb639fc3b0e8153b7c72f98978"><td class="memItemLeft" align="right" valign="top"><a id="a20eff8cb639fc3b0e8153b7c72f98978"></a>
 <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt; int &gt;::xmldoc_attrib_map_t&#160;</td><td class="memItemRight" valign="bottom"><b>xmldoc_attribs</b></td></tr>
 <tr class="separator:a20eff8cb639fc3b0e8153b7c72f98978"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -471,6 +838,9 @@ Protected Member Functions</h2></td></tr>
 <a class="el" href="classdrain_1_1VariableT.html">ref_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceMap2.html#a9bcbf2feb300e7214f0d2af4fb5eb266">link</a> (const std::string &amp;key, void *ptr, const std::type_info &amp;type, size_t count=1)</td></tr>
 <tr class="memdesc:a9bcbf2feb300e7214f0d2af4fb5eb266 inherit pro_methods_classdrain_1_1ReferenceMap2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a reference to a basic type or std::string. (Also for basetype arrays.) <br /></td></tr>
 <tr class="separator:a9bcbf2feb300e7214f0d2af4fb5eb266 inherit pro_methods_classdrain_1_1ReferenceMap2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dce7c1b4c80958f746c1edd167da363 inherit pro_methods_classdrain_1_1ReferenceMap2"><td class="memItemLeft" align="right" valign="top"><a id="a3dce7c1b4c80958f746c1edd167da363"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>unlink</b> (const std::string &amp;key)</td></tr>
+<tr class="separator:a3dce7c1b4c80958f746c1edd167da363 inherit pro_methods_classdrain_1_1ReferenceMap2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7dbc53b52637b91d21d08d9d372fdda2 inherit pro_methods_classdrain_1_1ReferenceMap2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceMap2.html#a7dbc53b52637b91d21d08d9d372fdda2">copyStruct</a> (const <a class="el" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2</a>&lt; <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">FlexibleVariable</a> &gt; &amp;m, const T2 &amp;src, T2 &amp;dst, <a class="el" href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1">extLinkPolicy</a> policy=<a class="el" href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1af8ede8b906acf8b2b5e13127a2a17032">RESERVE</a>)</td></tr>
 <tr class="memdesc:a7dbc53b52637b91d21d08d9d372fdda2 inherit pro_methods_classdrain_1_1ReferenceMap2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Experimental. Copies references and values of a structure to another.  <a href="classdrain_1_1ReferenceMap2.html#a7dbc53b52637b91d21d08d9d372fdda2">More...</a><br /></td></tr>
 <tr class="separator:a7dbc53b52637b91d21d08d9d372fdda2 inherit pro_methods_classdrain_1_1ReferenceMap2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -480,9 +850,6 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a0cab261405d46bcfcd724f396c0ec608 inherit pro_methods_classdrain_1_1SmartMap"><td class="memItemLeft" align="right" valign="top"><a id="a0cab261405d46bcfcd724f396c0ec608"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SmartMap</b> (const <a class="el" href="classdrain_1_1SmartMap.html">SmartMap</a> &amp;smap)</td></tr>
 <tr class="separator:a0cab261405d46bcfcd724f396c0ec608 inherit pro_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae048282c7011eedc2e0492f6421ea73 inherit pro_methods_classdrain_1_1SmartMap"><td class="memItemLeft" align="right" valign="top"><a id="aae048282c7011eedc2e0492f6421ea73"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
-<tr class="separator:aae048282c7011eedc2e0492f6421ea73 inherit pro_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2caa6fea9e9725a1d3dde96af1e1ff9 inherit pro_methods_classdrain_1_1SmartMap"><td class="memItemLeft" align="right" valign="top"><a id="ad2caa6fea9e9725a1d3dde96af1e1ff9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasKey</b> (const std::string &amp;key) const</td></tr>
 <tr class="separator:ad2caa6fea9e9725a1d3dde96af1e1ff9 inherit pro_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -570,18 +937,14 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> (cha
 <tr class="memdesc:ac2236179b2770b16ac72abb636634efd inherit pro_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write map as a JSON code.  <a href="classdrain_1_1SmartMap.html#ac2236179b2770b16ac72abb636634efd">More...</a><br /></td></tr>
 <tr class="separator:ac2236179b2770b16ac72abb636634efd inherit pro_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
-Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:a5e006c1cc754ff29b3d2b22ae545c531"><td class="memTemplParams" colspan="2"><a id="a5e006c1cc754ff29b3d2b22ae545c531"></a>
-template&lt;class V &gt; </td></tr>
-<tr class="memitem:a5e006c1cc754ff29b3d2b22ae545c531"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>attribToStream</b> (std::ostream &amp;ostr, const std::string &amp;key, const V &amp;value)</td></tr>
-<tr class="separator:a5e006c1cc754ff29b3d2b22ae545c531"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:aa11312eede319a01d9e28f48b10375ca"><td class="memItemLeft" align="right" valign="top"><a id="aa11312eede319a01d9e28f48b10375ca"></a>
+static xmldoc_attrib_map_t&#160;</td><td class="memItemRight" valign="bottom"><b>xmldoc_attribs</b></td></tr>
+<tr class="separator:aa11312eede319a01d9e28f48b10375ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:afd0d68c6d31ff249f3ae8662162663c3"><td class="memItemLeft" align="right" valign="top"><a id="afd0d68c6d31ff249f3ae8662162663c3"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>id</b></td></tr>
-<tr class="separator:afd0d68c6d31ff249f3ae8662162663c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1SmartMap"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1SmartMap')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1SmartMap.html">SmartMap&lt; FlexibleVariable &gt;</a></td></tr>
 <tr class="memitem:a3e9d8363daba3503121bd79ad72093b0 inherit pro_attribs_classdrain_1_1SmartMap"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#a3e9d8363daba3503121bd79ad72093b0">keyList</a></td></tr>
 <tr class="memdesc:a3e9d8363daba3503121bd79ad72093b0 inherit pro_attribs_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns values from std::string of type "value,value2,...valueN".  <a href="classdrain_1_1SmartMap.html#a3e9d8363daba3503121bd79ad72093b0">More...</a><br /></td></tr>
@@ -594,15 +957,6 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#a360531fdf0529252ca32fe16010bab62">arraySeparator</a></td></tr>
 <tr class="memdesc:a360531fdf0529252ca32fe16010bab62 inherit pro_attribs_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default separator character for array elements (std::vector's) <br /></td></tr>
 <tr class="separator:a360531fdf0529252ca32fe16010bab62 inherit pro_attribs_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
-Static Protected Attributes</h2></td></tr>
-<tr class="memitem:a431ef015333e2816aadcaf26b5ce7b5a"><td class="memItemLeft" align="right" valign="top"><a id="a431ef015333e2816aadcaf26b5ce7b5a"></a>
-static xmldoc_attrib_map_t&#160;</td><td class="memItemRight" valign="bottom"><b>xmldoc_attribs</b></td></tr>
-<tr class="separator:a431ef015333e2816aadcaf26b5ce7b5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ecee72cda8919ebce12f4b9db969386"><td class="memItemLeft" align="right" valign="top"><a id="a4ecee72cda8919ebce12f4b9db969386"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>nextID</b> = 0</td></tr>
-<tr class="separator:a4ecee72cda8919ebce12f4b9db969386"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class T = int&gt;<br />
@@ -615,8 +969,82 @@ class drain::NodeXML&lt; T &gt;</h3>
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="af134315afd4b41f418e587f985f0ff7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af134315afd4b41f418e587f985f0ff7b">&#9670;&nbsp;</a></span>docToStream() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::ostream&amp; docToStream </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Finds elements in an <a class="el" href="classdrain_1_1XML.html">XML</a> structure by class name. Finds elements in an <a class="el" href="classdrain_1_1XML.html">XML</a> structure by class name. Redirects to findByClass(t, std::string(cls), </p>
+
+</div>
+</div>
+<a id="af134315afd4b41f418e587f985f0ff7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af134315afd4b41f418e587f985f0ff7b">&#9670;&nbsp;</a></span>docToStream() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::ostream&amp; docToStream </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Finds elements in an <a class="el" href="classdrain_1_1XML.html">XML</a> structure by class name. Finds elements in an <a class="el" href="classdrain_1_1XML.html">XML</a> structure by class name. Redirects to findByClass(t, std::string(cls), </p>
+
+</div>
+</div>
 <a id="ab81f688b371899ed63378ada247d1854"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab81f688b371899ed63378ada247d1854">&#9670;&nbsp;</a></span>docTypeToStream()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab81f688b371899ed63378ada247d1854">&#9670;&nbsp;</a></span>docTypeToStream() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -639,13 +1067,13 @@ class drain::NodeXML&lt; T &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Write the XML definition beginning any XML document. </p>
+<p>Write the <a class="el" href="classdrain_1_1XML.html">XML</a> definition beginning any <a class="el" href="classdrain_1_1XML.html">XML</a> document. </p>
 <p>Each derived class should have a definition compatible with the structure generated by the class. </p>
 
 </div>
 </div>
-<a id="ac3983686bd3e7dabdc97c4be88e99415"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3983686bd3e7dabdc97c4be88e99415">&#9670;&nbsp;</a></span>findById() <span class="overload">[1/2]</span></h2>
+<a id="ab81f688b371899ed63378ada247d1854"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab81f688b371899ed63378ada247d1854">&#9670;&nbsp;</a></span>docTypeToStream() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -654,59 +1082,27 @@ class drain::NodeXML&lt; T &gt;</h3>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool findById </td>
+          <td class="memname">static std::ostream&amp; docTypeToStream </td>
           <td>(</td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>tree</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostr</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>tag</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">path_list_t &amp;&#160;</td>
-          <td class="paramname"><em>result</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;&#160;</td>
-          <td class="paramname"><em>path</em> = <code><a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a>()</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Find all the occurrence of given ID using recursive breath-first search. </p>
-<p>By definition, id attributes should be unique. This function nevertheless returns a list if user wants to handle more than one elements found.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tree</td><td>- source element, </td></tr>
-    <tr><td class="paramname">id</td><td>- id attribute to be searched for </td></tr>
-    <tr><td class="paramname">result</td><td>- path of pointing to </td></tr>
-    <tr><td class="paramname">path</td><td>- start path for the search. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>- <code>true</code>, if an element was found. </dd></dl>
+<p>Write the <a class="el" href="classdrain_1_1XML.html">XML</a> definition beginning any <a class="el" href="classdrain_1_1XML.html">XML</a> document. </p>
+<p>Each derived class should have a definition compatible with the structure generated by the class. </p>
 
 </div>
 </div>
-<a id="aebabe364755f9207280af892ccf1138c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebabe364755f9207280af892ccf1138c">&#9670;&nbsp;</a></span>findById() <span class="overload">[2/2]</span></h2>
+<a id="a68a13656822bc798305b30dabc97c481"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68a13656822bc798305b30dabc97c481">&#9670;&nbsp;</a></span>getTag() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -715,145 +1111,46 @@ class drain::NodeXML&lt; T &gt;</h3>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool findById </td>
+          <td class="memname">virtual const std::string&amp; getTag </td>
           <td>(</td>
-          <td class="paramtype">const V &amp;&#160;</td>
-          <td class="paramname"><em>tree</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>tag</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">typename V::path_t &amp;&#160;</td>
-          <td class="paramname"><em>result</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const typename V::path_t &amp;&#160;</td>
-          <td class="paramname"><em>path</em> = <code><a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a>()</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Find the first occurrence of given id using recursive breath-first search. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tree</td><td>- source element, </td></tr>
-    <tr><td class="paramname">id</td><td>- id attribute to be searched for </td></tr>
-    <tr><td class="paramname">result</td><td>- path of the element with required ID, if found. </td></tr>
-    <tr><td class="paramname">path</td><td>- start path for the search. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>- <code>true</code>, if an element was found. </dd></dl>
+<p>This function should not be called upon construction. </p>
 
 </div>
 </div>
-<a id="a7935ca2efb8ff93f3d81d5749f02799d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7935ca2efb8ff93f3d81d5749f02799d">&#9670;&nbsp;</a></span>findByTag()</h2>
+<a id="a7808cdc74f65aac10768d6eaa3aa8591"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7808cdc74f65aac10768d6eaa3aa8591">&#9670;&nbsp;</a></span>getTag() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool findByTag </td>
+          <td class="memname">static const std::string&amp; getTag </td>
           <td>(</td>
           <td class="paramtype">const T &amp;&#160;</td>
-          <td class="paramname"><em>t</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><em>type</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const N &amp;&#160;</td>
-          <td class="paramname"><em>tag</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt;&gt;::path_list_t &amp;&#160;</td>
-          <td class="paramname"><em>result</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;&#160;</td>
-          <td class="paramname"><em>path</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Tree</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a62912a7782909e768fc3560a41d218ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a62912a7782909e768fc3560a41d218ad">&#9670;&nbsp;</a></span>findByTags()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool findByTags </td>
-          <td>(</td>
-          <td class="paramtype">const T &amp;&#160;</td>
-          <td class="paramname"><em>t</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::set&lt; N &gt; &amp;&#160;</td>
-          <td class="paramname"><em>tags</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt;&gt;::path_list_t &amp;&#160;</td>
-          <td class="paramname"><em>result</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1NodeXML.html#aef500e3141ceb145306424f2567890c0">path_t</a> &amp;&#160;</td>
-          <td class="paramname"><em>path</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Tree</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
+<p>This function should not be called upon construction. Consider dynamic getDict() to skip </p>
 
 </div>
 </div>
@@ -873,6 +1170,33 @@ class drain::NodeXML&lt; T &gt;</h3>
 </div><div class="memdoc">
 <p>Set of NOT self.closing tags.</p>
 <p>Inclusive solution...</p>
+
+</div>
+</div>
+<a id="ab1a45aaa82635eb8c7283a0c05bb7e27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1a45aaa82635eb8c7283a0c05bb7e27">&#9670;&nbsp;</a></span>set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void set </td>
+          <td>(</td>
+          <td class="paramtype">const std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>drain::SmartMapTools::setValues(getAttributes(), l); // add new keys</p>
 
 </div>
 </div>
@@ -910,6 +1234,45 @@ class drain::NodeXML&lt; T &gt;</h3>
 
 </div>
 </div>
+<a id="a3e3e66d709d6ef795434d5bf46c35197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e3e66d709d6ef795434d5bf46c35197">&#9670;&nbsp;</a></span>setStyle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setStyle </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::initializer_list&lt; V &gt; &amp;&#160;</td>
+          <td class="paramname"><em>l</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set style of an element. </p>
+<div class="fragment"><div class="line">rect.setStyle(<span class="stringliteral">&quot;dash-array&quot;</span>,{2,5,3});</div>
+</div><!-- fragment --> 
+</div>
+</div>
 <a id="a1af3ae2bb501ec9cfe0fc6db7a36ad30"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1af3ae2bb501ec9cfe0fc6db7a36ad30">&#9670;&nbsp;</a></span>setText()</h2>
 
@@ -945,7 +1308,7 @@ class drain::NodeXML&lt; T &gt;</h3>
 </div>
 </div>
 <a id="ab56b84e4b188a9654ee2634f5cec26d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab56b84e4b188a9654ee2634f5cec26d9">&#9670;&nbsp;</a></span>toStream()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab56b84e4b188a9654ee2634f5cec26d9">&#9670;&nbsp;</a></span>toStream() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -982,7 +1345,57 @@ class drain::NodeXML&lt; T &gt;</h3>
       </table>
 </div><div class="memdoc">
 
-<p>XML output function shared for all XML documents, ie versions defined in subclasses. </p>
+<p><a class="el" href="classdrain_1_1XML.html">XML</a> output function shared for all <a class="el" href="classdrain_1_1XML.html">XML</a> documents, ie versions defined in subclasses. </p>
+<p>TODO: preamble/prologToStream()</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">defaultTag</td><td>- important for </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>iterate children - note the use of default tag</p>
+
+</div>
+</div>
+<a id="a60f311aa4c1682df9e618871690f0e6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60f311aa4c1682df9e618871690f0e6d">&#9670;&nbsp;</a></span>toStream() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; toStream </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>ostr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TR &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>defaultTag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>indent</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classdrain_1_1XML.html">XML</a> output function shared for all <a class="el" href="classdrain_1_1XML.html">XML</a> documents, ie versions defined in subclasses. </p>
 <p>TODO: preamble/prologToStream()</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -995,7 +1408,7 @@ class drain::NodeXML&lt; T &gt;</h3>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/drain/util/<a class="el" href="TreeXML_8h_source.html">TreeXML.h</a></li>
+<li>bak/<a class="el" href="bak_2TreeXML_8h_source.html">TreeXML.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

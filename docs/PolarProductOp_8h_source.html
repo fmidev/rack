@@ -103,82 +103,81 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#ifndef PolarProduct_OP_H_</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#define PolarProduct_OP_H_</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#ifndef RACK_PolarProductOP</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#define RACK_PolarProductOP</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;data/PolarODIM.h&quot;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;VolumeOp.h&quot;</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;data/PolarODIM.h&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerack.html">rack</a> {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">// using namespace drain::image;</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacedrain_1_1image.html">drain::image</a>;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classrack_1_1PolarProductOp.html">   61</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a> : <span class="keyword">public</span> <a class="code" href="classrack_1_1VolumeOp.html">VolumeOp</a>&lt;PolarODIM&gt; {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classrack_1_1PolarProductOp.html">   59</a></span>&#160;<span class="keyword">class </span><a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a> : <span class="keyword">public</span> <a class="code" href="classrack_1_1VolumeOp.html">VolumeOp</a>&lt;PolarODIM&gt; {</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(<span class="keyword">const</span> std::string &amp; name = __FUNCTION__, <span class="keyword">const</span> std::string &amp; description = <span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(<span class="keyword">const</span> std::string &amp; name = __FUNCTION__, <span class="keyword">const</span> std::string &amp; description = <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a> &amp; op);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a> &amp; op);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    ~<a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(){};</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1CoordinatePolicy.html">CoordinatePolicy</a> polarCoordPolicy;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    ~<a class="code" href="classrack_1_1PolarProductOp.html">PolarProductOp</a>(){};</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1CoordinatePolicy.html">CoordinatePolicy</a> polarCoordPolicy;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">bool</span> aboveSeaLevel; <span class="comment">// True, if altitude (input or output) is measured from sea level or radar site.</span></div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">bool</span> aboveSeaLevel; <span class="comment">// True, if altitude (input or output) is measured from sea level or radar site.</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> copyPolarGeometry(<span class="keyword">const</span> <a class="code" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp; srcODIM, <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;PolarDst&gt;</a> &amp; dstData)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        dstData.odim.area.width  = srcODIM.area.width;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        dstData.odim.area.height  = srcODIM.area.height;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        dstData.odim.rscale = srcODIM.<a class="code" href="classrack_1_1PolarODIM.html#a7a209526bccd05d33534ea350c72ce46">rscale</a>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        dstData.data.setGeometry(dstData.odim.area.width, dstData.odim.area.height);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">if</span> (!dstData.odim.type.empty()){</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            dstData.data.setType(dstData.odim.type.at(0));</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="comment">// warn type not set?</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    };</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">// Copy Polar could be enough?</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">void</span> setGeometry(<span class="keyword">const</span> <a class="code" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp; srcODIM, <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;PolarDst&gt;</a> &amp; dstData)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        copyPolarGeometry(srcODIM, dstData);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">void</span> copyPolarGeometry(<span class="keyword">const</span> <a class="code" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp; srcODIM, <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;PolarDst&gt;</a> &amp; dstData)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        dstData.odim.area.width  = srcODIM.area.width;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        dstData.odim.area.height  = srcODIM.area.height;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        dstData.odim.rscale = srcODIM.<a class="code" href="classrack_1_1PolarODIM.html#a7a209526bccd05d33534ea350c72ce46">rscale</a>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        dstData.data.setGeometry(dstData.odim.area.width, dstData.odim.area.height);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">if</span> (!dstData.odim.type.empty()){</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            dstData.data.setType(dstData.odim.type.at(0));</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="comment">// warn type not set?</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    };</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="comment">// Copy Polar could be enough?</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">void</span> setGeometry(<span class="keyword">const</span> <a class="code" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp; srcODIM, <a class="code" href="classrack_1_1PlainData.html">PlainData&lt;PolarDst&gt;</a> &amp; dstData)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        copyPolarGeometry(srcODIM, dstData);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordtype">void</span> deriveDstGeometry(<span class="keyword">const</span> <a class="code" href="classrack_1_1DataSetMap.html">DataSetMap&lt;PolarSrc&gt;</a> &amp; srcSweeps, <a class="code" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp; dstOdim, <span class="keywordtype">bool</span> MINIMISE_RSCALE=<span class="keyword">false</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1PolarProductOp.html#a35027d18c08a42943896258054ef7cc4">deriveDstGeometry</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1DataSetMap.html">DataSetMap&lt;PolarSrc&gt;</a> &amp; srcSweeps, <a class="code" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp; dstOdim, <span class="keywordtype">bool</span> MINIMISE_RSCALE=<span class="keyword">false</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordtype">void</span> determineMetadata(<span class="keyword">const</span> <a class="code" href="classrack_1_1DataSetMap.html">DataSetMap&lt;PolarSrc&gt;</a> &amp; srcSweeps, <a class="code" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp; dstOdim) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classrack_1_1PolarProductOp.html#a97e2c06ddcf72a3fcdc10f477cb63342">determineMetadata</a>(<span class="keyword">const</span> <a class="code" href="classrack_1_1DataSetMap.html">DataSetMap&lt;PolarSrc&gt;</a> &amp; srcSweeps, <a class="code" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp; dstOdim) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;};</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;};</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}  <span class="comment">// namespace rack</span></div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;}  <span class="comment">// namespace rack</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RACKOP_H_ */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RACKOP_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">// Rack</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">// Rack</span></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1CoordinatePolicy_html"><div class="ttname"><a href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a></div><div class="ttdoc">Policies for coordinate underflows and overflows.</div><div class="ttdef"><b>Definition:</b> CoordinatePolicy.h:106</div></div>
 <div class="ttc" id="aclassrack_1_1DataSetMap_html"><div class="ttname"><a href="classrack_1_1DataSetMap.html">rack::DataSetMap</a></div><div class="ttdef"><b>Definition:</b> Data.h:1368</div></div>
 <div class="ttc" id="aclassrack_1_1PlainData_html"><div class="ttname"><a href="classrack_1_1PlainData.html">rack::PlainData</a></div><div class="ttdoc">Essential class for storing radar data.</div><div class="ttdef"><b>Definition:</b> Data.h:302</div></div>
 <div class="ttc" id="aclassrack_1_1PolarODIM_html"><div class="ttname"><a href="classrack_1_1PolarODIM.html">rack::PolarODIM</a></div><div class="ttdoc">Metadata structure for single-radar data (polar scans, volumes and products).</div><div class="ttdef"><b>Definition:</b> PolarODIM.h:45</div></div>
 <div class="ttc" id="aclassrack_1_1PolarODIM_html_a7a209526bccd05d33534ea350c72ce46"><div class="ttname"><a href="classrack_1_1PolarODIM.html#a7a209526bccd05d33534ea350c72ce46">rack::PolarODIM::rscale</a></div><div class="ttdeci">double &amp; rscale</div><div class="ttdoc">Beam-directional bin length [m].</div><div class="ttdef"><b>Definition:</b> PolarODIM.h:77</div></div>
-<div class="ttc" id="aclassrack_1_1PolarProductOp_html"><div class="ttname"><a href="classrack_1_1PolarProductOp.html">rack::PolarProductOp</a></div><div class="ttdoc">Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input.</div><div class="ttdef"><b>Definition:</b> PolarProductOp.h:61</div></div>
+<div class="ttc" id="aclassrack_1_1PolarProductOp_html"><div class="ttname"><a href="classrack_1_1PolarProductOp.html">rack::PolarProductOp</a></div><div class="ttdoc">Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input.</div><div class="ttdef"><b>Definition:</b> PolarProductOp.h:59</div></div>
+<div class="ttc" id="aclassrack_1_1PolarProductOp_html_a35027d18c08a42943896258054ef7cc4"><div class="ttname"><a href="classrack_1_1PolarProductOp.html#a35027d18c08a42943896258054ef7cc4">rack::PolarProductOp::deriveDstGeometry</a></div><div class="ttdeci">virtual void deriveDstGeometry(const DataSetMap&lt; PolarSrc &gt; &amp;srcSweeps, PolarODIM &amp;dstOdim, bool MINIMISE_RSCALE=false) const</div><div class="ttdoc">Based on input data, find geometry that maximises range and ray count.</div><div class="ttdef"><b>Definition:</b> PolarProductOp.cpp:101</div></div>
+<div class="ttc" id="aclassrack_1_1PolarProductOp_html_a97e2c06ddcf72a3fcdc10f477cb63342"><div class="ttname"><a href="classrack_1_1PolarProductOp.html#a97e2c06ddcf72a3fcdc10f477cb63342">rack::PolarProductOp::determineMetadata</a></div><div class="ttdeci">virtual void determineMetadata(const DataSetMap&lt; PolarSrc &gt; &amp;srcSweeps, PolarODIM &amp;dstOdim) const</div><div class="ttdoc">Update timestamps etc.</div><div class="ttdef"><b>Definition:</b> PolarProductOp.cpp:199</div></div>
 <div class="ttc" id="aclassrack_1_1VolumeOp_html"><div class="ttname"><a href="classrack_1_1VolumeOp.html">rack::VolumeOp</a></div><div class="ttdoc">Base class for radar data processors.</div><div class="ttdef"><b>Definition:</b> VolumeOp.h:88</div></div>
-<div class="ttc" id="anamespacedrain_1_1image_html"><div class="ttname"><a href="namespacedrain_1_1image.html">drain::image</a></div><div class="ttdoc">Namespace for images and image processing tools.</div><div class="ttdef"><b>Definition:</b> AccumulationArray.cpp:45</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:44</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

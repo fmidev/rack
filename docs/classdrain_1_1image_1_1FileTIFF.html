@@ -99,13 +99,15 @@ Collaboration diagram for FileTIFF:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1FileTIFF__coll__graph.png" border="0" usemap="#aFileTIFF_coll__map" alt="Collaboration graph"/></div>
 <map name="aFileTIFF_coll__map" id="aFileTIFF_coll__map">
-<area shape="rect" title="For writing images in basic TIFF format. Reading not supported currently." alt="" coords="125,275,198,301"/>
-<area shape="rect" href="classdrain_1_1FileHandler.html" title=" " alt="" coords="5,171,101,197"/>
-<area shape="rect" href="classdrain_1_1FileInfo.html" title=" " alt="" coords="126,171,197,197"/>
-<area shape="rect" href="classdrain_1_1RegExp.html" title=" " alt="" coords="123,81,194,108"/>
-<area shape="rect" href="classdrain_1_1Frame2D.html" title=" " alt="" coords="228,171,356,197"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="229,81,363,108"/>
-<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="225,5,367,32"/>
+<area shape="rect" title="For writing images in basic TIFF format. Reading not supported currently." alt="" coords="186,289,259,316"/>
+<area shape="rect" href="classdrain_1_1FileHandler.html" title=" " alt="" coords="5,185,101,212"/>
+<area shape="rect" href="classdrain_1_1FileInfo.html" title=" " alt="" coords="126,185,197,212"/>
+<area shape="rect" href="classdrain_1_1RegExp.html" title=" " alt="" coords="113,89,183,115"/>
+<area shape="rect" href="classdrain_1_1Frame2D.html" title=" " alt="" coords="221,185,349,212"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="218,89,353,115"/>
+<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="214,5,357,32"/>
+<area shape="rect" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="374,185,519,212"/>
+<area shape="rect" title=" " alt="" coords="377,81,516,123"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -157,9 +159,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setDefaults</b> ()</t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae5d697c50b451e84faca0a433ea2830e"><td class="memItemLeft" align="right" valign="top"><a id="ae5d697c50b451e84faca0a433ea2830e"></a>
-static const <a class="el" href="classdrain_1_1Dictionary.html">dict_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getCompressionDict</b> ()</td></tr>
-<tr class="separator:ae5d697c50b451e84faca0a433ea2830e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f052ece88d8838b903f2d4c5002d9a7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileTIFF.html#a5f052ece88d8838b903f2d4c5002d9a7">write</a> (const std::string &amp;path, const <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;src)</td></tr>
 <tr class="memdesc:a5f052ece88d8838b903f2d4c5002d9a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation.  <a href="classdrain_1_1image_1_1FileTIFF.html#a5f052ece88d8838b903f2d4c5002d9a7">More...</a><br /></td></tr>
 <tr class="separator:a5f052ece88d8838b903f2d4c5002d9a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,6 +168,8 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:aa0496813d9e0acbae8d6bd3a0b272867"><td class="memItemLeft" align="right" valign="top"><a id="aa0496813d9e0acbae8d6bd3a0b272867"></a>
 static const <a class="el" href="classdrain_1_1FileInfo.html">drain::FileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fileInfo</b></td></tr>
 <tr class="separator:aa0496813d9e0acbae8d6bd3a0b272867"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a698be922194b18aed7c725a973d2a84c"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>compressionDict</b></td></tr>
+<tr class="separator:a698be922194b18aed7c725a973d2a84c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d499e9a6bbefcab039ad430536c9b95"><td class="memItemLeft" align="right" valign="top"><a id="a3d499e9a6bbefcab039ad430536c9b95"></a>
 static dict_t::value_t&#160;</td><td class="memItemRight" valign="bottom"><b>defaultCompression</b></td></tr>
 <tr class="separator:a3d499e9a6bbefcab039ad430536c9b95"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -248,6 +249,35 @@ TIFF *&#160;</td><td class="memItemRight" valign="bottom"><b>tif</b></td></tr>
 <p>Address each ŕow directly</p>
 <p>Copy each ŕow to buffer</p>
 
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a698be922194b18aed7c725a973d2a84c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a698be922194b18aed7c725a973d2a84c">&#9670;&nbsp;</a></span>compressionDict</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classdrain_1_1Dictionary.html">FileTIFF::dict_t</a> compressionDict</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">        {<span class="stringliteral">&quot;NONE&quot;</span>,     COMPRESSION_NONE},</div>
+<div class="line">        {<span class="stringliteral">&quot;LZW&quot;</span>,      COMPRESSION_LZW},</div>
+<div class="line">        {<span class="stringliteral">&quot;DEFLATE&quot;</span>,  COMPRESSION_DEFLATE},</div>
+<div class="line">        {<span class="stringliteral">&quot;PACKBITS&quot;</span>, COMPRESSION_PACKBITS}</div>
+<div class="line">}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

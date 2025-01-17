@@ -105,7 +105,7 @@ $(function() {
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#ifndef GLOBAL_FLAGS_H_</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define GLOBAL_FLAGS_H_</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;FlagsOld.h&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &quot;Flags.h&quot;</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;Static.h&quot;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a></div>
@@ -148,59 +148,60 @@ $(function() {
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classdrain_1_1GlobalFlags.html">   81</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1GlobalFlags.html">GlobalFlags</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1Flagger.html">Flagger</a> {</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classdrain_1_1GlobalFlags.html">   81</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1GlobalFlags.html">GlobalFlags</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1MultiFlagger.html">MultiFlagger</a>&lt;int&gt; {</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="classdrain_1_1Flags.html">Flags</a> &amp; getShared(){</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">return</span> Static::get&lt;Flags,T&gt;();</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <a class="code" href="classdrain_1_1MultiFlagger.html">MultiFlagger&lt;int&gt;</a> &amp; getShared(){</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">return</span> Static::get&lt;MultiFlagger&lt;int&gt;,T&gt;();</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="classdrain_1_1Dictionary.html">Flagger::dict_t</a> &amp; getSharedDict(){</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">return</span> getShared().getDict();</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1MultiFlagger.html">MultiFlagger&lt;int&gt;::dict_t</a> &amp; getSharedDict(){</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">return</span> getShared().<a class="code" href="classdrain_1_1MultiFlagger.html#af4087abd3cf152432c4410c6e9f5aa53">getDict</a>();</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <a class="code" href="classdrain_1_1GlobalFlags.html">GlobalFlags</a>() : <a class="code" href="classdrain_1_1Flagger.html">Flagger</a>(ownValue, getSharedDict()){</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    };</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T2&gt;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="classdrain_1_1GlobalFlags.html#ad2cb957500e1d80421ce86d88f032f18">  104</a></span>&#160;    <a class="code" href="classdrain_1_1GlobalFlags.html">GlobalFlags&lt;T&gt;</a> &amp; <a class="code" href="classdrain_1_1GlobalFlags.html#ad2cb957500e1d80421ce86d88f032f18">operator=</a>(<span class="keyword">const</span> T2 &amp;x){</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <a class="code" href="classdrain_1_1Flagger.html#a68ecdcf826f3595dcd66bd1e7813a517">assign</a>(x);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">    GlobalFlags() : MultiFlagger&lt;int&gt;(ownValue, getSharedDict()){</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">    };</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T2&gt;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="classdrain_1_1GlobalFlags.html#ad2cb957500e1d80421ce86d88f032f18">  106</a></span>&#160;    <a class="code" href="classdrain_1_1GlobalFlags.html">GlobalFlags&lt;T&gt;</a> &amp; <a class="code" href="classdrain_1_1GlobalFlags.html#ad2cb957500e1d80421ce86d88f032f18">operator=</a>(<span class="keyword">const</span> T2 &amp;x){</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <a class="code" href="classdrain_1_1MultiFlagger.html#a6d42ffe22b5ce5ecb191dd873cdb9add">assign</a>(x);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    }</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="comment">// Consider adding a warning if value reserved</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="comment">// Consider adding a notif   if key already defined</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">static</span> <span class="keyword">inline</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="classdrain_1_1GlobalFlags.html#a877423f8cd0466fcefe1f92c4b18f61a">  118</a></span>&#160;    Flagger::ivalue_t <a class="code" href="classdrain_1_1GlobalFlags.html#a877423f8cd0466fcefe1f92c4b18f61a">addEntry</a>(<span class="keyword">const</span> Flagger::dict_t::key_t &amp; key, ivalue_t i=0){</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1FlagResolver.html#ab183329c42ba3c3176c65a3f19adf665">Flagger::addEntry</a>(<a class="code" href="classdrain_1_1GlobalFlags.html">GlobalFlags&lt;T&gt;::getSharedDict</a>(), key, i);</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    }</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="comment">// System error (Network error, , memory error)</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="comment">// Consider adding a warning if value reserved</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="comment">// Consider adding a notif   if key already defined</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">    static inline</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">    int addEntry(const std::string &amp; key, int i=0){</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">        return FlaggerBase&lt;T&gt;::addEntry(GlobalFlags&lt;T&gt;::getSharedDict(), key, i);</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">    */</span></div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;};</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="comment">// System error (Network error, , memory error)</span></div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;} <span class="comment">// ::drain</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary&lt; key_t, ivalue_t &gt;</a></div></div>
-<div class="ttc" id="aclassdrain_1_1FlagResolver_html_ab183329c42ba3c3176c65a3f19adf665"><div class="ttname"><a href="classdrain_1_1FlagResolver.html#ab183329c42ba3c3176c65a3f19adf665">drain::FlagResolver::addEntry</a></div><div class="ttdeci">static ivalue_t addEntry(drain::Dictionary&lt; key_t, T &gt; &amp;dict, const key_t &amp;key, ivalue_t i=0)</div><div class="ttdoc">Add a new entry in the dictionary.</div></div>
-<div class="ttc" id="aclassdrain_1_1Flagger_html"><div class="ttname"><a href="classdrain_1_1Flagger.html">drain::Flagger</a></div><div class="ttdoc">A bit vector with external Dictionary mapping from strings to bits and vice versa.</div><div class="ttdef"><b>Definition:</b> FlagsOld.h:45</div></div>
-<div class="ttc" id="aclassdrain_1_1Flagger_html_a68ecdcf826f3595dcd66bd1e7813a517"><div class="ttname"><a href="classdrain_1_1Flagger.html#a68ecdcf826f3595dcd66bd1e7813a517">drain::Flagger::assign</a></div><div class="ttdeci">void assign(ivalue_t x)</div><div class="ttdoc">Sets value, ie. set or unsets all the flags.</div><div class="ttdef"><b>Definition:</b> FlagsOld.h:196</div></div>
-<div class="ttc" id="aclassdrain_1_1Flags_html"><div class="ttname"><a href="classdrain_1_1Flags.html">drain::Flags</a></div><div class="ttdoc">Self-contained Flagger – with an own dictionary and value.</div><div class="ttdef"><b>Definition:</b> FlagsOld.h:314</div></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;};</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;} <span class="comment">// ::drain</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdrain_1_1GlobalFlags_html"><div class="ttname"><a href="classdrain_1_1GlobalFlags.html">drain::GlobalFlags</a></div><div class="ttdoc">Flags using a global dictionary.</div><div class="ttdef"><b>Definition:</b> GlobalFlags.h:81</div></div>
-<div class="ttc" id="aclassdrain_1_1GlobalFlags_html_a877423f8cd0466fcefe1f92c4b18f61a"><div class="ttname"><a href="classdrain_1_1GlobalFlags.html#a877423f8cd0466fcefe1f92c4b18f61a">drain::GlobalFlags::addEntry</a></div><div class="ttdeci">static Flagger::ivalue_t addEntry(const Flagger::dict_t::key_t &amp;key, ivalue_t i=0)</div><div class="ttdoc">Add a new entry in the dictionary.</div><div class="ttdef"><b>Definition:</b> GlobalFlags.h:118</div></div>
-<div class="ttc" id="aclassdrain_1_1GlobalFlags_html_ad2cb957500e1d80421ce86d88f032f18"><div class="ttname"><a href="classdrain_1_1GlobalFlags.html#ad2cb957500e1d80421ce86d88f032f18">drain::GlobalFlags::operator=</a></div><div class="ttdeci">GlobalFlags&lt; T &gt; &amp; operator=(const T2 &amp;x)</div><div class="ttdoc">Sets value, ie. set or unsets all the flags.</div><div class="ttdef"><b>Definition:</b> GlobalFlags.h:104</div></div>
+<div class="ttc" id="aclassdrain_1_1GlobalFlags_html_ad2cb957500e1d80421ce86d88f032f18"><div class="ttname"><a href="classdrain_1_1GlobalFlags.html#ad2cb957500e1d80421ce86d88f032f18">drain::GlobalFlags::operator=</a></div><div class="ttdeci">GlobalFlags&lt; T &gt; &amp; operator=(const T2 &amp;x)</div><div class="ttdoc">Sets value, ie. set or unsets all the flags.</div><div class="ttdef"><b>Definition:</b> GlobalFlags.h:106</div></div>
+<div class="ttc" id="aclassdrain_1_1MultiFlagger_html"><div class="ttname"><a href="classdrain_1_1MultiFlagger.html">drain::MultiFlagger</a></div><div class="ttdef"><b>Definition:</b> Flags.h:199</div></div>
+<div class="ttc" id="aclassdrain_1_1MultiFlagger_html_a6d42ffe22b5ce5ecb191dd873cdb9add"><div class="ttname"><a href="classdrain_1_1MultiFlagger.html#a6d42ffe22b5ce5ecb191dd873cdb9add">drain::MultiFlagger&lt; int &gt;::assign</a></div><div class="ttdeci">virtual void assign(const std::string &amp;s) override</div><div class="ttdoc">Split a string to separate keys and/or values and set them.</div><div class="ttdef"><b>Definition:</b> Flags.h:330</div></div>
+<div class="ttc" id="aclassdrain_1_1MultiFlagger_html_af4087abd3cf152432c4410c6e9f5aa53"><div class="ttname"><a href="classdrain_1_1MultiFlagger.html#af4087abd3cf152432c4410c6e9f5aa53">drain::MultiFlagger::getDict</a></div><div class="ttdeci">virtual const dict_t &amp; getDict() const override</div><div class="ttdoc">Returns the static dictionary created for this value_t .</div><div class="ttdef"><b>Definition:</b> Flags.h:252</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:1277</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

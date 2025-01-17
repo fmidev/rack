@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['working_20with_20images_4337',['Working with images',['../imagespage.html',1,'']]]
+  ['writing_20svg_20files_4566',['Writing SVG files',['../svgpage.html',1,'']]]
 ];

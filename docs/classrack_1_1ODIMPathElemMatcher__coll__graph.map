@@ -1,11 +1,6 @@
 <map id="ODIMPathElemMatcher" name="ODIMPathElemMatcher">
-<area shape="rect" id="node1" title="Element in a chain in testing a path for a match." alt="" coords="5,575,177,601"/>
-<area shape="rect" id="node2" href="$classrack_1_1ODIMPathElem.html" title=" " alt="" coords="11,485,129,512"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="153,485,224,512"/>
-<area shape="rect" id="node4" href="$classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="91,396,198,423"/>
-<area shape="rect" id="node5" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="222,396,339,423"/>
-<area shape="rect" id="node6" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="233,233,329,260"/>
-<area shape="rect" id="node7" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="217,157,345,184"/>
-<area shape="rect" id="node8" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="205,81,357,108"/>
-<area shape="rect" id="node9" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="209,5,353,32"/>
+<area shape="rect" id="node1" title="Element in a chain in testing a path for a match." alt="" coords="29,185,201,212"/>
+<area shape="rect" id="node2" href="$classrack_1_1ODIMPathElem.html" title=" " alt="" coords="5,89,124,115"/>
+<area shape="rect" id="node3" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="148,81,304,123"/>
+<area shape="rect" id="node4" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="147,5,305,32"/>
 </map>

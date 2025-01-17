@@ -1,8 +1,17 @@
 <map id="NodeGDAL" name="NodeGDAL">
-<area shape="rect" id="node1" title=" " alt="" coords="63,319,155,345"/>
-<area shape="rect" id="node2" href="$structdrain_1_1image_1_1GDAL.html" title=" " alt="" coords="5,244,64,271"/>
-<area shape="rect" id="node3" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="89,244,279,271"/>
-<area shape="rect" id="node4" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="55,169,313,196"/>
-<area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="72,95,296,121"/>
-<area shape="rect" id="node6" title=" " alt="" coords="89,5,279,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="264,771,356,797"/>
+<area shape="rect" id="node2" href="$structdrain_1_1image_1_1GDAL.html" title=" " alt="" coords="265,695,323,721"/>
+<area shape="rect" id="node3" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="348,695,539,721"/>
+<area shape="rect" id="node4" href="$classdrain_1_1XML.html" title=" " alt="" coords="418,619,469,645"/>
+<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="329,411,587,437"/>
+<area shape="rect" id="node8" href="$classdrain_1_1StyleXML.html" title=" " alt="" coords="346,529,429,556"/>
+<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="346,248,570,275"/>
+<area shape="rect" id="node7" title=" " alt="" coords="363,157,553,199"/>
+<area shape="rect" id="node9" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="167,411,285,437"/>
+<area shape="rect" id="node14" href="$classdrain_1_1ClassListXML.html" title="Container for style classes. Essentially a set of strings, with space&#45;separated output support." alt="" coords="96,529,204,556"/>
+<area shape="rect" id="node10" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="178,248,274,275"/>
+<area shape="rect" id="node11" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="162,165,290,191"/>
+<area shape="rect" id="node12" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="150,81,302,108"/>
+<area shape="rect" id="node13" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="154,5,298,32"/>
+<area shape="rect" id="node15" title=" " alt="" coords="5,411,143,437"/>
 </map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['weak_4173',['WEAK',['../classrack_1_1EchoTop2Op.html#afcfbf201e8c1d42a402458d9257acb9fafe4722ca9de2cfd88591a69de2430c0a',1,'rack::EchoTop2Op']]]
+  ['reserve_4542',['RESERVE',['../classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1af8ede8b906acf8b2b5e13127a2a17032',1,'drain::ReferenceMap2::RESERVE()'],['../classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1af8ede8b906acf8b2b5e13127a2a17032',1,'drain::ReferenceMap::RESERVE()']]]
 ];

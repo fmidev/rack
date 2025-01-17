@@ -94,20 +94,16 @@ Collaboration diagram for Context:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Context__coll__graph.png" border="0" usemap="#aContext_coll__map" alt="Collaboration graph"/></div>
 <map name="aContext_coll__map" id="aContext_coll__map">
-<area shape="rect" title=" " alt="" coords="176,741,249,768"/>
-<area shape="rect" href="classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,652,160,679"/>
-<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="23,569,195,595"/>
-<area shape="rect" title=" " alt="" coords="5,485,212,512"/>
-<area shape="rect" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="190,652,235,679"/>
-<area shape="rect" href="classdrain_1_1StatusFlags.html" title=" " alt="" coords="259,652,358,679"/>
-<area shape="rect" href="classdrain_1_1GlobalFlags.html" title=" " alt="" coords="231,561,386,603"/>
-<area shape="rect" href="classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="273,485,344,512"/>
-<area shape="rect" href="classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="211,396,318,423"/>
-<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="342,396,459,423"/>
-<area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="353,233,449,260"/>
-<area shape="rect" href="classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="337,157,465,184"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="325,81,477,108"/>
-<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="329,5,473,32"/>
+<area shape="rect" title=" " alt="" coords="176,365,249,392"/>
+<area shape="rect" href="classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,269,160,295"/>
+<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="23,185,195,212"/>
+<area shape="rect" title=" " alt="" coords="5,96,212,123"/>
+<area shape="rect" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="190,269,235,295"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="259,261,457,303"/>
+<area shape="rect" href="classdrain_1_1MultiFlagger.html" title=" " alt="" coords="279,185,437,212"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="251,96,438,123"/>
+<area shape="rect" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="463,96,608,123"/>
+<area shape="rect" title=" " alt="" coords="466,5,605,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -125,9 +121,15 @@ long int&#160;</td><td class="memItemRight" valign="bottom"><b>getId</b> () cons
 <tr class="memitem:a8802382fe16a9f1966b9565e38a8495a"><td class="memItemLeft" align="right" valign="top"><a id="a8802382fe16a9f1966b9565e38a8495a"></a>
 const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getName</b> () const</td></tr>
 <tr class="separator:a8802382fe16a9f1966b9565e38a8495a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca097f1e5513aecafe2f902566893c63"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Context.html#aca097f1e5513aecafe2f902566893c63">getStatusMap</a> (bool update=true)</td></tr>
-<tr class="memdesc:aca097f1e5513aecafe2f902566893c63"><td class="mdescLeft">&#160;</td><td class="mdescRight">A long description of context variables and other resources.  <a href="classdrain_1_1Context.html#aca097f1e5513aecafe2f902566893c63">More...</a><br /></td></tr>
-<tr class="separator:aca097f1e5513aecafe2f902566893c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ab6efa5dd5a0d191abade4913b151db"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Context.html#a3ab6efa5dd5a0d191abade4913b151db">getStatusMap</a> () const</td></tr>
+<tr class="memdesc:a3ab6efa5dd5a0d191abade4913b151db"><td class="mdescLeft">&#160;</td><td class="mdescRight">A long description of context variables and other resources.  <a href="classdrain_1_1Context.html#a3ab6efa5dd5a0d191abade4913b151db">More...</a><br /></td></tr>
+<tr class="separator:a3ab6efa5dd5a0d191abade4913b151db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae80b47f203fa88e67a753ca0876a8dda"><td class="memItemLeft" align="right" valign="top"><a id="ae80b47f203fa88e67a753ca0876a8dda"></a>
+virtual <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getStatusMap</b> ()</td></tr>
+<tr class="separator:ae80b47f203fa88e67a753ca0876a8dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d031b9f56c787ef54763d715e553bc0"><td class="memItemLeft" align="right" valign="top"><a id="a5d031b9f56c787ef54763d715e553bc0"></a>
+virtual <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getUpdatedStatusMap</b> ()</td></tr>
+<tr class="separator:a5d031b9f56c787ef54763d715e553bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5843e9340a93d3960259c9968e79e5ad"><td class="memItemLeft" align="right" valign="top"><a id="a5843e9340a93d3960259c9968e79e5ad"></a>
 const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getStatus</b> (const std::string &amp;key, bool update) const</td></tr>
 <tr class="separator:a5843e9340a93d3960259c9968e79e5ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,7 +137,7 @@ const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420"
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:ab3b6c93fbb2dd0f13e5109679adabcbd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setStatus</b> (const std::string &amp;key, const T &amp;value)</td></tr>
 <tr class="separator:ab3b6c93fbb2dd0f13e5109679adabcbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af07f7112db179c45758cf80ad02ef09b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Context.html#af07f7112db179c45758cf80ad02ef09b">report</a> (<a class="el" href="classdrain_1_1StatusFlags.html">StatusFlags</a> &amp;flags)</td></tr>
+<tr class="memitem:af07f7112db179c45758cf80ad02ef09b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Context.html#af07f7112db179c45758cf80ad02ef09b">report</a> (<a class="el" href="classdrain_1_1EnumFlagger.html">StatusFlags</a> &amp;flags)</td></tr>
 <tr class="memdesc:af07f7112db179c45758cf80ad02ef09b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report status. Typically, report final status of a thread to its base context.  <a href="classdrain_1_1Context.html#af07f7112db179c45758cf80ad02ef09b">More...</a><br /></td></tr>
 <tr class="separator:af07f7112db179c45758cf80ad02ef09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -148,7 +150,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <tr class="memitem:af9fa347fce52d0a359e84b9918726c5c"><td class="memItemLeft" align="right" valign="top"><a id="af9fa347fce52d0a359e84b9918726c5c"></a>
 <a class="el" href="classdrain_1_1Log.html">Log</a>&#160;</td><td class="memItemRight" valign="bottom"><b>log</b></td></tr>
 <tr class="separator:af9fa347fce52d0a359e84b9918726c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a780e137a3091962bf3410a24551853c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1StatusFlags.html">StatusFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Context.html#a780e137a3091962bf3410a24551853c3">statusFlags</a></td></tr>
+<tr class="memitem:a780e137a3091962bf3410a24551853c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1EnumFlagger.html">StatusFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Context.html#a780e137a3091962bf3410a24551853c3">statusFlags</a></td></tr>
 <tr class="memdesc:a780e137a3091962bf3410a24551853c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional log filename (syntax): when defined, automatically opened by <a class="el" href="classdrain_1_1CommandBank.html#a89eec0772bf2dc5e8a5854e69be1ba3e" title="Run a single command.">CommandBank::run()</a>  <a href="classdrain_1_1Context.html#a780e137a3091962bf3410a24551853c3">More...</a><br /></td></tr>
 <tr class="separator:a780e137a3091962bf3410a24551853c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65c512aeaa9a46790f5f2488e7b8240f"><td class="memItemLeft" align="right" valign="top"><a id="a65c512aeaa9a46790f5f2488e7b8240f"></a>
@@ -177,8 +179,8 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b>
 <tr class="separator:ac8492ceccffaac3eae99efb1b1a78284"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aca097f1e5513aecafe2f902566893c63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca097f1e5513aecafe2f902566893c63">&#9670;&nbsp;</a></span>getStatusMap()</h2>
+<a id="a3ab6efa5dd5a0d191abade4913b151db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ab6efa5dd5a0d191abade4913b151db">&#9670;&nbsp;</a></span>getStatusMap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -187,11 +189,10 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a>&amp; getStatusMap </td>
+          <td class="memname">virtual const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a>&amp; getStatusMap </td>
           <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>update</em> = <code>true</code></td><td>)</td>
-          <td></td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -218,7 +219,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b>
         <tr>
           <td class="memname">virtual void report </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classdrain_1_1StatusFlags.html">StatusFlags</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1EnumFlagger.html">StatusFlags</a> &amp;&#160;</td>
           <td class="paramname"><em>flags</em></td><td>)</td>
           <td></td>
         </tr>
@@ -243,7 +244,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdrain_1_1StatusFlags.html">StatusFlags</a> statusFlags</td>
+          <td class="memname"><a class="el" href="classdrain_1_1EnumFlagger.html">StatusFlags</a> statusFlags</td>
         </tr>
       </table>
 </div><div class="memdoc">

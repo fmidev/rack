@@ -1,8 +1,9 @@
-<map id="MultiFlagger&lt; E &gt;" name="MultiFlagger&lt; E &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="195,115,337,142"/>
-<area shape="rect" id="node3" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="385,5,589,47"/>
-<area shape="rect" id="node4" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="391,71,584,112"/>
-<area shape="rect" id="node5" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="386,137,589,193"/>
-<area shape="rect" id="node6" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="394,217,581,273"/>
-<area shape="rect" id="node2" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,115,147,142"/>
+<map id="MultiFlagger&lt; E, T &gt;" name="MultiFlagger&lt; E, T &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="240,143,399,170"/>
+<area shape="rect" id="node3" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="447,5,672,47"/>
+<area shape="rect" id="node4" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="460,71,659,112"/>
+<area shape="rect" id="node5" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="463,136,656,177"/>
+<area shape="rect" id="node6" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="458,202,661,258"/>
+<area shape="rect" id="node7" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="466,282,653,338"/>
+<area shape="rect" id="node2" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,143,192,170"/>
 </map>

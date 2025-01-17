@@ -75,43 +75,38 @@ $(function() {
 <div class="title">svg Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Inheritance diagram for svg:</div>
-<div class="dyncontent">
-<div class="center"><img src="structdrain_1_1image_1_1svg__inherit__graph.png" border="0" usemap="#asvg_inherit__map" alt="Inheritance graph"/></div>
-<map name="asvg_inherit__map" id="asvg_inherit__map">
-<area shape="rect" title=" " alt="" coords="24,5,69,32"/>
-<area shape="rect" href="classdrain_1_1image_1_1NodeSVG.html" title=" " alt="" coords="5,80,88,107"/>
-</map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a3302b6d0e50afe2026eabac66a41a732"><td class="memItemLeft" align="right" valign="top"><a id="a3302b6d0e50afe2026eabac66a41a732"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>tag_t</b> { <br />
-&#160;&#160;<b>UNDEFINED</b> =NodeXML&lt;&gt;::UNDEFINED
-, <b>COMMENT</b> =NodeXML&lt;&gt;::COMMENT
-, <b>CTEXT</b> =NodeXML&lt;&gt;::CTEXT
-, <b>STYLE</b> =NodeXML&lt;&gt;::STYLE
+&#160;&#160;<b>UNDEFINED</b> =XML::UNDEFINED
+, <b>COMMENT</b> =XML::COMMENT
+, <b>CTEXT</b> =XML::CTEXT
+, <b>SCRIPT</b> =XML::SCRIPT
 , <br />
-&#160;&#160;<b>SCRIPT</b> =NodeXML&lt;&gt;::SCRIPT
-, <b>SVG</b>
+&#160;&#160;<b>STYLE</b> =XML::STYLE
+, <b>STYLE_SELECT</b> =XML::STYLE_SELECT
+, <b>SVG</b> =10
 , <b>CIRCLE</b>
-, <b>DESC</b>
 , <br />
-&#160;&#160;<b>GROUP</b>
+&#160;&#160;<b>DESC</b>
+, <b>GROUP</b>
 , <b>LINE</b>
 , <b>IMAGE</b>
-, <b>METADATA</b>
 , <br />
-&#160;&#160;<b>POLYGON</b>
+&#160;&#160;<b>METADATA</b>
+, <b>POLYGON</b>
 , <b>RECT</b>
 , <b>TEXT</b>
-, <b>TITLE</b>
 , <br />
-&#160;&#160;<b>TSPAN</b>
+&#160;&#160;<b>TITLE</b>
+, <b>TSPAN</b>
 <br />
  }</td></tr>
 <tr class="separator:a3302b6d0e50afe2026eabac66a41a732"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc28a2ff3e32d06491b9e074cd4b98d0"><td class="memItemLeft" align="right" valign="top"><a id="abc28a2ff3e32d06491b9e074cd4b98d0"></a>
+typedef int&#160;</td><td class="memItemRight" valign="bottom"><b>coord_t</b></td></tr>
+<tr class="separator:abc28a2ff3e32d06491b9e074cd4b98d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/drain/image/<a class="el" href="TreeSVG_8h_source.html">TreeSVG.h</a></li>

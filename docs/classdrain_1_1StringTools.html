@@ -123,6 +123,12 @@ static char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="separator:af4e164115421b2169ea6bdbb27baead6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73aff7f4c0a9d10e27619bdc27f03250"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a73aff7f4c0a9d10e27619bdc27f03250">replace</a> (const std::string &amp;src, const std::string &amp;from, const std::string &amp;to)</td></tr>
 <tr class="separator:a73aff7f4c0a9d10e27619bdc27f03250"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fb5b43f3d5a61a8b007ae2941dd2ea0"><td class="memItemLeft" align="right" valign="top"><a id="a2fb5b43f3d5a61a8b007ae2941dd2ea0"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>replace</b> (std::string &amp;src, char from, char to)</td></tr>
+<tr class="separator:a2fb5b43f3d5a61a8b007ae2941dd2ea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69f80eb1b4edf09fa5521810bafebee9"><td class="memItemLeft" align="right" valign="top"><a id="a69f80eb1b4edf09fa5521810bafebee9"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>replace</b> (const std::string &amp;src, char from, char to, std::string &amp;dst)</td></tr>
+<tr class="separator:a69f80eb1b4edf09fa5521810bafebee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9601d9886a9cb4e035dc0928640cad5d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a9601d9886a9cb4e035dc0928640cad5d">replace</a> (const conv_map_t &amp;m, std::string &amp;s, std::size_t pos=0)</td></tr>
 <tr class="memdesc:a9601d9886a9cb4e035dc0928640cad5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces instances appearing as map keys to map values.  <a href="classdrain_1_1StringTools.html#a9601d9886a9cb4e035dc0928640cad5d">More...</a><br /></td></tr>
 <tr class="separator:a9601d9886a9cb4e035dc0928640cad5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -766,7 +772,7 @@ template&lt;class T &gt; </td></tr>
 <p>Coupled trimming: remove a single leading and trailing char, if both found. </p>
 <div class="fragment"><div class="line">s = <a class="code" href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">trim</a>(<span class="stringliteral">&quot;\&quot;test\&quot;&quot;</span>);</div>
 <div class="line">s = <a class="code" href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">trim</a>(<span class="stringliteral">&quot;{test}&quot;</span>, <span class="stringliteral">&quot;{&quot;</span>, <span class="stringliteral">&quot;}&quot;</span>);</div>
-<div class="ttc" id="aclassdrain_1_1StringTools_html_a55aa8698f514bcac221b0fa4c9fb1f2e"><div class="ttname"><a href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">drain::StringTools::trim</a></div><div class="ttdeci">static std::string trim(const std::string &amp;s, const std::string &amp;trimChars=&quot; \t\n\r&quot;)</div><div class="ttdoc">Returns a string without leading and trailing whitespace (or str undesired chars).</div><div class="ttdef"><b>Definition:</b> String.cpp:137</div></div>
+<div class="ttc" id="aclassdrain_1_1StringTools_html_a55aa8698f514bcac221b0fa4c9fb1f2e"><div class="ttname"><a href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">drain::StringTools::trim</a></div><div class="ttdeci">static std::string trim(const std::string &amp;s, const std::string &amp;trimChars=&quot; \t\n\r&quot;)</div><div class="ttdoc">Returns a string without leading and trailing whitespace (or str undesired chars).</div><div class="ttdef"><b>Definition:</b> String.cpp:149</div></div>
 </div><!-- fragment --> 
 </div>
 </div>

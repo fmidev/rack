@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rack: FlaggerBase&lt; E &gt; Class Template Reference</title>
+<title>rack: FlaggerBase&lt; E, T &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -74,67 +74,82 @@ $(function() {
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classdrain_1_1FlaggerBase-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">FlaggerBase&lt; E &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
+<div class="title">FlaggerBase&lt; E, T &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="Flags_8h_source.html">Flags.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="FlagBase_8h_source.html">FlagBase.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for FlaggerBase&lt; E, T &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdrain_1_1FlaggerBase__inherit__graph.png" border="0" usemap="#aFlaggerBase_3_01E_00_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="aFlaggerBase_3_01E_00_01T_01_4_inherit__map" id="aFlaggerBase_3_01E_00_01T_01_4_inherit__map">
+<area shape="rect" title=" " alt="" coords="90,5,247,32"/>
+<area shape="rect" href="classdrain_1_1MultiFlagger.html" title=" " alt="" coords="5,87,156,114"/>
+<area shape="rect" href="classdrain_1_1MultiFlagger.html" title=" " alt="" coords="180,80,336,121"/>
+<area shape="rect" href="classdrain_1_1GlobalFlags.html" title="Flags using a global dictionary." alt="" coords="12,169,149,196"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:ac7c2f5cbcced44be0831db0496cc0ce3"><td class="memItemLeft" align="right" valign="top"><a id="ac7c2f5cbcced44be0831db0496cc0ce3"></a>
 typedef E&#160;</td><td class="memItemRight" valign="bottom"><b>value_t</b></td></tr>
 <tr class="separator:ac7c2f5cbcced44be0831db0496cc0ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25ff0cd524f056795dd05e1f7b702f4f"><td class="memItemLeft" align="right" valign="top"><a id="a25ff0cd524f056795dd05e1f7b702f4f"></a>
-typedef <a class="el" href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">FlagResolver::dict_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
-<tr class="separator:a25ff0cd524f056795dd05e1f7b702f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af38d9774958152c36e42414dc3439b74"><td class="memItemLeft" align="right" valign="top"><a id="af38d9774958152c36e42414dc3439b74"></a>
+typedef T&#160;</td><td class="memItemRight" valign="bottom"><b>storage_t</b></td></tr>
+<tr class="separator:af38d9774958152c36e42414dc3439b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35f0e0e5e27666aede8178d3dd2137f6"><td class="memItemLeft" align="right" valign="top"><a id="a35f0e0e5e27666aede8178d3dd2137f6"></a>
+typedef <a class="el" href="classdrain_1_1Dictionary.html">Dictionary</a>&lt; std::string, E &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dict_t</b></td></tr>
+<tr class="separator:a35f0e0e5e27666aede8178d3dd2137f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac94432274d27846064e98aaec0219f68"><td class="memItemLeft" align="right" valign="top"><a id="ac94432274d27846064e98aaec0219f68"></a>
 typedef dict_t::key_t&#160;</td><td class="memItemRight" valign="bottom"><b>key_t</b></td></tr>
 <tr class="separator:ac94432274d27846064e98aaec0219f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3201cad68ca19199b9826745ef2d2632"><td class="memItemLeft" align="right" valign="top"><a id="a3201cad68ca19199b9826745ef2d2632"></a>
-typedef dict_t::value_t&#160;</td><td class="memItemRight" valign="bottom"><b>dict_value_t</b></td></tr>
-<tr class="separator:a3201cad68ca19199b9826745ef2d2632"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1f17bc6fb1aef8b6ba2792d04ea7b147"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a1f17bc6fb1aef8b6ba2792d04ea7b147">FlaggerBase</a> (dict_value_t &amp;v)</td></tr>
-<tr class="memdesc:a1f17bc6fb1aef8b6ba2792d04ea7b147"><td class="mdescLeft">&#160;</td><td class="mdescRight">Own value will be unused (and invisible).  <a href="classdrain_1_1FlaggerBase.html#a1f17bc6fb1aef8b6ba2792d04ea7b147">More...</a><br /></td></tr>
-<tr class="separator:a1f17bc6fb1aef8b6ba2792d04ea7b147"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8ebaaa50d3e659bb659b99902bf748c"><td class="memItemLeft" align="right" valign="top"><a id="ad8ebaaa50d3e659bb659b99902bf748c"></a>
-virtual const <a class="el" href="classdrain_1_1Dictionary.html">dict_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDict</b> () const =0</td></tr>
+<tr class="memitem:a21a3d7258d1b3abbc577da8d4cde57be"><td class="memItemLeft" align="right" valign="top"><a id="a21a3d7258d1b3abbc577da8d4cde57be"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>FlaggerBase</b> (char separator=',')</td></tr>
+<tr class="separator:a21a3d7258d1b3abbc577da8d4cde57be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd44e9a44c3d3e937bce6f23e96cbb88"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#acd44e9a44c3d3e937bce6f23e96cbb88">FlaggerBase</a> (storage_t &amp;v, char separator=',')</td></tr>
+<tr class="memdesc:acd44e9a44c3d3e937bce6f23e96cbb88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value-referencing constructor.  <a href="classdrain_1_1FlaggerBase.html#acd44e9a44c3d3e937bce6f23e96cbb88">More...</a><br /></td></tr>
+<tr class="separator:acd44e9a44c3d3e937bce6f23e96cbb88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8ebaaa50d3e659bb659b99902bf748c"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classdrain_1_1Dictionary.html">dict_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#ad8ebaaa50d3e659bb659b99902bf748c">getDict</a> () const =0</td></tr>
+<tr class="memdesc:ad8ebaaa50d3e659bb659b99902bf748c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the static dictionary created for this <code>value_t</code> .  <a href="classdrain_1_1FlaggerBase.html#ad8ebaaa50d3e659bb659b99902bf748c">More...</a><br /></td></tr>
 <tr class="separator:ad8ebaaa50d3e659bb659b99902bf748c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad20897c5c8bd47f5d4005989bead0e55"><td class="memItemLeft" align="right" valign="top"><a id="ad20897c5c8bd47f5d4005989bead0e55"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr>
-<tr class="separator:ad20897c5c8bd47f5d4005989bead0e55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b0e029102ad38f4b814c6523aedb53d"><td class="memItemLeft" align="right" valign="top"><a id="a7b0e029102ad38f4b814c6523aedb53d"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr>
+<tr class="separator:a7b0e029102ad38f4b814c6523aedb53d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a952252bd26bf32d6a2d3b7024d858683"><td class="memItemLeft" align="right" valign="top"><a id="a952252bd26bf32d6a2d3b7024d858683"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const key_t &amp;key)</td></tr>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a952252bd26bf32d6a2d3b7024d858683">set</a> (const key_t &amp;key)</td></tr>
+<tr class="memdesc:a952252bd26bf32d6a2d3b7024d858683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets one or several flags. <br /></td></tr>
 <tr class="separator:a952252bd26bf32d6a2d3b7024d858683"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9f8407e01d3cb6986808f331b3bee31"><td class="memItemLeft" align="right" valign="top"><a id="ae9f8407e01d3cb6986808f331b3bee31"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const dict_value_t &amp;value)</td></tr>
-<tr class="separator:ae9f8407e01d3cb6986808f331b3bee31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04d82bcd21c4ab1d0268b19b77678a07"><td class="memItemLeft" align="right" valign="top"><a id="a04d82bcd21c4ab1d0268b19b77678a07"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a04d82bcd21c4ab1d0268b19b77678a07">set</a> (const value_t &amp;value)</td></tr>
+<tr class="memdesc:a04d82bcd21c4ab1d0268b19b77678a07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a single flag. <br /></td></tr>
+<tr class="separator:a04d82bcd21c4ab1d0268b19b77678a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af45bb4a06541e3d90caa8d3487263aaa"><td class="memItemLeft" align="right" valign="top"><a id="af45bb4a06541e3d90caa8d3487263aaa"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const <a class="el" href="classdrain_1_1FlaggerBase.html">FlaggerBase</a>&lt; E &gt; &amp;flagger)</td></tr>
 <tr class="separator:af45bb4a06541e3d90caa8d3487263aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5e462cec54cc65427563e897f7260df"><td class="memItemLeft" align="right" valign="top"><a id="aa5e462cec54cc65427563e897f7260df"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>assign</b> (const std::string &amp;s)=0</td></tr>
-<tr class="separator:aa5e462cec54cc65427563e897f7260df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8567861d32115f178b4df8737df0003d"><td class="memItemLeft" align="right" valign="top"><a id="a8567861d32115f178b4df8737df0003d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a8567861d32115f178b4df8737df0003d">isSet</a> (dict_value_t x) const</td></tr>
-<tr class="memdesc:a8567861d32115f178b4df8737df0003d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a given bit, or any of given bits, is set. <br /></td></tr>
-<tr class="separator:a8567861d32115f178b4df8737df0003d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a039c1fea1a42022bde1e3b044f5f7987"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a039c1fea1a42022bde1e3b044f5f7987">isSet</a> (const storage_t &amp;x) const =0</td></tr>
+<tr class="memdesc:a039c1fea1a42022bde1e3b044f5f7987"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a given bit, or any of given bits, is set.  <a href="classdrain_1_1FlaggerBase.html#a039c1fea1a42022bde1e3b044f5f7987">More...</a><br /></td></tr>
+<tr class="separator:a039c1fea1a42022bde1e3b044f5f7987"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3c7d0c2d658d33aec97f085608021c7"><td class="memItemLeft" align="right" valign="top"><a id="ae3c7d0c2d658d33aec97f085608021c7"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isSet</b> (const key_t &amp;key) const</td></tr>
 <tr class="separator:ae3c7d0c2d658d33aec97f085608021c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0616a832300e0ecc529cb56a18a0e02"><td class="memItemLeft" align="right" valign="top"><a id="af0616a832300e0ecc529cb56a18a0e02"></a>
-const dict_value_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> () const</td></tr>
-<tr class="separator:af0616a832300e0ecc529cb56a18a0e02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3061e7b64c4146aacd7a2a7d8a000ffd"><td class="memItemLeft" align="right" valign="top"><a id="a3061e7b64c4146aacd7a2a7d8a000ffd"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a3061e7b64c4146aacd7a2a7d8a000ffd">operator const dict_value_t &amp;</a> () const</td></tr>
-<tr class="memdesc:a3061e7b64c4146aacd7a2a7d8a000ffd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given an integer, retrieves dictionary keys corresponding to each index of set bits. <br /></td></tr>
-<tr class="separator:a3061e7b64c4146aacd7a2a7d8a000ffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbd7823945d417bf0278d4ca905c2077"><td class="memItemLeft" align="right" valign="top"><a id="afbd7823945d417bf0278d4ca905c2077"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>operator dict_value_t &amp;</b> ()</td></tr>
-<tr class="separator:afbd7823945d417bf0278d4ca905c2077"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1999573e457412156fa49c8f90225c67"><td class="memItemLeft" align="right" valign="top"><a id="a1999573e457412156fa49c8f90225c67"></a>
+const storage_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> () const</td></tr>
+<tr class="separator:a1999573e457412156fa49c8f90225c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a834fb24f9d96ea2a658f8f46cf275b88"><td class="memItemLeft" align="right" valign="top"><a id="a834fb24f9d96ea2a658f8f46cf275b88"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a834fb24f9d96ea2a658f8f46cf275b88">operator const storage_t &amp;</a> () const</td></tr>
+<tr class="memdesc:a834fb24f9d96ea2a658f8f46cf275b88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given an integer, retrieves dictionary keys corresponding to each index of set bits. <br /></td></tr>
+<tr class="separator:a834fb24f9d96ea2a658f8f46cf275b88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a991683ff410e9de6738a21af3489a9df"><td class="memItemLeft" align="right" valign="top"><a id="a991683ff410e9de6738a21af3489a9df"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator storage_t &amp;</b> ()</td></tr>
+<tr class="separator:a991683ff410e9de6738a21af3489a9df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67b76affb3b5d35fa419ac234144038b"><td class="memItemLeft" align="right" valign="top"><a id="a67b76affb3b5d35fa419ac234144038b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
+<tr class="separator:a67b76affb3b5d35fa419ac234144038b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2464e898adb1b0151f22935dfedde020"><td class="memItemLeft" align="right" valign="top"><a id="a2464e898adb1b0151f22935dfedde020"></a>
 virtual const key_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FlaggerBase.html#a2464e898adb1b0151f22935dfedde020">str</a> () const =0</td></tr>
 <tr class="memdesc:a2464e898adb1b0151f22935dfedde020"><td class="mdescLeft">&#160;</td><td class="mdescRight">String corresponding the current value. Returns empty, if not found. <br /></td></tr>
@@ -148,16 +163,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> (std::ostre
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a7512779e234c23e265474576b512d2e2"><td class="memItemLeft" align="right" valign="top"><a id="a7512779e234c23e265474576b512d2e2"></a>
-dict_value_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
-<tr class="separator:a7512779e234c23e265474576b512d2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaecbb1b0cac71aa911c1c61b212e8e3"><td class="memItemLeft" align="right" valign="top"><a id="acaecbb1b0cac71aa911c1c61b212e8e3"></a>
+storage_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
+<tr class="separator:acaecbb1b0cac71aa911c1c61b212e8e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6989953791434c8ea982054551c9e154"><td class="memItemLeft" align="right" valign="top"><a id="a6989953791434c8ea982054551c9e154"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></tr>
 <tr class="separator:a6989953791434c8ea982054551c9e154"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename E = std::size_t&gt;<br />
-class drain::FlaggerBase&lt; E &gt;</h3>
+<div class="textblock"><h3>template&lt;typename E = std::size_t, typename T = E&gt;<br />
+class drain::FlaggerBase&lt; E, T &gt;</h3>
 
 <p>A Flag mapper designed for global use, also supporting ENUM types. @See Perhaps replacing GlobalFlagger later.</p>
 <p>Example: </p><div class="fragment"><div class="line"><span class="keyword">enum</span> Crit {DATA, ELANGLE, TIME};</div>
@@ -165,7 +180,7 @@ class drain::FlaggerBase&lt; E &gt;</h3>
 <div class="line"> <span class="keyword">const</span> SingleFlagger&lt;Crit&gt;::dict_t SingleFlagger&lt;Crit&gt;::dict = {{<span class="stringliteral">&quot;DATA&quot;</span>, DATA}, {<span class="stringliteral">&quot;ELANGLE&quot;</span>, ELANGLE}, {<span class="stringliteral">&quot;TIME&quot;</span>, TIME}};</div>
 </div><!-- fragment --><p>Inside a class: </p><div class="fragment"><div class="line"><span class="keyword">class </span>Reader {</div>
 <div class="line">  <span class="keyword">public</span>:</div>
-<div class="line">  <span class="keyword">enum</span> Mode {ATTRIBUTES=1, DATASETS=2};</div>
+<div class="line">  <span class="keyword">enum</span> <a class="code" href="structMode.html">Mode</a> {ATTRIBUTES=1, DATASETS=2};</div>
 <div class="line">}</div>
 <div class="line"><span class="comment">// In the same or another header file:</span></div>
 <div class="line"><span class="keyword">template</span> &lt;&gt;</div>
@@ -174,18 +189,19 @@ class drain::FlaggerBase&lt; E &gt;</h3>
 <div class="line"><span class="keyword">template</span> &lt;&gt;</div>
 <div class="line"><span class="keyword">const</span> <a class="code" href="classdrain_1_1Dictionary.html">drain::SingleFlagger&lt;Reader::Mode&gt;::dict_t</a> <a class="code" href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger&lt;Reader::Mode&gt;::dict</a> =</div>
 <div class="line">      {{<span class="stringliteral">&quot;ATTRIBUTES&quot;</span>, Reader::ATTRIBUTES}, {<span class="stringliteral">&quot;DATASETS&quot;</span>, Reader::DATASETS}};</div>
-<div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary&lt; key_t, ivalue_t &gt;</a></div></div>
-<div class="ttc" id="aclassdrain_1_1SingleFlagger_html"><div class="ttname"><a href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a></div><div class="ttdef"><b>Definition:</b> Flags.h:518</div></div>
+<div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary</a></div><div class="ttdoc">Two-way mapping between strings and objects of template class T.</div><div class="ttdef"><b>Definition:</b> Dictionary.h:63</div></div>
+<div class="ttc" id="aclassdrain_1_1SingleFlagger_html"><div class="ttname"><a href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a></div><div class="ttdef"><b>Definition:</b> Flags.h:70</div></div>
+<div class="ttc" id="astructMode_html"><div class="ttname"><a href="structMode.html">Mode</a></div><div class="ttdef"><b>Definition:</b> Flags-example.cpp:165</div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">E</td><td>- enum or integer </td></tr>
-    <tr><td class="paramname">D</td><td>- dictionary, possibly const </td></tr>
+    <tr><td class="paramname">E</td><td>- single-value type: enum or integer </td></tr>
+    <tr><td class="paramname">T</td><td>- storage type (bit vector, "state"). T should not be enum, if E is numeric. </td></tr>
   </table>
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1f17bc6fb1aef8b6ba2792d04ea7b147"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f17bc6fb1aef8b6ba2792d04ea7b147">&#9670;&nbsp;</a></span>FlaggerBase()</h2>
+<a id="acd44e9a44c3d3e937bce6f23e96cbb88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd44e9a44c3d3e937bce6f23e96cbb88">&#9670;&nbsp;</a></span>FlaggerBase()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,9 +212,19 @@ class drain::FlaggerBase&lt; E &gt;</h3>
         <tr>
           <td class="memname"><a class="el" href="classdrain_1_1FlaggerBase.html">FlaggerBase</a> </td>
           <td>(</td>
-          <td class="paramtype">dict_value_t &amp;&#160;</td>
-          <td class="paramname"><em>v</em></td><td>)</td>
+          <td class="paramtype">storage_t &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>separator</em> = <code>','</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -208,13 +234,75 @@ class drain::FlaggerBase&lt; E &gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Own value will be unused (and invisible). </p>
-<p>Reconsider design. Should the value ever be referenced? </p>
+<p>Value-referencing constructor. </p>
+<p>An external value will be used, leaving protected <code>ownValue</code> unused . Reconsider design. Should the value ever be referenced? </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad8ebaaa50d3e659bb659b99902bf748c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8ebaaa50d3e659bb659b99902bf748c">&#9670;&nbsp;</a></span>getDict()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const <a class="el" href="classdrain_1_1Dictionary.html">dict_t</a>&amp; getDict </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the static dictionary created for this <code>value_t</code> . </p>
+<p>Notice that this function is non-static but returns a reference to a static dictionary. In C++ virtual functions must be non-static. This is nevertheless handy in templated design, for example. </p>
+
+<p>Implemented in <a class="el" href="classdrain_1_1MultiFlagger.html#af4087abd3cf152432c4410c6e9f5aa53">MultiFlagger&lt; E, T &gt;</a>, <a class="el" href="classdrain_1_1MultiFlagger.html#af4087abd3cf152432c4410c6e9f5aa53">MultiFlagger&lt; int &gt;</a>, <a class="el" href="classdrain_1_1MultiFlagger.html#af4087abd3cf152432c4410c6e9f5aa53">MultiFlagger&lt; group_t, group_t &gt;</a>, and <a class="el" href="classdrain_1_1SingleFlagger.html#af4087abd3cf152432c4410c6e9f5aa53">SingleFlagger&lt; E &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a039c1fea1a42022bde1e3b044f5f7987"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a039c1fea1a42022bde1e3b044f5f7987">&#9670;&nbsp;</a></span>isSet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool isSet </td>
+          <td>(</td>
+          <td class="paramtype">const storage_t &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if a given bit, or any of given bits, is set. </p>
+<p><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger</a>: exact match <a class="el" href="classdrain_1_1MultiFlagger.html">MultiFlagger</a>: bitwise OR &gt; 0 </p>
+
+<p>Implemented in <a class="el" href="classdrain_1_1MultiFlagger.html#a6fd91eb43b986f8efbf2785cf5b9a910">MultiFlagger&lt; int &gt;</a>, <a class="el" href="classdrain_1_1MultiFlagger.html#a6fd91eb43b986f8efbf2785cf5b9a910">MultiFlagger&lt; group_t, group_t &gt;</a>, and <a class="el" href="classdrain_1_1SingleFlagger.html#a6fd91eb43b986f8efbf2785cf5b9a910">SingleFlagger&lt; E &gt;</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/drain/util/<a class="el" href="Flags_8h_source.html">Flags.h</a></li>
+<li>src/drain/util/<a class="el" href="FlagBase_8h_source.html">FlagBase.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

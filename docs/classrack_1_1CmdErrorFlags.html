@@ -93,26 +93,27 @@ Collaboration diagram for CmdErrorFlags:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1CmdErrorFlags__coll__graph.png" border="0" usemap="#aCmdErrorFlags_coll__map" alt="Collaboration graph"/></div>
 <map name="aCmdErrorFlags_coll__map" id="aCmdErrorFlags_coll__map">
-<area shape="rect" title=" " alt="" coords="305,1225,424,1252"/>
-<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="280,1135,449,1176"/>
-<area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="303,1059,427,1085"/>
-<area shape="rect" href="classdrain_1_1BeanCommand.html" title=" " alt="" coords="259,983,470,1009"/>
-<area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="320,907,409,933"/>
-<area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="265,831,358,857"/>
-<area shape="rect" href="classdrain_1_1Context.html" title=" " alt="" coords="213,741,287,768"/>
-<area shape="rect" href="classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,652,160,679"/>
-<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="23,569,195,595"/>
-<area shape="rect" title=" " alt="" coords="5,485,212,512"/>
-<area shape="rect" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="187,652,233,679"/>
-<area shape="rect" href="classdrain_1_1StatusFlags.html" title=" " alt="" coords="257,652,355,679"/>
-<area shape="rect" href="classdrain_1_1GlobalFlags.html" title=" " alt="" coords="225,561,379,603"/>
-<area shape="rect" href="classdrain_1_1Flagger.html" title="A bit vector with external Dictionary mapping from strings to bits and vice versa." alt="" coords="264,485,335,512"/>
-<area shape="rect" href="classdrain_1_1FlagResolver.html" title="Referencing a dictionary of binary values: {&quot;A&quot;,1: &quot;B&quot;:2, &quot;C&quot;: 4, &quot;D&quot;: 8, ...} resolves two&#45;way mappi..." alt="" coords="202,396,309,423"/>
-<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="346,396,463,423"/>
-<area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="357,233,453,260"/>
-<area shape="rect" href="classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="341,157,469,184"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="329,81,481,108"/>
-<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="333,5,477,32"/>
+<area shape="rect" title=" " alt="" coords="2315,116,2433,143"/>
+<area shape="rect" href="classdrain_1_1SimpleCommand.html" title=" " alt="" coords="2096,109,2265,150"/>
+<area shape="rect" href="classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="1923,116,2047,143"/>
+<area shape="rect" href="classdrain_1_1BeanCommand.html" title=" " alt="" coords="1663,116,1873,143"/>
+<area shape="rect" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="1524,116,1613,143"/>
+<area shape="rect" href="classdrain_1_1Contextual.html" title=" " alt="" coords="1272,73,1365,100"/>
+<area shape="rect" href="classdrain_1_1Context.html" title=" " alt="" coords="1037,56,1110,83"/>
+<area shape="rect" href="classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="747,5,849,32"/>
+<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="477,5,649,32"/>
+<area shape="rect" title=" " alt="" coords="193,5,400,32"/>
+<area shape="rect" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="775,56,821,83"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="699,107,897,149"/>
+<area shape="rect" href="classdrain_1_1MultiFlagger.html" title=" " alt="" coords="484,115,643,141"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="203,71,390,97"/>
+<area shape="rect" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="224,121,369,148"/>
+<area shape="rect" title=" " alt="" coords="5,114,144,155"/>
+<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="1260,141,1377,168"/>
+<area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="1025,175,1121,201"/>
+<area shape="rect" href="classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="734,175,862,201"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="487,175,639,201"/>
+<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="225,175,369,201"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -172,17 +173,17 @@ virtual const <a class="el" href="classdrain_1_1ReferenceMap.html">drain::Refere
 <tr class="memitem:ac56cf959dc4beffb72efe7f3bd2a41f7 inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a id="ac56cf959dc4beffb72efe7f3bd2a41f7"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setParameters</b> (const std::string &amp;args) final</td></tr>
 <tr class="separator:ac56cf959dc4beffb72efe7f3bd2a41f7 inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93c7107b9d7d3ffad4ca61f79c2d176b inherit pub_methods_classdrain_1_1Command"><td class="memTemplParams" colspan="2"><a id="a93c7107b9d7d3ffad4ca61f79c2d176b"></a>
+<tr class="memitem:abf020db82125159cdac247af0b7bc760 inherit pub_methods_classdrain_1_1Command"><td class="memTemplParams" colspan="2"><a id="abf020db82125159cdac247af0b7bc760"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:a93c7107b9d7d3ffad4ca61f79c2d176b inherit pub_methods_classdrain_1_1Command"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setParameters</b> (const <a class="el" href="classdrain_1_1SmartMap.html">SmartMap</a>&lt; T &gt; &amp;args)</td></tr>
-<tr class="separator:a93c7107b9d7d3ffad4ca61f79c2d176b inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf020db82125159cdac247af0b7bc760 inherit pub_methods_classdrain_1_1Command"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setParameters</b> (const T &amp;args)</td></tr>
+<tr class="separator:abf020db82125159cdac247af0b7bc760 inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1621524b0f90a54e424d786e3ae3475 inherit pub_methods_classdrain_1_1Command"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:aa1621524b0f90a54e424d786e3ae3475 inherit pub_methods_classdrain_1_1Command"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#aa1621524b0f90a54e424d786e3ae3475">setParameter</a> (const std::string &amp;key, const T &amp;value)</td></tr>
 <tr class="memdesc:aa1621524b0f90a54e424d786e3ae3475 inherit pub_methods_classdrain_1_1Command"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a value to a single parameter.  <a href="classdrain_1_1Command.html#aa1621524b0f90a54e424d786e3ae3475">More...</a><br /></td></tr>
 <tr class="separator:aa1621524b0f90a54e424d786e3ae3475 inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af74da00fbd45d379f46413367ed61039 inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a id="af74da00fbd45d379f46413367ed61039"></a>
-<a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>addSection</b> (drain::Flagger::ivalue_t i)</td></tr>
-<tr class="separator:af74da00fbd45d379f46413367ed61039 inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad492a10841b88e085dd3131a1044df57 inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a id="ad492a10841b88e085dd3131a1044df57"></a>
+<a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>addSection</b> (int i)</td></tr>
+<tr class="separator:ad492a10841b88e085dd3131a1044df57 inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd36d7881ea8503d5c5824e7a5ad6c7e inherit pub_methods_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#acd36d7881ea8503d5c5824e7a5ad6c7e">update</a> ()</td></tr>
 <tr class="memdesc:acd36d7881ea8503d5c5824e7a5ad6c7e inherit pub_methods_classdrain_1_1Command"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional method for preparing command to execution.  <a href="classdrain_1_1Command.html#acd36d7881ea8503d5c5824e7a5ad6c7e">More...</a><br /></td></tr>
 <tr class="separator:acd36d7881ea8503d5c5824e7a5ad6c7e inherit pub_methods_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -236,6 +237,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a8f4131fe7f2dfaacdbfa93fc9f7a0ab9 inherit pub_types_classdrain_1_1BeanCommand"><td class="memItemLeft" align="right" valign="top"><a id="a8f4131fe7f2dfaacdbfa93fc9f7a0ab9"></a>
 typedef <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bean_t</b></td></tr>
 <tr class="separator:a8f4131fe7f2dfaacdbfa93fc9f7a0ab9 inherit pub_types_classdrain_1_1BeanCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classdrain_1_1Command"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1Command')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1Command.html">Command</a></td></tr>
+<tr class="memitem:a17cd043c9ec599670925dda080d06241 inherit pub_types_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top">typedef int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#a17cd043c9ec599670925dda080d06241">cmd_section_type</a></td></tr>
+<tr class="separator:a17cd043c9ec599670925dda080d06241 inherit pub_types_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classdrain_1_1Contextual"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classdrain_1_1Contextual')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td></tr>
 <tr class="memitem:a800009740f208898bd0dbe3f42c39531 inherit pub_static_methods_classdrain_1_1Contextual"><td class="memTemplParams" colspan="2"><a id="a800009740f208898bd0dbe3f42c39531"></a>
 template&lt;class T &gt; </td></tr>
@@ -250,8 +254,9 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td>
 <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bean</b></td></tr>
 <tr class="separator:aeb8bb702b21fe8b7c493e99c033a4837 inherit pub_attribs_classdrain_1_1BeanCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1Command"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1Command')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1Command.html">Command</a></td></tr>
-<tr class="memitem:ab217561ce555727ff977aa053656a686 inherit pub_attribs_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#ab217561ce555727ff977aa053656a686">section</a> = 1</td></tr>
-<tr class="separator:ab217561ce555727ff977aa053656a686 inherit pub_attribs_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79a639c757e5ee96de434f8670c915b9 inherit pub_attribs_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a id="a79a639c757e5ee96de434f8670c915b9"></a>
+<a class="el" href="classdrain_1_1Command.html#a17cd043c9ec599670925dda080d06241">cmd_section_type</a>&#160;</td><td class="memItemRight" valign="bottom"><b>section</b> = 1</td></tr>
+<tr class="separator:a79a639c757e5ee96de434f8670c915b9 inherit pub_attribs_classdrain_1_1Command"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_classdrain_1_1Command"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classdrain_1_1Command')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classdrain_1_1Command.html">Command</a></td></tr>
 <tr class="memitem:a7c1cd222b69ef093f0506cf5046350b6 inherit pub_static_attribs_classdrain_1_1Command"><td class="memItemLeft" align="right" valign="top"><a id="a7c1cd222b69ef093f0506cf5046350b6"></a>
 static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><b>cmdArgLayout</b> = {&quot;,&quot;, &quot;?&quot;, &quot;=&quot;, &quot;&quot;}</td></tr>

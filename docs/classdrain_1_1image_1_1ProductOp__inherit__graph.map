@@ -30,7 +30,7 @@
 <area shape="rect" id="node47" href="$classrack_1_1SunShineOp.html" title="A single&#45;ray &quot;product&quot; storing the altitude at each bin." alt="" coords="1473,832,1573,859"/>
 <area shape="rect" id="node48" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="1449,883,1597,909"/>
 <area shape="rect" id="node16" href="$classrack_1_1PolarSlidingAvgOp.html" title=" " alt="" coords="1733,5,1874,32"/>
-<area shape="rect" id="node20" href="$classrack_1_1CappiOp.html" title="Pseudo&#45;CAPPI: the constant altitude planar position indicator product." alt="" coords="1765,56,1842,83"/>
+<area shape="rect" id="node20" href="$classrack_1_1CappiOp.html" title="CAPPI and Pseudo&#45;CAPPI: the constant altitude planar position indicator product." alt="" coords="1765,56,1842,83"/>
 <area shape="rect" id="node21" href="$classrack_1_1EchoTopOpOld.html" title="Height of echo exceeding a reflectivity threshold." alt="" coords="1746,107,1861,133"/>
 <area shape="rect" id="node22" href="$classrack_1_1MaxEchoOp.html" title="The maximum dBZ value in each a vertical column." alt="" coords="1754,157,1853,184"/>
 <area shape="rect" id="node25" href="$classrack_1_1DopplerWindowOp.html" title=" " alt="" coords="1699,209,1908,250"/>

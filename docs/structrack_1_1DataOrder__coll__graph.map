@@ -1,7 +1,9 @@
 <map id="DataOrder" name="DataOrder">
-<area shape="rect" id="node1" title=" " alt="" coords="704,46,793,73"/>
-<area shape="rect" id="node2" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="395,5,589,47"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="196,46,345,73"/>
-<area shape="rect" id="node5" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="399,71,585,112"/>
-<area shape="rect" id="node4" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,46,147,73"/>
+<area shape="rect" id="node1" title=" " alt="" coords="936,46,1025,73"/>
+<area shape="rect" id="node2" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="627,5,821,47"/>
+<area shape="rect" id="node3" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="428,46,577,73"/>
+<area shape="rect" id="node7" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="631,71,817,112"/>
+<area shape="rect" id="node4" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="193,21,351,47"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="199,71,345,98"/>
+<area shape="rect" id="node6" title=" " alt="" coords="5,64,144,105"/>
 </map>

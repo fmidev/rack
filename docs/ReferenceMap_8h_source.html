@@ -130,59 +130,57 @@ $(function() {
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a> {</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T=Reference&gt;</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classdrain_1_1ReferenceMap2.html">   67</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1SmartMap.html">SmartMap</a>&lt;T&gt; {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T=Reference&gt;</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="classdrain_1_1ReferenceMap2.html">   69</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1SmartMap.html">SmartMap</a>&lt;T&gt; {</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">typedef</span> T ref_t;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="classdrain_1_1SmartMap.html">SmartMap&lt;T&gt;</a> <a class="code" href="classdrain_1_1SmartMap.html">map_t</a>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">typedef</span> T ref_t;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">typedef</span> <a class="code" href="classdrain_1_1SmartMap.html">SmartMap&lt;T&gt;</a> <a class="code" href="classdrain_1_1SmartMap.html">map_t</a>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> F&gt;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="classdrain_1_1ReferenceMap2.html#ae62f542b5197ef604ca76cce5fb6940f">   82</a></span>&#160;    ref_t &amp; <a class="code" href="classdrain_1_1ReferenceMap2.html#ae62f542b5197ef604ca76cce5fb6940f">link</a>(<span class="keyword">const</span> std::string &amp; key, F &amp;x){</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        ref_t &amp; r = (*this)[key];</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> F&gt;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classdrain_1_1ReferenceMap2.html#ae62f542b5197ef604ca76cce5fb6940f">   84</a></span>&#160;    ref_t &amp; <a class="code" href="classdrain_1_1ReferenceMap2.html#ae62f542b5197ef604ca76cce5fb6940f">link</a>(<span class="keyword">const</span> std::string &amp; key, F &amp;x){</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        r.link(x); <span class="comment">// .setSeparator(this-&gt;arraySeparator);</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        ref_t &amp; r = (*this)[key];</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        r.link(x); <span class="comment">// .setSeparator(this-&gt;arraySeparator);</span></div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">return</span> r;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">        if (this-&gt;find(key) == this-&gt;end()) // not  already referenced</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">            this-&gt;keyList.push_back(key);</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">        // Create</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">        ref_t &amp; r = map_t::operator[](key);</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">        r.setSeparator(this-&gt;arraySeparator); // applicable, if array type element</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">        // Link</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment">        r.link(x);</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">        // unitMap[key] = unit;</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">        return r;</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment">        */</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="classdrain_1_1ReferenceMap2.html#a9bcbf2feb300e7214f0d2af4fb5eb266">  105</a></span>&#160;    ref_t  &amp; <a class="code" href="classdrain_1_1ReferenceMap2.html#a9bcbf2feb300e7214f0d2af4fb5eb266">link</a>(<span class="keyword">const</span> std::string &amp; key, <span class="keywordtype">void</span> *ptr, <span class="keyword">const</span> std::type_info &amp;type, <span class="keywordtype">size_t</span> count=1){</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        ref_t &amp; r = (*this)[key];</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        r.link(ptr, type, count);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordflow">return</span> r;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">        if (this-&gt;find(key) == this-&gt;end()) // not  already referenced</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">            this-&gt;keyList.push_back(key);</span></div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment">        Reference &amp; r = map_t::operator[](key);</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">        r.setSeparator(this-&gt;arraySeparator); // applicable, if array type element</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">        r.link(ptr, type, count);</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">        // unitMap[key] = unit;</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">        return r;</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">        */</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classdrain_1_1ReferenceMap2.html#a9bcbf2feb300e7214f0d2af4fb5eb266">   94</a></span>&#160;    ref_t  &amp; <a class="code" href="classdrain_1_1ReferenceMap2.html#a9bcbf2feb300e7214f0d2af4fb5eb266">link</a>(<span class="keyword">const</span> std::string &amp; key, <span class="keywordtype">void</span> *ptr, <span class="keyword">const</span> std::type_info &amp;type, <span class="keywordtype">size_t</span> count=1){</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        ref_t &amp; r = (*this)[key];</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        r.link(ptr, type, count);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordflow">return</span> r;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">        if (this-&gt;find(key) == this-&gt;end()) // not  already referenced</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">            this-&gt;keyList.push_back(key);</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">        Reference &amp; r = map_t::operator[](key);</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">        r.setSeparator(this-&gt;arraySeparator); // applicable, if array type element</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">        r.link(ptr, type, count);</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="comment">        // unitMap[key] = unit;</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">        return r;</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordtype">void</span> unlink(<span class="keyword">const</span> std::string &amp; key){</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        map_t::erase(key);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordflow">for</span> (std::list&lt;std::string&gt;::iterator it = this-&gt;<a class="code" href="classdrain_1_1SmartMap.html#a3e9d8363daba3503121bd79ad72093b0">keyList</a>.begin(); it != this-&gt;keyList.end(); ++it){</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="keywordflow">if</span> (*it == key){</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                this-&gt;<a class="code" href="classdrain_1_1SmartMap.html#a3e9d8363daba3503121bd79ad72093b0">keyList</a>.erase(it);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            }</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        <span class="comment">//unitMap.erase(key);</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
 <div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1">  128</a></span>&#160;    <span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
 <div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3">  129</a></span>&#160;        <a class="code" href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3">LINK</a>,    </div>
@@ -211,7 +209,7 @@ $(function() {
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keyword">const</span> addr_t srcAddr = (addr_t)(&amp;src);</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keyword">const</span> addr_t dstAddr = (addr_t)(&amp;dst);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="comment">//for (std::list&lt;std::string&gt;::const_iterator it = m.getKeyList().begin(); it != m.getKeyList().end(); ++it){</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> std::string &amp; key: m.<a class="code" href="classdrain_1_1SmartMap.html#a8df04dbdd0242338d5b4aa4cfbcc6d93">getKeyList</a>()){</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> std::string &amp; key: m.getKeyList()){</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            <span class="comment">// const std::string &amp; key = *it;</span></div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            <span class="keyword">const</span> ref_t &amp; srcRef = m[key];</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            addr_t srcVarAddr = (addr_t)srcRef.getPtr();</div>
@@ -428,7 +426,7 @@ $(function() {
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        <span class="keyword">const</span> addr_t srcAddr = (addr_t)(&amp;src);</div>
 <div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        <span class="keyword">const</span> addr_t dstAddr = (addr_t)(&amp;dst);</div>
 <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;        <span class="comment">//for (std::list&lt;std::string&gt;::const_iterator it = m.getKeyList().begin(); it != m.getKeyList().end(); ++it){</span></div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> std::string &amp; key: m.<a class="code" href="classdrain_1_1SmartMap.html#a8df04dbdd0242338d5b4aa4cfbcc6d93">getKeyList</a>()){</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> std::string &amp; key: m.getKeyList()){</div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;            <span class="comment">// const std::string &amp; key = *it;</span></div>
 <div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;            <span class="keyword">const</span> <a class="code" href="classdrain_1_1VariableT.html">Reference</a> &amp; srcRef = m[key];</div>
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;            addr_t srcVarAddr = (addr_t)srcRef.getPtr();</div>
@@ -464,9 +462,9 @@ $(function() {
 <div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160; </div>
 <div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        <span class="comment">// Shared properties.</span></div>
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;        <span class="comment">//keyList = m.keyList;</span></div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;        <a class="code" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a> = m.<a class="code" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a>;</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;        <a class="code" href="classdrain_1_1SmartMap.html#a360531fdf0529252ca32fe16010bab62">arraySeparator</a> = m.<a class="code" href="classdrain_1_1SmartMap.html#a360531fdf0529252ca32fe16010bab62">arraySeparator</a>;</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;        <a class="code" href="classdrain_1_1ReferenceMap.html#a28150896138c8fe8b56898183096d290">unitMap</a> = m.<a class="code" href="classdrain_1_1ReferenceMap.html#a28150896138c8fe8b56898183096d290">unitMap</a>;</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;        <a class="code" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a> = m.separator;</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;        <a class="code" href="classdrain_1_1SmartMap.html#a360531fdf0529252ca32fe16010bab62">arraySeparator</a> = m.arraySeparator;</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;        <a class="code" href="classdrain_1_1ReferenceMap.html#a28150896138c8fe8b56898183096d290">unitMap</a> = m.unitMap;</div>
 <div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160; </div>
 <div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;    }</div>
 <div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160; </div>
@@ -567,19 +565,19 @@ $(function() {
 <div class="line"><a name="l00565"></a><span class="lineno">  565</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160; </div>
 <div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;<span class="comment">// Drain</span></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:308</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:412</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:426</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Public, yet typically used &quot;internally&quot;, when TIMING=true.</div><div class="ttdef"><b>Definition:</b> Log.h:676</div></div>
-<div class="ttc" id="aclassdrain_1_1ReferenceMap2_html"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html">drain::ReferenceMap2</a></div><div class="ttdoc">A map of references to base type scalars, arrays or std::string; changing values in either are equiva...</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:67</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:310</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:414</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aeba54d6b925ed37dd0a370c19fffe1d3"><div class="ttname"><a href="classdrain_1_1Logger.html#aeba54d6b925ed37dd0a370c19fffe1d3">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition:</b> Log.h:428</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Public, yet typically used &quot;internally&quot;, when TIMING=true.</div><div class="ttdef"><b>Definition:</b> Log.h:678</div></div>
+<div class="ttc" id="aclassdrain_1_1ReferenceMap2_html"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html">drain::ReferenceMap2</a></div><div class="ttdoc">A map of references to base type scalars, arrays or std::string; changing values in either are equiva...</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:69</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap2_html_a7dbc53b52637b91d21d08d9d372fdda2"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html#a7dbc53b52637b91d21d08d9d372fdda2">drain::ReferenceMap2::copyStruct</a></div><div class="ttdeci">void copyStruct(const ReferenceMap2&lt; T &gt; &amp;m, const T2 &amp;src, T2 &amp;dst, extLinkPolicy policy=RESERVE)</div><div class="ttdoc">Experimental. Copies references and values of a structure to another.</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:145</div></div>
-<div class="ttc" id="aclassdrain_1_1ReferenceMap2_html_a9bcbf2feb300e7214f0d2af4fb5eb266"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html#a9bcbf2feb300e7214f0d2af4fb5eb266">drain::ReferenceMap2::link</a></div><div class="ttdeci">ref_t &amp; link(const std::string &amp;key, void *ptr, const std::type_info &amp;type, size_t count=1)</div><div class="ttdoc">Create a reference to a basic type or std::string. (Also for basetype arrays.)</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:105</div></div>
+<div class="ttc" id="aclassdrain_1_1ReferenceMap2_html_a9bcbf2feb300e7214f0d2af4fb5eb266"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html#a9bcbf2feb300e7214f0d2af4fb5eb266">drain::ReferenceMap2::link</a></div><div class="ttdeci">ref_t &amp; link(const std::string &amp;key, void *ptr, const std::type_info &amp;type, size_t count=1)</div><div class="ttdoc">Create a reference to a basic type or std::string. (Also for basetype arrays.)</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:94</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap2_html_ad13ba38bb41ac1206987e9c82d85b6d1"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1">drain::ReferenceMap2::extLinkPolicy</a></div><div class="ttdeci">extLinkPolicy</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:128</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap2_html_ad13ba38bb41ac1206987e9c82d85b6d1a2fd6f336d08340583bd620a7f5694c90"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1a2fd6f336d08340583bd620a7f5694c90">drain::ReferenceMap2::ERROR</a></div><div class="ttdeci">@ ERROR</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:132</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap2_html_ad13ba38bb41ac1206987e9c82d85b6d1a998eded080e73768c0b44bf4891df984"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1a998eded080e73768c0b44bf4891df984">drain::ReferenceMap2::SKIP</a></div><div class="ttdeci">@ SKIP</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:130</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap2_html_ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1af2fe1bf26da6f8a451f054e30b3ce0f3">drain::ReferenceMap2::LINK</a></div><div class="ttdeci">@ LINK</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:129</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap2_html_ad13ba38bb41ac1206987e9c82d85b6d1af8ede8b906acf8b2b5e13127a2a17032"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1af8ede8b906acf8b2b5e13127a2a17032">drain::ReferenceMap2::RESERVE</a></div><div class="ttdeci">@ RESERVE</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:131</div></div>
-<div class="ttc" id="aclassdrain_1_1ReferenceMap2_html_ae62f542b5197ef604ca76cce5fb6940f"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html#ae62f542b5197ef604ca76cce5fb6940f">drain::ReferenceMap2::link</a></div><div class="ttdeci">ref_t &amp; link(const std::string &amp;key, F &amp;x)</div><div class="ttdoc">Associates a map entry with a variable.</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:82</div></div>
+<div class="ttc" id="aclassdrain_1_1ReferenceMap2_html_ae62f542b5197ef604ca76cce5fb6940f"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html#ae62f542b5197ef604ca76cce5fb6940f">drain::ReferenceMap2::link</a></div><div class="ttdeci">ref_t &amp; link(const std::string &amp;key, F &amp;x)</div><div class="ttdoc">Associates a map entry with a variable.</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:84</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap_html"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html">drain::ReferenceMap</a></div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:207</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap_html_a28150896138c8fe8b56898183096d290"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#a28150896138c8fe8b56898183096d290">drain::ReferenceMap::unitMap</a></div><div class="ttdeci">unitmap_t unitMap</div><div class="ttdoc">Creating a common segment for.</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:512</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap_html_a29d288276f8adda52271f8cfc2ce4159"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#a29d288276f8adda52271f8cfc2ce4159">drain::ReferenceMap::operator[]</a></div><div class="ttdeci">virtual const mapped_type &amp; operator[](const std::string &amp;key) const</div><div class="ttdoc">Calling unreferenced key throws an exception.</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:492</div></div>

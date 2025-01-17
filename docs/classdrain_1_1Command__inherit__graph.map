@@ -41,10 +41,10 @@
 <area shape="rect" id="node36" href="$classrack_1_1CartesianReset.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="825,1317,946,1344"/>
 <area shape="rect" id="node37" href="$classrack_1_1CartesianSize.html" title=" " alt="" coords="830,1368,941,1395"/>
 <area shape="rect" id="node38" href="$classrack_1_1CartesianSpread.html" title=" " alt="" coords="821,1419,950,1445"/>
-<area shape="rect" id="node39" href="$classrack_1_1CmdBaseSVG.html" title="SVG panel utils." alt="" coords="830,1469,941,1496"/>
-<area shape="rect" id="node40" href="$classrack_1_1CmdCheckType.html" title="Default handler for requests without own handler. Handles options that are recognized as 1) files to ..." alt="" coords="824,1520,947,1547"/>
-<area shape="rect" id="node41" href="$classrack_1_1CmdCompleteODIM.html" title="Ensure correct ODIM types after setting attributes." alt="" coords="810,1571,961,1597"/>
-<area shape="rect" id="node42" href="$classrack_1_1CmdConvert.html" title="Convert data with desired encoding." alt="" coords="834,1621,937,1648"/>
+<area shape="rect" id="node39" href="$classrack_1_1CmdCheckType.html" title="Default handler for requests without own handler. Handles options that are recognized as 1) files to ..." alt="" coords="824,1469,947,1496"/>
+<area shape="rect" id="node40" href="$classrack_1_1CmdCompleteODIM.html" title="Ensure correct ODIM types after setting attributes." alt="" coords="810,1520,961,1547"/>
+<area shape="rect" id="node41" href="$classrack_1_1CmdConvert.html" title="Convert data with desired encoding." alt="" coords="834,1571,937,1597"/>
+<area shape="rect" id="node42" href="$classrack_1_1CmdCreateDefaultQuality.html" title=" " alt="" coords="790,1621,981,1648"/>
 <area shape="rect" id="node44" href="$classrack_1_1CmdImageBox.html" title=" " alt="" coords="579,891,697,917"/>
 <area shape="rect" id="node46" href="$classrack_1_1CmdImageSampler.html" title=" " alt="" coords="565,956,711,983"/>
 <area shape="rect" id="node48" href="$classdrain_1_1CmdOpticalFlowBase.html" title="Utility for creating a Command that runs FastOpticalFlowOp operator." alt="" coords="557,1021,719,1048"/>

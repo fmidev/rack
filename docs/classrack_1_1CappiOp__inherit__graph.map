@@ -1,5 +1,5 @@
 <map id="CappiOp" name="CappiOp">
-<area shape="rect" id="node1" title="Pseudo&#45;CAPPI: the constant altitude planar position indicator product." alt="" coords="75,707,152,733"/>
+<area shape="rect" id="node1" title="CAPPI and Pseudo&#45;CAPPI: the constant altitude planar position indicator product." alt="" coords="75,707,152,733"/>
 <area shape="rect" id="node2" href="$classrack_1_1CumulativeProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system." alt="" coords="31,632,195,659"/>
 <area shape="rect" id="node3" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="52,557,175,584"/>
 <area shape="rect" id="node4" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="19,483,207,509"/>

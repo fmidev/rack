@@ -1,13 +1,15 @@
 <map id="DistanceModel" name="DistanceModel">
-<area shape="rect" id="node1" title="Base class for linear and exponential distances in rectangular pixel images." alt="" coords="1108,60,1227,87"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="831,7,913,33"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="526,7,642,33"/>
+<area shape="rect" id="node1" title="Base class for linear and exponential distances in rectangular pixel images." alt="" coords="1136,71,1255,97"/>
+<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="859,7,941,33"/>
+<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="554,7,670,33"/>
 <area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="275,7,460,33"/>
 <area shape="rect" id="node5" title=" " alt="" coords="5,7,225,33"/>
-<area shape="rect" id="node6" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="787,57,957,113"/>
-<area shape="rect" id="node7" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="509,72,659,99"/>
-<area shape="rect" id="node8" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="297,72,438,99"/>
-<area shape="rect" id="node9" href="$classdrain_1_1Bidirectional.html" title=" " alt="" coords="791,149,953,176"/>
-<area shape="rect" id="node10" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="517,149,651,176"/>
-<area shape="rect" id="node11" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="296,149,439,176"/>
+<area shape="rect" id="node6" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="815,57,985,113"/>
+<area shape="rect" id="node7" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="537,72,687,99"/>
+<area shape="rect" id="node8" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="289,57,446,84"/>
+<area shape="rect" id="node9" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="295,108,440,135"/>
+<area shape="rect" id="node10" title=" " alt="" coords="46,101,185,142"/>
+<area shape="rect" id="node11" href="$classdrain_1_1Bidirectional.html" title=" " alt="" coords="819,160,981,187"/>
+<area shape="rect" id="node12" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="545,160,679,187"/>
+<area shape="rect" id="node13" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="296,160,439,187"/>
 </map>

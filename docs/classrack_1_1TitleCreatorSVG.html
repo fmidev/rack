@@ -76,15 +76,43 @@ $(function() {
 <div class="title">TitleCreatorSVG Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>"Collects" titles from metadata. Invoked by <a class="el" href="classdrain_1_1TreeUtils.html#a3487b023a9c115792f41c1f155ea2f0f" title="Traverse tree, visiting each node as a prefix operation.">drain::TreeUtils::traverse()</a>  
+ <a href="classrack_1_1TitleCreatorSVG.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="graphics_8h_source.html">graphics.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for TitleCreatorSVG:</div>
+<div class="dyncontent">
+<div class="center"><img src="classrack_1_1TitleCreatorSVG__inherit__graph.png" border="0" usemap="#aTitleCreatorSVG_inherit__map" alt="Inheritance graph"/></div>
+<map name="aTitleCreatorSVG_inherit__map" id="aTitleCreatorSVG_inherit__map">
+<area shape="rect" title="&quot;Collects&quot; titles from metadata. Invoked by drain::TreeUtils::traverse()" alt="" coords="29,80,156,107"/>
+<area shape="rect" href="classdrain_1_1TreeVisitor.html" title=" " alt="" coords="5,5,180,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for TitleCreatorSVG:</div>
+<div class="dyncontent">
+<div class="center"><img src="classrack_1_1TitleCreatorSVG__coll__graph.png" border="0" usemap="#aTitleCreatorSVG_coll__map" alt="Collaboration graph"/></div>
+<map name="aTitleCreatorSVG_coll__map" id="aTitleCreatorSVG_coll__map">
+<area shape="rect" title="&quot;Collects&quot; titles from metadata. Invoked by drain::TreeUtils::traverse()" alt="" coords="29,80,156,107"/>
+<area shape="rect" href="classdrain_1_1TreeVisitor.html" title=" " alt="" coords="5,5,180,32"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a86a84aad0983418103a6dde76af3b190"><td class="memItemLeft" align="right" valign="top"><a id="a86a84aad0983418103a6dde76af3b190"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>visitPrefix</b> (TreeSVG &amp;tree, const TreeSVG::path_t &amp;odimPath)</td></tr>
-<tr class="separator:a86a84aad0983418103a6dde76af3b190"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac46a2ca8a154940874dc9193067d000a"><td class="memItemLeft" align="right" valign="top"><a id="ac46a2ca8a154940874dc9193067d000a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>visitPostfix</b> (TreeSVG &amp;tree, const TreeSVG::path_t &amp;odimPath)</td></tr>
-<tr class="separator:ac46a2ca8a154940874dc9193067d000a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fa67be2cef047d54c40b04c48fadaaa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1TitleCreatorSVG.html#a9fa67be2cef047d54c40b04c48fadaaa">visitPostfix</a> (TreeSVG &amp;tree, const TreeSVG::path_t &amp;odimPath) override</td></tr>
+<tr class="separator:a9fa67be2cef047d54c40b04c48fadaaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classdrain_1_1TreeVisitor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1TreeVisitor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1TreeVisitor.html">TreeVisitor&lt; TreeSVG &gt;</a></td></tr>
+<tr class="memitem:a54bd2c7f232a37d8d48d9926f4c11d3e inherit pub_methods_classdrain_1_1TreeVisitor"><td class="memItemLeft" align="right" valign="top"><a id="a54bd2c7f232a37d8d48d9926f4c11d3e"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1TreeVisitor.html#a54bd2c7f232a37d8d48d9926f4c11d3e">visitPrefix</a> (TreeSVG &amp;tree, const typename T::path_t &amp;path)</td></tr>
+<tr class="memdesc:a54bd2c7f232a37d8d48d9926f4c11d3e inherit pub_methods_classdrain_1_1TreeVisitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tasks to be executed before traversing child nodes. <br /></td></tr>
+<tr class="separator:a54bd2c7f232a37d8d48d9926f4c11d3e inherit pub_methods_classdrain_1_1TreeVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79898a5f2ed0bd16911b81b0d1f357b7 inherit pub_methods_classdrain_1_1TreeVisitor"><td class="memItemLeft" align="right" valign="top"><a id="a79898a5f2ed0bd16911b81b0d1f357b7"></a>
+virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1TreeVisitor.html#a79898a5f2ed0bd16911b81b0d1f357b7">visitPostfix</a> (TreeSVG &amp;tree, const typename T::path_t &amp;path)</td></tr>
+<tr class="memdesc:a79898a5f2ed0bd16911b81b0d1f357b7 inherit pub_methods_classdrain_1_1TreeVisitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tasks to be executed after traversing child nodes. <br /></td></tr>
+<tr class="separator:a79898a5f2ed0bd16911b81b0d1f357b7 inherit pub_methods_classdrain_1_1TreeVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -92,9 +120,51 @@ Public Attributes</h2></td></tr>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>mainHeaderHeight</b></td></tr>
 <tr class="separator:a454e6440e560988d9d1d005f782ccde8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>"Collects" titles from metadata. Invoked by <a class="el" href="classdrain_1_1TreeUtils.html#a3487b023a9c115792f41c1f155ea2f0f" title="Traverse tree, visiting each node as a prefix operation.">drain::TreeUtils::traverse()</a> </p>
+<p>In tree traversal, maintains information on metadata.</p>
+<p>Invoked by, hence compatible with <a class="el" href="classdrain_1_1TreeUtils.html#a3487b023a9c115792f41c1f155ea2f0f" title="Traverse tree, visiting each node as a prefix operation.">drain::TreeUtils::traverse()</a> </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9fa67be2cef047d54c40b04c48fadaaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fa67be2cef047d54c40b04c48fadaaa">&#9670;&nbsp;</a></span>visitPostfix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int visitPostfix </td>
+          <td>(</td>
+          <td class="paramtype">TreeSVG &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TreeSVG::path_t &amp;&#160;</td>
+          <td class="paramname"><em>odimPath</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Group title</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/main/<a class="el" href="fileio-svg_8h_source.html">fileio-svg.h</a></li>
-<li>src/main/fileio-svg.cpp</li>
+<li>src/main/<a class="el" href="graphics_8h_source.html">graphics.h</a></li>
+<li>src/main/graphics.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

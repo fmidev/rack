@@ -88,7 +88,7 @@ Inheritance diagram for CumulativeProductOp:</div>
 <div class="center"><img src="classrack_1_1CumulativeProductOp__inherit__graph.png" border="0" usemap="#aCumulativeProductOp_inherit__map" alt="Inheritance graph"/></div>
 <map name="aCumulativeProductOp_inherit__map" id="aCumulativeProductOp_inherit__map">
 <area shape="rect" title="Base class for flat (2D) products computed in the polar coordinate system." alt="" coords="82,632,246,659"/>
-<area shape="rect" href="classrack_1_1CappiOp.html" title="Pseudo&#45;CAPPI: the constant altitude planar position indicator product." alt="" coords="5,707,83,733"/>
+<area shape="rect" href="classrack_1_1CappiOp.html" title="CAPPI and Pseudo&#45;CAPPI: the constant altitude planar position indicator product." alt="" coords="5,707,83,733"/>
 <area shape="rect" href="classrack_1_1EchoTopOpOld.html" title="Height of echo exceeding a reflectivity threshold." alt="" coords="107,707,221,733"/>
 <area shape="rect" href="classrack_1_1MaxEchoOp.html" title="The maximum dBZ value in each a vertical column." alt="" coords="245,707,344,733"/>
 <area shape="rect" href="classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="103,557,225,584"/>
@@ -143,9 +143,9 @@ virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="botto
 <tr class="memitem:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top"><a id="a29e232e54cb61cfc533bb6ec8bf5dce4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>VolumeOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
 <tr class="separator:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">processVolume</a> (const Hi5Tree &amp;src, Hi5Tree &amp;dst) const</td></tr>
-<tr class="memdesc:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse through given volume and create new, processed data (volume or polar product).  <a href="classrack_1_1VolumeOp.html#aa00e1c37f72aacc2d1ace56a19f98d09">More...</a><br /></td></tr>
-<tr class="separator:aa00e1c37f72aacc2d1ace56a19f98d09 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa047244cd5bab597d627ce332f5d5302 inherit pub_methods_classrack_1_1VolumeOp"><td class="memItemLeft" align="right" valign="top">virtual Hi5Tree &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#aa047244cd5bab597d627ce332f5d5302">processVolume</a> (const Hi5Tree &amp;src, Hi5Tree &amp;dst) const final</td></tr>
+<tr class="memdesc:aa047244cd5bab597d627ce332f5d5302 inherit pub_methods_classrack_1_1VolumeOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse through given volume and create new, processed data (volume or polar product).  <a href="classrack_1_1VolumeOp.html#aa047244cd5bab597d627ce332f5d5302">More...</a><br /></td></tr>
+<tr class="separator:aa047244cd5bab597d627ce332f5d5302 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1BinaryPixelVectorOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1BinaryPixelVectorOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1BinaryPixelVectorOp.html">BinaryPixelVectorOp&lt; MultiplicationFunctor &gt;</a></td></tr>
 <tr class="memitem:a726765673dbefe05d5d492b91d9c723a inherit pub_methods_classdrain_1_1image_1_1BinaryPixelVectorOp"><td class="memItemLeft" align="right" valign="top"><a id="a726765673dbefe05d5d492b91d9c723a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>BinaryPixelVectorOp</b> (const std::string &amp;name, const std::string &amp;description)</td></tr>
@@ -291,10 +291,12 @@ virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a8f39c1ac1abc1594f47ed61a8795af98"><td class="memItemLeft" align="right" valign="top"><a id="a8f39c1ac1abc1594f47ed61a8795af98"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>CumulativeProductOp</b> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;, const std::string &amp;accumulationMethod=&quot;LATEST&quot;)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CumulativeProductOp.html#a8f39c1ac1abc1594f47ed61a8795af98">CumulativeProductOp</a> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;, const std::string &amp;accumulationMethod=&quot;LATEST&quot;)</td></tr>
+<tr class="memdesc:a8f39c1ac1abc1594f47ed61a8795af98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a8f39c1ac1abc1594f47ed61a8795af98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ffcb42c717baa767d5fa80b5859373d"><td class="memItemLeft" align="right" valign="top"><a id="a4ffcb42c717baa767d5fa80b5859373d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>CumulativeProductOp</b> (const <a class="el" href="classrack_1_1CumulativeProductOp.html">CumulativeProductOp</a> &amp;op)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CumulativeProductOp.html#a4ffcb42c717baa767d5fa80b5859373d">CumulativeProductOp</a> (const <a class="el" href="classrack_1_1CumulativeProductOp.html">CumulativeProductOp</a> &amp;op)</td></tr>
+<tr class="memdesc:a4ffcb42c717baa767d5fa80b5859373d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
 <tr class="separator:a4ffcb42c717baa767d5fa80b5859373d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4fad069cd8f280261fc9e3de91b1cf0"><td class="memItemLeft" align="right" valign="top"><a id="ad4fad069cd8f280261fc9e3de91b1cf0"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setGeometry</b> (const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstData) const</td></tr>
