@@ -473,6 +473,21 @@ void RackSVG::addTitles(drain::image::TreeSVG & object, GraphicsContext::ElemCla
 
 	drain::image::TreeSVG & backgroundRect = object[BACKGROUND_RECT](svg::RECT);
 	backgroundRect->addClass(elemClass);
+	// Lower... for GENERAL as well.
+	switch (elemClass) {
+		case GraphicsContext::ElemClass::MAIN_TITLE:
+			backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+			break;
+		case GraphicsContext::ElemClass::GROUP_TITLE:
+			backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+			break;
+		case GraphicsContext::ElemClass::IMAGE_TITLE:
+			backgroundRect->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+			break;
+		default:
+			break;
+	}
+	/*
 	if (elemClass == GraphicsContext::ElemClass::MAIN_TITLE){
 		backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
 	}
@@ -480,6 +495,7 @@ void RackSVG::addTitles(drain::image::TreeSVG & object, GraphicsContext::ElemCla
 		backgroundRect->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
 		// backgroundRect->addClass(LayoutSVG::FLOAT);  // alignment
 	}
+	*/
 	backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
 	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
 	backgroundRect->setHeight(40);
