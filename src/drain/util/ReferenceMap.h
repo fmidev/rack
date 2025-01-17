@@ -112,15 +112,13 @@ public:
 	inline
 	void unlink(const std::string & key){
 		map_t::erase(key);
-		// std::map<std::string,T>
-		/*
-		for (std::list<std::string>::iterator it = keyList.begin(); it != keyList.end(); ++it)
+		for (std::list<std::string>::iterator it = this->keyList.begin(); it != this->keyList.end(); ++it){
 			if (*it == key){
-				keyList.erase(it);
+				this->keyList.erase(it);
 				break;
 			}
-		unitMap.erase(key);
-		*/
+		}
+		//unitMap.erase(key);
 	}
 
 

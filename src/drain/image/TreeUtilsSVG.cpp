@@ -42,7 +42,7 @@ namespace image {
 
 PanelConfSVG TreeUtilsSVG::defaultConf;
 
-//const std::set<svg::tag_t> TreeUtilsSVG::abstractTags = {
+/*
 const std::set<XML::intval_t> TreeUtilsSVG::abstractTags = {
 		svg::tag_t::STYLE,
 		svg::tag_t::DESC,
@@ -51,11 +51,14 @@ const std::set<XML::intval_t> TreeUtilsSVG::abstractTags = {
 		svg::tag_t::TITLE,
 		svg::tag_t::TSPAN,
 };
+*/
 
 //bool TreeUtilsSVG::isAbstract(svg::tag_t tag){
+/*
 bool TreeUtilsSVG::isAbstract(XML::intval_t tag){
 	return (abstractTags.find((XML::intval_t)tag) != abstractTags.end());
 }
+*/
 
 
 
@@ -520,7 +523,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 	*/
 
 	// mout.attention("ACCEPT:", object->getTag());
-	mout.special<LOG_NOTICE>(__FUNCTION__, " start: ", object.data); //, object->getId(), " -> ", object->getBoundingBox());
+	mout.special<LOG_DEBUG>(__FUNCTION__, " start: ", object.data); //, object->getId(), " -> ", object->getBoundingBox());
 
 
 	// Depth-first
@@ -529,7 +532,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 	}
 
 	// mout.attention("ACCEPT:", object->getTag());
-	mout.special<LOG_NOTICE>(__FUNCTION__, " handle: ", object.data); //, object->getId(), " -> ", object->getBoundingBox());
+	mout.special<LOG_DEBUG>(__FUNCTION__, " handle: ", object.data); //, object->getId(), " -> ", object->getBoundingBox());
 
 
 	/// If main orientation (inside containers) is HORZ, stack containers VERT. And vice versa.
@@ -699,7 +702,8 @@ void TreeUtilsSVG::translateAll(TreeSVG & object, const Point2D<svg::coord_t> & 
  */
 int TranslatorSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) {
 	TreeSVG & node = tree(path);
-	if (TreeUtilsSVG::isAbstract((svg::tag_t)node->getType())){ // skip TITLE, DESC etc.
+	//if (TreeUtilsSVG::isAbstract((svg::tag_t)node->getType())){ // skip TITLE, DESC etc.
+	if (node->isAbstract()){ // skip TITLE, DESC etc.
 		return 1;
 	}
 	else {
@@ -723,12 +727,12 @@ bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<svg::coord_t> & 
 		// skip, trust others (rect anchor)
 	}
 	else {
-		if (box.empty()){
+		if (box.empty()){ // TODO: check/redefine empty
 			box = elem->getBoundingBox();
 		}
 		else {
 			// drain::Logger mout(__FILE__, __FUNCTION__);
-			//mout.pending("Updating bbox ", box, " with ", elem->getBoundingBox());
+			// mout.pending("Updating bbox ", box, " with ", elem->getBoundingBox());
 			box.expand(elem->getBoundingBox());
 		}
 	}
@@ -740,7 +744,7 @@ bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<svg::coord_t> & 
 
 int BBoxRetrieverSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) {
 	TreeSVG & node = tree(path);
-	if (node->typeIs(svg::SVG) || node->typeIs(svg::GROUP)){
+	if (node->typeIs(svg::SVG, svg::GROUP)){
 		return 0; // continue (traverse children)
 	}
 	else {
@@ -793,7 +797,8 @@ int RelativePathSetterSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & p
 		drain::image::TreeSVG & imageNode = tree(path);
 		const std::string imagePath = imageNode->get("xlink:href");
 		if (drain::StringTools::startsWith(imagePath, dir)){
-			imageNode->set("xlink:href", imagePath.substr(dir.size())); // TODO: setURL ?
+			// imageNode->set("xlink:href", imagePath.substr(dir.size())); // TODO: setURL ?
+			imageNode->setUrl(imagePath.substr(dir.size()));
 		}
 		else {
 			// mout.attention("could not set relative path: ", p, " href:", imagePath);

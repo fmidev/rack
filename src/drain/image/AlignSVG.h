@@ -769,22 +769,24 @@ DRAIN_ENUM_OSTREAM(LayoutSVG::GroupType);
 struct AlignAdapterSVG : public AlignSVG {
 
 	/// Mark one of the elements of this object (SVG or G) as a decisive position
+	template <class T>
 	inline
-	void setAlignAnchor(const std::string & pathElem){
-		anchorHorz = pathElem;
-		anchorVert = pathElem;
+	void setAlignAnchor(const T & pathElem){
+		anchorVert = anchorHorz = getElem(pathElem);
 		updateAlign();
 	}
 
+	template <class T>
 	inline
-	void setAlignAnchorHorz(const std::string & pathElem){
-		anchorHorz = pathElem;
+	void setAlignAnchorHorz(const T & pathElem){
+		anchorHorz = getElem(pathElem);
 		updateAlign();
 	}
 
+	template <class T>
 	inline
-	void setAlignAnchorVert(const std::string & pathElem){
-		anchorVert = pathElem;
+	void setAlignAnchorVert(const T & pathElem){
+		anchorVert = getElem(pathElem);
 		updateAlign();
 	}
 
@@ -808,6 +810,23 @@ struct AlignAdapterSVG : public AlignSVG {
 	~AlignAdapterSVG(){};
 
 protected:
+
+	static inline
+	const std::string & getElem(const std::string &s){
+		return s;
+	};
+
+	static inline
+	const char * getElem(const char *s){
+		return s;
+	};
+
+	template <class T>
+	static inline
+	const std::string & getElem(const T & type){
+		return EnumDict<T>::dict.getKey(type, false);
+	}
+
 
 	virtual inline
 	void updateAlign() override {

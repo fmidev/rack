@@ -74,37 +74,15 @@ public:
 
 struct PanelConfSVG {
 
-	/*
-	enum Axis {UNDEFINED_ORIENTATION=0, HORZ, VERT};
-	typedef drain::EnumFlagger<drain::SingleFlagger<Axis> > AxisFlagger;
-	AxisFlagger orientation = HORZ;
-
-	enum Direction {UNDEFINED_DIRECTION=0, INCR, DECR};
-	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
-	DirectionFlagger direction = INCR;
-	*/
-	// LayoutSVG layout;
-
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
-	//  Current
-	// std::string groupName;
-	// int maxPerGroup = 10;
-	bool absolutePaths = false;
+	bool absolutePaths = true;
 
 	// Currently, applications are recommended to handle "false" and "none". Or "auto"?
 	// std::string title;
 	// FontSizes fontSize;
 
-	/*
-	enum Legend {NO_LEGEND=0, LEFT=1, RIGHT=2, DUPLEX=LEFT|RIGHT, EMBED=4};
-	typedef drain::EnumFlagger<drain::MultiFlagger<Legend> > LegendFlagger;
-	LegendFlagger legend;
-	*/
-	//typedef drain::EnumFlagger<drain::SingleFlagger<Legend> > LegendFlagger;
-
-
 	inline  // maxPerGroup(10), layout(Alignment::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED),
-	PanelConfSVG() :   absolutePaths(false){
+	PanelConfSVG() : absolutePaths(true){
 	}
 
 	/*
@@ -133,17 +111,11 @@ public:
 
 	/*
 	static
-	const std::set<svg::tag_t> abstractTags;
-
-	static
-	bool isAbstract(svg::tag_t tag);
-	*/
-
-	static
 	const std::set<XML::intval_t> abstractTags;
 
 	static
 	bool isAbstract(XML::intval_t tag);
+	*/
 
 	/// Compute bounding box of the whole structure.
 	/**

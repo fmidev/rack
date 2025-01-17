@@ -67,6 +67,7 @@ GraphicsContext::GraphicsContext() {
 }
 
 GraphicsContext::GraphicsContext(const GraphicsContext & ctx) {
+	svgPanelConf.absolutePaths = ctx.svgPanelConf.absolutePaths;
 	svgGroupNameSyntax = ctx.svgGroupNameSyntax;
 	svgTitles    = ctx.svgTitles;
 }

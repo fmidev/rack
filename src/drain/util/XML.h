@@ -194,6 +194,10 @@ public:
 		setText(StringBuilder<>(args...).str()); // str() to avoid infinite loop
 	}
 
+	inline
+	void setUrl(const std::string & s){
+		url = s;
+	}
 
 
 	// ---------------- Attributes ---------------

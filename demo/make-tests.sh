@@ -235,7 +235,7 @@ while (( $line <= iEnd )); do
 
 	arglast=( $cmd )
 	argcount=${#arglast[*]}
-	arglast=${arglast[$(( argpount - 1 ))]}
+	arglast=${arglast[$(( argcount - 1 ))]}
 	echo "arg last $arglast"
 	output=$arglast
 	
