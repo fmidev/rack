@@ -113,7 +113,44 @@ struct NodeHi5 {
 /// The most importand and central class for handling HDF5 data in \b Rack .
 typedef drain::OrderedTree<hi5::NodeHi5, false, rack::ODIMPath> Hi5Tree;
 
+namespace drain {
 
+/*
+template <>
+template <typename K> // for K (path elem arg)
+const Hi5Tree::key_t & Hi5Tree::getKey(const K & key){
+	static const rack::ODIMPathElem elem(key); // dangerous
+	return elem;
+}
+*/
+
+/*
+template <>
+template <> // for K (path elem arg)
+inline
+const Hi5Tree::key_t & Hi5Tree::getKey(const rack::ODIMPathElem::group_t & key){
+	static const rack::ODIMPathElem elem(key); // dangerous
+	return elem;
+}
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+const Hi5Tree & Hi5Tree::operator[](const std::string & s) const {
+	return (*this)[rack::ODIMPathElem(s)];
+	//return (*this)[EnumDict<rack::RackSVG::TitleClass>::dict.getKey(x, false)];
+}
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+Hi5Tree & Hi5Tree::operator[](const std::string & s) {
+	return (*this)[rack::ODIMPathElem(s)];
+	//return (*this)[EnumDict<rack::RackSVG::TitleClass>::dict.getKey(x, false)];
+}
+*/
+
+}
 
 namespace hi5 {
 

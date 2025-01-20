@@ -478,7 +478,7 @@ public:
 		return retrieveChild(key);
 	}
 
-	/// NEW 2025 Child addressing operator
+	/// NEW 2025 templated child addressing operator
 	/**
 	 *  Allows using EnumDict enums as keys, for example.
 	 *
@@ -486,14 +486,16 @@ public:
 	template <class K>
 	inline
 	tree_t & operator[](const K & key){
-		return retrieveChild(static_cast<key_t>(key));
+		// return retrieveChild(getKey(key)); // 2025
+		return retrieveChild(static_cast<key_t>(key)); // OLD
 	}
 
-	/// NEW 2025 Child addressing operator
+	/// NEW 2025 templated child addressing operator
 	template <class K>
 	inline
 	const tree_t & operator[](const K & key) const {
-		return retrieveChild(static_cast<key_t>(key));
+		// return retrieveChild(getKey(key)); // 2025
+		return retrieveChild(static_cast<key_t>(key)); // OLD
 	}
 
 
@@ -745,6 +747,14 @@ x	 *  \see clearData()
 	};
 
 
+	template <typename K>
+	inline
+	bool hasChild(const K &key) const {
+		//return hasChild(getKey(key)); 2025
+		return hasChild(static_cast<key_t>(key)); // OLDISH
+	}
+
+
 	inline
 	bool hasPath(const path_t & path) const {
 		return hasPath(path.begin(), path.end());
@@ -909,6 +919,36 @@ protected:
 	static
 	const tree_t emptyNode;
 
+	/// "Default implementation" of key conversion – the identity mapping.
+	/*
+	 * As an option, child nodes can be addressed using keys which are not of key_y type, but can be converted to such.
+	 */
+	/*
+	static inline
+	const key_t & getKey(const key_t & key){
+		return key;
+	}
+	*/
+
+	/// Conversion of char array to key type, which itself should never be a char array.
+	/*
+	static inline
+	key_t getKey(const char * key){
+		return key_t(key);
+	}
+	*/
+
+	/// Mapping of keys of external type - for example an enumerated type - to native \c key_t type.
+	/*
+	 * As an option, child nodes can be addressed using keys which are not of key_y type, but can be converted to such.
+	 * Not that this version returns a constant reference.
+	 */
+	/*
+	template <typename K>
+	static
+	const key_t & getKey(const K & key); // left undefined!
+	*/
+
 	/// Checks if there is a node with a given path name.
 	/** Could be called hasDescendant; hence is like hasChild() but calls children recursively.
 	 *
@@ -1002,6 +1042,13 @@ protected:
 template <class T, bool EXCLUSIVE, class P>
 const DRAIN_TREE_NAME<T,EXCLUSIVE, P> DRAIN_TREE_NAME<T,EXCLUSIVE,P>::emptyNode;
 
+/*
+template <class T, bool EXCLUSIVE, class P>
+template <typename K>
+typename DRAIN_TREE_NAME<T,EXCLUSIVE,P>::key_t DRAIN_TREE_NAME<T,EXCLUSIVE,P>::getKey(const K & key){
+	return typename DRAIN_TREE_NAME<T,EXCLUSIVE,P>::key_t(key); // for example, std::string("myKey")
+}
+*/
 
 
 // Certified.

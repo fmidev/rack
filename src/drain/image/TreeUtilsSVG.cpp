@@ -192,7 +192,8 @@ void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> &
 		coord = anchorBoxHorz.x + anchorBoxHorz.width;
 		break;
 	case AlignBase::Pos::FILL:
-		mout.suspicious<LOG_WARNING>("Alignment:: ANCHOR has fill request: HORZ FILL");
+		// Maybe ok, since GROUP can be an anchor but also
+		// mout.suspicious<LOG_WARNING>("Alignment:: ANCHOR has fill request: HORZ FILL");
 		break;
 	case AlignBase::Pos::UNDEFINED_POS:  // -> consider MID or some absolute value, or margin. Or error:
 		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', AlignBase::Axis::HORZ, '=', pos);
@@ -234,7 +235,7 @@ void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> &
 		break;
 	case AlignBase::Pos::FILL:
 		//mout.experimental("STRETCHING..." );mout.experimental("STRETCHING..." );
-		mout.experimental("FILL:ing horz: ",   obox, " width -> ", anchorBoxHorz.width);
+		mout.experimental<LOG_DEBUG>("FILL:ing horz: ",   obox, " width -> ", anchorBoxHorz.width);
 		coord = anchorBoxHorz.x;
 		obox.setWidth(anchorBoxHorz.width);
 
@@ -257,7 +258,6 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 	svg::coord_t coord;
 	realignObjectVert(object, anchorBoxVert, coord);
 
-	// Point2D<svg::coord_t> offset(0, coord - object->getBoundingBox().y);
 	TranslatorSVG translator(0, coord - object->getBoundingBox().y);
 	TreeUtils::traverse(translator, object);
 
@@ -334,7 +334,7 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 		break;
 	case AlignBase::Pos::FILL:
 		//mout.experimental("STRETCHING..." );mout.experimental("STRETCHING..." );
-		mout.experimental("FILL:ing vert: ", obox, " height ");
+		mout.experimental<LOG_DEBUG>("FILL:ing vert: ", obox, " height ");
 		coord = anchorBoxVert.y;
 		obox.setHeight(anchorBoxVert.height);
 		break;
@@ -655,7 +655,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 				bboxAnchorVert = & entry.second->getBoundingBox();
 			}
 
-			mout.accept<LOG_NOTICE>("Expanding ... ", objectBBox, " horz:", *bboxAnchorHorz, " vert:", *bboxAnchorVert);
+			mout.accept<LOG_DEBUG>("Expanding ... ", objectBBox, " horz:", *bboxAnchorHorz, " vert:", *bboxAnchorVert);
 			/// mout.accept<LOG_NOTICE>("Expanding ... ", bbox, " now, after: ", entry.second.data);
 
 		}

@@ -329,6 +329,32 @@ void NodeSVG::updateAlign(){
 
 }  // image::
 
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const {
+	return hasChild(EnumDict<image::svg::tag_t>::dict.getKey(type, true)); // no error on non-existent dict entry
+}
+
+
+/// Automatic conversion of elem classes to strings.
+/**
+ *
+ */
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const {
+	return (*this)[EnumDict<image::svg::tag_t>::dict.getKey(type, false)];
+}
+
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type){
+	return (*this)[EnumDict<image::svg::tag_t>::dict.getKey(type, false)];
+}
+
+
 }  // drain::
 
 

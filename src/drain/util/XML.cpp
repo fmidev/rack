@@ -73,7 +73,7 @@ void XML::setText(const std::string & s) {
 
 	drain::Logger mout(__FILE__,__FUNCTION__);
 
-	mout.accept<LOG_WARNING>("setting text for elem type=", type, ", text: ", s); // *
+	// mout.accept<LOG_WARNING>("setting text for elem type=", type, ", text: ", s); // *
 	// TODO: warn if elem supports no ctext (like svg::CIRCLE or svg::RECT)
 
 	switch (type){
@@ -86,11 +86,10 @@ void XML::setText(const std::string & s) {
 		mout.special(s, " -> ", style);
 		*/
 		break;
-	case XML::STYLE_SELECT:
-		mout.info("parsing text to CSS definition");
-		//setValues(s, ':', ';');
+	case XML::STYLE_SELECT: // OK!
+		mout.debug("parsing text to CSS definition");
 		drain::SmartMapTools::setValues(getAttributes(), s, ';', ':', " \t\n");
-		mout.special(s, " -> ", getAttributes());
+		mout.special<LOG_DEBUG>(s, " -> ", getAttributes());
 		break;
 	case XML::UNDEFINED:
 		type = CTEXT;

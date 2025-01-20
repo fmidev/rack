@@ -435,7 +435,7 @@ public:
 		//BBoxSVG bbox;
 		// TreeUtilsSVG::computeBoundingBox(mainGroup, bbox);
 
-		RackSVG::addTitles(mainGroup, GraphicsContext::ElemClass::MAIN_TITLE);
+		RackSVG::addTitleBox(mainGroup, GraphicsContext::ElemClass::MAIN_TITLE);
 
 		drain::image::TreeSVG & mainTitle = mainGroup[GraphicsContext::ElemClass::MAIN_TITLE]; // "mainTitle"
 		mainTitle->setText(value);

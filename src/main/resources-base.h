@@ -102,6 +102,7 @@ public:
 
 };
 
+DRAIN_ENUM_OSTREAM(GraphicsContext::ElemClass);
 
 // Consider moving ImageKit here?
 class ImageContext {

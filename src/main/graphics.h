@@ -89,7 +89,10 @@ public:
 
 	/// Add TEXT elements: MAINTITLE, LOCATION, TIME, GENERAL
 	static
-	void addTitles(drain::image::TreeSVG & object, GraphicsContext::ElemClass elemClass);
+	void addTitleBox(drain::image::TreeSVG & object, GraphicsContext::ElemClass elemClass);
+
+	static
+	void addTitles(drain::image::TreeSVG & object, const std::string & anchor, GraphicsContext::ElemClass elemClass);
 
 	/// Add rectangle
 	static
@@ -128,6 +131,8 @@ protected:
 
 namespace drain {
 
+//
+
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass &x);
@@ -135,10 +140,10 @@ image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemCla
 /// Automatic conversion of elem classes to strings.
 /**
  *
- */
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type);
+ */
 
 
 //template <>
@@ -203,13 +208,17 @@ class TitleCreatorSVG : public drain::TreeVisitor<TreeSVG> {
 
 public:
 
-	int mainHeaderHeight;
 
 	inline
-	TitleCreatorSVG() : mainHeaderHeight(50) {
+	TitleCreatorSVG(GraphicsContext::TitleFlagger::ivalue_t titles) : mainHeaderHeight(50), titles(titles) {
 	};
 
 	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & odimPath) override;
+
+
+	int mainHeaderHeight;
+
+	GraphicsContext::TitleFlagger titles;
 
 };
 

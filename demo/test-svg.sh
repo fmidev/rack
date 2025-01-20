@@ -118,6 +118,11 @@ RUN_TEST  \\ --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\$
 
 
 WRITE_DOC 'In a grid of images, originating from several radars and times, the images can be labelled automatically with \c --gTitles command, with option \c IMAGE_TITLES . '
-RUN_TEST  \\ --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroup "'Examples of \${PLC} (\${NOD}) on \${what:date|%Y/%m/%d}'" --gTitles IMAGE_TITLE \\ 'data-kiira/*.h5'  -o series-labelled.svg
+RUN_TEST  \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroup "'Examples of \${PLC} (\${NOD}) on \${what:date|%Y/%m/%d}'" --gTitles IMAGE_TITLE \\ 'data-kiira/*.h5'  -o series-labelled.svg
+
+
+WRITE_DOC 'A further example, with three levels of titles.'
+RUN_TEST \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'"    --gGroup 'Examples of Kiira case' --gTitles GROUP_TITLE,IMAGE_TITLE,MAIN_TITLE \\  data-kiira/201708121530_radar.polar.fikor.h5 data-kiira/201708121600_radar.polar.fiika.h5  -o series-labelled2.svg
+
 
 echo -e "Created: \ndisplay ${OUTFILES[*]}"

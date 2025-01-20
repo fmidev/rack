@@ -78,6 +78,8 @@ const drain::EnumDict<image::svg::tag_t>::dict_t & getDict();
 template <>
 const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict;
 
+DRAIN_ENUM_OSTREAM(image::svg::tag_t)
+
 namespace image {
 
 // Future option
@@ -401,7 +403,42 @@ image::TreeSVG & image::TreeSVG::addChild(const image::TreeSVG::key_t & key){
 	return XML::xmlAddChild(*this, key);
 }
 
+/*
+template <>
+template <class K>
+const image::TreeSVG::key_t & image::TreeSVG::getKey(const K & key){
+	return EnumDict<K>::dict.getKey(key, false);
+}
+*/
 
+/*  tested 2025/01/20 but caused problems with Hi5Tree("dataset2") etc.
+template <>
+template <typename K> // for K (path elem arg)
+const image::TreeSVG::key_t & image::TreeSVG::getKey(const K & key){
+	return EnumDict<K>::dict.getKey(key, false);
+}
+
+template <>
+template <> // for K (path elem arg)
+inline
+const image::TreeSVG::key_t & image::TreeSVG::getKey(const drain::StyleSelectorXML<image::NodeSVG> & selector){
+	return selector;
+}
+
+*/
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const;
+
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type);
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const ;
 
 } // drain::
 

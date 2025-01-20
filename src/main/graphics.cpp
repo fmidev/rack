@@ -44,6 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics.h"
 
 
+
 namespace drain {
 
 /// Automatic conversion of elem classes to STYLE selector, eg MAINTITLE -> ".MAINTITLE"
@@ -51,21 +52,44 @@ namespace drain {
  *  Notice leading '.'.
  *
  */
+
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass &x){
 	return (*this)[std::string(".")+EnumDict<rack::GraphicsContext::ElemClass>::dict.getKey(x, false)];
 }
 
+
 /// Automatic conversion of elem classes to strings.
 /**
  *
- */
+
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type){
 	return (*this)[EnumDict<image::svg::tag_t>::dict.getKey(type, false)];
 }
+ */
+
+
+
+/// Automatic conversion of elem classes to strings.
+/**
+ *
+ */
+
+// template <> // for T (Tree class)
+
+/*
+template <>
+template <typename K> // for K (path elem arg)
+const image::TreeSVG::key_t & image::TreeSVG::getKey(const K & key){
+	return EnumDict<K>::dict.getKey(key, false);
+}
+*/
+
+
+
 
 /*
 template <> // for T (Tree class)
@@ -151,7 +175,8 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 		};
 
 
-		style["text.IMAGE_TITLE"] = {
+		// style["text.IMAGE_TITLE"] = {
+		style[Select(svg::TEXT, GraphicsContext::IMAGE_TITLE)] = {
 				{"font-size", 12},
 				{"stroke", "white"},
 				/* {"fill", "black"}, */
@@ -167,12 +192,14 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"font-size", 20},
 		};
 
-		style["rect.GROUP_TITLE"] = {
+		style[Select(svg::RECT, GraphicsContext::GROUP_TITLE)] = {
+		//style["rect.GROUP_TITLE"] = {
 				{"fill", "gray"},
 				{"opacity", 0.5},
 		};
 
-		style["text.GROUP_TITLE"] = {
+		style[Select(svg::TEXT, GraphicsContext::GROUP_TITLE)] = {
+		// style["text.GROUP_TITLE"] = {
 				{"fill", "black"},
 		};
 
@@ -180,12 +207,14 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"font-size", "30"},
 		};
 
-		style["rect.MAIN_TITLE"] = {
+		// style["rect.MAIN_TITLE"] = {
+		style[Select(svg::RECT, GraphicsContext::MAIN_TITLE)] = {
 				{"fill", "darkslateblue"},
 				{"opacity", "0.5"},
 		};
 
-		style["text.MAIN_TITLE"] = {
+		// style["text.MAIN_TITLE"] = {
+		style[Select(svg::TEXT, GraphicsContext::MAIN_TITLE)] = {
 				{"fill", "white"},
 		};
 
@@ -257,27 +286,6 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 	}
 
 	return alignedGroup;
-
-	// mout.pending<LOG_WARNING>("considering group: '", groupName, "' <= ", groupMapper, vmap.get("what:quantity","??"));
-	// mout.pending<LOG_WARNING>("Titles: ", ctx.svgTitles);
-
-	/*
-	const std::string name = ctx.getFormattedStatus(ctx.svgGroupNameSyntax); // status updated upon last file save
-	if (mainGroup.hasChild(name)){
-		ctx.svgGroupNameFormatted = name;
-		return mainGroup[name];
-	}
-	else { // NEW Group! Add  grouptitles?
-
-		drain::image::TreeSVG & alignedGroup = mainGroup[name](svg::GROUP);
-		alignedGroup->setId(name);
-		alignedGroup->addClass(drain::image::LayoutSVG::ALIGN_FRAME);
-		ctx.svgGroupNameFormatted = name;
-
-		return alignedGroup;
-	}
-	*/
-
 
 }
 
@@ -469,7 +477,7 @@ drain::image::TreeSVG & RackSVG::addImageBorder(drain::image::TreeSVG & imagePan
 
 
 
-void RackSVG::addTitles(drain::image::TreeSVG & object, GraphicsContext::ElemClass elemClass){
+void RackSVG::addTitleBox(drain::image::TreeSVG & object, GraphicsContext::ElemClass elemClass){
 
 	drain::image::TreeSVG & backgroundRect = object[BACKGROUND_RECT](svg::RECT);
 	backgroundRect->addClass(elemClass);
@@ -487,20 +495,16 @@ void RackSVG::addTitles(drain::image::TreeSVG & object, GraphicsContext::ElemCla
 		default:
 			break;
 	}
-	/*
-	if (elemClass == GraphicsContext::ElemClass::MAIN_TITLE){
-		backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
-	}
-	else {
-		backgroundRect->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
-		// backgroundRect->addClass(LayoutSVG::FLOAT);  // alignment
-	}
-	*/
+
 	backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
 	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
 	backgroundRect->setHeight(40);
-	// backgroundRect->setStyle("fill", "green");
-	// backgroundRect->setStyle("opacity", 0.75);
+
+	addTitles(object, BACKGROUND_RECT, elemClass);
+}
+
+void RackSVG::addTitles(drain::image::TreeSVG & object, const std::string & anchor, GraphicsContext::ElemClass elemClass){
+
 	/** TODO
 	const double fontSize = // getStyleValue(root, RackSVG::TITLE, "font-size", 12.5);
 			root[drain::image::svg::STYLE][elemClass]->get("font-size", 12.5);
@@ -509,12 +513,18 @@ void RackSVG::addTitles(drain::image::TreeSVG & object, GraphicsContext::ElemCla
 	TreeSVG & mainHeader = object[GraphicsContext::GENERAL](svg::TEXT); // group[GENERAL](svg::TEXT);
 	mainHeader->addClass(LayoutSVG::FLOAT);
 	mainHeader->addClass(elemClass); // also GENERAL?
-	mainHeader->setAlignAnchor(BACKGROUND_RECT);
-	mainHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); //AlignSVG::VertAlign::MIDDLE);
+	mainHeader->setAlignAnchor(anchor);
+	if (elemClass == GraphicsContext::ElemClass::IMAGE_TITLE){
+		mainHeader->setAlign(AlignSVG::BOTTOM, AlignSVG::LEFT); //AlignSVG::VertAlign::MIDDLE);
+	}
+	else {
+		mainHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); //AlignSVG::VertAlign::MIDDLE);
+	}
 	mainHeader->setHeight(20);
 	mainHeader->setMargin(4);
 	// Ensure order
 	mainHeader["product"](svg::TSPAN);
+	mainHeader["product"]->addClass("product");
 	mainHeader["prodpar"](svg::TSPAN);
 	// mainHeader["product"]->ctext = "product";
 	// mainHeader["prodpar"]->ctext = "prodpar";
@@ -523,24 +533,33 @@ void RackSVG::addTitles(drain::image::TreeSVG & object, GraphicsContext::ElemCla
 	TreeSVG & timeHeader = object[GraphicsContext::TIME](svg::TEXT);
 	timeHeader->addClass(LayoutSVG::FLOAT);
 	timeHeader->addClass(GraphicsContext::TITLE, GraphicsContext::TIME);
-	timeHeader->setAlignAnchor(BACKGROUND_RECT);
+	timeHeader->setAlignAnchor(anchor);
 	timeHeader->setAlign(AlignSVG::TOP, AlignSVG::RIGHT); // , AlignSVG::INSIDE);
 	timeHeader->setHeight(16);
 	timeHeader->setMargin(3);
 	timeHeader["date"](svg::TSPAN);
+	timeHeader["date"]->addClass("date");
 	timeHeader["time"](svg::TSPAN);
+	timeHeader["time"]->addClass("time");
 	// timeHeader["date"]->ctext = "date...";
 	// timeHeader["time"]->ctext = "time";
 
 	TreeSVG & locationHeader = object[GraphicsContext::LOCATION](svg::TEXT);
 	locationHeader->addClass(LayoutSVG::FLOAT);
 	locationHeader->addClass(GraphicsContext::TITLE, GraphicsContext::LOCATION);
-	locationHeader->setAlignAnchor(BACKGROUND_RECT);
-	locationHeader->setAlign(AlignSVG::TOP, AlignSVG::LEFT); // , AlignSVG::INSIDE); // AlignSVG::HorzAlign::RIGHT);
+	locationHeader->setAlignAnchor(anchor);
+	if (elemClass == GraphicsContext::ElemClass::IMAGE_TITLE){
+		locationHeader->setAlign(AlignSVG::TOP, AlignSVG::RIGHT);
+	}
+	else {
+		locationHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::LEFT);
+	}
 	locationHeader->setHeight(16);
 	locationHeader->setMargin(3);
 	locationHeader["NOD"](svg::TSPAN);
+	locationHeader["NOD"]->addClass("NOD");
 	locationHeader["PLC"](svg::TSPAN);
+	locationHeader["PLC"]->addClass("PLC");
 	// locationHeader["NOD"]->ctext = "NOD";
 	// locationHeader["PLC"]->ctext = "PLC";
 
@@ -557,19 +576,15 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 
 	drain::image::TreeSVG & mainGroup = getMainGroup(ctx);
 
-	mout.special("dumping SVG tree");
-	drain::TreeUtils::dump(ctx.svgTrack);
 
 	if (mout.isLevel(LOG_DEBUG)){
+		// mout.special("dumping SVG tree");
+		// drain::TreeUtils::dump(ctx.svgTrack);
 		drain::Output outfile("svg-0-unaligned.svg");
 		drain::image::NodeSVG::toStream(outfile.getStream(), ctx.svgTrack);
 	}
 
-
-	// drain::Point2D<drain::image::svg::coord_t> start(0,0);
-	//TreeUtilsSVG::superAlign(mainGroup, Align::HORZ, LayoutSVG::INCR, start);superAlign
-	mout.attention("next superAlign ", ctx.mainOrientation, '|', ctx.mainDirection);
-	//TreeUtilsSVG::superAlign(mainGroup, ctx.mainOrientation, ctx.mainDirection);
+	mout.debug("next superAlign ", ctx.mainOrientation, '|', ctx.mainDirection);
 
 	if (mout.isLevel(LOG_DEBUG+2)){
 		// mout.special("dumping SVG tree");
@@ -590,9 +605,8 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 	}
 
 	if (ctx.svgTitles){ // also "false" !?
-
 		// Create titles for each image panel
-		TitleCreatorSVG titleCreator;
+		TitleCreatorSVG titleCreator(ctx.svgTitles.getValue());
 		drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
 	}
 
@@ -606,7 +620,7 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 
 			// TreeSVG & group = RackSVG::getMainGroup(ctx); // ctx.svgTrack["headerGroup"](svg::GROUP);
 
-			addTitles(ctx.svgTrack, GraphicsContext::ElemClass::MAIN_TITLE);
+			addTitleBox(ctx.svgTrack, GraphicsContext::ElemClass::MAIN_TITLE);
 
 			// Automatic
 			//if ((ctx.svgPanelConf.title == "auto") || ctx.svgPanelConf.title.empty()){
@@ -706,11 +720,11 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 	TreeSVG & current = tree(path);
 
 	//if (!((current->getType()==svg::GROUP) || (current->getType()==svg::IMAGE))){ // At least METADATA must be skipped...
-	if (current->getType() != svg::GROUP){ // At least METADATA must be skipped...
+	if (!current->typeIs(svg::GROUP)){ // At least METADATA must be skipped...
 		return 0;
 	}
 
-	/// Statistics: computer count for each (key,value> pair.
+	/// Statistics: computer count for each (key,value) pair, for example (what:time, "20240115")
 	typedef std::map<std::string, unsigned short> variableStat_t;
 	variableStat_t stat;
 	/// Number of children having (any) metadata.
@@ -719,9 +733,9 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 	/// Iterate children and their attributes: check which attributes (key and value) are shared by all the children.
 	for (auto & entry: current.getChildren()){
 		TreeSVG & child = entry.second;
-		if (child.hasChild("metadata") && !child->hasClass("legend")){ // or has "data"?
+		if (child.hasChild(svg::METADATA) && !child->hasClass("legend")){ // or has "data"?
 			++count;
-			TreeSVG & childMetadata = entry.second["metadata"](svg::METADATA);
+			TreeSVG & childMetadata = entry.second[svg::METADATA](svg::METADATA);
 			for (const auto & attr: childMetadata->getAttributes()){
 				// tehty jo metadata->set(attr.first, attr.second);
 				std::string s = drain::StringBuilder<>(attr.first,'=',attr.second);
@@ -733,11 +747,11 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 
 	if (count > 0){
 
-		TreeSVG & metadata = current["metadata"](svg::METADATA);
+		TreeSVG & metadata = current[svg::METADATA](svg::METADATA);
 		metadata->addClass("md_shared");
 
-		TreeSVG & debugSharedBase = current["shared"](svg::DESC);
-		debugSharedBase->set("type", "SHARED");
+		TreeSVG & debugSharedBase = current[svg::DESC](svg::DESC);
+		debugSharedBase->set("data-type", "SHARED"); // ??
 		// TreeSVG & debugShared = debugSharedBase["cmt"](svg::COMMENT);
 		// debugShared->ctext = "SHARED: ";
 
@@ -763,7 +777,7 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 			// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
 			std::string key, value;
 			drain::StringTools::split2(e.first, key, value, '=');
-			if (e.second == count){
+			if (e.second == count){ // ALL!
 
 				mout.accept<LOG_DEBUG>('\t', e.first, ' ', path.str());
 
@@ -775,8 +789,8 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 
 				for (auto & entry: current.getChildren()){
 					TreeSVG & child = entry.second;
-					if (child.hasChild("metadata")){
-						TreeSVG & childMetadata = entry.second["metadata"](svg::METADATA);
+					if (child.hasChild(svg::METADATA)){
+						TreeSVG & childMetadata = entry.second[svg::METADATA](svg::METADATA);
 						childMetadata -> removeAttribute(key);
 						childMetadata -> addClass("md_pruned");
 					}
@@ -859,18 +873,17 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 	}
 
 	/// Group title
-	if (group->hasClass(LayoutSVG::ALIGN_FRAME)){
+	if (group->hasClass(LayoutSVG::ALIGN_FRAME) && titles.isSet(GraphicsContext::ElemClass::GROUP_TITLE)){
 		// Problem: VERT layout?
-		RackSVG::addTitles(group, GraphicsContext::ElemClass::GROUP_TITLE);
+		RackSVG::addTitleBox(group, GraphicsContext::ElemClass::GROUP_TITLE);
 		group[GraphicsContext::ElemClass::GENERAL](svg::TEXT); // undeeded, debugging
-		group[GraphicsContext::ElemClass::GENERAL]->setText(path.back());
+		// group[GraphicsContext::ElemClass::GENERAL]->setText(path.back()); // Keep! Good for debugging, as last elem serves as an ID
 	}
 
 
 	if (!group.hasChild("metadata")){
 		return 0;
 	}
-
 
 	if (!(group->hasClass(LayoutSVG::ALIGN_FRAME) || group->hasClass(GraphicsContext::IMAGE_PANEL))){
 		return 0;
@@ -883,9 +896,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 	}
 
 
-
 	TreeSVG & metadata = group[svg::METADATA];
-
 
 	if (!metadata->getAttributes().empty()){
 
@@ -893,11 +904,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 		// mout.attention("handle: ", current.data);
 		// Note: these are "subtitles", not the main title
 
-		/*
-		if (group->hasClass(GraphicsContext::IMAGE_PANEL)){
-			RackSVG::addTitles(group, GraphicsContext::ElemClass::IMAGE_TITLE);
-		}
-		*/
+
 
 		for (const auto & attr: metadata->getAttributes()){
 
@@ -914,6 +921,13 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 			}
 			else if (ODIM::locationKeys.count(attr.first)>0){
 				elemClass = GraphicsContext::LOCATION;
+			}
+
+			if (group->hasClass(GraphicsContext::IMAGE_PANEL) && titles.isSet(GraphicsContext::ElemClass::IMAGE_TITLE)){
+				RackSVG::addTitles(group, "image", GraphicsContext::ElemClass::IMAGE_TITLE);
+			}
+			else {
+				// return 0;
 			}
 
 
@@ -985,9 +999,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 	}
 	else {
 		mout.debug("title skipped, metadata empty under: ", path);
-		// TreeSVG & text = current["mark"](svg::TEXT);
-		// text->setText(path.str() + " empty metadata...");
-		return 0;
+		metadata->setType(drain::XML::COMMENT);
 	}
 
 	return 0;

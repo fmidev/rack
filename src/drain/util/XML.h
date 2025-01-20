@@ -199,6 +199,12 @@ public:
 		url = s;
 	}
 
+	template <class ...T>
+	inline
+	void setName(const T & ...args){
+		setAttribute("data-name", drain::StringBuilder<>(args...));
+	}
+
 
 	// ---------------- Attributes ---------------
 
@@ -443,9 +449,9 @@ public:
 	/**
 	 *  \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
 	 */
-	template <typename XML>
+	template <typename TX>
 	static inline
-	XML & xmlAssign(XML & dst, const XML & src){
+	TX & xmlAssign(TX & dst, const TX & src){
 
 		if (&src != &dst){
 			dst.clear();
@@ -462,9 +468,9 @@ public:
 	/**
 	 *  \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
 	 */
-	template <typename X>
+	template <typename TX>
 	static inline
-	X & xmlAssign(X & dst, const typename X::xml_node_t & src){
+	TX & xmlAssign(TX & dst, const typename TX::xml_node_t & src){
 
 		if (&src != &dst.data){
 			dst->clear();
@@ -502,26 +508,26 @@ public:
 	/**
 	 *  \tparam T - XML tree
 	 */
-	template <typename XML, typename V>
+	template <typename TX, typename V>
 	static inline
-	XML & xmlAssign(XML & tree, const V & arg){
+	TX & xmlAssign(TX & tree, const V & arg){
 		tree->set(arg);
 		return tree;
 	}
 
 	/// Tree
 	/**
-	 *
+	 *  \tparam TX - xml tree
 	 */
-	template <typename T>
+	template <typename TX>
 	static
 	//T & xmlAssign(T & tree, std::initializer_list<std::pair<const char *,const char *> > l){
-	T & xmlAssign(T & tree, std::initializer_list<std::pair<const char *,const Variable> > l){
+	TX & xmlAssign(TX & tree, std::initializer_list<std::pair<const char *,const Variable> > l){
 
 		switch (static_cast<intval_t>(tree->getType())){
 		case STYLE:
 			for (const auto & entry: l){
-				T & elem = tree[entry.first];
+				TX & elem = tree[entry.first];
 				elem->setType(STYLE_SELECT);
 				drain::SmartMapTools::setValues(elem->getAttributes(), entry.second, ';', ':', std::string(" \t\n"));
 			}
@@ -544,9 +550,9 @@ public:
 	 *   Forward definition – type can be set only upon construction of a complete
 	 *
 	 */
-	template <typename T>
+	template <typename TX>
 	static inline
-	T & xmlSetType(T & tree, const typename T::node_data_t::xml_tag_t & type){
+	TX & xmlSetType(TX & tree, const typename TX::node_data_t::xml_tag_t & type){
 		tree->setType(type);
 		return tree;
 	}
@@ -561,7 +567,7 @@ public:
 	template <typename T>
 	static
 	T & xmlAddChild(T & tree, const std::string & key){
-		typename T::node_data_t::xml_tag_t type = xmlGuessType(tree.data);
+		typename T::node_data_t::xml_tag_t type = xmlRetrieveDefaultType(tree.data);
 
 		if (!key.empty()){
 			return tree[key](type);
@@ -589,7 +595,7 @@ public:
 
 	template <typename N>
 	static
-	typename N::xml_tag_t xmlGuessType(const N & parentNode){
+	typename N::xml_tag_t xmlRetrieveDefaultType(const N & parentNode){
 		typedef typename N::xml_default_elem_map_t map_t;
 		const typename map_t::const_iterator it = N::xml_default_elems.find(parentNode.getNativeType());
 		if (it != N::xml_default_elems.end()){
