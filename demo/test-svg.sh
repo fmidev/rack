@@ -124,5 +124,9 @@ RUN_TEST  \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\
 WRITE_DOC 'A further example, with three levels of titles.'
 RUN_TEST \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'"    --gGroup 'Examples of Kiira case' --gTitles GROUP_TITLE,IMAGE_TITLE,MAIN_TITLE \\  data-kiira/201708121530_radar.polar.fikor.h5 data-kiira/201708121600_radar.polar.fiika.h5  -o series-labelled2.svg
 
+WRITE_DOC 'A further example, with...'
+RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'"    --gGroup "'Examples of \${what:time}'" --gTitles GROUP_TITLE,IMAGE_TITLE,MAIN_TITLE \\   data-kiira/201708121?00_radar.polar.fikor.h5 data-kiira/201708121?00_radar.polar.fiika.h5  -o series-labelled3.svg 
+
+
 
 echo -e "Created: \ndisplay ${OUTFILES[*]}"

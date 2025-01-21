@@ -555,7 +555,6 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 
 	drain::image::TreeSVG & mainGroup = getMainGroup(ctx);
 
-
 	if (mout.isLevel(LOG_DEBUG)){
 		// mout.special("dumping SVG tree");
 		// drain::TreeUtils::dump(ctx.svgTrack);
@@ -589,86 +588,6 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 		drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
 	}
 
-	/*
-	if (false && ctx.svgTitles.isSet(GraphicsContext::ElemClass::MAIN_TITLE)){ // also "false" !?
-
-		// MAIN HEADER(s)
-		// if (mainGroup.hasChild("metadata") || (ctx.svgPanelConf.title != "false")){ // hmmm
-		// if (ctx.svgTrack.hasChild("mainRect")){ // check
-		if (!ctx.svgTrack.hasChild(BACKGROUND_RECT)){ // AUTO
-		// if (false){ // AUTO
-
-			// TreeSVG & group = RackSVG::getMainGroup(ctx); // ctx.svgTrack["headerGroup"](svg::GROUP);
-
-			addTitleBox(ctx.svgTrack, GraphicsContext::ElemClass::MAIN_TITLE);
-
-			// Automatic
-			//if ((ctx.svgPanelConf.title == "auto") || ctx.svgPanelConf.title.empty()){
-			if (true){
-				// TODO: vars aligned by class (time, etc)
-				VariableFormatterODIM<drain::FlexibleVariable> formatter; // (No instance properties used, but inheritance/overriding)
-				for (const auto & entry: mainGroup["metadata"]->getAttributes()){
-					// Here, class is also the element key:
-					// Consider separate function, recognizing date/time, and formatting?
-
-					// std::string key;
-					GraphicsContext::ElemClass key;
-					std::stringstream sstr;
-
-					// In these, the selection is based on entry.first (eg. what:endtime)
-					if (formatter.formatDate(sstr, entry.first, entry.second, "%Y/%m/%d")){
-						mout.special("Recognized  DATE: ", entry.first, '=', entry.second);
-						key = GraphicsContext::TIME; //"TIME"; // str + enum??
-					}
-					else if (formatter.formatTime(sstr, entry.first, entry.second, "%H:%M UTC")){
-						mout.special("Recognized  TIME: ", entry.first, '=', entry.second);
-						key = GraphicsContext::TIME; //"TIME"; // str + enum??
-					}
-					else if (formatter.formatPlace(sstr, entry.first, entry.second)){
-						mout.special("Recognized PLACE: ", entry.first, '=', entry.second);
-						key = GraphicsContext::LOCATION; // "LOCATION"; // str + enum??
-					}
-					else {
-						sstr << entry.second.toStr();
-						key = GraphicsContext::GENERAL; // "GENERAL";
-					}
-					sstr << "&#160;";
-
-					TreeSVG & subHeader = ctx.svgTrack[key](svg::TEXT);
-					if (subHeader.hasChild(entry.first)){
-						subHeader[entry.first]->setType(svg::TSPAN); // needed?
-						subHeader[entry.first]->ctext += sstr.str(); // +"%";
-					}
-					else {
-						subHeader->ctext += sstr.str();
-					}
-
-				}
-
-			}
-
-			//if (!ctx.svgTitles.empty()){
-			if (false){
-				VariableFormatterODIM<drain::Variable> formatter; // (No instance properties used, but inheritance/overriding)
-				drain::StringMapper titleMapper(RackContext::variableMapper); // XXX
-				titleMapper.parse(ctx.svgTitles);
-				const drain::VariableMap & v = ctx.getStatusMap();
-				//mainHeader->ctext += titleMapper.toStr(v);
-				ctx.svgTrack[GraphicsContext::GENERAL]->ctext += titleMapper.toStr(v, -1, formatter);
-				ctx.svgTrack[GraphicsContext::GENERAL]->ctext += ' ';
-			}
-
-
-
-		}
-
-		// IMAGE HEADER and MAIN HEADER positions
-		// mout.attention("aligning texts of: ", group -> getTag());
-		// tsvg::alignText(mainGroup);
-	}
-	*/
-
-	//TreeUtilsSVG::superAlign(mainGroup, ctx.mainOrientation, ctx.mainDirection);
 
 	TreeUtilsSVG::superAlign(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
 
