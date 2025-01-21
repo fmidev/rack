@@ -331,8 +331,11 @@ void NodeSVG::setAlign(const P & pos, const A & axis,  const V &value){
 
 }  // image::
 
-// template <>
-// void NodeXML<image::svg::tag_t>::handleType(const image::svg::tag_t & type);
+inline
+std::ostream & operator<<(std::ostream &ostr, const image::NodeSVG & node){
+	return node.nodeToStream(ostr);
+}
+
 
 }  // drain::
 

@@ -43,8 +43,8 @@ RackContext::RackContext() : drain::SmartContext(__FUNCTION__) {
 	statusMap["version"] = __RACK_VERSION__;
 	statusMap["rackContext"] = "BASE";
 	svgTrack->setType(drain::image::svg::SVG); //, xmlTrack(drain::image::BaseSVG::SVG)
-	svgTrack->set("width", 600);
-	svgTrack->set("height", 600);
+	svgTrack->set("width", 64);
+	svgTrack->set("height", 48);
 }
 
 RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), ImageContext(ctx), Hdf5Context(ctx){

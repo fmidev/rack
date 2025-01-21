@@ -379,6 +379,10 @@ public:
 	/// Finds elements in an XML structure by class name.
 	/// Finds elements in an XML structure by class name. Redirects to findByClass(t, std::string(cls),
 
+	std::ostream & nodeToStream(std::ostream & ostr) const;
+
+
+
 	template <class V>
 	static inline
 	std::ostream & docToStream(std::ostream & ostr, const V & tree){
@@ -511,42 +515,47 @@ const typename drain::UnorderedMultiTree<N,EX,P>::key_t & drain::UnorderedMultiT
  *
  */
 template <class N>
-inline
-std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
+std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr) const {
 
 	//ostr << node.getTag() << '<' << (unsigned int)node.getType() << '>' << ' ';
-	ostr  << '<' << node.getTag() << '>' << ' ';
+	ostr  << '<' << getTag() << '>' << ' ';
 
 	// drain::Sprinter::toStream(ostr, node.getAttributes(), drain::Sprinter::jsonLayout);
 	// drain::Sprinter::toStream(ostr, node.getAttributes().getMap(), drain::Sprinter::jsonLayout);
 	//
-	if (!node.getAttributes().empty()){
-		drain::Sprinter::toStream(ostr, node.getAttributes().getMap(), drain::Sprinter::xmlAttributeLayout);
+	if (!getAttributes().empty()){
+		drain::Sprinter::toStream(ostr, getAttributes().getMap(), drain::Sprinter::xmlAttributeLayout);
 		ostr << ' ';
 	}
-	if (!node.getClasses().empty()){
+	if (!getClasses().empty()){
 		//ostr << '['; // has already braces []
 		//drain::Sprinter::toStream(ostr, node.classList, drain::Sprinter::pythonLayout);
-		drain::Sprinter::toStream(ostr, node.getClasses(), ClassListXML::layout);
+		drain::Sprinter::toStream(ostr, getClasses(), ClassListXML::layout);
 		//ostr << ']' << ' ';
 		ostr << ' ';
 	}
-	if (!node.getStyle().empty()){
+	if (!getStyle().empty()){
 		ostr << '{';
-		drain::Sprinter::toStream(ostr, node.getStyle());
+		drain::Sprinter::toStream(ostr, getStyle());
 		ostr << '}' << ' ';
 	}
-	if (!node.ctext.empty()){
+	if (!ctext.empty()){
 		ostr << "'";
-		if (node.ctext.length() > 20){
-			ostr << node.ctext.substr(0, 15);
+		if (ctext.length() > 20){
+			ostr << ctext.substr(0, 15) << "..";
 		}
 		else {
-			ostr << node.ctext;
+			ostr << ctext;
 		}
 		ostr << "'";
 	}
 	return ostr;
+}
+
+template <class N>
+inline
+std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
+	return node.nodeToStream(ostr);
 }
 
 /// XML output function shared for all XML documents, ie versions defined in subclasses.

@@ -484,6 +484,7 @@ void RackSVG::addTitleBox(drain::image::TreeSVG & object, GraphicsContext::ElemC
 	// Lower... for GENERAL as well.
 	switch (elemClass) {
 		case GraphicsContext::ElemClass::MAIN_TITLE:
+			backgroundRect->setId(GraphicsContext::ElemClass::MAIN_TITLE);
 			backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
 			break;
 		case GraphicsContext::ElemClass::GROUP_TITLE:
@@ -611,12 +612,13 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 	}
 
 
-	if (ctx.svgTitles.isSet(GraphicsContext::ElemClass::MAIN_TITLE)){ // also "false" !?
+	if (false && ctx.svgTitles.isSet(GraphicsContext::ElemClass::MAIN_TITLE)){ // also "false" !?
 
 		// MAIN HEADER(s)
 		// if (mainGroup.hasChild("metadata") || (ctx.svgPanelConf.title != "false")){ // hmmm
 		// if (ctx.svgTrack.hasChild("mainRect")){ // check
 		if (!ctx.svgTrack.hasChild(BACKGROUND_RECT)){ // AUTO
+		// if (false){ // AUTO
 
 			// TreeSVG & group = RackSVG::getMainGroup(ctx); // ctx.svgTrack["headerGroup"](svg::GROUP);
 
@@ -720,7 +722,7 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 	TreeSVG & current = tree(path);
 
 	//if (!((current->getType()==svg::GROUP) || (current->getType()==svg::IMAGE))){ // At least METADATA must be skipped...
-	if (!current->typeIs(svg::GROUP)){ // At least METADATA must be skipped...
+	if (!current->typeIs(svg::GROUP, svg::SVG)){ // At least METADATA must be skipped...
 		return 0;
 	}
 
@@ -770,6 +772,7 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 		// metadata->getAttributes().clear();
 		mout.pending<LOG_DEBUG>("pruning: ", drain::sprinter(stat), path.str());
 
+		// If this group level has variable entries ABC=123, DEF=456, ... , prune them from the lower level
 		for (const auto & e: stat){
 
 			mout.pending<LOG_DEBUG>('\t', e.first, ':', e.second);
@@ -777,7 +780,7 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 			// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
 			std::string key, value;
 			drain::StringTools::split2(e.first, key, value, '=');
-			if (e.second == count){ // ALL!
+			if (e.second == count){ // Shared by all the children.
 
 				mout.accept<LOG_DEBUG>('\t', e.first, ' ', path.str());
 
@@ -787,12 +790,14 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 
 				metadata->set(key, value); // NOTE: becoming strings (consider type dict?)
 
-				for (auto & entry: current.getChildren()){
-					TreeSVG & child = entry.second;
-					if (child.hasChild(svg::METADATA)){
-						TreeSVG & childMetadata = entry.second[svg::METADATA](svg::METADATA);
-						childMetadata -> removeAttribute(key);
-						childMetadata -> addClass("md_pruned");
+				if (count > 1){
+					for (auto & entry: current.getChildren()){
+						TreeSVG & child = entry.second;
+						if (child.hasChild(svg::METADATA)){
+							TreeSVG & childMetadata = entry.second[svg::METADATA](svg::METADATA);
+							childMetadata -> removeAttribute(key);
+							childMetadata -> addClass("md_pruned");
+						}
 					}
 				}
 
@@ -811,64 +816,14 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 
 
 /**
- *  \param frame - IMAGE or RECT inside which the text will be aligned
  */
-TreeSVG & getTextElemFOO(const TreeSVG & frame, TreeSVG & current, const std::string key){
-
-
-	/*
-	std::string name = current->get("name", "unknown-image");
-	if (timeClass.has(key)){
-		name += "_TIME";
-	}
-	if (locationClass.has(key)){
-		name += "_LOC";
-	}
-	*/
-
-
-	TreeSVG & text = current[key+"_title"];
-
-	// Temporary (until aligned)
-	const int x = frame->get("x", 0);
-	const int y = frame->get("y", 0);
-
-	if (text -> isUndefined()){
-		text -> setType(svg::TEXT);
-		//text->set("ref", current["image"]->getId());
-		//text->set("ref", 0);
-		text->set("x", x + 52);
-		text->set("y", y + 30);
-		// drain::image::TreeUtilsSVG::markAligned(frame, text);
-		// text->addClass(svgAlignBase::FLOAT); // "imageTitle" !
-		// text->set("ref", frame->getId());
-	}
-
-	// TODO: align conf for TIME and LOCATION from svgConf
-	/*
-	if (timeClass.has(key)){
-		text->addClass("TIME",  "BOTTOM", CmdBaseSVG::LEFT); // CmdBaseSVG::FLOAT,
-		text->set("y", y + 40); // temporary
-	}
-
-	if (locationClass.has(key)){
-		text->addClass("LOCATION", "TOP", "RIGHT"); // CmdBaseSVG::FLOAT,
-		text->set("y", y + 60); // temporary
-	}
-	*/
-
-	return text;
-}
-
-
-
 int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	TreeSVG & group = root(path);
 
-	if (!group->typeIs(svg::GROUP)){ // At least METADATA must be skipped...
+	if (!group->typeIs(svg::GROUP, svg::SVG)){ // At least METADATA must be skipped...
 		return 0;
 	}
 
@@ -879,15 +834,21 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 		group[GraphicsContext::ElemClass::GENERAL](svg::TEXT); // undeeded, debugging
 		// group[GraphicsContext::ElemClass::GENERAL]->setText(path.back()); // Keep! Good for debugging, as last elem serves as an ID
 	}
+	else if (group->typeIs(svg::SVG) && titles.isSet(GraphicsContext::ElemClass::MAIN_TITLE)){ // At least METADATA must be skipped...
+		RackSVG::addTitleBox(group, GraphicsContext::ElemClass::MAIN_TITLE);
+	}
+
 
 
 	if (!group.hasChild("metadata")){
 		return 0;
 	}
 
+	/*
 	if (!(group->hasClass(LayoutSVG::ALIGN_FRAME) || group->hasClass(GraphicsContext::IMAGE_PANEL))){
 		return 0;
 	}
+	*/
 
 
 	if (group->hasClass(GraphicsContext::IMAGE_PANEL)){
@@ -967,7 +928,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 			}
 			else {
 				text->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
-				text->ctext = drain::StringBuilder<'+'>(attr.first, attr.second);
+				// text->ctext = drain::StringBuilder<'|'>(elemClass, attr.first, attr.second);
 			}
 
 			// Explicit (instead of style-derived) font size needed for bounding box (vertical height)

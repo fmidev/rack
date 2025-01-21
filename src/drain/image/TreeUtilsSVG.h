@@ -165,14 +165,14 @@ public:
 	// static
 	// void realignObject(AlignBase::Axis axis, svg::coord_t pos, svg::coord_t width, TreeSVG & obj, svg::coord_t & newPos); // , Point2D<svg::coord_t> & newLocation);
 
-	static
-	void realignObjectHorz(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxHorz, svg::coord_t & coord);
+	// static
+	// void realignObjectHorz(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxHorz, svg::coord_t & coord);
 
 	static
 	void realignObjectHorz(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxHorz);
 
-	static
-	void realignObjectVert(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxVert, svg::coord_t & coord);
+	// static
+	 //void realignObjectVert(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxVert, svg::coord_t & coord);
 
 	static
 	void realignObjectVert(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxVert);
