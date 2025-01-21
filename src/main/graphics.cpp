@@ -316,12 +316,18 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 	// For each image an own group is created to contain also title TEXT's etc.
 	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
 
-	drain::image::TreeSVG & group = getCurrentAlignedGroup(ctx)[name];
+	drain::image::TreeSVG & alignFrame = getCurrentAlignedGroup(ctx);
+
+	// drain::image::TreeSVG & comment = alignFrame[svg::COMMENT](svg::COMMENT);
+	// comment->setText("start of ", LayoutSVG::ALIGN_FRAME, ' ', name, svg::GROUP);
+
+	drain::image::TreeSVG & group = alignFrame[name];
 
 	if (group->isUndefined()){
 		group->setType(svg::GROUP);
-		group->setId(name + 'G');
+		group->setId(name, svg::GROUP);
 		//group->setId(filepath.basename + 'G');
+
 	}
 
 	return group;
@@ -350,37 +356,6 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	image->set("xlink:href", filepath.str()); // 2025 FIX: without .str() error
 
 	addImageBorder(panelGroup); //, src.getGeometry().area);
-
-	/*
-	if ( ctx.svgDebug > 0){  // TODO: move to --gDebug etc.
-		image->set("opacity", 0.5);
-
-		drain::image::TreeSVG & rect = panelGroup["rect"](svg::RECT);
-		rect->set("width",  160); // debug
-		rect->set("height", 100); // debug
-		rect->set("fill", "none"); // just to make sure...
-		rect->setStyle("stroke", "magenta");
-		rect->setStyle("stroke-width", "2px");
-		// rect->setStyle("border-style", "dotted");
-		rect->setStyle("stroke-dasharray", {2,5});
-		// rect->setAlign<AlignSVG::INSIDE>(AlignSVG::LEFT);
-		rect->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE); // AlignSVG::RIGHT);
-		rect->setAlign(AlignSVG::MIDDLE, AlignSVG::INSIDE); // AlignSVG::MIDDLE);
-
-		drain::image::TreeSVG & rect2 = panelGroup["rect2"](svg::RECT);
-		rect2->set("width",  150); // debug
-		rect2->set("height", 120); // debug
-		rect2->set("fill", "none"); // just to make sure...
-		rect2->setStyle("stroke", "green");
-		rect2->setStyle("stroke-width", "5px");
-		rect2->setStyle("stroke-dasharray", {5,2,3});
-		rect2->setAlign(AlignSVG::CENTER, AlignSVG::OUTSIDE); // prune arg
-		rect2->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE); //  AlignSVG::BOTTOM);
-		//rect2->setAlign(AlignSVG::OBJECT, AlignSVG::CENTER);
-		//rect2->setAlign(AlignSVG::ANCHOR, AlignSVG::BOTTOM);
-		//rect2->setAlign(AlignSVG::OBJECT, AlignSVG::BOTTOM);
-	}
-	*/
 
 	// Metadata:
 	drain::image::TreeSVG & metadata = panelGroup[svg::METADATA](svg::METADATA);
@@ -526,14 +501,16 @@ void RackSVG::addTitles(drain::image::TreeSVG & object, const std::string & anch
 	// Ensure order
 	mainHeader["product"](svg::TSPAN);
 	mainHeader["product"]->addClass("product");
+	// mainHeader["product"]->ctext = "product"; // debugging
 	mainHeader["prodpar"](svg::TSPAN);
-	// mainHeader["product"]->ctext = "product";
-	// mainHeader["prodpar"]->ctext = "prodpar";
+	mainHeader["prodpar"]->addClass("product"); // yes, same...
+	// mainHeader["prodpar"]->ctext = "prodpar"; // debugging
 
 
 	TreeSVG & timeHeader = object[GraphicsContext::TIME](svg::TEXT);
 	timeHeader->addClass(LayoutSVG::FLOAT);
-	timeHeader->addClass(GraphicsContext::TITLE, GraphicsContext::TIME);
+	//timeHeader->addClass(GraphicsContext::TITLE, GraphicsContext::TIME);
+	timeHeader->addClass(elemClass, GraphicsContext::TIME);
 	timeHeader->setAlignAnchor(anchor);
 	timeHeader->setAlign(AlignSVG::TOP, AlignSVG::RIGHT); // , AlignSVG::INSIDE);
 	timeHeader->setHeight(16);
@@ -547,7 +524,8 @@ void RackSVG::addTitles(drain::image::TreeSVG & object, const std::string & anch
 
 	TreeSVG & locationHeader = object[GraphicsContext::LOCATION](svg::TEXT);
 	locationHeader->addClass(LayoutSVG::FLOAT);
-	locationHeader->addClass(GraphicsContext::TITLE, GraphicsContext::LOCATION);
+	//locationHeader->addClass(GraphicsContext::TITLE, GraphicsContext::LOCATION);
+	locationHeader->addClass(elemClass, GraphicsContext::LOCATION);
 	locationHeader->setAlignAnchor(anchor);
 	if (elemClass == GraphicsContext::ElemClass::IMAGE_TITLE){
 		locationHeader->setAlign(AlignSVG::TOP, AlignSVG::RIGHT);
@@ -611,7 +589,7 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 		drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
 	}
 
-
+	/*
 	if (false && ctx.svgTitles.isSet(GraphicsContext::ElemClass::MAIN_TITLE)){ // also "false" !?
 
 		// MAIN HEADER(s)
@@ -636,12 +614,6 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 					// std::string key;
 					GraphicsContext::ElemClass key;
 					std::stringstream sstr;
-					/*
-					const std::string & key = getTextClass(entry.first, "GENERAL");
-					TreeSVG & subHeader = headerGroup[key](svg::TEXT);
-					TreeSVG & sh = subHeader.hasChild(entry.first) ? subHeader[entry.first] : subHeader;
-					std::stringstream sstr(sh->ctext);
-					*/
 
 					// In these, the selection is based on entry.first (eg. what:endtime)
 					if (formatter.formatDate(sstr, entry.first, entry.second, "%Y/%m/%d")){
@@ -675,7 +647,6 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 
 			}
 
-			/* FREE format? */
 			//if (!ctx.svgTitles.empty()){
 			if (false){
 				VariableFormatterODIM<drain::Variable> formatter; // (No instance properties used, but inheritance/overriding)
@@ -695,6 +666,7 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 		// mout.attention("aligning texts of: ", group -> getTag());
 		// tsvg::alignText(mainGroup);
 	}
+	*/
 
 	//TreeUtilsSVG::superAlign(mainGroup, ctx.mainOrientation, ctx.mainDirection);
 
@@ -844,11 +816,11 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 		return 0;
 	}
 
-	/*
-	if (!(group->hasClass(LayoutSVG::ALIGN_FRAME) || group->hasClass(GraphicsContext::IMAGE_PANEL))){
+
+	if (!(group->typeIs(svg::SVG) || group->hasClass(LayoutSVG::ALIGN_FRAME) || group->hasClass(GraphicsContext::IMAGE_PANEL))){
 		return 0;
 	}
-	*/
+
 
 
 	if (group->hasClass(GraphicsContext::IMAGE_PANEL)){
@@ -898,9 +870,11 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 
 
 			// text->addClass("imageTitle"); // style class (only)
+			/*
 			if (group->hasClass(GraphicsContext::IMAGE_PANEL)){
 				text->addClass(GraphicsContext::IMAGE_TITLE);
 			}
+			*/
 
 			TreeSVG & tspan = text[attr.first](svg::TSPAN);
 			tspan->addClass(attr.first); // allows user-specified style
