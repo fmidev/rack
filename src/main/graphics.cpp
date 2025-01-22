@@ -354,12 +354,14 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	image->setId(filepath.basename); // unneeded, as TITLE also has it:
 	image[drain::image::svg::TITLE](drain::image::svg::TITLE) = filepath.basename;
 	image->setFrame(src.getGeometry().area);
-	image->set("xlink:href", filepath.str()); // 2025 FIX: without .str() error
-
-	addImageBorder(panelGroup); //, src.getGeometry().area);
+	// image->set("xlink:href", filepath.str()); // 2025 FIX: without .str() error
+	image->setUrl(filepath.str());
+	// addImageBorder(panelGroup); //, src.getGeometry().area);
 
 	// Metadata:
 	drain::image::TreeSVG & metadata = panelGroup[svg::METADATA](svg::METADATA);
+
+	// Add empty, pruned?
 
 	// Note assign: char * -> string  , "where:lat", "where:lon"
 	if (src.properties.hasKey("what:source")){
@@ -398,7 +400,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	// if (cmd.size() >= 2){prevCmdKey
 	// metadata->set("cmd", statusMap.get("cmd", ""));
 
-	drain::image::TreeSVG & description = panelGroup["description"](svg::DESC);
+	drain::image::TreeSVG & description = panelGroup[svg::DESC](svg::DESC);
 	description->getAttributes().importCastableMap(metadata->getAttributes());
 	// todo: description  : prevCmdKey "what:product", "what:prodpar", "how:angles"
 
@@ -418,7 +420,9 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	image->setFrame(svg->getBoundingBox().getFrame());
 	// image->set("width", svg->get("width", 0));
 	// image->set("height", svg->get("height", 0));
-	image->set("xlink:href", filepath.str());
+	// image->set("xlink:href", filepath.str());
+	image->setUrl(filepath.str());
+
 	// image["basename"](drain::image::svg::TITLE) = filepath.basename;
 	image[drain::image::svg::TITLE](drain::image::svg::TITLE) = filepath.basename;
 
@@ -695,14 +699,17 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 				metadata->set(key, value); // NOTE: becoming strings (consider type dict?)
 
 				// Actual pruning, "downwards"
-				if (count > 11111){
-				//if (count > 1){
+				if (count > 1){
+				//if (true){
 					for (auto & entry: current.getChildren()){
 						TreeSVG & child = entry.second;
 						if (child.hasChild(svg::METADATA)){
-							TreeSVG & childMetadata = entry.second[svg::METADATA](svg::METADATA);
-							childMetadata -> removeAttribute(key);
-							childMetadata -> addClass("md_pruned");
+							TreeSVG & childMetadata = entry.second[svg::METADATA]; //(svg::METADATA);
+							childMetadata->removeAttribute(key);
+							childMetadata->addClass("md_pruned");
+							TreeSVG & childMetadata2 = entry.second["metadataPruned"](svg::METADATA);
+							childMetadata2->addClass("md_general");
+							childMetadata2->set(key, value);
 						}
 					}
 				}
