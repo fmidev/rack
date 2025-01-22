@@ -55,8 +55,7 @@ public:
 
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
 
-	static
-	drain::image::TreeSVG & getStyle(RackContext & ctx);
+	// static drain::image::TreeSVG & getStyle(RackContext & ctx);
 
 
 	/// Top-level GROUP used by Rack. All the graphic elements will be created inside this element.
@@ -219,8 +218,16 @@ public:
 	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & odimPath) override;
 
 
+	/**
+	 *   Function needed, as attributes of two groups are considered: specific (private) and shared.
+	 */
+	static
+	void writeTitles(TreeSVG & group, const NodeSVG::map_t & attributes);
+
+	// Conf
 	int mainHeaderHeight;
 
+	// Conf
 	GraphicsContext::TitleFlagger titles;
 
 };

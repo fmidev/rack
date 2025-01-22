@@ -600,7 +600,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
+		drain::image::TreeSVG & style = ctx.getStyle(); // consider static/global?
 
 		std::string cssSelector, cssConf;
 		if (drain::StringTools::split2(value, cssSelector, cssConf, '=')){

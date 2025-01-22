@@ -36,9 +36,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
-#include <drain/image/Image.h>
-#include <drain/image/TreeUtilsSVG.h>
-#include <drain/imageops/PaletteOp.h>
 #include <drain/util/Static.h>
 
 #include "data/DataSelector.h"
@@ -47,157 +44,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // #include "graphics.h" // SVG
 
+#include "resources-image.h"
+
+
 namespace rack {
-
-
-using namespace drain::image;
-
-class GraphicsContext { // : public drain::BasicCommand {
-
-
-public:
-
-	/// Default constructor
-	GraphicsContext();
-
-	/// Copy constructor
-	GraphicsContext(const GraphicsContext & ctx);
-
-
-	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
-	enum ElemClass {
-		NONE = 0,
-		MAIN_TITLE = 1,  /** Main title in SVG image */
-		GROUP_TITLE = 2,
-		IMAGE_TITLE = 4,  /** Small title in a corner of radar image (time, location) */
-		TIME = 8,       /** Date and time attributes */
-		LOCATION = 16,   /** Place (coordinates, municipality) */
-		GENERAL = 32,    /** Default type */
-		ALL = (63),
-		MAIN,
-		TITLE,      /** Default title */
-		IMAGE_PANEL,
-		IMAGE_BORDER, /** RECT surrounding the image */
-		// IMAGE_SET  /** "Hidden" marker for image groups */
-	};
-
- 	// SVG output configuration (layout)
-	TreeSVG svgTrack;
-	PanelConfSVG svgPanelConf; // under constr - consider embedding these to PanelConfSVG:
-	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
-	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
-	int svgDebug = 0;
-	std::string svgGroupNameSyntax = "group";
-	std::string svgGroupNameFormatted;
-
-	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
-	TitleFlagger svgTitles = ElemClass::NONE;
-
-	// std::string svgTitles = "";
-
-	// For the NEXT graphic object
-	// AlignSVG::HorzAlign
-	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {AlignSVG::Topol::INSIDE}; // (AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ); // = {AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ};
-	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Pos::MIN};
-
-};
-
-DRAIN_ENUM_OSTREAM(GraphicsContext::ElemClass);
-
-// Consider moving ImageKit here?
-class ImageContext {
-public:
-
-
-	/// Default constr
-	ImageContext();
-
-	/// Copy constr
-	ImageContext(const ImageContext & ctx);
-
-	/// Defines if the next image processing operation uses scaled intentsites instead of raw byte values.
-	bool imagePhysical;
-
-	/// Defines which quality data, if any, is used as input weight.
-	/**
-	 *   Practically, only the following properties are actually used:
-	 *   - path: dataset, data or both
-	 *   - quantity: (typically QIND), future option
-	 */
-	ODIMPathElem::group_t qualityGroups;
-
-	// Accessed by CmdSampler
-	ImageSampler imageSampler;
-
-
-	inline
-	void setCurrentImageColor(const Image & src){
-		currentImage     = &src;
-	}
-
-	inline
-	void setCurrentImages(const Image & src){
-		currentImage     = &src;
-		currentGrayImage = &src;
-	}
-
-	inline
-	void unsetCurrentImages(){
-		currentImage     = NULL;
-		currentGrayImage = NULL;
-	}
-
-	void getImageStatus(drain::FlexVariableMap & statusMap) const;
-
-
-	/// Pointer to the last 2D data (image) processed
-	const Image *currentImage; // = NULL;
-
-	/// Pointer to the last single-channel 2D data (image) processed
-	const Image *currentGrayImage; // = NULL;  // data or grayImage
-
-
-	Image grayImage;
-	Image colorImage;
-
-	std::string paletteKey;
-
-
-	// New
-	inline
-	Palette & getPalette(){
-		return PaletteOp::getPalette(paletteKey);
-	}
-
-	// New
-	inline
-	Palette & getPalette(const std::string & key){
-		paletteKey = key;
-		return PaletteOp::getPalette(key);
-	}
-
-	/*
-	struct {
-		drain::Point2D<unsigned short> tilesize = 256;
-	} geotiff;
-	*/
-	/// Protected:
-
-	/// Given image pointer (null ok), get properties.
-	static
-	void getImageInfo(const Image *ptr, drain::Variable & entry);
-
-
-
-	static std::string outputQuantitySyntax;
-
-//protected:
-
-	void updateImageStatus(drain::VariableMap & statusMap) const ;
-
-
-};
-
 
 
 
