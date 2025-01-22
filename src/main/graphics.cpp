@@ -249,10 +249,11 @@ drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std
 	RackSVG::getStyle(ctx);
 
 	// drain::image::TreeSVG & main = ctx.svgTrack[ctx.svgGroupNameSyntax]; <- this makes sense as well
-	drain::image::TreeSVG & main = ctx.svgTrack["rack-outputs"];
+	drain::image::TreeSVG & main = ctx.svgTrack[GraphicsContext::MAIN];
 
 	if (main -> isUndefined()){
 		main->setType(svg::GROUP);
+		main->addClass(GraphicsContext::MAIN);
 	}
 
 	return main;
@@ -472,7 +473,8 @@ void RackSVG::addTitleBox(drain::image::TreeSVG & object, GraphicsContext::ElemC
 			break;
 	}
 
-	backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
+	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
+	backgroundRect->setAlignAnchor("*"); // only if HORZ-INCR?
 	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
 	backgroundRect->setHeight(40);
 
@@ -485,6 +487,8 @@ void RackSVG::addTitles(drain::image::TreeSVG & object, const std::string & anch
 	const double fontSize = // getStyleValue(root, RackSVG::TITLE, "font-size", 12.5);
 			root[drain::image::svg::STYLE][elemClass]->get("font-size", 12.5);
 	*/
+
+	// TODO: title area "filling order", by group class.
 
 	TreeSVG & mainHeader = object[GraphicsContext::GENERAL](svg::TEXT); // group[GENERAL](svg::TEXT);
 	mainHeader->addClass(LayoutSVG::FLOAT);
@@ -506,13 +510,19 @@ void RackSVG::addTitles(drain::image::TreeSVG & object, const std::string & anch
 	mainHeader["prodpar"]->addClass("product"); // yes, same...
 	// mainHeader["prodpar"]->ctext = "prodpar"; // debugging
 
-
+	// Layout principle: there should be always time... so start/continue from left.
 	TreeSVG & timeHeader = object[GraphicsContext::TIME](svg::TEXT);
 	timeHeader->addClass(LayoutSVG::FLOAT);
 	//timeHeader->addClass(GraphicsContext::TITLE, GraphicsContext::TIME);
 	timeHeader->addClass(elemClass, GraphicsContext::TIME);
 	timeHeader->setAlignAnchor(anchor);
-	timeHeader->setAlign(AlignSVG::TOP, AlignSVG::RIGHT); // , AlignSVG::INSIDE);
+	timeHeader->setAlign(AlignSVG::LEFT);
+	if (elemClass == GraphicsContext::ElemClass::IMAGE_TITLE){
+		timeHeader->setAlign(AlignSVG::TOP); // , AlignSVG::INSIDE);
+	}
+	else {
+		timeHeader->setAlign(AlignSVG::MIDDLE); // , AlignSVG::INSIDE);
+	}
 	timeHeader->setHeight(16);
 	timeHeader->setMargin(3);
 	timeHeader["date"](svg::TSPAN);
@@ -522,16 +532,18 @@ void RackSVG::addTitles(drain::image::TreeSVG & object, const std::string & anch
 	// timeHeader["date"]->ctext = "date...";
 	// timeHeader["time"]->ctext = "time";
 
+	// Layout principle: there should be always time... so start/continue from left.
 	TreeSVG & locationHeader = object[GraphicsContext::LOCATION](svg::TEXT);
 	locationHeader->addClass(LayoutSVG::FLOAT);
 	//locationHeader->addClass(GraphicsContext::TITLE, GraphicsContext::LOCATION);
 	locationHeader->addClass(elemClass, GraphicsContext::LOCATION);
 	locationHeader->setAlignAnchor(anchor);
+	locationHeader->setAlign(AlignSVG::RIGHT);
 	if (elemClass == GraphicsContext::ElemClass::IMAGE_TITLE){
-		locationHeader->setAlign(AlignSVG::TOP, AlignSVG::RIGHT);
+		locationHeader->setAlign(AlignSVG::TOP);
 	}
 	else {
-		locationHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::LEFT);
+		locationHeader->setAlign(AlignSVG::MIDDLE);
 	}
 	locationHeader->setHeight(16);
 	locationHeader->setMargin(3);
@@ -553,7 +565,7 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	drain::image::TreeSVG & mainGroup = getMainGroup(ctx);
+	// drain::image::TreeSVG & mainGroup = getMainGroup(ctx);
 
 	if (mout.isLevel(LOG_DEBUG)){
 		// mout.special("dumping SVG tree");
@@ -671,7 +683,7 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 			// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
 			std::string key, value;
 			drain::StringTools::split2(e.first, key, value, '=');
-			if (e.second == count){ // Shared by all the children.
+			if (e.second == count){ // = ALL,  shared by all the children.
 
 				mout.accept<LOG_DEBUG>('\t', e.first, ' ', path.str());
 
@@ -679,9 +691,12 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 				debugSharedBase->ctext += e.first;
 				// debugShared->set(key, value);
 
+				// Update/extend, "upwards".
 				metadata->set(key, value); // NOTE: becoming strings (consider type dict?)
 
-				if (count > 1){
+				// Actual pruning, "downwards"
+				if (count > 11111){
+				//if (count > 1){
 					for (auto & entry: current.getChildren()){
 						TreeSVG & child = entry.second;
 						if (child.hasChild(svg::METADATA)){
@@ -712,54 +727,48 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	// Apply to groups only.
 	TreeSVG & group = root(path);
-
-	if (!group->typeIs(svg::GROUP, svg::SVG)){ // At least METADATA must be skipped...
+	if (!group->typeIs(svg::GROUP)){ //
 		return 0;
 	}
 
-	/// Group title
-	if (group->hasClass(LayoutSVG::ALIGN_FRAME) && titles.isSet(GraphicsContext::ElemClass::GROUP_TITLE)){
-		// Problem: VERT layout?
-		RackSVG::addTitleBox(group, GraphicsContext::ElemClass::GROUP_TITLE);
-		group[GraphicsContext::ElemClass::GENERAL](svg::TEXT); // undeeded, debugging
-		// group[GraphicsContext::ElemClass::GENERAL]->setText(path.back()); // Keep! Good for debugging, as last elem serves as an ID
+	// CHECK: what if VERT layout?
+
+	if (group->hasClass(GraphicsContext::ElemClass::MAIN)){
+		if (titles.isSet(GraphicsContext::ElemClass::MAIN_TITLE)){ // At least METADATA must be skipped...
+			RackSVG::addTitleBox(group, GraphicsContext::ElemClass::MAIN_TITLE);
+		}
 	}
-	else if (group->typeIs(svg::SVG) && titles.isSet(GraphicsContext::ElemClass::MAIN_TITLE)){ // At least METADATA must be skipped...
-		RackSVG::addTitleBox(group, GraphicsContext::ElemClass::MAIN_TITLE);
+	else if (group->hasClass(LayoutSVG::ALIGN_FRAME)){
+		if (titles.isSet(GraphicsContext::ElemClass::GROUP_TITLE)){
+			RackSVG::addTitleBox(group, GraphicsContext::ElemClass::GROUP_TITLE);
+			// group[GraphicsContext::ElemClass::GENERAL](svg::TEXT); // undeeded, debugging
+			// group[GraphicsContext::ElemClass::GENERAL]->setText(path.back()); // Keep! Good for debugging, as last elem serves as an ID
+		}
 	}
-
-
-
-	if (!group.hasChild("metadata")){
+	else if (group->hasClass(GraphicsContext::IMAGE_PANEL)){
+		RackSVG::addTitles(group, "image", GraphicsContext::ElemClass::IMAGE_TITLE);
+		//group->setAlignAnchor(svg::IMAGE);
+	}
+	else {
+		// CHECK when?
 		return 0;
 	}
 
 
-	if (!(group->typeIs(svg::SVG) || group->hasClass(LayoutSVG::ALIGN_FRAME) || group->hasClass(GraphicsContext::IMAGE_PANEL))){
+	if (!group.hasChild(svg::METADATA)){
+		mout.attention("group has no METADATA element: ", group.data);
 		return 0;
 	}
-
-
-
-	if (group->hasClass(GraphicsContext::IMAGE_PANEL)){
-		// return 0;
-		group->setAlignAnchor(svg::IMAGE);
-	}
-
 
 	TreeSVG & metadata = group[svg::METADATA];
 
 	if (!metadata->getAttributes().empty()){
 
 		VariableFormatterODIM<std::string> formatter; // (No instance properties used, but inheritance/overriding)
-		// mout.attention("handle: ", current.data);
-		// Note: these are "subtitles", not the main title
-
-
 
 		for (const auto & attr: metadata->getAttributes()){
-
 
 			// This is a weird (old code)?  Can metadata have formatting, like time|%Y=201408171845 ??
 			// Anyway, after split, key contains attrib key.
@@ -775,32 +784,22 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 				elemClass = GraphicsContext::LOCATION;
 			}
 
+			/*
 			if (group->hasClass(GraphicsContext::IMAGE_PANEL) && titles.isSet(GraphicsContext::ElemClass::IMAGE_TITLE)){
 				RackSVG::addTitles(group, "image", GraphicsContext::ElemClass::IMAGE_TITLE);
 			}
-			else {
-				// return 0;
-			}
-
+			*/
 
 			TreeSVG & text = group[elemClass](svg::TEXT);  // +"_title"
-			text->addClass(elemClass);
-			//text->set("name", elemClass);
-
-
-			// text->addClass("imageTitle"); // style class (only)
-			/*
-			if (group->hasClass(GraphicsContext::IMAGE_PANEL)){
-				text->addClass(GraphicsContext::IMAGE_TITLE);
-			}
-			*/
+			// text->addClass(elemClass);
+			// text->set("name", elemClass);
 
 			TreeSVG & tspan = text[attr.first](svg::TSPAN);
 			tspan->addClass(attr.first); // allows user-specified style
 			//drain::StringTools::split2(attr.second.toStr(), v, format, '|');
 
 			if (elemClass == GraphicsContext::TIME){
-				text->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
+				// text->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
 				if (format.empty()){
 					//v = attr.second.toStr();
 					if (drain::StringTools::endsWith(key, "date")){
@@ -817,10 +816,10 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 				mout.accept<LOG_DEBUG>("TIME text format", format);
 			}
 			else if (elemClass == GraphicsContext::LOCATION){
-				text->setAlign(AlignSVG::BOTTOM, AlignSVG::RIGHT);
+				// text->setAlign(AlignSVG::BOTTOM, AlignSVG::RIGHT);
 			}
 			else {
-				text->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
+				// text->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
 				// text->ctext = drain::StringBuilder<'|'>(elemClass, attr.first, attr.second);
 			}
 
@@ -832,7 +831,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 			// text->setStyle("font-size", fontSize); //
 			text->setHeight(14);     // row height
 			text->setMargin(4); // margin
-			text->addClass(LayoutSVG::FLOAT); // Anchor defined, but need for proper bbox computation! (Yet text should be discarded)
+			// text->addClass(LayoutSVG::FLOAT); // Anchor defined, but need for proper bbox computation! (Yet text should be discarded)
 
 
 			// mout.attention("handle: ", attr.first, " ", v, " + ", format);

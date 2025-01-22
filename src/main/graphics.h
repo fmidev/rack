@@ -191,6 +191,9 @@ public:
 
 	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
 
+	// Also
+	GraphicsContext::TitleFlagger titles;
+
 protected:
 
 	typedef std::map<std::string, unsigned short> variableStat_t;
