@@ -769,42 +769,59 @@ std::ostream & operator<<(std::ostream &ostr, const UnorderedMultiTree<NodeXML<E
 	return ostr;
 }
 
-//template <class X> // , char SEP=' '
-class StyleSelectorXML : public std::string {
+
+// CSS element selector.
+class SelectorXML : public std::string {
 
 public:
 
+	static
+	const char CLASS = '.';
+
+	static
+	const char ID = '#';
+
+
 	inline
-	StyleSelectorXML(const std::string &s) : std::string(s){
+	SelectorXML(const std::string &s) : std::string(s){
 	}
 
 	inline
-	StyleSelectorXML(const char *s) : std::string(s){
+	SelectorXML(const char *s) : std::string(s){
 	}
 
 	template <class ...T>
 	inline
-	StyleSelectorXML(T... args) : std::string(StringBuilder<>(args...)){
+	SelectorXML(T... args) : std::string(StringBuilder<>(args...)){
 	}
 
 };
 
-class ClassSelectorXML : public StyleSelectorXML {
+// CSS class selector.
+/**
+ *
+ */
+class SelectorXMLcls : public SelectorXML {
 public:
 
-	template <class T>
+	template <class C>
 	inline
-	ClassSelectorXML(const T &arg) : StyleSelectorXML('.', arg){
+	SelectorXMLcls(const C &cls) : SelectorXML(CLASS, cls){
+	}
+
+	template <class E, class C>
+	inline
+	SelectorXMLcls(const E &elem, const C &cls) : SelectorXML(elem, CLASS, cls){
 	}
 
 };
 
-class IdSelectorXML : public StyleSelectorXML {
+class SelectorXMLid : public SelectorXML {
 public:
 
 	template <class T>
 	inline
-	IdSelectorXML(const T & arg) : StyleSelectorXML('#', arg){
+	SelectorXMLid(const T & arg) : SelectorXML(ID, arg){
 	}
 
 };

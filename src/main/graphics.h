@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // #include <drain/prog/CommandInstaller.h>
 
+#include "resources-image.h"
 #include "resources.h"
 
 // Notice: role of graphics.cpp and fileio-svg.cpp is currently equivalent
@@ -52,30 +53,31 @@ public:
 
 	//typedef drain::StyleSelectorXML<NodeSVG> Select;
 
-
-
 	// Identifier for the anchor background
 	static const std::string BACKGROUND_RECT; //  = "mainRect";
 
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
+	/*
 	enum ElemClass {
 		NONE = 0,
-		MAIN_TITLE = 1,  /** Main title in SVG image */
+		MAIN_TITLE = 1,  // Main title in SVG image
 		GROUP_TITLE = 2,
-		IMAGE_TITLE = 4,  /** Small title in a corner of radar image (time, location) */
-		TIME = 8,       /** Date and time attributes */
-		LOCATION = 16,   /** Place (coordinates, municipality) */
-		GENERAL = 32,    /** Default type */
+		IMAGE_TITLE = 4,  // Small title in a corner of radar image (time, location)
+		TIME = 8,       // Date and time attributes
+		LOCATION = 16,   // Place (coordinates, municipality)
+		GENERAL = 32,    // Default type
 		ALL = (63),
 		MAIN,
 		IMAGE_PANEL,
-		IMAGE_BORDER, /** RECT surrounding the image */
+		IMAGE_BORDER, // RECT surrounding the image
 		SHARED_METADATA, // Something that should not be repeated in panels.
 		// --- unused ? ---
-		TITLE,      /** Default title */
-	};
+		TITLE,      // Default title
+	  };
+    */
 
 	// Selected CSS classes corresponding to above element classes
+	/*
 	static const drain::ClassSelectorXML clsTITLE;// ('.', RackSVG::TITLE);
 	static const drain::ClassSelectorXML clsIMAGE_TITLE;// ('.', RackSVG::IMAGE_TITLE);
 	static const drain::ClassSelectorXML clsGROUP_TITLE;// ('.', RackSVG::GROUP_TITLE);
@@ -83,8 +85,9 @@ public:
 	static const drain::ClassSelectorXML clsTIME;// ('.', RackSVG::TIME);
 	static const drain::ClassSelectorXML clsLOCATION;// ('.', RackSVG::LOCATION);
 	static const drain::ClassSelectorXML clsIMAGE_BORDER;// ('.', RackSVG::IMAGE_BORDER);
+	*/
 
-	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
+	// typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
 	//TitleFlagger svgTitles = ElemClass::NONE;
 
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
@@ -131,10 +134,10 @@ public:
 
 	/// Add TEXT elements: MAINTITLE, LOCATION, TIME, GENERAL
 	static
-	void addTitleBox(drain::image::TreeSVG & object, RackSVG::ElemClass elemClass);
+	void addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & object, PanelConfSVG::ElemClass elemClass);
 
 	static
-	void addTitles(drain::image::TreeSVG & object, const std::string & anchor, RackSVG::ElemClass elemClass);
+	void addTitles(const PanelConfSVG & conf, drain::image::TreeSVG & object, const std::string & anchor, PanelConfSVG::ElemClass elemClass);
 
 	/// Add rectangle
 	static
@@ -169,7 +172,7 @@ protected:
 
 };
 
-DRAIN_ENUM_OSTREAM(RackSVG::ElemClass);
+//DRAIN_ENUM_OSTREAM(RackSVG::ElemClass);
 
 }
 
@@ -181,19 +184,6 @@ template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass &x);
 */
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const rack::RackSVG::ElemClass & key) const;
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & key);
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & key) const ;
 
 /// Automatic conversion of elem classes to strings.
 /**
@@ -272,15 +262,17 @@ public:
 	inline
 	TitleCreatorSVG(const PanelConfSVG & svgConf) : svgConf(svgConf) {
 		//titles.set(0xff);
+		/*
 		if (!svgConf.mainTitle.empty()){
-			titles.set(RackSVG::ElemClass::MAIN_TITLE);
+			titles.set(PanelConfSVG::ElemClass::MAIN_TITLE);
 		}
 
-		if (!svgConf.groupNameSyntax.empty()){
-			titles.set(RackSVG::ElemClass::GROUP_TITLE);
+		if (!svgConf.groupTitleSyntax.empty()){
+			titles.set(PanelConfSVG::ElemClass::GROUP_TITLE);
 		}
 
-		titles.set(RackSVG::ElemClass::IMAGE_TITLE);
+		titles.set(PanelConfSVG::ElemClass::IMAGE_TITLE);
+		*/
 		/*
 		if (!svgConf.groupNameSyntax.empty()){
 			titles.set(RackSVG::ElemClass::GROUP_TITLE);
@@ -307,7 +299,7 @@ protected:
 	// RackSVG::TitleFlagger::ivalue_t titles;
 
 	// Conf
-	RackSVG::TitleFlagger titles;
+	// RackSVG::TitleFlagger titles;
 
 
 };

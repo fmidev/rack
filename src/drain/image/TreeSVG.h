@@ -104,7 +104,7 @@ public:
 };
 
 //typedef drain::StyleSelectorXML<NodeSVG> SelectSVG;
-typedef drain::StyleSelectorXML SelectSVG;
+typedef drain::SelectorXML SelectSVG;
 
 /// A node structure for drain::UnorderedMultiTree<NodeSVG>, compatible with TreeXML
 /**

@@ -86,7 +86,9 @@ namespace rack {
 // typedef drain::image::AlignSVG alignSvg;
 
 
+// StyleSelectorXML :
 //  Wrapper. Unused, future option
+/*
 template <typename E>
 class ClassLabelXML : public std::string {
 public:
@@ -99,7 +101,7 @@ public:
 	}
 
 };
-
+*/
 
 
 
@@ -231,25 +233,7 @@ public:
 			CompleteAlignment<> align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Pos::UNDEFINED_POS); //(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Axis::UNDEFINED_AXIS, AlignBase::Pos::UNDEFINED_POS);
 
 			for (const std::string & key: keys){
-
 				align.set(key);
-				/*
-				if (drain::EnumDict<AlignSVG::Topol>::setValue(key, align.topol)){
-					// ok
-				}
-				else if (drain::EnumDict<AlignBase::Axis>::setValue(key, align.axis)){
-					// ok
-				}
-				else if (drain::EnumDict<AlignBase::Pos>::setValue(key, align.pos)){
-					// ok
-				}
-				else if (drain::EnumDict<Alignment<> >::setValue(key, (Alignment<> &)align)){ // Dangerous
-					// ok
-				}
-				else {
-					mout.error("Unknown alignment key: '", key, "' (all args: ", value, ")");
-				}
-				*/
 			}
 
 			switch (align.axis) {
@@ -297,11 +281,7 @@ public:
 	// CmdFontSizes() : drain::BasicCommand(__FUNCTION__, "Add or modify CSS entry") {
 	CmdFontSizes() : drain::SimpleCommand<std::string>(__FUNCTION__, "Set font sizes") {
 		// getParameters().link("sizes", fontSizes);
-		// setParameters(args);
-		//fontSizes.link(getContext<RackContext>().svgPanelConf.fontSizes);
 	}
-
-	//drain::UniTuple<double,4> fontSizes;
 
 	virtual
 	void exec() const override {
@@ -335,10 +315,10 @@ public:
 
 		drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
 
-		style[RackSVG::clsMAIN_TITLE]->set("font-size", ctx.svgPanelConf.fontSizes[0]);
-		style[RackSVG::clsGROUP_TITLE]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
-		style[RackSVG::clsTITLE]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
-		style[RackSVG::clsIMAGE_TITLE]->set("font-size", ctx.svgPanelConf.fontSizes[3]);
+		style[drain::SelectorXMLcls(PanelConfSVG::MAIN_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[0]);
+		style[drain::SelectorXMLcls(PanelConfSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
+		style[drain::SelectorXMLcls(PanelConfSVG::TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
+		style[drain::SelectorXMLcls(PanelConfSVG::IMAGE_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[3]);
 
 		// ctx.svgPanelConf.fontSizes = fontSizes;
 		// fontSizes.clear();
@@ -346,59 +326,88 @@ public:
 	}
 
 
-	void execFOO() const {
-		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		mout.accept<LOG_WARNING>("new values: ", ctx.svgPanelConf.fontSizes);
-	}
-
 };
 
-class CmdGroup : public drain::BasicCommand {
+
+class CmdGroupTitle : public drain::BasicCommand {
 
 public:
 
-	CmdGroup() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
+	CmdGroupTitle() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
 		RackContext & ctx = getContext<RackContext>();
-		getParameters().link("syntax", ctx.svgPanelConf.groupNameSyntax, "example: '${what:date|%Y%m} ${NOD}'");
+		getParameters().link("syntax", ctx.svgPanelConf.groupTitleSyntax, "example: '${what:date|%Y%m} ${NOD}'");
 	}
 
-	CmdGroup(const CmdGroup & cmd) : drain::BasicCommand(cmd) {
+	CmdGroupTitle(const CmdGroupTitle & cmd) : drain::BasicCommand(cmd) {
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
-		//RackContext & ctx = getContext<RackContext>();
-		//getParameters().link("value", ctx.svgTitles);
 	}
 
 	void exec() const {
-
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		drain::StringTools::replace(ctx.svgPanelConf.groupNameSyntax, '/', '-', ctx.svgPanelConf.groupNameSyntax);
+		drain::StringTools::replace(ctx.svgPanelConf.groupTitleSyntax, '/', '-', ctx.svgPanelConf.groupTitleSyntax);
+		mout.accept<LOG_WARNING>("new value: ", ctx.svgPanelConf.groupTitleSyntax);
+	}
 
+};
 
-		mout.accept<LOG_WARNING>("new value: ", ctx.svgPanelConf.groupNameSyntax);
+class CmdImageTitle : public drain::BasicCommand {
 
+public:
+
+	CmdImageTitle() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
+		RackContext & ctx = getContext<RackContext>();
+		getParameters().link("title", ctx.svgPanelConf.imageTitle, "'TIME'|'LOCATION'|'GENERAL'");
+	}
+
+	CmdImageTitle(const CmdImageTitle & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+	}
+
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+	}
+
+};
+
+class CmdTitle : public drain::BasicCommand {
+
+public:
+
+	CmdTitle() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
+		RackContext & ctx = getContext<RackContext>();
+		getParameters().link("title", ctx.svgPanelConf.mainTitle, "<empty>|<string>|'auto'");
+	}
+
+	CmdTitle(const CmdTitle & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+	}
+
+};
+
+class CmdTitleBoxHeight : public drain::BasicCommand {
+
+public:
+
+	CmdTitleBoxHeight() : drain::BasicCommand(__FUNCTION__, "Set title box height") {
+		RackContext & ctx = getContext<RackContext>();
+		getParameters().link("height", ctx.svgPanelConf.boxHeights.tuple(), "<mainTitle>,<groupTitle>,<imageTitle>");
+	}
+
+	CmdTitleBoxHeight(const CmdTitleBoxHeight & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
 	}
 
 };
 
 
-//class CmdTitles : public drain::BasicCommand {
-
+/*
 class CmdTitles : public drain::SimpleCommand<std::string> {
 public:
 
 	CmdTitles() : drain::SimpleCommand<std::string>(__FUNCTION__, "Set titles automatically", "[MAINTITLE|TIME|LOCATION|GENERAL]") {
-		// RackContext & ctx = getContext<RackContext>();
-		// getParameters().link("value", ctx.svgTitles);
-	}
-
-	CmdTitles(const CmdTitles & cmd) : SimpleCommand<std::string>(cmd) {
-		// CmdTitles(const CmdTitles & cmd) : drain::BasicCommand(cmd) {
-		// getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
-		// RackContext & ctx = getContext<RackContext>();
-		// getParameters().link("value", ctx.svgTitles);
 	}
 
 	void exec() const {
@@ -412,8 +421,9 @@ public:
 	}
 
 };
+*/
 
-
+/*
 class CmdGroupTitle : public drain::SimpleCommand<std::string> {
 
 public:
@@ -429,11 +439,6 @@ public:
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		drain::image::TreeSVG & headerGroup = RackSVG::getMainGroup(ctx); // ctx.getMainGroup(); // RackSVG::getMainGroup(ctx);
-		// drain::image::TreeSVG & headerGroup = RackSVG::getCurrentGroup(ctx);
-
-		// TreeSVG & headerGroup = mainGroup["headerGroup"](svg::GROUP);
-		// TreeSVG & headerRect = headerGroup["headerRect"](svg::RECT);
-		//headerGroup->setAlignAnchor("headerRect2");
 
 		TreeSVG & headerRect = headerGroup["headerRect"](svg::RECT); // +EXT!
 		headerRect->setHeight(70);
@@ -478,9 +483,9 @@ public:
 		// mout.special("FOO", rectTitle->getBoundingBox());
 	}
 };
+*/
 
-
-
+/*
 class CmdMainTitle : public drain::SimpleCommand<std::string> {
 
 public:
@@ -495,11 +500,8 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		//drain::image::TreeSVG & mainGroup = RackSVG::getMainGroup(ctx);
 		drain::image::TreeSVG & mainGroup = ctx.svgTrack;
 		drain::image::TreeSVG & style = mainGroup[drain::image::svg::STYLE];
-		//BBoxSVG bbox;
-		// TreeUtilsSVG::computeBoundingBox(mainGroup, bbox);
 
 		RackSVG::addTitleBox(mainGroup, RackSVG::ElemClass::MAIN_TITLE);
 
@@ -510,6 +512,7 @@ public:
 	}
 
 };
+*/
 
 class CmdPanel : public drain::SimpleCommand<std::string> {
 
@@ -830,14 +833,14 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdLayout>();  // Could be "CmdMainAlign", but syntax is so different. (HORZ,INCR etc)
 	install<CmdAlign>();
 	install<CmdFontSizes>();
-	install<CmdGroup>();
-	install<CmdGroupTitle>().section = HIDDEN; // under construction
+	install<CmdGroupTitle>();
+	install<CmdTitle>();
+	// install<CmdGroupTitle>().section = HIDDEN; // under construction
 	install<CmdPanel>(); // .section = HIDDEN; // addSection(i);
 	install<CmdPanelTest>().section = HIDDEN;  // addSection(i);
 	// install<CmdImageTitle>(); consider
-	install<CmdTitles>();
-	install<CmdMainTitle>();
 	install<CmdStyle>();
+	install<CmdTitleBoxHeight>();
 
 };
 

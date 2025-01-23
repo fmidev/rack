@@ -47,6 +47,10 @@ namespace drain {
 const SprinterLayout Sprinter::pythonLayout("[,]", "{,}",  "(,)", "\"\"", "''", ":"); // last ':' means plain map entries (not tuples as in C++)
 */
 
+const char SelectorXML::CLASS;
+
+const char SelectorXML::ID;
+
 
 template <>
 const drain::EnumDict<int,XML>::dict_t drain::EnumDict<int,XML>::dict = {

@@ -30,23 +30,21 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 // # pragma once
-#ifndef RACK_RESOURCES_IMG_H_
-#define RACK_RESOURCES_IMG_H_
+#ifndef RACK_RESOURCES_IMG_H
+#define RACK_RESOURCES_IMG_H
 
 #include <string>
 
 #include <drain/RegExp.h>
 #include <drain/image/Image.h>
 #include <drain/image/TreeSVG.h>
-#include <drain/image/Image.h>
 #include <drain/image/TreeUtilsSVG.h>
 #include <drain/imageops/PaletteOp.h>
-
 #include <drain/imageops/ImageModifierPack.h>
 #include <drain/imageops/PaletteOp.h>
 #include <drain/prog/CommandBankUtils.h>
 #include <drain/util/Rectangle.h>
-#include <drain/util/StatusFlags.h>
+// #include <drain/util/StatusFlags.h>
 // #include <drain/util/TreeOrdered.h>
 
 //#include <drain/util/Variable.h>
@@ -62,39 +60,48 @@ namespace rack {
 
 using namespace drain::image;
 
-/*
-class FontSizes : public drain::UniTuple<double,4> {
-
-
-public:
-
-	typedef drain::UniTuple<double,4> base_t;
-
-	double & titles;
-	double & header;
-	double & leftHeader;
-	double & rightHeader;
-
-	inline
-	FontSizes() : base_t(12,10,8,6), titles(next()), header(next()), leftHeader(next()), rightHeader(next()) {
-	}
-
-	inline
-	FontSizes(const FontSizes & fs) : base_t(fs), titles(next()), header(next()), leftHeader(next()), rightHeader(next()) {
-	}
-
-};
-*/
 
 struct PanelConfSVG {
+
+	enum ElemClass {
+		NONE = 0,
+		MAIN_TITLE = 1,  // Main title in SVG image
+		GROUP_TITLE = 2,
+		IMAGE_TITLE = 4,  // Small title in a corner of radar image (time, location)
+		TIME = 8,       // Date and time attributes
+		LOCATION = 16,   // Place (coordinates, municipality)
+		GENERAL = 32,    // Default type
+		ALL = (63),
+		MAIN,
+		IMAGE_PANEL,
+		IMAGE_BORDER, // RECT surrounding the image
+		SHARED_METADATA, // Something that should not be repeated in panels.
+		// --- unused ? ---
+		TITLE,      // Default title
+	};
+
+	// Selected CSS classes corresponding to above element classes
+	/*
+	static const drain::SelectorXMLcls clsTITLE;// ('.', RackSVG::TITLE);
+	static const drain::SelectorXMLcls clsIMAGE_TITLE;// ('.', RackSVG::IMAGE_TITLE);
+	static const drain::SelectorXMLcls clsGROUP_TITLE;// ('.', RackSVG::GROUP_TITLE);
+	static const drain::SelectorXMLcls clsMAIN_TITLE;// ('.', RackSVG::MAIN_TITLE);
+	static const drain::SelectorXMLcls clsTIME;// ('.', RackSVG::TIME);
+	static const drain::SelectorXMLcls clsLOCATION;// ('.', RackSVG::LOCATION);
+	static const drain::SelectorXMLcls clsIMAGE_BORDER;// ('.', RackSVG::IMAGE_BORDER);
+	*/
 
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
 	bool absolutePaths = true;
 
-	std::string mainTitle = "auto";
+	std::string mainTitle = "AUTO";
 
-	std::string groupNameSyntax = "group";
-	std::string groupNameFormatted;
+	std::string groupTitleSyntax = "AUTO";
+	std::string groupTitleFormatted;
+
+	std::string imageTitle = "TIME,LOCATION,GENERAL";
+	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
+	TitleFlagger svgImageTitles; //  = ElemClass::TIME|ElemClass::LOCATION|ElemClass::GENERAL;
 
 	/**
 	 *   0 - mainTitle.main
@@ -108,7 +115,7 @@ struct PanelConfSVG {
 	 *   0 - mainTitle
 	 *   1 - groupTitle
 	 */
-	drain::UniTuple<double,2>  boxHeights = {20.0, 15.0};
+	drain::UniTuple<double,3>  boxHeights = {20.0, 15.0, 10.0};
 
 
 	// Currently, applications are recommended to handle "false" and "none". Or "auto"?
@@ -120,6 +127,56 @@ struct PanelConfSVG {
 	}
 
 };
+
+}
+
+
+namespace drain {
+
+template <>
+const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict;
+
+DRAIN_ENUM_OSTREAM(rack::PanelConfSVG::ElemClass);
+
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool image::TreeSVG::hasChild(const rack::PanelConfSVG::ElemClass & key) const ;
+
+
+/// Automatic conversion of elem classes to strings.
+/**
+ *
+ */
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const image::TreeSVG & image::TreeSVG::operator[](const rack::PanelConfSVG::ElemClass & value) const;
+
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+image::TreeSVG & image::TreeSVG::operator[](const rack::PanelConfSVG::ElemClass & key);
+
+/*
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool image::TreeSVG::hasChild(const rack::PanelConfSVG::ElemClass & key) const;
+
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+image::TreeSVG & image::TreeSVG::operator[](const rack::PanelConfSVG::ElemClass & key);
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const image::TreeSVG & image::TreeSVG::operator[](const rack::PanelConfSVG::ElemClass & key) const;
+*/
+
+
+}
+
+
+namespace rack {
 
 class GraphicsContext { // : public drain::BasicCommand {
 
