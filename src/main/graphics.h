@@ -50,6 +50,10 @@ class RackSVG { // : public drain::BasicCommand {
 
 public:
 
+	//typedef drain::StyleSelectorXML<NodeSVG> Select;
+
+
+
 	// Identifier for the anchor background
 	static const std::string BACKGROUND_RECT; //  = "mainRect";
 
@@ -70,6 +74,15 @@ public:
 		// --- unused ? ---
 		TITLE,      /** Default title */
 	};
+
+	// Selected CSS classes corresponding to above element classes
+	static const drain::ClassSelectorXML clsTITLE;// ('.', RackSVG::TITLE);
+	static const drain::ClassSelectorXML clsIMAGE_TITLE;// ('.', RackSVG::IMAGE_TITLE);
+	static const drain::ClassSelectorXML clsGROUP_TITLE;// ('.', RackSVG::GROUP_TITLE);
+	static const drain::ClassSelectorXML clsMAIN_TITLE;// ('.', RackSVG::MAIN_TITLE);
+	static const drain::ClassSelectorXML clsTIME;// ('.', RackSVG::TIME);
+	static const drain::ClassSelectorXML clsLOCATION;// ('.', RackSVG::LOCATION);
+	static const drain::ClassSelectorXML clsIMAGE_BORDER;// ('.', RackSVG::IMAGE_BORDER);
 
 	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
 	//TitleFlagger svgTitles = ElemClass::NONE;
@@ -257,23 +270,45 @@ public:
 
 
 	inline
-	TitleCreatorSVG(RackSVG::TitleFlagger::ivalue_t titles) : mainHeaderHeight(50), titles(titles) {
+	TitleCreatorSVG(const PanelConfSVG & svgConf) : svgConf(svgConf) {
+		//titles.set(0xff);
+		if (!svgConf.mainTitle.empty()){
+			titles.set(RackSVG::ElemClass::MAIN_TITLE);
+		}
+
+		if (!svgConf.groupNameSyntax.empty()){
+			titles.set(RackSVG::ElemClass::GROUP_TITLE);
+		}
+
+		titles.set(RackSVG::ElemClass::IMAGE_TITLE);
+		/*
+		if (!svgConf.groupNameSyntax.empty()){
+			titles.set(RackSVG::ElemClass::GROUP_TITLE);
+		}
+		*/
+
 	};
 
 	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & odimPath) override;
 
 
 	/**
-	 *   Function needed, as attributes of two groups are considered: specific (private) and shared.
+	 *   Function useful, as attributes of two groups are considered: specific (private) and shared.
 	 */
 	static
 	void writeTitles(TreeSVG & group, const NodeSVG::map_t & attributes);
 
+	const PanelConfSVG & svgConf;
+
 	// Conf
-	int mainHeaderHeight;
+	// int mainHeaderHeight;
+
+protected:
+	// RackSVG::TitleFlagger::ivalue_t titles;
 
 	// Conf
 	RackSVG::TitleFlagger titles;
+
 
 };
 

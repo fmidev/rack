@@ -49,28 +49,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 namespace image {
-
-class FontSizes : public drain::UniTuple<double,4> {
-
-
-public:
-
-	typedef drain::UniTuple<double,4> base_t;
-
-	double & titles;
-	double & header;
-	double & leftHeader;
-	double & rightHeader;
-
-	inline
-	FontSizes() : base_t(12,10,8,6), titles(next()), header(next()), leftHeader(next()), rightHeader(next()) {
-	}
-
-	inline
-	FontSizes(const FontSizes & fs) : base_t(fs), titles(next()), header(next()), leftHeader(next()), rightHeader(next()) {
-	}
-
-};
 /*
 struct PanelConfSVG {
 

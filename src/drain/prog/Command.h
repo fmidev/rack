@@ -424,67 +424,7 @@ public:
 		// remember to call importParameters()
 	}
 
-/* 2024
-	virtual	inline
-	const std::string & getName() const { return name; };
 
-	virtual	inline
-	const std::string & getDescription() const { return description; };
-
-	virtual	inline
-	const ReferenceMap & getParameters() const { return parameters; };
-
-protected:
-
-	virtual inline
-	ReferenceMap & getParameters(){
-		return parameters;
-	};
-
-public:
-
-*/
-	/*
-	virtual
-	void setAllParameters(const std::string & args) override; //, char assignmentSymbol='=');
-	*/
-
-	/*
-	inline
-	void setParameters(const VariableMap & params){
-		parameters.importCastableMap(params);
-		lastParameters = sprinter(parameters, Sprinter::cmdLineLayout);
-		//this->update();
-	}
-	*/
-
-	/*  2024
-	template <class T>
-	inline
-	void setParameters(const SmartMap<T> & params){
-		parameters.importCastableMap(params);
-	}
-	*/
-
-	/*
-	template <class T>
-	void setParameter(const std::string & key, const T & value) {
-		parameters[key] = value;
-		//this->update();
-	}
-	*/
-
-
-/* 2024
-protected:
-
-	const std::string name;
-
-	const std::string description;
-
-	ReferenceMap parameters;
-
-	*/
 
 };
 

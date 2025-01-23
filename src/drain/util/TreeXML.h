@@ -769,7 +769,7 @@ std::ostream & operator<<(std::ostream &ostr, const UnorderedMultiTree<NodeXML<E
 	return ostr;
 }
 
-template <class X> // , char SEP=' '
+//template <class X> // , char SEP=' '
 class StyleSelectorXML : public std::string {
 
 public:
@@ -778,11 +778,33 @@ public:
 	StyleSelectorXML(const std::string &s) : std::string(s){
 	}
 
+	inline
 	StyleSelectorXML(const char *s) : std::string(s){
 	}
 
 	template <class ...T>
+	inline
 	StyleSelectorXML(T... args) : std::string(StringBuilder<>(args...)){
+	}
+
+};
+
+class ClassSelectorXML : public StyleSelectorXML {
+public:
+
+	template <class T>
+	inline
+	ClassSelectorXML(const T &arg) : StyleSelectorXML('.', arg){
+	}
+
+};
+
+class IdSelectorXML : public StyleSelectorXML {
+public:
+
+	template <class T>
+	inline
+	IdSelectorXML(const T & arg) : StyleSelectorXML('#', arg){
 	}
 
 };

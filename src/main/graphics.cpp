@@ -65,6 +65,7 @@ const drain::EnumDict<rack::RackSVG::ElemClass>::dict_t  drain::EnumDict<rack::R
 };
 
 
+
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool image::TreeSVG::hasChild(const rack::RackSVG::ElemClass & key) const {
@@ -97,7 +98,23 @@ image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & key
 namespace rack {
 
 /// Group identifiers for elements which be automatically aligned (stacked horizontally or vertically)
+const drain::ClassSelectorXML RackSVG::clsTITLE(RackSVG::TITLE);
+const drain::ClassSelectorXML RackSVG::clsIMAGE_TITLE(RackSVG::IMAGE_TITLE);
+const drain::ClassSelectorXML RackSVG::clsGROUP_TITLE(RackSVG::GROUP_TITLE);
+const drain::ClassSelectorXML RackSVG::clsMAIN_TITLE(RackSVG::MAIN_TITLE);
+const drain::ClassSelectorXML RackSVG::clsTIME(RackSVG::TIME);
+const drain::ClassSelectorXML RackSVG::clsLOCATION(RackSVG::LOCATION);
+const drain::ClassSelectorXML RackSVG::clsIMAGE_BORDER(RackSVG::IMAGE_BORDER);
 
+/*
+const drain::image::SelectSVG clsTITLE('.', RackSVG::TITLE);
+const drain::image::SelectSVG clsIMAGE_TITLE('.', RackSVG::IMAGE_TITLE);
+const drain::image::SelectSVG clsGROUP_TITLE('.', RackSVG::GROUP_TITLE);
+const drain::image::SelectSVG clsMAIN_TITLE('.', RackSVG::MAIN_TITLE);
+const drain::image::SelectSVG clsTIME('.', RackSVG::TIME);
+const drain::image::SelectSVG clsLOCATION('.', RackSVG::LOCATION);
+const drain::image::SelectSVG clsIMAGE_BORDER('.', RackSVG::IMAGE_BORDER);
+*/
 
 const std::string RackSVG::BACKGROUND_RECT = "bgRect";
 
@@ -112,15 +129,6 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 		// mout.debug("initializing style");
 
-		typedef drain::StyleSelectorXML<NodeSVG> Select;
-
-		const Select clsTITLE('.', RackSVG::TITLE);
-		const Select clsIMAGE_TITLE('.', RackSVG::IMAGE_TITLE);
-		const Select clsGROUP_TITLE('.', RackSVG::GROUP_TITLE);
-		const Select clsMAIN_TITLE('.', RackSVG::MAIN_TITLE);
-		const Select clsTIME('.', RackSVG::TIME);
-		const Select clsLOCATION('.', RackSVG::LOCATION);
-		const Select clsIMAGE_BORDER('.', RackSVG::IMAGE_BORDER);
 
 		style->setType(svg::STYLE);
 
@@ -134,7 +142,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 		// Text (new)
 		// style["text.TITLE"] = {
-		style[Select(svg::TEXT, clsTITLE)] = {
+		style[drain::image::SelectSVG(svg::TEXT, clsTITLE)] = {
 				{"font-size", "1.5em"},
 				{"stroke", "none"},
 				// {"fill", "blue"},
@@ -146,8 +154,8 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 
 		// style["text.IMAGE_TITLE"] = {
-		style[Select(svg::TEXT, clsIMAGE_TITLE)] = {
-				{"font-size", 12},
+		style[drain::image::SelectSVG(svg::TEXT, clsIMAGE_TITLE)] = {
+				// {"font-size", 12},
 				{"stroke", "white"},
 				/* {"fill", "black"}, */
 				{"stroke-opacity", "0.75"},
@@ -162,13 +170,13 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"font-size", 20},
 		};
 
-		style[Select(svg::RECT, clsGROUP_TITLE)] = {
+		style[drain::image::SelectSVG(svg::RECT, clsGROUP_TITLE)] = {
 		//style["rect.GROUP_TITLE"] = {
 				{"fill", "gray"},
 				{"opacity", 0.5},
 		};
 
-		style[Select(svg::TEXT, clsGROUP_TITLE)] = {
+		style[drain::image::SelectSVG(svg::TEXT, clsGROUP_TITLE)] = {
 		// style["text.GROUP_TITLE"] = {
 				{"fill", "black"},
 		};
@@ -178,13 +186,13 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 		};
 
 		// style["rect.MAIN_TITLE"] = {
-		style[Select(svg::RECT, clsMAIN_TITLE)] = {
+		style[drain::image::SelectSVG(svg::RECT, clsMAIN_TITLE)] = {
 				{"fill", "darkslateblue"},
 				{"opacity", "0.5"},
 		};
 
 		// style["text.MAIN_TITLE"] = {
-		style[Select(svg::TEXT, clsMAIN_TITLE)] = {
+		style[drain::image::SelectSVG(svg::TEXT, clsMAIN_TITLE)] = {
 				{"fill", "white"},
 		};
 
@@ -195,6 +203,10 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 		style[clsLOCATION].data = {
 				{"fill", "darkblue"}
+		};
+
+		style[clsIMAGE_TITLE] = {
+				{"font-size", 12},
 		};
 
 		style[clsIMAGE_BORDER] = { // TODO: add leading '.' ?
@@ -435,12 +447,15 @@ void RackSVG::addTitleBox(drain::image::TreeSVG & object, RackSVG::ElemClass ele
 		case RackSVG::ElemClass::MAIN_TITLE:
 			backgroundRect->setId(RackSVG::ElemClass::MAIN_TITLE);
 			backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+			// backgroundRect->setHeight(40);
 			break;
 		case RackSVG::ElemClass::GROUP_TITLE:
 			backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+			// backgroundRect->setHeight(40);
 			break;
 		case RackSVG::ElemClass::IMAGE_TITLE:
 			backgroundRect->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+			// backgroundRect->setHeight(40);
 			break;
 		default:
 			break;
@@ -449,7 +464,7 @@ void RackSVG::addTitleBox(drain::image::TreeSVG & object, RackSVG::ElemClass ele
 	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
 	backgroundRect->setAlignAnchor("*");
 	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
-	backgroundRect->setHeight(40);
+	backgroundRect->setHeight(40); // TODO!!
 
 	addTitles(object, BACKGROUND_RECT, elemClass);
 }
@@ -575,7 +590,8 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 		drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
 	}
 	*/
-	TitleCreatorSVG titleCreator(0xff);
+	//TitleCreatorSVG titleCreator(0xff);
+	TitleCreatorSVG titleCreator(ctx.svgPanelConf);
 	drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
 
 

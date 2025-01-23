@@ -62,14 +62,54 @@ namespace rack {
 
 using namespace drain::image;
 
+/*
+class FontSizes : public drain::UniTuple<double,4> {
+
+
+public:
+
+	typedef drain::UniTuple<double,4> base_t;
+
+	double & titles;
+	double & header;
+	double & leftHeader;
+	double & rightHeader;
+
+	inline
+	FontSizes() : base_t(12,10,8,6), titles(next()), header(next()), leftHeader(next()), rightHeader(next()) {
+	}
+
+	inline
+	FontSizes(const FontSizes & fs) : base_t(fs), titles(next()), header(next()), leftHeader(next()), rightHeader(next()) {
+	}
+
+};
+*/
 
 struct PanelConfSVG {
 
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
 	bool absolutePaths = true;
 
+	std::string mainTitle = "auto";
+
 	std::string groupNameSyntax = "group";
 	std::string groupNameFormatted;
+
+	/**
+	 *   0 - mainTitle.main
+	 *   1 - mainTitle.second and groupTile.main
+	 *   2 - groupTitle.second
+	 *   3 - imageTitle
+	 */
+	drain::UniTuple<double,4>  fontSizes = {15.0, 12.0, 10.0, 8.0};
+
+	/**
+	 *   0 - mainTitle
+	 *   1 - groupTitle
+	 */
+	drain::UniTuple<double,2>  boxHeights = {20.0, 15.0};
+
 
 	// Currently, applications are recommended to handle "false" and "none". Or "auto"?
 	// std::string title;

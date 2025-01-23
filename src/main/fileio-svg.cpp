@@ -289,6 +289,71 @@ protected:
 
 };
 
+// class CmdFontSizes : public drain::BasicCommand {
+class CmdFontSizes : public drain::SimpleCommand<std::string> {
+
+public:
+
+	// CmdFontSizes() : drain::BasicCommand(__FUNCTION__, "Add or modify CSS entry") {
+	CmdFontSizes() : drain::SimpleCommand<std::string>(__FUNCTION__, "Set font sizes") {
+		// getParameters().link("sizes", fontSizes);
+		// setParameters(args);
+		//fontSizes.link(getContext<RackContext>().svgPanelConf.fontSizes);
+	}
+
+	//drain::UniTuple<double,4> fontSizes;
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		double defaultValue = 0.8 * ctx.svgPanelConf.boxHeights[0];
+
+		ctx.svgPanelConf.fontSizes.clear();
+
+		drain::Reference fontSizes(ctx.svgPanelConf.fontSizes);
+		fontSizes.setFill(false);
+		fontSizes = value;
+
+		for (double & s: ctx.svgPanelConf.fontSizes){
+			defaultValue = 0.1 * ::round(10.0 * defaultValue);
+			mout.attention("font size ",  s, ", [", defaultValue, "]");
+			if (s == 0.0){
+				s = defaultValue;
+			}
+			else {
+				if (s > defaultValue){
+					mout.suspicious<LOG_WARNING>("font size increasing (",  s, '>', defaultValue, ") unexpectedly");
+				}
+				defaultValue = s;
+			}
+			defaultValue *= 0.9;
+		}
+		mout.accept<LOG_WARNING>("new values: ", ctx.svgPanelConf.fontSizes);
+
+		drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
+
+		style[RackSVG::clsMAIN_TITLE]->set("font-size", ctx.svgPanelConf.fontSizes[0]);
+		style[RackSVG::clsGROUP_TITLE]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
+		style[RackSVG::clsTITLE]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
+		style[RackSVG::clsIMAGE_TITLE]->set("font-size", ctx.svgPanelConf.fontSizes[3]);
+
+		// ctx.svgPanelConf.fontSizes = fontSizes;
+		// fontSizes.clear();
+
+	}
+
+
+	void execFOO() const {
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+		mout.accept<LOG_WARNING>("new values: ", ctx.svgPanelConf.fontSizes);
+	}
+
+};
+
 class CmdGroup : public drain::BasicCommand {
 
 public:
@@ -764,6 +829,7 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdLinkImage>(); //
 	install<CmdLayout>();  // Could be "CmdMainAlign", but syntax is so different. (HORZ,INCR etc)
 	install<CmdAlign>();
+	install<CmdFontSizes>();
 	install<CmdGroup>();
 	install<CmdGroupTitle>().section = HIDDEN; // under construction
 	install<CmdPanel>(); // .section = HIDDEN; // addSection(i);
