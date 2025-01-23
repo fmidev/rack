@@ -387,7 +387,7 @@ void CmdOutputFile::exec() const {
 
 	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT); // mostly shared (unneeded in image output, but fast anyway)
 
-
+	// drain::image::TreeSVG & svgGroup = ctx.getMainGroup();//  RackSVG::getMainGroup(ctx); // , path.basename  //  Note: repeatedly called for svg and png files?
 	drain::image::TreeSVG & svgGroup = RackSVG::getMainGroup(ctx); // , path.basename  //  Note: repeatedly called for svg and png files?
 
 	//track.data.set("id", STD_OUTPUT ? "stdout" : path.basename);

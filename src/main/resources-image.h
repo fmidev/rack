@@ -62,27 +62,29 @@ namespace rack {
 
 using namespace drain::image;
 
+
+struct PanelConfSVG {
+
+	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
+	bool absolutePaths = true;
+
+	std::string groupNameSyntax = "group";
+	std::string groupNameFormatted;
+
+	// Currently, applications are recommended to handle "false" and "none". Or "auto"?
+	// std::string title;
+	// FontSizes fontSize;
+
+	inline  // maxPerGroup(10), layout(Alignment::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED),
+	PanelConfSVG() : absolutePaths(true){
+	}
+
+};
+
 class GraphicsContext { // : public drain::BasicCommand {
 
 public:
 
-	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
-	enum ElemClass {
-		NONE = 0,
-		MAIN_TITLE = 1,  /** Main title in SVG image */
-		GROUP_TITLE = 2,
-		IMAGE_TITLE = 4,  /** Small title in a corner of radar image (time, location) */
-		TIME = 8,       /** Date and time attributes */
-		LOCATION = 16,   /** Place (coordinates, municipality) */
-		GENERAL = 32,    /** Default type */
-		ALL = (63),
-		MAIN,
-		IMAGE_PANEL,
-		IMAGE_BORDER, /** RECT surrounding the image */
-		SHARED_METADATA, // Something that should not be repeated in panels.
-		// --- unused ? ---
-		TITLE,      /** Default title */
-	};
 
 	/// Default constructor
 	GraphicsContext();
@@ -90,21 +92,43 @@ public:
 	/// Copy constructor
 	GraphicsContext(const GraphicsContext & ctx);
 
-	// Initialize styles, if undone.
-	drain::image::TreeSVG & getStyle();
+	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
+	/**
+	 *  Initialize styles, if undone.
+	 */
+	// drain::image::TreeSVG & getStyle();
 
- 	// SVG output configuration (layout)
+	/// Top-level GROUP used by Rack. All the graphic elements will be created inside this element.
+	/**
+	 *
+	 *
+	 */
+	// drain::image::TreeSVG & getMainGroup();
+
+	//drain::image::TreeSVG & getCurrentAlignedGroup();
+
+	// virtual
+	// std::string getFormattedStatus(const std::string & format) const = 0;
+
+	// drain::image::TreeSVG & getCurrentAlignedGroup();
+
+	// drain::image::TreeSVG & getImagePanelGroup(const drain::FilePath & filepath);
+
+
+	// SVG output configuration (layout)
 	TreeSVG svgTrack;
 	PanelConfSVG svgPanelConf; // under constr - consider embedding these to PanelConfSVG:
+	// std::string svgGroupNameSyntax = "group";
+	// std::string svgGroupNameFormatted;
+
 	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
 	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
 	int svgDebug = 0;
-	std::string svgGroupNameSyntax = "group";
-	std::string svgGroupNameFormatted;
 
+	/*
 	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
 	TitleFlagger svgTitles = ElemClass::NONE;
-
+	*/
 	// std::string svgTitles = "";
 
 	// For the NEXT graphic object
@@ -114,13 +138,14 @@ public:
 
 };
 
-DRAIN_ENUM_OSTREAM(GraphicsContext::ElemClass);
+//DRAIN_ENUM_OSTREAM(GraphicsContext::ElemClass);
 
 }
 
 
 namespace drain {
 
+/*
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool image::TreeSVG::hasChild(const rack::GraphicsContext::ElemClass & key) const;
@@ -133,6 +158,7 @@ image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemCla
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass & key) const ;
+*/
 
 }
 

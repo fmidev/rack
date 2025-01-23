@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+/*
 template <>
 const drain::EnumDict<rack::GraphicsContext::ElemClass>::dict_t  drain::EnumDict<rack::GraphicsContext::ElemClass>::dict = {
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, NONE),
@@ -62,9 +63,9 @@ bool image::TreeSVG::hasChild(const rack::GraphicsContext::ElemClass & key) cons
 
 
 /// Automatic conversion of elem classes to strings.
-/**
+/ **
  *
- */
+ * /
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass & value) const {
@@ -79,6 +80,7 @@ image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemCla
 	// std::string(".")+
 	return (*this)[EnumDict<rack::GraphicsContext::ElemClass>::dict.getKey(key, false)];
 }
+*/
 
 /*
 template <> // for T (Tree class)
@@ -105,10 +107,11 @@ GraphicsContext::GraphicsContext() {
 
 GraphicsContext::GraphicsContext(const GraphicsContext & ctx) {
 	svgPanelConf.absolutePaths = ctx.svgPanelConf.absolutePaths;
-	svgGroupNameSyntax = ctx.svgGroupNameSyntax;
-	svgTitles    = ctx.svgTitles;
+	svgPanelConf.groupNameSyntax = ctx.svgPanelConf.groupNameSyntax;
+	// svgTitles    = ctx.svgTitles;
 }
 
+/*
 drain::image::TreeSVG & GraphicsContext::getStyle(){
 
 	// drain::Logger mout(log, __FILE__, __FUNCTION__);
@@ -151,7 +154,7 @@ drain::image::TreeSVG & GraphicsContext::getStyle(){
 				{"font-size", "1.5em"},
 				{"stroke", "none"},
 				// {"fill", "blue"},
-				/* {"fill", "black"}, */
+				// {"fill", "black"},
 				// {"fill-opacity", "1"},
 				// {"paint-order", "stroke"},
 				// {"stroke-linejoin", "round"}
@@ -162,7 +165,7 @@ drain::image::TreeSVG & GraphicsContext::getStyle(){
 		style[Select(svg::TEXT, clsIMAGE_TITLE)] = {
 				{"font-size", 12},
 				{"stroke", "white"},
-				/* {"fill", "black"}, */
+				// {"fill", "black"},
 				{"stroke-opacity", "0.75"},
 				{"stroke-width", "0.3em"},
 				//{"fill", "darkslateblue"},
@@ -224,11 +227,79 @@ drain::image::TreeSVG & GraphicsContext::getStyle(){
 }
 // const drain::StatusFlags::value_t RackContext::BBOX_STATUS =   StatusFlags::add("BBOX");
 
+drain::image::TreeSVG & GraphicsContext::getMainGroup(){ // , const std::string & name
+
+	//using namespace drain::image;
+
+	// Ensure STYLE elem and definitions
+	// RackSVG::getStyle(ctx);
+	getStyle();
+
+	// drain::image::TreeSVG & main = ctx.svgTrack[ctx.svgGroupNameSyntax]; <- this makes sense as well
+	drain::image::TreeSVG & main = svgTrack[GraphicsContext::MAIN];
+
+	if (main -> isUndefined()){
+		main->setType(svg::GROUP);
+		main->addClass(GraphicsContext::MAIN);
+	}
+
+	return main;
+
+}
 
 
 
+drain::image::TreeSVG & GraphicsContext::getCurrentAlignedGroup(){ // what about prefix?
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	drain::image::TreeSVG & mainGroup = getMainGroup();
 
 
+	// mout.attention(); drain::TreeUtils::dump(mainGroup, mout); mout.end();
+
+	//drain::image::NodeSVG::toStream(ostr, tree, defaultTag, indent)
+	svgPanelConf.groupNameFormatted = getFormattedStatus(svgPanelConf.groupNameSyntax); // status updated upon last file save
+
+	drain::image::TreeSVG & alignedGroup = mainGroup[svgPanelConf.groupNameFormatted];
+
+	if (alignedGroup -> isUndefined()){
+		alignedGroup->setType(svg::GROUP);
+		alignedGroup->setId(svgPanelConf.groupNameFormatted);
+		alignedGroup->addClass(drain::image::LayoutSVG::ALIGN_FRAME);
+	}
+
+	return alignedGroup;
+
+}
+
+drain::image::TreeSVG & GraphicsContext::getImagePanelGroup(const drain::FilePath & filepath){
+
+	// For each image an own group is created to contain also title TEXT's etc.
+	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
+
+	drain::image::TreeSVG & alignFrame = getCurrentAlignedGroup();
+
+	// drain::image::TreeSVG & comment = alignFrame[svg::COMMENT](svg::COMMENT);
+	// comment->setText("start of ", LayoutSVG::ALIGN_FRAME, ' ', name, svg::GROUP);
+
+	drain::image::TreeSVG & imagePanel = alignFrame[name];
+
+	if (imagePanel->isUndefined()){
+
+		imagePanel->setType(svg::GROUP);
+		imagePanel->setId(name, svg::GROUP);
+
+		drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
+		image->setId(filepath.basename); // unneeded, as TITLE also has it?
+		image->setUrl(filepath.str());
+		image[drain::image::svg::TITLE](drain::image::svg::TITLE) = filepath.basename;
+	}
+
+	return imagePanel;
+
+}
+*/
 
 
 

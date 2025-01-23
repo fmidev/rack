@@ -54,9 +54,32 @@ public:
 	static const std::string BACKGROUND_RECT; //  = "mainRect";
 
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
+	enum ElemClass {
+		NONE = 0,
+		MAIN_TITLE = 1,  /** Main title in SVG image */
+		GROUP_TITLE = 2,
+		IMAGE_TITLE = 4,  /** Small title in a corner of radar image (time, location) */
+		TIME = 8,       /** Date and time attributes */
+		LOCATION = 16,   /** Place (coordinates, municipality) */
+		GENERAL = 32,    /** Default type */
+		ALL = (63),
+		MAIN,
+		IMAGE_PANEL,
+		IMAGE_BORDER, /** RECT surrounding the image */
+		SHARED_METADATA, // Something that should not be repeated in panels.
+		// --- unused ? ---
+		TITLE,      /** Default title */
+	};
 
-	// static drain::image::TreeSVG & getStyle(RackContext & ctx);
+	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
+	//TitleFlagger svgTitles = ElemClass::NONE;
 
+	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
+	/**
+	 *  Initialize styles, if undone.
+	 */
+	static
+	drain::image::TreeSVG & getStyle(RackContext & ctx);
 
 	/// Top-level GROUP used by Rack. All the graphic elements will be created inside this element.
 	/**
@@ -64,14 +87,21 @@ public:
 	 *
 	 */
 	static
-	drain::image::TreeSVG & getMainGroup(RackContext & ctx); // , const std::string & name = "");
+	drain::image::TreeSVG & getMainGroup(RackContext & ctx);
 
+	//drain::image::TreeSVG & getCurrentAlignedGroup();
+
+	// virtual
+	// std::string getFormattedStatus(RackContext & ctx, const std::string & format) const = 0;
 
 	static
 	drain::image::TreeSVG & getCurrentAlignedGroup(RackContext & ctx);
 
 	static
 	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath);
+
+
+
 
 
 	static
@@ -88,10 +118,10 @@ public:
 
 	/// Add TEXT elements: MAINTITLE, LOCATION, TIME, GENERAL
 	static
-	void addTitleBox(drain::image::TreeSVG & object, GraphicsContext::ElemClass elemClass);
+	void addTitleBox(drain::image::TreeSVG & object, RackSVG::ElemClass elemClass);
 
 	static
-	void addTitles(drain::image::TreeSVG & object, const std::string & anchor, GraphicsContext::ElemClass elemClass);
+	void addTitles(drain::image::TreeSVG & object, const std::string & anchor, RackSVG::ElemClass elemClass);
 
 	/// Add rectangle
 	static
@@ -126,15 +156,31 @@ protected:
 
 };
 
+DRAIN_ENUM_OSTREAM(RackSVG::ElemClass);
+
 }
 
 namespace drain {
 
 //
-
+/*
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass &x);
+*/
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool image::TreeSVG::hasChild(const rack::RackSVG::ElemClass & key) const;
+
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & key);
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & key) const ;
 
 /// Automatic conversion of elem classes to strings.
 /**
@@ -156,7 +202,6 @@ const std::string std::static_cast<std::string>(const RackSVG::ElemClass & e){
 */
 
 }
-
 
 
 namespace rack {
@@ -191,7 +236,7 @@ public:
 	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
 
 	// Also
-	GraphicsContext::TitleFlagger titles;
+	//GraphicsContext::TitleFlagger titles;
 
 protected:
 
@@ -212,7 +257,7 @@ public:
 
 
 	inline
-	TitleCreatorSVG(GraphicsContext::TitleFlagger::ivalue_t titles) : mainHeaderHeight(50), titles(titles) {
+	TitleCreatorSVG(RackSVG::TitleFlagger::ivalue_t titles) : mainHeaderHeight(50), titles(titles) {
 	};
 
 	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & odimPath) override;
@@ -228,7 +273,7 @@ public:
 	int mainHeaderHeight;
 
 	// Conf
-	GraphicsContext::TitleFlagger titles;
+	RackSVG::TitleFlagger titles;
 
 };
 

@@ -71,7 +71,7 @@ public:
 	}
 
 };
-
+/*
 struct PanelConfSVG {
 
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
@@ -85,14 +85,8 @@ struct PanelConfSVG {
 	PanelConfSVG() : absolutePaths(true){
 	}
 
-	/*
-	inline
-	PanelConfSVG(const PanelConfSVG & c) : orientation(c.orientation), direction(c.direction), legend(LEFT, EMBED), maxPerGroup(10), absolutePaths(false){
-	}
-	*/
-
-
 };
+*/
 
 /// SVG classes marking requests of relative horizontal and vertical alignment.
 /**
@@ -107,7 +101,7 @@ struct TreeUtilsSVG {
 
 public:
 
-	static PanelConfSVG defaultConf; // Consider separating Rack-specific properties.
+	// static PanelConfSVG defaultConf; // Consider separating Rack-specific properties.
 
 	/*
 	static

@@ -295,7 +295,7 @@ public:
 
 	CmdGroup() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
 		RackContext & ctx = getContext<RackContext>();
-		getParameters().link("syntax", ctx.svgGroupNameSyntax, "example: '${what:date|%Y%m} ${NOD}'");
+		getParameters().link("syntax", ctx.svgPanelConf.groupNameSyntax, "example: '${what:date|%Y%m} ${NOD}'");
 	}
 
 	CmdGroup(const CmdGroup & cmd) : drain::BasicCommand(cmd) {
@@ -309,10 +309,10 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		drain::StringTools::replace(ctx.svgGroupNameSyntax, '/', '-', ctx.svgGroupNameSyntax);
+		drain::StringTools::replace(ctx.svgPanelConf.groupNameSyntax, '/', '-', ctx.svgPanelConf.groupNameSyntax);
 
 
-		mout.accept<LOG_WARNING>("new value: ", ctx.svgGroupNameSyntax);
+		mout.accept<LOG_WARNING>("new value: ", ctx.svgPanelConf.groupNameSyntax);
 
 	}
 
@@ -341,7 +341,8 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		ctx.svgTitles.set(value);
+		mout.unimplemented<LOG_ERR>(__FILE__, __FUNCTION__);
+		//ctx.svgPanelConf.svgTitles.set(value);
 
 	}
 
@@ -362,7 +363,7 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		drain::image::TreeSVG & headerGroup = RackSVG::getMainGroup(ctx);
+		drain::image::TreeSVG & headerGroup = RackSVG::getMainGroup(ctx); // ctx.getMainGroup(); // RackSVG::getMainGroup(ctx);
 		// drain::image::TreeSVG & headerGroup = RackSVG::getCurrentGroup(ctx);
 
 		// TreeSVG & headerGroup = mainGroup["headerGroup"](svg::GROUP);
@@ -371,8 +372,8 @@ public:
 
 		TreeSVG & headerRect = headerGroup["headerRect"](svg::RECT); // +EXT!
 		headerRect->setHeight(70);
-		headerRect->addClass(GraphicsContext::TITLE, GraphicsContext::MAIN_TITLE);
-		headerRect->setId("textRect", GraphicsContext::MAIN_TITLE);
+		headerRect->addClass(RackSVG::TITLE, RackSVG::MAIN_TITLE);
+		headerRect->setId("textRect", RackSVG::MAIN_TITLE);
 		headerRect->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
 
 		// User-defined
@@ -394,7 +395,7 @@ public:
 		mainTitleText->setStyle("font-size", 20);
 
 		drain::image::TreeSVG & text1 = headerGroup["TIME"](svg::TEXT);
-		text1->addClass(LayoutSVG::FLOAT, GraphicsContext::TITLE);
+		text1->addClass(LayoutSVG::FLOAT, RackSVG::TITLE);
 		text1->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
 		// text1->setAlign(AlignSVG::TOP);
 		text1->setHeight(20);
@@ -402,7 +403,7 @@ public:
 		text1->setText(value, " (time)");
 
 		drain::image::TreeSVG & text2 = headerGroup["LOCATION"](svg::TEXT);
-		text2->addClass(LayoutSVG::FLOAT, GraphicsContext::TITLE);
+		text2->addClass(LayoutSVG::FLOAT, RackSVG::TITLE);
 		text2->setAlign(AlignSVG::RIGHT);
 		text2->setAlign(AlignSVG::TOP);
 		text2->setHeight(20);
@@ -435,11 +436,11 @@ public:
 		//BBoxSVG bbox;
 		// TreeUtilsSVG::computeBoundingBox(mainGroup, bbox);
 
-		RackSVG::addTitleBox(mainGroup, GraphicsContext::ElemClass::MAIN_TITLE);
+		RackSVG::addTitleBox(mainGroup, RackSVG::ElemClass::MAIN_TITLE);
 
-		drain::image::TreeSVG & mainTitle = mainGroup[GraphicsContext::ElemClass::MAIN_TITLE]; // "mainTitle"
+		drain::image::TreeSVG & mainTitle = mainGroup[RackSVG::ElemClass::MAIN_TITLE]; // "mainTitle"
 		mainTitle->setText(value);
-		const double fontSize = style[GraphicsContext::MAIN_TITLE]->get("font-size", 12.5);
+		const double fontSize = style[RackSVG::MAIN_TITLE]->get("font-size", 12.5);
 		mainTitle->setHeight(fontSize);
 	}
 
@@ -463,6 +464,7 @@ public:
 
 		drain::Frame2D<double> frame = {150,480};
 
+		// drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP); // RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
 		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
 		group->setId(value);
 		group->addClass(LayoutSVG::FLOAT);
@@ -600,7 +602,8 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		drain::image::TreeSVG & style = ctx.getStyle(); // consider static/global?
+		//drain::image::TreeSVG & style = ctx.getStyle(); // consider static/global?
+		drain::image::TreeSVG & style = RackSVG::getStyle(ctx); // consider static/global?
 
 		std::string cssSelector, cssConf;
 		if (drain::StringTools::split2(value, cssSelector, cssConf, '=')){
@@ -643,6 +646,7 @@ public:
 
 		drain::Frame2D<double> frame = {400,500};
 
+		//drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP);
 		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
 		group->setId(value);
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);

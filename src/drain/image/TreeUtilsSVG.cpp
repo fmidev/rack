@@ -40,7 +40,7 @@ namespace image {
 
 
 
-PanelConfSVG TreeUtilsSVG::defaultConf;
+// PanelConfSVG TreeUtilsSVG::defaultConf;
 
 /*
 const std::set<XML::intval_t> TreeUtilsSVG::abstractTags = {
