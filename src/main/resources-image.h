@@ -77,7 +77,7 @@ struct PanelConfSVG {
 		IMAGE_BORDER, // RECT surrounding the image
 		SHARED_METADATA, // Something that should not be repeated in panels.
 		// --- unused ? ---
-		TITLE,      // Default title
+		// TITLE,      // Default title
 	};
 
 	// Selected CSS classes corresponding to above element classes
@@ -109,13 +109,13 @@ struct PanelConfSVG {
 	 *   2 - groupTitle.second
 	 *   3 - imageTitle
 	 */
-	drain::UniTuple<double,4>  fontSizes = {15.0, 12.0, 10.0, 8.0};
+	drain::UniTuple<double,3>  fontSizes = {15.0, 12.0, 10.0};
 
 	/**
 	 *   0 - mainTitle
 	 *   1 - groupTitle
 	 */
-	drain::UniTuple<double,3>  boxHeights = {20.0, 15.0, 10.0};
+	drain::UniTuple<double,3>  boxHeights = {30.0, 25.0, 15.0};
 
 
 	// Currently, applications are recommended to handle "false" and "none". Or "auto"?

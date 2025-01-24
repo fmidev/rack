@@ -273,13 +273,57 @@ protected:
 
 };
 
+
+class CmdAdjustSizes : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdAdjustSizes(const std::string & name, const std::string & description) : drain::SimpleCommand<std::string>(name, description) {
+		// getParameters().link("sizes", fontSizes);
+	}
+
+	template <class T, size_t N=2>
+	void adjust(drain::UniTuple<T,N> & tuple, float decay = 0.8) const{
+
+
+		double defaultValue = decay * tuple[0];
+
+		tuple.clear();
+
+		drain::Reference ref(tuple);
+		ref.setFill(false);
+		ref = value;
+
+		for (double & s: tuple){
+			defaultValue = 0.1 * ::round(10.0 * defaultValue);
+			// mout.attention("font size ",  s, ", [", defaultValue, "]");
+			if (s == 0.0){
+				s = defaultValue;
+			}
+			else {
+				if (s > defaultValue){
+					// mout.suspicious<LOG_WARNING>("font size increasing (",  s, '>', defaultValue, ") unexpectedly");
+				}
+				defaultValue = s;
+			}
+			defaultValue *= decay;
+		}
+		// mout.accept<LOG_WARNING>("new values: ", ctx.svgPanelConf.fontSizes);
+
+
+	}
+
+
+};
+
+
 // class CmdFontSizes : public drain::BasicCommand {
-class CmdFontSizes : public drain::SimpleCommand<std::string> {
+class CmdFontSizes : public CmdAdjustSizes {
 
 public:
 
 	// CmdFontSizes() : drain::BasicCommand(__FUNCTION__, "Add or modify CSS entry") {
-	CmdFontSizes() : drain::SimpleCommand<std::string>(__FUNCTION__, "Set font sizes") {
+	CmdFontSizes() : CmdAdjustSizes(__FUNCTION__, "Adjust font sizes in CSS style section.") {
 		// getParameters().link("sizes", fontSizes);
 	}
 
@@ -288,14 +332,16 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+		adjust(ctx.svgPanelConf.boxHeights, 0.8);
 
+		/*
 		double defaultValue = 0.8 * ctx.svgPanelConf.boxHeights[0];
 
 		ctx.svgPanelConf.fontSizes.clear();
 
-		drain::Reference fontSizes(ctx.svgPanelConf.fontSizes);
-		fontSizes.setFill(false);
-		fontSizes = value;
+		drain::Reference ref(ctx.svgPanelConf.fontSizes);
+		ref.setFill(false);
+		ref = value;
 
 		for (double & s: ctx.svgPanelConf.fontSizes){
 			defaultValue = 0.1 * ::round(10.0 * defaultValue);
@@ -311,20 +357,68 @@ public:
 			}
 			defaultValue *= 0.9;
 		}
+		*/
 		mout.accept<LOG_WARNING>("new values: ", ctx.svgPanelConf.fontSizes);
 
+		// updateFontStyles(ctx);
+		/*
 		drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
-
-		style[drain::SelectorXMLcls(PanelConfSVG::MAIN_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[0]);
-		style[drain::SelectorXMLcls(PanelConfSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
-		style[drain::SelectorXMLcls(PanelConfSVG::TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
-		style[drain::SelectorXMLcls(PanelConfSVG::IMAGE_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[3]);
-
+		style[drain::SelectorXMLcls(svg::TEXT,PanelConfSVG::MAIN_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[0]);
+		style[drain::SelectorXMLcls(svg::TEXT,PanelConfSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
+		style[drain::SelectorXMLcls(svg::TEXT,PanelConfSVG::IMAGE_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
+		*/
 		// ctx.svgPanelConf.fontSizes = fontSizes;
 		// fontSizes.clear();
 
 	}
 
+	/*
+	static inline
+	void updateFontStyles(RackContext & ctx){
+		drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
+		style[drain::SelectorXMLcls(PanelConfSVG::MAIN_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[0]);
+		style[drain::SelectorXMLcls(PanelConfSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
+		style[drain::SelectorXMLcls(PanelConfSVG::IMAGE_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
+	}
+	*/
+
+};
+
+
+class CmdTitleBoxHeight : public CmdAdjustSizes {
+
+public:
+
+	CmdTitleBoxHeight() : CmdAdjustSizes(__FUNCTION__, "Set title box heights and adjust font sizes. See --gFontSizes") {
+		// RackContext & ctx = getContext<RackContext>();
+		// getParameters().separator = 0;
+		// getParameters().link("height", ctx.svgPanelConf.boxHeights.tuple(), "<mainTitle>,<groupTitle>,<imageTitle>").setSeparator(',').setFill(false);
+		// std::cerr << __FUNCTION__ << " (dft ctr) " << getParameters() << std::endl;
+	}
+
+	/*
+	CmdTitleBoxHeight(const CmdTitleBoxHeight & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+		// std::cerr << __FUNCTION__ << " (cpy ctr) " << getParameters() << std::endl;
+	}
+	*/
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		adjust(ctx.svgPanelConf.boxHeights, 0.8);
+		mout.accept<LOG_WARNING>("new BOX  values: ", ctx.svgPanelConf.boxHeights);
+
+		for (size_t i= 0; i<ctx.svgPanelConf.boxHeights.size(); ++i){
+			 ctx.svgPanelConf.fontSizes[i] = 0.65 * ctx.svgPanelConf.boxHeights[i];
+		}
+		mout.accept<LOG_WARNING>("new FONT values: ", ctx.svgPanelConf.fontSizes);
+
+		// CmdFontSizes::updateFontStyles(ctx);
+	}
 
 };
 
@@ -382,21 +476,6 @@ public:
 	}
 
 	CmdTitle(const CmdTitle & cmd) : drain::BasicCommand(cmd) {
-		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
-	}
-
-};
-
-class CmdTitleBoxHeight : public drain::BasicCommand {
-
-public:
-
-	CmdTitleBoxHeight() : drain::BasicCommand(__FUNCTION__, "Set title box height") {
-		RackContext & ctx = getContext<RackContext>();
-		getParameters().link("height", ctx.svgPanelConf.boxHeights.tuple(), "<mainTitle>,<groupTitle>,<imageTitle>");
-	}
-
-	CmdTitleBoxHeight(const CmdTitleBoxHeight & cmd) : drain::BasicCommand(cmd) {
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
 	}
 

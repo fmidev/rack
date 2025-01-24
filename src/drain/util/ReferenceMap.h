@@ -423,6 +423,7 @@ public:
 				//mout.warn("local: " , key , ':' , srcRef.getElementCount() );
 				dstMemberRef.copyFormat(srcRef);
 				dstMemberRef = srcRef; // value
+				//dstMemberRef.setInputSeparator(srcRef.getInputSeparator());
 			}
 			else {
 				//mout.warn("external: " , key     );

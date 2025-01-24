@@ -77,24 +77,24 @@ const std::string RackSVG::BACKGROUND_RECT = "bgRect";
 
 drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
-	// drain::Logger mout(log, __FILE__, __FUNCTION__);
+	// Consider areas or frames: MAIN_FRAME, GROUP_FRAME, IMAGE_FRAME
+
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	TreeSVG & style = ctx.svgTrack[svg::STYLE];
 
-	//if (!ctx.svgTrack.hasChild("style")){
+	using namespace drain;
+
 	if (style->isUndefined()){
 
 		// mout.debug("initializing style");
-		using namespace drain;
 
 		style->setType(svg::STYLE);
 
-		style[svg::TEXT] = {
-				{"font-family","Helvetica, Arial, sans-serif"}
-		};
+		// style[svg::SVG] = {};
 
-		style[SelectorXMLcls(svg::TEXT, PanelConfSVG::TITLE)] = {
-				{"font-size", "1.5em"},
+		style[svg::TEXT] = {
+				{"font-family","Helvetica, Arial, sans-serif"},
 				{"stroke", "none"},
 		};
 
@@ -108,64 +108,62 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"stroke-linejoin", "round"}
 		};
 
-		style[SelectorXMLcls(PanelConfSVG::GROUP_TITLE)] = {
-				{"font-size", 20},
-		};
+		// style[SelectorXMLcls(PanelConfSVG::GROUP_TITLE)] = {		};
 
 		style[SelectorXMLcls(svg::RECT, PanelConfSVG::GROUP_TITLE)] = {
 				{"fill", "gray"},
-				{"opacity", 0.5},
+				{"opacity", 1.0},
 		};
 
 		style[SelectorXMLcls(svg::TEXT, PanelConfSVG::GROUP_TITLE)] = {
+				// {"font-size", 20}, dynamic, see below
 				{"fill", "black"},
 		};
 
-		style[SelectorXMLcls(PanelConfSVG::MAIN_TITLE)] = {
-				{"font-size", "30"},
-		};
+
+		// style[SelectorXMLcls(PanelConfSVG::MAIN_TITLE)] = {};
 
 		// style["rect.MAIN_TITLE"] = {
 		style[SelectorXMLcls(svg::RECT, PanelConfSVG::MAIN_TITLE)] = {
-				{"fill", "darkslateblue"},
-				{"opacity", "0.5"},
+				{"fill", "darkblue"},
+				{"opacity", 1.0},
 		};
 
 		// style["text.MAIN_TITLE"] = {
 		style[SelectorXMLcls(svg::TEXT, PanelConfSVG::MAIN_TITLE)] = {
+				// {"font-size", 20.0}, dynamic, see below
 				{"fill", "white"},
 		};
 
+		// Currently, image titles have no background RECT, but let's keep this for clarity.
+		style[SelectorXMLcls(svg::TEXT,PanelConfSVG::IMAGE_TITLE)] = {
+				{"font-size", 12.0},
+		};
+
 		// Date and time.
-		style[SelectorXMLcls(PanelConfSVG::TIME)].data = {
+		style[SelectorXMLcls(PanelConfSVG::TIME)] = {
 				{"fill", "darkred"}
 		};
 
-		style[SelectorXMLcls(PanelConfSVG::LOCATION)].data = {
+		// Radar site
+		style[SelectorXMLcls(PanelConfSVG::LOCATION)] = {
 				{"fill", "darkblue"}
 		};
 
-		style[SelectorXMLcls(PanelConfSVG::IMAGE_TITLE)] = {
-				{"font-size", 12},
-		};
-
+		// Option: set stroke to make borders appear. Future option: borders OUTSIDE the image.
 		style[SelectorXMLcls(PanelConfSVG::IMAGE_BORDER)] = { // TODO: add leading '.' ?
 				{"fill", "none"},
 				{"stroke", "none"},
 				// {"stroke-opacity", 0.0},
-				{"stroke-width", "0.3em"},
+				{"stroke-width", 1.0},
 				// {"stroke-dasharray", {2,5,3}},
 		};
 
-		// style[".imageTitle2"] = "font-size:1.5em; stroke:white; stroke-opacity:0.5; stroke-width:0.3em; fill:darkslateblue; fill-opacity:1; paint-order:stroke; stroke-linejoin:round";
-		// drain::TreeUtils::dump(ctx.svgTrack);
-
-		// MODE 2: deprecated: text (CTEXT) of sub-element - note: child elem does not know its parent's type (STYLE)
-		// style["text"] = "filler:black";
-		// style["text"] = ("stroke:white; stroke-width:0.5em; stroke-opacity:0.25; fill:black; paint-order:stroke; stroke-linejoin:round");
-		// style["text"].data = "stroker:white";
-
 	}
+
+	style[SelectorXMLcls(PanelConfSVG::MAIN_TITLE)] ->set("font-size", ctx.svgPanelConf.fontSizes[0]);
+	style[SelectorXMLcls(PanelConfSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
+	style[SelectorXMLcls(PanelConfSVG::IMAGE_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
 
 	return style;
 }
@@ -382,6 +380,12 @@ void RackSVG::addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & obj
 
 	drain::image::TreeSVG & backgroundRect = object[BACKGROUND_RECT](svg::RECT);
 	backgroundRect->addClass(elemClass);
+
+	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
+	backgroundRect->setAlignAnchor("*");
+	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
+	// backgroundRect->setHeight(40); // TODO!!
+
 	// Lower... for GENERAL as well.
 	switch (elemClass) {
 		case PanelConfSVG::ElemClass::MAIN_TITLE:
@@ -394,21 +398,20 @@ void RackSVG::addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & obj
 			backgroundRect->setHeight(conf.boxHeights[1]);
 			// backgroundRect->setHeight(40);
 			break;
-		case PanelConfSVG::ElemClass::IMAGE_TITLE:
-			backgroundRect->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+			// case PanelConfSVG::ElemClass::IMAGE_TITLE:
+			// backgroundRect->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
 			// backgroundRect->setHeight(40);
-			backgroundRect->setHeight(conf.boxHeights[2]);
-			break;
+			// backgroundRect->setHeight(conf.boxHeights[2]);
+			// break;
 		default:
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.suspicious("Unhandled elemClass: ", elemClass);
 			break;
 	}
 
-	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
-	backgroundRect->setAlignAnchor("*");
-	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
-	// backgroundRect->setHeight(40); // TODO!!
-
 	addTitles(conf, object, BACKGROUND_RECT, elemClass);
+
+
 }
 
 void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object, const std::string & anchor, PanelConfSVG::ElemClass elemClass){
@@ -418,20 +421,23 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 			root[drain::image::svg::STYLE][elemClass]->get("font-size", 12.5);
 	*/
 
+	drain::Logger mout(__FILE__, __FUNCTION__);
 	// TODO: title area "filling order", by group class.
 
 	TreeSVG & mainHeader = object[PanelConfSVG::ElemClass::GENERAL](svg::TEXT); // group[GENERAL](svg::TEXT);
 	mainHeader->addClass(LayoutSVG::FLOAT);
 	mainHeader->addClass(elemClass); // also GENERAL?
 	mainHeader->setAlignAnchor(anchor);
+	/*
 	if (elemClass == PanelConfSVG::ElemClass::IMAGE_TITLE){
 		mainHeader->setAlign(AlignSVG::BOTTOM, AlignSVG::LEFT); //AlignSVG::VertAlign::MIDDLE);
 	}
 	else {
 		mainHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); //AlignSVG::VertAlign::MIDDLE);
 	}
-	//mainHeader->setHeight(20);
-	mainHeader->setMargin(4); // ADJUST
+	// mainHeader->setHeight(conf.boxHeights[0]);
+	// mainHeader->setMargin(conf.boxHeights[0]*0.2); // ADJUST
+	*/
 	// Ensure order
 	mainHeader["product"](svg::TSPAN);
 	mainHeader["product"]->addClass("product");
@@ -446,15 +452,6 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	//timeHeader->addClass(RackSVG::TITLE, RackSVG::TIME);
 	timeHeader->addClass(elemClass, PanelConfSVG::ElemClass::TIME);
 	timeHeader->setAlignAnchor(anchor);
-	timeHeader->setAlign(AlignSVG::LEFT);
-	if (elemClass == PanelConfSVG::ElemClass::IMAGE_TITLE){
-		timeHeader->setAlign(AlignSVG::TOP); // , AlignSVG::INSIDE);
-	}
-	else {
-		timeHeader->setAlign(AlignSVG::MIDDLE); // , AlignSVG::INSIDE);
-	}
-	// timeHeader->setHeight(16);
-	timeHeader->setMargin(3); // ADJUST
 	timeHeader["date"](svg::TSPAN);
 	timeHeader["date"]->addClass("date");
 	timeHeader["time"](svg::TSPAN);
@@ -468,6 +465,7 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	//locationHeader->addClass(RackSVG::TITLE, RackSVG::LOCATION);
 	locationHeader->addClass(elemClass, PanelConfSVG::ElemClass::LOCATION);
 	locationHeader->setAlignAnchor(anchor);
+	/*
 	locationHeader->setAlign(AlignSVG::RIGHT);
 	if (elemClass == PanelConfSVG::ElemClass::IMAGE_TITLE){
 		locationHeader->setAlign(AlignSVG::TOP);
@@ -475,14 +473,58 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	else {
 		locationHeader->setAlign(AlignSVG::MIDDLE);
 	}
-	// locationHeader->setHeight(16);
+	locationHeader->setHeight(16);
 	locationHeader->setMargin(3); // adjust
+	*/
 	locationHeader["NOD"](svg::TSPAN);
 	locationHeader["NOD"]->addClass("NOD");
 	locationHeader["PLC"](svg::TSPAN);
 	locationHeader["PLC"]->addClass("PLC");
 	// locationHeader["NOD"]->ctext = "NOD";
 	// locationHeader["PLC"]->ctext = "PLC";
+
+
+	double textBoxHeight = 0; // conf.boxHeights[0]; // MAIN_HEADER
+	double textBoxMargin = 0;
+
+	switch (elemClass) {
+	case PanelConfSVG::ElemClass::MAIN_TITLE:
+		textBoxHeight = conf.fontSizes[0];
+		mainHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
+		timeHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::LEFT);
+		locationHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT);
+		break;
+	case PanelConfSVG::ElemClass::GROUP_TITLE:
+		textBoxHeight = conf.fontSizes[1];
+		mainHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
+		timeHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::LEFT);
+		locationHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT);
+		break;
+	case PanelConfSVG::ElemClass::IMAGE_TITLE:
+		textBoxHeight = conf.fontSizes[2];
+		mainHeader->setAlign(AlignSVG::BOTTOM, AlignSVG::LEFT);
+		timeHeader->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
+		locationHeader->setAlign(AlignSVG::TOP, AlignSVG::RIGHT);
+		break;
+	default:
+		mout.error(__LINE__, "unhandled ElemClass", elemClass);
+		break;
+	}
+
+
+
+	textBoxMargin = textBoxHeight * 0.2;
+
+	mainHeader->setHeight(textBoxHeight);
+	mainHeader->setMargin(textBoxMargin); // adjust
+
+	timeHeader->setHeight(textBoxHeight);
+	timeHeader->setMargin(textBoxMargin); // adjust
+
+	locationHeader->setHeight(textBoxHeight);
+	locationHeader->setMargin(textBoxMargin); // adjust
+
+
 
 }
 
@@ -816,8 +858,8 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 					root[drain::image::svg::STYLE][PanelConfSVG::MAINTITLE]->get("font-size", 12.5);
 		 */
 		// text->setStyle("font-size", fontSize); //
-		text->setHeight(14);     // row height
-		text->setMargin(4); // margin
+		// text->setHeight(14);     // row height
+		// text->setMargin(4); // margin
 		// text->addClass(LayoutSVG::FLOAT); // Anchor defined, but need for proper bbox computation! (Yet text should be discarded)
 
 

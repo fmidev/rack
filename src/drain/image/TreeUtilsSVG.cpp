@@ -201,8 +201,12 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 
 	Logger mout(__FILE__, __FUNCTION__);
 
-
 	const bool IS_TEXT = object->typeIs(svg::TEXT);
+
+	if (IS_TEXT){
+		mout.experimental(__FUNCTION__, " handling ", object.data);
+	}
+
 
 	Box<svg::coord_t> & obox = object->getBoundingBox();
 
@@ -232,34 +236,47 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 	}
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', axis, '=', alignLoc);
 
+	mout.special("Vertical adjust: after anchor:", alignLoc, " coord=", coord, " based on abox:", anchorBoxVert);
 
 	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");
 
 	static const std::string TEXT_ANCHOR("text-anchor");
 
+	/// Vertical TEXT offset.
+	/** Generally, graphic elements span "downwards", i.e. with increasing y coordinate.
+	 *  TEXT element position is compensated by adding an approximated offset.
+	 */
 	if (IS_TEXT){
 		if (obox.height > 0){
 			coord += obox.height;
+			mout.special("Vertical adjust: TEXT + (height=", obox.height, ") coord=", coord);
 		}
 		else {
-			coord += object->getStyle().get("font-size", 0.0);
-			mout.experimental("Vertical adjust by explicit font-size=", object->getStyle()["font-size"]);
+			double s = object->getStyle().get("font-size", 0.0);
+			if (s > 0.0){
+				coord += s;
+				mout.special("Vertical adjust by explicit font-size:", s);
+			}
 		}
 	}
+
+	svg::coord_t coord0 = coord;
 
 	switch (alignLoc = object->getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::VERT)){
 	case AlignBase::Pos::MIN:
 		if (IS_TEXT){
 			coord += object->getMargin(); //
+			mout.special("Vertical adjust: TEXT +margin=", object->getMargin());
 		}
 		break;
 	case AlignBase::Pos::MID:
-		coord -= obox.height/2;
+		coord -= obox.height/2.0;
 		break;
 	case AlignBase::Pos::MAX:
 		coord -= obox.height;
 		if (IS_TEXT){
 			coord -= object->getMargin(); //
+			mout.special("Vertical adjust: TEXT -margin=", object->getMargin());
 		}
 		break;
 	case AlignBase::Pos::FILL:
@@ -269,12 +286,15 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 		obox.setHeight(anchorBoxVert.height);
 		break;
 	case AlignBase::Pos::UNDEFINED_POS: // or absolute
-		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', AlignBase::Axis::HORZ, pos);
+		mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", alignLoc, " for ", AlignSVG::Owner::OBJECT, '/', AlignBase::Axis::VERT);
 		break;
 	default:
 		mout.unimplemented<LOG_ERR>("AlignSVG::Pos ", alignLoc);
 	}
 
+	if (IS_TEXT){
+		mout.special("Adjusted TEXT with VERT:", alignLoc, ":", coord0, " -> ", coord);
+	}
 	// mout.attention("Alignment::OBJECT-HORZ ", pos);
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', axis, '=', alignLoc);
 

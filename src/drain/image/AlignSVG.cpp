@@ -191,7 +191,7 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 
 		bitShift += (axis == AlignBase::Axis::HORZ) ? 0 : 2;
 
-		sep=0;
+		//sep=0;
 		//sep=' ';
 
 		for (AlignSVG::Owner owner: {Owner::ANCHOR, Owner::OBJECT}){
@@ -204,14 +204,15 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 
 				if (sep){
 					ostr << sep;
-					sep = ' ';
+					//sep = ' ';
 				}
 				else {
-					sep='.';
+					//sep='.';
 				}
+				sep='.';
 
 				if (owner == Owner::ANCHOR){
-					ostr << '@';
+					// ostr << '@';
 				}
 				else {
 					//ostr << '.';
@@ -231,7 +232,7 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 			alignment |= (((bitvect_t)pos)<<bitShift);
 		}
 
-		// sep=' ';
+		sep=' ';
 	}
 
 

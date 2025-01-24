@@ -292,6 +292,9 @@ public:
 	template <typename T>
 	inline
 	void setHeight(T h){
+		if (typeIs(svg::TEXT)){
+			link("data-height", box.height);
+		}
 		box.height = h;
 	}
 
