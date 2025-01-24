@@ -100,6 +100,16 @@ EOF
 }
 
 
+WRITE_DOC 'A further example, usage of styles'
+RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'AUTO'"  --gGroupTitle "'AUTO:Examples of \${what:time}'" --gTitleBoxHeight "'30,20,10'" \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "'rect.MAIN_TITLE=fill:red'"  \\   --gStyle ".MAIN_TITLE='font-size:15;font-family:Times'"  --gStyle ".LOCATION='fill:green'" \\   'data-kiira/201708121??0_radar.polar.fi{ika,kor,van}.h5'    -o series-styled.svg 
+
+ls -1t ${OUTFILES[*]//.png/.cmd}
+
+echo -e "Created: \ndisplay ${OUTFILES[*]}"
+
+
+exit 0
+
 
 WRITE_DOC "Align two images horizontally (default)" 
 RUN_TEST \\  volume.h5 --cSize 400 -Q DBZH -c -o gray.png --palette 'default' -o rgb.png \\  -o simple.svg
@@ -127,6 +137,3 @@ RUN_TEST \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\$
 WRITE_DOC 'A further example, with...'
 RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'AUTO'"  --gGroupTitle "'Examples of \${what:time}'" \\   data-kiira/201708121?00_radar.polar.fikor.h5 data-kiira/201708121?00_radar.polar.fiika.h5   -o series-labelled3.svg 
 
-
-
-echo -e "Created: \ndisplay ${OUTFILES[*]}"
