@@ -102,7 +102,9 @@ EOF
 
 
 
-
+# --gTitles main=AUTO,groups=NONE|AUTO|ID,images=NONE
+# --gGroupId ''  # sets groups=ID
+# --gImageTitles TIME=UR:....., one at time, like imageConf   LOCATION:  
 
 
 WRITE_DOC "Align two images horizontally (default)" 

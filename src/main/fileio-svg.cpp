@@ -333,42 +333,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		adjust(ctx.svgPanelConf.boxHeights, 0.8);
-
-		/*
-		double defaultValue = 0.8 * ctx.svgPanelConf.boxHeights[0];
-
-		ctx.svgPanelConf.fontSizes.clear();
-
-		drain::Reference ref(ctx.svgPanelConf.fontSizes);
-		ref.setFill(false);
-		ref = value;
-
-		for (double & s: ctx.svgPanelConf.fontSizes){
-			defaultValue = 0.1 * ::round(10.0 * defaultValue);
-			mout.attention("font size ",  s, ", [", defaultValue, "]");
-			if (s == 0.0){
-				s = defaultValue;
-			}
-			else {
-				if (s > defaultValue){
-					mout.suspicious<LOG_WARNING>("font size increasing (",  s, '>', defaultValue, ") unexpectedly");
-				}
-				defaultValue = s;
-			}
-			defaultValue *= 0.9;
-		}
-		*/
 		mout.accept<LOG_WARNING>("new values: ", ctx.svgPanelConf.fontSizes);
-
-		// updateFontStyles(ctx);
-		/*
-		drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
-		style[drain::SelectorXMLcls(svg::TEXT,PanelConfSVG::MAIN_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[0]);
-		style[drain::SelectorXMLcls(svg::TEXT,PanelConfSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
-		style[drain::SelectorXMLcls(svg::TEXT,PanelConfSVG::IMAGE_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
-		*/
-		// ctx.svgPanelConf.fontSizes = fontSizes;
-		// fontSizes.clear();
 
 	}
 
@@ -390,10 +355,6 @@ class CmdTitleBoxHeight : public CmdAdjustSizes {
 public:
 
 	CmdTitleBoxHeight() : CmdAdjustSizes(__FUNCTION__, "Set title box heights and adjust font sizes. See --gFontSizes") {
-		// RackContext & ctx = getContext<RackContext>();
-		// getParameters().separator = 0;
-		// getParameters().link("height", ctx.svgPanelConf.boxHeights.tuple(), "<mainTitle>,<groupTitle>,<imageTitle>").setSeparator(',').setFill(false);
-		// std::cerr << __FUNCTION__ << " (dft ctr) " << getParameters() << std::endl;
 	}
 
 	/*
