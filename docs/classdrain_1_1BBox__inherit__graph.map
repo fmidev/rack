@@ -1,6 +1,6 @@
 <map id="BBox" name="BBox">
-<area shape="rect" id="node1" title="Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ..." alt="" coords="61,229,117,256"/>
-<area shape="rect" id="node2" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="9,155,170,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,80,173,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="17,5,161,32"/>
+<area shape="rect" id="node1" title="Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ..." alt="" coords="58,229,114,256"/>
+<area shape="rect" id="node2" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="5,155,167,181"/>
+<area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="19,80,153,107"/>
+<area shape="rect" id="node4" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="15,5,157,32"/>
 </map>

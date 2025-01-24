@@ -2,6 +2,6 @@
 <area shape="rect" id="node1" title="Something that has coordinates (x,y) and dimensions (width, height)." alt="" coords="87,229,173,256"/>
 <area shape="rect" id="node2" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="5,155,116,181"/>
 <area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="64,80,196,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="140,155,259,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Frame2D.html" title="Something that has width and height." alt="" coords="140,155,259,181"/>
 <area shape="rect" id="node4" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="58,5,202,32"/>
 </map>

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['general_4534',['GENERAL',['../classrack_1_1GraphicsContext.html#a064dd6903edf7f9e2f353b8c336db620aa965658e6a84d5502df1c1987b0a8466',1,'rack::GraphicsContext']]],
-  ['group_5ftitle_4535',['GROUP_TITLE',['../classrack_1_1GraphicsContext.html#a064dd6903edf7f9e2f353b8c336db620addfed14b4c003516e5c3ad990d04ba70',1,'rack::GraphicsContext']]]
+  ['odim_5f2_5f3_4539',['ODIM_2_3',['../classrack_1_1ODIM.html#a2256f5bba1c1c69a92b933aa501df470a8934cf09e1dac1e3a9cc7024310b5ff4',1,'rack::ODIM']]],
+  ['odim_5f2_5f4_4540',['ODIM_2_4',['../classrack_1_1ODIM.html#a2256f5bba1c1c69a92b933aa501df470ad5c2c2863a7b7e1899d258bbad659c59',1,'rack::ODIM']]]
 ];

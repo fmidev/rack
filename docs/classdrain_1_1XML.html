@@ -245,6 +245,10 @@ template&lt;class ... T&gt; </td></tr>
 <tr class="memitem:a23928bc72e2f57fa9e6b888d6a776f43"><td class="memItemLeft" align="right" valign="top"><a id="a23928bc72e2f57fa9e6b888d6a776f43"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setUrl</b> (const std::string &amp;s)</td></tr>
 <tr class="separator:a23928bc72e2f57fa9e6b888d6a776f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa35c1a6d0fb13e779be9f0e06f2223f1"><td class="memTemplParams" colspan="2"><a id="aa35c1a6d0fb13e779be9f0e06f2223f1"></a>
+template&lt;class ... T&gt; </td></tr>
+<tr class="memitem:aa35c1a6d0fb13e779be9f0e06f2223f1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setName</b> (const T &amp;...args)</td></tr>
+<tr class="separator:aa35c1a6d0fb13e779be9f0e06f2223f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5dc9d7494d137f8725d90c21d037fe4a"><td class="memItemLeft" align="right" valign="top"><a id="a5dc9d7494d137f8725d90c21d037fe4a"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</td></tr>
 <tr class="separator:a5dc9d7494d137f8725d90c21d037fe4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -384,37 +388,36 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>getCount</b> ()
 template&lt;class V &gt; </td></tr>
 <tr class="memitem:a77554e58136bc7389438258fbc3f357d"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>xmlAttribToStream</b> (std::ostream &amp;ostr, const std::string &amp;key, const V &amp;value)</td></tr>
 <tr class="separator:a77554e58136bc7389438258fbc3f357d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1606a5d9e664d260adcbdf9f43dfa3d"><td class="memTemplParams" colspan="2">template&lt;typename XML &gt; </td></tr>
-<tr class="memitem:aa1606a5d9e664d260adcbdf9f43dfa3d"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="classdrain_1_1XML.html">XML</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#aa1606a5d9e664d260adcbdf9f43dfa3d">xmlAssign</a> (<a class="el" href="classdrain_1_1XML.html">XML</a> &amp;dst, const <a class="el" href="classdrain_1_1XML.html">XML</a> &amp;src)</td></tr>
-<tr class="memdesc:aa1606a5d9e664d260adcbdf9f43dfa3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <a href="classdrain_1_1XML.html#aa1606a5d9e664d260adcbdf9f43dfa3d">More...</a><br /></td></tr>
-<tr class="separator:aa1606a5d9e664d260adcbdf9f43dfa3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0d8e643e39df190e10f76970c842944"><td class="memTemplParams" colspan="2">template&lt;typename X &gt; </td></tr>
-<tr class="memitem:ae0d8e643e39df190e10f76970c842944"><td class="memTemplItemLeft" align="right" valign="top">static X &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#ae0d8e643e39df190e10f76970c842944">xmlAssign</a> (X &amp;dst, const typename X::xml_node_t &amp;src)</td></tr>
-<tr class="memdesc:ae0d8e643e39df190e10f76970c842944"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <a href="classdrain_1_1XML.html#ae0d8e643e39df190e10f76970c842944">More...</a><br /></td></tr>
-<tr class="separator:ae0d8e643e39df190e10f76970c842944"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5ae03f57187126728eeec8ada386be3"><td class="memTemplParams" colspan="2">template&lt;typename TX &gt; </td></tr>
+<tr class="memitem:aa5ae03f57187126728eeec8ada386be3"><td class="memTemplItemLeft" align="right" valign="top">static TX &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#aa5ae03f57187126728eeec8ada386be3">xmlAssign</a> (TX &amp;dst, const TX &amp;src)</td></tr>
+<tr class="memdesc:aa5ae03f57187126728eeec8ada386be3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <a href="classdrain_1_1XML.html#aa5ae03f57187126728eeec8ada386be3">More...</a><br /></td></tr>
+<tr class="separator:aa5ae03f57187126728eeec8ada386be3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb262568ce77782dcb1efcd6f0e49a34"><td class="memTemplParams" colspan="2">template&lt;typename TX &gt; </td></tr>
+<tr class="memitem:abb262568ce77782dcb1efcd6f0e49a34"><td class="memTemplItemLeft" align="right" valign="top">static TX &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#abb262568ce77782dcb1efcd6f0e49a34">xmlAssign</a> (TX &amp;dst, const typename TX::xml_node_t &amp;src)</td></tr>
+<tr class="memdesc:abb262568ce77782dcb1efcd6f0e49a34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <a href="classdrain_1_1XML.html#abb262568ce77782dcb1efcd6f0e49a34">More...</a><br /></td></tr>
+<tr class="separator:abb262568ce77782dcb1efcd6f0e49a34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3162432a20d7413343eac1f286a89e94"><td class="memTemplParams" colspan="2">template&lt;typename X &gt; </td></tr>
 <tr class="memitem:a3162432a20d7413343eac1f286a89e94"><td class="memTemplItemLeft" align="right" valign="top">static X &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a3162432a20d7413343eac1f286a89e94">xmlAssignNode</a> (X &amp;dst, const X &amp;src)</td></tr>
 <tr class="memdesc:a3162432a20d7413343eac1f286a89e94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <a href="classdrain_1_1XML.html#a3162432a20d7413343eac1f286a89e94">More...</a><br /></td></tr>
 <tr class="separator:a3162432a20d7413343eac1f286a89e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a798aefb6087b72de04f47c26bcce6f25"><td class="memTemplParams" colspan="2">template&lt;typename XML , typename V &gt; </td></tr>
-<tr class="memitem:a798aefb6087b72de04f47c26bcce6f25"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="classdrain_1_1XML.html">XML</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a798aefb6087b72de04f47c26bcce6f25">xmlAssign</a> (<a class="el" href="classdrain_1_1XML.html">XML</a> &amp;tree, const V &amp;arg)</td></tr>
-<tr class="memdesc:a798aefb6087b72de04f47c26bcce6f25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <a href="classdrain_1_1XML.html#a798aefb6087b72de04f47c26bcce6f25">More...</a><br /></td></tr>
-<tr class="separator:a798aefb6087b72de04f47c26bcce6f25"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73c813d72190ab33da73da45e158bc55"><td class="memTemplParams" colspan="2"><a id="a73c813d72190ab33da73da45e158bc55"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a73c813d72190ab33da73da45e158bc55"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a73c813d72190ab33da73da45e158bc55">xmlAssign</a> (T &amp;tree, std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt; l)</td></tr>
-<tr class="memdesc:a73c813d72190ab33da73da45e158bc55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tree. <br /></td></tr>
-<tr class="separator:a73c813d72190ab33da73da45e158bc55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeaf835807a8f58bdd750e4a65a9bd899"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aeaf835807a8f58bdd750e4a65a9bd899"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#aeaf835807a8f58bdd750e4a65a9bd899">xmlSetType</a> (T &amp;tree, const typename T::node_data_t::xml_tag_t &amp;type)</td></tr>
-<tr class="separator:aeaf835807a8f58bdd750e4a65a9bd899"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd5f19fb613bf1f20cd4da6921f712e0"><td class="memTemplParams" colspan="2">template&lt;typename TX , typename V &gt; </td></tr>
+<tr class="memitem:acd5f19fb613bf1f20cd4da6921f712e0"><td class="memTemplItemLeft" align="right" valign="top">static TX &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#acd5f19fb613bf1f20cd4da6921f712e0">xmlAssign</a> (TX &amp;tree, const V &amp;arg)</td></tr>
+<tr class="memdesc:acd5f19fb613bf1f20cd4da6921f712e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <a href="classdrain_1_1XML.html#acd5f19fb613bf1f20cd4da6921f712e0">More...</a><br /></td></tr>
+<tr class="separator:acd5f19fb613bf1f20cd4da6921f712e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60bcb4a4b194af1d9148963a3a1ba88e"><td class="memTemplParams" colspan="2">template&lt;typename TX &gt; </td></tr>
+<tr class="memitem:a60bcb4a4b194af1d9148963a3a1ba88e"><td class="memTemplItemLeft" align="right" valign="top">static TX &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a60bcb4a4b194af1d9148963a3a1ba88e">xmlAssign</a> (TX &amp;tree, std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt; l)</td></tr>
+<tr class="memdesc:a60bcb4a4b194af1d9148963a3a1ba88e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tree.  <a href="classdrain_1_1XML.html#a60bcb4a4b194af1d9148963a3a1ba88e">More...</a><br /></td></tr>
+<tr class="separator:a60bcb4a4b194af1d9148963a3a1ba88e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a59f8a010c11a9539514b65a5fc79dc"><td class="memTemplParams" colspan="2">template&lt;typename TX &gt; </td></tr>
+<tr class="memitem:a3a59f8a010c11a9539514b65a5fc79dc"><td class="memTemplItemLeft" align="right" valign="top">static TX &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a3a59f8a010c11a9539514b65a5fc79dc">xmlSetType</a> (TX &amp;tree, const typename TX::node_data_t::xml_tag_t &amp;type)</td></tr>
+<tr class="separator:a3a59f8a010c11a9539514b65a5fc79dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ababf0b844cfc3d02dd9a4cc97eeffe"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a3ababf0b844cfc3d02dd9a4cc97eeffe"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a3ababf0b844cfc3d02dd9a4cc97eeffe">xmlAddChild</a> (T &amp;tree, const std::string &amp;key)</td></tr>
 <tr class="separator:a3ababf0b844cfc3d02dd9a4cc97eeffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12a0dffa595741f7aa2456fda8f8bae5"><td class="memTemplParams" colspan="2"><a id="a12a0dffa595741f7aa2456fda8f8bae5"></a>
+<tr class="memitem:a2a87c1d5038c6993b8c95e11cbd27244"><td class="memTemplParams" colspan="2"><a id="a2a87c1d5038c6993b8c95e11cbd27244"></a>
 template&lt;typename N &gt; </td></tr>
-<tr class="memitem:a12a0dffa595741f7aa2456fda8f8bae5"><td class="memTemplItemLeft" align="right" valign="top">static N::xml_tag_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>xmlGuessType</b> (const N &amp;parentNode)</td></tr>
-<tr class="separator:a12a0dffa595741f7aa2456fda8f8bae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a87c1d5038c6993b8c95e11cbd27244"><td class="memTemplItemLeft" align="right" valign="top">static N::xml_tag_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>xmlRetrieveDefaultType</b> (const N &amp;parentNode)</td></tr>
+<tr class="separator:a2a87c1d5038c6993b8c95e11cbd27244"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -1381,8 +1384,8 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ae0d8e643e39df190e10f76970c842944"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0d8e643e39df190e10f76970c842944">&#9670;&nbsp;</a></span>xmlAssign() <span class="overload">[1/3]</span></h2>
+<a id="aa5ae03f57187126728eeec8ada386be3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5ae03f57187126728eeec8ada386be3">&#9670;&nbsp;</a></span>xmlAssign() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1391,15 +1394,15 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static X&amp; xmlAssign </td>
+          <td class="memname">static TX&amp; xmlAssign </td>
           <td>(</td>
-          <td class="paramtype">X &amp;&#160;</td>
+          <td class="paramtype">TX &amp;&#160;</td>
           <td class="paramname"><em>dst</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const typename X::xml_node_t &amp;&#160;</td>
+          <td class="paramtype">const TX &amp;&#160;</td>
           <td class="paramname"><em>src</em>&#160;</td>
         </tr>
         <tr>
@@ -1425,8 +1428,8 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="aa1606a5d9e664d260adcbdf9f43dfa3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1606a5d9e664d260adcbdf9f43dfa3d">&#9670;&nbsp;</a></span>xmlAssign() <span class="overload">[2/3]</span></h2>
+<a id="abb262568ce77782dcb1efcd6f0e49a34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb262568ce77782dcb1efcd6f0e49a34">&#9670;&nbsp;</a></span>xmlAssign() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1435,15 +1438,15 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="classdrain_1_1XML.html">XML</a>&amp; xmlAssign </td>
+          <td class="memname">static TX&amp; xmlAssign </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classdrain_1_1XML.html">XML</a> &amp;&#160;</td>
+          <td class="paramtype">TX &amp;&#160;</td>
           <td class="paramname"><em>dst</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1XML.html">XML</a> &amp;&#160;</td>
+          <td class="paramtype">const typename TX::xml_node_t &amp;&#160;</td>
           <td class="paramname"><em>src</em>&#160;</td>
         </tr>
         <tr>
@@ -1469,8 +1472,8 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a798aefb6087b72de04f47c26bcce6f25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a798aefb6087b72de04f47c26bcce6f25">&#9670;&nbsp;</a></span>xmlAssign() <span class="overload">[3/3]</span></h2>
+<a id="acd5f19fb613bf1f20cd4da6921f712e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd5f19fb613bf1f20cd4da6921f712e0">&#9670;&nbsp;</a></span>xmlAssign() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1479,9 +1482,9 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="classdrain_1_1XML.html">XML</a>&amp; xmlAssign </td>
+          <td class="memname">static TX&amp; xmlAssign </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classdrain_1_1XML.html">XML</a> &amp;&#160;</td>
+          <td class="paramtype">TX &amp;&#160;</td>
           <td class="paramname"><em>tree</em>, </td>
         </tr>
         <tr>
@@ -1507,6 +1510,50 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>- <a class="el" href="classdrain_1_1XML.html">XML</a> tree </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a60bcb4a4b194af1d9148963a3a1ba88e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60bcb4a4b194af1d9148963a3a1ba88e">&#9670;&nbsp;</a></span>xmlAssign() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static TX&amp; xmlAssign </td>
+          <td>(</td>
+          <td class="paramtype">TX &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt;&#160;</td>
+          <td class="paramname"><em>l</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tree. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TX</td><td>- xml tree </td></tr>
   </table>
   </dd>
 </dl>
@@ -1558,8 +1605,8 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="aeaf835807a8f58bdd750e4a65a9bd899"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeaf835807a8f58bdd750e4a65a9bd899">&#9670;&nbsp;</a></span>xmlSetType()</h2>
+<a id="a3a59f8a010c11a9539514b65a5fc79dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a59f8a010c11a9539514b65a5fc79dc">&#9670;&nbsp;</a></span>xmlSetType()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1568,15 +1615,15 @@ char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static T&amp; xmlSetType </td>
+          <td class="memname">static TX&amp; xmlSetType </td>
           <td>(</td>
-          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramtype">TX &amp;&#160;</td>
           <td class="paramname"><em>tree</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const typename T::node_data_t::xml_tag_t &amp;&#160;</td>
+          <td class="paramtype">const typename TX::node_data_t::xml_tag_t &amp;&#160;</td>
           <td class="paramname"><em>type</em>&#160;</td>
         </tr>
         <tr>

@@ -1,65 +1,63 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node1" href="$structdrain_1_1image_1_1HistogramConfig.html" title=" " alt="" coords="451,5,581,32"/>
 <area shape="rect" id="node2" href="$classdrain_1_1image_1_1HistogramWindowConfig.html" title=" " alt="" coords="663,19,845,45"/>
-<area shape="rect" id="node3" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="5,1159,149,1185"/>
-<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="217,968,349,995"/>
-<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="197,1044,369,1071"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="202,1095,365,1121"/>
-<area shape="rect" id="node10" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="217,1297,349,1324"/>
-<area shape="rect" id="node19" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="202,917,365,944"/>
-<area shape="rect" id="node22" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="199,1475,367,1501"/>
-<area shape="rect" id="node27" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="201,1526,365,1567"/>
-<area shape="rect" id="node29" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="199,1592,367,1619"/>
-<area shape="rect" id="node30" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="199,791,367,817"/>
-<area shape="rect" id="node39" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="207,1651,359,1677"/>
-<area shape="rect" id="node41" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="207,1719,359,1745"/>
-<area shape="rect" id="node44" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="217,676,349,703"/>
-<area shape="rect" id="node46" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="217,1159,349,1185"/>
-<area shape="rect" id="node5" href="$structdrain_1_1Point3D.html" title=" " alt="" coords="461,968,571,995"/>
-<area shape="rect" id="node8" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="441,1069,591,1096"/>
-<area shape="rect" id="node9" href="$classdrain_1_1image_1_1ChannelGeometry.html" title=" " alt="" coords="446,1019,586,1045"/>
-<area shape="rect" id="node11" href="$classdrain_1_1Bidirectional.html" title=" " alt="" coords="445,1323,587,1349"/>
-<area shape="rect" id="node12" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="457,1373,575,1400"/>
+<area shape="rect" id="node3" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="5,1247,149,1273"/>
+<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="217,1044,349,1071"/>
+<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="197,1171,369,1197"/>
+<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="202,1120,365,1147"/>
+<area shape="rect" id="node10" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="217,1373,349,1400"/>
+<area shape="rect" id="node19" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="202,1272,365,1299"/>
+<area shape="rect" id="node22" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="201,1425,365,1466"/>
+<area shape="rect" id="node24" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="199,1491,367,1517"/>
+<area shape="rect" id="node25" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="199,892,367,919"/>
+<area shape="rect" id="node34" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="207,1563,359,1589"/>
+<area shape="rect" id="node36" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="207,1656,359,1683"/>
+<area shape="rect" id="node39" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="217,777,349,804"/>
+<area shape="rect" id="node41" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="217,1221,349,1248"/>
+<area shape="rect" id="node5" href="$structdrain_1_1Point3D.html" title=" " alt="" coords="461,1019,571,1045"/>
+<area shape="rect" id="node8" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="441,1120,591,1147"/>
+<area shape="rect" id="node9" href="$classdrain_1_1image_1_1ChannelGeometry.html" title=" " alt="" coords="446,1069,586,1096"/>
+<area shape="rect" id="node11" href="$classdrain_1_1Bidirectional.html" title=" " alt="" coords="445,1373,587,1400"/>
+<area shape="rect" id="node12" href="$classdrain_1_1Frame2D.html" title="Something that has width and height." alt="" coords="457,1323,575,1349"/>
 <area shape="rect" id="node16" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="461,1424,571,1451"/>
-<area shape="rect" id="node17" href="$classdrain_1_1Range.html" title=" " alt="" coords="465,1221,567,1248"/>
-<area shape="rect" id="node18" href="$classdrain_1_1image_1_1Decay2.html" title=" " alt="" coords="461,1272,571,1299"/>
-<area shape="rect" id="node13" href="$structdrain_1_1Box.html" title=" " alt="" coords="676,1189,832,1216"/>
-<area shape="rect" id="node15" href="$structdrain_1_1Box.html" title="Something that has coordinates (x,y) and dimensions (width, height)." alt="" coords="711,1399,797,1425"/>
-<area shape="rect" id="node14" href="$classdrain_1_1image_1_1BBoxSVG.html" title=" " alt="" coords="939,1189,1022,1216"/>
-<area shape="rect" id="node20" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="711,860,797,887"/>
-<area shape="rect" id="node21" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data)" alt="" coords="934,797,1027,824"/>
-<area shape="rect" id="node23" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="435,1525,597,1552"/>
-<area shape="rect" id="node25" href="$structdrain_1_1image_1_1Decay4.html" title=" " alt="" coords="443,1576,589,1603"/>
-<area shape="rect" id="node26" href="$classdrain_1_1image_1_1FontSizes.html" title=" " alt="" coords="474,1475,558,1501"/>
-<area shape="rect" id="node24" href="$classdrain_1_1BBox.html" title="Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ..." alt="" coords="726,1525,782,1552"/>
-<area shape="rect" id="node28" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="450,1627,582,1653"/>
-<area shape="rect" id="node31" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="443,765,589,792"/>
-<area shape="rect" id="node32" href="$classdrain_1_1Range.html" title=" " alt="" coords="447,816,585,843"/>
-<area shape="rect" id="node33" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="463,715,569,741"/>
-<area shape="rect" id="node35" href="$structrack_1_1Measurement.html" title="A single measurement (bin), with height coordinate and measurement value (reflectivity)." alt="" coords="460,867,572,893"/>
-<area shape="rect" id="node36" href="$classrack_1_1RadarWindowGeom.html" title="Like pixel window, but width is metres and height is degrees." alt="" coords="441,664,591,691"/>
-<area shape="rect" id="node34" href="$classdrain_1_1image_1_1Encoding.html" title=" " alt="" coords="713,733,795,760"/>
-<area shape="rect" id="node37" href="$classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="677,645,831,672"/>
-<area shape="rect" id="node38" href="$classrack_1_1DopplerInversionConfig.html" title=" " alt="" coords="893,645,1068,672"/>
-<area shape="rect" id="node40" href="$structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path." alt="" coords="440,1677,592,1704"/>
-<area shape="rect" id="node42" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="452,1728,580,1755"/>
-<area shape="rect" id="node43" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="706,1728,802,1755"/>
-<area shape="rect" id="node45" href="$structrack_1_1MethodWeights.html" title=" " alt="" coords="435,613,597,640"/>
-<area shape="rect" id="node47" href="$structdrain_1_1Rectangle.html" title="Rectange defined through lower left and upper right coordinates." alt="" coords="453,1171,579,1197"/>
-<area shape="rect" id="node48" href="$structdrain_1_1image_1_1Decay4.html" title=" " alt="" coords="461,1120,571,1147"/>
-<area shape="rect" id="node49" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="6,335,149,361"/>
-<area shape="rect" id="node50" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="216,335,351,361"/>
-<area shape="rect" id="node51" href="$classdrain_1_1Bidirectional.html" title=" " alt="" coords="435,56,597,83"/>
-<area shape="rect" id="node52" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="452,157,580,184"/>
-<area shape="rect" id="node53" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="456,208,576,235"/>
-<area shape="rect" id="node54" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="425,563,607,589"/>
-<area shape="rect" id="node55" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="437,259,595,285"/>
-<area shape="rect" id="node56" href="$classdrain_1_1Range.html" title=" " alt="" coords="455,309,577,336"/>
-<area shape="rect" id="node57" href="$classdrain_1_1Range.html" title=" " alt="" coords="465,360,567,387"/>
-<area shape="rect" id="node58" href="$classdrain_1_1Range.html" title=" " alt="" coords="461,411,571,437"/>
-<area shape="rect" id="node59" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="443,461,589,488"/>
-<area shape="rect" id="node60" href="$structrack_1_1MethodWeights.html" title=" " alt="" coords="417,512,615,539"/>
-<area shape="rect" id="node61" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="459,107,573,133"/>
-<area shape="rect" id="node62" href="$classdrain_1_1image_1_1GaussianWindowConf.html" title="Extends WindowConfig with radius." alt="" coords="672,95,836,121"/>
-<area shape="rect" id="node63" href="$classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead." alt="" coords="684,145,824,172"/>
+<area shape="rect" id="node17" href="$classdrain_1_1Range.html" title=" " alt="" coords="465,1475,567,1501"/>
+<area shape="rect" id="node18" href="$classdrain_1_1image_1_1Decay2.html" title=" " alt="" coords="461,1525,571,1552"/>
+<area shape="rect" id="node13" href="$structdrain_1_1Box.html" title=" " alt="" coords="676,791,832,817"/>
+<area shape="rect" id="node15" href="$structdrain_1_1Box.html" title="Something that has coordinates (x,y) and dimensions (width, height)." alt="" coords="711,1373,797,1400"/>
+<area shape="rect" id="node14" href="$classdrain_1_1image_1_1BBoxSVG.html" title=" " alt="" coords="939,791,1022,817"/>
+<area shape="rect" id="node20" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="711,1208,797,1235"/>
+<area shape="rect" id="node21" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data)" alt="" coords="934,1119,1027,1145"/>
+<area shape="rect" id="node23" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="450,1576,582,1603"/>
+<area shape="rect" id="node26" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="443,867,589,893"/>
+<area shape="rect" id="node27" href="$classdrain_1_1Range.html" title=" " alt="" coords="447,917,585,944"/>
+<area shape="rect" id="node28" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="463,968,569,995"/>
+<area shape="rect" id="node30" href="$structrack_1_1Measurement.html" title="A single measurement (bin), with height coordinate and measurement value (reflectivity)." alt="" coords="460,816,572,843"/>
+<area shape="rect" id="node31" href="$classrack_1_1RadarWindowGeom.html" title="Like pixel window, but width is metres and height is degrees." alt="" coords="441,765,591,792"/>
+<area shape="rect" id="node29" href="$classdrain_1_1image_1_1Encoding.html" title=" " alt="" coords="713,1031,795,1057"/>
+<area shape="rect" id="node32" href="$classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="677,233,831,260"/>
+<area shape="rect" id="node33" href="$classrack_1_1DopplerInversionConfig.html" title=" " alt="" coords="893,233,1068,260"/>
+<area shape="rect" id="node35" href="$structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path." alt="" coords="440,1627,592,1653"/>
+<area shape="rect" id="node37" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="452,1677,580,1704"/>
+<area shape="rect" id="node38" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="706,1677,802,1704"/>
+<area shape="rect" id="node40" href="$structrack_1_1MethodWeights.html" title=" " alt="" coords="435,715,597,741"/>
+<area shape="rect" id="node42" href="$structdrain_1_1Rectangle.html" title="Rectange defined through lower left and upper right coordinates." alt="" coords="453,1221,579,1248"/>
+<area shape="rect" id="node43" href="$structdrain_1_1image_1_1Decay4.html" title=" " alt="" coords="461,1171,571,1197"/>
+<area shape="rect" id="node44" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="6,385,149,412"/>
+<area shape="rect" id="node45" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="216,385,351,412"/>
+<area shape="rect" id="node46" href="$classdrain_1_1Bidirectional.html" title=" " alt="" coords="435,512,597,539"/>
+<area shape="rect" id="node47" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="452,563,580,589"/>
+<area shape="rect" id="node48" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="456,613,576,640"/>
+<area shape="rect" id="node49" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="425,664,607,691"/>
+<area shape="rect" id="node50" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="437,56,595,83"/>
+<area shape="rect" id="node51" href="$classdrain_1_1Range.html" title=" " alt="" coords="455,157,577,184"/>
+<area shape="rect" id="node52" href="$classdrain_1_1Range.html" title=" " alt="" coords="465,208,567,235"/>
+<area shape="rect" id="node53" href="$classdrain_1_1Range.html" title=" " alt="" coords="461,259,571,285"/>
+<area shape="rect" id="node54" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="435,309,597,336"/>
+<area shape="rect" id="node56" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="443,360,589,387"/>
+<area shape="rect" id="node57" href="$structdrain_1_1image_1_1Decay4.html" title=" " alt="" coords="443,411,589,437"/>
+<area shape="rect" id="node58" href="$structrack_1_1MethodWeights.html" title=" " alt="" coords="417,461,615,488"/>
+<area shape="rect" id="node55" href="$classdrain_1_1BBox.html" title="Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ..." alt="" coords="726,309,782,336"/>
+<area shape="rect" id="node59" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="459,107,573,133"/>
+<area shape="rect" id="node60" href="$classdrain_1_1image_1_1GaussianWindowConf.html" title="Extends WindowConfig with radius." alt="" coords="672,95,836,121"/>
+<area shape="rect" id="node61" href="$classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead." alt="" coords="684,145,824,172"/>
 </map>

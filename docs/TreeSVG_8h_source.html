@@ -152,323 +152,370 @@ $(function() {
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">const</span> <a class="code" href="classdrain_1_1Dictionary.html">EnumDict&lt;image::svg::tag_t&gt;::dict_t</a> <a class="code" href="structdrain_1_1EnumDict.html">EnumDict&lt;image::svg::tag_t&gt;::dict</a>;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">namespace </span>image {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;DRAIN_ENUM_OSTREAM(image::svg::tag_t)</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">// Future option</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1BBoxSVG.html">   84</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> : <span class="keyword">public</span> <a class="code" href="structdrain_1_1Box.html">drain::Box</a>&lt;svg::coord_t&gt; {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">namespace </span>image {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">// Future option</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1BBoxSVG.html">   86</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> : <span class="keyword">public</span> <a class="code" href="structdrain_1_1Box.html">drain::Box</a>&lt;svg::coord_t&gt; {</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a>(svg::coord_t x=0, svg::coord_t y=0, svg::coord_t width=0, svg::coord_t height=0) : <a class="code" href="structdrain_1_1Box.html">drain::Box&lt;svg::coord_t&gt;</a>(x, y, width, height)  {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> &amp; bbox) : <a class="code" href="structdrain_1_1Box.html">drain::Box&lt;svg::coord_t&gt;</a>(bbox)  {</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="comment">// Future option</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">bool</span> x_PERCENTAGE = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordtype">bool</span> y_PERCENTAGE = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordtype">bool</span> width_PERCENTAGE = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">bool</span> height_PERCENTAGE = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a>(svg::coord_t x=0, svg::coord_t y=0, svg::coord_t width=0, svg::coord_t height=0) : <a class="code" href="structdrain_1_1Box.html">drain::Box&lt;svg::coord_t&gt;</a>(x, y, width, height)  {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> &amp; bbox) : <a class="code" href="structdrain_1_1Box.html">drain::Box&lt;svg::coord_t&gt;</a>(bbox)  {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="comment">// Future option</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordtype">bool</span> x_PERCENTAGE = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">bool</span> y_PERCENTAGE = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordtype">bool</span> width_PERCENTAGE = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">bool</span> height_PERCENTAGE = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;};</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment">// class NodeSVG: public svg, public NodeXML&lt;svg::tag_t&gt;, public AlignAdapterSVG {</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html">  112</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a>: <span class="keyword">public</span> <a class="code" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt;svg::tag_t&gt;, <span class="keyword">public</span> <a class="code" href="structdrain_1_1image_1_1AlignAdapterSVG.html">AlignAdapterSVG</a> {</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a40ed0b401422bc09221099fc05f67b23">  117</a></span>&#160;    std::string <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a40ed0b401422bc09221099fc05f67b23">xlink</a>;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#affee72ee32ad4718d953331edbc2f833">  121</a></span>&#160;    std::string <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#affee72ee32ad4718d953331edbc2f833">svg</a>;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keyword">static</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1FileInfo.html">drain::FileInfo</a> fileInfo;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a47fda3b5600205d019433eb02642b409">NodeSVG</a>(svg::tag_t t = svg::UNDEFINED);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a47fda3b5600205d019433eb02642b409">NodeSVG</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp; node);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keyword">inline</span> <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    ~<a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a>(){};</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordtype">bool</span> isAbstract(){</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keywordflow">return</span> typeIs(</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                svg::tag_t::STYLE,</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;                svg::tag_t::DESC,</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;                svg::tag_t::METADATA,</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                svg::tag_t::SCRIPT,</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                svg::tag_t::TITLE,</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                svg::tag_t::TSPAN</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        );</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    }</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a5bdbb635acf74066faf0223391867622">  150</a></span>&#160;    <a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp; <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a5bdbb635acf74066faf0223391867622">operator=</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp; node){</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <a class="code" href="classdrain_1_1XML.html#a3162432a20d7413343eac1f286a89e94">XML::xmlAssignNode</a>(*<span class="keyword">this</span>, node);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">        if (&amp;node != this){</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">            XML::xmlAssignNode(*this, node);</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">            setType(n.getType()); // 2025</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">            drain::SmartMapTools::setValues&lt;map_t&gt;((map_t &amp;)*this, n);</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">        */</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    }</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#ad55f37dc84253d58b5ea509e9a5bd3de">  164</a></span>&#160;    <a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp; <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#ad55f37dc84253d58b5ea509e9a5bd3de">operator=</a>(<span class="keyword">const</span> std::initializer_list&lt;Variable::init_pair_t &gt; &amp;l){</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        set(l);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    }</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp; <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a5bdbb635acf74066faf0223391867622">operator=</a>(<span class="keyword">const</span> T &amp; arg){</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        set(arg);</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        <span class="comment">//assign(arg);</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    }</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a13ceb8d721abad76526b3ae1c3eb21ee">setAttribute</a>(<span class="keyword">const</span> std::string &amp; key, <span class="keyword">const</span> std::string &amp;value) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">//typedef drain::StyleSelectorXML&lt;NodeSVG&gt; SelectSVG;</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">typedef</span> <a class="code" href="classdrain_1_1SelectorXML.html">drain::SelectorXML</a> <a class="code" href="classdrain_1_1SelectorXML.html">SelectSVG</a>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">// class NodeSVG: public svg, public NodeXML&lt;svg::tag_t&gt;, public AlignAdapterSVG {</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html">  117</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a>: <span class="keyword">public</span> <a class="code" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt;svg::tag_t&gt;, <span class="keyword">public</span> <a class="code" href="structdrain_1_1image_1_1AlignAdapterSVG.html">AlignAdapterSVG</a> {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a40ed0b401422bc09221099fc05f67b23">  122</a></span>&#160;    std::string <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a40ed0b401422bc09221099fc05f67b23">xlink</a>;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#affee72ee32ad4718d953331edbc2f833">  126</a></span>&#160;    std::string <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#affee72ee32ad4718d953331edbc2f833">svg</a>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keyword">static</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1FileInfo.html">drain::FileInfo</a> fileInfo;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a47fda3b5600205d019433eb02642b409">NodeSVG</a>(svg::tag_t t = svg::UNDEFINED);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a47fda3b5600205d019433eb02642b409">NodeSVG</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp; node);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keyword">inline</span> <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    ~<a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a>(){};</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordtype">bool</span> isAbstract(){</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        <span class="keywordflow">return</span> typeIs(</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                svg::tag_t::STYLE,</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                svg::tag_t::DESC,</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                svg::tag_t::METADATA,</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                svg::tag_t::SCRIPT,</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;                svg::tag_t::TITLE,</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                svg::tag_t::TSPAN</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        );</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    }</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a5bdbb635acf74066faf0223391867622">  155</a></span>&#160;    <a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp; <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a5bdbb635acf74066faf0223391867622">operator=</a>(<span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp; node){</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <a class="code" href="classdrain_1_1XML.html#a3162432a20d7413343eac1f286a89e94">XML::xmlAssignNode</a>(*<span class="keyword">this</span>, node);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">        if (&amp;node != this){</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">            XML::xmlAssignNode(*this, node);</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">            setType(n.getType()); // 2025</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">            drain::SmartMapTools::setValues&lt;map_t&gt;((map_t &amp;)*this, n);</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#ad55f37dc84253d58b5ea509e9a5bd3de">  169</a></span>&#160;    <a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp; <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#ad55f37dc84253d58b5ea509e9a5bd3de">operator=</a>(<span class="keyword">const</span> std::initializer_list&lt;Variable::init_pair_t &gt; &amp;l){</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        set(l);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    }</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <a class="code" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp; <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a5bdbb635acf74066faf0223391867622">operator=</a>(<span class="keyword">const</span> T &amp; arg){</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        set(arg);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <span class="comment">//assign(arg);</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a13ceb8d721abad76526b3ae1c3eb21ee">setAttribute</a>(<span class="keyword">const</span> std::string &amp; key, <span class="keyword">const</span> <span class="keywordtype">char</span> *value) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a13ceb8d721abad76526b3ae1c3eb21ee">setAttribute</a>(<span class="keyword">const</span> std::string &amp; key, <span class="keyword">const</span> std::string &amp;value) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a6a3a8e4e34c6fe34e391c94b89588e4b">  191</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> &amp; <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a6a3a8e4e34c6fe34e391c94b89588e4b">getBoundingBox</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="keywordflow">return</span> box;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    }</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="comment">// Consider also with conversion:  getBoundingBox(Box&lt;T&gt; &amp;b)</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a04f2d93ed72fb310ea3ed84cce06aae7">  198</a></span>&#160;    <a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> &amp; <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a04f2d93ed72fb310ea3ed84cce06aae7">getBoundingBox</a>(){</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="keywordflow">return</span> box;</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    }</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a01f695faaccca71f24327180b0f1d3c1">  205</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a01f695faaccca71f24327180b0f1d3c1">setBoundingBox</a>(<span class="keyword">const</span> <a class="code" href="structdrain_1_1Box.html">drain::Box&lt;T&gt;</a> &amp; b){</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#ae24ffa1c317202e96b88cc638d9edd7d">setLocation</a>(b);</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        setFrame(b);</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="comment">// setAttribute(&quot;data:bbox&quot;, StringBuilder&lt;&#39; &#39;&gt;(b.x, b.y, b.getWidth(), b.getHeight()));</span></div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    }</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00214"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#ae24ffa1c317202e96b88cc638d9edd7d">  214</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#ae24ffa1c317202e96b88cc638d9edd7d">setLocation</a>(<span class="keyword">const</span> <a class="code" href="structdrain_1_1Point2D.html">drain::Point2D&lt;T&gt;</a> &amp; point){</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        box.x = point.x;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        box.y = point.y;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    }</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a110041c5eec2c57a251f043da0d2c161">  225</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a110041c5eec2c57a251f043da0d2c161">setLocation</a>(<span class="keyword">const</span> T &amp; x, <span class="keyword">const</span> T &amp; y){</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        box.setLocation(x, y);</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    }</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; </div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="keywordtype">void</span> setFrame(<span class="keyword">const</span> <a class="code" href="classdrain_1_1Frame2D.html">drain::Frame2D&lt;T&gt;</a> &amp; frame){</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        box.width  = frame.width;</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        box.height = frame.height;</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    }</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00242"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#af8cf44c2ddd07d188c9a963776dfab89">  242</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#af8cf44c2ddd07d188c9a963776dfab89">setFrame</a>(<span class="keyword">const</span> T &amp; w, <span class="keyword">const</span> T &amp; h){</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        box.setArea(w, h);</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    }</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00253"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a56f285c3d0ca3c31010b9353546ff5bd">  253</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a56f285c3d0ca3c31010b9353546ff5bd">setWidth</a>(T w){</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        box.width  = w;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    }</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a13ceb8d721abad76526b3ae1c3eb21ee">setAttribute</a>(<span class="keyword">const</span> std::string &amp; key, <span class="keyword">const</span> <span class="keywordtype">char</span> *value) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a6a3a8e4e34c6fe34e391c94b89588e4b">  196</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> &amp; <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a6a3a8e4e34c6fe34e391c94b89588e4b">getBoundingBox</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="keywordflow">return</span> box;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    }</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="comment">// Consider also with conversion:  getBoundingBox(Box&lt;T&gt; &amp;b)</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a04f2d93ed72fb310ea3ed84cce06aae7">  203</a></span>&#160;    <a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> &amp; <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a04f2d93ed72fb310ea3ed84cce06aae7">getBoundingBox</a>(){</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        <span class="keywordflow">return</span> box;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    }</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00210"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a01f695faaccca71f24327180b0f1d3c1">  210</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a01f695faaccca71f24327180b0f1d3c1">setBoundingBox</a>(<span class="keyword">const</span> <a class="code" href="structdrain_1_1Box.html">drain::Box&lt;T&gt;</a> &amp; b){</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#ae24ffa1c317202e96b88cc638d9edd7d">setLocation</a>(b);</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        setFrame(b);</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="comment">// setAttribute(&quot;data:bbox&quot;, StringBuilder&lt;&#39; &#39;&gt;(b.x, b.y, b.getWidth(), b.getHeight()));</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    }</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00219"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#ae24ffa1c317202e96b88cc638d9edd7d">  219</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#ae24ffa1c317202e96b88cc638d9edd7d">setLocation</a>(<span class="keyword">const</span> <a class="code" href="structdrain_1_1Point2D.html">drain::Point2D&lt;T&gt;</a> &amp; point){</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        box.x = point.x;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        box.y = point.y;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    }</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a110041c5eec2c57a251f043da0d2c161">  230</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a110041c5eec2c57a251f043da0d2c161">setLocation</a>(<span class="keyword">const</span> T &amp; x, <span class="keyword">const</span> T &amp; y){</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        box.setLocation(x, y);</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    }</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordtype">void</span> setFrame(<span class="keyword">const</span> <a class="code" href="classdrain_1_1Frame2D.html">drain::Frame2D&lt;T&gt;</a> &amp; frame){</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        box.width  = frame.width;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        box.height = frame.height;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    }</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#af8cf44c2ddd07d188c9a963776dfab89">  247</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#af8cf44c2ddd07d188c9a963776dfab89">setFrame</a>(<span class="keyword">const</span> T &amp; w, <span class="keyword">const</span> T &amp; h){</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        box.setArea(w, h);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    }</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    svg::coord_t getWidth(){</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="keywordflow">return</span> box.width;</div>
+<div class="line"><a name="l00258"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a56f285c3d0ca3c31010b9353546ff5bd">  258</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a56f285c3d0ca3c31010b9353546ff5bd">setWidth</a>(T w){</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        box.width  = w;</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    }</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a4aebe82dc0bab3b2a8cc5af11de088f8">  268</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a4aebe82dc0bab3b2a8cc5af11de088f8">setMargin</a>(T w){</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        <a class="code" href="classdrain_1_1ReferenceMap2.html#ae62f542b5197ef604ca76cce5fb6940f">link</a>(<span class="stringliteral">&quot;data-margin&quot;</span>, box.width);</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        box.width = w;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    }</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a6a79d511a9242b424f5560c94c8cf96b">  278</a></span>&#160;    svg::coord_t <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a6a79d511a9242b424f5560c94c8cf96b">getMargin</a>(){</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;        <span class="keywordflow">return</span> box.width;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    }</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; </div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00289"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#aadf4ec8346eb8bb6505825437512809d">  289</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#aadf4ec8346eb8bb6505825437512809d">setHeight</a>(T h){</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;        box.height = h;</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    }</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    svg::coord_t getWidth(){</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="keywordflow">return</span> box.width;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    }</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a4aebe82dc0bab3b2a8cc5af11de088f8">  273</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a4aebe82dc0bab3b2a8cc5af11de088f8">setMargin</a>(T w){</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        <a class="code" href="classdrain_1_1ReferenceMap2.html#ae62f542b5197ef604ca76cce5fb6940f">link</a>(<span class="stringliteral">&quot;data-margin&quot;</span>, box.width);</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        box.width = w;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    }</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00283"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#a6a79d511a9242b424f5560c94c8cf96b">  283</a></span>&#160;    svg::coord_t <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a6a79d511a9242b424f5560c94c8cf96b">getMargin</a>(){</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keywordflow">return</span> box.width;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    }</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; </div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keyword">inline</span></div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    svg::coord_t getHeight(){</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <span class="keywordflow">return</span> box.height;</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    }</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00294"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1NodeSVG.html#aadf4ec8346eb8bb6505825437512809d">  294</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#aadf4ec8346eb8bb6505825437512809d">setHeight</a>(T h){</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <span class="keywordflow">if</span> (typeIs(svg::TEXT)){</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            <a class="code" href="classdrain_1_1ReferenceMap2.html#ae62f542b5197ef604ca76cce5fb6940f">link</a>(<span class="stringliteral">&quot;data-height&quot;</span>, box.height);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        }</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        box.height = h;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    }</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a007ae514e56515a1ad8b673efb6bad5d">handleType</a>(<span class="keyword">const</span> svg::tag_t &amp; t) <span class="keyword">override</span> <span class="keyword">final</span>;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keyword">virtual</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keywordtype">void</span> updateAlign() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <span class="keyword">inline</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    svg::coord_t getHeight(){</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="keywordflow">return</span> box.height;</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    }</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160; </div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160; </div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <span class="comment">//drain::Box&lt;coord_t&gt; box;</span></div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> box;</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="comment">// consider:</span></div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="comment">// bool x_PERCENTAGE = false;</span></div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="comment">// bool y_PERCENTAGE = false;</span></div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="comment">// svg:</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; </div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <span class="keywordtype">int</span> radius = 0;</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;};</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; </div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="comment">template &lt;typename P, typename A,typename V&gt;</span></div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;<span class="comment">void NodeSVG::setAlign(const P &amp; pos, const A &amp; axis,  const V &amp;value){</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="comment">    alignments[p][a] = v;</span></div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="comment">}</span></div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1image_1_1NodeSVG.html#a007ae514e56515a1ad8b673efb6bad5d">handleType</a>(<span class="keyword">const</span> svg::tag_t &amp; t) <span class="keyword">override</span> <span class="keyword">final</span>;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    <span class="keyword">virtual</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keywordtype">void</span> updateAlign() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="comment">//drain::Box&lt;coord_t&gt; box;</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <a class="code" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> box;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    <span class="comment">// consider:</span></div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="comment">// bool x_PERCENTAGE = false;</span></div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="comment">// bool y_PERCENTAGE = false;</span></div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="comment">// svg:</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160; </div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <span class="keywordtype">int</span> radius = 0;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;};</div>
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;}  <span class="comment">// image::</span></div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="comment">// template &lt;&gt;</span></div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="comment">// void NodeXML&lt;image::svg::tag_t&gt;::handleType(const image::svg::tag_t &amp; type);</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160; </div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;}  <span class="comment">// drain::</span></div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160; </div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="comment">template &lt;typename P, typename A,typename V&gt;</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="comment">void NodeSVG::setAlign(const P &amp; pos, const A &amp; axis,  const V &amp;value){</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="comment">    alignments[p][a] = v;</span></div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160; </div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> drain::image::TreeSVG &amp; tree){</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    <span class="comment">//return drain::NodeXML&lt;const drain::image::NodeSVG&gt;::docToStream(ostr, tree);</span></div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1NodeXML.html#af134315afd4b41f418e587f985f0ff7b">drain::image::NodeSVG::docToStream</a>(ostr, tree);</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="comment">//return drain::image::TreeSVG::node_data_t::docToStream(ostr, tree);</span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;}  <span class="comment">// image::</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> image::NodeSVG &amp; node){</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="keywordflow">return</span> node.nodeToStream(ostr);</div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;}</div>
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; </div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a> {</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;}  <span class="comment">// drain::</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160; </div>
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; </div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;DRAIN_TYPENAME(image::NodeSVG);</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;DRAIN_TYPENAME(image::svg::tag_t);</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160; </div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="keyword">const</span> NodeXML&lt;image::svg::tag_t&gt;::xml_default_elem_map_t NodeXML&lt;image::svg::tag_t&gt;::xml_default_elems;</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> drain::image::TreeSVG &amp; tree){</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    <span class="comment">//return drain::NodeXML&lt;const drain::image::NodeSVG&gt;::docToStream(ostr, tree);</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1NodeXML.html#af134315afd4b41f418e587f985f0ff7b">drain::image::NodeSVG::docToStream</a>(ostr, tree);</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    <span class="comment">//return drain::image::TreeSVG::node_data_t::docToStream(ostr, tree);</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;}</div>
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160; </div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;<span class="comment">template &lt;&gt;</span></div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment">template &lt;typename K, typename V&gt;</span></div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="comment">image::TreeSVG &amp; image::TreeSVG::operator=(std::initializer_list&lt;std::pair&lt;K,V&gt; &gt; args){</span></div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="comment">    drain::Logger mout(__FILE__, __FUNCTION__);</span></div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="comment">    mout.attention(&quot;initlist pair&lt;K,V&gt;: &quot;, args);</span></div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="comment">    data.set(args); // what about TreeSVG &amp; arg</span></div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="comment">    return *this;</span></div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="comment">}</span></div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160; </div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160; </div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacedrain.html">drain</a> {</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160; </div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;DRAIN_TYPENAME(image::NodeSVG);</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;DRAIN_TYPENAME(image::svg::tag_t);</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160; </div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="keyword">const</span> NodeXML&lt;image::svg::tag_t&gt;::xml_default_elem_map_t NodeXML&lt;image::svg::tag_t&gt;::xml_default_elems;</div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160; </div>
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="comment">template &lt;&gt; // referring to Tree&lt;NodeSVG&gt;</span></div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;<span class="comment">image::TreeSVG &amp; image::TreeSVG::operator=(std::initializer_list&lt;std::pair&lt;const char *,const char *&gt; &gt; l);</span></div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160; </div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="comment">// referring to Tree&lt;NodeSVG&gt;</span></div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;image::TreeSVG &amp; image::TreeSVG::operator=(std::initializer_list&lt;std::pair&lt;const char *,const Variable&gt; &gt; l){</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="comment">//image::TreeSVG &amp; image::TreeSVG::operator=(std::initializer_list&lt;std::pair&lt;const char *,const char *&gt; &gt; l){</span></div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1XML.html#aa1606a5d9e664d260adcbdf9f43dfa3d">XML::xmlAssign</a>(*<span class="keyword">this</span>, l);</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;}</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160; </div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;image::TreeSVG &amp; image::TreeSVG::operator=(<span class="keyword">const</span> T &amp; arg){</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1XML.html#aa1606a5d9e664d260adcbdf9f43dfa3d">XML::xmlAssign</a>(*<span class="keyword">this</span>, arg);</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;<span class="comment">    data.set(arg); // what about TreeSVG &amp; arg</span></div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="comment">    return *this;</span></div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;<span class="comment">template &lt;typename K, typename V&gt;</span></div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="comment">image::TreeSVG &amp; image::TreeSVG::operator=(std::initializer_list&lt;std::pair&lt;K,V&gt; &gt; args){</span></div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;<span class="comment">    drain::Logger mout(__FILE__, __FUNCTION__);</span></div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="comment">    mout.attention(&quot;initlist pair&lt;K,V&gt;: &quot;, args);</span></div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="comment">    data.set(args); // what about TreeSVG &amp; arg</span></div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="comment">    return *this;</span></div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160; </div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="comment">template &lt;&gt; // referring to Tree&lt;NodeSVG&gt;</span></div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="comment">image::TreeSVG &amp; image::TreeSVG::operator=(std::initializer_list&lt;std::pair&lt;const char *,const char *&gt; &gt; l);</span></div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="comment">// referring to Tree&lt;NodeSVG&gt;</span></div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;image::TreeSVG &amp; image::TreeSVG::operator=(std::initializer_list&lt;std::pair&lt;const char *,const Variable&gt; &gt; l){</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="comment">//image::TreeSVG &amp; image::TreeSVG::operator=(std::initializer_list&lt;std::pair&lt;const char *,const char *&gt; &gt; l){</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1XML.html#aa5ae03f57187126728eeec8ada386be3">XML::xmlAssign</a>(*<span class="keyword">this</span>, l);</div>
 <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;}</div>
 <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160; </div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;<span class="comment">// Important! Useful and widely used – but  fails with older C++ compilers ?</span></div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160; </div>
 <div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;image::TreeSVG &amp; image::TreeSVG::operator()(<span class="keyword">const</span> image::svg::tag_t &amp; type){</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1XML.html#aeaf835807a8f58bdd750e4a65a9bd899">XML::xmlSetType</a>(*<span class="keyword">this</span>, type);</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;}</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160; </div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;<span class="keyword">inline</span></div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;image::TreeSVG &amp; image::TreeSVG::addChild(<span class="keyword">const</span> image::TreeSVG::key_t &amp; key){</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1XML.html#a3ababf0b844cfc3d02dd9a4cc97eeffe">XML::xmlAddChild</a>(*<span class="keyword">this</span>, key);</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;}</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160; </div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160; </div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160; </div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;} <span class="comment">// drain::</span></div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160; </div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// DRAIN_TREE_SVG</span></div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160; </div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;image::TreeSVG &amp; image::TreeSVG::operator=(<span class="keyword">const</span> T &amp; arg){</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1XML.html#aa5ae03f57187126728eeec8ada386be3">XML::xmlAssign</a>(*<span class="keyword">this</span>, arg);</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;<span class="comment">    data.set(arg); // what about TreeSVG &amp; arg</span></div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="comment">    return *this;</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;}</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160; </div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="comment">// Important! Useful and widely used – but  fails with older C++ compilers ?</span></div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;image::TreeSVG &amp; image::TreeSVG::operator()(<span class="keyword">const</span> image::svg::tag_t &amp; type){</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1XML.html#a3a59f8a010c11a9539514b65a5fc79dc">XML::xmlSetType</a>(*<span class="keyword">this</span>, type);</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;}</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160; </div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;<span class="keyword">inline</span></div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;image::TreeSVG &amp; image::TreeSVG::addChild(<span class="keyword">const</span> image::TreeSVG::key_t &amp; key){</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classdrain_1_1XML.html#a3ababf0b844cfc3d02dd9a4cc97eeffe">XML::xmlAddChild</a>(*<span class="keyword">this</span>, key);</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;}</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160; </div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="comment">template &lt;class K&gt;</span></div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="comment">const image::TreeSVG::key_t &amp; image::TreeSVG::getKey(const K &amp; key){</span></div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="comment">    return EnumDict&lt;K&gt;::dict.getKey(key, false);</span></div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160; </div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;<span class="comment">/*  tested 2025/01/20 but caused problems with Hi5Tree(&quot;dataset2&quot;) etc.</span></div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;<span class="comment">template &lt;typename K&gt; // for K (path elem arg)</span></div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;<span class="comment">const image::TreeSVG::key_t &amp; image::TreeSVG::getKey(const K &amp; key){</span></div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;<span class="comment">    return EnumDict&lt;K&gt;::dict.getKey(key, false);</span></div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;<span class="comment">template &lt;&gt; // for K (path elem arg)</span></div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="comment">inline</span></div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;<span class="comment">const image::TreeSVG::key_t &amp; image::TreeSVG::getKey(const drain::StyleSelectorXML&lt;image::NodeSVG&gt; &amp; selector){</span></div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;<span class="comment">    return selector;</span></div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<span class="comment">}</span></div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160; </div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="comment">// for T (Tree class)</span></div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="comment">// for K (path elem arg)</span></div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;<span class="keywordtype">bool</span> image::TreeSVG::hasChild(<span class="keyword">const</span> image::svg::tag_t &amp; type) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160; </div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160; </div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="comment">// for T (Tree class)</span></div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="comment">// for K (path elem arg)</span></div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;image::TreeSVG &amp; image::TreeSVG::operator[](<span class="keyword">const</span> image::svg::tag_t &amp; type);</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160; </div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="comment">// for T (Tree class)</span></div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;<span class="keyword">template</span> &lt;&gt; <span class="comment">// for K (path elem arg)</span></div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;<span class="keyword">const</span> image::TreeSVG &amp; image::TreeSVG::operator[](<span class="keyword">const</span> image::svg::tag_t &amp; type) <span class="keyword">const</span> ;</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160; </div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;} <span class="comment">// drain::</span></div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160; </div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// DRAIN_TREE_SVG</span></div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160; </div>
 <div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary</a></div><div class="ttdoc">Two-way mapping between strings and objects of template class T.</div><div class="ttdef"><b>Definition:</b> Dictionary.h:63</div></div>
 <div class="ttc" id="aclassdrain_1_1FileInfo_html"><div class="ttname"><a href="classdrain_1_1FileInfo.html">drain::FileInfo</a></div><div class="ttdef"><b>Definition:</b> FileInfo.h:48</div></div>
-<div class="ttc" id="aclassdrain_1_1Frame2D_html"><div class="ttname"><a href="classdrain_1_1Frame2D.html">drain::Frame2D</a></div><div class="ttdef"><b>Definition:</b> Frame.h:49</div></div>
+<div class="ttc" id="aclassdrain_1_1Frame2D_html"><div class="ttname"><a href="classdrain_1_1Frame2D.html">drain::Frame2D</a></div><div class="ttdoc">Something that has width and height.</div><div class="ttdef"><b>Definition:</b> Frame.h:53</div></div>
 <div class="ttc" id="aclassdrain_1_1NodeXML_html"><div class="ttname"><a href="classdrain_1_1NodeXML.html">drain::NodeXML</a></div><div class="ttdef"><b>Definition:</b> TreeXML.h:341</div></div>
 <div class="ttc" id="aclassdrain_1_1NodeXML_html_af134315afd4b41f418e587f985f0ff7b"><div class="ttname"><a href="classdrain_1_1NodeXML.html#af134315afd4b41f418e587f985f0ff7b">drain::NodeXML&lt; svg::tag_t &gt;::docToStream</a></div><div class="ttdeci">static std::ostream &amp; docToStream(std::ostream &amp;ostr, const V &amp;tree)</div><div class="ttdef"><b>Definition:</b> TreeXML.h:733</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceMap2_html_ae62f542b5197ef604ca76cce5fb6940f"><div class="ttname"><a href="classdrain_1_1ReferenceMap2.html#ae62f542b5197ef604ca76cce5fb6940f">drain::ReferenceMap2&lt; FlexibleVariable &gt;::link</a></div><div class="ttdeci">ref_t &amp; link(const std::string &amp;key, F &amp;x)</div><div class="ttdoc">Associates a map entry with a variable.</div><div class="ttdef"><b>Definition:</b> ReferenceMap.h:84</div></div>
-<div class="ttc" id="aclassdrain_1_1XML_html_a3162432a20d7413343eac1f286a89e94"><div class="ttname"><a href="classdrain_1_1XML.html#a3162432a20d7413343eac1f286a89e94">drain::XML::xmlAssignNode</a></div><div class="ttdeci">static X &amp; xmlAssignNode(X &amp;dst, const X &amp;src)</div><div class="ttdoc">Assign another tree structure to another.</div><div class="ttdef"><b>Definition:</b> XML.h:487</div></div>
-<div class="ttc" id="aclassdrain_1_1XML_html_a3ababf0b844cfc3d02dd9a4cc97eeffe"><div class="ttname"><a href="classdrain_1_1XML.html#a3ababf0b844cfc3d02dd9a4cc97eeffe">drain::XML::xmlAddChild</a></div><div class="ttdeci">static T &amp; xmlAddChild(T &amp;tree, const std::string &amp;key)</div><div class="ttdef"><b>Definition:</b> XML.h:563</div></div>
-<div class="ttc" id="aclassdrain_1_1XML_html_aa1606a5d9e664d260adcbdf9f43dfa3d"><div class="ttname"><a href="classdrain_1_1XML.html#aa1606a5d9e664d260adcbdf9f43dfa3d">drain::XML::xmlAssign</a></div><div class="ttdeci">static XML &amp; xmlAssign(XML &amp;dst, const XML &amp;src)</div><div class="ttdoc">Assign another tree structure to another.</div><div class="ttdef"><b>Definition:</b> XML.h:448</div></div>
-<div class="ttc" id="aclassdrain_1_1XML_html_aeaf835807a8f58bdd750e4a65a9bd899"><div class="ttname"><a href="classdrain_1_1XML.html#aeaf835807a8f58bdd750e4a65a9bd899">drain::XML::xmlSetType</a></div><div class="ttdeci">static T &amp; xmlSetType(T &amp;tree, const typename T::node_data_t::xml_tag_t &amp;type)</div><div class="ttdef"><b>Definition:</b> XML.h:549</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1BBoxSVG_html"><div class="ttname"><a href="classdrain_1_1image_1_1BBoxSVG.html">drain::image::BBoxSVG</a></div><div class="ttdef"><b>Definition:</b> TreeSVG.h:84</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html">drain::image::NodeSVG</a></div><div class="ttdef"><b>Definition:</b> TreeSVG.h:112</div></div>
+<div class="ttc" id="aclassdrain_1_1SelectorXML_html"><div class="ttname"><a href="classdrain_1_1SelectorXML.html">drain::SelectorXML</a></div><div class="ttdef"><b>Definition:</b> TreeXML.h:774</div></div>
+<div class="ttc" id="aclassdrain_1_1XML_html_a3162432a20d7413343eac1f286a89e94"><div class="ttname"><a href="classdrain_1_1XML.html#a3162432a20d7413343eac1f286a89e94">drain::XML::xmlAssignNode</a></div><div class="ttdeci">static X &amp; xmlAssignNode(X &amp;dst, const X &amp;src)</div><div class="ttdoc">Assign another tree structure to another.</div><div class="ttdef"><b>Definition:</b> XML.h:493</div></div>
+<div class="ttc" id="aclassdrain_1_1XML_html_a3a59f8a010c11a9539514b65a5fc79dc"><div class="ttname"><a href="classdrain_1_1XML.html#a3a59f8a010c11a9539514b65a5fc79dc">drain::XML::xmlSetType</a></div><div class="ttdeci">static TX &amp; xmlSetType(TX &amp;tree, const typename TX::node_data_t::xml_tag_t &amp;type)</div><div class="ttdef"><b>Definition:</b> XML.h:555</div></div>
+<div class="ttc" id="aclassdrain_1_1XML_html_a3ababf0b844cfc3d02dd9a4cc97eeffe"><div class="ttname"><a href="classdrain_1_1XML.html#a3ababf0b844cfc3d02dd9a4cc97eeffe">drain::XML::xmlAddChild</a></div><div class="ttdeci">static T &amp; xmlAddChild(T &amp;tree, const std::string &amp;key)</div><div class="ttdef"><b>Definition:</b> XML.h:569</div></div>
+<div class="ttc" id="aclassdrain_1_1XML_html_aa5ae03f57187126728eeec8ada386be3"><div class="ttname"><a href="classdrain_1_1XML.html#aa5ae03f57187126728eeec8ada386be3">drain::XML::xmlAssign</a></div><div class="ttdeci">static TX &amp; xmlAssign(TX &amp;dst, const TX &amp;src)</div><div class="ttdoc">Assign another tree structure to another.</div><div class="ttdef"><b>Definition:</b> XML.h:454</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1BBoxSVG_html"><div class="ttname"><a href="classdrain_1_1image_1_1BBoxSVG.html">drain::image::BBoxSVG</a></div><div class="ttdef"><b>Definition:</b> TreeSVG.h:86</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html">drain::image::NodeSVG</a></div><div class="ttdef"><b>Definition:</b> TreeSVG.h:117</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a007ae514e56515a1ad8b673efb6bad5d"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a007ae514e56515a1ad8b673efb6bad5d">drain::image::NodeSVG::handleType</a></div><div class="ttdeci">virtual void handleType(const svg::tag_t &amp;t) override final</div><div class="ttdef"><b>Definition:</b> TreeSVG.cpp:185</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a01f695faaccca71f24327180b0f1d3c1"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a01f695faaccca71f24327180b0f1d3c1">drain::image::NodeSVG::setBoundingBox</a></div><div class="ttdeci">void setBoundingBox(const drain::Box&lt; T &gt; &amp;b)</div><div class="ttdoc">Set position (x,y), width and height of an object.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:205</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a04f2d93ed72fb310ea3ed84cce06aae7"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a04f2d93ed72fb310ea3ed84cce06aae7">drain::image::NodeSVG::getBoundingBox</a></div><div class="ttdeci">BBoxSVG &amp; getBoundingBox()</div><div class="ttdoc">Get position (x,y), width and height of an object.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:198</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a110041c5eec2c57a251f043da0d2c161"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a110041c5eec2c57a251f043da0d2c161">drain::image::NodeSVG::setLocation</a></div><div class="ttdeci">void setLocation(const T &amp;x, const T &amp;y)</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:225</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a01f695faaccca71f24327180b0f1d3c1"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a01f695faaccca71f24327180b0f1d3c1">drain::image::NodeSVG::setBoundingBox</a></div><div class="ttdeci">void setBoundingBox(const drain::Box&lt; T &gt; &amp;b)</div><div class="ttdoc">Set position (x,y), width and height of an object.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:210</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a04f2d93ed72fb310ea3ed84cce06aae7"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a04f2d93ed72fb310ea3ed84cce06aae7">drain::image::NodeSVG::getBoundingBox</a></div><div class="ttdeci">BBoxSVG &amp; getBoundingBox()</div><div class="ttdoc">Get position (x,y), width and height of an object.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:203</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a110041c5eec2c57a251f043da0d2c161"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a110041c5eec2c57a251f043da0d2c161">drain::image::NodeSVG::setLocation</a></div><div class="ttdeci">void setLocation(const T &amp;x, const T &amp;y)</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:230</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a13ceb8d721abad76526b3ae1c3eb21ee"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a13ceb8d721abad76526b3ae1c3eb21ee">drain::image::NodeSVG::setAttribute</a></div><div class="ttdeci">virtual void setAttribute(const std::string &amp;key, const std::string &amp;value) override</div><div class="ttdoc">Set attribute value, handling units in string arguments, like in &quot;50%&quot; or &quot;640px&quot;.</div><div class="ttdef"><b>Definition:</b> TreeSVG.cpp:282</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a40ed0b401422bc09221099fc05f67b23"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a40ed0b401422bc09221099fc05f67b23">drain::image::NodeSVG::xlink</a></div><div class="ttdeci">static std::string xlink</div><div class="ttdoc">In opening SVG tag, referred to by attribute &quot;xmlns:xlink&quot;.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:117</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a40ed0b401422bc09221099fc05f67b23"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a40ed0b401422bc09221099fc05f67b23">drain::image::NodeSVG::xlink</a></div><div class="ttdeci">static std::string xlink</div><div class="ttdoc">In opening SVG tag, referred to by attribute &quot;xmlns:xlink&quot;.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:122</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a47fda3b5600205d019433eb02642b409"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a47fda3b5600205d019433eb02642b409">drain::image::NodeSVG::NodeSVG</a></div><div class="ttdeci">NodeSVG(svg::tag_t t=svg::UNDEFINED)</div><div class="ttdoc">Default constructor. Create a node of given type.</div><div class="ttdef"><b>Definition:</b> TreeSVG.cpp:160</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a4aebe82dc0bab3b2a8cc5af11de088f8"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a4aebe82dc0bab3b2a8cc5af11de088f8">drain::image::NodeSVG::setMargin</a></div><div class="ttdeci">void setMargin(T w)</div><div class="ttdoc">Set margin of a TEXT element (non-standard).</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:268</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a56f285c3d0ca3c31010b9353546ff5bd"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a56f285c3d0ca3c31010b9353546ff5bd">drain::image::NodeSVG::setWidth</a></div><div class="ttdeci">void setWidth(T w)</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:253</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a5bdbb635acf74066faf0223391867622"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a5bdbb635acf74066faf0223391867622">drain::image::NodeSVG::operator=</a></div><div class="ttdeci">NodeSVG &amp; operator=(const NodeSVG &amp;node)</div><div class="ttdoc">Copy data from a node. (Does not copy subtree.)</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:150</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a6a3a8e4e34c6fe34e391c94b89588e4b"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a6a3a8e4e34c6fe34e391c94b89588e4b">drain::image::NodeSVG::getBoundingBox</a></div><div class="ttdeci">const BBoxSVG &amp; getBoundingBox() const</div><div class="ttdoc">Get position (x,y), width and height of an object.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:191</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a6a79d511a9242b424f5560c94c8cf96b"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a6a79d511a9242b424f5560c94c8cf96b">drain::image::NodeSVG::getMargin</a></div><div class="ttdeci">svg::coord_t getMargin()</div><div class="ttdoc">Get margin of a TEXT element (non-standard).</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:278</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_aadf4ec8346eb8bb6505825437512809d"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#aadf4ec8346eb8bb6505825437512809d">drain::image::NodeSVG::setHeight</a></div><div class="ttdeci">void setHeight(T h)</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:289</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_ad55f37dc84253d58b5ea509e9a5bd3de"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#ad55f37dc84253d58b5ea509e9a5bd3de">drain::image::NodeSVG::operator=</a></div><div class="ttdeci">NodeSVG &amp; operator=(const std::initializer_list&lt; Variable::init_pair_t &gt; &amp;l)</div><div class="ttdoc">Copy data from a node. (Does not copy subtree.)</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:164</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_ae24ffa1c317202e96b88cc638d9edd7d"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#ae24ffa1c317202e96b88cc638d9edd7d">drain::image::NodeSVG::setLocation</a></div><div class="ttdeci">void setLocation(const drain::Point2D&lt; T &gt; &amp;point)</div><div class="ttdoc">Set position (x,y) of an object.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:214</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_af8cf44c2ddd07d188c9a963776dfab89"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#af8cf44c2ddd07d188c9a963776dfab89">drain::image::NodeSVG::setFrame</a></div><div class="ttdeci">void setFrame(const T &amp;w, const T &amp;h)</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:242</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_affee72ee32ad4718d953331edbc2f833"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#affee72ee32ad4718d953331edbc2f833">drain::image::NodeSVG::svg</a></div><div class="ttdeci">static std::string svg</div><div class="ttdoc">In opening SVG tag, referred to by attributes &quot;xmlns&quot; and &quot;xmlns:svg&quot;.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:121</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a4aebe82dc0bab3b2a8cc5af11de088f8"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a4aebe82dc0bab3b2a8cc5af11de088f8">drain::image::NodeSVG::setMargin</a></div><div class="ttdeci">void setMargin(T w)</div><div class="ttdoc">Set margin of a TEXT element (non-standard).</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:273</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a56f285c3d0ca3c31010b9353546ff5bd"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a56f285c3d0ca3c31010b9353546ff5bd">drain::image::NodeSVG::setWidth</a></div><div class="ttdeci">void setWidth(T w)</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:258</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a5bdbb635acf74066faf0223391867622"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a5bdbb635acf74066faf0223391867622">drain::image::NodeSVG::operator=</a></div><div class="ttdeci">NodeSVG &amp; operator=(const NodeSVG &amp;node)</div><div class="ttdoc">Copy data from a node. (Does not copy subtree.)</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:155</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a6a3a8e4e34c6fe34e391c94b89588e4b"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a6a3a8e4e34c6fe34e391c94b89588e4b">drain::image::NodeSVG::getBoundingBox</a></div><div class="ttdeci">const BBoxSVG &amp; getBoundingBox() const</div><div class="ttdoc">Get position (x,y), width and height of an object.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:196</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_a6a79d511a9242b424f5560c94c8cf96b"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#a6a79d511a9242b424f5560c94c8cf96b">drain::image::NodeSVG::getMargin</a></div><div class="ttdeci">svg::coord_t getMargin()</div><div class="ttdoc">Get margin of a TEXT element (non-standard).</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:283</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_aadf4ec8346eb8bb6505825437512809d"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#aadf4ec8346eb8bb6505825437512809d">drain::image::NodeSVG::setHeight</a></div><div class="ttdeci">void setHeight(T h)</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:294</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_ad55f37dc84253d58b5ea509e9a5bd3de"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#ad55f37dc84253d58b5ea509e9a5bd3de">drain::image::NodeSVG::operator=</a></div><div class="ttdeci">NodeSVG &amp; operator=(const std::initializer_list&lt; Variable::init_pair_t &gt; &amp;l)</div><div class="ttdoc">Copy data from a node. (Does not copy subtree.)</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:169</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_ae24ffa1c317202e96b88cc638d9edd7d"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#ae24ffa1c317202e96b88cc638d9edd7d">drain::image::NodeSVG::setLocation</a></div><div class="ttdeci">void setLocation(const drain::Point2D&lt; T &gt; &amp;point)</div><div class="ttdoc">Set position (x,y) of an object.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:219</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_af8cf44c2ddd07d188c9a963776dfab89"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#af8cf44c2ddd07d188c9a963776dfab89">drain::image::NodeSVG::setFrame</a></div><div class="ttdeci">void setFrame(const T &amp;w, const T &amp;h)</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:247</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1NodeSVG_html_affee72ee32ad4718d953331edbc2f833"><div class="ttname"><a href="classdrain_1_1image_1_1NodeSVG.html#affee72ee32ad4718d953331edbc2f833">drain::image::NodeSVG::svg</a></div><div class="ttdeci">static std::string svg</div><div class="ttdoc">In opening SVG tag, referred to by attributes &quot;xmlns&quot; and &quot;xmlns:svg&quot;.</div><div class="ttdef"><b>Definition:</b> TreeSVG.h:126</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:1277</div></div>
-<div class="ttc" id="astructdrain_1_1Box_html"><div class="ttname"><a href="structdrain_1_1Box.html">drain::Box</a></div><div class="ttdoc">Something that has coordinates (x,y) and dimensions (width, height).</div><div class="ttdef"><b>Definition:</b> Frame.h:151</div></div>
+<div class="ttc" id="astructdrain_1_1Box_html"><div class="ttname"><a href="structdrain_1_1Box.html">drain::Box</a></div><div class="ttdoc">Something that has coordinates (x,y) and dimensions (width, height).</div><div class="ttdef"><b>Definition:</b> Frame.h:160</div></div>
 <div class="ttc" id="astructdrain_1_1EnumDict_html"><div class="ttname"><a href="structdrain_1_1EnumDict.html">drain::EnumDict</a></div><div class="ttdoc">Wrapper for unique (static) dictionary of enum values.</div><div class="ttdef"><b>Definition:</b> EnumFlags.h:66</div></div>
 <div class="ttc" id="astructdrain_1_1Point2D_html"><div class="ttname"><a href="structdrain_1_1Point2D.html">drain::Point2D</a></div><div class="ttdef"><b>Definition:</b> Point.h:48</div></div>
 <div class="ttc" id="astructdrain_1_1image_1_1AlignAdapterSVG_html"><div class="ttname"><a href="structdrain_1_1image_1_1AlignAdapterSVG.html">drain::image::AlignAdapterSVG</a></div><div class="ttdoc">Adapter designed for NodeSVG.</div><div class="ttdef"><b>Definition:</b> AlignSVG.h:769</div></div>

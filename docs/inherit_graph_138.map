@@ -1,7 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,81,64,108"/>
-<area shape="rect" id="node2" href="$classdrain_1_1StringBuilder.html" title=" " alt="" coords="119,5,279,32"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Stringlet.html" title="A helper class for StringMapper." alt="" coords="161,56,238,83"/>
-<area shape="rect" id="node4" href="$classdrain_1_1StyleSelectorXML.html" title=" " alt="" coords="112,107,287,133"/>
-<area shape="rect" id="node5" href="$classrack_1_1ClassLabelXML.html" title=" " alt="" coords="120,157,279,184"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,31,111,57"/>
+<area shape="rect" id="node2" href="$classdrain_1_1StreamBuilder.html" title=" " alt="" coords="167,5,320,32"/>
+<area shape="rect" id="node4" href="$classdrain_1_1StreamBuilder.html" title=" " alt="" coords="159,56,328,83"/>
+<area shape="rect" id="node3" href="$classdrain_1_1Logger.html" title="LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log." alt="" coords="376,5,443,32"/>
 </map>

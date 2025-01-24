@@ -4,7 +4,7 @@ var searchData=
   ['paletteentry_2818',['PaletteEntry',['../classdrain_1_1image_1_1PaletteEntry.html',1,'drain::image']]],
   ['palettemanager_2819',['PaletteManager',['../structrack_1_1PaletteManager.html',1,'rack']]],
   ['paletteop_2820',['PaletteOp',['../classdrain_1_1image_1_1PaletteOp.html',1,'drain::image']]],
-  ['panelconfsvg_2821',['PanelConfSVG',['../structdrain_1_1image_1_1PanelConfSVG.html',1,'drain::image']]],
+  ['panelconfsvg_2821',['PanelConfSVG',['../structrack_1_1PanelConfSVG.html',1,'rack']]],
   ['parameter_2822',['Parameter',['../classParameter.html',1,'']]],
   ['path_2823',['Path',['../classdrain_1_1Path.html',1,'drain']]],
   ['path_3c_20odimpathelemmatcher_20_3e_2824',['Path&lt; ODIMPathElemMatcher &gt;',['../classdrain_1_1Path.html',1,'drain']]],

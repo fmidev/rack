@@ -212,12 +212,12 @@ const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;
 <tr class="separator:a6ec562e4d0e0bb88b064fdd1e5852b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adee7f56847248a4faca427ac2de50a22"><td class="memTemplParams" colspan="2">template&lt;class K &gt; </td></tr>
 <tr class="memitem:adee7f56847248a4faca427ac2de50a22"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#adee7f56847248a4faca427ac2de50a22">operator[]</a> (const K &amp;key)</td></tr>
-<tr class="memdesc:adee7f56847248a4faca427ac2de50a22"><td class="mdescLeft">&#160;</td><td class="mdescRight">NEW 2025 Child addressing operator.  <a href="classdrain_1_1DRAIN__TREE__NAME.html#adee7f56847248a4faca427ac2de50a22">More...</a><br /></td></tr>
+<tr class="memdesc:adee7f56847248a4faca427ac2de50a22"><td class="mdescLeft">&#160;</td><td class="mdescRight">NEW 2025 templated child addressing operator.  <a href="classdrain_1_1DRAIN__TREE__NAME.html#adee7f56847248a4faca427ac2de50a22">More...</a><br /></td></tr>
 <tr class="separator:adee7f56847248a4faca427ac2de50a22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7483e3f805845a664598f7e246d90b30"><td class="memTemplParams" colspan="2"><a id="a7483e3f805845a664598f7e246d90b30"></a>
 template&lt;class K &gt; </td></tr>
 <tr class="memitem:a7483e3f805845a664598f7e246d90b30"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a7483e3f805845a664598f7e246d90b30">operator[]</a> (const K &amp;key) const</td></tr>
-<tr class="memdesc:a7483e3f805845a664598f7e246d90b30"><td class="mdescLeft">&#160;</td><td class="mdescRight">NEW 2025 Child addressing operator. <br /></td></tr>
+<tr class="memdesc:a7483e3f805845a664598f7e246d90b30"><td class="mdescLeft">&#160;</td><td class="mdescRight">NEW 2025 templated child addressing operator. <br /></td></tr>
 <tr class="separator:a7483e3f805845a664598f7e246d90b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4dae8dd37aee6af0b9391c031cca8232"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">operator()</a> (const path_t &amp;path)</td></tr>
 <tr class="memdesc:a4dae8dd37aee6af0b9391c031cca8232"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a descendant. Creates one if not existing already.  <a href="classdrain_1_1DRAIN__TREE__NAME.html#a4dae8dd37aee6af0b9391c031cca8232">More...</a><br /></td></tr>
@@ -267,6 +267,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasChildren</b> () co
 <tr class="memitem:ac729ceb49af576a8ddac20f4bb8e3f45"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ac729ceb49af576a8ddac20f4bb8e3f45">hasChild</a> (const key_t &amp;key) const</td></tr>
 <tr class="memdesc:ac729ceb49af576a8ddac20f4bb8e3f45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the tree node has a direct descendant with name <code>key</code>.  <a href="classdrain_1_1DRAIN__TREE__NAME.html#ac729ceb49af576a8ddac20f4bb8e3f45">More...</a><br /></td></tr>
 <tr class="separator:ac729ceb49af576a8ddac20f4bb8e3f45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabaa298fd574849874ce8ac3e459b94b"><td class="memTemplParams" colspan="2"><a id="aabaa298fd574849874ce8ac3e459b94b"></a>
+template&lt;typename K &gt; </td></tr>
+<tr class="memitem:aabaa298fd574849874ce8ac3e459b94b"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>hasChild</b> (const K &amp;key) const</td></tr>
+<tr class="separator:aabaa298fd574849874ce8ac3e459b94b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65f43af37f0ed7b8ffe1efcbab9ba334"><td class="memItemLeft" align="right" valign="top"><a id="a65f43af37f0ed7b8ffe1efcbab9ba334"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasPath</b> (const path_t &amp;path) const</td></tr>
 <tr class="separator:a65f43af37f0ed7b8ffe1efcbab9ba334"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -321,7 +325,7 @@ node_data_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a91080c09ebdb9bd501d9c244aec87d7a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a91080c09ebdb9bd501d9c244aec87d7a">hasPath</a> (typename path_t::const_iterator it, typename path_t::const_iterator eit) const</td></tr>
-<tr class="memdesc:a91080c09ebdb9bd501d9c244aec87d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if there is a node with a given path name.  <a href="classdrain_1_1DRAIN__TREE__NAME.html#a91080c09ebdb9bd501d9c244aec87d7a">More...</a><br /></td></tr>
+<tr class="memdesc:a91080c09ebdb9bd501d9c244aec87d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Default implementation" of key conversion – the identity mapping.  <a href="classdrain_1_1DRAIN__TREE__NAME.html#a91080c09ebdb9bd501d9c244aec87d7a">More...</a><br /></td></tr>
 <tr class="separator:a91080c09ebdb9bd501d9c244aec87d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e00c02ca0ac1a336e27204e3d40ab5f"><td class="memItemLeft" align="right" valign="top"><a id="a7e00c02ca0ac1a336e27204e3d40ab5f"></a>
 <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a7e00c02ca0ac1a336e27204e3d40ab5f">get</a> (typename path_t::const_iterator it, typename path_t::const_iterator eit)</td></tr>
@@ -769,8 +773,8 @@ UnorderedTree.</dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Checks if there is a node with a given path name. </p>
-<p>Could be called hasDescendant; hence is like <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ac729ceb49af576a8ddac20f4bb8e3f45" title="Check if the tree node has a direct descendant with name key.">hasChild()</a> but calls children recursively.</p>
+<p>"Default implementation" of key conversion – the identity mapping. </p>
+<p>Conversion of char array to key type, which itself should never be a char array. Mapping of keys of external type - for example an enumerated type - to native <code>key_t</code> type. Checks if there is a node with a given path name. Could be called hasDescendant; hence is like <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ac729ceb49af576a8ddac20f4bb8e3f45" title="Check if the tree node has a direct descendant with name key.">hasChild()</a> but calls children recursively.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">eit</td><td>- <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#acdbe1b3241957d4062ec8683399520a4" title="Child iterator end.">end()</a> </td></tr>
@@ -1093,7 +1097,7 @@ UnorderedTree.</dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>NEW 2025 Child addressing operator. </p>
+<p>NEW 2025 templated child addressing operator. </p>
 <p>Allows using <a class="el" href="structdrain_1_1EnumDict.html" title="Wrapper for unique (static) dictionary of enum values.">EnumDict</a> enums as keys, for example. </p>
 
 </div>

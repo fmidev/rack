@@ -1,0 +1,10 @@
+<map id="PanelConfSVG" name="PanelConfSVG">
+<area shape="rect" id="node1" title=" " alt="" coords="143,380,257,407"/>
+<area shape="rect" id="node2" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,269,173,295"/>
+<area shape="rect" id="node3" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="17,185,161,212"/>
+<area shape="rect" id="node4" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="198,261,423,303"/>
+<area shape="rect" id="node5" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="231,185,390,212"/>
+<area shape="rect" id="node6" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="159,96,345,123"/>
+<area shape="rect" id="node7" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="370,96,515,123"/>
+<area shape="rect" id="node8" title=" " alt="" coords="373,5,512,47"/>
+</map>

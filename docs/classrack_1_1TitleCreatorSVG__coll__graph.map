@@ -1,4 +1,12 @@
 <map id="TitleCreatorSVG" name="TitleCreatorSVG">
-<area shape="rect" id="node1" title="&quot;Collects&quot; titles from metadata. Invoked by drain::TreeUtils::traverse()" alt="" coords="29,80,156,107"/>
-<area shape="rect" id="node2" href="$classdrain_1_1TreeVisitor.html" title=" " alt="" coords="5,5,180,32"/>
+<area shape="rect" id="node1" title="&quot;Collects&quot; titles from metadata. Invoked by drain::TreeUtils::traverse()" alt="" coords="51,469,177,496"/>
+<area shape="rect" id="node2" href="$classdrain_1_1TreeVisitor.html" title=" " alt="" coords="5,380,180,407"/>
+<area shape="rect" id="node3" href="$structrack_1_1PanelConfSVG.html" title=" " alt="" coords="205,380,319,407"/>
+<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="54,269,222,295"/>
+<area shape="rect" id="node5" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="66,185,210,212"/>
+<area shape="rect" id="node6" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="247,261,472,303"/>
+<area shape="rect" id="node7" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="280,185,439,212"/>
+<area shape="rect" id="node8" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="207,96,394,123"/>
+<area shape="rect" id="node9" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="419,96,564,123"/>
+<area shape="rect" id="node10" title=" " alt="" coords="422,5,561,47"/>
 </map>

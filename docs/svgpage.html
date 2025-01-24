@@ -75,75 +75,90 @@ Automatical generation of SVG files</h1>
  are included automatically in a simple <em>internal</em> SVG structure. This is neither time nor memory consuming, as the SVG structure itself is lightweight. In addition, some processing - like alignment of elements - only if an SVG file is actually written with <code>&ndash;outputFile</code> <code></code> &lt;file&gt;.svg command. Typically, that command is the last one executed.</p>
 <h2><a class="anchor" id="svg_example"></a>
 Examples of SVG panels</h2>
-<p>Align two images horizontally (default) </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/ --outputConf svg:absolutePaths=true  \</div>
-<div class="line">   volume.h5 --cSize 400 -Q DBZH -c -o gray.png --palette <span class="keywordflow">default</span> -o rgb.png \</div>
+<p>Align two images horizontally (default) </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<div class="line">   volume.h5 --cSize 400 -Q DBZH -c -o gray.png --palette <span class="stringliteral">&#39;default&#39;</span> -o rgb.png \</div>
 <div class="line">   -o simple.svg</div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:44</div></div>
 </div><!-- fragment --><div class="image">
 <img src="simple.png" alt=""/>
 <div class="caption">
-SVG output 'simple.png'</div></div>
- Also legend outputs (SVG) are included </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/ --outputConf svg:absolutePaths=true  \</div>
-<div class="line">   volume.h5 --cSize 400 -Q DBZH -c -o gray.png --palette <span class="keywordflow">default</span> -o rgb.png \</div>
+SVG output 'simple.svg'</div></div>
+ Also legend outputs are included in the resulting SVG panel. </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<div class="line">   volume.h5 --cSize 400 -Q DBZH -c -o gray.png --palette <span class="stringliteral">&#39;default&#39;</span> -o rgb.png \</div>
 <div class="line">   --legendOut legend.svg \</div>
 <div class="line">   -o simple2.svg</div>
 </div><!-- fragment --><div class="image">
 <img src="simple2.png" alt=""/>
 <div class="caption">
-SVG output 'simple2.png'</div></div>
- With several inputs, it is handier to use <code>--script</code> . (See: <a class="el" href="scriptspage.html#scripts">Defining scripts</a> .) Output names must be distinct, which is achieved using variables. (See <a class="el" href="text-output-page.html#templates">Formatting metadata output using templates</a> .) </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/ --outputConf svg:absolutePaths=<span class="keyword">true</span>  \</div>
+SVG output 'simple2.svg'</div></div>
+ With several inputs, it is handier to use <code>--script</code> . Output names must be distinct, which is achieved using variables. For details, see <a class="el" href="scriptspage.html#scripts">Defining scripts</a> and <a class="el" href="text-output-page.html#templates">Formatting metadata output using templates</a> . If generated products contain varying metadata, titles appear, automatically grouping distinguishing data. </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 -Q DBZH -c --palette &quot;&quot; -o out-${NOD}.png&#39;</span> \</div>
-<div class="line">   data/pvol_fianj.h5 data/pvol_fikor.h5 data/pvol_fikuo.h5 -o triple1.svg</div>
+<div class="line">   data/pvol_fi{anj,kor,kuo}.h5 \</div>
+<div class="line">   -o triple1.svg</div>
 </div><!-- fragment --><div class="image">
 <img src="triple1.png" alt=""/>
 <div class="caption">
-SVG output 'triple1.png'</div></div>
- Variables identifying the radar and timestamp often distinguish files sufficiently. Hence, consider using variables like <code>${NOD}</code> , <code>${what:date}</code>, and <code>${what:time}</code> . <code>Rack</code> supports grouping output images to rows or columns. Use <code>--cGroup</code> to set a distinguishing key. </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/ --outputConf svg:absolutePaths=<span class="keyword">true</span>  \</div>
+SVG output 'triple1.svg'</div></div>
+ <code>Rack</code> supports grouping output images to rows or columns. The groups are identified with <code>--gGroupTitle</code> <code>arg</code> , using distinguishing variables in the argument, for example <code>${NOD}</code> , <code>${what:date}</code> or <code>${what:time}</code> . </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 -Q DBZH -c --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
-<div class="line">   --gGroup <span class="stringliteral">&#39;Test-${NOD}&#39;</span> \</div>
-<div class="line">   data-kiira<span class="comment">/*.h5 -o series1.svg</span></div>
+<div class="line">   --gGroupTitle <span class="stringliteral">&#39;Sky conditions at ${time|%H:%M} UTC&#39;</span> \</div>
+<div class="line">   data-kiira/20170812*.h5 \</div>
+<div class="line">   -o time-series1.svg</div>
 </div><!-- fragment --><div class="image">
-<img src="series1.png" alt=""/>
+<img src="time-series1.png" alt=""/>
 <div class="caption">
-SVG output 'series1.png'</div></div>
- In a grid of images, originating from several radars and times, the images can be labelled automatically with <code>--gTitles</code> command, with option <code>IMAGE_TITLES</code> . </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/ --outputConf svg:absolutePaths=<span class="keyword">true</span>  \</div>
+SVG output 'time-series1.svg'</div></div>
+ Similar example using originating radar as the distinguishing metadata. </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 -Q DBZH -c --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
-<div class="line">   --gGroup <span class="stringliteral">&#39;Examples of ${PLC} (${NOD}) on ${what:date|%Y/%m/%d}&#39;</span> --gTitles IMAGE_TITLE \</div>
-<div class="line">   data-kiira<span class="comment">/*.h5 -o series-labelled.svg</span></div>
+<div class="line">   --gGroupTitle <span class="stringliteral">&#39;Examples of ${PLC} (${NOD})&#39;</span> \</div>
+<div class="line">   data-kiira/20170812*.h5 \</div>
+<div class="line">   -o radar-series.svg</div>
 </div><!-- fragment --><div class="image">
-<img src="series-labelled.png" alt=""/>
+<img src="radar-series.png" alt=""/>
 <div class="caption">
-SVG output 'series-labelled.png'</div></div>
+SVG output 'radar-series.svg'</div></div>
+ A further example, with three levels of titles. </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 -Q DBZH -c --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
+<div class="line">   --gGroupTitle <span class="stringliteral">&#39;Examples of Kiira case&#39;</span> --gStyle .IMAGE_BORDER=<span class="stringliteral">&#39;stroke:black;stroke-width:1&#39;</span> \</div>
+<div class="line">   data-kiira/201708121530_radar.polar.fikor.h5 data-kiira/201708121600_radar.polar.fiika.h5 \</div>
+<div class="line">   -o series-labelled2.svg</div>
+</div><!-- fragment --><div class="image">
+<img src="series-labelled2.png" alt=""/>
+<div class="caption">
+SVG output 'series-labelled2.svg'</div></div>
+ Titles can be removed with respective empty command values: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 -Q DBZH -c --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
+<div class="line">   --gTitle <span class="stringliteral">&#39;&#39;</span> --gGroupTitle <span class="stringliteral">&#39;&#39;</span> --gStyle .IMAGE_BORDER=<span class="stringliteral">&#39;stroke:black;stroke-width:1&#39;</span> \</div>
+<div class="line">   data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5 \</div>
+<div class="line">   -o series-labelled3.svg</div>
+</div><!-- fragment --><div class="image">
+<img src="series-labelled3.png" alt=""/>
+<div class="caption">
+SVG output 'series-labelled3.svg'</div></div>
+ A further example, usage of styles </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 -Q DBZH -c --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
+<div class="line">   --gTitle <span class="stringliteral">&#39;AUTO&#39;</span> --gGroupTitle <span class="stringliteral">&#39;AUTO:Examples of ${what:time}&#39;</span> --gTitleBoxHeight <span class="stringliteral">&#39;30,20,10&#39;</span> \</div>
+<div class="line">   --gStyle .IMAGE_BORDER=<span class="stringliteral">&#39;stroke:black;stroke-width:1&#39;</span> --gStyle <span class="stringliteral">&#39;rect.MAIN_TITLE=fill:red&#39;</span> \</div>
+<div class="line">   --gStyle .MAIN_TITLE=<span class="stringliteral">&#39;font-size:15;font-family:Times&#39;</span> --gStyle .LOCATION=<span class="stringliteral">&#39;fill:green&#39;</span> \</div>
+<div class="line">   data-kiira/201708121??0_radar.polar.fi{ika,kor,van}.h5 \</div>
+<div class="line">   -o series-styled.svg</div>
+</div><!-- fragment --><div class="image">
+<img src="series-styled.png" alt=""/>
+<div class="caption">
+SVG output 'series-styled.svg'</div></div>
  </p>
-<p>Alignment of the elements is done horizontally or vertically.</p>
-<div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5  --pCappi 500  -c -o $PWD/cappi-gray.png --palette <span class="stringliteral">&#39;&#39;</span> -o $PWD/cappi-rgb.png --outputConf svg:absolutePaths=<span class="keyword">true</span> -o display-cappi.svg</div>
-</div><!-- fragment --><div class="image">
-<img src="display-cappi.svg.png" alt=""/>
-<div class="caption">
-SVG panel</div></div>
- <p>By default, images are positioned horizontally, from left to right. This can be changed with <code>&ndash;outputConf</code> <code>svg</code> , selecting <code>orientation</code> as <code>HORZ</code> or <code>VERT</code> and coordinate <code>direction</code> as increasing (<code>INCR</code> ) or decreasing (<code>DECR</code> ).</p>
-<div class="fragment"><div class="line">group=main ()</div>
-<div class="line">max=10 (max per row/column)</div>
-<div class="line">title= ()</div>
-<div class="line">absolutePaths=false ()</div>
-<div class="line">fontSize=12,10,8,6 ()</div>
-<div class="line">debug=0 ()</div>
-</div><!-- fragment --><p>Example: </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> volume.h5 --pCappi 500 -o $PWD/cappi-polar-DBZH.png  -c --palette <span class="stringliteral">&#39;&#39;</span> -o $PWD/cappi-rgb.png --outputConf absolutePaths=<span class="keyword">true</span>  --gLayout orientation=VERT,direction=DECR -o display2-cappi.svg</div>
-</div><!-- fragment --><div class="image">
-<img src="display2-cappi.svg.png" alt=""/>
-<div class="caption">
-SVG panel</div></div>
- <p>Example: time series </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputConf svg:absolutePaths=<span class="keyword">true</span> --outputPrefix $PWD/ --cSize 300 --script <span class="stringliteral">&#39;-Q DBZH -c --palette &quot;&quot; -o out-${what:date|%Y%m%d}.png&#39;</span> --outputConf svg:group=May  data-acc/201705?51200_*.h5 --outputConf svg:group=June  data-acc/201706?51200_*.h5  -o time-series.svg</div>
-</div><!-- fragment --><div class="image">
-<img src="time-series.svg.png" alt=""/>
-<div class="caption">
-SVG panel</div></div>
- <p>The resulting SVG file can be converted to various other image formats using ImageMagick's <code>convert</code> program, for example. Note that some versions of it require absolute paths in filenames. A good alternative is <code>inkscape</code> .</p>
-<p>Note that you can also create SVG files using templates, see <a class="el" href="text-output-page.html#templates">Formatting metadata output using templates</a> .</p>
-<p>Remark. In future versions:</p><ul>
-<li>the parameters of <code>&ndash;outputConf</code> <code>svg</code> may change.</li>
-<li>title formatting supported (using -c &ndash;format ) </li>
+<p>Alignment of the elements is done horizontally or vertically. By default, images are positioned horizontally, from left to right. This can be changed with <code>&ndash;gLayout</code> , selecting <code>orientation</code> as <code>HORZ</code> or <code>VERT</code> and coordinate <code>direction</code> as increasing (<code>INCR</code> ) or decreasing (<code>DECR</code> ).</p>
+<p>The resulting SVG file can be converted to various other image formats using ImageMagick's <code>convert</code> program, for example. A good alternative is <code>inkscape</code> .</p>
+<h2><a class="anchor" id="svg_paths"></a>
+Relative or absolute image file paths?</h2>
+<p>In SVG files, IMAGE elements may use either relative or absolute file paths. By default, <code>Rack</code> uses absolute paths in IMAGE elements. Should relative paths be used, simply use them on commandline, or use <code>&ndash;outputPrefix</code> <code>$PWD/</code> together with <code>&ndash;outputConf</code> svg:absolutePaths=false .</p>
+<p>Some considerations:</p>
+<ul>
+<li>If an SVG file is to be placed on an HTML page, file references of IMAGE elements must be <em>relative</em> – HTTP servers typically avoid revealing any system-side paths, hence do not support them in openly adressing files.</li>
+<li>ImageMagick's <code>convert</code> and <code>display</code> programs seem to require <em>absolute</em> paths in filenames.</li>
+<li><code>Inkscape</code> program supports both</li>
 </ul>
+<p>With <b>Rack</b> , SVG files can also be created using templates, see <a class="el" href="text-output-page.html#templates">Formatting metadata output using templates</a> . </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- HTML footer for doxygen 1.8.17-->
