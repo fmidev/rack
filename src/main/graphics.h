@@ -129,7 +129,7 @@ public:
 
 	/// Add external image from a file path.
 	static
-	drain::image::TreeSVG & addImage(RackContext & ctx, const drain::FilePath & filepath, const drain::Frame2D<double> & frame = {640,400});
+	drain::image::TreeSVG & addImage(RackContext & ctx, const drain::Frame2D<double> & frame, const drain::FilePath & filepath);
 
 
 	/// Add TEXT elements: MAINTITLE, LOCATION, TIME, GENERAL

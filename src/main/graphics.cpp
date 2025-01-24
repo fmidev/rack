@@ -245,7 +245,7 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 	if (imagePanel->isUndefined()){
 
 		imagePanel->setType(svg::GROUP);
-		imagePanel->setId(name, svg::GROUP);
+		imagePanel->setId(name);
 
 		drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
 		image->setId(filepath.basename); // unneeded, as TITLE also has it?
@@ -338,30 +338,17 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
  *
  */
 drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath){ // what about prefix?
-
-	//drain::image::TreeSVG & group = getCurrentAlignedGroup(ctx); //[filepath.basename+"_Group"](svg::GROUP);
-	//
-
-	//drain::image::TreeSVG & image = ctx.getImagePanelGroup(filepath)(svg::IMAGE); // group[filepath.basename]
-	drain::image::TreeSVG & image = getImagePanelGroup(ctx, filepath)(svg::IMAGE); // group[filepath.basename]
-	image->setFrame(svg->getBoundingBox().getFrame());
-	// image->setUrl(filepath.str());
-	// image[drain::image::svg::TITLE](drain::image::svg::TITLE) = filepath.basename;
-
-	// TODO: align ?
-
-	return image;
-
+	const drain::Frame2D<double> frame(svg->getBoundingBox().getFrame());
+	return addImage(ctx, frame, filepath);
 }
 
 /// Add pixel image (PNG)
-drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::FilePath & filepath, const drain::Frame2D<double> & frame){ // what about prefix?
+drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::Frame2D<double> & frame, const drain::FilePath & filepath){ // what about prefix?
 
-	// drain::image::TreeSVG & image = ctx.getImagePanelGroup(filepath)(svg::IMAGE);
-	drain::image::TreeSVG & image = getImagePanelGroup(ctx, filepath)(svg::IMAGE);
+	drain::image::TreeSVG & imagePanel = getImagePanelGroup(ctx, filepath);
+	imagePanel->addClass(PanelConfSVG::IMAGE_PANEL);
+	drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE);
 	image->setFrame(frame);
-	// image->set("xlink:href", filepath.str());
-	// image[drain::image::svg::TITLE](drain::image::svg::TITLE) = filepath.basename;
 
 	return image;
 }
@@ -750,12 +737,14 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 			// If no higher element will write meta data, write it here (perhaps repeatedly)
 			WRITE_SHARED_METADATA &= (svgConf.mainTitle.empty()); // explicitly set main title MAY still  rewrite some metadata.
 			if (WRITE_PRIVATE_METADATA || WRITE_SHARED_METADATA){
-					RackSVG::addTitleBox(svgConf, group, PanelConfSVG::ElemClass::GROUP_TITLE);
+				RackSVG::addTitleBox(svgConf, group, PanelConfSVG::ElemClass::GROUP_TITLE);
 			}
 		}
 		else if (GROUP_USER){
 			RackSVG::addTitleBox(svgConf, group, PanelConfSVG::ElemClass::GROUP_TITLE);
-			group[PanelConfSVG::ElemClass::GENERAL]->setText(svgConf.groupTitleFormatted);
+			// group[PanelConfSVG::ElemClass::GENERAL]->setText(group[svg::TITLE]);
+			group[PanelConfSVG::ElemClass::GENERAL]->setText(group->getId());
+			// group[PanelConfSVG::ElemClass::GENERAL]->setText(svgConf.groupTitleFormatted+ "..dynamic=temporary WRONG!");
 			return 0;
 		}
 	}

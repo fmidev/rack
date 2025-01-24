@@ -127,7 +127,7 @@ public:
 		// drain::image::TreeSVG & group = CmdBaseSVG::getCurrentGroup(ctx);
 
 		// drain::image::TreeSVG & img =
-		RackSVG::addImage(ctx, drain::FilePath(this->value), {0,0});
+		RackSVG::addImage(ctx, drain::Frame2D<double>(320,200), drain::FilePath(this->value));
 
 	}
 

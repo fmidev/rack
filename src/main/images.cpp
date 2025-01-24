@@ -1017,7 +1017,7 @@ public:
 				TreeSVG svg;
 				palette.exportSVGLegend(svg, true);
 				TreeSVG & imageSvg = RackSVG::addImage(ctx, svg, filepath);
-				imageSvg -> addClass("legend", "MARGINAL");
+				imageSvg -> addClass("legend"); // TODO: embed gAlign
 				drain::Output ofstr(filepath.str());
 				NodeSVG::toStream(ofstr, svg);
 			}

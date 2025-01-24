@@ -204,7 +204,7 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 	const bool IS_TEXT = object->typeIs(svg::TEXT);
 
 	if (IS_TEXT){
-		mout.experimental(__FUNCTION__, " handling ", object.data);
+		// mout.experimental(__FUNCTION__, " handling ", object.data);
 	}
 
 
@@ -249,24 +249,24 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 	if (IS_TEXT){
 		if (obox.height > 0){
 			coord += obox.height;
-			mout.special("Vertical adjust: TEXT + (height=", obox.height, ") coord=", coord);
+			// mout.special("Vertical adjust: TEXT + (height=", obox.height, ") coord=", coord);
 		}
 		else {
 			double s = object->getStyle().get("font-size", 0.0);
 			if (s > 0.0){
 				coord += s;
-				mout.special("Vertical adjust by explicit font-size:", s);
+				// mout.special("Vertical adjust by explicit font-size:", s);
 			}
 		}
 	}
 
-	svg::coord_t coord0 = coord;
+	// svg::coord_t coord0 = coord;
 
 	switch (alignLoc = object->getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::VERT)){
 	case AlignBase::Pos::MIN:
 		if (IS_TEXT){
 			coord += object->getMargin(); //
-			mout.special("Vertical adjust: TEXT +margin=", object->getMargin());
+			// mout.special("Vertical adjust: TEXT +margin=", object->getMargin());
 		}
 		break;
 	case AlignBase::Pos::MID:
@@ -276,12 +276,12 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 		coord -= obox.height;
 		if (IS_TEXT){
 			coord -= object->getMargin(); //
-			mout.special("Vertical adjust: TEXT -margin=", object->getMargin());
+			// mout.special("Vertical adjust: TEXT -margin=", object->getMargin());
 		}
 		break;
 	case AlignBase::Pos::FILL:
-		//mout.experimental("STRETCHING..." );mout.experimental("STRETCHING..." );
-		mout.experimental<LOG_DEBUG>("FILL:ing vert: ", obox, " height ");
+		// mout.experimental("STRETCHING..." );mout.experimental("STRETCHING..." );
+		// mout.experimental<LOG_DEBUG>("FILL:ing vert: ", obox, " height ");
 		coord = anchorBoxVert.y;
 		obox.setHeight(anchorBoxVert.height);
 		break;
@@ -293,7 +293,7 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 	}
 
 	if (IS_TEXT){
-		mout.special("Adjusted TEXT with VERT:", alignLoc, ":", coord0, " -> ", coord);
+		// mout.special("Adjusted TEXT with VERT:", alignLoc, ":", coord0, " -> ", coord);
 	}
 	// mout.attention("Alignment::OBJECT-HORZ ", pos);
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', axis, '=', alignLoc);

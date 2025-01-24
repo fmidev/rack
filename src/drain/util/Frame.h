@@ -44,9 +44,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-
+/// Something that has \c width and \c height.
+/**
+ *   \see drain::Rectangle
+ *   \see drain::Point2D
+ */
 template <class T>
-class Frame2D : public drain::UniTuple<T,2> { //: protected AreaGeometryStruct {
+class Frame2D : public drain::UniTuple<T,2> {
 
 public:
 
@@ -54,18 +58,23 @@ public:
     T & height;
 
 	inline
-	Frame2D(T width=0, T height=0) : width(this->next()), height(this->next()){ //, area(0){
+	Frame2D(T width=0, T height=0) : width(this->next()), height(this->next()){
 		this->set(width, height?height:width);
 	};
 
 	Frame2D(const Frame2D<T> & geometry)  : width(this->next()), height(this->next()) {
-		//this->set(geometry.tuple());
+		this->set(geometry.width, geometry.height);
+	}
+
+	template <class T2>
+	Frame2D(const Frame2D<T2> & geometry)  : width(this->next()), height(this->next()) {
 		this->set(geometry.width, geometry.height);
 	}
 
 	// Reference, N>=2
 	template <size_t N>
-	Frame2D(drain::UniTuple<T,N> & tuple, T i) :
+	// Frame2D(drain::UniTuple<T,N> & tuple, T i) : // WHY T i, not int index type?size_t
+	Frame2D(drain::UniTuple<T,N> & tuple, size_t i) : // 2025 fixed
 	drain::UniTuple<T,2>(tuple, i),
 	width(this->next()),
 	height(this->next()){

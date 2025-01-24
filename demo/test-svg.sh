@@ -2,7 +2,8 @@
 
 DOCFILE=~/eclipse-workspace/rack/src/main/graphics.inc
 TMPDIR=out
-RACK="rack --outputPrefix \$PWD/$TMPDIR/ --outputConf svg:absolutePaths=true "
+#RACK="rack --outputPrefix \$PWD/$TMPDIR/ --outputConf svg:absolutePaths=true "
+RACK="rack --outputPrefix \$PWD/$TMPDIR/ "
 
 OUTFILES=()
 
@@ -82,7 +83,7 @@ function RUN_TEST(){
 	    exit 3
 	fi
 
-	CAPTION=${CAPTION:-"SVG output '$OUTFILE_PNG'"}
+	CAPTION=${CAPTION:-"SVG output '$OUTFILE'"}
 	
 	WRITE_DOC <<EOF
 \code
@@ -100,8 +101,43 @@ EOF
 }
 
 
+
+
+
+
+WRITE_DOC "Align two images horizontally (default)" 
+RUN_TEST \\  volume.h5 --cSize 400 -Q DBZH -c -o gray.png --palette "'default'" -o rgb.png \\  -o simple.svg
+
+WRITE_DOC "Also legend outputs are included in the resulting SVG panel."
+RUN_TEST \\  volume.h5 --cSize 400 -Q DBZH -c -o gray.png --palette "'default'" -o rgb.png \\  --legendOut legend.svg \\  -o simple2.svg
+
+WRITE_DOC 'With several inputs, it is handier to use \c --script . '
+WRITE_DOC 'Output names must be distinct, which is achieved using variables. For details, see \ref scripts and \ref templates .'
+WRITE_DOC 'If generated products contain varying metadata, titles appear, automatically grouping distinguishing data.'
+RUN_TEST \\ --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${NOD}.png'" \\ 'data/pvol_fi{anj,kor,kuo}.h5' \\  -o triple1.svg
+
+WRITE_DOC '\c Rack supports grouping output images to rows or columns.' # Use \c --cGroup to set a distinguishing key.'
+#WRITE_DOC 'Radar images can be organized to \e groups – on lines or columns.'
+WRITE_DOC 'The groups are identified with \c --gGroupTitle \c arg , using distinguishing variables in the argument, for example '
+WRITE_DOC '\c ${NOD} , \c ${what:date} or \c ${what:time} .'
+
+RUN_TEST  \\ --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Sky conditions at \${time|%H:%M} UTC'" \\ 'data-kiira/20170812*.h5' \\  -o time-series1.svg
+
+
+WRITE_DOC 'Similar example using originating radar as the distinguishing metadata.'
+RUN_TEST  \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Examples of \${PLC} (\${NOD})'"  \\ 'data-kiira/20170812*.h5' \\  -o radar-series.svg
+
+
+WRITE_DOC 'A further example, with three levels of titles.'
+RUN_TEST \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\   --gGroupTitle "'Examples of Kiira case'" --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:1'"  \\  data-kiira/201708121530_radar.polar.fikor.h5 data-kiira/201708121600_radar.polar.fiika.h5 \\  -o series-labelled2.svg
+
+WRITE_DOC 'Titles can be removed with respective empty command values:'
+RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "''"  --gGroupTitle "''" --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:1'"  \\   'data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5' \\  -o series-labelled3.svg 
+
+
+
 WRITE_DOC 'A further example, usage of styles'
-RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'AUTO'"  --gGroupTitle "'AUTO:Examples of \${what:time}'" --gTitleBoxHeight "'30,20,10'" \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "'rect.MAIN_TITLE=fill:red'"  \\   --gStyle ".MAIN_TITLE='font-size:15;font-family:Times'"  --gStyle ".LOCATION='fill:green'" \\   'data-kiira/201708121??0_radar.polar.fi{ika,kor,van}.h5'    -o series-styled.svg 
+RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'AUTO'"  --gGroupTitle "'AUTO:Examples of \${what:time}'" --gTitleBoxHeight "'30,20,10'" \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "'rect.MAIN_TITLE=fill:red'"  \\   --gStyle ".MAIN_TITLE='font-size:15;font-family:Times'"  --gStyle ".LOCATION='fill:green'" \\   'data-kiira/201708121??0_radar.polar.fi{ika,kor,van}.h5'  \\  -o series-styled.svg 
 
 ls -1t ${OUTFILES[*]//.png/.cmd}
 
@@ -109,31 +145,3 @@ echo -e "Created: \ndisplay ${OUTFILES[*]}"
 
 
 exit 0
-
-
-WRITE_DOC "Align two images horizontally (default)" 
-RUN_TEST \\  volume.h5 --cSize 400 -Q DBZH -c -o gray.png --palette 'default' -o rgb.png \\  -o simple.svg
-
-WRITE_DOC "Also legend outputs (SVG) are included"
-RUN_TEST \\  volume.h5 --cSize 400 -Q DBZH -c -o gray.png --palette 'default' -o rgb.png \\  --legendOut legend.svg \\  -o simple2.svg
-
-WRITE_DOC 'With several inputs, it is handier to use \c --script . (See: \ref scripts .)'
-WRITE_DOC 'Output names must be distinct, which is achieved using variables. (See \ref templates .)'
-RUN_TEST \\ --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${NOD}.png'" \\ data/pvol_fi{anj,kor,kuo}.h5  -o triple1.svg
-
-WRITE_DOC 'Variables identifying the radar and timestamp often distinguish files sufficiently.'
-WRITE_DOC 'Hence, consider using variables like \c ${NOD} , \c ${what:date}, and \c ${what:time} .'
-WRITE_DOC '\c Rack supports grouping output images to rows or columns. Use \c --cGroup to set a distinguishing key.'
-RUN_TEST  \\ --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Test-\${NOD}'" \\ 'data-kiira/*.h5'  -o series1.svg
-
-
-WRITE_DOC 'In a grid of images, originating from several radars and times, the images can be labelled automatically with \c --gTitles command, with option \c IMAGE_TITLES . '
-RUN_TEST  \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Examples of \${PLC} (\${NOD}) on \${what:date|%Y/%m/%d}'"  \\ 'data-kiira/*.h5'  -o series-labelled.svg
-
-
-WRITE_DOC 'A further example, with three levels of titles.'
-RUN_TEST \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\   --gGroupTitle "'Examples of Kiira case'" --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:1'"  \\  data-kiira/201708121530_radar.polar.fikor.h5 data-kiira/201708121600_radar.polar.fiika.h5  -o series-labelled2.svg
-
-WRITE_DOC 'A further example, with...'
-RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'AUTO'"  --gGroupTitle "'Examples of \${what:time}'" \\   data-kiira/201708121?00_radar.polar.fikor.h5 data-kiira/201708121?00_radar.polar.fiika.h5   -o series-labelled3.svg 
-
