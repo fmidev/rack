@@ -101,7 +101,7 @@ SVG output 'simple2.svg'</div></div>
 SVG output 'triple1.svg'</div></div>
  <code>Rack</code> supports grouping output images to rows or columns. The groups are identified with <code>--gGroupTitle</code> <code>arg</code> , using distinguishing variables in the argument, for example <code>${NOD}</code> , <code>${what:date}</code> or <code>${what:time}</code> . </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 -Q DBZH -c --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
-<div class="line">   --gGroupTitle <span class="stringliteral">&#39;Sky conditions at ${time|%H:%M} UTC&#39;</span> \</div>
+<div class="line">   --gGroupTitle <span class="stringliteral">&#39;Sky conditions at ${what:time|%H:%M} UTC&#39;</span> \</div>
 <div class="line">   data-kiira/20170812*.h5 \</div>
 <div class="line">   -o time-series1.svg</div>
 </div><!-- fragment --><div class="image">

@@ -236,7 +236,7 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 	}
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', axis, '=', alignLoc);
 
-	mout.special("Vertical adjust: after anchor:", alignLoc, " coord=", coord, " based on abox:", anchorBoxVert);
+	// mout.special("Vertical adjust: after anchor:", alignLoc, " coord=", coord, " based on abox:", anchorBoxVert);
 
 	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");
 
