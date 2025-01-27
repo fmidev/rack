@@ -141,7 +141,7 @@ void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> &
 	case AlignBase::Pos::MIN:
 		if (IS_TEXT){
 			object->setStyle(TEXT_ANCHOR, "start");
-			coord += object->getMargin(); //
+			coord += 2.0*object->getMargin(); //
 		}
 		break;
 	case AlignBase::Pos::MID:
@@ -156,7 +156,7 @@ void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> &
 	case AlignBase::Pos::MAX:
 		if (IS_TEXT){
 			object->setStyle(TEXT_ANCHOR, "end");
-			coord -= object->getMargin(); // margin
+			coord -= 2.0*object->getMargin(); // margin
 		}
 		else {
 			coord -= obox.width;
@@ -179,7 +179,7 @@ void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> &
 	// mout.attention("Alignment::OBJECT-HORZ ", pos);
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', axis, '=', alignLoc);
 
-	TranslatorSVG translator(coord - object->getBoundingBox().x, 0);
+	TranslatorSVG translator(coord - object->getBoundingBox().x, 0.0f);
 	TreeUtils::traverse(translator, object);
 
 }
@@ -298,7 +298,7 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 	// mout.attention("Alignment::OBJECT-HORZ ", pos);
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', axis, '=', alignLoc);
 
-	TranslatorSVG translator(0, coord - object->getBoundingBox().y);
+	TranslatorSVG translator(0.0f, coord - object->getBoundingBox().y);
 	TreeUtils::traverse(translator, object);
 
 }

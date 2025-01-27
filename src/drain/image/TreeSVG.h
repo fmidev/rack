@@ -54,7 +54,7 @@ typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
 
 struct svg {
 
-	typedef int coord_t;
+	typedef float coord_t;
 
 	enum tag_t {
 		UNDEFINED=XML::UNDEFINED,

@@ -430,7 +430,8 @@ void CmdOutputFile::exec() const {
 		//mout.pending<LOG_WARNING>(__FUNCTION__, " quantity2: ", ctx.getStatusMap().get("what:quantity","??"));
 
 		if (IMAGE_PNG){
-			RackSVG::addImage(ctx, srcImage, filepath); // path.str()
+			RackSVG::addImage(ctx, srcImage, filepath);
+
 		}
 
 		mout.info("Retrieved image: ", srcImage, " [", srcImage.properties.get("what:quantity", ""), "]");

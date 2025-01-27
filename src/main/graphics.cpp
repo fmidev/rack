@@ -22,21 +22,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 //#include <stddef.h>
 
 #include <string>
 
+/*
+  const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(path);
+  const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(path);
+  const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(path);
+  const bool IMAGE_SVG = drain::image::NodeSVG::fileInfo.checkPath(path);
+*/
+#include <drain/image/FilePng.h>
+#include <drain/image/TreeSVG.h>
 #include <drain/prog/Command.h>
 #include <drain/prog/CommandInstaller.h>
 #include <drain/prog/CommandBank.h>
 #include <drain/util/Output.h>
-
 #include "data/SourceODIM.h" // for NOD
 
 #include "resources.h"
@@ -63,7 +70,7 @@ const drain::EnumDict<rack::RackSVG::ElemClass>::dict_t  drain::EnumDict<rack::R
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SHARED_METADATA),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
 };
-*/
+ */
 
 
 }
@@ -175,11 +182,10 @@ drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std
 
 	// Ensure STYLE elem and definitions
 	RackSVG::getStyle(ctx);
-	//ctx.getStyle();
-
+	// ctx.getStyle();
 	// drain::image::TreeSVG & main = ctx.svgTrack[ctx.svgGroupNameSyntax]; <- this makes sense as well
 
-drain::image::TreeSVG & main = ctx.svgTrack[PanelConfSVG::MAIN];
+	drain::image::TreeSVG & main = ctx.svgTrack[PanelConfSVG::MAIN];
 	if (main -> isUndefined()){
 		main->setType(svg::GROUP);
 		main->addClass(PanelConfSVG::MAIN);
@@ -189,8 +195,98 @@ drain::image::TreeSVG & main = ctx.svgTrack[PanelConfSVG::MAIN];
 
 }
 
+/*
+ *   This could be in GraphicsContext, but ctx.log should be virtualized first, like getLog():
+ */
+void RackSVG::applyAlignment(RackContext & ctx, drain::image::TreeSVG & group){
+
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	if (ctx.alignHorz.pos != AlignBase::UNDEFINED_POS){
 
 
+		group->setAlign(AlignBase::HORZ, ctx.alignHorz.pos, ctx.alignHorz.get(AlignSVG::INSIDE));  // simplify
+		mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", group->getAlignStr());
+		// ctx.alignHorz.pos  = AlignSVG::UNDEFINED_TOPOL;
+		group->addClass(LayoutSVG::FLOAT);
+		mout.attention("updated align: ",  group.data); // , " -> all:", group->getAlignStr()
+
+		ctx.alignHorz.reset();
+		ctx.alignHorz.set(AlignBase::UNDEFINED_POS, AlignSVG::INSIDE);
+		// ctx.alignHorz.pos == AlignBase::UNDEFINED_POS
+		mout.attention(" HORZ state now: ", ctx.alignHorz);
+	}
+	/*
+	else {
+		group->setAlign(ctx.alignHorz);
+		// group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
+		mout.accept<LOG_NOTICE>("Using HORZ align: ", ctx.alignHorz, " -> ", group->getAlignStr());
+	}
+	 */
+
+	if (ctx.alignVert.pos != AlignBase::UNDEFINED_POS){
+		group->setAlign(AlignBase::VERT, ctx.alignVert.pos, ctx.alignVert.get(AlignSVG::INSIDE)); // simplify
+		mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignVert, " -> ", group->getAlignStr());
+		// ctx.alignVert.pos  = AlignSVG::UNDEFINED_TOPOL;
+		group->addClass(LayoutSVG::FLOAT);
+		mout.attention("updated align: ",  group.data); //  " -> all:", group->getAlignStr()
+		ctx.alignVert.reset();
+		ctx.alignVert.set(AlignBase::UNDEFINED_POS, AlignSVG::INSIDE);
+		mout.attention(" VERT state now: ", ctx.alignVert);
+		// ctx.alignVert.pos != AlignBase::UNDEFINED_POS
+	}
+	/*
+	else {
+		// group->setAlign(AlignSVG::TOP, AlignSVG::INSIDE); // AlignSVG::BOTTOM);
+		group->setAlign(ctx.alignVert);
+		// group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
+		mout.accept<LOG_NOTICE>("Using VERT align: ", ctx.alignVert, " -> ", group->getAlignStr());
+	}
+	 */
+
+
+}
+
+//bool RackSVG::applyInclusion(RackContext & ctx, SvgInclude format){
+bool RackSVG::applyInclusion(RackContext & ctx, const drain::FilePath & filepath){
+
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	mout.special<LOG_WARNING>("NOW file: ", filepath, ", includes=", ctx.svgPanelConf.svgIncludes);
+
+	SvgInclude format = UNKNOWN; // UNKNOWN
+	if (drain::image::FilePng::fileInfo.checkExtension(filepath.extension)){
+		format = PNG;
+	}
+	else if (drain::image::NodeSVG::fileInfo.checkExtension(filepath.extension)){
+		format = SVG;
+	}
+	// + TXT ?
+
+
+	// Main selection: format (PNG/SVG/TXT) is accepted
+	//
+	if (!ctx.svgPanelConf.svgIncludes.isSet(format)){
+		mout.reject<LOG_WARNING>("format=", format, ", skipped file: ", filepath);
+		return false;
+	}
+	else if (ctx.svgPanelConf.svgIncludes.isSet(SvgInclude::SKIP)){
+		mout.reject<LOG_WARNING>("explicitly SKIPped file: ", filepath);
+		ctx.svgPanelConf.svgIncludes.unset(SvgInclude::SKIP);
+		return false;
+	}
+	else if (ctx.svgPanelConf.svgIncludes.isSet(SvgInclude::NEXT)){
+		// Could warn, if also ON = "double-on"
+		mout.accept<LOG_WARNING>("explicitly included (", SvgInclude::NEXT, ") file: ", filepath);
+		ctx.svgPanelConf.svgIncludes.unset(SvgInclude::NEXT);
+		return true;
+	}
+	else {
+		mout.pending<LOG_WARNING>("considering file: ", filepath, ", format=", format);
+		return ctx.svgPanelConf.svgIncludes.isSet(SvgInclude::ON);
+	}
+
+}
 // Need ctx.
 
 /// Return current row or column of image panels.
@@ -259,11 +355,17 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 
 
 /// Add pixel image (PNG)
-drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
+// drain::image::TreeSVG &
+void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
 
-	using namespace drain::image;
+	// using namespace drain::image;
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	//if (applyInclusion(ctx, drain::EnumDict<rack::SvgInclude>::getValue(filepath.extension, false))){
+	if (!applyInclusion(ctx, filepath)){
+		return;
+	}
 
 	mout.attention("filepath:", filepath);
 
@@ -319,7 +421,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	if (cmdKey.size() >= 2){ // actually larger...
 		// metadata->set("cmdArgs", statusMap.get("cmdArgs", ""));
 	}
-	*/
+	 */
 	// std::string cmd = statusMap.get("cmd", "");
 	// if (cmd.size() >= 2){prevCmdKey
 	// metadata->set("cmd", statusMap.get("cmd", ""));
@@ -329,7 +431,7 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 	description->getAttributes().importCastableMap(metadata->getAttributes());
 	// todo: description  : prevCmdKey "what:product", "what:prodpar", "how:angles"
 
-	return image;
+	// return image;
 
 }
 
@@ -337,20 +439,36 @@ drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image:
 /**
  *
  */
-drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath){ // what about prefix?
+// drain::image::TreeSVG &
+void RackSVG::addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath){ // what about prefix?
+
+	//if (applyInclusion(ctx, drain::EnumDict<rack::SvgInclude>::getValue(filepath.extension, false))){
+	if (!applyInclusion(ctx, filepath)){
+		return;
+	}
+
 	const drain::Frame2D<double> frame(svg->getBoundingBox().getFrame());
-	return addImage(ctx, frame, filepath);
+	// return
+	addImage(ctx, frame, filepath);
 }
 
 /// Add pixel image (PNG)
-drain::image::TreeSVG & RackSVG::addImage(RackContext & ctx, const drain::Frame2D<double> & frame, const drain::FilePath & filepath){ // what about prefix?
+// drain::image::TreeSVG &
+void RackSVG::addImage(RackContext & ctx, const drain::Frame2D<double> & frame, const drain::FilePath & filepath){ // what about prefix?
+
+	//if (applyInclusion(ctx, drain::EnumDict<rack::SvgInclude>::getValue(filepath.extension, false))){
+	if (!applyInclusion(ctx, filepath)){
+		return;
+	}
 
 	drain::image::TreeSVG & imagePanel = getImagePanelGroup(ctx, filepath);
 	imagePanel->addClass(PanelConfSVG::IMAGE_PANEL);
+	applyAlignment(ctx, imagePanel);
+
 	drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE);
 	image->setFrame(frame);
 
-	return image;
+	// return image;
 }
 
 drain::image::TreeSVG & RackSVG::addImageBorder(drain::image::TreeSVG & imagePanelGroup){ //, const drain::Frame2D<double> & frame){
@@ -375,25 +493,25 @@ void RackSVG::addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & obj
 
 	// Lower... for GENERAL as well.
 	switch (elemClass) {
-		case PanelConfSVG::ElemClass::MAIN_TITLE:
-			backgroundRect->setId(PanelConfSVG::ElemClass::MAIN_TITLE);
-			backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
-			backgroundRect->setHeight(conf.boxHeights[0]);
-			break;
-		case PanelConfSVG::ElemClass::GROUP_TITLE:
-			backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
-			backgroundRect->setHeight(conf.boxHeights[1]);
-			// backgroundRect->setHeight(40);
-			break;
-			// case PanelConfSVG::ElemClass::IMAGE_TITLE:
-			// backgroundRect->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
-			// backgroundRect->setHeight(40);
-			// backgroundRect->setHeight(conf.boxHeights[2]);
-			// break;
-		default:
-			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.suspicious("Unhandled elemClass: ", elemClass);
-			break;
+	case PanelConfSVG::ElemClass::MAIN_TITLE:
+		backgroundRect->setId(PanelConfSVG::ElemClass::MAIN_TITLE);
+		backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+		backgroundRect->setHeight(conf.boxHeights[0]);
+		break;
+	case PanelConfSVG::ElemClass::GROUP_TITLE:
+		backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+		backgroundRect->setHeight(conf.boxHeights[1]);
+		// backgroundRect->setHeight(40);
+		break;
+		// case PanelConfSVG::ElemClass::IMAGE_TITLE:
+		// backgroundRect->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+		// backgroundRect->setHeight(40);
+		// backgroundRect->setHeight(conf.boxHeights[2]);
+		// break;
+	default:
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.suspicious("Unhandled elemClass: ", elemClass);
+		break;
 	}
 
 	addTitles(conf, object, BACKGROUND_RECT, elemClass);
@@ -406,7 +524,7 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	/** TODO
 	const double fontSize = // getStyleValue(root, RackSVG::TITLE, "font-size", 12.5);
 			root[drain::image::svg::STYLE][elemClass]->get("font-size", 12.5);
-	*/
+	 */
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	// TODO: title area "filling order", by group class.
@@ -424,7 +542,7 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	}
 	// mainHeader->setHeight(conf.boxHeights[0]);
 	// mainHeader->setMargin(conf.boxHeights[0]*0.2); // ADJUST
-	*/
+	 */
 	// Ensure order
 	mainHeader["product"](svg::TSPAN);
 	mainHeader["product"]->addClass("product");
@@ -462,7 +580,7 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	}
 	locationHeader->setHeight(16);
 	locationHeader->setMargin(3); // adjust
-	*/
+	 */
 	locationHeader["NOD"](svg::TSPAN);
 	locationHeader["NOD"]->addClass("NOD");
 	locationHeader["PLC"](svg::TSPAN);
@@ -500,7 +618,7 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 
 
 
-	textBoxMargin = textBoxHeight * 0.2;
+	textBoxMargin = textBoxHeight * 0.25;
 
 	mainHeader->setHeight(textBoxHeight);
 	mainHeader->setMargin(textBoxMargin); // adjust
@@ -560,7 +678,7 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 		TitleCreatorSVG titleCreator(ctx.svgTitles.getValue());
 		drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
 	}
-	*/
+	 */
 	//TitleCreatorSVG titleCreator(0xff);
 	TitleCreatorSVG titleCreator(ctx.svgPanelConf);
 	drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
@@ -635,7 +753,7 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 		TreeSVG & debugExplicit = current["rejected"](svg::DESC);
 		debugExplicit->addClass("EXPLICIT");
 		debugAll->ctext += drain::sprinter(stat).str();
-		*/
+		 */
 
 		// metadata->getAttributes().clear();
 		mout.pending<LOG_DEBUG>("pruning: ", drain::sprinter(stat), path.str());
@@ -661,18 +779,18 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 
 				// Actual pruning, "downwards"
 				// if (count > 1){
-					//if (true){
-					for (auto & entry: current.getChildren()){
-						TreeSVG & child = entry.second;
-						if (child.hasChild(svg::METADATA)){
-							TreeSVG & childMetadata = entry.second[svg::METADATA]; //(svg::METADATA);
-							childMetadata->removeAttribute(key);
-							childMetadata->addClass("md_pruned");
-							TreeSVG & childMetadata2 = entry.second[PanelConfSVG::ElemClass::SHARED_METADATA](svg::METADATA);
-							childMetadata2->addClass("md_general");
-							childMetadata2->set(key, value);
-						}
+				//if (true){
+				for (auto & entry: current.getChildren()){
+					TreeSVG & child = entry.second;
+					if (child.hasChild(svg::METADATA)){
+						TreeSVG & childMetadata = entry.second[svg::METADATA]; //(svg::METADATA);
+						childMetadata->removeAttribute(key);
+						childMetadata->addClass("md_pruned");
+						TreeSVG & childMetadata2 = entry.second[PanelConfSVG::ElemClass::SHARED_METADATA](svg::METADATA);
+						childMetadata2->addClass("md_general");
+						childMetadata2->set(key, value);
 					}
+				}
 				// }
 
 			}
@@ -767,7 +885,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 		mout.attention("group has no METADATA element: ", group.data);
 		return 0;
 	}
-	*/
+	 */
 
 	// Always
 	writeTitles(group, attributesPrivate);
@@ -780,7 +898,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 	if (WRITE_SHARED_METADATA && group.hasChild(PanelConfSVG::ElemClass::SHARED_METADATA)){ // explicit request: GROUP
 		writeTitles(group, group[PanelConfSVG::ElemClass::SHARED_METADATA]->getAttributes());
 	}
-	*/
+	 */
 
 	return 0;
 

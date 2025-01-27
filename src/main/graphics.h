@@ -117,19 +117,25 @@ public:
 	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath);
 
 
-
-
+	static
+	void applyAlignment(RackContext & ctx, drain::image::TreeSVG & group);
 
 	static
-	drain::image::TreeSVG & addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath);
+	bool applyInclusion(RackContext & cxt, const drain::FilePath & filepath); // , SvgInclude fileFormat);
+
+	static
+	// drain::image::TreeSVG &
+	void addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath);
 
 	/// Currently, uses file link (does not embed)
 	static
-	drain::image::TreeSVG & addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath);
+	// drain::image::TreeSVG &
+	void addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath);
 
 	/// Add external image from a file path.
 	static
-	drain::image::TreeSVG & addImage(RackContext & ctx, const drain::Frame2D<double> & frame, const drain::FilePath & filepath);
+	// drain::image::TreeSVG &
+	void addImage(RackContext & ctx, const drain::Frame2D<double> & frame, const drain::FilePath & filepath);
 
 
 	/// Add TEXT elements: MAINTITLE, LOCATION, TIME, GENERAL

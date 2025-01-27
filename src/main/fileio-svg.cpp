@@ -210,8 +210,11 @@ public:
 	// drain::StringBuilder<':'>(topol_enum::dict.getKeys())
 	CmdAlign() : drain::SimpleCommand<std::string>(__FUNCTION__, "Alignment of the next element", "topology", "",
 			drain::sprinter(drain::EnumDict<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
-			drain::sprinter(drain::EnumDict<AlignBase::Axis>::dict.getKeys(), {"|"}).str() + ':'+
-			drain::sprinter(drain::EnumDict<AlignBase::Pos>::dict.getKeys(), {"|"}).str()
+			// drain::sprinter(drain::EnumDict<AlignBase::Axis>::dict.getKeys(), {"|"}).str() + ':'+
+			drain::sprinter(drain::EnumDict<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str() + ',' +
+			drain::sprinter(drain::EnumDict<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
+			drain::sprinter(drain::EnumDict<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str()
+			// drain::sprinter(drain::EnumDict<AlignBase::Pos>::dict.getKeys(), {"|"}).str()
 	){
 		//getParameters().link("", x, drain::StringBuilder<':'>());
 	}
@@ -443,6 +446,35 @@ public:
 };
 
 
+class CmdInclude : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdInclude() : drain::SimpleCommand<std::string>(__FUNCTION__, "Select images to include in SVG panel", "include",
+			drain::sprinter(drain::EnumDict<SvgInclude>::dict.getKeys(), '|').str()) {
+	}
+
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+		//mout.unimplemented<LOG_ERR>(__FILE__, __FUNCTION__);
+		if (value.empty()){
+			mout.warn("empty argument - did you mean 'NONE' ?");
+		}
+		else if (value == "NONE"){
+			ctx.svgPanelConf.svgIncludes.reset();
+		}
+		else if (value == "OFF"){
+			ctx.svgPanelConf.svgIncludes.unset(SvgInclude::ON);
+		}
+		else {
+			ctx.svgPanelConf.svgIncludes.set(SvgInclude::ON); // so PNG,SVG,.. need no explicit "ON"
+			ctx.svgPanelConf.svgIncludes.set(value);
+		}
+	}
+};
+
+
 /*
 class CmdTitles : public drain::SimpleCommand<std::string> {
 public:
@@ -578,28 +610,35 @@ public:
 		group->addClass(LayoutSVG::FLOAT);
 
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
-		const std::string ANCHOR_ELEM("main");
-		//group->setAlignAnchorVert(MAIN_ELEM);
+		const std::string ANCHOR_ELEM("myRect"); // not PanelConfSVG::MAIN
 		group->setAlignAnchorHorz(ANCHOR_ELEM);
 
+		RackSVG::applyAlignment(ctx, group);
 
+		/*
 		if (ctx.alignHorz.topol != AlignSVG::UNDEFINED_TOPOL){
 			group->setAlign(AlignBase::HORZ, ctx.alignHorz.pos, ctx.alignHorz.topol);  // simplify
 			mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", group->getAlignStr());
-			//ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
+			ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
 		}
 		else {
-			group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
+			group->setAlign(ctx.alignHorz);
+			// group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
+			mout.accept<LOG_NOTICE>("Using HORZ align: ", ctx.alignHorz, " -> ", group->getAlignStr());
 		}
 
 		if (ctx.alignVert.topol != AlignSVG::UNDEFINED_TOPOL){
 			group->setAlign(AlignBase::VERT, ctx.alignVert.pos, ctx.alignVert.topol); // simplify
 			mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignVert, " -> ", group->getAlignStr());
-			// ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
+			ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
 		}
 		else {
-			group->setAlign(AlignSVG::TOP, AlignSVG::INSIDE); // AlignSVG::BOTTOM);
+			// group->setAlign(AlignSVG::TOP, AlignSVG::INSIDE); // AlignSVG::BOTTOM);
+			group->setAlign(ctx.alignVert);
+			// group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
+			mout.accept<LOG_NOTICE>("Using VERT align: ", ctx.alignVert, " -> ", group->getAlignStr());
 		}
+		*/
 
 		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
 		rect->set("width", frame.width);
@@ -668,7 +707,7 @@ public:
 
 			// Set horz alignment for every element
 			if (horzPos != AlignBase::Pos::UNDEFINED_POS){
-				text->setAlign(ctx.alignHorz, AlignSVG::Topol::INSIDE);
+				text->setAlign(AlignBase::HORZ, horzPos, AlignSVG::Topol::INSIDE);
 			}
 			else {
 				text->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE); // AlignSVG::LEFT);
@@ -688,12 +727,11 @@ public:
 		}
 
 		// mout.reject<LOG_NOTICE>(" ->  align:", ctx.topol, '|', ctx.halign, '/', ctx.valign);
-		mout.reject<LOG_NOTICE>("Main align:", ctx.alignHorz, ", ", ctx.alignVert);
-
+		// mout.reject<LOG_NOTICE>("Main align:", ctx.alignHorz, ", ", ctx.alignVert);
+		/*
 		ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
 		ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
-
-
+		*/
 	}
 };
 
@@ -874,6 +912,7 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdAlign>();
 	install<CmdFontSizes>();
 	install<CmdGroupTitle>();
+	install<CmdInclude>();
 	install<CmdTitle>();
 	// install<CmdGroupTitle>().section = HIDDEN; // under construction
 	install<CmdPanel>(); // .section = HIDDEN; // addSection(i);

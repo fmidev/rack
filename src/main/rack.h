@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "10.5"
+#define __RACK_VERSION__ "10.6"
 
 /**
+ *  Version 10.6
+ *   - gFontSize, gBoxSizes, gInclude,
+ *
  *  Version 10.5
  *   - completed SVG titles
  *

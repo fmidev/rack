@@ -123,8 +123,9 @@ WRITE_DOC '\c Rack supports grouping output images to rows or columns.' # Use \c
 WRITE_DOC 'The groups are identified with \c --gGroupTitle \c arg , using distinguishing variables in the argument, for example '
 WRITE_DOC '\c ${NOD} , \c ${what:date} or \c ${what:time} .'
 
-RUN_TEST  \\ --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Sky conditions at \${what:time|%H:%M} UTC'" \\ 'data-kiira/20170812*.h5' \\  -o time-series1.svg
+RUN_TEST  \\ --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Sky conditions at \${what:time|%H:%M} UTC'" \\ 'data-kiira/201708121?00*.h5' \\  -o time-series1.svg
 
+RUN_TEST  \\  --gLayout 'VERT,DECR'  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-${what:date}T${what:time}-${NOD}.png'"    --gGroupTitle "'Sky conditions at \${what:time|%H:%M} UTC'"    'data-kiira/201708121?00*.h5'  --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:0'" --gStyle rect.GROUP_TITLE="'stroke:white;stroke-width:2'" -o time-series2.svg 
 
 WRITE_DOC 'Similar example using originating radar as the distinguishing metadata.'
 RUN_TEST  \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Examples of \${PLC} (\${NOD})'"  \\ 'data-kiira/20170812*.h5' \\  -o radar-series.svg

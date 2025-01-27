@@ -35,6 +35,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+
+template <>
+const drain::EnumDict<rack::SvgInclude>::dict_t  drain::EnumDict<rack::SvgInclude>::dict = {
+		DRAIN_ENUM_ENTRY(rack::SvgInclude, NONE),
+		DRAIN_ENUM_ENTRY(rack::SvgInclude, PNG),
+		DRAIN_ENUM_ENTRY(rack::SvgInclude, SVG),
+		DRAIN_ENUM_ENTRY(rack::SvgInclude, TXT),
+		DRAIN_ENUM_ENTRY(rack::SvgInclude, ALL),
+		DRAIN_ENUM_ENTRY(rack::SvgInclude, NEXT),
+		DRAIN_ENUM_ENTRY(rack::SvgInclude, SKIP),
+		DRAIN_ENUM_ENTRY(rack::SvgInclude, ON),
+		DRAIN_ENUM_ENTRY(rack::SvgInclude, OFF),
+		DRAIN_ENUM_ENTRY(rack::SvgInclude, UNKNOWN),
+};
+
+
 template <>
 const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict = {
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, NONE),
@@ -145,6 +161,41 @@ GraphicsContext::GraphicsContext(const GraphicsContext & ctx) {
 	svgPanelConf.groupTitleSyntax = ctx.svgPanelConf.groupTitleSyntax;
 	// svgTitles    = ctx.svgTitles;
 }
+
+
+/*
+void GraphicsContext::applyAlignment(drain::image::TreeSVG & group){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (alignHorz.topol != AlignSVG::UNDEFINED_TOPOL){
+		group->setAlign(AlignBase::HORZ, alignHorz.pos, alignHorz.topol);  // simplify
+		mout.unimplemented<LOG_NOTICE>("Set: ", alignHorz, " -> ", group->getAlignStr());
+		//ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
+	}
+	else {
+		group->setAlign(alignHorz);
+		// group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
+		mout.accept<LOG_NOTICE>("Using HORZ align: ", alignHorz, " -> ", group->getAlignStr());
+	}
+
+	if (alignVert.topol != AlignSVG::UNDEFINED_TOPOL){
+		group->setAlign(AlignBase::VERT, alignVert.pos, alignVert.topol); // simplify
+		mout.unimplemented<LOG_NOTICE>("Set: ", alignVert, " -> ", group->getAlignStr());
+		// ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
+	}
+	else {
+		// group->setAlign(AlignSVG::TOP, AlignSVG::INSIDE); // AlignSVG::BOTTOM);
+		group->setAlign(alignVert);
+		// group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
+		mout.accept<LOG_NOTICE>("Using VERT align: ", alignVert, " -> ", group->getAlignStr());
+	}
+
+	alignHorz.topol = AlignSVG::UNDEFINED_TOPOL;
+	alignVert.topol = AlignSVG::UNDEFINED_TOPOL;
+
+}
+*/
 
 /*
 drain::image::TreeSVG & GraphicsContext::getStyle(){

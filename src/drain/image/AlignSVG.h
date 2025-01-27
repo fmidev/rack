@@ -131,22 +131,19 @@ struct Alignment {
 	//AlignBase::Pos pos
 	POS pos = AlignBase::Pos::UNDEFINED_POS; // or middle?
 
+	/// Default constructor
 	inline
 	Alignment(AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : axis(A), pos(pos){
 	}
 
-	inline
-	Alignment(AlignBase::Axis axis, AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS): axis(axis), pos(pos){
-	}
-
-	/*
-	inline
-	Alignment(AlignBase::Axis axis, AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : axis(axis), pos(pos){ // axis(axis),
-	}
-	*/
-
+	/// Copy constructor
 	inline
 	Alignment(const Alignment & ac) : axis(ac.axis), pos(ac.pos){
+	}
+
+
+	inline
+	Alignment(AlignBase::Axis axis, AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS): axis(axis), pos(pos){
 	}
 
 	template <typename AX2, AlignBase::Axis A2>
@@ -155,10 +152,40 @@ struct Alignment {
 		axis = align.axis; // error if const
 	}
 
+	/// Destructor.
+	inline virtual
+	~Alignment(){};
+
+	/*
+	template <typename T>
+	bool isSet2();
+
 	virtual inline
 	bool isSet() const {
 		return (axis != AlignBase::Axis::UNDEFINED_AXIS) && (pos != AlignBase::Pos::UNDEFINED_POS);
 	}
+	*/
+
+	inline
+	const AlignBase::Axis & get(const AlignBase::Axis & defaultValue) const {
+		if (axis != AlignBase::Axis::UNDEFINED_AXIS){
+			return axis;
+		}
+		else {
+			return defaultValue;
+		}
+	}
+
+	inline
+	const AlignBase::Pos & get(const AlignBase::Pos & defaultValue) const {
+		if (pos != AlignBase::Pos::UNDEFINED_POS){
+			return pos;
+		}
+		else {
+			return defaultValue;
+		}
+	}
+
 
 	virtual inline
 	void reset(){
@@ -177,8 +204,54 @@ struct Alignment {
 
 };
 
+/*
+template <typename AX, AlignBase::Axis A, typename POS>
+template <>
+bool Alignment<AX,A,POS>::isSet2<AlignBase::Axis>(){
+	return axis != AlignBase::Axis::UNDEFINED_AXIS;
+};
 
+template <typename AX, AlignBase::Axis A, typename POS>
+//template <>
+bool Alignment<AX,A,POS>::isSet2<AlignBase::Pos>(){
+	return axis != AlignBase::Pos::UNDEFINED_POS;
+};
+*/
 
+/*
+template <typename AX, AlignBase::Axis A, typename POS>
+template <>
+const  AlignBase::Axis & Alignment<AX,A,POS>::get(const AlignBase::Axis & defaultValue){
+	if (isSet<AlignBase::Axis>()){
+		return axis;
+	}
+	else {
+		return defaultValue;
+	}
+};
+
+template <typename AX, AlignBase::Axis A, typename POS>
+template <>
+const  AlignBase::Pos & Alignment<AX,A,POS>::get(const AlignBase::Pos & defaultValue){
+	if (isSet<AlignBase::Pos>()){
+		return pos;
+	}
+	else {
+		return defaultValue;
+	}
+};
+
+template <typename AX, AlignBase::Axis A, typename POS>
+template <>
+const  AlignBase::Axis & Alignment<AX,A,POS>::get(const AlignBase::Axis & defaultValue) const {
+	if (axis != AlignBase::Axis::UNDEFINED_AXIS){
+		return axis;
+	}
+	else {
+		return defaultValue;
+	}
+};
+*/
 
 
 template <typename AX, AlignBase::Axis V>
@@ -300,20 +373,6 @@ struct AlignSVG { // : protected Align {
 		updateAlign();
 	}
 
-	/// NEW High-level, user friendlier interface for setting the alignments for both OBJECT itself and its ANCHOR object.
-	/*
-	 *  \tparam T - enum type \c Topol or string
-	 *  \tparam A - enum type \c Alignment or string
-	 *  \param topol  - \c INSIDE or \c OUTSIDE
-	 *  \param align  - \c LEFT|CENTER|RIGHT or \c TOP|MIDDLE|BOTTOM
-	template <typename T, typename AX, AlignBase::Axis A>
-	void setAlign(const Alignment<AX,A> & align, const T & topol){
-		const Topol & t = EnumDict<AlignSVG::Topol>::getValue(topol, false);
-		// const Alignment<> & a = EnumDict<Alignment<> >::getValue(align, false);
-		setAlign(align.axis, align.pos, t);
-	}
-	 */
-
 	/// NEW High-level, user friendlier interface for setting INSIDE the alignments for both OBJECT itself and its ANCHOR object.
 	/*
 	 *  Template supports empty arg list.
@@ -346,52 +405,6 @@ struct AlignSVG { // : protected Align {
 	/// Compiler trap: unimplemented for two of same kind: either \c HorzAlign or \c VertAlign twice.
 	template <typename AX, AlignBase::Axis A>
 	void setAlign(const Alignment<AX,A> & align1, const Alignment<AX,A> & align2);
-
-	// Convenience: set both horz and vert alignments (INSIDE)
-	/*
-	void setAlign(const VertAlign & valign, const HorzAlign & halign){
-		setAlign(halign.axis, halign.pos, AlignSVG::Topol::INSIDE);
-		setAlign(valign.axis, valign.pos, AlignSVG::Topol::INSIDE);
-	}
-	 */
-
-
-	// typedef Alignment<const AlignBase::Axis, AlignBase::Axis::HORZ> HorzAlign;
-	/*
-	template <AlignBase::Axis AX, typename ...T>
-	void setAlign(const Alignment<const AlignBase::Axis, AX> & align, const T... args){
-		if (align.pos == AlignBase::FILL){
-			// Makes sense only for OBJECT, as it changed. ANCHOR is always unchanged.
-			setAlign(AlignSVG::OBJECT, align.axis, align.pos);
-		}
-		else {
-			setAlign(align.axis, align.pos, args...);
-		}
-	}
-	*/
-
-	/*
-	 *  Template supports empty arg list.
-	 *
-
-	template <typename ...T>
-	void setAlign(const HorzAlign & align, const T... args){
-		if (align.pos == AlignBase::FILL){
-			// Makes sense only for OBJECT, as it changed. ANCHOR is always unchanged.
-			setAlign(AlignSVG::OBJECT, align.axis, align.pos);
-		}
-		else {
-			setAlign(align.axis, align.pos, args...);
-		}
-	}
-
-	template <typename ...T>
-	void setAlign(const VertAlign & align, const T...  args){
-		setAlign(align.axis, align.pos, args...);
-	}
-	 */
-
-
 
 
 	/// High-level, user friendlier interface for setting the alignments for both OBJECT itself and its ANCHOR object.
@@ -557,11 +570,18 @@ const AlignBase::Pos & AlignSVG::getAlign(const OBJ & owner, const A & axis) con
 
 
 
-/// "Alternative" \e partial alignment configuration for single object (OBJECT or its ANCHOR).
+/// "Alternative" \e partial alignment configuration for single object. Partial means that either \c OBJECT itself or \c ANCHOR object is set.
 /**
- *  Essentially, a triplet (topol, axis, coord) .ie of types <Topol,Axis,Coord>
+ *  Extends Alignment with topology, \c Topol (\c INSIDE or \c OUTSIDE ).
  *
- *  Designed for command line use.
+ *  Essentially, a triplet of types <Topol,Axis,Coordinate>, out of which Axis may be const.
+ *
+ *
+ *  Designed to handle command line arguments, adjusting AlignSVG::HorzAlign and AlignSVG::VertAlign
+ *
+ *  \see AlignSVG::HorzAlign
+ *  \see AlignSVG::VertAlign
+ *
  *
  */
 template <typename AX = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis::UNDEFINED_AXIS> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
@@ -574,7 +594,9 @@ struct CompleteAlignment : public Alignment<AX,A> {
 	CompleteAlignment(const TT... args) : Alignment<AX,A>() {
 		set(args...);
 	}
-	//CompleteAlignment(AlignSVG::Topol topol=AlignSVG::Topol::INSIDE, AlignBase::Pos pos=AlignBase::Pos::MIN) : Alignment<AX,A>(pos), topol(topol){
+
+	inline
+	~CompleteAlignment(){};
 
 	virtual inline
 	bool isSet() const {
@@ -584,31 +606,25 @@ struct CompleteAlignment : public Alignment<AX,A> {
 		// return Alignment<AX,A>::isSet() && (topol != AlignSVG::Topol::UNDEFINED_TOPOL);
 	}
 
+	inline
+	const AlignSVG::Topol & get(const AlignSVG::Topol & defaultValue) const {
+		if (topol != AlignSVG::Topol::UNDEFINED_TOPOL){
+			return topol;
+		}
+		else {
+			return defaultValue;
+		}
+	}
 
+
+	// Sets all members to UNDEFINED state.
 	virtual inline
 	void reset(){
-		//this->axis  = AlignBase::Axis::UNDEFINED_AXIS;
 		Alignment<AX,A>::reset();
-		// this->pos   = AlignBase::Pos::UNDEFINED_POS;
 		topol = AlignSVG::Topol::UNDEFINED_TOPOL;
+		// this->updateAlign();
 	}
-	/// Constructor supporting setting of Axis.
-	/*
-	inline
-	CompleteAlignment(AlignSVG::Topol topol, AlignBase::Axis axis, AlignBase::Pos pos=AlignBase::Pos::MIN) : Alignment<AX,A>(axis, pos), topol(topol){
-	}
-	*/
 
-	// template <class ...TT>
-	/*
-	inline
-	void set(const CompleteAlignment & align){ // , const TT... args){
-		this->topol = align.topol;
-		this->axis  = align.axis;
-		this->pos   = align.pos;
-		// Could continue: set(args...);
-	}
-	*/
 
 	template <typename AX2, AlignBase::Axis A2, class ...TT>
 	void set(const Alignment<AX2,A2> & align, const TT... args){
@@ -667,9 +683,11 @@ protected:
 
 	inline
 	void set(){
+		// this->updateAlign(); // ok?
 	}
 
 };
+
 
 
 template <typename AX, AlignBase::Axis A>

@@ -60,8 +60,26 @@ namespace rack {
 
 using namespace drain::image;
 
+enum SvgInclude {
+	NONE = 0,
+	PNG = 1,  // Main title in SVG image
+	SVG = 2,
+	TXT = 4,
+	SKIP = 16,
+	NEXT = 32,
+	ON   = 64,
+	OFF  = 128,
+	ALL = ON|(PNG|SVG|TXT),
+	UNKNOWN = 255,
+	// --- unused ? ---
+	// TITLE,      // Default title
+};
+
 
 struct PanelConfSVG {
+
+	typedef drain::EnumFlagger<drain::MultiFlagger<SvgInclude> > IncludeFlagger;
+	IncludeFlagger svgIncludes;
 
 	enum ElemClass {
 		NONE = 0,
@@ -79,17 +97,12 @@ struct PanelConfSVG {
 		// --- unused ? ---
 		// TITLE,      // Default title
 	};
+	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
+	TitleFlagger svgImageTitles; //  = ElemClass::TIME|ElemClass::LOCATION|ElemClass::GENERAL;
 
-	// Selected CSS classes corresponding to above element classes
-	/*
-	static const drain::SelectorXMLcls clsTITLE;// ('.', RackSVG::TITLE);
-	static const drain::SelectorXMLcls clsIMAGE_TITLE;// ('.', RackSVG::IMAGE_TITLE);
-	static const drain::SelectorXMLcls clsGROUP_TITLE;// ('.', RackSVG::GROUP_TITLE);
-	static const drain::SelectorXMLcls clsMAIN_TITLE;// ('.', RackSVG::MAIN_TITLE);
-	static const drain::SelectorXMLcls clsTIME;// ('.', RackSVG::TIME);
-	static const drain::SelectorXMLcls clsLOCATION;// ('.', RackSVG::LOCATION);
-	static const drain::SelectorXMLcls clsIMAGE_BORDER;// ('.', RackSVG::IMAGE_BORDER);
-	*/
+	std::string imageTitle = "TIME,LOCATION,GENERAL";
+
+
 
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
 	bool absolutePaths = true;
@@ -99,9 +112,11 @@ struct PanelConfSVG {
 	std::string groupTitleSyntax = "AUTO";
 	std::string groupTitleFormatted;
 
-	std::string imageTitle = "TIME,LOCATION,GENERAL";
+
+	/*
 	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
 	TitleFlagger svgImageTitles; //  = ElemClass::TIME|ElemClass::LOCATION|ElemClass::GENERAL;
+	*/
 
 	/**
 	 *   0 - mainTitle.main
@@ -117,14 +132,10 @@ struct PanelConfSVG {
 	 */
 	drain::UniTuple<double,3>  boxHeights = {30.0, 25.0, 15.0};
 
-
-	// Currently, applications are recommended to handle "false" and "none". Or "auto"?
-	// std::string title;
-	// FontSizes fontSize;
-
 	inline  // maxPerGroup(10), layout(Alignment::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED),
-	PanelConfSVG() : absolutePaths(true){
+	PanelConfSVG() : svgIncludes(SvgInclude::ALL), absolutePaths(true){
 	}
+
 
 };
 
@@ -132,6 +143,11 @@ struct PanelConfSVG {
 
 
 namespace drain {
+
+template <>
+const drain::EnumDict<rack::SvgInclude>::dict_t  drain::EnumDict<rack::SvgInclude>::dict;
+
+DRAIN_ENUM_OSTREAM(rack::SvgInclude);
 
 template <>
 const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict;
@@ -189,6 +205,21 @@ public:
 	/// Copy constructor
 	GraphicsContext(const GraphicsContext & ctx);
 
+	// SVG output configuration (layout)
+	TreeSVG svgTrack;
+	PanelConfSVG svgPanelConf; // under constr - consider embedding these to PanelConfSVG:
+	// std::string svgGroupNameSyntax = "group";
+	// std::string svgGroupNameFormatted;
+
+	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
+	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
+	int svgDebug = 0;
+
+	// Here AlignSVG::HorzAlign and AlignSVG::VertAlign not used, as they contain no Topol(ogy).
+	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {AlignSVG::Topol::INSIDE};
+	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Pos::MIN};
+
+
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
 	/**
 	 *  Initialize styles, if undone.
@@ -211,27 +242,15 @@ public:
 
 	// drain::image::TreeSVG & getImagePanelGroup(const drain::FilePath & filepath);
 
-
-	// SVG output configuration (layout)
-	TreeSVG svgTrack;
-	PanelConfSVG svgPanelConf; // under constr - consider embedding these to PanelConfSVG:
-	// std::string svgGroupNameSyntax = "group";
-	// std::string svgGroupNameFormatted;
-
-	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
-	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
-	int svgDebug = 0;
-
 	/*
 	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
 	TitleFlagger svgTitles = ElemClass::NONE;
 	*/
 	// std::string svgTitles = "";
 
-	// For the NEXT graphic object
-	// AlignSVG::HorzAlign
-	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {AlignSVG::Topol::INSIDE}; // (AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ); // = {AlignSVG::Topol::INSIDE, AlignBase::Axis::HORZ};
-	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Pos::MIN};
+	/// Apply and reset alignHorz and alignVert.
+	// static
+	// void applyAlignment(drain::image::TreeSVG & group);
 
 };
 
