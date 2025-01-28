@@ -122,25 +122,37 @@ WRITE_DOC '\c Rack supports grouping output images to rows or columns.' # Use \c
 #WRITE_DOC 'Radar images can be organized to \e groups – on lines or columns.'
 WRITE_DOC 'The groups are identified with \c --gGroupTitle \c arg , using distinguishing variables in the argument, for example '
 WRITE_DOC '\c ${NOD} , \c ${what:date} or \c ${what:time} .'
+RUN_TEST  \\ --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Group title with formatted time: \${what:time|%H:%M} UTC'" \\ 'data-kiira/201708121?00*.h5' \\  -o time-series1.svg
 
-RUN_TEST  \\ --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Sky conditions at \${what:time|%H:%M} UTC'" \\ 'data-kiira/201708121?00*.h5' \\  -o time-series1.svg
-
+WRITE_DOC 'Expl..'
 RUN_TEST  \\  --gLayout 'VERT,DECR'  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-${what:date}T${what:time}-${NOD}.png'"    --gGroupTitle "'Sky conditions at \${what:time|%H:%M} UTC'"    'data-kiira/201708121?00*.h5'  --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:0'" --gStyle rect.GROUP_TITLE="'stroke:white;stroke-width:2'" -o time-series2.svg 
 
+WRITE_DOC 'Grouping without displaying titles can be done with prefix \c NONE . For example, using timestamp as follows:'
+RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'AUTO'"  --gGroupTitle "'NONE:Invisible grouping criterion-\${what:date}\${what:time}'"  \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o series-grouped.svg 
+
+
 WRITE_DOC 'Similar example using originating radar as the distinguishing metadata.'
-RUN_TEST  \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Examples of \${PLC} (\${NOD})'"  \\ 'data-kiira/20170812*.h5' \\  -o radar-series.svg
+RUN_TEST  \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Grouping using radar name: \${PLC} (\${NOD})'"  \\ 'data-kiira/20170812*.h5' \\  -o radar-series.svg
 
 
 WRITE_DOC 'A further example, with three levels of titles.'
 RUN_TEST \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\   --gGroupTitle "'Examples of Kiira case'" --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:1'"  \\  data-kiira/201708121530_radar.polar.fikor.h5 data-kiira/201708121600_radar.polar.fiika.h5 \\  -o series-labelled2.svg
 
-WRITE_DOC 'Titles can be removed with respective empty command values:'
-RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "''"  --gGroupTitle "''" --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:1'"  \\   'data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5' \\  -o series-labelled3.svg 
+
+WRITE_DOC 'Main title can be removed with empty arg:'
+RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "''"  --gGroupTitle "'\${what:date|%Y/%m/%d} ${what:time|%H:%M}'"   \\   'data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5' \\  -o group-titles-only.svg 
+
+WRITE_DOC 'User defined main title'
+RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'User defined title with timestamp: ${what:date|%Y/%m/%d} ${what:time|%H:%M}' "  --gGroupTitle "'NONE:\${what:date}-\${what:time}'"   \\   'data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5' \\  -o user-title.svg 
 
 
 
 WRITE_DOC 'A further example, usage of styles'
-RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'AUTO'"  --gGroupTitle "'AUTO:Examples of \${what:time}'" --gTitleBoxHeight "'30,20,10'" \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "'rect.MAIN_TITLE=fill:red'"  \\   --gStyle ".MAIN_TITLE='font-size:15;font-family:Times'"  --gStyle ".LOCATION='fill:green'" \\   'data-kiira/201708121??0_radar.polar.fi{ika,kor,van}.h5'  \\  -o series-styled.svg 
+RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'AUTO'"  --gGroupTitle "'AUTO:\${what:time}'" --gTitleBoxHeight "'30,20,15'" \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "'rect.MAIN_TITLE=fill:forestgreen'"  \\   --gStyle ".MAIN_TITLE='font-size:15;font-family:Times'"  --gStyle ".LOCATION='fill:darkgreen'" \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o series-styled.svg 
+
+
+
+
 
 ls -1t ${OUTFILES[*]//.png/.cmd}
 

@@ -58,7 +58,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-using namespace drain::image;
+//using namespace drain::image;
 
 enum SvgInclude {
 	NONE = 0,
@@ -75,6 +75,18 @@ enum SvgInclude {
 	// TITLE,      // Default title
 };
 
+/*
+enum TitleClass {
+	NONE = 0,
+	MAIN = 1,  // Main title in SVG image
+	GROUP = 2,
+	IMAGE = 4,  // Small title in a corner of radar image (time, location)
+	TIME = 8,       // Date and time attributes
+	LOCATION = 16,   // Place (coordinates, municipality)
+	GENERAL = 32,    // Default type
+};
+*/
+
 
 struct PanelConfSVG {
 
@@ -83,14 +95,14 @@ struct PanelConfSVG {
 
 	enum ElemClass {
 		NONE = 0,
-		MAIN_TITLE = 1,  // Main title in SVG image
-		GROUP_TITLE = 2,
-		IMAGE_TITLE = 4,  // Small title in a corner of radar image (time, location)
+		MAIN = 1,  // Main title in SVG image
+		GROUP = 2, // Group title
+		IMAGE = 4,  // Image title: small text (time, location) in corners of radar images
 		TIME = 8,       // Date and time attributes
 		LOCATION = 16,   // Place (coordinates, municipality)
 		GENERAL = 32,    // Default type
 		ALL = (63),
-		MAIN,
+		// MAIN,
 		IMAGE_PANEL,
 		IMAGE_BORDER, // RECT surrounding the image
 		SHARED_METADATA, // Something that should not be repeated in panels.
@@ -191,6 +203,7 @@ const image::TreeSVG & image::TreeSVG::operator[](const rack::PanelConfSVG::Elem
 
 }
 
+using namespace drain::image;
 
 namespace rack {
 
@@ -254,36 +267,7 @@ public:
 
 };
 
-//DRAIN_ENUM_OSTREAM(GraphicsContext::ElemClass);
 
-}
-
-
-namespace drain {
-
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const rack::GraphicsContext::ElemClass & key) const;
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass & key);
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass & key) const ;
-*/
-
-}
-
-
-
-
-
-
-namespace rack {
 
 
 // Consider moving ImageKit here?

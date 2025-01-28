@@ -55,9 +55,9 @@ template <>
 const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict = {
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, NONE),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, MAIN),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, MAIN_TITLE),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, GROUP_TITLE),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, IMAGE_TITLE),
+		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, MAIN),
+		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, GROUP),
+		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, IMAGE),
 		// DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, TITLE),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, LOCATION),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, TIME),

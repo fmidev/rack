@@ -434,7 +434,7 @@ class CmdTitle : public drain::BasicCommand {
 
 public:
 
-	CmdTitle() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
+	CmdTitle() : drain::BasicCommand(__FUNCTION__, "Set main title") {
 		RackContext & ctx = getContext<RackContext>();
 		getParameters().link("title", ctx.svgPanelConf.mainTitle, "<empty>|<string>|'auto'");
 	}
@@ -444,6 +444,43 @@ public:
 	}
 
 };
+
+/**
+ *  Main title:
+ *  - "NONE" – do not display
+ *  - "<string>" – (implicit) apply main title issued with \c --gTitle
+ *  - "AUTO" – apply automatic formatting
+ *
+ *  Group title:
+ *  - "NONE" – use grouping to rows or columns, but do not display group titles
+ *  - "AUTO:<syntax-string>" – apply group identifiers (\c --gGroup ) but use automatic formatting
+ *  - USER: apply group identifiers issued with \c --gGroup  as group titles
+ *
+ *  Image title:
+ *  - NONE: display no titles
+ *  - TIME: display time and date (automatic formatting)
+ *  - LOCATION: display  (automatic formatting)
+ *  - GENERAL: display metadata other than date, time or location (geographic information?)
+ *
+ */
+/*
+class CmdTitles : public drain::BasicCommand {
+
+public:
+
+	CmdTitles() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
+		RackContext & ctx = getContext<RackContext>();
+		getParameters().link("main", ctx.svgPanelConf.mainTitle,  "NONE|AUTO|USER");
+		getParameters().link("group", ctx.svgPanelConf.mainTitle, "NONE|AUTO|USER");
+		getParameters().link("image", ctx.svgPanelConf.mainTitle, "NONE|TIME|LOCATION|GENERAL");
+	}
+
+	CmdTitles(const CmdTitles & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+	}
+
+};
+*/
 
 
 class CmdInclude : public drain::SimpleCommand<std::string> {
