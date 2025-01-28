@@ -143,12 +143,12 @@ WRITE_DOC 'Main title can be removed with empty arg:'
 RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "''"  --gGroupTitle "'\${what:date|%Y/%m/%d} ${what:time|%H:%M}'"   \\   'data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5' \\  -o group-titles-only.svg 
 
 WRITE_DOC 'User defined main title'
-RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'User defined title with timestamp: ${what:date|%Y/%m/%d} ${what:time|%H:%M}' "  --gGroupTitle "'NONE:\${what:date}-\${what:time}'"   \\   'data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5' \\  -o user-title.svg 
+RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'User defined title with timestamp: \${what:date|%Y/%m/%d} \${what:time|%H:%M}' "  --gGroupTitle "'NONE:\${what:date}-\${what:time}'"   \\   'data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5' \\  -o user-title.svg 
 
 
 
 WRITE_DOC 'A further example, usage of styles'
-RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'AUTO'"  --gGroupTitle "'AUTO:\${what:time}'" --gTitleBoxHeight "'30,20,15'" \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "'rect.MAIN_TITLE=fill:forestgreen'"  \\   --gStyle ".MAIN_TITLE='font-size:15;font-family:Times'"  --gStyle ".LOCATION='fill:darkgreen'" \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o series-styled.svg 
+RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'AUTO'"  --gGroupTitle "'AUTO:\${what:time}'" --gTitleHeights "'30,20,15'" \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "rect.MAIN_TITLE='fill:forestgreen'"  \\   --gStyle ".MAIN_TITLE='font-size:15;font-family:Times'"  --gStyle ".LOCATION='fill:darkgreen'" \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o series-styled.svg 
 
 
 

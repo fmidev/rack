@@ -1690,7 +1690,66 @@ public:
 		statusFormatter.toStream(std::cout, ctx.getUpdatedStatusMap(), 0, RackContext::variableFormatter);
 
 	}
+
 };
+
+/// "Overrides" drain::CmdFormat
+class CmdFormat : public drain::BasicCommand {
+
+public:
+
+
+	/// Default constructor.
+	CmdFormat() : drain::BasicCommand(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
+		RackContext & ctx = getContext<RackContext>();
+		getParameters().link("syntax", ctx.formatStr);
+	};
+
+	/// Copy constructor.
+	CmdFormat(const CmdFormat & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK );
+	}
+
+	static
+	const std::map<std::string,std::string> presets;
+
+
+	void update() override {
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+		mout.attention("HEY");
+		for (const auto & entry: presets){
+			if (entry.first == ctx.formatStr){
+				mout.special("Found preset: ", entry.first, "=>",  entry.second);
+				ctx.formatStr = entry.second;
+				return;
+			}
+		}
+	}
+
+};
+
+const std::map<std::string,std::string> CmdFormat::presets = {
+		{"OSM", "wms?service=WMS&version=1.1.0&request=GetMap&format=image/png&layers=osm:osm&srs=EPSG:${where:EPSG}&bbox=${where:BBOX_native}&width=${where:xsize}&height=${where:ysize}"},
+		{"FMI-OSM", "http://map.fmi.fi/geoserver/wms?wms?service=WMS&version=1.1.0&request=GetMap&format=image/png&layers=osm:osm&srs=EPSG:${where:EPSG}&bbox=${where:BBOX_native}&width=${where:xsize}&height=${where:ysize}"},
+		{"metadata", {
+				"SOURCE='${what:source}'\n"
+				"NOD='${NOD}'\n"
+				"WMO='${WMO}'\n"
+				"PLC='${PLC}'\n"
+				"LAT='${where:lat}'\n"
+				"LON='${where:lon}'\n"
+				"SITEHEIGHT='${where:height}'\n"
+				"PROJDEF='${where:projdef}'\n"
+				"EPSG='${where:EPSG}'\n"
+				"BBOX='${where:BBOX_native}'\n"
+				"WIDTH='${where:xsize}'\n"
+				"HEIGHT='${where:ysize}'\n"
+				//"BBOX='${where:LL_lon},${where:LL_lat},${where:UR_lon},${where:UR_lat}'\n"
+		}
+		}
+};
+
 
 class CmdFormatOut : public drain::SimpleCommand<std::string> {
 
@@ -1701,12 +1760,15 @@ public:
 		//getParameters().link("filename", filename, "");
 	};
 
+
+
 	void exec() const {
 
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
+
 
 		drain::StringMapper statusFormatter(RackContext::variableMapper);
 		statusFormatter.parse(ctx.formatStr, true);
@@ -2564,7 +2626,8 @@ MainModule::MainModule(){ //
 	install<CmdEcho>();
 
 	//installer.install<CmdSleep> cmdSleep;
-	install<drain::CmdFormat>();
+	//install<drain::CmdFormat>();
+	install<CmdFormat>(); // rack version, with presets
 	install<drain::CmdFormatFile<RackContext> >();
 
 	install<drain::CmdDebug>();
@@ -2783,36 +2846,6 @@ public:
 };
 
 
-class CmdDumpXML : public drain::SimpleCommand<std::string> {
-
-public:
-
-	CmdDumpXML() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dump XML track") {
-		//getParameters().link("level", level = 5);
-	}
-
-
-
-	void exec() const {
-
-		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, getName());
-
-		mout.deprecating("use -o <file>.svg");
-		// tODO: detect bounding box
-
-		drain::Output ofstr(value);
-		drain::image::NodeSVG::toStream(ofstr, ctx.svgTrack);
-		//ofstr << ctx.xmlTrack << '\n';
-
-	}
-
-
-
-
-};
-
-
 /*
 class CmdTrigger : public drain::BasicCommand {
 
@@ -2832,20 +2865,15 @@ HiddenModule::HiddenModule(){ //
 	// Bank-referencing commands first
 	// drain::HelpCmd help(cmdBank);
 
-	// install<CmdTrigger>();
 	install<CmdPause>();
-
-	// install<CmdEcho>(); consider CmdRemark
-
 	install<CmdInputFilter>();
-
-	// install<CmdSelectOld>();
-
 	install<CmdTest2>("restart", 'R');
-
 	install<CmdHdf5Test>("getMyH5");
 
-	install<CmdDumpXML>();
+	// install<CmdTrigger>();
+	// install<CmdEcho>(); consider CmdRemark
+	// install<CmdSelectOld>();
+
 
 }
 

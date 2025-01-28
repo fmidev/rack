@@ -133,9 +133,12 @@ public:
 	void addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath);
 
 	/// Add external image from a file path.
+	/**
+	 *   \param styleClass - optional style class, possibly FLOAT
+	 */
 	static
 	// drain::image::TreeSVG &
-	void addImage(RackContext & ctx, const drain::Frame2D<double> & frame, const drain::FilePath & filepath);
+	void addImage(RackContext & ctx, const drain::Frame2D<drain::image::svg::coord_t> & frame, const drain::FilePath & filepath, const std::string & styleClass = "");
 
 
 	/// Add TEXT elements: MAINTITLE, LOCATION, TIME, GENERAL

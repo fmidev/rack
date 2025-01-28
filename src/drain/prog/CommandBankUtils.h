@@ -321,29 +321,6 @@ public:
 		ctx.formatStr = value;
 	}
 
-};
-
-/// Special command for handling undefined commands.
-class CmdNotFound : public SimpleCommand<> {
-
-public:
-
-	CmdNotFound(CommandBank & cmdBank) :
-		SimpleCommand<std::string>(__FUNCTION__, "Throw exception on unfound ", "cmdArg","")
-		//cmdBank(cmdBank)
-		{
-		section = 0; // hidden
-		cmdBank.notFoundHandlerCmdKey = "notFound"; // getName();
-	};
-
-	void exec() const {
-		Context & ctx = getContext<>();
-
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-		mout.error("Command '" , value , "' not found." );
-		/// cmdBank.help() ?
-	}
 
 };
 
@@ -391,6 +368,32 @@ void CmdFormatFile<C>::exec() const {
 		mout.error(getName() , ": opening file '" , value , "' failed." );
 
 };
+
+
+/// Special command for handling undefined commands.
+class CmdNotFound : public SimpleCommand<> {
+
+public:
+
+	CmdNotFound(CommandBank & cmdBank) :
+		SimpleCommand<std::string>(__FUNCTION__, "Throw exception on unfound ", "cmdArg","")
+		//cmdBank(cmdBank)
+		{
+		section = 0; // hidden
+		cmdBank.notFoundHandlerCmdKey = "notFound"; // getName();
+	};
+
+	void exec() const {
+		Context & ctx = getContext<>();
+
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		mout.error("Command '" , value , "' not found." );
+		/// cmdBank.help() ?
+	}
+
+};
+
 
 
 } /* namespace drain */

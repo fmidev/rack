@@ -895,6 +895,8 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	m2pix(cMetric, cImg);
 	updateNodeMap(SourceODIM(srcData.odim.source).getSourceCode(), cImg.x, cImg.y);
 
+
+
 	odim.updateLenient(srcData.odim); // Time, date, new
 	if (odim.NI == 0)
 		odim.NI = srcData.odim.getNyquist();

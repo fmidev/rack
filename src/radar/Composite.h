@@ -192,7 +192,7 @@ public:
 	drain::VariableMap nodeMap;
 
 	/// EXPERIMENTAL: save elangles TODO: consider rename metadataMap (for hairy details)
-	drain::VariableMap metadataMap;
+	// drain::VariableMap metadataMap;
 
 	/// Set input selector. See @DataSelector .
 	/**

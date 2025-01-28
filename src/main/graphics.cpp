@@ -208,7 +208,7 @@ void RackSVG::applyAlignment(RackContext & ctx, drain::image::TreeSVG & group){
 		group->setAlign(AlignBase::HORZ, ctx.alignHorz.pos, ctx.alignHorz.get(AlignSVG::INSIDE));  // simplify
 		mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", group->getAlignStr());
 		// ctx.alignHorz.pos  = AlignSVG::UNDEFINED_TOPOL;
-		group->addClass(LayoutSVG::FLOAT);
+		group->addClass(LayoutSVG::FLOAT); // what is this?
 		mout.attention("updated align: ",  group.data); // , " -> all:", group->getAlignStr()
 
 		ctx.alignHorz.reset();
@@ -358,36 +358,30 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 // drain::image::TreeSVG &
 void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
 
-	// using namespace drain::image;
-
-	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-	//if (applyInclusion(ctx, drain::EnumDict<rack::SvgInclude>::getValue(filepath.extension, false))){
 	if (!applyInclusion(ctx, filepath)){
 		return;
 	}
 
-	mout.attention("filepath:", filepath);
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	mout.attention("file path:", filepath);
 
 	//drain::image::TreeSVG & imagePanel = ctx.getImagePanelGroup(filepath); // getImagePanelGroup(ctx, filepath);
 	drain::image::TreeSVG & imagePanel = getImagePanelGroup(ctx, filepath); // getImagePanelGroup(ctx, filepath);
 	imagePanel->addClass(PanelConfSVG::IMAGE_PANEL); // Add elems ^ here ^ ?
 
-	// TEST
-	// panelGroup->setAlignAnchor("image");
+	// problematic, as init value!
+	applyAlignment(ctx, imagePanel);
 
 	drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
-	// image->setId(filepath.basename); // unneeded, as TITLE also has it:
-	// image[drain::image::svg::TITLE](drain::image::svg::TITLE) = filepath.basename;
 	image->setFrame(src.getGeometry().area);
-	// image->set("xlink:href", filepath.str()); // 2025 FIX: without .str() error
-	// image->setUrl(filepath.str());
 	addImageBorder(imagePanel); //, src.getGeometry().area);
+
+
+
 
 	// Metadata:
 	drain::image::TreeSVG & metadata = imagePanel[svg::METADATA](svg::METADATA);
-
-	// Add empty, pruned?
 
 	// Note assign: char * -> string  , "where:lat", "where:lon"
 	if (src.properties.hasKey("what:source")){
@@ -410,28 +404,11 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 		}
 	}
 
-	// SOLVED, by storeLastArguments()  ...
-	// if (src.properties.hasKey("what:product")){
-	/*
-	drain::VariableMap & statusMap = ctx.getStatusMap();
-	std::string cmdKey = statusMap.get("prevCmdKey", "");
-	mout.warn("prevCmdKey: ",  cmdKey);
-	mout.warn("prevCmdArgs: ", statusMap.get("prevCmdArgs", ""));
 
-	if (cmdKey.size() >= 2){ // actually larger...
-		// metadata->set("cmdArgs", statusMap.get("cmdArgs", ""));
-	}
-	 */
-	// std::string cmd = statusMap.get("cmd", "");
-	// if (cmd.size() >= 2){prevCmdKey
-	// metadata->set("cmd", statusMap.get("cmd", ""));
-
-	//drain::image::TreeSVG & description = imagePanel[svg::DESC](svg::DESC);
 	drain::image::TreeSVG & description = image[svg::DESC](svg::DESC);
 	description->getAttributes().importCastableMap(metadata->getAttributes());
 	// todo: description  : prevCmdKey "what:product", "what:prodpar", "how:angles"
 
-	// return image;
 
 }
 
@@ -442,21 +419,15 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 // drain::image::TreeSVG &
 void RackSVG::addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath){ // what about prefix?
 
-	//if (applyInclusion(ctx, drain::EnumDict<rack::SvgInclude>::getValue(filepath.extension, false))){
-	if (!applyInclusion(ctx, filepath)){
-		return;
-	}
-
-	const drain::Frame2D<double> frame(svg->getBoundingBox().getFrame());
-	// return
+	const drain::Frame2D<drain::image::svg::coord_t> frame(svg->getBoundingBox().getFrame());
 	addImage(ctx, frame, filepath);
+
 }
 
 /// Add pixel image (PNG)
 // drain::image::TreeSVG &
-void RackSVG::addImage(RackContext & ctx, const drain::Frame2D<double> & frame, const drain::FilePath & filepath){ // what about prefix?
+void RackSVG::addImage(RackContext & ctx, const drain::Frame2D<drain::image::svg::coord_t> & frame, const drain::FilePath & filepath, const std::string & styleClass){ // what about prefix?
 
-	//if (applyInclusion(ctx, drain::EnumDict<rack::SvgInclude>::getValue(filepath.extension, false))){
 	if (!applyInclusion(ctx, filepath)){
 		return;
 	}
@@ -467,11 +438,15 @@ void RackSVG::addImage(RackContext & ctx, const drain::Frame2D<double> & frame, 
 
 	drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE);
 	image->setFrame(frame);
+	if (!styleClass.empty()){
+		imagePanel->addClass(styleClass);
+		// image->addClass(styleClass);
+	}
 
 	// return image;
 }
 
-drain::image::TreeSVG & RackSVG::addImageBorder(drain::image::TreeSVG & imagePanelGroup){ //, const drain::Frame2D<double> & frame){
+drain::image::TreeSVG & RackSVG::addImageBorder(drain::image::TreeSVG & imagePanelGroup){ //, const drain::Frame2D<drain::image::svg::coord_t> & frame){
 	drain::image::TreeSVG & imageBorder = imagePanelGroup[PanelConfSVG::ElemClass::IMAGE_BORDER](svg::RECT); // +EXT!
 	imageBorder->addClass(PanelConfSVG::ElemClass::IMAGE_BORDER); // style
 	imageBorder->addClass(drain::image::LayoutSVG::FLOAT);
@@ -680,6 +655,8 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 	}
 	 */
 	//TitleCreatorSVG titleCreator(0xff);
+	ctx.svgPanelConf.mainTitle = ctx.getFormattedStatus(ctx.svgPanelConf.mainTitle);
+
 	TitleCreatorSVG titleCreator(ctx.svgPanelConf);
 	drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
 

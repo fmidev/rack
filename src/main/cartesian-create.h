@@ -251,24 +251,19 @@ public:
 	}
 
 	inline
-	void exec() const {
+	void exec() const override {
 
 		RackContext & ctx = getContext<RackContext>();
 
 		ctx.composite.reset();
-		// Consider including in reset:
 		ctx.composite.setTargetEncoding("");
 		ctx.composite.odim.source.clear();
 		ctx.composite.nodeMap.clear();
-		ctx.composite.metadataMap.clear();
-		// ctx.composite.projR2M.clear() !
-		// ctx.projStr.clear();
-
 		ctx.composite.odim.clear(); // 2022/12
-		//ctx.composite.odim.type.clear();
-		//ctx.composite.odim.scaling.scale = 0.0;
-
 		ctx.unsetCurrentImages();
+
+		// Consider including in reset:
+		// ctx.composite.metadataMap.clear();
 
 	}
 

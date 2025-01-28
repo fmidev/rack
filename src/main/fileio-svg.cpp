@@ -112,26 +112,6 @@ struct GraphicsSection : public drain::CommandSection {
 
 };
 
-class CmdLinkImage : public drain::SimpleCommand<std::string> {
-
-public:
-
-	CmdLinkImage() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product") {
-		//getParameters().link("level", level = 5);
-	}
-
-	void exec() const {
-		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FUNCTION__, getName());
-
-		// drain::image::TreeSVG & group = CmdBaseSVG::getCurrentGroup(ctx);
-
-		// drain::image::TreeSVG & img =
-		RackSVG::addImage(ctx, drain::Frame2D<double>(320,200), drain::FilePath(this->value));
-
-	}
-
-};
 
 
 
@@ -276,7 +256,7 @@ protected:
 
 };
 
-
+/// "Virtual" command base for FontSizes and HeaderSizes
 class CmdAdjustSizes : public drain::SimpleCommand<std::string> {
 
 public:
@@ -353,19 +333,12 @@ public:
 };
 
 
-class CmdTitleBoxHeight : public CmdAdjustSizes {
+class CmdTitleHeights : public CmdAdjustSizes {
 
 public:
 
-	CmdTitleBoxHeight() : CmdAdjustSizes(__FUNCTION__, "Set title box heights and adjust font sizes. See --gFontSizes") {
+	CmdTitleHeights() : CmdAdjustSizes(__FUNCTION__, "Set title box heights and adjust font sizes. See --gFontSizes") {
 	}
-
-	/*
-	CmdTitleBoxHeight(const CmdTitleBoxHeight & cmd) : drain::BasicCommand(cmd) {
-		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
-		// std::cerr << __FUNCTION__ << " (cpy ctr) " << getParameters() << std::endl;
-	}
-	*/
 
 	virtual
 	void exec() const override {
@@ -385,6 +358,39 @@ public:
 	}
 
 };
+
+class CmdLinkImage : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdLinkImage() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product") {
+		//getParameters().link("level", level = 5);
+	}
+
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		const Composite & composite = ctx.getComposite(RackContext::CURRENT);
+
+		drain::Frame2D<double> frame(composite.getFrameWidth(), composite.getFrameHeight());
+
+		if (frame.empty()){
+			mout.advice("Ensure --cSize <width>,<height> is called prior to this command (", getName(), ")");
+			mout.hint("Use  '--format FMI-MAP --outputFile -' to obtain a background map.");
+			mout.warn("Including (linking) image file without (width x height) information. Using 320x200");
+			frame.set(320,200);
+		}
+		ctx.getUpdatedStatusMap(); // for variables in file path
+		drain::FilePath filePath(ctx.getFormattedStatus(this->value));
+		mout.note("linking: ", filePath);
+		RackSVG::addImage(ctx, frame, filePath, drain::StringBuilder<>(LayoutSVG::GroupType::FLOAT));
+		// EnumDict<LayoutSVG::GroupType>::dict
+
+	}
+
+};
+
 
 
 class CmdGroupTitle : public drain::BasicCommand {
@@ -956,7 +962,7 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdPanelTest>().section = HIDDEN;  // addSection(i);
 	// install<CmdImageTitle>(); consider
 	install<CmdStyle>();
-	install<CmdTitleBoxHeight>();
+	install<CmdTitleHeights>();
 
 };
 
