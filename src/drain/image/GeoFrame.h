@@ -416,7 +416,7 @@ public:
 		updateProjection();
 	}
 
-	/// Updates bboxex, if needed.
+	/// Updates bboxes, if needed.
 	void updateProjection();
 
 	/// Returns the projection of the composite image as a proj4 std::string.

@@ -117,6 +117,22 @@ void CartesianODIM::updateGeoInfo(const drain::image::GeoFrame & geoFrame){
 	area.height = geoFrame.getFrameHeight();
 
 	projdef = geoFrame.getProjection();
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	/*
+	{
+		using namespace drain;
+		mout.warn(__FILE__, __FUNCTION__, " EPSG:",  geoFrame.projGeo2Native.getDst().getEPSG());
+		for (Projector::PROJDEF_variant v: {Projector::ORIG, Projector::MODIFIED, Projector::PROJ4, Projector::PROJ5, Projector::SIMPLE}){
+			mout.warn(" projGeo2Native:",  geoFrame.projGeo2Native.getDst().getProjDef(v) );
+		}
+
+		for (auto & entry: geoFrame.projGeo2Native.getDst().getProjDefDict()){
+			mout.warn(" entry:",  entry.first, '|', entry.second);
+		}
+
+	}
+	*/
 	epsg = geoFrame.projGeo2Native.getDst().getEPSG();
 
 	bboxD = geoFrame.getBoundingBoxDeg();

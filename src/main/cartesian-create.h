@@ -75,6 +75,7 @@ public:
 		composite.dataSelector.reset();
 		composite.odim.clear();
 		composite.nodeMap.clear();
+
 		//composite.odim.source.clear();
 
 		// mout.attention("Composite counter N=", composite.odim.ACCnum, ")");
@@ -99,6 +100,7 @@ public:
 
 		const drain::StringMatcher qualityMatcher("QIND"); // coming op: other
 
+		mout.accept<LOG_NOTICE>("EPSG_A: ", composite.odim.epsg);
 		if (qualityMatcher.test(composite.odim.quantity)){
 			mout.note("Quality [", composite.odim.quantity, "] as input: extracting data only");
 			extract(composite, "d");
@@ -106,6 +108,7 @@ public:
 		else {
 			extract(composite, "dw");
 		}
+		mout.accept<LOG_NOTICE>("EPSG: ", composite.odim.epsg);
 		// mout.attention("extract dw");
 
 

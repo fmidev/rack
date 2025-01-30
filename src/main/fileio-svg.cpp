@@ -384,7 +384,7 @@ public:
 		ctx.getUpdatedStatusMap(); // for variables in file path
 		drain::FilePath filePath(ctx.getFormattedStatus(this->value));
 		mout.note("linking: ", filePath);
-		RackSVG::addImage(ctx, frame, filePath, drain::StringBuilder<>(LayoutSVG::GroupType::FLOAT));
+		RackSVG::addImage(ctx, frame, filePath); // , drain::StringBuilder<>(LayoutSVG::GroupType::FLOAT));
 		// EnumDict<LayoutSVG::GroupType>::dict
 
 	}
@@ -399,6 +399,7 @@ public:
 
 	CmdGroupTitle() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
 		RackContext & ctx = getContext<RackContext>();
+		getParameters().separator = 0;
 		getParameters().link("syntax", ctx.svgPanelConf.groupTitleSyntax, "example: '${what:date|%Y%m} ${NOD}'");
 	}
 
@@ -440,8 +441,11 @@ class CmdTitle : public drain::BasicCommand {
 
 public:
 
+	// TODO: use unlinked SimpleCommand,
+
 	CmdTitle() : drain::BasicCommand(__FUNCTION__, "Set main title") {
 		RackContext & ctx = getContext<RackContext>();
+		getParameters().separator = 0;
 		getParameters().link("title", ctx.svgPanelConf.mainTitle, "<empty>|<string>|'auto'");
 	}
 
@@ -538,102 +542,12 @@ public:
 };
 */
 
-/*
-class CmdGroupTitle : public drain::SimpleCommand<std::string> {
+
+class CmdPanelFoo : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdGroupTitle() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "Set main title") {
-		//getParameters().link("level", level = 5);
-	}
-
-	void exec() const {
-
-		RackContext & ctx = getContext<RackContext>();
-
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-		drain::image::TreeSVG & headerGroup = RackSVG::getMainGroup(ctx); // ctx.getMainGroup(); // RackSVG::getMainGroup(ctx);
-
-		TreeSVG & headerRect = headerGroup["headerRect"](svg::RECT); // +EXT!
-		headerRect->setHeight(70);
-		headerRect->addClass(RackSVG::TITLE, RackSVG::MAIN_TITLE);
-		headerRect->setId("textRect", RackSVG::MAIN_TITLE);
-		headerRect->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
-
-		// User-defined
-		if (ctx.alignVert.topol == AlignSVG::UNDEFINED_TOPOL){
-			ctx.alignVert.set(AlignSVG::OUTSIDE);
-		}
-		if (ctx.alignVert.pos == AlignBase::UNDEFINED_POS){
-			ctx.alignVert.set(AlignBase::MAX);
-		}
-		headerRect->setAlign(ctx.alignVert, ctx.alignVert.topol); //, AlignSVG::OUTSIDE);
-		ctx.alignVert.reset();
-
-		drain::image::TreeSVG & mainTitleText = headerGroup["GENERAL"](svg::TEXT);
-		mainTitleText->addClass(LayoutSVG::FLOAT); // could be AlignSVG
-		mainTitleText->setText(value);
-		mainTitleText->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
-		// mainTitleText->setAlign(AlignSVG::CENTER);
-		mainTitleText->getBoundingBox().setHeight(16);
-		mainTitleText->setStyle("font-size", 20);
-
-		drain::image::TreeSVG & text1 = headerGroup["TIME"](svg::TEXT);
-		text1->addClass(LayoutSVG::FLOAT, RackSVG::TITLE);
-		text1->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
-		// text1->setAlign(AlignSVG::TOP);
-		text1->setHeight(20);
-		text1->setMargin(3);
-		text1->setText(value, " (time)");
-
-		drain::image::TreeSVG & text2 = headerGroup["LOCATION"](svg::TEXT);
-		text2->addClass(LayoutSVG::FLOAT, RackSVG::TITLE);
-		text2->setAlign(AlignSVG::RIGHT);
-		text2->setAlign(AlignSVG::TOP);
-		text2->setHeight(20);
-		text2->setMargin(3);
-		text2->setText(value, " (loc)");
-
-		// mout.special("FOO", rectTitle->getBoundingBox());
-	}
-};
-*/
-
-/*
-class CmdMainTitle : public drain::SimpleCommand<std::string> {
-
-public:
-
-	CmdMainTitle() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "Set main title") {
-		//getParameters().link("level", level = 5);
-	}
-
-	void exec() const {
-
-		RackContext & ctx = getContext<RackContext>();
-
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-		drain::image::TreeSVG & mainGroup = ctx.svgTrack;
-		drain::image::TreeSVG & style = mainGroup[drain::image::svg::STYLE];
-
-		RackSVG::addTitleBox(mainGroup, RackSVG::ElemClass::MAIN_TITLE);
-
-		drain::image::TreeSVG & mainTitle = mainGroup[RackSVG::ElemClass::MAIN_TITLE]; // "mainTitle"
-		mainTitle->setText(value);
-		const double fontSize = style[RackSVG::MAIN_TITLE]->get("font-size", 12.5);
-		mainTitle->setHeight(fontSize);
-	}
-
-};
-*/
-
-class CmdPanel : public drain::SimpleCommand<std::string> {
-
-public:
-
-	CmdPanel() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "layout") {
+	CmdPanelFoo() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "layout") {
 		//getParameters().link("level", level = 5);
 	}
 
@@ -817,6 +731,84 @@ public:
 
 
 
+class CmdPanel : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdPanel() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "layout") {
+		//getParameters().link("level", level = 5);
+	}
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		drain::Frame2D<double> frame = {120,300};
+
+		//drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
+		group->setId(value);
+		//group->setAlignAnchor(RackSVG::BACKGROUND_RECT);
+		RackSVG::applyAlignment(ctx, group);
+
+		drain::image::TreeSVG & rect = group[RackSVG::BACKGROUND_RECT](svg::RECT); // +EXT!
+		rect->set("width", frame.width);
+		rect->set("height", frame.height);
+		rect->setStyle("fill", "red");
+		rect->setAlignAnchorVert("*");
+		//rect->setAlign(AlignSVG::VERT_FILL);
+
+		drain::image::TreeSVG & rect2 = group["rect2"](svg::RECT); // +EXT!
+		rect2->set("height", 70);
+		rect2->setAlignAnchor(RackSVG::BACKGROUND_RECT);
+		rect2->setAlign(AlignSVG::TOP, AlignSVG::HORZ_FILL);
+		rect2->setStyle("stroke", "gray");
+		rect2->setAlignAnchor(RackSVG::BACKGROUND_RECT);
+
+		drain::VariableMap & status = ctx.getStatusMap();
+
+		drain::image::TreeSVG & text = group.addChild()(svg::TEXT);
+		//text->setId("Maintext");
+		text->addClass(PanelConfSVG::ElemClass::MAIN);
+		text->setHeight(30);
+		text->setMargin(5);
+		text->setStyle("font-size", 20);
+		text->setAlignAnchor("rect2");
+		//text->setAlignAnchor(RackSVG::BACKGROUND_RECT);
+		text->setAlign(AlignSVG::TOP, AlignSVG::CENTER);
+		text->setText(status["NOD"]);
+
+		drain::image::TreeSVG & text2 = group.addChild()(svg::TEXT);
+		//text->setId("Maintext");
+		text2->addClass(PanelConfSVG::ElemClass::MAIN);
+		text2->setHeight(25);
+		text2->setMargin(5);
+		text2->setStyle("font-size", 15);
+		text2->setAlignAnchor("rect2");
+		//text->setAlignAnchor(RackSVG::BACKGROUND_RECT);
+		text2->setAlign(AlignSVG::BOTTOM, AlignSVG::CENTER);
+		text2->setText(status["PLC"]);
+
+
+		for (const auto entry: {"what:time", "what:date", "what:object"}){
+			drain::image::TreeSVG & t = group[entry](svg::TEXT);
+			// t->setId(entry);
+			t->setHeight(10);
+			t->setStyle("font-size", 8);
+			t->setMargin(3);
+			t->setAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
+			t->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+			t->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+			//t->setText(entry, ":", status[entry]);
+			t->setText(status[entry]);
+		}
+
+
+	}
+
+};
+
 class CmdPanelTest : public drain::SimpleCommand<std::string> {
 
 public:
@@ -833,7 +825,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		drain::Frame2D<double> frame = {400,500};
+		drain::Frame2D<double> frame = {300,600};
 
 		//drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP);
 		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
@@ -843,6 +835,7 @@ public:
 		group->setAlignAnchor(ANCHOR_ELEM);
 		// rectGroup->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
 
+
 		if (ctx.mainOrientation == drain::image::AlignBase::Axis::HORZ){
 			group->setAlign(AlignBase::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, AlignSVG::OUTSIDE);
 			group->setAlign(AlignBase::Axis::VERT, AlignBase::MIN, AlignSVG::INSIDE); // drain::image::AlignSVG::VertAlignBase::TOP);
@@ -851,7 +844,6 @@ public:
 			group->setAlign(AlignBase::Axis::HORZ, AlignBase::MIN, AlignSVG::INSIDE); // drain::image::AlignSVG::HorzAlignBase::LEFT);
 			group->setAlign(AlignBase::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, AlignSVG::OUTSIDE);
 		}
-
 
 
 		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
@@ -958,7 +950,8 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdInclude>();
 	install<CmdTitle>();
 	// install<CmdGroupTitle>().section = HIDDEN; // under construction
-	install<CmdPanel>(); // .section = HIDDEN; // addSection(i);
+	install<CmdPanel>();
+	install<CmdPanelFoo>().section = HIDDEN; // addSection(i);
 	install<CmdPanelTest>().section = HIDDEN;  // addSection(i);
 	// install<CmdImageTitle>(); consider
 	install<CmdStyle>();

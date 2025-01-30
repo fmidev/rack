@@ -63,13 +63,13 @@ class CartesianProj : public drain::SimpleCommand<>{ // public drain::BasicComma
 
 public:
 
-	CartesianProj() : drain::SimpleCommand<>(__FUNCTION__, "Set projection", "projstr", "", "Proj.4 syntax"){
+	CartesianProj() : drain::SimpleCommand<>(__FUNCTION__, "Set projection", "<EPSG-code>|<projstr>", "", "Proj.4 syntax"){
 		getParameters().separator = 0;
 	};
 
 
 	inline
-	void exec() const {
+	void exec() const final {
 
 		RackContext & ctx = getContext<RackContext>();
 
@@ -77,9 +77,11 @@ public:
 		mout.debug("Setting projection to local composite");
 
 		ctx.composite.setProjection(value);
-		ctx.composite.odim.projdef = value;
+		// ctx.composite.odim.projdef = value; // plain EPSG code OK??
 		// NOTE: could be :
-		//ctx.composite.odim.projdef = ctx.composite.projR2M.getProjectionDst().getProjStr(drain::Projector::SIMPLE);
+		//
+		// ctx.composite.odim.projdef = ctx.composite.getProjection(); // drain::Projector::SIMPLE
+		// mout.attention<LOG_DEBUG>("Set projection '", value, "' to local comp:", ctx.composite.getProjection(), " (EPSG:", ctx.composite.odim.epsg, ") projdef:", ctx.composite.odim.projdef);
 
 	};
 

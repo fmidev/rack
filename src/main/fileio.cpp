@@ -377,10 +377,12 @@ void CmdOutputFile::exec() const {
 	// TODO: generalize image pick (current or str) for png/tif
 	//drain::FilePath path(value);
 	drain::FilePath path(filepath);
+	const bool DATA_HDF5 = hi5::fileInfo.checkPath(path);
 	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(path);
 	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(path);
 	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(path);
 	const bool IMAGE_SVG = drain::image::NodeSVG::fileInfo.checkPath(path);
+	const bool DATA_HTML = drain::NodeHTML::fileInfo.checkPath(path);
 
 	const bool NO_EXTENSION = path.extension.empty() && !STD_OUTPUT;
 
@@ -394,7 +396,8 @@ void CmdOutputFile::exec() const {
 	std::list<std::string> keys = {"what:lon", "here"};
 
 	//if (h5FileExtension.test(value)){
-	if (hi5::fileInfo.checkPath(path) || NO_EXTENSION){
+	// hi5::fileInfo.checkPath(path)
+	if (DATA_HDF5 || NO_EXTENSION){
 		if (NO_EXTENSION){
 			mout.discouraged("No file extension! Assuming HDF5...");
 		}
@@ -506,7 +509,7 @@ void CmdOutputFile::exec() const {
 		// ofstr << ctx.xmlTrack << '\n';
 		// mout.unimplemented("not support yet, use --outputPanel / dumpXML");
 	}
-	else if (drain::NodeHTML::fileInfo.checkPath(path)) {
+	else if (DATA_HTML) { // drain::NodeHTML::fileInfo.checkPath(path)
 
 		mout.special<LOG_DEBUG>("writing HTML file: ", path);
 
@@ -537,8 +540,6 @@ void CmdOutputFile::exec() const {
 			mout.attention("Source data:");
 			drain::TreeUtils::dump(src);
 		}
-
-
 
 		H5HTMLextractor extractor;
 		//extractor.setBaseDir(drain::FilePath::path_t(path.dir, path.basename));
@@ -652,9 +653,10 @@ void CmdOutputFile::exec() const {
 			// selector.setPathMatcher(ODIMPathElem::DATASET,ODIMPathElem::DATA);
 			if (ctx.select.empty()){
 				// special<LOG_DEBUG>
-				selector.setPathMatcher("data1");
+				selector.setPathMatcher(ODIMPathElem::DATA); //   "data1");
 				selector.setMaxCount(1);
-				mout.special<LOG_DEBUG>("Revised code: always using selector in --format'ted output, default selector=", selector);
+				// mout.special("Revised code: always using selector in --format'ted output, default selector=", selector); // <LOG_DEBUG>
+				mout.revised<LOG_NOTICE>("Revised code: default selector=", selector, ", pathMatcher=", selector.getPathMatcher()); // <LOG_DEBUG>
 			}
 			else {
 				selector.consumeParameters(ctx.select);
@@ -662,7 +664,11 @@ void CmdOutputFile::exec() const {
 			//mout.debug(selector);
 			selector.getPaths(src, paths);
 
+			// ctx.getUpdatedStatusMap();
+			//
 			const drain::VariableMap & vmapShared = ctx.getStatusMap();
+
+			mout.special("VMAP (", vmapShared.size(), ") where:EPSG=", vmapShared.get("where:EPSG", -1));
 
 			for (const ODIMPath & path: paths){
 				const drain::image::Image & img = src(path).data.image;

@@ -88,26 +88,11 @@ public:
 
 	virtual
 	void setParameters(const std::string & args) final;
-	/*
-	{
-		lastParameters = args;
-		setAllParameters(args);
-	};
-	*/
-
-
-
 
 	// TODO: make this a loop calling set(key,val) - but then no
 	template <class T>
-	//void setParameters(const SmartMap<T> & args){
 	void setParameters(const T & args){
 		// TODO: set parameter X=Y ?
-		/*
-		VariableMap vargs;
-		vargs.importCastableMap(args);
-		setParameters(vargs);
-		*/
 		ReferenceMap & parameters = getParameters();
 		std::stringstream sstr;
 		char separator = 0;
@@ -138,30 +123,11 @@ public:
 	}
 
 
-	inline
-	Command & addSection(int i){ // drain::FlaggerBase<>::ivalue_t
-		section |= i;
-		return *this;
-	}
-
-	/// Optional method for preparing command to execution.
-	/**
-	 *   This function will be called prior to running exec()
-	 */
-	virtual
-	void update(){
-	}
-
-
-
-	//virtual
-	//void setParameters(const SmartMapBase & params) = 0;
 
 	// Could also need/replace   void setParameters(const std::map<std::string,T> & p)
 
-	// Rename: hasParameters
 	inline
-	bool hasParameters() const { // tODO rename
+	bool hasParameters() const {
 
 		Logger mout(__FILE__, __FUNCTION__);
 
@@ -182,21 +148,29 @@ public:
 		return empty;
 	};
 
-	/// Run the command with current parameter values.
-	virtual	inline
-	void exec() const {};
 
 	/// Convenience. Sets parameters and executes the command.
 	/**
 	 *  \see exec() .
 	 */
-	virtual
-	inline
-	void run(const std::string & params = ""){
+	virtual	inline
+	void run(const std::string & params = "") final {
 		setParameters(params);
 		update();
 		exec();
 	}
+
+	/// Optional method for preparing command to execution.
+	/**
+	 *   This function will be called prior to running exec()
+	 */
+	virtual
+	void update(){
+	}
+
+	/// Run the command with current parameter values.
+	virtual	inline
+	void exec() const {};
 
 
 	// Optional bit(s) marking the command type (compare with manual page sections)
@@ -206,28 +180,24 @@ public:
 	typedef int cmd_section_type;
 	cmd_section_type section = 1;
 
-	/// After executing this command run a routine, if defined.
-	// bool execRoutine; -> see section flag TriggerSection;
-
-	/// Future option: single-code Dynamic functions: handle the command string
-	// virtual void setKey(const std::string & key) const {}
+	inline
+	Command & addSection(int i){ // drain::FlaggerBase<>::ivalue_t
+		section |= i;
+		return *this;
+	}
 
 	inline
 	const std::string & getLastParameters() const {
 		return lastParameters;
 	};
 
-
 protected:
 
 	virtual
 	ReferenceMap & getParameters() = 0;
 
-	// virtual
-	// void setAllParameters(const std::string & args); // = 0;
-
+	// Clumsy but useful
 	std::string lastParameters;
-
 
 };
 
@@ -411,7 +381,7 @@ public:
  *  The default implementation of run() calls setParameters() and exec().
  *  The default implementation exec() does nothing, it should be redefined in derived classes.
  */
-//class BasicCommand : public Command {  // Todo consider BeanLike
+
 class BasicCommand : public BeanCommand<BeanLike> {  // Todo consider BeanLike
 
 public:
@@ -424,10 +394,10 @@ public:
 		// remember to call importParameters()
 	}
 
-
-
 };
 
+
+//typedef BeanCommand<BeanLike>  BasicCommand;
 
 
 

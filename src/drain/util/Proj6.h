@@ -37,217 +37,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include <string>
 
-#include <proj.h>
-
-#include "Dictionary.h"
+// #include <proj.h>
+// #include "Dictionary.h"
 #include "Point.h"
+#include "Projector.h"
 // #include "TreeUnordered.h"
 
 
 namespace drain
 {
-
-class Proj6;
-
-
-// Helper class for containing a single (one-way) Proj object and its
-class Projector {
-
-	friend class Proj6;
-
-	static const SprinterLayout projDefLayout; // space-separated, =, no hypens  (" ","","=", "","");
-
-
-public:
-
-	static const std::string proj4version;
-
-	typedef drain::Dictionary<std::string,std::string> ProjDef;
-
-	//typedef enum {PROJ4, PROJ6, CRS} version;
-	typedef enum {
-		ACCEPT_CRS, // Do not touch
-		REMOVE_CRS, // Delete "+type=crs" from projDef, warn if EPSG:<code> syntax used
-		FORCE_CRS   // Add "+type=crs"
-	} CRS_mode;
-
-
-	/// Each projector has three (3) versions of project definition
-	typedef enum {
-		ORIG,    // Supplied, provided by user
-		MODIFIED, // EPSG-converted and filtered
-		// FINAL,    //
-		PROJ4, // Final, formulated by projlib
-		PROJ5, // Final, formulated by projlib
-		SIMPLE // Final, simplified for backward compatibility: "+type=crs" and "+init=epsg:..." pruned.
-	} PROJDEF_variant;
-
-
-	inline  // NEW 2024: proj_context_create()
-	Projector(const std::string & projDef = "", CRS_mode crs=ACCEPT_CRS) : pjContext(proj_context_create()), pj(nullptr), epsg(0){
-	//Projector(const std::string & projDef = "", CRS_mode crs=ACCEPT_CRS) : pjContext(nullptr), pj(nullptr), epsg(0){
-		if (projDef.empty()){
-			projDefs = {{ORIG,""}, {MODIFIED,""}, {PROJ4,""}, {PROJ5,""}, {SIMPLE,""}};
-		}
-		else {
-			setProjection(projDef, crs);
-		}
-	}
-
-	inline
-	Projector(PJ_CONTEXT *pjContext, const std::string & projDef = "", CRS_mode crs=ACCEPT_CRS) : pjContext(pjContext), pj(nullptr), epsg(0){
-
-		if (projDef.empty()){
-			// CONSIDER projeDef.empty() check in setProjection(projDef, crs); ?
-			projDefs = {{ORIG,""}, {MODIFIED,""}, {PROJ4,""}, {PROJ5,""}, {SIMPLE,""}};
-		}
-		else {
-			setProjection(projDef, crs);
-		}
-
-	}
-
-	// 	Moved to .cpp for version 6/7/8 problems (context_clone)
-	Projector(const Projector & pr);
-
-	/*
-	inline
-	Projector(const Projector & pr) :
-		pjContext(proj_context_clone(pr.pjContext)), // NEW 2024
-		// pjContext(nullptr), // for safety
-		// TODO: CLONE, in version 7.2.
-		 // TODO: flag for own CTX => destroy at end
-		pj(proj_clone(pjContext, pr.pj)),
-		// projDefDict(pr.projDefDict),
-		epsg(pr.epsg)
-	{
-		// TODO
-		//projDefs = {{ORIG,"*"}, {CHECKED,"**"}, {FINAL,"***"}, {INTERNAL,"****"}};
-		setProjection(pr.getProjDef(ORIG)); // imitate ?
-	}
-		*/
-
-	virtual inline
-	~Projector(){
-		proj_destroy(pj);
-		proj_context_destroy(pjContext); // NEW 2024
-	}
-
-    static
-    void getProjDefDict(const std::string & str, ProjDef & dict);
-
-	static
-	//int extractEPSG(const std::string & projDef);
-	int extractEPSG(const ProjDef & projDefDict);
-
-    static
-    void getProjDefStr(const ProjDef & dict, std::stringstream & sstr, const std::set<std::string> & excludeKeys = {"+type"});
-
-	const std::string & getProjDef(PROJDEF_variant v = SIMPLE) const { // For external objects, excluding +init=epsg and +type=crs
-		return projDefs[v];
-	}
-
-
-
-	/// Deletes projection object and clears all the metadata.
-	void clear(){
-		projDefs = {{ORIG,""}, {MODIFIED,""}, {PROJ4,""}, {PROJ5,""}, {SIMPLE,""}};
-		pjContext = nullptr; // TODO: flag for own CTX => destroy at end
-		proj_destroy(pj);
-		pj = nullptr;
-		projDefDict.clear();
-		epsg = 0;
-	}
-
-	/// Sets projection defined as Proj string.
-	/**
-	 *
-	 */
-	void setProjection(const std::string &str, CRS_mode crs=FORCE_CRS);
-
-	/// Sets projection defined as EPSG code.
-	/**
-	 *
-	 */
-	void setProjection(int epsg, CRS_mode crs=FORCE_CRS);
-
-	// protect
-	void updateProjectionDefs(CRS_mode crs);
-
-	/// Returns true, if PJ object has been set.
-	inline
-	bool isSet() const {
-		return (pj != nullptr);
-	}
-
-	// NOTE: compliancy problems Proj.4...6...
-    inline
-	bool isLongLat() const {
-    	// TODO: what if not defined.
-    	return isLongLat(pj);
-    }
-
-    inline
-	int getEPSG() const {
-    	return epsg;
-    }
-
-
-
-	/// Prunes "+init=epsg:<...>" and optionally "+type=crs" codes.
-	//static
-	// int filterProjStr(const std::string & src, std::ostream & ostr, CRS_mode crs=ACCEPT_CRS);
-
-
-	inline
-    void info(std::ostream & ostr = std::cout, int wkt = -1){
-
-		for (const auto & entry: projDefs){
-			ostr << entry.first << ": '" << entry.second << "'\n";
-		}
-		info(pj, ostr, wkt);
-    }
-
-    inline
-    std::string getErrorString() const {
-    	int err = proj_context_errno(pjContext);
-    	return proj_errno_string(err);
-    	//return "Not Impl."; //std::string(pj_strerrno(*pj_get_errno_ref()));
-    };
-
-// to-be protected:
-
-    /// Dump misc information, for debugging
-    void info(PJ *pj, std::ostream & ostr = std::cout, int wkt = -1);
-
-protected:
-
-    // const std::string & getProjection(const PJ *prj, std::string & projDef) const;
-    ProjDef projDefDict;
-
-	mutable
-	std::map<PROJDEF_variant,std::string> projDefs;
-
-
-	/// For setting projection.
-	/**
-	 * \param projStr - string in Proj format
-	 * \param CRS     - set or unset
-	 */
-	// PJ * getProjection(const std::string & projStr, CRS_mode crs=ACCEPT_CRS) const;
-
-    static
-    bool isLongLat(const PJ *prj);
-
-	PJ_CONTEXT *pjContext;
-	PJ *pj;
-
-	//mutable
-	//std::string projDef;
-
-	int epsg;
-
-};
 
 /*! A wrapper for the famous Proj6 class.
  *  
@@ -290,6 +88,7 @@ public:
 	 */
 	inline
 	void setProjectionSrc(const std::string & projDef, Projector::CRS_mode crs=Projector::FORCE_CRS){
+		//src.clear();
 		src.setProjection(projDef, crs);
 		setMapping(true);
 	}
@@ -342,27 +141,6 @@ public:
     };
 
 
-protected:
-
-	/** \tparam POINT_XY – anything with members double x and double y
-	 *  \tparam D - PJ_DIRECTION enum value (libproj)
-	 */
-	template
-	<PJ_DIRECTION D,class POINT_XY>
-	inline
-	void project(POINT_XY & point) const {
-		// void project(drain::Point2D<double> & point) const {
-		// Note: sizeof not needed, future option for arrays.
-		proj_trans_generic(proj, D, &point.x, sizeof(POINT_XY), 1, &point.y, sizeof(POINT_XY), 1, 0, 0, 0, 0, 0, 0);
-	}
-
-	template
-	<PJ_DIRECTION D>
-	inline
-	void project(double & x, double & y) const {
-		// Note: sizeof not needed, future option for arrays.
-		proj_trans_generic(proj, D, &x, sizeof(double), 1, &y, sizeof(double), 1, 0, 0, 0, 0, 0, 0);
-	}
 
 
 public:
@@ -407,73 +185,6 @@ public:
 		project<PJ_INV>(point);
 	}
 
-
-	/// Forward projection.
-	/*
-	inline
-	void projectFwdOLD(double & x, double & y) const {
-		PJ_COORD coord;
-		coord.lp.lam = x;
-		coord.lp.phi = y;
-		proj_trans_array(proj, PJ_DIRECTION::PJ_FWD, 1, &coord);
-		x = coord.xy.x;
-		y = coord.xy.y;
-	};
-	*/
-
-	/// Forward projection.
-	/*
-	inline
-	void projectFwdOLD(const double & x, const double & y,double & x2, double & y2) const {
-
-		PJ_COORD coord;
-		coord.lp.lam = x;
-		coord.lp.phi = y;
-
-		proj_trans_array(proj, PJ_DIRECTION::PJ_FWD, 1, &coord);
-		x2 = coord.xy.x;
-		y2 = coord.xy.y;
-
-	}
-	*/
-
-    /// Todo: projections for vectors
-    ///inline
-
-
-    /// Inverse projection.
-    /*
-	inline
-    void projectInvOLD(double & x, double & y) const
-    {
-
-    	PJ_COORD coord;
-    	coord.xy.x = x;
-    	coord.xy.y = y;
-
-    	proj_trans_array(proj, PJ_DIRECTION::PJ_INV, 1, &coord);
-    	x = coord.lp.lam;
-    	y = coord.lp.phi;
-
-    };
-    */
-
-    /// Inverse projection from (x2,y2) to (x,y).
-    /*
-    inline
-    void projectInvOLD(const double & x2, const double & y2, double & x, double & y) const
-    {
-
-    	PJ_COORD coord;
-    	coord.xy.x = x2;
-    	coord.xy.y = y2;
-
-    	proj_trans_array(proj, PJ_DIRECTION::PJ_INV, 1, &coord);
-    	x = coord.lp.lam;
-    	y = coord.lp.phi;
-
-    };
-    */
 
 
     inline
@@ -533,6 +244,27 @@ protected:
     // typedef drain::Dictionary<int, std::string> epsg_dict_t;
 	void setMapping(bool lenient);
 
+protected:
+
+	/** \tparam POINT_XY – anything with members double x and double y
+	 *  \tparam D - PJ_DIRECTION enum value (libproj)
+	 */
+	template
+	<PJ_DIRECTION D,class POINT_XY>
+	inline
+	void project(POINT_XY & point) const {
+		// void project(drain::Point2D<double> & point) const {
+		// Note: sizeof not needed, future option for arrays.
+		proj_trans_generic(proj, D, &point.x, sizeof(POINT_XY), 1, &point.y, sizeof(POINT_XY), 1, 0, 0, 0, 0, 0, 0);
+	}
+
+	template
+	<PJ_DIRECTION D>
+	inline
+	void project(double & x, double & y) const {
+		// Note: sizeof not needed, future option for arrays.
+		proj_trans_generic(proj, D, &x, sizeof(double), 1, &y, sizeof(double), 1, 0, 0, 0, 0, 0, 0);
+	}
 
 
 

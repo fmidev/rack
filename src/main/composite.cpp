@@ -809,8 +809,10 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		*/
 
 		//if (!encoding.empty()){
-		mout.attention("Calling: composite.extractNEW2() channels=", channels, " encoding:", encoding);
+		mout.attention<LOG_DEBUG>("Calling: composite.extractNEW2() channels=", channels, " encoding:", encoding);
 		//}
+		// mout.reject<LOG_NOTICE>("pre-extract EPSG:", composite.projGeo2Native.getDst().getEPSG());
+		// mout.reject<LOG_NOTICE>("pre-extract proj:", composite.projGeo2Native.getDst().getProjDef());
 
 		composite.extractNEW2(dstProduct, channels, cropImage, encoding);
 
@@ -899,11 +901,12 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 		}
 
+		mout.accept<LOG_DEBUG>("natEPSG:", composite.projGeo2Native.getDst().getEPSG());
 
 		//const short epsg = composite.projGeo2Native.getDst().getEPSG();
 		//if (epsg > 0){
 		if (composite.projGeo2Native.getDst().getEPSG() > 0){
-			mout.deprecating<LOG_DEBUG>("/how:EPSG migrated to where:EPSG");
+			mout.hint<LOG_DEBUG>("/how:EPSG migrated to /where:EPSG");
 		}
 
 		// DataTools::updateInternalAttributes(ctx.cartesianHi5);

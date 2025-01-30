@@ -1694,33 +1694,46 @@ public:
 };
 
 /// "Overrides" drain::CmdFormat
-class CmdFormat : public drain::BasicCommand {
+//class CmdFormat : public drain::BasicCommand {
+class CmdFormat : public drain::SimpleCommand<> {
 
 public:
 
 
 	/// Default constructor.
-	CmdFormat() : drain::BasicCommand(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
-		RackContext & ctx = getContext<RackContext>();
-		getParameters().link("syntax", ctx.formatStr);
+	//CmdFormat() : drain::BasicCommand(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
+	CmdFormat() : drain::SimpleCommand<>(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)", "syntax") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
+		// RackContext & ctx = getContext<RackContext>();
+		// getParameters().link("syntax", ctx.formatStr);  direct shared LINK bad!
 	};
 
 	/// Copy constructor.
+	/*
 	CmdFormat(const CmdFormat & cmd) : drain::BasicCommand(cmd) {
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK );
 	}
+	*/
 
 	static
 	const std::map<std::string,std::string> presets;
 
 
-	void update() override {
+	//void update() override {
+	void exec() const override {
+
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		mout.attention("HEY");
+		ctx.formatStr = value;
+		/*
+		mout.attention("ctx.id = ", ctx.getId());
+		mout.attention("ctx.formatStr: '", ctx.formatStr,"'");
+		mout.attention("params: '", this->getParameters());
+		mout.attention("syntax: '", this->getParameters()["syntax"]);
+		*/
 		for (const auto & entry: presets){
+			// mout.attention("now ", entry.first);
 			if (entry.first == ctx.formatStr){
-				mout.special("Found preset: ", entry.first, "=>",  entry.second);
+				mout.info("using preset: ", entry.first, "=>",  entry.second);
 				ctx.formatStr = entry.second;
 				return;
 			}

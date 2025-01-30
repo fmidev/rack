@@ -27,6 +27,20 @@ function WRITE_DOC(){
 NEWLINE="
 "
 
+function WRITE_TITLE(){
+    echo $NEWLINE >> $DOCFILE
+    echo '<b>' $* '</b>' >> $DOCFILE
+    echo $NEWLINE >> $DOCFILE
+}
+
+function WRITE_HELP(){
+    local cmd="$1"
+    make $cmd.hlp
+    echo $NEWLINE >> $DOCFILE
+    echo "\include $cmd.hlp" >> $DOCFILE
+    echo $NEWLINE >> $DOCFILE
+}
+
 function RUN_TEST(){
 
     local cmd="$RACK $*"
@@ -34,7 +48,16 @@ function RUN_TEST(){
     local argc=${#args[*]}
 
     # Assume last arg is an output file
-    local OUTFILE=${args[$(( argc - 1 ))]}
+    local DESC="${args[$(( argc - 1 ))]}"
+    local OUTFILE=${DESC,,}'.svg'
+    OUTFILE=${OUTFILE//,/}
+    cmd="${cmd/$DESC/$OUTFILE}"
+
+    DESC="${DESC//_/ }."
+    
+    #local OUTFILE=${DESC// /_}
+
+    
     local BASENAME=${OUTFILE%.*}
     local FORMAT=${OUTFILE##*.}
 
@@ -42,6 +65,7 @@ function RUN_TEST(){
     # echo -e ${cmd//\/$TMPDIR/} > $TMPDIR/$BASENAME.cmd
     # echo "# CMD: $TMPDIR/$BASENAME.cmd"
     # rack_cmd=${cmd//\/$TMPDIR/}
+    cmd="${cmd/$DESC/$OUTFILE}"
     rack_cmd=${cmd//\\/\\$NEWLINE  }
     echo "${rack_cmd}" > $TMPDIR/$BASENAME.cmd
     cmd=(`echo -e $cmd | tr -d '\\'`)
@@ -83,7 +107,7 @@ function RUN_TEST(){
 	    exit 3
 	fi
 
-	CAPTION=${CAPTION:-"SVG output '$OUTFILE'"}
+	CAPTION=${CAPTION:-"SVG panel example: $DESC"}
 	
 	WRITE_DOC <<EOF
 \code
@@ -106,51 +130,78 @@ EOF
 # --gGroupId ''  # sets groups=ID
 # --gImageTitles TIME=UR:....., one at time, like imageConf   LOCATION:  
 
+#WRITE_DOC '\subsection svg-panels Basic SVG panels'
 
-WRITE_DOC "Align two images horizontally (default)" 
-RUN_TEST \\  volume.h5 --cSize 400 -Q DBZH -c -o gray.png --palette "'default'" -o rgb.png \\  -o simple.svg
+#MAPFORMAT="--format 'nutshell maps.wms_GEOCONF=radar:\${NOD}_LAYERS=osm:osm_PROJ=\${where:EPGS}_Presets=OpenStreetMap_SIZE=\${where:xsize},\${where:xsize}.png --link maps/\${NOD}_\${where:EPGS}_\${where:xsize},\${where:xsize}.png'"
+
+CONF="--format metadata -o \"\${NOD}_\${where:EPSG}_\${where:xsize},\${where:xsize}.cnf\""
+
+
+WRITE_DOC "Align images horizontally (default):" 
+RUN_TEST \\  volume.h5 --cProj 3067 --cSize 400 -Q DBZH -c "$CONF" -o gray.png --palette "'default'" -o rgb.png \\  -o 'Basic_example'
+
 
 WRITE_DOC "Also legend outputs are included in the resulting SVG panel."
-RUN_TEST \\  volume.h5 --cSize 400 -Q DBZH -c -o gray.png --palette "'default'" -o rgb.png \\  --legendOut legend.svg \\  -o simple2.svg
+RUN_TEST \\  volume.h5 --cProj 3067 --cSize 400 -Q DBZH -c "$CONF" -o gray.png --palette "'default'" -o rgb.png \\  --legendOut legend.svg \\  -o 'Example_with_a_legend'
 
 WRITE_DOC 'With several inputs, it is handier to use \c --script . '
-WRITE_DOC 'Output names must be distinct, which is achieved using variables. For details, see \ref scripts and \ref templates .'
-WRITE_DOC 'If generated products contain varying metadata, titles appear, automatically grouping distinguishing data.'
-RUN_TEST \\ --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${NOD}.png'" \\ 'data/pvol_fi{anj,kor,kuo}.h5' \\  -o triple1.svg
+WRITE_DOC 'Output names must be distinct, which is achieved using variables.'
+WRITE_DOC 'If generated products contain different metadata, titles will appear, automatically displaying distinguishing data.'
+WRITE_DOC 'For details, see \ref scripts and \ref templates .'
+RUN_TEST \\ $MAPFORMAT --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${NOD}.png'" \\ 'data/pvol_fi{anj,kor,kuo}.h5' \\  -o 'Three_radars,_with_automatic_titles'
+
+#exit 0
+
+WRITE_TITLE 'Grouping images by timestamp or other metadata'
 
 WRITE_DOC '\c Rack supports grouping output images to rows or columns.' # Use \c --cGroup to set a distinguishing key.'
 #WRITE_DOC 'Radar images can be organized to \e groups – on lines or columns.'
 WRITE_DOC 'The groups are identified with \c --gGroupTitle \c arg , using distinguishing variables in the argument, for example '
 WRITE_DOC '\c ${NOD} , \c ${what:date} or \c ${what:time} .'
-RUN_TEST  \\ --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Group title with formatted time: \${what:time|%H:%M} UTC'" \\ 'data-kiira/201708121?00*.h5' \\  -o time-series1.svg
+RUN_TEST  \\ --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Grouping by time: \${what:time|%H:%M} UTC'" \\ 'data-kiira/201708121?00*.h5' \\  -o 'Time_series'
 
-WRITE_DOC 'Expl..'
-RUN_TEST  \\  --gLayout 'VERT,DECR'  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-${what:date}T${what:time}-${NOD}.png'"    --gGroupTitle "'Sky conditions at \${what:time|%H:%M} UTC'"    'data-kiira/201708121?00*.h5'  --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:0'" --gStyle rect.GROUP_TITLE="'stroke:white;stroke-width:2'" -o time-series2.svg 
+WRITE_DOC 'Group layout can be set with \c --gLayout that sets orientation \c HORZ (rows) or \c VERT (column). Also direction can be changed.'
+WRITE_HELP 'gLayout'
+WRITE_DOC 'Example:'
+RUN_TEST  \\ --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'"  \\  --gLayout 'VERT,DECR'  --gGroupTitle "'Grouping by time: \${what:time|%H:%M} UTC'"    'data-kiira/201708121?00*.h5'   -o 'Time_series2' 
 
-WRITE_DOC 'Grouping without displaying titles can be done with prefix \c NONE . For example, using timestamp as follows:'
-RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'AUTO'"  --gGroupTitle "'NONE:Invisible grouping criterion-\${what:date}\${what:time}'"  \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o series-grouped.svg 
+# --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:0'" --gStyle rect.GROUP_TITLE="'stroke:white;stroke-width:2'"
+
+WRITE_DOC 'Grouping without displaying titles can be done with prefix \c NONE . For example, using plain (unformatted) timestamp as follows:'
+RUN_TEST \\   --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'NONE:Invisible grouping criterion-\${what:date}\${what:time}'"  \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o 'Without_group_titles'
 
 
-WRITE_DOC 'Similar example using originating radar as the distinguishing metadata.'
-RUN_TEST  \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Grouping using radar name: \${PLC} (\${NOD})'"  \\ 'data-kiira/20170812*.h5' \\  -o radar-series.svg
+WRITE_DOC 'Similar example using radar site code for grouping:'
+RUN_TEST  \\  --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'Grouping using radar name: \${PLC} (\${NOD})'"  \\ 'data-kiira/20170812*.h5' \\  -o 'Grouping_by_site_codes'
 
 
-WRITE_DOC 'A further example, with three levels of titles.'
-RUN_TEST \\  --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\   --gGroupTitle "'Examples of Kiira case'" --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:1'"  \\  data-kiira/201708121530_radar.polar.fikor.h5 data-kiira/201708121600_radar.polar.fiika.h5 \\  -o series-labelled2.svg
+WRITE_DOC 'The main title can be set explicitly with \c --gTitle command . The default value, \c AUTO , displays main title as in the examples above.'
+RUN_TEST \\  --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'My Main Title for \${what:date|%A, %d %B %Y}'"   --gGroupTitle "'Radar \${PLC}'" \\ 'data-kiira/201708121?00_*{ika,kor,van}.h5'   \\  -o 'User-defined_title'
+
+# --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:1'" 
 
 
 WRITE_DOC 'Main title can be removed with empty arg:'
-RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "''"  --gGroupTitle "'\${what:date|%Y/%m/%d} ${what:time|%H:%M}'"   \\   'data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5' \\  -o group-titles-only.svg 
+RUN_TEST \\   --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "''"  --gGroupTitle "'\${what:time|%H:%M} ${what:time|%H:%M}'"   \\   'data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5' \\  -o "Group_titles_only"
 
-WRITE_DOC 'User defined main title'
-RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'User defined title with timestamp: \${what:date|%Y/%m/%d} \${what:time|%H:%M}' "  --gGroupTitle "'NONE:\${what:date}-\${what:time}'"   \\   'data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5' \\  -o user-title.svg 
+#WRITE_DOC 'User defined main title'
+#RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'User defined title with timestamp: \${what:date|%Y/%m/%d} \${what:time|%H:%M}' "  --gGroupTitle "'NONE:\${what:date}-\${what:time}'"   \\   'data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5' \\  -o user-title.svg 
 
 
+WRITE_DOC '<b>Changing style of graphic panels</b><p/>'
 
 WRITE_DOC 'A further example, usage of styles'
-RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'AUTO'"  --gGroupTitle "'AUTO:\${what:time}'" --gTitleHeights "'30,20,15'" \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "rect.MAIN_TITLE='fill:forestgreen'"  \\   --gStyle ".MAIN_TITLE='font-size:15;font-family:Times'"  --gStyle ".LOCATION='fill:darkgreen'" \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o series-styled.svg 
+RUN_TEST \\   --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'Larger font here...'"  --gGroupTitle "'...but smaller here, with still readable timestamp \${what:date|%A, %d %B %Y} at \${what:time|%H:%M} UTC'" --gTitleHeights "'40,20,30'" \\  'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o "User-defined_title_height"
+
+WRITE_DOC 'A further example, usage of styles'
+RUN_TEST \\   --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'AUTO:\${what:time}'"  \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "rect.MAIN='fill:forestgreen'" --gStyle "rect.GROUP='fill:lightgreen'"  \\   --gStyle "text.MAIN='font-family:Times'"  --gStyle ".LOCATION='fill:brown'" \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o "Multiple_styles"
 
 
+WRITE_DOC 'Background images, like maps'
+
+#WRITE_DOC '\subsection svg-include Including and excluding images in SVG panels'
+#make -B gInclude.hlp
+#WRITE_DOC '\include gInclude.hlp'
 
 
 
