@@ -56,6 +56,7 @@ public:
 	// Identifier for the anchor background
 	static const std::string BACKGROUND_RECT; //  = "mainRect";
 
+	// static const std::string TECH_PANEL;
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
 	/*
 	enum ElemClass {
@@ -96,6 +97,10 @@ public:
 	 */
 	static
 	drain::image::TreeSVG & getStyle(RackContext & ctx);
+
+	/// returns timeformat
+	static
+	const std::string & guessFormat(const std::string & key);
 
 	/// Top-level GROUP used by Rack. All the graphic elements will be created inside this element.
 	/**

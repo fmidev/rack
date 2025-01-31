@@ -64,6 +64,7 @@ const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<ra
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, GENERAL),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, IMAGE_PANEL),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, IMAGE_BORDER),
+		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, SIDE_PANEL),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, SHARED_METADATA),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
 };

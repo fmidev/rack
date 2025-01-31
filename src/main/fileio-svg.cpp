@@ -747,61 +747,87 @@ public:
 		drain::Frame2D<double> frame = {120,300};
 
 		//drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP);
-		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[PanelConfSVG::SIDE_PANEL](svg::GROUP);
 		group->setId(value);
+
 		//group->setAlignAnchor(RackSVG::BACKGROUND_RECT);
 		RackSVG::applyAlignment(ctx, group);
 
-		drain::image::TreeSVG & rect = group[RackSVG::BACKGROUND_RECT](svg::RECT); // +EXT!
-		rect->set("width", frame.width);
-		rect->set("height", frame.height);
-		rect->setStyle("fill", "red");
-		rect->setAlignAnchorVert("*");
-		//rect->setAlign(AlignSVG::VERT_FILL);
 
-		drain::image::TreeSVG & rect2 = group["rect2"](svg::RECT); // +EXT!
-		rect2->set("height", 70);
+		drain::image::TreeSVG & rect = group[RackSVG::BACKGROUND_RECT](svg::RECT); // +EXT!
+		rect->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+		rect->setWidth(frame.width);
+		rect->setHeight(frame.height);
+		// rect->setStyle("fill", "red");
+		/*
+		 does not work over
+		rect->setAlignAnchorVert("*");
+		rect->setAlign(AlignSVG::VERT_FILL);
+		*/
+		// rect->setAlign(AlignSVG::VERT_FILL);
+
+		static std::string HEADER_RECT("headerRect");
+
+		drain::image::TreeSVG & rect2 = group[HEADER_RECT](svg::RECT); // +EXT!
+		rect2->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
 		rect2->setAlignAnchor(RackSVG::BACKGROUND_RECT);
 		rect2->setAlign(AlignSVG::TOP, AlignSVG::HORZ_FILL);
-		rect2->setStyle("stroke", "gray");
-		rect2->setAlignAnchor(RackSVG::BACKGROUND_RECT);
+		rect2->setHeight(120);
 
 		drain::VariableMap & status = ctx.getStatusMap();
 
 		drain::image::TreeSVG & text = group.addChild()(svg::TEXT);
-		//text->setId("Maintext");
-		text->addClass(PanelConfSVG::ElemClass::MAIN);
-		text->setHeight(30);
-		text->setMargin(5);
-		text->setStyle("font-size", 20);
-		text->setAlignAnchor("rect2");
+		text->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+		text->setAlignAnchor(HEADER_RECT);
 		//text->setAlignAnchor(RackSVG::BACKGROUND_RECT);
 		text->setAlign(AlignSVG::TOP, AlignSVG::CENTER);
-		text->setText(status["NOD"]);
+		text->setFontSize(25.0);
+		text->setText("TOP:", status["NOD"]);
 
 		drain::image::TreeSVG & text2 = group.addChild()(svg::TEXT);
-		//text->setId("Maintext");
-		text2->addClass(PanelConfSVG::ElemClass::MAIN);
-		text2->setHeight(25);
-		text2->setMargin(5);
-		text2->setStyle("font-size", 15);
-		text2->setAlignAnchor("rect2");
-		//text->setAlignAnchor(RackSVG::BACKGROUND_RECT);
+		text2->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+		text2->setAlignAnchor(HEADER_RECT);
+		text2->setFontSize(15.0);
 		text2->setAlign(AlignSVG::BOTTOM, AlignSVG::CENTER);
-		text2->setText(status["PLC"]);
+		text2->setText("BOTTOM:", status["PLC"]);
 
+		drain::image::TreeSVG & text3 = group.addChild()(svg::TEXT);
+		text3->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+		text3->setAlignAnchor(HEADER_RECT);
+		text3->setFontSize(20.0);
+		text3->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT);
+		text3->setText("MIDDLE:", status["PLC"]);
+
+		VariableFormatterODIM<std::string> formatter;
+
+		std::string anchorVert(HEADER_RECT);
 
 		for (const auto entry: {"what:time", "what:date", "what:object"}){
-			drain::image::TreeSVG & t = group[entry](svg::TEXT);
-			// t->setId(entry);
-			t->setHeight(10);
-			t->setStyle("font-size", 8);
-			t->setMargin(3);
-			t->setAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
-			t->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
-			t->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
-			//t->setText(entry, ":", status[entry]);
-			t->setText(status[entry]);
+
+			if (status.hasKey(entry)){
+				drain::image::TreeSVG & t = group[entry](svg::TEXT);
+				t->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+				t->setFontSize(10);
+				if (!anchorVert.empty()){
+					t->setAlignAnchorVert(anchorVert);
+					anchorVert.clear();
+				}
+				t->setAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
+				t->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+				t->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+
+				const std::string & format = RackSVG::guessFormat(entry);
+				if (!format.empty()){
+					std::stringstream sstr;
+					formatter.formatVariable(entry, status[entry], format, sstr);
+					t->ctext = sstr.str();
+				}
+				else {
+					t->setText(status[entry]);
+				}
+				//t->setText(entry, ":", status[entry]);
+
+			}
 		}
 
 

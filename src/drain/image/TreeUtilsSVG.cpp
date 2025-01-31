@@ -246,6 +246,7 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 	/** Generally, graphic elements span "downwards", i.e. with increasing y coordinate.
 	 *  TEXT element position is compensated by adding an approximated offset.
 	 */
+	/*
 	if (IS_TEXT){
 		if (obox.height > 0){
 			coord += obox.height;
@@ -259,6 +260,9 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 			}
 		}
 	}
+	*/
+
+	const svg::coord_t fontSize = object->getStyle().get("font-size", obox.height*0.8);
 
 	// svg::coord_t coord0 = coord;
 
@@ -266,17 +270,29 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 	case AlignBase::Pos::MIN:
 		if (IS_TEXT){
 			coord += object->getMargin(); //
+			coord += fontSize;
 			// mout.special("Vertical adjust: TEXT +margin=", object->getMargin());
 		}
 		break;
 	case AlignBase::Pos::MID:
-		coord -= obox.height/2.0;
+		if (IS_TEXT){
+			//coord += obox.height/2.0;
+			coord += fontSize/2.0;
+			// mout.special("Vertical adjust: TEXT +margin=", object->getMargin());
+		}
+		else {
+			coord -= obox.height/2.0;
+		}
 		break;
 	case AlignBase::Pos::MAX:
-		coord -= obox.height;
 		if (IS_TEXT){
+			//coord += obox.height;
+			//coord -= fontSize; //
 			coord -= object->getMargin(); //
 			// mout.special("Vertical adjust: TEXT -margin=", object->getMargin());
+		}
+		else {
+			coord -= obox.height;
 		}
 		break;
 	case AlignBase::Pos::FILL:

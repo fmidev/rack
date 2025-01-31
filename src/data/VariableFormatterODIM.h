@@ -145,36 +145,42 @@ public:
 
 	/// Checks if variables have ODIM names (keys), and apply special formatting (currently with time stamps)
 	virtual
-	bool formatVariable(const std::string & key, const T & value, const std::string & format, std::ostream & ostr) const override {
+	bool formatVariable(const std::string & key, const T & value, const std::string & format, std::ostream & ostr) const override;
 
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		// mout.warn("trying time format: ", key, " + ", format);
-
-		if (format.find('%') != std::string::npos){
-			// Time formatting (instead of C-stype printf formatting)td::ostream & ostr
-			if (formatDate(ostr, key, value, format)){
-				// mout.attention("formatting DATE");
-				return true;
-			}
-			else if (formatTime(ostr, key, value, format)){
-				// mout.attention("formatting TIME");
-				return true;
-			}
-			else if (ODIM::locationKeys.count(key) > 0){  // skip formatPlace
-				// if (formatPlace(ostr, key, value, format)){
-				// Recognize location/place, but still apply default formatter, to support numeric formatting like ${where:lon|%04.3f}
-				drain::VariableFormatter<T>::formatVariable(key, value, format, ostr);
-				// mout.attention("formatting PLACE");
-				return true;
-			}
-		}
-
-		// Else, use default formatting:
-		return drain::VariableFormatter<T>::formatVariable(key, value, format, ostr); // basic/trad.
-	}
 
 
 };
+
+/// Checks if variables have ODIM names (keys), and apply special formatting (currently with time stamps)
+template <class T>
+bool VariableFormatterODIM<T>::formatVariable(const std::string & key, const T & value, const std::string & format, std::ostream & ostr) const {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	// mout.warn("trying time format: ", key, " + ", format);
+
+	if (format.find('%') != std::string::npos){
+		// Time formatting (instead of C-stype printf formatting)td::ostream & ostr
+		if (formatDate(ostr, key, value, format)){
+			// mout.attention("formatting DATE");
+			return true;
+		}
+		else if (formatTime(ostr, key, value, format)){
+			// mout.attention("formatting TIME");
+			return true;
+		}
+		else if (ODIM::locationKeys.count(key) > 0){  // skip formatPlace
+			// if (formatPlace(ostr, key, value, format)){
+			// Recognize location/place, but still apply default formatter, to support numeric formatting like ${where:lon|%04.3f}
+			drain::VariableFormatter<T>::formatVariable(key, value, format, ostr);
+			// mout.attention("formatting PLACE");
+			return true;
+		}
+	}
+
+	// Else, use default formatting:
+	return drain::VariableFormatter<T>::formatVariable(key, value, format, ostr); // basic/trad.
+}
+
 
 
 }  // namespace rack

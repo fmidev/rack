@@ -303,6 +303,9 @@ public:
 		return box.height;
 	}
 
+	/// Sets font size and also text elem "height".
+	void setFontSize(svg::coord_t size, svg::coord_t elemHeight = 0.0);
+
 
 protected:
 

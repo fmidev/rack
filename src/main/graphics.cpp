@@ -166,6 +166,18 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				// {"stroke-dasharray", {2,5,3}},
 		};
 
+		style[SelectorXMLcls(svg::RECT,PanelConfSVG::SIDE_PANEL)] = { // TODO: add leading '.' ?
+				{"fill", "black"},
+				{"stroke", "white"},
+				{"stroke-width", 2.0},
+		};
+
+		style[SelectorXMLcls(svg::TEXT,PanelConfSVG::SIDE_PANEL)] = { // TODO: add leading '.' ?
+				{"font-size", 12.0},
+				{"stroke", "none"},
+				{"fill", "white"},
+		};
+
 	}
 
 	style[SelectorXMLcls(PanelConfSVG::MAIN)] ->set("font-size", ctx.svgPanelConf.fontSizes[0]);
@@ -175,6 +187,29 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 	return style;
 }
 // const drain::StatusFlags::value_t RackContext::BBOX_STATUS =   StatusFlags::add("BBOX");
+
+const std::string & RackSVG::guessFormat(const std::string & key){
+
+		//v = attr.second.toStr();
+		if (drain::StringTools::endsWith(key, "date")){
+			static const std::string s("%Y/%m/%d");
+			return s;
+		}
+		else if ((key == "time") || (key == "what:time")){
+			//else if (drain::StringTools::endsWith(key, ":time")){
+			static const std::string s("%H:%M UTC");
+			return s;
+		}
+		else if (drain::StringTools::endsWith(key, "time")){
+			static const std::string s("%H:%M:%S UTC");
+			return s;
+		}
+		else {
+			static const std::string s;
+			return s;
+		}
+		// mout.accept<LOG_DEBUG>("TIME text format", format);
+}
 
 drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std::string & name
 
@@ -921,7 +956,9 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 
 		if (elemClass == PanelConfSVG::ElemClass::TIME){
 			if (format.empty()){
-				//v = attr.second.toStr();
+
+				format = RackSVG::guessFormat(key);
+				/*
 				if (drain::StringTools::endsWith(key, "date")){
 					format = "%Y/%m/%d";
 				}
@@ -932,6 +969,7 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 				else if (drain::StringTools::endsWith(key, "time")){
 					format = " %H:%M:%S UTC";
 				}
+				*/
 				text->set("format", format);
 			}
 			// mout.accept<LOG_DEBUG>("TIME text format", format);

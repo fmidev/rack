@@ -126,24 +126,20 @@ public:
 	// NOTE: must return false, if not found. Then, further processors may handle the variable tag (remove, change, leave it).
 	virtual
 	bool formatVariable(const std::string & key, const T & value, const std::string & format, std::ostream & ostr) const {
-
-		drain::Logger mout(__FILE__, __FUNCTION__);
-
+		// drain::Logger mout(__FILE__, __FUNCTION__);
 		// Default implementation discards \c key.
 		return formatValue(value, format, ostr);
-
-		/*
-		typename std::map<std::string,T>::const_iterator it = variables.find(key);
-
-		if (it != variables.end()){
-			return formatValue(it->second, format, ostr);
-		}
-		else {
-			return false;
-		}
-		*/
-
 	}
+
+	/// Checks if variables have ODIM names (keys), and apply special formatting (currently with time stamps)
+	virtual inline
+	bool formatVariable(const std::string & key, const T & value, const std::string & format, std::string & str) const final {
+		std::stringstream sstr;
+		const bool result = formatVariable(key, value, format, sstr);
+		str = sstr.str();
+		return result;
+	}
+
 
 	/// Given a value, print it formatted to stream.
 	/**
