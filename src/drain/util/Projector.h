@@ -39,9 +39,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <proj.h>
 
-#include "Dictionary.h"
+// #include "Dictionary.h"
+#include "EnumFlags.h"
 // #include "Point.h"
-// #include "TreeUnordered.h"
 
 
 namespace drain
@@ -74,7 +74,7 @@ public:
 
 	/// Each projector has three (3) versions of project definition
 	typedef enum {
-		ORIG,    // Supplied, provided by user
+		ORIG,    // Supplied by user
 		MODIFIED, // EPSG-converted and filtered
 		// FINAL,    //
 		PROJ4, // Final, formulated by projlib
@@ -85,9 +85,7 @@ public:
 
 	inline  // NEW 2024: proj_context_create()
 	Projector(const std::string & projDef = "", CRS_mode crs=ACCEPT_CRS) : pjContext(proj_context_create()), pj(nullptr), epsg(0){
-	//Projector(const std::string & projDef = "", CRS_mode crs=ACCEPT_CRS) : pjContext(nullptr), pj(nullptr), epsg(0){
 		if (projDef.empty()){
-			// clear(); don't use this before designing: proj_context
 			projDefs = {{ORIG,""}, {MODIFIED,""}, {PROJ4,""}, {PROJ5,""}, {SIMPLE,""}};
 		}
 		else {
@@ -100,7 +98,6 @@ public:
 
 		if (projDef.empty()){
 			// CONSIDER projeDef.empty() check in setProjection(projDef, crs); ?
-			// clear(); don't use this before designing: proj_context
 			projDefs = {{ORIG,""}, {MODIFIED,""}, {PROJ4,""}, {PROJ5,""}, {SIMPLE,""}};
 		}
 		else {
@@ -112,22 +109,6 @@ public:
 	// 	Moved to .cpp for version 6/7/8 problems (context_clone)
 	Projector(const Projector & pr);
 
-	/*
-	inline
-	Projector(const Projector & pr) :
-		pjContext(proj_context_clone(pr.pjContext)), // NEW 2024
-		// pjContext(nullptr), // for safety
-		// TODO: CLONE, in version 7.2.
-		 // TODO: flag for own CTX => destroy at end
-		pj(proj_clone(pjContext, pr.pj)),
-		// projDefDict(pr.projDefDict),
-		epsg(pr.epsg)
-	{
-		// TODO
-		//projDefs = {{ORIG,"*"}, {CHECKED,"**"}, {FINAL,"***"}, {INTERNAL,"****"}};
-		setProjection(pr.getProjDef(ORIG)); // imitate ?
-	}
-		*/
 
 	virtual inline
 	~Projector(){
@@ -136,35 +117,25 @@ public:
 	}
 
 
-	inline
-    const ProjDef & getProjDefDict() const {
-    	return projDef;
-    }
+	static
+	int extractEPSG(const std::string & projDef);
+
 
 	const std::string & getProjDef(PROJDEF_variant v = SIMPLE) const { // For external objects, excluding +init=epsg and +type=crs
 		return projDefs[v];
 	}
 
-	/// Extracts numeric EPSG code from plain number or from "EPSG:<code>", +init
-	static
-	int extractEPSG(const std::string & s);
-
-	/// Traverses entries and searches for "+init..." or "EPSG" entry
-	static
-	int extractEPSG(const ProjDef & projDefDict);
 
 
 	/// Deletes projection object and clears all the metadata.
-	void clear();
-	/*{
+	void clear(){
 		projDefs = {{ORIG,""}, {MODIFIED,""}, {PROJ4,""}, {PROJ5,""}, {SIMPLE,""}};
 		pjContext = nullptr; // TODO: flag for own CTX => destroy at end
 		proj_destroy(pj);
 		pj = nullptr;
-		projDef.clear();
+		projDefDict.clear();
 		epsg = 0;
 	}
-	*/
 
 	/// Sets projection defined as Proj string.
 	/**
@@ -178,6 +149,8 @@ public:
 	 */
 	void setProjection(int epsg, CRS_mode crs=FORCE_CRS);
 
+	// protect
+	void createProjection(CRS_mode crs);
 
 	/// Returns true, if PJ object has been set.
 	inline
@@ -199,6 +172,10 @@ public:
 
 
 
+	/// Prunes "+init=epsg:<...>" and optionally "+type=crs" codes.
+	//static
+	// int filterProjStr(const std::string & src, std::ostream & ostr, CRS_mode crs=ACCEPT_CRS);
+
 
 	inline
     void info(std::ostream & ostr = std::cout, int wkt = -1){
@@ -216,50 +193,54 @@ public:
     	//return "Not Impl."; //std::string(pj_strerrno(*pj_get_errno_ref()));
     };
 
-// to-be protected:
+// To be protected?
 
     /// Dump misc information, for debugging
     void info(PJ *pj, std::ostream & ostr = std::cout, int wkt = -1);
 
 protected:
 
-    /// Essential Proj.6 pointers.
+	/// Metadata for PROJ (introduced in latest versions, currently not used by Drain & Rack )
+	PJ_CONTEXT *pjContext;
 
-	PJ_CONTEXT *pjContext = nullptr;
-	PJ *pj = nullptr;
+    /// Essential member: the pointer to a PJ object. This is the primary description of state.
+	PJ *pj;
 
+    /// Secondary description of state.
+    ProjDef projDefDict;
+
+	///
 	int epsg = 0;
 
-	/// Prunes "+init=epsg:<...>" and optionally "+type=crs" codes.
-	/*
-	 *   Optionally, prunes "+init=epsg:<...>" and optionally "+type=crs" codes.
-	 */
-    //static
-    //void getProjDefStr(const ProjDef & dict, std::stringstream & sstr, const std::set<std::string> & excludeKeys = {"+type"});
-	void getProjDefStr(std::stringstream & sstr, const std::set<std::string> & excludeKeys = {"+type"}) const ;
-
-	// protect
-	// void updateProjectionDefs(CRS_mode crs);
-    //static
-    void getProjDefDict(const std::string & str); // ProjDef & dict);
-
-
-    /// After ProjDef[s] have been populated, create the actual projection.
-    void createProjection(const std::string & projDefStr, CRS_mode crs);
-
-
-    /// Projection definition as a map(key, value)
-    ProjDef projDef;
-
-    /// Variants of Proj.4 "projdef" strings for current projection.
 	mutable
 	std::map<PROJDEF_variant,std::string> projDefs;
+
+	void storeProjDef(const std::string & str);
+
+    static
+    void getProjDefStr(const ProjDef & dict, std::stringstream & sstr, const std::set<std::string> & excludeKeys = {"+type"});
+
+	// static
+	// int extractEPSGold(const ProjDef & projDefDict);
+
+	/// For setting projection.
+	/**
+	 * \param projStr - string in Proj format
+	 * \param CRS     - set or unset
+	 */
+	// PJ * getProjection(const std::string & projStr, CRS_mode crs=ACCEPT_CRS) const;
 
     static
     bool isLongLat(const PJ *prj);
 
 
 };
+
+template <>
+const drain::EnumDict<Projector::PROJDEF_variant>::dict_t  drain::EnumDict<Projector::PROJDEF_variant>::dict;
+
+DRAIN_ENUM_OSTREAM(Projector::PROJDEF_variant);
+
 
 } // drain
 

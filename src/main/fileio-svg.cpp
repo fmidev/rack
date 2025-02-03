@@ -367,7 +367,7 @@ public:
 		//getParameters().link("level", level = 5);
 	}
 
-	void exec() const {
+	void exec() const override {
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
@@ -407,7 +407,7 @@ public:
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
 	}
 
-	void exec() const {
+	void exec() const override {
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
@@ -430,7 +430,7 @@ public:
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
 	}
 
-	void exec() const {
+	void exec() const override {
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 	}
@@ -501,7 +501,7 @@ public:
 			drain::sprinter(drain::EnumDict<SvgInclude>::dict.getKeys(), '|').str()) {
 	}
 
-	void exec() const {
+	void exec() const override {
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		//mout.unimplemented<LOG_ERR>(__FILE__, __FUNCTION__);
@@ -551,7 +551,7 @@ public:
 		//getParameters().link("level", level = 5);
 	}
 
-	void exec() const {
+	void exec() const override {
 
 		// ClassLabelXML<drain::image::AlignSVG> label1(drain::image::AlignSVG::PANEL);
 		// ClassLabelXML<drain::image::AlignSVG> label2("PANEL");
@@ -700,7 +700,7 @@ public:
 		//getParameters().link("level", level = 5);
 	}
 
-	void exec() const {
+	void exec() const override {
 
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
@@ -730,27 +730,29 @@ public:
 };
 
 
-
+/// Currenly, value is not used.
 class CmdPanel : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdPanel() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "layout") {
+	CmdPanel() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "layout", "TECH") {
 		//getParameters().link("level", level = 5);
 	}
 
-	void exec() const {
+	void exec() const override {
 
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		drain::Frame2D<double> frame = {120,300};
+		PanelConfSVG & conf = ctx.svgPanelConf;
 
-		//drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP);
+		drain::Frame2D<double> frame = {160,300};
+
 		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[PanelConfSVG::SIDE_PANEL](svg::GROUP);
 		group->setId(value);
-
+		group->addClass(PanelConfSVG::SIDE_PANEL);
 		//group->setAlignAnchor(RackSVG::BACKGROUND_RECT);
+
 		RackSVG::applyAlignment(ctx, group);
 
 
@@ -758,72 +760,93 @@ public:
 		rect->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
 		rect->setWidth(frame.width);
 		rect->setHeight(frame.height);
-		// rect->setStyle("fill", "red");
 		/*
 		 does not work over
 		rect->setAlignAnchorVert("*");
 		rect->setAlign(AlignSVG::VERT_FILL);
-		*/
+		 */
 		// rect->setAlign(AlignSVG::VERT_FILL);
 
 		static std::string HEADER_RECT("headerRect");
-
-		drain::image::TreeSVG & rect2 = group[HEADER_RECT](svg::RECT); // +EXT!
-		rect2->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
-		rect2->setAlignAnchor(RackSVG::BACKGROUND_RECT);
-		rect2->setAlign(AlignSVG::TOP, AlignSVG::HORZ_FILL);
-		rect2->setHeight(120);
-
 		drain::VariableMap & status = ctx.getStatusMap();
 
-		drain::image::TreeSVG & text = group.addChild()(svg::TEXT);
-		text->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
-		text->setAlignAnchor(HEADER_RECT);
-		//text->setAlignAnchor(RackSVG::BACKGROUND_RECT);
-		text->setAlign(AlignSVG::TOP, AlignSVG::CENTER);
-		text->setFontSize(25.0);
-		text->setText("TOP:", status["NOD"]);
-
-		drain::image::TreeSVG & text2 = group.addChild()(svg::TEXT);
-		text2->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
-		text2->setAlignAnchor(HEADER_RECT);
-		text2->setFontSize(15.0);
-		text2->setAlign(AlignSVG::BOTTOM, AlignSVG::CENTER);
-		text2->setText("BOTTOM:", status["PLC"]);
-
-		drain::image::TreeSVG & text3 = group.addChild()(svg::TEXT);
-		text3->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
-		text3->setAlignAnchor(HEADER_RECT);
-		text3->setFontSize(20.0);
-		text3->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT);
-		text3->setText("MIDDLE:", status["PLC"]);
+		drain::image::TreeSVG & rect2 = group[HEADER_RECT](svg::RECT); // +EXT!
 
 		VariableFormatterODIM<std::string> formatter;
 
+		{
+			rect2->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+			rect2->setAlignAnchor(RackSVG::BACKGROUND_RECT);
+			rect2->setAlign(AlignSVG::TOP, AlignSVG::HORZ_FILL);
+			rect2->setHeight(120);
+
+			drain::image::TreeSVG & text = group.addChild()(svg::TEXT);
+			text->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+			text->setAlignAnchor(HEADER_RECT);
+			text->setAlign(AlignSVG::TOP, AlignSVG::CENTER);
+			// text->setFontSize(20.0);
+			text->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
+			text->setStyle("fill", "lightblue");
+			text->setText(status["PLC"]);
+
+			drain::image::TreeSVG & text2 = group.addChild()(svg::TEXT);
+			text2->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+			//text2->setAlignAnchor(HEADER_RECT);
+			text2->setFontSize(conf.fontSizes[0], conf.boxHeights[0]);
+			text2->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
+			text2->setText(status["NOD"]);
+
+			std::stringstream sstr;
+
+			drain::image::TreeSVG & date = group["date"](svg::TEXT); //addTextElem(group, "date");
+			date->setAlignAnchor(HEADER_RECT);
+			// date->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT); // CENTER);
+			date->setAlign(AlignSVG::CENTER);
+			date->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
+
+			date->addClass(PanelConfSVG::ElemClass::TIME);
+			formatter.formatDate(sstr, "date", status.get("what:date", ""), "%Y/%m/%d");
+			date->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
+			date->setStyle("fill", "gray");
+			date->setText(sstr.str());
+
+			drain::image::TreeSVG & time = group["time"](svg::TEXT); // addTextElem(group, "time");
+			time->setAlignAnchorHorz(HEADER_RECT);
+			// time->setAlignAnchorVert(HEADER_RECT);
+			time->setAlign(AlignSVG::CENTER);
+			time->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
+			//time->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+			time->setStyle("fill", "white");
+			time->setFontSize(conf.fontSizes[0]);
+			time->setMargin(conf.boxHeights[1]*2.1); // KLUDGE, fix later with negative HEIGHT handling
+			// time->setFontSize(20,25);		//time->setMargin(15);
+			sstr.str("");
+			formatter.formatTime(sstr, "time", status.get("what:time", ""), "%H:%M UTC");
+			time->setText(sstr.str());
+			//time->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+			//time->setAlign(AlignSVG::CENTER);
+		}
+
 		std::string anchorVert(HEADER_RECT);
 
-		for (const auto entry: {"what:time", "what:date", "what:object"}){
+		// "where:BBOX",
+		for (const auto key: {"what:object", "what:product", "what:prodpar", "what:quantity", "how:angles", "how:lowprf", "how:hiprf",  "where:EPSG"}){
 
-			if (status.hasKey(entry)){
-				drain::image::TreeSVG & t = group[entry](svg::TEXT);
+			std::string value = status.get(key, "");
+			if (!value.empty()){
+				drain::image::TreeSVG & t = addTextElem(group, key);
+				t->setAlignAnchorVert(anchorVert);
+				anchorVert.clear();
 				t->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
-				t->setFontSize(10);
-				if (!anchorVert.empty()){
-					t->setAlignAnchorVert(anchorVert);
-					anchorVert.clear();
-				}
-				t->setAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
-				t->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
-				t->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
 
-				const std::string & format = RackSVG::guessFormat(entry);
+				const std::string & format = RackSVG::guessFormat(key);
 				if (!format.empty()){
 					std::stringstream sstr;
-					formatter.formatVariable(entry, status[entry], format, sstr);
+					formatter.formatVariable(key, value, format, sstr);
 					t->ctext = sstr.str();
 				}
 				else {
-					t->setText(status[entry]);
+					t->setText(value);
 				}
 				//t->setText(entry, ":", status[entry]);
 
@@ -831,6 +854,17 @@ public:
 		}
 
 
+	}
+
+	// , const drain::VariableMap & vmap
+	drain::image::TreeSVG & addTextElem(drain::image::TreeSVG & group, const std::string & key) const {
+		drain::image::TreeSVG & t = group[key](svg::TEXT);
+		// t->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+		t->setFontSize(15.0, 4.0);
+		t->setAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
+		t->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+		t->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+		return t;
 	}
 
 };

@@ -93,6 +93,18 @@ public:
 		setMapping(true);
 	}
 
+	/// Sets source projection, primarily using EPSG code.
+	/**
+	 *
+	 */
+	inline
+	void setProjectionSrc(const Projector & projDef){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.unimplemented<LOG_ERR>("Not setting ", projDef.getProjDef());
+		//src.setProjection(projDef, crs);
+		// setMapping(true);
+	}
+
     /// Sets destination projection.
 	inline
 	void setProjectionDst(const std::string & projDef, Projector::CRS_mode crs=Projector::FORCE_CRS){
@@ -100,7 +112,17 @@ public:
 		setMapping(true);
 	}
 
-    /// Sets source and destination projection.
+
+    /// Sets destination projection, primarily using EPSG code.
+	inline
+	void setProjectionDst(const Projector & projDef){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.unimplemented<LOG_ERR>("Not setting ", projDef.getProjDef());
+		// dst.setProjection(projDef, crs);
+		// setMapping(true);
+	}
+
+    /// Sets source and destination projection. TOOD: EPSG code handling
 	inline
 	void setProjections(const std::string & projDefSrc, const std::string & projDefDst){
 		src.setProjection(projDefSrc, Projector::FORCE_CRS);

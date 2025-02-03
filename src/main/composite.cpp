@@ -410,7 +410,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 		double w = weight;
 
-		mout.debug("CART MAIN #" + ctx.getName());
+		mout.attention("CART MAIN #" + ctx.getName());
 
 		if (current.is(ODIMPathElem::QUALITY)){ // rare
 			mout.info("plain quality data, ok (no further quality data)");  // TODO: fix if quality/quality (BirdOp)

@@ -32,8 +32,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Log.h>
 #include <drain/String.h>
 
-#include "MapReader.h"
-#include "Proj6.h"
+// #include "MapReader.h"
+#include "Projector.h"
+
 
 namespace drain
 {
@@ -42,7 +43,14 @@ const SprinterLayout Projector::projDefLayout(" ","","=", "",""); // space-separ
 
 const std::string Projector::proj4version = drain::StringBuilder<'.'>(PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
 
-
+template <>
+const drain::EnumDict<Projector::PROJDEF_variant>::dict_t  drain::EnumDict<Projector::PROJDEF_variant>::dict = {
+		DRAIN_ENUM_ENTRY(Projector::PROJDEF_variant, ORIG),
+		DRAIN_ENUM_ENTRY(Projector::PROJDEF_variant, MODIFIED),
+		DRAIN_ENUM_ENTRY(Projector::PROJDEF_variant, PROJ4),
+		DRAIN_ENUM_ENTRY(Projector::PROJDEF_variant, PROJ5),
+		DRAIN_ENUM_ENTRY(Projector::PROJDEF_variant, SIMPLE),
+};
 
 Projector::Projector(const Projector & pr) :
 #if PROJ_VERSION_MAJOR == 6
@@ -60,83 +68,82 @@ Projector::Projector(const Projector & pr) :
 }
 
 
-void Projector::clear(){
-	// projDefs = {{ORIG,""}, {MODIFIED,""}, {PROJ4,""}, {PROJ5,""}, {SIMPLE,""}};
-	for (auto & entry: projDefs){
-		entry.second.clear();
-	}
-	// TODO/ RE-DESIGN:
-	// proj_destroy_context(pjContext) (because its cloned, right?)
-	pjContext = nullptr; // TODO: flag for own CTX => destroy at end
-	proj_destroy(pj);
-	pj = nullptr;
-	projDef.clear();
-	epsg = 0;
-}
-
-
 void Projector::setProjection(int epsg, CRS_mode crs){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.info("Setting epsg: ", epsg, ", expanding projDef");
-	clear();
-
-	// drain::StringBuilder<':'> projDefStr("EPSG", epsg);
 	this->epsg = epsg;
-	createProjection(drain::StringBuilder<':'>("EPSG", epsg), crs);
 
-	/*
-	projDefs[ORIG] = epsgStr; //sstr.str();
+	drain::StringBuilder<':'> epsgTag("EPSG", epsg);
 
-	PJ *pjTmp = proj_create(0, epsgStr.c_str()); // pjContext: better with or without?
+	mout.info("Setting epsg: ", epsg, " -> ", epsgTag, " -> expanding projDef");
 
-	const char *projStr = proj_as_proj_string(pjContext, pjTmp, PJ_PROJ_4, nullptr);
-	mout.info("Converted 'EPSG:", epsg, "' to non-(x,y)-swapping '", projStr,"'");
+	projDefs[ORIG] = epsgTag;
 
-	projDefDict.clear();
-	getProjDefDict(projStr, projDefDict);
-	proj_destroy(pjTmp);
+	// IMPORTANT. This part is needed to "wash away" EPSG:4326 property of latlong coord order (instead of longlat)
+	{
+		PJ *pjTmp = proj_create(pjContext, epsgTag.c_str()); // pjContext: better with or without (0)?
+		const char *projStr = proj_as_proj_string(pjContext, pjTmp, PJ_PROJ_4, nullptr);
+		mout.special("Converting 'EPSG:", epsg, "' to non-(x,y)-swapping '", projStr,"'");
+		storeProjDef(projStr);
+		proj_destroy(pjTmp);
+	}
+	// And yes, proj_as_proj_string will be called again.
 
-	updateProjectionDefs(crs);
-	*/
+	createProjection(crs);
 }
-
-
-
 
 
 void Projector::setProjection(const std::string &projDefStr, CRS_mode crs){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	int epsg = extractEPSG(projDefStr);
+	epsg = extractEPSG(projDefStr);
 	if (epsg > 0){
-		mout.accept<LOG_DEBUG>("EPSG=", epsg, " <- '", projDefStr, "'");
 		setProjection(epsg);
 	}
 	else {
-		clear(); // new 2025
-		createProjection(projDefStr, crs);
+		projDefs[ORIG] = projDefStr;
+		storeProjDef(projDefStr);
+		mout.debug("projDefDict: ", projDefDict);
+		createProjection(crs);
 	}
 
-	mout.accept<LOG_DEBUG>("final PROJ5 format: ", getProjDef(PROJ5));
 
 }
 
-
-
-void Projector::createProjection(const std::string & projDefStr, CRS_mode crs){
+void Projector::createProjection(CRS_mode crs){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	/*
-	projDefs[ORIG].clear();
+	std::set<std::string> excludeKeys = {"+init"};
+	switch (crs) {
+		case REMOVE_CRS:
+			excludeKeys.insert("+type");  // +type=crs
+			break;
+		case FORCE_CRS:
+			projDefDict.set("+type","crs");
+			break;
+		default:
+			break;
+	}
+
+
+
+	std::stringstream sstr;
+	if (true){
+		//if (epsg == 0){
+		getProjDefStr(projDefDict, sstr, excludeKeys);
+	}
+	else {
+		// drain::StringBuilder<':'> epsgTag("EPSG", epsg);
+		sstr << "EPSG:" << epsg;
+	}
+	projDefs[MODIFIED] = sstr.str();
+
 	projDefs[PROJ4].clear();
 	projDefs[PROJ5].clear();
 	projDefs[SIMPLE].clear();
-	projDefs[MODIFIED].clear();
-	*/
 
 	/* https://proj.org/development/reference/functions.html#c.proj_create
 	 *
@@ -146,64 +153,53 @@ void Projector::createProjection(const std::string & projDefStr, CRS_mode crs){
 	 * It is a legacy means of conveying CRS descriptions: use of object codes (EPSG:XXXX typically) or
 	 * WKT description is recommended for better expressivity.
 	 */
-	// mout.attention("CREATING: ", projDefStr);// sstr.str());
-	pj = proj_create(pjContext, projDefStr.c_str()); // sstr.str().c_str());
+	if (pj != nullptr){
+		proj_destroy(pj);
+	}
+
+	//for (Projector::PROJDEF_variant v: {ORIG, MODIFIED, PROJ4, PROJ5, SIMPLE}){
+	/*
+	for (const auto & entry: drain::EnumDict<Projector::PROJDEF_variant>::dict){
+		mout.warn(entry.first, ':', getProjDef(entry.second));
+	}
+	*/
+	mout.debug("creating (epsg=", epsg, ") pstr=", sstr.str());
+	pj = proj_create(pjContext, sstr.str().c_str());
 
 	if (pj == nullptr){
 		mout.warn("orig:    ", projDefs[ORIG]);
 		mout.warn("checked: ", projDefs[MODIFIED]);
 		// mout.warn("final:   ", projDefs[FINAL]);
-		mout.error(getErrorString(), " - could not derive projection from: ", projDefStr); // sstr.str()
+		mout.error(getErrorString(), " - could not derive projection from: ", sstr.str());
 		//throw std::runtime_error(getErrorString() + "(" + str + ") /" + __FILE__ + ':' + __FUNCTION__);
 		// if warn only -> clear() ?
 		return;
 	}
 
-	projDefs[ORIG] = projDefStr;
-
 	projDefs[PROJ4] = proj_as_proj_string(pjContext, pj, PJ_PROJ_4, nullptr);
-	mout.success<LOG_DEBUG>("created (proj4): ", projDefs[PROJ4]);
-
 	projDefs[PROJ5] = proj_as_proj_string(pjContext, pj, PJ_PROJ_5, nullptr);
-	mout.success<LOG_DEBUG>("created (proj5): ", projDefs[PROJ5]);
 
-	//getProjDefDict(projDefs[PROJ4], projDefDict);
-	getProjDefDict(projDefs[PROJ4]);
+	mout.accept<LOG_DEBUG>("'EPSG:", epsg, "' based projStr 2 '", projDefs[PROJ4], "'");
 
-	std::set<std::string> excludeKeys = {"+init"};
-	switch (crs) {
-		case REMOVE_CRS:
-			excludeKeys.insert("+type");    // REMOVE!
-			break;
-		case FORCE_CRS:
-			projDef.set("+type","crs");  // ADD
-			break;
-		default:
-			break;
-	}
+	std::stringstream sstrSimple;
+	getProjDefStr(projDefDict, sstrSimple, {"+init", "+type", "+units", "EPSG"});
+	projDefs[SIMPLE] = sstrSimple.str();
 
-	std::stringstream sstr;
-	getProjDefStr(sstr, excludeKeys);
-	projDefs[MODIFIED] = sstr.str();
-
-	//std::stringstream sstrSimple;
-	sstr.str("");
-	getProjDefStr(sstr, {"+init", "+type", "+units", "EPSG"});
-	projDefs[SIMPLE] = sstr.str();
-
-	mout.accept<LOG_DEBUG>("CREATED proj5: ", projDefs[SIMPLE]);
 
 	// test: redo
-	// proj_destroy(pj);
-	// pj = proj_create(pjContext, s);
+	//proj_destroy(pj);
+	//pj = proj_create(pjContext, s);
+
 	// The returned string is valid while the input obj parameter is valid, and until a next call to proj_as_proj_string() with the same input object.
 
 }
 
 
-void Projector::getProjDefDict(const std::string & src){ //, ProjDef & projDef){ // , const std::set<string> & exclude){
+void Projector::storeProjDef(const std::string & src){ // , ProjDef & projDef){ //
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	projDefDict.clear();
 
 	std::list<std::string> projDefList;
 	drain::StringTools::split(src, projDefList, ' ');
@@ -211,17 +207,16 @@ void Projector::getProjDefDict(const std::string & src){ //, ProjDef & projDef){
 	mout.debug("Split: ", projDefList.size(), " items");
 
 	std::string key,value;
-	for (const std::string & entry: projDefList) {
+	for (const auto & entry: projDefList) {
 
 		if (entry.empty()){
-			// Late trimming of input string...  (leading and/or trailing part)
 			continue;
 		}
 
 		value.clear(); // split2 does not clear
 
 		drain::StringTools::split2(entry, key, value, "=:"); // Using '=' for standard +params, ':' for EPSG
-		//mout.pending<LOG_NOTICE>(key, " - ", value);
+		mout.debug(key, " - ", value);
 
 		if (key == "+init"){
 			mout.discouraged("Use of +init (", entry, ')');
@@ -231,10 +226,7 @@ void Projector::getProjDefDict(const std::string & src){ //, ProjDef & projDef){
 				mout.warn("+type detected, with value='", value, "' (not 'crs' )");
 			}
 		}
-		if (value.empty() && (key != "+no_defs")){
-			mout.warn("value empty for key '", key, "', entry:", entry);
-		}
-		projDef.set(key, value);
+		projDefDict.set(key, value);
 
 	}
 
@@ -242,11 +234,9 @@ void Projector::getProjDefDict(const std::string & src){ //, ProjDef & projDef){
 }
 
 
-//void Projector::getProjDefStr(const ProjDef & projDef, std::stringstream & sstr, const std::set<std::string> & exclude){
-void Projector::getProjDefStr(std::stringstream & sstr, const std::set<std::string> & exclude) const {
+void Projector::getProjDefStr(const ProjDef & projDef, std::stringstream & sstr, const std::set<std::string> & exclude){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	//drain::Sprinter::sequenceToStream(cout, projDef, SprinterLayout(" ","","=", "",""));
 
 	char sep = 0;
 	for (const ProjDef::entry_t & entry: projDef){
@@ -268,59 +258,11 @@ void Projector::getProjDefStr(std::stringstream & sstr, const std::set<std::stri
 		else if (!entry.second.empty()){
 			sstr << '=' << entry.second;
 		}
+
 	}
 
 }
 
-
-/*
-PJ *Projector::getProjection(const std::string & projDef, CRS_mode CRS) const {
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	std::stringstream sstr;
-
-	// If +type=crs in string, remove it initially, then add if required.
-	const int EPSG = filterProjStr(projDef, sstr, CRS); // (CRS==FORCE_CRS ? REMOVE_CRS:CRS));
-
-	if (EPSG > 0){
-		//sstr.str("");
-		// sstr << "EPSG:" << EPSG;
-		if (EPSG==4326){
-			mout.note("Using EPSG:4326 implies CRS mode with swapped axis order");
-			if (CRS != FORCE_CRS){
-				mout.advice("Consider also proj str: '+proj=longlat +datum=WGS84 +no_defs +type=crs'");
-			}
-		}
-		if (CRS == ACCEPT_CRS){
-			mout.note("using EPSG:<code> implies CRS mode");
-		}
-		else if (CRS == REMOVE_CRS){
-			mout.error("using EPSG:<code> implies CRS mode");
-		}
-	}
-	else {
-		if (CRS == FORCE_CRS){
-			sstr << " +type=crs";
-		}
-	}
-
-	const std::string projDefFinal(sstr.str());
-
-	mout.note("Final proj str: ", projDefFinal);
-
-	PJ *pj = proj_create(pjContext, projDefFinal.c_str());
-
-	if (pj == nullptr){
-		mout.warn("orig:  ", projDef);
-		mout.warn("final: ", projDefFinal);
-		mout.error(getErrorString(), " - could not derive projection from: ", projDefFinal);
-		//throw std::runtime_error(getErrorString() + "(" + str + ") /" + __FILE__ + ':' + __FUNCTION__);
-	}
-
-	return pj;
-}
-*/
 
 
 
@@ -378,22 +320,6 @@ bool Projector::isLongLat(const PJ *pj) {
 
 }
 
-/*
-const std::string & Projector::getProjection(const PJ *pj, std::string & projDef) const {
-
-
-	if (pj == nullptr){
-		projDef.clear();
-    }
-	else {
-		// The returned string is valid while the input obj parameter is valid, and until a next call to proj_as_proj_string() with the same input object.
-		const char *s = proj_as_proj_string(pjContext, pj, PJ_PROJ_5, nullptr);
-		projDef.assign(s);
-		// free(s);
-	}
-	return projDef;
-}
-*/
 
 void Projector::info(PJ *pj, std::ostream & ostr, int wkt){
 
@@ -401,12 +327,6 @@ void Projector::info(PJ *pj, std::ostream & ostr, int wkt){
 		ostr << "null Projector::info";
 		return;
 	}
-
-	/*
-	std::string str;
-	getProjection(pj, str);
-	ostr << "'" << str << "'";
-	*/
 
 	PJ_TYPE type = proj_get_type(pj);
 	ostr << "enumtype:" << type;
@@ -439,34 +359,45 @@ void Projector::info(PJ *pj, std::ostream & ostr, int wkt){
 		ostr << " WKT:\n " << proj_as_wkt(pjContext, pj, (PJ_WKT_TYPE)wkt, nullptr) << '\n';
 	}
 
+	for (const auto & entry: drain::EnumDict<Projector::PROJDEF_variant>::dict){
+		ostr << entry.first << ':' << getProjDef(entry.second) << '\n';
+	}
 
 	ostr << std::flush;
 
 }
 
-int Projector::extractEPSG(const std::string & s){
+int Projector::extractEPSG(const std::string & projStr){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	int epsg = 0;
+	size_t i=0;
 
 	for (std::string key: {"EPSG:", "+init=epsg:"}){
-		int epsg = 0;
-		size_t i=0;
-		 if ((i = s.find(key)) != std::string::npos){
-			 epsg = ::atoi(s.substr(i+key.length()).c_str());
-			 if (i > 0){
-				 drain::Logger(__FILE__, __FUNCTION__).suspicious("extra arguments in EPSG(", epsg, ") definition ", s);
-			 }
-			 if (epsg == 0){
-				 drain::Logger(__FILE__, __FUNCTION__).suspicious("Failed in extracting non-zero EPSG code from '", s.substr(i+key.length()), "', from: ", s, "'");
-			 }
-			 return epsg;
-		 }
+
+		if ((i = projStr.find(key)) != std::string::npos){
+			epsg = ::atoi(projStr.substr(i+key.length()).c_str());
+			if (i > 0){
+				mout.suspicious("extra arguments in EPSG(", epsg, ") definition ", projStr);
+			}
+			if (epsg == 0){
+				mout.error("Failed in extracting non-zero EPSG code from '", projStr.substr(i+key.length()), "', from: ", projStr, "'");
+			}
+			if (epsg == 4326){
+				mout.note("drain handles 'EPSG:", epsg, "' longlat/latlong projection with unswapped coordinate order (lon,lat)");
+			}
+			return epsg;
+		}
 	}
 
-	return ::atoi(s.c_str());
 
+
+	return ::atoi(projStr.c_str());
 }
 
-
-int Projector::extractEPSG(const ProjDef & dict){
+/*
+int Projector::extractEPSGold(const ProjDef & dict){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -509,6 +440,56 @@ int Projector::extractEPSG(const ProjDef & dict){
 	return epsg;
 
 }
+*/
+
+/*
+PJ *Projector::getProjection(const std::string & projDef, CRS_mode CRS) const {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	std::stringstream sstr;
+
+	// If +type=crs in string, remove it initially, then add if required.
+	const int EPSG = filterProjStr(projDef, sstr, CRS); // (CRS==FORCE_CRS ? REMOVE_CRS:CRS));
+
+	if (EPSG > 0){
+		//sstr.str("");
+		// sstr << "EPSG:" << EPSG;
+		if (EPSG==4326){
+			mout.note("Using EPSG:4326 implies CRS mode with swapped axis order");
+			if (CRS != FORCE_CRS){
+				mout.advice("Consider also proj str: '+proj=longlat +datum=WGS84 +no_defs +type=crs'");
+			}
+		}
+		if (CRS == ACCEPT_CRS){
+			mout.note("using EPSG:<code> implies CRS mode");
+		}
+		else if (CRS == REMOVE_CRS){
+			mout.error("using EPSG:<code> implies CRS mode");
+		}
+	}
+	else {
+		if (CRS == FORCE_CRS){
+			sstr << " +type=crs";
+		}
+	}
+
+	const std::string projDefFinal(sstr.str());
+
+	mout.note("Final proj str: ", projDefFinal);
+
+	PJ *pj = proj_create(pjContext, projDefFinal.c_str());
+
+	if (pj == nullptr){
+		mout.warn("orig:  ", projDef);
+		mout.warn("final: ", projDefFinal);
+		mout.error(getErrorString(), " - could not derive projection from: ", projDefFinal);
+		//throw std::runtime_error(getErrorString() + "(" + str + ") /" + __FILE__ + ':' + __FUNCTION__);
+	}
+
+	return pj;
+}
+*/
 
 
 

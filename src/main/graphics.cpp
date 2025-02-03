@@ -604,22 +604,30 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 
 	switch (elemClass) {
 	case PanelConfSVG::ElemClass::MAIN:
-		textBoxHeight = conf.fontSizes[0];
+		textBoxHeight = conf.boxHeights[0]; // fontSizes
 		mainHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
 		timeHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::LEFT);
 		locationHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT);
 		break;
 	case PanelConfSVG::ElemClass::GROUP:
-		textBoxHeight = conf.fontSizes[1];
+		textBoxHeight = conf.boxHeights[1]; // fontSizes
 		mainHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
 		timeHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::LEFT);
 		locationHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT);
 		break;
 	case PanelConfSVG::ElemClass::IMAGE:
-		textBoxHeight = conf.fontSizes[2];
-		mainHeader->setAlign(AlignSVG::BOTTOM, AlignSVG::LEFT);
-		timeHeader->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
-		locationHeader->setAlign(AlignSVG::TOP, AlignSVG::RIGHT);
+		textBoxHeight = conf.boxHeights[2]; // fontSizes
+		if (textBoxHeight > 0.0){
+			mainHeader->setAlign(AlignSVG::BOTTOM, AlignSVG::LEFT);
+			timeHeader->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
+			locationHeader->setAlign(AlignSVG::TOP, AlignSVG::RIGHT);
+		}
+		else {
+			mainHeader->setComment("removed");
+			timeHeader->setComment("removed");
+			locationHeader->setComment("removed");
+			return;
+		}
 		break;
 	default:
 		mout.error(__LINE__, "unhandled ElemClass", elemClass);
@@ -950,7 +958,7 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 			elemClass = PanelConfSVG::ElemClass::LOCATION;
 		}
 
-		TreeSVG & text  = group[elemClass](svg::TEXT);
+		TreeSVG & text  = group[elemClass]; // (svg::TEXT);
 		TreeSVG & tspan = text[attr.first](svg::TSPAN);
 		tspan->addClass(attr.first); // allows user-specified style
 
