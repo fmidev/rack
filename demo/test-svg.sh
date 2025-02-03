@@ -136,14 +136,7 @@ EOF
 
 #CONF="--format metadata -o \"\${NOD}_\${where:EPSG}_\${where:xsize},\${where:xsize}.cnf\""
 
-WRITE_DOC 'With \b background maps. External images can be linked with \c --gLinkImage. For example, maps can be included, aligning the following radar image on top of it with \c --gAlign \c HORZ_FILL,VERT_FILL .'
-
-#WRITE_DOC '\subsection svg-include Including and excluding images in SVG panels'
-#make -B gInclude.hlp
-#WRITE_DOC '\include gInclude.hlp'
-RUN_TEST \\  --gTitle "''" --gGroupTitle "'AUTO:'" --inputPrefix '$PWD/'   --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage maps/maps.wms_GEOCONF=radar:\${NOD}_LAYERS=osm:osm_PROJ=\${where:EPSG}_SIZE=\${where:xsize},\${where:ysize}.png  --imageTransp 0.0:0.1,0.9,1 --palette default --gAlign HORZ_FILL,VERT_FILL  -o out-\${what:date}T\${what:time}-\${NOD}.png'"  data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 -o 'Adding_background_maps'
-
-exit 0
+#exit 0
 
 WRITE_DOC "Align images horizontally (default):" 
 RUN_TEST \\  volume.h5 --cProj 3067 --cSize 400 -Q DBZH -c "$CONF" -o gray.png --palette "'default'" -o rgb.png \\  -o 'Basic_example'
@@ -208,9 +201,17 @@ RUN_TEST \\   --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --pa
 
 
 
-WRITE_DOC 'Metadata panel. (Experimental, under development.)'
+WRITE_DOC 'Metadata panel. (Experimental, variants under development.)'
 
-RUN_TEST \\  --gTitleHeights "'40,30,0'"  --gTitle "''" --gGroupTitle "''" \\  volume.h5 \\ --cProj 3067 --cSize 500 -Q DBZH -c \\ --palette "'default'" --legendOut legend.svg -o rbg.png \\  --gPanel TECH --gStyle text.IMAGE='opacity:0' \\  -o "Metadata_panel"
+RUN_TEST \\  --gTitleHeights "'30,25,15'"  --gTitle "''" --gGroupTitle "''" \\  volume.h5 \\ --cProj 3067 --cSize 500 -Q DBZH -c \\ --palette "'default'" --legendOut legend.svg -o rbg.png \\  --gPanel TECH --gStyle text.IMAGE='opacity:0' \\  -o "Metadata_panel"
+
+
+WRITE_DOC '\b Background maps. External images can be linked with \c --gLinkImage. For example, maps can be included, aligning the following radar image on top of it with \c --gAlign \c HORZ_FILL,VERT_FILL .'
+
+#WRITE_DOC '\subsection svg-include Including and excluding images in SVG panels'
+#make -B gInclude.hlp
+#WRITE_DOC '\include gInclude.hlp'
+RUN_TEST \\  --gTitle "''" --gGroupTitle "'AUTO:'" --inputPrefix '$PWD/'   --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png  --imageTransp 0.0:0.1,0.9,1 --palette default --gAlign HORZ_FILL,VERT_FILL  -o out-\${what:date}T\${what:time}-\${NOD}.png'"  data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 -o 'Adding_background_maps'
 
 
 

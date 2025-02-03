@@ -32,9 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "10.6.1"
+#define __RACK_VERSION__ "10.7"
 
 /**
+ *  Version 10.7
+ *   - gPanel TECH
+ *   - SVG transformations (translate, scale, skew, matrix)
+
  *  Version 10.6.1
  *   - Fixed projstr EPSG bug
 

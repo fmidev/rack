@@ -368,6 +368,7 @@ public:
 	}
 
 	void exec() const override {
+
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
@@ -382,7 +383,7 @@ public:
 			frame.set(320,200);
 		}
 		ctx.getUpdatedStatusMap(); // for variables in file path
-		drain::FilePath filePath(ctx.getFormattedStatus(this->value));
+		drain::FilePath filePath(ctx.getFormattedStatus(ctx.inputPrefix + this->value));
 		mout.note("linking: ", filePath);
 		RackSVG::addImage(ctx, frame, filePath); // , drain::StringBuilder<>(LayoutSVG::GroupType::FLOAT));
 		// EnumDict<LayoutSVG::GroupType>::dict
@@ -781,19 +782,18 @@ public:
 			rect2->setHeight(120);
 
 			drain::image::TreeSVG & text = group.addChild()(svg::TEXT);
-			text->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
 			text->setAlignAnchor(HEADER_RECT);
 			text->setAlign(AlignSVG::TOP, AlignSVG::CENTER);
-			// text->setFontSize(20.0);
+			text->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
 			text->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
 			text->setStyle("fill", "lightblue");
 			text->setText(status["PLC"]);
 
 			drain::image::TreeSVG & text2 = group.addChild()(svg::TEXT);
+			text2->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+			text2->setAlign(AlignSVG::CENTER);
 			text2->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
-			//text2->setAlignAnchor(HEADER_RECT);
 			text2->setFontSize(conf.fontSizes[0], conf.boxHeights[0]);
-			text2->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
 			text2->setText(status["NOD"]);
 
 			std::stringstream sstr;
@@ -801,24 +801,22 @@ public:
 			drain::image::TreeSVG & date = group["date"](svg::TEXT); //addTextElem(group, "date");
 			date->setAlignAnchor(HEADER_RECT);
 			// date->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT); // CENTER);
-			date->setAlign(AlignSVG::CENTER);
 			date->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
-
+			date->setAlign(AlignSVG::CENTER);
 			date->addClass(PanelConfSVG::ElemClass::TIME);
-			formatter.formatDate(sstr, "date", status.get("what:date", ""), "%Y/%m/%d");
-			date->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
 			date->setStyle("fill", "gray");
+			date->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
+			formatter.formatDate(sstr, "date", status.get("what:date", ""), "%Y/%m/%d");
 			date->setText(sstr.str());
 
 			drain::image::TreeSVG & time = group["time"](svg::TEXT); // addTextElem(group, "time");
 			time->setAlignAnchorHorz(HEADER_RECT);
-			// time->setAlignAnchorVert(HEADER_RECT);
+			//time->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
+			time->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE); // over ["date"]
 			time->setAlign(AlignSVG::CENTER);
-			time->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
-			//time->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
 			time->setStyle("fill", "white");
-			time->setFontSize(conf.fontSizes[0]);
-			time->setMargin(conf.boxHeights[1]*2.1); // KLUDGE, fix later with negative HEIGHT handling
+			time->setFontSize(conf.fontSizes[0], conf.boxHeights[0]);
+			// time->setMargin(conf.boxHeights[1]*2.1); // KLUDGE, fix later with negative HEIGHT handling
 			// time->setFontSize(20,25);		//time->setMargin(15);
 			sstr.str("");
 			formatter.formatTime(sstr, "time", status.get("what:time", ""), "%H:%M UTC");
@@ -835,20 +833,36 @@ public:
 
 			std::string value = status.get(key, "");
 			if (!value.empty()){
-				drain::image::TreeSVG & t = addTextElem(group, key);
-				t->setAlignAnchorVert(anchorVert);
+				// drain::image::TreeSVG & t = addTextElem(group, key);
+
+				drain::image::TreeSVG & tkey = group[key](svg::TEXT);
+				tkey->setId(key);
+				tkey->setAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
+				tkey->setAlignAnchorVert(anchorVert);
 				anchorVert.clear();
-				t->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
-				// t->transform.rotate = (rotate += 10.0);
+				tkey->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+				tkey->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+				tkey->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+				tkey->setFontSize(conf.fontSizes[2], conf.boxHeights[1]);
+				tkey->setStyle("fill", "darkgray");
+				tkey->setText(key);
+
+				drain::image::TreeSVG & tval = group[tkey->getId()+"Value"](svg::TEXT);
+				tval->setAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
+				tval->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE);
+				tval->setAlignAnchorVert(key);
+				tval->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
+				tval->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+				tval->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
 
 				const std::string & format = RackSVG::guessFormat(key);
 				if (!format.empty()){
 					std::stringstream sstr;
 					formatter.formatVariable(key, value, format, sstr);
-					t->ctext = sstr.str();
+					tval->ctext = sstr.str();
 				}
 				else {
-					t->setText(value);
+					tval->setText(value);
 				}
 				//t->setText(entry, ":", status[entry]);
 
