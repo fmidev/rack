@@ -399,9 +399,9 @@ public:
 	*/
 
 
-	// ------------------ Style Class ---------------
-
 protected:
+
+	// ------------------ Style Class ---------------
 
 	ClassListXML classList;
 
@@ -410,7 +410,6 @@ public:
 	const ClassListXML & getClasses() const {
 		return classList;
 	}
-
 
 	template <typename ... TT>
 	inline
@@ -436,6 +435,11 @@ public:
 	void clearClasses(){
 		classList.clear();
 	}
+
+
+	virtual
+	void specificAttributesToStream(std::ostream & ostr) const;
+
 
 // ----------------- Static utilities for derived classes ----------------------
 

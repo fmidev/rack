@@ -105,6 +105,8 @@ const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict = {
 		{"tspan", drain::image::svg::TSPAN},
 };
 
+
+
 // Applied by XML::xmlAddChild()
 template <>
 const NodeXML<drain::image::svg::tag_t>::xml_default_elem_map_t NodeXML<drain::image::svg::tag_t>::xml_default_elems = {
@@ -116,6 +118,25 @@ const NodeXML<drain::image::svg::tag_t>::xml_default_elem_map_t NodeXML<drain::i
 
 
 namespace image {
+
+TransformSVG::TransformSVG(){ //  : translate(typeid(svg::coord_t)) {
+
+	/*
+	rotate.setOutputSeparator(' ');
+	scale.setOutputSeparator(' ');
+	translate.setOutputSeparator(' ');
+	matrix.setOutputSeparator(' ');
+	*/
+};
+
+
+void TransformSVG::toStream(std::ostream & ostr) const {
+#define DRAIN_SVGTRANS_STREAM(transform) if (!transform.empty()){ostr << #transform << "(" << transform << ") ";}
+	DRAIN_SVGTRANS_STREAM(rotate)
+	DRAIN_SVGTRANS_STREAM(scale)
+	DRAIN_SVGTRANS_STREAM(translate)
+	DRAIN_SVGTRANS_STREAM(matrix)
+}
 
 template <>
 NodeSVG::xmldoc_attrib_map_t NodeSVG::xml_node_t::xmldoc_attribs = {
@@ -294,12 +315,17 @@ void NodeSVG::setFontSize(svg::coord_t size, svg::coord_t elemHeight){
 			//case svg::TSPAN:
 			// elemHeight = (elemHeight>0.0) ? elemHeight : 1.5*size;
 			if (elemHeight > 0){
+				//setHeight(-elemHeight);
 				setHeight(elemHeight);
 			}
 			else if (getHeight() == 0.0){
+				//setHeight(-1.5*size);
 				setHeight(1.5*size);
 			}
 			setMargin(0.25*size);
+			// svg::coord_t
+			//transform.translate[0] = getMargin();
+			//transform.translate[1] = getHeight()-getMargin();
 			// no break
 		default:
 			setStyle("font-size", size);
@@ -344,7 +370,14 @@ void NodeSVG::updateAlign(){
 
 }
 
-
+void NodeSVG::specificAttributesToStream(std::ostream & ostr) const {
+	XML::specificAttributesToStream(ostr);
+	if (!transform.empty()){
+		ostr << ' ' << "transform=" << '"';
+		transform.toStream(ostr);
+		ostr << '"';
+	}
+}
 
 }  // image::
 

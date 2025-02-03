@@ -460,6 +460,20 @@ public:
 		// return *this;
 	}
 
+	// NEW 2025
+	inline // protected
+	void append(){
+	}
+
+	template <class T, class ...TT>
+	void append(const T &arg, const TT& ...args){
+		//Castable::operator<<(x);
+		append(arg);
+		append(args...);
+		//return *this;
+	}
+
+
 	template <class T>
 	inline
 	T get(size_t i) const {
@@ -467,6 +481,16 @@ public:
 			throw std::runtime_error("Castable::get() index overflow");
 		return caster.get<T>(getPtr(i));
 	}
+
+	/*
+	template <class T>
+	inline
+	void setElem(size_t i) const {
+		if (i >= elementCount)
+			throw std::runtime_error("Castable::get() index overflow");
+		return caster.get<T>(getPtr(i));
+	}
+	*/
 
 
 	/// Conversion to std::string.

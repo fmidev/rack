@@ -103,4 +103,16 @@ void XML::setText(const std::string & s) {
 
 }
 
+void XML::specificAttributesToStream(std::ostream & ostr) const {
+
+	if (!classList.empty()){
+		ostr << " class=\"";
+		drain::Sprinter::toStream(ostr, classList, ClassListXML::layout);
+		// std::copy(tree->classList.begin(), tree->classList.end(), std::ostream_iterator<std::string>(ostr, " "));
+		ostr << '"'; //ostr << "\"";
+	}
+
+}
+
+
 }  // drain::

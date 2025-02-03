@@ -602,12 +602,15 @@ std::ostream & NodeXML<T>::toStream(std::ostream & ostr, const TR & tree, const 
 	}
 	else if (!tree->isCText()){
 		//char sep=' ';
+		tree->specificAttributesToStream(ostr);
+		/*
 		if (!tree->classList.empty()){
 			ostr << " class=\"";
 			drain::Sprinter::toStream(ostr, tree->classList, ClassListXML::layout);
 			// std::copy(tree->classList.begin(), tree->classList.end(), std::ostream_iterator<std::string>(ostr, " "));
 			ostr << '"'; //ostr << "\"";
 		}
+		*/
 
 		// Iterate attributes - note: also for comment
 		// Checking empties, so Sprinter::toStream not applicable

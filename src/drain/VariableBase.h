@@ -117,10 +117,7 @@ public:
 	}
 
 
-
-
-
-	//template <class T>
+	/*  Trying to raise to Castable
 	VariableBase & append(){
 		return *this;
 	}
@@ -131,12 +128,16 @@ public:
 		append(rest...);
 		return *this;
 	}
+	*/
 
 	template <class T, class ...TT>
-	VariableBase & set(const T &x, const TT& ...rest){
+	// VariableBase &
+	void set(const T &arg, const TT& ...args){
 		clear();
-		(*this) = x;
-		return append(rest...);
+		// (*this) = x; // 2025
+		assign(arg); // 2025
+		//return append(rest...);
+		append(args...);
 	}
 
 	/// Does not change separator chars.
@@ -189,20 +190,23 @@ public:
 	const CastableIterator & end() const { return dataEnd; };
 
 
-
-//protected:
-
-
 	/// Extends the array to include \c elementCount elements of current type.
 	/**
 	 *  Needed for example in reading data directly using a pointer.
 	 */
 	virtual inline
 	bool setSize(size_t elementCount){
-		// TODO: if is reference?
-		//return updateSize(elementCount); // fix/check: always returns true?
 		updateSize(elementCount);
 		return true;
+	}
+
+	///
+	virtual inline
+	void ensureSize(size_t elementCount){
+		if (this->elementCount < elementCount){
+			updateSize(elementCount);
+		}
+		// return true;
 	}
 
 protected:

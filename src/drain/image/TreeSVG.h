@@ -80,9 +80,10 @@ const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict;
 
 DRAIN_ENUM_OSTREAM(image::svg::tag_t)
 
+
+
 namespace image {
 
-// Future option
 class BBoxSVG : public drain::Box<svg::coord_t> {
 
 public:
@@ -95,11 +96,93 @@ public:
 	BBoxSVG(const BBoxSVG & bbox) : drain::Box<svg::coord_t>(bbox)  {
 	}
 
-	// Future option
+	// Future option - also other units!
+	/*
 	bool x_PERCENTAGE = false;
 	bool y_PERCENTAGE = false;
 	bool width_PERCENTAGE = false;
 	bool height_PERCENTAGE = false;
+	*/
+};
+
+
+template <size_t N>
+class Transform : public UniTuple<double,N> {
+
+public:
+
+	bool empty() const {
+		return (*this == 0.0);
+	}
+
+	inline
+	void toStream(std::ostream & ostr) const {
+		ostr << '(';
+		TupleBase<double,N>::toStream(ostr, ' ');
+		ostr << ')';
+	}
+
+};
+
+
+template <size_t N>
+std::ostream & operator<<(std::ostream & ostr, Transform<N> & tr){
+	tr.toStream(ostr);
+	return ostr;
+}
+
+
+// Future option
+class TransformSVG {
+
+public:
+
+	TransformSVG();
+
+	inline
+	bool empty() const {
+		return (rotate.empty() && scale.empty() && translate.empty() && matrix.empty()) ;
+	}
+
+	inline
+	void setTranslate(const svg::coord_t & x, const svg::coord_t & y){
+		// translate.ensureSize(2);
+		translate.set(x,y);
+	}
+
+	inline
+	void setTranslateX(const svg::coord_t & x){
+		// translate.ensureSize(1);
+		// translate.set(x);
+		translate[0] = x;
+	}
+
+	inline
+	void setTranslateY(const svg::coord_t & y){
+		// translate.ensureSize(2);
+		// svg::coord_t x = translate.get<svg::coord_t>(1);
+		translate[1] = y;
+		// translate.set(x, y);
+	}
+
+	/// Angle (deg), [x,y]
+
+	Transform<3> rotate;
+	Transform<2> scale;
+	Transform<2> translate;
+	Transform<6> matrix;
+
+	/*
+	Variable rotate;
+	Variable scale;
+	Variable translate;
+	Variable matrix;
+	*/
+
+	// drain::Variable matrix;
+	// drain::Variable skewX;
+	// drain::Variable skewY;
+	void toStream(std::ostream & ostr) const;
 
 };
 
@@ -306,8 +389,20 @@ public:
 	/// Sets font size and also text elem "height".
 	void setFontSize(svg::coord_t size, svg::coord_t elemHeight = 0.0);
 
+	TransformSVG transform;
+
+	/// Write transform, in addition to XML::ClassList.
+	/**
+	 *  Writes special attributes:
+	 *  - class="..." as defined XMK::specificAttributesToStream()
+	 *  - transform="..." geometric transformations – only if defined.
+	 *
+	 */
+	virtual
+	void specificAttributesToStream(std::ostream & ostr) const override;
 
 protected:
+
 
 	///
 	/**

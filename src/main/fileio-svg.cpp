@@ -830,6 +830,7 @@ public:
 		std::string anchorVert(HEADER_RECT);
 
 		// "where:BBOX",
+		// svg::coord_t rotate = 0.0;
 		for (const auto key: {"what:object", "what:product", "what:prodpar", "what:quantity", "how:angles", "how:lowprf", "how:hiprf",  "where:EPSG"}){
 
 			std::string value = status.get(key, "");
@@ -838,6 +839,7 @@ public:
 				t->setAlignAnchorVert(anchorVert);
 				anchorVert.clear();
 				t->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+				// t->transform.rotate = (rotate += 10.0);
 
 				const std::string & format = RackSVG::guessFormat(key);
 				if (!format.empty()){
@@ -860,7 +862,7 @@ public:
 	drain::image::TreeSVG & addTextElem(drain::image::TreeSVG & group, const std::string & key) const {
 		drain::image::TreeSVG & t = group[key](svg::TEXT);
 		// t->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
-		t->setFontSize(15.0, 4.0);
+		t->setFontSize(10.0);
 		t->setAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
 		t->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
 		t->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);

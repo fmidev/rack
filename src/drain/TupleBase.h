@@ -171,6 +171,28 @@ public:
 		return true;
 	}
 
+	/// Equality operator against single value
+	/**
+	 *  \return true, if all the values are equal to \c t .
+	 */
+	bool operator==(const value_type &t) const {
+		//
+		for (const auto e: *this){
+			if (e != t){
+				return false;
+			}
+		}
+		/*
+		 * const_iterator it  = begin();
+		while (it != end()){
+			if (*it != t)
+				return false;
+			++it;
+		}*/
+		return true;
+	}
+
+
 	/// Inequality operator
 	bool operator!=(const tuplebase_t &t) const {
 		return !(*this == t);

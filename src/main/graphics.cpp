@@ -959,6 +959,10 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 		}
 
 		TreeSVG & text  = group[elemClass]; // (svg::TEXT);
+		if (text->isUndefined()){
+			text->setType(svg::COMMENT); // test...
+			text->setText("skipped elem");
+		}
 		TreeSVG & tspan = text[attr.first](svg::TSPAN);
 		tspan->addClass(attr.first); // allows user-specified style
 
