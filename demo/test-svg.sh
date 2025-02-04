@@ -211,7 +211,7 @@ WRITE_DOC '\b Background maps. External images can be linked with \c --gLinkImag
 #WRITE_DOC '\subsection svg-include Including and excluding images in SVG panels'
 #make -B gInclude.hlp
 #WRITE_DOC '\include gInclude.hlp'
-RUN_TEST \\  --gTitle "''" --gGroupTitle "'AUTO:'" --inputPrefix '$PWD/'   --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png  --imageTransp 0.0:0.1,0.9,1 --palette default --gAlign HORZ_FILL,VERT_FILL  -o out-\${what:date}T\${what:time}-\${NOD}.png'"  data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 -o 'Adding_background_maps'
+RUN_TEST \\  --gTitle "''" --gGroupTitle "'AUTO:'" --inputPrefix '$PWD/'   --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png  --imageTransp 0.0:0.1,0.1,1 --palette default --gAlign HORZ_FILL,VERT_FILL  -o out-\${what:date}T\${what:time}-\${NOD}.png'"  data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 -o 'Adding_background_maps'
 
 
 
