@@ -84,27 +84,14 @@ void TreeUtilsSVG::finalizeBoundingBox(TreeSVG & svg){
 
 void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> & anchorBoxHorz){
 
-	svg::coord_t coord = 0;
-
-	/*
-	realignObjectHorz(object, anchorBoxHorz, coord);
-	TranslatorSVG translator(coord - object->getBoundingBox().x, 0);
-	TreeUtils::traverse(translator, object);
-	}
-
-	void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> & anchorBoxHorz, svg::coord_t & coord){ // Point2D<svg::coord_t> & newLocation){
-	*/
 
 	Logger mout(__FILE__, __FUNCTION__);
-
 
 	const bool IS_TEXT = object->typeIs(svg::TEXT);
 
 	Box<svg::coord_t> & obox = object->getBoundingBox();
 
-	if (IS_TEXT){
-		// mout.debug("TEXT start coord = (", coord, ") ");
-	}
+	svg::coord_t coord = 0;
 
 	AlignBase::Pos alignLoc;
 
@@ -141,7 +128,6 @@ void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> &
 	case AlignBase::Pos::MIN:
 		if (IS_TEXT){
 			object->setStyle(TEXT_ANCHOR, "start");
-			// coord += 2.0*object->getMargin(); //
 			object->transform.translate.set(+2.0 * object->getMargin());
 		}
 		break;
@@ -151,15 +137,11 @@ void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> &
 		}
 		else {
 			coord -= obox.width/2;
-			//location.x -= box.width/2;
 		}
 		break;
 	case AlignBase::Pos::MAX:
 		if (IS_TEXT){
 			object->setStyle(TEXT_ANCHOR, "end");
-			// coord -= 2.0*object->getMargin(); // margin
-			// object->transform.translate.setSize(std::max(size_t(2), object->transform.translate.getSize()));
-			// marginX = object->transform.translate.get<svg::coord_t>(0);
 			object->transform.translate.set(-2.0 * object->getMargin());
 		}
 		else {
@@ -193,53 +175,24 @@ void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> &
  */
 void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> & anchorBoxVert){
 
-	svg::coord_t coord = 0;
-
-	/*
-	realignObjectVert(object, anchorBoxVert, coord);
-	TranslatorSVG translator(0, coord - object->getBoundingBox().y);
-	TreeUtils::traverse(translator, object);
-	}
-	void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> & anchorBoxVert, svg::coord_t & coord){ // Point2D<svg::coord_t> & newLocation){
-	*/
 
 	Logger mout(__FILE__, __FUNCTION__);
 
 	const bool IS_TEXT = object->typeIs(svg::TEXT);
 
-	if (IS_TEXT){
-		// mout.experimental(__FUNCTION__, " handling ", object.data);
-	}
-
+	svg::coord_t coord = 0;
 
 	AlignBase::Pos alignLoc;
-	svg::coord_t yMin;
-	svg::coord_t yMax;
-
-
-
-	mout.debug("Adjusting VERT location (", ") with ANCHOR's ref point");
-
-	// This is for TEXT, mainly, which span "upwards", in negative vertical direction.
-	if (anchorBoxVert.height > 0.0){
-		yMin = anchorBoxVert.y;
-		yMax = anchorBoxVert.y + anchorBoxVert.height;
-	}
-	else {
-		yMin = anchorBoxVert.y + anchorBoxVert.height;
-		yMax = anchorBoxVert.y;
-	}
-
 
 	switch (alignLoc = object->getAlign(AlignSVG::Owner::ANCHOR, AlignBase::Axis::VERT)){
 	case AlignBase::Pos::MIN:
-		coord = yMin; // anchorBoxVert.y;
+		coord = anchorBoxVert.y;
 		break;
 	case AlignBase::Pos::MID:
-		coord = 0.5*(yMin+yMax); //  anchorBoxVert.y + anchorBoxVert.height/2;
+		coord = anchorBoxVert.y + anchorBoxVert.height/2;
 		break;
 	case AlignBase::Pos::MAX:
-		coord = yMax; // anchorBoxVert.y + anchorBoxVert.height;
+		coord = anchorBoxVert.y + anchorBoxVert.height;
 		break;
 	case AlignBase::Pos::FILL:
 		mout.suspicious<LOG_NOTICE>("Alignment:: ANCHOR has fill request: HORZ FILL");
@@ -259,117 +212,20 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 
 	static const std::string TEXT_ANCHOR("text-anchor");
 
-	/// Vertical TEXT offset.
-	/** Generally, graphic elements span "downwards", i.e. with increasing y coordinate.
-	 *  TEXT element position is compensated by adding an approximated offset.
-	 */
-	/*
-	if (IS_TEXT){
-		if (obox.height > 0){
-			coord += obox.height;
-			// mout.special("Vertical adjust: TEXT + (height=", obox.height, ") coord=", coord);
-		}
-		else {
-			double s = object->getStyle().get("font-size", 0.0);
-			if (s > 0.0){
-				coord += s;
-				// mout.special("Vertical adjust by explicit font-size:", s);
-			}
-		}
-	}
-	*/
 	Box<svg::coord_t> & obox = object->getBoundingBox();
-
-
-	// Notice negative value!
-
-	// const svg::coord_t fontSize = object->getStyle().get("font-size", obox.height*0.8);
-	svg::coord_t height = obox.height; //object->getStyle().get("font-size", obox.height*0.8);
-	if (IS_TEXT && (height==0.0)){
-		// Assume 25% to and bottom margins
-		// Notice negative value!
-		height = 1.5 * object->getStyle().get("font-size", 10.0); // value is for "debugging", to make text appear as a cascade.
-	}
-	if (IS_TEXT){
-		// ensure
-		height = -::abs(height);
-	}
-
-	if (height >= 0.0){
-		yMin = 0;
-		yMax = height;
-	}
-	else {
-		yMin = height;
-		yMax = 0;
-	}
-
-	// svg::coord_t coord0 = coord;
-	svg::coord_t marginX = 0.0;
-	svg::coord_t marginY = object->getMargin();
-	// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform
 
 	if (IS_TEXT){
 		object->transform.translate[1] += (object->getHeight()-object->getMargin());
 	}
 
-
 	switch (alignLoc = object->getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::VERT)){
 	case AlignBase::Pos::MIN:
-		//coord -= yMin;
-		if (IS_TEXT){
-			//coord += obox.height;
-			// coord -= object->getMargin(); //
-			/*
-			object->transform.translate.setSize(std::max(size_t(2), object->transform.translate.getSize()));
-			marginX = object->transform.translate.get<svg::coord_t>(0);
-			object->transform.translate.set(marginX, -marginY); // yes, also HORZ taken care, here
-			*/
-			// coord += fontSize;
-			// mout.special("Vertical adjust: TEXT +margin=", object->getMargin());
-			//object->transform.translate[1] += (object->getHeight()-object->getMargin());
-		}
-		else {
-			//
-		}
 		break;
 	case AlignBase::Pos::MID:
-		// coord -= 0.5*(yMin+yMax);
 		coord -= 0.5*obox.height;
-		if (IS_TEXT){
-			// coord += 0.5*obox.height;
-			// coord -= object->getMargin();
-			/*
-			object->transform.translate.setSize(std::max(size_t(2), object->transform.translate.getSize()));
-			marginX = object->transform.translate.get<svg::coord_t>(0);
-			object->transform.translate.set(marginX, -marginY); // yes, also HORZ taken care, here
-			*/
-			// coord += obox.height/2.0;
-			// coord += fontSize/2.0;
-			// mout.special("Vertical adjust: TEXT +margin=", object->getMargin());
-			// object->transform.translate[1] += (object->getHeight() - object->getMargin());
-		}
-		else {
-			//coord -= 0.5*obox.height;
-
-		}
 		break;
 	case AlignBase::Pos::MAX:
-		// coord -= yMax;
 		coord -= obox.height;
-		if (IS_TEXT){
-			// object->transform.translate[1] += (object->getHeight() - object->getMargin());
-			// coord -= object->getMargin(); //
-			/*
-			object->transform.translate.setSize(std::max(size_t(2), object->transform.translate.getSize()));
-			marginX = object->transform.translate.get<svg::coord_t>(0);
-			object->transform.translate.set(marginX, -marginY); // yes, also HORZ taken care, here
-			*/
-			// mout.special("Vertical adjust: TEXT -margin=", object->getMargin());
-		}
-		else {
-			//coord -= obox.height;
-		}
 		break;
 	case AlignBase::Pos::FILL:
 		// mout.experimental("STRETCHING..." );mout.experimental("STRETCHING..." );
@@ -386,12 +242,6 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 	default:
 		mout.unimplemented<LOG_ERR>("AlignSVG::Pos ", alignLoc);
 	}
-
-	if (IS_TEXT){
-		// mout.special("Adjusted TEXT with VERT:", alignLoc, ":", coord0, " -> ", coord);
-	}
-	// mout.attention("Alignment::OBJECT-HORZ ", pos);
-	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', axis, '=', alignLoc);
 
 	TranslatorSVG translator(0.0f, coord - object->getBoundingBox().y);
 	TreeUtils::traverse(translator, object);

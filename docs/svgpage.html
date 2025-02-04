@@ -188,7 +188,9 @@ SVG panel example: Multiple styles.</div></div>
 <div class="caption">
 SVG panel example: Metadata panel.</div></div>
  <b>Background</b> maps. External images can be linked with <code>--gLinkImage</code>. For example, maps can be included, aligning the following radar image on top of it with <code>--gAlign</code> <code>HORZ_FILL</code>,VERT_FILL . </p><div class="fragment"><div class="line"><a class="code" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
-<div class="line">   --gTitle <span class="stringliteral">&#39;&#39;</span> --gGroupTitle <span class="stringliteral">&#39;AUTO:&#39;</span> --inputPrefix $PWD/ --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage maps/map-radar:${NOD}-${where:EPSG}-${where:xsize}x${where:ysize}.png  --imageTransp 0.0:0.1,0,1 --palette default --gAlign HORZ_FILL,VERT_FILL  -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> data-kiira/201708121600_radar.polar.fikor.h5 data-kiira/201708121600_radar.polar.fiika.h5 data-kiira/201708121600_radar.polar.fivan.h5 -o adding_background_maps.svg</div>
+<div class="line">   --inputPrefix $PWD/ \</div>
+<div class="line">   --gTitle <span class="stringliteral">&#39;&#39;</span> --gGroupTitle <span class="stringliteral">&#39;AUTO:&#39;</span> \</div>
+<div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage maps/map-radar:${NOD}-${where:EPSG}-${where:xsize}x${where:ysize}.png  --imageTransp 0.0:0.1,0,1 --palette default --gAlign HORZ_FILL,VERT_FILL  -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 -o adding_background_maps.svg</div>
 </div><!-- fragment --><div class="image">
 <img src="adding_background_maps.png" alt=""/>
 <div class="caption">
