@@ -133,9 +133,10 @@ template&lt;typename OBJ , typename A , typename V &gt; </td></tr>
 <tr class="memitem:a3acfa3cc4d97a08ba56b7933da2b675f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1AlignSVG.html#a3acfa3cc4d97a08ba56b7933da2b675f">setAlign</a> (const AlignBase::Axis &amp;axis, const <a class="el" href="structdrain_1_1image_1_1AlignBase.html#a94c3a04b97f81dd5db990b01eb6521a0">AlignBase::Pos</a> &amp;pos, Topol topol=Topol::INSIDE)</td></tr>
 <tr class="memdesc:a3acfa3cc4d97a08ba56b7933da2b675f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a single alignment setting. "Intermediate-level": axis and pos are given separately.  <a href="structdrain_1_1image_1_1AlignSVG.html#a3acfa3cc4d97a08ba56b7933da2b675f">More...</a><br /></td></tr>
 <tr class="separator:a3acfa3cc4d97a08ba56b7933da2b675f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabb43667564b139d1c0ba211cdc3003e"><td class="memTemplParams" colspan="2">template&lt;typename ... T, typename AX , AlignBase::Axis A&gt; </td></tr>
+<tr class="memitem:aabb43667564b139d1c0ba211cdc3003e"><td class="memTemplParams" colspan="2"><a id="aabb43667564b139d1c0ba211cdc3003e"></a>
+template&lt;typename ... T, typename AX , AlignBase::Axis A&gt; </td></tr>
 <tr class="memitem:aabb43667564b139d1c0ba211cdc3003e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1AlignSVG.html#aabb43667564b139d1c0ba211cdc3003e">setAlign</a> (const <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a>&lt; AX, A &gt; &amp;align, const T... args)</td></tr>
-<tr class="memdesc:aabb43667564b139d1c0ba211cdc3003e"><td class="mdescLeft">&#160;</td><td class="mdescRight">NEW High-level, user friendlier interface for setting the alignments for both OBJECT itself and its ANCHOR object.  <a href="structdrain_1_1image_1_1AlignSVG.html#aabb43667564b139d1c0ba211cdc3003e">More...</a><br /></td></tr>
+<tr class="memdesc:aabb43667564b139d1c0ba211cdc3003e"><td class="mdescLeft">&#160;</td><td class="mdescRight">NEW High-level, user friendlier interface for setting INSIDE the alignments for both OBJECT itself and its ANCHOR object. <br /></td></tr>
 <tr class="separator:aabb43667564b139d1c0ba211cdc3003e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d8730a89349f788ed91a31b1ccf9fb1"><td class="memTemplParams" colspan="2"><a id="a9d8730a89349f788ed91a31b1ccf9fb1"></a>
 template&lt;typename AX1 , AlignBase::Axis A1, typename AX2 , AlignBase::Axis A2&gt; </td></tr>
@@ -279,7 +280,7 @@ align_conf_t&#160;</td><td class="memItemRight" valign="bottom"><b>alignments</b
 </div>
 </div>
 <a id="a3acfa3cc4d97a08ba56b7933da2b675f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3acfa3cc4d97a08ba56b7933da2b675f">&#9670;&nbsp;</a></span>setAlign() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3acfa3cc4d97a08ba56b7933da2b675f">&#9670;&nbsp;</a></span>setAlign() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -331,47 +332,8 @@ align_conf_t&#160;</td><td class="memItemRight" valign="bottom"><b>alignments</b
 
 </div>
 </div>
-<a id="aabb43667564b139d1c0ba211cdc3003e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabb43667564b139d1c0ba211cdc3003e">&#9670;&nbsp;</a></span>setAlign() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void setAlign </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a>&lt; AX, A &gt; &amp;&#160;</td>
-          <td class="paramname"><em>align</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const T...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>NEW High-level, user friendlier interface for setting the alignments for both OBJECT itself and its ANCHOR object. </p>
-<p>NEW High-level, user friendlier interface for setting INSIDE the alignments for both OBJECT itself and its ANCHOR object. </p>
-
-</div>
-</div>
 <a id="a92f3a7173cf553b6c23533b558e436fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92f3a7173cf553b6c23533b558e436fc">&#9670;&nbsp;</a></span>setAlign() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a92f3a7173cf553b6c23533b558e436fc">&#9670;&nbsp;</a></span>setAlign() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

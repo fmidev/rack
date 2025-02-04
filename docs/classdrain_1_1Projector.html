@@ -73,6 +73,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
@@ -120,7 +121,7 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Projector</b> (const std::string &amp;projDef=&quot;&quot;, CRS_mode crs=ACCEPT_CRS)</td></tr>
 <tr class="separator:aa88cc91615cfdc971c9b8c84c15f86c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5db103f89e853ce936e36feaea89630b"><td class="memItemLeft" align="right" valign="top"><a id="a5db103f89e853ce936e36feaea89630b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Projector</b> (PJ_CONTEXT *pjContext, const std::string &amp;projDef=&quot;&quot;, CRS_mode crs=ACCEPT_CRS)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Projector</b> (PJ_CONTEXT *<a class="el" href="classdrain_1_1Projector.html#a4a1a07bf2320524baa235f8b602de836">pjContext</a>, const std::string &amp;projDef=&quot;&quot;, CRS_mode crs=ACCEPT_CRS)</td></tr>
 <tr class="separator:a5db103f89e853ce936e36feaea89630b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5b50cb1754f6b5e651137b62639914e"><td class="memItemLeft" align="right" valign="top"><a id="af5b50cb1754f6b5e651137b62639914e"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Projector</b> (const <a class="el" href="classdrain_1_1Projector.html">Projector</a> &amp;pr)</td></tr>
@@ -140,9 +141,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Projector.html#a1e07c386660d6f9f4c35baa435865ca3">setProjection</a> (int epsg, CRS_mode crs=FORCE_CRS)</td></tr>
 <tr class="memdesc:a1e07c386660d6f9f4c35baa435865ca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets projection defined as EPSG code. <br /></td></tr>
 <tr class="separator:a1e07c386660d6f9f4c35baa435865ca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad46c6c29e5c3abc69a6d86f026d02883"><td class="memItemLeft" align="right" valign="top"><a id="ad46c6c29e5c3abc69a6d86f026d02883"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>updateProjectionDefs</b> (CRS_mode crs)</td></tr>
-<tr class="separator:ad46c6c29e5c3abc69a6d86f026d02883"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0da8c22f8e4a169d1c01de0effd5e13d"><td class="memItemLeft" align="right" valign="top"><a id="a0da8c22f8e4a169d1c01de0effd5e13d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>createProjection</b> (CRS_mode crs)</td></tr>
+<tr class="separator:a0da8c22f8e4a169d1c01de0effd5e13d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a479da8bc6c27c908ec0c5c460fb26a4a"><td class="memItemLeft" align="right" valign="top"><a id="a479da8bc6c27c908ec0c5c460fb26a4a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Projector.html#a479da8bc6c27c908ec0c5c460fb26a4a">isSet</a> () const</td></tr>
 <tr class="memdesc:a479da8bc6c27c908ec0c5c460fb26a4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if PJ object has been set. <br /></td></tr>
@@ -161,21 +162,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getErrorString</b> () const</td></tr>
 <tr class="separator:aa871aa958cb921d9d2b565ffb38b3eee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5b3c9300ff4acc15f049ae3563b97df"><td class="memItemLeft" align="right" valign="top"><a id="ab5b3c9300ff4acc15f049ae3563b97df"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Projector.html#ab5b3c9300ff4acc15f049ae3563b97df">info</a> (PJ *pj, std::ostream &amp;ostr=std::cout, int wkt=-1)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Projector.html#ab5b3c9300ff4acc15f049ae3563b97df">info</a> (PJ *<a class="el" href="classdrain_1_1Projector.html#aaf888f501116a334cb0e37c10b1777c7">pj</a>, std::ostream &amp;ostr=std::cout, int wkt=-1)</td></tr>
 <tr class="memdesc:ab5b3c9300ff4acc15f049ae3563b97df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump misc information, for debugging. <br /></td></tr>
 <tr class="separator:ab5b3c9300ff4acc15f049ae3563b97df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af04d7e6882e38ba805e465f25b8221bc"><td class="memItemLeft" align="right" valign="top"><a id="af04d7e6882e38ba805e465f25b8221bc"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>getProjDefDict</b> (const std::string &amp;str, <a class="el" href="classdrain_1_1Dictionary.html">ProjDef</a> &amp;dict)</td></tr>
-<tr class="separator:af04d7e6882e38ba805e465f25b8221bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c74bde85a91bc7a68a9914aff30d941"><td class="memItemLeft" align="right" valign="top"><a id="a7c74bde85a91bc7a68a9914aff30d941"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>extractEPSG</b> (const <a class="el" href="classdrain_1_1Dictionary.html">ProjDef</a> &amp;projDefDict)</td></tr>
-<tr class="separator:a7c74bde85a91bc7a68a9914aff30d941"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6282ab3940aa420b286dd2df4ae3c433"><td class="memItemLeft" align="right" valign="top"><a id="a6282ab3940aa420b286dd2df4ae3c433"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>getProjDefStr</b> (const <a class="el" href="classdrain_1_1Dictionary.html">ProjDef</a> &amp;dict, std::stringstream &amp;sstr, const std::set&lt; std::string &gt; &amp;excludeKeys={&quot;+type&quot;})</td></tr>
-<tr class="separator:a6282ab3940aa420b286dd2df4ae3c433"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a858fbca9db866c18acd781ca77b53f1d"><td class="memItemLeft" align="right" valign="top"><a id="a858fbca9db866c18acd781ca77b53f1d"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>extractEPSG</b> (const std::string &amp;projDef)</td></tr>
+<tr class="separator:a858fbca9db866c18acd781ca77b53f1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -183,29 +178,41 @@ Static Public Attributes</h2></td></tr>
 static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>proj4version</b> = <a class="el" href="classdrain_1_1StringBuilder.html">drain::StringBuilder</a>&lt;'.'&gt;(PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH)</td></tr>
 <tr class="separator:a3f1ef9532e66cede9a2d390d4c2b03e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:adfe60041b6799f13627428d325fb6a68"><td class="memItemLeft" align="right" valign="top"><a id="adfe60041b6799f13627428d325fb6a68"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>storeProjDef</b> (const std::string &amp;str)</td></tr>
+<tr class="separator:adfe60041b6799f13627428d325fb6a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a6282ab3940aa420b286dd2df4ae3c433"><td class="memItemLeft" align="right" valign="top"><a id="a6282ab3940aa420b286dd2df4ae3c433"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>getProjDefStr</b> (const <a class="el" href="classdrain_1_1Dictionary.html">ProjDef</a> &amp;dict, std::stringstream &amp;sstr, const std::set&lt; std::string &gt; &amp;excludeKeys={&quot;+type&quot;})</td></tr>
+<tr class="separator:a6282ab3940aa420b286dd2df4ae3c433"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb99ba8dd1394652797076dc9716b824"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Projector.html#adb99ba8dd1394652797076dc9716b824">isLongLat</a> (const PJ *prj)</td></tr>
 <tr class="memdesc:adb99ba8dd1394652797076dc9716b824"><td class="mdescLeft">&#160;</td><td class="mdescRight">For setting projection.  <a href="classdrain_1_1Projector.html#adb99ba8dd1394652797076dc9716b824">More...</a><br /></td></tr>
 <tr class="separator:adb99ba8dd1394652797076dc9716b824"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:a4a1a07bf2320524baa235f8b602de836"><td class="memItemLeft" align="right" valign="top"><a id="a4a1a07bf2320524baa235f8b602de836"></a>
+PJ_CONTEXT *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Projector.html#a4a1a07bf2320524baa235f8b602de836">pjContext</a></td></tr>
+<tr class="memdesc:a4a1a07bf2320524baa235f8b602de836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Metadata for PROJ (introduced in latest versions, currently not used by Drain &amp; Rack ) <br /></td></tr>
+<tr class="separator:a4a1a07bf2320524baa235f8b602de836"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf888f501116a334cb0e37c10b1777c7"><td class="memItemLeft" align="right" valign="top"><a id="aaf888f501116a334cb0e37c10b1777c7"></a>
+PJ *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Projector.html#aaf888f501116a334cb0e37c10b1777c7">pj</a></td></tr>
+<tr class="memdesc:aaf888f501116a334cb0e37c10b1777c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Essential member: the pointer to a PJ object. This is the primary description of state. <br /></td></tr>
+<tr class="separator:aaf888f501116a334cb0e37c10b1777c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78531e8dfc8ce4dc158391a5660b924f"><td class="memItemLeft" align="right" valign="top"><a id="a78531e8dfc8ce4dc158391a5660b924f"></a>
-<a class="el" href="classdrain_1_1Dictionary.html">ProjDef</a>&#160;</td><td class="memItemRight" valign="bottom"><b>projDefDict</b></td></tr>
+<a class="el" href="classdrain_1_1Dictionary.html">ProjDef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Projector.html#a78531e8dfc8ce4dc158391a5660b924f">projDefDict</a></td></tr>
+<tr class="memdesc:a78531e8dfc8ce4dc158391a5660b924f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Secondary description of state. <br /></td></tr>
 <tr class="separator:a78531e8dfc8ce4dc158391a5660b924f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05a1b13df1e62f3e4d3e3f8ef23e5e74"><td class="memItemLeft" align="right" valign="top"><a id="a05a1b13df1e62f3e4d3e3f8ef23e5e74"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>epsg</b> = 0</td></tr>
+<tr class="separator:a05a1b13df1e62f3e4d3e3f8ef23e5e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40bdeb7fe4228c9e43be84e5a2159a90"><td class="memItemLeft" align="right" valign="top"><a id="a40bdeb7fe4228c9e43be84e5a2159a90"></a>
 std::map&lt; <a class="el" href="classdrain_1_1Projector.html#a711a592c3ebc676eafa0d18216a646ec">PROJDEF_variant</a>, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>projDefs</b></td></tr>
 <tr class="separator:a40bdeb7fe4228c9e43be84e5a2159a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a1a07bf2320524baa235f8b602de836"><td class="memItemLeft" align="right" valign="top"><a id="a4a1a07bf2320524baa235f8b602de836"></a>
-PJ_CONTEXT *&#160;</td><td class="memItemRight" valign="bottom"><b>pjContext</b></td></tr>
-<tr class="separator:a4a1a07bf2320524baa235f8b602de836"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf888f501116a334cb0e37c10b1777c7"><td class="memItemLeft" align="right" valign="top"><a id="aaf888f501116a334cb0e37c10b1777c7"></a>
-PJ *&#160;</td><td class="memItemRight" valign="bottom"><b>pj</b></td></tr>
-<tr class="separator:aaf888f501116a334cb0e37c10b1777c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05a1b13df1e62f3e4d3e3f8ef23e5e74"><td class="memItemLeft" align="right" valign="top"><a id="a05a1b13df1e62f3e4d3e3f8ef23e5e74"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>epsg</b></td></tr>
-<tr class="separator:a05a1b13df1e62f3e4d3e3f8ef23e5e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -250,8 +257,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>Proj6</b></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/drain/util/<a class="el" href="Proj6_8h_source.html">Proj6.h</a></li>
-<li>src/drain/util/Proj6.cpp</li>
+<li>src/drain/util/<a class="el" href="Projector_8h_source.html">Projector.h</a></li>
+<li>src/drain/util/Projector.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

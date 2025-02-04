@@ -81,14 +81,15 @@ Collaboration diagram for PanelConfSVG:</div>
 <div class="dyncontent">
 <div class="center"><img src="structrack_1_1PanelConfSVG__coll__graph.png" border="0" usemap="#aPanelConfSVG_coll__map" alt="Collaboration graph"/></div>
 <map name="aPanelConfSVG_coll__map" id="aPanelConfSVG_coll__map">
-<area shape="rect" title=" " alt="" coords="143,380,257,407"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="5,269,173,295"/>
-<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="17,185,161,212"/>
-<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="198,261,423,303"/>
-<area shape="rect" href="classdrain_1_1MultiFlagger.html" title=" " alt="" coords="231,185,390,212"/>
-<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="159,96,345,123"/>
-<area shape="rect" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="370,96,515,123"/>
-<area shape="rect" title=" " alt="" coords="373,5,512,47"/>
+<area shape="rect" title=" " alt="" coords="1047,64,1161,91"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="695,5,863,32"/>
+<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="465,5,609,32"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="665,57,893,98"/>
+<area shape="rect" href="classdrain_1_1MultiFlagger.html" title=" " alt="" coords="457,100,616,127"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="667,122,892,163"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="193,75,380,101"/>
+<area shape="rect" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="214,125,359,152"/>
+<area shape="rect" title=" " alt="" coords="5,118,144,159"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -96,28 +97,40 @@ Collaboration diagram for PanelConfSVG:</div>
 Public Types</h2></td></tr>
 <tr class="memitem:a064dd6903edf7f9e2f353b8c336db620"><td class="memItemLeft" align="right" valign="top"><a id="a064dd6903edf7f9e2f353b8c336db620"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>ElemClass</b> { <br />
 &#160;&#160;<b>NONE</b> = 0
-, <b>MAIN_TITLE</b> = 1
-, <b>GROUP_TITLE</b> = 2
-, <b>IMAGE_TITLE</b> = 4
+, <b>MAIN</b> = 1
+, <b>GROUP</b> = 2
+, <b>IMAGE</b> = 4
 , <br />
 &#160;&#160;<b>TIME</b> = 8
 , <b>LOCATION</b> = 16
 , <b>GENERAL</b> = 32
 , <b>ALL</b> = (63)
 , <br />
-&#160;&#160;<b>MAIN</b>
-, <b>IMAGE_PANEL</b>
+&#160;&#160;<b>IMAGE_PANEL</b>
 , <b>IMAGE_BORDER</b>
+, <b>SIDE_PANEL</b>
 , <b>SHARED_METADATA</b>
 <br />
  }</td></tr>
 <tr class="separator:a064dd6903edf7f9e2f353b8c336db620"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa22d5b7e322e0d5489403b81caa58a8e"><td class="memItemLeft" align="right" valign="top"><a id="aa22d5b7e322e0d5489403b81caa58a8e"></a>
+typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1MultiFlagger.html">drain::MultiFlagger</a>&lt; SvgInclude &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>IncludeFlagger</b></td></tr>
+<tr class="separator:aa22d5b7e322e0d5489403b81caa58a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a166a934cfcbb8dca3f21a2e22c99df9d"><td class="memItemLeft" align="right" valign="top"><a id="a166a934cfcbb8dca3f21a2e22c99df9d"></a>
 typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1MultiFlagger.html">drain::MultiFlagger</a>&lt; ElemClass &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TitleFlagger</b></td></tr>
 <tr class="separator:a166a934cfcbb8dca3f21a2e22c99df9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:aa2a0f1a48b7b22645d47d2b72088ecc4"><td class="memItemLeft" align="right" valign="top"><a id="aa2a0f1a48b7b22645d47d2b72088ecc4"></a>
+<a class="el" href="classdrain_1_1EnumFlagger.html">IncludeFlagger</a>&#160;</td><td class="memItemRight" valign="bottom"><b>svgIncludes</b></td></tr>
+<tr class="separator:aa2a0f1a48b7b22645d47d2b72088ecc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fb09acbfc7f3e32c43d88c693404afc"><td class="memItemLeft" align="right" valign="top"><a id="a1fb09acbfc7f3e32c43d88c693404afc"></a>
+<a class="el" href="classdrain_1_1EnumFlagger.html">TitleFlagger</a>&#160;</td><td class="memItemRight" valign="bottom"><b>svgImageTitles</b></td></tr>
+<tr class="separator:a1fb09acbfc7f3e32c43d88c693404afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35f3497ef4df0e0fb59a0acf1aac375b"><td class="memItemLeft" align="right" valign="top"><a id="a35f3497ef4df0e0fb59a0acf1aac375b"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>imageTitle</b> = &quot;TIME,LOCATION,GENERAL&quot;</td></tr>
+<tr class="separator:a35f3497ef4df0e0fb59a0acf1aac375b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42354a993a909f5795647885fcdb051a"><td class="memItemLeft" align="right" valign="top"><a id="a42354a993a909f5795647885fcdb051a"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1PanelConfSVG.html#a42354a993a909f5795647885fcdb051a">absolutePaths</a> = true</td></tr>
 <tr class="memdesc:a42354a993a909f5795647885fcdb051a"><td class="mdescLeft">&#160;</td><td class="mdescRight">SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP. <br /></td></tr>
@@ -131,12 +144,6 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>groupTitleSynt
 <tr class="memitem:aac636f93972509896634a4c2aab58799"><td class="memItemLeft" align="right" valign="top"><a id="aac636f93972509896634a4c2aab58799"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>groupTitleFormatted</b></td></tr>
 <tr class="separator:aac636f93972509896634a4c2aab58799"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35f3497ef4df0e0fb59a0acf1aac375b"><td class="memItemLeft" align="right" valign="top"><a id="a35f3497ef4df0e0fb59a0acf1aac375b"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>imageTitle</b> = &quot;TIME,LOCATION,GENERAL&quot;</td></tr>
-<tr class="separator:a35f3497ef4df0e0fb59a0acf1aac375b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fb09acbfc7f3e32c43d88c693404afc"><td class="memItemLeft" align="right" valign="top"><a id="a1fb09acbfc7f3e32c43d88c693404afc"></a>
-<a class="el" href="classdrain_1_1EnumFlagger.html">TitleFlagger</a>&#160;</td><td class="memItemRight" valign="bottom"><b>svgImageTitles</b></td></tr>
-<tr class="separator:a1fb09acbfc7f3e32c43d88c693404afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e16e6e30a2bbbe2e59a3bed7de1b8e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1UniTuple.html">drain::UniTuple</a>&lt; double, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1PanelConfSVG.html#a6e16e6e30a2bbbe2e59a3bed7de1b8e9">fontSizes</a> = {15.0, 12.0, 10.0}</td></tr>
 <tr class="separator:a6e16e6e30a2bbbe2e59a3bed7de1b8e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2db93ae162ed4811fbe54e152c210d65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1UniTuple.html">drain::UniTuple</a>&lt; double, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1PanelConfSVG.html#a2db93ae162ed4811fbe54e152c210d65">boxHeights</a> = {30.0, 25.0, 15.0}</td></tr>

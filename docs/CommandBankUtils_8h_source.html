@@ -382,81 +382,84 @@ $(function() {
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        ctx.<a class="code" href="classdrain_1_1ContextKit.html#aee4a5737e1021bb341e080d2dca6310a">formatStr</a> = value;</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    }</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; </div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;};</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160; </div>
-<div class="line"><a name="l00327"></a><span class="lineno"><a class="line" href="classdrain_1_1CmdNotFound.html">  327</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1CmdNotFound.html">CmdNotFound</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1SimpleCommand.html">SimpleCommand</a>&lt;&gt; {</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; </div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;};</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160; </div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
 <div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160; </div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <a class="code" href="classdrain_1_1CmdNotFound.html">CmdNotFound</a>(<a class="code" href="classdrain_1_1CommandBank.html">CommandBank</a> &amp; cmdBank) :</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        <a class="code" href="classdrain_1_1SimpleCommand.html">SimpleCommand&lt;std::string&gt;</a>(__FUNCTION__, <span class="stringliteral">&quot;Throw exception on unfound &quot;</span>, <span class="stringliteral">&quot;cmdArg&quot;</span>,<span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="comment">//cmdBank(cmdBank)</span></div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        {</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        section = 0; <span class="comment">// hidden</span></div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        cmdBank.<a class="code" href="classdrain_1_1CommandBank.html#a5c877829c6b32a03c5c987b4e37074da">notFoundHandlerCmdKey</a> = <span class="stringliteral">&quot;notFound&quot;</span>; <span class="comment">// getName();</span></div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> C=Context&gt;</div>
+<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="classdrain_1_1CmdFormatFile.html">  331</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1CmdFormatFile.html">CmdFormatFile</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1SimpleCommand.html">SimpleCommand</a>&lt;std::string&gt; {</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160; </div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    <a class="code" href="classdrain_1_1CmdFormatFile.html">CmdFormatFile</a>() : <a class="code" href="classdrain_1_1SimpleCommand.html">SimpleCommand&lt;&gt;</a>(__FUNCTION__, <span class="stringliteral">&quot;Read format for metadata dump from a file&quot;</span>,<span class="stringliteral">&quot;filename&quot;</span>,<span class="stringliteral">&quot;&quot;</span>,<span class="stringliteral">&quot;std::string&quot;</span>) {</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    };</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160; </div>
-<div class="line"><a name="l00339"></a><span class="lineno"><a class="line" href="classdrain_1_1CmdNotFound.html#a777533ac38260c4f3ff96e64c87256c8">  339</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1CmdNotFound.html#a777533ac38260c4f3ff96e64c87256c8">exec</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <a class="code" href="classdrain_1_1Context.html">Context</a> &amp; ctx = getContext&lt;&gt;();</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(ctx.log, __FILE__, __FUNCTION__);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1CmdFormatFile.html#a777533ac38260c4f3ff96e64c87256c8">exec</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160; </div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;};</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; </div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160; </div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">error</a>(<span class="stringliteral">&quot;Command &#39;&quot;</span> , value , <span class="stringliteral">&quot;&#39; not found.&quot;</span> );</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    }</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160; </div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;};</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; </div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> C&gt;</div>
+<div class="line"><a name="l00345"></a><span class="lineno"><a class="line" href="classdrain_1_1CmdFormatFile.html#a777533ac38260c4f3ff96e64c87256c8">  345</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classdrain_1_1CmdFormatFile.html#a777533ac38260c4f3ff96e64c87256c8">CmdFormatFile&lt;C&gt;::exec</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    C &amp;ctx = getContext&lt;C&gt;();</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; </div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(ctx.log, __FILE__, __FUNCTION__);</div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160; </div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160; </div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> C=Context&gt;</div>
-<div class="line"><a name="l00354"></a><span class="lineno"><a class="line" href="classdrain_1_1CmdFormatFile.html">  354</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1CmdFormatFile.html">CmdFormatFile</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1SimpleCommand.html">SimpleCommand</a>&lt;std::string&gt; {</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160; </div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160; </div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160; </div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <a class="code" href="classdrain_1_1CmdFormatFile.html">CmdFormatFile</a>() : <a class="code" href="classdrain_1_1SimpleCommand.html">SimpleCommand&lt;&gt;</a>(__FUNCTION__, <span class="stringliteral">&quot;Read format for metadata dump from a file&quot;</span>,<span class="stringliteral">&quot;filename&quot;</span>,<span class="stringliteral">&quot;&quot;</span>,<span class="stringliteral">&quot;std::string&quot;</span>) {</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    };</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160; </div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1CmdFormatFile.html#a777533ac38260c4f3ff96e64c87256c8">exec</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160; </div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;};</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    <span class="comment">//drain::Input ifstr(value);</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    std::ifstream ifstr;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    ifstr.open(value.c_str(), std::ios::in);</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    <span class="keywordflow">if</span> (ifstr.good()){</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        std::stringstream sstr;</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        sstr &lt;&lt; ifstr.rdbuf();</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment">        for (int c = ifstr.get(); !ifstr.eof(); c = ifstr.get()){ // why not getline?</span></div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;<span class="comment">            sstr &lt;&lt; (char)c;</span></div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        ifstr.close();</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        <span class="comment">//Context &amp;ctx = getContext&lt;&gt;();</span></div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        ctx.formatStr = sstr.str(); <span class="comment">// SmartContext ?</span></div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160; </div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> C&gt;</div>
-<div class="line"><a name="l00368"></a><span class="lineno"><a class="line" href="classdrain_1_1CmdFormatFile.html#a777533ac38260c4f3ff96e64c87256c8">  368</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classdrain_1_1CmdFormatFile.html#a777533ac38260c4f3ff96e64c87256c8">CmdFormatFile&lt;C&gt;::exec</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    }</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">error</a>(getName() , <span class="stringliteral">&quot;: opening file &#39;&quot;</span> , value , <span class="stringliteral">&quot;&#39; failed.&quot;</span> );</div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    C &amp;ctx = getContext&lt;C&gt;();</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;};</div>
 <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160; </div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(ctx.log, __FILE__, __FUNCTION__);</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160; </div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <span class="comment">//drain::Input ifstr(value);</span></div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    std::ifstream ifstr;</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    ifstr.open(value.c_str(), std::ios::in);</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    <span class="keywordflow">if</span> (ifstr.good()){</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        std::stringstream sstr;</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        sstr &lt;&lt; ifstr.rdbuf();</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        <span class="comment">/*</span></div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="comment">        for (int c = ifstr.get(); !ifstr.eof(); c = ifstr.get()){ // why not getline?</span></div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;<span class="comment">            sstr &lt;&lt; (char)c;</span></div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;<span class="comment">        */</span></div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        ifstr.close();</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        <span class="comment">//Context &amp;ctx = getContext&lt;&gt;();</span></div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        ctx.formatStr = sstr.str(); <span class="comment">// SmartContext ?</span></div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160; </div>
+<div class="line"><a name="l00374"></a><span class="lineno"><a class="line" href="classdrain_1_1CmdNotFound.html">  374</a></span>&#160;<span class="keyword">class </span><a class="code" href="classdrain_1_1CmdNotFound.html">CmdNotFound</a> : <span class="keyword">public</span> <a class="code" href="classdrain_1_1SimpleCommand.html">SimpleCommand</a>&lt;&gt; {</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160; </div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <a class="code" href="classdrain_1_1CmdNotFound.html">CmdNotFound</a>(<a class="code" href="classdrain_1_1CommandBank.html">CommandBank</a> &amp; cmdBank) :</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        <a class="code" href="classdrain_1_1SimpleCommand.html">SimpleCommand&lt;std::string&gt;</a>(__FUNCTION__, <span class="stringliteral">&quot;Throw exception on unfound &quot;</span>, <span class="stringliteral">&quot;cmdArg&quot;</span>,<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        <span class="comment">//cmdBank(cmdBank)</span></div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        {</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        section = 0; <span class="comment">// hidden</span></div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        cmdBank.<a class="code" href="classdrain_1_1CommandBank.html#a5c877829c6b32a03c5c987b4e37074da">notFoundHandlerCmdKey</a> = <span class="stringliteral">&quot;notFound&quot;</span>; <span class="comment">// getName();</span></div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    };</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160; </div>
+<div class="line"><a name="l00386"></a><span class="lineno"><a class="line" href="classdrain_1_1CmdNotFound.html#a777533ac38260c4f3ff96e64c87256c8">  386</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classdrain_1_1CmdNotFound.html#a777533ac38260c4f3ff96e64c87256c8">exec</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        <a class="code" href="classdrain_1_1Context.html">Context</a> &amp; ctx = getContext&lt;&gt;();</div>
 <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    }</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">error</a>(getName() , <span class="stringliteral">&quot;: opening file &#39;&quot;</span> , value , <span class="stringliteral">&quot;&#39; failed.&quot;</span> );</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160; </div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;};</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        <a class="code" href="classdrain_1_1Logger.html">drain::Logger</a> mout(ctx.log, __FILE__, __FUNCTION__);</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160; </div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        mout.<a class="code" href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">error</a>(<span class="stringliteral">&quot;Command &#39;&quot;</span> , value , <span class="stringliteral">&quot;&#39; not found.&quot;</span> );</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    }</div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160; </div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160; </div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;} <span class="comment">/* namespace drain */</span></div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;};</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160; </div>
 <div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160; </div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;} <span class="comment">/* namespace drain */</span></div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160; </div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdrain_1_1Bank_html_a168902c408924506c6fdbec55457a06d"><div class="ttname"><a href="classdrain_1_1Bank.html#a168902c408924506c6fdbec55457a06d">drain::Bank::has</a></div><div class="ttdeci">bool has(const K &amp;key) const</div><div class="ttdoc">Check if a cloner is defined for this key.</div><div class="ttdef"><b>Definition:</b> Bank.h:141</div></div>
-<div class="ttc" id="aclassdrain_1_1BasicCommand_html"><div class="ttname"><a href="classdrain_1_1BasicCommand.html">drain::BasicCommand</a></div><div class="ttdoc">Simple implementation of Command: adds name , description and parameters .</div><div class="ttdef"><b>Definition:</b> Command.h:415</div></div>
+<div class="ttc" id="aclassdrain_1_1BasicCommand_html"><div class="ttname"><a href="classdrain_1_1BasicCommand.html">drain::BasicCommand</a></div><div class="ttdoc">Simple implementation of Command: adds name , description and parameters .</div><div class="ttdef"><b>Definition:</b> Command.h:385</div></div>
 <div class="ttc" id="aclassdrain_1_1CmdDebug_html"><div class="ttname"><a href="classdrain_1_1CmdDebug.html">drain::CmdDebug</a></div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:81</div></div>
 <div class="ttc" id="aclassdrain_1_1CmdDebug_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classdrain_1_1CmdDebug.html#a777533ac38260c4f3ff96e64c87256c8">drain::CmdDebug::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:90</div></div>
 <div class="ttc" id="aclassdrain_1_1CmdExecFile_html"><div class="ttname"><a href="classdrain_1_1CmdExecFile.html">drain::CmdExecFile</a></div><div class="ttdoc">Load script file and execute the commands immediately using current Context.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:260</div></div>
@@ -464,14 +467,14 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1CmdExecScript_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classdrain_1_1CmdExecScript.html#a777533ac38260c4f3ff96e64c87256c8">drain::CmdExecScript::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:235</div></div>
 <div class="ttc" id="aclassdrain_1_1CmdExpandVariables_html"><div class="ttname"><a href="classdrain_1_1CmdExpandVariables.html">drain::CmdExpandVariables</a></div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:141</div></div>
 <div class="ttc" id="aclassdrain_1_1CmdExpandVariables_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classdrain_1_1CmdExpandVariables.html#a777533ac38260c4f3ff96e64c87256c8">drain::CmdExpandVariables::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:150</div></div>
-<div class="ttc" id="aclassdrain_1_1CmdFormatFile_html"><div class="ttname"><a href="classdrain_1_1CmdFormatFile.html">drain::CmdFormatFile</a></div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:354</div></div>
-<div class="ttc" id="aclassdrain_1_1CmdFormatFile_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classdrain_1_1CmdFormatFile.html#a777533ac38260c4f3ff96e64c87256c8">drain::CmdFormatFile::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:368</div></div>
+<div class="ttc" id="aclassdrain_1_1CmdFormatFile_html"><div class="ttname"><a href="classdrain_1_1CmdFormatFile.html">drain::CmdFormatFile</a></div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:331</div></div>
+<div class="ttc" id="aclassdrain_1_1CmdFormatFile_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classdrain_1_1CmdFormatFile.html#a777533ac38260c4f3ff96e64c87256c8">drain::CmdFormatFile::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:345</div></div>
 <div class="ttc" id="aclassdrain_1_1CmdFormat_html"><div class="ttname"><a href="classdrain_1_1CmdFormat.html">drain::CmdFormat</a></div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:311</div></div>
 <div class="ttc" id="aclassdrain_1_1CmdFormat_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classdrain_1_1CmdFormat.html#a777533ac38260c4f3ff96e64c87256c8">drain::CmdFormat::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:319</div></div>
 <div class="ttc" id="aclassdrain_1_1CmdLog_html"><div class="ttname"><a href="classdrain_1_1CmdLog.html">drain::CmdLog</a></div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:101</div></div>
 <div class="ttc" id="aclassdrain_1_1CmdLog_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classdrain_1_1CmdLog.html#a777533ac38260c4f3ff96e64c87256c8">drain::CmdLog::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.cpp:52</div></div>
-<div class="ttc" id="aclassdrain_1_1CmdNotFound_html"><div class="ttname"><a href="classdrain_1_1CmdNotFound.html">drain::CmdNotFound</a></div><div class="ttdoc">Special command for handling undefined commands.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:327</div></div>
-<div class="ttc" id="aclassdrain_1_1CmdNotFound_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classdrain_1_1CmdNotFound.html#a777533ac38260c4f3ff96e64c87256c8">drain::CmdNotFound::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:339</div></div>
+<div class="ttc" id="aclassdrain_1_1CmdNotFound_html"><div class="ttname"><a href="classdrain_1_1CmdNotFound.html">drain::CmdNotFound</a></div><div class="ttdoc">Special command for handling undefined commands.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:374</div></div>
+<div class="ttc" id="aclassdrain_1_1CmdNotFound_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classdrain_1_1CmdNotFound.html#a777533ac38260c4f3ff96e64c87256c8">drain::CmdNotFound::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:386</div></div>
 <div class="ttc" id="aclassdrain_1_1CmdScript_html"><div class="ttname"><a href="classdrain_1_1CmdScript.html">drain::CmdScript</a></div><div class="ttdoc">Load script file and executes the commands immediately.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:164</div></div>
 <div class="ttc" id="aclassdrain_1_1CmdStatus_html"><div class="ttname"><a href="classdrain_1_1CmdStatus.html">drain::CmdStatus</a></div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:128</div></div>
 <div class="ttc" id="aclassdrain_1_1CmdStatus_html_a777533ac38260c4f3ff96e64c87256c8"><div class="ttname"><a href="classdrain_1_1CmdStatus.html#a777533ac38260c4f3ff96e64c87256c8">drain::CmdStatus::exec</a></div><div class="ttdeci">void exec() const</div><div class="ttdoc">Run the command with current parameter values.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.cpp:73</div></div>
@@ -482,7 +485,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1CommandBank_html_a649e460631f0e524039e98c89886cf53"><div class="ttname"><a href="classdrain_1_1CommandBank.html#a649e460631f0e524039e98c89886cf53">drain::CommandBank::execFileCmd</a></div><div class="ttdeci">std::string execFileCmd</div><div class="ttdoc">Command for reading and executing commands from a file in the current (running) context.</div><div class="ttdef"><b>Definition:</b> CommandBank.h:271</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandBank_html_aaa5e1d60643ea389b706dbf0dfa2ec32"><div class="ttname"><a href="classdrain_1_1CommandBank.html#aaa5e1d60643ea389b706dbf0dfa2ec32">drain::CommandBank::help</a></div><div class="ttdeci">void help(std::ostream &amp;ostr=std::cout)</div><div class="ttdoc">Basic help dump, displays help commands to proceed.</div><div class="ttdef"><b>Definition:</b> CommandBank.cpp:856</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandBank_html_abfef1e32656bc64c89c0f32238ec05ad"><div class="ttname"><a href="classdrain_1_1CommandBank.html#abfef1e32656bc64c89c0f32238ec05ad">drain::CommandBank::scriptCmd</a></div><div class="ttdeci">std::string scriptCmd</div><div class="ttdoc">Command for storing a routine.</div><div class="ttdef"><b>Definition:</b> CommandBank.h:237</div></div>
-<div class="ttc" id="aclassdrain_1_1Command_html_a17cd043c9ec599670925dda080d06241"><div class="ttname"><a href="classdrain_1_1Command.html#a17cd043c9ec599670925dda080d06241">drain::Command::cmd_section_type</a></div><div class="ttdeci">int cmd_section_type</div><div class="ttdef"><b>Definition:</b> Command.h:206</div></div>
+<div class="ttc" id="aclassdrain_1_1Command_html_a17cd043c9ec599670925dda080d06241"><div class="ttname"><a href="classdrain_1_1Command.html#a17cd043c9ec599670925dda080d06241">drain::Command::cmd_section_type</a></div><div class="ttdeci">int cmd_section_type</div><div class="ttdef"><b>Definition:</b> Command.h:173</div></div>
 <div class="ttc" id="aclassdrain_1_1ContextKit_html_aee4a5737e1021bb341e080d2dca6310a"><div class="ttname"><a href="classdrain_1_1ContextKit.html#aee4a5737e1021bb341e080d2dca6310a">drain::ContextKit::formatStr</a></div><div class="ttdeci">std::string formatStr</div><div class="ttdef"><b>Definition:</b> Context.h:205</div></div>
 <div class="ttc" id="aclassdrain_1_1Context_html"><div class="ttname"><a href="classdrain_1_1Context.html">drain::Context</a></div><div class="ttdef"><b>Definition:</b> Context.h:57</div></div>
 <div class="ttc" id="aclassdrain_1_1HelpCmd_html"><div class="ttname"><a href="classdrain_1_1HelpCmd.html">drain::HelpCmd</a></div><div class="ttdoc">CommandBank-dependent.</div><div class="ttdef"><b>Definition:</b> CommandBankUtils.h:279</div></div>
@@ -490,7 +493,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:310</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a1eed5888863ce6b6fab130b6ac4e9a2e"><div class="ttname"><a href="classdrain_1_1Logger.html#a1eed5888863ce6b6fab130b6ac4e9a2e">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition:</b> Log.h:414</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_aee5a57299a9fdd63d6c60103dcc4be9b"><div class="ttname"><a href="classdrain_1_1Logger.html#aee5a57299a9fdd63d6c60103dcc4be9b">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Public, yet typically used &quot;internally&quot;, when TIMING=true.</div><div class="ttdef"><b>Definition:</b> Log.h:678</div></div>
-<div class="ttc" id="aclassdrain_1_1SimpleCommand_html"><div class="ttname"><a href="classdrain_1_1SimpleCommand.html">drain::SimpleCommand</a></div><div class="ttdoc">A single-parameter command.</div><div class="ttdef"><b>Definition:</b> Command.h:439</div></div>
+<div class="ttc" id="aclassdrain_1_1SimpleCommand_html"><div class="ttname"><a href="classdrain_1_1SimpleCommand.html">drain::SimpleCommand</a></div><div class="ttdoc">A single-parameter command.</div><div class="ttdef"><b>Definition:</b> Command.h:409</div></div>
 <div class="ttc" id="aclassdrain_1_1SmartContext_html"><div class="ttname"><a href="classdrain_1_1SmartContext.html">drain::SmartContext</a></div><div class="ttdef"><b>Definition:</b> Context.h:211</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:1277</div></div>
 </div><!-- fragment --></div><!-- contents -->

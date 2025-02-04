@@ -643,242 +643,245 @@ $(function() {
 <div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;    }</div>
 <div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!tree-&gt;isCText()){</div>
 <div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;        <span class="comment">//char sep=&#39; &#39;;</span></div>
-<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;        <span class="keywordflow">if</span> (!tree-&gt;classList.empty()){</div>
-<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;            ostr &lt;&lt; <span class="stringliteral">&quot; class=\&quot;&quot;</span>;</div>
-<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;            <a class="code" href="classdrain_1_1Sprinter.html#abe1e6bf8d8874a9263882f4e7c203d6d">drain::Sprinter::toStream</a>(ostr, tree-&gt;classList, <a class="code" href="classdrain_1_1ClassListXML.html#a8c27dc5ec62c87595ef78036bf6b6999">ClassListXML::layout</a>);</div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;            <span class="comment">// std::copy(tree-&gt;classList.begin(), tree-&gt;classList.end(), std::ostream_iterator&lt;std::string&gt;(ostr, &quot; &quot;));</span></div>
-<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;            ostr &lt;&lt; <span class="charliteral">&#39;&quot;&#39;</span>; <span class="comment">//ostr &lt;&lt; &quot;\&quot;&quot;;</span></div>
-<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;        }</div>
-<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160; </div>
-<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;        <span class="comment">// Iterate attributes - note: also for comment</span></div>
-<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;        <span class="comment">// Checking empties, so Sprinter::toStream not applicable</span></div>
-<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;        <span class="comment">//for (const typename T::node_data_t::key_t &amp; key: tree.data.getKeyList()){</span></div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">typename</span> TR::node_data_t::key_t &amp; key: tree-&gt;getAttributes().getKeyList()){</div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;            <span class="keywordflow">if</span> (!tree.data[key].empty()){</div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;                std::stringstream sstr;</div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;                sstr &lt;&lt; tree.data[key];  <span class="comment">// consider checking 0, not only empty string &quot;&quot;.</span></div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;                <span class="keywordflow">if</span> (!sstr.str().empty()){</div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;                    xmlAttribToStream(ostr, key, sstr.str());</div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;                }</div>
-<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;            }</div>
-<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;            <span class="comment">//ostr &lt;&lt; &#39; &#39;;</span></div>
-<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;        }</div>
-<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160; </div>
-<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;        <span class="comment">// TAG style</span></div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;        <span class="keywordflow">if</span> (!tree-&gt;style.empty()){</div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;            ostr &lt;&lt; <span class="stringliteral">&quot; style=\&quot;&quot;</span>;</div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;            <a class="code" href="classdrain_1_1Sprinter.html#a4778fb0448972f170659900aa1b0edb0">Sprinter::sequenceToStream</a>(ostr, tree-&gt;style, StyleXML::styleLineLayout);</div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;            <span class="comment">//Sprinter::mapToStream(ostr, tree-&gt;style, StyleXML::styleLineLayout);</span></div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;            ostr &lt;&lt; <span class="charliteral">&#39;&quot;&#39;</span>; <span class="comment">// &lt;&lt; &#39; &#39;;</span></div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;        }</div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160; </div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160; </div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;    }</div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;        <span class="keywordflow">if</span> (!tree.data.empty()){</div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;            <span class="comment">// ??</span></div>
-<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;        }</div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;    }</div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160; </div>
-<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;    <span class="comment">// END TAG</span></div>
-<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;    <span class="keywordflow">if</span> (tree-&gt;isComment()){</div>
-<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;        ostr &lt;&lt; <span class="stringliteral">&quot; /--&gt;\n&quot;</span>;</div>
-<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;    }</div>
-<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tree-&gt;isCText()){</div>
-<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;        ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;        tree-&gt;specificAttributesToStream(ostr);</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;<span class="comment">        if (!tree-&gt;classList.empty()){</span></div>
+<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160;<span class="comment">            ostr &lt;&lt; &quot; class=\&quot;&quot;;</span></div>
+<div class="line"><a name="l00609"></a><span class="lineno">  609</span>&#160;<span class="comment">            drain::Sprinter::toStream(ostr, tree-&gt;classList, ClassListXML::layout);</span></div>
+<div class="line"><a name="l00610"></a><span class="lineno">  610</span>&#160;<span class="comment">            // std::copy(tree-&gt;classList.begin(), tree-&gt;classList.end(), std::ostream_iterator&lt;std::string&gt;(ostr, &quot; &quot;));</span></div>
+<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;<span class="comment">            ostr &lt;&lt; &#39;&quot;&#39;; //ostr &lt;&lt; &quot;\&quot;&quot;;</span></div>
+<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;<span class="comment">        */</span></div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160; </div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;        <span class="comment">// Iterate attributes - note: also for comment</span></div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;        <span class="comment">// Checking empties, so Sprinter::toStream not applicable</span></div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;        <span class="comment">//for (const typename T::node_data_t::key_t &amp; key: tree.data.getKeyList()){</span></div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">typename</span> TR::node_data_t::key_t &amp; key: tree-&gt;getAttributes().getKeyList()){</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;            <span class="keywordflow">if</span> (!tree.data[key].empty()){</div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;                std::stringstream sstr;</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;                sstr &lt;&lt; tree.data[key];  <span class="comment">// consider checking 0, not only empty string &quot;&quot;.</span></div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;                <span class="keywordflow">if</span> (!sstr.str().empty()){</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;                    xmlAttribToStream(ostr, key, sstr.str());</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;                }</div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;            }</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;            <span class="comment">//ostr &lt;&lt; &#39; &#39;;</span></div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;        }</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160; </div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;        <span class="comment">// TAG style</span></div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;        <span class="keywordflow">if</span> (!tree-&gt;style.empty()){</div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;            ostr &lt;&lt; <span class="stringliteral">&quot; style=\&quot;&quot;</span>;</div>
+<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;            <a class="code" href="classdrain_1_1Sprinter.html#a4778fb0448972f170659900aa1b0edb0">Sprinter::sequenceToStream</a>(ostr, tree-&gt;style, StyleXML::styleLineLayout);</div>
+<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;            <span class="comment">//Sprinter::mapToStream(ostr, tree-&gt;style, StyleXML::styleLineLayout);</span></div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;            ostr &lt;&lt; <span class="charliteral">&#39;&quot;&#39;</span>; <span class="comment">// &lt;&lt; &#39; &#39;;</span></div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;        }</div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160; </div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160; </div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;    }</div>
+<div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;        <span class="keywordflow">if</span> (!tree.data.empty()){</div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;            <span class="comment">// ??</span></div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;        }</div>
+<div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;    }</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160; </div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;    <span class="comment">// END TAG</span></div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;    <span class="keywordflow">if</span> (tree-&gt;isComment()){</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;        ostr &lt;&lt; <span class="stringliteral">&quot; /--&gt;\n&quot;</span>;</div>
 <div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;    }</div>
-<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tree.data.isSelfClosing() &amp;&amp;</div>
-<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;            (!tree-&gt;typeIs((intval_t)STYLE)) &amp;&amp; (!tree-&gt;typeIs((intval_t)SCRIPT)) &amp;&amp;</div>
-<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;            (children.empty()) &amp;&amp; tree-&gt;ctext.empty() ){ <span class="comment">// OR no ctext!</span></div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;        <span class="comment">// close TAG</span></div>
-<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;        ostr &lt;&lt; <span class="stringliteral">&quot;/&gt;\n&quot;</span>;</div>
-<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;        <span class="comment">//ostr &lt;&lt; &#39;/&#39; &lt;&lt; &#39;&gt;&#39;;</span></div>
-<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;        <span class="comment">//ostr &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;    }</div>
-<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;    <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        <span class="comment">// close starting TAG ...</span></div>
-<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;        ostr &lt;&lt; &#39;&gt;<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;<span class="stringliteral">        // ... and write contents</span></div>
-<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;<span class="stringliteral">        /*</span></div>
-<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;<span class="stringliteral">        if (!tree-&gt;style.empty()){</span></div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;<span class="stringliteral">            ostr &lt;&lt; &quot;&lt;!-- STYLE? &quot;;</span></div>
-<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;<span class="stringliteral">            drain::Sprinter::toStream(ostr, tree-&gt;style.getMap(), drain::Sprinter::xmlAttributeLayout);</span></div>
-<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;<span class="stringliteral">            ostr &lt;&lt; &quot;/--&gt;\n&quot;;</span></div>
-<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;<span class="stringliteral">        }</span></div>
-<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;<span class="stringliteral">        */</span></div>
-<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;<span class="stringliteral">        if (tree-&gt;isStyle()){</span></div>
-<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;<span class="stringliteral">            // https://www.w3.org/TR/xml/#sec-cdata-sect</span></div>
-<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;<span class="stringliteral">            // ostr &lt;&lt; &quot;&lt;![CDATA[ \n&quot;;</span></div>
-<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;<span class="stringliteral">            if (!tree-&gt;ctext.empty()){</span></div>
-<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;<span class="stringliteral">                // TODO: indent</span></div>
-<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;<span class="stringliteral">                ostr &lt;&lt; fill &lt;&lt; tree-&gt;ctext &lt;&lt; &quot; /* CTEXT? */&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;<span class="stringliteral">            }</span></div>
-<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;<span class="stringliteral">            if (!tree-&gt;getAttributes().empty()){</span></div>
-<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;<span class="stringliteral">                drain::Logger mout(__FILE__,__FUNCTION__);</span></div>
-<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;<span class="stringliteral">                mout.warn(&quot;STYLE elem &quot;, tree-&gt;getId(),&quot; contains attributes, probably meant as style: &quot;, sprinter(tree-&gt;getAttributes()));</span></div>
-<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;<span class="stringliteral">                ostr &lt;&lt; &quot;\n\t /* &lt;!-- DISCARDED attribs &quot;;</span></div>
-<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;<span class="stringliteral">                Sprinter::toStream(ostr, tree-&gt;getAttributes()); //, StyleXML::styleRecordLayout</span></div>
-<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;<span class="stringliteral">                ostr &lt;&lt; &quot; /--&gt; */&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;<span class="stringliteral">            }</span></div>
-<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;<span class="stringliteral">            if (!tree-&gt;style.empty()){</span></div>
-<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;<span class="stringliteral">                ostr &lt;&lt; fill &lt;&lt; &quot;/** style obj **/&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;<span class="stringliteral">                for (const auto &amp; attr: tree-&gt;style){</span></div>
-<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;<span class="stringliteral">                    ostr &lt;&lt; fill &lt;&lt; &quot;  &quot;;</span></div>
-<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;<span class="stringliteral">                    Sprinter::pairToStream(ostr, attr, StyleXML::styleRecordLayout); // {&quot; :;&quot;}</span></div>
-<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;<span class="stringliteral">                    //attr.first &lt;&lt; &#39;</span>:<span class="stringliteral">&#39; attr.first &lt;&lt; &#39;</span>:<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;<span class="stringliteral">                    ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;<span class="stringliteral">                }</span></div>
-<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;<span class="stringliteral">                // ostr &lt;&lt; fill &lt;&lt; &quot;}\n&quot;;</span></div>
-<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;<span class="stringliteral">                // Sprinter::sequenceToStream(ostr, entry.second-&gt;getAttributes(), StyleXML::styleRecordLayoutActual);</span></div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;<span class="stringliteral">                // ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;<span class="stringliteral">            }</span></div>
-<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;<span class="stringliteral">            ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;<span class="stringliteral">            // ostr &lt;&lt; fill &lt;&lt; &quot;&lt;!-- elems /--&gt;&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;<span class="stringliteral">            ostr &lt;&lt; fill &lt;&lt; &quot;/* elems */&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;<span class="stringliteral">            for (const auto &amp; entry: tree.getChildren()){</span></div>
-<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;<span class="stringliteral">                if (!entry.second-&gt;ctext.empty()){</span></div>
-<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;<span class="stringliteral">                    //ostr &lt;&lt; fill &lt;&lt; &quot;&lt;!-- elem(&quot;&lt;&lt; entry.first &lt;&lt; &quot;) ctext /--&gt;&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;<span class="stringliteral">                    ostr &lt;&lt; fill &lt;&lt; &quot;  &quot; &lt;&lt; entry.first &lt;&lt; &quot; {&quot; &lt;&lt; entry.second-&gt;ctext &lt;&lt; &quot;} /* CTEXT */ \n&quot;;</span></div>
-<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;<span class="stringliteral">                }</span></div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;<span class="stringliteral">                if (!entry.second-&gt;getAttributes().empty()){</span></div>
-<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;<span class="stringliteral">                    //ostr &lt;&lt; fill &lt;&lt; &quot;&lt;!-- elem(&quot;&lt;&lt; entry.first &lt;&lt; &quot;) attribs /--&gt;&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;<span class="stringliteral">                    ostr &lt;&lt; fill &lt;&lt; &quot;  &quot; &lt;&lt; entry.first &lt;&lt; &quot; {\n&quot;;</span></div>
-<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;<span class="stringliteral">                    for (const auto &amp; attr: entry.second-&gt;getAttributes()){</span></div>
-<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;<span class="stringliteral">                        ostr &lt;&lt; fill  &lt;&lt; &quot;    &quot;;</span></div>
-<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;<span class="stringliteral">                        ostr &lt;&lt; attr.first &lt;&lt; &#39;</span>:<span class="stringliteral">&#39; &lt;&lt; attr.second &lt;&lt; &#39;</span>;<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;<span class="stringliteral">                        //Sprinter::pairToStream(ostr, attr, StyleXML::styleLineLayout); // {&quot; :;&quot;}</span></div>
-<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;<span class="stringliteral">                        // Sprinter::pairToStream(ostr, attr, StyleXML::styleRecordLayout); // {&quot; :;&quot;}</span></div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;<span class="stringliteral">                        // attr.first &lt;&lt; &#39;</span>:<span class="stringliteral">&#39; attr.first &lt;&lt; &#39;</span>:<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;<span class="stringliteral">                        ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;<span class="stringliteral">                    }</span></div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;<span class="stringliteral">                    ostr &lt;&lt; fill &lt;&lt; &quot;  }\n&quot;;</span></div>
-<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;<span class="stringliteral">                    //Sprinter::sequenceToStream(ostr, entry.second-&gt;getAttributes(), StyleXML::styleRecordLayoutActual);</span></div>
-<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;<span class="stringliteral">                    ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;<span class="stringliteral">                }</span></div>
-<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;<span class="stringliteral">                // Sprinter::sequenceToStream(ostr, entry.second-&gt;style, StyleXML::styleRecordLayout);</span></div>
-<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;<span class="stringliteral">            }</span></div>
-<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;<span class="stringliteral">            ostr &lt;&lt; &quot;\n&quot;; // end CTEXT</span></div>
-<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;<span class="stringliteral">            //ostr &lt;&lt; &quot; ]]&gt;\n&quot;; // end CTEXT</span></div>
-<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;<span class="stringliteral">            // end STYLE defs</span></div>
-<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;<span class="stringliteral">        }</span></div>
-<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;<span class="stringliteral">        else {</span></div>
-<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;<span class="stringliteral">            if (tree-&gt;ctext.empty())</span></div>
-<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;<span class="stringliteral">                ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;; // TODO nextline</span></div>
-<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;<span class="stringliteral">            else</span></div>
-<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;<span class="stringliteral">                ostr &lt;&lt; tree-&gt;ctext;</span></div>
-<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;<span class="stringliteral">            for (const auto &amp; entry: children){</span></div>
-<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;<span class="stringliteral">                toStream(ostr, entry.second, entry.first, indent+1); // no ++</span></div>
-<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;<span class="stringliteral">                //ostr &lt;&lt; *it;</span></div>
-<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;<span class="stringliteral">            }</span></div>
-<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;<span class="stringliteral">            // add end &lt;/TAG&gt;</span></div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;<span class="stringliteral">        }</span></div>
-<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;<span class="stringliteral">        if (tree-&gt;typeIs((intval_t)STYLE) || !children.empty()){</span></div>
-<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;<span class="stringliteral">            ostr &lt;&lt; fill;</span></div>
-<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;<span class="stringliteral">            //std::fill_n(std::ostream_iterator&lt;char&gt;(ostr), 2*indent, &#39;</span> <span class="stringliteral">&#39;);</span></div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;<span class="stringliteral">        }</span></div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;<span class="stringliteral">        ostr &lt;&lt; &#39;</span>&lt;<span class="stringliteral">&#39; &lt;&lt; &#39;</span>/<span class="stringliteral">&#39; &lt;&lt; tree-&gt;getTag() &lt;&lt; &#39;</span>&gt;<span class="stringliteral">&#39;;</span></div>
-<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;<span class="stringliteral">        ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;  // TODO nextline</span></div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tree-&gt;isCText()){</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;        ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;    }</div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (tree.data.isSelfClosing() &amp;&amp;</div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;            (!tree-&gt;typeIs((intval_t)STYLE)) &amp;&amp; (!tree-&gt;typeIs((intval_t)SCRIPT)) &amp;&amp;</div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;            (children.empty()) &amp;&amp; tree-&gt;ctext.empty() ){ <span class="comment">// OR no ctext!</span></div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;        <span class="comment">// close TAG</span></div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;        ostr &lt;&lt; <span class="stringliteral">&quot;/&gt;\n&quot;</span>;</div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;        <span class="comment">//ostr &lt;&lt; &#39;/&#39; &lt;&lt; &#39;&gt;&#39;;</span></div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;        <span class="comment">//ostr &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;    }</div>
+<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;        <span class="comment">// close starting TAG ...</span></div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;        ostr &lt;&lt; &#39;&gt;<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;<span class="stringliteral">        // ... and write contents</span></div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;<span class="stringliteral">        /*</span></div>
+<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;<span class="stringliteral">        if (!tree-&gt;style.empty()){</span></div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;<span class="stringliteral">            ostr &lt;&lt; &quot;&lt;!-- STYLE? &quot;;</span></div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;<span class="stringliteral">            drain::Sprinter::toStream(ostr, tree-&gt;style.getMap(), drain::Sprinter::xmlAttributeLayout);</span></div>
+<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;<span class="stringliteral">            ostr &lt;&lt; &quot;/--&gt;\n&quot;;</span></div>
+<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;<span class="stringliteral">        }</span></div>
+<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;<span class="stringliteral">        */</span></div>
+<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;<span class="stringliteral">        if (tree-&gt;isStyle()){</span></div>
+<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;<span class="stringliteral">            // https://www.w3.org/TR/xml/#sec-cdata-sect</span></div>
+<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;<span class="stringliteral">            // ostr &lt;&lt; &quot;&lt;![CDATA[ \n&quot;;</span></div>
+<div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;<span class="stringliteral">            if (!tree-&gt;ctext.empty()){</span></div>
+<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;<span class="stringliteral">                // TODO: indent</span></div>
+<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;<span class="stringliteral">                ostr &lt;&lt; fill &lt;&lt; tree-&gt;ctext &lt;&lt; &quot; /* CTEXT? */&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;<span class="stringliteral">            }</span></div>
+<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;<span class="stringliteral">            if (!tree-&gt;getAttributes().empty()){</span></div>
+<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;<span class="stringliteral">                drain::Logger mout(__FILE__,__FUNCTION__);</span></div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;<span class="stringliteral">                mout.warn(&quot;STYLE elem &quot;, tree-&gt;getId(),&quot; contains attributes, probably meant as style: &quot;, sprinter(tree-&gt;getAttributes()));</span></div>
+<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;<span class="stringliteral">                ostr &lt;&lt; &quot;\n\t /* &lt;!-- DISCARDED attribs &quot;;</span></div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;<span class="stringliteral">                Sprinter::toStream(ostr, tree-&gt;getAttributes()); //, StyleXML::styleRecordLayout</span></div>
+<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;<span class="stringliteral">                ostr &lt;&lt; &quot; /--&gt; */&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;<span class="stringliteral">            }</span></div>
+<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;<span class="stringliteral">            if (!tree-&gt;style.empty()){</span></div>
+<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;<span class="stringliteral">                ostr &lt;&lt; fill &lt;&lt; &quot;/** style obj **/&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;<span class="stringliteral">                for (const auto &amp; attr: tree-&gt;style){</span></div>
+<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;<span class="stringliteral">                    ostr &lt;&lt; fill &lt;&lt; &quot;  &quot;;</span></div>
+<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;<span class="stringliteral">                    Sprinter::pairToStream(ostr, attr, StyleXML::styleRecordLayout); // {&quot; :;&quot;}</span></div>
+<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;<span class="stringliteral">                    //attr.first &lt;&lt; &#39;</span>:<span class="stringliteral">&#39; attr.first &lt;&lt; &#39;</span>:<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;<span class="stringliteral">                    ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;<span class="stringliteral">                }</span></div>
+<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;<span class="stringliteral">                // ostr &lt;&lt; fill &lt;&lt; &quot;}\n&quot;;</span></div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;<span class="stringliteral">                // Sprinter::sequenceToStream(ostr, entry.second-&gt;getAttributes(), StyleXML::styleRecordLayoutActual);</span></div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;<span class="stringliteral">                // ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;<span class="stringliteral">            }</span></div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;<span class="stringliteral">            ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;<span class="stringliteral">            // ostr &lt;&lt; fill &lt;&lt; &quot;&lt;!-- elems /--&gt;&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;<span class="stringliteral">            ostr &lt;&lt; fill &lt;&lt; &quot;/* elems */&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;<span class="stringliteral">            for (const auto &amp; entry: tree.getChildren()){</span></div>
+<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;<span class="stringliteral">                if (!entry.second-&gt;ctext.empty()){</span></div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;<span class="stringliteral">                    //ostr &lt;&lt; fill &lt;&lt; &quot;&lt;!-- elem(&quot;&lt;&lt; entry.first &lt;&lt; &quot;) ctext /--&gt;&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;<span class="stringliteral">                    ostr &lt;&lt; fill &lt;&lt; &quot;  &quot; &lt;&lt; entry.first &lt;&lt; &quot; {&quot; &lt;&lt; entry.second-&gt;ctext &lt;&lt; &quot;} /* CTEXT */ \n&quot;;</span></div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;<span class="stringliteral">                }</span></div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;<span class="stringliteral">                if (!entry.second-&gt;getAttributes().empty()){</span></div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;<span class="stringliteral">                    //ostr &lt;&lt; fill &lt;&lt; &quot;&lt;!-- elem(&quot;&lt;&lt; entry.first &lt;&lt; &quot;) attribs /--&gt;&quot; &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;<span class="stringliteral">                    ostr &lt;&lt; fill &lt;&lt; &quot;  &quot; &lt;&lt; entry.first &lt;&lt; &quot; {\n&quot;;</span></div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;<span class="stringliteral">                    for (const auto &amp; attr: entry.second-&gt;getAttributes()){</span></div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;<span class="stringliteral">                        ostr &lt;&lt; fill  &lt;&lt; &quot;    &quot;;</span></div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;<span class="stringliteral">                        ostr &lt;&lt; attr.first &lt;&lt; &#39;</span>:<span class="stringliteral">&#39; &lt;&lt; attr.second &lt;&lt; &#39;</span>;<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;<span class="stringliteral">                        //Sprinter::pairToStream(ostr, attr, StyleXML::styleLineLayout); // {&quot; :;&quot;}</span></div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;<span class="stringliteral">                        // Sprinter::pairToStream(ostr, attr, StyleXML::styleRecordLayout); // {&quot; :;&quot;}</span></div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;<span class="stringliteral">                        // attr.first &lt;&lt; &#39;</span>:<span class="stringliteral">&#39; attr.first &lt;&lt; &#39;</span>:<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;<span class="stringliteral">                        ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;<span class="stringliteral">                    }</span></div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;<span class="stringliteral">                    ostr &lt;&lt; fill &lt;&lt; &quot;  }\n&quot;;</span></div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;<span class="stringliteral">                    //Sprinter::sequenceToStream(ostr, entry.second-&gt;getAttributes(), StyleXML::styleRecordLayoutActual);</span></div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;<span class="stringliteral">                    ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;<span class="stringliteral">                }</span></div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;<span class="stringliteral">                // Sprinter::sequenceToStream(ostr, entry.second-&gt;style, StyleXML::styleRecordLayout);</span></div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;<span class="stringliteral">            }</span></div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;<span class="stringliteral">            ostr &lt;&lt; &quot;\n&quot;; // end CTEXT</span></div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;<span class="stringliteral">            //ostr &lt;&lt; &quot; ]]&gt;\n&quot;; // end CTEXT</span></div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;<span class="stringliteral">            // end STYLE defs</span></div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;<span class="stringliteral">        }</span></div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;<span class="stringliteral">        else {</span></div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;<span class="stringliteral">            if (tree-&gt;ctext.empty())</span></div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;<span class="stringliteral">                ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;; // TODO nextline</span></div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;<span class="stringliteral">            else</span></div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;<span class="stringliteral">                ostr &lt;&lt; tree-&gt;ctext;</span></div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;<span class="stringliteral">            for (const auto &amp; entry: children){</span></div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;<span class="stringliteral">                toStream(ostr, entry.second, entry.first, indent+1); // no ++</span></div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;<span class="stringliteral">                //ostr &lt;&lt; *it;</span></div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;<span class="stringliteral">            }</span></div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;<span class="stringliteral">            // add end &lt;/TAG&gt;</span></div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;<span class="stringliteral">        }</span></div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;<span class="stringliteral">        if (tree-&gt;typeIs((intval_t)STYLE) || !children.empty()){</span></div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;<span class="stringliteral">            ostr &lt;&lt; fill;</span></div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;<span class="stringliteral">            //std::fill_n(std::ostream_iterator&lt;char&gt;(ostr), 2*indent, &#39;</span> <span class="stringliteral">&#39;);</span></div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;<span class="stringliteral">        }</span></div>
 <div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;<span class="stringliteral">        //if (tree.data.id &gt;= 0)</span></div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;<span class="stringliteral">        //  ostr &lt;&lt; &quot;&lt;!-- &quot; &lt;&lt; tree.data.id &lt;&lt; &quot; /--&gt;\n&quot;;</span></div>
-<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;<span class="stringliteral">    }</span></div>
-<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;<span class="stringliteral">    return ostr;</span></div>
-<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;<span class="stringliteral">}</span></div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;<span class="stringliteral">template &lt;&gt;</span></div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;<span class="stringliteral">const drain::EnumDict&lt;int,XML&gt;::dict_t drain::EnumDict&lt;int,XML&gt;::dict;</span></div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;<span class="stringliteral">        ostr &lt;&lt; &#39;</span>&lt;<span class="stringliteral">&#39; &lt;&lt; &#39;</span>/<span class="stringliteral">&#39; &lt;&lt; tree-&gt;getTag() &lt;&lt; &#39;</span>&gt;<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;<span class="stringliteral">        ostr &lt;&lt; &#39;</span>\n<span class="stringliteral">&#39;;  // TODO nextline</span></div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;<span class="stringliteral">        //if (tree.data.id &gt;= 0)</span></div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;<span class="stringliteral">        //  ostr &lt;&lt; &quot;&lt;!-- &quot; &lt;&lt; tree.data.id &lt;&lt; &quot; /--&gt;\n&quot;;</span></div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;<span class="stringliteral">    }</span></div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;<span class="stringliteral">    return ostr;</span></div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;<span class="stringliteral">}</span></div>
 <div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;<span class="stringliteral">template &lt;class E, bool EX, class P&gt;</span></div>
-<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;<span class="stringliteral">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const UnorderedMultiTree&lt;NodeXML&lt;E&gt;,EX,P&gt; &amp; tree){</span></div>
-<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;<span class="stringliteral">    // DOC def? TODO: preamble/prologToStream()</span></div>
-<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;<span class="stringliteral">    NodeXML&lt;E&gt;::docTypeToStream(ostr); // must be member, to support virtual?</span></div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;<span class="stringliteral">    NodeXML&lt;E&gt;::toStream(ostr, tree, &quot;&quot;);</span></div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;<span class="stringliteral">    return ostr;</span></div>
-<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;<span class="stringliteral">}</span></div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;<span class="stringliteral">// CSS element selector.</span></div>
-<div class="line"><a name="l00774"></a><span class="lineno"><a class="line" href="classdrain_1_1SelectorXML.html">  774</a></span>&#160;<span class="stringliteral">class SelectorXML : public std::string {</span></div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;<span class="stringliteral">template &lt;&gt;</span></div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;<span class="stringliteral">const drain::EnumDict&lt;int,XML&gt;::dict_t drain::EnumDict&lt;int,XML&gt;::dict;</span></div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;<span class="stringliteral">template &lt;class E, bool EX, class P&gt;</span></div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;<span class="stringliteral">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const UnorderedMultiTree&lt;NodeXML&lt;E&gt;,EX,P&gt; &amp; tree){</span></div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;<span class="stringliteral">    // DOC def? TODO: preamble/prologToStream()</span></div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;<span class="stringliteral">    NodeXML&lt;E&gt;::docTypeToStream(ostr); // must be member, to support virtual?</span></div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;<span class="stringliteral">    NodeXML&lt;E&gt;::toStream(ostr, tree, &quot;&quot;);</span></div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;<span class="stringliteral">    return ostr;</span></div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;<span class="stringliteral">}</span></div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;<span class="stringliteral"></span> </div>
 <div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;<span class="stringliteral">public:</span></div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;<span class="stringliteral">    static</span></div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;<span class="stringliteral">    const char CLASS = &#39;</span>.<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;<span class="stringliteral">// CSS element selector.</span></div>
+<div class="line"><a name="l00777"></a><span class="lineno"><a class="line" href="classdrain_1_1SelectorXML.html">  777</a></span>&#160;<span class="stringliteral">class SelectorXML : public std::string {</span></div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;<span class="stringliteral">public:</span></div>
 <div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;<span class="stringliteral"></span> </div>
 <div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;<span class="stringliteral">    static</span></div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;<span class="stringliteral">    const char ID = &#39;</span>#<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;<span class="stringliteral">    const char CLASS = &#39;</span>.<span class="stringliteral">&#39;;</span></div>
 <div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;<span class="stringliteral">    inline</span></div>
-<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;<span class="stringliteral">    SelectorXML(const std::string &amp;s) : std::string(s){</span></div>
-<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;<span class="stringliteral">    }</span></div>
-<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;<span class="stringliteral">    inline</span></div>
-<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;<span class="stringliteral">    SelectorXML(const char *s) : std::string(s){</span></div>
-<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;<span class="stringliteral">    }</span></div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;<span class="stringliteral">    template &lt;class ...T&gt;</span></div>
-<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;<span class="stringliteral">    inline</span></div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;<span class="stringliteral">    SelectorXML(T... args) : std::string(StringBuilder&lt;&gt;(args...)){</span></div>
-<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;<span class="stringliteral">    }</span></div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;<span class="stringliteral">};</span></div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;<span class="stringliteral">// CSS class selector.</span></div>
-<div class="line"><a name="l00804"></a><span class="lineno"><a class="line" href="classdrain_1_1SelectorXMLcls.html">  804</a></span>&#160;<span class="stringliteral">class SelectorXMLcls : public SelectorXML {</span></div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;<span class="stringliteral">public:</span></div>
-<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;<span class="stringliteral">    template &lt;class C&gt;</span></div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;<span class="stringliteral">    inline</span></div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;<span class="stringliteral">    SelectorXMLcls(const C &amp;cls) : SelectorXML(CLASS, cls){</span></div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;<span class="stringliteral">    }</span></div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;<span class="stringliteral">    template &lt;class E, class C&gt;</span></div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;<span class="stringliteral">    inline</span></div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;<span class="stringliteral">    SelectorXMLcls(const E &amp;elem, const C &amp;cls) : SelectorXML(elem, CLASS, cls){</span></div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;<span class="stringliteral">    }</span></div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;<span class="stringliteral">};</span></div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00819"></a><span class="lineno"><a class="line" href="classdrain_1_1SelectorXMLid.html">  819</a></span>&#160;<span class="stringliteral">class SelectorXMLid : public SelectorXML {</span></div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;<span class="stringliteral">public:</span></div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;<span class="stringliteral">    static</span></div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;<span class="stringliteral">    const char ID = &#39;</span>#<span class="stringliteral">&#39;;</span></div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;<span class="stringliteral">    inline</span></div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;<span class="stringliteral">    SelectorXML(const std::string &amp;s) : std::string(s){</span></div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;<span class="stringliteral">    }</span></div>
+<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;<span class="stringliteral">    inline</span></div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;<span class="stringliteral">    SelectorXML(const char *s) : std::string(s){</span></div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;<span class="stringliteral">    }</span></div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;<span class="stringliteral">    template &lt;class ...T&gt;</span></div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;<span class="stringliteral">    inline</span></div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;<span class="stringliteral">    SelectorXML(T... args) : std::string(StringBuilder&lt;&gt;(args...)){</span></div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;<span class="stringliteral">    }</span></div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;<span class="stringliteral">};</span></div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;<span class="stringliteral">// CSS class selector.</span></div>
+<div class="line"><a name="l00807"></a><span class="lineno"><a class="line" href="classdrain_1_1SelectorXMLcls.html">  807</a></span>&#160;<span class="stringliteral">class SelectorXMLcls : public SelectorXML {</span></div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;<span class="stringliteral">public:</span></div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;<span class="stringliteral">    template &lt;class C&gt;</span></div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;<span class="stringliteral">    inline</span></div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;<span class="stringliteral">    SelectorXMLcls(const C &amp;cls) : SelectorXML(CLASS, cls){</span></div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;<span class="stringliteral">    }</span></div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;<span class="stringliteral">    template &lt;class E, class C&gt;</span></div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;<span class="stringliteral">    inline</span></div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;<span class="stringliteral">    SelectorXMLcls(const E &amp;elem, const C &amp;cls) : SelectorXML(elem, CLASS, cls){</span></div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;<span class="stringliteral">    }</span></div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;<span class="stringliteral">};</span></div>
 <div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;<span class="stringliteral">    template &lt;class T&gt;</span></div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;<span class="stringliteral">    inline</span></div>
-<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;<span class="stringliteral">    SelectorXMLid(const T &amp; arg) : SelectorXML(ID, arg){</span></div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;<span class="stringliteral">    }</span></div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;<span class="stringliteral">};</span></div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00822"></a><span class="lineno"><a class="line" href="classdrain_1_1SelectorXMLid.html">  822</a></span>&#160;<span class="stringliteral">class SelectorXMLid : public SelectorXML {</span></div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;<span class="stringliteral">public:</span></div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;<span class="stringliteral">    template &lt;class T&gt;</span></div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;<span class="stringliteral">    inline</span></div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;<span class="stringliteral">    SelectorXMLid(const T &amp; arg) : SelectorXML(ID, arg){</span></div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="stringliteral">    }</span></div>
 <div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;<span class="stringliteral">/*</span></div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;<span class="stringliteral">inline</span></div>
-<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;<span class="stringliteral">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const TreeXML &amp; t){</span></div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;<span class="stringliteral">    // DOC def? TODO: preamble/prologToStream()</span></div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;<span class="stringliteral">    TreeXML::node_data_t::docTypeToStream(ostr); // must be member, to support virtual?</span></div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;<span class="stringliteral">    TreeXML::node_data_t::toStream(ostr, t, &quot;&quot;);</span></div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;<span class="stringliteral">    return ostr;</span></div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;<span class="stringliteral">}</span></div>
-<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;<span class="stringliteral">*/</span></div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;<span class="stringliteral">}  // drain::</span></div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;<span class="stringliteral">};</span></div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;<span class="stringliteral">/*</span></div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;<span class="stringliteral">inline</span></div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;<span class="stringliteral">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const TreeXML &amp; t){</span></div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;<span class="stringliteral">    // DOC def? TODO: preamble/prologToStream()</span></div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;<span class="stringliteral">    TreeXML::node_data_t::docTypeToStream(ostr); // must be member, to support virtual?</span></div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;<span class="stringliteral">    TreeXML::node_data_t::toStream(ostr, t, &quot;&quot;);</span></div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;<span class="stringliteral">    return ostr;</span></div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;<span class="stringliteral">}</span></div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;<span class="stringliteral">*/</span></div>
 <div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;<span class="stringliteral"></span> </div>
-<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;<span class="stringliteral">#endif /* TREEXML_H_ */</span></div>
-<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;<span class="stringliteral">}  // drain::</span></div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;<span class="stringliteral"></span> </div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;<span class="stringliteral">#endif /* TREEXML_H_ */</span></div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;<span class="stringliteral"></span> </div>
 <div class="ttc" id="aclassdrain_1_1Castable_html"><div class="ttname"><a href="classdrain_1_1Castable.html">drain::Castable</a></div><div class="ttdef"><b>Definition:</b> Castable.h:76</div></div>
 <div class="ttc" id="aclassdrain_1_1ClassListXML_html_a8c27dc5ec62c87595ef78036bf6b6999"><div class="ttname"><a href="classdrain_1_1ClassListXML.html#a8c27dc5ec62c87595ef78036bf6b6999">drain::ClassListXML::layout</a></div><div class="ttdeci">static const SprinterLayout layout</div><div class="ttdoc">Uses spaces as separators.</div><div class="ttdef"><b>Definition:</b> ClassXML.h:141</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition:</b> Log.h:310</div></div>
@@ -902,7 +905,7 @@ $(function() {
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_abe1e6bf8d8874a9263882f4e7c203d6d"><div class="ttname"><a href="classdrain_1_1Sprinter.html#abe1e6bf8d8874a9263882f4e7c203d6d">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const std::initializer_list&lt; T &gt; &amp;x, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">New (experimental)</div><div class="ttdef"><b>Definition:</b> Sprinter.h:420</div></div>
 <div class="ttc" id="aclassdrain_1_1StringBuilder_html"><div class="ttname"><a href="classdrain_1_1StringBuilder.html">drain::StringBuilder</a></div><div class="ttdef"><b>Definition:</b> StringBuilder.h:58</div></div>
 <div class="ttc" id="aclassdrain_1_1XML_html_a18880130859d3e9817b3bea7a66098df"><div class="ttname"><a href="classdrain_1_1XML.html#a18880130859d3e9817b3bea7a66098df">drain::XML::addClass</a></div><div class="ttdeci">void addClass(const TT &amp;... args)</div><div class="ttdoc">Style class.</div><div class="ttdef"><b>Definition:</b> TreeXML.h:220</div></div>
-<div class="ttc" id="aclassdrain_1_1XML_html_a3162432a20d7413343eac1f286a89e94"><div class="ttname"><a href="classdrain_1_1XML.html#a3162432a20d7413343eac1f286a89e94">drain::XML::xmlAssignNode</a></div><div class="ttdeci">static X &amp; xmlAssignNode(X &amp;dst, const X &amp;src)</div><div class="ttdoc">Assign another tree structure to another.</div><div class="ttdef"><b>Definition:</b> XML.h:493</div></div>
+<div class="ttc" id="aclassdrain_1_1XML_html_a3162432a20d7413343eac1f286a89e94"><div class="ttname"><a href="classdrain_1_1XML.html#a3162432a20d7413343eac1f286a89e94">drain::XML::xmlAssignNode</a></div><div class="ttdeci">static X &amp; xmlAssignNode(X &amp;dst, const X &amp;src)</div><div class="ttdoc">Assign another tree structure to another.</div><div class="ttdef"><b>Definition:</b> XML.h:497</div></div>
 <div class="ttc" id="aclassdrain_1_1XML_html_a7ad81e5a41f330ce8fe5d50e3e89b713"><div class="ttname"><a href="classdrain_1_1XML.html#a7ad81e5a41f330ce8fe5d50e3e89b713">drain::XML::setAttribute</a></div><div class="ttdeci">virtual void setAttribute(const std::string &amp;key, const std::string &amp;value)</div><div class="ttdoc">Default implementation. Needed for handling units in strings, like &quot;50%&quot; or &quot;640px&quot;.</div><div class="ttdef"><b>Definition:</b> TreeXML.h:166</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition:</b> DataSelector.cpp:1277</div></div>
 <div class="ttc" id="astructdrain_1_1EnumDict_html"><div class="ttname"><a href="structdrain_1_1EnumDict.html">drain::EnumDict</a></div><div class="ttdoc">Wrapper for unique (static) dictionary of enum values.</div><div class="ttdef"><b>Definition:</b> EnumFlags.h:66</div></div>

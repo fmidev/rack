@@ -112,13 +112,21 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj6.html#a1b6ed6f041f3f5ae79ff4c947bbc223e">setProjectionSrc</a> (const std::string &amp;projDef, Projector::CRS_mode crs=Projector::FORCE_CRS)</td></tr>
 <tr class="memdesc:a1b6ed6f041f3f5ae79ff4c947bbc223e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets source projection. <br /></td></tr>
 <tr class="separator:a1b6ed6f041f3f5ae79ff4c947bbc223e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62b0c90adb7f6b5ef046d1e9eb658da1"><td class="memItemLeft" align="right" valign="top"><a id="a62b0c90adb7f6b5ef046d1e9eb658da1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj6.html#a62b0c90adb7f6b5ef046d1e9eb658da1">setProjectionSrc</a> (const <a class="el" href="classdrain_1_1Projector.html">Projector</a> &amp;projDef)</td></tr>
+<tr class="memdesc:a62b0c90adb7f6b5ef046d1e9eb658da1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets source projection, primarily using EPSG code. <br /></td></tr>
+<tr class="separator:a62b0c90adb7f6b5ef046d1e9eb658da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17626e81c120aafb8edce4831c666328"><td class="memItemLeft" align="right" valign="top"><a id="a17626e81c120aafb8edce4831c666328"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj6.html#a17626e81c120aafb8edce4831c666328">setProjectionDst</a> (const std::string &amp;projDef, Projector::CRS_mode crs=Projector::FORCE_CRS)</td></tr>
 <tr class="memdesc:a17626e81c120aafb8edce4831c666328"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets destination projection. <br /></td></tr>
 <tr class="separator:a17626e81c120aafb8edce4831c666328"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a183bfb3c74dbd0bb4891292ead33925d"><td class="memItemLeft" align="right" valign="top"><a id="a183bfb3c74dbd0bb4891292ead33925d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj6.html#a183bfb3c74dbd0bb4891292ead33925d">setProjectionDst</a> (const <a class="el" href="classdrain_1_1Projector.html">Projector</a> &amp;projDef)</td></tr>
+<tr class="memdesc:a183bfb3c74dbd0bb4891292ead33925d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets destination projection, primarily using EPSG code. <br /></td></tr>
+<tr class="separator:a183bfb3c74dbd0bb4891292ead33925d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f2c3ce059f81475e93eea2fe41b18cb"><td class="memItemLeft" align="right" valign="top"><a id="a6f2c3ce059f81475e93eea2fe41b18cb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj6.html#a6f2c3ce059f81475e93eea2fe41b18cb">setProjections</a> (const std::string &amp;projDefSrc, const std::string &amp;projDefDst)</td></tr>
-<tr class="memdesc:a6f2c3ce059f81475e93eea2fe41b18cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets source and destination projection. <br /></td></tr>
+<tr class="memdesc:a6f2c3ce059f81475e93eea2fe41b18cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets source and destination projection. TOOD: EPSG code handling. <br /></td></tr>
 <tr class="separator:a6f2c3ce059f81475e93eea2fe41b18cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afab4d6039faf4208af0545211ee2dd30"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj6.html#afab4d6039faf4208af0545211ee2dd30">getProjectionSrc</a> () const</td></tr>
 <tr class="memdesc:afab4d6039faf4208af0545211ee2dd30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the projection std::string applied by the last setProjection call.  <a href="classdrain_1_1Proj6.html#afab4d6039faf4208af0545211ee2dd30">More...</a><br /></td></tr>
@@ -153,8 +161,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>projectInv</b> (doubl
 <tr class="memitem:a412db3fc7c24b99a2c7a57838634cbac"><td class="memItemLeft" align="right" valign="top"><a id="a412db3fc7c24b99a2c7a57838634cbac"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>projectInv</b> (<a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;point) const</td></tr>
 <tr class="separator:a412db3fc7c24b99a2c7a57838634cbac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae1e896796e9f9548050bad439b90926"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj6.html#aae1e896796e9f9548050bad439b90926">debug</a> (std::ostream &amp;ostr=std::cout, int wkt=-1)</td></tr>
-<tr class="memdesc:aae1e896796e9f9548050bad439b90926"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forward projection.  <a href="classdrain_1_1Proj6.html#aae1e896796e9f9548050bad439b90926">More...</a><br /></td></tr>
+<tr class="memitem:aae1e896796e9f9548050bad439b90926"><td class="memItemLeft" align="right" valign="top"><a id="aae1e896796e9f9548050bad439b90926"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> (std::ostream &amp;ostr=std::cout, int wkt=-1)</td></tr>
 <tr class="separator:aae1e896796e9f9548050bad439b90926"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d3134c0385931975eb084325de1c9cc"><td class="memItemLeft" align="right" valign="top"><a id="a4d3134c0385931975eb084325de1c9cc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj6.html#a4d3134c0385931975eb084325de1c9cc">isLongLat</a> () const</td></tr>
@@ -184,6 +192,9 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a9e2be7afcebd80e983bc0e09b8d49e45"><td class="memItemLeft" align="right" valign="top"><a id="a9e2be7afcebd80e983bc0e09b8d49e45"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setMapping</b> (bool lenient)</td></tr>
+<tr class="separator:a9e2be7afcebd80e983bc0e09b8d49e45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad1a4edce9a93981e868a2f161095d69"><td class="memTemplParams" colspan="2">template&lt;PJ_DIRECTION D, class POINT_XY &gt; </td></tr>
 <tr class="memitem:aad1a4edce9a93981e868a2f161095d69"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj6.html#aad1a4edce9a93981e868a2f161095d69">project</a> (POINT_XY &amp;point) const</td></tr>
 <tr class="separator:aad1a4edce9a93981e868a2f161095d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,9 +202,6 @@ Protected Member Functions</h2></td></tr>
 template&lt;PJ_DIRECTION D&gt; </td></tr>
 <tr class="memitem:a3036edcddc23878db4541cbc0b4b1b2c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>project</b> (double &amp;x, double &amp;y) const</td></tr>
 <tr class="separator:a3036edcddc23878db4541cbc0b4b1b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e2be7afcebd80e983bc0e09b8d49e45"><td class="memItemLeft" align="right" valign="top"><a id="a9e2be7afcebd80e983bc0e09b8d49e45"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setMapping</b> (bool lenient)</td></tr>
-<tr class="separator:a9e2be7afcebd80e983bc0e09b8d49e45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -210,45 +218,6 @@ PJ *&#160;</td><td class="memItemRight" valign="bottom"><b>proj</b> = nullptr</t
 <p>IMPORTANT:</p>
 <p><a href="https://proj.org/development/reference/functions.html#c.proj_create">https://proj.org/development/reference/functions.html#c.proj_create</a> If a proj-string contains a +type=crs option, then it is interpreted as a CRS definition. In particular geographic CRS are assumed to have axis in the longitude, latitude order and with degree angular unit. The use of proj-string to describe a CRS is discouraged. It is a legacy means of conveying CRS descriptions: use of object codes (EPSG:XXXX typically) or WKT description is recommended for better expressivity. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aae1e896796e9f9548050bad439b90926"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae1e896796e9f9548050bad439b90926">&#9670;&nbsp;</a></span>debug()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void debug </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>ostr</em> = <code>std::cout</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>wkt</em> = <code>-1</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Forward projection. </p>
-<p>Forward projection. Todo: projections for vectors inline Inverse projection. Inverse projection from (x2,y2) to (x,y). </p>
-
-</div>
-</div>
 <a id="afab4d6039faf4208af0545211ee2dd30"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afab4d6039faf4208af0545211ee2dd30">&#9670;&nbsp;</a></span>getProjectionSrc()</h2>
 

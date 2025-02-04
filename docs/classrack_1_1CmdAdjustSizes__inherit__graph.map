@@ -1,10 +1,10 @@
 <map id="CmdAdjustSizes" name="CmdAdjustSizes">
-<area shape="rect" id="node1" title=" " alt="" coords="77,393,203,420"/>
+<area shape="rect" id="node1" title="&quot;Virtual&quot; command base for FontSizes and HeaderSizes" alt="" coords="73,393,199,420"/>
 <area shape="rect" id="node7" href="$classrack_1_1CmdFontSizes.html" title=" " alt="" coords="5,468,120,495"/>
-<area shape="rect" id="node8" href="$classrack_1_1CmdTitleBoxHeight.html" title=" " alt="" coords="144,468,293,495"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="55,304,225,345"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="78,229,202,256"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="35,155,245,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="95,80,185,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="93,5,187,32"/>
+<area shape="rect" id="node8" href="$classrack_1_1CmdTitleHeights.html" title=" " alt="" coords="144,468,275,495"/>
+<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="51,304,221,345"/>
+<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="74,229,198,256"/>
+<area shape="rect" id="node4" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="31,155,241,181"/>
+<area shape="rect" id="node5" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="91,80,181,107"/>
+<area shape="rect" id="node6" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="89,5,183,32"/>
 </map>

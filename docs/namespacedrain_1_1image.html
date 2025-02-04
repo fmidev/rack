@@ -118,7 +118,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">User-friendly programming interface for alignment considering two elements.  <a href="structdrain_1_1image_1_1AlignSVG.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1CompleteAlignment.html">CompleteAlignment</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Alternative" <em>partial</em> alignment configuration for single object (OBJECT or its ANCHOR).  <a href="structdrain_1_1image_1_1CompleteAlignment.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Alternative" <em>partial</em> alignment configuration for single object. Partial means that either <code>OBJECT</code> itself or <code>ANCHOR</code> object is set.  <a href="structdrain_1_1image_1_1CompleteAlignment.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1LayoutSVG.html">LayoutSVG</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Higher level controller for setting alignments.  <a href="classdrain_1_1image_1_1LayoutSVG.html#details">More...</a><br /></td></tr>
@@ -268,6 +268,10 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Transform.html">Transform</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -732,6 +736,10 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 template&lt;class T , class D &gt; </td></tr>
 <tr class="memitem:a4ecf81c9bbf3cb428176e786dadd14b4"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1SegmentStatisticsProber.html">SegmentStatisticsProber</a>&lt; T, D &gt; &amp;prober)</td></tr>
 <tr class="separator:a4ecf81c9bbf3cb428176e786dadd14b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2326cb1c3094d15ac2c01a1ac6af2483"><td class="memTemplParams" colspan="2"><a id="a2326cb1c3094d15ac2c01a1ac6af2483"></a>
+template&lt;size_t N&gt; </td></tr>
+<tr class="memitem:a2326cb1c3094d15ac2c01a1ac6af2483"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classdrain_1_1image_1_1Transform.html">Transform</a>&lt; N &gt; &amp;tr)</td></tr>
+<tr class="separator:a2326cb1c3094d15ac2c01a1ac6af2483"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5490f4483d7eee71ce48b54081bd48b"><td class="memItemLeft" align="right" valign="top"><a id="ae5490f4483d7eee71ce48b54081bd48b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_DEF</b> (<a class="el" href="classdrain_1_1image_1_1WindowConfig.html">WindowConfig</a>)</td></tr>
 <tr class="separator:ae5490f4483d7eee71ce48b54081bd48b"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -196,12 +196,6 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:aa1621524b0f90a54e424d786e3ae3475"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#aa1621524b0f90a54e424d786e3ae3475">setParameter</a> (const std::string &amp;key, const T &amp;value)</td></tr>
 <tr class="memdesc:aa1621524b0f90a54e424d786e3ae3475"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a value to a single parameter.  <a href="classdrain_1_1Command.html#aa1621524b0f90a54e424d786e3ae3475">More...</a><br /></td></tr>
 <tr class="separator:aa1621524b0f90a54e424d786e3ae3475"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad492a10841b88e085dd3131a1044df57"><td class="memItemLeft" align="right" valign="top"><a id="ad492a10841b88e085dd3131a1044df57"></a>
-<a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>addSection</b> (int i)</td></tr>
-<tr class="separator:ad492a10841b88e085dd3131a1044df57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd36d7881ea8503d5c5824e7a5ad6c7e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#acd36d7881ea8503d5c5824e7a5ad6c7e">update</a> ()</td></tr>
-<tr class="memdesc:acd36d7881ea8503d5c5824e7a5ad6c7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional method for preparing command to execution.  <a href="classdrain_1_1Command.html#acd36d7881ea8503d5c5824e7a5ad6c7e">More...</a><br /></td></tr>
-<tr class="separator:acd36d7881ea8503d5c5824e7a5ad6c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f6485c2075b4c36114fd725551336df"><td class="memItemLeft" align="right" valign="top"><a id="a4f6485c2075b4c36114fd725551336df"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasParameters</b> () const</td></tr>
 <tr class="separator:a4f6485c2075b4c36114fd725551336df"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,15 +203,21 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasParameters</b> () 
 virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#abf014e954d8d42d51152cc4b34de5f76">getType</a> () const</td></tr>
 <tr class="memdesc:abf014e954d8d42d51152cc4b34de5f76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of result, comparable to a return type of a function. ? <br /></td></tr>
 <tr class="separator:abf014e954d8d42d51152cc4b34de5f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e9d3bbdcec194457468348a055de185"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#a5e9d3bbdcec194457468348a055de185">run</a> (const std::string &amp;params=&quot;&quot;) final</td></tr>
+<tr class="memdesc:a5e9d3bbdcec194457468348a055de185"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience. Sets parameters and executes the command.  <a href="classdrain_1_1Command.html#a5e9d3bbdcec194457468348a055de185">More...</a><br /></td></tr>
+<tr class="separator:a5e9d3bbdcec194457468348a055de185"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd36d7881ea8503d5c5824e7a5ad6c7e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#acd36d7881ea8503d5c5824e7a5ad6c7e">update</a> ()</td></tr>
+<tr class="memdesc:acd36d7881ea8503d5c5824e7a5ad6c7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional method for preparing command to execution.  <a href="classdrain_1_1Command.html#acd36d7881ea8503d5c5824e7a5ad6c7e">More...</a><br /></td></tr>
+<tr class="separator:acd36d7881ea8503d5c5824e7a5ad6c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a951c3a8da6ec531137592b969a542cbb"><td class="memItemLeft" align="right" valign="top"><a id="a951c3a8da6ec531137592b969a542cbb"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#a951c3a8da6ec531137592b969a542cbb">exec</a> () const</td></tr>
 <tr class="memdesc:a951c3a8da6ec531137592b969a542cbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the command with current parameter values. <br /></td></tr>
 <tr class="separator:a951c3a8da6ec531137592b969a542cbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6ff66747141f8cf6f4e2ef9e5c58729"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#ad6ff66747141f8cf6f4e2ef9e5c58729">run</a> (const std::string &amp;params=&quot;&quot;)</td></tr>
-<tr class="memdesc:ad6ff66747141f8cf6f4e2ef9e5c58729"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience. Sets parameters and executes the command.  <a href="classdrain_1_1Command.html#ad6ff66747141f8cf6f4e2ef9e5c58729">More...</a><br /></td></tr>
-<tr class="separator:ad6ff66747141f8cf6f4e2ef9e5c58729"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2170fe7678dc56d71719a2d867ee8f6"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#ad2170fe7678dc56d71719a2d867ee8f6">getLastParameters</a> () const</td></tr>
-<tr class="memdesc:ad2170fe7678dc56d71719a2d867ee8f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">After executing this command run a routine, if defined.  <a href="classdrain_1_1Command.html#ad2170fe7678dc56d71719a2d867ee8f6">More...</a><br /></td></tr>
+<tr class="memitem:ad492a10841b88e085dd3131a1044df57"><td class="memItemLeft" align="right" valign="top"><a id="ad492a10841b88e085dd3131a1044df57"></a>
+<a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>addSection</b> (int i)</td></tr>
+<tr class="separator:ad492a10841b88e085dd3131a1044df57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2170fe7678dc56d71719a2d867ee8f6"><td class="memItemLeft" align="right" valign="top"><a id="ad2170fe7678dc56d71719a2d867ee8f6"></a>
+const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getLastParameters</b> () const</td></tr>
 <tr class="separator:ad2170fe7678dc56d71719a2d867ee8f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1Contextual"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1Contextual')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td></tr>
 <tr class="memitem:af0652177ffe41db9b359137133b8f83a inherit pub_methods_classdrain_1_1Contextual"><td class="memItemLeft" align="right" valign="top"><a id="af0652177ffe41db9b359137133b8f83a"></a>
@@ -305,36 +305,8 @@ template&lt;class T &gt; </td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad2170fe7678dc56d71719a2d867ee8f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2170fe7678dc56d71719a2d867ee8f6">&#9670;&nbsp;</a></span>getLastParameters()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::string&amp; getLastParameters </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>After executing this command run a routine, if defined. </p>
-<p>Future option: single-code Dynamic functions: handle the command string </p>
-
-</div>
-</div>
-<a id="ad6ff66747141f8cf6f4e2ef9e5c58729"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6ff66747141f8cf6f4e2ef9e5c58729">&#9670;&nbsp;</a></span>run()</h2>
+<a id="a5e9d3bbdcec194457468348a055de185"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e9d3bbdcec194457468348a055de185">&#9670;&nbsp;</a></span>run()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -352,7 +324,7 @@ template&lt;class T &gt; </td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">final</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
