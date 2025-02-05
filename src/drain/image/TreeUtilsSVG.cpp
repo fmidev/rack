@@ -243,8 +243,16 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 		mout.unimplemented<LOG_ERR>("AlignSVG::Pos ", alignLoc);
 	}
 
+
 	TranslatorSVG translator(0.0f, coord - object->getBoundingBox().y);
 	TreeUtils::traverse(translator, object);
+	/*
+	if (object->typeIs(svg::GROUP)){
+		object->transform.translate[1] += coord - object->getBoundingBox().y;
+	}
+	else {
+	}
+	*/
 
 }
 
