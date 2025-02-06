@@ -302,22 +302,22 @@ bool RackSVG::applyInclusion(RackContext & ctx, const drain::FilePath & filepath
 	// Main selection: format (PNG/SVG/TXT) is accepted
 	//
 	if (!ctx.svgPanelConf.svgIncludes.isSet(format)){
-		mout.reject<LOG_WARNING>("format=", format, ", skipped file: ", filepath);
+		mout.reject<LOG_INFO>("format=", format, ", skipped file: ", filepath);
 		return false;
 	}
 	else if (ctx.svgPanelConf.svgIncludes.isSet(SvgInclude::SKIP)){
-		mout.reject<LOG_WARNING>("explicitly SKIPped file: ", filepath);
+		mout.reject<LOG_INFO>("explicitly SKIPped file: ", filepath);
 		ctx.svgPanelConf.svgIncludes.unset(SvgInclude::SKIP);
 		return false;
 	}
 	else if (ctx.svgPanelConf.svgIncludes.isSet(SvgInclude::NEXT)){
 		// Could warn, if also ON = "double-on"
-		mout.accept<LOG_WARNING>("explicitly included (", SvgInclude::NEXT, ") file: ", filepath);
+		mout.info("explicitly included (", SvgInclude::NEXT, ") file: ", filepath);
 		ctx.svgPanelConf.svgIncludes.unset(SvgInclude::NEXT);
 		return true;
 	}
 	else {
-		mout.pending<LOG_WARNING>("considering file: ", filepath, ", format=", format);
+		mout.pending<LOG_DEBUG>("considering file: ", filepath, ", format=", format);
 		return ctx.svgPanelConf.svgIncludes.isSet(SvgInclude::ON);
 	}
 
@@ -399,7 +399,7 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	mout.attention("file path:", filepath);
+	mout.debug("file path:", filepath);
 
 	//drain::image::TreeSVG & imagePanel = ctx.getImagePanelGroup(filepath); // getImagePanelGroup(ctx, filepath);
 	drain::image::TreeSVG & imagePanel = getImagePanelGroup(ctx, filepath); // getImagePanelGroup(ctx, filepath);

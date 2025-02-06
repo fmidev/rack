@@ -32,27 +32,28 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "10.7"
+#define __RACK_VERSION__ "10.7.1"
 
 /**
+ *
  *  Version 10.7
  *   - gPanel TECH
  *   - SVG transformations (translate, scale, skew, matrix)
-
- *  Version 10.6.1
- *   - Fixed projstr EPSG bug
-
+ *  Release 10.7.1
+ *   - cEchoTop ReferenceMap short key bug (type=C)
+ *
  *  Version 10.6
  *   - gFontSize, gBoxSizes, gInclude,
+ *  Release 10.6.1
+ *   - Fixed projstr EPSG bug
  *
  *  Version 10.5
  *   - completed SVG titles
  *
- *  Version 10.4.1
- *   - hasChild(const T & key) -> getKey(...) experiments without success
- *
  *  Version 10.4
  *   - SVG titles IMAGETITLE, GROUPTITLE, MAINTITLE
+ *  Release 10.4.1
+ *   - hasChild(const T & key) -> getKey(...) experiments without success
  *
  *  Version 10.3
  *   - XML refactoring, separated utilities

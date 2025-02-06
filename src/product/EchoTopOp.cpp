@@ -398,7 +398,7 @@ void EchoTopOp::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSe
 
 	mout.debug("ODIM scaling 1: ", dstEchoTop.odim.scaling);
 
-
+	dstEchoTop.odim.addShortKeys(); // kludge
 	// applyODIM(dstEchoTop.odim, odim);
 	dstEchoTop.setEncoding(odim.type, targetEncoding);
 

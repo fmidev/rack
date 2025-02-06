@@ -180,7 +180,7 @@ public:
 	inline
 	void setTypeDefaults(const T & type, const std::string & values = ""){
 
-		drain::Logger mout("EncodingODIM", __FUNCTION__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 
 		drain::Type t(type);
 		const char typechar = drain::Type::getTypeChar(t);
@@ -192,8 +192,6 @@ public:
 		}
 
 		scaling.set(1.0, 0.0);
-		// scale  = 1.0;
-	    // offset = 0.0;
 
 	    //if (!type.empty()){ // ?
 	    if (typechar != '*'){
