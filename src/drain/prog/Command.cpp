@@ -82,6 +82,30 @@ void Command::setParameters(const std::string & args){ //, char assignmentSymbol
 
 }
 
+void Command::help(std::ostream & ostr, bool DETAILED) const {
+	ostr << "  " << getDescription() << '\n';
+	if (DETAILED){
+		getRelatedCommands(ostr);
+	}
+};
+
+
+void Command::getRelatedCommands(std::ostream & ostr) const {
+	if (!relatedCommands.empty()){
+		ostr << "  See also: ";
+		char sep=0;
+		//for (const Command *cmd: relatedCommands){
+		for (const std::string &cmd: relatedCommands){
+			if (sep)
+				ostr << sep;
+			else
+				sep = ',';
+			ostr << cmd;
+		}
+		ostr << '\n';
+	}
+};
+
 /*
 void BasicCommand::setAllParameters(const std::string & args){ //, char assignmentSymbol) {
 

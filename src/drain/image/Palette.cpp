@@ -33,10 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 #include <map>
 
-// #include "drain/util/FilePath.h"
+//#include "drain/image/TreeSLD.h"
 #include "drain/util/Input.h"
 #include "drain/util/StringMapper.h"
-//
 #include "drain/util/Output.h"
 
 #include "Palette.h"
@@ -618,6 +617,7 @@ void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 			case 4:
 				entry.alpha = l.back();
 				l.pop_back();
+				// no break
 			case 3:
 				entry.color.assignSequence(l);
 				break;
@@ -669,8 +669,16 @@ void Palette::write(const std::string & filename) const {
 		mout.debug("writing SVG legend");
 		TreeSVG svg;
 		exportSVGLegend(svg, true);
-		// ofstr << svg;
 		NodeSVG::toStream(ofstr, svg);
+	}
+	else if (NodeSLD::fileInfo.checkExtension(filepath.extension)){ // .json
+		mout.debug("exporting SLD legend");
+		TreeSLD sld; // (SLD::StyledLayerDescriptor);
+		exportSLD(sld);
+		// ofstr << svg;
+		mout.attention("output");
+		NodeSLD::toStream(ofstr, sld);
+		mout.attention("output2");
 	}
 	else if (drain::JSON::fileInfo.checkExtension(filepath.extension)){ // .json
 		mout.debug("exporting JSON palette");
@@ -1109,8 +1117,6 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 	const int lineheight = 20;
 
 	svg->setType(svg::SVG);
-	// svg->set("id", title);
-	// TODO font-size:  font-face:
 
 	TreeSVG & background = svg["bg"](svg::RECT);
 	// background->setType(NodeSVG::RECT);
@@ -1250,6 +1256,189 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 
 	svg->set("width", width);
 	svg->set("height", height);
+
+}
+
+void Palette::exportSLD(TreeSLD & sld) const {
+
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+	mout.attention("startar");
+
+	sld->setType(SLD::StyledLayerDescriptor);
+
+
+	TreeSLD & namedLayer = sld[SLD::NamedLayer](SLD::NamedLayer);
+
+	TreeSLD & mainName = namedLayer[SLD::Name](SLD::Name);
+
+	mout.attention("mainName");
+
+	mainName = title;
+
+	TreeSLD & userStyle = namedLayer[SLD::UserStyle](SLD::UserStyle);
+
+	TreeSLD & name = userStyle[SLD::Name](SLD::Name);
+	name = this->title;
+
+	TreeSLD & title = userStyle[SLD::Title](SLD::Title);
+	title = this->title;
+
+	TreeSLD & abstract = userStyle[SLD::Abstract](SLD::Abstract);
+	abstract = this->title;
+
+	//int height = (1.5 + size() + specialCodes.size()) * lineheight;
+	TreeSLD & featureTypeStyle = userStyle[SLD::FeatureTypeStyle](SLD::FeatureTypeStyle);
+
+
+	TreeSLD & rule = featureTypeStyle[SLD::Rule](SLD::Rule);
+
+	TreeSLD & rasterSymbolizer = rule[SLD::RasterSymbolizer](SLD::RasterSymbolizer);
+
+	TreeSLD & opacity = rasterSymbolizer[SLD::Opacity](SLD::Opacity);
+	opacity = "1.0";
+
+	// int y;
+	std::stringstream key;
+	std::stringstream style;
+	std::stringstream threshold;
+	size_t precision = 2; // for threshold
+	// const auto default_precision{std::cout.precision()};
+
+	bool INTEGER = true;
+	for (const auto & entry: *this){
+		if (trunc(entry.first) != entry.first){
+			INTEGER = false;
+			break;
+		}
+	}
+	// sld["comment"]->setComment().set("integer", INTEGER);
+
+	Palette::const_iterator it = begin();
+	std::map<std::string,PaletteEntry>::const_iterator itSpecial = specialCodes.begin();
+
+	// TODO: extract createLegendEntry and traverse specials separately (see SVG?)
+
+	TreeSLD & colorMap = rasterSymbolizer[SLD::ColorMap](SLD::ColorMap);
+
+	mout.attention("main map");
+
+	while ((it != end()) || (itSpecial != specialCodes.end())){
+
+		bool special = (itSpecial != specialCodes.end());
+
+		const PaletteEntry & entry = special ? itSpecial->second : it->second;
+
+		mout.attention("entry: ", entry);
+
+		if (!entry.hidden){
+
+			std::string s;
+			entry.getHexColor(s);
+			TreeSLD & colorMapEntry = colorMap[s](SLD::ColorMapEntry);
+
+			// colorMapEntry->set("color","");
+			// entry.getHexColor(colorMapEntry->url);
+			colorMapEntry->set("label", entry.label);
+
+			colorMapEntry->set("opacity", 1.0);
+			mout.attention("  HEX: ", s);
+
+			/*
+			key.str("");
+			key << "color";
+			key.fill('0');
+			key.width(2);
+			key << index;
+
+			TreeSLD & child = sld[name.str()](SLD::GROUP);
+			//child->setType(SLD::GROUP);
+
+			TreeSLD & t = child["title"](SLD::TITLE) = name.str();
+			// t->setType(SLD::TITLE);
+			// t->ctext = name.str(); // + threshold.str();
+
+			//y = up ? height - (index+1) * lineheight : index * lineheight;
+			y = headerHeight + index*lineheight;
+
+			TreeSLD & rect = child["r"](SLD::RECT);
+			// rect->setType(SLD::RECT);
+			rect->set("x", 0);
+			rect->set("y", y);
+			rect->set("width", lineheight*1.7);
+			rect->set("height", lineheight);
+			//child["r"]->set("style", "fill:green");
+			*/
+
+
+			style.str("");
+			const PaletteEntry::color_t & color = entry.color;
+			switch (color.size()){
+			case 4:
+				//if (color[3] != 255.0)
+				//	style << "fill-opacity:" << color[3]/255.0 << ';';
+				colorMapEntry->set("opacity", color[3]/255.0);
+				// no break
+			case 3:
+				//style << "fill:rgb(" << color[0] << ',' << color[1] << ',' << color[2] << ");";
+				break;
+			case 1:
+				// style << "fill:rgb(" << color[0] << ',' << color[0] << ',' << color[0] << ");";
+				break;
+			}
+			//rect->set("style", style.str());
+			// rect->setStyle(style.str());
+
+			if (!special){
+				threshold.str(" ");
+				// TODO: integers
+				if (INTEGER)
+					threshold << it->first;
+				else
+					threshold << std::setprecision(precision) << it->first;
+
+				colorMapEntry->set("quantity", threshold.str());
+
+				/*
+				t->ctext += threshold.str();
+				TreeSLD & thr = child["th"](SLD::TEXT) = threshold.str();
+				thr->set("text-anchor", "end");
+				thr->set("x", lineheight*1.5);
+				thr->set("y", y + lineheight-1);
+				*/
+			}
+
+			if (!entry.label.empty()){
+				/*
+				t->ctext += ' ';
+				t->ctext += entry.label;
+
+				TreeSLD & text = child["t"](SLD::TEXT) = entry.label;
+				text->set("x", 2*lineheight);
+				text->set("y", y + lineheight-1);
+				*/
+			}
+
+
+		}
+
+		if (special)
+			++itSpecial;
+		else
+			++it;
+		//ostr << '\n';
+	}
+
+	mout.attention("main map END");
+	//ostr << std::setprecision(default_precision);
+
+	/*
+	const int height = headerHeight + index*lineheight;
+	background->set("width", width);
+	background->set("height", height);
+	svg->set("width", width);
+	svg->set("height", height);
+	*/
 
 }
 

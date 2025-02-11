@@ -938,6 +938,19 @@ void CommandBank::help(FlagResolver::ivalue_t sectionFilter, std::ostream & ostr
 	//std::flush(ostr);
 }
 
+void CommandBank::linkRelatedCommandList(const std::set<std::string> & cmdList){
+	for (const std::string &key1: cmdList){
+		const Command & cmd1 = get(key1);
+		for (const std::string &key2: cmdList){
+			if (key2 != key1){
+				const Command & cmd2 = get(key2);
+				cmd1.relatedCommands.insert(key2);
+				cmd2.relatedCommands.insert(key1);
+			}
+		}
+	}
+}
+
 
 /// Checked key and respective command
 void CommandBank::info(const std::string & key, const value_t & cmd, std::ostream & ostr, bool detailed) const {
@@ -997,15 +1010,16 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 
 	ostr << '\n';
 
-	ostr << ' ' << ' ' << cmd.getDescription() << '\n';
+	//ostr << ' ' << ' ' << cmd.getDescription() << '\n';
 	//ostr << cmd.getDescription() << '\n';
+	cmd.help(ostr, detailed);
 
 	/// Iterate variable keys
 	if (detailed){
 
 		for (const std::string & key: keys){
 
-			if ((key.at(0) == '_') && !mout.isDebug()){
+			if ((key.at(0) == '_') && !mout.isDebug()){  // what? hidden? but appears in above list?
 				continue;
 			}
 
@@ -1035,7 +1049,10 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 			//ostr << 'X';
 			ostr << '\n';
 		}
+
 	}
+
+
 }
 
 

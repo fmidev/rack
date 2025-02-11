@@ -31,15 +31,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_PALETTE
 #define DRAIN_PALETTE
 
-#include <drain/UniTuple.h>
+#include "drain/UniTuple.h"
+#include "drain/util/BeanLike.h"
+#include "drain/util/JSON.h"
+#include "drain/util/Dictionary.h"
+
 #include "ImageFile.h"
 #include "Geometry.h"
 #include "TreeSVG.h"
-
-#include "drain/util/BeanLike.h"
-// #include "drain/util/Dictionary.h" // temporary ?
-#include "drain/util/JSON.h"
-#include "drain/util/Dictionary.h"
+#include "TreeSLD.h"
 #include "Legend.h"
 #include "PaletteEntry.h"
 
@@ -127,6 +127,9 @@ public:
 
 	/// Returns a legend as an SVG graphic.
 	void exportSVGLegend(TreeSVG & svg, bool up = true) const;
+
+	/// Export as SLD structure supported by GeoServer
+	void exportSLD(TreeSLD & sld) const;
 
 	/// Export palette such
 	/**

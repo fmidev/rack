@@ -76,7 +76,9 @@ public:
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		mout.debug("Setting projection to local composite");
 
-		ctx.composite.setProjection(value);
+		if (!value.empty()){
+			ctx.composite.setProjection(value);
+		}
 		// ctx.composite.odim.projdef = value; // plain EPSG code OK??
 		// NOTE: could be :
 		//
@@ -289,34 +291,56 @@ CartesianModule::CartesianModule(drain::CommandBank & bank) : module_t(bank) {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	install<CartesianCreate>('c');
+//#define DRAIN_CMD_INSTALL(prefix, cmd) drain::Command & cmd = install<prefix##cmd>
+
+	DRAIN_CMD_INSTALL(Cartesian,Create)('c');
+	DRAIN_CMD_INSTALL(Composite,CreateTile)();
+	DRAIN_CMD_INSTALL(Composite,Add)();
+	DRAIN_CMD_INSTALL(Composite,AddWeighted)();
+	linkRelatedCommands(Create, Add, AddWeighted);
+	linkRelatedCommands(Create, CreateTile);
+
+	DRAIN_CMD_INSTALL(Composite,DefaultQuality)();
+	linkRelatedCommands(DefaultQuality, AddWeighted);
+
+	DRAIN_CMD_INSTALL(Cartesian,BBox)();
+	DRAIN_CMD_INSTALL(Cartesian,BBoxReset)();
+	DRAIN_CMD_INSTALL(Cartesian,BBoxTest)();
+	DRAIN_CMD_INSTALL(Cartesian,BBoxTile)();
+	linkRelatedCommands(BBox, BBoxTile, CreateTile);
+	linkRelatedCommands(BBox, BBoxTest);
+
+	DRAIN_CMD_INSTALL(Cartesian,Extract)();
+	linkRelatedCommands(Add, Extract);
+
+	DRAIN_CMD_INSTALL(Cartesian,Init)();
+	DRAIN_CMD_INSTALL(Composite,Method)();
+	linkRelatedCommands(Method, Add);
+
+	DRAIN_CMD_INSTALL(Cartesian,Plot)();
+	DRAIN_CMD_INSTALL(Cartesian,PlotFile)();
+	linkRelatedCommands(Plot, PlotFile);
+
+	DRAIN_CMD_INSTALL(Cartesian,Proj)();   // shared
+	DRAIN_CMD_INSTALL(Cartesian,Reset)();
+	DRAIN_CMD_INSTALL(Cartesian,Size)();
+	linkRelatedCommands(BBox, Proj, Reset, Size);
+
+	linkRelatedCommands(Init,Reset);
+	linkRelatedCommands(BBoxReset,Reset);
+	linkRelatedCommands(Method,Reset);
+
+	DRAIN_CMD_INSTALL(Cartesian,Range)();
+	linkRelatedCommands(Range, Size);
+
+	DRAIN_CMD_INSTALL(Cartesian,Time)();
+	DRAIN_CMD_INSTALL(Composite,TimeDecay)(); // Yes, both
+	DRAIN_CMD_INSTALL(Composite,DecayTime)(); // Yes, both
+	linkRelatedCommands(Time, TimeDecay, DecayTime);
+
 	install<CartesianCreateLookup>();
-	install<CompositeAdd>();
-
-	install<CompositeAddWeighted>();
-	install<CompositeDefaultQuality>();
-
-	install<CartesianBBox>();
-
-	install<CartesianBBoxReset>();
-	install<CartesianBBoxTest>();
-	install<CartesianBBoxTile>();
-	install<CartesianExtract>();
 	install<CartesianGrid>();
-	install<CartesianInit>();
-	install<CompositeMethod>();
-
-	install<CartesianPlot>();
-	install<CartesianPlotFile>();
-	install<CartesianProj>();   // shared
-	install<CartesianRange>();
-	install<CartesianReset>();
-	install<CartesianSize>();
 	install<CartesianSpread>();
-	install<CartesianTime>();
-	install<CompositeTimeDecay>(); // Yes, both
-	install<CompositeDecayTime>(); // Yes, both
-	install<CompositeCreateTile>();
 	install<CartesianSun>("cCreateSun");
 	install<CartesianOpticalFlow>("cOpticalFlow"); // class name: FastOpticalFlow2Op
 

@@ -146,6 +146,48 @@ public:
 		return installShared<CMD>(name, alias);
 	}
 
+	/*
+	template <class ...CC>
+	static
+	//void linkRelatedCommands(const std::string & cmd, const CC & ... cmds){
+	void linkRelatedCommands(const Command & cmd, const CC & ... cmds){
+		std::string name = cmd.getName();
+		CommandBank::deriveCmdName(name, PREFIX);
+
+		// relatedCommands.insert(&cmd);
+		// linkRelatedCommands(cmds...);
+		linkRelatedCommands(name, cmds...);
+		// return *this;
+	};
+
+
+	template <class ...CC>
+	static // inline
+	void linkRelatedCommands(const std::string & name, const Command & cmd, const CC & ... cmds){
+		//cmd.linkRelatedCommands(name);
+		cmd.relatedCommands.insert(name);
+		linkRelatedCommands(name, cmds...);
+	}
+
+	static inline
+	void linkRelatedCommands(const std::string & name, const Command & cmd){
+		cmd.relatedCommands.insert(name);
+		// cmd.linkRelatedCommands(name);
+	}
+
+	// mutable
+	// std::set<const Command *> relatedCommands;
+
+	typedef std::set<const Command *> CmdSet;
+
+	template <class ...TT>
+	inline
+	void createCmdSet(CmdSet & set,const TT & ... cmds){
+		set.insert(cmds);
+	}
+		*/
+
+
 };
 
 
@@ -173,20 +215,48 @@ public:
 
 	};
 
-	// CommandModule(const std::string & name, CommandBank & bank = getCommandBank()) :
-	// CommandInstaller<PREFIX, SECTION>(bank), name(name)
+	/**
+	 *  Not static, because cmdBank addressed.
+	 */
+	template <class ...TT>
+	inline
+	void linkRelatedCommands(TT & ... cmds){
+		std::set<std::string> cmdList;
+		linkRelatedCommandList(cmdList, cmds...); // infinite loop?
+	}
 
-	// virtual	void initialize() = 0;
+	template <class ...TT>
+	inline
+	void linkRelatedCommandList(std::set<std::string> & cmdList, Command & cmd, TT & ... cmds){
+		std::string name = cmd.getName();
+		CommandBank::deriveCmdName(name, PREFIX);
+		cmdList.insert(name);
+		linkRelatedCommandList(cmdList, cmds...); // infinite loop?
+	}
 
-	/// Default installer for this module.
-	//  CommandInstaller<> installer;
-	//  const std::string name;
+	template <class ...TT>
+	inline
+	void linkRelatedCommandList(std::set<std::string> & cmdList, const std::string & cmdName, TT & ... cmds){
+		cmdList.insert(cmdName);
+		linkRelatedCommandList(cmdList, cmds...); // infinite loop?
+	}
+
+
+	template <class ...TT>
+	inline
+	void linkRelatedCommandList(std::set<std::string> & cmdList){
+		this->cmdBank.linkRelatedCommandList(cmdList); // infinite loop?
+	}
+
 
 
 };
 
 }
 
+
+/// Usage: inside a Module:  DRAIN_CMD_INSTALL(Cmd, Verbose)('v');
+#define DRAIN_CMD_INSTALL(prefix, cmd) drain::Command & cmd = install<prefix##cmd>
 
 
 /* namespace drain */

@@ -68,9 +68,11 @@ public:
 	virtual inline
 	~Command(){};
 
-	// TODO: getFullName(), the "C++ name" of this (derived) class.
-	// Typically not same as the command line command.
 
+	/// Returns the class name of this command, like "CmdVerbose".
+	/**
+	 *  Typically not same as the command line command, for example "verbose" for command "--verbose",
+	 */
 	virtual
 	const std::string & getName() const = 0;
 
@@ -142,11 +144,13 @@ public:
 	};
 
 	/// Description of result, comparable to a return type of a function. ?
+	/*
 	virtual inline
 	const std::string & getType() const {
 		static const std::string empty;
 		return empty;
 	};
+	*/
 
 
 	/// Convenience. Sets parameters and executes the command.
@@ -191,7 +195,42 @@ public:
 		return lastParameters;
 	};
 
+
+	virtual
+	void help(std::ostream & ostr = std::cout, bool DETAILED=false) const;
+
+	virtual
+	void getRelatedCommands(std::ostream & ostr = std::cout) const;
+
+
+	/// Add related command(s), to appear in help after "See-also:" phrase.
+	/**
+	 *  This "relation" is single directional, so typically linked commands
+	 *  should also link this command. Command catalogs like CommandBank should administer two-way linking.
+	 *
+	 *  \see CommandBank
+	 */
+	/*
+	template <class C, class ...CC>
+	Command & linkRelatedCommands(const C & cmd, const CC & ... cmds){
+		relatedCommands.insert(cmd);
+		linkRelatedCommands(cmds...);
+		return *this;
+	};
+	*/
+
+	mutable
+	std::set<std::string> relatedCommands;
+
+
 protected:
+
+	// Terminal
+	inline
+	Command & linkRelatedCommands(){
+		return *this;
+	};
+
 
 	virtual
 	ReferenceMap & getParameters() = 0;
