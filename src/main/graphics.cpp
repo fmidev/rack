@@ -214,6 +214,7 @@ const std::string & RackSVG::guessFormat(const std::string & key){
 drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std::string & name
 
 	//using namespace drain::image;
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	// Ensure STYLE elem and definitions
 	RackSVG::getStyle(ctx);
@@ -224,7 +225,9 @@ drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std
 	if (main -> isUndefined()){
 		main->setType(svg::GROUP);
 		main->addClass(PanelConfSVG::MAIN);
+		// mout.attention("Created MAIN, ", PanelConfSVG::MAIN, ": ", main.data, " / ", main.data.getType());
 	}
+	// mout.attention("Providing MAIN, ", PanelConfSVG::MAIN, ": ", main.data, " / ", main.data.getType());
 
 	return main;
 
@@ -287,7 +290,8 @@ bool RackSVG::applyInclusion(RackContext & ctx, const drain::FilePath & filepath
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	mout.special<LOG_WARNING>("NOW file: ", filepath, ", includes=", ctx.svgPanelConf.svgIncludes);
+	//mout.special<LOG_WARNING>("NOW file: ", filepath, ", includes=", ctx.svgPanelConf.svgIncludes);
+	mout.special<LOG_DEBUG>("NOW file: ", filepath, ", includes=", ctx.svgPanelConf.svgIncludes);
 
 	SvgInclude format = UNKNOWN; // UNKNOWN
 	if (drain::image::FilePng::fileInfo.checkExtension(filepath.extension)){
@@ -556,10 +560,10 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	// Ensure order
 	mainHeader["product"](svg::TSPAN);
 	mainHeader["product"]->addClass("product");
-	// mainHeader["product"]->ctext = "product"; // debugging
+	// mainHeader["product"]->setText("product"); //CTXX // debugging
 	mainHeader["prodpar"](svg::TSPAN);
 	mainHeader["prodpar"]->addClass("product"); // yes, same...
-	// mainHeader["prodpar"]->ctext = "prodpar"; // debugging
+	// mainHeader["prodpar"]->setText("prodpar"); //CTXX // debugging
 
 	// Layout principle: there should be always time... so start/continue from left.
 	TreeSVG & timeHeader = object[PanelConfSVG::ElemClass::TIME](svg::TEXT);
@@ -571,8 +575,8 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	timeHeader["date"]->addClass("date");
 	timeHeader["time"](svg::TSPAN);
 	timeHeader["time"]->addClass("time");
-	// timeHeader["date"]->ctext = "date...";
-	// timeHeader["time"]->ctext = "time";
+	// timeHeader["date"]->setText("date..."); //CTXX
+	// timeHeader["time"]->setText("time"); //CTXX
 
 	// Layout principle: there should be always time... so start/continue from left.
 	TreeSVG & locationHeader = object[PanelConfSVG::ElemClass::LOCATION](svg::TEXT);
@@ -595,8 +599,8 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	locationHeader["NOD"]->addClass("NOD");
 	locationHeader["PLC"](svg::TSPAN);
 	locationHeader["PLC"]->addClass("PLC");
-	// locationHeader["NOD"]->ctext = "NOD";
-	// locationHeader["PLC"]->ctext = "PLC";
+	// locationHeader["NOD"]->setText("NOD"); //CTXX
+	// locationHeader["PLC"]->setText("PLC"); //CTXX
 
 
 	double textBoxHeight = 0; // conf.boxHeights[0]; // MAIN_HEADER
@@ -761,12 +765,12 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 		TreeSVG & debugSharedBase = current[svg::DESC](svg::DESC);
 		debugSharedBase->set("data-type", "SHARED"); // ??
 		// TreeSVG & debugShared = debugSharedBase["cmt"](svg::COMMENT);
-		// debugShared->ctext = "SHARED: ";
+		// debugShared->setText("SHARED: "); //CTXX
 
 		if (mout.isLevel(LOG_DEBUG)){
 			TreeSVG & debugAll = current["description"](svg::DESC);
 			debugAll->set("COUNT", count);
-			debugAll->ctext = "All";
+			debugAll->setText("All"); //CTXX
 		}
 
 		/*
@@ -790,8 +794,10 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 
 				mout.accept<LOG_DEBUG>('\t', e.first, ' ', path.str());
 
-				debugSharedBase->ctext += ' ';
-				debugSharedBase->ctext += e.first;
+				//debugSharedBase->set(e.first, 1);
+				// debugSharedBase->ctext += ' ';
+				// debugSharedBase->ctext += e.first;
+				debugSharedBase.addChild() = e.first;
 				// debugShared->set(key, value);
 
 				// Update/extend, "upwards".
@@ -991,7 +997,7 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 		}
 		else {
 			// text->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER);
-			// text->ctext = drain::StringBuilder<'|'>(elemClass, attr.first, attr.second);
+			// text->setText(drain::StringBuilder<'|'>(elemClass, attr.first, attr.second)); //CTXX
 		}
 
 		// Explicit (instead of style-derived) font size needed for bounding box (vertical height)
@@ -1008,16 +1014,17 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 		// mout.attention("handle: ", attr.first, " ", v, " + ", format);
 
 		if (format.empty()){
-			tspan->ctext += attr.second.toStr();
+			// tspan->ctext += attr.second.toStr();
+			tspan->setText(attr.second, "&#160;"); // non-b.sp
 		}
 		else {
 			//mout.attention("handle: ", attr.first, " ", v, " + ", format);
 			std::stringstream sstr;
 			formatter.formatVariable(key, attr.second, format, sstr);
-			tspan->ctext += sstr.str();
-			// tspan->ctext += "?";
+			//tspan->ctext += sstr.str();
+			tspan->setText(sstr.str(), "&#160;"); // non-b.sp
 		}
-		tspan->ctext += "&#160;"; //'_';
+		// tspan->ctext += "&#160;"; //'_';
 	}
 
 

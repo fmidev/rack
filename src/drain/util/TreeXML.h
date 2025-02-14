@@ -44,6 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "TreeUnordered.h"
 #include "XML.h"
+#include "UtilsXML.h"
 
 
 namespace drain {
@@ -52,7 +53,6 @@ namespace drain {
 /**
  *  \tparam T - index type; may be enum.
  */
-// template <class T=int>
 template <class T=int>
 class NodeXML : public XML {
 
@@ -60,32 +60,21 @@ public:
 
 	typedef T xml_tag_t;
 	typedef NodeXML<T> xml_node_t;
-	typedef drain::Path<std::string,'/'> path_t;
-	// typedef path_t::elem_t path_elem_t;
+	typedef drain::Path<std::string,'/'> path_t; // basically, also path_elem_t could be a template.
 	typedef UnorderedMultiTree<xml_node_t,false, path_t> xml_tree_t;
-	// typedef UnorderedMultiTree<xml_node_t,false, drain::Path<std::string,'/'> > xml_tree_t;
-	// typedef std::list<path_t> path_list_t; // could be?
 
 	inline
 	NodeXML(const intval_t & t = intval_t(0)){
 		setType(t);
-		//setId(++nextID);
 		drain::StringTools::import(++nextID, id);
 	};
 
 	// Note: use default constructor in derived classes.
 	inline
 	NodeXML(const NodeXML & node){
-		//drain::StringTools::import(++nextID, id);
-		// RISKY copyStruct(node, node, *this, map_t::RESERVE); // Needed? setType will handle? And this may corrupt (yet unconstructed) object?
-		// type = node.getType();
 		XML::xmlAssignNode(*this, node);
 		drain::StringTools::import(++nextID, id);
-		// setType(node.getType());
-		// setId(++nextID);
-		// drain::StringTools::import(++nextID, id);
 	}
-
 
 	inline
 	~NodeXML(){};
@@ -139,42 +128,30 @@ protected:
 public:
 
 	/*
-	template <elem_t E>
-	inline
-	bool typeIs() const {
-		return type == E;
-	};*/
-
 	inline
 	bool isUndefined() const {
 		return type == UNDEFINED;
-		// return typeIs((elem_t)UNDEFINED);
-		//return ((int)getType() == UNDEFINED);
 	}
 
-
-	// Consider raising these to XML
 	inline
 	bool isComment() const {
 		return type == COMMENT;
-		//return typeIs((elem_t)COMMENT);
 	}
 
 	inline
 	bool isCText() const {
 		return type == CTEXT;
-		// return typeIs((elem_t)CTEXT);
 	}
 
 	inline
 	bool isStyle() const {
 		return type == STYLE;
 	}
-
-// protected:
+	*/
 
 	// virtual
-	// TODO: strictly open/closed/flexible?
+	// TODO: will be developed to use content_mode (strictly open/closed/flexible)?
+	/*
 	bool isSelfClosing() const { // rename explicit closing
 
 		static
@@ -182,21 +159,29 @@ public:
 
 		return (l.find(this->getType()) == l.end()); // not in the set
 
-		//return false;
 	}
+	*/
+
+
+	/*
+	enum tag_display_mode {
+		FLEXIBLE_TAG = 0,  // <TAG>...</TAG> or <TAG/>
+		OPENING_TAG= 1,   // <TAG>
+		CLOSING_TAG = 2,   // </TAG>
+		EMPTY_TAG = OPENING_TAG | CLOSING_TAG,  // element has no descendants:  <hr/>
+		NON_EMPTY_TAG, // opening and closing tags must appear, even when empty: <script></script>
+	};
+	*/
+
+
 
 	/**
-	 *   This function should not be called upon construction.
+	 *   This function should not be called upon construction, as the dictionary does not exist.
 	 */
 	virtual
 	const std::string & getTag() const {
-		// std::cout << __FILE__ << ':' << __FUNCTION__ << "(const) dict: " << drain::TypeName<T>::str()  << std::endl; // << drain::EnumDict<T>::dict
-		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << sprinter(drain::EnumDict<T>::dict) << std::endl; // <<
-		//return drain::EnumDict<T>::dict.getKey((T)type, false); // throw error
+		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::EnumDict<T>::dict) << std::endl; // <<
 		return drain::EnumDict<T>::getDict().getKey((T)type, false);
- 		//static std::string dummyTag = "DUMMY";
-		//return dummyTag;
-
 	}
 
 	/**
@@ -204,17 +189,10 @@ public:
 	 */
 	static inline // needed?
 	const std::string & getTag(const T & type){
-		// std::cout << __FILE__ << ':' << __FUNCTION__ << " non-const dict: "  << drain::TypeName<T>::str() << std::endl; // << drain::EnumDict<T>::dict
-		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' '<< sprinter(drain::EnumDict<T>::dict) << std::endl; // <<
-		// return drain::EnumDict<T>::dict.getKey((T)type, false); // throw error
+		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::EnumDict<T>::dict) << std::endl; // <<
 		return drain::EnumDict<T>::getDict().getKey((T)type, false);
-		// static std::string dummyTag = "DUMMY";
-		// return dummyTag;
 	}
 
-
-
-	// NEW: --------------
 
 	inline
 	void set(const NodeXML & node){
@@ -319,11 +297,8 @@ public:
 			setStyle(key, value);
 		}
 		else if (key == "style"){
-			// Modify collection
-			// setStyle(value);
 			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.unimplemented("Setting style as attribute: \"style\"=", value);
-			//setStyle(key, value);
+			mout.obsolete("Setting style as attribute: \"style\"=", value);
 		}
 		else if (key == "class"){
 			// mout.warn<LOG_DEBUG>("class");
@@ -376,10 +351,10 @@ public:
 	}
 
 
-	/// Finds elements in an XML structure by class name.
-	/// Finds elements in an XML structure by class name. Redirects to findByClass(t, std::string(cls),
-
-	std::ostream & nodeToStream(std::ostream & ostr) const;
+	/// Dumps info. Future option: outputs leading and ending tag
+	// std::ostream & nodeToStream(std::ostream & ostr, tag_display_mode mode=EMPTY_TAG) const;
+	virtual
+	std::ostream & nodeToStream(std::ostream & ostr, tag_display_mode mode=EMPTY_TAG) const;
 
 
 
@@ -388,13 +363,10 @@ public:
 	std::ostream & docToStream(std::ostream & ostr, const V & tree){
 		V::node_data_t::xml_node_t::docTypeToStream(ostr);
 		V::node_data_t::xml_node_t::toStream(ostr, tree);
+		// UtilsXML::toStream(ostr, tree);
 		return ostr;
 	}
 
-	/// "Forward definition" of Tree::toOstream
-	template <class V>
-	static
-	std::ostream & toStream(std::ostream &ostr, const V & t, const std::string & defaultTag = "", int indent=0);
 
 	/// Write the XML definition beginning any XML document.
 	/**
@@ -447,7 +419,8 @@ protected:
 
 
 	/// NOTE: these could/should be templated, in TreeXML<...> right?
-	typedef std::map<std::string,std::string> xmldoc_attrib_map_t;
+	//typedef std::map<std::string,std::string> xmldoc_attrib_map_t;
+	typedef std::list<std::pair<std::string,std::string> > xmldoc_attrib_map_t;
 	static xmldoc_attrib_map_t xmldoc_attribs;
 
 
@@ -510,47 +483,102 @@ const typename drain::UnorderedMultiTree<N,EX,P>::key_t & drain::UnorderedMultiT
 
 
 
-/// Note: Not designed for XML output, this is more for debugging (in tree dumps),
-/**
- *
- */
 template <class N>
-std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr) const {
+std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mode) const {
 
-	//ostr << node.getTag() << '<' << (unsigned int)node.getType() << '>' << ' ';
-	ostr  << '<' << getTag() << '>' << ' ';
+	if (isComment()){
+		if (mode != CLOSING_TAG){
+			ostr << "<!-- " << getTag() << ' ' << ctext; // << " /-->\n";
+		}
+	}
+	else if (isCText()){
+		if (mode != CLOSING_TAG){ // or: OPENING
+			ostr << ctext; //  << '(' << mode << ')'; // << " /-->\n";
+		}
+		return ostr;
+	}
+	else {
 
-	// drain::Sprinter::toStream(ostr, node.getAttributes(), drain::Sprinter::jsonLayout);
-	// drain::Sprinter::toStream(ostr, node.getAttributes().getMap(), drain::Sprinter::jsonLayout);
-	//
-	if (!getAttributes().empty()){
-		drain::Sprinter::toStream(ostr, getAttributes().getMap(), drain::Sprinter::xmlAttributeLayout);
-		ostr << ' ';
-	}
-	if (!getClasses().empty()){
-		//ostr << '['; // has already braces []
-		//drain::Sprinter::toStream(ostr, node.classList, drain::Sprinter::pythonLayout);
-		drain::Sprinter::toStream(ostr, getClasses(), ClassListXML::layout);
-		//ostr << ']' << ' ';
-		ostr << ' ';
-	}
-	if (!getStyle().empty()){
-		ostr << '{';
-		drain::Sprinter::toStream(ostr, getStyle());
-		ostr << '}' << ' ';
-	}
-	if (!ctext.empty()){
-		ostr << "'";
-		if (ctext.length() > 20){
-			ostr << ctext.substr(0, 15) << "..";
+		if (mode==CLOSING_TAG){
+			ostr << "</";
 		}
 		else {
-			ostr << ctext;
+			ostr << '<';
 		}
-		ostr << "'";
+
+		if (getTag().empty()){
+			ostr << "defaultTag"; // << ' ';  FIX! getDefaultTag?
+		}
+		else {
+			ostr << getTag(); // << ' ';
+			// TODO check GDAL XML
+			// if (!defaultTag.empty())
+			// attribToStream(ostr, "name", defaultTag);
+		}
 	}
+
+	if (mode != CLOSING_TAG){
+
+		if (typeIs(STYLE)){
+			xmlAttribToStream(ostr, "data-mode", "experimental");
+		}
+		else { // if (!isCText())
+
+			specificAttributesToStream(ostr);
+
+			char sep=0;
+
+			// Iterate attributes - note: also for comment
+			for (const auto & key: getAttributes().getKeyList()){
+				std::string v = get(key, "");
+				// Skip empties (so Sprinter::toStream not applicable)
+				if (!v.empty()){
+					xmlAttribToStream(ostr, key, v);
+					sep=' ';
+				}
+			}
+
+			// Handle CSS style separately
+			if (!style.empty()){
+				if (sep)
+					ostr << sep;
+				ostr << "style=\"";
+				Sprinter::sequenceToStream(ostr, style, StyleXML::styleLineLayout);
+				ostr << '"'; // << ' ';
+			}
+
+			/*
+			if (!ctext.empty()){
+				ostr << "  "; // debugging
+			}
+			*/
+		}
+
+	}
+
+	// END TAG
+	if (isComment()){
+		ostr << " /-->\n";
+		// warn if has children? or comment them??
+	}
+	/*
+	else if (isCText()){
+		ostr << '\n'; // <-- needed?
+		// error if has children? or add subtree cleanup upon assignment
+	}
+	*/
+	else if (mode==EMPTY_TAG){ // OR no ctext!
+		// close TAG
+		ostr << "/>"; // \n <- check newline - add before indent?
+	}
+	else {
+		ostr << '>';
+	}
+
 	return ostr;
+
 }
+
 
 template <class N>
 inline
@@ -565,200 +593,6 @@ std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
  *   \param defaultTag - important for
  *
  */
-template <class T>
-template <class TR>
-std::ostream & NodeXML<T>::toStream(std::ostream & ostr, const TR & tree, const std::string & defaultTag, int indent){
-
-	// TODO: delegate to XML node start/end function, maybe xmlNodeToStream ?
-
-	const typename TR::container_t & children = tree.getChildren();
-
-	// Indent
-	//std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
-	std::string fill(2*indent, ' ');
-	ostr << fill;
-
-	// Start dag
-	if (tree->isComment()){
-		ostr << "<!-- " << tree->getTag() << ' ' << tree->ctext; // << " /-->\n";
-	}
-	else if (tree->isCText()){
-		ostr << tree->ctext; // << " /-->\n";
-	}
-	else if (tree->getTag().empty())
-		ostr << '<' << defaultTag; // << ' ';
-	else {
-		ostr << '<' << tree->getTag(); // << ' ';
-		// TODO check GDAL XML
-		//if (!defaultTag.empty())
-		//	attribToStream(ostr, "name", defaultTag);
-	}
-
-	if (tree->typeIs((intval_t)STYLE)){
-		//ostr << ' ';
-		xmlAttribToStream(ostr, "data-mode", "experimental");
-		// Sprinter::sequenceToStream(ostr, tree->style, StyleXML::styleRecordLayout);
-		// ostr << "\n /-->";
-	}
-	else if (!tree->isCText()){
-		//char sep=' ';
-		tree->specificAttributesToStream(ostr);
-		/*
-		if (!tree->classList.empty()){
-			ostr << " class=\"";
-			drain::Sprinter::toStream(ostr, tree->classList, ClassListXML::layout);
-			// std::copy(tree->classList.begin(), tree->classList.end(), std::ostream_iterator<std::string>(ostr, " "));
-			ostr << '"'; //ostr << "\"";
-		}
-		*/
-
-		// Iterate attributes - note: also for comment
-		// Checking empties, so Sprinter::toStream not applicable
-		//for (const typename T::node_data_t::key_t & key: tree.data.getKeyList()){
-		for (const typename TR::node_data_t::key_t & key: tree->getAttributes().getKeyList()){
-			if (!tree.data[key].empty()){
-				std::stringstream sstr;
-				sstr << tree.data[key];  // consider checking 0, not only empty string "".
-				if (!sstr.str().empty()){
-					xmlAttribToStream(ostr, key, sstr.str());
-				}
-			}
-			//ostr << ' ';
-		}
-
-		// TAG style
-		if (!tree->style.empty()){
-			ostr << " style=\"";
-			Sprinter::sequenceToStream(ostr, tree->style, StyleXML::styleLineLayout);
-			//Sprinter::mapToStream(ostr, tree->style, StyleXML::styleLineLayout);
-			ostr << '"'; // << ' ';
-		}
-
-
-	}
-	else {
-		if (!tree.data.empty()){
-			// ??
-		}
-	}
-
-	// END TAG
-	if (tree->isComment()){
-		ostr << " /-->\n";
-	}
-	else if (tree->isCText()){
-		ostr << '\n';
-	}
-	else if (tree.data.isSelfClosing() &&
-			(!tree->typeIs((intval_t)STYLE)) && (!tree->typeIs((intval_t)SCRIPT)) &&
-			(children.empty()) && tree->ctext.empty() ){ // OR no ctext!
-		// close TAG
-		ostr << "/>\n";
-		//ostr << '/' << '>';
-		//ostr << '\n';
-	}
-	else {
-		// close starting TAG ...
-		ostr << '>';
-
-		// ... and write contents
-
-		/*
-		if (!tree->style.empty()){
-			ostr << "<!-- STYLE? ";
-			drain::Sprinter::toStream(ostr, tree->style.getMap(), drain::Sprinter::xmlAttributeLayout);
-			ostr << "/-->\n";
-		}
-		*/
-
-		if (tree->isStyle()){
-			// https://www.w3.org/TR/xml/#sec-cdata-sect
-			// ostr << "<![CDATA[ \n";
-
-			if (!tree->ctext.empty()){
-				// TODO: indent
-				ostr << fill << tree->ctext << " /* CTEXT? */" << '\n';
-			}
-
-			if (!tree->getAttributes().empty()){
-				drain::Logger mout(__FILE__,__FUNCTION__);
-				mout.warn("STYLE elem ", tree->getId()," contains attributes, probably meant as style: ", sprinter(tree->getAttributes()));
-				ostr << "\n\t /* <!-- DISCARDED attribs ";
-				Sprinter::toStream(ostr, tree->getAttributes()); //, StyleXML::styleRecordLayout
-				ostr << " /--> */" << '\n';
-			}
-
-			if (!tree->style.empty()){
-				ostr << fill << "/** style obj **/" << '\n';
-				for (const auto & attr: tree->style){
-					ostr << fill << "  ";
-					Sprinter::pairToStream(ostr, attr, StyleXML::styleRecordLayout); // {" :;"}
-					//attr.first << ':' attr.first << ':';
-					ostr << '\n';
-				}
-				// ostr << fill << "}\n";
-				// Sprinter::sequenceToStream(ostr, entry.second->getAttributes(), StyleXML::styleRecordLayoutActual);
-				// ostr << '\n';
-			}
-
-			ostr << '\n';
-			// ostr << fill << "<!-- elems /-->" << '\n';
-			ostr << fill << "/* elems */" << '\n';
-			for (const auto & entry: tree.getChildren()){
-				if (!entry.second->ctext.empty()){
-					//ostr << fill << "<!-- elem("<< entry.first << ") ctext /-->" << '\n';
-					ostr << fill << "  " << entry.first << " {" << entry.second->ctext << "} /* CTEXT */ \n";
-				}
-				if (!entry.second->getAttributes().empty()){
-					//ostr << fill << "<!-- elem("<< entry.first << ") attribs /-->" << '\n';
-					ostr << fill << "  " << entry.first << " {\n";
-					for (const auto & attr: entry.second->getAttributes()){
-						ostr << fill  << "    ";
-						ostr << attr.first << ':' << attr.second << ';';
-						//Sprinter::pairToStream(ostr, attr, StyleXML::styleLineLayout); // {" :;"}
-						// Sprinter::pairToStream(ostr, attr, StyleXML::styleRecordLayout); // {" :;"}
-						// attr.first << ':' attr.first << ':';
-						ostr << '\n';
-					}
-					ostr << fill << "  }\n";
-					//Sprinter::sequenceToStream(ostr, entry.second->getAttributes(), StyleXML::styleRecordLayoutActual);
-					ostr << '\n';
-				}
-				// Sprinter::sequenceToStream(ostr, entry.second->style, StyleXML::styleRecordLayout);
-			}
-			ostr << "\n"; // end CTEXT
-			//ostr << " ]]>\n"; // end CTEXT
-			// end STYLE defs
-		}
-		else {
-
-			if (tree->ctext.empty())
-				ostr << '\n'; // TODO nextline
-			else
-				ostr << tree->ctext;
-
-			/// iterate children - note the use of default tag
-			for (const auto & entry: children){
-				toStream(ostr, entry.second, entry.first, indent+1); // no ++
-				//ostr << *it;
-			}
-			// add end </TAG>
-
-		}
-
-		if (tree->typeIs((intval_t)STYLE) || !children.empty()){
-			ostr << fill;
-			//std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
-		}
-
-		ostr << '<' << '/' << tree->getTag() << '>';
-		ostr << '\n';  // TODO nextline
-
-		//if (tree.data.id >= 0)
-		//	ostr << "<!-- " << tree.data.id << " /-->\n";
-	}
-	return ostr;
-}
 
 template <>
 const drain::EnumDict<int,XML>::dict_t drain::EnumDict<int,XML>::dict;
@@ -772,62 +606,6 @@ std::ostream & operator<<(std::ostream &ostr, const UnorderedMultiTree<NodeXML<E
 	return ostr;
 }
 
-
-// CSS element selector.
-class SelectorXML : public std::string {
-
-public:
-
-	static
-	const char CLASS = '.';
-
-	static
-	const char ID = '#';
-
-
-	inline
-	SelectorXML(const std::string &s) : std::string(s){
-	}
-
-	inline
-	SelectorXML(const char *s) : std::string(s){
-	}
-
-	template <class ...T>
-	inline
-	SelectorXML(T... args) : std::string(StringBuilder<>(args...)){
-	}
-
-};
-
-// CSS class selector.
-/**
- *
- */
-class SelectorXMLcls : public SelectorXML {
-public:
-
-	template <class C>
-	inline
-	SelectorXMLcls(const C &cls) : SelectorXML(CLASS, cls){
-	}
-
-	template <class E, class C>
-	inline
-	SelectorXMLcls(const E &elem, const C &cls) : SelectorXML(elem, CLASS, cls){
-	}
-
-};
-
-class SelectorXMLid : public SelectorXML {
-public:
-
-	template <class T>
-	inline
-	SelectorXMLid(const T & arg) : SelectorXML(ID, arg){
-	}
-
-};
 
 
 /*

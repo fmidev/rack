@@ -41,6 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/EnumFlags.h"
 #include "drain/util/FileInfo.h"
 #include "drain/util/Frame.h"
+#include "drain/util/SelectorXML.h"
 #include "drain/util/TreeXML.h"
 #include "AlignSVG.h"
 
@@ -237,13 +238,6 @@ public:
 	inline
 	NodeSVG & operator=(const NodeSVG & node){
 		XML::xmlAssignNode(*this, node);
-		/*
-		if (&node != this){
-			XML::xmlAssignNode(*this, node);
-			setType(n.getType()); // 2025
-			drain::SmartMapTools::setValues<map_t>((map_t &)*this, n);
-		}
-		*/
 		return *this;
 	}
 
@@ -473,10 +467,15 @@ image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<K,V> 
 }
 */
 
-/*
+
 template <> // referring to Tree<NodeSVG>
-image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const char *> > l);
-*/
+template <> // referring to tparam T
+inline
+image::TreeSVG & image::TreeSVG::operator=(const std::string & arg){
+	XML::xmlAssignString(*this, arg);
+	return *this;
+}
+
 
 template <> // referring to Tree<NodeSVG>
 inline
@@ -504,11 +503,27 @@ image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type){
 		return XML::xmlSetType(*this, type);
 }
 
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type);
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const ;
+
+
 template <>
 inline
 image::TreeSVG & image::TreeSVG::addChild(const image::TreeSVG::key_t & key){
 	return XML::xmlAddChild(*this, key);
 }
+
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const;
+
 
 /*
 template <>
@@ -533,19 +548,6 @@ const image::TreeSVG::key_t & image::TreeSVG::getKey(const drain::StyleSelectorX
 }
 
 */
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const;
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type);
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const ;
 
 } // drain::
 

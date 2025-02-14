@@ -71,7 +71,6 @@ const NodeXML<BaseHTML::tag_t>::xml_default_elem_map_t NodeXML<BaseHTML::tag_t>:
 
 template <>
 const drain::EnumDict<BaseHTML::tag_t>::dict_t & drain::EnumDict<BaseHTML::tag_t>::getDict(){
-
 	/*
 	static drain::EnumDict<BaseHTML::tag_t>::dict_t dict;
 
@@ -80,7 +79,6 @@ const drain::EnumDict<BaseHTML::tag_t>::dict_t & drain::EnumDict<BaseHTML::tag_t
 		dict.add("undefined", drain::BaseHTML::UNDEFINED);
 	}
 	*/
-
 	return dict;
 }
 
@@ -121,46 +119,21 @@ const drain::EnumDict<BaseHTML::tag_t>::dict_t drain::EnumDict<BaseHTML::tag_t>:
 		{"ul", drain::BaseHTML::UL},
 };
 
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+TreeHTML & TreeHTML::operator[](const BaseHTML::tag_t & type){
+	return (*this)[EnumDict<BaseHTML::tag_t>::dict.getKey(type, false)];
+}
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const TreeHTML & TreeHTML::operator[](const BaseHTML::tag_t & type) const {
+	return (*this)[EnumDict<BaseHTML::tag_t>::dict.getKey(type, false)];
+}
 
 
 // TODO: macro with lowerCaser
 // TODO: mark some non-self-closing like <script/>
-/*
-template <>
-std::map<NodeHTML::tag_t,std::string> NodeHTML::xml_node_t::tags = {
-	{drain::BaseHTML::UNDEFINED,	"undefined"},
-	{drain::BaseHTML::COMMENT,	"#comment"},
-	{drain::BaseHTML::CTEXT,	"#ctext"},
-	{drain::BaseHTML::STYLE,	"style"},
-	{drain::BaseHTML::SCRIPT,	"script"},
-	{drain::BaseHTML::HTML,	    "html"},
-	{drain::BaseHTML::HEAD,	    "head"},
-	{drain::BaseHTML::BODY,	    "body"},
-	{drain::BaseHTML::A,	    "a"},
-	{drain::BaseHTML::BASE,	    "base"},
-	{drain::BaseHTML::BR,	    "br"},
-	{drain::BaseHTML::CAPTION,	"caption"},
-	{drain::BaseHTML::DIV,	    "div"},
-	{drain::BaseHTML::H1,	    "h1"},
-	{drain::BaseHTML::H2,	    "h2"},
-	{drain::BaseHTML::H3,	    "h3"},
-	{drain::BaseHTML::HR,	    "hr"},
-	{drain::BaseHTML::IMG,	    "img"},
-	{drain::BaseHTML::LI,  		"li"},
-	{drain::BaseHTML::LINK,  	"link"},
-	{drain::BaseHTML::META,  	"meta"},
-	{drain::BaseHTML::OL,  		"ol"},
-	{drain::BaseHTML::P,	    "p"},
-	{drain::BaseHTML::SPAN,	    "span"},
-	{drain::BaseHTML::TABLE,	"table"},
-	{drain::BaseHTML::TITLE,  	"title"},
-	{drain::BaseHTML::TR,  		"tr"},
-	{drain::BaseHTML::TH,  		"th"},
-	{drain::BaseHTML::TD,		"td"},
-	{drain::BaseHTML::UL,  		"ul"},
-
-};
-*/
 
 NodeHTML::NodeHTML(const tag_t & t) : xml_node_t() {
 	// this->type = BaseHTML::UNDEFINED;
@@ -170,61 +143,49 @@ NodeHTML::NodeHTML(const tag_t & t) : xml_node_t() {
 NodeHTML::NodeHTML(const NodeHTML & node) : xml_node_t() { // NOTE: super class default constr -> does not call copyStruct
 	copyStruct(node, node, *this, ReferenceMap2::extLinkPolicy::LINK);
 	setType(node.getType());
-	/*
-	copyStruct(node, node, *this, xml_node_t::RESERVE); // This may corrupt (yet unconstructed) object?
-	this->type = BaseHTML::UNDEFINED;
-	setType(node.getType());
-	*/
+	ctext = node.ctext;
 }
 
 void NodeHTML::handleType(const tag_t &t){
 
-	// link("id", id);
-
-	//case NodeXML<>::CTEXT:
-	//case NodeXML<>::UNDEFINED:
-	//xml_node_t::setType(t);
-	// type = t;
-
 	switch (t) {
-
-
+	/*
 	case HTML:
 	case HEAD:
 	case TITLE:
 		return;
 	case BODY:
 		break;
+	case P:
+		break;
+	case TABLE:
+		break;
+	case TR:
+		break;
+	case TD:
+		break; */
 	case A:
 		link("href", url = "");
-		break;
-	case P:
+		//link("href", ctext = "");
 		break;
 	case IMG:
 		link("src", url = "");
-		//link("style", style, "");
-		break;
-	case TABLE:
-		//link("style", style, "");
-		break;
-	case TR:
-		//link("style", style, "");
-		break;
-	case TD:
+		// link("src", ctext = "");
 		break;
 	default:
 		return;
 	}
 
-	// link("style", style = "");
 }
 
-template <>
-bool NodeXML<BaseHTML::tag_t>::isSelfClosing() const {	/// Set of NOT self.closing tags.
+// template <>
+//bool NodeXML<BaseHTML::tag_t>::isSingular() const {	/// Set of NOT self.closing tags.
+bool NodeHTML::isSingular() const {
 
 	/// Inclusive solution...
 	static
 	const std::set<BaseHTML::tag_t> l = {BaseHTML::BR, BaseHTML::HR};
+	//return (l.find((BaseHTML::tag_t)this->getType()) != l.end()); // = found in the set
 	return (l.find((BaseHTML::tag_t)this->getType()) != l.end()); // = found in the set
 
 	/*
@@ -263,18 +224,18 @@ TreeHTML & TreeUtilsHTML::initHtml(drain::TreeHTML & html, const std::string & h
 
 	html(drain::NodeHTML::HTML);
 
-	drain::TreeHTML & head  = html["head"](drain::NodeHTML::HEAD);
+	drain::TreeHTML & head  = html[drain::NodeHTML::HEAD](drain::NodeHTML::HEAD);
 
 	drain::TreeHTML & encoding = head["encoding"](drain::BaseHTML::META);
 	encoding->set("charset", "utf-8");
 
 	// drain::TreeHTML & style =
-	head["style"](drain::BaseHTML::STYLE);
+	head[drain::BaseHTML::STYLE](drain::BaseHTML::STYLE);
 
-	drain::TreeHTML & title = head["title"](drain::BaseHTML::TITLE);
+	drain::TreeHTML & title = head[drain::BaseHTML::TITLE](drain::BaseHTML::TITLE);
 	title = heading;
 
-	drain::TreeHTML & body = html["body"](drain::BaseHTML::BODY);
+	drain::TreeHTML & body = html[drain::BaseHTML::BODY](drain::BaseHTML::BODY);
 
 	if (!heading.empty()){
 		drain::TreeHTML & h1 = body["title"](drain::BaseHTML::H1);
@@ -284,18 +245,21 @@ TreeHTML & TreeUtilsHTML::initHtml(drain::TreeHTML & html, const std::string & h
 	return body;
 }
 
+/*
 drain::TreeHTML & TreeUtilsHTML::addChild(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const std::string & key){
 	if (!key.empty()){
 		return elem[key](tagType);
 	}
 	else {
-		std::stringstream k("elem");
+		std::stringstream k;
+		k << "elem";
 		k.width(3);
 		k.fill('0');
 		k << elem.getChildren().size();
 		return elem[k.str()](tagType);
 	}
 }
+*/
 
 
 /*

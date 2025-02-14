@@ -410,7 +410,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 		double w = weight;
 
-		mout.attention("CART MAIN #" + ctx.getName());
+		mout.attention<LOG_DEBUG>("CART MAIN #" + ctx.getName());
 
 		if (current.is(ODIMPathElem::QUALITY)){ // rare
 			mout.info("plain quality data, ok (no further quality data)");  // TODO: fix if quality/quality (BirdOp)
@@ -614,7 +614,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
     node->setType(NodeSVG::RECT);
     node->set("width",  cartSrc.odim.area.width);
     node->set("height", cartSrc.odim.area.height);
-    node["title"]->ctext = odim.NOD;
+    node["title"]->setText(odim.NOD); //CTXX
 	*/
 
 }

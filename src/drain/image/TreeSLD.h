@@ -109,13 +109,6 @@ namespace image {
 class NodeSLD: public NodeXML<SLD::tag_t> {
 public:
 
-	/// In opening SVG tag, referred to by attribute "xmlns:xlink"
-	static
-	std::string xlink;
-
-	/// In opening SVG tag, referred to by attributes "xmlns" and "xmlns:svg"
-	static
-	std::string svg;
 
 	static
 	const drain::FileInfo fileInfo;
@@ -134,13 +127,6 @@ public:
 	inline
 	NodeSLD & operator=(const NodeSLD & node){
 		XML::xmlAssignNode(*this, node);
-		/*
-		if (&node != this){
-			XML::xmlAssignNode(*this, node);
-			setType(n.getType()); // 2025
-			drain::SmartMapTools::setValues<map_t>((map_t &)*this, n);
-		}
-		*/
 		return *this;
 	}
 
@@ -155,7 +141,6 @@ public:
 	inline
 	NodeSLD & operator=(const T & arg){
 		set(arg);
-		//assign(arg);
 		return *this;
 	}
 
@@ -251,19 +236,48 @@ template <> // referring to Tree<NodeSLD>
 inline
 image::TreeSLD & image::TreeSLD::operator=(std::initializer_list<std::pair<const char *,const Variable> > l){
 //image::TreeSLD & image::TreeSLD::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
-	return XML::xmlAssign(*this, l);
+	XML::xmlAssign(*this, l);
+	return *this;
 }
 
 
 template <>
 template <class T>
+inline
 image::TreeSLD & image::TreeSLD::operator=(const T & arg){
-	return XML::xmlAssign(*this, arg);
-	/*
-	data.set(arg); // what about TreeSLD & arg
+	XML::xmlAssign(*this, arg);
 	return *this;
-	*/
 }
+
+template <>
+template <>
+inline
+image::TreeSLD & image::TreeSLD::operator=(const std::string & arg){
+	XML::xmlAssignString(*this, arg);
+	return *this;
+}
+
+/*
+template <>
+template <>
+inline
+image::TreeSLD & image::TreeSLD::operator=(const char * arg){
+	XML::xmlAssignString(*this, arg);
+	return *this;
+}
+*/
+
+
+/*
+template <>
+template <>
+image::TreeSLD & image::TreeSLD::operator=(const char *arg){
+	return XML::xmlAssignString(*this, arg);
+}
+*/
+
+
+
 
 // Important! Useful and widely used – but  fails with older C++ compilers ?
 template <>

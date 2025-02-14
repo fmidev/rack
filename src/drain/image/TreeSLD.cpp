@@ -81,13 +81,13 @@ template <>
 NodeSLD::xmldoc_attrib_map_t NodeSLD::xml_node_t::xmldoc_attribs = {
 		{"version",  "1.0"},
 		{"encoding", "UTF-8"},
-		{"standalone", "no"},
+		// {"standalone", "no"},
 		// {"data-remark", "SLD"} debugging? inkview claims
 };
 
 const drain::FileInfo NodeSLD::fileInfo("sld");
 
-std::string NodeSLD::xlink("http://www.w3.org/1999/xlink");
+// std::string NodeSLD::xlink("http://www.w3.org/1999/xlink");
 // std::string NodeSLD::sld("http://www.w3.org/2000/SLD");
 
 
@@ -112,38 +112,30 @@ void NodeSLD::handleType(const SLD::tag_t & t) { // setType(const elem_t & t) {
 
 	// drain::Logger mout(drain::TypeName<NodeSLD>::str().c_str(), __FUNCTION__);
 	// mout.attention(__FUNCTION__, ": current type=", type, " arg=", t);
-	/*
-	YES: how to handle unchanged type properly? And reset bbox upon type change?
-	if (type == t){
-		return; // lazy
-	}
-	*/
-	// type = t;
 
 	switch (t) {
 	case image::SLD::UNDEFINED:
-		// case UNDEFINED:
 		break;
 	case image::SLD::COMMENT:
-		// setComment();
 		break;
 	case image::SLD::CTEXT:
-		//case XML::CTEXT:
-		// setText();
-		// tag = "";
+		break;
+	case SLD::StyledLayerDescriptor:
+		set({
+			{"version", "1.0.0"},
+			{"xmlns", "http://www.opengis.net/sld"},
+			{"xmlns:ogc", "http://www.opengis.net/ogc"},
+			{"xmlns:xlink", "http://www.w3.org/1999/xlink"},
+			{"xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance"},
+			{"xsi:schemaLocation", "http://www.opengis.net/sld  http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd"},
+		});
 		break;
 	case SLD::ColorMapEntry:
-		link("color", url); // rename
+		// link("color", ctext); // rename
+		break;
 	default:
 		return;
 	}
-
-	// link("pos", box.getLocation().tuple());
-	// link("frm", box.getFrame().tuple());
-	// DEPRECATING: see separate STYLE and CLASS?
-	// link("style", style = "");
-	// link("fill", fill = "");
-	// link("opacity", opacity = ""); // string, so silent if empty
 
 
 }

@@ -859,7 +859,7 @@ public:
 				if (!format.empty()){
 					std::stringstream sstr;
 					formatter.formatVariable(key, value, format, sstr);
-					tval->ctext = sstr.str();
+					tval->setText(sstr.str()); //CTXX
 				}
 				else {
 					tval->setText(value);
@@ -1172,7 +1172,7 @@ void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, dra
 
 	drain::image::TreeSVG & title = imageElem["title"];
 	title->setType(svg::TITLE);
-	title->ctext = label + " (experimental) ";
+	title->setText(label + " (experimental) "); //CTXX
 
 	//title->setType(NodeSVG:);
 	drain::image::TreeSVG & comment = imageElem["comment"];

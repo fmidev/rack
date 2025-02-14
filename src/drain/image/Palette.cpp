@@ -235,6 +235,73 @@ void Palette::update() const {
 }
 
 
+void Palette::refine(size_t n){
+
+	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+	if (n==0)
+		n = refinement;
+
+	if (n==0){
+		mout.unimplemented("zero refinement; no defaults (like 256) defined") << mout.endl;
+		return;
+	}
+
+
+	//Palette::iterator it = begin();
+	if (this->empty()){
+		mout.warn("empty palette" );
+		return;
+	}
+
+	//Palette::iterator it0 = it;
+	//++it;
+	//if (it == end()){
+	if (this->size() == 1){
+		mout.warn("single-entry palette, skipping" );
+		return;
+	}
+
+	if (n < size()){
+		mout.warn("request ", n, " colours but has already", size(), ", returning");
+		return;
+	}
+
+	/// Number of colors.
+	const size_t colors = begin()->second.color.size();
+
+	/// New number of entries between two current entries.
+	const size_t steps = n / (size()-1);
+	const double e = 1.0 / static_cast<double>(steps);
+	double coeff;
+
+	double fNew;
+	std::vector<double> debugIntervals(steps);
+
+	const ImageCodeMap<PaletteEntry>::cont_t::value_type *lastEntry = nullptr;
+	for (const auto & entry: *this){
+
+		if (lastEntry != nullptr){
+			for (size_t i = 1; i < steps; ++i) {
+				coeff = e * static_cast<float>(i);
+				fNew = 0.01 * round(100.0*(lastEntry->first + coeff*(entry.first-lastEntry->first)));
+				debugIntervals[i] = fNew;
+				PaletteEntry & pNew = (*this)[fNew]; // 0.01f * round(100.0*(lastEntry->first + c*(entry.first-lastEntry->first)))];
+				// pNew.color.resize(s);
+				for (size_t k=0; k<colors; ++k) {
+					pNew.color[k] = (1.0-coeff)*lastEntry->second.color[k] + coeff*entry.second.color[k] ;
+				}
+			}
+			mout.warn("current: [", lastEntry->first, ',',  entry.first, "[: ", drain::sprinter(debugIntervals));
+		}
+		lastEntry = & entry;
+
+	}
+	mout.warn("refined palette contains ", size(), " entries (colours)");
+
+}
+
+
 void Palette::load(const std::string & filename, bool flexible){
 
 	//Logger mout(getImgLog(), __FILE__, __FUNCTION__);
@@ -637,6 +704,8 @@ void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 	}
 }
 
+
+
 /*
 void Palette::updateDictionary(){
 
@@ -675,10 +744,7 @@ void Palette::write(const std::string & filename) const {
 		mout.debug("exporting SLD legend");
 		TreeSLD sld; // (SLD::StyledLayerDescriptor);
 		exportSLD(sld);
-		// ofstr << svg;
-		mout.attention("output");
-		NodeSLD::toStream(ofstr, sld);
-		mout.attention("output2");
+		NodeSLD::docToStream(ofstr, sld);
 	}
 	else if (drain::JSON::fileInfo.checkExtension(filepath.extension)){ // .json
 		mout.debug("exporting JSON palette");
@@ -1045,72 +1111,6 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 
 
 
-void Palette::refine(size_t n){
-
-	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-
-	if (n==0)
-		n = refinement;
-
-	if (n==0){
-		mout.unimplemented("zero refinement; no defaults (like 256) defined") << mout.endl;
-		return;
-	}
-
-
-	//Palette::iterator it = begin();
-	if (this->empty()){
-		mout.warn("empty palette" );
-		return;
-	}
-
-	//Palette::iterator it0 = it;
-	//++it;
-	//if (it == end()){
-	if (this->size() == 1){
-		mout.warn("single-entry palette, skipping" );
-		return;
-	}
-
-	if (n < size()){
-		mout.warn("request ", n, " colours but has already", size(), ", returning");
-		return;
-	}
-
-	/// Number of colors.
-	const size_t colors = begin()->second.color.size();
-
-	/// New number of entries between two current entries.
-	const size_t steps = n / (size()-1);
-	const double e = 1.0 / static_cast<double>(steps);
-	double coeff;
-
-	double fNew;
-	std::vector<double> debugIntervals(steps);
-
-	const ImageCodeMap<PaletteEntry>::cont_t::value_type *lastEntry = nullptr;
-	for (const auto & entry: *this){
-
-		if (lastEntry != nullptr){
-			for (size_t i = 1; i < steps; ++i) {
-				coeff = e * static_cast<float>(i);
-				fNew = 0.01 * round(100.0*(lastEntry->first + coeff*(entry.first-lastEntry->first)));
-				debugIntervals[i] = fNew;
-				PaletteEntry & pNew = (*this)[fNew]; // 0.01f * round(100.0*(lastEntry->first + c*(entry.first-lastEntry->first)))];
-				// pNew.color.resize(s);
-				for (size_t k=0; k<colors; ++k) {
-					pNew.color[k] = (1.0-coeff)*lastEntry->second.color[k] + coeff*entry.second.color[k] ;
-				}
-			}
-			mout.warn("current: [", lastEntry->first, ',',  entry.first, "[: ", drain::sprinter(debugIntervals));
-		}
-		lastEntry = & entry;
-
-	}
-	mout.warn("refined palette contains ", size(), " entries (colours)");
-
-}
-
 void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 
 	const int headerHeight = 30;
@@ -1176,15 +1176,14 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 			TreeSVG & child = svg[name.str()](svg::GROUP);
 			//child->setType(svg::GROUP);
 
-			TreeSVG & t = child["title"](svg::TITLE) = name.str();
-			// t->setType(svg::TITLE);
-			// t->ctext = name.str(); // + threshold.str();
+			TreeSVG & t = child[svg::TITLE](svg::TITLE);
+			t = name.str();
+			// t->setText(name.str()); //CTXX // + threshold.str();
 
 			//y = up ? height - (index+1) * lineheight : index * lineheight;
 			y = headerHeight + index*lineheight;
 
-			TreeSVG & rect = child["r"](svg::RECT);
-			// rect->setType(svg::RECT);
+			TreeSVG & rect = child[svg::RECT](svg::RECT);
 			rect->set("x", 0);
 			rect->set("y", y);
 			rect->set("width", lineheight*1.7);
@@ -1217,19 +1216,23 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 					threshold << it->first;
 				else
 					threshold << std::setprecision(precision) << it->first;
-				t->ctext += threshold.str();
-				TreeSVG & thr = child["th"](svg::TEXT) = threshold.str();
+				// t->ctext += threshold.str();
+				t.addChild() = threshold.str()+'|';
+				// t->setText(threshold.str());
+				TreeSVG & thr = child["th"](svg::TEXT);
+				thr = threshold.str();
 				thr->set("text-anchor", "end");
 				thr->set("x", lineheight*1.5);
 				thr->set("y", y + lineheight-1);
 			}
 
 			if (!entry.label.empty()){
+				t.addChild() = entry.label;
+				// t->ctext += ' ';
+				// t->ctext += entry.label;
 
-				t->ctext += ' ';
-				t->ctext += entry.label;
-
-				TreeSVG & text = child["t"](svg::TEXT) = entry.label;
+				TreeSVG & text = child["t"](svg::TEXT);
+				text = entry.label;
 				text->set("x", 2*lineheight);
 				text->set("y", y + lineheight-1);
 			}
@@ -1263,7 +1266,7 @@ void Palette::exportSLD(TreeSLD & sld) const {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	mout.attention("startar");
+	//mout.attention("startar");
 
 	sld->setType(SLD::StyledLayerDescriptor);
 
@@ -1271,9 +1274,6 @@ void Palette::exportSLD(TreeSLD & sld) const {
 	TreeSLD & namedLayer = sld[SLD::NamedLayer](SLD::NamedLayer);
 
 	TreeSLD & mainName = namedLayer[SLD::Name](SLD::Name);
-
-	mout.attention("mainName");
-
 	mainName = title;
 
 	TreeSLD & userStyle = namedLayer[SLD::UserStyle](SLD::UserStyle);
@@ -1285,18 +1285,17 @@ void Palette::exportSLD(TreeSLD & sld) const {
 	title = this->title;
 
 	TreeSLD & abstract = userStyle[SLD::Abstract](SLD::Abstract);
+	//abstract.addChild()(SLD::CTEXT) = this->title;
 	abstract = this->title;
+	//abstract = this->title;
 
 	//int height = (1.5 + size() + specialCodes.size()) * lineheight;
 	TreeSLD & featureTypeStyle = userStyle[SLD::FeatureTypeStyle](SLD::FeatureTypeStyle);
-
-
 	TreeSLD & rule = featureTypeStyle[SLD::Rule](SLD::Rule);
-
 	TreeSLD & rasterSymbolizer = rule[SLD::RasterSymbolizer](SLD::RasterSymbolizer);
 
 	TreeSLD & opacity = rasterSymbolizer[SLD::Opacity](SLD::Opacity);
-	opacity = "1.0";
+	opacity = "1.0"; // std::string("1.0");
 
 	// int y;
 	std::stringstream key;
@@ -1329,46 +1328,22 @@ void Palette::exportSLD(TreeSLD & sld) const {
 
 		const PaletteEntry & entry = special ? itSpecial->second : it->second;
 
-		mout.attention("entry: ", entry);
+		// mout.attention("entry: ", entry);
 
 		if (!entry.hidden){
 
-			std::string s;
-			entry.getHexColor(s);
-			TreeSLD & colorMapEntry = colorMap[s](SLD::ColorMapEntry);
+			//std::string s;
+			//entry.getHexColor(s);
+			TreeSLD & colorMapEntry = colorMap.addChild()(SLD::ColorMapEntry);
 
-			// colorMapEntry->set("color","");
+			std::stringstream sstr;
+			entry.getHexColor(sstr);
+			colorMapEntry->set("color", sstr.str());
+			// colorMapEntry->set("color", s);
+			// entry.getHexColor(colorMapEntry->ctext);
 			// entry.getHexColor(colorMapEntry->url);
 			colorMapEntry->set("label", entry.label);
-
 			colorMapEntry->set("opacity", 1.0);
-			mout.attention("  HEX: ", s);
-
-			/*
-			key.str("");
-			key << "color";
-			key.fill('0');
-			key.width(2);
-			key << index;
-
-			TreeSLD & child = sld[name.str()](SLD::GROUP);
-			//child->setType(SLD::GROUP);
-
-			TreeSLD & t = child["title"](SLD::TITLE) = name.str();
-			// t->setType(SLD::TITLE);
-			// t->ctext = name.str(); // + threshold.str();
-
-			//y = up ? height - (index+1) * lineheight : index * lineheight;
-			y = headerHeight + index*lineheight;
-
-			TreeSLD & rect = child["r"](SLD::RECT);
-			// rect->setType(SLD::RECT);
-			rect->set("x", 0);
-			rect->set("y", y);
-			rect->set("width", lineheight*1.7);
-			rect->set("height", lineheight);
-			//child["r"]->set("style", "fill:green");
-			*/
 
 
 			style.str("");
@@ -1386,8 +1361,6 @@ void Palette::exportSLD(TreeSLD & sld) const {
 				// style << "fill:rgb(" << color[0] << ',' << color[0] << ',' << color[0] << ");";
 				break;
 			}
-			//rect->set("style", style.str());
-			// rect->setStyle(style.str());
 
 			if (!special){
 				threshold.str(" ");
@@ -1399,26 +1372,7 @@ void Palette::exportSLD(TreeSLD & sld) const {
 
 				colorMapEntry->set("quantity", threshold.str());
 
-				/*
-				t->ctext += threshold.str();
-				TreeSLD & thr = child["th"](SLD::TEXT) = threshold.str();
-				thr->set("text-anchor", "end");
-				thr->set("x", lineheight*1.5);
-				thr->set("y", y + lineheight-1);
-				*/
 			}
-
-			if (!entry.label.empty()){
-				/*
-				t->ctext += ' ';
-				t->ctext += entry.label;
-
-				TreeSLD & text = child["t"](SLD::TEXT) = entry.label;
-				text->set("x", 2*lineheight);
-				text->set("y", y + lineheight-1);
-				*/
-			}
-
 
 		}
 
@@ -1426,19 +1380,10 @@ void Palette::exportSLD(TreeSLD & sld) const {
 			++itSpecial;
 		else
 			++it;
-		//ostr << '\n';
 	}
 
-	mout.attention("main map END");
-	//ostr << std::setprecision(default_precision);
+	drain::TreeUtils::dump(sld, std::cout);
 
-	/*
-	const int height = headerHeight + index*lineheight;
-	background->set("width", width);
-	background->set("height", height);
-	svg->set("width", width);
-	svg->set("height", height);
-	*/
 
 }
 

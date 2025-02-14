@@ -132,7 +132,11 @@ public:
 	bool findByClass(const T & t, const C & cls, path_list_t & result, const path_t & path = path_t());
 
 
-
+	/*
+	template <class TR>
+	static
+	std::ostream & toStream(std::ostream & ostr, const TR & tree, const std::string & defaultTag="unnamed", int indent=0);
+	*/
 
 };
 
@@ -245,6 +249,161 @@ bool UtilsXML::findByClass(const T & t, const C & cls, std::list<typename T::pat
 
 	return !result.empty();
 }
+
+/*
+template <class TR>
+std::ostream & UtilsXML::toStream(std::ostream & ostr, const TR & tree, const std::string & defaultTag, int indent){
+
+	// TODO: delegate to XML node start/end function, maybe xmlNodeToStream ?
+
+	const typename TR::container_t & children = tree.getChildren();
+
+	// const XML & data = tree.data; // template type forcing
+	const typename TR::node_data_t & data = tree.data;
+
+	tag_display_mode mode = EMPTY_TAG;
+
+	if (data.isCText()){ // this can be true only at root, and rarely so...?
+		data.nodeToStream(ostr, mode);
+		ostr << "<!--TX-->";
+		return ostr;
+	}
+
+	if (!tree->ctext.empty()){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.warn("Non-CTEXT-elem with ctext: <", tree->getTag(), " id='", tree->getId(), "' ...>, text='", tree->ctext, "'");
+	}
+
+	if (!children.empty()){
+		mode = OPENING_TAG;
+	}
+
+	if (tree->isExplicit()){ // explicit
+		mode = OPENING_TAG;
+	}
+
+	if (tree->isSingular()){ // <br/> <hr/>
+		mode = EMPTY_TAG;
+	}
+
+
+	// Indent
+	//std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
+	std::string fill(2*indent, ' ');
+	ostr << fill;
+	tree->nodeToStream(ostr, mode);
+
+	if (mode == EMPTY_TAG){
+		ostr << "<!--ET-->";
+		ostr << '\n';
+		return ostr;
+	}
+	else if (tree->isStyle()){
+		// https://www.w3.org/TR/xml/#sec-cdata-sect
+		// ostr << "<![CDATA[ \n";
+
+		if (!tree->ctext.empty()){
+			// TODO: indent
+			ostr << fill << tree->ctext << " /" << "* CTEXT? *" << "/" << '\n';
+		}
+
+		if (!tree->getAttributes().empty()){
+			drain::Logger mout(__FILE__,__FUNCTION__);
+			mout.warn("STYLE elem ", tree->getId()," contains attributes, probably meant as style: ", sprinter(tree->getAttributes()));
+			ostr << "\n\t /" << "* <!-- DISCARDED attribs ";
+			Sprinter::toStream(ostr, tree->getAttributes()); //, StyleXML::styleRecordLayout
+			ostr << " /--> *" << "/" << '\n';
+		}
+
+		if (!tree->style.empty()){
+			ostr << fill << "/ ** style obj ** /" << '\n';
+			for (const auto & attr: tree->style){
+				ostr << fill << "  ";
+				Sprinter::pairToStream(ostr, attr, StyleXML::styleRecordLayout); // {" :;"}
+				//attr.first << ':' attr.first << ':';
+				ostr << '\n';
+			}
+			// ostr << fill << "}\n";
+			// Sprinter::sequenceToStream(ostr, entry.second->getAttributes(), StyleXML::styleRecordLayoutActual);
+			// ostr << '\n';
+		}
+
+		ostr << '\n';
+		// ostr << fill << "<!-- elems /-->" << '\n';
+		ostr << fill << "/ * elems * /" << '\n';
+		for (const auto & entry: tree.getChildren()){
+			if (!entry.second->ctext.empty()){
+				//ostr << fill << "<!-- elem("<< entry.first << ") ctext /-->" << '\n';
+				ostr << fill << "  " << entry.first << " {" << entry.second->ctext << "} / * CTEXT  * / \n";
+			}
+			if (!entry.second->getAttributes().empty()){
+				//ostr << fill << "<!-- elem("<< entry.first << ") attribs /-->" << '\n';
+				ostr << fill << "  " << entry.first << " {\n";
+				for (const auto & attr: entry.second->getAttributes()){
+					ostr << fill  << "    ";
+					ostr << attr.first << ':' << attr.second << ';';
+					ostr << '\n';
+				}
+				ostr << fill << "  }\n";
+				ostr << '\n';
+			}
+		}
+		ostr << "\n"; // end CTEXT
+		// ostr << " ]]>\n"; // end CTEXT
+		// end STYLE defs
+		ostr << fill;
+
+	}
+	else {
+
+		// Detect if all the children are of type CTEXT, to be rendered in a single line.
+		// Note: potential re-parsing will probably detect them as a single CTEXT element.
+		bool ALL_CTEXT = !children.empty();
+
+		for (const auto & entry: children){
+			if (!entry.second->isCText()){
+				ALL_CTEXT = false;
+				break;
+			}
+		}
+
+		if (ALL_CTEXT){
+			ostr << "<!--ALL_CTEXT-->";
+			char sep=0;
+			for (const auto & entry: children){
+				if (sep){
+					ostr << sep;
+				}
+				else {
+					sep = ' '; // consider global setting?
+				}
+				ostr << entry.second->getText();
+			}
+		}
+		else {
+			// ostr << "<!-- RECURSION -->";
+			ostr << '\n';
+			/// iterate children - note the use of default tag
+			for (const auto & entry: children){
+				toStream(ostr, entry.second, entry.first, indent+1); // Notice, no ++indent
+				// "implicit" newline
+			}
+			ostr << fill; //  for CLOSING tag
+		}
+
+	}
+
+
+	tree->nodeToStream(ostr, CLOSING_TAG);
+	//ostr << fill;
+	ostr << '\n';  // Always after closing tag!
+
+	//if (tree.data.id >= 0)
+	//	ostr << "<!-- " << tree.data.id << " /-->\n";
+
+	return ostr;
+}
+*/
 
 
 }  // drain::

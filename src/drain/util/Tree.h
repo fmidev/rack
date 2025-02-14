@@ -344,6 +344,10 @@ public:
 
 
 	/// Assigns a value to contents.
+	/**
+	 *   This may be redefined in derived classes.
+	 *   For example, assigning a value of certain class may cause adding a specific child element instead of assigning to data (the default, here).
+	 */
 	template <class T2>
 	inline
 	tree_t & operator=(const T2 &v){
@@ -354,6 +358,12 @@ public:
 		return *this;
 	}
 
+
+	// This may cause problems, as non-template, and forces implementation of .data = std::string(str).
+	inline
+	tree_t & operator=(const char *str){
+		return this->operator=(std::string(str));
+	}
 
 
 	/// Assign tree structure (of depth one).

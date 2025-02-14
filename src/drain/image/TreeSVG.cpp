@@ -85,8 +85,17 @@ const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict = dr
 
 template <>
 const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict = {
+		/*
+		{"UNDEFINED", XML::UNDEFINED},
+		{"COMMENT",   XML::COMMENT},
+		{"CTEXT",     XML::CTEXT},
+		{"SCRIPT",    XML::SCRIPT},
+		{"STYLE",     XML::STYLE},
+		{"STYLE_SELECT", XML::STYLE_SELECT},
+		*/
 		{"UNDEFINED", drain::image::svg::UNDEFINED},
 		{"#", drain::image::svg::COMMENT},
+		{"CTEXT", drain::image::svg::CTEXT},
 		{"script", drain::image::svg::SCRIPT},
 		{"style", drain::image::svg::STYLE},
 		{"style_select", drain::image::svg::STYLE_SELECT},
@@ -150,31 +159,6 @@ const drain::FileInfo NodeSVG::fileInfo("svg");
 
 std::string NodeSVG::xlink("http://www.w3.org/1999/xlink");
 std::string NodeSVG::svg("http://www.w3.org/2000/svg");
-
-// NodeSVG::NodeSVG(){	setType(UNDEFINED);}
-
-// OLD
-/*
-template <>
-std::map<svg::tag_t,std::string> NodeXML<svg::tag_t>::tags = {
-	{drain::image::svg::UNDEFINED,	"UNDEFINED"},
-	{drain::image::svg::COMMENT, "#"},
-	{drain::image::svg::CTEXT, ""},
-	{drain::image::svg::SVG,   "svg"},
-	{drain::image::svg::CIRCLE,  "circle"},
-	{drain::image::svg::DESC,  "desc"},
-	{drain::image::svg::GROUP, "g"},
-	{drain::image::svg::IMAGE, "image"},
-	{drain::image::svg::LINE,  "line"},
-	{drain::image::svg::METADATA,  "metadata"},
-	{drain::image::svg::POLYGON,  "polygon"},
-	{drain::image::svg::RECT,  "rect"},
-	{drain::image::svg::STYLE, "style"}, // raise?
-	{drain::image::svg::TEXT,  "text"},
-	{drain::image::svg::TITLE, "title"},
-	{drain::image::svg::TSPAN, "tspan"},
-};
-*/
 
 
 
@@ -272,6 +256,7 @@ void NodeSVG::handleType(const svg::tag_t & t) { // setType(const elem_t & t) {
 		// link("height", height = "0");
 		// if (version == 1) {
 		link("xlink:href", url); // text_anchor
+		// link("xlink:href", ctext); // text_anchor
 		// if (version > 2.x ?) {
 		//link("href", text_anchor);
 		break;

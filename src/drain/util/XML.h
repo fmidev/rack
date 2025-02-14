@@ -49,37 +49,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // #include "UtilsXML.h"
 // #include "Flags.h"
 #include "ReferenceMap.h"
+#include "StyleXML.h"
 
 namespace drain {
 
 
-/**
- *   Flexibility is used (at least) in:
- *   - linking box.height to font-size (in TEXT or TSPAN elems)
- */
-class StyleXML : public ReferenceMap2<FlexibleVariable> {
-
-public:
-
-	inline
-	StyleXML(){};
-
-	static const SprinterLayout styleLineLayout;
-	static const SprinterLayout styleRecordLayout;
-	static const SprinterLayout styleRecordLayoutActual;
-
-
-};
-
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
-	drain::Sprinter::toStream(ostr, style.getMap(), drain::Sprinter::xmlAttributeLayout);
-	return ostr;
-}
-
-// ------------------------- public UtilsXML,
-
+/// Base class for XML "nodes", to be data elements T for drain::Tree<T>
 class XML :  protected ReferenceMap2<FlexibleVariable> {
 public:
 
@@ -88,35 +63,70 @@ public:
 	// TODO:
 	// static const intval_t flag_OPEN = 128;
 	// static const intval_t flag_TEXT = 256;
-
 	static const intval_t UNDEFINED = 0;
-	static const intval_t COMMENT = 1;  // || flag_TEXT
-	static const intval_t CTEXT = 2;  // || flag_TEXT
-	static const intval_t SCRIPT = 3; // || flag_EXPLICIT || flag_TEXT
-	static const intval_t STYLE = 4;  // || flag_EXPLICIT
+	static const intval_t COMMENT   = 1; // || flag_TEXT
+	static const intval_t CTEXT     = 2; // || flag_TEXT
+	static const intval_t SCRIPT    = 3; // || flag_EXPLICIT || flag_TEXT
+	static const intval_t STYLE     = 4; // || flag_EXPLICIT
 	static const intval_t STYLE_SELECT = 5;
-
-
-	intval_t type = XML::UNDEFINED;
 
 	typedef ReferenceMap2<FlexibleVariable> map_t;
 
-	/// Some general-purpose variables
+protected:
+
+	intval_t type = XML::UNDEFINED;
 
 	// String, still easily allowing numbers through set("id", ...)
 	std::string id;
-
 	// Consider either/or
 	std::string ctext;
-
 	std::string url;
 
+public:
 	// Could be templated, behind Static?
 	static int nextID;
 
 	inline
 	static int getCount(){
 		return nextID;
+	}
+
+
+	inline
+	bool isUndefined() const {
+		return type == UNDEFINED;
+	}
+
+	inline
+	bool isComment() const {
+		return type == COMMENT;
+	}
+
+	inline
+	bool isCText() const {
+		return type == CTEXT;
+	}
+
+	inline
+	bool isStyle() const {
+		return type == STYLE;
+	}
+
+	/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
+	virtual
+	bool isSingular() const {
+		return false;
+	}
+
+	/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
+	virtual
+	bool isExplicit() const {
+
+		static
+		const std::set<intval_t> l = {SCRIPT, STYLE}; // todo, append, and/or generalize...
+
+		return (l.find(type) != l.end()); // not in the set
+
 	}
 
 	/// Clear style, class and string data but keep the element type.
@@ -187,6 +197,7 @@ public:
 	 *
 	 *   TODO: strict/exclusive, i.e. non-element behavior
 	 */
+	virtual // redef shows variadic args, below?
 	void setText(const std::string & s);
 
 	template <class ...T>
@@ -194,9 +205,16 @@ public:
 		setText(StringBuilder<>(args...).str()); // str() to avoid infinite loop
 	}
 
+	virtual inline
+	const std::string & getText() const {
+		return ctext;
+	}
+
+
 	inline
 	void setUrl(const std::string & s){
 		url = s;
+		// ctext = s;
 	}
 
 	template <class ...T>
@@ -441,7 +459,25 @@ public:
 	void specificAttributesToStream(std::ostream & ostr) const;
 
 
+	enum tag_display_mode {
+		FLEXIBLE_TAG = 0,  // <TAG>...</TAG> or <TAG/>
+		OPENING_TAG= 1,   // <TAG>
+		CLOSING_TAG = 2,   // </TAG>
+		EMPTY_TAG = OPENING_TAG | CLOSING_TAG,  // element has no descendants:  <hr/>
+		NON_EMPTY_TAG, // opening and closing tags must appear, even when empty: <script></script>
+	};
+
+
+	virtual
+	std::ostream & nodeToStream(std::ostream & ostr, tag_display_mode mode=EMPTY_TAG) const = 0;
+
 // ----------------- Static utilities for derived classes ----------------------
+
+
+	template <class TR>
+	static
+	std::ostream & toStream(std::ostream & ostr, const TR & tree, const std::string & defaultTag="ELEM", int indent=0);
+
 
 	template <class V>
 	static inline
@@ -461,7 +497,7 @@ public:
 			dst.clear();
 			// also dst->clear();
 			dst->setType(src->getType());
-			dst->ctext = src->ctext;
+			dst->setText(src->ctext); //CTXX
 			dst->getAttributes() = src->getAttributes();
 		}
 
@@ -476,13 +512,15 @@ public:
 	static inline
 	TX & xmlAssign(TX & dst, const typename TX::xml_node_t & src){
 
+		xmlAssignNode(dst.data, src);
+		/*
 		if (&src != &dst.data){
-			dst->clear();
+			dst->clear(); NOW reset()
 			dst->getAttributes().importMap(src.getAttributes());
 			dst->setStyle(src.getStyle());
 			dst->setText(src.ctext);
 		}
-
+		*/
 		return dst;
 	}
 
@@ -502,6 +540,7 @@ public:
 			dst.setType(src.getType()); // important: creates links!
 			dst.getAttributes().importMap(src.getAttributes());
 			dst.setStyle(src.getStyle());
+			// dst.setText(src.ctext); // wrong! set type to CTEXT
 			dst.ctext = src.ctext;
 		}
 
@@ -548,10 +587,72 @@ public:
 		return tree;
 	};
 
+	// UNDER CONSTRUCTION!
+	/// When assigning a string, create new element unless the element itself is of type CTEXT.
+	/**
+	 *   \return - text element (CTEXT): current or child element of the current element
+	 *
+	 *   Forward definition – type can be set only upon construction of a complete class
+	 */
+	template <typename TX>
+	static inline  // NOT YET as template specification of xmlAssign(...)
+	TX & xmlAssignString(TX & tree, const std::string & s){
+		if (tree->isUndefined()){
+			tree->setType(CTEXT);
+		}
+		tree->ctext = s;
+		return tree;
+		/*
+		if (tree->isCText()){
+			tree->setText(s);
+			return tree;
+		}
+		else if (tree->isUndefined()){
+			tree->setType(CTEXT);
+			tree->setText(s);
+			return tree;
+		}
+		else {
+			for (auto & entry: tree){
+				if (entry.second->isCText()){
+					entry.second->setText(s);
+					return entry.second;
+				}
+			}
+			// drain::Logger(__FILE__, __FUNCTION__).error("Assign string...");
+			TX & child = tree.addChild();
+			child->setType(CTEXT);
+			child->setText(s);
+			return child;
+		}
+		*/
+	}
+
+	template <typename TX>
+	static inline  // NOT YET as template specification of xmlAssign(...)
+	TX & xmlAppendString(TX & tree, const std::string & s){
+		if (tree->isCText()){
+			tree->ctext += s;
+			return tree;
+		}
+		else if (tree->isUndefined()){
+			tree->setType(CTEXT);
+			// tree->setText(s);
+			tree->ctext += s;
+			return tree;
+		}
+		else {
+			// drain::Logger(__FILE__, __FUNCTION__).error("Assign string...");
+			TX & child = tree.addChild();
+			child->setType(CTEXT);
+			child->setText(s);
+			return child;
+		}
+	}
 
 	///
 	/**
-	 *   Forward definition – type can be set only upon construction of a complete
+	 *   Forward definition – type can be set only upon construction of a complete class
 	 *
 	 */
 	template <typename TX>
@@ -560,7 +661,6 @@ public:
 		tree->setType(type);
 		return tree;
 	}
-
 
 
 	/**
@@ -577,23 +677,12 @@ public:
 			return tree[key](type);
 		}
 		else {
-			std::stringstream k("elem");
-			k.width(3);
+			std::stringstream k; // ("elem");
+			k << "elem"; // number with 4 digits overwrites this?
+			k.width(3);  // consider static member prefix
 			k.fill('0');
 			k << tree.getChildren().size();
 			return tree[k.str()](type);
-			//return xmlGuessType(tree.data, tree[k.str()]);
-			/*
-			T & child = tree[k.str()];
-			typedef typename T::node_data_t::xml_default_elem_map_t map_t;
-			const typename map_t::const_iterator it = T::node_data_t::xml_default_elems.find(tree->getNativeType());
-			if (it != T::node_data_t::xml_default_elems.end()){
-				child->setType(it->second);
-				drain::Logger(__FILE__, __FUNCTION__).experimental<LOG_WARNING>("Default type set: ", child->getTag());
-			}
-			// NodeXML<drain::image::svg::tag_t>::xml_default_elem_map_t
-			return child;
-			*/
 		}
 	}
 
@@ -625,10 +714,176 @@ public:
 	*/
 
 
+
 };
 
 
+template <class TR>
+std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::string & defaultTag, int indent){
 
+	drain::Logger mout(__FILE__,__FUNCTION__);
+
+
+	const typename TR::container_t & children = tree.getChildren();
+
+	const XML & data = tree.data; // template type forcing, keep here for programming aid.
+	// const typename TR::node_data_t & data = tree.data; // template used
+
+	tag_display_mode mode = EMPTY_TAG;
+
+	if (data.isCText()){ // this can be true only at root, and rarely so...?
+		data.nodeToStream(ostr, mode);
+		// ostr << "<!--TX-->";
+		return ostr;
+	}
+
+	if (!data.ctext.empty()){
+		// mout.warn("Non-CTEXT-elem with ctext: <", data.getTag(), " id='", data.getId(), "' ...>, text='", data.ctext, "'");
+		if (data.isSingular()){
+			mout.warn("Singular (normally empty) element <", tree->getTag(), " id='", data.getId(), "' ...> has CTEXT: '", data.ctext, "'");
+		}
+		mode = OPENING_TAG;
+	}
+
+	if (!children.empty()){
+		mode = OPENING_TAG;
+		if (data.isSingular()){
+			mout.warn("Singular (hence normally empty) element <", tree->getTag(), " id='", data.getId(), "' ...> has ", children.size(), " children?");
+		}
+	}
+
+	if (data.isExplicit()){ // explicit
+		mode = OPENING_TAG;
+	}
+
+	if (data.isSingular()){ // <br/> <hr/>
+		mode = EMPTY_TAG;
+	}
+
+
+	// Indent
+	// std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
+	std::string fill(2*indent, ' ');
+	ostr << fill;
+	data.nodeToStream(ostr, mode);
+
+	if (mode == EMPTY_TAG){
+		//ostr << "<!--ET-->";
+		ostr << '\n';
+		return ostr;
+	}
+	else if (data.isStyle()){
+		// https://www.w3.org/TR/xml/#sec-cdata-sect
+		// ostr << "<![CDATA[ \n";
+		ostr << "<!-- STYLE -->";
+
+		if (!data.ctext.empty()){
+			// TODO: indent
+			ostr << fill << data.ctext;
+			StyleXML::commentToStream(ostr, " TEXT ");
+			ostr << '\n';
+		}
+
+		if (!data.getAttributes().empty()){
+			mout.warn("STYLE elem ", data.getId()," contains attributes, probably meant as style: ", sprinter(data.getAttributes()));
+			ostr << "\n\t /" << "* <!-- DISCARDED attribs ";
+			Sprinter::toStream(ostr, data.getAttributes()); //, StyleXML::styleRecordLayout
+			ostr << " /--> *" << "/" << '\n';
+		}
+
+		if (!data.style.empty()){
+			ostr << fill;
+			StyleXML::commentToStream(ostr, "STYLE OBJ");
+			ostr << '\n';
+			for (const auto & attr: data.style){
+				ostr << fill << "  ";
+				Sprinter::pairToStream(ostr, attr, StyleXML::styleRecordLayout); // {" :;"}
+				//attr.first << ':' attr.first << ':';
+				ostr << '\n';
+			}
+			// ostr << fill << "}\n";
+			// Sprinter::sequenceToStream(ostr, entry.second->getAttributes(), StyleXML::styleRecordLayoutActual);
+			// ostr << '\n';
+		}
+		ostr << '\n';
+
+		ostr << fill;
+		StyleXML::commentToStream(ostr, "style ELEMS");
+		ostr << '\n';
+
+		for (const auto & entry: tree.getChildren()){
+			if (!entry.second->ctext.empty()){
+				//ostr << fill << "<!-- elem("<< entry.first << ") ctext /-->" << '\n';
+				ostr << fill << "  " << entry.first << " {" << entry.second->ctext << "} /* CTEXT */ \n";
+			}
+			if (!entry.second->getAttributes().empty()){
+				ostr << fill << "  " << entry.first << " {\n";
+				for (const auto & attr: entry.second->getAttributes()){
+					ostr << fill  << "    ";
+					ostr << attr.first << ':' << attr.second << ';';
+					ostr << '\n';
+				}
+				ostr << fill << "  }\n";
+				ostr << '\n';
+			}
+		}
+		ostr << "\n"; // end CTEXT
+		// ostr << " ]]>\n"; // end CTEXT
+		// end STYLE defs
+		ostr << fill;
+
+	}
+	else {
+
+		// Elements "own" CTEXT will be always output first -> check for problems, if other elements added first.
+		ostr << data.ctext;
+
+		// Detect if all the children are of type CTEXT, to be rendered in a single line.
+		// Note: potential re-parsing will probably detect them as a single CTEXT element.
+		bool ALL_CTEXT = true; // (!data.ctext.empty()) || !children.empty();
+
+		for (const auto & entry: children){
+			if (!entry.second->isCText()){
+				ALL_CTEXT = false;
+				break;
+			}
+		}
+
+		// ALL_CTEXT = false;
+
+		if (ALL_CTEXT){
+			// ostr << "<!--ALL_CTEXT-->";
+			char sep=0;
+			for (const auto & entry: children){
+				if (sep){
+					ostr << sep;
+				}
+				else {
+					sep = ' '; // consider global setting?
+				}
+				ostr << entry.second->getText();
+			}
+		}
+		else {
+			// ostr << "<!-- RECURSION -->";
+			ostr << '\n';
+			/// iterate children - note the use of default tag
+			for (const auto & entry: children){
+				toStream(ostr, entry.second, entry.first, indent+1); // Notice, no ++indent
+				// "implicit" newline
+			}
+			ostr << fill; //  for CLOSING tag
+		}
+
+	}
+
+	// ostr << "<!-- END "<< data.getId() << ' ' << data.getTag() << '(' << data.getType() << ')' << "-->";
+
+	data.nodeToStream(ostr, CLOSING_TAG);
+	ostr << '\n';  // Always after closing tag!
+
+	return ostr;
+}
 
 
 

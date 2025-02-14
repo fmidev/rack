@@ -72,6 +72,8 @@ struct BaseHTML {
 
 };
 
+template <>
+const drain::EnumDict<BaseHTML::tag_t>::dict_t drain::EnumDict<BaseHTML::tag_t>::dict;
 
 /**
  *  \tparam T - index type; may be enum.
@@ -94,7 +96,8 @@ public:
 	inline
 	~NodeHTML(){};
 
-
+	virtual
+	bool isSingular() const override;
 
 	/*
 	inline
@@ -147,12 +150,33 @@ protected:
  */
 typedef NodeHTML::xml_tree_t TreeHTML;
 
+
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+TreeHTML & TreeHTML::operator[](const BaseHTML::tag_t & type);
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const TreeHTML & TreeHTML::operator[](const BaseHTML::tag_t & type) const ;
+
+
 template <>
 inline
 //TreeHTML & TreeHTML::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
 TreeHTML & TreeHTML::operator=(std::initializer_list<std::pair<const char *,const Variable> > l){
 	return XML::xmlAssign(*this, l);
 }
+
+/// Create separate CTEXT element.
+template <>
+template <>
+inline
+TreeHTML & TreeHTML::operator=(const std::string & arg){
+	XML::xmlAssignString(*this, arg);
+	return *this;
+}
+
 
 template <>
 template <class T>
@@ -180,24 +204,28 @@ std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
 
 
 
-template <>
-bool NodeXML<BaseHTML::tag_t>::isSelfClosing() const;
+// template <>
+// bool NodeXML<BaseHTML::tag_t>::isSelfClosing() const;
+
+//template <>
+//bool NodeXML<BaseHTML::tag_t>::isSingular() const;
 
 
 DRAIN_TYPENAME(NodeHTML);
 DRAIN_TYPENAME(BaseHTML::tag_t);
 
 
-/** Example/ experimental template specif
+
+template <>
+const NodeXML<BaseHTML::tag_t>::xml_default_elem_map_t NodeXML<BaseHTML::tag_t>::xml_default_elems;
+
+/** Experimental template specification
 */
 template <>
 inline
 TreeHTML & TreeHTML::addChild(const TreeHTML::key_t & key){
 	return XML::xmlAddChild(*this, key);
 }
-
-template <>
-const NodeXML<BaseHTML::tag_t>::xml_default_elem_map_t NodeXML<BaseHTML::tag_t>::xml_default_elems;
 
 
 template <>
@@ -243,8 +271,8 @@ public:
 	 *
 	 *
 	 */
-	static  // compare with TreeHTML::addChild( - is needed?
-	drain::TreeHTML & addChild(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const std::string & key);
+	// static  // compare with TreeHTML::addChild( - is needed?
+	//drain::TreeHTML & addChild(drain::TreeHTML & elem, drain::BaseHTML::tag_t tagType, const std::string & key);
 
 	template <class T>
 	static inline
@@ -325,16 +353,16 @@ protected:
 
 };
 
+
 /*
 template <>
 template <>
 inline
 TreeHTML & TreeHTML::operator()(const std::string & text){
-	this->data.ctext = text;
+	this->data.setText(text); //CTXX
 	return *this;
 }
 */
-
 
 
 

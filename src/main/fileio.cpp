@@ -434,7 +434,15 @@ void CmdOutputFile::exec() const {
 
 		if (IMAGE_PNG){
 			RackSVG::addImage(ctx, srcImage, filepath);
+			/*
+			std::cout << "\nMain:\n";
+			drain::TreeUtils::dump(RackSVG::getMainGroup(ctx), std::cout);
+			drain::image::NodeSVG::toStream(std::cout, RackSVG::getMainGroup(ctx));
 
+			std::cout << "\nTrack:\n";
+			drain::TreeUtils::dump(ctx.svgTrack, std::cout);
+			drain::image::NodeSVG::toStream(std::cout, ctx.svgTrack);
+			*/
 		}
 
 		mout.info("Retrieved image: ", srcImage, " [", srcImage.properties.get("what:quantity", ""), "]");
