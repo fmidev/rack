@@ -154,6 +154,13 @@ public:
 	virtual
 	void setAttribute(const std::string & key, const char *value) override;
 
+	/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
+	virtual inline
+	bool isSingular() const override final {
+		static const std::set<SLD::tag_t> singular = {SLD::ColorMapEntry};
+		// Consider "complement" approach, non-singular
+		return singular.find(static_cast<SLD::tag_t>(type)) != singular.end();
+	}
 
 
 

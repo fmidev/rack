@@ -353,6 +353,9 @@ public:
 
 	/// Dumps info. Future option: outputs leading and ending tag
 	// std::ostream & nodeToStream(std::ostream & ostr, tag_display_mode mode=EMPTY_TAG) const;
+	/**
+	 *  \see XML::toStream()
+	 */
 	virtual
 	std::ostream & nodeToStream(std::ostream & ostr, tag_display_mode mode=EMPTY_TAG) const;
 
@@ -507,6 +510,8 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 		}
 
 		if (getTag().empty()){
+			drain::Logger(__FILE__, __FUNCTION__).unimplemented<LOG_ERR>("defaultTag for type=", getType(), " requested by for ID=", getId(), " attr=", getAttributes());
+
 			ostr << "defaultTag"; // << ' ';  FIX! getDefaultTag?
 		}
 		else {

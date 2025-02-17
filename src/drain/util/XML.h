@@ -79,10 +79,10 @@ protected:
 	// String, still easily allowing numbers through set("id", ...)
 	std::string id;
 	// Consider either/or
-	std::string ctext;
 	std::string url;
-
 public:
+	std::string ctext;
+
 	// Could be templated, behind Static?
 	static int nextID;
 
@@ -723,7 +723,6 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 
 	drain::Logger mout(__FILE__,__FUNCTION__);
 
-
 	const typename TR::container_t & children = tree.getChildren();
 
 	const XML & data = tree.data; // template type forcing, keep here for programming aid.
@@ -731,7 +730,7 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 
 	tag_display_mode mode = EMPTY_TAG;
 
-	if (data.isCText()){ // this can be true only at root, and rarely so...?
+	if (data.isCText()){ // this can be true only at root, and rarely so...? (because recursive call not reached, if ctext)
 		data.nodeToStream(ostr, mode);
 		// ostr << "<!--TX-->";
 		return ostr;
@@ -740,9 +739,13 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 	if (!data.ctext.empty()){
 		// mout.warn("Non-CTEXT-elem with ctext: <", data.getTag(), " id='", data.getId(), "' ...>, text='", data.ctext, "'");
 		if (data.isSingular()){
-			mout.warn("Singular (normally empty) element <", tree->getTag(), " id='", data.getId(), "' ...> has CTEXT: '", data.ctext, "'");
+			//mout.warn("Singular (normally empty) element <", tree->getTag(), " id='", data.getId(), "' ...> has CTEXT: '", data.ctext, "'");
+			mout.warn("Skipping CTEXT of a singular element <", tree->getTag(), " id='", data.getId(), "' ...> , CTEXT: '", data.ctext, "'");
+			mode = EMPTY_TAG;
 		}
-		mode = OPENING_TAG;
+		else {
+			mode = OPENING_TAG;
+		}
 	}
 
 	if (!children.empty()){

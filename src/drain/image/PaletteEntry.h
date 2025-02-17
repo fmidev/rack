@@ -185,9 +185,11 @@ public:
 	/// Returns the color without leading marker (like "0x").
 	void getHexColor(std::ostream & ostr) const;
 
+	/// Write colour in hexadecimal notation, with an optional prefix (often "#").
 	inline
-	void getHexColor(std::string & str) const {
+	void getHexColor(std::string & str, const std::string & prefix = "") const {
 		std::stringstream sstr;
+		sstr << prefix;
 		getHexColor(sstr);
 		str = sstr.str();
 	}

@@ -1169,7 +1169,7 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 		if (!entry.hidden){
 
 			name.str("");
-			name << "color";
+			name << "color-";
 			name.fill('0');
 			name.width(2);
 			name << index;
@@ -1304,6 +1304,7 @@ void Palette::exportSLD(TreeSLD & sld) const {
 	size_t precision = 2; // for threshold
 	// const auto default_precision{std::cout.precision()};
 
+	/// If the quantity is an integer, do not apply decimal notation.
 	bool INTEGER = true;
 	for (const auto & entry: *this){
 		if (trunc(entry.first) != entry.first){
@@ -1320,7 +1321,10 @@ void Palette::exportSLD(TreeSLD & sld) const {
 
 	TreeSLD & colorMap = rasterSymbolizer[SLD::ColorMap](SLD::ColorMap);
 
-	mout.attention("main map");
+	colorMap->set("type", "intervals"); // ramp
+	// ? colorMap->set("extended", true);
+
+	// mout.attention("main map");
 
 	while ((it != end()) || (itSpecial != specialCodes.end())){
 
@@ -1332,19 +1336,11 @@ void Palette::exportSLD(TreeSLD & sld) const {
 
 		if (!entry.hidden){
 
-			//std::string s;
-			//entry.getHexColor(s);
 			TreeSLD & colorMapEntry = colorMap.addChild()(SLD::ColorMapEntry);
 
-			std::stringstream sstr;
-			entry.getHexColor(sstr);
-			colorMapEntry->set("color", sstr.str());
-			// colorMapEntry->set("color", s);
-			// entry.getHexColor(colorMapEntry->ctext);
-			// entry.getHexColor(colorMapEntry->url);
+			entry.getHexColor(colorMapEntry->ctext, "#");
 			colorMapEntry->set("label", entry.label);
 			colorMapEntry->set("opacity", 1.0);
-
 
 			style.str("");
 			const PaletteEntry::color_t & color = entry.color;
@@ -1382,7 +1378,7 @@ void Palette::exportSLD(TreeSLD & sld) const {
 			++it;
 	}
 
-	drain::TreeUtils::dump(sld, std::cout);
+	// drain::TreeUtils::dump(sld, std::cout);
 
 
 }
@@ -1432,6 +1428,7 @@ void PaletteOp::setGrayPalette(unsigned int iChannels,unsigned int aChannels,flo
 } // image::
 
 } // drain::
+
 
 template <>
 std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image::Palette & palette, const drain::SprinterLayout & layout){
@@ -1488,4 +1485,3 @@ std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image
 	return ostr;
 }
 
-// Drain
