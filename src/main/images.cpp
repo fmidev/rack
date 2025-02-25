@@ -949,11 +949,11 @@ public:
 
 };
 
-class CmdPaletteInput : public drain::SimpleCommand<std::string> {
+class CmdInputPalette : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdPaletteInput() : drain::SimpleCommand<std::string>(__FUNCTION__, "Load palette.", "filename", "", "<filename>.[txt|json]") {
+	CmdInputPalette() : drain::SimpleCommand<std::string>(__FUNCTION__, "Load palette.", "filename", "", "<filename>.[txt|json]") {
 	};
 
 	virtual
@@ -985,14 +985,16 @@ public:
 
 };
 
-class CmdPaletteOutput : public drain::SimpleCommand<std::string> {
+
+class CmdOutputPalette : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdPaletteOutput() : drain::SimpleCommand<std::string>(__FUNCTION__, "Save palette as TXT, JSON or SVG.", "filename", "") {
+	CmdOutputPalette() : drain::SimpleCommand<std::string>(__FUNCTION__, "Save palette as TXT, JSON, SVG or SLD.", "filename", "") {
 	};
 
-	void exec() const {
+	virtual
+	void exec() const override {
 
 		RackContext & ctx = getContext<RackContext>();
 
@@ -1264,7 +1266,71 @@ public:
 	}
 };
 
+#define DRAIN_NAME(cls) (#cls)
 
+template <class C>
+class Deprecator : public drain::BasicCommand {
+
+public:
+
+	std::string params;
+
+	inline
+	Deprecator(const std::string & deprName) : drain::BasicCommand(deprName, "Deprecating command") {
+		if (origCmd.hasParameters()){
+			//const drain::ReferenceMap & p = origCmd.getParameters();
+			this->getParameters().link("params", params); //  drain::sprinter(origCmd.getParameters().getKeyList()).str());
+		}
+		// this->relatedCommands.insert(DRAIN_NAME(C));
+	}
+
+	inline
+	Deprecator(const Deprecator<C> & cmd) : BasicCommand(cmd){
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this); // dangerous fwd, but "std::string params" will be the only member referenced!
+	}
+
+	virtual inline
+	void help(std::ostream & ostr = std::cout, bool DETAILED=false) const {
+		ostr << "Deprecating, use instead:" << ' ';
+		for (const auto & cmd: this->relatedCommands){
+			ostr << cmd << ',';
+		}
+		// todo: add param explic here in top level
+	}
+
+	mutable
+	C origCmd;
+
+
+	virtual
+	void exec() const override {
+
+		drain::Context & ctx = this->template getContext<drain::Context>();
+
+		drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
+
+		if (origCmd.hasParameters()){ //  && !params.empty()
+			origCmd.setParameters(params);
+		}
+
+		mout.deprecating("This command will be obsolete in future. Use '", origCmd.getName(), "' instead");
+
+		//  origCmd.setParams...
+		origCmd.exec();
+
+	}
+
+
+};
+
+class CmdPaletteOut : public Deprecator<CmdOutputPalette> {
+
+public:
+	inline
+	CmdPaletteOut() : Deprecator<CmdOutputPalette>(__FUNCTION__){
+	}
+
+};
 
 
 ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) { // :{ //  : CommandSection("images"){
@@ -1277,7 +1343,6 @@ ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) { // :{ // 
 	install<CmdPalette>();
 	install<CmdImageAlpha>();
 	install<CmdImageTransp>();
-	install<CmdPaletteOutput>("legendOut"); // Same as --iPaletteOut below
 	install<CmdImageFlatten>();
 	install<CmdImagePhysical>("iPhysical"); // perhaps should be imagePhysical!
 	install<CmdImagePhysical>("imagePhysical");
@@ -1286,8 +1351,20 @@ ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) { // :{ // 
 	/// WAS: with prefix 'i', like image operators
 	// drain::CommandInstaller<'i',ImageSection> installer2(drain::getCommandBank());
 	install<CmdPaletteConf>();
-	install<CmdPaletteInput>("paletteIn");
-	install<CmdPaletteOutput>("paletteOut");
+	install<CmdInputPalette>("paletteIn");
+
+	install<CmdInputPalette>(); // last, and visible
+	//install<CmdOutputPalette>("paletteOut");
+	//markDeprecating<CmdPaletteOut>();
+	//DRAIN_CMD_INSTALL(Cmd,PaletteOut)();
+	//install<Deprecator<CmdOutputPalette> >();
+	// DRAIN_CMD_INSTALL(Cmd,OutputPalette)();
+	install<CmdOutputPalette>("legendOut"); // Same as --iPaletteOut above
+	//DRAIN_CMD_INSTALL(Cmd,OutputPalette)();
+	install<CmdOutputPalette>(); // last, and visible
+	installDeprecating<CmdPaletteOut,CmdOutputPalette>(); //DEPREC.
+
+	// linkRelatedCommands(PaletteOut, OutputPalette);
 	install<CmdPaletteRefine>();
 	install<CmdPlot>();
 	install<CmdImageBox>();

@@ -59,7 +59,7 @@ struct SLD {
 		UNDEFINED=XML::UNDEFINED,
 		COMMENT=XML::COMMENT,
 		CTEXT=XML::CTEXT,
-		SCRIPT=XML::SCRIPT,
+		SCRIPT=XML::SCRIPT, // Not supported?
 		Abstract = 10,
 		ColorMap,
 		ColorMapEntry,
@@ -103,7 +103,11 @@ namespace image {
 /**
   \example TreeSLD-example.cpp
 
+  Especially designed for RasterSymbolizer.
+  https://docs.geoserver.org/latest/en/user/styling/sld/reference/rastersymbolizer.html#type
+
   \see drain::TreeXML
+
 
  */
 class NodeSLD: public NodeXML<SLD::tag_t> {

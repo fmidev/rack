@@ -1010,6 +1010,12 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 
 	ostr << '\n';
 
+	/*
+	if (cmd.section & 1){ // FIX
+		ostr << "DEPRECATING" << '\n';
+	}
+	*/
+
 	//ostr << ' ' << ' ' << cmd.getDescription() << '\n';
 	//ostr << cmd.getDescription() << '\n';
 	cmd.help(ostr, detailed);

@@ -92,8 +92,11 @@ protected:
 	 *
 	 */  // drain::Flagger::ivalue_t
 	CommandSection(const std::string & title, bank_section_t index) : title(title), index(index){
-		if (index > 0)
+		if (index > 0){
 			drain::getCommandBank().sections.add(title, index);
+			//bank_section_t i = FlagResolver::getFreeBit(drain::getCommandBank().sections);
+
+		}
 	}
 
 
@@ -107,11 +110,19 @@ struct HiddenSection : public CommandSection {
 
 };
 
+struct DeprecatingSection : public CommandSection {
+
+	inline
+	DeprecatingSection(): CommandSection("deprecating", 1){ // consider fixed number?
+	};
+
+};
+
 
 struct GeneralSection : public CommandSection {
 
 	inline
-	GeneralSection(): CommandSection("general"){
+	GeneralSection(): CommandSection("general", 2){
 	};
 
 };
@@ -120,7 +131,7 @@ struct GeneralSection : public CommandSection {
 struct TriggerSection : public CommandSection {
 
 	inline
-	TriggerSection(): CommandSection("trigger"){
+	TriggerSection(): CommandSection("trigger", 4){
 	};
 
 };

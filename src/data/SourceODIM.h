@@ -78,12 +78,13 @@ public:
 	 */
 	const std::string & getSourceCode() const;
 
-	///
-
-private:
-
-	const std::string & getPreferredSourceCode() const;
-
+	/// Return radar identifier; a single code retrieved in the order of preference.
+	/**
+	 * Example:
+	   \code
+	   getPreferredSourceCode(NOD, RAD, WMO, WIGOS, ORG, CTY, PLC);
+	   \endcode
+	 */
 	template <class ...TT>
 	const std::string & getPreferredSourceCode(const std::string & arg, const TT& ...args) const {
 		//std::cerr << __FILE__ << ':' << __LINE__ << __FUNCTION__ << " (variadic args)" << std::endl;
@@ -92,6 +93,11 @@ private:
 		else
 			return getPreferredSourceCode(args...);
 	}
+
+private:
+
+	const std::string & getPreferredSourceCode() const;
+
 
 	void init();
 

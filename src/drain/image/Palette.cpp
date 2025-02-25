@@ -1262,34 +1262,69 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 
 }
 
+/*
+ * http://d.geosrv.fmi.fi:8080/geoserver/web/wicket/bookmarkable/org.geoserver.wms.web.data.StylePage?0&filter=false
+
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sld
+http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd" version="1.0.0">
+  <NamedLayer>
+    <Name>Radar test</Name>
+    <UserStyle>
+      <Title>A raster style</Title>
+      <FeatureTypeStyle>
+        <Rule>
+          <RasterSymbolizer>
+            <Opacity>1.0</Opacity>
+          </RasterSymbolizer>
+        </Rule>
+      </FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>
+ *
+ *
+ */
+
 void Palette::exportSLD(TreeSLD & sld) const {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	//mout.attention("startar");
+	//mout.attention("start");
 
 	sld->setType(SLD::StyledLayerDescriptor);
+
+	/*
+	 * GeoServer supports the use of a StyledLayerDescriptor document containing a single <NamedLayer> element,
+	 * which contains a single <UserStyle> element to specify the styling.
+	 *
+     * When used in this fashion the layer name is ignored, since the style may be applied to many different layers.
+	 * https://docs.geoserver.org/latest/en/user/styling/sld/working.html#symbology-encoding-styles
+	 *
+	 */
 
 
 	TreeSLD & namedLayer = sld[SLD::NamedLayer](SLD::NamedLayer);
 
-	TreeSLD & mainName = namedLayer[SLD::Name](SLD::Name);
-	mainName = title;
+	TreeSLD & layerName = namedLayer[SLD::Name](SLD::Name);
+	layerName->ctext = title;
+
+	TreeSLD & comment = namedLayer[SLD::COMMENT](SLD::COMMENT);
+	comment = "GeoServer: the layer name is ignored, since the style may be applied to many different layers";
 
 	TreeSLD & userStyle = namedLayer[SLD::UserStyle](SLD::UserStyle);
 
 	TreeSLD & name = userStyle[SLD::Name](SLD::Name);
-	name = this->title;
+	name->ctext = title;
+	StringTools::replace({{" ", "_"}, {"-", "_"}}, name->ctext);
+	StringTools::lowerCase(name->ctext);
 
 	TreeSLD & title = userStyle[SLD::Title](SLD::Title);
 	title = this->title;
 
 	TreeSLD & abstract = userStyle[SLD::Abstract](SLD::Abstract);
-	//abstract.addChild()(SLD::CTEXT) = this->title;
 	abstract = this->title;
-	//abstract = this->title;
 
-	//int height = (1.5 + size() + specialCodes.size()) * lineheight;
 	TreeSLD & featureTypeStyle = userStyle[SLD::FeatureTypeStyle](SLD::FeatureTypeStyle);
 	TreeSLD & rule = featureTypeStyle[SLD::Rule](SLD::Rule);
 	TreeSLD & rasterSymbolizer = rule[SLD::RasterSymbolizer](SLD::RasterSymbolizer);
@@ -1314,17 +1349,39 @@ void Palette::exportSLD(TreeSLD & sld) const {
 	}
 	// sld["comment"]->setComment().set("integer", INTEGER);
 
-	Palette::const_iterator it = begin();
-	std::map<std::string,PaletteEntry>::const_iterator itSpecial = specialCodes.begin();
 
 	// TODO: extract createLegendEntry and traverse specials separately (see SVG?)
 
 	TreeSLD & colorMap = rasterSymbolizer[SLD::ColorMap](SLD::ColorMap);
 
+	/**
+	 * GeoServer extends the <ColorMap> element to allow two attributes: type and extended.
+
+	The <ColorMap> type attribute specifies the kind of ColorMap to use.
+	There are three different types of ColorMaps that can be specified: ramp, intervals and values.
+
+	type="ramp" is the default ColorMap type.
+	It specifies that colors should be interpolated for values between the color map entries.
+
+    type="values" means that only pixels with the specified entry quantity values are rendered.
+    Pixels with other values are not rendered. Using the example set of color map entries:
+
+	type="intervals" value means that each interval defined by two entries is rendered using the
+	color of the first (lowest-value) entry. No color interpolation is applied across the intervals.
+	 */
 	colorMap->set("type", "intervals"); // ramp
+
+	/**
+	     The 'extended' attribute specifies whether the color map gradient uses 256 (8-bit) or 65536 (16-bit) colors.
+	     The value false (the default) specifies that the color scale is calculated using 8-bit color, and true specifies using 16-bit color.
+	 */
 	// ? colorMap->set("extended", true);
 
 	// mout.attention("main map");
+
+	// MAIN LOOP
+	Palette::const_iterator it = begin();
+	std::map<std::string,PaletteEntry>::const_iterator itSpecial = specialCodes.begin();
 
 	while ((it != end()) || (itSpecial != specialCodes.end())){
 
@@ -1339,8 +1396,16 @@ void Palette::exportSLD(TreeSLD & sld) const {
 			TreeSLD & colorMapEntry = colorMap.addChild()(SLD::ColorMapEntry);
 
 			entry.getHexColor(colorMapEntry->ctext, "#");
-			colorMapEntry->set("label", entry.label);
+
+			/**
+			 *  https://docs.geoserver.org/latest/en/user/styling/sld/reference/rastersymbolizer.html#type
+			 *
+			 *     <ColorMapEntry> elements can also have opacity and label attributes.
+			 *     The opacity attribute overrides the global <Opacity> value.
+			 *     The label attribute is used to provide text for legends.
+			 */
 			colorMapEntry->set("opacity", 1.0);
+			colorMapEntry->set("label", entry.label);
 
 			style.str("");
 			const PaletteEntry::color_t & color = entry.color;
@@ -1358,6 +1423,16 @@ void Palette::exportSLD(TreeSLD & sld) const {
 				break;
 			}
 
+
+			/** https://docs.geoserver.org/latest/en/user/styling/sld/reference/rastersymbolizer.html#colormap
+			 *
+			 *  The simplest <ColorMap> has two color map entries. One specifyies a color for the “bottom” of the dataset,
+			 *  and the other specifyies a color for the “top” of the dataset.
+			 *  Pixels with values equal to or less than the minimum value are rendered with the bottom color (and opacity).
+			 *  Pixels with values equal to or great than the maximum value are rendered with the top color and opacity.
+			 *  The colors for values in between are automatically interpolated, making creating color gradients easy.
+			 */
+
 			if (!special){
 				threshold.str(" ");
 				// TODO: integers
@@ -1368,6 +1443,10 @@ void Palette::exportSLD(TreeSLD & sld) const {
 
 				colorMapEntry->set("quantity", threshold.str());
 
+			}
+			else {
+				colorMapEntry->set("quantity", "??");
+				colorMapEntry->setType(XML::COMMENT);
 			}
 
 		}

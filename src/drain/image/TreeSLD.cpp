@@ -46,6 +46,7 @@ DRAIN_TYPENAME_DEF(image::SLD::tag_t);
 
 template <>
 const EnumDict<image::SLD::tag_t>::dict_t EnumDict<image::SLD::tag_t>::dict = {
+		DRAIN_ENUM_ENTRY(drain::image::SLD, COMMENT), // good to have an explicit TAG string,  for debugging
 		DRAIN_ENUM_ENTRY(drain::image::SLD, Abstract),
 		DRAIN_ENUM_ENTRY(drain::image::SLD, ColorMap),
 		DRAIN_ENUM_ENTRY(drain::image::SLD, ColorMapEntry),

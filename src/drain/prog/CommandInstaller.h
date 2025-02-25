@@ -216,6 +216,50 @@ public:
 	};
 
 	/**
+	 *  If CMD_NEW is given (ie. different from CMD), add it to recommended alternatives.
+	 */
+	template <class CMD, class CMD_NEW = CMD>
+	Command & installDeprecating(const std::string & name, char alias = 0){
+		Command & cmd = this->cmdBank.template add<CMD>(name,alias);
+		cmd.section |= this->getSection().index; // keep TRIGGER
+
+		cmd.section |= drain::Static::get<drain::DeprecatingSection>().index;
+		//cmd_section_type TRIGGER = drain::Static::get<drain::TriggerSection>().index;
+
+
+		std::string nameNew = CMD_NEW().getName();
+		CommandBank::deriveCmdName(nameNew, PREFIX);
+		cmd.relatedCommands.insert(nameNew);
+
+		return cmd;
+	}
+
+	/**
+	 *  If CMD_NEW is given (ie. different from CMD), add it to recommended alternatives.
+	 */
+	template <class CMD, class CMD_NEW = CMD>
+	Command & installDeprecating(char alias = 0){
+		std::string name = CMD().getName();
+		CommandBank::deriveCmdName(name, PREFIX);
+
+		return installDeprecating<CMD,CMD_NEW>(name, alias);
+
+		/*
+		// this->cmdBank.linkRelatedCommandList(cmdList);
+		Command & cmd = this->template install<CMD>(name, alias);
+
+		std::string nameNew = CMD_NEW().getName();
+		CommandBank::deriveCmdName(nameNew, PREFIX);
+
+		cmd.relatedCommands.insert(nameNew);
+		return cmd;
+		// return install<CMD>(name, alias);
+		 */
+	}
+
+
+
+	/**
 	 *  Not static, because cmdBank addressed.
 	 */
 	template <class ...TT>

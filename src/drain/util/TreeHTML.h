@@ -96,9 +96,13 @@ public:
 	inline
 	~NodeHTML(){};
 
+	/// Tell if this element should always be a single tag, not separate opening and closing tags.
 	virtual
-	bool isSingular() const override;
+	bool isSingular() const override final;
 
+	/// Tell if this element should always have separate opening and closing tags even when empty, like <STYLE></STYLE>
+	virtual
+	bool isExplicit() const override final;
 	/*
 	inline
     NodeHTML & operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
@@ -124,13 +128,27 @@ public:
 	virtual
 	bool isSelfClosing() const;
 	*/
-
+	static // virtual
+	inline
+	std::ostream & docTypeToStream(std::ostream &ostr){
+		ostr << "<!DOCTYPE html>\n";
+		/* ostr << "<?xml ";
+		for (const auto & entry: xmldoc_attribs){
+			xmlAttribToStream(ostr, entry.first, entry.second);
+		}
+		ostr << "?>";
+		ostr << '\n';
+		*/
+		return ostr;
+	}
+	/*
 	static inline
 	std::ostream & docToStream(std::ostream &ostr, const xml_tree_t &  tree){
 		ostr << "<!DOCTYPE html>\n";
 		toStream(ostr, tree);
 		return ostr;
 	}
+	*/
 
 
 	static
@@ -144,13 +162,20 @@ protected:
 };
 
 
+
 /// The  HTML data structure.
 /**
  *
  */
-typedef NodeHTML::xml_tree_t TreeHTML;
+// typedef NodeHTML::xml_tree_t TreeHTML;
+typedef drain::UnorderedMultiTree<NodeHTML,false, NodeXML<>::path_t> TreeHTML;
 
-
+template <> // for T (Tree class)
+inline
+std::ostream & NodeXML<BaseHTML::tag_t>::docTypeToStream(std::ostream &ostr){
+		ostr << "<!DOCTYPE html>\n";
+		return ostr;
+}
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
@@ -158,7 +183,7 @@ TreeHTML & TreeHTML::operator[](const BaseHTML::tag_t & type);
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
-const TreeHTML & TreeHTML::operator[](const BaseHTML::tag_t & type) const ;
+const TreeHTML & TreeHTML::operator[](const BaseHTML::tag_t & type) const;
 
 
 template <>
@@ -191,6 +216,10 @@ std::ostream & operator<<(std::ostream &ostr, const NodeHTML & node){
 	return drain::Sprinter::toStream(ostr, node.getAttributes());
 }
 
+inline
+std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
+	return NodeHTML::docToStream(ostr, tree);
+}
 
 /*
 inline
@@ -212,6 +241,7 @@ std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
 
 
 DRAIN_TYPENAME(NodeHTML);
+DRAIN_TYPENAME(BaseHTML);
 DRAIN_TYPENAME(BaseHTML::tag_t);
 
 

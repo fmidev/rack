@@ -114,20 +114,11 @@ public:
 
 	/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
 	virtual
-	bool isSingular() const {
-		return false;
-	}
+	bool isSingular() const;
 
 	/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
 	virtual
-	bool isExplicit() const {
-
-		static
-		const std::set<intval_t> l = {SCRIPT, STYLE}; // todo, append, and/or generalize...
-
-		return (l.find(type) != l.end()); // not in the set
-
-	}
+	bool isExplicit() const;
 
 	/// Clear style, class and string data but keep the element type.
 	/**
@@ -387,21 +378,12 @@ public:
 		}
 	}
 
-	/*
-	template <typename K, typename V>
-	inline
-	void setStyle(const std::initializer_list<std::pair<K,V> > &args){
-		drain::SmartMapTools::setValues(style, args);
-	}
-	*/
-
 	inline
 	void setStyle(const std::initializer_list<std::pair<const char *,const drain::Variable> > &args){
 		drain::SmartMapTools::setValues(style, args);
 	}
 
 	/*
-	inline
 	void setStyle(	const std::initializer_list<std::pair<const char *,const char *> > & args){
 		drain::SmartMapTools::setValues(style, args);
 	}
@@ -725,8 +707,8 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 
 	const typename TR::container_t & children = tree.getChildren();
 
-	const XML & data = tree.data; // template type forcing, keep here for programming aid.
-	// const typename TR::node_data_t & data = tree.data; // template used
+	// const XML & data = tree.data; // template type forcing, keep here for programming aid.
+	const typename TR::node_data_t & data = tree.data; // template used
 
 	tag_display_mode mode = EMPTY_TAG;
 
@@ -739,8 +721,7 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 	if (!data.ctext.empty()){
 		// mout.warn("Non-CTEXT-elem with ctext: <", data.getTag(), " id='", data.getId(), "' ...>, text='", data.ctext, "'");
 		if (data.isSingular()){
-			//mout.warn("Singular (normally empty) element <", tree->getTag(), " id='", data.getId(), "' ...> has CTEXT: '", data.ctext, "'");
-			mout.warn("Skipping CTEXT of a singular element <", tree->getTag(), " id='", data.getId(), "' ...> , CTEXT: '", data.ctext, "'");
+			// mout.warn("Skipping CTEXT of a singular element <", tree->getTag(), " id='", data.getId(), "' ...> , CTEXT: '", data.ctext, "'");
 			mode = EMPTY_TAG;
 		}
 		else {
@@ -755,10 +736,11 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 		}
 	}
 
+	mout.attention("Hey! ", TypeName<TR>::str(), " with ", TypeName<typename TR::node_data_t>::str(), "Explicit ", data.isExplicit(), " or implicit ", data.isSingular());
 	if (data.isExplicit()){ // explicit
 		mode = OPENING_TAG;
 	}
-
+	else // ?
 	if (data.isSingular()){ // <br/> <hr/>
 		mode = EMPTY_TAG;
 	}

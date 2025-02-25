@@ -69,18 +69,15 @@ const NodeXML<BaseHTML::tag_t>::xml_default_elem_map_t NodeXML<BaseHTML::tag_t>:
 
 
 
+/*
 template <>
 const drain::EnumDict<BaseHTML::tag_t>::dict_t & drain::EnumDict<BaseHTML::tag_t>::getDict(){
-	/*
-	static drain::EnumDict<BaseHTML::tag_t>::dict_t dict;
+	//// static drain::EnumDict<BaseHTML::tag_t>::dict_t dict;
 
-	if (dict.empty()){
-
-		dict.add("undefined", drain::BaseHTML::UNDEFINED);
-	}
-	*/
+	//if (dict.empty()){ dict.add("undefined", drain::BaseHTML::UNDEFINED);}
 	return dict;
 }
+*/
 
 
 template <>
@@ -178,21 +175,30 @@ void NodeHTML::handleType(const tag_t &t){
 
 }
 
-// template <>
-//bool NodeXML<BaseHTML::tag_t>::isSingular() const {	/// Set of NOT self.closing tags.
 bool NodeHTML::isSingular() const {
 
-	/// Inclusive solution...
+	/// "Inclusive" solution...
 	static
 	const std::set<BaseHTML::tag_t> l = {BaseHTML::BR, BaseHTML::HR};
-	//return (l.find((BaseHTML::tag_t)this->getType()) != l.end()); // = found in the set
+
+	std::cout << __FILE__ << '/' << __FUNCTION__ << this->getTag() << " singular=" << (l.find((BaseHTML::tag_t)this->getType()) == l.end()) << '\n';
+
+	// If is (BR, HR, ...), return true, forcing "self-closing" element.
 	return (l.find((BaseHTML::tag_t)this->getType()) != l.end()); // = found in the set
 
-	/*
+}
+
+bool NodeHTML::isExplicit() const {
+
+	/// These tags can appear "empty", without child elements.
 	static
-	const std::set<BaseHTML::tag_t> l = {BaseHTML::SCRIPT, BaseHTML::TITLE};
-	return (l.find(this->getType()) == l.end()); // not in the set
-	*/
+	const std::set<intval_t> l = {BaseHTML::A, BaseHTML::IMG};
+
+	std::cout << __FILE__ << '/' << __FUNCTION__ << this->getTag() << " explicit=" << (l.find(type) == l.end()) << '\n';
+
+	// Not in the set, meaning: not allowed to be empty.
+	return (l.find(type) == l.end());
+
 }
 
 
