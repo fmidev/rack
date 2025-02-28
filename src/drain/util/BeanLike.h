@@ -44,7 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/VariableAssign.h>
 // #include "Variable.h"
 #include "ReferenceMap.h"
-
+//#include "VariableMap.h"
 
 namespace drain
 {
@@ -60,6 +60,19 @@ namespace drain
 class BeanLike {
 
 public:
+
+	// typedef FlexVariableMap map_t;
+	typedef ReferenceMap map_t;
+
+	// 2024 public:
+	BeanLike(const BeanLike & b) : name(b.name), description(b.description){
+		// copy(b);
+		parameters.copyStruct(b.getParameters(), b, *this, ReferenceMap::RESERVE);
+	}
+
+
+	BeanLike(const std::string & name, const std::string & description="") : name(name), description(description) {
+	}
 
 	virtual inline
 	~BeanLike(){};
@@ -92,17 +105,17 @@ public:
 	}
 
 	inline
-	const ReferenceMap & getParameters() const { return parameters; };
+	const map_t & getParameters() const { return parameters; };
 
 	inline
-	ReferenceMap & getParameters() { return parameters; };
+	map_t & getParameters() { return parameters; };
 
 
 	template <class F>
 	inline
 	void setParametersFromEntries(const F & args){
 
-		ReferenceMap & parameters = getParameters();
+		map_t & parameters = getParameters();
 		std::stringstream sstr;
 		char separator = 0;
 		for (const auto & entry: args){
@@ -262,15 +275,6 @@ public:
 	}
 	*/
 
-// 2024 public:
-	BeanLike(const BeanLike & b) : name(b.name), description(b.description){
-		// copy(b);
-		parameters.copyStruct(b.getParameters(), b, *this, ReferenceMap::RESERVE);
-	}
-
-
-	BeanLike(const std::string & name, const std::string & description="") : name(name), description(description) {
-	}
 
 protected:
 
@@ -280,7 +284,8 @@ protected:
 
 	const std::string description; // todo separate (Beanlet)
 
-	ReferenceMap parameters;  // todo separate (Beanlet)
+	//ReferenceMap parameters;  // todo separate (Beanlet)
+	map_t parameters;  // todo separate (Beanlet)?
 
 	/// Called after setParameters()
 	virtual inline

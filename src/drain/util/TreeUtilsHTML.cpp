@@ -28,34 +28,62 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+ 
+/*
+ * TreeHTML.cpp
+ *
+ *  Created on:2024
+ *      Author: mpeura
+ */
 
-#include "BeanLike.h"
+#include "TreeUtilsHTML.h"
 
-namespace drain
-{
+namespace drain {
 
-	std::ostream & BeanLike::toStream(std::ostream & ostr, bool compact) const {
-		ostr << name << ": " << description;
-		if (compact){
-			ostr << ' ' << parameters; //  << '\n'; // ?
-		}
-		else {
-			ostr << '\n';
-			//ostr << '\t' << parameters << '\n';
-			// Was that ^ supposed to be: ostr << "\t parameters\n";
-			for (const std::string & key: getParameters().getKeyList()){
-				// const Reference & param = parameters.at(key);
-				const map_t::value_t & param = parameters.at(key);
-				std::cout << '\t' << key << ':' << param << '\n';
-			}
-			/*
-			for (const auto & entry: getParameters()){
-				std::cout << '\t' << entry.first << ':' << entry.second << '\n';
-			}
-			*/
-		}
-		return ostr;
+TreeHTML & TreeUtilsHTML::initHtml(drain::TreeHTML & html, const std::string & heading){
+
+	html(drain::NodeHTML::HTML);
+
+	drain::TreeHTML & head  = html[drain::NodeHTML::HEAD](drain::NodeHTML::HEAD);
+
+	drain::TreeHTML & encoding = head["encoding"](drain::html::META);
+	encoding->set("charset", "utf-8");
+
+	// drain::TreeHTML & style =
+	head[drain::html::STYLE](drain::html::STYLE);
+
+	drain::TreeHTML & title = head[drain::html::TITLE](drain::html::TITLE);
+	title = heading;
+
+	drain::TreeHTML & body = html[drain::html::BODY](drain::html::BODY);
+
+	if (!heading.empty()){
+		drain::TreeHTML & h1 = body["title"](drain::html::H1);
+		h1 = heading;
 	}
 
+	return body;
+}
 
-} // drain::
+/*
+drain::TreeHTML & TreeUtilsHTML::fillTableRow(drain::TreeHTML & table, drain::TreeHTML & tr, const std::string value){
+
+	for (const auto & entry: table.getChildren()){
+		// Using keys of the first row, create a new row. Often, it is the title row (TH elements).
+		for (const auto & e: entry.second.getChildren()){
+			tr[e.first]->setType(drain::NodeHTML::TD);
+			tr[e.first] = value;
+		}
+		// Return after investigating the first row:
+		return tr;
+	}
+
+	// If table is empty, also tr is.
+	return tr;
+
+}
+*/
+//int NodeXML::nextID = 0;
+
+
+}  // drain::

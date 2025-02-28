@@ -81,18 +81,6 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const FlexibleVariable & 
 
 DRAIN_TYPENAME(FlexibleVariable);
 
-/*
-template <>
-const std::string TypeName<FlexibleVariable>::name;
-*/
-
-
-/*
-template <>
-FlexibleVariable::FlexibleVariable(const char *s){
-};
-*/
-
 
 }  // namespace drain
 

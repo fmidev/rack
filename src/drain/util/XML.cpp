@@ -70,18 +70,21 @@ void XML::clear(){
 }
 
 bool XML::isSingular() const {
-	std::cerr << __FUNCTION__ << " always FALSE!\n";
+	// std::cerr << __FUNCTION__ << " always FALSE!\n";
 	return false;
 }
 
 /// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
 bool XML::isExplicit() const {
 
+	// Recommended implementation: with typeIs()
+	return typeIs(SCRIPT, STYLE);
+
+	/*
 	static
 	const std::set<intval_t> l = {SCRIPT, STYLE}; // todo, append, and/or generalize...
-
 	return (l.find(type) != l.end()); // not in the set
-
+	*/
 }
 
 void XML::setText(const std::string & s) {

@@ -150,6 +150,20 @@ public:
 		importMap(m);
 	};
 
+	/// Constructor for initializer lists.
+	/**
+	 *  \code
+	 *    	VariableMap vmap = {{"name": "Julian"}, {"number": 123.45}};
+	 *  \endcode
+	 */
+	inline
+	FlexVariableMap(std::initializer_list<Variable::init_pair_t > inits) : SmartMap<FlexibleVariable>(','){
+		for (const auto & entry: inits){
+			(*this)[entry.first] = entry.second;
+		}
+	};
+
+
 	inline
 	FlexVariableMap & operator=(const FlexVariableMap & v){
 		importMap(v);

@@ -29,7 +29,10 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <cmath>
+#include <stdexcept>
 
+#include <drain/Type.h>
 #include <drain/TypeUtils.h>
 
 namespace drain {
@@ -80,6 +83,34 @@ const std::type_info & TypeUtils::guessType(const std::string & value){
 	}
 
 }
+
+class fitsIn {
+
+public:
+
+	typedef bool value_t;
+
+	/**
+	 *  \tparam S - type to be analyzed
+	 *  \tparam T - destination type  (practically value_t)
+	 */
+	template <class S, class T>
+	static inline
+	T callback(){
+		return static_cast<T>(isWithinRange<S>()); // static cast unneeded in these ?
+	}
+
+protected:
+
+	// Must be here to get template<void> implemented
+	template <class S>
+	static inline
+	size_t isWithinRange(){
+		return sizeof(S);
+	}
+
+};
+
 
 
 

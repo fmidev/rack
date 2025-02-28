@@ -49,11 +49,11 @@ namespace image {
 
 class NodeSLD;
 
-typedef drain::UnorderedMultiTree<NodeSLD,false, NodeXML<>::path_t> TreeSLD;
+typedef UnorderedMultiTree<NodeSLD,false, drain::NodeXML<>::path_t> TreeSLD;
+//typedef drain::UnorderedMultiTree<NodeSLD,false, NodeXML<>::path_t> TreeSLD;
 
 struct SLD {
 
-	// typedef float coord_t;
 
 	enum tag_t {
 		UNDEFINED=XML::UNDEFINED,
@@ -87,7 +87,6 @@ struct SLD {
 } // image::
 
 
-//const drain::EnumDict<image::SLD::elem_t>::dict_t & getDict();
 
 
 template <>
@@ -159,14 +158,8 @@ public:
 	void setAttribute(const std::string & key, const char *value) override;
 
 	/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
-	virtual inline
-	bool isSingular() const override final {
-		static const std::set<SLD::tag_t> singular = {SLD::ColorMapEntry};
-		// Consider "complement" approach, non-singular
-		return singular.find(static_cast<SLD::tag_t>(type)) != singular.end();
-	}
-
-
+	virtual
+	bool isSingular() const override final;
 
 	/// Write transform, in addition to XML::ClassList.
 	/**
@@ -197,6 +190,8 @@ void NodeSLD::setAlign(const P & pos, const A & axis,  const V &value){
 	alignments[p][a] = v;
 }
 */
+//typedef UnorderedMultiTree<NodeSLD,false, drain::NodeXML<>::path_t> TreeSLD;
+
 
 }  // image::
 
@@ -205,16 +200,23 @@ std::ostream & operator<<(std::ostream &ostr, const image::NodeSLD & node){
 	return node.nodeToStream(ostr);
 }
 
+inline
+std::ostream & operator<<(std::ostream &ostr, const image::TreeSLD & tree){
+	//return drain::NodeXML<const drain::image::NodeSLD>::docToStream(ostr, tree);
+	return image::NodeSLD::docToStream(ostr, tree);
+}
+
 
 }  // drain::
 
 
+/*
 inline
 std::ostream & operator<<(std::ostream &ostr, const drain::image::TreeSLD & tree){
 	//return drain::NodeXML<const drain::image::NodeSLD>::docToStream(ostr, tree);
 	return drain::image::NodeSLD::docToStream(ostr, tree);
-	//return drain::image::TreeSLD::node_data_t::docToStream(ostr, tree);
 }
+*/
 
 
 

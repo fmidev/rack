@@ -107,8 +107,17 @@ NodeSLD::NodeSLD(const NodeSLD & node) : xml_node_t(){
 	// mout.warn("node type: ", node.getType(), " -> type: ", type);
 }
 
-//template <>
-// void NodeXML<image::SLD::tag_t>::handleType(const image::SLD::tag_t & t){
+/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
+
+bool NodeSLD::isSingular() const  {
+	// static const std::set<SLD::tag_t> singular = {SLD::ColorMapEntry};
+	// Consider "complement" approach, non-singular
+	// return singular.find(static_cast<SLD::tag_t>(type)) != singular.end();
+	return typeIs(// Note: variadic template
+			SLD::ColorMapEntry
+	);
+}
+
 void NodeSLD::handleType(const SLD::tag_t & t) { // setType(const elem_t & t) {
 
 	// drain::Logger mout(drain::TypeName<NodeSLD>::str().c_str(), __FUNCTION__);

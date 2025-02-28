@@ -52,58 +52,71 @@ namespace image
  */
 
 
-PaletteEntry::PaletteEntry(): BeanLike(__FUNCTION__), //value(0.0),
+PaletteEntry::PaletteEntry():
+		BeanLike(__FUNCTION__),
+		// color(3, 0.0), // VECT
 		alpha(255.0), hidden(false){
 	init();
 }
 
-PaletteEntry::PaletteEntry(const PaletteEntry & entry): BeanLike(__FUNCTION__), // value(0.0),
-		alpha(255.0), hidden(false){
+PaletteEntry::PaletteEntry(const PaletteEntry & entry):
+				BeanLike(__FUNCTION__),
+				// color(3, 0.0), // VECT
+				alpha(255.0), hidden(false){
 	init();
 	parameters.importMap(entry.getParameters());
 	color = entry.color;
 }
 
 PaletteEntry::PaletteEntry(const char * code, const char * label, const color_t & color, value_t alpha, bool hidden) :
-		BeanLike(__FUNCTION__), code(code), label(label), color(color), alpha(alpha), hidden(hidden) {
+				BeanLike(__FUNCTION__),
+				code(code), label(label), color(color), alpha(alpha), hidden(hidden) {
 	init();
 }
 
 PaletteEntry::PaletteEntry(const char * label, const color_t & color, value_t alpha, bool hidden) :
-		BeanLike(__FUNCTION__), code(label), label(label), color(color), alpha(alpha), hidden(hidden) {
+				BeanLike(__FUNCTION__),
+				code(label), label(label), color(color), alpha(alpha), hidden(hidden) {
 	init();
 }
 
 PaletteEntry::PaletteEntry(const color_t & color, value_t alpha, bool hidden) :
-		BeanLike(__FUNCTION__), color(color), alpha(alpha), hidden(hidden) {
+		BeanLike(__FUNCTION__),
+		color(color), alpha(alpha), hidden(hidden) {
 	init();
 }
 
 
 PaletteEntry::PaletteEntry(const std::initializer_list<Variable::init_pair_t > & args) :
-		BeanLike(__FUNCTION__), alpha(255.0), hidden(false) {
+		BeanLike(__FUNCTION__),
+		// color(3, 0.0),  // VECT
+		alpha(255.0), hidden(false) {
 	init();
 	/*
 	for (auto entry: args){
 		std::cout << entry.first << " == " << entry.second << std::endl;
-		// setParameter(entry.first, entry.second);
 	}*/
+	// parameters = args;
 	setParameters(args);
 }
 
-PaletteEntry::PaletteEntry(const char * label): BeanLike(__FUNCTION__), label(label), alpha(255.0), hidden(true) {
+PaletteEntry::PaletteEntry(const char * label):
+		BeanLike(__FUNCTION__),
+		// color(3, 0.0),  // VECT
+ 		label(label), alpha(255.0), hidden(true) {
+	// Why no init() ? because hidden?
 	parameters.link("label", this->label);
 }
 
 
 
 void PaletteEntry::init(){
-	// color.resize(1, 0); NOVECT
-	// parameters.link("value", value); //  = 0.0
-	// parameters.link("color", color);
+	// color.resize(1, 0); VECT
+	// parameters.link("color", color); // UNITUPLE
+	parameters.link("color", color);
+	// parameters["color"] << 128.0 << 0.0 << 255.0; // FLEX ?
 	parameters.link("code", code);
 	parameters.link("label", label);
-	parameters.link("color", color);
 	parameters.link("alpha", alpha); //  = 255.0
 	parameters.link("hidden", hidden); // =false
 }

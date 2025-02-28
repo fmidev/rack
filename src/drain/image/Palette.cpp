@@ -203,29 +203,24 @@ void Palette::update() const {
 	size_t i = 0;
 	size_t a = 0;
 
-	//for (std::map<std::string,PaletteEntry >::const_iterator it = specialCodes.begin(); it != specialCodes.end(); ++it){
 	for (const auto & entry: specialCodes){
-
-		// const PaletteEntry & entry = it->second;
 
 		if (entry.second.color.size() > i)
 			i = entry.second.color.size();
 
-		if (entry.second.alpha < 255.0)
+		//if (entry.second.alpha < 255.0)
+		if (entry.second.alpha < 1.0)
 			a = 1;
 
 	}
 
-	//for (Palette::const_iterator it = begin(); it != end(); ++it){
 	for (const auto & entry: *this){
-
-		// const PaletteEntry & entry = it->second;
-		// mout.note(" e" , it->first , '\t' , entry.color.size() );
 
 		if (entry.second.color.size() > i)
 			i = entry.second.color.size();
 
-		if (entry.second.alpha < 255.0)
+		//if (entry.second.alpha < 255.0)
+		if (entry.second.alpha < 1.0)
 			a = 1;
 
 	}
@@ -474,7 +469,11 @@ void Palette::loadTXT(std::istream & ifstr){
 	// id.setType(typeid(std::string));
 	// id.setSeparator('-');
 
+	//FlexibleVariable flex;
+
 	while (std::getline(ifstr, line)){
+
+		//flex.clear();
 
 		//mout.note() << "'" << line <<  "'" << std::endl;
 		size_t i = line.find_first_not_of(" \t");
@@ -534,11 +533,17 @@ void Palette::loadTXT(std::istream & ifstr){
 				mout.warn("suspicious line: ", line);
 				continue;
 			}
-			mout .debug3("reading  entry[", d, "]");
+			mout.debug3("reading  entry[", d, "]");
+
 		}
 
 
 		PaletteEntry & entry = SPECIAL ? specialCodes[label] : (*this)[d]; // Create entry?
+
+		// Experimental
+		// entry.colorFlex << d;
+		//entry.colorFlex.clear();
+		entry.colorFlex.reset(); // clear also type
 
 		// entry.value = d; NEW
 		if (!label.empty()){
@@ -567,15 +572,30 @@ void Palette::loadTXT(std::istream & ifstr){
 
 		//Variable colours(typeid(PaletteEntry::value_t)); // NOVECT
 		PaletteEntry::color_t::iterator cit = entry.color.begin();
+
+		static const PaletteEntry::value_t UNSET_VALUE = std::numeric_limits<PaletteEntry::value_t>::max();
+		entry.alpha = UNSET_VALUE;
+
+		// const std::type_info & t = TypeUtils::minimizeIntType<unsigned char>(d); develop updating(nesting), or list/sequence here?
+		// mout.attention(" d=", d, " -> ", drain::Type::call<drain::compactName>(t));
 		while (data >> d) {
-			//colours << d;
 			if (cit == entry.color.end()){
-				mout.error("Overflow of color elements(", entry.color.size(), "). last value: ", d);
+				if (entry.alpha == UNSET_VALUE){
+					entry.alpha = d;
+				}
+				else {
+					mout.error("Overflow of color elements(", entry.color.size(), "). last value: ", d);
+				}
 			}
 			else {
 				*cit = d;
+				++cit;
 			}
-			++cit;
+			entry.colorFlex << d; // always append
+		}
+
+		if (entry.alpha == UNSET_VALUE){
+			entry.alpha = 1.0;
 		}
 
 		// FILL remaining (esp. gray)
@@ -585,21 +605,18 @@ void Palette::loadTXT(std::istream & ifstr){
 		}
 		//colours.toSequence(entry.color);
 
+		entry.checkAlpha(); // No effect for UniTuple<3>
 
-		entry.checkAlpha();
-
-		//mout.note("got " , colours.getElementCount() , '/' , entry.color.size() , " colours" );
-
+		// mout.note("got " , colours.getElementCount() , '/' , entry.color.size() , " colours" );
 		// TODO!
 		// if (entry.color.size() == 4)
-		//  alpha=
+		// alpha=
+		// mout.attention("Flex: ", entry.colorFlex);
 
 		mout.debug3(entry.label, '\t', entry);
 
-
-		// label.clear();
-
 	}
+
 
 	///// ifstr.close(); // ?
 
@@ -686,7 +703,10 @@ void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 				l.pop_back();
 				// no break
 			case 3:
-				entry.color.assignSequence(l);
+				// entry.color.assignSequence(l);
+				entry.color[2] = l.back(); l.pop_back();
+				entry.color[1] = l.back(); l.pop_back();
+				entry.color[0] = l.back(); l.pop_back();
 				break;
 			default:
 				mout.fail("Unsupported number of colours: ", l.size());
@@ -1056,9 +1076,9 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 
 	// entry.id = "test";
 
-	// entry.color.resize(3); // NOVECT
-	//entry.getParameters().link("color", entry.color);
 	entry.getParameters().link("color", entry.color.tuple());
+	// entry.color.resize(3); // VECT
+	// entry.getParameters().link("color", entry.color);
 
 	std::string colorHex;
 	entry.getParameters().link("colorHex", colorHex);
@@ -1144,6 +1164,7 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 	size_t precision = 2; // for threshold
 	// const auto default_precision{std::cout.precision()};
 
+	/*
 	bool INTEGER = true;
 	for (const auto & entry: *this){
 		if (trunc(entry.first) != entry.first){
@@ -1151,9 +1172,11 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 			break;
 		}
 	}
+	*/
+
 	// svg["comment"]->setComment().set("integer", INTEGER);
-	svg["comment"](svg::COMMENT); //.set("integer", INTEGER);
-	svg["comment"] -> set("integer", INTEGER); // ???
+	svg[svg::COMMENT](svg::COMMENT); //.set("integer", INTEGER);
+	// svg[svg::COMMENT] -> set("integer", INTEGER); // ???
 
 	Palette::const_iterator it = begin();
 	std::map<std::string,PaletteEntry>::const_iterator itSpecial = specialCodes.begin();
@@ -1211,11 +1234,15 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 
 			if (!special){
 				threshold.str(" ");
-				// TODO: integers
-				if (INTEGER)
-					threshold << it->first;
-				else
+				// if (INTEGER)
+				if (::round(it->first) == it->first){
+					threshold << static_cast<int>(it->first);
+					// threshold << it->first;
+				}
+				else {
 					threshold << std::setprecision(precision) << it->first;
+				}
+
 				// t->ctext += threshold.str();
 				t.addChild() = threshold.str()+'|';
 				// t->setText(threshold.str());
@@ -1340,6 +1367,7 @@ void Palette::exportSLD(TreeSLD & sld) const {
 	// const auto default_precision{std::cout.precision()};
 
 	/// If the quantity is an integer, do not apply decimal notation.
+	/*
 	bool INTEGER = true;
 	for (const auto & entry: *this){
 		if (trunc(entry.first) != entry.first){
@@ -1347,6 +1375,7 @@ void Palette::exportSLD(TreeSLD & sld) const {
 			break;
 		}
 	}
+	*/
 	// sld["comment"]->setComment().set("integer", INTEGER);
 
 
@@ -1404,7 +1433,9 @@ void Palette::exportSLD(TreeSLD & sld) const {
 			 *     The opacity attribute overrides the global <Opacity> value.
 			 *     The label attribute is used to provide text for legends.
 			 */
-			colorMapEntry->set("opacity", 1.0);
+			if (entry.alpha < 1.0){
+				colorMapEntry->set("opacity", entry.alpha);
+			}
 			colorMapEntry->set("label", entry.label);
 
 			style.str("");
@@ -1436,11 +1467,13 @@ void Palette::exportSLD(TreeSLD & sld) const {
 			if (!special){
 				threshold.str(" ");
 				// TODO: integers
-				if (INTEGER)
-					threshold << it->first;
-				else
+				//if (INTEGER)
+				if (::round(it->first) == it->first){
+					threshold << static_cast<int>(it->first);
+				}
+				else {
 					threshold << std::setprecision(precision) << it->first;
-
+				}
 				colorMapEntry->set("quantity", threshold.str());
 
 			}

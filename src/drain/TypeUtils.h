@@ -32,16 +32,133 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TYPE_UTILS
 #define DRAIN_TYPE_UTILS
 
+#include <cmath>
 #include <limits>
 #include <set>
 #include <typeinfo>
 
 
-// #include "Type.h"
+#include "Type.h"
 #include "RegExp.h"
 
 namespace drain {
 
+///
+/**
+ *
+ */
+template <class S>
+struct typeLimits {
+
+	static inline
+	long int getMinI(){
+		return static_cast<long int>(std::numeric_limits<S>::min());
+	}
+
+	static inline
+	unsigned long int getMaxI(){
+		return static_cast<unsigned long int>(std::numeric_limits<S>::max());
+	}
+
+	static inline
+	double getMaxF(){
+		return static_cast<double>(std::numeric_limits<S>::max());
+	}
+
+};
+
+
+template <> inline long int typeLimits<void>::getMinI(){ return 0l; }
+template <> inline unsigned long int typeLimits<void>::getMaxI(){ return 0l; }
+template <> inline   double typeLimits<void>::getMaxF(){ return 0.0; }
+
+template <> inline long int typeLimits<std::string>::getMinI(){ return 0l; }
+template <> inline unsigned long int typeLimits<std::string>::getMaxI(){ return 0l; }
+template <> inline   double typeLimits<std::string>::getMaxF(){ return 0.0; }
+
+/// Class for ensuring that variable of type D remains within limits of type S.
+/**
+ *  Returns a function pointer of type typeLimiter::value_t .
+ *  \code
+     typedef drain::typeLimiter<double> Limiter;
+     Limiter::value_t limit = Type::call<typeLimiter>(t);  // t is type_info, char or std::string.
+	 double d = limit(12345.6789);
+    \endcode
+
+    With images of type drain::image::Image, use convenient function:
+    \code
+    Limiter::value_t limit = img.getEncoding().getLimiter<double>();
+	\endcode
+ *
+ */
+// THIS WORKS WELL!
+template <class D>
+class typeLimiter  {
+
+public:
+
+	/// Definition that simplifies
+	typedef D (*value_t)(D);
+
+	/**
+	 *  \tparam S - type selector
+	 *  \tparam T - destination type
+	 */
+	template <class S, class T>
+	static inline
+	T callback(){
+		if (std::numeric_limits<S>::is_integer)
+			return &typeLimiter<D>::limitInteger<S,D>;
+		else
+			return &typeLimiter<D>::limitFloat<S,D>;
+	}
+
+
+protected:
+
+	///
+	/**
+	 *  \tparam S - type selector
+	 *  \tparam T - target value type (integer type)
+	 *
+	 *  Note: expecting T > S, ie. S is a narrower basetype.
+	 */
+	template <class S, class T>
+	static
+	T limitInteger(T x){
+
+		static const T minValue = static_cast<T>(typeLimits<S>::getMinI());
+		static const T maxValue = static_cast<T>(typeLimits<S>::getMaxI());
+		if (x < minValue)
+			return minValue;
+		else if (x > maxValue)
+			return maxValue;
+
+		return x;
+	}
+
+	///
+	/**
+	 *  \tparam S - type selector
+	 *  \tparam T - target value type (float or double)
+	 */
+	template <class S, class T>
+	static
+	T limitFloat(T x){
+
+		static const T maxValue = static_cast<T>(typeLimits<S>::getMaxF());
+		// notice minus sign
+		if (x < -maxValue)
+			return -maxValue;
+		else if (x > maxValue)
+			return maxValue;
+
+		return x;
+	}
+
+
+
+};
 
 struct TypeUtils {
 
@@ -53,6 +170,15 @@ struct TypeUtils {
 	static
 	const std::type_info & guessType(const std::string & value);
 
+	/// Returns the (loosely) minimal type that could store the value without precision loss.
+	/**
+	 *
+	 */
+	static
+	const std::type_info & guessType(double d, const std::type_info & type = typeid(unsigned char));
+
+
+
 	/// Given a vector or list of strings, suggest a matching storage type (int, double, std::string).
 	/**
 	 *   \tparam C - contrainer, esp. std::list or std::vector
@@ -60,6 +186,27 @@ struct TypeUtils {
 	template <class C>
 	static
 	const std::type_info & guessArrayType(const C & container);
+
+
+	/**
+	 *   \tparam T - range-tested type
+	 *   \tparam S - source type
+	 */
+	template <typename T, typename S>
+	static inline
+	bool isWithinRange(const S & x){
+		// Call limit(), eg. check if 352 stays within [0,256[
+		return (Type::call<typeLimiter<S> >(typeid(T))(x) == x);
+	}
+
+	// 	 *   \tparam S - source type, typically with a large value range, double for example
+
+	/**
+	 *   \tparam T - narrower type, like short int.
+	 */
+	template <typename T=unsigned char>
+	static
+	const std::type_info & minimizeIntType(double d);
 
 	static
 	const drain::RegExp  trueRegExp; // ignore case
@@ -72,6 +219,60 @@ struct TypeUtils {
 	const drain::RegExp numeralRegExp;
 
 };
+
+
+
+/**
+ *  Starting from uchar, rising until
+ *
+ */
+template <typename T=unsigned char>
+const std::type_info & TypeUtils::minimizeIntType(double d){ // , const std::type_info & type = typeid(unsigned char)){
+
+	// const bool IS_INTEGER = (d == ::trunc(d));
+
+	if (d != ::trunc(d)){
+		return typeid(double); // later, also float option?
+	}
+
+
+	if (isWithinRange<T>(d)){
+		return typeid(T);
+	}
+
+	static const std::type_info & type = typeid(T);
+
+	// Type::call<isSigned>(type)
+	// Later, directly "inline" through type specification ?
+	if (std::numeric_limits<T>::is_signed){
+		// throw std::runtime_error(StringBuilder<' '>(__FUNCTION__, "  requested signed type: ", TypeName<T>::str()));
+		if (&type == &typeid(signed char)){
+			return minimizeIntType<signed short>(d);
+		}
+		else if (&type == &typeid(signed short)){
+			return minimizeIntType<signed int>(d);
+		}
+		else if (&type == &typeid(signed int)){
+			return minimizeIntType<signed long>(d);
+		}
+	}
+	else {
+		if (&type == &typeid(unsigned char)){
+			return minimizeIntType<unsigned short>(d);
+		}
+		else if (&type == &typeid(unsigned short)){
+			return minimizeIntType<unsigned int>(d);
+		}
+		else if (&type == &typeid(unsigned int)){
+			return minimizeIntType<unsigned long>(d);
+		}
+	}
+
+	return typeid(double);
+
+}
+
+
 
 
 /*
@@ -178,44 +379,8 @@ size_t sizeGetter::getSize<void>(){
 /// Returns the basic type (integer, float, bool, string, void) as a string.
 /**
  *  Usage:
- *  Type::call<drain::simpleName>(t)
+ *  Type::call<drain::compactName>(t)
  */
-/*
-class complexNameOLD {
-
-public:
-
-	typedef std::string value_t;
-
-	//  \tparam S - type to be analyzed (argument)
-	//  \tparam T - return type  (practically value_t)
-	template <class S, class T>
-	static
-	T callback(){
-		//const std::type_info & t = typeid(S);
-		std::stringstream sstr;
-		if (std::numeric_limits<S>::is_specialized){
-			if (std::numeric_limits<S>::is_integer)
-				if (std::numeric_limits<S>::is_signed)
-					sstr <<   "signed integer";
-				else
-					sstr << "unsigned integer";
-			else
-				sstr << "float";
-		}
-		else {
-			sstr << " non-numeric";
-		}
-		//sstr << '(' << (sizeof(S)*8) << ')';
-		sstr << " (" << (8 * sizeGetter::callback<S, std::size_t>()) << " bits)";
-		//sstr << ' ' << simpleName::callback<S,T>();
-		return sstr.str();
-	}
-
-};
-*/
-
-
 class compactName {
 
 public:
@@ -322,41 +487,6 @@ public:
 
 };
 
-// Experimental template exercise... (works ok)
-/**
- *  \tparam N - is numeric
- *  \tparam T - is integer
- *  \tparam S - is signed
-template <bool N, bool T, bool S> //, std::string STR = "">
-struct numInfo { //: protected numInfoBase {
-	static std::string s;
-};
-
-// Default: non-numeric (N==false)
-template <bool N, bool T, bool S>
-std::string complexName::numInfo<N,T,S>::s("non-numeric");
-
-// Numeric, float
-template <bool S>
-struct complexName::numInfo<true,false,S> {
-	static std::string s;
-};
-
-template <bool S>
-std::string complexName::numInfo<true,false,S>::s("float");
-
-// Numeric, integer
-template <bool S>
-struct complexName::numInfo<true,true,S> {
-	static std::string s; //("non-numeric");
-};
-
-template <>
-std::string complexName::numInfo<true,true,true>::s("signed integer");
-
-template <>
-std::string complexName::numInfo<true,true,false>::s("unsigned integer");
- */
 
 
 
@@ -514,38 +644,6 @@ public:
 };
 
 
-///
-/**
- *
- */
-template <class S>
-struct typeLimits {
-
-	static inline
-	long int getMinI(){
-		return static_cast<long int>(std::numeric_limits<S>::min());
-	}
-
-	static inline
-	unsigned long int getMaxI(){
-		return static_cast<unsigned long int>(std::numeric_limits<S>::max());
-	}
-
-	static inline
-	double getMaxF(){
-		return static_cast<double>(std::numeric_limits<S>::max());
-	}
-
-};
-
-
-template <> inline long int typeLimits<void>::getMinI(){ return 0l; }
-template <> inline unsigned long int typeLimits<void>::getMaxI(){ return 0l; }
-template <> inline   double typeLimits<void>::getMaxF(){ return 0.0; }
-
-template <> inline long int typeLimits<std::string>::getMinI(){ return 0l; }
-template <> inline unsigned long int typeLimits<std::string>::getMaxI(){ return 0l; }
-template <> inline   double typeLimits<std::string>::getMaxF(){ return 0.0; }
 
 
 /// The minimum value of a type given as type_info, char or std::string.
@@ -633,90 +731,42 @@ public:
 };
 
 
-/// Class for ensuring that variable of type D remains within limits of type S.
+
+// Experimental template exercise... (works ok)
 /**
- *  Returns a function pointer of type typeLimiter::value_t .
- *  \code
-     typedef drain::typeLimiter<double> Limiter;
-     Limiter::value_t limit = Type::call<typeLimiter>(t);  // t is type_info, char or std::string.
-	 double d = limit(12345.6789);
-    \endcode
-
-    With images of type drain::image::Image, use convenient function:
-    \code
-    Limiter::value_t limit = img.getEncoding().getLimiter<double>();
-	\endcode
- *
- */
-// THIS WORKS WELL!
-template <class D>
-class typeLimiter  {
-
-public:
-
-	/// Definition that simplifies
-	typedef D (*value_t)(D);
-
-	/**
-	 *  \tparam S - type selector
-	 *  \tparam T - destination type
-	 */
-	template <class S, class T>
-	static inline
-	T callback(){
-		if (std::numeric_limits<S>::is_integer)
-			return &typeLimiter<D>::limitInteger<S,D>;
-		else
-			return &typeLimiter<D>::limitFloat<S,D>;
-	}
-
-
-protected:
-
-	///
-	/**
-	 *  \tparam S - type selector
-	 *  \tparam T - target value type (integer type)
-	 *
-	 *  Note: expecting T > S, ie. S is a narrower basetype.
-	 */
-	template <class S, class T>
-	static
-	T limitInteger(T x){
-
-		static const T minValue = static_cast<T>(typeLimits<S>::getMinI());
-		static const T maxValue = static_cast<T>(typeLimits<S>::getMaxI());
-		if (x < minValue)
-			return minValue;
-		else if (x > maxValue)
-			return maxValue;
-
-		return x;
-	}
-
-	///
-	/**
-	 *  \tparam S - type selector
-	 *  \tparam T - target value type (float or double)
-	 */
-	template <class S, class T>
-	static
-	T limitFloat(T x){
-
-		static const T maxValue = static_cast<T>(typeLimits<S>::getMaxF());
-		// notice minus sign
-		if (x < -maxValue)
-			return -maxValue;
-		else if (x > maxValue)
-			return maxValue;
-
-		return x;
-	}
-
-
-
+ *  \tparam N - is numeric
+ *  \tparam T - is integer
+ *  \tparam S - is signed
+template <bool N, bool T, bool S> //, std::string STR = "">
+struct numInfo { //: protected numInfoBase {
+	static std::string s;
 };
 
+// Default: non-numeric (N==false)
+template <bool N, bool T, bool S>
+std::string complexName::numInfo<N,T,S>::s("non-numeric");
+
+// Numeric, float
+template <bool S>
+struct complexName::numInfo<true,false,S> {
+	static std::string s;
+};
+
+template <bool S>
+std::string complexName::numInfo<true,false,S>::s("float");
+
+// Numeric, integer
+template <bool S>
+struct complexName::numInfo<true,true,S> {
+	static std::string s; //("non-numeric");
+};
+
+template <>
+std::string complexName::numInfo<true,true,true>::s("signed integer");
+
+template <>
+std::string complexName::numInfo<true,true,false>::s("unsigned integer");
+ */
 
 
 } // drain::

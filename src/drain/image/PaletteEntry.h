@@ -38,7 +38,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Geometry.h"
 #include "TreeSVG.h"
 
-#include "drain/util/BeanLike.h"
+//#include "drain/util/BeanLike.h"
+#include "drain/util/VariableMap.h"
+
 #include "drain/util/Dictionary.h" // temporary ?
 #include "drain/util/JSON.h"
 #include "Legend.h"
@@ -47,6 +49,33 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+/// BeanLike-like, based on FlexMap
+class FavaBean {
+public:
+
+	inline
+	FavaBean(){};
+
+	inline
+	FavaBean(const FavaBean & b){};
+
+	typedef FlexVariableMap map_t;
+
+	inline
+	const map_t & getParameters() const { return parameters; };
+
+	inline
+	map_t & getParameters() { return parameters; };
+
+
+	const std::string name;  // todo separate (Beanlet)
+
+	const std::string description; // todo separate (Beanlet)
+
+	//ReferenceMap parameters;  // todo separate (Beanlet)
+	map_t parameters;  // todo separate (Beanlet)?
+
+};
 
 namespace image
 {
@@ -59,7 +88,7 @@ namespace image
  *
  *
  */
-class PaletteEntry : public BeanLike {
+class PaletteEntry : public BeanLike { // public FavaBean { //
 
 public:
 
@@ -67,7 +96,8 @@ public:
 	typedef double value_t;
 
 	/// Color vector type
-	typedef UniTuple<value_t,3> color_t;
+	typedef UniTuple<value_t,3> color_t;  // UNITUPLE
+	// typedef std::vector<value_t> color_t; // VECT
 
 	/// Default constructor
 	PaletteEntry();
@@ -157,6 +187,8 @@ public:
 
 	/// Index or threshold value. Must be signed, as image data may generally have negative values.
 	// double value;
+	// Experimental
+	FlexibleVariable colorFlex;
 
 	/// Colors, or more generally, channel values
 	color_t color;

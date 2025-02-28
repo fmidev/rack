@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "11.1"
+#define __RACK_VERSION__ "11.2"
 
 /**
  *  Version 11.0
@@ -41,6 +41,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 11.1
  *  - Recycling ctext as a multi-purpose string attribute, requires redefining isSingular()
  *  - SLD details (type="")
+ *  Release 11.2
+ *  - TreeUtilsHTML, isSingular(), isExplicit() adjusted
  *
  *  Version 10.7
  *   - gPanel TECH

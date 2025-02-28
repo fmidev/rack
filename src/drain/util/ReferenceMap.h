@@ -243,7 +243,7 @@ public:
 
 			if (keyList.empty()){
 				if (key.empty()){
-					std::cerr << "empty key referencing to " << x << " unit=" << unit << std::endl;
+					std::cerr << "empty key referencing to " << sprinter(x) << " unit=" << unit << std::endl;
 				}
 				else if (key.at(0) == '_'){
 					throw std::runtime_error(key + ": hidden parameters can be added only after visible");

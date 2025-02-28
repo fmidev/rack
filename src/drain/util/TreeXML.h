@@ -103,27 +103,6 @@ public:
 		return static_cast<T>(type); // may fail! consider two-way conversion assert
 	};
 
-	/// Return true, if type is any of the arguments.
-	/**
-	 *
-	 */
-	template <class T2, class ...T3>
-	inline
-	bool typeIs(const T2 & arg, const T3... args) const {
-		if (type == static_cast<intval_t>(arg)){
-			return true;
-		}
-		else {
-			return typeIs(args...);
-		}
-	};
-
-protected:
-
-	inline
-	bool typeIs() const {
-		return false;
-	};
 
 public:
 

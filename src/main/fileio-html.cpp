@@ -63,7 +63,7 @@ drain::TreeHTML & H5HTMLextractor::addTogglerScript(drain::TreeHTML & head, cons
 			"}",
 	};
 
-	drain::TreeHTML & script = head[key](drain::BaseHTML::SCRIPT);
+	drain::TreeHTML & script = head[key](drain::html::SCRIPT);
 	script->set("type", "text/javascript");
 	script = builder.c_str();
 
@@ -73,9 +73,9 @@ drain::TreeHTML & H5HTMLextractor::addTogglerScript(drain::TreeHTML & head, cons
 drain::TreeHTML & H5HTMLextractor::addTogglerStyle(drain::TreeHTML & head, const std::string key){
 
 	/// Original code from: https://www.w3schools.com/howto/howto_js_treeview.asp
-	drain::TreeHTML & style = head[key](drain::BaseHTML::STYLE);
+	drain::TreeHTML & style = head[key](drain::html::STYLE);
 	// script->set("type", "text/javascript");
-	style["comment"](drain::BaseHTML::STYLE)->setText("/* Original example: https://www.w3schools.com/howto/howto_js_treeview.asp */");
+	style["comment"](drain::html::STYLE)->setText("/* Original example: https://www.w3schools.com/howto/howto_js_treeview.asp */");
 	style["ul, #myUL"] = "list-style-type: none;";
 	style["#myUL"]->set("margin:0; padding:0;");
 	style[".caret"]->set("cursor:pointer; user-select:none;");
@@ -94,21 +94,21 @@ drain::TreeHTML & H5HTMLextractor::getHtml(){
 	if (html->isUndefined()){
 
 		// submout.ok("initializing HTML");
-		html(drain::BaseHTML::HTML);
+		html(drain::html::HTML);
 
 		// submout.ok("adding HEAD");
-		drain::TreeHTML & head = html["head"](drain::BaseHTML::HEAD); //  << drain::NodeHTML::entry<drain::NodeHTML::HEAD>();
+		drain::TreeHTML & head = html[drain::html::HEAD](drain::html::HEAD); //  << drain::NodeHTML::entry<drain::NodeHTML::HEAD>();
 
 		// submout.ok("adding TITLE");
-		head["title"](drain::BaseHTML::TITLE) = "HDF5 file";
+		head[drain::html::TITLE](drain::html::TITLE) = "HDF5 file";
 
 		/*
-		drain::TreeHTML & styleLink = head["styleLink"](drain::BaseHTML::LINK);
+		drain::TreeHTML & styleLink = head["styleLink"](drain::html::LINK);
 		styleLink->set("rel",  "stylesheet");
 		styleLink->set("href", "toggle.css");
 		*/
 
-		drain::TreeHTML & style = head["style"](drain::BaseHTML::STYLE);
+		drain::TreeHTML & style = head[drain::html::STYLE](drain::html::STYLE);
 		//style["table,tr"] = "border:1px solid;";
 		style["h1,h2,h3"] = "font-family: Helvetica, sans-serif;";
 		style["table,img"] = "border:1px solid;";
@@ -122,13 +122,13 @@ drain::TreeHTML & H5HTMLextractor::getHtml(){
 
 		addTogglerStyle(head);
 		addTogglerScript(head);
-		// drain::TreeHTML & script = head["script2"](drain::BaseHTML::SCRIPT);
+		// drain::TreeHTML & script = head["script2"](drain::html::SCRIPT);
 		// script->set("type", "text/javascript");
 		// script->set("src", "toggle.js");
 
 
-		html["body"](drain::BaseHTML::BODY);
-		html["body"]->set("onload", "addTogglers()");
+		html[drain::html::BODY](drain::html::BODY);
+		html[drain::html::BODY]->set("onload", "addTogglers()");
 
 		submout.accept(html);
 
@@ -158,7 +158,7 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 	drain::TreeHTML & htmlDoc = getHtml();
 
 	drain::TreeHTML & body = htmlDoc["body"];
-	body["ul"](drain::BaseHTML::UL); // prevent nested class
+	body["ul"](drain::html::UL); // prevent nested class
 
 	drain::TreeHTML::path_t htmlPath;
 
@@ -172,9 +172,9 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 		htmlPath.appendElem("ul");
 		// submout.ok("checking path: ", htmlPath);
 
-		drain::TreeHTML & group = body(htmlPath); //(drain::BaseHTML::UL);
+		drain::TreeHTML & group = body(htmlPath); //(drain::html::UL);
 		if (group->isUndefined()){
-			group->setType(drain::BaseHTML::UL);
+			group->setType(drain::html::UL);
 			group->addClass("nested");
 		}
 
@@ -193,7 +193,7 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 			htmlPath.appendElem(elemName);
 			drain::TreeHTML & item = body(htmlPath); // (drain::NodeHTML::LI);
 			if (item->isUndefined()){
-				item->setType(drain::BaseHTML::LI);
+				item->setType(drain::html::LI);
 				// item->set("name", estr);
 				if (e.is(ODIMPathElem::ARRAY)){
 
@@ -229,9 +229,9 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 
 				}
 				else {
-					drain::TreeHTML & span = body(htmlPath)[elemName+"-span"]; // (drain::BaseHTML::SPAN);
+					drain::TreeHTML & span = body(htmlPath)[elemName+"-span"]; // (drain::html::SPAN);
 					if (span->isUndefined()){
-						span->setType(drain::BaseHTML::SPAN);
+						span->setType(drain::html::SPAN);
 						span->addClass("caret");
 						span = elemName+'/';
 					}
@@ -239,7 +239,7 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 					if (e.is(ODIMPathElem::DATASET)){
 						const drain::VariableMap & v = t[ODIMPathElem::WHERE].data.attributes;
 						if (v.hasKey("elangle")){ // body(htmlPath)
-							drain::TreeHTML & info = span[elemName+"-elangle"](drain::BaseHTML::SPAN);
+							drain::TreeHTML & info = span[elemName+"-elangle"](drain::html::SPAN);
 							info->addClass("metadata");
 							info = v["elangle"];
 						}
@@ -247,7 +247,7 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 					else if (e.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
 						const drain::VariableMap & v = t[ODIMPathElem::WHAT].data.attributes;
 						//if (v.hasKey("quantity")){ body(htmlPath)
-						drain::TreeHTML & info = span[elemName+"-elangle"](drain::BaseHTML::SPAN);
+						drain::TreeHTML & info = span[elemName+"-elangle"](drain::html::SPAN);
 						info->addClass("metadata");
 						info = v.get("quantity", "unknown");
 					}

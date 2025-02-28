@@ -553,8 +553,8 @@ void CmdOutputFile::exec() const {
 		//extractor.setBaseDir(drain::FilePath::path_t(path.dir, path.basename));
 		extractor.setBaseDir(path.dir);
 		drain::TreeHTML & html = extractor.getHtml();
-		html["head"]["title"](drain::BaseHTML::TITLE) = path.basename;
-		html["body"]["header"](drain::BaseHTML::H1) = path.basename;
+		html[drain::html::HEAD][drain::html::TITLE](drain::html::TITLE) = path.basename;
+		html[drain::html::BODY]["header"](drain::html::H1) = path.basename;
 		html->setId(path.basename); // currently more like comment.
 
 		drain::TreeUtils::traverse(extractor, src);

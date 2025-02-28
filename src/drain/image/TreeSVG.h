@@ -234,6 +234,13 @@ public:
 		);
 	}
 
+	/// If true, render always as single elem (without child elems)
+	virtual inline
+	bool isSingular() const override final {
+		return false;
+	}
+
+
 	/// Copy data from a node. (Does not copy subtree.)
 	inline
 	NodeSVG & operator=(const NodeSVG & node){

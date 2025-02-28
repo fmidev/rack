@@ -31,15 +31,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TYPE
 #define DRAIN_TYPE
 
-#include <typeinfo>
-//#include <type_traits>
-//#include <limits>
+#include <iostream>
 #include <list>
 #include <set>
 #include <stdexcept>
+#include <typeinfo>
+#include <vector>
 
-//#include "Log.h"
-#include "RegExp.h"
+// #include "Log.h"
+// #include "RegExp.h"
 
 namespace drain {
 

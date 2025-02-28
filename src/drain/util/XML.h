@@ -72,6 +72,28 @@ public:
 
 	typedef ReferenceMap2<FlexibleVariable> map_t;
 
+	/// Return true, if type is any of the arguments.
+	/**
+	 *
+	 */
+	template <class T2, class ...T3>
+	inline
+	bool typeIs(const T2 & arg, const T3... args) const {
+		if (type == static_cast<intval_t>(arg)){
+			return true;
+		}
+		else {
+			return typeIs(args...);
+		}
+	};
+
+protected:
+
+	inline
+	bool typeIs() const {
+		return false;
+	};
+
 protected:
 
 	intval_t type = XML::UNDEFINED;
@@ -736,15 +758,14 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 		}
 	}
 
-	mout.attention("Hey! ", TypeName<TR>::str(), " with ", TypeName<typename TR::node_data_t>::str(), "Explicit ", data.isExplicit(), " or implicit ", data.isSingular());
+	// mout.attention("Hey! ", TypeName<TR>::str(), " with ", TypeName<typename TR::node_data_t>::str(), "Explicit ", data.isExplicit(), " or implicit ", data.isSingular());
 	if (data.isExplicit()){ // explicit
 		mode = OPENING_TAG;
 	}
-	else // ?
-	if (data.isSingular()){ // <br/> <hr/>
+	else if (data.isSingular()){ // <br/> <hr/>
 		mode = EMPTY_TAG;
 	}
-
+	// Hence, is flexible, "bimodal", supports empty and open-close mode.
 
 	// Indent
 	// std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
@@ -760,7 +781,7 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 	else if (data.isStyle()){
 		// https://www.w3.org/TR/xml/#sec-cdata-sect
 		// ostr << "<![CDATA[ \n";
-		ostr << "<!-- STYLE -->";
+		// ostr << "<!-- STYLE -->"; WRONG!
 
 		if (!data.ctext.empty()){
 			// TODO: indent
