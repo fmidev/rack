@@ -81,6 +81,63 @@ namespace image
 {
 
 
+
+
+class PalEntry { //  : public ABC { //: public drain::BeanLike {
+
+
+public:
+
+
+	/// Threshold value (lowest value to be associated with entry (color and alpha)
+	typedef double value_t;
+
+	/// Color vector type
+	//typedef drain::UniTuple<value_t,3> color_t;
+	typedef std::vector<value_t> color_vect_t;
+	typedef drain::FlexVariableMap map_t;
+
+	PalEntry(const color_vect_t & color={}, value_t alpha=1.0, const std::string & label = "");
+
+	PalEntry(const std::initializer_list<drain::Variable::init_pair_t > & args);
+
+//protected:
+
+	//ReferenceMap parameters;  // todo separate (Beanlet)
+	map_t parameters;  // todo separate (Beanlet)?
+
+	//color_t color;
+	drain::FlexibleVariable & color; // "Inverse" linkage to parameters.
+	value_t alpha = 1.0;
+
+	std::string label;
+
+	inline
+	PalEntry & operator=(const PalEntry & b);
+
+
+	inline
+	const map_t & getParameters() const { return parameters; };
+
+	inline
+	map_t & getParameters() { return parameters; };
+
+
+	const std::string name;  // todo separate (Beanlet)
+
+	const std::string description; // todo separate (Beanlet)
+
+protected:
+
+	//ReferenceMap parameters;  // todo separate (Beanlet)
+
+	void init();
+
+};
+
+
+
+
 /// Container for color, transparency (alpha) and textual id and description. Does not contain intensity thresholds (intervals).
 /**
  *  The color is stored as 8 bit value [0.0 ,255.0].
@@ -88,15 +145,20 @@ namespace image
  *
  *
  */
-class PaletteEntry : public BeanLike { // public FavaBean { //
+class PaletteEntry { // : public BeanLike { // public FavaBean { //
 
 public:
 
 	/// Intensity type
 	typedef double value_t;
 
+	// UUSI
+	typedef std::vector<value_t> color_vect_t;
+	typedef drain::FlexVariableMap map_t;
+
 	/// Color vector type
-	typedef UniTuple<value_t,3> color_t;  // UNITUPLE
+	typedef FlexibleVariable color_t; // NEW
+	// typedef UniTuple<value_t,3> color_t;  // UNITUPLE
 	// typedef std::vector<value_t> color_t; // VECT
 
 	/// Default constructor
@@ -118,7 +180,7 @@ public:
 	 *  \endcode
 	 *
 	 */
-	PaletteEntry(const char * code, const char * label, const color_t & color, value_t alpha=255.0, bool hidden=false);
+	PaletteEntry(const char * code, const char * label, const color_vect_t & color, value_t alpha=255.0, bool hidden=false);
 
 	///
 	/**
@@ -132,7 +194,7 @@ public:
 	         // ...
 	   \endcode
 	 */
-	PaletteEntry(const char * label, const color_t & color, value_t alpha=255.0, bool hidden=false);
+	PaletteEntry(const char * label, const color_vect_t & color, value_t alpha=255.0, bool hidden=false);
 
 	///
 	/**
@@ -147,7 +209,7 @@ public:
 	    \endcode
 	 *
 	 */
-	PaletteEntry(const color_t & color, value_t alpha=255.0, bool hidden=false);
+	PaletteEntry(const color_vect_t & color, value_t alpha=255.0, bool hidden=false);
 
 	/// Constructor supporting Palette initialization using "{key,value}" form.
 	/**
@@ -177,7 +239,8 @@ public:
 	//PaletteEntry(const std::string & label);
 	PaletteEntry(const char * label);
 
-	void checkAlpha();
+	// UUSI
+	map_t parameters;
 
 	/// Technical identifier (optional).
 	std::string code;
@@ -188,10 +251,10 @@ public:
 	/// Index or threshold value. Must be signed, as image data may generally have negative values.
 	// double value;
 	// Experimental
-	FlexibleVariable colorFlex;
+	FlexibleVariable & color;
 
 	/// Colors, or more generally, channel values
-	color_t color;
+	// color_t color;
 
 	/// Transparency
 	value_t alpha;
@@ -205,6 +268,16 @@ public:
 	 */
 	bool hidden;
 
+	// inline
+	PaletteEntry & operator=(const PaletteEntry & b);
+
+
+	inline
+	const map_t & getParameters() const { return parameters; };
+
+	inline
+	map_t & getParameters() { return parameters; };
+
 	/**
 	 *  \param ostr - output stream
 	 *  \param separator  - char after palette index
@@ -213,6 +286,9 @@ public:
 	 */
 	//	std::ostream & toOStream(std::ostream &ostr, char separator='\t', char separator2=0) const;
 	std::ostream & toStream(std::ostream &ostr, char separator='\t') const;
+
+	void checkAlpha();
+
 
 	/// Returns the color without leading marker (like "0x").
 	void getHexColor(std::ostream & ostr) const;

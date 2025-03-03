@@ -157,9 +157,14 @@ public:
 	 *   Also std::string is accepted, but handled as request of \c char array.
 	 */
 	virtual
-	void setType(const std::type_info & t);
+	void setType(const std::type_info & t) override ;
 
-
+	/// Overriding (shadowing) Castable::setType()
+	template <class T>
+	inline
+	void setType(){
+		setType(typeid(T));
+	}
 
 	/// Extends the array by one element.
 	/*
@@ -167,7 +172,7 @@ public:
 	 */
 	template <class T>
 	inline
-	VariableBase &operator<<(const T &x){
+	VariableBase & operator<<(const T &x){
 		//Castable::operator<<(x);
 		append(x);
 		return *this;

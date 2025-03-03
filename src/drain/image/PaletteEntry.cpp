@@ -45,6 +45,54 @@ namespace drain
 namespace image
 {
 
+PalEntry::PalEntry(const color_vect_t & color, value_t alpha, const std::string & label) : color(parameters["color"] = color), alpha(alpha), label(label){
+	init();
+}
+
+
+PalEntry::PalEntry(const std::initializer_list<drain::Variable::init_pair_t > & args) :
+		color(parameters["color"])
+{
+	init();
+	drain::SmartMapTools::setValues(parameters, args);
+	// parameters(args);
+};
+
+void PalEntry::init(){
+	// parameters.link("color", c);
+	// color.setType(typeid(double)); // is needed? Ok, file read needs "assumption"
+	parameters.link("alpha", alpha); // OR embedded in color?
+	parameters.link("label", label); // OR embedded in color?
+}
+
+
+PalEntry & PalEntry::operator=(const PalEntry & b){
+	color = b.color;
+	alpha = b.alpha;
+	label = b.label;
+	return *this;
+}
+
+
+/*
+void PaletteEntry::init(){
+	// parameters.link("color", c);
+	// color.setType(typeid(double)); // is needed? Ok, file read needs "assumption"
+	parameters.link("alpha", alpha); // OR embedded in color?
+	parameters.link("label", label); // OR embedded in color?
+}
+*/
+
+
+PaletteEntry & PaletteEntry::operator=(const PaletteEntry & b){
+	code   = b.code;
+	label  = b.label;
+	color  = b.color;
+	alpha  = b.alpha;
+	hidden = b.hidden;
+	return *this;
+}
+
 /// Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table. 
 /*! Treats an RGB truecolor image of N pixels as as a palette of N colors.
  *  -
@@ -52,58 +100,88 @@ namespace image
  */
 
 
+
+
+
 PaletteEntry::PaletteEntry():
-		BeanLike(__FUNCTION__),
-		// color(3, 0.0), // VECT
-		alpha(255.0), hidden(false){
+						// BeanLike(__FUNCTION__),
+				color(parameters["color"]),
+				// color(3, 0.0), // VECT
+				alpha(255.0),
+				hidden(false){
 	init();
 }
 
 PaletteEntry::PaletteEntry(const PaletteEntry & entry):
-				BeanLike(__FUNCTION__),
-				// color(3, 0.0), // VECT
-				alpha(255.0), hidden(false){
+// BeanLike(__FUNCTION__),
+// color(3, 0.0), // VECT
+		code(entry.code),
+		label(entry.label),
+		color(parameters["color"] = entry.color),
+		alpha(entry.alpha),
+		hidden(entry.hidden){
 	init();
-	parameters.importMap(entry.getParameters());
-	color = entry.color;
+	// parameters.importMap(entry.getParameters());
+	// color = b.color;
+	// color = entry.color;
 }
 
-PaletteEntry::PaletteEntry(const char * code, const char * label, const color_t & color, value_t alpha, bool hidden) :
-				BeanLike(__FUNCTION__),
-				code(code), label(label), color(color), alpha(alpha), hidden(hidden) {
+PaletteEntry::PaletteEntry(const char * code, const char * label, const color_vect_t & color, value_t alpha, bool hidden) :
+				// BeanLike(__FUNCTION__),
+				code(code),
+				label(label),
+				color(parameters["color"] = color),
+				// color(color),
+				alpha(alpha),
+				hidden(hidden) {
+	init();
+	// std::cerr << __FUNCTION__ << '|' << code << '=' << label << *this << "# " << parameters << '\n';
+}
+
+PaletteEntry::PaletteEntry(const char * label, const color_vect_t & color, value_t alpha, bool hidden) :
+				// BeanLike(__FUNCTION__),
+				code(label),
+				label(label),
+				color(parameters["color"] = color),
+				// color(color),
+				alpha(alpha),
+				hidden(hidden) {
 	init();
 }
 
-PaletteEntry::PaletteEntry(const char * label, const color_t & color, value_t alpha, bool hidden) :
-				BeanLike(__FUNCTION__),
-				code(label), label(label), color(color), alpha(alpha), hidden(hidden) {
-	init();
-}
-
-PaletteEntry::PaletteEntry(const color_t & color, value_t alpha, bool hidden) :
-		BeanLike(__FUNCTION__),
-		color(color), alpha(alpha), hidden(hidden) {
+PaletteEntry::PaletteEntry(const color_vect_t & color, value_t alpha, bool hidden) :
+		// BeanLike(__FUNCTION__),
+		color(parameters["color"] = color),
+		// color(color),
+		alpha(alpha),
+		hidden(hidden) {
 	init();
 }
 
 
 PaletteEntry::PaletteEntry(const std::initializer_list<Variable::init_pair_t > & args) :
-		BeanLike(__FUNCTION__),
+		// BeanLike(__FUNCTION__),
 		// color(3, 0.0),  // VECT
-		alpha(255.0), hidden(false) {
+		color(parameters["color"]),
+		alpha(255.0),
+		hidden(false) {
 	init();
+	drain::SmartMapTools::setValues(parameters, args);
 	/*
 	for (auto entry: args){
 		std::cout << entry.first << " == " << entry.second << std::endl;
 	}*/
 	// parameters = args;
-	setParameters(args);
+	// setParameters(args);
 }
 
 PaletteEntry::PaletteEntry(const char * label):
-		BeanLike(__FUNCTION__),
-		// color(3, 0.0),  // VECT
- 		label(label), alpha(255.0), hidden(true) {
+						// BeanLike(__FUNCTION__),
+				label(label),
+					// color(3, 0.0),  // VECT
+				color(parameters["color"]),
+				alpha(255.0),
+				hidden(true) {
 	// Why no init() ? because hidden?
 	parameters.link("label", this->label);
 }
@@ -113,7 +191,7 @@ PaletteEntry::PaletteEntry(const char * label):
 void PaletteEntry::init(){
 	// color.resize(1, 0); VECT
 	// parameters.link("color", color); // UNITUPLE
-	parameters.link("color", color);
+	// parameters.link("color", color); SKIP for FlexibleVariable
 	// parameters["color"] << 128.0 << 0.0 << 255.0; // FLEX ?
 	parameters.link("code", code);
 	parameters.link("label", label);
@@ -125,12 +203,14 @@ void PaletteEntry::init(){
 // Alpha check
 void PaletteEntry::checkAlpha(){
 
-	const size_t s = color.size();
+	//const size_t s = color.size();
+	const size_t s = color.getElementCount();
 
 	switch (s){
 		case 4:
 		case 2:
-			alpha = color[s-1];
+			// alpha = color[s-1];
+			alpha = color.get<double>(s-1);
 			// NOVECT color.resize(s-1);
 			break;
 		default:
@@ -154,16 +234,14 @@ void PaletteEntry::getHexColor(std::ostream & ostr) const {
 // std::ostream & PaletteEntry::toOStream(std::ostream &ostr, char separator, char separator2) const{
 std::ostream & PaletteEntry::toStream(std::ostream &ostr, char separator) const{
 
-		/*
-		ostr << "# value from Palette index!" << separator;
-		if (std::isnan(value)){
-			ostr << '@' << separator;
+
+		std::ios_base::fmtflags format(ostr.flags());
+		std::streamsize prec = ostr.precision();
+		if (Type::call<drain::typeIsFloat>(color.getType())){
+			ostr << std::fixed << std::setprecision(1);
+			ostr.precision(1);
 		}
-		else {
-			ostr << value << separator;
-		}
-		*/
-		ostr << std::fixed << std::setprecision(1);
+
 		char sep = 0;
 		for (color_t::const_iterator it=color.begin(); it != color.end(); ++it){
 			if (sep){
@@ -172,7 +250,7 @@ std::ostream & PaletteEntry::toStream(std::ostream &ostr, char separator) const{
 			else {
 				sep = separator;
 			}
-			ostr << *it; //  << separator2;
+			ostr << static_cast<double>(*it); // prevent uchars appearing as characters
 		}
 
 		// alpha (optional)
@@ -182,10 +260,11 @@ std::ostream & PaletteEntry::toStream(std::ostream &ostr, char separator) const{
 			}
 			ostr << alpha;
 		}
-		//if (color.size()==4)
-		//	if (color[3] != 255.0)
-		//		ostr << color[3];
 
+		ostr.flags(format);
+		//ostr.unsetf(std::fixed);
+		// ostr << std::setprecision(16);
+		ostr.precision(prec);
 		return ostr;
 }
 

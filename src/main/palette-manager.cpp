@@ -60,6 +60,9 @@ namespace rack {
 			m["CLASS"] =
 			#include "palette/palette-CLASS.inc"
 			;
+			// drain::Sprinter::sequenceToStream(std::cout, m["CLASS"], "\n", drain::Sprinter::cppLayout);
+			// std::cout << "-------------------------" << '\n';
+			// std::cout << m["CLASS"] << '\n';
 
 			m["CLASS-ETOP"] =
 			#include "palette/palette-CLASS-ETOP.inc"

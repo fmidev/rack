@@ -121,7 +121,7 @@ public:
 
 	/// Returns true, if string is empty or array size is zero.  (In future, semantics may change: 0 for scalars?)
 	/**
-	 *
+	 *   To comply with STL Container concept.
 	 *
 	 *
 	 *   \see getSize()
@@ -137,6 +137,11 @@ public:
 	};
 
 	/// Return true, if the pointer is set.
+	/**
+	 *  An invalid reference variable cannot be assigned a value.
+	 *
+	 *  \see drain::Reference
+	 */
 	inline
 	bool isValid() const {
 		return (caster.typeIsSet()) && (caster.ptr != nullptr);
@@ -182,6 +187,7 @@ public:
 
 	/// Returns the length of the array, the number of elements in this entry.
 	/**
+	 *  Currently undefined for strings. Could return string char count.
 	 *
 	 *   \see getElementSize()
 	 *   \see getSize()
@@ -208,8 +214,14 @@ public:
 	 *   \see getElementSize().
 	 */
 	virtual inline
-	size_t getSize() const {
+	size_t getSize() const final { // final trap
 		return elementCount * caster.getElementSize();
+	}
+
+	/// Alias, to comply with STL containers.
+	inline
+	size_t size() const {
+		return getElementCount();
 	}
 
 
@@ -250,8 +262,6 @@ public:
 	}
 
 
-public:
-
 
 	template <class T>
 	Castable &operator=(const T &x){
@@ -288,18 +298,6 @@ public:
 		return *this;
 	}
 
-
-	/*
-	inline
-	Castable &operator=(const Variable &c){
-		return assignCastable(c);
-	}
-
-	inline
-	Castable &operator=(const Referencer &c){
-		return assignCastable(c);
-	}
-	*/
 
 	// Special handler for string assignment
 	inline
@@ -352,6 +350,7 @@ public:
 			}
 		}
 		else {
+			std::cerr << __FILE__ << ':' << __FUNCTION__ << ": arg:" << x << '\n';
 			throw std::runtime_error(std::string(__FUNCTION__) + ": type is unset");
 		}
 
@@ -362,28 +361,22 @@ public:
 
 	/// Copies elements of a list.
 	template<typename T>
-	// Castable & operator=(std::initializer_list<T> l){
 	void assign(std::initializer_list<T> l){
 		assignContainer(l);
-		//return *this;
 	}
 
 	/// Copies elements of a list.
 	template <class T>
 	inline
-	// Castable &operator=(const std::list<T> & l){
 	void assign(const std::list<T> & l){
 		assignContainer(l);
-		// return *this;
 	}
 
 	/// Copies elements of a vector.
 	template <class T>
 	inline
-	// Castable &operator=(const std::vector<T> & v){
 	void assign(const std::vector<T> & v){
 		assignContainer(v);
-		// return *this;
 	}
 
 	/// Copies elements of a set.
@@ -400,7 +393,6 @@ public:
 	Castable & assignCastable(const Castable &c);
 
 
-
 	template <class T>
 	inline
 	Castable &operator<<(const T &x){
@@ -415,49 +407,42 @@ public:
 	 */
 	template <class T>
 	inline
-	//Castable &operator<<(const T &x){
 	void append(const T &x){
-		suggestType(typeid(T));
+		suggestType(typeid(T)); // must be here, esp. if string suggested
 		if (isString()){
 			appendToString(x);
 		}
 		else {
+			// suggestType will be repeated
 			appendToElementArray(x);
 		}
-		//return *this;
 	}
 
 	/// Appends the string or appends the array by one element.
 	inline
-	// Castable &operator<<
 	void append(const char *s){
-		//return *this << (std::string(s));
 		append(std::string(s));
 	}
 
 	/// Appends elements of std::list
 	template <class T>
-	inline  /// Castable &operator<<(
+	inline
 	void append(const std::list<T> & l){
 		assignContainer(l, true);
-		//return *this;
 	}
 
 	/// Appends elements of a vector
 	template <class T>
 	inline
-	// Castable &operator<<
 	void append(const std::vector<T> & v){
 		assignContainer(v, true);
-		/// return *this;
 	}
 
 	/// Appends elements of a set
 	template <class T>
-	inline  // Castable &operator<<
+	inline
 	void append(const std::set<T> & s){
 		assignContainer(s, true);
-		// return *this;
 	}
 
 	// NEW 2025
@@ -467,20 +452,57 @@ public:
 
 	template <class T, class ...TT>
 	void append(const T &arg, const TT& ...args){
-		//Castable::operator<<(x);
 		append(arg);
 		append(args...);
-		//return *this;
 	}
 
 
 	template <class T>
 	inline
 	T get(size_t i) const {
-		if (i >= elementCount)
+		if (i >= elementCount){
+			std::cerr << __FILE__ << " index=" << i << ", contents: '";
+			this->toStream(std::cerr);
+			std::cerr << "'\n";
 			throw std::runtime_error("Castable::get() index overflow");
+		}
 		return caster.get<T>(getPtr(i));
 	}
+
+
+	template <class T>
+	inline
+	T front() const {
+		if (empty()){
+			throw std::runtime_error("Castable::front() called on empty variable");
+		}
+		return caster.get<T>(getPtr(0));
+	}
+
+	template <class T>
+	inline
+	T back() const {
+		if (empty()){
+			throw std::runtime_error("Castable::back() called on empty variable");
+		}
+		return caster.get<T>(getPtr(elementCount - 1));
+	}
+
+	/// Tries to remove the last element.
+	/**
+	 *
+	 */
+	inline
+	void pop_back() { // consider move to Variable (but Flexible needs this anyway.
+		if (empty()){
+			throw std::runtime_error("Castable::front() called on empty variable");
+		}
+		if (!isVariable()){
+			throw std::runtime_error("Castable::pop_back() called on a referencing variable");
+		}
+		requestSize(elementCount - 1);
+	}
+
 
 	/*
 	template <class T>

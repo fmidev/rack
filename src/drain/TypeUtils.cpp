@@ -84,6 +84,53 @@ const std::type_info & TypeUtils::guessType(const std::string & value){
 
 }
 
+
+const std::type_info & TypeUtils::minimizeIntType(double value, const std::type_info & type){ // , const std::type_info & type = typeid(unsigned char)){
+
+	// const bool IS_INTEGER = (d == ::trunc(d));
+
+	if (value != ::trunc(value)){
+		return typeid(double); // later, also float option?
+	}
+
+	//if (isWithinRange<T>(d)){
+	if (Type::call<typeLimiter<double> >(type)(value) == value){
+		return type;
+	}
+
+	// static const std::type_info & type = typeid(T);
+	// Type::call<isSigned>(type)
+	// Later, directly "inline" through type specification ?
+
+	if (Type::call<isSigned>(type)){
+		// throw std::runtime_error(StringBuilder<' '>(__FUNCTION__, "  requested signed type: ", TypeName<T>::str()));
+		if (&type == &typeid(signed char)){
+			//return minimizeIntType<signed short>(d);
+			return minimizeIntType(value, typeid(signed short));
+		}
+		else if (&type == &typeid(signed short)){
+			return minimizeIntType(value, typeid(signed int));
+		}
+		else if (&type == &typeid(signed int)){
+			return minimizeIntType(value, typeid(signed long));
+		}
+	}
+	else {
+		if (&type == &typeid(unsigned char)){
+			return minimizeIntType(value, typeid(unsigned short));
+		}
+		else if (&type == &typeid(unsigned short)){
+			return minimizeIntType(value, typeid(unsigned int));
+		}
+		else if (&type == &typeid(unsigned int)){
+			return minimizeIntType(value, typeid(unsigned long));
+		}
+	}
+
+	return typeid(double);
+
+}
+
 class fitsIn {
 
 public:

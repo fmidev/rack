@@ -97,9 +97,12 @@ void Palette::addEntry(double min, double red, double green, double blue, const 
 	PaletteEntry & entry = (*this)[min];
 	// entry.value = min; NEW
 	// NOVECT entry.color.resize(3);
+	entry.color.set(red, green, blue);
+	/*
 	entry.color[0] = red;
 	entry.color[1] = green;
 	entry.color[2] = blue;
+	*/
 	entry.code = id;
 	entry.label = label;
 
@@ -201,31 +204,45 @@ void Palette::update() const {
 	Logger mout(__FILE__, __FUNCTION__);
 
 	size_t i = 0;
+	size_t iMax = 0;
 	size_t a = 0;
 
 	for (const auto & entry: specialCodes){
 
-		if (entry.second.color.size() > i)
-			i = entry.second.color.size();
+		i = std::max(i, entry.second.color.size());
 
-		//if (entry.second.alpha < 255.0)
-		if (entry.second.alpha < 1.0)
+		if (iMax == 0){
+			iMax = i;
+		}
+		else if (i != iMax){ // Debugging
+			mout.fail<LOG_ERR>("Colour count changed from ", iMax, " to ", i, " within palette");
+		}
+
+		if (entry.second.alpha < 255.0)
+		// if (entry.second.alpha < 1.0)
 			a = 1;
 
 	}
 
-	for (const auto & entry: *this){
+	for (const entry_t & entry: *this){
 
-		if (entry.second.color.size() > i)
-			i = entry.second.color.size();
+		i = std::max(i, entry.second.color.size());
 
-		//if (entry.second.alpha < 255.0)
-		if (entry.second.alpha < 1.0)
+		if (iMax == 0){
+			iMax = i;
+		}
+		else if (i != iMax){ // Debugging
+			mout.fail<LOG_ERR>("Colour count changed from ", iMax, " to ", i, " within palette");
+		}
+
+		if (entry.second.alpha < 255.0)
+		// if (entry.second.alpha < 1.0)
 			a = 1;
 
 	}
 
 	channels.setChannelCount(i, a);
+	mout.special("channel count: ", channels);
 
 }
 
@@ -263,7 +280,8 @@ void Palette::refine(size_t n){
 	}
 
 	/// Number of colors.
-	const size_t colors = begin()->second.color.size();
+	//const size_t colors = begin()->second.color.size();
+	const size_t colors = begin()->second.color.getElementCount();
 
 	/// New number of entries between two current entries.
 	const size_t steps = n / (size()-1);
@@ -283,8 +301,10 @@ void Palette::refine(size_t n){
 				debugIntervals[i] = fNew;
 				PaletteEntry & pNew = (*this)[fNew]; // 0.01f * round(100.0*(lastEntry->first + c*(entry.first-lastEntry->first)))];
 				// pNew.color.resize(s);
+				pNew.color.setSize(0);
 				for (size_t k=0; k<colors; ++k) {
-					pNew.color[k] = (1.0-coeff)*lastEntry->second.color[k] + coeff*entry.second.color[k] ;
+					//pNew.color[k] = (1.0-coeff)*lastEntry->second.color[k] + coeff*entry.second.color[k] ;
+					pNew.color << (1.0-coeff)*lastEntry->second.color.get<double>(k) + coeff*entry.second.color.get<double>(k);
 				}
 			}
 			mout.warn("current: [", lastEntry->first, ',',  entry.first, "[: ", drain::sprinter(debugIntervals));
@@ -456,20 +476,19 @@ void Palette::loadTXT(std::istream & ifstr){
 
 	reset();
 
-	double d;
+	// Threshold; original scientific quantity.
+	double threshold;
+	// Colour component.
+	double colour;
+	size_t colourCount = 0; // to be monitored; should be constant
 
 	bool SPECIAL;
 	std::string line;
 	std::string label;
 	std::string labelPrev;
 
+	// Range<size_t> colourDimension(100,1);
 
-	// int index = 100;
-	// Variable id;
-	// id.setType(typeid(std::string));
-	// id.setSeparator('-');
-
-	//FlexibleVariable flex;
 
 	while (std::getline(ifstr, line)){
 
@@ -529,21 +548,18 @@ void Palette::loadTXT(std::istream & ifstr){
 			//id = NAN;
 		}
 		else {
-			if (!(data >> d)){
+			if (!(data >> threshold)){
 				mout.warn("suspicious line: ", line);
 				continue;
 			}
-			mout.debug3("reading  entry[", d, "]");
+			mout.debug3("reading  entry[", threshold, "]");
 
 		}
 
 
-		PaletteEntry & entry = SPECIAL ? specialCodes[label] : (*this)[d]; // Create entry?
+		PaletteEntry & entry = SPECIAL ? specialCodes[label] : (*this)[threshold]; // Create entry?
 
-		// Experimental
-		// entry.colorFlex << d;
-		//entry.colorFlex.clear();
-		entry.colorFlex.reset(); // clear also type
+		// mout.attention("label: ", label, "LINE: ", line);
 
 		// entry.value = d; NEW
 		if (!label.empty()){
@@ -563,62 +579,84 @@ void Palette::loadTXT(std::istream & ifstr){
 
 		// mout.warn(line, " <- ", label);
 
+		entry.color.reset();
+		entry.alpha = 255.0; // UNSET_VALUE;
+
+		// Basic solution (all double)
 		/*
-		id = "";
-		id << ++index;
-		id << entry.label;
-		// entry.code = id.toStr();   NEW 2023/09
+		entry.color.setType<double>();
+		while (data >> d) {
+			entry.color << d;
+		}
 		*/
 
-		//Variable colours(typeid(PaletteEntry::value_t)); // NOVECT
-		PaletteEntry::color_t::iterator cit = entry.color.begin();
-
-		static const PaletteEntry::value_t UNSET_VALUE = std::numeric_limits<PaletteEntry::value_t>::max();
-		entry.alpha = UNSET_VALUE;
-
-		// const std::type_info & t = TypeUtils::minimizeIntType<unsigned char>(d); develop updating(nesting), or list/sequence here?
-		// mout.attention(" d=", d, " -> ", drain::Type::call<drain::compactName>(t));
-		while (data >> d) {
-			if (cit == entry.color.end()){
-				if (entry.alpha == UNSET_VALUE){
-					entry.alpha = d;
-				}
-				else {
-					mout.error("Overflow of color elements(", entry.color.size(), "). last value: ", d);
-				}
-			}
-			else {
-				*cit = d;
-				++cit;
-			}
-			entry.colorFlex << d; // always append
+		// Adaptive solution (type detection)
+		const std::type_info *typePtr = & typeid(unsigned char);
+		std::vector<double> values;
+		values.reserve(8); // optimize
+		while (data >> colour) {
+			values.push_back(colour);
+			typePtr = & TypeUtils::minimizeIntType(colour, *typePtr);
 		}
 
-		if (entry.alpha == UNSET_VALUE){
-			entry.alpha = 1.0;
+		entry.color.setType(*typePtr);
+		for (const double & v: values){
+			entry.color << v;
 		}
 
-		// FILL remaining (esp. gray)
-		while (cit != entry.color.end()){
-			*cit = d;
-			++cit;
+		mout.debug(" entry=", colour, " -> ", entry, " type:", drain::Type::call<drain::compactName>(*typePtr));
+
+		switch (entry.color.size()){
+		case 0:
+			mout.error("no elements read to a colour vector on line: ", line);
+			break;
+		case 1: // ok, simple intensity mapping
+		case 3:
+			break;
+		case 2: // assume 2nd is alpha
+		case 4: // assume 4th is alpha
+			entry.alpha = entry.color.back<double>();
+			entry.color.pop_back();
+			mout.accept("extracted alpha (", entry.alpha, ") from line: '", line, "', leaving ", entry.color.size(), " colours:", entry);
+			break;
+		default:
+			break;
+		};
+
+		if (colourCount == 0){
+			colourCount = entry.color.size();
 		}
-		//colours.toSequence(entry.color);
+		else if (colourCount != entry.color.size()){
+			mout.fail<LOG_ERR>("Colour count changed from ", colourCount, " to ", entry.color.size(), " on line: ", line);
+			return;
+		}
 
-		entry.checkAlpha(); // No effect for UniTuple<3>
+		// colourDimension.min = std::min(colourDimension.min, entry.color.size());
+		// colourDimension.max = std::max(colourDimension.max, entry.color.size());
 
+		entry.checkAlpha(); // deprecated?
 		// mout.note("got " , colours.getElementCount() , '/' , entry.color.size() , " colours" );
-		// TODO!
-		// if (entry.color.size() == 4)
-		// alpha=
-		// mout.attention("Flex: ", entry.colorFlex);
-
 		mout.debug3(entry.label, '\t', entry);
 
 	}
 
+	// Todo: global type detection (minimum int type)
+	/*
+	if (!colourDimension.empty()){
+		mout.warn("colourDimension varies: [" , colourDimension, "] colours");
 
+		for (entry_t & entry: *this){
+			while (entry.second.color.size() < colourDimension.max){
+
+			}
+		}
+	}
+	 */
+
+	// drain::Sprinter::sequenceToStream(std::cerr, *this, "\n", drain::Sprinter::cppLayout);
+	// std::cerr << '\n';
 	///// ifstr.close(); // ?
+	// mout.debug("colourDimension (range): " , colourDimension, " colours" );
 
 }
 
@@ -704,9 +742,13 @@ void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 				// no break
 			case 3:
 				// entry.color.assignSequence(l);
-				entry.color[2] = l.back(); l.pop_back();
-				entry.color[1] = l.back(); l.pop_back();
-				entry.color[0] = l.back(); l.pop_back();
+				entry.color.setSize(0);
+				entry.color << l.front(); l.pop_front();
+				entry.color << l.front(); l.pop_front();
+				entry.color << l.front(); l.pop_front();
+				// entry.color[2] = l.back(); l.pop_back();
+				// entry.color[1] = l.back(); l.pop_back();
+				// entry.color[0] = l.back(); l.pop_back();
 				break;
 			default:
 				mout.fail("Unsupported number of colours: ", l.size());
@@ -726,21 +768,6 @@ void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 
 
 
-/*
-void Palette::updateDictionary(){
-
-	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-
-	this->dictionary.clear();
-
-	//for (Palette::const_iterator it = begin(); it != end(); ++it){
-	for (const auto & entry: *this){
-		mout.info("add ", entry.first, ' ', entry.second.label);
-		this->dictionary.add(entry.first, entry.second.code);
-	}
-
-}
-*/
 
 void Palette::write(const std::string & filename) const {
 
@@ -754,7 +781,12 @@ void Palette::write(const std::string & filename) const {
 
 	drain::Output ofstr(filename);
 
-	if (NodeSVG::fileInfo.checkExtension(filepath.extension)){ // .svg
+	// "Native" format
+	if (filepath.extension == "txt"){
+			mout.debug("writing plain txt palette file");
+			exportTXT(ofstr,'\t', '\t');
+	}
+	else if (NodeSVG::fileInfo.checkExtension(filepath.extension)){ // .svg
 		mout.debug("writing SVG legend");
 		TreeSVG svg;
 		exportSVGLegend(svg, true);
@@ -815,10 +847,6 @@ void Palette::write(const std::string & filename) const {
 		mout.note("Writing in JSON format: list of (nested) {key,value} pairs.");
 		// mout.debug("This format is compatible with std::map (ReferenceMap applied by BeanLike).");
 		Sprinter::toStream(ofstr, *this, Sprinter::jsonLayout);
-	}
-	else if (filepath.extension == "txt"){
-		mout.debug("writing plain txt palette file");
-		exportTXT(ofstr,'\t', '\t');
 	}
 	else if (filepath.extension == "pal"){
 		mout.debug("writing formatted .pal file");
@@ -889,76 +917,6 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 
 }
 
-/*
-void Palette::exportCPP(std::ostream & ostr, bool flat) const {
-
-	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-
-	//std::cout << "cppLayout: --- "<< '\n';
-	if (flat){
-		mout.info("Writing in 'flat' C++ format: list of values.");
-		mout.debug("This format relies on PaletteEntry constructors.");
-		//static const SprinterLayout Palette::cppLayout2("{,}", "{,}", "{,}", "\"\"", "");
-		Sprinter::toStream(ostr, *this, Palette::cppLayout2);
-	}
-	else {
-		mout.note("Writing in structured C++ format: list of (nested) {key,value} pairs.");
-		mout.debug("This format relies on ReferenceMap reader applied by BeanLike.");
-		Sprinter::toStream(ostr, *this, Sprinter::cppLayout);
-	}
-
-}
-
-*/
-
-
-	/*
-	ostr << "{";
-	if (title.empty()){
-		ostr << " // " << title;
-	}
-	ostr << '\n';
-
-	char sep = 0;
-
-	if (!specialCodes.empty()){
-		ostr << "  // special codes //\n";
-		for (const auto & entry: specialCodes){
-			if (sep)
-				ostr << sep << '\n';
-			else
-				sep = ',';
-			ostr << "    {" << entry.first << ", {";
-			entry.second.toStream(ostr, ',');
-			ostr << "} }\n";
-		}
-	}
-
-	if (sep)
-		ostr << sep << '\n';
-
-	ostr << "  // colours  \n";
-	for (const auto & entry: *this){
-		if (sep)
-			ostr << sep << '\n';
-		else
-			sep = ',';
-		ostr << "    {" << entry.first << ", ";
-		if ((!entry.second.id.empty()) && (entry.second.id != entry.second.label)){
-			ostr << '"' << entry.second.id << '"' << ", ";
-		}
-		ostr << '"' << entry.second.label << '"' << ", {";
-		entry.second.toStream(ostr, ',');
-		//ostr << "} }";
-		ostr << "}";
-		if (entry.second.alpha < 1.0){
-			ostr << ", " << entry.second.alpha;
-		}
-		ostr << " }";
-	}
-
-	ostr << "\n}\n";
-	*/
 
 
 //void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
@@ -1074,9 +1032,9 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 
 	PaletteEntry entry;
 
-	// entry.id = "test";
+	// entry.getParameters().link("color", entry.color.tuple()); OLD
+	// entry.getParameters().link("color", entry.color);
 
-	entry.getParameters().link("color", entry.color.tuple());
 	// entry.color.resize(3); // VECT
 	// entry.getParameters().link("color", entry.color);
 
@@ -1085,7 +1043,7 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 	/*
 	drain::ReferenceMap entryWrapper;
 	//entryWrapper
-	entryWrapper.link("label", entry.label = "MIKA");
+	entryWrapper.link("label", entry.label = "Explanation...");
 	entryWrapper.link("color", entry.color);
 	entryWrapper.link("colorHex", colorHex);
 	entryWrapper.link("value", entry.value = 123.566);
@@ -1217,16 +1175,23 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 
 			style.str("");
 			const PaletteEntry::color_t & color = entry.color;
-			switch (color.size()){
+			//switch (color.size()){
+			switch (color.getElementCount()){
 			case 4:
-				if (color[3] != 255.0)
-					style << "fill-opacity:" << color[3]/255.0 << ';';
+				//if (color[3] != 255.0) {
+				if (color.get<double>(3) != 255.0) {
+					//style << "fill-opacity:" << color[3]/255.0 << ';';
+					style << "fill-opacity:" << color.get<double>(3)/255.0 << ';';
+				}
 				// no break
 			case 3:
-				style << "fill:rgb(" << color[0] << ',' << color[1] << ',' << color[2] << ");";
+				// style << "fill:rgb(" << color[0] << ',' << color[1] << ',' << color[2] << ");";
+				style << "fill:rgb(" << color.get<double>(0) << ',' << color.get<double>(1) << ',' << color.get<double>(2) << ");";
 				break;
 			case 1:
-				style << "fill:rgb(" << color[0] << ',' << color[0] << ',' << color[0] << ");";
+				// style << "fill:rgb(" << color[0] << ',' << color[0] << ',' << color[0] << ");";
+				// style << "fill:rgb(" << color.get<double>(0) << ");";
+				style << "fill:rgb(" << color.get<double>(0) << ',' << color.get<double>(1) << ',' << color.get<double>(2) << ");";
 				break;
 			}
 			//rect->set("style", style.str());
@@ -1433,18 +1398,18 @@ void Palette::exportSLD(TreeSLD & sld) const {
 			 *     The opacity attribute overrides the global <Opacity> value.
 			 *     The label attribute is used to provide text for legends.
 			 */
-			if (entry.alpha < 1.0){
-				colorMapEntry->set("opacity", entry.alpha);
+			if (entry.alpha < 255.0){
+				colorMapEntry->set("opacity", entry.alpha/255.0);
 			}
 			colorMapEntry->set("label", entry.label);
 
 			style.str("");
 			const PaletteEntry::color_t & color = entry.color;
-			switch (color.size()){
+			//switch (color.size()){
+			switch (color.getElementCount()){
 			case 4:
-				//if (color[3] != 255.0)
-				//	style << "fill-opacity:" << color[3]/255.0 << ';';
-				colorMapEntry->set("opacity", color[3]/255.0);
+				//colorMapEntry->set("opacity", color[3]/255.0);
+				colorMapEntry->set("opacity", color.get<double>(3)/255.0);
 				// no break
 			case 3:
 				//style << "fill:rgb(" << color[0] << ',' << color[1] << ',' << color[2] << ");";

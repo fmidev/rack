@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "11.2"
+#define __RACK_VERSION__ "11.3"
 
 /**
  *  Version 11.0
@@ -43,6 +43,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - SLD details (type="")
  *  Release 11.2
  *  - TreeUtilsHTML, isSingular(), isExplicit() adjusted
+ *  Release 11.3
+ *  - Fixed/revised support of transparency in palette values
  *
  *  Version 10.7
  *   - gPanel TECH

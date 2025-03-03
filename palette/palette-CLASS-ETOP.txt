@@ -3,9 +3,11 @@
 
 # Class indices (~thresholds) are also quality index values?
 
+# No data
 #nodata
 @ 255.0	255.0	255.0
 
+# Under detection level
 #undetect
 @ 0.0	0.0	0.0
 

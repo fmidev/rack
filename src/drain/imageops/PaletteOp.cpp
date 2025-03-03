@@ -220,7 +220,7 @@ void PaletteOp::getDstConf(const ImageConf &src, ImageConf &dst) const {
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
 	if (palettePtr->empty()){
-		mout.warn(" no palette loaded " );
+		mout.warn("no palette loaded?");
 		dst.setGeometry(src.getGeometry());
 		return;
 	}
@@ -235,7 +235,7 @@ void PaletteOp::getDstConf(const ImageConf &src, ImageConf &dst) const {
 	dst.setChannelCount(palettePtr->getChannels());
 
 	if (dst.getAlphaChannelCount() != alphaChannelCount){
-		mout.warn("dst alpha channel count changed from " ,alphaChannelCount , " to " , dst.getAlphaChannelCount() );
+		mout.note("adjusted dst alpha channel count from ", alphaChannelCount, " to ", dst.getAlphaChannelCount());
 	}
 
 	if (src.hasAlphaChannel() && !dst.hasAlphaChannel()){
@@ -286,20 +286,25 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	// Note: colouring involves also alpha, if found, so channelCount includes alpha channel(s)
 
-	size_t channelCount = dst.getGeometry().channels.getChannelCount();
+	// size_t channelCount = dst.getGeometry().channels.getChannelCount();
 
-	if (channelCount > paletteChannels.getChannelCount()){
-		mout.note("dst has " , channelCount , " colours (channels), using that of palette: " , paletteChannels.getChannelCount() );
-		channelCount = paletteChannels.getChannelCount();
+	size_t imageChannelCount = dst.getGeometry().channels.getImageChannelCount();
+
+
+	if (imageChannelCount > paletteChannels.getChannelCount()){
+		mout.note("dst has " , imageChannelCount , " colours (channels), using that of palette: " , paletteChannels.getChannelCount() );
+		imageChannelCount = paletteChannels.getChannelCount();
 	}
-	else if (channelCount < paletteChannels.getChannelCount()){
-		mout.note("palette has " , paletteChannels.getImageChannelCount() , " colours (channels), using only that of dst: " , channelCount );
+	else if (imageChannelCount < paletteChannels.getChannelCount()){
+		mout.note("palette has " , paletteChannels.getImageChannelCount() , " colours (channels), using only that of dst: " , imageChannelCount );
 	}
 
 
 	const bool SPECIAL_CODES = !specialCodes.empty();  // for PolarODIM nodata & undetected
 
 	const Palette & pal = *palettePtr;
+
+	const bool ALPHA = (pal.getChannels().getAlphaChannelCount() > 0);
 
 	//const std::type_info & type  = srcChannel.getType();
 	const ImageConf & encoding = srcChannel.getConf();
@@ -341,13 +346,23 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 		mout.info("created look-up table[", lut.size(), "] for input: ", drain::Type::getTypeChar(encoding.getType()) );
 		mout.info("scaling: ", encoding.getScaling(), " => ", sc);
 
+		/*
+		for (const auto & entry: lut){
+			mout.warn("LUT: ", entry->first, '\t', entry->second);
+		}
+		*/
+
 		if (mout.isDebug(2)){
 			for (size_t i=0; i<lut.size(); ++i){
 				mout.note(i, "\t", lut[i]->first, "\t", sc.fwd(i), "\t", pal.retrieve(sc.fwd(i))->first );
 			}
 		}
 
+		// mout.attention("applying LUT for ", channelCount, " channels");
+
 		for (size_t  i = 0; i < width; ++i) {
+
+			// mout.warn("column ", i);
 
 			for (size_t j = 0; j < height; ++j) {
 
@@ -359,8 +374,13 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 				if (SPECIAL_CODES){  // PolarODIM
 					pit = specialCodes.find(d);
 					if (pit != specialCodes.end()){
-						for (k = 0; k < channelCount; ++k)
-							dst.get(k).put(i,j, pit->second.color[k]);
+						for (k = 0; k < imageChannelCount; ++k){
+							dst.get(k).put(i,j, pit->second.color.get<int>(k));
+							//dst.get(k).put(i,j, pit->second.color[k]);
+						}
+						if (ALPHA){
+							dst.getAlpha().put(address, pit->second.alpha);
+						}
 						continue;
 					}
 				}
@@ -373,8 +393,14 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 					pit = lut[static_cast<int>(d) >> lut.bitShift];
 				}
 
-				for (k = 0; k < channelCount; ++k)
-					dst.get(k).put(address, pit->second.color[k]);
+				for (k = 0; k < imageChannelCount; ++k){
+					dst.get(k).put(address, pit->second.color.get<int>(k));
+					// dst.get(k).put(address, pit->second.color[k]);
+				}
+				if (ALPHA){
+					dst.getAlpha().put(address, pit->second.alpha);
+				}
+
 
 			}
 		}
@@ -392,8 +418,10 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 				mout << i << '>' << scaling.fwd(i) << '\t';
 				pit = pal.retrieve(scaling.fwd(i));
 				mout << pit->first << '\t';
-				for (k = 0; k < channelCount; ++k)
-					mout << pit->second.color[k] << '\t';
+				for (k = 0; k < imageChannelCount; ++k){
+					//mout << pit->second.color[k] << '\t';
+					mout << pit->second.color.get<double>(k) << '\t';
+				}
 				mout << '\n';
 			}
 			mout << mout.endl;
@@ -408,8 +436,10 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 				if (SPECIAL_CODES){  // PolarODIM
 					pit = specialCodes.find(d);
 					if (pit != specialCodes.end()){
-						for (k = 0; k < channelCount; ++k)
-							dst.get(k).put(i,j, pit->second.color[k]);
+						for (k = 0; k < imageChannelCount; ++k){
+							// dst.get(k).put(i,j, pit->second.color[k]);
+							dst.get(k).put(i,j, pit->second.color.get<double>(k));
+						}
 						continue;
 					}
 				}
@@ -421,15 +451,18 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 					pit = pal.retrieve(d);
 				}
 
-				for (k = 0; k < channelCount; ++k)
-					dst.get(k).put(i,j, pit->second.color[k]);
+				for (k = 0; k < imageChannelCount; ++k){
+					// dst.get(k).put(i,j, pit->second.color[k]);
+					dst.get(k).put(i,j, pit->second.color.get<double>(k));
+				}
+
 
 			}
 		}
 	}
 
 
-
+	// mout.attention("LUT finishing");
 
 	if (paletteChannels.getAlphaChannelCount() == 0){
 		if ((src.getGeometry().channels.getAlphaChannelCount()>0) && (dst.getGeometry().channels.getAlphaChannelCount()>0)){
@@ -437,6 +470,8 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 			CopyOp().traverseChannel(src.getAlpha(), dst.getAlpha());
 		}
 	}
+
+	// mout.attention("LUT end");
 
 
 }

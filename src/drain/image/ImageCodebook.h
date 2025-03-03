@@ -56,7 +56,9 @@ public:
 	typedef std::map<double,T> cont_t;
 	typedef typename cont_t::key_type     key_t;
 	typedef typename cont_t::value_type entry_t;
-	//typedef typename cont_t::size_type size_t;
+
+	/// LOOK-UP table is an array of pointers to the actual Palette
+	typedef drain::LookUp<typename cont_t::const_iterator> lookup_t;
 
 	// Utility for initializer_list based inits: the threshold values are read in parallel.
 	typedef typename std::list<entry_t> list_t;
@@ -78,8 +80,6 @@ public:
 	};
 
 
-	/// LOOK-UP table
-	typedef drain::LookUp<typename cont_t::const_iterator> lookup_t;
 
 	mutable
 	lookup_t lookUp;
@@ -92,7 +92,71 @@ public:
 	 *   TODO: count parameter (now automatic)
 	 *   TODO: interval fill up function (mixer)
 	 */
-	lookup_t & createLookUp(const std::type_info & type, const ValueScaling & scaling) const { // todo N?
+	lookup_t & createLookUp(const std::type_info & type, const ValueScaling & scaling) const;
+	// inline
+	typename cont_t::const_iterator retrieve(double d) const {
+
+		typename cont_t::const_iterator it = this->begin();
+		typename cont_t::const_iterator rit = it; // result
+
+		while (it != this->end()){
+			if (it->first > d)
+				return rit;
+			rit = it;
+			++it;
+		}
+
+		return rit; // may be invalid
+
+	}
+
+	// inline
+	typename cont_t::iterator retrieve(double d) {
+
+		typename cont_t::iterator  it = this->begin();
+		typename cont_t::iterator rit = it;
+
+		while (it != this->end()){
+			if (it->first > d)
+				return rit;
+			rit = it;
+			++it;
+		}
+
+		return rit; // may be invalid
+
+	}
+
+
+
+
+	///
+	/*
+	 *    \param equal - typically =, :, or -
+	 *    \param start - typically hyphen or leading parenthesis (, {, [
+	 *    \param end   - typically hyphen or trailing parenthesis ), }, [
+	 *    \param separator - typically comma or semicolon
+	 */
+
+	// ValueScaling scaling; more like property of image
+
+	char separator;
+};
+
+/*
+class ImageCodeEntry {
+public:
+
+	virtual inline
+	~ImageCodeEntry(){};
+
+	virtual
+	bool empty() const = 0;
+};
+*/
+
+template <class T>
+typename ImageCodeMap<T>::lookup_t & ImageCodeMap<T>::createLookUp(const std::type_info & type, const ValueScaling & scaling) const { // todo N?
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -184,68 +248,6 @@ public:
 
 		return lookUp;
 	}
-
-	// inline
-	typename cont_t::const_iterator retrieve(double d) const {
-
-		typename cont_t::const_iterator it = this->begin();
-		typename cont_t::const_iterator rit = it; // result
-
-		while (it != this->end()){
-			if (it->first > d)
-				return rit;
-			rit = it;
-			++it;
-		}
-
-		return rit; // may be invalid
-
-	}
-
-	// inline
-	typename cont_t::iterator retrieve(double d) {
-
-		typename cont_t::iterator  it = this->begin();
-		typename cont_t::iterator rit = it;
-
-		while (it != this->end()){
-			if (it->first > d)
-				return rit;
-			rit = it;
-			++it;
-		}
-
-		return rit; // may be invalid
-
-	}
-
-
-
-
-	///
-	/*
-	 *    \param equal - typically =, :, or -
-	 *    \param start - typically hyphen or leading parenthesis (, {, [
-	 *    \param end   - typically hyphen or trailing parenthesis ), }, [
-	 *    \param separator - typically comma or semicolon
-	 */
-
-	// ValueScaling scaling; more like property of image
-
-	char separator;
-};
-
-/*
-class ImageCodeEntry {
-public:
-
-	virtual inline
-	~ImageCodeEntry(){};
-
-	virtual
-	bool empty() const = 0;
-};
-*/
 
 
 } // drain::

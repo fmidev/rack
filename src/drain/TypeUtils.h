@@ -199,14 +199,39 @@ struct TypeUtils {
 		return (Type::call<typeLimiter<S> >(typeid(T))(x) == x);
 	}
 
+	/**
+	 *   \tparam T - range-tested type
+	 *   \tparam S - source type
+	 */
+	template <typename S>
+	static inline
+	bool isWithinRange(const S & x, const std::type_info & type){
+		// Call limit(), eg. check if 352 stays within uchar range [0,256[
+		return (Type::call<typeLimiter<S> >(type)(x) == x);
+	}
+
 	// 	 *   \tparam S - source type, typically with a large value range, double for example
 
+	/// Return a minimal numeric type, that can contain a numeric value.
 	/**
-	 *   \tparam T - narrower type, like short int.
+	 *   \param value - numeric value to be tested
+	 *   \tparam T - minimal type allowed, for example short int.
 	 */
 	template <typename T=unsigned char>
+	static inline
+	const std::type_info & minimizeIntType(double value){
+		// a bit clumsy, as calls Type::call().
+		return minimizeIntType(value, typeid(T));
+	}
+
+	/// Return a minimal numeric type, that can contain a numeric value.
+	/**
+	 *   \param value - numeric value to be tested
+	 *   \param type  - minimal type allowed
+	 */
 	static
-	const std::type_info & minimizeIntType(double d);
+	const std::type_info & minimizeIntType(double value, const std::type_info & type = typeid(unsigned char));
+
 
 	static
 	const drain::RegExp  trueRegExp; // ignore case
@@ -226,6 +251,7 @@ struct TypeUtils {
  *  Starting from uchar, rising until
  *
  */
+/*
 template <typename T=unsigned char>
 const std::type_info & TypeUtils::minimizeIntType(double d){ // , const std::type_info & type = typeid(unsigned char)){
 
@@ -271,7 +297,7 @@ const std::type_info & TypeUtils::minimizeIntType(double d){ // , const std::typ
 	return typeid(double);
 
 }
-
+*/
 
 
 

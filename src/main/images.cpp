@@ -576,6 +576,7 @@ public:
 			*/
 		}
 
+		//mout.attention("Applying...");
 		apply(ctx);
 
 	}
@@ -592,6 +593,9 @@ public:
 			mout.warn("empty palette, giving up");
 			return;
 		}
+
+		mout.attention("START !");
+
 
 		const drain::image::Image & graySrc = ctx.getCurrentGrayImage(); // ImageKit::getCurrentGrayImage(ctx);  // no conversion
 		ctx.select = "";
@@ -634,7 +638,7 @@ public:
 		/// Principally ODIM needed, but PolarODIM contains Nyquist velocity information, if needed.
 		//const PolarODIM imgOdim(props);
 		const PolarODIM imgOdim(graySrc); // Uses Castable, so type-consistent
-		mout.info("input encoding: ", EncodingODIM(imgOdim));
+		mout.attention("input encoding: ", EncodingODIM(imgOdim));
 
 		static const drain::KeySelector vradTest("VRAD", "VRADH", "VRADV"); // , "^VRAD.*");
 
@@ -816,6 +820,9 @@ public:
 			//data.odim.quantity = encoding.quantity;
 
 			mout.debug("target: " , data );
+
+			mout.attention("Applying:");
+			mout.attention(data.data.getConf());
 
 			/// MAIN
 			op.process(graySrc, data.data);
