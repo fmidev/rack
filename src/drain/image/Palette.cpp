@@ -218,9 +218,9 @@ void Palette::update() const {
 			mout.fail<LOG_ERR>("Colour count changed from ", iMax, " to ", i, " within palette");
 		}
 
-		if (entry.second.alpha < 255.0)
-		// if (entry.second.alpha < 1.0)
+		if (entry.second.alpha < 255.0){ //  < 1.0)
 			a = 1;
+		}
 
 	}
 
@@ -235,9 +235,9 @@ void Palette::update() const {
 			mout.fail<LOG_ERR>("Colour count changed from ", iMax, " to ", i, " within palette");
 		}
 
-		if (entry.second.alpha < 255.0)
-		// if (entry.second.alpha < 1.0)
+		if (entry.second.alpha < 255.0){ //  < 1.0)
 			a = 1;
+		}
 
 	}
 

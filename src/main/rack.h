@@ -45,6 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - TreeUtilsHTML, isSingular(), isExplicit() adjusted
  *  Release 11.3
  *  - Fixed/revised support of transparency in palette values
+ *  - GeoTiff: float/double type; explicit --encoding recommended with nodata= and undetect
  *
  *  Version 10.7
  *   - gPanel TECH
