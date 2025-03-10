@@ -285,7 +285,7 @@ void FileTIFF::writeImageData(const drain::image::Image & src){
 			}
 		}
 		else {
-			mout.unimplemented<LOG_ERR>("Direct (no tiling) write for non-integer type: ", drain::Type::call<compactName>(type));
+			mout.experimental("Direct (no tiling) write for non-integer type: ", drain::Type::call<compactName>(type));
 
 			/// Copy each ŕow to buffer
 			// buffer = new unsigned char[width*1]; // 8 bits
@@ -304,7 +304,7 @@ void FileTIFF::writeImageData(const drain::image::Image & src){
 				if (!TIFFWriteScanline(tif, buffer, j, 0))
 					TIFFError(__FUNCTION__, "failure in buffered WriteScanline\n");
 			}
-			delete buffer;
+			// delete buffer;
 		}
 
 	}
