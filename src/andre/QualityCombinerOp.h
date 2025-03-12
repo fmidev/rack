@@ -95,7 +95,8 @@ public:
 		AndreOp(__FUNCTION__,"Combines detection probabilities to overall quality field QIND (and CLASS).")  // VolumeOp<PolarODIM>
 	{
 		// dataSelector.path = "/da ta[0-9]+$";
-		dataSelector.setQuantityRegExp("^DBZH$");
+		//dataSelector.setQuantityRegExp("^DBZH$");
+		dataSelector.setQuantities("DBZH:DBZ");
 
 		allowedEncoding.clear();
 	}

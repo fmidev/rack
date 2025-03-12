@@ -158,7 +158,26 @@ if [ $# == 0 ]; then
     
     convert +append -frame 3 -fill green  composite-fi-C.tif  composite-fi-S.tif composite-geotiff-error.png
 
+    echo "# Test storage types and tiled mode"
+    
+    for TILE in 256 0; do
+	for TYPE in C S f d; do
+	    BASENAME=test-geotiff-${TYPE}-${TILE}
+	    rack volume-double.h5 -Q DBZH --cProj 3067  --encoding $TYPE  -c --outputConf tif:tile=${TILE}x${TILE} -o ${BASENAME}.tif;
+	    gdalinfo ${BASENAME}.tif | fgrep Band -A 3 > ${BASENAME}.gdal
+	    # test-geotiff-${TYPE}-${TILE}.txt
+	    diff --text {valid,.}/${BASENAME}.gdal
+	    if [ $? != 0 ]; then
+		echo "Metadata check ${BASENAME}.gdal failed for ${BASENAME}.tif"
+		exit 1
+	    fi
+	done;
+    done
+
+    
 fi
 
 ls -ltr diff-????.lgeo
+
+ls -ltr test-geotiff-?-*.txt
 

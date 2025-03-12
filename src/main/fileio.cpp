@@ -485,6 +485,10 @@ void CmdOutputFile::exec() const {
 			mout.error("unknown file name extension: ", filepath);
 		}
 
+		// mout.revised<LOG_WARNING>("CLEARING SELECTOR 1");
+		// ctx.select.clear(); // 2025/03
+		// ctx.formatStr.clear();
+
 	}
 	else if (IMAGE_SVG){ // drain::image::NodeSVG::fileInfo.checkPath(path)) {
 
@@ -698,6 +702,9 @@ void CmdOutputFile::exec() const {
 		}
 
 	}
+
+	// mout.revised<LOG_WARNING>("CLEARING SELECTOR");
+	// ctx.select.clear(); // 2025/03
 
 };
 

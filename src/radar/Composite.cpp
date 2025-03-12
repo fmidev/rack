@@ -90,7 +90,8 @@ Composite::Composite() :  decay(1.0), cropping(false)
 
 	//dataSelector.setPathMatcher(ODIMPathElem::DATA); // 2024/01
 	//dataSelector.setQuantities(""); // "DBZH";
-	dataSelector.setQuantityRegExp(""); // "DBZH";
+	//dataSelector.setQuantityRegExp(""); // "DBZH";
+	dataSelector.setQuantities(""); // "DBZH";
 	//dataSelector.setParameter("path", "data:");
 	dataSelector.setMaxCount(1);
 	// dataSelector.order = "ELANGLE:MIN";  // Should be separately for cart and polar data?

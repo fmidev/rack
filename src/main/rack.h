@@ -32,9 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "11.3"
+#define __RACK_VERSION__ "11.4"
 
 /**
+ *
  *  Version 11.0
  *  - Help supports "see also", linking related commands.
  *  - Initial SLD palette
@@ -46,6 +47,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 11.3
  *  - Fixed/revised support of transparency in palette values
  *  - GeoTiff: float/double type; explicit --encoding recommended with nodata= and undetect
+ *  Release 11.4
+ *  - EchoTop dataSelector: prf=ANY
+ *  - Clear --select after --outputFile
  *
  *  Version 10.7
  *   - gPanel TECH

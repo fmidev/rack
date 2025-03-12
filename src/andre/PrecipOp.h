@@ -108,7 +108,8 @@ public:
 		parameters.link("dbz", this->dbz = dbz, "dBZ");
 		parameters.link("dbzSpan", this->dbzSpan = dbzSpan, "dBZ");
 
-		dataSelector.setQuantityRegExp("DBZH$");
+		//dataSelector.setQuantityRegExp("DBZH$");
+		dataSelector.setQuantities("DBZH:DBZ");
 		dataSelector.setMaxCount(1);
 		REQUIRE_STANDARD_DATA = false;
 	};

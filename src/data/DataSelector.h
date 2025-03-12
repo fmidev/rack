@@ -201,9 +201,9 @@ public:
 	}
 
 	/// Sets basic quantities and quality quantities. These sets are separated by '/'.
-	void setQuantities(const std::string & s); // , const std::string & separators = ","); // todo: rename (here only) quantities?
+	void setQuantities(const std::string & s);
 
-	void setQuantityRegExp(const std::string & s); // todo: rename (here only) quantities?
+	// void setQuantityRegExp(const std::string & s); // todo: rename (here only) quantities?
 
 	inline
 	bool quantityIsSet() const {

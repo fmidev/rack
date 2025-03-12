@@ -103,8 +103,8 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	RadarAccumulator<Accumulator,PolarODIM> accumulator;
 
 	/// Some product generators may have user defined accumulation methods.
-	mout.attention("accumulationMethod: ", accumulationMethod);
-	mout.warn(DRAIN_LOG_VAR(accumulationMethod));
+	// mout.attention("accumulationMethod: ", accumulationMethod);
+	// mout.warn(DRAIN_LOG_VAR(accumulationMethod));
 
 	accumulator.setMethod(drain::StringTools::replace(accumulationMethod, ":", ","));
 	accumulator.checkCompositingMethod(dstData.odim);
@@ -112,7 +112,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	accumulator.odim.rscale = dstData.odim.rscale;
 	// TODO: accumulator.setGeometry(dstData.odim);
 
-	mout.attention("accumulator got: ", accumulator.getMethod());
+	mout.debug("accumulator got: ", accumulator.getMethod());
 
 	mout.debug((const Accumulator &) accumulator );
 

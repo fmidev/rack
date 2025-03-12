@@ -320,7 +320,7 @@ void DataSelector::updateQuantities() const { // const std::string & separators
 }
 
 
-
+/*
 void DataSelector::setQuantityRegExp(const std::string & quantities){
 
 	drain::Logger mout(__FILE__,__FUNCTION__);
@@ -328,7 +328,7 @@ void DataSelector::setQuantityRegExp(const std::string & quantities){
 	mout.deprecating<LOG_DEBUG+1>("selection syntax has changed, use setQuantities() ");
 	quantitySelector.setKey(quantities);
 }
-
+*/
 
 
 // TODO: write new collectPaths() with parentQuantity="" , "DBZH" -> "DBZH/QIND" to be matched with ".*/QIND"

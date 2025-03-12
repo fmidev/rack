@@ -83,6 +83,9 @@ METHOD=${METHOD:-MAXIMUM}
 product=${PRODUCT:+'--'${PRODUCT/,/ }}
 #product=${QUANTITY:+"-Q '$QUANTITY' $product"}
 # If PRODUCT is unset, use lowest sweep (PPI) DBZH.
+PALETTE=${PALETTE:-$QUANTITY}
+PALETTE=${PALETTE:-'default'}
+
 QUANTITY=${QUANTITY:-'DBZH'}
 QUANTITY=${QUANTITY//\*/}
 #if [ "$PRODUCT" == '' ]; then
@@ -92,7 +95,7 @@ QUANTITY=${QUANTITY//\*/}
 product=${product:-"-Q '$QUANTITY'"}
 
 
-PALETTE=${PALETTE:-$QUANTITY}
+
 
 ctime=${TIMESTAMP:+"--cTime $TIMESTAMP"}
 # 
@@ -331,7 +334,8 @@ grid=${GRID:+"--cGrid $GRID"}
 #DEMOFILES=${DEMO:+"$NEWLINE -o $BASENAME.png -o $BASENAME.tif -Q QIND -o $BASENAME-QIND.png -Q COUNT -o $BASENAME-COUNT.png -Q '*DEV' -o $BASENAME-STDEV.png $NEWLINE -Q '${QUANTITY}' --palette palette-${PALETTE}.txt $grid -o $BASENAME-rgb.png $NEWLINE --encoding 'C,0.2,-32,1,100' --imageAlpha -o $BASENAME-rgba.png $NEWLINE -o $BASENAME-h5.txt"}
 
 #DEMOFILES=${DEMO:+"$NEWLINE -o $BASENAME.png -o $BASENAME.tif -Q QIND -o $BASENAME-QIND.png -Q COUNT -o $BASENAME-COUNT.png -Q '*DEV' -o $BASENAME-STDEV.png $NEWLINE -Q '${QUANTITY}' --palette palette-${PALETTE}.txt $grid -o $BASENAME-rgb.png $NEWLINE --imageTransp 0.1:0.2,0.3,0.7 -o $BASENAME-rgba.png $NEWLINE -o $BASENAME-h5.txt"}
-DEMOFILES=${DEMO:+"$NEWLINE --gInclude NONE -o $BASENAME.png -o $BASENAME.tif -Q QIND -o $BASENAME-QIND.png -Q COUNT -o $BASENAME-COUNT.png -Q '.*DEV' -o $BASENAME-STDEV.png $NEWLINE -Q '${QUANTITY}' --palette '${PALETTE}' $grid --gInclude NEXT -o $BASENAME-rgb.png --gAlign TOP,RIGHT --legendOut $BASENAME-leg.svg $NEWLINE --imageTransp 0.1:0.2,0.3,0.7 -o $BASENAME-rgba.png $NEWLINE   -o $BASENAME.svg $NEWLINE  -o $BASENAME-h5.txt"}
+#DEMOFILES=${DEMO:+"$NEWLINE --gInclude NONE -o $BASENAME.png -o $BASENAME.tif -Q QIND -o $BASENAME-QIND.png -Q COUNT -o $BASENAME-COUNT.png -Q '.*DEV' -o $BASENAME-STDEV.png $NEWLINE -Q '${QUANTITY}' --palette '${PALETTE}' $grid --gInclude NEXT -o $BASENAME-rgb.png --gAlign TOP,RIGHT --legendOut $BASENAME-leg.svg $NEWLINE --imageTransp 0.1:0.2,0.3,0.7 -o $BASENAME-rgba.png $NEWLINE   -o $BASENAME.svg $NEWLINE  -o $BASENAME-h5.txt"}
+DEMOFILES=${DEMO:+"$NEWLINE --gInclude NONE -o $BASENAME.png -o $BASENAME.tif -Q QIND -o $BASENAME-QIND.png -Q COUNT -o $BASENAME-COUNT.png -Q '.*DEV' -o $BASENAME-STDEV.png $NEWLINE -Q '' --palette 'default' $grid --gInclude NEXT -o $BASENAME-rgb.png --gAlign TOP,RIGHT --legendOut $BASENAME-leg.svg $NEWLINE --imageTransp 0.1:0.2,0.3,0.7 -o $BASENAME-rgba.png $NEWLINE   -o $BASENAME.svg $NEWLINE  -o $BASENAME-h5.txt"}
 
 # if not TILED encoding='' ?
 encoding='' 
