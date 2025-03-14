@@ -29,12 +29,14 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/Log.h>
-#include "data/DataCoder.h"
-#include "data/Quantity.h"
-#include <drain/util/SmartMap.h>
 #include <limits>
 #include <string>
+
+#include <drain/Log.h>
+#include <drain/util/SmartMap.h>
+
+#include "DataCoder.h"
+#include "Quantity.h"
 
 using namespace drain;
 using namespace drain::image;
@@ -59,10 +61,14 @@ void DataCoder::init(){
 
 	//SKIP_UNDETECT = ((!q.hasUndetectValue()) || (DataCoder::undetectQualityCoeff==0));
 
-	mout.debug("DataCoder::undetectQualityCoeff: " , DataCoder::undetectQualityCoeff );
-	mout.debug('[', dataODIM.quantity, ']');
-	mout << "q.hasUndetectValue: " << q.hasUndetectValue() << mout;
-	mout << "SKIP_UNDETECT: " << SKIP_UNDETECT << mout;
+	mout.debug(DRAIN_LOG_VAR(DataCoder::undetectQualityCoeff));
+	mout.debug(DRAIN_LOG_VAR(dataODIM.quantity));
+	mout.debug(DRAIN_LOG_VAR(q.hasUndetectValue()));
+	mout.debug(DRAIN_LOG_VAR(SKIP_UNDETECT));
+	// mout.debug("DataCoder::undetectQualityCoeff: " , DataCoder::undetectQualityCoeff );
+	// mout.debug('[', dataODIM.quantity, ']');
+	// mout.debug("q.hasUndetectValue: ", q.hasUndetectValue());
+	// mout.debug("SKIP_UNDETECT: ", SKIP_UNDETECT);
 
 
 	if (SKIP_UNDETECT){

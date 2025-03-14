@@ -419,7 +419,7 @@ void GeoFrame::updateDataExtentDeg(const drain::Rectangle<double> & inputExtentD
 	deg2m(inputExtentD.lowerLeft,  bboxNat.lowerLeft);
 	deg2m(inputExtentD.upperRight, bboxNat.upperRight);
 
-	mout.attention("converted Degrees->Nat: (", inputExtentD, ") -> [", bboxNat, "]");
+	mout.debug("converted degrees->native (degrees or metric): (", inputExtentD, ") -> [", bboxNat, "]");
 
 	updateDataExtentNat(bboxNat);
 

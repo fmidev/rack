@@ -215,13 +215,20 @@ EncodingODIM & EncodingODIM::setScaling(double gain, double offset, double undet
 
 void EncodingODIM::updateLenient(const EncodingODIM & odim){
 
-	if (type.empty())
+	if (type.empty()){
 		type = odim.type;
+	}
 
-	if ((this->scaling.scale == 0.0) && (type == odim.type)){
+	//if ((this->scaling.scale == 0.0) && (type == odim.type)){
+	if (this->scaling.scale == 0.0){
+
+		if (type != odim.type){
+			drain::Logger mout(drain::getLog(), __FILE__, __FUNCTION__);
+			mout.revised("scaling was undefined (0.0), changing also type: ", type, " -> ", odim.type);
+			type = odim.type;
+		}
+
 		this->scaling.assignSequence(odim.scaling);
-		//scale   = odim.scale;
-		//offset = odim.offset;
 		nodata = odim.nodata;
 		undetect = odim.undetect;
 	}

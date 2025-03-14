@@ -28,8 +28,8 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef DataCoder_H_
-#define DataCoder_H_
+#ifndef RACK_DataCoder
+#define RACK_DataCoder
 
 
 //

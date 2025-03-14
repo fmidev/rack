@@ -247,13 +247,13 @@ public:
 		m2pix(lon, lat, i,j);
 	}
 
-	/// Project geographic coordinates to image coordinates.
+	/// Project geographic coordinates (degrees) to image coordinates (pixels).
 	inline
 	void deg2pix(const drain::Point2D<double> & loc, drain::Point2D<int> & pix) const {
 		deg2pix(loc.x, loc.y, pix.x, pix.y);
 	}
 
-	/// Convert metric coordinates to degrees
+	/// Convert degrees to native (often metric) coordinates
 	/**
 	 */
 	virtual inline
@@ -261,6 +261,9 @@ public:
 		projGeo2Native.projectFwd(lon, lat, x, y); // PROJ6-CRS uses degrees
 	}
 
+	/// Convert degrees to native (often metric) coordinates
+	/**
+	 */
 	inline
 	void deg2m(const drain::Point2D<double> & pDeg, drain::Point2D<double> & pMet) const {
 		deg2m(pDeg.x, pDeg.y, pMet.x, pMet.y);
@@ -275,11 +278,10 @@ public:
 		// lat *= RAD2DEG; // PROJ6-CRS uses degrees
 	}
 
-	/// Calculates the geographic coordinates [rad] of the center of a pixel at (i,j).
+	/// Calculates the geographic coordinates (lon,lat) [rad] of the center of a pixel at (i,j).
 	virtual inline
 	void pix2rad(int i, int j, double & lon, double & lat) const {
-		pix2m(i,j, lon,lat); //pix2m(i,j, x,y);
-		//projGeo2Native.projectInv(lon,lat, lon,lat);
+		pix2m(i,j, lon,lat);
 		projGeo2Native.projectInv(lon,lat, lon,lat);
 		// PROJ6-CRS uses degrees:
 		lon *= DEG2RAD;
@@ -358,15 +360,13 @@ public:
 	}
 
 
-	/// Scales image coordinates (i,j) to geographic map coordinates (x,y) in the pixel \b centres.
+	/// Scales image coordinates (i,j) to map coordinates (x,y) in the pixel \b centres.
 	/**
 	 *  \par i - horizontal image coordinate
 	 *  \par j - vertical image coordinate
 	 *  \par x - horizontal map coordinate in meters
 	 *  \par y - vertical map coordinate in meters
 	 * Note that i increases to right, j downwards.
-	 *
-	 *
 	 */
 	inline
 	virtual
@@ -375,6 +375,7 @@ public:
 		y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + bBoxNative.lowerLeft.y;
 	}
 
+	/// Scales image coordinates (i,j) to map coordinates (x,y) in the pixel \b centres.
 	inline
 	virtual
 	void pix2m(const drain::Point2D<int> & pImage, drain::Point2D<double> & pMetric) const {
@@ -382,13 +383,14 @@ public:
 		pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + bBoxNative.lowerLeft.y;
 	}
 
-	/// Scales image coordinates (i,j) to geographic map coordinates (x,y) of the lower left corner pixel.
+	/// Scales image coordinates (i,j) to map coordinates (x,y) of the lower left corner pixel.
 	/**
 	 *  \par i - horizontal image coordinate
 	 *  \par j - vertical image coordinate
-	 *  \par x - horizontal map coordinate in meters
-	 *  \par y - vertical map coordinate in meters
-	 * Note that i increases to right, j downwards.
+	 *  \par x - horizontal map coordinate (often metric)
+	 *  \par y - vertical map coordinate (often metric)
+	 *
+	 *  Note that i increases to right, j downwards.
 	 */
 	inline
 	virtual

@@ -277,7 +277,7 @@ public:
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.experimental<LOG_DEBUG>("invoking ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT>()");
-		mout.experimental<LOG_DEBUG-1>("root odim: ", this->odim);
+		mout.experimental<LOG_DEBUG+1>("root odim: ", this->odim);
 
 		ODIM::updateH5AttributeGroups<ODIMPathElem::ROOT>(this->odim, this->tree);
 		DataTools::updateInternalAttributes(this->tree); // overrides anything?

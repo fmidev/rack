@@ -183,6 +183,8 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	// mout.attention("START ", EncodingODIM(srcData.odim));
+
 	if (!srcQuality.data.isEmpty()){
 		mout.info("Quality data available with input; using quality as weights in compositing.");
 		DataCoder converter(srcData.odim, srcQuality.odim);
@@ -190,8 +192,8 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 		AC::addData(srcData.data, srcQuality.data, converter, weight, i0, j0);
 	}
 	else {
-		mout.info("No quality data available with input, ok." );
-		ODIM qualityOdim;
+		mout.info("No quality data available with input, ok.");
+		ODIM qualityOdim; // dummy
 		getQuantityMap().setQuantityDefaults(qualityOdim, "QIND");
 
 		DataCoder converter(srcData.odim, qualityOdim);
@@ -199,7 +201,10 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 		AC::addData(srcData.data, converter, weight, i0, j0);
 	}
 
+	// mout.attention("END1 ", EncodingODIM(this->odim));
 	odim.updateLenient(srcData.odim); // Time, date, new
+	// mout.attention("END2 ", EncodingODIM(this->odim));
+
 	counter += std::max(1L, srcData.odim.ACCnum);
 	// odim.ACCnum += std::max(1L, srcData.odim.ACCnum); wrong
 	// odim.ACCnum = counter; // TODO remove counter?
@@ -389,6 +394,7 @@ void RadarAccumulator<AC,OD>::extractOLD(const OD & odimOut, DataSet<DstType<OD>
 
 		//DataDst dstData(dataGroup); // FIXME "qualityN" instead of dataN creates: /dataset1/qualityN/quality1/data
 		//mout.warn("odimFinal: " , odimFinal );
+		mout.special("odimData: " , EncodingODIM(odimData) );
 		DataCoder dataCoder(odimData, odimQuality); // (will use only either odim!)
 		mout.debug("dataCoder: ", dataCoder);
 		mout.debug2("dataCoder: data: ", dataCoder.dataODIM);

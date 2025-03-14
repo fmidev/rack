@@ -107,8 +107,8 @@ bool ODIMPathTools::getNextChild(const Hi5Tree & tree, ODIMPathElem & child){
 			mout.warn("index requested for unindexed path element '", child, "'");
 		}
 		else {
-			mout.debug("returning a new child element '", child, "'");
 			child.index = 1;
+			mout.debug("returning a new child element '", child, "'");
 		}
 		return false;
 	}

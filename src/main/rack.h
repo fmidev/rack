@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "11.4"
+#define __RACK_VERSION__ "11.5"
 
 /**
  *
@@ -49,7 +49,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - GeoTiff: float/double type; explicit --encoding recommended with nodata= and undetect
  *  Release 11.4
  *  - EchoTop dataSelector: prf=ANY
- *  - Clear --select after --outputFile
+ *  - Clear --select after --outputFile (?)
+ *  Release 11.5
+ *  - Fixed tile storage type (S = uint16)
  *
  *  Version 10.7
  *   - gPanel TECH

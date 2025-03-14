@@ -75,29 +75,7 @@ void SourceODIM::init(){
 
 
 const std::string & SourceODIM::getSourceCode() const {
-
 	return getPreferredSourceCode(NOD, RAD, WMO, WIGOS, ORG, CTY, PLC);
-
-	/*
-	for (const std::string & key : getKeyList()){
-		const drain::Variable & value = (*this)[key];
-		if (!value.isEmpty()){
-			return
-		}
-	}
-	*/
-	/*
-	#define TRY_RETURN(s) if (!s.empty()) return s
-	TRY_RETURN(NOD); // TODO: add options for desired order
-	TRY_RETURN(RAD);
-	TRY_RETURN(WMO);
-	TRY_RETURN(WIGOS); // NEW 2020
-	TRY_RETURN(ORG);
-	TRY_RETURN(CTY);
-	TRY_RETURN(PLC);
-	const static std::string empty;
-	return empty;
-	*/
 }
 
 const std::string & SourceODIM::getPreferredSourceCode() const {

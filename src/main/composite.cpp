@@ -128,8 +128,9 @@ void Compositor::add(Composite & composite, int inputFilter, bool updateSelector
 	*/
 
 
-	if (ctx.statusFlags)
+	if (ctx.statusFlags){
 		mout.warn("Status flags before accumulating: ", ctx.statusFlags);
+	}
 
 	RackResources & resources = getResources();
 
@@ -163,6 +164,7 @@ void Compositor::add(Composite & composite, int inputFilter, bool updateSelector
 		/// Set dfault encoding for final (extracted) product. Applied by RadarAccumulator.
 		//  If needed, initialize with input metadata.
 		if (!resources.baseCtx().targetEncoding.empty()){
+			mout.attention("encoding: ", resources.baseCtx().targetEncoding);
 			composite.setTargetEncoding(resources.baseCtx().targetEncoding);
 			resources.baseCtx().targetEncoding.clear(); // OMP?
 		}
@@ -589,14 +591,18 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	// Update source list, time stamp etc needed also for time decay
 	// => in addCartesian()
 
-	mout.debug("Composite initialized: " , composite );
+	mout.debug("Composite initialized: ", composite);
 
 	int i0,j0;
 	composite.deg2pix(cartSrc.odim.UL_lon, cartSrc.odim.UL_lat, i0, j0);
 	j0++; // UL pixel is located at (0,-1) in the image coordinates!
-	mout.debug2("sub image start coordinates: " , i0 , ',' , j0 );
+	mout.debug2("sub image start coordinates: " , i0, ',', j0);
 
+	// mout.attention("cartSrc: ", EncodingODIM(cartSrc.odim));
 	composite.addCartesian(cartSrc, srcQuality, w, i0, j0);
+
+	// mout.attention("composite.odim: ", EncodingODIM(composite.odim));
+
 
 	ctx.setCurrentImages(cartSrc.data);
 	//mout.warn("composite: " , composite );
@@ -682,6 +688,8 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		mout.fail("empty composite, skipping extraction");
 		return;
 	}
+
+	//mout.experimental("Encoding: ", EncodingODIM(composite.odim));
 
 	// resources.setSource(ctx.cartesianHi5, *this);
 

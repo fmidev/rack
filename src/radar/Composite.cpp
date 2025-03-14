@@ -73,10 +73,14 @@ namespace rack
 // template <>
 //const drain::EnumDict<rack::Composite::FieldType>::dict_t drain::EnumDict<rack::Composite::FieldType>::dict =  {
 const Composite::dict_t Composite::dict = {
-		{"DATA", rack::Composite::FieldType::DATA},
-		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
-		{"COUNT", rack::Composite::FieldType::COUNT},
-		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
+		DRAIN_ENUM_ENTRY(rack::Composite::FieldType, DATA),
+		DRAIN_ENUM_ENTRY(rack::Composite::FieldType, WEIGHT),
+		DRAIN_ENUM_ENTRY(rack::Composite::FieldType, COUNT),
+		DRAIN_ENUM_ENTRY(rack::Composite::FieldType, DEVIATION),
+//		{"DATA", rack::Composite::FieldType::DATA},
+//		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
+//		{"COUNT", rack::Composite::FieldType::COUNT},
+//		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
 };
 //static DataCoder converter;
 
@@ -87,10 +91,9 @@ const Composite::dict_t Composite::dict = {
 Composite::Composite() :  decay(1.0), cropping(false)
 {
 
-
-	//dataSelector.setPathMatcher(ODIMPathElem::DATA); // 2024/01
-	//dataSelector.setQuantities(""); // "DBZH";
-	//dataSelector.setQuantityRegExp(""); // "DBZH";
+	// dataSelector.setPathMatcher(ODIMPathElem::DATA); // 2024/01
+	// dataSelector.setQuantities(""); // "DBZH";
+	// dataSelector.setQuantityRegExp(""); // "DBZH";
 	dataSelector.setQuantities(""); // "DBZH";
 	//dataSelector.setParameter("path", "data:");
 	dataSelector.setMaxCount(1);
@@ -125,12 +128,9 @@ void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const
 	bool OLD_SYNTAX = false;
 
 	std::list<std::string> keys;
-	//drain::StringTools::split(fields, keys, ':');
-	drain::StringTools::split(fields, keys, ',');
+	drain::StringTools::split(fields, keys, ','); // ':');
 	for (const std::string & key: keys){
-		// int value = EnumDict<FieldType>::dict.getValue(key);
 		int value = Composite::dict.getValue(key);
-		// (value_t)
 		if (value > 0){
 			fieldList.push_back((FieldType)value);
 		}
@@ -148,8 +148,7 @@ void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const
 
 		// mout.warn("Old fashioned field list (string): ", e.what());
 		// mout.warn(e.what());
-
-		//bool DATA_SPECIFIC_QUALITY = false;
+		// bool DATA_SPECIFIC_QUALITY = false;
 		for (char c: fields) {
 
 			// char c2 = static_cast<int>(c);
@@ -191,94 +190,6 @@ void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const
 	}
 
 
-
-	// bool ENCODING_USED = false;
-
-	// Consider redesign, with a map of objects {quantity, type,}
-	/*
-	for (size_t i = 0; i < fields.length(); ++i) {
-
-		ODIM odimData;
-		//drain::SmartMapTools::updateCastableValues(odimData, this->odim);
-		drain::SmartMapTools::updateValues(odimData, this->odim);
-		// odimData.updateFromMap(this->odim);
-		//odimData.updateFromCastableMap(this->odim);
-		odimData.quantity = this->odim.quantity;
-
-		ODIM odimQuality;
-
-		FieldFlagger type = DATA;  // NEW
-
-		char field = fields.at(i);
-		switch (field) {
-			case '/':
-				DATA_SPECIFIC_QUALITY = true;
-				continue;
-				break; // unneeded?
-			case 'm': // ???
-			case 'D':
-			case 'p': // ???
-				mout.warn() << "non-standard layer code; use 'd' for 'data' instead" << mout.endl;
-				// no break
-			case 'd':
-				type = DATA;
-				qm.setQuantityDefaults(odimQuality, "QIND", "C");
-				odimQuality.quantity = "QIND";
-				break;
-			case 'w':
-				type.set(WEIGHT);
-				qm.setQuantityDefaults(odimQuality, "QIND", "C");
-				odimQuality.quantity = "QIND";
-				//odimQuality.undetect = 256;
-				//odimQuality.nodata = -1;  // this is good, because otherwise nearly-undetectValue-quality CAPPI areas become no-data.
-				break;
-			case 'W': // WRONG! Should not affect TYPE, or anything in encoding
-				type.set(WEIGHT,DATA_SPECIFIC);
-				qm.setQuantityDefaults(odimQuality, "QIND", "d");
-				odimQuality.quantity = "QIND";
-				//odimQuality.undetect = 256;
-				//odimQuality.nodata = -1;  // this is good, because otherwise nearly-undetectValue-quality CAPPI areas become no-data.
-				break;
-			case 'c':
-				type.set(COUNT);
-				qm.setQuantityDefaults(odimQuality, "COUNT", "C");
-				odimQuality.quantity = "COUNT";
-				break;
-			case 'C': // WRONG! Should not affect TYPE, or anything in encoding
-				type.set(COUNT,DATA_SPECIFIC);
-				qm.setQuantityDefaults(odimQuality, "COUNT", "C");
-				odimQuality.quantity = "COUNT";
-				break;
-			// case 'q': // consider
-			case 's':
-				type.set(DIFFERENCE,DATA_SPECIFIC);
-				//type = WEIGHT;
-				// odimQuality = odimOut;
-				odimQuality.quantity = this->odim.quantity + "DEV";
-				if (qm.hasQuantity(odimQuality.quantity)){
-					qm.setQuantityDefaults(odimQuality, odimQuality.quantity, odimQuality.type);
-					mout.accept<LOG_NOTICE>("found quantyConf[", odimQuality.quantity, "], type=", odimQuality.type);
-					//mout.special("Quality: ", EncodingODIM(odimQuality));
-					mout.special("Quality: ", EncodingODIM(odimQuality));
-					mout.special("Quality: ", odimQuality);
-				}
-				else {
-					const std::type_info & t = drain::Type::getTypeInfo(odimQuality.type);
-					odimQuality.scaling.scale *= 20.0;  // ?
-					//const std::type_info & t = Type::getType(odimFinal.type);
-					odimQuality.scaling.offset = round(drain::Type::call<drain::typeMin, double>(t) + drain::Type::call<drain::typeMax, double>(t))/2.0;
-					//odimQuality.offset = round(drain::Type::call<drain::typeMax,double>(t) + drain::Type::getMin<double>(t))/2.0;  // same as data!
-					if (encoding.empty()){
-						mout.warn("quantyConf[" , odimQuality.quantity , "] not found, using somewhat arbitary scaling:" );
-						mout.special("Quality: ", EncodingODIM(odimQuality));
-					}
-				}
-				break;
-			default:
-				mout.error("Unsupported field code: '", field, "'");
-				break;
-		}
-		*/
 }
 
 
@@ -307,9 +218,13 @@ void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldT
 	 */
 	bool DATA_SPECIFIC_QUALITY = false;
 
+	//mout.experimental<LOG_NOTICE>("EncodingODIM THIS = ", this->odim);
+
 	ODIM odimData;
 	drain::SmartMapTools::updateValues(odimData, this->odim);
 	odimData.quantity = this->odim.quantity;
+
+	// mout.experimental<LOG_NOTICE>("EncodingODIM SRC  = ", EncodingODIM(odimData));
 
 	ODIM odimQuality;
 
@@ -338,9 +253,10 @@ void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldT
 		//DataDst dstData(dataGroup); // FIXME "qualityN" instead of dataN creates: /dataset1/qualityN/quality1/data
 		//mout.warn("odimFinal: " , odimFinal );
 		DataCoder dataCoder(odimData, odimQuality); // (will use only either odim!)
-		mout.debug("dataCoder: ", dataCoder);
-		mout.debug2("dataCoder: data: ", dataCoder.dataODIM);
-		mout.debug2("dataCoder: qind: ", dataCoder.qualityODIM);
+		//mout.experimental<LOG_NOTICE>("dataCoder SRC = ", odimData);
+		mout.debug("dataCoder = ", dataCoder);
+		mout.debug2("dataCoder - data: ", dataCoder.dataODIM);
+		mout.debug2("dataCoder - qind: ", dataCoder.qualityODIM);
 
 		/*
 		if (!crop.empty()){
@@ -916,10 +832,7 @@ void Composite::addCartesian(const PlainData<CartesianSrc> & cartSrc, const Plai
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	//if (drain::Logger::TIMING){
-		// SourceODIM source(cartSrc.odim);
 	mout.startTiming(cartSrc.odim.source);
-	//}
 
 	extracting = false;
 
@@ -927,29 +840,26 @@ void Composite::addCartesian(const PlainData<CartesianSrc> & cartSrc, const Plai
 
 	// EnsureEncoding
 	// checkInputODIM(cartSrc.odim); // RadarAccumulator
+	//mout.reject<LOG_NOTICE>(cartSrc.odim.source);
+	//mout.reject<LOG_NOTICE>(EncodingODIM(cartSrc.odim));
+
 	addData(cartSrc, srcQuality, weight, i0, j0);
 	++odim.ACCnum;
 
 	/// Cartesian
 	updateNodeMap(SourceODIM(cartSrc.odim.source).getSourceCode(), i0 + cartSrc.odim.area.width/2, j0 + cartSrc.odim.area.height/2);
-	//updateGeoData();
-	//mout.warn("nodemap keys: " , nodeMap );
-
-	// Update geographical extent (optional information)
-	// const Rectangle<double> srcExtent(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
-	// updateDataExtent(srcExtent);
-	//updateDataExtent(cartSrc.odim.bboxD);
 
 	updateDataExtentDeg(cartSrc.odim.bboxD);
-	// odim.update(cartSrc.odim); // moved to add Data
 
-	mout.debug("completed");
+	// mout.debug("completed");
 }
 
 void Composite::updateNodeMap(const std::string & node, int i, int j){
 	drain::Variable & v = nodeMap[node];
-	v.setType(typeid(int));
-	v.setSeparator(':');
+	if (!v.typeIsSet()){
+		v.setType(typeid(int));
+		v.setSeparator(':');
+	}
 	v << i << j;
 }
 
