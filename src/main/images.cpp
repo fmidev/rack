@@ -283,7 +283,7 @@ public:
 		const drain::image::Image & srcAlpha = ctx.getCurrentGrayImage();
 		ODIM srcODIM(srcAlpha); // NOTE: perhaps no odim data in props?
 
-		mout.special("alpha src image: " , srcAlpha );
+		mout.special("alpha src image: ", srcAlpha );
 
 		// Dst image (typically, an existing coloured image)
 		drain::image::Image & dstImg = getDstImage(ctx);

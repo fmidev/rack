@@ -73,8 +73,9 @@ EchoTopOp::EchoTopOp(double threshold) :
 	//dataSelector.setQuantityRegExp(s)
 	dataSelector.setQuantities("^DBZH$");
 	dataSelector.setPrf(DataSelector::Prf::ANY);
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.attention("SELECTOR: ", dataSelector);
+
+	// drain::Logger mout(__FILE__, __FUNCTION__);
+	// mout.attention("SELECTOR: ", dataSelector);
 
 	this->undetectReflectivity = getQuantityMap().get("DBZH").undetectValue;
 
