@@ -70,45 +70,37 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 
 	//mout.warn("allocating data AMVU" );
 	PlainData<PolarDst> & dstDataU   = dstProduct.getData("AMVU");
-	/*
-	 mout.note("AMVU tests" );
-	mout.warn("AMVU: quantity=" , dstDataU.odim.quantity );
-	mout.warn("AMVU: quantity=" , dstProduct.getData("AMVU").odim.quantity );
-
-	typedef std::map<std::string, PlainData<PolarDst> > dmap;
-	dmap m;
-	m.insert(dmap::value_type("AMFY", PlainData<PolarDst>(dstProduct.getTree()["data98"], "AMFU")));
-	mout.note("AMFY/AMFU: quantity=" , m.begin()->second.odim.quantity );
-
-	PlainData<PolarDst> dstDataU2(dstProduct.getTree()["data99"],"AMVU");
-	mout.warn("AMVU2: quantity=" , dstDataU2.odim.quantity );
-
-	PlainData<PolarDst> dstDataU3(dstDataU2);
-	mout.warn("AMVU3: quantity=" , dstDataU3.odim.quantity );
-	*/
-
-	//dstDataU.data.clear();
-	mout.warn("allocating data AMVV" );
+	// mout.warn("allocating data AMVV" );
 	PlainData<PolarDst> & dstDataV   = dstProduct.getData("AMVV");
-	//dstDataV.data.clear();
+	// dstDataV.data.clear();
 	PlainData<PolarDst> & dstQuality = dstProduct.getQualityData();
 	//dstQuality.data.clear();
 
 	dstDataU.odim.type = odim.type;
 	ProductBase::applyODIM(dstDataU.odim, odim, true);
 	ProductBase::completeEncoding(dstDataU.odim, targetEncoding);
+	// dstDataU.initialize(dstDataU.odim.type, srcData.odim.getGeometry());
 	dstDataU.data.setType(dstDataU.odim.type);
 	setGeometry(srcData.odim, dstDataU);
-	mout.debug("dstDataU.odim" , EncodingODIM(dstDataU.odim) );
+	// mout.debug("dstDataU.odim" , EncodingODIM(dstDataU.odim) );
 
 	dstDataV.odim.type = odim.type;
 	ProductBase::applyODIM(dstDataV.odim, odim, true);
 	ProductBase::completeEncoding(dstDataV.odim, targetEncoding);
+	// dstDataV.initialize(dstDataV.odim.type, srcData.odim.getGeometry());
 	dstDataV.data.setType(dstDataV.odim.type);
 	setGeometry(srcData.odim, dstDataV);
+	// dstDataV.initialize(type, geometry)
 
 	getQuantityMap().setQuantityDefaults(dstQuality, "QIND");
 	setGeometry(srcData.odim, dstQuality);
+
+	// dstDataU.odim.prodpar = getParameters().getKeys();
+	// dstDataV.odim.prodpar = getParameters().getKeys();
+
+	mout.warn("update");
+	dstDataU.odim.updateLenient(srcData.odim); // date, time, etc
+	dstDataV.odim.updateLenient(srcData.odim); // date, time, etc
 
 	mout.warn("U:    " , dstDataU );
 	mout.warn("V:    " , dstDataV );
@@ -130,12 +122,12 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 	else {
 
 	}
+
 	mout.warn("Create window");
 	DopplerInversionWindow window(conf, dstDataU.odim);
 
 	window.conf.updatePixelSize(srcData.odim);
-	//window.resetAtEdges = true;
-
+	// window.resetAtEdges = true;
 	// window.signCos = +1; //(testSigns & 1) ? +1 : -1;
 	// window.signSin = -1;(testSigns & 2) ? +1 : -1;
 
@@ -150,22 +142,25 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 	// MAIN OPERATION !
 	window.run();
 
+	/*
 	dstDataU.odim.prodpar = getParameters().getKeys();
+
 	mout.warn("update");
 	dstDataU.odim.updateLenient(srcData.odim); // date, time, etc
+	dstDataV.odim.updateLenient(srcData.odim); // date, time, etc
+	*/
+
 	mout.warn("update2");
-	//dstDataU.data.properties.importMap(dstDataU.odim);
 	dstDataU.data.properties.importCastableMap(dstDataU.odim);
+	mout.attention("dataU: ", dstDataU.data.properties);
+
 	mout.warn("update3");
-	//dstDataV.data.properties.importMap(dstDataV.odim);
 	dstDataV.data.properties.importCastableMap(dstDataV.odim);
+	mout.attention("dataV: ", dstDataV.data.properties);
 
 	// Copy VRAD
 	PlainData<PolarDst> & dstDataVRAD   = dstProduct.getData("VRAD"); // or odim.quantity safer? VRADH?
 	mout.warn("copying orig " , srcData.odim.quantity , "->" , "VRAD" );
-
-	//PlainData<PolarDst> & dstDataVRAD   = dstProduct.getData(DopplerOp::regExpVRAD); // or odim.quantity safer? VRADH?
-	//dstDataVRAD.odim.importMap(srcData.odim);
 	dstDataVRAD.copyEncoding(srcData);
 	dstDataVRAD.setGeometry(srcData.data.getGeometry());
 	dstDataVRAD.data.copyDeep(srcData.data);
@@ -259,7 +254,7 @@ void DopplerWindOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<P
 	 */
 
 	//drain::image::File::write(dst,"DopplerInversionOp.png");
-	mout .debug3() <<window.odimSrc << mout.endl;
+	mout.debug3(window.odimSrc);
 
 
 }

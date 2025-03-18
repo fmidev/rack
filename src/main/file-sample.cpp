@@ -44,12 +44,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+/**
+ *  \tparam P - DataSet<PolarSrc> or DataSet<CartesianSrc>
+ */
+
 template <class P>
 void sampleData(const typename P::dataset_t & dataset, const Sampler & sampler, const std::string & format, std::ostream &ostr){ // const {
 
-	//RackContext & ctx  = this->template getContext<RackContext>();
-
-	//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	P picker(sampler.variableMap, dataset.getFirstData().odim);
@@ -57,6 +58,7 @@ void sampleData(const typename P::dataset_t & dataset, const Sampler & sampler, 
 	typename P::map_t dataMap;
 
 	for (typename DataSet<typename P::src_t>::const_iterator it = dataset.begin(); it != dataset.end(); ++it){
+		mout.attention("adding: ", it->first);
 		dataMap.insert(typename P::map_t::value_type(it->first, it->second));
 	}
 
@@ -83,7 +85,7 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	mout.info("Sample file (.dat)" );
+	mout.info("Writing sample file (.dat)", filename);
 
 	DataSelector selector;
 	selector.setPathMatcher(ODIMPathElem::DATASET);
@@ -120,20 +122,20 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 
 		if (ctx.currentHi5 == ctx.currentPolarHi5){
 
-			mout.debug("sampling polar data" );
-			//const DataSet<PolarSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
+			// mout.debug("sampling polar data" );
+			// const DataSet<PolarSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
 			const DataSet<PolarSrc> dataset(srcDataSet, selector.getQuantitySelector());
-			mout.info("data: " , dataset );
+			mout.info("sampling polar data: " , dataset );
 
 			sampleData<PolarDataPicker>(dataset, sampler, ctx.formatStr, ofstr);
 
 		}
 		else {
 
-			mout.debug("sampling Cartesian data: " );
+			// mout.debug("sampling Cartesian data: " );
 			//const DataSet<CartesianSrc> dataset(srcDataSet, drain::RegExp(selector.getQuantity()));
 			const DataSet<CartesianSrc> dataset(srcDataSet, selector.getQuantitySelector());
-			mout.info("data: " , dataset );
+			mout.info("sampling Cartesian  data: " , dataset );
 			/*
 			for (DataSet<CartesianSrc>::const_iterator it = dataset.begin(); it != dataset.end(); ++it){
 				mout.warn("data:" , it->first );
@@ -144,6 +146,9 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 
 		}
 
+	}
+	else {
+		mout.warn("No paths found with: ", selector);
 	}
 
 

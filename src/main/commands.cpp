@@ -187,7 +187,8 @@ public:
 	};
 
 
-	void exec() const {
+	virtual
+	void exec() const override {
 		RackContext & ctx = getContext<RackContext>();
 		//drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
 		drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
@@ -207,10 +208,21 @@ public:
 		//mout.warn("ctx.select=", ctx.select, "...");
 	}
 
-private:
+	virtual
+	void help(std::ostream & ostr, bool DETAILED) const {
 
-	// DataSelector testSelector;
-	// std::string value;
+		ostr << "  " << getDescription() << '\n';
+
+		ostr << "  path: defines a path segment to be matched, with desired index ranges (example: dataset2:4/data3:8";
+		ostr << "  path: leading slash fixes matching at the root (example: /dataset:/data: ), otherwise the tail part is matched";
+		ostr << "  quantity: list of strings or regExps separated by semicolon ':', quality quantity by slash '/'";
+
+		if (DETAILED){
+			getRelatedCommands(ostr);
+		}
+
+	};
+
 
 };
 
@@ -295,56 +307,6 @@ rack volume.h5 --select 'quantity=DBZH,elangle=0.5:4.0'   <commands>
 
 */
 
-/*
-class CmdSelectOld : public  CmdBaseSelective { //drain::BasicCommand {
-
-public:
-
-	CmdSelectOld() : CmdBaseSelective(__FUNCTION__, "Data selection for the next operation."){
-	};
-
-
-	/// Only checks the validity of selector.
-	void exec() const {
-
-		RackContext & ctx = getContext<RackContext>();
-
-		drain::Logger mout(ctx.log, __FILE__, getName());
-
-		//mout.warn("setting: " , value );
-		DataSelector  test;
-
-		try {
-			// NOTE: test is good for checking immediately. But \c value is needed to store
-
-			// ImageSelector itest;
-			if (ctx.log.getVerbosity() > LOG_DEBUG){
-				mout.special("testing: " , value );
-				test.setParameters(value);
-				mout.special("testing: => " ,  test );
-				ODIMPathList paths;
-				const Hi5Tree & src = ctx.getMyHi5();
-				test.getPaths(src, paths);
-				mout.special("path count => " ,  paths.size() );
-				mout.debug3("paths: " ,  drain::sprinter(paths) );
-			}
-
-			// std::cerr << __FILE__ << drain::sprinter(paths) << '\n';
-			ctx.select = value;
-
-		}
-		catch (const std::exception &e) { // consider generalising this
-			mout.warn("keys: " , test.getParameters().getKeys() );
-			mout.warn("msg: "  , e.what() );
-			mout.error("error in: " , value );
-		}
-		// mout.special(getName() , ctx.getId() , ':' , ctx.select );
-
-	};
-
-
-};
-*/
 
 /// Set selection criteria strictly to one \c quantity .
 /**
@@ -1693,144 +1655,6 @@ public:
 
 };
 
-/// "Overrides" drain::CmdFormat
-//class CmdFormat : public drain::BasicCommand {
-class CmdFormat : public drain::SimpleCommand<> {
-
-public:
-
-
-	/// Default constructor.
-	//CmdFormat() : drain::BasicCommand(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
-	CmdFormat() : drain::SimpleCommand<>(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)", "syntax") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
-		// RackContext & ctx = getContext<RackContext>();
-		// getParameters().link("syntax", ctx.formatStr);  direct shared LINK bad!
-	};
-
-	/// Copy constructor.
-	/*
-	CmdFormat(const CmdFormat & cmd) : drain::BasicCommand(cmd) {
-		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK );
-	}
-	*/
-
-	static
-	const std::map<std::string,std::string> presets;
-
-
-	//void update() override {
-	void exec() const override {
-
-		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		ctx.formatStr = value;
-		/*
-		mout.attention("ctx.id = ", ctx.getId());
-		mout.attention("ctx.formatStr: '", ctx.formatStr,"'");
-		mout.attention("params: '", this->getParameters());
-		mout.attention("syntax: '", this->getParameters()["syntax"]);
-		*/
-		for (const auto & entry: presets){
-			// mout.attention("now ", entry.first);
-			if (entry.first == ctx.formatStr){
-				mout.info("using preset: ", entry.first, "=>",  entry.second);
-				ctx.formatStr = entry.second;
-				return;
-			}
-		}
-	}
-
-};
-
-const std::map<std::string,std::string> CmdFormat::presets = {
-		{"OSM", "wms?service=WMS&version=1.1.0&request=GetMap&format=image/png&layers=osm:osm&srs=EPSG:${where:EPSG}&bbox=${where:BBOX_native}&width=${where:xsize}&height=${where:ysize}"},
-		{"FMI-OSM", "http://map.fmi.fi/geoserver/wms?wms?service=WMS&version=1.1.0&request=GetMap&format=image/png&layers=osm:osm&srs=EPSG:${where:EPSG}&bbox=${where:BBOX_native}&width=${where:xsize}&height=${where:ysize}"},
-		{"metadata", {
-				"SOURCE='${what:source}'\n"
-				"NOD='${NOD}'\n"
-				"WMO='${WMO}'\n"
-				"PLC='${PLC}'\n"
-				"LAT='${where:lat}'\n"
-				"LON='${where:lon}'\n"
-				"SITEHEIGHT='${where:height}'\n"
-				"PROJDEF='${where:projdef}'\n"
-				"EPSG='${where:EPSG}'\n"
-				"BBOX='${where:BBOX_native}'\n"
-				"WIDTH='${where:xsize}'\n"
-				"HEIGHT='${where:ysize}'\n"
-				//"BBOX='${where:LL_lon},${where:LL_lat},${where:UR_lon},${where:UR_lat}'\n"
-		}
-		}
-};
-
-
-class CmdFormatOut : public drain::SimpleCommand<std::string> {
-
-public:
-
-	CmdFormatOut() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dumps the formatted std::string to a file or stdout.", "filename","","std::string") {
-		//getParameters().separators.clear();
-		//getParameters().link("filename", filename, "");
-	};
-
-
-
-	void exec() const {
-
-		//RackResources & resources = getResources();
-		RackContext & ctx = getContext<RackContext>();
-
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
-
-
-		drain::StringMapper statusFormatter(RackContext::variableMapper);
-		statusFormatter.parse(ctx.formatStr, true);
-
-		mout.deprecating("Use  -o / --outputFile [file|'-'] instead of  ", getName());
-
-		if (value == "log"){
-			mout.unimplemented("Logging: future option" );
-			//statusFormatter.toStream(ctx.log.getOstr, ctx.getStatus());
-			//std::cout << statusFormatter;
-		}
-		else if (value == "image"){
-			//resources.
-			mout.deprecating("this command is unneed (--format is sufficient)" );
-		}
-		else {
-			std::string outFileName;
-			drain::VariableMap & statusMap = ctx.getUpdatedStatusMap();
-			if ((value == "")||(value == "-")){
-				outFileName = "-";
-			}
-			else {
-				drain::StringMapper filenameFormatter(RackContext::variableMapper);
-				filenameFormatter.parse(ctx.outputPrefix + value, false);  //filename = mapper.toStr(ctx.getStatusMap());
-				// Consider here or shared: VariableFormatterODIM<drain::Variable> odimHandler;
-				outFileName = filenameFormatter.toStr(statusMap, -1, RackContext::variableFormatter);
-				//outFileName = ctx.outputPrefix + value;
-			}
-			mout.info("writing " , outFileName );
-			drain::Output ofstr(outFileName);
-			//mout.warn(ctx.getStatus() );
-			//std::ofstream ofstr(outFileName.c_str(), std::ios::out);
-			if (ofstr){
-				// VariableFormatterODIM<drain::Variable> odimHandler;
-				statusFormatter.toStream(ofstr, statusMap, 0, RackContext::variableFormatter); // odimHandler);
-			}
-			else
-				mout.warn("write error: " , outFileName );
-			//strm.toStream(ofstr, cmdStatus.statusMap.exportMap());
-			//ofstr.close();
-		}
-
-		//mout.warn("after expansion: " , r.statusFormatter );
-		//r.statusFormatter.debug(std::cerr, r.getStatusMap());
-
-	};
-
-};
-
 
 
 /// Facility for validating and storing desired technical (non-meteorological) user parameters.
@@ -1853,63 +1677,65 @@ public:
 
 
 	virtual
-	inline
-	void exec() const { //(const std::string & params){
+	void exec() const override;
 
-		RackContext & ctx = getContext<RackContext>();
-
-		drain::Logger mout(ctx.log, __FUNCTION__, getName());
-
-
-		try {
-
-			EncodingBag enc;
-
-			/// Also check and warn of unknown parameters
-			enc.setValues(value);  // sets type, perhaps, hence set type defaults and override them with user defs
-
-			drain::Range<double> range;
-			range.set(drain::Type::call<drain::typeMin, double>(enc.type), drain::Type::call<drain::typeMax, double>(enc.type));
-			if (!range.contains(enc.undetect)){
-				mout.warn("undetect=" , enc.undetect , " outside storage type range=" , range );
-			}
-			if (!range.contains(enc.nodata)){
-				mout.warn("nodata=" , enc.nodata , " outside storage type range=" , range );
-			}
-
-			//mout.note("(user) params: " , params );
-			//mout.note("parameters:    " , parameters );
-			mout.debug("odim: " , enc );
-			//odim.setTypeDefaults();
-
-			/// Main action: store the value for later commands.
-			ctx.targetEncoding = value;
-			mout.debug("ctx.targetEncoding " , ctx.targetEncoding );
-
-			// Reassign (to odim).
-			//parameters.setValues(params);
-			//mout.note("Re-assigned parameters: " , parameters );
-
-		}
-		catch (const std::runtime_error & e) {
-
-			mout.warn("Could not set odim" );
-			mout.note("pars: " , getParameters() );
-			//mout.warn("odim: " , enc );
-			mout.error(e.what() );
-
-		}
-
-		// std::cerr << "CmdEncoding.odim: " << odim << std::endl;
-		// std::cerr << "CmdEncoding.pars: " << parameters << std::endl;
-
-	};
 
 
 
 };
 // extern drain::CommandEntry<CmdEncoding> cmdEncoding;
 
+
+void CmdEncoding::exec() const {
+
+	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+
+	try {
+
+		EncodingBag enc;
+
+		/// Also check and warn of unknown parameters
+		enc.setValues(value);  // sets type, perhaps, hence set type defaults and override them with user defs
+
+		drain::Range<double> range;
+		range.set(drain::Type::call<drain::typeMin, double>(enc.type), drain::Type::call<drain::typeMax, double>(enc.type));
+		if (!range.contains(enc.undetect)){
+			mout.warn("undetect=" , enc.undetect , " outside storage type range=" , range );
+		}
+		if (!range.contains(enc.nodata)){
+			mout.warn("nodata=" , enc.nodata , " outside storage type range=" , range );
+		}
+
+		//mout.note("(user) params: " , params );
+		//mout.note("parameters:    " , parameters );
+		mout.debug("odim: " , enc );
+		//odim.setTypeDefaults();
+
+		/// Main action: store the value for later commands.
+		ctx.targetEncoding = value;
+		mout.debug("ctx.targetEncoding " , ctx.targetEncoding );
+
+		// Reassign (to odim).
+		//parameters.setValues(params);
+		//mout.note("Re-assigned parameters: " , parameters );
+
+	}
+	catch (const std::runtime_error & e) {
+
+		mout.warn("Could not set odim" );
+		mout.note("pars: " , getParameters() );
+		//mout.warn("odim: " , enc );
+		mout.error(e.what() );
+
+	}
+
+	// std::cerr << "CmdEncoding.odim: " << odim << std::endl;
+	// std::cerr << "CmdEncoding.pars: " << parameters << std::endl;
+
+};
 
 
 
@@ -2635,13 +2461,15 @@ MainModule::MainModule(){ //
 
 	install<CmdEncoding>('e');
 	install<CmdEncoding>("target");  // alias
-	install<CmdFormatOut>();
 	install<CmdEcho>();
 
 	//installer.install<CmdSleep> cmdSleep;
 	//install<drain::CmdFormat>();
+	/*
 	install<CmdFormat>(); // rack version, with presets
+	install<CmdFormatOut>();
 	install<drain::CmdFormatFile<RackContext> >();
+	*/
 
 	install<drain::CmdDebug>();
 	install<VerboseCmd>('v');
@@ -2873,6 +2701,29 @@ public:
 };
 */
 
+class CmdUpdateVariables : public drain::BasicCommand {
+
+public:
+
+	CmdUpdateVariables() : drain::BasicCommand(__FUNCTION__, "Force calling DataTools::updateInternalAttributes(ctx.getHi5(Hdf5Context::CURRENT))") {
+	}
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		Hi5Tree & dst = ctx.getHi5(Hdf5Context::CURRENT);
+		mout.warn("updateInternalAttributes: ", dst);
+
+		DataTools::updateInternalAttributes(dst);
+
+	};
+
+};
+
+
 HiddenModule::HiddenModule(){ //
 
 	// Bank-referencing commands first
@@ -2882,6 +2733,7 @@ HiddenModule::HiddenModule(){ //
 	install<CmdInputFilter>();
 	install<CmdTest2>("restart", 'R');
 	install<CmdHdf5Test>("getMyH5");
+	install<CmdUpdateVariables>();
 
 	// install<CmdTrigger>();
 	// install<CmdEcho>(); consider CmdRemark

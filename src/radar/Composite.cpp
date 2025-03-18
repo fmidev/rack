@@ -599,6 +599,9 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		mout.startTiming(source.NOD);
 	}
 
+	mout.special("addPolar: ", srcData.odim);
+
+
 	extracting = false;
 
 	//const DataSet<PolarSrc> konsta(srcData.getTree()["dataset1"]);  // TODO REMOVE XX

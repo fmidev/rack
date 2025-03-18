@@ -257,8 +257,15 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 		mout.info("Initialising (like) a single-radar Cartesian");
 
-		if (!composite.projectionIsSet())
+		if (!composite.projectionIsSet()){
+			mout.note("using radar-specific AEQD projection");
 			projectAEQD = true;
+		}
+		else {
+			mout.note("using predefined projection: ", composite.getProjection());
+			projectAEQD = true;
+		}
+
 		// see single below
 	}
 
@@ -309,7 +316,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			return;
 		}
 
-		mout.info("Using input path: ", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
+		mout.attention("Using input path: ", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
 
 		ODIMPathElem current = dataPath.back();
 		ODIMPath parent = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
@@ -330,18 +337,20 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 				//composite.odim.updateFromMap(polarSrc.odim); // REMOVED. Overwrites time
 
 				const std::string & encoding = composite.getTargetEncoding();
-				if (encoding.empty()){
+				if (!encoding.empty()){
+					mout.debug("Predefined encoding '", encoding, "' (str)");
+				}
+				else {
 					mout.hint("Use --encoding if specific data type and scaling needed");
 					// This is somewhat disturbing but perhaps worth it.
+					/*
 					if (projectAEQD){
-						mout.note("Adapting encoding of input: " , EncodingODIM(composite.odim) );
+						mout.note("Adapting encoding of input (AEQD): " , EncodingODIM(composite.odim) );
 					}
 					else {
 						mout.note("Storing encoding of first input: " , EncodingODIM(composite.odim) );
 					}
-				}
-				else {
-					mout.debug("Predefined encoding '", encoding, "' (str)");
+					*/
 				}
 				mout.debug("Storing metadata: " , composite.odim );
 				ProductBase::completeEncoding(composite.odim, encoding); // NEW: unneeded? WAS: note, needed even if encoding==""

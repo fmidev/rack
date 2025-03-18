@@ -139,6 +139,8 @@ int process(int argc, const char **argv) {
 	cmdBank.get("inputFile").section |= TRIGGER;
 
 	cmdBank.linkRelatedCommands("cAdd", "pAdd");
+	//cmdBank.linkRelatedCommands("format", "sample");
+
 
 	try {
 		mout.info("Converting arguments to a script ");

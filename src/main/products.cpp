@@ -281,6 +281,7 @@ public:
 			dst[ODIMPathElem::WHAT].data.attributes["rack_product"] = this->getName();
 		}
 
+		// mout.warn("updateInternalAttributes:...  ", dst);
 		DataTools::updateInternalAttributes(dst);
 		ctx.currentPolarHi5 = & ctx.polarProductHi5; // if cartesian, be careful with this...
 		ctx.currentHi5      = & ctx.polarProductHi5;

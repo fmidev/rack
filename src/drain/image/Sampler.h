@@ -209,7 +209,7 @@ public:
 	template <class D, class P>
 	void sample(const std::map<std::string, D> & images, const P & picker, const std::string & formatStr, std::ostream & ostr = std::cout) const { // std::string format copy ok
 
-		drain::Logger mout(__FUNCTION__, getName());
+		drain::Logger mout(getImgLog(), __FUNCTION__, getName());
 
 		if (images.empty()){
 			mout.error("no image data (channels) provided: " );
@@ -228,7 +228,7 @@ public:
 		// Save initial formatting data
 
 		//mout.special("fieldWidth: " , fieldWidth , ", fillChar=" , fillChar );
-		mout.debug2("variables (initially): " , variableMap.getKeys() );
+		mout.attention("variables (initially): " , variableMap.getKeys() );
 
 		/// Final formatter defined here, to copy ostr precision etc.
 		// Note: supports leading minus sign
@@ -238,7 +238,7 @@ public:
 		std::string format = getFormat(formatStr);
 		formatter.parse(format, true); // convert escaped, eg. "\\n" -> "\n"
 		formatter.iosFormat.copyFrom(ostr);
-		mout.special("iosFormat: " , formatter.iosFormat );
+		mout.special("iosFormat: ", formatter.iosFormat);
 
 		// std::string format = getFormat(formatStr);
 
@@ -316,6 +316,12 @@ public:
 		if (jEnd < jStart)
 			jEnd = picker.height-1;
 
+		mout.attention(DRAIN_LOG_VAR(iStart));
+		mout.attention(DRAIN_LOG_VAR(iStep));
+		mout.attention(DRAIN_LOG_VAR(iEnd));
+		mout.attention(DRAIN_LOG_VAR(jStart));
+		mout.attention(DRAIN_LOG_VAR(jStep));
+		mout.attention(DRAIN_LOG_VAR(jEnd));
 
 		// Main loop: traverse image area with (i,j)
 		// SamplePicker has set variableMap references (ie. geographical coords j2=(height-1-j) ).
@@ -354,7 +360,7 @@ public:
 			}
 			// formatter.expand(map, true);
 		}
-		mout.debug("last values: " , variableMap );
+		mout.warn("last values: " , variableMap );
 		//mout.warn("formatter " , formatter );
 
 	}

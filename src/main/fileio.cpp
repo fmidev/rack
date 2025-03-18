@@ -831,11 +831,6 @@ public:
 
 
 
-// BeanCommand<drain::image::ImageSampler>
-// BeanerCommand<drain::image::ImageSampler>
-//class CmdSample : public drain::SimpleCommand<> {
-//class CmdImageSampler : public drain::BeanCommand<drain::image::ImageSampler> {
-//class CmdImageSampler : public drain::BeanerCommand<drain::image::ImageSampler> {
 class CmdImageSampler : public drain::BeanCommand<drain::image::ImageSampler> {
 
 public:
@@ -860,6 +855,144 @@ public:
 };
 
 
+/// "Overrides" drain::CmdFormat
+//class CmdFormat : public drain::BasicCommand {
+class CmdFormat : public drain::SimpleCommand<> {
+
+public:
+
+
+	/// Default constructor.
+	//CmdFormat() : drain::BasicCommand(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
+	CmdFormat() : drain::SimpleCommand<>(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)", "syntax") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
+		// RackContext & ctx = getContext<RackContext>();
+		// getParameters().link("syntax", ctx.formatStr);  direct shared LINK bad!
+	};
+
+	/// Copy constructor.
+	/*
+	CmdFormat(const CmdFormat & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK );
+	}
+	*/
+
+	static
+	const std::map<std::string,std::string> presets;
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+		ctx.formatStr = value;
+		/*
+		mout.attention("ctx.id = ", ctx.getId());
+		mout.attention("ctx.formatStr: '", ctx.formatStr,"'");
+		mout.attention("params: '", this->getParameters());
+		mout.attention("syntax: '", this->getParameters()["syntax"]);
+		*/
+		for (const auto & entry: presets){
+			// mout.attention("now ", entry.first);
+			if (entry.first == ctx.formatStr){
+				mout.info("using preset: ", entry.first, "=>",  entry.second);
+				ctx.formatStr = entry.second;
+				return;
+			}
+		}
+	}
+
+};
+
+const std::map<std::string,std::string> CmdFormat::presets = {
+		{"OSM", "wms?service=WMS&version=1.1.0&request=GetMap&format=image/png&layers=osm:osm&srs=EPSG:${where:EPSG}&bbox=${where:BBOX_native}&width=${where:xsize}&height=${where:ysize}"},
+		{"FMI-OSM", "http://map.fmi.fi/geoserver/wms?wms?service=WMS&version=1.1.0&request=GetMap&format=image/png&layers=osm:osm&srs=EPSG:${where:EPSG}&bbox=${where:BBOX_native}&width=${where:xsize}&height=${where:ysize}"},
+		{"metadata", {
+				"SOURCE='${what:source}'\n"
+				"NOD='${NOD}'\n"
+				"WMO='${WMO}'\n"
+				"PLC='${PLC}'\n"
+				"LAT='${where:lat}'\n"
+				"LON='${where:lon}'\n"
+				"SITEHEIGHT='${where:height}'\n"
+				"PROJDEF='${where:projdef}'\n"
+				"EPSG='${where:EPSG}'\n"
+				"BBOX='${where:BBOX_native}'\n"
+				"WIDTH='${where:xsize}'\n"
+				"HEIGHT='${where:ysize}'\n"
+				//"BBOX='${where:LL_lon},${where:LL_lat},${where:UR_lon},${where:UR_lat}'\n"
+		}
+		}
+};
+
+
+class CmdFormatOut : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdFormatOut() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dumps the formatted std::string to a file or stdout.", "filename","","std::string") {
+		//getParameters().separators.clear();
+		//getParameters().link("filename", filename, "");
+	};
+
+
+	virtual
+	void exec() const override {
+
+		//RackResources & resources = getResources();
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
+
+
+		drain::StringMapper statusFormatter(RackContext::variableMapper);
+		statusFormatter.parse(ctx.formatStr, true);
+
+		mout.deprecating("Use  -o / --outputFile [file|'-'] instead of  ", getName());
+
+		if (value == "log"){
+			mout.unimplemented("Logging: future option" );
+			//statusFormatter.toStream(ctx.log.getOstr, ctx.getStatus());
+			//std::cout << statusFormatter;
+		}
+		else if (value == "image"){
+			//resources.
+			mout.deprecating("this command is unneed (--format is sufficient)" );
+		}
+		else {
+			std::string outFileName;
+			drain::VariableMap & statusMap = ctx.getUpdatedStatusMap();
+			if ((value == "")||(value == "-")){
+				outFileName = "-";
+			}
+			else {
+				drain::StringMapper filenameFormatter(RackContext::variableMapper);
+				filenameFormatter.parse(ctx.outputPrefix + value, false);  //filename = mapper.toStr(ctx.getStatusMap());
+				// Consider here or shared: VariableFormatterODIM<drain::Variable> odimHandler;
+				outFileName = filenameFormatter.toStr(statusMap, -1, RackContext::variableFormatter);
+				//outFileName = ctx.outputPrefix + value;
+			}
+			mout.info("writing " , outFileName );
+			drain::Output ofstr(outFileName);
+			//mout.warn(ctx.getStatus() );
+			//std::ofstream ofstr(outFileName.c_str(), std::ios::out);
+			if (ofstr){
+				// VariableFormatterODIM<drain::Variable> odimHandler;
+				statusFormatter.toStream(ofstr, statusMap, 0, RackContext::variableFormatter); // odimHandler);
+			}
+			else
+				mout.warn("write error: " , outFileName );
+			//strm.toStream(ofstr, cmdStatus.statusMap.exportMap());
+			//ofstr.close();
+		}
+
+		//mout.warn("after expansion: " , r.statusFormatter );
+		//r.statusFormatter.debug(std::cerr, r.getStatusMap());
+
+	};
+
+};
+
+
 
 FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // : drain::CommandSection("general") {
 
@@ -877,10 +1010,25 @@ FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // 
 	install<CmdOutputRawImages>('O').addSection(IMAGES);
 	install<CmdOutputConf>();
 
+	// install<CmdFormat>(); // rack version, with presets
+	// install<CmdFormatOut>();
+	install<drain::CmdFormatFile<RackContext> >();
+
+	DRAIN_CMD_INSTALL(Cmd,Format)();
+	DRAIN_CMD_INSTALL(Cmd,FormatOut)();
+	linkRelatedCommands(Format,FormatOut);
+
+	DRAIN_CMD_INSTALL(Cmd,ImageSampler)("sample");
+	ImageSampler.relatedCommands.insert("format");
+
 	// install<CmdOutputTreeConf>();
 
 	install<CmdGeoTiff>().addSection(IMAGES);
-	install<CmdImageSampler>("sample");
+
+	//DRAIN_CMD_INSTALL(ImageSampler)("sample");
+	// drain::Command & imageSampler =  install<CmdImageSampler>("sample");
+	// imageSampler.relatedCommands.insert("format");
+
 	install<CmdHistogram>();
 
 	//installer<CmdInputValidatorFile> cmdInputValidatorFile;

@@ -89,14 +89,14 @@ public:
 
 	//void writeGeoTIFF(const drain::image::Image & src, const std::string & filename) const;
 
+	virtual
+	void exec() const override;
+
 	void writeProfile(const Hi5Tree & src, const std::string & filename) const;
 
 	void writeSamples(const Hi5Tree & src, const std::string & filename) const;
 
 	void writeDotGraph(const Hi5Tree & src, const std::string & filename, ODIMPathElem::group_t selector = (ODIMPathElem::ROOT | ODIMPathElem::IS_INDEXED)) const;
-
-	void exec() const;
-
 
 
 };
