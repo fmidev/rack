@@ -109,7 +109,7 @@ void SourceODIM::setNOD(){
 				//std::string  code = getSourceCode();
 				if (!code.empty()){
 					mout.info("Site code 'NOD' not found, using '" , code , "' as node indicator " );
-					mout.special(*this);
+					mout.special<LOG_INFO>(*this);
 				}
 				else {
 					mout.info(*this);

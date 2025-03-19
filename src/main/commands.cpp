@@ -201,7 +201,7 @@ public:
 		} catch (const std::exception & e) {
 			mout.error("syntax error in selection string: ", value);
 		}
-		mout.special<LOG_NOTICE>("ctx.selector: ", mySelector);
+		mout.special<LOG_DEBUG>("ctx.selector: ", mySelector);
 		// mout.special<LOG_INFO>("ctx.selector, quantity: ", ctx.superSelector.getQuantitySelector());
 		// mout.special<LOG_INFO>("ctx.selector, quality: ",  ctx.superSelector.getQualitySelector());
 		ctx.select = value;

@@ -680,7 +680,17 @@ void CmdOutputFile::exec() const {
 			//
 			const drain::VariableMap & vmapShared = ctx.getStatusMap();
 
-			mout.special("VMAP (", vmapShared.size(), ") where:EPSG=", vmapShared.get("where:EPSG", -1));
+			mout.debug("VMAP (", vmapShared.size(), ") where:EPSG=", vmapShared.get("where:EPSG", -1));
+
+			switch (paths.size()){
+			case 0:
+				mout.warn("no paths returned with by Selector: ", selector);
+				// no break
+			case 1:
+				break;
+			default:
+				mout.hint("several datasets found, use --select dataset1 or --select dataset:,count=1 to limit");
+			}
 
 			for (const ODIMPath & path: paths){
 				const drain::image::Image & img = src(path).data.image;
