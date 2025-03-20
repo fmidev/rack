@@ -75,7 +75,8 @@ drain::TreeHTML & H5HTMLextractor::addTogglerStyle(drain::TreeHTML & head, const
 	/// Original code from: https://www.w3schools.com/howto/howto_js_treeview.asp
 	drain::TreeHTML & style = head[key](drain::html::STYLE);
 	// script->set("type", "text/javascript");
-	style["comment"](drain::html::STYLE)->setText("/* Original example: https://www.w3schools.com/howto/howto_js_treeview.asp */");
+	//style.addChild()
+	style[drain::html::COMMENT](drain::html::COMMENT) = "Original example: https://www.w3schools.com/howto/howto_js_treeview.asp";
 	style["ul, #myUL"] = "list-style-type: none;";
 	style["#myUL"]->set("margin:0; padding:0;");
 	style[".caret"]->set("cursor:pointer; user-select:none;");
@@ -109,8 +110,10 @@ drain::TreeHTML & H5HTMLextractor::getHtml(){
 		*/
 
 		drain::TreeHTML & style = head[drain::html::STYLE](drain::html::STYLE);
+		style[drain::html::COMMENT](drain::html::COMMENT)->setText("Rack default style");
+
 		//style["table,tr"] = "border:1px solid;";
-		style["h1,h2,h3"] = "font-family: Helvetica, sans-serif;";
+		style["h1,h2,h3"]  = "font-family: Helvetica, sans-serif;";
 		style["table,img"] = "border:1px solid;";
 		style["table"] = "border-collapse:collapse; font-size:small; font-family:monospace";
 		style["th"] = "text-align:left; font-decoration:none";

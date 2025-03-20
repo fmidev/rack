@@ -818,10 +818,19 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 		ostr << '\n';
 
 		for (const auto & entry: tree.getChildren()){
+
+			if (entry.second->isComment()){
+				// StringTools::replace();
+				ostr << fill << "/* "<< entry.second->ctext << " */" << '\n';
+				// XML::toStream(ostr, entry.second, defaultTag, indent); // indent not used?
+				continue;
+			}
+
 			if (!entry.second->ctext.empty()){
 				//ostr << fill << "<!-- elem("<< entry.first << ") ctext /-->" << '\n';
 				ostr << fill << "  " << entry.first << " {" << entry.second->ctext << "} /* CTEXT */ \n";
 			}
+
 			if (!entry.second->getAttributes().empty()){
 				ostr << fill << "  " << entry.first << " {\n";
 				for (const auto & attr: entry.second->getAttributes()){
@@ -832,6 +841,7 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 				ostr << fill << "  }\n";
 				ostr << '\n';
 			}
+
 		}
 		ostr << "\n"; // end CTEXT
 		// ostr << " ]]>\n"; // end CTEXT

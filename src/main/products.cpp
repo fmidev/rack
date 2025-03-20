@@ -91,7 +91,7 @@ public:
 		getParameters().link("index", elevIndex = 0);
 	};
 
-	CmdSweep(const CmdSweep &cmd) : drain::BasicCommand(cmd){
+	CmdSweep(const CmdSweep &cmd) : drain::BasicCommand(cmd), elevIndex(0) {
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 

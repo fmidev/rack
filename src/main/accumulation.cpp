@@ -459,7 +459,7 @@ public:
 		RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+		drain::Logger mout(ctx.log, __FILE__, getName());
 
 
 		RadarAccumulator<Accumulator,PolarODIM> & acc = resources.polarAccumulator;
@@ -487,6 +487,10 @@ public:
 		//acc.odim.ACCnum += acc.count;
 		//acc.count = 0; // NOTE CHECK - if data re-added?
 		acc.extractOLD(acc.odim, dstProduct, value);
+
+		if (acc.counter == 0){
+			mout.error("accumulation array received no input");
+		}
 		acc.odim.ACCnum = acc.counter;
 
 		ODIM::updateH5AttributeGroups<ODIMPathElem::DATASET>(acc.odim, dstDataSetGroup); //@dstProduct odim.copyToDataSet(dstDataSetGroup);

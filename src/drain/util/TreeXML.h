@@ -468,7 +468,7 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 	if (mode != CLOSING_TAG){
 
 		if (typeIs(STYLE)){
-			xmlAttribToStream(ostr, "data-mode", "experimental");
+			 // xmlAttribToStream(ostr, "data-mode", "experimental");
 		}
 		else { // if (!isCText())
 
