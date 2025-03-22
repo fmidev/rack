@@ -242,10 +242,11 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 	*/
 
 	//mout.debug("Selector results: " );
-	for (const ODIMPath & path: paths)
+	for (const ODIMPath & path: paths){
 		mout.info("Selector results: ", path);
+	}
 
-	mout.note("Use physical scale? ", ctx.imagePhysical);
+	mout.note("use physical scale? ", ctx.imagePhysical);
 
 	// For derived quantity:
 	drain::StringMapper quantitySyntaxMapper(RackContext::variableMapper);
@@ -272,7 +273,16 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			continue;
 		}
 
-		// if (path.begin()->isRoot()){
+		// NEW
+		if (path.empty()){
+			mout.error("empty path, skipping...");
+			continue;
+		}
+
+		// Strip root (all leading slashes)
+		path.trimHead();
+
+		/*
 		if (path.front().isRoot()){
 			path.pop_front();
 			mout.debug("path started with root, trimmed it to: ", path);
@@ -281,6 +291,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				continue;
 			}
 		}
+		*/
 
 		const ODIMPathElem & datasetElem = path.front(); // *path.begin();
 
@@ -464,12 +475,13 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 					if (CHANGE_TYPE || CHANGE_SCALING){
 
-						if (CHANGE_TYPE)
+						if (CHANGE_TYPE){
 							mout.attention("data storage TYPE change requested by user");
+						}
 
-						if (CHANGE_SCALING)
+						if (CHANGE_SCALING){
 							mout.attention("data SCALING change requested by user");
-
+						}
 
 						const QuantityMap & qmap = getQuantityMap();
 						if (qmap.hasQuantity(dstQuantity)){
@@ -478,13 +490,14 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 							// NOTE: dstData.odim.quantity may NOW contain variable syntax,  "${what:quantity}_X"
 						}
 						else {
-							dstData.odim.updateValues(ctx.targetEncoding);
+							//dstData.odim.updateValues(ctx.targetEncoding);
+							ProductBase::completeEncoding(dstData.odim, ctx.targetEncoding);
 							// dstData.odim.quantity = dstQuantity; // replace syntax pattern
 							if (CHANGE_TYPE && ! CHANGE_SCALING){
 								mout.attention("no conf for: ", dstQuantity);
 								mout.warn("type changed from: ", srcData.odim.type, " to ", dstData.odim.type, ", but no scaling set ");
 							}
-
+							mout.special(EncodingODIM(dstData.odim));
 						}
 					}
 
