@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "11.6"
+#define __RACK_VERSION__ "11.7"
 
 /**
  *
@@ -50,10 +50,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 11.4
  *  - EchoTop dataSelector: prf=ANY
  *  - Clear --select after --outputFile (?)
- *  Release 11.5
- *  - Fixed composite tile storage type bug (S = uint16)
  *  Release 11.6
  *  - Fixed composite tile storage type bug (S = uint16)
+ *  Release 11.7
+ *  - Fixed accumulation encoding (automatic undetect/nodata)
  *
  *  Version 10.7
  *   - gPanel TECH
