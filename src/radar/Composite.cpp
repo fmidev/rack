@@ -599,7 +599,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		mout.startTiming(source.NOD);
 	}
 
-	mout.special("addPolar: ", srcData.odim);
+	// mout.special("addPolar: ", srcData.odim);
 
 
 	extracting = false;

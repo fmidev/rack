@@ -570,7 +570,7 @@ void DataSelector::prunePaths(const Hi5Tree & src, std::list<ODIMPath> & pathLis
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (pathList.empty()){
-		mout.warn("Path list empty, returning");
+		mout.fail<LOG_NOTICE>("Path list empty, returning");
 		return;
 	}
 

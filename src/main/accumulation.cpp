@@ -313,7 +313,10 @@ public:
 		ODIMPath path;
 		//acc.dataSelector.setPathMatcher(ODIMPathElem::DATASET, ODIMPathElem::DATA); // TODO: could be QUALITY ?
 
-		acc.dataSelector.getPath(src, path);  //, ODIMPathElem::DATASET); //, true);
+		if (!acc.dataSelector.getPath(src, path)){
+			mout.warn("no paths found with selector:" , acc.dataSelector , ", skipping..." );
+			return;
+		}
 
 		/*
 		mout.attention("srcData /how:ACCnum=", src["how"].data.attributes["ACCnum"]);
@@ -326,7 +329,7 @@ public:
 
 
 		if (srcData.data.isEmpty()){
-			mout.warn("No data found with selector:" , acc.dataSelector , ", skipping..." );
+			mout.warn("empty data found with selector:" , acc.dataSelector , ", skipping..." );
 			return;
 		}
 

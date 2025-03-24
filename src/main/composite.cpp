@@ -316,7 +316,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			return;
 		}
 
-		mout.attention("Using input path: ", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
+		mout.accept<LOG_INFO>("using input path: ", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
 
 		ODIMPathElem current = dataPath.back();
 		ODIMPath parent = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
