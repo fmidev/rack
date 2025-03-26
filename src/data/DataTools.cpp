@@ -43,6 +43,7 @@ namespace rack {
 
 using namespace hi5;
 
+/*
 std::list<std::string> & DataTools::getMainAttributes(){
 
 	static std::list<std::string> mainAttributes = {
@@ -53,7 +54,8 @@ std::list<std::string> & DataTools::getMainAttributes(){
 			"what:time",
 			"what:quantity",
 			"where:BBOX",
-			"how:angles:0.3",
+			"where:EPSG",
+			"how:angles", // "how:angles:0.3",
 			"NOD",
 			"where:lat",
 			"where:lon",
@@ -64,6 +66,7 @@ std::list<std::string> & DataTools::getMainAttributes(){
 
 	return mainAttributes;
 }
+*/
 
 
 void DataTools::getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m){
@@ -100,6 +103,7 @@ drain::VariableMap & DataTools::getAttributeStyles(){
 		{"lat", "YELLOW:DIM"},
 		{"nodes", "YELLOW:DIM"},
 		{"BBOX", "YELLOW:DIM"},
+		{"EPSG", "YELLOW:BOLD"},
 		{"xsize", "YELLOW:DIM"},
 		{"ysize", "YELLOW:DIM"},
 		{"rscale", "YELLOW:DIM"},

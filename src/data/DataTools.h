@@ -163,8 +163,8 @@ public:
 	bool treeToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr);
 
 
-	static
-	std::list<std::string> & getMainAttributes();
+	//static
+	// std::list<std::string> & getMainAttributes();
 
 	/// List of most important ODIM attributes (with style suggestion).
 	/**

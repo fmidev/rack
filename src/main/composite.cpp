@@ -263,7 +263,8 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		}
 		else {
 			mout.note("using predefined projection: ", composite.getProjection());
-			projectAEQD = true;
+			//projectAEQD = true;
+			projectAEQD = false;
 		}
 
 		// see single below
