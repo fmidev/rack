@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+//const std::list<std::string> & compatibleVariants,
 Quantity::Quantity(const std::string & name,
 		const drain::Range<double> & range,
 		char defaultType,
@@ -44,6 +45,40 @@ Quantity::Quantity(const std::string & name,
 			defaultType(defaultType),
 			physicalRange(range),
 			undetectValue(undetectValue) {
+
+	addEncodings(l);
+
+}
+
+
+Quantity::Quantity(const std::string & name,
+		const std::list<std::string> & compatibleVariants,
+		const drain::Range<double> & range,
+		char defaultType,
+		const list_t & l,
+		double undetectValue):
+			name(name),
+			defaultType(defaultType),
+			physicalRange(range),
+			undetectValue(undetectValue) {
+
+	addEncodings(l);
+}
+
+Quantity::Quantity(const std::string & name,
+		const std::list<std::string> & compatibleVariants,
+		char defaultType,
+		const list_t & l,
+		double undetectValue):
+			name(name),
+			defaultType(defaultType),
+			// physicalRange(0.0, 0.0),
+			undetectValue(undetectValue) {
+
+	addEncodings(l);
+}
+
+void Quantity::addEncodings(const list_t & l){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -61,9 +96,9 @@ Quantity::Quantity(const std::string & name,
 			newEntry = entry;
 			if (!this->defaultType)
 				this->defaultType = type;
-			if (newEntry.scaling.physRange.empty() && !range.empty()){
+			if (newEntry.scaling.physRange.empty() && !physicalRange.empty()){
 				//std::cout << name << ": empty range " << entry.scaling.physRange << " <-- " << range << '\n';
-				newEntry.scaling.physRange.set(range); // also to floats?
+				newEntry.scaling.physRange.set(physicalRange); // also to floats?
 			}
 		}
 	}
@@ -99,6 +134,39 @@ EncodingODIM & Quantity::set(char typecode) {
 
 	return odim;
 }
+
+/// Retrieve the scaling for a given storage type.
+const EncodingODIM & Quantity::get(char typecode) const {
+
+	if (!typecode)
+		typecode = defaultType;
+
+	const const_iterator it = find(typecode);
+
+	if (it != end()){ // null ok
+		return it->second;
+	}
+	else {
+		//drain::Logger mout("Quantity", __FUNCTION__);
+		//mout.warn("undefined code for this quantity, code=" , typecode );
+		// TODO return default
+		static EncodingODIM empty;
+		return empty;
+	}
+
+}
+
+/// Retrieve the scaling for a given storage type.
+const EncodingODIM & Quantity::get(const std::string & t) const {
+	if (t.length() != 1)
+		//hrow (std::runtime_error(t + "<= illegal std::string in EncodingODIM::"+__FUNCTION__+" line "+__LINE__));
+		throw (std::runtime_error(t+" <= illegal std::string, "+ __FUNCTION__));
+	else
+		return get(t.at(0));
+}
+
+
+
 
 std::ostream & Quantity::toStream(std::ostream & ostr) const {
 	for (const_iterator it = begin(); it != end(); ++it){

@@ -55,7 +55,7 @@ public:
 
 	inline
 	QuantityMap(){
-		initialize();
+		//initialize();
 	}
 
 	inline
@@ -70,8 +70,22 @@ public:
 		mout.attention("? copy const <map>");
 	}
 
+	inline
+	QuantityMap(const std::initializer_list<std::pair<std::string, Quantity> > & inits){
+		assign(inits);
+	}
 
-	void initialize();
+
+	inline
+	QuantityMap & operator=(const std::initializer_list<std::pair<std::string, Quantity> > & inits){
+		assign(inits);
+		return *this;
+	}
+
+	void assign(const std::initializer_list<std::pair<std::string, Quantity> > & inits);
+
+
+	void initializeOLD();
 
 	/// Sets quantity encoding. If gain=0.0, default values for the given type will be set as defined in drain::Type
 	//void set(const std::string & key, char type, double gain, double offset, double undetect, double nodata);
@@ -84,18 +98,22 @@ public:
 	 *
 	 */
 	//void set(const std::string & key, char type='C', double gain=1.0, double offset=NAN);
-	inline // EncodingODIM
+	/*
+	inline
 	Quantity & add(const std::string & key){ // char typecode = 'C'
 		Quantity & q = (*this)[key];
 		q.set('C');
 		return q;
 	}
+	*/
 
+	/*
 	inline // EncodingODIM
 	EncodingODIM & set(const std::string & key, char typecode){ // char typecode = 'C'
 		Quantity & q = (*this)[key];
 		return q.set(typecode);
 	}
+	*/
 
 	/*
 	inline
@@ -107,6 +125,7 @@ public:
 	*/
 	//void set(const std::string & key, const Quantity & q);
 
+	/*
 	inline
 	Quantity & copy(const std::string & key, const Quantity & dst){
 		Quantity & q = (*this)[key];
@@ -114,47 +133,27 @@ public:
 		q = dst;
 		return q;
 	}
-
+	*/
 
 	inline
 	bool hasQuantity(const std::string & key) const {
-		return find(key) != end();
+		// return find(key) != end();  // revised 2025
+		return retrieve(key) != end(); // revised 2025
 	}
 
+	// NEW 2025
+	iterator retrieve(const std::string & key);
 
-	inline
-	const Quantity & get(const std::string & key) const {
+	// NEW 2025
+	const_iterator retrieve(const std::string & key) const;
 
-			const const_iterator it = find(key);
+	const Quantity & get(const std::string & key) const;
 
-			if (it != end()){ // null ok
-				return it->second;
-			}
-			else {
-				//drain::Logger mout("Quantity", __FUNCTION__);
-				//mout.warn("undefined quantity=" , key );
-				static Quantity empty;
-				return empty;
-			}
+	Quantity & get(const std::string & key);
 
-	}
+	// New 2025 ... to replace get()?
+	// const Quantity & findApplicable(const std::string & key) const;
 
-	inline
-	Quantity & get(const std::string & key) {
-
-		const iterator it = find(key);
-
-		if (it != end()){ // null ok
-			return it->second;
-		}
-		else {
-			// Warning: if this is declared (modified), further instances will override and hence confuse
-
-			static Quantity empty;
-			return empty;
-		}
-
-	}
 
 	/// Sets default values of given quantity - but not the quantity itself. Optionally overrides with user values.
 	/**
@@ -242,23 +241,15 @@ public:
 		return EncodingODIM::haveSimilarEncoding(odim, q.get(q.defaultType));
 	}
 
-
-
-	inline
-	std::ostream & toOstr(std::ostream & ostr) const {
-		for (const_iterator it = begin(); it != end(); ++it){
-			ostr << it->first << '\n' << it->second; // << '\n';
-		}
-		return ostr;
-	}
-
+	/// Output
+	std::ostream & toStream(std::ostream & ostr) const;
 
 
 };
 
 inline
 std::ostream & operator<<(std::ostream & ostr, const QuantityMap & map){
-	return map.toOstr(ostr);
+	return map.toStream(ostr);
 }
 
 QuantityMap & getQuantityMap();

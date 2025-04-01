@@ -226,10 +226,14 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 	}
 
 	//mout.warn("quantity [" , dstODIM.quantity , "]" );
-	const QuantityMap & qmap= getQuantityMap();
-	bool result = qmap.setQuantityDefaults(dstODIM, dstODIM.quantity, encoding);
+	const QuantityMap & qmap = getQuantityMap();
 
-	if (!result){
+	// const bool OK = qmap.setQuantityDefaults(dstODIM, dstODIM.quantity, encoding);
+
+	if (qmap.setQuantityDefaults(dstODIM, dstODIM.quantity, encoding)){
+		mout.accept<LOG_DEBUG>("quantity=", dstODIM.quantity, " encoding=", encoding);
+	}
+	else {
 		if (qmap.hasQuantity(dstODIM.quantity)){
 			if (drain::Type::call<drain::typeIsInteger>(dstODIM.type))
 				mout.warn(); // Integer: underflow/overflow possible. Bit value

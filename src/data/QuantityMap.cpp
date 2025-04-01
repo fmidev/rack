@@ -35,69 +35,214 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+void QuantityMap::assign(const std::initializer_list<std::pair<std::string, Quantity> > & inits) {
+	for (const auto & entry: inits){
+		(*this)[entry.first] = entry.second;
+	}
+	//return *this;
+}
 
-void QuantityMap::initialize(){
+std::ostream & QuantityMap::toStream(std::ostream & ostr) const {
+	for (const auto & entry: *this){
+		ostr << entry.first << ' ';
+		if (!entry.second.variants.empty()){
+			ostr << '(' << entry.second.variants << ')' <<' ';
+		}
+		ostr << " – " << entry.second.name << '\n';
+		ostr << entry.second; // << '\n';
+	}
+	return ostr;
+}
+
+
+void QuantityMap::initializeOLD(){
 
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
+	/*
+	// NEW:
+	*this = {
+			{"DBZH", {
+					"Radar reflectivity",
+					{"DBZ[HV]", "DBZ[HV]C", "T[HV]"},
+					{-32.0, +60.0},
+					'C',
+					{
+							{'C', 0.5, -32.0},
+							{'S', 0.01, -0.01*(128*256)}
+					},
+					-32.0 // "virtual" zero
+			}
+			},
+			{"DBZHDEV", {
+					"Deviation of radar reflectivity",
+					{"DBZH_DEV"},
+					{-100.0, 100.0},
+					'C',
+					{
+							{'C', 1.0, -128},
+							{'S'}
+					},
+					0.0
+			}
+			},
+			{"VRAD", {
+					"Radial velocity",
+					{"VRAD", "VRAD[HV]"},
+					{-100.0, 100},
+					'C',
+					{
+							{'C', 0.5, -64.0},
+							{'S', {-100.0,+100.0}}
+					}
+			}
+			},
+			{"VRAD_DEV", {
+					"Radial velocity, deviation",
+					{},
+					{-100.0, 100},
+					'C',
+					{
+							{'C', 0.0, 64.0},
+							{'S', 0, 128.0}
+					}
+			}
+			},
+			{"VRAD_DIFF", {
+					"Radial velocity difference", {},
+					{-100.0, 100},
+					'C',
+					{
+							{'C', {-32, +32}},
+							{'S', {-256.0,+256.0}}
+					}
+			}
+			},
+			{"RHOHV", {
+					"Polarimetric cross-correlation", {},
+					{0.0, 1.0},
+					'S',
+					{
+							{'C', 0.004,  -0.004},
+							{'S', 0.0001, -0.0001}
+					}
+			}
+			},
+			{"ZDR", {
+					"Polarimetric difference", {},
+					{0.0, 1.0},
+					'S',
+					{
+							{'C', 0.1,  -12.8},
+							{'S', 0.01, -0.01*(128.0*256.0)}
+					}
+			}
+			},
+			{"KDP", {
+					"Polarimetric differential phase", {},
+					{-120.0, +120.0},
+					'S',
+					{
+							{'C'},
+							{'S', 0.01, -0.01*(128.0*256.0)}
+					}
+			}
+			},
+			{"PHIDP", {
+					"Polarimetric differential phase", {"PhiDP"},
+					{-180.0, +180.0},
+					'S',
+					{
+							{'C'},
+							{'S'}
+					}
+			}
+			},
+			{"RATE", {
+					"Precipitation rate", {},
+					{-180.0, +180.0},
+					'S',
+					{
+							{'C', 0.05},
+							{'S', 0.0005}
+					}
+			}
+			},
+			{"HCLASS", {
+					"Classification (Vaisala)", {"HydroCLASS"},
+					'S',
+					{
+							{'C', 1.0},
+							{'S', 1.0}
+					}
+			}
+			},
+			{"CLASS", {
+					"Classification", {"CLASS_.*"},
+					'S',
+					{
+							{'C', 1.0},
+							{'S', 1.0}
+					}
+			}
+			},
+			{"QIND", {
+					"Quality index", {"QIND_.*"},
+					{0.0, 1.0},
+					'C',
+					{
+							{'C', 1.0/250.0},
+							{'S', 1.0/65535.0}
+					}
+			}
+			},
+			{"PROB", {
+					"Probability", {"PROB_.*"},
+					{0.0, 1.0},
+					'C',
+					{
+							{'C', 1.0/250.0},
+							{'S', 1.0/65535.0}
+					}
+			}
+			},
+			{"COUNT", {
+					"Count", {"COUNT_.*"},
+					'C',
+					{
+							{'C'}, {'S'}, {'I'}, {'L'}, {'f'}, {'d'}
+					}
+			}
+			},
+			{"AMV", {
+					"Atmospheric motion [vector component]", {"AMV[UV]"},
+					'C',
+					{
+							{'C', {-100,100}},
+							{'c', {-127,127}},
+							{'S', {-327.68, +327.68}},
+							{'s', 0.01},
+							{'f'},
+							{'d'}
+					}
+			}
+			},
+	};
+	*/
 
-	// OLD
-
-	Quantity & DBZH = add("DBZH");
-	DBZH.set('C').setScaling(0.5, -32);
-	DBZH.set('S').setScaling(0.01, -0.01*(128*256));
-	DBZH.setZero(-32.0);
-
-	copy("TH",    DBZH );
-	copy("DBZHC", DBZH );
-
-	Quantity & DBZHDEV = add("DBZHDEV"); // RadarAccumulator
-	DBZHDEV.set('C').setScaling(1, -128);
-	DBZHDEV.set('S').setRange(-100.0, +100.0);
-	DBZHDEV.setZero(0.0);
-
-	Quantity & VRAD = add("VRAD");
-	VRAD.set('C').setScaling(    0.5, -64.0);  // nodata = 0?  IRIS
-	//VRAD.set('S').setScaling( 0.0025, -0.0025*(256.0*128.0)); // nodata = 0?
-	VRAD.set('S').setRange(-100, 100);
-	copy("VRADH", VRAD);
-	copy("VRADV", VRAD);
-	copy("VRADDH", VRAD);
-	copy("VRADDV", VRAD);
-
-	Quantity & VRAD_DIFF = add("VRAD_DIFF");
-	VRAD_DIFF.set('C').setRange(-32,  32.0);
-	VRAD_DIFF.set('S').setRange(-256, 256.0);
-
-	Quantity & VRAD_DEV = add("VRAD_DEV");
-	VRAD_DEV.set('C').setRange(0,  64.0);
-	VRAD_DEV.set('S').setRange(0, 128.0);
-
-	Quantity & RHOHV = add("RHOHV");
-	RHOHV.set('C').setScaling(0.004); //
-	RHOHV.set('S').setScaling(0.0001); //
-
-	set("ZDR", 'C').setScaling( 0.1, -12.8); //
-	set("ZDR", 'S').setScaling( 0.01, -0.01*(128*256)); //
-
-	set("RATE", 'C').setScaling( 0.05); // nodata = 0?
-	set("RATE", 'S').setScaling( 0.0005); // nodata = 0?
-
-	Quantity & KDP = add("KDP");
-	KDP.set('C').setRange(-120.0, +120.0);
-	KDP.set('S').setScaling(0.01, -327.68);
-
-	Quantity & PHIDP = add("PHIDP");
-	PHIDP.set('C').setRange(-180.0, +180.0);
-	PHIDP.set('S').setRange(-180.0, +180.0);
-	// PHIDP.set('S').setScaling(0.00549333, -0.00549333);
-
-	Quantity & HCLASS = add("HCLASS");
-	HCLASS.set('C').setScaling(1, 0);
-	HCLASS.set('S').setScaling(1, 0);
+	/* keep this for debugging
+	Quantity q1 = {
+			"Count", {"COUNT_.*"},
+			'C',
+			{
+					{'C'}, {'S'}, {'I'}, {'L'}, {'f'}, {'d'}
+			}
+	};
+	*/
 
 
 	//DBZHDEV.set('S').setRange(-100.0, +100.0);
+	/*
 	const bool FIRST_INIT = !hasQuantity("HGHT");
 
 	if (ODIM::versionFlagger.isSet(ODIM::KILOMETRES)){
@@ -116,227 +261,13 @@ void QuantityMap::initialize(){
 		set("HGHTDEV", 'C').setRange( -10000.0, +10000.0);   //   255 => 12.5km
 		set("HGHTDEV", 'S').setRange( -20000.0, +20000.0); // 65535 => 13.x km
 	}
-
-	Quantity & QIND = add("QIND");
-	QIND.set('C').setScaling( 1.0/250.0);   //
-	QIND.set('S').setScaling( 1.0/(256.0*256.0-1.0));
-	QIND.setZero(0.0);
-
-	copy("PROB", QIND);
-
-	Quantity & COUNT = add("COUNT");
-	COUNT.set('S'); // default type short int
-	COUNT.set('C'); //
-	COUNT.set('I'); //
-	COUNT.set('L'); //
-	COUNT.set('f'); // Floats needed in infinite accumulations
-	COUNT.set('d'); //
-
-	Quantity & AMVU = add("AMVU");
-	AMVU.set('C').setRange(-100,100);
-	AMVU.set('c').setRange(-127,127);
-	AMVU.set('S').setRange(-327.68, +327.68);
-	AMVU.set('s').setScaling(0.01);
-	AMVU.set('d');
-	copy("AMVV", AMVU);
-
-	Quantity & CLASS = add("CLASS");
-	CLASS.set('C');
-	CLASS.set('S');
-
-	// NEw
-
-	if (false){
-
-		map_t & m = *this;
-
-		m["AMVU"] = {"Atmospheric motion, lateral component", {0,0}, 'C',
-			{
-				{'C', {-100,100} } /* range */ ,
-				{'S', {-327.68,327.68} } /* range */ ,
-				{'c', {-127,127}} /* range */ ,
-				{'d'},
-				{'s', 0.01,-0.01}
-			}
-		};
-
-		m["AMVV"] = {"Atmospheric motion, lateral component", {0,0}, 'C',
-				{
-						{'C', {-100,100} } /* range */ ,
-						{'S', {-327.68,327.68} } /* range */ ,
-						{'c', {-127,127}} /* range */ ,
-						{'d'},
-						{'s', 0.01,-0.01}
-				}
-		};
-
-		m["CLASS"] = {"Classification", {0,0}, 'C',
-			{
-				{'C', 1},
-				{'S', 1},
-				{'c', 1},
-				{'s', 1}
-			}
-		};
-
-		m["COUNT"] = {"Count", {}, 'C',
-			{
-				{'C', 1},
-				{'I', 1},
-				{'L', 1},
-				{'S', 1},
-				{'d', 1.0},
-				{'f', 1.0}
-			}
-		};
-
-		m["DBZH"] = {"Radar reflectivity, horz component", {-32.0, +64.0}, 'C',
-			{
-				{'C', 0.5,-32},
-				{'S', 0.01,-327.68}
-			},
-			-32
-		};
-
-		m["DBZHC"] = {"Radar reflectivity, horz component, corrected", {-32.0, +64.0}, 'C',
-			{
-				{'C', 0.5,-32},
-				{'S', 0.01,-327.68}
-			},
-			-32
-		};
-
-		m["DBZHDEV"] = {"Radar reflectivity, horz component, deviation", {0,0}, 'C',
-			{
-				{'C', 1,-128},
-				{'S', {-100,100}}, /* range */
-				{'f'}
-			},
-			0
-		};
-
-		m["HGHT"] = {"Height", {0,0}, 'C',
-			{
-				{'C', 0.05,-0.05},
-				{'S', 0.0002,-0.0002}
-			}
-		};
-
-		m["PROB"] = {"Probability", {0.0,1.0}, 'C',
-			{
-				{'C', 0.004,-0.004},
-				{'S'}
-			},
-			0.0
-		};
-
-		m["QIND"] = {"Quality index", {0,0}, 'C',
-			{
-				{'C', 0.004,-0.004},
-				{'S'}
-			},
-			0.0
-		};
-
-		m["RATE"] = {"Precipitation rate (mm)", {0,0}, 'C',
-			{
-				{'C', 0.05,-0.05},
-				{'S', 0.0005,-0.0005}
-			},
-			0.0
-		};
-
-		m["RHOHV"] = {"Rho HV", {0.0,1.0}, 'C',
-			{
-				{'C', 0.004,-0.004},
-				{'S', 0.0001,-0.0001}
-			}
-		};
-
-		m["TH"] = {"Total radar reflecticity", {-32.0,+64.0}, 'C',
-			{
-				{'C', 0.5,-32},
-				{'S', 0.01,-327.68}
-			},
-			-32.0
-		};
-
-		m["VRAD"] = {"Doppler velocity", {-64.0,+64.0}, 'C',
-			{
-				{'C', 0.5,-64},
-				{'S', {-100.0,+100.0} } /* range */
-			}
-		};
-
-		m["VRADDH"] = {"Doppler velocity", {-64.0,+64.0}, 'C',
-				{
-						{'C', 0.5,-64},
-						{'S', {-100.0,+100.0} } /* range */
-				}
-		};
-
-		m["VRADDV"] = {"Doppler velocity", {0,0}, 'C',
-				{
-						{'C', 0.5,-64},
-						{'S', {-100.0,+100.0} } /* range */
-				}
-		};
-
-		m["VRADH"] = {"Doppler velocity", {0,0}, 'C',
-				{
-						{'C', 0.5,-64},
-						{'S', {-100.0,+100.0} } /* range */
-				}
-		};
-
-		m["VRADV"] = {"Doppler velocity", {0,0}, 'C',
-				{
-						{'C', 0.5,-64},
-						{'S', {-100.0,+100.0} } /* range */
-				}
-		};
-
-		m["VRAD_DEV"] = {"Doppler velocity", {0,0}, 'C',
-				{
-						{'C', {0.0, 64}} /* range */ ,
-						{'S', {0.0, 128}} /* range */
-				}
-		};
-
-		m["VRAD_DIFF"] = {"VRAD_DIFFdesc", {0,0}, 'C',
-			{
-				{'C', {-32,32}, 255, 0, 0.252964,-32.253 } /* range */ ,
-				{'S', {-256,256}, 65535, 0, 0.00781286,-256.008 } /* range */
-			}
-		};
-
-		m["ZDR"] = {"ZDRdesc", {-10.0,+10.0}, 'C',
-			{
-				{'C', 0.1,-12.8},
-				{'S', 0.01,-327.68}
-			}
-		};
-
-	}
-
-
-	// mout.attention(drain::sprinter(*this, drain::Sprinter::cppLayout));
-	/*
-	Quantity quantity = {"dBZ", {-32.0, 64.0}, 'C',
-			{
-					{'s', {1.2, 3.4}, 0.0, 255.0, {1.1, 2.2}}
-					//			{'C', {'C', {0.5,  -32.0},  0.0, 255.0}},
-					//			{'S', {'S', {0.01, -324.6}}}
-			},
-			-33.0
-	};
 	*/
-	//typedef drain::EnumFlagger<drain::MultiFlagger<EncodingODIM::ExplicitSetting> > AdaptionFlagger;
+
 
 
 	// typedef EncodingODIM ;
 	if (false){
-
+		// keep this for debugging ??
 		for (auto & entry: *this){
 
 			Quantity & q = entry.second;
@@ -395,6 +326,91 @@ void QuantityMap::initialize(){
 
 }
 
+
+QuantityMap::const_iterator QuantityMap::retrieve(const std::string & key) const {
+
+		// Attempt 1: find exact match
+		const_iterator it = find(key);
+
+		// Attempt 2: find a compatible variant
+		if (it == end()){
+			//for (const auto & entry: *this){
+			for (it=begin(); it!=end(); ++it){
+				if (it->second.variants.test(key, false)){
+					std::cerr << "NEW: found " << key << " <-> " << it->first << " [" << it->second << "]";
+					// return entry.second;
+					break;
+				}
+			}
+			// Give up, leaving: it==end()
+		}
+		return it;
+
+}
+
+
+QuantityMap::iterator QuantityMap::retrieve(const std::string & key) {
+
+	// Attempt 1: find exact match
+	iterator it = find(key);
+
+	// Attempt 2: find a compatible variant
+	if (it == end()){
+		//for (const auto & entry: *this){
+		for (it=begin(); it!=end(); ++it){
+			if (it->second.variants.test(key, false)){
+				std::cerr << "NEW: found " << key << " <-> " << it->first << " [" << it->second << "]";
+				// return entry.second;
+				break;
+			}
+		}
+		// Give up, leaving: it==end()
+	}
+	return it;
+
+}
+
+const Quantity & QuantityMap::get(const std::string & key) const {
+
+		// const const_iterator it = find(key); // revised 2025
+		const const_iterator it = retrieve(key); // revised 2025
+
+		if (it != end()){ // null ok
+			return it->second;
+		}
+		else {
+			//drain::Logger mout("Quantity", __FUNCTION__);
+			//mout.warn("undefined quantity=" , key );
+			static const Quantity empty;
+			return empty;
+		}
+
+}
+
+Quantity & QuantityMap::get(const std::string & key) {
+
+	// const iterator it = find(key); // revised 2025
+	const iterator it = retrieve(key); // revised 2025
+
+	// Attempt 1: find fully matching one.
+	if (it != end()){ // null ok
+		return it->second;
+	}
+	else {
+		// Warning: if this is declared (modified), further instances will override and hence confuse
+		static Quantity empty;
+		return empty;
+	}
+
+}
+
+/*
+const Quantity & QuantityMap::findApplicable(const std::string & key) const {
+	throw std::runtime_error(__FUNCTION__);
+}
+*/
+
+
 bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string & quantity, const std::string & values) const {  // TODO : should it add?
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -410,7 +426,8 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 	}
 
 	mout.debug3("searching for quantity=" , quantity );
-	const_iterator it = find(quantity);
+	//const_iterator it = find(quantity);
+	const_iterator it = retrieve(quantity);
 	if (it != end()){
 
 		mout.debug2("found quantity '"  , quantity , "'" );
@@ -467,14 +484,227 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 }
 
 QuantityMap & getQuantityMap() {
-	static QuantityMap quantityMap;
+
+	static QuantityMap quantityMap = {
+			{"DBZH", {
+					"Radar reflectivity",
+					{"DBZ[HV]", "DBZ[HV]C", "T[HV]"},
+					{-32.0, +60.0},
+					'C',
+					{
+							{'C', 0.5, -32.0},
+							{'S', 0.01, -0.01*(128*256)}
+					},
+					-32.0 // "virtual" zero
+			}
+			},
+			{"DBZHDEV", {
+					"Deviation of radar reflectivity",
+					{"DBZH_DEV"},
+					{-100.0, 100.0},
+					'C',
+					{
+							{'C', 1.0, -128},
+							{'S'}
+					},
+					0.0
+			}
+			},
+			{"VRAD", {
+					"Radial velocity",
+					{"VRAD", "VRAD[HV]"},
+					{-100.0, 100},
+					'C',
+					{
+							{'C', 0.5, -64.0},
+							{'S', {-100.0,+100.0}}
+					}
+			}
+			},
+			{"VRAD_DEV", {
+					"Radial velocity, deviation",
+					{},
+					{-100.0, 100},
+					'C',
+					{
+							{'C', 0.0, 64.0},
+							{'S', 0, 128.0}
+					}
+			}
+			},
+			{"VRAD_DIFF", {
+					"Radial velocity difference", {},
+					{-100.0, 100},
+					'C',
+					{
+							{'C', {-32, +32}},
+							{'S', {-256.0,+256.0}}
+					}
+			}
+			},
+			{"RHOHV", {
+					"Polarimetric cross-correlation", {},
+					{0.0, 1.0},
+					'S',
+					{
+							{'C', 0.004,  -0.004},
+							{'S', 0.0001, -0.0001}
+					}
+			}
+			},
+			{"ZDR", {
+					"Polarimetric difference", {},
+					{0.0, 1.0},
+					'S',
+					{
+							{'C', 0.1,  -12.8},
+							{'S', 0.01, -0.01*(128.0*256.0)}
+					}
+			}
+			},
+			{"KDP", {
+					"Polarimetric differential phase", {},
+					{-120.0, +120.0},
+					'S',
+					{
+							{'C'},
+							{'S', 0.01, -0.01*(128.0*256.0)}
+					}
+			}
+			},
+			{"PHIDP", {
+					"Polarimetric differential phase", {"PhiDP"},
+					{-180.0, +180.0},
+					'S',
+					{
+							{'C'},
+							{'S'}
+					}
+			}
+			},
+			{"RATE", {
+					"Precipitation rate", {"RAINRATE"},
+					'S',
+					{
+							{'C', 0.05},
+							{'S', 0.0005}
+					}
+			}
+			},
+			{"HCLASS", {
+					"Classification (Vaisala)", {"HydroCLASS"},
+					'S',
+					{
+							{'C', 1.0},
+							{'S', 1.0}
+					}
+			}
+			},
+			{"CLASS", {
+					"Classification", {"CLASS_.*"},
+					'S',
+					{
+							{'C', 1.0},
+							{'S', 1.0}
+					}
+			}
+			},
+			{"QIND", {
+					"Quality index", {"QIND_.*"},
+					{0.0, 1.0},
+					'C',
+					{
+							{'C', 1.0/250.0},
+							{'S', 1.0/65535.0}
+					}
+			}
+			},
+			{"PROB", {
+					"Probability", {"PROB_.*"},
+					{0.0, 1.0},
+					'C',
+					{
+							{'C', 1.0/250.0},
+							{'S', 1.0/65535.0}
+					}
+			}
+			},
+			{"COUNT", {
+					"Count", {"COUNT_.*"},
+					'C',
+					{
+							{'C'}, {'S'}, {'I'}, {'L'}, {'f'}, {'d'}
+					}
+			}
+			},
+			{"AMV", {
+					"Atmospheric motion [vector component]", {"AMV[UV]"},
+					'C',
+					{
+							{'C', {-100,100}},
+							{'c', {-127,127}},
+							{'S', {-327.68, +327.68}},
+							{'s', 0.01},
+							{'f'},
+							{'d'}
+					}
+			}
+			},
+	};
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	const bool FIRST_INIT = !quantityMap.hasQuantity("HGHT");
+
+	if (ODIM::versionFlagger.isSet(ODIM::KILOMETRES)){
+		if (!FIRST_INIT){
+			mout.note("Using kilometres for HGHT and HGHTDEV (ODIM version: ", ODIM::versionFlagger, ")");
+		}
+		quantityMap["HGHT"] = {
+				"Height/altitude [km]", {"ALT", "ALTITUDE"},
+				'S',
+				{
+						{'C', 0.01},    //   255 => 25,5km
+						{'S', 0.0004}   // 65535 => 26.2 km
+				}
+		};
+		quantityMap["HGHTDEV"] = {
+				"Height/altitude deviation [km]", {"ALT", "ALTITUDE"},
+				'S',
+				{
+						{'C', {-10.0, +10.0}}, //   255 => 12.5km
+						{'S', {-20.0, +20.0}}  // 65535 => 13.x km
+				}
+		};
+	}
+	else {
+
+		if (!FIRST_INIT){
+			mout.note("Using metres for HGHT and HGHTDEV (ODIM version: ", ODIM::versionFlagger, ")");
+		}
+
+		quantityMap["HGHT"] = {
+				"Height/altitude [m]", {"ALT", "ALTITUDE"},
+				'S',
+				{
+						{'C', 100.0},
+						{'S', 0.4}
+				}
+		};
+		quantityMap["HGHTDEV"] = {
+				"Height/altitude deviation [m]", {"HGHT_?DEV","ALTDEV", "ALTITUDE"},
+				'S',
+				{
+						{'C', {-10000.0, +10000.0}},
+						{'S', {-20000.0, +20000.0}}
+				}
+		};
+	}
+
 	return quantityMap;
 }
 
 
-
-}  // namespace rack
-
+}  // rack::
 
 
-// Rack

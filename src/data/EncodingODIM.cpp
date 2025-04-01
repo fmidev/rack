@@ -67,7 +67,8 @@ EncodingODIM::EncodingODIM(char type, double scale, double offset, double nodata
 	{
 
 	init(ODIMPathElem::ALL_LEVELS); // Note: clears values
-	//init(ODIMPathElem::OTHER);
+
+	// TODO: alarm if scaling aimed for floating point types
 
 	this->type.assign(1, type);
 	setTypeDefaults();
@@ -76,7 +77,12 @@ EncodingODIM::EncodingODIM(char type, double scale, double offset, double nodata
 		explicitSettings |= SCALING;
 	}
 	else {
-		this->scaling.set(scale, offset);
+		if (!std::isnan(offset)){
+			this->scaling.set(scale, offset);
+		}
+		else {
+			this->scaling.set(scale, -scale);
+		}
 	}
 
 	if (!std::isnan(nodata)){
@@ -111,9 +117,16 @@ EncodingODIM::EncodingODIM(char type, const drain::Range<double> & range, double
 	//setTypeDefaults();
 	setRange(range.min, range.max); // sets scaling
 
+	// TODO: alarm if scaling aimed for floating point types
+
 	if (scale != 0.0){
 		explicitSettings |= SCALING;
-		this->scaling.set(scale, offset);
+		if (!std::isnan(offset)){
+			this->scaling.set(scale, offset);
+		}
+		else {
+			this->scaling.set(scale, -scale);
+		}
 	}
 
 	if (!std::isnan(nodata)){

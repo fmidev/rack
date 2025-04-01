@@ -104,10 +104,16 @@ public:
 	EncodingODIM(const EncodingODIM & odim);
 
 	/// Scale driven encoding for brace inits. RISK: group_t confusion?
-	EncodingODIM(char type, double scale=1.0, double offset=0.0, double nodata = NAN, double undetect = NAN, const drain::Range<double> & range = {0,0});
+	/**
+	 *  If \c offset is not given, -scale is assumed for integral types.
+	 */
+	EncodingODIM(char type, double scale=1.0, double offset=NAN, double nodata = NAN, double undetect = NAN, const drain::Range<double> & range = {0,0});
 
 	/// Range-driven encoding for brace inits.
-	EncodingODIM(char type, const drain::Range<double> & range, double scale=0.0, double offset=0.0, double nodata = NAN, double undetect = NAN);
+	/**
+	 *  If \c offset is not given, -scale is assumed for integral types.
+	 */
+	EncodingODIM(char type, const drain::Range<double> & range, double scale=0.0, double offset=NAN, double nodata = NAN, double undetect = NAN);
 
 
 	inline

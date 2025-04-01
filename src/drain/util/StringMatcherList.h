@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <stdexcept>
 
-#include <drain/Log.h>
+// #include <drain/Log.h>
 #include <drain/Sprinter.h>
 #include <drain/String.h>
 #include "StringMatcher.h"
@@ -83,26 +83,14 @@ public:
 	 *  \param args - separate list of quantities - literals or regExps.
 	 */
 	template <typename ...TT>
-	void setKey(const std::string & arg, const TT & ... args){
+	void setKeys(const std::string & arg, const TT & ... args){
 		//clear();
-		setKeys(arg); // split and adapt
+		insertKeys(arg); // split and adapt
 		addKey(args...);
 	}
 
-	/// Define the list of accepted quantities as a string.
-	/**
-	 *  \param args - comma-separated list of quantities: literals or regexps.
-	 *  \param separators - can be also ",:" and contain ':' if that is not used in the regexps.
-	 */
-	void setKeys(const std::string & args); // , const std::string & separators = ","
 
-	/// Define a syntax for quantity key. Will be checked if listed quantity keys do not match.
-	/**
-	 *  \param arg  - regular expression, like "^DBZ[HV]?C?$
-	 *  \param args - regular expressions of further quantities
-	 */
-
-	//template <typename T, typename ...TT>
+	/// Append keys to existing list.
 	template <typename ...TT>
 	void addKey(const std::string & arg, const TT & ... args){
 		adaptKey(arg);
@@ -136,8 +124,12 @@ public:
 
 protected:
 
-	// inline
-	// void setQuantity(){};
+	/// Define the list of accepted quantities as a string.
+	/**
+	 *  \param args - comma-separated list of quantities: literals or regexps.
+	 *  \param separators - can be also ",:" and contain ':' if that is not used in the regexps.
+	 */
+	void insertKeys(const std::string & args); // , const std::string & separators = ","
 
 	inline
 	void addKey(){};
@@ -155,8 +147,8 @@ protected:
 };
 
 template <class T>
-void StringMatcherList<T>::setKeys(const std::string & args){ //, const std::string & separators){
-	drain::Logger mout(__FILE__, __FUNCTION__);
+void StringMatcherList<T>::insertKeys(const std::string & args){ //, const std::string & separators){
+	// drain::Logger mout(__FILE__, __FUNCTION__);
 	this->clear();
 	std::vector<std::string> argv;
 	//const char s =
@@ -203,15 +195,11 @@ void StringMatcherList<T>::adaptKey(const std::string & s){
 template <class T>
 bool StringMatcherList<T>::test(const std::string & key, bool defaultResult) const {
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
 	if (this->empty()){
 		return defaultResult; // Alternative: could need empty k - but on the other hand, why add it in a list, as it accepts anything.
 	}
 	else {
 		for (const auto & k: *this){
-			// mout.experimental("testing [", s, "] vs [", q, "]");
-			//if (k.test(key)){  //
 			if (k == key){  //
 				return true;
 			}

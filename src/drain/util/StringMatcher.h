@@ -62,7 +62,7 @@ public:
 	static
 	const std::string regExpSpecialChars;
 
-	/// Visible reference to the RegExp.
+	/// A visible reference to the current string / regExp.
 	const std::string & value;
 
 	inline
@@ -75,11 +75,25 @@ public:
 		set(matcher.value);
 	}
 
-	/// Assign string which may be literal or a regular expression.
+	/// Assign a string – which may be a literal or a regular expression.
 	/**
 	 *
 	 */
 	void set(const std::string & s);
+
+	inline
+	StringMatcher & operator=(const std::string &s){
+		set(s);
+		return *this;
+	}
+
+	inline
+	StringMatcher & operator=(const StringMatcher &s){
+		set(s.value);
+		return *this;
+	}
+
+
 
 	inline
 	bool operator==(const std::string &s) const {

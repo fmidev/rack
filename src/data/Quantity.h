@@ -31,22 +31,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ODIM_QUANTITY
 #define ODIM_QUANTITY
 
-#include <drain/Log.h>
-#include <drain/Type.h>
 #include <ostream>
-//#include <set>
-
 #include <stdexcept>
 
+#include <drain/Log.h>
+#include <drain/Type.h>
 #include <drain/util/ReferenceMap.h>
-
+#include <drain/util/StringMatcherList.h>
 #include <drain/util/Range.h>
+
 #include "EncodingODIM.h"
-//#include "Data.h"
 
 namespace rack {
 
-/// Structure for defining
+/// Structure for defining quantity
 /**
  *
  */
@@ -54,10 +52,16 @@ class Quantity : public std::map<char,EncodingODIM> {
 
 public:
 
+	/// Container for default encodings
 	typedef std::map<char,EncodingODIM> map_t;
+
+	/// List type applicable in constructors
 	typedef std::list<EncodingODIM> list_t;
 
 	std::string name;
+
+	/// Collection of quantities that can be similarly scaled and encoded
+	drain::StringMatcherList<drain::StringMatcher> variants;
 
 	/// Default storage type
 	char defaultType = '\0';
@@ -68,13 +72,40 @@ public:
 	/*
 	 *  A physical value that represents all the measurement results that fall below a detection limit.
 	 */
-	double undetectValue;
+	double undetectValue = std::numeric_limits<double>::signaling_NaN();
 
 
 	/// Default constructor
+	Quantity(const std::string & name = "",
+			const drain::Range<double> & range = {},
+			char defaultType='\0',
+			const list_t & l = {}, // brace initializer
+			double undetectValue = std::numeric_limits<double>::signaling_NaN());
+
+	/// Constructor accepting variants (related/similar quantities)
+	Quantity(const std::string & name,
+			const std::list<std::string> & compatibleVariants,
+			const drain::Range<double> & range, //  = {},
+			char defaultType='\0',
+			const list_t & l = {}, // brace initializer
+			double undetectValue = std::numeric_limits<double>::signaling_NaN());
+
+	/// Constructor without range (counters can be such)
+	/**
+	 *
+	 */
+	Quantity(const std::string & name,
+			const std::list<std::string> & compatibleVariants,
+			char defaultType,
+			const list_t & l = {}, // brace initializer
+			double undetectValue = std::numeric_limits<double>::signaling_NaN());
+
+
+	/*
 	inline
 	Quantity(): defaultType('\0'), undetectValue(std::numeric_limits<double>::signaling_NaN()) {
 	}
+	*/
 
 	/// Copy constructor
 	inline
@@ -87,12 +118,6 @@ public:
 
 	}
 
-	/// Constructor for brace initializer.
-	Quantity(const std::string & name,
-			const drain::Range<double> & range = {},
-			char defaultType='\0',
-			const list_t & l = {},
-			double undetectValue = std::numeric_limits<double>::signaling_NaN());
 
 
 	/// Declare encoding (a storage type and scaling) for this quantity.
@@ -102,37 +127,18 @@ public:
 	 */
 	EncodingODIM & set(char typecode);
 
+	void addEncodings(const list_t & l);
+
 
 	/// Retrieve the scaling for a given storage type.
-	inline
-	const EncodingODIM & get(char typecode = '\0') const {
-
-		if (!typecode)
-			typecode = defaultType;
-
-		const const_iterator it = find(typecode);
-
-		if (it != end()){ // null ok
-			return it->second;
-		}
-		else {
-			//drain::Logger mout("Quantity", __FUNCTION__);
-			//mout.warn("undefined code for this quantity, code=" , typecode );
-			// TODO return default
-			static EncodingODIM empty;
-			return empty;
-		}
-
-	}
+	const EncodingODIM & get(char typecode = '\0') const;
 
 	/// Retrieve the scaling for a given storage type.
+	const EncodingODIM & get(const std::string & t) const;
+
 	inline
-	const EncodingODIM & get(const std::string & t) const {
-		if (t.length() != 1)
-			//hrow (std::runtime_error(t + "<= illegal std::string in EncodingODIM::"+__FUNCTION__+" line "+__LINE__));
-			throw (std::runtime_error(t+" <= illegal std::string, "+ __FUNCTION__));
-		else
-			return get(t.at(0));
+	bool isApplicable(const std::string & key){ // needed?
+		return variants.test(key, false);
 	}
 
 	/// True, if a value corresponding a very small (unmeasurable) value has been defined.

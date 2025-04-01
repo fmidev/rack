@@ -29,99 +29,10 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-//#include <algorithm>
-//#include <syslog.h>  // levels: LOG_ERROR etc.
 
-#include <drain/Log.h>
-#include <drain/RegExp.h>
-#include <drain/Sprinter.h>
-#include <drain/String.h>
-#include <drain/Type.h>
-
-//#include "KeyMatcher.h"
 #include <drain/util/StringMatcherList.h>
 
 namespace drain {
-
-/*
-void KeySelector::setKeys(const std::string & args){ //, const std::string & separators){
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	clear();
-	std::vector<std::string> argv;
-	//const char s =
-	drain::StringTools::split(args, argv, ",:"); //separators);
-	for (const std::string & arg: argv){
-		// mout.attention("adapting: ", arg, " split by '", separators, "'");
-		adaptKey(arg);
-	}
-
-}
-*/
-
-/* problematic. Keep for a while
-	if (s == ':'){
-		mout.deprecating("usage of colon ':' as quantity separator ");
-	}
- */
-
-
-/** In future, the recommended way to define desired/accepted quantities is a comma-separated list of keys.
- *
- */
-
-/*
-void KeySelector::adaptKey(const std::string & s){
-
-	if (s.empty()){
-		return;
-	}
-	else {
-
-		KeyMatcher matcher(s);
-		for (const KeyMatcher & m: *this){
-			if (m.value == matcher.value){
-				// exists already, dont append...
-				return;
-			}
-		}
-
-		// quantities.
-		push_back(KeyMatcher());
-		// quantities.
-		back().set(s);
-	}
-
-}
-
-
-bool KeySelector::test(const std::string & key, bool defaultResult) const {
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	if (empty()){
-		return defaultResult; // Alternative: could need empty k - but on the other hand, why add it in a list, as it accepts anything.
-	}
-	else {
-		for (const auto & k: *this){
-			// mout.experimental("testing [", s, "] vs [", q, "]");
-			if (k.test(key)){  //
-				return true;
-			}
-		}
-	}
-
-	return false;
-
-}
-
-
-void KeySelector::toStream(std::ostream & ostr) const {
-	drain::Sprinter::sequenceToStream(ostr, *this, drain::Sprinter::cmdLineLayout);
-	// if (regExp.isSet() && !empty())
-	// ostr << drain::Sprinter::cmdLineLayout.arrayChars.separator;
-	// ostr << regExp.toStr();
-}
-*/
 
 DRAIN_TYPENAME_DEF(KeySelector);
 

@@ -518,7 +518,7 @@ public:
 	}
 
 
-	void exec() const {
+	void exec() const override {
 
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
@@ -675,7 +675,7 @@ public:
 	CmdDelete() :  CmdBaseSelective(__FUNCTION__, "Deletes selected parts of h5 structure."){
 	};
 
-	void exec() const {
+	void exec() const override {
 
 		RackContext & ctx = getContext<RackContext>();
 
@@ -794,7 +794,7 @@ public:
 	CmdKeep() :  CmdBaseSelective(__FUNCTION__, "Keeps selected part of data structure, deletes rest."){
 	};
 
-	void exec() const {
+	void exec() const override {
 
 		RackContext & ctx = getContext<RackContext>();
 
@@ -893,7 +893,7 @@ public:
 	};
 
 	// TODO: recognize attr,attr vs path,path
-	void exec() const {
+	void exec() const override {
 
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
@@ -1047,7 +1047,7 @@ public:
 
 	//CmdRename() :  drain::BasicCommand(__FUNCTION__, "Move/rename paths and attributes"){};
 
-	void exec() const {
+	void exec() const override {
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		mout.obsolete("--> '--move' " );
@@ -1192,7 +1192,7 @@ public:
 
 	}
 
-	void exec() const {
+	void exec() const override {
 
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
@@ -1257,7 +1257,8 @@ public:
 			"version", "2.4", drain::sprinter(ODIM::versionFlagger.getDict().getKeys()).str()) {
 	};
 
-	void exec() const {
+	inline
+	void exec() const override {
 		/*
 		std::string value_underscored;
 		drain::StringTools::replace(value, ".", "_", value_underscored);
@@ -1265,7 +1266,7 @@ public:
 		*/
 		// ... keep dictionary neat
 		ODIM::versionFlagger.set(value);
-		getQuantityMap().initialize();
+		getQuantityMap(); //.initialize();
 	}
 
 };
@@ -1297,7 +1298,7 @@ public:
 			"assignment", "", "/<path>:<key>[=<value>]") {
 	};
 
-	void exec() const {
+	void exec() const override {
 
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
