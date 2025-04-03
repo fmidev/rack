@@ -1007,9 +1007,31 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		mout.info("Palette key: ", ctx.paletteKey);
+		mout.special("Palette key: ", ctx.paletteKey);
 
-		const drain::image::Palette & palette = ctx.getPalette();
+		drain::image::Palette & palette = ctx.getPalette();
+
+		const QuantityMap & qm = getQuantityMap();
+
+
+		if (palette.comment.empty() && !ctx.paletteKey.empty()){
+			// Retrieve additional information from quantityMap.
+			QuantityMap::const_iterator it = qm.retrieve(ctx.paletteKey);
+			// const Quantity & quantity = getQuantityMap().get(palette.title);
+			if (it != qm.end()){
+				palette.comment = drain::StringBuilder<' '>(it->first, ' ', it->second.name);
+				//palette.comment += ' ';it->first;
+			}
+			else {
+				palette.comment = ctx.paletteKey;
+				// palette.comment
+			}
+		}
+		else {
+
+		}
+		mout.special("comment: ", palette.comment);
+
 
 		// const drain::VariableMap & statusMap = ctx.getStatusMap();
 		drain::StringMapper mapper(RackContext::variableMapper);

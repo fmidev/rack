@@ -61,13 +61,13 @@ public:
 	inline
 	QuantityMap(const QuantityMap & m) : map_t(m){
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.attention("? copy const <QuantityMap>");
+		mout.warn("? copy const <QuantityMap>");
 	}
 
 	inline
 	QuantityMap(const map_t & m) : map_t(m){
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.attention("? copy const <map>");
+		mout.warn("? copy const <map>");
 	}
 
 	inline
@@ -84,78 +84,50 @@ public:
 
 	void assign(const std::initializer_list<std::pair<std::string, Quantity> > & inits);
 
-
-	void initializeOLD();
-
-	/// Sets quantity encoding. If gain=0.0, default values for the given type will be set as defined in drain::Type
-	//void set(const std::string & key, char type, double gain, double offset, double undetect, double nodata);
-	//Quantity & set(const std::string & key);
-
-	/// Sets quantity encoding for a non-negative quantity.
-	/*
-	 *  If offset not given, for unsigned storage types the lowest mapped value
-	 *  will be 0.0, encoded with byte value 1. Byte value 0 set for \c undetect.
-	 *
+	/// Checks if an exact match, without checking variants, is found.
+	/**
+	 *   \see hasQuantity()
 	 */
-	//void set(const std::string & key, char type='C', double gain=1.0, double offset=NAN);
-	/*
 	inline
-	Quantity & add(const std::string & key){ // char typecode = 'C'
-		Quantity & q = (*this)[key];
-		q.set('C');
-		return q;
+	bool hasKey(const std::string & key) const {
+		return find(key) != end();  // revised 2025
 	}
-	*/
 
-	/*
-	inline // EncodingODIM
-	EncodingODIM & set(const std::string & key, char typecode){ // char typecode = 'C'
-		Quantity & q = (*this)[key];
-		return q.set(typecode);
-	}
-	*/
-
-	/*
-	inline
-	EncodingODIM & set(const std::string & key, const EncodingODIM & src){
-		Quantity & q = (*this)[key];
-		char typecode = src.type.empty() ? 'C' : src.type.at(0);
-		return q.set(typecode);
-	}
-	*/
-	//void set(const std::string & key, const Quantity & q);
-
-	/*
-	inline
-	Quantity & copy(const std::string & key, const Quantity & dst){
-		Quantity & q = (*this)[key];
-		//char typecode = src.type.empty() ? 'C' : src.type.at(0);
-		q = dst;
-		return q;
-	}
-	*/
-
+	/// Checks if an exact match or a variant, is found.
+	/**
+	 *   \see hasKey()
+	 */
 	inline
 	bool hasQuantity(const std::string & key) const {
 		// return find(key) != end();  // revised 2025
 		return retrieve(key) != end(); // revised 2025
 	}
 
-	// NEW 2025
+	/// Tries to find a quantity, first by exact match, or then among variants.
+	/**
+	 *   First, uses map_t::find(). If a match is found, iterator pointing to it is returned.
+	 *   If not, the map is revisited and all the variants are tested as well.
+	 *
+	 *   \return - a valid iterator or map_t::end()
+	 *
+	 */
 	iterator retrieve(const std::string & key);
 
-	// NEW 2025
+	/// Tries to find a quantity, first by exact match, or then among variants.
+	/**
+	 *   First, uses map_t::find(). If a match is found, iterator pointing to it is returned.
+	 *   If not, the map is revisited and all the variants are tested as well.
+	 *
+	 *   \return - a valid iterator or map_t::end()
+	 *
+	 */
 	const_iterator retrieve(const std::string & key) const;
 
 	const Quantity & get(const std::string & key) const;
 
 	Quantity & get(const std::string & key);
 
-	// New 2025 ... to replace get()?
-	// const Quantity & findApplicable(const std::string & key) const;
-
-
-	/// Sets default values of given quantity - but not the quantity itself. Optionally overrides with user values.
+	/// Sets default values of given quantity without assigning the quantity. Optionally overrides with user values.
 	/**
 	 *  \param quantity - the quantity according to which the encoding will be set.
 	 *  \param values - str values, comma-separated

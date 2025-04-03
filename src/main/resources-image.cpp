@@ -164,229 +164,6 @@ GraphicsContext::GraphicsContext(const GraphicsContext & ctx) {
 }
 
 
-/*
-void GraphicsContext::applyAlignment(drain::image::TreeSVG & group){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	if (alignHorz.topol != AlignSVG::UNDEFINED_TOPOL){
-		group->setAlign(AlignBase::HORZ, alignHorz.pos, alignHorz.topol);  // simplify
-		mout.unimplemented<LOG_NOTICE>("Set: ", alignHorz, " -> ", group->getAlignStr());
-		//ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
-	}
-	else {
-		group->setAlign(alignHorz);
-		// group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
-		mout.accept<LOG_NOTICE>("Using HORZ align: ", alignHorz, " -> ", group->getAlignStr());
-	}
-
-	if (alignVert.topol != AlignSVG::UNDEFINED_TOPOL){
-		group->setAlign(AlignBase::VERT, alignVert.pos, alignVert.topol); // simplify
-		mout.unimplemented<LOG_NOTICE>("Set: ", alignVert, " -> ", group->getAlignStr());
-		// ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
-	}
-	else {
-		// group->setAlign(AlignSVG::TOP, AlignSVG::INSIDE); // AlignSVG::BOTTOM);
-		group->setAlign(alignVert);
-		// group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
-		mout.accept<LOG_NOTICE>("Using VERT align: ", alignVert, " -> ", group->getAlignStr());
-	}
-
-	alignHorz.topol = AlignSVG::UNDEFINED_TOPOL;
-	alignVert.topol = AlignSVG::UNDEFINED_TOPOL;
-
-}
-*/
-
-/*
-drain::image::TreeSVG & GraphicsContext::getStyle(){
-
-	// drain::Logger mout(log, __FILE__, __FUNCTION__);
-
-	TreeSVG & style = svgTrack[svg::STYLE];
-
-	//if (!ctx.svgTrack.hasChild("style")){
-	if (style->isUndefined()){
-
-		// mout.debug("initializing style");
-
-		style->setType(svg::STYLE);
-
-		style[svg::TEXT] = {
-				{"font-family","Helvetica, Arial, sans-serif"}
-		};
-
-		// MODE 3: attribs of sub-element
-		style[GraphicsContext::IMAGE_BORDER] = { // TODO: add leading '.' ?
-				{"fill", "none"},
-				{"stroke", "none"},
-				// {"stroke-opacity", 0.0},
-				{"stroke-width", "0.3em"},
-				// {"stroke-dasharray", {2,5,3}},
-		};
-		//style["group.imageFrame > rect"].data = {
-
-		typedef drain::StyleSelectorXML<NodeSVG> Select;
-
-		const Select clsTITLE('.', GraphicsContext::TITLE);
-		const Select clsIMAGE_TITLE('.', GraphicsContext::IMAGE_TITLE);
-		const Select clsGROUP_TITLE('.', GraphicsContext::GROUP_TITLE);
-		const Select clsMAIN_TITLE('.', GraphicsContext::MAIN_TITLE);
-		const Select clsTIME('.', GraphicsContext::TIME);
-		const Select clsLOCATION('.', GraphicsContext::LOCATION);
-
-		// Text (new)
-		// style["text.TITLE"] = {
-		style[Select(svg::TEXT, clsTITLE)] = {
-				{"font-size", "1.5em"},
-				{"stroke", "none"},
-				// {"fill", "blue"},
-				// {"fill", "black"},
-				// {"fill-opacity", "1"},
-				// {"paint-order", "stroke"},
-				// {"stroke-linejoin", "round"}
-		};
-
-
-		// style["text.IMAGE_TITLE"] = {
-		style[Select(svg::TEXT, clsIMAGE_TITLE)] = {
-				{"font-size", 12},
-				{"stroke", "white"},
-				// {"fill", "black"},
-				{"stroke-opacity", "0.75"},
-				{"stroke-width", "0.3em"},
-				//{"fill", "darkslateblue"},
-				{"fill-opacity", "1"},
-				{"paint-order", "stroke"},
-				{"stroke-linejoin", "round"}
-		};
-
-		style[clsGROUP_TITLE] = {
-				{"font-size", 20},
-		};
-
-		style[Select(svg::RECT, clsGROUP_TITLE)] = {
-		//style["rect.GROUP_TITLE"] = {
-				{"fill", "gray"},
-				{"opacity", 0.5},
-		};
-
-		style[Select(svg::TEXT, clsGROUP_TITLE)] = {
-		// style["text.GROUP_TITLE"] = {
-				{"fill", "black"},
-		};
-
-		style[clsMAIN_TITLE] = {
-				{"font-size", "30"},
-		};
-
-		// style["rect.MAIN_TITLE"] = {
-		style[Select(svg::RECT, clsMAIN_TITLE)] = {
-				{"fill", "darkslateblue"},
-				{"opacity", "0.5"},
-		};
-
-		// style["text.MAIN_TITLE"] = {
-		style[Select(svg::TEXT, clsMAIN_TITLE)] = {
-				{"fill", "white"},
-		};
-
-		// Date and time.
-		style[clsTIME].data = {
-				{"fill", "darkred"}
-		};
-
-		style[clsLOCATION].data = {
-				{"fill", "darkblue"}
-		};
-
-		// style[".imageTitle2"] = "font-size:1.5em; stroke:white; stroke-opacity:0.5; stroke-width:0.3em; fill:darkslateblue; fill-opacity:1; paint-order:stroke; stroke-linejoin:round";
-		// drain::TreeUtils::dump(ctx.svgTrack);
-
-		// MODE 2: deprecated: text (CTEXT) of sub-element - note: child elem does not know its parent's type (STYLE)
-		// style["text"] = "filler:black";
-		// style["text"] = ("stroke:white; stroke-width:0.5em; stroke-opacity:0.25; fill:black; paint-order:stroke; stroke-linejoin:round");
-		// style["text"].data = "stroker:white";
-
-	}
-
-	return style;
-}
-// const drain::StatusFlags::value_t RackContext::BBOX_STATUS =   StatusFlags::add("BBOX");
-
-drain::image::TreeSVG & GraphicsContext::getMainGroup(){ // , const std::string & name
-
-	//using namespace drain::image;
-
-	// Ensure STYLE elem and definitions
-	// RackSVG::getStyle(ctx);
-	getStyle();
-
-	// drain::image::TreeSVG & main = ctx.svgTrack[ctx.svgGroupNameSyntax]; <- this makes sense as well
-	drain::image::TreeSVG & main = svgTrack[GraphicsContext::MAIN];
-
-	if (main -> isUndefined()){
-		main->setType(svg::GROUP);
-		main->addClass(GraphicsContext::MAIN);
-	}
-
-	return main;
-
-}
-
-
-
-drain::image::TreeSVG & GraphicsContext::getCurrentAlignedGroup(){ // what about prefix?
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	drain::image::TreeSVG & mainGroup = getMainGroup();
-
-
-	// mout.attention(); drain::TreeUtils::dump(mainGroup, mout); mout.end();
-
-	//drain::image::NodeSVG::toStream(ostr, tree, defaultTag, indent)
-	svgPanelConf.groupNameFormatted = getFormattedStatus(svgPanelConf.groupNameSyntax); // status updated upon last file save
-
-	drain::image::TreeSVG & alignedGroup = mainGroup[svgPanelConf.groupNameFormatted];
-
-	if (alignedGroup -> isUndefined()){
-		alignedGroup->setType(svg::GROUP);
-		alignedGroup->setId(svgPanelConf.groupNameFormatted);
-		alignedGroup->addClass(drain::image::LayoutSVG::ALIGN_FRAME);
-	}
-
-	return alignedGroup;
-
-}
-
-drain::image::TreeSVG & GraphicsContext::getImagePanelGroup(const drain::FilePath & filepath){
-
-	// For each image an own group is created to contain also title TEXT's etc.
-	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
-
-	drain::image::TreeSVG & alignFrame = getCurrentAlignedGroup();
-
-	// drain::image::TreeSVG & comment = alignFrame[svg::COMMENT](svg::COMMENT);
-	// comment->setText("start of ", LayoutSVG::ALIGN_FRAME, ' ', name, svg::GROUP);
-
-	drain::image::TreeSVG & imagePanel = alignFrame[name];
-
-	if (imagePanel->isUndefined()){
-
-		imagePanel->setType(svg::GROUP);
-		imagePanel->setId(name, svg::GROUP);
-
-		drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
-		image->setId(filepath.basename); // unneeded, as TITLE also has it?
-		image->setUrl(filepath.str());
-		image[drain::image::svg::TITLE](drain::image::svg::TITLE) = filepath.basename;
-	}
-
-	return imagePanel;
-
-}
-*/
 
 
 
@@ -401,6 +178,31 @@ ImageContext::ImageContext(const ImageContext & ctx):
 		currentImage(ctx.currentImage),
 		currentGrayImage(ctx.currentGrayImage){
 }
+
+Palette & ImageContext::getPalette(const std::string & key){
+	paletteKey = key;
+	try {
+		return PaletteOp::getPalette(key);
+	}
+	catch (const std::exception & e){
+		const QuantityMap & qm = getQuantityMap();
+		std::cerr << " Trying QM search...\n";
+		QuantityMap::const_iterator it = qm.retrieve(key);
+		if (it != qm.end()){
+			std::cerr << " ... Found: " << it->second << "!\n";
+			if (it->first != key){
+				return PaletteOp::getPalette(it->first);
+			}
+		}
+
+		throw e; // forward...
+
+		//return PaletteOp::getPalette(key);
+	}
+}
+
+
+
 
 // Note: for example Palette uses this to extract actual quantity
 /**

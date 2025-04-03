@@ -237,7 +237,13 @@ void ImageFrame::toStream(std::ostream & ostr) const {
 
 	ostr << getConf();
 
-	ostr << ' ' << std::hex << (size_t) segmentBegin << ' ' << std::hex << (size_t) segmentEnd << ' ' << std::dec;
+	//std::stringstream sstr;
+	StringBuilder<> sb(std::hex, (size_t) segmentBegin);
+	StringBuilder<> se(std::hex, (size_t) segmentEnd);
+	std::string prefix;
+	StringTools::extractPrefix(sb, se, prefix, 2);
+	ostr << ' ' << '#' << prefix << '('<< sb << '-' <<  se << ')' << ' ' << std::dec;
+	//ostr << ' ' << std::hex << (size_t) segmentBegin << ' ' << std::hex << (size_t) segmentEnd << ' ' << std::dec;
 
 }
 

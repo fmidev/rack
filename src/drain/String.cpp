@@ -245,6 +245,33 @@ bool StringTools::trimScan(const std::string &s, size_t & posLeft, size_t & posR
 }
 
 
+/// Extract common leading part
+/**
+ *  \return - index of the first deviating character, ie. length of the common part.
+ */
+size_t StringTools::extractPrefixLength(const std::string & src1, const std::string & src2, size_t step){
+
+	if (step == 0){
+		throw std::runtime_error("StringTools::extractPrefixLength step=0");
+	}
+
+	const size_t L = std::min(src1.length(), src2.length());
+	for (size_t i=0; i<L; ++i){
+		if (src1[i] != src2[i]){
+			return i - (i%step);
+		}
+	}
+	return L - (L%step);
+}
+
+/// Extract common leading part
+size_t StringTools::extractPrefix(const std::string & src1, const std::string & src2, std::string & prefix, std::string & dst1, std::string & dst2, size_t step){
+	const size_t length = extractPrefixLength(src1, src2, step);
+	prefix = src1.substr(0, length);
+	dst1 = src1.substr(length);
+	dst2 = src2.substr(length);
+	return length;
+}
 
 
 char StringTools::upperCase(char c){

@@ -1259,13 +1259,14 @@ public:
 
 	inline
 	void exec() const override {
-		/*
-		std::string value_underscored;
-		drain::StringTools::replace(value, ".", "_", value_underscored);
-		ODIM::versionFlagger.set(value_underscored);
-		*/
+
 		// ... keep dictionary neat
 		ODIM::versionFlagger.set(value);
+
+		if (ODIM::versionFlagger.isSet(ODIM::KILOMETRES)){
+			drain::Logger(getContext<RackContext>().log, __FILE__, __FUNCTION__).note("Using kilometres for HGHT and HGHTDEV (ODIM version: ", ODIM::versionFlagger, ")");
+		}
+
 		getQuantityMap(); //.initialize();
 	}
 
@@ -2233,14 +2234,8 @@ public:
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	};
 
-	/*
-	CmdQuantityConf(): drain::SimpleCommand<>(__FUNCTION__,
-			"1) list quantities, 2) set default type for a quantity, 3) set default scaling for (quantity,type) pair") {
-	}
-	*/
 
-//	void run(const std::string & params = ""){
-	void exec() const {
+	void exec() const override {
 
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());

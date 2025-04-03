@@ -120,7 +120,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 	//const Data<PolarSrc> & srcData = srcSweep.getFirstData(); // VRAD or VRADH
 
-
+	mout.attention("Start");
 
 	const PlainData<PolarSrc> & srcDataU = srcSweep.getData("AMVU");
 	if (srcDataU.data.isEmpty()){
@@ -174,11 +174,16 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 	//const double dstNI = abs(odim.NI);
 	mout.info("Inverting (u,v) back to VRAD " );
+	mout.info("srcU: " , srcDataU.data );
+	mout.info("srcV: " , srcDataV.data );
+	mout.info("dstD: " , dstData.data  );
+	mout.info("dstQ: " , dstQuality.data );
+	/*
 	mout.info("src [" , srcDataU.odim.quantity , "] " , EncodingODIM(srcDataU.odim) );
 	mout.info("src [" , srcDataV.odim.quantity , "] " , EncodingODIM(srcDataV.odim) );
 	mout.info("dst [" , dstData.odim.quantity , "]  " , EncodingODIM(dstData.odim) , ", [" , minCode , ',' , maxCode , ']' );
 	mout.info("dst [" , dstQuality.odim.quantity , "]" , EncodingODIM(dstQuality.odim) );
-
+	*/
 	// UNUSED const double srcNI2 = 2.0*srcDataVRAD.odim.getNyquist(); // 2.0*srcData.odim.NI;
 
 	/// Azimuth in radians
@@ -205,6 +210,8 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	mout.warn("Main " , dstData    );
 	mout.note("Main " , dstQuality );
 
+	const size_t size_debug = dstData.data.getArea();
+
 	for (size_t j = 0; j < dstData.data.getHeight(); ++j) {
 
 		azmR = dstData.odim.getBeamWidth() * static_cast<double>(j) ; // window.BEAM2RAD * static_cast<double>(j);
@@ -212,9 +219,13 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 		for (size_t i = 0; i < dstData.data.getWidth(); ++i) {
 
 			address = dstData.data.address(i,j);
+
+			if (address > size_debug){
+				mout.error("coord overflow: ", address, " > ", size_debug, " geom:", dstData.data.getGeometry());
+			}
+
 			u = srcDataU.data.get<double>(address);
 			v = srcDataV.data.get<double>(address);
-
 
 			if (MASK_DATA || MATCH_ALIASED){
 				vOrig = srcDataVRAD.data.get<double>(address);
@@ -252,31 +263,37 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 				}
 
 				vReproj = dstData.odim.scaleInverse(vReproj);
+
+				if (((i+50)==j) && ((i&7)==0)){
+					std::cerr << i << '\t' << unitVOrig << '\t' << unitVReproj << '\t' << quality << '\n';
+				}
+
 				if ((vReproj > minCode) && (vReproj < maxCode)){ // continue processing
-					// dstDataVRAD.data.put(address, vReproj);
+
 					dstData.data.put(address, vReproj);
 					quality = 0.5 + 0.5*(unitVReproj.x*unitVOrig.x + unitVReproj.y*unitVOrig.y);
-					/*
-					if (((i+50)==j) && ((i&7)==0)){
-						std::cerr << i << '\t' << unitVOrig << '\t' << unitVReproj << '\t' << quality << '\n';
-					}
-					*/
+
+					// if (((i+50)==j) && ((i&7)==0)){
+					//	std::cerr << i << '\t' << unitVOrig << '\t' << unitVReproj << '\t' << quality << '\n';
+					// }
+
 					dstQuality.data.put(address, dstQuality.odim.scaleInverse(quality) );
 				}
 				else {
 					dstData.data.put(address, dstData.odim.undetect); // rand() & 0xffff); //
 					dstQuality.data.put(address, 0);
 				};
+
 			}
 			else {
 				dstData.data.put(address, dstData.odim.undetect);
 			}
 
-
 		}
 	}
 	//@ dstDataVRAD.updateTree();
 
+	exit(13);
 
 }
 
@@ -313,21 +330,20 @@ public:
 	};
 
 
-	double relative_NI_threshold;
+	double relative_NI_threshold = 0.9;
 
 	/// Nyquist wrap measure
 	mutable
-	int counter;
+	int counter = 0;
 
-	int size;
+	int size = 0;
 
-	//mutable
 	PolarODIM srcODIM;
 
 protected:
 
 	/// NI divided by 2.
-	double NI_threshold;
+	double NI_threshold = 0.0;
 	drain::typeLimiter<double>::value_t limit; //  = dstData.data.getLimiter<double>();
 
 	/// Returns true, if value in location (i,j) is not \c nodata nor \c undetect .

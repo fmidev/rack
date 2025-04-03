@@ -228,8 +228,9 @@ ODIMPath RackContext::findImage(){ //RackContext & ctx){
 	DataSelector imageSelector;
 	// mout.accept("Image selector", imageSelector);
 	// mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", this->getStatusMap().get("what:quantity","??"));
-
-	mout.revised<LOG_NOTICE>("keeping, not clearing selector: ", this->select);
+	if (!this->select.empty()){
+		mout.revised<LOG_INFO>("keeping, not clearing selector: ", this->select);
+	}
 	// imageSelector.consumeParameters(this->select);
 
 	imageSelector.setParameters(this->select);
@@ -299,7 +300,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 			this->statusFlags.set(drain::Status::DATA_ERROR); // resources.dataOk = false;
 		}
 
-		// mout.attention("found: ", img);
+		mout.attention("found: ", img);
 
 		// Hence, image may also be empty.
 		this->setCurrentImages(img);

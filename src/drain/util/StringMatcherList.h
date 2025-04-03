@@ -75,6 +75,25 @@ public:
 	virtual inline
 	~StringMatcherList(){};
 
+	StringMatcherList operator=(const StringMatcherList<T> &l){
+		setKeys(l);
+		return *this;
+	}
+
+	void setKeys(const StringMatcherList<matcher_t> & l){
+		this->clear();
+		for (const matcher_t & key: l) {
+			this->push_back(key);
+		}
+	}
+
+	template <class T2>
+	void setKeys(const std::list<T2> & l){
+		this->clear();
+		for (const T2 & key: l) {
+			adaptKey(key);
+		}
+	}
 
 	/// Define the list of accepted quantities.
 	/**

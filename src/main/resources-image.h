@@ -44,15 +44,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/imageops/PaletteOp.h>
 #include <drain/prog/CommandBankUtils.h>
 #include <drain/util/Rectangle.h>
-// #include <drain/util/StatusFlags.h>
-// #include <drain/util/TreeOrdered.h>
 
-//#include <drain/util/Variable.h>
-
-// #include "data/ProductConf.h"
+#include "data/QuantityMap.h"
 #include "data/VariableFormatterODIM.h"
-
-//#include "resources-base.h"
 
 
 namespace rack {
@@ -332,25 +326,13 @@ public:
 	std::string paletteKey;
 
 
-	// New
 	inline
 	Palette & getPalette(){
 		return PaletteOp::getPalette(paletteKey);
 	}
 
-	// New
-	inline
-	Palette & getPalette(const std::string & key){
-		paletteKey = key;
-		return PaletteOp::getPalette(key);
-	}
+	Palette & getPalette(const std::string & key);
 
-	/*
-	struct {
-		drain::Point2D<unsigned short> tilesize = 256;
-	} geotiff;
-	*/
-	/// Protected:
 
 	/// Given image pointer (null ok), get properties.
 	static

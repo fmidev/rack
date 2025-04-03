@@ -32,11 +32,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "12"
+#define __RACK_VERSION__ "12.1"
 
 /**
  *  Version 12.0
  *  - Revised QuantityMap, allowing retrieve("DBZXP")
+ *  Release 12.1
+ *  - StringTools: extractPrefix (common leading part)
+ *  - Image memory area fix prefixed hex string
  *
  *  Version 11.0
  *  - Help supports "see also", linking related commands.

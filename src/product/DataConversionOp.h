@@ -498,6 +498,3 @@ void DataConversionOp<M>::traverseImageFrame(const ODIM & srcOdim, const drain::
 }
 
 #endif /* DATACONVERSIONOP_H_ */
-
-// Rack
-// REP // REP // REP // REP

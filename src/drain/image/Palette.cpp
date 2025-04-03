@@ -75,7 +75,8 @@ Palette::Palette(std::initializer_list<std::pair<Variable, PaletteEntry> > inits
 		// std::cout << '=' << sprinter(entry.second, Sprinter::cppLayout) << '\n';
 	}
 
-	comment = "Built-in";  // = Initialized in code
+	// empty
+	// comment = "Built-in";  // = Initialized in code
 
 	/*
 	std::cout << "cppLayout: --- "<< '\n';

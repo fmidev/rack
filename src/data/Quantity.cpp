@@ -62,7 +62,15 @@ Quantity::Quantity(const std::string & name,
 			physicalRange(range),
 			undetectValue(undetectValue) {
 
+	for (const std::string & key: compatibleVariants){
+		variants.addKey(key);
+	}
+	variants.addKey("TEST");
+
+	// std::cerr << name << " koe1 " << drain::sprinter(compatibleVariants) << " -> " << variants << '\n';
+
 	addEncodings(l);
+
 }
 
 Quantity::Quantity(const std::string & name,
@@ -75,8 +83,20 @@ Quantity::Quantity(const std::string & name,
 			// physicalRange(0.0, 0.0),
 			undetectValue(undetectValue) {
 
+	for (const std::string & key: compatibleVariants){
+		variants.addKey(key);
+	}
+	// variants.addKey("KOE");
+
+	// std::cerr << name << " koe2 " << drain::sprinter(compatibleVariants) << " -> " << variants << '\n';
+
 	addEncodings(l);
+
 }
+
+//void Quantity::addVariants(const std::list<std::string> & l){
+//}
+
 
 void Quantity::addEncodings(const list_t & l){
 

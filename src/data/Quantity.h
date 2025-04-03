@@ -112,13 +112,24 @@ public:
 	Quantity(const Quantity & quantity):
 		map_t(quantity),
 		name(quantity.name),
-		defaultType('\0'),
+		variants(quantity.variants),
+		defaultType(quantity.defaultType),
 		physicalRange(quantity.physicalRange),
 		undetectValue(quantity.undetectValue) {
-
 	}
 
-
+	/*
+	inline
+	Quantity & operator=(const Quantity & quantity){
+		map_t::operator=(quantity);
+		variants.setKeys(quantity);
+		name = quantity.name;
+		defaultType = quantity.defaultType;
+		physicalRange = quantity.physicalRange;
+		undetectValue = quantity.undetectValue;
+		return *this;
+	}
+	*/
 
 	/// Declare encoding (a storage type and scaling) for this quantity.
 	/*

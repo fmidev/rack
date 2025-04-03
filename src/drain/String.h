@@ -202,6 +202,42 @@ public:
 	static
 	bool split2(const std::string & s, T1 & first, T2 & second, const C &separators, const std::string & trimChars=" \t\n");
 
+	/// Determine the length of a common leading part, rounding up the result with step.
+	/**
+	 *   \param src1 - input string
+	 *   \param src2 - input string
+	 *   \param step - minimum size difference (consider hex strings, and step=2 or step=4)
+	 *   \return - index of the first deviating character, ie. length of the common part, rounded by \c step
+	 */
+	static
+	size_t extractPrefixLength(const std::string & src1, const std::string & src2, size_t step = 1);
+
+	/// Extract common leading part, truncating the source strings
+	/**
+	 *   \param src1 - input string
+	 *   \param src2 - input string
+	 *   \param prefix - common leading part of src1 and src2
+	 *   \param dst1 - src1 without prefix
+	 *   \param dst2 - src2 without prefix
+	 *   \return - index of the first deviating character, ie. length of the common part, rounded by \c step
+	 */
+	static
+	size_t extractPrefix(const std::string & src1, const std::string & src2,
+			std::string & prefix, std::string & dst1, std::string & dst2, size_t step = 1);
+
+	/// Extract common leading part, truncating the input strings
+	/**
+	 *   \param src1 - input string
+	 *   \param src2 - input string
+	 *   \param prefix - common leading part of src1 and src2
+	 *   \return - index of the first deviating character, ie. length of the common part.
+	 */
+	static inline
+	size_t extractPrefix(std::string & s1, std::string & s2, std::string & prefix, size_t step = 1){
+		return extractPrefix(s1, s2, prefix, s1, s2, step);
+	}
+
+
 	/// Writes a STL Container (list, vector, set) to a stream, using an optional separator char (e.g. ',').
 	/**
 	 *  \see StringTools::split()
@@ -270,6 +306,8 @@ public:
 	template <class T>
 	static
 	std::string & import(const T & src, std::string & target);
+
+
 
 
 //private: CONSIDER!
