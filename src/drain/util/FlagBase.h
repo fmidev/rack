@@ -418,45 +418,6 @@ public:
 		this->value = storage_t(0); // ALERT! enums need neutral value.
 	};
 
-	/// Sets one or several flags.
-	virtual inline
-	void set(const key_t & key){
-		if (key.empty())
-			return; // needed?
-		assign(key);
-	}
-	/*
-
-		if (key.empty())
-			return;
-
-		if ((key.find(',')!= std::string::npos)||(key.find('|')!= std::string::npos)){
-			Logger mout(__FILE__, __FUNCTION__);
-			mout.unimplemented<LOG_ERR>(__FILE__, ':', TypeName<E>::str(), ": multi-key arg: '"+ key, "', for single-flagger: ", sprinter(this->getDict().getKeys()));
-		}
-
-		if (this->getDict().hasKey(key)){
-			this->value = static_cast<storage_t>(this->getDict().getValue(key)); // Cast needed (only) if MultiFlagger converts enum value_t -> storage_t
-		}
-		else {
-			// this->value = FlagResolver::getIntValue(this->getDict(), key);  // SingleFlagger does not like this.
-			Logger mout(__FILE__, __FUNCTION__);
-			mout.error(__FILE__, ':', TypeName<E>::str(), ": no such key: '"+ key, "', keys=", sprinter(this->getDict().getKeys()));
-			// throw std::runtime_error(std::string("Dictionary[") + typeid(dict_value_t).name()+ "]: no such key: "+ key);
-		}
-	}
-	*/
-
-	/// Set a single flag.
-	virtual inline
-	void set(const value_t & value){
-		this->value = value;
-	};
-
-	virtual inline
-	void set(const FlaggerBase<E> & flagger){
-		this->value = flagger.value;
-	}
 
 	/// Checks if a given bit, or any of given bits, is set.
 	/**
@@ -466,12 +427,6 @@ public:
 	virtual
 	bool isSet(const storage_t & x) const = 0;
 
-	/*
-	inline
-	bool isSet(const value_t & x) const {
-		return (value & x) != 0; // enums...
-	};
-	*/
 
 	inline
 	bool isSet(const key_t & key) const {
@@ -482,14 +437,6 @@ public:
 	const storage_t & getValue() const {
 		return value;
 	}
-
-	/// Given an integer, retrieves dictionary keys corresponding to each index of set bits.
-	/*
-	inline
-	std::string getKeys(char separator=0) const {
-		return FlagResolver::getKeys(dictionary, value, separator ? separator : this->separator);
-	}
-	*/
 
 
 	///
@@ -524,6 +471,29 @@ public:
 	char separator;
 
 	void debug(std::ostream & ostr) const;
+
+protected:
+
+	/*
+	/// Sets one or several flags.
+	virtual inline
+	void set(const key_t & key){
+		if (key.empty())
+			return; // needed?
+		assign(key);
+	}
+
+	/// Set a single flag.
+	virtual inline
+	void set(const value_t & value){
+		this->value = value;
+	};
+
+	virtual inline
+	void set(const FlaggerBase<E> & flagger){
+		this->value = flagger.value;
+	}
+	*/
 
 private:
 

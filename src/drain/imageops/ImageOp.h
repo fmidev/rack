@@ -66,6 +66,12 @@ public:
 	virtual
 	void process(const ImageFrame & src, Image & dst) const;
 
+	virtual inline
+	void process(Image & dst) const override final {
+		process(dst, dst);
+	}
+
+
 	virtual
 	void process(const ImageFrame & src, const ImageFrame & srcWeight, Image & dst, Image & dstWeight) const;
 

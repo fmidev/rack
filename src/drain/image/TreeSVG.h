@@ -116,10 +116,10 @@ public:
 		return (*this == 0.0);
 	}
 
-	inline
-	void toStream(std::ostream & ostr) const {
+	virtual inline
+	void toStream(std::ostream & ostr) const override {
 		ostr << '(';
-		TupleBase<double,N>::toStream(ostr, ' ');
+		TupleBase<double,N>::toStreamFormatted(ostr, ' ');
 		ostr << ')';
 	}
 

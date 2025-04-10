@@ -650,12 +650,14 @@ public:
 		return (this->find(quantity) != this->end());
 	}
 
-	const data_t & getData(const std::string & quantity) const {
-		return getData(quantity.c_str());
+	inline
+	const data_t & getData(const char *quantity) const {
+		return getData(std::string(quantity));
+		//return getData(quantity.c_str());
 	}
 
 
-	const data_t & getData(const char *quantity) const {
+	const data_t & getData(const std::string & quantity) const {
 
 		//drain::Logger mout(__FILE__, __FUNCTION__); //
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G) + "}");
@@ -672,12 +674,14 @@ public:
 		}
 	}
 
-	data_t & getData(const std::string & quantity) {
-		return getData(quantity.c_str());
+	inline
+	data_t & getData(const char *quantity) {
+		return getData(std::string(quantity));
+		//return getData(quantity.c_str());
 	}
 
 
-	data_t & getData(const char *quantity) {
+	data_t & getData(const std::string & quantity) {
 
 		//drain::Logger mout(__FILE__, __FUNCTION__); //REPL "DataGroup." + ODIMPathElem::getKey(G), __FUNCTION__);
 		drain::Logger mout(__FUNCTION__, "DataGroup{" + ODIMPathElem::getKey(G) + "}");

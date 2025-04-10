@@ -1316,7 +1316,13 @@ void Palette::exportSLD(TreeSLD & sld) const {
 	title = this->title;
 
 	TreeSLD & abstract = userStyle[SLD::Abstract](SLD::Abstract);
-	abstract = this->title;
+	if (!this->comment.empty()){
+		mout.special("Inserting comment: ", this->comment);
+		abstract = this->comment;
+	}
+	else {
+		abstract = this->title;
+	}
 
 	TreeSLD & featureTypeStyle = userStyle[SLD::FeatureTypeStyle](SLD::FeatureTypeStyle);
 	TreeSLD & rule = featureTypeStyle[SLD::Rule](SLD::Rule);

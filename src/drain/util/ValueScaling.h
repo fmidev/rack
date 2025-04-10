@@ -302,10 +302,8 @@ public:
 		return (y - offset) / scale;
 	}
 
-
-
-	inline
-	void toStream(std::ostream & ostr) const {
+	virtual inline
+	void toStream(std::ostream & ostr) const override {
 		ostr << scale << ',' << offset;
 		if (isPhysical())
 			 ostr << " [" << physRange << ']';

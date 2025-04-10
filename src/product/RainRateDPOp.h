@@ -113,7 +113,11 @@ public:
 	~RainRateDPOp(){};
 
 	virtual
+	void processDataSetOLD(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
+
+	virtual
 	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
+
 
 	drain::Range<double> dbzRange;
 	drain::Range<double> kdpRange;
@@ -124,7 +128,7 @@ protected:
 
 	void computeFuzzyMembership(
 			const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,
-			Data<PolarDst> & dstData) const;
+			PlainData<PolarDst> & dstData) const;
 
 	void computeProduct(
 			const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,

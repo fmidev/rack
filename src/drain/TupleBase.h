@@ -328,21 +328,29 @@ public:
 	 *   Derived classes may change the layout.
 	 */
 	virtual
-	std::ostream & toStream(std::ostream & ostr, char separator=',') const {
+	void toStreamFormatted(std::ostream & ostr, char separator=',') const {
+	// void toStream(std::ostream & ostr) const {
+		//, char separator=','
 		char sep = 0;
 		for (const_iterator it = begin(); it != end(); ++it){
 			if (sep)
 				ostr << sep;
 			else
 				sep = separator;
-			ostr << *it; //(*this)[i];
+			ostr << *it;
 		}
-		return ostr;
+		//return ostr;
 	}
+
+	virtual
+	void toStream(std::ostream & ostr) const {
+		toStreamFormatted(ostr);
+	}
+
 
 	std::string toStr(char separator=',') const {
 		std::stringstream sstr;
-		toStream(sstr, separator);
+		toStreamFormatted(sstr, separator);
 		return sstr.str();
 	}
 
@@ -383,7 +391,8 @@ const size_t TupleBase<S,N>::storageTypeSize = sizeof(S);
 
 template <class S, size_t N>
 std::ostream & operator<<(std::ostream & ostr, const TupleBase<S,N> & tuple){
-	return tuple.toStream(ostr);
+	tuple.toStream(ostr);
+	return ostr;
 }
 
 

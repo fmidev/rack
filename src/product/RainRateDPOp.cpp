@@ -58,10 +58,11 @@ namespace rack {
 
 
 void RainRateDPOp::computeFuzzyMembership(const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,
-		Data<PolarDst> & dstData) const {
+		PlainData<PolarDst> & dstData) const {
 
 	getQuantityMap().setQuantityDefaults(dstData, "QIND", "C");
-	dstData.setGeometry(srcData.data.getGeometry());
+	// dstData.setGeometry(srcData.data.getGeometry());
+	dstData.copyGeometry(srcData);
 
 	drain::image::Image::const_iterator sit = srcData.data.begin();
 	drain::image::Image::iterator dit = dstData.data.begin();
@@ -165,6 +166,57 @@ void RainRateDPOp::computeProduct2(
 
 
 void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<PolarDst> & dstProduct) const {
+
+	/// For monitoring cmd execution as text dump. Use --debug (or \c --verbose \c \<level\> to define verbosity.
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	mout.info("start");
+
+	// static
+	// const drain::KeySelector dbzSelector("DBZH", "DBZHC", "DBZ");
+
+	static
+	const QuantityMap & qmap = getQuantityMap();
+
+	static
+	const drain::KeySelector & dbzSelector = qmap.get("DBZ").variants;
+
+	// DBZ - the critical input. If missing, this product fails.
+	const PlainData<PolarSrc> & srcDBZ = sweepSrc.getData(dbzSelector);
+	if (srcDBZ.data.isEmpty()){
+		mout.error("Could not find dBZ data with: ", dbzSelector);
+		return;
+	}
+
+	PlainData<PolarDst> & dstDBZheavy = dstProduct.getData("FUZZY:DBZ_HEAVY");
+	const double d = dbzRange.span() / 4.0;
+	drain::FuzzyStep<double> thresholdDBZheavy(dbzRange.min-d, dbzRange.min+d);
+	computeFuzzyMembership(srcDBZ, thresholdDBZheavy, dstDBZheavy);
+
+	// ZDR
+	static
+	const drain::KeySelector & zdrSelector = qmap.get("ZDR").variants;
+	const PlainData<PolarSrc> & srcZDR = sweepSrc.getData(zdrSelector);
+	PlainData<PolarDst> & dstZDRheavy = dstProduct.getData("FUZZY:ZDR_HEAVY");
+	if (!srcZDR.data.isEmpty()){
+		drain::FuzzyStep<double> thresholdZDR(zdrRange.min, zdrRange.max);
+		computeFuzzyMembership(srcZDR, thresholdZDR, dstZDRheavy);
+	}
+	else {
+		dstZDRheavy.copyGeometry(srcZDR);
+		mout.special("No ZDR data found with: ", zdrSelector);
+	}
+
+	// KDP
+	const PlainData<PolarSrc> & srcKDP = sweepSrc.getData("KDP");
+
+
+
+}
+
+
+
+void RainRateDPOp::processDataSetOLD(const DataSet<PolarSrc> & sweepSrc, DataSet<PolarDst> & dstProduct) const {
 
 	/// For monitoring cmd execution as text dump. Use --debug (or \c --verbose \c \<level\> to define verbosity.
 	drain::Logger mout(__FILE__, __FUNCTION__);

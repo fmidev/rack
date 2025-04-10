@@ -103,6 +103,10 @@ namespace rack {
 			#include "palette/palette-HGHT.inc"
 			;
 
+			m["KDP"] =
+			#include "palette/palette-KDP.inc"
+			;
+
 			m["PROB"] =
 			#include "palette/palette-PROB.inc"
 			;

@@ -65,7 +65,7 @@ Quantity::Quantity(const std::string & name,
 	for (const std::string & key: compatibleVariants){
 		variants.addKey(key);
 	}
-	variants.addKey("TEST");
+	// variants.addKey("TEST");
 
 	// std::cerr << name << " koe1 " << drain::sprinter(compatibleVariants) << " -> " << variants << '\n';
 

@@ -189,7 +189,7 @@ Palette & ImageContext::getPalette(const std::string & key){
 		std::cerr << " Trying QM search...\n";
 		QuantityMap::const_iterator it = qm.retrieve(key);
 		if (it != qm.end()){
-			std::cerr << " ... Found: " << it->second << "!\n";
+			std::cerr << " ... Found: [" << it->first << "] " << it->second << "!\n";
 			if (it->first != key){
 				return PaletteOp::getPalette(it->first);
 			}

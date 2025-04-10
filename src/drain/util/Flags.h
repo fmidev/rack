@@ -126,6 +126,26 @@ public:
 		return (this->value == x);
 	};
 
+	// Start copy Base
+	virtual inline
+	void set(const key_t & key){
+		if (key.empty())
+			return; // needed?
+		assign(key);
+	}
+
+	/// Set a single flag.
+	virtual inline
+	void set(const value_t & value){
+		this->value = value;
+	};
+
+	virtual inline
+	void set(const FlaggerBase<E> & flagger){
+		this->value = flagger.value;
+	}
+	// END Base
+
 	template <class T>
 	inline
 	SingleFlagger<E> & operator=(const T & v){
