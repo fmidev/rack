@@ -430,7 +430,7 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 	}
 
 	// TODO: 1) time formatting 2) priority (startdate, starttime)
-	for (const std::string key: {"what:date", "what:time", "what:product", "what:prodpar", "what:quantity", "where:elangle", "prevCmdKey"}){
+	for (const std::string key: {"what:date", "what:time", "what:product", "what:prodpar", "what:quantity", "where:elangle", "how:camethod", "prevCmdKey"}){
 		if (src.properties.hasKey(key)){
 			size_t i = key.find(':');
 			if (i == std::string::npos){
@@ -563,7 +563,10 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	// mainHeader["product"]->setText("product"); //CTXX // debugging
 	mainHeader["prodpar"](svg::TSPAN);
 	mainHeader["prodpar"]->addClass("product"); // yes, same...
-	// mainHeader["prodpar"]->setText("prodpar"); //CTXX // debugging
+
+	// NEW
+	mainHeader["camethod"](svg::TSPAN);
+	mainHeader["camethod"]->addClass("product");
 
 	// Layout principle: there should be always time... so start/continue from left.
 	TreeSVG & timeHeader = object[PanelConfSVG::ElemClass::TIME](svg::TEXT);
@@ -974,20 +977,7 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 
 		if (elemClass == PanelConfSVG::ElemClass::TIME){
 			if (format.empty()){
-
 				format = RackSVG::guessFormat(key);
-				/*
-				if (drain::StringTools::endsWith(key, "date")){
-					format = "%Y/%m/%d";
-				}
-				else if (key == "time"){
-					//else if (drain::StringTools::endsWith(key, ":time")){
-					format = "%H:%M UTC";
-				}
-				else if (drain::StringTools::endsWith(key, "time")){
-					format = " %H:%M:%S UTC";
-				}
-				*/
 				text->set("format", format);
 			}
 			// mout.accept<LOG_DEBUG>("TIME text format", format);

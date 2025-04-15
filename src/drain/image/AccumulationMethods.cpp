@@ -56,7 +56,7 @@ AccMethodBank & getAccMethodBank() {
 	if (bank.getMap().empty()){
 
 		// Double: perhaps first retrieved with "", but then cloned with key "IdentityFunctor".
-		bank.add<AccumulationMethod>(); // Unset/undefined
+		bank.add<AccumulationMethod>(); // Unset or undefined
 		bank.add<MaximumMethod>();
 		bank.add<MinimumMethod>();
 		bank.add<MinMaxMethod>();
@@ -64,47 +64,13 @@ AccMethodBank & getAccMethodBank() {
 		bank.add<WeightedAverageMethod>();
 		bank.add<MaximumWeightMethod>();
 		bank.add<OverwriteMethod>();
-		bank.add<OverwriteMethod>("OVERWRITE"); // "alias"
+		bank.add<OverwriteMethod>("LATEST"); // "alias"
 
 	}
 
 	return bank;
 
 }
-
-// TODO 2023; crop
-/*
-void AccumulationMethod::initDstOLD(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
-
-	Logger mout(getImgLog(), __FUNCTION__, getName());
-
-	if (crop.upperRight.x < crop.lowerLeft.x){
-		mout.error("Negative direction in crop image i coordinates: ", crop);
-	}
-
-	if (crop.upperRight.y < crop.lowerLeft.y){
-		mout.error("Negative direction in crop image j coordinates: ", crop);
-	}
-
-
-	if (!dst.typeIsSet()){
-		if (!coder.type.empty())
-			dst.setType(coder.type.at(0));
-		else
-			throw std::runtime_error(name + "::(AccumulationMethod::_initDst): default output type and image type unset.");
-	}
-
-	if (crop.empty()){
-		//mout.unimplemented("Crop");
-		dst.setGeometry(accArray.getWidth(), accArray.getHeight());
-	}
-	else {
-		mout.experimental("applying cropped (", crop ,") view of ", accArray.getGeometry());
-		dst.setGeometry(crop.getWidth(), crop.getHeight());
-	}
-
-}
-*/
 
 void AccumulationMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & cropArea) const {
 
@@ -418,25 +384,38 @@ void MinMaxMethod::extractValue(const AccumulationArray & accArray, const Accumu
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	double diff;
-	const double noData   = coder.getNoDataMarker();
+	const double noData    = coder.getNoDataMarker();
+	const double noReading = coder.getNoReadingMarker();
+
+	double min, max, weight;
 
 	if (crop.empty()){
 		const size_t s = dst.getVolume();
 		for (size_t addr = 0; addr < s; ++addr){
-			switch (accArray.count.at(addr)) {
-				case 2:
-					diff = static_cast<double>(accArray.data2.at(addr));
-					coder.encodeDiff(diff);
-					dst.put(addr, diff);
-					break;
-				case 1:
-					// dst.put(i, noData);
-					// no break;
-				default:
-					dst.put(addr, noData);
-					break;
+			if (accArray.count.at(addr) > 0){
+				weight = accArray.weight.at(addr);
+				if (weight > 0.0){
+					min = accArray.data.at(addr);
+					max = accArray.data2.at(addr);
+					if (max > -min){
+						coder.encode(max, weight);
+						dst.put(addr, max);
+					}
+					else {
+						coder.encode(min, weight);
+						dst.put(addr, min);
+					}
+					// value  = accArray.data.at(addr);
+					// coder.encode(value, weight);
+					// dst.put(addr, value);
+				}
+				else
+					dst.put(addr, noReading);
 			}
+			else {
+				dst.put(addr, noData);
+			}
+
 		}
 	}
 	else {
@@ -445,17 +424,8 @@ void MinMaxMethod::extractValue(const AccumulationArray & accArray, const Accumu
 		for (unsigned int j=0; j<dst.getHeight(); ++j) {
 			for (unsigned int i=0; i<dst.getWidth(); ++i) {
 				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
-				switch (accArray.count.at(addr)) {
-				case 2:
-					diff = static_cast<double>(accArray.data2.at(addr));
-					coder.encodeDiff(diff);
-					dst.put(i,j, diff);
-					break;
-				case 1:
-				default:
-					dst.put(i,j, noData);
-					break;
-				}
+
+
 			}
 		}
 	}

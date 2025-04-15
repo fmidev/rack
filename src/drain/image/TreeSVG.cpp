@@ -140,7 +140,7 @@ TransformSVG::TransformSVG(){ //  : translate(typeid(svg::coord_t)) {
 
 
 void TransformSVG::toStream(std::ostream & ostr) const {
-#define DRAIN_SVGTRANS_STREAM(transform) if (!transform.empty()){ostr << #transform << "(" << transform << ") ";}
+#define DRAIN_SVGTRANS_STREAM(transform) if (!transform.empty()){ostr << #transform << " " << transform << " ";}
 	DRAIN_SVGTRANS_STREAM(rotate)
 	DRAIN_SVGTRANS_STREAM(scale)
 	DRAIN_SVGTRANS_STREAM(translate)

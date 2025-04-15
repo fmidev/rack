@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/BeanLike.h>
 #include <drain/util/Point.h>
 #include <drain/util/Rectangle.h>
+
 #include "ImageT.h"
 #include "CoordinatePolicy.h"
 #include "AccumulationArray.h"
@@ -143,46 +144,15 @@ public:
 	virtual
 	void extractDev(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
-	//virtual
-	//void extractDevInv(const AccumulationConverter & coder, Image & dst) const;
-
-	//const std::string name;
-
-	/*
-	virtual
-	std::ostream & toStream(std::ostream & ostr) const {
-		ostr << name;
-		if (!parameters.empty())
-			ostr << " [" << parameters << "]";
-		return ostr;
-	};
-	*/
 
 protected:
 
-	/// Sets variables that depend on public parameters. Called by setParameters().
-	//virtual
-	//void updateInternalParameters(){};
 
-	// void initDstOLD(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const ;
-
-
-	// AccumulationMethod(const std::string & name, AccumulationArray & c) :  BeanLike(name, __FUNCTION__), accumulationArray(c)  {
-	//};
-
-	AccumulationMethod(const std::string & name) :  BeanLike(name, __FUNCTION__) {
+	AccumulationMethod(const std::string & name, const std::string & description) :  BeanLike(name, description) {
 	};
 
-	//AccumulationArray & accumulationArray;
 
 };
-
-/*
-inline
-std::ostream & operator<<(std::ostream & ostr, const AccumulationMethod & accumulationMethod){
-	return accumulationMethod.toStream(ostr);
-}
-*/
 
 
 
@@ -192,7 +162,7 @@ class OverwriteMethod : public AccumulationMethod {
 public:
 
 	//OverwriteMethod(AccumulationArray & c) : AccumulationMethod("LATEST", c) {};
-	OverwriteMethod() : AccumulationMethod("LATEST") {};
+	OverwriteMethod() : AccumulationMethod("OVERRIDE", "Latest data overrides") {};
 
 	virtual
 	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const override;
@@ -210,7 +180,7 @@ public:
 
 	//MaximumMethod(AccumulationArray & c) : AccumulationMethod("MAXIMUM", c) {};
 	inline
-	MaximumMethod() : AccumulationMethod("MAXIMUM") {};
+	MaximumMethod() : AccumulationMethod("MAXIMUM", "Maximum of values") {};
 
 	virtual
 	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const override;
@@ -223,7 +193,7 @@ public:
 
 	//MinimumMethod(AccumulationArray & c) : AccumulationMethod("MINIMUM", c) {};
 	inline
-	MinimumMethod() : AccumulationMethod("MINIMUM") {};
+	MinimumMethod() : AccumulationMethod("MINIMUM", "Maximum of values") {};
 
 	virtual
 	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const override;
@@ -236,7 +206,7 @@ class MinMaxMethod : public AccumulationMethod {
 public:
 
 	inline
-	MinMaxMethod() : AccumulationMethod("MINMAX") {};
+	MinMaxMethod() : AccumulationMethod("MINMAX", "Minimum or maximum with larger absolute value") {};
 
 	virtual
 	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const override;
@@ -256,7 +226,7 @@ public:
 
 	//AverageMethod(AccumulationArray & c) : AccumulationMethod("AVERAGE", c) {};
 	inline
-	AverageMethod() : AccumulationMethod("AVERAGE") {};
+	AverageMethod() : AccumulationMethod("AVERAGE", "Average of values") {};
 
 	virtual
 	void add(AccumulationArray & accArray,  const size_t i, double value, double weight) const override;
@@ -283,10 +253,10 @@ class WeightedAverageMethod : public AccumulationMethod {
 public:
 
 	inline
-	WeightedAverageMethod() : AccumulationMethod("WAVG"), pInv(1.0), USE_P(false), rInv(1.0), USE_R(false) {
-		parameters.link("p", p = 1.0);
-		parameters.link("r", r = 1.0);
-		parameters.link("bias", bias = 0.0);
+	WeightedAverageMethod() : AccumulationMethod("WAVG","Weighted average of values"), pInv(1.0), USE_P(false), rInv(1.0), USE_R(false) {
+		parameters.link("p", p = 1.0, "exponent for data value");
+		parameters.link("r", r = 1.0, "exponent for weight");
+		parameters.link("bias", bias = 0.0, "origin, for non-negative value exponent");
 		updateBean();
 	};
 
@@ -352,7 +322,7 @@ public:
 
 	//MaximumWeightMethod(AccumulationArray & c) : AccumulationMethod("MAXW", c) {};
 	inline
-	MaximumWeightMethod() : AccumulationMethod("MAXW") {};
+	MaximumWeightMethod() : AccumulationMethod("MAXW", "Maximum-weight (maximum-quality)") {};
 
 	virtual
 	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const ;

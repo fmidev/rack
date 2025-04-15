@@ -40,6 +40,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 12.1
  *  - StringTools: extractPrefix (common leading part)
  *  - Image memory area fix prefixed hex string
+ *  - Fix: TreeSVG translate (extra parentheses)
+ *  - cMethod: added MINMAX
  *
  *  Version 11.0
  *  - Help supports "see also", linking related commands.

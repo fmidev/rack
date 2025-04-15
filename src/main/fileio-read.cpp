@@ -313,7 +313,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 			const std::string sourceOld = ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["source"]; // Warning: Creates attribute, unless it exists
 			//mout.warn("Input: ", sourceNew, " Previous input: ", sourceOld, " same?: ", sourceNew==sourceOld);
 			if (sourceNew == sourceOld){
-				mout.ok<LOG_NOTICE>("Unchanged input src '", sourceNew, "' -> update (append) volume");
+				mout.ok<LOG_DEBUG>("Unchanged input src '", sourceNew, "' -> update (append) volume");
 				appendPolarH5(srcTmp, ctx.polarInputHi5);
 			}
 			else {
@@ -469,7 +469,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 		ODIMPathElemMap::iterator tit = dstTimeGroups.find(timeGroup.first);
 
 		if (tit == dstTimeGroups.end()){
-			mout.note("Adding new dataset, time: ", timeGroup.first);
+			mout.ok<LOG_INFO>("Adding new dataset, time: ", timeGroup.first);
 			// In this form, does not support top-level QUALITY field insertions, neither updates.
 			DataSelector::swapData(srcDataSet, dstRoot, ODIMPathElem::DATASET); // check type (DATASET) after filter implemented!
 		}
