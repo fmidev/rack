@@ -377,6 +377,7 @@ public:
 	// Rember to add an initialized unit: template<> SingleFlagger<...>::dict = {{...,...}, ...}
 	// static const dict_t dict;
 
+protected:
 	// Default constructor. Local value \c ownValue will be used.
 	/**
 	 *
@@ -403,6 +404,8 @@ public:
 	virtual inline
 	~FlaggerBase(){
 	}
+
+public:
 
 	/// Returns the static dictionary created for this \c value_t .
 	/**

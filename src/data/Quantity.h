@@ -61,7 +61,7 @@ public:
 	std::string name;
 
 	/// Collection of quantities that can be similarly scaled and encoded
-	drain::StringMatcherList<drain::StringMatcher> variants;
+	drain::StringMatcherList<drain::StringMatcher> keySelector; // could be keyMatcher?
 
 	/// Default storage type
 	char defaultType = '\0';
@@ -112,7 +112,7 @@ public:
 	Quantity(const Quantity & quantity):
 		map_t(quantity),
 		name(quantity.name),
-		variants(quantity.variants),
+		keySelector(quantity.keySelector),
 		defaultType(quantity.defaultType),
 		physicalRange(quantity.physicalRange),
 		undetectValue(quantity.undetectValue) {
@@ -149,7 +149,7 @@ public:
 
 	inline
 	bool isApplicable(const std::string & key){ // needed?
-		return variants.test(key, false);
+		return keySelector.test(key, false);
 	}
 
 	/// True, if a value corresponding a very small (unmeasurable) value has been defined.

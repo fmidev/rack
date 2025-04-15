@@ -34,6 +34,57 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+#define RACK_QTY_INIT(qty) qty(map_t::operator [](#qty))
+
+QuantityMap::QuantityMap() : map_t(),
+		RACK_QTY_INIT(TH),
+		RACK_QTY_INIT(DBZ),
+		RACK_QTY_INIT(VRAD),
+		RACK_QTY_INIT(ZDR),
+		RACK_QTY_INIT(RHOHV),
+		RACK_QTY_INIT(KDP),
+		RACK_QTY_INIT(QIND),
+		RACK_QTY_INIT(PROB),
+		RACK_QTY_INIT(FUZZY)
+		{
+}
+
+QuantityMap::QuantityMap(const QuantityMap & m) : map_t(m),
+		RACK_QTY_INIT(TH),
+		RACK_QTY_INIT(DBZ),
+		RACK_QTY_INIT(VRAD),
+		RACK_QTY_INIT(ZDR),
+		RACK_QTY_INIT(RHOHV),
+		RACK_QTY_INIT(KDP),
+		RACK_QTY_INIT(QIND),
+		RACK_QTY_INIT(PROB),
+		RACK_QTY_INIT(FUZZY)
+{
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.warn("? copy const <QuantityMap>");
+}
+
+/*
+QuantityMap::QuantityMap(const map_t & m) : map_t(m){
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.warn("? copy const <map>");
+}
+*/
+
+QuantityMap::QuantityMap(const std::initializer_list<std::pair<std::string, Quantity> > & inits) : map_t(),
+		RACK_QTY_INIT(TH),
+		RACK_QTY_INIT(DBZ),
+		RACK_QTY_INIT(VRAD),
+		RACK_QTY_INIT(ZDR),
+		RACK_QTY_INIT(RHOHV),
+		RACK_QTY_INIT(KDP),
+		RACK_QTY_INIT(QIND),
+		RACK_QTY_INIT(PROB),
+		RACK_QTY_INIT(FUZZY)
+{
+	assign(inits);
+}
+
 void QuantityMap::assign(const std::initializer_list<std::pair<std::string, Quantity> > & inits) {
 	for (const auto & entry: inits){
 		// std::cerr << entry.first << ' ' << entry.second.variants << '\n';
@@ -47,8 +98,8 @@ void QuantityMap::assign(const std::initializer_list<std::pair<std::string, Quan
 std::ostream & QuantityMap::toStream(std::ostream & ostr) const {
 	for (const auto & entry: *this){
 		ostr << entry.first << ' ';
-		if (!entry.second.variants.empty()){
-			ostr << '(' << entry.second.variants << ')' <<' ';
+		if (!entry.second.keySelector.empty()){
+			ostr << '(' << entry.second.keySelector << ')' <<' ';
 		}
 		ostr << "– " << entry.second.name << '\n';
 		ostr << entry.second; // << '\n';
@@ -69,7 +120,7 @@ QuantityMap::const_iterator QuantityMap::retrieve(const std::string & key) const
 			//for (const auto & entry: *this){
 			for (it=begin(); it!=end(); ++it){
 				// std::cerr << "TESTING " << key << " -> " << it->first << ' ' << it->second << " [" << it->second.variants << "]\n";
-				if (it->second.variants.test(key, false)){
+				if (it->second.keySelector.test(key, false)){
 					// std::cerr << "NEW: found " << key << " <-> " << it->first << " [" << it->second << "]\n";
 					// return entry.second;
 					break;
@@ -91,7 +142,7 @@ QuantityMap::iterator QuantityMap::retrieve(const std::string & key) {
 	// Attempt 2: find a compatible variant
 	if (it == end()){
 		for (it=begin(); it!=end(); ++it){
-			if (it->second.variants.test(key, false)){
+			if (it->second.keySelector.test(key, false)){
 				// std::cerr << "NEW: found " << key << " <-> " << it->first << " [" << it->second << "]";
 				// return entry.second;
 				break;
@@ -213,7 +264,8 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 QuantityMap & getQuantityMap() {
 
 	static QuantityMap quantityMap = {
-			{"DBZH", {
+			// {"DBZH", {
+			{"DBZ", {
 					"Radar reflectivity",
 					{"DBZ", "DBZ[HV]", "DBZ[HV]C", "T[HV]"},
 					{-32.0, +60.0},

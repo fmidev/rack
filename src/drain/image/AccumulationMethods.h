@@ -164,7 +164,7 @@ protected:
 	//virtual
 	//void updateInternalParameters(){};
 
-	void initDstOLD(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const ;
+	// void initDstOLD(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const ;
 
 
 	// AccumulationMethod(const std::string & name, AccumulationArray & c) :  BeanLike(name, __FUNCTION__), accumulationArray(c)  {
@@ -195,11 +195,11 @@ public:
 	OverwriteMethod() : AccumulationMethod("LATEST") {};
 
 	virtual
-	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const;
+	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const override;
 
 	/// Special defimition: difference
 	virtual
-	void extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
+	void extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const override;
 
 
 };
@@ -213,7 +213,7 @@ public:
 	MaximumMethod() : AccumulationMethod("MAXIMUM") {};
 
 	virtual
-	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const;
+	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const override;
 
 };
 
@@ -226,7 +226,26 @@ public:
 	MinimumMethod() : AccumulationMethod("MINIMUM") {};
 
 	virtual
-	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const;
+	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const override;
+
+};
+
+
+class MinMaxMethod : public AccumulationMethod {
+
+public:
+
+	inline
+	MinMaxMethod() : AccumulationMethod("MINMAX") {};
+
+	virtual
+	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const override;
+
+	virtual
+	void extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const override;
+
+	virtual
+	void extractDev(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const override;
 
 };
 
@@ -240,19 +259,19 @@ public:
 	AverageMethod() : AccumulationMethod("AVERAGE") {};
 
 	virtual
-	void add(AccumulationArray & accArray,  const size_t i, double value, double weight) const;
+	void add(AccumulationArray & accArray,  const size_t i, double value, double weight) const override;
 
 	virtual // inline
-	void add(AccumulationArray & accArray,  const size_t i, double value, double weight, unsigned int count) const;
+	void add(AccumulationArray & accArray,  const size_t i, double value, double weight, unsigned int count) const override;
 
 	virtual
-	void extractValue(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
+	void extractValue(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const override;
 
 	virtual
-	void extractWeight(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
+	void extractWeight(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const override;
 
 	virtual
-	void extractDev(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
+	void extractDev(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const override;
 
 };
 
@@ -284,22 +303,22 @@ public:
 
 
 	virtual
-	void updateBean() const;
+	void updateBean() const override;
 
 	virtual
-	void add(AccumulationArray & accArray,  const size_t i, double value, double weight) const;
+	void add(AccumulationArray & accArray,  const size_t i, double value, double weight) const override;
 
 	virtual inline
-	void add(AccumulationArray & accArray,  const size_t i, double value, double weight, unsigned int count) const;
+	void add(AccumulationArray & accArray,  const size_t i, double value, double weight, unsigned int count) const override;
 
 	virtual
-	void extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
+	void extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const override;
 
 	virtual
-	void extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
+	void extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const override;
 
 	virtual
-	void extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
+	void extractDev(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const override;
 
 	/*
 	virtual
@@ -336,7 +355,7 @@ public:
 	MaximumWeightMethod() : AccumulationMethod("MAXW") {};
 
 	virtual
-	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const;
+	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const ;
 
 };
 

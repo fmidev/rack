@@ -53,28 +53,29 @@ public:
 
 	typedef std::map<std::string, Quantity> map_t;
 
-	inline
-	QuantityMap(){
-		//initialize();
-	}
+	/// Default constructor
+	QuantityMap();
 
-	inline
-	QuantityMap(const QuantityMap & m) : map_t(m){
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.warn("? copy const <QuantityMap>");
-	}
+	/// Copy constructor
+	QuantityMap(const QuantityMap & m);
 
-	inline
-	QuantityMap(const map_t & m) : map_t(m){
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.warn("? copy const <map>");
-	}
+	/// Constructor for ... ?
+	// QuantityMap(const map_t & m);
 
-	inline
-	QuantityMap(const std::initializer_list<std::pair<std::string, Quantity> > & inits){
-		assign(inits);
-	}
+	/// Constructor for init lists.
+	QuantityMap(const std::initializer_list<std::pair<std::string, Quantity> > & inits);
 
+	// New 2025: a set of frequently needed conf tables
+	const Quantity & TH;
+	const Quantity & DBZ;
+	const Quantity & VRAD;
+	const Quantity & ZDR;
+	const Quantity & RHOHV;
+	const Quantity & KDP;
+	// const Quantity & PHIDP;
+	const Quantity & QIND;
+	const Quantity & PROB; // Rack
+	const Quantity & FUZZY; // Rack
 
 	inline
 	QuantityMap & operator=(const std::initializer_list<std::pair<std::string, Quantity> > & inits){

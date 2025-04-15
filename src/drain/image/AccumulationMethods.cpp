@@ -59,6 +59,7 @@ AccMethodBank & getAccMethodBank() {
 		bank.add<AccumulationMethod>(); // Unset/undefined
 		bank.add<MaximumMethod>();
 		bank.add<MinimumMethod>();
+		bank.add<MinMaxMethod>();
 		bank.add<AverageMethod>();
 		bank.add<WeightedAverageMethod>();
 		bank.add<MaximumWeightMethod>();
@@ -72,6 +73,7 @@ AccMethodBank & getAccMethodBank() {
 }
 
 // TODO 2023; crop
+/*
 void AccumulationMethod::initDstOLD(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
@@ -102,6 +104,7 @@ void AccumulationMethod::initDstOLD(const AccumulationArray & accArray, const Ac
 	}
 
 }
+*/
 
 void AccumulationMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & cropArea) const {
 
@@ -371,18 +374,107 @@ void MaximumMethod::add(AccumulationArray & accArray, const size_t i, double val
 	//++accArray.count.at(i); //  = 1;
 }
 
-void MinimumMethod::add(AccumulationArray & accArray, const size_t i, double value, double weight) const{
+void MinimumMethod::add(AccumulationArray & accArray, const size_t i, double value, double weight) const {
 
 	// "Weight control" is needed, because data initialized with undetectValue, but 'value' can be negative.
-	if (weight > 0.0)
+	if (weight > 0.0) {
 		if ( (accArray.weight.at(i) == 0.0) || (value < accArray.data.at(i)) ){
 			accArray.data.at(i)   = value;
 			accArray.weight.at(i) = weight;
 		}
+	}
 
 	accArray.count.at(i)  = 1;
 
 }
+
+/**
+ *   Collect minimum and maximum values to accArray.data and accArray.data2, respectively
+ */
+void MinMaxMethod::add(AccumulationArray & accArray, const size_t i, double value, double weight) const {
+
+	// "Weight control" is needed, because data initialized with undetectValue, but 'value' can be negative.
+	if (weight > 0.0){
+		if (accArray.weight.at(i) == 0.0){
+			accArray.data.at(i)   = value;
+			accArray.data2.at(i)  = value;
+			accArray.weight.at(i) = weight;
+		}
+		else if (value < accArray.data.at(i)){
+			accArray.data.at(i)   = value;
+			accArray.weight.at(i) = weight;
+		}
+		else if (value > accArray.data2.at(i)){
+			accArray.data2.at(i)  = value;
+			accArray.weight.at(i) = weight;
+		}
+	}
+	// accArray.data2
+	accArray.count.at(i)  = 1;
+
+}
+
+void MinMaxMethod::extractValue(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
+
+	Logger mout(getImgLog(), __FUNCTION__, getName());
+
+	double diff;
+	const double noData   = coder.getNoDataMarker();
+
+	if (crop.empty()){
+		const size_t s = dst.getVolume();
+		for (size_t addr = 0; addr < s; ++addr){
+			switch (accArray.count.at(addr)) {
+				case 2:
+					diff = static_cast<double>(accArray.data2.at(addr));
+					coder.encodeDiff(diff);
+					dst.put(addr, diff);
+					break;
+				case 1:
+					// dst.put(i, noData);
+					// no break;
+				default:
+					dst.put(addr, noData);
+					break;
+			}
+		}
+	}
+	else {
+		mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+		size_t addr;
+		for (unsigned int j=0; j<dst.getHeight(); ++j) {
+			for (unsigned int i=0; i<dst.getWidth(); ++i) {
+				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+				switch (accArray.count.at(addr)) {
+				case 2:
+					diff = static_cast<double>(accArray.data2.at(addr));
+					coder.encodeDiff(diff);
+					dst.put(i,j, diff);
+					break;
+				case 1:
+				default:
+					dst.put(i,j, noData);
+					break;
+				}
+			}
+		}
+	}
+
+}
+
+
+
+/// Retrieves the standard deviation of the accumulated values.
+/**
+ *  \par dst - target array in which the values are stored.
+ *  \par gain - scaling coefficient applied to each retrived value
+ *  \par offset - additive coefficient applied to each retrieved value
+ *  \par NODATA   - if bin count is undetectValue that is, there is no data in a bin, this value is applied.
+ */
+void MinMaxMethod::extractDev(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
+
+}
+
 
 
 void AverageMethod::add(AccumulationArray & accArray, const size_t i, double value, double weight) const {

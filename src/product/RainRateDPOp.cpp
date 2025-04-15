@@ -57,7 +57,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-void RainRateDPOp::computeFuzzyMembership(const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,
+void RainRateDPOp::computeFuzzyWeight(const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,
 		PlainData<PolarDst> & dstData) const {
 
 	getQuantityMap().setQuantityDefaults(dstData, "QIND", "C");
@@ -78,6 +78,74 @@ void RainRateDPOp::computeFuzzyMembership(const PlainData<PolarSrc> & srcData, c
 
 
 }
+
+
+void RainRateDPOp::computeProductNEW(const PlainData<PolarSrc> & srcData, const SingleParamPrecip & rateFnc, DataSet<PolarDst> & dstProduct) const {
+
+	const std::string & quantity = srcData.odim.quantity;
+	// const drain::image::Geometry & geometry = srcData.data.getGeometry();
+
+	std::string debugQuantity = "RATE_" + quantity;
+	PlainData<PolarDst> & dstData = dstProduct.getData(debugQuantity);
+	setEncodingNEW(dstData, "RATE", "S");
+	dstData.odim.quantity = debugQuantity;
+	dstData.copyGeometry(srcData);
+
+
+	typedef drain::typeLimiter<double> Limiter;
+	Limiter::value_t limit = drain::Type::call<Limiter>(dstData.data.getType());
+
+	drain::image::Image::const_iterator sit = srcData.data.begin();
+	drain::image::Image::iterator dit = dstData.data.begin();
+
+	double x;
+	while (sit != srcData.data.end()){
+		if (srcData.odim.isValue(*sit)){
+			x = srcData.odim.scaleForward(*sit);
+			*dit = limit(dstData.odim.scaleInverse(rateFnc.rainRate(x)));
+		}
+		++sit;
+		++dit;
+	}
+
+
+}
+
+void RainRateDPOp::computeProductNEW2(const PlainData<PolarSrc> & srcData1, const PlainData<PolarSrc> & srcData2,
+		const DoubleParamPrecip & rateFnc, DataSet<PolarDst> & dstProduct) const {
+
+	const std::string & quantity = srcData1.odim.quantity;
+	// const drain::image::Geometry & geometry = srcData.data.getGeometry();
+
+	std::string debugQuantity = "RATE_" + quantity;
+	PlainData<PolarDst> & dstData = dstProduct.getData(debugQuantity);
+	setEncodingNEW(dstData, "RATE", "S");
+	dstData.odim.quantity = debugQuantity;
+	dstData.copyGeometry(srcData1);
+
+
+	typedef drain::typeLimiter<double> Limiter;
+	Limiter::value_t limit = drain::Type::call<Limiter>(dstData.data.getType());
+
+	drain::image::Image::const_iterator sit1 = srcData1.data.begin();
+	drain::image::Image::const_iterator sit2 = srcData2.data.begin();
+	drain::image::Image::iterator dit = dstData.data.begin();
+
+	double x1,x2;
+	while (sit1 != srcData1.data.end()){
+		if (srcData1.odim.isValue(*sit1) && srcData2.odim.isValue(*sit2)){
+			x1 = srcData1.odim.scaleForward(*sit1);
+			x2 = srcData1.odim.scaleForward(*sit2);
+			*dit = limit(dstData.odim.scaleInverse(rateFnc.rainRate(x1, x2)));
+		}
+		++sit1;
+		++sit2;
+		++dit;
+	}
+
+
+}
+
 
 void RainRateDPOp::computeProduct(const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFtor,
 		 const SingleParamPrecip & rateFnc, DataSet<PolarDst> & dstProduct) const {
@@ -138,7 +206,6 @@ void RainRateDPOp::computeProduct2(
 	getQuantityMap().setQuantityDefaults(dstQuality, "QIND", "C");
 	dstQuality.copyGeometry(srcData1);
 
-	double x1, x2;
 	typedef drain::typeLimiter<double> Limiter;
 	Limiter::value_t limit = drain::Type::call<Limiter>(dstData.data.getType());
 
@@ -147,6 +214,7 @@ void RainRateDPOp::computeProduct2(
 	drain::image::Image::iterator dit = dstData.data.begin();
 	drain::image::Image::iterator qit = dstQuality.data.begin();
 
+	double x1, x2;
 	while (sit1 != srcData1.data.end()){
 
 		if (srcData1.odim.isValue(*sit1) && srcData2.odim.isValue(*sit2)){
@@ -178,38 +246,73 @@ void RainRateDPOp::processDataSet(const DataSet<PolarSrc> & sweepSrc, DataSet<Po
 	static
 	const QuantityMap & qmap = getQuantityMap();
 
-	static
-	const drain::KeySelector & dbzSelector = qmap.get("DBZ").variants;
+	//static	const drain::KeySelector & dbzSelector = qmap.get("DBZ").keySelector;
 
 	// DBZ - the critical input. If missing, this product fails.
-	const PlainData<PolarSrc> & srcDBZ = sweepSrc.getData(dbzSelector);
-	if (srcDBZ.data.isEmpty()){
-		mout.error("Could not find dBZ data with: ", dbzSelector);
-		return;
+	const PlainData<PolarSrc> & srcDBZ = sweepSrc.getData(qmap.DBZ.keySelector);
+	const bool DBZ  = !srcDBZ.data.isEmpty();
+
+	PlainData<PolarDst> & dstDBZheavy = dstProduct.getData("FUZZY_DBZ_HEAVY");
+	PlainData<PolarDst> & dstDBZhail  = dstProduct.getData("FUZZY_DBZ_HAIL"); // even heavier...
+
+	if (DBZ){
+		const double d = dbzRange.span() / 4.0;
+		drain::FuzzyStep<double> thresholdDBZheavy(dbzRange.min-d, dbzRange.min+d);
+		computeFuzzyWeight(srcDBZ, thresholdDBZheavy, dstDBZheavy);
+
+		drain::FuzzyStep<double> thresholdDBZhail(dbzRange.max-d, dbzRange.max+d);
+		computeFuzzyWeight(srcDBZ, thresholdDBZhail, dstDBZhail);
+
+		computeProductNEW(srcDBZ, RainRateOp::precipZrain, dstProduct);
+
+	}
+	else {
+		mout.fail("Could not find dBZ data with: ", qmap.DBZ.keySelector);
+		mout.advice("Without dBZ input, rain rate will fail esp. for weak precip");
 	}
 
-	PlainData<PolarDst> & dstDBZheavy = dstProduct.getData("FUZZY:DBZ_HEAVY");
-	const double d = dbzRange.span() / 4.0;
-	drain::FuzzyStep<double> thresholdDBZheavy(dbzRange.min-d, dbzRange.min+d);
-	computeFuzzyMembership(srcDBZ, thresholdDBZheavy, dstDBZheavy);
 
 	// ZDR
-	static
-	const drain::KeySelector & zdrSelector = qmap.get("ZDR").variants;
-	const PlainData<PolarSrc> & srcZDR = sweepSrc.getData(zdrSelector);
-	PlainData<PolarDst> & dstZDRheavy = dstProduct.getData("FUZZY:ZDR_HEAVY");
-	if (!srcZDR.data.isEmpty()){
+	// static const drain::KeySelector & zdrSelector = qmap.get("ZDR").keySelector;
+	const PlainData<PolarSrc> & srcZDR = sweepSrc.getData(qmap.ZDR.keySelector);
+	const bool ZDR = !srcZDR.data.isEmpty();
+	PlainData<PolarDst> & dstZDRheavy = dstProduct.getData("FUZZY_ZDR_HEAVY");
+	if (ZDR){
 		drain::FuzzyStep<double> thresholdZDR(zdrRange.min, zdrRange.max);
-		computeFuzzyMembership(srcZDR, thresholdZDR, dstZDRheavy);
+		computeFuzzyWeight(srcZDR, thresholdZDR, dstZDRheavy);
+
 	}
 	else {
 		dstZDRheavy.copyGeometry(srcZDR);
-		mout.special("No ZDR data found with: ", zdrSelector);
+		mout.special("No ZDR data found with: ", qmap.ZDR.keySelector);
 	}
 
 	// KDP
-	const PlainData<PolarSrc> & srcKDP = sweepSrc.getData("KDP");
+	// static
+	// const drain::KeySelector & kdpSelector = qmap.get("KDP").keySelector;
+	const PlainData<PolarSrc> & srcKDP = sweepSrc.getData(qmap.KDP.keySelector);
+	PlainData<PolarDst> & dstKDPheavy = dstProduct.getData("FUZZY_KDP_HEAVY");
+	const bool KDP = !srcKDP.data.isEmpty();
+	if (KDP){
+		drain::FuzzyStep<double> thresholdKDP(kdpRange.min, kdpRange.max);
+		computeFuzzyWeight(srcKDP, thresholdKDP, dstKDPheavy);
+		computeProductNEW(srcKDP, RainRateOp::precipKDP, dstProduct);
+	}
+	else {
+		dstKDPheavy.copyGeometry(srcKDP);
+		mout.special("No KDP data found with: ", qmap.KDP.keySelector);
+	}
 
+
+	if (DBZ && ZDR){
+		mout.special(RainRateOp::precipZZDR);
+		computeProductNEW2(srcDBZ, srcZDR, RainRateOp::precipZZDR, dstProduct);
+	}
+
+	if (KDP && ZDR){
+		mout.special(RainRateOp::precipKDPZDR);
+		computeProductNEW2(srcKDP, srcZDR, RainRateOp::precipKDPZDR, dstProduct);
+	}
 
 
 }
@@ -234,9 +337,9 @@ void RainRateDPOp::processDataSetOLD(const DataSet<PolarSrc> & sweepSrc, DataSet
 	mout.note(parameters);
 
 
-	const bool useDBZH  = !srcDBZH.data.isEmpty();
+	const bool DBZ  = !srcDBZH.data.isEmpty();
 
-	if (!useDBZH){
+	if (!DBZ){
 		mout.warn("critical DBZH data missing, giving up..." );
 		return;
 	}
@@ -249,7 +352,6 @@ void RainRateDPOp::processDataSetOLD(const DataSet<PolarSrc> & sweepSrc, DataSet
 
 	//dstProduct.g
 	PlainData<PolarDst> & rateQuality = rateDst.getQualityData("QIND");
-	//setEncodingNEW(rateDst); // rateDst, not rateQuality?
 	qmap.setQuantityDefaults(rateQuality, "QIND", "C");
 
 	// copy (nbins, nrays, rscale)
@@ -265,35 +367,19 @@ void RainRateDPOp::processDataSetOLD(const DataSet<PolarSrc> & sweepSrc, DataSet
 
 	// ZDR
 	const PlainData<PolarSrc> & srcZDR = sweepSrc.getData("ZDR");
-	const bool useZDR   = !srcZDR.data.isEmpty();
-	if (!useZDR){
+	const bool ZDR   = !srcZDR.data.isEmpty();
+	if (!ZDR){
 		mout.warn("ZDR missing" );
 	}
 
 	// KDP
 	const PlainData<PolarSrc> & srcKDP = sweepSrc.getData("KDP");
-	const bool useKDP = !srcKDP.data.isEmpty();
-	if (!useKDP){
+	const bool KDP = !srcKDP.data.isEmpty();
+	if (!KDP){
 		mout.warn("KDP missing" );
 	}
 
-	// KDP x DBZH... needed?
-	/*
-	PlainData<PolarDst> & heavyKDPxDBZH = dstProduct.getData("KDPxDBZH_FUZZY");
-	qmap.setQuantityDefaults(heavyKDPxDBZH, "PROB");
-	heavyKDPxDBZH.setGeometry(geometry);
-	drain::image::BinaryFunctorOp<MultiplicationFunctor> mul;
-	mout.warn(heavyDBZH.data     );
-	mout.warn(heavyKDP.data.getChannel(0)      );
-	mout.warn(heavyKDPxDBZH.data );
-	mul.traverseChannel(heavyDBZH.data, heavyKDP.data.getChannel(0), heavyKDPxDBZH.data);
-	*/
-
-
-	//double rateZ      = 0.0;
-	//double rateZZDR   = 0.0;
 	double rateKDP    = 0.0;
-	//double rateKDPZDR = 0.0;
 
 	double rate;
 	double rateRain = 0.0;
@@ -318,7 +404,7 @@ void RainRateDPOp::processDataSetOLD(const DataSet<PolarSrc> & sweepSrc, DataSet
 	// debugging
 	if (mout.isLevel(LOG_INFO)){
 
-		if (useDBZH){
+		if (DBZ){
 			mout.special(RainRateOp::precipZrain);
 			if (mout.isLevel(LOG_DEBUG)){
 				for (int i = 0; i < 32; ++i) {
@@ -327,28 +413,20 @@ void RainRateDPOp::processDataSetOLD(const DataSet<PolarSrc> & sweepSrc, DataSet
 			}
 		}
 
-		if (useKDP){
+		if (KDP){
 			mout.special(RainRateOp::precipKDP);
 		}
 
-		if (useDBZH && useZDR){
+		if (DBZ && ZDR){
 			mout.special(RainRateOp::precipZZDR);
 		}
 
-		if (useKDP && useZDR){
+		if (KDP && ZDR){
 			mout.special(RainRateOp::precipKDPZDR);
 		}
 
-		if (useKDP){
+		if (KDP){
 			mout.special(RainRateOp::precipKDP);
-		}
-
-		if (useDBZH && useZDR){
-			mout.special(RainRateOp::precipZZDR);
-		}
-
-		if (useKDP && useZDR){
-			mout.special(RainRateOp::precipKDPZDR);
 		}
 
 	}
@@ -360,30 +438,30 @@ void RainRateDPOp::processDataSetOLD(const DataSet<PolarSrc> & sweepSrc, DataSet
 
 		mout.warn("Writing debug data");
 
-		if (useDBZH){
+		if (DBZ){
 			mout.special(RainRateOp::precipZrain);
-			computeFuzzyMembership(srcDBZH, thresholdDBZheavy, dstProduct.getData("fuzzy_dbz_heavy"));
-			computeFuzzyMembership(srcDBZH, thresholdDBZhail,  dstProduct.getData("fuzzy_dbz_hail"));
+			computeFuzzyWeight(srcDBZH, thresholdDBZheavy, dstProduct.getData("fuzzy_dbz_heavy"));
+			computeFuzzyWeight(srcDBZH, thresholdDBZhail,  dstProduct.getData("fuzzy_dbz_hail"));
 			computeProduct(srcDBZH, thresholdDBZheavyINV, RainRateOp::precipZrain, dstProduct);
 		}
 
-		if (useDBZH && useZDR){
-			computeFuzzyMembership(srcZDR, thresholdZDR,      dstProduct.getData("fuzzy_zdr"));
+		if (DBZ && ZDR){
+			computeFuzzyWeight(srcZDR, thresholdZDR,      dstProduct.getData("fuzzy_zdr"));
 		}
 
 
-		if (useKDP){
+		if (KDP){
 			mout.special(RainRateOp::precipKDP);
-			computeFuzzyMembership(srcKDP, thresholdKDP,      dstProduct.getData("fuzzy_kdp"));
+			computeFuzzyWeight(srcKDP, thresholdKDP,      dstProduct.getData("fuzzy_kdp"));
 			computeProduct(srcKDP, thresholdKDP, RainRateOp::precipKDP, dstProduct);
 		}
 
-		if (useDBZH && useZDR){
+		if (DBZ && ZDR){
 			mout.special(RainRateOp::precipZZDR);
 			computeProduct2(srcDBZH, thresholdDBZheavyINV, srcZDR, thresholdZDR, RainRateOp::precipZZDR, dstProduct);
 		}
 
-		if (useKDP && useZDR){
+		if (KDP && ZDR){
 			mout.special(RainRateOp::precipKDPZDR);
 			computeProduct2(srcKDP, thresholdKDP, srcZDR, thresholdZDR, RainRateOp::precipKDPZDR, dstProduct);
 		}
@@ -405,7 +483,7 @@ void RainRateDPOp::processDataSetOLD(const DataSet<PolarSrc> & sweepSrc, DataSet
 	double valueZDR  = 0.0;
 
 	typedef drain::image::Image::const_iterator src_iter;
-	src_iter itDBZH      = srcDBZH.data.begin();
+	src_iter itDBZ      = srcDBZH.data.begin();
 	src_iter itZDR       = srcZDR.data.begin();
 	src_iter itKDP       = srcKDP.data.begin();
 
@@ -418,19 +496,19 @@ void RainRateDPOp::processDataSetOLD(const DataSet<PolarSrc> & sweepSrc, DataSet
 		rate = rateDst.odim.nodata;
 
 		// isValue: true, if value not 'undetect' or 'nodata'
-		if (useDBZH)
-			dbzValid = srcDBZH.odim.isValue(*itDBZH);
+		if (DBZ)
+			dbzValid = srcDBZH.odim.isValue(*itDBZ);
 
-		if (useZDR)
+		if (ZDR)
 			zdrValid = srcZDR.odim.isValue(*itZDR);
 
-		if (useKDP)
+		if (KDP)
 			kdpValid = srcKDP.odim.isValue(*itKDP);
 
 
 		if (dbzValid){
 
-			valueDBZH = srcDBZH.odim.scaleForward(*itDBZH);
+			valueDBZH = srcDBZH.odim.scaleForward(*itDBZ);
 
 			if (kdpValid){
 
@@ -485,13 +563,13 @@ void RainRateDPOp::processDataSetOLD(const DataSet<PolarSrc> & sweepSrc, DataSet
 		}
 
 
-		if (useDBZH) // Kept here for debugging. In operational version unneeded.
-			++itDBZH;
+		if (DBZ) // Kept here for debugging. In operational version unneeded.
+			++itDBZ;
 
-		if (useZDR)
+		if (ZDR)
 			++itZDR;
 
-		if (useKDP)
+		if (KDP)
 			++itKDP;
 
 		++itRate;

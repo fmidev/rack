@@ -126,9 +126,14 @@ public:
 
 protected:
 
-	void computeFuzzyMembership(
+	void computeFuzzyWeight(
 			const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,
 			PlainData<PolarDst> & dstData) const;
+
+	void computeProductNEW(const PlainData<PolarSrc> & srcData, const SingleParamPrecip & rateFnc, DataSet<PolarDst> & dstProduct) const;
+
+	void computeProductNEW2(const PlainData<PolarSrc> & srcData, const PlainData<PolarSrc> & srcData2,
+			const DoubleParamPrecip & rateFnc, DataSet<PolarDst> & dstProduct) const;
 
 	void computeProduct(
 			const PlainData<PolarSrc> & srcData, const drain::Fuzzifier<double> & fuzzyFctor,

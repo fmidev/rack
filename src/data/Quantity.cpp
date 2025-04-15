@@ -63,7 +63,7 @@ Quantity::Quantity(const std::string & name,
 			undetectValue(undetectValue) {
 
 	for (const std::string & key: compatibleVariants){
-		variants.addKey(key);
+		keySelector.addKey(key);
 	}
 	// variants.addKey("TEST");
 
@@ -84,7 +84,7 @@ Quantity::Quantity(const std::string & name,
 			undetectValue(undetectValue) {
 
 	for (const std::string & key: compatibleVariants){
-		variants.addKey(key);
+		keySelector.addKey(key);
 	}
 	// variants.addKey("KOE");
 

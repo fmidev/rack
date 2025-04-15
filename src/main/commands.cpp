@@ -152,6 +152,7 @@ protected:
 	This option is useful in selecting data for:
 
 	- partial reading a large input file (see \ref fileiopage ).
+	- selecting data for anomaly detection and removal (see \ref andrepage ).
 	- a meteorological product (see \ref productspage ).
 	- compositing (see \ref compositespage ).
 	- saving images (PNG, GeoTIFF, PPM; see \ref imagespage ).
@@ -162,6 +163,7 @@ protected:
 	\include example-select.inc
 
 	The following examples are less realistic than those above, but are used in unit testing of the program code.
+	( You may wish to change output file extension from \c .txt to \c .h5 ).
 
 	\include example-select-test.inc
 
