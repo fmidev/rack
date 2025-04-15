@@ -564,7 +564,10 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	mainHeader["prodpar"](svg::TSPAN);
 	mainHeader["prodpar"]->addClass("product"); // yes, same...
 
+
 	// NEW
+	mainHeader["quantity"](svg::TSPAN);
+	mainHeader["quantity"]->addClass("product");
 	mainHeader["camethod"](svg::TSPAN);
 	mainHeader["camethod"]->addClass("product");
 
