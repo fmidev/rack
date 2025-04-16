@@ -266,7 +266,7 @@ QuantityMap & getQuantityMap() {
 	static QuantityMap quantityMap = {
 			// {"DBZH", {
 			{"DBZ", {
-					"Radar reflectivity",
+					"Equivalent reflectivity factor",
 					{"DBZ", "DBZ[HV]", "DBZ[HV]C", "T[HV]"},
 					{-32.0, +60.0},
 					'C',
@@ -278,7 +278,7 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"DBZHDEV", {
-					"Deviation of radar reflectivity",
+					"Deviation of equivalent reflectivity factor",
 					{"DBZH_DEV"},
 					{-100.0, 100.0},
 					'C',
@@ -290,7 +290,7 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"VRAD", {
-					"Radial velocity",
+					"Radial velocity of scatterers away from instrument",
 					{"VRAD", "VRAD[HV]"},
 					{-100.0, 100},
 					'C',
@@ -301,7 +301,7 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"VRAD_DEV", {
-					"Radial velocity, deviation",
+					"Deviation of radial velocity of scatterers away from instrument",
 					{},
 					{-100.0, 100},
 					'C',
@@ -312,7 +312,8 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"VRAD_DIFF", {
-					"Radial velocity difference", {},
+					"Difference of radial velocity of scatterers away from instrument",
+					{},
 					{-100.0, 100},
 					'C',
 					{
@@ -322,7 +323,7 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"RHOHV", {
-					"Polarimetric cross-correlation", {},
+					"Polarimetric correlation coefficient", {},
 					{0.0, 1.0},
 					'S',
 					{
@@ -332,7 +333,7 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"ZDR", {
-					"Polarimetric difference", {},
+					"Logarithmic differential reflectivity", {},
 					{0.0, 1.0},
 					'S',
 					{
@@ -342,7 +343,7 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"KDP", {
-					"Polarimetric differential phase", {},
+					"Specific differential phase", {},
 					{-120.0, +120.0},
 					'S',
 					{

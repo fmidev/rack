@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 
 //#include "drain/image/File.h"  // debugging
 
@@ -124,7 +124,7 @@ void AccumulationMethod::extractValue(const AccumulationArray & accArray, const 
 				if (addr >= addrMax){
 					mout.error("Geometry address error: ", addr, " = (", i, ',', j, ") >= ", addrMax);
 				}
-				*/
+				 */
 
 				if (accArray.count.at(addr) > 0){
 					weight = accArray.weight.at(addr);
@@ -163,7 +163,7 @@ void AccumulationMethod::extractWeight(const AccumulationArray & accArray, const
 		const size_t s = dst.getVolume();
 		for (size_t addr = 0; addr < s; ++addr) {
 			if (accArray.count.at(addr) > 0){
-			//if (true){
+				//if (true){
 				weight = accArray.weight.at(addr);
 				coder.encodeWeight(weight);
 				dst.put(addr, weight);
@@ -283,17 +283,17 @@ void OverwriteMethod::extractDev(const AccumulationArray & accArray, const Accum
 		const size_t s = dst.getVolume();
 		for (size_t addr = 0; addr < s; ++addr){
 			switch (accArray.count.at(addr)) {
-				case 2:
-					diff = static_cast<double>(accArray.data2.at(addr));
-					coder.encodeDiff(diff);
-					dst.put(addr, diff);
-					break;
-				case 1:
-					// dst.put(i, noData);
-					// no break;
-				default:
-					dst.put(addr, noData);
-					break;
+			case 2:
+				diff = static_cast<double>(accArray.data2.at(addr));
+				coder.encodeDiff(diff);
+				dst.put(addr, diff);
+				break;
+			case 1:
+				// dst.put(i, noData);
+				// no break;
+			default:
+				dst.put(addr, noData);
+				break;
 			}
 		}
 	}
@@ -405,9 +405,6 @@ void MinMaxMethod::extractValue(const AccumulationArray & accArray, const Accumu
 						coder.encode(min, weight);
 						dst.put(addr, min);
 					}
-					// value  = accArray.data.at(addr);
-					// coder.encode(value, weight);
-					// dst.put(addr, value);
 				}
 				else
 					dst.put(addr, noReading);
@@ -415,7 +412,6 @@ void MinMaxMethod::extractValue(const AccumulationArray & accArray, const Accumu
 			else {
 				dst.put(addr, noData);
 			}
-
 		}
 	}
 	else {
@@ -424,7 +420,27 @@ void MinMaxMethod::extractValue(const AccumulationArray & accArray, const Accumu
 		for (unsigned int j=0; j<dst.getHeight(); ++j) {
 			for (unsigned int i=0; i<dst.getWidth(); ++i) {
 				addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
-
+				if (accArray.count.at(addr) > 0){
+					weight = accArray.weight.at(addr);
+					if (weight > 0.0){
+						min = accArray.data.at(addr);
+						max = accArray.data2.at(addr);
+						if (max > -min){
+							coder.encode(max, weight);
+							dst.put(addr, max);
+						}
+						else {
+							coder.encode(min, weight);
+							dst.put(addr, min);
+						}
+					}
+					else {
+						dst.put(addr, noReading);
+					}
+				}
+				else {
+					dst.put(addr, noData);
+				}
 
 			}
 		}
@@ -434,14 +450,59 @@ void MinMaxMethod::extractValue(const AccumulationArray & accArray, const Accumu
 
 
 
-/// Retrieves the standard deviation of the accumulated values.
-/**
- *  \par dst - target array in which the values are stored.
- *  \par gain - scaling coefficient applied to each retrived value
- *  \par offset - additive coefficient applied to each retrieved value
- *  \par NODATA   - if bin count is undetectValue that is, there is no data in a bin, this value is applied.
- */
+
 void MinMaxMethod::extractDev(const AccumulationArray & accArray,  const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop) const {
+
+	Logger mout(getImgLog(), __FUNCTION__, getName());
+
+		const double noData    = coder.getNoDataMarker();
+		const double noReading = coder.getNoReadingMarker();
+
+		double diff, weight;
+
+		if (crop.empty()){
+			const size_t s = dst.getVolume();
+			for (size_t addr = 0; addr < s; ++addr){
+				if (accArray.count.at(addr) > 0){
+					weight = accArray.weight.at(addr);
+					if (weight > 0.0){
+						diff = accArray.data2.at(addr) - accArray.data.at(addr);
+						coder.encodeDiff(diff);
+						dst.put(addr, diff);
+					}
+					else {
+						dst.put(addr, noReading);
+					}
+				}
+				else {
+					dst.put(addr, noData);
+				}
+			}
+		}
+		else {
+			mout.special(" crop:", crop, " dst: ", dst.getGeometry());
+			size_t addr;
+			for (unsigned int j=0; j<dst.getHeight(); ++j) {
+				for (unsigned int i=0; i<dst.getWidth(); ++i) {
+					addr = accArray.address(crop.lowerLeft.x+i, crop.upperRight.y+j);
+					if (accArray.count.at(addr) > 0){
+						weight = accArray.weight.at(addr);
+						if (weight > 0.0){
+							diff = accArray.data2.at(addr) - accArray.data.at(addr);
+							coder.encodeDiff(diff);
+							dst.put(addr, diff);
+						}
+						else {
+							dst.put(addr, noReading);
+						}
+					}
+					else {
+						dst.put(addr, noData);
+					}
+
+				}
+			}
+		}
 
 }
 
@@ -758,7 +819,7 @@ void WeightedAverageMethod::extractValue(const AccumulationArray & accArray, con
 						value = accArray.data.at(addr) / accArray.count.get<double>(addr); // distorts?
 					}
 					else
-					*/
+					 */
 					{
 						value = accArray.data.at(addr) / weight;
 					}
