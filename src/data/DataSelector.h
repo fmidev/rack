@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_DATASELECTOR
 #define RACK_DATASELECTOR
 
+#include <data/QuantitySelector.h>
 #include <set>
 #include <list>
 #include <map>
@@ -221,7 +222,7 @@ public:
 	}
 
 	inline
-	const drain::KeySelector & getQuantitySelector() const {
+	const QuantitySelector & getQuantitySelector() const {
 		return quantitySelector;
 	}
 
@@ -393,7 +394,7 @@ protected:
 	std::string quantities;
 
 	mutable
-	drain::KeySelector quantitySelector;
+	QuantitySelector quantitySelector;
 
 	//mutable
 	//drain::KeySelector qualitySelector;

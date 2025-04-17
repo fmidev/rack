@@ -92,7 +92,7 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 	//ctx.select.clear();
 
 	mout.debug2(selector );
-	const drain::KeySelector & slct = selector.getQuantitySelector();
+	const QuantitySelector & slct = selector.getQuantitySelector();
 	// const drain::RegExp quantityRegExp(selector.getQuantity());
 	const bool USE_COUNT = slct.test("COUNT");
 	// mout.debug3("use count" , static_cast<int>(USE_COUNT) );
@@ -103,7 +103,7 @@ void CmdOutputFile::writeProfile(const Hi5Tree & src, const std::string & filena
 	std::string mainQuantity; // = product.getFirstData().odim.quantity;
 
 	//const drain::RegExp mainQuantityRegExp("HGHT");
-	drain::KeySelector mainQuantitySlct("HGHT");
+	QuantitySelector mainQuantitySlct("HGHT");
 
 	//for (DataSet<PolarSrc>::const_iterator it = product.begin(); it != product.end(); ++it){
 	for (const auto & entry: product){

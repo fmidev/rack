@@ -164,7 +164,7 @@ void GliderOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<PolarD
 	}
 
 	//static drain::RegExp regExpVRAD("^VRAD[H]?$");
-	static const KeySelector selectVRAD("^VRAD[H]?$");
+	static const QuantitySelector selectVRAD("^VRAD[H]?$");
 	const Data<PolarSrc> &  vradSrc = sweepSrc.getData(selectVRAD); // VolumeOpNew::
 	const bool VRAD = !vradSrc.data.isEmpty();
 	const double NI = vradSrc.odim.getNyquist();

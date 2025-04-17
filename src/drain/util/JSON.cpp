@@ -42,7 +42,7 @@ FileInfo JSON::fileInfo("json");
 
 
 template <>
-const drain::JSONtree2 drain::JSONtree2::emptyNode;
+const drain::JSONtree drain::JSONtree::emptyNode;
 
 void JSON::readValue(const std::string & s, Castable & v, bool keepType){
 	std::istringstream istr(s);

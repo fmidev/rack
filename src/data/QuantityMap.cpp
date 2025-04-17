@@ -64,12 +64,6 @@ QuantityMap::QuantityMap(const QuantityMap & m) : map_t(m),
 	mout.warn("? copy const <QuantityMap>");
 }
 
-/*
-QuantityMap::QuantityMap(const map_t & m) : map_t(m){
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.warn("? copy const <map>");
-}
-*/
 
 QuantityMap::QuantityMap(const std::initializer_list<std::pair<std::string, Quantity> > & inits) : map_t(),
 		RACK_QTY_INIT(TH),
@@ -85,6 +79,13 @@ QuantityMap::QuantityMap(const std::initializer_list<std::pair<std::string, Quan
 	assign(inits);
 }
 
+/*
+QuantityMap::QuantityMap(const map_t & m) : map_t(m){
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.warn("? copy const <map>");
+}
+*/
+
 void QuantityMap::assign(const std::initializer_list<std::pair<std::string, Quantity> > & inits) {
 	for (const auto & entry: inits){
 		// std::cerr << entry.first << ' ' << entry.second.variants << '\n';
@@ -98,11 +99,18 @@ void QuantityMap::assign(const std::initializer_list<std::pair<std::string, Quan
 std::ostream & QuantityMap::toStream(std::ostream & ostr) const {
 	for (const auto & entry: *this){
 		ostr << entry.first << ' ';
+		//ostr << "– " << entry.second.name << '\n';
+		ostr << "– " << entry.second << '\n';
+		/*
 		if (!entry.second.keySelector.empty()){
-			ostr << '(' << entry.second.keySelector << ')' <<' ';
+			//ostr << "Variants: " <<' ';
+			//ostr << '(' << entry.second.keySelector << ')' <<' ';
+			for (const auto & e: entry.second.keySelector){
+				ostr << '\t' << e << '\t' << e.getStandardName() << '\t' << e.getLongName() << '\n';
+			}
 		}
-		ostr << "– " << entry.second.name << '\n';
-		ostr << entry.second; // << '\n';
+		*/
+		// ostr << entry.second; // << '\n';
 	}
 	return ostr;
 }
@@ -263,11 +271,27 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 
 QuantityMap & getQuantityMap() {
 
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	/**  Elements:
+	 *   - key: "DBZ" - for which a palette entry is found
+	 *   - title: appearing in palette
+	 *   - variants: FM300 /CfRadial naming
+	 *
+	 */
 	static QuantityMap quantityMap = {
 			// {"DBZH", {
 			{"DBZ", {
 					"Equivalent reflectivity factor",
-					{"DBZ", "DBZ[HV]", "DBZ[HV]C", "T[HV]"},
+					//{"DBZ", "DBZ[HV]", "DBZ[HV]C", "T[HV]"},
+					{
+							{"DBZH", "radar_equivalent_reflectivity_factor_h", "Equivalent reflectivity factor H"},
+							{"DBZV", "radar_equivalent_reflectivity_factor_v", "Equivalent reflectivity factor V"},
+							{"DBTH", "radar_equivalent_reflectivity_factor_h", "Total power H (uncorrected reflectivity)"},
+							{"DBTV", "radar_equivalent_reflectivity_factor_v", "Total power V (uncorrected reflectivity)"},
+							{"TH", "radar_linear_equivalent_reflectivity_factor_h", "Linear total power H (uncorrected reflectivity)"}, // NOTE: mostly still log scale!
+							{"TV", "radar_linear_equivalent_reflectivity_factor_v", "Linear total power V (uncorrected reflectivity)"}, // NOTE: mostly still log scale!
+					},
 					{-32.0, +60.0},
 					'C',
 					{
@@ -291,7 +315,12 @@ QuantityMap & getQuantityMap() {
 			},
 			{"VRAD", {
 					"Radial velocity of scatterers away from instrument",
-					{"VRAD", "VRAD[HV]"},
+					{
+							{"VRADH", "radial_velocity_of_scatterers_away_from_instrument_h", "Radial velocity of scatterers away from instrument H"},
+							{"VRADV", "radial_velocity_of_scatterers_away_from_instrument_v", "Radial velocity of scatterers away from instrument V"},
+							{"WRADH", "radar_doppler_spectrum_width_h", "Doppler spectrum width H"},
+							{"WRADV", "radar_doppler_spectrum_width_v", "Doppler spectrum width V"},
+					},
 					{-100.0, 100},
 					'C',
 					{
@@ -301,7 +330,7 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"VRAD_DEV", {
-					"Deviation of radial velocity of scatterers away from instrument",
+					"Deviation of radial velocity of scatterers",
 					{},
 					{-100.0, 100},
 					'C',
@@ -312,7 +341,7 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"VRAD_DIFF", {
-					"Difference of radial velocity of scatterers away from instrument",
+					"Difference of radial velocity of scatterers",
 					{},
 					{-100.0, 100},
 					'C',
@@ -323,7 +352,10 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"RHOHV", {
-					"Polarimetric correlation coefficient", {},
+					"Polarimetric correlation coefficient",
+					{
+							{"RHOHV", "radar_correlation_coefficient_hv", "Correlation coefficient HV"},
+					},
 					{0.0, 1.0},
 					'S',
 					{
@@ -333,7 +365,10 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"ZDR", {
-					"Logarithmic differential reflectivity", {},
+					"Logarithmic differential reflectivity",
+					{
+							{"ZDR", "radar_differential_reflectivity_hv", "Log differential reflectivity H/V"},
+					},
 					{0.0, 1.0},
 					'S',
 					{
@@ -343,7 +378,10 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"KDP", {
-					"Specific differential phase", {},
+					"Specific differential phase",
+					{
+							{"KDP", "specific_differential_phase_hv", "Specific differential phase HV"}
+					},
 					{-120.0, +120.0},
 					'S',
 					{
@@ -353,7 +391,10 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"PHIDP", {
-					"Polarimetric differential phase", {"PhiDP"},
+					"Polarimetric differential phase",
+					{
+							{"PHIDP", "radar_differential_phase_hv", "Differential phase HV"}
+					},
 					{-180.0, +180.0},
 					'S',
 					{
@@ -372,7 +413,10 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"HCLASS", {
-					"Classification (Vaisala)", {"HydroCLASS"},
+					"Hydrometeor class",
+					{
+						{"HydroCLASS", "radar_hydrometeor_class", "Vaisala HydroClass index"},
+					},
 					'S',
 					{
 							{'C', 1.0},
@@ -381,7 +425,11 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"CLASS", {
-					"Classification", {"CLASS_.*"},
+					"Classification",
+					{
+							{"CLASS", "radar_target_class", "Target class index"},
+							{"CLASS_.*", "radar_target_subclass", "Target subclass index"},
+					},
 					'S',
 					{
 							{'C', 1.0},
@@ -390,7 +438,11 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"QIND", {
-					"Quality index", {"QIND_.*"},
+					"Quality index",
+					{
+							{"QIND", "radar_quality", "Overall quality index"},
+							{"QIND.*", "radar_specific_quality", "Specific quality index"},
+					},
 					{0.0, 1.0},
 					'C',
 					{
@@ -400,7 +452,10 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"PROB", {
-					"Probability", {"PROB_.*"},
+					"Probability",
+					{
+							{"PROB_.*", "radar_target_class_probability", "Target class probability"},
+					},
 					{0.0, 1.0},
 					'C',
 					{
@@ -410,7 +465,11 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"COUNT", {
-					"Count", {"COUNT_.*"},
+					"Count",
+					{
+						{"COUNT", "radar_count", "Count of samples"},
+						{"COUNT_.*", "radar_specific_count", "Count of specific samples"},
+					},
 					'C',
 					{
 							{'C'}, {'S'}, {'I'}, {'L'}, {'f'}, {'d'}
@@ -418,7 +477,11 @@ QuantityMap & getQuantityMap() {
 			}
 			},
 			{"AMV", {
-					"Atmospheric motion [vector component]", {"AMV[UV]"},
+					"Atmospheric motion [vector component]",
+					{
+						{"AMVU", "radar_atmospheric_motion_u", "Atmospheric motion, U component"},
+						{"AMVV", "radar_atmospheric_motion_v", "Atmospheric motion, V component"},
+					},
 					'C',
 					{
 							{'C', {-100,100}},
@@ -432,7 +495,27 @@ QuantityMap & getQuantityMap() {
 			},
 	};
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	Quantity test = {
+			"Equivalent reflectivity factor",
+			//{"DBZ", "DBZH", "DBZV", },
+			{{"DBZ", "Yes"}, {"DBZH", "Horizontal"}, {"DBZV", "Vertical"}},
+			{-32.0, +60.0},
+			'C',
+			{
+					{'C', 0.5, -32.0},
+					{'S', 0.01, -0.01*(128*256)}
+			},
+			-32.0 // "virtual" zero
+	};
+
+
+	QuantitySelector stest = {{"DBZ", "Yes"}, {"DBZH", "Horizontal"}, {"DBZV", "Vertical"}};
+
+	// test.keySelector = {{"DBZ", "Yes"}, {"DBZH", "Horizontal"}, {"DBZV", "Vertical"}};
+	// mout.warn(test);
+	//quantityMap["test"] = test;
+
 
 	const bool FIRST_INIT = true; // !quantityMap.hasQuantity("HGHT");
 

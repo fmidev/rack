@@ -668,15 +668,15 @@ void Palette::loadJSON(std::istream & ifstr){
 
 	reset();
 
-	drain::JSONtree2 json;
+	drain::JSONtree json;
 
 	drain::JSON::readTree(json, ifstr);
 	//drain::JSONtree::read(json, ifstr);
 
-	//const drain::JSONtree2::node_data_t & metadata = json["metadata"].data;
+	//const drain::JSONtree::node_data_t & metadata = json["metadata"].data;
 	// Consider whole metadata as JSON tree?
 	//title = metadata["title"]; // .toStr();
-	const drain::JSONtree2 & metadata = json["metadata"];
+	const drain::JSONtree & metadata = json["metadata"];
 	title = metadata["title"].data.toStr();
 
 	mout.info("title: ", title);
@@ -690,7 +690,7 @@ void Palette::loadJSON(std::istream & ifstr){
 }
 
 
-void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
+void Palette::importJSON(const drain::JSONtree & entries){ //, int depth){
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
@@ -700,8 +700,8 @@ void Palette::importJSON(const drain::JSONtree2 & entries){ //, int depth){
 	for (const auto & data: entries){
 
 		//const std::string & id         = it->first;
-		const drain::JSONtree2::key_t & id = data.first;
-		const drain::JSONtree2 & child     = data.second;
+		const drain::JSONtree::key_t & id = data.first;
+		const drain::JSONtree & child     = data.second;
 
 		//const VariableMap & attr  = child.data;
 
@@ -801,7 +801,7 @@ void Palette::write(const std::string & filename) const {
 	}
 	else if (drain::JSON::fileInfo.checkExtension(filepath.extension)){ // .json
 		mout.debug("exporting JSON palette");
-		drain::JSONtree2 json;
+		drain::JSONtree json;
 		exportJSON(json);
 		mout.debug("writing JSON palette/class file");
 		drain::JSON::treeToStream(ofstr, json);
@@ -828,7 +828,7 @@ void Palette::write(const std::string & filename) const {
 		mout.debug("This format is compatible with std::map (ReferenceMap applied by BeanLike).");
 		Sprinter::toStream(ofstr, *this, Sprinter::cppLayout);
 		/*
-		drain::JSONtree2 json;
+		drain::JSONtree json;
 		exportJSON(json);
 		static const drain::SprinterLayout myCpp("[,]", "{:}", "(=)", "\"\"");
 		drain::Sprinter::toStream(ofstr, json, myCpp); // drain::Sprinter::pythonLayout);
@@ -921,16 +921,16 @@ void Palette::exportTXT(std::ostream & ostr, char separator, char separator2) co
 
 
 //void Palette::exportJSON(drain::JSONtree::tree_t & json) const {
-void Palette::exportJSON(drain::JSONtree2 & json) const {
+void Palette::exportJSON(drain::JSONtree & json) const {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	mout.warn("JSON syntax may change in future, ensure palettes using other formats.");
 
-	drain::JSONtree2 & metadata = json["metadata"];
+	drain::JSONtree & metadata = json["metadata"];
 	metadata["title"] = title;
 
-	drain::JSONtree2 & entries =  json["entries"];
+	drain::JSONtree & entries =  json["entries"];
 
 	int i = 0;
 	std::stringstream key;
@@ -948,7 +948,7 @@ void Palette::exportJSON(drain::JSONtree2 & json) const {
 		key << ++i;
 
 		//drain::JSONtree::tree_t & js = entries[key.str()]; // entries[entry.id];
-		drain::JSONtree2 & js = entries[key.str()];
+		drain::JSONtree & js = entries[key.str()];
 
 		js["color"] = entry.second.color;
 		//js.data.importCastableMap(entry.second.getParameters()); // color repeated?
@@ -968,7 +968,7 @@ void Palette::exportJSON(drain::JSONtree2 & json) const {
 		key.width(4);
 		key.fill('0');
 		key << ++i;
-		drain::JSONtree2 & m = entries[key.str()];
+		drain::JSONtree & m = entries[key.str()];
 		const drain::image::PaletteEntry & col = entry.second;
 		// m["color"] = col.color;
 		// mout.warn("id: ", col.id, " = ", col.getParameter<std::string>("id"));

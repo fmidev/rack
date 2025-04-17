@@ -535,8 +535,7 @@ public:
 			mout.note("selector quantity unset, setting " , selector.getQuantity() );
 		}
 
-		//const drain::RegExp quantityRegExp(selector.getQuantity());
-		const drain::KeySelector & slct = selector.getQuantitySelector();
+		const QuantitySelector & slct = selector.getQuantitySelector();
 
 		Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT);
 
@@ -565,7 +564,7 @@ public:
 
 	template <class OD>
 	//void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const drain::RegExp & slct) const {
-	void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const drain::KeySelector & slct) const {
+	void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const QuantitySelector & slct) const {
 
 		RackContext & ctx = getContext<RackContext>();
 
@@ -1596,11 +1595,11 @@ public:
 
 			const drain::ReferenceMap::unitmap_t & u = m.getUnitMap();
 
-			drain::JSONtree2 jsonRoot;
+			drain::JSONtree jsonRoot;
 
-			drain::JSONtree2 & json = jsonRoot[value];
+			drain::JSONtree & json = jsonRoot[value];
 			json["title"] = command.getDescription();
-			drain::JSONtree2 & variables = json["variables"];
+			drain::JSONtree & variables = json["variables"];
 
 			// O
 			const drain::ReferenceMap::keylist_t & keys = m.getKeyList();
@@ -1609,7 +1608,7 @@ public:
 
 				// const drain::Referencer & entry = m[key];
 
-				drain::JSONtree2 & variable = variables[key];
+				drain::JSONtree & variable = variables[key];
 
 				variable["value"] = m[key]; //entry;
 
@@ -2249,12 +2248,6 @@ public:
 			editQuantityConf(quantity);
 		}
 		else {
-			/*
-			if (!encoding.empty()){
-				mout.fail("given encoding... 'quantity' parameter is obligatory" );
-				return;
-			}
-			*/
 
 			// todo: if (selector.consumeParameters(ctx.select)){
 			if (ctx.select.empty()){
@@ -2270,15 +2263,18 @@ public:
 				selector.setParameters(ctx.select);
 				const drain::RegExp regExp(selector.getQuantity());
 				bool match = false;
-				for (QuantityMap::const_iterator it = m.begin(); it != m.end(); ++it){
-					if (regExp.test(it->first)){
+				//for (QuantityMap::const_iterator it = m.begin(); it != m.end(); ++it){
+				for (QuantityMap::value_type & entry: m){
+					if (regExp.test(entry.first)){
 						match = true;
-						mout.warn(it->first , " matches " , regExp );
-						editQuantityConf(it->first);
+						mout.warn(entry.first , " matches " , regExp );
+						editQuantityConf(entry.first);
+						// return; ?? or edit many?
 					}
 				}
-				if (!match)
+				if (!match){
 					mout.warn("no matches with. " , regExp );
+				}
 			}
 		}
 
@@ -2289,11 +2285,8 @@ public:
 
 protected:
 
-	//std::string quantityType;
+	// EncodingODIM odim;
 
-	EncodingODIM odim;
-
-	//double zero;
 
 	void editQuantityConf(const std::string & quantity) const { //, const std::string & type, const std::string & args) const {
 
@@ -2354,7 +2347,7 @@ protected:
 			mout.note("set default type for :" , quantity , '\n' , q );
 		}
 		else if (zero.empty()){  // No type or zero given, dump quantity conf
-			std::cout << quantity << '\n';
+			std::cout << quantity << " – "; //  << '\n';
 			// if (params != quantity)
 			//	std::cout << " *\t" << q.get(q.defaultType) << '\n';
 			// else

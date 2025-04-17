@@ -71,9 +71,19 @@ public:
 	}
 
 	inline
+	StringMatcher(const char *s) : value(regExpString), isRegExp(false){
+		set(s);
+	}
+
+	inline
 	StringMatcher(const StringMatcher & matcher) : value(regExpString), isRegExp(false){
 		set(matcher.value);
 	}
+
+	inline
+	bool empty() const {
+		return RegExp::empty();
+	};
 
 	/// Assign a string – which may be a literal or a regular expression.
 	/**

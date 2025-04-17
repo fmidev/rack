@@ -211,7 +211,7 @@ void DataConversionOp<M>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	std::set<ODIMPathElem> parents;
 
 	//const drain::RegExp quantityRegExp(this->dataSelector.getQuantity());
-	const drain::KeySelector & slct = this->dataSelector.getQuantitySelector();
+	const QuantitySelector & slct = this->dataSelector.getQuantitySelector();
 
 	mout.special("slct: ", slct);
 

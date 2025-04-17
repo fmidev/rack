@@ -57,28 +57,72 @@ public:
 
 	typedef std::list<T> list_t;
 
+	/*
+	inline
+	StringMatcherList(){
+	};
+	*/
+
 	/// Basic constructor
-	template<typename ... TT>
+
+	template <typename ... TT>
 	inline
 	StringMatcherList(const TT &... args){
 		// reset not needed
 		addKey(args...);
 	};
 
+
 	/// Copy constructor. Copies the list of quantities.
 	inline
-	StringMatcherList(const StringMatcherList<T> &slct) : list_t(slct) {
+	StringMatcherList(const StringMatcherList<T> &l) : list_t(l) {
 	};
+
+	inline
+	StringMatcherList(std::initializer_list<matcher_t> l){
+		setKeys(l);
+	};
+
+	/// Initialiser constructor.
+	/*
+	template <class T2>
+	StringMatcherList(const std::initializer_list<T2> & l){
+		setKeys(l);
+	};
+	*/
+
 
 
 	/// Destructor
 	virtual inline
 	~StringMatcherList(){};
 
-	StringMatcherList operator=(const StringMatcherList<T> &l){
+	inline
+	StringMatcherList operator=(const StringMatcherList<matcher_t> &l){
 		setKeys(l);
 		return *this;
 	}
+
+	StringMatcherList operator=(const std::initializer_list<matcher_t> &l){
+		setKeys(l);
+		return *this;
+	}
+
+
+	/*
+	StringMatcherList operator=(StringMatcherList<matcher_t> l){
+		setKeys(l);
+		return *this;
+	}
+	*/
+
+	/*
+	template <class T2>
+	StringMatcherList operator=(const std::initializer_list<T2> &l){
+		// setKeys(l);
+		return *this;
+	}
+	*/
 
 	void setKeys(const StringMatcherList<matcher_t> & l){
 		this->clear();
@@ -86,6 +130,14 @@ public:
 			this->push_back(key);
 		}
 	}
+
+	template <class T2>
+	void setKeys(const std::initializer_list<T2> & l){
+		this->clear();
+		for (const T2 & entry: l) {
+			adaptKey(entry);
+		}
+	};
 
 	template <class T2>
 	void setKeys(const std::list<T2> & l){
@@ -109,9 +161,10 @@ public:
 	}
 
 
-	/// Append keys to existing list.
+	/// Append keys to existing list.matcher_t
 	template <typename ...TT>
-	void addKey(const std::string & arg, const TT & ... args){
+	//void addKey(const std::string & arg, const TT & ... args){
+	void addKey(const matcher_t & arg, const TT & ... args){
 		adaptKey(arg);
 		addKey(args...);
 	}
@@ -124,6 +177,9 @@ public:
 	 *  \param defaultResult - if selector (list) is empty, return this value.
 	 */
 	bool test(const std::string & key, bool defaultResult = true) const;
+
+	const matcher_t & retrieve(const std::string & key) const;
+
 
 	inline
 	bool isSet() const {
@@ -153,7 +209,8 @@ protected:
 	inline
 	void addKey(){};
 
-	void adaptKey(const std::string & s);
+	//void adaptKey(const std::string & s);
+	void adaptKey(const matcher_t & s);
 
 	/// Data quantity (excluding quality data, like QIND or CLASS)
 	// mutable // called by updateBean()?
@@ -184,14 +241,15 @@ void StringMatcherList<T>::insertKeys(const std::string & args){ //, const std::
  *
  */
 template <class T>
-void StringMatcherList<T>::adaptKey(const std::string & s){
+//void StringMatcherList<T>::adaptKey(const std::string & s){
+void StringMatcherList<T>::adaptKey(const matcher_t & matcher){
 
-	if (s.empty()){
+	if (matcher.empty()){
 		return;
 	}
 	else {
 
-		matcher_t matcher(s);
+		//matcher_t matcher(s);
 		for (const matcher_t & m: *this){
 			if (m == matcher){  // two matchers are equal if they accept and reject equally.
 				// exists already, dont append...
@@ -228,6 +286,28 @@ bool StringMatcherList<T>::test(const std::string & key, bool defaultResult) con
 	return false;
 
 }
+
+template <class T>
+const typename StringMatcherList<T>::matcher_t & StringMatcherList<T>::retrieve(const std::string & key) const {
+
+	static
+	const matcher_t empty;
+
+	if (this->empty()){
+		return empty; // Alternative: could need empty k - but on the other hand, why add it in a list, as it accepts anything.
+	}
+	else {
+		for (const auto & matcher: *this){
+			if (matcher == key){  //
+				return matcher;
+			}
+		}
+	}
+
+	return empty;
+
+}
+
 
 template <class T>
 inline

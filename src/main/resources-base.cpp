@@ -451,6 +451,7 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) const {
 
 		mout.debug(path);
 
+
 		if (path.empty()){
 			// mout.special(selector); // ,"'"
 			mout.note("h5 data exists, but no data groups found with selector: ", selector); // ,"'"
@@ -476,6 +477,18 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) const {
 				statusMap["how:bits"] = 8*drain::Type::call<drain::sizeGetter>(t);
 				statusMap["how:fulltype"] = drain::Type::call<drain::compactName>(t);
 				statusMap["how:complextype"] = drain::Type::call<drain::complexName>(t);
+			}
+
+			const std::string quantity = statusMap.get("what:quantity", "");
+			if (!quantity.empty()){
+				const Quantity & q = getQuantityMap().get(quantity); // NOTE: doubled search
+				const FM301KeyMatcher & m = q.keySelector.retrieve(quantity);
+				statusMap["what:quantityName"] = m.getStandardName();
+				statusMap["what:quantityDescription"] = m.getLongName();
+			}
+			else {
+				// statusMap.erase("what:quantitydescription");
+				statusMap["what:quantitydescription"] = "TEST";
 			}
 
 		}

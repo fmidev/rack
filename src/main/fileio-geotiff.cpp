@@ -96,27 +96,21 @@ void CmdGeoTiff::write(RackContext & ctx, const drain::image::Image & src, const
 	// t.setTime(prop.get("what:time", "000000"), "%H%M%S");
 	file.setTime(t);
 
-	//mout.attention("orig ODIM angles: ",   drain::sprinter(odim.angles) );
-	//mout.attention("src.properties map: ", src.properties);
-
-	//const std::string desc = prop.get("what:object", "") + ":"+ prop.get("what:product", "") + ":" + prop.get("what:prodpar", "") + ":" + prop.get("what:quantity", "");
-	//const std::string desc = drain::StringBuilder(
-	std::stringstream desc;
-	desc << odim.object << ':' << odim.quantity << ':' << odim.product;
+	std::stringstream imageDescription;
+	imageDescription << odim.object << ':' << odim.product;
 	if (!odim.prodpar.empty()){
-		desc << '(' << odim.prodpar << ')';
+		imageDescription << '(' << odim.prodpar << ')';
 	}
 	if (!src.properties["how:angles"].empty())
-		desc << ':' << "elangles(" << src.properties["how:angles"] << ')';
-	file.setField(TIFFTAG_IMAGEDESCRIPTION, desc.str());
+		imageDescription << '[' << src.properties["how:angles"] << ']';
+	imageDescription << ':' << odim.quantity;
+	file.setField(TIFFTAG_IMAGEDESCRIPTION, imageDescription.str());
 
 	// Consider:
 	// https://www.awaresystems.be/imaging/tiff/tifftags/minsamplevalue.html
 
 	// http://www.gdal.org/frmt_gtiff.html
-	// Optional
-	file.setField(TIFFTAG_SOFTWARE,(const std::string &) drain::StringBuilder<>(__RACK__," ",__RACK_VERSION__));
-	//file.setField(TIFFTAG_SOFTWARE, drain::StringBuilder(__RACK__," ",__RACK_VERSION__));
+	file.setField(TIFFTAG_SOFTWARE, drain::StringBuilder<>(__RACK__," ",__RACK_VERSION__).str());
 
 	file.setDefaults();
 	file.useDefaultTileSize();
@@ -198,17 +192,49 @@ void CmdGeoTiff::write(RackContext & ctx, const drain::image::Image & src, const
 		file.setGeoMetaData(frame); // OR SKIP, if empty?
 
 		//mout.special("GDAL info end");
+		const Quantity & quantity = getQuantityMap().get(odim.quantity); // NOTE: doubled search
+		mout.special("QUANTITY: ", quantity);
+		const FM301KeyMatcher & quantityInfo = quantity.keySelector.retrieve(odim.quantity);
+		mout.special("QUANTITY-INFO: ", quantityInfo);
+		const SourceODIM sourceODIM(odim.source);
 
-		drain::Variable imagetype("Weather Radar");
+
+		std::stringstream imageType;
+		imageType << "Weather Radar";
+		// imageType.setInputSeparator(' ');
 		if (odim.ACCnum > 2) // TODO: fix bug... acc=2 for one...
-			imagetype << "Composite (" <<  odim.source << ") [#" << odim.ACCnum << "]"; // todo: check commas
-		else
-			imagetype <<  SourceODIM(odim.source).getSourceCode();
-		file.setGdal("IMAGETYPE", imagetype);  // ["IMAGETYPE"] = imagetype;
-		file.setGdal("TITLE", odim.product+':'+odim.prodpar);
-		// file.gdalInfo["TITLE"] = odim.product+':'+odim.prodpar;
-		file.setGdal("UNITS", odim.quantity);
-		// file.gdalInfo["UNITS"] = odim.quantity; // .data.setText( );
+			imageType << " Composite Image (" <<  odim.source << ") [#" << odim.ACCnum << "]"; // todo: check commas
+		else {
+			imageType << " Image [" << sourceODIM.getSourceCode() << "]";
+		}
+		file.setGdal("IMAGETYPE", imageType.str());  // ["IMAGETYPE"] = imagetype;
+
+		std::stringstream imageTitle; //("Weather Radar");
+		imageTitle << sourceODIM.NOD << ' ' << '"' << sourceODIM.PLC << '"' << ' ';
+		imageTitle << odim.product;
+		if (!odim.prodpar.empty()){
+			imageTitle << '(' << odim.prodpar << ')';
+		}
+		if (!src.properties["how:angles"].empty()){
+			imageTitle << '[' << src.properties["how:angles"] << ']';
+		}
+		imageTitle << ' ';
+		if (!quantityInfo.empty()){
+			// imageTitle << quantityInfo.getStandardName() << ' ';
+			imageTitle << odim.quantity << ' ' << '"' << quantityInfo.getLongName() << '"'; //  << ' ';
+		}
+		else {
+			imageTitle << quantity.name; // ODIM quantity name, like "DBZH".
+		}
+		file.setGdal("TITLE", imageTitle.str());
+
+		std::stringstream imageUnits;
+		imageUnits << odim.quantity;
+		if (!quantityInfo.empty()){
+			imageUnits << " [" << quantityInfo.getStandardName() << "]";
+		}
+		file.setGdal("UNITS", imageUnits.str()); // quantityInfo.getUnit()!
+
 		// file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
 
 		const std::string comments = src.properties.get("", "");
@@ -220,7 +246,7 @@ void CmdGeoTiff::write(RackContext & ctx, const drain::image::Image & src, const
 			*/
 			mout.experimental<LOG_NOTICE>("Handling comments: ", comments);
 
-			drain::JSONtree2 tree;
+			drain::JSONtree tree;
 			std::stringstream sstr(comments);  // OLD ok, variables already expanded
 			// std::stringstream sstr(mapper.toStr(statusMap, -1, RackContext::variableFormatter)); // NEW
 			if (sstr){

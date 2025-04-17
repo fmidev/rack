@@ -182,7 +182,7 @@ void Composite::checkQuantity(const std::string & quantity){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	const drain::KeySelector & qs = dataSelector.getQuantitySelector();
+	const QuantitySelector & qs = dataSelector.getQuantitySelector();
 	if (qs.test(quantity)){
 		mout.accept<LOG_INFO>("quantity [", quantity, "] ~ ", qs);
 	}
@@ -485,7 +485,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		//drain::Rectangle<double> bboxNat;
 		pRadarToComposite.determineBoundingBoxM(range, bboxInput);
 
-		mout.accept("Detected 'native' input BBOX: ", bboxInput);
+		// mout.accept<LOG_DEBUG>("Detected 'native' input BBOX: ", bboxInput);
 
 		setBoundingBoxM(bboxInput);
 
@@ -513,7 +513,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		}
 
 	}
-	mout.special<LOG_NOTICE>("Detected 'native' input BBOX: ", bboxInput);
+	mout.special<LOG_DEBUG>("Detected 'native' input BBOX: ", bboxInput);
 
 	/// Note: area not yet defined.
 
@@ -924,9 +924,9 @@ void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldT
 
 			if (qm.hasQuantity(odimQuality.quantity)){
 				qm.setQuantityDefaults(odimQuality, odimQuality.quantity, odimQuality.type);
-				mout.accept<LOG_NOTICE>("found quantyConf[", odimQuality.quantity, "], type=", odimQuality.type);
-				mout.special("Quality: ", EncodingODIM(odimQuality));
-				mout.special("Quality: ", odimQuality);
+				mout.accept<LOG_DEBUG>("found quantityConf[", odimQuality.quantity, "], type=", odimQuality.type);
+				mout.special<LOG_DEBUG>("Quality: ", EncodingODIM(odimQuality));
+				mout.special<LOG_DEBUG>("Quality: ", odimQuality);
 			}
 			else {
 				const std::type_info & t = drain::Type::getTypeInfo(odimQuality.type);

@@ -72,20 +72,23 @@ namespace rack {
 			#include "palette/palette-COUNT.inc"
 			;
 
-			m["DBZHSTDDEV"] =
-			#include "palette/palette-DBZHSTDDEV.inc"
+			m["DBZ"] =
+			#include "palette/palette-DBZ.inc"
 			;
-
+			/*
 			m["DBZH"] =
 			#include "palette/palette-DBZH.inc"
 			;
-			/*
 			m.addAlias("DBZ", "DBZH");
 			m.addAlias("DBZ", "DBZV");
 			m.addAlias("DBZ", "TH");
 			m.addAlias("DBZ", "TV");
 			m.addAlias("DBZ", "T"); // ?
 			*/
+			m["DBZHSTDDEV"] =
+			#include "palette/palette-DBZHSTDDEV.inc"
+			;
+
 
 			m["DBZ-SLOPE"] =
 			#include "palette/palette-DBZ-SLOPE.inc"

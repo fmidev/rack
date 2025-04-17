@@ -397,13 +397,13 @@ void CommandBank::readFile(const std::string & filename, Program & prog) const {
 	}
 	else {
 
-		JSONtree2 cmdTree;
+		JSONtree cmdTree;
 		Input input(filename);
 		JSON::readTree(cmdTree, input);
 		mout.experimental<LOG_INFO>("parsed JSON structure:\n", sprinter(cmdTree));
 
 		//for (const auto & node: cmdTree){
-		for (const JSONtree2::pair_t & node: cmdTree){
+		for (const JSONtree::pair_t & node: cmdTree){
 			mout.debug("inserting: ", node.first); //, node.second.data);
 			command_t & cmd = clone(node.first);
 			cmd.setExternalContext(ctx);
@@ -412,7 +412,7 @@ void CommandBank::readFile(const std::string & filename, Program & prog) const {
 					/// Copy to list, and assign once to get full \c lastParameters
 					typedef std::pair<const std::string &, const Variable &> pair_t;
 					std::list<pair_t> pars;
-					for (const JSONtree2::pair_t & subNode: node.second){
+					for (const JSONtree::pair_t & subNode: node.second){
 						pars.push_back(pair_t(subNode.first, subNode.second.data));
 						// cmd.setParameter(subNode.first, subNode.second.data);
 					}
@@ -426,7 +426,7 @@ void CommandBank::readFile(const std::string & filename, Program & prog) const {
 			else {
 				if (node.second.hasChildren()){
 					mout.warn("cmd '", node.first, "' takes no args, but was provided named arg(s): ");
-					for (const JSONtree2::pair_t & subNode: node.second){
+					for (const JSONtree::pair_t & subNode: node.second){
 						mout.warn('\t', subNode.first, '=', subNode.second.data);
 						//cmd.setParameter();
 					}

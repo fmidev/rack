@@ -252,18 +252,18 @@ void JSON::readTree(T & tree, std::istream & istr){
 
 
 // New 2023 "implementation"
-typedef drain::UnorderedMultiTree<drain::Variable,true> JSONtree2;
+typedef drain::UnorderedMultiTree<drain::Variable,true> JSONtree;
 
 
 template <>
 inline
-void drain::JSON::handleValue(std::istream & istr, JSONtree2 & dst, const std::string & key){
-//void drain::JSON::handleValue(std::istream & istr, JSONtree2 & child){
+void drain::JSON::handleValue(std::istream & istr, JSONtree & dst, const std::string & key){
+//void drain::JSON::handleValue(std::istream & istr, JSONtree & child){
 
 	drain::Logger log( __FILE__, __FUNCTION__);
 
 
-	JSONtree2 & child = dst.addChild(key);
+	JSONtree & child = dst.addChild(key);
 
 	TextReader::skipWhiteSpace(istr);
 
@@ -285,7 +285,7 @@ void drain::JSON::handleValue(std::istream & istr, JSONtree2 & dst, const std::s
 
 template <>
 inline
-std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const JSONtree2 & tree, const drain::SprinterLayout & layout){
+std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const JSONtree & tree, const drain::SprinterLayout & layout){
 	return drain::JSON::treeToStream(ostr, tree, layout);
 	//return drain::Sprinter::treeToStream(ostr, tree, layout);
 }
@@ -295,7 +295,7 @@ std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const JSONtree2 & 
 template <>
 template <>
 inline
-ReferenceT<JSONtree2> & ReferenceT<JSONtree2>::link(JSONtree2 &tree){
+ReferenceT<JSONtree> & ReferenceT<JSONtree>::link(JSONtree &tree){
 	try {
 		//this->setPtr(p);
 	}

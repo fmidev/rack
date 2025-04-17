@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ODIM_QUANTITY
 #define ODIM_QUANTITY
 
+#include <data/QuantitySelector.h>
 #include <ostream>
 #include <stdexcept>
 
@@ -42,7 +43,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "EncodingODIM.h"
 
+
 namespace rack {
+
+
 
 /// Structure for defining quantity
 /**
@@ -58,10 +62,15 @@ public:
 	/// List type applicable in constructors
 	typedef std::list<EncodingODIM> list_t;
 
+	/// Container supporting constructors
+	// typedef std::map<std::string,std::string> desc_map_t;
+
 	std::string name;
 
 	/// Collection of quantities that can be similarly scaled and encoded
-	drain::StringMatcherList<drain::StringMatcher> keySelector; // could be keyMatcher?
+	//drain::StringMatcherList<drain::StringMatcher> keySelector; // could be keyMatcher?
+	//drain::StringMatcherList<FM301KeyMatcher>
+	QuantitySelector keySelector; // could be keyMatcher?
 
 	/// Default storage type
 	char defaultType = '\0';
@@ -76,16 +85,23 @@ public:
 
 
 	/// Default constructor
+	/*
 	Quantity(const std::string & name = "",
 			const drain::Range<double> & range = {},
 			char defaultType='\0',
 			const list_t & l = {}, // brace initializer
 			double undetectValue = std::numeric_limits<double>::signaling_NaN());
+	*/
 
 	/// Constructor accepting variants (related/similar quantities)
+	/*
 	Quantity(const std::string & name,
 			const std::list<std::string> & compatibleVariants,
-			const drain::Range<double> & range, //  = {},
+			const drain::Range<double> & range, */
+	Quantity(const std::string & name = "",
+			//const std::list<std::string> & compatibleVariants = {},
+			const QuantitySelector & compatibleVariants = {},
+			const drain::Range<double> & range = {},
 			char defaultType='\0',
 			const list_t & l = {}, // brace initializer
 			double undetectValue = std::numeric_limits<double>::signaling_NaN());
@@ -95,7 +111,8 @@ public:
 	 *
 	 */
 	Quantity(const std::string & name,
-			const std::list<std::string> & compatibleVariants,
+			// const std::list<std::string> & compatibleVariants,
+			const QuantitySelector & compatibleVariants,
 			char defaultType,
 			const list_t & l = {}, // brace initializer
 			double undetectValue = std::numeric_limits<double>::signaling_NaN());

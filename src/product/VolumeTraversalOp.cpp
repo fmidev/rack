@@ -81,7 +81,7 @@ void VolumeTraversalOp::traverseVolume(const Hi5Tree &src, Hi5Tree &dst) const {
 
 
 	//drain::RegExp quantityRegExp(this->dataSelector.getQuantity()); // DataSet objects (further below)
-	drain::KeySelector slct(this->dataSelector.getQuantitySelector()); // DataSet objects (further below)
+	QuantitySelector slct(this->dataSelector.getQuantitySelector()); // DataSet objects (further below)
 
 	//std::stringstream key;
 

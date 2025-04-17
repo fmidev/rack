@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 //const std::list<std::string> & compatibleVariants,
+/*
 Quantity::Quantity(const std::string & name,
 		const drain::Range<double> & range,
 		char defaultType,
@@ -49,22 +50,27 @@ Quantity::Quantity(const std::string & name,
 	addEncodings(l);
 
 }
+*/
 
 
 Quantity::Quantity(const std::string & name,
-		const std::list<std::string> & compatibleVariants,
+		//const std::list<std::string> & compatibleVariants,
+		const QuantitySelector & compatibleVariants,
 		const drain::Range<double> & range,
 		char defaultType,
 		const list_t & l,
 		double undetectValue):
 			name(name),
+			keySelector(compatibleVariants),
 			defaultType(defaultType),
 			physicalRange(range),
 			undetectValue(undetectValue) {
 
+	/*
 	for (const std::string & key: compatibleVariants){
 		keySelector.addKey(key);
 	}
+	*/
 	// variants.addKey("TEST");
 
 	// std::cerr << name << " koe1 " << drain::sprinter(compatibleVariants) << " -> " << variants << '\n';
@@ -74,19 +80,22 @@ Quantity::Quantity(const std::string & name,
 }
 
 Quantity::Quantity(const std::string & name,
-		const std::list<std::string> & compatibleVariants,
+		// const std::list<std::string> & compatibleVariants,
+		const QuantitySelector & compatibleVariants,
 		char defaultType,
 		const list_t & l,
 		double undetectValue):
 			name(name),
+			keySelector(compatibleVariants),
 			defaultType(defaultType),
 			// physicalRange(0.0, 0.0),
 			undetectValue(undetectValue) {
 
+	/*
 	for (const std::string & key: compatibleVariants){
 		keySelector.addKey(key);
 	}
-	// variants.addKey("KOE");
+	*/
 
 	// std::cerr << name << " koe2 " << drain::sprinter(compatibleVariants) << " -> " << variants << '\n';
 
@@ -189,6 +198,15 @@ const EncodingODIM & Quantity::get(const std::string & t) const {
 
 
 std::ostream & Quantity::toStream(std::ostream & ostr) const {
+	ostr << name << '\n';
+
+	// if (!keySelector.empty()){
+	// ostr << "Related: " << '\n';
+	for (const auto & entry: keySelector){
+		ostr << '\t' << entry.value << '\t' << entry.getStandardName() << '\t' << '"' << entry.getLongName() << '"' <<  '\n';
+	}
+	// }
+
 	for (const_iterator it = begin(); it != end(); ++it){
 		//ostr.width(6);
 		if (it->first == defaultType)

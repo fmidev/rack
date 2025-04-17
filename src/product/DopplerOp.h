@@ -159,8 +159,7 @@ public:
 	void processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const;
 
 
-
-	int matchOriginal;
+	int matchOriginal = 0;
 
 
 };
