@@ -300,7 +300,7 @@ ODIMPath RackContext::findImage(const DataSelector & imageSelector){ // RackCont
 			this->statusFlags.set(drain::Status::DATA_ERROR); // resources.dataOk = false;
 		}
 
-		mout.attention("found: ", img);
+		mout.attention<LOG_DEBUG>("found: ", img);
 
 		// Hence, image may also be empty.
 		this->setCurrentImages(img);
@@ -511,7 +511,7 @@ void RackContext::updateStatus() const {
 	/// Miscellaneous
 	statusMap["select"]      = select;
 	statusMap["andreSelect"] = andreSelect;
-	statusMap["composite"]   = "segFault..."; //drain::sprinter(composite).str();
+	statusMap["composite"]   = "under_constr..."; //drain::sprinter(composite).str();
 	// statusMap["accumulator"] = acc.toStr();
 
 }

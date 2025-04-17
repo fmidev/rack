@@ -2454,10 +2454,9 @@ MainModule::MainModule(){ //
 	install<CmdEncoding>("target");  // alias
 	install<CmdEcho>();
 
-	//installer.install<CmdSleep> cmdSleep;
-	//install<drain::CmdFormat>();
 	/*
-	install<CmdFormat>(); // rack version, with presets
+	 MOVED to fileio.cpp !
+	install<CmdFormat>();
 	install<CmdFormatOut>();
 	install<drain::CmdFormatFile<RackContext> >();
 	*/

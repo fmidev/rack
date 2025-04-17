@@ -37,7 +37,7 @@ namespace rack {
 #define RACK_QTY_INIT(qty) qty(map_t::operator [](#qty))
 
 QuantityMap::QuantityMap() : map_t(),
-		RACK_QTY_INIT(TH),
+		//RACK_QTY_INIT(TH),
 		RACK_QTY_INIT(DBZ),
 		RACK_QTY_INIT(VRAD),
 		RACK_QTY_INIT(ZDR),
@@ -50,7 +50,7 @@ QuantityMap::QuantityMap() : map_t(),
 }
 
 QuantityMap::QuantityMap(const QuantityMap & m) : map_t(m),
-		RACK_QTY_INIT(TH),
+		// RACK_QTY_INIT(TH),
 		RACK_QTY_INIT(DBZ),
 		RACK_QTY_INIT(VRAD),
 		RACK_QTY_INIT(ZDR),
@@ -66,7 +66,7 @@ QuantityMap::QuantityMap(const QuantityMap & m) : map_t(m),
 
 
 QuantityMap::QuantityMap(const std::initializer_list<std::pair<std::string, Quantity> > & inits) : map_t(),
-		RACK_QTY_INIT(TH),
+		// RACK_QTY_INIT(TH),
 		RACK_QTY_INIT(DBZ),
 		RACK_QTY_INIT(VRAD),
 		RACK_QTY_INIT(ZDR),
@@ -165,31 +165,38 @@ QuantityMap::iterator QuantityMap::retrieve(const std::string & key) {
 
 const Quantity & QuantityMap::get(const std::string & key) const {
 
-		const const_iterator it = retrieve(key);
+	// drain::Logger mout(__FILE__, __FUNCTION__);
 
-		if (it != end()){ // null ok
-			return it->second;
-		}
-		else {
-			//drain::Logger mout("Quantity", __FUNCTION__);
-			//mout.warn("undefined quantity=" , key );
-			static const Quantity empty;
-			return empty;
-		}
+	const const_iterator it = retrieve(key);
+
+	if (it != end()){
+		// mout.warn("found:", key, " => ", it->first);
+		return it->second;
+	}
+	else {
+		// drain::Logger mout("Quantity", __FUNCTION__);
+		// mout.warn("quantity=" , key, " NOT FOUND");
+		static const Quantity empty("<quantity>");
+		return empty;
+	}
 
 }
 
 Quantity & QuantityMap::get(const std::string & key) {
 
+	// drain::Logger mout(__FILE__, "non-const");
+
 	const iterator it = retrieve(key); // revised 2025
 
-	// Attempt 1: find fully matching one.
+	// Attempt 1: found fully matching one.
 	if (it != end()){ // null ok
+		// mout.warn("found:", key, " => ", it->first, " -> ", it->second.name);
 		return it->second;
 	}
 	else {
 		// Warning: if this is declared (modified), further instances will override and hence confuse
-		static Quantity empty;
+		// mout.warn("quantity=" , key, " NOT FOUND");
+		static Quantity empty("<quantity>");
 		return empty;
 	}
 
@@ -280,10 +287,8 @@ QuantityMap & getQuantityMap() {
 	 *
 	 */
 	static QuantityMap quantityMap = {
-			// {"DBZH", {
 			{"DBZ", {
 					"Equivalent reflectivity factor",
-					//{"DBZ", "DBZ[HV]", "DBZ[HV]C", "T[HV]"},
 					{
 							{"DBZH", "radar_equivalent_reflectivity_factor_h", "Equivalent reflectivity factor H"},
 							{"DBZV", "radar_equivalent_reflectivity_factor_v", "Equivalent reflectivity factor V"},

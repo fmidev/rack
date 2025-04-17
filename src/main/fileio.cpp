@@ -355,8 +355,10 @@ void CmdOutputFile::exec() const {
 
 	const bool STD_OUTPUT = value.empty() || (value == "-");
 
+	// New 2025 (expensive?)
+	const drain::VariableMap & statusMap = ctx.getUpdatedStatusMap();
+
 	if (!STD_OUTPUT){
-		const drain::VariableMap & statusMap = ctx.getUpdatedStatusMap();
 		drain::StringMapper mapper(RackContext::variableMapper);
 		mapper.parse(ctx.outputPrefix + value);
 		// VariableFormatterODIM<drain::Variable> odimHandler;
@@ -393,7 +395,7 @@ void CmdOutputFile::exec() const {
 	drain::image::TreeSVG & svgGroup = RackSVG::getMainGroup(ctx); // , path.basename  //  Note: repeatedly called for svg and png files?
 
 	//track.data.set("id", STD_OUTPUT ? "stdout" : path.basename);
-	std::list<std::string> keys = {"what:lon", "here"};
+	// std::list<std::string> keys = {"what:lon", "here"};
 
 	//if (h5FileExtension.test(value)){
 	// hi5::fileInfo.checkPath(path)
@@ -678,7 +680,7 @@ void CmdOutputFile::exec() const {
 
 			// ctx.getUpdatedStatusMap();
 			//
-			const drain::VariableMap & vmapShared = ctx.getStatusMap();
+			const drain::VariableMap & vmapShared = ctx.getStatusMap(); // updated above
 
 			mout.debug("VMAP (", vmapShared.size(), ") where:EPSG=", vmapShared.get("where:EPSG", -1));
 
@@ -875,8 +877,6 @@ public:
 	/// Default constructor.
 	//CmdFormat() : drain::BasicCommand(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
 	CmdFormat() : drain::SimpleCommand<>(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)", "syntax") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
-		// RackContext & ctx = getContext<RackContext>();
-		// getParameters().link("syntax", ctx.formatStr);  direct shared LINK bad!
 	};
 
 	/// Copy constructor.

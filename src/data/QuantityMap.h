@@ -66,7 +66,7 @@ public:
 	QuantityMap(const std::initializer_list<std::pair<std::string, Quantity> > & inits);
 
 	// New 2025: a set of frequently needed conf tables
-	const Quantity & TH;
+	// const Quantity & TH;
 	const Quantity & DBZ;
 	const Quantity & VRAD;
 	const Quantity & ZDR;

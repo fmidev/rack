@@ -84,7 +84,9 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 		mout.info("several quantities, using the first one :" , quantity );
 	}
 	*/
-	mout.special("selected [", quantity, "]");
+	if (dataSelector.getQuantity() != quantity){
+		mout.info("selected [", quantity, "]");
+	}
 
 
 	// Consider EchoTop, with DBZH input and HGHT output; but CAPPI should adapt to input quantity

@@ -394,7 +394,7 @@ void RadarAccumulator<AC,OD>::extractOLD(const OD & odimOut, DataSet<DstType<OD>
 
 		//DataDst dstData(dataGroup); // FIXME "qualityN" instead of dataN creates: /dataset1/qualityN/quality1/data
 		//mout.warn("odimFinal: " , odimFinal );
-		mout.special("odimData: " , EncodingODIM(odimData) );
+		mout.debug("odimData: " , EncodingODIM(odimData) );
 		DataCoder dataCoder(odimData, odimQuality); // (will use only either odim!)
 		mout.debug("dataCoder: ", dataCoder);
 		mout.debug2("dataCoder: data: ", dataCoder.dataODIM);

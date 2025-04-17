@@ -417,6 +417,8 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) const {
 
 	drain::Logger mout( __FILE__, __FUNCTION__);
 
+	// mout.attention("start");
+
 	if (!currentHi5)
 		return;
 
@@ -480,15 +482,22 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) const {
 			}
 
 			const std::string quantity = statusMap.get("what:quantity", "");
+			//mout.attention("quantity: '", quantity, "'");
 			if (!quantity.empty()){
 				const Quantity & q = getQuantityMap().get(quantity); // NOTE: doubled search
+				// mout.attention("quantity: ", q.name, " keys:", q.keySelector);
 				const FM301KeyMatcher & m = q.keySelector.retrieve(quantity);
+				if (m.value != quantity){
+					mout.special("quantity: ", m.value, " mapped to : ", quantity);
+				}
 				statusMap["what:quantityName"] = m.getStandardName();
 				statusMap["what:quantityDescription"] = m.getLongName();
 			}
 			else {
-				// statusMap.erase("what:quantitydescription");
-				statusMap["what:quantitydescription"] = "TEST";
+				statusMap.erase("what:quantityName");
+				statusMap.erase("what:quantityDescription");
+				// statusMap["what:quantityDescription"] = "TEST";
+				// statusMap["what:quantityDescription"] = "TEST";
 			}
 
 		}

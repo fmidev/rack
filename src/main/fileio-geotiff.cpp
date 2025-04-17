@@ -193,9 +193,9 @@ void CmdGeoTiff::write(RackContext & ctx, const drain::image::Image & src, const
 
 		//mout.special("GDAL info end");
 		const Quantity & quantity = getQuantityMap().get(odim.quantity); // NOTE: doubled search
-		mout.special("QUANTITY: ", quantity);
+		// mout.special("QUANTITY: ", quantity);
 		const FM301KeyMatcher & quantityInfo = quantity.keySelector.retrieve(odim.quantity);
-		mout.special("QUANTITY-INFO: ", quantityInfo);
+		// mout.special("QUANTITY-INFO: ", quantityInfo);
 		const SourceODIM sourceODIM(odim.source);
 
 
