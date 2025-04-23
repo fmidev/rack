@@ -225,11 +225,20 @@ if [ "$INFILE" != '' ]; then
     INIT="        $INFILE $time --cAddWeighted $CWEIGHT "
     #INIT="--cLoad $INFILE $time --cAddWeighted $CWEIGHT "
 else
-    INIT="$NEWLINE --cProj '$PROJ' $NEWLINE --cSize $SIZE --cBBox $BBOX $bboxtile  $encoding --cInit"
+    INIT="$NEWLINE --cProj '$PROJ' $NEWLINE --cSize $SIZE --cBBox $BBOX $bboxtile  $encoding "  # --cInit
+    if [ "$SCHEME" != 'TILE' ]; then
+	INIT="$INIT --cInit"
+    fi
 fi
 
+if [ "$SCHEME" != 'TILE' ]; then
+    INIT="$INIT --cMethod $METHOD"
+fi
+
+
 # PART 1: Initial part    # --encoding $CTYPE
-command="$RACK $debug $log $decay --cMethod $METHOD $undetect  $INIT $NEWLINE $inselect $inprefix $outprefix $verbose" 
+# Removed --cMethod $METHOD
+command="$RACK $debug $log $decay $undetect $INIT $NEWLINE $inselect $inprefix $outprefix $verbose" 
 
 
 # Routine applied to each input volume (in default and TILE schemes).
