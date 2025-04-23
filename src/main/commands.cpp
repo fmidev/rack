@@ -1771,11 +1771,11 @@ class CmdErrorFlags : public drain::SimpleCommand<std::string> {
 public:
 
 	CmdErrorFlags() : drain::SimpleCommand<std::string>(__FUNCTION__, "Status of last select.", "flags"){
-		//getParameters().link("flags", value);
 	};
 
 
-	void exec() const {
+	virtual
+	void exec() const final {
 		RackContext & ctx = getContext<RackContext>();
 		//drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
@@ -1787,9 +1787,39 @@ public:
 		}
 	}
 
-protected:
+
+};
+
+class CmdStopOnError : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdStopOnError() : drain::SimpleCommand<std::string>(__FUNCTION__, "Stop on given error condition(s).", "flags"){
+	};
 
 
+	virtual
+	void exec() const final {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		if (ctx.statusFlags){
+			drain::StatusFlags flags(value);
+			mout.note("error(s) set – testing: ", flags);
+			// Reset with overlapping values (AND op)
+			flags.set(flags.getValue() & ctx.statusFlags.getValue());
+			//if (ctx.statusFlags.isAnySet(flags.getValue())){
+			if (flags){
+				// mout.note("error state: ", ctx.statusFlags, " – tested: ", flags);
+				mout.warn("stopping on error condition(s): ", flags);
+				// drain::EnumDict<Status>;
+				exit(flags);
+			}
+		}
+
+	}
 
 };
 
@@ -2466,6 +2496,7 @@ MainModule::MainModule(){ //
 
 	install<CmdExpandVariables2>();
 	install<CmdErrorFlags>();
+	install<CmdStopOnError>();
 
 	install<UndetectWeight>();
 

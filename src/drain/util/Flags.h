@@ -227,22 +227,6 @@ public:
 	typedef typename flagger_t::dict_t dict_t;
 	typedef typename dict_t::key_t key_t; // ~string
 
-	/*
-	inline
-	MultiFlagger(){
-	};
-
-	inline
-	MultiFlagger(storage_t & v, char sep=',') : flagger_t(v,sep){
-	};
-
-	template <typename ... V>
-	inline
-	MultiFlagger(const V &... args){
-		set(args...);
-		// this->value = v;
-	};
-	*/
 
 	inline
 	MultiFlagger(const dict_t & dict) : dict(dict) {
@@ -265,21 +249,25 @@ public:
 	~MultiFlagger(){};
 
 
-
-public:
-
-	virtual
+	virtual inline
 	const dict_t & getDict() const override {
 		return dict;
 	};
 
 	/// Return true, all the bits of argument \c x are set.
-	virtual
+	virtual inline
 	bool isSet(const storage_t & x) const override {
 		return ((this->value & x) == x);
 	};
 
+	/// Return true, all the bits of argument \c x are set.
+	inline
+	bool isAnySet(const storage_t & x) const {
+		return ((this->value & x) != 0);
+	};
+
 	/// Unset some bit(s).
+	inline
 	void unset(const storage_t & x){
 		this->value = (this->value & ~x);
 		//return ((this->value & x) == x);
@@ -324,26 +312,11 @@ public:
 		return currentStr;  // CHECK USAGE
 	}
 
-	/// Given only a numeric/enum value,
-	/*
-	virtual
-	std::string str(const dict_value_t & value){
-		return FlagResolver::getKeys(this->getDict(), value, this->separator);
-	}
-	*/
-	/// This should be called after assigning a string to & str() .
-	/*
-	inline
-	void update(){
-		assign(currentStr);
-	}
-	*/
 
 
 protected:
 
 	const dict_t & dict;
-	// dict_t ownDict;
 
 	/// Split a string to separate keys and/or values and set them.
 	virtual
@@ -356,40 +329,10 @@ protected:
 	inline
 	void add(){};
 
-	/*
-	virtual inline
-	void addOne(const value_t & value){
-		// why OR op in dvalue
-		// this->value = static_cast<dict_value_t>((dvalue_t)this->value | (dvalue_t)value);
-		this->value |= static_cast<value_t>(value);
-	}
-	*/
-
-
 	inline
 	void addOne(const key_t & key){
-
 		// Resolves also "" and numeric keys.
 		this->value |= FlagResolver::getIntValue(this->getDict(), key, this->separator);
-
-		/*
-		if (key.empty())
-			return;
-
-		//dict_value_t v = ::atoi(key);
-
-		const dict_t & dict = this->getDict();
-		if (dict.hasKey(key)){
-			//this->value |= (dict_value_t)dict.getValue(key); // why cast? dvalue_t -> value_t
-			addOne((dict_value_t)dict.getValue(key));
-		}
-		else {
-			/// XXX
-			Logger mout(__FILE__, __FUNCTION__);
-			mout.error(TypeName<E>::get(), ": no such key: '"+ key, "', keys=", sprinter(this->getDict().getKeys()));
-			// throw std::runtime_error(std::string("Dictionary/") + typeid(dict_value_t).name()+ ": no such key: "+ key);
-		}
-		*/
 	}
 
 	template <typename T2>
@@ -400,10 +343,8 @@ protected:
 		this->value |= static_cast<value_t>(value);
 	}
 
-
 	mutable
 	std::string currentStr;
-	// key_t currentStr;
 
 
 };

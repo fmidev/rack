@@ -109,14 +109,17 @@ void CompositeCreateTile::exec() const {
 	//Composite & composite = getComposite();
 	Composite & composite = ctx.composite;
 
-	if (!composite.geometryIsSet())
+	if (!composite.geometryIsSet()){
 		mout.error("Composite geometry undefined, cannot create tile");
+	}
 
-	if (! composite.bboxIsSet())
+	if (! composite.bboxIsSet()){
 		mout.error("Bounding box undefined, cannot create tile");
+	}
 
-	if (! composite.projectionIsSet()) // or use first input (bbox reset)
+	if (! composite.projectionIsSet()){ // or use first input (bbox reset)
 		mout.error("Projection undefined, cannot create tile");
+	}
 
 	if ((composite.odim.ACCnum > 0) || (!composite.odim.quantity.empty())){
 		mout.debug("Clearing previous composite...");
@@ -129,11 +132,18 @@ void CompositeCreateTile::exec() const {
 		mout.info("Cleared previous composite");
 	}
 
+	if (ctx.statusFlags){ // drain::Status::INPUT_ERROR
+		// mout.warn("errors: ", ctx.statusFlags);
+		mout.error("errors: ", ctx.statusFlags, " – quitting");
+		return;
+	}
 
 	composite.setCropping(true);
 	//add(composite, RackContext::POLAR|RackContext::CURRENT);
 	add(composite, RackContext::POLAR|RackContext::CURRENT, true); // updateSelector
+
 	extract(composite, "dw");
+
 
 	// "Debugging"
 	if (!composite.isCropping()){

@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "12.2"
+#define __RACK_VERSION__ "12.3"
 
 /**
  *  Version 12.0
@@ -44,6 +44,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - cMethod: added MINMAX
  *  Version 12.2
  *  - Revised QuantityMap, cfRadial descriptions appear in variables and metadata (GeoTIFF)
+ *  Version 12.3
+ *  - Added: INPUT_ERROR check for --cCreateTile
+ *  - Added: --stopOnError, revised --errorFlags
  *
  *  Version 11.0
  *  - Help supports "see also", linking related commands.
