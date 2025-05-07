@@ -55,8 +55,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+void CmdInputFile::readFile(const std::string & fileName) const {
 
-void CmdInputFile::exec() const {
+//void CmdInputFile::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
 
@@ -64,10 +65,10 @@ void CmdInputFile::exec() const {
 
 	// mout.timestamp("BEGIN_FILEREAD");
 
-	mout.note("reading: ", value );
+	mout.note("reading: ", fileName); // value );
 
 	// TODO: expand?
-	std::string fullFilename = ctx.inputPrefix + value;
+	std::string fullFilename = ctx.inputPrefix + fileName; // value ;
 
 	ctx.statusFlags.unset(drain::Status::INPUT_ERROR);
 	ctx.statusFlags.unset(drain::Status::DATA_ERROR);
@@ -80,7 +81,7 @@ void CmdInputFile::exec() const {
 	// mout.warn("inputComplete: " , (int)inputComplete );
 	// mout.warn("autoExec:      " , (int)cmdAutoExec.exec );
 
-	drain::FilePath path(value);
+	drain::FilePath path(fileName);
 	const bool NO_EXTENSION = path.extension.empty();
 
 	try {
@@ -91,8 +92,12 @@ void CmdInputFile::exec() const {
 			}
 			readFileH5(fullFilename);
 		}
+		else if (listFileExtension.test(fileName)){
+			readListFile(fullFilename);
+		}
 		else if (drain::image::FileTIFF::fileInfo.checkExtension(path.extension)){
-			mout.error("Reading TIFF files not supported");
+			mout.advice("Writing TIFF files is supported");
+			mout.error("Reading TIFF files unsupported");
 		}
 		else if (drain::image::FilePng::fileInfo.checkExtension(path.extension)){ //(IMAGE_PNG || IMAGE_PNM){
 			readImageFile(fullFilename);
@@ -100,10 +105,11 @@ void CmdInputFile::exec() const {
 		else if (drain::image::FilePnm::fileInfo.checkExtension(path.extension)){ //(IMAGE_PNG || IMAGE_PNM){
 			readImageFile(fullFilename);
 		}
-		else if (textFileExtension.test(this->value))
+		else if (textFileExtension.test(fileName)){
 			readTextFile(fullFilename);
+		}
 		else {
-			mout.error("Unrecognized/unsupported file type, filename: '", this->value, "'");
+			mout.error("Unrecognized/unsupported file type, filename: '", fileName, "'");
 		}
 
 	}
@@ -905,6 +911,39 @@ void pickElems(const Hi5Tree & src, int groupFilter, std::map<std::string, ODIMP
 */
 
 
+
+void CmdInputFile::readListFile(const std::string & fullFilename) const  {
+
+	RackContext & ctx = getContext<RackContext>();
+
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = getResources().mout( ;
+
+	drain::Input input(fullFilename);
+
+	std::string line;
+	while ( std::getline((std::ifstream &)input, line) ){
+		if (!line.empty()){
+			// mout.debug2(line );
+			if (line.at(0) != '#'){
+				// Note: comments also after commands could be stripped,
+				// but simple char search is faulty as command args can contain hash '#'
+				std::string inputFileName = drain::StringTools::trim(line);
+				if (inputFileName == this->value){
+					// Todo: use full paths in comparing...
+					mout.error("Recursion detected while reading ", fullFilename);
+				}
+				else {
+					readFile(inputFileName);
+				}
+			}
+		}
+	}
+
+	//hi5::Hi5Base::readText(ctx.polarInputHi5, ifstr);
+	// DataTools::updateInternalAttributes(ctx.polarInputHi5);
+
+
+}
 
 
 

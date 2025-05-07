@@ -106,34 +106,35 @@ public:
 
 
 	/// Include commands from file, inserting them before iterator.
-	//void includeFile(const std::string & filename, Program & prog, Program::iterator it) const;
-
+	//  void includeFile(const std::string & filename, Program & prog, Program::iterator it) const;
 
 	/// A mini program executed after each cmd until ']' or ')' is encountered
 
 	/// Read commands from a text file and insert them into a string.
 	/**
-	 *
+	 *   Non-static – CommandBank is needed for checking if a command has arguments.
 	 */
+	// static
 	void readFileTXT(const std::string & filename, Script & script) const;
 
 	void readFile(const std::string & filename, Program & prog) const;
 
 	/// Convert program arguments a script. Like in main(), actual command arguments start from 1.
 	/**
-	 *   CommandBank is needed in checking if a command has arguments.
+	 *   Non-static – CommandBank is needed for checking if a command has arguments.
 	 */
 	void scriptify(int argc, const char **argv, Script & script) const;
 
 	/// Splits a command line to a list of commands, that is, a script.
 	/**
-	 *   CommandBank is needed in checking if a command has arguments.
+	 *   Non-static – CommandBank is needed for checking if a command has arguments.
 	 */
+	//static
 	void scriptify(const std::string & cmdLine, Script & script) const;
 
 	/// Converts a Unix/Linux command line to pairs (cmd,params) of strings.
 	/**
-	 *   CommandBank is needed in checking if a command has arguments.
+	 *   Non-static – CommandBank is needed for checking if a command has arguments.
 	 *
 	 *   \return - true if command argument (argNext) was digested.
 	 */
@@ -152,7 +153,8 @@ protected:
 	void append(const Script & script, Context & ctx, Program & prog) const ;
 
 
-	void tokenize(const std::string & cmdLine, std::list<std::string> & args) const;
+	static
+	void tokenize(const std::string & cmdLine, std::list<std::string> & args);
 
 public:
 

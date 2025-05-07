@@ -208,7 +208,8 @@ void CommandBank::scriptify(int argc, const char **argv, Script & script) const 
 	}
 }
 
-void CommandBank::tokenize(const std::string & line, std::list<std::string> & args) const{
+//void CommandBank::tokenize(const std::string & line, std::list<std::string> & args) const{
+void CommandBank::tokenize(const std::string & line, std::list<std::string> & args) {
 
 	Logger mout(__FILE__, __FUNCTION__); //
 
@@ -462,8 +463,11 @@ void CommandBank::readFileTXT(const std::string & filename, Script & script) con
 		while ( std::getline((std::ifstream &)input, line) ){
 			if (!line.empty()){
 				mout.debug2(line );
-				if (line.at(0) != '#')
+				if (line.at(0) != '#'){
+					// Note: comments also after commands could be stripped,
+					// but simple char search is faulty as command args can contain hash '#'
 					scriptify(line, script);
+				}
 			}
 		}
 	}

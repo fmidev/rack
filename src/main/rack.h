@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "12.4"
+#define __RACK_VERSION__ "12.5"
 
 /**
  *  Version 12.0
@@ -49,6 +49,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Added: --stopOnError, revised --errorFlags
  *  Version 12.4
  *  - Fix: PaletteOp get(), predefined cached palette
+ *  Version 12.5
+ *  - Input list read with <file>.lst
  *
  *  Version 11.0
  *  - Help supports "see also", linking related commands.

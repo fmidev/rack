@@ -2465,15 +2465,11 @@ MainModule::MainModule(){ //
 
 	drain::CmdScript script(cmdBank);
 	install(script);
-	// installExternal(script);
-
-	// install<drain::CmdExecScript>();
-	DRAIN_CMD_INSTALL(drain::Cmd,ExecScript)();
-
 	drain::CmdExecFile execFile(cmdBank);
-	// installExternal(execFile); // T param unneeded?
-	install(execFile); // T param unneeded?
-	//installExternal<drain::CmdExecFile>(execFile); // T param unneeded?
+	install(execFile);
+
+	DRAIN_CMD_INSTALL(drain::Cmd,ExecScript)();
+	//DRAIN_CMD_INSTALL(drain::Cmd,ExecFile)(cmdBank);
 	linkRelatedCommands(script, execFile, ExecScript);
 
 

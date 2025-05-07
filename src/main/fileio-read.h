@@ -101,11 +101,20 @@ public:
 
 	//mutable bool inputComplete;
 
-	void exec() const;
+	inline
+	void exec() const {
+		readFile(value);
+	}
+
+	// Called by exec, allowing recursion (esp. by readListFile)
+	void readFile(const std::string & fileName) const;
 
 protected:
 
 	void readFileH5(const std::string & fullFilename) const;
+	void readListFile(const std::string & fullFilename) const;
+	void readTextFile(const std::string & fullFilename) const;
+	void readImageFile(const std::string & fullFilename) const;
 
 	//void readFileAndAppendH5(const std::string & fullFilename) const;
 
@@ -123,10 +132,6 @@ protected:
 
 	void updateQuality(Hi5Tree & srcData, Hi5Tree & dstData) const;
 
-
-	void readTextFile(const std::string & fullFilename) const;
-
-	void readImageFile(const std::string & fullFilename) const;
 
 	template <class OD>  // const drain::VariableMap & rootProperties,
 	void deriveImageODIM( const drain::image::Image &srcImage,

@@ -53,18 +53,9 @@ namespace rack {
 extern
 const drain::RegExp h5FileExtension;
 
-/// Syntax for recognising GeoTIFF files.
-//extern
-//const drain::RegExp tiffFileExtension;
-//const drain::FileInfo fileInfoTIFF;
-
-/// Syntax for recognising Portable Networks Image image file.
-//extern
-//const drain::RegExp pngFileExtension;
-
-/// Syntax for recognising PNM (PGM,PPM) image file.
-//extern
-//const drain::RegExp pnmFileExtension;
+/// Input file lists
+extern
+const drain::RegExp listFileExtension;
 
 /// Syntax for recognising text files.
 extern

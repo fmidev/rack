@@ -83,6 +83,9 @@ namespace rack {
 /// Syntax for recognising hdf5 files.
 //  Edited 2017/07 such that also files without extension are considered h5 files. BALTRAD bug
 
+/// Syntax for command files, typically used reading HDF5 input lists.
+const drain::RegExp listFileExtension(".*\\.(lst)$",  REG_EXTENDED | REG_ICASE);
+
 /// Syntax for recognising text files.
 const drain::RegExp textFileExtension(".*\\.(txt)$",  REG_EXTENDED | REG_ICASE);
 
@@ -94,7 +97,6 @@ const drain::RegExp sampleFileExtension(".*\\.(dat)$",  REG_EXTENDED | REG_ICASE
 
 /// Syntax for recognising Graphviz DOT files.
 const drain::RegExp dotFileExtension(".*\\.(dot)$",  REG_EXTENDED | REG_ICASE);
-
 
 
 
