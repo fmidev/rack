@@ -54,6 +54,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+void CmdInputFile::exec() const {
+
+	RackContext & ctx = getContext<RackContext>();
+
+	ctx.statusFlags.unset(drain::Status::INPUT_ERROR);
+	ctx.statusFlags.unset(drain::Status::DATA_ERROR);
+	ctx.unsetCurrentImages();
+
+	readFile(value);
+
+}
 
 void CmdInputFile::readFile(const std::string & fileName) const {
 
@@ -70,9 +81,6 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 	// TODO: expand?
 	std::string fullFilename = ctx.inputPrefix + fileName; // value ;
 
-	ctx.statusFlags.unset(drain::Status::INPUT_ERROR);
-	ctx.statusFlags.unset(drain::Status::DATA_ERROR);
-	ctx.unsetCurrentImages();
 
 	//const drain::CommandRegistry & r = drain::getRegistry();
 	//mout.warn("lastCommand: '" , drain::CommandRegistry::index , r.getLastCommand() , "'" );
@@ -93,7 +101,11 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 			readFileH5(fullFilename);
 		}
 		else if (listFileExtension.test(fileName)){
-			readListFile(fullFilename);
+			if (!ctx.inputPrefix.empty()){
+				mout.note("Reading LST file directly from: '", fileName, "', omitting prefix: ", ctx.inputPrefix);
+			}
+			readListFile(fileName);
+			//readListFile(fullFilename);
 		}
 		else if (drain::image::FileTIFF::fileInfo.checkExtension(path.extension)){
 			mout.advice("Writing TIFF files is supported");

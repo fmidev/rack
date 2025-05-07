@@ -101,10 +101,8 @@ public:
 
 	//mutable bool inputComplete;
 
-	inline
-	void exec() const {
-		readFile(value);
-	}
+	// Essentially calls readFile
+	void exec() const;
 
 	// Called by exec, allowing recursion (esp. by readListFile)
 	void readFile(const std::string & fileName) const;
