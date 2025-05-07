@@ -180,21 +180,90 @@ ImageContext::ImageContext(const ImageContext & ctx):
 }
 
 Palette & ImageContext::getPalette(const std::string & key){
-	paletteKey = key;
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	//paletteKey = key;
+
+	// NEW: try direct and the QM based, only after that load
+	PaletteMap & pmap = PaletteOp::getPaletteMap();
+
+	/// Attempt 1: exact match of \c key
+	mout.special("Attempt 1: with exact key [", key, "]");
+	PaletteMap::iterator it = pmap.find(key);
+	if (it != pmap.end()){
+		paletteKey = key;
+		return it->second;
+	}
+
+	/// Attempt 2: exact match of \c key
+
+	mout.special("Attempt 2: try quantities associated with  [", key, "]");
+
+	const QuantityMap & qm = getQuantityMap();
+	QuantityMap::const_iterator qit = qm.retrieve(key);
+	if (qit != qm.end()){
+
+		if (qit->first != key){
+			mout.pending("Trying general quantity key: [", qit->first, "]");
+			it = pmap.find(qit->first);
+			if (it != pmap.end()){
+				mout.ok("Found palette using general quantity key: [", qit->first, "]");
+				//mout.ok("Found palette using general quantity key: [", qit->first, "]: \n", qit->second);
+				paletteKey = it->first;
+				return it->second;
+			}
+		}
+		else {
+			mout.pending("Found [", qit->first, "], but same as original key...");
+		}
+
+		mout.pending("Testing quantity selectors of  [", qit->first, "]: ", qit->second.keySelector);
+
+		for (const auto & ksel: qit->second.keySelector){
+			mout.pending("Testing  [", ksel.value, "]... ");
+			it = pmap.find(ksel.value);
+			if (it != pmap.end()){
+				paletteKey = it->first;
+				return it->second;
+			}
+		}
+
+		mout.warn("Could not find palette with  [", key, "] or [", qit->first, "] (with its variants) ");
+
+	}
+
+
+
 	try {
 		return PaletteOp::getPalette(key);
 	}
 	catch (const std::exception & e){
+
+		mout.fail("Tried everything...");
+
+		/*
+		mout.special("Failed with [", key, "], now trying QM search...");
+
+
 		const QuantityMap & qm = getQuantityMap();
-		std::cerr << " Trying QM search...\n";
+
+		mout.special("Failed with [", key, "], now trying QM search...");
+
 		QuantityMap::const_iterator it = qm.retrieve(key);
 		if (it != qm.end()){
-			std::cerr << " ... Found: [" << it->first << "] " << it->second << "!\n";
+			mout.special("Found: [", it->first, "]: \n", it->second);
 			if (it->first != key){
-				return PaletteOp::getPalette(it->first);
+				mout.special("Trying QM [", it->first, "]");
+				Palette & p = PaletteOp::getPalette(it->first);
+				mout.accept<LOG_NOTICE>("Found [", it->first, "] ->", p.comment);
+				return p;
+			}
+			else {
+				mout.warn("Problem: [", it->first, "] != ", key);
 			}
 		}
-
+		*/
 		throw e; // forward...
 
 		//return PaletteOp::getPalette(key);

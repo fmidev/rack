@@ -145,7 +145,7 @@ Palette & PaletteOp::getPalette(const std::string & key) {
 		}
 	}
 	else {
-		mout.experimental("Using cached palette [", key, "]");
+		mout.experimental("Using predefined palette [", key, "]");
 	}
 	// setPalette(palette);
 	return palette;

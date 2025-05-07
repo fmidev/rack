@@ -513,7 +513,8 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
+		//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
+		drain::Logger mout(ctx.log, __FILE__, getName()); // = resources.mout;
 
 		if (ctx.statusFlags.isSet(drain::Status::INPUT_ERROR)){
 			mout.warn("input failed, skipping" );
@@ -551,12 +552,13 @@ public:
 				std::string processing;
 				// IMPORTANT: splitting must be compatible with: ImageContext::outputQuantitySyntax
 				drain::StringTools::split2(quantity, quantity, processing, "|/:>");
-				mout.special("src [", quantity, "] : processing(", processing, ")");
+				mout.special("src quantity=[", quantity, "] : processing='", processing, "'");
 
 				if (!quantity.empty()){
-					mout.info("loading palette: ", quantity);
+					mout.info("retrieving palette: ", quantity);
 					//ctx.palette.load(quantity, true);
-					ctx.getPalette(quantity);
+					Palette & p = ctx.getPalette(quantity);
+					mout.info("retrievied palette: ", p.comment, " size=", p.size());
 				}
 				else {
 					mout.fail("could not derive data quantity (quantity empty)");

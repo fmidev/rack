@@ -97,7 +97,7 @@ public:
 		return PREFIX;
 	}
 
-
+	/// Install command initialized and stored by command bank.
 	template <class CMD>
 	Command & install(const std::string & name, char alias = 0){
 		Command & cmd = cmdBank.add<CMD>(name,alias);
@@ -105,6 +105,7 @@ public:
 		return cmd;
 	}
 
+	/// Install external command.
 	template <class CMD>
 	Command & install(char alias = 0){
 		std::string name = CMD().getName();
@@ -112,6 +113,32 @@ public:
 		return install<CMD>(name, alias);
 	}
 
+	/// Install external command.
+	/**
+	 *  Use this method if bank based command is inapplicable.
+	 *  This is the case if the command constructor needs other objects upon initialization that cannot be assigned as default values in constructors.
+	 */
+	template <class CMD>
+	Command & install(CMD & cmdExt, const std::string & name, char alias = 0){
+		Command & cmd = cmdBank.addExternal(cmdExt, name,alias);// must give cmdExt, for copying
+		cmd.section |= getSection().index; // keep TRIGGER
+		return cmd;
+	}
+
+	/// Install external command.
+	/**
+	 *  Use this method if bank based command is inapplicable.
+	 *  This is the case if the command constructor needs other objects upon initialization that cannot be assigned as default values in constructors.
+	 */
+	template <class CMD>
+	Command & install(CMD & cmdExt, char alias = 0){
+		std::string name = cmdExt.getName();
+		CommandBank::deriveCmdName(name, PREFIX);
+		return install(cmdExt, name, alias);
+	}
+
+	// Deprecated method name - use plain install()
+	/*
 	template <class CMD>
 	Command & installExternal(CMD & cmdExt, const std::string & name, char alias = 0){
 		Command & cmd = cmdBank.addExternal(cmdExt, name,alias);// must give cmdExt, for copying
@@ -119,16 +146,16 @@ public:
 		return cmd;
 	}
 
+	// Deprecated method name - use plain install()
 	template <class CMD>
 	Command & installExternal(CMD & cmdExt, char alias = 0){
 		std::string name = cmdExt.getName();
 		CommandBank::deriveCmdName(name, PREFIX);
-		//Command & cmd = bank.addExternal(cmdExt, name,alias); // must give cmdExt, for copying
-		//cmd.section = getSection().index;
 		return installExternal(cmdExt, name, alias);
 	}
+	*/
 
-	/// Install to shared CommandBank.
+	/// Install to shared (global) CommandBank.
 	template <class CMD>
 	static
 	Command & installShared(const std::string & name, char alias = 0){
@@ -137,7 +164,7 @@ public:
 		return cmd;
 	}
 
-	/// Install to shared CommandBank.
+	/// Install to shared (global) CommandBank.
 	template <class CMD>
 	static
 	Command & installShared(char alias = 0){

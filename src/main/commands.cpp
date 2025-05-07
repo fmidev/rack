@@ -2458,27 +2458,38 @@ MainModule::MainModule(){ //
 
 	// Bank-referencing commands first
 	drain::HelpCmd help(cmdBank);
-	installExternal(help, 'h');
+	install(help, 'h');
+	//installExternal(help, 'h');
 
 	install<CmdHelpExample>();
 
 	drain::CmdScript script(cmdBank);
-	installExternal(script);
+	install(script);
+	// installExternal(script);
 
-	install<drain::CmdExecScript>();
+	// install<drain::CmdExecScript>();
+	DRAIN_CMD_INSTALL(drain::Cmd,ExecScript)();
 
 	drain::CmdExecFile execFile(cmdBank);
-	installExternal<drain::CmdExecFile>(execFile); // T param unneeded?
+	// installExternal(execFile); // T param unneeded?
+	install(execFile); // T param unneeded?
+	//installExternal<drain::CmdExecFile>(execFile); // T param unneeded?
+	linkRelatedCommands(script, execFile, ExecScript);
+
 
 	drain::CmdLog log(cmdBank);
-	installExternal(log); //  cmdLogFile; // consider abbr. -L ?
-
+	install(log); //  cmdLogFile; // consider abbr. -L ?
 
 	// Independent commands
-	install<CmdSelect>('s');
-	install<CmdSelectQuantity>('Q');
-	install<CmdSet>();
-	install<drain::CmdStatus>();
+	DRAIN_CMD_INSTALL(Cmd,Select)('s');
+	DRAIN_CMD_INSTALL(Cmd,SelectQuantity)('Q');
+	linkRelatedCommands(Select, SelectQuantity);
+
+	DRAIN_CMD_INSTALL(Cmd,Set)();
+	DRAIN_CMD_INSTALL(drain::Cmd,Status)();
+	// install<CmdSet>();
+	//install<drain::CmdStatus>();
+	linkRelatedCommands(Set, Status);
 
 	install<CmdEncoding>('e');
 	install<CmdEncoding>("target");  // alias
