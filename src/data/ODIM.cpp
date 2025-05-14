@@ -206,15 +206,21 @@ bool ODIM::getTime(drain::Time & t, const std::string &dateStr, const std::strin
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	try {
-		if (!dateStr.empty())
-			t.setTime(dateStr, ODIM::dateformat);
-		else
-			mout.note("empty date string");
 
-		if (!timeStr.empty())
+		if (!dateStr.empty()){
+			t.setTime(dateStr, ODIM::dateformat);
+		}
+		else {
+			mout.note("empty date string");
+			return false;
+		}
+
+		if (!timeStr.empty()){
 			t.setTime(timeStr, ODIM::timeformat);
-		else
+		}
+		else {
 			mout.note("empty time string");
+		}
 
 	}
 	catch (const std::exception &e) {

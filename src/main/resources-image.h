@@ -306,18 +306,18 @@ public:
 
 	inline
 	void unsetCurrentImages(){
-		currentImage     = NULL;
-		currentGrayImage = NULL;
+		currentImage     = nullptr;
+		currentGrayImage = nullptr;
 	}
 
 	void getImageStatus(drain::FlexVariableMap & statusMap) const;
 
 
 	/// Pointer to the last 2D data (image) processed
-	const Image *currentImage; // = NULL;
+	const Image *currentImage = nullptr; // = NULL;
 
 	/// Pointer to the last single-channel 2D data (image) processed
-	const Image *currentGrayImage; // = NULL;  // data or grayImage
+	const Image *currentGrayImage = nullptr; // = NULL;  // data or grayImage
 
 
 	Image grayImage;

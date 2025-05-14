@@ -296,10 +296,12 @@ void ImageContext::getImageInfo(const drain::image::Image *ptr, Variable & entry
 
 void ImageContext::updateImageStatus(drain::VariableMap & statusMap) const {
 
+
 	getImageInfo(&colorImage, statusMap["img:colorImage"]);
 	getImageInfo(&grayImage, statusMap["img:grayImage"]);
 	getImageInfo(currentImage, statusMap["img:currentImage"]);
 	getImageInfo(currentGrayImage, statusMap["img:currentGrayImage"]);
+
 
 }
 

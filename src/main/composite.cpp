@@ -82,18 +82,17 @@ double Compositor::applyTimeDecay(Composite & composite, double w, const ODIM & 
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	//const RackResources & resources = getResources();
-	//RackContext & ctx = getContext<RackContext>();
-
-	//Composite & composite = ctx.getComposite(RackContext::PRIVATE);
+	// const RackResources & resources = getResources();
+	// RackContext & ctx = getContext<RackContext>();
+	// Composite & composite = ctx.getComposite(RackContext::PRIVATE);
 
 	if (composite.decay < 1.0){
 
 		const double delayMinutes = composite.getTimeDifferenceMinute(odim);  // assume update done
-		mout.info("Delay minutes: " , delayMinutes );
+		//mout.info("Delay minutes: " , delayMinutes );
 
 		const double delayWeight = ::pow(composite.decay, delayMinutes);
-		mout.info("Scaled delay weight: "  , delayWeight  );
+		mout.info("Delay minutes: ", delayMinutes, " -> scaled delay weight: ", delayWeight);
 		if (delayWeight < 0.01)
 			mout.warn("decay (delay weight coeff) below 0.01" );  // SKIP?
 		w *= delayWeight;
@@ -103,6 +102,8 @@ double Compositor::applyTimeDecay(Composite & composite, double w, const ODIM & 
 		mout.warn("decay coeff (" , composite.decay , ") above 1.0, adjusting 1.0." );
 		composite.decay = 1.0;
 	}
+
+	// mout.debug("Decay based weight w=", w);
 
 	return w;
 }
@@ -958,7 +959,14 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		}
 		else {
 			mout.experimental(dstProduct );
-			mout.warn("dstProduct does not have claimed quantity: " , composite.odim.quantity ); // .getFirstData().data
+			if (dstProduct.hasQuality()){
+				mout.revised("Assigning qualityData to current image(s)");
+				ctx.setCurrentImages(dstProduct.getQualityData().data);
+			}
+			else {
+				mout.warn("dstProduct does not have claimed quantity: " , composite.odim.quantity ); // .getFirstData().data
+				ctx.unsetCurrentImages();
+			}
 			// ctx.statusFlags.set(drain::Status::DATA_ERROR);
 			// ctx.unsetCurrentImages();
 		}
@@ -982,70 +990,6 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 	// mout.warn("updateInternalAttributes 2:",  ctx.cartesianHi5.data.attributes);
 
 }
-
-
-
-
-
-
-
-
-
-
-/*
-// TODO: change to half-time in minutes
-class CompositeTimeDecay : public drain::SimpleCommand<double> {
-
-public:
-
-	//	CompositeTimeDecay() : drain::BasicCommand(__FUNCTION__, "Delay weight (0.9...1.0) per minute. 1=no decay. See --cTime"){
-	CompositeTimeDecay() : drain::SimpleCommand<double>(__FUNCTION__, "Delay weight (0.9...1.0) per minute. 1=no decay. See --cTime", "decay", 1.0){
-		//getParameters().link("decay", getResources().composite.decay = 1.0, "coeff");
-	};
-
-	inline
-	void exec() const {
-		RackContext & ctx = getContext<RackContext>();
-		//Composite & composite = getComposite();
-		ctx.composite.decay = value;
-	}
-
-};
-*/
-
-/// half-time in minutes
-/**
- *    x/2 = x * (1/2)^{t/T}
- *
- *	log(0.5) = t/T*log(0.5) =>
- class CompositeDecayTime : public drain::SimpleCommand<int> {
-
-	public:
-	CompositeDecayTime() : drain::SimpleCommand<int>(__FUNCTION__, "Delay half-time in minutes. 0=no decay", "time", 0, "minutes"){
-		//getParameters().link("halftime", getResources().composite.decay = 1.0, "coeff");
-	};
-
-	inline
-	void exec() const {
-		// Composite & composite = getComposite();
-		RackContext & ctx = getContext<RackContext>();
-		if (this->value > 0){
-			ctx.composite.decay = ::pow(0.5, 1.0 / static_cast<double>(value));
-		}
-		else {
-			ctx.composite.decay = 1.0;
-		}
-	}
-
-
-};
-*/
-
-
-
-
-
-
 
 
 }  // namespace rack::

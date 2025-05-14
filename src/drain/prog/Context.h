@@ -163,20 +163,14 @@ protected:
 	drain::VariableMap statusMap;
 
 	virtual
-	void updateStatus() const {
-		//void updateStatus(bool update=true) const {
-		// if (update){
-		statusMap["statusFlags"] = statusFlags.value;
-		statusMap["statusKeys"] = statusFlags.str();  //getKeys()
-		//}
-	};
+	void updateStatus() const;
 
 private:
 
 	static long int counter;
 
-
 	//drain::VariableMap statusMap;
+
 };
 
 

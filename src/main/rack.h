@@ -32,10 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "12.5"
+#define __RACK_VERSION__ "12.5.1"
 
 /**
- *  Version 12.0
+ *  Version 12
  *  - Revised QuantityMap, allowing retrieve("DBZXP")
  *  Release 12.1
  *  - StringTools: extractPrefix (common leading part)
@@ -51,8 +51,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Fix: PaletteOp get(), predefined cached palette
  *  Version 12.5
  *  - Input list read with <file>.lst
+ *  Release 12.5.1
+ *  - Fix: cExtract WEIGHT image pointers
  *
- *  Version 11.0
+ *  Version 11
  *  - Help supports "see also", linking related commands.
  *  - Initial SLD palette
  *  Release 11.1

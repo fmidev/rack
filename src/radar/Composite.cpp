@@ -708,10 +708,12 @@ double Composite::getTimeDifferenceMinute(const CartesianODIM & odimIn) const {
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	//mout.note(2) << "Tile time: " << tileTime.toStr("%Y/%m/%d %H:%M.%S") << mout.endl;
 
+
 	drain::Time compositeTime;
 	if (!odim.getTime(compositeTime)){
-		mout.warn("time:", odim.time);
-		mout.warn("composite date/time=(", odim.date, '/', odim.time, ") not set, but requested");
+		mout.fail("date: '", odim.date, "'");
+		mout.fail("time: '", odim.time, "'");
+		mout.warn("composite date-time='", odim.date, '-', odim.time, "' unset - returning difference 0.0");
 		return 0.0;
 	}
 	//compositeTime.setTime(odim.date, "%Y%m%d");
@@ -719,7 +721,7 @@ double Composite::getTimeDifferenceMinute(const CartesianODIM & odimIn) const {
 
 	drain::Time tileTime;
 	if (!odimIn.getTime(tileTime)){
-		mout.warn("tile date/time not set, but requested");
+		mout.warn("tile date/time unset - returning difference 0.0");
 		return 0.0;
 	}
 	// tileTime.setTime(odimIn.date, "%Y%m%d");
