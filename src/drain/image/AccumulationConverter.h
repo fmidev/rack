@@ -91,30 +91,31 @@ public:
 	void encodeDiff(double & diff) const {};
 
 	/// Returns the value when weight==0.0. Physically, this relates to results obtained under measurement accuracy.
-	virtual inline
-	double getNoDataMarker() const {
+	virtual // inline
+	double getNoDataMarker() const = 0; /* {
 		double value  = 0.0;
 		double weight = 0.0;
 		encode(value, weight);  // infinite loop, if encode uses marker?
 		return value;
-	}
+	}*/
 
 	/**
 	 *  Unchecked code!
 	 */
-	virtual inline
-	double getNoWeightDataMarker() const {
+	virtual // inline
+	double getWeightNoDataMarker() const = 0; /* {
 		double value  = 0.0;
 		double weight = 0.0;
 		encode(value, weight);
 		return weight;
 	}
+	*/
 
 	/// Returns a marker value which indicates that although data has been measured, it is not within required accuracy or is otherways unreliable.
-	virtual inline
-	double getNoReadingMarker() const {
+	virtual // inline
+	double getNoReadingMarker() const = 0; /* {
 		return 0.0;
-	}
+	}*/
 
 
 	/// Default output storage data type

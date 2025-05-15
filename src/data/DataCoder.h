@@ -96,14 +96,14 @@ public:
 	}
 
 	/// NEW, untested...
-	virtual
+	virtual inline
 	double getNoDataMarker() const override {
 		return dataODIM.nodata;
 	}
 
 	/// NEW, untested...
-	virtual
-	double getNoWeightDataMarker() const override {
+	virtual inline
+	double getWeightNoDataMarker() const override {
 		return qualityODIM.nodata;
 	}
 

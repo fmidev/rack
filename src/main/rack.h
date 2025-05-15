@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "12.5.1"
+#define __RACK_VERSION__ "12.5.3"
 
 /**
  *  Version 12
@@ -53,6 +53,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Input list read with <file>.lst
  *  Release 12.5.1
  *  - Fix: cExtract WEIGHT image pointers
+ *  Release 12.5.2-3
+ *  - Fix: cExtract WEIGHT nodata value for QIND
  *
  *  Version 11
  *  - Help supports "see also", linking related commands.

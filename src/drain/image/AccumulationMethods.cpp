@@ -156,7 +156,7 @@ void AccumulationMethod::extractWeight(const AccumulationArray & accArray, const
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	const double nodata = coder.getNoWeightDataMarker();
+	const double nodata = coder.getWeightNoDataMarker();
 	// mout.attention("NoDataMarker: ", nodata);
 
 	double weight;
@@ -614,8 +614,7 @@ void AverageMethod::extractWeight(const AccumulationArray & accArray, const Accu
 	unsigned int count;
 	double weight = 0.0;
 	coder.encodeWeight(weight);
-	//const double weightCode0 = weight;
-	const double nodata = coder.getNoDataMarker();
+	const double nodata = coder.getWeightNoDataMarker();
 
 
 	if (crop.empty()){
@@ -897,7 +896,7 @@ void WeightedAverageMethod::extractWeight(const AccumulationArray & accArray, co
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	const double nodata = coder.getNoDataMarker();
+	const double nodata = coder.getWeightNoDataMarker();
 	double weight;
 	unsigned int count;
 
