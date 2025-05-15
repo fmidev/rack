@@ -140,7 +140,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	const double relativeHeight = 1000.0 * (USE_METADATA_FLEVEL ? srcData.odim.freeze : freezingLevel.height) - srcData.odim.height;
 
 	if (USE_METADATA_FLEVEL){
-		mout.note("Using freezing level set in metadata: " , srcData.odim.freeze , " (km)" );
+		mout.note("Using freezing level set in meta data: " , srcData.odim.freeze , " (km)" );
 	}
 	mout.note("Site-relative freezing level height: " , relativeHeight , " (m)" );
 
@@ -150,7 +150,6 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 
 	for (unsigned int i = 0; i < srcData.odim.area.width; ++i) {
 
-
 		// if (SCAN){
 		beam = srcData.odim.getBinDistance(i);
 		height = Geometry::heightFromEtaBeam(elangleR, beam) - relativeHeight;
@@ -159,11 +158,10 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 		//quality = 1.0 - 0.5*freezingLayer(height);
 		quality = sqrt(pFreeze*pFreeze + pLiquid*pLiquid);
 
-		if ((i&31) == 0)
-			mout .debug3() << i << '\t' << beam << "m,\t h=" << height << "m,\t p=" << pFreeze <<"m, q=" << quality << mout.endl;
+		//if ((i&31) == 0)
+		//	mout.debug3() << i << '\t' << beam << "m,\t h=" << height << "m,\t p=" << pFreeze <<"m, q=" << quality << mout.endl;
 
 		// TODO: use str height information (HEIGHT in PseudoCAPPI)
-
 
 		for (unsigned int j = 0; j < srcData.odim.area.height; ++j) {
 
@@ -189,7 +187,7 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 						dstData.data.put(i,j, rateEnc );
 						dstQuality.data.put(i,j, quality);
 					}
-					dstQuality.data.put(i,j, quality*maxQuality);
+					dstQuality.data.put(i,j, quality*maxQuality); // ??? overrides
 					//dstQuality.data.putScaled(i, j);
 					//dstQuality.data.put(i,j, 250.0);
 				}

@@ -95,6 +95,19 @@ public:
 		return dataODIM.undetect;
 	}
 
+	/// NEW, untested...
+	virtual
+	double getNoDataMarker() const override {
+		return dataODIM.nodata;
+	}
+
+	/// NEW, untested...
+	virtual
+	double getNoWeightDataMarker() const override {
+		return qualityODIM.nodata;
+	}
+
+
 	virtual
 	bool decode(double & value) const override;
 

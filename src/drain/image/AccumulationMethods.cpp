@@ -156,7 +156,9 @@ void AccumulationMethod::extractWeight(const AccumulationArray & accArray, const
 
 	Logger mout(getImgLog(), __FUNCTION__, getName());
 
-	const double nodata = coder.getNoDataMarker();
+	const double nodata = coder.getNoWeightDataMarker();
+	// mout.attention("NoDataMarker: ", nodata);
+
 	double weight;
 
 	if (crop.empty()){

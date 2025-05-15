@@ -100,17 +100,13 @@ public:
 	 */
 	// TODO: freezinglevel as a polar pre-prod.
 	RainRateOp(double freezingLevel = 10.0, double freezingLevelThickness = 0.2, double z_ra=200.0, double z_rb=1.6, double z_sa=2000.0, double z_sb=2.0) :
-		//RackOp("RainRate",	"Computes rain rate [mm/h] from reflectance [dBZ].") {
-		PolarProductOp(__FUNCTION__,	"Estimates precipitation rate [mm/h] from reflectance [dBZ].") {
+		PolarProductOp(__FUNCTION__, "Estimates precipitation rate [mm/h] from reflectance [dBZ].") {
 
 		dataSelector.setQuantities("^DBZH$");
 		dataSelector.setMaxCount(1);
 
 		odim.product = "SURF";
 		odim.quantity = "RATE";
-
-		// defaultEncoding="S,0.0001,220"
-		// target="S,0.0001,220"
 
 		odim.type = "S";
 	}
