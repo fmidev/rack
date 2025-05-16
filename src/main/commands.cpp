@@ -1041,6 +1041,22 @@ protected:
 
 };
 
+class CmdSelectObject : public drain::SimpleCommand<> {
+
+public:
+
+	CmdSelectObject() : drain::SimpleCommand<>(__FUNCTION__, "Select input object for the next operation", "flags", "INPUT|POLAR|CARTESIAN") {
+	};
+
+
+	void exec() const {
+		RackContext & ctx  = getContext<RackContext>(); // this->template
+		ctx.inputFlags.set(value);
+	}
+
+};
+
+
 //class CmdRename : public  drain::BasicCommand {
 class CmdRename : public CmdMove {
 
@@ -2479,7 +2495,8 @@ MainModule::MainModule(){ //
 	// Independent commands
 	DRAIN_CMD_INSTALL(Cmd,Select)('s');
 	DRAIN_CMD_INSTALL(Cmd,SelectQuantity)('Q');
-	linkRelatedCommands(Select, SelectQuantity);
+	DRAIN_CMD_INSTALL(Cmd,SelectObject)();
+	linkRelatedCommands(Select, SelectQuantity, SelectObject);
 
 	DRAIN_CMD_INSTALL(Cmd,Set)();
 	DRAIN_CMD_INSTALL(drain::Cmd,Status)();

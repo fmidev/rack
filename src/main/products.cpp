@@ -131,6 +131,7 @@ public:
 	};
 
 	typedef std::map<std::string,std::string> map_t;
+
 	static
 	map_t quantityMap;
 
@@ -140,18 +141,8 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		/*
-		std::vector<std::string> s;
-		drain::StringTools::split(value, s, ",");
-		if (s[0] == "pSweep"){
-			if (s.size() > 1)
-				ctx.getStatusMap()["what:quantity"] = "";
-			else
-				ctx.getStatusMap()["what:quantity"] = "";
-		}
-		else {
-		  map_t::const_iterator it = quantityMap.find(s[0]);
-		*/
+		mout.deprecating("future versions may use --encoding quantity=... " );
+
 
 		map_t::const_iterator it = quantityMap.find(value.substr(0, value.find(',')));
 		if (it != quantityMap.end()){
@@ -170,6 +161,7 @@ public:
 };
 
 CmdOutputQuantity::map_t CmdOutputQuantity::quantityMap;
+
 
 
 
@@ -244,9 +236,11 @@ public:
 		// RackContext::CURRENT not ok, it can be another polar product
 		// const Hi5Tree & src = ctx.getHi5(RackContext::POLAR | RackContext::INPUT); // what about ANDRE processing?
 		const Hi5Tree & src = ctx.getHi5(
+				ctx.inputFlags,
 				RackContext::PRIVATE|RackContext::POLAR|RackContext::INPUT,
 				RackContext::SHARED |RackContext::POLAR|RackContext::INPUT
 		);
+		ctx.inputFlags.reset();
 
 		// mout.warn("Private ", ctx.id);
 		// mout.warn("BaseCtx ", getResources().baseCtx().id);
@@ -264,8 +258,6 @@ public:
 			mout.warn("Empty, but proceeding...");
 		}
 
-		// if (only if) ctx.append, then ctx? shared?
-		// Hi5Tree & dst = ctx.polarProductHi5; //getTarget();  //For AnDRe ops, src serves also as dst.
 
 		if (&src == &ctx.polarProductHi5){
 			mout.warn("src = ctx.polarProductHi5");
@@ -341,6 +333,7 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 	//ProductInstaller installer(drain::getCommandBank());
 	//ProductModule & installer = *this;
 
+
 	// Visualization of geometry etc
 	install<BeamAltitudeOp>();
 	install<DrawingOp>();
@@ -390,8 +383,7 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 	install<RainRateDPOp>(); //  rainRateDP;
 	// install<RainRateDPSimpleOp> rainRateDPSimple;
 
-	install<rack::FunctorOp>(); //  ftor;
-
+	install<rack::FunctorOp>(); //
 
 	// Geographical products
 	install<SunShineOp>(); //  sun;
@@ -399,20 +391,14 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 
 	const drain::FlagResolver::ivalue_t SECTION = getSection().index;
 	const char PREFIX = getPrefix();
-	// std::cerr << __FUNCTION__ << SECTION << ':' << PREFIX << std::endl;
-
-	/*
-	//cmdBank.addExternal(PREFIX, sweepCmd).section = SECTION;
-	std::cerr << __FUNCTION__ << sweepCmd.getName() << '\n';
-	std::string key(sweepCmd.getName());
-	std::cerr << __FUNCTION__ << key << '\n';
-	drain::CommandBank::deriveCmdName(key, PREFIX);
-	std::cerr << __FUNCTION__ << key << '\n';
-	cmdBank.addExternal(sweepCmd, key);
-	*/
 
 	static CmdSweep sweepCmd;
 	cmdBank.addExternal(PREFIX, sweepCmd).section = SECTION;
+
+	/*
+	static CmdInputObject inputSelectCmd;
+	cmdBank.addExternal(PREFIX, inputSelectCmd).section = SECTION;
+	*/
 
 	// Special command
 	static CmdOutputQuantity outputQuantityCmd;

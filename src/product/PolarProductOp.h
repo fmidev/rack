@@ -70,6 +70,8 @@ public:
 	static
 	const CoordinatePolicy polarCoordPolicy;
 
+
+
 protected:
 
 	bool aboveSeaLevel; // True, if altitude (input or output) is measured from sea level or radar site.

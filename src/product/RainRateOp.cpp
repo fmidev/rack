@@ -119,7 +119,8 @@ void RainRateOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> & ds
 	/// Check if elevation scan or a ground-level product.
 	const bool SCAN = (srcData.odim.product == "SCAN");
 	if (!SCAN){
-		mout.error("input data not of type SCAN " );
+		//mout.error("input data not of type SCAN " );
+		mout.special("input data not of type SCAN " );
 	}
 
 	const double elangleR = srcData.odim.getElangleR();

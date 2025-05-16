@@ -105,6 +105,8 @@ public:
 	/// Path prefix for output files. Move to resources?
 	std::string outputPrefix;
 
+	/// Add prefix, unless filePath starts with a slash '/'.
+	void resolveFilePath(const std::string & prefix, const std::string & filePath, std::string & finalFilePath);
 
 	/// TODO: inherit from ProductBase
 	/*
@@ -135,6 +137,8 @@ public:
 	//Hi5Tree & getHi5(h5_role::value_t filter);
 	//	return getHi5Full(filter);
 	// }
+
+	Hi5RoleFlagger inputFlags = 0;
 
 	/**
 	 *  \param filter - flags marking the allowed/desired properties (POLAR, INPUT, ...) in order of preference

@@ -107,20 +107,12 @@ const drain::EnumDict<Hdf5Context::Hi5Role>::dict_t drain::EnumDict<Hdf5Context:
 		DRAIN_ENUM_ENTRY(rack::Hdf5Context, INPUT),
 		DRAIN_ENUM_ENTRY(rack::Hdf5Context, POLAR),
 		DRAIN_ENUM_ENTRY(rack::Hdf5Context, CARTESIAN),
+		DRAIN_ENUM_ENTRY(rack::Hdf5Context, PRODUCT),
 		DRAIN_ENUM_ENTRY(rack::Hdf5Context, EMPTY),
 		DRAIN_ENUM_ENTRY(rack::Hdf5Context, PRIVATE),
 		DRAIN_ENUM_ENTRY(rack::Hdf5Context, SHARED),
 };
 
-/*
-const Hdf5Context::h5_role::ivalue_t Hdf5Context::CURRENT = h5_role::addEntry("CURRENT"); //,    **< Link also external targets *
-const Hdf5Context::h5_role::ivalue_t Hdf5Context::INPUT   = h5_role::addEntry("INPUT"); // ,      **< No not link, but add entry (void) *
-const Hdf5Context::h5_role::ivalue_t Hdf5Context::POLAR   = h5_role::addEntry("POLAR"); // =4,      **< No action *
-const Hdf5Context::h5_role::ivalue_t Hdf5Context::CARTESIAN=h5_role::addEntry("CARTESIAN"); // =8,  **< Throw exception *
-const Hdf5Context::h5_role::ivalue_t Hdf5Context::EMPTY   = h5_role::addEntry("EMPTY"); // =16,     **< Also accept empty  *
-const Hdf5Context::h5_role::ivalue_t Hdf5Context::PRIVATE = h5_role::addEntry("PRIVATE"); // =32,
-const Hdf5Context::h5_role::ivalue_t Hdf5Context::SHARED  = h5_role::addEntry("SHARED"); // =64     **< Try shared first  *
-*/
 
 /* This is basically good (by design), but _used_ wrong... So often flags not used, esp. PRIVATE, SHARED, EMPTY.
  *
@@ -139,6 +131,17 @@ Hi5Tree & Hdf5Context::getMyHi5(Hi5RoleFlagger::ivalue_t filter){
 	}
 	*/
 	//const Hi5Tree & cart = cartesianHi5;
+	//if ((filter & POLAR) || (filter & PRODUCT)){
+	if (filter & PRODUCT){
+		if (!polarProductHi5.empty()){
+			mout.experimental("Returning polar product");
+			return polarProductHi5;
+		}
+		else {
+			mout.warn("Polar product was requested, but not found");
+		}
+	}
+
 
 	// Return Cartesian product if it is non empty, or empty Cartesian is accepted.
 	if (filter & CARTESIAN){

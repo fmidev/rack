@@ -60,6 +60,33 @@ RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), Ima
 	outputPrefix = ctx.outputPrefix;
 }
 
+void RackContext::resolveFilePath(const std::string & prefix, const std::string & filePath, std::string & finalFilePath){
+
+	drain::Logger mout(this->log, __FILE__, __FUNCTION__);
+
+	if (filePath.at(0) != '/'){
+		finalFilePath = prefix + filePath;
+		// return finalFilePath;
+	}
+	else if (prefix.empty()){
+		finalFilePath = filePath;
+		// return filePath;
+	}
+	else {
+		mout.revised<LOG_NOTICE>("file path starts with '/' – omitting prefix '", prefix, "'");
+		size_t l = prefix.length();
+		if (prefix.at(l-1) == '/'){
+			// fullFilename = prefix + fileName;
+			// mout.warn("inputPrefix ends and file path start with '/'");
+			mout.warn("inputPrefix ends with '/'");
+		}
+		mout.advice("remove '/' from '", filePath,"' and append it to prefix if you meant '", prefix.substr(0,l-1), filePath, "'");
+		finalFilePath = filePath;
+		// return filePath;
+	}
+
+
+}
 
 // const std::string RackContext::validVariableChars("[a-zA-Z0-9][a-zA-Z0-9_:]*");
 
@@ -108,7 +135,7 @@ Hi5Tree & RackContext::getHi5Full(h5_role::value_t & filter) {
 Hi5Tree & RackContext::getHi5Full(Hi5RoleFlagger::ivalue_t filter) {
 //Hi5Tree & RackContext::getHi5(h5_role::value_t filter) {
 
-	drain::Logger mout( __FILE__, __FUNCTION__);
+	drain::Logger mout(this->log, __FILE__, __FUNCTION__);
 
 	const drain::EnumDict<Hdf5Context::Hi5Role>::dict_t & dict = drain::EnumDict<Hdf5Context::Hi5Role>::dict;
 

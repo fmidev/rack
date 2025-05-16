@@ -74,12 +74,34 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 
 	drain::Logger mout(ctx.log, getName().c_str()); // __FILE__
 
-	// mout.timestamp("BEGIN_FILEREAD");
+	if (fileName.empty()){
+		mout.error("empty filename");
+	}
 
-	mout.note("reading: ", fileName); // value );
+	mout.note("reading: ", fileName);
 
-	// TODO: expand?
-	std::string fullFilename = ctx.inputPrefix + fileName; // value ;
+	std::string fullFilename;
+	ctx.resolveFilePath(ctx.inputPrefix, fileName, fullFilename);
+	/*
+	if (fileName.at(0) != '/'){
+		fullFilename = ctx.inputPrefix + fileName;
+	}
+	else if (ctx.inputPrefix.empty()){
+		fullFilename = fileName;
+	}
+	else {
+		mout.revised<LOG_NOTICE>("file path starts with '/' – omitting inputPrefix '", ctx.inputPrefix, "'");
+		size_t l = ctx.inputPrefix.length();
+		if (ctx.inputPrefix.at(l-1) == '/'){
+			//fullFilename = ctx.inputPrefix + fileName;
+			//mout.warn("inputPrefix ends and file path start with '/'");
+			mout.warn("inputPrefix ends with '/'");
+			mout.advice("remove trailing '/' if you meant '", ctx.inputPrefix.substr(0,l-1), fileName, "'");
+		}
+		fullFilename = fileName;
+	}*/
+
+	mout.note("reading: ", fullFilename);
 
 
 	//const drain::CommandRegistry & r = drain::getRegistry();

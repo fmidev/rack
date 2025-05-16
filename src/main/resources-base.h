@@ -107,9 +107,10 @@ public:
 		INPUT=2,     // Latest input file
 		POLAR=4,     // Current Polar volume or product
 		CARTESIAN=8, // Accept Cartesian
-		EMPTY=16,    // Also accept empty
-		PRIVATE=32,  // File owned my this thread only
-		SHARED=64,   // File shared by all the threads
+		PRODUCT=16,  // To select polar product (POLAR,PRODUCT) instead of volume
+		EMPTY=32,    // Also accept empty
+		PRIVATE=64,  // File owned my this thread only
+		SHARED=128,   // File shared by all the threads
 	};
 
 	typedef drain::EnumFlagger<drain::MultiFlagger<Hi5Role> > Hi5RoleFlagger;

@@ -302,6 +302,8 @@ public:
 /// To be used like mout.warn(DRAIN_LOG_VAR(name))
 #define DRAIN_LOG_VAR(name) '#', #name, '=', name
 
+
+
 /// LogSourc e is the means for a function or any program segment to "connect" to a Log.
 /**
  *
@@ -630,7 +632,7 @@ public:
 	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & hint(const TT &... args){
-		static const Notification notif(__FUNCTION__, TextStyle::CYAN, TextStyle::DIM, TextStyle::UNDERLINE);
+		static const Notification notif(__FUNCTION__, TextStyle::CYAN, TextStyle::DIM, TextStyle::ITALIC);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
@@ -640,26 +642,12 @@ public:
 	template<int L=LOG_INFO,typename ... TT>
 	inline
 	Logger & revised(const TT &... args){
-		static const Notification notif(__FUNCTION__, TextStyle::YELLOW, TextStyle::DIM);
+		static const Notification notif(__FUNCTION__, TextStyle::YELLOW, TextStyle::ITALIC); // , TextStyle::DIM
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
 	};
 
-	/// Public, yet typically used "internally", when TIMING=true.
-	/*
-	template<typename ... TT>
-	inline
-	Logger & timing(const TT &... args){
-		static const Notification notif(__FUNCTION__, 7);
-		if (TIMING){ // ok here (also?)
-			initMessage<LOG_WARNING>(notif); // can be low, say WARNING level, because restricted with TIMING
-			flush(args...);
-			//std::cerr << args...;
-		};
-		return *this;
-	};
-	*/
 
 
 	/// Debug information.
@@ -701,15 +689,6 @@ public:
 		return *this;
 	};
 
-
-	/*
-	inline
-	Logger & debug(level_t level){
-		static const Notification notif("DEBUG*", 49);
-		return initMessage<LOG_DEBUG+1>(notif); // obsolete
-		//return *this;
-	};
-	*/
 
 	inline
 	Logger & log(level_t level){
