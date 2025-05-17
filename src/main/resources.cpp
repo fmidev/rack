@@ -64,6 +64,31 @@ void RackContext::resolveFilePath(const std::string & prefix, const std::string 
 
 	drain::Logger mout(this->log, __FILE__, __FUNCTION__);
 
+	if (filePath.empty()){
+		mout.error("empty filename: '", filePath, "'");
+	}
+	else if (filePath.at(0) == '/'){
+		mout.revised<LOG_NOTICE>("file path starts with '/' – omitting prefix '", prefix, "'");
+		size_t l = prefix.length();
+		if (prefix.at(l-1) == '/'){
+			mout.discouraged("inputPrefix ends with '/'");
+			mout.advice("remove '/' from '", filePath,"' and append it to prefix if you meant '", prefix.substr(0,l-1), filePath, "'");
+		}
+		finalFilePath = filePath;
+	}
+	else if (filePath.substr(0,2) == "./"){
+		mout.revised<LOG_NOTICE>("file path starts with './' – omitting prefix '", prefix, "'");
+		finalFilePath = filePath;
+	}
+	else if (prefix.empty()){
+		finalFilePath = filePath;
+		// return filePath;
+	}
+	else {
+		finalFilePath = prefix + filePath;
+	}
+
+	/*
 	if (filePath.at(0) != '/'){
 		finalFilePath = prefix + filePath;
 		// return finalFilePath;
@@ -73,17 +98,10 @@ void RackContext::resolveFilePath(const std::string & prefix, const std::string 
 		// return filePath;
 	}
 	else {
-		mout.revised<LOG_NOTICE>("file path starts with '/' – omitting prefix '", prefix, "'");
-		size_t l = prefix.length();
-		if (prefix.at(l-1) == '/'){
-			// fullFilename = prefix + fileName;
-			// mout.warn("inputPrefix ends and file path start with '/'");
-			mout.warn("inputPrefix ends with '/'");
-		}
-		mout.advice("remove '/' from '", filePath,"' and append it to prefix if you meant '", prefix.substr(0,l-1), filePath, "'");
 		finalFilePath = filePath;
 		// return filePath;
 	}
+	*/
 
 
 }

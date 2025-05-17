@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "12.6"
+#define __RACK_VERSION__ "12.6.1"
 
 /**
  *  Version 12
@@ -57,6 +57,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Fix: cExtract WEIGHT nodata value for QIND
  *  Version 12.6
  *  - New selector: --selectObject (esp. for rain rate, POLAR or POLAR,PRODUCT)
+ *  Release 12.6.1
+ *  - Path prefix: omit if starts with / or ./
  *
  *  Version 11
  *  - Help supports "see also", linking related commands.
