@@ -82,24 +82,6 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 
 	std::string fullFilename;
 	ctx.resolveFilePath(ctx.inputPrefix, fileName, fullFilename);
-	/*
-	if (fileName.at(0) != '/'){
-		fullFilename = ctx.inputPrefix + fileName;
-	}
-	else if (ctx.inputPrefix.empty()){
-		fullFilename = fileName;
-	}
-	else {
-		mout.revised<LOG_NOTICE>("file path starts with '/' – omitting inputPrefix '", ctx.inputPrefix, "'");
-		size_t l = ctx.inputPrefix.length();
-		if (ctx.inputPrefix.at(l-1) == '/'){
-			//fullFilename = ctx.inputPrefix + fileName;
-			//mout.warn("inputPrefix ends and file path start with '/'");
-			mout.warn("inputPrefix ends with '/'");
-			mout.advice("remove trailing '/' if you meant '", ctx.inputPrefix.substr(0,l-1), fileName, "'");
-		}
-		fullFilename = fileName;
-	}*/
 
 	mout.note("reading: ", fullFilename);
 

@@ -67,22 +67,24 @@ void RackContext::resolveFilePath(const std::string & prefix, const std::string 
 	if (filePath.empty()){
 		mout.error("empty filename: '", filePath, "'");
 	}
+	else if (prefix.empty()){
+		finalFilePath = filePath;
+	}
 	else if (filePath.at(0) == '/'){
 		mout.revised<LOG_NOTICE>("file path starts with '/' – omitting prefix '", prefix, "'");
+		mout.advice("append '/' to prefix if you meant '", prefix, filePath, "'");
+		/*
 		size_t l = prefix.length();
 		if (prefix.at(l-1) == '/'){
-			mout.discouraged("inputPrefix ends with '/'");
+			//mout.discouraged("inputPrefix ends with '/'");
 			mout.advice("remove '/' from '", filePath,"' and append it to prefix if you meant '", prefix.substr(0,l-1), filePath, "'");
 		}
+		*/
 		finalFilePath = filePath;
 	}
 	else if (filePath.substr(0,2) == "./"){
 		mout.revised<LOG_NOTICE>("file path starts with './' – omitting prefix '", prefix, "'");
 		finalFilePath = filePath;
-	}
-	else if (prefix.empty()){
-		finalFilePath = filePath;
-		// return filePath;
 	}
 	else {
 		finalFilePath = prefix + filePath;

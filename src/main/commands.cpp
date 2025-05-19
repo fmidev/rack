@@ -382,6 +382,22 @@ protected:
 
 const std::map<std::string,std::string> CmdSelectQuantity::transTable = {{",", "|"}, {"*",".*"}, {"?","."}};
 
+class CmdSelectObject : public drain::SimpleCommand<> {
+
+public:
+
+	CmdSelectObject() : drain::SimpleCommand<>(__FUNCTION__, "Select input object for the next operation", "flags", "INPUT|POLAR|CARTESIAN") {
+	};
+
+
+	void exec() const {
+		RackContext & ctx  = getContext<RackContext>(); // this->template
+		ctx.inputFlags.set(value);
+	}
+
+};
+
+
 /// Modifies metadata (data attributes).
 /**
 
@@ -1038,21 +1054,6 @@ protected:
 
 
 
-
-};
-
-class CmdSelectObject : public drain::SimpleCommand<> {
-
-public:
-
-	CmdSelectObject() : drain::SimpleCommand<>(__FUNCTION__, "Select input object for the next operation", "flags", "INPUT|POLAR|CARTESIAN") {
-	};
-
-
-	void exec() const {
-		RackContext & ctx  = getContext<RackContext>(); // this->template
-		ctx.inputFlags.set(value);
-	}
 
 };
 

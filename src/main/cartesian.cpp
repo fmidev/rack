@@ -325,7 +325,7 @@ CartesianModule::CartesianModule(drain::CommandBank & bank) : module_t(bank) {
 	linkRelatedCommands(BBox, BBoxTest);
 
 	DRAIN_CMD_INSTALL(Cartesian,Extract)();
-	linkRelatedCommands(Add, Extract);
+	linkRelatedCommands(Add, AddWeighted, Extract);
 
 	DRAIN_CMD_INSTALL(Cartesian,Init)();
 	DRAIN_CMD_INSTALL(Composite,Method)();
