@@ -456,6 +456,15 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 }
 
 
+void TreeUtilsSVG::superAlignNEW(TreeSVG & object, AlignBase::Axis orientation, LayoutSVG::Direction direction){ //, const Point2D<svg::coord_t> & offset){ // offsetInit
+
+	Logger mout(__FILE__, __FUNCTION__);
+
+	if (object->isAbstract()){
+		return;
+	}
+
+}
 
 /**  Iteratively traverses elements of ALIGN_GROUP, and (re)aligns elements inside them as panels.
  *
@@ -465,17 +474,6 @@ void TreeUtilsSVG::translateAll(TreeSVG & object, const Point2D<svg::coord_t> & 
 	if (object->isAbstract()){
 		return;
 	}
-	/*
-	switch (object->getType()){
-	case NodeXML<svg::tag_t>::STYLE:
-	case svg::DESC:
-	case svg::METADATA:
-	case svg::TITLE:
-		return;
-	default:
-		break;
-	}
-	*/
 
 	// For many elements (like group, "G"), this property is hidden hence not appearing in attributes.
 	BBoxSVG & bbox = object->getBoundingBox();

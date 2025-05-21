@@ -57,7 +57,7 @@ protected:
 		DetectorOp(name, description, classCode), dbzPeak(+5),  VRAD_FLIP(false), zdrAbsMin(+2.0)  {
 		//dataSelector.setQuantityRegExp("^(DBZH|VRAD|VRADH|RHOHV|ZDR)$");
 		dataSelector.setQuantities("DBZH:VRAD:VRADH:RHOHV:ZDR");
-		dataSelector.setMaxCount(1);
+		// dataSelector.setMaxCount(1);
 	};
 
 	/**

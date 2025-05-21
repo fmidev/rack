@@ -33,8 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "PolarProductOp.h"
 #include "drain/imageops/ImageOp.h"
+#include "radar/Doppler.h"
+
 #include "DetectorOp.h"
-#include "../radar/Doppler.h"
 
 using namespace drain::image;
 
@@ -64,7 +65,7 @@ public:
 		// dataSelector.path = "da ta[0-9]+/?$";
 		// dataSelector.setQuantityRegExp("^(VRAD|VRADH)$");
 		dataSelector.setQuantities("VRADH:VRAD");
-		dataSelector.setMaxCount(1);
+		// dataSelector.setMaxCount(1);
 
 		parameters.link("speedDevThreshold", this->speedDevThreshold = speedDevThreshold, "Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)");
 		parameters.link("windowWidth", this->conf.widthM = windowWidthM, "window width, beam-directional (m)"); //, "[m]");
@@ -82,7 +83,7 @@ public:
 	inline
 	~DopplerNoiseOp(){};
 
-	double speedDevThreshold;
+	double speedDevThreshold = 3.0;
 	DopplerDevWindow::conf_t conf;
 
 

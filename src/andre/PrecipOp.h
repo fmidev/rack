@@ -67,7 +67,7 @@ public:
 		//parameters.link("qualityThreshold", this->qualityThreshold = 0.95, "minimum quality");
 		UNIVERSAL = true;
 		dataSelector.setQuantities("DBZH$");
-		dataSelector.setMaxCount(1);
+		// dataSelector.setMaxCount(1);
 		REQUIRE_STANDARD_DATA = false;
 	};
 
@@ -110,7 +110,7 @@ public:
 
 		//dataSelector.setQuantityRegExp("DBZH$");
 		dataSelector.setQuantities("DBZH:DBZ");
-		dataSelector.setMaxCount(1);
+		// dataSelector.setMaxCount(1);
 		REQUIRE_STANDARD_DATA = false;
 	};
 

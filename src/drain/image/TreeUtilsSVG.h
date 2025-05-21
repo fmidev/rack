@@ -122,6 +122,8 @@ public:
 	void superAlign(TreeSVG & node, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR);
 	//const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
 
+	static
+	void superAlignNEW(TreeSVG & node, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR);
 
 
 	// static

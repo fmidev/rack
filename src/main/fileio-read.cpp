@@ -83,7 +83,7 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 	std::string fullFilename;
 	ctx.resolveFilePath(ctx.inputPrefix, fileName, fullFilename);
 
-	mout.note("reading: ", fullFilename);
+	mout.debug("full path: ", fullFilename);
 
 
 	//const drain::CommandRegistry & r = drain::getRegistry();

@@ -82,7 +82,7 @@ public:
 		UNIVERSAL = true;
 		//dataSelector.setQuantityRegExp("^DBZH$");
 		dataSelector.setQuantities("DBZH:DBZ");
-		dataSelector.setMaxCount(1);
+		// dataSelector.setMaxCount(1); NEW 2025
 		REQUIRE_STANDARD_DATA = false;
 
 

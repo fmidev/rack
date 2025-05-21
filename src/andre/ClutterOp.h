@@ -73,7 +73,7 @@ public:
 		UNIVERSAL = true;
 
 		dataSelector.setQuantities("");  // or FREQ?
-		dataSelector.setMaxCount(1);
+		// dataSelector.setMaxCount(1);
 
 		parameters.link("decay", this->decay = decay, "per 1000m");
 		parameters.link("gamma", this->gamma = gamma, "brightness");
