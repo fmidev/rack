@@ -734,7 +734,8 @@ double Composite::getTimeDifferenceMinute(const CartesianODIM & odimIn) const {
 	return static_cast<double>(abs(compositeTime.getTime() - tileTime.getTime()))/60.0;
 }
 
-void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields,  const drain::Rectangle<int> & cropArea, const std::string & encoding){
+// void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields,  const drain::Rectangle<int> & cropArea, const std::string & encoding){
+void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields,  const drain::Rectangle<int> & cropArea, const std::string & encoding){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -801,14 +802,21 @@ void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const
 
 	for (FieldType field: fieldList) {
 		// mout.attention("FIELD: ", (char)(((int)field)&127), '=', FieldFlagger::getKeysNEW2(field));
-		extractNEW(dstProduct, field, cropArea, encoding);
+		pdata_dst_t & dstData = extract(dstProduct, field, cropArea, encoding);
+
+		if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS) && !legend.empty()){
+			mout.experimental("Copying (moving) legend for ", field);
+			dstData.getWhat()["legend"] = drain::sprinter(legend, "|", ",", ":").str();
+			legend.clear();
+		}
 	}
 
 
 }
 
 
-void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field, const drain::Rectangle<int> & cropArea, const std::string & encoding){
+//void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field, const drain::Rectangle<int> & cropArea, const std::string & encoding){
+Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field, const drain::Rectangle<int> & cropArea, const std::string & encoding){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -899,8 +907,18 @@ void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldT
 
 			dstData.data.setType(odimData.type);
 			mout.debug3("dstData: " , dstData );
-			//mout.debug("quantfieldquantity );
 			this->Accumulator::extractField(fieldChar, dataCoder, dstData.data, cropArea);
+
+			return dstData;
+			/*
+			if (!legend.empty()){
+				if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS)){
+					mout.experimental("Copying (moving) legend for ", field);
+					dstData.getWhat()["legend"] = drain::sprinter(legend, "|", ",", ":").str();
+					legend.clear();
+				}
+			}
+			*/
 		}
 		else {
 
@@ -956,6 +974,16 @@ void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldT
 			dstQuality.data.setType(odimQuality.type);
 			mout.debug3("dstData: " , dstQuality );
 			this->Accumulator::extractField(fieldChar, dataCoder, dstQuality.data, cropArea);
+
+			return dstQuality;
+			/*
+			if (!legend.empty()){
+				mout.experimental("Copying (moving) legend for ", field);
+				dstQuality.getWhat()["legend"] = drain::sprinter(legend, "|", ",", ":").str();
+				legend.clear();
+			}
+			*/
+
 		}
 
 

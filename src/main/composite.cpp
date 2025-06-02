@@ -318,11 +318,13 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			return;
 		}
 
-		mout.accept<LOG_INFO>("using input path: ", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
+		//mout.accept<LOG_INFO>("using input path: ", dataPath, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
 
 		ODIMPathElem current = dataPath.back();
 		ODIMPath parent = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
 		parent.pop_back();
+
+		mout.accept<LOG_INFO>("using input path: ", parent, "|/", current, " [", polarSrc.odim.quantity, "] elangle=", polarSrc.odim.elangle);
 
 		#pragma omp critical
 		{
@@ -396,21 +398,41 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			mout.debug( "subComposite defined: BBOX=", composite.getBoundingBoxDeg(), ", quantity: ", composite.odim.quantity, "'");
 			mout.debug2("subComposite: ", composite, '\n', composite.odim);
 
-
 			// subComposite.addPolar(polarSrc, 1.0, projectAEQD); // Subcomposite: always 1.0.
 			// const PlainData<PolarSrc> & srcQuality = polarSrc.hasQuality() ? polarSrc.getQualityData("QIND");
 			// ODIMPathElem	current = dataPath.back();
 			// ODIMPath..parent  = dataPath; // note: typically dataset path, but may be e.g. "data2", for "quality1"
 			// parent.pop_back();
 
+
+
+			//mout.attention("current: ", src(parent));
+			//hi5::Hi5Base::writeText(src(parent), std::cout);
+
+			const drain::VariableMap & what = src(dataPath)[ODIMPathElem::WHAT].data.attributes;
+			//			mout.attention(parent, '|', current, " ATTR: ", what);
+			// TODO: consider copying all the features to composite.metadata(Map) ?
+			const drain::Variable & legend = what["legend"];
+
+			if (!legend.empty()){
+				legend.toMap(composite.legend, ',', ':');
+				mout.attention("TODO: copy LEGEND: ", legend, "-> ", drain::sprinter(composite.legend));
+			}
+			else {
+				composite.legend.clear();
+			}
+
+
 			//mout.warn(parent , "/HOW" , src(parent)[ODIMPathElem::HOW].data.attributes );
 			//mout.warn(datasetPath , "/HOW" , src[datasetPath][ODIMPathElem::HOW].data.attributes );
 			const drain::VariableMap & how = src(parent)[ODIMPathElem::HOW].data.attributes;
 
-			if (how["angles"].getElementCount() > 0)
+			if (how["angles"].getElementCount() > 0){
 				how["angles"].toSequence(composite.odim.angles);
-			else if (!polarSrc.odim.angles.empty())
+			}
+			else if (!polarSrc.odim.angles.empty()){
 				composite.odim.angles = polarSrc.odim.angles;
+			}
 			else {
 				composite.odim.angles.resize(1, polarSrc.odim.elangle);
 				//compositeAngles = polarSrc.odim.elangle;
@@ -802,41 +824,23 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 		// mout.attention("Upd...");
 		drain::SmartMapTools::updateValues(dstRoot.odim, composite.odim);
 
-		// mout.special("dstRoot.odim: ", dstRoot.odim);
-		// mout.warn(composite.odim );
-
-		/**
-		 *  composite.odim stores properties of (first) input data
-		 *
-		 *  composite.getTargetEncoding() stores desired encoding
-		 *
-			mout.special("targetEncoding: ", composite.getTargetEncoding());
-		 */
-
-		// Problem: this is data-quantity dominated (like DBZH, while searching for s=std.dev)
-		// ProductBase::completeEncoding(dstRoot.odim, composite.getTargetEncoding());
-		// const bool SPECIAL_ENCODING = ! resources.baseCtx().targetEncoding.empty();
-		// const std::string & encoding = SPECIAL_ENCODING ? resources.baseCtx().targetEncoding : composite.getTargetEncoding();
-
 		std::string & encoding = resources.baseCtx().targetEncoding;
 
-		/*
-		mout.attention("Extracting...");
-		if (encoding.empty()){
-			mout.special("using specified encoding: ", encoding);
-		}
-		*/
-
-		//if (!encoding.empty()){
-		mout.attention<LOG_DEBUG>("Calling: composite.extractNEW2() channels=", channels, " encoding:", encoding);
-		//}
+		mout.attention<LOG_DEBUG>("Calling: composite.extract() channels=", channels, " encoding:", encoding);
 		// mout.reject<LOG_NOTICE>("pre-extract EPSG:", composite.projGeo2Native.getDst().getEPSG());
 		// mout.reject<LOG_NOTICE>("pre-extract proj:", composite.projGeo2Native.getDst().getProjDef());
 
-		composite.extractNEW2(dstProduct, channels, cropImage, encoding);
-
+		/// MAIN!composite.legend
+		composite.extract(dstProduct, channels, cropImage, encoding);
 		encoding.clear();
-		// resources.baseCtx().targetEncoding.clear();
+
+		/*
+		if (!composite.legend.empty()){
+			mout.experimental("Copying (moving) legend");
+			dstProduct.getWhat()["legend"] = drain::sprinter(composite.legend, "|", ",", ":").str();
+			composite.legend.clear();
+		}
+		*/
 
 		// mout.warn("extracted data: " , dstProduct ); // .getFirstData().data
 

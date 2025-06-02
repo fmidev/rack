@@ -98,8 +98,6 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 		style->setType(svg::STYLE);
 
-		// style[svg::SVG] = {};
-
 		style[svg::TEXT] = {
 				{"font-family","Helvetica, Arial, sans-serif"},
 				{"stroke", "none"},
@@ -115,7 +113,6 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"stroke-linejoin", "round"}
 		};
 
-		// style[SelectorXMLcls(PanelConfSVG::GROUP_TITLE)] = {		};
 
 		style[SelectorXMLcls(svg::RECT, PanelConfSVG::GROUP)] = {
 				{"fill", "gray"},
@@ -128,17 +125,12 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 		};
 
 
-		// style[SelectorXMLcls(PanelConfSVG::MAIN_TITLE)] = {};
-
-		// style["rect.MAIN_TITLE"] = {
 		style[SelectorXMLcls(svg::RECT, PanelConfSVG::MAIN)] = {
 				{"fill", "darkblue"},
 				{"opacity", 1.0},
 		};
 
-		// style["text.MAIN_TITLE"] = {
 		style[SelectorXMLcls(svg::TEXT, PanelConfSVG::MAIN)] = {
-				// {"font-size", 20.0}, dynamic, see below
 				{"fill", "white"},
 		};
 

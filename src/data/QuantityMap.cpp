@@ -437,8 +437,8 @@ QuantityMap & getQuantityMap() {
 					},
 					'S',
 					{
-							{'C', 1.0},
-							{'S', 1.0}
+							{'C', 1.0, 0.0},  // NOTE: zero value overlapping undetect
+							{'S', 1.0, 0.0}   // NOTE: zero value overlapping undetect
 					}
 			}
 			},

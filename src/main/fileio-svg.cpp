@@ -394,25 +394,27 @@ public:
 
 
 
-class CmdGroupTitle : public drain::BasicCommand {
+//class CmdGroupTitle : public drain::BasicCommand {
+class CmdGroupTitle : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdGroupTitle() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
-		RackContext & ctx = getContext<RackContext>();
+	//CmdGroupTitle() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
+	CmdGroupTitle() : drain::SimpleCommand<std::string>(__FUNCTION__, "Set titles, supporting variables", "syntax") {
+		// RackContext & ctx = getContext<RackContext>();
 		getParameters().separator = 0;
-		getParameters().link("syntax", ctx.svgPanelConf.groupTitleSyntax, "example: '${what:date|%Y%m} ${NOD}'");
+		// getParameters().link("syntax", ctx.svgPanelConf.groupTitleSyntax, "example: '${what:date|%Y%m} ${NOD}'");
 	}
 
-	CmdGroupTitle(const CmdGroupTitle & cmd) : drain::BasicCommand(cmd) {
-		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+	CmdGroupTitle(const CmdGroupTitle & cmd) : drain::SimpleCommand<std::string>(cmd) { // drain::BasicCommand(cmd) {
+		// getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
 	}
 
 	void exec() const override {
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-		drain::StringTools::replace(ctx.svgPanelConf.groupTitleSyntax, '/', '-', ctx.svgPanelConf.groupTitleSyntax);
+		// drain::StringTools::replace(ctx.svgPanelConf.groupTitleSyntax, '/', '-', ctx.svgPanelConf.groupTitleSyntax);
+		drain::StringTools::replace(value, '/', '-', ctx.svgPanelConf.groupTitleSyntax);
 		mout.accept<LOG_WARNING>("new value: ", ctx.svgPanelConf.groupTitleSyntax);
 	}
 

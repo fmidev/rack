@@ -224,15 +224,17 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 	}
 
 	/// Copy attributes (group or image)
-	for (drain::VariableMap::const_iterator it = attributes.begin(); it != attributes.end(); it++){
-		dataToH5Attribute(it->second, fid, path, it->first);
+	//for (drain::VariableMap::const_iterator it = attributes.begin(); it != attributes.end(); it++){
+	for (const auto & entry: attributes){
+		dataToH5Attribute(entry.second, fid, path, entry.first);
+		//dataToH5Attribute(it->second, fid, path, it->first);
 	}
 
 	if (attributes.hasKey("legend")){
 
 		const drain::Variable & leg = attributes["legend"];
 
-		mout.special("experimental: writing legend ", leg);
+		mout.special<LOG_INFO>("writing legend ", leg);
 
 		if (!path.back().is(Hi5Tree::path_t::elem_t::WHAT)){ // FIX
 			mout.info("legend attribute found at ", path.back(), ", should be at what/' ");
@@ -243,7 +245,7 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 
 		if (!tree.hasChild(legend)){
 
-			// Writing compounds requires classes using basic types and/or std::string.
+			// Writing compounds requires classes using basic types and std::string.
 			std::map<int, std::string> entries;
 			leg.toMap(entries, ',', ':');
 
@@ -252,12 +254,12 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 				p.pop_back(); // strip "/how"
 			p << legend;
 
-			mout.special("legend path=", p);
+			mout.special<LOG_DEBUG>("legend path=", p);
 			Writer::mapToH5Compound(entries, fid, p, "code", "class");
 
 		}
 		else {
-			mout.warn("legend already in path ", path, ", skipping.");
+			mout.warn("legend exists already '", path, "', skipping.");
 		}
 
 	}

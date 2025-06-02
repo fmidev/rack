@@ -113,7 +113,7 @@ struct HiddenSection : public CommandSection {
 struct DeprecatingSection : public CommandSection {
 
 	inline
-	DeprecatingSection(): CommandSection("deprecating", 1){ // consider fixed number?
+	DeprecatingSection(): CommandSection("deprecating"){ // , 1){ // consider fixed number?
 	};
 
 };
@@ -122,7 +122,7 @@ struct DeprecatingSection : public CommandSection {
 struct GeneralSection : public CommandSection {
 
 	inline
-	GeneralSection(): CommandSection("general", 2){
+	GeneralSection(): CommandSection("general"){ // , 2){
 	};
 
 };
@@ -131,7 +131,7 @@ struct GeneralSection : public CommandSection {
 struct TriggerSection : public CommandSection {
 
 	inline
-	TriggerSection(): CommandSection("trigger", 4){
+	TriggerSection(): CommandSection("trigger"){ // , 4){
 	};
 
 };

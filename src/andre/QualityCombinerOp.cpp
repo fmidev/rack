@@ -172,7 +172,7 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 	drain::VariableMap & classWhat = dstClass.getWhat();
 	std::stringstream sstr;
 
-	mout.attention("str legend revised");
+	mout.debug("string legend revised");
 	sstr << index << ':' << label;
 	/*
 	const classdict_t & dict = getClassPalette().dictionary;

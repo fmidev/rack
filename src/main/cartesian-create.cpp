@@ -183,6 +183,7 @@ void CartesianReset::exec() const {
 	ctx.composite.odim.source.clear();
 	ctx.composite.nodeMap.clear();
 	ctx.composite.odim.clear(); // 2022/12
+	ctx.composite.legend.clear();
 	ctx.unsetCurrentImages();
 
 	// Consider including in reset:

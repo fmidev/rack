@@ -619,6 +619,43 @@ void CmdOutputFile::exec() const {
 		drain::Output output(path.str());
 		drain::TreeUtils::dump<Hi5Tree,true>(src, output, DataTools::treeToStream);
 	}
+	else if (path.extension == "inf"){
+		// mout.advice("Use dedicated --outputTree to apply formatting");
+		drain::Output output(path.str());
+
+		// TODO: consider Data<polar> object, with PolarODIM
+
+
+
+		ODIM odim;
+		odim.date = src[ODIMPathElem::WHAT].data.attributes.get("date", "");
+		odim.time = src[ODIMPathElem::WHAT].data.attributes.get("time", "");
+		drain::Time time;
+		odim.getTime(time);
+		std::cerr << "base TIME: " << time.getTime() << '\n';
+
+		for (const auto & datasetGroup: src){
+			if (datasetGroup.first.is(ODIMPathElem::DATASET)){
+				// datasetGroup.second[ODIMPathElem::WHAT].data.attributes.get("date", "");
+				// datasetGroup.second[ODIMPathElem::WHAT].data.attributes.get("time", "");
+				DataSet<PolarSrc> dataSet(datasetGroup.second);
+				std::cerr << dataSet << '\n';
+
+				output << datasetGroup.first << '=';
+				std::set<std::string> quantities; // keep ordered
+				for (const auto & dataGroup: datasetGroup.second){
+					if (dataGroup.first.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
+						quantities.insert(dataGroup.second[ODIMPathElem::WHAT].data.attributes.get("quantity", "?"));
+						// output << dataGroup.second[ODIMPathElem::WHAT].data.attributes.get("quantity", "?") << ':';
+					}
+				}
+				//output.getStream() << ((drain::StringBuilder<','>(quantities2)).str());
+				output << drain::sprinter(quantities, ",");
+				output << '\n';
+			}
+		}
+		//drain::TreeUtils::dump<Hi5Tree,true>(src, output, DataTools::treeToStream);
+	}
 	else {
 
 		mout.info("File format: text");

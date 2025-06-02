@@ -164,10 +164,10 @@ void DetectorOp::runDetection(const DataSetMap<PolarSrc> & srcVolume, DataSetMap
 			/// MAIN COMMAND
 			runDetection(srcDataSet, dstProb,  dstDataSet);
 
+			const double classCodeValue = dstClass.odim.scaleInverse(classEntry.first);
+			mout.special("Marking class [", CLASSNAME, "] with data value=", classCodeValue);
+			QualityCombinerOp::updateOverallDetection(dstProb.data, dstQind, dstClass, CLASSNAME, classCodeValue);
 
-			//QualityCombinerOp::updateOverallDetection(srcProb, dstQind, dstClass, CLASSNAME, classCode);
-			//QualityCombinerOp::updateOverallDetection(dstProb.data, dstQind, dstClass, CLASSNAME, classCode);
-			QualityCombinerOp::updateOverallDetection(dstProb.data, dstQind, dstClass, CLASSNAME, classEntry.first);
 			//File::write(dstQind.data, "dstQind2.png");
 			//File::write(dstClass.data, "dstClass2.png");
 			//mout.note(dstDataSet );

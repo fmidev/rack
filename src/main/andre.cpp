@@ -173,12 +173,12 @@ public:
 
 	/// Set implicit parameters
 	virtual
-	void update(){
+	void update() override {
 
 		RackContext & ctx = this->template getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );
 
-		mout.attention("Applying data selector and targetEncoding ");
+		// mout.debug("Applying data selector and targetEncoding ");
 
 		if (!ctx.select.empty()){
 			mout.info("Storing AnDRe selector: ", ctx.select);
@@ -201,7 +201,7 @@ public:
 	}
 
 	virtual
-	void exec() const {
+	void exec() const override {
 
 		RackContext & ctx = this->template getContext<RackContext>();
 
@@ -248,7 +248,7 @@ public:
 	*/
 
 	virtual
-	void update(){
+	void update() override {
 
 		RackContext & ctx = this->template getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName() );

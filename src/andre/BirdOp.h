@@ -60,23 +60,6 @@ protected:
 		// dataSelector.setMaxCount(1);
 	};
 
-	/**
-	 *
-	 *  \param dbzPeak
-	 *  \param vradDevMin
-	 *  \param rhoHVmax
-	 *  \param zdrAbsMin
-	 *  \param windowWidth
-	 *  \param windowHeight
-	 *
-	BiometeorOp(double dbzPeak = -5.0, double vradDev = 5.0, double rhoHV = 0.7, double zdrAbs = 2.0, double windowWidth = 2500, double windowHeight = 5.0) :
-
-		DetectorOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.bird"){ // Optional postprocessing: morphological closing.
-
-		init(dbzPeak, vradDev, rhoHV, zdrAbs, windowWidth, windowHeight);
-
-	};
-	 */
 
 	inline
 	GliderOp(const GliderOp & op) : DetectorOp(op), dbzPeak(0.0), VRAD_FLIP(false), zdrAbsMin(+2.0) {
@@ -175,11 +158,21 @@ public:
 
 	// BIRD: double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrAbsMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0
 
+	/**
+	 *
+	 *  \param dbzPeak
+	 *  \param vradDevMin
+	 *  \param rhoHVmax
+	 *  \param zdrAbsMin
+	 *  \param windowWidth
+	 *  \param windowHeight
+	 *
+	 */
 	InsectOp(double dbzPeak = -10.0, double vradDevMax = +5.0, double rhoHVmax = 0.7, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
 		GliderOp(__FUNCTION__, "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.insect"){
 		init(dbzPeak, vradDevMax, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 		// this->vradDev.max = 0.9 *vradDevMax;
-		//this->vradDev.min = 1.1 *vradDevMax;
+		// this->vradDev.min = 1.1 *vradDevMax;
 	};
 
 	InsectOp(const InsectOp & op) : GliderOp(op) {

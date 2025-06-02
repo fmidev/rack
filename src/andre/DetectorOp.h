@@ -177,16 +177,13 @@ public:
 		runDetector(srcData, dstData);
 	};
 
-	//const unsigned short int CODE;
-	/// If true, applies also to quantities str than the one used in detection. The detection and the accumulation will be stored one step upwards.
-	bool UNIVERSAL;
+	/// If true, applies also to quantities str than the one used in detection. The detection and the accumulation will be stored one step upwards (dataset-N level).
+	bool UNIVERSAL = false;
 
 protected:
 
 	virtual
 	void initDataDst(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, const std::string & quantity = "") const;
-	//void initDataDst(PlainData<PolarDst> & dstData, const std::string & quantity, const ODIM & srcODIM);
-
 
 	// This is difficult...
 	//const Hi5Tree & getNormalizedData(const DataSet<> & srcDataSet, DataSet<> & dstDataSet, const std::string & quantity) const;
@@ -216,7 +213,7 @@ protected:
 	 *  The copy will be stored in dst for subsequent detectors to retrieve.
 	 *  \return "data" or "data"
 	 */
-	bool REQUIRE_STANDARD_DATA;
+	bool REQUIRE_STANDARD_DATA = false;
 
 
 	/// Enhances the detection result by reinforcing sectors of strong response, attenuating others. Optional utility for derived classes.
@@ -236,5 +233,3 @@ protected:
 }  // rack::
 
 #endif /* ANDRE_OP_H_ */
-
-// Rack

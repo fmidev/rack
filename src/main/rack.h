@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "12.6.2"
+#define __RACK_VERSION__ "12.7"
 
 /**
  *  Version 12
@@ -61,6 +61,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Path prefix: omit if starts with / or ./
  *  Release 12.6.2
  *  - AnDRe data selectors: removed selector-specific (max) count=1
+ *  Version 12.7
+ *  - Automatic Palette reduction to match legend.
+ *  - Alias --paletteDefault, -P  for --palette "default"
+ *  - gGroupTile reference overwrite fixed
  *
  *  Version 11
  *  - Help supports "see also", linking related commands.

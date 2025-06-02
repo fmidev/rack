@@ -47,21 +47,28 @@ void Command::setParameters(const std::string & args){ //, char assignmentSymbol
 
 	if (args.empty() && !parameters.empty()){
 
+		/** Somewhat ambiguous: how should empty argument be treated?
+		 */
+
 		Logger mout(getName().c_str(), __FUNCTION__);
 
-		//mout.info(" empty argument" );
 		ReferenceMap::iterator it = parameters.begin();
 
-		if (parameters.size() > 1){
-			mout.info("resetting 1st parameter (only): " , it->second );
-			//mout.note("parameters: " , parameters );
-		}
+
+		/** Somewhat ambiguous: how should empty argument be treated?
+		 */
 
 		if (it->second.isString()){
+			// String: clear it!
+			if (parameters.size() > 1){
+				mout.info("resetting 1st parameter (only): " , it->second );
+				//mout.note("parameters: " , parameters );
+			}
 			it->second.clear();
 		}
 		else if (it->second.getType() == typeid(bool)){
-			mout.note(it->first , ": empty assignment, interpreting as 'false'" );
+			// Boolean: treat as FALSE.
+			mout.note("empty argument for ", getName(), ", interpreting as boolean assignment ", it->first, "=false");
 			it->second = false;
 		}
 		else{

@@ -219,6 +219,10 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const FlexVariableMap & v
 
 
 // std::ostream &operator<<(std::ostream &ostr, const VariableMap &m);
+inline
+std::ostream & operator<<(std::ostream &ostr, const FlexVariableMap & vmap){
+	return Sprinter::sequenceToStream(ostr, vmap.getMap(), Sprinter::jsonLayout.mapChars, Sprinter::jsonLayout);
+}
 
 } // drain
 

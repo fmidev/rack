@@ -93,7 +93,7 @@ void RadarWindowConfig::updatePixelSize(const PolarODIM & inputODIM){ // Doppler
 		this->frame.height = 1;
 	}
 
-	mout.attention("updatePixelSize finally: ", this->frame);
+	mout.debug("final size: ", this->frame, " px");
 
 
 	//mout.note(this->height , '<' , this->heightD );

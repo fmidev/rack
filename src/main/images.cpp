@@ -477,14 +477,9 @@ public:
 };
 ////static drain::CommandEntry<CmdImageFlatten> cmdImageFlatten("imageFlatten");
 
-// See also CmdPaletteIn and CmdPaletteOut in imageOps?
-class CmdPalette : public drain::SimpleCommand<std::string> {
+class PaletteBase {
 
 public:
-
-	CmdPalette() : drain::SimpleCommand<std::string>(__FUNCTION__, "Load and apply palette.", "filename", "", "<filename>.[txt|json]") {
-	};
-
 
 	static
 	void retrieveQuantity(RackContext & ctx, std::string & quantity){
@@ -508,78 +503,32 @@ public:
 
 	}
 
+	static
+	void retrieveDefaultPalette(RackContext & ctx){ // , const std::string & quantity
 
-	void exec() const {
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
 
-		RackContext & ctx = getContext<RackContext>();
+		// Guess label (quantity) Allow load even if no image
+		std::string quantity;
 
-		//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
-		drain::Logger mout(ctx.log, __FILE__, getName()); // = resources.mout;
+		/// Minimum total effort... try selecting image already.
+		retrieveQuantity(ctx, quantity);
 
-		if (ctx.statusFlags.isSet(drain::Status::INPUT_ERROR)){
-			mout.warn("input failed, skipping" );
-			return;
-		}
+		// NEW 2023/05/10 : consider DBZH:RESIZE
+		std::string processing;
+		// IMPORTANT: splitting must be compatible with: ImageContext::outputQuantitySyntax
+		drain::StringTools::split2(quantity, quantity, processing, "|/:>");
+		mout.special("src quantity=[", quantity, "] : processing='", processing, "'");
 
-		if (ctx.statusFlags.isSet(drain::Status::DATA_ERROR)){   // !resources.dataOk){
-			mout.warn("data error, skipping");
-			return;
-		}
-
-		// No explicit quantity issued
-		const bool DEFAULT_PALETTE = (value.empty() || (value == "default"));
-
-		if (DEFAULT_PALETTE && !ctx.paletteKey.empty()){
-			mout.revised("NOT: Using current palette: ", ctx.paletteKey);
-		}
-		//if (DEFAULT_PALETTE && !ctx.paletteKey.empty()){
-		if (false){
-			mout.info("Using current palette: ", ctx.paletteKey);
+		if (!quantity.empty()){
+			mout.info("retrieving palette: ", quantity);
+			//ctx.palette.load(quantity, true);
+			const Palette & p = ctx.getPalette(quantity);
+			mout.info("retrievied palette: ", p.comment, " size=", p.size());
 		}
 		else {
-			// Read (get) a palette? (Ie. change current palette
-			//if ((!value.empty()) || ctx.paletteKey.empty()){
-			//if (!value.empty() || ctx.palette.empty()){
-
-			if (DEFAULT_PALETTE){
-
-				// Guess label (quantity) Allow load even if no image
-				std::string quantity;
-				/// Minimum total effort... try selecting image already.
-				retrieveQuantity(ctx, quantity);
-
-				// NEW 2023/05/10 : consider DBZH:RESIZE
-				std::string processing;
-				// IMPORTANT: splitting must be compatible with: ImageContext::outputQuantitySyntax
-				drain::StringTools::split2(quantity, quantity, processing, "|/:>");
-				mout.special("src quantity=[", quantity, "] : processing='", processing, "'");
-
-				if (!quantity.empty()){
-					mout.info("retrieving palette: ", quantity);
-					//ctx.palette.load(quantity, true);
-					Palette & p = ctx.getPalette(quantity);
-					mout.info("retrievied palette: ", p.comment, " size=", p.size());
-				}
-				else {
-					mout.fail("could not derive data quantity (quantity empty)");
-				}
-			}
-			else {
-				ctx.getPalette(value);
-				// ctx.palette.load(value, true);
-			}
-
-
-			/// TODO: store palette in dst /dataset, or better add palette(link) to Image ?
-			/*
-			mout.warn("palette will be also saved to: " , ctx.currentPath );
-			Hi5Tree & dst = (*ctx.currentHi5);
-			dst(ctx.currentPath).data.attributes["IMAGE_SUBCLASS"] = "IMAGE_INDEXED";
-			*/
+			mout.fail("could not derive data quantity (quantity empty)");
 		}
-
-		//mout.attention("Applying...");
-		apply(ctx);
 
 	}
 
@@ -596,8 +545,7 @@ public:
 			return;
 		}
 
-		mout.attention("START !");
-
+		// mout.attention("START !");
 
 		const drain::image::Image & graySrc = ctx.getCurrentGrayImage(); // ImageKit::getCurrentGrayImage(ctx);  // no conversion
 		ctx.select = "";
@@ -642,13 +590,35 @@ public:
 		const PolarODIM imgOdim(graySrc); // Uses Castable, so type-consistent
 		mout.attention("input encoding: ", EncodingODIM(imgOdim));
 
-		//static const QuantitySelector vradTest("VRAD", "VRADH", "VRADV"); // , "^VRAD.*");
-		static const drain::KeySelector vradTest("VRAD", "VRADH", "VRADV"); // , "^VRAD.*");
+		//mout.warn("input props: ", graySrc.getProperties());
+		const drain::FlexibleVariable & legend = graySrc.getProperties()["what:legend"];
+		if (!legend.empty()){
+			mout.experimental("input legend: ", legend);
+			std::map<int, std::string> entries;
+			legend.toMap(entries, ',', ':');
+			mout.experimental("reducing palette to use legend: ", drain::sprinter(entries));
+			for (auto & entry: palette){
+				entry.second.hidden = true;
+				//if (static_castentry.first;
+			}
+			for (const auto & entry: entries){
+				drain::image::PaletteEntry & p = palette[entry.first];
+				p.hidden = false;
+				mout.experimental("including: ", '[', p.code, ']', p.label, '/', entry.second);
+				// p.label = entry.second;
+				// p.code = entry.second;
+			}
+		}
 
-		mout.special<LOG_DEBUG>("vradTest: ", vradTest, " vs ", imgOdim.quantity);
 
 
-		if (vradTest.test(imgOdim.quantity)){
+
+		// static const drain::KeySelector vradTest("VRAD", "VRADH", "VRADV"); // , "^VRAD.*");
+		// mout.special<LOG_DEBUG>("vradTest: ", vradTest, " vs ", imgOdim.quantity);
+		// const QuantityMap & qm = getQuantityMap();
+
+		if (getQuantityMap().VRAD.keySelector.test(imgOdim.quantity)){
+		//if (vradTest.test(imgOdim.quantity)){
 			//if (imgOdim.quantity.substr(0,4) == "VRAD"){
 			// rescale relative to NI (percentage -100% ... +100%)
 			const double NI = imgOdim.getNyquist(); //props["how:NI"];
@@ -870,6 +840,129 @@ public:
 
 		ctx.targetEncoding.clear();
 	}
+
+
+};
+
+// See also CmdPaletteIn and CmdPaletteOut in imageOps?
+class CmdPalette : public drain::SimpleCommand<std::string>, public PaletteBase {
+
+public:
+
+	CmdPalette() : drain::SimpleCommand<std::string>(__FUNCTION__, "Load and apply palette.", "filename", "", "<filename>.[txt|json]") {
+	};
+
+
+
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, getName()); // = resources.mout;
+
+		if (ctx.statusFlags.isSet(drain::Status::INPUT_ERROR)){
+			mout.warn("input failed, skipping" );
+			return;
+		}
+
+		if (ctx.statusFlags.isSet(drain::Status::DATA_ERROR)){   // !resources.dataOk){
+			mout.warn("data error, skipping");
+			return;
+		}
+
+		// No explicit quantity issued
+		const bool DEFAULT_PALETTE = (value.empty() || (value == "default"));
+
+		if (DEFAULT_PALETTE && !ctx.paletteKey.empty()){
+			mout.revised("NOT: Using current palette: ", ctx.paletteKey);
+		}
+		//if (DEFAULT_PALETTE && !ctx.paletteKey.empty()){
+		// Read (get) a palette? (Ie. change current palette
+		//if ((!value.empty()) || ctx.paletteKey.empty()){
+		//if (!value.empty() || ctx.palette.empty()){
+
+		if (DEFAULT_PALETTE){
+
+			retrieveDefaultPalette(ctx);
+
+			/*
+				// Guess label (quantity) Allow load even if no image
+				std::string quantity;
+				/// Minimum total effort... try selecting image already.
+				retrieveQuantity(ctx, quantity);
+
+				// NEW 2023/05/10 : consider DBZH:RESIZE
+				std::string processing;
+				// IMPORTANT: splitting must be compatible with: ImageContext::outputQuantitySyntax
+				drain::StringTools::split2(quantity, quantity, processing, "|/:>");
+				mout.special("src quantity=[", quantity, "] : processing='", processing, "'");
+
+				if (!quantity.empty()){
+					mout.info("retrieving palette: ", quantity);
+					//ctx.palette.load(quantity, true);
+					const Palette & p = ctx.getPalette(quantity);
+					mout.info("retrievied palette: ", p.comment, " size=", p.size());
+				}
+				else {
+					mout.fail("could not derive data quantity (quantity empty)");
+				}
+			 */
+		}
+		else {
+			const Palette & p = ctx.getPalette(value);
+			mout.info("using specific palette: ", p.comment, " size=", p.size());
+			// ctx.palette.load(value, true);
+		}
+
+
+		/// TODO: store palette in dst /dataset, or better add palette(link) to Image ?
+		/*
+			mout.warn("palette will be also saved to: " , ctx.currentPath );
+			Hi5Tree & dst = (*ctx.currentHi5);
+			dst(ctx.currentPath).data.attributes["IMAGE_SUBCLASS"] = "IMAGE_INDEXED";
+		 */
+
+		//mout.attention("Applying...");
+		apply(ctx);
+
+	}
+
+};
+
+
+class CmdPaletteDefault : public drain::BasicCommand, public PaletteBase {
+
+public:
+
+	CmdPaletteDefault() : drain::BasicCommand(__FUNCTION__, "Apply default palette matching the quantity of current data.") {
+	};
+
+
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, getName()); // = resources.mout;
+
+		if (ctx.statusFlags.isSet(drain::Status::INPUT_ERROR)){
+			mout.warn("input failed, skipping" );
+			return;
+		}
+
+		if (ctx.statusFlags.isSet(drain::Status::DATA_ERROR)){   // !resources.dataOk){
+			mout.warn("data error, skipping");
+			return;
+		}
+
+		// No explicit quantity issued
+		retrieveDefaultPalette(ctx);
+
+		apply(ctx);
+
+	}
+
 };
 
 
@@ -1365,17 +1458,27 @@ public:
 };
 
 
-ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) { // :{ //  : CommandSection("images"){
+ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) {
 
 	//drain::CommandBank::trimWords().insert("Op");
 
 	/// Legacy commands with plain names
-	// drain::CommandInstaller<0,ImageSection> installer(drain::getCommandBank());
+	//  drain::CommandInstaller<0,ImageSection> installer(drain::getCommandBank());
 	install<CmdImage>();
-	install<CmdPalette>();
-	install<CmdImageAlpha>();
-	install<CmdImageTransp>();
-	install<CmdImageFlatten>();
+	DRAIN_CMD_INSTALL(Cmd, Palette)();
+	DRAIN_CMD_INSTALL(Cmd, PaletteDefault)('P');
+	linkRelatedCommands(Palette, PaletteDefault);
+	//install<CmdPalette>();
+	//install<CmdPaletteDefault>('P');
+	DRAIN_CMD_INSTALL(Cmd, ImageAlpha)();
+	DRAIN_CMD_INSTALL(Cmd, ImageTransp)();
+	linkRelatedCommands(Palette, ImageAlpha, ImageTransp);
+
+	DRAIN_CMD_INSTALL(Cmd, PaletteRefine)();
+	linkRelatedCommands(Palette, PaletteRefine);
+
+	// install<CmdImageAlpha>();
+	// install<CmdImageTransp>();
 	install<CmdImagePhysical>("iPhysical"); // perhaps should be imagePhysical!
 	install<CmdImagePhysical>("imagePhysical");
 	install<CmdImageQuality>();
@@ -1383,21 +1486,26 @@ ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) { // :{ // 
 	/// WAS: with prefix 'i', like image operators
 	// drain::CommandInstaller<'i',ImageSection> installer2(drain::getCommandBank());
 	install<CmdPaletteConf>();
-	install<CmdInputPalette>("paletteIn");
 
-	install<CmdInputPalette>(); // last, and visible
-	//install<CmdOutputPalette>("paletteOut");
-	//markDeprecating<CmdPaletteOut>();
-	//DRAIN_CMD_INSTALL(Cmd,PaletteOut)();
-	//install<Deprecator<CmdOutputPalette> >();
+	install<CmdImageFlatten>();
+
+	install<CmdInputPalette>("paletteIn"); // deprecating
+	DRAIN_CMD_INSTALL(Cmd, InputPalette)();
+	// install<CmdInputPalette>(); // last, and visible
+	// install<CmdOutputPalette>("paletteOut");
+	// markDeprecating<CmdPaletteOut>();
+	// DRAIN_CMD_INSTALL(Cmd,PaletteOut)();
+	// install<Deprecator<CmdOutputPalette> >();
 	// DRAIN_CMD_INSTALL(Cmd,OutputPalette)();
 	install<CmdOutputPalette>("legendOut"); // Same as --iPaletteOut above
-	//DRAIN_CMD_INSTALL(Cmd,OutputPalette)();
-	install<CmdOutputPalette>(); // last, and visible
-	installDeprecating<CmdPaletteOut,CmdOutputPalette>(); //DEPREC.
-
+	// DRAIN_CMD_INSTALL(Cmd,OutputPalette)();
+	DRAIN_CMD_INSTALL(Cmd, OutputPalette)();
+	// install<CmdOutputPalette>(); // last, and visible
+	installDeprecating<CmdPaletteOut,CmdOutputPalette>();
+	linkRelatedCommands(InputPalette, OutputPalette, Palette, PaletteDefault);
 	// linkRelatedCommands(PaletteOut, OutputPalette);
-	install<CmdPaletteRefine>();
+
+
 	install<CmdPlot>();
 	install<CmdImageBox>();
 

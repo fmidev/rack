@@ -32,15 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define COMPOSITE2_H_
 
 #include "drain/image/AccumulationConverter.h"
-
 #include "drain/image/AccumulatorGeo.h"
 #include "drain/util/Rectangle.h"
 
 #include "hi5/Hi5.h"
 #include "data/CartesianODIM.h"
 #include "data/Data.h"
-//#include "data/DataSelector.h"
-//#include "Coordinates.h"
 
 #include "RadarAccumulator.h"
 #include "RadarProj.h"
@@ -107,18 +104,16 @@ public:
 
 	enum FieldType {
 		DATA_SPECIFIC = 32,       /** Ascii bit for lower-case chars, see below */
-		QUALITY = 256,			  /** Marker for non-data */
-		DATA   = 'd',             /** Main data, of named quantity */
-		WEIGHT = 'w'|QUALITY,     /** Separation */
-		COUNT  = 'c'|QUALITY,     /** Number of samples */
-		DEVIATION = 's'|QUALITY, /** Separation: std.dev or difference */
-		WEIGHT_DS = 'W'|QUALITY,     /** Separation */
-		COUNT_DS  = 'C'|QUALITY,     /** Number of samples */
+		QUALITY   = 256,		  /** Marker for non-data */
+		DATA      = 'd',          /** Main data, of named quantity */
+		WEIGHT    = 'w'|QUALITY,  /** Quality */
+		COUNT     = 'c'|QUALITY,  /** Number of samples */
+		DEVIATION = 's'|QUALITY,  /** Separation: std.dev or difference */
+		WEIGHT_DS = 'W'|QUALITY,  /** Quality */
+		COUNT_DS  = 'C'|QUALITY,  /** Number of samples */
 		DEVIATION_DS = 'S'|QUALITY  /** Separation */
 	};
 
-	//typedef drain::Dictionary<std::string,unsigned long> FieldDict;
-	//typedef drain::EnumDict<FieldType> FieldDict;
 	typedef drain::EnumDict<FieldType>::dict_t dict_t;
 	static
 	const dict_t dict;
@@ -127,6 +122,8 @@ public:
 	// Must choose between char-based or bit flagging (d,w,c,s will overlap).
 	// typedef drain::EnumFlagger<drain::MultiFlagger<FieldType> > FieldFlagger;
 
+	typedef std::map<int,std::string> legend_t;
+	legend_t legend;
 
 	Composite();
 
@@ -135,9 +132,10 @@ public:
 	// To allow consecutive --cExtract calls (for --encoding )
 	bool extracting = false;
 
-	void extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields="d", const drain::Rectangle<int> & cropArea={0,0}, const std::string & encoding="C");
+	void extract(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields, const drain::Rectangle<int> & cropArea={0,0}, const std::string & encoding="C");
+	// void extract(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields="d", const drain::Rectangle<int> & cropArea={0,0}, const std::string & encoding="C");
 
-	void extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field = DATA, const drain::Rectangle<int> & cropArea={0,0}, const std::string & encoding="C");
+	pdata_dst_t & extract(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field = DATA, const drain::Rectangle<int> & cropArea={0,0}, const std::string & encoding="C");
 
 	/// If cropping is set, calling addPolar() also crops the bounding box to intersection of radar area and original area.
 	/**
@@ -178,7 +176,10 @@ public:
 
 
 	/// Weight decrease (0.0...1.0), per minute, in the weighting of delayed data. Zero means no change in weighting.
-	double decay;
+	/**  Actual "decay" will be (1.0-decay).
+	 *
+	 */
+	double decay = 0.0;
 
 	double getTimeDifferenceMinute(const CartesianODIM & odimIn) const;
 
@@ -192,7 +193,7 @@ public:
 	drain::VariableMap nodeMap;
 
 	/// EXPERIMENTAL: save elangles TODO: consider rename metadataMap (for hairy details)
-	// drain::VariableMap metadataMap;
+	//  drain::VariableMap metadataMap;
 
 	/// Set input selector. See @DataSelector .
 	/**
@@ -215,7 +216,11 @@ protected:
 
 	void updateNodeMap(const std::string & node, int i, int j);
 
-	bool cropping;
+	bool cropping = false;
+
+
+	Data<DstType<CartesianODIM> > & prepareDstData(DataSet<DstType<CartesianODIM> > & dstProduct);
+
 
 };
 
@@ -225,5 +230,3 @@ DRAIN_ENUM_OSTREAM(rack::Composite::FieldType);
 
 
 #endif /*COMPOSITE_H_*/
-
-// Rack

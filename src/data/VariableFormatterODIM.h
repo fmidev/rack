@@ -55,7 +55,7 @@ namespace rack {
  *  In addition, this class formats ODIM time stamps (what:time, what:startdate, ...)
  *  # Time formatting, like the date command
  *
- *  \tparam T - type of the variables.
+ *  \tparam T - type of the variables: std::string, drain::Variable for example.
  *
  *  \see StringLet
  *  \see StringMapper
