@@ -56,19 +56,21 @@ public:
 	 *
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
-	NonMetOp(double threshold=0.4, double thresholdWidth=0.2, double windowWidth=0.0, double windowHeight=0.0, double medianPos=0.95) :
-		DetectorOp(__FUNCTION__,"Detects clutter. Based on dual-pol parameter RhoHV . Optional postprocessing: morphological closing. Universal.", "nonmet"){
+	//NonMetOp(double threshold=0.4, double thresholdWidth=0.2, double windowWidth=0.0, double windowHeight=0.0, double medianPos=0.95) :
+	NonMetOp(const drain::UniTuple<double,2> & threshold = {0.2,0.6}, const drain::UniTuple<double,2> & medianWindow = {0.0,0.0}, double medianThreshold=0.95) :
+		DetectorOp(__FUNCTION__,"Detects clutter. Based on dual-pol parameter RhoHV . Optional post processing: morphological closing. Universal.", "nonmet"){
 
 		dataSelector.setQuantities("RHOHV");
 		REQUIRE_STANDARD_DATA = false;
 		UNIVERSAL = true;
 
-		parameters.link("threshold", this->threshold.tuple(), "0...1[:0...1]");
-		this->threshold.min = threshold-thresholdWidth;
-		this->threshold.max = threshold+thresholdWidth;
-		//parameters.link("thresholdWidth", this->thresholdWidth = thresholdWidth, "0...1");
-		parameters.link("windowWidth", this->windowWidth = windowWidth, "metres");
-		parameters.link("windowHeight", this->windowHeight = windowHeight, "degrees");
+		parameters.link("threshold", this->threshold.tuple() = threshold, "0...1[:0...1]");
+		// this->threshold = threshold;
+		// this->threshold.max = threshold+thresholdWidth;
+		// parameters.link("thresholdWidth", this->thresholdWidth = thresholdWidth, "0...1");
+		parameters.link("medianWindow", this->medianWindow.tuple() = medianWindow, "metres,degrees");
+		// parameters.link("windowWidth", this->windowWidth = windowWidth, "metres");
+		// parameters.link("windowHeight", this->windowHeight = windowHeight, "degrees");
 		parameters.link("medianPos", this->medianPos = medianPos, "0...1");
 		//parameters.link("area", this->area, area);
 	};
@@ -84,9 +86,9 @@ public:
 	//double threshold;
 	//double thresholdWidth;
 	drain::Range<double> threshold;
-
-	double windowWidth;
-	double windowHeight;
+	drain::Frame2D<double> medianWindow;
+	// double windowWidth;
+	// double windowHeight;
 	double medianPos;
 
 protected:

@@ -194,7 +194,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	drain::Point2D<double> unitVOrig;
 
 	/// Resolved (u,v), from AMVU and AMVV
-	double u, v, quality;
+	double u, v, quality=1.0;
 
 	/// Resolved (u,v) projected back on beam
 	double vReproj;
@@ -264,9 +264,6 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 				vReproj = dstData.odim.scaleInverse(vReproj);
 
-				if (((i+50)==j) && ((i&7)==0)){
-					std::cerr << i << '\t' << unitVOrig << '\t' << unitVReproj << '\t' << quality << '\n';
-				}
 
 				if ((vReproj > minCode) && (vReproj < maxCode)){ // continue processing
 
@@ -283,6 +280,10 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 					dstData.data.put(address, dstData.odim.undetect); // rand() & 0xffff); //
 					dstQuality.data.put(address, 0);
 				};
+
+				if (((i+50)==j) && ((i&7)==0)){
+					std::cerr << i << '\t' << unitVOrig << '\t' << unitVReproj << '\t' << quality << '\n';
+				}
 
 			}
 			else {

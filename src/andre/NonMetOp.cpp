@@ -49,16 +49,28 @@ void NonMetOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	//mout.debug(parameters );
 
-	/// Assumes that at least range 2...253 is intensities (not nodata or undetected)
-	//op.setParameter("max", src.getMax<double>()-2.0);
+	// mout.attention(srcData.odim.quantity);
 
 	//drain::FuzzyStepsoid<double, double> f(odimIn.scaleInverse(threshold), odimIn.scaleInverse(threshold + thresholdWidth) - odimIn.scaleInverse(threshold) ); BUG
 	const unsigned int QMIN = dstProb.odim.scaleInverse(0.0);
 	const unsigned int QMAX = dstProb.odim.scaleInverse(0.95);
-	drain::FuzzyStep<double> fuzzyStep(threshold.max, threshold.min, QMAX);  // inverted
-	mout.debug("fuzzy step:" , fuzzyStep );
+	drain::FuzzyStep<double> fuzzyStep; //(threshold.max, threshold.min, QMAX);  // inverted
+	if (threshold.min < threshold.max){
+		// mout.attention("REVERSE");
+		fuzzyStep.set(threshold.max, threshold.min, QMAX);
+	}
+	else {
+		mout.info("swapping min-max of ", threshold);
+		fuzzyStep.set(threshold.min, threshold.max, QMAX);
+	}
+
+	//mout.special("fuzzy step:" , fuzzyStep );
+	/*
+	for (double d: {0.0, 0.1, 0.2, 0.5, 0.75, 1.0}){
+		mout.special("fuzzy step:", d, " -> \t", fuzzyStep(d));
+	}
+	*/
 
 	Image::const_iterator it = srcData.data.begin();
 	Image::iterator dit = dstProb.data.begin();
@@ -73,15 +85,17 @@ void NonMetOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 	}
 
 	/// Median filtering imitating morphological closing
-	if ((windowWidth>0) && (windowHeight>0)){
+	//if ((windowWidth>0) && (windowHeight>0)){
+	if (medianWindow.getArea() > 0.0){
 
 		const CoordinatePolicy & coordPolicy = srcData.data.getCoordinatePolicy();
 		dstProb.data.setCoordinatePolicy(coordPolicy);
 
 		//Image tmp;
 		//tmp.setCoordinatePolicy(coordPolicy);
-		const int w = srcData.odim.getBeamBins(windowWidth);        // windowWidth / srcData.odim.rscale;
-		const int h = srcData.odim.getAzimuthalBins(windowHeight);  // windowHeight * 360.0 / srcData.odim.geometry.height;
+
+		const int w = srcData.odim.getBeamBins(medianWindow.width);        // windowWidth / srcData.odim.rscale;
+		const int h = srcData.odim.getAzimuthalBins(medianWindow.height);  // windowHeight * 360.0 / srcData.odim.geometry.height;
 
 		SlidingWindowMedianOp median;
 		median.setSize(w,h);

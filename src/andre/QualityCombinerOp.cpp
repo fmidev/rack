@@ -517,10 +517,21 @@ void QualityCombinerOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, Dat
 
 		/// TODO: move these to updateLocalQuality
 
+		for (const char *quality: {"QIND", "CLASS"}){
+			if (!dstData.hasQuality(quality)){
+				mout.experimental("quality data [", quality," missing for [", it->first, "], adding...");
+				// mout.experimental("");
+				dstData.createSimpleQualityData(dstData.getQualityData("QIND"), 1.0, 0.95, 0.0);
+			}
+		}
+
+		/*
 		if (!dstData.hasQuality("QIND")){
 			mout.note("no quality index data (QIND) for quantity=", it->first, ", skipping.");
-			mout.unimplemented("Shouldn't it be added, instead?");
-			continue;
+			mout.experimental("");
+			dstData.createSimpleQualityData(dstData.getQualityData("QIND"), 1.0, 0.95, 0.9);
+			// mout.unimplemented("...Skipping");
+			// continue;
 		}
 		// PlainData<PolarDst> & dstQuality = dstData.getQualityData("QIND");
 
@@ -529,7 +540,7 @@ void QualityCombinerOp::processDataSet(const DataSet<PolarSrc> & srcDataSet, Dat
 			mout.unimplemented("Shouldn't it be added, instead?");
 			continue;
 		}
-		// PlainData<PolarDst> & dstClass = dstData.getQualityData("CLASS");
+		*/
 
 		updateLocalQuality(srcDataSet, dstData);
 

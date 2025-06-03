@@ -180,14 +180,14 @@ public:
 		this->INVERSE = (range.min > range.max);
 
 		if (!this->INVERSE){
-			finalRange.min  = range.min;
-			finalRange.max = range.max;
+			rangeFinal.min = range.min;
+			rangeFinal.max = range.max;
 			span = range.max - range.min;
 		}
 		else {
 			//cerr << "set INVERSE" << endl;
-			finalRange.min  = range.max;
-			finalRange.max = range.min;
+			rangeFinal.min = range.max;
+			rangeFinal.max = range.min;
 			span = range.min - range.max;
 		}
 
@@ -201,12 +201,12 @@ public:
 	virtual
 	double operator()(double x) const {
 
-		if (x <= finalRange.min)
+		if (x <= rangeFinal.min)
 			return this->biasFinal;
-		else if (x >= finalRange.max)
+		else if (x >= rangeFinal.max)
 			return this->biasFinal + this->scaleFinal;
 		else
-			return this->biasFinal + this->scaleFinal*(x-finalRange.min) / span;  // div by undetectValue not possible, unless start==end
+			return this->biasFinal + this->scaleFinal*(x-rangeFinal.min) / span;  // div by undetectValue not possible, unless start==end
 
 	}
 
@@ -219,8 +219,8 @@ protected:
 
 	//
 	mutable
-	drain::Range<double> finalRange;
-	//std::pair<double,double> finalRange;
+	drain::Range<double> rangeFinal;
+	//std::pair<double,double> rangeFinal;
 
 
 };
