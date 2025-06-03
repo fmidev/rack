@@ -113,8 +113,8 @@ public:
 	// static
 	// void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, AlignBase::Axis orientation=AlignBase::Axis::HORZ);
 
-	static
-	void setRelativePaths(drain::image::TreeSVG & object, const drain::FilePath & filepath);
+	// replaced with traversing setter
+	// static void setRelativePaths(drain::image::TreeSVG & object, const drain::FilePath & filepath);
 
 
 	// NEW ---------------------
@@ -196,11 +196,16 @@ class RelativePathSetterSVG : public drain::TreeVisitor<TreeSVG> {
 
 public:
 
+	// Leading path, maybe partial, to be pruned
 	const std::string dir;
 
+	// String starting the modified path, for example "file://"
+	const std::string prefix;
+
 	inline
-	RelativePathSetterSVG(const drain::FilePath & filepath) :
-		dir(filepath.dir.empty() ? "" : filepath.dir.str()+'/') {
+	RelativePathSetterSVG(const drain::FilePath & filepath, const std::string & prefix = "") :
+		dir(filepath.dir.empty() ? "" : filepath.dir.str()+'/'),
+		prefix(prefix) {
 	}
 
 	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;

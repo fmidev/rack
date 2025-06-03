@@ -377,6 +377,17 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 		drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
 		image->setId(filepath.basename); // unneeded, as TITLE also has it?
 		image->setUrl(filepath.str());
+		/*
+		image->set("data-dir", filepath.dir.str());
+		if (filepath.dir.hasRoot()){
+			image->setUrl(filepath.str());
+		}
+		else {
+			// Append "relative" root, './' to skip support colon ':' in filenames
+			//image->setUrl(drain::FilePath::path_t(".", filepath).str());
+			image->setUrl(drain::StringBuilder<'/'>(".", filepath.str()));
+		}
+		*/
 		image[drain::image::svg::TITLE](drain::image::svg::TITLE) = filepath.basename;
 	}
 

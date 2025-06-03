@@ -73,7 +73,7 @@ public:
 	/// Copy constructor
 	FilePath(const FilePath & s);
 
-	inline
+	virtual inline
 	~FilePath(){};
 
 	inline
@@ -138,6 +138,8 @@ public:
 	path_t dir;
 	std::string basename;
 	std::string extension;
+
+	//bool isRooted
 
 	/// Directory path separator
 	//static

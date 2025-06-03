@@ -113,13 +113,8 @@ public:
 
 		pngConf.link("compression", drain::image::FilePng::compressionLevel);
 
-		// svgConf.link("group", ctx.svgPanelConf.groupName); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
-		// svgConf.link("orientation", svgConfOrientation, drain::sprinter(drain::EnumDict<drain::image::Align::Axis>::dict.getKeys()).str()); // init clash
-		// svgConf.link("direction",   svgConfDirection,   drain::sprinter(drain::EnumDict<drain::image::LayoutSVG::Direction>::dict.getKeys()).str());   // init clash
-		// svgConf.link("max", ctx.svgPanelConf.maxPerGroup, "max per row/column"); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
-		// svgConf.link("legend", svgConfLegend, drain::sprinter(drain::EnumDict<drain::image::PanelConfSVG::Legend>::dict.getKeys()).str());
-		// svgConf.link("title", ctx.svgPanelConf.title); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
-		svgConf.link("absolutePaths", ctx.svgPanelConf.absolutePaths);
+		//svgConf.link("absolutePaths", ctx.svgPanelConf.absolutePaths);
+		svgConf.link("paths", ctx.svgPanelConf.pathPolicy);
 		// svgConf.link("fontSize", ctx.svgPanelConf.fontSize.tuple());
 		svgConf.link("debug", ctx.svgDebug); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 
@@ -140,7 +135,7 @@ public:
 		hdf5Conf.copyStruct(cmd.hdf5Conf,   cmd, *this, drain::ReferenceMap::LINK);
 		pngConf.copyStruct(cmd.pngConf,     cmd, *this, drain::ReferenceMap::LINK);
 		gtiffConf.copyStruct(cmd.gtiffConf, cmd, *this, drain::ReferenceMap::LINK);
-		svgConf.copyStruct(cmd.svgConf, cmd, *this,     drain::ReferenceMap::LINK); //,
+		svgConf.copyStruct(cmd.svgConf,     cmd, *this, drain::ReferenceMap::LINK); //,
 
 		// RackContext & ctx = getContext<RackContext>();
 		//svgConf.link("group", ctx.svgPanelConf.groupName); // otherwise could be other/static ctx, because of LINK above ?
@@ -186,12 +181,8 @@ public:
 			mout.unimplemented("(no parameters supported for PPM/PGM )");
 		}
 		else if (drain::image::NodeSVG::fileInfo.checkExtension(format)){
-			// read params
 			handleParams(svgConf, params);
-			// write params
-
-			// ctx.svgPanelConf.layout.setOrientation(svgConfOrientation);  //orientation.set(svgConfOrientation);
-			// ctx.svgPanelConf.layout.setDirection(svgConfDirection);
+			ctx.svgPanelConf.pathPolicyFlagger.set(ctx.svgPanelConf.pathPolicy);
 		}
 #ifndef USE_GEOTIFF_NO
 		else if (drain::image::FileGeoTIFF::fileInfo.checkExtension(format)){ // "tif"
@@ -507,12 +498,17 @@ void CmdOutputFile::exec() const {
 		mout.experimental("writing SVG file: ", path);
 
 		//RackSVG::addRectangle(ctx, {120,500});
-		if (!ctx.svgPanelConf.absolutePaths){
-			drain::image::RelativePathSetterSVG psetter(path.dir);
-			// drain::TreeUtils::traverse(psetter, RackSVG::getMainGroup(ctx));
+		//if (!ctx.svgPanelConf.absolutePaths){
+		// mout.attention("svg: ", ctx.svgPanelConf.pathPolicyFlagger);
+		if (!ctx.svgPanelConf.pathPolicyFlagger.isSet(PanelConfSVG::ABSOLUTE)){
+			// mout.attention("svg: RELATIVE paths, stripping: ", path.dir);
+			const std::string prefix = ctx.svgPanelConf.pathPolicyFlagger.isSet(PanelConfSVG::PREFIXED) ? "./" : "";
+			drain::image::RelativePathSetterSVG psetter(path.dir, prefix); // consider "file://"
 			drain::TreeUtils::traverse(psetter, ctx.svgTrack);
-			// RelativePathSetterSVG
 			// TreeUtilsSVG::setRelativePaths(RackSVG::getMain(ctx), path.dir);
+		}
+		else {
+			// mout.attention("svg: ABSOLUTE paths");
 		}
 		RackSVG::completeSVG(ctx); //, path.dir);
 

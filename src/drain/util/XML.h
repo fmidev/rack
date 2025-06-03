@@ -223,6 +223,10 @@ public:
 		return ctext;
 	}
 
+	inline
+	const std::string & getUrl(){
+		return url;
+	}
 
 	inline
 	void setUrl(const std::string & s){

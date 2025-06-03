@@ -194,13 +194,21 @@ public:
 	//  needed?
 	template <typename T2, typename ... TT>
 	void append(const T2 & arg, const TT &... args) {
-		_append(arg); // replace with appendElem(elem), remove _append?
+		//append_(arg); // replace with appendElem(elem), remove _append?
+		appendElem(arg); // replace with appendElem(elem), remove _append?
 		append(args...);
 	}
 
 	template <typename ... TT>
 	void append(const path_t &p, const TT &... args) {
 		this->insert(this->end(), p.begin(), p.end());
+		append(args...);
+	}
+
+	// NEW
+	template <typename ... TT>
+	void append(char c, const TT &... args) {
+		appendElem(c);
 		append(args...);
 	}
 
@@ -561,6 +569,7 @@ public:
 protected:
 
 	/// "Default" append function.
+	/*
 	void _append(const elem_t &elem){
 		appendElem(elem);
 	}
@@ -571,8 +580,8 @@ protected:
 	template <typename T2>
 	void _append(const T2 & p){
 		appendElem(p);
-		//_appendPath(p);
 	}
+	*/
 
 	/// Extract elements from the string, starting at position i.
 	void _appendPath(const std::string & p, size_t start=0){

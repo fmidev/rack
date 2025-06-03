@@ -69,6 +69,11 @@ const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<ra
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
 };
 
+template <>
+const drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict_t  drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict = {
+		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::PathPolicy, ABSOLUTE),
+		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::PathPolicy, PREFIXED)
+};
 
 
 template <> // for T (Tree class)
@@ -158,7 +163,9 @@ GraphicsContext::GraphicsContext() {
 }
 
 GraphicsContext::GraphicsContext(const GraphicsContext & ctx) {
-	svgPanelConf.absolutePaths = ctx.svgPanelConf.absolutePaths;
+	//svgPanelConf.absolutePaths = ctx.svgPanelConf.absolutePaths;
+	svgPanelConf.pathPolicyFlagger = ctx.svgPanelConf.pathPolicyFlagger;
+	svgPanelConf.pathPolicy = ctx.svgPanelConf.pathPolicy;
 	svgPanelConf.groupTitleSyntax = ctx.svgPanelConf.groupTitleSyntax;
 	// svgTitles    = ctx.svgTitles;
 }

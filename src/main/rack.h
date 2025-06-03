@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "12.7"
+#define __RACK_VERSION__ "12.7.1"
 
 /**
  *  Version 12
@@ -65,6 +65,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Automatic Palette reduction to match legend.
  *  - Alias --paletteDefault, -P  for --palette "default"
  *  - gGroupTile reference overwrite fixed
+ *  Release 12.7.1
+ *  - SVG --outputConf svg:paths=PREFIX adds explicit prefix "./" to relative paths (enabling colons ':' in path/filenames)
+ *
  *
  *  Version 11
  *  - Help supports "see also", linking related commands.

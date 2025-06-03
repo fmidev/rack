@@ -582,16 +582,18 @@ int BBoxRetrieverSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path)
 
 
 int RelativePathSetterSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) {
+
 	TreeSVG & node = tree(path);
+
 	if (node->typeIs(svg::SVG) || node->typeIs(svg::GROUP)){
 		return 0; // continue (traverse also children)
 	}
 	else if (node->typeIs(svg::IMAGE)){
 		drain::image::TreeSVG & imageNode = tree(path);
-		const std::string imagePath = imageNode->get("xlink:href");
+		const std::string imagePath = imageNode->getUrl(); //imageNode->get("xlink:href");
 		if (drain::StringTools::startsWith(imagePath, dir)){
 			// imageNode->set("xlink:href", imagePath.substr(dir.size())); // TODO: setURL ?
-			imageNode->setUrl(imagePath.substr(dir.size()));
+			imageNode->setUrl(prefix + imagePath.substr(dir.size()));
 		}
 		else {
 			// mout.attention("could not set relative path: ", p, " href:", imagePath);

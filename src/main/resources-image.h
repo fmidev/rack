@@ -69,6 +69,7 @@ enum SvgInclude {
 	// TITLE,      // Default title
 };
 
+
 /*
 enum TitleClass {
 	NONE = 0,
@@ -109,14 +110,20 @@ struct PanelConfSVG {
 
 	std::string imageTitle = "TIME,LOCATION,GENERAL";
 
-
+	enum PathPolicy {
+		ABSOLUTE = 1,  // Else is relative, stripped away using inputPrefix?
+		PREFIXED = 2,  // file:// is appended
+	};
 
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
-	bool absolutePaths = true;
+	typedef drain::EnumFlagger<drain::MultiFlagger<PathPolicy> > PathPolicyFlagger;
 
-	std::string mainTitle = "AUTO";
+	PathPolicyFlagger pathPolicyFlagger = ABSOLUTE;
+	std::string pathPolicy = "ABSOLUTE";
+	// bool absolutePaths = true;
 
-	std::string groupTitleSyntax = "AUTO";
+	std::string mainTitle = "AUTO"; // redesign?
+	std::string groupTitleSyntax = "AUTO"; // redesign?
 	std::string groupTitleFormatted;
 
 
@@ -140,7 +147,7 @@ struct PanelConfSVG {
 	drain::UniTuple<double,3>  boxHeights = {30.0, 25.0, 15.0};
 
 	inline  // maxPerGroup(10), layout(Alignment::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED),
-	PanelConfSVG() : svgIncludes(SvgInclude::ALL), absolutePaths(true){
+	PanelConfSVG() : svgIncludes(SvgInclude::ALL), pathPolicyFlagger(PathPolicy::ABSOLUTE), pathPolicy("ABSOLUTE") { // absolutePaths(true){
 	}
 
 
@@ -153,13 +160,16 @@ namespace drain {
 
 template <>
 const drain::EnumDict<rack::SvgInclude>::dict_t  drain::EnumDict<rack::SvgInclude>::dict;
-
 DRAIN_ENUM_OSTREAM(rack::SvgInclude);
 
 template <>
 const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict;
-
 DRAIN_ENUM_OSTREAM(rack::PanelConfSVG::ElemClass);
+
+
+template <>
+const drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict_t  drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict;
+DRAIN_ENUM_OSTREAM(rack::PanelConfSVG::PathPolicy);
 
 
 template <> // for T (Tree class)
@@ -198,13 +208,18 @@ const image::TreeSVG & image::TreeSVG::operator[](const rack::PanelConfSVG::Elem
 
 }
 
-using namespace drain::image;
+// using namespace drain::image;
+
 
 namespace rack {
 
+using namespace drain::image;
+
 class GraphicsContext { // : public drain::BasicCommand {
 
+
 public:
+
 
 
 	/// Default constructor
@@ -213,22 +228,19 @@ public:
 	/// Copy constructor
 	GraphicsContext(const GraphicsContext & ctx);
 
-	// SVG output configuration (layout)
 	TreeSVG svgTrack;
-	PanelConfSVG svgPanelConf; // under constr - consider embedding these to PanelConfSVG:
-	// std::string svgGroupNameSyntax = "group";
-	// std::string svgGroupNameFormatted;
+
+	// SVG output configuration (layout)
+	PanelConfSVG svgPanelConf; // under constr
 
 	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
 	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
-	int svgDebug = 0;
 
-	// Here AlignSVG::HorzAlign and AlignSVG::VertAlign not used, as they contain no Topol(ogy).
-	// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {AlignSVG::Topol::INSIDE};
-	// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Pos::MIN};
+	// Here AlignSVG::HorzAlign and AlignSVG::VertAlign unused, as they contain no Topol(ogy).
 	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {AlignSVG::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS};
 	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS};
 
+	int svgDebug = 0;
 
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
 	/**
