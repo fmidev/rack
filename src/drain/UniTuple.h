@@ -156,17 +156,29 @@ public:
 	}
 
 
+	// Self-reference for casting
+	inline
+	const tuple_t & tuple() const{
+		return *this;
+	}
 
 
 	// Self-reference for casting
+	inline
 	tuple_t & tuple(){
 		return *this;
 	}
 
-	// Self-reference for casting
-	const tuple_t & tuple() const{
+	template<typename ... TT>
+	inline
+	tuple_t & tuple(const TT &... args){
+		// tuple_t & tuple(const T & arg, const TT &... rest){
+		// set(arg, rest);
+		this->set(args...);
 		return *this;
 	}
+
+
 
 
 	void debug(std::ostream & ostr) const {

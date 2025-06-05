@@ -74,9 +74,8 @@ void CopyOp::getDstConf(const ImageConf & src, ImageConf & dst) const {
 	  dst.setScaling(s);
 	*/
 	dst.adoptScaling(src, src.getType(), dst.getType());
-	mout.debug2(" dst:       " , dst );
-
-	mout.warn(" dst(orig): " , dst );
+	// mout.debug2("dst:       " , dst );
+	// mout.warn("dst(orig): " , dst );
 
 }
 
