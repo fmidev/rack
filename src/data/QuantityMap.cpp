@@ -44,8 +44,8 @@ QuantityMap::QuantityMap() : map_t(),
 		RACK_QTY_INIT(RHOHV),
 		RACK_QTY_INIT(KDP),
 		RACK_QTY_INIT(QIND),
-		RACK_QTY_INIT(PROB),
-		RACK_QTY_INIT(FUZZY)
+		RACK_QTY_INIT(PROB)
+		//RACK_QTY_INIT(FUZZY)
 		{
 }
 
@@ -57,8 +57,8 @@ QuantityMap::QuantityMap(const QuantityMap & m) : map_t(m),
 		RACK_QTY_INIT(RHOHV),
 		RACK_QTY_INIT(KDP),
 		RACK_QTY_INIT(QIND),
-		RACK_QTY_INIT(PROB),
-		RACK_QTY_INIT(FUZZY)
+		RACK_QTY_INIT(PROB)
+		// RACK_QTY_INIT(FUZZY)
 {
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.warn("? copy const <QuantityMap>");
@@ -73,8 +73,8 @@ QuantityMap::QuantityMap(const std::initializer_list<std::pair<std::string, Quan
 		RACK_QTY_INIT(RHOHV),
 		RACK_QTY_INIT(KDP),
 		RACK_QTY_INIT(QIND),
-		RACK_QTY_INIT(PROB),
-		RACK_QTY_INIT(FUZZY)
+		RACK_QTY_INIT(PROB)
+		// RACK_QTY_INIT(FUZZY)
 {
 	assign(inits);
 }
@@ -460,6 +460,7 @@ QuantityMap & getQuantityMap() {
 					"Probability",
 					{
 							{"PROB_.*", "radar_target_class_probability", "Target class probability"},
+							{"FUZZY.*", "radar_target_class_probability", "Target class probability"},
 					},
 					{0.0, 1.0},
 					'C',
@@ -477,6 +478,7 @@ QuantityMap & getQuantityMap() {
 					},
 					'C',
 					{
+							// NOTE! undetect should not be 0, but like (nodata-1) = (0xffff-2)?
 							{'C'}, {'S'}, {'I'}, {'L'}, {'f'}, {'d'}
 					}
 			}

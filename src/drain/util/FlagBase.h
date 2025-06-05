@@ -475,15 +475,14 @@ public:
 
 	void debug(std::ostream & ostr) const;
 
-protected:
-
+	/* these apply to SingleFlaggers */
 	/*
 	/// Sets one or several flags.
 	virtual inline
 	void set(const key_t & key){
 		if (key.empty())
-			return; // needed?
-		assign(key);
+			return;  // needed?
+		assign(key); // potential problem: assign assumes string arg
 	}
 
 	/// Set a single flag.
@@ -497,6 +496,8 @@ protected:
 		this->value = flagger.value;
 	}
 	*/
+
+protected:
 
 private:
 

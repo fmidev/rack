@@ -28,20 +28,30 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef BIRD_H_
-#define BIRD_H_
+#ifndef RACK_GLIDER_OP
+#define RACK_GLIDER_OP
 
-#include <andre/DetectorOp.h>
-#include "data/Data.h"
+#include <string>
+
 #include "drain/image/Image.h"
 #include "drain/image/Window.h"
 #include "drain/imageops/ImageOp.h"
-#include <string>
 
-using namespace drain::image;
+// RAISED
+#include "drain/imageops/SlidingWindowOp.h"
+
+//#include "data/Data.h"
+#include "andre/DetectorOp.h"
+// #include "drain/util/FunctorPack.h"
+// #include "drain/util/Fuzzy.h"
+
+// RAISED
+#include "radar/Analysis.h"
+#include "radar/Doppler.h"
 
 namespace rack {
 
+using namespace drain::image;
 
 ///
 /**
@@ -53,16 +63,14 @@ class GliderOp: public DetectorOp {
 protected:
 
 	inline
-	GliderOp(const std::string & name, const std::string & description, const std::string & classCode) :
-		DetectorOp(name, description, classCode), dbzPeak(+5),  VRAD_FLIP(false), zdrAbsMin(+2.0)  {
-		//dataSelector.setQuantityRegExp("^(DBZH|VRAD|VRADH|RHOHV|ZDR)$");
+	GliderOp(const std::string & name, const std::string & description, const std::string & classCode, bool vrad_flip) :
+		DetectorOp(name, description, classCode), dbzPeak(+5), VRAD_FLIP(vrad_flip), zdrAbsMin(+2.0)  {
 		dataSelector.setQuantities("DBZH:VRAD:VRADH:RHOHV:ZDR");
-		// dataSelector.setMaxCount(1);
 	};
 
 
 	inline
-	GliderOp(const GliderOp & op) : DetectorOp(op), dbzPeak(0.0), VRAD_FLIP(false), zdrAbsMin(+2.0) {
+	GliderOp(const GliderOp & op) : DetectorOp(op), dbzPeak(0.0), VRAD_FLIP(op.VRAD_FLIP), zdrAbsMin(+2.0) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	};
 
@@ -71,40 +79,56 @@ protected:
 
 
 	double dbzPeak;
-
-	bool VRAD_FLIP;
+	const bool VRAD_FLIP;
 	drain::Range<double> vradDevRange;
-
-	//double wradMin;
-
 	drain::Range<double> rhoHVRange;
-
 	double zdrAbsMin;
 
 	drain::image::WindowConfig window;
-	//double windowWidth;
-	//double windowHeight;
 
 
 	virtual
 	//void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & dstAux) const;
 	void runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & dstAux) const;
 
+	/*
+	virtual
+	const ImageOp & getFuzzifierDBZ(const PolarODIM & odim) const = 0;
+
+	virtual
+	const ImageOp & getFuzzifierVRAD(const PolarODIM & odim) const = 0;
+
+	virtual
+	const ImageOp & getFuzzifierZDR(const PolarODIM & odim) const = 0;
+
+	virtual
+	const ImageOp & getFuzzifierRHOHV(const PolarODIM & odim) const = 0;
+	*/
 
 protected:
 
+	void init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrDevMin, double windowWidth, double windowHeight);
 
-	/// Inits common for BIRD and INSECT
-	// kludge
-	//void init(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrDevMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0);
+	virtual
+	void computeFuzzyDBZ(Image & response, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData) const;
+
+	virtual
+	void computeFuzzyVRAD(Image & response, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData) const;
+
+	virtual
+	void computeFuzzyZDR(Image & response, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData) const;
+
+	virtual
+	void computeFuzzyRHOHV(Image & response, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData) const;
 
 	/// Convenience function for "accumulating" detection results.
 	/**
 	 *   \param tmp - image for latest result, in a sequence of operations
 	 *   \param dstData - actual result
 	 *   \param dstProductAux -
+	 *   Image & tmp,
 	 */
-	void applyOperator(const ImageOp & op, Image & tmp, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const;
+	void applyOperator(const ImageOp & op, const std::string & feature, const Data<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const;
 
 
 };
@@ -131,7 +155,7 @@ public:
 //	BirdOp(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrAbsMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0) :
 	BirdOp(double dbzPeak = 0.0, double vradDevMin = 3.0, double rhoHVmax = 0.8, double zdrAbsMin = 1.0, double windowWidth = 2500, double windowHeight = 5.0) :
 
-		GliderOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.bird"){ // Optional postprocessing: morphological closing.
+		GliderOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.bird", false){ // Optional postprocessing: morphological closing.
 
 		init(dbzPeak, vradDevMin, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 
@@ -142,13 +166,45 @@ public:
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	};
 
-	// virtual 	inline	~BirdOp(){};
+	virtual inline
+	~BirdOp(){};
+
+
+	/*
+	virtual
+	const ImageOp & getFuzzifierDBZ(const PolarODIM & odim) const {
+		dbzFuzzifier.odimSrc = odim;
+		dbzFuzzifier.functor.set(dbzPeak, +5.0);
+		return dbzFuzzifier;
+	}
+
+	virtual
+	const ImageOp & getFuzzifierVRAD(const PolarODIM & odim) const;
+
+	virtual inline
+	const ImageOp & getFuzzifierZDR(const PolarODIM & odim) const {
+		dbzFuzzifier.odimSrc = odim;
+		dbzFuzzifier.functor.set(dbzPeak, +5.0);
+		return dbzFuzzifier;
+	};
+
+	virtual
+	const ImageOp & getFuzzifierRHOHV(const PolarODIM & odim) const {
+		dbzFuzzifier.odimSrc = odim;
+		dbzFuzzifier.functor.set(dbzPeak, +5.0);
+		return dbzFuzzifier;
+	};
+
 
 protected:
 
-	///
-	void init(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrDevMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0);
+	mutable
+	RadarFunctorOp<drain::FuzzyBell<double> > dbzFuzzifier;
 
+	mutable
+	drain::image::SlidingWindowOp<DopplerDevWindow> vradFuzzifier;
+	//RadarFunctorOp<drain::FuzzyBell<double> > dbzFuzzifier;
+	*/
 };
 
 
@@ -169,19 +225,53 @@ public:
 	 *
 	 */
 	InsectOp(double dbzPeak = -10.0, double vradDevMax = +5.0, double rhoHVmax = 0.7, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
-		GliderOp(__FUNCTION__, "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.insect"){
+		GliderOp(__FUNCTION__, "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.insect", true){
 		init(dbzPeak, vradDevMax, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
-		// this->vradDev.max = 0.9 *vradDevMax;
-		// this->vradDev.min = 1.1 *vradDevMax;
 	};
 
 	InsectOp(const InsectOp & op) : GliderOp(op) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	}
 
+	/*
+	virtual
+	const ImageOp & getFuzzifierDBZ(const PolarODIM & odim) const {
+		dbzFuzzifier.odimSrc = odim;
+		dbzFuzzifier.functor.set(dbzPeak, +5.0);
+		return dbzFuzzifier;
+	}
+
+	virtual inline
+	const ImageOp & getFuzzifierVRAD(const PolarODIM & odim) const {
+		dbzFuzzifier.odimSrc = odim;
+		dbzFuzzifier.functor.set(dbzPeak, +5.0);
+		return dbzFuzzifier;
+	};
+
+	virtual inline
+	const ImageOp & getFuzzifierZDR(const PolarODIM & odim) const {
+		dbzFuzzifier.odimSrc = odim;
+		dbzFuzzifier.functor.set(dbzPeak, +5.0);
+		return dbzFuzzifier;
+	};
+
+	virtual
+	const ImageOp & getFuzzifierRHOHV(const PolarODIM & odim) const {
+		dbzFuzzifier.odimSrc = odim;
+		dbzFuzzifier.functor.set(dbzPeak, +5.0);
+		return dbzFuzzifier;
+	};
+
+
 protected:
 
-	void init(double dbzPeak = -5.0, double vradDevMax = +5.0, double rhoHVmax = 0.7, double zdrDevMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0);
+	mutable
+	RadarFunctorOp<drain::FuzzyBell<double> > dbzFuzzifier;
+	//drain::FuzzyStep<double> fuzzyStepDBZ;
+
+	mutable
+	drain::image::SlidingWindowOp<DopplerDevWindow> vradFuzzifier;
+	*/
 
 };
 

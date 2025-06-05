@@ -144,6 +144,7 @@ public:
 	void set(const FlaggerBase<E> & flagger){
 		this->value = flagger.value;
 	}
+
 	// END Base
 
 	template <class T>
@@ -216,14 +217,15 @@ std::ostream & operator<<(std::ostream & ostr, const drain::SingleFlagger<E> & f
  *   Abstract class, because getDict() returning Dictionary<std::string,E> still undefined.
  */
 template <typename E, typename T=size_t>
-class MultiFlagger : public FlaggerBase<E,T> {
+class MultiFlagger : public FlaggerBase<E,T> {  // <E,FlagResolver::ivalue_t> { //
 
 public:
 
 	typedef E value_t;
-	//typedef typename FlaggerBase<E,size_t>::storage_t storage_t;
 	typedef T storage_t;
 	typedef FlaggerBase<E,T> flagger_t;
+	//typedef FlagResolver::ivalue_t storage_t;
+	//typedef FlaggerBase<E,FlagResolver::ivalue_t> flagger_t;
 	typedef typename flagger_t::dict_t dict_t;
 	typedef typename dict_t::key_t key_t; // ~string
 
@@ -300,8 +302,8 @@ public:
 	/// For exporting values.
 	virtual
 	const key_t & str() const  override  {
-		const dict_t & dict = this->getDict();
-		currentStr = FlagResolver::getKeys(dict, this->value, this->separator);
+		// const dict_t & dict = this->getDict();
+		currentStr = FlagResolver::getKeys(this->getDict(), this->value, this->separator);
 		return currentStr;
 	}
 
@@ -309,6 +311,9 @@ public:
 	/// For importing values. After assignment, update() should be called. Experimental
 	virtual
 	std::string & str(){
+		// NEW: also non-const is updated
+		// const dict_t & dict = this->getDict();
+		currentStr = FlagResolver::getKeys(this->getDict(), this->value, this->separator);
 		return currentStr;  // CHECK USAGE
 	}
 
@@ -335,6 +340,12 @@ protected:
 		this->value |= FlagResolver::getIntValue(this->getDict(), key, this->separator);
 	}
 
+	// New
+	inline
+	void addOne(const storage_t & value){
+		this->value |= value;
+	}
+
 	template <typename T2>
 	inline
 	void addOne(const T2 & value){
@@ -353,7 +364,7 @@ protected:
 
 template <typename E,typename T>
 inline
-std::ostream & operator<<(std::ostream & ostr, const drain::MultiFlagger<E,T> & flagger) {
+std::ostream & operator<<(std::ostream & ostr, const drain::MultiFlagger<E,T> & flagger) {  // ,T
 	return FlagResolver::keysToStream(flagger.getDict(), flagger.getValue(), ostr);
 }
 
@@ -361,45 +372,6 @@ std::ostream & operator<<(std::ostream & ostr, const drain::MultiFlagger<E,T> & 
 
 
 
-
-
-
-/// Flagger with referenced/external dictionary accepting values of (integer) type T
-/**
- *  Designed for local, instantaneous use.
- *  Should several flaggers use the same dictionary, use Flagger2<F> instead.
- *
- *  \tparam F – SingleFlagger<T> or MultiFlagger<T>, integer type T
- *
- */
-/*
-template <class F>
-class Flagger2 : public F {  // Consider renaming to IntFlagger !
-
-public:
-
-	typedef F fbase_t;
-	typedef typename fbase_t::value_t value_t;
-	typedef typename fbase_t::dict_t   dict_t;
-
-
-	inline
-	Flagger2(const dict_t & dict, value_t & value, char sep=',') : fbase_t(dict, value, sep) { // , dict(dict){
-	}
-
-	inline
-	Flagger2(const Flagger2<F> & flagger) : fbase_t(flagger.dict) { // DANGEROUS if tmp ref?  : dict(flagger.dict){
-	}
-
-	template <class T>
-	inline
-	Flagger2<F> & operator=(const T & v){
-		this->set(v);
-		return *this;
-	}
-
-};
-*/
 
 /// Flagger with own dictionary, and accepting values of (integer) type T
 /**

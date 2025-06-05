@@ -35,7 +35,7 @@ namespace rack {
 
 
 
-void rack::RadarFunctorBase::apply(const drain::image::Channel &src, drain::image::Channel &dst, const drain::UnaryFunctor & ftor, bool LIMIT) const {
+void RadarFunctorBase::apply(const drain::image::Channel &src, drain::image::Channel &dst, const drain::UnaryFunctor & ftor, bool LIMIT) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__); //REPL getImgLog(), this->name+"(RadarFunctorOp)", __FUNCTION__);
 	mout.debug("start" );
@@ -45,13 +45,15 @@ void rack::RadarFunctorBase::apply(const drain::image::Channel &src, drain::imag
 	// drain::Type::call<drain::typeMax, double>(dst.getType());
 	const drain::ValueScaling & dstScaling = dst.getScaling();
 
-	typedef drain::typeLimiter<double> Limiter;
-	Limiter::value_t limit = drain::Type::call<Limiter>(dst.getType());
-
 	drain::image::Image::const_iterator s  = src.begin();
 	drain::image::Image::iterator d = dst.begin();
 	double s2;
+
 	if (LIMIT){
+
+		typedef drain::typeLimiter<double> Limiter;
+		Limiter::value_t limit = drain::Type::call<Limiter>(dst.getType());
+
 		while (d != dst.end()){
 			s2 = static_cast<double>(*s);
 			if (s2 == odimSrc.nodata)
@@ -59,8 +61,6 @@ void rack::RadarFunctorBase::apply(const drain::image::Channel &src, drain::imag
 			else if (s2 == odimSrc.undetect)
 				*d = undetectValue;
 			else
-				//*d = dst.scaling.limit<double>(dstMax * this->functor(odimSrc.scaleForward(s2)));
-				//*d = limit(dstMax * this->functor(odimSrc.scaleForward(s2)));
 				*d = limit(dstScaling.inv(ftor(odimSrc.scaleForward(s2))));
 			++s;
 			++d;
@@ -75,7 +75,6 @@ void rack::RadarFunctorBase::apply(const drain::image::Channel &src, drain::imag
 				*d = undetectValue;
 			else
 				*d = dstScaling.inv(ftor(odimSrc.scaleForward(s2)));
-			//*d = dstMax * this->functor(odimSrc.scaleForward(s2));
 			++s;
 			++d;
 		}

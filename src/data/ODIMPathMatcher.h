@@ -139,6 +139,7 @@ public:
 	//drain::Flagger flags;
 	//drain::Flagger2<drain::MultiFlagger<group_t> > flags;
 	drain::MultiFlagger<group_t, group_t> flags;
+	//drain::MultiFlagger<group_t> flags;
 
 	virtual
 	std::ostream & toStream(std::ostream & sstr) const;

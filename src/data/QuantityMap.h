@@ -75,7 +75,7 @@ public:
 	// const Quantity & PHIDP;
 	const Quantity & QIND;
 	const Quantity & PROB; // Rack
-	const Quantity & FUZZY; // Rack
+	// const Quantity & FUZZY; // Rack
 
 	inline
 	QuantityMap & operator=(const std::initializer_list<std::pair<std::string, Quantity> > & inits){

@@ -54,6 +54,34 @@ const std::set<XML::intval_t> TreeUtilsSVG::abstractTags = {
 */
 
 
+// Consider XMl Visitor...
+bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<svg::coord_t> & box){
+
+	if (elem->typeIs(svg::SVG) || elem->typeIs(svg::GROUP)){
+		for (const TreeSVG::pair_t & entry: elem){
+			computeBoundingBox(entry.second, box); // recursion
+		}
+	}
+	else if (elem->typeIs(svg::TEXT)){
+		// skip, trust others (rect anchor)
+	}
+	else {
+		if (box.empty()){ // TODO: check/redefine empty
+			box = elem->getBoundingBox();
+		}
+		else {
+			// drain::Logger mout(__FILE__, __FUNCTION__);
+			// mout.pending("Updating bbox ", box, " with ", elem->getBoundingBox());
+			box.expand(elem->getBoundingBox());
+		}
+	}
+
+	return (box.getWidth() != 0.0) && (box.getHeight() != 0.0);
+
+}
+
+
+
 
 void TreeUtilsSVG::finalizeBoundingBox(TreeSVG & svg){
 
@@ -505,33 +533,6 @@ int TranslatorSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) {
 		bbox.y += offset.y;
 		return 0;
 	}
-}
-
-
-// Consider XMl Visitor...
-bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<svg::coord_t> & box){
-
-	if (elem->typeIs(svg::SVG) || elem->typeIs(svg::GROUP)){
-		for (const TreeSVG::pair_t & entry: elem){
-			computeBoundingBox(entry.second, box); // recursion
-		}
-	}
-	else if (elem->typeIs(svg::TEXT)){
-		// skip, trust others (rect anchor)
-	}
-	else {
-		if (box.empty()){ // TODO: check/redefine empty
-			box = elem->getBoundingBox();
-		}
-		else {
-			// drain::Logger mout(__FILE__, __FUNCTION__);
-			// mout.pending("Updating bbox ", box, " with ", elem->getBoundingBox());
-			box.expand(elem->getBoundingBox());
-		}
-	}
-
-	return (box.getWidth() != 0.0) && (box.getHeight() != 0.0);
-
 }
 
 
