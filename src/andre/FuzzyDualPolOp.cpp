@@ -29,7 +29,6 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <andre/BirdOp.h>
 #include <drain/Log.h>
 #include "data/DataSelector.h"
 #include "data/DataTools.h"
@@ -52,8 +51,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-using namespace drain;
-using namespace drain::image;
+//using namespace drain;
+// using namespace drain::image;
 
 
 
@@ -63,18 +62,18 @@ using namespace drain::image;
 /* Rename
  *
  * Image & tmp,
+ * const std::string & feature,
  */
-void FuzzyDualPolOp::applyOperator(const ImageOp & op,  const std::string & feature, const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
+void FuzzyDualPolOp::applyOperator(const ImageOp & op,  const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const {
 
-	drain::Logger mout(__FUNCTION__, getName() + "::"+feature);
+	drain::Logger mout(__FUNCTION__, getName()); //  + "::"+feature
 
-	mout.debug("running " , feature , '/' , op.getName() );
-	// mout.debug("ZDR_NONZERO" , op.functor );
-
-	drain::StringBuilder<'_'> featureQuantity("FUZZY", srcData.odim.quantity, op.getName(), op.getParameters().getValues());
+	drain::StringBuilder<'_'> featureQuantityBrief("FUZZY", srcData.odim.quantity);
+	drain::StringBuilder<'_'> featureMethod(op.getName(), op.getParameters().getValues());
+	drain::StringBuilder<'_'> featureQuantity(featureQuantityBrief, featureMethod);
 
 	//mout.attention("FUZZY...", feature, '-', op.getName(), '-', srcData.odim.quantity);
-	mout.attention("quantity: ", featureQuantity);
+	mout.info("quantity: ", featureQuantity);
 
 	// OLD: (conditional-store)
 	// static const std::string response_tmp("FUZZY_LAST");
@@ -82,7 +81,6 @@ void FuzzyDualPolOp::applyOperator(const ImageOp & op,  const std::string & feat
 
 	// NEW
 	PlainData<PolarDst> & dstFeature = dstProductAux.getQualityData(featureQuantity.str());
-
 
 	if (dstFeature.data.isEmpty()){
 		mout.attention("Computing feature [", featureQuantity, "] ");
@@ -93,6 +91,7 @@ void FuzzyDualPolOp::applyOperator(const ImageOp & op,  const std::string & feat
 		dstFeature.setGeometry(srcData.data.getGeometry());
 		// dstFeature.setPhysicalRange(0.0, 1.0); // needed?
 		op.traverseChannel(srcData.data, dstFeature.data);
+		dstFeature.getHow()["method"] = featureMethod.str();
 	}
 	else {
 		mout.ok<LOG_NOTICE>("Feature [", featureQuantity, "] exists already, not recomputing");
@@ -111,7 +110,7 @@ void FuzzyDualPolOp::applyOperator(const ImageOp & op,  const std::string & feat
 		dstData.setGeometry(srcData.data.getGeometry());
 		mout.attention("COP2:", dstData.data.getGeometry());
 		drain::image::CopyOp().process(dstFeature.data, dstData.data);
-		dstData.odim.prodpar = feature;
+		dstData.odim.prodpar = featureQuantityBrief;
 		mout.attention("COP3:", dstData.data.getGeometry());
 	}
 	else {
@@ -121,112 +120,13 @@ void FuzzyDualPolOp::applyOperator(const ImageOp & op,  const std::string & feat
 		BinaryFunctorOp<drain::MultiplicationFunctor>().traverseChannel(dstData.data, dstFeature.data, dstData.data);
 		// File::write(dstData.data, feature+".png");
 		dstData.odim.prodpar += ',';
-		dstData.odim.prodpar += feature;
+		dstData.odim.prodpar += featureQuantityBrief;
 		//dstData.odim.prodpar = drain::StringBuilder<','>(dstData.odim.prodpar, feature);
 	}
 
-	//mout.attention(feature, " dstData: ", dstData);
-
-	/*
-	/// Save directly to target (dstData), if this is the first applied detector
-	if (NEW){
-		mout.debug2("creating dst image" );
-		//dstData.setPhysicalRange(0.0, 1.0);
-		dstData.setPhysicalRange(0.0, 1.0);
-		op.traverseChannel(src.data, dstData.data);
-		dstData.odim.prodpar = feature;
-		tmp.setGeometry(dstData.data.getGeometry());
-	}
-	else {
-		mout.debug2("tmp exists => accumulating detection" );
-		op.process(src.data, tmp);
-		//op.traverseChannel(src.data.getChannel(0), tmp.getChannel(0));
-		mout.debug2("updating dst image" );
-		dstData.data.getChannel(0).setPhysicalRange({0,1}, true);
-		tmp.getChannel(0).setPhysicalRange({0,1}, true);
-		BinaryFunctorOp<drain::MultiplicationFunctor>().traverseChannel(dstData.data, tmp, dstData.data);
-		// File::write(dstData.data, feature+".png");
-		dstData.odim.prodpar += ',';
-		dstData.odim.prodpar += feature;
-	}
-
-	/// Debugging: save intermediate images.
-	// mout.special(outputDataVerbosity);
-
-	//if (outputDataVerbosity >= 1){
-	if (outputDataVerbosity){ // bool (isSet()
-
-		mout.special<LOG_DEBUG>("saving [", feature, "]");
-		PlainData<PolarDst> & dstFeature = dstProductAux.getQualityData(feature);  // consider direct instead of copy?
-		dstFeature.odim.quantity = feature;
-		const QuantityMap & qm = getQuantityMap();
-		qm.setQuantityDefaults(dstFeature, "PROB");
-		if (NEW)
-			drain::image::CopyOp().process(dstData.data, dstFeature.data);
-		else
-			drain::image::CopyOp().process(tmp, dstFeature.data);
-		//@ dstFeature.updateTree();
-	}
-	*/
 
 }
 
-void FuzzyDualPolOp::computeFuzzyDBZ(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
-
-	RadarFunctorOp<FuzzyBell<double> > dbzFuzzifier;
-	dbzFuzzifier.odimSrc = srcData.odim;
-	dbzFuzzifier.functor.set(dbzPeak, +5.0);
-	applyOperator(dbzFuzzifier, "FUZZY_DBZH_LOW", srcData, dstData, dstProduct);
-
-};
-
-void FuzzyDualPolOp::computeFuzzyVRAD(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
-
-	FuzzyStep<double> fuzzyStep; //(0.5);
-	//const double pos = vradDevMin; ///vradSrc.odim.NI; // TODO: consider relative value directly as parameter NO! => alarm if over +/- 0.5
-
-	if (!VRAD_FLIP)
-		fuzzyStep.set(vradDevRange.min, vradDevRange.max);
-	else
-		fuzzyStep.set(vradDevRange.max, vradDevRange.min);
-
-	DopplerDevWindow::conf_t conf(fuzzyStep, window.frame.width, window.frame.height, 0.05, true, false); // require 5% samples
-	conf.updatePixelSize(srcData.odim);
-	SlidingWindowOp<DopplerDevWindow> vradDevOp(conf);
-
-	//mout.warn("fuzzy step: " , fuzzyStep  );
-	/*
-	mout.debug2("VRAD op   " , vradDevOp );
-	mout.debug(vradDevOp.conf.frame.width  , 'x' , vradDevOp.conf.frame.height );
-	//mout.debug(vradDevOp.conf.ftor );
-	mout.special("ftor params: " , vradDevOp.conf.functorParameters );
-	mout.debug("vradSrc NI=" , vradSrc.odim.getNyquist() );
-	mout.debug2("vradSrc props:" , vradSrc.data.getProperties() );
-	*/
-	//  tmp,
-	applyOperator(vradDevOp, "FUZZY_VRADH_DEV", srcData, dstData, dstProduct);
-
-
-};
-
-void FuzzyDualPolOp::computeFuzzyZDR(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
-	RadarFunctorOp<FuzzyTriangle<double> > zdrFuzzifier;
-	zdrFuzzifier.odimSrc = srcData.odim;
-	zdrFuzzifier.functor.set(+zdrAbsMin, 0.0, -zdrAbsMin); // INVERSE //, -1.0, 1.0);
-	// zdrFuzzifier.functor.set(0.5, 2.0, 255);
-	// mout.debug("ZDR_NONZERO" , zdrFuzzifier.functor );
-	// zdrFuzzifier.getParameters()
-	applyOperator(zdrFuzzifier,  "FUZZY_ZDR_NONZERO", srcData, dstData, dstProduct);
-};
-
-void FuzzyDualPolOp::computeFuzzyRHOHV(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
-	RadarFunctorOp<FuzzyStep<double> > rhohvFuzzifier;
-	rhohvFuzzifier.odimSrc = srcData.odim;
-	//rhohvFuzzifier.functor.set(rhoHVmax+(1.0-rhoHVmax)/2.0, rhoHVmax);
-	rhohvFuzzifier.functor.set(rhoHVRange.max, rhoHVRange.min);
-	// mout.debug("RHOHV_LOW" , rhohvFuzzifier.functor );
-	applyOperator(rhohvFuzzifier, "FUZZY_RHOHV_LOW", srcData, dstData, dstProduct);
-};
 
 
 // processDataSet
@@ -272,15 +172,19 @@ void FuzzyDualPolOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<
 		mout.warn("skipping VRAD..." );
 		overallScale *= 0.5;
 	}
-	else if (vradDevRange.min > NI) {
-			mout.warn("vradDev range (" , vradDevRange , ") exceeds NI of input: " , NI ); // semi-fatal
-			mout.warn("skipping VRAD..." );
-			overallScale *= 0.5;
+	else if (vradDevThreshold > NI) {
+		//else if (vradDevRange.min > NI) {
+			//mout.warn("vradDev range (" , vradDevRange , ") exceeds NI of input: " , NI ); // semi-fatal
+		mout.warn("vradDev threshold (" , vradDevThreshold , ") exceeds NI of input: " , NI ); // semi-fatal
+		mout.warn("skipping VRAD..." );
+		overallScale *= 0.5;
 	}
 	else {
+		/*
 		if (vradDevRange.max > NI) {
 			mout.warn("threshold end point of vradDev (" , vradDevRange , ") exceeds NI of input: " , NI );
 		}
+		*/
 		computeFuzzyVRAD(srcDataVRAD, dstData, dstProductAux);
 	}
 
@@ -361,38 +265,6 @@ void FuzzyDualPolOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<
 
 
 
-
-// kludge
-/*
-void BirdOp::init(double dbzPeak, double vradDevMin, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
-
-	parameters.link("dbzPeak",      this->dbzPeak = dbzPeak,  "Typical reflectivity (DBZH)");
-	parameters.link("vradDevMin",   this->vradDevRange.tuple(0.0, vradDevMin), "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
-	parameters.link("rhoHVmax",     this->rhoHVRange.tuple(0.9*rhoHVmax, rhoHVmax),  "Fuzzy threshold of maximum rhoHV value");
-	parameters.link("zdrAbsMin",    this->zdrAbsMin = zdrAbsMin,  "Fuzzy threshold of absolute ZDR");
-	parameters.link("windowWidth",  this->window.frame.width = windowWidth,  "window width, beam-directional (m)"); //, "[m]");
-	parameters.link("windowHeight", this->window.frame.height = windowHeight,  "window width, azimuthal (deg)"); //, "[d]");
-
-	// parameters.link("wradMin", this->wradMin, wradMin, "Minimum normalized deviation of within-bin Doppler speed deviation (WRAD)");
-
-}
-*/
-
-/*
-void InsectOp::init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
-
-	// THIS IS INVERTED (wrt. BIRD)
-	//VRAD_FLIP=true;
-
-	parameters.link("dbzPeak",      this->dbzPeak = dbzPeak, "Typical reflectivity (DBZH)");
-	parameters.link("vradDevMax",   this->vradDevRange.tuple(0, vradDevMax), "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
-	parameters.link("rhoHVmax",     this->rhoHVRange.tuple(0.9*rhoHVmax, rhoHVmax), "Fuzzy threshold of maximum rhoHV value");
-	parameters.link("zdrAbsMin",    this->zdrAbsMin = zdrAbsMin, "Fuzzy threshold of absolute ZDR");
-	parameters.link("windowWidth",  this->window.frame.width = windowWidth, "window width, beam-directional (m)"); //, "[m]");
-	parameters.link("windowHeight", this->window.frame.height = windowHeight, "window width, azimuthal (deg)"); //, "[d]");
-
-}
-*/
 
 }
 

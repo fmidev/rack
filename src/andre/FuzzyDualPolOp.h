@@ -45,13 +45,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // RAISED
 // RAISED
+/*
 #include "drain/imageops/SlidingWindowOp.h"
 #include "radar/Analysis.h"
 #include "radar/Doppler.h"
+*/
 
 namespace rack {
 
-using namespace drain::image;
+//using namespace drain::image;
 
 ///
 /**
@@ -64,13 +66,13 @@ protected:
 
 	inline
 	FuzzyDualPolOp(const std::string & name, const std::string & description, const std::string & classCode, bool vrad_flip) :
-		DetectorOp(name, description, classCode), dbzPeak(+5), VRAD_FLIP(vrad_flip), zdrAbsMin(+2.0)  {
+		DetectorOp(name, description, classCode)  {
 		dataSelector.setQuantities("DBZH:VRAD:VRADH:RHOHV:ZDR");
 	};
 
 
 	inline
-	FuzzyDualPolOp(const FuzzyDualPolOp & op) : DetectorOp(op), dbzPeak(0.0), VRAD_FLIP(op.VRAD_FLIP), zdrAbsMin(+2.0) {
+	FuzzyDualPolOp(const FuzzyDualPolOp & op) : DetectorOp(op) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	};
 
@@ -78,17 +80,17 @@ protected:
 	~FuzzyDualPolOp(){};
 
 
-	double dbzPeak;
-	const bool VRAD_FLIP;
-	drain::Range<double> vradDevRange;
-	drain::Range<double> rhoHVRange;
-	double zdrAbsMin;
+	double dbzParam = 0.0;  // Peak or threshold location (hence "param").
+	//drain::Range<double> vradDevRange;
+	double vradDevThreshold = 2.0;
+	//drain::Range<double> rhoHVRange;
+	double rhoHVthreshold = 0.95;
+	double zdrAbsThreshold = 2.0;
 
 	drain::image::WindowConfig window;
 
 
 	virtual
-	//void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & dstAux) const;
 	void runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & dstAux) const;
 
 
@@ -116,8 +118,9 @@ protected:
 	 *   \param dstData - actual result
 	 *   \param dstProductAux -
 	 *   Image & tmp,
+	 *   const std::string & feature,
 	 */
-	void applyOperator(const ImageOp & op, const std::string & feature, const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const;
+	void applyOperator(const ImageOp & op, const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const;
 
 
 };

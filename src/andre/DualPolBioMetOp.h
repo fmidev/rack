@@ -83,7 +83,7 @@ public:
 	 *
 	 */
 //	BirdOp(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrAbsMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0) :
-	BirdOp(double dbzPeak = 0.0, double vradDevMin = 3.0, double rhoHVmax = 0.8, double zdrAbsMin = 1.0, double windowWidth = 2500, double windowHeight = 5.0) :
+	BirdOp(double dbzPeak = 0.0, double vradDevMin = 3.0, double rhoHVmax = 0.95, double zdrAbsMin = 1.0, double windowWidth = 2500, double windowHeight = 5.0) :
 
 		FuzzyDualPolOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.bird", false){ // Optional postprocessing: morphological closing.
 
@@ -134,7 +134,8 @@ public:
 	 *  \param windowHeight
 	 *
 	 */
-	InsectOp(double dbzPeak = -10.0, double vradDevMax = +5.0, double rhoHVmax = 0.7, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
+	// InsectOp(double dbzPeak = -10.0, double vradDevMax = +5.0, double rhoHVmax = 0.7, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
+	InsectOp(double dbzPeak = 0.0, double vradDevMax = +5.0, double rhoHVmax = 0.95, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
 		FuzzyDualPolOp(__FUNCTION__, "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.insect", true){
 		init(dbzPeak, vradDevMax, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 	};
