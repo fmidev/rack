@@ -447,10 +447,11 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 				// double marker = palette.getValueByCode(entry.first, true);
 				mout.attention("found palette entry: ", sprinter(legendEntry.second, drain::Sprinter::jsonLayout));
 				//updateOverallDetection(entry.second.data, dstQIND, dstCLASS, entry.first, (short unsigned int)123);
-				mout.attention("srcData: ", entry.second.data);
+				mout.debug("srcData: ", entry.second.data);
 				updateOverallDetection(entry.second.data, dstQIND, dstCLASS, entry.first, legendEntry.first);
 			} catch (const std::exception & e) {
-				mout.fail("Could not retrieve code (palette/legend entry) for [", entry.first, "]");
+				mout.fail<LOG_DEBUG>("Could not retrieve code (palette/legend entry) for [", entry.first, "]");
+				mout.note("Skipping update of QIND and CLASS with [", entry.first, "]");
 			}
 		}
 	}
