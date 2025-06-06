@@ -105,6 +105,11 @@ protected:
 
 };
 
+template <char SEP>
+inline
+std::ostream & operator<<(std::ostream &ostr, const StringBuilder<SEP> & strb){
+	return ostr << strb.str();
+}
 
 } // drain::
 

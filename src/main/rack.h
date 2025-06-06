@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "12.7.1"
+#define __RACK_VERSION__ "12.8"
 
 /**
  *  Version 12
@@ -67,6 +67,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - gGroupTile reference overwrite fixed
  *  Release 12.7.1
  *  - SVG --outputConf svg:paths=PREFIX adds explicit prefix "./" to relative paths (enabling colons ':' in path/filenames)
+ *  Version 12.8
+ *  - BirdOp and InsectOp redesigned under FuzzyDualPolOp
  *
  *
  *  Version 11

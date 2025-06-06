@@ -43,9 +43,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "andre/AttenuationOp.h"
 #include "andre/BioMetOp.h"
-#include "andre/BirdOp.h"
 #include "andre/ClutterOp.h"
 #include "andre/CCorOp.h"
+#include "andre/DualPolBioMetOp.h" // BirdOp.h
 #include "andre/DopplerNoiseOp.h"
 #include "andre/EmitterOp.h"
 #include "andre/HydroClassBasedOp.h"

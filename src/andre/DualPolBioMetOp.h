@@ -38,16 +38,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/imageops/ImageOp.h"
 
 // RAISED
+/*
 #include "drain/imageops/SlidingWindowOp.h"
+#include "radar/Analysis.h"
+#include "radar/Doppler.h"
 
 //#include "data/Data.h"
 #include "andre/DetectorOp.h"
 // #include "drain/util/FunctorPack.h"
 // #include "drain/util/Fuzzy.h"
-
 // RAISED
-#include "radar/Analysis.h"
-#include "radar/Doppler.h"
+*/
+
+#include "FuzzyDualPolOp.h"
+
 
 namespace rack {
 
@@ -58,80 +62,6 @@ using namespace drain::image;
 
  *
  */
-class FuzzyDualPolOp: public DetectorOp {
-
-protected:
-
-	inline
-	FuzzyDualPolOp(const std::string & name, const std::string & description, const std::string & classCode, bool vrad_flip) :
-		DetectorOp(name, description, classCode), dbzPeak(+5), VRAD_FLIP(vrad_flip), zdrAbsMin(+2.0)  {
-		dataSelector.setQuantities("DBZH:VRAD:VRADH:RHOHV:ZDR");
-	};
-
-
-	inline
-	FuzzyDualPolOp(const FuzzyDualPolOp & op) : DetectorOp(op), dbzPeak(0.0), VRAD_FLIP(op.VRAD_FLIP), zdrAbsMin(+2.0) {
-		this->parameters.copyStruct(op.getParameters(), op, *this);
-	};
-
-	virtual inline
-	~FuzzyDualPolOp(){};
-
-
-	double dbzPeak;
-	const bool VRAD_FLIP;
-	drain::Range<double> vradDevRange;
-	drain::Range<double> rhoHVRange;
-	double zdrAbsMin;
-
-	drain::image::WindowConfig window;
-
-
-	virtual
-	//void processDataSet(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & dstAux) const;
-	void runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & dstAux) const;
-
-	/*
-	virtual
-	const ImageOp & getFuzzifierDBZ(const PolarODIM & odim) const = 0;
-
-	virtual
-	const ImageOp & getFuzzifierVRAD(const PolarODIM & odim) const = 0;
-
-	virtual
-	const ImageOp & getFuzzifierZDR(const PolarODIM & odim) const = 0;
-
-	virtual
-	const ImageOp & getFuzzifierRHOHV(const PolarODIM & odim) const = 0;
-	*/
-
-protected:
-
-	void init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrDevMin, double windowWidth, double windowHeight);
-
-	virtual
-	void computeFuzzyDBZ(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
-
-	virtual
-	void computeFuzzyVRAD(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
-
-	virtual
-	void computeFuzzyZDR(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
-
-	virtual
-	void computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
-
-	/// Convenience function for "accumulating" detection results.
-	/**
-	 *   \param tmp - image for latest result, in a sequence of operations
-	 *   \param dstData - actual result
-	 *   \param dstProductAux -
-	 *   Image & tmp,
-	 */
-	void applyOperator(const ImageOp & op, const std::string & feature, const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const;
-
-
-};
 
 ///
 /**
@@ -169,42 +99,22 @@ public:
 	virtual inline
 	~BirdOp(){};
 
-
-	/*
 	virtual
-	const ImageOp & getFuzzifierDBZ(const PolarODIM & odim) const {
-		dbzFuzzifier.odimSrc = odim;
-		dbzFuzzifier.functor.set(dbzPeak, +5.0);
-		return dbzFuzzifier;
-	}
+	void init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrDevMin, double windowWidth, double windowHeight);
 
 	virtual
-	const ImageOp & getFuzzifierVRAD(const PolarODIM & odim) const;
-
-	virtual inline
-	const ImageOp & getFuzzifierZDR(const PolarODIM & odim) const {
-		dbzFuzzifier.odimSrc = odim;
-		dbzFuzzifier.functor.set(dbzPeak, +5.0);
-		return dbzFuzzifier;
-	};
+	void computeFuzzyDBZ(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
 
 	virtual
-	const ImageOp & getFuzzifierRHOHV(const PolarODIM & odim) const {
-		dbzFuzzifier.odimSrc = odim;
-		dbzFuzzifier.functor.set(dbzPeak, +5.0);
-		return dbzFuzzifier;
-	};
+	void computeFuzzyVRAD(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+
+	virtual
+	void computeFuzzyZDR(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+
+	virtual
+	void computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
 
 
-protected:
-
-	mutable
-	RadarFunctorOp<drain::FuzzyBell<double> > dbzFuzzifier;
-
-	mutable
-	drain::image::SlidingWindowOp<DopplerDevWindow> vradFuzzifier;
-	//RadarFunctorOp<drain::FuzzyBell<double> > dbzFuzzifier;
-	*/
 };
 
 
@@ -233,45 +143,21 @@ public:
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	}
 
-	/*
 	virtual
-	const ImageOp & getFuzzifierDBZ(const PolarODIM & odim) const {
-		dbzFuzzifier.odimSrc = odim;
-		dbzFuzzifier.functor.set(dbzPeak, +5.0);
-		return dbzFuzzifier;
-	}
-
-	virtual inline
-	const ImageOp & getFuzzifierVRAD(const PolarODIM & odim) const {
-		dbzFuzzifier.odimSrc = odim;
-		dbzFuzzifier.functor.set(dbzPeak, +5.0);
-		return dbzFuzzifier;
-	};
-
-	virtual inline
-	const ImageOp & getFuzzifierZDR(const PolarODIM & odim) const {
-		dbzFuzzifier.odimSrc = odim;
-		dbzFuzzifier.functor.set(dbzPeak, +5.0);
-		return dbzFuzzifier;
-	};
+	void init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrDevMin, double windowWidth, double windowHeight);
 
 	virtual
-	const ImageOp & getFuzzifierRHOHV(const PolarODIM & odim) const {
-		dbzFuzzifier.odimSrc = odim;
-		dbzFuzzifier.functor.set(dbzPeak, +5.0);
-		return dbzFuzzifier;
-	};
+	void computeFuzzyDBZ(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
 
+	virtual
+	void computeFuzzyVRAD(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
 
-protected:
+	virtual
+	void computeFuzzyZDR(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
 
-	mutable
-	RadarFunctorOp<drain::FuzzyBell<double> > dbzFuzzifier;
-	//drain::FuzzyStep<double> fuzzyStepDBZ;
+	virtual
+	void computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
 
-	mutable
-	drain::image::SlidingWindowOp<DopplerDevWindow> vradFuzzifier;
-	*/
 
 };
 

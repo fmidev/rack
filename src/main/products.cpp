@@ -67,9 +67,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 // AnDRe
-#include "andre/BirdOp.h"
+// #include "andre/BirdOp.h"
 #include "andre/BioMetOp.h"
 #include "andre/ClutterOp.h"
+#include "andre/DualPolBioMetOp.h"
 
 #include "product/FunctorOp.h"
 

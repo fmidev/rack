@@ -46,10 +46,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // #include "radar/Analysis.h"
 // #include "radar/Doppler.h"
 #include "drain/util/FunctorPack.h"
-// #include "drain/util/Fuzzy.h"
-//#include "drain/util/RegExp.h"
 
-#include "BirdOp.h"
+#include "FuzzyDualPolOp.h"
 
 
 namespace rack {
@@ -58,18 +56,6 @@ using namespace drain;
 using namespace drain::image;
 
 
-
-void FuzzyDualPolOp::init(double dbzPeak, double vradDevMin, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
-
-	parameters.link("dbzPeak",      this->dbzPeak = dbzPeak,  "Typical reflectivity (DBZH)");
-	parameters.link(VRAD_FLIP ? "vradDevMax":"vradDevMin", this->vradDevRange.tuple(0.0, vradDevMin), "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
-	parameters.link("rhoHVmax",     this->rhoHVRange.tuple(0.9*rhoHVmax, rhoHVmax),  "Fuzzy threshold of maximum rhoHV value");
-	parameters.link("zdrAbsMin",    this->zdrAbsMin = zdrAbsMin,  "Fuzzy threshold of absolute ZDR");
-	parameters.link("windowWidth",  this->window.frame.width = windowWidth,  "window width, beam-directional (m)"); //, "[m]");
-	parameters.link("windowHeight", this->window.frame.height = windowHeight,  "window width, azimuthal (deg)"); //, "[d]");
-	// parameters.link("wradMin", this->wradMin, wradMin, "Minimum normalized deviation of within-bin Doppler speed deviation (WRAD)");
-
-}
 
 
 
