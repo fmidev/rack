@@ -66,7 +66,6 @@ namespace image
 
  *  NOTE. Design for parameters may vary in future, since multichannel image could be handled by giving
  *  a value for each: 1.2,1.4,0.7 for example. 
- */
 class GammaFunctor : public drain::UnaryFunctor
 {
 
@@ -91,12 +90,11 @@ public:
 
 
 };
+ */
 
+} // image::
 
+} // drain::
 
-}
-}
+#endif /* GAMMAOP_H_ */
 
-#endif /*GAMMAOP_H_*/
-
-// Drain
