@@ -30,15 +30,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 //#include <math.h>
 
-#include <drain/image/ImageFile.h> // debugging
 #include <product/EchoTopOpOld.h>
-#include "drain/util/Fuzzy.h"
-#include "drain/util/FunctorBank.h"
+#include <drain/util/Fuzzy.h>
+//#include <drain/util/FunctorBank.h>
+#include <drain/util/FunctorPack.h>
 
-#include "drain/imageops/DistanceTransformOp.h"
-#include "drain/imageops/GammaOp.h"
-#include "drain/imageops/GaussianAverageOp.h"
-#include "drain/imageops/SegmentAreaOp.h"
+#include <drain/image/ImageFile.h> // debugging
+#include <drain/imageops/DistanceTransformOp.h>
+#include <drain/imageops/GaussianAverageOp.h>
+#include <drain/imageops/SegmentAreaOp.h>
 
 #include "radar/Constants.h"
 #include "radar/Analysis.h"
@@ -232,7 +232,7 @@ void ConvOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSe
 
 	//drain::image::GammaOp
 	//drain::image::UnaryFunctorOpCloner<drain::image::GammaFunctor> gammaOp;
-	drain::image::UnaryFunctorOp<drain::image::GammaFunctor> gammaOp;
+	drain::image::UnaryFunctorOp<drain::GammaFunctor> gammaOp;
 	gammaOp.functor.gamma = gamma;
 	gammaOp.process(dstData.data, dstData.data);
 

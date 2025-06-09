@@ -53,7 +53,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-#include "GammaOp.h"
 #include "RunLengthOp.h"
 
 #include "BlenderOp.h"
@@ -68,7 +67,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "FlowAverageWindowOp.h" // for SlidingWindowOp
 #include "FloodFillOp.h"
 #include "FunctorOp.h"
-#include "GammaOp.h"
 #include "GaussianAverageOp.h"
 #include "DifferentialOp.h"
 #include "HighBoostOp.h"

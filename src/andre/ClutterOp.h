@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/Data.h"
 #include "data/DataSelector.h"
 #include <hi5/Hi5.h>
-#include "drain/util/ReferenceMap.h"
+#include <drain/util/ReferenceMap.h>
 #include <string>
 
 using namespace drain::image;

@@ -29,21 +29,20 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/image/ImageFile.h>
 #include <algorithm>
+
+
+#include <drain/util/FunctorPack.h>
+#include <drain/util/Fuzzy.h>
+// debugging
+#include <drain/image/ImageFile.h>
+#include <drain/imageops/DistanceTransformOp.h>
+#include <drain/imageops/HighPassOp.h>
+#include <drain/imageops/MarginalStatisticOp.h>
+#include <drain/imageops/SlidingWindowMedianOp.h>
 
 //#include "radar/ODIM.h"
 #include "EmitterOp.h"
-
-#include "drain/util/FunctorPack.h"
-#include "drain/util/Fuzzy.h"
-// debugging
-#include "drain/imageops/DistanceTransformOp.h"
-#include "drain/imageops/HighPassOp.h"
-#include "drain/imageops/MarginalStatisticOp.h"
-#include "drain/imageops/SlidingWindowMedianOp.h"
-
-
 
 // using namespace std;
 

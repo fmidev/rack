@@ -48,7 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <set>
 */
 
-#include "drain/util/EnumFlags.h"
+#include <drain/util/EnumFlags.h>
 #include "data/DataSelector.h"
 #include "data/ODIMPath.h"
 

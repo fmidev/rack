@@ -32,12 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/ImageFile.h>
 #include "NonMetOp.h"
 
-#include "drain/util/Fuzzy.h"
+#include <drain/util/Fuzzy.h>
 
-#include "drain/imageops/SlidingWindowMedianOp.h"
+#include <drain/imageops/SlidingWindowMedianOp.h>
 
-//#include "drain/imageops/SegmentAreaOp.h"
-//#include "drain/image/MathOpPack.h"
+//#include <drain/imageops/SegmentAreaOp.h>
+//#include <drain/image/MathOpPack.h>
 
 using namespace drain::image;
 

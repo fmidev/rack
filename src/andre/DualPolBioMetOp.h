@@ -33,20 +33,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
-#include "drain/image/Image.h"
-#include "drain/image/Window.h"
-#include "drain/imageops/ImageOp.h"
+#include <drain/image/Image.h>
+#include <drain/image/Window.h>
+#include <drain/imageops/ImageOp.h>
 
 // RAISED
 /*
-#include "drain/imageops/SlidingWindowOp.h"
+#include <drain/imageops/SlidingWindowOp.h>
 #include "radar/Analysis.h"
 #include "radar/Doppler.h"
 
 //#include "data/Data.h"
 #include "andre/DetectorOp.h"
-// #include "drain/util/FunctorPack.h"
-// #include "drain/util/Fuzzy.h"
+// #include <drain/util/FunctorPack.h>
+// #include <drain/util/Fuzzy.h>
 // RAISED
 */
 

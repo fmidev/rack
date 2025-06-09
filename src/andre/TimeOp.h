@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define Time_OP_H_
 
 #include <drain/image/ImageFile.h>
-#include "drain/util/Time.h"
+#include <drain/util/Time.h>
 #include "DetectorOp.h"
 
 using namespace drain::image;

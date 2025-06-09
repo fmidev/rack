@@ -30,31 +30,33 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <drain/Log.h>
-#include "data/DataSelector.h"
-#include "data/DataTools.h"
-#include "data/PolarODIM.h"
-#include "data/QuantityMap.h"
-#include "drain/image/ImageChannel.h"
-#include "drain/image/ImageLike.h"
-#include "drain/image/Window.h"
-#include "drain/imageops/CopyOp.h"
-#include "drain/imageops/FunctorOp.h"
+#include <drain/util/FunctorPack.h>
+#include <drain/image/ImageChannel.h>
+#include <drain/image/ImageLike.h>
+#include <drain/image/Window.h>
+#include <drain/imageops/CopyOp.h>
+#include <drain/imageops/FunctorOp.h>
 
-// RAISED
-// #include "drain/imageops/SlidingWindowOp.h"
-// #include "radar/Analysis.h"
-// #include "radar/Doppler.h"
-#include "drain/util/FunctorPack.h"
+#include "data/DataSelector.h"
+// #include "data/DataTools.h"
+// #include "data/PolarODIM.h"
+#include "data/QuantityMap.h"
 
 #include "FuzzyDualPolOp.h"
 
 
 namespace rack {
 
-//using namespace drain;
-// using namespace drain::image;
 
-
+void FuzzyDualPolOp::getGammaLookUpTable(double p, std::vector<unsigned char> & lookUpTable){
+	const size_t N = 256;
+	const double scale = 1.0/255.0;
+	lookUpTable.resize(N);
+	const drain::GammaFunctor functor(p);
+	for (size_t i=0; i<N; ++i){
+		lookUpTable[i] = static_cast<unsigned char>(255.0 * functor(scale * static_cast<double>(i)));
+	}
+}
 
 
 
@@ -218,7 +220,7 @@ void FuzzyDualPolOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<
 		mout.error("dstData still empty! ? Could not find input data; quantity=", dataSelector.getQuantity());
 	}
 	else {
-		if (overallScale < 1.0){
+		if (overallScale < 1.0){ // TODO: rescale this to match with the number of input quantities; aNonMet
 			mout.warn("Input(s) missing, rescaling with overall scale " , overallScale );
 			dstData.data.getScaling().scale *= overallScale;
 			dstData.data.getScaling().offset *= overallScale;
@@ -233,6 +235,27 @@ void FuzzyDualPolOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData<
 		// fuzzyBright.functor.set(overallScale, 0.0);
 		//fuzzyBright.process(dstData.data, dstData.data);
 	}
+
+	if (gammaAdjustment != 1.0){
+		mout.special("applying gamma adjustment (p=", gammaAdjustment,")");
+		std::vector<unsigned char> lookUp;
+		getGammaLookUpTable(gammaAdjustment, lookUp); // todo: odim scaling included? Tiny difference...
+		for (size_t i=0; i<256; ++i){
+			mout.special(" look: ", i, " => ", (float)lookUp[i]);
+		}
+
+		//double d;
+		for (drain::image::Image::iterator it = dstData.data.begin(); it!= dstData.data.end(); ++it){
+			if (dstData.odim.isValue(static_cast<double>(*it))){
+				*it = lookUp[*it];
+			}
+		}
+
+		dstData.getHow()["gammaAdjustment"] = gammaAdjustment;
+
+	}
+
+
 	writeHow(dstData);
 	//DataTools::updateInternalAttributes(dstData.getTree()); // needed?
 	mout.success(" -> dstData: " , dstData );

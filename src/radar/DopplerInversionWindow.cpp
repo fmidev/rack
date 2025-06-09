@@ -32,11 +32,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/ImageFile.h>
 #include <cmath>
 
-#include "drain/util/FunctorBank.h"
-#include "drain/util/Fuzzy.h"
-#include "drain/util/Geo.h"
+#include <drain/util/FunctorBank.h>
+#include <drain/util/Fuzzy.h>
+#include <drain/util/Geo.h>
 
-#include "drain/imageops/SlidingWindowOp.h"
+#include <drain/imageops/SlidingWindowOp.h>
 
 
 #include "radar/Geometry.h"
@@ -45,6 +45,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "DopplerInversionWindow.h"
 
 
+namespace drain {
+	DRAIN_TYPENAME_DEF(rack::DopplerWindow);
+	DRAIN_TYPENAME_DEF(rack::DopplerAverageWindow);
+	DRAIN_TYPENAME_DEF(rack::DopplerAverageWindow2);
+	DRAIN_TYPENAME_DEF(rack::DopplerDevWindow);
+}
 
 
 namespace rack {

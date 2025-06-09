@@ -33,8 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_VARIABLE VariableT<VariableInitializer<VariableBase> >
 
 #include <drain/Sprinter.h>
-#include "drain/VariableBase.h"
-#include "drain/VariableT.h"
+#include <drain/VariableBase.h>
+#include <drain/VariableT.h>
 
 
 namespace drain {

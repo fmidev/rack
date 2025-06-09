@@ -33,11 +33,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/Data.h"
 #include "data/PolarODIM.h"
 #include "data/QuantityMap.h"
-#include "drain/image/Image.h"
-#include "drain/image/ImageLike.h"
+#include <drain/image/Image.h>
+#include <drain/image/ImageLike.h>
 #include "product/RainRateOp.h"
 #include "radar/Geometry.h"
-#include "drain/util/Fuzzy.h"
+#include <drain/util/Fuzzy.h>
 #include <cmath>
 #include <string>
 

@@ -36,8 +36,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <sstream>
 
 
-#include "drain/image/Sampler.h"
-#include "drain/image/AccumulatorGeo.h"
+#include <drain/image/Sampler.h>
+#include <drain/image/AccumulatorGeo.h>
 #include "data/Data.h"
 
 // ##include "Geometry.h"

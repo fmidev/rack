@@ -62,7 +62,7 @@ public:
 
 	typedef W window_t;
 
-	SlidingWindowOp(typename W::conf_t & conf) : WindowOp<W>(conf, __FUNCTION__, ""){
+	SlidingWindowOp(const typename W::conf_t & conf) : WindowOp<W>(conf, __FUNCTION__, ""){
 	};
 
 	//SlidingWindowOp(const SlidingWindowOp & op) : WindowOp<W>(op){};
@@ -160,23 +160,30 @@ public:
 	};
 
 
-	// Since templating was introduced, instantaneous classes can be created (instad of inheritance)
+	// With templates, instantaneous classes can be created (instead of inheritance)
 	SlidingWindowOp(const std::string &name = __FUNCTION__, const std::string &description = "") : WindowOp<W>(name, description){
 	};
 
-protected:
-
-	// virtual	void processOLD(const ImageFrame & src, Image & dst) const;
+	virtual inline
+	const std::string & getName() const override {
+		return TypeName<image::SlidingWindowOp<W> >::str();
+	}
 
 
 };
 
-
-
 } // image::
+
+template <class W>
+struct TypeName<image::SlidingWindowOp<W> > {
+
+    static const std::string & str(){
+    	static const std::string name = drain::StringBuilder<>("SlidingWindowOp<", drain::TypeName<W>::str(), ">");
+        return name;
+    }
+
+};
 
 }  // drain::
 
-#endif /*SLIDINGWINDOWOP_H_*/
-
-// Drain
+#endif // DRAIN_SLIDINGWINDOWOP_H_

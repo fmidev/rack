@@ -40,6 +40,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+const std::map<char,std::string> XML::encodingMap = {
+		{'&', "&amp;"},
+		{'<', "&lt;"},
+		{'>', "&gt;"},
+		{'"', "&quot;"}
+};
+
 // array,map,pair,string,key, mapPair  [+AfillB:ared 2pxb-;+AopacityB:0.33-;+AscaleB:0.5-]
 const SprinterLayout StyleXML::styleLineLayout(";", ";",  ":", "", ""); //, "\"\"", "''", ":");
 

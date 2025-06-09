@@ -31,15 +31,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include <drain/image/ImageFile.h>
-#include "drain/util/Fuzzy.h"
-#include "drain/imageops/ImageModifierPack.h"
+#include <drain/util/Fuzzy.h>
+#include <drain/imageops/ImageModifierPack.h>
 
 #include "hi5/Hi5Write.h"
 //#include "data/ODIM.h"
 //#include "main/rack.h"
 
-//#include "drain/imageops/SegmentAreaOp.h"
-// #include "drain/image/"
+//#include <drain/imageops/SegmentAreaOp.h>
+// #include <drain/image/>
 #include "TestOp.h"
 
 

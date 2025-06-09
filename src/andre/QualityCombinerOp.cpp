@@ -38,10 +38,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <utility>
 
 #include <drain/Sprinter.h>
-#include "drain/image/Image.h"
-#include "drain/image/ImageFrame.h"
-#include "drain/util/SmartMap.h"
-#include "drain/util/TreeOrdered.h"
+#include <drain/image/Image.h>
+#include <drain/image/ImageFrame.h>
+#include <drain/util/SmartMap.h>
+#include <drain/util/TreeOrdered.h>
 
 #include "data/Data.h"
 #include "data/PolarODIM.h"
@@ -177,7 +177,7 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 	/*
 	const classdict_t & dict = getClassPalette().dictionary;
 	mout.debug2(index , ':' , dict.getValue(index) , '/' , label );
-//#include "drain/util/SmartMap.h"
+//#include <drain/util/SmartMap.h>
 
 	sstr << index << ':' << dict.getValue(index);
 	*/
@@ -193,7 +193,7 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 		mout.special(i );
 		//mout.special('\t' , srcProb.odim.scaleForward(i)  );
 		mout.special('\t' , srcProb.getConf().fwd(i) );
-		mout.special('\t' , dstQind#include "drain/util/SmartMap.h"
+		mout.special('\t' , dstQind#include <drain/util/SmartMap.h>
 		.odim.scaleForward(i)  );
 		mout.special('\t' , dstClass.odim.scaleForward(i) );
 	}

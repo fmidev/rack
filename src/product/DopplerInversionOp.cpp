@@ -32,11 +32,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/ImageFile.h>
 #include <cmath>
 
-#include "drain/util/FunctorBank.h"
-#include "drain/util/Fuzzy.h"
-#include "drain/util/Geo.h"
+#include <drain/util/FunctorBank.h>
+#include <drain/util/Fuzzy.h>
+#include <drain/util/Geo.h>
 
-#include "drain/imageops/SlidingWindowOp.h"
+#include <drain/imageops/SlidingWindowOp.h>
 
 
 #include "radar/Geometry.h"

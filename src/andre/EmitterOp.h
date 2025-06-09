@@ -33,11 +33,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define EMITTER_SEGMENT_OP_H_
 
 #include <drain/image/ImageFile.h>
-#include "drain/util/FunctorPack.h"
+#include <drain/util/FunctorPack.h>
 
-#include "drain/imageops/SegmentAreaOp.h"
-#include "drain/imageops/RunLengthOp.h"
-#include "drain/imageops/DistanceTransformOp.h"
+#include <drain/imageops/SegmentAreaOp.h>
+#include <drain/imageops/RunLengthOp.h>
+#include <drain/imageops/DistanceTransformOp.h>
 
 #include "DetectorOp.h"
 

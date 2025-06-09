@@ -34,13 +34,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <limits>
 
-//#include "drain/util/FunctorPack.h"
-//#include "drain/util/Math.h"
+//#include <drain/util/FunctorPack.h>
+//#include <drain/util/Math.h>
 
 /*
-#include "drain/image/File.h"
-#include "drain/imageops/RunLengthOp.h"
-#include "drain/imageops/DistanceTransformOp.h"
+#include <drain/image/File.h>
+#include <drain/imageops/RunLengthOp.h>
+#include <drain/imageops/DistanceTransformOp.h>
 */
 
 

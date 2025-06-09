@@ -29,9 +29,9 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include <drain/Log.h>
-#include "drain/util/Time.h"  // decayTime
+#include <drain/util/Time.h>  // decayTime
 // #include <drain/VariableAssign.h>  // decayTime
-//#include "drain/util/Variable.h"
+//#include <drain/util/Variable.h>
 #include <drain/image/ImageFile.h>
 #include <drain/image/AccumulationMethods.h>
 #include <drain/imageops/DistanceTransformFillOp.h>

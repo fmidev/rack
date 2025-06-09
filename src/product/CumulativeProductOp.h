@@ -33,8 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define CumulativePolarProduct_OP_H_
 
 #include <drain/Log.h>
-#include "drain/util/Fuzzy.h"
-#include "drain/image/Accumulator.h"
+#include <drain/util/Fuzzy.h>
+#include <drain/image/Accumulator.h>
 
 #include "radar/Geometry.h"
 #include "radar/Constants.h"

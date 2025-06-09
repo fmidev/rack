@@ -32,15 +32,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/ImageFile.h>
 #include <algorithm>
 
-#include "drain/util/Fuzzy.h"
-#include "drain/util/Math.h"
-#include "drain/util/Output.h"
+#include <drain/util/Fuzzy.h>
+#include <drain/util/Math.h>
+#include <drain/util/Output.h>
 // debugging
-#include "drain/imageops/DistanceTransformFillOp.h"
-#include "drain/imageops/FastAverageOp.h"
-#include "drain/imageops/HighPassOp.h"
-#include "drain/imageops/MarginalStatisticOp.h"
-#include "drain/imageops/SlidingWindowHistogramOp.h"
+#include <drain/imageops/DistanceTransformFillOp.h>
+#include <drain/imageops/FastAverageOp.h>
+#include <drain/imageops/HighPassOp.h>
+#include <drain/imageops/MarginalStatisticOp.h>
+#include <drain/imageops/SlidingWindowHistogramOp.h>
 
 
 #include "data/ODIM.h"

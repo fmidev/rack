@@ -145,6 +145,27 @@ void StringTools::replace(const conv_map_t & m, std::string & s, std::size_t pos
 
 }
 
+void StringTools::replace(const std::map<char,std::string> & m, const std::string & src, std::ostream & ostr){
+
+
+	std::string::const_iterator it = src.begin(); //  + pos;
+	//std::forward(it, len);
+	while (it != src.end()){
+
+		std::map<char,std::string>::const_iterator mit = m.find(*it);
+		if (mit == m.end()){
+			ostr << *it;
+		}
+		else {
+			ostr << mit->second;
+		}
+
+		++it;
+	}
+
+
+}
+
 
 std::string StringTools::trim(const std::string &s, const std::string & trimChars ){
 

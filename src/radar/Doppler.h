@@ -31,31 +31,22 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_ANALYSIS_DOPPLER_H
 #define RACK_ANALYSIS_DOPPLER_H
 
-#include <drain/Log.h>
 #include <math.h>
 
-#include "drain/util/Fuzzy.h"
-
-//#include "drain/image/FuzzyOp.h"
-
-#include "drain/util/Functor.h"
-#include "drain/util/FunctorBank.h"
-
-#include "drain/image/Window.h"
-#include "drain/image/SlidingWindow.h"
-//#include "drain/image/SequentialImageOp.h"
-
+#include <drain/Log.h>
+#include <drain/Type.h>
+#include <drain/util/Fuzzy.h>
+#include <drain/util/Functor.h>
+#include <drain/util/FunctorBank.h>
+#include <drain/image/Window.h>
+#include <drain/image/SlidingWindow.h>
 
 #include "RadarWindows.h"
-
-//#include "Analysis.h"
-
 
 
 using namespace drain::image;
 
 namespace rack {
-
 
 
 /**
@@ -317,6 +308,7 @@ protected:
 
 };
 
+//DRAIN_TYPENAME(DopplerDevWindow);
 
 /// Computes eccentrity of Doppler speeds mapped on a Nyquist-normalized unit window.
 class DopplerEccentricityWindow : public DopplerWindow {
@@ -353,7 +345,14 @@ protected:
 
 } // rack::
 
+namespace drain {
 
+
+	DRAIN_TYPENAME(rack::DopplerWindow);
+	DRAIN_TYPENAME(rack::DopplerAverageWindow);
+	DRAIN_TYPENAME(rack::DopplerAverageWindow2);
+	DRAIN_TYPENAME(rack::DopplerDevWindow);
+}
 
 
 #endif

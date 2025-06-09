@@ -32,25 +32,25 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/ImageFile.h>
 #include <algorithm>
 
-#include "drain/util/FunctorPack.h"
-#include "drain/util/Fuzzy.h"
+#include <drain/util/FunctorPack.h>
+#include <drain/util/Fuzzy.h>
 
-//#include "drain/imageops/SegmentAreaOp.h"
-//#include "drain/imageops/RunLengthOp.h"
-//#include "drain/imageops/MathOpPack.h"
-//#include "drain/imageops/HighPassOp.h"
-//#include "drain/imageops/SlidingWindowMedianOp.h"
-#include "drain/imageops/DistanceTransformOp.h"
-//#include "drain/imageops/SegmentAreaOp.h"
-#include "drain/imageops/RunLengthOp.h"
-//#include "drain/imageops/BasicFunctors.h"
-#include "drain/imageops/DistanceTransformOp.h"
-//#include "drain/imageops/FuzzyOp.h"
-#include "drain/imageops/FunctorOp.h"
+//#include <drain/imageops/SegmentAreaOp.h>
+//#include <drain/imageops/RunLengthOp.h>
+//#include <drain/imageops/MathOpPack.h>
+//#include <drain/imageops/HighPassOp.h>
+//#include <drain/imageops/SlidingWindowMedianOp.h>
+#include <drain/imageops/DistanceTransformOp.h>
+//#include <drain/imageops/SegmentAreaOp.h>
+#include <drain/imageops/RunLengthOp.h>
+//#include <drain/imageops/BasicFunctors.h>
+#include <drain/imageops/DistanceTransformOp.h>
+//#include <drain/imageops/FuzzyOp.h>
+#include <drain/imageops/FunctorOp.h>
 
-//#include "drain/imageops/MarginalStatisticOp.h"
-//#include "drain/imageops/FuzzyPeakOp.h"
-//#include "drain/imageops/FuzzyThresholdOp.h"
+//#include <drain/imageops/MarginalStatisticOp.h>
+//#include <drain/imageops/FuzzyPeakOp.h>
+//#include <drain/imageops/FuzzyThresholdOp.h>
 
 // debugging
 #include "LineOp.h"

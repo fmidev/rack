@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //
 #include <math.h>
 
-#include "drain/image/CoordinateHandler.h"
+#include <drain/image/CoordinateHandler.h>
 
 
 /*! \file

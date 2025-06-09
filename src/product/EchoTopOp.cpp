@@ -29,8 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include "drain/util/Output.h" // DEBUGGING
-#include "drain/util/Fuzzy.h" // FuzzyTriangle
+#include <drain/util/Output.h> // DEBUGGING
+#include <drain/util/Fuzzy.h> // FuzzyTriangle
 
 #include "data/SourceODIM.h"
 #include "main/palette-manager.h"

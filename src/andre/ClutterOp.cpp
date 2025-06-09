@@ -37,11 +37,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/QuantityMap.h"
 #include "data/SourceODIM.h"
 #include <hi5/Hi5Read.h>
-#include "drain/image/Image.h"
+#include <drain/image/Image.h>
 #include "radar/Geometry.h"
 //#include <stddef.h>
-#include "drain/util/StringMapper.h"
-#include "drain/util/TreeOrdered.h"
+#include <drain/util/StringMapper.h>
+#include <drain/util/TreeOrdered.h>
 #include <cmath>
 #include <map>
 #include <stdexcept>

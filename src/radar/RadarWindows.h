@@ -44,7 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/GaussianWindow.h>
 #include <drain/imageops/FunctorOp.h>
 #include <drain/imageops/GaussianAverageOp.h>
-//#include "drain/image/SequentialImageOp.h"
+//#include <drain/image/SequentialImageOp.h>
 
 #include "data/ODIM.h"
 #include "data/PolarODIM.h"
@@ -56,34 +56,6 @@ using namespace drain::image;
 
 namespace rack {
 
-
-class RadarWindowCore : public drain::image::WeightedWindowCore {
-
-
-public:
-
-	/// Will act as base class: Window<RadarWindowCore> : public RadarWindowCore {...}, init currently not supported.
-	/**
-	 */
-	RadarWindowCore() : NI(0.0) {
-	}
-
-	/**
-	 *  \param odimSrc - metadata of the source data
-	 */
-	//RadarWindowCore(const PolarODIM & odimSrc) : odimSrc(odimSrc) {
-	//}
-
-
-	//const PolarODIM & odimSrc;
-	PolarODIM odimSrc;
-
-
-	/// Nyquist velocity of src. Derived, if not explicit in src metadata.
-	/// Maximimum unambiguous velocity (Nyquist velocity). ODIM::NI may be missing, so it's here.
-	mutable double NI;
-
-};
 
 /// Like pixel window, but width is metres and height is degrees.
 /**
@@ -179,6 +151,26 @@ public:
 
 };
 
+
+
+class RadarWindowCore : public drain::image::WeightedWindowCore {
+
+
+public:
+
+	/// Will act as base class: Window<RadarWindowCore> : public RadarWindowCore {...}, init currently not supported.
+	/**
+	 */
+	RadarWindowCore() : NI(0.0) {
+	}
+
+	PolarODIM odimSrc;
+
+	/// Nyquist velocity of src. Derived, if not explicit in src metadata.
+	/// Maximimum unambiguous velocity (Nyquist velocity). ODIM::NI may be missing, so it's here.
+	mutable double NI;
+
+};
 
 
 /// A two-dimensional image processing window that handles the special ODIM codes and scales the result. Template parameter for drain::SlidingWindowOpT

@@ -33,8 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define EMITTER_OP_H_
 
 
-//#include "drain/imageops/GammaOp.h"
-//#include "drain/imageops/HighBoostOp.h"
+//#include <drain/imageops/GammaOp.h>
+//#include <drain/imageops/HighBoostOp.h>
 
 
 #include <drain/image/ImageFile.h>

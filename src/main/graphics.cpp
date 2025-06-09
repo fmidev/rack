@@ -1010,17 +1010,18 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 		// mout.attention("handle: ", attr.first, " ", v, " + ", format);
 
 		if (format.empty()){
-			// tspan->ctext += attr.second.toStr();
-			tspan->setText(attr.second, "&#160;"); // non-b.sp
+			// tspan->setText(attr.second, "&#160;"); // non-b.sp
+			tspan->setText(attr.second, " "); // escape code & in non-b.sp caused problems...
 		}
 		else {
 			//mout.attention("handle: ", attr.first, " ", v, " + ", format);
 			std::stringstream sstr;
 			formatter.formatVariable(key, attr.second, format, sstr);
-			//tspan->ctext += sstr.str();
-			tspan->setText(sstr.str(), "&#160;"); // non-b.sp
+			// tspan->ctext += sstr.str();
+			// tspan->setText(sstr.str(), "&#160;"); // non-b.sp
+			tspan->setText(attr.second, " "); // escape code & in non-b.sp caused problems...
 		}
-		// tspan->ctext += "&#160;"; //'_';
+
 	}
 
 

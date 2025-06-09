@@ -137,8 +137,8 @@ public:
 			return s;
 	};
 
-	double fromValue;
-	double toValue;
+	double fromValue = 0.0;
+	double toValue   = 0.0;
 
 };
 
@@ -173,8 +173,8 @@ public:
 			return s;
 	};
 
-	double threshold;
-	double replace;
+	double threshold = 0.5;
+	double replace   = 0.0;
 
 };
 
@@ -215,12 +215,64 @@ public:
 			return replaceHigh;
 	};
 
-	double threshold;
-	double replace;
-	double replaceHigh;
+	double threshold   = 0.5;
+	double replace     = 0.0;
+	double replaceHigh = 1.0;
 
 };
 
+
+
+/// Gamma correction. Intensity is mapped as f' = f^(gamma)
+/*!
+   Adjusts the brightness such that intensities remain monotonously inside the original scale.
+   Unlike in direct linear scaling neither underflow nor overflow occurs and visual details remain
+   detectable down to applied bit resolution.
+
+	Prior to calling this function it should be ensured that the source image has normalized scale
+	(eg. with \c--physicalRange, \c -R ).
+
+   \code
+   drainage image-gray.png -R 0:1 --iGamma 1.5 -o gamma-bright.png
+   drainage image-gray.png -R 0:1 --iGamma 2.0 -o gamma-bright.png
+   drainage image-gray.png -R 0:1 --iGamma 0.5 -o gamma-dark.png
+   \endcode
+
+
+   \code
+   drainage image-color.png -R 0:1 --iGamma 2.0 -o gamma-color-bright.png
+   drainage image-color.png -R 0:1 --iGamma 0.5 -o gamma-color-dark.png
+   \endcode
+
+   \see FunctorOp
+
+ *  NOTE. Design for parameters may vary in future, since multichannel image could be handled by giving
+ *  a value for each: 1.2,1.4,0.7 for example.
+ */
+class GammaFunctor : public drain::UnaryFunctor
+{
+
+public:
+
+	GammaFunctor(double gamma = 1.0) : UnaryFunctor(__FUNCTION__, "Gamma correction for brightness."){
+		this->getParameters().link("gamma", this->gamma = gamma, "0.0...");
+	};
+
+	GammaFunctor(const GammaFunctor & ftor) : UnaryFunctor(ftor){
+		this->getParameters().link("gamma", this->gamma = ftor.gamma, "0.0..");
+		//this->getParameters().copyStruct(ftor.getParameters(), ftor, *this);
+	};
+
+	//virtual
+	inline
+	double operator()(double s) const {
+		return this->scale * pow(s, 1.0/gamma);
+	};
+
+	double gamma = 1.0;
+
+
+};
 
 
 /// Adds a intensity values .
@@ -455,6 +507,7 @@ public:
 		return this->scale * std::min(static_cast<double>(s1), static_cast<double>(s2)) + this->bias;
 	};
 };
+
 
 
 

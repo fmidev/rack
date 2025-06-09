@@ -32,12 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef SHIPOP_H_
 #define SHIPOP_H_
 
-//#include "drain/image/FuzzyOp.h"
+//#include <drain/image/FuzzyOp.h>
 
 #include "DetectorOp.h"
 
 // temp
-//#include "drain/radar/Andre.h"
+//#include <drain/radar/Andre.h>
 
 
 using namespace drain::image;

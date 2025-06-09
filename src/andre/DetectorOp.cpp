@@ -33,12 +33,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 
 // DEBUGGING
-#include "drain/util/FunctorPack.h"
-
-#include "drain/imageops/DistanceTransformOp.h"
-#include "drain/imageops/FunctorOp.h"
-#include "drain/imageops/GammaOp.h"
-#include "drain/imageops/MarginalStatisticOp.h"
+#include <drain/util/FunctorPack.h>
+#include <drain/imageops/DistanceTransformOp.h>
+#include <drain/imageops/FunctorOp.h>
+#include <drain/imageops/MarginalStatisticOp.h>
 
 //#include "main/rack.h"
 #include "hi5/Hi5.h"
@@ -342,7 +340,7 @@ void DetectorOp::_enhanceDirectionally(Image & dst, float medianPos, int width) 
 		ImageFile::write(tmp,"andre-enh1-stat.png");
 
 	//GammaOp gammaOp;
-	drain::image::UnaryFunctorOp<drain::image::GammaFunctor> gammaOp;
+	drain::image::UnaryFunctorOp<drain::GammaFunctor> gammaOp;
 	gammaOp.functor.gamma = 4.0;
 	mout .debug3() << gammaOp << mout.endl;
 	gammaOp.traverseChannel(tmp.getChannel(0), tmp.getChannel(0));

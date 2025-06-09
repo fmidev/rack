@@ -32,8 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Variable.h>
 
-#include "drain/image/FilePng.h"
-#include "drain/image/AccumulationMethods.h"
+#include <drain/image/FilePng.h>
+#include <drain/image/AccumulationMethods.h>
 
 #include "data/DataCoder.h"
 

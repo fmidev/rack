@@ -32,8 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DOPPLER_AvgExpOP_H_
 #define DOPPLER_AvgExpOP_H_
 
-#include "drain/imageops/ImpulseResponseOp.h"
-#include "drain/imageops/ImpulseAvgOp.h"
+#include <drain/imageops/ImpulseResponseOp.h>
+#include <drain/imageops/ImpulseAvgOp.h>
 
 #include "data/DataCoder.h"
 #include "DopplerOp.h"

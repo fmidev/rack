@@ -33,31 +33,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
-#include "drain/image/Image.h"
-#include "drain/image/Window.h"
-#include "drain/imageops/ImageOp.h"
+#include <drain/image/Image.h>
+#include <drain/image/Window.h>
+#include <drain/imageops/ImageOp.h>
 
 
-//#include "data/Data.h"
 #include "andre/DetectorOp.h"
-// #include "drain/util/FunctorPack.h"
-// #include "drain/util/Fuzzy.h"
-
-// RAISED
-// RAISED
-/*
-#include "drain/imageops/SlidingWindowOp.h"
-#include "radar/Analysis.h"
-#include "radar/Doppler.h"
-*/
 
 namespace rack {
 
-//using namespace drain::image;
 
-///
+/// Base class for BirdOp and InsectOp.
 /**
-
  *
  */
 class FuzzyDualPolOp: public DetectorOp {
@@ -81,13 +68,12 @@ protected:
 
 
 	double dbzParam = 0.0;  // Peak or threshold location (hence "param").
-	//drain::Range<double> vradDevRange;
 	double vradDevThreshold = 2.0;
-	//drain::Range<double> rhoHVRange;
 	double rhoHVthreshold = 0.95;
 	double zdrAbsThreshold = 2.0;
-
-	drain::image::WindowConfig window;
+	drain::image::WindowConfig windowConf;
+	// RadarWindowConfig windowConf;
+	double gammaAdjustment = 2.0; // neutral value, post-processing
 
 
 	virtual
@@ -122,6 +108,9 @@ protected:
 	 */
 	void applyOperator(const ImageOp & op, const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const;
 
+	/// Returns a 256-element map of Gamma corrected values, scaled by 256.
+	static
+	void getGammaLookUpTable(double p, std::vector<unsigned char> & lookUpTable);
 
 };
 

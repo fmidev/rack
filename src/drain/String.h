@@ -118,6 +118,30 @@ public:
 	static
 	void replace(const conv_map_t & m, std::string &s, std::size_t pos = 0);
 
+	//typedef std::map<char,std::string> _map_t;
+
+	/// Replaces instances appearing as map keys to map values.
+	/**
+	 *  \see RegExp::replace.
+	 */
+	// std::map<std::string,std::string>
+	static
+	void replace(const std::map<char,std::string> & m, const std::string & src, std::ostream & ostr);
+
+	static inline
+	void replace(const std::map<char,std::string> & m, const std::string & src, std::string & dst){
+		std::stringstream result;
+		replace(m, src, dst);
+		dst = result.str();
+
+	}
+
+
+	static inline
+	void replace(const std::map<char,std::string> & m, std::string & src){
+		replace(m, src, src);
+	}
+
 
 	/// In src, replaces instances of 'from' to 'to', storing the result in dst.
 	static

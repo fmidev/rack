@@ -32,11 +32,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/ImageFile.h>
 #include "DopplerNoiseOp.h"
 
-#include "drain/util/FunctorPack.h"
-#include "drain/util/Fuzzy.h"
+#include <drain/util/FunctorPack.h>
+#include <drain/util/Fuzzy.h>
 
-#include "drain/imageops/FunctorOp.h"
-#include "drain/imageops/SlidingWindowHistogramOp.h"
+#include <drain/imageops/FunctorOp.h>
+#include <drain/imageops/SlidingWindowHistogramOp.h>
 
 //#include "hi5/Hi5Write.h"
 /*#include "data/ODIM.h"

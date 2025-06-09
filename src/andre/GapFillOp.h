@@ -33,9 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define GapFillerOP_H_
 
 #include <drain/image/ImageFile.h>
-#include "drain/util/Fuzzy.h"
-#include "drain/image/Intensity.h"
-//#include "drain/image/MathOpPack.h"
+#include <drain/util/Fuzzy.h>
+#include <drain/image/Intensity.h>
+//#include <drain/image/MathOpPack.h>
 #include "radar/Geometry.h"
 #include "RemoverOp.h"
 
@@ -56,13 +56,13 @@ class GapFillOpBase: public RemoverOp {
 
 public:
 
-
-	int widthM;
-	float heightD;
+	// Todo: windowConf ? with double?
+	int widthM = 0;
+	float heightD = 0;
 
 	// Originally for GapFillOpRec, but for combined op...
-	int  loops;
-	double expansionCoeff;
+	int  loops = 0;
+	double expansionCoeff = 1.0;
 
 protected:
 

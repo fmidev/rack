@@ -55,31 +55,27 @@ public:
 	typename W::conf_t conf;
 
 	WindowOp(const std::string & name = __FUNCTION__, const std::string & description="") :
-		ImageOp(name, description) {
+		ImageOp(name, description) { //, fullName(name+'('+drain::TypeName<W>::str()+')') {  // tODO: fix XML tag &gt; handling
 		this->parameters.link("width",  conf.frame.tuple()).fillArray = true;
 		// this->parameters.link("width",  conf.frame.width);
 		// this->parameters.link("height", conf.frame.height);
 	};
 
 	WindowOp(const std::string & name, const std::string & description, unsigned int width, unsigned int height) :
-		ImageOp(name, description) {
+		ImageOp(name, description) { // , fullName(name+'('+drain::TypeName<W>::str()+')') {
 		this->parameters.link("width",  conf.frame.tuple()).fillArray = true;
 		// this->parameters.link("width",  conf.frame.width);
 		// this->parameters.link("height", conf.frame.height);
 		setSize(width, height);
 	};
 
-	WindowOp(typename W::conf_t & c, const std::string & name = __FUNCTION__, const std::string & description="") :
-		ImageOp(name, description), conf(c) {
+	WindowOp(const typename W::conf_t & c, const std::string & name = __FUNCTION__, const std::string & description="") :
+		ImageOp(name, description), conf(c) { // , fullName(name+'('+drain::TypeName<W>::str()+')') {
 		this->parameters.link("width",  conf.frame.tuple()).fillArray = true;
-		// this->parameters.link("width",  conf.frame.width);
-		// this->parameters.link("height", conf.frame.height);
 	};
 
-	WindowOp(const WindowOp<W> & op) : ImageOp(op), conf(op.conf){
+	WindowOp(const WindowOp<W> & op) : ImageOp(op), conf(op.conf) { // , fullName(op.name+'('+drain::TypeName<W>::str()+')'){
 		this->parameters.link("width",  conf.frame.tuple()).fillArray = true;
-		// this->parameters.link("width",  conf.frame.width);
-		// this->parameters.link("height", conf.frame.height);
 	}
 
 	virtual ~WindowOp(){};
@@ -95,15 +91,31 @@ public:
 		conf.frame.set(width, height);
 	}
 
+	virtual inline
+	const std::string & getName() const override {
+		return TypeName<image::WindowOp<W> >::str();
+	};
 
 };
 
 
 
-}
 
-}
+} // image::
+
+
+
+template <class W>
+struct TypeName<image::WindowOp<W> > {
+
+    static const std::string & str(){
+    	static const std::string name = drain::StringBuilder<>("WindowOp<", drain::TypeName<W>::str(), ">");
+        return name;
+    }
+
+};
+
+
+} // drain::
 
 #endif /*WINDOWOP_H_*/
-
-// Drain

@@ -70,6 +70,10 @@ public:
 	static const intval_t STYLE     = 4; // || flag_EXPLICIT
 	static const intval_t STYLE_SELECT = 5;
 
+	/// User may optionally filter attributes and CTEST with this using StringTools::replace(XML::encodingMap);
+	static
+	const std::map<char,std::string> encodingMap;
+
 	typedef ReferenceMap2<FlexibleVariable> map_t;
 
 	/// Return true, if type is any of the arguments.
@@ -490,7 +494,14 @@ public:
 	template <class V>
 	static inline
 	void xmlAttribToStream(std::ostream &ostr, const std::string & key, const V &value){
-		ostr << ' ' << key << '=' << '"' << value << '"'; // << ' ';
+		//StringTools::replace(XML::encodingMap, data.ctext, ostr);
+		//ostr << ' ' << key << '=' << '"' << value << '"'; // << ' ';
+		ostr << ' ';
+		StringTools::replace(XML::encodingMap, key, ostr);
+		ostr << '=' << '"';
+		StringTools::replace(XML::encodingMap, value, ostr);
+		ostr << '"';
+		//<< key << '=' << '"' << value << '"'; // << ' ';
 	}
 
 	/// Assign another tree structure to another
@@ -856,7 +867,8 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 	else {
 
 		// Elements "own" CTEXT will be always output first -> check for problems, if other elements added first.
-		ostr << data.ctext;
+		// ostr << data.ctext;
+		StringTools::replace(XML::encodingMap, data.ctext, ostr); // any time issue?
 
 		// Detect if all the children are of type CTEXT, to be rendered in a single line.
 		// Note: potential re-parsing will probably detect them as a single CTEXT element.
@@ -881,7 +893,9 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 				else {
 					sep = ' '; // consider global setting?
 				}
-				ostr << entry.second->getText();
+				//ostr << entry.second->getText();
+				StringTools::replace(XML::encodingMap, entry.second->getText(), ostr); // any time issue?
+				// ostr << entry.second->getText();
 			}
 		}
 		else {

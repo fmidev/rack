@@ -34,8 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "hi5/Hi5Write.h"
 
-//#include "drain/image/File.h"
-//#include "drain/image/MathOpPack.h"
+//#include <drain/image/File.h>
+//#include <drain/image/MathOpPack.h>
 
 
 using namespace drain::image;

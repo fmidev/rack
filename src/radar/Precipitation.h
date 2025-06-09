@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/RegExp.h>
 
-#include "drain/util/BeanLike.h"
+#include <drain/util/BeanLike.h>
 
 #ifndef RACK_PRECIPITATION
 #define RACK_PRECIPITATION
