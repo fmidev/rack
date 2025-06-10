@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_GLIDER_OP
 #define RACK_GLIDER_OP
 
+#include <andre/FuzzyDetectorOp.h>
 #include <string>
 
 #include <drain/image/Image.h>
@@ -50,7 +51,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // RAISED
 */
 
-#include "FuzzyDualPolOp.h"
 
 
 namespace rack {
@@ -68,7 +68,7 @@ using namespace drain::image;
 
  *
  */
-class BirdOp: public FuzzyDualPolOp {
+class BirdOp: public FuzzyDetectorOp {
 
 public:
 
@@ -85,14 +85,14 @@ public:
 //	BirdOp(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrAbsMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0) :
 	BirdOp(double dbzPeak = 0.0, double vradDevMin = 1.0, double rhoHVmax = 0.95, double zdrAbsMin = 1.0, double windowWidth = 2500, double windowHeight = 5.0) :
 
-		FuzzyDualPolOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.bird", false){ // Optional postprocessing: morphological closing.
+		FuzzyDetectorOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.bird", false){ // Optional postprocessing: morphological closing.
 
 		init(dbzPeak, vradDevMin, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 
 	};
 
 	inline
-	BirdOp(const BirdOp & op) : FuzzyDualPolOp(op) {
+	BirdOp(const BirdOp & op) : FuzzyDetectorOp(op) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	};
 
@@ -118,7 +118,7 @@ public:
 };
 
 
-class InsectOp: public FuzzyDualPolOp {
+class InsectOp: public FuzzyDetectorOp {
 
 public:
 
@@ -136,11 +136,11 @@ public:
 	 */
 	// InsectOp(double dbzPeak = -10.0, double vradDevMax = +5.0, double rhoHVmax = 0.7, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
 	InsectOp(double dbzPeak = 0.0, double vradDevMax = +5.0, double rhoHVmax = 0.95, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
-		FuzzyDualPolOp(__FUNCTION__, "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.insect", true){
+		FuzzyDetectorOp(__FUNCTION__, "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.insect", true){
 		init(dbzPeak, vradDevMax, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 	};
 
-	InsectOp(const InsectOp & op) : FuzzyDualPolOp(op) {
+	InsectOp(const InsectOp & op) : FuzzyDetectorOp(op) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	}
 
