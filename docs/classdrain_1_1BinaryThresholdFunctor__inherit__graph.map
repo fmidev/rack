@@ -1,6 +1,9 @@
 <map id="BinaryThresholdFunctor" name="BinaryThresholdFunctor">
-<area shape="rect" id="node1" title="Thresholds intensity values." alt="" coords="5,229,181,256"/>
-<area shape="rect" id="node2" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="39,155,148,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="58,80,129,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="53,5,134,32"/>
+<area shape="rect" id="Node000001" title="Thresholds intensity values." alt="" coords="5,225,181,251"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="39,152,148,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,191,96,225,91,225,91,191"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="58,79,129,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="96,118,96,152,91,152,91,118"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="53,5,134,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="96,44,96,79,91,79,91,44"/>
 </map>

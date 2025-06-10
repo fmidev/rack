@@ -1,6 +1,9 @@
 <map id="CmdImageSampler" name="CmdImageSampler">
-<area shape="rect" id="node1" title=" " alt="" coords="27,244,173,271"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="5,155,195,196"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="55,80,145,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="53,5,147,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="27,240,173,265"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="5,152,195,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,206,103,240,97,240,97,206"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="55,79,145,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,118,103,152,97,152,97,118"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="53,5,147,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="103,44,103,79,97,79,97,44"/>
 </map>

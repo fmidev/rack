@@ -1,8 +1,11 @@
 <map id="GaussianStripe&lt; DIR, R &gt;" name="GaussianStripe&lt; DIR, R &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="30,244,221,271"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1GaussianStripeWeighted.html" title=" " alt="" coords="35,319,216,360"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="8,155,243,196"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="73,80,177,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="57,5,193,32"/>
-<area shape="rect" id="node6" href="$classrack_1_1GaussianStripeVertPolarWeighted.html" title=" " alt="" coords="5,408,245,435"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,225,196,251"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1GaussianStripeWeighted.html" title=" " alt="" coords="10,299,191,339"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="103,264,103,299,98,299,98,264"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="35,152,166,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,191,103,225,98,225,98,191"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="49,79,153,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,118,103,152,98,152,98,118"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="33,5,169,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="103,44,103,79,98,79,98,44"/>
 </map>

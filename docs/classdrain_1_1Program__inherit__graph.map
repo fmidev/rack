@@ -1,6 +1,9 @@
 <map id="Program" name="Program">
-<area shape="rect" id="node1" title="Sequence consisting of Command:s retrieved from a CommandBank." alt="" coords="141,199,219,225"/>
-<area shape="rect" id="node2" href="$classdrain_1_1CommandSequence.html" title=" " alt="" coords="5,95,192,151"/>
-<area shape="rect" id="node3" title=" " alt="" coords="7,5,190,47"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="216,109,309,136"/>
+<area shape="rect" id="Node000001" title="Sequence consisting of Command:s retrieved from a CommandBank." alt="" coords="141,196,219,221"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1CommandSequence.html" title=" " alt="" coords="5,93,192,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,156,171,194,167,197,131,160"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,5,192,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="101,59,101,93,96,93,96,59"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="216,108,309,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="244,145,193,197,190,194,240,142"/>
 </map>

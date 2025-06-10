@@ -1,9 +1,15 @@
 <map id="BankSuper&lt; T &gt;" name="BankSuper&lt; T &gt;">
-<area shape="rect" id="node1" title="A Bank with additional support for brief, single char keys." alt="" coords="499,78,629,105"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Bank.html" title=" " alt="" coords="219,15,385,42"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,5,169,47"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="222,71,382,112"/>
-<area shape="rect" id="node5" title=" " alt="" coords="9,71,166,112"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="231,136,373,177"/>
-<area shape="rect" id="node7" title=" " alt="" coords="13,136,161,177"/>
+<area shape="rect" id="Node000001" title="A Bank with additional support for brief, single char keys." alt="" coords="499,77,629,102"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1Bank.html" title=" " alt="" coords="219,15,385,41"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="371,41,510,74,508,79,370,47"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,5,169,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="183,24,218,24,218,30,183,29"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="231,69,373,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="387,87,499,87,499,92,387,92"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="13,69,161,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="175,87,230,87,230,92,175,92"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="222,133,382,173"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="395,128,511,99,512,105,396,133"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="9,133,166,173"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="180,151,222,151,222,156,180,156"/>
 </map>

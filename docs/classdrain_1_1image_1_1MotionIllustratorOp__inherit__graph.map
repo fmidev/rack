@@ -1,4 +1,9 @@
 <map id="MotionIllustratorOp&lt; T, T2 &gt;" name="MotionIllustratorOp&lt; T, T2 &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="27,95,175,136"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOp.html" title=" " alt="" coords="5,5,196,47"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="27,240,175,280"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="5,152,196,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,206,103,240,98,240,98,206"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="55,79,146,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="103,118,103,152,98,152,98,118"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="60,5,141,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="103,44,103,79,98,79,98,44"/>
 </map>

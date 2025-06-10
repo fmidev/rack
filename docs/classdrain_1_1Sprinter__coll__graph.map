@@ -1,8 +1,13 @@
 <map id="Sprinter" name="Sprinter">
-<area shape="rect" id="node1" title=" " alt="" coords="45,632,118,659"/>
-<area shape="rect" id="node2" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="23,396,140,423"/>
-<area shape="rect" id="node3" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="33,233,129,260"/>
-<area shape="rect" id="node4" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="17,157,145,184"/>
-<area shape="rect" id="node5" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,81,157,108"/>
-<area shape="rect" id="node6" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="9,5,153,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="45,625,118,651"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="23,391,140,416"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,430,84,625,79,625,79,430"/>
+<area shape="rect" id="Node000003" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="33,229,129,255"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="84,268,84,390,79,390,79,268"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="17,155,145,180"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="84,194,84,229,79,229,79,194"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,80,157,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="84,120,84,154,79,154,79,120"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="9,5,153,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="84,45,84,80,79,80,79,45"/>
 </map>

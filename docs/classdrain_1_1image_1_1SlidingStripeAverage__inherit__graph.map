@@ -1,5 +1,7 @@
 <map id="SlidingStripeAverage&lt; SW &gt;" name="SlidingStripeAverage&lt; SW &gt;">
-<area shape="rect" id="node1" title="Stripe window for computing averages." alt="" coords="36,80,193,121"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingStripeAverageWeighted.html" title="Stripe window for computing weight averages." alt="" coords="5,169,224,211"/>
-<area shape="rect" id="node2" title=" " alt="" coords="93,5,136,32"/>
+<area shape="rect" id="Node000001" title="Stripe window for computing averages." alt="" coords="36,79,193,119"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1SlidingStripeAverageWeighted.html" title="Stripe window for computing weight averages." alt="" coords="5,167,224,207"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="117,133,117,166,112,166,112,133"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="93,5,136,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,44,117,79,112,79,112,44"/>
 </map>

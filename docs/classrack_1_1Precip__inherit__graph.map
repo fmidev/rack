@@ -1,12 +1,21 @@
 <map id="Precip" name="Precip">
-<area shape="rect" id="node1" title=" " alt="" coords="237,80,299,107"/>
-<area shape="rect" id="node3" href="$classrack_1_1DoubleParamPrecip.html" title=" " alt="" coords="108,155,257,181"/>
-<area shape="rect" id="node6" href="$classrack_1_1SingleParamPrecip.html" title=" " alt="" coords="282,155,425,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="227,5,309,32"/>
-<area shape="rect" id="node4" href="$classrack_1_1PrecipKDPZDR.html" title=" " alt="" coords="5,229,123,256"/>
-<area shape="rect" id="node5" href="$classrack_1_1PrecipZZDR.html" title=" " alt="" coords="147,229,245,256"/>
-<area shape="rect" id="node7" href="$classrack_1_1PrecipKDP.html" title=" " alt="" coords="295,229,385,256"/>
-<area shape="rect" id="node8" href="$classrack_1_1PrecipZ.html" title=" " alt="" coords="409,229,479,256"/>
-<area shape="rect" id="node9" href="$classrack_1_1PrecipZrain.html" title=" " alt="" coords="333,304,429,331"/>
-<area shape="rect" id="node10" href="$classrack_1_1PrecipZsnow.html" title=" " alt="" coords="454,304,559,331"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="237,79,299,104"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1DoubleParamPrecip.html" title=" " alt="" coords="108,152,257,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="246,115,198,154,195,150,242,110"/>
+<area shape="rect" id="Node000006" href="$classrack_1_1SingleParamPrecip.html" title=" " alt="" coords="282,152,425,177"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="294,110,341,150,338,154,290,115"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="227,5,309,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="271,44,271,79,265,79,265,44"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1PrecipKDPZDR.html" title=" " alt="" coords="5,225,123,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="153,187,85,227,82,223,150,182"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1PrecipZZDR.html" title=" " alt="" coords="147,225,245,251"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="190,191,196,225,191,226,185,192"/>
+<area shape="rect" id="Node000007" href="$classrack_1_1PrecipKDP.html" title=" " alt="" coords="295,225,385,251"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="351,192,345,226,340,225,346,191"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1PrecipZ.html" title=" " alt="" coords="409,225,479,251"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="380,184,431,223,428,227,377,188"/>
+<area shape="rect" id="Node000009" href="$classrack_1_1PrecipZrain.html" title=" " alt="" coords="333,299,429,324"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="427,263,393,300,389,297,423,259"/>
+<area shape="rect" id="Node000010" href="$classrack_1_1PrecipZsnow.html" title=" " alt="" coords="454,299,559,324"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="465,259,499,297,495,300,461,263"/>
 </map>

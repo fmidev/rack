@@ -1,7 +1,11 @@
 <map id="Composite" name="Composite">
-<area shape="rect" id="node1" title="Cartesian composite (mosaic) of data from several radars." alt="" coords="71,259,163,285"/>
-<area shape="rect" id="node2" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="22,155,213,211"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title=" " alt="" coords="52,80,183,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Accumulator.html" title=" " alt="" coords="5,5,109,32"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1GeoFrame.html" title="Array with georeferencing support." alt="" coords="134,5,223,32"/>
+<area shape="rect" id="Node000001" title="Cartesian composite (mosaic) of data from several radars." alt="" coords="71,255,163,280"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="22,152,213,207"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,220,120,254,115,254,115,220"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title=" " alt="" coords="52,79,183,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="120,118,120,152,115,152,115,118"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1Accumulator.html" title=" " alt="" coords="5,5,109,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="78,40,110,77,106,80,74,43"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1GeoFrame.html" title="Array with georeferencing support." alt="" coords="134,5,223,31"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="162,43,129,80,125,77,158,40"/>
 </map>

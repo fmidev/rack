@@ -1,6 +1,11 @@
 <map id="MultiChannelWindowCore" name="MultiChannelWindowCore">
-<area shape="rect" id="node1" title=" " alt="" coords="5,229,196,256"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title=" " alt="" coords="18,155,183,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="49,80,153,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="33,5,169,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="15,225,205,251"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="5,299,215,339"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="113,264,113,299,107,299,107,264"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title=" " alt="" coords="27,152,193,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,191,113,225,107,225,107,191"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="58,79,162,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="113,118,113,152,107,152,107,118"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="42,5,178,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="113,44,113,79,107,79,107,44"/>
 </map>

@@ -1,12 +1,21 @@
 <map id="Compositor" name="Compositor">
-<area shape="rect" id="node1" title=" " alt="" coords="715,107,812,133"/>
-<area shape="rect" id="node6" href="$classrack_1_1CartesianCreate.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="886,5,1013,32"/>
-<area shape="rect" id="node7" href="$classrack_1_1CartesianExtract.html" title=" " alt="" coords="884,56,1015,83"/>
-<area shape="rect" id="node8" href="$classrack_1_1CompositeAdd.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="891,107,1008,133"/>
-<area shape="rect" id="node9" href="$classrack_1_1CompositeAddWeighted.html" title=" " alt="" coords="860,157,1039,184"/>
-<area shape="rect" id="node10" href="$classrack_1_1CompositeCreateTile.html" title=" " alt="" coords="870,208,1029,235"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="543,107,667,133"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="284,107,495,133"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="147,107,236,133"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="5,107,99,133"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="715,104,812,129"/>
+<area shape="rect" id="Node000006" href="$classrack_1_1CartesianCreate.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="886,5,1013,31"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="786,92,819,65,859,40,888,28,890,33,861,44,822,69,790,96"/>
+<area shape="rect" id="Node000007" href="$classrack_1_1CartesianExtract.html" title=" " alt="" coords="884,55,1015,80"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="824,98,900,78,901,83,826,103"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1CompositeAdd.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="891,104,1008,129"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="826,114,890,114,890,119,826,119"/>
+<area shape="rect" id="Node000009" href="$classrack_1_1CompositeAddWeighted.html" title=" " alt="" coords="860,153,1039,179"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="826,130,901,151,900,156,824,135"/>
+<area shape="rect" id="Node000010" href="$classrack_1_1CompositeCreateTile.html" title=" " alt="" coords="870,203,1029,228"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="790,137,822,164,861,189,890,200,888,205,859,194,819,169,786,141"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="543,104,667,129"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="680,114,714,114,714,119,680,119"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="284,104,495,129"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="509,114,542,114,542,119,509,119"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="147,104,236,129"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="250,114,284,114,284,119,250,119"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="5,104,99,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="113,114,147,114,147,119,113,119"/>
 </map>

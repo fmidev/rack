@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['scripts_4585',['Scripts',['../scriptspage.html',1,'']]],
-  ['selecting_20data_4586',['Selecting data',['../selectpage.html',1,'']]]
+  ['quick_20reference_0',['Quick reference',['../quickpage.html',1,'']]]
 ];

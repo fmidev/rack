@@ -1,5 +1,7 @@
 <map id="Logger" name="Logger">
-<area shape="rect" id="node1" title="LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log." alt="" coords="49,155,115,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1StreamBuilder.html" title=" " alt="" coords="5,80,159,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="29,5,135,32"/>
+<area shape="rect" id="Node000001" title="LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log." alt="" coords="49,152,115,177"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1StreamBuilder.html" title=" " alt="" coords="5,79,159,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,118,85,152,79,152,79,118"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="29,5,135,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="85,44,85,79,79,79,79,44"/>
 </map>

@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classdrain_1_1FilePath.html" title="Extracts and stores directory path, base filename and extension." alt="" coords="5,5,79,32"/>
+<area shape="rect" id="Node000000" href="$classdrain_1_1FileHandler.html" title=" " alt="" coords="5,31,101,56"/>
+<area shape="rect" id="Node000001" href="$classdrain_1_1image_1_1FilePnm.html" title="For reading and writing images in PNM format." alt="" coords="149,5,224,31"/>
+<area shape="poly" id="edge652_Node000000_Node000001" title=" " alt="" coords="114,29,149,22,150,28,115,34"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1FileTIFF.html" title="For writing images in basic TIFF format. Reading not supported currently." alt="" coords="150,55,223,80"/>
+<area shape="poly" id="edge653_Node000000_Node000002" title=" " alt="" coords="115,52,150,58,149,63,114,57"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1FileGeoTIFF.html" title=" " alt="" coords="272,55,371,80"/>
+<area shape="poly" id="edge654_Node000002_Node000003" title=" " alt="" coords="237,65,272,65,272,70,237,70"/>
 </map>

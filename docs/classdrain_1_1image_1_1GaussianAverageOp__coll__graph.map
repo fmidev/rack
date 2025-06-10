@@ -1,10 +1,17 @@
 <map id="GaussianAverageOp" name="GaussianAverageOp">
-<area shape="rect" id="node1" title="Sliding window averaging operator with optional weighting support." alt="" coords="46,565,199,592"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="5,475,240,516"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="82,399,163,425"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="77,323,168,349"/>
-<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="82,247,163,273"/>
-<area shape="rect" id="node6" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="65,157,181,184"/>
-<area shape="rect" id="node7" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="30,81,215,108"/>
-<area shape="rect" id="node8" title=" " alt="" coords="13,5,233,32"/>
+<area shape="rect" id="Node000001" title="Sliding window averaging operator with optional weighting support." alt="" coords="46,556,199,581"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="5,467,240,507"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,520,125,556,120,556,120,520"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="82,392,163,417"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="125,431,125,467,120,467,120,431"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="77,317,168,343"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="125,357,125,392,120,392,120,357"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="82,243,163,268"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="125,282,125,317,120,317,120,282"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="65,155,181,180"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="125,194,125,242,120,242,120,194"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="30,80,215,105"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="125,120,125,154,120,154,120,120"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="13,5,233,31"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="125,45,125,80,120,80,120,45"/>
 </map>

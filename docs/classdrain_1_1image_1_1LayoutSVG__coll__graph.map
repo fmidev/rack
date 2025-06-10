@@ -1,9 +1,20 @@
 <map id="LayoutSVG" name="LayoutSVG">
-<area shape="rect" id="node1" title="Higher level controller for setting alignments." alt="" coords="973,57,1067,84"/>
-<area shape="rect" id="node2" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="639,5,837,61"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="428,57,577,84"/>
-<area shape="rect" id="node7" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="627,86,849,127"/>
-<area shape="rect" id="node4" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="193,32,351,59"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="199,83,345,109"/>
-<area shape="rect" id="node6" title=" " alt="" coords="5,75,144,117"/>
+<area shape="rect" id="Node000001" title="Higher level controller for setting alignments." alt="" coords="1024,63,1117,88"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="689,12,888,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="902,51,1024,67,1024,72,901,56"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="433,19,623,59"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="637,37,689,37,689,42,637,42"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="193,5,351,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="364,23,433,29,432,34,364,28"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="199,67,345,92"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="358,63,432,52,433,57,359,69"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="428,99,628,124"/>
+<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="357,91,375,94,428,100,427,105,374,99,356,97"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="5,59,144,99"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="158,77,199,77,199,82,158,82"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="677,91,900,131"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="913,94,1000,83,1023,80,1024,85,1000,89,914,100"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="642,109,677,109,677,114,642,114"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="193,129,351,155"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="364,128,427,121,428,126,364,134"/>
 </map>

@@ -1,5 +1,13 @@
 <map id="ODIMPathMatcher" name="ODIMPathMatcher">
-<area shape="rect" id="node1" title="Structure for testing if a path matches a given sequence of path elements." alt="" coords="51,155,190,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Path.html" title=" " alt="" coords="5,80,236,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="9,5,232,32"/>
+<area shape="rect" id="Node000001" title="Structure for testing if a path matches a given sequence of path elements." alt="" coords="69,317,207,343"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1Path.html" title=" " alt="" coords="23,243,253,268"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,282,141,317,135,317,135,282"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,155,228,180"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="125,193,138,241,132,243,120,194"/>
+<area shape="rect" id="Node000004" href="$structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path." alt="" coords="253,155,405,180"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="292,188,165,245,163,240,289,183"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="253,80,405,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="331,120,331,154,326,154,326,120"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="257,5,401,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="331,45,331,80,326,80,326,45"/>
 </map>

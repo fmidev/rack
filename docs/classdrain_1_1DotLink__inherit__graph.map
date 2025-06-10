@@ -1,4 +1,5 @@
 <map id="DotLink" name="DotLink">
-<area shape="rect" id="node1" title=" " alt="" coords="11,80,83,107"/>
-<area shape="rect" id="node2" href="$classdrain_1_1DotEntity.html" title=" " alt="" coords="5,5,88,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="11,79,83,104"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1DotEntity.html" title=" " alt="" coords="5,5,88,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="49,44,49,79,44,79,44,44"/>
 </map>

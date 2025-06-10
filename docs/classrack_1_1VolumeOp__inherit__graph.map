@@ -1,4 +1,11 @@
 <map id="VolumeOp&lt; M &gt;" name="VolumeOp&lt; M &gt;">
-<area shape="rect" id="node1" title="Base class for radar data processors." alt="" coords="63,80,194,107"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ProductOp.html" title=" " alt="" coords="5,5,252,32"/>
+<area shape="rect" id="Node000001" title="Base class for radar data processors." alt="" coords="48,240,179,265"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1RadarProductOp.html" title=" " alt="" coords="25,152,202,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,206,116,240,111,240,111,206"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="62,79,165,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="116,118,116,152,111,152,111,118"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="5,5,107,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="76,40,106,77,102,80,72,43"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="131,5,213,31"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="156,43,125,80,121,77,152,40"/>
 </map>

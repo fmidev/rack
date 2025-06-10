@@ -1,8 +1,13 @@
 <map id="Cloner&lt; B, S &gt;" name="Cloner&lt; B, S &gt;">
-<area shape="rect" id="node1" title="Wrapper for derived class S, returning base class T." alt="" coords="184,80,303,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="5,155,231,196"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="255,155,483,196"/>
-<area shape="rect" id="node2" href="$structdrain_1_1ClonerBase.html" title=" " alt="" coords="176,5,311,32"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1UnaryFunctorOpCloner.html" title=" " alt="" coords="15,244,221,271"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1BinaryFunctorOpCloner.html" title=" " alt="" coords="263,244,474,271"/>
+<area shape="rect" id="Node000001" title="Wrapper for derived class S, returning base class T." alt="" coords="185,79,304,104"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="5,152,233,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="216,114,151,154,148,150,213,109"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="257,152,483,192"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="276,109,341,150,338,154,273,114"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1ClonerBase.html" title=" " alt="" coords="177,5,312,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,44,247,79,242,79,242,44"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1BinaryFunctorOpCloner.html" title=" " alt="" coords="14,240,225,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="122,206,122,240,117,240,117,206"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1UnaryFunctorOpCloner.html" title=" " alt="" coords="267,240,473,265"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="373,206,373,240,367,240,367,206"/>
 </map>

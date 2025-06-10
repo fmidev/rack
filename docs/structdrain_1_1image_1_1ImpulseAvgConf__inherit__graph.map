@@ -1,7 +1,11 @@
 <map id="ImpulseAvgConf" name="ImpulseAvgConf">
-<area shape="rect" id="node1" title=" " alt="" coords="52,80,180,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImpulseBucket.html" title=" " alt="" coords="11,155,221,196"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,5,157,32"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImpulseAvg.html" title="Averaging operator. A simple example implementation of ImpulseBucket." alt="" coords="5,244,104,271"/>
-<area shape="rect" id="node5" href="$classrack_1_1DopplerAvg.html" title="Averaging operator. A simple example implementation of ImpulseCumulator." alt="" coords="129,244,226,271"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="52,79,180,104"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ImpulseBucket.html" title=" " alt="" coords="11,152,221,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="119,118,119,152,113,152,113,118"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,5,157,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,44,119,79,113,79,113,44"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1ImpulseAvg.html" title="Averaging operator. A simple example implementation of ImpulseBucket." alt="" coords="5,240,104,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="95,205,66,241,62,238,91,201"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1DopplerAvg.html" title="Averaging operator. A simple example implementation of ImpulseCumulator." alt="" coords="129,240,226,265"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="141,201,170,238,166,241,137,205"/>
 </map>

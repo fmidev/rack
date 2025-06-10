@@ -1,7 +1,11 @@
 <map id="SegmentStatisticsOp" name="SegmentStatisticsOp">
-<area shape="rect" id="node1" title="Computes statistics of segments: area, centroid, horizontality, verticality, variance and elongation...." alt="" coords="5,304,164,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SegmentOp.html" title="A base class for computing statistics of segments. As segment is an area of connected pixels." alt="" coords="35,229,134,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="44,155,125,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="39,80,130,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="44,5,125,32"/>
+<area shape="rect" id="Node000001" title="Computes statistics of segments: area, centroid, horizontality, verticality, variance and elongation...." alt="" coords="5,299,164,324"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1SegmentOp.html" title="A base class for computing statistics of segments. As segment is an area of connected pixels." alt="" coords="35,225,134,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,264,87,299,82,299,82,264"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="44,152,125,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="87,191,87,225,82,225,82,191"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="39,79,130,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="87,118,87,152,82,152,82,118"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="44,5,125,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="87,44,87,79,82,79,82,44"/>
 </map>

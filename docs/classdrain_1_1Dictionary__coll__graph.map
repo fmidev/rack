@@ -1,4 +1,5 @@
 <map id="Dictionary&lt; K, V &gt;" name="Dictionary&lt; K, V &gt;">
-<area shape="rect" id="node1" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="5,95,151,121"/>
-<area shape="rect" id="node2" title=" " alt="" coords="9,5,147,47"/>
+<area shape="rect" id="Node000001" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="5,93,151,119"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="9,5,147,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,59,81,93,75,93,75,59"/>
 </map>

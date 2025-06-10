@@ -1,4 +1,5 @@
 <map id="MapReader&lt; K, V &gt;" name="MapReader&lt; K, V &gt;">
-<area shape="rect" id="node1" title="General utility for reading text entries of type KEY=VALUE into a map." alt="" coords="5,109,157,136"/>
-<area shape="rect" id="node2" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="46,5,117,32"/>
+<area shape="rect" id="Node000001" title="General utility for reading text entries of type KEY=VALUE into a map." alt="" coords="5,108,157,133"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="46,5,117,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,45,84,108,79,108,79,45"/>
 </map>

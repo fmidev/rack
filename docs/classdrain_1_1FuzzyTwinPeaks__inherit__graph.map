@@ -1,7 +1,11 @@
 <map id="FuzzyTwinPeaks&lt; T &gt;" name="FuzzyTwinPeaks&lt; T &gt;">
-<area shape="rect" id="node1" title="A function taking shape of two peaks, with a zero in the middle ." alt="" coords="5,304,171,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor." alt="" coords="31,229,145,256"/>
-<area shape="rect" id="node3" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="33,155,143,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="53,80,123,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="47,5,129,32"/>
+<area shape="rect" id="Node000001" title="A function taking shape of two peaks, with a zero in the middle ." alt="" coords="5,299,171,324"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor." alt="" coords="31,225,145,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,264,91,299,85,299,85,264"/>
+<area shape="rect" id="Node000003" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="33,152,143,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="91,191,91,225,85,225,85,191"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="53,79,123,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="91,118,91,152,85,152,85,118"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="47,5,129,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="91,44,91,79,85,79,85,44"/>
 </map>

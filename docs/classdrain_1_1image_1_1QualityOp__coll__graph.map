@@ -1,9 +1,15 @@
 <map id="QualityOp" name="QualityOp">
-<area shape="rect" id="node1" title=" " alt="" coords="72,475,159,501"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="75,399,156,425"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="70,323,161,349"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,247,156,273"/>
-<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,157,173,184"/>
-<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,208,108"/>
-<area shape="rect" id="node7" title=" " alt="" coords="5,5,225,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="72,467,159,492"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="75,392,156,417"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,432,118,466,113,466,113,432"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="70,317,161,343"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="118,357,118,392,113,392,113,357"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,243,156,268"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="118,282,118,317,113,317,113,282"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,155,173,180"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="118,194,118,242,113,242,113,194"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,80,208,105"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="118,120,118,154,113,154,113,120"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="5,5,225,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="118,45,118,80,113,80,113,45"/>
 </map>

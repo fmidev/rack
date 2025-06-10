@@ -1,10 +1,5 @@
 <map id="MultiFlagger&lt; E, T &gt;" name="MultiFlagger&lt; E, T &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="240,181,399,207"/>
-<area shape="rect" id="node3" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="448,5,673,47"/>
-<area shape="rect" id="node4" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="461,71,660,112"/>
-<area shape="rect" id="node5" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="464,136,657,177"/>
-<area shape="rect" id="node6" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="459,202,662,258"/>
-<area shape="rect" id="node7" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="447,283,675,324"/>
-<area shape="rect" id="node8" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="467,349,654,405"/>
-<area shape="rect" id="node2" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,181,192,207"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,79,164,104"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="6,5,163,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,44,87,79,82,79,82,44"/>
 </map>

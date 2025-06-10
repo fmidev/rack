@@ -1,5 +1,7 @@
 <map id="Vector&lt; T &gt;" name="Vector&lt; T &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="24,155,125,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Matrix.html" title=" " alt="" coords="5,80,144,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="6,5,143,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="23,152,125,177"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1Matrix.html" title=" " alt="" coords="23,79,125,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,118,77,152,71,152,71,118"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,5,143,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="77,44,77,79,71,79,71,44"/>
 </map>

@@ -1,11 +1,23 @@
 <map id="Sampler" name="Sampler">
-<area shape="rect" id="node1" title="Utility for sampling images (2D data), outputting formatted text data." alt="" coords="112,363,188,389"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="8,259,89,285"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="5,157,121,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="32,81,217,108"/>
-<area shape="rect" id="node9" href="$classdrain_1_1ReferenceMap2.html" title="A map of references to base type scalars, arrays or std::string; changing values in either are equiva..." alt="" coords="122,208,285,235"/>
-<area shape="rect" id="node5" title=" " alt="" coords="15,5,235,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title=" " alt="" coords="260,259,371,285"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="248,157,383,184"/>
-<area shape="rect" id="node8" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="244,81,387,108"/>
+<area shape="rect" id="Node000001" title="Utility for sampling images (2D data), outputting formatted text data." alt="" coords="267,345,343,371"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="132,243,213,268"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,274,291,343,288,347,197,278"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="88,155,204,180"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="156,192,172,241,166,243,151,194"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,80,208,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="128,117,143,153,139,155,123,119"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,5,225,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="118,45,118,80,113,80,113,45"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1Range.html" title=" " alt="" coords="249,243,360,268"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="307,282,307,345,302,345,302,282"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="237,155,372,180"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="307,194,307,242,302,242,302,194"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="233,80,377,105"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="307,120,307,154,302,154,302,120"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1ReferenceMap2.html" title="A map of references to base type scalars, arrays or std::string; changing values in either are equiva..." alt="" coords="393,243,555,268"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="444,277,325,348,323,343,441,273"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="415,155,541,180"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="479,194,477,242,472,242,474,194"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="401,80,563,105"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="483,120,481,154,476,154,478,119"/>
 </map>

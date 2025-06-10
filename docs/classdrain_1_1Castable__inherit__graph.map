@@ -1,5 +1,7 @@
 <map id="Castable" name="Castable">
-<area shape="rect" id="node1" title=" " alt="" coords="100,5,179,32"/>
-<area shape="rect" id="node2" href="$classdrain_1_1CastableIterator.html" title=" " alt="" coords="5,80,132,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1VariableBase.html" title="Base class for variables: Variable, Reference and FlexibleVariable." alt="" coords="157,80,263,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="100,5,179,31"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1CastableIterator.html" title=" " alt="" coords="5,79,132,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,43,82,80,78,77,116,39"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1VariableBase.html" title="Base class for variables: Variable, Reference and FlexibleVariable." alt="" coords="157,79,263,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="163,39,200,77,197,80,159,43"/>
 </map>

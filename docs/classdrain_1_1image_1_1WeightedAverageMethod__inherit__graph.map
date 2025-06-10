@@ -1,5 +1,7 @@
 <map id="WeightedAverageMethod" name="WeightedAverageMethod">
-<area shape="rect" id="node1" title=" " alt="" coords="5,155,191,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1AccumulationMethod.html" title="Function for accumulating data: maximum, average, weighted average etc." alt="" coords="18,80,178,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="57,5,139,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,152,191,177"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1AccumulationMethod.html" title="Function for accumulating data: maximum, average, weighted average etc." alt="" coords="18,79,178,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,118,101,152,95,152,95,118"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="57,5,139,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="101,44,101,79,95,79,95,44"/>
 </map>

@@ -1,5 +1,7 @@
 <map id="Decay2&lt; T &gt;" name="Decay2&lt; T &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="23,155,132,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="11,80,143,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="5,5,149,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="23,152,132,177"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="11,79,143,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,118,80,152,75,152,75,118"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="5,5,149,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="80,44,80,79,75,79,75,44"/>
 </map>

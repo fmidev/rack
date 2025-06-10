@@ -1,5 +1,7 @@
 <map id="DistanceModelExponential" name="DistanceModelExponential">
-<area shape="rect" id="node1" title=" " alt="" coords="5,155,201,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1DistanceModel.html" title="Base class for linear and exponential distances in rectangular pixel images." alt="" coords="44,80,163,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="63,5,144,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,152,201,177"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1DistanceModel.html" title="Base class for linear and exponential distances in rectangular pixel images." alt="" coords="44,79,163,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,118,106,152,101,152,101,118"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="63,5,144,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="106,44,106,79,101,79,101,44"/>
 </map>

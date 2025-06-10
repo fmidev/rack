@@ -1,5 +1,7 @@
 <map id="ODIMPathElem" name="ODIMPathElem">
-<area shape="rect" id="node1" title=" " alt="" coords="96,5,215,32"/>
-<area shape="rect" id="node2" href="$classrack_1_1ODIMPathElem2.html" title=" " alt="" coords="5,80,132,107"/>
-<area shape="rect" id="node3" href="$classrack_1_1ODIMPathElemMatcher.html" title="Element in a chain in testing a path for a match." alt="" coords="156,80,328,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="96,5,215,31"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1ODIMPathElem2.html" title=" " alt="" coords="5,79,132,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,41,85,81,81,76,129,37"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1ODIMPathElemMatcher.html" title="Element in a chain in testing a path for a match." alt="" coords="156,79,328,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="181,37,230,76,226,81,178,41"/>
 </map>

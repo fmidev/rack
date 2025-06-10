@@ -1,5 +1,7 @@
 <map id="ReferenceMap2&lt; T &gt;" name="ReferenceMap2&lt; T &gt;">
-<area shape="rect" id="node1" title="A map of references to base type scalars, arrays or std::string; changing values in either are equiva..." alt="" coords="34,155,197,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,80,208,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,5,225,32"/>
+<area shape="rect" id="Node000001" title="A map of references to base type scalars, arrays or std::string; changing values in either are equiva..." alt="" coords="5,152,168,177"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="23,79,150,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,118,89,152,84,152,84,118"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,5,168,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="89,44,89,79,84,79,84,44"/>
 </map>

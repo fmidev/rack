@@ -1,12 +1,23 @@
 <map id="SimpleCommand&lt; T &gt;" name="SimpleCommand&lt; T &gt;">
-<area shape="rect" id="node1" title="A single&#45;parameter command." alt="" coords="301,304,473,331"/>
-<area shape="rect" id="node6" href="$classdrain_1_1CmdNotFound.html" title="Special command for handling undefined commands." alt="" coords="5,379,141,405"/>
-<area shape="rect" id="node7" href="$classrack_1_1CartesianProj.html" title="First, commands applicable in any Cartesian product generation, not only radar compositeing." alt="" coords="165,379,296,405"/>
-<area shape="rect" id="node8" href="$classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="320,379,453,405"/>
-<area shape="rect" id="node9" href="$classrack_1_1CmdFormat.html" title="&quot;Overrides&quot; drain::CmdFormat" alt="" coords="477,379,597,405"/>
-<area shape="rect" id="node10" href="$classrack_1_1CmdOutputQuantity.html" title=" " alt="" coords="622,379,797,405"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="325,229,449,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="281,155,492,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="342,80,431,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="340,5,433,32"/>
+<area shape="rect" id="Node000001" title="A single&#45;parameter command." alt="" coords="715,129,887,155"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1CmdNotFound.html" title="Special command for handling undefined commands." alt="" coords="954,5,1090,31"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="823,118,872,78,933,40,963,28,965,33,936,44,875,83,827,122"/>
+<area shape="rect" id="Node000007" href="$classrack_1_1CartesianProj.html" title="First, commands applicable in any Cartesian product generation, not only radar compositeing." alt="" coords="957,55,1087,80"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="845,122,934,89,971,77,973,83,936,94,846,127"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="955,104,1089,129"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="900,128,955,122,955,127,901,133"/>
+<area shape="rect" id="Node000009" href="$classrack_1_1CmdFormat.html" title="&quot;Overrides&quot; drain::CmdFormat" alt="" coords="962,153,1082,179"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="901,150,962,157,961,162,900,155"/>
+<area shape="rect" id="Node000010" href="$classrack_1_1CmdOutputQuantity.html" title=" " alt="" coords="935,203,1109,228"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="847,157,936,189,973,200,971,205,934,194,846,162"/>
+<area shape="rect" id="Node000011" href="$classrack_1_1CmdSelectObject.html" title=" " alt="" coords="944,252,1100,277"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="827,162,875,201,936,238,965,249,963,254,933,243,872,205,824,166"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="543,129,667,155"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="681,139,715,139,715,145,681,145"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="284,129,495,155"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="509,139,542,139,542,145,509,145"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="147,129,236,155"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="250,139,284,139,284,145,250,145"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="5,129,99,155"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="113,139,147,139,147,145,113,145"/>
 </map>

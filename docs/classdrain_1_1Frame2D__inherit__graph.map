@@ -1,8 +1,13 @@
 <map id="Frame2D&lt; T &gt;" name="Frame2D&lt; T &gt;">
-<area shape="rect" id="node1" title="Something that has width and height." alt="" coords="96,155,215,181"/>
-<area shape="rect" id="node4" href="$structdrain_1_1Box.html" title=" " alt="" coords="5,229,161,256"/>
-<area shape="rect" id="node6" href="$structdrain_1_1Box.html" title="Something that has coordinates (x,y) and dimensions (width, height)." alt="" coords="186,229,271,256"/>
-<area shape="rect" id="node2" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="89,80,221,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="83,5,227,32"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1BBoxSVG.html" title=" " alt="" coords="42,304,125,331"/>
+<area shape="rect" id="Node000001" title="Something that has width and height." alt="" coords="96,152,215,177"/>
+<area shape="rect" id="Node000004" href="$structdrain_1_1Box.html" title=" " alt="" coords="5,225,161,251"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="135,189,97,227,93,223,132,185"/>
+<area shape="rect" id="Node000006" href="$structdrain_1_1Box.html" title="Something that has coordinates (x,y) and dimensions (width, height)." alt="" coords="186,225,271,251"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="179,185,219,223,215,227,175,189"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="89,79,221,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,118,158,152,153,152,153,118"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="83,5,227,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="158,44,158,79,153,79,153,44"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1BBoxSVG.html" title=" " alt="" coords="42,299,125,324"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="86,264,86,299,81,299,81,264"/>
 </map>

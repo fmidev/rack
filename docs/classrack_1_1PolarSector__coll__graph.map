@@ -1,13 +1,22 @@
 <map id="PolarSector" name="PolarSector">
-<area shape="rect" id="node1" title=" " alt="" coords="251,351,347,377"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="127,247,208,273"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="83,157,199,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,208,108"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,5,225,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title=" " alt="" coords="244,247,355,273"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="232,157,367,184"/>
-<area shape="rect" id="node8" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="232,81,375,108"/>
-<area shape="rect" id="node9" href="$classdrain_1_1Range.html" title=" " alt="" coords="392,247,529,273"/>
-<area shape="rect" id="node10" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="391,157,559,184"/>
-<area shape="rect" id="node11" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="403,81,547,108"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="217,345,313,371"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="87,243,168,268"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,274,251,343,248,347,153,278"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,155,173,180"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="121,193,128,242,123,242,116,194"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,80,208,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="118,120,118,154,113,154,113,120"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,5,225,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="118,45,118,80,113,80,113,45"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1Range.html" title=" " alt="" coords="196,243,333,268"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="267,282,267,345,262,345,262,282"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="197,155,332,180"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="267,194,267,242,262,242,262,194"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="291,80,435,105"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="338,116,282,156,279,152,335,111"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="356,155,491,180"/>
+<area shape="poly" id="edge10_Node000010_Node000008" title=" " alt="" coords="384,115,416,153,412,156,380,118"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1Range.html" title=" " alt="" coords="363,243,473,268"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="407,281,390,303,369,323,342,338,314,349,312,344,340,334,366,319,386,300,402,278"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="424,194,421,242,416,242,419,194"/>
 </map>

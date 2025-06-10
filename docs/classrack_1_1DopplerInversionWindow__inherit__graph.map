@@ -1,10 +1,17 @@
 <map id="DopplerInversionWindow" name="DopplerInversionWindow">
-<area shape="rect" id="node1" title=" " alt="" coords="36,497,221,524"/>
-<area shape="rect" id="node8" href="$classrack_1_1DopplerInversionWindowWeighted.html" title=" " alt="" coords="5,572,252,599"/>
-<area shape="rect" id="node2" href="$classrack_1_1SlidingRadarWindow.html" title=" " alt="" coords="27,408,231,449"/>
-<area shape="rect" id="node3" href="$classrack_1_1SlidingRadarWindowBase.html" title="A two&#45;dimensional image processing window that handles the special ODIM codes and scales the result...." alt="" coords="35,319,223,360"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="9,229,249,271"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="63,155,194,181"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="77,80,181,107"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="61,5,197,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="36,475,221,500"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1DopplerInversionWindowWeighted.html" title=" " alt="" coords="5,548,252,573"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="131,514,131,548,126,548,126,514"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1SlidingRadarWindow.html" title=" " alt="" coords="27,387,231,427"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,440,131,474,126,474,126,440"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1SlidingRadarWindowBase.html" title="A two&#45;dimensional image processing window that handles the special ODIM codes and scales the result...." alt="" coords="35,299,223,339"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="131,353,131,386,126,386,126,353"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1SlidingWindow.html" title="Window implementation that uses incremental update of state." alt="" coords="41,225,216,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="131,264,131,299,126,299,126,264"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="63,152,194,177"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="131,191,131,225,126,225,126,191"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="77,79,181,104"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="131,118,131,152,126,152,126,118"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="61,5,197,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="131,44,131,79,126,79,126,44"/>
 </map>

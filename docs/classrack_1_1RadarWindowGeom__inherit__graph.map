@@ -1,7 +1,11 @@
 <map id="RadarWindowGeom" name="RadarWindowGeom">
-<area shape="rect" id="node1" title="Like pixel window, but width is metres and height is degrees." alt="" coords="17,155,168,181"/>
-<area shape="rect" id="node4" href="$classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="16,229,169,256"/>
-<area shape="rect" id="node2" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="9,80,177,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="21,5,165,32"/>
-<area shape="rect" id="node5" href="$classrack_1_1DopplerInversionConfig.html" title=" " alt="" coords="5,304,180,331"/>
+<area shape="rect" id="Node000001" title="Like pixel window, but width is metres and height is degrees." alt="" coords="17,152,168,177"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="16,225,169,251"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="95,191,95,225,90,225,90,191"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="9,79,177,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,118,95,152,90,152,90,118"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="21,5,165,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="95,44,95,79,90,79,90,44"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1DopplerInversionConfig.html" title=" " alt="" coords="5,299,180,324"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="95,264,95,299,90,299,90,264"/>
 </map>

@@ -1,6 +1,9 @@
 <map id="DistanceModel" name="DistanceModel">
-<area shape="rect" id="node1" title="Base class for linear and exponential distances in rectangular pixel images." alt="" coords="144,80,263,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1DistanceModelExponential.html" title=" " alt="" coords="5,155,201,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1DistanceModelLinear.html" title=" " alt="" coords="225,155,384,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="163,5,244,32"/>
+<area shape="rect" id="Node000001" title="Base class for linear and exponential distances in rectangular pixel images." alt="" coords="144,79,263,104"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1DistanceModelExponential.html" title=" " alt="" coords="5,152,201,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="178,114,121,154,118,150,175,110"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1DistanceModelLinear.html" title=" " alt="" coords="225,152,384,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="232,110,290,150,287,154,229,114"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="163,5,244,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,44,206,79,201,79,201,44"/>
 </map>

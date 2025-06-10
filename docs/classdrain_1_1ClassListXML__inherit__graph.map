@@ -1,4 +1,5 @@
 <map id="ClassListXML" name="ClassListXML">
-<area shape="rect" id="node1" title="Container for style classes. Essentially a set of strings, with space&#45;separated output support." alt="" coords="20,80,128,107"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,143,32"/>
+<area shape="rect" id="Node000001" title="Container for style classes. Essentially a set of strings, with space&#45;separated output support." alt="" coords="20,79,128,104"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,143,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,44,77,79,71,79,71,44"/>
 </map>

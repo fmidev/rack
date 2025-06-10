@@ -1,5 +1,7 @@
 <map id="PlainData&lt; DT &gt;" name="PlainData&lt; DT &gt;">
-<area shape="rect" id="node1" title="Essential class for storing radar data." alt="" coords="15,80,148,107"/>
-<area shape="rect" id="node3" href="$classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data." alt="" coords="31,155,132,181"/>
-<area shape="rect" id="node2" href="$classrack_1_1TreeWrapper.html" title="Base class for all kinds of radar data." alt="" coords="5,5,157,32"/>
+<area shape="rect" id="Node000001" title="Essential class for storing radar data." alt="" coords="15,79,148,104"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data." alt="" coords="31,152,132,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="84,118,84,152,79,152,79,118"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1TreeWrapper.html" title="Base class for all kinds of radar data." alt="" coords="5,5,157,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,44,84,79,79,79,79,44"/>
 </map>

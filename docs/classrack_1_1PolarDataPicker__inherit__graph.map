@@ -1,5 +1,7 @@
 <map id="PolarDataPicker" name="PolarDataPicker">
-<area shape="rect" id="node1" title=" " alt="" coords="57,155,183,181"/>
-<area shape="rect" id="node2" href="$classrack_1_1RadarDataPicker.html" title=" " alt="" coords="5,80,235,107"/>
-<area shape="rect" id="node3" href="$structdrain_1_1image_1_1SamplePicker.html" title="Interprets data values for Sampler." alt="" coords="65,5,175,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="57,152,183,177"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1RadarDataPicker.html" title=" " alt="" coords="5,79,235,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,118,123,152,117,152,117,118"/>
+<area shape="rect" id="Node000003" href="$structdrain_1_1image_1_1SamplePicker.html" title="Interprets data values for Sampler." alt="" coords="65,5,175,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="123,44,123,79,117,79,117,44"/>
 </map>

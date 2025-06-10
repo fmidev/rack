@@ -1,5 +1,7 @@
 <map id="UniCloner&lt; B &gt;" name="UniCloner&lt; B &gt;">
-<area shape="rect" id="node1" title="Creates an entry of desired type and destroys it upon exit." alt="" coords="33,185,159,212"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Bank.html" title=" " alt="" coords="41,96,151,123"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,5,187,47"/>
+<area shape="rect" id="Node000001" title="Creates an entry of desired type and destroys it upon exit." alt="" coords="33,183,159,208"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1Bank.html" title=" " alt="" coords="41,95,151,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,134,99,182,93,182,93,134"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,5,187,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="99,59,99,94,93,94,93,59"/>
 </map>

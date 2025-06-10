@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['quick_20reference_4583',['Quick reference',['../quickpage.html',1,'']]]
+  ['output_0',['output',['../fileiopage.html',1,'File input and output'],['../text-output-page.html',1,'Text output']]]
 ];

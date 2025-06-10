@@ -1,13 +1,28 @@
 <map id="ImageSampler" name="ImageSampler">
-<area shape="rect" id="node1" title="Traverses image, returning samples." alt="" coords="197,452,314,479"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="270,363,361,389"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="291,259,372,285"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data." alt="" coords="164,363,240,389"/>
-<area shape="rect" id="node4" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="231,157,347,184"/>
-<area shape="rect" id="node5" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="179,81,364,108"/>
-<area shape="rect" id="node11" href="$classdrain_1_1ReferenceMap2.html" title="A map of references to base type scalars, arrays or std::string; changing values in either are equiva..." alt="" coords="103,208,266,235"/>
-<area shape="rect" id="node6" title=" " alt="" coords="161,5,381,32"/>
-<area shape="rect" id="node8" href="$classdrain_1_1Range.html" title=" " alt="" coords="21,259,132,285"/>
-<area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="9,157,144,184"/>
-<area shape="rect" id="node10" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="5,81,148,108"/>
+<area shape="rect" id="Node000001" title="Traverses image, returning samples." alt="" coords="265,433,383,459"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="344,345,435,371"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="375,383,354,411,336,435,331,431,350,408,371,380"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="361,243,442,268"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="401,282,393,346,388,345,396,282"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data." alt="" coords="233,345,309,371"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="388,281,370,303,348,323,304,348,302,343,345,319,366,299,384,278"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="375,155,491,180"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="427,194,408,243,403,241,422,192"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="361,80,546,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="449,120,439,155,434,154,444,118"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="343,5,563,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="456,45,456,80,451,80,451,45"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="283,382,297,408,315,431,311,434,292,411,278,384"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1Range.html" title=" " alt="" coords="37,243,147,268"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="124,273,204,319,249,343,247,348,201,324,122,278"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="14,155,149,180"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="87,194,93,242,88,242,82,194"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="5,80,149,105"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="81,119,83,154,78,154,76,120"/>
+<area shape="rect" id="Node000011" href="$classdrain_1_1ReferenceMap2.html" title="A map of references to base type scalars, arrays or std::string; changing values in either are equiva..." alt="" coords="173,243,336,268"/>
+<area shape="poly" id="edge11_Node000007_Node000011" title=" " alt="" coords="259,281,264,321,270,344,265,346,259,322,254,282"/>
+<area shape="rect" id="Node000012" href="$classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="191,155,318,180"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="257,194,257,242,252,242,252,194"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="173,80,336,105"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="257,120,257,154,252,154,252,120"/>
 </map>

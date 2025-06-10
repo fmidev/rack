@@ -1,6 +1,9 @@
 <map id="CopyFunctor" name="CopyFunctor">
-<area shape="rect" id="node1" title=" " alt="" coords="9,229,111,256"/>
-<area shape="rect" id="node2" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="5,155,115,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="25,80,95,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="19,5,101,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="9,225,111,251"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="5,152,115,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="63,191,63,225,57,225,57,191"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="25,79,95,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="63,118,63,152,57,152,57,118"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="19,5,101,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="63,44,63,79,57,79,57,44"/>
 </map>

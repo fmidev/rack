@@ -1,5 +1,7 @@
 <map id="ProductModule" name="ProductModule">
-<area shape="rect" id="node1" title=" " alt="" coords="49,184,168,211"/>
-<area shape="rect" id="node2" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="23,95,195,136"/>
-<area shape="rect" id="node3" href="$classdrain_1_1CommandInstaller.html" title="Creates an instance of command class C." alt="" coords="5,5,212,47"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="49,181,168,207"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="23,93,195,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,147,111,181,106,181,106,147"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1CommandInstaller.html" title="Creates an instance of command class C." alt="" coords="5,5,212,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="111,59,111,93,106,93,106,59"/>
 </map>

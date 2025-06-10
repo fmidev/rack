@@ -1,4 +1,5 @@
 <map id="RootData&lt; DT &gt;" name="RootData&lt; DT &gt;">
-<area shape="rect" id="node1" title="Experimental structure, designed only for accessing root level metadata." alt="" coords="16,80,147,107"/>
-<area shape="rect" id="node2" href="$classrack_1_1TreeWrapper.html" title="Base class for all kinds of radar data." alt="" coords="5,5,157,32"/>
+<area shape="rect" id="Node000001" title="Experimental structure, designed only for accessing root level metadata." alt="" coords="16,79,147,104"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1TreeWrapper.html" title="Base class for all kinds of radar data." alt="" coords="5,5,157,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,44,84,79,79,79,79,44"/>
 </map>

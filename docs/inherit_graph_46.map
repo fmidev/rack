@@ -1,3 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structdrain_1_1EnumDict.html" title="Wrapper for unique (static) dictionary of enum values." alt="" coords="5,5,187,32"/>
+<area shape="rect" id="Node000000" href="$classdrain_1_1DotEntity.html" title=" " alt="" coords="5,55,88,80"/>
+<area shape="rect" id="Node000001" href="$classdrain_1_1DotHeader.html" title=" " alt="" coords="136,5,228,31"/>
+<area shape="poly" id="edge643_Node000000_Node000001" title=" " alt="" coords="94,47,145,28,147,33,96,52"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1DotLink.html" title=" " alt="" coords="146,55,218,80"/>
+<area shape="poly" id="edge644_Node000000_Node000002" title=" " alt="" coords="102,65,146,65,146,70,102,70"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1DotNode.html" title=" " alt="" coords="143,104,221,129"/>
+<area shape="poly" id="edge645_Node000000_Node000003" title=" " alt="" coords="96,82,147,101,145,106,94,87"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1DotBullit.html" title=" " alt="" coords="293,79,371,104"/>
+<area shape="poly" id="edge646_Node000003_Node000004" title=" " alt="" coords="235,105,292,95,293,101,235,110"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1DotRankNode.html" title=" " alt="" coords="276,128,388,153"/>
+<area shape="poly" id="edge647_Node000003_Node000005" title=" " alt="" coords="235,122,276,129,275,134,235,128"/>
 </map>

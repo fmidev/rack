@@ -1,10 +1,17 @@
 <map id="HistEntry" name="HistEntry">
-<area shape="rect" id="node1" title=" " alt="" coords="178,336,261,363"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="113,247,195,273"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="72,157,188,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,208,108"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,5,225,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title=" " alt="" coords="225,247,363,273"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="218,157,386,184"/>
-<area shape="rect" id="node8" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="233,81,377,108"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="177,331,259,356"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="112,243,193,268"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,277,211,329,207,332,168,281"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="83,155,199,180"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="147,193,154,242,148,242,142,194"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,80,208,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="127,118,139,153,134,155,122,120"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,5,225,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="118,45,118,80,113,80,113,45"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1Range.html" title=" " alt="" coords="224,243,361,268"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="276,280,230,332,226,328,272,277"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="232,155,367,180"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="300,194,296,242,291,242,295,194"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="233,80,377,105"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="305,119,303,155,298,154,300,119"/>
 </map>

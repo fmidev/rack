@@ -1,11 +1,19 @@
 <map id="SlidingRadarWindow&lt; C, R &gt;" name="SlidingRadarWindow&lt; C, R &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="228,408,384,449"/>
-<area shape="rect" id="node7" href="$classrack_1_1RadarWindowAvg.html" title=" " alt="" coords="5,497,180,524"/>
-<area shape="rect" id="node8" href="$classrack_1_1RadarWindowSoftMax.html" title=" " alt="" coords="204,497,408,524"/>
-<area shape="rect" id="node9" href="$classrack_1_1RadarWindowWeightedAvg.html" title=" " alt="" coords="432,497,668,524"/>
-<area shape="rect" id="node2" href="$classrack_1_1SlidingRadarWindowBase.html" title=" " alt="" coords="211,319,401,360"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="186,229,426,271"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="241,155,371,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="254,80,358,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="238,5,374,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="228,387,384,427"/>
+<area shape="rect" id="Node000007" href="$classrack_1_1RadarWindowAvg.html" title=" " alt="" coords="5,475,180,500"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="243,434,125,477,123,472,241,429"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1RadarWindowSoftMax.html" title=" " alt="" coords="204,475,408,500"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="309,440,309,474,303,474,303,440"/>
+<area shape="rect" id="Node000009" href="$classrack_1_1RadarWindowWeightedAvg.html" title=" " alt="" coords="432,475,668,500"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="378,428,515,472,514,477,377,433"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1SlidingRadarWindowBase.html" title="A two&#45;dimensional image processing window that handles the special ODIM codes and scales the result...." alt="" coords="212,299,400,339"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="309,353,309,386,303,386,303,353"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1SlidingWindow.html" title="Window implementation that uses incremental update of state." alt="" coords="219,225,393,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="309,264,309,299,303,299,303,264"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="241,152,371,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="309,191,309,225,303,225,303,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="254,79,358,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="309,118,309,152,303,152,303,118"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="238,5,374,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="309,44,309,79,303,79,303,44"/>
 </map>

@@ -1,6 +1,9 @@
 <map id="BinaryFunctorOpCloner&lt; F &gt;" name="BinaryFunctorOpCloner&lt; F &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="14,244,225,271"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="5,155,233,196"/>
-<area shape="rect" id="node3" href="$structdrain_1_1Cloner.html" title="Wrapper for derived class S, returning base class T." alt="" coords="60,80,179,107"/>
-<area shape="rect" id="node4" href="$structdrain_1_1ClonerBase.html" title=" " alt="" coords="52,5,187,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="14,240,225,265"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="5,152,233,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,206,122,240,117,240,117,206"/>
+<area shape="rect" id="Node000003" href="$structdrain_1_1Cloner.html" title="Wrapper for derived class S, returning base class T." alt="" coords="60,79,179,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="122,118,122,152,117,152,117,118"/>
+<area shape="rect" id="Node000004" href="$structdrain_1_1ClonerBase.html" title=" " alt="" coords="52,5,187,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="122,44,122,79,117,79,117,44"/>
 </map>

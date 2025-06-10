@@ -1,7 +1,13 @@
 <map id="CmdPaletteOut" name="CmdPaletteOut">
-<area shape="rect" id="node1" title=" " alt="" coords="31,304,151,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title="A single&#45;parameter command." alt="" coords="5,229,177,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="29,155,153,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="47,80,136,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="45,5,138,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="67,372,187,397"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1Deprecator.html" title=" " alt="" coords="5,299,248,324"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,338,129,372,124,372,124,338"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="65,225,189,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="129,264,129,299,124,299,124,264"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="21,152,232,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="129,191,129,225,124,225,124,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="82,79,171,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="129,118,129,152,124,152,124,118"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="80,5,173,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="129,44,129,79,124,79,124,44"/>
 </map>

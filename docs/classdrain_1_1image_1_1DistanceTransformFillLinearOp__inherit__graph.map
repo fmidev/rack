@@ -1,8 +1,13 @@
 <map id="DistanceTransformFillLinearOp" name="DistanceTransformFillLinearOp">
-<area shape="rect" id="node1" title="Spreeads values using inverse linear distance transform." alt="" coords="5,408,227,435"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title=" " alt="" coords="21,319,211,360"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="21,229,211,271"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="75,155,157,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="71,80,161,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,5,157,32"/>
+<area shape="rect" id="Node000001" title="Spreeads values using inverse linear distance transform." alt="" coords="5,387,227,412"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title=" " alt="" coords="21,299,211,339"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,352,119,386,113,386,113,352"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="16,225,216,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="119,264,119,299,113,299,113,264"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="75,152,157,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="119,191,119,225,113,225,113,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="71,79,161,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="119,118,119,152,113,152,113,118"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,5,157,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="119,44,119,79,113,79,113,44"/>
 </map>

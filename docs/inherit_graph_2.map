@@ -1,248 +1,529 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structdrain_1_1image_1_1AccumulationConverter.html" title="Converts raw data to values appropriate for accumulation." alt="" coords="144,892,319,919"/>
-<area shape="rect" id="node2" href="$classrack_1_1DataCoder.html" title="Converts ODIM encoded data (with markers) to natural values and backwards." alt="" coords="401,892,492,919"/>
-<area shape="rect" id="node3" href="$classrack_1_1AndreContext.html" title=" " alt="" coords="176,3021,287,3048"/>
-<area shape="rect" id="node4" href="$classrack_1_1RackContext.html" title="Resources provided separately for each thread." alt="" coords="394,2895,499,2921"/>
-<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="191,1424,272,1451"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="411,1095,482,1121"/>
-<area shape="rect" id="node36" href="$classdrain_1_1image_1_1AccumulationMethod.html" title="Function for accumulating data: maximum, average, weighted average etc." alt="" coords="367,1145,527,1172"/>
-<area shape="rect" id="node43" href="$classdrain_1_1image_1_1DistanceModel.html" title="Base class for linear and exponential distances in rectangular pixel images." alt="" coords="387,1323,506,1349"/>
-<area shape="rect" id="node46" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="401,1525,492,1552"/>
-<area shape="rect" id="node215" href="$structdrain_1_1image_1_1ImpulseAvgConf.html" title=" " alt="" coords="383,2075,511,2101"/>
-<area shape="rect" id="node219" href="$classdrain_1_1image_1_1PaletteEntry.html" title="Container for color, transparency (alpha) and textual id and description. Does not contain intensity ..." alt="" coords="396,1627,497,1653"/>
-<area shape="rect" id="node220" href="$classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data." alt="" coords="409,1677,485,1704"/>
-<area shape="rect" id="node221" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations." alt="" coords="393,1576,500,1603"/>
-<area shape="rect" id="node223" href="$classrack_1_1FreezingLevel.html" title=" " alt="" coords="391,1728,503,1755"/>
-<area shape="rect" id="node224" href="$structrack_1_1HistEntry.html" title=" " alt="" coords="405,943,488,969"/>
-<area shape="rect" id="node225" href="$classrack_1_1PolarSector.html" title=" " alt="" coords="399,993,495,1020"/>
-<area shape="rect" id="node226" href="$classrack_1_1Precip.html" title=" " alt="" coords="415,1044,478,1071"/>
-<area shape="rect" id="node235" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="395,2717,498,2744"/>
-<area shape="rect" id="node7" href="$classdrain_1_1BinaryFunctor.html" title=" " alt="" coords="623,917,735,944"/>
-<area shape="rect" id="node15" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="625,512,734,539"/>
-<area shape="rect" id="node8" href="$classdrain_1_1AdditionFunctor.html" title="Adds a intensity values ." alt="" coords="887,1019,1011,1045"/>
-<area shape="rect" id="node9" href="$classdrain_1_1DivisionFunctor.html" title="Divides image by another image." alt="" coords="888,1069,1011,1096"/>
-<area shape="rect" id="node10" href="$classdrain_1_1MaximumFunctor.html" title=" " alt="" coords="881,765,1017,792"/>
-<area shape="rect" id="node11" href="$classdrain_1_1MinimumFunctor.html" title="Minimum intensity. Prescaled input." alt="" coords="883,816,1015,843"/>
-<area shape="rect" id="node12" href="$classdrain_1_1MixerFunctor.html" title="Blends an image to another with given proportion." alt="" coords="896,867,1003,893"/>
-<area shape="rect" id="node13" href="$classdrain_1_1MultiplicationFunctor.html" title="Multiplies two images, with optional post scaling and offset." alt="" coords="870,917,1029,944"/>
-<area shape="rect" id="node14" href="$classdrain_1_1SubtractionFunctor.html" title="Subtracts image from another image." alt="" coords="877,968,1021,995"/>
-<area shape="rect" id="node16" href="$classdrain_1_1BinaryThresholdFunctor.html" title="Thresholds intensity values." alt="" coords="861,259,1037,285"/>
-<area shape="rect" id="node17" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor." alt="" coords="892,309,1007,336"/>
-<area shape="rect" id="node27" href="$structdrain_1_1IdentityFunctor.html" title=" " alt="" coords="889,360,1009,387"/>
-<area shape="rect" id="node28" href="$classdrain_1_1RemappingFunctor.html" title="Maps a single intensity value to another value." alt="" coords="877,411,1021,437"/>
-<area shape="rect" id="node29" href="$classdrain_1_1ScalingFunctor.html" title="Rescales intensities linearly: f&#39; = scale*f + offset." alt="" coords="891,461,1008,488"/>
-<area shape="rect" id="node31" href="$classdrain_1_1ThresholdFunctor.html" title="Thresholds intensity values." alt="" coords="882,512,1017,539"/>
-<area shape="rect" id="node32" href="$classdrain_1_1image_1_1CopyFunctor.html" title=" " alt="" coords="898,563,1001,589"/>
-<area shape="rect" id="node33" href="$classdrain_1_1image_1_1GammaFunctor.html" title="Gamma correction. Intensity is mapped as f&#39; = f^(gamma)" alt="" coords="888,613,1011,640"/>
-<area shape="rect" id="node34" href="$classdrain_1_1image_1_1QuantizatorFunctor.html" title="TODO: CopyOP should be quite similar." alt="" coords="876,664,1023,691"/>
-<area shape="rect" id="node35" href="$classrack_1_1DataMarker.html" title="Simple class marking true data with a given constant value, typically a CLASS label." alt="" coords="900,715,999,741"/>
-<area shape="rect" id="node18" href="$classdrain_1_1FuzzyBell.html" title=" " alt="" coords="1155,107,1313,133"/>
-<area shape="rect" id="node19" href="$classdrain_1_1FuzzyBell2.html" title=" " alt="" coords="1151,157,1317,184"/>
-<area shape="rect" id="node20" href="$classdrain_1_1FuzzyBell.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve." alt="" coords="1173,208,1295,235"/>
-<area shape="rect" id="node21" href="$classdrain_1_1FuzzyBell2.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve. Diminishes quicker than Fuzz..." alt="" coords="1169,259,1299,285"/>
-<area shape="rect" id="node22" href="$classdrain_1_1FuzzySigmoid.html" title="A smooth step function, by default from &#45;1.0 to +1.0." alt="" coords="1159,309,1309,336"/>
-<area shape="rect" id="node23" href="$classdrain_1_1FuzzyStep.html" title="A basic, linear transition from 0 to scale between (start) and (end) ." alt="" coords="1171,360,1297,387"/>
-<area shape="rect" id="node24" href="$classdrain_1_1FuzzyStepsoid.html" title="A smooth step function between 0.0 and 1.0. Increasing (decreasing) with positive (negative) width...." alt="" coords="1157,411,1311,437"/>
-<area shape="rect" id="node25" href="$classdrain_1_1FuzzyTriangle.html" title="A basic triangular peak function with linear around the peak." alt="" coords="1160,461,1308,488"/>
-<area shape="rect" id="node26" href="$classdrain_1_1FuzzyTwinPeaks.html" title="A function taking shape of two peaks, with a zero in the middle ." alt="" coords="1151,512,1317,539"/>
-<area shape="rect" id="node30" href="$classdrain_1_1NegateFunctor.html" title="Inverts intensities: f&#39; = f_max &#45; f." alt="" coords="1175,563,1293,589"/>
-<area shape="rect" id="node37" href="$classdrain_1_1image_1_1AverageMethod.html" title=" " alt="" coords="617,1019,741,1045"/>
-<area shape="rect" id="node38" href="$classdrain_1_1image_1_1MaximumMethod.html" title=" " alt="" coords="611,1069,748,1096"/>
-<area shape="rect" id="node39" href="$classdrain_1_1image_1_1MaximumWeightMethod.html" title=" " alt="" coords="588,1120,771,1147"/>
-<area shape="rect" id="node40" href="$classdrain_1_1image_1_1MinimumMethod.html" title=" " alt="" coords="613,1171,746,1197"/>
-<area shape="rect" id="node41" href="$classdrain_1_1image_1_1OverwriteMethod.html" title=" " alt="" coords="612,1221,747,1248"/>
-<area shape="rect" id="node42" href="$classdrain_1_1image_1_1WeightedAverageMethod.html" title=" " alt="" coords="587,968,772,995"/>
-<area shape="rect" id="node44" href="$classdrain_1_1image_1_1DistanceModelExponential.html" title=" " alt="" coords="581,1323,777,1349"/>
-<area shape="rect" id="node45" href="$classdrain_1_1image_1_1DistanceModelLinear.html" title=" " alt="" coords="600,1272,759,1299"/>
-<area shape="rect" id="node47" href="$classdrain_1_1image_1_1ImageBox.html" title="Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by de..." alt="" coords="635,1525,723,1552"/>
-<area shape="rect" id="node48" href="$classdrain_1_1image_1_1ImageChannels.html" title=" " alt="" coords="618,1576,741,1603"/>
-<area shape="rect" id="node49" href="$classdrain_1_1image_1_1ImageCoordPolicy.html" title=" " alt="" coords="609,1627,749,1653"/>
-<area shape="rect" id="node50" href="$classdrain_1_1image_1_1ImageEncoding.html" title="Changes the type of a target image." alt="" coords="618,1677,741,1704"/>
-<area shape="rect" id="node51" href="$classdrain_1_1image_1_1ImageFill.html" title=" " alt="" coords="638,1728,721,1755"/>
-<area shape="rect" id="node52" href="$classdrain_1_1image_1_1ImageGeometry.html" title=" " alt="" coords="615,1779,743,1805"/>
-<area shape="rect" id="node53" href="$classdrain_1_1image_1_1ImageHistogram.html" title=" " alt="" coords="614,1829,745,1856"/>
-<area shape="rect" id="node54" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="639,1880,720,1907"/>
-<area shape="rect" id="node212" href="$classdrain_1_1image_1_1ImagePlot.html" title="Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by de..." alt="" coords="635,1373,723,1400"/>
-<area shape="rect" id="node213" href="$classdrain_1_1image_1_1ImagePlotFile.html" title=" " alt="" coords="624,1424,735,1451"/>
-<area shape="rect" id="node214" href="$classdrain_1_1image_1_1ImageSampler.html" title="Traverses image, returning samples." alt="" coords="621,1475,738,1501"/>
-<area shape="rect" id="node55" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="836,2206,1063,2247"/>
-<area shape="rect" id="node59" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="855,2323,1044,2365"/>
-<area shape="rect" id="node63" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="847,2389,1052,2430"/>
-<area shape="rect" id="node65" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="882,2456,1017,2483"/>
-<area shape="rect" id="node67" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="832,2509,1067,2550"/>
-<area shape="rect" id="node69" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="836,2577,1063,2618"/>
-<area shape="rect" id="node72" href="$classdrain_1_1image_1_1CatenatorOp.html" title="Operator for concatenating images vertically or as channels." alt="" coords="897,2643,1001,2669"/>
-<area shape="rect" id="node75" href="$classdrain_1_1image_1_1CropOp.html" title=" " alt="" coords="914,2693,985,2720"/>
-<area shape="rect" id="node76" href="$classdrain_1_1image_1_1DifferentialOp.html" title="Virtual base class for horizontal and vertical intensity derivatives." alt="" coords="893,2744,1006,2771"/>
-<area shape="rect" id="node83" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="849,2820,1049,2847"/>
-<area shape="rect" id="node85" href="$classdrain_1_1image_1_1FloodFillOp.html" title="A fill operation for one color." alt="" coords="902,1120,997,1147"/>
-<area shape="rect" id="node86" href="$classdrain_1_1image_1_1FunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="886,2888,1013,2915"/>
-<area shape="rect" id="node94" href="$classdrain_1_1image_1_1HighBoostOp.html" title="Enhances details by mixing original image and result of HighPassOp op." alt="" coords="896,1171,1003,1197"/>
-<area shape="rect" id="node95" href="$classdrain_1_1image_1_1HighPassOp.html" title="Finds details at one&#45;pixel scale, defined as difference of image and its low&#45;pass filtered copy." alt="" coords="900,1221,999,1248"/>
-<area shape="rect" id="node96" href="$classdrain_1_1image_1_1ImpulseResponseOpBase.html" title=" " alt="" coords="837,1272,1062,1299"/>
-<area shape="rect" id="node98" href="$classdrain_1_1image_1_1MarginalStatisticOp.html" title="Computes horizontal or vertical intensity statistics: iAverage, sum, ..." alt="" coords="874,1323,1025,1349"/>
-<area shape="rect" id="node99" href="$classdrain_1_1image_1_1MotionExtrapolatorOp.html" title=" " alt="" coords="867,1373,1032,1400"/>
-<area shape="rect" id="node100" href="$classdrain_1_1image_1_1MultiThresholdOp.html" title=" " alt="" coords="881,1424,1018,1451"/>
-<area shape="rect" id="node101" href="$classdrain_1_1image_1_1NegateOp.html" title=" " alt="" coords="906,1475,993,1501"/>
-<area shape="rect" id="node102" href="$classdrain_1_1image_1_1PaletteOp.html" title="Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table." alt="" coords="907,1525,992,1552"/>
-<area shape="rect" id="node103" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="893,1576,1005,1603"/>
-<area shape="rect" id="node185" href="$classdrain_1_1image_1_1QuadTreeOp.html" title="QuadTrees the image, stretching the image correspondingly." alt="" coords="899,1627,1000,1653"/>
-<area shape="rect" id="node186" href="$classdrain_1_1image_1_1QualityMixerOp.html" title="Overwrites pixels of destination image in locations where destination weight is lower." alt="" coords="888,1677,1011,1704"/>
-<area shape="rect" id="node187" href="$classdrain_1_1image_1_1QualityOp.html" title=" " alt="" coords="906,1728,993,1755"/>
-<area shape="rect" id="node190" href="$classdrain_1_1image_1_1RecomposeOp.html" title="Create vertical image composed of separate views." alt="" coords="891,1779,1007,1805"/>
-<area shape="rect" id="node191" href="$classdrain_1_1image_1_1ResizeOp.html" title="Resizes the image, stretching the image correspondingly." alt="" coords="908,1829,991,1856"/>
-<area shape="rect" id="node192" href="$classdrain_1_1image_1_1RunLengthOp.html" title="Base class for RunLengthHorzOp and RunLengthVertOp." alt="" coords="895,1880,1004,1907"/>
-<area shape="rect" id="node195" href="$classdrain_1_1image_1_1SegmentOp.html" title="A base class for computing statistics of segments. As segment is an area of connected pixels." alt="" coords="900,1931,999,1957"/>
-<area shape="rect" id="node198" href="$classdrain_1_1image_1_1SuperProberOp.html" title="A base class for computing statistics of segments. As segment is an area of connected pixels." alt="" coords="890,1981,1009,2008"/>
-<area shape="rect" id="node199" href="$classdrain_1_1image_1_1TransposeOp.html" title="Transpose operator. Swaps the intensities over the diagonal exis." alt="" coords="897,2032,1002,2059"/>
-<area shape="rect" id="node200" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="882,2083,1017,2109"/>
-<area shape="rect" id="node56" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title=" " alt="" coords="1121,2206,1347,2247"/>
-<area shape="rect" id="node58" href="$classdrain_1_1image_1_1DistanceTransformExponentialOp.html" title=" " alt="" coords="1115,2272,1353,2299"/>
-<area shape="rect" id="node57" href="$classdrain_1_1image_1_1DistanceTransformFillExponentialOp.html" title=" " alt="" coords="1401,2213,1660,2240"/>
-<area shape="rect" id="node60" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title=" " alt="" coords="1139,2323,1329,2365"/>
-<area shape="rect" id="node62" href="$classdrain_1_1image_1_1DistanceTransformLinearOp.html" title="Computes inverse linear distance to bright points." alt="" coords="1133,2389,1335,2416"/>
-<area shape="rect" id="node61" href="$classdrain_1_1image_1_1DistanceTransformFillLinearOp.html" title="Spreeads values using inverse linear distance transform." alt="" coords="1420,2331,1641,2357"/>
-<area shape="rect" id="node64" href="$classdrain_1_1image_1_1SeparableWindowOp.html" title="Sliding window averaging operator with optional weighting support." alt="" coords="1155,2440,1313,2467"/>
-<area shape="rect" id="node66" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title="Template for operators applying pipeline&#45;like sliding window." alt="" coords="1145,2491,1323,2517"/>
-<area shape="rect" id="node68" href="$classdrain_1_1image_1_1GaussianAverageOp.html" title="Sliding window averaging operator with optional weighting support." alt="" coords="1157,2541,1311,2568"/>
-<area shape="rect" id="node70" href="$classdrain_1_1image_1_1FastAverageOp.html" title="Sliding window averaging operator with optional weighting support." alt="" coords="1175,2592,1293,2619"/>
-<area shape="rect" id="node71" href="$classdrain_1_1image_1_1FastAverageWeightedOp.html" title="Utility for explicitly." alt="" coords="1441,2592,1621,2619"/>
-<area shape="rect" id="node73" href="$classdrain_1_1image_1_1ChannelCatenatorOp.html" title=" " alt="" coords="1155,2643,1313,2669"/>
-<area shape="rect" id="node74" href="$classdrain_1_1image_1_1VerticalCatenatorOp.html" title=" " alt="" coords="1157,2693,1311,2720"/>
-<area shape="rect" id="node77" href="$classdrain_1_1image_1_1GradientOp.html" title="Computes spatial horizontal derivatives (dx and dy)." alt="" coords="1186,2744,1282,2771"/>
-<area shape="rect" id="node80" href="$classdrain_1_1image_1_1LaplaceOp.html" title="Computes second intensity derivatives." alt="" coords="1189,2795,1279,2821"/>
-<area shape="rect" id="node78" href="$classdrain_1_1image_1_1GradientHorzOp.html" title=" " alt="" coords="1467,2693,1594,2720"/>
-<area shape="rect" id="node79" href="$classdrain_1_1image_1_1GradientVertOp.html" title=" " alt="" coords="1469,2744,1592,2771"/>
-<area shape="rect" id="node81" href="$classdrain_1_1image_1_1LaplaceHorzOp.html" title="Computes second horizontal derivative, dx2." alt="" coords="1471,2795,1591,2821"/>
-<area shape="rect" id="node82" href="$classdrain_1_1image_1_1LaplaceVertOp.html" title="Computes second vertical derivative, dy2." alt="" coords="1473,2845,1589,2872"/>
-<area shape="rect" id="node84" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title="Template for DistanceTransformFillLinearOp and DistanceTransformFillExponentialOp." alt="" coords="1125,2845,1343,2872"/>
-<area shape="rect" id="node87" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="1141,2897,1327,2938"/>
-<area shape="rect" id="node89" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="1115,2963,1353,2989"/>
-<area shape="rect" id="node91" href="$classdrain_1_1image_1_1BinaryFunctorOp.html" title="Class for using two&#45;parameter function objects (like std::functor) for sequential and spatial pixel i..." alt="" coords="1150,3013,1318,3040"/>
-<area shape="rect" id="node92" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="1157,3115,1311,3157"/>
-<area shape="rect" id="node88" href="$classdrain_1_1image_1_1TransparentOp.html" title=" " alt="" coords="1473,2904,1589,2931"/>
-<area shape="rect" id="node90" href="$classdrain_1_1image_1_1CopyOp.html" title=" " alt="" coords="1494,2963,1567,2989"/>
-<area shape="rect" id="node93" href="$classrack_1_1RadarFunctorOp.html" title="Convenience (abbreviation)" alt="" coords="1449,3093,1613,3120"/>
-<area shape="rect" id="node97" href="$classdrain_1_1image_1_1ImpulseResponseOp.html" title="A fill operation for one color." alt="" coords="1137,1239,1331,1265"/>
-<area shape="rect" id="node104" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="1147,1341,1321,1382"/>
-<area shape="rect" id="node106" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="1139,1406,1329,1447"/>
-<area shape="rect" id="node183" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="1138,1472,1330,1499"/>
-<area shape="rect" id="node184" href="$classdrain_1_1image_1_1GrayOp.html" title=" " alt="" coords="1199,1289,1269,1316"/>
-<area shape="rect" id="node105" href="$classdrain_1_1image_1_1DistanceOp.html" title="Computes the distance between intensity vectors." alt="" coords="1482,1348,1579,1375"/>
-<area shape="rect" id="node107" href="$classdrain_1_1image_1_1MagnitudeOp.html" title="Computes pixel magnitude, that is, euclidean norm of the intensity vector." alt="" coords="1476,1405,1585,1432"/>
-<area shape="rect" id="node108" href="$classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images." alt="" coords="1486,1456,1575,1483"/>
-<area shape="rect" id="node109" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="1708,1369,1903,1410"/>
-<area shape="rect" id="node113" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="1717,1456,1893,1483"/>
-<area shape="rect" id="node115" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="1711,1507,1899,1533"/>
-<area shape="rect" id="node110" href="$classrack_1_1VerticalIntersectionOp.html" title=" " alt="" coords="1951,1405,2117,1432"/>
-<area shape="rect" id="node111" href="$classrack_1_1VerticalProfileOp.html" title="Computes vertical profiles of reflectivity (DBZH), including raw and polarized reflectivity." alt="" coords="1969,1304,2099,1331"/>
-<area shape="rect" id="node112" href="$classrack_1_1VerticalWindProfileOp.html" title="Computes vertical profiles of reflectivity (DBZH), including raw and polarized reflectivity." alt="" coords="1953,1355,2115,1381"/>
-<area shape="rect" id="node114" href="$classrack_1_1PseudoRhiOp.html" title="Pseudo Range&#45;Height indicator." alt="" coords="1980,1456,2088,1483"/>
-<area shape="rect" id="node116" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="1973,1507,2095,1533"/>
-<area shape="rect" id="node117" href="$classrack_1_1PolarSlidingWindowOp.html" title=" " alt="" coords="2165,1071,2421,1127"/>
-<area shape="rect" id="node119" href="$classrack_1_1BeamAltitudeOp.html" title="A single&#45;ray &quot;product&quot; storing the altitude at each bin." alt="" coords="2229,1160,2358,1187"/>
-<area shape="rect" id="node120" href="$classrack_1_1ConvOp.html" title="Computes Cb s or bottoms in kilometers for a given dBZ threshold, typically 20, 40 or 45 dBZ." alt="" coords="2257,1211,2330,1237"/>
-<area shape="rect" id="node121" href="$classrack_1_1CumulativeProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system." alt="" coords="2211,1261,2375,1288"/>
-<area shape="rect" id="node125" href="$classrack_1_1DopplerAvgExpOp.html" title=" " alt="" coords="2224,1329,2363,1356"/>
-<area shape="rect" id="node126" href="$classrack_1_1DopplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data." alt="" coords="2248,1380,2339,1407"/>
-<area shape="rect" id="node142" href="$classrack_1_1DrawingOp.html" title="Select and visualise a direction, range, sector or arc." alt="" coords="2246,1431,2341,1457"/>
-<area shape="rect" id="node143" href="$classrack_1_1EchoTopOp.html" title=" " alt="" coords="2247,1481,2340,1508"/>
-<area shape="rect" id="node144" href="$classrack_1_1ExtRackOp.html" title="Base class for radar data processors." alt="" coords="2247,1532,2340,1559"/>
-<area shape="rect" id="node145" href="$classrack_1_1FunctorOp.html" title="A single&#45;ray &quot;product&quot; storing the altitude at each bin." alt="" coords="2249,1583,2337,1609"/>
-<area shape="rect" id="node146" href="$classrack_1_1PolarNeuralVPROp.html" title="The VPRimum dBZ value in each a vertical column." alt="" coords="2222,1633,2365,1660"/>
-<area shape="rect" id="node147" href="$classrack_1_1PolarSlidingWindowOp.html" title="Window operator with support." alt="" coords="2187,1684,2399,1711"/>
-<area shape="rect" id="node148" href="$classrack_1_1RainRateDPOp.html" title="Uses DBZ, ZDR and KDP to derive rain rate. Under construction." alt="" coords="2235,1735,2352,1761"/>
-<area shape="rect" id="node149" href="$classrack_1_1RainRateOp.html" title="Computes rain rate from dBZ." alt="" coords="2244,1785,2343,1812"/>
-<area shape="rect" id="node150" href="$classrack_1_1SunShineOp.html" title="A single&#45;ray &quot;product&quot; storing the altitude at each bin." alt="" coords="2243,1836,2343,1863"/>
-<area shape="rect" id="node151" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="2219,1887,2367,1913"/>
-<area shape="rect" id="node118" href="$classrack_1_1PolarSlidingAvgOp.html" title=" " alt="" coords="2503,1051,2645,1077"/>
-<area shape="rect" id="node122" href="$classrack_1_1CappiOp.html" title="CAPPI and Pseudo&#45;CAPPI: the constant altitude planar position indicator product." alt="" coords="2535,1101,2613,1128"/>
-<area shape="rect" id="node123" href="$classrack_1_1EchoTopOpOld.html" title="Height of echo exceeding a reflectivity threshold." alt="" coords="2517,1152,2631,1179"/>
-<area shape="rect" id="node124" href="$classrack_1_1MaxEchoOp.html" title="The maximum dBZ value in each a vertical column." alt="" coords="2525,1203,2623,1229"/>
-<area shape="rect" id="node127" href="$classrack_1_1DopplerWindowOp.html" title=" " alt="" coords="2469,1507,2679,1549"/>
-<area shape="rect" id="node129" href="$classrack_1_1DopplerWindowOp.html" title=" " alt="" coords="2469,1573,2679,1614"/>
-<area shape="rect" id="node131" href="$classrack_1_1DopplerWindowOp.html" title=" " alt="" coords="2469,1638,2679,1679"/>
-<area shape="rect" id="node133" href="$classrack_1_1DopplerCrawlerOp.html" title=" " alt="" coords="2503,1704,2645,1731"/>
-<area shape="rect" id="node134" href="$classrack_1_1DopplerDiffOp.html" title="Experimental." alt="" coords="2517,1755,2631,1781"/>
-<area shape="rect" id="node135" href="$classrack_1_1DopplerReprojectOp.html" title=" " alt="" coords="2497,1253,2651,1280"/>
-<area shape="rect" id="node136" href="$classrack_1_1DopplerSamplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data." alt="" coords="2501,1304,2647,1331"/>
-<area shape="rect" id="node138" href="$classrack_1_1DopplerWindOp.html" title="Base class for operators retrieving true wind (u,v)." alt="" coords="2512,1355,2636,1381"/>
-<area shape="rect" id="node140" href="$classrack_1_1DopplerWindowOp.html" title="Base class for Doppler average and variance." alt="" coords="2481,1405,2667,1432"/>
-<area shape="rect" id="node141" href="$classrack_1_1ExtDopplerOp.html" title="Base class for radar data processors." alt="" coords="2518,1456,2630,1483"/>
-<area shape="rect" id="node128" href="$classrack_1_1DopplerEccentricityOp.html" title=" " alt="" coords="2727,1515,2893,1541"/>
-<area shape="rect" id="node130" href="$classrack_1_1DopplerDevOp.html" title=" " alt="" coords="2751,1580,2869,1607"/>
-<area shape="rect" id="node132" href="$classrack_1_1DopplerAvgOp.html" title="Simple op not producing quality field." alt="" coords="2753,1645,2867,1672"/>
-<area shape="rect" id="node137" href="$classrack_1_1DopplerDiffPlotterOp.html" title=" " alt="" coords="2731,1304,2889,1331"/>
-<area shape="rect" id="node139" href="$classrack_1_1DopplerInversionOp.html" title="Derives two&#45;dimensional wind (u,v) from Doppler data." alt="" coords="2735,1355,2885,1381"/>
-<area shape="rect" id="node152" href="$classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="2535,1887,2613,1913"/>
-<area shape="rect" id="node153" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors." alt="" coords="2762,2419,2858,2445"/>
-<area shape="rect" id="node177" href="$classrack_1_1QualityCombinerOp.html" title="A quick QualityCombiner ." alt="" coords="2735,1836,2885,1863"/>
-<area shape="rect" id="node178" href="$classrack_1_1RemoverOp.html" title="The simplest possible anomaly removal operator and the base class for more complex ones." alt="" coords="2761,1887,2859,1913"/>
-<area shape="rect" id="node154" href="$classrack_1_1AttenuationOp.html" title="Computes attenuation caused by precipitation." alt="" coords="2961,1937,3077,1964"/>
-<area shape="rect" id="node155" href="$classrack_1_1BiometOp.html" title="Detects birds and insects." alt="" coords="2975,1988,3062,2015"/>
-<area shape="rect" id="node156" href="$classrack_1_1CCorOp.html" title=" " alt="" coords="2983,2039,3054,2065"/>
-<area shape="rect" id="node157" href="$classrack_1_1ClutterOp.html" title="Based on pre&#45;computed clutter map, scales the clutter probability for desired sweeps." alt="" coords="2977,2089,3061,2116"/>
-<area shape="rect" id="node158" href="$classrack_1_1DefaultOp.html" title="Simply, &quot;detects&quot; precipitation ie sets its probability." alt="" coords="2975,2140,3063,2167"/>
-<area shape="rect" id="node159" href="$classrack_1_1DopplerNoiseOp.html" title="Detects suspicious variance in Doppler speed (VRAD)." alt="" coords="2955,2191,3083,2217"/>
-<area shape="rect" id="node160" href="$classrack_1_1EmitterOp.html" title="A quick emitter detection based on subtracting horizontal window medians by vertical ones." alt="" coords="2975,2241,3063,2268"/>
-<area shape="rect" id="node161" href="$classrack_1_1ExtAndreOp.html" title="Base class for radar data processors." alt="" coords="2969,2292,3068,2319"/>
-<area shape="rect" id="node162" href="$classrack_1_1GliderOp.html" title=" " alt="" coords="2979,2343,3058,2369"/>
-<area shape="rect" id="node165" href="$classrack_1_1HydroClassBasedOp.html" title="Sets probabilities of non&#45;meteorological echoes based on precomputed hydrometeor classification." alt="" coords="2941,2393,3096,2420"/>
-<area shape="rect" id="node166" href="$classrack_1_1JammingOp.html" title="A detector for widespread electromagnetic interference." alt="" coords="2969,2444,3068,2471"/>
-<area shape="rect" id="node167" href="$classrack_1_1LineOp.html" title="Quick emitter detection based on subtracting a horizontal segment lengths by inversed vertical segmen..." alt="" coords="2985,2495,3052,2521"/>
-<area shape="rect" id="node168" href="$classrack_1_1NonMetOp.html" title="Marks bins with low RhoHV value as probable anomalies." alt="" coords="2973,2545,3064,2572"/>
-<area shape="rect" id="node169" href="$classrack_1_1PrecipOp.html" title="Simply, &quot;detects&quot; precipitation ie sets its probability." alt="" coords="2979,2596,3059,2623"/>
-<area shape="rect" id="node170" href="$classrack_1_1ShipFastOp.html" title="Detects ships." alt="" coords="2971,2647,3066,2673"/>
-<area shape="rect" id="node171" href="$classrack_1_1ShipOp.html" title="Detects ships." alt="" coords="2985,2697,3053,2724"/>
-<area shape="rect" id="node172" href="$classrack_1_1SpeckleOp.html" title=" " alt="" coords="2973,2748,3064,2775"/>
-<area shape="rect" id="node173" href="$classrack_1_1SunOp.html" title="Detects birds and insects." alt="" coords="2987,2799,3051,2825"/>
-<area shape="rect" id="node174" href="$classrack_1_1TestOp.html" title=" " alt="" coords="2985,2849,3052,2876"/>
-<area shape="rect" id="node175" href="$classrack_1_1TimeOp.html" title="A radio interference detector." alt="" coords="2982,2900,3055,2927"/>
-<area shape="rect" id="node176" href="$classrack_1_1ZDRvarOp.html" title=" " alt="" coords="2974,2951,3063,2977"/>
-<area shape="rect" id="node163" href="$classrack_1_1BirdOp.html" title=" " alt="" coords="3165,2317,3232,2344"/>
-<area shape="rect" id="node164" href="$classrack_1_1InsectOp.html" title=" " alt="" coords="3159,2368,3238,2395"/>
-<area shape="rect" id="node179" href="$classrack_1_1DamperOp.html" title=" " alt="" coords="2973,1887,3065,1913"/>
-<area shape="rect" id="node180" href="$classrack_1_1GapFillOpBase.html" title="The base class for operators removing detected anomalies by overriding low&#45;quality pixels with neighb..." alt="" coords="2960,1836,3077,1863"/>
-<area shape="rect" id="node181" href="$classrack_1_1GapFillOp.html" title="A simple gap filler based on distance transformation." alt="" coords="3156,1811,3241,1837"/>
-<area shape="rect" id="node182" href="$classrack_1_1GapFillRecOp.html" title="Recursive, &#39;splinic&#39; gap filler based on fast averaging." alt="" coords="3144,1861,3253,1888"/>
-<area shape="rect" id="node188" href="$classdrain_1_1image_1_1QualityOverrideOp.html" title="Overwrites pixels of destination image in locations where destination weight is lower." alt="" coords="1163,1573,1305,1600"/>
-<area shape="rect" id="node189" href="$classdrain_1_1image_1_1QualityThresholdOp.html" title=" " alt="" coords="1159,1523,1309,1549"/>
-<area shape="rect" id="node193" href="$classdrain_1_1image_1_1RunLengthHorzOp.html" title="Computes lengths of horizontal segments." alt="" coords="1165,1675,1303,1701"/>
-<area shape="rect" id="node194" href="$classdrain_1_1image_1_1RunLengthVertOp.html" title="Computes lengths of vertical segments." alt="" coords="1167,1624,1301,1651"/>
-<area shape="rect" id="node196" href="$classdrain_1_1image_1_1SegmentAreaOp.html" title="Computes sizes of connected pixel areas." alt="" coords="1134,1776,1334,1803"/>
-<area shape="rect" id="node197" href="$classdrain_1_1image_1_1SegmentStatisticsOp.html" title="Computes statistics of segments: area, centroid, horizontality, verticality, variance and elongation...." alt="" coords="1155,1725,1313,1752"/>
-<area shape="rect" id="node201" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="1135,2010,1333,2051"/>
-<area shape="rect" id="node203" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="1137,2075,1331,2117"/>
-<area shape="rect" id="node205" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="1125,2141,1343,2182"/>
-<area shape="rect" id="node207" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="1117,1827,1351,1869"/>
-<area shape="rect" id="node209" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="1137,1893,1331,1934"/>
-<area shape="rect" id="node211" href="$classdrain_1_1image_1_1BlenderOp.html" title="Smoothes image and mixes the result with the original." alt="" coords="1189,1959,1279,1985"/>
-<area shape="rect" id="node202" href="$classdrain_1_1image_1_1SlidingWindowMedianOp.html" title=" " alt="" coords="1439,2017,1623,2044"/>
-<area shape="rect" id="node204" href="$classdrain_1_1image_1_1FastOpticalFlowOp.html" title=" " alt="" coords="1459,2083,1602,2109"/>
-<area shape="rect" id="node206" href="$classdrain_1_1image_1_1SlidingWindowHistogramOp.html" title="Window histogram for computing [asmdvNX] = iAverage, sum, median, stddev, variance,..." alt="" coords="1429,2148,1633,2175"/>
-<area shape="rect" id="node208" href="$classdrain_1_1image_1_1FlowAverageOp.html" title="Window average that preserves the magnitude." alt="" coords="1469,1835,1593,1861"/>
-<area shape="rect" id="node210" href="$classdrain_1_1image_1_1FastOpticalFlow2Op.html" title=" " alt="" coords="1455,1900,1606,1927"/>
-<area shape="rect" id="node216" href="$classdrain_1_1image_1_1ImpulseBucket.html" title=" " alt="" coords="575,2791,784,2833"/>
-<area shape="rect" id="node217" href="$classdrain_1_1image_1_1ImpulseAvg.html" title="Averaging operator. A simple example implementation of ImpulseBucket." alt="" coords="900,2939,999,2965"/>
-<area shape="rect" id="node218" href="$classrack_1_1DopplerAvg.html" title="Averaging operator. A simple example implementation of ImpulseCumulator." alt="" coords="901,2989,998,3016"/>
-<area shape="rect" id="node222" href="$classrack_1_1DatasetSelector.html" title=" " alt="" coords="616,2439,743,2465"/>
-<area shape="rect" id="node227" href="$classrack_1_1DoubleParamPrecip.html" title=" " alt="" coords="605,208,754,235"/>
-<area shape="rect" id="node230" href="$classrack_1_1SingleParamPrecip.html" title=" " alt="" coords="608,56,751,83"/>
-<area shape="rect" id="node228" href="$classrack_1_1PrecipKDPZDR.html" title=" " alt="" coords="891,157,1008,184"/>
-<area shape="rect" id="node229" href="$classrack_1_1PrecipZZDR.html" title=" " alt="" coords="900,208,999,235"/>
-<area shape="rect" id="node231" href="$classrack_1_1PrecipKDP.html" title=" " alt="" coords="905,5,994,32"/>
-<area shape="rect" id="node232" href="$classrack_1_1PrecipZ.html" title=" " alt="" coords="914,56,985,83"/>
-<area shape="rect" id="node233" href="$classrack_1_1PrecipZrain.html" title=" " alt="" coords="1186,56,1282,83"/>
-<area shape="rect" id="node234" href="$classrack_1_1PrecipZsnow.html" title=" " alt="" coords="1181,5,1287,32"/>
-<area shape="rect" id="node236" href="$classrack_1_1ProductOp.html" title="Polar and Cartesian products." alt="" coords="595,2857,764,2884"/>
-<area shape="rect" id="node237" href="$classdrain_1_1Context.html" title=" " alt="" coords="14,2819,87,2845"/>
-<area shape="rect" id="node238" href="$classFileContext.html" title=" " alt="" coords="183,2819,279,2845"/>
-<area shape="rect" id="node239" href="$classdrain_1_1SmartContext.html" title=" " alt="" coords="175,2768,287,2795"/>
-<area shape="rect" id="node240" href="$classdrain_1_1ContextKit.html" title="Utilities." alt="" coords="5,2768,96,2795"/>
-<area shape="rect" id="node241" href="$structdrain_1_1image_1_1FunctorWrapper.html" title="Helper class that only ensures that functor is initialized before ImageOp." alt="" coords="598,2388,761,2415"/>
-<area shape="rect" id="node242" href="$classrack_1_1GraphicsContext.html" title=" " alt="" coords="166,2869,297,2896"/>
-<area shape="rect" id="node243" href="$classrack_1_1Hdf5Context.html" title=" " alt="" coords="179,2920,283,2947"/>
-<area shape="rect" id="node244" href="$classrack_1_1ImageContext.html" title=" " alt="" coords="174,2971,289,2997"/>
-<area shape="rect" id="node245" href="$classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="181,2717,282,2744"/>
-<area shape="rect" id="node246" href="$classrack_1_1RadarFunctorBase.html" title=" " alt="" coords="1164,3064,1304,3091"/>
+<area shape="rect" id="Node000000" href="$structdrain_1_1image_1_1AccumulationConverter.html" title="Converts raw data to values appropriate for accumulation." alt="" coords="144,575,319,600"/>
+<area shape="rect" id="Node000001" href="$classrack_1_1DataCoder.html" title="Converts ODIM encoded data (with markers) to natural values and backwards." alt="" coords="401,575,492,600"/>
+<area shape="poly" id="edge2_Node000000_Node000001" title=" " alt="" coords="333,585,401,585,401,590,333,590"/>
+<area shape="rect" id="Node000256" href="$classrack_1_1AndreContext.html" title=" " alt="" coords="176,3543,287,3568"/>
+<area shape="rect" id="Node000255" href="$classrack_1_1RackContext.html" title="Resources provided separately for each thread." alt="" coords="394,3567,499,3592"/>
+<area shape="poly" id="edge3_Node000256_Node000255" title=" " alt="" coords="301,3560,394,3571,393,3576,300,3566"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="191,871,272,896"/>
+<area shape="poly" id="edge156_Node000002_Node000001" title=" " alt="" coords="236,856,250,804,275,738,313,669,337,637,365,609,382,599,400,592,402,597,384,603,368,613,341,641,317,672,280,740,255,806,241,858"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="411,920,482,945"/>
+<area shape="poly" id="edge4_Node000002_Node000003" title=" " alt="" coords="286,893,412,922,411,927,285,898"/>
+<area shape="rect" id="Node000035" href="$classdrain_1_1image_1_1AccumulationMethod.html" title="Function for accumulating data: maximum, average, weighted average etc." alt="" coords="367,1043,527,1068"/>
+<area shape="poly" id="edge36_Node000002_Node000035" title=" " alt="" coords="261,903,431,1040,427,1044,258,907"/>
+<area shape="rect" id="Node000043" href="$classdrain_1_1image_1_1DistanceModel.html" title="Base class for linear and exponential distances in rectangular pixel images." alt="" coords="387,1264,506,1289"/>
+<area shape="poly" id="edge44_Node000002_Node000043" title=" " alt="" coords="249,907,441,1263,436,1265,244,910"/>
+<area shape="rect" id="Node000046" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="401,2012,492,2037"/>
+<area shape="poly" id="edge47_Node000002_Node000046" title=" " alt="" coords="240,909,446,2011,440,2012,235,910"/>
+<area shape="rect" id="Node000152" href="$structdrain_1_1image_1_1ImpulseAvgConf.html" title=" " alt="" coords="383,2653,511,2679"/>
+<area shape="poly" id="edge151_Node000002_Node000152" title=" " alt="" coords="238,910,288,1356,369,2048,446,2653,441,2653,364,2049,283,1356,233,910"/>
+<area shape="rect" id="Node000156" href="$classdrain_1_1image_1_1Sampler.html" title="Utility for sampling images (2D data), outputting formatted text data." alt="" coords="409,624,485,649"/>
+<area shape="poly" id="edge155_Node000002_Node000156" title=" " alt="" coords="239,856,256,813,282,760,319,706,341,681,365,659,386,647,408,640,409,645,388,652,368,663,344,684,323,709,287,763,261,816,244,858"/>
+<area shape="rect" id="Node000157" href="$classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations." alt="" coords="393,673,500,699"/>
+<area shape="poly" id="edge157_Node000002_Node000157" title=" " alt="" coords="243,857,290,783,325,743,365,708,392,694,394,699,368,712,328,746,294,786,248,860"/>
+<area shape="rect" id="Node000159" href="$classrack_1_1FreezingLevel.html" title=" " alt="" coords="391,723,503,748"/>
+<area shape="poly" id="edge159_Node000002_Node000159" title=" " alt="" coords="250,858,299,807,331,780,365,757,391,746,393,750,368,762,334,785,303,811,254,862"/>
+<area shape="rect" id="Node000160" href="$structrack_1_1HistEntry.html" title=" " alt="" coords="405,772,488,797"/>
+<area shape="poly" id="edge160_Node000002_Node000160" title=" " alt="" coords="263,861,310,833,366,806,404,793,406,798,368,811,313,838,265,866"/>
+<area shape="rect" id="Node000161" href="$classrack_1_1PolarSector.html" title=" " alt="" coords="399,821,495,847"/>
+<area shape="poly" id="edge161_Node000002_Node000161" title=" " alt="" coords="285,869,398,842,399,847,286,874"/>
+<area shape="rect" id="Node000162" href="$classrack_1_1Precip.html" title=" " alt="" coords="415,871,478,896"/>
+<area shape="poly" id="edge162_Node000002_Node000162" title=" " alt="" coords="286,881,415,881,415,886,286,886"/>
+<area shape="rect" id="Node000171" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="395,3444,498,3469"/>
+<area shape="poly" id="edge171_Node000002_Node000171" title=" " alt="" coords="237,910,283,1589,323,2129,369,2690,415,3153,446,3443,441,3444,410,3154,364,2690,318,2129,278,1589,232,910"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BinaryFunctor.html" title=" " alt="" coords="623,869,735,895"/>
+<area shape="poly" id="edge5_Node000003_Node000004" title=" " alt="" coords="495,920,623,891,624,897,496,925"/>
+<area shape="rect" id="Node000012" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="625,475,734,500"/>
+<area shape="poly" id="edge13_Node000003_Node000012" title=" " alt="" coords="494,923,511,916,525,905,567,856,600,800,626,740,645,679,667,570,675,500,680,500,672,571,650,680,631,741,605,802,571,859,528,909,513,920,496,927"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1AdditionFunctor.html" title="Adds a intensity values ." alt="" coords="905,943,1029,968"/>
+<area shape="poly" id="edge6_Node000004_Node000005" title=" " alt="" coords="750,893,785,904,809,916,833,927,906,945,904,950,831,933,807,921,783,908,748,898"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1DivisionFunctor.html" title="Divides image by another image." alt="" coords="906,992,1029,1017"/>
+<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="750,888,786,904,803,922,810,942,818,960,834,977,869,993,906,1001,905,1006,867,998,830,982,813,963,805,944,798,925,782,908,747,892"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1MaximumFunctor.html" title=" " alt="" coords="899,1041,1035,1067"/>
+<area shape="poly" id="edge8_Node000004_Node000007" title=" " alt="" coords="750,886,769,893,786,904,799,919,806,935,810,967,814,998,821,1013,834,1027,865,1044,900,1052,898,1057,863,1049,830,1031,817,1016,809,1000,805,968,801,937,795,922,782,908,766,898,748,891"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1MinimumFunctor.html" title="Minimum intensity. Prescaled input." alt="" coords="901,745,1033,771"/>
+<area shape="poly" id="edge9_Node000004_Node000008" title=" " alt="" coords="704,858,760,818,795,797,831,780,866,769,901,762,902,767,867,774,833,784,797,802,763,822,708,863"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1MixerFunctor.html" title="Blends an image to another with given proportion." alt="" coords="914,795,1021,820"/>
+<area shape="poly" id="edge10_Node000004_Node000009" title=" " alt="" coords="726,862,831,829,913,812,914,818,833,834,728,867"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1MultiplicationFunctor.html" title="Multiplies two images, with optional post scaling and offset." alt="" coords="888,844,1047,869"/>
+<area shape="poly" id="edge11_Node000004_Node000010" title=" " alt="" coords="749,873,888,861,888,866,749,879"/>
+<area shape="rect" id="Node000011" href="$classdrain_1_1SubtractionFunctor.html" title="Subtracts image from another image." alt="" coords="895,893,1039,919"/>
+<area shape="poly" id="edge12_Node000004_Node000011" title=" " alt="" coords="749,885,896,897,895,903,749,890"/>
+<area shape="rect" id="Node000013" href="$classdrain_1_1Fuzzifier.html" title=" " alt="" coords="892,301,1043,327"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="696,461,750,397,788,364,831,336,860,324,891,317,892,322,862,329,833,340,791,368,754,401,700,465"/>
+<area shape="rect" id="Node000014" href="$classdrain_1_1BinaryThresholdFunctor.html" title="Thresholds intensity values." alt="" coords="879,351,1055,376"/>
+<area shape="poly" id="edge15_Node000012_Node000014" title=" " alt="" coords="704,464,760,423,795,402,831,385,878,371,880,376,833,390,797,407,763,427,708,468"/>
+<area shape="rect" id="Node000015" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor." alt="" coords="910,400,1025,425"/>
+<area shape="poly" id="edge16_Node000012_Node000015" title=" " alt="" coords="726,467,831,434,909,418,910,424,833,439,728,472"/>
+<area shape="rect" id="Node000026" href="$classdrain_1_1GammaFunctor.html" title="Gamma correction. Intensity is mapped as f&#39; = f^(gamma)" alt="" coords="906,449,1029,475"/>
+<area shape="poly" id="edge27_Node000012_Node000026" title=" " alt="" coords="747,479,905,465,906,470,748,484"/>
+<area shape="rect" id="Node000027" href="$structdrain_1_1IdentityFunctor.html" title=" " alt="" coords="907,499,1027,524"/>
+<area shape="poly" id="edge28_Node000012_Node000027" title=" " alt="" coords="748,490,907,504,907,509,748,496"/>
+<area shape="rect" id="Node000028" href="$classdrain_1_1RemappingFunctor.html" title="Maps a single intensity value to another value." alt="" coords="895,548,1039,573"/>
+<area shape="poly" id="edge29_Node000012_Node000028" title=" " alt="" coords="730,502,833,533,896,546,895,552,831,538,728,507"/>
+<area shape="rect" id="Node000029" href="$classdrain_1_1ScalingFunctor.html" title="Rescales intensities linearly: f&#39; = scale*f + offset." alt="" coords="909,597,1026,623"/>
+<area shape="poly" id="edge30_Node000012_Node000029" title=" " alt="" coords="708,506,764,546,798,566,833,582,871,594,909,601,908,607,870,599,831,587,795,570,761,550,705,511"/>
+<area shape="rect" id="Node000031" href="$classdrain_1_1ThresholdFunctor.html" title="Thresholds intensity values." alt="" coords="900,647,1035,672"/>
+<area shape="poly" id="edge32_Node000012_Node000031" title=" " alt="" coords="700,509,754,572,792,605,833,632,866,644,900,652,899,657,864,650,831,636,788,609,751,576,696,513"/>
+<area shape="rect" id="Node000032" href="$classdrain_1_1image_1_1CopyFunctor.html" title=" " alt="" coords="916,696,1019,721"/>
+<area shape="poly" id="edge33_Node000012_Node000032" title=" " alt="" coords="695,511,716,550,747,597,786,643,833,681,874,698,916,705,915,710,873,703,831,686,782,647,742,600,711,553,690,514"/>
+<area shape="rect" id="Node000033" href="$classdrain_1_1image_1_1QuantizatorFunctor.html" title="TODO: CopyOP should be quite similar." alt="" coords="894,203,1041,228"/>
+<area shape="poly" id="edge34_Node000012_Node000033" title=" " alt="" coords="686,460,704,411,734,350,776,288,801,261,831,237,861,222,893,214,895,220,863,227,833,242,805,265,780,292,739,353,709,413,691,462"/>
+<area shape="rect" id="Node000034" href="$classrack_1_1DataMarker.html" title="Simple class marking true data with a given constant value, typically a CLASS label." alt="" coords="918,252,1017,277"/>
+<area shape="poly" id="edge35_Node000012_Node000034" title=" " alt="" coords="690,461,711,421,742,374,782,326,831,286,874,269,917,262,918,268,875,274,833,291,786,330,746,377,715,424,694,463"/>
+<area shape="rect" id="Node000016" href="$classdrain_1_1FuzzyBell.html" title=" " alt="" coords="1191,351,1349,376"/>
+<area shape="poly" id="edge17_Node000015_Node000016" title=" " alt="" coords="1038,399,1191,373,1192,379,1039,404"/>
+<area shape="rect" id="Node000017" href="$classdrain_1_1FuzzyBell2.html" title=" " alt="" coords="1187,400,1353,425"/>
+<area shape="poly" id="edge18_Node000015_Node000017" title=" " alt="" coords="1039,410,1186,410,1186,415,1039,415"/>
+<area shape="rect" id="Node000018" href="$classdrain_1_1FuzzyStep.html" title=" " alt="" coords="1189,449,1351,475"/>
+<area shape="poly" id="edge19_Node000015_Node000018" title=" " alt="" coords="1039,422,1192,447,1191,452,1038,427"/>
+<area shape="rect" id="Node000019" href="$classdrain_1_1FuzzyBell.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve." alt="" coords="1209,499,1331,524"/>
+<area shape="poly" id="edge20_Node000015_Node000019" title=" " alt="" coords="1040,414,1072,422,1104,434,1120,447,1129,460,1138,472,1152,484,1180,495,1209,503,1208,508,1178,501,1149,488,1134,476,1125,463,1116,450,1101,439,1071,427,1038,420"/>
+<area shape="rect" id="Node000020" href="$classdrain_1_1FuzzyBell2.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve. Diminishes quicker than Fuzz..." alt="" coords="1205,548,1335,573"/>
+<area shape="poly" id="edge21_Node000015_Node000020" title=" " alt="" coords="1039,410,1073,418,1104,435,1116,446,1124,459,1129,485,1135,510,1141,522,1152,533,1177,547,1205,555,1203,560,1175,552,1149,537,1137,525,1130,512,1124,486,1119,461,1112,450,1101,439,1071,423,1038,416"/>
+<area shape="rect" id="Node000021" href="$classdrain_1_1FuzzySigmoid.html" title="A smooth step function, by default from &#45;1.0 to +1.0." alt="" coords="1195,597,1345,623"/>
+<area shape="poly" id="edge22_Node000015_Node000021" title=" " alt="" coords="1039,409,1074,417,1104,435,1120,453,1128,472,1130,510,1131,548,1138,566,1152,583,1172,596,1195,604,1194,609,1170,600,1149,587,1134,568,1126,549,1124,510,1122,473,1115,456,1101,439,1072,422,1038,414"/>
+<area shape="rect" id="Node000022" href="$classdrain_1_1FuzzyStep.html" title="A basic, linear transition from 0 to scale between (start) and (end) ." alt="" coords="1207,153,1333,179"/>
+<area shape="poly" id="edge23_Node000015_Node000022" title=" " alt="" coords="1038,411,1072,403,1101,385,1118,362,1126,339,1127,314,1124,289,1121,264,1122,238,1130,213,1149,188,1175,171,1205,163,1207,168,1178,176,1152,192,1135,215,1128,239,1127,263,1129,289,1132,314,1131,340,1123,365,1104,389,1074,408,1039,417"/>
+<area shape="rect" id="Node000023" href="$classdrain_1_1FuzzyStepsoid.html" title="A smooth step function between 0.0 and 1.0. Increasing (decreasing) with positive (negative) width...." alt="" coords="1193,203,1347,228"/>
+<area shape="poly" id="edge24_Node000015_Node000023" title=" " alt="" coords="1038,411,1071,402,1101,385,1115,368,1122,351,1124,313,1126,275,1134,256,1149,237,1169,224,1192,216,1194,221,1172,229,1152,241,1138,258,1131,276,1129,314,1127,352,1120,371,1104,389,1073,407,1039,416"/>
+<area shape="rect" id="Node000024" href="$classdrain_1_1FuzzyTriangle.html" title="A basic triangular peak function with linear around the peak." alt="" coords="1196,252,1344,277"/>
+<area shape="poly" id="edge25_Node000015_Node000024" title=" " alt="" coords="1038,409,1071,401,1101,385,1112,374,1119,363,1124,338,1130,312,1137,299,1149,287,1171,274,1195,266,1196,271,1173,279,1152,291,1141,302,1135,313,1129,339,1124,365,1116,377,1104,389,1073,406,1039,414"/>
+<area shape="rect" id="Node000025" href="$classdrain_1_1FuzzyTwinPeaks.html" title="A function taking shape of two peaks, with a zero in the middle ." alt="" coords="1187,301,1353,327"/>
+<area shape="poly" id="edge26_Node000015_Node000025" title=" " alt="" coords="1037,405,1070,398,1101,385,1116,374,1125,361,1134,348,1149,336,1186,321,1188,326,1152,340,1138,352,1129,364,1120,377,1104,390,1072,403,1038,410"/>
+<area shape="rect" id="Node000030" href="$classdrain_1_1NegateFunctor.html" title="Inverts intensities: f&#39; = f_max &#45; f." alt="" coords="1211,647,1329,672"/>
+<area shape="poly" id="edge31_Node000029_Node000030" title=" " alt="" coords="1040,619,1211,647,1210,652,1039,624"/>
+<area shape="rect" id="Node000036" href="$classdrain_1_1image_1_1AverageMethod.html" title=" " alt="" coords="617,919,741,944"/>
+<area shape="poly" id="edge37_Node000035_Node000036" title=" " alt="" coords="468,1031,514,991,543,970,574,953,616,938,618,943,576,958,546,975,518,995,472,1035"/>
+<area shape="rect" id="Node000037" href="$classdrain_1_1image_1_1MaximumMethod.html" title=" " alt="" coords="611,968,748,993"/>
+<area shape="poly" id="edge38_Node000035_Node000037" title=" " alt="" coords="488,1035,574,1002,616,991,617,996,575,1007,490,1040"/>
+<area shape="rect" id="Node000038" href="$classdrain_1_1image_1_1MaximumWeightMethod.html" title=" " alt="" coords="588,1017,771,1043"/>
+<area shape="poly" id="edge39_Node000035_Node000038" title=" " alt="" coords="540,1042,587,1037,588,1043,541,1048"/>
+<area shape="rect" id="Node000039" href="$classdrain_1_1image_1_1MinMaxMethod.html" title=" " alt="" coords="618,1067,741,1092"/>
+<area shape="poly" id="edge40_Node000035_Node000039" title=" " alt="" coords="541,1062,618,1070,618,1076,540,1068"/>
+<area shape="rect" id="Node000040" href="$classdrain_1_1image_1_1MinimumMethod.html" title=" " alt="" coords="613,1116,746,1141"/>
+<area shape="poly" id="edge41_Node000035_Node000040" title=" " alt="" coords="492,1071,575,1101,622,1113,620,1119,574,1106,490,1076"/>
+<area shape="rect" id="Node000041" href="$classdrain_1_1image_1_1OverwriteMethod.html" title=" " alt="" coords="612,1165,747,1191"/>
+<area shape="poly" id="edge42_Node000035_Node000041" title=" " alt="" coords="472,1075,518,1114,576,1150,612,1164,611,1169,573,1155,515,1118,469,1080"/>
+<area shape="rect" id="Node000042" href="$classdrain_1_1image_1_1WeightedAverageMethod.html" title=" " alt="" coords="587,1215,772,1240"/>
+<area shape="poly" id="edge43_Node000035_Node000042" title=" " alt="" coords="465,1078,509,1140,540,1173,576,1200,604,1212,601,1217,573,1204,537,1176,505,1143,460,1082"/>
+<area shape="rect" id="Node000044" href="$classdrain_1_1image_1_1DistanceModelExponential.html" title=" " alt="" coords="581,1313,777,1339"/>
+<area shape="poly" id="edge45_Node000043_Node000044" title=" " alt="" coords="520,1289,619,1311,618,1316,519,1295"/>
+<area shape="rect" id="Node000045" href="$classdrain_1_1image_1_1DistanceModelLinear.html" title=" " alt="" coords="600,1264,759,1289"/>
+<area shape="poly" id="edge46_Node000043_Node000045" title=" " alt="" coords="519,1274,600,1274,600,1279,519,1279"/>
+<area shape="rect" id="Node000047" href="$classdrain_1_1image_1_1ImageBox.html" title="Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by de..." alt="" coords="635,2184,723,2209"/>
+<area shape="poly" id="edge48_Node000046_Node000047" title=" " alt="" coords="465,2048,509,2109,540,2142,576,2169,605,2182,636,2190,634,2195,603,2187,573,2174,537,2146,505,2113,460,2051"/>
+<area shape="rect" id="Node000048" href="$classdrain_1_1image_1_1ImageChannels.html" title=" " alt="" coords="618,2233,741,2259"/>
+<area shape="poly" id="edge49_Node000046_Node000048" title=" " alt="" coords="460,2049,476,2087,501,2133,535,2180,576,2219,596,2229,619,2237,617,2242,594,2234,573,2223,531,2183,497,2136,472,2090,455,2051"/>
+<area shape="rect" id="Node000049" href="$classdrain_1_1image_1_1ImageCoordPolicy.html" title=" " alt="" coords="609,2283,749,2308"/>
+<area shape="poly" id="edge50_Node000046_Node000049" title=" " alt="" coords="456,2050,470,2097,494,2157,529,2217,551,2244,576,2268,610,2285,608,2290,573,2272,547,2248,525,2220,489,2159,465,2099,451,2052"/>
+<area shape="rect" id="Node000050" href="$classdrain_1_1image_1_1ImageEncoding.html" title="Changes the type of a target image." alt="" coords="618,1740,741,1765"/>
+<area shape="poly" id="edge51_Node000046_Node000050" title=" " alt="" coords="451,1998,465,1950,488,1889,524,1827,547,1799,573,1775,594,1762,617,1755,619,1760,596,1767,576,1779,551,1803,528,1830,493,1892,470,1952,456,2000"/>
+<area shape="rect" id="Node000051" href="$classdrain_1_1image_1_1ImageFill.html" title=" " alt="" coords="638,1789,721,1815"/>
+<area shape="poly" id="edge52_Node000046_Node000051" title=" " alt="" coords="455,1998,471,1959,496,1911,530,1864,573,1824,605,1809,637,1802,638,1807,606,1814,576,1828,534,1867,501,1914,476,1961,460,2000"/>
+<area shape="rect" id="Node000052" href="$classdrain_1_1image_1_1ImageGeometry.html" title=" " alt="" coords="615,1839,743,1864"/>
+<area shape="poly" id="edge53_Node000046_Node000052" title=" " alt="" coords="460,1998,505,1935,536,1901,573,1873,614,1857,616,1862,576,1878,540,1905,509,1939,464,2002"/>
+<area shape="rect" id="Node000053" href="$classdrain_1_1image_1_1ImageHistogram.html" title=" " alt="" coords="614,1888,745,1913"/>
+<area shape="poly" id="edge54_Node000046_Node000053" title=" " alt="" coords="468,2000,514,1960,543,1940,574,1922,613,1908,615,1914,576,1927,546,1944,518,1964,472,2004"/>
+<area shape="rect" id="Node000054" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="639,1987,720,2012"/>
+<area shape="poly" id="edge55_Node000046_Node000054" title=" " alt="" coords="506,2016,638,2001,639,2006,506,2021"/>
+<area shape="rect" id="Node000149" href="$classdrain_1_1image_1_1ImagePlot.html" title="Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by de..." alt="" coords="635,2036,723,2061"/>
+<area shape="poly" id="edge148_Node000046_Node000149" title=" " alt="" coords="506,2028,635,2042,635,2047,506,2033"/>
+<area shape="rect" id="Node000150" href="$classdrain_1_1image_1_1ImagePlotFile.html" title=" " alt="" coords="624,2085,735,2111"/>
+<area shape="poly" id="edge149_Node000046_Node000150" title=" " alt="" coords="492,2040,575,2070,624,2083,623,2089,574,2075,490,2045"/>
+<area shape="rect" id="Node000151" href="$classdrain_1_1image_1_1ImageSampler.html" title="Traverses image, returning samples." alt="" coords="621,2135,738,2160"/>
+<area shape="poly" id="edge150_Node000046_Node000151" title=" " alt="" coords="472,2045,518,2083,576,2120,621,2135,619,2140,574,2124,515,2088,469,2049"/>
+<area shape="rect" id="Node000055" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="854,2357,1081,2397"/>
+<area shape="poly" id="edge56_Node000054_Node000055" title=" " alt="" coords="735,1997,762,2005,786,2021,802,2042,813,2062,822,2103,819,2143,811,2184,803,2224,800,2263,809,2302,819,2322,834,2341,856,2358,852,2362,830,2345,814,2325,804,2304,795,2264,797,2223,806,2183,814,2143,816,2103,808,2064,797,2045,782,2025,760,2010,733,2003"/>
+<area shape="rect" id="Node000057" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="873,2421,1062,2461"/>
+<area shape="poly" id="edge58_Node000054_Node000057" title=" " alt="" coords="735,1997,762,2005,786,2021,805,2046,817,2070,824,2095,827,2120,822,2168,811,2216,799,2264,795,2312,797,2336,804,2359,816,2383,834,2407,852,2422,874,2431,871,2436,849,2426,830,2411,811,2386,799,2361,792,2337,790,2312,794,2264,806,2215,817,2167,821,2120,819,2096,812,2072,800,2049,782,2025,760,2010,733,2002"/>
+<area shape="rect" id="Node000059" href="$classdrain_1_1image_1_1FunctorOp.html" title=" " alt="" coords="868,1091,1067,1116"/>
+<area shape="poly" id="edge60_Node000054_Node000059" title=" " alt="" coords="733,1996,760,1988,782,1972,801,1941,813,1901,820,1854,822,1801,817,1680,804,1550,791,1420,786,1300,789,1247,797,1199,810,1159,830,1127,847,1113,867,1104,869,1109,850,1117,834,1130,815,1161,802,1200,794,1247,792,1300,797,1420,809,1550,822,1680,827,1801,825,1855,818,1903,805,1943,786,1976,762,1993,735,2001"/>
+<area shape="rect" id="Node000061" href="$classdrain_1_1image_1_1FunctorOp.html" title=" " alt="" coords="862,1141,1073,1181"/>
+<area shape="poly" id="edge61_Node000054_Node000061" title=" " alt="" coords="733,1996,760,1988,782,1972,799,1944,811,1907,818,1863,820,1814,816,1703,805,1583,794,1463,790,1352,793,1303,800,1258,812,1221,830,1191,844,1178,860,1169,863,1173,847,1182,834,1194,817,1223,805,1260,798,1303,796,1352,800,1463,811,1583,821,1703,825,1814,823,1864,816,1908,804,1946,786,1976,762,1993,735,2001"/>
+<area shape="rect" id="Node000071" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="854,2535,1081,2575"/>
+<area shape="poly" id="edge62_Node000054_Node000071" title=" " alt="" coords="734,1997,762,2005,786,2021,798,2041,807,2065,815,2125,815,2196,811,2273,807,2349,807,2420,815,2479,823,2502,834,2520,855,2537,852,2541,830,2524,818,2505,809,2480,801,2420,802,2349,806,2272,810,2196,810,2125,802,2066,793,2043,782,2025,760,2009,733,2002"/>
+<area shape="rect" id="Node000074" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="869,2599,1066,2639"/>
+<area shape="poly" id="edge65_Node000054_Node000074" title=" " alt="" coords="734,1997,762,2005,786,2022,800,2043,809,2070,817,2138,816,2219,811,2305,805,2392,804,2472,812,2539,821,2565,834,2586,850,2599,870,2609,867,2614,847,2604,830,2589,816,2567,807,2540,799,2473,800,2392,805,2305,811,2218,812,2138,804,2072,795,2045,782,2025,760,2009,733,2002"/>
+<area shape="rect" id="Node000075" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="869,2663,1066,2703"/>
+<area shape="poly" id="edge66_Node000054_Node000075" title=" " alt="" coords="734,1997,762,2005,786,2022,801,2046,811,2076,817,2111,820,2151,818,2241,811,2337,804,2434,802,2523,804,2563,810,2597,820,2627,834,2650,850,2663,870,2673,867,2678,847,2668,830,2653,815,2629,805,2599,799,2563,796,2523,798,2434,805,2337,813,2241,815,2151,812,2112,806,2077,796,2048,782,2025,760,2009,733,2002"/>
+<area shape="rect" id="Node000076" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="846,2727,1089,2767"/>
+<area shape="poly" id="edge67_Node000054_Node000076" title=" " alt="" coords="734,1997,762,2004,786,2022,802,2048,813,2081,820,2120,822,2164,820,2263,811,2369,802,2476,799,2574,802,2618,808,2656,819,2688,834,2714,847,2726,844,2730,830,2717,814,2691,803,2657,796,2618,794,2574,797,2475,805,2369,814,2263,817,2164,814,2121,808,2083,798,2050,782,2025,760,2009,733,2002"/>
+<area shape="rect" id="Node000077" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="850,2791,1085,2831"/>
+<area shape="poly" id="edge68_Node000054_Node000077" title=" " alt="" coords="734,1997,762,2004,786,2022,804,2050,815,2087,822,2129,825,2178,821,2285,811,2401,801,2518,797,2625,799,2672,806,2715,817,2750,834,2778,851,2793,848,2797,830,2781,812,2752,801,2716,794,2673,791,2625,795,2517,805,2401,816,2285,819,2178,817,2130,810,2088,799,2053,782,2025,760,2009,733,2002"/>
+<area shape="rect" id="Node000079" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="865,2855,1070,2895"/>
+<area shape="poly" id="edge70_Node000054_Node000079" title=" " alt="" coords="734,1997,762,2004,786,2022,805,2053,818,2092,825,2139,827,2191,823,2307,811,2433,799,2559,794,2676,797,2727,804,2773,816,2812,834,2842,848,2854,865,2864,863,2868,845,2859,830,2845,811,2814,799,2774,791,2728,789,2676,794,2559,806,2433,817,2307,822,2191,819,2139,812,2094,800,2055,782,2025,760,2009,733,2002"/>
+<area shape="rect" id="Node000081" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="832,2919,1103,2959"/>
+<area shape="poly" id="edge72_Node000054_Node000081" title=" " alt="" coords="734,1997,762,2004,786,2022,806,2055,820,2098,827,2148,830,2204,824,2330,811,2465,797,2601,792,2727,794,2782,802,2832,815,2873,834,2906,846,2917,843,2921,830,2909,810,2875,796,2833,789,2783,786,2727,792,2601,806,2465,819,2329,824,2204,822,2148,815,2099,802,2058,782,2025,760,2009,733,2002"/>
+<area shape="rect" id="Node000082" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="842,2983,1093,3023"/>
+<area shape="poly" id="edge73_Node000054_Node000082" title=" " alt="" coords="735,1997,762,2004,786,2022,808,2058,822,2103,830,2157,832,2217,826,2352,811,2497,796,2643,789,2778,792,2837,799,2890,813,2935,834,2970,846,2981,843,2985,830,2973,808,2937,794,2891,786,2838,784,2778,791,2643,806,2497,820,2351,827,2217,824,2157,817,2104,803,2060,782,2025,760,2009,733,2002"/>
+<area shape="rect" id="Node000083" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="900,3048,1035,3073"/>
+<area shape="poly" id="edge74_Node000054_Node000083" title=" " alt="" coords="735,1997,762,2004,786,2022,798,2047,806,2088,814,2206,814,2359,810,2530,806,2701,806,2853,814,2971,823,3010,834,3034,848,3045,864,3054,900,3062,899,3067,862,3059,845,3050,830,3037,818,3012,809,2971,801,2854,801,2701,805,2530,809,2359,809,2206,801,2089,793,2049,782,2025,760,2009,733,2002"/>
+<area shape="rect" id="Node000085" href="$classdrain_1_1image_1_1CatenatorOp.html" title="Operator for concatenating images vertically or as channels." alt="" coords="915,3097,1019,3123"/>
+<area shape="poly" id="edge76_Node000054_Node000085" title=" " alt="" coords="735,1997,762,2004,786,2022,799,2048,807,2091,815,2215,815,2376,810,2555,805,2734,805,2894,813,3017,822,3058,834,3083,851,3097,871,3106,916,3112,915,3117,870,3111,848,3101,830,3086,817,3060,808,3018,800,2894,800,2734,805,2555,809,2375,810,2215,802,2092,794,2050,782,2025,760,2009,733,2002"/>
+<area shape="rect" id="Node000088" href="$classdrain_1_1image_1_1CropOp.html" title=" " alt="" coords="932,3147,1003,3172"/>
+<area shape="poly" id="edge79_Node000054_Node000088" title=" " alt="" coords="734,1996,762,2004,786,2022,799,2050,808,2094,816,2224,815,2392,810,2579,805,2767,804,2934,813,3063,822,3106,834,3132,855,3148,880,3157,907,3161,932,3161,932,3166,906,3166,879,3162,852,3153,830,3136,816,3108,807,3064,799,2935,799,2767,805,2579,810,2392,811,2224,803,2095,794,2051,782,2025,760,2009,733,2002"/>
+<area shape="rect" id="Node000089" href="$classdrain_1_1image_1_1DifferentialOp.html" title="Virtual base class for horizontal and vertical intensity derivatives." alt="" coords="911,3196,1024,3221"/>
+<area shape="poly" id="edge80_Node000054_Node000089" title=" " alt="" coords="734,1996,762,2004,786,2022,800,2051,809,2097,817,2233,816,2408,810,2604,804,2800,803,2975,806,3048,812,3109,821,3154,834,3182,850,3195,869,3204,911,3210,910,3216,867,3209,847,3199,830,3185,816,3156,806,3110,801,3049,798,2975,799,2800,805,2604,810,2408,812,2233,804,2098,795,2052,782,2025,760,2009,733,2002"/>
+<area shape="rect" id="Node000096" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="867,1255,1067,1280"/>
+<area shape="poly" id="edge87_Node000054_Node000096" title=" " alt="" coords="733,1996,760,1988,782,1972,797,1947,807,1915,813,1877,816,1834,813,1737,804,1632,795,1527,793,1429,796,1386,802,1348,813,1315,830,1290,847,1276,866,1267,868,1272,850,1280,834,1293,818,1318,807,1349,801,1387,798,1429,801,1526,809,1631,818,1737,821,1834,819,1878,813,1917,802,1950,786,1976,762,1993,734,2001"/>
+<area shape="rect" id="Node000102" href="$classdrain_1_1image_1_1FloodFillOp.html" title="A fill operation for one color." alt="" coords="920,1304,1015,1329"/>
+<area shape="poly" id="edge93_Node000054_Node000102" title=" " alt="" coords="733,1996,760,1988,782,1972,796,1949,806,1920,812,1884,814,1844,812,1754,804,1656,797,1559,795,1469,798,1428,804,1393,814,1363,830,1339,849,1324,872,1315,919,1309,920,1314,873,1320,852,1328,834,1342,819,1365,809,1394,803,1429,800,1469,802,1559,809,1656,817,1754,819,1844,817,1885,811,1921,801,1951,786,1976,762,1993,734,2001"/>
+<area shape="rect" id="Node000062" href="$classdrain_1_1image_1_1FunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="904,1205,1031,1231"/>
+<area shape="poly" id="edge94_Node000054_Node000062" title=" " alt="" coords="733,1996,760,1988,782,1972,798,1945,809,1911,815,1870,818,1824,814,1720,804,1607,794,1494,791,1390,794,1344,800,1303,812,1268,830,1240,846,1227,864,1218,903,1211,904,1216,866,1223,849,1232,834,1244,817,1270,806,1304,799,1344,796,1390,799,1494,809,1607,819,1719,823,1824,821,1871,814,1912,803,1948,786,1976,762,1993,734,2001"/>
+<area shape="rect" id="Node000103" href="$classdrain_1_1image_1_1HighBoostOp.html" title="Enhances details by mixing original image and result of HighPassOp op." alt="" coords="914,1353,1021,1379"/>
+<area shape="poly" id="edge102_Node000054_Node000103" title=" " alt="" coords="733,1996,760,1988,782,1972,795,1951,804,1924,812,1854,811,1771,804,1681,798,1591,797,1508,806,1438,816,1410,830,1388,848,1374,869,1365,914,1359,914,1364,871,1370,851,1378,834,1392,820,1413,811,1439,802,1508,803,1591,810,1681,816,1771,817,1855,809,1925,800,1953,786,1976,762,1993,734,2001"/>
+<area shape="rect" id="Node000104" href="$classdrain_1_1image_1_1HighPassOp.html" title="Finds details at one&#45;pixel scale, defined as difference of image and its low&#45;pass filtered copy." alt="" coords="918,1403,1017,1428"/>
+<area shape="poly" id="edge103_Node000054_Node000104" title=" " alt="" coords="733,1996,760,1988,782,1972,794,1953,802,1928,810,1865,809,1788,804,1706,799,1623,799,1547,807,1483,817,1458,830,1438,849,1423,871,1414,917,1408,918,1413,873,1419,852,1427,834,1441,821,1460,813,1484,804,1547,805,1623,810,1706,815,1788,816,1865,808,1929,799,1955,786,1976,762,1993,734,2001"/>
+<area shape="rect" id="Node000105" href="$classdrain_1_1image_1_1ImpulseResponseOpBase.html" title=" " alt="" coords="855,1452,1080,1477"/>
+<area shape="poly" id="edge104_Node000054_Node000105" title=" " alt="" coords="733,1996,760,1988,782,1972,793,1955,801,1932,808,1875,808,1806,804,1731,801,1656,801,1586,809,1528,818,1505,830,1487,853,1470,856,1474,834,1491,822,1508,814,1530,806,1587,806,1656,810,1730,814,1805,814,1875,806,1934,798,1957,786,1976,762,1993,734,2001"/>
+<area shape="rect" id="Node000107" href="$classdrain_1_1image_1_1MarginalStatisticOp.html" title="Computes horizontal or vertical intensity statistics: iAverage, sum, ..." alt="" coords="892,1501,1043,1527"/>
+<area shape="poly" id="edge106_Node000054_Node000107" title=" " alt="" coords="733,1996,760,1988,782,1972,802,1945,815,1918,822,1891,824,1864,818,1810,804,1755,790,1700,784,1646,787,1618,795,1591,809,1563,830,1536,858,1517,891,1508,893,1514,860,1522,834,1540,813,1566,799,1593,792,1619,789,1646,795,1699,809,1754,823,1809,830,1864,827,1892,820,1920,807,1948,786,1976,762,1993,734,2001"/>
+<area shape="rect" id="Node000108" href="$classdrain_1_1image_1_1MotionExtrapolatorOp.html" title=" " alt="" coords="885,1551,1050,1576"/>
+<area shape="poly" id="edge107_Node000054_Node000108" title=" " alt="" coords="733,1996,760,1988,782,1972,800,1948,812,1925,818,1901,821,1877,816,1829,804,1781,793,1732,788,1684,791,1659,798,1635,811,1611,830,1587,855,1569,884,1560,885,1565,857,1574,834,1591,815,1614,803,1637,796,1660,793,1684,798,1731,809,1780,821,1828,826,1877,824,1902,817,1927,804,1951,786,1976,762,1993,734,2001"/>
+<area shape="rect" id="Node000109" href="$classdrain_1_1image_1_1MotionIllustratorOp.html" title=" " alt="" coords="893,1601,1041,1641"/>
+<area shape="poly" id="edge108_Node000054_Node000109" title=" " alt="" coords="733,1995,760,1988,782,1972,797,1953,807,1933,816,1894,814,1854,805,1814,797,1773,794,1733,803,1692,814,1671,830,1651,859,1630,893,1620,894,1625,861,1635,834,1655,819,1674,808,1694,800,1733,802,1773,810,1813,819,1853,821,1894,812,1935,802,1955,786,1976,762,1992,735,2001"/>
+<area shape="rect" id="Node000110" href="$classdrain_1_1image_1_1MultiThresholdOp.html" title=" " alt="" coords="899,1665,1036,1691"/>
+<area shape="poly" id="edge109_Node000054_Node000110" title=" " alt="" coords="733,1995,760,1987,782,1972,804,1939,812,1906,811,1872,804,1837,798,1803,797,1768,806,1734,830,1700,845,1689,862,1680,898,1672,899,1678,864,1685,848,1693,834,1704,811,1736,802,1769,803,1802,810,1837,816,1871,817,1906,809,1941,786,1976,762,1992,735,2000"/>
+<area shape="rect" id="Node000111" href="$classdrain_1_1image_1_1NegateOp.html" title=" " alt="" coords="924,1715,1011,1740"/>
+<area shape="poly" id="edge110_Node000054_Node000111" title=" " alt="" coords="733,1995,760,1987,782,1972,801,1945,808,1918,808,1890,805,1862,801,1834,801,1805,810,1777,830,1749,851,1735,875,1726,923,1721,924,1726,876,1731,854,1740,834,1753,814,1779,806,1806,806,1833,810,1861,814,1890,814,1919,806,1948,786,1976,762,1992,735,2000"/>
+<area shape="rect" id="Node000112" href="$classdrain_1_1image_1_1PaletteOp.html" title="Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table." alt="" coords="925,1764,1010,1789"/>
+<area shape="poly" id="edge111_Node000054_Node000112" title=" " alt="" coords="733,1994,759,1987,782,1972,798,1952,805,1931,805,1887,803,1864,805,1842,813,1820,830,1799,851,1785,876,1776,924,1771,924,1776,877,1781,854,1789,834,1803,818,1823,810,1843,809,1865,810,1887,810,1931,802,1954,786,1976,762,1992,734,2000"/>
+<area shape="rect" id="Node000113" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="911,1813,1023,1839"/>
+<area shape="poly" id="edge112_Node000054_Node000113" title=" " alt="" coords="733,1994,759,1986,782,1972,795,1958,801,1943,805,1911,809,1879,816,1863,830,1848,849,1836,869,1828,911,1821,912,1826,871,1833,851,1841,834,1852,821,1866,814,1880,810,1912,806,1944,799,1960,786,1976,761,1991,734,1999"/>
+<area shape="rect" id="Node000121" href="$classdrain_1_1image_1_1QuadTreeOp.html" title="QuadTrees the image, stretching the image correspondingly." alt="" coords="917,1863,1018,1888"/>
+<area shape="poly" id="edge120_Node000054_Node000121" title=" " alt="" coords="733,1992,759,1984,782,1972,798,1954,805,1935,813,1916,830,1897,851,1886,873,1879,916,1872,917,1877,874,1884,853,1891,834,1901,817,1918,810,1937,803,1957,786,1976,761,1989,735,1997"/>
+<area shape="rect" id="Node000122" href="$classdrain_1_1image_1_1QualityMixerOp.html" title="Overwrites pixels of destination image in locations where destination weight is lower." alt="" coords="906,1912,1029,1937"/>
+<area shape="poly" id="edge121_Node000054_Node000122" title=" " alt="" coords="733,1986,783,1972,807,1959,831,1946,905,1929,907,1934,833,1951,809,1963,785,1976,734,1992"/>
+<area shape="rect" id="Node000123" href="$classdrain_1_1image_1_1QualityOp.html" title=" " alt="" coords="924,1961,1011,1987"/>
+<area shape="poly" id="edge122_Node000054_Node000123" title=" " alt="" coords="733,1992,924,1975,924,1980,734,1997"/>
+<area shape="rect" id="Node000126" href="$classdrain_1_1image_1_1RecomposeOp.html" title="Create vertical image composed of separate views." alt="" coords="909,2011,1025,2036"/>
+<area shape="poly" id="edge125_Node000054_Node000126" title=" " alt="" coords="734,2001,909,2016,909,2021,733,2006"/>
+<area shape="rect" id="Node000127" href="$classdrain_1_1image_1_1ResizeOp.html" title="Resizes the image, stretching the image correspondingly." alt="" coords="926,2060,1009,2085"/>
+<area shape="poly" id="edge126_Node000054_Node000127" title=" " alt="" coords="734,2007,785,2021,809,2033,833,2045,881,2058,926,2065,926,2071,880,2063,831,2050,807,2038,783,2026,733,2012"/>
+<area shape="rect" id="Node000128" href="$classdrain_1_1image_1_1RunLengthOp.html" title="Base class for RunLengthHorzOp and RunLengthVertOp." alt="" coords="913,2109,1022,2135"/>
+<area shape="poly" id="edge127_Node000054_Node000128" title=" " alt="" coords="734,2001,761,2009,786,2021,803,2040,810,2059,818,2078,834,2094,872,2111,913,2119,912,2124,870,2117,830,2099,813,2081,805,2061,798,2043,782,2025,759,2013,733,2006"/>
+<area shape="rect" id="Node000131" href="$classdrain_1_1image_1_1SegmentOp.html" title="A base class for computing statistics of segments. As segment is an area of connected pixels." alt="" coords="918,2159,1017,2184"/>
+<area shape="poly" id="edge130_Node000054_Node000131" title=" " alt="" coords="734,1999,761,2007,786,2021,799,2037,806,2053,810,2085,814,2116,821,2130,834,2144,853,2156,874,2164,918,2171,917,2176,873,2169,850,2161,830,2148,817,2133,809,2117,805,2085,801,2054,795,2040,782,2025,759,2012,733,2004"/>
+<area shape="rect" id="Node000134" href="$classdrain_1_1image_1_1SuperProberOp.html" title="A base class for computing statistics of segments. As segment is an area of connected pixels." alt="" coords="908,2208,1027,2233"/>
+<area shape="poly" id="edge133_Node000054_Node000134" title=" " alt="" coords="734,1998,762,2006,786,2021,802,2043,810,2065,810,2110,811,2153,818,2173,834,2193,850,2205,868,2213,908,2220,907,2226,867,2218,847,2210,830,2197,813,2176,805,2154,805,2110,805,2066,798,2046,782,2025,759,2011,733,2003"/>
+<area shape="rect" id="Node000135" href="$classdrain_1_1image_1_1TransposeOp.html" title="Transpose operator. Swaps the intensities over the diagonal exis." alt="" coords="915,2257,1020,2283"/>
+<area shape="poly" id="edge134_Node000054_Node000135" title=" " alt="" coords="735,1998,762,2006,786,2021,806,2049,814,2078,814,2107,810,2135,806,2163,807,2190,815,2217,834,2243,851,2255,872,2264,915,2271,914,2276,870,2269,849,2260,830,2247,810,2219,801,2191,801,2163,805,2134,809,2106,809,2079,801,2052,782,2025,760,2010,733,2003"/>
+<area shape="rect" id="Node000136" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="900,2307,1035,2332"/>
+<area shape="poly" id="edge135_Node000054_Node000136" title=" " alt="" coords="735,1998,762,2005,786,2021,809,2056,818,2091,816,2125,810,2160,804,2194,803,2227,811,2260,834,2292,848,2303,864,2311,900,2319,899,2324,862,2316,845,2308,830,2296,806,2262,797,2228,799,2193,805,2159,811,2125,812,2091,804,2058,782,2025,760,2010,733,2003"/>
+<area shape="rect" id="Node000148" href="$classdrain_1_1radar_1_1ProductFQD.html" title=" " alt="" coords="887,2485,1048,2511"/>
+<area shape="poly" id="edge147_Node000054_Node000148" title=" " alt="" coords="734,1997,762,2005,786,2021,807,2050,821,2079,829,2108,831,2136,824,2193,809,2250,795,2306,788,2361,791,2389,799,2416,813,2444,834,2471,858,2488,887,2497,886,2502,856,2493,830,2475,808,2446,794,2418,786,2390,783,2361,789,2305,804,2248,819,2192,826,2136,824,2108,816,2081,803,2053,782,2025,760,2010,733,2002"/>
+<area shape="rect" id="Node000056" href="$classdrain_1_1image_1_1DistanceTransformExponentialOp.html" title=" " alt="" coords="1151,2580,1389,2605"/>
+<area shape="poly" id="edge57_Node000055_Node000056" title=" " alt="" coords="1094,2399,1105,2407,1120,2427,1128,2447,1129,2488,1130,2528,1138,2547,1152,2565,1170,2578,1167,2582,1149,2569,1133,2550,1125,2529,1124,2488,1123,2448,1116,2429,1101,2411,1091,2403"/>
+<area shape="rect" id="Node000058" href="$classdrain_1_1image_1_1DistanceTransformLinearOp.html" title="Computes inverse linear distance to bright points." alt="" coords="1169,2629,1371,2655"/>
+<area shape="poly" id="edge59_Node000057_Node000058" title=" " alt="" coords="1076,2453,1104,2471,1119,2489,1127,2507,1129,2545,1132,2581,1138,2598,1152,2615,1171,2627,1168,2631,1149,2619,1134,2601,1126,2582,1124,2545,1121,2509,1115,2491,1101,2475,1074,2457"/>
+<area shape="rect" id="Node000072" href="$classdrain_1_1image_1_1FastAverageOp.html" title="Sliding window averaging operator with optional weighting support." alt="" coords="1211,2679,1329,2704"/>
+<area shape="poly" id="edge63_Node000071_Node000072" title=" " alt="" coords="1094,2579,1104,2585,1122,2605,1129,2626,1136,2646,1152,2664,1180,2678,1211,2686,1210,2691,1178,2683,1149,2668,1131,2648,1124,2628,1117,2608,1101,2589,1091,2583"/>
+<area shape="rect" id="Node000073" href="$classdrain_1_1image_1_1FastAverageWeightedOp.html" title="Utility for explicitly." alt="" coords="1477,2679,1657,2704"/>
+<area shape="poly" id="edge64_Node000072_Node000073" title=" " alt="" coords="1343,2689,1477,2689,1477,2694,1343,2694"/>
+<area shape="rect" id="Node000078" href="$classdrain_1_1image_1_1GaussianAverageOp.html" title="Sliding window averaging operator with optional weighting support." alt="" coords="1193,2799,1347,2824"/>
+<area shape="poly" id="edge69_Node000077_Node000078" title=" " alt="" coords="1099,2809,1193,2809,1193,2814,1099,2814"/>
+<area shape="rect" id="Node000080" href="$classdrain_1_1image_1_1SeparableWindowOp.html" title="Sliding window averaging operator with optional weighting support." alt="" coords="1191,2863,1349,2888"/>
+<area shape="poly" id="edge71_Node000079_Node000080" title=" " alt="" coords="1084,2873,1191,2873,1191,2878,1084,2878"/>
+<area shape="rect" id="Node000084" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title="Template for operators applying pipeline&#45;like sliding window." alt="" coords="1181,3048,1359,3073"/>
+<area shape="poly" id="edge75_Node000083_Node000084" title=" " alt="" coords="1048,3058,1180,3058,1180,3063,1048,3063"/>
+<area shape="rect" id="Node000086" href="$classdrain_1_1image_1_1ChannelCatenatorOp.html" title=" " alt="" coords="1191,3147,1349,3172"/>
+<area shape="poly" id="edge77_Node000085_Node000086" title=" " alt="" coords="1033,3118,1192,3144,1191,3149,1032,3123"/>
+<area shape="rect" id="Node000087" href="$classdrain_1_1image_1_1VerticalCatenatorOp.html" title=" " alt="" coords="1193,3097,1347,3123"/>
+<area shape="poly" id="edge78_Node000085_Node000087" title=" " alt="" coords="1033,3107,1193,3107,1193,3113,1033,3113"/>
+<area shape="rect" id="Node000090" href="$classdrain_1_1image_1_1GradientOp.html" title="Computes spatial horizontal derivatives (dx and dy)." alt="" coords="1222,3245,1318,3271"/>
+<area shape="poly" id="edge81_Node000089_Node000090" title=" " alt="" coords="1038,3217,1222,3248,1222,3253,1037,3223"/>
+<area shape="rect" id="Node000093" href="$classdrain_1_1image_1_1LaplaceOp.html" title="Computes second intensity derivatives." alt="" coords="1225,3196,1315,3221"/>
+<area shape="poly" id="edge84_Node000089_Node000093" title=" " alt="" coords="1037,3206,1224,3206,1224,3211,1037,3211"/>
+<area shape="rect" id="Node000091" href="$classdrain_1_1image_1_1GradientHorzOp.html" title=" " alt="" coords="1503,3295,1630,3320"/>
+<area shape="poly" id="edge82_Node000090_Node000091" title=" " alt="" coords="1333,3266,1503,3294,1502,3299,1332,3271"/>
+<area shape="rect" id="Node000092" href="$classdrain_1_1image_1_1GradientVertOp.html" title=" " alt="" coords="1505,3245,1628,3271"/>
+<area shape="poly" id="edge83_Node000090_Node000092" title=" " alt="" coords="1332,3255,1505,3255,1505,3261,1332,3261"/>
+<area shape="rect" id="Node000094" href="$classdrain_1_1image_1_1LaplaceHorzOp.html" title="Computes second horizontal derivative, dx2." alt="" coords="1507,3196,1627,3221"/>
+<area shape="poly" id="edge85_Node000093_Node000094" title=" " alt="" coords="1329,3206,1506,3206,1506,3211,1329,3211"/>
+<area shape="rect" id="Node000095" href="$classdrain_1_1image_1_1LaplaceVertOp.html" title="Computes second vertical derivative, dy2." alt="" coords="1509,3147,1625,3172"/>
+<area shape="poly" id="edge86_Node000093_Node000095" title=" " alt="" coords="1328,3196,1508,3166,1509,3172,1329,3202"/>
+<area shape="rect" id="Node000097" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title=" " alt="" coords="1157,1403,1383,1443"/>
+<area shape="poly" id="edge88_Node000096_Node000097" title=" " alt="" coords="1082,1276,1104,1289,1116,1301,1124,1314,1130,1339,1135,1365,1142,1376,1152,1388,1173,1401,1170,1406,1149,1392,1137,1380,1130,1366,1125,1341,1119,1316,1112,1304,1101,1293,1079,1281"/>
+<area shape="rect" id="Node000099" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title=" " alt="" coords="1175,1289,1365,1329"/>
+<area shape="poly" id="edge90_Node000096_Node000099" title=" " alt="" coords="1074,1279,1176,1293,1175,1298,1074,1285"/>
+<area shape="rect" id="Node000101" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title="Template for DistanceTransformFillLinearOp and DistanceTransformFillExponentialOp." alt="" coords="1161,1353,1379,1379"/>
+<area shape="poly" id="edge92_Node000096_Node000101" title=" " alt="" coords="1082,1279,1104,1289,1120,1301,1129,1314,1138,1327,1152,1338,1182,1351,1180,1356,1149,1343,1134,1331,1125,1317,1116,1305,1101,1294,1080,1284"/>
+<area shape="rect" id="Node000098" href="$classdrain_1_1image_1_1DistanceTransformFillExponentialOp.html" title=" " alt="" coords="1437,1411,1696,1436"/>
+<area shape="poly" id="edge89_Node000097_Node000098" title=" " alt="" coords="1397,1421,1437,1421,1437,1426,1397,1426"/>
+<area shape="rect" id="Node000100" href="$classdrain_1_1image_1_1DistanceTransformFillLinearOp.html" title="Spreeads values using inverse linear distance transform." alt="" coords="1456,1296,1677,1321"/>
+<area shape="poly" id="edge91_Node000099_Node000100" title=" " alt="" coords="1378,1306,1456,1306,1456,1311,1378,1311"/>
+<area shape="rect" id="Node000063" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="1151,1011,1389,1036"/>
+<area shape="poly" id="edge95_Node000062_Node000063" title=" " alt="" coords="1044,1215,1074,1207,1101,1191,1115,1174,1122,1157,1124,1121,1127,1083,1134,1065,1149,1047,1168,1034,1171,1038,1152,1051,1139,1067,1132,1084,1130,1121,1127,1158,1120,1177,1104,1195,1076,1211,1045,1220"/>
+<area shape="rect" id="Node000065" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="1177,1061,1363,1101"/>
+<area shape="poly" id="edge97_Node000062_Node000065" title=" " alt="" coords="1043,1212,1074,1204,1101,1191,1118,1172,1124,1152,1132,1131,1149,1111,1176,1095,1178,1100,1152,1115,1136,1134,1130,1154,1122,1175,1104,1195,1076,1209,1045,1218"/>
+<area shape="rect" id="Node000067" href="$classdrain_1_1image_1_1BinaryFunctorOp.html" title="Class for using two&#45;parameter function objects (like std::functor) for sequential and spatial pixel i..." alt="" coords="1186,1189,1354,1215"/>
+<area shape="poly" id="edge99_Node000062_Node000067" title=" " alt="" coords="1044,1211,1185,1204,1186,1209,1045,1217"/>
+<area shape="rect" id="Node000068" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="1193,1125,1347,1165"/>
+<area shape="poly" id="edge100_Node000062_Node000068" title=" " alt="" coords="1044,1203,1102,1190,1150,1174,1192,1162,1193,1167,1151,1179,1103,1195,1045,1208"/>
+<area shape="rect" id="Node000064" href="$classdrain_1_1image_1_1CopyOp.html" title=" " alt="" coords="1530,1011,1603,1036"/>
+<area shape="poly" id="edge96_Node000063_Node000064" title=" " alt="" coords="1403,1021,1530,1021,1530,1026,1403,1026"/>
+<area shape="rect" id="Node000066" href="$classdrain_1_1image_1_1TransparentOp.html" title=" " alt="" coords="1509,1068,1625,1093"/>
+<area shape="poly" id="edge98_Node000065_Node000066" title=" " alt="" coords="1376,1078,1509,1078,1509,1083,1376,1083"/>
+<area shape="rect" id="Node000069" href="$classrack_1_1RadarFunctorOp.html" title="Convenience (abbreviation)" alt="" coords="1485,1185,1649,1211"/>
+<area shape="poly" id="edge101_Node000068_Node000069" title=" " alt="" coords="1362,1158,1496,1183,1495,1188,1361,1164"/>
+<area shape="rect" id="Node000106" href="$classdrain_1_1image_1_1ImpulseResponseOp.html" title="A fill operation for one color." alt="" coords="1173,1468,1367,1493"/>
+<area shape="poly" id="edge105_Node000105_Node000106" title=" " alt="" coords="1094,1469,1173,1473,1173,1478,1094,1474"/>
+<area shape="rect" id="Node000114" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="1183,1685,1357,1725"/>
+<area shape="poly" id="edge113_Node000113_Node000114" title=" " alt="" coords="1036,1820,1070,1812,1101,1798,1117,1784,1125,1768,1133,1751,1149,1735,1181,1718,1184,1723,1152,1739,1137,1754,1129,1770,1121,1787,1104,1803,1072,1818,1038,1825"/>
+<area shape="rect" id="Node000116" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="1175,1749,1365,1789"/>
+<area shape="poly" id="edge115_Node000113_Node000116" title=" " alt="" coords="1036,1811,1102,1798,1175,1784,1176,1789,1103,1803,1037,1816"/>
+<area shape="rect" id="Node000119" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="1174,1813,1366,1839"/>
+<area shape="poly" id="edge118_Node000113_Node000119" title=" " alt="" coords="1037,1823,1174,1823,1174,1829,1037,1829"/>
+<area shape="rect" id="Node000120" href="$classdrain_1_1image_1_1GrayOp.html" title=" " alt="" coords="1235,1863,1305,1888"/>
+<area shape="poly" id="edge119_Node000113_Node000120" title=" " alt="" coords="1037,1835,1235,1867,1234,1872,1036,1840"/>
+<area shape="rect" id="Node000115" href="$classdrain_1_1image_1_1DistanceOp.html" title="Computes the distance between intensity vectors." alt="" coords="1518,1692,1615,1717"/>
+<area shape="poly" id="edge114_Node000114_Node000115" title=" " alt="" coords="1371,1702,1518,1702,1518,1707,1371,1707"/>
+<area shape="rect" id="Node000117" href="$classdrain_1_1image_1_1MagnitudeOp.html" title="Computes pixel magnitude, that is, euclidean norm of the intensity vector." alt="" coords="1512,1799,1621,1824"/>
+<area shape="poly" id="edge116_Node000116_Node000117" title=" " alt="" coords="1378,1782,1512,1801,1512,1806,1378,1787"/>
+<area shape="rect" id="Node000118" href="$classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images." alt="" coords="1522,1749,1611,1775"/>
+<area shape="poly" id="edge117_Node000116_Node000118" title=" " alt="" coords="1378,1764,1522,1760,1522,1766,1379,1769"/>
+<area shape="rect" id="Node000124" href="$classdrain_1_1image_1_1QualityOverrideOp.html" title="Overwrites pixels of destination image in locations where destination weight is lower." alt="" coords="1199,1912,1341,1937"/>
+<area shape="poly" id="edge123_Node000123_Node000124" title=" " alt="" coords="1024,1962,1198,1934,1199,1939,1025,1967"/>
+<area shape="rect" id="Node000125" href="$classdrain_1_1image_1_1QualityThresholdOp.html" title=" " alt="" coords="1195,1961,1345,1987"/>
+<area shape="poly" id="edge124_Node000123_Node000125" title=" " alt="" coords="1025,1971,1194,1971,1194,1977,1025,1977"/>
+<area shape="rect" id="Node000129" href="$classdrain_1_1image_1_1RunLengthHorzOp.html" title="Computes lengths of horizontal segments." alt="" coords="1201,2011,1339,2036"/>
+<area shape="poly" id="edge128_Node000128_Node000129" title=" " alt="" coords="1035,2115,1069,2107,1101,2094,1116,2083,1125,2071,1134,2057,1149,2045,1174,2034,1199,2028,1201,2033,1176,2040,1152,2050,1138,2061,1129,2074,1120,2087,1104,2099,1071,2112,1036,2120"/>
+<area shape="rect" id="Node000130" href="$classdrain_1_1image_1_1RunLengthVertOp.html" title="Computes lengths of vertical segments." alt="" coords="1203,2060,1337,2085"/>
+<area shape="poly" id="edge129_Node000128_Node000130" title=" " alt="" coords="1035,2108,1202,2081,1203,2086,1036,2114"/>
+<area shape="rect" id="Node000132" href="$classdrain_1_1image_1_1SegmentAreaOp.html" title="Computes sizes of connected pixel areas." alt="" coords="1170,2109,1370,2135"/>
+<area shape="poly" id="edge131_Node000131_Node000132" title=" " alt="" coords="1030,2159,1191,2132,1192,2137,1031,2164"/>
+<area shape="rect" id="Node000133" href="$classdrain_1_1image_1_1SegmentStatisticsOp.html" title="Computes statistics of segments: area, centroid, horizontality, verticality, variance and elongation...." alt="" coords="1191,2159,1349,2184"/>
+<area shape="poly" id="edge132_Node000131_Node000133" title=" " alt="" coords="1031,2169,1190,2169,1190,2174,1031,2174"/>
+<area shape="rect" id="Node000137" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="1173,2323,1367,2363"/>
+<area shape="poly" id="edge136_Node000136_Node000137" title=" " alt="" coords="1049,2323,1173,2333,1172,2338,1048,2328"/>
+<area shape="rect" id="Node000139" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="1173,2387,1367,2427"/>
+<area shape="poly" id="edge138_Node000136_Node000139" title=" " alt="" coords="1049,2327,1104,2342,1128,2357,1152,2373,1183,2385,1182,2390,1149,2378,1125,2362,1102,2347,1047,2332"/>
+<area shape="rect" id="Node000141" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="1153,2451,1387,2491"/>
+<area shape="poly" id="edge140_Node000136_Node000141" title=" " alt="" coords="1049,2320,1078,2328,1104,2343,1116,2354,1123,2366,1130,2391,1136,2415,1142,2426,1152,2437,1170,2449,1168,2453,1149,2441,1138,2429,1131,2417,1125,2392,1118,2368,1112,2357,1101,2347,1076,2333,1047,2325"/>
+<area shape="rect" id="Node000143" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="1161,2515,1379,2555"/>
+<area shape="poly" id="edge142_Node000136_Node000143" title=" " alt="" coords="1049,2318,1078,2326,1104,2343,1121,2362,1128,2382,1130,2423,1131,2463,1138,2483,1153,2501,1168,2513,1165,2517,1149,2505,1133,2485,1126,2464,1125,2423,1123,2384,1116,2365,1101,2347,1076,2331,1048,2323"/>
+<area shape="rect" id="Node000145" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="1171,2209,1369,2249"/>
+<area shape="poly" id="edge144_Node000136_Node000145" title=" " alt="" coords="1047,2307,1102,2292,1125,2275,1149,2258,1180,2246,1182,2251,1152,2263,1128,2280,1104,2296,1049,2313"/>
+<area shape="rect" id="Node000147" href="$classdrain_1_1image_1_1BlenderOp.html" title="Smoothes image and mixes the result with the original." alt="" coords="1225,2273,1315,2299"/>
+<area shape="poly" id="edge146_Node000136_Node000147" title=" " alt="" coords="1048,2308,1224,2288,1225,2294,1049,2313"/>
+<area shape="rect" id="Node000138" href="$classdrain_1_1image_1_1FastOpticalFlow2Op.html" title=" " alt="" coords="1491,2331,1642,2356"/>
+<area shape="poly" id="edge137_Node000137_Node000138" title=" " alt="" coords="1381,2341,1491,2341,1491,2346,1381,2346"/>
+<area shape="rect" id="Node000140" href="$classdrain_1_1image_1_1FastOpticalFlowOp.html" title=" " alt="" coords="1495,2395,1638,2420"/>
+<area shape="poly" id="edge139_Node000139_Node000140" title=" " alt="" coords="1381,2405,1495,2405,1495,2410,1381,2410"/>
+<area shape="rect" id="Node000142" href="$classdrain_1_1image_1_1FlowAverageOp.html" title="Window average that preserves the magnitude." alt="" coords="1505,2459,1629,2484"/>
+<area shape="poly" id="edge141_Node000141_Node000142" title=" " alt="" coords="1401,2469,1504,2469,1504,2474,1401,2474"/>
+<area shape="rect" id="Node000144" href="$classdrain_1_1image_1_1SlidingWindowHistogramOp.html" title="Window histogram for computing [asmdvNX] = iAverage, sum, median, stddev, variance,..." alt="" coords="1465,2523,1669,2548"/>
+<area shape="poly" id="edge143_Node000143_Node000144" title=" " alt="" coords="1393,2533,1465,2533,1465,2538,1393,2538"/>
+<area shape="rect" id="Node000146" href="$classdrain_1_1image_1_1SlidingWindowMedianOp.html" title=" " alt="" coords="1475,2216,1659,2241"/>
+<area shape="poly" id="edge145_Node000145_Node000146" title=" " alt="" coords="1383,2226,1475,2226,1475,2231,1383,2231"/>
+<area shape="rect" id="Node000153" href="$classdrain_1_1image_1_1ImpulseBucket.html" title=" " alt="" coords="575,3238,784,3278"/>
+<area shape="poly" id="edge152_Node000152_Node000153" title=" " alt="" coords="460,2691,673,3237,668,3239,455,2693"/>
+<area shape="rect" id="Node000154" href="$classdrain_1_1image_1_1ImpulseAvg.html" title="Averaging operator. A simple example implementation of ImpulseBucket." alt="" coords="918,3245,1017,3271"/>
+<area shape="poly" id="edge153_Node000153_Node000154" title=" " alt="" coords="798,3255,918,3255,918,3261,798,3261"/>
+<area shape="rect" id="Node000155" href="$classrack_1_1DopplerAvg.html" title="Averaging operator. A simple example implementation of ImpulseCumulator." alt="" coords="919,3295,1016,3320"/>
+<area shape="poly" id="edge154_Node000153_Node000155" title=" " alt="" coords="798,3276,919,3296,918,3302,797,3281"/>
+<area shape="rect" id="Node000158" href="$classrack_1_1DatasetSelector.html" title=" " alt="" coords="616,31,743,56"/>
+<area shape="poly" id="edge158_Node000157_Node000158" title=" " alt="" coords="511,671,525,659,537,637,546,609,554,538,553,454,546,363,541,272,540,188,549,117,558,88,573,66,592,51,615,43,616,48,594,55,577,69,563,91,554,118,545,188,546,272,552,363,558,454,559,538,551,610,542,639,529,662,514,675"/>
+<area shape="rect" id="Node000163" href="$classrack_1_1DoubleParamPrecip.html" title=" " alt="" coords="605,153,754,179"/>
+<area shape="poly" id="edge163_Node000162_Node000163" title=" " alt="" coords="491,876,509,869,525,856,542,824,553,779,559,725,562,667,564,551,567,501,572,461,596,375,624,292,670,178,675,180,629,294,601,377,577,463,572,501,569,551,567,667,564,726,558,780,547,826,529,860,512,873,493,881"/>
+<area shape="rect" id="Node000166" href="$classrack_1_1SingleParamPrecip.html" title=" " alt="" coords="608,80,751,105"/>
+<area shape="poly" id="edge166_Node000162_Node000166" title=" " alt="" coords="490,876,509,869,525,856,540,830,551,796,557,756,560,711,559,611,551,502,543,392,540,291,542,245,548,204,558,168,573,139,595,117,623,103,625,108,598,122,577,142,563,170,553,205,548,245,546,291,548,392,556,501,564,610,566,711,563,757,556,797,545,832,529,860,512,874,492,881"/>
+<area shape="rect" id="Node000164" href="$classrack_1_1PrecipKDPZDR.html" title=" " alt="" coords="909,104,1026,129"/>
+<area shape="poly" id="edge164_Node000163_Node000164" title=" " alt="" coords="767,148,908,124,909,129,768,154"/>
+<area shape="rect" id="Node000165" href="$classrack_1_1PrecipZZDR.html" title=" " alt="" coords="918,153,1017,179"/>
+<area shape="poly" id="edge165_Node000163_Node000165" title=" " alt="" coords="768,163,918,163,918,169,768,169"/>
+<area shape="rect" id="Node000167" href="$classrack_1_1PrecipKDP.html" title=" " alt="" coords="923,5,1012,31"/>
+<area shape="poly" id="edge167_Node000166_Node000167" title=" " alt="" coords="755,74,783,65,807,52,831,40,878,27,922,20,923,25,879,32,833,44,809,57,785,70,757,79"/>
+<area shape="rect" id="Node000168" href="$classrack_1_1PrecipZ.html" title=" " alt="" coords="932,55,1003,80"/>
+<area shape="poly" id="edge168_Node000166_Node000168" title=" " alt="" coords="764,83,932,68,932,73,765,88"/>
+<area shape="rect" id="Node000169" href="$classrack_1_1PrecipZrain.html" title=" " alt="" coords="1222,31,1318,56"/>
+<area shape="poly" id="edge169_Node000168_Node000169" title=" " alt="" coords="1016,61,1222,44,1222,50,1017,66"/>
+<area shape="rect" id="Node000170" href="$classrack_1_1PrecipZsnow.html" title=" " alt="" coords="1217,80,1323,105"/>
+<area shape="poly" id="edge170_Node000168_Node000170" title=" " alt="" coords="1017,69,1217,86,1217,91,1016,74"/>
+<area shape="rect" id="Node000172" href="$classrack_1_1RadarProductOp.html" title=" " alt="" coords="585,3323,774,3348"/>
+<area shape="poly" id="edge172_Node000171_Node000172" title=" " alt="" coords="469,3432,515,3394,573,3358,608,3346,610,3351,576,3363,518,3399,473,3437"/>
+<area shape="rect" id="Node000174" href="$classrack_1_1RadarProductOp.html" title=" " alt="" coords="586,3373,773,3413"/>
+<area shape="poly" id="edge174_Node000171_Node000174" title=" " alt="" coords="506,3438,605,3410,607,3415,508,3443"/>
+<area shape="rect" id="Node000175" href="$classrack_1_1RadarProductOp.html" title=" " alt="" coords="591,3437,768,3477"/>
+<area shape="poly" id="edge175_Node000171_Node000175" title=" " alt="" coords="512,3454,591,3454,591,3459,512,3459"/>
+<area shape="rect" id="Node000176" href="$classrack_1_1RadarProductOp.html" title=" " alt="" coords="583,3501,776,3556"/>
+<area shape="poly" id="edge176_Node000171_Node000176" title=" " alt="" coords="502,3471,591,3499,590,3504,501,3476"/>
+<area shape="rect" id="Node000177" href="$classrack_1_1RadarProductOp.html" title=" " alt="" coords="591,3581,768,3621"/>
+<area shape="poly" id="edge177_Node000171_Node000177" title=" " alt="" coords="470,3478,516,3523,545,3546,576,3566,601,3578,599,3583,573,3571,542,3550,512,3527,466,3481"/>
+<area shape="rect" id="Node000179" href="$classrack_1_1RadarProductOp.html" title="Polar and Cartesian products." alt="" coords="596,3666,763,3706"/>
+<area shape="poly" id="edge179_Node000171_Node000179" title=" " alt="" coords="470,3478,529,3554,551,3595,560,3612,576,3631,601,3649,627,3664,625,3668,598,3654,573,3635,556,3615,546,3597,524,3557,466,3482"/>
+<area shape="rect" id="Node000173" href="$classrack_1_1DataConversionOp.html" title="Converts HDF5 data to use desired data type, scaling and encoding (ODIM gain, offset,..." alt="" coords="874,3344,1061,3369"/>
+<area shape="poly" id="edge173_Node000172_Node000173" title=" " alt="" coords="788,3341,874,3347,874,3352,787,3346"/>
+<area shape="rect" id="Node000178" href="$classrack_1_1VolumeOp.html" title="Base class for radar data processors." alt="" coords="902,3577,1033,3603"/>
+<area shape="poly" id="edge178_Node000177_Node000178" title=" " alt="" coords="781,3594,902,3590,902,3595,782,3600"/>
+<area shape="rect" id="Node000180" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="873,3761,1061,3787"/>
+<area shape="poly" id="edge180_Node000179_Node000180" title=" " alt="" coords="759,3708,925,3759,924,3764,758,3713"/>
+<area shape="rect" id="Node000248" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="879,3627,1055,3652"/>
+<area shape="poly" id="edge248_Node000179_Node000248" title=" " alt="" coords="776,3668,888,3649,889,3655,776,3673"/>
+<area shape="rect" id="Node000250" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="870,3677,1065,3717"/>
+<area shape="poly" id="edge250_Node000179_Node000250" title=" " alt="" coords="776,3687,870,3690,870,3696,776,3692"/>
+<area shape="rect" id="Node000181" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="1209,3783,1331,3808"/>
+<area shape="poly" id="edge181_Node000180_Node000181" title=" " alt="" coords="1075,3779,1209,3788,1208,3794,1075,3784"/>
+<area shape="rect" id="Node000182" href="$classrack_1_1PolarSlidingWindowOp.html" title=" " alt="" coords="1439,3580,1695,3635"/>
+<area shape="poly" id="edge182_Node000181_Node000182" title=" " alt="" coords="1344,3789,1367,3782,1388,3769,1400,3755,1407,3741,1411,3710,1415,3678,1422,3661,1435,3645,1452,3633,1455,3637,1439,3649,1427,3664,1421,3679,1417,3711,1412,3742,1405,3758,1391,3773,1370,3787,1346,3794"/>
+<area shape="rect" id="Node000184" href="$classrack_1_1BeamAltitudeOp.html" title="A single&#45;ray &quot;product&quot; storing the altitude at each bin." alt="" coords="1502,3659,1631,3684"/>
+<area shape="poly" id="edge184_Node000181_Node000184" title=" " alt="" coords="1344,3787,1367,3780,1388,3769,1404,3752,1411,3733,1418,3713,1436,3695,1467,3679,1501,3671,1502,3676,1469,3684,1439,3699,1423,3716,1416,3735,1408,3755,1391,3773,1369,3785,1345,3792"/>
+<area shape="rect" id="Node000185" href="$classrack_1_1ConvOp.html" title="Computes Cb s or bottoms in kilometers for a given dBZ threshold, typically 20, 40 or 45 dBZ." alt="" coords="1530,3708,1603,3733"/>
+<area shape="poly" id="edge185_Node000181_Node000185" title=" " alt="" coords="1344,3781,1388,3769,1412,3756,1436,3744,1485,3730,1529,3722,1530,3727,1486,3735,1438,3748,1415,3761,1390,3774,1346,3786"/>
+<area shape="rect" id="Node000186" href="$classrack_1_1CumulativeProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system." alt="" coords="1485,3757,1649,3783"/>
+<area shape="poly" id="edge186_Node000181_Node000186" title=" " alt="" coords="1345,3786,1484,3774,1485,3780,1345,3792"/>
+<area shape="rect" id="Node000190" href="$classrack_1_1DopplerAvgExpOp.html" title=" " alt="" coords="1497,3807,1636,3832"/>
+<area shape="poly" id="edge190_Node000181_Node000190" title=" " alt="" coords="1345,3799,1497,3811,1497,3816,1345,3804"/>
+<area shape="rect" id="Node000191" href="$classrack_1_1DopplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data." alt="" coords="1521,3856,1612,3881"/>
+<area shape="poly" id="edge191_Node000181_Node000191" title=" " alt="" coords="1323,3810,1438,3842,1522,3859,1521,3864,1437,3847,1322,3815"/>
+<area shape="rect" id="Node000207" href="$classrack_1_1DrawingOp.html" title="Select and visualise a direction, range, sector or arc." alt="" coords="1519,3905,1614,3931"/>
+<area shape="poly" id="edge207_Node000181_Node000207" title=" " alt="" coords="1301,3814,1362,3854,1399,3874,1438,3891,1479,3903,1520,3911,1519,3916,1478,3909,1436,3897,1397,3879,1359,3858,1298,3818"/>
+<area shape="rect" id="Node000208" href="$classrack_1_1EchoTopOp.html" title=" " alt="" coords="1520,3955,1613,3980"/>
+<area shape="poly" id="edge208_Node000181_Node000208" title=" " alt="" coords="1292,3817,1353,3880,1394,3913,1438,3941,1479,3955,1520,3962,1519,3967,1478,3960,1436,3946,1390,3918,1349,3884,1288,3821"/>
+<area shape="rect" id="Node000209" href="$classrack_1_1ExtRackOp.html" title="Base class for radar data processors." alt="" coords="1520,4004,1613,4029"/>
+<area shape="poly" id="edge209_Node000181_Node000209" title=" " alt="" coords="1287,3818,1310,3857,1344,3904,1388,3952,1439,3990,1479,4006,1520,4013,1519,4018,1477,4011,1436,3995,1384,3956,1340,3908,1306,3860,1282,3821"/>
+<area shape="rect" id="Node000210" href="$classrack_1_1FunctorOp.html" title="A single&#45;ray &quot;product&quot; storing the altitude at each bin." alt="" coords="1523,4053,1611,4079"/>
+<area shape="poly" id="edge210_Node000181_Node000210" title=" " alt="" coords="1283,3820,1304,3868,1337,3928,1382,3989,1409,4017,1439,4040,1459,4050,1480,4057,1523,4064,1522,4069,1479,4062,1456,4055,1436,4044,1405,4021,1378,3993,1333,3931,1299,3870,1278,3822"/>
+<area shape="rect" id="Node000211" href="$classrack_1_1PolarNeuralVPROp.html" title="The VPRimum dBZ value in each a vertical column." alt="" coords="1495,4103,1638,4128"/>
+<area shape="poly" id="edge211_Node000181_Node000211" title=" " alt="" coords="1280,3820,1298,3877,1330,3951,1351,3989,1376,4027,1405,4060,1439,4089,1466,4103,1496,4111,1495,4116,1464,4108,1436,4094,1402,4064,1372,4030,1346,3992,1325,3953,1293,3879,1275,3822"/>
+<area shape="rect" id="Node000212" href="$classrack_1_1PolarSlidingWindowOp.html" title="Window operator with support." alt="" coords="1461,4152,1673,4177"/>
+<area shape="poly" id="edge212_Node000181_Node000212" title=" " alt="" coords="1278,3821,1293,3887,1323,3974,1344,4019,1370,4064,1402,4104,1439,4139,1462,4151,1459,4156,1436,4143,1398,4108,1366,4067,1340,4022,1318,3976,1288,3888,1273,3822"/>
+<area shape="rect" id="Node000213" href="$classrack_1_1RainRateDPOp.html" title="Uses DBZ, ZDR and KDP to derive rain rate. Under construction." alt="" coords="1508,3383,1625,3408"/>
+<area shape="poly" id="edge213_Node000181_Node000213" title=" " alt="" coords="1344,3792,1368,3784,1387,3769,1404,3748,1415,3727,1422,3705,1424,3684,1421,3640,1410,3596,1400,3551,1396,3506,1399,3484,1406,3462,1418,3439,1435,3417,1451,3405,1469,3397,1507,3389,1508,3395,1471,3402,1454,3410,1439,3421,1422,3442,1411,3464,1404,3485,1402,3506,1405,3550,1416,3594,1426,3639,1430,3684,1427,3706,1420,3729,1409,3751,1391,3773,1370,3788,1346,3797"/>
+<area shape="rect" id="Node000214" href="$classrack_1_1RainRateOp.html" title="Computes rain rate from dBZ." alt="" coords="1517,3432,1616,3457"/>
+<area shape="poly" id="edge214_Node000181_Node000214" title=" " alt="" coords="1344,3792,1368,3784,1388,3769,1402,3751,1412,3733,1421,3696,1418,3658,1410,3620,1403,3582,1400,3543,1409,3505,1420,3486,1435,3467,1453,3453,1474,3445,1517,3438,1517,3444,1475,3450,1456,3458,1439,3471,1424,3489,1414,3507,1406,3544,1408,3581,1416,3619,1424,3658,1426,3696,1417,3735,1407,3754,1391,3773,1370,3788,1346,3797"/>
+<area shape="rect" id="Node000215" href="$classrack_1_1SunShineOp.html" title="A single&#45;ray &quot;product&quot; storing the altitude at each bin." alt="" coords="1517,3481,1617,3507"/>
+<area shape="poly" id="edge215_Node000181_Node000215" title=" " alt="" coords="1344,3791,1368,3783,1387,3769,1409,3739,1417,3708,1416,3677,1410,3645,1405,3612,1404,3580,1413,3548,1435,3516,1453,3503,1474,3495,1516,3488,1516,3493,1475,3500,1456,3508,1439,3520,1418,3550,1410,3581,1410,3612,1416,3644,1421,3676,1422,3709,1414,3741,1391,3773,1370,3788,1346,3796"/>
+<area shape="rect" id="Node000216" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="1493,3531,1641,3556"/>
+<area shape="poly" id="edge216_Node000181_Node000216" title=" " alt="" coords="1344,3791,1367,3783,1387,3769,1405,3746,1413,3721,1413,3696,1411,3670,1408,3644,1408,3618,1416,3592,1436,3567,1462,3550,1491,3541,1493,3546,1464,3555,1439,3571,1421,3594,1414,3619,1413,3644,1416,3670,1419,3696,1418,3722,1410,3748,1391,3773,1370,3788,1345,3796"/>
+<area shape="rect" id="Node000183" href="$classrack_1_1PolarSlidingAvgOp.html" title=" " alt="" coords="1778,3529,1919,3555"/>
+<area shape="poly" id="edge183_Node000182_Node000183" title=" " alt="" coords="1698,3574,1793,3552,1794,3557,1699,3579"/>
+<area shape="rect" id="Node000187" href="$classrack_1_1CappiOp.html" title="CAPPI and Pseudo&#45;CAPPI: the constant altitude planar position indicator product." alt="" coords="1810,3677,1887,3703"/>
+<area shape="poly" id="edge187_Node000186_Node000187" title=" " alt="" coords="1661,3754,1695,3744,1719,3729,1743,3713,1776,3701,1809,3694,1810,3699,1778,3706,1745,3718,1722,3733,1697,3748,1663,3759"/>
+<area shape="rect" id="Node000188" href="$classrack_1_1EchoTopOpOld.html" title="Height of echo exceeding a reflectivity threshold." alt="" coords="1791,3579,1906,3604"/>
+<area shape="poly" id="edge188_Node000186_Node000188" title=" " alt="" coords="1661,3762,1679,3754,1694,3744,1707,3729,1714,3714,1718,3682,1721,3648,1728,3631,1742,3615,1765,3600,1790,3593,1792,3598,1767,3605,1746,3619,1733,3634,1726,3649,1723,3682,1719,3716,1712,3732,1698,3748,1681,3759,1663,3767"/>
+<area shape="rect" id="Node000189" href="$classrack_1_1MaxEchoOp.html" title="The maximum dBZ value in each a vertical column." alt="" coords="1799,3628,1898,3653"/>
+<area shape="poly" id="edge189_Node000186_Node000189" title=" " alt="" coords="1661,3760,1694,3744,1711,3726,1718,3705,1725,3684,1742,3664,1770,3650,1799,3642,1800,3647,1772,3655,1746,3668,1730,3687,1723,3707,1715,3728,1698,3748,1663,3764"/>
+<area shape="rect" id="Node000192" href="$classrack_1_1DopplerWindowOp.html" title=" " alt="" coords="1744,4202,1953,4242"/>
+<area shape="poly" id="edge192_Node000191_Node000192" title=" " alt="" coords="1626,3864,1664,3871,1682,3880,1698,3892,1713,3911,1724,3929,1733,3966,1731,4004,1725,4041,1717,4078,1715,4115,1723,4151,1746,4188,1759,4200,1756,4204,1742,4192,1718,4153,1710,4115,1712,4077,1719,4040,1726,4003,1728,3967,1719,3931,1709,3914,1694,3896,1680,3884,1663,3876,1625,3869"/>
+<area shape="rect" id="Node000194" href="$classrack_1_1DopplerWindowOp.html" title=" " alt="" coords="1744,3727,1953,3767"/>
+<area shape="poly" id="edge194_Node000191_Node000194" title=" " alt="" coords="1625,3864,1661,3857,1695,3842,1710,3828,1718,3811,1726,3794,1742,3777,1764,3765,1766,3770,1746,3781,1731,3797,1723,3814,1714,3831,1697,3847,1663,3862,1626,3870"/>
+<area shape="rect" id="Node000196" href="$classrack_1_1DopplerWindowOp.html" title=" " alt="" coords="1744,3791,1953,3831"/>
+<area shape="poly" id="edge196_Node000191_Node000196" title=" " alt="" coords="1625,3856,1695,3842,1758,3829,1759,3834,1697,3847,1626,3861"/>
+<area shape="rect" id="Node000198" href="$classrack_1_1DopplerCrawlerOp.html" title=" " alt="" coords="1778,3856,1919,3881"/>
+<area shape="poly" id="edge198_Node000191_Node000198" title=" " alt="" coords="1626,3866,1778,3866,1778,3871,1626,3871"/>
+<area shape="rect" id="Node000199" href="$classrack_1_1DopplerDiffOp.html" title="Experimental." alt="" coords="1791,3905,1906,3931"/>
+<area shape="poly" id="edge199_Node000191_Node000199" title=" " alt="" coords="1626,3876,1792,3905,1791,3911,1626,3882"/>
+<area shape="rect" id="Node000200" href="$classrack_1_1DopplerReprojectOp.html" title=" " alt="" coords="1772,3955,1925,3980"/>
+<area shape="poly" id="edge200_Node000191_Node000200" title=" " alt="" coords="1627,3870,1662,3878,1697,3892,1713,3904,1722,3917,1731,3930,1745,3941,1773,3953,1770,3957,1743,3946,1727,3933,1718,3920,1709,3908,1695,3896,1661,3883,1626,3875"/>
+<area shape="rect" id="Node000201" href="$classrack_1_1DopplerSamplerOp.html" title="Base class for computing products using Doppler speed [VRAD] data." alt="" coords="1776,4004,1921,4029"/>
+<area shape="poly" id="edge201_Node000191_Node000201" title=" " alt="" coords="1626,3867,1663,3874,1698,3892,1710,3904,1717,3917,1723,3943,1728,3968,1735,3979,1746,3991,1777,4006,1774,4011,1742,3995,1730,3983,1723,3970,1718,3944,1712,3919,1705,3907,1694,3896,1662,3879,1625,3872"/>
+<area shape="rect" id="Node000203" href="$classrack_1_1DopplerWindOp.html" title="Base class for operators retrieving true wind (u,v)." alt="" coords="1787,4053,1911,4079"/>
+<area shape="poly" id="edge203_Node000191_Node000203" title=" " alt="" coords="1626,3865,1664,3873,1682,3881,1698,3892,1713,3910,1721,3929,1723,3968,1725,4005,1732,4023,1746,4040,1765,4053,1787,4060,1786,4065,1763,4057,1742,4044,1727,4025,1720,4006,1718,3968,1716,3931,1709,3913,1694,3896,1679,3885,1662,3878,1625,3870"/>
+<area shape="rect" id="Node000205" href="$classrack_1_1DopplerWindowOp.html" title="Base class for Doppler average and variance." alt="" coords="1755,4103,1942,4128"/>
+<area shape="poly" id="edge205_Node000191_Node000205" title=" " alt="" coords="1627,3864,1664,3872,1682,3880,1698,3892,1717,3917,1725,3942,1726,3967,1723,3993,1720,4018,1721,4042,1729,4066,1746,4089,1761,4100,1757,4105,1742,4093,1724,4068,1716,4043,1715,4017,1718,3992,1720,3967,1719,3943,1712,3919,1694,3896,1679,3885,1663,3877,1626,3870"/>
+<area shape="rect" id="Node000206" href="$classrack_1_1ExtDopplerOp.html" title="Base class for radar data processors." alt="" coords="1793,4152,1905,4177"/>
+<area shape="poly" id="edge206_Node000191_Node000206" title=" " alt="" coords="1626,3864,1664,3872,1682,3880,1698,3892,1720,3923,1729,3954,1728,3986,1723,4017,1718,4048,1718,4079,1725,4109,1746,4139,1767,4153,1793,4161,1791,4166,1765,4158,1742,4143,1720,4111,1712,4080,1713,4048,1718,4016,1723,3985,1723,3955,1715,3925,1694,3896,1679,3885,1662,3877,1625,3869"/>
+<area shape="rect" id="Node000193" href="$classrack_1_1DopplerAvgOp.html" title="Simple op not producing quality field." alt="" coords="2027,4209,2142,4235"/>
+<area shape="poly" id="edge193_Node000192_Node000193" title=" " alt="" coords="1967,4219,2027,4219,2027,4225,1967,4225"/>
+<area shape="rect" id="Node000195" href="$classrack_1_1DopplerDevOp.html" title=" " alt="" coords="2026,3735,2143,3760"/>
+<area shape="poly" id="edge195_Node000194_Node000195" title=" " alt="" coords="1967,3745,2026,3745,2026,3750,1967,3750"/>
+<area shape="rect" id="Node000197" href="$classrack_1_1DopplerEccentricityOp.html" title=" " alt="" coords="2001,3799,2168,3824"/>
+<area shape="poly" id="edge197_Node000196_Node000197" title=" " alt="" coords="1967,3809,2001,3809,2001,3814,1967,3814"/>
+<area shape="rect" id="Node000202" href="$classrack_1_1DopplerDiffPlotterOp.html" title=" " alt="" coords="2006,4004,2163,4029"/>
+<area shape="poly" id="edge202_Node000201_Node000202" title=" " alt="" coords="1935,4014,2006,4014,2006,4019,1935,4019"/>
+<area shape="rect" id="Node000204" href="$classrack_1_1DopplerInversionOp.html" title="Derives two&#45;dimensional wind (u,v) from Doppler data." alt="" coords="2009,4053,2160,4079"/>
+<area shape="poly" id="edge204_Node000203_Node000204" title=" " alt="" coords="1924,4063,2009,4063,2009,4069,1924,4069"/>
+<area shape="rect" id="Node000217" href="$classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="1809,3480,1888,3505"/>
+<area shape="poly" id="edge217_Node000216_Node000217" title=" " alt="" coords="1651,3526,1809,3497,1809,3502,1652,3531"/>
+<area shape="rect" id="Node000218" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors." alt="" coords="2037,3480,2133,3505"/>
+<area shape="poly" id="edge218_Node000217_Node000218" title=" " alt="" coords="1902,3490,2036,3490,2036,3495,1902,3495"/>
+<area shape="rect" id="Node000242" href="$classrack_1_1QualityCombinerOp.html" title="A quick QualityCombiner ." alt="" coords="2009,3529,2160,3555"/>
+<area shape="poly" id="edge242_Node000217_Node000242" title=" " alt="" coords="1902,3501,2024,3527,2022,3532,1901,3506"/>
+<area shape="rect" id="Node000243" href="$classrack_1_1RemoverOp.html" title="The simplest possible anomaly removal operator and the base class for more complex ones." alt="" coords="2035,2961,2134,2987"/>
+<area shape="poly" id="edge243_Node000217_Node000243" title=" " alt="" coords="1859,3466,2075,2986,2080,2988,1864,3469"/>
+<area shape="rect" id="Node000219" href="$classrack_1_1AttenuationOp.html" title="Computes attenuation caused by precipitation." alt="" coords="2235,3109,2351,3135"/>
+<area shape="poly" id="edge219_Node000218_Node000219" title=" " alt="" coords="2086,3466,2095,3401,2116,3315,2133,3269,2155,3224,2181,3181,2214,3144,2234,3131,2237,3136,2218,3148,2186,3185,2159,3226,2138,3271,2122,3317,2100,3402,2091,3467"/>
+<area shape="rect" id="Node000220" href="$classrack_1_1BiometOp.html" title="Detects birds and insects." alt="" coords="2250,3159,2337,3184"/>
+<area shape="poly" id="edge220_Node000218_Node000220" title=" " alt="" coords="2087,3466,2100,3410,2123,3336,2140,3298,2160,3260,2185,3224,2214,3193,2231,3182,2249,3175,2251,3180,2233,3187,2218,3197,2189,3228,2165,3263,2145,3300,2128,3338,2105,3411,2093,3467"/>
+<area shape="rect" id="Node000221" href="$classrack_1_1CCorOp.html" title=" " alt="" coords="2258,3208,2329,3233"/>
+<area shape="poly" id="edge221_Node000218_Node000221" title=" " alt="" coords="2090,3466,2105,3418,2130,3358,2166,3296,2189,3268,2214,3243,2235,3230,2257,3223,2259,3228,2237,3235,2218,3247,2192,3271,2170,3299,2135,3361,2110,3420,2095,3467"/>
+<area shape="rect" id="Node000222" href="$classrack_1_1ClutterOp.html" title="Based on pre&#45;computed clutter map, scales the clutter probability for desired sweeps." alt="" coords="2251,3257,2335,3283"/>
+<area shape="poly" id="edge222_Node000218_Node000222" title=" " alt="" coords="2093,3466,2111,3428,2137,3381,2172,3333,2214,3292,2250,3275,2252,3280,2218,3296,2176,3337,2142,3384,2116,3430,2098,3468"/>
+<area shape="rect" id="Node000223" href="$classrack_1_1DefaultOp.html" title="Simply, &quot;detects&quot; precipitation ie sets its probability." alt="" coords="2249,3307,2337,3332"/>
+<area shape="poly" id="edge223_Node000218_Node000223" title=" " alt="" coords="2099,3467,2145,3404,2178,3370,2215,3341,2248,3326,2250,3331,2217,3346,2181,3374,2149,3408,2103,3470"/>
+<area shape="rect" id="Node000224" href="$classrack_1_1DopplerNoiseOp.html" title="Detects suspicious variance in Doppler speed (VRAD)." alt="" coords="2229,3356,2357,3381"/>
+<area shape="poly" id="edge224_Node000218_Node000224" title=" " alt="" coords="2107,3469,2155,3429,2215,3390,2242,3379,2244,3384,2217,3395,2158,3433,2111,3473"/>
+<area shape="rect" id="Node000225" href="$classrack_1_1EmitterOp.html" title="A quick emitter detection based on subtracting horizontal window medians by vertical ones." alt="" coords="2249,3405,2337,3431"/>
+<area shape="poly" id="edge225_Node000218_Node000225" title=" " alt="" coords="2129,3472,2215,3439,2249,3428,2251,3433,2217,3445,2131,3477"/>
+<area shape="rect" id="Node000226" href="$classrack_1_1ExtAndreOp.html" title="Base class for radar data processors." alt="" coords="2244,3455,2343,3480"/>
+<area shape="poly" id="edge226_Node000218_Node000226" title=" " alt="" coords="2146,3483,2243,3471,2244,3476,2146,3488"/>
+<area shape="rect" id="Node000227" href="$classrack_1_1FuzzyDualPolOp.html" title="Base class for BirdOp and InsectOp." alt="" coords="2230,3504,2357,3529"/>
+<area shape="poly" id="edge227_Node000218_Node000227" title=" " alt="" coords="2146,3497,2230,3507,2230,3512,2146,3502"/>
+<area shape="rect" id="Node000230" href="$classrack_1_1HydroClassBasedOp.html" title="Sets probabilities of non&#45;meteorological echoes based on precomputed hydrometeor classification." alt="" coords="2216,3553,2371,3579"/>
+<area shape="poly" id="edge230_Node000218_Node000230" title=" " alt="" coords="2147,3506,2169,3514,2217,3540,2248,3551,2246,3556,2215,3544,2167,3519,2145,3511"/>
+<area shape="rect" id="Node000231" href="$classrack_1_1JammingOp.html" title="A detector for widespread electromagnetic interference." alt="" coords="2244,3603,2343,3628"/>
+<area shape="poly" id="edge231_Node000218_Node000231" title=" " alt="" coords="2147,3502,2170,3515,2187,3534,2195,3553,2202,3571,2218,3589,2245,3603,2242,3608,2214,3593,2197,3574,2190,3555,2182,3536,2166,3519,2144,3507"/>
+<area shape="rect" id="Node000232" href="$classrack_1_1LineOp.html" title="Quick emitter detection based on subtracting a horizontal segment lengths by inversed vertical segmen..." alt="" coords="2260,3652,2327,3677"/>
+<area shape="poly" id="edge232_Node000218_Node000232" title=" " alt="" coords="2147,3501,2170,3515,2183,3530,2190,3546,2195,3578,2199,3609,2206,3624,2218,3639,2238,3651,2261,3658,2259,3664,2236,3656,2214,3643,2201,3627,2194,3611,2190,3579,2185,3548,2179,3533,2166,3519,2144,3505"/>
+<area shape="rect" id="Node000233" href="$classrack_1_1NonMetOp.html" title="Marks bins with low RhoHV value as probable anomalies." alt="" coords="2248,3701,2339,3727"/>
+<area shape="poly" id="edge233_Node000218_Node000233" title=" " alt="" coords="2147,3500,2170,3515,2186,3537,2194,3559,2195,3603,2196,3646,2203,3667,2218,3688,2232,3699,2249,3705,2247,3710,2229,3703,2214,3692,2198,3670,2190,3647,2190,3603,2189,3560,2182,3539,2166,3519,2145,3505"/>
+<area shape="rect" id="Node000234" href="$classrack_1_1PrecipOp.html" title="Simply, &quot;detects&quot; precipitation ie sets its probability." alt="" coords="2253,3751,2333,3776"/>
+<area shape="poly" id="edge234_Node000218_Node000234" title=" " alt="" coords="2147,3499,2170,3515,2189,3543,2198,3572,2198,3600,2195,3628,2192,3656,2192,3683,2200,3710,2218,3737,2234,3750,2254,3757,2252,3762,2232,3754,2214,3741,2195,3712,2187,3684,2186,3655,2190,3627,2193,3600,2192,3573,2185,3546,2166,3519,2144,3504"/>
+<area shape="rect" id="Node000235" href="$classrack_1_1ShipFastOp.html" title="Detects ships." alt="" coords="2246,3800,2341,3825"/>
+<area shape="poly" id="edge235_Node000218_Node000235" title=" " alt="" coords="2148,3500,2170,3515,2193,3550,2201,3584,2200,3619,2195,3653,2189,3686,2189,3720,2197,3753,2218,3787,2231,3797,2247,3804,2245,3809,2228,3802,2214,3790,2192,3755,2183,3720,2184,3686,2190,3652,2195,3618,2196,3585,2188,3552,2166,3519,2145,3504"/>
+<area shape="rect" id="Node000236" href="$classrack_1_1ShipOp.html" title="Detects ships." alt="" coords="2259,3849,2327,3875"/>
+<area shape="poly" id="edge236_Node000218_Node000236" title=" " alt="" coords="2147,3499,2170,3515,2185,3536,2196,3556,2205,3597,2203,3638,2195,3677,2187,3717,2185,3757,2193,3796,2203,3816,2218,3836,2237,3850,2260,3857,2258,3862,2235,3855,2214,3840,2199,3819,2188,3798,2180,3757,2182,3716,2190,3676,2198,3637,2200,3598,2191,3558,2181,3538,2166,3519,2144,3503"/>
+<area shape="rect" id="Node000237" href="$classrack_1_1SpeckleOp.html" title=" " alt="" coords="2248,3899,2339,3924"/>
+<area shape="poly" id="edge237_Node000218_Node000237" title=" " alt="" coords="2147,3499,2170,3515,2187,3539,2199,3563,2206,3586,2209,3610,2205,3656,2195,3702,2185,3748,2181,3793,2184,3816,2190,3839,2201,3862,2218,3886,2232,3897,2249,3904,2247,3909,2229,3901,2214,3889,2197,3865,2185,3841,2179,3817,2176,3793,2180,3747,2190,3701,2200,3655,2203,3610,2201,3587,2194,3565,2183,3542,2166,3519,2144,3503"/>
+<area shape="rect" id="Node000238" href="$classrack_1_1SunOp.html" title="Detects birds and insects." alt="" coords="2261,3948,2325,3973"/>
+<area shape="poly" id="edge238_Node000218_Node000238" title=" " alt="" coords="2147,3499,2170,3515,2189,3542,2202,3569,2210,3596,2212,3623,2207,3675,2195,3727,2183,3778,2178,3830,2180,3856,2187,3882,2199,3908,2218,3935,2238,3949,2262,3956,2261,3961,2236,3954,2214,3939,2195,3911,2182,3884,2175,3857,2172,3830,2178,3778,2190,3726,2202,3674,2207,3623,2205,3597,2197,3571,2185,3545,2166,3519,2144,3503"/>
+<area shape="rect" id="Node000239" href="$classrack_1_1TestOp.html" title=" " alt="" coords="2260,3997,2327,4023"/>
+<area shape="poly" id="edge239_Node000218_Node000239" title=" " alt="" coords="2147,3499,2170,3515,2191,3545,2206,3576,2214,3605,2216,3635,2210,3694,2195,3751,2181,3809,2174,3867,2177,3896,2184,3925,2197,3954,2218,3984,2237,3998,2260,4005,2259,4010,2235,4003,2214,3988,2193,3957,2179,3927,2171,3897,2169,3867,2175,3808,2190,3750,2205,3693,2211,3635,2208,3606,2201,3577,2187,3548,2166,3519,2144,3503"/>
+<area shape="rect" id="Node000240" href="$classrack_1_1TimeOp.html" title="A radio interference detector." alt="" coords="2257,3011,2330,3036"/>
+<area shape="poly" id="edge240_Node000218_Node000240" title=" " alt="" coords="2083,3466,2087,3386,2093,3332,2104,3273,2120,3212,2143,3152,2174,3095,2214,3045,2234,3032,2256,3025,2257,3030,2236,3037,2218,3049,2179,3098,2148,3154,2125,3214,2109,3274,2098,3333,2092,3386,2088,3467"/>
+<area shape="rect" id="Node000241" href="$classrack_1_1ZDRvarOp.html" title=" " alt="" coords="2249,3060,2338,3085"/>
+<area shape="poly" id="edge241_Node000218_Node000241" title=" " alt="" coords="2084,3466,2091,3394,2110,3294,2127,3241,2149,3188,2178,3138,2214,3095,2230,3084,2247,3076,2249,3081,2232,3088,2218,3099,2182,3141,2154,3190,2132,3242,2115,3296,2096,3394,2089,3467"/>
+<area shape="rect" id="Node000228" href="$classrack_1_1BirdOp.html" title=" " alt="" coords="2440,3480,2507,3505"/>
+<area shape="poly" id="edge228_Node000227_Node000228" title=" " alt="" coords="2370,3504,2439,3494,2440,3500,2370,3509"/>
+<area shape="rect" id="Node000229" href="$classrack_1_1InsectOp.html" title=" " alt="" coords="2434,3529,2513,3555"/>
+<area shape="poly" id="edge229_Node000227_Node000229" title=" " alt="" coords="2370,3525,2434,3534,2433,3539,2370,3530"/>
+<area shape="rect" id="Node000244" href="$classrack_1_1DamperOp.html" title=" " alt="" coords="2247,2912,2339,2937"/>
+<area shape="poly" id="edge244_Node000243_Node000244" title=" " alt="" coords="2147,2957,2247,2933,2248,2938,2148,2962"/>
+<area shape="rect" id="Node000245" href="$classrack_1_1GapFillOpBase.html" title="The base class for operators removing detected anomalies by overriding low&#45;quality pixels with neighb..." alt="" coords="2235,2961,2352,2987"/>
+<area shape="poly" id="edge245_Node000243_Node000245" title=" " alt="" coords="2148,2971,2234,2971,2234,2977,2148,2977"/>
+<area shape="rect" id="Node000246" href="$classrack_1_1GapFillOp.html" title="A simple gap filler based on distance transformation." alt="" coords="2431,2937,2516,2963"/>
+<area shape="poly" id="edge246_Node000245_Node000246" title=" " alt="" coords="2365,2962,2430,2953,2431,2958,2366,2967"/>
+<area shape="rect" id="Node000247" href="$classrack_1_1GapFillRecOp.html" title="Recursive, &#39;splinic&#39; gap filler based on fast averaging." alt="" coords="2419,2987,2528,3012"/>
+<area shape="poly" id="edge247_Node000245_Node000247" title=" " alt="" coords="2366,2981,2419,2989,2418,2994,2365,2987"/>
+<area shape="rect" id="Node000249" href="$classrack_1_1PseudoRhiOp.html" title="Pseudo Range&#45;Height indicator." alt="" coords="1216,3585,1324,3611"/>
+<area shape="poly" id="edge249_Node000248_Node000249" title=" " alt="" coords="1069,3623,1216,3603,1216,3608,1069,3628"/>
+<area shape="rect" id="Node000251" href="$classrack_1_1VerticalIntersectionOp.html" title=" " alt="" coords="1187,3684,1353,3709"/>
+<area shape="poly" id="edge251_Node000250_Node000251" title=" " alt="" coords="1078,3694,1187,3694,1187,3699,1078,3699"/>
+<area shape="rect" id="Node000252" href="$classrack_1_1VerticalProfileOp.html" title="Computes vertical profiles of reflectivity (DBZH), including raw and polarized reflectivity." alt="" coords="1205,3733,1335,3759"/>
+<area shape="poly" id="edge252_Node000250_Node000252" title=" " alt="" coords="1079,3712,1205,3733,1204,3738,1078,3717"/>
+<area shape="rect" id="Node000253" href="$classrack_1_1VerticalWindProfileOp.html" title="Computes vertical profiles of reflectivity (DBZH), including raw and polarized reflectivity." alt="" coords="1189,3635,1351,3660"/>
+<area shape="poly" id="edge253_Node000250_Node000253" title=" " alt="" coords="1078,3676,1191,3657,1192,3663,1079,3681"/>
+<area shape="rect" id="Node000258" href="$classdrain_1_1Context.html" title=" " alt="" coords="14,3568,87,3593"/>
+<area shape="rect" id="Node000257" href="$classdrain_1_1SmartContext.html" title=" " alt="" coords="175,3592,287,3617"/>
+<area shape="poly" id="edge254_Node000258_Node000257" title=" " alt="" coords="102,3585,176,3595,175,3600,101,3590"/>
+<area shape="poly" id="edge255_Node000257_Node000255" title=" " alt="" coords="301,3594,393,3583,394,3588,301,3599"/>
+<area shape="rect" id="Node000259" href="$classdrain_1_1ContextKit.html" title="Utilities." alt="" coords="5,3617,96,3643"/>
+<area shape="poly" id="edge256_Node000259_Node000257" title=" " alt="" coords="109,3619,175,3610,175,3615,110,3624"/>
+<area shape="rect" id="Node000060" href="$structdrain_1_1image_1_1FunctorWrapper.html" title="Helper class that only ensures that functor is initialized before ImageOp." alt="" coords="598,1937,761,1963"/>
+<area shape="poly" id="edge257_Node000060_Node000059" title=" " alt="" coords="771,1933,782,1923,800,1894,811,1856,818,1812,820,1762,816,1648,804,1526,793,1403,788,1290,791,1240,798,1195,811,1157,830,1127,847,1113,867,1104,869,1109,850,1117,834,1130,816,1159,804,1196,796,1240,794,1290,798,1403,809,1525,821,1648,826,1762,823,1812,816,1857,804,1896,786,1926,774,1937"/>
+<area shape="poly" id="edge258_Node000060_Node000061" title=" " alt="" coords="771,1933,782,1923,798,1896,809,1862,816,1821,818,1775,815,1671,805,1559,796,1446,792,1342,795,1295,801,1254,813,1219,830,1191,844,1178,860,1169,863,1173,847,1182,834,1194,818,1221,807,1255,800,1296,798,1342,801,1446,811,1558,820,1671,824,1775,821,1822,814,1863,803,1898,786,1926,774,1937"/>
+<area shape="poly" id="edge259_Node000060_Node000062" title=" " alt="" coords="771,1933,782,1923,797,1898,807,1866,813,1828,816,1785,813,1688,804,1582,795,1477,793,1380,796,1337,802,1298,813,1266,830,1240,846,1227,864,1218,903,1211,904,1216,866,1223,849,1232,834,1244,818,1268,807,1300,801,1337,798,1380,801,1477,809,1582,818,1687,821,1785,819,1828,813,1867,802,1900,786,1926,775,1937"/>
+<area shape="rect" id="Node000260" href="$classrack_1_1GraphicsContext.html" title=" " alt="" coords="166,3641,297,3667"/>
+<area shape="poly" id="edge260_Node000260_Node000255" title=" " alt="" coords="294,3635,318,3627,415,3590,417,3595,320,3633,296,3640"/>
+<area shape="rect" id="Node000261" href="$classrack_1_1Hdf5Context.html" title=" " alt="" coords="179,3691,283,3716"/>
+<area shape="poly" id="edge261_Node000261_Node000255" title=" " alt="" coords="295,3686,317,3677,352,3656,384,3633,431,3590,435,3594,387,3637,355,3661,320,3682,297,3691"/>
+<area shape="rect" id="Node000262" href="$classrack_1_1ImageContext.html" title=" " alt="" coords="174,3493,289,3519"/>
+<area shape="poly" id="edge262_Node000262_Node000255" title=" " alt="" coords="296,3520,320,3527,416,3564,414,3569,318,3533,294,3525"/>
+<area shape="rect" id="Node000254" href="$classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="181,3444,282,3469"/>
+<area shape="poly" id="edge264_Node000254_Node000255" title=" " alt="" coords="296,3468,320,3478,354,3499,386,3522,434,3564,431,3568,383,3527,351,3503,317,3483,294,3473"/>
+<area shape="poly" id="edge263_Node000254_Node000171" title=" " alt="" coords="296,3454,395,3454,395,3459,296,3459"/>
+<area shape="rect" id="Node000070" href="$classrack_1_1RadarFunctorBase.html" title=" " alt="" coords="1200,1239,1340,1264"/>
+<area shape="poly" id="edge265_Node000070_Node000069" title=" " alt="" coords="1353,1234,1495,1208,1496,1213,1354,1239"/>
 </map>

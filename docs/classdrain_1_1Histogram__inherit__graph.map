@@ -1,4 +1,5 @@
 <map id="Histogram" name="Histogram">
-<area shape="rect" id="node1" title="Class for computing a histogram and some statistics: average, min, max, mean, std...." alt="" coords="52,80,143,107"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,189,32"/>
+<area shape="rect" id="Node000001" title="Class for computing a histogram and some statistics: average, min, max, mean, std...." alt="" coords="52,79,143,104"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,189,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,44,100,79,95,79,95,44"/>
 </map>

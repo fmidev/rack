@@ -1,8 +1,14 @@
 <map id="DotLink" name="DotLink">
-<area shape="rect" id="node1" title=" " alt="" coords="78,427,150,453"/>
-<area shape="rect" id="node2" href="$classdrain_1_1DotEntity.html" title=" " alt="" coords="67,247,150,273"/>
-<area shape="rect" id="node6" href="$classdrain_1_1DotNode.html" title=" " alt="" coords="131,323,209,349"/>
-<area shape="rect" id="node3" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,157,160,184"/>
-<area shape="rect" id="node4" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,195,108"/>
-<area shape="rect" id="node5" title=" " alt="" coords="5,5,212,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="78,420,150,445"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1DotEntity.html" title=" " alt="" coords="67,243,150,268"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,282,116,420,111,420,107,282"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1DotNode.html" title=" " alt="" coords="131,317,209,343"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="130,277,162,315,158,319,125,280"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,155,160,180"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="111,194,111,242,106,242,106,194"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,80,195,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="111,120,111,154,106,154,106,120"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,5,212,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="111,45,111,80,106,80,106,45"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="159,356,123,421,118,419,154,354"/>
 </map>

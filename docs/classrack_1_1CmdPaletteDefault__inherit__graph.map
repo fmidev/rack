@@ -1,0 +1,13 @@
+<map id="CmdPaletteDefault" name="CmdPaletteDefault">
+<area shape="rect" id="Node000001" title=" " alt="" coords="106,299,251,324"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="49,225,173,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,259,170,297,166,300,129,262"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="5,152,216,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="113,191,113,225,108,225,108,191"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="66,79,155,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="113,118,113,152,108,152,108,118"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="64,5,157,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="113,44,113,79,108,79,108,44"/>
+<area shape="rect" id="Node000006" href="$classrack_1_1PaletteBase.html" title=" " alt="" coords="197,225,296,251"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="228,262,192,300,188,297,224,259"/>
+</map>

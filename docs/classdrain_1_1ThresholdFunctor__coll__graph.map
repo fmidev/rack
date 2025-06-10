@@ -1,9 +1,15 @@
 <map id="ThresholdFunctor" name="ThresholdFunctor">
-<area shape="rect" id="node1" title="Thresholds intensity values." alt="" coords="48,475,183,501"/>
-<area shape="rect" id="node2" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="61,399,170,425"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="80,323,151,349"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,247,156,273"/>
-<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,157,173,184"/>
-<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,208,108"/>
-<area shape="rect" id="node7" title=" " alt="" coords="5,5,225,32"/>
+<area shape="rect" id="Node000001" title="Thresholds intensity values." alt="" coords="48,467,183,492"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="61,392,170,417"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,432,118,466,113,466,113,432"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="80,317,151,343"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="118,357,118,392,113,392,113,357"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,243,156,268"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="118,282,118,317,113,317,113,282"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,155,173,180"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="118,194,118,242,113,242,113,194"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,80,208,105"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="118,120,118,154,113,154,113,120"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="5,5,225,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="118,45,118,80,113,80,113,45"/>
 </map>

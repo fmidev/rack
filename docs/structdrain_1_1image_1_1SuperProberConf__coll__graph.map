@@ -1,6 +1,9 @@
 <map id="SuperProberConf" name="SuperProberConf">
-<area shape="rect" id="node1" title="Container for parameters of SegmentProber." alt="" coords="11,247,142,273"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Range.html" title=" " alt="" coords="21,157,132,184"/>
-<area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="9,81,144,108"/>
-<area shape="rect" id="node4" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="5,5,148,32"/>
+<area shape="rect" id="Node000001" title="Container for parameters of SegmentProber." alt="" coords="12,243,143,268"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1Range.html" title=" " alt="" coords="22,155,133,180"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,194,80,242,75,242,75,194"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="10,80,145,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="80,120,80,154,75,154,75,120"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="5,5,149,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="80,45,80,80,75,80,75,45"/>
 </map>

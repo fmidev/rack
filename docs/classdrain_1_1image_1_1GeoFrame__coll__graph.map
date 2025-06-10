@@ -1,10 +1,22 @@
 <map id="GeoFrame" name="GeoFrame">
-<area shape="rect" id="node1" title="Array with georeferencing support." alt="" coords="158,467,247,493"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Proj6.html" title=" " alt="" coords="106,304,161,331"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Projector.html" title=" " alt="" coords="60,200,140,227"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="5,96,179,137"/>
-<area shape="rect" id="node5" title=" " alt="" coords="7,5,177,47"/>
-<area shape="rect" id="node6" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="193,304,354,331"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="207,200,342,227"/>
-<area shape="rect" id="node8" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="203,103,346,130"/>
+<area shape="rect" id="Node000001" title="Array with georeferencing support." alt="" coords="126,472,215,497"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1Proj6.html" title=" " alt="" coords="74,311,129,336"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,350,93,397,97,423,106,447,119,460,135,470,132,474,115,464,102,449,91,424,88,398,92,349"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Projector.html" title=" " alt="" coords="53,208,133,233"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="98,247,103,310,98,311,93,248"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="5,95,179,135"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="90,148,89,184,93,207,88,208,84,184,85,148"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="7,5,177,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="95,59,95,95,89,95,89,59"/>
+<area shape="rect" id="Node000006" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="159,311,321,336"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="241,350,233,398,225,424,213,450,190,474,186,470,208,446,220,422,228,396,236,349"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="178,159,313,184"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="247,198,243,310,238,310,242,198"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="223,13,367,38"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="289,52,252,159,247,158,284,50"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="283,102,418,127"/>
+<area shape="poly" id="edge10_Node000010_Node000008" title=" " alt="" coords="312,49,345,100,341,103,307,51"/>
+<area shape="rect" id="Node000009" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="277,208,424,233"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="330,245,254,313,251,309,326,241"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="353,141,353,208,348,208,348,141"/>
 </map>

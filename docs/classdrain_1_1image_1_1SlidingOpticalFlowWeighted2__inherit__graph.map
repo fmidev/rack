@@ -1,8 +1,13 @@
 <map id="SlidingOpticalFlowWeighted2" name="SlidingOpticalFlowWeighted2">
-<area shape="rect" id="node1" title=" " alt="" coords="5,408,217,435"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingOpticalFlow2.html" title=" " alt="" coords="28,319,195,360"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="6,229,217,271"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="46,155,177,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="59,80,163,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="43,5,179,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,387,217,412"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1SlidingOpticalFlow2.html" title=" " alt="" coords="28,299,195,339"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,352,114,386,109,386,109,352"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1SlidingWindow.html" title="Window implementation that uses incremental update of state." alt="" coords="24,225,199,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="114,264,114,299,109,299,109,264"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="46,152,177,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="114,191,114,225,109,225,109,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="59,79,163,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="114,118,114,152,109,152,109,118"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="43,5,179,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="114,44,114,79,109,79,109,44"/>
 </map>

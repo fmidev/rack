@@ -1,4 +1,5 @@
 <map id="SrcType&lt; M &gt;" name="SrcType&lt; M &gt;">
-<area shape="rect" id="node1" title="Read&#45;only data type." alt="" coords="43,109,158,136"/>
-<area shape="rect" id="node2" href="$structrack_1_1DataType.html" title=" " alt="" coords="5,5,196,61"/>
+<area shape="rect" id="Node000001" title="Read&#45;only data type." alt="" coords="27,79,142,104"/>
+<area shape="rect" id="Node000002" href="$structrack_1_1DataType.html" title="Container that couples together a tree structure and a data array (drain::image::Image),..." alt="" coords="5,5,164,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,44,87,79,82,79,82,44"/>
 </map>

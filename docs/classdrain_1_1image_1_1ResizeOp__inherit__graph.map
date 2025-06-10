@@ -1,6 +1,9 @@
 <map id="ResizeOp" name="ResizeOp">
-<area shape="rect" id="node1" title="Resizes the image, stretching the image correspondingly." alt="" coords="9,229,92,256"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="10,155,91,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="5,80,96,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="10,5,91,32"/>
+<area shape="rect" id="Node000001" title="Resizes the image, stretching the image correspondingly." alt="" coords="9,225,92,251"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="10,152,91,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="53,191,53,225,48,225,48,191"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="5,79,96,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="53,118,53,152,48,152,48,118"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="10,5,91,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="53,44,53,79,48,79,48,44"/>
 </map>

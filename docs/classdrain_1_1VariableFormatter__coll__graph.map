@@ -1,4 +1,5 @@
 <map id="VariableFormatter&lt; T &gt;" name="VariableFormatter&lt; T &gt;">
-<area shape="rect" id="node1" title="Formats variables to output stream." alt="" coords="5,95,183,121"/>
-<area shape="rect" id="node2" href="$classdrain_1_1IosFormat.html" title="Stores precision, fillChar and fieldWidth applied by STD streams." alt="" coords="51,5,137,32"/>
+<area shape="rect" id="Node000001" title="Formats variables to output stream." alt="" coords="5,93,183,119"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1IosFormat.html" title="Stores precision, fillChar and fieldWidth applied by STD streams." alt="" coords="51,5,137,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,45,97,93,91,93,91,45"/>
 </map>

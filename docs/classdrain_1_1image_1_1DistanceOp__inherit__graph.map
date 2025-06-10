@@ -1,8 +1,13 @@
 <map id="DistanceOp" name="DistanceOp">
-<area shape="rect" id="node1" title="Computes the distance between intensity vectors." alt="" coords="44,393,141,420"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="5,304,180,345"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="37,229,149,256"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="52,155,133,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="47,80,138,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="52,5,133,32"/>
+<area shape="rect" id="Node000001" title="Computes the distance between intensity vectors." alt="" coords="44,387,141,412"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="5,299,180,339"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,352,95,386,90,386,90,352"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="37,225,149,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="95,264,95,299,90,299,90,264"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="52,152,133,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="95,191,95,225,90,225,90,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="47,79,138,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="95,118,95,152,90,152,90,118"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="52,5,133,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="95,44,95,79,90,79,90,44"/>
 </map>

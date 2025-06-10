@@ -1,6 +1,9 @@
 <map id="BeanRefCommand&lt; B &gt;" name="BeanRefCommand&lt; B &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="10,229,193,256"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="5,155,197,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="57,80,146,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="55,5,148,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="10,225,193,251"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="5,152,197,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,191,104,225,99,225,99,191"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="57,79,146,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="104,118,104,152,99,152,99,118"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="55,5,148,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="104,44,104,79,99,79,99,44"/>
 </map>

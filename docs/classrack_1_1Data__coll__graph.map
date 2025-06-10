@@ -1,9 +1,15 @@
 <map id="Data&lt; DT &gt;" name="Data&lt; DT &gt;">
-<area shape="rect" id="node1" title="Data structure consisting of plain data and an optional quality data." alt="" coords="135,276,236,303"/>
-<area shape="rect" id="node2" href="$classrack_1_1PlainData.html" title="Essential class for storing radar data." alt="" coords="36,193,169,219"/>
-<area shape="rect" id="node3" href="$classrack_1_1TreeWrapper.html" title="Base class for all kinds of radar data." alt="" coords="5,89,157,115"/>
-<area shape="rect" id="node4" href="$classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="205,185,355,227"/>
-<area shape="rect" id="node5" href="$classrack_1_1DataGroup.html" title=" " alt="" coords="181,81,400,123"/>
-<area shape="rect" id="node6" href="$classrack_1_1TreeWrapper.html" title=" " alt="" coords="51,5,280,32"/>
-<area shape="rect" id="node7" title=" " alt="" coords="304,5,531,32"/>
+<area shape="rect" id="Node000001" title="Data structure consisting of plain data and an optional quality data." alt="" coords="135,272,236,297"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1PlainData.html" title="Essential class for storing radar data." alt="" coords="36,190,169,215"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,223,175,270,172,274,123,227"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1TreeWrapper.html" title="Base class for all kinds of radar data." alt="" coords="5,87,157,113"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="89,125,103,189,98,191,84,127"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="205,183,355,223"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="249,234,201,274,197,270,246,229"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1DataGroup.html" title=" " alt="" coords="181,80,400,120"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="290,134,285,183,279,182,285,133"/>
+<area shape="rect" id="Node000006" href="$classrack_1_1TreeWrapper.html" title=" " alt="" coords="51,5,280,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="196,36,263,78,260,82,193,40"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="304,5,531,31"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="389,40,322,82,319,78,386,36"/>
 </map>

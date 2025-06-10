@@ -1,6 +1,9 @@
 <map id="MultiplicationFunctor" name="MultiplicationFunctor">
-<area shape="rect" id="node1" title="Multiplies two images, with optional post scaling and offset." alt="" coords="5,229,164,256"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BinaryFunctor.html" title=" " alt="" coords="29,155,141,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="49,80,120,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="44,5,125,32"/>
+<area shape="rect" id="Node000001" title="Multiplies two images, with optional post scaling and offset." alt="" coords="5,225,164,251"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BinaryFunctor.html" title=" " alt="" coords="29,152,141,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,191,87,225,82,225,82,191"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="49,79,120,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="87,118,87,152,82,152,82,118"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="44,5,125,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="87,44,87,79,82,79,82,44"/>
 </map>

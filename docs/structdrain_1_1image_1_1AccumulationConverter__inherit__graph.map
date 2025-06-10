@@ -1,4 +1,5 @@
 <map id="AccumulationConverter" name="AccumulationConverter">
-<area shape="rect" id="node1" title="Converts raw data to values appropriate for accumulation." alt="" coords="5,5,180,32"/>
-<area shape="rect" id="node2" href="$classrack_1_1DataCoder.html" title="Converts ODIM encoded data (with markers) to natural values and backwards." alt="" coords="47,80,138,107"/>
+<area shape="rect" id="Node000001" title="Converts raw data to values appropriate for accumulation." alt="" coords="5,5,180,31"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1DataCoder.html" title="Converts ODIM encoded data (with markers) to natural values and backwards." alt="" coords="47,79,138,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,44,95,79,90,79,90,44"/>
 </map>

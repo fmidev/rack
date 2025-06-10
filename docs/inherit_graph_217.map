@@ -1,0 +1,21 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,169,68,194"/>
+<area shape="rect" id="Node000001" href="$classdrain_1_1LookUp.html" title=" " alt="" coords="116,5,300,45"/>
+<area shape="poly" id="edge775_Node000000_Node000001" title=" " alt="" coords="46,155,72,105,91,78,114,55,133,43,136,48,118,59,95,82,76,107,50,157"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1Matrix.html" title=" " alt="" coords="139,70,277,95"/>
+<area shape="poly" id="edge776_Node000000_Node000002" title=" " alt="" coords="55,156,82,129,115,104,141,93,143,98,117,109,85,133,59,159"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Histogram.html" title="Class for computing a histogram and some statistics: average, min, max, mean, std...." alt="" coords="163,119,253,145"/>
+<area shape="poly" id="edge777_Node000000_Node000003" title=" " alt="" coords="80,164,115,153,162,141,163,146,117,159,82,169"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1LookUp.html" title="Look&#45;up tables." alt="" coords="153,169,263,194"/>
+<area shape="poly" id="edge778_Node000000_Node000004" title=" " alt="" coords="82,179,153,179,153,184,82,184"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1LookUp2.html" title="Look&#45;up tables." alt="" coords="149,218,267,243"/>
+<area shape="poly" id="edge779_Node000000_Node000005" title=" " alt="" coords="82,192,117,203,161,215,159,220,115,208,80,197"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1Matrix.html" title=" " alt="" coords="157,267,259,293"/>
+<area shape="poly" id="edge781_Node000000_Node000007" title=" " alt="" coords="59,203,85,230,117,254,157,269,155,274,115,258,82,234,55,207"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1WeightedVector.html" title=" " alt="" coords="127,317,289,342"/>
+<area shape="poly" id="edge783_Node000000_Node000009" title=" " alt="" coords="50,206,76,256,94,282,118,303,138,314,135,319,114,307,91,285,71,259,45,208"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1FunctorLookUp.html" title="Values are available from [0,2PI]." alt="" coords="348,218,521,243"/>
+<area shape="poly" id="edge780_Node000005_Node000006" title=" " alt="" coords="281,228,348,228,348,233,281,233"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1Vector.html" title=" " alt="" coords="384,267,485,293"/>
+<area shape="poly" id="edge782_Node000007_Node000008" title=" " alt="" coords="273,277,384,277,384,283,273,283"/>
+</map>

@@ -1,7 +1,11 @@
 <map id="Tray&lt; T &gt;" name="Tray&lt; T &gt;">
-<area shape="rect" id="node1" title="Set of images, usable for general calls of type traverseFrame(src, dst) ." alt="" coords="203,78,289,105"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageTray.html" title=" " alt="" coords="337,5,524,47"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageTray.html" title=" " alt="" coords="342,71,519,112"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageTray.html" title="Container applicable for Channels and Images, with alpha support." alt="" coords="367,137,495,163"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,78,155,105"/>
+<area shape="rect" id="Node000001" title="Set of images, usable for general calls of type traverseFrame(src, dst) ." alt="" coords="203,77,289,102"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ImageTray.html" title=" " alt="" coords="342,5,519,45"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="295,70,336,55,371,43,372,48,338,60,297,75"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1ImageTray.html" title=" " alt="" coords="337,69,524,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="303,87,337,87,337,92,303,92"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1ImageTray.html" title="Container applicable for Channels and Images, with alpha support." alt="" coords="367,134,495,159"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="295,104,338,119,381,131,380,136,337,124,293,109"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,77,155,102"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,87,202,87,202,92,168,92"/>
 </map>

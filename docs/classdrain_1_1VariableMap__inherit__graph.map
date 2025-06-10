@@ -1,5 +1,7 @@
 <map id="VariableMap" name="VariableMap">
-<area shape="rect" id="node1" title="A map of Variables." alt="" coords="57,155,160,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,80,195,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,5,212,32"/>
+<area shape="rect" id="Node000001" title="A map of Variables." alt="" coords="57,152,160,177"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,79,195,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,118,111,152,106,152,106,118"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,5,212,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="111,44,111,79,106,79,106,44"/>
 </map>

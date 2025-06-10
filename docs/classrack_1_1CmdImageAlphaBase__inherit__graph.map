@@ -1,9 +1,15 @@
 <map id="CmdImageAlphaBase" name="CmdImageAlphaBase">
-<area shape="rect" id="node1" title=" " alt="" coords="68,304,231,331"/>
-<area shape="rect" id="node6" href="$classrack_1_1CmdImageAlpha.html" title=" " alt="" coords="5,379,136,405"/>
-<area shape="rect" id="node7" href="$classrack_1_1CmdImageTransp.html" title=" " alt="" coords="161,379,295,405"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="87,229,211,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="44,155,255,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="105,80,194,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="103,5,196,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="68,299,231,324"/>
+<area shape="rect" id="Node000006" href="$classrack_1_1CmdImageAlpha.html" title=" " alt="" coords="5,372,136,397"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="128,335,85,374,82,370,125,331"/>
+<area shape="rect" id="Node000007" href="$classrack_1_1CmdImageTransp.html" title=" " alt="" coords="161,372,295,397"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="174,331,217,370,213,374,170,335"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="87,225,211,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,264,152,299,147,299,147,264"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="44,152,255,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="152,191,152,225,147,225,147,191"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="105,79,194,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="152,118,152,152,147,152,147,118"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="103,5,196,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="152,44,152,79,147,79,147,44"/>
 </map>

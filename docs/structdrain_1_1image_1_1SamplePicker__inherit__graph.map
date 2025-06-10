@@ -1,9 +1,15 @@
 <map id="SamplePicker" name="SamplePicker">
-<area shape="rect" id="node1" title="Interprets data values for Sampler." alt="" coords="5,93,116,120"/>
-<area shape="rect" id="node2" href="$classrack_1_1RadarDataPicker.html" title=" " alt="" coords="164,5,393,32"/>
-<area shape="rect" id="node4" href="$classrack_1_1RadarDataPicker.html" title=" " alt="" coords="175,57,382,98"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1ImageReader.html" title="Reads image channels, returning scaled (physical) values." alt="" coords="224,123,333,149"/>
-<area shape="rect" id="node7" href="$classrack_1_1RadarDataPicker.html" title="Base class for utilities traversing radar data with Sampler." alt="" coords="189,173,369,200"/>
-<area shape="rect" id="node3" href="$classrack_1_1PolarDataPicker.html" title=" " alt="" coords="456,5,581,32"/>
-<area shape="rect" id="node5" href="$classrack_1_1CartesianDataPicker.html" title=" " alt="" coords="441,64,596,91"/>
+<area shape="rect" id="Node000001" title="Interprets data values for Sampler." alt="" coords="5,95,116,121"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1RadarDataPicker.html" title=" " alt="" coords="175,5,382,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,87,163,56,202,43,203,48,165,61,98,92"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1RadarDataPicker.html" title=" " alt="" coords="164,70,393,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="129,97,169,93,170,98,130,103"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1ImageReader.html" title="Reads image channels, returning scaled (physical) values." alt="" coords="224,119,333,145"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="130,113,224,123,223,129,130,118"/>
+<area shape="rect" id="Node000007" href="$classrack_1_1RadarDataPicker.html" title="Base class for utilities traversing radar data with Sampler." alt="" coords="189,169,369,194"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="97,125,165,155,205,166,203,171,163,160,95,130"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1CartesianDataPicker.html" title=" " alt="" coords="441,13,596,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="396,23,441,23,441,28,396,28"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1PolarDataPicker.html" title=" " alt="" coords="456,70,581,95"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="407,80,456,80,456,85,407,85"/>
 </map>

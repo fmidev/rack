@@ -1,11 +1,26 @@
 <map id="DistanceOp" name="DistanceOp">
-<area shape="rect" id="node1" title="Computes the distance between intensity vectors." alt="" coords="67,641,164,668"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="28,551,203,592"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="59,475,171,501"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="75,399,156,425"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="70,323,161,349"/>
-<area shape="rect" id="node6" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,247,156,273"/>
-<area shape="rect" id="node7" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,157,173,184"/>
-<area shape="rect" id="node8" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,208,108"/>
-<area shape="rect" id="node9" title=" " alt="" coords="5,5,225,32"/>
+<area shape="rect" id="Node000001" title="Computes the distance between intensity vectors." alt="" coords="87,644,185,669"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="49,555,223,595"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,608,139,644,133,644,133,608"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="5,467,117,492"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="81,501,123,553,119,556,77,504"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="43,392,125,417"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="79,432,68,467,62,466,74,430"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="51,317,141,343"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="94,357,89,392,83,391,89,356"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="107,243,189,268"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="134,281,107,319,102,315,129,278"/>
+<area shape="rect" id="Node000012" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="170,317,241,343"/>
+<area shape="poly" id="edge12_Node000012_Node000006" title=" " alt="" coords="168,277,198,315,194,319,164,281"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="90,155,206,180"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="151,194,151,242,145,242,145,194"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="55,80,241,105"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="151,120,151,154,145,154,145,120"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="38,5,258,31"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="151,45,151,80,145,80,145,45"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1SubtractionFunctor.html" title="Subtracts image from another image." alt="" coords="141,467,285,492"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="197,504,154,556,150,553,193,501"/>
+<area shape="rect" id="Node000011" href="$classdrain_1_1BinaryFunctor.html" title=" " alt="" coords="153,392,265,417"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="213,431,215,466,210,466,208,432"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="209,357,211,392,206,392,204,357"/>
 </map>

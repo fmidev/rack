@@ -1,5 +1,7 @@
 <map id="DataGroup&lt; DT, G &gt;" name="DataGroup&lt; DT, G &gt;">
-<area shape="rect" id="node1" title="A map of &quot;data type&quot; group_t (DATA or QUALITY) where the data can be retrieved using quantity keys (s..." alt="" coords="153,80,311,107"/>
-<area shape="rect" id="node2" href="$classrack_1_1TreeWrapper.html" title=" " alt="" coords="5,5,235,32"/>
-<area shape="rect" id="node3" title=" " alt="" coords="259,5,431,32"/>
+<area shape="rect" id="Node000001" title="A map of &quot;data type&quot; group_t (DATA or QUALITY) where the data can be retrieved using quantity keys (s..." alt="" coords="153,79,311,104"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1TreeWrapper.html" title=" " alt="" coords="5,5,235,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,36,215,76,212,81,148,40"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="259,5,431,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="317,40,252,81,249,76,314,36"/>
 </map>

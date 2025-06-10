@@ -1,5 +1,7 @@
 <map id="EnumDict&lt; E, OWNER &gt;" name="EnumDict&lt; E, OWNER &gt;">
-<area shape="rect" id="node1" title="Wrapper for unique (static) dictionary of enum values." alt="" coords="5,185,187,212"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="23,96,169,123"/>
-<area shape="rect" id="node3" title=" " alt="" coords="27,5,165,47"/>
+<area shape="rect" id="Node000001" title="Wrapper for unique (static) dictionary of enum values." alt="" coords="5,183,187,208"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="23,95,169,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,134,99,182,93,182,93,134"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="27,5,165,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="99,59,99,94,93,94,93,59"/>
 </map>

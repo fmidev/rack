@@ -1,8 +1,13 @@
 <map id="SlidingWindowMedian" name="SlidingWindowMedian">
-<area shape="rect" id="node1" title=" " alt="" coords="32,408,199,435"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="22,319,209,360"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="5,229,225,271"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="50,155,181,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="63,80,167,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="47,5,183,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="15,387,182,412"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="5,299,192,339"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,352,101,386,96,386,96,352"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1SlidingWindow.html" title="Window implementation that uses incremental update of state." alt="" coords="11,225,186,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="101,264,101,299,96,299,96,264"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="33,152,164,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="101,191,101,225,96,225,96,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="47,79,151,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="101,118,101,152,96,152,96,118"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="31,5,167,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="101,44,101,79,96,79,96,44"/>
 </map>

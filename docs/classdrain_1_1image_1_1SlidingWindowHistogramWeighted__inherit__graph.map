@@ -1,9 +1,15 @@
 <map id="SlidingWindowHistogramWeighted" name="SlidingWindowHistogramWeighted">
-<area shape="rect" id="node1" title=" " alt="" coords="5,408,252,435"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1SlidingWindowMedianWeighted.html" title=" " alt="" coords="15,483,242,509"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="31,319,226,360"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title="Window implementation that uses incremental update of state." alt="" coords="41,244,216,271"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="35,155,222,196"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="77,80,181,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="61,5,197,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,387,252,412"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1SlidingWindowMedianWeighted.html" title=" " alt="" coords="15,460,242,485"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="131,426,131,460,126,460,126,426"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="31,299,226,339"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,352,131,386,126,386,126,352"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1SlidingWindow.html" title="Window implementation that uses incremental update of state." alt="" coords="41,225,216,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="131,264,131,299,126,299,126,264"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="63,152,194,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="131,191,131,225,126,225,126,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="77,79,181,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="131,118,131,152,126,152,126,118"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="61,5,197,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="131,44,131,79,126,79,126,44"/>
 </map>

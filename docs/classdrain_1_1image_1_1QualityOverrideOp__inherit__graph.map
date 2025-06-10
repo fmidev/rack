@@ -1,7 +1,11 @@
 <map id="QualityOverrideOp" name="QualityOverrideOp">
-<area shape="rect" id="node1" title="Overwrites pixels of destination image in locations where destination weight is lower." alt="" coords="5,304,148,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1QualityOp.html" title=" " alt="" coords="33,229,120,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="36,155,117,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="31,80,122,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="36,5,117,32"/>
+<area shape="rect" id="Node000001" title="Overwrites pixels of destination image in locations where destination weight is lower." alt="" coords="5,299,148,324"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1QualityOp.html" title=" " alt="" coords="33,225,120,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,264,79,299,74,299,74,264"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="36,152,117,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="79,191,79,225,74,225,74,191"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="31,79,122,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="79,118,79,152,74,152,74,118"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="36,5,117,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="79,44,79,79,74,79,74,44"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="SprinterLayout" name="SprinterLayout">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,123,32"/>
-<area shape="rect" id="node2" href="$classdrain_1_1DotLayout.html" title=" " alt="" coords="19,80,109,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,123,31"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1DotLayout.html" title=" " alt="" coords="19,79,109,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,44,67,79,61,79,61,44"/>
 </map>

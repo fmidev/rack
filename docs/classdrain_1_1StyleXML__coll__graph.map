@@ -1,11 +1,20 @@
 <map id="StyleXML" name="StyleXML">
-<area shape="rect" id="node1" title=" " alt="" coords="93,529,176,556"/>
-<area shape="rect" id="node2" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,411,264,437"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,248,247,275"/>
-<area shape="rect" id="node4" title=" " alt="" coords="39,157,230,199"/>
-<area shape="rect" id="node5" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="288,411,405,437"/>
-<area shape="rect" id="node6" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="299,248,395,275"/>
-<area shape="rect" id="node7" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="283,165,411,191"/>
-<area shape="rect" id="node8" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="271,81,423,108"/>
-<area shape="rect" id="node9" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="275,5,419,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="93,508,176,533"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,391,264,416"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,430,128,471,132,508,126,508,123,471,124,429"/>
+<area shape="poly" id="edge4_Node000001_Node000002" title=" " alt="" coords="145,429,146,471,143,508,138,508,141,471,140,430"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="71,229,198,255"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="137,268,137,390,132,390,132,268"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="53,155,216,180"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="137,194,137,229,132,229,132,194"/>
+<area shape="rect" id="Node000005" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="288,391,405,416"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="315,425,157,510,154,506,312,420"/>
+<area shape="rect" id="Node000006" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="299,229,395,255"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="349,268,349,390,344,390,344,268"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="283,155,411,180"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="349,194,349,229,344,229,344,194"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="271,80,423,105"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="349,120,349,154,344,154,344,120"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="275,5,419,31"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="349,45,349,80,344,80,344,45"/>
 </map>

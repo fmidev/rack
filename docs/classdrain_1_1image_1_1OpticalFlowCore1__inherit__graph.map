@@ -1,5 +1,9 @@
 <map id="OpticalFlowCore1" name="OpticalFlowCore1">
-<area shape="rect" id="node1" title=" " alt="" coords="5,155,143,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1OpticalFlowCore.html" title=" " alt="" coords="9,80,139,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="6,5,142,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="42,152,179,177"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="5,225,216,265"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="113,191,113,225,108,225,108,191"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1OpticalFlowCore.html" title=" " alt="" coords="46,79,175,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,118,113,152,108,152,108,118"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="43,5,179,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="113,44,113,79,108,79,108,44"/>
 </map>

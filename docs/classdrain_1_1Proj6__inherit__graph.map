@@ -1,5 +1,7 @@
 <map id="Proj6" name="Proj6">
-<area shape="rect" id="node1" title=" " alt="" coords="77,5,131,32"/>
-<area shape="rect" id="node2" href="$classrack_1_1RadarProj.html" title=" " alt="" coords="5,80,91,107"/>
-<area shape="rect" id="node3" href="$classrack_1_1RadarProj4.html" title=" " alt="" coords="115,80,208,107"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="77,5,131,31"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1RadarProj.html" title=" " alt="" coords="5,79,91,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,43,59,80,55,77,84,40"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1RadarProj4.html" title=" " alt="" coords="115,79,208,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="124,40,154,77,150,80,120,43"/>
 </map>

@@ -1,10 +1,14 @@
 <map id="BBoxSVG" name="BBoxSVG">
-<area shape="rect" id="node1" title=" " alt="" coords="142,304,225,331"/>
-<area shape="rect" id="node2" href="$structdrain_1_1Box.html" title=" " alt="" coords="105,229,261,256"/>
-<area shape="rect" id="node3" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="5,155,188,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="29,80,164,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="25,5,168,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Frame2D.html" title="Something that has width and height." alt="" coords="212,155,331,181"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="205,80,337,107"/>
-<area shape="rect" id="node8" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="199,5,343,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="89,299,171,324"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1Box.html" title=" " alt="" coords="52,225,208,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,264,133,299,127,299,127,264"/>
+<area shape="rect" id="Node000003" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="5,152,116,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="83,185,121,223,117,227,80,189"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="64,79,196,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="111,116,74,154,70,150,107,112"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1Frame2D.html" title="Something that has width and height." alt="" coords="140,152,259,177"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="153,112,190,150,186,154,149,116"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="58,5,202,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="133,44,133,79,127,79,127,44"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="180,189,143,227,139,223,177,185"/>
 </map>

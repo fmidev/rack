@@ -1,6 +1,9 @@
 <map id="StringMapper" name="StringMapper">
-<area shape="rect" id="node1" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="145,95,254,121"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,132,32"/>
-<area shape="rect" id="node3" href="$classdrain_1_1IosFormat.html" title="Stores precision, fillChar and fieldWidth applied by STD streams." alt="" coords="156,5,243,32"/>
-<area shape="rect" id="node4" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="267,5,337,32"/>
+<area shape="rect" id="Node000001" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="145,93,254,119"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,132,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,36,183,91,180,95,96,40"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1IosFormat.html" title="Stores precision, fillChar and fieldWidth applied by STD streams." alt="" coords="156,5,243,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="202,45,202,93,197,93,197,45"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="267,5,337,31"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="294,45,275,71,255,85,234,96,232,91,252,81,271,67,290,42"/>
 </map>

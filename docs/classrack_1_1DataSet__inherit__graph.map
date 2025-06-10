@@ -1,7 +1,11 @@
 <map id="DataSet&lt; DT &gt;" name="DataSet&lt; DT &gt;">
-<area shape="rect" id="node1" title="A map of radar data, indexed by quantity code (DBZH, VRAD, etc)." alt="" coords="269,184,392,211"/>
-<area shape="rect" id="node2" href="$classrack_1_1DataGroup.html" title=" " alt="" coords="133,95,331,136"/>
-<area shape="rect" id="node3" href="$classrack_1_1TreeWrapper.html" title=" " alt="" coords="5,13,235,39"/>
-<area shape="rect" id="node4" title=" " alt="" coords="259,5,429,47"/>
-<area shape="rect" id="node5" href="$classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="355,95,506,136"/>
+<area shape="rect" id="Node000001" title="A map of radar data, indexed by quantity code (DBZH, VRAD, etc)." alt="" coords="269,181,392,207"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1DataGroup.html" title=" " alt="" coords="133,93,331,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="268,140,318,179,314,183,265,144"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1TreeWrapper.html" title=" " alt="" coords="5,13,235,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="148,45,209,91,206,95,145,49"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="259,5,429,45"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="310,56,258,95,255,91,306,52"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet" alt="" coords="355,93,506,133"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="397,144,347,183,344,179,394,140"/>
 </map>

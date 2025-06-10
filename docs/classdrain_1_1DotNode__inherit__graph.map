@@ -1,6 +1,9 @@
 <map id="DotNode" name="DotNode">
-<area shape="rect" id="node1" title=" " alt="" coords="65,80,144,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1DotBullit.html" title=" " alt="" coords="5,155,84,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1DotRankNode.html" title=" " alt="" coords="109,155,221,181"/>
-<area shape="rect" id="node2" href="$classdrain_1_1DotEntity.html" title=" " alt="" coords="63,5,146,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="65,79,144,104"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1DotBullit.html" title=" " alt="" coords="5,152,84,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="88,116,56,154,52,150,84,113"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1DotRankNode.html" title=" " alt="" coords="109,152,221,177"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="125,113,157,150,153,154,121,116"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1DotEntity.html" title=" " alt="" coords="63,5,146,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,44,107,79,102,79,102,44"/>
 </map>

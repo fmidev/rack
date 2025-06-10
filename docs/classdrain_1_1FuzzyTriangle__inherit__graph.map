@@ -1,7 +1,11 @@
 <map id="FuzzyTriangle&lt; T &gt;" name="FuzzyTriangle&lt; T &gt;">
-<area shape="rect" id="node1" title="A basic triangular peak function with linear around the peak." alt="" coords="5,304,153,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor." alt="" coords="22,229,137,256"/>
-<area shape="rect" id="node3" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="25,155,134,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="44,80,115,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="39,5,120,32"/>
+<area shape="rect" id="Node000001" title="A basic triangular peak function with linear around the peak." alt="" coords="5,299,153,324"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor." alt="" coords="22,225,137,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,264,82,299,77,299,77,264"/>
+<area shape="rect" id="Node000003" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="25,152,134,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="82,191,82,225,77,225,77,191"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="44,79,115,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="82,118,82,152,77,152,77,118"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="39,5,120,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="82,44,82,79,77,79,77,44"/>
 </map>

@@ -1,8 +1,17 @@
 <map id="Histogram" name="Histogram">
-<area shape="rect" id="node1" title="Class for computing a histogram and some statistics: average, min, max, mean, std...." alt="" coords="73,336,164,363"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,247,189,273"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="214,247,319,273"/>
-<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="161,81,329,108"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Range.html" title=" " alt="" coords="267,157,405,184"/>
-<area shape="rect" id="node5" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="173,5,317,32"/>
+<area shape="rect" id="Node000001" title="Class for computing a histogram and some statistics: average, min, max, mean, std...." alt="" coords="73,331,164,356"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,243,189,268"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,281,118,329,113,331,101,282"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="214,243,319,268"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="236,277,140,333,137,328,234,273"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="77,155,245,180"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="188,187,254,240,251,244,184,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="89,80,233,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="164,120,164,154,159,154,159,120"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1Range.html" title=" " alt="" coords="270,155,407,180"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="322,192,279,244,275,240,318,189"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="271,80,406,105"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="341,120,341,154,336,154,336,120"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="267,5,411,31"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="341,45,341,80,336,80,336,45"/>
 </map>

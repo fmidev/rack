@@ -1,0 +1,9 @@
+<map id="FavaBean" name="FavaBean">
+<area shape="rect" id="Node000001" title="BeanLike&#45;like, based on FlexMap." alt="" coords="75,257,160,283"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s." alt="" coords="52,169,183,195"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,209,120,257,115,257,115,209"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="5,95,229,120"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="120,134,120,169,115,169,115,134"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="22,5,213,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="120,59,120,94,115,94,115,59"/>
+</map>

@@ -1,8 +1,13 @@
 <map id="FlowAverageWindowWeighted" name="FlowAverageWindowWeighted">
-<area shape="rect" id="node1" title=" " alt="" coords="11,393,230,420"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1FlowAverageWindow.html" title="Window average that preserves the magnitude." alt="" coords="41,319,200,345"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="5,229,236,271"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="55,155,186,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="69,80,173,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="53,5,189,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="11,387,230,412"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1FlowAverageWindow.html" title="Window average that preserves the magnitude." alt="" coords="41,313,200,339"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,352,123,387,118,387,118,352"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="5,225,236,265"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="123,279,123,313,118,313,118,279"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="55,152,186,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="123,191,123,225,118,225,118,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="69,79,173,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="123,118,123,152,118,152,118,118"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="53,5,189,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="123,44,123,79,118,79,118,44"/>
 </map>

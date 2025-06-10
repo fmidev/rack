@@ -1,10 +1,25 @@
 <map id="CommandBank" name="CommandBank">
-<area shape="rect" id="node1" title="Container and execution tools for commands derived from Command." alt="" coords="159,275,281,301"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BankSuper.html" title=" " alt="" coords="40,185,229,212"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Bank.html" title=" " alt="" coords="41,96,151,123"/>
-<area shape="rect" id="node4" title=" " alt="" coords="5,5,187,47"/>
-<area shape="rect" id="node5" href="$classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="303,185,412,212"/>
-<area shape="rect" id="node6" title=" " alt="" coords="175,96,302,123"/>
-<area shape="rect" id="node7" href="$classdrain_1_1IosFormat.html" title="Stores precision, fillChar and fieldWidth applied by STD streams." alt="" coords="326,96,413,123"/>
-<area shape="rect" id="node8" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="437,96,507,123"/>
+<area shape="rect" id="Node000001" title="Container and execution tools for commands derived from Command." alt="" coords="844,194,967,219"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BankSuper.html" title=" " alt="" coords="513,110,703,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="668,137,860,191,859,196,666,142"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Bank.html" title=" " alt="" coords="261,15,371,41"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="372,42,490,80,571,107,569,112,488,85,370,47"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,5,187,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="200,24,260,25,260,30,200,29"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="245,69,387,109"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="401,96,514,109,513,115,401,102"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="22,69,170,109"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="184,87,244,87,244,92,184,92"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="236,133,396,173"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="409,144,489,136,517,133,517,138,490,141,410,149"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="17,133,175,173"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="189,151,236,151,236,156,189,156"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="553,222,663,247"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="676,227,820,215,844,212,844,217,820,220,677,233"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="253,198,379,223"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="393,214,553,228,553,233,393,220"/>
+<area shape="rect" id="Node000011" href="$classdrain_1_1IosFormat.html" title="Stores precision, fillChar and fieldWidth applied by STD streams." alt="" coords="273,247,359,273"/>
+<area shape="poly" id="edge10_Node000009_Node000011" title=" " alt="" coords="372,252,553,237,553,242,373,258"/>
+<area shape="rect" id="Node000012" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="281,297,351,322"/>
+<area shape="poly" id="edge11_Node000009_Node000012" title=" " alt="" coords="364,296,489,267,565,245,566,250,490,272,365,302"/>
 </map>

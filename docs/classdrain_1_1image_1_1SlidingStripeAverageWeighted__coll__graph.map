@@ -1,9 +1,19 @@
 <map id="SlidingStripeAverageWeighted&lt; SW &gt;" name="SlidingStripeAverageWeighted&lt; SW &gt;">
-<area shape="rect" id="node1" title="Stripe window for computing weight averages." alt="" coords="5,427,224,468"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingStripeAverage.html" title="Stripe window for computing averages." alt="" coords="36,336,193,377"/>
-<area shape="rect" id="node3" title=" " alt="" coords="72,247,115,273"/>
-<area shape="rect" id="node4" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="139,247,245,273"/>
-<area shape="rect" id="node5" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="87,81,255,108"/>
-<area shape="rect" id="node7" href="$classdrain_1_1Range.html" title=" " alt="" coords="193,157,330,184"/>
-<area shape="rect" id="node6" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="99,5,243,32"/>
+<area shape="rect" id="Node000001" title="Stripe window for computing weight averages." alt="" coords="8,420,227,460"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1SlidingStripeAverage.html" title="Stripe window for computing averages." alt="" coords="39,331,196,371"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,385,120,420,115,420,115,385"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="75,243,117,268"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="104,281,116,330,110,331,99,282"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="142,243,247,268"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="179,280,135,332,131,329,174,277"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,155,173,180"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="116,187,182,240,179,244,112,191"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="17,80,161,105"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="92,120,92,154,87,154,87,120"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1Range.html" title=" " alt="" coords="198,155,335,180"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="250,192,207,244,203,240,246,189"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="199,80,334,105"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="269,120,269,154,264,154,264,120"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="195,5,339,31"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="269,45,269,80,264,80,264,45"/>
 </map>

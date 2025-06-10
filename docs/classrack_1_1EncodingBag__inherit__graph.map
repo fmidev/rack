@@ -1,10 +1,17 @@
 <map id="EncodingBag" name="EncodingBag">
-<area shape="rect" id="node1" title="Utility. Consider long names, and then addShortKeys()" alt="" coords="62,453,169,480"/>
-<area shape="rect" id="node8" href="$classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="60,528,171,555"/>
-<area shape="rect" id="node2" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products)." alt="" coords="70,379,161,405"/>
-<area shape="rect" id="node3" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)" alt="" coords="86,304,145,331"/>
-<area shape="rect" id="node4" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="57,229,174,256"/>
-<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,155,173,181"/>
-<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,80,208,107"/>
-<area shape="rect" id="node7" title=" " alt="" coords="5,5,225,32"/>
+<area shape="rect" id="Node000001" title="Utility. Consider long names, and then addShortKeys()" alt="" coords="62,445,169,471"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="60,519,171,544"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="118,484,118,519,113,519,113,484"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products)." alt="" coords="70,372,161,397"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,411,118,445,113,445,113,411"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)" alt="" coords="86,299,145,324"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="118,338,118,372,113,372,113,338"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1EncodingODIM.html" title="Structure for data storage type, scaling and marker codes. Does not contain quantity." alt="" coords="57,225,174,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="118,264,118,299,113,299,113,264"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,152,173,177"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="118,191,118,225,113,225,113,191"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,79,208,104"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="118,118,118,152,113,152,113,118"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="5,5,225,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="118,44,118,79,113,79,113,44"/>
 </map>

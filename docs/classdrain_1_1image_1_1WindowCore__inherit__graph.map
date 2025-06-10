@@ -1,51 +1,99 @@
 <map id="WindowCore" name="WindowCore">
-<area shape="rect" id="node1" title="Container for source and target images, and their setters." alt="" coords="189,186,293,213"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="365,71,552,112"/>
-<area shape="rect" id="node10" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="341,153,576,195"/>
-<area shape="rect" id="node14" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title=" " alt="" coords="376,229,541,255"/>
-<area shape="rect" id="node18" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="393,509,524,535"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="5,186,141,213"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="629,8,859,49"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1SlidingWindow.html" title="Window implementation that uses incremental update of state." alt="" coords="657,78,831,105"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1SlidingStripe.html" title="A horizontal, one&#45;dimensional SlidingWindow (Nx1)." alt="" coords="950,5,1099,47"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="927,71,1122,112"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1SlidingWindowHistogramWeighted.html" title=" " alt="" coords="1185,78,1432,105"/>
-<area shape="rect" id="node9" href="$classdrain_1_1image_1_1SlidingWindowMedianWeighted.html" title=" " alt="" coords="1485,78,1711,105"/>
-<area shape="rect" id="node11" href="$classdrain_1_1image_1_1GaussianStripe.html" title=" " alt="" coords="649,135,839,162"/>
-<area shape="rect" id="node12" href="$classdrain_1_1image_1_1GaussianStripeWeighted.html" title=" " alt="" coords="934,136,1115,177"/>
-<area shape="rect" id="node13" href="$classrack_1_1GaussianStripeVertPolarWeighted.html" title=" " alt="" coords="1189,143,1429,170"/>
-<area shape="rect" id="node15" href="$classdrain_1_1image_1_1MultiChannelWindowCore.html" title=" " alt="" coords="649,186,839,213"/>
-<area shape="rect" id="node16" href="$classrack_1_1EtopWindowCore.html" title=" " alt="" coords="677,237,811,263"/>
-<area shape="rect" id="node17" href="$classrack_1_1RadarWindowCore.html" title=" " alt="" coords="673,287,815,314"/>
-<area shape="rect" id="node19" href="$classdrain_1_1image_1_1GaussianStripe.html" title=" " alt="" coords="652,339,836,380"/>
-<area shape="rect" id="node21" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="629,404,859,445"/>
-<area shape="rect" id="node24" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="624,469,864,511"/>
-<area shape="rect" id="node36" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="633,535,855,576"/>
-<area shape="rect" id="node38" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="639,600,849,641"/>
-<area shape="rect" id="node42" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="634,711,854,752"/>
-<area shape="rect" id="node46" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="639,828,849,869"/>
-<area shape="rect" id="node20" href="$classdrain_1_1image_1_1GaussianStripeWeighted.html" title=" " alt="" coords="934,293,1115,335"/>
-<area shape="rect" id="node22" href="$classdrain_1_1image_1_1FlowAverageWindow.html" title="Window average that preserves the magnitude." alt="" coords="945,359,1104,386"/>
-<area shape="rect" id="node23" href="$classdrain_1_1image_1_1FlowAverageWindowWeighted.html" title=" " alt="" coords="1199,330,1418,357"/>
-<area shape="rect" id="node25" href="$classrack_1_1SlidingRadarWindowBase.html" title=" " alt="" coords="930,411,1119,452"/>
-<area shape="rect" id="node30" href="$classrack_1_1SlidingRadarWindowBase.html" title="A two&#45;dimensional image processing window that handles the special ODIM codes and scales the result...." alt="" coords="931,476,1119,517"/>
-<area shape="rect" id="node26" href="$classrack_1_1SlidingRadarWindow.html" title=" " alt="" coords="1231,381,1387,423"/>
-<area shape="rect" id="node27" href="$classrack_1_1RadarWindowAvg.html" title=" " alt="" coords="1511,306,1685,333"/>
-<area shape="rect" id="node28" href="$classrack_1_1RadarWindowSoftMax.html" title=" " alt="" coords="1496,357,1700,383"/>
-<area shape="rect" id="node29" href="$classrack_1_1RadarWindowWeightedAvg.html" title=" " alt="" coords="1480,407,1716,434"/>
-<area shape="rect" id="node31" href="$classrack_1_1SlidingRadarWindow.html" title=" " alt="" coords="1217,447,1400,488"/>
-<area shape="rect" id="node33" href="$classrack_1_1SlidingRadarWindow.html" title=" " alt="" coords="1211,513,1406,539"/>
-<area shape="rect" id="node35" href="$classrack_1_1SlidingRadarWindow.html" title=" " alt="" coords="1207,564,1411,605"/>
-<area shape="rect" id="node32" href="$classrack_1_1DopplerWindow.html" title=" " alt="" coords="1535,458,1661,485"/>
-<area shape="rect" id="node34" href="$classrack_1_1RadarWindowStdDev.html" title="Sliding window for computing standard deviation of scalar quantities." alt="" coords="1499,513,1697,539"/>
-<area shape="rect" id="node37" href="$classrack_1_1Etop2Window.html" title=" " alt="" coords="969,542,1080,569"/>
-<area shape="rect" id="node39" href="$classdrain_1_1image_1_1SlidingOpticalFlow2.html" title=" " alt="" coords="941,593,1108,635"/>
-<area shape="rect" id="node41" href="$classdrain_1_1image_1_1SlidingOpticalFlow2.html" title="Currently not in use. See SlidingOpticalFlowWeighted2 below." alt="" coords="929,659,1120,686"/>
-<area shape="rect" id="node40" href="$classdrain_1_1image_1_1SlidingOpticalFlowWeighted2.html" title=" " alt="" coords="1203,630,1415,657"/>
-<area shape="rect" id="node43" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="931,711,1118,752"/>
-<area shape="rect" id="node45" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title="Base class for median and str histogram based statistics." alt="" coords="912,777,1137,803"/>
-<area shape="rect" id="node44" href="$classdrain_1_1image_1_1SlidingWindowMedian.html" title=" " alt="" coords="1225,718,1392,745"/>
-<area shape="rect" id="node47" href="$classdrain_1_1image_1_1SlidingOpticalFlow.html" title=" " alt="" coords="941,828,1108,869"/>
-<area shape="rect" id="node49" href="$classdrain_1_1image_1_1SlidingOpticalFlow.html" title=" " alt="" coords="933,894,1116,921"/>
-<area shape="rect" id="node48" href="$classdrain_1_1image_1_1SlidingOpticalFlowWeighted.html" title=" " alt="" coords="1207,835,1411,862"/>
+<area shape="rect" id="Node000001" title="Container for source and target images, and their setters." alt="" coords="189,141,293,166"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="351,5,586,45"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="259,128,294,90,340,55,366,43,368,48,343,60,297,94,263,131"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="375,69,562,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="292,134,341,119,384,107,386,112,342,124,294,139"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="341,133,596,173"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="307,151,341,151,341,156,307,156"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1WeightedWindowCore.html" title=" " alt="" coords="386,198,551,223"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="292,168,342,183,397,195,396,200,341,188,290,173"/>
+<area shape="rect" id="Node000013" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="403,749,534,774"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="255,178,465,747,460,749,250,180"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="5,141,141,166"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,151,189,151,189,156,155,156"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="654,44,889,84"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="563,199,594,183,605,173,611,163,618,140,624,117,642,94,662,82,665,86,646,98,629,119,623,142,616,165,609,177,598,188,566,204"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="644,108,899,148"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="562,192,595,183,619,171,643,159,684,146,685,151,645,164,621,176,597,188,564,197"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1image_1_1MultiChannelWindowCore.html" title=" " alt="" coords="676,173,867,198"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="565,200,675,191,676,196,565,205"/>
+<area shape="rect" id="Node000011" href="$classrack_1_1EtopWindowCore.html" title=" " alt="" coords="705,222,838,247"/>
+<area shape="poly" id="edge10_Node000006_Node000011" title=" " alt="" coords="566,216,705,227,704,232,565,221"/>
+<area shape="rect" id="Node000012" href="$classrack_1_1RadarWindowCore.html" title=" " alt="" coords="700,271,843,297"/>
+<area shape="poly" id="edge11_Node000006_Node000012" title=" " alt="" coords="525,225,645,257,700,269,699,274,643,263,523,230"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="975,165,1185,205"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="880,183,975,183,975,188,880,188"/>
+<area shape="rect" id="Node000014" href="$classdrain_1_1image_1_1GaussianStripe.html" title=" " alt="" coords="679,321,863,361"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="471,735,486,662,517,564,539,511,567,460,601,413,642,371,678,351,680,356,646,375,606,416,572,463,544,514,522,566,491,664,476,736"/>
+<area shape="rect" id="Node000015" href="$classdrain_1_1image_1_1GaussianStripe.html" title=" " alt="" coords="679,385,863,425"/>
+<area shape="poly" id="edge14_Node000013_Node000015" title=" " alt="" coords="474,735,492,673,526,592,548,549,575,507,606,469,642,435,678,416,680,421,646,440,610,472,579,510,553,552,530,594,497,675,479,736"/>
+<area shape="rect" id="Node000018" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="656,449,887,489"/>
+<area shape="poly" id="edge17_Node000013_Node000018" title=" " alt="" coords="477,735,499,685,535,621,582,555,611,525,642,499,664,487,666,492,646,504,615,529,586,558,539,624,504,687,482,737"/>
+<area shape="rect" id="Node000021" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="666,513,877,553"/>
+<area shape="poly" id="edge20_Node000013_Node000021" title=" " alt="" coords="482,735,508,697,545,650,590,603,643,563,667,551,669,556,645,568,594,607,549,654,513,700,487,738"/>
+<area shape="rect" id="Node000022" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="666,577,877,617"/>
+<area shape="poly" id="edge21_Node000013_Node000022" title=" " alt="" coords="491,737,556,682,598,652,643,627,673,615,675,620,645,632,601,657,560,686,495,741"/>
+<area shape="rect" id="Node000023" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="656,641,887,681"/>
+<area shape="poly" id="edge22_Node000013_Node000023" title=" " alt="" coords="511,741,643,691,684,679,686,684,645,696,513,746"/>
+<area shape="rect" id="Node000024" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="661,705,881,745"/>
+<area shape="poly" id="edge23_Node000013_Node000024" title=" " alt="" coords="547,749,661,736,661,741,548,755"/>
+<area shape="rect" id="Node000025" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="653,770,889,825"/>
+<area shape="poly" id="edge24_Node000013_Node000025" title=" " alt="" coords="548,768,653,781,653,786,547,773"/>
+<area shape="rect" id="Node000026" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="649,849,893,889"/>
+<area shape="poly" id="edge25_Node000013_Node000026" title=" " alt="" coords="509,778,572,806,645,835,684,847,683,852,643,840,570,811,507,782"/>
+<area shape="rect" id="Node000027" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="660,913,883,953"/>
+<area shape="poly" id="edge26_Node000013_Node000027" title=" " alt="" coords="494,782,558,841,600,872,645,899,674,911,672,916,643,904,597,877,555,845,490,786"/>
+<area shape="rect" id="Node000028" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="660,977,883,1017"/>
+<area shape="poly" id="edge27_Node000013_Node000028" title=" " alt="" coords="486,785,512,824,548,873,593,922,645,963,669,975,666,979,643,968,589,926,544,876,507,827,482,788"/>
+<area shape="rect" id="Node000030" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="652,1041,891,1081"/>
+<area shape="poly" id="edge29_Node000013_Node000030" title=" " alt="" coords="482,786,504,837,538,903,586,970,614,1001,646,1027,666,1039,663,1044,642,1032,610,1005,582,974,534,906,499,840,477,788"/>
+<area shape="rect" id="Node000031" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="651,1105,891,1145"/>
+<area shape="poly" id="edge30_Node000013_Node000031" title=" " alt="" coords="478,787,497,849,529,932,552,976,578,1018,610,1057,646,1091,664,1103,662,1108,642,1095,606,1061,574,1021,547,978,524,934,492,851,473,788"/>
+<area shape="rect" id="Node000032" href="$classdrain_1_1image_1_1GaussianStripe.html" title=" " alt="" coords="676,1170,867,1195"/>
+<area shape="poly" id="edge31_Node000013_Node000032" title=" " alt="" coords="476,787,490,861,519,962,542,1015,570,1067,604,1115,646,1155,677,1172,675,1177,642,1159,600,1118,565,1070,537,1018,514,964,485,863,471,788"/>
+<area shape="rect" id="Node000034" href="$classdrain_1_1image_1_1SlidingWindow.html" title="Window implementation that uses incremental update of state." alt="" coords="684,1549,859,1574"/>
+<area shape="poly" id="edge33_Node000013_Node000034" title=" " alt="" coords="482,786,768,1547,763,1549,477,788"/>
+<area shape="rect" id="Node000016" href="$classdrain_1_1image_1_1GaussianStripeWeighted.html" title=" " alt="" coords="989,385,1171,425"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="877,403,989,403,989,408,877,408"/>
+<area shape="rect" id="Node000017" href="$classrack_1_1GaussianStripeVertPolarWeighted.html" title=" " alt="" coords="1261,393,1501,418"/>
+<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="1184,403,1261,403,1261,408,1184,408"/>
+<area shape="rect" id="Node000019" href="$classdrain_1_1image_1_1FlowAverageWindow.html" title="Window average that preserves the magnitude." alt="" coords="1001,457,1159,482"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="900,467,1001,467,1001,472,900,472"/>
+<area shape="rect" id="Node000020" href="$classdrain_1_1image_1_1FlowAverageWindowWeighted.html" title=" " alt="" coords="1272,457,1491,482"/>
+<area shape="poly" id="edge19_Node000019_Node000020" title=" " alt="" coords="1173,467,1271,467,1271,472,1173,472"/>
+<area shape="rect" id="Node000029" href="$classrack_1_1Etop2Window.html" title=" " alt="" coords="1025,985,1135,1010"/>
+<area shape="poly" id="edge28_Node000028_Node000029" title=" " alt="" coords="896,995,1024,995,1024,1000,896,1000"/>
+<area shape="rect" id="Node000033" href="$classdrain_1_1image_1_1GaussianStripeWeighted.html" title=" " alt="" coords="989,1099,1171,1139"/>
+<area shape="poly" id="edge32_Node000032_Node000033" title=" " alt="" coords="850,1165,898,1155,988,1136,990,1141,899,1160,851,1170"/>
+<area shape="rect" id="Node000035" href="$classdrain_1_1image_1_1SlidingOpticalFlow.html" title=" " alt="" coords="997,1163,1163,1203"/>
+<area shape="poly" id="edge34_Node000034_Node000035" title=" " alt="" coords="775,1535,793,1469,825,1382,847,1335,875,1290,907,1249,945,1213,969,1198,996,1189,997,1194,971,1203,948,1217,911,1252,879,1293,852,1338,830,1384,798,1471,780,1536"/>
+<area shape="rect" id="Node000037" href="$classdrain_1_1image_1_1SlidingOpticalFlow2.html" title=" " alt="" coords="997,1227,1163,1267"/>
+<area shape="poly" id="edge36_Node000034_Node000037" title=" " alt="" coords="779,1534,800,1480,834,1410,882,1338,912,1305,945,1276,969,1263,996,1254,997,1259,972,1268,948,1281,916,1309,887,1341,839,1412,804,1482,783,1536"/>
+<area shape="rect" id="Node000039" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="983,1291,1177,1331"/>
+<area shape="poly" id="edge38_Node000034_Node000039" title=" " alt="" coords="783,1535,807,1493,843,1440,890,1386,916,1361,945,1340,981,1324,984,1328,948,1345,920,1366,894,1390,848,1443,812,1495,787,1538"/>
+<area shape="rect" id="Node000042" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="987,1355,1173,1395"/>
+<area shape="poly" id="edge39_Node000034_Node000042" title=" " alt="" coords="790,1536,855,1471,898,1436,945,1406,985,1389,987,1394,948,1410,901,1440,858,1475,794,1540"/>
+<area shape="rect" id="Node000044" href="$classrack_1_1SlidingRadarWindowBase.html" title=" " alt="" coords="983,1419,1177,1474"/>
+<area shape="poly" id="edge40_Node000034_Node000044" title=" " alt="" coords="811,1540,946,1484,983,1472,985,1477,948,1489,814,1545"/>
+<area shape="rect" id="Node000045" href="$classrack_1_1SlidingRadarWindowBase.html" title=" " alt="" coords="947,1498,1213,1553"/>
+<area shape="poly" id="edge41_Node000034_Node000045" title=" " alt="" coords="872,1547,946,1538,947,1544,873,1552"/>
+<area shape="rect" id="Node000046" href="$classrack_1_1SlidingRadarWindowBase.html" title=" " alt="" coords="986,1577,1174,1617"/>
+<area shape="poly" id="edge42_Node000034_Node000046" title=" " alt="" coords="873,1570,986,1584,985,1589,872,1576"/>
+<area shape="rect" id="Node000047" href="$classrack_1_1SlidingRadarWindowBase.html" title=" " alt="" coords="985,1641,1175,1681"/>
+<area shape="poly" id="edge43_Node000034_Node000047" title=" " alt="" coords="815,1577,877,1602,947,1627,989,1639,988,1644,946,1632,875,1607,813,1582"/>
+<area shape="rect" id="Node000048" href="$classdrain_1_1image_1_1SlidingOpticalFlow.html" title=" " alt="" coords="989,1706,1171,1731"/>
+<area shape="poly" id="edge44_Node000034_Node000048" title=" " alt="" coords="797,1582,861,1638,903,1667,948,1691,989,1705,988,1710,946,1696,900,1671,858,1642,793,1586"/>
+<area shape="rect" id="Node000049" href="$classdrain_1_1image_1_1SlidingOpticalFlow2.html" title="Currently not in use. See SlidingOpticalFlowWeighted2 below." alt="" coords="985,1755,1175,1781"/>
+<area shape="poly" id="edge45_Node000034_Node000049" title=" " alt="" coords="790,1584,816,1620,852,1663,897,1706,948,1742,986,1756,984,1761,945,1746,894,1711,849,1667,812,1623,786,1587"/>
+<area shape="rect" id="Node000050" href="$classdrain_1_1image_1_1SlidingStripe.html" title="A horizontal, one&#45;dimensional SlidingWindow (Nx1)." alt="" coords="1005,1805,1155,1845"/>
+<area shape="poly" id="edge46_Node000034_Node000050" title=" " alt="" coords="787,1586,811,1631,846,1687,892,1744,919,1769,948,1791,976,1805,1006,1814,1004,1819,974,1810,945,1796,916,1773,888,1747,842,1690,806,1633,782,1588"/>
+<area shape="rect" id="Node000051" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title="Base class for median and str histogram based statistics." alt="" coords="967,1870,1193,1895"/>
+<area shape="poly" id="edge47_Node000034_Node000051" title=" " alt="" coords="782,1586,802,1643,835,1717,858,1755,884,1792,914,1826,948,1855,972,1868,969,1872,945,1860,910,1830,880,1796,853,1758,831,1719,797,1645,777,1588"/>
+<area shape="rect" id="Node000052" href="$classrack_1_1SlidingRadarWindowBase.html" title="A two&#45;dimensional image processing window that handles the special ODIM codes and scales the result...." alt="" coords="986,1920,1174,1960"/>
+<area shape="poly" id="edge48_Node000034_Node000052" title=" " alt="" coords="780,1587,798,1652,830,1739,852,1785,879,1829,911,1870,948,1906,966,1917,987,1926,985,1931,964,1922,945,1910,907,1874,875,1832,847,1787,825,1741,793,1654,775,1588"/>
+<area shape="rect" id="Node000036" href="$classdrain_1_1image_1_1SlidingOpticalFlowWeighted.html" title=" " alt="" coords="1279,1170,1483,1195"/>
+<area shape="poly" id="edge35_Node000035_Node000036" title=" " alt="" coords="1177,1180,1279,1180,1279,1185,1177,1185"/>
+<area shape="rect" id="Node000038" href="$classdrain_1_1image_1_1SlidingOpticalFlowWeighted2.html" title=" " alt="" coords="1275,1234,1487,1259"/>
+<area shape="poly" id="edge37_Node000037_Node000038" title=" " alt="" coords="1177,1244,1275,1244,1275,1249,1177,1249"/>
 </map>

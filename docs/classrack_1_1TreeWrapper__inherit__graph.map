@@ -1,6 +1,9 @@
 <map id="TreeWrapper&lt; DT &gt;" name="TreeWrapper&lt; DT &gt;">
-<area shape="rect" id="node1" title="Base class for all kinds of radar data." alt="" coords="73,5,225,32"/>
-<area shape="rect" id="node2" href="$classrack_1_1PlainData.html" title="Essential class for storing radar data." alt="" coords="5,80,139,107"/>
-<area shape="rect" id="node4" href="$classrack_1_1RootData.html" title="Experimental structure, designed only for accessing root level metadata." alt="" coords="163,80,293,107"/>
-<area shape="rect" id="node3" href="$classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data." alt="" coords="21,155,123,181"/>
+<area shape="rect" id="Node000001" title="Base class for all kinds of radar data." alt="" coords="73,5,225,31"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1PlainData.html" title="Essential class for storing radar data." alt="" coords="5,79,139,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,42,86,80,83,76,125,38"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1RootData.html" title="Experimental structure, designed only for accessing root level metadata." alt="" coords="163,79,293,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="174,38,217,76,213,80,170,42"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data." alt="" coords="21,152,123,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="75,118,75,152,69,152,69,118"/>
 </map>

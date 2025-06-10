@@ -1,11 +1,20 @@
 <map id="CoordinateHandler2D" name="CoordinateHandler2D">
-<area shape="rect" id="node1" title=" " alt="" coords="201,291,363,317"/>
-<area shape="rect" id="node2" href="$classdrain_1_1Range.html" title=" " alt="" coords="5,179,116,206"/>
-<area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="107,89,241,115"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="141,179,269,206"/>
-<area shape="rect" id="node4" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="103,5,245,32"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="293,179,425,206"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="277,81,441,123"/>
-<area shape="rect" id="node8" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="287,5,431,32"/>
-<area shape="rect" id="node9" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="450,172,605,213"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="247,287,409,312"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,169,160,209"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,212,303,284,301,289,137,217"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="185,177,317,202"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="269,212,322,285,317,288,265,215"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="169,80,333,120"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="253,134,253,176,248,176,248,134"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="179,5,323,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="253,44,253,80,248,80,248,44"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="341,177,469,202"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="391,215,339,288,334,285,387,212"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="391,87,526,113"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="447,126,415,178,410,175,442,123"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1Range.html" title=" " alt="" coords="494,177,605,202"/>
+<area shape="poly" id="edge9_Node000009_Node000007" title=" " alt="" coords="483,121,539,175,535,178,479,125"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="387,5,531,31"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="461,44,461,87,456,87,456,44"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="519,211,414,265,359,289,356,284,412,260,516,206"/>
 </map>

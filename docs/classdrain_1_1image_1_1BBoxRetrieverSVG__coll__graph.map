@@ -1,12 +1,18 @@
 <map id="BBoxRetrieverSVG" name="BBoxRetrieverSVG">
-<area shape="rect" id="node1" title=" " alt="" coords="43,399,185,425"/>
-<area shape="rect" id="node2" href="$classdrain_1_1TreeVisitor.html" title=" " alt="" coords="5,309,180,336"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1BBoxSVG.html" title=" " alt="" coords="205,309,287,336"/>
-<area shape="rect" id="node4" href="$structdrain_1_1Box.html" title=" " alt="" coords="168,233,324,260"/>
-<area shape="rect" id="node5" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="68,157,251,184"/>
-<area shape="rect" id="node6" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="92,81,227,108"/>
-<area shape="rect" id="node7" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="88,5,231,32"/>
-<area shape="rect" id="node8" href="$classdrain_1_1Frame2D.html" title="Something that has width and height." alt="" coords="275,157,393,184"/>
-<area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="268,81,400,108"/>
-<area shape="rect" id="node10" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="262,5,406,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="43,392,185,417"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1TreeVisitor.html" title=" " alt="" coords="5,304,180,329"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,342,114,391,108,392,96,343"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1BBoxSVG.html" title=" " alt="" coords="205,304,287,329"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="218,339,133,394,130,389,215,335"/>
+<area shape="rect" id="Node000004" href="$structdrain_1_1Box.html" title=" " alt="" coords="168,229,324,255"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="249,269,249,304,243,304,243,269"/>
+<area shape="rect" id="Node000005" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="123,155,233,180"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="200,189,237,227,233,231,197,192"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="180,80,312,105"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="227,118,191,156,187,153,224,114"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1Frame2D.html" title="Something that has width and height." alt="" coords="257,155,376,180"/>
+<area shape="poly" id="edge8_Node000008_Node000006" title=" " alt="" coords="269,114,307,152,303,156,265,118"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="174,5,318,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="249,45,249,80,243,80,243,45"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="297,192,259,231,256,227,293,189"/>
 </map>

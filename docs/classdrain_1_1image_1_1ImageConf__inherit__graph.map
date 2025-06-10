@@ -1,9 +1,17 @@
 <map id="ImageConf" name="ImageConf">
-<area shape="rect" id="node1" title="Struct for image (excluding data)" alt="" coords="156,304,249,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1Encoding.html" title=" " alt="" coords="109,229,190,256"/>
-<area shape="rect" id="node3" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="57,155,162,181"/>
-<area shape="rect" id="node4" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,80,173,107"/>
-<area shape="rect" id="node5" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="112,5,256,32"/>
-<area shape="rect" id="node7" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="197,80,360,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="225,229,311,256"/>
+<area shape="rect" id="Node000001" title="Struct for image (excluding data)" alt="" coords="132,299,225,324"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1Encoding.html" title=" " alt="" coords="85,225,166,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,260,172,297,168,300,140,263"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="47,152,153,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="111,189,124,224,119,226,106,191"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="5,79,173,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="96,117,101,151,96,152,90,118"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="17,5,161,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="92,44,92,79,87,79,87,44"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="205,225,291,251"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="229,263,192,300,188,297,225,259"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="183,152,345,177"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="261,191,253,226,248,225,256,190"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="197,79,341,104"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="270,118,268,152,262,152,265,118"/>
 </map>

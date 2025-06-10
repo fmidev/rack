@@ -1,4 +1,5 @@
 <map id="SuperProber" name="SuperProber">
-<area shape="rect" id="node1" title="A DIRECTED recursive method for visiting pixels of a segment in an image." alt="" coords="42,95,143,121"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SegmentProber.html" title=" " alt="" coords="5,5,180,47"/>
+<area shape="rect" id="Node000001" title="A DIRECTED recursive method for visiting pixels of a segment in an image." alt="" coords="42,93,143,119"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1SegmentProber.html" title=" " alt="" coords="5,5,180,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,59,95,93,90,93,90,59"/>
 </map>

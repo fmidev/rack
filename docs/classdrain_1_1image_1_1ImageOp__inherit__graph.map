@@ -1,51 +1,99 @@
 <map id="ImageOp" name="ImageOp">
-<area shape="rect" id="node1" title="Base class for image processing functions." alt="" coords="273,882,355,909"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="407,64,633,105"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="425,163,615,204"/>
-<area shape="rect" id="node10" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="417,228,623,269"/>
-<area shape="rect" id="node12" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="453,294,587,321"/>
-<area shape="rect" id="node14" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="403,345,637,387"/>
-<area shape="rect" id="node16" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="407,411,633,452"/>
-<area shape="rect" id="node18" href="$classdrain_1_1image_1_1CatenatorOp.html" title="Operator for concatenating images vertically or as channels." alt="" coords="468,477,572,503"/>
-<area shape="rect" id="node21" href="$classdrain_1_1image_1_1CropOp.html" title=" " alt="" coords="485,527,555,554"/>
-<area shape="rect" id="node22" href="$classdrain_1_1image_1_1DifferentialOp.html" title="Virtual base class for horizontal and vertical intensity derivatives." alt="" coords="463,578,577,605"/>
-<area shape="rect" id="node25" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="420,629,620,655"/>
-<area shape="rect" id="node27" href="$classdrain_1_1image_1_1FloodFillOp.html" title="A fill operation for one color." alt="" coords="473,679,567,706"/>
-<area shape="rect" id="node28" href="$classdrain_1_1image_1_1FunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="457,730,583,757"/>
-<area shape="rect" id="node32" href="$classdrain_1_1image_1_1HighBoostOp.html" title="Enhances details by mixing original image and result of HighPassOp op." alt="" coords="467,781,573,807"/>
-<area shape="rect" id="node33" href="$classdrain_1_1image_1_1HighPassOp.html" title="Finds details at one&#45;pixel scale, defined as difference of image and its low&#45;pass filtered copy." alt="" coords="471,831,569,858"/>
-<area shape="rect" id="node34" href="$classdrain_1_1image_1_1ImpulseResponseOpBase.html" title=" " alt="" coords="407,882,633,909"/>
-<area shape="rect" id="node35" href="$classdrain_1_1image_1_1MarginalStatisticOp.html" title="Computes horizontal or vertical intensity statistics: iAverage, sum, ..." alt="" coords="445,933,595,959"/>
-<area shape="rect" id="node36" href="$classdrain_1_1image_1_1MotionExtrapolatorOp.html" title=" " alt="" coords="437,983,603,1010"/>
-<area shape="rect" id="node37" href="$classdrain_1_1image_1_1MultiThresholdOp.html" title=" " alt="" coords="451,1034,589,1061"/>
-<area shape="rect" id="node38" href="$classdrain_1_1image_1_1NegateOp.html" title=" " alt="" coords="477,1085,563,1111"/>
-<area shape="rect" id="node39" href="$classdrain_1_1image_1_1PaletteOp.html" title="Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table." alt="" coords="477,1135,563,1162"/>
-<area shape="rect" id="node40" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="464,1186,576,1213"/>
-<area shape="rect" id="node41" href="$classdrain_1_1image_1_1QuadTreeOp.html" title="QuadTrees the image, stretching the image correspondingly." alt="" coords="469,1237,571,1263"/>
-<area shape="rect" id="node42" href="$classdrain_1_1image_1_1QualityMixerOp.html" title="Overwrites pixels of destination image in locations where destination weight is lower." alt="" coords="459,1287,581,1314"/>
-<area shape="rect" id="node43" href="$classdrain_1_1image_1_1QualityOp.html" title=" " alt="" coords="477,1338,563,1365"/>
-<area shape="rect" id="node44" href="$classdrain_1_1image_1_1RecomposeOp.html" title="Create vertical image composed of separate views." alt="" coords="462,1389,578,1415"/>
-<area shape="rect" id="node45" href="$classdrain_1_1image_1_1ResizeOp.html" title="Resizes the image, stretching the image correspondingly." alt="" coords="479,1439,561,1466"/>
-<area shape="rect" id="node46" href="$classdrain_1_1image_1_1RunLengthOp.html" title="Base class for RunLengthHorzOp and RunLengthVertOp." alt="" coords="465,1490,575,1517"/>
-<area shape="rect" id="node47" href="$classdrain_1_1image_1_1SegmentOp.html" title="A base class for computing statistics of segments. As segment is an area of connected pixels." alt="" coords="471,1541,569,1567"/>
-<area shape="rect" id="node48" href="$classdrain_1_1image_1_1SuperProberOp.html" title="A base class for computing statistics of segments. As segment is an area of connected pixels." alt="" coords="461,1591,579,1618"/>
-<area shape="rect" id="node49" href="$classdrain_1_1image_1_1TransposeOp.html" title="Transpose operator. Swaps the intensities over the diagonal exis." alt="" coords="467,1642,573,1669"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="135,882,225,909"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="5,882,87,909"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title=" " alt="" coords="691,5,918,47"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1DistanceTransformExponentialOp.html" title=" " alt="" coords="685,71,924,98"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title=" " alt="" coords="710,123,899,164"/>
-<area shape="rect" id="node9" href="$classdrain_1_1image_1_1DistanceTransformLinearOp.html" title="Computes inverse linear distance to bright points." alt="" coords="703,189,906,215"/>
-<area shape="rect" id="node11" href="$classdrain_1_1image_1_1SeparableWindowOp.html" title="Sliding window averaging operator with optional weighting support." alt="" coords="726,239,883,266"/>
-<area shape="rect" id="node13" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title="Template for operators applying pipeline&#45;like sliding window." alt="" coords="715,294,894,321"/>
-<area shape="rect" id="node15" href="$classdrain_1_1image_1_1GaussianAverageOp.html" title="Sliding window averaging operator with optional weighting support." alt="" coords="728,349,881,375"/>
-<area shape="rect" id="node17" href="$classdrain_1_1image_1_1FastAverageOp.html" title="Sliding window averaging operator with optional weighting support." alt="" coords="745,399,864,426"/>
-<area shape="rect" id="node19" href="$classdrain_1_1image_1_1ChannelCatenatorOp.html" title=" " alt="" coords="726,450,883,477"/>
-<area shape="rect" id="node20" href="$classdrain_1_1image_1_1VerticalCatenatorOp.html" title=" " alt="" coords="728,501,881,527"/>
-<area shape="rect" id="node23" href="$classdrain_1_1image_1_1GradientOp.html" title="Computes spatial horizontal derivatives (dx and dy)." alt="" coords="757,551,853,578"/>
-<area shape="rect" id="node24" href="$classdrain_1_1image_1_1LaplaceOp.html" title="Computes second intensity derivatives." alt="" coords="759,602,850,629"/>
-<area shape="rect" id="node26" href="$classdrain_1_1image_1_1DistanceTransformFillOp.html" title="Template for DistanceTransformFillLinearOp and DistanceTransformFillExponentialOp." alt="" coords="695,653,914,679"/>
-<area shape="rect" id="node29" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="712,704,897,745"/>
-<area shape="rect" id="node30" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="685,770,924,797"/>
-<area shape="rect" id="node31" href="$classdrain_1_1image_1_1BinaryFunctorOp.html" title="Class for using two&#45;parameter function objects (like std::functor) for sequential and spatial pixel i..." alt="" coords="721,821,889,847"/>
+<area shape="rect" id="Node000001" title="Base class for image processing functions." alt="" coords="273,1131,355,1157"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="425,5,651,45"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="313,1117,317,896,331,559,342,387,357,235,376,120,388,80,401,56,422,38,426,42,405,59,392,82,381,121,362,236,347,388,336,559,323,897,318,1117"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="443,69,633,109"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="313,1118,319,909,333,592,344,431,359,289,377,181,388,144,401,121,420,105,442,94,444,99,423,109,405,124,393,146,383,182,364,290,349,432,338,592,324,909,318,1118"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1image_1_1FunctorOp.html" title=" " alt="" coords="439,134,637,159"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="313,1117,319,917,333,616,345,463,359,329,378,227,389,192,401,170,418,156,437,147,440,152,420,161,405,174,393,194,383,228,365,330,350,464,339,616,324,917,319,1118"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1image_1_1FunctorOp.html" title=" " alt="" coords="433,184,643,224"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="313,1117,320,929,336,649,348,507,362,382,379,287,389,255,401,234,415,222,431,212,434,217,418,226,405,238,394,257,385,288,367,383,353,508,341,649,326,929,319,1118"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="425,248,651,288"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="314,1118,321,941,338,681,350,550,364,435,381,347,390,317,401,298,423,281,426,285,405,302,395,319,386,348,369,436,355,551,343,682,327,942,319,1118"/>
+<area shape="rect" id="Node000013" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="439,312,637,352"/>
+<area shape="poly" id="edge11_Node000001_Node000013" title=" " alt="" coords="314,1117,323,953,340,713,352,593,366,487,382,407,391,379,401,362,418,348,438,338,440,343,421,352,405,366,396,382,387,408,371,488,357,594,345,714,328,953,319,1117"/>
+<area shape="rect" id="Node000014" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="439,376,637,416"/>
+<area shape="poly" id="edge12_Node000001_Node000014" title=" " alt="" coords="314,1117,324,965,342,746,368,540,383,467,392,442,401,426,418,412,438,402,440,407,421,416,405,430,396,444,388,468,373,541,347,747,329,965,319,1118"/>
+<area shape="rect" id="Node000015" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="417,440,659,480"/>
+<area shape="poly" id="edge13_Node000001_Node000015" title=" " alt="" coords="312,1118,314,987,324,799,335,702,350,613,372,540,385,512,401,490,415,478,418,482,405,494,390,515,377,542,356,615,340,703,329,799,319,987,318,1118"/>
+<area shape="rect" id="Node000016" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="421,504,655,544"/>
+<area shape="poly" id="edge14_Node000001_Node000016" title=" " alt="" coords="313,1118,316,998,328,829,339,743,354,664,374,599,387,574,401,554,419,540,422,544,405,558,391,576,379,601,359,665,344,744,333,830,321,998,318,1118"/>
+<area shape="rect" id="Node000018" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="435,568,641,608"/>
+<area shape="poly" id="edge16_Node000001_Node000018" title=" " alt="" coords="313,1117,319,1009,332,860,343,784,358,715,377,657,401,618,416,605,434,596,436,601,419,610,405,622,382,660,363,716,349,785,337,861,324,1010,319,1118"/>
+<area shape="rect" id="Node000020" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="403,632,673,672"/>
+<area shape="poly" id="edge18_Node000001_Node000020" title=" " alt="" coords="314,1117,321,1021,336,891,348,825,362,765,379,716,401,682,415,670,419,674,405,686,384,718,367,767,353,826,342,892,326,1021,319,1118"/>
+<area shape="rect" id="Node000021" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="413,696,663,736"/>
+<area shape="poly" id="edge19_Node000001_Node000021" title=" " alt="" coords="315,1117,324,1034,341,923,366,817,382,776,401,748,418,734,421,738,405,751,387,778,371,819,346,924,329,1034,320,1118"/>
+<area shape="rect" id="Node000022" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="471,761,605,786"/>
+<area shape="poly" id="edge20_Node000001_Node000022" title=" " alt="" coords="316,1117,326,1043,344,947,368,856,384,821,401,797,433,777,470,769,471,774,435,782,404,801,388,823,373,858,349,948,331,1043,321,1118"/>
+<area shape="rect" id="Node000024" href="$classdrain_1_1image_1_1CatenatorOp.html" title="Operator for concatenating images vertically or as channels." alt="" coords="486,810,590,835"/>
+<area shape="poly" id="edge22_Node000001_Node000024" title=" " alt="" coords="312,1117,315,1060,326,987,338,948,353,911,374,876,401,846,420,833,442,824,485,817,486,823,443,830,422,838,404,850,378,879,358,913,343,950,332,988,320,1061,317,1117"/>
+<area shape="rect" id="Node000027" href="$classdrain_1_1image_1_1CropOp.html" title=" " alt="" coords="503,859,573,885"/>
+<area shape="poly" id="edge23_Node000001_Node000027" title=" " alt="" coords="314,1117,320,1069,333,1008,359,947,378,919,401,895,425,881,451,872,502,867,503,872,452,877,427,885,404,899,382,923,364,950,339,1010,325,1069,319,1117"/>
+<area shape="rect" id="Node000028" href="$classdrain_1_1image_1_1DifferentialOp.html" title="Virtual base class for horizontal and vertical intensity derivatives." alt="" coords="481,909,595,934"/>
+<area shape="poly" id="edge24_Node000001_Node000028" title=" " alt="" coords="316,1117,325,1078,341,1031,365,984,382,963,401,945,419,933,439,925,480,918,481,923,441,930,422,938,404,949,386,966,370,987,346,1033,330,1080,322,1118"/>
+<area shape="rect" id="Node000035" href="$classdrain_1_1image_1_1DistanceTransformOp.html" title=" " alt="" coords="438,958,638,983"/>
+<area shape="poly" id="edge25_Node000001_Node000035" title=" " alt="" coords="321,1117,332,1088,349,1055,372,1021,401,994,437,977,439,982,404,998,376,1025,353,1057,337,1090,326,1119"/>
+<area shape="rect" id="Node000041" href="$classdrain_1_1image_1_1FloodFillOp.html" title="A fill operation for one color." alt="" coords="491,1007,585,1033"/>
+<area shape="poly" id="edge26_Node000001_Node000041" title=" " alt="" coords="328,1118,358,1079,378,1059,401,1043,445,1026,490,1019,490,1024,447,1031,404,1048,382,1063,362,1082,332,1121"/>
+<area shape="rect" id="Node000042" href="$classdrain_1_1image_1_1FunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="475,1057,601,1082"/>
+<area shape="poly" id="edge27_Node000001_Node000042" title=" " alt="" coords="344,1121,402,1092,474,1074,475,1079,404,1097,347,1126"/>
+<area shape="rect" id="Node000050" href="$classdrain_1_1image_1_1HighBoostOp.html" title="Enhances details by mixing original image and result of HighPassOp op." alt="" coords="485,1106,591,1131"/>
+<area shape="poly" id="edge28_Node000001_Node000050" title=" " alt="" coords="368,1135,484,1122,485,1127,369,1141"/>
+<area shape="rect" id="Node000051" href="$classdrain_1_1image_1_1HighPassOp.html" title="Finds details at one&#45;pixel scale, defined as difference of image and its low&#45;pass filtered copy." alt="" coords="489,1155,587,1181"/>
+<area shape="poly" id="edge29_Node000001_Node000051" title=" " alt="" coords="369,1147,489,1160,488,1165,368,1152"/>
+<area shape="rect" id="Node000052" href="$classdrain_1_1image_1_1ImpulseResponseOpBase.html" title=" " alt="" coords="425,1205,651,1230"/>
+<area shape="poly" id="edge30_Node000001_Node000052" title=" " alt="" coords="347,1162,404,1191,443,1202,442,1207,402,1196,344,1167"/>
+<area shape="rect" id="Node000054" href="$classdrain_1_1image_1_1MarginalStatisticOp.html" title="Computes horizontal or vertical intensity statistics: iAverage, sum, ..." alt="" coords="463,1254,613,1279"/>
+<area shape="poly" id="edge31_Node000001_Node000054" title=" " alt="" coords="332,1167,362,1206,382,1225,404,1240,432,1252,463,1260,462,1265,431,1258,401,1245,378,1229,358,1209,328,1170"/>
+<area shape="rect" id="Node000055" href="$classdrain_1_1image_1_1MotionExtrapolatorOp.html" title=" " alt="" coords="455,1303,621,1329"/>
+<area shape="poly" id="edge32_Node000001_Node000055" title=" " alt="" coords="325,1169,337,1198,353,1231,376,1263,404,1290,429,1302,456,1310,454,1315,427,1307,401,1294,372,1267,349,1234,332,1200,320,1171"/>
+<area shape="rect" id="Node000056" href="$classdrain_1_1image_1_1MotionIllustratorOp.html" title=" " alt="" coords="464,1353,612,1393"/>
+<area shape="poly" id="edge33_Node000001_Node000056" title=" " alt="" coords="322,1170,331,1208,346,1254,370,1300,386,1321,404,1339,433,1356,464,1366,463,1371,430,1361,401,1343,382,1325,366,1303,341,1256,326,1209,317,1171"/>
+<area shape="rect" id="Node000057" href="$classdrain_1_1image_1_1MultiThresholdOp.html" title=" " alt="" coords="469,1418,607,1443"/>
+<area shape="poly" id="edge34_Node000001_Node000057" title=" " alt="" coords="318,1170,323,1220,336,1284,347,1317,362,1349,381,1378,404,1403,435,1421,470,1429,469,1434,433,1426,401,1407,377,1381,357,1351,342,1319,331,1285,318,1221,313,1170"/>
+<area shape="rect" id="Node000058" href="$classdrain_1_1image_1_1NegateOp.html" title=" " alt="" coords="495,1467,581,1493"/>
+<area shape="poly" id="edge35_Node000001_Node000058" title=" " alt="" coords="322,1170,333,1238,351,1323,375,1403,389,1434,404,1454,424,1467,447,1475,494,1481,494,1486,446,1481,422,1472,401,1458,385,1437,370,1405,346,1325,328,1239,316,1171"/>
+<area shape="rect" id="Node000059" href="$classdrain_1_1image_1_1PaletteOp.html" title="Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table." alt="" coords="495,1517,581,1542"/>
+<area shape="poly" id="edge36_Node000001_Node000059" title=" " alt="" coords="321,1170,330,1247,347,1348,372,1443,388,1479,405,1503,424,1517,448,1525,495,1530,495,1536,446,1530,422,1522,401,1507,383,1482,367,1445,342,1349,325,1248,315,1171"/>
+<area shape="rect" id="Node000060" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="482,1566,594,1591"/>
+<area shape="poly" id="edge37_Node000001_Node000060" title=" " alt="" coords="320,1170,328,1257,344,1373,355,1430,369,1483,386,1525,405,1553,421,1565,441,1573,482,1580,482,1585,439,1578,419,1570,401,1557,381,1527,364,1484,350,1432,339,1374,323,1258,315,1171"/>
+<area shape="rect" id="Node000068" href="$classdrain_1_1image_1_1QuadTreeOp.html" title="QuadTrees the image, stretching the image correspondingly." alt="" coords="487,1615,589,1641"/>
+<area shape="poly" id="edge38_Node000001_Node000068" title=" " alt="" coords="319,1171,326,1267,341,1397,352,1463,366,1522,384,1570,405,1602,422,1615,443,1623,487,1629,487,1635,442,1628,420,1620,401,1606,379,1573,361,1524,347,1464,335,1398,321,1268,314,1171"/>
+<area shape="rect" id="Node000069" href="$classdrain_1_1image_1_1QualityMixerOp.html" title="Overwrites pixels of destination image in locations where destination weight is lower." alt="" coords="477,1665,599,1690"/>
+<area shape="poly" id="edge39_Node000001_Node000069" title=" " alt="" coords="319,1170,324,1276,337,1421,348,1495,363,1561,382,1615,405,1652,420,1663,438,1671,477,1678,476,1684,436,1676,417,1668,401,1655,377,1618,358,1563,343,1496,332,1422,318,1276,313,1171"/>
+<area shape="rect" id="Node000070" href="$classdrain_1_1image_1_1QualityOp.html" title=" " alt="" coords="495,1714,581,1739"/>
+<area shape="poly" id="edge40_Node000001_Node000070" title=" " alt="" coords="318,1170,322,1285,334,1445,345,1526,360,1600,380,1661,392,1684,405,1701,424,1715,447,1723,495,1728,494,1734,446,1729,421,1720,401,1705,387,1687,375,1663,355,1602,340,1527,329,1446,317,1285,313,1171"/>
+<area shape="rect" id="Node000073" href="$classdrain_1_1image_1_1RecomposeOp.html" title="Create vertical image composed of separate views." alt="" coords="480,1763,596,1789"/>
+<area shape="poly" id="edge41_Node000001_Node000073" title=" " alt="" coords="318,1170,320,1293,331,1468,342,1558,357,1639,378,1706,390,1731,405,1750,421,1762,439,1771,480,1778,479,1783,438,1776,418,1767,401,1754,386,1734,373,1708,352,1641,336,1559,326,1469,315,1294,313,1170"/>
+<area shape="rect" id="Node000074" href="$classdrain_1_1image_1_1ResizeOp.html" title="Resizes the image, stretching the image correspondingly." alt="" coords="497,1813,579,1838"/>
+<area shape="poly" id="edge42_Node000001_Node000074" title=" " alt="" coords="318,1171,318,1303,328,1493,338,1590,354,1679,376,1751,389,1779,405,1799,424,1814,448,1823,497,1827,496,1832,446,1828,422,1819,401,1803,385,1782,371,1753,349,1680,333,1591,322,1493,313,1303,312,1171"/>
+<area shape="rect" id="Node000075" href="$classdrain_1_1image_1_1RunLengthOp.html" title="Base class for RunLengthHorzOp and RunLengthVertOp." alt="" coords="483,1862,593,1887"/>
+<area shape="poly" id="edge43_Node000001_Node000075" title=" " alt="" coords="319,1170,329,1321,347,1537,373,1740,388,1811,396,1835,405,1849,421,1862,441,1870,484,1876,483,1882,439,1875,419,1866,401,1852,391,1837,383,1813,367,1741,342,1538,324,1322,314,1171"/>
+<area shape="rect" id="Node000078" href="$classdrain_1_1image_1_1SegmentOp.html" title="A base class for computing statistics of segments. As segment is an area of connected pixels." alt="" coords="489,1911,587,1937"/>
+<area shape="poly" id="edge44_Node000001_Node000078" title=" " alt="" coords="319,1170,328,1330,345,1562,357,1678,371,1780,387,1858,396,1883,405,1898,422,1912,443,1920,489,1926,488,1931,442,1925,420,1916,401,1902,391,1885,382,1859,366,1781,352,1679,340,1563,323,1331,314,1170"/>
+<area shape="rect" id="Node000081" href="$classdrain_1_1image_1_1SuperProberOp.html" title="A base class for computing statistics of segments. As segment is an area of connected pixels." alt="" coords="479,1961,597,1986"/>
+<area shape="poly" id="edge45_Node000001_Node000081" title=" " alt="" coords="319,1170,327,1340,344,1587,355,1712,370,1821,386,1904,395,1931,405,1948,420,1960,438,1968,479,1975,478,1980,437,1973,417,1964,401,1951,390,1934,381,1905,364,1822,350,1712,338,1588,322,1340,314,1171"/>
+<area shape="rect" id="Node000082" href="$classdrain_1_1image_1_1TransposeOp.html" title="Transpose operator. Swaps the intensities over the diagonal exis." alt="" coords="485,2010,591,2035"/>
+<area shape="poly" id="edge46_Node000001_Node000082" title=" " alt="" coords="319,1171,326,1349,342,1613,354,1745,368,1862,385,1950,395,1980,405,1997,422,2010,442,2019,485,2025,485,2030,440,2024,419,2015,401,2000,390,1982,380,1952,363,1863,348,1746,337,1613,321,1350,314,1171"/>
+<area shape="rect" id="Node000083" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="471,2059,605,2085"/>
+<area shape="poly" id="edge47_Node000001_Node000083" title=" " alt="" coords="319,1170,325,1358,341,1637,352,1778,367,1903,384,1996,394,2028,405,2046,418,2058,435,2066,471,2073,470,2079,433,2071,416,2062,401,2050,389,2030,379,1998,361,1903,347,1779,335,1638,320,1358,313,1171"/>
+<area shape="rect" id="Node000095" href="$classdrain_1_1radar_1_1ProductFQD.html" title=" " alt="" coords="457,2109,619,2134"/>
+<area shape="poly" id="edge48_Node000001_Node000095" title=" " alt="" coords="319,1170,324,1367,339,1662,350,1812,365,1943,383,2043,394,2076,405,2096,429,2113,458,2121,456,2126,426,2117,401,2099,389,2078,378,2044,360,1944,345,1812,334,1663,319,1367,313,1171"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="135,1131,225,1157"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="239,1141,273,1141,273,1147,239,1147"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="5,1131,87,1157"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="100,1141,134,1141,134,1147,100,1147"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1DistanceTransformExponentialOp.html" title=" " alt="" coords="721,13,960,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="665,23,721,23,721,28,665,28"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1DistanceTransformLinearOp.html" title="Computes inverse linear distance to bright points." alt="" coords="739,77,942,102"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="647,87,739,87,739,92,647,92"/>
+<area shape="rect" id="Node000011" href="$classdrain_1_1image_1_1FastAverageOp.html" title="Sliding window averaging operator with optional weighting support." alt="" coords="781,255,900,281"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="665,265,781,265,781,271,665,271"/>
+<area shape="rect" id="Node000017" href="$classdrain_1_1image_1_1GaussianAverageOp.html" title="Sliding window averaging operator with optional weighting support." alt="" coords="764,511,917,537"/>
+<area shape="poly" id="edge15_Node000016_Node000017" title=" " alt="" coords="669,521,764,521,764,527,669,527"/>
+<area shape="rect" id="Node000019" href="$classdrain_1_1image_1_1SeparableWindowOp.html" title="Sliding window averaging operator with optional weighting support." alt="" coords="762,575,919,601"/>
+<area shape="poly" id="edge17_Node000018_Node000019" title=" " alt="" coords="654,585,762,585,762,591,654,591"/>
+<area shape="rect" id="Node000023" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title="Template for operators applying pipeline&#45;like sliding window." alt="" coords="751,761,930,786"/>
+<area shape="poly" id="edge21_Node000022_Node000023" title=" " alt="" coords="619,771,751,771,751,776,619,776"/>
 </map>

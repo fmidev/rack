@@ -1,13 +1,29 @@
 <map id="FloodFillOp" name="FloodFillOp">
-<area shape="rect" id="node1" title="A fill operation for one color." alt="" coords="120,541,215,568"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="43,452,124,479"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="30,363,121,389"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="25,247,107,273"/>
-<area shape="rect" id="node5" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,157,173,184"/>
-<area shape="rect" id="node11" href="$classdrain_1_1image_1_1SegmentProberConf.html" title=" " alt="" coords="86,297,249,339"/>
-<area shape="rect" id="node6" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,81,208,108"/>
-<area shape="rect" id="node7" title=" " alt="" coords="5,5,225,32"/>
-<area shape="rect" id="node8" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="209,452,329,479"/>
-<area shape="rect" id="node9" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="207,363,341,389"/>
-<area shape="rect" id="node10" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="204,247,347,273"/>
+<area shape="rect" id="Node000001" title="A fill operation for one color." alt="" coords="184,519,279,544"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="41,423,123,449"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,454,214,516,211,521,110,458"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="21,317,111,343"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="73,356,83,422,78,423,67,357"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="19,243,100,268"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="64,282,68,317,62,317,59,282"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,155,173,180"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="71,189,55,205,52,224,57,242,51,243,46,224,50,203,67,185"/>
+<area shape="rect" id="Node000011" href="$classdrain_1_1image_1_1SegmentProberConf.html" title=" " alt="" coords="150,416,313,456"/>
+<area shape="poly" id="edge11_Node000011_Node000005" title=" " alt="" coords="130,191,135,203,149,242,156,273,165,304,179,342,200,381,221,415,216,417,195,384,174,344,159,305,151,274,143,243,130,205,125,193"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="23,80,208,105"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="118,120,118,154,113,154,113,120"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="5,5,225,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="118,45,118,80,113,80,113,45"/>
+<area shape="rect" id="Node000008" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="315,367,435,392"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="364,405,327,458,287,494,250,521,247,516,284,490,323,454,360,402"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="348,243,483,268"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="410,282,382,367,377,366,405,280"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="231,155,375,180"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="331,187,402,240,398,245,328,191"/>
+<area shape="rect" id="Node000013" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="189,243,324,268"/>
+<area shape="poly" id="edge14_Node000013_Node000010" title=" " alt="" coords="293,193,265,243,261,241,288,191"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="234,470,234,518,229,518,229,470"/>
+<area shape="rect" id="Node000012" href="$classdrain_1_1Range.html" title=" " alt="" coords="189,317,327,343"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="254,357,239,416,234,415,249,355"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="260,282,260,317,255,317,254,282"/>
 </map>

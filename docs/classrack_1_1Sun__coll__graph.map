@@ -1,5 +1,7 @@
 <map id="Sun" name="Sun">
-<area shape="rect" id="node1" title=" " alt="" coords="88,95,135,121"/>
-<area shape="rect" id="node2" href="$structrack_1_1Horizontal.html" title=" " alt="" coords="5,5,95,32"/>
-<area shape="rect" id="node3" href="$structrack_1_1Geographical.html" title=" " alt="" coords="119,5,227,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="88,93,135,119"/>
+<area shape="rect" id="Node000002" href="$structrack_1_1Horizontal.html" title=" " alt="" coords="5,5,95,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,41,105,91,101,94,64,44"/>
+<area shape="rect" id="Node000003" href="$structrack_1_1Geographical.html" title=" " alt="" coords="119,5,227,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="158,44,122,94,118,91,154,41"/>
 </map>

@@ -1,13 +1,23 @@
 <map id="DopplerWindow" name="DopplerWindow">
-<area shape="rect" id="node1" title=" " alt="" coords="1275,81,1400,108"/>
-<area shape="rect" id="node8" href="$classrack_1_1DopplerAverageWindow.html" title=" " alt="" coords="1459,5,1638,32"/>
-<area shape="rect" id="node9" href="$classrack_1_1DopplerAverageWindow2.html" title="Smoothens Doppler field, providing quality computed as eccentricity." alt="" coords="1455,56,1642,83"/>
-<area shape="rect" id="node10" href="$classrack_1_1DopplerDevWindow.html" title=" " alt="" coords="1473,107,1624,133"/>
-<area shape="rect" id="node11" href="$classrack_1_1DopplerEccentricityWindow.html" title="Computes eccentrity of Doppler speeds mapped on a Nyquist&#45;normalized unit window." alt="" coords="1448,157,1649,184"/>
-<area shape="rect" id="node2" href="$classrack_1_1SlidingRadarWindow.html" title=" " alt="" coords="1044,74,1227,115"/>
-<area shape="rect" id="node3" href="$classrack_1_1SlidingRadarWindowBase.html" title="A two&#45;dimensional image processing window that handles the special ODIM codes and scales the result...." alt="" coords="808,74,996,115"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="520,74,760,115"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="341,81,472,108"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="189,81,293,108"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="5,81,141,108"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="1209,80,1335,105"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1DopplerAverageWindow.html" title=" " alt="" coords="1394,5,1573,31"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1308,71,1382,39,1420,28,1422,33,1384,45,1310,76"/>
+<area shape="rect" id="Node000009" href="$classrack_1_1DopplerAverageWindow2.html" title="Smoothens Doppler field, providing quality computed as eccentricity." alt="" coords="1390,55,1577,80"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1348,81,1389,76,1390,81,1349,86"/>
+<area shape="rect" id="Node000010" href="$classrack_1_1DopplerDevWindow.html" title=" " alt="" coords="1408,104,1559,129"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1349,99,1408,105,1407,111,1348,104"/>
+<area shape="rect" id="Node000011" href="$classrack_1_1DopplerEccentricityWindow.html" title="Computes eccentrity of Doppler speeds mapped on a Nyquist&#45;normalized unit window." alt="" coords="1383,153,1584,179"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1311,109,1384,139,1422,151,1421,156,1382,145,1309,114"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1SlidingRadarWindow.html" title=" " alt="" coords="979,73,1161,113"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1175,90,1209,90,1209,95,1175,95"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1SlidingRadarWindowBase.html" title="A two&#45;dimensional image processing window that handles the special ODIM codes and scales the result...." alt="" coords="743,73,931,113"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="945,90,979,90,979,95,945,95"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1SlidingWindow.html" title="Window implementation that uses incremental update of state." alt="" coords="520,80,695,105"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="709,90,742,90,742,95,709,95"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="341,80,472,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="486,90,520,90,520,95,486,95"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="189,80,293,105"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="307,90,341,90,341,95,307,95"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="5,80,141,105"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="155,90,189,90,189,95,155,95"/>
 </map>

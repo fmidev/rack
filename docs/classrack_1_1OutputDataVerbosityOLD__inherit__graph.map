@@ -1,8 +1,13 @@
 <map id="OutputDataVerbosityOLD" name="OutputDataVerbosityOLD">
-<area shape="rect" id="node1" title=" " alt="" coords="18,379,203,405"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="20,304,201,331"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="49,229,173,256"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="5,155,216,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="66,80,155,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="64,5,157,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="18,372,203,397"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="20,299,201,324"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,338,113,372,108,372,108,338"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="49,225,173,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="113,264,113,299,108,299,108,264"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="5,152,216,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="113,191,113,225,108,225,108,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="66,79,155,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="113,118,113,152,108,152,108,118"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="64,5,157,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="113,44,113,79,108,79,108,44"/>
 </map>

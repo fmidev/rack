@@ -1,12 +1,22 @@
 <map id="Beam" name="Beam">
-<area shape="rect" id="node1" title=" " alt="" coords="152,640,212,667"/>
-<area shape="rect" id="node2" href="$classdrain_1_1FuzzyBell2.html" title=" " alt="" coords="5,551,172,577"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor." alt="" coords="123,475,238,501"/>
-<area shape="rect" id="node10" href="$classdrain_1_1FuzzyBell.html" title=" " alt="" coords="196,551,355,577"/>
-<area shape="rect" id="node4" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="126,399,235,425"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="145,323,216,349"/>
-<area shape="rect" id="node6" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="140,247,221,273"/>
-<area shape="rect" id="node7" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="123,157,239,184"/>
-<area shape="rect" id="node8" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="88,81,273,108"/>
-<area shape="rect" id="node9" title=" " alt="" coords="71,5,291,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="148,629,208,655"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1FuzzyBell.html" title=" " alt="" coords="5,541,164,567"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,574,167,627,163,631,106,578"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor." alt="" coords="119,467,234,492"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="153,503,101,543,98,539,150,498"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1FuzzyBell2.html" title=" " alt="" coords="188,541,355,567"/>
+<area shape="poly" id="edge10_Node000010_Node000003" title=" " alt="" coords="204,498,257,539,254,543,201,503"/>
+<area shape="rect" id="Node000004" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="122,392,231,417"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="179,432,179,466,174,466,174,432"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="141,317,212,343"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="179,357,179,392,174,392,174,357"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="136,243,217,268"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="179,282,179,317,174,317,174,282"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="119,155,235,180"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="179,194,179,242,174,242,174,194"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="84,80,269,105"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="179,120,179,154,174,154,174,120"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="67,5,287,31"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="179,45,179,80,174,80,174,45"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="250,578,193,631,189,627,247,574"/>
 </map>

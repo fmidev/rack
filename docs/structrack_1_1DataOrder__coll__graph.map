@@ -1,9 +1,20 @@
 <map id="DataOrder" name="DataOrder">
-<area shape="rect" id="node1" title=" " alt="" coords="936,46,1025,73"/>
-<area shape="rect" id="node2" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="627,5,821,47"/>
-<area shape="rect" id="node3" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="428,46,577,73"/>
-<area shape="rect" id="node7" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="631,71,817,112"/>
-<area shape="rect" id="node4" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="193,21,351,47"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="199,71,345,98"/>
-<area shape="rect" id="node6" title=" " alt="" coords="5,64,144,105"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="959,63,1048,88"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="653,23,840,63"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="854,54,959,67,958,73,853,59"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="432,31,596,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="610,41,653,41,653,46,610,46"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="193,5,351,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="365,25,432,32,431,37,364,30"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="199,67,345,92"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="358,64,431,53,432,58,359,69"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="428,95,600,120"/>
+<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="356,91,375,94,428,99,428,105,374,99,355,97"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="5,59,144,99"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="158,77,199,77,199,82,158,82"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="649,87,844,127"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="857,94,934,85,958,81,959,86,935,90,858,100"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="614,105,649,105,649,110,614,110"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="193,129,351,155"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="364,126,428,117,428,122,365,131"/>
 </map>

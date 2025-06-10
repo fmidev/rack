@@ -1,8 +1,13 @@
 <map id="CatenatorOp" name="CatenatorOp">
-<area shape="rect" id="node1" title="Operator for concatenating images vertically or as channels." alt="" coords="121,229,225,256"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ChannelCatenatorOp.html" title=" " alt="" coords="5,304,163,331"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1VerticalCatenatorOp.html" title=" " alt="" coords="187,304,341,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="133,155,214,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="128,80,219,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="133,5,214,32"/>
+<area shape="rect" id="Node000001" title="Operator for concatenating images vertically or as channels." alt="" coords="121,225,225,251"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1ChannelCatenatorOp.html" title=" " alt="" coords="5,299,163,324"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="150,261,100,301,97,296,147,257"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1VerticalCatenatorOp.html" title=" " alt="" coords="187,299,341,324"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="200,257,251,296,248,301,197,261"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="133,152,214,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,191,176,225,171,225,171,191"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="128,79,219,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="176,118,176,152,171,152,171,118"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="133,5,214,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="176,44,176,79,171,79,171,44"/>
 </map>

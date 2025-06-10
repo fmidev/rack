@@ -1,8 +1,13 @@
 <map id="WindowConfig" name="WindowConfig">
-<area shape="rect" id="node1" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="319,5,434,32"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1GaussianWindowConf.html" title="Extends WindowConfig with radius." alt="" coords="5,80,169,107"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1HistogramWindowConfig.html" title=" " alt="" coords="193,80,376,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead." alt="" coords="400,80,540,107"/>
-<area shape="rect" id="node5" href="$classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="564,80,717,107"/>
-<area shape="rect" id="node6" href="$classrack_1_1DopplerInversionConfig.html" title=" " alt="" coords="553,155,728,181"/>
+<area shape="rect" id="Node000001" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="319,5,434,31"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1GaussianWindowConf.html" title="Extends WindowConfig with radius." alt="" coords="5,79,169,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="318,37,135,81,134,76,316,31"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1HistogramWindowConfig.html" title=" " alt="" coords="193,79,376,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="353,41,301,81,298,76,350,37"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1OpticalFlowConfig.html" title="Consider using SlidingStripeOpticalFlow instead." alt="" coords="400,79,540,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="404,37,456,76,453,81,401,41"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1RadarWindowConfig.html" title=" " alt="" coords="564,79,717,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="433,32,599,76,597,81,432,37"/>
+<area shape="rect" id="Node000006" href="$classrack_1_1DopplerInversionConfig.html" title=" " alt="" coords="553,152,728,177"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="643,118,643,152,638,152,638,118"/>
 </map>

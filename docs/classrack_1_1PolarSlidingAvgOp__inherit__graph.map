@@ -1,12 +1,17 @@
 <map id="PolarSlidingAvgOp" name="PolarSlidingAvgOp">
-<area shape="rect" id="node1" title=" " alt="" coords="63,736,204,763"/>
-<area shape="rect" id="node2" href="$classrack_1_1PolarSlidingWindowOp.html" title=" " alt="" coords="5,632,261,688"/>
-<area shape="rect" id="node3" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="72,557,195,584"/>
-<area shape="rect" id="node4" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="39,483,227,509"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images." alt="" coords="25,393,241,435"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="39,304,228,345"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="77,229,189,256"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="93,155,174,181"/>
-<area shape="rect" id="node9" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="88,80,179,107"/>
-<area shape="rect" id="node10" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="93,5,174,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="63,489,204,515"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1PolarSlidingWindowOp.html" title=" " alt="" coords="5,387,261,441"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,455,136,489,131,489,131,455"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="72,313,195,339"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="136,352,136,387,131,387,131,352"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="39,240,227,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="136,279,136,313,131,313,131,279"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1RadarProductOp.html" title="Polar and Cartesian products." alt="" coords="50,152,217,192"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="136,206,136,240,131,240,131,206"/>
+<area shape="rect" id="Node000006" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="82,79,185,104"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="136,118,136,152,131,152,131,118"/>
+<area shape="rect" id="Node000007" href="$classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="25,5,127,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="96,40,126,77,122,80,92,43"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="151,5,233,31"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="176,43,145,80,141,77,172,40"/>
 </map>

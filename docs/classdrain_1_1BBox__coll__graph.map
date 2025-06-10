@@ -1,6 +1,14 @@
 <map id="BBox" name="BBox">
-<area shape="rect" id="node1" title="Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ..." alt="" coords="58,229,114,256"/>
-<area shape="rect" id="node2" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="5,155,167,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="19,80,153,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="15,5,157,32"/>
+<area shape="rect" id="Node000001" title="Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ..." alt="" coords="63,356,119,381"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="11,281,172,307"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,321,94,356,89,356,89,321"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="5,129,140,155"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="78,168,93,281,87,281,73,169"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="18,5,162,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="89,45,77,130,72,129,84,44"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="112,80,247,105"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="117,37,166,77,163,82,113,42"/>
+<area shape="rect" id="Node000005" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="107,179,254,204"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="163,216,103,283,99,280,159,213"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="182,119,183,179,178,179,177,119"/>
 </map>

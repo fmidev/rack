@@ -1,0 +1,7 @@
+<map id="PaletteBase" name="PaletteBase">
+<area shape="rect" id="Node000001" title=" " alt="" coords="77,5,175,31"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1CmdPalette.html" title=" " alt="" coords="5,79,103,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,43,68,80,64,77,102,39"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1CmdPaletteDefault.html" title=" " alt="" coords="127,79,272,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="150,38,189,77,186,80,146,42"/>
+</map>

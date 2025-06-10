@@ -1,7 +1,11 @@
 <map id="AnDReCommand&lt; OP &gt;" name="AnDReCommand&lt; OP &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="11,229,193,256"/>
-<area shape="rect" id="node5" href="$classrack_1_1DetectorCommand.html" title=" " alt="" coords="5,304,199,331"/>
-<area shape="rect" id="node2" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="17,155,187,181"/>
-<area shape="rect" id="node3" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="57,80,147,107"/>
-<area shape="rect" id="node4" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="55,5,149,32"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="11,225,193,251"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1DetectorCommand.html" title=" " alt="" coords="5,299,199,324"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="105,264,105,299,99,299,99,264"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="17,152,187,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,191,105,225,99,225,99,191"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="57,79,147,104"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,118,105,152,99,152,99,118"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="55,5,149,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="105,44,105,79,99,79,99,44"/>
 </map>

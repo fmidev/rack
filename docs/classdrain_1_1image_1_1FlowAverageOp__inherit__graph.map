@@ -1,8 +1,13 @@
 <map id="FlowAverageOp" name="FlowAverageOp">
-<area shape="rect" id="node1" title="Window average that preserves the magnitude." alt="" coords="61,393,185,420"/>
-<area shape="rect" id="node2" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="5,304,240,345"/>
-<area shape="rect" id="node3" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="55,229,190,256"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="82,155,163,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="77,80,168,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="82,5,163,32"/>
+<area shape="rect" id="Node000001" title="Window average that preserves the magnitude." alt="" coords="61,387,185,412"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1SlidingWindowOp.html" title=" " alt="" coords="5,299,240,339"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,352,125,386,120,386,120,352"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1WindowOp.html" title=" " alt="" coords="55,225,190,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="125,264,125,299,120,299,120,264"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="82,152,163,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="125,191,125,225,120,225,120,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="77,79,168,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="125,118,125,152,120,152,120,118"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="82,5,163,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="125,44,125,79,120,79,120,44"/>
 </map>

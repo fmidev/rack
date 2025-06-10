@@ -1,14 +1,21 @@
 <map id="CumulativeProductOp" name="CumulativeProductOp">
-<area shape="rect" id="node1" title="Base class for flat (2D) products computed in the polar coordinate system." alt="" coords="82,632,246,659"/>
-<area shape="rect" id="node10" href="$classrack_1_1CappiOp.html" title="CAPPI and Pseudo&#45;CAPPI: the constant altitude planar position indicator product." alt="" coords="5,707,83,733"/>
-<area shape="rect" id="node11" href="$classrack_1_1EchoTopOpOld.html" title="Height of echo exceeding a reflectivity threshold." alt="" coords="107,707,221,733"/>
-<area shape="rect" id="node12" href="$classrack_1_1MaxEchoOp.html" title="The maximum dBZ value in each a vertical column." alt="" coords="245,707,344,733"/>
-<area shape="rect" id="node2" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="103,557,225,584"/>
-<area shape="rect" id="node3" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="70,483,258,509"/>
-<area shape="rect" id="node4" href="$classdrain_1_1image_1_1ProductOp.html" title="Computes dot product of intensities of two images." alt="" coords="56,393,272,435"/>
-<area shape="rect" id="node5" href="$classdrain_1_1image_1_1BinaryPixelVectorOp.html" title=" " alt="" coords="69,304,259,345"/>
-<area shape="rect" id="node6" href="$classdrain_1_1image_1_1PixelVectorOp.html" title="A base class for operations between of multi&#45;channel pixels (intensity vectors) of two images." alt="" coords="108,229,220,256"/>
-<area shape="rect" id="node7" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="123,155,205,181"/>
-<area shape="rect" id="node8" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="119,80,209,107"/>
-<area shape="rect" id="node9" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="123,5,205,32"/>
+<area shape="rect" id="Node000001" title="Base class for flat (2D) products computed in the polar coordinate system." alt="" coords="82,387,246,412"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1CappiOp.html" title="CAPPI and Pseudo&#45;CAPPI: the constant altitude planar position indicator product." alt="" coords="5,460,83,485"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="134,421,65,462,62,457,131,417"/>
+<area shape="rect" id="Node000009" href="$classrack_1_1EchoTopOpOld.html" title="Height of echo exceeding a reflectivity threshold." alt="" coords="107,460,221,485"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="167,426,167,460,161,460,161,426"/>
+<area shape="rect" id="Node000010" href="$classrack_1_1MaxEchoOp.html" title="The maximum dBZ value in each a vertical column." alt="" coords="245,460,344,485"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="199,416,275,457,272,462,196,421"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="103,313,225,339"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,352,167,387,161,387,161,352"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="70,240,258,265"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="167,279,167,313,161,313,161,279"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1RadarProductOp.html" title="Polar and Cartesian products." alt="" coords="81,152,247,192"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="167,206,167,240,161,240,161,206"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="113,79,215,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="167,118,167,152,161,152,161,118"/>
+<area shape="rect" id="Node000006" href="$classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="56,5,157,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="127,40,157,77,153,80,122,43"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="182,5,263,31"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="206,43,176,80,171,77,202,40"/>
 </map>

@@ -1,10 +1,17 @@
 <map id="CmdAdjustSizes" name="CmdAdjustSizes">
-<area shape="rect" id="node1" title="&quot;Virtual&quot; command base for FontSizes and HeaderSizes" alt="" coords="73,393,199,420"/>
-<area shape="rect" id="node7" href="$classrack_1_1CmdFontSizes.html" title=" " alt="" coords="5,468,120,495"/>
-<area shape="rect" id="node8" href="$classrack_1_1CmdTitleHeights.html" title=" " alt="" coords="144,468,275,495"/>
-<area shape="rect" id="node2" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="51,304,221,345"/>
-<area shape="rect" id="node3" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="74,229,198,256"/>
-<area shape="rect" id="node4" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="31,155,241,181"/>
-<area shape="rect" id="node5" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="91,80,181,107"/>
-<area shape="rect" id="node6" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="89,5,183,32"/>
+<area shape="rect" id="Node000001" title="&quot;Virtual&quot; command base for FontSizes and HeaderSizes" alt="" coords="73,387,199,412"/>
+<area shape="rect" id="Node000007" href="$classrack_1_1CmdFontSizes.html" title=" " alt="" coords="5,460,120,485"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="116,424,76,462,73,458,112,420"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1CmdTitleHeights.html" title=" " alt="" coords="144,460,275,485"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="160,420,199,458,196,462,156,424"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="51,299,221,339"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,352,139,386,133,386,133,352"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="74,225,198,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="139,264,139,299,133,299,133,264"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="31,152,241,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="139,191,139,225,133,225,133,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="91,79,181,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="139,118,139,152,133,152,133,118"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="89,5,183,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="139,44,139,79,133,79,133,44"/>
 </map>
