@@ -152,6 +152,14 @@ void FuzzyDetectorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData
 	/// Reduction coefficient to compensate missing measurement data
 	double overallScale = 1.0;
 
+	const QuantitySelector &  qSelector = this->dataSelector.getQuantitySelector();
+
+	bool USE_DBZ   = qSelector.test("DBZ");
+	bool USE_VRAD  = qSelector.test("VRAD");
+	bool USE_RHOHV = qSelector.test("RHOHV");
+	bool USE_ZDR   = qSelector.test("ZDR");
+
+
 	const Data<PolarSrc> & srcDataDBZ = sweepSrc.getData(qm.DBZ.keySelector); // VolumeOpNew::
 	const bool DBZ = !srcDataDBZ.data.isEmpty();  // or: || dbzParams.empty() ?
 	if (!DBZ){

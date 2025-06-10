@@ -57,15 +57,9 @@ namespace rack {
 
 using namespace drain::image;
 
-///
-/**
-
- *
- */
 
 ///
 /**
-
  *
  */
 class BirdOp: public FuzzyDetectorOp {
