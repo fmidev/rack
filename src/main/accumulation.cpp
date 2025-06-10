@@ -35,9 +35,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/prog/CommandBankUtils.h>
 #include <drain/prog/CommandSections.h>
 #include <drain/prog/CommandInstaller.h>
+#include <product/RadarProductOp.h>
 
 
-#include "product/ProductOp.h"
 #include "radar/RadarProj.h"
 
 #include "resources.h"

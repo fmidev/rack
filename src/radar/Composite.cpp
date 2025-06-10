@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/ImageFile.h>
 #include <drain/image/AccumulationMethods.h>
 #include <drain/imageops/DistanceTransformFillOp.h>
+#include <product/RadarProductOp.h>
 
 #include "main/rack.h"  // for version toOStr
 
@@ -42,9 +43,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/SourceODIM.h"
 #include "data/ODIMPathTools.h"
 
-#include "product/ProductOp.h"
-
-//#include "Geometry.h"
 #include "Composite.h"
 //#include "Coordinates.h"
 //#include "RadarProj.h"

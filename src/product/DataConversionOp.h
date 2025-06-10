@@ -60,7 +60,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/QuantityMap.h"
 //#include <drain/util/LinearScaling.h>
 #include <hi5/Hi5.h>
-#include "ProductOp.h"
+#include <product/RadarProductOp.h>
 
 //#include "VolumeTraversalOp.h"
 //#include <drain/utility>
@@ -79,7 +79,7 @@ namespace rack {
  *
  */
 template <class M>
-class DataConversionOp: public ProductOp<M,M> {
+class DataConversionOp: public RadarProductOp<M,M> {
 
 public:
 
@@ -88,7 +88,7 @@ public:
 
 	DataConversionOp(const std::string & type="C", double gain=1.0, double offset=0.0,
 			double undetect=0.0, double nodata=255.0, std::string copyGroupSuffix="") :
-				ProductOp<M, M>(__FUNCTION__, "Converts HDF5 data to use desired data type, scaling and encoding") {
+				RadarProductOp<M, M>(__FUNCTION__, "Converts HDF5 data to use desired data type, scaling and encoding") {
 
 		this->allowedEncoding.link("what:type", this->odim.type = type);
 		this->allowedEncoding.link("what:gain", this->odim.scaling.scale = gain);

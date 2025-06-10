@@ -44,6 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/util/Variable.h>
 //#include <drain/util/TreeOrdered.h>
 #include <drain/util/ReferenceMap.h>
+#include <product/RadarProductOp.h> // NEW
 
 
 
@@ -58,7 +59,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "hi5/Hi5Write.h" // debugging
 
 
-#include "ProductOp.h" // NEW
 
 namespace rack {
 
@@ -85,11 +85,11 @@ using namespace drain::image;
  */
 // TODO: generalize for Cart
 template <class M>
-class VolumeOp : public ProductOp<const PolarODIM, M> {
+class VolumeOp : public RadarProductOp<const PolarODIM, M> {
 
 public:
 
-	VolumeOp(const std::string & name, const std::string &description="") : ProductOp<const PolarODIM, M>(name, description){
+	VolumeOp(const std::string & name, const std::string &description="") : RadarProductOp<const PolarODIM, M>(name, description){
 	};
 
 	virtual inline

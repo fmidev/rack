@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/util/Log.h>
 //#include <drain/util/Variable.h>
 #include <drain/image/Image.h>
-#include "product/ProductOp.h"
+#include <product/RadarProductOp.h>
 #include "product/PseudoRhiOp.h"
 #include "radar/Geometry.h"
 #include <algorithm>

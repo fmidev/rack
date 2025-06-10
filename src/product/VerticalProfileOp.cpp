@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/QuantityMap.h"
 #include <drain/image/Geometry.h>
 #include <drain/image/ImageT.h>
-#include "product/ProductOp.h"
+#include <product/RadarProductOp.h>
 #include "product/VerticalProfileOp.h"
 #include "radar/Constants.h"
 #include "radar/Geometry.h"

@@ -41,10 +41,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Point.h>
 #include <drain/image/SegmentProber.h>
 #include "product/DopplerOp.h"
-#include "product/ProductOp.h"
-//#include <stddef.h>
 #include <syslog.h>
 #include <drain/util/SmartMap.h>
+#include <product/RadarProductOp.h>
 #include <map>
 //#include <stdexcept>
 #include <string>

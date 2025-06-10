@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/Sampler.h>
 //#include <drain/util/Proj4.h>
 #include <drain/image/AccumulatorGeo.h>
+#include <product/RadarProductOp.h>
 #include "data/ODIM.h"
 #include "data/ODIMPath.h"
 #include "data/Data.h"
@@ -45,7 +46,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/DataCoder.h"
 #include "data/QuantityMap.h"
 #include "Geometry.h"
-#include "product/ProductOp.h"
 
 
 namespace rack {
