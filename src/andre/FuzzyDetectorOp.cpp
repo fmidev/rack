@@ -142,6 +142,7 @@ void FuzzyDetectorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData
 	 *  	FUZZY_${quantity}_
 	 */
 
+	mout.attention("expecting ", getDataSelector().getQuantitySelector().size(), " select:", getDataSelector().getQuantitySelector());
 
 	// Image tmp(typeid(unsigned char));
 	// tmp.setPhysicalRange(0.0, 1.0, true);
