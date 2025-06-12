@@ -160,43 +160,48 @@ void FuzzyDetectorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData
 	bool USE_ZDR   = qSelector.test("ZDR");
 
 
-	const Data<PolarSrc> & srcDataDBZ = sweepSrc.getData(qm.DBZ.keySelector); // VolumeOpNew::
-	const bool DBZ = !srcDataDBZ.data.isEmpty();  // or: || dbzParams.empty() ?
-	if (!DBZ){
-		mout.warn("DBZ data missing, selector: ", qm.DBZ.keySelector);
-		overallScale *= 0.75;
-	}
-	else {
-		computeFuzzyDBZ(srcDataDBZ, dstData, dstProductAux);
+	if (USE_DBZ){
+		const Data<PolarSrc> & srcDataDBZ = sweepSrc.getData(qm.DBZ.keySelector); // VolumeOpNew::
+		const bool DBZ = !srcDataDBZ.data.isEmpty();  // or: || dbzParams.empty() ?
+		if (!DBZ){
+			mout.warn("DBZ data missing, selector: ", qm.DBZ.keySelector);
+			overallScale *= 0.75;
+		}
+		else {
+			computeFuzzyDBZ(srcDataDBZ, dstData, dstProductAux);
+		}
+
 	}
 
-	const Data<PolarSrc> &  srcDataVRAD = sweepSrc.getData(qm.VRAD.keySelector); // VolumeOpNew::
-	const bool VRAD = !srcDataVRAD.data.isEmpty();
-	const double NI = srcDataVRAD.odim.getNyquist();
-	if (!VRAD){
-		mout.warn("VRAD missing, skipping..." );
-		overallScale *= 0.5;
-	}
-	else if (NI == 0) { //  if (vradSrc.odim.NI == 0) {
-		mout.note("vradSrc.odim (encoding): " , EncodingODIM(srcDataVRAD.odim) );
-		mout.warn("vradSrc.odim.NI==0, and could not derive NI from encoding" );
-		mout.warn("skipping VRAD..." );
-		overallScale *= 0.5;
-	}
-	else if (vradDevThreshold > NI) {
-		//else if (vradDevRange.min > NI) {
-			//mout.warn("vradDev range (" , vradDevRange , ") exceeds NI of input: " , NI ); // semi-fatal
-		mout.warn("vradDev threshold (" , vradDevThreshold , ") exceeds NI of input: " , NI ); // semi-fatal
-		mout.warn("skipping VRAD..." );
-		overallScale *= 0.5;
-	}
-	else {
-		/*
-		if (vradDevRange.max > NI) {
-			mout.warn("threshold end point of vradDev (" , vradDevRange , ") exceeds NI of input: " , NI );
+	if (USE_VRAD){
+		const Data<PolarSrc> &  srcDataVRAD = sweepSrc.getData(qm.VRAD.keySelector); // VolumeOpNew::
+		const bool VRAD = !srcDataVRAD.data.isEmpty();
+		const double NI = srcDataVRAD.odim.getNyquist();
+		if (!VRAD){
+			mout.warn("VRAD missing, skipping..." );
+			overallScale *= 0.5;
 		}
-		*/
-		computeFuzzyVRAD(srcDataVRAD, dstData, dstProductAux);
+		else if (NI == 0) { //  if (vradSrc.odim.NI == 0) {
+			mout.note("vradSrc.odim (encoding): " , EncodingODIM(srcDataVRAD.odim) );
+			mout.warn("vradSrc.odim.NI==0, and could not derive NI from encoding" );
+			mout.warn("skipping VRAD..." );
+			overallScale *= 0.5;
+		}
+		else if (vradDevThreshold > NI) {
+			//else if (vradDevRange.min > NI) {
+				//mout.warn("vradDev range (" , vradDevRange , ") exceeds NI of input: " , NI ); // semi-fatal
+			mout.warn("vradDev threshold (" , vradDevThreshold , ") exceeds NI of input: " , NI ); // semi-fatal
+			mout.warn("skipping VRAD..." );
+			overallScale *= 0.5;
+		}
+		else {
+			/*
+			if (vradDevRange.max > NI) {
+				mout.warn("threshold end point of vradDev (" , vradDevRange , ") exceeds NI of input: " , NI );
+			}
+			*/
+			computeFuzzyVRAD(srcDataVRAD, dstData, dstProductAux);
+		}
 	}
 
 

@@ -36,7 +36,7 @@
 <area shape="poly" id="edge15_Node000009_Node000016" title=" " alt="" coords="1332,510,1348,472,1373,425,1405,377,1446,336,1480,319,1482,324,1450,340,1409,380,1377,428,1353,474,1337,512"/>
 <area shape="rect" id="Node000017" href="$classrack_1_1ExtAndreOp.html" title="Base class for radar data processors." alt="" coords="1476,351,1575,376"/>
 <area shape="poly" id="edge16_Node000009_Node000017" title=" " alt="" coords="1338,511,1381,448,1411,414,1447,385,1475,372,1477,376,1449,390,1415,418,1385,451,1342,514"/>
-<area shape="rect" id="Node000018" href="$classrack_1_1FuzzyDualPolOp.html" title="Base class for BirdOp and InsectOp." alt="" coords="1462,400,1589,425"/>
+<area shape="rect" id="Node000018" href="$classrack_1_1FuzzyDetectorOp.html" title="Base class for BirdOp and InsectOp." alt="" coords="1459,400,1592,425"/>
 <area shape="poly" id="edge17_Node000009_Node000018" title=" " alt="" coords="1347,512,1391,473,1447,434,1473,423,1475,428,1449,439,1394,477,1350,516"/>
 <area shape="rect" id="Node000021" href="$classrack_1_1HydroClassBasedOp.html" title="Sets probabilities of non&#45;meteorological echoes based on precomputed hydrometeor classification." alt="" coords="1448,449,1603,475"/>
 <area shape="poly" id="edge20_Node000009_Node000021" title=" " alt="" coords="1366,516,1447,483,1481,472,1482,477,1449,489,1368,521"/>
@@ -63,9 +63,9 @@
 <area shape="rect" id="Node000032" href="$classrack_1_1ZDRvarOp.html" title=" " alt="" coords="1481,992,1570,1017"/>
 <area shape="poly" id="edge31_Node000009_Node000032" title=" " alt="" coords="1338,561,1369,648,1403,757,1410,792,1412,823,1411,878,1413,903,1418,927,1430,952,1450,979,1464,990,1482,997,1480,1002,1462,994,1446,983,1425,955,1413,929,1407,903,1406,878,1407,824,1404,793,1397,759,1363,649,1333,563"/>
 <area shape="rect" id="Node000019" href="$classrack_1_1BirdOp.html" title=" " alt="" coords="1672,376,1739,401"/>
-<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="1602,400,1671,390,1672,396,1602,405"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="1605,399,1672,390,1672,396,1606,405"/>
 <area shape="rect" id="Node000020" href="$classrack_1_1InsectOp.html" title=" " alt="" coords="1666,425,1745,451"/>
-<area shape="poly" id="edge19_Node000018_Node000020" title=" " alt="" coords="1602,421,1666,430,1665,435,1602,426"/>
+<area shape="poly" id="edge19_Node000018_Node000020" title=" " alt="" coords="1606,421,1666,430,1665,435,1605,427"/>
 <area shape="rect" id="Node000035" href="$classrack_1_1DamperOp.html" title=" " alt="" coords="1479,1041,1571,1067"/>
 <area shape="poly" id="edge34_Node000034_Node000035" title=" " alt="" coords="1388,1051,1479,1051,1479,1057,1388,1057"/>
 <area shape="rect" id="Node000036" href="$classrack_1_1GapFillOpBase.html" title="The base class for operators removing detected anomalies by overriding low&#45;quality pixels with neighb..." alt="" coords="1467,1091,1584,1116"/>

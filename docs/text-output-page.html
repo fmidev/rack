@@ -210,7 +210,17 @@ Sampling data</h1>
 </li>
 </ul>
 <p>Sampling steps, start, and end can be changed with <code>--sample</code> command. One may also skip lines containing <code>undetect</code> or <code>nodata</code> samples. If a comment char is defined some metadata, including applied format, appears as comments in the start of the output.</p>
-<div class="fragment"></div><!-- fragment --><p>Example of a formatted sampling: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH --sample 10,30,i=50:200,j=0:50 --format <span class="stringliteral">&#39;${i},${j} (${LON},${LAT}) ${DBZH}&#39;</span> -o samples-formatted.dat</div>
+<div class="fragment"><div class="line">--sample  &lt;iStep&gt;,&lt;jStep&gt;,&lt;i&gt;,&lt;j&gt;,&lt;commentChar&gt;,&lt;skipVoid&gt;,&lt;handleVoid&gt;  (section: general)</div>
+<div class="line">  Extract samples. See --format.</div>
+<div class="line">  See also: format</div>
+<div class="line">    iStep=10 [horz coord step]</div>
+<div class="line">    jStep=0 [vert coord step]</div>
+<div class="line">    i=-1:1 [horz index or range]</div>
+<div class="line">    j=-1:1 [vert index or range]</div>
+<div class="line">    commentChar=# [comment prefix (char or bytevalue)]</div>
+<div class="line">    skipVoid=false [skip lines with invalid/missing values]</div>
+<div class="line">    handleVoid=null [skip or mark invalid values [skip|null|&lt;number&gt;]]</div>
+</div><!-- fragment --><p>Example of a formatted sampling: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select quantity=DBZH --sample 10,30,i=50:200,j=0:50 --format <span class="stringliteral">&#39;${i},${j} (${LON},${LAT}) ${DBZH}&#39;</span> -o samples-formatted.dat</div>
 </div><!-- fragment --><p>The result: </p><div class="fragment"><div class="line">## input properties </div>
 <div class="line"># bbox=[1507.9672560563260504,3892.9862409188299353,1507.9629643527550797,3892.9862409202742128]</div>
 <div class="line"># height=360</div>

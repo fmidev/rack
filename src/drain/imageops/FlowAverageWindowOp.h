@@ -140,6 +140,7 @@ protected:
 	virtual
 	void write();
 
+
 };
 
 class FlowAverageWindowWeighted : public FlowAverageWindow {
@@ -180,6 +181,12 @@ public:
 		// drain::Logger mout(getImgLog(), __FUNCTION__,__FILE__);  //REP (this->name+"[const ImageTray &, ImageTray &]", __FUNCTION__);
 		this->traverseMultiChannel(src, dst);
 	}
+
+	virtual inline
+	const std::string & getName() const override {
+		return name;
+	};
+
 
 };
 

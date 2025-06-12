@@ -64,7 +64,7 @@ var searchData=
   ['fuzzybell2_61',['FuzzyBell2',['../classdrain_1_1FuzzyBell2.html',1,'drain']]],
   ['fuzzybell2_3c_20double_20_3e_62',['FuzzyBell2&lt; double &gt;',['../classdrain_1_1FuzzyBell2.html',1,'drain']]],
   ['fuzzybell_3c_20double_20_3e_63',['FuzzyBell&lt; double &gt;',['../classdrain_1_1FuzzyBell.html',1,'drain']]],
-  ['fuzzydualpolop_64',['FuzzyDualPolOp',['../classrack_1_1FuzzyDualPolOp.html',1,'rack']]],
+  ['fuzzydetectorop_64',['FuzzyDetectorOp',['../classrack_1_1FuzzyDetectorOp.html',1,'rack']]],
   ['fuzzysigmoid_65',['FuzzySigmoid',['../classdrain_1_1FuzzySigmoid.html',1,'drain']]],
   ['fuzzystep_66',['FuzzyStep',['../classdrain_1_1FuzzyStep.html',1,'drain']]],
   ['fuzzystep_3c_20double_20_3e_67',['FuzzyStep&lt; double &gt;',['../classdrain_1_1FuzzyStep.html',1,'drain']]],

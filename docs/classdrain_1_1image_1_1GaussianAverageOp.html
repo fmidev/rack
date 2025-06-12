@@ -142,6 +142,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aab606c539bd35d52c9317c36ac97fae9" id="r_aab606c539bd35d52c9317c36ac97fae9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GaussianAverageOp.html#aab606c539bd35d52c9317c36ac97fae9">traverseChannel</a> (const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;src, const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;<a class="el" href="classdrain_1_1image_1_1ImageMod.html#a5190755c358b359fbdd9401048404de5">srcAlpha</a>, <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;dst, <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;dstAlpha) const</td></tr>
 <tr class="memdesc:aab606c539bd35d52c9317c36ac97fae9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply to single channel with alpha.  <br /></td></tr>
 <tr class="separator:aab606c539bd35d52c9317c36ac97fae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a136e94d3f302d884d53feba32465ec2a" id="r_a136e94d3f302d884d53feba32465ec2a"><td class="memItemLeft" align="right" valign="top">virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GaussianAverageOp.html#a136e94d3f302d884d53feba32465ec2a">getName</a> () const override</td></tr>
+<tr class="memdesc:a136e94d3f302d884d53feba32465ec2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the name of an instance.  <br /></td></tr>
+<tr class="separator:a136e94d3f302d884d53feba32465ec2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1WindowOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1WindowOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1WindowOp.html">WindowOp&lt; Window&lt; GaussianWindowConf &gt; &gt;</a></td></tr>
 <tr class="memitem:a83d1adbae836584dbfdbb8cbbf348b49 inherit pub_methods_classdrain_1_1image_1_1WindowOp" id="r_a83d1adbae836584dbfdbb8cbbf348b49"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>WindowOp</b> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;)</td></tr>
@@ -161,9 +164,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setSize</b> (unsigned
 <tr class="memitem:aefb865cd7329b8908471f748afd433ba inherit pub_methods_classdrain_1_1image_1_1WindowOp" id="r_aefb865cd7329b8908471f748afd433ba"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setSize</b> (unsigned int width, unsigned int height)</td></tr>
 <tr class="separator:aefb865cd7329b8908471f748afd433ba inherit pub_methods_classdrain_1_1image_1_1WindowOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a136e94d3f302d884d53feba32465ec2a inherit pub_methods_classdrain_1_1image_1_1WindowOp" id="r_a136e94d3f302d884d53feba32465ec2a"><td class="memItemLeft" align="right" valign="top">virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1WindowOp.html#a136e94d3f302d884d53feba32465ec2a">getName</a> () const override</td></tr>
-<tr class="memdesc:a136e94d3f302d884d53feba32465ec2a inherit pub_methods_classdrain_1_1image_1_1WindowOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the name of an instance.  <br /></td></tr>
-<tr class="separator:a136e94d3f302d884d53feba32465ec2a inherit pub_methods_classdrain_1_1image_1_1WindowOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1ImageOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1ImageOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1ImageOp.html">ImageOp</a></td></tr>
 <tr class="memitem:a569b2d092cc236988b21f6a9cc4a9b92 inherit pub_methods_classdrain_1_1image_1_1ImageOp" id="r_a569b2d092cc236988b21f6a9cc4a9b92"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageOp.html#a569b2d092cc236988b21f6a9cc4a9b92">process</a> (const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;src, <a class="el" href="classdrain_1_1image_1_1Image.html">Image</a> &amp;dst) const</td></tr>
 <tr class="memdesc:a569b2d092cc236988b21f6a9cc4a9b92 inherit pub_methods_classdrain_1_1image_1_1ImageOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main interface. Typically splits processing to each channel.  <br /></td></tr>
@@ -423,6 +423,35 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a136e94d3f302d884d53feba32465ec2a" name="a136e94d3f302d884d53feba32465ec2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a136e94d3f302d884d53feba32465ec2a">&#9670;&#160;</a></span>getName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const std::string &amp; getName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the name of an instance. </p>
+
+<p>Reimplemented from <a class="el" href="classdrain_1_1image_1_1WindowOp.html#a136e94d3f302d884d53feba32465ec2a">WindowOp&lt; Window&lt; GaussianWindowConf &gt; &gt;</a>.</p>
+
+</div>
+</div>
 <a id="a56efd711511a84ab900466e2db2004d9" name="a56efd711511a84ab900466e2db2004d9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a56efd711511a84ab900466e2db2004d9">&#9670;&#160;</a></span>traverseChannel() <span class="overload">[1/2]</span></h2>
 

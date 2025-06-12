@@ -91,9 +91,10 @@ public:
 	virtual
 	void traverseChannel(const Channel & src, const Channel & srcAlpha, Channel &dst, Channel & dstAlpha) const ;
 
-
-
-protected:
+	virtual inline
+	const std::string & getName() const override {
+		return name;
+	};
 
 };
 

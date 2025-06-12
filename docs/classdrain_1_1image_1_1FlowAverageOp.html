@@ -134,6 +134,9 @@ Collaboration diagram for FlowAverageOp:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae7b1d81102dcadd8bb1d9002c5d840b5" id="r_ae7b1d81102dcadd8bb1d9002c5d840b5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FlowAverageOp.html#ae7b1d81102dcadd8bb1d9002c5d840b5">traverseChannels</a> (const <a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;src, <a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;dst) const</td></tr>
 <tr class="separator:ae7b1d81102dcadd8bb1d9002c5d840b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a136e94d3f302d884d53feba32465ec2a" id="r_a136e94d3f302d884d53feba32465ec2a"><td class="memItemLeft" align="right" valign="top">virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FlowAverageOp.html#a136e94d3f302d884d53feba32465ec2a">getName</a> () const override</td></tr>
+<tr class="memdesc:a136e94d3f302d884d53feba32465ec2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the name of an instance.  <br /></td></tr>
+<tr class="separator:a136e94d3f302d884d53feba32465ec2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1SlidingWindowOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1SlidingWindowOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1SlidingWindowOp.html">SlidingWindowOp&lt; FlowAverageWindowWeighted &gt;</a></td></tr>
 <tr class="memitem:ac46ec2a3222f7caa6d2eb2379e6c39de inherit pub_methods_classdrain_1_1image_1_1SlidingWindowOp" id="r_ac46ec2a3222f7caa6d2eb2379e6c39de"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>SlidingWindowOp</b> (const typename W::conf_t &amp;conf)</td></tr>
@@ -150,9 +153,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a054461d7e742fdfd96e195e32ae101c1 inherit pub_methods_classdrain_1_1image_1_1SlidingWindowOp" id="r_a054461d7e742fdfd96e195e32ae101c1"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>traverseMultiChannel</b> (const <a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;src, <a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &gt; &amp;dst) const</td></tr>
 <tr class="separator:a054461d7e742fdfd96e195e32ae101c1 inherit pub_methods_classdrain_1_1image_1_1SlidingWindowOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a136e94d3f302d884d53feba32465ec2a inherit pub_methods_classdrain_1_1image_1_1SlidingWindowOp" id="r_a136e94d3f302d884d53feba32465ec2a"><td class="memItemLeft" align="right" valign="top">virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1SlidingWindowOp.html#a136e94d3f302d884d53feba32465ec2a">getName</a> () const override</td></tr>
-<tr class="memdesc:a136e94d3f302d884d53feba32465ec2a inherit pub_methods_classdrain_1_1image_1_1SlidingWindowOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the name of an instance.  <br /></td></tr>
-<tr class="separator:a136e94d3f302d884d53feba32465ec2a inherit pub_methods_classdrain_1_1image_1_1SlidingWindowOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1WindowOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1WindowOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1WindowOp.html">WindowOp&lt; W &gt;</a></td></tr>
 <tr class="memitem:a83d1adbae836584dbfdbb8cbbf348b49 inherit pub_methods_classdrain_1_1image_1_1WindowOp" id="r_a83d1adbae836584dbfdbb8cbbf348b49"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>WindowOp</b> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;)</td></tr>
@@ -388,6 +388,35 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s.">Window</a> average that preserves the magnitude. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a136e94d3f302d884d53feba32465ec2a" name="a136e94d3f302d884d53feba32465ec2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a136e94d3f302d884d53feba32465ec2a">&#9670;&#160;</a></span>getName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const std::string &amp; getName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the name of an instance. </p>
+
+<p>Reimplemented from <a class="el" href="classdrain_1_1image_1_1SlidingWindowOp.html#a136e94d3f302d884d53feba32465ec2a">SlidingWindowOp&lt; FlowAverageWindowWeighted &gt;</a>.</p>
+
+</div>
+</div>
 <a id="ae7b1d81102dcadd8bb1d9002c5d840b5" name="ae7b1d81102dcadd8bb1d9002c5d840b5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae7b1d81102dcadd8bb1d9002c5d840b5">&#9670;&#160;</a></span>traverseChannels()</h2>
 

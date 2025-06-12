@@ -134,7 +134,7 @@ var searchData=
   ['application_3a_20creating_20clutter_20maps_131',['Application: creating clutter maps',['../accumulationpage.html#create_cluttermap',1,'']]],
   ['apply_132',['apply',['../classrack_1_1PaletteBase.html#a667fb4a4eb6fef905e6d99c41c80c6e4',1,'rack::PaletteBase']]],
   ['applyodim_133',['applyODIM',['../classrack_1_1ProductBase.html#a4d69a96f68c7fe813dada3f601b811af',1,'rack::ProductBase']]],
-  ['applyoperator_134',['applyOperator',['../classrack_1_1FuzzyDualPolOp.html#a4c277f48da1b7f18ffb3a41fa3583fdd',1,'rack::FuzzyDualPolOp']]],
+  ['applyoperator_134',['applyOperator',['../classrack_1_1FuzzyDetectorOp.html#a4c277f48da1b7f18ffb3a41fa3583fdd',1,'rack::FuzzyDetectorOp']]],
   ['arg_135',['objects as {...}, starting from the arg',['../classdrain_1_1Sprinter.html#autotoc_md22',1,'']]],
   ['arguments_136',['Command line arguments',['../index.html#command_line_format',1,'']]],
   ['array_137',['ARRAY',['../classrack_1_1ODIMPathElem.html#ae7011caba8882ad9b6bef266ac92335a',1,'rack::ODIMPathElem']]],

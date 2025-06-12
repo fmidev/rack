@@ -1,6 +1,6 @@
 <map id="InsectOp" name="InsectOp">
 <area shape="rect" id="Node000001" title=" " alt="" coords="74,680,153,705"/>
-<area shape="rect" id="Node000002" href="$classrack_1_1FuzzyDualPolOp.html" title="Base class for BirdOp and InsectOp." alt="" coords="50,607,177,632"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1FuzzyDetectorOp.html" title="Base class for BirdOp and InsectOp." alt="" coords="47,607,180,632"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,646,116,680,111,680,111,646"/>
 <area shape="rect" id="Node000003" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors." alt="" coords="65,533,161,559"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="116,572,116,607,111,607,111,572"/>

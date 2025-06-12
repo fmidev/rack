@@ -208,8 +208,9 @@ A sweep coloured with <code>--palette</code> command.</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="transparency"></a>
 Adding transparency</h1>
 <p>Adding transparency to radar images is useful in applications involving layered data viewing. Transparency can be added to gray or colour images with <code>--imageTransp</code> .</p>
-<div class="fragment"><div class="line">--imageTransp  &lt;ftor&gt;,&lt;undetect&gt;,&lt;nodata&gt;  (Section: images)</div>
+<div class="fragment"><div class="line">--imageTransp  &lt;ftor&gt;,&lt;undetect&gt;,&lt;nodata&gt;  (section: images)</div>
 <div class="line">  Adds a transparency channel. Uses copied image, creating one if needed.</div>
+<div class="line">  See also: imageAlpha,palette</div>
 <div class="line">    ftor= [min:max or Functor_p1_p2_p3_...]</div>
 <div class="line">    undetect=0 [opacity of &#39;undetect&#39; pixels]</div>
 <div class="line">    nodata=1 [opacity of &#39;nodata&#39; pixels]</div>
@@ -275,8 +276,6 @@ List of image operators</h2>
 <div class="line">  Adds values</div>
 <div class="line">--iAverage  &lt;width&gt;</div>
 <div class="line">  Window averaging with optional weighting support.</div>
-<div class="line">--iBlender  &lt;width&gt;,&lt;spreader&gt;,&lt;mix&gt;,&lt;loops&gt;,&lt;expansionCoeff&gt;</div>
-<div class="line">  Smoothes image repeatedly, mixing original image with the result at each round.</div>
 <div class="line">--iCatenate  &lt;scale&gt;,&lt;offset&gt;</div>
 <div class="line">  Catenates images</div>
 <div class="line">--iCopy  &lt;dstView&gt;,&lt;scale&gt;,&lt;bias&gt;,&lt;LIMIT&gt;</div>
@@ -290,7 +289,7 @@ List of image operators</h2>
 <div class="line">--iDistanceTransformExp  &lt;width&gt;,&lt;height&gt;,&lt;topology&gt;</div>
 <div class="line">  Exponentially decreasing intensities. Set half-decay radii.</div>
 <div class="line">--iDistanceTransformFill  &lt;width&gt;,&lt;height&gt;,&lt;topology&gt;,&lt;alphaThreshold&gt;</div>
-<div class="line">  Spreads intensities linearly up to distance defined by alpha intensities.</div>
+<div class="line">  Spreads intensities linearly up to distance defined by alpha channel.</div>
 <div class="line">--iDistanceTransformFillExp  &lt;width&gt;,&lt;height&gt;,&lt;topology&gt;,&lt;alphaThreshold&gt;</div>
 <div class="line">  Spreads intensities exponentially up to distance defined by alpha intensities.</div>
 <div class="line">--iDiv  &lt;scale&gt;,&lt;bias&gt;,&lt;LIMIT&gt;</div>
@@ -321,7 +320,7 @@ List of image operators</h2>
 <div class="line">  Horizontal intensity difference</div>
 <div class="line">--iGradientVert  &lt;radius&gt;,&lt;LIMIT&gt;</div>
 <div class="line">  Vertical intensity difference</div>
-<div class="line">--iGray  &lt;coeff&gt;</div>
+<div class="line">--iGray  &lt;coeff&gt;,&lt;normalize&gt;</div>
 <div class="line">  Convert multi-channel image to single. Post-scaling with desired functor.</div>
 <div class="line">--iHighBoost  &lt;width&gt;,&lt;height&gt;,&lt;coeff&gt;</div>
 <div class="line">  Mixture of original and high-pass filtered image</div>
@@ -352,7 +351,7 @@ List of image operators</h2>
 <div class="line">--iMultiThreshold  &lt;range&gt;,&lt;min&gt;,&lt;max&gt;</div>
 <div class="line">  Change values outside given range to target.min and target.max</div>
 <div class="line">--iNegate  </div>
-<div class="line">  ../src/drain/imageops/ImageOpBank.h</div>
+<div class="line">  Invert values (unsigned char or unsigned short int)</div>
 <div class="line">--iProduct  &lt;functor&gt;</div>
 <div class="line">  Computes the dot product of pixel vectors. Post-scaling with desired functor.</div>
 <div class="line">--iQualityMixer  &lt;coeff&gt;</div>
@@ -379,6 +378,8 @@ List of image operators</h2>
 <div class="line">  Segment statistics: area, mx, my, variance, slimness, horizontality, verticality, elongation</div>
 <div class="line">--iSub  &lt;scale&gt;,&lt;bias&gt;,&lt;LIMIT&gt;</div>
 <div class="line">  Subtracts values</div>
+<div class="line">--iSuperProber  &lt;threshold&gt;,&lt;filename&gt;,&lt;debug&gt;</div>
+<div class="line">  Hierarchical segment prober</div>
 <div class="line">--iThreshold  &lt;threshold&gt;,&lt;replace&gt;,&lt;LIMIT&gt;</div>
 <div class="line">  Resets values lower than a threshold</div>
 <div class="line">--iThresholdBinary  &lt;threshold&gt;,&lt;replace&gt;,&lt;replaceHigh&gt;,&lt;LIMIT&gt;</div>
@@ -387,12 +388,14 @@ List of image operators</h2>
 <div class="line">  Flips image matrix around its corner.</div>
 <div class="line">--iWindowHistogram  &lt;width&gt;,&lt;valueFunc&gt;,&lt;percentage&gt;,&lt;bins&gt;</div>
 <div class="line">  A pipeline implementation of window histogram; valueFunc=[asmdvNX] (avg,sum,median,stddev,variance,miN,maX)</div>
+<div class="line">--iWindowOp&lt;Window&lt;WindowConfig,WindowCore&gt;&gt;  &lt;width&gt;,&lt;spreader&gt;,&lt;mix&gt;,&lt;loops&gt;,&lt;expansionCoeff&gt;</div>
+<div class="line">  Smoothes image repeatedly, mixing original image with the result at each round.</div>
 <div class="line"> </div>
-<div class="line">For help on a commands, type:</div>
+<div class="line">For help on commands, type:</div>
 <div class="line">  --help &lt;command&gt;</div>
 <div class="line"> </div>
 <div class="line">For help on command sections, type:</div>
-<div class="line">  --help [general|trigger|images|andre|science|products|accumulation|cart|imageOps|all]</div>
+<div class="line">  --help [general|trigger|images|andre|science|products|accumulation|cart|deprecating|imageOps|graphics|all]</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- HTML footer for doxygen 1.8.17-->
