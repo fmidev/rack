@@ -154,10 +154,10 @@ void FuzzyDetectorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData
 
 	const QuantitySelector &  qSelector = this->dataSelector.getQuantitySelector();
 
-	bool USE_DBZ   = qSelector.test("DBZ");
-	bool USE_VRAD  = qSelector.test("VRAD");
-	bool USE_RHOHV = qSelector.test("RHOHV");
-	bool USE_ZDR   = qSelector.test("ZDR");
+	bool USE_DBZ   = true || qSelector.test("DBZ");
+	bool USE_VRAD  = true || qSelector.test("VRAD");
+	bool USE_RHOHV = true || qSelector.test("RHOHV");
+	bool USE_ZDR   = true || qSelector.test("ZDR");
 
 
 	if (USE_DBZ){
@@ -165,6 +165,7 @@ void FuzzyDetectorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData
 		const bool DBZ = !srcDataDBZ.data.isEmpty();  // or: || dbzParams.empty() ?
 		if (!DBZ){
 			mout.warn("DBZ data missing, selector: ", qm.DBZ.keySelector);
+			mout.warn("Sweep info: ", sweepSrc);
 			overallScale *= 0.75;
 		}
 		else {
@@ -178,7 +179,9 @@ void FuzzyDetectorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData
 		const bool VRAD = !srcDataVRAD.data.isEmpty();
 		const double NI = srcDataVRAD.odim.getNyquist();
 		if (!VRAD){
-			mout.warn("VRAD missing, skipping..." );
+			mout.warn("VRAD data missing, selector: ", qm.VRAD.keySelector);
+			mout.warn("Sweep info: ", sweepSrc);
+			// mout.warn("VRAD missing, skipping..." );
 			overallScale *= 0.5;
 		}
 		else if (NI == 0) { //  if (vradSrc.odim.NI == 0) {
@@ -205,27 +208,31 @@ void FuzzyDetectorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData
 	}
 
 
+	if (USE_RHOHV){
+		const Data<PolarSrc> &  srcDataRHOHV = sweepSrc.getData(qm.RHOHV.keySelector); // VolumeOpNew::
+		const bool RHOHV = !srcDataRHOHV.data.isEmpty();
+		if (!RHOHV){
+			overallScale *= 0.5;
+			mout.warn("RHOHV missing, selector: ", qm.RHOHV.keySelector);
+		}
+		else {
+			computeFuzzyRHOHV(srcDataRHOHV, dstData, dstProductAux);
+		}
+	}
 
-	const Data<PolarSrc> &  srcDataRHOHV = sweepSrc.getData(qm.RHOHV.keySelector); // VolumeOpNew::
-	const bool RHOHV = !srcDataRHOHV.data.isEmpty();
-	if (!RHOHV){
-		overallScale *= 0.5;
-		mout.warn("RHOHV missing, selector: ", qm.RHOHV.keySelector);
-	}
-	else {
-		computeFuzzyRHOHV(srcDataRHOHV, dstData, dstProductAux);
+	if (USE_ZDR){
+		const Data<PolarSrc> &  srcDataZDR = sweepSrc.getData(qm.ZDR.keySelector); // VolumeOpNew::
+		const bool ZDR = !srcDataZDR.data.isEmpty();
+		if (!ZDR){
+			overallScale *= 0.75;
+			mout.warn("ZDR missing" );
+		}
+		else {
+			// mout.debug2(zdrSrc.odim );
+			computeFuzzyZDR(srcDataZDR, dstData, dstProductAux);
+		}
 	}
 
-	const Data<PolarSrc> &  srcDataZDR = sweepSrc.getData(qm.ZDR.keySelector); // VolumeOpNew::
-	const bool ZDR = !srcDataZDR.data.isEmpty();
-	if (!ZDR){
-		overallScale *= 0.75;
-		mout.warn("ZDR missing" );
-	}
-	else {
-		// mout.debug2(zdrSrc.odim );
-		computeFuzzyZDR(srcDataZDR, dstData, dstProductAux);
-	}
 
 	mout.debug("Overall scale " , overallScale );
 	mout.success(" -> dstData: " , dstData );
@@ -254,9 +261,11 @@ void FuzzyDetectorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData
 		mout.special("applying gamma adjustment (p=", gammaAdjustment,")");
 		std::vector<unsigned char> lookUp;
 		getGammaLookUpTable(gammaAdjustment, lookUp); // todo: odim scaling included? Tiny difference...
+		/*
 		for (size_t i=0; i<256; ++i){
 			mout.special(" look: ", i, " => ", (float)lookUp[i]);
 		}
+		*/
 
 		//double d;
 		for (drain::image::Image::iterator it = dstData.data.begin(); it!= dstData.data.end(); ++it){

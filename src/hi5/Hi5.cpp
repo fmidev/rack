@@ -224,10 +224,9 @@ hid_t Hi5Base::getH5NativeDataType(const std::type_info &type){
 		//return H5T_NATIVE_UCHAR; /// TODO
 	}
 	else if (type == typeid(void)){
-		mout.warn(__FUNCTION__, "void type requested, setting string type");
+		mout.warn(__FUNCTION__, " void type requested, setting string type");
 		throw std::runtime_error("Requested void type attribute");
 		return getH5StringVariableLength();
-		//return H5T_NATIVE_UCHAR; /// TODO
 	}
 	/*
 	else if (type == typeid(std::string)){

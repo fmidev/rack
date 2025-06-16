@@ -314,8 +314,11 @@ void DetectorOp::writeHow(PlainData<PolarDst> & dstData) const {
 	a["task"] = std::string("fi.fmi.Rack.AnDRe.")+name;
 	//a["task_args"] = getParameters().toStr(':');
 	static const drain::SprinterLayout layout(",", ":");
-	a["task_args"] = drain::sprinter(getParameters(), layout).str();
 
+	const drain::BeanLike::map_t & params = getParameters();
+	// if (!params.empty()){
+	a["task_args"] = drain::sprinter(params, layout).str();
+	//}
 
 }
 

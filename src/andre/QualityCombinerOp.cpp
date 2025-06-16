@@ -157,6 +157,7 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 	drain::VariableMap & qindHow = dstQind.getHow();
 	//qindHow["task"] = std::string("fi.fmi.")+__RACK__+".AnDRe.Detector.OverallQuality";
 	qindHow["task"] = "fi.fmi.rack.AnDRe.Detector.OverallQuality";
+	// qindHow["task_args"].setType<std::string>();
 	qindHow["task_args"] << label; // like SHIPOP
 	ProductBase::setRackVersion(qindHow);
 
@@ -252,6 +253,10 @@ void QualityCombinerOp::updateOverallQuality(const PlainData<PolarSrc> & srcQind
 	mout.special("srcClasses: ", drain::sprinter(srcClasses));
 
 	drain::Variable & task_args = dstQind.getHow()["task_args"];
+	if (!task_args.typeIsSet()){
+		task_args.setType<std::string>();
+	}
+
 	std::set<std::string> dstClasses;
 	task_args.toSequence(dstClasses, ',');
 	mout.special("dstClasses: ", drain::sprinter(dstClasses));

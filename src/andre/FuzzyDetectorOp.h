@@ -54,7 +54,8 @@ protected:
 	inline
 	FuzzyDetectorOp(const std::string & name, const std::string & description, const std::string & classCode, bool vrad_flip) :
 		DetectorOp(name, description, classCode)  {
-		dataSelector.setQuantities("DBZ:VRAD:RHOHV:ZDR");
+		// dataSelector.setQuantities("DBZ:VRAD:RHOHV:ZDR");
+		dataSelector.setQuantities("DBZH:VRADH:RHOHV:ZDR");
 	};
 
 

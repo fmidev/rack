@@ -32,17 +32,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef BioMetOP2_H_
 #define BioMetOP2_H_
 
-#include "DetectorOp.h"
+//#include "DetectorOp.h"
 
 //#include <drain/image/SegmentAreaOp.h>
 #include <drain/util/Fuzzy.h>
 //#include <drain/image/MathOpPack.h>
 //#include <drain/image/File.h>
+#include "DetectorOp.h"
 
-
-using namespace drain::image;
-
-
+// using namespace drain::image;
 
 namespace rack {
 
@@ -97,8 +95,7 @@ protected:
 };
 
 
-
-}
+} // rack::
 
 #endif /* BIOMET_OP_H_ */
 
