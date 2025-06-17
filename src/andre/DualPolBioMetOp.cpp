@@ -126,12 +126,6 @@ void BirdOp::computeFuzzyVRAD(const PlainData<PolarSrc> & srcData, PlainData<Pol
 
 	FuzzyStep<double> fuzzyStep; //(0.5);
 
-	/*
-	if (!VRAD_FLIP)
-		fuzzyStep.set(vradDevRange.min, vradDevRange.max);
-	else
-		fuzzyStep.set(vradDevRange.max, vradDevRange.min);
-		*/
 	fuzzyStep.set(vradDevThreshold - 1.0, vradDevThreshold + 1.0);
 
 	DopplerDevWindow::conf_t conf(fuzzyStep, windowConf.frame.width, windowConf.frame.height, 0.05, true, false); // require 5% samples

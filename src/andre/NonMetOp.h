@@ -146,6 +146,52 @@ protected:
 };
 
 
+
+class ChaffOp: public FuzzyDetectorOp {
+
+public:
+
+	// BIRD: double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrAbsMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0
+
+	/**
+	 *
+	 *  \param dbzPeak
+	 *  \param vradDevMin
+	 *  \param rhoHVmax
+	 *  \param zdrAbsMin
+	 *  \param windowWidth
+	 *  \param windowHeight
+	 *
+	 */
+	ChaffOp(double dbzPeak = 15.0, double vradDevMax = +5.0, double rhoHVmax = 0.50, double zdrAbsMin = 0.5, double windowWidth = 2500, double windowHeight = 5.0) :
+		FuzzyDetectorOp(__FUNCTION__, "Estimates chaff probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.chaff"){
+		init(dbzPeak, vradDevMax, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
+	};
+
+	ChaffOp(const ChaffOp & op) : FuzzyDetectorOp(op) {
+		this->parameters.copyStruct(op.getParameters(), op, *this);
+	}
+
+	virtual
+	void init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrDevMin, double windowWidth, double windowHeight);
+
+	virtual
+	void computeFuzzyDBZ(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+
+	virtual
+	void computeFuzzyVRAD(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+
+	virtual
+	void computeFuzzyZDR(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+
+	virtual
+	void computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+
+
+};
+
+
+
 } // rack::
 
 #endif /* NONMET_OP_H_ */

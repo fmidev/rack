@@ -358,12 +358,13 @@ AnDReModule::AnDReModule(drain::CommandBank & cmdBank) : module_t(cmdBank) { // 
 
 	// Wrapper for detector ops
 	DetectorInstaller detectorInstaller(cmdBank);
-	detectorInstaller.install<AttenuationOp>(); // attn;
-	detectorInstaller.install<BiometOp>(); //   biomet;
-	detectorInstaller.install<BirdOp>(); //     bird;
-	detectorInstaller.install<DopplerNoiseOp>(); // dopplerNoise;
-	detectorInstaller.install<EmitterOp>(); // emitter;
-	detectorInstaller.install<InsectOp> (); //  insect;
+	detectorInstaller.install<AttenuationOp>();
+	detectorInstaller.install<BiometOp>();
+	detectorInstaller.install<BirdOp>();
+	detectorInstaller.install<ChaffOp>();
+	detectorInstaller.install<DopplerNoiseOp>();
+	detectorInstaller.install<EmitterOp>();
+	detectorInstaller.install<InsectOp> ();
 	detectorInstaller.install<JammingOp>(); // jamming;
 	//detectorInstaller.install<NoiseOp>     noise; // on hold (bak)
 	detectorInstaller.install<NonMetOp> (); // nonMet;

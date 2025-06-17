@@ -32,10 +32,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Fuzzy.h>
 #include <drain/image/ImageFile.h>
 #include <drain/imageops/SlidingWindowMedianOp.h>
-//#include <drain/imageops/SegmentAreaOp.h>
-//#include <drain/image/MathOpPack.h>
 #include "NonMetOp.h"
+#include "FuzzyDetectorOp.h"
 
+
+#include <drain/imageops/SlidingWindowOp.h>
+#include "radar/Analysis.h"
+#include "radar/Doppler.h"
 
 namespace rack {
 
@@ -133,7 +136,7 @@ void NonMetOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 
 
 NonMet2Op::NonMet2Op(const drain::UniTuple<double,2> & threshold, const drain::UniTuple<double,2> & medianWindow, double medianThreshold) :
-				FuzzyDetectorOp(__FUNCTION__, "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet", true){
+				FuzzyDetectorOp(__FUNCTION__, "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet"){
 	init(threshold, medianWindow, medianThreshold);
 }
 
@@ -156,6 +159,56 @@ void NonMet2Op::computeFuzzyZDR(const PlainData<PolarSrc> & src, PlainData<Polar
 void NonMet2Op::computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
 
 }
+
+
+
+void ChaffOp::init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
+
+	parameters.link("dbzPeak",     this->dbzParam = dbzPeak,  "Typical reflectivity (DBZH)");
+	parameters.link("vradDevMax",  this->vradDevThreshold = vradDevMax, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
+	parameters.link("rhoHVmax",    this->rhoHVthreshold = rhoHVmax,  "Fuzzy threshold of maximum rhoHV value");
+	parameters.link("zdrAbsMin",   this->zdrAbsThreshold = zdrAbsMin,  "Fuzzy threshold of absolute ZDR");
+	parameters.link("window",      this->windowConf.frame.tuple(windowWidth, windowHeight),  "beam-directional(m), azimuthal(deg)"); //, "[d]");
+	parameters.link("gamma",       this->gammaAdjustment,  "Contrast adjustment, dark=0.0 < 1.0 < brighter ");
+
+}
+
+
+void ChaffOp::computeFuzzyDBZ(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
+	RadarFunctorOp<drain::FuzzyBell<double> > dbzFuzzifier;
+	dbzFuzzifier.odimSrc = srcData.odim;
+	dbzFuzzifier.functor.set(dbzParam, +25.0);
+	applyOperator(dbzFuzzifier, srcData, dstData, dstProduct);
+};
+
+void ChaffOp::computeFuzzyVRAD(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
+
+	drain::FuzzyStep<double> fuzzyStep;
+	fuzzyStep.set(vradDevThreshold + 1.0, vradDevThreshold - 1.0); // Inverse; small deviation yields high response
+
+	DopplerDevWindow::conf_t conf(fuzzyStep, windowConf.frame.width, windowConf.frame.height, 0.05, true, false); // require 5% samples
+	conf.updatePixelSize(srcData.odim);
+
+	SlidingWindowOp<DopplerDevWindow> vradDevOp(conf);
+	applyOperator(vradDevOp, srcData, dstData, dstProduct);
+
+};
+
+void ChaffOp::computeFuzzyZDR(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
+	RadarFunctorOp<drain::FuzzyTriangle<double> > zdrFuzzifier;
+	zdrFuzzifier.odimSrc = srcData.odim;
+	zdrFuzzifier.functor.set(+zdrAbsThreshold, 0.0, -zdrAbsThreshold); // INVERSE //, -1.0, 1.0);
+	applyOperator(zdrFuzzifier, srcData, dstData, dstProduct);
+};
+
+
+
+void ChaffOp::computeFuzzyRHOHV(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
+	RadarFunctorOp<drain::FuzzyStep<double> > rhohvFuzzifier;
+	rhohvFuzzifier.odimSrc = srcData.odim;
+	rhohvFuzzifier.functor.set(rhoHVthreshold, rhoHVthreshold * 0.8);
+	applyOperator(rhohvFuzzifier, srcData, dstData, dstProduct);
+};
 
 
 } // Rack

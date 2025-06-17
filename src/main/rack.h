@@ -32,9 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "12.92"
+#define __RACK_VERSION__ "13.0"
 
 /**
+ *  Version 13
+ *  - andre::ChaffOp
+ *
  *  Version 12
  *  - Revised QuantityMap, allowing retrieve("DBZXP")
  *  Release 12.1

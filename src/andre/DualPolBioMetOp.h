@@ -31,12 +31,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_GLIDER_OP
 #define RACK_GLIDER_OP
 
-#include <andre/FuzzyDetectorOp.h>
 #include <string>
 
 #include <drain/image/Image.h>
 #include <drain/image/Window.h>
 #include <drain/imageops/ImageOp.h>
+
+
+#include "FuzzyDetectorOp.h"
 
 // RAISED
 /*
@@ -72,14 +74,14 @@ public:
 	 *  \param vradDevMin
 	 *  \param rhoHVmax
 	 *  \param zdrAbsMin
-	 *  \param windowWidth
+	 *  \param windowWidth  // Optional postprocessing: morphological closing.
 	 *  \param windowHeight
 	 *
 	 */
 //	BirdOp(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrAbsMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0) :
 	BirdOp(double dbzPeak = 0.0, double vradDevMin = 1.0, double rhoHVmax = 0.95, double zdrAbsMin = 1.0, double windowWidth = 2500, double windowHeight = 5.0) :
 
-		FuzzyDetectorOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.bird", false){ // Optional postprocessing: morphological closing.
+		FuzzyDetectorOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.bird"){
 
 		init(dbzPeak, vradDevMin, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 
@@ -130,7 +132,7 @@ public:
 	 */
 	// InsectOp(double dbzPeak = -10.0, double vradDevMax = +5.0, double rhoHVmax = 0.7, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
 	InsectOp(double dbzMax = 0.0, double vradDevMax = +5.0, double rhoHVmax = 0.95, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
-		FuzzyDetectorOp(__FUNCTION__, "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.insect", true){
+		FuzzyDetectorOp(__FUNCTION__, "Probability of insects, based on DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.insect"){
 		init(dbzMax, vradDevMax, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 	};
 

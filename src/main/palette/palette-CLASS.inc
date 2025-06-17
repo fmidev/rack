@@ -11,7 +11,7 @@
   {        10, {"precip.wet", "Rain", {151,255,19}} },
   {        11, {"precip.wet.supercooled", "Supercooled Rain", {233,252,8}} },
   {        56, {"nonmet.dust", "Dust", {233,255,164}} },
-  {        58, {"nonmet.chaff", "Chaff", {249,240,107}} },
+  {        58, {"nonmet.chaff", "Chaff", {208,255,112}} },
   {        60, {"nonmet.biol.insect", "Insect", {255,255,16}} },
   {        61, {"nonmet.biol.dopplernoise", "Doppler noise", {255,224,64}} },
   {        62, {"nonmet.biomet", "Biol", {255,190,111}} },

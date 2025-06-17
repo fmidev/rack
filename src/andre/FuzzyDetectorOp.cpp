@@ -307,10 +307,9 @@ void FuzzyDetectorOp::runDetection(const DataSet<PolarSrc> & sweepSrc, PlainData
 	}
 	*/
 
+
+
 }
-
-
-
 
 }
 

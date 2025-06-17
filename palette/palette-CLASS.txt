@@ -46,7 +46,7 @@
 
 # nonmet.chaff
 # Chaff
-58.0	249.0	240.0	107.0
+58.0	208.0	255.0	112.0
 
 # nonmet.biol.insect
 # Insect
