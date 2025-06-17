@@ -29,36 +29,30 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/image/ImageFile.h>
-#include "NonMetOp.h"
-
 #include <drain/util/Fuzzy.h>
-
+#include <drain/image/ImageFile.h>
 #include <drain/imageops/SlidingWindowMedianOp.h>
-
 //#include <drain/imageops/SegmentAreaOp.h>
 //#include <drain/image/MathOpPack.h>
+#include "NonMetOp.h"
 
-using namespace drain::image;
 
 namespace rack {
 
-//void NonMetOp::filterImage(const PolarODIM &srcData.odim, const Image &src, Image &dst) const {
 
 void NonMetOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const {
 
-
 	drain::Logger mout(__FILE__, __FUNCTION__);
-
 	// mout.attention(srcData.odim.quantity);
-
-	//drain::FuzzyStepsoid<double, double> f(odimIn.scaleInverse(threshold), odimIn.scaleInverse(threshold + thresholdWidth) - odimIn.scaleInverse(threshold) ); BUG
+	// drain::FuzzyStepsoid<double, double> f(odimIn.scaleInverse(threshold), odimIn.scaleInverse(threshold + thresholdWidth) - odimIn.scaleInverse(threshold) ); BUG
 	const unsigned int QMIN = dstProb.odim.scaleInverse(0.0);
 	const unsigned int QMAX = dstProb.odim.scaleInverse(0.95);
 	drain::FuzzyStep<double> fuzzyStep; //(threshold.max, threshold.min, QMAX);  // inverted
 	if (threshold.min < threshold.max){
-		// mout.attention("REVERSE");
 		fuzzyStep.set(threshold.max, threshold.min, QMAX);
+	}
+	else if (threshold.min == threshold.max){
+			fuzzyStep.set(threshold.max, 0.9*threshold.max, QMAX);
 	}
 	else {
 		mout.info("swapping min-max of ", threshold);
@@ -138,6 +132,30 @@ void NonMetOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarD
 }
 
 
+NonMet2Op::NonMet2Op(const drain::UniTuple<double,2> & threshold, const drain::UniTuple<double,2> & medianWindow, double medianThreshold) :
+				FuzzyDetectorOp(__FUNCTION__, "Estimates probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet", true){
+	init(threshold, medianWindow, medianThreshold);
 }
 
-// Rack
+//void NonMet2Op::init(double dbzMax, double vradDevMax, double rhoHVmax, double zdrDevMin, double windowWidth, double windowHeight){
+void NonMet2Op::init(const drain::UniTuple<double,2> & threshold, const drain::UniTuple<double,2> & medianWindow, double medianThreshold) {
+
+	dataSelector.setQuantities("RHOHV");
+	REQUIRE_STANDARD_DATA = false;
+	UNIVERSAL = true;
+
+	parameters.link("threshold", this->threshold.tuple() = threshold, "0...1[:0...1]");
+	parameters.link("medianWindow", this->medianWindow.tuple() = medianWindow, "metres,degrees");
+	parameters.link("medianPos", this->medianPos = medianPos, "0...1");
+}
+
+void NonMet2Op::computeFuzzyZDR(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
+
+}
+
+void NonMet2Op::computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
+
+}
+
+
+} // Rack

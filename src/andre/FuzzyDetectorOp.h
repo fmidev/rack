@@ -74,7 +74,7 @@ protected:
 	double zdrAbsThreshold = 2.0;
 	drain::image::WindowConfig windowConf;
 	// RadarWindowConfig windowConf;
-	double gammaAdjustment = 2.0; // neutral value, post-processing
+	double gammaAdjustment = 1.0; // neutral value, post-processing
 
 
 	virtual

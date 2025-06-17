@@ -367,6 +367,7 @@ AnDReModule::AnDReModule(drain::CommandBank & cmdBank) : module_t(cmdBank) { // 
 	detectorInstaller.install<JammingOp>(); // jamming;
 	//detectorInstaller.install<NoiseOp>     noise; // on hold (bak)
 	detectorInstaller.install<NonMetOp> (); // nonMet;
+	detectorInstaller.install<NonMet2Op> (); // nonMet;
 	detectorInstaller.install<ShipOp>(); //       ship;
 	detectorInstaller.install<SpeckleOp>(); // speckle;
 

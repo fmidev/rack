@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "12.91"
+#define __RACK_VERSION__ "12.92"
 
 /**
  *  Version 12
@@ -73,6 +73,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - BirdOp and InsectOp with brightness adjustment (gamma correction)
  *  Release 12.91
  *  - Fixed BirdOp and InsectOp bug
+ *  Release 12.92
+ *  - NonMet palette color (lighter orange)
  *
  *
  *  Version 11
