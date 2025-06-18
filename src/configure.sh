@@ -168,6 +168,8 @@ echo "Final values: "
 
 ask_variable CCFLAGS "Include paths"
 ask_variable LDFLAGS "Library paths"
+
+ask_variable CC      "C++ compiler"
 #ask_variable LDLIBS  "Libraries"
 
 ask_variable prefix 'Directory prefix for binary executable: ${prefix}/bin/'

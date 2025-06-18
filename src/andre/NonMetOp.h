@@ -57,7 +57,7 @@ public:
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
 	//NonMetOp(double threshold=0.4, double thresholdWidth=0.2, double windowWidth=0.0, double windowHeight=0.0, double medianPos=0.95) :
-	NonMetOp(const drain::UniTuple<double,2> & threshold = {0.75,0.95}, const drain::UniTuple<double,2> & medianWindow = {0.0,0.0}, double medianThreshold=0.95) :
+	NonMetOp(const drain::UniTuple<double,2> & threshold = {0.7,0.8}, const drain::UniTuple<double,2> & medianWindow = {0.0,0.0}, double medianThreshold=0.95) :
 		DetectorOp(__FUNCTION__,"Detects clutter. Based on dual-pol parameter RhoHV . Optional post processing: morphological closing. Universal.", "nonmet"){
 
 		dataSelector.setQuantities("RHOHV");

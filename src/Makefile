@@ -19,6 +19,9 @@ build:
 cppcheck:
 	cppcheck --language=c++ --error-exitcode=1 --quiet */*.{h,cpp} drain/*/*.{h,cpp} 
 
+configure:
+	./configure.sh
+
 install:
 	./install.sh
 
