@@ -138,6 +138,11 @@ public:
 		return type == STYLE;
 	}
 
+	inline
+	bool isScript() const {
+		return type == SCRIPT;
+	}
+
 	/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
 	virtual
 	bool isSingular() const;
@@ -868,7 +873,13 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 
 		// Elements "own" CTEXT will be always output first -> check for problems, if other elements added first.
 		// ostr << data.ctext;
-		StringTools::replace(XML::encodingMap, data.ctext, ostr); // any time issue?
+
+		if (data.isScript()){
+			ostr << data.ctext; // let < and > pass through
+		}
+		else {
+			StringTools::replace(XML::encodingMap, data.ctext, ostr); // any time issue?
+		}
 
 		// Detect if all the children are of type CTEXT, to be rendered in a single line.
 		// Note: potential re-parsing will probably detect them as a single CTEXT element.

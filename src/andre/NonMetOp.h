@@ -163,7 +163,7 @@ public:
 	 *  \param windowHeight
 	 *
 	 */
-	ChaffOp(double dbzPeak = 15.0, double vradDevMax = +5.0, double rhoHVmax = 0.50, double zdrAbsMin = 0.5, double windowWidth = 2500, double windowHeight = 5.0) :
+	ChaffOp(double dbzPeak = 10.0, double vradDevMax = +5.0, double rhoHVmax = 0.50, double zdrAbsMin = 0.5, double windowWidth = 2500, double windowHeight = 5.0) :
 		FuzzyDetectorOp(__FUNCTION__, "Estimates chaff probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.chaff"){
 		init(dbzPeak, vradDevMax, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 	};
