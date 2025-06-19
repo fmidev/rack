@@ -63,10 +63,10 @@ function guess_dir(){
     P=${P%/*}
     local P_old
     eval  P_old=\$$KEY
-    #if [ "$P" != "$P_old" ]; then
     echo "# Previous value: $KEY=$P_old"
-    #echo $KEY="$P"
-    #fi
+    if [ "$P" == '' ]; then
+	P=$P_old
+    fi
     eval $KEY="$P"
     echo 
 }
@@ -169,7 +169,7 @@ echo "Final values: "
 ask_variable CCFLAGS "Include paths"
 ask_variable LDFLAGS "Library paths"
 
-ask_variable CC      "C++ compiler"
+ask_variable CC      "C++ compiler (g++, g++-12, g++-13, ...)"
 #ask_variable LDLIBS  "Libraries"
 
 ask_variable prefix 'Directory prefix for binary executable: ${prefix}/bin/'

@@ -29,9 +29,9 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <andre/FuzzyDetectorOp.h>
 #include <drain/Log.h>
 #include <drain/util/FunctorPack.h>
+#include <drain/util/Output.h>
 #include <drain/image/ImageChannel.h>
 #include <drain/image/ImageLike.h>
 #include <drain/image/Window.h>
@@ -42,6 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // #include "data/DataTools.h"
 // #include "data/PolarODIM.h"
 #include "data/QuantityMap.h"
+#include "andre/FuzzyDetectorOp.h"
 
 
 
@@ -76,6 +77,19 @@ void FuzzyDetectorOp::applyOperator(const ImageOp & op,  const PlainData<PolarSr
 
 	//mout.attention("FUZZY...", feature, '-', op.getName(), '-', srcData.odim.quantity);
 	mout.info("quantity: ", featureQuantity);
+
+	if (mout.isDebug(2)){
+		drain::Output output(featureQuantityBrief.str() + ".txt");
+		const QuantityMap & qm = getQuantityMap();
+		const Quantity & quantity = qm.get(srcData.odim.quantity);
+
+		double f;
+		const double coeff = 1.0/256.0;
+		for (int i = 0; i<256; ++i){
+			f = quantity.physicalRange.min + static_cast<double>(i)* coeff*quantity.physicalRange.span();
+			output << i << '\t' << f;
+		}
+	}
 
 	// OLD: (conditional-store)
 	// static const std::string response_tmp("FUZZY_LAST");
