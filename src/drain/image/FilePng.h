@@ -82,8 +82,14 @@ public:
 	static
 	void readOld(T & image, const std::string &path, int png_transforms = 0);  //(PNG_TRANSFORM_PACKING || PNG_TRANSFORM_EXPAND));  16 >> 8?
 
+	// static
+	// void read(ImageFrame & image, const std::string &path, int png_transforms = 0);  //(PNG_TRANSFORM_PACKING || PNG_TRANSFORM_EXPAND));  16 >> 8?
+
 	static
 	void read(ImageFrame & image, const std::string &path, int png_transforms = 0);  //(PNG_TRANSFORM_PACKING || PNG_TRANSFORM_EXPAND));  16 >> 8?
+
+	// static
+	// void readImage(Image & image, const std::string &path, int png_transforms = 0);  //(PNG_TRANSFORM_PACKING || PNG_TRANSFORM_EXPAND));  16 >> 8?
 
 	// consider readFrame() like with PNM
 
@@ -105,7 +111,31 @@ public:
 	short int compressionLevel;
 
 protected:
-	static FileInfo & initFileInfo;  //???
+
+	// static FileInfo & initFileInfo;  //???
+
+
+	static
+	void readFile(const std::string & path, png_structp  & png_ptr, png_infop & info_ptr, int png_transforms);
+
+	static
+	void readComments(png_structp & png_ptr, png_infop & info_ptr, FlexVariableMap & properties);
+
+	static
+	void readConfiguration(png_structp & png_ptr, png_infop & info_ptr, ImageConf & conf);
+
+	static
+	void copyData(png_structp & png_ptr, png_infop & info_ptr, const ImageConf & pngConf, ImageFrame & image);
+
+
+	static
+	void copyData8to8(png_structp & png_ptr, png_infop & info_ptr, ImageFrame & image);
+
+	static
+	void copyData8to16(png_structp & png_ptr, png_infop & info_ptr, ImageFrame & image);
+
+	static
+	void copyData16(png_structp & png_ptr, png_infop & info_ptr, ImageFrame & image);
 
 };
 

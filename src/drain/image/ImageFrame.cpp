@@ -61,13 +61,40 @@ void ImageFrame::init(){
 
 void ImageFrame::setStorageType(const std::type_info &type){
 
-	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+	// Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	conf.setType(type);
 	segmentBegin.setType(type);
 	segmentEnd.setType(type);
 
 }
+
+
+bool ImageFrame::suggestType(const std::type_info &t){
+
+	if (conf.getType() == t){
+		return true;
+	}
+
+	if (!conf.typeIsSet()){
+		Logger(getImgLog(), __FILE__, __FUNCTION__).error("type unset, and requested [", t, "]");
+	}
+
+	return false;
+}
+
+
+bool ImageFrame::requireGeometry(const Geometry & geometry){
+
+	if (conf.getGeometry() == geometry){
+		return true;
+	}
+
+	Logger(getImgLog(), __FILE__, __FUNCTION__).error("tried to change geometry ", conf.getGeometry(), " to ", geometry);
+
+	return false;
+}
+
 
 void ImageFrame::adjustBuffer(){
 

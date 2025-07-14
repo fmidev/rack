@@ -38,19 +38,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_STREAM_BUILDER
 #define DRAIN_STREAM_BUILDER
 
-/*
-#include <limits>
-#include <iterator>
-#include <sstream>
-#include <iostream>
-#include <list>
-#include <map>
-*/
 
 //#include "RegExp.h"
-#include <iostream>
+//#include <iostream>
 #include <string>
 #include <sstream>
+
+#include "Type.h"
 
 namespace drain {
 
@@ -80,36 +74,20 @@ public:
 		return add(args...);
 	}
 
-	/*
-	template<Enum E, typename ... TT>
-	StreamBuilder & add(const E & arg, const TT &... args) {
-		if (SEP && (tellp() > 0)){
-			*this << (SEP);
-		}
-		*this << arg;
-		return add(args...);
-	}
-	*/
 
 
 protected:
 
-	/*
-	template<class T, typename ... TT>
-	StreamBuilder & addSeparated(const T & arg, const TT &... args) {
-		if (SEP){
-			*this << (SEP);
-		}
+	template<class T>
+	void append(const T & arg) {
 		*this << arg;
-		return addSeparated(args...);
 	}
 
-	// Terminal
-	inline
-	StreamBuilder & addSeparated(){
-		 return *this;
-	};
-	*/
+	void append(const std::type_info & type) {
+		*this << Type::call<simpleName>(type);
+		// *this << arg;
+	}
+
 
 	// Terminal
 	inline

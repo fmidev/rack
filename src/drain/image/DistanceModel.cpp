@@ -28,7 +28,7 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include <drain/image/ImageFile.h>
+#include "ImageFile.h"  // debugging?
 #include "DistanceModel.h"
 
 namespace drain {
@@ -42,9 +42,12 @@ const float DistanceModel::nan_f = std::numeric_limits<float>::quiet_NaN();
 
 template <>
 const EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict_t EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict = {
-	{"4-CONNECTED",   drain::image::DistanceModel::CONN4},
-	{"8-CONNECTED",   drain::image::DistanceModel::CONN8},
-	{"16-CONNECTED",  drain::image::DistanceModel::KNIGHT}  // consider true names... "KNIGHT?"
+		DRAIN_ENUM_ENTRY(drain::image::DistanceModel, CONN_UNSET),
+		// {"UNSET",   	drain::image::DistanceModel::CONN_UNSET},
+		// Idea in the following ones: leading digits are enough to identify
+		{"4-CONNECTED",   drain::image::DistanceModel::CONN4},
+		{"8-CONNECTED",   drain::image::DistanceModel::CONN8},
+		{"16-CONNECTED",  drain::image::DistanceModel::KNIGHT}  // consider true names... "KNIGHT?"
 };
 
 void DistanceModel::update(){

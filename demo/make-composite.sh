@@ -246,7 +246,7 @@ routine="$delete ${ANDRE[*]} $product $encoding "  #--cCreate"
 
 weighed=${CWEIGHT:+-"Weighted $CWEIGHT"}
 if [ "$SCHEME" == '' ]; then
-    command="$command $NEWLINE --script '$routine --cAdd${weighted}' "  
+    command="$command $NEWLINE --script '${routine//\'/} --cAdd${weighted}' "  
 fi 
 
 if [ "$SCHEME" == 'TILED' ]; then

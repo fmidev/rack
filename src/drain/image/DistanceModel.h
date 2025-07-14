@@ -125,7 +125,7 @@ class DistanceModel : public BeanLike {
 
 public:
 
-	enum PIXEL_ADJACENCY {CONN4=4, CONN8=8, KNIGHT=16};
+	enum PIXEL_ADJACENCY {CONN_UNSET=0, CONN4=4, CONN8=8, KNIGHT=16};
 
 	typedef PIXEL_ADJACENCY topol_t; // Needed? Consider topol_enum_t
 

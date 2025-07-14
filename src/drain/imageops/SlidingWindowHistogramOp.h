@@ -28,14 +28,12 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef SLIDINGWINDOWHISTOGRAM_H_
-#define SLIDINGWINDOWHISTOGRAM_H_
+#ifndef DRAIN_SLIDING_WINDOW_HISTOGRAM_H_
+#define DRAIN_SLIDING_WINDOW_HISTOGRAM_H_
 
 
-
-#include "SlidingWindowOp.h"
-//#include "SlidingOp.h"  // NEW 2015
 #include "drain/util/Histogram.h"
+#include "SlidingWindowOp.h"
 
 namespace drain
 {
@@ -76,13 +74,6 @@ public:
 		histogram.setSize(conf.bins); // needed?
 	};
 
-
-
-	/*
-	 *   TODO: weight = > weightSUm
-	 *   TODO: multiple channels (banks)?
-	 *   FIXME: Polar coord problem
-	 */
 	/** 
 	 *   TODO: weight = > weightSUm
 	 *   TODO: multiple channels (banks)?
@@ -98,16 +89,23 @@ public:
 
 		histogram.setSize(this->conf.bins);
 		histogram.setSampleCount(this->getArea());
-		//histogram.setScale(src.getMin<int>(), src.getMax<int>(), dst.getMin<int>(), dst.getMax<int>());
+		// histogram.setScale(src.getMin<int>(), src.getMax<int>(), dst.getMin<int>(), dst.getMax<int>());
 		histogram.setRange(this->src.getConf().template getTypeMin<int>(), this->src.getConf().template getTypeMax<int>());
 
-		if (!this->conf.valueFunc.empty())
+		mout.attention("Range: ", this->src.getConf().template getTypeMin<int>(), '-' , this->src.getConf().template getTypeMax<int>());
+
+		if (!this->conf.valueFunc.empty()){
 			histogram.setValueFunc(this->conf.valueFunc.at(0));
+		}
+
 		histogram.setMedianPosition(this->conf.percentage);
 
 		mout.warn("a=", this->getArea()); // , " sampleCountMedian=", histogram.sampleCountMedian);
 		mout.warn("histogram=", histogram, " ");
 		mout.debug3(this->coordinateHandler);
+
+		mout.attention("end INIT");
+		//exit(123);
 
 	}
 
@@ -139,9 +137,7 @@ protected:
 
 	virtual inline
 	void addPixel(Point2D<int> & p){
-
 		//if (this->debugDiag(4))std::cerr << this->location << '\n';
-
 		if (this->coordinateHandler.validate(p))
 			histogram.increment(this->src.template get<int>(p));
 	};

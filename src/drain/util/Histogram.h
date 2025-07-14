@@ -190,7 +190,12 @@ public:
 	template <class T>
 	inline
 	void increment(T i){
-		//++(*this)[((i-inMin)*bins)/inSpan];
+		/*
+		size_t i2 = scaling.inv(i);
+		if (i2 >= this->size()){
+			std::cerr << "fail: " << i << "\t => \t" << i2 << '\t';
+			return;
+		}*/
 		++(*this)[scaling.inv(i)];
 		++sampleCount;  // TODO: slow?
 	}
@@ -198,6 +203,13 @@ public:
 	template <class T>
 	inline
 	void increment(T i, int count){
+		/*
+		size_t i2 = scaling.inv(i);
+		if (i2 >= this->size()){
+			std::cerr << "fail: " << i << "\t => \t" << i2 << '\t';
+			return;
+		}
+		*/
 		(*this)[scaling.inv(i)] += count;
 		//(*this)[((i-inMin)*bins)/inSpan] += count;
 		sampleCount += count;
@@ -206,6 +218,11 @@ public:
 	template <class T>
 	inline
 	void incrementRaw(T i){
+		/*
+		if (i >= this->size()){
+			std::cerr << "failRaw: " << i << '\t';
+			return;
+		}*/
 		++(*this)[i];
 		++sampleCount;  // TODO: slow?
 	}
@@ -213,6 +230,10 @@ public:
 	template <class T>
 	inline
 	void incrementRaw(T i, int count){
+		if (i > this->size()){
+			std::cerr << "failRaw: " << i << '\t';
+			return;
+		}
 		(*this)[i] += count;
 		sampleCount += count;
 	}

@@ -146,6 +146,11 @@ public:
 		traverseAsChannelTrays(src, srcWeight, dst, dstWeight);
 	}
 
+	virtual inline
+	const std::string & getName() const override {
+		return name;
+	};
+
 protected:
 
 	//mutable	drain::SmartMap<std::string> aliasMap;
@@ -192,21 +197,9 @@ protected:
 	// MIXING
 	std::string blender;
 
-	// int width=5, int height=0, char spreader='a', char blender='m', unsigned short loops=1
-	//void initRefs();
+	unsigned short loops = 1;
 
-	//double coeff;
-	unsigned short loops;
-
-	double expansionCoeff;
-
-	/**
-	 *  \param loops - sets loops=1 if looping not supported spreader(key).
-	 */
-	//ImageOp & getSmoother(const std::string & key, bool weighted, unsigned short & loops) const;
-
-	//ImageOp & getMixer(const std::string & key, bool weighted) const;
-	// double coeff;
+	double expansionCoeff = 1.0;
 
 
 };

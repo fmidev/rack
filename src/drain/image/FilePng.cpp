@@ -29,12 +29,9 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include "FilePng.h"
-//#include "drain/util/RegExp.h"
 
-//#include "drain/util/JSONwriter.h"
 #include "drain/util/Time.h"
-
+#include "FilePng.h"
 
 namespace drain
 {
@@ -64,16 +61,10 @@ namespace image
 /// Syntax for recognising image files
 FileInfo FilePng::fileInfo("png");
 
-FileInfo & FilePng::initFileInfo(FilePng::fileInfo); // ???
 
 
-/// TODO: allow plain header read?
-void readHeader(png_struct & png, png_info & info, ImageConf & conf){
 
-}
-
-
-void FilePng::read(ImageFrame & image, const std::string & path, int png_transforms ) {
+void FilePng::readFile(const std::string & path, png_structp & png_ptr, png_infop & info_ptr, int png_transforms) {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
@@ -82,7 +73,7 @@ void FilePng::read(ImageFrame & image, const std::string & path, int png_transfo
 
 	// Try to open the file
 	FILE *fp = fopen(path.c_str(), "rb");
-	if (fp == NULL){
+	if (fp == nullptr){
 		throw std::runtime_error(std::string("FilePng: could not open file: ") + path);
 	}
 
@@ -103,14 +94,15 @@ void FilePng::read(ImageFrame & image, const std::string & path, int png_transfo
 		throw std::runtime_error(std::string("FilePng: not a png file: ") + path);
 	}
 
-
-	png_structp  png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	// Main'ish
+	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!png_ptr){
 		fclose(fp);
 		throw std::runtime_error(std::string("FilePng: problem in allocating image memory for: ")+path);
 	}
 
-	png_infop info_ptr = png_create_info_struct(png_ptr);
+	// Main'ish
+	info_ptr = png_create_info_struct(png_ptr);
 	if (!info_ptr){
 		fclose(fp);
 	    png_destroy_read_struct(&png_ptr,(png_infopp)NULL, (png_infopp)NULL);
@@ -129,105 +121,101 @@ void FilePng::read(ImageFrame & image, const std::string & path, int png_transfo
 
 	png_read_png(png_ptr, info_ptr, png_transforms, NULL);
 
+	// Should be safe - png struct is now complete.
+	fclose(fp);
 
 
+}
 
+void FilePng::readComments(png_structp & png_ptr, png_infop & info_ptr, FlexVariableMap & properties) {
 
 	/// Read comments
-	mout.debug("reading image comments");
+	// mout.debug("reading image comments");
 	int num_text = 0;
 	png_textp text_ptr = NULL;
 	png_get_text(png_ptr, info_ptr,&text_ptr, &num_text);
 	//mout.attention();
 	for (int i = 0; i < num_text; ++i) {
-		mout.debug2(text_ptr[i].key, '=', text_ptr[i].text);
+		// mout.debug2(text_ptr[i].key, '=', text_ptr[i].text);
 		// ValueReader::scanValue(text_ptr[i].text, image.properties[text_ptr[i].key]);
-		JSON::readValue(text_ptr[i].text, image.properties[text_ptr[i].key]);
+		JSON::readValue(text_ptr[i].text, properties[text_ptr[i].key]);
 	}
-	//mout << mout.endl;
 
+
+}
+
+void FilePng::readConfiguration(png_structp & png_ptr, png_infop & info_ptr, ImageConf & conf) {
+
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	const unsigned int inputBitDepth = png_get_bit_depth(png_ptr, info_ptr);
-	drain::Type t;
+
 	switch (inputBitDepth) {
 	case 16:
-		//image.initialize<unsigned short>();
-		t.setType<unsigned short>();
+		conf.setType<unsigned short>();
 		break;
 	case 8:
-		t.setType<unsigned char>();
+		conf.setType<unsigned char>();
 		break;
 	default:
-		fclose(fp);
+	 //////////////	fclose(fp);
 		png_destroy_read_struct(&png_ptr,&info_ptr, (png_infopp)NULL);
 		//png_free_data(png_ptr,info_ptr,PNG_FREE_ALL,-1);  // ???
-		throw std::runtime_error(std::string("FilePng: unsupported bit depth in : ")+path);
+		throw std::runtime_error(std::string("FilePng: unsupported bit depth in : ")); // +path
 		return;
 	}
 
-	//image.setType(t);
-	mout.debug2("initialize, type " , image.getType().name() );
+	mout.attention("type " , conf);
 
-	/// Copy to drain::Image
-	const unsigned int width  = png_get_image_width(png_ptr, info_ptr);
-	const unsigned int height = png_get_image_height(png_ptr, info_ptr);
-	const unsigned int channels = png_get_channels(png_ptr, info_ptr);
+	//mout.debug2("initialize, type " , image.getType().name() );
 
-
-	Geometry g(image.getGeometry());
-
-	mout.debug2("Setting geometry: ", g);
+	conf.setArea(png_get_image_width(png_ptr, info_ptr), png_get_image_height(png_ptr, info_ptr));
 
 	// This test enables read into an alpha channel.
-	if  ((channels!=g.channels.getChannelCount()) || (width!=g.area.getWidth()) || (height!=g.area.getHeight())){
-		switch (channels) {
-		case 4:
-			g.set(width,height,3,1);
-			break;
-		case 3:
-			g.setGeometry(width,height,3); // check alpha=0!
-			break;
-		case 2:
-			g.set(width,height,1,1);
-			break;
-		case 1:
-			g.setGeometry(width,height,1); // check alpha=0!
-			break;
-		default:
-			throw std::runtime_error(std::string("FilePng: invalid channel count in : ")+path);
-		}
+	switch (png_get_channels(png_ptr, info_ptr)) {
+	case 4:
+		conf.setChannelCount(3,1);
+		break;
+	case 3:
+		conf.setChannelCount(3,0);
+		break;
+	case 2:
+		conf.setChannelCount(1,1);
+		break;
+	case 1:
+		conf.setChannelCount(1,0);
+		break;
+	default:
+		throw std::runtime_error(std::string("FilePng: invalid channel count in : ")); // + conf);
 	}
 
-	// Form Image, set target type and geometry. For ImageFrame, compare target type and geometry. If differences, throw exception.
-	image.initialize(t, g);
-
-	mout.debug3() << "png geometry ok, ";
-	mout << "png channels =" << channels << "\n";
-	mout << "png bit_depth=" << inputBitDepth << "\n";
-	mout << mout.endl;
 
 	// TODO: use png_get_pCal(.........)
-#ifdef PNG_pCAL_SUPPORTED___DEFUNCT
-	/// Read physical scaling
-	if (info_ptr->pcal_X0 == info_ptr->pcal_X1){
-		mout.toOStr() << "physical scale supported, but no intensity range, pcalX0=" <<  info_ptr->pcal_X0 << ", pcalX1=" <<  info_ptr->pcal_X1  << mout.endl;
-		image.setDefaultLimits();
-	}
-	else {
-		image.setLimits(info_ptr->pcal_X0, info_ptr->pcal_X1);
-		mout.note("setting physical scale: " , image );
-	}
+	#ifdef PNG_pCAL_SUPPORTED___DEFUNCT
+		/// Read physical scaling
+		if (info_ptr->pcal_X0 == info_ptr->pcal_X1){
+			mout("physical scale supported, but no intensity range, pcalX0=", info_ptr->pcal_X0, ", pcalX1=", info_ptr->pcal_X1);
+			//image.setDefaultLimits();
+			conf.set...(?);
+		}
+		else {
+			//image.setLimits(info_ptr->pcal_X0, info_ptr->pcal_X1);
+			conf.setPhysicalRange();
+			mout.note("setting physical scale: " , image );
+		}
 
-#endif
+	#endif
 
-	/*
-	 if ((bit_depth!=8) && (bit_depth != 16)){
-		fclose(fp);
-		png_destroy_read_struct(&png_ptr,&info_ptr, (png_infopp)NULL);
-		//png_free_data(png_ptr,info_ptr,PNG_FREE_ALL,-1);  // ???
-		throw std::runtime_error(std::string("FilePng: unsupported bit depth in : ")+path);
-	}
-	*/
+
+}
+
+void FilePng::copyData(png_structp & png_ptr, png_infop & info_ptr, const ImageConf & pngConf, ImageFrame & image) {
+
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+	const unsigned int inputBitDepth = 8*pngConf.getElementSize();
+	mout.debug("png conf: ", pngConf);
+
 	const unsigned int targetBitDepth = 8*image.getConf().getElementSize();
 
 	const bool from8to8  = (inputBitDepth == 8) && (targetBitDepth ==  8);
@@ -235,9 +223,11 @@ void FilePng::read(ImageFrame & image, const std::string & path, int png_transfo
 
 	if (from8to8) {
 		mout.debug("8-bit input, 8-bit target, easy..." );
+		copyData8to8(png_ptr, info_ptr, image);
 	}
 	else if (from8to16) {
 		mout.note("-bit input, 16-bit target, rescaling..." );
+		copyData8to16(png_ptr, info_ptr, image);
 	}
 	else {
 		if ((inputBitDepth == 16) && (targetBitDepth == 16)){
@@ -245,8 +235,20 @@ void FilePng::read(ImageFrame & image, const std::string & path, int png_transfo
 		}
 		else {
 			mout.warn(inputBitDepth , "-bit input, ", targetBitDepth , "-bit target, problems ahead?" );
+			// png_destroy_read_struct(&png_ptr,&info_ptr, (png_infopp)NULL);
+			///// png_free_data(png_ptr,info_ptr,PNG_FREE_ALL,-1);  // ???
+			// throw std::runtime_error(std::string("FilePng: unsupported bit depth in : ")+path);
 		}
+		copyData16(png_ptr, info_ptr, image);
 	}
+
+}
+
+void FilePng::copyData8to8(png_structp & png_ptr, png_infop & info_ptr, ImageFrame & image) {
+
+	const unsigned int width    = image.getWidth();
+	const unsigned int height   = image.getHeight();
+	const unsigned int channels = image.getChannelCount();
 
 	png_bytep *row_pointers = png_get_rows(png_ptr, info_ptr);
 	png_bytep p;
@@ -256,6 +258,8 @@ void FilePng::read(ImageFrame & image, const std::string & path, int png_transfo
 		for (unsigned int i = 0; i < width; ++i) {
 			for (unsigned int k = 0; k < channels; ++k) {
 				i0 = channels*i + k;
+				image.put(i,j,k, p[i0]);
+				/*
 				if (from8to8) {
 					image.put(i,j,k, p[i0]);
 				}
@@ -265,20 +269,107 @@ void FilePng::read(ImageFrame & image, const std::string & path, int png_transfo
 				else {
 					image.put(i,j,k, (p[i0*2]<<8) + (p[i0*2+1]<<0));
 				}
+				*/
 			}
 		}
 	}
 
-	fclose(fp);
-	png_destroy_read_struct(&png_ptr,&info_ptr, (png_infopp)NULL);
-	//png_free_data(png_ptr,info_ptr,PNG_FREE_ALL,-1);  // ???
+}
 
-	//png_destroy_read_struct(&png_ptr,(png_infopp)NULL, (png_infopp)NULL);
-	//png_destroy_info_struct(png_ptr,&info_ptr);
+void FilePng::copyData8to16(png_structp & png_ptr, png_infop & info_ptr, ImageFrame & image) {
 
+	const unsigned int width    = image.getWidth();
+	const unsigned int height   = image.getHeight();
+	const unsigned int channels = image.getChannelCount();
+
+	png_bytep *row_pointers = png_get_rows(png_ptr, info_ptr);
+	png_bytep p;
+	int i0;
+	for (unsigned int j = 0; j < height; ++j) {
+		p = row_pointers[j];
+		for (unsigned int i = 0; i < width; ++i) {
+			for (unsigned int k = 0; k < channels; ++k) {
+				i0 = channels*i + k;
+				image.put(i,j,k, p[i0]<<8);
+			}
+		}
+	}
 
 }
 
+void FilePng::copyData16(png_structp & png_ptr, png_infop & info_ptr, ImageFrame & image) {
+
+	const unsigned int width    = image.getWidth();
+	const unsigned int height   = image.getHeight();
+	const unsigned int channels = image.getChannelCount();
+
+	png_bytep *row_pointers = png_get_rows(png_ptr, info_ptr);
+	png_bytep p;
+	int i0;
+	for (unsigned int j = 0; j < height; ++j) {
+		p = row_pointers[j];
+		for (unsigned int i = 0; i < width; ++i) {
+			for (unsigned int k = 0; k < channels; ++k) {
+				i0 = channels*i + k;
+				image.put(i,j,k, (p[i0*2]<<8) + (p[i0*2+1]<<0));
+			}
+		}
+	}
+
+}
+
+
+void FilePng::read(ImageFrame & image, const std::string & path, int png_transforms ) {
+
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+	mout.debug("path='" , path , "'" );
+
+	png_structp  png_ptr = nullptr;
+	png_infop info_ptr = nullptr;
+
+	readFile(path, png_ptr, info_ptr, png_transforms);
+
+	readComments(png_ptr, info_ptr, image.properties);
+
+	ImageConf conf;
+	readConfiguration(png_ptr, info_ptr, conf);
+
+	image.suggestType(conf.getType());         // Image will always change type
+	image.requireGeometry(conf.getGeometry()); // ImageFrame will throw exception
+
+	copyData(png_ptr, info_ptr, conf, image);
+
+	png_destroy_read_struct(&png_ptr,&info_ptr, (png_infopp)NULL); // confirmed by valgrind
+
+}
+
+/*
+void FilePng::readImage(Image & image, const std::string & path, int png_transforms ) {
+
+	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
+
+	mout.debug("path='" , path , "'" );
+
+	png_structp  png_ptr = nullptr;
+	png_infop info_ptr = nullptr;
+
+	readFile(path, png_ptr, info_ptr, png_transforms);
+
+	readComments(png_ptr, info_ptr, image.properties);
+
+	ImageConf conf;
+	readConfiguration(png_ptr, info_ptr, conf);
+
+
+	image.initialize(conf.getType(), conf.getGeometry());
+
+	copyData(png_ptr, info_ptr, conf, image);
+
+	png_destroy_read_struct(&png_ptr,&info_ptr, (png_infopp)NULL); // confirmed by valgrind
+
+}
+*/
 
 
 /** Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model.

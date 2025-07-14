@@ -53,106 +53,15 @@ class ImageFile
 public:
 
 	static // inline  //
-	void read(Image &img, const std::string & path); /*{
-
-		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		if (FilePnm::fileNameRegExp.test(path)){
-			mout.debug("file format: PNM" );
-			FilePnm::read(img, path); // , commentReader
-		}
-		else {
-			if (FilePng::fileNameRegExp.test(path))
-				mout.debug("file format: PNG" );
-			else
-				mout.warn("unrecognized extension, assuming PNG" );
-			FilePng::read(img, path); // , commentReader
-		}
-	}
-	*/
+	void read(Image &img, const std::string & path);
 
 	static
 	void readFrame(ImageFrame &img, const std::string & path);
 
-	/*
-	static inline
-	void readFrame(ImageFrame &img, const std::string & path){
 
-		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-		if (FilePng::fileNameRegExp.test(path)){
-			mout.debug("file format: PNG" );
-			FilePng::read(img, path);
-		}
-		else if (FilePnm::fileNameRegExp.test(path)){
-			mout.debug("file format: PNM" );
-			FilePnm::readFrame(img, path);
-		}
-		else {
-			mout.warn("unrecognized extension, assuming png" );
-			FilePng::read(img, path);
-		}
-	}
-	*/
-
-/*
-	template <class T>
-	static void read(ImageT<T> &img, const std::string &path){
-#ifdef DRAIN_MAGICK_yes
-		Magick::ImageT magickImage;
-		magickImage.read(path);
-		MagickDrain::convert(magickImage,img);
-#else
-		// Todo PNM support
-		//FilePng::read(img,path);
-		//FilePng::read(img,path);
-#endif
-	}
-*/
-
-	//static void read(Image<unsigned char> &image,const std::string &path);
-	static // inline
+	static
 	void write(const ImageFrame &img,const std::string &path);
-	/*{
 
-		drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
-
-		if (FilePng::fileNameRegExp.test(path)){
-			mout.debug("file format: PNG" );
-			FilePng::write(img, path);
-		}
-		else if (FilePnm::fileNameRegExp.test(path)){
-			mout.debug("file format: PNM" );
-			FilePnm::write(img, path);
-		}
-		else {
-			mout.warn("unrecognized extension, assuming png" );
-			FilePng::write(img, path);
-		}
-	}
-	*/
-
-	/*
-	template <class T>
-	static void write(const ImageT<T> &img,const std::string &path){
-#ifdef DRAIN_MAGICK_yes
-
-		Magick::ImageT magickImage;
-		magickImage.size("1x1");
-		magickImage.magick("RGBA");
-
-		if (Debug > 1)
-			std::cerr << "Converting image to Magick image." << std::endl;
-
-		MagickDrain::convert(img,magickImage);
-
-		if (Debug > 0)
-			std::cerr << "Writing image" << img.getName() << " to "<< path << std::endl;
-
-		magickImage.write(path);
-#else
-		FilePng::write(img,path);
-#endif
-	}
-	 */
 
 	/// Writes image to a file, naming it: prefix + index + ".png", using desired number of leading zeros.
 	/** Utility function esp. for debugging

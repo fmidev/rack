@@ -606,19 +606,6 @@ struct TypeName<std::initializer_list<T> > {
 		return name;
 	}
 
-	/*
-	static const char* get(){
-		static std::string name;
-		if (name.empty()){
-			name = "std::initializer_list<";
-			name += drain::TypeName<T>::get();
-			name += ">";
-			//name = drain::StringBuilder("std::initializer_list<", drain::TypeName<T>::get(), ">");
-		}
-		return name.c_str();
-	}
-	*/
-
 };
 
 
@@ -631,23 +618,10 @@ struct TypeName<std::vector<T> > {
 			name = "std::vector<"; // + drain::TypeName<T>::get() + ">";
 			name += drain::TypeName<T>::str();
 			name += ">";
-			//name = drain::StringBuilder("std::initializer_list<", drain::TypeName<T>::get(), ">");
 		}
 		return name;
 	}
 
-	/*
-	static const char* get(){
-		static std::string name;
-		if (name.empty()){
-			//name = drain::StringBuilder("std::vector<", drain::TypeName<T>::get(), ">");
-			name = "std::vector<"; // + drain::TypeName<T>::get() + ">";
-			name += drain::TypeName<T>::get();
-			name += ">";
-		}
-		return name.c_str();
-	}
-	*/
 };
 
 

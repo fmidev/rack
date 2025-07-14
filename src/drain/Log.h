@@ -765,10 +765,16 @@ public:
 	Logger &operator<<(const std::ostream & sstr) {
 		// TODO if (!message.empty())
 		if (level <= monitor.getVerbosity())
-			message << sstr.rdbuf();
+			message << sstr.rdbuf(); // so simple? See StreamBuilder for additional checks
 		return *this;
 	}
 
+	inline
+	Logger &operator<<(const std::type_info & type) {
+		if (level <= monitor.getVerbosity())
+			message << Type::call<simpleName>(type);
+		return *this;
+	}
 
 
 	template <class T>

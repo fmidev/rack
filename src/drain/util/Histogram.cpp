@@ -173,18 +173,17 @@ std::ostream & Histogram::toStream(std::ostream & ostr) const {
 	ostr << " sum=" << h.getSum<double>() << ',';
 	ostr << " weight=" << h.weight << ',';
 	ostr << " sampleCount=" << h.sampleCount << ',';
-	ostr << " sampleCountMedian=" << h.sampleCountMedian << ',';
+	ostr << " sampleCountMedian=" << h.sampleCountMedian;
 	if (h.getSum<double>()>0){
+		ostr << ',';
 		ostr << " n=" << h.getSampleCount() << ',';
 		ostr << " mean=" << h.getMean<double>() << ',';
 		ostr << " min=" << h.getMin<double>() << ',';
 		ostr << " max=" << h.getMax<double>() << ',';
-		ostr << " stdev=" << h.getStdDeviation<double>() << ',';
+		ostr << " stdev=" << h.getStdDeviation<double>(); //  << ',';
 		ostr << '\n';
 	}
 	return ostr;
 }
 
-}
-
-// Drain
+} // drain::

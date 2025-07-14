@@ -64,6 +64,8 @@ class ModifiableImage : public MultiChannel {
 
 public:
 
+
+
 	virtual inline
 	const ImageConf & getConf() const {
 		return conf;
@@ -157,15 +159,22 @@ public:
 		setGeometry(width, height, imageChannels, alphaChannels);
 	}
 
-	/// Sets the type and allocates a data buffer.
-	/*
-	template <class T>
-	inline
-	void initialize(size_t width, size_t height, size_t imageChannels=1, size_t alphaChannels=0){
-		setStorageType(typeid(T));
-		setGeometry(width,height,imageChannels,alphaChannels);
-	}
-	*/
+
+	/// Change type. This overrides the behavior of #ImageFrame::suggestType().
+	/**
+	 *   Sets type, also if already set.
+	 */
+	virtual
+	bool suggestType(const std::type_info &t) override;
+
+	/// Change geometry. This overrides the behavior of #ImageFrame::requireGeometry().
+	/**
+	 *   Example: reading data to a channel of an existing image.
+	 */
+	virtual
+	bool requireGeometry(const Geometry & geometry) override;
+
+
 private:
 
 	void update();

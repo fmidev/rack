@@ -118,9 +118,12 @@ public:
 			std::cerr << __FUNCTION__ << i << '\t' << this->myFunctor(i) << '\n';
 		}
 		*/
-
+		mout.attention("FILL:");
 		(this->*fill)();
+		mout.attention("WRITE:");
 		write();
+
+		mout.attention("SLIDE: ...");
 
 		if (this->isHorizontal()){
 			mout.debug2("start slideHorz" );
@@ -131,6 +134,7 @@ public:
 			mout.debug2("start slideVert" );
 			slideVert();
 		}
+
 	}
 
 	/// Sets coord handler, calls initialise, sets pos(0,0), fills, writes and slides.

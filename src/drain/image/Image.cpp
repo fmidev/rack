@@ -88,6 +88,29 @@ void Image::swap(Image & img){
 
 }
 
+
+
+bool ModifiableImage::suggestType(const std::type_info &t){
+
+	if (conf.getType() != t){
+		setStorageType(t);
+	}
+
+	return true;
+}
+
+
+bool ModifiableImage::requireGeometry(const Geometry & geometry){
+
+	if (conf.getGeometry() != geometry){
+		setGeometry(geometry);
+	}
+
+	return true;
+
+}
+
+
 void ModifiableImage::update(){
 	//Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	//mout.warn("clear" );

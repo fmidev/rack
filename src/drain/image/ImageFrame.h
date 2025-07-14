@@ -33,15 +33,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <stddef.h>  // size_t
 
-//#include <drain/util/CastableIterator.h>
-#include <drain/TypeUtils.h>
-#include <drain/Sprinter.h>
-//#include "drain/util/FlexibleVariable.h"
-#include <drain/image/CoordinatePolicy.h>
-
+#include "drain/TypeUtils.h"
+#include "drain/Sprinter.h"
 #include "drain/util/ValueScaling.h"
 #include "drain/util/VariableMap.h"
 
+#include "CoordinatePolicy.h"
 #include "Geometry.h"
 #include "ImageLike.h"
 
@@ -402,22 +399,37 @@ public:
 	virtual
 	const Channel & getAlphaChannel(size_t i=0) const = 0;
 
-
-	/// Returns numeric channel index from "r", "g", "b", or "a" or a non-negative number in string format.
 	/**
-	 *   Given a numeric channel index, returns it as a number.
+	 *   Example: reading data to a channel of an existing image.
 	 */
-	//size_t getChannelIndex(const std::string & index) const;
+	virtual
+	bool suggestType(const std::type_info &t);
+
+	/**
+	 *   Example: reading data to a channel of an existing image.
+	 */
+	virtual
+	bool requireGeometry(const Geometry & geometry);
 
 	/// Sets the type and allocates a data buffer.
 	//  Experimental for ImageFrame
 	virtual inline
 	void initialize(const std::type_info &t, const Geometry & geometry){
-		if ((conf.getType() == t) && (conf.getGeometry() == geometry))
+
+		if (conf.getType() != t){
+			Logger(getImgLog(), __FILE__, __FUNCTION__).error("tried to change type [", conf.getType(), "] to [", t, "]");
 			return;
-		else {
-			throw std::runtime_error(std::string("ImageFrame::")+__FUNCTION__+": tried to change ImageFrame geometry");
 		}
+		else if (conf.getGeometry() != geometry){
+			Logger(getImgLog(), __FILE__, __FUNCTION__).error("tried to change geometry ", conf.getGeometry(), " to ", geometry);
+			return;
+		}
+		else {
+			return;
+			// Logger mout(__FILE__, __FUNCTION__);
+			// throw std::runtime_error(StringBuilder<>(__FILE__, "::",__FUNCTION__, ": tried to change ImageFrame geometry:", conf, " => ", conf.getGeometry()));
+		}
+
 	}
 
 	/// Sets the type and allocates a data buffer.

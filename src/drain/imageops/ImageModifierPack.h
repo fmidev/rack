@@ -280,10 +280,10 @@ public:
 
 protected:
 
-	size_t width;
-	mutable size_t height;
-	mutable size_t imageChannelCount;
-	mutable size_t alphaChannelCount;
+	size_t width = 0;
+	mutable size_t height = 0;
+	mutable size_t imageChannelCount = 1;
+	mutable size_t alphaChannelCount = 0;
 
 
 };

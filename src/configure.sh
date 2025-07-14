@@ -169,6 +169,7 @@ echo "Final values: "
 ask_variable CCFLAGS "Include paths"
 ask_variable LDFLAGS "Library paths"
 
+CC=${CC:-'g++'}
 ask_variable CC      "C++ compiler (g++, g++-12, g++-13, ...)"
 #ask_variable LDLIBS  "Libraries"
 
