@@ -175,6 +175,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CCorOp.html">CCorOp</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ChaffOp.html">ChaffOp</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ClutterOp.html">ClutterOp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Based on pre-computed clutter map, scales the clutter probability for desired sweeps.  <a href="classrack_1_1ClutterOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -616,6 +618,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1MethodWeights.html">MethodWeights</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1NonMet2Op.html">NonMet2Op</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks bins with low <em>RhoHV</em> value as probable anomalies.  <a href="classrack_1_1NonMet2Op.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1NonMetOp.html">NonMetOp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks bins with low <em>RhoHV</em> value as probable anomalies.  <a href="classrack_1_1NonMetOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -736,6 +741,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure for defining quantity.  <a href="classrack_1_1Quantity.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registry for regular quantities appearing in weather radar.  <a href="classrack_1_1QuantityMap.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackContext.html">RackContext</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resources provided separately for each thread.  <a href="classrack_1_1RackContext.html#details">More...</a><br /></td></tr>
@@ -1116,13 +1122,18 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <p>Rack is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.</p>
 <p>Rack is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Rack. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+<p>Version 13</p><ul>
+<li>andre::ChaffOp Release 13.1</li>
+<li>Radar BEAM static coeff</li>
+<li>Typo fix: MINIMUM explanation</li>
+</ul>
 <p>Version 12</p><ul>
-<li>Revised <a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a>, allowing retrieve("DBZXP") Release 12.1</li>
+<li>Revised <a class="el" href="classrack_1_1QuantityMap.html" title="Registry for regular quantities appearing in weather radar.">QuantityMap</a>, allowing retrieve("DBZXP") Release 12.1</li>
 <li>StringTools: extractPrefix (common leading part)</li>
 <li>Image memory area fix prefixed hex string</li>
 <li>Fix: TreeSVG translate (extra parentheses)</li>
 <li>cMethod: added MINMAX Version 12.2</li>
-<li>Revised <a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a>, cfRadial descriptions appear in variables and metadata (GeoTIFF) Version 12.3</li>
+<li>Revised <a class="el" href="classrack_1_1QuantityMap.html" title="Registry for regular quantities appearing in weather radar.">QuantityMap</a>, cfRadial descriptions appear in variables and metadata (GeoTIFF) Version 12.3</li>
 <li>Added: INPUT_ERROR check for &ndash;cCreateTile</li>
 <li>Added: &ndash;stopOnError, revised &ndash;errorFlags Version 12.4</li>
 <li>Fix: PaletteOp get(), predefined cached palette Version 12.5</li>
@@ -1137,7 +1148,9 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <li>gGroupTile reference overwrite fixed Release 12.7.1</li>
 <li>SVG &ndash;outputConf svg:paths=PREFIX adds explicit prefix "./" to relative paths (enabling colons ':' in path/filenames) Version 12.8</li>
 <li><a class="el" href="classrack_1_1BirdOp.html">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html">InsectOp</a> redesigned under FuzzyDualPolOp Version 12.9</li>
-<li><a class="el" href="classrack_1_1BirdOp.html">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html">InsectOp</a> with brightness adjustment (gamma correction)</li>
+<li><a class="el" href="classrack_1_1BirdOp.html">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html">InsectOp</a> with brightness adjustment (gamma correction) Release 12.91</li>
+<li>Fixed <a class="el" href="classrack_1_1BirdOp.html">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html">InsectOp</a> bug Release 12.92</li>
+<li>NonMet palette color (lighter orange)</li>
 </ul>
 <p>Version 11</p><ul>
 <li>Help supports "see also", linking related commands.</li>
@@ -1232,7 +1245,7 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <li>Revised &ndash;select quantity=... quality handling (QIND for dataset, and /QIND for quantity-specific)</li>
 </ul>
 <p>Version 8.9.5</p><ul>
-<li>Added KDP, PHIDP and HCLASS to <a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a> (&ndash;quantityConf)</li>
+<li>Added KDP, PHIDP and HCLASS to <a class="el" href="classrack_1_1QuantityMap.html" title="Registry for regular quantities appearing in weather radar.">QuantityMap</a> (&ndash;quantityConf)</li>
 <li>Contained bugs in &ndash;cExtract crop parameter, appearing (only) with some &ndash;cMethod options.</li>
 </ul>
 <p>Version 8.9.4</p><ul>

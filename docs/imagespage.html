@@ -276,6 +276,8 @@ List of image operators</h2>
 <div class="line">  Adds values</div>
 <div class="line">--iAverage  &lt;width&gt;</div>
 <div class="line">  Window averaging with optional weighting support.</div>
+<div class="line">--iBlender  &lt;width&gt;,&lt;spreader&gt;,&lt;mix&gt;,&lt;loops&gt;,&lt;expansionCoeff&gt;</div>
+<div class="line">  Smoothes image repeatedly, mixing original image with the result at each round.</div>
 <div class="line">--iCatenate  &lt;scale&gt;,&lt;offset&gt;</div>
 <div class="line">  Catenates images</div>
 <div class="line">--iCopy  &lt;dstView&gt;,&lt;scale&gt;,&lt;bias&gt;,&lt;LIMIT&gt;</div>
@@ -388,8 +390,6 @@ List of image operators</h2>
 <div class="line">  Flips image matrix around its corner.</div>
 <div class="line">--iWindowHistogram  &lt;width&gt;,&lt;valueFunc&gt;,&lt;percentage&gt;,&lt;bins&gt;</div>
 <div class="line">  A pipeline implementation of window histogram; valueFunc=[asmdvNX] (avg,sum,median,stddev,variance,miN,maX)</div>
-<div class="line">--iWindowOp&lt;Window&lt;WindowConfig,WindowCore&gt;&gt;  &lt;width&gt;,&lt;spreader&gt;,&lt;mix&gt;,&lt;loops&gt;,&lt;expansionCoeff&gt;</div>
-<div class="line">  Smoothes image repeatedly, mixing original image with the result at each round.</div>
 <div class="line"> </div>
 <div class="line">For help on commands, type:</div>
 <div class="line">  --help &lt;command&gt;</div>

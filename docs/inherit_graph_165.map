@@ -1,15 +1,15 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classdrain_1_1TreeVisitor.html" title=" " alt="" coords="5,129,180,155"/>
 <area shape="rect" id="Node000001" href="$classdrain_1_1image_1_1BBoxRetrieverSVG.html" title=" " alt="" coords="242,5,385,31"/>
-<area shape="poly" id="edge747_Node000000_Node000001" title=" " alt="" coords="116,118,165,78,227,40,256,28,258,33,229,44,168,82,120,122"/>
+<area shape="poly" id="edge749_Node000000_Node000001" title=" " alt="" coords="116,118,165,78,227,40,256,28,258,33,229,44,168,82,120,122"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1RelativePathSetterSVG.html" title=" " alt="" coords="228,55,399,80"/>
-<area shape="poly" id="edge748_Node000000_Node000002" title=" " alt="" coords="137,122,227,89,264,78,265,83,229,94,139,127"/>
+<area shape="poly" id="edge750_Node000000_Node000002" title=" " alt="" coords="137,122,227,89,264,78,265,83,229,94,139,127"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1TranslatorSVG.html" title=" " alt="" coords="257,104,370,129"/>
-<area shape="poly" id="edge749_Node000000_Node000003" title=" " alt="" coords="193,128,256,120,257,126,194,133"/>
+<area shape="poly" id="edge751_Node000000_Node000003" title=" " alt="" coords="193,128,256,120,257,126,194,133"/>
 <area shape="rect" id="Node000004" href="$classrack_1_1MetaDataCollectorSVG.html" title=" " alt="" coords="228,153,399,179"/>
-<area shape="poly" id="edge750_Node000000_Node000004" title=" " alt="" coords="194,150,228,154,228,159,193,156"/>
+<area shape="poly" id="edge752_Node000000_Node000004" title=" " alt="" coords="194,150,228,154,228,159,193,156"/>
 <area shape="rect" id="Node000005" href="$classrack_1_1MetaDataPrunerSVG.html" title=" " alt="" coords="236,203,391,228"/>
-<area shape="poly" id="edge751_Node000000_Node000005" title=" " alt="" coords="142,157,229,187,269,200,267,205,227,193,140,162"/>
+<area shape="poly" id="edge753_Node000000_Node000005" title=" " alt="" coords="142,157,229,187,269,200,267,205,227,193,140,162"/>
 <area shape="rect" id="Node000006" href="$classrack_1_1TitleCreatorSVG.html" title="&quot;Collects&quot; titles from metadata. Invoked by drain::TreeUtils::traverse()" alt="" coords="250,252,377,277"/>
-<area shape="poly" id="edge752_Node000000_Node000006" title=" " alt="" coords="120,162,169,200,229,237,261,249,259,254,227,242,166,204,117,166"/>
+<area shape="poly" id="edge754_Node000000_Node000006" title=" " alt="" coords="120,162,169,200,229,237,261,249,259,254,227,242,166,204,117,166"/>
 </map>

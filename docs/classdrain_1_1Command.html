@@ -290,6 +290,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>help</b> (std
 <tr class="memitem:a8280a63abe7ebbc81afd6e143c191e79" id="r_a8280a63abe7ebbc81afd6e143c191e79"><td class="memItemLeft" align="right" valign="top"><a id="a8280a63abe7ebbc81afd6e143c191e79" name="a8280a63abe7ebbc81afd6e143c191e79"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>getRelatedCommands</b> (std::ostream &amp;ostr=std::cout) const</td></tr>
 <tr class="separator:a8280a63abe7ebbc81afd6e143c191e79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32a2430b46c3428b61a2f753d86a55d0" id="r_a32a2430b46c3428b61a2f753d86a55d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#a32a2430b46c3428b61a2f753d86a55d0">linkRelated</a> (const std::string &amp;cmdKey) const</td></tr>
+<tr class="memdesc:a32a2430b46c3428b61a2f753d86a55d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add related command(s), to appear in help after "See-also:" phrase.  <br /></td></tr>
+<tr class="separator:a32a2430b46c3428b61a2f753d86a55d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1Contextual"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1Contextual')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td></tr>
 <tr class="memitem:af0652177ffe41db9b359137133b8f83a inherit pub_methods_classdrain_1_1Contextual" id="r_af0652177ffe41db9b359137133b8f83a"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>Contextual</b> ()</td></tr>
@@ -326,9 +329,6 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a79a639c757e5ee96de434f8670c915b9" id="r_a79a639c757e5ee96de434f8670c915b9"><td class="memItemLeft" align="right" valign="top"><a id="a79a639c757e5ee96de434f8670c915b9" name="a79a639c757e5ee96de434f8670c915b9"></a>
 <a class="el" href="classdrain_1_1Command.html#a17cd043c9ec599670925dda080d06241">cmd_section_type</a>&#160;</td><td class="memItemRight" valign="bottom"><b>section</b> = 1</td></tr>
 <tr class="separator:a79a639c757e5ee96de434f8670c915b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2aabdb22e634b8388be4c2c858c2c492" id="r_a2aabdb22e634b8388be4c2c858c2c492"><td class="memItemLeft" align="right" valign="top">std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Command.html#a2aabdb22e634b8388be4c2c858c2c492">relatedCommands</a></td></tr>
-<tr class="memdesc:a2aabdb22e634b8388be4c2c858c2c492"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add related command(s), to appear in help after "See-also:" phrase.  <br /></td></tr>
-<tr class="separator:a2aabdb22e634b8388be4c2c858c2c492"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -338,15 +338,15 @@ static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLay
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:afdaf0e01343c88fd71e13c2bc9266c39" id="r_afdaf0e01343c88fd71e13c2bc9266c39"><td class="memItemLeft" align="right" valign="top"><a id="afdaf0e01343c88fd71e13c2bc9266c39" name="afdaf0e01343c88fd71e13c2bc9266c39"></a>
-<a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>linkRelatedCommands</b> ()</td></tr>
-<tr class="separator:afdaf0e01343c88fd71e13c2bc9266c39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21a0603d348299fc09a151c26dad9a42" id="r_a21a0603d348299fc09a151c26dad9a42"><td class="memItemLeft" align="right" valign="top"><a id="a21a0603d348299fc09a151c26dad9a42" name="a21a0603d348299fc09a151c26dad9a42"></a>
 virtual <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getParameters</b> ()=0</td></tr>
 <tr class="separator:a21a0603d348299fc09a151c26dad9a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:a2aabdb22e634b8388be4c2c858c2c492" id="r_a2aabdb22e634b8388be4c2c858c2c492"><td class="memItemLeft" align="right" valign="top"><a id="a2aabdb22e634b8388be4c2c858c2c492" name="a2aabdb22e634b8388be4c2c858c2c492"></a>
+std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>relatedCommands</b></td></tr>
+<tr class="separator:a2aabdb22e634b8388be4c2c858c2c492"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a395030bfc55059cd3f0f37fa96e8f5bd" id="r_a395030bfc55059cd3f0f37fa96e8f5bd"><td class="memItemLeft" align="right" valign="top"><a id="a395030bfc55059cd3f0f37fa96e8f5bd" name="a395030bfc55059cd3f0f37fa96e8f5bd"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>lastParameters</b></td></tr>
 <tr class="separator:a395030bfc55059cd3f0f37fa96e8f5bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -438,6 +438,36 @@ template&lt;class T &gt; </td></tr>
 <p>Typically not same as the command line command, for example "verbose" for command "--verbose", </p>
 
 <p>Implemented in <a class="el" href="classdrain_1_1BeanCommand.html#a5ed5b7677ecb813bf79971295b853dd0">BeanCommand&lt; B, B2 &gt;</a>, <a class="el" href="classdrain_1_1BeanCommand.html#a5ed5b7677ecb813bf79971295b853dd0">BeanCommand&lt; B, B &amp; &gt;</a>, <a class="el" href="classdrain_1_1BeanCommand.html#a5ed5b7677ecb813bf79971295b853dd0">BeanCommand&lt; BeanLike &gt;</a>, <a class="el" href="classdrain_1_1BeanCommand.html#a5ed5b7677ecb813bf79971295b853dd0">BeanCommand&lt; drain::image::ImageBox &gt;</a>, <a class="el" href="classdrain_1_1BeanCommand.html#a5ed5b7677ecb813bf79971295b853dd0">BeanCommand&lt; drain::image::ImageSampler &gt;</a>, <a class="el" href="classdrain_1_1BeanCommand.html#a5ed5b7677ecb813bf79971295b853dd0">BeanCommand&lt; FastOpticalFlow2Op &gt;</a>, and <a class="el" href="classdrain_1_1BeanCommand.html#a5ed5b7677ecb813bf79971295b853dd0">BeanCommand&lt; OP &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a32a2430b46c3428b61a2f753d86a55d0" name="a32a2430b46c3428b61a2f753d86a55d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32a2430b46c3428b61a2f753d86a55d0">&#9670;&#160;</a></span>linkRelated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void linkRelated </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>cmdKey</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add related command(s), to appear in help after "See-also:" phrase. </p>
+<p>This "relation" is single directional, so typically linked commands should also link this command. <a class="el" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ...">Command</a> catalogs like <a class="el" href="classdrain_1_1CommandBank.html" title="Container and execution tools for commands derived from Command.">CommandBank</a> should administer two-way linking.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1CommandBank.html" title="Container and execution tools for commands derived from Command.">CommandBank</a> </dd></dl>
 
 </div>
 </div>
@@ -566,33 +596,6 @@ template&lt;class T &gt; </div>
 <p>This function will be called prior to running <a class="el" href="classdrain_1_1Command.html#a951c3a8da6ec531137592b969a542cbb" title="Run the command with current parameter values.">exec()</a> </p>
 
 <p>Reimplemented in <a class="el" href="classrack_1_1AnDReCommand.html#af9f317a6530155acd7adfb119bed731c">AnDReCommand&lt; OP &gt;</a>, <a class="el" href="classrack_1_1DetectorCommand.html#af9f317a6530155acd7adfb119bed731c">DetectorCommand&lt; OP &gt;</a>, and <a class="el" href="classrack_1_1ProductCommand.html#af9f317a6530155acd7adfb119bed731c">ProductCommand&lt; OP &gt;</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a2aabdb22e634b8388be4c2c858c2c492" name="a2aabdb22e634b8388be4c2c858c2c492"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2aabdb22e634b8388be4c2c858c2c492">&#9670;&#160;</a></span>relatedCommands</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::set&lt;std::string&gt; relatedCommands</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">mutable</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Add related command(s), to appear in help after "See-also:" phrase. </p>
-<p>This "relation" is single directional, so typically linked commands should also link this command. <a class="el" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ...">Command</a> catalogs like <a class="el" href="classdrain_1_1CommandBank.html" title="Container and execution tools for commands derived from Command.">CommandBank</a> should administer two-way linking.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1CommandBank.html" title="Container and execution tools for commands derived from Command.">CommandBank</a> </dd></dl>
 
 </div>
 </div>

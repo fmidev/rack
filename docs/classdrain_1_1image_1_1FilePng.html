@@ -79,7 +79,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="classdrain_1_1image_1_1FilePng-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">FilePng Class Reference</div></div>
 </div><!--header-->
@@ -94,9 +94,9 @@ Collaboration diagram for FilePng:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1FilePng__coll__graph.png" border="0" usemap="#aFilePng_coll__map" alt="Collaboration graph"/></div>
 <map name="aFilePng_coll__map" id="aFilePng_coll__map">
-<area shape="rect" title="For reading and writing images in PNG format." alt="" coords="6,196,75,221"/>
+<area shape="rect" title="For reading and writing images in PNG format." alt="" coords="6,181,75,207"/>
 <area shape="rect" href="classdrain_1_1FileInfo.html" title=" " alt="" coords="5,93,76,119"/>
-<area shape="poly" title=" " alt="" coords="43,133,43,196,38,196,38,133"/>
+<area shape="poly" title=" " alt="" coords="43,133,43,181,38,181,38,133"/>
 <area shape="rect" href="classdrain_1_1RegExp.html" title=" " alt="" coords="5,5,76,31"/>
 <area shape="poly" title=" " alt="" coords="43,45,43,93,38,93,38,45"/>
 </map>
@@ -108,7 +108,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ab8ee152232039c465dc0a5caf6ca18fe"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePng.html#ab8ee152232039c465dc0a5caf6ca18fe">readOld</a> (T &amp;image, const std::string &amp;path, int png_transforms=0)</td></tr>
 <tr class="memdesc:ab8ee152232039c465dc0a5caf6ca18fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising png files.  <br /></td></tr>
 <tr class="separator:ab8ee152232039c465dc0a5caf6ca18fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b317b687e361fac5fe4be9cab6c007d" id="r_a1b317b687e361fac5fe4be9cab6c007d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePng.html#a1b317b687e361fac5fe4be9cab6c007d">read</a> (<a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image, const std::string &amp;path, int png_transforms=0)</td></tr>
+<tr class="memitem:a1b317b687e361fac5fe4be9cab6c007d" id="r_a1b317b687e361fac5fe4be9cab6c007d"><td class="memItemLeft" align="right" valign="top"><a id="a1b317b687e361fac5fe4be9cab6c007d" name="a1b317b687e361fac5fe4be9cab6c007d"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>read</b> (<a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image, const std::string &amp;path, int png_transforms=0)</td></tr>
 <tr class="separator:a1b317b687e361fac5fe4be9cab6c007d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cbbcdd5455b722eea871acf51d268af" id="r_a0cbbcdd5455b722eea871acf51d268af"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePng.html#a0cbbcdd5455b722eea871acf51d268af">write</a> (const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image, const std::string &amp;path)</td></tr>
 <tr class="memdesc:a0cbbcdd5455b722eea871acf51d268af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes image to a png file.  <br /></td></tr>
@@ -125,18 +126,34 @@ static short int&#160;</td><td class="memItemRight" valign="bottom"><b>compressi
 <tr class="memdesc:a4391fabe9adc679fad93fe3199b15d87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default compression level for png_set_compression_level(png_ptr, ...);. <br /></td></tr>
 <tr class="separator:a4391fabe9adc679fad93fe3199b15d87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
-Static Protected Attributes</h2></td></tr>
-<tr class="memitem:af654e04e3f0ba1085f70c07fac8ec141" id="r_af654e04e3f0ba1085f70c07fac8ec141"><td class="memItemLeft" align="right" valign="top"><a id="af654e04e3f0ba1085f70c07fac8ec141" name="af654e04e3f0ba1085f70c07fac8ec141"></a>
-static <a class="el" href="classdrain_1_1FileInfo.html">FileInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>initFileInfo</b></td></tr>
-<tr class="separator:af654e04e3f0ba1085f70c07fac8ec141"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a06a804e2c59ea807926fa8f42fd66ae3" id="r_a06a804e2c59ea807926fa8f42fd66ae3"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePng.html#a06a804e2c59ea807926fa8f42fd66ae3">readFile</a> (const std::string &amp;path, png_structp &amp;png_ptr, png_infop &amp;info_ptr, int png_transforms)</td></tr>
+<tr class="separator:a06a804e2c59ea807926fa8f42fd66ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19c3bfc4a5641180cbc1bb8c49aa74d3" id="r_a19c3bfc4a5641180cbc1bb8c49aa74d3"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePng.html#a19c3bfc4a5641180cbc1bb8c49aa74d3">readComments</a> (png_structp &amp;png_ptr, png_infop &amp;info_ptr, <a class="el" href="classdrain_1_1FlexVariableMap.html">FlexVariableMap</a> &amp;properties)</td></tr>
+<tr class="separator:a19c3bfc4a5641180cbc1bb8c49aa74d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae09adca6c3f1000314a92668ff1cd8ab" id="r_ae09adca6c3f1000314a92668ff1cd8ab"><td class="memItemLeft" align="right" valign="top"><a id="ae09adca6c3f1000314a92668ff1cd8ab" name="ae09adca6c3f1000314a92668ff1cd8ab"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>readConfiguration</b> (png_structp &amp;png_ptr, png_infop &amp;info_ptr, <a class="el" href="classdrain_1_1image_1_1ImageConf.html">ImageConf</a> &amp;conf)</td></tr>
+<tr class="separator:ae09adca6c3f1000314a92668ff1cd8ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af64936a680a9f48899cae6b648faa864" id="r_af64936a680a9f48899cae6b648faa864"><td class="memItemLeft" align="right" valign="top"><a id="af64936a680a9f48899cae6b648faa864" name="af64936a680a9f48899cae6b648faa864"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>copyData</b> (png_structp &amp;png_ptr, png_infop &amp;info_ptr, const <a class="el" href="classdrain_1_1image_1_1ImageConf.html">ImageConf</a> &amp;pngConf, <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image)</td></tr>
+<tr class="separator:af64936a680a9f48899cae6b648faa864"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0d9b87ff666eb02ec2e2a48a06ba842" id="r_ac0d9b87ff666eb02ec2e2a48a06ba842"><td class="memItemLeft" align="right" valign="top"><a id="ac0d9b87ff666eb02ec2e2a48a06ba842" name="ac0d9b87ff666eb02ec2e2a48a06ba842"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>copyData8to8</b> (png_structp &amp;png_ptr, png_infop &amp;info_ptr, <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image)</td></tr>
+<tr class="separator:ac0d9b87ff666eb02ec2e2a48a06ba842"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e5e94edd232723ce0f441364cc9fd07" id="r_a0e5e94edd232723ce0f441364cc9fd07"><td class="memItemLeft" align="right" valign="top"><a id="a0e5e94edd232723ce0f441364cc9fd07" name="a0e5e94edd232723ce0f441364cc9fd07"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>copyData8to16</b> (png_structp &amp;png_ptr, png_infop &amp;info_ptr, <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image)</td></tr>
+<tr class="separator:a0e5e94edd232723ce0f441364cc9fd07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c1b0f06ce8bedb0e13e7c6d6c64010f" id="r_a0c1b0f06ce8bedb0e13e7c6d6c64010f"><td class="memItemLeft" align="right" valign="top"><a id="a0c1b0f06ce8bedb0e13e7c6d6c64010f" name="a0c1b0f06ce8bedb0e13e7c6d6c64010f"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>copyData16</b> (png_structp &amp;png_ptr, png_infop &amp;info_ptr, <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image)</td></tr>
+<tr class="separator:a0c1b0f06ce8bedb0e13e7c6d6c64010f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>For reading and writing images in PNG format. </p>
 <p>A lighter alternative for Magick++ which supports tens of image formats. Portable Network Graphics (PNG) format is a widely adapted, flexible image format for gray level and color images. It supports lossless compression and alpha channels. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1b317b687e361fac5fe4be9cab6c007d" name="a1b317b687e361fac5fe4be9cab6c007d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b317b687e361fac5fe4be9cab6c007d">&#9670;&#160;</a></span>read()</h2>
+<a id="a19c3bfc4a5641180cbc1bb8c49aa74d3" name="a19c3bfc4a5641180cbc1bb8c49aa74d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19c3bfc4a5641180cbc1bb8c49aa74d3">&#9670;&#160;</a></span>readComments()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -145,22 +162,22 @@ static <a class="el" href="classdrain_1_1FileInfo.html">FileInfo</a> &amp;&#160;
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void read </td>
+          <td class="memname">void readComments </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;&#160;</td>
-          <td class="paramname"><em>image</em>, </td>
+          <td class="paramtype">png_structp &amp;&#160;</td>
+          <td class="paramname"><em>png_ptr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>path</em>, </td>
+          <td class="paramtype">png_infop &amp;&#160;</td>
+          <td class="paramname"><em>info_ptr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>png_transforms</em> = <code>0</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1FlexVariableMap.html">FlexVariableMap</a> &amp;&#160;</td>
+          <td class="paramname"><em>properties</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -170,13 +187,60 @@ static <a class="el" href="classdrain_1_1FileInfo.html">FileInfo</a> &amp;&#160;
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read comments</p>
+
+</div>
+</div>
+<a id="a06a804e2c59ea807926fa8f42fd66ae3" name="a06a804e2c59ea807926fa8f42fd66ae3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06a804e2c59ea807926fa8f42fd66ae3">&#9670;&#160;</a></span>readFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void readFile </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">png_structp &amp;&#160;</td>
+          <td class="paramname"><em>png_ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">png_infop &amp;&#160;</td>
+          <td class="paramname"><em>info_ptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>png_transforms</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 <p>Main action</p>
-<p>Read comments</p>
-<p>Copy to drain::Image</p>
 
 </div>
 </div>

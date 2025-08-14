@@ -162,24 +162,24 @@ Detection results of <code>--aBiomet</code> .</div></div>
  <h2><a class="anchor" id="aBiomet2"></a>
 Detecting birds and insects (dual-pol)</h2>
 <p>There is also detectors for birds and insects using dual-pol data.</p>
-<div class="fragment"><div class="line">rack volume.h5 --aBird &#39;0,1,0.95,1,2500:5,2&#39; -o aBird.h5</div>
+<div class="fragment"><div class="line">rack volume.h5 --aBird &#39;0,1,0.95,1,2500:5,1&#39; -o aBird.h5</div>
 <div class="line">  % dbzPeak=0 [Typical reflectivity (DBZH)]</div>
 <div class="line">  % vradDevMin=1 [Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)]</div>
 <div class="line">  % rhoHVmax=0.95 [Fuzzy threshold of maximum rhoHV value]</div>
 <div class="line">  % zdrAbsMin=1 [Fuzzy threshold of absolute ZDR]</div>
 <div class="line">  % window=2500:5 [beam-directional(m), azimuthal(deg)]</div>
-<div class="line">  % gamma=2 [Contrast adjustment, dark=0.0 &lt; 1.0 &lt; brighter ]</div>
+<div class="line">  % gamma=1 [Contrast adjustment, dark=0.0 &lt; 1.0 &lt; brighter ]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-bird-precip-bird.png" alt=""/>
 <div class="caption">
 Detection results of <code>--aBird</code> .</div></div>
- <div class="fragment"><div class="line">rack volume.h5 --aInsect &#39;0,5,0.95,3,2500:5,2&#39; -o aInsect.h5</div>
+ <div class="fragment"><div class="line">rack volume.h5 --aInsect &#39;0,5,0.95,3,2500:5,1&#39; -o aInsect.h5</div>
 <div class="line">  % dbzPeak=0 [Max reflectivity, +/-5dBZ]</div>
 <div class="line">  % vradDevMax=5 [Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)]</div>
 <div class="line">  % rhoHVmax=0.95 [Fuzzy threshold of maximum rhoHV value]</div>
 <div class="line">  % zdrAbsMin=3 [Fuzzy threshold of absolute ZDR]</div>
 <div class="line">  % window=2500:5 [beam-directional(m), azimuthal(deg)]</div>
-<div class="line">  % gamma=2 [Contrast adjustment, dark=0.0 &lt; 1.0 &lt; brighter ]</div>
+<div class="line">  % gamma=1 [Contrast adjustment, dark=0.0 &lt; 1.0 &lt; brighter ]</div>
 </div><!-- fragment --><div class="image">
 <img src="result-insect.png" alt=""/>
 <div class="caption">
@@ -240,8 +240,8 @@ Detection results of <code>--aJamming</code> .</div></div>
  <h2><a class="anchor" id="aNonMet"></a>
 Detecting sea clutter and other non-meteorogical targets</h2>
 <p>With the polarimetric quantity <em>RhoHV</em> one can easily detect some non-meteorological echoes such as sea clutter. For meteorological targets, <em>RhoHV</em> is close to 1.0 and below otherwise. For example, sea clutter can be detected with the following command:</p>
-<div class="fragment"><div class="line">rack volume.h5 --aNonMet &#39;0.2:0.6,0:0,0&#39; -o aNonMet.h5</div>
-<div class="line">  % threshold=0.2:0.6 [0...1[:0...1]]</div>
+<div class="fragment"><div class="line">rack volume.h5 --aNonMet &#39;0.7:0.8,0:0,0&#39; -o aNonMet.h5</div>
+<div class="line">  % threshold=0.7:0.8 [0...1[:0...1]]</div>
 <div class="line">  % medianWindow=0:0 [metres,degrees]</div>
 <div class="line">  % medianPos=0 [0...1]</div>
 </div><!-- fragment --><div class="image">

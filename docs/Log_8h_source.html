@@ -828,268 +828,274 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00765" name="l00765"></a><span class="lineno"><a class="line" href="classdrain_1_1Logger.html#a0743f3c756f07af202eedd8f2caca385">  765</a></span>    <a class="code hl_class" href="classdrain_1_1Logger.html">Logger</a> &amp;<a class="code hl_function" href="classdrain_1_1Logger.html#a0743f3c756f07af202eedd8f2caca385">operator&lt;&lt;</a>(<span class="keyword">const</span> std::ostream &amp; sstr) {</div>
 <div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>        <span class="comment">// TODO if (!message.empty())</span></div>
 <div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>        <span class="keywordflow">if</span> (level &lt;= monitor.getVerbosity())</div>
-<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>            message &lt;&lt; sstr.rdbuf();</div>
+<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>            message &lt;&lt; sstr.rdbuf(); <span class="comment">// so simple? See StreamBuilder for additional checks</span></div>
 <div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
 <div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>    }</div>
 </div>
 <div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span> </div>
-<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span> </div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span> </div>
-<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>    <a class="code hl_class" href="classdrain_1_1Logger.html">Logger</a> &amp;<a class="code hl_function" href="classdrain_1_1Logger.html#a0743f3c756f07af202eedd8f2caca385">operator&lt;&lt;</a>(<span class="keyword">const</span> T &amp; x) {</div>
-<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>        <span class="comment">//cerr &lt;&lt; &quot;source input:&quot; &lt;&lt; x &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>        <span class="keywordflow">if</span> (level &lt;= monitor.getVerbosity())</div>
-<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>            message &lt;&lt; x;</div>
-<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>    }</div>
-<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span> </div>
-<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>    <span class="keyword">typedef</span> <span class="keywordtype">void</span> * oper;</div>
-<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>    <span class="keyword">static</span> oper endl;</div>
-<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span> </div>
-<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span> </div>
-<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>    <span class="keywordtype">void</span> end(){</div>
-<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>        monitor.flush(level, *notif_ptr, prefix, message);</div>
-<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>    }</div>
+<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>    <a class="code hl_class" href="classdrain_1_1Logger.html">Logger</a> &amp;<a class="code hl_function" href="classdrain_1_1Logger.html#a0743f3c756f07af202eedd8f2caca385">operator&lt;&lt;</a>(<span class="keyword">const</span> std::type_info &amp; type) {</div>
+<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>        <span class="keywordflow">if</span> (level &lt;= monitor.getVerbosity())</div>
+<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>            message &lt;&lt; Type::call&lt;simpleName&gt;(type);</div>
+<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>    }</div>
+<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span> </div>
+<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span> </div>
+<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>    Logger &amp;<a class="code hl_function" href="classdrain_1_1Logger.html#a0743f3c756f07af202eedd8f2caca385">operator&lt;&lt;</a>(<span class="keyword">const</span> T &amp; x) {</div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>        <span class="comment">//cerr &lt;&lt; &quot;source input:&quot; &lt;&lt; x &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>        <span class="keywordflow">if</span> (level &lt;= monitor.getVerbosity())</div>
+<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>            message &lt;&lt; x;</div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>    }</div>
+<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span> </div>
+<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>    <span class="keyword">typedef</span> <span class="keywordtype">void</span> * oper;</div>
+<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>    <span class="keyword">static</span> oper endl;</div>
 <div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span> </div>
+<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span> </div>
 <div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>    <span class="keyword">inline</span></div>
-<div class="foldopen" id="foldopen00793" data-start="{" data-end="}">
-<div class="line"><a id="l00793" name="l00793"></a><span class="lineno"><a class="line" href="classdrain_1_1Logger.html#adae949c1f2d716f64cf76f2556512c95">  793</a></span>    <a class="code hl_class" href="classdrain_1_1Logger.html">Logger</a> &amp;<a class="code hl_function" href="classdrain_1_1Logger.html#adae949c1f2d716f64cf76f2556512c95">operator&lt;&lt;</a>(oper op){</div>
+<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>    <span class="keywordtype">void</span> end(){</div>
 <div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>        monitor.flush(level, *notif_ptr, prefix, message);</div>
-<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>; <span class="comment">// &lt;- drop this?</span></div>
-<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>    }</div>
+<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>    }</div>
+<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span> </div>
+<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>    <span class="keyword">inline</span></div>
+<div class="foldopen" id="foldopen00799" data-start="{" data-end="}">
+<div class="line"><a id="l00799" name="l00799"></a><span class="lineno"><a class="line" href="classdrain_1_1Logger.html#adae949c1f2d716f64cf76f2556512c95">  799</a></span>    <a class="code hl_class" href="classdrain_1_1Logger.html">Logger</a> &amp;<a class="code hl_function" href="classdrain_1_1Logger.html#adae949c1f2d716f64cf76f2556512c95">operator&lt;&lt;</a>(oper op){</div>
+<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>        monitor.flush(level, *notif_ptr, prefix, message);</div>
+<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>; <span class="comment">// &lt;- drop this?</span></div>
+<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>    }</div>
 </div>
-<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span> </div>
-<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>    <span class="keyword">inline</span></div>
-<div class="foldopen" id="foldopen00800" data-start="{" data-end="}">
-<div class="line"><a id="l00800" name="l00800"></a><span class="lineno"><a class="line" href="classdrain_1_1Logger.html#a20916e24748be43d8178b79956e998b6">  800</a></span>    <a class="code hl_class" href="classdrain_1_1Logger.html">Logger</a> &amp;<a class="code hl_function" href="classdrain_1_1Logger.html#a20916e24748be43d8178b79956e998b6">operator&lt;&lt;</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Logger.html">Logger</a> &amp; l){</div>
-<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span> </div>
-<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>        <span class="keywordflow">if</span> (&amp;l != <span class="keyword">this</span>){</div>
-<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>            message &lt;&lt; <span class="stringliteral">&quot; NOTE: Logger&quot;</span> &lt;&lt; __FUNCTION__ &lt;&lt; <span class="stringliteral">&quot; flush with non-this Logger&quot;</span>;</div>
-<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>        }</div>
-<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>        monitor.flush(level, *notif_ptr, prefix, message);</div>
-<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>    }</div>
+<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span> </div>
+<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>    <span class="keyword">inline</span></div>
+<div class="foldopen" id="foldopen00806" data-start="{" data-end="}">
+<div class="line"><a id="l00806" name="l00806"></a><span class="lineno"><a class="line" href="classdrain_1_1Logger.html#a20916e24748be43d8178b79956e998b6">  806</a></span>    <a class="code hl_class" href="classdrain_1_1Logger.html">Logger</a> &amp;<a class="code hl_function" href="classdrain_1_1Logger.html#a20916e24748be43d8178b79956e998b6">operator&lt;&lt;</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Logger.html">Logger</a> &amp; l){</div>
+<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span> </div>
+<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>        <span class="keywordflow">if</span> (&amp;l != <span class="keyword">this</span>){</div>
+<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>            message &lt;&lt; <span class="stringliteral">&quot; NOTE: Logger&quot;</span> &lt;&lt; __FUNCTION__ &lt;&lt; <span class="stringliteral">&quot; flush with non-this Logger&quot;</span>;</div>
+<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>        }</div>
+<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>        monitor.flush(level, *notif_ptr, prefix, message);</div>
+<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>    }</div>
 </div>
-<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span> </div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span>    <span class="keywordtype">int</span> getVerbosity()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>        <span class="keywordflow">return</span> monitor.getVerbosity();</div>
-<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>    };</div>
-<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span> </div>
-<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span> </div>
-<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>    Log &amp; monitor;</div>
-<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span> </div>
-<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>    std::string prefix;</div>
+<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span> </div>
+<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>    <span class="keywordtype">int</span> getVerbosity()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>        <span class="keywordflow">return</span> monitor.getVerbosity();</div>
+<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>    };</div>
 <div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span> </div>
-<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>    level_t level;</div>
-<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>    time_t time;</div>
-<div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span> </div>
-<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>    <span class="keyword">const</span> Notification * notif_ptr;</div>
-<div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span> </div>
-<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span> </div>
-<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... TT&gt;</div>
-<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span>    <span class="keywordtype">void</span> initTiming(<span class="keyword">const</span> TT &amp;... args){</div>
-<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>        timing = <span class="keyword">true</span>; <span class="comment">// consider error if already timing?</span></div>
-<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;TIMING:&quot;</span> &lt;&lt; MARKER; <span class="comment">// &lt;&lt; &quot;&lt;li&gt;&quot;;</span></div>
-<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>        describeTiming(args...);</div>
-<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>        <span class="comment">// std::cerr &lt;&lt; &quot; [&quot; &lt;&lt;  prefix  &lt;&lt; &quot;] &lt;ol&gt;&quot; &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>        <span class="comment">//std::cerr &lt;&lt; &quot; &lt;ol&gt;&quot; &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot; &lt;div&gt;&quot;</span> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>        time = monitor.getMilliseconds();</div>
-<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>    };</div>
-<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span> </div>
-<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span> </div>
-<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ... TT&gt;</div>
-<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>    <span class="keywordtype">void</span> describeTiming(<span class="keyword">const</span> T &amp; arg, <span class="keyword">const</span> TT &amp;... args){</div>
-<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>        std::cerr &lt;&lt; arg;</div>
-<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>        describeTiming(args...);</div>
-<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span>    };</div>
+<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span> </div>
+<div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span>    Log &amp; monitor;</div>
+<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span> </div>
+<div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span>    std::string prefix;</div>
+<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span> </div>
+<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span>    level_t level;</div>
+<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span>    time_t time;</div>
+<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span> </div>
+<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>    <span class="keyword">const</span> Notification * notif_ptr;</div>
+<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span> </div>
+<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span> </div>
+<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... TT&gt;</div>
+<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>    <span class="keywordtype">void</span> initTiming(<span class="keyword">const</span> TT &amp;... args){</div>
+<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>        timing = <span class="keyword">true</span>; <span class="comment">// consider error if already timing?</span></div>
+<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;TIMING:&quot;</span> &lt;&lt; MARKER; <span class="comment">// &lt;&lt; &quot;&lt;li&gt;&quot;;</span></div>
+<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>        describeTiming(args...);</div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>        <span class="comment">// std::cerr &lt;&lt; &quot; [&quot; &lt;&lt;  prefix  &lt;&lt; &quot;] &lt;ol&gt;&quot; &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>        <span class="comment">//std::cerr &lt;&lt; &quot; &lt;ol&gt;&quot; &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a id="l00840" name="l00840"></a><span class="lineno">  840</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot; &lt;div&gt;&quot;</span> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a id="l00841" name="l00841"></a><span class="lineno">  841</span>        time = monitor.getMilliseconds();</div>
+<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>    };</div>
+<div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span> </div>
 <div class="line"><a id="l00844" name="l00844"></a><span class="lineno">  844</span> </div>
-<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>    <span class="keywordtype">void</span> describeTiming(){</div>
-<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>    };</div>
-<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span> </div>
-<div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span> </div>
-<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... TT&gt;</div>
-<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>    <span class="comment">//void setPrefix(const char * filename, const char * func_name, const TT &amp;... args){</span></div>
-<div class="foldopen" id="foldopen00867" data-start="{" data-end="}">
-<div class="line"><a id="l00867" name="l00867"></a><span class="lineno"><a class="line" href="classdrain_1_1Logger.html#a5cfe065351fa06fc117b52087bb759d2">  867</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1Logger.html#a5cfe065351fa06fc117b52087bb759d2">setPrefix</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * filename, <span class="keyword">const</span> TT &amp;... args){</div>
-<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span> </div>
-<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>        std::stringstream sstr;</div>
-<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span> </div>
-<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>        <span class="keywordflow">if</span> (filename){</div>
-<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span> </div>
-<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span>            <span class="keywordflow">if</span> (*filename != <span class="charliteral">&#39;\0&#39;</span>){</div>
+<div class="line"><a id="l00845" name="l00845"></a><span class="lineno">  845</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ... TT&gt;</div>
+<div class="line"><a id="l00846" name="l00846"></a><span class="lineno">  846</span>    <span class="keywordtype">void</span> describeTiming(<span class="keyword">const</span> T &amp; arg, <span class="keyword">const</span> TT &amp;... args){</div>
+<div class="line"><a id="l00847" name="l00847"></a><span class="lineno">  847</span>        std::cerr &lt;&lt; arg;</div>
+<div class="line"><a id="l00848" name="l00848"></a><span class="lineno">  848</span>        describeTiming(args...);</div>
+<div class="line"><a id="l00849" name="l00849"></a><span class="lineno">  849</span>    };</div>
+<div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span> </div>
+<div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00852" name="l00852"></a><span class="lineno">  852</span>    <span class="keywordtype">void</span> describeTiming(){</div>
+<div class="line"><a id="l00853" name="l00853"></a><span class="lineno">  853</span>    };</div>
+<div class="line"><a id="l00854" name="l00854"></a><span class="lineno">  854</span> </div>
+<div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span> </div>
+<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... TT&gt;</div>
+<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span>    <span class="comment">//void setPrefix(const char * filename, const char * func_name, const TT &amp;... args){</span></div>
+<div class="foldopen" id="foldopen00873" data-start="{" data-end="}">
+<div class="line"><a id="l00873" name="l00873"></a><span class="lineno"><a class="line" href="classdrain_1_1Logger.html#a5cfe065351fa06fc117b52087bb759d2">  873</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1Logger.html#a5cfe065351fa06fc117b52087bb759d2">setPrefix</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * filename, <span class="keyword">const</span> TT &amp;... args){</div>
 <div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span> </div>
-<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>                <span class="keyword">const</span> <span class="keywordtype">char</span> * s2 = strrchr(filename, <span class="charliteral">&#39;/&#39;</span>);</div>
-<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>                <span class="keywordflow">if</span> (s2 == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>                    s2 = filename;</div>
-<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>                <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span>                    ++s2;</div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>        std::stringstream sstr;</div>
+<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span> </div>
+<div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>        <span class="keywordflow">if</span> (filename){</div>
+<div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span> </div>
+<div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span>            <span class="keywordflow">if</span> (*filename != <span class="charliteral">&#39;\0&#39;</span>){</div>
 <div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span> </div>
-<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>                <span class="keyword">const</span> <span class="keywordtype">char</span> * s3 = strrchr(s2, <span class="charliteral">&#39;.&#39;</span>);</div>
-<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span>                <span class="keywordflow">if</span> (s3 == <span class="keyword">nullptr</span>)</div>
-<div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span>                    sstr &lt;&lt; s2;</div>
-<div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>                    <span class="comment">//prefix.assign(s2);</span></div>
-<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span>                <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>                    <span class="comment">//prefix.assign(s2, s3-s2);</span></div>
-<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>                    sstr.write(s2, <span class="keywordtype">size_t</span>(s3-s2));</div>
-<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>                <span class="comment">// prefix.append(&quot;:&quot;);</span></div>
-<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>                <span class="comment">// sstr &lt;&lt; &#39;:&#39;;</span></div>
-<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>            }</div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>        }</div>
-<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>        <span class="comment">// NEW  sstr &lt;&lt; func_name &lt;&lt; &quot;: &quot;;</span></div>
-<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>        <span class="comment">//appendPrefix(sstr, func_name, args...);</span></div>
-<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>        appendPrefix(sstr, args...);</div>
-<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>        prefix = sstr.str();</div>
-<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>    }</div>
+<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span>                <span class="keyword">const</span> <span class="keywordtype">char</span> * s2 = strrchr(filename, <span class="charliteral">&#39;/&#39;</span>);</div>
+<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>                <span class="keywordflow">if</span> (s2 == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span>                    s2 = filename;</div>
+<div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span>                <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00885" name="l00885"></a><span class="lineno">  885</span>                    ++s2;</div>
+<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span> </div>
+<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span>                <span class="keyword">const</span> <span class="keywordtype">char</span> * s3 = strrchr(s2, <span class="charliteral">&#39;.&#39;</span>);</div>
+<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>                <span class="keywordflow">if</span> (s3 == <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>                    sstr &lt;&lt; s2;</div>
+<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>                    <span class="comment">//prefix.assign(s2);</span></div>
+<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>                <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>                    <span class="comment">//prefix.assign(s2, s3-s2);</span></div>
+<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>                    sstr.write(s2, <span class="keywordtype">size_t</span>(s3-s2));</div>
+<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>                <span class="comment">// prefix.append(&quot;:&quot;);</span></div>
+<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>                <span class="comment">// sstr &lt;&lt; &#39;:&#39;;</span></div>
+<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>            }</div>
+<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>        }</div>
+<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>        <span class="comment">// NEW  sstr &lt;&lt; func_name &lt;&lt; &quot;: &quot;;</span></div>
+<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>        <span class="comment">//appendPrefix(sstr, func_name, args...);</span></div>
+<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>        appendPrefix(sstr, args...);</div>
+<div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span>        prefix = sstr.str();</div>
+<div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>    }</div>
 </div>
-<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span> </div>
-<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>    <span class="comment">/*</span></div>
-<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span><span class="comment">    template&lt;typename T, typename ... TT&gt;</span></div>
-<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span><span class="comment">    inline</span></div>
-<div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span><span class="comment">    void setPrefix(const TT &amp;... args){</span></div>
-<div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span><span class="comment">        std::stringstream sstr;</span></div>
-<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span><span class="comment">        appendPrefix(sstr, args...);</span></div>
-<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span><span class="comment">        prefix = sstr.str();</span></div>
-<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span><span class="comment">    }</span></div>
-<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span><span class="comment">    */</span></div>
-<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span> </div>
-<div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span> </div>
-<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>    <span class="keywordtype">void</span> appendPrefix(std::stringstream &amp; sstr){</div>
-<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>    }</div>
-<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span> </div>
-<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ... TT&gt;</div>
-<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>    <span class="keywordtype">void</span> appendPrefix(std::stringstream &amp; sstr, <span class="keyword">const</span> T &amp; arg, <span class="keyword">const</span> TT &amp;... args){</div>
-<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>        sstr &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; arg;</div>
-<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span>        appendPrefix(sstr, args...);</div>
+<div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span> </div>
+<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span><span class="comment">    template&lt;typename T, typename ... TT&gt;</span></div>
+<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span><span class="comment">    inline</span></div>
+<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span><span class="comment">    void setPrefix(const TT &amp;... args){</span></div>
+<div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span><span class="comment">        std::stringstream sstr;</span></div>
+<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span><span class="comment">        appendPrefix(sstr, args...);</span></div>
+<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span><span class="comment">        prefix = sstr.str();</span></div>
+<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span><span class="comment">    }</span></div>
+<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span> </div>
+<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span> </div>
+<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span>    <span class="keywordtype">void</span> appendPrefix(std::stringstream &amp; sstr){</div>
 <div class="line"><a id="l00918" name="l00918"></a><span class="lineno">  918</span>    }</div>
 <div class="line"><a id="l00919" name="l00919"></a><span class="lineno">  919</span> </div>
-<div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span>    <span class="keyword">template</span> &lt;level_t L&gt;</div>
-<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>    Logger &amp; initMessage(<span class="keyword">const</span> Notification &amp; notif){</div>
-<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span>        this-&gt;notif_ptr = &amp; notif;</div>
-<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span>        this-&gt;level = L;</div>
-<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>        this-&gt;message.str(<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span>    }</div>
-<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span>    <span class="comment">//void initMessage(level_t level);</span></div>
-<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span> </div>
-<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span>    <span class="comment">/*</span></div>
-<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span><span class="comment">    template &lt;level_t L&gt;</span></div>
-<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span><span class="comment">    Logger &amp; initMessage(){</span></div>
-<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span><span class="comment"></span> </div>
-<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span><span class="comment">        static</span></div>
-<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span><span class="comment">        const Notification &amp; notif = Log::getDict()[L];</span></div>
-<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span><span class="comment"></span> </div>
-<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span><span class="comment">        this-&gt;notif_ptr = &amp;notif;</span></div>
-<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span><span class="comment">        this-&gt;level = L;</span></div>
-<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span><span class="comment">        this-&gt;message.str(&quot;&quot;);</span></div>
-<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span><span class="comment">        return *this;</span></div>
-<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span><span class="comment">    }</span></div>
-<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span><span class="comment">    */</span></div>
-<div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span> </div>
-<div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span>    Logger &amp; initMessage(level_t level);</div>
-<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span> </div>
-<div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span>    <span class="comment">/*</span></div>
-<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span><span class="comment">    inline</span></div>
-<div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span><span class="comment">    Logger &amp; initMessage(level_t level){</span></div>
-<div class="line"><a id="l00949" name="l00949"></a><span class="lineno">  949</span><span class="comment">        static const Notification notif(__FUNCTION__); // TextStyle::DIM, TextStyle::ITALIC);</span></div>
-<div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span><span class="comment">        this-&gt;notif_ptr = &amp; notif; // Log::getDict()[level];</span></div>
-<div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span><span class="comment">        this-&gt;level = level;</span></div>
-<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span><span class="comment">        this-&gt;message.str(&quot;&quot;);</span></div>
-<div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span><span class="comment">        return *this;</span></div>
-<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span><span class="comment">    }</span></div>
-<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span><span class="comment">    */</span></div>
-<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span> </div>
-<div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ... TT&gt;</div>
-<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span>    Logger &amp; flush(<span class="keyword">const</span> T &amp; arg, <span class="keyword">const</span> TT &amp;... rest){</div>
-<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span>        <span class="comment">//*this &lt;&lt; arg;</span></div>
-<div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span>        append(arg);</div>
-<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span>        flush(rest...);</div>
-<div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>    };</div>
-<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span> </div>
-<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>    Logger &amp; flush(<span class="keyword">const</span> T &amp; arg){</div>
-<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>        <span class="comment">// *this &lt;&lt; arg;</span></div>
-<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span>        append(arg);</div>
-<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span>        monitor.flush(level, *notif_ptr, prefix, message);</div>
-<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span>    };</div>
-<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span> </div>
-<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span>    Logger &amp; flush(){</div>
-<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span>    };</div>
-<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span> </div>
-<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ... TT&gt;</div>
+<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>    <span class="keywordtype">void</span> appendPrefix(std::stringstream &amp; sstr, <span class="keyword">const</span> T &amp; arg, <span class="keyword">const</span> TT &amp;... args){</div>
+<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span>        sstr &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; arg;</div>
+<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span>        appendPrefix(sstr, args...);</div>
+<div class="line"><a id="l00924" name="l00924"></a><span class="lineno">  924</span>    }</div>
+<div class="line"><a id="l00925" name="l00925"></a><span class="lineno">  925</span> </div>
+<div class="line"><a id="l00926" name="l00926"></a><span class="lineno">  926</span>    <span class="keyword">template</span> &lt;level_t L&gt;</div>
+<div class="line"><a id="l00927" name="l00927"></a><span class="lineno">  927</span>    Logger &amp; initMessage(<span class="keyword">const</span> Notification &amp; notif){</div>
+<div class="line"><a id="l00928" name="l00928"></a><span class="lineno">  928</span>        this-&gt;notif_ptr = &amp; notif;</div>
+<div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span>        this-&gt;level = L;</div>
+<div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span>        this-&gt;message.str(<span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span>    }</div>
+<div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span>    <span class="comment">//void initMessage(level_t level);</span></div>
+<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span> </div>
+<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span><span class="comment">    template &lt;level_t L&gt;</span></div>
+<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span><span class="comment">    Logger &amp; initMessage(){</span></div>
+<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span><span class="comment"></span> </div>
+<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span><span class="comment">        static</span></div>
+<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span><span class="comment">        const Notification &amp; notif = Log::getDict()[L];</span></div>
+<div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span><span class="comment"></span> </div>
+<div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span><span class="comment">        this-&gt;notif_ptr = &amp;notif;</span></div>
+<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span><span class="comment">        this-&gt;level = L;</span></div>
+<div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span><span class="comment">        this-&gt;message.str(&quot;&quot;);</span></div>
+<div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span><span class="comment">        return *this;</span></div>
+<div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span><span class="comment">    }</span></div>
+<div class="line"><a id="l00947" name="l00947"></a><span class="lineno">  947</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00948" name="l00948"></a><span class="lineno">  948</span> </div>
+<div class="line"><a id="l00950" name="l00950"></a><span class="lineno">  950</span>    Logger &amp; initMessage(level_t level);</div>
+<div class="line"><a id="l00951" name="l00951"></a><span class="lineno">  951</span> </div>
+<div class="line"><a id="l00952" name="l00952"></a><span class="lineno">  952</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00953" name="l00953"></a><span class="lineno">  953</span><span class="comment">    inline</span></div>
+<div class="line"><a id="l00954" name="l00954"></a><span class="lineno">  954</span><span class="comment">    Logger &amp; initMessage(level_t level){</span></div>
+<div class="line"><a id="l00955" name="l00955"></a><span class="lineno">  955</span><span class="comment">        static const Notification notif(__FUNCTION__); // TextStyle::DIM, TextStyle::ITALIC);</span></div>
+<div class="line"><a id="l00956" name="l00956"></a><span class="lineno">  956</span><span class="comment">        this-&gt;notif_ptr = &amp; notif; // Log::getDict()[level];</span></div>
+<div class="line"><a id="l00957" name="l00957"></a><span class="lineno">  957</span><span class="comment">        this-&gt;level = level;</span></div>
+<div class="line"><a id="l00958" name="l00958"></a><span class="lineno">  958</span><span class="comment">        this-&gt;message.str(&quot;&quot;);</span></div>
+<div class="line"><a id="l00959" name="l00959"></a><span class="lineno">  959</span><span class="comment">        return *this;</span></div>
+<div class="line"><a id="l00960" name="l00960"></a><span class="lineno">  960</span><span class="comment">    }</span></div>
+<div class="line"><a id="l00961" name="l00961"></a><span class="lineno">  961</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00962" name="l00962"></a><span class="lineno">  962</span> </div>
+<div class="line"><a id="l00963" name="l00963"></a><span class="lineno">  963</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> ... TT&gt;</div>
+<div class="line"><a id="l00964" name="l00964"></a><span class="lineno">  964</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00965" name="l00965"></a><span class="lineno">  965</span>    Logger &amp; flush(<span class="keyword">const</span> T &amp; arg, <span class="keyword">const</span> TT &amp;... rest){</div>
+<div class="line"><a id="l00966" name="l00966"></a><span class="lineno">  966</span>        <span class="comment">//*this &lt;&lt; arg;</span></div>
+<div class="line"><a id="l00967" name="l00967"></a><span class="lineno">  967</span>        append(arg);</div>
+<div class="line"><a id="l00968" name="l00968"></a><span class="lineno">  968</span>        flush(rest...);</div>
+<div class="line"><a id="l00969" name="l00969"></a><span class="lineno">  969</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00970" name="l00970"></a><span class="lineno">  970</span>    };</div>
+<div class="line"><a id="l00971" name="l00971"></a><span class="lineno">  971</span> </div>
+<div class="line"><a id="l00972" name="l00972"></a><span class="lineno">  972</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00973" name="l00973"></a><span class="lineno">  973</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00974" name="l00974"></a><span class="lineno">  974</span>    Logger &amp; flush(<span class="keyword">const</span> T &amp; arg){</div>
+<div class="line"><a id="l00975" name="l00975"></a><span class="lineno">  975</span>        <span class="comment">// *this &lt;&lt; arg;</span></div>
+<div class="line"><a id="l00976" name="l00976"></a><span class="lineno">  976</span>        append(arg);</div>
+<div class="line"><a id="l00977" name="l00977"></a><span class="lineno">  977</span>        monitor.flush(level, *notif_ptr, prefix, message);</div>
+<div class="line"><a id="l00978" name="l00978"></a><span class="lineno">  978</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00979" name="l00979"></a><span class="lineno">  979</span>    };</div>
+<div class="line"><a id="l00980" name="l00980"></a><span class="lineno">  980</span> </div>
 <div class="line"><a id="l00981" name="l00981"></a><span class="lineno">  981</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span>    <span class="keywordtype">void</span> append(<span class="keyword">const</span> T &amp; arg){</div>
-<div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span>        *<span class="keyword">this</span> &lt;&lt; arg;</div>
-<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>    }</div>
+<div class="line"><a id="l00982" name="l00982"></a><span class="lineno">  982</span>    Logger &amp; flush(){</div>
+<div class="line"><a id="l00983" name="l00983"></a><span class="lineno">  983</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00984" name="l00984"></a><span class="lineno">  984</span>    };</div>
 <div class="line"><a id="l00985" name="l00985"></a><span class="lineno">  985</span> </div>
-<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>    <span class="comment">/*</span></div>
-<div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span><span class="comment">    inline</span></div>
-<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span><span class="comment">    Logger &amp; flush(){</span></div>
-<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span><span class="comment">        monitor.flush(level, *notif_ptr, prefix, message);</span></div>
-<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span><span class="comment">        return *this;</span></div>
-<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span><span class="comment">    };</span></div>
-<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span><span class="comment">    */</span></div>
-<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span> </div>
-<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span> </div>
-<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span>};</div>
+<div class="line"><a id="l00986" name="l00986"></a><span class="lineno">  986</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00987" name="l00987"></a><span class="lineno">  987</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00988" name="l00988"></a><span class="lineno">  988</span>    <span class="keywordtype">void</span> append(<span class="keyword">const</span> T &amp; arg){</div>
+<div class="line"><a id="l00989" name="l00989"></a><span class="lineno">  989</span>        *<span class="keyword">this</span> &lt;&lt; arg;</div>
+<div class="line"><a id="l00990" name="l00990"></a><span class="lineno">  990</span>    }</div>
+<div class="line"><a id="l00991" name="l00991"></a><span class="lineno">  991</span> </div>
+<div class="line"><a id="l00992" name="l00992"></a><span class="lineno">  992</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00993" name="l00993"></a><span class="lineno">  993</span><span class="comment">    inline</span></div>
+<div class="line"><a id="l00994" name="l00994"></a><span class="lineno">  994</span><span class="comment">    Logger &amp; flush(){</span></div>
+<div class="line"><a id="l00995" name="l00995"></a><span class="lineno">  995</span><span class="comment">        monitor.flush(level, *notif_ptr, prefix, message);</span></div>
+<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span><span class="comment">        return *this;</span></div>
+<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span><span class="comment">    };</span></div>
+<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span> </div>
+<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span> </div>
+<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span>};</div>
 </div>
-<div class="line"><a id="l00996" name="l00996"></a><span class="lineno">  996</span> </div>
-<div class="line"><a id="l00997" name="l00997"></a><span class="lineno">  997</span> </div>
-<div class="line"><a id="l00998" name="l00998"></a><span class="lineno">  998</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00999" name="l00999"></a><span class="lineno">  999</span><span class="keyword">inline</span></div>
-<div class="line"><a id="l01000" name="l01000"></a><span class="lineno"> 1000</span><span class="keywordtype">void</span> Logger::append(<span class="keyword">const</span> TextStyle::Colour &amp; colour){</div>
-<div class="line"><a id="l01001" name="l01001"></a><span class="lineno"> 1001</span>    *<span class="keyword">this</span> &lt;&lt; <span class="stringliteral">&quot;&lt;color&gt;&quot;</span>;</div>
-<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span>}</div>
+<div class="line"><a id="l01002" name="l01002"></a><span class="lineno"> 1002</span> </div>
 <div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span> </div>
-<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span> </div>
-<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> ... TT&gt;</div>
-<div class="foldopen" id="foldopen01006" data-start="{" data-end="}">
-<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"><a class="line" href="classdrain_1_1Logger.html#aaefb6cbeed150415649af955fa6825da"> 1006</a></span><a class="code hl_function" href="classdrain_1_1Logger.html#aaefb6cbeed150415649af955fa6825da">Logger::Logger</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename, <span class="keyword">const</span> TT &amp; ...args):</div>
-<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span>                message(*this),</div>
-<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>                timing(false),</div>
-<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span>                monitor(getLog()),</div>
-<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span>                level(LOG_NOTICE),</div>
-<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span>                time(getLog().getMilliseconds()),</div>
-<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>                notif_ptr(NULL){</div>
-<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>    <a class="code hl_function" href="classdrain_1_1Logger.html#a5cfe065351fa06fc117b52087bb759d2">setPrefix</a>(filename, args...);</div>
-<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>}</div>
+<div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span><span class="keyword">inline</span></div>
+<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span><span class="keywordtype">void</span> Logger::append(<span class="keyword">const</span> TextStyle::Colour &amp; colour){</div>
+<div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span>    *<span class="keyword">this</span> &lt;&lt; <span class="stringliteral">&quot;&lt;color&gt;&quot;</span>;</div>
+<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>}</div>
+<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span> </div>
+<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span> </div>
+<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> ... TT&gt;</div>
+<div class="foldopen" id="foldopen01012" data-start="{" data-end="}">
+<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"><a class="line" href="classdrain_1_1Logger.html#aaefb6cbeed150415649af955fa6825da"> 1012</a></span><a class="code hl_function" href="classdrain_1_1Logger.html#aaefb6cbeed150415649af955fa6825da">Logger::Logger</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *filename, <span class="keyword">const</span> TT &amp; ...args):</div>
+<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>                message(*this),</div>
+<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>                timing(false),</div>
+<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span>                monitor(getLog()),</div>
+<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>                level(LOG_NOTICE),</div>
+<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>                time(getLog().getMilliseconds()),</div>
+<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>                notif_ptr(NULL){</div>
+<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>    <a class="code hl_function" href="classdrain_1_1Logger.html#a5cfe065351fa06fc117b52087bb759d2">setPrefix</a>(filename, args...);</div>
+<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>}</div>
 </div>
-<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span> </div>
-<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> ... TT&gt;</div>
-<div class="foldopen" id="foldopen01017" data-start="{" data-end="}">
-<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"><a class="line" href="classdrain_1_1Logger.html#af020c398c251ff669271daa68f02be67"> 1017</a></span><a class="code hl_function" href="classdrain_1_1Logger.html#aaefb6cbeed150415649af955fa6825da">Logger::Logger</a>(<a class="code hl_class" href="classdrain_1_1Log.html">Log</a> &amp;log, <span class="keyword">const</span> <span class="keywordtype">char</span> *filename, <span class="keyword">const</span> TT &amp; ...args):</div>
-<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>                message(*this),</div>
-<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>                timing(false),</div>
-<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>                monitor(log),</div>
-<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span>                level(LOG_NOTICE),</div>
-<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span>                time(log.getMilliseconds()),</div>
-<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span>                notif_ptr(NULL){</div>
-<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span>    <a class="code hl_function" href="classdrain_1_1Logger.html#a5cfe065351fa06fc117b52087bb759d2">setPrefix</a>(filename, args...);</div>
-<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span>}</div>
+<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span> </div>
+<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> ... TT&gt;</div>
+<div class="foldopen" id="foldopen01023" data-start="{" data-end="}">
+<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"><a class="line" href="classdrain_1_1Logger.html#af020c398c251ff669271daa68f02be67"> 1023</a></span><a class="code hl_function" href="classdrain_1_1Logger.html#aaefb6cbeed150415649af955fa6825da">Logger::Logger</a>(<a class="code hl_class" href="classdrain_1_1Log.html">Log</a> &amp;log, <span class="keyword">const</span> <span class="keywordtype">char</span> *filename, <span class="keyword">const</span> TT &amp; ...args):</div>
+<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span>                message(*this),</div>
+<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span>                timing(false),</div>
+<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span>                monitor(log),</div>
+<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span>                level(LOG_NOTICE),</div>
+<div class="line"><a id="l01028" name="l01028"></a><span class="lineno"> 1028</span>                time(log.getMilliseconds()),</div>
+<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span>                notif_ptr(NULL){</div>
+<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"> 1030</span>    <a class="code hl_function" href="classdrain_1_1Logger.html#a5cfe065351fa06fc117b52087bb759d2">setPrefix</a>(filename, args...);</div>
+<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span>}</div>
 </div>
-<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span><span class="comment">//std::ostream &amp;operator&lt;&lt;(std::ostream &amp;ostr, const Log &amp;error);</span></div>
-<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span> </div>
-<div class="line"><a id="l01028" name="l01028"></a><span class="lineno"> 1028</span> </div>
-<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span>}</div>
-<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"> 1030</span> </div>
-<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span><span class="comment">//const std::string FEELU(__FILE__);</span></div>
-<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span> </div>
-<div class="line"><a id="l01033" name="l01033"></a><span class="lineno"> 1033</span><span class="preprocessor">#endif </span><span class="comment">/* DEBUG_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span><span class="comment">//std::ostream &amp;operator&lt;&lt;(std::ostream &amp;ostr, const Log &amp;error);</span></div>
+<div class="line"><a id="l01033" name="l01033"></a><span class="lineno"> 1033</span> </div>
 <div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span> </div>
-<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span><span class="comment">// Drain</span></div>
+<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span>}</div>
+<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span> </div>
+<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span><span class="comment">//const std::string FEELU(__FILE__);</span></div>
+<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span> </div>
+<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span><span class="preprocessor">#endif </span><span class="comment">/* DEBUG_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span> </div>
+<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span><span class="comment">// Drain</span></div>
 <div class="ttc" id="aclassdrain_1_1DrainException_html"><div class="ttname"><a href="classdrain_1_1DrainException.html">drain::DrainException</a></div><div class="ttdef"><b>Definition</b> Log.h:288</div></div>
 <div class="ttc" id="aclassdrain_1_1Log_html"><div class="ttname"><a href="classdrain_1_1Log.html">drain::Log</a></div><div class="ttdoc">Handler for notifications sent by a Logger.</div><div class="ttdef"><b>Definition</b> Log.h:147</div></div>
 <div class="ttc" id="aclassdrain_1_1Log_html_a034d684c2bb4195c725dae147ac44a4f"><div class="ttname"><a href="classdrain_1_1Log.html#a034d684c2bb4195c725dae147ac44a4f">drain::Log::level_t</a></div><div class="ttdeci">unsigned short level_t</div><div class="ttdoc">Log verbosity level type.</div><div class="ttdef"><b>Definition</b> Log.h:152</div></div>
@@ -1100,12 +1106,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1Logger_html_a0743f3c756f07af202eedd8f2caca385"><div class="ttname"><a href="classdrain_1_1Logger.html#a0743f3c756f07af202eedd8f2caca385">drain::Logger::operator&lt;&lt;</a></div><div class="ttdeci">Logger &amp; operator&lt;&lt;(const std::ostream &amp;sstr)</div><div class="ttdoc">Send a longer [INFO] preceded with a time stamp.</div><div class="ttdef"><b>Definition</b> Log.h:765</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a0af3e0b6dafda98e69964792931707b6"><div class="ttname"><a href="classdrain_1_1Logger.html#a0af3e0b6dafda98e69964792931707b6">drain::Logger::discouraged</a></div><div class="ttdeci">Logger &amp; discouraged(const TT &amp;... args)</div><div class="ttdoc">Warning on user's convention or action that can potentially cause errors or confusions.</div><div class="ttdef"><b>Definition</b> Log.h:441</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a0bc1b21078753cc95f4935be3a2d1f0b"><div class="ttname"><a href="classdrain_1_1Logger.html#a0bc1b21078753cc95f4935be3a2d1f0b">drain::Logger::pending</a></div><div class="ttdeci">Logger &amp; pending(const TT &amp;... args)</div><div class="ttdoc">Report a conditional accept/reject, to be completed next.</div><div class="ttdef"><b>Definition</b> Log.h:596</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a20916e24748be43d8178b79956e998b6"><div class="ttname"><a href="classdrain_1_1Logger.html#a20916e24748be43d8178b79956e998b6">drain::Logger::operator&lt;&lt;</a></div><div class="ttdeci">Logger &amp; operator&lt;&lt;(const Logger &amp;l)</div><div class="ttdoc">NEW: sending &quot;mout&quot; insread of &quot;mout.endl&quot; Handling flush operator.</div><div class="ttdef"><b>Definition</b> Log.h:800</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a20916e24748be43d8178b79956e998b6"><div class="ttname"><a href="classdrain_1_1Logger.html#a20916e24748be43d8178b79956e998b6">drain::Logger::operator&lt;&lt;</a></div><div class="ttdeci">Logger &amp; operator&lt;&lt;(const Logger &amp;l)</div><div class="ttdoc">NEW: sending &quot;mout&quot; insread of &quot;mout.endl&quot; Handling flush operator.</div><div class="ttdef"><b>Definition</b> Log.h:806</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a2577e1ea3f8231490262b9a2a676295e"><div class="ttname"><a href="classdrain_1_1Logger.html#a2577e1ea3f8231490262b9a2a676295e">drain::Logger::isDebug</a></div><div class="ttdeci">bool isDebug(level_t l=0)</div><div class="ttdoc">Returns true, if the debug level of the monitor is at least l.</div><div class="ttdef"><b>Definition</b> Log.h:358</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a2eeb21da3091f96a8c27c4470507e922"><div class="ttname"><a href="classdrain_1_1Logger.html#a2eeb21da3091f96a8c27c4470507e922">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition</b> Log.h:430</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a434832834468ad7111d9b8c4b97266ed"><div class="ttname"><a href="classdrain_1_1Logger.html#a434832834468ad7111d9b8c4b97266ed">drain::Logger::success</a></div><div class="ttdeci">Logger &amp; success(const TT &amp;... args)</div><div class="ttdoc">Some processing step has completed with desired result.</div><div class="ttdef"><b>Definition</b> Log.h:622</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a4ed63674a1c233eaae8c12e5d17bef6d"><div class="ttname"><a href="classdrain_1_1Logger.html#a4ed63674a1c233eaae8c12e5d17bef6d">drain::Logger::alert</a></div><div class="ttdeci">Logger &amp; alert(const TT &amp;... args)</div><div class="ttdoc">Quits immediately, dumps pending messages.</div><div class="ttdef"><b>Definition</b> Log.h:389</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a5cfe065351fa06fc117b52087bb759d2"><div class="ttname"><a href="classdrain_1_1Logger.html#a5cfe065351fa06fc117b52087bb759d2">drain::Logger::setPrefix</a></div><div class="ttdeci">void setPrefix(const char *filename, const TT &amp;... args)</div><div class="ttdoc">Sets a label that starts every line in the log.</div><div class="ttdef"><b>Definition</b> Log.h:867</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a5cfe065351fa06fc117b52087bb759d2"><div class="ttname"><a href="classdrain_1_1Logger.html#a5cfe065351fa06fc117b52087bb759d2">drain::Logger::setPrefix</a></div><div class="ttdeci">void setPrefix(const char *filename, const TT &amp;... args)</div><div class="ttdoc">Sets a label that starts every line in the log.</div><div class="ttdef"><b>Definition</b> Log.h:873</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a5ec2137b6de48cef2b76605e604fa61c"><div class="ttname"><a href="classdrain_1_1Logger.html#a5ec2137b6de48cef2b76605e604fa61c">drain::Logger::obsolete</a></div><div class="ttdeci">Logger &amp; obsolete(const TT &amp;... args)</div><div class="ttdoc">Feature has been removed. Special type of Logger::warn().</div><div class="ttdef"><b>Definition</b> Log.h:465</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a60f37798e5868468cf39e92bd496ea2d"><div class="ttname"><a href="classdrain_1_1Logger.html#a60f37798e5868468cf39e92bd496ea2d">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition</b> Log.h:666</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a63239a9e36ffb5cf0eb0214e548880d4"><div class="ttname"><a href="classdrain_1_1Logger.html#a63239a9e36ffb5cf0eb0214e548880d4">drain::Logger::quit</a></div><div class="ttdeci">Logger &amp; quit(const TT &amp;... args)</div><div class="ttdoc">Quits immediately, dumps pending messages.</div><div class="ttdef"><b>Definition</b> Log.h:379</div></div>
@@ -1119,15 +1125,15 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1Logger_html_a97d1fa3b32d89c804ad1f653332584a2"><div class="ttname"><a href="classdrain_1_1Logger.html#a97d1fa3b32d89c804ad1f653332584a2">drain::Logger::fail</a></div><div class="ttdeci">Logger &amp; fail(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue. Special type of Logger::warn().</div><div class="ttdef"><b>Definition</b> Log.h:453</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_aa1d3edbdfb372725aa2854614e16abd5"><div class="ttname"><a href="classdrain_1_1Logger.html#aa1d3edbdfb372725aa2854614e16abd5">drain::Logger::isLevel</a></div><div class="ttdeci">bool isLevel(level_t l)</div><div class="ttdoc">Returns true, if the log monitor level is at least l.</div><div class="ttdef"><b>Definition</b> Log.h:348</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_aabebb5e00b8fed4e179e5df34915e295"><div class="ttname"><a href="classdrain_1_1Logger.html#aabebb5e00b8fed4e179e5df34915e295">drain::Logger::attention</a></div><div class="ttdeci">Logger &amp; attention(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue. Special type of Logger::warn().</div><div class="ttdef"><b>Definition</b> Log.h:476</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_aaefb6cbeed150415649af955fa6825da"><div class="ttname"><a href="classdrain_1_1Logger.html#aaefb6cbeed150415649af955fa6825da">drain::Logger::Logger</a></div><div class="ttdeci">Logger(const char *filename, const TT &amp;...args)</div><div class="ttdoc">Start logging,.</div><div class="ttdef"><b>Definition</b> Log.h:1006</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_aaefb6cbeed150415649af955fa6825da"><div class="ttname"><a href="classdrain_1_1Logger.html#aaefb6cbeed150415649af955fa6825da">drain::Logger::Logger</a></div><div class="ttdeci">Logger(const char *filename, const TT &amp;...args)</div><div class="ttdoc">Start logging,.</div><div class="ttdef"><b>Definition</b> Log.h:1012</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_ab55ebf7d0a7f176aac2e77e9c5cbc78b"><div class="ttname"><a href="classdrain_1_1Logger.html#ab55ebf7d0a7f176aac2e77e9c5cbc78b">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition</b> Log.h:416</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_ad1f47e4a9ee1425494c4ac2d36c818bf"><div class="ttname"><a href="classdrain_1_1Logger.html#ad1f47e4a9ee1425494c4ac2d36c818bf">drain::Logger::suspicious</a></div><div class="ttdeci">Logger &amp; suspicious(const TT &amp;... args)</div><div class="ttdoc">A weak warning about something going possibly wrong.</div><div class="ttdef"><b>Definition</b> Log.h:500</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_ad5462d1ee418df202728f783d3d51100"><div class="ttname"><a href="classdrain_1_1Logger.html#ad5462d1ee418df202728f783d3d51100">drain::Logger::accept</a></div><div class="ttdeci">Logger &amp; accept(const TT &amp;... args)</div><div class="ttdoc">Some input has been accepted, for example by a syntax.</div><div class="ttdef"><b>Definition</b> Log.h:582</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_adae949c1f2d716f64cf76f2556512c95"><div class="ttname"><a href="classdrain_1_1Logger.html#adae949c1f2d716f64cf76f2556512c95">drain::Logger::operator&lt;&lt;</a></div><div class="ttdeci">Logger &amp; operator&lt;&lt;(oper op)</div><div class="ttdoc">Handling flush operator.</div><div class="ttdef"><b>Definition</b> Log.h:793</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_adae949c1f2d716f64cf76f2556512c95"><div class="ttname"><a href="classdrain_1_1Logger.html#adae949c1f2d716f64cf76f2556512c95">drain::Logger::operator&lt;&lt;</a></div><div class="ttdeci">Logger &amp; operator&lt;&lt;(oper op)</div><div class="ttdoc">Handling flush operator.</div><div class="ttdef"><b>Definition</b> Log.h:799</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_add61c67aecbd42bf412bd8356c743097"><div class="ttname"><a href="classdrain_1_1Logger.html#add61c67aecbd42bf412bd8356c743097">drain::Logger::unimplemented</a></div><div class="ttdeci">Logger &amp; unimplemented(const TT &amp;... args)</div><div class="ttdoc">Feature to be done. Special type of Logger::note().</div><div class="ttdef"><b>Definition</b> Log.h:511</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_aefd0f1b0da37e6765255c50280b67290"><div class="ttname"><a href="classdrain_1_1Logger.html#aefd0f1b0da37e6765255c50280b67290">drain::Logger::deprecating</a></div><div class="ttdeci">Logger &amp; deprecating(const TT &amp;... args)</div><div class="ttdoc">Feature will be removed. Special type of Logger::note().</div><div class="ttdef"><b>Definition</b> Log.h:521</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_af5409ca373534195a9c7a10b09389739"><div class="ttname"><a href="classdrain_1_1Logger.html#af5409ca373534195a9c7a10b09389739">drain::Logger::debug2</a></div><div class="ttdeci">Logger &amp; debug2(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition</b> Log.h:676</div></div>
-<div class="ttc" id="aclassdrain_1_1StreamBuilder_html"><div class="ttname"><a href="classdrain_1_1StreamBuilder.html">drain::StreamBuilder</a></div><div class="ttdef"><b>Definition</b> StreamBuilder.h:59</div></div>
+<div class="ttc" id="aclassdrain_1_1StreamBuilder_html"><div class="ttname"><a href="classdrain_1_1StreamBuilder.html">drain::StreamBuilder</a></div><div class="ttdef"><b>Definition</b> StreamBuilder.h:53</div></div>
 <div class="ttc" id="aclassdrain_1_1StringBuilder_html"><div class="ttname"><a href="classdrain_1_1StringBuilder.html">drain::StringBuilder</a></div><div class="ttdef"><b>Definition</b> StringBuilder.h:58</div></div>
 <div class="ttc" id="aclassdrain_1_1TextStyleVT100_html"><div class="ttname"><a href="classdrain_1_1TextStyleVT100.html">drain::TextStyleVT100</a></div><div class="ttdef"><b>Definition</b> TextStyleVT100.h:45</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>

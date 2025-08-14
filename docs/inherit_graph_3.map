@@ -1,13 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classdrain_1_1image_1_1Accumulator.html" title=" " alt="" coords="5,28,109,53"/>
 <area shape="rect" id="Node000001" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="157,5,348,60"/>
-<area shape="poly" id="edge266_Node000000_Node000001" title=" " alt="" coords="123,35,157,34,157,39,123,41"/>
+<area shape="poly" id="edge268_Node000000_Node000001" title=" " alt="" coords="123,35,157,34,157,39,123,41"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title=" " alt="" coords="187,84,318,109"/>
-<area shape="poly" id="edge267_Node000000_Node000002" title=" " alt="" coords="112,55,158,69,203,81,202,86,157,74,111,60"/>
+<area shape="poly" id="edge269_Node000000_Node000002" title=" " alt="" coords="112,55,158,69,203,81,202,86,157,74,111,60"/>
 <area shape="rect" id="Node000003" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="396,69,587,124"/>
-<area shape="poly" id="edge268_Node000002_Node000003" title=" " alt="" coords="332,94,396,94,396,99,332,99"/>
+<area shape="poly" id="edge270_Node000002_Node000003" title=" " alt="" coords="332,94,396,94,396,99,332,99"/>
 <area shape="rect" id="Node000004" href="$classrack_1_1Composite.html" title="Cartesian composite (mosaic) of data from several radars." alt="" coords="635,84,727,109"/>
-<area shape="poly" id="edge269_Node000003_Node000004" title=" " alt="" coords="601,94,634,94,634,99,601,99"/>
+<area shape="poly" id="edge271_Node000003_Node000004" title=" " alt="" coords="601,94,634,94,634,99,601,99"/>
 <area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1GeoFrame.html" title="Array with georeferencing support." alt="" coords="13,84,102,109"/>
-<area shape="poly" id="edge270_Node000005_Node000002" title=" " alt="" coords="116,94,187,94,187,99,116,99"/>
+<area shape="poly" id="edge272_Node000005_Node000002" title=" " alt="" coords="116,94,187,94,187,99,116,99"/>
 </map>

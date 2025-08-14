@@ -175,19 +175,24 @@ Direct compositing</h3>
 <p>A 800 x 1000 maximum composite over Finland in a lat-lon projection is obtained with</p>
 <div class="fragment"><div class="line">rack --odim 2.2      \</div>
 <div class="line"> --cProj &#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39; \</div>
-<div class="line"> --cSize 800,1000 --cBBox 17,57.7,33,69.5     --cInit --cMethod MAXIMUM \</div>
+<div class="line"> --cSize 500,750 --cBBox 17,57.7,33,69.5     --cInit --cMethod WAVG,2,2,-32 \</div>
 <div class="line">     \</div>
-<div class="line"> --script &#39;  -Q &#39;DBZH&#39;   --cAdd&#39;  \</div>
-<div class="line">  data/pvol_fianj.h5  \</div>
-<div class="line">  data/pvol_fiika.h5  \</div>
-<div class="line">  data/pvol_fikor.h5  \</div>
-<div class="line">  data/pvol_fikuo.h5  \</div>
-<div class="line">  data/pvol_filuo.h5  \</div>
-<div class="line">  data/pvol_fiuta.h5  \</div>
-<div class="line">  data/pvol_fivan.h5  \</div>
-<div class="line">  data/pvol_fivim.h5  \</div>
+<div class="line"> --script &#39;  --pCappi 0   --cAdd&#39;  \</div>
+<div class="line">  data-20140525/201405251200_radar.polar.fianj.h5  \</div>
+<div class="line">  data-20140525/201405251200_radar.polar.fiika.h5  \</div>
+<div class="line">  data-20140525/201405251200_radar.polar.fikor.h5  \</div>
+<div class="line">  data-20140525/201405251200_radar.polar.fikuo.h5  \</div>
+<div class="line">  data-20140525/201405251200_radar.polar.filuo.h5  \</div>
+<div class="line">  data-20140525/201405251200_radar.polar.fiuta.h5  \</div>
+<div class="line">  data-20140525/201405251200_radar.polar.fivan.h5  \</div>
+<div class="line">  data-20140525/201405251200_radar.polar.fivim.h5  \</div>
 <div class="line"> --cExtract dwsc \</div>
-<div class="line"> --gTitle &#39;Rack - ClutterMap ${what:date|%Y/%m}&#39; -o composite-fi.h5 </div>
+<div class="line"> --gTitle &#39;Rack - ClutterMap ${what:date|%Y/%m}&#39; -o composite-fi.h5 \</div>
+<div class="line"> --gInclude NONE -o composite-fi.png -o composite-fi.tif -Q QIND -o composite-fi-QIND.png -Q COUNT -o composite-fi-COUNT.png -Q &#39;.*DEV&#39; -o composite-fi-STDEV.png \</div>
+<div class="line"> -Q &#39;&#39; --palette &#39;default&#39;  --gInclude NEXT -o composite-fi-rgb.png --gAlign TOP,RIGHT --legendOut composite-fi-leg.svg \</div>
+<div class="line"> --imageTransp 0.1:0.2,0.3,0.7 -o composite-fi-rgba.png \</div>
+<div class="line">   -o composite-fi.svg \</div>
+<div class="line">  -o composite-fi-h5.txt</div>
 </div><!-- fragment --><p>A similar composite of CAPPI in 1000 m altitude, with quality-weighted compositing method is obtained with</p>
 <div class="fragment"><div class="line">rack --odim 2.2      \</div>
 <div class="line"> --cProj &#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39; \</div>

@@ -231,9 +231,9 @@ Collaboration diagram for NonMetOp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a276e4f985ea0cdc7469839f674d7d28b" id="r_a276e4f985ea0cdc7469839f674d7d28b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1NonMetOp.html#a276e4f985ea0cdc7469839f674d7d28b">NonMetOp</a> (const <a class="el" href="classdrain_1_1UniTuple.html">drain::UniTuple</a>&lt; double, 2 &gt; &amp;threshold={0.2, 0.6}, const <a class="el" href="classdrain_1_1UniTuple.html">drain::UniTuple</a>&lt; double, 2 &gt; &amp;medianWindow={0.0, 0.0}, double medianThreshold=0.95)</td></tr>
-<tr class="memdesc:a276e4f985ea0cdc7469839f674d7d28b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
-<tr class="separator:a276e4f985ea0cdc7469839f674d7d28b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75889f4026e79b4281eeb36ca069762f" id="r_a75889f4026e79b4281eeb36ca069762f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1NonMetOp.html#a75889f4026e79b4281eeb36ca069762f">NonMetOp</a> (const <a class="el" href="classdrain_1_1UniTuple.html">drain::UniTuple</a>&lt; double, 2 &gt; &amp;threshold={0.7, 0.8}, const <a class="el" href="classdrain_1_1UniTuple.html">drain::UniTuple</a>&lt; double, 2 &gt; &amp;medianWindow={0.0, 0.0}, double medianThreshold=0.95)</td></tr>
+<tr class="memdesc:a75889f4026e79b4281eeb36ca069762f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
+<tr class="separator:a75889f4026e79b4281eeb36ca069762f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1DetectorOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1DetectorOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1DetectorOp.html">DetectorOp</a></td></tr>
 <tr class="memitem:a2f50e39be9c0a4d5a12b076800615d7e inherit pub_methods_classrack_1_1DetectorOp" id="r_a2f50e39be9c0a4d5a12b076800615d7e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DetectorOp.html#a2f50e39be9c0a4d5a12b076800615d7e">DetectorOp</a> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;, const std::string &amp;echoClass=&quot;&quot;)</td></tr>
 <tr class="separator:a2f50e39be9c0a4d5a12b076800615d7e inherit pub_methods_classrack_1_1DetectorOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -602,8 +602,8 @@ static unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Marks bins with low <em>RhoHV</em> value as probable anomalies. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a276e4f985ea0cdc7469839f674d7d28b" name="a276e4f985ea0cdc7469839f674d7d28b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a276e4f985ea0cdc7469839f674d7d28b">&#9670;&#160;</a></span>NonMetOp()</h2>
+<a id="a75889f4026e79b4281eeb36ca069762f" name="a75889f4026e79b4281eeb36ca069762f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75889f4026e79b4281eeb36ca069762f">&#9670;&#160;</a></span>NonMetOp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -615,7 +615,7 @@ static unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>
           <td class="memname"><a class="el" href="classrack_1_1NonMetOp.html">NonMetOp</a> </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classdrain_1_1UniTuple.html">drain::UniTuple</a>&lt; double, 2 &gt; &amp;&#160;</td>
-          <td class="paramname"><em>threshold</em> = <code>{0.2,0.6}</code>, </td>
+          <td class="paramname"><em>threshold</em> = <code>{0.7,0.8}</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -645,10 +645,8 @@ static unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>
 <p>Default constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">threshold</td><td>- <code>RhoHV</code> values below this will be considered this anomalies </td></tr>
-    <tr><td class="paramname">thresholdWidth</td><td>- steepness coefficient for the threshold </td></tr>
-    <tr><td class="paramname">windowWidth</td><td>- optional: median filtering window width in metres </td></tr>
-    <tr><td class="paramname">windowHeight</td><td>- optional: median filtering height width in degrees </td></tr>
+    <tr><td class="paramname">threshold</td><td>- <code>RhoHV</code> values below this will be considered as anomalies </td></tr>
+    <tr><td class="paramname">medianWindow</td><td>- optional: median filtering window (degrees) in metres and height (degrees) </td></tr>
     <tr><td class="paramname">medianPos</td><td>- optional: median position: 0.5 = normal median ( &gt;0.5: conservative for precip) //(morphology: 0.5 &gt; opening; 0.5 &lt; closing)</td></tr>
   </table>
   </dd>

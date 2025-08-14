@@ -325,7 +325,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        std::string nameNew = CMD_NEW().getName();</div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        <a class="code hl_function" href="classdrain_1_1CommandBank.html#afe12f5ad6907164ef8e296967f9f0efa">CommandBank::deriveCmdName</a>(nameNew, PREFIX);</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        cmd.<a class="code hl_variable" href="classdrain_1_1Command.html#a2aabdb22e634b8388be4c2c858c2c492">relatedCommands</a>.insert(nameNew);</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        cmd.<a class="code hl_function" href="classdrain_1_1Command.html#a32a2430b46c3428b61a2f753d86a55d0">linkRelated</a>(nameNew);</div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        <span class="keywordflow">return</span> cmd;</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    }</div>
@@ -336,74 +336,72 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno"><a class="line" href="classdrain_1_1CommandModule.html#afcaf6b915e4bbb7b2b7ea274b4dabe05">  268</a></span>    <a class="code hl_class" href="classdrain_1_1Command.html">Command</a> &amp; <a class="code hl_function" href="classdrain_1_1CommandModule.html#afcaf6b915e4bbb7b2b7ea274b4dabe05">installDeprecating</a>(<span class="keywordtype">char</span> alias = 0){</div>
 <div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        std::string name = CMD().<a class="code hl_function" href="classdrain_1_1Command.html#a42e75998622fd2b6ff423ddb53d6dac3">getName</a>();</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        <a class="code hl_function" href="classdrain_1_1CommandBank.html#afe12f5ad6907164ef8e296967f9f0efa">CommandBank::deriveCmdName</a>(name, PREFIX);</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        <span class="keywordflow">return</span> installDeprecating&lt;CMD,CMD_NEW&gt;(name, alias);</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        <span class="keywordflow">return</span> installDeprecating&lt;CMD,CMD_NEW&gt;(name, alias);</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    }</div>
+</div>
 <div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        <span class="comment">/*</span></div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="comment">        // this-&gt;cmdBank.linkRelatedCommandList(cmdList);</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="comment">        Command &amp; cmd = this-&gt;template install&lt;CMD&gt;(name, alias);</span></div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span><span class="comment"></span> </div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="comment">        std::string nameNew = CMD_NEW().getName();</span></div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span><span class="comment">        CommandBank::deriveCmdName(nameNew, PREFIX);</span></div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="comment"></span> </div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="comment">        cmd.relatedCommands.insert(nameNew);</span></div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="comment">        return cmd;</span></div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="comment">        // return install&lt;CMD&gt;(name, alias);</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="comment">         */</span></div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    }</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>...TT&gt;</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    <span class="keyword">inline</span></div>
+<div class="foldopen" id="foldopen00281" data-start="{" data-end="}">
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno"><a class="line" href="classdrain_1_1CommandModule.html#ac903a24455b15c91fe17f70fc8b221f8">  281</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1CommandModule.html#ac903a24455b15c91fe17f70fc8b221f8">linkRelatedCommands</a>(TT &amp; ... cmds){</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        std::set&lt;std::string&gt; cmdList;</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        linkRelatedCommandList(cmdList, cmds...); <span class="comment">// infinite loop?</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    }</div>
 </div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>...TT&gt;</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    <span class="keyword">inline</span></div>
-<div class="foldopen" id="foldopen00294" data-start="{" data-end="}">
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno"><a class="line" href="classdrain_1_1CommandModule.html#ac903a24455b15c91fe17f70fc8b221f8">  294</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1CommandModule.html#ac903a24455b15c91fe17f70fc8b221f8">linkRelatedCommands</a>(TT &amp; ... cmds){</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>        std::set&lt;std::string&gt; cmdList;</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        linkRelatedCommandList(cmdList, cmds...); <span class="comment">// infinite loop?</span></div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    }</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>...TT&gt;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    <span class="keywordtype">void</span> linkRelatedCommandList(std::set&lt;std::string&gt; &amp; cmdList, <a class="code hl_class" href="classdrain_1_1Command.html">Command</a> &amp; cmd, TT &amp; ... cmds){</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>        std::string name = cmd.<a class="code hl_function" href="classdrain_1_1Command.html#a42e75998622fd2b6ff423ddb53d6dac3">getName</a>();</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        <a class="code hl_function" href="classdrain_1_1CommandBank.html#afe12f5ad6907164ef8e296967f9f0efa">CommandBank::deriveCmdName</a>(name, PREFIX);</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        cmdList.insert(name);</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>        linkRelatedCommandList(cmdList, cmds...); <span class="comment">// infinite loop?</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    }</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>...TT&gt;</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    <span class="keywordtype">void</span> linkRelatedCommandList(std::set&lt;std::string&gt; &amp; cmdList, <span class="keyword">const</span> std::string &amp; cmdName, TT &amp; ... cmds){</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        cmdList.insert(cmdName);</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        linkRelatedCommandList(cmdList, cmds...); <span class="comment">// infinite loop?</span></div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    }</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>...TT&gt;</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>    <span class="keywordtype">void</span> linkRelatedCommandList(std::set&lt;std::string&gt; &amp; cmdList){</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>        this-&gt;cmdBank.<a class="code hl_function" href="classdrain_1_1CommandBank.html#a1c9afe89bd58d73c527382614b2b64bd">linkRelatedCommandList</a>(cmdList); <span class="comment">// infinite loop?</span></div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    }</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    <span class="comment">// void linkRelatedSection(Command &amp; cmd, const std::string &amp; section){</span></div>
+<div class="foldopen" id="foldopen00314" data-start="{" data-end="}">
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno"><a class="line" href="classdrain_1_1CommandModule.html#ac7d2e69eef5c567067564790154d9094">  314</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1CommandModule.html#ac7d2e69eef5c567067564790154d9094">linkRelatedSection</a>(<a class="code hl_class" href="classdrain_1_1Command.html">Command</a> &amp; cmd, <span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1CommandSection.html">CommandSection</a> &amp; section){</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>        std::string name = cmd.<a class="code hl_function" href="classdrain_1_1Command.html#a42e75998622fd2b6ff423ddb53d6dac3">getName</a>();</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>        <a class="code hl_function" href="classdrain_1_1CommandBank.html#afe12f5ad6907164ef8e296967f9f0efa">CommandBank::deriveCmdName</a>(name, PREFIX);</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>        this-&gt;cmdBank.<a class="code hl_function" href="classdrain_1_1Bank.html#a937d22cb52f61e743617a2adf8c6f9a1">get</a>(name).linkRelated(section); <span class="comment">// cast to str</span></div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>    }</div>
 </div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>...TT&gt;</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    <span class="keywordtype">void</span> linkRelatedCommandList(std::set&lt;std::string&gt; &amp; cmdList, <a class="code hl_class" href="classdrain_1_1Command.html">Command</a> &amp; cmd, TT &amp; ... cmds){</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>        std::string name = cmd.<a class="code hl_function" href="classdrain_1_1Command.html#a42e75998622fd2b6ff423ddb53d6dac3">getName</a>();</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>        <a class="code hl_function" href="classdrain_1_1CommandBank.html#afe12f5ad6907164ef8e296967f9f0efa">CommandBank::deriveCmdName</a>(name, PREFIX);</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>        cmdList.insert(name);</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>        linkRelatedCommandList(cmdList, cmds...); <span class="comment">// infinite loop?</span></div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    }</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> </div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>...TT&gt;</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    <span class="keywordtype">void</span> linkRelatedCommandList(std::set&lt;std::string&gt; &amp; cmdList, <span class="keyword">const</span> std::string &amp; cmdName, TT &amp; ... cmds){</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>        cmdList.insert(cmdName);</div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>        linkRelatedCommandList(cmdList, cmds...); <span class="comment">// infinite loop?</span></div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    }</div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span> </div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>...TT&gt;</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>    <span class="keywordtype">void</span> linkRelatedCommandList(std::set&lt;std::string&gt; &amp; cmdList){</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>        this-&gt;cmdBank.linkRelatedCommandList(cmdList); <span class="comment">// infinite loop?</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    }</div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> </div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span> </div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>};</div>
+</div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span> </div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>};</div>
-</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>}</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>}</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><span class="preprocessor">#define DRAIN_CMD_INSTALL(prefix, cmd) drain::Command &amp; cmd = install&lt;prefix##cmd&gt;</span></div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="preprocessor">#define DRAIN_CMD_INSTALL(prefix, cmd) drain::Command &amp; cmd = install&lt;prefix##cmd&gt;</span></div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="comment">/* namespace drain */</span></div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> </div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="comment">/* namespace drain */</span></div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="preprocessor">#endif </span><span class="comment">/* DRAINLET_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><span class="comment">// Rack</span></div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="preprocessor">#endif </span><span class="comment">/* DRAINLET_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span> </div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="comment">// Rack</span></div>
+<div class="ttc" id="aclassdrain_1_1Bank_html_a937d22cb52f61e743617a2adf8c6f9a1"><div class="ttname"><a href="classdrain_1_1Bank.html#a937d22cb52f61e743617a2adf8c6f9a1">drain::Bank::get</a></div><div class="ttdeci">const T &amp; get(const K &amp;key) const</div><div class="ttdoc">Returns the base instance.</div><div class="ttdef"><b>Definition</b> Bank.h:159</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandBank_html"><div class="ttname"><a href="classdrain_1_1CommandBank.html">drain::CommandBank</a></div><div class="ttdoc">Container and execution tools for commands derived from Command.</div><div class="ttdef"><b>Definition</b> CommandBank.h:56</div></div>
+<div class="ttc" id="aclassdrain_1_1CommandBank_html_a1c9afe89bd58d73c527382614b2b64bd"><div class="ttname"><a href="classdrain_1_1CommandBank.html#a1c9afe89bd58d73c527382614b2b64bd">drain::CommandBank::linkRelatedCommandList</a></div><div class="ttdeci">void linkRelatedCommandList(const std::set&lt; std::string &gt; &amp;cmdList)</div><div class="ttdoc">Adds command keys, intelinking all the commands in the list.</div><div class="ttdef"><b>Definition</b> CommandBank.cpp:917</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandBank_html_afe12f5ad6907164ef8e296967f9f0efa"><div class="ttname"><a href="classdrain_1_1CommandBank.html#afe12f5ad6907164ef8e296967f9f0efa">drain::CommandBank::deriveCmdName</a></div><div class="ttdeci">static void deriveCmdName(std::string &amp;name, char prefix=0)</div><div class="ttdoc">Given a command class name like MyFileReadCommand, derives a respective command line option (&quot;myFileR...</div><div class="ttdef"><b>Definition</b> CommandBank.cpp:62</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandInstaller_html"><div class="ttname"><a href="classdrain_1_1CommandInstaller.html">drain::CommandInstaller</a></div><div class="ttdoc">Creates an instance of command class C.</div><div class="ttdef"><b>Definition</b> CommandInstaller.h:80</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandInstaller_html_a0137beb5bb1d39625340d5eb35f1b2d8"><div class="ttname"><a href="classdrain_1_1CommandInstaller.html#a0137beb5bb1d39625340d5eb35f1b2d8">drain::CommandInstaller::install</a></div><div class="ttdeci">Command &amp; install(char alias=0)</div><div class="ttdoc">Install external command.</div><div class="ttdef"><b>Definition</b> CommandInstaller.h:110</div></div>
@@ -416,11 +414,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1CommandModule_html"><div class="ttname"><a href="classdrain_1_1CommandModule.html">drain::CommandModule</a></div><div class="ttdoc">Combines command installation and sectioning.</div><div class="ttdef"><b>Definition</b> CommandInstaller.h:228</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandModule_html_ab34def6eea5f2ba5e495c9e2b428aed8"><div class="ttname"><a href="classdrain_1_1CommandModule.html#ab34def6eea5f2ba5e495c9e2b428aed8">drain::CommandModule::installDeprecating</a></div><div class="ttdeci">Command &amp; installDeprecating(const std::string &amp;name, char alias=0)</div><div class="ttdef"><b>Definition</b> CommandInstaller.h:249</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandModule_html_abcd0ddd15701abd1f1acd08c153eac89"><div class="ttname"><a href="classdrain_1_1CommandModule.html#abcd0ddd15701abd1f1acd08c153eac89">drain::CommandModule::CommandModule</a></div><div class="ttdeci">CommandModule(CommandBank &amp;bank=getCommandBank())</div><div class="ttdef"><b>Definition</b> CommandInstaller.h:240</div></div>
-<div class="ttc" id="aclassdrain_1_1CommandModule_html_ac903a24455b15c91fe17f70fc8b221f8"><div class="ttname"><a href="classdrain_1_1CommandModule.html#ac903a24455b15c91fe17f70fc8b221f8">drain::CommandModule::linkRelatedCommands</a></div><div class="ttdeci">void linkRelatedCommands(TT &amp;... cmds)</div><div class="ttdef"><b>Definition</b> CommandInstaller.h:294</div></div>
+<div class="ttc" id="aclassdrain_1_1CommandModule_html_ac7d2e69eef5c567067564790154d9094"><div class="ttname"><a href="classdrain_1_1CommandModule.html#ac7d2e69eef5c567067564790154d9094">drain::CommandModule::linkRelatedSection</a></div><div class="ttdeci">void linkRelatedSection(Command &amp;cmd, const CommandSection &amp;section)</div><div class="ttdef"><b>Definition</b> CommandInstaller.h:314</div></div>
+<div class="ttc" id="aclassdrain_1_1CommandModule_html_ac903a24455b15c91fe17f70fc8b221f8"><div class="ttname"><a href="classdrain_1_1CommandModule.html#ac903a24455b15c91fe17f70fc8b221f8">drain::CommandModule::linkRelatedCommands</a></div><div class="ttdeci">void linkRelatedCommands(TT &amp;... cmds)</div><div class="ttdef"><b>Definition</b> CommandInstaller.h:281</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandModule_html_afcaf6b915e4bbb7b2b7ea274b4dabe05"><div class="ttname"><a href="classdrain_1_1CommandModule.html#afcaf6b915e4bbb7b2b7ea274b4dabe05">drain::CommandModule::installDeprecating</a></div><div class="ttdeci">Command &amp; installDeprecating(char alias=0)</div><div class="ttdef"><b>Definition</b> CommandInstaller.h:268</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandSection_html"><div class="ttname"><a href="classdrain_1_1CommandSection.html">drain::CommandSection</a></div><div class="ttdef"><b>Definition</b> CommandSections.h:54</div></div>
 <div class="ttc" id="aclassdrain_1_1Command_html"><div class="ttname"><a href="classdrain_1_1Command.html">drain::Command</a></div><div class="ttdoc">Base class for commands: typically actions taking parameters but also plain variable assignments and ...</div><div class="ttdef"><b>Definition</b> Command.h:55</div></div>
-<div class="ttc" id="aclassdrain_1_1Command_html_a2aabdb22e634b8388be4c2c858c2c492"><div class="ttname"><a href="classdrain_1_1Command.html#a2aabdb22e634b8388be4c2c858c2c492">drain::Command::relatedCommands</a></div><div class="ttdeci">std::set&lt; std::string &gt; relatedCommands</div><div class="ttdoc">Add related command(s), to appear in help after &quot;See-also:&quot; phrase.</div><div class="ttdef"><b>Definition</b> Command.h:223</div></div>
+<div class="ttc" id="aclassdrain_1_1Command_html_a32a2430b46c3428b61a2f753d86a55d0"><div class="ttname"><a href="classdrain_1_1Command.html#a32a2430b46c3428b61a2f753d86a55d0">drain::Command::linkRelated</a></div><div class="ttdeci">void linkRelated(const std::string &amp;cmdKey) const</div><div class="ttdoc">Add related command(s), to appear in help after &quot;See-also:&quot; phrase.</div><div class="ttdef"><b>Definition</b> Command.h:221</div></div>
 <div class="ttc" id="aclassdrain_1_1Command_html_a42e75998622fd2b6ff423ddb53d6dac3"><div class="ttname"><a href="classdrain_1_1Command.html#a42e75998622fd2b6ff423ddb53d6dac3">drain::Command::getName</a></div><div class="ttdeci">virtual const std::string &amp; getName() const =0</div><div class="ttdoc">Returns the class name of this command, like &quot;CmdVerbose&quot;.</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
 <div class="ttc" id="anamespacedrain_html_a569239d05d6fef65d2712f8239abfd65"><div class="ttname"><a href="namespacedrain.html#a569239d05d6fef65d2712f8239abfd65">drain::getCommandBank</a></div><div class="ttdeci">CommandBank &amp; getCommandBank()</div><div class="ttdoc">Global program command registry. Optional utility.</div><div class="ttdef"><b>Definition</b> CommandBank.cpp:51</div></div>

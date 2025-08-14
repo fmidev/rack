@@ -106,6 +106,8 @@ Anomaly detection and removal</h2>
 <div class="line">  Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.</div>
 <div class="line">--aCCor  &lt;threshold&gt;,&lt;mask&gt;</div>
 <div class="line">  Detects clutter. Based on difference of DBZH and TH. At halfwidth PROB=0.5. Universal.</div>
+<div class="line">--aChaff  &lt;dbzPeak&gt;,&lt;vradDevMax&gt;,&lt;rhoHVmax&gt;,&lt;zdrAbsMin&gt;,&lt;window&gt;,&lt;gamma&gt;</div>
+<div class="line">  Estimates chaff probability from DBZH, VRAD, RhoHV and ZDR.</div>
 <div class="line">--aClutter  &lt;decay&gt;,&lt;gamma&gt;,&lt;quantity&gt;,&lt;file&gt;</div>
 <div class="line">  Reads a ground clutter map and scales it to sweeps.</div>
 <div class="line">--aDamper  &lt;threshold&gt;,&lt;undetectThreshold&gt;,&lt;minValue&gt;</div>
@@ -125,11 +127,13 @@ Anomaly detection and removal</h2>
 <div class="line">--aHydroClassBased  &lt;nonMet&gt;,&lt;NOMET&gt;</div>
 <div class="line">  Sets probabilities of non-meteorological echoes based on precomputed hydrometeor CLASS.</div>
 <div class="line">--aInsect  &lt;dbzPeak&gt;,&lt;vradDevMax&gt;,&lt;rhoHVmax&gt;,&lt;zdrAbsMin&gt;,&lt;window&gt;,&lt;gamma&gt;</div>
-<div class="line">  Estimates probability from DBZH, VRAD, RhoHV and ZDR.</div>
+<div class="line">  Probability of insects, based on DBZH, VRAD, RhoHV and ZDR.</div>
 <div class="line">--aJamming  &lt;smoothnessThreshold&gt;,&lt;distanceMin&gt;,&lt;refit&gt;</div>
 <div class="line">  Detects broad lines caused by electromagnetic interference. Intensities should be smooth, increasing by distance.</div>
 <div class="line">--aNonMet  &lt;threshold&gt;,&lt;medianWindow&gt;,&lt;medianPos&gt;</div>
 <div class="line">  Detects clutter. Based on dual-pol parameter RhoHV . Optional post processing: morphological closing. Universal.</div>
+<div class="line">--aNonMet2  &lt;threshold&gt;,&lt;medianWindow&gt;,&lt;medianPos&gt;</div>
+<div class="line">  Estimates probability from DBZH, VRAD, RhoHV and ZDR.</div>
 <div class="line">--aPrecip  &lt;probMax&gt;,&lt;dbz&gt;,&lt;dbzSpan&gt;</div>
 <div class="line">  Detects precipitation...</div>
 <div class="line">--aQualityCombiner  </div>
@@ -357,6 +361,8 @@ Image operators</h2>
 <div class="line">  Adds values</div>
 <div class="line">--iAverage  &lt;width&gt;</div>
 <div class="line">  Window averaging with optional weighting support.</div>
+<div class="line">--iBlender  &lt;width&gt;,&lt;spreader&gt;,&lt;mix&gt;,&lt;loops&gt;,&lt;expansionCoeff&gt;</div>
+<div class="line">  Smoothes image repeatedly, mixing original image with the result at each round.</div>
 <div class="line">--iCatenate  &lt;scale&gt;,&lt;offset&gt;</div>
 <div class="line">  Catenates images</div>
 <div class="line">--iCopy  &lt;dstView&gt;,&lt;scale&gt;,&lt;bias&gt;,&lt;LIMIT&gt;</div>
@@ -469,8 +475,6 @@ Image operators</h2>
 <div class="line">  Flips image matrix around its corner.</div>
 <div class="line">--iWindowHistogram  &lt;width&gt;,&lt;valueFunc&gt;,&lt;percentage&gt;,&lt;bins&gt;</div>
 <div class="line">  A pipeline implementation of window histogram; valueFunc=[asmdvNX] (avg,sum,median,stddev,variance,miN,maX)</div>
-<div class="line">--iWindowOp&lt;Window&lt;WindowConfig,WindowCore&gt;&gt;  &lt;width&gt;,&lt;spreader&gt;,&lt;mix&gt;,&lt;loops&gt;,&lt;expansionCoeff&gt;</div>
-<div class="line">  Smoothes image repeatedly, mixing original image with the result at each round.</div>
 <div class="line"> </div>
 <div class="line">For help on commands, type:</div>
 <div class="line">  --help &lt;command&gt;</div>

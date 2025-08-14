@@ -84,12 +84,17 @@ $(function() {
   <div class="headertitle"><div class="title">QuantityMap Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Registry for regular quantities appearing in weather radar.  
+ <a href="classrack_1_1QuantityMap.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="QuantityMap_8h_source.html">QuantityMap.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for QuantityMap:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1QuantityMap__inherit__graph.png" border="0" usemap="#aQuantityMap_inherit__map" alt="Inheritance graph"/></div>
 <map name="aQuantityMap_inherit__map" id="aQuantityMap_inherit__map">
-<area shape="rect" title=" " alt="" coords="57,79,164,104"/>
+<area shape="rect" title="Registry for regular quantities appearing in weather radar." alt="" coords="57,79,164,104"/>
 <area shape="rect" title=" " alt="" coords="5,5,216,31"/>
 <area shape="poly" title=" " alt="" coords="113,44,113,79,108,79,108,44"/>
 </map>
@@ -99,7 +104,7 @@ Collaboration diagram for QuantityMap:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1QuantityMap__coll__graph.png" border="0" usemap="#aQuantityMap_coll__map" alt="Collaboration graph"/></div>
 <map name="aQuantityMap_coll__map" id="aQuantityMap_coll__map">
-<area shape="rect" title=" " alt="" coords="123,433,230,459"/>
+<area shape="rect" title="Registry for regular quantities appearing in weather radar." alt="" coords="123,433,230,459"/>
 <area shape="rect" title=" " alt="" coords="50,257,261,283"/>
 <area shape="poly" title=" " alt="" coords="161,296,178,433,173,433,156,297"/>
 <area shape="rect" href="classrack_1_1Quantity.html" title="Structure for defining quantity." alt="" coords="284,257,363,283"/>
@@ -205,7 +210,13 @@ const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</
 const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>PROB</b></td></tr>
 <tr class="separator:ae0ec4dd557bca44eb4084659028d017e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Registry for regular quantities appearing in weather radar. </p>
+<p>In the map, each entry is a <a class="el" href="classrack_1_1Quantity.html" title="Structure for defining quantity.">rack::Quantity</a>, providing a short description and default encoding.</p>
+<p>Also variants of similar quantities are supported. Practically, the quantities are stored primarily by a general name in uppercase letters (like "DBZ"). If a quantity is queried with the general name, it is found directly with that map key.</p>
+<p>If a similar quantity (like "TH") or a related specific quantity (like "DBZHCX") is searched for, then an additional, deeper search uses direct string matching and regular expressions and finds the main entry (in this case, that stored with key "DBZ").</p>
+<p>In this context, by <em>similar</em> or <em>related</em> we mean quantities that are physically related and should use similar encodings and palettes. Consequently, as a convention, default palettes of regular quantities can be automatically associated with related, similar quantities automatically through <a class="el" href="classrack_1_1QuantityMap.html" title="Registry for regular quantities appearing in weather radar.">rack::QuantityMap</a> . </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a760c6733ddcafb3472621f2784d49106" name="a760c6733ddcafb3472621f2784d49106"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a760c6733ddcafb3472621f2784d49106">&#9670;&#160;</a></span>QuantityMap()</h2>
 

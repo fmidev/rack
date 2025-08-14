@@ -1,37 +1,37 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="5,277,149,303"/>
 <area shape="rect" id="Node000001" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="197,129,329,155"/>
-<area shape="poly" id="edge753_Node000000_Node000001" title=" " alt="" coords="104,266,244,153,248,157,107,270"/>
+<area shape="poly" id="edge755_Node000000_Node000001" title=" " alt="" coords="104,266,244,153,248,157,107,270"/>
 <area shape="rect" id="Node000010" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="197,252,329,277"/>
-<area shape="poly" id="edge764_Node000000_Node000010" title=" " alt="" coords="163,276,197,271,198,276,163,281"/>
+<area shape="poly" id="edge766_Node000000_Node000010" title=" " alt="" coords="163,276,197,271,198,276,163,281"/>
 <area shape="rect" id="Node000012" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="197,301,329,327"/>
-<area shape="poly" id="edge766_Node000000_Node000012" title=" " alt="" coords="163,298,198,303,197,308,163,304"/>
+<area shape="poly" id="edge768_Node000000_Node000012" title=" " alt="" coords="163,298,198,303,197,308,163,304"/>
 <area shape="rect" id="Node000015" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="197,375,329,400"/>
-<area shape="poly" id="edge769_Node000000_Node000015" title=" " alt="" coords="116,307,239,372,237,377,113,311"/>
+<area shape="poly" id="edge771_Node000000_Node000015" title=" " alt="" coords="116,307,239,372,237,377,113,311"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1Bidirectional.html" title=" " alt="" coords="387,104,529,129"/>
-<area shape="poly" id="edge754_Node000001_Node000002" title=" " alt="" coords="343,129,386,123,387,129,344,134"/>
+<area shape="poly" id="edge756_Node000001_Node000002" title=" " alt="" coords="343,129,386,123,387,129,344,134"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1Frame2D.html" title="Something that has width and height." alt="" coords="399,203,517,228"/>
-<area shape="poly" id="edge755_Node000001_Node000003" title=" " alt="" coords="306,158,378,188,415,200,414,205,376,192,304,163"/>
+<area shape="poly" id="edge757_Node000001_Node000003" title=" " alt="" coords="306,158,378,188,415,200,414,205,376,192,304,163"/>
 <area shape="rect" id="Node000006" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="403,153,513,179"/>
-<area shape="poly" id="edge759_Node000001_Node000006" title=" " alt="" coords="344,149,403,157,402,162,343,154"/>
+<area shape="poly" id="edge761_Node000001_Node000006" title=" " alt="" coords="344,149,403,157,402,162,343,154"/>
 <area shape="rect" id="Node000008" href="$classdrain_1_1Range.html" title=" " alt="" coords="407,5,509,31"/>
-<area shape="poly" id="edge762_Node000001_Node000008" title=" " alt="" coords="283,117,323,78,376,40,406,27,408,32,379,44,327,82,286,121"/>
+<area shape="poly" id="edge764_Node000001_Node000008" title=" " alt="" coords="283,117,323,78,376,40,406,27,408,32,379,44,327,82,286,121"/>
 <area shape="rect" id="Node000009" href="$classdrain_1_1image_1_1Decay2.html" title=" " alt="" coords="403,55,513,80"/>
-<area shape="poly" id="edge763_Node000001_Node000009" title=" " alt="" coords="302,121,376,89,410,78,412,83,378,94,304,126"/>
+<area shape="poly" id="edge765_Node000001_Node000009" title=" " alt="" coords="302,121,376,89,410,78,412,83,378,94,304,126"/>
 <area shape="rect" id="Node000004" href="$structdrain_1_1Box.html" title=" " alt="" coords="587,153,743,179"/>
-<area shape="poly" id="edge756_Node000003_Node000004" title=" " alt="" coords="524,197,610,176,611,181,526,202"/>
+<area shape="poly" id="edge758_Node000003_Node000004" title=" " alt="" coords="524,197,610,176,611,181,526,202"/>
 <area shape="rect" id="Node000007" href="$structdrain_1_1Box.html" title="Something that has coordinates (x,y) and dimensions (width, height)." alt="" coords="622,203,707,228"/>
-<area shape="poly" id="edge758_Node000003_Node000007" title=" " alt="" coords="531,213,622,213,622,218,531,218"/>
+<area shape="poly" id="edge760_Node000003_Node000007" title=" " alt="" coords="531,213,622,213,622,218,531,218"/>
 <area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1BBoxSVG.html" title=" " alt="" coords="791,153,873,179"/>
-<area shape="poly" id="edge757_Node000004_Node000005" title=" " alt="" coords="756,163,790,163,790,169,756,169"/>
-<area shape="poly" id="edge760_Node000006_Node000004" title=" " alt="" coords="527,163,586,163,586,169,527,169"/>
-<area shape="poly" id="edge761_Node000006_Node000007" title=" " alt="" coords="526,179,623,203,621,208,524,185"/>
+<area shape="poly" id="edge759_Node000004_Node000005" title=" " alt="" coords="756,163,790,163,790,169,756,169"/>
+<area shape="poly" id="edge762_Node000006_Node000004" title=" " alt="" coords="527,163,586,163,586,169,527,169"/>
+<area shape="poly" id="edge763_Node000006_Node000007" title=" " alt="" coords="526,179,623,203,621,208,524,185"/>
 <area shape="rect" id="Node000011" href="$structdrain_1_1Point3D.html" title=" " alt="" coords="403,252,513,277"/>
-<area shape="poly" id="edge765_Node000010_Node000011" title=" " alt="" coords="343,262,403,262,403,267,343,267"/>
+<area shape="poly" id="edge767_Node000010_Node000011" title=" " alt="" coords="343,262,403,262,403,267,343,267"/>
 <area shape="rect" id="Node000013" href="$structdrain_1_1Rectangle.html" title="Rectange defined through lower left and upper right coordinates." alt="" coords="395,351,521,376"/>
-<area shape="poly" id="edge767_Node000012_Node000013" title=" " alt="" coords="328,327,407,348,406,353,327,333"/>
+<area shape="poly" id="edge769_Node000012_Node000013" title=" " alt="" coords="328,327,407,348,406,353,327,333"/>
 <area shape="rect" id="Node000014" href="$structdrain_1_1image_1_1Decay4.html" title=" " alt="" coords="403,301,513,327"/>
-<area shape="poly" id="edge768_Node000012_Node000014" title=" " alt="" coords="343,311,403,311,403,317,343,317"/>
+<area shape="poly" id="edge770_Node000012_Node000014" title=" " alt="" coords="343,311,403,311,403,317,343,317"/>
 <area shape="rect" id="Node000016" href="$structrack_1_1MethodWeights.html" title=" " alt="" coords="377,400,539,425"/>
-<area shape="poly" id="edge770_Node000015_Node000016" title=" " alt="" coords="343,395,377,400,377,405,343,400"/>
+<area shape="poly" id="edge772_Node000015_Node000016" title=" " alt="" coords="343,395,377,400,377,405,343,400"/>
 </map>

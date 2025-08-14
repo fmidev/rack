@@ -330,8 +330,12 @@ virtual <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &am
 <tr class="memitem:ad257f4148fcf9b5d9f437a20e6ef1358" id="r_ad257f4148fcf9b5d9f437a20e6ef1358"><td class="memItemLeft" align="right" valign="top"><a id="ad257f4148fcf9b5d9f437a20e6ef1358" name="ad257f4148fcf9b5d9f437a20e6ef1358"></a>
 virtual const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAlphaChannel</b> (size_t i=0) const =0</td></tr>
 <tr class="separator:ad257f4148fcf9b5d9f437a20e6ef1358"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61c43ccbc9c0723f7545c14930e2e9ad" id="r_a61c43ccbc9c0723f7545c14930e2e9ad"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html#a61c43ccbc9c0723f7545c14930e2e9ad">suggestType</a> (const std::type_info &amp;t)</td></tr>
+<tr class="separator:a61c43ccbc9c0723f7545c14930e2e9ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb567a777eb895a04fe885cecf3d1056" id="r_aeb567a777eb895a04fe885cecf3d1056"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html#aeb567a777eb895a04fe885cecf3d1056">requireGeometry</a> (const <a class="el" href="classdrain_1_1image_1_1Geometry.html">Geometry</a> &amp;geometry)</td></tr>
+<tr class="separator:aeb567a777eb895a04fe885cecf3d1056"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeae1fafaffc4d995a349a87116b28b1" id="r_afeae1fafaffc4d995a349a87116b28b1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html#afeae1fafaffc4d995a349a87116b28b1">initialize</a> (const std::type_info &amp;t, const <a class="el" href="classdrain_1_1image_1_1Geometry.html">Geometry</a> &amp;geometry)</td></tr>
-<tr class="memdesc:afeae1fafaffc4d995a349a87116b28b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns numeric channel index from "r", "g", "b", or "a" or a non-negative number in string format.  <br /></td></tr>
+<tr class="memdesc:afeae1fafaffc4d995a349a87116b28b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type and allocates a data buffer.  <br /></td></tr>
 <tr class="separator:afeae1fafaffc4d995a349a87116b28b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43c4b3e3e2dbe573101b02901d364cee" id="r_a43c4b3e3e2dbe573101b02901d364cee"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html#a43c4b3e3e2dbe573101b02901d364cee">initialize</a> (const std::type_info &amp;t, size_t width, size_t height, size_t imageChannels=1, size_t alphaChannels=0)</td></tr>
 <tr class="memdesc:a43c4b3e3e2dbe573101b02901d364cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the type and allocates a data buffer.  <br /></td></tr>
@@ -926,8 +930,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns numeric channel index from "r", "g", "b", or "a" or a non-negative number in string format. </p>
-<p>Given a numeric channel index, returns it as a number. Sets the type and allocates a data buffer. </p>
+<p>Sets the type and allocates a data buffer. </p>
 
 <p>Reimplemented in <a class="el" href="classdrain_1_1image_1_1ModifiableImage.html#ad521ce64e0b96e7500844af963635654">ModifiableImage</a>.</p>
 
@@ -1245,6 +1248,35 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
+<a id="aeb567a777eb895a04fe885cecf3d1056" name="aeb567a777eb895a04fe885cecf3d1056"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb567a777eb895a04fe885cecf3d1056">&#9670;&#160;</a></span>requireGeometry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool requireGeometry </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1image_1_1Geometry.html">Geometry</a> &amp;&#160;</td>
+          <td class="paramname"><em>geometry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Example: reading data to a channel of an existing image. </p>
+
+<p>Reimplemented in <a class="el" href="classdrain_1_1image_1_1ModifiableImage.html#aca7e5162a6c2ce5684c55d0dacec8375">ModifiableImage</a>.</p>
+
+</div>
+</div>
 <a id="a83de4881caa306e714d4ffb8d4cc9e9c" name="a83de4881caa306e714d4ffb8d4cc9e9c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a83de4881caa306e714d4ffb8d4cc9e9c">&#9670;&#160;</a></span>setView()</h2>
 
@@ -1297,6 +1329,35 @@ template&lt;class T &gt; </div>
 <p>ENCODING</p>
 <p><a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char,...">Image</a> channel range</p>
 <p>Alpha channel range</p>
+
+</div>
+</div>
+<a id="a61c43ccbc9c0723f7545c14930e2e9ad" name="a61c43ccbc9c0723f7545c14930e2e9ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61c43ccbc9c0723f7545c14930e2e9ad">&#9670;&#160;</a></span>suggestType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool suggestType </td>
+          <td>(</td>
+          <td class="paramtype">const std::type_info &amp;&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Example: reading data to a channel of an existing image. </p>
+
+<p>Reimplemented in <a class="el" href="classdrain_1_1image_1_1ModifiableImage.html#ad4ee092303c8fde5884575aa7628a4c9">ModifiableImage</a>.</p>
 
 </div>
 </div>
