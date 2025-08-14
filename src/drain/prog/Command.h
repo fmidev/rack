@@ -86,8 +86,6 @@ public:
 	const SprinterLayout cmdArgLayout; // = {",", "?", "=", ""};
 
 
-public:
-
 	virtual
 	void setParameters(const std::string & args) final;
 
@@ -219,19 +217,26 @@ public:
 	};
 	*/
 
-	mutable
-	std::set<std::string> relatedCommands;
+	inline
+	void linkRelated(const std::string & cmdKey) const {
+		relatedCommands.insert(cmdKey);
+	};
 
 
 protected:
 
+	mutable
+	std::set<std::string> relatedCommands;
+
 	// Terminal
+	/*
 	inline
 	Command & linkRelatedCommands(){
 		return *this;
 	};
+	*/
 
-
+	// Why protected?
 	virtual
 	ReferenceMap & getParameters() = 0;
 

@@ -276,20 +276,14 @@ public:
 	template <class ...TT>
 	void linkRelatedCommands(const TT & ... cmds){
 		std::set<std::string> cmdList;
-		linkRelatedCommandList(cmdList, cmds...); // infinite loop?
+		linkRelatedCommandList(cmdList, cmds...);
 	}
 
+	/// Adds command keys, intelinking all the commands in the list.
 	void linkRelatedCommandList(const std::set<std::string> & cmdList);
 
 
 protected:
-
-	/*
-	template <class ...TT>
-	void linkRelatedCommandList(std::set<std::string> & cmdList, const TT & ... cmds){
-		linkRelatedCommands(cmdList, cmds...);
-	}
-	*/
 
 	template <class ...TT>
 	void linkRelatedCommandList(std::set<std::string> & cmdList, const std::string & cmd, const TT & ... cmds){
@@ -303,27 +297,6 @@ protected:
 		cmdList.insert(cmd);
 		linkRelatedCommandList(cmdList, cmds...);
 	}
-
-	/*
-	void linkRelatedCommandList(std::set<std::string> & cmdList, const std::string & cmd){
-		cmdList.insert(cmd);
-		linkRelatedCommandList(cmdList);
-	}
-
-	void linkRelatedCommandList(std::set<std::string> & cmdList, const char * cmd){
-		cmdList.insert(cmd);
-		linkRelatedCommandList(cmdList);
-	}
-	*/
-
-	// template <class ...TT>
-	// void linkRelatedCommands(std::list<std::string> & cmdList, const TT & ... cmds){
-	// }
-
-
-
-	/// Command executing the script in the current (running) context
-	// std::string execScriptCmd;
 
 
 };

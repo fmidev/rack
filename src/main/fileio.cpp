@@ -1062,7 +1062,8 @@ FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // 
 	linkRelatedCommands(Format,FormatOut);
 
 	DRAIN_CMD_INSTALL(Cmd,ImageSampler)("sample");
-	ImageSampler.relatedCommands.insert("format");
+	ImageSampler.linkRelated("format");
+	// ImageSampler.relatedCommands.insert("format");
 
 	// install<CmdOutputTreeConf>();
 

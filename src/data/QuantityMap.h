@@ -47,6 +47,23 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+/// Registry for regular quantities appearing in weather radar.
+/**
+ *   In the map, each entry is a rack::Quantity, providing a short description and default encoding.
+ *
+ *   Also variants of similar quantities are supported. Practically, the quantities are stored primarily by
+ *   a general name in uppercase letters (like "DBZ"). If a quantity is queried with the general name,
+ *   it is found directly with that map key.
+ *
+ *   If a similar quantity (like "TH") or a related specific quantity (like "DBZHCX") is searched for,
+ *   then an additional, deeper search uses direct string matching and regular expressions and finds
+ *   the main entry (in this case, that stored with key "DBZ").
+ *
+ *   In this context, by _similar_ or _related_ we mean quantities that are physically related and should use
+ *   similar encodings and palettes.
+ *   Consequently, as a convention, default palettes of regular quantities can be automatically associated
+ *   with related, similar quantities automatically through rack::QuantityMap .
+ */
 class QuantityMap : public std::map<std::string, Quantity> {
 
 public:

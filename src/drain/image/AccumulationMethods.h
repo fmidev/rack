@@ -66,7 +66,7 @@ class AccumulationMethod : public BeanLike {
 public:
 
 	inline
-	AccumulationMethod() :  BeanLike("UNDEFINED", __FUNCTION__)  {
+	AccumulationMethod() :  BeanLike("UNDEFINED", "Undefined method")  {
 	};
 
 	inline
@@ -193,7 +193,7 @@ public:
 
 	//MinimumMethod(AccumulationArray & c) : AccumulationMethod("MINIMUM", c) {};
 	inline
-	MinimumMethod() : AccumulationMethod("MINIMUM", "Maximum of values") {};
+	MinimumMethod() : AccumulationMethod("MINIMUM", "Minimum of values") {};
 
 	virtual
 	void add(AccumulationArray & accArray, const size_t i, double value, double weight) const override;
@@ -253,7 +253,7 @@ class WeightedAverageMethod : public AccumulationMethod {
 public:
 
 	inline
-	WeightedAverageMethod() : AccumulationMethod("WAVG","Weighted average of values"), pInv(1.0), USE_P(false), rInv(1.0), USE_R(false) {
+	WeightedAverageMethod() : AccumulationMethod("WAVG", "Weighted average of data and quality values"), pInv(1.0), USE_P(false), rInv(1.0), USE_R(false) {
 		parameters.link("p", p = 1.0, "exponent for data value");
 		parameters.link("r", r = 1.0, "exponent for weight");
 		parameters.link("bias", bias = 0.0, "origin, for non-negative value exponent");
@@ -262,12 +262,7 @@ public:
 
 	inline
 	WeightedAverageMethod(const WeightedAverageMethod & method) : AccumulationMethod(method), pInv(1.0), USE_P(false), rInv(1.0), USE_R(false) {
-		parameters.copyStruct(method.parameters, method, *this);
-		/*
-		parameters.link("p", p = 1.0);
-		parameters.link("r", r = 1.0);
-		parameters.link("bias", bias = 0.0);
-		*/
+		parameters.copyStruct(method.parameters, method, *this); // Does this copy descriptions?
 		updateBean();
 	};
 

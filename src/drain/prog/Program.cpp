@@ -62,11 +62,8 @@ void Program::run() const {
 
 	Logger mout(__FILE__, __FUNCTION__);
 
-	//for (const_iterator it = this->begin(); it != this->end(); ++it) {
 	for (const auto & entry: *this) {
-		// String...
-		//const typename list_t::value_type::first_type & key = it->first;
-		//Command & cmd = *it->second;
+
 		const Command & cmd = *entry.second;
 
 		if (entry.first == "script"){
@@ -74,8 +71,7 @@ void Program::run() const {
 			continue;
 		}
 
-		//Command & cmd = *(*it);
-		mout.warn("  executing ", entry.first, "-> ",  cmd.getName(), '(', cmd.getParameters(), ')');
+		mout.warn("executing ", entry.first, "-> ",  cmd.getName(), '(', cmd.getParameters(), ')');
 		//mout.note("  context: "  , cmd.getContext<>().getId() );
 		cmd.exec();
 	}

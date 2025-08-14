@@ -262,35 +262,7 @@ void CommandBank::scriptify(const std::string & line, Script & script) const{
 	typedef std::list<std::string> list_t;
 	list_t args;
 
-	// Tokenize
-	/*
-	std::stringstream sstr(line);
-	while (sstr) {
-		l.push_back("");
-		sstr >> l.back();
-	}
-	*/
 	tokenize(line, args);
-
-	// DEBUGGING, CAN BE REMOVED
-	/*
-	{
-		std::list<std::string> args2;
-		std::stringstream sstr2(line);
-		while (sstr2) {
-			args2.push_back("");
-			sstr2 >> args2.back();
-		}
-		if (args != args2){
-			mout.special(drain::sprinter(args));
-			mout.special(drain::sprinter(args2));
-			mout.error("Programming error? Script parsing deviated: ", line);
-
-		}
-	}
-	mout.error("finito");
-	*/
-
 
 	list_t::const_iterator it = args.begin();
 	while (it != args.end()) {
@@ -943,17 +915,33 @@ void CommandBank::help(FlagResolver::ivalue_t sectionFilter, std::ostream & ostr
 }
 
 void CommandBank::linkRelatedCommandList(const std::set<std::string> & cmdList){
-	for (const std::string &key1: cmdList){
-		const Command & cmd1 = get(key1);
-		for (const std::string &key2: cmdList){
-			if (key2 != key1){
-				const Command & cmd2 = get(key2);
-				cmd1.relatedCommands.insert(key2);
-				cmd2.relatedCommands.insert(key1);
+
+	try {
+
+		for (const std::string &key1: cmdList){
+			const Command & cmd1 = get(key1);
+			for (const std::string &key2: cmdList){
+				if (key2 != key1){
+					const Command & cmd2 = get(key2);
+					cmd1.linkRelated(key2);
+					cmd2.linkRelated(key1);
+				}
 			}
 		}
+
 	}
+	catch (const std::exception & e) {
+		Logger(__FILE__, __FUNCTION__).warn("Non-existing command link in ", drain::sprinter(cmdList));
+	}
+
 }
+
+/// Adds a section key (without checking it).
+/*
+void CommandBank::linkRelatedSection(const std::string & cmdSection){
+
+}
+*/
 
 
 /// Checked key and respective command

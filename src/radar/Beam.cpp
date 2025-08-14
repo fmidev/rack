@@ -46,7 +46,11 @@ double Beam::getBeamPowerDeg(double d) const {
 	// e^x = ½ => x = ln(1/2) = - ln(2)
 	// e^(-x²) = ½ => -x = ln(1/sqrt(2)) = -ln(sqrt2) =
 	// x = ln(sqrt2)
+
+	// 2025
+	static
 	const double coeff = 4.0 * log(sqrt(2.0)); // 4 = 2*2 for (1/(½width))²
+
 	return exp(- (d*d) * coeff/(width*width));
 }
 

@@ -2482,12 +2482,18 @@ MainModule::MainModule(){ //
 
 	drain::CmdScript script(cmdBank);
 	install(script);
+
 	drain::CmdExecFile execFile(cmdBank);
 	install(execFile);
 
 	DRAIN_CMD_INSTALL(drain::Cmd,ExecScript)();
 	//DRAIN_CMD_INSTALL(drain::Cmd,ExecFile)(cmdBank);
 	linkRelatedCommands(script, execFile, ExecScript);
+	linkRelatedSection(script, drain::Static::get<drain::TriggerSection>());
+	// linkRelatedSection(script, "koe");
+	// script.linkRelatedCommands("TEST");
+	// script.value = "TEST";
+	// script.getRelatedCommands(std::cout);
 
 
 	drain::CmdLog log(cmdBank);

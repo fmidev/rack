@@ -185,9 +185,10 @@ CartesianBBoxTest() : drain::SimpleCommand<int>(__FUNCTION__, "Tests whether the
 class CompositeMethod : public drain::SimpleCommand<std::string> {
 public:
 
-	CompositeMethod() : drain::SimpleCommand<std::string>(__FUNCTION__, "Method to be used in accumulating the (weighted) values.",
+	CompositeMethod() : drain::SimpleCommand<std::string>(__FUNCTION__,
+			"Method in accumulating values on a composite.",
 			"method", "MAXIMUM", "LATEST|MAXIMUM|MAXW|AVERAGE|WAVG,p,r,bias") { // , method() {
-		exec();
+		exec(); // well, ok...
 	};
 
 	inline
@@ -201,7 +202,11 @@ public:
 	};
 
 	virtual
-	void help(std::ostream & ostr = std::cout, bool DETAILED=false) const {
+	void help(std::ostream & ostr = std::cout, bool DETAILED=false) const override {
+
+		// kludge, copied:
+		ostr << "  " << getDescription() << '\n';
+
 		AccMethodBank & bank = getAccMethodBank();
 		for (const auto & entry: bank.getMap()){
 			const AccumulationMethod & method = entry.second->getSource();
@@ -212,6 +217,12 @@ public:
 			}
 			ostr << '\n';
 		}
+
+		// kludge, copied:
+		if (DETAILED){
+			getRelatedCommands(ostr);
+		}
+
 	}
 
 };

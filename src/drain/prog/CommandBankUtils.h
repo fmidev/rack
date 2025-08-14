@@ -139,6 +139,11 @@ public:
 };
 
 
+/**
+ *  This may be deprecating. Commands should be always expanded?
+ *  Or use this switch/flag inside ctx to switch on/off getMap +
+ *
+ */
 class CmdExpandVariables : public BasicCommand {
 
 public:
@@ -150,14 +155,13 @@ public:
 	inline
 	void exec() const {
 		SmartContext & ctx = getContext<SmartContext>();
-		//CommandRegistry & r = getRegistry();
 		ctx.expandVariables = !ctx.expandVariables;
 	};
 
 };
 
 
-/// Load script file and executes the commands immediately
+/// Define a script.
 /**
  *   Lightweight. Keeps commands until commandBank reads and stores them.
  *
@@ -188,7 +192,9 @@ protected:
 
 /// Executes the defined script
 /**
- *   Note: automatic triggering by selected commands is often more handy.
+ *  Actually, this command itself does not execute the script,
+ *  but is marked with TRIGGER flag which means that after calling
+ *  the empty Command::exec() the CommandBank automatically runs the actual script.
  *
  */
 class CmdExecScript : public BasicCommand {
@@ -201,55 +207,19 @@ public:
 		// const drain::Flagger::ivalue_t
 		cmd_section_type TRIGGER = drain::Static::get<drain::TriggerSection>().index;
 		this->section |= TRIGGER;
-		/*
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.experimental("constr: TRIGGER=" , TRIGGER );
-		mout.experimental("My sections: " , this->section );
-		*/
 	};
 
-	/*
-	inline
-	CmdExecScript(const	CmdExecScript & cmd) : BasicCommand(cmd){
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.experimental("Copy constr, their sections: " , cmd.section );
-		mout.experimental("Copy constr, my sections:    " , this->section );
-	};
-	*/
-	/*
-	CmdExecScript(CommandBank & cmdBank) :
-		BasicCommand(__FUNCTION__, "Execute script.") {
-		//cmdBank.setScriptExecCmd(getName());
-		const drain::Flagger::value_t TRIGGER = drain::Static::get<drain::TriggerSection>().index;
-		cmdBank.setScriptTriggerFlag(TRIGGER);
-		this->section |= TRIGGER;
-
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.experimental("constr: TRIGGER=" , TRIGGER );
-		mout.experimental(*this );
-		mout.experimental("My sections: '" , this->section , "' ." );
-
-	};
-	*/
 
 	inline
 	void exec() const {
 		SmartContext & ctx = getContext<SmartContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		mout.debug("Executing script with '" , getName() , "' ." );
-		//mout.warn("My sections: '" , this->section , "' ." );
-		//mout.error("This command '" , getName() , "' cannot be run independently." );
+		mout.debug("Storing script with '" , getName() , "' ." );
 	};
 
-	// reconsider exec();
-
-protected:
-
-	// Copy constructor should copy this as well.
-	// FUture versions may store the script in Context!
-	//CommandBank & bank;
 
 };
+
 
 
 

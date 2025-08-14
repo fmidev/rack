@@ -256,7 +256,7 @@ public:
 
 		std::string nameNew = CMD_NEW().getName();
 		CommandBank::deriveCmdName(nameNew, PREFIX);
-		cmd.relatedCommands.insert(nameNew);
+		cmd.linkRelated(nameNew);
 
 		return cmd;
 	}
@@ -268,20 +268,7 @@ public:
 	Command & installDeprecating(char alias = 0){
 		std::string name = CMD().getName();
 		CommandBank::deriveCmdName(name, PREFIX);
-
 		return installDeprecating<CMD,CMD_NEW>(name, alias);
-
-		/*
-		// this->cmdBank.linkRelatedCommandList(cmdList);
-		Command & cmd = this->template install<CMD>(name, alias);
-
-		std::string nameNew = CMD_NEW().getName();
-		CommandBank::deriveCmdName(nameNew, PREFIX);
-
-		cmd.relatedCommands.insert(nameNew);
-		return cmd;
-		// return install<CMD>(name, alias);
-		 */
 	}
 
 
@@ -319,6 +306,16 @@ public:
 		this->cmdBank.linkRelatedCommandList(cmdList); // infinite loop?
 	}
 
+	/**
+	 *   Command parameter is used only for referring to the static command provided by CommandBank.
+	 */
+	inline
+	// void linkRelatedSection(Command & cmd, const std::string & section){
+	void linkRelatedSection(Command & cmd, const CommandSection & section){
+		std::string name = cmd.getName();
+		CommandBank::deriveCmdName(name, PREFIX);
+		this->cmdBank.get(name).linkRelated(section); // cast to str
+	}
 
 
 };
