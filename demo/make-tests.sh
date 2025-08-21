@@ -50,6 +50,18 @@ VT100_GREEN='\033[1;42m'
 VT100_ORANGE='\033[1;30m'
 VT100_END='\033[0m'
 
+SCRIPT=$0
+function end_test(){
+    local line=$1
+    local ERROR_LOG=`date +'%Y-%m-%d-error.log'`
+    echo "#$0 $((line - 1))" >> $ERROR_LOG
+    echo "$cmd" >> $ERROR_LOG
+    echo >> $ERROR_LOG
+    echo "$cmd"
+    echo -e "$VT100_RED FAILED! $VT100_END"
+    echo -e "Retry with:\n$0 $((line - 1))"
+    echo -e "Skip  with:\n$0 $((line))"
+}
 
 # Fixed filenames will be used: volume.h5 and sweep1.h5, sweep2.h5, ...  
 # The user should copy or link them to this directory
@@ -153,8 +165,9 @@ while (( $line <= iEnd )); do
 	OK=$?
 	echo -ne '\033[0m'
 	if [ $OK != 0 ] && [ $STOP_ON_ERROR == 'EXEC' ]; then
-	    echo $0 $line '# <- restart with this'
-	    echo -e "$VT100_RED FAILED $VT100_END"
+	    end_test $line
+	    #echo $0 $line '# <- start with this'
+	    #echo -e "$VT100_RED FAILED $VT100_END"
 	    #echo -e '\033[1;43mFAILED\033[0m'
 	    exit 1
         fi
@@ -206,14 +219,16 @@ while (( $line <= iEnd )); do
     eval "$cmd"
 
     if (( $? != 0 )); then
-	echo $cmd
-	echo $0 $line '# <- restart with this'
-	echo -e "$VT100_RED FAILED $VT100_END"
-	#echo -e '\033[1;41mFAILED\033[0m'
+	end_test $line
+	#echo $cmd
+	#echo $0 $line '# <- restart with this'
+	#end_test $line
+	#echo -e "$VT100_RED FAILED $VT100_END"
+	#echo -e '\033[1;41mFAILED\a033[0m'
 	#echo FAILED
 	FAILS=$(( FAILS + 1 ))
 	if [ $STOP_ON_ERROR != 'NO' ]; then
-	    eval "echo $cmd"
+	    #eval "echo $cmd"
 	    echo i=$i
 	    if (( i == 1 )); then
 		echo "check LD_LIBRARY_PATH"
@@ -246,17 +261,19 @@ while (( $line <= iEnd )); do
 	eval $cmd2
 	if [ $? != 0 ]; then
 	    echo -e "$VT100_RED SVG conversion failed  $VT100_END"
-	    echo $0 $line '# <- restart with this'
+	    end_test $line
+	    #echo $0 $line '# <- restart with this'
 	    exit 2
 	fi
 
-	echo -e "$VT100_ORANGE checking XML syntax: $ouput $VT100_END"
+	echo -e "$VT100_ORANGE checking XML syntax: $output $VT100_END"
 	cmd2="xmllint --noout $output"
 	echo $cmd2
 	eval $cmd2
 	if [ $? != 0 ]; then
 	    echo -e "$VT100_RED XML validation failed for $output  $VT100_END"
-	    echo $0 $line '# <- restart with this'
+	    end_test $line
+	    #echo $0 $line '# <- restart with this'
 	    exit 3
 	fi
     fi
@@ -266,7 +283,8 @@ while (( $line <= iEnd )); do
 	diff valid/${output} ${output} 
 	if [ $? != 0 ]; then
 	    echo -e "$VT100_RED Text file validation failed for $output  $VT100_END"
-	    echo $0 $line '# <- restart with this'
+	    end_test $line
+	    # echo $0 $line '# <- restart with this'
 	    exit 4
 	fi
     fi
