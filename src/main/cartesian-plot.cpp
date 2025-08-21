@@ -89,9 +89,14 @@ void CartesianPlotFile::exec() const {
 				sstr >> w;
 			else
 				w = 1.0;
-			// std::cout << '#' << line << '\n';
-			// std::cout << lon << ',' << lat << '\t' << d << ',' << w << '\n';
+			/*
+			if (mout.isDebug()){
+				std::cout << '#' << line << '\n';
+				std::cout << lon << ',' << lat << '\t' << d << ',' << w << '\n';
+			}
+			*/
 			ctx.composite.addUnprojected(lon, lat, d, w);
+
 
 		}
 	}

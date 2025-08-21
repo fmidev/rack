@@ -76,6 +76,41 @@ namespace image
 class Accumulator  {
 public:
 
+
+	enum FieldType {
+		DATA_SPECIFIC = 32,       // Ascii bit for lower-case chars, see below
+		QUALITY   = 256,		  // Marker for non-data
+		DATA      = 'd',          // Main data, of named quantity
+		WEIGHT    = 'w'|QUALITY,  // Quality
+		COUNT     = 'c'|QUALITY,  // Number of samples
+		DEVIATION = 's'|QUALITY,  // Separation: std.dev or difference
+		WEIGHT_DS = 'W'|QUALITY,  // Quality
+		COUNT_DS  = 'C'|QUALITY,  // Number of samples
+		DEVIATION_DS = 'S'|QUALITY  // Separation
+	};
+
+	typedef std::list<FieldType> FieldList;
+
+	// Deprecating?
+	inline static
+	char getFieldChar(FieldType field){
+		return static_cast<char>(field & 127);
+	}
+
+	static
+	FieldType getField(char field);
+
+	static
+	void getFields(const std::string & fieldStr, FieldList & fieldList);
+
+	static
+	void createFieldList(const std::string & fieldChars, FieldList & fieldList);
+
+
+	typedef drain::EnumDict<FieldType>::dict_t dict_t;
+	static
+	const dict_t dict;
+
 	/// Todo: export
 	AccumulationArray accArray;
 
@@ -191,7 +226,17 @@ public:
 	 *  - s = standard deviation, unscaled
 	 *
 	 */
-	void extractField(char field, const AccumulationConverter & converter, Image & dst, const drain::Rectangle<int> & crop) const;
+	inline
+	void extractField(char field, const AccumulationConverter & converter, Image & dst, const drain::Rectangle<int> & crop) const {
+			extractField(getField(field), converter, dst, crop);
+	}
+
+	void extractField(FieldType field, const AccumulationConverter & converter, Image & dst, const drain::Rectangle<int> & crop) const;
+	/*
+	{
+		extractField(getFieldChar(field), converter, dst, crop);
+	}
+	*/
 
 
 	virtual

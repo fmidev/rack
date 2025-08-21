@@ -474,7 +474,7 @@ public:
 	template<int L=LOG_WARNING,typename ... TT>
 	inline
 	Logger & attention(const TT &... args){
-		static const Notification notif(__FUNCTION__, TextStyle::CYAN, TextStyle::REVERSE, TextStyle::DIM); // 46);
+		static const Notification notif(__FUNCTION__, TextStyle::CYAN, TextStyle::REVERSE); // , TextStyle::DIM); // 46);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
@@ -539,7 +539,7 @@ public:
 	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & experimental(const TT &... args){
-		static const Notification notif(__FUNCTION__, TextStyle::CYAN, TextStyle::REVERSE); // 94);
+		static const Notification notif(__FUNCTION__, TextStyle::CYAN, TextStyle::REVERSE, TextStyle::DIM); // 94);
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;

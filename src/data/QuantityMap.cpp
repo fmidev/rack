@@ -500,6 +500,19 @@ QuantityMap & getQuantityMap() {
 					}
 			}
 			},
+			{"FLASH", {
+					"Lightning",
+					{
+							{"FLASH", "lightning_intensity", "Lightning"},
+					},
+					'S',
+					{
+							{'C', {-32.0, +32.0}},  // NOTE: zero value overlapping undetect
+							{'S', {-32.0, +32.0}}   // NOTE: zero value overlapping undetect
+					},
+					0.0 // virtual zero
+			}
+			},
 	};
 
 

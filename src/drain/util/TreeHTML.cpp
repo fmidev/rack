@@ -62,6 +62,7 @@ const NodeXML<html::tag_t>::xml_default_elem_map_t NodeXML<html::tag_t>::xml_def
 		{html::BODY, html::P}, // not sure about this
 		{html::UL, html::LI},
 		{html::OL, html::LI},
+		{html::PRE, html::CTEXT},
 		{html::TABLE, html::TR},
 		{html::TR, html::TD},
 };
@@ -108,6 +109,7 @@ const drain::EnumDict<html::tag_t>::dict_t drain::EnumDict<html::tag_t>::dict = 
 		{"meta", drain::html::META},
 		{"ol", drain::html::OL},
 		{"p", drain::html::P},
+		{"pre", drain::html::PRE},
 		{"span", drain::html::SPAN},
 		{"table", drain::html::TABLE},
 		{"title", drain::html::TITLE},

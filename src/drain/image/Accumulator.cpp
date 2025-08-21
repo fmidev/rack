@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 
 //#include "drain/image/File.h"  // debugging
 
@@ -46,6 +46,95 @@ namespace drain
 
 namespace image
 {
+
+const Accumulator::dict_t Accumulator::dict = {
+		DRAIN_ENUM_ENTRY(Accumulator::FieldType, DATA),
+		DRAIN_ENUM_ENTRY(Accumulator::FieldType, WEIGHT),
+		DRAIN_ENUM_ENTRY(Accumulator::FieldType, COUNT),
+		DRAIN_ENUM_ENTRY(Accumulator::FieldType, DEVIATION),
+		//		{"DATA", rack::Composite::FieldType::DATA},
+		//		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
+		//		{"COUNT", rack::Composite::FieldType::COUNT},
+		//		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
+};
+
+Accumulator::FieldType Accumulator::getField(char field){
+
+	short int i;
+	for (const auto & entry: Accumulator::dict){
+		i = static_cast<short int>(entry.second);
+		if ((entry.second&127) == i){
+			return entry.second;
+		}
+	}
+
+	throw std::runtime_error(drain::StringBuilder<':'>(__FILE__, __FUNCTION__, " unknown field", field));
+
+}
+
+/**  TODO: add:  static bool getField(char field){ looping } to Accumulator
+ *
+ */
+void Accumulator::createFieldList(const std::string & fieldChars, FieldList & fieldList){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	for (char c: fieldChars) {
+
+		switch (c) {
+		case '/':
+			mout.advice("Use capital letters DATA_SPECIFIC_QUALITY, eg. 'C' instead of '/c'");
+			mout.error("Old style marker '/' for DATA_SPECIFIC_QUALITY");
+			//DATA_SPECIFIC_QUALITY = true;
+			continue;
+			break; // unneeded?
+		case 'd': //
+			fieldList.push_back(DATA);
+			break;
+		case 'w': // ???
+			fieldList.push_back(WEIGHT);
+			break;
+		case 'c': // ???
+			fieldList.push_back(COUNT);
+			break;
+		case 's': // ???
+			fieldList.push_back(DEVIATION);
+			break;
+		default:
+			mout.error("Unsupported field marker: char '", c, "'");
+		}
+
+		mout.info("Converted field code: ", c, " => ", dict.getKey(fieldList.back()));
+
+	}
+
+
+}
+void Accumulator::getFields(const std::string & fieldStr, FieldList & fieldList) {
+
+	Logger mout(__FILE__, __FUNCTION__);
+
+	std::list<std::string> fieldKeys;
+	drain::StringTools::split(fieldStr, fieldKeys, ','); // ':');
+		for (const std::string & key: fieldKeys){
+			int value = dict.getValue(key);
+			if (value > 0){
+				fieldList.push_back((FieldType)value);
+			}
+			else {
+				// OLD_SYNTAX = true;
+				if (fieldList.empty()){
+					mout.deprecating("Old fashioned field list (string): ");
+					createFieldList(fieldStr, fieldList);
+				}
+				else {
+					mout.advice("Use either 'DATA,WEIGHT,...' or 'dw...'");
+					mout.error("Mixed-type field list ", fieldStr);
+				}
+				break;
+			}
+		};
+}
 
 
 
@@ -116,7 +205,7 @@ void Accumulator::setMethod(const std::string & method){
 		return setMethod(method, "" );  // Variable()
 	else
 		return setMethod(method.substr(0, i), method.substr(i+1) );  // Variable(method.substr(i+1))
-	*/
+	 */
 }
 
 void Accumulator::addData(const Image & srcData, const AccumulationConverter & converter, double priorWeight, int iOffset, int jOffset){
@@ -206,7 +295,7 @@ void Accumulator::addData(const Image & src, const Image & srcQuality, const Ima
 }
 
 
-void Accumulator::extractField(char field, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & cropArea) const {
+void Accumulator::extractField(FieldType field, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & cropArea) const {
 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
@@ -228,7 +317,7 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 
 		dst.setGeometry(accArray.getGeometry());
 	}
-	*/
+	 */
 
 
 	// Storage type selection for fields str than 'data'. (???)
@@ -244,27 +333,43 @@ void Accumulator::extractField(char field, const AccumulationConverter & coder, 
 	mout.debug2("field ", field);
 
 	switch (field){
-		case 'd':
-		case 'D':
-			methodPtr->extractValue(accArray, coder, dst, finalCropArea);
-			break;
-		case 'w':
-		case 'W':
-			methodPtr->extractWeight(accArray, coder, dst, finalCropArea);
-			break;
-		case 'c':
-		case 'C':
-			methodPtr->extractCount(accArray, coder, dst, finalCropArea);
-			break;
-		case 's':
-		case 'S':
-			//mout.warn(coder );
-			methodPtr->extractDev(accArray, coder, dst, finalCropArea);
-			//methodPtr->extractDev(dst, params.scale, params.bias, params.NODATA);
-			break;
-		default:
-			mout.error("unknown (unimplemented) field ", field);
-			//throw std::runtime_error(std::string("Accumulator::extractField: unknown field code '") + field + "'");
+	case FieldType::DATA:
+	// case 'd':
+	// case 'D':
+		if (!coder.isDataEncodingSet()){
+			mout.error("Data encoding unset");
+		}
+		methodPtr->extractValue(accArray, coder, dst, finalCropArea);
+		break;
+	case FieldType::WEIGHT:
+	case FieldType::WEIGHT_DS:
+	// case 'w':
+	// case 'W':
+		if (!coder.isQualityEncodingSet()){
+			mout.error("Quality encoding unset");
+		}
+		methodPtr->extractWeight(accArray, coder, dst, finalCropArea);
+		break;
+	case FieldType::COUNT:
+	case FieldType::COUNT_DS:
+	// case 'c':
+	// case 'C':
+		if (!coder.isQualityEncodingSet()){
+			mout.error("Quality encoding unset");
+		}
+		methodPtr->extractCount(accArray, coder, dst, finalCropArea);
+		break;
+	case FieldType::DEVIATION:
+	case FieldType::DEVIATION_DS:
+	//case 's':
+	//case 'S':
+		if (!coder.isQualityEncodingSet()){
+			mout.error("Quality encoding unset");
+		}
+		methodPtr->extractDev(accArray, coder, dst, finalCropArea);
+		break;
+	default:
+		mout.error("unknown (unimplemented) field ", field);
 	}
 
 }
@@ -289,7 +394,7 @@ void Accumulator::initDst(const AccumulationConverter & coder, Image & dst, drai
 	if (cropImage.isInside(composite.getFrameWidth(), 0) || cropImage.isInside(0, composite.getFrameHeight())){
 		mout.error("Crop area ", cropImage, " exceeds composite ");
 	}
-	*/
+	 */
 
 	if (!dst.typeIsSet()){
 		if (!coder.type.empty()){
@@ -336,14 +441,14 @@ void Accumulator::initDst(const AccumulationConverter & coder, Image & dst, drai
 
 
 std::ostream & Accumulator::toStream(std::ostream & ostr) const {
-//std::ostream & operator<<(std::ostream & ostr, const Accumulator & accumulator){
+	//std::ostream & operator<<(std::ostream & ostr, const Accumulator & accumulator){
 
 	ostr << "Accumulator ("<< accArray.getGeometry() << ") ";
 	ostr << " ["<< getMethod() << "] ";
 	/*
 	for (std::map<std::string, AccumulationMethod &>::const_iterator it = methods.begin(); it != methods.end(); it++)
 		ostr << it->second << ',';
-	*/
+	 */
 	//ostr << '\n';
 	//return ostr;
 

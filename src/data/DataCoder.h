@@ -90,6 +90,18 @@ public:
 	virtual
 	~DataCoder(){};
 
+
+	virtual
+	bool isDataEncodingSet() const override {
+		return dataODIM.isSet();
+	}
+
+	virtual
+	bool isQualityEncodingSet() const override {
+		return qualityODIM.isSet();
+	}
+
+
 	virtual
 	double getNoReadingMarker() const override {
 		return dataODIM.undetect;

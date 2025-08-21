@@ -196,7 +196,7 @@ Palette & ImageContext::getPalette(const std::string & key){
 	PaletteMap & pmap = PaletteOp::getPaletteMap();
 
 	/// Attempt 1: exact match of \c key
-	mout.special("Attempt 1: with exact key [", key, "]");
+	mout.experimental<LOG_INFO>("Attempt 1: with exact key [", key, "]");
 	PaletteMap::iterator it = pmap.find(key);
 	if (it != pmap.end()){
 		paletteKey = key;
@@ -205,7 +205,7 @@ Palette & ImageContext::getPalette(const std::string & key){
 
 	/// Attempt 2: exact match of \c key
 
-	mout.special("Attempt 2: try quantities associated with  [", key, "]");
+	mout.experimental<LOG_INFO>("Attempt 2: try quantities associated with  [", key, "]");
 
 	const QuantityMap & qm = getQuantityMap();
 	QuantityMap::const_iterator qit = qm.retrieve(key);

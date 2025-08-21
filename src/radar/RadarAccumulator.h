@@ -50,6 +50,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+/// Todo: consider non-template class:
+/*
+ * with Cart / polar linkage
+ *
+ *  getProperties("where:proj", comp.projDef)
+ *  getProperties("where:xsize", comp.width ?)
+ *  getProperties("where:nbins", comp.width ?)
+ *
+ */
+
 /// Data array for creating composites and accumulated polar products (Surface rain fall or cluttermaps)
 /**
 
@@ -98,6 +108,7 @@ public:
 	void extractOLD(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,
 			const std::string & fields, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
+
 	/// Input data selector.
 	DataSelector dataSelector;
 	// DataSelector dataSelector(ODIMPathElem::DATA);
@@ -113,7 +124,7 @@ public:
 	/// If source data has no quality field, this value is applied for (detected) data.
 	double defaultQuality;
 
-	/// Book-keeping for new data. Finally, in extraction phase, added to odim.ACCnum .
+	///  Book-keeping for new data. Finally, in extraction phase, added to odim.ACCnum .
 	/**  Must be kept separate during accumulation. The accumulation array channel count keeps track of bin hits.
 	 *
 	 */
@@ -121,32 +132,23 @@ public:
 
 
 	/// Not critical. If set, needed to warn if input data does not match the expected / potential targetEncoding
-	inline
-	void setTargetEncoding(const std::string & encoding){
-		targetEncoding = encoding;
-		if (odim.quantity.empty()){
-			//drain::ReferenceMap m;
-			ODIM m;
-			m.link("what:quantity", odim.quantity); // appends
-			m.addShortKeys();
-			m.updateValues(encoding);
-		}
-		//odim.setValues(encoding); // experimental
-	}
+	void setTargetEncoding(const std::string & encoding);
 
 	inline
 	void consumeTargetEncoding(std::string & encoding){
+		setTargetEncoding(encoding);
+		encoding.clear();
+		/*
 		if (!encoding.empty()){
 			targetEncoding = encoding;
 			if (odim.quantity.empty()){
-				//drain::ReferenceMap m;
 				ODIM m;
-				m.link("what:quantity", odim.quantity); // appends
+				// Append quantity.
+				m.link("what:quantity", odim.quantity);
 				m.addShortKeys();
 				m.updateValues(encoding);
 			}
-		}
-		encoding.clear();
+		} */
 	}
 
 
@@ -177,6 +179,48 @@ protected:
 
 };
 
+
+template  <class AC, class OD>
+void RadarAccumulator<AC,OD>::setTargetEncoding(const std::string & encoding){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	targetEncoding = encoding;
+
+	if (encoding.empty()){
+		return;
+	}
+
+	std::string quantityPrev = odim.quantity;
+	// if (odim.quantity.empty()){
+	/*
+	ODIM m;
+	m.link("what:quantity", odim.quantity); // appends
+	m.addShortKeys();
+	m.updateValues(encoding);
+	*/
+	//}
+
+	//odim.link("what:quantity", odim.quantity);
+	//m.addShortKeys();
+	odim.addShortKeys();
+	odim.updateValues(encoding);
+
+
+	if (!quantityPrev.empty()){
+		if (odim.quantity != quantityPrev){
+			mout.warn("Quantity changed from [", quantityPrev, "] to [", odim.quantity, "]");
+		}
+		else {
+			mout.info("Confirming quantity [", odim.quantity, "] explicitly");
+		}
+	}
+
+	// mout.attention("Quantity: [", quantityPrev, "] -> [", odim.quantity, "]");
+	mout.attention("Target encoding: [", encoding, "] odim: ", odim); //, "]");
+
+
+}
 
 template  <class AC, class OD>
 void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, double weight, int i0, int j0){
@@ -281,11 +325,11 @@ void RadarAccumulator<AC,OD>::extractOLD(const OD & odimOut, DataSet<DstType<OD>
 
 	const QuantityMap & qm = getQuantityMap();
 
-	/** Determines if quality is stored in
-	 *  /dataset1/quality1/
-	 *  or
-	 *  /dataset1/data1/quality1/
-	 */
+	// Determines if quality is stored in
+	//   /dataset1/quality1/
+	// or
+	//  /dataset1/data1/quality1/
+	//
 	bool DATA_SPECIFIC_QUALITY = false;
 
 	// Consider redesign, with a map of objects {quantity, type,}

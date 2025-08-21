@@ -464,6 +464,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 				composite.addPolar(polarSrc, polarSrc.getQualityData("QIND"), w, projectAEQD); // Subcomposite: always 1.0.
 			}
 			else {
+				// TODO: use ctx.getHi5(RackContext::CURRENT, RackContext::POLAR);
 				DataSet<PolarSrc> dataSetSrc((*ctx.currentPolarHi5)(parent));
 				//dataSetSrc.getQualityData2()
 				const PlainData<PolarSrc> & srcDataSetQuality = dataSetSrc.getQualityData("QIND");
@@ -705,8 +706,8 @@ void Compositor::prepareBBox(const Composite & composite, const drain::BBox & cr
  */
 
 //void Compositor::extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox) const {
-void Compositor::extract(Composite & composite, const std::string & channels, const std::string & crop) const {
-
+// void Compositor::extract(Composite & composite, const std::string & channels, const std::string & crop) const {
+void Compositor::extract(Composite & composite, const drain::image::Accumulator::FieldList & channels, const std::string & crop) const {
 
 	RackContext & ctx = getContext<RackContext>();
 
@@ -770,12 +771,12 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 		if (crop == "INPUT"){
 			prepareBBox(composite, bboxDataNat, cropImage);
-			mout.advice<LOG_NOTICE>("Equivalent command: --cExtract ", channels, ':',
+			mout.advice<LOG_NOTICE>("Equivalent command: --cExtract ", drain::sprinter(channels), ':',
 					drain::sprinter(bboxDataNat.tuple(), ","));
 		}
 		else if (crop == "OVERLAP"){
 			prepareBBox(composite, bboxDataOverlapNat, cropImage);
-			mout.advice<LOG_NOTICE>("Equivalent arguments: --cExtract ", channels, ':',
+			mout.advice<LOG_NOTICE>("Equivalent arguments: --cExtract ", drain::sprinter(channels), ':',
 					drain::sprinter(bboxDataOverlapNat.tuple(), drain::Sprinter::plainLayout) );
 		}
 		else {
@@ -826,12 +827,13 @@ void Compositor::extract(Composite & composite, const std::string & channels, co
 
 		std::string & encoding = resources.baseCtx().targetEncoding;
 
-		mout.attention<LOG_DEBUG>("Calling: composite.extract() channels=", channels, " encoding:", encoding);
+		mout.attention<LOG_DEBUG>("Calling: composite.extract() channels=", drain::sprinter(channels), " encoding:", encoding);
 		// mout.reject<LOG_NOTICE>("pre-extract EPSG:", composite.projGeo2Native.getDst().getEPSG());
 		// mout.reject<LOG_NOTICE>("pre-extract proj:", composite.projGeo2Native.getDst().getProjDef());
 
 		/// MAIN!composite.legend
-		composite.extract(dstProduct, channels, cropImage, encoding);
+		// composite.extract(dstProduct, channels, cropImage, encoding);
+		composite.extract(dstProduct, channels, encoding, cropImage);
 		encoding.clear();
 
 		/*

@@ -127,7 +127,11 @@ public:
 		return ostr;
 	}
 
+	virtual
+	bool isDataEncodingSet() const = 0;
 
+	virtual
+	bool isQualityEncodingSet() const = 0;
 
 
 };

@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "13.1"
+#define __RACK_VERSION__ "13.2"
 
 /**
  *  Version 13
@@ -40,6 +40,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 13.1
  *  - Radar BEAM static coeff
  *  - Typo fix: MINIMUM explanation
+ *  Release 13.2
+ *  - Revised cExtract field handling
  *
  *  Version 12
  *  - Revised QuantityMap, allowing retrieve("DBZXP")

@@ -158,6 +158,16 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 
 	//if (mout.isDebug(LOG_DEBUG))
 	accumulator.extractOLD(dstData.odim, dstProduct, "dwC");
+
+	/* 2025 no no...
+	DataCoder dataCoder(dstData.odim, dstData.getQualityData().odim); // (
+	// for (const Accumulator::FieldType field: {Accumulator::FieldType::DATA, ...})
+	drain::image::Image &img = dstData.data;
+	const drain::Rectangle<int> area(0, 0, img.getWidth(), img.getHeight());
+	accumulator.extractField(Accumulator::FieldType::DATA,   dataCoder, dstData.data, area);
+	accumulator.extractField(Accumulator::FieldType::WEIGHT, dataCoder, dstData.data, area);
+	*/
+
 	//else
 	// OK mout.warn("eka: " , drain::sprinter(dstData.odim.angles) );
 		//accumulator.extract(dstData.odim, dstProduct, "dw");

@@ -22,12 +22,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
+ */
 #include <drain/Log.h>
 #include <drain/util/Time.h>  // decayTime
 // #include <drain/VariableAssign.h>  // decayTime
@@ -49,37 +49,24 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 using namespace drain::image;
 
-/*
-template <>
-const drain::FlagResolver::dict_t drain::EnumDict<rack::Composite::FieldType>::dict = {
-		{"DATA", rack::Composite::FieldType::DATA},
-		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
-		{"COUNT", rack::Composite::FieldType::COUNT},
-		{"DEVIATION", rack::Composite::FieldType::DEVIATION}
-};
-*/
 
 
 
 namespace rack
 {
 
-
-//using namespace drain;
-
-//Composite::FieldDict
-// template <>
-//const drain::EnumDict<rack::Composite::FieldType>::dict_t drain::EnumDict<rack::Composite::FieldType>::dict =  {
+/*
 const Composite::dict_t Composite::dict = {
 		DRAIN_ENUM_ENTRY(rack::Composite::FieldType, DATA),
 		DRAIN_ENUM_ENTRY(rack::Composite::FieldType, WEIGHT),
 		DRAIN_ENUM_ENTRY(rack::Composite::FieldType, COUNT),
 		DRAIN_ENUM_ENTRY(rack::Composite::FieldType, DEVIATION),
-//		{"DATA", rack::Composite::FieldType::DATA},
-//		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
-//		{"COUNT", rack::Composite::FieldType::COUNT},
-//		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
+		//		{"DATA", rack::Composite::FieldType::DATA},
+		//		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
+		//		{"COUNT", rack::Composite::FieldType::COUNT},
+		//		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
 };
+*/
 //static DataCoder converter;
 
 // Notice: =-32.0 is good only for DBZH
@@ -273,7 +260,7 @@ void Composite::addPolarInnerLoop(const PlainData<PolarSrc> & srcData, const Pla
 		pix2m(pComp, pMetric);
 		xLookUp[pComp.x - bboxPix.lowerLeft.x] = pMetric.x;
 	}
-	*/
+	 */
 
 	size_t address;
 	for (pComp.y = bboxPix.lowerLeft.y; pComp.y>bboxPix.upperRight.y; --pComp.y){ // notice negative
@@ -294,7 +281,7 @@ void Composite::addPolarInnerLoop(const PlainData<PolarSrc> & srcData, const Pla
 			if (((pComp.y%15)==0) && ((pComp.x % 15) ==0)){
 				std::cerr << pMetric.x << ' ';
 			};
-			*/
+			 */
 
 			pRadarToComposite.projectInv(pMetric.x, pMetric.y);
 			range = ::sqrt(pMetric.x*pMetric.x + pMetric.y*pMetric.y);
@@ -314,7 +301,7 @@ void Composite::addPolarInnerLoop(const PlainData<PolarSrc> & srcData, const Pla
 				if (b == 50){ //<< '\t' << (a%beams)
 					std::cerr << a << '\t' << (atan2(pMetric.x, pMetric.y)*M_PI/180.0) <<  '\n';
 				}
-				*/
+				 */
 
 				if (a < beams){
 
@@ -413,7 +400,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	if (this->odim.projdef.empty()){
 		mout.warn("ProjDef was empty, setting: ", this->odim.projdef);
 	}
-	*/
+	 */
 
 
 	//const bool USE_PRIOR_WEIGHT = (priorWeight > 0.0);
@@ -732,14 +719,18 @@ double Composite::getTimeDifferenceMinute(const CartesianODIM & odimIn) const {
 	return static_cast<double>(abs(compositeTime.getTime() - tileTime.getTime()))/60.0;
 }
 
+
+
+
 // void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields,  const drain::Rectangle<int> & cropArea, const std::string & encoding){
-void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields,  const drain::Rectangle<int> & cropArea, const std::string & encoding){
+/*
+void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields, const std::string & encoding, const drain::Rectangle<int> & cropArea){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	std::list<FieldType> fieldList;
 
-	bool OLD_SYNTAX = false;
+	// bool OLD_SYNTAX = false;
 
 	std::list<std::string> keys;
 	drain::StringTools::split(fields, keys, ','); // ':');
@@ -749,58 +740,32 @@ void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const std
 			fieldList.push_back((FieldType)value);
 		}
 		else {
-			OLD_SYNTAX = true;
-			if (!fieldList.empty()){
+			// OLD_SYNTAX = true;
+			if (fieldList.empty()){
+				mout.deprecating("Old fashioned field list (string): ");
+				createFieldList(fields, fieldList);
+			}
+			else {
 				mout.advice("Use either 'DATA,WEIGHT,...' or 'dw...'");
 				mout.error("Mixed-type field list ", fields);
 			}
+			break;
 		}
 	};
 
+	extract(dstProduct, fieldList, encoding, cropArea);
 
-	if (OLD_SYNTAX) {
+}
+*/
 
-		// mout.warn("Old fashioned field list (string): ", e.what());
-		// mout.warn(e.what());
-		// bool DATA_SPECIFIC_QUALITY = false;
-		for (char c: fields) {
+void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const FieldList & fields, const std::string & encoding, const drain::Rectangle<int> & cropArea){
 
-			// char c2 = static_cast<int>(c);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
-			switch (c) {
-			case '/':
-				mout.advice("Use capital letters DATA_SPECIFIC_QUALITY, eg. 'C' instead of '/c'");
-				mout.error("Old style marker '/' for DATA_SPECIFIC_QUALITY");
-				//DATA_SPECIFIC_QUALITY = true;
-				continue;
-				break; // unneeded?
-			case 'd': //
-				fieldList.push_back(DATA);
-				break;
-			case 'w': // ???
-				fieldList.push_back(WEIGHT);
-				break;
-			case 'c': // ???
-				fieldList.push_back(COUNT);
-				break;
-			case 's': // ???
-				fieldList.push_back(DEVIATION);
-				break;
-			default:
-				mout.error("Unsupported field marker: char '", c, '"');
-				// mout.error("Unsupported field marker: ", FieldFlagger::getKeysNEW2(field));
-			}
-
-			mout.info("Converted field code: ", c, " => ", Composite::dict.getKey(fieldList.back()));
-
-		}
-
-	}
-
-
-	for (FieldType field: fieldList) {
+	for (FieldType field: fields) {
 		// mout.attention("FIELD: ", (char)(((int)field)&127), '=', FieldFlagger::getKeysNEW2(field));
-		pdata_dst_t & dstData = extract(dstProduct, field, cropArea, encoding);
+		// pdata_dst_t & dstData = extract(dstProduct, field, cropArea, encoding);
+		pdata_dst_t & dstData = extract(dstProduct, field, encoding, cropArea);
 
 		if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS) && !legend.empty()){
 			mout.experimental("Copying (moving) legend for ", field);
@@ -814,7 +779,7 @@ void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const std
 
 
 //void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field, const drain::Rectangle<int> & cropArea, const std::string & encoding){
-Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field, const drain::Rectangle<int> & cropArea, const std::string & encoding){
+Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field, const std::string & encoding, const drain::Rectangle<int> & cropArea){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -822,7 +787,7 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 
 	// Old-fashioned char, to be changed later.
 	char fieldChar = (char)(((int)field)&127);
-	mout.attention<LOG_DEBUG>("extracting FIELD: ", field, '=', fieldChar);
+	mout.attention("extracting FIELD: ", field, '=', fieldChar, '|', drain::image::Accumulator::getFieldChar(field));
 
 
 	//const std::type_info & t = drain::Type::getTypeInfo('C'); // drain::Type::getTypeInfo(odimOut.type);
@@ -843,6 +808,8 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 
 	ODIM odimData;
 	drain::SmartMapTools::updateValues(odimData, this->odim);
+
+	// This should be unneeded...
 	odimData.quantity = this->odim.quantity;
 
 	// mout.experimental<LOG_NOTICE>("EncodingODIM SRC  = ", EncodingODIM(odimData));
@@ -859,7 +826,7 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 		else if (type == QUALITY){
 			mout.debug("target: " , EncodingODIM(odimQuality) );
 		}
-		*/
+		 */
 
 		if (odimData.quantity.empty()){
 			odimData.quantity = "UNKNOWN"; // ok; for example --cPlotFile carries no information on quantity
@@ -879,14 +846,9 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 		mout.debug2("dataCoder - data: ", dataCoder.dataODIM);
 		mout.debug2("dataCoder - qind: ", dataCoder.qualityODIM);
 
-		/*
-		if (!crop.empty()){
-			mout.unimplemented("crop ",  crop, ", dstData.data resize + Accumulator::extractField ");
-		}
-		*/
-
 		/// Also available: if (type.isSet()) ...
 
+		// Note: encoding is used only for DATA to avoid ambiguous setting for multiple request of fields: DATA,WEIGHT,COUNT, ...
 		if (field == DATA){
 			mout.debug("extracting DATA/" , field, " [", odimData.quantity, ']');
 			if (!encoding.empty()){
@@ -897,15 +859,19 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 				mout.ok<LOG_NOTICE>("Using previously stored encoding for data [", odimData.quantity, "]: ", getTargetEncoding());
 			}
 
-			//mout.warn(dstData.odim );
 			pdata_dst_t & dstData = dstProduct.getData(odimData.quantity);
-			// dstData.odim.importMap(odimData);
-			// dstData.odim.importMap(odimData);
 			drain::SmartMapTools::updateValues(dstData.odim, odimData);
+			if (!dataCoder.dataODIM.isSet()){
+				// Note: this is also checked by Accumulator, but better diagnostics (ODIM) here:
+				mout.error("Target encoding unset: gain=", dataCoder.dataODIM.scaling.scale, ", type=", dataCoder.dataODIM.type);
+				return dstData;
+			}
 
 			dstData.data.setType(odimData.type);
 			mout.debug3("dstData: " , dstData );
-			this->Accumulator::extractField(fieldChar, dataCoder, dstData.data, cropArea);
+			//this->Accumulator::extractField(fieldChar, dataCoder, dstData.data, cropArea);
+			//this->Accumulator::
+			extractField(field, dataCoder, dstData.data, cropArea);
 
 			return dstData;
 			/*
@@ -916,7 +882,7 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 					legend.clear();
 				}
 			}
-			*/
+			 */
 		}
 		else {
 
@@ -971,6 +937,13 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 
 			dstQuality.data.setType(odimQuality.type);
 			mout.debug3("dstData: " , dstQuality );
+
+			if (!dataCoder.qualityODIM.isSet()){
+				// Note: this is also checked by Accumulator, but better diagnostics (ODIM) here:
+				mout.error("Target encoding unset: gain=", dataCoder.qualityODIM.scaling.scale, ", type=", dataCoder.dataODIM.type);
+				return dstQuality;
+			}
+
 			this->Accumulator::extractField(fieldChar, dataCoder, dstQuality.data, cropArea);
 
 			return dstQuality;
@@ -980,7 +953,7 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 				dstQuality.getWhat()["legend"] = drain::sprinter(legend, "|", ",", ":").str();
 				legend.clear();
 			}
-			*/
+			 */
 
 		}
 

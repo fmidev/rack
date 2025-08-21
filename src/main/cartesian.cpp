@@ -30,14 +30,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
-#include <drain/Log.h>
 #include <string>
 
+#include <drain/Log.h>
 #include <drain/prog/CommandInstaller.h>
 
-
 #include "resources.h"  // for RackContext?
-
 #include "composite.h"  // for cmdFormat called by
 #include "cartesian.h"  // for cmdFormat called by
 #include "cartesian-add.h"
@@ -49,12 +47,70 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "cartesian-plot.h"
 
 
-
-
 namespace rack {
 
 
+class CartesianInit : public drain::BasicCommand {
 
+public:
+
+	CartesianInit() : drain::BasicCommand(__FUNCTION__, "Allocate memory to --cSize, applying --target and --select, if set."){};
+
+	inline
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>();
+		ctx.composite.dataSelector.consumeParameters(ctx.select);
+		ctx.composite.allocate();
+		ctx.composite.consumeTargetEncoding(ctx.targetEncoding);
+	}
+
+};
+
+
+class CompositeMethod : public drain::SimpleCommand<std::string> {
+public:
+
+	CompositeMethod() : drain::SimpleCommand<std::string>(__FUNCTION__,
+			"Method in accumulating values on a composite.",
+			"method", "MAXIMUM", "LATEST|MAXIMUM|MAXW|AVERAGE|WAVG,p,r,bias") { // , method() {
+		exec(); // well, ok...
+	};
+
+	inline
+	void exec() const {
+		RackContext & ctx = getContext<RackContext>(); //
+		ctx.composite.setMethod(value);  // method? Or Method obj?
+		#pragma omp critical
+		{
+			getResources().polarAccumulator.setMethod(value);  // Ensures correct (primary) name.
+		}
+	};
+
+	virtual
+	void help(std::ostream & ostr = std::cout, bool DETAILED=false) const override {
+
+		// kludge, copied:
+		ostr << "  " << getDescription() << '\n';
+
+		AccMethodBank & bank = getAccMethodBank();
+		for (const auto & entry: bank.getMap()){
+			const AccumulationMethod & method = entry.second->getSource();
+			ostr << '\t' << entry.first << " – " << method.getDescription();
+			if (method.hasParameters()){
+				ostr << " – parameters: ";
+				method.getParameters().getKeys(ostr);
+			}
+			ostr << '\n';
+		}
+
+		// kludge, copied:
+		if (DETAILED){
+			getRelatedCommands(ostr);
+		}
+
+	}
+
+};
 
 /// First, commands applicable in any Cartesian product generation, not only radar compositeing.
 
@@ -155,22 +211,6 @@ public:
 
 
 
-class CartesianInit : public drain::BasicCommand {
-
-public:
-
-	CartesianInit() : drain::BasicCommand(__FUNCTION__, "Allocate memory to --cSize, applying --target and --select, if set."){};
-
-	inline
-	void exec() const {
-		RackContext & ctx = getContext<RackContext>();
-		ctx.composite.dataSelector.consumeParameters(ctx.select);
-		ctx.composite.allocate();
-		ctx.composite.consumeTargetEncoding(ctx.targetEncoding);
-	}
-
-};
-
 
 
 
@@ -181,51 +221,6 @@ public:
 CartesianBBoxTest() : drain::SimpleCommand<int>(__FUNCTION__, "Tests whether the radar range is inside the composite.",
 			"mode", 0, "If no overlap and n==0, only set inputOk=false. Else exit with return value n."	) {
  */
-
-class CompositeMethod : public drain::SimpleCommand<std::string> {
-public:
-
-	CompositeMethod() : drain::SimpleCommand<std::string>(__FUNCTION__,
-			"Method in accumulating values on a composite.",
-			"method", "MAXIMUM", "LATEST|MAXIMUM|MAXW|AVERAGE|WAVG,p,r,bias") { // , method() {
-		exec(); // well, ok...
-	};
-
-	inline
-	void exec() const {
-		RackContext & ctx = getContext<RackContext>(); //
-		ctx.composite.setMethod(value);  // method? Or Method obj?
-		#pragma omp critical
-		{
-			getResources().polarAccumulator.setMethod(value);  // Ensures correct (primary) name.
-		}
-	};
-
-	virtual
-	void help(std::ostream & ostr = std::cout, bool DETAILED=false) const override {
-
-		// kludge, copied:
-		ostr << "  " << getDescription() << '\n';
-
-		AccMethodBank & bank = getAccMethodBank();
-		for (const auto & entry: bank.getMap()){
-			const AccumulationMethod & method = entry.second->getSource();
-			ostr << '\t' << entry.first << " – " << method.getDescription();
-			if (method.hasParameters()){
-				ostr << " – parameters: ";
-				method.getParameters().getKeys(ostr);
-			}
-			ostr << '\n';
-		}
-
-		// kludge, copied:
-		if (DETAILED){
-			getRelatedCommands(ostr);
-		}
-
-	}
-
-};
 
 
 

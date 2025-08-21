@@ -78,10 +78,13 @@ void CartesianCreate::exec() const {
 	//mout.accept<LOG_NOTICE>("EPSG_A: ", composite.odim.epsg);
 	if (qualityMatcher.test(composite.odim.quantity)){
 		mout.note("Quality [", composite.odim.quantity, "] as input: extracting data only");
-		extract(composite, "d");
+		//extract(composite, "d");
+		extract(composite, {drain::image::Accumulator::DATA});
 	}
 	else {
-		extract(composite, "dw");
+		extract(composite, {drain::image::Accumulator::DATA, drain::image::Accumulator::WEIGHT});
+		//
+		//extract(composite, "dw");
 	}
 
 	// mout.accept<LOG_NOTICE>("EPSG: ", composite.odim.epsg);
@@ -142,7 +145,8 @@ void CompositeCreateTile::exec() const {
 	//add(composite, RackContext::POLAR|RackContext::CURRENT);
 	add(composite, RackContext::POLAR|RackContext::CURRENT, true); // updateSelector
 
-	extract(composite, "dw");
+	extract(composite, {drain::image::Accumulator::DATA, drain::image::Accumulator::WEIGHT});
+	// extract(composite, "dw");
 
 
 	// "Debugging"

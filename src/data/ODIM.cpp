@@ -36,9 +36,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 template <>
 const drain::EnumDict<rack::ODIM::Version>::dict_t drain::EnumDict<rack::ODIM::Version>::dict = {
-		{"2.2", rack::ODIM::ODIM_2_2 },
-		{"2.3", rack::ODIM::ODIM_2_3 },
-		{"2.4", rack::ODIM::ODIM_2_4 },
+		{"2.2",  rack::ODIM::ODIM_2_2 },
+		{"2.3",  rack::ODIM::ODIM_2_3 },
+		{"2.4",  rack::ODIM::ODIM_2_4 },
+		{"RACK", rack::ODIM::RACK_EXTENSIONS},
 		{"KILOMETRES", rack::ODIM::KILOMETRES },
 };
 

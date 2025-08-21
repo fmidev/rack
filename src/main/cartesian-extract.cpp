@@ -49,7 +49,10 @@ void CartesianExtract::exec() const {
 
 	Composite & composite = ctx.getComposite(RackContext::PRIVATE); // check thread safety
 
-	extract(composite, channels, crop);
+	drain::image::Accumulator::FieldList fieldList;
+	drain::image::Accumulator::getFields(channels, fieldList);
+
+	extract(composite, fieldList, crop);
 
 }
 

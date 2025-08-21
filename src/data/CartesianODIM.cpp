@@ -70,7 +70,7 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 		link("how:ACCnum", ACCnum = 0);
 
-		// link("how:EPSG", epsg = 0);
+		// This should be conditional on --odim +RACK
 		link("where:EPSG", epsg = 0);
 	}
 

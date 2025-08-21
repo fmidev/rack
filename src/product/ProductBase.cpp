@@ -218,7 +218,8 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 		mout.info("dstODIM unset, applying defaults for quantity: " , dstODIM.quantity );
 	}
 	else {
-		// That is, no "resetting" needed.
+		// Ok, quantity unchanged, type is set and unchanged, some scaling has been set.
+		// That is, no "resetting" using quality is needed.
 		dstODIM.addShortKeys();
 		dstODIM.updateValues(encoding);
 		mout.info(" (only) minor changes requested in encoding: " , encoding , " => " , EncodingODIM(dstODIM) );
@@ -228,7 +229,6 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 	//mout.warn("quantity [" , dstODIM.quantity , "]" );
 	const QuantityMap & qmap = getQuantityMap();
 
-	// const bool OK = qmap.setQuantityDefaults(dstODIM, dstODIM.quantity, encoding);
 
 	if (qmap.setQuantityDefaults(dstODIM, dstODIM.quantity, encoding)){
 		mout.accept<LOG_DEBUG>("quantity=", dstODIM.quantity, " encoding=", encoding);
@@ -239,7 +239,7 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 				mout.warn(); // Integer: underflow/overflow possible. Bit value
 			else
 				mout.info(); // Pretty safe, only precision issues possible
-			mout << "No explicit config for storage type '" << dstODIM.type << "' for quantity [" << dstODIM.quantity << "], guessing: " << EncodingODIM(dstODIM) << mout.endl;
+			mout << "No explicit encoding for storage type '" << dstODIM.type << "' for quantity [" << dstODIM.quantity << "], guessing: " << EncodingODIM(dstODIM) << mout.endl;
 		}
 		else {
 			if (encoding.empty()){

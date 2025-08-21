@@ -74,7 +74,7 @@ struct html {
 		STYLE_SELECT=NodeXML<>::STYLE_SELECT,
 		HTML,
 		HEAD, BASE, LINK, META, TITLE,
-		BODY, A, BR, CAPTION, DIV, H1, H2, H3, HR, IMG, LI, OL, P, SPAN, TABLE, TR, TH, TD, UL};
+		BODY, A, BR, CAPTION, DIV, H1, H2, H3, HR, IMG, LI, OL, P, PRE, SPAN, TABLE, TR, TH, TD, UL};
 
 	// check CTEXT, maybe implement in XML
 	// typedef NodeHTML xml_nod e_t;

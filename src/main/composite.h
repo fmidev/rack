@@ -86,7 +86,8 @@ protected:
 	void addPolar(Composite & composite, const Hi5Tree & src) const;
 	void addCartesian(Composite & composite, const Hi5Tree & src) const;
 	//void extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox = {0,0,0,0}) const;
-	void extract(Composite & composite, const std::string & channels, const std::string & crop = "") const;
+	// void extract(Composite & composite, const std::string & channels, const std::string & crop = "") const;
+	void extract(Composite & composite, const drain::image::Accumulator::FieldList & channels, const std::string & crop = "") const;
 
 	double weight;
 
