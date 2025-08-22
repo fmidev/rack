@@ -60,6 +60,17 @@ namespace rack {
  *
  */
 
+/*  FUTURE OPTION
+class RadarAccumulatorBase : public drain::image::AccumulatorGeo {
+public:
+	typedef drain::image::Accumulator::FieldType field_t;
+	void extractData(ODIM & odim, drain::image::Image & dst,    field_t field, const std::string & encoding, const drain::Rectangle<int> & cropArea);
+	void extractQuality(ODIM & odim, drain::image::Image & dst, field_t field, const std::string & encoding, const drain::Rectangle<int> & cropArea);
+	//drain::Logger mout(__FILE__, __FUNCTION__);
+
+};
+*/
+
 /// Data array for creating composites and accumulated polar products (Surface rain fall or cluttermaps)
 /**
 
@@ -68,6 +79,7 @@ namespace rack {
 
  */
 template <class AC, class OD>
+//class RadarAccumulator : public AC { // deprecating AC!
 class RadarAccumulator : public AC {
 
 public:
@@ -75,6 +87,8 @@ public:
 	/// Input data type
 	typedef PlainData<SrcType<OD const> > pdata_src_t;
 	typedef PlainData<DstType<OD> >       pdata_dst_t;
+	typedef drain::image::Accumulator::FieldType field_t;
+
 
 	/// Default constructor
 	RadarAccumulator() : dataSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY), defaultQuality(0.5), counter(0) { // , undetectValue(-52.0) {
@@ -108,11 +122,30 @@ public:
 	void extractOLD(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,
 			const std::string & fields, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
+	inline
+	void extract(DataSet<DstType<OD> > & dstProduct, const std::string & fieldStr, const std::string & encoding="C", const drain::Rectangle<int> & cropArea={0,0}){
+		drain::image::Accumulator::FieldList fields;
+		drain::image::Accumulator::getFields(fieldStr, fields);
+		extract(dstProduct, fields, encoding, cropArea);
+	}
+
+	void extract(DataSet<DstType<OD> > & dstProduct, const drain::image::Accumulator::FieldList & fields, const std::string & encoding="C", const drain::Rectangle<int> & cropArea={0,0});
+
+	pdata_dst_t & extract(DataSet<DstType<OD> > & dstProduct, field_t field = field_t::DATA, const std::string & encoding="C", const drain::Rectangle<int> & cropArea={0,0});
+
+	void extractDraft(ODIM & odim, drain::image::Image & dstData, field_t field, const std::string & encoding="", const drain::Rectangle<int> & cropArea={0,0});
 
 	/// Input data selector.
 	DataSelector dataSelector;
 	// DataSelector dataSelector(ODIMPathElem::DATA);
 	// dataSelector.pathMatcher.setElems(ODIMPathElem::DATA);
+
+	// Possible future extension.
+	// Must choose between char-based or bit flagging (d,w,c,s will overlap).
+	// typedef drain::EnumFlagger<drain::MultiFlagger<FieldType> > FieldFlagger;
+
+	typedef std::map<int,std::string> legend_t;
+	legend_t legend;
 
 
 	/// For storing the scaling and encoding of (1st) input or user-defined values. Also for bookkeeping of date, time, sources etc.
@@ -306,7 +339,264 @@ bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) cons
 
 }
 
+template  <class AC, class OD>
+//void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const FieldList & fields, const std::string & encoding, const drain::Rectangle<int> & cropArea){
+void RadarAccumulator<AC,OD>::extract(DataSet<DstType<OD> > & dstProduct, const drain::image::Accumulator::FieldList & fields, const std::string & encoding, const drain::Rectangle<int> & cropArea){
 
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	for (drain::image::Accumulator::FieldType field: fields) {
+
+		pdata_dst_t & dstData = extract(dstProduct, field, encoding, cropArea);
+
+		if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS) && !legend.empty()){
+			mout.experimental("Copying (moving) legend for ", field);
+			dstData.getWhat()["legend"] = drain::sprinter(legend, "|", ",", ":").str();
+			legend.clear();
+		}
+	}
+
+
+}
+
+
+template  <class AC, class OD>
+typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract(DataSet<DstType<OD> > & dstProduct, drain::image::Accumulator::FieldType field, const std::string & encoding, const drain::Rectangle<int> & cropArea){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	mout.attention("extracting FIELD: ", field);
+
+	char fieldChar = (char)(((int)field)&127);
+	if (fieldChar != drain::image::Accumulator::getFieldChar(field)){
+		mout.fail("program error: ", field, '=', fieldChar, "!=", drain::image::Accumulator::getFieldChar(field));
+	}
+
+	//const std::type_info & t = drain::Type::getTypeInfo('C'); // drain::Type::getTypeInfo(odimOut.type);
+	if (!cropArea.empty()){
+		mout.note("Applying cropping: bbox=", cropArea, " [pix] from ", this->accArray.getGeometry()); // this->getFrameWidth(), 'x', this->getFrameHeight());
+	}
+
+	const QuantityMap & qm = getQuantityMap();
+
+	/** Determines if quality is stored in
+	 *  /dataset1/quality1/
+	 *  or
+	 *  /dataset1/data1/quality1/
+	 */
+	//bool DATA_SPECIFIC_QUALITY = false;
+	//mout.experimental<LOG_NOTICE>("EncodingODIM THIS = ", this->odim);
+
+	ODIM odimData;
+	drain::SmartMapTools::updateValues(odimData, this->odim); // Note: copies, to support extraction with different encodings
+	// This should be unneeded...	// odimData.quantity = this->odim.quantity;
+	ODIM odimQuality;
+	// mout.experimental<LOG_NOTICE>("EncodingODIM SRC  = ", EncodingODIM(odimData));
+
+	/// At extraction stage, we should know the quantity...
+
+	// TODO: clean confusing mixture of referring to dataCoder.dataODIM <==> odimData
+	DataCoder dataCoder(odimData, odimQuality); // (will use only either odim!)
+
+	{
+		mout.attention("extracting field '", field, "'");
+
+		/*
+		if (odimData.quantity.empty()){
+			odimData.quantity = "UNKNOWN"; // ok; for example --cPlotFile carries no information on quantity
+			mout.note("quantity=", odimData.quantity);
+		}
+		*/
+		mout.debug(DRAIN_LOG_VAR(dataCoder));
+		mout.debug2(DRAIN_LOG_VAR(dataCoder.dataODIM));
+		mout.debug2(DRAIN_LOG_VAR(dataCoder.qualityODIM));
+
+		/// Also available: if (type.isSet()) ...
+
+		// Note: encoding is used only for DATA to avoid ambiguous setting for multiple request of fields: DATA,WEIGHT,COUNT, ...
+		if (field == field_t::DATA){
+
+			//pdata_dst_t & dstData = dstProduct.getData(this->odim.quantity);
+
+			// TODO: clean confusing mixture of dataCoder.dataODIM <==> odimData
+
+
+			// Update 1/2: from initial values to this "instantaneous" extraction
+			drain::SmartMapTools::updateValues(odimData, this->odim); // lazy (qualityData does not need)
+
+			mout.debug("extracting DATA/" , field, " [", odimData.quantity, ']');
+
+			if (!encoding.empty()){
+				mout.accept("User-defined encoding for data [", odimData.quantity, "]: ", encoding);
+				ProductBase::completeEncoding(odimData, encoding);
+			}
+			else if (!getTargetEncoding().empty()){
+				mout.ok<LOG_NOTICE>("Using initial/default encoding for data [", odimData.quantity, "]: ", getTargetEncoding());
+				ProductBase::completeEncoding(odimData, getTargetEncoding());
+			}
+
+			if (odimData.quantity.empty()){
+				mout.error("unspecified quantity");
+			}
+
+			pdata_dst_t & dstData = dstProduct.getData(odimData.quantity);
+
+			// Update 2/2: copy "instantaneous", maybe adjusted encoding to retrieved data
+			drain::SmartMapTools::updateValues(dstData.odim, odimData);
+
+			if (dataCoder.dataODIM.isSet()){
+				dstData.data.setType(odimData.type);
+				mout.debug3("dstData: " , dstData );
+				this->Accumulator::extractField(field, dataCoder, dstData.data, cropArea);
+				return dstData;
+			}
+			else {
+				// Note: this is also checked by Accumulator, but better diagnostics (ODIM) here:
+				mout.error("Target encoding unset: gain=", dataCoder.dataODIM.scaling.scale, ", type=", dataCoder.dataODIM.type);
+				return dstData;
+			}
+
+		}
+		else {
+
+			switch (field){
+			case field_t::WEIGHT_DS:
+			case field_t::WEIGHT:
+				odimQuality.quantity = "QIND";
+				break;
+			case field_t::COUNT_DS:
+			case field_t::COUNT:
+				odimQuality.quantity = "COUNT";
+				break;
+			case field_t::DEVIATION:
+				odimQuality.quantity = this->odim.quantity + "DEV";
+				break;
+			default:
+				mout.error("Unsupported field marker: ", field, "='", fieldChar, "'");
+				//mout.error("Unsupported field marker: ", FieldFlagger::getKeysNEW2(field));
+			}
+
+			mout.debug("extracting QUALITY/" , field, " [", odimQuality.quantity, ']');
+
+			if (qm.hasQuantity(odimQuality.quantity)){
+				qm.setQuantityDefaults(odimQuality, odimQuality.quantity, odimQuality.type);
+				mout.accept<LOG_DEBUG>("found quantityConf[", odimQuality.quantity, "], type=", odimQuality.type);
+				mout.special<LOG_DEBUG>("Quality: ", EncodingODIM(odimQuality));
+				mout.special<LOG_DEBUG>("Quality: ", odimQuality);
+			}
+			else if (!encoding.empty()){
+				mout.accept<LOG_INFO>("User-defined encoding for quality [", odimQuality.quantity, "]: ", encoding);
+				ProductBase::completeEncoding(odimQuality, encoding);
+				mout.debug("User-defined encoding for QUALITY: -> ", odimQuality);
+			}
+			else {
+				// mout.experimental("No predefined scaling for ", odimQuality.quantity);
+				/*
+				const std::type_info & t = drain::Type::getTypeInfo(odimQuality.type);
+				odimQuality.scaling.scale *= 20.0;  // ?
+				odimQuality.scaling.offset = round(drain::Type::call<drain::typeMin, double>(t) + drain::Type::call<drain::typeMax, double>(t))/2.0;
+				if (encoding.empty()){
+					mout.warn("quantyConf[" , odimQuality.quantity , "] not found, using somewhat arbitrary scaling:" );
+					mout.special("Quality: ", EncodingODIM(odimQuality));
+				}
+				*/
+				odimQuality.setType(typeid(float));
+				mout.warn("quantyConf[" , odimQuality.quantity , "] not found, using float" );
+				mout.special("Quality: ", EncodingODIM(odimQuality));
+
+			}
+			// else auto-scale?
+
+
+			typedef QualityDataSupport<DstType<OD> > q_support_t;
+			q_support_t & qualityOwner = Accumulator::isSpecific(field) ? (q_support_t &) dstProduct.getData(odimData.quantity) : (q_support_t &) dstProduct;
+			pdata_dst_t & dstQuality = qualityOwner.getQualityData(odimQuality.quantity);
+
+			/*
+			drain::SmartMapTools::updateValues(dstQuality.odim, odimQuality);
+
+			dstQuality.data.setType(odimQuality.type);
+			mout.debug3("dstData: " , dstQuality );
+
+			if (!dataCoder.qualityODIM.isSet()){
+				// Note: this is also checked by Accumulator, but better diagnostics (ODIM) here:
+				mout.error("Target encoding unset: gain=", dataCoder.qualityODIM.scaling.scale, ", type=", dataCoder.dataODIM.type);
+				return dstQuality;
+			}
+
+			this->Accumulator::extractField(fieldChar, dataCoder, dstQuality.data, cropArea);
+
+			return dstQuality;
+			*/
+
+			// NOTE similarity... but fct still would need separating (dataCoder, odimData, odimQuality, odimNow, field, crop)
+			drain::SmartMapTools::updateValues(dstQuality.odim, odimQuality);
+
+			if (dataCoder.qualityODIM.isSet()){
+				dstQuality.data.setType(odimData.type);
+				mout.debug3("dstData: " , dstQuality );
+				this->Accumulator::extractField(fieldChar, dataCoder, dstQuality.data, cropArea);
+				return dstQuality;
+			}
+			else {
+				// Note: this is also checked by Accumulator, but better diagnostics (ODIM) here:
+				mout.error("Target encoding unset: gain=", dataCoder.qualityODIM.scaling.scale, ", type=", dataCoder.qualityODIM.type);
+				return dstQuality;
+			}
+
+		}
+
+		// mout.debug("updating local tree attributes");
+
+	}
+
+
+	// mout.debug("updating local tree attributes" );
+	// mout.debug("finished" );
+
+}
+
+template  <class AC, class OD>
+void RadarAccumulator<AC,OD>::extractDraft(ODIM & dstODIM, drain::image::Image & dstData, field_t field, const std::string & encoding, const drain::Rectangle<int> & cropArea){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (dstODIM.quantity.empty()){
+		mout.warn(DRAIN_LOG_VAR(dstODIM));
+		mout.error("dstODIM.quantity unset");
+		return;
+	}
+
+	/*
+	ODIM dataODIM;
+	ODIM qualityODIM;
+
+	if (!encoding.empty()){
+		mout.accept<LOG_INFO>("User-defined encoding for  [", dstODIM.quantity, "]: ", encoding);
+		if (Accumulator::isQuality(field)){
+			ProductBase::completeEncoding(qualityODIM, encoding);
+		}
+		else {
+			ProductBase::completeEncoding(dataOdim, encoding);
+		}
+		mout.debug("Final encoding: ", dstODIM.quantity);
+	}
+
+	if (!dstODIM.isSet()){
+		mout.error("dstODIM.quantity unset");
+	}
+
+	this->Accumulator::extractField(field, dataCoder, dstData, cropArea);
+
+	switch (field) {
+		case field_t::QUALITY:
+			break;
+		default:
+			break;
+	}
+	*/
+
+}
 
 template  <class AC, class OD>
 void RadarAccumulator<AC,OD>::extractOLD(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,

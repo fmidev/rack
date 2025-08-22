@@ -365,7 +365,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 	checkQuantity(srcData.odim.quantity);
 
-	checkCompositingMethod(srcData.odim);
+	checkCompositingMethod(srcData.odim); // CHECK: return value unused, definition unclear
 
 	if (srcData.odim.rscale <= 0.0){
 		mout.advice("Consider quick fix, like --/dataset1/where:rscale=500");
@@ -758,13 +758,13 @@ void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const std
 }
 */
 
+/*
 void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const FieldList & fields, const std::string & encoding, const drain::Rectangle<int> & cropArea){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	for (FieldType field: fields) {
-		// mout.attention("FIELD: ", (char)(((int)field)&127), '=', FieldFlagger::getKeysNEW2(field));
-		// pdata_dst_t & dstData = extract(dstProduct, field, cropArea, encoding);
+
 		pdata_dst_t & dstData = extract(dstProduct, field, encoding, cropArea);
 
 		if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS) && !legend.empty()){
@@ -778,7 +778,6 @@ void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const Fie
 }
 
 
-//void Composite::extractNEW(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field, const drain::Rectangle<int> & cropArea, const std::string & encoding){
 Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field, const std::string & encoding, const drain::Rectangle<int> & cropArea){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -797,13 +796,12 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 
 	const QuantityMap & qm = getQuantityMap();
 
-	/** Determines if quality is stored in
-	 *  /dataset1/quality1/
-	 *  or
-	 *  /dataset1/data1/quality1/
-	 */
-	bool DATA_SPECIFIC_QUALITY = false;
+	// Determines if quality is stored in
+	// *  /dataset1/quality1/
+	// *  or
+	// *  /dataset1/data1/quality1/
 
+	bool DATA_SPECIFIC_QUALITY = false;
 	//mout.experimental<LOG_NOTICE>("EncodingODIM THIS = ", this->odim);
 
 	ODIM odimData;
@@ -811,22 +809,12 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 
 	// This should be unneeded...
 	odimData.quantity = this->odim.quantity;
-
 	// mout.experimental<LOG_NOTICE>("EncodingODIM SRC  = ", EncodingODIM(odimData));
 
 	ODIM odimQuality;
 
 	{
 		mout.debug("extracting field ", field);
-
-		/*
-		if (type == DATA){
-			mout.debug("target: " , EncodingODIM(odimData) );
-		}
-		else if (type == QUALITY){
-			mout.debug("target: " , EncodingODIM(odimQuality) );
-		}
-		 */
 
 		if (odimData.quantity.empty()){
 			odimData.quantity = "UNKNOWN"; // ok; for example --cPlotFile carries no information on quantity
@@ -874,15 +862,6 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 			extractField(field, dataCoder, dstData.data, cropArea);
 
 			return dstData;
-			/*
-			if (!legend.empty()){
-				if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS)){
-					mout.experimental("Copying (moving) legend for ", field);
-					dstData.getWhat()["legend"] = drain::sprinter(legend, "|", ",", ":").str();
-					legend.clear();
-				}
-			}
-			 */
 		}
 		else {
 
@@ -947,16 +926,8 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 			this->Accumulator::extractField(fieldChar, dataCoder, dstQuality.data, cropArea);
 
 			return dstQuality;
-			/*
-			if (!legend.empty()){
-				mout.experimental("Copying (moving) legend for ", field);
-				dstQuality.getWhat()["legend"] = drain::sprinter(legend, "|", ",", ":").str();
-				legend.clear();
-			}
-			 */
 
 		}
-
 
 		// mout.debug("updating local tree attributes");
 
@@ -968,6 +939,7 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 
 }
 
+*/
 
 
 }

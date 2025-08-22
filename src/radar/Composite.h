@@ -124,8 +124,8 @@ public:
 	// Must choose between char-based or bit flagging (d,w,c,s will overlap).
 	// typedef drain::EnumFlagger<drain::MultiFlagger<FieldType> > FieldFlagger;
 
-	typedef std::map<int,std::string> legend_t;
-	legend_t legend;
+	//typedef std::map<int,std::string> legend_t;
+	//legend_t legend;
 
 	Composite();
 
@@ -134,6 +134,7 @@ public:
 	// To allow consecutive --cExtract calls (for --encoding )
 	bool extracting = false;
 
+	/*
 	inline
 	void extract(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fieldStr, const std::string & encoding="C", const drain::Rectangle<int> & cropArea={0,0}){
 		FieldList fields;
@@ -143,11 +144,8 @@ public:
 
 	void extract(DataSet<DstType<CartesianODIM> > & dstProduct, const FieldList & fields, const std::string & encoding="C", const drain::Rectangle<int> & cropArea={0,0});
 
-	// void extract(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields="d", const drain::Rectangle<int> & cropArea={0,0}, const std::string & encoding="C");
-
-	// pdata_dst_t & extract(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field = DATA, const drain::Rectangle<int> & cropArea={0,0}, const std::string & encoding="C");
-
 	pdata_dst_t & extract(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field = DATA, const std::string & encoding="C", const drain::Rectangle<int> & cropArea={0,0});
+	*/
 
 	/// If cropping is set, calling addPolar() also crops the bounding box to intersection of radar area and original area.
 	/**

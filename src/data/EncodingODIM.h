@@ -181,6 +181,16 @@ public:
 
 	void setRange(double min, double max);
 
+	/// Complete with setTypeDefaults()
+	//template <class T>
+	inline
+	void setType(const std::type_info & type){
+		this->type = drain::Type::getTypeChar(type);
+		scaling.set(1.0, 0.0);
+		undetect = drain::Type::call<drain::typeMin, double>(type);
+    	nodata   = drain::Type::call<drain::typeMax, double>(type);
+	}
+
 	/// Sets gain=1, offset=0, undetect=type_min, nodata=type_max. Note: sets type only if unset.
 	template <class T>
 	inline

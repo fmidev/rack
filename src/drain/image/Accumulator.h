@@ -76,7 +76,11 @@ namespace image
 class Accumulator  {
 public:
 
-
+	/**
+	 *
+	 *  FIX: DS = DataSet-specific - forward definition
+	 *
+	 */
 	enum FieldType {
 		DATA_SPECIFIC = 32,       // Ascii bit for lower-case chars, see below
 		QUALITY   = 256,		  // Marker for non-data
@@ -99,6 +103,17 @@ public:
 
 	static
 	FieldType getField(char field);
+
+	inline static
+	bool isQuality(FieldType field){
+		return (field & QUALITY) != 0;
+	}
+
+	/// Future option to mark scaled/normalized etc
+	inline static
+	bool isSpecific(FieldType field){
+		return (field & DATA_SPECIFIC) != 0;
+	}
 
 	static
 	void getFields(const std::string & fieldStr, FieldList & fieldList);

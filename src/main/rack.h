@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Radar BEAM static coeff
  *  - Typo fix: MINIMUM explanation
  *  Release 13.2
- *  - Revised cExtract field handling
+ *  - Revised cExtract field handling, float type as default
  *
  *  Version 12
  *  - Revised QuantityMap, allowing retrieve("DBZXP")

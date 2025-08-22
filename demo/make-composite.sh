@@ -8,7 +8,8 @@
 LC_NUMERIC='en_GB.utf8'
 
 # Binary executable to use
-RACK=${RACK:-'rack --odim 2.2'}
+# RACK=${RACK:-'rack --odim 2.2'} # disturbs doc examples...
+RACK=${RACK:-'rack'}
 
 START_TIME=`date +'%s'`
 
