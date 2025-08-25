@@ -319,7 +319,7 @@ void DataConversionOp<M>::processDataSet(const DataSet<src_t> & srcSweep, DataSe
 			mout.attention("srcODIM:      ", srcODIM);
 			dstData.odim.quantity = quantity;
 			dstData.odim.updateLenient(srcODIM); // <= dstData.odim.NI = srcData.odim.NI; // if Cart?
-			ProductBase::completeEncoding(dstData.odim, this->targetEncoding);
+			dstData.odim.completeEncoding( this->targetEncoding);
 			mout.special("Final encoding: ", (const EncodingODIM &)dstData.odim);
 			//processData(srcData, dstData2);
 			processImage(srcODIM, srcData.data, dstData.odim, dstData.data);
@@ -355,7 +355,7 @@ void DataConversionOp<M>::processImage2023(const ODIM & srcOdim, const drain::im
 
 	ODIM odim;
 	odim.updateFromCastableMap(srcOdim); // quantity, etc
-	ProductBase::completeEncoding(odim, this->targetEncoding);
+	odim.completeEncoding( this->targetEncoding);
 	processImage(srcOdim, srcImage, odim, dstImage);
 
 	//op.processImage2(srcOdim, srcImage, ctx.targetEncoding, ctx.grayImage);

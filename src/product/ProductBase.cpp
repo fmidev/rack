@@ -180,6 +180,7 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 
 }
 
+// Deprecating. (Moved to ODIM::)
 void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -190,6 +191,8 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 
 	const std::string origQuantity(dstODIM.quantity);
 
+	// "Trick": pick quantity only dstODIM.
+	//// Warning:
 	EncodingODIM odim;
 	odim.type = "";
 	odim.link("what:quantity", dstODIM.quantity); 	// Consider (..., bool ALLOW_QUANTITY_CHANGE=true)
@@ -208,6 +211,7 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 		mout.warn("quantity (still) empty, odim=" , odim );
 	}
 
+	// ADD?: if !origQuantity.empty() && ...
 	if (dstODIM.quantity != origQuantity){
 		mout.info("quantity change " , origQuantity , " => " , dstODIM.quantity , " requested, ok"  );
 	}
@@ -222,7 +226,7 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 		// That is, no "resetting" using quality is needed.
 		dstODIM.addShortKeys();
 		dstODIM.updateValues(encoding);
-		mout.info(" (only) minor changes requested in encoding: " , encoding , " => " , EncodingODIM(dstODIM) );
+		mout.info("adjusted encoding: " , encoding , " => " , EncodingODIM(dstODIM) );
 		return;
 	}
 

@@ -34,17 +34,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <sstream>
 
-
-#include <drain/image/Sampler.h>
-//#include <drain/util/Proj4.h>
+// #include <drain/image/Sampler.h>
 #include <drain/image/AccumulatorGeo.h>
-#include <product/RadarProductOp.h>
+
+
 #include "data/ODIM.h"
 #include "data/ODIMPath.h"
 #include "data/Data.h"
 #include "data/DataSelector.h"
 #include "data/DataCoder.h"
 #include "data/QuantityMap.h"
+// #include "product/RadarProductOp.h"
 #include "Geometry.h"
 
 
@@ -60,16 +60,55 @@ namespace rack {
  *
  */
 
-/*  FUTURE OPTION
-class RadarAccumulatorBase : public drain::image::AccumulatorGeo {
+class RadarAccumulatorBase {
+
+
 public:
-	typedef drain::image::Accumulator::FieldType field_t;
-	void extractData(ODIM & odim, drain::image::Image & dst,    field_t field, const std::string & encoding, const drain::Rectangle<int> & cropArea);
-	void extractQuality(ODIM & odim, drain::image::Image & dst, field_t field, const std::string & encoding, const drain::Rectangle<int> & cropArea);
-	//drain::Logger mout(__FILE__, __FUNCTION__);
+
+	inline
+	RadarAccumulatorBase() : dataSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY), defaultQuality(0.5), counter(0){};
+
+	inline
+	RadarAccumulatorBase(const RadarAccumulatorBase & base) : dataSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY),
+	defaultQuality(base.defaultQuality), counter(base.counter){};
+
+	void extractFinally(const drain::image::Accumulator & accumulator, drain::image::Accumulator::FieldType field,
+			const ODIM &srcODIM, const DataCoder & dataCoder,
+			ODIM &dstODIM, drain::image::Image & dstImage, const drain::Rectangle<int> & cropArea);
+
+	/// Input data selector.
+	DataSelector dataSelector;
+	// DataSelector dataSelector(ODIMPathElem::DATA);
+	// dataSelector.pathMatcher.setElems(ODIMPathElem::DATA);
+
+	typedef std::map<int,std::string> legend_t;
+	legend_t legend;
+
+
+	/// If source data has no quality field, this value is applied for (detected) data.
+	double defaultQuality;
+
+	///  Book-keeping for new data. Finally, in extraction phase, added to odim.ACCnum .
+	/**  Must be kept separate during accumulation. The accumulation array channel count keeps track of bin hits.
+	 *
+	 */
+	size_t counter;
+
+	inline
+	const std::string & getTargetEncoding(){
+		return targetEncoding;
+	}
+
+
+protected:
+
+	static
+	bool checkCompositingMethod(const AccumulationMethod & rule, const ODIM & dataODIM);
+
+	std::string targetEncoding;
+
 
 };
-*/
 
 /// Data array for creating composites and accumulated polar products (Surface rain fall or cluttermaps)
 /**
@@ -80,7 +119,7 @@ public:
  */
 template <class AC, class OD>
 //class RadarAccumulator : public AC { // deprecating AC!
-class RadarAccumulator : public AC {
+class RadarAccumulator : public RadarAccumulatorBase, public AC {
 
 public:
 
@@ -91,7 +130,7 @@ public:
 
 
 	/// Default constructor
-	RadarAccumulator() : dataSelector(ODIMPathElem::DATA|ODIMPathElem::QUALITY), defaultQuality(0.5), counter(0) { // , undetectValue(-52.0) {
+	RadarAccumulator() { // , undetectValue(-52.0) {
 		odim.type.clear();
 		odim.ACCnum = 0; // NEW
 	}
@@ -133,35 +172,16 @@ public:
 
 	pdata_dst_t & extract(DataSet<DstType<OD> > & dstProduct, field_t field = field_t::DATA, const std::string & encoding="C", const drain::Rectangle<int> & cropArea={0,0});
 
-	void extractDraft(ODIM & odim, drain::image::Image & dstData, field_t field, const std::string & encoding="", const drain::Rectangle<int> & cropArea={0,0});
-
-	/// Input data selector.
-	DataSelector dataSelector;
-	// DataSelector dataSelector(ODIMPathElem::DATA);
-	// dataSelector.pathMatcher.setElems(ODIMPathElem::DATA);
-
-	// Possible future extension.
-	// Must choose between char-based or bit flagging (d,w,c,s will overlap).
-	// typedef drain::EnumFlagger<drain::MultiFlagger<FieldType> > FieldFlagger;
-
-	typedef std::map<int,std::string> legend_t;
-	legend_t legend;
+	// void extractDraft(ODIM & odim, drain::image::Image & dstData, field_t field, const std::string & encoding="", const drain::Rectangle<int> & cropArea={0,0});
 
 
 	/// For storing the scaling and encoding of (1st) input or user-defined values. Also for bookkeeping of date, time, sources etc.
 	/*
 	 *  Helps in warning if input data does not match the expected / potential targetEncoding
 	 */
+	// Note: consider rack::ODIM. And perhaps ODIM to inherit FlexibleVariableMap.
 	OD odim;
 
-	/// If source data has no quality field, this value is applied for (detected) data.
-	double defaultQuality;
-
-	///  Book-keeping for new data. Finally, in extraction phase, added to odim.ACCnum .
-	/**  Must be kept separate during accumulation. The accumulation array channel count keeps track of bin hits.
-	 *
-	 */
-	size_t counter;
 
 
 	/// Not critical. If set, needed to warn if input data does not match the expected / potential targetEncoding
@@ -171,24 +191,9 @@ public:
 	void consumeTargetEncoding(std::string & encoding){
 		setTargetEncoding(encoding);
 		encoding.clear();
-		/*
-		if (!encoding.empty()){
-			targetEncoding = encoding;
-			if (odim.quantity.empty()){
-				ODIM m;
-				// Append quantity.
-				m.link("what:quantity", odim.quantity);
-				m.addShortKeys();
-				m.updateValues(encoding);
-			}
-		} */
 	}
 
 
-	inline
-	const std::string & getTargetEncoding(){
-		return targetEncoding;
-	}
 
 	virtual inline
 	std::ostream & toStream(std::ostream & ostr) const {
@@ -203,12 +208,13 @@ public:
 	}
 
 	/// Warns if data scaling involves risks in using WAVG (weighted averaging)
-	bool checkCompositingMethod(const ODIM & srcODIM) const;
+	//bool checkCompositingMethod(const ODIM & srcODIM) const;
+	inline
+	bool checkCompositingMethod(const ODIM & dataODIM){
+		return RadarAccumulatorBase::checkCompositingMethod(this->getMethod(), dataODIM);
+	}
 
 
-protected:
-
-	std::string targetEncoding;
 
 };
 
@@ -304,6 +310,7 @@ void RadarAccumulator<AC,OD>::addData(const pdata_src_t & srcData, const pdata_s
 }
 
 
+/*
 template  <class AC, class OD>
 bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) const {
 
@@ -338,7 +345,7 @@ bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) cons
 
 
 }
-
+*/
 template  <class AC, class OD>
 //void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const FieldList & fields, const std::string & encoding, const drain::Rectangle<int> & cropArea){
 void RadarAccumulator<AC,OD>::extract(DataSet<DstType<OD> > & dstProduct, const drain::image::Accumulator::FieldList & fields, const std::string & encoding, const drain::Rectangle<int> & cropArea){
@@ -361,7 +368,8 @@ void RadarAccumulator<AC,OD>::extract(DataSet<DstType<OD> > & dstProduct, const 
 
 
 template  <class AC, class OD>
-typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract(DataSet<DstType<OD> > & dstProduct, drain::image::Accumulator::FieldType field, const std::string & encoding, const drain::Rectangle<int> & cropArea){
+typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract(DataSet<DstType<OD> > & dstProduct, drain::image::Accumulator::FieldType field,
+		const std::string & encoding, const drain::Rectangle<int> & cropArea){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -428,11 +436,13 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 
 			if (!encoding.empty()){
 				mout.accept("User-defined encoding for data [", odimData.quantity, "]: ", encoding);
-				ProductBase::completeEncoding(odimData, encoding);
+				//odimData.completeEncoding( encoding);
+				odimData.completeEncoding(encoding);
 			}
 			else if (!getTargetEncoding().empty()){
 				mout.ok<LOG_NOTICE>("Using initial/default encoding for data [", odimData.quantity, "]: ", getTargetEncoding());
-				ProductBase::completeEncoding(odimData, getTargetEncoding());
+				// odimData.completeEncoding( getTargetEncoding());
+				odimData.completeEncoding(getTargetEncoding());
 			}
 
 			if (odimData.quantity.empty()){
@@ -442,6 +452,9 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 			pdata_dst_t & dstData = dstProduct.getData(odimData.quantity);
 
 			// Update 2/2: copy "instantaneous", maybe adjusted encoding to retrieved data
+			extractFinally(*this, field, odimData, dataCoder, dstData.odim, dstData.data, cropArea);
+			return dstData;
+			/*
 			drain::SmartMapTools::updateValues(dstData.odim, odimData);
 
 			if (dataCoder.dataODIM.isSet()){
@@ -455,6 +468,7 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 				mout.error("Target encoding unset: gain=", dataCoder.dataODIM.scaling.scale, ", type=", dataCoder.dataODIM.type);
 				return dstData;
 			}
+			*/
 
 		}
 		else {
@@ -486,7 +500,7 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 			}
 			else if (!encoding.empty()){
 				mout.accept<LOG_INFO>("User-defined encoding for quality [", odimQuality.quantity, "]: ", encoding);
-				ProductBase::completeEncoding(odimQuality, encoding);
+				odimQuality.completeEncoding(encoding);
 				mout.debug("User-defined encoding for QUALITY: -> ", odimQuality);
 			}
 			else {
@@ -512,37 +526,27 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 			q_support_t & qualityOwner = Accumulator::isSpecific(field) ? (q_support_t &) dstProduct.getData(odimData.quantity) : (q_support_t &) dstProduct;
 			pdata_dst_t & dstQuality = qualityOwner.getQualityData(odimQuality.quantity);
 
-			/*
-			drain::SmartMapTools::updateValues(dstQuality.odim, odimQuality);
-
-			dstQuality.data.setType(odimQuality.type);
-			mout.debug3("dstData: " , dstQuality );
-
-			if (!dataCoder.qualityODIM.isSet()){
-				// Note: this is also checked by Accumulator, but better diagnostics (ODIM) here:
-				mout.error("Target encoding unset: gain=", dataCoder.qualityODIM.scaling.scale, ", type=", dataCoder.dataODIM.type);
-				return dstQuality;
-			}
-
-			this->Accumulator::extractField(fieldChar, dataCoder, dstQuality.data, cropArea);
-
-			return dstQuality;
-			*/
 
 			// NOTE similarity... but fct still would need separating (dataCoder, odimData, odimQuality, odimNow, field, crop)
+			extractFinally(*this, field, odimQuality, dataCoder, dstQuality.odim, dstQuality.data, cropArea);
+			return dstQuality;
+			/*
 			drain::SmartMapTools::updateValues(dstQuality.odim, odimQuality);
-
-			if (dataCoder.qualityODIM.isSet()){
-				dstQuality.data.setType(odimData.type);
+			// if (dataCoder.squalityODIM.isSet()){
+			if (dstQuality.odim.isSet()){
+				// dstQuality.data.setType(odimData.type); // <- this was probably wrong
+				dstQuality.data.setType(dstQuality.odim.type); // <- this was probably wrong
 				mout.debug3("dstData: " , dstQuality );
 				this->Accumulator::extractField(fieldChar, dataCoder, dstQuality.data, cropArea);
 				return dstQuality;
 			}
 			else {
 				// Note: this is also checked by Accumulator, but better diagnostics (ODIM) here:
-				mout.error("Target encoding unset: gain=", dataCoder.qualityODIM.scaling.scale, ", type=", dataCoder.qualityODIM.type);
+				mout.error("Target encoding unset: gain=", dstQuality.odim.scaling.scale, ", type=", dstQuality.odim.type);
+				//mout.error("Target encoding unset: gain=", dataCoder.qualityODIM.scaling.scale, ", type=", dataCoder.qualityODIM.type);
 				return dstQuality;
 			}
+			*/
 
 		}
 
@@ -556,47 +560,6 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 
 }
 
-template  <class AC, class OD>
-void RadarAccumulator<AC,OD>::extractDraft(ODIM & dstODIM, drain::image::Image & dstData, field_t field, const std::string & encoding, const drain::Rectangle<int> & cropArea){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	if (dstODIM.quantity.empty()){
-		mout.warn(DRAIN_LOG_VAR(dstODIM));
-		mout.error("dstODIM.quantity unset");
-		return;
-	}
-
-	/*
-	ODIM dataODIM;
-	ODIM qualityODIM;
-
-	if (!encoding.empty()){
-		mout.accept<LOG_INFO>("User-defined encoding for  [", dstODIM.quantity, "]: ", encoding);
-		if (Accumulator::isQuality(field)){
-			ProductBase::completeEncoding(qualityODIM, encoding);
-		}
-		else {
-			ProductBase::completeEncoding(dataOdim, encoding);
-		}
-		mout.debug("Final encoding: ", dstODIM.quantity);
-	}
-
-	if (!dstODIM.isSet()){
-		mout.error("dstODIM.quantity unset");
-	}
-
-	this->Accumulator::extractField(field, dataCoder, dstData, cropArea);
-
-	switch (field) {
-		case field_t::QUALITY:
-			break;
-		default:
-			break;
-	}
-	*/
-
-}
 
 template  <class AC, class OD>
 void RadarAccumulator<AC,OD>::extractOLD(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,

@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "data/SourceODIM.h"
 #include "data/ODIMPathTools.h"
+#include "product/ProductBase.h"
 
 #include "resources.h"  // for RackContext?
 #include "composite.h"  // for cmdFormat called by
@@ -52,29 +53,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-/*
-Composite & Compositor::getCompositeOLD() const {
-
-	RackContext & ctx  = this->template getContext<RackContext>();
-
-	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-	if (ctx.composite.isDefined()){ // raw or product
-		mout.debug("private composite" );
-		return ctx.composite;
-	}
-
-	RackContext & baseCtx = getResources().baseCtx();
-	if (baseCtx.composite.isDefined()){ // raw or product
-		mout.debug("shared composite" );
-		return baseCtx.composite;
-	}
-
-	// Undefined, but go on...
-	return ctx.composite;
-
-};
-*/
 
 double Compositor::applyTimeDecay(Composite & composite, double w, const ODIM & odim) const {
 
@@ -357,7 +335,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 					*/
 				}
 				mout.debug("Storing metadata: " , composite.odim );
-				ProductBase::completeEncoding(composite.odim, encoding); // NEW: unneeded? WAS: note, needed even if encoding==""
+				composite.odim.completeEncoding( encoding); // NEW: unneeded? WAS: note, needed even if encoding==""
 			}
 			else {
 

@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "13.2"
+#define __RACK_VERSION__ "13.3"
 
 /**
  *  Version 13
@@ -42,6 +42,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Typo fix: MINIMUM explanation
  *  Release 13.2
  *  - Revised cExtract field handling, float type as default
+ *  Release 13.3
+ *  - ProductBase::completeEncoding(odim, encoding) -> odim.completeEncoding(encoding)
  *
  *  Version 12
  *  - Revised QuantityMap, allowing retrieve("DBZXP")

@@ -491,7 +491,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 						}
 						else {
 							//dstData.odim.updateValues(ctx.targetEncoding);
-							ProductBase::completeEncoding(dstData.odim, ctx.targetEncoding);
+							dstData.odim.completeEncoding( ctx.targetEncoding);
 							// dstData.odim.quantity = dstQuantity; // replace syntax pattern
 							if (CHANGE_TYPE && ! CHANGE_SCALING){
 								mout.attention("no conf for: ", dstQuantity);

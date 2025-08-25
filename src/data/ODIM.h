@@ -224,6 +224,8 @@ public:
 	virtual
 	void updateLenient(const ODIM & odim);
 
+	void completeEncoding(const std::string & encoding);
+
 	/// Retrieves the stored time. Returns true if successful. // consider:  throws error if fail.
 	inline
 	bool getTime(drain::Time & t) const {

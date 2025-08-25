@@ -230,7 +230,7 @@ protected:
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
 
-		ProductBase::completeEncoding(dst.odim, encoding);
+		dst.odim.completeEncoding( encoding);
 
 		if (!dst.odim.type.empty())
 			dst.data.setType(dst.odim.type);
@@ -309,7 +309,7 @@ void RadarProductOp<MS,MD>::setEncoding(const ODIM & inputODIM, PlainData<dst_t>
 
 	ProductBase::applyODIM(dst.odim, this->odim);
 	ProductBase::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
-	ProductBase::completeEncoding(dst.odim, this->targetEncoding);
+	dst.odim.completeEncoding( this->targetEncoding);
 
 	// Set actual scaling up to date with metadata)
 	dst.data.setScaling(dst.odim.scaling);

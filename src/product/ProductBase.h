@@ -170,6 +170,7 @@ public:
 	 */
 	static
 	void completeEncoding(ODIM & productODIM, const std::string & targetEncoding);
+	// Deprecating. (Moved to ODIM::)
 
 
 

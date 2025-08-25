@@ -452,7 +452,7 @@ void RackContext::convertGrayImage(const drain::image::Image & srcImage){ // Rac
 	op.processImage2023(srcOdim, srcImage, ctx.grayImage);
 	/*
 	op.odim.updateFromCastableMap(srcOdim); // quantity etc?
-	ProductBase::completeEncoding(op.odim, ctx.targetEncoding);
+	op.odim.completeEncoding( ctx.targetEncoding);
 	mout.debug("target: '", ctx.targetEncoding, "' -> ", EncodingODIM(op.odim));
 	// ctx.grayImage.properties.importCastableMap(op.odim); // Optional
 	op.processImage(srcOdim, srcImage, op.odim, ctx.grayImage);

@@ -376,7 +376,7 @@ public:
 
 		ProductBase::applyODIM(acc.odim, srcData.odim, true);
 		if (!resources.baseCtx().targetEncoding.empty()){
-			// ProductBase::completeEncoding(acc.odim, resources.baseCtx().targetEncoding);
+			// acc.odim.completeEncoding( resources.baseCtx().targetEncoding);
 			mout.info("targetEncoding already at this stage may be deprecating(?) - use it only in extraction "  );
 			acc.setTargetEncoding(resources.baseCtx().targetEncoding);
 			resources.baseCtx().targetEncoding.clear();

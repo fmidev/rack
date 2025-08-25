@@ -33,6 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Flags.h>
 
 #include "ODIM.h"
+#include "QuantityMap.h"
+
 
 template <>
 const drain::EnumDict<rack::ODIM::Version>::dict_t drain::EnumDict<rack::ODIM::Version>::dict = {
@@ -293,6 +295,81 @@ void ODIM::adjustGeometry(size_t cols, size_t rows){
 	mout.unimplemented("resolution adjustment");
 }
 
+void ODIM::completeEncoding(const std::string & encoding){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (encoding.empty()){
+		mout.debug("empty request (ok)" );
+	}
+
+	const std::string origQuantity(quantity);
+
+	// "Trick": pick quantity only dstODIM.
+	//// Warning:
+	EncodingODIM odim;
+	odim.type = "";
+	odim.link("what:quantity", quantity); 	// Consider (..., bool ALLOW_QUANTITY_CHANGE=true)
+	odim.addShortKeys();
+	odim.updateValues(encoding);
+
+	//mout.debug2()
+	/*
+	mout.warn(odim.getKeys() );
+	mout.warn("request: " , encoding );
+	mout.warn("dstODIM.quantity: " , dstODIM.quantity );
+	mout.warn("odim: " , odim );
+	*/
+
+	if (quantity.empty()){
+		mout.warn("quantity (still) empty, odim=" , odim );
+	}
+
+	// ADD?: if !origQuantity.empty() && ...
+	if (quantity != origQuantity){
+		mout.info("quantity change " , origQuantity , " => " , quantity , " requested, ok"  );
+	}
+	else if (!odim.type.empty() && (odim.type != type)){
+		mout.info("type change " , type , " => " , odim.type , " requested, ok" );
+	}
+	else if (!isSet()){ // quantity set, but type or gain unset
+		mout.info("ODIM still unset, applying defaults for quantity: " , quantity );
+	}
+	else {
+		// Ok, quantity unchanged, type is set and unchanged, some scaling has been set.
+		// That is, no "resetting" using quality is needed.
+		addShortKeys();
+		updateValues(encoding);
+		mout.info("adjusted encoding: " , encoding , " => " , EncodingODIM(*this) );
+		return;
+	}
+
+	//mout.warn("quantity [" , dstODIM.quantity , "]" );
+	const QuantityMap & qmap = getQuantityMap();
+
+	// What?? Risk of overriding earlier settings?
+	if (qmap.setQuantityDefaults(*this, quantity, encoding)){
+		mout.accept<LOG_DEBUG>("quantity=", quantity, " encoding=", encoding);
+	}
+	else {
+		if (qmap.hasQuantity(quantity)){
+			if (drain::Type::call<drain::typeIsInteger>(type))
+				mout.warn(); // Integer: underflow/overflow possible. Bit value
+			else
+				mout.info(); // Pretty safe, only precision issues possible
+			mout << "No explicit encoding for storage type '" << type << "' for quantity [" << quantity << "], guessing: " << EncodingODIM(*this) << mout.endl;
+		}
+		else {
+			if (encoding.empty()){
+				mout.warn("unknown quantity [" , quantity , "], guessing: " , EncodingODIM(*this) );
+			}
+			else {
+				mout.note("unknown quantity [" , quantity , "], setting: " , EncodingODIM(*this) );
+			}
+		}
+
+	}
+}
 
 void ODIM::updateLenient(const ODIM & odim){
 

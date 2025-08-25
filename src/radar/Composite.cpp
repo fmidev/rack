@@ -841,7 +841,7 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 			mout.debug("extracting DATA/" , field, " [", odimData.quantity, ']');
 			if (!encoding.empty()){
 				mout.accept("User-defined encoding for data [", odimData.quantity, "]: ", encoding);
-				ProductBase::completeEncoding(odimData, encoding);
+				odimData.completeEncoding( encoding);
 			}
 			else if (!getTargetEncoding().empty()){
 				mout.ok<LOG_NOTICE>("Using previously stored encoding for data [", odimData.quantity, "]: ", getTargetEncoding());
@@ -906,7 +906,7 @@ Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & d
 
 			if (!encoding.empty()){
 				mout.accept<LOG_INFO>("User-defined encoding for quality [", odimQuality.quantity, "]: ", encoding);
-				ProductBase::completeEncoding(odimQuality, encoding);
+				odimQuality.completeEncoding( encoding);
 				mout.debug("User-defined encoding for QUALITY: -> ", odimQuality);
 			}
 			typedef QualityDataSupport<DstType<CartesianODIM> > q_support_t;

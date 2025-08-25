@@ -169,7 +169,7 @@ void DopplerWindowOp<W>::setEncoding(const ODIM & inputODIM, PlainData<PolarDst>
 	}
 
 	//ProductBase::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
-	ProductBase::completeEncoding(dst.odim, targetEncoding);
+	dst.odim.completeEncoding( targetEncoding);
 
 	dst.data.setScaling(dst.odim.scaling); // needed?
 	//dst.data.setScaling(dst.odim.scaling.scale, dst.odim.scaling.offset);

@@ -786,7 +786,7 @@ public:
 
 			// This step only for storage type (quantity (other easily discarded).
 
-			//ProductBase::completeEncoding(data.odim, ctx.targetEncoding);
+			//data.odim.completeEncoding( ctx.targetEncoding);
 			//data.setEncoding(data.odim.type);
 			//data.data.setScaling(data.odim.scaling);
 			//data.data.setScaling(128.0, 120); // RGB = unitless.
