@@ -58,7 +58,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+struct PolarAreaSelector : drain::BeanLike {
 
+	inline
+	PolarAreaSelector() : BeanLike(__FUNCTION__, ""){
+	};
+
+
+	drain::Range<double> distance = {0.0, 250.0};
+	drain::Range<double> azimuth  = {0.0, 360.0};
+
+};
 
 /// Resources provided separately for each thread.
 /**
@@ -108,13 +118,8 @@ public:
 	/// Add prefix, unless filePath starts with a slash '/'.
 	void resolveFilePath(const std::string & prefix, const std::string & filePath, std::string & finalFilePath);
 
-	/// TODO: inherit from ProductBase
-	/*
-	std::string targetEncoding; // consider encodingRequest !
-	ODIMPathElem appendResults;
-	/// Determines if also intermediate results (1) are saved. See --aStore
-	int outputDataVerbosity;
-	*/
+	PolarAreaSelector polarAreaSelector;
+
 
 	// Accumulator for data in Cartesian coordinates
 	Composite composite;

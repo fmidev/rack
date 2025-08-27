@@ -389,6 +389,7 @@ public:
 		this->updateBean();
 	}
 
+	// New 2025
 	void set(const UniTuple<double,2> & range, double scale=1.0, double bias=0.0){
 		this->location = 0.5 * (range[0] + range[1]);
 		this->width    =       (range[1] - range[0]);
@@ -465,15 +466,21 @@ public:
 		updateBean();
 	}
 
+	/// Set peak to a given half-width range.
+	// New 2025
+	void set(const UniTuple<double,2> & range, double scale=1.0, double bias=0.0){
+		this->location = 0.5 * (range[0] + range[1]);
+		this->width    =       (range[1] - range[0]);
+		this->setScale(scale, bias);
+		this->updateBean();
+	}
 
 
-	inline
-	virtual
+	virtual	inline
 	double operator()(double x) const {
 		x = steepness * (x - location);
 		x = 1.0 + x*x;
 		return this->biasFinal + this->scaleFinal/(x*x); // *x*x*x*x
-
 	};
 
 
@@ -484,13 +491,13 @@ public:
 		this->updateScale();
 	}
 
-	double location;
-	double width;
+	double location = 0.0;
+	double width = 1.0;
 
 protected:
 
 	mutable
-	double steepness;
+	double steepness = 1.0;
 
 
 };
@@ -545,8 +552,8 @@ public:
 			return  this->biasFinal;
 	};
 
-	double location;
-	double width;
+	double location = 0.0;
+	double width    = 1.0;
 
 protected:
 
@@ -619,7 +626,6 @@ public:
 		//std::cerr << location << ',' << width << ',' << widthFinal << ',' << (int)this->INVERSE << '\n';
 	}
 
-	inline
 	virtual
 	double operator()(double x) const {
 		x = x - this->location;
@@ -631,8 +637,8 @@ public:
 			return  this->biasFinal;
 	};
 
-	double location;
-	double width;
+	double location = 0.0;
+	double width    = 1.0;
 
 protected:
 
@@ -710,8 +716,8 @@ public:
 
 
 
-	double location;
-	double width;
+	double location = 0.0;
+	double width = 1.0;
 
 protected:
 
@@ -730,7 +736,7 @@ protected:
 	}
 
 	mutable
-	double steepness;
+	double steepness = 1.0;
 
 
 };

@@ -398,6 +398,42 @@ public:
 };
 
 
+struct TestAreaSelector : drain::BeanLike {
+
+	inline
+	TestAreaSelector() : BeanLike(__FUNCTION__, "Polar area (sector, annulus) selector"){
+		parameters.link("distance", this->distance.tuple());
+		parameters.link("azimuth",  this->azimuth.tuple());
+	};
+
+	drain::Range<double> distance = {0.0, 250.0};
+	drain::Range<double> azimuth  = {0.0, 360.0};
+
+};
+
+// Compare this with: CmdImageBox : public drain::BeanCommand<drain::image::ImageBox>
+
+class CmdSelectArea : public drain::BeanCommand<TestAreaSelector> { // SimpleCommand<> {
+
+public:
+
+	CmdSelectArea() : drain::BeanCommand<TestAreaSelector> (){ // __FUNCTION__, "Select area for sampling and selected polar commands") {
+	};
+
+	CmdSelectArea(const CmdSelectArea &cmd) : drain::BeanCommand<TestAreaSelector> (){ // __FUNCTION__, "Select area for sampling and selected polar commands") {
+	};
+
+	void exec() const {
+		RackContext & ctx  = getContext<RackContext>(); // this->template
+		ctx.polarAreaSelector.distance = bean.distance;
+		ctx.polarAreaSelector.azimuth  = bean.azimuth;
+
+		// ctx.inputFlags.set(value);
+	}
+
+};
+
+
 /// Modifies metadata (data attributes).
 /**
 
@@ -2505,6 +2541,9 @@ MainModule::MainModule(){ //
 	DRAIN_CMD_INSTALL(Cmd,SelectObject)();
 	linkRelatedCommands(Select, SelectQuantity, SelectObject);
 
+	//DRAIN_CMD_INSTALL(Cmd,SelectArea)();
+	//linkRelatedCommands(Select, SelectArea);
+
 	DRAIN_CMD_INSTALL(Cmd,Set)();
 	DRAIN_CMD_INSTALL(drain::Cmd,Status)();
 	// install<CmdSet>();
@@ -2787,6 +2826,8 @@ HiddenModule::HiddenModule(){ //
 	install<CmdHdf5Test>("getMyH5");
 	install<CmdUpdateVariables>();
 
+	//DRAIN_CMD_INSTALL(Cmd,SelectArea)();
+	install<CmdSelectArea>();
 	// install<CmdTrigger>();
 	// install<CmdEcho>(); consider CmdRemark
 	// install<CmdSelectOld>();

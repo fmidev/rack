@@ -102,7 +102,7 @@ public:
 	}
 
 	/// Prints images geometry, buffer size and type information.
-	void toOStr(std::ostream &ostr = std::cout) const {
+	void toStream(std::ostream &ostr = std::cout) const {
 		// "RadarDataPicker "
 		ostr << drain::TypeName<rack::RadarDataPicker<OD> >::name;
 		ostr << this->width << "x" << this->height << "; " << this->ref << "; " <<  odim << '\n';
@@ -131,18 +131,12 @@ protected:
 template <class OD>
 inline
 std::ostream & operator<<(std::ostream &ostr, const RadarDataPicker<OD> & p){
-	p.toOStr(ostr);
+	p.toStream(ostr);
 	return ostr;
 }
 
 }
 
-namespace drain {
-
-//template <class OD>
-//const std::string TypeName<rack::RadarDataPicker<OD> >::name("RadarDataPicker");
-
-}
 
 namespace rack {
 
@@ -223,24 +217,7 @@ namespace drain {
 DRAIN_TYPENAME(rack::RadarDataPicker<rack::PolarODIM>);
 DRAIN_TYPENAME(rack::RadarDataPicker<rack::CartesianODIM>);
 
-
-/*
-template <>
-const std::string TypeName<rack::RadarDataPicker<rack::PolarODIM> >:: name;
-
-template <>
-const std::string TypeName<rack::RadarDataPicker<rack::CartesianODIM> >:: name;
-
-template <>
-const std::string TypeName<rack::PolarDataPicker>:: name;
-
-template <>
-const std::string TypeName<rack::CartesianDataPicker>:: name;
-*/
-
-}
+} // Rack
 
 
 #endif /* RADAR_DATA_PICKER_H */
-
-// Rack

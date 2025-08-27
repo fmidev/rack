@@ -164,7 +164,7 @@ void NonMet2Op::computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<Pol
 
 void ChaffOp::init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
 
-	parameters.link("dbzPeak",     this->dbzParam = dbzPeak,  "Typical reflectivity (DBZH)");
+	parameters.link("dbzPeak",     this->dbzParam.tuple(dbzPeak-5.0, dbzPeak+5.0),  "Typical reflectivity (DBZH)");
 	parameters.link("vradDevMax",  this->vradDevThreshold = vradDevMax, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
 	parameters.link("rhoHVmax",    this->rhoHVthreshold = rhoHVmax,  "Fuzzy threshold of maximum rhoHV value");
 	parameters.link("zdrAbsMin",   this->zdrAbsThreshold = zdrAbsMin,  "Fuzzy threshold of absolute ZDR");
