@@ -177,7 +177,13 @@ void ChaffOp::init(double dbzPeak, double vradDevMax, double rhoHVmax, double zd
 void ChaffOp::computeFuzzyDBZ(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
 	RadarFunctorOp<drain::FuzzyBell<double> > dbzFuzzifier;
 	dbzFuzzifier.odimSrc = srcData.odim;
-	dbzFuzzifier.functor.set(dbzParam, +25.0);
+	// dbzFuzzifier.functor.set(dbzPeak, +25.0);
+	if (dbzParam.empty()){ // start==end
+		dbzFuzzifier.functor.set(dbzParam.min-10.0, dbzParam.max+10.0);
+	}
+	else {
+		dbzFuzzifier.functor.set(dbzParam.min, dbzParam.max);
+	}
 	applyOperator(dbzFuzzifier, srcData, dstData, dstProduct);
 };
 

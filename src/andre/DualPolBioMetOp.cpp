@@ -64,9 +64,10 @@ using namespace drain::image;
  *
  */
 
-void InsectOp::init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
+void InsectOp::init(double dbzMax, double vradDevMax, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
 
-	parameters.link("dbzPeak",      this->dbzParam = dbzPeak,  "Max reflectivity, +/-5dBZ");
+	//parameters.link("dbzPeak",      this->dbzPeak = dbzPeak,  "Max reflectivity, +/-5dBZ");
+	parameters.link("dbzMax",       this->dbzParam.tuple(dbzMax-5.0, dbzMax+5.0),  "Max reflectivity").fillArray = true;
 	parameters.link("vradDevMax",   this->vradDevThreshold = vradDevMax, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
 	parameters.link("rhoHVmax",     this->rhoHVthreshold = rhoHVmax,  "Fuzzy threshold of maximum rhoHV value");
 	parameters.link("zdrAbsMin",    this->zdrAbsThreshold = zdrAbsMin,  "Fuzzy threshold of absolute ZDR");
@@ -77,7 +78,7 @@ void InsectOp::init(double dbzPeak, double vradDevMax, double rhoHVmax, double z
 
 void BirdOp::init(double dbzPeak, double vradDevMin, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
 
-	parameters.link("dbzPeak",      this->dbzParam = dbzPeak,  "Typical reflectivity (DBZH)");
+	parameters.link("dbzPeak",      this->dbzParam.tuple(dbzPeak-5.0, dbzPeak+5.0) ,  "Typical reflectivity (DBZH)") = true;
 	parameters.link("vradDevMin",   this->vradDevThreshold = vradDevMin, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
 	parameters.link("rhoHVmax",     this->rhoHVthreshold = rhoHVmax,  "Fuzzy threshold of maximum rhoHV value");
 	parameters.link("zdrAbsMin",    this->zdrAbsThreshold = zdrAbsMin,  "Fuzzy threshold of absolute ZDR");
@@ -95,7 +96,14 @@ void BirdOp::init(double dbzPeak, double vradDevMin, double rhoHVmax, double zdr
 void InsectOp::computeFuzzyDBZ(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
 	//RadarFunctorOp<FuzzyBell<double> > dbzFuzzifier;
 	RadarFunctorOp<drain::FuzzyStep<double> > dbzFuzzifier;
-	dbzFuzzifier.functor.set(dbzParam+5.0, dbzParam-5.0); // INVERSE
+	// dbzFuzzifier.functor.set(dbzPeak+5.0, dbzPeak-5.0); // INVERSE
+	if (!dbzParam.empty()){ // min==max
+		dbzFuzzifier.functor.set(dbzParam);
+	}
+	else {
+		// span out
+		dbzFuzzifier.functor.set(dbzParam.min-5.0, dbzParam.max+5.0);
+	}
 	dbzFuzzifier.odimSrc = srcData.odim;
 	// , "FUZZY_DBZH_LOW"
 	applyOperator(dbzFuzzifier, srcData, dstData, dstProduct);
@@ -104,7 +112,13 @@ void InsectOp::computeFuzzyDBZ(const PlainData<PolarSrc> & srcData, PlainData<Po
 void BirdOp::computeFuzzyDBZ(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
 	RadarFunctorOp<FuzzyBell<double> > dbzFuzzifier;
 	dbzFuzzifier.odimSrc = srcData.odim;
-	dbzFuzzifier.functor.set(dbzParam, +10.0);
+	if (!dbzParam.empty()){ // min==max
+		dbzFuzzifier.functor.set(dbzParam);
+	}
+	else {
+		// span out
+		dbzFuzzifier.functor.set(dbzParam.min-5.0, dbzParam.max+5.0);
+	}
 	// , "FUZZY_DBZH_LOW"
 	applyOperator(dbzFuzzifier, srcData, dstData, dstProduct);
 };

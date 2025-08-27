@@ -180,7 +180,8 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 
 }
 
-// Deprecating. (Moved to ODIM::)
+// Moved to ODIM::
+/*
 void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -199,13 +200,6 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 	odim.addShortKeys();
 	odim.updateValues(encoding);
 
-	//mout.debug2()
-	/*
-	mout.warn(odim.getKeys() );
-	mout.warn("request: " , encoding );
-	mout.warn("dstODIM.quantity: " , dstODIM.quantity );
-	mout.warn("odim: " , odim );
-	*/
 
 	if (dstODIM.quantity.empty()){
 		mout.warn("quantity (still) empty, odim=" , odim );
@@ -256,11 +250,14 @@ void ProductBase::completeEncoding(ODIM & dstODIM, const std::string & encoding)
 
 	}
 }
-
+*/
 
 
 // Under constr.
+
 void ProductBase::setAllowedEncoding(const std::string & keys) {
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.unimplemented<LOG_ERR>();
 	std::list<std::string> l;
 	drain::StringTools::split(keys, l, ',');
 }

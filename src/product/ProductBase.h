@@ -168,8 +168,8 @@ public:
 	 *  TODO: Template ODIM
 	 *  (Set allowed encoding under construction.)
 	 */
-	static
-	void completeEncoding(ODIM & productODIM, const std::string & targetEncoding);
+	// static
+	//void completeEncoding(ODIM & productODIM, const std::string & targetEncoding);
 	// Deprecating. (Moved to ODIM::)
 
 

@@ -67,8 +67,8 @@ protected:
 	virtual inline
 	~FuzzyDetectorOp(){};
 
-
-	double dbzParam = 0.0;  // Peak or threshold location (hence "param").
+	drain::Range<double> dbzParam = {-5.0,+5.0}; // Peak(span) or threshold(area), hence called generally "parameter".
+	//double dbzPeak = 0.0;  // Peak or threshold location.
 	double vradDevThreshold = 2.0;
 	double rhoHVthreshold = 0.95;
 	double zdrAbsThreshold = 2.0;

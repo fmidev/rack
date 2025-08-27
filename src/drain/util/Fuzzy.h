@@ -389,6 +389,13 @@ public:
 		this->updateBean();
 	}
 
+	void set(const UniTuple<double,2> & range, double scale=1.0, double bias=0.0){
+		this->location = 0.5 * (range[0] + range[1]);
+		this->width    =       (range[1] - range[0]);
+		this->setScale(scale, bias);
+		this->updateBean();
+	}
+
 
 	virtual
 	void updateBean() const override {
@@ -406,14 +413,14 @@ public:
 
 	};
 
-	double location;
-	double width;
+	double location = 0.0;
+	double width = 1.0;
 
 protected:
 
 	//double scale;
 	mutable
-	double widthInv;
+	double widthInv = 1.0;
 
 
 };
