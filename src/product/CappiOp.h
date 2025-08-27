@@ -56,11 +56,13 @@ class CappiOp : public CumulativeProductOp {
 public:
 
 	/// Nominal height of horizontal intersection.
-	double altitude;
+	double altitude = 1000.0; // meters
 
 	//
-	Beam beam;
-	double weightMin;
+	Beam beam = 1.0; // degrees
+	double weightMin = -0.1; // limit for
+
+	bool COMPUTE_HGHT = false;
 
 	/// Pseudo-CAPPI: the constant altitude planar position indicator.
 	/**
@@ -77,6 +79,17 @@ public:
 	//inline CappiOp(const CappiOp &op) : CumulativeProductOp(op), altitude(1000.0), weightMin(-1.0) {};
 
 	void processData(const Data<PolarSrc> & data, RadarAccumulator<Accumulator,PolarODIM> & accumulator) const override;
+
+	virtual inline
+	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const override {
+		if (COMPUTE_HGHT){
+			static const std::string HGHT("HGHT");
+			return HGHT;
+		}
+		else {
+			return CumulativeProductOp::getOutputQuantity();
+		}
+	}
 
 };
 

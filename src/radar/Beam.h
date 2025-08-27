@@ -39,10 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Geo.h>
 
 
-/*! \file
- *  This file contains radar constants...
- */
-// 6,370
+
 namespace rack {
 
 
@@ -50,15 +47,26 @@ class Beam {
 
 public:
 
+	inline
+	Beam(double widthDeg = 1.0){
+		setBeamWidthDeg(widthDeg);
+	}
+
 	/// Beam width in degrees.
 	double width;
+
+	inline
+	Beam & operator=(const double & widthDeg){
+		setBeamWidthDeg(widthDeg);
+		return *this;
+	}
 
 	/// Set beam width in degrees.
 	inline
 	void setBeamWidthDeg(double width){
 		this->width = width;
-		fuzzyBell.set(0,  0.5 * width); // half-width
-		fuzzyBell2.set(0, 0.5 * width); // half-width
+		// fuzzyBell.set(0,  0.5 * width); // half-width
+		// fuzzyBell2.set(0, 0.5 * width); // half-width
 	}
 
 	/// Set beam width in radians.
@@ -91,10 +99,10 @@ public:
 	 */
 
 	// A fuzzy beam power model, with +/- 0.1 degree beam "width".
-	drain::FuzzyBell<double>  fuzzyBell;
+	// drain::FuzzyBell<double>  fuzzyBell;
 
 	// A fuzzy beam power model, with +/- 0.1 degree beam "width".
-	drain::FuzzyBell2<double> fuzzyBell2;
+	// drain::FuzzyBell2<double> fuzzyBell2;
 	//drain::FuzzyBell<double> beamPower:
 
 

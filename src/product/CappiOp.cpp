@@ -68,6 +68,7 @@ CappiOp::CappiOp(double altitude, bool aboveSeaLevel, double beamWidth, double w
 	parameters.link("beamWidth", this->beam.width = beamWidth, "deg"); //"virtual beam width");
 	parameters.link("weightMin", this->weightMin = weightMin, "-0.1|0...1");
 	parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "string");
+	parameters.link("height", this->COMPUTE_HGHT = false, "true|false");
 	//parameters.link("weightExponent", this->weightExponent = weightExponent, "scalar");
 
 	//dataSelector.setQuantities("^DBZH$");
@@ -218,38 +219,79 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		// TODO: derive iStart and iEnd instead.
 		//if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.geometry.width)){
 
-		for (size_t j = 0; j < accumulator.accArray.getHeight(); ++j) {
+		if (!COMPUTE_HGHT){
 
-			jSweep = (j * sweep.odim.area.height) / accumulator.accArray.getHeight();
 
-			value = sweep.data.get<double>(iSweep, jSweep);
+			for (size_t j = 0; j < accumulator.accArray.getHeight(); ++j) {
 
-			// if (i==j) std::cerr << "cappi w0=" << weight << "(" << value << ") => ";
+				jSweep = (j * sweep.odim.area.height) / accumulator.accArray.getHeight();
 
-			if (USE_QUALITY){
-				w = sweepQuality.data.get<double>(iSweep,jSweep);
-				if (!coder.decode(value, w))
-					continue;
-				w = beamWeight * w;
-			}
-			else {
-				if (value == sweep.odim.undetect){
-					w = beamWeight * DataCoder::undetectQualityCoeff; //converter.undetectQualityCoeff;
+				value = sweep.data.get<double>(iSweep, jSweep);
+
+				// if (i==j) std::cerr << "cappi w0=" << weight << "(" << value << ") => ";
+
+				if (USE_QUALITY){
+					w = sweepQuality.data.get<double>(iSweep,jSweep);
+					if (!coder.decode(value, w))
+						continue;
+					w = beamWeight * w;
 				}
 				else {
-					w = beamWeight;
+					if (value == sweep.odim.undetect){
+						w = beamWeight * DataCoder::undetectQualityCoeff; //converter.undetectQualityCoeff;
+					}
+					else {
+						w = beamWeight;
+					}
+					if (!coder.decode(value))
+						continue;
+
 				}
-				if (!coder.decode(value))
-					continue;
+
+				address = accumulator.accArray.data.address(i,j);
+				accumulator.add(address, value, w);
+				//accumulator.add(address, value, 1.0);
 
 			}
 
-			address = accumulator.accArray.data.address(i,j);
-			accumulator.add(address, value, w);
-			//accumulator.add(address, value, 1.0);
-
 		}
+		else { // EXPERIMENTAL
 
+			double d = accumulator.odim.getBinDistance(i);
+			value = Geometry::heightFromEtaGround(sweep.odim.getElangleR(), d);
+
+			mout.experimental("Computing HGHT:", value);
+
+			for (size_t j = 0; j < accumulator.accArray.getHeight(); ++j) {
+
+				jSweep = (j * sweep.odim.area.height) / accumulator.accArray.getHeight();
+
+				//value = sweep.data.get<double>(iSweep, jSweep);
+
+				// if (i==j) std::cerr << "cappi w0=" << weight << "(" << value << ") => ";
+
+				if (USE_QUALITY){
+					w = sweepQuality.data.get<double>(iSweep,jSweep);
+					if (!coder.decode(value, w))
+						continue;
+					w = beamWeight * w;
+				}
+				else {
+					if (value == sweep.odim.undetect){
+						w = beamWeight * DataCoder::undetectQualityCoeff; //converter.undetectQualityCoeff;
+					}
+					else {
+						w = beamWeight;
+					}
+					if (!coder.decode(value))
+						continue;
+
+				}
+
+				address = accumulator.accArray.data.address(i,j);
+				accumulator.add(address, value, w);
+			}
+		}
 	}
 	/*
 	std::stringstream filename;
