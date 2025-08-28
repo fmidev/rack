@@ -82,14 +82,16 @@ public:
 
 	virtual inline
 	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const override {
+		static const std::string HGHT("HGHT");
 		if (COMPUTE_HGHT){
-			static const std::string HGHT("HGHT");
 			return HGHT;
 		}
 		else {
-			return CumulativeProductOp::getOutputQuantity();
+			return CumulativeProductOp::getOutputQuantity(inputQuantity);
 		}
 	}
+
+
 
 };
 

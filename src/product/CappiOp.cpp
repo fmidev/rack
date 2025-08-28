@@ -139,7 +139,21 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 	// In this context decoding only, ie form bytevalues to physical values.
 	DataCoder coder(sweep.odim, sweepQuality.odim);
-	mout.debug("decoder: ", (const drain::BeanLike &)(coder));
+
+	// Optional! Used only if height=true (odim.quantity=HGHT)
+	// DataCoder heightCoder(odim, sweepQuality.odim);
+	// mout.attention("heightCoder: ", accumulator.odim);
+	//mout.attention("heightCoder: ", accumulator.odim);
+	// DataCoder heightCoder(accumulator.odim, sweepQuality.odim);
+	mout.experimental("hey");
+
+	if (!COMPUTE_HGHT){
+		mout.debug("decoder: ", (const drain::BeanLike &)(coder));
+	}
+	else {
+		mout.experimental("hey");
+		//mout.experimental("height [HGHT] decoder: ", (const drain::BeanLike &)(heightCoder));
+	}
 
 	// Elevation angle
 	const double eta = sweep.odim.getElangleR();
@@ -258,7 +272,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		else { // EXPERIMENTAL
 
 			double d = accumulator.odim.getBinDistance(i);
-			value = Geometry::heightFromEtaGround(sweep.odim.getElangleR(), d);
+			double height = Geometry::heightFromEtaGround(sweep.odim.getElangleR(), d);
 
 			mout.experimental("Computing HGHT:", value);
 
@@ -266,14 +280,17 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 				jSweep = (j * sweep.odim.area.height) / accumulator.accArray.getHeight();
 
-				//value = sweep.data.get<double>(iSweep, jSweep);
+				value = sweep.data.get<double>(iSweep, jSweep);
 
 				// if (i==j) std::cerr << "cappi w0=" << weight << "(" << value << ") => ";
+				if (value == sweep.odim.nodata){
+					continue;
+				}
 
 				if (USE_QUALITY){
 					w = sweepQuality.data.get<double>(iSweep,jSweep);
-					if (!coder.decode(value, w))
-						continue;
+					// if (!heightCoder.decode(value, w))
+					//	continue;
 					w = beamWeight * w;
 				}
 				else {
@@ -283,13 +300,14 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 					else {
 						w = beamWeight;
 					}
-					if (!coder.decode(value))
-						continue;
+					//if (!heightCoder.decode(value))
+					//	continue;
 
 				}
 
 				address = accumulator.accArray.data.address(i,j);
-				accumulator.add(address, value, w);
+				//accumulator.add(address, value, w);
+				accumulator.add(address, height, w);
 			}
 		}
 	}

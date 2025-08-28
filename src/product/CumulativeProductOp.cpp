@@ -85,7 +85,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	}
 	*/
 	if (dataSelector.getQuantity() != quantity){
-		mout.info("selected [", quantity, "]");
+		mout.info("selected input [", quantity, "]");
 	}
 
 
@@ -93,10 +93,12 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	//const std::string dstQuantity = odim.quantity.empty() ? quantity : odim.quantity;
 	const std::string dstQuantity = getOutputQuantity(quantity);
 
+	mout.special("output quantity: ", dstQuantity);
 	Data<PolarDst> & dstData = dstProduct.getData(dstQuantity);
 	//mout.warn("dstOdim " , dstData.odim );
 
 	setEncoding(srcData.odim, dstData);
+	mout.special("output encoding: ", ODIM(dstData.odim));
 
 	deriveDstGeometry(srcSweeps, dstData.odim);
 	//dstData.data.setGeometry(dstData.odim.area.width, dstData.odim.area.height);

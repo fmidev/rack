@@ -397,8 +397,10 @@ double EncodingODIM::getMin() const {
 
 	const std::type_info & t = drain::Type::getTypeInfo(type);
 
-	if (t == typeid(void))
-		throw std::runtime_error(std::string("ODIM")+__FUNCTION__+" type unset");
+	if (t == typeid(void)){
+		mout.error("type unset");
+	}
+	// throw std::runtime_error(std::string("ODIM ")+__FUNCTION__+" type unset");
 
 	if (drain::Type::call<drain::typeIsInteger>(t)){
 		long int i = drain::Type::call<drain::typeMin, long int>(t);
@@ -410,8 +412,10 @@ double EncodingODIM::getMin() const {
 		} while ((d == undetect) || (d == nodata));
 		return scaleForward(d);
 	}
-	else
+	else {
 		return scaleForward( drain::Type::call<drain::typeMin, double>(t) );
+	}
+
 
 }
 
