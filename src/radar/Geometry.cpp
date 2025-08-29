@@ -141,7 +141,6 @@ void Geometry::findClosestElevations(const float &elevationAngle,
      *  \f]
      */
     double Geometry::heightFromEtaBeta(double eta, double beta){
-    	// a = EARTH_RADIUS_43
     	return EARTH_RADIUS_43 * (cos(eta)/cos(beta + eta) - 1.0);
     }
   

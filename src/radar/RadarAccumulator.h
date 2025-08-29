@@ -154,10 +154,12 @@ public:
 	 */
 	void addData(const pdata_src_t & srcData, const pdata_src_t & srcQuality, const pdata_src_t & srcCount);
 
+
 	/**
 	 *  \param odimOut - metadata container (PolarODIM or CartesianODIM)
 	 *  \param fields - layers (d=data, w=weight, C=count, ...)
 	 */
+	// TODO: remove this (use the new ones)
 	void extractOLD(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,
 			const std::string & fields, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
@@ -373,7 +375,7 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.attention("extracting FIELD: ", field);
+	mout.debug("extracting FIELD: ", field);
 
 	char fieldChar = (char)(((int)field)&127);
 	if (fieldChar != drain::image::Accumulator::getFieldChar(field)){
@@ -560,7 +562,7 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 
 }
 
-
+// TODO: remove this (use the new ones)
 template  <class AC, class OD>
 void RadarAccumulator<AC,OD>::extractOLD(const OD & odimOut, DataSet<DstType<OD> > & dstProduct,
 		const std::string & fields, const drain::Rectangle<int> & crop) const {

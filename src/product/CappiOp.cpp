@@ -214,6 +214,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		//if ((!pseudo) && (beamWeight < weightMin))
 		if (beamWeight < weightMin)
 			continue;
+		// Prevent bell curve falling neglible
 		beamWeight = std::max(beamWeightMin, beamWeight);
 
 		binDistance = Geometry::beamFromEtaBeta(eta, beta);
@@ -221,7 +222,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 			continue;
 
 		t = sweep.odim.getBinIndex(binDistance);
-		if (t < 0)
+		if (t < 0) // unneeded test? Was tested equivalently above already?
 			continue;
 
 		iSweep = static_cast<size_t>(t);
@@ -271,10 +272,11 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		}
 		else { // EXPERIMENTAL
 
-			double d = accumulator.odim.getBinDistance(i);
-			double height = Geometry::heightFromEtaGround(sweep.odim.getElangleR(), d);
+			// double d = accumulator.odim.getBinDistance(i);
+			// double height = Geometry::heightFromEtaGround(sweep.odim.getElangleR(), d);
+			double height = Geometry::heightFromEtaBeta(sweep.odim.getElangleR(), beta);
 
-			mout.experimental("Computing HGHT:", value);
+			mout.experimental<LOG_DEBUG>("Computed HGHT:", height);
 
 			for (size_t j = 0; j < accumulator.accArray.getHeight(); ++j) {
 

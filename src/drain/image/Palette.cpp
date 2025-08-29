@@ -243,7 +243,7 @@ void Palette::update() const {
 	}
 
 	channels.setChannelCount(i, a);
-	mout.special("channel count: ", channels);
+	mout.debug("palette channel count: ", channels);
 
 }
 

@@ -856,7 +856,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 	}
 
 	if (!group.hasChild(svg::METADATA)){
-		mout.attention("skipping, group has no METADATA element: ", group.data);
+		mout.reject<LOG_DEBUG>("skipping, group has no METADATA element: ", group.data);
 		return 0;
 	}
 

@@ -45,6 +45,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 13.3
  *  - ProductBase::completeEncoding(odim, encoding) -> odim.completeEncoding(encoding)
  *  - FuzzyDetectorOp, DualPolBioMetOp: dbzParam is a range (needed for birds)
+ *  Release 13.4
+ *  - CappiOp height
  *
  *  Version 12
  *  - Revised QuantityMap, allowing retrieve("DBZXP")
