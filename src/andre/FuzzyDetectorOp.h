@@ -44,18 +44,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-/*
- class LocalFunctorBank {
-
-	template <class T>
-	static
-	drain::Cloner<drain::UnaryFunctor,T> & getCloner(){
-		static drain::Cloner<drain::UnaryFunctor,T> cloner; // = Static::get<Cloner<T,D>, bank_id>();
-		return cloner;
-	}
-
-};
-*/
 
 ///
 /*
@@ -141,33 +129,7 @@ protected:
 	void runDetection(const DataSet<PolarSrc> & src, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & dstAux) const;
 
 
-protected:
 
-	static const QuantitySelector selectorEmpty;
-	static const QuantitySelector selectorDBZ;
-	static const QuantitySelector selectorVRAD;
-	static const QuantitySelector selectorZDR;
-	static const QuantitySelector selectorRHOHV;
-
-	static drain::FuzzyIdentity<double> dummy;
-
-public:
-
-	//virtual
-	//const RadarFunctorBase & getDBZFuzzifier(const ODIM & srcODIM) const = 0;
-	//const drain::Fuzzifier<double> & getDBZFuzzifier() const = 0;
-
-	/*
-	virtual inline
-	RadarFunctorBaseOp & getDBZFuzzifier() const {
-		return dummyFunctorOp;
-	}
-
-	virtual inline
-	RadarFunctorBaseOp & getVRADFuzzifier() const {
-		return dummyFunctorOp;
-	}
-	*/
 
 	virtual inline
 	drain::Fuzzifier<double> & getFuzzifierDBZ(LocalFunctorBank & bank) const {
@@ -190,21 +152,6 @@ public:
 	}
 
 
-	/*
-	virtual inline
-	RadarFunctorBaseOp & getZDRFuzzifier() const {
-		return dummyFunctorOp;
-	}
-
-	virtual inline
-	RadarFunctorBaseOp & getRHOHVFuzzifier() const {
-		return dummyFunctorOp;
-	}
-	*/
-
-
-	// virtual
-	// void computeFuzzy(RadarFunctorBaseOp & fuzzifier, const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;  // = 0;
 
 	virtual
 	void computeFuzzy(const drain::Fuzzifier<double> & fuzzifier, const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;  // = 0;
@@ -212,19 +159,6 @@ public:
 	virtual
 	void computeFuzzyVRAD(const drain::Fuzzifier<double> & fuzzifier, const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;  // = 0;
 
-	/*
-	virtual
-	void computeFuzzyDBZ(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;  // = 0;
-
-	virtual
-	void computeFuzzyVRAD(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const; // = 0;
-
-	virtual
-	void computeFuzzyZDR(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;  // = 0;
-
-	virtual
-	void computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const; // = 0;
-	*/
 
 	/// Convenience function for "accumulating" detection results.
 	/**
@@ -240,8 +174,20 @@ public:
 	static
 	void getGammaLookUpTable(double p, std::vector<unsigned char> & lookUpTable);
 
-	mutable
-	RadarFunctorOp<drain::IdentityFunctor> dummyFunctorOp;
+protected:
+
+	static const QuantitySelector selectorEmpty;
+	static const QuantitySelector selectorDBZ;
+	static const QuantitySelector selectorVRAD;
+	static const QuantitySelector selectorZDR;
+	static const QuantitySelector selectorRHOHV;
+
+	static drain::FuzzyIdentity<double> dummy;
+
+public:
+
+	// mutable
+	// RadarFunctorOp<drain::IdentityFunctor> dummyFunctorOp;
 };
 
 

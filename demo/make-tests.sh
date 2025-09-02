@@ -32,7 +32,7 @@ if [ "$1" == 'clean' ]; then
     exit 0
 fi
 
-rm -v *.hlp
+rm -vf *.hlp
 
 # Check that 'rack' is executable
 #rack > /dev/null
@@ -84,6 +84,12 @@ echo -n > $TEST_CMD_FILE
 INCLUDES=( `grep '\\include .*.\(hlp\|exm\)\w*$'  ${DOC_FILES[*]} | cut -d'\' -f2 | cut -d' ' -f2 ` )
 echo "make --always-make ${INCLUDES[*]} " >> $TEST_CMD_FILE
 
+# Fuzzy images 
+for i in `grep '\image \+html' ../src/drain/util/Fuzzy.h | cut -d '-' -f2- | cut -d' ' -f1`; do
+    echo make Fuzzy-$i >> $TEST_CMD_FILE
+done
+
+#exit 1
 #echo > $TEST_CMD_FILE.foo
 
 # Join cmd lines split by '\'

@@ -149,6 +149,10 @@ drainage image-gray.png         -T S --iFuzzyStep 64:192   -o fuzzyStep-16bit.pn
 drainage image-gray.png  -R 0:1 -T S --iFuzzyStep 0.25:0.5 -o fuzzyStep-16bit-phys.png
 \endcode
 
+
+\image html  Fuzzy-FuzzyStep_-2:+2_-1:1.png "Fuzzy Step."
+\image latex Fuzzy-FuzzyStep_-2:+2_-1:1.png "Fuzzy Step." width=0.9\textwidth
+
  */
 template <class T> //,class T2>
 class FuzzyStep : public Fuzzifier<T> {
@@ -257,6 +261,10 @@ protected:
 	drainage image-gray.png -R 0:1 --iFuzzyTriangle 0.25:0.75,0.5  -o fuzzyTriangle-phys.png
 	drainage image-gray.png -T S   --iFuzzyTriangle 64:192,128     -o fuzzyTriangle-16bit.png
 	\endcode
+
+	\image html  Fuzzy-FuzzyTriangle_-2:+2_-1:1.png "Fuzzy Triangle."
+	\image latex Fuzzy-FuzzyTriangle_-2:+2_-1:1.png "Fuzzy Triangle." width=0.9\textwidth
+
  */
 template <class T>  //,class T2>
 class FuzzyTriangle : public Fuzzifier<T> {
@@ -388,6 +396,10 @@ protected:
 	drainage image-gray.png -R 0:1 --iFuzzyBell 0.5,0.2  -o fuzzyBell-phys.png
 	drainage image-gray.png -T S   --iFuzzyBell 128,16   -o fuzzyBell-16bit.png
 	\endcode
+
+	\image html  Fuzzy-FuzzyBell_-2:+2_0:1.png "Fuzzy Bell."
+	\image latex Fuzzy-FuzzyBell_-2:+2_0:1.png "Fuzzy Bell." width=0.9\textwidth
+
  */
 template <class T>
 class FuzzyBell : public Fuzzifier<T> {
@@ -464,7 +476,9 @@ protected:
     drainage image-gray.png        --iFuzzyBell2 128,16   -o fuzzyBell2.png
 	drainage image-gray.png -R 0:1 --iFuzzyBell2 0.5,0.2  -o fuzzyBell2-phys.png
 	drainage image-gray.png -T S   --iFuzzyBell2 128,16   -o fuzzyBell2-16bit.png
- *
+
+	\image html  Fuzzy-FuzzyBell2_-2:+2_0:1.png "Fuzzy Bell2."
+	\image latex Fuzzy-FuzzyBell2_-2:+2_0:1.png "Fuzzy Bell2." width=0.9\textwidth
  */
 template <class T>
 class FuzzyBell2 : public Fuzzifier<T> {

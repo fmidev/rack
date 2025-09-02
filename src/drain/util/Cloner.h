@@ -97,6 +97,7 @@ struct ClonerBase {
 	virtual // clear
 	bool drop(index_t i) const = 0;
 
+
 	//experimental
 	// virtual	bool dropUnique() = 0;
 
@@ -109,7 +110,7 @@ struct ClonerBase {
 
 /// Wrapper for derived class S, returning base class T.
 /**
- *  \tparam T  - visible base class
+ *  \tparam T - visible base class
  *  \tparam S - internal wrapped class derived from T
  *
  */
@@ -247,7 +248,7 @@ struct Cloner : public ClonerBase<B> {
 
 	/// Remove cloned entry
 	virtual inline  // clear
-	bool drop(index_t i) const {
+	bool drop(index_t i) const override {
 
 		const typename ptr_container_t::iterator it = ptrs.find(i);
 
@@ -270,7 +271,7 @@ struct Cloner : public ClonerBase<B> {
 	//protected:
 
 	/// Default instance, also the source for cloning.
-	//static S entry;  // Consider non-static
+	//  static S entry;  // Consider non-static
 	S src;  // Consider non-static
 
 	/// Remove cloned entries
