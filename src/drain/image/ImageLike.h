@@ -162,6 +162,13 @@ public:
 		return conf.isEmpty();
 	};
 
+	// 2025
+	/// Return true, if image has width and height
+	inline
+	operator bool() const {
+		return !conf.isEmpty();
+	};
+
 	/// Coord policy
 	inline
 	const CoordinatePolicy & getCoordinatePolicy() const {

@@ -226,12 +226,6 @@ public:
 		return quantitySelector;
 	}
 
-	/*
-	inline
-	const drain::KeySelector & getQualitySelector() const {
-		return qualitySelector;
-	}
-	*/
 
 	inline
 	void setMaxCount(unsigned int i){
@@ -310,7 +304,7 @@ public:
 	 *   typically adjusted by calling functions (not by the end user).
 	 *
 	 *   The full tree structure will be searched for; \c groupFilter does not affect the traversal.
-	 *   When retrieving quality groups, \c groupFilter should countain ODIMPathElem::QUALITY.
+	 *   When retrieving quality groups, \c groupFilter should contain ODIMPathElem::QUALITY.
 	 *
 	 *   \see deriveParameters().
 	 */

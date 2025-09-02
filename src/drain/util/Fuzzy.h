@@ -109,6 +109,28 @@ private:
 
 };
 
+/// Identity function - returns the input value
+/**
+ *
+ */
+template <class T>
+class FuzzyIdentity : public Fuzzifier<T> {
+
+public:
+
+	inline
+	FuzzyIdentity() :Fuzzifier<T>(__FUNCTION__, "Identity function") {};
+
+	virtual inline
+	~FuzzyIdentity(){};
+
+	virtual inline
+	double operator()(double x) const {
+		return x;
+	}
+
+};
+
 /// A basic, linear transition from 0 to scale between \c (start) and \c (end) .
 /*!
  *  \tparam T  - input storage type
@@ -271,7 +293,7 @@ public:
 	/// Sets the parameters of the membership function.
 	// std::numeric_limits<double>::signaling_NaN()
 	inline
-	void set(double startPos, double endPos, double peakPos=0.0, double scale=1.0, double bias=0.0){ // todo join
+	void set(double startPos, double endPos, double peakPos=std::numeric_limits<double>::min, double scale=1.0, double bias=0.0){ // todo join
 
 		this->range.set(startPos, endPos);
 
@@ -283,6 +305,14 @@ public:
 			this->peakPos = (startPos + endPos) / 2.0;
 		*/
 
+		this->setScale(scale, bias); //
+		this->updateBean();
+	}
+
+	inline
+	void set(const drain::Range<double> & r, double peakPos=std::numeric_limits<double>::min, double scale=1.0, double bias=0.0){ // todo join
+		this->range.set(r);
+		this->peakPos = peakPos;
 		this->setScale(scale, bias); //
 		this->updateBean();
 	}

@@ -136,14 +136,41 @@ public:
 		//LIMIT = limit;
 	};
 
+	virtual inline
+	~RadarFunctorBase(){
+	};
+
 
 	void apply(const drain::image::Channel &src, drain::image::Channel & dst, const drain::UnaryFunctor & ftor, bool LIMIT = true) const;
 
+	virtual inline
+	double fuzzify(double x){
+		return x;
+	}
+	// operator T() const
+	//drain::image::ImageOp getImageOp() = 0;
+
+
 };
 
+class RadarFunctorBaseOp : public RadarFunctorBase {
+public:
+
+
+	virtual inline
+	operator drain::image::ImageOp & () = 0;
+
+protected:
+
+	RadarFunctorBaseOp(){};
+
+	virtual
+	~RadarFunctorBaseOp(){};
+
+};
 /// Convenience (abbreviation)
 template <class F>
-class RadarFunctorOp : public RadarFunctorBase, public drain::image::UnaryFunctorOp<F> {
+class RadarFunctorOp : public RadarFunctorBaseOp, public drain::image::UnaryFunctorOp<F> {
 public:
 
 	/*
@@ -174,6 +201,18 @@ public:
 	void traverseChannel(const drain::image::Channel &src, drain::image::Channel & dst) const {
 		apply(src, dst, this->functor, this->LIMIT);
 	}
+
+	virtual inline
+	double fuzzify(double x){
+		return this->functor(x);
+		// return x;
+	}
+
+
+	virtual inline
+	operator drain::image::ImageOp & () {
+		return *this;
+	};
 
 	/// Process the image.
 	/**

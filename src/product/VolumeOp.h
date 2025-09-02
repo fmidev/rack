@@ -137,7 +137,12 @@ Hi5Tree & VolumeOp<M>::processVolume(const Hi5Tree &srcRoot, Hi5Tree &dstRoot) c
 	this->dataSelector.getPaths(srcRoot, dataPaths);
 
 	if (dataPaths.empty()){
-		mout.warn("no dataset's selected" );
+		if (!this->dataSelector.getQuantitySelector().test("HGHT")){
+			mout.experimental<LOG_INFO>("no dataset's selected, but height=[HGHT] requested, continuing");
+		}
+		else {
+			mout.warn("no dataset's selected");
+		}
 	}
 	else {
 		mout.debug3("populate the dataset map, paths=" , dataPaths.size() );

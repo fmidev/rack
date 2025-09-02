@@ -152,6 +152,7 @@ void NonMet2Op::init(const drain::UniTuple<double,2> & threshold, const drain::U
 	parameters.link("medianPos", this->medianPos = medianPos, "0...1");
 }
 
+/*
 void NonMet2Op::computeFuzzyZDR(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
 
 }
@@ -159,21 +160,22 @@ void NonMet2Op::computeFuzzyZDR(const PlainData<PolarSrc> & src, PlainData<Polar
 void NonMet2Op::computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
 
 }
+*/
 
 
 
 void ChaffOp::init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrAbsMin, double windowWidth, double windowHeight) {
 
-	parameters.link("dbzPeak",     this->dbzParam.tuple(dbzPeak-5.0, dbzPeak+5.0),  "Typical reflectivity (DBZH)");
-	parameters.link("vradDevMax",  this->vradDevThreshold = vradDevMax, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
-	parameters.link("rhoHVmax",    this->rhoHVthreshold = rhoHVmax,  "Fuzzy threshold of maximum rhoHV value");
-	parameters.link("zdrAbsMin",   this->zdrAbsThreshold = zdrAbsMin,  "Fuzzy threshold of absolute ZDR");
+	parameters.link("dbzPeak",     dbzParam.tuple(dbzPeak-5.0, dbzPeak+5.0),  "Typical reflectivity (DBZH)");
+	parameters.link("vradDevMax",  vradDevThreshold = vradDevMax, "Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)");
+	parameters.link("rhoHVmax",    rhoHVthreshold.tuple(rhoHVmax, 0.8*rhoHVmax),  "Fuzzy threshold of maximum rhoHV value");
+	parameters.link("zdrAbsMin",   zdrAbsThreshold = zdrAbsMin,  "Fuzzy threshold of absolute ZDR");
 	parameters.link("window",      this->windowConf.frame.tuple(windowWidth, windowHeight),  "beam-directional(m), azimuthal(deg)"); //, "[d]");
 	parameters.link("gamma",       this->gammaAdjustment,  "Contrast adjustment, dark=0.0 < 1.0 < brighter ");
 
 }
 
-
+/*
 void ChaffOp::computeFuzzyDBZ(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {
 	RadarFunctorOp<drain::FuzzyBell<double> > dbzFuzzifier;
 	dbzFuzzifier.odimSrc = srcData.odim;
@@ -215,6 +217,6 @@ void ChaffOp::computeFuzzyRHOHV(const PlainData<PolarSrc> & srcData, PlainData<P
 	rhohvFuzzifier.functor.set(rhoHVthreshold, rhoHVthreshold * 0.8);
 	applyOperator(rhohvFuzzifier, srcData, dstData, dstProduct);
 };
-
+*/
 
 } // Rack

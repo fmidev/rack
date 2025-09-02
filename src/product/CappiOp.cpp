@@ -145,13 +145,13 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 	// mout.attention("heightCoder: ", accumulator.odim);
 	//mout.attention("heightCoder: ", accumulator.odim);
 	// DataCoder heightCoder(accumulator.odim, sweepQuality.odim);
-	mout.experimental("hey");
+	// mout.experimental("hey");
 
 	if (!COMPUTE_HGHT){
 		mout.debug("decoder: ", (const drain::BeanLike &)(coder));
 	}
 	else {
-		mout.experimental("hey");
+		// mout.experimental("hey");
 		//mout.experimental("height [HGHT] decoder: ", (const drain::BeanLike &)(heightCoder));
 	}
 

@@ -85,10 +85,13 @@ public:
 	// double windowHeight;
 	double medianPos;
 
+
 protected:
 
 	virtual
 	void runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst> & dstProb) const;
+
+
 
 };
 
@@ -123,6 +126,24 @@ public:
 	// double windowHeight;
 	double medianPos;
 
+	/// Fuzzifier of RHOHV shows response on values lower than 1.0
+	virtual inline
+	drain::Fuzzifier<double> & getFuzzifierRHOHV(LocalFunctorBank & bank) const override {
+		typedef drain::FuzzyStep<double> ftor_t;
+		ftor_t & functor = bank.clone<ftor_t>();
+		// Ensure INVERSE (decreasing step function)
+		if (rhoHVthreshold.min > rhoHVthreshold.max){
+			functor.set(rhoHVthreshold);
+		}
+		else if (rhoHVthreshold.min < rhoHVthreshold.max){
+			functor.set(rhoHVthreshold.max, rhoHVthreshold.min); // invert
+		}
+		else {
+			functor.set(rhoHVthreshold.max, 0.8 * rhoHVthreshold.max);
+		}
+		return functor;
+	}
+
 protected:
 
 	//virtual
@@ -131,6 +152,7 @@ protected:
 	virtual
 	void init(const drain::UniTuple<double,2> & threshold, const drain::UniTuple<double,2> & medianWindow, double medianThreshold);
 
+	/*
 	virtual inline
 	void computeFuzzyDBZ(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const {};
 
@@ -142,7 +164,7 @@ protected:
 
 	virtual
 	void computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
-
+	*/
 };
 
 
@@ -175,6 +197,7 @@ public:
 	virtual
 	void init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrDevMin, double windowWidth, double windowHeight);
 
+	/*
 	virtual
 	void computeFuzzyDBZ(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
 
@@ -186,7 +209,29 @@ public:
 
 	virtual
 	void computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+	*/
 
+	/*
+	virtual inline
+	const drain::Fuzzifier<double> & getDBZFuzzifier() const override {
+		// dbzFuzzifier.set(dbzParam);
+		return dbzFuzzifier;
+	}
+	*/
+
+	/*
+	virtual inline
+	RadarFunctorBaseOp & getDBZFuzzifier() const override {
+		dbzFuzzifier.functor.set(dbzParam);
+		return dbzFuzzifier;
+	}
+	*/
+
+private:
+
+	//mutable
+	// RadarFunctorOp<drain::FuzzyStep<double> > dbzFuzzifier;
+	// RadarDataFunctor<drain::FuzzyStep<double> > dbzFuzzifier;
 
 };
 

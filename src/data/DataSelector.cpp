@@ -296,39 +296,11 @@ void DataSelector::updateQuantities() const { // const std::string & separators
 	drain::Logger mout(__FILE__,__FUNCTION__);
 	// Don't call updateBean(), it calls this...
 
-	// NEW
-	quantitySelector.setKeys(quantities); //, separators);
+	quantitySelector.setKeys(quantities);
 
-	// OLD
-	/*
-	// Phase 1: split qty vs QUALITY
-	std::string args, qargs;
-	drain::StringTools::split2(quantities, args, qargs, '/'); // ':' general separator; ',' only through --setQuantity because --select uses ',' as separator.
-	quantitySelector.setKeys(args); //, separators);
-
-
-	qualitySelector.setKeys(qargs); //, separators);
-
-
-	std::stringstream sstr;
-	sstr << quantitySelector;
-	if (qualitySelector.isSet()){
-		sstr << '/' << qualitySelector;
-	}
-	quantities = sstr.str();
-	*/
 }
 
 
-/*
-void DataSelector::setQuantityRegExp(const std::string & quantities){
-
-	drain::Logger mout(__FILE__,__FUNCTION__);
-	//setQuantityRegExp(quantities);
-	mout.deprecating<LOG_DEBUG+1>("selection syntax has changed, use setQuantities() ");
-	quantitySelector.setKey(quantities);
-}
-*/
 
 
 // TODO: write new collectPaths() with parentQuantity="" , "DBZH" -> "DBZH/QIND" to be matched with ".*/QIND"
@@ -495,10 +467,18 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 			else {
 				if (quantitySelector.test(retrievedQuantity)){
 					quantityOK = true;
-					mout.accept<LOG_DEBUG>("  [", retrievedQuantity, "] at ", path, " quantity=", quantityOK);
+					mout.accept<LOG_DEBUG>("  [", retrievedQuantity, "] at ", path); // " quantity=", quantityOK);
 				}
+				else if (quantitySelector.test(parentQuantity + '/' + retrievedQuantity)){
+					quantityOK = true;
+					mout.accept<LOG_DEBUG>("Specific sub-quantity [", parentQuantity, '/', retrievedQuantity, "] at ", path); // , " quantity=", quantityOK);
+				}
+				else if (quantitySelector.test(retrievedQuantity+"/HGHT")){
+					quantityOK = true;
+					mout.accept<LOG_WARNING>("Specific virtual height [", retrievedQuantity, "/'HGHT'] at ", path); // , " quantity=", quantityOK);
+				}
+				/*
 				else {
-					//const std::string compoundQuantity = parentQuantity.empty() ? (retrievedQuantity+'/') : (parentQuantity+'/'+retrievedQuantity);
 					const std::string compoundQuantity = parentQuantity+'/'+retrievedQuantity;
 					mout.pending("  testing: [", compoundQuantity, "] at ", path); //, quantityOK);
 					if (quantitySelector.test(compoundQuantity)){
@@ -506,6 +486,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 						mout.accept<LOG_DEBUG>("  [", compoundQuantity, "] at ", path, " quantity OK!"); //, quantityOK);
 					}
 				}
+				*/
 			}
 
 			if (quantityOK){

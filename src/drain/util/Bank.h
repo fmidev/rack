@@ -60,6 +60,7 @@ namespace drain
  *
  *  An entry may have several keys. Single-char keys (aliases) are provided by SuperBank
  */
+// TODO: remove resolve(key), lower it to superbank, with applying functions; redefine has(), get(), etc.
 template <class T, class K=std::string>
 class Bank : protected std::map<K, ClonerBase<T> *> {
 
@@ -238,6 +239,8 @@ public:
 	/**
 	 *  If K != std::string, this class must be derived and this function redefined.
 	 */
+	// TODO: remove this stupid resolve(key), it works only with K=std::string, and cannot work (easily) with other classes.
+	// lower it to superbank, with applying functions; redefine has(), get(), etc.
 	virtual
 	const std::string & resolve(const K & key) const {
 		return key;

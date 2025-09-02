@@ -60,11 +60,76 @@ namespace rack {
 using namespace drain::image;
 
 
+class DualPolBioMetOp: public FuzzyDetectorOp {
+
+public:
+
+	inline
+	DualPolBioMetOp(const std::string & name, const std::string & description, const std::string & classCode) : FuzzyDetectorOp(name, description, classCode){
+	}
+
+	inline
+	DualPolBioMetOp(const DualPolBioMetOp & op) : FuzzyDetectorOp(op){
+	}
+
+	virtual inline
+	const QuantitySelector & getSelectorDBZ() const override {
+		return selectorDBZ;
+	};
+
+	virtual inline
+	const QuantitySelector & getSelectorVRAD() const override {
+		return selectorVRAD;
+	};
+
+	virtual inline
+	const QuantitySelector & getSelectorZDR() const override {
+		return selectorZDR;
+	};
+
+	virtual inline
+	const QuantitySelector & getSelectorRHOHV() const override {
+		return selectorRHOHV;
+	};
+
+
+	/// Fuzzifier of ZDR is designed to detect objects that have horizontal or vertical span.
+	virtual inline
+	drain::Fuzzifier<double> & getFuzzifierZDR(LocalFunctorBank & bank) const override {
+		typedef drain::FuzzyTriangle<double> ftor_t;
+		ftor_t & functor = bank.clone<ftor_t>();
+		functor.set(::abs(zdrAbsThreshold), -::abs(zdrAbsThreshold), 0.0); // INVERSE
+		return functor;
+	}
+
+	/// Fuzzifier of RHOHV shows response on values lower than 1.0
+	virtual inline
+	drain::Fuzzifier<double> & getFuzzifierRHOHV(LocalFunctorBank & bank) const override {
+		typedef drain::FuzzyStep<double> ftor_t;
+		ftor_t & functor = bank.clone<ftor_t>();
+		// Ensure INVERSE (decreasing step function)
+		if (rhoHVthreshold.min > rhoHVthreshold.max){
+			functor.set(rhoHVthreshold);
+		}
+		else if (rhoHVthreshold.min < rhoHVthreshold.max){
+			functor.set(rhoHVthreshold.max, rhoHVthreshold.min); // invert
+		}
+		else {
+			functor.set(rhoHVthreshold.max, 0.8 * rhoHVthreshold.max);
+		}
+		return functor;
+	}
+
+
+
+
+};
+
 ///
 /**
  *
  */
-class BirdOp: public FuzzyDetectorOp {
+class BirdOp: public DualPolBioMetOp {
 
 public:
 
@@ -79,16 +144,16 @@ public:
 	 *
 	 */
 //	BirdOp(double dbzPeak = -5.0, double vradDevMin = 5.0, double rhoHVmax = 0.7, double zdrAbsMin = 2.0, double windowWidth = 2500, double windowHeight = 5.0) :
-	BirdOp(double dbzPeak = 0.0, double vradDevMin = 1.0, double rhoHVmax = 0.95, double zdrAbsMin = 1.0, double windowWidth = 2500, double windowHeight = 5.0) :
+	BirdOp(double dbzPeak = -10.0, double vradDevMin = 1.0, double rhoHVmax = 0.99, double zdrAbsMin = 1.0, double windowWidth = 2500, double windowHeight = 5.0) :
 
-		FuzzyDetectorOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.bird"){
+		DualPolBioMetOp(__FUNCTION__, "Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.bird"){
 
 		init(dbzPeak, vradDevMin, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 
 	};
 
 	inline
-	BirdOp(const BirdOp & op) : FuzzyDetectorOp(op) {
+	BirdOp(const BirdOp & op) : DualPolBioMetOp(op) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	};
 
@@ -98,23 +163,67 @@ public:
 	virtual
 	void init(double dbzPeak, double vradDevMax, double rhoHVmax, double zdrDevMin, double windowWidth, double windowHeight);
 
-	virtual
-	void computeFuzzyDBZ(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+	virtual inline
+	drain::Fuzzifier<double> & getFuzzifierDBZ(LocalFunctorBank & bank) const override {
 
-	virtual
-	void computeFuzzyVRAD(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+		drain::Logger mout(__FUNCTION__, getName());
+		typedef drain::FuzzyBell2<double> ftor_t;
+		// typedef drain::FuzzyStep<double> ftor_t;
+		ftor_t & functor = bank.clone<ftor_t>();
 
-	virtual
-	void computeFuzzyZDR(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+		if (dbzParam.min < dbzParam.max){
+			functor.set(dbzParam);
+		}
+		else if (dbzParam.min > dbzParam.max){ // INVERSE
+			functor.set(dbzParam.max, dbzParam.min);
+		}
+		else{
+			// span out
+			functor.set(dbzParam.min+15.0, dbzParam.max-15.0);
+		}
 
-	virtual
-	void computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+		/*
+		typedef drain::FuzzyStep<double> ftor_t;
+		ftor_t & functor = bank.clone<ftor_t>();
+		if (dbzParam.min > dbzParam.max){ // INVERSE
+			// mout.warn("Ok, INVERSE:", dbzParam);
+			functor.set(dbzParam);
+		}
+		else if (dbzParam.min < dbzParam.max){
+			// mout.warn("Ok, reversing:", dbzParam.max, '-', dbzParam.min);
+			functor.set(dbzParam.max, dbzParam.min);
+		}
+		else {
+			// span out
+			functor.set(dbzParam.min+15.0, dbzParam.max-15.0);
+		}
+		*/
+		return functor;
+	}
 
+	// Birds are expected to move independently and fast
+	virtual inline
+	drain::Fuzzifier<double> & getFuzzifierVRAD(LocalFunctorBank & bank) const override {
+		typedef drain::FuzzyStep<double> ftor_t;
+		ftor_t & functor = bank.clone<ftor_t>();
+		functor.set(vradDevThreshold-1.0, vradDevThreshold+1.0);
+		return functor;
+	}
+
+	/*
+	virtual inline
+	drain::Fuzzifier<double> & getFuzzifierVRAD(LocalFunctorBank & bank) const override {
+		typedef drain::FuzzyStep<double> ftor_t;
+		ftor_t & functor = bank.clone<ftor_t>();
+		functor.set(vradDevThreshold-1.0, vradDevThreshold+1.0);
+		return functor;
+	}
+	*/
 
 };
 
 
-class InsectOp: public FuzzyDetectorOp {
+class InsectOp: public DualPolBioMetOp {
 
 public:
 
@@ -131,30 +240,53 @@ public:
 	 *
 	 */
 	// InsectOp(double dbzPeak = -10.0, double vradDevMax = +5.0, double rhoHVmax = 0.7, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
-	InsectOp(double dbzMax = 0.0, double vradDevMax = +5.0, double rhoHVmax = 0.95, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
-		FuzzyDetectorOp(__FUNCTION__, "Probability of insects, based on DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.insect"){
+	InsectOp(double dbzMax = 0.0, double vradDevMax = +5.0, double rhoHVmax = 0.99, double zdrAbsMin = 3.0, double windowWidth = 2500, double windowHeight = 5.0) :
+		DualPolBioMetOp(__FUNCTION__, "Probability of insects, based on DBZH, VRAD, RhoHV and ZDR.", "nonmet.biol.insect"){
 		init(dbzMax, vradDevMax, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 	};
 
-	InsectOp(const InsectOp & op) : FuzzyDetectorOp(op) {
+	InsectOp(const InsectOp & op) : DualPolBioMetOp(op) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	}
 
 	virtual
 	void init(double dbzMax, double vradDevMax, double rhoHVmax, double zdrDevMin, double windowWidth, double windowHeight);
 
-	virtual
-	void computeFuzzyDBZ(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+	virtual inline
+	drain::Fuzzifier<double> & getFuzzifierDBZ(LocalFunctorBank & bank) const override {
+		typedef drain::FuzzyStep<double> ftor_t;
+		ftor_t & functor = bank.clone<ftor_t>();
+		if (dbzParam.min > dbzParam.max){ // INVERSE
+			functor.set(dbzParam);
+		}
+		else if (dbzParam.min < dbzParam.max){
+			functor.set(dbzParam.max, dbzParam.min);
+		}
+		else {
+			// span out
+			functor.set(dbzParam.min+5.0, dbzParam.max-5.0);
+		}
+		return functor;
+	}
 
-	virtual
-	void computeFuzzyVRAD(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
+	// Insects are expected to float, mostly
+	virtual inline
+	drain::Fuzzifier<double> & getFuzzifierVRAD(LocalFunctorBank & bank) const override {
+		typedef drain::FuzzyStep<double> ftor_t;
+		ftor_t & functor = bank.clone<ftor_t>();
+		functor.set(vradDevThreshold+1.0, vradDevThreshold-1.0);
+		return functor;
+	}
 
-	virtual
-	void computeFuzzyZDR(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
-
-	virtual
-	void computeFuzzyRHOHV(const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProduct) const;
-
+	/*
+	virtual inline
+	drain::Fuzzifier<double> & getFuzzifierVRAD(LocalFunctorBank & bank) const override {
+		typedef drain::FuzzyStep<double> ftor_t;
+		ftor_t & functor = bank.clone<ftor_t>();
+		functor.set(vradDevThreshold+1.0, vradDevThreshold-1.0); // INVERSE
+		return functor;
+	}
+	*/
 
 };
 

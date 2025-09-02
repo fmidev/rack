@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "13.4"
+#define __RACK_VERSION__ "13.5"
 
 /**
  *  Version 13
@@ -47,6 +47,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - FuzzyDetectorOp, DualPolBioMetOp: dbzParam is a range (needed for birds)
  *  Release 13.4
  *  - CappiOp height
+ *  Release 13.5
+ *  - FuzzyDetectorOp, DualPolBioMetOp: local functor bank
  *
  *  Version 12
  *  - Revised QuantityMap, allowing retrieve("DBZXP")

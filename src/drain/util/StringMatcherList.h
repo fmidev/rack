@@ -57,14 +57,7 @@ public:
 
 	typedef std::list<T> list_t;
 
-	/*
-	inline
-	StringMatcherList(){
-	};
-	*/
-
 	/// Basic constructor
-
 	template <typename ... TT>
 	inline
 	StringMatcherList(const TT &... args){
@@ -83,47 +76,32 @@ public:
 		setKeys(l);
 	};
 
-	/// Initialiser constructor.
-	/*
-	template <class T2>
-	StringMatcherList(const std::initializer_list<T2> & l){
-		setKeys(l);
-	};
-	*/
-
-
 
 	/// Destructor
 	virtual inline
 	~StringMatcherList(){};
 
+
+	/// Return true, if at least one matcher key defined.
+	operator bool() const {
+		return !this->empty();
+	}
+
+
+	/// Replace current list with a new one.
 	inline
 	StringMatcherList operator=(const StringMatcherList<matcher_t> &l){
 		setKeys(l);
 		return *this;
 	}
 
+	/// Replace current list with a new one.
 	StringMatcherList operator=(const std::initializer_list<matcher_t> &l){
 		setKeys(l);
 		return *this;
 	}
 
-
-	/*
-	StringMatcherList operator=(StringMatcherList<matcher_t> l){
-		setKeys(l);
-		return *this;
-	}
-	*/
-
-	/*
-	template <class T2>
-	StringMatcherList operator=(const std::initializer_list<T2> &l){
-		// setKeys(l);
-		return *this;
-	}
-	*/
-
+	/// Replace current list with a new one.
 	void setKeys(const StringMatcherList<matcher_t> & l){
 		this->clear();
 		for (const matcher_t & key: l) {
@@ -131,6 +109,7 @@ public:
 		}
 	}
 
+	/// Replace current list with a new one.
 	template <class T2>
 	void setKeys(const std::initializer_list<T2> & l){
 		this->clear();
@@ -139,6 +118,7 @@ public:
 		}
 	};
 
+	/// Replace current list with a new one.
 	template <class T2>
 	void setKeys(const std::list<T2> & l){
 		this->clear();

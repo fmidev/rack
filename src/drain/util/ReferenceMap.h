@@ -264,6 +264,14 @@ public:
 		// Link
 		r.link(x);
 		unitMap[key] = unit;
+		/*
+		if (!unit.empty()){
+			unitMap[key] = unit;
+		}
+		else {
+			unitMap[key] = drain::Type::call<drain::simpleName>(typeid(F));
+		}
+		*/
 		return r;
 	}
 

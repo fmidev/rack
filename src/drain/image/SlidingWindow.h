@@ -118,12 +118,11 @@ public:
 			std::cerr << __FUNCTION__ << i << '\t' << this->myFunctor(i) << '\n';
 		}
 		*/
-		mout.attention("FILL:");
+		//mout.attention("FILL:");
 		(this->*fill)();
-		mout.attention("WRITE:");
+		//mout.attention("WRITE:");
 		write();
-
-		mout.attention("SLIDE: ...");
+		//mout.attention("SLIDE: ...");
 
 		if (this->isHorizontal()){
 			mout.debug2("start slideHorz" );

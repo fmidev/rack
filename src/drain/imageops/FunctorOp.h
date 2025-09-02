@@ -57,7 +57,7 @@ struct FunctorWrapper {
 
 	FunctorWrapper(){};
 
-	FunctorWrapper(const FunctorWrapper<F> & op) : functor(op.functor) {
+	FunctorWrapper(const FunctorWrapper<F> & wrapper) : functor(wrapper.functor) {
 		//functor.getParameters().copyStruct(op.functor.getParameters(), op.functor, functor);
 	};
 

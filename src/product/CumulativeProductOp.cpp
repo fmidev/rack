@@ -76,6 +76,11 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	}
 
 	const DataSet<PolarSrc> & firstSweep =  srcSweeps.begin()->second;
+
+	const QuantitySelector & qs = dataSelector.getQuantitySelector();
+
+	mout.experimental("Super list", drain::sprinter(qs.getList()));
+
 	const Data<PolarSrc> & srcData = firstSweep.getData(dataSelector.getQuantitySelector()); // firstSweep.getFirstData();
 	const std::string & quantity = srcData.odim.quantity;
 

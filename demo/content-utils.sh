@@ -2,6 +2,8 @@
 OUTFILE=${OUTFILE:-'volume-tmp.h5'}
 TXTFILE=${OUTFILE%.*}'.txt'
 
+rm -v test-content.log
+
 function HELP(){
     local cmd=$1
     rack --help "$cmd" > help-$cmd.inc
@@ -70,6 +72,8 @@ function TEST(){
     # weird chars cause binary mode, and premature end of (f)grep scanning
     cmd="rack $INFILE --/what:source= $*" #-o $OUTFILE"
     echo "# $cmd -o $OUTFILE "   # "Note: ~ unfiltered"
+
+    echo "# $cmd -o $OUTFILE " >> test-content.log
     
     # Save also txt file, pruning nosave-marked '~' objects. Note: source string causes binary mode?
     eval "$cmd -o -" > $TXTFILE.raw
