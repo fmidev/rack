@@ -77,7 +77,12 @@ $(function() {
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#compositing">Compositing</a><ul><li class="level2"><a href="#cmethods">Compositing methods</a></li>
-<li class="level2"><a href="#cprojections">Projections</a></li>
+<li class="level2"><a href="#cinitialisation">Initialisation</a><ul><li class="level3"><a href="#csize">Size</a></li>
+<li class="level3"><a href="#cprojections">Projection</a></li>
+<li class="level3"><a href="#cbbox">Bounding box</a></li>
+<li class="level3"><a href="#cinit">Initialisation</a></li>
+</ul>
+</li>
 <li class="level2"><a href="#specialcodes">Handling special codes</a></li>
 <li class="level2"><a href="#cschemes">Compositing schemes</a><ul><li class="level3"><a href="#directcompositing">Direct compositing</a></li>
 <li class="level3"><a href="#tiledcompositing">Tiled compositing</a></li>
@@ -115,9 +120,19 @@ Compositing methods</h2>
 </li>
 </ul>
 <p>In both direct and tiled schemes, data of each radar can undergo anomaly detection and removal. In addition, a polar product (like pseudo CAPPI or echo height) can be computed.</p>
-<h2><a class="anchor" id="cprojections"></a>
-Projections</h2>
-<p>Projection definition command &ndash;cProj uses <b>Proj.4</b> syntax, supporting also EPSG codes given like <code>'+init=epsg:4326'</code> . When writing GeoTIFF files, using EPSG codes is recommended because not all <b>Proj.4</b> project definition strings are supported by the GeoTIFF library.</p>
+<h2><a class="anchor" id="cinitialisation"></a>
+Initialisation</h2>
+<p>Essential properties of a composite are:</p><ul>
+<li>Size of the array (image)</li>
+<li>Geographical projection</li>
+<li>Geographical extent</li>
+</ul>
+<h3><a class="anchor" id="csize"></a>
+Size</h3>
+<p>The size of the composite, in pixels, is set with <code>–cSize</code>. </p><div class="fragment"></div><!-- fragment --><h3><a class="anchor" id="cprojections"></a>
+Projection</h3>
+<p>Projection definition command &ndash;cProj uses <b>Proj.4</b> syntax and additionally supports direct EPSG codes, <code>--cProj\</code> 3067 . </p><div class="fragment"></div><!-- fragment --><p>If the projection is not given, <b>Rack</b> uses the Azimuthal Equidistant (AEQD) projection centered at radar site of the first input.</p>
+<p>When writing GeoTIFF files, using EPSG codes is recommended because not all <b>Proj.4</b> project definition strings are supported by the GeoTIFF library. The following list produced as a part of release tests.</p>
 <div class="fragment"><div class="line">4326</div>
 <div class="line">+init=epsg:4326</div>
 <div class="line"><span class="preprocessor"># Note: only partially conformant with WKT2:2019</span></div>
@@ -151,11 +166,18 @@ Projections</h2>
 <div class="line"><span class="preprocessor"># LibGTIF fails with (plain) Proj.4 definition string:</span></div>
 <div class="line"><span class="preprocessor"># +proj=stere +lat_0=90 +lat_ts=71 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs</span></div>
 <div class="line"> </div>
-</div><!-- fragment --><h2><a class="anchor" id="specialcodes"></a>
+</div><!-- fragment --><h3><a class="anchor" id="cbbox"></a>
+Bounding box</h3>
+<p>The geographical area – the bounding box – of the composite is set with <code>--cBBox</code> taking lower left and upper right points as arguments. The points can be always given in degrees. If the applied projection is metric, the coordinates can be given as meters. If the bounding box is not explictly given with <code>--cBBox</code> command, the corner points of the first radar input are used.</p>
+<div class="fragment"></div><!-- fragment --><p>Hint: look at additional attributes of prefix <code>where:BBOX</code> written in output files. These attributes display the coordinates of metric projections in native (i.e. metric) units and also report extent and overlap of input data. The bounding boxes can be used in optimising composite products. (Write of additional non-standard attributes is controlled with the <code>--odim</code> command. )</p>
+<h3><a class="anchor" id="cinit"></a>
+Initialisation</h3>
+<p>Command <code>--cInit</code> creates an empty compositing array of desired size in the memory and stores the essential attributes listed above. The command is optional – initialisation is implicitly invoked when the first input is introduced with <code>--cAdd</code> or <code>--cAddWeighted</code> . However, explicit command is recommended, if the user wants to get an empty image (instead of an error) in case no inputs are available.</p>
+<div class="fragment"></div><!-- fragment --><h2><a class="anchor" id="specialcodes"></a>
 Handling special codes</h2>
 <p>Radar data complying the ODIM standard applies special marker codes <code>undetect</code> and <code>nodata</code> . These codes have to be handled carefully in product generation and compositing. In <b>Rack</b> , pixel values with <code>nodata</code> are simply skipped; they are not accumulated in the composite array, for example.</p>
 <p>Handling of <code>undetect</code> can be tuned by the user with <code>--quantityConf</code> and <code>--undetectWeight</code> . The physical value or "virtual zero" replacing <code>undetect</code> codes is set using <code>--quantityConf</code> , <br  />
- for example, <code>--quantityConf</code> <code>DBZH</code>,zero=-32.0 (corresponding the limit of signal detection sensitivity). See also <a class="el" href="index.html#quantityConf">Default encoding of quantities</a>. The corresponding relative weight is set with <code>--undetectWeight</code> <code>&lt;value&gt;</code> . The value 0.0...1.0 describes the significance of the value relative to a "true" detected measurement value. The value is zero by default, which in compositing means that the location is marked as processed (a counter is incremented), but the value will not be accumulated.</p>
+ for example, <code>--quantityConf</code> <code>DBZH</code>,zero=-32.0 (corresponding the limit of signal detection sensitivity). See also <a class="el" href="index.html#quantityConf">Default encoding of quantities</a>. The corresponding relative weight is set with <code>--undetectWeight</code> <code>&lt;value&gt;</code> . The value 0.0...1.0 describes the significance of the value relative to a "true" detected measurement value. The value is zero by default, which in compositing means that the location is marked as processed (a counter is incremented) but the value is not accumulated.</p>
 <h2><a class="anchor" id="cschemes"></a>
 Compositing schemes</h2>
 <h3><a class="anchor" id="directcompositing"></a>
@@ -173,28 +195,23 @@ Direct compositing</h3>
 </map>
 </div>
 <p>A 800 x 1000 maximum composite over Finland in a lat-lon projection is obtained with</p>
-<div class="fragment"><div class="line">rack --odim 2.2      \</div>
+<div class="fragment"><div class="line">rack      \</div>
 <div class="line"> --cProj &#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39; \</div>
-<div class="line"> --cSize 500,750 --cBBox 17,57.7,33,69.5     --cInit --cMethod WAVG,2,2,-32 \</div>
+<div class="line"> --cSize 800,1000 --cBBox 17,57.7,33,69.5     --cInit --cMethod MAXIMUM \</div>
 <div class="line">     \</div>
-<div class="line"> --script &#39;  --pCappi 0   --cAdd&#39;  \</div>
-<div class="line">  data-20140525/201405251200_radar.polar.fianj.h5  \</div>
-<div class="line">  data-20140525/201405251200_radar.polar.fiika.h5  \</div>
-<div class="line">  data-20140525/201405251200_radar.polar.fikor.h5  \</div>
-<div class="line">  data-20140525/201405251200_radar.polar.fikuo.h5  \</div>
-<div class="line">  data-20140525/201405251200_radar.polar.filuo.h5  \</div>
-<div class="line">  data-20140525/201405251200_radar.polar.fiuta.h5  \</div>
-<div class="line">  data-20140525/201405251200_radar.polar.fivan.h5  \</div>
-<div class="line">  data-20140525/201405251200_radar.polar.fivim.h5  \</div>
+<div class="line"> --script &#39;  -Q DBZH   --cAdd&#39;  \</div>
+<div class="line">  data/pvol_fianj.h5  \</div>
+<div class="line">  data/pvol_fiika.h5  \</div>
+<div class="line">  data/pvol_fikor.h5  \</div>
+<div class="line">  data/pvol_fikuo.h5  \</div>
+<div class="line">  data/pvol_filuo.h5  \</div>
+<div class="line">  data/pvol_fiuta.h5  \</div>
+<div class="line">  data/pvol_fivan.h5  \</div>
+<div class="line">  data/pvol_fivim.h5  \</div>
 <div class="line"> --cExtract dwsc \</div>
-<div class="line"> --gTitle &#39;Rack - ClutterMap ${what:date|%Y/%m}&#39; -o composite-fi.h5 \</div>
-<div class="line"> --gInclude NONE -o composite-fi.png -o composite-fi.tif -Q QIND -o composite-fi-QIND.png -Q COUNT -o composite-fi-COUNT.png -Q &#39;.*DEV&#39; -o composite-fi-STDEV.png \</div>
-<div class="line"> -Q &#39;&#39; --palette &#39;default&#39;  --gInclude NEXT -o composite-fi-rgb.png --gAlign TOP,RIGHT --legendOut composite-fi-leg.svg \</div>
-<div class="line"> --imageTransp 0.1:0.2,0.3,0.7 -o composite-fi-rgba.png \</div>
-<div class="line">   -o composite-fi.svg \</div>
-<div class="line">  -o composite-fi-h5.txt</div>
+<div class="line"> --gTitle &#39;Rack - ClutterMap ${what:date|%Y/%m}&#39; -o composite-fi.h5 </div>
 </div><!-- fragment --><p>A similar composite of CAPPI in 1000 m altitude, with quality-weighted compositing method is obtained with</p>
-<div class="fragment"><div class="line">rack --odim 2.2      \</div>
+<div class="fragment"><div class="line">rack      \</div>
 <div class="line"> --cProj &#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39; \</div>
 <div class="line"> --cSize 500,750 --cBBox 17,57.7,33,69.5     --cInit --cMethod WAVG,2,2,-32 \</div>
 <div class="line">     \</div>
@@ -216,9 +233,13 @@ Direct compositing</h3>
 <li><code>COUNT</code> - number of radars contributed</li>
 <li><code>DEVIATION</code> - difference or discrepancy of data (if more than one radar contributed)</li>
 </ul>
-<p>The desired combination is given as a column (<code></code>: ) separated list of above keywords. Note that for now, also the older syntax is supported: a string composed of single letters ( <code>d</code> ), weight, (<code>w</code> ), deviation (std.dev., <code>s</code> ) and count of radars (<code>c</code> ).</p>
-<p>The new, second parameter is optional cropping: the desired bounding box <code></code> &lt;LLx&gt;:&lt;LLy&gt;:&lt;URx&gt;:&lt;URy&gt; or <code>DATA</code> (automatic bounding box) or <code>OVERLAP</code> (overlapping area).</p>
-<div class="image">
+<p>The desired combination is given as a comma-separated list of above keywords. Notice that the command <code>–cCreate</code> for creating single radar "composite" is equivalent to <code>--cAdd</code> <code>cExtract</code> <code>DATA</code>,WEIGHT . For example:</p>
+<p>Upon initialisation of teh compositing array, <code>Rack</code> stores the encoding parameters – storage type, scaling and marker values (<code>undetect</code> , <code>nodata</code>) – given explicitly or adopted from the first input. Then, in extraction stage, that encoding is applied by default. The internal compositing array itself is floating point data, so encoding of the output can be also set upon extraction. Reusing the above single-radar example, as follows: <br  />
+</p>
+<p>The encoding is applied to the first field (like <code>DATA</code> ) listed; the remaining field (typically quality fields) use their default encodings. But if desired, encoding of each field can be set, for example as follows:</p>
+<p>For now, the old syntax is also supported: a string composed of single letters (<code>d</code> ), weight, (<code>w</code> ), deviation (std.dev., <code>s</code> ) and count of radars (<code>c</code> ).</p>
+<p>Cropping is supported by a new optional parameter: the desired bounding box can be given explicitly <code></code> &lt;LLx&gt;,&lt;LLy&gt;,&lt;URx&gt;,&lt;URy&gt; or <code>DATA</code> (automatic bounding box) or <code>OVERLAP</code> (overlapping area).</p>
+<div class="fragment"></div><!-- fragment --><div class="image">
 <img src="composite-layers.png" alt=""/>
 <div class="caption">
 Layers extracted from the accumulation array: the composite, quality field, deviation and count of radars.</div></div>
@@ -239,14 +260,14 @@ Tiled compositing</h3>
 </map>
 </div>
 <p>For example, creation of a tile:</p>
-<div class="fragment"><div class="line">rack --odim 2.2      \</div>
+<div class="fragment"><div class="line">rack      \</div>
 <div class="line"> --cProj &#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39; \</div>
 <div class="line"> --cSize 500,750 --cBBox 17,57.7,33,69.5     \</div>
 <div class="line">     data-20140525/201405251200_radar.polar.fivim.h5   --pCappi 1000   --cCreateTile -o tiles/201405251200_radar.polar.fivim-tile.h5</div>
 </div><!-- fragment --><div class="dotgraph">
 </div>
 <p>Then, tiles are collectively added to composite with a single command. Notice that the composite definitions should be exactly the same as in the tile creation:</p>
-<div class="fragment"><div class="line">rack --odim 2.2      \</div>
+<div class="fragment"><div class="line">rack      \</div>
 <div class="line"> --cProj &#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39; \</div>
 <div class="line"> --cSize 500,750 --cBBox 17,57.7,33,69.5     --cInit --cMethod WAVG,2,2,-32 \</div>
 <div class="line">     --script &#39;--cAdd&#39;  \</div>
@@ -265,11 +286,11 @@ Tiled compositing</h3>
 Tiles containing several radars</h3>
 <p>By default, each tile contains data from a single radar. Alternatively, for a large composite, one can construct a tile containing data from several radars by calling <code>--cBBoxTile</code> command immediately after <code>--cBBox</code> and <code>--cSize</code> . The latter commands are equal to those of the large composite. A multi-radar tile is otherwise generated like any composite, that is, <code>--cAdd</code> and <code>--cExtract</code> commands are needed (unlike in constructing a single-radar tile).</p>
 <p>For example, consider receiving a precomputed the OPERA composite, to which the Russian and Belarussian radars are added. First, the latter data is composited to a tile cropped with <code>--cBBoxTile</code> under OPERA geometry:</p>
-<div class="fragment"><div class="line">rack --odim 2.2      \</div>
+<div class="fragment"><div class="line">rack      \</div>
 <div class="line"> --cProj &#39;+proj=laea +lat_0=55.0 +lon_0=10.0 +x_0=1950000.0 +y_0=2300000.0 +units=m +ellps=WGS84&#39; \</div>
 <div class="line"> --cSize 1900,2200 --cBBox -10.4346,31.7462,57.812,67.621 --cBBoxTile 24.4357,51.754,47.9115,65.4706    --cInit --cMethod MAXIMUM \</div>
 <div class="line">     \</div>
-<div class="line"> --script &#39;  -Q &#39;DBZH&#39;   --cAdd&#39;  \</div>
+<div class="line"> --script &#39;  -Q DBZH   --cAdd&#39;  \</div>
 <div class="line">  data-east/201703071200_radar.polar.bymin.h5  \</div>
 <div class="line">  data-east/201703071200_radar.polar.ruavn.h5  \</div>
 <div class="line">  data-east/201703071200_radar.polar.ruudb.h5  \</div>

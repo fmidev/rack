@@ -2,8 +2,8 @@
 <area shape="rect" id="Node000001" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="5,368,107,393"/>
 <area shape="rect" id="Node000002" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="156,343,259,368"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,367,155,361,156,367,120,373"/>
-<area shape="rect" id="Node000087" href="$classrack_1_1RackContext.html" title="Resources provided separately for each thread." alt="" coords="155,392,260,417"/>
-<area shape="poly" id="edge48_Node000001_Node000087" title=" " alt="" coords="121,388,155,394,154,399,120,393"/>
+<area shape="rect" id="Node000088" href="$classrack_1_1RackContext.html" title="Resources provided separately for each thread." alt="" coords="155,392,260,417"/>
+<area shape="poly" id="edge48_Node000001_Node000088" title=" " alt="" coords="121,388,155,394,154,399,120,393"/>
 <area shape="rect" id="Node000003" href="$classrack_1_1RadarProductOp.html" title=" " alt="" coords="310,185,499,211"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="219,329,253,274,278,245,307,221,332,208,334,213,309,226,281,249,257,277,223,332"/>
 <area shape="rect" id="Node000005" href="$classrack_1_1RadarProductOp.html" title=" " alt="" coords="311,235,498,275"/>
@@ -22,10 +22,10 @@
 <area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="507,457,581,454,581,459,507,462"/>
 <area shape="rect" id="Node000011" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="553,491,741,516"/>
 <area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="501,520,552,513,553,518,502,525"/>
-<area shape="rect" id="Node000081" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="559,540,735,565"/>
-<area shape="poly" id="edge42_Node000010_Node000081" title=" " alt="" coords="502,540,559,544,558,549,501,545"/>
-<area shape="rect" id="Node000083" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="549,610,744,650"/>
-<area shape="poly" id="edge44_Node000010_Node000083" title=" " alt="" coords="471,558,596,607,594,612,469,563"/>
+<area shape="rect" id="Node000082" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="559,540,735,565"/>
+<area shape="poly" id="edge42_Node000010_Node000082" title=" " alt="" coords="502,540,559,544,558,549,501,545"/>
+<area shape="rect" id="Node000084" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="549,610,744,650"/>
+<area shape="poly" id="edge44_Node000010_Node000084" title=" " alt="" coords="471,558,596,607,594,612,469,563"/>
 <area shape="rect" id="Node000012" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="814,491,937,516"/>
 <area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="755,501,814,501,814,506,755,506"/>
 <area shape="rect" id="Node000013" href="$classrack_1_1PolarSlidingWindowOp.html" title=" " alt="" coords="1007,8,1263,63"/>
@@ -88,12 +88,12 @@
 <area shape="poly" id="edge30_Node000022_Node000036" title=" " alt="" coords="1194,374,1231,382,1249,390,1265,401,1285,430,1294,458,1294,487,1290,516,1286,545,1286,573,1293,601,1313,628,1329,640,1326,645,1309,632,1289,603,1281,574,1281,545,1285,516,1289,487,1288,459,1281,432,1261,405,1246,394,1230,387,1193,380"/>
 <area shape="rect" id="Node000037" href="$classrack_1_1ExtDopplerOp.html" title="Base class for radar data processors." alt="" coords="1359,692,1471,717"/>
 <area shape="poly" id="edge31_Node000022_Node000037" title=" " alt="" coords="1195,374,1232,381,1249,390,1265,401,1289,436,1298,471,1296,507,1290,542,1284,577,1282,611,1290,645,1313,679,1334,694,1360,701,1358,706,1332,698,1309,683,1285,647,1277,612,1278,576,1285,541,1291,506,1292,472,1284,438,1261,405,1247,394,1230,387,1194,379"/>
-<area shape="rect" id="Node000082" href="$classrack_1_1PseudoRhiOp.html" title="Pseudo Range&#45;Height indicator." alt="" coords="821,540,929,565"/>
-<area shape="poly" id="edge43_Node000081_Node000082" title=" " alt="" coords="748,550,821,550,821,555,748,555"/>
-<area shape="rect" id="Node000084" href="$classrack_1_1VerticalIntersectionOp.html" title=" " alt="" coords="792,589,959,615"/>
-<area shape="poly" id="edge45_Node000083_Node000084" title=" " alt="" coords="758,614,791,610,792,615,758,619"/>
-<area shape="rect" id="Node000085" href="$classrack_1_1VerticalProfileOp.html" title="Computes vertical profiles of reflectivity (DBZH), including raw and polarized reflectivity." alt="" coords="810,639,941,664"/>
-<area shape="poly" id="edge46_Node000083_Node000085" title=" " alt="" coords="758,638,810,643,810,648,758,643"/>
-<area shape="rect" id="Node000086" href="$classrack_1_1VerticalWindProfileOp.html" title="Computes vertical profiles of reflectivity (DBZH), including raw and polarized reflectivity." alt="" coords="794,688,957,713"/>
-<area shape="poly" id="edge47_Node000083_Node000086" title=" " alt="" coords="722,652,793,674,830,685,829,690,791,679,721,657"/>
+<area shape="rect" id="Node000083" href="$classrack_1_1PseudoRhiOp.html" title="Pseudo Range&#45;Height indicator." alt="" coords="821,540,929,565"/>
+<area shape="poly" id="edge43_Node000082_Node000083" title=" " alt="" coords="748,550,821,550,821,555,748,555"/>
+<area shape="rect" id="Node000085" href="$classrack_1_1VerticalIntersectionOp.html" title=" " alt="" coords="792,589,959,615"/>
+<area shape="poly" id="edge45_Node000084_Node000085" title=" " alt="" coords="758,614,791,610,792,615,758,619"/>
+<area shape="rect" id="Node000086" href="$classrack_1_1VerticalProfileOp.html" title="Computes vertical profiles of reflectivity (DBZH), including raw and polarized reflectivity." alt="" coords="810,639,941,664"/>
+<area shape="poly" id="edge46_Node000084_Node000086" title=" " alt="" coords="758,638,810,643,810,648,758,643"/>
+<area shape="rect" id="Node000087" href="$classrack_1_1VerticalWindProfileOp.html" title="Computes vertical profiles of reflectivity (DBZH), including raw and polarized reflectivity." alt="" coords="794,688,957,713"/>
+<area shape="poly" id="edge47_Node000084_Node000087" title=" " alt="" coords="722,652,793,674,830,685,829,690,791,679,721,657"/>
 </map>

@@ -9,6 +9,5 @@ var searchData=
   ['formatstr_6',['formatStr',['../classdrain_1_1ContextKit.html#aee4a5737e1021bb341e080d2dca6310a',1,'drain::ContextKit']]],
   ['frame_7',['frame',['../classrack_1_1CartesianDataPicker.html#a8980f428c9c7473a50a92798a7c86c15',1,'rack::CartesianDataPicker']]],
   ['freeze_8',['freeze',['../classrack_1_1PolarODIM.html#a2318c473b6a881a089c6856ed1438dae',1,'rack::PolarODIM']]],
-  ['functor_9',['functor',['../classrack_1_1DopplerInversionWindow.html#a06a3c6f3d15b73e559d52065a4cb9249',1,'rack::DopplerInversionWindow']]],
-  ['fuzzybell_10',['fuzzyBell',['../classrack_1_1Beam.html#af14d783201eac639e84a704a8e448b07',1,'rack::Beam']]]
+  ['functor_9',['functor',['../classrack_1_1DopplerInversionWindow.html#a06a3c6f3d15b73e559d52065a4cb9249',1,'rack::DopplerInversionWindow']]]
 ];

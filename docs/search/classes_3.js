@@ -94,5 +94,6 @@ var searchData=
   ['drain_5ftree_5fname_91',['DRAIN_TREE_NAME',['../classdrain_1_1DRAIN__TREE__NAME.html',1,'drain']]],
   ['drainexception_92',['DrainException',['../classdrain_1_1DrainException.html',1,'drain']]],
   ['drawingop_93',['DrawingOp',['../classrack_1_1DrawingOp.html',1,'rack']]],
-  ['dsttype_94',['DstType',['../structrack_1_1DstType.html',1,'rack']]]
+  ['dsttype_94',['DstType',['../structrack_1_1DstType.html',1,'rack']]],
+  ['dualpolbiometop_95',['DualPolBioMetOp',['../classrack_1_1DualPolBioMetOp.html',1,'rack']]]
 ];

@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['data_0',['data',['../classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67',1,'drain::DRAIN_TREE_NAME::data'],['../classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f',1,'rack::ODIMPathElem::DATA'],['../classdrain_1_1image_1_1AccumulationArray.html#a1cbd022800989bd92fa1cd54b0d05d27',1,'drain::image::AccumulationArray::data']]],
+  ['data_0',['data',['../classdrain_1_1image_1_1AccumulationArray.html#a1cbd022800989bd92fa1cd54b0d05d27',1,'drain::image::AccumulationArray::data'],['../classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67',1,'drain::DRAIN_TREE_NAME::data'],['../classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f',1,'rack::ODIMPathElem::DATA']]],
   ['data2_1',['data2',['../classdrain_1_1image_1_1AccumulationArray.html#a744c0e80e0a791d32c1bbd833afd7738',1,'drain::image::AccumulationArray']]],
   ['data_5fgroups_2',['DATA_GROUPS',['../classrack_1_1ODIMPathElem.html#ab8c31771d3dd020765063e9e14f03df4',1,'rack::ODIMPathElem']]],
   ['databboxnat_3',['dataBBoxNat',['../classdrain_1_1image_1_1GeoFrame.html#a7950eb43d69e9d04b042c97a09dc0972',1,'drain::image::GeoFrame']]],
   ['dataoverlapbboxnat_4',['dataOverlapBBoxNat',['../classdrain_1_1image_1_1GeoFrame.html#ac471ad9c76658d2ae8443bfb7da2b279',1,'drain::image::GeoFrame']]],
-  ['dataselector_5',['dataSelector',['../classrack_1_1RadarAccumulator.html#a2fe1ad87be83ea67c8e51843cb791be4',1,'rack::RadarAccumulator']]],
+  ['dataselector_5',['dataSelector',['../classrack_1_1RadarAccumulatorBase.html#a2fe1ad87be83ea67c8e51843cb791be4',1,'rack::RadarAccumulatorBase']]],
   ['dataset_6',['DATASET',['../classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c',1,'rack::ODIMPathElem']]],
   ['date_7',['date',['../classrack_1_1ODIM.html#a97f8a59003c89308e7c68c51ad1173c7',1,'rack::ODIM']]],
   ['dateformat_8',['dateformat',['../classrack_1_1ODIM.html#ac4fc409b2eb44f99bf93f6f7112bf0c7',1,'rack::ODIM']]],
@@ -15,7 +15,7 @@ var searchData=
   ['decay_12',['decay',['../classrack_1_1Composite.html#ab01a33c3f845cc963c97a17973b4e871',1,'rack::Composite']]],
   ['defaultcmdkey_13',['defaultCmdKey',['../classdrain_1_1CommandBank.html#aa9b227182b46f1b39b9994093bca5257',1,'drain::CommandBank']]],
   ['defaultlayout_14',['defaultLayout',['../classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8',1,'drain::Sprinter']]],
-  ['defaultquality_15',['defaultquality',['../classrack_1_1DataCoder.html#afc01b34a7bd371b2051c99603ab796f1',1,'rack::DataCoder::defaultQuality'],['../classrack_1_1RadarAccumulator.html#afc01b34a7bd371b2051c99603ab796f1',1,'rack::RadarAccumulator::defaultQuality']]],
+  ['defaultquality_15',['defaultquality',['../classrack_1_1DataCoder.html#afc01b34a7bd371b2051c99603ab796f1',1,'rack::DataCoder::defaultQuality'],['../classrack_1_1RadarAccumulatorBase.html#afc01b34a7bd371b2051c99603ab796f1',1,'rack::RadarAccumulatorBase::defaultQuality']]],
   ['defaulttype_16',['defaultType',['../classrack_1_1Quantity.html#af5140d15bd9d808ec01bb06f3ae465e2',1,'rack::Quantity']]],
   ['detectionthreshold_17',['detectionThreshold',['../classrack_1_1DataCoder.html#abad7c5528d2d9fba4e33019ccbcd8bd0',1,'rack::DataCoder']]],
   ['devaltitude_18',['devAltitude',['../classrack_1_1BiometOp.html#af877fbc267569e9c4300844dbdc94044',1,'rack::BiometOp']]],

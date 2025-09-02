@@ -1,0 +1,11 @@
+<map id="MyOp" name="MyOp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="112,225,172,251"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1RadarFunctorBase.html" title=" " alt="" coords="5,152,145,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,186,133,223,129,227,94,190"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="169,152,251,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="191,189,155,227,151,223,188,185"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="165,79,255,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="213,118,213,152,207,152,207,118"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="169,5,251,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="213,44,213,79,207,79,207,44"/>
+</map>

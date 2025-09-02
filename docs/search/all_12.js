@@ -22,7 +22,7 @@ var searchData=
   ['markblockedin_19',['markBlockedIn',['../structdrain_1_1image_1_1ProberControl.html#a7355bf02bc138edd7096d1890b1604b2',1,'drain::image::ProberControl']]],
   ['markblockedout_20',['markBlockedOut',['../structdrain_1_1image_1_1ProberControl.html#a5e5cda75fee80b721d99b5662d6ebfb4',1,'drain::image::ProberControl']]],
   ['markervalue_21',['markerValue',['../classdrain_1_1image_1_1SegmentProberConf.html#ab4dd9abdd7e87125453f9084b0a374d3',1,'drain::image::SegmentProberConf']]],
-  ['markexcluded_22',['markexcluded',['../classrack_1_1DataTools.html#a09c5875ce5f5445a0d63051617f246fa',1,'rack::DataTools::markExcluded(Hi5Tree &amp;src, const Hi5Tree::path_t &amp;path, bool exclude=true)'],['../classrack_1_1DataTools.html#a6a23160d481d0055582b04d0125bd2a5',1,'rack::DataTools::markExcluded(Hi5Tree &amp;src, bool exclude=true)']]],
+  ['markexcluded_22',['markexcluded',['../classrack_1_1DataTools.html#a6a23160d481d0055582b04d0125bd2a5',1,'rack::DataTools::markExcluded(Hi5Tree &amp;src, bool exclude=true)'],['../classrack_1_1DataTools.html#a09c5875ce5f5445a0d63051617f246fa',1,'rack::DataTools::markExcluded(Hi5Tree &amp;src, const Hi5Tree::path_t &amp;path, bool exclude=true)']]],
   ['match_23',['match',['../classrack_1_1ODIMPathMatcher.html#af401e10cb74c00e9b29975682c36e630',1,'rack::ODIMPathMatcher']]],
   ['matchelem_24',['matchElem',['../classrack_1_1ODIMPathMatcher.html#a93c74cf43d36d26dd55ee9e08eedf7cd',1,'rack::ODIMPathMatcher']]],
   ['matchhead_25',['matchHead',['../classrack_1_1ODIMPathMatcher.html#a2ec248b46babdb59a0da0464647bfdcc',1,'rack::ODIMPathMatcher']]],
@@ -45,7 +45,7 @@ var searchData=
   ['metadatacollectorsvg_42',['MetaDataCollectorSVG',['../classrack_1_1MetaDataCollectorSVG.html',1,'rack']]],
   ['metadataprunersvg_43',['MetaDataPrunerSVG',['../classrack_1_1MetaDataPrunerSVG.html',1,'rack']]],
   ['meteorogical_20targets_44',['Detecting sea clutter and other non-meteorogical targets',['../andrepage.html#aNonMet',1,'']]],
-  ['meteorological_20products_45',['meteorological products',['../productspage.html',1,'Meteorological products'],['../index.html#products_brief',1,'Meteorological products'],['../quickpage.html#commands_product',1,'Meteorological products']]],
+  ['meteorological_20products_45',['meteorological products',['../productspage.html',1,'Meteorological products'],['../quickpage.html#commands_product',1,'Meteorological products'],['../index.html#products_brief',1,'Meteorological products']]],
   ['methods_46',['Compositing methods',['../compositespage.html#cmethods',1,'']]],
   ['methodweights_47',['MethodWeights',['../structrack_1_1MethodWeights.html',1,'rack']]],
   ['methodweights_3c_20double_20_3e_48',['MethodWeights&lt; double &gt;',['../structrack_1_1MethodWeights.html',1,'rack']]],
@@ -67,7 +67,7 @@ var searchData=
   ['modifyalign_64',['modifyAlign',['../structdrain_1_1image_1_1AlignSVG.html#a8bdf7e25519a39cb8d814d446d9e2789',1,'drain::image::AlignSVG']]],
   ['modifying_20data_65',['Modifying data',['../modifypage.html',1,'']]],
   ['modifying_20data_20arrays_20and_20metadata_66',['Modifying data arrays and metadata',['../modifypage.html#modify',1,'']]],
-  ['motion_67',['motion',['../motionpage.html#motion',1,'Motion'],['../motionpage.html',1,'Motion']]],
+  ['motion_67',['motion',['../motionpage.html',1,'Motion'],['../motionpage.html#motion',1,'Motion']]],
   ['motion_20field_20apparent_20in_20subsequent_20images_68',['Motion field apparent in subsequent images',['../motionpage.html#oflow',1,'']]],
   ['motion_20fields_69',['motion fields',['../motionpage.html#motion-composites',1,'Composites of motion fields'],['../motionpage.html#motiondetection',1,'Detecting motion fields'],['../motionpage.html#motion-spread',1,'Spreading motion fields']]],
   ['motionextrapolatorop_70',['MotionExtrapolatorOp',['../classdrain_1_1image_1_1MotionExtrapolatorOp.html',1,'drain::image']]],
@@ -92,5 +92,6 @@ var searchData=
   ['multiflagger_3c_20textstyle_3a_3astyle_20_3e_89',['MultiFlagger&lt; TextStyle::Style &gt;',['../classdrain_1_1MultiFlagger.html',1,'drain']]],
   ['multiple_20threads_90',['Parallel computation – using multiple threads',['../parallelpage.html#parallel_intro',1,'']]],
   ['multiplicationfunctor_91',['MultiplicationFunctor',['../classdrain_1_1MultiplicationFunctor.html',1,'drain']]],
-  ['multithresholdop_92',['MultiThresholdOp',['../classdrain_1_1image_1_1MultiThresholdOp.html',1,'drain::image']]]
+  ['multithresholdop_92',['MultiThresholdOp',['../classdrain_1_1image_1_1MultiThresholdOp.html',1,'drain::image']]],
+  ['myop_93',['MyOp',['../classrack_1_1MyOp.html',1,'rack']]]
 ];

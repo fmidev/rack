@@ -1,5 +1,5 @@
 <map id="CompositeDefaultQuality" name="CompositeDefaultQuality">
-<area shape="rect" id="Node000001" title=" " alt="" coords="17,372,204,397"/>
+<area shape="rect" id="Node000001" title="Commands (more) related to radar composites." alt="" coords="17,372,204,397"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="7,299,215,324"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,338,113,372,108,372,108,338"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="49,225,173,251"/>

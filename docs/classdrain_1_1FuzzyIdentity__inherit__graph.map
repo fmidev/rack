@@ -1,0 +1,11 @@
+<map id="FuzzyIdentity&lt; T &gt;" name="FuzzyIdentity&lt; T &gt;">
+<area shape="rect" id="Node000001" title="Identity function &#45; returns the input value." alt="" coords="5,299,152,324"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor." alt="" coords="21,225,136,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,264,81,299,76,299,76,264"/>
+<area shape="rect" id="Node000003" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="24,152,133,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="81,191,81,225,76,225,76,191"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="43,79,114,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="81,118,81,152,76,152,76,118"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="38,5,119,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="81,44,81,79,76,79,76,44"/>
+</map>

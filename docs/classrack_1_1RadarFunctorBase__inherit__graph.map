@@ -1,5 +1,11 @@
 <map id="RadarFunctorBase" name="RadarFunctorBase">
-<area shape="rect" id="Node000001" title=" " alt="" coords="17,5,157,31"/>
-<area shape="rect" id="Node000002" href="$classrack_1_1RadarFunctorOp.html" title="Convenience (abbreviation)" alt="" coords="5,79,169,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,44,90,79,85,79,85,44"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="53,5,193,31"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1MyOp.html" title=" " alt="" coords="27,79,87,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,43,69,80,66,77,101,39"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1RadarFunctorBaseOp.html" title=" " alt="" coords="111,79,269,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,39,181,77,177,80,142,43"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1RadarFunctorOp.html" title=" " alt="" coords="5,152,180,192"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="167,115,118,154,114,150,163,111"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1RadarFunctorOp.html" title="Convenience (abbreviation)" alt="" coords="204,159,368,185"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="216,111,273,157,270,161,213,115"/>
 </map>

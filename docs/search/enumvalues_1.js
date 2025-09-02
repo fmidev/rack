@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['data_0',['DATA',['../classrack_1_1Composite.html#aa01498a3ceb2fa74dc9536c16caef1daa9d7d6f31868d66330397c967c4afd2d2',1,'rack::Composite']]],
-  ['datasets_1',['DATASETS',['../classhi5_1_1Reader.html#a46c8a310cf4c094f8c80e1cb8dc1f911a819692478a5ee5404708d38bdaef1f97',1,'hi5::Reader']]],
-  ['deviation_2',['DEVIATION',['../classrack_1_1Composite.html#aa01498a3ceb2fa74dc9536c16caef1daaedaeae01d3d7264274e63155f10e9b3f',1,'rack::Composite']]],
-  ['deviation_5fds_3',['DEVIATION_DS',['../classrack_1_1Composite.html#aa01498a3ceb2fa74dc9536c16caef1daa640d4e962345f385228f75095fffbcd0',1,'rack::Composite']]]
+  ['error_0',['error',['../classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1a2fd6f336d08340583bd620a7f5694c90',1,'drain::ReferenceMap2::ERROR'],['../classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1a2fd6f336d08340583bd620a7f5694c90',1,'drain::ReferenceMap::ERROR']]],
+  ['exclusive_1',['EXCLUSIVE',['../classhi5_1_1Reader.html#a46c8a310cf4c094f8c80e1cb8dc1f911a088b83acb938fbda78ab567a1a6e71e0',1,'hi5::Reader']]]
 ];

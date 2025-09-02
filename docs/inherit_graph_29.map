@@ -1,49 +1,29 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classdrain_1_1CommandInstaller.html" title="Creates an instance of command class C." alt="" coords="5,319,212,359"/>
-<area shape="rect" id="Node000001" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="307,5,485,45"/>
-<area shape="poly" id="edge607_Node000000_Node000001" title=" " alt="" coords="115,305,133,250,161,182,203,113,229,82,258,55,281,42,306,32,307,37,283,46,262,59,232,86,207,117,166,185,138,252,121,306"/>
-<area shape="rect" id="Node000003" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="310,69,482,109"/>
-<area shape="poly" id="edge609_Node000000_Node000003" title=" " alt="" coords="121,305,142,262,172,211,211,161,258,119,283,106,309,97,311,102,285,111,262,124,215,165,176,214,147,264,126,307"/>
-<area shape="rect" id="Node000005" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="311,133,481,173"/>
-<area shape="poly" id="edge611_Node000000_Node000005" title=" " alt="" coords="130,305,184,243,219,210,259,183,309,163,311,168,261,188,223,214,188,246,134,309"/>
-<area shape="rect" id="Node000007" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="310,197,482,237"/>
-<area shape="poly" id="edge613_Node000000_Node000007" title=" " alt="" coords="148,308,199,276,259,247,309,231,311,236,261,252,202,281,151,313"/>
-<area shape="rect" id="Node000009" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="295,261,497,301"/>
-<area shape="poly" id="edge615_Node000000_Node000009" title=" " alt="" coords="222,313,295,299,296,304,223,319"/>
-<area shape="rect" id="Node000012" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="260,326,532,351"/>
-<area shape="poly" id="edge618_Node000000_Node000012" title=" " alt="" coords="226,336,260,336,260,341,226,341"/>
-<area shape="rect" id="Node000014" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="312,376,480,416"/>
-<area shape="poly" id="edge620_Node000000_Node000014" title=" " alt="" coords="224,359,312,377,311,382,222,364"/>
-<area shape="rect" id="Node000016" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="310,440,482,480"/>
-<area shape="poly" id="edge622_Node000000_Node000016" title=" " alt="" coords="151,364,202,396,261,426,311,441,309,447,259,430,199,401,148,369"/>
-<area shape="rect" id="Node000018" href="$classdrain_1_1CommandModule.html" title="Combines command installation and sectioning." alt="" coords="295,504,497,544"/>
-<area shape="poly" id="edge624_Node000000_Node000018" title=" " alt="" coords="134,368,188,431,223,463,261,490,295,504,293,509,259,494,219,467,184,435,130,372"/>
-<area shape="rect" id="Node000022" href="$classrack_1_1DetectorInstaller.html" title=" " alt="" coords="331,569,461,594"/>
-<area shape="poly" id="edge628_Node000000_Node000022" title=" " alt="" coords="125,370,146,413,175,463,214,513,237,535,261,554,295,569,331,577,330,582,293,574,259,558,233,539,210,517,171,466,141,416,120,372"/>
-<area shape="rect" id="Node000023" href="$classrack_1_1RemoverInstaller.html" title=" " alt="" coords="329,618,463,643"/>
-<area shape="poly" id="edge629_Node000000_Node000023" title=" " alt="" coords="121,371,139,424,167,488,208,552,233,580,261,604,294,620,329,628,328,633,292,625,259,609,229,584,203,555,162,490,134,426,116,373"/>
-<area shape="rect" id="Node000002" href="$classrack_1_1AccumulationModule.html" title=" " alt="" coords="580,13,739,38"/>
-<area shape="poly" id="edge608_Node000001_Node000002" title=" " alt="" coords="499,23,580,23,580,28,499,28"/>
-<area shape="rect" id="Node000004" href="$classrack_1_1AnDReModule.html" title=" " alt="" coords="602,77,717,102"/>
-<area shape="poly" id="edge610_Node000003_Node000004" title=" " alt="" coords="496,87,602,87,602,92,496,92"/>
-<area shape="rect" id="Node000006" href="$classrack_1_1CartesianModule.html" title="drain::Commands for conversions to Cartesian coordinate system, including radar image composites." alt="" coords="593,138,725,163"/>
-<area shape="poly" id="edge612_Node000005_Node000006" title=" " alt="" coords="495,150,593,149,593,154,495,155"/>
-<area shape="rect" id="Node000008" href="$classrack_1_1GraphicsModule.html" title=" " alt="" coords="596,187,723,213"/>
-<area shape="poly" id="edge614_Node000007_Node000008" title=" " alt="" coords="496,208,596,201,596,207,496,213"/>
-<area shape="rect" id="Node000010" href="$classrack_1_1HiddenModule.html" title=" " alt="" coords="601,237,717,262"/>
-<area shape="poly" id="edge616_Node000009_Node000010" title=" " alt="" coords="510,265,601,254,601,259,511,270"/>
-<area shape="rect" id="Node000011" href="$classrack_1_1TestModule.html" title=" " alt="" coords="611,286,707,311"/>
-<area shape="poly" id="edge617_Node000009_Node000011" title=" " alt="" coords="511,286,611,293,611,298,510,292"/>
-<area shape="rect" id="Node000013" href="$classrack_1_1ImageModule.html" title=" " alt="" coords="604,335,715,361"/>
-<area shape="poly" id="edge619_Node000012_Node000013" title=" " alt="" coords="546,341,604,343,604,349,546,347"/>
-<area shape="rect" id="Node000015" href="$classrack_1_1ImageOpModule.html" title=" " alt="" coords="595,385,724,410"/>
-<area shape="poly" id="edge621_Node000014_Node000015" title=" " alt="" coords="494,394,594,394,594,400,494,399"/>
-<area shape="rect" id="Node000017" href="$classrack_1_1ProductModule.html" title=" " alt="" coords="600,441,719,466"/>
-<area shape="poly" id="edge623_Node000016_Node000017" title=" " alt="" coords="496,455,600,452,600,457,496,460"/>
-<area shape="rect" id="Node000019" href="$classrack_1_1FileModule.html" title=" " alt="" coords="613,490,706,515"/>
-<area shape="poly" id="edge625_Node000018_Node000019" title=" " alt="" coords="511,512,612,504,613,509,511,517"/>
-<area shape="rect" id="Node000020" href="$classrack_1_1MainModule.html" title=" " alt="" coords="608,539,711,565"/>
-<area shape="poly" id="edge626_Node000018_Node000020" title=" " alt="" coords="511,534,608,544,607,549,510,539"/>
-<area shape="rect" id="Node000021" href="$classrack_1_1ScienceModule.html" title=" " alt="" coords="599,589,719,614"/>
-<area shape="poly" id="edge627_Node000018_Node000021" title=" " alt="" coords="500,545,533,555,581,575,615,586,613,591,579,580,531,560,499,550"/>
+<area shape="rect" id="Node000000" href="$classdrain_1_1CommandSection.html" title=" " alt="" coords="5,301,143,327"/>
+<area shape="rect" id="Node000001" href="$structdrain_1_1DeprecatingSection.html" title=" " alt="" coords="195,5,345,31"/>
+<area shape="poly" id="edge647_Node000000_Node000001" title=" " alt="" coords="76,287,87,235,108,169,141,100,163,68,189,40,206,29,209,33,192,44,167,71,145,103,113,171,92,237,82,288"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1GeneralSection.html" title=" " alt="" coords="209,55,331,80"/>
+<area shape="poly" id="edge648_Node000000_Node000002" title=" " alt="" coords="79,287,93,244,115,191,146,136,166,111,189,89,208,78,210,82,192,93,170,115,151,139,119,193,98,246,84,289"/>
+<area shape="rect" id="Node000003" href="$structdrain_1_1HiddenSection.html" title=" " alt="" coords="212,104,328,129"/>
+<area shape="poly" id="edge649_Node000000_Node000003" title=" " alt="" coords="83,287,99,254,122,214,152,173,189,139,211,127,213,131,192,143,156,177,127,217,104,256,88,290"/>
+<area shape="rect" id="Node000004" href="$structdrain_1_1TriggerSection.html" title=" " alt="" coords="213,153,327,179"/>
+<area shape="poly" id="edge650_Node000000_Node000004" title=" " alt="" coords="90,288,131,238,159,211,189,188,213,176,215,181,192,192,162,215,135,241,94,292"/>
+<area shape="rect" id="Node000005" href="$structrack_1_1AccumulationSection.html" title=" " alt="" coords="191,203,349,228"/>
+<area shape="poly" id="edge651_Node000000_Node000005" title=" " alt="" coords="101,291,142,264,190,237,219,226,221,231,192,242,144,268,104,296"/>
+<area shape="rect" id="Node000006" href="$structrack_1_1AnDReSection.html" title=" " alt="" coords="213,252,327,277"/>
+<area shape="poly" id="edge652_Node000000_Node000006" title=" " alt="" coords="138,295,218,275,219,280,139,301"/>
+<area shape="rect" id="Node000007" href="$structrack_1_1CartesianSection.html" title=" " alt="" coords="204,301,336,327"/>
+<area shape="poly" id="edge653_Node000000_Node000007" title=" " alt="" coords="157,311,203,311,203,317,157,317"/>
+<area shape="rect" id="Node000008" href="$structrack_1_1GraphicsSection.html" title=" " alt="" coords="207,351,333,376"/>
+<area shape="poly" id="edge654_Node000000_Node000008" title=" " alt="" coords="139,327,219,348,218,353,138,333"/>
+<area shape="rect" id="Node000009" href="$structrack_1_1ImageOpSection.html" title=" " alt="" coords="205,400,335,425"/>
+<area shape="poly" id="edge655_Node000000_Node000009" title=" " alt="" coords="105,333,146,359,192,385,224,397,222,402,190,390,143,364,102,337"/>
+<area shape="rect" id="Node000010" href="$structrack_1_1ImageSection.html" title=" " alt="" coords="215,449,325,475"/>
+<area shape="poly" id="edge656_Node000000_Node000010" title=" " alt="" coords="94,336,135,386,162,412,192,434,218,447,216,452,189,439,159,416,131,389,90,339"/>
+<area shape="rect" id="Node000011" href="$structrack_1_1ProductSection.html" title=" " alt="" coords="211,499,329,524"/>
+<area shape="poly" id="edge657_Node000000_Node000011" title=" " alt="" coords="88,338,127,411,157,450,192,484,215,496,212,501,189,488,153,454,123,414,84,341"/>
+<area shape="rect" id="Node000012" href="$structrack_1_1ScienceSection.html" title=" " alt="" coords="210,548,330,573"/>
+<area shape="poly" id="edge658_Node000000_Node000012" title=" " alt="" coords="84,340,98,382,120,434,151,487,171,512,192,533,213,546,210,550,189,537,167,515,147,490,115,436,93,384,79,341"/>
+<area shape="rect" id="Node000013" href="$structrack_1_1TestSection.html" title=" " alt="" coords="222,597,318,623"/>
+<area shape="poly" id="edge659_Node000000_Node000013" title=" " alt="" coords="82,340,93,391,113,456,146,524,167,555,192,583,207,593,223,599,221,604,204,597,189,587,163,559,141,527,108,458,87,392,77,341"/>
 </map>

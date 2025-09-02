@@ -409,14 +409,14 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <p>Most descriptors have unscaled and scaled (normalized) versions, distinguished with uppercase and lowercase letters.</p>
 <p>For example, the unscaled area is obtained with <code>'A'</code>: </p><div class="fragment"><div class="line">drainage shapes.png --iSegmentStats A,64 -o segmentStat-area.png</div>
 </div><!-- fragment --><p>Respectively, the scaled area is obtained with <code>'a'</code>. </p><div class="fragment"><div class="line">drainage shapes.png --iSegmentStats a,64,functor=<a class="code hl_class" href="classdrain_1_1FuzzyStep.html">FuzzyStep</a>:0.5:0.75  -o segmentStat-areaRel.png</div>
-<div class="ttc" id="aclassdrain_1_1FuzzyStep_html"><div class="ttname"><a href="classdrain_1_1FuzzyStep.html">drain::FuzzyStep</a></div><div class="ttdoc">A basic, linear transition from 0 to scale between (start) and (end) .</div><div class="ttdef"><b>Definition</b> Fuzzy.h:132</div></div>
+<div class="ttc" id="aclassdrain_1_1FuzzyStep_html"><div class="ttname"><a href="classdrain_1_1FuzzyStep.html">drain::FuzzyStep</a></div><div class="ttdoc">A basic, linear transition from 0 to scale between (start) and (end) .</div><div class="ttdef"><b>Definition</b> Fuzzy.h:154</div></div>
 </div><!-- fragment --><p>The relative vertical position can be computed similarly, with <code>'y'</code>.</p>
 <div class="fragment"><div class="line">drainage shapes.png --iSegmentStats x,64,functor=<a class="code hl_class" href="classdrain_1_1FuzzyStep.html">FuzzyStep</a>:100:0 -o segmentStat-x.png</div>
 <div class="line">drainage shapes.png --iSegmentStats h,64 -o segmentStat-horz.png</div>
 <div class="line">drainage shapes.png --iSegmentStats v,64 -o segmentStat-vert.png</div>
 <div class="line">drainage shapes.png --iSegmentStats e,32 -o segmentStat-elong.png</div>
 <div class="line">drainage shapes.png --iSegmentStats s,32,functor=<a class="code hl_class" href="classdrain_1_1FuzzyStepsoid.html">FuzzyStepsoid</a>:0:10 -o segmentStat-variance.png</div>
-<div class="ttc" id="aclassdrain_1_1FuzzyStepsoid_html"><div class="ttname"><a href="classdrain_1_1FuzzyStepsoid.html">drain::FuzzyStepsoid</a></div><div class="ttdoc">A smooth step function between 0.0 and 1.0. Increasing (decreasing) with positive (negative) width....</div><div class="ttdef"><b>Definition</b> Fuzzy.h:576</div></div>
+<div class="ttc" id="aclassdrain_1_1FuzzyStepsoid_html"><div class="ttname"><a href="classdrain_1_1FuzzyStepsoid.html">drain::FuzzyStepsoid</a></div><div class="ttdoc">A smooth step function between 0.0 and 1.0. Increasing (decreasing) with positive (negative) width....</div><div class="ttdef"><b>Definition</b> Fuzzy.h:620</div></div>
 </div><!-- fragment --><p>Several statistics can be computed simultaneously simply. For example, elongation (e), slimness (l) and y-coordinate (y):</p>
 <div class="fragment"><div class="line">drainage shapes.png --iSegmentStats ely,64:255 -o segmentStat-ely.png</div>
 </div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>

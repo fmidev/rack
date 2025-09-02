@@ -1,5 +1,20 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,45,38"/>
-<area shape="rect" id="Node000001" href="$classrack_1_1RadarAccumulator.html" title="Data array for creating composites and accumulated polar products (Surface rain fall or cluttermaps)" alt="" coords="93,5,272,45"/>
-<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="59,23,93,23,93,28,59,28"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="73,13,113,38"/>
+<area shape="rect" id="Node000001" href="$classrack_1_1RadarAccumulator.html" title="Data array for creating composites and accumulated polar products (Surface rain fall or cluttermaps)" alt="" coords="234,5,413,45"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="127,23,234,23,234,28,127,28"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1Accumulator.html" title=" " alt="" coords="41,142,145,167"/>
+<area shape="rect" id="Node000007" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="228,121,419,175"/>
+<area shape="poly" id="edge2_Node000006_Node000007" title=" " alt="" coords="159,150,228,148,228,153,159,155"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1AccumulatorGeo.html" title=" " alt="" coords="258,199,389,225"/>
+<area shape="poly" id="edge3_Node000006_Node000005" title=" " alt="" coords="159,168,272,197,271,202,157,173"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1RadarAccumulator.html" title=" " alt="" coords="467,121,657,175"/>
+<area shape="poly" id="edge4_Node000005_Node000003" title=" " alt="" coords="388,193,418,185,466,172,467,177,419,191,389,198"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1Composite.html" title="Cartesian composite (mosaic) of data from several radars." alt="" coords="705,135,797,161"/>
+<area shape="poly" id="edge5_Node000003_Node000004" title=" " alt="" coords="671,145,705,145,705,151,671,151"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1image_1_1GeoFrame.html" title="Array with georeferencing support." alt="" coords="48,199,137,225"/>
+<area shape="poly" id="edge6_Node000008_Node000005" title=" " alt="" coords="151,209,258,209,258,215,151,215"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1RadarAccumulatorBase.html" title="Todo: consider non&#45;template class:" alt="" coords="5,70,180,95"/>
+<area shape="poly" id="edge9_Node000002_Node000001" title=" " alt="" coords="157,64,242,43,243,48,159,69"/>
+<area shape="poly" id="edge8_Node000002_Node000007" title=" " alt="" coords="152,97,228,118,227,124,151,102"/>
+<area shape="poly" id="edge7_Node000002_Node000003" title=" " alt="" coords="194,83,302,90,419,105,474,118,473,123,418,111,302,95,193,88"/>
 </map>

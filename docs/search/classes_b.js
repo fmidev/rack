@@ -39,5 +39,6 @@ var searchData=
   ['multiflagger_3c_20svginclude_20_3e_36',['MultiFlagger&lt; SvgInclude &gt;',['../classdrain_1_1MultiFlagger.html',1,'drain']]],
   ['multiflagger_3c_20textstyle_3a_3astyle_20_3e_37',['MultiFlagger&lt; TextStyle::Style &gt;',['../classdrain_1_1MultiFlagger.html',1,'drain']]],
   ['multiplicationfunctor_38',['MultiplicationFunctor',['../classdrain_1_1MultiplicationFunctor.html',1,'drain']]],
-  ['multithresholdop_39',['MultiThresholdOp',['../classdrain_1_1image_1_1MultiThresholdOp.html',1,'drain::image']]]
+  ['multithresholdop_39',['MultiThresholdOp',['../classdrain_1_1image_1_1MultiThresholdOp.html',1,'drain::image']]],
+  ['myop_40',['MyOp',['../classrack_1_1MyOp.html',1,'rack']]]
 ];

@@ -84,7 +84,11 @@ Selecting data</h1>
 <p>Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection criteria.  </p>
 <p>This command determines the data to be applied in subsequent input read or product generation commands.</p>
 <p>In <b>Rack</b>, many operations implictly select a subset of available data instead of using it all. For example, in computing a Pseudo CAPPI image, <code>DBZH</code> data from single-PRF sweeps is used by default.</p>
-<p><b>Synopsis</b> </p><div class="fragment"></div><!-- fragment --><p>Remarks on the options:</p>
+<p><b>Synopsis</b> </p><div class="fragment"><div class="line">--select, -s  &lt;selector&gt;  (section: general)</div>
+<div class="line">  Data selector for the next computation</div>
+<div class="line">  path: defines a path segment to be matched, with desired index ranges (example: dataset2:4/data3:8  path: leading slash fixes matching at the root (example: /dataset:/data: ), otherwise the tail part is matched  quantity: list of strings or regExps separated by semicolon &#39;:&#39;, quality quantity by slash &#39;/&#39;  See also: selectObject,selectQuantity</div>
+<div class="line">    selector=path,quantity,elangle,count,order,prf,timespan </div>
+</div><!-- fragment --><p>Remarks on the options:</p>
 <ul>
 <li><code>path</code> argument defines a path <em>segment</em> to be matched, with desired index ranges (example: <code>dataset2:4/data3</code>:8 )</li>
 <li>in <code>path</code> argument, a leading slash fixes the matching to the root (example: <code>/dataset</code>:/data: ), otherwise the tail part is matched</li>

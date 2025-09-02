@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['quality_0',['QUALITY',['../classrack_1_1Composite.html#aa01498a3ceb2fa74dc9536c16caef1daaa9ad1ec625f93027f90d2e294fcc90a3',1,'rack::Composite']]]
+  ['skip_0',['skip',['../classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1a998eded080e73768c0b44bf4891df984',1,'drain::ReferenceMap2::SKIP'],['../classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1a998eded080e73768c0b44bf4891df984',1,'drain::ReferenceMap::SKIP']]]
 ];

@@ -1,5 +1,7 @@
 <map id="RadarAccumulator&lt; AC, OD &gt;" name="RadarAccumulator&lt; AC, OD &gt;">
-<area shape="rect" id="Node000001" title="Data array for creating composites and accumulated polar products (Surface rain fall or cluttermaps)" alt="" coords="5,79,184,119"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="75,5,115,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,44,97,79,92,79,92,44"/>
+<area shape="rect" id="Node000001" title="Data array for creating composites and accumulated polar products (Surface rain fall or cluttermaps)" alt="" coords="69,79,247,119"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1RadarAccumulatorBase.html" title="Todo: consider non&#45;template class:" alt="" coords="5,5,180,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,39,144,77,140,80,109,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="205,5,245,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="208,43,176,80,172,77,204,39"/>
 </map>

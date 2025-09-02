@@ -289,25 +289,25 @@ Constructors Variable,FlexibleVariable,Reference</h1>
         <td>45.678 ®</td>
       </tr>
       <tr class="code">
-        <td>std::string str("Test"); V var(str);</td>
+        <td>std::string str(&quot;Test&quot;); V var(str);</td>
         <td>V variable(var);</td>
-        <td>"Test" ©</td>
-        <td>"Test" ©</td>
-        <td>"Test" ®</td>
+        <td>&quot;Test&quot; ©</td>
+        <td>&quot;Test&quot; ©</td>
+        <td>&quot;Test&quot; ®</td>
       </tr>
       <tr class="code">
         <td>UniTuple2i uni2i(INIT_2i); V var(uni2i);</td>
         <td>V variable(var);</td>
-        <td>12,34</td>
-        <td>12,34</td>
-        <td>12,34 ®</td>
+        <td>67,89</td>
+        <td>67,89</td>
+        <td>67,89 ®</td>
       </tr>
       <tr class="code">
         <td>UniTuple3d uni3d(INIT_3d); V var(uni3d);</td>
         <td>V variable(var);</td>
-        <td>5.6,7.8,9</td>
-        <td>5.6,7.8,9</td>
-        <td>5.6,7.8,9 ®</td>
+        <td>65.6,77.8,89</td>
+        <td>65.6,77.8,89</td>
+        <td>65.6,77.8,89 ®</td>
       </tr>
       <tr>
         <th class="right" colspan="2">Copy constructor variants</th>
@@ -341,60 +341,60 @@ Constructors Variable,FlexibleVariable,Reference</h1>
         <td>123 ®</td>
       </tr>
       <tr class="code">
-        <td>std::string str("Test"); Variable var(str);</td>
+        <td>std::string str(&quot;Test&quot;); Variable var(str);</td>
         <td>V variable(var);</td>
-        <td>"Test" ©</td>
-        <td>"Test" ©</td>
+        <td>&quot;Test&quot; ©</td>
+        <td>&quot;Test&quot; ©</td>
         <td>null</td>
       </tr>
       <tr class="code">
-        <td>std::string str("Test"); FlexibleVariable var(str);</td>
+        <td>std::string str(&quot;Test&quot;); FlexibleVariable var(str);</td>
         <td>V variable(var);</td>
-        <td>"Test" ©</td>
-        <td>"Test" ©</td>
+        <td>&quot;Test&quot; ©</td>
+        <td>&quot;Test&quot; ©</td>
         <td>null</td>
       </tr>
       <tr class="code">
-        <td>std::string str("Test"); FlexibleVariable var; var.link(str);</td>
+        <td>std::string str(&quot;Test&quot;); FlexibleVariable var; var.link(str);</td>
         <td>V variable(var);</td>
-        <td>"Test" ©</td>
-        <td>"Test" ®</td>
-        <td>"Test" ®</td>
+        <td>&quot;Test&quot; ©</td>
+        <td>&quot;Test&quot; ®</td>
+        <td>&quot;Test&quot; ®</td>
       </tr>
       <tr class="code">
-        <td>std::string str("Test"); Reference var(str);</td>
+        <td>std::string str(&quot;Test&quot;); Reference var(str);</td>
         <td>V variable(var);</td>
-        <td>"Test" ©</td>
-        <td>"Test" ®</td>
-        <td>"Test" ®</td>
+        <td>&quot;Test&quot; ©</td>
+        <td>&quot;Test&quot; ®</td>
+        <td>&quot;Test&quot; ®</td>
       </tr>
       <tr class="code">
         <td>UniTuple3d uni3d(INIT_3d); Variable var(uni3d);</td>
         <td>V variable(var);</td>
-        <td>5.6,7.8,9</td>
-        <td>5.6,7.8,9</td>
+        <td>65.6,77.8,89</td>
+        <td>65.6,77.8,89</td>
         <td>null</td>
       </tr>
       <tr class="code">
         <td>UniTuple3d uni3d(INIT_3d); FlexibleVariable var(uni3d);</td>
         <td>V variable(var);</td>
-        <td>5.6,7.8,9</td>
-        <td>5.6,7.8,9</td>
+        <td>65.6,77.8,89</td>
+        <td>65.6,77.8,89</td>
         <td>null</td>
       </tr>
       <tr class="code">
         <td>UniTuple3d uni3d(INIT_3d); FlexibleVariable var; var.link(uni3d);</td>
         <td>V variable(var);</td>
-        <td>5.6,7.8,9</td>
-        <td>5.6,7.8,9 ®</td>
-        <td>5.6,7.8,9 ®</td>
+        <td>65.6,77.8,89</td>
+        <td>65.6,77.8,89 ®</td>
+        <td>65.6,77.8,89 ®</td>
       </tr>
       <tr class="code">
         <td>UniTuple3d uni3d(INIT_3d); Reference var(uni3d);</td>
         <td>V variable(var);</td>
-        <td>5.6,7.8,9</td>
-        <td>5.6,7.8,9 ®</td>
-        <td>5.6,7.8,9 ®</td>
+        <td>65.6,77.8,89</td>
+        <td>65.6,77.8,89 ®</td>
+        <td>65.6,77.8,89 ®</td>
       </tr>
       <tr>
         <th class="right" colspan="2">Non-const variable arg</th>
@@ -428,25 +428,25 @@ Constructors Variable,FlexibleVariable,Reference</h1>
         <td>45.678 ®</td>
       </tr>
       <tr class="code">
-        <td>std::string str("Test");</td>
+        <td>std::string str(&quot;Test&quot;);</td>
         <td>V variable(str);</td>
-        <td>"Test" ©</td>
-        <td>"Test" ©</td>
-        <td>"Test" ®</td>
+        <td>&quot;Test&quot; ©</td>
+        <td>&quot;Test&quot; ©</td>
+        <td>&quot;Test&quot; ®</td>
       </tr>
       <tr class="code">
         <td>UniTuple2i uni2i(INIT_2i)</td>
         <td>V variable(uni2i);</td>
-        <td>12,34</td>
-        <td>12,34</td>
-        <td>12,34 ®</td>
+        <td>67,89</td>
+        <td>67,89</td>
+        <td>67,89 ®</td>
       </tr>
       <tr class="code">
         <td>UniTuple3d uni3d(INIT_3d)</td>
         <td>V variable(uni3d);</td>
-        <td>5.6,7.8,9</td>
-        <td>5.6,7.8,9</td>
-        <td>5.6,7.8,9 ®</td>
+        <td>65.6,77.8,89</td>
+        <td>65.6,77.8,89</td>
+        <td>65.6,77.8,89 ®</td>
       </tr>
       <tr>
         <th class="right" colspan="2">Type initialisation</th>
@@ -512,30 +512,30 @@ Constructors Variable,FlexibleVariable,Reference</h1>
       </tr>
       <tr class="code">
         <td></td>
-        <td>V variable("Hello!");</td>
-        <td>"Hello!" ©</td>
-        <td>"Hello!" ©</td>
+        <td>V variable(&quot;Hello!&quot;);</td>
+        <td>&quot;Hello!&quot; ©</td>
+        <td>&quot;Hello!&quot; ©</td>
         <td>×</td>
       </tr>
       <tr class="code">
         <td></td>
-        <td>V variable(std::string("Test"));</td>
-        <td>"Test" ©</td>
-        <td>"Test" ©</td>
+        <td>V variable(std::string(&quot;Test&quot;));</td>
+        <td>&quot;Test&quot; ©</td>
+        <td>&quot;Test&quot; ©</td>
         <td>×</td>
       </tr>
       <tr class="code">
         <td></td>
         <td>V variable(UniTuple2i(INIT_2i));</td>
-        <td>12,34</td>
-        <td>12,34</td>
+        <td>67,89</td>
+        <td>67,89</td>
         <td>×</td>
       </tr>
       <tr class="code">
         <td></td>
         <td>V variable(UniTuple3d(INIT_3d));</td>
-        <td>5.6,7.8,9</td>
-        <td>5.6,7.8,9</td>
+        <td>65.6,77.8,89</td>
+        <td>65.6,77.8,89</td>
         <td>×</td>
       </tr>
       <tr>
@@ -570,31 +570,31 @@ Constructors Variable,FlexibleVariable,Reference</h1>
         <td>×</td>
       </tr>
       <tr class="code">
-        <td>const std::string str("Test");</td>
+        <td>const std::string str(&quot;Test&quot;);</td>
         <td>V variable(str);</td>
-        <td>"Test" ©</td>
-        <td>"Test" ©</td>
+        <td>&quot;Test&quot; ©</td>
+        <td>&quot;Test&quot; ©</td>
         <td>×</td>
       </tr>
       <tr class="code">
-        <td>const char *s="123abc";</td>
+        <td>const char *s=&quot;123abc&quot;;</td>
         <td>V variable(s);</td>
-        <td>"123abc" ©</td>
-        <td>"123abc" ©</td>
+        <td>&quot;123abc&quot; ©</td>
+        <td>&quot;123abc&quot; ©</td>
         <td>×</td>
       </tr>
       <tr class="code">
         <td>UniTuple2i ut(INIT_2i);</td>
         <td>V variable(ut);</td>
-        <td>12,34</td>
-        <td>12,34</td>
+        <td>67,89</td>
+        <td>67,89</td>
         <td>×</td>
       </tr>
       <tr class="code">
         <td>UniTuple3d ut(INIT_3d);</td>
         <td>V variable(ut);</td>
-        <td>5.6,7.8,9</td>
-        <td>5.6,7.8,9</td>
+        <td>65.6,77.8,89</td>
+        <td>65.6,77.8,89</td>
         <td>×</td>
       </tr>
       <tr>
@@ -630,26 +630,27 @@ Constructors Variable,FlexibleVariable,Reference</h1>
       </tr>
       <tr class="code">
         <td></td>
-        <td>V variable = "12.34567";</td>
-        <td>"12.34567" ©</td>
-        <td>"12.34567" ©</td>
+        <td>V variable = &quot;12.34567&quot;;</td>
+        <td>&quot;12.34567&quot; ©</td>
+        <td>&quot;12.34567&quot; ©</td>
         <td>×</td>
       </tr>
       <tr class="code">
         <td></td>
         <td>V variable = INIT_2i;</td>
-        <td>12,34</td>
-        <td>12,34</td>
+        <td>67,89</td>
+        <td>67,89</td>
         <td>×</td>
       </tr>
       <tr class="code">
         <td></td>
         <td>V variable = UniTuple3d(INIT_3d);</td>
-        <td>5.6,7.8,9</td>
-        <td>5.6,7.8,9</td>
+        <td>65.6,77.8,89</td>
+        <td>65.6,77.8,89</td>
         <td>×</td>
       </tr>
     </table>
+    <pre>Created by: src/Variables-example.cpp: testConstructors</pre>
   </body>
 </html>
 <h1><a class="anchor" id="variables-comparison-assignments"></a>
@@ -711,7 +712,7 @@ Variable</h2>
         <td type="unsigned long">0</td>
         <td type="float">0</td>
         <td type="double">0</td>
-        <td type="char-array">"0" ©</td>
+        <td type="char-array">&quot;0&quot; ©</td>
       </tr>
       <tr class="code">
         <td>bool</td>
@@ -724,7 +725,20 @@ Variable</h2>
         <td type="unsigned long">1</td>
         <td type="float">1</td>
         <td type="double">1</td>
-        <td type="char-array">"1" ©</td>
+        <td type="char-array">&quot;1&quot; ©</td>
+      </tr>
+      <tr class="code">
+        <td>int</td>
+        <td>0</td>
+        <td type="bool">false</td>
+        <td type="unsigned char"> </td>
+        <td type="char"> </td>
+        <td type="short">0</td>
+        <td type="int">0</td>
+        <td type="unsigned long">0</td>
+        <td type="float">0</td>
+        <td type="double">0</td>
+        <td type="char-array">&quot;0&quot; ©</td>
       </tr>
       <tr class="code">
         <td>int</td>
@@ -739,7 +753,7 @@ Variable</h2>
         <td type="unsigned long">123</td>
         <td type="float">123</td>
         <td type="double">123</td>
-        <td type="char-array">"123" ©</td>
+        <td type="char-array">&quot;123&quot; ©</td>
       </tr>
       <tr class="code">
         <td>float</td>
@@ -764,7 +778,7 @@ Variable</h2>
         </td>
         <td type="float">12.345</td>
         <td type="double">12.345</td>
-        <td type="char-array">"12.345" ©</td>
+        <td type="char-array">&quot;12.345&quot; ©</td>
       </tr>
       <tr class="code">
         <td>double</td>
@@ -792,7 +806,7 @@ Variable</h2>
         </td>
         <td type="double">3.14159</td>
         <td type="char-array">
-          <span class="warn">"3.14159" ©</span>
+          <span class="warn">&quot;3.14159&quot; ©</span>
         </td>
       </tr>
       <tr class="code">
@@ -821,12 +835,12 @@ Variable</h2>
         </td>
         <td type="double">3.14159</td>
         <td type="char-array">
-          <span class="warn">"3.14159" ©</span>
+          <span class="warn">&quot;3.14159&quot; ©</span>
         </td>
       </tr>
       <tr class="code">
         <td>std::string</td>
-        <td>"Hello!"</td>
+        <td>&quot;Hello!&quot;</td>
         <td type="bool">
           <span class="warn">false</span>
         </td>
@@ -851,11 +865,11 @@ Variable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"Hello!" ©</td>
+        <td type="char-array">&quot;Hello!&quot; ©</td>
       </tr>
       <tr class="code">
         <td>std::string</td>
-        <td>"true"</td>
+        <td>&quot;true&quot;</td>
         <td type="bool">true</td>
         <td type="unsigned char">
           <span class="warn"> </span>
@@ -878,11 +892,11 @@ Variable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"true" ©</td>
+        <td type="char-array">&quot;true&quot; ©</td>
       </tr>
       <tr class="code">
         <td>std::string</td>
-        <td>"false"</td>
+        <td>&quot;false&quot;</td>
         <td type="bool">false</td>
         <td type="unsigned char">
           <span class="warn"> </span>
@@ -905,11 +919,11 @@ Variable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"false" ©</td>
+        <td type="char-array">&quot;false&quot; ©</td>
       </tr>
       <tr class="code">
         <td>std::string</td>
-        <td>"3141592E-6"</td>
+        <td>&quot;3141592E-6&quot;</td>
         <td type="bool">
           <span class="warn">true</span>
         </td>
@@ -934,11 +948,11 @@ Variable</h2>
         <td type="double">
           <span class="warn">3.14159</span>
         </td>
-        <td type="char-array">"3141592E-6" ©</td>
+        <td type="char-array">&quot;3141592E-6&quot; ©</td>
       </tr>
       <tr class="code">
         <td>const char *</td>
-        <td>"Test"</td>
+        <td>&quot;Test&quot;</td>
         <td type="bool">
           <span class="warn">false</span>
         </td>
@@ -963,11 +977,11 @@ Variable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"Test" ©</td>
+        <td type="char-array">&quot;Test&quot; ©</td>
       </tr>
       <tr class="code">
         <td>const char *</td>
-        <td>"true"</td>
+        <td>&quot;true&quot;</td>
         <td type="bool">true</td>
         <td type="unsigned char">
           <span class="warn"> </span>
@@ -990,11 +1004,11 @@ Variable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"true" ©</td>
+        <td type="char-array">&quot;true&quot; ©</td>
       </tr>
       <tr class="code">
         <td>const char *</td>
-        <td>"false"</td>
+        <td>&quot;false&quot;</td>
         <td type="bool">false</td>
         <td type="unsigned char">
           <span class="warn"> </span>
@@ -1017,49 +1031,49 @@ Variable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"false" ©</td>
+        <td type="char-array">&quot;false&quot; ©</td>
       </tr>
       <tr class="code">
-        <td>UniTuple<2,int></td>
+        <td>UniTuple&lt;2,int&gt;</td>
         <td>uni2i</td>
         <td type="bool">
           <span class="warn">true,true</span>
         </td>
-        <td type="unsigned char">,"</td>
-        <td type="char">,"</td>
-        <td type="short">12,34</td>
-        <td type="int">12,34</td>
-        <td type="unsigned long">12,34</td>
-        <td type="float">12,34</td>
-        <td type="double">12,34</td>
-        <td type="char-array">"12,34" ©</td>
+        <td type="unsigned char">C,Y</td>
+        <td type="char">C,Y</td>
+        <td type="short">67,89</td>
+        <td type="int">67,89</td>
+        <td type="unsigned long">67,89</td>
+        <td type="float">67,89</td>
+        <td type="double">67,89</td>
+        <td type="char-array">&quot;67,89&quot; ©</td>
       </tr>
       <tr class="code">
-        <td>UniTuple<3,double></td>
+        <td>UniTuple&lt;3,double&gt;</td>
         <td>uni3d</td>
         <td type="bool">
           <span class="warn">true,true,true</span>
         </td>
         <td type="unsigned char">
-          <span class="warn">,,	</span>
+          <span class="warn">A,M,Y</span>
         </td>
         <td type="char">
-          <span class="warn">,,	</span>
+          <span class="warn">A,M,Y</span>
         </td>
         <td type="short">
-          <span class="warn">5,7,9</span>
+          <span class="warn">65,77,89</span>
         </td>
         <td type="int">
-          <span class="warn">5,7,9</span>
+          <span class="warn">65,77,89</span>
         </td>
         <td type="unsigned long">
-          <span class="warn">5,7,9</span>
+          <span class="warn">65,77,89</span>
         </td>
         <td type="float">
-          <span class="warn">5.6,7.8,9</span>
+          <span class="warn">65.6,77.8,89</span>
         </td>
-        <td type="double">5.6,7.8,9</td>
-        <td type="char-array">"5.6,7.8,9" ©</td>
+        <td type="double">65.6,77.8,89</td>
+        <td type="char-array">&quot;65.6,77.8,89&quot; ©</td>
       </tr>
       <tr class="code">
         <td>void *</td>
@@ -1089,7 +1103,7 @@ Variable</h2>
           <span class="warn">0</span>
         </td>
         <td type="char-array">
-          <span class="warn">"nullptr" ©</span>
+          <span class="warn">&quot;nullptr&quot; ©</span>
         </td>
       </tr>
       <tr>
@@ -1106,7 +1120,7 @@ Variable</h2>
         <td type="unsigned long">123</td>
         <td type="float">123</td>
         <td type="double">123</td>
-        <td type="char-array">"123" ©</td>
+        <td type="char-array">&quot;123&quot; ©</td>
       </tr>
       <tr class="code">
         <td>int i=123</td>
@@ -1119,7 +1133,7 @@ Variable</h2>
         <td type="unsigned long">123</td>
         <td type="float">123</td>
         <td type="double">123</td>
-        <td type="char-array">"123" ©</td>
+        <td type="char-array">&quot;123&quot; ©</td>
       </tr>
       <tr class="code">
         <td>int i=123</td>
@@ -1132,10 +1146,10 @@ Variable</h2>
         <td type="unsigned long">123</td>
         <td type="float">123</td>
         <td type="double">123</td>
-        <td type="char-array">"123" ©</td>
+        <td type="char-array">&quot;123&quot; ©</td>
       </tr>
       <tr class="code">
-        <td>std::string s("test")</td>
+        <td>std::string s(&quot;abc&quot;)</td>
         <td>Variable(s)</td>
         <td type="bool">
           <span class="warn">false</span>
@@ -1161,10 +1175,10 @@ Variable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"test" ©</td>
+        <td type="char-array">&quot;test&quot; ©</td>
       </tr>
       <tr class="code">
-        <td>std::string s("test")</td>
+        <td>std::string s(&quot;abc&quot;)</td>
         <td>FlexibleVariable(s)</td>
         <td type="bool">
           <span class="warn">false</span>
@@ -1190,10 +1204,10 @@ Variable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"test" ©</td>
+        <td type="char-array">&quot;test&quot; ©</td>
       </tr>
       <tr class="code">
-        <td>std::string s("test")</td>
+        <td>std::string s(&quot;abc&quot;)</td>
         <td>Reference(s)</td>
         <td type="bool">
           <span class="warn">false</span>
@@ -1219,48 +1233,130 @@ Variable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"test" ©</td>
+        <td type="char-array">&quot;test&quot; ©</td>
+      </tr>
+      <tr class="code">
+        <td>std::string s(&quot;true&quot;)</td>
+        <td>Variable(s)</td>
+        <td type="bool">true</td>
+        <td type="unsigned char">
+          <span class="warn"> </span>
+        </td>
+        <td type="char">
+          <span class="warn">t</span>
+        </td>
+        <td type="short">
+          <span class="warn">0</span>
+        </td>
+        <td type="int">
+          <span class="warn">0</span>
+        </td>
+        <td type="unsigned long">
+          <span class="warn">0</span>
+        </td>
+        <td type="float">
+          <span class="warn">0</span>
+        </td>
+        <td type="double">
+          <span class="warn">0</span>
+        </td>
+        <td type="char-array">&quot;true&quot; ©</td>
+      </tr>
+      <tr class="code">
+        <td>std::string s(&quot;true&quot;)</td>
+        <td>FlexibleVariable(s)</td>
+        <td type="bool">true</td>
+        <td type="unsigned char">
+          <span class="warn"> </span>
+        </td>
+        <td type="char">
+          <span class="warn">t</span>
+        </td>
+        <td type="short">
+          <span class="warn">0</span>
+        </td>
+        <td type="int">
+          <span class="warn">0</span>
+        </td>
+        <td type="unsigned long">
+          <span class="warn">0</span>
+        </td>
+        <td type="float">
+          <span class="warn">0</span>
+        </td>
+        <td type="double">
+          <span class="warn">0</span>
+        </td>
+        <td type="char-array">&quot;true&quot; ©</td>
+      </tr>
+      <tr class="code">
+        <td>std::string s(&quot;true&quot;)</td>
+        <td>Reference(s)</td>
+        <td type="bool">true</td>
+        <td type="unsigned char">
+          <span class="warn"> </span>
+        </td>
+        <td type="char">
+          <span class="warn">t</span>
+        </td>
+        <td type="short">
+          <span class="warn">0</span>
+        </td>
+        <td type="int">
+          <span class="warn">0</span>
+        </td>
+        <td type="unsigned long">
+          <span class="warn">0</span>
+        </td>
+        <td type="float">
+          <span class="warn">0</span>
+        </td>
+        <td type="double">
+          <span class="warn">0</span>
+        </td>
+        <td type="char-array">&quot;true&quot; ©</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
         <td>Variable(uni3d)</td>
         <td type="bool">true,true,true</td>
-        <td type="unsigned char">,,	</td>
-        <td type="char">,,	</td>
-        <td type="short">5,7,9</td>
-        <td type="int">5,7,9</td>
-        <td type="unsigned long">5,7,9</td>
-        <td type="float">5.6,7.8,9</td>
-        <td type="double">5.6,7.8,9</td>
-        <td type="char-array">"5.6,7.8,9" ©</td>
+        <td type="unsigned char">A,M,Y</td>
+        <td type="char">A,M,Y</td>
+        <td type="short">65,77,89</td>
+        <td type="int">65,77,89</td>
+        <td type="unsigned long">65,77,89</td>
+        <td type="float">65.6,77.8,89</td>
+        <td type="double">65.6,77.8,89</td>
+        <td type="char-array">&quot;65.6,77.8,89&quot; ©</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
         <td>FlexibleVariable(uni3d)</td>
         <td type="bool">true,true,true</td>
-        <td type="unsigned char">,,	</td>
-        <td type="char">,,	</td>
-        <td type="short">5,7,9</td>
-        <td type="int">5,7,9</td>
-        <td type="unsigned long">5,7,9</td>
-        <td type="float">5.6,7.8,9</td>
-        <td type="double">5.6,7.8,9</td>
-        <td type="char-array">"5.6,7.8,9" ©</td>
+        <td type="unsigned char">A,M,Y</td>
+        <td type="char">A,M,Y</td>
+        <td type="short">65,77,89</td>
+        <td type="int">65,77,89</td>
+        <td type="unsigned long">65,77,89</td>
+        <td type="float">65.6,77.8,89</td>
+        <td type="double">65.6,77.8,89</td>
+        <td type="char-array">&quot;65.6,77.8,89&quot; ©</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
         <td>Reference(uni3d)</td>
         <td type="bool">true,true,true</td>
-        <td type="unsigned char">,,	</td>
-        <td type="char">,,	</td>
-        <td type="short">5,7,9</td>
-        <td type="int">5,7,9</td>
-        <td type="unsigned long">5,7,9</td>
-        <td type="float">5.6,7.8,9</td>
-        <td type="double">5.6,7.8,9</td>
-        <td type="char-array">"5.6,7.8,9" ©</td>
+        <td type="unsigned char">A,M,Y</td>
+        <td type="char">A,M,Y</td>
+        <td type="short">65,77,89</td>
+        <td type="int">65,77,89</td>
+        <td type="unsigned long">65,77,89</td>
+        <td type="float">65.6,77.8,89</td>
+        <td type="double">65.6,77.8,89</td>
+        <td type="char-array">&quot;65.6,77.8,89&quot; ©</td>
       </tr>
     </table>
+    <pre>Created by: src/Variables-example.cpp: testAssignments</pre>
   </body>
 </html>
 <h2><a class="anchor" id="FlexibleVariable"></a>
@@ -1320,7 +1416,7 @@ FlexibleVariable</h2>
         <td type="unsigned long">0</td>
         <td type="float">0</td>
         <td type="double">0</td>
-        <td type="char-array">"0" ©</td>
+        <td type="char-array">&quot;0&quot; ©</td>
       </tr>
       <tr class="code">
         <td>bool</td>
@@ -1333,7 +1429,20 @@ FlexibleVariable</h2>
         <td type="unsigned long">1</td>
         <td type="float">1</td>
         <td type="double">1</td>
-        <td type="char-array">"1" ©</td>
+        <td type="char-array">&quot;1&quot; ©</td>
+      </tr>
+      <tr class="code">
+        <td>int</td>
+        <td>0</td>
+        <td type="bool">false</td>
+        <td type="unsigned char"> </td>
+        <td type="char"> </td>
+        <td type="short">0</td>
+        <td type="int">0</td>
+        <td type="unsigned long">0</td>
+        <td type="float">0</td>
+        <td type="double">0</td>
+        <td type="char-array">&quot;0&quot; ©</td>
       </tr>
       <tr class="code">
         <td>int</td>
@@ -1348,7 +1457,7 @@ FlexibleVariable</h2>
         <td type="unsigned long">123</td>
         <td type="float">123</td>
         <td type="double">123</td>
-        <td type="char-array">"123" ©</td>
+        <td type="char-array">&quot;123&quot; ©</td>
       </tr>
       <tr class="code">
         <td>float</td>
@@ -1373,7 +1482,7 @@ FlexibleVariable</h2>
         </td>
         <td type="float">12.345</td>
         <td type="double">12.345</td>
-        <td type="char-array">"12.345" ©</td>
+        <td type="char-array">&quot;12.345&quot; ©</td>
       </tr>
       <tr class="code">
         <td>double</td>
@@ -1401,7 +1510,7 @@ FlexibleVariable</h2>
         </td>
         <td type="double">3.14159</td>
         <td type="char-array">
-          <span class="warn">"3.14159" ©</span>
+          <span class="warn">&quot;3.14159&quot; ©</span>
         </td>
       </tr>
       <tr class="code">
@@ -1430,12 +1539,12 @@ FlexibleVariable</h2>
         </td>
         <td type="double">3.14159</td>
         <td type="char-array">
-          <span class="warn">"3.14159" ©</span>
+          <span class="warn">&quot;3.14159&quot; ©</span>
         </td>
       </tr>
       <tr class="code">
         <td>std::string</td>
-        <td>"Hello!"</td>
+        <td>&quot;Hello!&quot;</td>
         <td type="bool">
           <span class="warn">false</span>
         </td>
@@ -1460,11 +1569,11 @@ FlexibleVariable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"Hello!" ©</td>
+        <td type="char-array">&quot;Hello!&quot; ©</td>
       </tr>
       <tr class="code">
         <td>std::string</td>
-        <td>"true"</td>
+        <td>&quot;true&quot;</td>
         <td type="bool">true</td>
         <td type="unsigned char">
           <span class="warn"> </span>
@@ -1487,11 +1596,11 @@ FlexibleVariable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"true" ©</td>
+        <td type="char-array">&quot;true&quot; ©</td>
       </tr>
       <tr class="code">
         <td>std::string</td>
-        <td>"false"</td>
+        <td>&quot;false&quot;</td>
         <td type="bool">false</td>
         <td type="unsigned char">
           <span class="warn"> </span>
@@ -1514,11 +1623,11 @@ FlexibleVariable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"false" ©</td>
+        <td type="char-array">&quot;false&quot; ©</td>
       </tr>
       <tr class="code">
         <td>std::string</td>
-        <td>"3141592E-6"</td>
+        <td>&quot;3141592E-6&quot;</td>
         <td type="bool">
           <span class="warn">true</span>
         </td>
@@ -1543,11 +1652,11 @@ FlexibleVariable</h2>
         <td type="double">
           <span class="warn">3.14159</span>
         </td>
-        <td type="char-array">"3141592E-6" ©</td>
+        <td type="char-array">&quot;3141592E-6&quot; ©</td>
       </tr>
       <tr class="code">
         <td>const char *</td>
-        <td>"Test"</td>
+        <td>&quot;Test&quot;</td>
         <td type="bool">
           <span class="warn">false</span>
         </td>
@@ -1572,11 +1681,11 @@ FlexibleVariable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"Test" ©</td>
+        <td type="char-array">&quot;Test&quot; ©</td>
       </tr>
       <tr class="code">
         <td>const char *</td>
-        <td>"true"</td>
+        <td>&quot;true&quot;</td>
         <td type="bool">true</td>
         <td type="unsigned char">
           <span class="warn"> </span>
@@ -1599,11 +1708,11 @@ FlexibleVariable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"true" ©</td>
+        <td type="char-array">&quot;true&quot; ©</td>
       </tr>
       <tr class="code">
         <td>const char *</td>
-        <td>"false"</td>
+        <td>&quot;false&quot;</td>
         <td type="bool">false</td>
         <td type="unsigned char">
           <span class="warn"> </span>
@@ -1626,49 +1735,49 @@ FlexibleVariable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"false" ©</td>
+        <td type="char-array">&quot;false&quot; ©</td>
       </tr>
       <tr class="code">
-        <td>UniTuple<2,int></td>
+        <td>UniTuple&lt;2,int&gt;</td>
         <td>uni2i</td>
         <td type="bool">
           <span class="warn">true,true</span>
         </td>
-        <td type="unsigned char">,"</td>
-        <td type="char">,"</td>
-        <td type="short">12,34</td>
-        <td type="int">12,34</td>
-        <td type="unsigned long">12,34</td>
-        <td type="float">12,34</td>
-        <td type="double">12,34</td>
-        <td type="char-array">"12,34" ©</td>
+        <td type="unsigned char">C,Y</td>
+        <td type="char">C,Y</td>
+        <td type="short">67,89</td>
+        <td type="int">67,89</td>
+        <td type="unsigned long">67,89</td>
+        <td type="float">67,89</td>
+        <td type="double">67,89</td>
+        <td type="char-array">&quot;67,89&quot; ©</td>
       </tr>
       <tr class="code">
-        <td>UniTuple<3,double></td>
+        <td>UniTuple&lt;3,double&gt;</td>
         <td>uni3d</td>
         <td type="bool">
           <span class="warn">true,true,true</span>
         </td>
         <td type="unsigned char">
-          <span class="warn">,,	</span>
+          <span class="warn">A,M,Y</span>
         </td>
         <td type="char">
-          <span class="warn">,,	</span>
+          <span class="warn">A,M,Y</span>
         </td>
         <td type="short">
-          <span class="warn">5,7,9</span>
+          <span class="warn">65,77,89</span>
         </td>
         <td type="int">
-          <span class="warn">5,7,9</span>
+          <span class="warn">65,77,89</span>
         </td>
         <td type="unsigned long">
-          <span class="warn">5,7,9</span>
+          <span class="warn">65,77,89</span>
         </td>
         <td type="float">
-          <span class="warn">5.6,7.8,9</span>
+          <span class="warn">65.6,77.8,89</span>
         </td>
-        <td type="double">5.6,7.8,9</td>
-        <td type="char-array">"5.6,7.8,9" ©</td>
+        <td type="double">65.6,77.8,89</td>
+        <td type="char-array">&quot;65.6,77.8,89&quot; ©</td>
       </tr>
       <tr class="code">
         <td>void *</td>
@@ -1698,7 +1807,7 @@ FlexibleVariable</h2>
           <span class="warn">0</span>
         </td>
         <td type="char-array">
-          <span class="warn">"nullptr" ©</span>
+          <span class="warn">&quot;nullptr&quot; ©</span>
         </td>
       </tr>
       <tr>
@@ -1715,7 +1824,7 @@ FlexibleVariable</h2>
         <td type="unsigned long">123</td>
         <td type="float">123</td>
         <td type="double">123</td>
-        <td type="char-array">"123" ©</td>
+        <td type="char-array">&quot;123&quot; ©</td>
       </tr>
       <tr class="code">
         <td>int i=123</td>
@@ -1728,7 +1837,7 @@ FlexibleVariable</h2>
         <td type="unsigned long">123</td>
         <td type="float">123</td>
         <td type="double">123</td>
-        <td type="char-array">"123" ©</td>
+        <td type="char-array">&quot;123&quot; ©</td>
       </tr>
       <tr class="code">
         <td>int i=123</td>
@@ -1741,10 +1850,10 @@ FlexibleVariable</h2>
         <td type="unsigned long">123</td>
         <td type="float">123</td>
         <td type="double">123</td>
-        <td type="char-array">"123" ©</td>
+        <td type="char-array">&quot;123&quot; ©</td>
       </tr>
       <tr class="code">
-        <td>std::string s("test")</td>
+        <td>std::string s(&quot;abc&quot;)</td>
         <td>Variable(s)</td>
         <td type="bool">
           <span class="warn">false</span>
@@ -1770,10 +1879,10 @@ FlexibleVariable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"test" ©</td>
+        <td type="char-array">&quot;test&quot; ©</td>
       </tr>
       <tr class="code">
-        <td>std::string s("test")</td>
+        <td>std::string s(&quot;abc&quot;)</td>
         <td>FlexibleVariable(s)</td>
         <td type="bool">
           <span class="warn">false</span>
@@ -1799,10 +1908,10 @@ FlexibleVariable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"test" ©</td>
+        <td type="char-array">&quot;test&quot; ©</td>
       </tr>
       <tr class="code">
-        <td>std::string s("test")</td>
+        <td>std::string s(&quot;abc&quot;)</td>
         <td>Reference(s)</td>
         <td type="bool">
           <span class="warn">false</span>
@@ -1828,48 +1937,130 @@ FlexibleVariable</h2>
         <td type="double">
           <span class="warn">0</span>
         </td>
-        <td type="char-array">"test" ©</td>
+        <td type="char-array">&quot;test&quot; ©</td>
+      </tr>
+      <tr class="code">
+        <td>std::string s(&quot;true&quot;)</td>
+        <td>Variable(s)</td>
+        <td type="bool">true</td>
+        <td type="unsigned char">
+          <span class="warn"> </span>
+        </td>
+        <td type="char">
+          <span class="warn">t</span>
+        </td>
+        <td type="short">
+          <span class="warn">0</span>
+        </td>
+        <td type="int">
+          <span class="warn">0</span>
+        </td>
+        <td type="unsigned long">
+          <span class="warn">0</span>
+        </td>
+        <td type="float">
+          <span class="warn">0</span>
+        </td>
+        <td type="double">
+          <span class="warn">0</span>
+        </td>
+        <td type="char-array">&quot;true&quot; ©</td>
+      </tr>
+      <tr class="code">
+        <td>std::string s(&quot;true&quot;)</td>
+        <td>FlexibleVariable(s)</td>
+        <td type="bool">true</td>
+        <td type="unsigned char">
+          <span class="warn"> </span>
+        </td>
+        <td type="char">
+          <span class="warn">t</span>
+        </td>
+        <td type="short">
+          <span class="warn">0</span>
+        </td>
+        <td type="int">
+          <span class="warn">0</span>
+        </td>
+        <td type="unsigned long">
+          <span class="warn">0</span>
+        </td>
+        <td type="float">
+          <span class="warn">0</span>
+        </td>
+        <td type="double">
+          <span class="warn">0</span>
+        </td>
+        <td type="char-array">&quot;true&quot; ©</td>
+      </tr>
+      <tr class="code">
+        <td>std::string s(&quot;true&quot;)</td>
+        <td>Reference(s)</td>
+        <td type="bool">true</td>
+        <td type="unsigned char">
+          <span class="warn"> </span>
+        </td>
+        <td type="char">
+          <span class="warn">t</span>
+        </td>
+        <td type="short">
+          <span class="warn">0</span>
+        </td>
+        <td type="int">
+          <span class="warn">0</span>
+        </td>
+        <td type="unsigned long">
+          <span class="warn">0</span>
+        </td>
+        <td type="float">
+          <span class="warn">0</span>
+        </td>
+        <td type="double">
+          <span class="warn">0</span>
+        </td>
+        <td type="char-array">&quot;true&quot; ©</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
         <td>Variable(uni3d)</td>
         <td type="bool">true,true,true</td>
-        <td type="unsigned char">,,	</td>
-        <td type="char">,,	</td>
-        <td type="short">5,7,9</td>
-        <td type="int">5,7,9</td>
-        <td type="unsigned long">5,7,9</td>
-        <td type="float">5.6,7.8,9</td>
-        <td type="double">5.6,7.8,9</td>
-        <td type="char-array">"5.6,7.8,9" ©</td>
+        <td type="unsigned char">A,M,Y</td>
+        <td type="char">A,M,Y</td>
+        <td type="short">65,77,89</td>
+        <td type="int">65,77,89</td>
+        <td type="unsigned long">65,77,89</td>
+        <td type="float">65.6,77.8,89</td>
+        <td type="double">65.6,77.8,89</td>
+        <td type="char-array">&quot;65.6,77.8,89&quot; ©</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
         <td>FlexibleVariable(uni3d)</td>
         <td type="bool">true,true,true</td>
-        <td type="unsigned char">,,	</td>
-        <td type="char">,,	</td>
-        <td type="short">5,7,9</td>
-        <td type="int">5,7,9</td>
-        <td type="unsigned long">5,7,9</td>
-        <td type="float">5.6,7.8,9</td>
-        <td type="double">5.6,7.8,9</td>
-        <td type="char-array">"5.6,7.8,9" ©</td>
+        <td type="unsigned char">A,M,Y</td>
+        <td type="char">A,M,Y</td>
+        <td type="short">65,77,89</td>
+        <td type="int">65,77,89</td>
+        <td type="unsigned long">65,77,89</td>
+        <td type="float">65.6,77.8,89</td>
+        <td type="double">65.6,77.8,89</td>
+        <td type="char-array">&quot;65.6,77.8,89&quot; ©</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
         <td>Reference(uni3d)</td>
         <td type="bool">true,true,true</td>
-        <td type="unsigned char">,,	</td>
-        <td type="char">,,	</td>
-        <td type="short">5,7,9</td>
-        <td type="int">5,7,9</td>
-        <td type="unsigned long">5,7,9</td>
-        <td type="float">5.6,7.8,9</td>
-        <td type="double">5.6,7.8,9</td>
-        <td type="char-array">"5.6,7.8,9" ©</td>
+        <td type="unsigned char">A,M,Y</td>
+        <td type="char">A,M,Y</td>
+        <td type="short">65,77,89</td>
+        <td type="int">65,77,89</td>
+        <td type="unsigned long">65,77,89</td>
+        <td type="float">65.6,77.8,89</td>
+        <td type="double">65.6,77.8,89</td>
+        <td type="char-array">&quot;65.6,77.8,89&quot; ©</td>
       </tr>
     </table>
+    <pre>Created by: src/Variables-example.cpp: testAssignments</pre>
   </body>
 </html>
 <h2><a class="anchor" id="Reference"></a>
@@ -1929,7 +2120,7 @@ Reference</h2>
         <td type="unsigned long">0 ®</td>
         <td type="float">0 ®</td>
         <td type="double">0 ®</td>
-        <td type="std::string">"0" ®</td>
+        <td type="std::string">&quot;0&quot; ®</td>
       </tr>
       <tr class="code">
         <td>bool</td>
@@ -1942,7 +2133,20 @@ Reference</h2>
         <td type="unsigned long">1 ®</td>
         <td type="float">1 ®</td>
         <td type="double">1 ®</td>
-        <td type="std::string">"1" ®</td>
+        <td type="std::string">&quot;1&quot; ®</td>
+      </tr>
+      <tr class="code">
+        <td>int</td>
+        <td>0</td>
+        <td type="bool">false ®</td>
+        <td type="unsigned char">  ®</td>
+        <td type="char">  ®</td>
+        <td type="short">0 ®</td>
+        <td type="int">0 ®</td>
+        <td type="unsigned long">0 ®</td>
+        <td type="float">0 ®</td>
+        <td type="double">0 ®</td>
+        <td type="std::string">&quot;0&quot; ®</td>
       </tr>
       <tr class="code">
         <td>int</td>
@@ -1957,7 +2161,7 @@ Reference</h2>
         <td type="unsigned long">123 ®</td>
         <td type="float">123 ®</td>
         <td type="double">123 ®</td>
-        <td type="std::string">"123" ®</td>
+        <td type="std::string">&quot;123&quot; ®</td>
       </tr>
       <tr class="code">
         <td>float</td>
@@ -1982,7 +2186,7 @@ Reference</h2>
         </td>
         <td type="float">12.345 ®</td>
         <td type="double">12.345 ®</td>
-        <td type="std::string">"12.345" ®</td>
+        <td type="std::string">&quot;12.345&quot; ®</td>
       </tr>
       <tr class="code">
         <td>double</td>
@@ -2010,7 +2214,7 @@ Reference</h2>
         </td>
         <td type="double">3.14159 ®</td>
         <td type="std::string">
-          <span class="warn">"3.14159" ®</span>
+          <span class="warn">&quot;3.14159&quot; ®</span>
         </td>
       </tr>
       <tr class="code">
@@ -2039,12 +2243,12 @@ Reference</h2>
         </td>
         <td type="double">3.14159 ®</td>
         <td type="std::string">
-          <span class="warn">"3.14159" ®</span>
+          <span class="warn">&quot;3.14159&quot; ®</span>
         </td>
       </tr>
       <tr class="code">
         <td>std::string</td>
-        <td>"Hello!"</td>
+        <td>&quot;Hello!&quot;</td>
         <td type="bool">
           <span class="warn">false ®</span>
         </td>
@@ -2069,11 +2273,11 @@ Reference</h2>
         <td type="double">
           <span class="warn">0 ®</span>
         </td>
-        <td type="std::string">"Hello!" ®</td>
+        <td type="std::string">&quot;Hello!&quot; ®</td>
       </tr>
       <tr class="code">
         <td>std::string</td>
-        <td>"true"</td>
+        <td>&quot;true&quot;</td>
         <td type="bool">true ®</td>
         <td type="unsigned char">
           <span class="warn">  ®</span>
@@ -2096,11 +2300,11 @@ Reference</h2>
         <td type="double">
           <span class="warn">0 ®</span>
         </td>
-        <td type="std::string">"true" ®</td>
+        <td type="std::string">&quot;true&quot; ®</td>
       </tr>
       <tr class="code">
         <td>std::string</td>
-        <td>"false"</td>
+        <td>&quot;false&quot;</td>
         <td type="bool">false ®</td>
         <td type="unsigned char">
           <span class="warn">  ®</span>
@@ -2123,11 +2327,11 @@ Reference</h2>
         <td type="double">
           <span class="warn">0 ®</span>
         </td>
-        <td type="std::string">"false" ®</td>
+        <td type="std::string">&quot;false&quot; ®</td>
       </tr>
       <tr class="code">
         <td>std::string</td>
-        <td>"3141592E-6"</td>
+        <td>&quot;3141592E-6&quot;</td>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
@@ -2152,11 +2356,11 @@ Reference</h2>
         <td type="double">
           <span class="warn">3.14159 ®</span>
         </td>
-        <td type="std::string">"3141592E-6" ®</td>
+        <td type="std::string">&quot;3141592E-6&quot; ®</td>
       </tr>
       <tr class="code">
         <td>const char *</td>
-        <td>"Test"</td>
+        <td>&quot;Test&quot;</td>
         <td type="bool">
           <span class="warn">false ®</span>
         </td>
@@ -2181,11 +2385,11 @@ Reference</h2>
         <td type="double">
           <span class="warn">0 ®</span>
         </td>
-        <td type="std::string">"Test" ®</td>
+        <td type="std::string">&quot;Test&quot; ®</td>
       </tr>
       <tr class="code">
         <td>const char *</td>
-        <td>"true"</td>
+        <td>&quot;true&quot;</td>
         <td type="bool">true ®</td>
         <td type="unsigned char">
           <span class="warn">  ®</span>
@@ -2208,11 +2412,11 @@ Reference</h2>
         <td type="double">
           <span class="warn">0 ®</span>
         </td>
-        <td type="std::string">"true" ®</td>
+        <td type="std::string">&quot;true&quot; ®</td>
       </tr>
       <tr class="code">
         <td>const char *</td>
-        <td>"false"</td>
+        <td>&quot;false&quot;</td>
         <td type="bool">false ®</td>
         <td type="unsigned char">
           <span class="warn">  ®</span>
@@ -2235,65 +2439,65 @@ Reference</h2>
         <td type="double">
           <span class="warn">0 ®</span>
         </td>
-        <td type="std::string">"false" ®</td>
+        <td type="std::string">&quot;false&quot; ®</td>
       </tr>
       <tr class="code">
-        <td>UniTuple<2,int></td>
+        <td>UniTuple&lt;2,int&gt;</td>
         <td>uni2i</td>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
         <td type="unsigned char">
-          <span class="warn"> ®</span>
+          <span class="warn">C ®</span>
         </td>
         <td type="char">
-          <span class="warn"> ®</span>
+          <span class="warn">C ®</span>
         </td>
         <td type="short">
-          <span class="warn">12 ®</span>
+          <span class="warn">67 ®</span>
         </td>
         <td type="int">
-          <span class="warn">12 ®</span>
+          <span class="warn">67 ®</span>
         </td>
         <td type="unsigned long">
-          <span class="warn">12 ®</span>
+          <span class="warn">67 ®</span>
         </td>
         <td type="float">
-          <span class="warn">12 ®</span>
+          <span class="warn">67 ®</span>
         </td>
         <td type="double">
-          <span class="warn">12 ®</span>
+          <span class="warn">67 ®</span>
         </td>
-        <td type="std::string">"12,34" ®</td>
+        <td type="std::string">&quot;67,89&quot; ®</td>
       </tr>
       <tr class="code">
-        <td>UniTuple<3,double></td>
+        <td>UniTuple&lt;3,double&gt;</td>
         <td>uni3d</td>
         <td type="bool">
           <span class="warn">true ®</span>
         </td>
         <td type="unsigned char">
-          <span class="warn"> ®</span>
+          <span class="warn">A ®</span>
         </td>
         <td type="char">
-          <span class="warn"> ®</span>
+          <span class="warn">A ®</span>
         </td>
         <td type="short">
-          <span class="warn">5 ®</span>
+          <span class="warn">65 ®</span>
         </td>
         <td type="int">
-          <span class="warn">5 ®</span>
+          <span class="warn">65 ®</span>
         </td>
         <td type="unsigned long">
-          <span class="warn">5 ®</span>
+          <span class="warn">65 ®</span>
         </td>
         <td type="float">
-          <span class="warn">5.6 ®</span>
+          <span class="warn">65.6 ®</span>
         </td>
         <td type="double">
-          <span class="warn">5.6 ®</span>
+          <span class="warn">65.6 ®</span>
         </td>
-        <td type="std::string">"5.6,7.8,9" ®</td>
+        <td type="std::string">&quot;65.6,77.8,89&quot; ®</td>
       </tr>
       <tr class="code">
         <td>void *</td>
@@ -2323,7 +2527,7 @@ Reference</h2>
           <span class="warn">0 ®</span>
         </td>
         <td type="std::string">
-          <span class="warn">"nullptr" ®</span>
+          <span class="warn">&quot;nullptr&quot; ®</span>
         </td>
       </tr>
       <tr>
@@ -2340,7 +2544,7 @@ Reference</h2>
         <td type="unsigned long">123 ®</td>
         <td type="float">123 ®</td>
         <td type="double">123 ®</td>
-        <td type="std::string">"123" ®</td>
+        <td type="std::string">&quot;123&quot; ®</td>
       </tr>
       <tr class="code">
         <td>int i=123</td>
@@ -2353,7 +2557,7 @@ Reference</h2>
         <td type="unsigned long">123 ®</td>
         <td type="float">123 ®</td>
         <td type="double">123 ®</td>
-        <td type="std::string">"123" ®</td>
+        <td type="std::string">&quot;123&quot; ®</td>
       </tr>
       <tr class="code">
         <td>int i=123</td>
@@ -2366,10 +2570,10 @@ Reference</h2>
         <td type="unsigned long">123 ®</td>
         <td type="float">123 ®</td>
         <td type="double">123 ®</td>
-        <td type="std::string">"123" ®</td>
+        <td type="std::string">&quot;123&quot; ®</td>
       </tr>
       <tr class="code">
-        <td>std::string s("test")</td>
+        <td>std::string s(&quot;abc&quot;)</td>
         <td>Variable(s)</td>
         <td type="bool">
           <span class="warn">false ®</span>
@@ -2395,10 +2599,10 @@ Reference</h2>
         <td type="double">
           <span class="warn">0 ®</span>
         </td>
-        <td type="std::string">"test" ®</td>
+        <td type="std::string">&quot;test&quot; ®</td>
       </tr>
       <tr class="code">
-        <td>std::string s("test")</td>
+        <td>std::string s(&quot;abc&quot;)</td>
         <td>FlexibleVariable(s)</td>
         <td type="bool">
           <span class="warn">false ®</span>
@@ -2424,10 +2628,10 @@ Reference</h2>
         <td type="double">
           <span class="warn">0 ®</span>
         </td>
-        <td type="std::string">"test" ®</td>
+        <td type="std::string">&quot;test&quot; ®</td>
       </tr>
       <tr class="code">
-        <td>std::string s("test")</td>
+        <td>std::string s(&quot;abc&quot;)</td>
         <td>Reference(s)</td>
         <td type="bool">
           <span class="warn">false ®</span>
@@ -2453,7 +2657,88 @@ Reference</h2>
         <td type="double">
           <span class="warn">0 ®</span>
         </td>
-        <td type="std::string">"test" ®</td>
+        <td type="std::string">&quot;test&quot; ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string s(&quot;true&quot;)</td>
+        <td>Variable(s)</td>
+        <td type="bool">true ®</td>
+        <td type="unsigned char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">t ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="std::string">&quot;true&quot; ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string s(&quot;true&quot;)</td>
+        <td>FlexibleVariable(s)</td>
+        <td type="bool">true ®</td>
+        <td type="unsigned char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">t ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="std::string">&quot;true&quot; ®</td>
+      </tr>
+      <tr class="code">
+        <td>std::string s(&quot;true&quot;)</td>
+        <td>Reference(s)</td>
+        <td type="bool">true ®</td>
+        <td type="unsigned char">
+          <span class="warn">  ®</span>
+        </td>
+        <td type="char">
+          <span class="warn">t ®</span>
+        </td>
+        <td type="short">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="int">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="unsigned long">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="float">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="double">
+          <span class="warn">0 ®</span>
+        </td>
+        <td type="std::string">&quot;true&quot; ®</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
@@ -2462,27 +2747,27 @@ Reference</h2>
           <span class="warn">true ®</span>
         </td>
         <td type="unsigned char">
-          <span class="warn"> ®</span>
+          <span class="warn">A ®</span>
         </td>
         <td type="char">
-          <span class="warn"> ®</span>
+          <span class="warn">A ®</span>
         </td>
         <td type="short">
-          <span class="warn">5 ®</span>
+          <span class="warn">65 ®</span>
         </td>
         <td type="int">
-          <span class="warn">5 ®</span>
+          <span class="warn">65 ®</span>
         </td>
         <td type="unsigned long">
-          <span class="warn">5 ®</span>
+          <span class="warn">65 ®</span>
         </td>
         <td type="float">
-          <span class="warn">5.6 ®</span>
+          <span class="warn">65.6 ®</span>
         </td>
         <td type="double">
-          <span class="warn">5.6 ®</span>
+          <span class="warn">65.6 ®</span>
         </td>
-        <td type="std::string">"5.6,7.8,9" ®</td>
+        <td type="std::string">&quot;65.6,77.8,89&quot; ®</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
@@ -2491,27 +2776,27 @@ Reference</h2>
           <span class="warn">true ®</span>
         </td>
         <td type="unsigned char">
-          <span class="warn"> ®</span>
+          <span class="warn">A ®</span>
         </td>
         <td type="char">
-          <span class="warn"> ®</span>
+          <span class="warn">A ®</span>
         </td>
         <td type="short">
-          <span class="warn">5 ®</span>
+          <span class="warn">65 ®</span>
         </td>
         <td type="int">
-          <span class="warn">5 ®</span>
+          <span class="warn">65 ®</span>
         </td>
         <td type="unsigned long">
-          <span class="warn">5 ®</span>
+          <span class="warn">65 ®</span>
         </td>
         <td type="float">
-          <span class="warn">5.6 ®</span>
+          <span class="warn">65.6 ®</span>
         </td>
         <td type="double">
-          <span class="warn">5.6 ®</span>
+          <span class="warn">65.6 ®</span>
         </td>
-        <td type="std::string">"5.6,7.8,9" ®</td>
+        <td type="std::string">&quot;65.6,77.8,89&quot; ®</td>
       </tr>
       <tr class="code">
         <td>UniTuple</td>
@@ -2520,29 +2805,30 @@ Reference</h2>
           <span class="warn">true ®</span>
         </td>
         <td type="unsigned char">
-          <span class="warn"> ®</span>
+          <span class="warn">A ®</span>
         </td>
         <td type="char">
-          <span class="warn"> ®</span>
+          <span class="warn">A ®</span>
         </td>
         <td type="short">
-          <span class="warn">5 ®</span>
+          <span class="warn">65 ®</span>
         </td>
         <td type="int">
-          <span class="warn">5 ®</span>
+          <span class="warn">65 ®</span>
         </td>
         <td type="unsigned long">
-          <span class="warn">5 ®</span>
+          <span class="warn">65 ®</span>
         </td>
         <td type="float">
-          <span class="warn">5.6 ®</span>
+          <span class="warn">65.6 ®</span>
         </td>
         <td type="double">
-          <span class="warn">5.6 ®</span>
+          <span class="warn">65.6 ®</span>
         </td>
-        <td type="std::string">"5.6,7.8,9" ®</td>
+        <td type="std::string">&quot;65.6,77.8,89&quot; ®</td>
       </tr>
     </table>
+    <pre>Created by: src/Variables-example.cpp: testAssignments</pre>
   </body>
 </html>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203" title="Variable-like that is linked to a standard variable: double, int, std::string . Supports multi-elemen...">Reference</a> </dd>

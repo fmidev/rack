@@ -1,29 +1,31 @@
 <map id="FuzzyDetectorOp" name="FuzzyDetectorOp">
-<area shape="rect" id="Node000001" title="Base class for BirdOp and InsectOp." alt="" coords="117,607,251,632"/>
-<area shape="rect" id="Node000011" href="$classrack_1_1BirdOp.html" title=" " alt="" coords="5,680,72,705"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="150,640,64,682,61,677,147,636"/>
-<area shape="rect" id="Node000012" href="$classrack_1_1ChaffOp.html" title=" " alt="" coords="96,680,171,705"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="170,645,144,681,139,678,165,642"/>
-<area shape="rect" id="Node000013" href="$classrack_1_1InsectOp.html" title=" " alt="" coords="195,680,274,705"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="203,642,229,678,224,681,198,645"/>
-<area shape="rect" id="Node000014" href="$classrack_1_1NonMet2Op.html" title="Marks bins with low RhoHV value as probable anomalies." alt="" coords="299,680,397,705"/>
-<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="224,635,322,677,320,682,222,640"/>
-<area shape="rect" id="Node000002" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors." alt="" coords="136,533,232,559"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,572,187,607,181,607,181,572"/>
-<area shape="rect" id="Node000003" href="$classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="145,460,223,485"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="187,499,187,533,181,533,181,499"/>
-<area shape="rect" id="Node000004" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="110,387,258,412"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="187,426,187,460,181,460,181,426"/>
-<area shape="rect" id="Node000005" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="123,313,245,339"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="187,352,187,387,181,387,181,352"/>
-<area shape="rect" id="Node000006" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="90,240,278,265"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="187,279,187,313,181,313,181,279"/>
-<area shape="rect" id="Node000007" href="$classrack_1_1RadarProductOp.html" title="Polar and Cartesian products." alt="" coords="101,152,267,192"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="187,206,187,240,181,240,181,206"/>
-<area shape="rect" id="Node000008" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="133,79,235,104"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="187,118,187,152,181,152,181,118"/>
-<area shape="rect" id="Node000009" href="$classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="76,5,177,31"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="147,40,177,77,173,80,142,43"/>
-<area shape="rect" id="Node000010" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="202,5,283,31"/>
-<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="226,43,196,80,191,77,222,40"/>
+<area shape="rect" id="Node000001" title="Base class for BirdOp and InsectOp." alt="" coords="105,607,239,632"/>
+<area shape="rect" id="Node000011" href="$classrack_1_1ChaffOp.html" title=" " alt="" coords="5,680,80,705"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="140,641,65,682,63,677,138,636"/>
+<area shape="rect" id="Node000012" href="$classrack_1_1DualPolBioMetOp.html" title=" " alt="" coords="104,680,240,705"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="175,646,175,680,169,680,169,646"/>
+<area shape="rect" id="Node000015" href="$classrack_1_1NonMet2Op.html" title="Marks bins with low RhoHV value as probable anomalies." alt="" coords="264,680,363,705"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="208,636,291,677,289,682,205,640"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors." alt="" coords="124,533,220,559"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,572,175,607,169,607,169,572"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="133,460,211,485"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="175,499,175,533,169,533,169,499"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="98,387,246,412"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="175,426,175,460,169,460,169,426"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="111,313,233,339"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="175,352,175,387,169,387,169,352"/>
+<area shape="rect" id="Node000006" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="78,240,266,265"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="175,279,175,313,169,313,169,279"/>
+<area shape="rect" id="Node000007" href="$classrack_1_1RadarProductOp.html" title="Polar and Cartesian products." alt="" coords="89,152,255,192"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="175,206,175,240,169,240,169,206"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="121,79,223,104"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="175,118,175,152,169,152,169,118"/>
+<area shape="rect" id="Node000009" href="$classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="64,5,165,31"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="135,40,165,77,161,80,130,43"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="190,5,271,31"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="214,43,184,80,179,77,210,40"/>
+<area shape="rect" id="Node000013" href="$classrack_1_1BirdOp.html" title=" " alt="" coords="91,753,157,779"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="159,718,134,755,130,752,154,715"/>
+<area shape="rect" id="Node000014" href="$classrack_1_1InsectOp.html" title=" " alt="" coords="182,753,261,779"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="190,715,216,752,211,755,186,718"/>
 </map>

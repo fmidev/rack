@@ -139,6 +139,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a451598c581407262366fd6f2adae980a" id="r_a451598c581407262366fd6f2adae980a"><td class="memItemLeft" align="right" valign="top"><a id="a451598c581407262366fd6f2adae980a" name="a451598c581407262366fd6f2adae980a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (double location=0.0, double width=1.0, double <a class="el" href="classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab">scale</a>=1.0, double <a class="el" href="classdrain_1_1Functor.html#aa6231a5027112a1cf56c610e6d7d91c5">bias</a>=0.0)</td></tr>
 <tr class="separator:a451598c581407262366fd6f2adae980a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9ee23484abc9a76fe8ade0b6f4f58f1" id="r_af9ee23484abc9a76fe8ade0b6f4f58f1"><td class="memItemLeft" align="right" valign="top"><a id="af9ee23484abc9a76fe8ade0b6f4f58f1" name="af9ee23484abc9a76fe8ade0b6f4f58f1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> (const <a class="el" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt; double, 2 &gt; &amp;range, double <a class="el" href="classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab">scale</a>=1.0, double <a class="el" href="classdrain_1_1Functor.html#aa6231a5027112a1cf56c610e6d7d91c5">bias</a>=0.0)</td></tr>
+<tr class="separator:af9ee23484abc9a76fe8ade0b6f4f58f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa896ef0d942fc3236d34466fb54c8402" id="r_aa896ef0d942fc3236d34466fb54c8402"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1FuzzyBell.html#aa896ef0d942fc3236d34466fb54c8402">updateBean</a> () const override</td></tr>
 <tr class="memdesc:aa896ef0d942fc3236d34466fb54c8402"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after <a class="el" href="classdrain_1_1BeanLike.html#a7cb20fed3030548a4ed68c3a44fcc630" title="Grants access to (if above hidden)">setParameters()</a>  <br /></td></tr>
 <tr class="separator:aa896ef0d942fc3236d34466fb54c8402"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -230,10 +233,10 @@ virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a9c3652c82cce8787e3d0d1196d352500" id="r_a9c3652c82cce8787e3d0d1196d352500"><td class="memItemLeft" align="right" valign="top"><a id="a9c3652c82cce8787e3d0d1196d352500" name="a9c3652c82cce8787e3d0d1196d352500"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>location</b></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>location</b> = 0.0</td></tr>
 <tr class="separator:a9c3652c82cce8787e3d0d1196d352500"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9df23e056f5d1a0388cd8190431c0e03" id="r_a9df23e056f5d1a0388cd8190431c0e03"><td class="memItemLeft" align="right" valign="top"><a id="a9df23e056f5d1a0388cd8190431c0e03" name="a9df23e056f5d1a0388cd8190431c0e03"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>width</b> = 1.0</td></tr>
 <tr class="separator:a9df23e056f5d1a0388cd8190431c0e03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1Fuzzifier"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1Fuzzifier')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1Fuzzifier.html">Fuzzifier&lt; T &gt;</a></td></tr>
 <tr class="memitem:a0d423a9cc9188ad27dc8597ac0185791 inherit pub_attribs_classdrain_1_1Fuzzifier" id="r_a0d423a9cc9188ad27dc8597ac0185791"><td class="memItemLeft" align="right" valign="top">
@@ -244,7 +247,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>INVERSE</b></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:ab750432db7365399efedfefd4c5e4423" id="r_ab750432db7365399efedfefd4c5e4423"><td class="memItemLeft" align="right" valign="top"><a id="ab750432db7365399efedfefd4c5e4423" name="ab750432db7365399efedfefd4c5e4423"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>widthInv</b></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>widthInv</b> = 1.0</td></tr>
 <tr class="separator:ab750432db7365399efedfefd4c5e4423"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1Functor"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1Functor')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1Functor.html">Functor</a></td></tr>
 <tr class="memitem:a80d402d10e8341004c0caf10133b80ab inherit pro_attribs_classdrain_1_1Functor" id="r_a80d402d10e8341004c0caf10133b80ab"><td class="memItemLeft" align="right" valign="top">

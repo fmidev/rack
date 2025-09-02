@@ -26,42 +26,46 @@
 <area shape="poly" id="edge12_Node000011_Node000013" title=" " alt="" coords="319,558,355,497,381,464,412,436,436,423,439,428,415,440,385,468,359,500,324,561"/>
 <area shape="rect" id="Node000014" href="$classdrain_1_1Fuzzifier.html" title="A base class for fuzzy functions; also an unary functor." alt="" coords="444,449,559,475"/>
 <area shape="poly" id="edge13_Node000011_Node000014" title=" " alt="" coords="327,560,364,521,412,485,443,472,445,477,415,490,368,525,331,563"/>
-<area shape="rect" id="Node000025" href="$classdrain_1_1GammaFunctor.html" title="Gamma correction. Intensity is mapped as f&#39; = f^(gamma)" alt="" coords="440,499,563,524"/>
-<area shape="poly" id="edge24_Node000011_Node000025" title=" " alt="" coords="347,563,412,534,451,522,452,527,414,539,349,568"/>
-<area shape="rect" id="Node000026" href="$structdrain_1_1IdentityFunctor.html" title=" " alt="" coords="441,548,561,573"/>
-<area shape="poly" id="edge25_Node000011_Node000026" title=" " alt="" coords="377,574,441,565,441,571,378,579"/>
-<area shape="rect" id="Node000027" href="$classdrain_1_1RemappingFunctor.html" title="Maps a single intensity value to another value." alt="" coords="429,597,573,623"/>
-<area shape="poly" id="edge26_Node000011_Node000027" title=" " alt="" coords="378,591,429,598,429,603,378,596"/>
-<area shape="rect" id="Node000028" href="$classdrain_1_1ScalingFunctor.html" title="Rescales intensities linearly: f&#39; = scale*f + offset." alt="" coords="443,647,560,672"/>
-<area shape="poly" id="edge27_Node000011_Node000028" title=" " alt="" coords="346,601,414,633,449,644,447,649,412,638,344,606"/>
-<area shape="rect" id="Node000030" href="$classdrain_1_1ThresholdFunctor.html" title="Thresholds intensity values." alt="" coords="434,696,569,721"/>
-<area shape="poly" id="edge29_Node000011_Node000030" title=" " alt="" coords="331,606,367,646,390,665,415,682,440,693,438,698,412,687,387,670,363,650,327,610"/>
-<area shape="rect" id="Node000031" href="$classdrain_1_1image_1_1CopyFunctor.html" title=" " alt="" coords="450,745,553,771"/>
-<area shape="poly" id="edge30_Node000011_Node000031" title=" " alt="" coords="324,609,358,671,384,704,415,732,451,748,449,753,412,736,380,708,354,674,319,611"/>
-<area shape="rect" id="Node000032" href="$classdrain_1_1image_1_1QuantizatorFunctor.html" title="TODO: CopyOP should be quite similar." alt="" coords="428,795,575,820"/>
-<area shape="poly" id="edge31_Node000011_Node000032" title=" " alt="" coords="319,610,331,648,351,695,378,742,415,781,433,792,431,797,412,785,374,745,346,697,326,650,314,612"/>
-<area shape="rect" id="Node000033" href="$classrack_1_1DataMarker.html" title="Simple class marking true data with a given constant value, typically a CLASS label." alt="" coords="452,844,551,869"/>
-<area shape="poly" id="edge32_Node000011_Node000033" title=" " alt="" coords="317,611,326,658,344,718,373,779,392,806,415,831,433,842,453,849,451,854,430,847,412,835,388,810,368,781,339,720,321,660,311,612"/>
-<area shape="rect" id="Node000015" href="$classdrain_1_1FuzzyBell.html" title=" " alt="" coords="641,203,800,228"/>
-<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="570,449,587,436,605,412,612,388,613,364,611,339,609,314,610,288,617,263,635,237,651,226,654,230,639,241,622,265,615,289,614,314,616,339,618,364,617,389,609,415,591,440,573,453"/>
-<area shape="rect" id="Node000016" href="$classdrain_1_1FuzzyBell2.html" title=" " alt="" coords="637,252,804,277"/>
-<area shape="poly" id="edge15_Node000014_Node000016" title=" " alt="" coords="570,448,588,436,601,418,608,401,611,363,613,325,621,306,635,287,652,275,655,280,639,291,625,308,618,326,616,364,614,402,606,421,591,440,573,452"/>
-<area shape="rect" id="Node000017" href="$classdrain_1_1FuzzyStep.html" title=" " alt="" coords="639,301,802,327"/>
-<area shape="poly" id="edge16_Node000014_Node000017" title=" " alt="" coords="570,447,588,436,599,424,605,413,611,388,617,362,624,349,636,336,654,325,657,329,639,340,628,352,622,364,616,389,610,414,603,427,591,440,573,451"/>
-<area shape="rect" id="Node000018" href="$classdrain_1_1FuzzyBell.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve." alt="" coords="659,351,782,376"/>
-<area shape="poly" id="edge17_Node000014_Node000018" title=" " alt="" coords="571,444,588,436,602,424,611,411,620,398,636,385,660,374,662,379,639,390,624,402,616,414,606,427,591,440,573,449"/>
-<area shape="rect" id="Node000019" href="$classdrain_1_1FuzzyBell2.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve. Diminishes quicker than Fuzz..." alt="" coords="655,400,786,425"/>
-<area shape="poly" id="edge18_Node000014_Node000019" title=" " alt="" coords="571,444,663,423,664,428,572,449"/>
-<area shape="rect" id="Node000020" href="$classdrain_1_1FuzzySigmoid.html" title="A smooth step function, by default from &#45;1.0 to +1.0." alt="" coords="645,449,796,475"/>
-<area shape="poly" id="edge19_Node000014_Node000020" title=" " alt="" coords="572,459,645,459,645,465,572,465"/>
-<area shape="rect" id="Node000021" href="$classdrain_1_1FuzzyStep.html" title="A basic, linear transition from 0 to scale between (start) and (end) ." alt="" coords="657,499,784,524"/>
-<area shape="poly" id="edge20_Node000014_Node000021" title=" " alt="" coords="572,475,664,496,663,501,571,480"/>
-<area shape="rect" id="Node000022" href="$classdrain_1_1FuzzyStepsoid.html" title="A smooth step function between 0.0 and 1.0. Increasing (decreasing) with positive (negative) width...." alt="" coords="644,548,797,573"/>
-<area shape="poly" id="edge21_Node000014_Node000022" title=" " alt="" coords="573,476,591,485,606,498,615,510,624,523,639,534,663,546,661,550,636,539,621,526,611,514,602,501,588,490,571,481"/>
-<area shape="rect" id="Node000023" href="$classdrain_1_1FuzzyTriangle.html" title="A basic triangular peak function with linear around the peak." alt="" coords="647,597,795,623"/>
-<area shape="poly" id="edge22_Node000014_Node000023" title=" " alt="" coords="573,474,591,485,603,498,610,511,616,536,622,561,628,572,639,584,657,595,654,600,636,588,624,576,617,563,611,537,605,513,598,501,588,489,570,478"/>
-<area shape="rect" id="Node000024" href="$classdrain_1_1FuzzyTwinPeaks.html" title="A function taking shape of two peaks, with a zero in the middle ." alt="" coords="638,647,803,672"/>
-<area shape="poly" id="edge23_Node000014_Node000024" title=" " alt="" coords="573,473,591,485,606,504,613,523,616,561,618,598,625,616,639,633,655,644,652,649,635,637,621,618,613,599,611,562,608,525,601,507,588,489,570,477"/>
-<area shape="rect" id="Node000029" href="$classdrain_1_1NegateFunctor.html" title="Inverts intensities: f&#39; = f_max &#45; f." alt="" coords="662,696,779,721"/>
-<area shape="poly" id="edge28_Node000028_Node000029" title=" " alt="" coords="572,672,664,693,663,699,571,678"/>
+<area shape="rect" id="Node000027" href="$classdrain_1_1GammaFunctor.html" title="Gamma correction. Intensity is mapped as f&#39; = f^(gamma)" alt="" coords="440,499,563,524"/>
+<area shape="poly" id="edge26_Node000011_Node000027" title=" " alt="" coords="347,563,412,534,451,522,452,527,414,539,349,568"/>
+<area shape="rect" id="Node000028" href="$structdrain_1_1IdentityFunctor.html" title=" " alt="" coords="441,548,561,573"/>
+<area shape="poly" id="edge27_Node000011_Node000028" title=" " alt="" coords="377,574,441,565,441,571,378,579"/>
+<area shape="rect" id="Node000029" href="$classdrain_1_1RemappingFunctor.html" title="Maps a single intensity value to another value." alt="" coords="429,597,573,623"/>
+<area shape="poly" id="edge28_Node000011_Node000029" title=" " alt="" coords="378,591,429,598,429,603,378,596"/>
+<area shape="rect" id="Node000030" href="$classdrain_1_1ScalingFunctor.html" title="Rescales intensities linearly: f&#39; = scale*f + offset." alt="" coords="443,647,560,672"/>
+<area shape="poly" id="edge29_Node000011_Node000030" title=" " alt="" coords="346,601,414,633,449,644,447,649,412,638,344,606"/>
+<area shape="rect" id="Node000032" href="$classdrain_1_1ThresholdFunctor.html" title="Thresholds intensity values." alt="" coords="434,696,569,721"/>
+<area shape="poly" id="edge31_Node000011_Node000032" title=" " alt="" coords="331,606,367,646,390,665,415,682,440,693,438,698,412,687,387,670,363,650,327,610"/>
+<area shape="rect" id="Node000033" href="$classdrain_1_1image_1_1CopyFunctor.html" title=" " alt="" coords="450,745,553,771"/>
+<area shape="poly" id="edge32_Node000011_Node000033" title=" " alt="" coords="324,609,358,671,384,704,415,732,451,748,449,753,412,736,380,708,354,674,319,611"/>
+<area shape="rect" id="Node000034" href="$classdrain_1_1image_1_1QuantizatorFunctor.html" title="TODO: CopyOP should be quite similar." alt="" coords="428,795,575,820"/>
+<area shape="poly" id="edge33_Node000011_Node000034" title=" " alt="" coords="319,610,331,648,351,695,378,742,415,781,433,792,431,797,412,785,374,745,346,697,326,650,314,612"/>
+<area shape="rect" id="Node000035" href="$classrack_1_1DataMarker.html" title="Simple class marking true data with a given constant value, typically a CLASS label." alt="" coords="452,844,551,869"/>
+<area shape="poly" id="edge34_Node000011_Node000035" title=" " alt="" coords="317,611,326,658,344,718,373,779,392,806,415,831,433,842,453,849,451,854,430,847,412,835,388,810,368,781,339,720,321,660,311,612"/>
+<area shape="rect" id="Node000015" href="$classdrain_1_1FuzzyBell.html" title=" " alt="" coords="649,153,808,179"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="570,449,587,436,608,406,616,376,615,345,611,314,606,283,606,251,614,220,635,188,650,177,653,181,639,192,619,222,611,252,611,283,616,313,620,345,621,376,613,408,591,440,573,453"/>
+<area shape="rect" id="Node000016" href="$classdrain_1_1FuzzyBell2.html" title=" " alt="" coords="645,203,812,228"/>
+<area shape="poly" id="edge15_Node000014_Node000016" title=" " alt="" coords="570,449,587,436,605,412,612,388,613,364,611,339,608,314,609,288,617,263,635,237,651,226,654,230,639,241,622,265,615,289,614,313,616,338,618,364,617,389,609,415,591,440,573,453"/>
+<area shape="rect" id="Node000017" href="$classdrain_1_1FuzzyIdentity.html" title=" " alt="" coords="637,252,820,277"/>
+<area shape="poly" id="edge16_Node000014_Node000017" title=" " alt="" coords="570,448,588,436,601,418,608,400,611,363,613,325,621,306,636,287,652,275,655,280,639,291,625,308,618,326,616,363,614,402,606,421,591,440,573,452"/>
+<area shape="rect" id="Node000018" href="$classdrain_1_1FuzzyStep.html" title=" " alt="" coords="647,301,810,327"/>
+<area shape="poly" id="edge17_Node000014_Node000018" title=" " alt="" coords="570,447,588,436,599,424,605,413,611,387,617,361,624,348,636,336,654,325,657,329,639,340,628,352,622,363,616,389,610,414,603,427,591,440,573,451"/>
+<area shape="rect" id="Node000019" href="$classdrain_1_1FuzzyBell.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve." alt="" coords="667,351,790,376"/>
+<area shape="poly" id="edge18_Node000014_Node000019" title=" " alt="" coords="571,444,588,436,602,424,611,411,620,398,636,385,666,372,668,377,639,390,624,402,615,414,606,427,591,440,573,449"/>
+<area shape="rect" id="Node000020" href="$classdrain_1_1FuzzyBell2.html" title="A smooth symmetric peak function that resembles the Gaussian bell curve. Diminishes quicker than Fuzz..." alt="" coords="663,400,794,425"/>
+<area shape="poly" id="edge19_Node000014_Node000020" title=" " alt="" coords="571,444,669,423,670,428,572,449"/>
+<area shape="rect" id="Node000021" href="$classdrain_1_1FuzzyIdentity.html" title="Identity function &#45; returns the input value." alt="" coords="655,449,802,475"/>
+<area shape="poly" id="edge20_Node000014_Node000021" title=" " alt="" coords="572,459,655,459,655,465,572,465"/>
+<area shape="rect" id="Node000022" href="$classdrain_1_1FuzzySigmoid.html" title="A smooth step function, by default from &#45;1.0 to +1.0." alt="" coords="653,499,804,524"/>
+<area shape="poly" id="edge21_Node000014_Node000022" title=" " alt="" coords="572,475,670,496,669,501,571,480"/>
+<area shape="rect" id="Node000023" href="$classdrain_1_1FuzzyStep.html" title="A basic, linear transition from 0 to scale between (start) and (end) ." alt="" coords="665,548,792,573"/>
+<area shape="poly" id="edge22_Node000014_Node000023" title=" " alt="" coords="573,476,591,485,606,498,615,511,624,523,639,534,666,546,664,551,636,539,620,526,611,514,602,501,588,490,571,481"/>
+<area shape="rect" id="Node000024" href="$classdrain_1_1FuzzyStepsoid.html" title="A smooth step function between 0.0 and 1.0. Increasing (decreasing) with positive (negative) width...." alt="" coords="652,597,805,623"/>
+<area shape="poly" id="edge23_Node000014_Node000024" title=" " alt="" coords="573,474,591,485,603,498,610,511,616,536,622,561,628,573,639,584,657,595,654,599,636,588,624,576,617,563,611,537,605,513,598,501,588,489,570,478"/>
+<area shape="rect" id="Node000025" href="$classdrain_1_1FuzzyTriangle.html" title="A basic triangular peak function with linear around the peak." alt="" coords="655,647,803,672"/>
+<area shape="poly" id="edge24_Node000014_Node000025" title=" " alt="" coords="573,473,591,485,606,504,613,524,616,561,618,598,625,616,639,633,656,645,653,649,636,637,621,619,613,599,610,562,608,525,601,507,588,489,570,477"/>
+<area shape="rect" id="Node000026" href="$classdrain_1_1FuzzyTwinPeaks.html" title="A function taking shape of two peaks, with a zero in the middle ." alt="" coords="646,696,811,721"/>
+<area shape="poly" id="edge25_Node000014_Node000026" title=" " alt="" coords="573,472,591,485,609,511,617,536,618,562,616,587,614,611,615,635,622,659,639,683,654,694,651,698,635,687,617,662,609,636,608,611,610,586,613,561,612,537,604,513,587,489,570,476"/>
+<area shape="rect" id="Node000031" href="$classdrain_1_1NegateFunctor.html" title="Inverts intensities: f&#39; = f_max &#45; f." alt="" coords="670,745,787,771"/>
+<area shape="poly" id="edge30_Node000030_Node000031" title=" " alt="" coords="574,674,591,682,606,695,615,708,624,720,639,732,671,745,669,750,636,736,620,724,611,711,602,699,588,687,572,679"/>
 </map>

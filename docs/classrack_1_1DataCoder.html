@@ -166,6 +166,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaecfea712c6b6c1461f58f47e47d8d7a" id="r_aaecfea712c6b6c1461f58f47e47d8d7a"><td class="memItemLeft" align="right" valign="top"><a id="aaecfea712c6b6c1461f58f47e47d8d7a" name="aaecfea712c6b6c1461f58f47e47d8d7a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DataCoder</b> (const <a class="el" href="classrack_1_1DataCoder.html">DataCoder</a> &amp;converter)</td></tr>
 <tr class="separator:aaecfea712c6b6c1461f58f47e47d8d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a960f04e2119f786be361d3d7eeddee8e" id="r_a960f04e2119f786be361d3d7eeddee8e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataCoder.html#a960f04e2119f786be361d3d7eeddee8e">isDataEncodingSet</a> () const override</td></tr>
+<tr class="separator:a960f04e2119f786be361d3d7eeddee8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a135e1fb3a34fae2af84d8cbf6e6120c1" id="r_a135e1fb3a34fae2af84d8cbf6e6120c1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataCoder.html#a135e1fb3a34fae2af84d8cbf6e6120c1">isQualityEncodingSet</a> () const override</td></tr>
+<tr class="separator:a135e1fb3a34fae2af84d8cbf6e6120c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa394474de29f038496702e85cbc0780" id="r_afa394474de29f038496702e85cbc0780"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataCoder.html#afa394474de29f038496702e85cbc0780">getNoReadingMarker</a> () const override</td></tr>
 <tr class="memdesc:afa394474de29f038496702e85cbc0780"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a marker value which indicates that although data has been measured, it is not within required accuracy or is otherways unreliable.  <br /></td></tr>
 <tr class="separator:afa394474de29f038496702e85cbc0780"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -628,6 +632,60 @@ typedef <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a>&#1
 <p>Creates a naive quality field: data=1.0, undetect/nodata=0.0. </p>
 <pre class="fragment"> Class-specific extension, ie not inherited from base class.
 </pre><p> void encodeDataToWeight(double value, double &amp; weight) const; </p>
+
+</div>
+</div>
+<a id="a960f04e2119f786be361d3d7eeddee8e" name="a960f04e2119f786be361d3d7eeddee8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a960f04e2119f786be361d3d7eeddee8e">&#9670;&#160;</a></span>isDataEncodingSet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool isDataEncodingSet </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structdrain_1_1image_1_1AccumulationConverter.html">AccumulationConverter</a>.</p>
+
+</div>
+</div>
+<a id="a135e1fb3a34fae2af84d8cbf6e6120c1" name="a135e1fb3a34fae2af84d8cbf6e6120c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a135e1fb3a34fae2af84d8cbf6e6120c1">&#9670;&#160;</a></span>isQualityEncodingSet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool isQualityEncodingSet </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structdrain_1_1image_1_1AccumulationConverter.html">AccumulationConverter</a>.</p>
 
 </div>
 </div>

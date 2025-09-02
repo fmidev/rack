@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['a_20new_20image_20if_20requested_0',['selection: find a new image, if requested.',['../classrack_1_1RackContext.html#autotoc_md67',1,'']]],
+  ['a_20new_20image_20if_20requested_0',['selection: find a new image, if requested.',['../classrack_1_1RackContext.html#autotoc_md69',1,'']]],
   ['a_20radar_20overlap_20with_20a_20given_20geographical_20scope_1',['Does a radar overlap with a given geographical scope?',['../miscbook.html#checkscope',1,'']]],
   ['a_20sequence_20is_20simply_20concatenated_2',['no layout: a sequence is simply concatenated',['../structdrain_1_1TypeLayout.html#autotoc_md25',1,'']]],
   ['a_20weather_20radar_20data_20processing_20program_3',['Rack - a weather radar data processing program',['../index.html',1,'']]],

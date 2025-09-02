@@ -1,17 +1,19 @@
 <map id="RadarFunctorOp&lt; F &gt;" name="RadarFunctorOp&lt; F &gt;">
-<area shape="rect" id="Node000001" title="Convenience (abbreviation)" alt="" coords="79,387,243,412"/>
-<area shape="rect" id="Node000002" href="$classrack_1_1RadarFunctorBase.html" title=" " alt="" coords="5,306,145,331"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,339,150,384,146,388,96,343"/>
-<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="170,299,325,339"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="218,350,175,388,172,384,214,346"/>
-<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1FunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="184,225,311,251"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="250,264,250,299,245,299,245,264"/>
-<area shape="rect" id="Node000005" href="$structdrain_1_1image_1_1FunctorWrapper.html" title="Helper class that only ensures that functor is initialized before ImageOp." alt="" coords="93,152,255,177"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="198,185,237,223,234,227,194,189"/>
-<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="280,152,361,177"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="301,189,261,227,257,223,297,185"/>
-<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="275,79,366,104"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="323,118,323,152,318,152,318,118"/>
-<area shape="rect" id="Node000008" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="280,5,361,31"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="323,44,323,79,318,79,318,44"/>
+<area shape="rect" id="Node000001" title="Convenience (abbreviation)" alt="" coords="93,387,257,412"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1RadarFunctorBaseOp.html" title=" " alt="" coords="5,306,164,331"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,338,164,384,160,388,107,342"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1RadarFunctorBase.html" title=" " alt="" coords="15,225,155,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="87,264,87,306,82,306,82,264"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="189,299,343,339"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="236,350,191,388,187,384,232,346"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1FunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="203,225,329,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="269,264,269,299,263,299,263,264"/>
+<area shape="rect" id="Node000006" href="$structdrain_1_1image_1_1FunctorWrapper.html" title="Helper class that only ensures that functor is initialized before ImageOp." alt="" coords="111,152,274,177"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="216,185,256,223,252,227,213,189"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1ImageOp.html" title="Base class for image processing functions." alt="" coords="299,152,380,177"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="319,189,280,227,276,223,316,185"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1image_1_1ImageMod.html" title="Class for operations that modify an existing image instead of producing a new image." alt="" coords="294,79,385,104"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="342,118,342,152,337,152,337,118"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="299,5,380,31"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="342,44,342,79,337,79,337,44"/>
 </map>
