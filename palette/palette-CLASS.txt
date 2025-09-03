@@ -104,6 +104,10 @@
 # Beam overshooting
 200.0	208.0	224.0	255.0
 
+# geom.altitude
+# Altitude used as quality
+208	248.0	224.0	224.0
+
 # distortion.second_trip
 # Second trip
 216.0	224.0	255.0	240.0

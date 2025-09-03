@@ -19,7 +19,7 @@
   {       180, {"nonmet.biol.insect", "Insects", {255,248,0}} },
   {       184, {"nonmet.biol.bird", "Birds", {255,0,128}} },
   {       196, {"dist.attn.rain", "Attenuation in rain", {255,224,224}} },
-  {       208, {"geom.altitude", "Altitude used as quality", {248,224,224}} },
+  {       208, {"geom.altitude", "Altitude used as quality", {248,224,224}} } ,
   {       232, {"signal.noise", "Receiver noise", {240,240,240}} },
   {       240, {"signal.emitter", "External emitter", {240,240,128}} },
   {       242, {"signal.emitter.line", "Emitter line or segment", {240,208,224}} },

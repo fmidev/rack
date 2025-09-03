@@ -39,21 +39,21 @@ namespace rack {
 
 /// Computes attenuation caused by \em precipitation.
 /*!
-
+ * Some similarity with rack::CappiOp.
  *
  */
 class AltitudeOp: public DetectorOp {
 
 public:
 
+	/// Default constructor.
 	/**
+	 *
 	 * \param prob - maximum expected reflectance of biometeors
 	 * \param maxAltitude - maximum expected altitude of biometeors
-	 * \param reflDev - fuzzy width of  \c reflMax
-	 * \param devAltitude - fuzzy width of \c maxAltitude
 	 */
 	AltitudeOp() :
-		DetectorOp(__FUNCTION__, "Weights altitude", "nonmet.biol") { //"distortion.altitude"){ //ECHO_CLASS_PRECIP){
+		DetectorOp(__FUNCTION__, "Weights altitude", "geom.altitude") { // "nonmet.biol.bird"){ // "distortion.altitude"){ //ECHO_CLASS_PRECIP){
 
 		parameters.link("functor", this->functor = functor, " Functor");
 		parameters.link("aboveSeaLevel", this->aboveSeaLevel, "Reference is sea level, not radar site");

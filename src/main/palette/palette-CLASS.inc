@@ -26,6 +26,7 @@
   {       192, {"distortion.attenuation", "Attenuated", {208,208,255}} },
   {       196, {"distortion.undershooting", "Beam undershooting", {208,224,224}} },
   {       200, {"distortion.overshooting", "Beam overshooting", {208,224,255}} },
+  {       208, {"geom.altitude", "Altitude used as quality", {248,224,224}} },
   {       216, {"distortion.second_trip", "Second trip", {224,255,240}} },
   {       224, {"sun", "Sun", {255,255,208}} },
   {       240, {"emitter", "Emitter", {255,224,224}} },

@@ -34,6 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/util/Fuzzy.h>
 #include <drain/util/FunctorBank.h>
 //#include "data/DataCoder.h"
+#include "radar/Geometry.h"
 #include "AltitudeOp.h"
 
 
@@ -68,30 +69,38 @@ void AltitudeOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<Pola
 	//const drain::FuzzyBell<double> fuzzifier(0.0, reflHalfWidth);
 	drain::UnaryFunctor & ftor = drain::getFunctor(this->functor);
 
-	mout.accept<LOG_ERR>("Ok, obtained functor:", ftor);
+	mout.accept<LOG_NOTICE>("Ok, obtained functor:", ftor);
 
-	double quality = 0; // yes, not probability
-	double obs = 0;
-	const size_t i0 = srcData.odim.getBinIndex(5000.0);
+	// double quality = 0; // yes, not probability
+	// double obs = 0;
 
-	for (size_t j = 0; j < height; ++j) {
+	const double eta = srcData.odim.getElangleR();
+	double binDistance = 0.0;
+	double h = 0.0;
 
-		for (size_t i = i0; i < width; ++i) {
+	mout.debug2(" => DST: " , dstData.data.getScaling() );
 
-			if (srcData.odim.isValue(obs)){
+	double hScaled = 0;
 
-			}
-			else {
-				dstData.data.putScaled(i, j, 0.75*(1.0 - quality)); // default
-				//dstData.data.putScaled(i, j, 1.0 - DataCoder::undetectQualityCoeff*quality); // default
-			}
-			//dstData.data.putScaled(i, j, 1.0 - quality);
+	for (size_t i = 0; i < width; ++i) {
 
+		binDistance = srcData.odim.getBinDistance(i);
+		h = Geometry::heightFromEtaBeam(eta, binDistance);
+
+
+		if (ODIM::versionFlagger.isSet(ODIM::KILOMETRES)){
+			h *= 0.001;
 		}
-		// mout.warn(marker );
+
+		hScaled = dstData.odim.scaling.inv(ftor(h));
+
+		mout.debug2(0, "\t", binDistance, ", \t h=", h, " \t -> ", ftor(h), " code=", hScaled);
+
+		for (size_t j = 0; j < height; ++j) {
+			dstData.data.put(i, j, hScaled); // default
+		}
 
 		// marker.process(srcData.data, dstData.data);
-		mout.debug2(" => DST: " , dstData.data.getScaling() );
 
 	}
 }
