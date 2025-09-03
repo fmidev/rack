@@ -38,10 +38,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include <map>
 
-#include "FunctorBank.h"
 
 #include "Fuzzy.h"
 #include "FunctorPack.h"
+#include "FunctorBank.h"
 
 
 namespace drain

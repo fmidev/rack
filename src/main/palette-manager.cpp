@@ -43,7 +43,6 @@ namespace rack {
 
 
 			//drain::Logger mout(drain::image::getImgLog(), __FILE__, __FUNCTION__);
-
 			//drain::image::getImgLog().setVerbosity(20);
 
 			/*
@@ -51,7 +50,6 @@ namespace rack {
 			#include "palette/palette-ANDRE-CLASS.inc"
 			;
 			*/
-
 
 			m["ALT"] =
 			#include "palette/palette-ALT.inc"

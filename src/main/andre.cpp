@@ -42,6 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "andre/PrecipOp.h"
 
 #include "andre/AttenuationOp.h"
+#include "andre/AltitudeOp.h"
 #include "andre/BioMetOp.h"
 #include "andre/ClutterOp.h"
 #include "andre/CCorOp.h"
@@ -358,6 +359,7 @@ AnDReModule::AnDReModule(drain::CommandBank & cmdBank) : module_t(cmdBank) { // 
 
 	// Wrapper for detector ops
 	DetectorInstaller detectorInstaller(cmdBank);
+	detectorInstaller.install<AltitudeOp>();
 	detectorInstaller.install<AttenuationOp>();
 	detectorInstaller.install<BiometOp>();
 	detectorInstaller.install<BirdOp>();
