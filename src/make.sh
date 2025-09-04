@@ -61,7 +61,12 @@ for SRC in {andre,data,drain,drain/{image,imageops,util,prog},hi5,main,product,r
     mkdir --parents -v $DST_DIR/
     
     OBJ=$DST_DIR/${SRC_FILE%.*}.o
-    
+
+    # Compile object file, if:
+    # - CLEAN flag set
+    # - file does not exist
+    # - it is older than this rack version (i.e. rack.h has changed)
+    # - source file is newer than the object (this is the traditional make rule)
     if [ -v CLEAN ] || [ ! -f $OBJ ] || [ main/rack.h -nt $OBJ ] || [ $SRC -nt $OBJ ]  ; then
 	echo "# Building file: $SRC -> $OBJ"
 	cmd="$CC -std=c++11 $OPTS $CCFLAGS -I. -c -o $OBJ $SRC"

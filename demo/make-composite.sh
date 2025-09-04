@@ -349,7 +349,8 @@ DEMOFILES=${DEMO:+"$NEWLINE --gInclude NONE -o $BASENAME.png -o $BASENAME.tif -Q
 
 # if not TILED encoding='' ?
 encoding='' 
-command="$command $NEWLINE$encoding --cExtract dwsc $NEWLINE --gTitle 'Rack - ClutterMap \${what:date|%Y/%m}' -o $OUTFILE $DEMOFILES"
+# command="$command $NEWLINE$encoding --cExtract dwsc $NEWLINE --gTitle 'Rack - ClutterMap \${what:date|%Y/%m}' -o $OUTFILE $DEMOFILES"
+command="$command $NEWLINE$encoding --cExtract DATA,WEIGHT,COUNT $NEWLINE --gTitle 'Rack Composite - \${what:date|%Y/%m}' -o $OUTFILE $DEMOFILES"
 
 #fi 0,47,36,73
 echo

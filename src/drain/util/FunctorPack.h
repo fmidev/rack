@@ -150,6 +150,8 @@ public:
 	drainage image-gray.png  --physicalRange 0:1 --iThreshold 0.5   -o thresholdRelative.png
 	drainage image.png --physicalRange 0:1 --iThreshold 0.25  -o thresholdRelative-image.png
 	\endcode
+
+	\see BinaryThresholdFunctor
  */
 class ThresholdFunctor : public UnaryFunctor {
 
@@ -165,8 +167,8 @@ public:
 	}
 
 
-	inline
-	double operator()(double s) const {
+	virtual inline
+	double operator()(double s) const override {
 		if (s < threshold)
 			return replace;
 		else
@@ -185,6 +187,9 @@ public:
 	drainage image-gray.png  --physicalRange 0:1 --iThresholdBinary 0.65 -o thresholdBinaryRelative.png
 	drainage image.png --physicalRange 0:1 --iThresholdBinary 0.5  -o thresholdBinaryRelative-image.png
 	\endcode
+
+	\see BinaryThresholdFunctor
+
  */
 class BinaryThresholdFunctor : public UnaryFunctor { // : public ThresholdFunctor {
 
@@ -197,27 +202,36 @@ public:
 	*/
 
 	BinaryThresholdFunctor(double threshold = 0.5, double replace = 0.0, double replaceHigh = 1.0) : UnaryFunctor(__FUNCTION__, "Resets values lower and higher than a threshold")  {
-		//, threshold(threshold), replace(replace)
-		this->getParameters().link("threshold", this->threshold = threshold);
+		this->getParameters().link("threshold", this->threshold.tuple(threshold,threshold)).fillArray = true;
+		this->getParameters().link("replace",   this->replace.tuple(replace, replaceHigh));
+		//this->getParameters().link("replaceHigh", this->replaceHigh = replaceHigh);
+		/*
+		this->getParameters().link("threshold", this->threshold.tuple(threshold,threshold)).fillArray = true;
 		this->getParameters().link("replace", this->replace = replace);
 		this->getParameters().link("replaceHigh", this->replaceHigh = replaceHigh);
+		*/
 	};
 
 	BinaryThresholdFunctor(const BinaryThresholdFunctor & ftor) : UnaryFunctor(ftor){
 		parameters.copyStruct(ftor.parameters, ftor, *this);
 	}
 
-	inline
-	double operator()(double s) const {
-		if (s < threshold)
-			return replace;
+	virtual inline
+	double operator()(double s) const override {
+		if (s < threshold.min)
+			return replace.min;
+		else if (s > threshold.max)
+			return replace.max;
 		else
-			return replaceHigh;
+			return s;
 	};
 
-	double threshold   = 0.5;
-	double replace     = 0.0;
-	double replaceHigh = 1.0;
+	Range<double> threshold  = {0.5, 0.5};
+	Range<double> replace    = {0.0, 1.0};
+
+	// double threshold   = 0.5;
+	// double replace     = 0.0;
+	// double replaceHigh = 1.0;
 
 };
 

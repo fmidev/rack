@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "13.6"
+#define __RACK_VERSION__ "13.7"
 
 /**
  *  Version 13
@@ -51,6 +51,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - FuzzyDetectorOp, DualPolBioMetOp: local functor bank
  *  Release 13.6
  *  - andre::AltitudeOp
+ *  Release 13.7
+ *  - drain::BinaryThresholdFunctor: threshold is a span, inside which no thresholding.
  *
  *  Version 12
  *  - Revised QuantityMap, allowing retrieve("DBZXP")

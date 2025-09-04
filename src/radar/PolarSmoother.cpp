@@ -71,9 +71,9 @@ void PolarSmoother::filter(const PolarODIM & odimSrc, const drain::image::Image 
 	weightMakerOp.odimSrc = odimSrc;
 	weightMakerOp.nodataValue   = 0.0;
 	weightMakerOp.undetectValue = 1.0;
-	weightMakerOp.functor.threshold  = -10.0; // OOPS this is relates to DBZ, not general!
-	weightMakerOp.functor.replace = 0;
-	weightMakerOp.functor.replaceHigh = 255;
+	weightMakerOp.functor.threshold.set(-10.0,-10.0); // OOPS this is relates to DBZ, not general!
+	weightMakerOp.functor.replace.set(0,255);
+	// weightMakerOp.functor.replaceHigh = 255;
 	weightMakerOp.process(src, srcWeighted);
 
 	// File::write(src, "fuzzyCellArea0.png");
