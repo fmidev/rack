@@ -80,24 +80,20 @@ void AltitudeOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<Pola
 
 	mout.debug2(" => DST: " , dstData.data.getScaling() );
 
-	double hScaled = 0;
+	const double scaleMetres = ODIM::versionFlagger.isSet(ODIM::KILOMETRES) ? 0.001 : 1.0;
+
+	double hEncoded = 0;
 
 	for (size_t i = 0; i < width; ++i) {
 
 		binDistance = srcData.odim.getBinDistance(i);
-		h = Geometry::heightFromEtaBeam(eta, binDistance);
+		h = scaleMetres * Geometry::heightFromEtaBeam(eta, binDistance);
+		hEncoded = dstData.odim.scaling.inv(ftor(h));
 
-
-		if (ODIM::versionFlagger.isSet(ODIM::KILOMETRES)){
-			h *= 0.001;
-		}
-
-		hScaled = dstData.odim.scaling.inv(ftor(h));
-
-		mout.debug2(0, "\t", binDistance, ", \t h=", h, " \t -> ", ftor(h), " code=", hScaled);
+		mout.debug2(0, "\t", binDistance, ", \t h=", h, " \t -> ", ftor(h), " code=", hEncoded);
 
 		for (size_t j = 0; j < height; ++j) {
-			dstData.data.put(i, j, hScaled); // default
+			dstData.data.put(i, j, hEncoded); // default
 		}
 
 		// marker.process(srcData.data, dstData.data);

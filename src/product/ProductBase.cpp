@@ -113,30 +113,33 @@ void ProductBase::help(std::ostream &ostr, bool showDescription) const {
 }
 
 
-
-void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDefaults){
+/**
+ *  Renamed second param from srcODIM to defaultODIM
+ *  (because it originates not necessarily from src data)
+ */
+void ProductBase::applyODIM(ODIM & productODIM, const ODIM & defaultODIM, bool useDefaults){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const bool QUANTITY_UNSET = productODIM.quantity.empty();
 
 	if (QUANTITY_UNSET){
-		productODIM.quantity = srcODIM.quantity;
-		mout.info("set quantity=" , productODIM.quantity );
+		productODIM.quantity = defaultODIM.quantity;
+		mout.info("copied quantity [" , productODIM.quantity, "] from input" );
 	}
 
 	if  (!productODIM.isSet()){
 
 		// If src data and product have same quantity and storage type, adapt same encoding
-		if ((srcODIM.quantity == productODIM.quantity) && (srcODIM.type == productODIM.type)){ // note: may still be empty
-			EncodingODIM srcBase(srcODIM);
+		if ((defaultODIM.quantity == productODIM.quantity) && (defaultODIM.type == productODIM.type)){ // note: may still be empty
+			EncodingODIM srcBase(defaultODIM);
 			productODIM.updateFromMap(srcBase); // Does not copy geometry (rscale, nbins, etc).
 			mout.info("same quantity=" , productODIM.quantity , " and type, copied encoding: " , EncodingODIM(productODIM) );
 		}
 
 		//mout.toOStr() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
 		//mout.warn("productODIM.update(srcODIM)" );
-		productODIM.updateLenient(srcODIM); // date, time, Nyquist(NI) - WARNING, some day setLenient may copy srcODIM encoding
+		productODIM.updateLenient(defaultODIM); // date, time, Nyquist(NI) - WARNING, some day setLenient may copy srcODIM encoding
 
 	}
 
@@ -164,14 +167,14 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool useDe
 	*/
 
 	// mout.toOStr() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
-	if (QUANTITY_UNSET && (srcODIM.quantity == productODIM.quantity)){
+	if (QUANTITY_UNSET && (defaultODIM.quantity == productODIM.quantity)){
 		// xxx
-		if (productODIM.isSet() && drain::Type::call<drain::typeIsSmallInt>(srcODIM.type)){
-			if (srcODIM.getMin() < productODIM.getMin()){
-				mout.note("input [", srcODIM.quantity , "] min=", srcODIM.getMin() ,") lower than supported by target  (min=", productODIM.getMin() , ")");
+		if (productODIM.isSet() && drain::Type::call<drain::typeIsSmallInt>(defaultODIM.type)){
+			if (defaultODIM.getMin() < productODIM.getMin()){
+				mout.note("input [", defaultODIM.quantity , "] min=", defaultODIM.getMin() ,") lower than supported by target  (min=", productODIM.getMin() , ")");
 			}
-			if (srcODIM.getMax() > productODIM.getMax()){
-				mout.note("input [", srcODIM.quantity , "] max=", srcODIM.getMax() ,") higher than supported by target (max=", productODIM.getMax() , ")");
+			if (defaultODIM.getMax() > productODIM.getMax()){
+				mout.note("input [", defaultODIM.quantity , "] max=", defaultODIM.getMax() ,") higher than supported by target (max=", productODIM.getMax() , ")");
 			}
 		}
 	}

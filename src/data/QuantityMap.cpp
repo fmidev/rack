@@ -541,13 +541,14 @@ QuantityMap & getQuantityMap() {
 
 	if (ODIM::versionFlagger.isSet(ODIM::KILOMETRES)){
 		if (FIRST_INIT){ // TODO: only if changed?
-			mout.debug("Using kilometres for HGHT and HGHTDEV (ODIM version: ", ODIM::versionFlagger, ")");
+			//mout.debug("Using kilometres for HGHT and HGHTDEV (ODIM version: ", ODIM::versionFlagger, ")");
+			mout.attention("ODIM version: ", ODIM::versionFlagger, " (selects metres/kilometres for HGHT and HGHTDEV)");
 		}
 		quantityMap["HGHT"] = {
 				"Height/altitude [km]", {"ALT", "ALTITUDE"},
 				'S',
 				{
-						{'C', 0.01},    //   255 => 25,5km
+						{'C', 0.1},    //   255 => 25,5km
 						{'S', 0.0004}   // 65535 => 26.2 km
 				}
 		};
