@@ -167,9 +167,9 @@ public:
 			return dstImg;
 		}
 		/// Add empty alphaSrc channel
-		mout.special("dst image/plain: " , dstImg );
+		mout.special<LOG_DEBUG>("dst image/plain: " , dstImg );
 		dstImg.setAlphaChannelCount(1);
-		mout.special("dst image+alpha: " , dstImg );
+		mout.special<LOG_DEBUG>("dst image+alpha: " , dstImg );
 
 		mout.debug("image:"       , dstImg );
 
@@ -283,7 +283,7 @@ public:
 		const drain::image::Image & srcAlpha = ctx.getCurrentGrayImage();
 		ODIM srcODIM(srcAlpha); // NOTE: perhaps no odim data in props?
 
-		mout.special("alpha src image: ", srcAlpha );
+		mout.special<LOG_DEBUG>("alpha src image: ", srcAlpha);
 
 		// Dst image (typically, an existing coloured image)
 		drain::image::Image & dstImg = getDstImage(ctx);
@@ -350,49 +350,25 @@ public:
 				mout.error("unknown functor: " , s1 );
 				return;
 			}
-			//std::list<std::string> params;
 
 			drain::Range<double> range;
-			//drain::Referencer r(range.tuple());
-			//r.setSeparator(':').setFill() = ftor;
 			drain::Reference(range.tuple()).setSeparator(':').setFill().assignString(ftor);
 
-			mout.special("range: " , range );
+			mout.special<LOG_DEBUG>("range: ", range);
 
 			drain::FuzzyStep<double> fuzzyStep;
 
-			//fuzzyStep.setParameters(p, assignmentSymbol, separatorSymbol)
-			/*
-			RadarFunctorOp<drain::FuzzyStep<double> > fuzzyStep;
-			fuzzyStep.LIMIT = true;
-			fuzzyStep.odimSrc.updateFromMap(srcAlpha.getProperties());
-			*/
-
 			if (ctx.imagePhysical){
 				mout.info("using physical scale " );
-				//fuzzyStep.functor.set(range.min, range.max, 1.0);
-				//fuzzyStep.setParameters(range, 1.0);
-				//fuzzyStep.set(range.min, range.max, 1.0);
 			}
 			else {
-				//const drain::ValueScaling & scaling = srcImg.getScaling();
-				// EncodingODIM(src.odim)
 				mout.info("no physical scaling, using raw values of gray source: "  ,  srcAlpha.getConf()  );
-				//const double max = drain::Type::call<drain::typeNaturalMax>(src.data.getType()); // 255, 65535, or 1.0
 				const double max = drain::Type::call<drain::typeNaturalMax>(srcAlpha.getType()); // 255, 65535, or 1.0
-				//fuzzyStep.functor.set(srcAlpha.getConf().fwd(max*range.min), srcAlpha.getConf().fwd(max*range.max), 1.0);
-				const ImageConf & ac = srcAlpha.getConf();
-				// fuzzyStep.functor.set(ac.fwd(max*range.min), ac.fwd(max*range.max), 1.0);
-				//fuzzyStep.set(ac.fwd(max*range.min), ac.fwd(max*range.max), 1.0);
-				range.min = ac.fwd(max*range.min);
-				range.max = ac.fwd(max*range.max);
-				// fuzzyStep.set(ac.fwd(max*range.min), ac.fwd(max*range.max), 1.0);
-				// mout.info("new range: " , fuzzyStep.range );
-				// mout.info("range: " , fuzzyStep.functor.range );
-			//	mout.info("new range: " , fuzzyStep.range );
+				const ImageConf & alphaConf = srcAlpha.getConf();
+				range.min = alphaConf.fwd(max*range.min);
+				range.max = alphaConf.fwd(max*range.max);
 			}
 
-			//fuzzyStep.setParameters(range, 1.0);
 			fuzzyStep.set(range, 1.0);
 
 			mout.debug("fuzzy: "  , fuzzyStep );
@@ -402,10 +378,6 @@ public:
 		}
 
 		// dstImg has unknowns source -> encoding will not be written in metadata
-
-		//fuzzyStep.traverseChannel(srcAlpha.getChannel(0), dstImg.getAlphaChannel());
-
-		//mout.warn() = this->getParameters();
 
 	}
 
@@ -783,9 +755,7 @@ public:
 			// data.setEncoding("C");
 			// if (data.odim.type)
 
-
 			// This step only for storage type (quantity (other easily discarded).
-
 			//data.odim.completeEncoding( ctx.targetEncoding);
 			//data.setEncoding(data.odim.type);
 			//data.data.setScaling(data.odim.scaling);
@@ -793,9 +763,8 @@ public:
 			//data.odim.quantity = encoding.quantity;
 
 			mout.debug("target: " , data );
-
-			mout.attention("Applying:");
-			mout.attention(data.data.getConf());
+			mout.attention<LOG_DEBUG>("Applying:");
+			mout.attention<LOG_DEBUG>(data.data.getConf());
 
 			/// MAIN
 			op.process(graySrc, data.data);

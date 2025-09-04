@@ -315,7 +315,10 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) const {
 				const Quantity & q = getQuantityMap().get(quantity); // NOTE: doubled search
 				// mout.attention("quantity: ", q.name, " keys:", q.keySelector);
 				const FM301KeyMatcher & m = q.keySelector.retrieve(quantity);
-				if (m.value != quantity){
+				if (m.value.empty()){
+					mout.warn("no cFM301 quantity declared for: ", quantity);
+				}
+				else if (m.value != quantity){
 					mout.special("quantity: ", m.value, " mapped to : ", quantity);
 				}
 				statusMap["what:quantityName"] = m.getStandardName();

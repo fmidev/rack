@@ -279,10 +279,9 @@ public:
 		ctx.currentPolarHi5 = & ctx.polarProductHi5; // if cartesian, be careful with this...
 		ctx.currentHi5      = & ctx.polarProductHi5;
 
-		mout.special("modified code: currentImage");
+		mout.revised<LOG_DEBUG>("modified code: currentImage");
 		ctx.findImage();
 		// mout.timestamp("END_PRODUCT");
-
 		// hi5::Writer::writeFile("test2.h5", dst);
 	};
 

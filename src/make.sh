@@ -51,7 +51,7 @@ OBJS=()
 #    echo {andre,data,drain/{image,imageops,util,prog},hi5,main,product,radar}/*.cpp | tr ' ' '\n' > sources.lst
 # fi
 
-
+# Yes, explicit list.
 for SRC in {andre,data,drain,drain/{image,imageops,util,prog},hi5,main,product,radar}/*.cpp ; do
 
     SRC_FILE=${SRC##*/}
