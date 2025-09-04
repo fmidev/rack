@@ -145,7 +145,7 @@ Palette & PaletteOp::getPalette(const std::string & key) {
 		}
 	}
 	else {
-		mout.experimental("Using predefined palette [", key, "]");
+		mout.experimental<LOG_DEBUG>("Using predefined palette [", key, "]");
 	}
 	// setPalette(palette);
 	return palette;
@@ -338,8 +338,8 @@ void PaletteOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 		// This is needed for "normalising" quantities if desired (eg. Doppler wind, unamambiguous range)
 		ValueScaling sc(scale, offset);
 
-		mout.special("first entry: ", sprinter(*pal.begin())  );
-		mout.special("last  entry: ", sprinter(*pal.rbegin()) );
+		mout.special<LOG_DEBUG>("first entry: ", sprinter(*pal.begin())  );
+		mout.special<LOG_DEBUG>("last  entry: ", sprinter(*pal.rbegin()) );
 
 		const Palette::lookup_t & lut = pal.createLookUp(encoding.getType(), sc);
 

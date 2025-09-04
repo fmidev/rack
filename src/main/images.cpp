@@ -462,7 +462,7 @@ public:
 		if (!srcImage.isEmpty()){
 			quantity = srcImage.getProperties().get("what:quantity", "");
 			if (!quantity.empty())
-				mout.special("ctx.currentGrayImage: quantity=" , quantity );
+				mout.special<LOG_DEBUG>("ctx.currentGrayImage: quantity=" , quantity );
 		}
 
 		if (quantity.empty()){
@@ -490,7 +490,7 @@ public:
 		std::string processing;
 		// IMPORTANT: splitting must be compatible with: ImageContext::outputQuantitySyntax
 		drain::StringTools::split2(quantity, quantity, processing, "|/:>");
-		mout.special("src quantity=[", quantity, "] : processing='", processing, "'");
+		mout.special<LOG_DEBUG>("src quantity=[", quantity, "], processing='", processing, "'");
 
 		if (!quantity.empty()){
 			mout.info("retrieving palette: ", quantity);
@@ -560,7 +560,7 @@ public:
 		/// Principally ODIM needed, but PolarODIM contains Nyquist velocity information, if needed.
 		//const PolarODIM imgOdim(props);
 		const PolarODIM imgOdim(graySrc); // Uses Castable, so type-consistent
-		mout.attention("input encoding: ", EncodingODIM(imgOdim));
+		mout.debug("input encoding: ", EncodingODIM(imgOdim));
 
 		//mout.warn("input props: ", graySrc.getProperties());
 		const drain::FlexibleVariable & legend = graySrc.getProperties()["what:legend"];
@@ -654,7 +654,7 @@ public:
 		}
 
 
-		mout.note("params: ", op.getParameters());
+		mout.debug("image operator params: ", op.getParameters());
 
 		// If user has not explicitly set a quantity, assume RGB image temporary. (Excluded in HDF write)
 		const bool NO_SAVE = encoding.quantity.empty();
@@ -687,7 +687,7 @@ public:
 		statusMap["what:quantity"] = srcQuantity; // override...
 		dstQuantity = quantitySyntaxMapper.toStr(statusMap);
 		if (srcQuantity != dstQuantity){
-			mout.special("src[", srcQuantity, "] -> dst[", dstQuantity, "]");
+			mout.special<LOG_DEBUG>("quantity change: src[", srcQuantity, "] -> dst[", dstQuantity, "]");
 		}
 
 		/*
@@ -732,10 +732,10 @@ public:
 			data.setExcluded(NO_SAVE);
 
 			if (origSize == dstProduct.size()){
-				mout.note("Storing processed image in: ", elem, "/data?/ [", dstQuantity, ']'); // NEW 2023
+				mout.info("Storing processed image in: ", elem, "/data?/ [", dstQuantity, ']'); // NEW 2023
 			}
 			else {
-				mout.note("Storing processed image in: ", elem, "/data", dstProduct.size(),"/ [", dstQuantity, ']'); // NEW 2023
+				mout.info("Storing processed image in: ", elem, "/data", dstProduct.size(),"/ [", dstQuantity, ']'); // NEW 2023
 			}
 
 			if (NO_SAVE){
@@ -852,31 +852,7 @@ public:
 		//if (!value.empty() || ctx.palette.empty()){
 
 		if (DEFAULT_PALETTE){
-
 			retrieveDefaultPalette(ctx);
-
-			/*
-				// Guess label (quantity) Allow load even if no image
-				std::string quantity;
-				/// Minimum total effort... try selecting image already.
-				retrieveQuantity(ctx, quantity);
-
-				// NEW 2023/05/10 : consider DBZH:RESIZE
-				std::string processing;
-				// IMPORTANT: splitting must be compatible with: ImageContext::outputQuantitySyntax
-				drain::StringTools::split2(quantity, quantity, processing, "|/:>");
-				mout.special("src quantity=[", quantity, "] : processing='", processing, "'");
-
-				if (!quantity.empty()){
-					mout.info("retrieving palette: ", quantity);
-					//ctx.palette.load(quantity, true);
-					const Palette & p = ctx.getPalette(quantity);
-					mout.info("retrievied palette: ", p.comment, " size=", p.size());
-				}
-				else {
-					mout.fail("could not derive data quantity (quantity empty)");
-				}
-			 */
 		}
 		else {
 			const Palette & p = ctx.getPalette(value);
@@ -884,14 +860,12 @@ public:
 			// ctx.palette.load(value, true);
 		}
 
-
 		/// TODO: store palette in dst /dataset, or better add palette(link) to Image ?
 		/*
 			mout.warn("palette will be also saved to: " , ctx.currentPath );
 			Hi5Tree & dst = (*ctx.currentHi5);
 			dst(ctx.currentPath).data.attributes["IMAGE_SUBCLASS"] = "IMAGE_INDEXED";
 		 */
-
 		//mout.attention("Applying...");
 		apply(ctx);
 

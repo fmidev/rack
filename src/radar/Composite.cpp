@@ -55,18 +55,6 @@ using namespace drain::image;
 namespace rack
 {
 
-/*
-const Composite::dict_t Composite::dict = {
-		DRAIN_ENUM_ENTRY(rack::Composite::FieldType, DATA),
-		DRAIN_ENUM_ENTRY(rack::Composite::FieldType, WEIGHT),
-		DRAIN_ENUM_ENTRY(rack::Composite::FieldType, COUNT),
-		DRAIN_ENUM_ENTRY(rack::Composite::FieldType, DEVIATION),
-		//		{"DATA", rack::Composite::FieldType::DATA},
-		//		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
-		//		{"COUNT", rack::Composite::FieldType::COUNT},
-		//		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
-};
-*/
 //static DataCoder converter;
 
 // Notice: =-32.0 is good only for DBZH
@@ -527,24 +515,19 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	}
 
 	if (bboxInput.crop(getBoundingBoxNat())){ // bool result incorrect
-		mout.special("Cropped input BBOX: ", bboxInput);
+		mout.debug("Cropped input BBOX: ", bboxInput);
 		// <LOG_NOTICE>
 	}
 
 	drain::Rectangle<int> bboxPix;
 	m2pix(bboxInput.lowerLeft,  bboxPix.lowerLeft);
 	m2pix(bboxInput.upperRight, bboxPix.upperRight);
-	mout.note("cropped, data:", bboxInput.tuple(), ", pix area: ", bboxPix.tuple());
+	mout.debug("cropped, data:", bboxInput.tuple(), ", pix area: ", bboxPix.tuple());
 
 	//mout.warn() << "Should use:" <<  bboxPix << ", in " << getFrameWidth() << 'x' << getFrameHeight() << '\n';
 	mout.debug("Composite (cropped) ", *this, " geom: ", accArray.getGeometry(), "\nProj:\n", pRadarToComposite, "\n Pix area:\n", bboxPix, '\n');
 
-	mout.debug("allocating");
 	allocate();
-	//mout.debug2("allocated" );
-	//std::cerr << count << std::endl;
-
-	//mout.attention("Image BBOX: ", bboxPix);
 
 	/// -------------------------------------------------------
 	/// DATA PROJECTION (MAIN LOOP)

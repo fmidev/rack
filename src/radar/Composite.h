@@ -239,7 +239,7 @@ protected:
 
 } // rack::
 
-DRAIN_ENUM_OSTREAM(rack::Composite::FieldType);
+// DRAIN_ENUM_OSTREAM(rack::Composite::FieldType);
 
 
 #endif /*COMPOSITE_H_*/

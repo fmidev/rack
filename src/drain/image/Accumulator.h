@@ -301,6 +301,8 @@ std::ostream & operator<<(std::ostream &ostr, const Accumulator & accumulator){
 
 }  // drain::
 
+DRAIN_ENUM_OSTREAM(drain::image::Accumulator::FieldType);
+
 #endif /* Cumulator_H_ */
 
 // Drain

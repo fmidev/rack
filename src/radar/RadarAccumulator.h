@@ -258,7 +258,7 @@ void RadarAccumulator<AC,OD>::setTargetEncoding(const std::string & encoding){
 	}
 
 	// mout.attention("Quantity: [", quantityPrev, "] -> [", odim.quantity, "]");
-	mout.attention("Target encoding: [", encoding, "] odim: ", odim); //, "]");
+	mout.attention<LOG_DEBUG>("Target encoding: [", encoding, "] odim: ", odim); //, "]");
 
 
 }
@@ -409,7 +409,7 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 	DataCoder dataCoder(odimData, odimQuality); // (will use only either odim!)
 
 	{
-		mout.attention("extracting field '", field, "'");
+		mout.attention("extracting field '", field, "'", static_cast<int>(field));
 
 		/*
 		if (odimData.quantity.empty()){

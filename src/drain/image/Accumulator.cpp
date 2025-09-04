@@ -44,9 +44,21 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+const image::Accumulator::dict_t image::Accumulator::dict = {
+		DRAIN_ENUM_ENTRY(image::Accumulator::FieldType, DATA),
+		DRAIN_ENUM_ENTRY(image::Accumulator::FieldType, WEIGHT),
+		DRAIN_ENUM_ENTRY(image::Accumulator::FieldType, COUNT),
+		DRAIN_ENUM_ENTRY(image::Accumulator::FieldType, DEVIATION),
+		//		{"DATA", rack::Composite::FieldType::DATA},
+		//		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
+		//		{"COUNT", rack::Composite::FieldType::COUNT},
+		//		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
+};
+
 namespace image
 {
 
+/*
 const Accumulator::dict_t Accumulator::dict = {
 		DRAIN_ENUM_ENTRY(Accumulator::FieldType, DATA),
 		DRAIN_ENUM_ENTRY(Accumulator::FieldType, WEIGHT),
@@ -57,6 +69,7 @@ const Accumulator::dict_t Accumulator::dict = {
 		//		{"COUNT", rack::Composite::FieldType::COUNT},
 		//		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
 };
+*/
 
 Accumulator::FieldType Accumulator::getField(char field){
 
