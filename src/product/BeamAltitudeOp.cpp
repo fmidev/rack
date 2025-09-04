@@ -44,7 +44,7 @@ BeamAltitudeOp::BeamAltitudeOp() : // const std::string & type="S", double gain=
 				PolarProductOp(__FUNCTION__,"Computes the altitude at each bin")
 {
 
-	parameters.link("aboveSeaLevel", this->aboveSeaLevel = true, "0=radar site|1=sea level");
+	parameters.link("aboveSeaLevel", this->aboveSeaLevel = true, "false=radar site|true=sea level");
 
 	odim.product  = "ALTITUDE";
 	odim.quantity = "HGHT";
@@ -84,7 +84,13 @@ void BeamAltitudeOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> 
 	double h, hEncoded;
 	for (unsigned int i = 0; i < dstData.odim.area.width; ++i) {
 		//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.scale << " m\n";
-		h = scaleMetres * Geometry::heightFromEtaGround(eta, dstData.odim.getBinDistance(i));
+
+		if (aboveSeaLevel){
+			h = scaleMetres * (srcData.odim.height +  Geometry::heightFromEtaGround(eta, dstData.odim.getBinDistance(i)));
+		}
+		else {
+			h = scaleMetres * Geometry::heightFromEtaGround(eta, dstData.odim.getBinDistance(i));
+		}
 		hEncoded = dstData.odim.scaling.inv(h);
 
 		// h = Geometry::heightFromEtaGround(eta, i*dst.odim.rscale)/gainMetres;
