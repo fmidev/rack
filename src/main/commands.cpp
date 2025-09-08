@@ -244,11 +244,28 @@ public:
 	virtual
 	void parametersToStream(std::ostream & ostr, const std::string & indent= "  ") const override {
 
-		for (const auto & entry: mySelector.getParameters()){
-			ostr << indent << entry.first << ' ' << entry.second << '\n';
-		}
+		const drain::ReferenceMap & params = mySelector.getParameters();
+		const std::list<std::string> & keys = params.getKeyList();  // To get keys in specified order.
 
+		const std::map<std::string,std::string> & units = params.getUnitMap();
+
+		for (const std::string & key: keys){
+			ostr << indent << key << " (" << params.get(key, "") << ")";
+
+			std::map<std::string,std::string>::const_iterator uit = units.find(key);
+			if (uit != units.end()){
+				if (!uit->second.empty()){
+					ostr << ' ' << '[' << uit->second << ']';
+				}
+			}
+			ostr << '\n';
+		}
 	}
+
+	virtual inline
+	void parameterKeysToStream(std::ostream & ostr) const override {
+		Command::parameterKeysToStream(ostr, mySelector.getParameters().getKeyList(), ',');
+	};
 
 
 	/* This fails, because the keys are used as truth

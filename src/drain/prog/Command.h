@@ -194,8 +194,8 @@ public:
 	};
 
 
-	virtual
-	void help(std::ostream & ostr = std::cout, bool DETAILED=false) const final;
+	//virtual
+	// void help(std::ostream & ostr = std::cout, bool DETAILED=false) const final;
 
 	virtual
 	void getRelatedCommands(std::ostream & ostr = std::cout) const;
@@ -230,6 +230,13 @@ public:
 	 */
 	virtual
 	void parametersToStream(std::ostream & ostr, const std::string & indent= "  ") const;
+
+	virtual inline
+	void parameterKeysToStream(std::ostream & ostr) const {
+		parameterKeysToStream(ostr, getParameters().getKeyList(), getParameters().separator);
+	};
+
+	void parameterKeysToStream(std::ostream & ostr, const std::list<std::string> & list, char sep=',') const;
 
 
 protected:

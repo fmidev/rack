@@ -956,13 +956,17 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 	char alias = getAlias(key);
 	if (alias)
 		ostr << ", -" << alias;
+	ostr << ' ';
+
+	cmd.parameterKeysToStream(ostr);
+	ostr << ' ';
 
 	const ReferenceMap & params = cmd.getParameters();
 
 	// ostr << '\n';
 	if (detailed){
 		ostr << "  (";
-		ostr << "section: " << FlagResolver::getKeys(sections,cmd.section, ',');
+		ostr << "section: " << FlagResolver::getKeys(sections, cmd.section, ',');
 		if ((params.separator) && (params.separator!=',')){
 			ostr << ", separator: '" << params.separator << "'";
 		}
@@ -971,85 +975,14 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 
 	ostr << '\n';
 
-	ostr << "  " << cmd.getDescription();
+	ostr << "  " << cmd.getDescription() << '\n';
 
-	// if detailed...
-	cmd.parametersToStream(ostr, "  ");
-	const std::map<std::string,std::string> & units = params.getUnitMap();
-	/*
-		const std::map<std::string,std::string> & units = params.getUnitMap();
-	const std::list<std::string> & keys = params.getKeyList();  // To get keys in specified order.
-
-	ostr << ' ' << ' ';
-	char separator = 0;
-	//for (std::list<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
-
-	for (const std::string & key: keys){
-
-		if (separator)
-			ostr << separator;
-		else
-			separator = params.separator; //',';
-
-		if (key.empty()){
-			ostr << '<' << params.getKeys() << '>';
-			if (params.size() != 1){
-				mout.warn("the first key empty, but not unique");
-				//mout.warn("the first key empty, but not unique" );
-			}
-		}
-		else {
-			ostr << '<' << key << '>'; // Like a pseudo parameter, '<value>'
-		}
-	}
-	*/
-
-	//char separator = 0;
-
-
-	cmd.help(ostr, detailed); // TODO: embed following detailed part in help?
 	if (detailed){
+		cmd.parametersToStream(ostr, "  - ");
 		cmd.getRelatedCommands(ostr);
 	}
+	ostr << '\n';
 
-
-	/// Iterate variable keys
-	if (detailed){
-
-		for (const std::string & key: keys){
-
-			if ((key.at(0) == '_') && !mout.isDebug()){  // what? hidden? but appears in above list?
-				continue;
-			}
-
-			// special:
-			if (keys.size()==1){
-				if (key.find(',') != std::string::npos){
-					// Latent-multikey case
-					ostr << '\t' << params.begin()->second << '\n';
-					return;
-				}
-			}
-
-			ostr << '\t' << key;
-			// ostr << ' ' << ' ' << key;
-			// ostr << ' ' << ' ' << ' ' << ' ' << key;
-			ReferenceMap::const_iterator rit = params.find(key); // er.. ok..
-			if (rit == params.end())
-				throw std::runtime_error(key + ": key listed, but no command found");
-			else {
-				ostr << '=' << rit->second << ' ';
-				//ostr << 'Q';
-				std::map<std::string,std::string>::const_iterator uit = units.find(key);
-				if (uit != units.end())
-					if (!uit->second.empty())
-						ostr << '[' << uit->second << ']';
-			}
-			//ostr << 'X';
-			ostr << '\n';
-		}
-
-	}
 
 
 }

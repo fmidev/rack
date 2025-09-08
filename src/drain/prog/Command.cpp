@@ -89,44 +89,75 @@ void Command::setParameters(const std::string & args){ //, char assignmentSymbol
 
 }
 
+/*
 void Command::help(std::ostream & ostr, bool DETAILED) const {
 	Logger mout(__FUNCTION__, getName());
 	mout.deprecating("help for: ", getName());
-	/*
 	ostr << "  " << getDescription() << '\n';
 	if (DETAILED){
 		getRelatedCommands(ostr);
 	}
-	*/
 };
+*/
 
-void Command::parametersToStream(std::ostream & ostr, const std::string & indent) const {
+void Command::parameterKeysToStream(std::ostream & ostr, const std::list<std::string> & keys, char sep) const {
 
-	const ReferenceMap & params = getParameters();
-	const std::map<std::string,std::string> & units = params.getUnitMap();
-	const std::list<std::string> & keys = params.getKeyList();  // To get keys in specified order.
-
-	ostr << indent; // ' ' << ' ';
 	char separator = 0;
-	//for (std::list<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
 
 	for (const std::string & key: keys){
 
 		if (separator)
 			ostr << separator;
 		else
-			separator = params.separator; //',';
+			separator = sep;
 
 		if (key.empty()){
-			ostr << '<' << params.getKeys() << '>';
+			ostr << '<' << "keys?" << '>';
+			/*
 			if (params.size() != 1){
 				std::cerr << "the first key empty, but not unique\n";
 				//mout.warn("the first key empty, but not unique");
 				//mout.warn("the first key empty, but not unique" );
 			}
+			*/
 		}
 		else {
 			ostr << '<' << key << '>'; // Like a pseudo parameter, '<value>'
+		}
+	}
+
+}
+
+
+void Command::parametersToStream(std::ostream & ostr, const std::string & indent) const {
+
+	const ReferenceMap & params = getParameters();
+	const std::list<std::string> & keys = params.getKeyList();  // To get keys in specified order.
+
+	const std::map<std::string,std::string> & units = params.getUnitMap();
+
+	for (const std::string & key: keys){
+		if (key.empty()){
+			//mout.warn
+			std::cerr << "empty key...\n";
+		}
+		else {
+			const auto it = params.find(key);
+			if (it != params.end()){
+				//ostr << indent << it->first << '=' << it->second << '\n';
+				ostr << indent << it->first << " (" << it->second << ")";
+
+				std::map<std::string,std::string>::const_iterator uit = units.find(key);
+				if (uit != units.end()){
+					if (!uit->second.empty()){
+						ostr << ' ' << '[' << uit->second << ']';
+					}
+				}
+				ostr << '\n';
+			}
+			else {
+				ostr << "param <" << key << "> undefined\n";
+			}
 		}
 	}
 }
