@@ -74,7 +74,7 @@ void BlenderOp::traverseChannels(const ImageTray<const Channel> & src, ImageTray
 
 	unsigned short loopsFinal = loops;
 
-	UniCloner<ImageOp> cloner(getImageOpBank());
+	LocalCloner<ImageOp> cloner(getImageOpBank());
 
 	const drain::SmartMap<std::string> & spreaderAliases = WEIGHTED ? getSmootherAliasMap<true>() : getSmootherAliasMap<false>();
 

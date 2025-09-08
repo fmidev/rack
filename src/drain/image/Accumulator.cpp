@@ -36,6 +36,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Accumulator.h"
 
 
+const drain::image::Accumulator::dict_t drain::image::Accumulator::dict = {
+		DRAIN_ENUM_ENTRY(drain::image::Accumulator::FieldType, DATA),
+		DRAIN_ENUM_ENTRY(drain::image::Accumulator::FieldType, WEIGHT),
+		DRAIN_ENUM_ENTRY(drain::image::Accumulator::FieldType, COUNT),
+		DRAIN_ENUM_ENTRY(drain::image::Accumulator::FieldType, DEVIATION),
+		//		{"DATA", rack::Composite::FieldType::DATA},
+		//		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
+		//		{"COUNT", rack::Composite::FieldType::COUNT},
+		//		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
+};
+
+
 
 // TODO: image/
 /** See also radar::Compositor
@@ -44,6 +56,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+/*
 const image::Accumulator::dict_t image::Accumulator::dict = {
 		DRAIN_ENUM_ENTRY(image::Accumulator::FieldType, DATA),
 		DRAIN_ENUM_ENTRY(image::Accumulator::FieldType, WEIGHT),
@@ -54,6 +67,7 @@ const image::Accumulator::dict_t image::Accumulator::dict = {
 		//		{"COUNT", rack::Composite::FieldType::COUNT},
 		//		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
 };
+*/
 
 namespace image
 {

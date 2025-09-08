@@ -789,5 +789,3 @@ protected:
 } // drain::
 
 #endif /* FUZZY_H_*/
-
-// Drain

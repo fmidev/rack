@@ -502,19 +502,31 @@ image::TreeSVG & image::TreeSVG::operator=(const T & arg){
 	*/
 }
 
-// Important! Useful and widely used – but  fails with older C++ compilers ?
-template <>
-template <>
-inline
-image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type){
+/// Handy in setting the type.
+/**
+ *  Usage:
+ *    TreeSVG & child = tree[path_elem](type);
+ *    TreeSVG & child = tree(path)(type);
+ *
+ *   Note: fails with older C++ compilers ?
+ */
+template <> // for T - Tree class
+template <> // for K - operator() argument
+// inline
+image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
+/*
+{
 		return XML::xmlSetType(*this, type);
 }
+*/
 
 
+/// Automatic conversion of element type (enum value) to a string.
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type);
 
+/// Automatic conversion of element type (enum value) to a string.
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const ;

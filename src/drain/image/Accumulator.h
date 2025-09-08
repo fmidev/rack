@@ -93,6 +93,11 @@ public:
 		DEVIATION_DS = 'S'|QUALITY  // Separation
 	};
 
+	typedef drain::EnumDict<FieldType>::dict_t dict_t;
+
+	static
+	const dict_t dict;
+
 	typedef std::list<FieldType> FieldList;
 
 	// Deprecating?
@@ -121,10 +126,6 @@ public:
 	static
 	void createFieldList(const std::string & fieldChars, FieldList & fieldList);
 
-
-	typedef drain::EnumDict<FieldType>::dict_t dict_t;
-	static
-	const dict_t dict;
 
 	/// Todo: export
 	AccumulationArray accArray;

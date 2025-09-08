@@ -473,10 +473,16 @@ protected:
 };
 
 
-/// Creates an entry of desired type and destroys it upon exit.
-//  TODO: extend to local bank, creating and destroying several entries.
+/// Creates an entries offered by a bank and destroys them upon exit.
+/**
+ *  Creating entries using a static Cloner provided by a drain::Bank.
+ *  The entries are basically global.
+ *  However, they become destroyed upon desctruction of the LocalCloner instance
+ *  that created (requested) them. Hence, the entries share the same scope with
+ *  the LocalCloner.
+ */
 template <class B>
-class UniCloner {
+class LocalCloner {
 
 public:
 
@@ -495,10 +501,10 @@ public:
 
 	typedef std::map<cloner_t *, std::set<index_t> > book_t;
 
-	UniCloner(const bank_t & bank) : bank(bank), idx(0) { // , cloner(nullptr)
+	LocalCloner(const bank_t & bank) : bank(bank), idx(0) { // , cloner(nullptr)
 	};
 
-	~UniCloner(){
+	~LocalCloner(){
 		for (typename book_t::value_type & v : this->book){
 			drain::Logger mout(__FILE__, __FUNCTION__);
 			mout.debug() << "Freeing: ";

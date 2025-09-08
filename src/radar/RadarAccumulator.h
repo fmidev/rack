@@ -409,7 +409,7 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 	DataCoder dataCoder(odimData, odimQuality); // (will use only either odim!)
 
 	{
-		mout.attention("extracting field '", field, "'", static_cast<int>(field));
+		mout.attention("extracting field '", field, "' = ", static_cast<int>(field));
 
 		/*
 		if (odimData.quantity.empty()){

@@ -409,7 +409,7 @@ public:
 
 	conf_t conf;
 
-	UniCloner<UnaryFunctor> unicloner;
+	LocalCloner<UnaryFunctor> unicloner;
 
 	// Final function, set upon instantiation
 	drain::UnaryFunctor & myFunctor;

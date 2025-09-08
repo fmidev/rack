@@ -180,95 +180,55 @@ NodeSVG::NodeSVG(svg::tag_t t){
 NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), box(0,0,0,0), radius(0) {
 	// RISKY references! copyStruct(node, node, *this, ReferenceMap2::extLinkPolicy::LINK); // <-- risky! may link Variable contents?
 	XML::xmlAssignNode(*this, node);
-	// Logger mout(__FILE__, __FUNCTION__);
-	 //setType(node.getType());
-	// mout.warn("node type: ", node.getType(), " -> type: ", type);
 }
 
-//template <>
-// void NodeXML<image::svg::tag_t>::handleType(const image::svg::tag_t & t){
 void NodeSVG::handleType(const svg::tag_t & t) { // setType(const elem_t & t) {
-
-	// drain::Logger mout(drain::TypeName<NodeSVG>::str().c_str(), __FUNCTION__);
-	// mout.attention(__FUNCTION__, ": current type=", type, " arg=", t);
-	/*
-	YES: how to handle unchanged type properly? And reset bbox upon type change?
-	if (type == t){
-		return; // lazy
-	}
-	*/
-	// type = t;
 
 	switch (t) {
 	case image::svg::UNDEFINED:
-		// case UNDEFINED:
 		break;
 	case image::svg::COMMENT:
-		// setComment();
 		break;
 	case image::svg::CTEXT:
-		//case XML::CTEXT:
-		// setText();
-		// tag = "";
 		break;
 	case image::svg::SVG:
-		//tag = "svg";
-		//link("x", box.x = 0);
-		//link("y", box.y = 0);
 		link("width", box.width); // = 0);
 		link("height", box.height); // = 0);
-		//link("width", width = "0");
-		//link("height", height = "0");
 		link("xmlns", NodeSVG::svg);
 		link("xmlns:svg", NodeSVG::svg);
 		link("xmlns:xlink", NodeSVG::xlink);
 		break;
 	case image::svg::TITLE:
-		//tag = "title";
 		break;
 	case image::svg::GROUP:
-		// tag = "g";
 		link("data-pos", box.getLocation().tuple());
 		link("data-frm", box.getFrame().tuple());
 		break;
 	case image::svg::RECT:
-		// tag = "rect";
 		link("x", box.x = 0);
 		link("y", box.y = 0);
 		link("width", box.width); // = 0);
 		link("height", box.height); // = 0);
-		// link("width", width = "0");
-		// link("height", height = "0");
 		break;
 	case image::svg::CIRCLE:
-		// tag = "circ";
 		link("cx", box.x = 0);
 		link("cy", box.y = 0);
 		link("r", radius = 0);
 		break;
 	case image::svg::IMAGE:
-		// tag = "image";
 		link("x", box.x = 0);
 		link("y", box.y = 0);
 		link("width", box.width); //  = 0);
 		link("height", box.height); //  = 0);
-		//link("width", width = "0");
-		// link("height", height = "0");
 		// if (version == 1) {
 		link("xlink:href", url); // text_anchor
-		// link("xlink:href", ctext); // text_anchor
 		// if (version > 2.x ?) {
-		//link("href", text_anchor);
 		break;
 	case image::svg::TEXT:
-		// tag = "text";
 		link("x", box.x); //  = 0);
 		link("y", box.y); //  = 0);
-		// style.link("font-size", this->box.height); // Not good, shows zero size
-		// link("text-anchor", text_anchor = "");
 		break;
 	case image::svg::TSPAN:
-		// style.link("font-size", this->box.height); // Not good, shows zero size
 		break;
 	default:
 		return;
@@ -373,10 +333,16 @@ bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const {
 	return hasChild(EnumDict<image::svg::tag_t>::dict.getKey(type, true)); // no error on non-existent dict entry
 }
 
+/// Set the type.
+template <> // for T - Tree class
+template <> // for K - operator() argument
+image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type){
+		return XML::xmlSetType(*this, type);
+}
 
-/// Automatic conversion of elem classes to strings.
+/// Automatic conversion of element type (enum value) to a string.
 /**
- *
+ *   Convenience
  */
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
@@ -384,7 +350,10 @@ const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type
 	return (*this)[EnumDict<image::svg::tag_t>::dict.getKey(type, false)];
 }
 
-
+/// Automatic conversion of element type (enum value) to a string.
+/**
+ *  Convenience
+ */
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type){

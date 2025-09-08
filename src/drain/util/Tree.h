@@ -532,7 +532,8 @@ public:
 	 *
 	 *  This function, not using native path_t type, can be redefined in template classes.
 	 *  For example, an important attribute can be set using this method.
-	 *  Method operator()(const char *arg) should be redefined to produce equivalent
+	 *
+	 *  However, operator()(const char *arg) should be redefined to produce equivalent
 	 *  result with <code>const string &arg</code>.
 	 */
 	template <class S>

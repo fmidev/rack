@@ -329,7 +329,7 @@ public:
 
 		if (functorBank.has(s1)){
 
-			drain::UniCloner<drain::UnaryFunctor> localBank(functorBank);
+			drain::LocalCloner<drain::UnaryFunctor> localBank(functorBank);
 
 			//mout.special("list " , drain::sprinter(l) );
 

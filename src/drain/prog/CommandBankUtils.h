@@ -247,12 +247,12 @@ protected:
 
 
 /// CommandBank-dependent
-class HelpCmd : public SimpleCommand<std::string> {
+class CmdHelp : public SimpleCommand<std::string> {
 
 public:
 
 
-	HelpCmd(CommandBank & cmdBank) : SimpleCommand<std::string>(__FUNCTION__, "Display help.", "key", "", "command|sections"), cmdBank(cmdBank) {
+	CmdHelp(CommandBank & cmdBank) : SimpleCommand<std::string>(__FUNCTION__, "Display help.", "key", "", "command|sections"), cmdBank(cmdBank) {
 	};
 
 	inline

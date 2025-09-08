@@ -84,7 +84,7 @@ protected:
 	}
 
 	mutable
-	UniCloner<UnaryFunctor> unicloner;
+	LocalCloner<UnaryFunctor> unicloner;
 
 	/// Retrieve functor to process the result: either the functor defined as functorStr or member functor (identity by default).
 	/**

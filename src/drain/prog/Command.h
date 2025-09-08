@@ -361,7 +361,7 @@ public:
 	};
 
 	virtual	inline
-	const drain::ReferenceMap & getParameters() const final {
+	const drain::ReferenceMap & getParameters() const  { // final
 		return getBean().getParameters();
 	};
 

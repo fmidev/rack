@@ -68,7 +68,7 @@ void FunctorOp::processData(const Data<PolarSrc> & src, Data<PolarDst> &dst) con
 		mout.experimental("pars: ", ftorParams);
 
 		// NEW
-		drain::UniCloner<drain::UnaryFunctor> localBank(functorBank);
+		drain::LocalCloner<drain::UnaryFunctor> localBank(functorBank);
 		drain::UnaryFunctor & ftor = localBank.getCloned(ftorName);
 		// OLD
 		// drain::UnaryFunctor & ftor = functorBank.clone(ftorName);

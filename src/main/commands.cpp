@@ -210,21 +210,31 @@ public:
 		//mout.warn("ctx.select=", ctx.select, "...");
 	}
 
+	/*
 	virtual
-	void help(std::ostream & ostr, bool DETAILED) const {
+	void help(std::ostream & ostr, bool DETAILED) const override {
 
 		ostr << "  " << getDescription() << '\n';
 
-		ostr << "  path: defines a path segment to be matched, with desired index ranges (example: dataset2:4/data3:8";
-		ostr << "  path: leading slash fixes matching at the root (example: /dataset:/data: ), otherwise the tail part is matched";
+		ostr << "  path: defines a path segment to be matched, with desired index ranges (example: dataset2:4/data3:8\n";
+		ostr << "  path: leading slash fixes matching at the root (example: /dataset:/data: ), otherwise the tail part is matched\n";
 		ostr << "  quantity: list of strings or regExps separated by semicolon ':', quality quantity by slash '/'";
+
+		for (const auto & entry: mySelector.getParameters()){
+			ostr << entry.first << ' ' << entry.second << '\n';
+		}
 
 		if (DETAILED){
 			getRelatedCommands(ostr);
 		}
 
 	};
+	*/
 
+	virtual
+	drain::ReferenceMap & getParameters() const override{
+		return mySelector.getParameters();
+	}
 
 };
 
@@ -2141,7 +2151,7 @@ public:
 #else
 		std::cout << "GeoTIFF not supported" << '\n';
 #endif
-		std::cout << "experimental ODIM default: " << rack::ODIM::versionFlagger << '\n';
+		std::cout << "ODIM " << rack::ODIM::versionFlagger << '\n';
 		std::cout << '\n';
 
 
@@ -2193,7 +2203,7 @@ class CmdAppend : public drain::SimpleCommand<std::string> {  //public drain::Ba
 
 public:
 
-	CmdAppend() : drain::SimpleCommand<std::string>(__FUNCTION__, "Append inputs/products (empty=overwrite).", "path", "", "<amprty>|dataset[n]|data[n]"){
+	CmdAppend() : drain::SimpleCommand<std::string>(__FUNCTION__, "Append inputs/products (empty=overwrite).", "path", "", "<empty>|dataset[n]|data[n]"){
 	}
 
 	virtual
@@ -2510,7 +2520,7 @@ MainModule::MainModule(){ //
 	drain::CommandBank & cmdBank = drain::getCommandBank();
 
 	// Bank-referencing commands first
-	drain::HelpCmd help(cmdBank);
+	drain::CmdHelp help(cmdBank);
 	install(help, 'h');
 	//installExternal(help, 'h');
 

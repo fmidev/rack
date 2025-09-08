@@ -195,21 +195,9 @@ class BinaryThresholdFunctor : public UnaryFunctor { // : public ThresholdFuncto
 
 public:
 
-	/*
-	BinaryThresholdFunctor(double threshold = 0.5, double replace = 0.0, double replaceHigh = 1.0) : ThresholdFunctor(threshold, replace),  replaceHigh(replaceHigh) {
-		this->getParameters().link("replaceHigh", this->replaceHigh = replaceHigh);
-	};
-	*/
-
-	BinaryThresholdFunctor(double threshold = 0.5, double replace = 0.0, double replaceHigh = 1.0) : UnaryFunctor(__FUNCTION__, "Resets values lower and higher than a threshold")  {
-		this->getParameters().link("threshold", this->threshold.tuple(threshold,threshold)).fillArray = true;
-		this->getParameters().link("replace",   this->replace.tuple(replace, replaceHigh));
-		//this->getParameters().link("replaceHigh", this->replaceHigh = replaceHigh);
-		/*
-		this->getParameters().link("threshold", this->threshold.tuple(threshold,threshold)).fillArray = true;
-		this->getParameters().link("replace", this->replace = replace);
-		this->getParameters().link("replaceHigh", this->replaceHigh = replaceHigh);
-		*/
+	BinaryThresholdFunctor(double threshold = 0.5, double replaceLow = 0.0, double replaceHigh = 1.0) : UnaryFunctor(__FUNCTION__, "Resets values lower and higher than a threshold")  {
+		this->getParameters().link("threshold", this->threshold.tuple(threshold,threshold), "min[:max]").fillArray = true;
+		this->getParameters().link("replace",   this->replace.tuple(replaceLow, replaceHigh), "min[:max]");
 	};
 
 	BinaryThresholdFunctor(const BinaryThresholdFunctor & ftor) : UnaryFunctor(ftor){
@@ -228,10 +216,6 @@ public:
 
 	Range<double> threshold  = {0.5, 0.5};
 	Range<double> replace    = {0.0, 1.0};
-
-	// double threshold   = 0.5;
-	// double replace     = 0.0;
-	// double replaceHigh = 1.0;
 
 };
 
@@ -284,7 +268,6 @@ public:
 	};
 
 	double gamma = 1.0;
-
 
 };
 
@@ -464,11 +447,13 @@ public:
 		this->biasFinal   = this->bias;
 	}
 
-	double coeff;
+	double coeff = 1.0;
 
 protected:
+
 	mutable
-	double scaleFinal2;
+	double scaleFinal2 = 1.0;
+
 };
 
 
