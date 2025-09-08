@@ -957,9 +957,24 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 	if (alias)
 		ostr << ", -" << alias;
 
-	// if detailed...
-	cmd.parametersToStream(ostr);
 	const ReferenceMap & params = cmd.getParameters();
+
+	// ostr << '\n';
+	if (detailed){
+		ostr << "  (";
+		ostr << "section: " << FlagResolver::getKeys(sections,cmd.section, ',');
+		if ((params.separator) && (params.separator!=',')){
+			ostr << ", separator: '" << params.separator << "'";
+		}
+		ostr << ')';
+	}
+
+	ostr << '\n';
+
+	ostr << "  " << cmd.getDescription();
+
+	// if detailed...
+	cmd.parametersToStream(ostr, "  ");
 	const std::map<std::string,std::string> & units = params.getUnitMap();
 	/*
 		const std::map<std::string,std::string> & units = params.getUnitMap();
@@ -991,18 +1006,7 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 
 	//char separator = 0;
 
-	if (detailed){
-		ostr << "  (";
-		ostr << "section: " << FlagResolver::getKeys(sections,cmd.section, ',');
-		if ((params.separator) && (params.separator!=',')){
-			ostr << ", separator: '" << params.separator << "'";
-		}
-		ostr << ')';
-	}
 
-	ostr << '\n';
-
-	ostr << cmd.getDescription();
 	cmd.help(ostr, detailed); // TODO: embed following detailed part in help?
 	if (detailed){
 		cmd.getRelatedCommands(ostr);
